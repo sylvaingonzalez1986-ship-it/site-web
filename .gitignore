@@ -51,3 +51,6 @@ public/uploads/producers/*
 
 # local runtime data (never commit customer/order/invoice exports)
 data/*.json
+
+# local supabase cli temp files
+supabase/.temp/
