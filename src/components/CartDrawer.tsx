@@ -6,7 +6,10 @@ import { useEffect, useMemo, useState } from "react";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { useCart } from "@/context/CartContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { useCmsStore } from "@/hooks/useCmsStore";
 import { useCustomerSession } from "@/hooks/useCustomerSession";
+import { getCustomerCheckoutEligibility } from "@/lib/customer-checkout-eligibility";
+import { getBadgeDiscountPercent } from "@/lib/loyalty-tier-benefits";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { formatPrice } from "@/lib/utils";
 
@@ -17,8 +20,23 @@ type CartDrawerProps = {
 
 type PromoPreview = {
   code: string;
-  discountPercent: number;
-  discountAmount: number;
+  promoDiscountPercent: number;
+  promoDiscountAmount: number;
+  badgeDiscountPercent: number;
+  badgeDiscountAmount: number;
+  discountedTotal: number;
+};
+
+type LotteryPreview = {
+  ticketId: string;
+  ticketNumber: string;
+  rewardType: "discount" | "gift";
+  prizeName: string;
+  giftLabel?: string;
+  lotteryDiscountPercent: number;
+  lotteryDiscountAmount: number;
+  badgeDiscountPercent: number;
+  badgeDiscountAmount: number;
   discountedTotal: number;
 };
 
@@ -35,7 +53,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     removeFromCart,
     clearCart,
   } = useCart();
-  const { user } = useCustomerSession();
+  const { user, loyalty, tickets, lotteryConfig } = useCustomerSession();
+  const { store: cmsStore } = useCmsStore();
 
   const [shippingName, setShippingName] = useState("");
   const [shippingEmail, setShippingEmail] = useState("");
@@ -49,6 +68,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const [promoError, setPromoError] = useState<string | null>(null);
   const [promoSuccess, setPromoSuccess] = useState<string | null>(null);
   const [promoPreview, setPromoPreview] = useState<PromoPreview | null>(null);
+  const [selectedLotteryTicketId, setSelectedLotteryTicketId] = useState("");
+  const [lotteryLoading, setLotteryLoading] = useState(false);
+  const [lotteryError, setLotteryError] = useState<string | null>(null);
+  const [lotterySuccess, setLotterySuccess] = useState<string | null>(null);
+  const [lotteryPreview, setLotteryPreview] = useState<LotteryPreview | null>(null);
   useBodyScrollLock(open);
 
   useEffect(() => {
@@ -67,13 +91,93 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     setShippingCountry(user?.country || "France");
   }, [open, user]);
 
+  const badgeDiscountPercent = useMemo(() => {
+    if (!isAuthenticated || !loyalty.currentBadge.unlocked) {
+      return 0;
+    }
+
+    return getBadgeDiscountPercent(cmsStore.content.profile, loyalty.currentBadge.id);
+  }, [cmsStore.content.profile, isAuthenticated, loyalty.currentBadge.id, loyalty.currentBadge.unlocked]);
+
+  const badgeDiscountAmount = useMemo(
+    () => Number(((totalPrice * badgeDiscountPercent) / 100).toFixed(2)),
+    [badgeDiscountPercent, totalPrice],
+  );
+
+  const totalAfterBadgeDiscount = useMemo(
+    () => Number(Math.max(totalPrice - badgeDiscountAmount, 0).toFixed(2)),
+    [badgeDiscountAmount, totalPrice],
+  );
+
+  const redeemableWinningTickets = useMemo(
+    () =>
+      tickets.filter(
+        (ticket) =>
+          ticket.status === "scratched" &&
+          ticket.isWin === true &&
+          !ticket.redeemedAt &&
+          Boolean(ticket.prize?.name),
+      ),
+    [tickets],
+  );
+
   useEffect(() => {
     setPromoPreview(null);
     setPromoError(null);
     setPromoSuccess(null);
-  }, [promoCode, totalPrice]);
+  }, [promoCode, totalPrice, badgeDiscountPercent]);
 
-  const checkoutAmount = promoPreview?.discountedTotal ?? totalPrice;
+  useEffect(() => {
+    setLotteryPreview(null);
+    setLotteryError(null);
+    setLotterySuccess(null);
+  }, [selectedLotteryTicketId, totalPrice, badgeDiscountPercent]);
+
+  useEffect(() => {
+    if (
+      selectedLotteryTicketId &&
+      !redeemableWinningTickets.some((ticket) => ticket.id === selectedLotteryTicketId)
+    ) {
+      setSelectedLotteryTicketId("");
+      setLotteryPreview(null);
+    }
+  }, [redeemableWinningTickets, selectedLotteryTicketId]);
+
+  const checkoutAmount =
+    lotteryPreview?.discountedTotal ?? promoPreview?.discountedTotal ?? totalAfterBadgeDiscount;
+  const lotteryTicketThreshold = useMemo(() => {
+    const threshold = Number(lotteryConfig?.ticketThresholdEuros ?? 20);
+    if (!Number.isFinite(threshold) || threshold <= 0) {
+      return 20;
+    }
+
+    return threshold;
+  }, [lotteryConfig?.ticketThresholdEuros]);
+  const estimatedEarnedTickets = useMemo(() => {
+    if (!isAuthenticated || !lotteryConfig?.isActive) {
+      return 0;
+    }
+
+    return Math.floor(Math.max(checkoutAmount, 0) / lotteryTicketThreshold);
+  }, [checkoutAmount, isAuthenticated, lotteryConfig?.isActive, lotteryTicketThreshold]);
+  const missingForNextTicket = useMemo(() => {
+    if (!isAuthenticated || !lotteryConfig?.isActive) {
+      return null;
+    }
+
+    const safeAmount = Math.max(checkoutAmount, 0);
+    const remainder = safeAmount % lotteryTicketThreshold;
+    const missing = remainder === 0 ? lotteryTicketThreshold : lotteryTicketThreshold - remainder;
+    return Number(missing.toFixed(2));
+  }, [checkoutAmount, isAuthenticated, lotteryConfig?.isActive, lotteryTicketThreshold]);
+  const displayedBadgeDiscountPercent =
+    lotteryPreview?.badgeDiscountPercent ?? promoPreview?.badgeDiscountPercent ?? badgeDiscountPercent;
+  const displayedBadgeDiscountAmount =
+    lotteryPreview?.badgeDiscountAmount ?? promoPreview?.badgeDiscountAmount ?? badgeDiscountAmount;
+  const checkoutEligibility = useMemo(
+    () => (user ? getCustomerCheckoutEligibility(user) : { allowed: false }),
+    [user],
+  );
 
   const canCheckout = useMemo(
     () =>
@@ -100,6 +204,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const applyPromoCode = async () => {
     setPromoError(null);
     setPromoSuccess(null);
+    setLotteryError(null);
+
+    if (selectedLotteryTicketId) {
+      setPromoError("Le ticket gagnant n'est pas cumulable avec un code promo.");
+      return;
+    }
 
     const code = promoCode.trim().toUpperCase();
     if (!code) {
@@ -128,8 +238,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       const data = (await response.json()) as {
         valid?: boolean;
         code?: string;
-        discountPercent?: number;
-        discountAmount?: number;
+        promoDiscountPercent?: number;
+        promoDiscountAmount?: number;
+        badgeDiscountPercent?: number;
+        badgeDiscountAmount?: number;
         discountedTotal?: number;
         error?: string;
       };
@@ -142,18 +254,102 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
       setPromoPreview({
         code: data.code,
-        discountPercent: data.discountPercent ?? 0,
-        discountAmount: data.discountAmount ?? 0,
-        discountedTotal: data.discountedTotal ?? totalPrice,
+        promoDiscountPercent: data.promoDiscountPercent ?? 0,
+        promoDiscountAmount: data.promoDiscountAmount ?? 0,
+        badgeDiscountPercent: data.badgeDiscountPercent ?? badgeDiscountPercent,
+        badgeDiscountAmount: data.badgeDiscountAmount ?? badgeDiscountAmount,
+        discountedTotal: data.discountedTotal ?? totalAfterBadgeDiscount,
       });
       setPromoSuccess(
-        `Code ${data.code} applique (${data.discountPercent ?? 0}% de reduction).`,
+        `Code ${data.code} applique (${data.promoDiscountPercent ?? 0}% de reduction code).`,
       );
     } catch {
       setPromoPreview(null);
       setPromoError("Impossible de verifier le code promo.");
     } finally {
       setPromoLoading(false);
+    }
+  };
+
+  const applyLotteryTicket = async () => {
+    setLotteryError(null);
+    setLotterySuccess(null);
+    setPromoError(null);
+
+    if (!selectedLotteryTicketId) {
+      setLotteryError("Selectionne un ticket gagnant.");
+      return;
+    }
+
+    if (promoCode.trim()) {
+      setLotteryError("Le ticket gagnant n'est pas cumulable avec un code promo.");
+      return;
+    }
+
+    setLotteryLoading(true);
+    try {
+      const response = await fetch("/api/checkout/viva", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          action: "validate_ticket",
+          amount: totalPrice,
+          items: items.map((item) => ({
+            id: item.id,
+            quantity: item.quantity,
+          })),
+          lotteryTicketId: selectedLotteryTicketId,
+        }),
+      });
+
+      const data = (await response.json()) as {
+        valid?: boolean;
+        ticketId?: string;
+        ticketNumber?: string;
+        rewardType?: "discount" | "gift";
+        prizeName?: string;
+        giftLabel?: string;
+        lotteryDiscountPercent?: number;
+        lotteryDiscountAmount?: number;
+        badgeDiscountPercent?: number;
+        badgeDiscountAmount?: number;
+        discountedTotal?: number;
+        error?: string;
+      };
+
+      if (!response.ok || !data.valid || !data.ticketId || !data.ticketNumber || !data.rewardType || !data.prizeName) {
+        setLotteryPreview(null);
+        setLotteryError(data.error ?? "Ticket gagnant invalide.");
+        return;
+      }
+
+      setLotteryPreview({
+        ticketId: data.ticketId,
+        ticketNumber: data.ticketNumber,
+        rewardType: data.rewardType,
+        prizeName: data.prizeName,
+        giftLabel: data.giftLabel,
+        lotteryDiscountPercent: data.lotteryDiscountPercent ?? 0,
+        lotteryDiscountAmount: data.lotteryDiscountAmount ?? 0,
+        badgeDiscountPercent: data.badgeDiscountPercent ?? badgeDiscountPercent,
+        badgeDiscountAmount: data.badgeDiscountAmount ?? badgeDiscountAmount,
+        discountedTotal: data.discountedTotal ?? totalAfterBadgeDiscount,
+      });
+      setPromoCode("");
+      setPromoPreview(null);
+      setPromoSuccess(null);
+      setLotterySuccess(
+        data.rewardType === "discount"
+          ? `Ticket ${data.ticketNumber} applique (${data.lotteryDiscountPercent ?? 0}% de reduction).`
+          : `Ticket ${data.ticketNumber} applique (lot ajoute a la commande).`,
+      );
+    } catch {
+      setLotteryPreview(null);
+      setLotteryError("Impossible de verifier le ticket gagnant.");
+    } finally {
+      setLotteryLoading(false);
     }
   };
 
@@ -164,6 +360,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         : `${window.location.pathname}${window.location.search}`;
     onClose();
     router.push(`/compte/connexion?next=${encodeURIComponent(nextPath)}`);
+  };
+
+  const goToProfile = () => {
+    onClose();
+    router.push("/profil");
   };
 
   return (
@@ -322,20 +523,61 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   <input
                     className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
                     value={promoCode}
-                    onChange={(event) => setPromoCode(event.target.value.toUpperCase())}
+                    onChange={(event) => {
+                      const value = event.target.value.toUpperCase();
+                      setPromoCode(value);
+                      if (value.trim()) {
+                        setSelectedLotteryTicketId("");
+                      }
+                    }}
                     placeholder="Code promo (optionnel)"
+                    disabled={Boolean(selectedLotteryTicketId)}
                   />
                   <button
                     type="button"
                     className="btn-cartoon btn-secondary h-10 px-3 text-xs"
-                    disabled={promoLoading || items.length === 0}
+                    disabled={promoLoading || items.length === 0 || Boolean(selectedLotteryTicketId)}
                     onClick={applyPromoCode}
                   >
                     {promoLoading ? "..." : "Appliquer"}
                   </button>
                 </div>
+                <div className="grid grid-cols-[1fr,auto] gap-2">
+                  <select
+                    className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    value={selectedLotteryTicketId}
+                    onChange={(event) => {
+                      const nextId = event.target.value;
+                      setSelectedLotteryTicketId(nextId);
+                      if (nextId) {
+                        setPromoCode("");
+                        setPromoPreview(null);
+                        setPromoError(null);
+                        setPromoSuccess(null);
+                      }
+                    }}
+                    disabled={redeemableWinningTickets.length === 0 || promoCode.trim().length > 0}
+                  >
+                    <option value="">Ticket gagnant (optionnel)</option>
+                    {redeemableWinningTickets.map((ticket) => (
+                      <option key={ticket.id} value={ticket.id}>
+                        {ticket.ticketNumber} - {ticket.prize?.name ?? "Lot"}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    className="btn-cartoon btn-secondary h-10 px-3 text-xs"
+                    disabled={lotteryLoading || !selectedLotteryTicketId || items.length === 0 || promoCode.trim().length > 0}
+                    onClick={applyLotteryTicket}
+                  >
+                    {lotteryLoading ? "..." : "Utiliser ticket"}
+                  </button>
+                </div>
                 {promoError && <p className="text-sm font-semibold text-red-700">{promoError}</p>}
                 {promoSuccess && <p className="text-sm font-semibold text-green-700">{promoSuccess}</p>}
+                {lotteryError && <p className="text-sm font-semibold text-red-700">{lotteryError}</p>}
+                {lotterySuccess && <p className="text-sm font-semibold text-green-700">{lotterySuccess}</p>}
               </div>
             </div>
           </div>
@@ -343,16 +585,66 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
         <div className="cartoon-panel mt-3 shrink-0 bg-white p-4">
           <div className="flex items-center justify-between text-lg font-extrabold">
-            <span>Total</span>
+            <span>Total panier</span>
             <span>{formatPrice(totalPrice)} TTC</span>
           </div>
+          {displayedBadgeDiscountPercent > 0 && (
+            <div className="mt-2 text-sm text-green-700">
+              Reduction fidelite ({loyalty.currentBadge.label}): -{formatPrice(displayedBadgeDiscountAmount)} (
+              {displayedBadgeDiscountPercent}%)
+            </div>
+          )}
           {promoPreview && (
             <div className="mt-2 text-sm text-green-700">
-              Reduction: -{formatPrice(promoPreview.discountAmount)} ({promoPreview.discountPercent}%)
+              Reduction code {promoPreview.code}: -{formatPrice(promoPreview.promoDiscountAmount)} (
+              {promoPreview.promoDiscountPercent}%)
+            </div>
+          )}
+          {lotteryPreview?.rewardType === "discount" && (
+            <div className="mt-2 text-sm text-green-700">
+              Ticket {lotteryPreview.ticketNumber}: -{formatPrice(lotteryPreview.lotteryDiscountAmount)} (
+              {lotteryPreview.lotteryDiscountPercent}%)
+            </div>
+          )}
+          {lotteryPreview?.rewardType === "gift" && (
+            <div className="mt-2 text-sm text-green-700">
+              Ticket {lotteryPreview.ticketNumber}: lot ajoute ({lotteryPreview.giftLabel ?? lotteryPreview.prizeName})
             </div>
           )}
           <div className="mt-1 text-sm font-semibold text-ink">
             A payer: {formatPrice(checkoutAmount)} TTC
+          </div>
+          <div className="mt-3 rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
+            <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">
+              Tickets loterie apres achat
+            </p>
+            {!isAuthenticated ? (
+              <p className="mt-1 text-sm text-charcoal">
+                Connecte-toi pour cumuler des tickets.
+              </p>
+            ) : !lotteryConfig ? (
+              <p className="mt-1 text-sm text-charcoal">
+                Configuration loterie indisponible pour le moment.
+              </p>
+            ) : !lotteryConfig.isActive ? (
+              <p className="mt-1 text-sm text-charcoal">
+                Loterie actuellement desactivee.
+              </p>
+            ) : (
+              <>
+                <p className="mt-1 text-sm font-semibold text-ink">
+                  Tu vas gagner {estimatedEarnedTickets} ticket{estimatedEarnedTickets > 1 ? "s" : ""}.
+                </p>
+                <p className="mt-1 text-xs text-charcoal">
+                  Regle: 1 ticket par tranche de {formatPrice(lotteryTicketThreshold)} TTC payee.
+                </p>
+                {missingForNextTicket !== null && (
+                  <p className="mt-1 text-xs text-charcoal">
+                    Encore {formatPrice(missingForNextTicket)} TTC pour 1 ticket supplementaire.
+                  </p>
+                )}
+              </>
+            )}
           </div>
           <div className="mt-3">
             <CheckoutButton
@@ -374,14 +666,19 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 postalCode: shippingPostalCode,
                 country: shippingCountry,
               }}
-              promoCode={promoPreview?.code || promoCode.trim().toUpperCase() || undefined}
-              disabled={!canCheckout || authLoading || !isAuthenticated}
+              promoCode={promoPreview?.code || undefined}
+              lotteryTicketId={lotteryPreview?.ticketId || undefined}
+              disabled={!canCheckout || authLoading || !isAuthenticated || !checkoutEligibility.allowed}
               onSuccess={() => {
                 clearCart();
                 setPromoCode("");
                 setPromoPreview(null);
                 setPromoError(null);
                 setPromoSuccess(null);
+                setSelectedLotteryTicketId("");
+                setLotteryPreview(null);
+                setLotteryError(null);
+                setLotterySuccess(null);
               }}
             />
             {!authLoading && !isAuthenticated && (
@@ -393,6 +690,20 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               <p className="mt-2 text-xs font-semibold text-charcoal">
                 Completer les informations de livraison pour payer.
               </p>
+            )}
+            {!authLoading && isAuthenticated && !checkoutEligibility.allowed && (
+              <div className="mt-2 space-y-2">
+                <p className="text-xs font-semibold text-charcoal">
+                  {checkoutEligibility.error ?? "Profil non eligible a la commande."}
+                </p>
+                <button
+                  type="button"
+                  onClick={goToProfile}
+                  className="btn-cartoon btn-secondary h-9 px-3 text-xs"
+                >
+                  Completer mon profil
+                </button>
+              </div>
             )}
           </div>
         </div>
