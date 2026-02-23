@@ -12,6 +12,20 @@ type ArticleJsonLdProps = {
   category?: string;
 };
 
+const BUSINESS_NAME = "Les Chanvriers Bretons";
+const BUSINESS_EMAIL = "leschanvriersbretons@gmail.com";
+const BUSINESS_PHONE =
+  process.env.BUSINESS_PHONE?.trim() ||
+  process.env.NEXT_PUBLIC_BUSINESS_PHONE?.trim() ||
+  undefined;
+const BUSINESS_ADDRESS = {
+  "@type": "PostalAddress",
+  streetAddress: "60 rue Francois 1er",
+  postalCode: "75008",
+  addressLocality: "Paris",
+  addressCountry: "FR",
+};
+
 function safeJsonLdStringify(value: unknown): string {
   return JSON.stringify(value)
     .replace(/</g, "\\u003c")
@@ -27,16 +41,45 @@ export function OrganizationJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Les Chanvriers Bretons",
+    name: BUSINESS_NAME,
     url: baseUrl,
     logo: `${baseUrl}/charles.png`,
     description:
-      "Shop CBD bio pas cher en Bretagne. Fleurs, huiles, resines, cosmetiques et infusions CBD de qualite.",
-    address: {
-      "@type": "PostalAddress",
-      addressRegion: "Bretagne",
-      addressCountry: "FR",
-    },
+      "Shop CBD bio breton pas cher en Bretagne. Fleurs CBD indoor et greenhouse, huiles CBD spectre complet, resines, cosmetiques et tisanes au chanvre naturel. CBD artisanal et legal.",
+    email: BUSINESS_EMAIL,
+    telephone: BUSINESS_PHONE,
+    address: BUSINESS_ADDRESS,
+    sameAs: [
+      "https://www.instagram.com/leschanvriersbretons",
+      "https://www.facebook.com/leschanvriersbretons",
+      "https://www.tiktok.com/@leschanvriersbretons",
+    ],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
+    />
+  );
+}
+
+export function LocalBusinessJsonLd() {
+  const baseUrl = getSiteUrl();
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    name: BUSINESS_NAME,
+    url: baseUrl,
+    logo: `${baseUrl}/charles.png`,
+    image: `${baseUrl}/charles.png`,
+    description:
+      "Boutique CBD bio breton en Bretagne. Fleurs CBD indoor et greenhouse, huiles CBD spectre complet, resines CBD naturelles, cosmetiques et tisanes au chanvre bio. CBD artisanal, naturel et legal. Livraison rapide en France.",
+    email: BUSINESS_EMAIL,
+    telephone: BUSINESS_PHONE,
+    address: BUSINESS_ADDRESS,
+    priceRange: "EUR",
     sameAs: [
       "https://www.instagram.com/leschanvriersbretons",
       "https://www.facebook.com/leschanvriersbretons",
@@ -58,7 +101,7 @@ export function WebSiteJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Les Chanvriers Bretons",
+    name: BUSINESS_NAME,
     url: baseUrl,
     potentialAction: {
       "@type": "SearchAction",
@@ -130,7 +173,7 @@ export function ProductListJsonLd({
           name:
             (product.producerId
               ? producerById.get(product.producerId)?.name
-              : undefined) ?? "Les Chanvriers Bretons",
+              : undefined) ?? BUSINESS_NAME,
         },
         offers: {
           "@type": "Offer",
@@ -139,7 +182,7 @@ export function ProductListJsonLd({
           availability: "https://schema.org/InStock",
           seller: {
             "@type": "Organization",
-            name: "Les Chanvriers Bretons",
+            name: BUSINESS_NAME,
           },
         },
       },
@@ -165,7 +208,7 @@ export function ProductJsonLd({ product }: { product: Product }) {
     image: `${baseUrl}${product.images?.[0] ?? product.image}`,
     brand: {
       "@type": "Brand",
-      name: "Les Chanvriers Bretons",
+      name: BUSINESS_NAME,
     },
     offers: {
       "@type": "Offer",
@@ -175,7 +218,7 @@ export function ProductJsonLd({ product }: { product: Product }) {
       url: `${baseUrl}/boutique`,
       seller: {
         "@type": "Organization",
-        name: "Les Chanvriers Bretons",
+        name: BUSINESS_NAME,
       },
     },
   };
@@ -214,11 +257,11 @@ export function ArticleJsonLd({
     },
     author: {
       "@type": "Organization",
-      name: "Les Chanvriers Bretons",
+      name: BUSINESS_NAME,
     },
     publisher: {
       "@type": "Organization",
-      name: "Les Chanvriers Bretons",
+      name: BUSINESS_NAME,
       logo: {
         "@type": "ImageObject",
         url: `${baseUrl}/charles.png`,
