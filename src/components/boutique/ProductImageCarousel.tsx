@@ -16,6 +16,7 @@ type ProductImageCarouselProps = {
 
 const SWIPE_THRESHOLD_PX = 50;
 const MAX_DRAG_OFFSET_PX = 96;
+const FALLBACK_IMAGE_SRC = "/product_flower.jpg";
 
 export function ProductImageCarousel({
   images,
@@ -44,6 +45,7 @@ export function ProductImageCarousel({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
+  const [failedRemoteImages, setFailedRemoteImages] = useState<Set<string>>(new Set());
   const touchStartXRef = useRef<number | null>(null);
   const touchStartYRef = useRef<number | null>(null);
 
@@ -53,6 +55,7 @@ export function ProductImageCarousel({
     setCurrentIndex((current) => Math.min(current, sanitizedImages.length - 1));
     setDragOffset(0);
     setIsSwiping(false);
+    setFailedRemoteImages(new Set());
     touchStartXRef.current = null;
     touchStartYRef.current = null;
   }, [sanitizedImages.length]);
@@ -154,14 +157,34 @@ export function ProductImageCarousel({
       >
         {sanitizedImages.map((image, index) => (
           <div key={`${image}-${index}`} className="relative min-w-full">
-            <Image
-              src={image}
-              alt={hasMultipleImages ? `${alt} - photo ${index + 1}` : alt}
-              fill
-              sizes={sizes}
-              unoptimized={isRemoteImageUrl(image)}
-              className="object-cover transition-transform duration-300 group-hover/product-carousel:scale-105"
-            />
+            {isRemoteImageUrl(image) ? (
+              <img
+                src={failedRemoteImages.has(image) ? FALLBACK_IMAGE_SRC : image}
+                alt={hasMultipleImages ? `${alt} - photo ${index + 1}` : alt}
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover/product-carousel:scale-105"
+                loading="lazy"
+                decoding="async"
+                referrerPolicy="no-referrer"
+                onError={() => {
+                  setFailedRemoteImages((current) => {
+                    if (current.has(image)) {
+                      return current;
+                    }
+                    const next = new Set(current);
+                    next.add(image);
+                    return next;
+                  });
+                }}
+              />
+            ) : (
+              <Image
+                src={image}
+                alt={hasMultipleImages ? `${alt} - photo ${index + 1}` : alt}
+                fill
+                sizes={sizes}
+                className="object-cover transition-transform duration-300 group-hover/product-carousel:scale-105"
+              />
+            )}
           </div>
         ))}
       </div>

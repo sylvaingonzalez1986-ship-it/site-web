@@ -698,7 +698,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           <div className="mt-2 flex items-center justify-between text-sm text-ink">
             <span>Livraison</span>
             <span>
-              {shippingFee <= 0 ? "Offerte (badge Argent+)" : formatPrice(shippingFee)}
+              {shippingFee <= 0 ? "Offerte (hors badge Bronze)" : formatPrice(shippingFee)}
             </span>
           </div>
           <div className="mt-1 text-sm font-semibold text-ink">

@@ -66,6 +66,17 @@ export function Navbar() {
         }`}
       >
         <div className="retro-container relative flex items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            className="inline-flex h-11 w-11 items-center justify-center border-2 border-[#1a1a1a] bg-[#f7f4ee] md:hidden"
+            aria-label="Menu"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav"
+          >
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+
           <Link href="/" className="hidden font-display text-xl text-ink md:block md:text-2xl">
             Les Chanvriers Bretons
           </Link>
@@ -95,31 +106,19 @@ export function Navbar() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setCartOpen(true)}
-              aria-label="Panier"
-              className="relative inline-flex h-11 w-11 items-center justify-center border-2 border-[#1a1a1a] bg-[#f7f4ee]"
-            >
-              <ShoppingCart size={19} />
-              {totalItems > 0 && (
-                <span className="absolute -right-2 -top-2 min-w-5 rounded-full bg-[#d35400] px-1 text-center text-xs font-bold text-white">
-                  {totalItems}
-                </span>
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={() => setMenuOpen((prev) => !prev)}
-              className="inline-flex h-11 w-11 items-center justify-center border-2 border-[#1a1a1a] bg-[#f7f4ee] md:hidden"
-              aria-label="Menu"
-              aria-expanded={menuOpen}
-              aria-controls="mobile-nav"
-            >
-              {menuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setCartOpen(true)}
+            aria-label="Panier"
+            className="relative inline-flex h-11 w-11 items-center justify-center border-2 border-[#1a1a1a] bg-[#f7f4ee]"
+          >
+            <ShoppingCart size={19} />
+            {totalItems > 0 && (
+              <span className="absolute -right-2 -top-2 min-w-5 rounded-full bg-[#d35400] px-1 text-center text-xs font-bold text-white">
+                {totalItems}
+              </span>
+            )}
+          </button>
         </div>
       </header>
 

@@ -46,15 +46,24 @@ export async function PUT(request: Request) {
     });
 
     try {
+      const blogStorageReferences = Array.from(
+        new Set(
+          [
+            ...saved.blog.map((post) => post.coverImage),
+            ...(Array.isArray(saved.content.home.seasonGalleryImages)
+              ? saved.content.home.seasonGalleryImages
+              : []),
+          ].filter((value): value is string => typeof value === "string" && value.trim().length > 0),
+        ),
+      );
+
       await cleanupUnusedProductUploads(
         saved.products.flatMap((product) => [
           product.image,
           ...(Array.isArray(product.images) ? product.images : []),
         ]),
       );
-      await cleanupUnusedBlogUploads(
-        saved.blog.map((post) => post.coverImage).filter(Boolean),
-      );
+      await cleanupUnusedBlogUploads(blogStorageReferences);
       await cleanupUnusedProducerUploads(
         saved.producers.map((producer) => producer.image).filter(Boolean),
       );

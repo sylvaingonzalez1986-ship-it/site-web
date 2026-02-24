@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { defaultStore } from "@/data/default-store";
 import { AdminTextCarousel } from "@/components/admin/AdminTextCarousel";
+import { AdminSeasonGalleryManager } from "@/components/admin/AdminSeasonGalleryManager";
 import { AdminCustomersPanel } from "@/components/admin/AdminCustomersPanel";
 import { AdminPromosPanel } from "@/components/admin/AdminPromosPanel";
 import { AdminLotteryPanel } from "@/components/admin/AdminLotteryPanel";
@@ -724,7 +725,10 @@ export function AdminPanel() {
         </div>
 
         {activeTab === "textes" && (
-          <AdminTextCarousel draft={draft} setDraft={setDraft} />
+          <div className="grid gap-6">
+            <AdminTextCarousel draft={draft} setDraft={setDraft} />
+            <AdminSeasonGalleryManager draft={draft} setDraft={setDraft} />
+          </div>
         )}
 
         {activeTab === "commandes" && (

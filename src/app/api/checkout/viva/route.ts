@@ -8,7 +8,10 @@ import {
 import { readStoreByBackend } from "@/lib/data-backend";
 import { INVOICE_SETTINGS } from "@/lib/invoice-config";
 import { buildLoyaltySummaryWithBonus } from "@/lib/loyalty";
-import { isBadgeEligibleForFreeShipping } from "@/lib/loyalty-tier-benefits";
+import {
+  getBadgeDiscountPercent,
+  isBadgeEligibleForFreeShipping,
+} from "@/lib/loyalty-tier-benefits";
 import {
   getRedeemableLotteryTicketBenefitByBackend,
   redeemLotteryTicketForOrderByBackend,
@@ -66,6 +69,25 @@ type VivaSummaryItem = {
   name: string;
   quantity: number;
 };
+
+function getCustomerOrdersForLoyalty(input: {
+  store: CmsStore;
+  customerId: string;
+  customerEmail: string;
+}): CmsStore["orders"] {
+  const safeCustomerEmail = input.customerEmail.trim().toLowerCase();
+  return input.store.orders.filter((order) => {
+    if (order.customerId && order.customerId === input.customerId) {
+      return true;
+    }
+
+    if (!order.customerId && order.customerEmail) {
+      return order.customerEmail.trim().toLowerCase() === safeCustomerEmail;
+    }
+
+    return false;
+  });
+}
 
 function buildVivaItemSummary(items: VivaSummaryItem[]): {
   customerTrns: string;
@@ -429,12 +451,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Code promo invalide ou deja utilise." }, { status: 400 });
     }
 
+    const store = await readStoreByBackend();
+    const customerOrders = getCustomerOrdersForLoyalty({
+      store,
+      customerId,
+      customerEmail: customer?.email ?? "",
+    });
+    const loyaltySummary = buildLoyaltySummaryWithBonus(
+      customerOrders,
+      customer?.loyaltyPoints ?? 0,
+    );
+    const badgeDiscountPercent = loyaltySummary.currentBadge.unlocked
+      ? getBadgeDiscountPercent(store.content.profile, loyaltySummary.currentBadge.id)
+      : 0;
+
     const payloadItems = Array.isArray(payload.items) ? payload.items : [];
     let subtotal = Number.isFinite(payload.amount) ? Number(payload.amount) : 0;
 
     if (payloadItems.length > 0) {
       try {
-        const resolvedItems = await resolveCheckoutItems(payloadItems);
+        const resolvedItems = await resolveCheckoutItems(payloadItems, store);
         subtotal = resolvedItems.reduce((total, item) => total + item.lineTotal, 0);
       } catch (error) {
         return NextResponse.json(
@@ -449,18 +485,20 @@ export async function POST(request: Request) {
     }
 
     const safeSubtotal = Number(subtotal.toFixed(2));
-    const discountAmount = Number(((safeSubtotal * promo.discountPercent) / 100).toFixed(2));
-    const discountedTotal = Number(Math.max(safeSubtotal - discountAmount, 0).toFixed(2));
+    const badgeDiscountAmount = Number(((safeSubtotal * badgeDiscountPercent) / 100).toFixed(2));
+    const subtotalAfterBadge = Number(Math.max(safeSubtotal - badgeDiscountAmount, 0).toFixed(2));
+    const promoDiscountAmount = Number(((subtotalAfterBadge * promo.discountPercent) / 100).toFixed(2));
+    const discountedTotal = Number(Math.max(subtotalAfterBadge - promoDiscountAmount, 0).toFixed(2));
 
     return NextResponse.json({
       valid: true,
       code: promo.code,
       promoDiscountPercent: promo.discountPercent,
-      promoDiscountAmount: discountAmount,
-      badgeDiscountPercent: 0,
-      badgeDiscountAmount: 0,
+      promoDiscountAmount,
+      badgeDiscountPercent,
+      badgeDiscountAmount,
       discountPercent: promo.discountPercent,
-      discountAmount,
+      discountAmount: Number((promoDiscountAmount + badgeDiscountAmount).toFixed(2)),
       discountedTotal,
     });
   }
@@ -477,12 +515,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Ticket manquant." }, { status: 400 });
     }
 
+    const store = await readStoreByBackend();
+    const customerOrders = getCustomerOrdersForLoyalty({
+      store,
+      customerId,
+      customerEmail: customer?.email ?? "",
+    });
+    const loyaltySummary = buildLoyaltySummaryWithBonus(
+      customerOrders,
+      customer?.loyaltyPoints ?? 0,
+    );
+    const badgeDiscountPercent = loyaltySummary.currentBadge.unlocked
+      ? getBadgeDiscountPercent(store.content.profile, loyaltySummary.currentBadge.id)
+      : 0;
+
     const payloadItems = Array.isArray(payload.items) ? payload.items : [];
     let subtotal = Number.isFinite(payload.amount) ? Number(payload.amount) : 0;
 
     if (payloadItems.length > 0) {
       try {
-        const resolvedItems = await resolveCheckoutItems(payloadItems);
+        const resolvedItems = await resolveCheckoutItems(payloadItems, store);
         subtotal = resolvedItems.reduce((total, item) => total + item.lineTotal, 0);
       } catch (error) {
         return NextResponse.json(
@@ -505,14 +557,16 @@ export async function POST(request: Request) {
     }
 
     const safeSubtotal = Number(subtotal.toFixed(2));
+    const badgeDiscountAmount = Number(((safeSubtotal * badgeDiscountPercent) / 100).toFixed(2));
+    const subtotalAfterBadge = Number(Math.max(safeSubtotal - badgeDiscountAmount, 0).toFixed(2));
     const isDiscount = ticketBenefit.benefit.rewardType === "discount";
     const lotteryDiscountPercent = isDiscount
       ? (ticketBenefit.benefit.discountPercent ?? 0)
       : 0;
     const lotteryDiscountAmount = Number(
-      ((safeSubtotal * lotteryDiscountPercent) / 100).toFixed(2),
+      ((subtotalAfterBadge * lotteryDiscountPercent) / 100).toFixed(2),
     );
-    const discountedTotal = Number(Math.max(safeSubtotal - lotteryDiscountAmount, 0).toFixed(2));
+    const discountedTotal = Number(Math.max(subtotalAfterBadge - lotteryDiscountAmount, 0).toFixed(2));
 
     return NextResponse.json({
       valid: true,
@@ -526,8 +580,8 @@ export async function POST(request: Request) {
           : undefined,
       lotteryDiscountPercent,
       lotteryDiscountAmount,
-      badgeDiscountPercent: 0,
-      badgeDiscountAmount: 0,
+      badgeDiscountPercent,
+      badgeDiscountAmount,
       discountedTotal,
     });
   }
@@ -568,22 +622,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Panier invalide." }, { status: 400 });
   }
 
-  const safeCustomerEmail = customer.email.trim().toLowerCase();
-  const customerOrders = store.orders.filter((order) => {
-    if (order.customerId && order.customerId === customerId) {
-      return true;
-    }
-
-    if (!order.customerId && order.customerEmail) {
-      return order.customerEmail.trim().toLowerCase() === safeCustomerEmail;
-    }
-
-    return false;
+  const customerOrders = getCustomerOrdersForLoyalty({
+    store,
+    customerId,
+    customerEmail: customer.email,
   });
   const loyaltySummary = buildLoyaltySummaryWithBonus(
     customerOrders,
     customer.loyaltyPoints ?? 0,
   );
+  const badgeDiscountPercent = loyaltySummary.currentBadge.unlocked
+    ? getBadgeDiscountPercent(store.content.profile, loyaltySummary.currentBadge.id)
+    : 0;
   const hasFreeShippingByBadge = isBadgeEligibleForFreeShipping(
     loyaltySummary.currentBadge.id,
     loyaltySummary.currentBadge.unlocked,
@@ -690,6 +740,13 @@ export async function POST(request: Request) {
       }
     | null = null;
   let requestedDiscountAmount = 0;
+  const requestedBadgeDiscountAmount = Number(
+    ((preDiscountSubtotal * badgeDiscountPercent) / 100).toFixed(2),
+  );
+  requestedDiscountAmount = requestedBadgeDiscountAmount;
+  const subtotalAfterBadge = Number(
+    Math.max(preDiscountSubtotal - requestedBadgeDiscountAmount, 0).toFixed(2),
+  );
 
   if (promoCode) {
     if (!customerId) {
@@ -707,13 +764,13 @@ export async function POST(request: Request) {
       );
     }
 
-    const discountAmount = Number(((preDiscountSubtotal * promo.discountPercent) / 100).toFixed(2));
+    const discountAmount = Number(((subtotalAfterBadge * promo.discountPercent) / 100).toFixed(2));
     appliedPromo = {
       code: promo.code,
       discountPercent: promo.discountPercent,
       discountAmount,
     };
-    requestedDiscountAmount = discountAmount;
+    requestedDiscountAmount = Number((requestedBadgeDiscountAmount + discountAmount).toFixed(2));
   }
 
   if (lotteryTicketId) {
@@ -739,7 +796,7 @@ export async function POST(request: Request) {
     const discountPercent = isDiscount
       ? (ticketBenefit.benefit.discountPercent ?? 0)
       : 0;
-    const discountAmount = Number(((preDiscountSubtotal * discountPercent) / 100).toFixed(2));
+    const discountAmount = Number(((subtotalAfterBadge * discountPercent) / 100).toFixed(2));
     appliedTicket = {
       ticketId: ticketBenefit.ticketId,
       ticketNumber: ticketBenefit.ticketNumber,
@@ -752,7 +809,7 @@ export async function POST(request: Request) {
         ? ticketBenefit.benefit.giftLabel
         : undefined,
     };
-    requestedDiscountAmount = discountAmount;
+    requestedDiscountAmount = Number((requestedBadgeDiscountAmount + discountAmount).toFixed(2));
   }
 
   let finalizedItems = resolvedItems;

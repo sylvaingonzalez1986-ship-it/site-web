@@ -5,14 +5,12 @@ import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel
 
 type HomeSeasonGalleryProps = {
   title: string;
-  description: string;
   images: string[];
   zIndex: number;
 };
 
 export function HomeSeasonGallery({
   title,
-  description,
   images,
   zIndex,
 }: HomeSeasonGalleryProps) {
@@ -42,7 +40,6 @@ export function HomeSeasonGallery({
       <div className="retro-container">
         <div className="cartoon-border bg-[#f1eee7] p-6 md:p-8">
           <h2 className="section-title text-ink">{title}</h2>
-          <p className="mt-4 max-w-3xl text-lg text-charcoal">{description}</p>
 
           {galleryImages.length === 0 ? (
             <div className="mt-6 border-2 border-dashed border-[#1a1a1a] bg-white p-6 text-sm font-semibold text-charcoal">

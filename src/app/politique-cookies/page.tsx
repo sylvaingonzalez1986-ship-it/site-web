@@ -19,12 +19,12 @@ export default function PolitiqueCookiesPage() {
       <div className="retro-container">
         <article className="cartoon-border bg-white p-6 md:p-10">
           <h1 className="section-title">POLITIQUE DE COOKIES</h1>
-          <p className="mt-4 text-sm leading-relaxed text-charcoal">
+          <p className="mt-4 break-words text-sm leading-relaxed text-charcoal [overflow-wrap:anywhere]">
             Cette politique explique l&apos;usage des cookies sur le site
             {" "}
             <a
               href="https://leschanvriersbretons.com"
-              className="underline"
+              className="break-all underline"
               target="_blank"
               rel="noreferrer"
             >
@@ -33,7 +33,7 @@ export default function PolitiqueCookiesPage() {
             .
           </p>
 
-          <div className="mt-6 grid gap-6 text-sm leading-relaxed text-ink">
+          <div className="mt-6 grid gap-6 break-words text-sm leading-relaxed text-ink [overflow-wrap:anywhere]">
             <section>
               <h2 className="font-display text-2xl">Article 1 - Qu&apos;est-ce qu&apos;un cookie </h2>
               <p className="mt-2">
@@ -48,7 +48,7 @@ export default function PolitiqueCookiesPage() {
               <p className="mt-2">
                 Le site utilise principalement des cookies techniques nécessaires.
               </p>
-              <div className="mt-3 overflow-x-auto">
+              <div className="mt-3 max-w-full overflow-x-auto">
                 <table className="w-full min-w-[700px] border-collapse text-left text-xs sm:text-sm">
                   <thead>
                     <tr className="bg-[#f4f1ea]">
@@ -129,7 +129,7 @@ export default function PolitiqueCookiesPage() {
               <p className="mt-2">
                 Pour toute question relative aux cookies :
                 <br />
-                leschanvriersbretons@gmail.com
+                <span className="break-all">leschanvriersbretons@gmail.com</span>
               </p>
             </section>
           </div>

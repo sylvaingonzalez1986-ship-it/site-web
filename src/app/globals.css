@@ -1,7 +1,7 @@
 ﻿@import "tailwindcss";
 
 :root {
-  --mint: #b8d4d1;
+  --mint: #bac59d;
   --yellow: #f4c26f;
   --orange: #d35400;
   --teal: #2e8b78;
@@ -458,7 +458,7 @@ h4 {
 
 .app-showcase {
   --app-phone-width: 210px;
-  background-image: linear-gradient(160deg, rgba(184, 212, 209, 0.2) 0%, rgba(247, 244, 238, 1) 65%);
+  background-image: linear-gradient(160deg, rgba(186, 197, 157, 0.2) 0%, rgba(247, 244, 238, 1) 65%);
 }
 
 .app-showcase-row {

@@ -108,43 +108,29 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
         return;
       }
 
+      const contentType = response.headers.get("content-type") ?? "";
+      if (!contentType.toLowerCase().includes("application/pdf")) {
+        setInvoiceError("Le fichier recu n'est pas une facture PDF valide.");
+        return;
+      }
+
       const blob = await response.blob();
-      if (blob.size === 0) {
+      if (blob.size < 100) {
         setInvoiceError("Facture vide recue. Reessayez dans quelques secondes.");
         return;
       }
 
-      const contentDisposition = response.headers.get("content-disposition") ?? "";
-      const filenameMatch =
-        contentDisposition.match(/filename\*=UTF-8''([^;]+)/i) ??
-        contentDisposition.match(/filename=\"?([^\";]+)\"?/i);
-      let filename = `facture-${order.id}.pdf`;
-      if (filenameMatch?.[1]) {
-        try {
-          filename = decodeURIComponent(filenameMatch[1]);
-        } catch {
-          filename = filenameMatch[1];
-        }
-      }
-
       const url = URL.createObjectURL(blob);
-      const supportsDownloadAttribute =
-        typeof HTMLAnchorElement !== "undefined" &&
-        "download" in HTMLAnchorElement.prototype;
-
-      if (supportsDownloadAttribute) {
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
+      if (!opened) {
         const anchor = document.createElement("a");
         anchor.href = url;
-        anchor.download = filename;
+        anchor.download = `facture-${order.id}.pdf`;
         anchor.style.display = "none";
         document.body.appendChild(anchor);
         anchor.click();
         anchor.remove();
-      } else {
-        window.open(url, "_blank", "noopener,noreferrer");
       }
-
-      // Safari/Firefox peuvent ignorer un revoke immediat et annuler le telechargement.
       window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
     } catch {
       window.open(

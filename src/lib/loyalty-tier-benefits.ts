@@ -15,13 +15,11 @@ export type LoyaltyDiscountContentKey =
   | "ambassadeurDiscountPercent"
   | "legendeDiscountPercent";
 
-export const LOYALTY_TIER_DISCOUNT_OPTIONS = [0, 2, 3, 5, 7, 10, 12, 15, 20] as const;
-const FREE_SHIPPING_BADGE_IDS: LoyaltyBadgeId[] = [
-  "explorateur",
-  "connaisseur",
-  "ambassadeur",
-  "legende",
-];
+export const LOYALTY_TIER_DISCOUNT_OPTIONS = [
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+  11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+] as const;
 
 export const LOYALTY_TIER_BENEFITS_FIELDS: Array<{
   id: LoyaltyBadgeId;
@@ -87,9 +85,7 @@ export function sanitizeLoyaltyTierDiscountPercent(value: unknown): number {
   }
 
   const rounded = Math.round(parsed);
-  return LOYALTY_TIER_DISCOUNT_OPTIONS.includes(rounded as (typeof LOYALTY_TIER_DISCOUNT_OPTIONS)[number])
-    ? rounded
-    : 0;
+  return Math.max(0, Math.min(30, rounded));
 }
 
 export function getBadgeDiscountPercent(
@@ -112,7 +108,13 @@ export function isBadgeEligibleForFreeShipping(
     return false;
   }
 
-  return FREE_SHIPPING_BADGE_IDS.includes(badgeId);
+  return isBadgeTierEligibleForFreeShipping(badgeId);
+}
+
+export function isBadgeTierEligibleForFreeShipping(
+  badgeId: LoyaltyBadgeId,
+): boolean {
+  return badgeId !== "decouverte";
 }
 
 

@@ -49,7 +49,7 @@ export const defaultStore: CmsStore = {
     },
     boutique: {
       eyebrow: "Boutique CBD",
-      title: "NOS PRODUITS",
+      title: "MES PRODUITS",
       description:
         "Filtre par categorie, ajoute au panier, puis lance ton paiement via Viva Smart Checkout.",
       emptyMessage: "Aucun produit dans cette categorie pour l instant.",
@@ -96,11 +96,11 @@ export const defaultStore: CmsStore = {
       badgeBenefitsModalTitle: "Avantages du palier",
       badgeBenefitsModalHint: "Chaque ligne correspond a un avantage.",
       badgeBenefitsCloseLabel: "Fermer",
-      decouverteDiscountPercent: 0,
-      explorateurDiscountPercent: 0,
-      connaisseurDiscountPercent: 0,
-      ambassadeurDiscountPercent: 0,
-      legendeDiscountPercent: 0,
+      decouverteDiscountPercent: 2,
+      explorateurDiscountPercent: 4,
+      connaisseurDiscountPercent: 6,
+      ambassadeurDiscountPercent: 8,
+      legendeDiscountPercent: 10,
       decouverteBenefits:
         "Acces au programme fidelite\nCumule des points sur chaque commande\nBadge bronze sur ton profil",
       explorateurBenefits:

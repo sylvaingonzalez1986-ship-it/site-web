@@ -112,10 +112,10 @@ export default function ApplicationPage() {
               </div>
               <div className="cartoon-border relative min-h-[420px] overflow-hidden bg-cream md:min-h-[540px]">
                 <Image
-                  src="/charles.png"
-                  alt="Charles app"
+                  src="/app-character-cropped.png"
+                  alt="Illustration application"
                   fill
-                  className="object-contain object-bottom"
+                  className="object-contain object-center"
                 />
               </div>
             </div>

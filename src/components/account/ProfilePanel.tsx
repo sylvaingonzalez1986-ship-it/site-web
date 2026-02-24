@@ -12,6 +12,7 @@ import {
   getBadgeBenefitsText,
   getBadgeDiscountPercent,
   isBadgeEligibleForFreeShipping,
+  isBadgeTierEligibleForFreeShipping,
   parseBadgeBenefitsLines,
 } from "@/lib/loyalty-tier-benefits";
 import { formatPrice } from "@/lib/utils";
@@ -353,8 +354,8 @@ export function ProfilePanel() {
                         loyalty.currentBadge.id,
                         loyalty.currentBadge.unlocked,
                       )
-                        ? "Livraison offerte active (badge Argent+)"
-                        : "Livraison offerte a partir du badge Argent"}
+                        ? "Livraison offerte active (hors badge Bronze)"
+                        : "Livraison offerte pour tous les badges sauf Bronze"}
                     </p>
                     {!loyalty.currentBadge.unlocked && (
                       <p className="mt-1 text-xs font-semibold text-charcoal">A debloquer</p>
@@ -441,8 +442,8 @@ export function ProfilePanel() {
                           </p>
                           <p className="mt-1 text-xs font-semibold text-ink">
                             Livraison offerte:{" "}
-                            {isBadgeEligibleForFreeShipping(badge.id, badge.unlocked)
-                              ? "Oui (a partir de ce palier)"
+                            {isBadgeTierEligibleForFreeShipping(badge.id)
+                              ? "Oui"
                               : "Non"}
                           </p>
                           <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">

@@ -21,7 +21,13 @@ export function Footer() {
                 <p className="text-sm font-semibold text-ink">Les Chanvriers Bretons</p>
                 <p className="mt-1 text-xs text-charcoal">{footer.copyright}</p>
                 <p className="mt-2 text-xs text-charcoal">
-                  Nous contacter: leschanvriersbretons@gmail.com
+                  Nous contacter:{" "}
+                  <a
+                    href="mailto:leschanvriersbretons@gmail.com"
+                    className="font-semibold underline decoration-2 underline-offset-2 hover:text-ink"
+                  >
+                    leschanvriersbretons@gmail.com
+                  </a>
                 </p>
                 <p className="mt-2 text-xs text-charcoal">
                   CBD bio breton, naturel et legal. Livraison rapide en France.

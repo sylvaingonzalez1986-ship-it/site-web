@@ -1,8 +1,9 @@
 ﻿"use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { isInvoiceEligibleOrder } from "@/lib/invoice-utils";
 import { getDeliveryMethodLabel } from "@/lib/shipping";
 import { formatPrice } from "@/lib/utils";
 import type { CmsOrder, OrderStatus } from "@/types/store";
@@ -42,6 +43,8 @@ function getStatusClass(status: OrderStatus): string {
 }
 
 export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalProps) {
+  const [invoiceLoading, setInvoiceLoading] = useState(false);
+  const [invoiceError, setInvoiceError] = useState<string | null>(null);
   useBodyScrollLock(Boolean(order));
 
   useEffect(() => {
@@ -59,9 +62,16 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [order, onClose]);
 
+  useEffect(() => {
+    setInvoiceError(null);
+    setInvoiceLoading(false);
+  }, [order?.id]);
+
   if (!order) {
     return null;
   }
+
+  const canDownloadInvoice = isInvoiceEligibleOrder(order);
 
   const hasShippingInfo = Boolean(
     order.shippingAddress ||
@@ -83,6 +93,62 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
     ? Number(order.totalHt.toFixed(2))
     : Number((order.totalAmount - (order.totalVat ?? 0)).toFixed(2));
   const totalVat = Number.isFinite(order.totalVat) ? Number(order.totalVat.toFixed(2)) : 0;
+
+  const downloadInvoice = async () => {
+    setInvoiceError(null);
+    setInvoiceLoading(true);
+    try {
+      const invoiceUrl = `/api/admin/orders/${encodeURIComponent(order.id)}/invoice`;
+      const response = await fetch(invoiceUrl, {
+        method: "GET",
+        cache: "no-store",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        try {
+          const data = (await response.json()) as { error?: string };
+          setInvoiceError(data.error ?? "Impossible de telecharger la facture.");
+        } catch {
+          setInvoiceError("Impossible de telecharger la facture.");
+        }
+        return;
+      }
+
+      const contentType = response.headers.get("content-type") ?? "";
+      if (!contentType.toLowerCase().includes("application/pdf")) {
+        setInvoiceError("Le fichier recu n'est pas une facture PDF valide.");
+        return;
+      }
+
+      const blob = await response.blob();
+      if (blob.size < 100) {
+        setInvoiceError("Facture vide recue. Reessayez dans quelques secondes.");
+        return;
+      }
+
+      const url = URL.createObjectURL(blob);
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
+      if (!opened) {
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = `facture-${order.id}.pdf`;
+        anchor.style.display = "none";
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+      }
+      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch {
+      window.open(
+        `/api/admin/orders/${encodeURIComponent(order.id)}/invoice`,
+        "_blank",
+        "noopener,noreferrer",
+      );
+    } finally {
+      setInvoiceLoading(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
@@ -235,6 +301,25 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
               <span>{formatPrice(order.totalAmount)}</span>
             </div>
           </div>
+        </div>
+
+        <div className="mt-6">
+          <button
+            type="button"
+            className="btn-cartoon btn-primary"
+            disabled={!canDownloadInvoice || invoiceLoading}
+            onClick={downloadInvoice}
+          >
+            {invoiceLoading ? "Telechargement..." : "Telecharger la facture"}
+          </button>
+          {!canDownloadInvoice && (
+            <p className="mt-2 text-sm text-charcoal">
+              Facture disponible uniquement pour les commandes payees.
+            </p>
+          )}
+          {invoiceError && (
+            <p className="mt-2 text-sm font-semibold text-red-700">{invoiceError}</p>
+          )}
         </div>
       </div>
     </div>

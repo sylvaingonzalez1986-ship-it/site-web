@@ -1,6 +1,6 @@
 import PDFDocument from "pdfkit/js/pdfkit.standalone";
 import { NextResponse } from "next/server";
-import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
+import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { readStoreByBackend } from "@/lib/data-backend";
 import { INVOICE_COMPANY, INVOICE_SETTINGS, getInvoiceLegalFooter } from "@/lib/invoice-config";
 import { issueInvoiceForOrder } from "@/lib/invoice-store";
@@ -35,9 +35,9 @@ export async function GET(
   _: Request,
   { params }: { params: Promise<{ orderId: string }> },
 ) {
-  const session = await getCurrentCustomerSessionByBackend();
-  if (!session) {
-    return NextResponse.json({ error: "Non autorise." }, { status: 401 });
+  const denied = await denyIfNotAdminApi();
+  if (denied) {
+    return denied;
   }
 
   const { orderId } = await params;
@@ -48,10 +48,6 @@ export async function GET(
     return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
   }
 
-  if (order.customerId !== session.customerId) {
-    return NextResponse.json({ error: "Acces interdit." }, { status: 403 });
-  }
-
   if (!isInvoiceEligibleOrder(order)) {
     return NextResponse.json(
       { error: "Facture indisponible tant que la commande n'est pas payee." },
@@ -59,21 +55,15 @@ export async function GET(
     );
   }
 
-  const [customer, issuedInvoice] = await Promise.all([
-    Promise.resolve(session.customer),
-    issueInvoiceForOrder(order.id),
-  ]);
+  const issuedInvoice = await issueInvoiceForOrder(order.id);
 
-  const customerName =
-    order.customerName?.trim() ||
-    `${customer?.firstName ?? ""} ${customer?.lastName ?? ""}`.trim() ||
-    "Client";
-  const customerEmail = order.customerEmail?.trim() || customer?.email || "";
-  const customerPhone = order.shippingPhone?.trim() || customer?.phone || "";
-  const shippingAddress = order.shippingAddress?.trim() || customer?.address || "";
-  const shippingCity = order.shippingCity?.trim() || customer?.city || "";
-  const shippingPostalCode = order.shippingPostalCode?.trim() || customer?.postalCode || "";
-  const shippingCountry = order.shippingCountry?.trim() || customer?.country || "";
+  const customerName = order.customerName?.trim() || "Client";
+  const customerEmail = order.customerEmail?.trim() || "";
+  const customerPhone = order.shippingPhone?.trim() || "";
+  const shippingAddress = order.shippingAddress?.trim() || "";
+  const shippingCity = order.shippingCity?.trim() || "";
+  const shippingPostalCode = order.shippingPostalCode?.trim() || "";
+  const shippingCountry = order.shippingCountry?.trim() || "";
 
   const itemsSubTotalTtc = Number(
     order.items.reduce((sum, item) => sum + item.lineTotal, 0).toFixed(2),
@@ -88,8 +78,12 @@ export async function GET(
   const fallbackTaxTotals = computeOrderTaxTotals(order.items, {
     taxable: INVOICE_SETTINGS.vatMode === "taxable",
   });
-  const totalHt = Number.isFinite(order.totalHt) ? Number(order.totalHt.toFixed(2)) : fallbackTaxTotals.totalHt;
-  const totalVat = Number.isFinite(order.totalVat) ? Number(order.totalVat.toFixed(2)) : fallbackTaxTotals.totalVat;
+  const totalHt = Number.isFinite(order.totalHt)
+    ? Number(order.totalHt.toFixed(2))
+    : fallbackTaxTotals.totalHt;
+  const totalVat = Number.isFinite(order.totalVat)
+    ? Number(order.totalVat.toFixed(2))
+    : fallbackTaxTotals.totalVat;
   const vatBreakdown = Array.isArray(order.vatBreakdown) && order.vatBreakdown.length > 0
     ? order.vatBreakdown
     : fallbackTaxTotals.vatBreakdown;

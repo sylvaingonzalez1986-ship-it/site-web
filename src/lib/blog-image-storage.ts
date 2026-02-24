@@ -226,6 +226,10 @@ export async function cleanupUnusedBlogUploads(imagePaths: string[]): Promise<vo
         .map((imagePath) => extractSupabaseObjectPath(imagePath, BLOG_IMAGE_BUCKET))
         .filter((value): value is string => Boolean(value)),
     );
+    if (referencedObjects.size === 0) {
+      // Safety guard: avoid deleting the whole bucket on an incomplete payload.
+      return;
+    }
 
     const removablePaths: string[] = [];
     let offset = 0;
@@ -277,6 +281,10 @@ export async function cleanupUnusedBlogUploads(imagePaths: string[]): Promise<vo
       .filter((imagePath) => isUploadBlogImagePath(imagePath))
       .map((imagePath) => imagePath.slice(BLOG_IMAGE_PUBLIC_UPLOAD_PREFIX.length)),
   );
+  if (referencedFiles.size === 0) {
+    // Safety guard: avoid deleting all local uploads on an incomplete payload.
+    return;
+  }
 
   const entries = await readdir(BLOG_IMAGE_UPLOAD_DIR, { withFileTypes: true });
 

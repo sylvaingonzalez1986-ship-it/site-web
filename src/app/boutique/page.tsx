@@ -157,19 +157,25 @@ export default function BoutiquePage() {
 
   const availableFilters = useMemo(() => {
     const categoryOrder = Object.keys(categoryLabels) as ProductCategory[];
-    const visibleCategorySet = new Set<ProductCategory>();
+    const modeCategoryCounts = new Map<ProductCategory, number>();
 
     for (const product of modeProducts) {
       if (product.category === "accessoires") {
         continue;
       }
-      visibleCategorySet.add(product.category);
+      modeCategoryCounts.set(product.category, (modeCategoryCounts.get(product.category) ?? 0) + 1);
     }
 
-    const filters: Filter[] = ["all"];
+    const filters: Filter[] = [];
     const hasPromos = mergeUniqueProductsById([...modeProducts, ...globalAccessoriesProducts]).some((product) =>
       hasActiveProductPromo(product),
     );
+    const hasModeProducts = modeProducts.length > 0;
+
+    if (hasModeProducts) {
+      filters.push("all");
+    }
+
     if (hasPromos) {
       filters.push("promos");
     }
@@ -178,7 +184,7 @@ export default function BoutiquePage() {
       if (category === "accessoires") {
         continue;
       }
-      if (visibleCategorySet.has(category)) {
+      if ((modeCategoryCounts.get(category) ?? 0) > 0) {
         filters.push(category);
       }
     }
@@ -248,21 +254,21 @@ export default function BoutiquePage() {
             </p>
             <div className="mt-6">
               <div className="mx-auto mb-5 w-full max-w-3xl">
-                <div className="inline-flex w-full overflow-hidden rounded border-2 border-[#1a1a1a] bg-white">
+                <div className="grid w-full grid-cols-3 overflow-hidden rounded border-2 border-[#1a1a1a] bg-white">
                   <button
                     type="button"
-                    className={`flex-1 px-4 py-3 text-sm font-bold uppercase tracking-[0.1em] transition-colors ${
+                    className={`flex min-h-[58px] items-center justify-center px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors md:px-4 md:text-sm md:tracking-[0.1em] ${
                       showcaseMode === "products"
                         ? "bg-[#0a7b61] text-white"
                         : "text-ink hover:bg-[#f2ede2]"
                     }`}
                     onClick={() => setShowcaseMode("products")}
                   >
-                    Nos produits
+                    <span className="block">Mes produits</span>
                   </button>
                   <button
                     type="button"
-                    className={`flex-1 border-l-2 border-[#1a1a1a] px-4 py-3 text-sm font-bold uppercase tracking-[0.1em] transition-colors ${
+                    className={`flex min-h-[58px] items-center justify-center border-l-2 border-[#1a1a1a] px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors md:px-4 md:text-sm md:tracking-[0.1em] ${
                       showcaseMode === "neighbors"
                         ? "bg-[#0a7b61] text-white"
                         : "text-ink hover:bg-[#f2ede2]"
@@ -274,11 +280,11 @@ export default function BoutiquePage() {
                     }}
                     disabled={voisinProducts.length === 0}
                   >
-                    Mes voisins
+                    <span className="block">Mes voisins</span>
                   </button>
                   <button
                     type="button"
-                    className={`flex-1 border-l-2 border-[#1a1a1a] px-4 py-3 text-sm font-bold uppercase tracking-[0.1em] transition-colors ${
+                    className={`flex min-h-[58px] items-center justify-center border-l-2 border-[#1a1a1a] px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors md:px-4 md:text-sm md:tracking-[0.1em] ${
                       showcaseMode === "copains"
                         ? "bg-[#0a7b61] text-white"
                         : "text-ink hover:bg-[#f2ede2]"
@@ -290,11 +296,13 @@ export default function BoutiquePage() {
                     }}
                     disabled={copainsProducts.length === 0}
                   >
-                    Les copains de France et de Navarre
+                    <span className="block">Les copains de France et de Navarre</span>
                   </button>
                 </div>
               </div>
-              <CategoryFilter selected={filter} filters={availableFilters} onChange={setFilter} />
+              {availableFilters.length > 1 && (
+                <CategoryFilter selected={filter} filters={availableFilters} onChange={setFilter} />
+              )}
             </div>
           </div>
         );
@@ -310,7 +318,7 @@ export default function BoutiquePage() {
               <div className="cartoon-border mb-6 bg-[#d7f0e8] p-8">
                 <h2 className="font-display text-4xl text-ink">Mes voisins</h2>
                 <p className="mt-3 max-w-3xl text-charcoal">
-                  Producteurs de Bretagne, de Loire-Atlantique (44) et de Mayenne (53).
+                  Producteurs bretons et du 44 (parce que c'était la famille avant que Pétain foute le bordel).
                 </p>
               </div>
             )}

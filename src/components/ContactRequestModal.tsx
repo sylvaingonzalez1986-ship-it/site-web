@@ -46,6 +46,19 @@ export function ContactRequestModal({ open, onClose }: ContactRequestModalProps)
     return null;
   }
 
+  const fallbackSubject = encodeURIComponent("Demande de contact - Les Chanvriers Bretons");
+  const fallbackBody = encodeURIComponent(
+    [
+      `Nom: ${name || "-"}`,
+      `Email: ${email || "-"}`,
+      `Téléphone: ${phone || "-"}`,
+      "",
+      "Message:",
+      message || "-",
+    ].join("\n"),
+  );
+  const fallbackMailto = `mailto:leschanvriersbretons@gmail.com?subject=${fallbackSubject}&body=${fallbackBody}`;
+
   const canSubmit =
     name.trim().length >= 2 && email.trim().length > 0 && message.trim().length >= 10;
 
@@ -149,6 +162,17 @@ export function ContactRequestModal({ open, onClose }: ContactRequestModalProps)
             maxLength={3000}
           />
           {error && <p className="text-sm font-semibold text-red-700">{error}</p>}
+          {error && (
+            <p className="text-xs text-charcoal">
+              En secours, envoie-nous ton message par e-mail:{" "}
+              <a
+                href={fallbackMailto}
+                className="font-semibold underline decoration-2 underline-offset-2"
+              >
+                leschanvriersbretons@gmail.com
+              </a>
+            </p>
+          )}
           {success && <p className="text-sm font-semibold text-green-700">{success}</p>}
           <button
             type="button"
