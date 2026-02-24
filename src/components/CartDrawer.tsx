@@ -2,15 +2,25 @@
 
 import { Minus, Plus, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CheckoutButton } from "@/components/CheckoutButton";
+import { MondialRelayPicker } from "@/components/MondialRelayPicker";
 import { useCart } from "@/context/CartContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useCmsStore } from "@/hooks/useCmsStore";
 import { useCustomerSession } from "@/hooks/useCustomerSession";
 import { getCustomerCheckoutEligibility } from "@/lib/customer-checkout-eligibility";
-import { getBadgeDiscountPercent } from "@/lib/loyalty-tier-benefits";
+import {
+  getBadgeDiscountPercent,
+  isBadgeEligibleForFreeShipping,
+} from "@/lib/loyalty-tier-benefits";
 import { hasActiveProductPromo } from "@/lib/product-promo";
+import {
+  computeShippingFee,
+  getShippingPricingConfig,
+  type DeliveryMethod,
+  type MondialRelayPoint,
+} from "@/lib/shipping";
 import { formatPrice } from "@/lib/utils";
 
 type CartDrawerProps = {
@@ -63,6 +73,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const [shippingCity, setShippingCity] = useState("");
   const [shippingPostalCode, setShippingPostalCode] = useState("");
   const [shippingCountry, setShippingCountry] = useState("France");
+  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("home");
+  const [selectedRelayPoint, setSelectedRelayPoint] = useState<MondialRelayPoint | null>(null);
   const [promoCode, setPromoCode] = useState("");
   const [promoLoading, setPromoLoading] = useState(false);
   const [promoError, setPromoError] = useState<string | null>(null);
@@ -73,10 +85,14 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const [lotteryError, setLotteryError] = useState<string | null>(null);
   const [lotterySuccess, setLotterySuccess] = useState<string | null>(null);
   const [lotteryPreview, setLotteryPreview] = useState<LotteryPreview | null>(null);
+  const wasOpenRef = useRef(false);
   useBodyScrollLock(open);
 
   useEffect(() => {
-    if (!open) {
+    const justOpened = open && !wasOpenRef.current;
+    wasOpenRef.current = open;
+
+    if (!justOpened) {
       return;
     }
 
@@ -89,6 +105,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     setShippingCity(user?.city ?? "");
     setShippingPostalCode(user?.postalCode ?? "");
     setShippingCountry(user?.country || "France");
+    setSelectedRelayPoint(null);
   }, [open, user]);
 
   const badgeDiscountPercent = useMemo(() => {
@@ -145,6 +162,26 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
   const checkoutAmount =
     lotteryPreview?.discountedTotal ?? promoPreview?.discountedTotal ?? totalAfterBadgeDiscount;
+  const shippingPricingConfig = useMemo(() => getShippingPricingConfig(), []);
+  const hasFreeShippingByBadge = useMemo(
+    () => isBadgeEligibleForFreeShipping(loyalty.currentBadge.id, loyalty.currentBadge.unlocked),
+    [loyalty.currentBadge.id, loyalty.currentBadge.unlocked],
+  );
+  const shippingFee = useMemo(
+    () =>
+      computeShippingFee({
+        method: deliveryMethod,
+        subtotalAfterDiscount: checkoutAmount,
+        config: shippingPricingConfig,
+        isMemberFreeShippingEligible: hasFreeShippingByBadge,
+        ignoreFreeThreshold: true,
+      }),
+    [checkoutAmount, deliveryMethod, hasFreeShippingByBadge, shippingPricingConfig],
+  );
+  const finalAmountToPay = useMemo(
+    () => Number((checkoutAmount + shippingFee).toFixed(2)),
+    [checkoutAmount, shippingFee],
+  );
   const lotteryTicketThreshold = useMemo(() => {
     const threshold = Number(lotteryConfig?.ticketThresholdEuros ?? 20);
     if (!Number.isFinite(threshold) || threshold <= 0) {
@@ -158,18 +195,18 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       return 0;
     }
 
-    return Math.floor(Math.max(checkoutAmount, 0) / lotteryTicketThreshold);
-  }, [checkoutAmount, isAuthenticated, lotteryConfig?.isActive, lotteryTicketThreshold]);
+    return Math.floor(Math.max(finalAmountToPay, 0) / lotteryTicketThreshold);
+  }, [finalAmountToPay, isAuthenticated, lotteryConfig?.isActive, lotteryTicketThreshold]);
   const missingForNextTicket = useMemo(() => {
     if (!isAuthenticated || !lotteryConfig?.isActive) {
       return null;
     }
 
-    const safeAmount = Math.max(checkoutAmount, 0);
+    const safeAmount = Math.max(finalAmountToPay, 0);
     const remainder = safeAmount % lotteryTicketThreshold;
     const missing = remainder === 0 ? lotteryTicketThreshold : lotteryTicketThreshold - remainder;
     return Number(missing.toFixed(2));
-  }, [checkoutAmount, isAuthenticated, lotteryConfig?.isActive, lotteryTicketThreshold]);
+  }, [finalAmountToPay, isAuthenticated, lotteryConfig?.isActive, lotteryTicketThreshold]);
   const displayedBadgeDiscountPercent =
     lotteryPreview?.badgeDiscountPercent ?? promoPreview?.badgeDiscountPercent ?? badgeDiscountPercent;
   const displayedBadgeDiscountAmount =
@@ -185,12 +222,15 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         shippingName.trim() &&
           shippingEmail.trim() &&
           shippingPhone.trim() &&
-          shippingAddress.trim() &&
+          (deliveryMethod === "relay" || shippingAddress.trim()) &&
           shippingCity.trim() &&
           shippingPostalCode.trim() &&
-          shippingCountry.trim(),
+          shippingCountry.trim() &&
+          (deliveryMethod === "home" || selectedRelayPoint),
       ),
     [
+      deliveryMethod,
+      selectedRelayPoint,
       shippingAddress,
       shippingCity,
       shippingCountry,
@@ -379,7 +419,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       )}
 
       <aside
-        className={`safe-area-top safe-area-bottom safe-area-x fixed right-0 top-0 z-50 flex h-[100vh] h-[100dvh] max-h-[100dvh] w-full max-w-md flex-col overflow-hidden border-l-4 border-[#1a1a2e] bg-[#fff8f0] p-4 transition-transform duration-300 ${
+        className={`safe-area-top safe-area-bottom safe-area-x fixed right-0 top-0 z-50 flex h-[100vh] h-[100dvh] max-h-[100dvh] w-full max-w-[96vw] flex-col overflow-hidden border-l-4 border-[#1a1a2e] bg-[#fff8f0] p-4 transition-transform duration-300 md:max-w-2xl lg:max-w-3xl ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -493,12 +533,43 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   onChange={(event) => setShippingPhone(event.target.value)}
                   placeholder="Telephone"
                 />
-                <input
-                  className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
-                  value={shippingAddress}
-                  onChange={(event) => setShippingAddress(event.target.value)}
-                  placeholder="Adresse"
-                />
+                <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-2">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">
+                    Mode de livraison
+                  </p>
+                  <div className="mt-2 inline-flex w-full overflow-hidden rounded border-2 border-[#1a1a1a] bg-white">
+                    <button
+                      type="button"
+                      className={`flex-1 px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] ${
+                        deliveryMethod === "home"
+                          ? "bg-[#0a7b61] text-white"
+                          : "text-ink hover:bg-[#f2ede2]"
+                      }`}
+                      onClick={() => setDeliveryMethod("home")}
+                    >
+                      Domicile
+                    </button>
+                    <button
+                      type="button"
+                      className={`flex-1 border-l-2 border-[#1a1a1a] px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] ${
+                        deliveryMethod === "relay"
+                          ? "bg-[#0a7b61] text-white"
+                          : "text-ink hover:bg-[#f2ede2]"
+                      }`}
+                      onClick={() => setDeliveryMethod("relay")}
+                    >
+                      Point relais
+                    </button>
+                  </div>
+                </div>
+                {deliveryMethod === "home" && (
+                  <input
+                    className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    value={shippingAddress}
+                    onChange={(event) => setShippingAddress(event.target.value)}
+                    placeholder="Adresse"
+                  />
+                )}
                 <div className="grid grid-cols-2 gap-2">
                   <input
                     className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
@@ -519,6 +590,16 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   onChange={(event) => setShippingCountry(event.target.value)}
                   placeholder="Pays"
                 />
+                {deliveryMethod === "relay" && (
+                  <MondialRelayPicker
+                    postalCode={shippingPostalCode}
+                    city={shippingCity}
+                    country={shippingCountry}
+                    selectedPoint={selectedRelayPoint}
+                    onSelect={setSelectedRelayPoint}
+                    minHeightClassName="min-h-[300px] md:min-h-[360px]"
+                  />
+                )}
                 <div className="grid grid-cols-[1fr,auto] gap-2">
                   <input
                     className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
@@ -588,6 +669,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             <span>Total panier</span>
             <span>{formatPrice(totalPrice)} TTC</span>
           </div>
+          <div className="mt-1 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+            Livraison: {deliveryMethod === "relay" ? "Point relais" : "Domicile"}
+          </div>
           {displayedBadgeDiscountPercent > 0 && (
             <div className="mt-2 text-sm text-green-700">
               Reduction fidelite ({loyalty.currentBadge.label}): -{formatPrice(displayedBadgeDiscountAmount)} (
@@ -611,8 +695,14 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               Ticket {lotteryPreview.ticketNumber}: lot ajoute ({lotteryPreview.giftLabel ?? lotteryPreview.prizeName})
             </div>
           )}
+          <div className="mt-2 flex items-center justify-between text-sm text-ink">
+            <span>Livraison</span>
+            <span>
+              {shippingFee <= 0 ? "Offerte (badge Argent+)" : formatPrice(shippingFee)}
+            </span>
+          </div>
           <div className="mt-1 text-sm font-semibold text-ink">
-            A payer: {formatPrice(checkoutAmount)} TTC
+            A payer: {formatPrice(finalAmountToPay)} TTC
           </div>
           <div className="mt-3 rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
             <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">
@@ -649,7 +739,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           <div className="mt-3">
             <CheckoutButton
               amount={totalPrice}
-              amountToPay={checkoutAmount}
+              amountToPay={finalAmountToPay}
               itemsCount={totalItems}
               items={items.map((item) => ({
                 id: item.id,
@@ -665,6 +755,17 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 city: shippingCity,
                 postalCode: shippingPostalCode,
                 country: shippingCountry,
+                deliveryMethod,
+                deliveryFeeEur: shippingFee,
+                relayId: deliveryMethod === "relay" ? selectedRelayPoint?.id : undefined,
+                relayName: deliveryMethod === "relay" ? selectedRelayPoint?.name : undefined,
+                relayAddress:
+                  deliveryMethod === "relay" ? selectedRelayPoint?.address : undefined,
+                relayPostalCode:
+                  deliveryMethod === "relay" ? selectedRelayPoint?.postalCode : undefined,
+                relayCity: deliveryMethod === "relay" ? selectedRelayPoint?.city : undefined,
+                relayCountry:
+                  deliveryMethod === "relay" ? selectedRelayPoint?.country : undefined,
               }}
               promoCode={promoPreview?.code || undefined}
               lotteryTicketId={lotteryPreview?.ticketId || undefined}
@@ -688,7 +789,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             )}
             {!canCheckout && items.length > 0 && (
               <p className="mt-2 text-xs font-semibold text-charcoal">
-                Completer les informations de livraison pour payer.
+                {deliveryMethod === "relay" && !selectedRelayPoint
+                  ? "Selectionne un Point Relais pour payer."
+                  : "Completer les informations de livraison pour payer."}
               </p>
             )}
             {!authLoading && isAuthenticated && !checkoutEligibility.allowed && (

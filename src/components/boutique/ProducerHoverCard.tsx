@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { isRemoteImageUrl } from "@/lib/image-source";
 import type { Producer } from "@/types/store";
 
 type ProducerHoverCardProps = {
@@ -40,7 +41,14 @@ export function ProducerHoverCard({ producer, x, y }: ProducerHoverCardProps) {
     >
       <div className="flex items-start gap-3">
         <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md border-2 border-[#1a1a1a] bg-white">
-          <Image src={producer.image} alt={producer.name} fill sizes="64px" className="object-cover" />
+          <Image
+            src={producer.image}
+            alt={producer.name}
+            fill
+            sizes="64px"
+            unoptimized={isRemoteImageUrl(producer.image)}
+            className="object-cover"
+          />
         </div>
         <div className="min-w-0">
           <p className="font-display text-xl leading-none text-ink">{producer.name}</p>

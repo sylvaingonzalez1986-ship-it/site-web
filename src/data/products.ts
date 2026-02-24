@@ -1,6 +1,8 @@
 export type ProductCategory =
   | "fleurs"
+  | "resines"
   | "huiles"
+  | "e-liquide"
   | "cosmetiques"
   | "alimentaire"
   | "accessoires";
@@ -24,13 +26,26 @@ export type Product = {
   analysisPdf?: string;
   description: string;
   badge?: string;
+  trackStock?: boolean;
+  stockQuantity?: number;
+  variantLabel?: string;
+  variantOptions?: Array<{
+    id: string;
+    label: string;
+    price: number;
+    inStock?: boolean;
+    enabled?: boolean;
+    stockQuantity?: number;
+  }>;
 };
 
 export const categoryLabels: Record<ProductCategory, string> = {
-  fleurs: "Fleurs et Resines",
+  fleurs: "Fleurs",
+  resines: "Resines",
   huiles: "Huiles",
+  "e-liquide": "E-liquides",
   cosmetiques: "Cosmetiques",
-  alimentaire: "Alimentaire",
+  alimentaire: "Tisane",
   accessoires: "Accessoires",
 };
 
@@ -54,7 +69,7 @@ export const products: Product[] = [
   {
     id: "resine-armor-5g",
     name: "Resine Armor 5g",
-    category: "fleurs",
+    category: "resines",
     price: 24.9,
     vatRate: 20,
     image: productImages.resin,
@@ -114,6 +129,15 @@ export const products: Product[] = [
     vatRate: 20,
     image: productImages.tea,
     description: "Texture legere pour routine visage simple.",
+  },
+  {
+    id: "eliquide-menthe-10ml",
+    name: "E-liquide Menthe 10ml",
+    category: "e-liquide",
+    price: 14.9,
+    vatRate: 20,
+    image: productImages.tea,
+    description: "E-liquide CBD gout menthe pour vapotage.",
   },
   {
     id: "infusion-soir",

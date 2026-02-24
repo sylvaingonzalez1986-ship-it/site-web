@@ -7,8 +7,21 @@ import {
 } from "@/lib/customer-backend";
 import { readStoreByBackend } from "@/lib/data-backend";
 import { INVOICE_SETTINGS } from "@/lib/invoice-config";
+import { buildLoyaltySummaryWithBonus } from "@/lib/loyalty";
+import { isBadgeEligibleForFreeShipping } from "@/lib/loyalty-tier-benefits";
+import {
+  getRedeemableLotteryTicketBenefitByBackend,
+  redeemLotteryTicketForOrderByBackend,
+} from "@/lib/lottery-backend";
 import { appendOrderByBackend } from "@/lib/order-backend";
+import { getAvailableQuantity } from "@/lib/product-stock";
+import {
+  computeShippingFee,
+  getShippingPricingConfig,
+  type DeliveryMethod,
+} from "@/lib/shipping";
 import { applyDiscountOnLines, computeFromTtc, computeOrderTaxTotals, distributePackDiscount, sanitizeOrderVatRate } from "@/lib/tax";
+import type { CmsStore } from "@/types/store";
 
 type CheckoutItemPayload = {
   id: string;
@@ -18,7 +31,7 @@ type CheckoutItemPayload = {
 };
 
 type CheckoutPayload = {
-  action?: "checkout" | "validate_promo";
+  action?: "checkout" | "validate_promo" | "validate_ticket";
   amount?: number;
   itemsCount?: number;
   items?: CheckoutItemPayload[];
@@ -29,7 +42,16 @@ type CheckoutPayload = {
   shippingCity?: string;
   shippingPostalCode?: string;
   shippingCountry?: string;
+  deliveryMethod?: DeliveryMethod;
+  deliveryFeeEur?: number;
+  relayId?: string;
+  relayName?: string;
+  relayAddress?: string;
+  relayPostalCode?: string;
+  relayCity?: string;
+  relayCountry?: string;
   promoCode?: string;
+  lotteryTicketId?: string;
 };
 
 type VivaTokenResponse = {
@@ -74,7 +96,10 @@ type ResolvedCheckoutItem = {
   parentPackName?: string;
 };
 
-async function resolveCheckoutItems(items: CheckoutItemPayload[]): Promise<ResolvedCheckoutItem[]> {
+async function resolveCheckoutItems(
+  items: CheckoutItemPayload[],
+  storeOverride?: CmsStore,
+): Promise<ResolvedCheckoutItem[]> {
   const normalizedPayloadItems = items
     .map((item) => ({
       id: sanitizeText(item.id, 120),
@@ -89,17 +114,37 @@ async function resolveCheckoutItems(items: CheckoutItemPayload[]): Promise<Resol
     return [];
   }
 
-  const store = await readStoreByBackend();
+  const store = storeOverride ?? (await readStoreByBackend());
   const productsById = new Map(store.products.map((product) => [product.id, product]));
 
   const resolvedItems: ResolvedCheckoutItem[] = [];
   for (const item of normalizedPayloadItems) {
-    const product = productsById.get(item.id);
+    const [baseProductIdRaw, variantIdRaw] = item.id.split("::", 2);
+    const baseProductId = sanitizeText(baseProductIdRaw, 120);
+    const selectedVariantId = sanitizeText(variantIdRaw, 120);
+    const product = productsById.get(baseProductId);
     if (!product) {
       throw new Error(`Produit inconnu: ${item.id}`);
     }
 
-    const unitPrice = Number.isFinite(product.price) ? Number(product.price) : 0;
+    const selectedVariant =
+      selectedVariantId && Array.isArray(product.variantOptions)
+        ? product.variantOptions.find((variant) => variant.id === selectedVariantId)
+        : undefined;
+
+    if (selectedVariantId && !selectedVariant) {
+      throw new Error(`Variante inconnue pour le produit: ${product.name}`);
+    }
+
+    if (selectedVariant && (selectedVariant.enabled === false || selectedVariant.inStock === false)) {
+      throw new Error(`Variante en rupture pour le produit: ${product.name}`);
+    }
+
+    const unitPrice = selectedVariant
+      ? Number(selectedVariant.price)
+      : Number.isFinite(product.price)
+        ? Number(product.price)
+        : 0;
     if (unitPrice <= 0) {
       throw new Error(`Prix invalide pour le produit: ${product.name}`);
     }
@@ -125,6 +170,11 @@ async function resolveCheckoutItems(items: CheckoutItemPayload[]): Promise<Resol
             continue;
           }
 
+          const availableComponentQuantity = getAvailableQuantity(component, "");
+          if (availableComponentQuantity !== null && availableComponentQuantity < item.quantity) {
+            throw new Error(`Stock insuffisant pour ${component.name}.`);
+          }
+
           const safeComponentUnitPrice = Number(distributed.priceTtc.toFixed(2));
           resolvedItems.push({
             id: component.id,
@@ -141,9 +191,17 @@ async function resolveCheckoutItems(items: CheckoutItemPayload[]): Promise<Resol
       }
     }
 
+    const availableQuantity = getAvailableQuantity(product, selectedVariantId);
+    if (availableQuantity !== null && availableQuantity < item.quantity) {
+      throw new Error(`Stock insuffisant pour ${product.name}.`);
+    }
+
     resolvedItems.push({
-      id: product.id,
-      name: sanitizeText(product.name, 120) || "Produit",
+      id: selectedVariantId ? `${product.id}::${selectedVariantId}` : product.id,
+      name: sanitizeText(
+        selectedVariant ? `${product.name} - ${selectedVariant.label}` : product.name,
+        120,
+      ) || "Produit",
       unitPrice,
       quantity: item.quantity,
       lineTotal: Number((unitPrice * item.quantity).toFixed(2)),
@@ -179,6 +237,18 @@ function sanitizePromoCode(value: unknown): string {
   }
 
   return value.trim().toUpperCase().slice(0, 24);
+}
+
+function sanitizeLotteryTicketId(value: unknown): string {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value.trim();
+}
+
+function sanitizeDeliveryMethod(value: unknown): DeliveryMethod {
+  return value === "relay" ? "relay" : "home";
 }
 
 type VivaEndpointConfig = {
@@ -341,6 +411,7 @@ export async function POST(request: Request) {
   const customerId = session?.customerId;
   const customer = session?.customer ?? null;
   const promoCode = sanitizePromoCode(payload.promoCode);
+  const lotteryTicketId = sanitizeLotteryTicketId(payload.lotteryTicketId);
 
   if (action === "validate_promo") {
     if (!promoCode) {
@@ -384,8 +455,79 @@ export async function POST(request: Request) {
     return NextResponse.json({
       valid: true,
       code: promo.code,
+      promoDiscountPercent: promo.discountPercent,
+      promoDiscountAmount: discountAmount,
+      badgeDiscountPercent: 0,
+      badgeDiscountAmount: 0,
       discountPercent: promo.discountPercent,
       discountAmount,
+      discountedTotal,
+    });
+  }
+
+  if (action === "validate_ticket") {
+    if (!customerId) {
+      return NextResponse.json(
+        { error: "Connecte-toi pour utiliser un ticket gagnant." },
+        { status: 401 },
+      );
+    }
+
+    if (!lotteryTicketId) {
+      return NextResponse.json({ error: "Ticket manquant." }, { status: 400 });
+    }
+
+    const payloadItems = Array.isArray(payload.items) ? payload.items : [];
+    let subtotal = Number.isFinite(payload.amount) ? Number(payload.amount) : 0;
+
+    if (payloadItems.length > 0) {
+      try {
+        const resolvedItems = await resolveCheckoutItems(payloadItems);
+        subtotal = resolvedItems.reduce((total, item) => total + item.lineTotal, 0);
+      } catch (error) {
+        return NextResponse.json(
+          { error: error instanceof Error ? error.message : "Panier invalide." },
+          { status: 400 },
+        );
+      }
+    }
+
+    if (!Number.isFinite(subtotal) || subtotal <= 0) {
+      return NextResponse.json({ error: "Montant invalide." }, { status: 400 });
+    }
+
+    const ticketBenefit = await getRedeemableLotteryTicketBenefitByBackend({
+      userId: customerId,
+      ticketId: lotteryTicketId,
+    });
+    if (!ticketBenefit) {
+      return NextResponse.json({ error: "Ticket gagnant invalide ou déjà utilise." }, { status: 400 });
+    }
+
+    const safeSubtotal = Number(subtotal.toFixed(2));
+    const isDiscount = ticketBenefit.benefit.rewardType === "discount";
+    const lotteryDiscountPercent = isDiscount
+      ? (ticketBenefit.benefit.discountPercent ?? 0)
+      : 0;
+    const lotteryDiscountAmount = Number(
+      ((safeSubtotal * lotteryDiscountPercent) / 100).toFixed(2),
+    );
+    const discountedTotal = Number(Math.max(safeSubtotal - lotteryDiscountAmount, 0).toFixed(2));
+
+    return NextResponse.json({
+      valid: true,
+      ticketId: ticketBenefit.ticketId,
+      ticketNumber: ticketBenefit.ticketNumber,
+      rewardType: ticketBenefit.benefit.rewardType,
+      prizeName: ticketBenefit.prizeName,
+      giftLabel:
+        ticketBenefit.benefit.rewardType === "gift"
+          ? ticketBenefit.benefit.giftLabel
+          : undefined,
+      lotteryDiscountPercent,
+      lotteryDiscountAmount,
+      badgeDiscountPercent: 0,
+      badgeDiscountAmount: 0,
       discountedTotal,
     });
   }
@@ -410,9 +552,11 @@ export async function POST(request: Request) {
     );
   }
 
+  const store = await readStoreByBackend();
+
   let resolvedItems: ResolvedCheckoutItem[];
   try {
-    resolvedItems = await resolveCheckoutItems(payloadItems);
+    resolvedItems = await resolveCheckoutItems(payloadItems, store);
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Panier invalide." },
@@ -423,6 +567,27 @@ export async function POST(request: Request) {
   if (resolvedItems.length === 0) {
     return NextResponse.json({ error: "Panier invalide." }, { status: 400 });
   }
+
+  const safeCustomerEmail = customer.email.trim().toLowerCase();
+  const customerOrders = store.orders.filter((order) => {
+    if (order.customerId && order.customerId === customerId) {
+      return true;
+    }
+
+    if (!order.customerId && order.customerEmail) {
+      return order.customerEmail.trim().toLowerCase() === safeCustomerEmail;
+    }
+
+    return false;
+  });
+  const loyaltySummary = buildLoyaltySummaryWithBonus(
+    customerOrders,
+    customer.loyaltyPoints ?? 0,
+  );
+  const hasFreeShippingByBadge = isBadgeEligibleForFreeShipping(
+    loyaltySummary.currentBadge.id,
+    loyaltySummary.currentBadge.unlocked,
+  );
 
   const preDiscountSubtotal = Number(
     resolvedItems.reduce((total, item) => total + item.lineTotal, 0).toFixed(2),
@@ -438,18 +603,24 @@ export async function POST(request: Request) {
     (customer ? `${customer.firstName} ${customer.lastName}`.trim() : "");
   const shippingEmail = sanitizeText(payload.shippingEmail, 120) || customer?.email || "";
   const shippingPhone = sanitizePhone(payload.shippingPhone) || customer?.phone || "";
-  const shippingAddress = sanitizeText(payload.shippingAddress, 180) || customer?.address || "";
+  const requestedDeliveryMethod = sanitizeDeliveryMethod(payload.deliveryMethod);
+  const shippingAddressInput = sanitizeText(payload.shippingAddress, 180) || customer?.address || "";
   const shippingCity = sanitizeText(payload.shippingCity, 120) || customer?.city || "";
   const shippingPostalCode =
     sanitizeText(payload.shippingPostalCode, 16) || customer?.postalCode || "";
   const shippingCountry =
     sanitizeText(payload.shippingCountry, 80) || customer?.country || "France";
+  const relayId = sanitizeText(payload.relayId, 120);
+  const relayName = sanitizeText(payload.relayName, 180);
+  const relayAddress = sanitizeText(payload.relayAddress, 200);
+  const relayCity = sanitizeText(payload.relayCity, 120);
+  const relayPostalCode = sanitizeText(payload.relayPostalCode, 16);
+  const relayCountry = sanitizeText(payload.relayCountry, 80) || shippingCountry;
 
   if (
     !shippingName ||
     !shippingEmail ||
     !shippingPhone ||
-    !shippingAddress ||
     !shippingCity ||
     !shippingPostalCode ||
     !shippingCountry
@@ -459,6 +630,26 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
+
+  if (requestedDeliveryMethod === "home" && !shippingAddressInput) {
+    return NextResponse.json(
+      { error: "Adresse de livraison manquante." },
+      { status: 400 },
+    );
+  }
+
+  if (
+    requestedDeliveryMethod === "relay" &&
+    (!relayId || !relayName || !relayAddress || !relayCity || !relayPostalCode)
+  ) {
+    return NextResponse.json(
+      { error: "Point Relais incomplet. Selectionne un relais avant paiement." },
+      { status: 400 },
+    );
+  }
+
+  const shippingAddress =
+    requestedDeliveryMethod === "relay" ? relayAddress : shippingAddressInput;
 
   const config = getVivaConfig();
   const legacyConfigured = Boolean(
@@ -472,6 +663,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 503 });
   }
 
+  if (promoCode && lotteryTicketId) {
+    return NextResponse.json(
+      { error: "Le code promo et le ticket gagnant ne sont pas cumulables." },
+      { status: 400 },
+    );
+  }
+
   let appliedPromo:
     | {
         code: string;
@@ -479,6 +677,19 @@ export async function POST(request: Request) {
         discountAmount: number;
       }
     | null = null;
+  let appliedTicket:
+    | {
+        ticketId: string;
+        ticketNumber: string;
+        prizeName: string;
+        prizeDescription: string;
+        rewardType: "discount" | "gift";
+        discountPercent: number;
+        discountAmount: number;
+        giftLabel?: string;
+      }
+    | null = null;
+  let requestedDiscountAmount = 0;
 
   if (promoCode) {
     if (!customerId) {
@@ -502,13 +713,53 @@ export async function POST(request: Request) {
       discountPercent: promo.discountPercent,
       discountAmount,
     };
+    requestedDiscountAmount = discountAmount;
+  }
+
+  if (lotteryTicketId) {
+    if (!customerId) {
+      return NextResponse.json(
+        { error: "Connecte-toi pour utiliser un ticket gagnant." },
+        { status: 401 },
+      );
+    }
+
+    const ticketBenefit = await getRedeemableLotteryTicketBenefitByBackend({
+      userId: customerId,
+      ticketId: lotteryTicketId,
+    });
+    if (!ticketBenefit) {
+      return NextResponse.json(
+        { error: "Ticket gagnant invalide ou deja utilise." },
+        { status: 400 },
+      );
+    }
+
+    const isDiscount = ticketBenefit.benefit.rewardType === "discount";
+    const discountPercent = isDiscount
+      ? (ticketBenefit.benefit.discountPercent ?? 0)
+      : 0;
+    const discountAmount = Number(((preDiscountSubtotal * discountPercent) / 100).toFixed(2));
+    appliedTicket = {
+      ticketId: ticketBenefit.ticketId,
+      ticketNumber: ticketBenefit.ticketNumber,
+      prizeName: ticketBenefit.prizeName,
+      prizeDescription: ticketBenefit.prizeDescription,
+      rewardType: ticketBenefit.benefit.rewardType,
+      discountPercent,
+      discountAmount,
+      giftLabel: ticketBenefit.benefit.rewardType === "gift"
+        ? ticketBenefit.benefit.giftLabel
+        : undefined,
+    };
+    requestedDiscountAmount = discountAmount;
   }
 
   let finalizedItems = resolvedItems;
-  if (appliedPromo && appliedPromo.discountAmount > 0) {
+  if (requestedDiscountAmount > 0) {
     const discountedLineTotals = applyDiscountOnLines(
       resolvedItems.map((item) => ({ lineTotal: item.lineTotal })),
-      appliedPromo.discountAmount,
+      requestedDiscountAmount,
     );
     finalizedItems = resolvedItems.map((item, index) => {
       const lineTotal = discountedLineTotals[index] ?? item.lineTotal;
@@ -520,13 +771,31 @@ export async function POST(request: Request) {
     });
   }
 
-  const totalAmount = Number(
+  const itemsTotalAmount = Number(
     finalizedItems.reduce((total, item) => total + item.lineTotal, 0).toFixed(2),
   );
+  const effectiveDiscountAmount = Number(
+    Math.max(preDiscountSubtotal - itemsTotalAmount, 0).toFixed(2),
+  );
+  const shippingPricingConfig = getShippingPricingConfig();
+  const shippingFee = computeShippingFee({
+    method: requestedDeliveryMethod,
+    subtotalAfterDiscount: itemsTotalAmount,
+    config: shippingPricingConfig,
+    isMemberFreeShippingEligible: hasFreeShippingByBadge,
+    ignoreFreeThreshold: true,
+  });
+  const totalAmount = Number((itemsTotalAmount + shippingFee).toFixed(2));
   if (appliedPromo) {
     appliedPromo = {
       ...appliedPromo,
-      discountAmount: Number(Math.max(preDiscountSubtotal - totalAmount, 0).toFixed(2)),
+      discountAmount: effectiveDiscountAmount,
+    };
+  }
+  if (appliedTicket && appliedTicket.rewardType === "discount") {
+    appliedTicket = {
+      ...appliedTicket,
+      discountAmount: effectiveDiscountAmount,
     };
   }
 
@@ -539,9 +808,38 @@ export async function POST(request: Request) {
       lineVatAmount: taxSplit.vat,
     };
   });
+  if (appliedTicket && appliedTicket.rewardType === "gift") {
+    finalizedItemsWithTax.push({
+      id: `gift-ticket-${appliedTicket.ticketId}`,
+      name: `Lot ticket: ${appliedTicket.giftLabel ?? appliedTicket.prizeName}`,
+      unitPrice: 0,
+      quantity: 1,
+      lineTotal: 0,
+      vatRate: 20,
+      unitPriceHt: 0,
+      lineTotalHt: 0,
+      lineVatAmount: 0,
+    });
+  }
+
+  const taxComputationItems = [...finalizedItemsWithTax];
+  if (shippingFee > 0) {
+    const shippingTaxSplit = computeFromTtc(shippingFee, 20, { taxable: isTaxable });
+    taxComputationItems.push({
+      id: "delivery-fee",
+      name: requestedDeliveryMethod === "relay" ? "Livraison point relais" : "Livraison domicile",
+      unitPrice: shippingFee,
+      quantity: 1,
+      lineTotal: shippingFee,
+      vatRate: 20,
+      unitPriceHt: shippingTaxSplit.ht,
+      lineTotalHt: shippingTaxSplit.ht,
+      lineVatAmount: shippingTaxSplit.vat,
+    });
+  }
 
   const taxTotals = computeOrderTaxTotals(
-    finalizedItemsWithTax.map((item) => ({
+    taxComputationItems.map((item) => ({
       productId: item.id,
       name: item.name,
       unitPrice: item.unitPrice,
@@ -627,16 +925,45 @@ export async function POST(request: Request) {
       },
       shipping: {
         address: shippingAddress,
-        city: shippingCity,
-        postalCode: shippingPostalCode,
-        country: shippingCountry,
+        city: requestedDeliveryMethod === "relay" ? relayCity : shippingCity,
+        postalCode:
+          requestedDeliveryMethod === "relay" ? relayPostalCode : shippingPostalCode,
+        country: requestedDeliveryMethod === "relay" ? relayCountry : shippingCountry,
         phone: shippingPhone,
+        deliveryMethod: requestedDeliveryMethod,
+        deliveryFee: shippingFee,
+        relayProvider:
+          requestedDeliveryMethod === "relay" ? "mondial_relay" : undefined,
+        relayId: requestedDeliveryMethod === "relay" ? relayId : undefined,
+        relayName: requestedDeliveryMethod === "relay" ? relayName : undefined,
+        relayAddress:
+          requestedDeliveryMethod === "relay" ? relayAddress : undefined,
+        relayPostalCode:
+          requestedDeliveryMethod === "relay" ? relayPostalCode : undefined,
+        relayCity: requestedDeliveryMethod === "relay" ? relayCity : undefined,
+        relayCountry: requestedDeliveryMethod === "relay" ? relayCountry : undefined,
       },
       promo: appliedPromo,
       viva: {
         orderCode,
       },
     });
+
+    if (appliedTicket && customerId) {
+      try {
+        await redeemLotteryTicketForOrderByBackend({
+          userId: customerId,
+          ticketId: appliedTicket.ticketId,
+          orderId: order.id,
+          rewardLabel:
+            appliedTicket.rewardType === "discount"
+              ? `${appliedTicket.discountPercent}% sur la commande`
+              : appliedTicket.giftLabel ?? appliedTicket.prizeName,
+        });
+      } catch (ticketError) {
+        console.error("Ticket redemption error:", ticketError);
+      }
+    }
 
     return NextResponse.json({
       message: "Commande enregistree. Redirection vers Viva.",

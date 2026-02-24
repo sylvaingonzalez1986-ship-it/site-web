@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Image from "next/image";
+import { useState, type FormEvent } from "react";
 import { AppScreensShowcase } from "@/components/application/AppScreensShowcase";
 import { CustomSection } from "@/components/CustomSection";
 import { FeatureCard } from "@/components/FeatureCard";
@@ -11,6 +12,10 @@ export default function ApplicationPage() {
   const { store } = useCmsStore();
   const appContent = store.content.application;
   const appSections = store.sections.application.filter((section) => section.visible);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
+  const [newsletterStatus, setNewsletterStatus] = useState<string | null>(null);
+  const [newsletterError, setNewsletterError] = useState<string | null>(null);
   const appFeatures = [
     {
       icon: "FID",
@@ -33,6 +38,52 @@ export default function ApplicationPage() {
       description: appContent.feature4Description,
     },
   ];
+
+  const submitNewsletter = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setNewsletterError(null);
+    setNewsletterStatus(null);
+
+    const email = newsletterEmail.trim().toLowerCase();
+    if (!email) {
+      setNewsletterError("Ajoute ton e-mail avant validation.");
+      return;
+    }
+
+    setNewsletterLoading(true);
+    try {
+      const response = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          source: "application",
+        }),
+      });
+
+      const data = (await response.json()) as {
+        ok?: boolean;
+        alreadySubscribed?: boolean;
+        error?: string;
+      };
+
+      if (!response.ok || !data.ok) {
+        setNewsletterError(data.error ?? "Inscription impossible.");
+        return;
+      }
+
+      setNewsletterStatus(
+        data.alreadySubscribed
+          ? "Tu es déjà inscrit(e) à la newsletter."
+          : "Inscription validée. Vérifie ton e-mail de confirmation.",
+      );
+      setNewsletterEmail("");
+    } catch {
+      setNewsletterError("Inscription impossible pour le moment.");
+    } finally {
+      setNewsletterLoading(false);
+    }
+  };
 
   const renderApplicationSection = (section: ApplicationSection, index: number) => {
     const spacingClass = index === 0 ? "" : "mt-10";
@@ -96,16 +147,35 @@ export default function ApplicationPage() {
               <p className="mx-auto mt-4 max-w-2xl text-lg text-charcoal">
                 {appContent.newsletterDescription}
               </p>
-              <form className="mx-auto mt-6 flex max-w-xl flex-col gap-3 sm:flex-row">
+              <form
+                className="mx-auto mt-6 flex max-w-xl flex-col gap-3 sm:flex-row"
+                onSubmit={submitNewsletter}
+              >
                 <input
                   type="email"
                   placeholder={appContent.newsletterEmailPlaceholder}
                   className="h-12 flex-1 border-2 border-[#1a1a1a] bg-[#f7f4ee] px-4"
+                  value={newsletterEmail}
+                  onChange={(event) => setNewsletterEmail(event.target.value)}
                 />
-                <button type="submit" className="btn-cartoon btn-primary h-12">
-                  {appContent.newsletterSubmitLabel}
+                <button
+                  type="submit"
+                  className="btn-cartoon btn-primary h-12"
+                  disabled={newsletterLoading}
+                >
+                  {newsletterLoading ? "Envoi..." : appContent.newsletterSubmitLabel}
                 </button>
               </form>
+              {newsletterError && (
+                <p className="mx-auto mt-3 max-w-xl text-sm font-semibold text-red-700">
+                  {newsletterError}
+                </p>
+              )}
+              {newsletterStatus && (
+                <p className="mx-auto mt-3 max-w-xl text-sm font-semibold text-green-700">
+                  {newsletterStatus}
+                </p>
+              )}
             </div>
           </div>
         );

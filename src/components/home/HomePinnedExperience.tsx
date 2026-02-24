@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
 import { CustomSection } from "@/components/CustomSection";
+import { HomeSeasonGallery } from "@/components/home/HomeSeasonGallery";
+import { HomeTicketPromoBand } from "@/components/home/HomeTicketPromoBand";
 import type { Product } from "@/data/products";
 import { useCmsStore } from "@/hooks/useCmsStore";
 import { hasActiveProductPromo } from "@/lib/product-promo";
@@ -26,20 +28,41 @@ import type { CmsStore, HomeSection } from "@/types/store";
 gsap.registerPlugin(ScrollTrigger);
 type HomeContent = CmsStore["content"]["home"];
 const HERO_ASSET_VERSION = "20260216-4";
-const HERO_FRAME_IDLE_SRC = `/hero-circle-idle.png?v=${HERO_ASSET_VERSION}`;
+const HERO_FRAME_IDLE_SRC = `/hero-bretagne-bg.png?v=${HERO_ASSET_VERSION}`;
 const HERO_FRAME_SCENE_SRC = `/hero-bretagne-bg.png?v=${HERO_ASSET_VERSION}`;
 const LEGAL_FRAME_BG_SRC = `/legal-circle-bg.png?v=${HERO_ASSET_VERSION}`;
 const PRODUCTS_FRAME_BG_SRC = `/products-circle-bg.png?v=${HERO_ASSET_VERSION}`;
+const HOME_ALLOWED_TYPES = new Set(["hero", "legal", "products", "custom"]);
+const HOME_SECTION_ORDER: Record<string, number> = {
+  hero: 0,
+  legal: 1,
+  products: 2,
+  app: 3,
+  story: 4,
+  contact: 5,
+  custom: 6,
+};
 
 export function HomePinnedExperience() {
   const snapTriggerRef = useRef<ScrollTrigger | null>(null);
   const { store } = useCmsStore();
+  const [isMobileViewport, setIsMobileViewport] = useState<boolean | null>(null);
   const home = store.content.home;
   const featuredProducts = store.products.slice(0, 3);
-  const homeSections = useMemo(
-    () => store.sections.home.filter((section) => section.visible),
-    [store.sections.home],
-  );
+  const homeSections = useMemo(() => {
+    return store.sections.home
+      .map((section, index) => ({ section, index }))
+      .filter(({ section }) => section.visible && HOME_ALLOWED_TYPES.has(section.type))
+      .sort((a, b) => {
+        const orderA = HOME_SECTION_ORDER[a.section.type] ?? 999;
+        const orderB = HOME_SECTION_ORDER[b.section.type] ?? 999;
+        if (orderA !== orderB) {
+          return orderA - orderB;
+        }
+        return a.index - b.index;
+      })
+      .map(({ section }) => section);
+  }, [store.sections.home]);
   const homeSectionsKey = useMemo(
     () =>
       homeSections
@@ -49,6 +72,18 @@ export function HomePinnedExperience() {
   );
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const updateViewport = () => setIsMobileViewport(mediaQuery.matches);
+    updateViewport();
+    mediaQuery.addEventListener("change", updateViewport);
+    return () => mediaQuery.removeEventListener("change", updateViewport);
+  }, []);
+
+  useEffect(() => {
+    if (isMobileViewport !== false) {
+      return;
+    }
+
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 769px)", () => {
@@ -112,7 +147,7 @@ export function HomePinnedExperience() {
       snapTriggerRef.current?.kill();
       snapTriggerRef.current = null;
     };
-  }, [homeSectionsKey, store.updatedAt]);
+  }, [homeSectionsKey, isMobileViewport, store.updatedAt]);
 
   const renderHomeSection = (section: HomeSection, index: number) => {
     const zIndex = (index + 1) * 10;
@@ -120,7 +155,16 @@ export function HomePinnedExperience() {
     switch (section.type) {
       case "hero":
         return (
-          <HeroPinnedSection key={section.id} home={home} zIndex={zIndex} />
+          <div key={section.id}>
+            <HeroPinnedSection home={home} zIndex={zIndex} />
+            <HomeTicketPromoBand zIndex={zIndex + 1} />
+            <HomeSeasonGallery
+              title={home.seasonGalleryTitle}
+              description={home.seasonGalleryDescription}
+              images={home.seasonGalleryImages}
+              zIndex={zIndex + 2}
+            />
+          </div>
         );
       case "legal":
         return (
@@ -197,10 +241,238 @@ export function HomePinnedExperience() {
     }
   };
 
+  const renderMobileHomeSection = (section: HomeSection, index: number) => {
+    const zIndex = (index + 1) * 10;
+
+    switch (section.type) {
+      case "hero":
+        return (
+          <div key={section.id}>
+            <MobileHeroSection home={home} zIndex={zIndex} />
+            <HomeTicketPromoBand zIndex={zIndex + 1} />
+            <HomeSeasonGallery
+              title={home.seasonGalleryTitle}
+              description={home.seasonGalleryDescription}
+              images={home.seasonGalleryImages}
+              zIndex={zIndex + 2}
+            />
+          </div>
+        );
+      case "legal":
+        return <MobileLegalSection key={section.id} home={home} zIndex={zIndex} />;
+      case "products":
+        return (
+          <MobileProductsSection
+            key={section.id}
+            featuredProducts={featuredProducts}
+            home={home}
+            zIndex={zIndex}
+          />
+        );
+      case "custom":
+        return (
+          <CustomSection
+            key={section.id}
+            id={section.id}
+            custom={section.custom}
+            variant="band"
+            zIndex={zIndex}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  if (isMobileViewport === null) {
+    return (
+      <section className="section-band bg-mint halftone-overlay paper-grain pt-28">
+        <div className="retro-container">
+          <div className="cartoon-border bg-cream p-6 text-sm text-charcoal">Chargement...</div>
+        </div>
+      </section>
+    );
+  }
+
+  if (isMobileViewport) {
+    return (
+      <div className="relative overflow-x-hidden">
+        {homeSections.map((section, index) => renderMobileHomeSection(section, index))}
+      </div>
+    );
+  }
+
   return (
     <div className="relative overflow-x-hidden">
       {homeSections.map((section, index) => renderHomeSection(section, index))}
     </div>
+  );
+}
+
+function MobileHeroSection({ home, zIndex }: { home: HomeContent; zIndex: number }) {
+  const heroLines = [home.heroLine1, home.heroLine2, home.heroLine3]
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .slice(0, 3);
+  const renderedHeroLines = heroLines.length > 0 ? heroLines : ["BIENVENUE"];
+
+  return (
+    <section className="section-band bg-mint halftone-overlay paper-grain pt-28" style={{ zIndex }}>
+      <div className="retro-container">
+        <div className="cartoon-border bg-cream p-5">
+          <h1 className="pinned-title text-ink">
+            {renderedHeroLines.map((line, index) => (
+              <span key={`${line}-${index}`} className="headline-line block text-[clamp(40px,14vw,72px)] leading-[0.9]">
+                {line}
+              </span>
+            ))}
+          </h1>
+
+          <div className="hero-circle-group relative mx-auto mt-4 h-[72vw] w-[72vw] max-h-[330px] max-w-[330px] overflow-hidden rounded-full bg-cream cartoon-border outline outline-[6px] outline-white">
+            <div className="absolute inset-0 z-0 bg-cream" aria-hidden="true" />
+            <div
+              className="absolute inset-0 z-[1] bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${HERO_FRAME_IDLE_SRC})` }}
+              aria-hidden="true"
+            />
+            <div className="absolute inset-0 z-[2] bg-gradient-to-t from-[#1a1a1a]/10 via-transparent to-transparent" />
+            <div className="absolute left-1/2 bottom-0 z-10 h-[92%] w-[96%] -translate-x-1/2">
+              <Image
+                src="/charles.png"
+                alt="Charles"
+                fill
+                priority
+                sizes="72vw"
+                className="object-contain object-bottom drop-shadow-[0_8px_10px_rgba(26,26,26,0.28)]"
+              />
+            </div>
+          </div>
+
+          <p className="mt-5 text-lg leading-relaxed text-charcoal">{home.heroDescription}</p>
+          <div className="mt-5">
+            <Link href="/boutique" className="btn-primary btn-cartoon inline-flex min-h-[48px] items-center gap-2">
+              <ShoppingBag className="h-5 w-5" />
+              {home.heroPrimaryCtaLabel}
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileLegalSection({ home, zIndex }: { home: HomeContent; zIndex: number }) {
+  return (
+    <section className="section-band bg-yellow halftone-overlay paper-grain" style={{ zIndex }}>
+      <div className="retro-container">
+        <div className="cartoon-border bg-cream p-5">
+          <div className="relative mx-auto h-[68vw] w-[68vw] max-h-[310px] max-w-[310px] overflow-hidden rounded-full bg-cream cartoon-border outline outline-[6px] outline-white">
+            <div
+              className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${LEGAL_FRAME_BG_SRC})` }}
+              aria-hidden="true"
+            />
+            <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/15 via-transparent to-transparent" />
+            <div className="absolute left-1/2 bottom-0 z-10 h-[92%] w-[96%] -translate-x-1/2">
+              <Image
+                src="/sylvain.png"
+                alt="Sylvain"
+                fill
+                sizes="68vw"
+                className="object-contain object-bottom drop-shadow-[0_8px_10px_rgba(26,26,26,0.28)]"
+              />
+            </div>
+          </div>
+          <h2 className="pinned-title mt-4 leading-none text-ink">
+            <span className="headline-line block text-[clamp(34px,12vw,58px)]">{home.legalLine1}</span>
+            <span className="headline-line block text-[clamp(34px,12vw,58px)]">{home.legalLine2}</span>
+          </h2>
+          <p className="mt-3 text-base leading-relaxed text-charcoal">{home.legalDescription}</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <div className="pill-cartoon flex items-center gap-2 px-3 py-2 text-xs">
+              <Shield className="h-4 w-4" /> {home.legalPillThc}
+            </div>
+            <div className="pill-cartoon flex items-center gap-2 px-3 py-2 text-xs">
+              <FlaskConical className="h-4 w-4" /> {home.legalPillLab}
+            </div>
+            <div className="pill-cartoon flex items-center gap-2 px-3 py-2 text-xs">
+              <Truck className="h-4 w-4" /> {home.legalPillDelivery}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileProductsSection({
+  featuredProducts,
+  home,
+  zIndex,
+}: {
+  featuredProducts: Product[];
+  home: HomeContent;
+  zIndex: number;
+}) {
+  return (
+    <section id="products" className="section-band bg-mint halftone-overlay paper-grain pb-10" style={{ zIndex }}>
+      <div className="retro-container">
+        <div className="cartoon-border bg-cream p-5">
+          <h2 className="pinned-title leading-none text-ink">
+            <span className="headline-line block text-[clamp(34px,12vw,58px)]">{home.productsTitleLine1}</span>
+            <span className="headline-line block text-[clamp(34px,12vw,58px)]">{home.productsTitleLine2}</span>
+          </h2>
+
+          <div className="mt-5 grid gap-4">
+            {featuredProducts.map((product) => {
+              const hasPromo = hasActiveProductPromo(product);
+              return (
+                <article key={product.id} className="product-card card-cartoon overflow-hidden bg-white p-0">
+                  <ProductImageCarousel
+                    images={product.images?.length ? product.images : [product.image]}
+                    alt={product.name}
+                    badge={product.badge}
+                    promoText={hasPromo ? `Moins ${product.promoPercent}%` : undefined}
+                    className="border-b-2 border-[#1a1a1a]"
+                    sizes="92vw"
+                  />
+                  <div className="p-3">
+                    <h3 className="font-display text-xl text-ink">{product.name}</h3>
+                    {hasPromo ? (
+                      <div className="mt-1 flex flex-col text-xs uppercase tracking-wide">
+                        <span className="price-original">
+                          {home.productsPricePrefix} {formatPrice(product.originalPrice)} TTC
+                        </span>
+                        <span className="price-promo">
+                          {home.productsPricePrefix} {formatPrice(product.price)} TTC
+                        </span>
+                      </div>
+                    ) : (
+                      <p className="mt-1 text-xs uppercase tracking-wide text-charcoal">
+                        {home.productsPricePrefix} {formatPrice(product.price)} TTC
+                      </p>
+                    )}
+                    <Link
+                      href="/boutique"
+                      className="btn-cartoon btn-primary mt-3 inline-flex min-h-[44px] w-full items-center justify-center gap-2"
+                    >
+                      <ShoppingCart className="h-4 w-4" /> {home.productsAddButtonLabel}
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <div className="mt-5">
+            <Link href="/boutique" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-ink hover:text-orange">
+              {home.productsCtaLabel}
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -211,6 +483,11 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
   const headlineRef = useRef<HTMLDivElement>(null);
   const subheadlineRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const heroLines = [home.heroLine1, home.heroLine2, home.heroLine3]
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .slice(0, 3);
+  const renderedHeroLines = heroLines.length > 0 ? heroLines : ["BIENVENUE"];
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -360,7 +637,7 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
             <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/10 via-transparent to-transparent" />
             <div
               ref={mascotRef}
-              className="pinned-mascot absolute left-1/2 bottom-0 z-10 h-[85%] w-[90%] -translate-x-1/2"
+              className="pinned-mascot absolute left-1/2 bottom-0 z-10 h-[92%] w-[96%] -translate-x-1/2"
             >
               <Image
                 src="/charles.png"
@@ -376,9 +653,14 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
 
       <div ref={headlineRef} className="pinned-headline absolute left-[52vw] top-[14vh] w-[42vw] z-20">
         <h1 className="pinned-title leading-[0.92] tracking-[0.01em] text-ink">
-          <span className="headline-line block text-[clamp(48px,7vw,96px)]">{home.heroLine1}</span>
-          <span className="headline-line block text-[clamp(48px,7vw,96px)]">{home.heroLine2}</span>
-          <span className="headline-line block text-[clamp(48px,7vw,96px)]">{home.heroLine3}</span>
+          {renderedHeroLines.map((line, index) => (
+            <span
+              key={`${line}-${index}`}
+              className="headline-line block text-[clamp(48px,7vw,96px)]"
+            >
+              {line}
+            </span>
+          ))}
         </h1>
       </div>
 
@@ -524,7 +806,7 @@ function LegalPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: numbe
           aria-hidden="true"
         />
         <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/15 via-transparent to-transparent" />
-        <div className="legal-character absolute left-1/2 bottom-0 z-10 h-[85%] w-[90%] -translate-x-1/2">
+        <div className="legal-character absolute left-1/2 bottom-0 z-10 h-[92%] w-[96%] -translate-x-1/2">
           <Image
             src="/sylvain.png"
             alt="Sylvain"

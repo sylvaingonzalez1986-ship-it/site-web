@@ -8,6 +8,20 @@ import type { CmsStore } from "@/types/store";
 
 export const runtime = "nodejs";
 
+function isPrintfulProduct(product: { id?: string; source?: unknown } | null | undefined): boolean {
+  if (!product) {
+    return false;
+  }
+
+  const id = typeof product.id === "string" ? product.id : "";
+  if (id.startsWith("printful-p-")) {
+    return true;
+  }
+
+  const source = typeof product.source === "string" ? product.source.trim().toLowerCase() : "";
+  return source === "printful";
+}
+
 export async function GET() {
   const store = await readStoreByBackend();
   return NextResponse.json(store);
@@ -17,9 +31,18 @@ export async function PUT(request: Request) {
   try {
     const payload = (await request.json()) as CmsStore;
     const current = await readStoreByBackend();
+    const incomingProducts = Array.isArray(payload.products) ? payload.products : [];
+    const editableProducts = incomingProducts.filter(
+      (product) =>
+        !isPrintfulProduct(product as unknown as { id?: string; source?: unknown }),
+    );
+    const preservedPrintfulProducts = current.products.filter((product) =>
+      isPrintfulProduct(product as unknown as { id?: string; source?: unknown }),
+    );
     const saved = await writeStoreByBackend({
       ...payload,
       orders: current.orders,
+      products: [...editableProducts, ...preservedPrintfulProducts],
     });
 
     try {

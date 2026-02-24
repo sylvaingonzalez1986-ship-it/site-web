@@ -33,6 +33,15 @@ export type AppendOrderInput = {
     postalCode: string;
     country: string;
     phone: string;
+    deliveryMethod?: "home" | "relay";
+    deliveryFee?: number;
+    relayProvider?: string;
+    relayId?: string;
+    relayName?: string;
+    relayAddress?: string;
+    relayPostalCode?: string;
+    relayCity?: string;
+    relayCountry?: string;
   };
   promo?: {
     code: string;

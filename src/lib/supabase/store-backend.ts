@@ -110,6 +110,64 @@ function toStringArray(value: unknown): string[] {
   return value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
 }
 
+function toBoolean(value: unknown, fallback = false): boolean {
+  if (typeof value === "boolean") {
+    return value;
+  }
+  if (typeof value === "number") {
+    return value !== 0;
+  }
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    if (["1", "true", "yes", "on"].includes(normalized)) {
+      return true;
+    }
+    if (["0", "false", "no", "off"].includes(normalized)) {
+      return false;
+    }
+  }
+  return fallback;
+}
+
+function toNonNegativeIntegerOrUndefined(value: unknown): number | undefined {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    return undefined;
+  }
+  return Math.floor(parsed);
+}
+
+function sanitizeVariantOptions(
+  value: unknown,
+): Product["variantOptions"] | undefined {
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+
+  const mapped = value
+    .map((rawOption, index) => {
+      const option = toObject(rawOption);
+      const id = toOptionalString(option.id) ?? `variant-${index + 1}`;
+      const label = sanitizeDisplayText(option.label, "").trim() || `Option ${index + 1}`;
+      const price = toNonNegativeMoney(option.price);
+      const enabled = toBoolean(option.enabled, true);
+      const inStock = toBoolean(option.inStock, true);
+      const stockQuantity = toNonNegativeIntegerOrUndefined(option.stockQuantity);
+
+      return {
+        id,
+        label,
+        price,
+        enabled,
+        inStock,
+        stockQuantity,
+      };
+    })
+    .filter((option) => option.id.trim().length > 0);
+
+  return mapped.length > 0 ? mapped : undefined;
+}
+
 function toObject(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return {};
@@ -149,6 +207,16 @@ function toPromoPercentOrNull(value: unknown): number | null {
     return null;
   }
   return rounded;
+}
+
+function isPrintfulProductRecord(input: { id?: unknown; source?: unknown }): boolean {
+  const id = toStringValue(input.id);
+  if (id.startsWith("printful-p-")) {
+    return true;
+  }
+
+  const source = toStringValue(input.source).trim().toLowerCase();
+  return source === "printful";
 }
 
 function mapProducerRow(row: Record<string, unknown>): Producer {
@@ -220,6 +288,17 @@ function mapOrderRow(
     shippingPostalCode: toOptionalString(row.shipping_postal_code),
     shippingCountry: toOptionalString(row.shipping_country),
     shippingPhone: toOptionalString(row.shipping_phone),
+    deliveryMethod:
+      toStringValue(row.delivery_method).toLowerCase() === "relay" ? "relay" : "home",
+    deliveryFee: Number.isFinite(Number(row.delivery_fee))
+      ? Number(Number(row.delivery_fee).toFixed(2))
+      : undefined,
+    relayId: toOptionalString(row.relay_id),
+    relayName: toOptionalString(row.relay_name),
+    relayAddress: toOptionalString(row.relay_address),
+    relayPostalCode: toOptionalString(row.relay_postal_code),
+    relayCity: toOptionalString(row.relay_city),
+    relayCountry: toOptionalString(row.relay_country),
     promoCode: toOptionalString(row.promo_code),
     discountPercent: Number.isFinite(Number(row.discount_percent))
       ? Number(row.discount_percent)
@@ -276,6 +355,9 @@ function mapProductRow(
       : [defaultStore.products[0]?.image ?? ""];
 
   const packProductIds = isPack ? (packProductIdsByPackId.get(id) ?? []) : undefined;
+  const stockQuantity = toNonNegativeIntegerOrUndefined(row.stock_quantity);
+  const variantLabel = toOptionalString(sanitizeDisplayText(row.variant_label));
+  const variantOptions = sanitizeVariantOptions(row.variant_options);
 
   return {
     id,
@@ -297,6 +379,10 @@ function mapProductRow(
     analysisPdf: normalizeProductAnalysisPath(toOptionalString(row.analysis_pdf)),
     description: sanitizeDisplayText(row.description),
     badge: toOptionalString(sanitizeDisplayText(row.badge)),
+    trackStock: toBoolean(row.track_stock, false),
+    stockQuantity,
+    variantLabel,
+    variantOptions,
   };
 }
 
@@ -507,7 +593,12 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
     failIfError(deleteProducers.error, "delete removed producers");
   }
 
-  const productRows = nextStore.products.map((product, index) => {
+  const editableProducts = nextStore.products.filter(
+    (product) =>
+      !isPrintfulProductRecord(product as Product & { source?: unknown }),
+  );
+
+  const productRows = editableProducts.map((product, index) => {
     const safePrice = toNonNegativeMoney(product.price);
     const safeOriginalPrice = toPositiveMoneyOrNull(product.originalPrice);
     const safePromoPercent = toPromoPercentOrNull(product.promoPercent);
@@ -515,6 +606,22 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
       safeOriginalPrice !== null &&
       safePromoPercent !== null &&
       safeOriginalPrice > safePrice;
+
+    const stockQuantity =
+      product.trackStock === true
+        ? toNonNegativeIntegerOrUndefined(product.stockQuantity) ?? 0
+        : null;
+    const variantOptions = Array.isArray(product.variantOptions)
+      ? product.variantOptions.map((option, optionIndex) => ({
+          id: toOptionalString(option.id) ?? `variant-${optionIndex + 1}`,
+          label: sanitizeDisplayText(option.label, "").trim() || `Option ${optionIndex + 1}`,
+          price: toNonNegativeMoney(option.price),
+          enabled: option.enabled !== false,
+          inStock: option.inStock !== false,
+          stockQuantity:
+            toNonNegativeIntegerOrUndefined(option.stockQuantity) ?? null,
+        }))
+      : null;
 
     return {
       id: product.id,
@@ -534,6 +641,10 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
       analysis_pdf: normalizeProductAnalysisPath(product.analysisPdf) ?? null,
       description: sanitizeDisplayText(product.description),
       badge: toOptionalString(sanitizeDisplayText(product.badge ?? "")) ?? null,
+      track_stock: product.trackStock === true,
+      stock_quantity: stockQuantity,
+      variant_label: toOptionalString(sanitizeDisplayText(product.variantLabel ?? "")) ?? null,
+      variant_options: variantOptions,
       position: index,
     };
   });
@@ -545,12 +656,20 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
     failIfError(upsertProducts.error, "upsert products");
   }
 
-  const existingProductsResult = await supabase.from("products").select("id");
+  const existingProductsResult = await supabase.from("products").select("id,source");
   failIfError(existingProductsResult.error, "select existing products");
-  const nextProductIds = new Set(nextStore.products.map((product) => product.id));
+  const nextProductIds = new Set(editableProducts.map((product) => product.id));
   const productIdsToDelete = (existingProductsResult.data ?? [])
-    .map((row) => toStringValue((row as Record<string, unknown>).id))
-    .filter((id) => id && !nextProductIds.has(id));
+    .map((row) => row as Record<string, unknown>)
+    .filter((row) => {
+      if (isPrintfulProductRecord({ id: row.id, source: row.source })) {
+        return false;
+      }
+
+      const id = toStringValue(row.id);
+      return Boolean(id) && !nextProductIds.has(id);
+    })
+    .map((row) => toStringValue(row.id));
 
   if (productIdsToDelete.length > 0) {
     const deleteProducts = await supabase.from("products").delete().in("id", productIdsToDelete);

@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
 import {
+  ADMIN_COOKIE_NAME,
+  createAdminSessionToken,
+  getAdminCookieOptions,
+} from "@/lib/admin-auth";
+import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
+import {
   clearLegacyCustomerCookie,
   isAtLeast18,
   normalizeDateOfBirth,
@@ -70,7 +76,22 @@ export async function POST(request: Request) {
 
     await clearLegacyCustomerCookie();
 
-    return NextResponse.json({ user: result.customer });
+    const response = NextResponse.json({ user: result.customer });
+
+    if (isAllowedAdminEmail(result.customer.email)) {
+      try {
+        const adminSessionToken = await createAdminSessionToken();
+        response.cookies.set({
+          name: ADMIN_COOKIE_NAME,
+          value: adminSessionToken,
+          ...getAdminCookieOptions(),
+        });
+      } catch (error) {
+        console.error("Admin session bootstrap failed on account register:", error);
+      }
+    }
+
+    return response;
   } catch (error) {
     if (error instanceof Error && error.message.includes("rpc_rate_limit_hit")) {
       return NextResponse.json(

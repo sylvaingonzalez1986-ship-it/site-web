@@ -5,6 +5,8 @@ import {
   getAdminCookieOptions,
   getAdminPassword,
 } from "@/lib/admin-auth";
+import { isAllowedAdminEmail, normalizeEmail } from "@/lib/admin-allowlist";
+import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
 
 export async function POST(request: Request) {
@@ -29,6 +31,15 @@ export async function POST(request: Request) {
 
     const payload = (await request.json()) as { password?: string };
     const configuredPassword = getAdminPassword();
+    const customerSession = await getCurrentCustomerSessionByBackend();
+    const sessionEmail = normalizeEmail(customerSession?.customer.email);
+
+    if (!customerSession || !isAllowedAdminEmail(sessionEmail)) {
+      return NextResponse.json(
+        { error: "Acces admin reserve au compte autorise." },
+        { status: 403 },
+      );
+    }
 
     if (!payload.password || payload.password !== configuredPassword) {
       return NextResponse.json({ error: "Mot de passe invalide." }, { status: 401 });

@@ -6,6 +6,10 @@ import { defaultStore } from "@/data/default-store";
 import { AdminTextCarousel } from "@/components/admin/AdminTextCarousel";
 import { AdminCustomersPanel } from "@/components/admin/AdminCustomersPanel";
 import { AdminPromosPanel } from "@/components/admin/AdminPromosPanel";
+import { AdminLotteryPanel } from "@/components/admin/AdminLotteryPanel";
+import { AdminNewsletterPanel } from "@/components/admin/AdminNewsletterPanel";
+import { AdminOrderDetailModal } from "@/components/admin/AdminOrderDetailModal";
+import { AdminPrintfulPanel } from "@/components/admin/AdminPrintfulPanel";
 import {
   FRENCH_DEPARTMENTS,
   FRENCH_REGIONS,
@@ -38,12 +42,25 @@ const orderStatusLabels: Record<OrderStatus, string> = {
   shipped: "Expediee",
   cancelled: "Annulee",
 };
-type AdminTab = "commandes" | "clients" | "promos" | "produits" | "copains" | "blog" | "textes";
+type AdminTab =
+  | "commandes"
+  | "clients"
+  | "promos"
+  | "loterie"
+  | "newsletter"
+  | "printful"
+  | "produits"
+  | "copains"
+  | "blog"
+  | "textes";
 
 const adminTabs: AdminTab[] = [
   "commandes",
   "clients",
   "promos",
+  "loterie",
+  "newsletter",
+  "printful",
   "produits",
   "copains",
   "blog",
@@ -54,6 +71,9 @@ const tabLabels: Record<AdminTab, string> = {
   commandes: "Commandes",
   clients: "Clients",
   promos: "Promos",
+  loterie: "Loterie",
+  newsletter: "Newsletter",
+  printful: "Printful",
   produits: "Mes Produits",
   copains: "Coin des Copains",
   blog: "Blog",
@@ -154,6 +174,8 @@ export function AdminPanel() {
   const [orderDateFrom, setOrderDateFrom] = useState("");
   const [orderDateTo, setOrderDateTo] = useState("");
   const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
+  const [selectedProducerId, setSelectedProducerId] = useState<string | null>(null);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<AdminTab>("commandes");
 
   const updatedLabel = useMemo(() => {
@@ -199,6 +221,10 @@ export function AdminPanel() {
     () => draft.blog.find((post) => post.id === selectedBlogId) ?? null,
     [draft.blog, selectedBlogId],
   );
+  const selectedOrder = useMemo(
+    () => draft.orders.find((order) => order.id === selectedOrderId) ?? null,
+    [draft.orders, selectedOrderId],
+  );
 
   const productsWithIndex = useMemo(
     () => draft.products.map((product, index) => ({ product, index })),
@@ -211,6 +237,21 @@ export function AdminPanel() {
   const partnerProducts = useMemo(
     () => productsWithIndex.filter(({ product }) => Boolean(product.producerId) && !product.isPack),
     [productsWithIndex],
+  );
+  const selectedProducer = useMemo(
+    () => draft.producers.find((producer) => producer.id === selectedProducerId) ?? null,
+    [draft.producers, selectedProducerId],
+  );
+  const selectedProducerIndex = useMemo(
+    () => draft.producers.findIndex((producer) => producer.id === selectedProducerId),
+    [draft.producers, selectedProducerId],
+  );
+  const selectedProducerProducts = useMemo(
+    () =>
+      partnerProducts.filter(
+        ({ product }) => Boolean(product.producerId) && product.producerId === selectedProducerId,
+      ),
+    [partnerProducts, selectedProducerId],
   );
 
   const loadStore = async () => {
@@ -250,6 +291,19 @@ export function AdminPanel() {
       setSelectedBlogId(draft.blog[0].id);
     }
   }, [draft.blog, selectedBlogId]);
+
+  useEffect(() => {
+    if (draft.producers.length === 0) {
+      if (selectedProducerId !== null) {
+        setSelectedProducerId(null);
+      }
+      return;
+    }
+
+    if (!selectedProducerId || !draft.producers.some((producer) => producer.id === selectedProducerId)) {
+      setSelectedProducerId(draft.producers[0].id);
+    }
+  }, [draft.producers, selectedProducerId]);
 
   const saveStore = async () => {
     setSaving(true);
@@ -416,16 +470,16 @@ export function AdminPanel() {
     setDraft((current) => ({ ...current, products: [...current.products, makeProduct()] }));
   };
 
-  const addPartnerProduct = () => {
+  const addPartnerProductForProducer = (producerId: string) => {
     setDraft((current) => {
-      const firstProducer = current.producers[0];
-      if (!firstProducer) {
+      const selected = current.producers.find((producer) => producer.id === producerId);
+      if (!selected) {
         return current;
       }
 
       return {
         ...current,
-        products: [...current.products, { ...makeProduct(), producerId: firstProducer.id }],
+        products: [...current.products, { ...makeProduct(), producerId: selected.id }],
       };
     });
   };
@@ -521,10 +575,12 @@ export function AdminPanel() {
   };
 
   const addProducer = () => {
+    const nextProducer = makeProducer();
     setDraft((current) => ({
       ...current,
-      producers: [...current.producers, makeProducer()],
+      producers: [...current.producers, nextProducer],
     }));
+    setSelectedProducerId(nextProducer.id);
   };
 
   const removeProducer = (index: number) => {
@@ -543,6 +599,7 @@ export function AdminPanel() {
     setDraft((current) => ({
       ...current,
       producers: current.producers.filter((_, i) => i !== index),
+      products: current.products.filter((product) => product.producerId !== producer.id),
     }));
   };
 
@@ -745,6 +802,13 @@ export function AdminPanel() {
                   </div>
 
                   <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedOrderId(order.id)}
+                      className="btn-cartoon btn-secondary"
+                    >
+                      Detail
+                    </button>
                     <select
                       className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
                       value={order.status}
@@ -798,6 +862,12 @@ export function AdminPanel() {
         {activeTab === "promos" && (
           <AdminPromosPanel draft={draft} setDraft={setDraft} />
         )}
+
+        {activeTab === "loterie" && <AdminLotteryPanel />}
+
+        {activeTab === "newsletter" && <AdminNewsletterPanel />}
+
+        {activeTab === "printful" && <AdminPrintfulPanel />}
 
         {activeTab === "blog" && (
         <div className="cartoon-border bg-cream p-6 md:p-8">
@@ -925,105 +995,6 @@ export function AdminPanel() {
         </div>
         )}
 
-        {activeTab === "copains" && (
-        <div className="cartoon-border bg-cream p-6 md:p-8">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="font-display text-3xl">Producteurs Partenaires ({draft.producers.length})</h2>
-            <button type="button" className="btn-cartoon btn-secondary" onClick={addProducer}>
-              Ajouter un producteur
-            </button>
-          </div>
-
-          <div className="mt-6 grid gap-4">
-            {draft.producers.length === 0 && (
-              <p className="text-charcoal">Aucun producteur partenaire pour le moment.</p>
-            )}
-            {draft.producers.map((producer, index) => (
-              <article key={`${producer.id}-${index}`} className="card-cartoon bg-white p-4">
-                <div className="grid gap-3 md:grid-cols-2">
-                  <input
-                    className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                    value={producer.id}
-                    onChange={(event) => updateProducer(index, "id", event.target.value)}
-                    placeholder="id"
-                  />
-                  <input
-                    className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                    value={producer.name}
-                    onChange={(event) => updateProducer(index, "name", event.target.value)}
-                    placeholder="nom producteur"
-                  />
-                  <input
-                    className="h-10 border-2 border-[#1a1a1a] bg-[#f4f4f4] px-2 text-sm"
-                    value={formatProducerLocation(producer.department, producer.region)}
-                    readOnly
-                    placeholder="localisation"
-                  />
-                  <select
-                    className="h-10 border-2 border-[#1a1a1a] bg-white px-2 text-sm"
-                    value={producer.region}
-                    onChange={(event) => updateProducerRegion(index, event.target.value)}
-                  >
-                    <option value="">-- Region --</option>
-                    {FRENCH_REGIONS.map((region) => (
-                      <option key={region} value={region}>
-                        {region}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className="h-10 border-2 border-[#1a1a1a] bg-white px-2 text-sm"
-                    value={producer.department}
-                    onChange={(event) =>
-                      updateProducerDepartment(index, event.target.value)
-                    }
-                  >
-                    <option value="">-- Departement --</option>
-                    {(producer.region
-                      ? FRENCH_DEPARTMENTS.filter(
-                          (department) => department.region === producer.region,
-                        )
-                      : FRENCH_DEPARTMENTS
-                    ).map((department) => (
-                      <option key={department.code} value={department.name}>
-                        {department.code} - {department.name}
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                    value={producer.website}
-                    onChange={(event) => updateProducer(index, "website", event.target.value)}
-                    placeholder="website (https://...)"
-                  />
-                </div>
-
-                <textarea
-                  className="mt-3 min-h-20 w-full border-2 border-[#1a1a1a] p-2 text-sm"
-                  value={producer.description}
-                  onChange={(event) => updateProducer(index, "description", event.target.value)}
-                  placeholder="description"
-                />
-
-                <div className="mt-3 grid gap-3 md:grid-cols-[1fr,auto] md:items-start">
-                  <ProducerImageUpload
-                    value={producer.image}
-                    onChange={(nextImagePath) => updateProducer(index, "image", nextImagePath)}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeProducer(index)}
-                    className="btn-cartoon btn-primary h-10"
-                  >
-                    Supprimer
-                  </button>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-        )}
-
         {activeTab === "produits" && (
           <div className="cartoon-border bg-cream p-6 md:p-8">
             <div className="flex items-center justify-between gap-3">
@@ -1105,6 +1076,40 @@ export function AdminPanel() {
                       placeholder="badge"
                     />
                   </div>
+                  <div className="mt-3 grid gap-3 md:grid-cols-[auto,1fr] md:items-center">
+                    <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+                      <input
+                        type="checkbox"
+                        checked={product.trackStock === true}
+                        onChange={(event) => {
+                          const enabled = event.target.checked;
+                          updateProduct(index, "trackStock", enabled);
+                          if (!enabled) {
+                            updateProduct(index, "stockQuantity", undefined);
+                          } else if (!Number.isFinite(Number(product.stockQuantity))) {
+                            updateProduct(index, "stockQuantity", 0);
+                          }
+                        }}
+                      />
+                      Suivre stock
+                    </label>
+                    <input
+                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm disabled:opacity-50"
+                      value={product.trackStock ? (product.stockQuantity ?? 0) : ""}
+                      type="number"
+                      min={0}
+                      step={1}
+                      disabled={product.trackStock !== true}
+                      onChange={(event) =>
+                        updateProduct(
+                          index,
+                          "stockQuantity",
+                          Math.max(0, Math.floor(Number(event.target.value) || 0)),
+                        )
+                      }
+                      placeholder="Quantite stock"
+                    />
+                  </div>
                   <textarea
                     className="mt-3 min-h-20 w-full border-2 border-[#1a1a1a] p-2 text-sm"
                     value={product.description}
@@ -1129,128 +1134,294 @@ export function AdminPanel() {
         {activeTab === "copains" && (
           <div className="cartoon-border bg-cream p-6 md:p-8">
             <div className="flex items-center justify-between gap-3">
-              <h2 className="font-display text-3xl">Produits Copains ({partnerProducts.length})</h2>
-              <button
-                type="button"
-                className="btn-cartoon btn-secondary"
-                onClick={addPartnerProduct}
-                disabled={draft.producers.length === 0}
-              >
-                Ajouter un produit copain
+              <h2 className="font-display text-3xl">Coin des Copains</h2>
+              <button type="button" className="btn-cartoon btn-secondary" onClick={addProducer}>
+                Ajouter un producteur
               </button>
             </div>
 
-            {draft.producers.length === 0 && (
-              <p className="mt-4 text-charcoal">
-                Cree d&apos;abord un producteur pour pouvoir ajouter un produit copain.
-              </p>
-            )}
-
-            <div className="mt-6 grid gap-4">
-              {partnerProducts.length === 0 && (
-                <p className="text-charcoal">Aucun produit partenaire pour le moment.</p>
-              )}
-              {partnerProducts.map(({ product, index }) => (
-                <article key={`${product.id}-${index}`} className="card-cartoon bg-white p-4">
-                  <div className="grid gap-3 md:grid-cols-9">
-                    <input
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
-                      value={product.id}
-                      onChange={(e) => updateProduct(index, "id", e.target.value)}
-                      placeholder="id"
-                    />
-                    <input
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
-                      value={product.name}
-                      onChange={(e) => updateProduct(index, "name", e.target.value)}
-                      placeholder="nom"
-                    />
-                    <select
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                      value={product.category}
-                      onChange={(e) =>
-                        updateProduct(index, "category", e.target.value as ProductCategory)
-                      }
-                    >
-                      {productCategoryOptions.map((category) => (
-                        <option key={category} value={category}>
-                          {categoryLabels[category]}
-                        </option>
-                      ))}
-                    </select>
-                    <input
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                      value={product.price}
-                      type="number"
-                      step="0.01"
-                      onChange={(e) => updateProduct(index, "price", Number(e.target.value) || 0)}
-                      placeholder="prix"
-                    />
-                    <select
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                      value={product.vatRate ?? 20}
-                      onChange={(e) => updateProduct(index, "vatRate", Number(e.target.value) as VatRate)}
-                    >
-                      {VAT_RATE_OPTIONS.map((rate) => (
-                        <option key={rate} value={rate}>
-                          TVA {rate}%
-                        </option>
-                      ))}
-                    </select>
-                    <select
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
-                      value={product.producerId ?? ""}
-                      onChange={(e) =>
-                        updateProduct(index, "producerId", e.target.value.trim() || undefined)
-                      }
-                    >
-                      <option value="">-- Produit maison --</option>
-                      {draft.producers.map((producer) => (
-                        <option key={producer.id} value={producer.id}>
-                          {producer.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="mt-3 grid gap-3 md:grid-cols-2">
-                    <ProductImageUpload
-                      images={product.images ?? [product.image]}
-                      onChange={(nextImagePaths) => updateProductImages(index, nextImagePaths)}
-                    />
-                    <ProductAnalysisUpload
-                      value={product.analysisPdf}
-                      onChange={(nextAnalysisPath) =>
-                        updateProductAnalysis(index, nextAnalysisPath)
-                      }
-                    />
-                  </div>
-                  <div className="mt-3">
-                    <input
-                      className="h-10 w-full border-2 border-[#1a1a1a] px-2 text-sm"
-                      value={product.badge ?? ""}
-                      onChange={(e) => updateProduct(index, "badge", e.target.value)}
-                      placeholder="badge"
-                    />
-                  </div>
-                  <textarea
-                    className="mt-3 min-h-20 w-full border-2 border-[#1a1a1a] p-2 text-sm"
-                    value={product.description}
-                    onChange={(e) => updateProduct(index, "description", e.target.value)}
-                    placeholder="description"
-                  />
-                  <div className="mt-3 flex justify-end">
+            <div className="mt-6 grid gap-6 lg:grid-cols-[300px_1fr]">
+              <aside className="card-cartoon bg-white p-4">
+                <h3 className="font-display text-2xl">Producteurs ({draft.producers.length})</h3>
+                <div className="mt-3 grid gap-2">
+                  {draft.producers.length === 0 && (
+                    <p className="text-sm text-charcoal">
+                      Aucun producteur partenaire pour le moment.
+                    </p>
+                  )}
+                  {draft.producers.map((producer) => (
                     <button
+                      key={producer.id}
                       type="button"
-                      onClick={() => removeProduct(index)}
-                      className="btn-cartoon btn-primary"
+                      onClick={() => setSelectedProducerId(producer.id)}
+                      className={`rounded border-2 px-3 py-2 text-left transition-colors ${
+                        selectedProducerId === producer.id
+                          ? "border-[#1a1a1a] bg-[#e8f7f2]"
+                          : "border-[#1a1a1a] bg-white hover:bg-[#f7f4ee]"
+                      }`}
                     >
-                      Supprimer
+                      <p className="text-sm font-semibold text-ink">{producer.name || "Sans nom"}</p>
+                      <p className="text-xs text-charcoal">
+                        {formatProducerLocation(producer.department, producer.region)}
+                      </p>
                     </button>
+                  ))}
+                </div>
+              </aside>
+
+              <div className="grid gap-4">
+                {!selectedProducer || selectedProducerIndex < 0 ? (
+                  <div className="card-cartoon bg-white p-5 text-charcoal">
+                    Selectionne un producteur pour gerer sa fiche et ses produits.
                   </div>
-                </article>
-              ))}
+                ) : (
+                  <>
+                    <article className="card-cartoon bg-white p-4">
+                      <div className="grid gap-3 md:grid-cols-2">
+                        <input
+                          className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                          value={selectedProducer.id}
+                          onChange={(event) =>
+                            updateProducer(selectedProducerIndex, "id", event.target.value)
+                          }
+                          placeholder="id"
+                        />
+                        <input
+                          className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                          value={selectedProducer.name}
+                          onChange={(event) =>
+                            updateProducer(selectedProducerIndex, "name", event.target.value)
+                          }
+                          placeholder="nom producteur"
+                        />
+                        <input
+                          className="h-10 border-2 border-[#1a1a1a] bg-[#f4f4f4] px-2 text-sm"
+                          value={formatProducerLocation(selectedProducer.department, selectedProducer.region)}
+                          readOnly
+                          placeholder="localisation"
+                        />
+                        <select
+                          className="h-10 border-2 border-[#1a1a1a] bg-white px-2 text-sm"
+                          value={selectedProducer.region}
+                          onChange={(event) =>
+                            updateProducerRegion(selectedProducerIndex, event.target.value)
+                          }
+                        >
+                          <option value="">-- Region --</option>
+                          {FRENCH_REGIONS.map((region) => (
+                            <option key={region} value={region}>
+                              {region}
+                            </option>
+                          ))}
+                        </select>
+                        <select
+                          className="h-10 border-2 border-[#1a1a1a] bg-white px-2 text-sm"
+                          value={selectedProducer.department}
+                          onChange={(event) =>
+                            updateProducerDepartment(selectedProducerIndex, event.target.value)
+                          }
+                        >
+                          <option value="">-- Departement --</option>
+                          {(selectedProducer.region
+                            ? FRENCH_DEPARTMENTS.filter(
+                                (department) => department.region === selectedProducer.region,
+                              )
+                            : FRENCH_DEPARTMENTS
+                          ).map((department) => (
+                            <option key={department.code} value={department.name}>
+                              {department.code} - {department.name}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                          value={selectedProducer.website}
+                          onChange={(event) =>
+                            updateProducer(selectedProducerIndex, "website", event.target.value)
+                          }
+                          placeholder="website (https://...)"
+                        />
+                      </div>
+
+                      <textarea
+                        className="mt-3 min-h-20 w-full border-2 border-[#1a1a1a] p-2 text-sm"
+                        value={selectedProducer.description}
+                        onChange={(event) =>
+                          updateProducer(selectedProducerIndex, "description", event.target.value)
+                        }
+                        placeholder="description"
+                      />
+
+                      <div className="mt-3 grid gap-3 md:grid-cols-[1fr,auto] md:items-start">
+                        <ProducerImageUpload
+                          value={selectedProducer.image}
+                          onChange={(nextImagePath) =>
+                            updateProducer(selectedProducerIndex, "image", nextImagePath)
+                          }
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeProducer(selectedProducerIndex)}
+                          className="btn-cartoon btn-primary h-10"
+                        >
+                          Supprimer producteur (+ ses produits)
+                        </button>
+                      </div>
+                    </article>
+
+                    <article className="card-cartoon bg-white p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <h3 className="font-display text-2xl">
+                          Produits de {selectedProducer.name} ({selectedProducerProducts.length})
+                        </h3>
+                        <button
+                          type="button"
+                          className="btn-cartoon btn-secondary"
+                          onClick={() => addPartnerProductForProducer(selectedProducer.id)}
+                        >
+                          Ajouter un produit
+                        </button>
+                      </div>
+
+                      <div className="mt-4 grid gap-4">
+                        {selectedProducerProducts.length === 0 && (
+                          <p className="text-charcoal">Aucun produit pour ce producteur.</p>
+                        )}
+                        {selectedProducerProducts.map(({ product, index }) => (
+                          <article key={`${product.id}-${index}`} className="rounded border-2 border-[#1a1a1a] bg-[#fdfcf9] p-4">
+                            <div className="grid gap-3 md:grid-cols-7">
+                              <input
+                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
+                                value={product.id}
+                                onChange={(e) => updateProduct(index, "id", e.target.value)}
+                                placeholder="id"
+                              />
+                              <input
+                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
+                                value={product.name}
+                                onChange={(e) => updateProduct(index, "name", e.target.value)}
+                                placeholder="nom"
+                              />
+                              <select
+                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                                value={product.category}
+                                onChange={(e) =>
+                                  updateProduct(index, "category", e.target.value as ProductCategory)
+                                }
+                              >
+                                {productCategoryOptions.map((category) => (
+                                  <option key={category} value={category}>
+                                    {categoryLabels[category]}
+                                  </option>
+                                ))}
+                              </select>
+                              <input
+                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                                value={product.price}
+                                type="number"
+                                step="0.01"
+                                onChange={(e) => updateProduct(index, "price", Number(e.target.value) || 0)}
+                                placeholder="prix"
+                              />
+                              <select
+                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                                value={product.vatRate ?? 20}
+                                onChange={(e) =>
+                                  updateProduct(index, "vatRate", Number(e.target.value) as VatRate)
+                                }
+                              >
+                                {VAT_RATE_OPTIONS.map((rate) => (
+                                  <option key={rate} value={rate}>
+                                    TVA {rate}%
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                            <div className="mt-3 grid gap-3 md:grid-cols-2">
+                              <ProductImageUpload
+                                images={product.images ?? [product.image]}
+                                onChange={(nextImagePaths) => updateProductImages(index, nextImagePaths)}
+                              />
+                              <ProductAnalysisUpload
+                                value={product.analysisPdf}
+                                onChange={(nextAnalysisPath) =>
+                                  updateProductAnalysis(index, nextAnalysisPath)
+                                }
+                              />
+                            </div>
+                            <div className="mt-3">
+                              <input
+                                className="h-10 w-full border-2 border-[#1a1a1a] px-2 text-sm"
+                                value={product.badge ?? ""}
+                                onChange={(e) => updateProduct(index, "badge", e.target.value)}
+                                placeholder="badge"
+                              />
+                            </div>
+                            <div className="mt-3 grid gap-3 md:grid-cols-[auto,1fr] md:items-center">
+                              <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+                                <input
+                                  type="checkbox"
+                                  checked={product.trackStock === true}
+                                  onChange={(event) => {
+                                    const enabled = event.target.checked;
+                                    updateProduct(index, "trackStock", enabled);
+                                    if (!enabled) {
+                                      updateProduct(index, "stockQuantity", undefined);
+                                    } else if (!Number.isFinite(Number(product.stockQuantity))) {
+                                      updateProduct(index, "stockQuantity", 0);
+                                    }
+                                  }}
+                                />
+                                Suivre stock
+                              </label>
+                              <input
+                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm disabled:opacity-50"
+                                value={product.trackStock ? (product.stockQuantity ?? 0) : ""}
+                                type="number"
+                                min={0}
+                                step={1}
+                                disabled={product.trackStock !== true}
+                                onChange={(event) =>
+                                  updateProduct(
+                                    index,
+                                    "stockQuantity",
+                                    Math.max(0, Math.floor(Number(event.target.value) || 0)),
+                                  )
+                                }
+                                placeholder="Quantite stock"
+                              />
+                            </div>
+                            <textarea
+                              className="mt-3 min-h-20 w-full border-2 border-[#1a1a1a] p-2 text-sm"
+                              value={product.description}
+                              onChange={(e) => updateProduct(index, "description", e.target.value)}
+                              placeholder="description"
+                            />
+                            <div className="mt-3 flex justify-end">
+                              <button
+                                type="button"
+                                onClick={() => removeProduct(index)}
+                                className="btn-cartoon btn-primary"
+                              >
+                                Supprimer
+                              </button>
+                            </div>
+                          </article>
+                        ))}
+                      </div>
+                    </article>
+                  </>
+                )}
+              </div>
             </div>
           </div>
+        )}
+
+        {selectedOrder && (
+          <AdminOrderDetailModal
+            order={selectedOrder}
+            onClose={() => setSelectedOrderId(null)}
+          />
         )}
       </div>
     </section>

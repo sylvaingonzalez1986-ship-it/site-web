@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import type { MouseEvent } from "react";
+import { isRemoteImageUrl } from "@/lib/image-source";
 import type { Producer } from "@/types/store";
 
 type ProducerBadgeProps = {
@@ -36,7 +37,14 @@ export function ProducerBadge({
       aria-controls={controlsId}
     >
       <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-white">
-        <Image src={producer.image} alt={producer.name} fill sizes="40px" className="object-cover" />
+        <Image
+          src={producer.image}
+          alt={producer.name}
+          fill
+          sizes="40px"
+          unoptimized={isRemoteImageUrl(producer.image)}
+          className="object-cover"
+        />
       </span>
       <span className="truncate text-sm font-bold text-ink">{producer.name}</span>
     </button>

@@ -1,6 +1,8 @@
 import { Buffer } from "node:buffer";
 import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
+import { issueInvoiceForOrder } from "@/lib/invoice-store";
+import { mintLotteryTicketsForOrderByBackend } from "@/lib/lottery-backend";
 import { updateOrderPaymentByVivaOrderCodeByBackend } from "@/lib/order-backend";
 import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
 
@@ -212,6 +214,18 @@ export async function POST(request: Request) {
       { ok: true, ignored: true, reason: "order_not_found" },
       { status: 200 },
     );
+  }
+
+  if (updated.paymentState === "paid") {
+    await issueInvoiceForOrder(updated.id);
+
+    if (updated.customerId) {
+      await mintLotteryTicketsForOrderByBackend({
+        userId: updated.customerId,
+        orderId: updated.id,
+        orderAmount: updated.totalAmount,
+      });
+    }
   }
 
   return NextResponse.json({

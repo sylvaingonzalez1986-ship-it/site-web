@@ -1,18 +1,40 @@
 ﻿"use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { CustomSection } from "@/components/CustomSection";
 import { ProductCard } from "@/components/ProductCard";
 import { ProducerBar } from "@/components/boutique/ProducerBar";
 import { ProductQuickViewCarousel } from "@/components/boutique/ProductQuickViewCarousel";
-import { type Product, type ProductCategory } from "@/data/products";
+import { categoryLabels, type Product, type ProductCategory } from "@/data/products";
 import { useCmsStore } from "@/hooks/useCmsStore";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import type { BoutiqueSection } from "@/types/store";
 
 type Filter = "all" | "promos" | ProductCategory;
-type ShowcaseMode = "products" | "copains";
+type ShowcaseMode = "products" | "neighbors" | "copains";
+
+function isPrintfulProduct(product: Product): boolean {
+  return product.id.startsWith("printful-p-") || product.id.startsWith("printful-v-");
+}
+
+function normalizeGeoLabel(value: string | undefined): string {
+  return (value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function matchesDepartmentCode(label: string, code: string): boolean {
+  return (
+    label === code ||
+    label.startsWith(`${code} `) ||
+    label.startsWith(`${code}-`) ||
+    label.includes(`(${code})`) ||
+    label.endsWith(` ${code}`)
+  );
+}
 
 function getProductDedupKey(product: Product): string {
   return [
@@ -22,6 +44,21 @@ function getProductDedupKey(product: Product): string {
     product.producerId ?? "",
     product.isPack ? "pack" : "single",
   ].join("|");
+}
+
+function mergeUniqueProductsById(products: Product[]): Product[] {
+  const seen = new Set<string>();
+  const merged: Product[] = [];
+
+  for (const product of products) {
+    if (seen.has(product.id)) {
+      continue;
+    }
+    seen.add(product.id);
+    merged.push(product);
+  }
+
+  return merged;
 }
 
 export default function BoutiquePage() {
@@ -49,39 +86,134 @@ export default function BoutiquePage() {
   }, [store.products]);
 
   const ownProducts = useMemo(
-    () => uniqueProducts.filter((product) => !product.producerId),
-    [uniqueProducts],
-  );
-
-  const promoProducts = useMemo(
-    () => uniqueProducts.filter((product) => hasActiveProductPromo(product)),
-    [uniqueProducts],
-  );
-
-  const filteredOwnProducts = useMemo(
     () =>
-      filter === "all"
-        ? ownProducts
-        : filter === "promos"
-          ? ownProducts.filter((item) => hasActiveProductPromo(item))
-        : ownProducts.filter((item) => item.category === filter),
-    [filter, ownProducts],
+      uniqueProducts.filter(
+        (product) => !product.producerId && !isPrintfulProduct(product),
+      ),
+    [uniqueProducts],
   );
 
   const partnerProducts = useMemo(
-    () => uniqueProducts.filter((product) => product.producerId),
+    () =>
+      uniqueProducts.filter(
+        (product) => product.producerId && !isPrintfulProduct(product),
+      ),
     [uniqueProducts],
   );
 
-  const filteredPartnerProducts = useMemo(
+  const neighborProducerIds = useMemo(() => {
+    const ids = new Set<string>();
+
+    for (const producer of store.producers) {
+      const region = normalizeGeoLabel(producer.region);
+      const department = normalizeGeoLabel(producer.department);
+      const isBretagne = region.includes("bretagne");
+      const isLoireAtlantique =
+        department.includes("loire-atlantique") ||
+        department.includes("loire atlantique") ||
+        matchesDepartmentCode(department, "44");
+      const isMayenne =
+        department.includes("mayenne") || matchesDepartmentCode(department, "53");
+
+      if (isBretagne || isLoireAtlantique || isMayenne) {
+        ids.add(producer.id);
+      }
+    }
+
+    return ids;
+  }, [store.producers]);
+
+  const voisinProducts = useMemo(
     () =>
-      filter === "all"
-        ? partnerProducts
-        : filter === "promos"
-          ? partnerProducts.filter((item) => hasActiveProductPromo(item))
-          : partnerProducts.filter((item) => item.category === filter),
-    [filter, partnerProducts],
+      partnerProducts.filter(
+        (product) => product.producerId && neighborProducerIds.has(product.producerId),
+      ),
+    [neighborProducerIds, partnerProducts],
   );
+
+  const copainsProducts = useMemo(
+    () =>
+      partnerProducts.filter(
+        (product) => product.producerId && !neighborProducerIds.has(product.producerId),
+      ),
+    [neighborProducerIds, partnerProducts],
+  );
+
+  const globalAccessoriesProducts = useMemo(
+    () => uniqueProducts.filter((product) => product.category === "accessoires"),
+    [uniqueProducts],
+  );
+  const modeProducts = useMemo(() => {
+    if (showcaseMode === "neighbors") {
+      return voisinProducts;
+    }
+
+    if (showcaseMode === "copains") {
+      return copainsProducts;
+    }
+
+    return ownProducts;
+  }, [copainsProducts, ownProducts, showcaseMode, voisinProducts]);
+
+  const availableFilters = useMemo(() => {
+    const categoryOrder = Object.keys(categoryLabels) as ProductCategory[];
+    const visibleCategorySet = new Set<ProductCategory>();
+
+    for (const product of modeProducts) {
+      if (product.category === "accessoires") {
+        continue;
+      }
+      visibleCategorySet.add(product.category);
+    }
+
+    const filters: Filter[] = ["all"];
+    const hasPromos = mergeUniqueProductsById([...modeProducts, ...globalAccessoriesProducts]).some((product) =>
+      hasActiveProductPromo(product),
+    );
+    if (hasPromos) {
+      filters.push("promos");
+    }
+
+    for (const category of categoryOrder) {
+      if (category === "accessoires") {
+        continue;
+      }
+      if (visibleCategorySet.has(category)) {
+        filters.push(category);
+      }
+    }
+
+    if (globalAccessoriesProducts.length > 0) {
+      filters.push("accessoires");
+    }
+
+    return filters;
+  }, [globalAccessoriesProducts, modeProducts]);
+
+  useEffect(() => {
+    if (!availableFilters.includes(filter)) {
+      setFilter("all");
+    }
+  }, [availableFilters, filter]);
+
+  const displayedProducts = useMemo(() => {
+    // Accessoires stays shared across the 3 top tabs by product decision.
+    if (filter === "accessoires") {
+      return globalAccessoriesProducts;
+    }
+
+    if (filter === "promos") {
+      return mergeUniqueProductsById([...modeProducts, ...globalAccessoriesProducts]).filter((product) =>
+        hasActiveProductPromo(product),
+      );
+    }
+
+    if (filter === "all") {
+      return modeProducts;
+    }
+
+    return modeProducts.filter((item) => item.category === filter);
+  }, [filter, globalAccessoriesProducts, modeProducts]);
 
   const producersById = useMemo(
     () => new Map(store.producers.map((producer) => [producer.id, producer])),
@@ -131,38 +263,62 @@ export default function BoutiquePage() {
                   <button
                     type="button"
                     className={`flex-1 border-l-2 border-[#1a1a1a] px-4 py-3 text-sm font-bold uppercase tracking-[0.1em] transition-colors ${
+                      showcaseMode === "neighbors"
+                        ? "bg-[#0a7b61] text-white"
+                        : "text-ink hover:bg-[#f2ede2]"
+                    } ${voisinProducts.length === 0 ? "cursor-not-allowed opacity-50" : ""}`}
+                    onClick={() => {
+                      if (voisinProducts.length > 0) {
+                        setShowcaseMode("neighbors");
+                      }
+                    }}
+                    disabled={voisinProducts.length === 0}
+                  >
+                    Mes voisins
+                  </button>
+                  <button
+                    type="button"
+                    className={`flex-1 border-l-2 border-[#1a1a1a] px-4 py-3 text-sm font-bold uppercase tracking-[0.1em] transition-colors ${
                       showcaseMode === "copains"
                         ? "bg-[#0a7b61] text-white"
                         : "text-ink hover:bg-[#f2ede2]"
-                    } ${partnerProducts.length === 0 ? "cursor-not-allowed opacity-50" : ""}`}
+                    } ${copainsProducts.length === 0 ? "cursor-not-allowed opacity-50" : ""}`}
                     onClick={() => {
-                      if (partnerProducts.length > 0) {
+                      if (copainsProducts.length > 0) {
                         setShowcaseMode("copains");
                       }
                     }}
-                    disabled={partnerProducts.length === 0}
+                    disabled={copainsProducts.length === 0}
                   >
-                    Le coin des copains
+                    Les copains de France et de Navarre
                   </button>
                 </div>
               </div>
-              <CategoryFilter selected={filter} onChange={setFilter} />
+              <CategoryFilter selected={filter} filters={availableFilters} onChange={setFilter} />
             </div>
           </div>
         );
       case "products": {
-        const displayedProducts = showcaseMode === "products"
-          ? filter === "promos"
-            ? promoProducts
-            : filteredOwnProducts
-          : filteredPartnerProducts;
+        const isNeighborsMode = showcaseMode === "neighbors";
         const isCopainsMode = showcaseMode === "copains";
+        const isPartnerMode = isNeighborsMode || isCopainsMode;
+        const hasProducerProducts = displayedProducts.some((product) => Boolean(product.producerId));
 
         return (
           <div key={section.id} className={spacingClass}>
+            {isNeighborsMode && (
+              <div className="cartoon-border mb-6 bg-[#d7f0e8] p-8">
+                <h2 className="font-display text-4xl text-ink">Mes voisins</h2>
+                <p className="mt-3 max-w-3xl text-charcoal">
+                  Producteurs de Bretagne, de Loire-Atlantique (44) et de Mayenne (53).
+                </p>
+              </div>
+            )}
             {isCopainsMode && (
               <div className="cartoon-border mb-6 bg-yellow p-8">
-                <h2 className="font-display text-4xl text-ink">{boutique.copainsSectionTitle}</h2>
+                <h2 className="font-display text-4xl text-ink">
+                  Les copains de France et de Navarre
+                </h2>
                 <p className="mt-3 max-w-3xl text-charcoal">{boutique.copainsSectionDescription}</p>
               </div>
             )}
@@ -176,7 +332,7 @@ export default function BoutiquePage() {
               </div>
             )}
 
-            {isCopainsMode ? (
+            {isPartnerMode && hasProducerProducts ? (
               <ProducerBar
                 producers={store.producers}
                 products={displayedProducts}
@@ -203,7 +359,9 @@ export default function BoutiquePage() {
               <div className="cartoon-border mt-6 bg-cream p-6 text-center text-charcoal">
                 {filter === "promos"
                   ? "Aucune promotion en cours."
-                  : isCopainsMode
+                  : isNeighborsMode
+                    ? "Aucun produit voisin pour ce filtre."
+                    : isCopainsMode
                     ? "Aucun produit partenaire pour ce filtre."
                     : boutique.emptyMessage}
               </div>

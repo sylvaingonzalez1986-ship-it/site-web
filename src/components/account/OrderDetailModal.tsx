@@ -72,9 +72,12 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
 
   const canDownloadInvoice = isInvoiceEligibleOrder(order);
   const subTotal = Number(order.items.reduce((sum, item) => sum + item.lineTotal, 0).toFixed(2));
+  const deliveryFee = Number.isFinite(order.deliveryFee)
+    ? Number((order.deliveryFee ?? 0).toFixed(2))
+    : 0;
   const discountAmount = Number.isFinite(order.discountAmount)
     ? Number((order.discountAmount ?? 0).toFixed(2))
-    : Math.max(Number((subTotal - order.totalAmount).toFixed(2)), 0);
+    : Math.max(Number((subTotal - Math.max(order.totalAmount - deliveryFee, 0)).toFixed(2)), 0);
   const hasShippingInfo = Boolean(
     order.shippingAddress ||
       order.shippingCity ||
@@ -243,6 +246,10 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
                 <span>-{formatPrice(discountAmount)}</span>
               </div>
             )}
+            <div className="mt-1 flex items-center justify-between">
+              <span>Livraison</span>
+              <span>{deliveryFee > 0 ? formatPrice(deliveryFee) : "Offerte"}</span>
+            </div>
             <div className="mt-2 flex items-center justify-between text-base font-bold text-ink">
               <span>Total</span>
               <span>{formatPrice(order.totalAmount)}</span>

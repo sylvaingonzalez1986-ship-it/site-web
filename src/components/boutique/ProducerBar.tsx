@@ -14,6 +14,7 @@ type ProducerBarProps = {
   addButtonLabel: string;
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
+  onOpenQuickView?: (productId: string, sourceProducts: Product[]) => void;
 };
 
 type HoverPosition = {
@@ -48,6 +49,7 @@ export function ProducerBar({
   addButtonLabel,
   producerPartnerLabel,
   producerWebsiteLabel,
+  onOpenQuickView,
 }: ProducerBarProps) {
   const [selectedProducerId, setSelectedProducerId] = useState<string | null>(null);
   const [hoveredProducerId, setHoveredProducerId] = useState<string | null>(null);
@@ -208,6 +210,7 @@ export function ProducerBar({
           addButtonLabel={addButtonLabel}
           producerPartnerLabel={producerPartnerLabel}
           producerWebsiteLabel={producerWebsiteLabel}
+          onOpenQuickView={onOpenQuickView}
           onClose={() => setSelectedProducerId(null)}
         />
       ) : (
@@ -220,6 +223,11 @@ export function ProducerBar({
                 product.producerId ? producerById.get(product.producerId) : undefined
               }
               addButtonLabel={addButtonLabel}
+              onOpenQuickView={
+                onOpenQuickView
+                  ? () => onOpenQuickView(product.id, products)
+                  : undefined
+              }
             />
           ))}
         </div>

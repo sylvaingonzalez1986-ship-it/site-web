@@ -4,9 +4,11 @@ import { getSiteUrl } from "@/lib/site-url";
 
 const categories = [
   "fleurs-cbd",
+  "resines-cbd",
   "huiles-cbd",
+  "e-liquide-cbd",
   "cosmetiques-cbd",
-  "alimentaire-cbd",
+  "tisane-cbd",
   "accessoires-cbd",
 ];
 

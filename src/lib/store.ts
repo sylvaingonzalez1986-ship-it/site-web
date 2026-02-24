@@ -199,8 +199,14 @@ function normalizeProduct(
   validProducerIds: Set<string>,
 ): Product {
   const id = product.id?.trim() || `product-${index + 1}`;
-  const safeCategory = validCategories.has(product.category)
-    ? product.category
+  const rawCategory = typeof product.category === "string" ? product.category.trim() : "";
+  const categoryAliasMap: Record<string, Product["category"]> = {
+    "e-liquides": "e-liquide",
+    tisane: "alimentaire",
+  };
+  const aliasedCategory = categoryAliasMap[rawCategory] ?? rawCategory;
+  const safeCategory = validCategories.has(aliasedCategory)
+    ? (aliasedCategory as Product["category"])
     : "fleurs";
   const normalizedImages = normalizeProductImages(product);
   const safePrice = Number.isFinite(product.price)
@@ -336,6 +342,16 @@ function normalizeOrder(order: CmsOrder, index: number): CmsOrder {
     shippingPostalCode: order.shippingPostalCode?.trim() || undefined,
     shippingCountry: order.shippingCountry?.trim() || undefined,
     shippingPhone: order.shippingPhone?.trim() || undefined,
+    deliveryMethod: order.deliveryMethod === "relay" ? "relay" : "home",
+    deliveryFee: Number.isFinite(order.deliveryFee)
+      ? Number((order.deliveryFee ?? 0).toFixed(2))
+      : undefined,
+    relayId: order.relayId?.trim() || undefined,
+    relayName: order.relayName?.trim() || undefined,
+    relayAddress: order.relayAddress?.trim() || undefined,
+    relayPostalCode: order.relayPostalCode?.trim() || undefined,
+    relayCity: order.relayCity?.trim() || undefined,
+    relayCountry: order.relayCountry?.trim() || undefined,
     promoCode: order.promoCode?.trim().toUpperCase() || undefined,
     discountPercent,
     discountAmount,
@@ -733,6 +749,14 @@ export async function appendOrder(input: {
     postalCode: string;
     country: string;
     phone: string;
+    deliveryMethod?: "home" | "relay";
+    deliveryFee?: number;
+    relayId?: string;
+    relayName?: string;
+    relayAddress?: string;
+    relayPostalCode?: string;
+    relayCity?: string;
+    relayCountry?: string;
   };
   promo?: {
     code: string;
@@ -786,6 +810,16 @@ export async function appendOrder(input: {
       shippingPostalCode: input.shipping?.postalCode,
       shippingCountry: input.shipping?.country,
       shippingPhone: input.shipping?.phone,
+      deliveryMethod: input.shipping?.deliveryMethod,
+      deliveryFee: Number.isFinite(input.shipping?.deliveryFee)
+        ? Number((input.shipping?.deliveryFee ?? 0).toFixed(2))
+        : undefined,
+      relayId: input.shipping?.relayId,
+      relayName: input.shipping?.relayName,
+      relayAddress: input.shipping?.relayAddress,
+      relayPostalCode: input.shipping?.relayPostalCode,
+      relayCity: input.shipping?.relayCity,
+      relayCountry: input.shipping?.relayCountry,
       promoCode: input.promo?.code,
       discountPercent: input.promo?.discountPercent,
       discountAmount: input.promo?.discountAmount,

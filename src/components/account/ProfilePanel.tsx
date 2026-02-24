@@ -11,6 +11,7 @@ import { useCustomerSession } from "@/hooks/useCustomerSession";
 import {
   getBadgeBenefitsText,
   getBadgeDiscountPercent,
+  isBadgeEligibleForFreeShipping,
   parseBadgeBenefitsLines,
 } from "@/lib/loyalty-tier-benefits";
 import { formatPrice } from "@/lib/utils";
@@ -347,6 +348,14 @@ export function ProfilePanel() {
                   <div>
                     <h2 className="font-display text-3xl text-ink">{loyalty.currentBadge.label}</h2>
                     <p className="text-sm text-charcoal">{loyalty.currentBadge.description}</p>
+                    <p className="mt-1 text-xs font-semibold text-ink">
+                      {isBadgeEligibleForFreeShipping(
+                        loyalty.currentBadge.id,
+                        loyalty.currentBadge.unlocked,
+                      )
+                        ? "Livraison offerte active (badge Argent+)"
+                        : "Livraison offerte a partir du badge Argent"}
+                    </p>
                     {!loyalty.currentBadge.unlocked && (
                       <p className="mt-1 text-xs font-semibold text-charcoal">A debloquer</p>
                     )}
@@ -369,6 +378,29 @@ export function ProfilePanel() {
                 ) : (
                   <p className="mt-6 text-sm font-semibold text-ink">Niveau maximal atteint.</p>
                 )}
+              </div>
+
+              <div className="mt-4 card-cartoon bg-white p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.08em] text-charcoal">
+                      Tickets de grattage
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-ink">
+                      {availableTicketCount} disponible{availableTicketCount > 1 ? "s" : ""} / {tickets.length} total
+                    </p>
+                    {!lotteryConfig?.isActive && (
+                      <p className="mt-1 text-xs text-charcoal">Loterie actuellement desactivee.</p>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTabAndSync("loterie")}
+                    className="btn-cartoon btn-secondary h-10 px-3 text-xs"
+                  >
+                    Ouvrir mes tickets
+                  </button>
+                </div>
               </div>
 
               <div className="mt-6">
@@ -406,6 +438,12 @@ export function ProfilePanel() {
                           </p>
                           <p className="mt-1 text-xs font-semibold text-ink">
                             Reduction permanente: {getBadgeDiscountPercent(profileContent, badge.id)}%
+                          </p>
+                          <p className="mt-1 text-xs font-semibold text-ink">
+                            Livraison offerte:{" "}
+                            {isBadgeEligibleForFreeShipping(badge.id, badge.unlocked)
+                              ? "Oui (a partir de ce palier)"
+                              : "Non"}
                           </p>
                           <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
                             {popupHint}

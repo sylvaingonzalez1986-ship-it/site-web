@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/api/", "/compte/", "/profil"],
+        disallow: ["/admin", "/api/", "/compte/", "/profil", "/age-gate"],
       },
     ],
     sitemap: "https://leschanvriersbretons.com/sitemap.xml",

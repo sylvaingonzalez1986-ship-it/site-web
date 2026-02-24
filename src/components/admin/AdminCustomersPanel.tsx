@@ -59,6 +59,8 @@ export function AdminCustomersPanel() {
   const [promoCode, setPromoCode] = useState("");
   const [promoPercent, setPromoPercent] = useState("10");
   const [addingPromo, setAddingPromo] = useState(false);
+  const [ticketGrantCount, setTicketGrantCount] = useState("1");
+  const [grantingTickets, setGrantingTickets] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -241,6 +243,38 @@ export function AdminCustomersPanel() {
     }
   };
 
+  const grantTickets = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!selectedCustomerId) {
+      return;
+    }
+
+    setGrantingTickets(true);
+    setStatus(null);
+    try {
+      const response = await fetch(
+        `/api/admin/customers/${encodeURIComponent(selectedCustomerId)}/tickets`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ticketCount: Number(ticketGrantCount) }),
+        },
+      );
+
+      if (!response.ok) {
+        const data = (await response.json()) as { error?: string };
+        setStatus(data.error ?? "Erreur attribution tickets.");
+        return;
+      }
+
+      setTicketGrantCount("1");
+      setStatus("Tickets attribues.");
+      await loadCustomerDetail(selectedCustomerId);
+    } finally {
+      setGrantingTickets(false);
+    }
+  };
+
   if (selectedCustomerId) {
     return (
       <div className="cartoon-border bg-cream p-6 md:p-8">
@@ -363,6 +397,30 @@ export function AdminCustomersPanel() {
                   </div>
                 ))}
               </div>
+            </article>
+
+            <article className="card-cartoon bg-white p-5">
+              <h3 className="font-display text-2xl text-ink">Ticket de grattage</h3>
+              <form onSubmit={grantTickets} className="mt-3 grid gap-2 md:grid-cols-[220px,auto]">
+                <input
+                  className="h-11 border-2 border-[#1a1a1a] px-3"
+                  type="number"
+                  min={1}
+                  max={200}
+                  value={ticketGrantCount}
+                  onChange={(event) => setTicketGrantCount(event.target.value)}
+                />
+                <button
+                  type="submit"
+                  className="btn-cartoon btn-secondary h-11 px-4"
+                  disabled={grantingTickets}
+                >
+                  {grantingTickets ? "..." : "Attribuer tickets"}
+                </button>
+              </form>
+              <p className="mt-3 text-xs text-charcoal">
+                Attribution manuelle de tickets promotionnels (1 a 200).
+              </p>
             </article>
 
             <article className="card-cartoon bg-white p-5">

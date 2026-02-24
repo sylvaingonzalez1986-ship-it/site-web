@@ -54,6 +54,14 @@ export type CmsOrder = {
   shippingPostalCode?: string;
   shippingCountry?: string;
   shippingPhone?: string;
+  deliveryMethod?: "home" | "relay";
+  deliveryFee?: number;
+  relayId?: string;
+  relayName?: string;
+  relayAddress?: string;
+  relayPostalCode?: string;
+  relayCity?: string;
+  relayCountry?: string;
   promoCode?: string;
   discountPercent?: number;
   discountAmount?: number;
@@ -175,6 +183,9 @@ export type SiteContent = {
     heroDescription: string;
     heroPrimaryCtaLabel: string;
     heroSecondaryCtaLabel: string;
+    seasonGalleryTitle: string;
+    seasonGalleryDescription: string;
+    seasonGalleryImages: string[];
     legalLine1: string;
     legalLine2: string;
     legalDescription: string;
@@ -242,6 +253,21 @@ export type SiteContent = {
     breadcrumbBlogLabel: string;
     postPublishedPrefix: string;
     postBackLabel: string;
+  };
+  profile: {
+    badgeBenefitsModalTitle: string;
+    badgeBenefitsModalHint: string;
+    badgeBenefitsCloseLabel: string;
+    decouverteDiscountPercent: number;
+    explorateurDiscountPercent: number;
+    connaisseurDiscountPercent: number;
+    ambassadeurDiscountPercent: number;
+    legendeDiscountPercent: number;
+    decouverteBenefits: string;
+    explorateurBenefits: string;
+    connaisseurBenefits: string;
+    ambassadeurBenefits: string;
+    legendeBenefits: string;
   };
   footer: {
     copyright: string;

@@ -1,4 +1,10 @@
 import { NextResponse } from "next/server";
+import {
+  ADMIN_COOKIE_NAME,
+  createAdminSessionToken,
+  getAdminCookieOptions,
+} from "@/lib/admin-auth";
+import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
 import { applyCustomerProfilePatch } from "@/lib/account-profile";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 
@@ -8,7 +14,22 @@ export async function GET() {
     return NextResponse.json({ user: null }, { status: 401 });
   }
 
-  return NextResponse.json({ user: session.customer });
+  const response = NextResponse.json({ user: session.customer });
+
+  if (isAllowedAdminEmail(session.customer.email)) {
+    try {
+      const adminSessionToken = await createAdminSessionToken();
+      response.cookies.set({
+        name: ADMIN_COOKIE_NAME,
+        value: adminSessionToken,
+        ...getAdminCookieOptions(),
+      });
+    } catch (error) {
+      console.error("Admin session bootstrap failed on account/me:", error);
+    }
+  }
+
+  return response;
 }
 
 export async function PATCH(request: Request) {

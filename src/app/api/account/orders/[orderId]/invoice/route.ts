@@ -78,6 +78,9 @@ export async function GET(
   const itemsSubTotalTtc = Number(
     order.items.reduce((sum, item) => sum + item.lineTotal, 0).toFixed(2),
   );
+  const deliveryFee = Number.isFinite(order.deliveryFee)
+    ? Number((order.deliveryFee ?? 0).toFixed(2))
+    : 0;
   const discountAmount = Number.isFinite(order.discountAmount)
     ? Number((order.discountAmount ?? 0).toFixed(2))
     : 0;
@@ -184,6 +187,10 @@ export async function GET(
     doc.text(`-${formatMoney(discountAmount)}`, xTotalHt, y);
     y += 16;
   }
+
+  doc.text("Livraison", xUnitHt - 10, y, { width: 120 });
+  doc.text(deliveryFee > 0 ? formatMoney(deliveryFee) : "Offerte", xTotalHt, y);
+  y += 16;
 
   if (INVOICE_SETTINGS.vatMode === "taxable") {
     doc.text("Total HT", xUnitHt - 10, y, { width: 120 });

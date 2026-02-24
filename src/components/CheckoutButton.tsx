@@ -17,6 +17,14 @@ type CheckoutShippingPayload = {
   city: string;
   postalCode: string;
   country: string;
+  deliveryMethod?: "home" | "relay";
+  deliveryFeeEur?: number;
+  relayId?: string;
+  relayName?: string;
+  relayAddress?: string;
+  relayPostalCode?: string;
+  relayCity?: string;
+  relayCountry?: string;
 };
 
 type CheckoutButtonProps = {
@@ -26,6 +34,7 @@ type CheckoutButtonProps = {
   items: CheckoutItemPayload[];
   shipping: CheckoutShippingPayload;
   promoCode?: string;
+  lotteryTicketId?: string;
   disabled?: boolean;
   onSuccess?: () => void;
 };
@@ -37,6 +46,7 @@ export function CheckoutButton({
   items,
   shipping,
   promoCode,
+  lotteryTicketId,
   disabled = false,
   onSuccess,
 }: CheckoutButtonProps) {
@@ -67,7 +77,16 @@ export function CheckoutButton({
           shippingCity: shipping.city,
           shippingPostalCode: shipping.postalCode,
           shippingCountry: shipping.country,
+          deliveryMethod: shipping.deliveryMethod,
+          deliveryFeeEur: shipping.deliveryFeeEur,
+          relayId: shipping.relayId,
+          relayName: shipping.relayName,
+          relayAddress: shipping.relayAddress,
+          relayPostalCode: shipping.relayPostalCode,
+          relayCity: shipping.relayCity,
+          relayCountry: shipping.relayCountry,
           promoCode: promoCode || undefined,
+          lotteryTicketId: lotteryTicketId || undefined,
         }),
       });
 

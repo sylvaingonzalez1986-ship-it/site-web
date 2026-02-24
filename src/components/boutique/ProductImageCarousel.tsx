@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
+import { isRemoteImageUrl } from "@/lib/image-source";
 
 type ProductImageCarouselProps = {
   images: string[];
@@ -158,6 +159,7 @@ export function ProductImageCarousel({
               alt={hasMultipleImages ? `${alt} - photo ${index + 1}` : alt}
               fill
               sizes={sizes}
+              unoptimized={isRemoteImageUrl(image)}
               className="object-cover transition-transform duration-300 group-hover/product-carousel:scale-105"
             />
           </div>

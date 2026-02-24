@@ -8,6 +8,8 @@ import { ProductAnalysisModal } from "@/components/boutique/ProductAnalysisModal
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
 import { useCart } from "@/context/CartContext";
 import { categoryLabels, type Product } from "@/data/products";
+import { isRemoteImageUrl } from "@/lib/image-source";
+import { isProductInStock } from "@/lib/product-stock";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { formatPrice } from "@/lib/utils";
 import type { Producer } from "@/types/store";
@@ -16,14 +18,21 @@ type ProductCardProps = {
   product: Product;
   producer?: Producer;
   addButtonLabel?: string;
+  onOpenQuickView?: () => void;
 };
 
-export function ProductCard({ product, producer, addButtonLabel = "Ajouter" }: ProductCardProps) {
+export function ProductCard({
+  product,
+  producer,
+  addButtonLabel = "Ajouter",
+  onOpenQuickView,
+}: ProductCardProps) {
   const router = useRouter();
   const { addToCart, authLoading } = useCart();
   const [analysisOpen, setAnalysisOpen] = useState(false);
   const allImages = product.images?.length ? product.images : [product.image];
   const hasPromo = hasActiveProductPromo(product);
+  const inStock = isProductInStock(product);
   const producerLocation = producer
     ? [producer.department, producer.region].filter(Boolean).join(", ") || producer.location
     : "";
@@ -63,7 +72,14 @@ export function ProductCard({ product, producer, addButtonLabel = "Ajouter" }: P
         {producer && (
           <div className="cartoon-border mt-3 flex items-center gap-2 bg-yellow px-3 py-2">
             <div className="relative h-8 w-8 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-white">
-              <Image src={producer.image} alt={producer.name} fill sizes="32px" className="object-cover" />
+              <Image
+                src={producer.image}
+                alt={producer.name}
+                fill
+                sizes="32px"
+                unoptimized={isRemoteImageUrl(producer.image)}
+                className="object-cover"
+              />
             </div>
             <div className="min-w-0">
               <p className="truncate text-xs font-bold text-ink">{producer.name}</p>
@@ -73,6 +89,11 @@ export function ProductCard({ product, producer, addButtonLabel = "Ajouter" }: P
         )}
         <div className="mt-2 flex items-center gap-2">
           <h3 className="font-display text-2xl text-ink">{product.name}</h3>
+          {!inStock && (
+            <span className="pill-cartoon border-[#7f1d1d] bg-[#f8d7da] px-2 py-1 text-[10px] uppercase tracking-[0.1em] text-[#7f1d1d]">
+              Rupture
+            </span>
+          )}
           {product.isPack && (
             <span className="pill-cartoon px-2 py-1 text-[10px] uppercase tracking-[0.1em]">
               Pack
@@ -105,14 +126,25 @@ export function ProductCard({ product, producer, addButtonLabel = "Ajouter" }: P
               <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
             </div>
           )}
-          <button
-            type="button"
-            onClick={handleAddToCart}
-            disabled={authLoading}
-            className="btn-cartoon btn-primary inline-flex min-h-[44px] items-center gap-2 px-4 py-3 text-xs disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <Plus size={15} /> {addButtonLabel}
-          </button>
+          <div className="flex items-center gap-2">
+            {onOpenQuickView && (
+              <button
+                type="button"
+                onClick={onOpenQuickView}
+                className="btn-cartoon btn-secondary inline-flex min-h-[44px] items-center px-4 py-3 text-xs"
+              >
+                Voir
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              disabled={authLoading || !inStock}
+              className="btn-cartoon btn-primary inline-flex min-h-[44px] items-center gap-2 px-4 py-3 text-xs disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Plus size={15} /> {inStock ? addButtonLabel : "Rupture"}
+            </button>
+          </div>
         </div>
       </div>
 

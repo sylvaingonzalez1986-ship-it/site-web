@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 const BASE_URL = "https://leschanvriersbretons.com";
@@ -8,33 +8,51 @@ const categoryMeta: Record<
   { title: string; description: string; label: string }
 > = {
   "fleurs-cbd": {
-    title: "Fleurs CBD Bio Pas Cher | Résines CBD Qualité Premium",
+    title: "Fleurs CBD Bio Pas Cher | Qualite Premium",
     description:
-      "Achetez des fleurs et résines CBD bio pas cher. Qualité premium, arômes naturels, analysées en laboratoire. Livraison rapide en France. Shop CBD breton.",
-    label: "Fleurs & Résines CBD",
+      "Achetez des fleurs CBD bio pas cher. Qualite premium, aromes naturels, analyses en laboratoire. Livraison rapide en France.",
+    label: "Fleurs CBD",
+  },
+  "resines-cbd": {
+    title: "Resines CBD Bio | Qualite Premium",
+    description:
+      "Achetez des resines CBD bio pas cher. Texture et aromes maitrises, analyses en laboratoire. Livraison rapide en France.",
+    label: "Resines CBD",
   },
   "huiles-cbd": {
-    title: "Huiles CBD Bio | Full Spectrum & Broad Spectrum Pas Cher",
+    title: "Huiles CBD Bio | Full Spectrum et Broad Spectrum",
     description:
-      "Huiles CBD bio full spectrum et broad spectrum à petit prix. 10%, 20%, menthe ou nature. Shop CBD breton, livraison France.",
+      "Huiles CBD bio full spectrum et broad spectrum a petit prix. Shop CBD breton, livraison France.",
     label: "Huiles CBD",
   },
-  "cosmetiques-cbd": {
-    title: "Cosmétiques CBD Bio | Baumes, Crèmes & Soins au Chanvre",
+  "e-liquide-cbd": {
+    title: "E-liquides CBD | Vape CBD",
     description:
-      "Cosmétiques CBD bio : baumes réparateurs, crèmes hydratantes et huiles de massage au chanvre. Soins naturels pas cher.",
-    label: "Cosmétiques CBD",
+      "E-liquides CBD au profil aromatique maitrise et dosage transparent. Livraison rapide en France.",
+    label: "E-liquides CBD",
+  },
+  "cosmetiques-cbd": {
+    title: "Cosmetiques CBD Bio | Baumes, Cremes et Soins au Chanvre",
+    description:
+      "Cosmetiques CBD bio : baumes reparateurs, cremes hydratantes et huiles de massage au chanvre.",
+    label: "Cosmetiques CBD",
+  },
+  "tisane-cbd": {
+    title: "Tisane CBD Bio | Infusions au Chanvre",
+    description:
+      "Tisanes et infusions CBD bio au chanvre. Relaxation et plaisir au quotidien.",
+    label: "Tisane CBD",
   },
   "alimentaire-cbd": {
-    title: "Alimentaire CBD Bio | Infusions, Gummies & Miel au Chanvre",
+    title: "Tisane CBD Bio | Infusions au Chanvre",
     description:
-      "Produits alimentaires CBD bio : infusions relaxantes, gummies fruités et miel au chanvre. Gourmand et pas cher.",
-    label: "Alimentaire CBD",
+      "Tisanes et infusions CBD bio au chanvre. Relaxation et plaisir au quotidien.",
+    label: "Tisane CBD",
   },
   "accessoires-cbd": {
-    title: "Accessoires CBD | Grinders, Pochons & Kits Découverte",
+    title: "Accessoires CBD | Grinders, Pochons et Kits Decouverte",
     description:
-      "Accessoires CBD de qualité : grinders, pochons hermétiques, plateaux et kits découverte. Tout pour le CBD pas cher.",
+      "Accessoires CBD de qualite : grinders, pochons hermetiques, plateaux et kits decouverte.",
     label: "Accessoires CBD",
   },
 };
@@ -48,7 +66,7 @@ export async function generateMetadata({
   const meta = categoryMeta[category];
 
   if (!meta) {
-    return { title: "Catégorie introuvable" };
+    return { title: "Categorie introuvable" };
   }
 
   return {

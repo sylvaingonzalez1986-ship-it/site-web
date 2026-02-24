@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Menu, ShoppingCart, X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -7,13 +8,13 @@ import { CartDrawer } from "@/components/CartDrawer";
 import { useCart } from "@/context/CartContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useCustomerSession } from "@/hooks/useCustomerSession";
+import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
 
 const baseLinks = [
   { href: "/", label: "Accueil" },
   { href: "/boutique", label: "Boutique" },
   { href: "/blog", label: "Blog" },
   { href: "/application", label: "App" },
-  { href: "/admin", label: "Admin" },
 ];
 
 export function Navbar() {
@@ -25,6 +26,7 @@ export function Navbar() {
 
   const links = [
     ...baseLinks,
+    ...(isAllowedAdminEmail(user?.email) ? [{ href: "/admin", label: "Admin" }] : []),
     user
       ? { href: "/profil", label: "Profil" }
       : { href: "/compte/connexion", label: "Compte" },
@@ -63,9 +65,26 @@ export function Navbar() {
             : "bg-transparent py-6"
         }`}
       >
-        <div className="retro-container flex items-center justify-between gap-4">
-          <Link href="/" className="font-display text-xl text-ink md:text-2xl">
+        <div className="retro-container relative flex items-center justify-between gap-4">
+          <Link href="/" className="hidden font-display text-xl text-ink md:block md:text-2xl">
             Les Chanvriers Bretons
+          </Link>
+
+          <Link
+            href="/"
+            className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 md:hidden"
+            aria-label="Accueil"
+          >
+            <div className="relative h-11 w-11 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-[#f7f4ee]">
+              <Image
+                src="/hero-circle-idle.png"
+                alt="Logo Les Chanvriers Bretons"
+                fill
+                sizes="44px"
+                className="object-cover"
+                priority
+              />
+            </div>
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">

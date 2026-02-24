@@ -7,15 +7,25 @@ const supabaseHostname = process.env.NEXT_PUBLIC_SUPABASE_URL
 const nextConfig: NextConfig = {
   reactCompiler: true,
   images: {
-    remotePatterns: supabaseHostname
-      ? [
-        {
-          protocol: "https",
-          hostname: supabaseHostname,
-          pathname: "/storage/v1/object/public/**",
-        },
-      ]
-      : [],
+    remotePatterns: [
+      ...(supabaseHostname
+        ? [
+            {
+              protocol: "https" as const,
+              hostname: supabaseHostname,
+              pathname: "/storage/v1/object/public/**",
+            },
+          ]
+        : []),
+      {
+        protocol: "https",
+        hostname: "static.wixstatic.com",
+      },
+      {
+        protocol: "https",
+        hostname: "files.cdn.printful.com",
+      },
+    ],
   },
   outputFileTracingIncludes: {
     "/*": [

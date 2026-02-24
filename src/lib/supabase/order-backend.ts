@@ -58,6 +58,47 @@ function computeNextStatusFromPaymentState(
   return currentStatus === "paid" ? "pending_payment" : currentStatus;
 }
 
+type ApplyInventoryResult = {
+  applied: boolean;
+  reason?: string;
+  processed_items?: number;
+};
+
+async function applyOrderInventoryInSupabase(orderId: string): Promise<void> {
+  const safeOrderId = orderId.trim();
+  if (!safeOrderId) {
+    return;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase.rpc("rpc_apply_order_inventory", {
+    p_order_id: safeOrderId,
+  });
+
+  if (result.error) {
+    const message = result.error.message || "Echec application inventaire.";
+    if (message.includes("order_not_found")) {
+      throw new Error("Commande introuvable pour inventaire.");
+    }
+    if (message.includes("order_not_paid")) {
+      throw new Error("Commande non payee: inventaire non applique.");
+    }
+    if (message.includes("inventory_insufficient_variant")) {
+      throw new Error("Stock variante insuffisant.");
+    }
+    if (message.includes("inventory_insufficient_product")) {
+      throw new Error("Stock produit insuffisant.");
+    }
+
+    throw new Error(`[supabase:rpc_apply_order_inventory] ${message}`);
+  }
+
+  const payload = result.data as ApplyInventoryResult | null;
+  if (!payload) {
+    return;
+  }
+}
+
 export async function appendOrderToSupabase(input: AppendOrderInput): Promise<CmsOrder> {
   const supabase = createSupabaseServiceClient();
   const orderId = createOrderId();
@@ -84,6 +125,19 @@ export async function appendOrderToSupabase(input: AppendOrderInput): Promise<Cm
     shipping_postal_code: input.shipping?.postalCode?.trim() || null,
     shipping_country: input.shipping?.country?.trim() || null,
     shipping_phone: input.shipping?.phone?.trim() || null,
+    delivery_method:
+      input.shipping?.deliveryMethod === "relay" ? "relay" : "home",
+    delivery_fee:
+      Number.isFinite(Number(input.shipping?.deliveryFee)) && Number(input.shipping?.deliveryFee) >= 0
+        ? Number(Number(input.shipping?.deliveryFee).toFixed(2))
+        : 0,
+    relay_provider: input.shipping?.relayProvider?.trim() || null,
+    relay_id: input.shipping?.relayId?.trim() || null,
+    relay_name: input.shipping?.relayName?.trim() || null,
+    relay_address: input.shipping?.relayAddress?.trim() || null,
+    relay_city: input.shipping?.relayCity?.trim() || null,
+    relay_postal_code: input.shipping?.relayPostalCode?.trim() || null,
+    relay_country: input.shipping?.relayCountry?.trim() || null,
     promo_code: input.promo?.code?.trim().toUpperCase() || null,
     discount_percent: input.promo?.discountPercent ?? null,
     discount_amount: input.promo?.discountAmount ?? null,
@@ -184,6 +238,10 @@ export async function updateOrderPaymentStateInSupabase(
 
   failIfError(updateResult.error, "update order payment_state");
 
+  if (paymentState === "paid") {
+    await applyOrderInventoryInSupabase(orderId);
+  }
+
   return findOrderById(orderId);
 }
 
@@ -209,6 +267,10 @@ export async function updateOrderPaymentByVivaOrderCodeInSupabase(input: {
   if (wasUpdated !== true) {
     return null;
   }
+  const updatedOrder = await findOrderByVivaOrderCode(safeOrderCode);
+  if (updatedOrder?.paymentState === "paid") {
+    await applyOrderInventoryInSupabase(updatedOrder.id);
+  }
 
-  return findOrderByVivaOrderCode(safeOrderCode);
+  return updatedOrder;
 }

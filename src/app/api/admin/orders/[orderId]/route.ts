@@ -1,3 +1,5 @@
+import { issueInvoiceForOrder } from "@/lib/invoice-store";
+import { mintLotteryTicketsForOrderByBackend } from "@/lib/lottery-backend";
 import { NextResponse } from "next/server";
 import type { CmsOrder, OrderStatus } from "@/types/store";
 import { updateOrderPaymentStateByBackend, updateOrderStatusByBackend } from "@/lib/order-backend";
@@ -31,6 +33,17 @@ export async function PATCH(
       updated = await updateOrderPaymentStateByBackend(orderId, payload.paymentState);
       if (!updated) {
         return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
+      }
+
+      if (payload.paymentState === "paid") {
+        await issueInvoiceForOrder(updated.id);
+        if (updated.customerId) {
+          await mintLotteryTicketsForOrderByBackend({
+            userId: updated.customerId,
+            orderId: updated.id,
+            orderAmount: updated.totalAmount,
+          });
+        }
       }
     }
 
