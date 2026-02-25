@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { CustomSection } from "@/components/CustomSection";
 import { ProductCard } from "@/components/ProductCard";
@@ -196,30 +196,26 @@ export default function BoutiquePage() {
     return filters;
   }, [globalAccessoriesProducts, modeProducts]);
 
-  useEffect(() => {
-    if (!availableFilters.includes(filter)) {
-      setFilter("all");
-    }
-  }, [availableFilters, filter]);
+  const effectiveFilter: Filter = availableFilters.includes(filter) ? filter : "all";
 
   const displayedProducts = useMemo(() => {
     // Accessoires stays shared across the 3 top tabs by product decision.
-    if (filter === "accessoires") {
+    if (effectiveFilter === "accessoires") {
       return globalAccessoriesProducts;
     }
 
-    if (filter === "promos") {
+    if (effectiveFilter === "promos") {
       return mergeUniqueProductsById([...modeProducts, ...globalAccessoriesProducts]).filter((product) =>
         hasActiveProductPromo(product),
       );
     }
 
-    if (filter === "all") {
+    if (effectiveFilter === "all") {
       return modeProducts;
     }
 
-    return modeProducts.filter((item) => item.category === filter);
-  }, [filter, globalAccessoriesProducts, modeProducts]);
+    return modeProducts.filter((item) => item.category === effectiveFilter);
+  }, [effectiveFilter, globalAccessoriesProducts, modeProducts]);
 
   const producersById = useMemo(
     () => new Map(store.producers.map((producer) => [producer.id, producer])),
@@ -257,6 +253,7 @@ export default function BoutiquePage() {
                 <div className="grid w-full grid-cols-3 overflow-hidden rounded border-2 border-[#1a1a1a] bg-white">
                   <button
                     type="button"
+                    data-tutorial="tab-mes-produits"
                     className={`flex min-h-[58px] items-center justify-center px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors md:px-4 md:text-sm md:tracking-[0.1em] ${
                       showcaseMode === "products"
                         ? "bg-[#0a7b61] text-white"
@@ -268,6 +265,7 @@ export default function BoutiquePage() {
                   </button>
                   <button
                     type="button"
+                    data-tutorial="tab-mes-voisins"
                     className={`flex min-h-[58px] items-center justify-center border-l-2 border-[#1a1a1a] px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors md:px-4 md:text-sm md:tracking-[0.1em] ${
                       showcaseMode === "neighbors"
                         ? "bg-[#0a7b61] text-white"
@@ -284,6 +282,7 @@ export default function BoutiquePage() {
                   </button>
                   <button
                     type="button"
+                    data-tutorial="tab-les-copains"
                     className={`flex min-h-[58px] items-center justify-center border-l-2 border-[#1a1a1a] px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors md:px-4 md:text-sm md:tracking-[0.1em] ${
                       showcaseMode === "copains"
                         ? "bg-[#0a7b61] text-white"
@@ -301,7 +300,7 @@ export default function BoutiquePage() {
                 </div>
               </div>
               {availableFilters.length > 1 && (
-                <CategoryFilter selected={filter} filters={availableFilters} onChange={setFilter} />
+                <CategoryFilter selected={effectiveFilter} filters={availableFilters} onChange={setFilter} />
               )}
             </div>
           </div>
@@ -318,7 +317,7 @@ export default function BoutiquePage() {
               <div className="cartoon-border mb-6 bg-[#d7f0e8] p-8">
                 <h2 className="font-display text-4xl text-ink">Mes voisins</h2>
                 <p className="mt-3 max-w-3xl text-charcoal">
-                  Producteurs bretons et du 44 (parce que c'était la famille avant que Pétain foute le bordel).
+                  Producteurs bretons et du 44 (parce que c&apos;etait la famille avant que Petain foute le bordel).
                 </p>
               </div>
             )}
@@ -331,7 +330,7 @@ export default function BoutiquePage() {
               </div>
             )}
 
-            {filter === "promos" && displayedProducts.length > 0 && (
+            {effectiveFilter === "promos" && displayedProducts.length > 0 && (
               <div className="cartoon-border mb-6 bg-[#d35400] p-5 text-white">
                 <h3 className="font-display text-3xl text-white">Promotions en cours</h3>
                 <p className="mt-2 text-sm text-white/95">
@@ -365,7 +364,7 @@ export default function BoutiquePage() {
 
             {displayedProducts.length === 0 && !loading && (
               <div className="cartoon-border mt-6 bg-cream p-6 text-center text-charcoal">
-                {filter === "promos"
+                {effectiveFilter === "promos"
                   ? "Aucune promotion en cours."
                   : isNeighborsMode
                     ? "Aucun produit voisin pour ce filtre."

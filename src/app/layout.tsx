@@ -8,6 +8,7 @@ import {
   WebSiteJsonLd,
 } from "@/components/JsonLd";
 import { Navbar } from "@/components/Navbar";
+import { TutorialProvider } from "@/components/tutorial/TutorialProvider";
 import { CartProvider } from "@/context/CartContext";
 import "./globals.css";
 
@@ -120,11 +121,13 @@ export default function RootLayout({
         <LocalBusinessJsonLd />
         <WebSiteJsonLd />
         <CartProvider>
-          <div className="site-background min-h-screen">
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
-          </div>
+          <TutorialProvider>
+            <div className="site-background min-h-screen">
+              <Navbar />
+              <main>{children}</main>
+              <Footer />
+            </div>
+          </TutorialProvider>
         </CartProvider>
       </body>
     </html>

@@ -1,6 +1,8 @@
 import "server-only";
 
 import { randomUUID } from "node:crypto";
+import { assertPasswordNotLeaked } from "@/lib/password-leak-check";
+import { bindSupabaseReferralCode } from "@/lib/supabase/referral-backend";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { AdminCustomer, PromoCode, PublicCustomer } from "@/types/customer";
@@ -63,6 +65,13 @@ function sanitizePostalCode(value: unknown): string {
 function sanitizeCountry(value: unknown): string {
   const country = sanitizeText(value, 80);
   return country || DEFAULT_COUNTRY;
+}
+
+function generateReferralCodeFromUserId(userId: string): string {
+  return userId
+    .replace(/-/g, "")
+    .toUpperCase()
+    .slice(0, 10);
 }
 
 function parseDateOnly(dateValue: string): Date | null {
@@ -189,6 +198,10 @@ type ProfileRow = {
   country: string;
   notes: string;
   loyalty_points: number;
+  referral_code: string;
+  referred_by_code: string | null;
+  referral_bound_at: string | null;
+  referral_rewarded_at: string | null;
   created_at: string;
 };
 
@@ -210,6 +223,22 @@ function mapProfileToPublicCustomer(
     country: profile.country || DEFAULT_COUNTRY,
     loyaltyPoints: Number.isFinite(profile.loyalty_points) ? profile.loyalty_points : 0,
     promoCodes,
+    referralCode:
+      typeof profile.referral_code === "string" ? profile.referral_code.trim().toUpperCase() : undefined,
+    referredByCode:
+      typeof profile.referred_by_code === "string"
+        ? profile.referred_by_code.trim().toUpperCase()
+        : undefined,
+    referralBoundAt:
+      typeof profile.referral_bound_at === "string" &&
+      Number.isFinite(Date.parse(profile.referral_bound_at))
+        ? profile.referral_bound_at
+        : undefined,
+    referralRewardedAt:
+      typeof profile.referral_rewarded_at === "string" &&
+      Number.isFinite(Date.parse(profile.referral_rewarded_at))
+        ? profile.referral_rewarded_at
+        : undefined,
     createdAt:
       typeof profile.created_at === "string" && Number.isFinite(Date.parse(profile.created_at))
         ? profile.created_at
@@ -263,6 +292,7 @@ async function ensureProfileRow(input: {
     country: sanitizeCountry(input.country),
     notes: "",
     loyalty_points: 0,
+    referral_code: generateReferralCodeFromUserId(input.userId),
   };
 
   const inserted = await supabase
@@ -385,6 +415,7 @@ export async function registerSupabaseCustomer(input: {
   lastName: string;
   dateOfBirth: string;
   password: string;
+  referralCode?: string;
   phone?: string;
   address?: string;
   city?: string;
@@ -395,6 +426,8 @@ export async function registerSupabaseCustomer(input: {
   const firstName = sanitizeText(input.firstName, 80);
   const lastName = sanitizeText(input.lastName, 80);
   const dateOfBirth = normalizeDateOfBirth(input.dateOfBirth);
+  const referralCode =
+    typeof input.referralCode === "string" ? input.referralCode.trim() : "";
 
   if (!email || !firstName || !lastName || input.password.length < 8 || !dateOfBirth) {
     throw new Error("Informations invalides.");
@@ -402,6 +435,8 @@ export async function registerSupabaseCustomer(input: {
   if (!isAtLeast18(dateOfBirth)) {
     throw new Error("Inscription reservee aux personnes majeures (18+).");
   }
+
+  await assertPasswordNotLeaked(input.password);
 
   const supabaseService = createSupabaseServiceClient();
   const createUserResult = await supabaseService.auth.admin.createUser({
@@ -423,17 +458,31 @@ export async function registerSupabaseCustomer(input: {
   }
 
   const userId = createUserResult.data.user.id;
-  const profile = await ensureProfileRow({
-    userId,
-    firstName,
-    lastName,
-    dateOfBirth,
-    phone: input.phone,
-    address: input.address,
-    city: input.city,
-    postalCode: input.postalCode,
-    country: input.country,
-  });
+  let profile: ProfileRow;
+  try {
+    profile = await ensureProfileRow({
+      userId,
+      firstName,
+      lastName,
+      dateOfBirth,
+      phone: input.phone,
+      address: input.address,
+      city: input.city,
+      postalCode: input.postalCode,
+      country: input.country,
+    });
+
+    if (referralCode) {
+      await bindSupabaseReferralCode({
+        refereeId: userId,
+        referralCode,
+      });
+      profile = (await ensureProfileRow({ userId })) as ProfileRow;
+    }
+  } catch (error) {
+    await supabaseService.auth.admin.deleteUser(userId);
+    throw error;
+  }
 
   const supabaseServer = await createSupabaseServerClient();
   const signInResult = await supabaseServer.auth.signInWithPassword({

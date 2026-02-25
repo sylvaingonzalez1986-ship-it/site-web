@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 
 type AccountRegisterFormProps = {
   nextUrl: string;
+  initialReferralCode?: string;
 };
 
-export function AccountRegisterForm({ nextUrl }: AccountRegisterFormProps) {
+export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: AccountRegisterFormProps) {
   const router = useRouter();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -19,6 +20,7 @@ export function AccountRegisterForm({ nextUrl }: AccountRegisterFormProps) {
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("France");
+  const [referralCode, setReferralCode] = useState(initialReferralCode);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -68,6 +70,7 @@ export function AccountRegisterForm({ nextUrl }: AccountRegisterFormProps) {
           city,
           postalCode,
           country,
+          referralCode,
         }),
       });
 
@@ -164,6 +167,14 @@ export function AccountRegisterForm({ nextUrl }: AccountRegisterFormProps) {
           placeholder="Pays"
         />
       </div>
+      <input
+        type="text"
+        className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base uppercase"
+        value={referralCode}
+        onChange={(event) => setReferralCode(event.target.value.toUpperCase())}
+        placeholder="Code parrain (optionnel)"
+        data-tutorial="referral-code-input"
+      />
       <button type="submit" disabled={loading} className="btn-cartoon btn-primary h-12">
         {loading ? "Creation..." : "Creer mon compte"}
       </button>

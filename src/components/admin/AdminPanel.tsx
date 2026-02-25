@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import { defaultStore } from "@/data/default-store";
 import { AdminTextCarousel } from "@/components/admin/AdminTextCarousel";
 import { AdminSeasonGalleryManager } from "@/components/admin/AdminSeasonGalleryManager";
+import { AdminPagesPanel } from "@/components/admin/AdminPagesPanel";
 import { AdminCustomersPanel } from "@/components/admin/AdminCustomersPanel";
+import { AdminReferralsPanel } from "@/components/admin/AdminReferralsPanel";
 import { AdminPromosPanel } from "@/components/admin/AdminPromosPanel";
 import { AdminLotteryPanel } from "@/components/admin/AdminLotteryPanel";
 import { AdminNewsletterPanel } from "@/components/admin/AdminNewsletterPanel";
@@ -46,6 +48,7 @@ const orderStatusLabels: Record<OrderStatus, string> = {
 type AdminTab =
   | "commandes"
   | "clients"
+  | "parrainage"
   | "promos"
   | "loterie"
   | "newsletter"
@@ -53,11 +56,13 @@ type AdminTab =
   | "produits"
   | "copains"
   | "blog"
+  | "pages"
   | "textes";
 
 const adminTabs: AdminTab[] = [
   "commandes",
   "clients",
+  "parrainage",
   "promos",
   "loterie",
   "newsletter",
@@ -65,12 +70,14 @@ const adminTabs: AdminTab[] = [
   "produits",
   "copains",
   "blog",
+  "pages",
   "textes",
 ];
 
 const tabLabels: Record<AdminTab, string> = {
   commandes: "Commandes",
   clients: "Clients",
+  parrainage: "Parrainage",
   promos: "Promos",
   loterie: "Loterie",
   newsletter: "Newsletter",
@@ -78,6 +85,7 @@ const tabLabels: Record<AdminTab, string> = {
   produits: "Mes Produits",
   copains: "Coin des Copains",
   blog: "Blog",
+  pages: "Pages",
   textes: "Textes",
 };
 
@@ -110,6 +118,16 @@ function makeProducer(): Producer {
     department: "",
     region: "",
     website: "",
+  };
+}
+
+function makeVariantOption(nextIndex: number): NonNullable<Product["variantOptions"]>[number] {
+  return {
+    id: `variant-${Date.now()}-${Math.floor(Math.random() * 9000 + 1000)}`,
+    label: `Format ${nextIndex}`,
+    price: 0,
+    enabled: true,
+    inStock: true,
   };
 }
 
@@ -514,6 +532,191 @@ export function AdminPanel() {
     });
   };
 
+  const addVariantOptionToProduct = (productIndex: number) => {
+    setDraft((current) => {
+      const nextProducts = [...current.products];
+      const product = nextProducts[productIndex];
+      if (!product) {
+        return current;
+      }
+
+      const nextVariantOptions = Array.isArray(product.variantOptions)
+        ? [...product.variantOptions]
+        : [];
+      nextVariantOptions.push(makeVariantOption(nextVariantOptions.length + 1));
+
+      nextProducts[productIndex] = {
+        ...product,
+        variantLabel: product.variantLabel?.trim() || "Format",
+        variantOptions: nextVariantOptions,
+      };
+
+      return { ...current, products: nextProducts };
+    });
+  };
+
+  const removeVariantOptionFromProduct = (productIndex: number, optionIndex: number) => {
+    setDraft((current) => {
+      const nextProducts = [...current.products];
+      const product = nextProducts[productIndex];
+      if (!product || !Array.isArray(product.variantOptions)) {
+        return current;
+      }
+
+      const nextVariantOptions = product.variantOptions.filter((_, index) => index !== optionIndex);
+      nextProducts[productIndex] = {
+        ...product,
+        variantOptions: nextVariantOptions.length > 0 ? nextVariantOptions : undefined,
+        variantLabel: nextVariantOptions.length > 0 ? product.variantLabel : undefined,
+      };
+
+      return { ...current, products: nextProducts };
+    });
+  };
+
+  const updateVariantOptionForProduct = (
+    productIndex: number,
+    optionIndex: number,
+    patch: Partial<NonNullable<Product["variantOptions"]>[number]>,
+  ) => {
+    setDraft((current) => {
+      const nextProducts = [...current.products];
+      const product = nextProducts[productIndex];
+      if (!product || !Array.isArray(product.variantOptions)) {
+        return current;
+      }
+
+      const nextVariantOptions = [...product.variantOptions];
+      const currentOption = nextVariantOptions[optionIndex];
+      if (!currentOption) {
+        return current;
+      }
+
+      nextVariantOptions[optionIndex] = { ...currentOption, ...patch };
+      nextProducts[productIndex] = {
+        ...product,
+        variantOptions: nextVariantOptions,
+      };
+
+      return { ...current, products: nextProducts };
+    });
+  };
+
+  const renderVariantEditor = (product: Product, index: number) => {
+    const variantOptions = Array.isArray(product.variantOptions) ? product.variantOptions : [];
+
+    return (
+      <div className="mt-3 rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <label className="flex-1">
+            <span className="text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+              Intitule format
+            </span>
+            <input
+              className="mt-1 h-10 w-full border-2 border-[#1a1a1a] bg-white px-2 text-sm"
+              value={product.variantLabel ?? ""}
+              onChange={(event) => updateProduct(index, "variantLabel", event.target.value)}
+              placeholder="Format (ex: Poids, Taille, Pack)"
+            />
+          </label>
+          <button
+            type="button"
+            className="btn-cartoon btn-secondary h-10 px-3 text-xs"
+            onClick={() => addVariantOptionToProduct(index)}
+          >
+            Ajouter un format
+          </button>
+        </div>
+
+        {variantOptions.length === 0 ? (
+          <p className="mt-2 text-xs text-charcoal">
+            Aucun format configure. Exemple: 5g, 10g, 20g.
+          </p>
+        ) : (
+          <div className="mt-3 grid gap-2">
+            {variantOptions.map((option, optionIndex) => (
+              <div
+                key={`${option.id}-${optionIndex}`}
+                className="grid gap-2 rounded border border-[#1a1a1a] bg-white p-2 md:grid-cols-[2fr,1fr,auto,auto,1fr,auto] md:items-center"
+              >
+                <input
+                  className="h-9 border-2 border-[#1a1a1a] px-2 text-xs"
+                  value={option.label}
+                  onChange={(event) =>
+                    updateVariantOptionForProduct(index, optionIndex, {
+                      label: event.target.value,
+                    })
+                  }
+                  placeholder="Label format (ex: 10g)"
+                />
+                <input
+                  className="h-9 border-2 border-[#1a1a1a] px-2 text-xs"
+                  value={option.price}
+                  type="number"
+                  min={0}
+                  step="0.01"
+                  onChange={(event) =>
+                    updateVariantOptionForProduct(index, optionIndex, {
+                      price: Math.max(0, Number(event.target.value) || 0),
+                    })
+                  }
+                  placeholder="Prix"
+                />
+                <label className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
+                  <input
+                    type="checkbox"
+                    checked={option.enabled !== false}
+                    onChange={(event) =>
+                      updateVariantOptionForProduct(index, optionIndex, {
+                        enabled: event.target.checked,
+                      })
+                    }
+                  />
+                  Actif
+                </label>
+                <label className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
+                  <input
+                    type="checkbox"
+                    checked={option.inStock !== false}
+                    onChange={(event) =>
+                      updateVariantOptionForProduct(index, optionIndex, {
+                        inStock: event.target.checked,
+                      })
+                    }
+                  />
+                  Stock
+                </label>
+                <input
+                  className="h-9 border-2 border-[#1a1a1a] px-2 text-xs"
+                  value={option.stockQuantity ?? ""}
+                  type="number"
+                  min={0}
+                  step={1}
+                  onChange={(event) =>
+                    updateVariantOptionForProduct(index, optionIndex, {
+                      stockQuantity:
+                        event.target.value === ""
+                          ? undefined
+                          : Math.max(0, Math.floor(Number(event.target.value) || 0)),
+                    })
+                  }
+                  placeholder="Qte (optionnel)"
+                />
+                <button
+                  type="button"
+                  className="btn-cartoon btn-primary h-9 px-3 text-xs"
+                  onClick={() => removeVariantOptionFromProduct(index, optionIndex)}
+                >
+                  Suppr.
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const updateProducer = <K extends keyof Producer>(
     index: number,
     key: K,
@@ -731,6 +934,8 @@ export function AdminPanel() {
           </div>
         )}
 
+        {activeTab === "pages" && <AdminPagesPanel />}
+
         {activeTab === "commandes" && (
         <div className="cartoon-border bg-cream p-6 md:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -862,6 +1067,8 @@ export function AdminPanel() {
         )}
 
         {activeTab === "clients" && <AdminCustomersPanel />}
+
+        {activeTab === "parrainage" && <AdminReferralsPanel />}
 
         {activeTab === "promos" && (
           <AdminPromosPanel draft={draft} setDraft={setDraft} />
@@ -1080,6 +1287,7 @@ export function AdminPanel() {
                       placeholder="badge"
                     />
                   </div>
+                  {renderVariantEditor(product, index)}
                   <div className="mt-3 grid gap-3 md:grid-cols-[auto,1fr] md:items-center">
                     <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
                       <input
@@ -1361,6 +1569,7 @@ export function AdminPanel() {
                                 placeholder="badge"
                               />
                             </div>
+                            {renderVariantEditor(product, index)}
                             <div className="mt-3 grid gap-3 md:grid-cols-[auto,1fr] md:items-center">
                               <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
                                 <input

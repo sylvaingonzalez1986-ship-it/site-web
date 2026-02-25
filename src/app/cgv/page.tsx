@@ -1,20 +1,28 @@
-ï»¿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { getSiteUrl } from "@/lib/site-url";
+import { CmsPageRenderer } from "@/components/cms/CmsPageRenderer";
+import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-static-pages";
 
-const siteUrl = getSiteUrl();
-const cgvUrl = `${siteUrl}/cgv`;
+const CMS_SLUG = "cgv";
+const CANONICAL_PATH = "/cgv";
+const FALLBACK_TITLE = "CGV";
+const FALLBACK_DESCRIPTION =
+  "Conditions generales de vente (CGV) du site Les Chanvriers Bretons.";
 
-export const metadata: Metadata = {
-  title: "CGV",
-  description:
-    "Conditions generales de vente (CGV) du site Les Chanvriers Bretons.",
-  alternates: {
-    canonical: cgvUrl,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildCmsStaticPageMetadata({
+    slug: CMS_SLUG,
+    canonicalPath: CANONICAL_PATH,
+    fallbackTitle: FALLBACK_TITLE,
+    fallbackDescription: FALLBACK_DESCRIPTION,
+  });
+}
 
-export default function CgvPage() {
+export default async function CgvPage() {
+  const cmsPage = await getStaticCmsPageBySlug(CMS_SLUG);
+  if (cmsPage) {
+    return <CmsPageRenderer page={cmsPage} />;
+  }
   return (
     <section className="section-band bg-cream halftone-overlay paper-grain pt-32">
       <div className="retro-container">
@@ -22,7 +30,7 @@ export default function CgvPage() {
           <h1 className="section-title">CONDITIONS GENERALES DE VENTE (CGV)</h1>
           <p className="mt-4 text-sm leading-relaxed text-charcoal">
             Les presentes conditions generales de vente (CGV) regissent les relations entre la
-            sociÃ©tÃ© Les Champs Bretons, SASU immatriculee au RCS de Paris, et toute personne
+            société Les Champs Bretons, SASU immatriculee au RCS de Paris, et toute personne
             effectuant un achat sur le site{" "}
             <a
               href="https://www.leschanvriersbretons.com"
@@ -52,7 +60,7 @@ export default function CgvPage() {
               </p>
               <p className="mt-2">
                 Les produits commercialises respectent la legislation en vigueur en France et
-                affichent un taux de THC infÃ©rieur a 0,3 %, conformement Ã  la rÃ©glementation
+                affichent un taux de THC inférieur a 0,3 %, conformement à la réglementation
                 applicable.
               </p>
             </section>
@@ -68,7 +76,7 @@ export default function CgvPage() {
                 notamment par carte bancaire via Viva Payments.
               </p>
               <p className="mt-2">
-                Les Champs Bretons se reserve le droit de modifier ses prix Ã  tout moment, et les
+                Les Champs Bretons se reserve le droit de modifier ses prix à tout moment, et les
                 produits sont factures sur la base du tarif en vigueur au moment de la validation de
                 la commande.
               </p>
@@ -112,28 +120,28 @@ export default function CgvPage() {
                 droit de retraction.
               </p>
               <p className="mt-2">
-                Les produits doivent Ãªtre retournes dans leur etat d&apos;origine, non ouverts et non
-                utilises. Les frais de retour sont Ã  la charge du client.
+                Les produits doivent être retournes dans leur etat d&apos;origine, non ouverts et non
+                utilises. Les frais de retour sont à la charge du client.
               </p>
             </section>
 
             <section>
               <h2 className="font-display text-2xl">Article 7 - Responsabilite et garantie</h2>
               <p className="mt-2">
-                Les produits proposes respectent la rÃ©glementation en vigueur. Les Champs Bretons ne
-                saurait Ãªtre tenu responsable d&apos;une mauvaise utilisation des produits.
+                Les produits proposes respectent la réglementation en vigueur. Les Champs Bretons ne
+                saurait être tenu responsable d&apos;une mauvaise utilisation des produits.
               </p>
               <p className="mt-2">
-                Aucune rÃ©clamation ne pourra Ãªtre acceptee si les produits ont Ã©tÃ© ouverts, utilises
+                Aucune réclamation ne pourra être acceptee si les produits ont été ouverts, utilises
                 ou endommages apres la livraison.
               </p>
             </section>
 
             <section>
-              <h2 className="font-display text-2xl">Article 8 - PropriÃ©tÃ© intellectuelle</h2>
+              <h2 className="font-display text-2xl">Article 8 - Propriété intellectuelle</h2>
               <p className="mt-2">
                 Tous les elements du site leschanvriersbretons.com, notamment textes, images et
-                graphismes, sont protÃ©gÃ©s par le droit d&apos;auteur et la propriÃ©tÃ© intellectuelle.
+                graphismes, sont protégés par le droit d&apos;auteur et la propriété intellectuelle.
               </p>
               <p className="mt-2">
                 Toute reproduction, meme partielle, est strictement interdite sans autorisation
@@ -142,15 +150,15 @@ export default function CgvPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-2xl">Article 9 - DonnÃ©es personnelles</h2>
+              <h2 className="font-display text-2xl">Article 9 - Données personnelles</h2>
               <p className="mt-2">
                 Les informations collectees sont utilisees uniquement pour la gestion des commandes
-                et du service client. Elles ne sont ni revendues ni communiquees Ã  des tiers a des
+                et du service client. Elles ne sont ni revendues ni communiquees à des tiers a des
                 fins commerciales.
               </p>
               <p className="mt-2">
-                Le client dispose d&apos;un droit d&apos;accÃ¨s, de rectification et de suppression de ses
-                donnÃ©es conformement au RGPD. Les details sont disponibles sur la page{" "}
+                Le client dispose d&apos;un droit d&apos;accès, de rectification et de suppression de ses
+                données conformement au RGPD. Les details sont disponibles sur la page{" "}
                 <Link href="/politique-confidentialite" className="underline">
                   Politique de confidentialite
                 </Link>
@@ -161,18 +169,18 @@ export default function CgvPage() {
             <section>
               <h2 className="font-display text-2xl">Article 10 - Droit applicable et litiges</h2>
               <p className="mt-2">
-                Les presentes CGV sont regies par le droit franÃ§ais.
+                Les presentes CGV sont regies par le droit français.
               </p>
               <p className="mt-2">
                 En cas de litige, une solution amiable sera privilegiee. A defaut d&apos;accord, les
-                tribunaux compÃ©tents seront ceux du ressort du siÃ¨ge social de Les Champs Bretons.
+                tribunaux compétents seront ceux du ressort du siège social de Les Champs Bretons.
               </p>
             </section>
 
             <section>
               <h2 className="font-display text-2xl">Article 11 - Majorite legale</h2>
               <p className="mt-2">
-                La creation de compte et la commande sur le site sont rÃ©servÃ©es aux personnes
+                La creation de compte et la commande sur le site sont réservées aux personnes
                 majeures (18 ans et plus).
               </p>
             </section>
@@ -184,13 +192,13 @@ export default function CgvPage() {
                 personnes majeures. Les conditions de participation, les probabilites et les
                 modalites d&apos;attribution des lots sont detaillees dans le{" "}
                 <Link href="/reglement-jeu-promo" className="underline">
-                  RÃ¨glement du jeu promotionnel
+                  Règlement du jeu promotionnel
                 </Link>
                 .
               </p>
               <p className="mt-2">
-                Les lots et avantages attribuÃ©s au titre du jeu ne sont pas convertibles en
-                especes, sauf mention contraire expresse dans le rÃ¨glement.
+                Les lots et avantages attribués au titre du jeu ne sont pas convertibles en
+                especes, sauf mention contraire expresse dans le règlement.
               </p>
             </section>
           </div>

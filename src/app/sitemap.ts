@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { readPublishedCmsPagesByBackend } from "@/lib/cms-pages-backend";
 import { getPublishedBlogPostsByBackend } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -14,7 +15,10 @@ const categories = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getSiteUrl();
-  const posts = await getPublishedBlogPostsByBackend();
+  const [posts, cmsPages] = await Promise.all([
+    getPublishedBlogPostsByBackend(),
+    readPublishedCmsPagesByBackend(),
+  ]);
 
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -41,6 +45,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/fidelite`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
   ];
 
   const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
@@ -57,5 +67,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...categoryPages, ...blogPages];
+  const cmsDynamicPages: MetadataRoute.Sitemap = cmsPages.map((page) => ({
+    url: `${baseUrl}/${page.slug}`,
+    lastModified: new Date(page.updatedAt),
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...categoryPages, ...blogPages, ...cmsDynamicPages];
 }

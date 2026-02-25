@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { issueInvoiceForOrder } from "@/lib/invoice-store";
 import { mintLotteryTicketsForOrderByBackend } from "@/lib/lottery-backend";
 import { updateOrderPaymentByVivaOrderCodeByBackend } from "@/lib/order-backend";
+import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
 import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
@@ -225,6 +226,11 @@ export async function POST(request: Request) {
         orderId: updated.id,
         orderAmount: updated.totalAmount,
       });
+      try {
+        await applyReferralRewardForPaidOrderByBackend({ orderId: updated.id });
+      } catch (error) {
+        console.error("Referral reward application failed on webhook:", error);
+      }
     }
   }
 

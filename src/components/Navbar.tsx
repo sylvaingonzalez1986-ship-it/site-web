@@ -2,11 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, ShoppingCart, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { HelpCircle, Menu, ShoppingCart, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { CartDrawer } from "@/components/CartDrawer";
+import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
+import { useTutorial } from "@/components/tutorial/TutorialProvider";
 import { useCart } from "@/context/CartContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { useCmsPages } from "@/hooks/useCmsPages";
 import { useCustomerSession } from "@/hooks/useCustomerSession";
 import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
 
@@ -19,18 +22,44 @@ const baseLinks = [
 
 export function Navbar() {
   const { totalItems } = useCart();
-  const { user } = useCustomerSession();
+  const { user, loyalty } = useCustomerSession();
+  const { pages: cmsPages } = useCmsPages();
+  const { isEnabled: tutorialEnabled, restartTutorial } = useTutorial();
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const links = [
-    ...baseLinks,
-    ...(isAllowedAdminEmail(user?.email) ? [{ href: "/admin", label: "Admin" }] : []),
-    user
-      ? { href: "/profil", label: "Profil" }
-      : { href: "/compte/connexion", label: "Compte" },
-  ];
+  const cmsNavLinks = useMemo(
+    () =>
+      [...cmsPages]
+        .filter((page) => page.showInNav)
+        .sort((a, b) => a.position - b.position)
+        .map((page) => ({
+          href: `/${page.slug}`,
+          label: page.navLabel.trim() || page.title,
+        })),
+    [cmsPages],
+  );
+
+  const links = useMemo(() => {
+    const merged = [
+      ...baseLinks,
+      ...cmsNavLinks,
+      ...(isAllowedAdminEmail(user?.email) ? [{ href: "/admin", label: "Admin" }] : []),
+      user
+        ? { href: "/profil", label: "Profil" }
+        : { href: "/compte/connexion", label: "Compte" },
+    ];
+
+    const byHref = new Map<string, { href: string; label: string }>();
+    for (const link of merged) {
+      if (!byHref.has(link.href)) {
+        byHref.set(link.href, link);
+      }
+    }
+
+    return Array.from(byHref.values());
+  }, [cmsNavLinks, user]);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 56);
@@ -59,6 +88,7 @@ export function Navbar() {
   return (
     <>
       <header
+        data-tutorial="navbar"
         className={`safe-area-top safe-area-x fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
           isScrolled
             ? "bg-[#f7f4ee]/95 border-b-2 border-[#1a1a1a] py-3 backdrop-blur"
@@ -86,25 +116,63 @@ export function Navbar() {
             className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 md:hidden"
             aria-label="Accueil"
           >
-            <div className="relative h-11 w-11 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-[#f7f4ee]">
-              <Image
-                src="/hero-circle-idle.png"
-                alt="Logo Les Chanvriers Bretons"
-                fill
-                sizes="44px"
-                className="object-cover"
-                priority
-              />
-            </div>
+            <Image
+              src="/hero-circle-idle.png"
+              alt="Logo Les Chanvriers Bretons"
+              width={44}
+              height={44}
+              sizes="44px"
+              className="h-11 w-11 object-contain"
+              priority
+            />
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
-            {links.map((link) => (
-              <Link key={link.href} href={link.href} className="nav-link">
-                {link.label}
-              </Link>
-            ))}
+            {links.map((link) => {
+              const isAccountLink = link.href === "/profil" || link.href === "/compte/connexion";
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`nav-link ${isAccountLink && user ? "inline-flex items-center gap-2" : ""}`}
+                  data-tutorial={
+                    link.href === "/boutique"
+                      ? "navbar-boutique"
+                      : isAccountLink
+                        ? "navbar-account"
+                        : undefined
+                  }
+                >
+                  <span>{link.label}</span>
+                  {link.href === "/profil" && user && (
+                    <span
+                      className="inline-flex items-center"
+                      aria-label={`Badge actuel: ${loyalty.currentBadge.label}`}
+                      title={`Badge actuel: ${loyalty.currentBadge.label}`}
+                    >
+                      <LoyaltyBadgeIllustration
+                        badgeId={loyalty.currentBadge.id}
+                        unlocked={loyalty.currentBadge.unlocked}
+                        size="xs"
+                      />
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </nav>
+
+          {tutorialEnabled && (
+            <button
+              type="button"
+              onClick={restartTutorial}
+              aria-label="Revoir le tutoriel"
+              className="relative inline-flex h-11 w-11 items-center justify-center border-2 border-[#1a1a1a] bg-[#f7f4ee]"
+            >
+              <HelpCircle size={19} />
+            </button>
+          )}
 
           <button
             type="button"
@@ -129,16 +197,40 @@ export function Navbar() {
         }`}
       >
         <div className="safe-area-top safe-area-bottom safe-area-x flex h-full flex-col items-center justify-center gap-8 overflow-y-auto py-10">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className="font-display text-3xl text-ink"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) => {
+            const isAccountLink = link.href === "/profil" || link.href === "/compte/connexion";
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className={`font-display text-3xl text-ink ${isAccountLink && user ? "inline-flex items-center gap-3" : ""}`}
+                data-tutorial={
+                  link.href === "/boutique"
+                    ? "navbar-boutique"
+                    : isAccountLink
+                      ? "navbar-account"
+                      : undefined
+                }
+              >
+                <span>{link.label}</span>
+                {link.href === "/profil" && user && (
+                  <span
+                    className="inline-flex items-center"
+                    aria-label={`Badge actuel: ${loyalty.currentBadge.label}`}
+                    title={`Badge actuel: ${loyalty.currentBadge.label}`}
+                  >
+                    <LoyaltyBadgeIllustration
+                      badgeId={loyalty.currentBadge.id}
+                      unlocked={loyalty.currentBadge.unlocked}
+                      size="xs"
+                    />
+                  </span>
+                )}
+              </Link>
+            );
+          })}
         </div>
       </div>
 

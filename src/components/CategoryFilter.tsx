@@ -13,7 +13,7 @@ type CategoryFilterProps = {
 
 export function CategoryFilter({ selected, filters, onChange }: CategoryFilterProps) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2" data-tutorial="category-filter">
       {filters.map((filter) => {
         const label = filter === "all" ? "Tout" : filter === "promos" ? "Promos" : categoryLabels[filter];
 

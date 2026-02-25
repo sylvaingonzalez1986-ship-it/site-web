@@ -40,6 +40,7 @@ export async function registerCustomerByBackend(input: {
   lastName: string;
   dateOfBirth: string;
   password: string;
+  referralCode?: string;
   phone?: string;
   address?: string;
   city?: string;

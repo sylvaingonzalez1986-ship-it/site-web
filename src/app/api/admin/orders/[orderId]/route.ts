@@ -1,6 +1,8 @@
 import { issueInvoiceForOrder } from "@/lib/invoice-store";
 import { mintLotteryTicketsForOrderByBackend } from "@/lib/lottery-backend";
 import { NextResponse } from "next/server";
+import { denyIfNotAdminApi } from "@/lib/admin-guard";
+import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
 import type { CmsOrder, OrderStatus } from "@/types/store";
 import { updateOrderPaymentStateByBackend, updateOrderStatusByBackend } from "@/lib/order-backend";
 
@@ -8,6 +10,11 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ orderId: string }> },
 ) {
+  const denied = await denyIfNotAdminApi();
+  if (denied) {
+    return denied;
+  }
+
   const { orderId } = await params;
 
   try {
@@ -43,6 +50,11 @@ export async function PATCH(
             orderId: updated.id,
             orderAmount: updated.totalAmount,
           });
+          try {
+            await applyReferralRewardForPaidOrderByBackend({ orderId: updated.id });
+          } catch (error) {
+            console.error("Referral reward application failed on admin order update:", error);
+          }
         }
       }
     }

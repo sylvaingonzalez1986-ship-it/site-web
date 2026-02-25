@@ -1,11 +1,14 @@
 "use client";
 
-import { Award, ShoppingBag, Tag, Ticket, User as UserIcon, type LucideIcon } from "lucide-react";
+import Link from "next/link";
+import { Award, Copy, Gift, ShoppingBag, Tag, Ticket, User as UserIcon, Users, type LucideIcon } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { LoyaltyBadgeSummary } from "@/components/account/LoyaltyBadgeSummary";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
 import { LotterySection } from "@/components/account/LotterySection";
 import { OrderDetailModal } from "@/components/account/OrderDetailModal";
+import { useTutorial } from "@/components/tutorial/TutorialProvider";
 import { useCmsStore } from "@/hooks/useCmsStore";
 import { useCustomerSession } from "@/hooks/useCustomerSession";
 import {
@@ -16,6 +19,8 @@ import {
   parseBadgeBenefitsLines,
 } from "@/lib/loyalty-tier-benefits";
 import { formatPrice } from "@/lib/utils";
+import type { PublicCustomer } from "@/types/customer";
+import type { ReferralSummary } from "@/types/referral";
 import type { CmsOrder, OrderStatus } from "@/types/store";
 
 const orderStatusLabels: Record<OrderStatus, string> = {
@@ -79,6 +84,7 @@ function getInitials(firstName: string, lastName: string): string {
 export function ProfilePanel() {
   const router = useRouter();
   const pathname = usePathname();
+  const { isEnabled: tutorialEnabled, restartTutorial } = useTutorial();
   const {
     user,
     orders,
@@ -88,6 +94,7 @@ export function ProfilePanel() {
     loyalty,
     loading,
     refresh,
+    setUser,
   } = useCustomerSession();
   const { store: cmsStore } = useCmsStore();
 
@@ -103,6 +110,12 @@ export function ProfilePanel() {
   const [status, setStatus] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<CmsOrder | null>(null);
   const [activeTab, setActiveTab] = useState<ProfileTab>("fidelite");
+  const [referralSummary, setReferralSummary] = useState<ReferralSummary | null>(null);
+  const [referralLoading, setReferralLoading] = useState(false);
+  const [referralCodeInput, setReferralCodeInput] = useState("");
+  const [referralStatus, setReferralStatus] = useState<string | null>(null);
+  const [referralError, setReferralError] = useState<string | null>(null);
+  const [copyStatus, setCopyStatus] = useState<string | null>(null);
 
   const sortedOrders = useMemo(
     () => [...orders].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)),
@@ -152,6 +165,48 @@ export function ProfilePanel() {
     setCountry(user.country || "France");
   }, [user]);
 
+  useEffect(() => {
+    if (!user) {
+      setReferralSummary(null);
+      setReferralCodeInput("");
+      return;
+    }
+
+    let active = true;
+    setReferralLoading(true);
+
+    const loadReferral = async () => {
+      try {
+        const response = await fetch("/api/account/referral", { cache: "no-store" });
+        if (!active) {
+          return;
+        }
+
+        if (!response.ok) {
+          setReferralSummary(null);
+          return;
+        }
+
+        const data = (await response.json()) as { summary?: ReferralSummary };
+        const summary = data.summary ?? null;
+        setReferralSummary(summary);
+        if (!summary?.referredByCode) {
+          setReferralCodeInput("");
+        }
+      } finally {
+        if (active) {
+          setReferralLoading(false);
+        }
+      }
+    };
+
+    void loadReferral();
+
+    return () => {
+      active = false;
+    };
+  }, [user]);
+
   if (loading) {
     return (
       <section className="section-band bg-mint halftone-overlay paper-grain pt-36">
@@ -163,10 +218,34 @@ export function ProfilePanel() {
   }
 
   if (!user) {
+    const nextUrl = "/profil?tab=fidelite";
+    const loginHref = `/compte/connexion?next=${encodeURIComponent(nextUrl)}`;
+
     return (
       <section className="section-band bg-mint halftone-overlay paper-grain pt-36">
-        <div className="retro-container">
-          <div className="cartoon-border bg-cream p-8">Session invalide.</div>
+        <div className="retro-container grid gap-6">
+          <article className="cartoon-border bg-cream p-6 md:p-8">
+            <h1 className="section-title">PROFIL</h1>
+            <p className="mt-3 text-sm leading-relaxed text-charcoal md:text-base">
+              Connecte-toi pour acceder a ton espace client. En attendant, tu peux deja consulter
+              le resume du programme fidelite.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link
+                href="/fidelite"
+                className="btn-cartoon btn-secondary inline-flex h-10 items-center justify-center px-4 text-xs leading-none"
+              >
+                Voir le resume badges
+              </Link>
+              <Link
+                href={loginHref}
+                className="btn-cartoon btn-primary inline-flex h-10 items-center justify-center px-4 text-xs leading-none"
+              >
+                Se connecter
+              </Link>
+            </div>
+          </article>
+          <LoyaltyBadgeSummary />
         </div>
       </section>
     );
@@ -202,6 +281,63 @@ export function ProfilePanel() {
       await refresh();
     } finally {
       setSaving(false);
+    }
+  };
+
+  const applyReferralCode = async () => {
+    const normalizedCode = referralCodeInput.trim().toUpperCase();
+    if (!normalizedCode) {
+      setReferralError("Saisis un code parrain.");
+      setReferralStatus(null);
+      return;
+    }
+
+    setReferralLoading(true);
+    setReferralError(null);
+    setReferralStatus(null);
+
+    try {
+      const response = await fetch("/api/account/referral", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: normalizedCode }),
+      });
+      const data = (await response.json()) as {
+        error?: string;
+        summary?: ReferralSummary;
+        user?: PublicCustomer | null;
+      };
+
+      if (!response.ok) {
+        setReferralError(data.error || "Impossible d'appliquer ce code parrain.");
+        return;
+      }
+
+      if (data.summary) {
+        setReferralSummary(data.summary);
+      }
+      if (data.user) {
+        setUser(data.user);
+      }
+      setReferralCodeInput("");
+      setReferralStatus("Code parrain applique.");
+      await refresh({ silent: true });
+    } finally {
+      setReferralLoading(false);
+    }
+  };
+
+  const copyReferralLink = async () => {
+    if (!user.referralCode || typeof window === "undefined") {
+      return;
+    }
+
+    const shareUrl = `${window.location.origin}/compte/inscription?ref=${encodeURIComponent(user.referralCode)}`;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopyStatus("Lien de parrainage copie.");
+    } catch {
+      setCopyStatus("Copie impossible sur cet appareil.");
     }
   };
 
@@ -284,8 +420,22 @@ export function ProfilePanel() {
             </div>
           </div>
 
-          <div className="mt-6 flex justify-end">
-            <button type="button" onClick={logout} className="btn-cartoon btn-secondary">
+          <div className="mt-6 flex flex-wrap justify-end gap-2">
+            {tutorialEnabled && (
+              <button
+                type="button"
+                onClick={restartTutorial}
+                className="btn-cartoon btn-secondary inline-flex items-center justify-center leading-none"
+                data-tutorial="profile-replay"
+              >
+                Revoir le tutoriel
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={logout}
+              className="btn-cartoon btn-secondary inline-flex items-center justify-center leading-none"
+            >
               Se deconnecter
             </button>
           </div>
@@ -397,11 +547,106 @@ export function ProfilePanel() {
                   <button
                     type="button"
                     onClick={() => setActiveTabAndSync("loterie")}
-                    className="btn-cartoon btn-secondary h-10 px-3 text-xs"
+                    className="btn-cartoon btn-secondary inline-flex h-10 items-center justify-center px-3 text-xs leading-none"
                   >
                     Ouvrir mes tickets
                   </button>
                 </div>
+              </div>
+
+              <div className="mt-4 card-cartoon bg-white p-4" data-tutorial="profile-referral">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Parrainage</p>
+                    <p className="mt-1 text-sm font-semibold text-ink">
+                      Invite tes proches et gagne des points bonus.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-cartoon btn-secondary inline-flex h-10 items-center justify-center gap-2 px-3 text-xs leading-none"
+                    onClick={copyReferralLink}
+                    disabled={!user.referralCode}
+                  >
+                    <Copy size={14} className="shrink-0" /> Copier mon lien
+                  </button>
+                </div>
+
+                <div className="mt-3 grid gap-3 md:grid-cols-2">
+                  <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
+                    <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Mon code</p>
+                    <p className="mt-1 font-mono text-lg font-bold text-ink">
+                      {referralSummary?.referralCode || user.referralCode || "-"}
+                    </p>
+                  </div>
+                  <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
+                    <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Mon statut filleul</p>
+                    <p className="mt-1 text-sm font-semibold text-ink">
+                      {referralSummary?.referredByCode
+                        ? `Code utilise: ${referralSummary.referredByCode}`
+                        : "Aucun code parrain utilise"}
+                    </p>
+                  </div>
+                </div>
+
+                {referralSummary && (
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
+                      <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Filleuls</p>
+                      <p className="mt-1 inline-flex items-center gap-2 text-lg font-bold text-ink">
+                        <Users size={16} /> {referralSummary.totalReferrals}
+                      </p>
+                    </div>
+                    <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
+                      <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Recompenses</p>
+                      <p className="mt-1 inline-flex items-center gap-2 text-lg font-bold text-ink">
+                        <Gift size={16} /> {referralSummary.rewardedReferrals}
+                      </p>
+                    </div>
+                    <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
+                      <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points parrains</p>
+                      <p className="mt-1 text-lg font-bold text-ink">{referralSummary.pointsEarnedAsReferrer}</p>
+                    </div>
+                    <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
+                      <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points filleul</p>
+                      <p className="mt-1 text-lg font-bold text-ink">{referralSummary.pointsEarnedAsReferee}</p>
+                    </div>
+                  </div>
+                )}
+
+                <p className="mt-3 text-xs text-charcoal">
+                  Bonus par parrainage valide: {referralSummary?.config.referrerPoints ?? 0} pts
+                  pour le parrain et {referralSummary?.config.refereePoints ?? 0} pts pour le filleul
+                  apres la premiere commande payee du filleul.
+                </p>
+
+                {!referralSummary?.referredByCode && (
+                  <div className="mt-3 grid gap-2 sm:grid-cols-[1fr,auto] sm:items-center">
+                    <input
+                      type="text"
+                      className="h-11 border-2 border-[#1a1a1a] bg-white px-3 text-sm uppercase"
+                      placeholder="J'ai un code parrain"
+                      value={referralCodeInput}
+                      onChange={(event) => setReferralCodeInput(event.target.value.toUpperCase())}
+                      disabled={referralLoading}
+                    />
+                    <button
+                      type="button"
+                      className="btn-cartoon btn-primary inline-flex h-11 items-center justify-center px-4 text-xs leading-none"
+                      onClick={applyReferralCode}
+                      disabled={referralLoading}
+                    >
+                      {referralLoading ? "..." : "Appliquer"}
+                    </button>
+                  </div>
+                )}
+
+                {referralLoading && (
+                  <p className="mt-2 text-xs font-semibold text-charcoal">Mise a jour parrainage...</p>
+                )}
+                {referralStatus && <p className="mt-2 text-xs font-semibold text-green-700">{referralStatus}</p>}
+                {referralError && <p className="mt-2 text-xs font-semibold text-red-700">{referralError}</p>}
+                {copyStatus && <p className="mt-2 text-xs font-semibold text-ink">{copyStatus}</p>}
               </div>
 
               <div className="mt-6">
@@ -583,7 +828,11 @@ export function ProfilePanel() {
                   value={country}
                   onChange={(event) => setCountry(event.target.value)}
                 />
-                <button type="submit" disabled={saving} className="btn-cartoon btn-primary h-12 md:col-span-2">
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="btn-cartoon btn-primary inline-flex h-12 items-center justify-center leading-none md:col-span-2"
+                >
                   {saving ? "Sauvegarde..." : "Mettre a jour le profil"}
                 </button>
               </form>

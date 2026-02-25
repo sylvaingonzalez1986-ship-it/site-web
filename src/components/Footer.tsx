@@ -2,14 +2,34 @@
 
 import Link from "next/link";
 import { Instagram, Mail } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ContactRequestModal } from "@/components/ContactRequestModal";
+import { useCmsPages } from "@/hooks/useCmsPages";
 import { useCmsStore } from "@/hooks/useCmsStore";
 
 export function Footer() {
   const { store } = useCmsStore();
+  const { pages: cmsPages } = useCmsPages();
   const footer = store.content.footer;
   const [contactOpen, setContactOpen] = useState(false);
+  const dynamicFooterLinks = useMemo(() => {
+    const staticHrefs = new Set([
+      "/mentions-legales",
+      "/politique-confidentialite",
+      "/politique-cookies",
+      "/cgv",
+      "/reglement-jeu-promo",
+    ]);
+
+    return [...cmsPages]
+      .filter((page) => page.showInFooter)
+      .sort((a, b) => a.position - b.position)
+      .map((page) => ({
+        href: `/${page.slug}`,
+        label: page.footerLabel.trim() || page.title,
+      }))
+      .filter((link) => !staticHrefs.has(link.href));
+  }, [cmsPages]);
 
   return (
     <>
@@ -138,6 +158,15 @@ export function Footer() {
                   >
                     Reglement jeu promo
                   </Link>
+                  {dynamicFooterLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2] sm:col-span-2"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>

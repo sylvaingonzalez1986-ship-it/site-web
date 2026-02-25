@@ -649,6 +649,11 @@ h4 {
   animation: bounce-slow 2s ease-in-out infinite;
 }
 
+.season-sylvain-animate {
+  animation: season-sylvain-pop 2.8s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
 @keyframes float {
   0%,
   100% {
@@ -666,6 +671,16 @@ h4 {
   }
   50% {
     transform: translateY(-6px);
+  }
+}
+
+@keyframes season-sylvain-pop {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.015);
   }
 }
 

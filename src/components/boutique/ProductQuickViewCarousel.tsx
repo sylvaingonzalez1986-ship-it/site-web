@@ -136,7 +136,7 @@ export function ProductQuickViewCarousel({
       return;
     }
 
-    const added = addToCart(activeProduct);
+    const added = addToCart(activeProduct, selectedVariant?.id);
     if (added) {
       return;
     }

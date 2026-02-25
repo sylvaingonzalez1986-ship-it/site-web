@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { getAllCustomersByBackend } from "@/lib/customer-backend";
 import { readStoreByBackend } from "@/lib/data-backend";
 import { buildLoyaltySummaryWithBonus } from "@/lib/loyalty";
@@ -6,6 +7,11 @@ import { buildLoyaltySummaryWithBonus } from "@/lib/loyalty";
 export const runtime = "nodejs";
 
 export async function GET() {
+  const denied = await denyIfNotAdminApi();
+  if (denied) {
+    return denied;
+  }
+
   const [customers, store] = await Promise.all([getAllCustomersByBackend(), readStoreByBackend()]);
 
   const list = customers.map((customer) => {

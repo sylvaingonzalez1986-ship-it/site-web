@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { Product } from "@/data/products";
+import { getSelectableVariantOptions } from "@/lib/product-stock";
 import type { PublicCustomer } from "@/types/customer";
 
 type CartLine = Product & {
@@ -15,7 +16,7 @@ type CartContextValue = {
   totalPrice: number;
   isAuthenticated: boolean;
   authLoading: boolean;
-  addToCart: (product: Product) => boolean;
+  addToCart: (product: Product, variantId?: string) => boolean;
   removeFromCart: (productId: string) => void;
   decreaseQuantity: (productId: string) => void;
   clearCart: () => void;
@@ -64,19 +65,49 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     };
   }, [pathname]);
 
-  const addToCart = (product: Product): boolean => {
+  const addToCart = (product: Product, variantId?: string): boolean => {
     if (!isAuthenticated) {
       return false;
     }
 
+    const [baseProductId, embeddedVariantId = ""] = product.id.split("::", 2);
+    const variantKey = variantId || embeddedVariantId;
+    const selectableVariants = Array.isArray(product.variantOptions)
+      ? getSelectableVariantOptions(product)
+      : [];
+    const variant = variantKey
+      ? selectableVariants.find((option) => option.id === variantKey)
+      : selectableVariants[0];
+    const normalizedBaseId = baseProductId || product.id;
+    const cartProductId = variant ? `${normalizedBaseId}::${variant.id}` : normalizedBaseId;
+    const cartProductName = variant
+      ? embeddedVariantId
+        ? product.name
+        : `${product.name} - ${variant.label}`
+      : product.name;
+    const cartProductPrice = variant ? variant.price : product.price;
+
+    if (!Number.isFinite(cartProductPrice) || cartProductPrice < 0) {
+      return false;
+    }
+
     setItems((current) => {
-      const existing = current.find((item) => item.id === product.id);
+      const existing = current.find((item) => item.id === cartProductId);
       if (!existing) {
-        return [...current, { ...product, quantity: 1 }];
+        return [
+          ...current,
+          {
+            ...product,
+            id: cartProductId,
+            name: cartProductName,
+            price: cartProductPrice,
+            quantity: 1,
+          },
+        ];
       }
 
       return current.map((item) =>
-        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item,
+        item.id === cartProductId ? { ...item, quantity: item.quantity + 1 } : item,
       );
     });
 

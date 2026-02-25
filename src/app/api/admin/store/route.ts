@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { cleanupUnusedBlogUploads } from "@/lib/blog-image-storage";
 import { readStoreByBackend, writeStoreByBackend } from "@/lib/data-backend";
 import { cleanupUnusedProductAnalyses } from "@/lib/product-analysis-storage";
@@ -23,11 +24,21 @@ function isPrintfulProduct(product: { id?: string; source?: unknown } | null | u
 }
 
 export async function GET() {
+  const denied = await denyIfNotAdminApi();
+  if (denied) {
+    return denied;
+  }
+
   const store = await readStoreByBackend();
   return NextResponse.json(store);
 }
 
 export async function PUT(request: Request) {
+  const denied = await denyIfNotAdminApi();
+  if (denied) {
+    return denied;
+  }
+
   try {
     const payload = (await request.json()) as CmsStore;
     const current = await readStoreByBackend();

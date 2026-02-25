@@ -33,12 +33,18 @@ export function ProductCard({
   const allImages = product.images?.length ? product.images : [product.image];
   const hasPromo = hasActiveProductPromo(product);
   const inStock = isProductInStock(product);
+  const requiresVariantChoice = (product.variantOptions?.length ?? 0) > 0;
   const producerLocation = producer
     ? [producer.department, producer.region].filter(Boolean).join(", ") || producer.location
     : "";
 
   const handleAddToCart = () => {
     if (authLoading) {
+      return;
+    }
+
+    if (requiresVariantChoice && onOpenQuickView) {
+      onOpenQuickView();
       return;
     }
 
@@ -142,7 +148,8 @@ export function ProductCard({
               disabled={authLoading || !inStock}
               className="btn-cartoon btn-primary inline-flex min-h-[44px] items-center gap-2 px-4 py-3 text-xs disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <Plus size={15} /> {inStock ? addButtonLabel : "Rupture"}
+              <Plus size={15} />{" "}
+              {inStock ? (requiresVariantChoice ? "Choisir format" : addButtonLabel) : "Rupture"}
             </button>
           </div>
         </div>

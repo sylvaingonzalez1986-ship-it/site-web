@@ -1,19 +1,27 @@
-﻿﻿import type { Metadata } from "next";
-import { getSiteUrl } from "@/lib/site-url";
+﻿import type { Metadata } from "next";
+import { CmsPageRenderer } from "@/components/cms/CmsPageRenderer";
+import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-static-pages";
 
-const siteUrl = getSiteUrl();
-const rulesUrl = `${siteUrl}/reglement-jeu-promo`;
+const CMS_SLUG = "reglement-jeu-promo";
+const CANONICAL_PATH = "/reglement-jeu-promo";
+const FALLBACK_TITLE = "Reglement jeu promotionnel";
+const FALLBACK_DESCRIPTION =
+  "Reglement officiel du jeu promotionnel Ticket de grattage des Chanvriers Bretons.";
 
-export const metadata: Metadata = {
-  title: "Règlement jeu promotionnel",
-  description:
-    "Règlement officiel du jeu promotionnel Ticket de grattage des Chanvriers Bretons.",
-  alternates: {
-    canonical: rulesUrl,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildCmsStaticPageMetadata({
+    slug: CMS_SLUG,
+    canonicalPath: CANONICAL_PATH,
+    fallbackTitle: FALLBACK_TITLE,
+    fallbackDescription: FALLBACK_DESCRIPTION,
+  });
+}
 
-export default function ReglementJeuPromoPage() {
+export default async function ReglementJeuPromoPage() {
+  const cmsPage = await getStaticCmsPageBySlug(CMS_SLUG);
+  if (cmsPage) {
+    return <CmsPageRenderer page={cmsPage} />;
+  }
   return (
     <section className="section-band bg-cream halftone-overlay paper-grain pt-32">
       <div className="retro-container">
@@ -40,7 +48,7 @@ export default function ReglementJeuPromoPage() {
               <h2 className="font-display text-2xl">Article 2 - Duree</h2>
               <p className="mt-2">
                 Le jeu debute le 1er mars 2026 a 00h00 (heure de Paris) pour une duree
-                indéterminée, jusqu&apos;a modification, suspension ou arret par l&apos;Organisateur.
+                indeterminee, jusqu&apos;a modification, suspension ou arret par l&apos;Organisateur.
               </p>
             </section>
 
@@ -48,7 +56,7 @@ export default function ReglementJeuPromoPage() {
               <h2 className="font-display text-2xl">Article 3 - Conditions de participation</h2>
               <p className="mt-2">
                 Le jeu est reserve aux personnes majeures (18+) disposant d&apos;un compte client valide
-                sur le site et d&apos;une commande payée.
+                sur le site et d&apos;une commande payee.
               </p>
               <p className="mt-2">
                 Une verification de majorite est requise. L&apos;Organisateur peut annuler toute
@@ -57,13 +65,13 @@ export default function ReglementJeuPromoPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-2xl">Article 4 - Mécanique</h2>
+              <h2 className="font-display text-2xl">Article 4 - Mecanique</h2>
               <p className="mt-2">
-                Attribution automatique : 1 ticket par tranche de 20 EUR TTC de commande payée
+                Attribution automatique : 1 ticket par tranche de 20 EUR TTC de commande payee
                 (seuil affiche dans l&apos;espace client).
               </p>
               <p className="mt-2">
-                Chaque ticket est grattable une seule fois. Le résultat est déterminé cété serveur
+                Chaque ticket est grattable une seule fois. Le resultat est determine cote serveur
                 au moment du grattage.
               </p>
             </section>
@@ -84,13 +92,14 @@ export default function ReglementJeuPromoPage() {
               <h2 className="font-display text-2xl">Article 6 - Lots</h2>
               <p className="mt-2">
                 Les lots disponibles sont :
-                <br />- Commun : 10 % de reduction sur la prochaine commande OU 1 g offert
-                <br />- Rare : 20 % de reduction sur la prochaine commande OU 10 g offerts
-                <br />- Epique : 50 % de reduction sur la prochaine commande OU 50 g offerts
-                <br />- Legendaire : 1 an de consommation offerte
+                <br />- Commun : 10 % de reduction sur la prochaine commande OU 1 g offert sur la prochaine commande
+                <br />- Rare : 20 % de reduction sur la prochaine commande OU 10 g offerts sur la prochaine commande
+                <br />- Epique : 50 % de reduction sur la prochaine commande OU 50 g offerts sur la prochaine commande
+                <br />- Legendaire : 365 g de fleurs offerts (1 g/jour pendant 12 mois, varietes
+                selon stock) OU 1 an de tisane (2 boites/mois pendant 12 mois)
               </p>
               <p className="mt-2">
-                La sous-attribution des lots &quot;OU&quot; est déterminée aléatoirement cété serveur.
+                La sous-attribution des lots &quot;OU&quot; est determinee aleatoirement cote serveur.
               </p>
               <p className="mt-2">
                 Les lots ne sont ni echangeables contre especes, ni cessibles. Delai de remise :
@@ -102,14 +111,14 @@ export default function ReglementJeuPromoPage() {
               <h2 className="font-display text-2xl">Article 7 - Limites et anti-fraude</h2>
               <p className="mt-2">
                 Les tickets sont personnels. L&apos;Organisateur peut suspendre ou annuler tout gain en
-                cas de comportement frauduleux ou contraire au present règlement.
+                cas de comportement frauduleux ou contraire au present reglement.
               </p>
             </section>
 
             <section>
-              <h2 className="font-display text-2xl">Article 8 - Données personnelles</h2>
+              <h2 className="font-display text-2xl">Article 8 - Donnees personnelles</h2>
               <p className="mt-2">
-                Les données du jeu sont traitees pour la gestion des tickets, l&apos;attribution des
+                Les donnees du jeu sont traitees pour la gestion des tickets, l&apos;attribution des
                 gains, la prevention de la fraude et la preuve des operations.
               </p>
               <p className="mt-2">
@@ -120,7 +129,7 @@ export default function ReglementJeuPromoPage() {
             <section>
               <h2 className="font-display text-2xl">Article 9 - Responsabilite</h2>
               <p className="mt-2">
-                L&apos;Organisateur ne peut être tenu responsable en cas d&apos;incident technique,
+                L&apos;Organisateur ne peut etre tenu responsable en cas d&apos;incident technique,
                 indisponibilite temporaire du service ou force majeure.
               </p>
             </section>
@@ -128,7 +137,7 @@ export default function ReglementJeuPromoPage() {
             <section>
               <h2 className="font-display text-2xl">Article 10 - Litiges et mediation</h2>
               <p className="mt-2">
-                Le present règlement est soumis au droit français. Toute réclamation doit être
+                Le present reglement est soumis au droit francais. Toute reclamation doit etre
                 adressee en priorite a leschanvriersbretons@gmail.com.
               </p>
               <p className="mt-2">
@@ -136,16 +145,14 @@ export default function ReglementJeuPromoPage() {
                 consommation conformement aux dispositions du Code de la consommation.
               </p>
               <p className="mt-2">
-                Pour les professionnels, tribunal de commerce de Paris compétent.
+                Pour les professionnels, tribunal de commerce de Paris competent.
               </p>
             </section>
           </div>
 
-          <p className="mt-8 text-xs text-charcoal">Version en vigueur : 22 fevrier 2026</p>
+          <p className="mt-8 text-xs text-charcoal">Version en vigueur : 25 fevrier 2026</p>
         </article>
       </div>
     </section>
   );
 }
-
-

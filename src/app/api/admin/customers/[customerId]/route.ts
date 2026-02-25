@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { adminUpdateCustomerByBackend, getCustomerByIdFullByBackend } from "@/lib/customer-backend";
 import { readStoreByBackend } from "@/lib/data-backend";
 import { buildLoyaltySummary, buildLoyaltySummaryWithBonus } from "@/lib/loyalty";
@@ -45,6 +46,11 @@ export async function GET(
   _: Request,
   { params }: { params: Promise<{ customerId: string }> },
 ) {
+  const denied = await denyIfNotAdminApi();
+  if (denied) {
+    return denied;
+  }
+
   const { customerId } = await params;
   const detail = await buildCustomerDetail(customerId);
 
@@ -59,6 +65,11 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ customerId: string }> },
 ) {
+  const denied = await denyIfNotAdminApi();
+  if (denied) {
+    return denied;
+  }
+
   const { customerId } = await params;
 
   try {

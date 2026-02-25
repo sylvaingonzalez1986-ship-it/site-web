@@ -38,6 +38,10 @@ export type PublicCustomer = {
   country: string;
   loyaltyPoints: number;
   promoCodes: PromoCode[];
+  referralCode?: string;
+  referredByCode?: string;
+  referralBoundAt?: string;
+  referralRewardedAt?: string;
   createdAt: string;
 };
 

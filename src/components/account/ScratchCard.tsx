@@ -7,6 +7,8 @@ type ScratchCardProps = {
   ticketNumber: string;
   onScratch: () => Promise<ScratchResult>;
   disabled: boolean;
+  demo?: boolean;
+  compact?: boolean;
 };
 
 const REVEAL_THRESHOLD = 0.86;
@@ -71,7 +73,13 @@ function drawCover(
   ctx.fillText("GRATTE LE PERSO", width / 2, height - 10);
 }
 
-export function ScratchCard({ ticketNumber, onScratch, disabled }: ScratchCardProps) {
+export function ScratchCard({
+  ticketNumber,
+  onScratch,
+  disabled,
+  demo = false,
+  compact = false,
+}: ScratchCardProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const coverImageRef = useRef<HTMLImageElement | null>(null);
@@ -273,28 +281,43 @@ export function ScratchCard({ ticketNumber, onScratch, disabled }: ScratchCardPr
 
   const revealLabel = useMemo(() => {
     if (!result) {
-      return "Gratte le personnage jusqu'au bout pour reveler le lot";
+      return demo
+        ? "Demo: gratte le personnage jusqu'au bout"
+        : "Gratte le personnage jusqu'au bout pour reveler le lot";
+    }
+    if (demo) {
+      return result.isWin ? "Demo: gain fictif affiche" : "Demo: ticket fictif sans gain";
     }
     return result.isWin ? "Ticket valide: gain confirme" : "Ticket valide: sans gain";
-  }, [result]);
+  }, [demo, result]);
 
   return (
-    <div className="relative overflow-hidden rounded-[18px] border-[3px] border-[#1a1a1a] bg-[#fffaf0] shadow-[8px_8px_0_rgba(26,26,26,0.2)]">
+    <div
+      className={`relative overflow-hidden rounded-[18px] border-[3px] border-[#1a1a1a] bg-[#fffaf0] ${
+        compact ? "shadow-[5px_5px_0_rgba(26,26,26,0.16)]" : "shadow-[8px_8px_0_rgba(26,26,26,0.2)]"
+      }`}
+    >
       <div className="bg-[#0a7b61] px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.14em] text-white">
-        Ticket promo - grattage instantane
+        {demo ? "Ticket demo - grattage" : "Ticket promo - grattage instantane"}
       </div>
 
-      <div className="pointer-events-none absolute left-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 rounded-full border-2 border-[#1a1a1a] bg-cream md:block" />
-      <div className="pointer-events-none absolute right-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 rounded-full border-2 border-[#1a1a1a] bg-cream md:block" />
+      {!compact && (
+        <>
+          <div className="pointer-events-none absolute left-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 rounded-full border-2 border-[#1a1a1a] bg-cream md:block" />
+          <div className="pointer-events-none absolute right-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 rounded-full border-2 border-[#1a1a1a] bg-cream md:block" />
+        </>
+      )}
 
-      <div className="grid gap-4 p-4 md:grid-cols-[260px_1fr] md:items-start md:p-5">
+      <div className={compact ? "grid gap-3 p-3" : "grid gap-4 p-4 md:grid-cols-[260px_1fr] md:items-start md:p-5"}>
         <div className="rounded-[12px] border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
           <p className="mb-2 text-center text-xs font-bold uppercase tracking-[0.08em] text-charcoal">
             Zone a gratter
           </p>
           <div
             ref={containerRef}
-            className="relative mx-auto aspect-square w-full max-w-[230px] overflow-hidden rounded-[10px] border-2 border-[#1a1a1a] bg-white"
+            className={`relative mx-auto aspect-square w-full overflow-hidden rounded-[10px] border-2 border-[#1a1a1a] bg-white ${
+              compact ? "max-w-[172px]" : "max-w-[230px]"
+            }`}
           >
             <div className="absolute inset-0 bg-[#fffaf0]" />
             <div className="absolute inset-x-2 bottom-2 rounded-[8px] border border-[#1a1a1a] bg-[#fffaf0]/90 px-2 py-1 text-center">
@@ -338,20 +361,34 @@ export function ScratchCard({ ticketNumber, onScratch, disabled }: ScratchCardPr
           )}
         </div>
 
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">Les Chanvriers Bretons</p>
-          <p className="mt-1 font-mono text-xs font-semibold text-ink">{ticketNumber}</p>
-          <p className="mt-2 font-display text-3xl text-ink">Ticket de grattage</p>
-          <p className="mt-2 text-sm text-charcoal">
-            Gratte la zone argent pour découvrir immédiatement ton résultat.
-          </p>
-          <p className="mt-2 text-[11px] uppercase tracking-[0.08em] text-charcoal">
-            1 ticket = 1 seul grattage - tirage securise cote serveur
-          </p>
-        </div>
+        {compact ? (
+          <div className="rounded-[12px] border-2 border-[#1a1a1a] bg-white px-3 py-2">
+            <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">Demo tutoriel</p>
+            <p className="mt-1 font-mono text-[11px] font-semibold text-ink">{ticketNumber}</p>
+            <p className="mt-1 text-xs text-charcoal">
+              Gratte pour reveler un exemple de lot sans appel API reel.
+            </p>
+          </div>
+        ) : (
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">Les Chanvriers Bretons</p>
+            <p className="mt-1 font-mono text-xs font-semibold text-ink">{ticketNumber}</p>
+            <p className="mt-2 font-display text-3xl text-ink">Ticket de grattage</p>
+            <p className="mt-2 text-sm text-charcoal">
+              Gratte la zone argent pour découvrir immédiatement ton résultat.
+            </p>
+            <p className="mt-2 text-[11px] uppercase tracking-[0.08em] text-charcoal">
+              1 ticket = 1 seul grattage - tirage securise cote serveur
+            </p>
+          </div>
+        )}
       </div>
 
-      <div className="border-t-2 border-[#1a1a1a] bg-[#f2e9d8] px-4 py-2 text-center text-xs font-semibold text-charcoal">
+      <div
+        className={`border-t-2 border-[#1a1a1a] bg-[#f2e9d8] text-center font-semibold text-charcoal ${
+          compact ? "px-3 py-2 text-[11px]" : "px-4 py-2 text-xs"
+        }`}
+      >
         {revealLabel}
       </div>
 

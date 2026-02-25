@@ -7,10 +7,11 @@ import type { LoyaltyBadgeId } from "@/types/loyalty";
 type LoyaltyBadgeIllustrationProps = {
   badgeId: LoyaltyBadgeId;
   unlocked: boolean;
-  size?: "sm" | "md";
+  size?: "xs" | "sm" | "md";
 };
 
 const sizeClasses: Record<NonNullable<LoyaltyBadgeIllustrationProps["size"]>, string> = {
+  xs: "h-9 w-9",
   sm: "h-12 w-12",
   md: "h-16 w-16",
 };

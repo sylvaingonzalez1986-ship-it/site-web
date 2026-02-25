@@ -1,19 +1,27 @@
-ï»¿import type { Metadata } from "next";
-import { getSiteUrl } from "@/lib/site-url";
+import type { Metadata } from "next";
+import { CmsPageRenderer } from "@/components/cms/CmsPageRenderer";
+import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-static-pages";
 
-const siteUrl = getSiteUrl();
-const cookiesUrl = `${siteUrl}/politique-cookies`;
+const CMS_SLUG = "politique-cookies";
+const CANONICAL_PATH = "/politique-cookies";
+const FALLBACK_TITLE = "Politique de cookies";
+const FALLBACK_DESCRIPTION =
+  "Politique de cookies du site Les Chanvriers Bretons.";
 
-export const metadata: Metadata = {
-  title: "Politique de cookies",
-  description:
-    "Politique de cookies du site Les Chanvriers Bretons.",
-  alternates: {
-    canonical: cookiesUrl,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildCmsStaticPageMetadata({
+    slug: CMS_SLUG,
+    canonicalPath: CANONICAL_PATH,
+    fallbackTitle: FALLBACK_TITLE,
+    fallbackDescription: FALLBACK_DESCRIPTION,
+  });
+}
 
-export default function PolitiqueCookiesPage() {
+export default async function PolitiqueCookiesPage() {
+  const cmsPage = await getStaticCmsPageBySlug(CMS_SLUG);
+  if (cmsPage) {
+    return <CmsPageRenderer page={cmsPage} />;
+  }
   return (
     <section className="section-band bg-cream halftone-overlay paper-grain pt-32">
       <div className="retro-container">
@@ -46,7 +54,7 @@ export default function PolitiqueCookiesPage() {
             <section>
               <h2 className="font-display text-2xl">Article 2 - Cookies utilises</h2>
               <p className="mt-2">
-                Le site utilise principalement des cookies techniques nÃ©cessaires.
+                Le site utilise principalement des cookies techniques nécessaires.
               </p>
               <div className="mt-3 max-w-full overflow-x-auto">
                 <table className="w-full min-w-[700px] border-collapse text-left text-xs sm:text-sm">
@@ -78,7 +86,7 @@ export default function PolitiqueCookiesPage() {
                         Maintenir la session du compte client connecte.
                       </td>
                       <td className="border border-[#1a1a1a] px-3 py-2">
-                        Session ou duree configurÃ©e par le service d&apos;authentification.
+                        Session ou duree configurée par le service d&apos;authentification.
                       </td>
                     </tr>
                     <tr>
@@ -87,7 +95,7 @@ export default function PolitiqueCookiesPage() {
                       </td>
                       <td className="border border-[#1a1a1a] px-3 py-2">Technique</td>
                       <td className="border border-[#1a1a1a] px-3 py-2">
-                        SÃ©curiser l&apos;accÃ¨s a l&apos;espace administrateur.
+                        Sécuriser l&apos;accès a l&apos;espace administrateur.
                       </td>
                       <td className="border border-[#1a1a1a] px-3 py-2">12 heures maximum</td>
                     </tr>
@@ -99,8 +107,8 @@ export default function PolitiqueCookiesPage() {
             <section>
               <h2 className="font-display text-2xl">Article 3 - Base legale</h2>
               <p className="mt-2">
-                Les cookies techniques utilises sont nÃ©cessaires au fonctionnement du site et a la
-                sÃ©curitÃ© des services. Leur depot repose sur l&apos;interet legitime de l&apos;editeur et,
+                Les cookies techniques utilises sont nécessaires au fonctionnement du site et a la
+                sécurité des services. Leur depot repose sur l&apos;interet legitime de l&apos;editeur et,
                 selon les cas, sur l&apos;execution du contrat.
               </p>
             </section>
@@ -109,7 +117,7 @@ export default function PolitiqueCookiesPage() {
               <h2 className="font-display text-2xl">Article 4 - Gestion des cookies</h2>
               <p className="mt-2">
                 Vous pouvez configurer votre navigateur pour refuser ou supprimer les cookies.
-                Toutefois, le blocage des cookies techniques peut empecher l&apos;accÃ¨s au compte, au
+                Toutefois, le blocage des cookies techniques peut empecher l&apos;accès au compte, au
                 panier, a l&apos;espace admin ou au processus de commande.
               </p>
             </section>
@@ -118,8 +126,8 @@ export default function PolitiqueCookiesPage() {
               <h2 className="font-display text-2xl">Article 5 - Cookies tiers et mesure d&apos;audience</h2>
               <p className="mt-2">
                 A ce jour, aucun cookie publicitaire tiers n&apos;est depose par defaut sur le site.
-                Si des outils de mesure d&apos;audience non strictement nÃ©cessaires sont ajoutes, cette
-                politique sera mise Ã  jour et un mecanisme de consentement sera mis en place le cas
+                Si des outils de mesure d&apos;audience non strictement nécessaires sont ajoutes, cette
+                politique sera mise à jour et un mecanisme de consentement sera mis en place le cas
                 echeant.
               </p>
             </section>

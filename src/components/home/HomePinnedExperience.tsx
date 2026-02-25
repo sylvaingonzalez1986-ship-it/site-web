@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
 import { CustomSection } from "@/components/CustomSection";
+import { HomeBadgePromoBand } from "@/components/home/HomeBadgePromoBand";
 import { HomeSeasonGallery } from "@/components/home/HomeSeasonGallery";
 import { HomeTicketPromoBand } from "@/components/home/HomeTicketPromoBand";
 import type { Product } from "@/data/products";
@@ -32,11 +33,10 @@ const HERO_FRAME_IDLE_SRC = `/hero-bretagne-bg.png?v=${HERO_ASSET_VERSION}`;
 const HERO_FRAME_SCENE_SRC = `/hero-bretagne-bg.png?v=${HERO_ASSET_VERSION}`;
 const LEGAL_FRAME_BG_SRC = `/legal-circle-bg.png?v=${HERO_ASSET_VERSION}`;
 const PRODUCTS_FRAME_BG_SRC = `/products-circle-bg.png?v=${HERO_ASSET_VERSION}`;
-const HOME_ALLOWED_TYPES = new Set(["hero", "legal", "products", "custom"]);
+const HOME_ALLOWED_TYPES = new Set(["hero", "products", "custom"]);
 const HOME_SECTION_ORDER: Record<string, number> = {
   hero: 0,
-  legal: 1,
-  products: 2,
+  products: 1,
   app: 3,
   story: 4,
   contact: 5,
@@ -210,16 +210,15 @@ export function HomePinnedExperience() {
           <div key={section.id}>
             <HeroPinnedSection home={home} zIndex={zIndex} />
             <HomeTicketPromoBand zIndex={zIndex + 1} />
+            <HomeBadgePromoBand zIndex={zIndex + 2} />
             <HomeSeasonGallery
               title={home.seasonGalleryTitle}
               images={home.seasonGalleryImages}
-              zIndex={zIndex + 2}
+              zIndex={zIndex + 3}
+              decorativeBackgroundSrc={LEGAL_FRAME_BG_SRC}
+              mascotSrc="/sylvain.png"
             />
           </div>
-        );
-      case "legal":
-        return (
-          <LegalPinnedSection key={section.id} home={home} zIndex={zIndex} />
         );
       case "products":
         return (
@@ -322,15 +321,16 @@ export function HomePinnedExperience() {
           <div key={section.id}>
             <MobileHeroSection home={home} zIndex={zIndex} />
             <HomeTicketPromoBand zIndex={zIndex + 1} />
+            <HomeBadgePromoBand zIndex={zIndex + 2} />
             <HomeSeasonGallery
               title={home.seasonGalleryTitle}
               images={home.seasonGalleryImages}
-              zIndex={zIndex + 2}
+              zIndex={zIndex + 3}
+              decorativeBackgroundSrc={LEGAL_FRAME_BG_SRC}
+              mascotSrc="/sylvain.png"
             />
           </div>
         );
-      case "legal":
-        return <MobileLegalSection key={section.id} home={home} zIndex={zIndex} />;
       case "products":
         return (
           <MobileProductsSection
@@ -388,7 +388,11 @@ function MobileHeroSection({ home, zIndex }: { home: HomeContent; zIndex: number
   const renderedHeroLines = heroLines.length > 0 ? heroLines : ["BIENVENUE"];
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-28" style={{ zIndex }}>
+    <section
+      className="section-band bg-mint halftone-overlay paper-grain pt-28"
+      style={{ zIndex }}
+      data-tutorial="home-hero"
+    >
       <div className="retro-container">
         <div className="cartoon-border bg-cream p-5">
           <h1 className="pinned-title text-ink">
@@ -689,6 +693,7 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
       ref={sectionRef}
       className="section-pinned pinned-hero bg-mint halftone-overlay paper-grain"
       style={{ zIndex }}
+      data-tutorial="home-hero"
     >
         <div
           ref={cardRef}

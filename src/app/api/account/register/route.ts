@@ -21,6 +21,7 @@ export async function POST(request: Request) {
       lastName?: string;
       dateOfBirth?: string;
       password?: string;
+      referralCode?: string;
       phone?: string;
       address?: string;
       city?: string;
@@ -67,6 +68,7 @@ export async function POST(request: Request) {
       lastName: payload.lastName,
       dateOfBirth,
       password: payload.password,
+      referralCode: payload.referralCode,
       phone: payload.phone,
       address: payload.address,
       city: payload.city,
