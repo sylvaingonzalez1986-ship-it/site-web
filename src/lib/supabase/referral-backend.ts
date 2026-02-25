@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
+import { isReferralFirstOrderDiscountEligible } from "@/lib/referral-first-order-discount";
 import type {
   AdminReferralOverview,
   ReferralRewardConfig,
@@ -160,6 +161,49 @@ export async function applySupabaseReferralRewardOnPaidOrder(input: {
   failIfError(result.error, "rpc_apply_referral_reward_on_paid_order");
 
   return result.data === true;
+}
+
+export async function getSupabaseReferralFirstOrderDiscountEligibility(input: {
+  userId: string;
+  hasManualDiscount?: boolean;
+}): Promise<boolean> {
+  const safeUserId = input.userId.trim();
+  if (!safeUserId) {
+    return false;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const [profileResult, paidOrdersResult] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("referred_by_code,referral_rewarded_at")
+      .eq("id", safeUserId)
+      .maybeSingle(),
+    supabase
+      .from("orders")
+      .select("id", { count: "exact", head: true })
+      .eq("customer_id", safeUserId)
+      .in("payment_state", ["paid", "not_configured"]),
+  ]);
+
+  failIfError(profileResult.error, "referral first-order profile");
+  failIfError(paidOrdersResult.error, "referral first-order paid orders");
+
+  const profile = profileResult.data as
+    | { referred_by_code?: string | null; referral_rewarded_at?: string | null }
+    | null;
+  const paidOrdersCount = Number(paidOrdersResult.count ?? 0);
+
+  return isReferralFirstOrderDiscountEligible({
+    referredByCode:
+      typeof profile?.referred_by_code === "string" ? profile.referred_by_code : undefined,
+    referralRewardedAt:
+      typeof profile?.referral_rewarded_at === "string"
+        ? profile.referral_rewarded_at
+        : undefined,
+    hasPaidOrder: paidOrdersCount > 0,
+    hasManualDiscount: input.hasManualDiscount === true,
+  });
 }
 
 export async function getSupabaseReferralSummary(userId: string): Promise<ReferralSummary> {

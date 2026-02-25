@@ -19,6 +19,12 @@ import {
 import { appendOrderByBackend } from "@/lib/order-backend";
 import { getAvailableQuantity } from "@/lib/product-stock";
 import {
+  computeReferralFirstOrderDiscountAmount,
+  REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_CODE,
+  REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_PERCENT,
+} from "@/lib/referral-first-order-discount";
+import { isReferralFirstOrderDiscountEligibleByBackend } from "@/lib/referral-backend";
+import {
   computeShippingFee,
   getShippingPricingConfig,
   type DeliveryMethod,
@@ -725,6 +731,7 @@ export async function POST(request: Request) {
         code: string;
         discountPercent: number;
         discountAmount: number;
+        consumeCode?: boolean;
       }
     | null = null;
   let appliedTicket:
@@ -810,6 +817,27 @@ export async function POST(request: Request) {
         : undefined,
     };
     requestedDiscountAmount = Number((requestedBadgeDiscountAmount + discountAmount).toFixed(2));
+  }
+
+  if (!appliedPromo && !appliedTicket && customerId) {
+    const isReferralAutoDiscountEligible = await isReferralFirstOrderDiscountEligibleByBackend({
+      userId: customerId,
+      hasManualDiscount: false,
+    });
+
+    if (isReferralAutoDiscountEligible) {
+      const discountAmount = computeReferralFirstOrderDiscountAmount(
+        subtotalAfterBadge,
+        REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_PERCENT,
+      );
+      appliedPromo = {
+        code: REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_CODE,
+        discountPercent: REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_PERCENT,
+        discountAmount,
+        consumeCode: false,
+      };
+      requestedDiscountAmount = Number((requestedBadgeDiscountAmount + discountAmount).toFixed(2));
+    }
   }
 
   let finalizedItems = resolvedItems;

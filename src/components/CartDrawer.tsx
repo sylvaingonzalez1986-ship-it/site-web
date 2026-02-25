@@ -16,6 +16,11 @@ import {
 } from "@/lib/loyalty-tier-benefits";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import {
+  computeReferralFirstOrderDiscountAmount,
+  isReferralFirstOrderDiscountEligible,
+  REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_PERCENT,
+} from "@/lib/referral-first-order-discount";
+import {
   computeShippingFee,
   getShippingPricingConfig,
   type DeliveryMethod,
@@ -63,7 +68,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     removeFromCart,
     clearCart,
   } = useCart();
-  const { user, loyalty, tickets, lotteryConfig } = useCustomerSession();
+  const { user, orders, loyalty, tickets, lotteryConfig, loading: customerSessionLoading } = useCustomerSession();
   const { store: cmsStore } = useCmsStore();
 
   const [shippingName, setShippingName] = useState("");
@@ -125,6 +130,50 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     () => Number(Math.max(totalPrice - badgeDiscountAmount, 0).toFixed(2)),
     [badgeDiscountAmount, totalPrice],
   );
+  const hasManualDiscountChoice = promoCode.trim().length > 0 || selectedLotteryTicketId.length > 0;
+  const hasPaidOrders = useMemo(
+    () => orders.some((order) => order.paymentState === "paid" || order.paymentState === "not_configured"),
+    [orders],
+  );
+  const hasAutoReferralDiscount = useMemo(
+    () =>
+      isAuthenticated &&
+      !authLoading &&
+      !customerSessionLoading &&
+      !promoPreview &&
+      !lotteryPreview &&
+      isReferralFirstOrderDiscountEligible({
+        referredByCode: user?.referredByCode,
+        referralRewardedAt: user?.referralRewardedAt,
+        hasPaidOrder: hasPaidOrders,
+        hasManualDiscount: hasManualDiscountChoice,
+      }),
+    [
+      authLoading,
+      customerSessionLoading,
+      hasManualDiscountChoice,
+      hasPaidOrders,
+      isAuthenticated,
+      lotteryPreview,
+      promoPreview,
+      user?.referredByCode,
+      user?.referralRewardedAt,
+    ],
+  );
+  const referralAutoDiscountAmount = useMemo(
+    () =>
+      hasAutoReferralDiscount
+        ? computeReferralFirstOrderDiscountAmount(
+            totalAfterBadgeDiscount,
+            REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_PERCENT,
+          )
+        : 0,
+    [hasAutoReferralDiscount, totalAfterBadgeDiscount],
+  );
+  const totalAfterAutoReferralDiscount = useMemo(
+    () => Number(Math.max(totalAfterBadgeDiscount - referralAutoDiscountAmount, 0).toFixed(2)),
+    [referralAutoDiscountAmount, totalAfterBadgeDiscount],
+  );
 
   const redeemableWinningTickets = useMemo(
     () =>
@@ -161,7 +210,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   }, [redeemableWinningTickets, selectedLotteryTicketId]);
 
   const checkoutAmount =
-    lotteryPreview?.discountedTotal ?? promoPreview?.discountedTotal ?? totalAfterBadgeDiscount;
+    lotteryPreview?.discountedTotal ??
+    promoPreview?.discountedTotal ??
+    (hasAutoReferralDiscount ? totalAfterAutoReferralDiscount : totalAfterBadgeDiscount);
   const shippingPricingConfig = useMemo(() => getShippingPricingConfig(), []);
   const hasFreeShippingByBadge = useMemo(
     () => isBadgeEligibleForFreeShipping(loyalty.currentBadge.id, loyalty.currentBadge.unlocked),
@@ -676,6 +727,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             <div className="mt-2 text-sm text-green-700">
               Reduction fidelite ({loyalty.currentBadge.label}): -{formatPrice(displayedBadgeDiscountAmount)} (
               {displayedBadgeDiscountPercent}%)
+            </div>
+          )}
+          {hasAutoReferralDiscount && (
+            <div className="mt-2 text-sm text-green-700">
+              Remise filleul premiere commande: -{formatPrice(referralAutoDiscountAmount)} (
+              {REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_PERCENT}%)
             </div>
           )}
           {promoPreview && (

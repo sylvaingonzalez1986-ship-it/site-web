@@ -47,6 +47,7 @@ export type AppendOrderInput = {
     code: string;
     discountPercent: number;
     discountAmount: number;
+    consumeCode?: boolean;
   } | null;
   viva?: {
     orderCode: number;

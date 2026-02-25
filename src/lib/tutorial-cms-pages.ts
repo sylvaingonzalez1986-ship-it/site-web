@@ -105,12 +105,21 @@ export function applyTutorialCmsPageOverrides(
 
     const title = page.title.trim() || step.title;
     const description = page.description.trim();
-    const sectionBodies = page.sections
+    const mainSection =
+      page.sections.find((section) => section.id === "main-text") ?? page.sections[0];
+    const mainLines = mainSection ? toSectionBodyLines(mainSection.body) : [];
+    const detailLines = page.sections
+      .filter((section) => section.id !== mainSection?.id)
       .flatMap((section) => toSectionBodyLines(section.body))
       .filter((line) => line.length > 0);
-    const text = sectionBodies[0] || description || step.text;
+    const mainBodyRaw = mainSection?.body.trim() ?? "";
+    const isMainBodyDefaultOrEmpty = mainBodyRaw.length === 0 || mainBodyRaw === step.text.trim();
+    const text =
+      description.length > 0 && isMainBodyDefaultOrEmpty
+        ? description
+        : mainLines[0] || description || step.text;
 
-    const detailsFromPage = sectionBodies.slice(1);
+    const detailsFromPage = [...mainLines.slice(1), ...detailLines];
     const details =
       detailsFromPage.length > 0
         ? detailsFromPage

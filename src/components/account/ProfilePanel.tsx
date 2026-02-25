@@ -619,6 +619,9 @@ export function ProfilePanel() {
                   pour le parrain et {referralSummary?.config.refereePoints ?? 0} pts pour le filleul
                   apres la premiere commande payee du filleul.
                 </p>
+                <p className="mt-1 text-xs text-charcoal">
+                  Le filleul obtient aussi 10% de remise automatique sur sa premiere commande.
+                </p>
 
                 {!referralSummary?.referredByCode && (
                   <div className="mt-3 grid gap-2 sm:grid-cols-[1fr,auto] sm:items-center">

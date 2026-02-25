@@ -164,7 +164,9 @@ export async function appendOrderToSupabase(input: AppendOrderInput): Promise<Cm
     parent_pack_name: item.parentPackName ?? null,
   }));
 
+  const shouldConsumePromoCode = input.promo?.consumeCode !== false;
   const promoPayload =
+    shouldConsumePromoCode &&
     rawCustomerId &&
       UUID_PATTERN.test(rawCustomerId) &&
       input.promo?.code

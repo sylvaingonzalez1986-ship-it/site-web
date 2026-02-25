@@ -175,6 +175,11 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
         placeholder="Code parrain (optionnel)"
         data-tutorial="referral-code-input"
       />
+      {referralCode.trim().length > 0 && (
+        <p className="text-xs font-semibold text-charcoal">
+          Code parrain detecte: 10% auto sur ta premiere commande.
+        </p>
+      )}
       <button type="submit" disabled={loading} className="btn-cartoon btn-primary h-12">
         {loading ? "Creation..." : "Creer mon compte"}
       </button>

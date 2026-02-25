@@ -12,6 +12,7 @@ import type {
 import { SECTION_STYLE_OPTIONS, type SectionStyle } from "@/types/store";
 
 const STATUS_OPTIONS: CmsPageStatus[] = ["draft", "published", "archived"];
+const CMS_PAGES_UPDATED_EVENT = "lcb:cms-pages-updated";
 
 function createSectionDraft(index: number): CmsPageSection {
   return {
@@ -43,6 +44,14 @@ export function AdminPagesPanel() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string>("Chargement...");
+
+  const notifyCmsPagesUpdated = () => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    window.dispatchEvent(new CustomEvent(CMS_PAGES_UPDATED_EVENT));
+  };
 
   const sortedPages = useMemo(
     () => [...pages].sort((a, b) => a.position - b.position || a.title.localeCompare(b.title)),
@@ -132,6 +141,7 @@ export function AdminPagesPanel() {
       setSelectedPageId(created.id);
       setNewPageTitle("");
       setNewPageSlug("");
+      notifyCmsPagesUpdated();
       setStatusMessage("Page creee.");
     } catch {
       setStatusMessage("Erreur reseau pendant la creation.");
@@ -176,6 +186,7 @@ export function AdminPagesPanel() {
 
       const updated = data as CmsPage;
       setPages((current) => current.map((page) => (page.id === updated.id ? updated : page)));
+      notifyCmsPagesUpdated();
       setStatusMessage("Page sauvegardee.");
     } catch {
       setStatusMessage("Erreur reseau pendant la sauvegarde.");
@@ -205,6 +216,7 @@ export function AdminPagesPanel() {
 
       const updated = data as CmsPage;
       setPages((current) => current.map((page) => (page.id === updated.id ? updated : page)));
+      notifyCmsPagesUpdated();
       setStatusMessage("Page archivee.");
     } catch {
       setStatusMessage("Erreur reseau pendant l'archivage.");
@@ -250,6 +262,7 @@ export function AdminPagesPanel() {
       const created = data as CmsPage;
       setPages((current) => [...current, created]);
       setSelectedPageId(created.id);
+      notifyCmsPagesUpdated();
       setStatusMessage("Page dupliquee.");
     } catch {
       setStatusMessage("Erreur reseau pendant la duplication.");

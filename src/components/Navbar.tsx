@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { HelpCircle, Menu, ShoppingCart, X } from "lucide-react";
+import { Menu, ShoppingCart, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { CartDrawer } from "@/components/CartDrawer";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
-import { useTutorial } from "@/components/tutorial/TutorialProvider";
 import { useCart } from "@/context/CartContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useCmsPages } from "@/hooks/useCmsPages";
@@ -24,7 +23,6 @@ export function Navbar() {
   const { totalItems } = useCart();
   const { user, loyalty } = useCustomerSession();
   const { pages: cmsPages } = useCmsPages();
-  const { isEnabled: tutorialEnabled, restartTutorial } = useTutorial();
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -162,17 +160,6 @@ export function Navbar() {
               );
             })}
           </nav>
-
-          {tutorialEnabled && (
-            <button
-              type="button"
-              onClick={restartTutorial}
-              aria-label="Revoir le tutoriel"
-              className="relative inline-flex h-11 w-11 items-center justify-center border-2 border-[#1a1a1a] bg-[#f7f4ee]"
-            >
-              <HelpCircle size={19} />
-            </button>
-          )}
 
           <button
             type="button"

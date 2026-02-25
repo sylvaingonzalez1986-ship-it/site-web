@@ -1,6 +1,7 @@
 import "server-only";
 
 import {
+  getSupabaseReferralFirstOrderDiscountEligibility,
   applySupabaseReferralRewardOnPaidOrder,
   bindSupabaseReferralCode,
   getSupabaseAdminReferralOverview,
@@ -23,6 +24,13 @@ export async function applyReferralRewardForPaidOrderByBackend(input: {
   orderId: string;
 }): Promise<boolean> {
   return applySupabaseReferralRewardOnPaidOrder(input);
+}
+
+export async function isReferralFirstOrderDiscountEligibleByBackend(input: {
+  userId: string;
+  hasManualDiscount?: boolean;
+}): Promise<boolean> {
+  return getSupabaseReferralFirstOrderDiscountEligibility(input);
 }
 
 export async function getAdminReferralOverviewByBackend(): Promise<AdminReferralOverview> {
