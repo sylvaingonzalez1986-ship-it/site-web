@@ -95,6 +95,20 @@ export type BlogPost = {
   updatedAt: string;
 };
 
+export const PRODUCER_CULTURE_TYPES = [
+  "indoor",
+  "greenhouse",
+  "outdoor",
+] as const;
+
+export type ProducerCultureType = (typeof PRODUCER_CULTURE_TYPES)[number];
+
+export const PRODUCER_CULTURE_LABELS: Record<ProducerCultureType, string> = {
+  indoor: "Indoor",
+  greenhouse: "Greenhouse",
+  outdoor: "Outdoor",
+};
+
 export type Producer = {
   id: string;
   name: string;
@@ -104,6 +118,15 @@ export type Producer = {
   department: string;
   region: string;
   website: string;
+  cultureType: ProducerCultureType[];
+  climate: string;
+  soil: string;
+  altitude: string;
+  certifications: string[];
+  speciality: string;
+  philosophy: string;
+  experience: string;
+  founded: string;
 };
 
 export const SECTION_STYLE_OPTIONS = ["mint", "yellow", "cream"] as const;

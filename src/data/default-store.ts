@@ -108,9 +108,9 @@ export const defaultStore: CmsStore = {
       connaisseurBenefits:
         "Recompenses premium en avant-premiere\nOffres dediees au palier or\nSupport prioritaire",
       ambassadeurBenefits:
-        "Invitations privilegiees a nos lancements\nAvantages exclusifs palier platine\nSelection speciale de produits",
+        "Invitations privilegiees a nos lancements\nAvantages exclusifs palier platine\nSelection speciale de produits\nCadeau anniversaire en passant une commande le mois de ton anniversaire",
       legendeBenefits:
-        "Meilleurs avantages fidelite disponibles\nAcces VIP sur operations speciales\nPalier diamant affiche sur ton profil",
+        "Meilleurs avantages fidelite disponibles\nAcces VIP sur operations speciales\nPalier diamant affiche sur ton profil\nCadeau anniversaire en passant une commande le mois de ton anniversaire\nCadeau de Noel en passant une commande en decembre",
     },
     footer: {
       copyright: "Copyright Les Chanvriers Bretons - Tous droits reserves.",

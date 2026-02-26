@@ -25,11 +25,11 @@ export function HomeBadgePromoBand({ zIndex }: HomeBadgePromoBandProps) {
             Badge fidelite
           </p>
           <h2 className="mt-2 font-display text-3xl leading-none text-ink md:text-5xl">
-            Plus tu commandes, plus ton badge monte
+            Plus tu commandes, plus tu b&eacute;n&eacute;ficies d&apos;avantages.
           </h2>
           <p className="mt-3 max-w-4xl text-sm leading-relaxed text-charcoal md:text-base">
-            Le principe est simple: 1 EUR depense = 1 point. Tu progresses par paliers et tu
-            debloques plus d&apos;avantages a chaque niveau.
+            Le principe est simple : 1 &euro; d&eacute;pens&eacute; = 1 point. Tu progresses par paliers et tu
+            d&eacute;bloques de nouveaux avantages &agrave; chaque niveau.
           </p>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">

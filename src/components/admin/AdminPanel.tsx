@@ -27,12 +27,15 @@ import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import {
   BLOG_CATEGORY_OPTIONS,
   ORDER_STATUS_OPTIONS,
+  PRODUCER_CULTURE_LABELS,
+  PRODUCER_CULTURE_TYPES,
   type BlogPost,
   type BlogCategory,
   type CmsOrder,
   type CmsStore,
   type OrderStatus,
   type Producer,
+  type ProducerCultureType,
 } from "@/types/store";
 
 const productCategoryOptions = Object.keys(categoryLabels) as ProductCategory[];
@@ -93,6 +96,23 @@ function formatProducerLocation(department: string, region: string): string {
   return [department.trim(), region.trim()].filter(Boolean).join(", ") || "France";
 }
 
+function parseProducerCertificationsInput(value: string): string[] {
+  const nextValues: string[] = [];
+  const seen = new Set<string>();
+
+  for (const rawValue of value.split(",")) {
+    const certification = rawValue.trim();
+    const key = certification.toLowerCase();
+    if (!certification || seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    nextValues.push(certification);
+  }
+
+  return nextValues;
+}
+
 function makeProduct(): Product {
   return {
     id: `product-${Date.now()}`,
@@ -118,6 +138,15 @@ function makeProducer(): Producer {
     department: "",
     region: "",
     website: "",
+    cultureType: [],
+    climate: "",
+    soil: "",
+    altitude: "",
+    certifications: [],
+    speciality: "",
+    philosophy: "",
+    experience: "",
+    founded: "",
   };
 }
 
@@ -772,6 +801,31 @@ export function AdminPanel() {
         department: nextDepartment,
         region: nextRegion,
         location: formatProducerLocation(nextDepartment, nextRegion),
+      };
+
+      return { ...current, producers: next };
+    });
+  };
+
+  const toggleProducerCultureType = (index: number, cultureType: ProducerCultureType) => {
+    setDraft((current) => {
+      const next = [...current.producers];
+      const producer = next[index];
+      if (!producer) {
+        return current;
+      }
+
+      const currentCultureTypes = Array.isArray(producer.cultureType)
+        ? producer.cultureType
+        : [];
+      const hasCultureType = currentCultureTypes.includes(cultureType);
+      const nextCultureTypes = hasCultureType
+        ? currentCultureTypes.filter((entry) => entry !== cultureType)
+        : [...currentCultureTypes, cultureType];
+
+      next[index] = {
+        ...producer,
+        cultureType: nextCultureTypes,
       };
 
       return { ...current, producers: next };
@@ -1463,6 +1517,107 @@ export function AdminPanel() {
                         }
                         placeholder="description"
                       />
+
+                      <div className="admin-field-group mt-4 grid gap-3">
+                        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-charcoal">
+                          Donnees carte TCG
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {PRODUCER_CULTURE_TYPES.map((cultureType) => {
+                            const active = (selectedProducer.cultureType ?? []).includes(cultureType);
+                            return (
+                              <button
+                                key={cultureType}
+                                type="button"
+                                onClick={() =>
+                                  toggleProducerCultureType(selectedProducerIndex, cultureType)
+                                }
+                                className={`pill-cartoon px-3 py-1 text-xs uppercase tracking-[0.08em] transition-colors ${
+                                  active
+                                    ? "bg-[#1a1a1a] text-white"
+                                    : "bg-white text-ink hover:bg-[#f4f4f4]"
+                                }`}
+                                aria-pressed={active}
+                              >
+                                {PRODUCER_CULTURE_LABELS[cultureType]}
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        <div className="grid gap-3 md:grid-cols-2">
+                          <input
+                            className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                            value={selectedProducer.climate}
+                            onChange={(event) =>
+                              updateProducer(selectedProducerIndex, "climate", event.target.value)
+                            }
+                            placeholder="climat (ex: Oceanique)"
+                          />
+                          <input
+                            className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                            value={selectedProducer.soil}
+                            onChange={(event) =>
+                              updateProducer(selectedProducerIndex, "soil", event.target.value)
+                            }
+                            placeholder="sol / terroir"
+                          />
+                          <input
+                            className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                            value={selectedProducer.altitude}
+                            onChange={(event) =>
+                              updateProducer(selectedProducerIndex, "altitude", event.target.value)
+                            }
+                            placeholder="altitude"
+                          />
+                          <input
+                            className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                            value={selectedProducer.speciality}
+                            onChange={(event) =>
+                              updateProducer(selectedProducerIndex, "speciality", event.target.value)
+                            }
+                            placeholder="specialite"
+                          />
+                          <input
+                            className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                            value={selectedProducer.experience}
+                            onChange={(event) =>
+                              updateProducer(selectedProducerIndex, "experience", event.target.value)
+                            }
+                            placeholder="experience (ex: 8 ans)"
+                          />
+                          <input
+                            className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                            value={selectedProducer.founded}
+                            onChange={(event) =>
+                              updateProducer(selectedProducerIndex, "founded", event.target.value)
+                            }
+                            placeholder="annee de creation"
+                          />
+                        </div>
+
+                        <input
+                          className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                          value={(selectedProducer.certifications ?? []).join(", ")}
+                          onChange={(event) =>
+                            updateProducer(
+                              selectedProducerIndex,
+                              "certifications",
+                              parseProducerCertificationsInput(event.target.value),
+                            )
+                          }
+                          placeholder="certifications (separees par des virgules)"
+                        />
+
+                        <textarea
+                          className="min-h-16 w-full border-2 border-[#1a1a1a] p-2 text-sm"
+                          value={selectedProducer.philosophy}
+                          onChange={(event) =>
+                            updateProducer(selectedProducerIndex, "philosophy", event.target.value)
+                          }
+                          placeholder="philosophie (phrase courte)"
+                        />
+                      </div>
 
                       <div className="mt-3 grid gap-3 md:grid-cols-[1fr,auto] md:items-start">
                         <ProducerImageUpload

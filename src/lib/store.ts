@@ -18,6 +18,7 @@ import {
   SECTION_STYLE_OPTIONS,
   BLOG_CATEGORY_OPTIONS,
   ORDER_STATUS_OPTIONS,
+  PRODUCER_CULTURE_TYPES,
   type ApplicationSection,
   type BlogCategory,
   type BlogPageSection,
@@ -30,6 +31,7 @@ import {
   type OrderStatus,
   type PageSections,
   type Producer,
+  type ProducerCultureType,
   type PublicStoreResponse,
   type SectionPageKey,
   type SectionStyle,
@@ -43,6 +45,7 @@ const validOrderStatuses = new Set<OrderStatus>(ORDER_STATUS_OPTIONS);
 const validBlogCategories = new Set<BlogCategory>(BLOG_CATEGORY_OPTIONS);
 const validSectionStyles = new Set<SectionStyle>(SECTION_STYLE_OPTIONS);
 const validVatRates = new Set<VatRate>(VAT_RATE_OPTIONS);
+const validProducerCultureTypes = new Set<ProducerCultureType>(PRODUCER_CULTURE_TYPES);
 const isTaxableStore = INVOICE_SETTINGS.vatMode === "taxable";
 const MAX_CUSTOM_SECTIONS_PER_PAGE = 20;
 const MAX_SECTION_TITLE_LENGTH = 120;
@@ -175,6 +178,57 @@ function normalizeVatRate(value: unknown): VatRate {
   return 20;
 }
 
+function normalizeProducerCultureTypes(value: unknown): ProducerCultureType[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const normalized: ProducerCultureType[] = [];
+  const seen = new Set<ProducerCultureType>();
+
+  for (const item of value) {
+    if (typeof item !== "string") {
+      continue;
+    }
+
+    const candidate = item.trim().toLowerCase() as ProducerCultureType;
+    if (!validProducerCultureTypes.has(candidate) || seen.has(candidate)) {
+      continue;
+    }
+
+    seen.add(candidate);
+    normalized.push(candidate);
+  }
+
+  return normalized;
+}
+
+function normalizeProducerCertifications(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const normalized: string[] = [];
+  const seen = new Set<string>();
+
+  for (const item of value) {
+    if (typeof item !== "string") {
+      continue;
+    }
+
+    const certification = item.trim();
+    const key = certification.toLowerCase();
+    if (!certification || seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+    normalized.push(certification);
+  }
+
+  return normalized;
+}
+
 function normalizeProducer(producer: Producer, index: number): Producer {
   void index;
   const region = producer.region?.trim() || "";
@@ -190,6 +244,15 @@ function normalizeProducer(producer: Producer, index: number): Producer {
     department,
     region,
     website: sanitizeWebsite(producer.website),
+    cultureType: normalizeProducerCultureTypes(producer.cultureType),
+    climate: producer.climate?.trim() || "",
+    soil: producer.soil?.trim() || "",
+    altitude: producer.altitude?.trim() || "",
+    certifications: normalizeProducerCertifications(producer.certifications),
+    speciality: producer.speciality?.trim() || "",
+    philosophy: producer.philosophy?.trim() || "",
+    experience: producer.experience?.trim() || "",
+    founded: producer.founded?.trim() || "",
   };
 }
 
@@ -627,6 +690,10 @@ function normalizeStore(input: CmsStore, options?: { touchUpdatedAt?: boolean })
       blog: {
         ...defaultStore.content.blog,
         ...input.content?.blog,
+      },
+      profile: {
+        ...defaultStore.content.profile,
+        ...input.content?.profile,
       },
       footer: { ...defaultStore.content.footer, ...input.content?.footer },
     },

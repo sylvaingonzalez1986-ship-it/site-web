@@ -4,6 +4,7 @@ import process from "node:process";
 import { createClient } from "@supabase/supabase-js";
 
 const ROOT = process.cwd();
+const VALID_PRODUCER_CULTURE_TYPES = new Set(["indoor", "greenhouse", "outdoor"]);
 
 function parseEnv(content) {
   const result = {};
@@ -45,6 +46,56 @@ function toNumber(value, fallback = 0) {
 function toIso(value) {
   const parsed = Date.parse(String(value ?? ""));
   return Number.isFinite(parsed) ? new Date(parsed).toISOString() : new Date().toISOString();
+}
+
+function toTrimmedStringArray(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const seen = new Set();
+  const nextValues = [];
+
+  for (const item of value) {
+    if (typeof item !== "string") {
+      continue;
+    }
+    const trimmed = item.trim();
+    if (!trimmed) {
+      continue;
+    }
+    const key = trimmed.toLowerCase();
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    nextValues.push(trimmed);
+  }
+
+  return nextValues;
+}
+
+function sanitizeProducerCultureTypes(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const seen = new Set();
+  const nextValues = [];
+
+  for (const item of value) {
+    if (typeof item !== "string") {
+      continue;
+    }
+    const normalized = item.trim().toLowerCase();
+    if (!VALID_PRODUCER_CULTURE_TYPES.has(normalized) || seen.has(normalized)) {
+      continue;
+    }
+    seen.add(normalized);
+    nextValues.push(normalized);
+  }
+
+  return nextValues;
 }
 
 async function readJson(filePath, fallback) {
@@ -91,6 +142,15 @@ async function main() {
       department: String(producer.department ?? ""),
       region: String(producer.region ?? ""),
       website: String(producer.website ?? ""),
+      culture_type: sanitizeProducerCultureTypes(producer.cultureType),
+      climate: String(producer.climate ?? ""),
+      soil: String(producer.soil ?? ""),
+      altitude: String(producer.altitude ?? ""),
+      certifications: toTrimmedStringArray(producer.certifications),
+      speciality: String(producer.speciality ?? ""),
+      philosophy: String(producer.philosophy ?? ""),
+      experience: String(producer.experience ?? ""),
+      founded: String(producer.founded ?? ""),
       position: index,
     }));
     const result = await supabase.from("producers").upsert(rows, { onConflict: "id" });
@@ -169,6 +229,7 @@ async function main() {
       boutique: content.boutique ?? {},
       application: content.application ?? {},
       blog: content.blog ?? {},
+      profile: content.profile ?? {},
       footer: content.footer ?? {},
       updated_at: toIso(store.updatedAt),
     }, { onConflict: "id" });

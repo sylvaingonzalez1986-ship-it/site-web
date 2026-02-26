@@ -54,7 +54,7 @@ export default async function PolitiqueCookiesPage() {
             <section>
               <h2 className="font-display text-2xl">Article 2 - Cookies utilises</h2>
               <p className="mt-2">
-                Le site utilise principalement des cookies techniques nécessaires.
+                Le site utilise principalement des cookies techniques nÃ©cessaires.
               </p>
               <div className="mt-3 max-w-full overflow-x-auto">
                 <table className="w-full min-w-[700px] border-collapse text-left text-xs sm:text-sm">
@@ -86,7 +86,7 @@ export default async function PolitiqueCookiesPage() {
                         Maintenir la session du compte client connecte.
                       </td>
                       <td className="border border-[#1a1a1a] px-3 py-2">
-                        Session ou duree configurée par le service d&apos;authentification.
+                        Session ou duree configurÃ©e par le service d&apos;authentification.
                       </td>
                     </tr>
                     <tr>
@@ -95,7 +95,7 @@ export default async function PolitiqueCookiesPage() {
                       </td>
                       <td className="border border-[#1a1a1a] px-3 py-2">Technique</td>
                       <td className="border border-[#1a1a1a] px-3 py-2">
-                        Sécuriser l&apos;accès a l&apos;espace administrateur.
+                        SÃ©curiser l&apos;accÃ¨s a l&apos;espace administrateur.
                       </td>
                       <td className="border border-[#1a1a1a] px-3 py-2">12 heures maximum</td>
                     </tr>
@@ -107,8 +107,8 @@ export default async function PolitiqueCookiesPage() {
             <section>
               <h2 className="font-display text-2xl">Article 3 - Base legale</h2>
               <p className="mt-2">
-                Les cookies techniques utilises sont nécessaires au fonctionnement du site et a la
-                sécurité des services. Leur depot repose sur l&apos;interet legitime de l&apos;editeur et,
+                Les cookies techniques utilises sont nÃ©cessaires au fonctionnement du site et a la
+                sÃ©curitÃ© des services. Leur depot repose sur l&apos;interet legitime de l&apos;editeur et,
                 selon les cas, sur l&apos;execution du contrat.
               </p>
             </section>
@@ -117,7 +117,7 @@ export default async function PolitiqueCookiesPage() {
               <h2 className="font-display text-2xl">Article 4 - Gestion des cookies</h2>
               <p className="mt-2">
                 Vous pouvez configurer votre navigateur pour refuser ou supprimer les cookies.
-                Toutefois, le blocage des cookies techniques peut empecher l&apos;accès au compte, au
+                Toutefois, le blocage des cookies techniques peut empecher l&apos;accÃ¨s au compte, au
                 panier, a l&apos;espace admin ou au processus de commande.
               </p>
             </section>
@@ -126,8 +126,8 @@ export default async function PolitiqueCookiesPage() {
               <h2 className="font-display text-2xl">Article 5 - Cookies tiers et mesure d&apos;audience</h2>
               <p className="mt-2">
                 A ce jour, aucun cookie publicitaire tiers n&apos;est depose par defaut sur le site.
-                Si des outils de mesure d&apos;audience non strictement nécessaires sont ajoutes, cette
-                politique sera mise à jour et un mecanisme de consentement sera mis en place le cas
+                Si des outils de mesure d&apos;audience non strictement nÃ©cessaires sont ajoutes, cette
+                politique sera mise Ã  jour et un mecanisme de consentement sera mis en place le cas
                 echeant.
               </p>
             </section>

@@ -21,9 +21,9 @@ export function HomeTicketPromoBand({ zIndex }: HomeTicketPromoBandProps) {
             1 an de conso a gagner
           </h2>
           <p className="mt-3 max-w-4xl text-sm leading-relaxed text-charcoal md:text-base">
-            A chaque commande payee, tu cumules des tickets (1 ticket tous les 20 EUR TTC). Gratte en profil pour
-            tenter le gros lot et decrocher d&apos;autres recompenses: reductions, grammes offerts et surprises.
-            Le detail du lot legendaire est disponible dans le reglement du jeu.
+            &Agrave; chaque commande pay&eacute;e, tu cumules des tickets (1 ticket pour 20 &euro; TTC). Retrouve tes tickets
+            &agrave; gratter dans ton profil pour tenter le gros lot et d&eacute;crocher d&apos;autres r&eacute;compenses : r&eacute;ductions,
+            grammes offerts et surprises.
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="pill-cartoon bg-white px-3 py-1 text-xs uppercase tracking-[0.06em] text-ink">

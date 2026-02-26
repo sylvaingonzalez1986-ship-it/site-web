@@ -6,8 +6,18 @@ import type { Product, VatRate } from "@/data/products";
 import { normalizeProductAnalysisPath } from "@/lib/product-analysis-storage";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { sanitizeOrderVatRate } from "@/lib/tax";
-import type { BlogPost, CmsStore, PublicStoreResponse } from "@/types/store";
-import type { OrderItem, OrderStatus, PageSections, Producer, SiteContent } from "@/types/store";
+import {
+  PRODUCER_CULTURE_TYPES,
+  type BlogPost,
+  type CmsStore,
+  type OrderItem,
+  type OrderStatus,
+  type PageSections,
+  type Producer,
+  type ProducerCultureType,
+  type PublicStoreResponse,
+  type SiteContent,
+} from "@/types/store";
 
 const validOrderStatus = new Set<OrderStatus>([
   "new",
@@ -23,6 +33,7 @@ const validPaymentState = new Set<CmsStore["orders"][number]["paymentState"]>([
   "failed",
   "not_configured",
 ]);
+const validProducerCultureTypes = new Set<ProducerCultureType>(PRODUCER_CULTURE_TYPES);
 const MOJIBAKE_CHARS_REGEX = /[ÃÂâ�]/g;
 
 function failIfError(error: { message: string } | null, context: string): void {
@@ -108,6 +119,53 @@ function toStringArray(value: unknown): string[] {
   }
 
   return value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+}
+
+function sanitizeProducerCultureTypes(value: unknown): ProducerCultureType[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const normalized: ProducerCultureType[] = [];
+  const seen = new Set<ProducerCultureType>();
+
+  for (const item of value) {
+    if (typeof item !== "string") {
+      continue;
+    }
+
+    const candidate = item.trim().toLowerCase() as ProducerCultureType;
+    if (!validProducerCultureTypes.has(candidate) || seen.has(candidate)) {
+      continue;
+    }
+
+    seen.add(candidate);
+    normalized.push(candidate);
+  }
+
+  return normalized;
+}
+
+function sanitizeProducerCertifications(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const normalized: string[] = [];
+  const seen = new Set<string>();
+
+  for (const item of value) {
+    const certification = sanitizeDisplayText(item, "").trim();
+    const key = certification.toLowerCase();
+    if (!certification || seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+    normalized.push(certification);
+  }
+
+  return normalized;
 }
 
 function toBoolean(value: unknown, fallback = false): boolean {
@@ -236,6 +294,15 @@ function mapProducerRow(row: Record<string, unknown>): Producer {
     department,
     region,
     website: toStringValue(row.website),
+    cultureType: sanitizeProducerCultureTypes(row.culture_type),
+    climate: sanitizeDisplayText(row.climate),
+    soil: sanitizeDisplayText(row.soil),
+    altitude: sanitizeDisplayText(row.altitude),
+    certifications: sanitizeProducerCertifications(row.certifications),
+    speciality: sanitizeDisplayText(row.speciality),
+    philosophy: sanitizeDisplayText(row.philosophy),
+    experience: sanitizeDisplayText(row.experience),
+    founded: sanitizeDisplayText(row.founded),
   };
 }
 
@@ -403,6 +470,9 @@ function mergeContent(row: Record<string, unknown> | null): SiteContent {
   const safeBlog = sanitizeNestedText(
     (row.blog as Partial<SiteContent["blog"]> | undefined) ?? {},
   );
+  const safeProfile = sanitizeNestedText(
+    (row.profile as Partial<SiteContent["profile"]> | undefined) ?? {},
+  );
   const safeFooter = sanitizeNestedText(
     (row.footer as Partial<SiteContent["footer"]> | undefined) ?? {},
   );
@@ -424,6 +494,10 @@ function mergeContent(row: Record<string, unknown> | null): SiteContent {
     blog: {
       ...defaultStore.content.blog,
       ...safeBlog,
+    },
+    profile: {
+      ...defaultStore.content.profile,
+      ...safeProfile,
     },
     footer: {
       ...defaultStore.content.footer,
@@ -571,6 +645,15 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
     department: sanitizeDisplayText(producer.department),
     region: sanitizeDisplayText(producer.region),
     website: producer.website,
+    culture_type: sanitizeProducerCultureTypes(producer.cultureType),
+    climate: sanitizeDisplayText(producer.climate),
+    soil: sanitizeDisplayText(producer.soil),
+    altitude: sanitizeDisplayText(producer.altitude),
+    certifications: sanitizeProducerCertifications(producer.certifications),
+    speciality: sanitizeDisplayText(producer.speciality),
+    philosophy: sanitizeDisplayText(producer.philosophy),
+    experience: sanitizeDisplayText(producer.experience),
+    founded: sanitizeDisplayText(producer.founded),
     position: index,
   }));
 
@@ -750,6 +833,7 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
     boutique: nextStore.content.boutique,
     application: nextStore.content.application,
     blog: nextStore.content.blog,
+    profile: nextStore.content.profile,
     footer: nextStore.content.footer,
     updated_at: new Date().toISOString(),
   };

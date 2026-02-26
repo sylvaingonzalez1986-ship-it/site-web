@@ -31,7 +31,7 @@ export default async function MentionsLegalesPage() {
           <p className="mt-4 text-sm text-charcoal">
             Conformement aux dispositions des articles 6-III et 19 de la Loi numero 2004-575 du 21
             juin 2004 pour la Confiance dans l&apos;economie numerique (L.C.E.N.), les informations
-            suivantes sont portees à la connaissance des utilisateurs du site{" "}
+            suivantes sont portees Ã  la connaissance des utilisateurs du site{" "}
             <a
               href="https://www.leschanvriersbretons.com"
               className="underline"
@@ -84,7 +84,7 @@ export default async function MentionsLegalesPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-2xl">Propriété intellectuelle</h2>
+              <h2 className="font-display text-2xl">PropriÃ©tÃ© intellectuelle</h2>
               <p className="mt-2">
                 Toute reproduction, representation, modification, publication ou adaptation totale
                 ou partielle des elements du site, quel que soit le moyen ou le procede utilise,
@@ -92,17 +92,17 @@ export default async function MentionsLegalesPage() {
                 leschanvriersbretons@gmail.com.
               </p>
               <p className="mt-2">
-                Toute exploitation non autorisée du site ou de l&apos;un quelconque des elements
+                Toute exploitation non autorisÃ©e du site ou de l&apos;un quelconque des elements
                 qu&apos;il contient sera consideree comme constitutive d&apos;une contrefacon et
                 poursuivie conformement aux dispositions des articles L.335-2 et suivants du Code
-                de la propriété intellectuelle.
+                de la propriÃ©tÃ© intellectuelle.
               </p>
             </section>
 
             <section>
-              <h2 className="font-display text-2xl">Règlement des litiges</h2>
+              <h2 className="font-display text-2xl">RÃ¨glement des litiges</h2>
               <p className="mt-2">
-                La Commission europeenne fournit une plateforme de règlement des litiges en ligne
+                La Commission europeenne fournit une plateforme de rÃ¨glement des litiges en ligne
                 (ODR), accessible a l&apos;adresse :
                 {" "}
                 <a
@@ -118,7 +118,7 @@ export default async function MentionsLegalesPage() {
               <p className="mt-2">
                 En tant que client, vous avez toujours la possibilite de contacter le conseil
                 d&apos;arbitrage de la Commission europeenne. Nous ne sommes ni disposes a, ni
-                obliges de, participer a une procedure de règlement des litiges devant un conseil
+                obliges de, participer a une procedure de rÃ¨glement des litiges devant un conseil
                 d&apos;arbitrage de la consommation.
               </p>
               <p className="mt-2">Contact e-mail : leschanvriersbretons@gmail.com</p>
@@ -133,7 +133,7 @@ export default async function MentionsLegalesPage() {
                 Les conditions de participation, la liste des lots et les modalites d&apos;attribution
                 sont decrites dans le{" "}
                 <Link href="/reglement-jeu-promo" className="underline">
-                  Règlement du jeu promotionnel
+                  RÃ¨glement du jeu promotionnel
                 </Link>
                 .
               </p>

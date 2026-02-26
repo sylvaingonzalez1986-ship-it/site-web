@@ -3,6 +3,7 @@
 import {
   ArrowDown,
   ArrowUp,
+  Award,
   BookOpen,
   ChevronLeft,
   ChevronRight,
@@ -31,7 +32,7 @@ type AdminTextCarouselProps = {
   setDraft: Dispatch<SetStateAction<CmsStore>>;
 };
 
-type SlideKey = "home" | "boutique" | "application" | "blog" | "footer";
+type SlideKey = "home" | "boutique" | "application" | "blog" | "profile" | "footer";
 type SlideDefinition = { key: SlideKey; label: string; icon: LucideIcon; sectionPage?: SectionPageKey };
 type CustomDraft = { title: string; body: string; style: SectionStyle };
 type TextField = {
@@ -47,6 +48,7 @@ const SLIDES: SlideDefinition[] = [
   { key: "boutique", label: "Boutique", icon: ShoppingBag, sectionPage: "boutique" },
   { key: "application", label: "Application", icon: Smartphone, sectionPage: "application" },
   { key: "blog", label: "Blog", icon: BookOpen, sectionPage: "blog" },
+  { key: "profile", label: "Fidelite", icon: Award },
   { key: "footer", label: "Footer", icon: LayoutGrid },
 ];
 
@@ -163,6 +165,62 @@ const FOOTER_FIELDS: TextField[] = [
   { path: "footer.copyright", label: "Copyright", placeholder: "Copyright", type: "input" },
   { path: "footer.legalLabel", label: "Label Mentions Legales", placeholder: "Label mentions", type: "input" },
   { path: "footer.privacyLabel", label: "Label Confidentialite", placeholder: "Label confidentialite", type: "input" },
+];
+
+const PROFILE_FIELDS: TextField[] = [
+  {
+    path: "profile.badgeBenefitsModalTitle",
+    label: "Titre popup avantages",
+    placeholder: "Avantages du palier",
+    type: "input",
+  },
+  {
+    path: "profile.badgeBenefitsModalHint",
+    label: "Sous-titre popup avantages",
+    placeholder: "Chaque ligne correspond a un avantage.",
+    type: "input",
+  },
+  {
+    path: "profile.badgeBenefitsCloseLabel",
+    label: "Label bouton fermer",
+    placeholder: "Fermer",
+    type: "input",
+  },
+  {
+    path: "profile.decouverteBenefits",
+    label: "Avantages Bronze",
+    placeholder: "Un avantage par ligne",
+    type: "textarea",
+    minHeightClass: "min-h-20",
+  },
+  {
+    path: "profile.explorateurBenefits",
+    label: "Avantages Argent",
+    placeholder: "Un avantage par ligne",
+    type: "textarea",
+    minHeightClass: "min-h-20",
+  },
+  {
+    path: "profile.connaisseurBenefits",
+    label: "Avantages Or",
+    placeholder: "Un avantage par ligne",
+    type: "textarea",
+    minHeightClass: "min-h-20",
+  },
+  {
+    path: "profile.ambassadeurBenefits",
+    label: "Avantages Platine",
+    placeholder: "Un avantage par ligne",
+    type: "textarea",
+    minHeightClass: "min-h-20",
+  },
+  {
+    path: "profile.legendeBenefits",
+    label: "Avantages Diamant",
+    placeholder: "Un avantage par ligne",
+    type: "textarea",
+    minHeightClass: "min-h-20",
+  },
 ];
 
 function createDefaultCustomDraft(): CustomDraft {
@@ -667,6 +725,24 @@ export function AdminTextCarousel({ draft, setDraft }: AdminTextCarouselProps) {
               <div key={slide.key} role="tabpanel" aria-hidden={!isActive} className="admin-carousel-slide">
                 {slide.sectionPage ? (
                   renderSectionManager(slide.sectionPage, isActive)
+                ) : slide.key === "profile" ? (
+                  <section className="admin-field-group">
+                    <h3 className="font-display text-2xl text-ink">Contenu badges fidelite</h3>
+                    <p className="mt-1 text-sm text-charcoal">
+                      Modifie le contenu des cadres badges. Une ligne = un avantage.
+                    </p>
+                    <div className="mt-3 grid gap-3 md:grid-cols-2">
+                      {PROFILE_FIELDS.map((field) => (
+                        <TextFieldControl
+                          key={`profile-${field.path}`}
+                          field={field}
+                          value={readContentValue(field.path)}
+                          onChange={(value) => writeContentValue(field.path, value)}
+                          active={isActive}
+                        />
+                      ))}
+                    </div>
+                  </section>
                 ) : (
                   <section className="admin-field-group">
                     <h3 className="font-display text-2xl text-ink">Textes Footer</h3>

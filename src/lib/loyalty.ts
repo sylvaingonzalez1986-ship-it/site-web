@@ -11,7 +11,7 @@ const LOYALTY_BADGE_DEFINITIONS: Array<{
     id: "decouverte",
     label: "Bronze",
     description: "Entree dans le programme fidelite.",
-    minPoints: 250,
+    minPoints: 100,
   },
   {
     id: "explorateur",
@@ -29,13 +29,13 @@ const LOYALTY_BADGE_DEFINITIONS: Array<{
     id: "ambassadeur",
     label: "Platine",
     description: "Tu fais partie des meilleurs clients.",
-    minPoints: 1250,
+    minPoints: 1500,
   },
   {
     id: "legende",
     label: "Diamant",
     description: "Le sommet du programme fidelite.",
-    minPoints: 1500,
+    minPoints: 2000,
   },
 ];
 
