@@ -12,6 +12,7 @@ export type AppendOrderInput = {
     unitPriceHt?: number;
     lineTotalHt?: number;
     lineVatAmount?: number;
+    bonusPoints?: number;
     parentPackId?: string;
     parentPackName?: string;
   }>;

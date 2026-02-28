@@ -18,13 +18,6 @@ const BUSINESS_PHONE =
   process.env.BUSINESS_PHONE?.trim() ||
   process.env.NEXT_PUBLIC_BUSINESS_PHONE?.trim() ||
   undefined;
-const BUSINESS_ADDRESS = {
-  "@type": "PostalAddress",
-  streetAddress: "60 rue Francois 1er",
-  postalCode: "75008",
-  addressLocality: "Paris",
-  addressCountry: "FR",
-};
 
 function safeJsonLdStringify(value: unknown): string {
   return JSON.stringify(value)
@@ -45,10 +38,13 @@ export function OrganizationJsonLd() {
     url: baseUrl,
     logo: `${baseUrl}/charles.png`,
     description:
-      "Shop CBD bio breton pas cher en Bretagne. Fleurs CBD indoor et greenhouse, huiles CBD spectre complet, resines, cosmetiques et tisanes au chanvre naturel. CBD artisanal et legal.",
+      "Shop CBD bio breton pas cher en Bretagne. Fleurs CBD indoor et greenhouse, huiles CBD spectre complet, résines, cosmétiques et tisanes au chanvre naturel breton. CBD artisanal et légal.",
     email: BUSINESS_EMAIL,
     telephone: BUSINESS_PHONE,
-    address: BUSINESS_ADDRESS,
+    areaServed: [
+      { "@type": "Country", name: "France" },
+      { "@type": "AdministrativeArea", name: "Bretagne" },
+    ],
     sameAs: [
       "https://www.instagram.com/leschanvriersbretons",
       "https://www.facebook.com/leschanvriersbretons",
@@ -69,17 +65,30 @@ export function LocalBusinessJsonLd() {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Store",
+    "@type": "OnlineStore",
     name: BUSINESS_NAME,
     url: baseUrl,
     logo: `${baseUrl}/charles.png`,
     image: `${baseUrl}/charles.png`,
     description:
-      "Boutique CBD bio breton en Bretagne. Fleurs CBD indoor et greenhouse, huiles CBD spectre complet, resines CBD naturelles, cosmetiques et tisanes au chanvre bio. CBD artisanal, naturel et legal. Livraison rapide en France.",
+      "Boutique CBD bio breton en Bretagne. Fleurs CBD indoor et greenhouse, huiles CBD spectre complet, résines CBD naturelles, cosmétiques et tisanes au chanvre bio breton. CBD artisanal, naturel et légal. Livraison rapide en France.",
     email: BUSINESS_EMAIL,
     telephone: BUSINESS_PHONE,
-    address: BUSINESS_ADDRESS,
-    priceRange: "EUR",
+    priceRange: "€5 - €80",
+    currenciesAccepted: "EUR",
+    areaServed: [
+      { "@type": "Country", name: "France" },
+      { "@type": "AdministrativeArea", name: "Bretagne" },
+    ],
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday", "Tuesday", "Wednesday", "Thursday",
+        "Friday", "Saturday", "Sunday",
+      ],
+      opens: "00:00",
+      closes: "23:59",
+    },
     sameAs: [
       "https://www.instagram.com/leschanvriersbretons",
       "https://www.facebook.com/leschanvriersbretons",
@@ -200,12 +209,30 @@ export function ProductListJsonLd({
 export function ProductJsonLd({ product }: { product: Product }) {
   const baseUrl = getSiteUrl();
 
+  const categorySlugs: Record<string, string> = {
+    fleurs: "fleurs-cbd",
+    resines: "resines-cbd",
+    huiles: "huiles-cbd",
+    "e-liquide": "e-liquide-cbd",
+    cosmetiques: "cosmetiques-cbd",
+    alimentaire: "tisane-cbd",
+    miam: "miam-cbd",
+    accessoires: "accessoires-cbd",
+  };
+  const catSlug = categorySlugs[product.category] ?? `${product.category}-cbd`;
+  const productUrl = `${baseUrl}/boutique/${catSlug}/${product.id}`;
+  const imageUrl = product.images?.[0] ?? product.image;
+  const fullImageUrl = imageUrl.startsWith("http")
+    ? imageUrl
+    : `${baseUrl}${imageUrl}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
     description: product.description,
-    image: `${baseUrl}${product.images?.[0] ?? product.image}`,
+    image: fullImageUrl,
+    url: productUrl,
     brand: {
       "@type": "Brand",
       name: BUSINESS_NAME,
@@ -215,7 +242,7 @@ export function ProductJsonLd({ product }: { product: Product }) {
       price: product.price,
       priceCurrency: "EUR",
       availability: "https://schema.org/InStock",
-      url: `${baseUrl}/boutique`,
+      url: productUrl,
       seller: {
         "@type": "Organization",
         name: BUSINESS_NAME,
@@ -267,6 +294,32 @@ export function ArticleJsonLd({
         url: `${baseUrl}/charles.png`,
       },
     },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
+    />
+  );
+}
+
+export function FaqJsonLd({
+  questions,
+}: {
+  questions: { question: string; answer: string }[];
+}) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: questions.map((q) => ({
+      "@type": "Question",
+      name: q.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: q.answer,
+      },
+    })),
   };
 
   return (

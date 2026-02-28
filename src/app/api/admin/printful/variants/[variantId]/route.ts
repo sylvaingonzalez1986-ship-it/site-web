@@ -97,7 +97,7 @@ export async function DELETE(
     });
     return NextResponse.json({ success: true });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Depublication Printful impossible.";
+    const message = error instanceof Error ? error.message : "Dépublication Printful impossible.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }

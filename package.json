@@ -23,7 +23,9 @@
     "nodemailer": "^6.10.0",
     "pdfkit": "^0.17.2",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "simple-icons": "^16.9.0",
+    "ffmpeg-static": "^5.2.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

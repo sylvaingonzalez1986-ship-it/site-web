@@ -4,7 +4,7 @@ import { ADMIN_COOKIE_NAME, verifyAdminSessionToken } from "@/lib/admin-auth";
 const MUTATIVE_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 const AGE_GATE_COOKIE_NAME = "age_verified";
 const CRAWLER_USER_AGENT_PATTERN =
-  /(googlebot|bingbot|duckduckbot|yandex(bot)?|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slurp|applebot)/i;
+  /(googlebot|bingbot|duckduckbot|yandex(bot)?|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slurp|applebot|pinterestbot|discordbot|whatsapp|petalbot|ahrefsbot|semrushbot)/i;
 
 async function isAdminAuthorized(request: NextRequest): Promise<boolean> {
   try {
@@ -68,6 +68,12 @@ function sanitizeNextPath(value: string | null): string {
 function isValidOrigin(request: NextRequest): boolean {
   const origin = request.headers.get("origin");
   if (!origin) {
+    // For mutative requests, a missing Origin header is suspicious (non-browser client
+    // or very old browser). Allow only for webhook endpoints that receive server-to-server
+    // calls. For everything else, require the header on mutative methods.
+    if (MUTATIVE_METHODS.has(request.method)) {
+      return false;
+    }
     return true;
   }
 
@@ -87,12 +93,13 @@ export async function middleware(request: NextRequest) {
   const isCrawler = isCrawlerRequest(request);
   const isDocumentNavigation = isDocumentNavigationRequest(request);
 
+  const isApplicationPage = pathname.startsWith("/application");
   const isAdminPage = pathname.startsWith("/admin");
   const isAdminApi = pathname.startsWith("/api/admin");
   const isAdminLoginPage = pathname === "/admin/login";
   const isAdminLoginApi = pathname === "/api/admin/login";
   const isAdminLogoutApi = pathname === "/api/admin/logout";
-  const needsAdminSessionCheck = isAdminPage || isAdminApi || isAdminLoginPage;
+  const needsAdminSessionCheck = isApplicationPage || isAdminPage || isAdminApi || isAdminLoginPage;
   const adminAuthorized = needsAdminSessionCheck
     ? await isAdminAuthorized(request)
     : false;
@@ -132,7 +139,12 @@ export async function middleware(request: NextRequest) {
   if (isCustomerApi && MUTATIVE_METHODS.has(request.method) && !isValidOrigin(request)) {
     return NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 });
   }
-  if (isCheckoutApi && MUTATIVE_METHODS.has(request.method) && !isValidOrigin(request)) {
+  if (
+    isCheckoutApi &&
+    !isCheckoutWebhookApi &&
+    MUTATIVE_METHODS.has(request.method) &&
+    !isValidOrigin(request)
+  ) {
     return NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 });
   }
 
@@ -142,6 +154,12 @@ export async function middleware(request: NextRequest) {
 
   if (isAdminLoginPage && adminAuthorized) {
     return NextResponse.redirect(new URL("/admin", request.url));
+  }
+
+  if (isApplicationPage && !adminAuthorized) {
+    const loginUrl = new URL("/admin/login", request.url);
+    loginUrl.searchParams.set("next", `${pathname}${search}`);
+    return NextResponse.redirect(loginUrl);
   }
 
   if ((isAdminPage || isAdminApi) && !adminAuthorized) {

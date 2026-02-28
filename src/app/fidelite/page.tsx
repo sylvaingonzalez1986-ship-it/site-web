@@ -3,9 +3,9 @@ import Link from "next/link";
 import { LoyaltyBadgeSummary } from "@/components/account/LoyaltyBadgeSummary";
 
 export const metadata: Metadata = {
-  title: "Programme fidelite",
+  title: "Programme fidélité",
   description:
-    "Decouvre les badges fidelite Les Chanvriers Bretons: seuils, reductions et avantages par palier.",
+    "Découvre les badges fidélité Les Chanvriers Bretons : seuils, réductions et avantages par palier.",
   alternates: {
     canonical: "https://leschanvriersbretons.com/fidelite",
   },
@@ -20,8 +20,8 @@ export default function FidelitePage() {
     <section className="section-band bg-mint halftone-overlay paper-grain pt-36">
       <div className="retro-container grid gap-6">
         <LoyaltyBadgeSummary
-          title="PROGRAMME FIDELITE"
-          description="Le principe est simple: 1 EUR depense = 1 point. Plus ton palier monte, plus tes avantages augmentent."
+          title="PROGRAMME FIDÉLITÉ"
+          description="Le principe est simple : 1 EUR dépensé = 1 point. Plus ton palier monte, plus tes avantages augmentent."
         />
 
         <article className="cartoon-border bg-cream p-6">

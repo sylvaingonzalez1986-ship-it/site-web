@@ -5,9 +5,12 @@ import { CategoryFilter } from "@/components/CategoryFilter";
 import { CustomSection } from "@/components/CustomSection";
 import { ProductCard } from "@/components/ProductCard";
 import { ProducerBar } from "@/components/boutique/ProducerBar";
-import { ProductQuickViewCarousel } from "@/components/boutique/ProductQuickViewCarousel";
+import { ProducerTcgCard } from "@/components/boutique/ProducerTcgCard";
+import { ProducerTcgModal } from "@/components/boutique/ProducerTcgModal";
 import { categoryLabels, type Product, type ProductCategory } from "@/data/products";
 import { useCmsStore } from "@/hooks/useCmsStore";
+import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
+import { dedupeProducts } from "@/lib/product-dedup";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import type { BoutiqueSection } from "@/types/store";
 
@@ -36,16 +39,6 @@ function matchesDepartmentCode(label: string, code: string): boolean {
   );
 }
 
-function getProductDedupKey(product: Product): string {
-  return [
-    product.name.trim().toLowerCase(),
-    product.category,
-    Number(product.price || 0).toFixed(2),
-    product.producerId ?? "",
-    product.isPack ? "pack" : "single",
-  ].join("|");
-}
-
 function mergeUniqueProductsById(products: Product[]): Product[] {
   const seen = new Set<string>();
   const merged: Product[] = [];
@@ -66,24 +59,9 @@ export default function BoutiquePage() {
   const boutique = store.content.boutique;
   const [filter, setFilter] = useState<Filter>("all");
   const [showcaseMode, setShowcaseMode] = useState<ShowcaseMode>("products");
-  const [quickViewProductId, setQuickViewProductId] = useState<string | null>(null);
-  const [quickViewSourceProducts, setQuickViewSourceProducts] = useState<Product[]>([]);
-
-  const uniqueProducts = useMemo(() => {
-    const seenKeys = new Set<string>();
-    const nextProducts: Product[] = [];
-
-    for (const product of store.products) {
-      const key = getProductDedupKey(product);
-      if (seenKeys.has(key)) {
-        continue;
-      }
-      seenKeys.add(key);
-      nextProducts.push(product);
-    }
-
-    return nextProducts;
-  }, [store.products]);
+  const [selectedOwnProducerId, setSelectedOwnProducerId] = useState<string | null>(null);
+  const uniqueProducts = useMemo(() => dedupeProducts(store.products), [store.products]);
+  const ownProducer = useMemo(() => getOwnProducer(), []);
 
   const ownProducts = useMemo(
     () =>
@@ -217,25 +195,25 @@ export default function BoutiquePage() {
     return modeProducts.filter((item) => item.category === effectiveFilter);
   }, [effectiveFilter, globalAccessoriesProducts, modeProducts]);
 
+  const displayedOwnProducts = useMemo(
+    () => displayedProducts.filter((product) => !product.producerId),
+    [displayedProducts],
+  );
+
   const producersById = useMemo(
     () => new Map(store.producers.map((producer) => [producer.id, producer])),
     [store.producers],
+  );
+
+  const ownProductsByProducerId = useMemo(
+    () => new Map([[ownProducer.id, displayedOwnProducts]]),
+    [displayedOwnProducts, ownProducer.id],
   );
 
   const boutiqueSections = useMemo(
     () => store.sections.boutique.filter((section) => section.visible),
     [store.sections.boutique],
   );
-
-  const openQuickView = (productId: string, sourceProducts: Product[]) => {
-    setQuickViewProductId(productId);
-    setQuickViewSourceProducts(sourceProducts);
-  };
-
-  const closeQuickView = () => {
-    setQuickViewProductId(null);
-    setQuickViewSourceProducts([]);
-  };
 
   const renderBoutiqueSection = (section: BoutiqueSection, index: number) => {
     const spacingClass = index === 0 ? "" : "mt-8";
@@ -310,6 +288,8 @@ export default function BoutiquePage() {
         const isCopainsMode = showcaseMode === "copains";
         const isPartnerMode = isNeighborsMode || isCopainsMode;
         const hasProducerProducts = displayedProducts.some((product) => Boolean(product.producerId));
+        const showOwnProducerCard =
+          showcaseMode === "products" && displayedOwnProducts.length > 0;
 
         return (
           <div key={section.id} className={spacingClass}>
@@ -346,20 +326,46 @@ export default function BoutiquePage() {
                 addButtonLabel={boutique.addButtonLabel}
                 producerPartnerLabel={boutique.producerPartnerLabel}
                 producerWebsiteLabel={boutique.producerWebsiteLabel}
-                onOpenQuickView={openQuickView}
               />
             ) : (
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {displayedProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    producer={product.producerId ? producersById.get(product.producerId) : undefined}
-                    addButtonLabel={boutique.addButtonLabel}
-                    onOpenQuickView={() => openQuickView(product.id, displayedProducts)}
-                  />
-                ))}
-              </div>
+              <>
+                {showOwnProducerCard && (
+                  <div className="mb-6 flex justify-center md:justify-start">
+                    <ProducerTcgCard
+                      producer={ownProducer}
+                      isSelected={selectedOwnProducerId === ownProducer.id}
+                      onClick={() =>
+                        setSelectedOwnProducerId((current) =>
+                          current === ownProducer.id ? null : ownProducer.id,
+                        )
+                      }
+                    />
+                  </div>
+                )}
+
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {displayedProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      producer={resolveProductProducer(product, producersById)}
+                      addButtonLabel={boutique.addButtonLabel}
+                    />
+                  ))}
+                </div>
+
+                <ProducerTcgModal
+                  open={showOwnProducerCard && selectedOwnProducerId !== null}
+                  producers={[ownProducer]}
+                  selectedProducerId={selectedOwnProducerId}
+                  productsByProducerId={ownProductsByProducerId}
+                  addButtonLabel={boutique.addButtonLabel}
+                  producerPartnerLabel="Producteur maison"
+                  producerWebsiteLabel={boutique.producerWebsiteLabel}
+                  onClose={() => setSelectedOwnProducerId(null)}
+                  onSelectProducer={setSelectedOwnProducerId}
+                />
+              </>
             )}
 
             {displayedProducts.length === 0 && !loading && (
@@ -398,14 +404,6 @@ export default function BoutiquePage() {
       <div className="retro-container">
         {boutiqueSections.map((section, index) => renderBoutiqueSection(section, index))}
       </div>
-      <ProductQuickViewCarousel
-        productId={quickViewProductId}
-        products={quickViewSourceProducts}
-        producersById={producersById}
-        addButtonLabel={boutique.addButtonLabel}
-        onChangeProductId={setQuickViewProductId}
-        onClose={closeQuickView}
-      />
     </section>
   );
 }

@@ -1,16 +1,16 @@
 ﻿import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Les Chanvriers Unis — App Mobile CBD Communauté & Fidélité",
+  title: "Les Chanvriers Unis — App Mobile CBD Bretagne, Communauté & Fidélité",
   description:
-    "Téléchargez Les Chanvriers Unis : l'app mobile pour commander du CBD facilement, cumuler des points fidélité et rejoindre la communauté CBD bretonne.",
+    "Téléchargez Les Chanvriers Unis : l'app mobile pour commander du CBD bio breton, cumuler des points fidélité, suivre les producteurs bretons et rejoindre la communauté CBD en Bretagne.",
   alternates: {
     canonical: "https://leschanvriersbretons.com/application",
   },
   openGraph: {
-    title: "Les Chanvriers Unis — App Mobile CBD",
+    title: "Les Chanvriers Unis — App Mobile CBD Bretagne",
     description:
-      "L'app mobile pour commander du CBD, cumuler des points fidélité et rejoindre la communauté bretonne.",
+      "L'app mobile pour commander du CBD bio breton, cumuler des points fidélité et rejoindre la communauté des chanvriers bretons.",
     url: "https://leschanvriersbretons.com/application",
   },
 };

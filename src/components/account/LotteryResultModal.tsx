@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useMemo } from "react";
-import { X } from "lucide-react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { formatPrice } from "@/lib/utils";
 import type { LotteryPrizeRarity, ScratchResult } from "@/types/lottery";
@@ -15,8 +14,8 @@ type LotteryResultModalProps = {
 const rarityLabels: Record<LotteryPrizeRarity, string> = {
   common: "Commun",
   rare: "Rare",
-  epic: "Epique",
-  legendary: "Legendaire",
+  epic: "Épique",
+  legendary: "Légendaire",
 };
 
 const rarityBadgeClasses: Record<LotteryPrizeRarity, string> = {
@@ -77,11 +76,11 @@ export function LotteryResultModal({ result, onClose }: LotteryResultModalProps)
           </h3>
           <button
             type="button"
-            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0"
+            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
             onClick={onClose}
             aria-label="Fermer"
           >
-            <X size={16} />
+            ✕
           </button>
         </div>
 

@@ -5,9 +5,9 @@ import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-st
 
 const CMS_SLUG = "mentions-legales";
 const CANONICAL_PATH = "/mentions-legales";
-const FALLBACK_TITLE = "Mentions legales";
+const FALLBACK_TITLE = "Mentions légales";
 const FALLBACK_DESCRIPTION =
-  "Mentions legales du site Les Chanvriers Bretons conformement a la loi numero 2004-575 du 21 juin 2004.";
+  "Mentions légales du site Les Chanvriers Bretons conformément à la loi numéro 2004-575 du 21 juin 2004.";
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildCmsStaticPageMetadata({

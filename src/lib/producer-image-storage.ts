@@ -184,7 +184,7 @@ export async function saveProducerImageUpload(file: File): Promise<string> {
   }
 
   if (detected.mimeType !== sanitizedMimeType) {
-    throw new ProducerImageUploadError("Le contenu du fichier ne correspond pas au type declare.", 415);
+    throw new ProducerImageUploadError("Le contenu du fichier ne correspond pas au type déclaré.", 415);
   }
 
   const fileName = `${randomUUID()}.${detected.extension}`;

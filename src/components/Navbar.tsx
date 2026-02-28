@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, ShoppingCart, X } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { CartDrawer } from "@/components/CartDrawer";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
@@ -16,7 +16,6 @@ const baseLinks = [
   { href: "/", label: "Accueil" },
   { href: "/boutique", label: "Boutique" },
   { href: "/blog", label: "Blog" },
-  { href: "/application", label: "App" },
 ];
 
 export function Navbar() {
@@ -43,6 +42,7 @@ export function Navbar() {
     const merged = [
       ...baseLinks,
       ...cmsNavLinks,
+      ...(isAllowedAdminEmail(user?.email) ? [{ href: "/application", label: "App" }] : []),
       ...(isAllowedAdminEmail(user?.email) ? [{ href: "/admin", label: "Admin" }] : []),
       user
         ? { href: "/profil", label: "Profil" }
@@ -97,12 +97,12 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMenuOpen((prev) => !prev)}
-            className="inline-flex h-11 w-11 items-center justify-center border-2 border-[#1a1a1a] bg-[#f7f4ee] md:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center border-2 border-[#1a1a1a] bg-[#f7f4ee] text-2xl font-bold leading-none md:hidden"
             aria-label="Menu"
             aria-expanded={menuOpen}
             aria-controls="mobile-nav"
           >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            {menuOpen ? "✕" : "☰"}
           </button>
 
           <Link href="/" className="hidden font-display text-xl text-ink md:block md:text-2xl">

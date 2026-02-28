@@ -4,6 +4,10 @@ import { Buffer } from "node:buffer";
 import { defaultStore } from "@/data/default-store";
 import type { Product, VatRate } from "@/data/products";
 import { normalizeProductAnalysisPath } from "@/lib/product-analysis-storage";
+import { normalizeProductImagePath } from "@/lib/product-image-storage";
+import { normalizeProductVideoPath } from "@/lib/product-video-storage";
+import { normalizeExternalUrl } from "@/lib/external-url";
+import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { sanitizeOrderVatRate } from "@/lib/tax";
 import {
@@ -226,6 +230,32 @@ function sanitizeVariantOptions(
   return mapped.length > 0 ? mapped : undefined;
 }
 
+function normalizeProductImagesForPersistence(product: Pick<Product, "image" | "images">): string[] {
+  const normalized: string[] = [];
+  const candidates = [
+    ...(Array.isArray(product.images) ? product.images : []),
+    product.image,
+  ];
+
+  for (const candidate of candidates) {
+    const safePath = normalizeProductImagePath(candidate);
+    if (normalized.includes(safePath)) {
+      continue;
+    }
+
+    normalized.push(safePath);
+    if (normalized.length >= PRODUCT_IMAGE_MAX_COUNT) {
+      break;
+    }
+  }
+
+  if (normalized.length === 0) {
+    normalized.push(normalizeProductImagePath(undefined));
+  }
+
+  return normalized;
+}
+
 function toObject(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return {};
@@ -293,7 +323,12 @@ function mapProducerRow(row: Record<string, unknown>): Producer {
     location,
     department,
     region,
-    website: toStringValue(row.website),
+    website: normalizeExternalUrl(toStringValue(row.website)),
+    socialLinks: {
+      instagram: normalizeExternalUrl(toStringValue(row.instagram)),
+      facebook: normalizeExternalUrl(toStringValue(row.facebook)),
+      tiktok: normalizeExternalUrl(toStringValue(row.tiktok)),
+    },
     cultureType: sanitizeProducerCultureTypes(row.culture_type),
     climate: sanitizeDisplayText(row.climate),
     soil: sanitizeDisplayText(row.soil),
@@ -317,6 +352,7 @@ function mapOrderItemRow(row: Record<string, unknown>): OrderItem {
     lineTotalHt: Number(toNumber(row.line_total_ht, 0).toFixed(2)),
     lineVatAmount: Number(toNumber(row.line_vat_amount, 0).toFixed(2)),
     vatRate: sanitizeOrderVatRate(toNumber(row.vat_rate, 20)),
+    bonusPoints: toNonNegativeIntegerOrUndefined(row.bonus_points),
     parentPackId: toOptionalString(row.parent_pack_id),
     parentPackName: toOptionalString(row.parent_pack_name),
   };
@@ -423,6 +459,8 @@ function mapProductRow(
 
   const packProductIds = isPack ? (packProductIdsByPackId.get(id) ?? []) : undefined;
   const stockQuantity = toNonNegativeIntegerOrUndefined(row.stock_quantity);
+  const weightGrams = toNonNegativeIntegerOrUndefined(row.weight_grams);
+  const videoUrl = normalizeProductVideoPath(toOptionalString(row.video_url) ?? "");
   const variantLabel = toOptionalString(sanitizeDisplayText(row.variant_label));
   const variantOptions = sanitizeVariantOptions(row.variant_options);
 
@@ -440,12 +478,15 @@ function mapProductRow(
       : undefined,
     isPack: isPack ? true : undefined,
     packProductIds: packProductIds && packProductIds.length > 0 ? packProductIds : undefined,
+    weightGrams,
+    videoUrl: videoUrl ?? undefined,
     image: normalizedImages[0] ?? "",
     images: normalizedImages,
     producerId: toOptionalString(row.producer_id),
     analysisPdf: normalizeProductAnalysisPath(toOptionalString(row.analysis_pdf)),
     description: sanitizeDisplayText(row.description),
     badge: toOptionalString(sanitizeDisplayText(row.badge)),
+    bonusPoints: toNonNegativeIntegerOrUndefined(row.bonus_points),
     trackStock: toBoolean(row.track_stock, false),
     stockQuantity,
     variantLabel,
@@ -469,6 +510,9 @@ function mergeContent(row: Record<string, unknown> | null): SiteContent {
   );
   const safeBlog = sanitizeNestedText(
     (row.blog as Partial<SiteContent["blog"]> | undefined) ?? {},
+  );
+  const safeLogistics = sanitizeNestedText(
+    (row.logistics as Partial<SiteContent["logistics"]> | undefined) ?? {},
   );
   const safeProfile = sanitizeNestedText(
     (row.profile as Partial<SiteContent["profile"]> | undefined) ?? {},
@@ -494,6 +538,10 @@ function mergeContent(row: Record<string, unknown> | null): SiteContent {
     blog: {
       ...defaultStore.content.blog,
       ...safeBlog,
+    },
+    logistics: {
+      ...defaultStore.content.logistics,
+      ...safeLogistics,
     },
     profile: {
       ...defaultStore.content.profile,
@@ -644,7 +692,10 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
     location: sanitizeDisplayText(producer.location),
     department: sanitizeDisplayText(producer.department),
     region: sanitizeDisplayText(producer.region),
-    website: producer.website,
+    website: normalizeExternalUrl(producer.website),
+    instagram: normalizeExternalUrl(producer.socialLinks?.instagram),
+    facebook: normalizeExternalUrl(producer.socialLinks?.facebook),
+    tiktok: normalizeExternalUrl(producer.socialLinks?.tiktok),
     culture_type: sanitizeProducerCultureTypes(producer.cultureType),
     climate: sanitizeDisplayText(producer.climate),
     soil: sanitizeDisplayText(producer.soil),
@@ -682,6 +733,7 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
   );
 
   const productRows = editableProducts.map((product, index) => {
+    const normalizedImages = normalizeProductImagesForPersistence(product);
     const safePrice = toNonNegativeMoney(product.price);
     const safeOriginalPrice = toPositiveMoneyOrNull(product.originalPrice);
     const safePromoPercent = toPromoPercentOrNull(product.promoPercent);
@@ -715,8 +767,10 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
       original_price: hasConsistentPromo ? safeOriginalPrice : null,
       promo_percent: hasConsistentPromo ? safePromoPercent : null,
       is_pack: product.isPack === true,
-      image: product.image,
-      images: Array.isArray(product.images) ? product.images : [product.image],
+      weight_grams: toNonNegativeIntegerOrUndefined(product.weightGrams) ?? null,
+      video_url: normalizeProductVideoPath(product.videoUrl) ?? null,
+      image: normalizedImages[0],
+      images: normalizedImages,
       producer_id:
         product.producerId && validProducerIds.has(product.producerId)
           ? product.producerId
@@ -724,6 +778,7 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
       analysis_pdf: normalizeProductAnalysisPath(product.analysisPdf) ?? null,
       description: sanitizeDisplayText(product.description),
       badge: toOptionalString(sanitizeDisplayText(product.badge ?? "")) ?? null,
+      bonus_points: toNonNegativeIntegerOrUndefined(product.bonusPoints) ?? null,
       track_stock: product.trackStock === true,
       stock_quantity: stockQuantity,
       variant_label: toOptionalString(sanitizeDisplayText(product.variantLabel ?? "")) ?? null,

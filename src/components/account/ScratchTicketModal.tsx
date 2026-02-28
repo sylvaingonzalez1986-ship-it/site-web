@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import { useEffect } from "react";
-import { X } from "lucide-react";
 import { ScratchCard } from "@/components/account/ScratchCard";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { LotteryTicket, ScratchResult } from "@/types/lottery";
@@ -51,11 +50,11 @@ export function ScratchTicketModal({ ticket, onClose, onScratch }: ScratchTicket
           </div>
           <button
             type="button"
-            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0"
+            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
             onClick={onClose}
             aria-label="Fermer"
           >
-            <X size={16} />
+            ✕
           </button>
         </div>
 

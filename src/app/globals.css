@@ -133,6 +133,41 @@ h4 {
   box-shadow: 8px 8px 0 rgba(26, 26, 26, 0.28);
 }
 
+/* ── Product card compact layout ── */
+.product-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.product-card-description {
+  max-height: 4.5em;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--charcoal);
+  border: 2px solid rgba(26, 26, 26, 0.12);
+  border-radius: 6px;
+  background: #fff;
+  padding: 0.4rem 0.5rem;
+}
+
+.product-card-description::-webkit-scrollbar {
+  width: 4px;
+}
+
+.product-card-description::-webkit-scrollbar-thumb {
+  background: rgba(26, 26, 26, 0.25);
+  border-radius: 4px;
+}
+
 .product-carousel {
   touch-action: pan-y;
 }
@@ -994,6 +1029,78 @@ h4 {
   padding: 0.35rem 0.45rem;
 }
 
+.producer-detail-description {
+  max-height: 7.5rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--charcoal);
+  border: 2px solid rgba(26, 26, 26, 0.18);
+  border-radius: 8px;
+  background: #fff;
+  padding: 0.55rem 0.65rem;
+}
+
+.producer-detail-description::-webkit-scrollbar {
+  width: 5px;
+}
+
+.producer-detail-description::-webkit-scrollbar-thumb {
+  background: rgba(26, 26, 26, 0.28);
+  border-radius: 4px;
+}
+
+.producer-detail-metric {
+  min-height: 2.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+  border: 2px solid rgba(26, 26, 26, 0.12);
+  border-radius: 8px;
+  background: #fff;
+  padding: 0.45rem 0.55rem;
+}
+
+.producer-social-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.producer-social-link {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.producer-social-link:hover {
+  transform: translateY(-1px) rotate(-2deg);
+  box-shadow: 2px 2px 0 rgba(26, 26, 26, 0.2);
+}
+
+.producer-social-icon {
+  width: 62%;
+  height: 62%;
+  display: block;
+}
+
+.producer-social-links--compact .producer-social-link {
+  width: 22px;
+  height: 22px;
+}
+
+.producer-social-links--compact .producer-social-icon {
+  width: 60%;
+  height: 60%;
+}
+
 .tcg-card-footer {
   display: flex;
   align-items: center;
@@ -1109,6 +1216,16 @@ h4 {
   right: 0;
 }
 
+/* When few items: no arrows, centered track */
+.tcg-carousel--no-loop {
+  padding: 0;
+}
+
+.tcg-carousel-track--center {
+  justify-content: center;
+  overflow-x: visible;
+}
+
 @media (min-width: 769px) {
   .tcg-carousel-arrow {
     display: flex;
@@ -1133,52 +1250,72 @@ h4 {
   background: rgba(26, 26, 26, 0.62);
   backdrop-filter: blur(2px);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+  overflow: hidden;
   animation: producerModalFadeIn 180ms ease-out;
 }
 
 .producer-modal-shell {
   position: relative;
-  width: min(1200px, 96vw);
-  max-height: 94vh;
+  width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0;
+  min-height: 0;
+  overflow: hidden;
   animation: producerModalPopIn 220ms cubic-bezier(0.18, 0.9, 0.22, 1);
 }
 
 .producer-modal-controls {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
-  justify-content: center;
   gap: 0.5rem;
+  min-height: 56px;
+  padding: calc(0.5rem + env(safe-area-inset-top)) calc(1rem + env(safe-area-inset-right)) 0.5rem calc(1rem + env(safe-area-inset-left));
+  background: var(--cream);
+  border-bottom: 2px solid var(--ink);
+  flex-shrink: 0;
 }
 
 .producer-modal-close {
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: static;
+  justify-self: end;
+}
+
+.producer-modal-controls > p {
+  text-align: center;
 }
 
 .producer-modal-content {
-  overflow: auto;
-  max-height: calc(94vh - 3rem);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 0;
 }
 
 .producer-modal-content .producer-detail-enter {
   margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  max-width: none;
+  min-height: 100%;
+  box-shadow: none;
+  border-width: 0;
+  border-radius: 0;
 }
 
 @media (max-width: 768px) {
   .producer-modal-shell {
-    width: 100%;
-    max-height: 96vh;
-  }
-
-  .producer-modal-content {
-    max-height: calc(96vh - 3rem);
+    height: 100dvh;
+    max-height: 100dvh;
   }
 }
 

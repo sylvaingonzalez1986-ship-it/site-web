@@ -6,8 +6,8 @@ import type { LotteryConfig, LotteryPrize, LotteryPrizeRarity, LotteryStats } fr
 const rarityLabels: Record<LotteryPrizeRarity, string> = {
   common: "Commun",
   rare: "Rare",
-  epic: "Epique",
-  legendary: "Legendaire",
+  epic: "Épique",
+  legendary: "Légendaire",
 };
 
 const rarityBadgeClass: Record<LotteryPrizeRarity, string> = {
@@ -116,7 +116,7 @@ export function AdminLotteryPanel() {
       setConfig(data.config);
       setPrizes(data.prizes);
       setStats(data.stats);
-      setStatus("Loterie chargee.");
+      setStatus("Loterie chargée.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Erreur de chargement loterie.");
     } finally {
@@ -161,7 +161,7 @@ export function AdminLotteryPanel() {
       if (data.stats) {
         setStats(data.stats);
       }
-      setStatus("Configuration loterie sauvegardee.");
+      setStatus("Configuration loterie sauvegardée.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Erreur sauvegarde loterie.");
     } finally {
@@ -204,16 +204,16 @@ export function AdminLotteryPanel() {
 
       const createdPrize = data.prize;
       if (!response.ok || !createdPrize) {
-        setStatus(data.error ?? "Impossible de creer le lot.");
+        setStatus(data.error ?? "Impossible de créer le lot.");
         return;
       }
 
       setPrizes((current) => [...current, createdPrize]);
       setNewPrize(emptyPrizeDraft());
-      setStatus("Lot cree.");
+      setStatus("Lot créé.");
       await loadData();
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Erreur creation lot.");
+      setStatus(error instanceof Error ? error.message : "Erreur création lot.");
     } finally {
       setCreatingPrize(false);
     }
@@ -253,17 +253,17 @@ export function AdminLotteryPanel() {
 
       const updatedPrize = data.prize;
       if (!response.ok || !updatedPrize) {
-        setStatus(data.error ?? "Erreur mise a jour lot.");
+      setStatus("Erreur mise à jour lot.");
         return;
       }
 
       setPrizes((current) =>
         current.map((item) => (item.id === updatedPrize.id ? updatedPrize : item)),
       );
-      setStatus(`Lot ${updatedPrize.name} mis a jour.`);
+      setStatus(`Lot ${updatedPrize.name} mis à jour.`);
       await loadData();
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Erreur mise a jour lot.");
+      setStatus(error instanceof Error ? error.message : "Erreur mise à jour lot.");
     } finally {
       setSavingPrizeId(null);
     }
@@ -290,7 +290,7 @@ export function AdminLotteryPanel() {
       }
 
       setPrizes((current) => current.filter((item) => item.id !== prize.id));
-      setStatus("Lot supprime.");
+      setStatus("Lot supprimé.");
       await loadData();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Erreur suppression lot.");

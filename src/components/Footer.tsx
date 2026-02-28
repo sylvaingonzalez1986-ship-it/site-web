@@ -50,7 +50,7 @@ export function Footer() {
                   </a>
                 </p>
                 <p className="mt-2 text-xs text-charcoal">
-                  CBD bio breton, naturel et legal. Livraison rapide en France.
+                  CBD naturel, breton et légal.
                 </p>
 
                 <div className="mt-4 flex flex-wrap items-stretch gap-3">
@@ -115,6 +115,12 @@ export function Footer() {
                     Tisanes CBD
                   </Link>
                   <Link
+                    href="/boutique/miam-cbd"
+                    className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
+                  >
+                    Miam CBD
+                  </Link>
+                  <Link
                     href="/blog"
                     className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2] sm:col-span-2"
                   >
@@ -125,7 +131,7 @@ export function Footer() {
 
               <div className="cartoon-border-sm bg-[#f7f4ee] p-4">
                 <p className="text-xs font-bold uppercase tracking-[0.09em] text-charcoal">
-                  Informations legales
+                  Informations légales
                 </p>
                 <div className="mt-3 grid gap-2 sm:grid-cols-2">
                   <Link
@@ -156,7 +162,7 @@ export function Footer() {
                     href="/reglement-jeu-promo"
                     className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2] sm:col-span-2"
                   >
-                    Reglement jeu promo
+                    Règlement jeu promo
                   </Link>
                   {dynamicFooterLinks.map((link) => (
                     <Link

@@ -22,7 +22,7 @@ export function HomeBadgePromoBand({ zIndex }: HomeBadgePromoBandProps) {
       <div className="retro-container">
         <div className="cartoon-border-sm bg-[#f8e3bd] p-4 md:p-6">
           <p className="text-xs font-bold uppercase tracking-[0.11em] text-charcoal">
-            Badge fidelite
+            Badge fidélité
           </p>
           <h2 className="mt-2 font-display text-3xl leading-none text-ink md:text-5xl">
             Plus tu commandes, plus tu b&eacute;n&eacute;ficies d&apos;avantages.

@@ -159,7 +159,7 @@ export async function saveProductAnalysisUpload(file: File): Promise<string> {
     sanitizedMimeType !== "application/x-pdf"
   ) {
     throw new ProductAnalysisUploadError(
-      "Le contenu du fichier ne correspond pas au type declare.",
+      "Le contenu du fichier ne correspond pas au type déclaré.",
       415,
     );
   }

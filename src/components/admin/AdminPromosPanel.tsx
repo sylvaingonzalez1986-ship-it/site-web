@@ -231,7 +231,7 @@ export function AdminPromosPanel({ draft, setDraft }: AdminPromosPanelProps) {
       return;
     }
     if (validComponentIds.length === 0) {
-      setPackError("Selectionne au moins un produit pour le pack.");
+      setPackError("Sélectionne au moins un produit pour le pack.");
       return;
     }
     if (!Number.isFinite(price) || price <= 0) {

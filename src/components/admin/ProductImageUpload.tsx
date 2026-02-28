@@ -8,6 +8,7 @@ import {
   PRODUCT_IMAGE_UPLOAD_MAX_BYTES,
   isSupportedProductImageMimeType,
 } from "@/lib/product-image-policy";
+import { isRemoteImageUrl } from "@/lib/image-source";
 
 type ProductImageUploadProps = {
   images?: string[];
@@ -237,13 +238,24 @@ export function ProductImageUpload({ images, onChange }: ProductImageUploadProps
           return (
             <div key={imagePath} className="rounded border-2 border-[#1a1a1a] bg-white p-2">
               <div className="relative h-20 overflow-hidden rounded border border-[#1a1a1a]">
-                <Image
-                  src={imagePath}
-                  alt={`Image produit ${index + 1}`}
-                  fill
-                  sizes="160px"
-                  className="object-cover"
-                />
+                {isRemoteImageUrl(imagePath) ? (
+                  <img
+                    src={imagePath}
+                    alt={`Image produit ${index + 1}`}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <Image
+                    src={imagePath}
+                    alt={`Image produit ${index + 1}`}
+                    fill
+                    sizes="160px"
+                    className="object-cover"
+                  />
+                )}
               </div>
               <div className="mt-2 flex gap-2">
                 <button

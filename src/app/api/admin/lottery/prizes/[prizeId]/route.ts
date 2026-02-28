@@ -65,7 +65,7 @@ export async function PUT(
 
     return NextResponse.json({ prize });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Mise a jour lot impossible.";
+    const message = error instanceof Error ? error.message : "Mise à jour lot impossible.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }

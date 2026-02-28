@@ -2,9 +2,10 @@ import { issueInvoiceForOrder } from "@/lib/invoice-store";
 import { mintLotteryTicketsForOrderByBackend } from "@/lib/lottery-backend";
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
+import { logAuditEvent } from "@/lib/audit-log";
+import { applyOrderLoyaltyBonusByBackend, updateOrderPaymentStateByBackend, updateOrderStatusByBackend } from "@/lib/order-backend";
 import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
 import type { CmsOrder, OrderStatus } from "@/types/store";
-import { updateOrderPaymentStateByBackend, updateOrderStatusByBackend } from "@/lib/order-backend";
 
 export async function PATCH(
   request: Request,
@@ -44,6 +45,7 @@ export async function PATCH(
 
       if (payload.paymentState === "paid") {
         await issueInvoiceForOrder(updated.id);
+        await applyOrderLoyaltyBonusByBackend(updated.id);
         if (updated.customerId) {
           await mintLotteryTicketsForOrderByBackend({
             userId: updated.customerId,
@@ -62,6 +64,8 @@ export async function PATCH(
     if (!updated) {
       return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
     }
+
+    logAuditEvent({ eventType: "update_order", metadata: { orderId, status: payload.status, paymentState: payload.paymentState } });
 
     return NextResponse.json(updated);
   } catch {

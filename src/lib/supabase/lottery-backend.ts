@@ -455,7 +455,7 @@ export async function deleteLotteryPrizeInSupabase(prizeId: string): Promise<boo
   failIfError(usage.error, "count lottery_prize usage");
 
   if ((usage.count ?? 0) > 0) {
-    throw new Error("Ce lot a déjà été attribué. Desactive-le au lieu de le supprimer.");
+    throw new Error("Ce lot a déjà été attribué. Désactive-le au lieu de le supprimer.");
   }
 
   const result = await supabase

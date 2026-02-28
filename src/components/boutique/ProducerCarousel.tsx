@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, type ReactNode } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type ProducerCarouselProps = {
   /** Number of real (non-cloned) items */
   itemCount: number;
+  /** Enable infinite loop (clones expected in children) */
+  loop?: boolean;
   children: ReactNode;
 };
 
@@ -22,7 +23,7 @@ const GAP = 16; // matches gap-4 (1rem)
  * (done by the parent passing duplicated elements) and silently
  * reset scrollLeft when crossing the seam.
  */
-export function ProducerCarousel({ itemCount, children }: ProducerCarouselProps) {
+export function ProducerCarousel({ itemCount, loop = true, children }: ProducerCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
   const dirRef = useRef<-1 | 1>(1);
@@ -90,33 +91,37 @@ export function ProducerCarousel({ itemCount, children }: ProducerCarouselProps)
   }, []);
 
   return (
-    <div className="tcg-carousel">
-      {/* Left arrow – desktop only */}
-      <button
-        type="button"
-        className="tcg-carousel-arrow tcg-carousel-arrow--left"
-        aria-label="Défiler à gauche"
-        onMouseEnter={() => startScroll(-1)}
-        onMouseLeave={stopScroll}
-      >
-        <ChevronLeft size={22} strokeWidth={3} />
-      </button>
+    <div className={`tcg-carousel${loop ? "" : " tcg-carousel--no-loop"}`}>
+      {/* Left arrow – desktop only, hidden when no loop */}
+      {loop && (
+        <button
+          type="button"
+          className="tcg-carousel-arrow tcg-carousel-arrow--left text-2xl font-bold leading-none"
+          aria-label="Défiler à gauche"
+          onMouseEnter={() => startScroll(-1)}
+          onMouseLeave={stopScroll}
+        >
+          ‹
+        </button>
+      )}
 
       {/* Track */}
-      <div ref={trackRef} className="tcg-carousel-track">
+      <div ref={trackRef} className={`tcg-carousel-track${loop ? "" : " tcg-carousel-track--center"}`}>
         {children}
       </div>
 
-      {/* Right arrow – desktop only */}
-      <button
-        type="button"
-        className="tcg-carousel-arrow tcg-carousel-arrow--right"
-        aria-label="Défiler à droite"
-        onMouseEnter={() => startScroll(1)}
-        onMouseLeave={stopScroll}
-      >
-        <ChevronRight size={22} strokeWidth={3} />
-      </button>
+      {/* Right arrow – desktop only, hidden when no loop */}
+      {loop && (
+        <button
+          type="button"
+          className="tcg-carousel-arrow tcg-carousel-arrow--right text-2xl font-bold leading-none"
+          aria-label="Défiler à droite"
+          onMouseEnter={() => startScroll(1)}
+          onMouseLeave={stopScroll}
+        >
+          ›
+        </button>
+      )}
     </div>
   );
 }

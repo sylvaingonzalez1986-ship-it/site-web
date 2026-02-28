@@ -12,9 +12,9 @@ type BlogPostPageProps = {
 
 const blogCategoryLabels: Record<string, string> = {
   guide: "Guide",
-  actualite: "Actualite",
-  "bien-etre": "Bien-etre",
-  legislation: "Legislation",
+  actualite: "Actualité",
+  "bien-etre": "Bien-être",
+  legislation: "Législation",
 };
 
 export async function generateMetadata({
@@ -45,6 +45,12 @@ export async function generateMetadata({
       url: canonicalUrl,
       type: "article",
       images: [{ url: `${baseUrl}${post.coverImage}` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [`${baseUrl}${post.coverImage}`],
     },
   };
 }

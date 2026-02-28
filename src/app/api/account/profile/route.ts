@@ -1,11 +1,18 @@
 import { NextResponse } from "next/server";
 import { applyCustomerProfilePatch } from "@/lib/account-profile";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
+import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
 
 export async function PATCH(request: Request) {
   const session = await getCurrentCustomerSessionByBackend();
   if (!session) {
     return NextResponse.json({ error: "Non autorise." }, { status: 401 });
+  }
+
+  const ip = getRequestIp(request);
+  const rl = await hitRateLimit({ key: `profile_patch:${ip}`, windowSeconds: 300, maxHits: 10 });
+  if (!rl.allowed) {
+    return NextResponse.json({ error: "Trop de requêtes." }, { status: 429 });
   }
 
   try {

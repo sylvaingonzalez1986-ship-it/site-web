@@ -10,19 +10,19 @@ const LOYALTY_BADGE_DEFINITIONS: Array<{
   {
     id: "decouverte",
     label: "Bronze",
-    description: "Entree dans le programme fidelite.",
+    description: "Entrée dans le programme fidélité.",
     minPoints: 100,
   },
   {
     id: "explorateur",
     label: "Argent",
-    description: "Tu passes au niveau client regulier.",
+    description: "Tu passes au niveau client régulier.",
     minPoints: 500,
   },
   {
     id: "connaisseur",
     label: "Or",
-    description: "Un niveau premium bien etabli.",
+    description: "Un niveau premium bien établi.",
     minPoints: 1000,
   },
   {
@@ -34,7 +34,7 @@ const LOYALTY_BADGE_DEFINITIONS: Array<{
   {
     id: "legende",
     label: "Diamant",
-    description: "Le sommet du programme fidelite.",
+    description: "Le sommet du programme fidélité.",
     minPoints: 2000,
   },
 ];

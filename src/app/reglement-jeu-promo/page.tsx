@@ -4,9 +4,9 @@ import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-st
 
 const CMS_SLUG = "reglement-jeu-promo";
 const CANONICAL_PATH = "/reglement-jeu-promo";
-const FALLBACK_TITLE = "Reglement jeu promotionnel";
+const FALLBACK_TITLE = "Règlement jeu promotionnel";
 const FALLBACK_DESCRIPTION =
-  "Reglement officiel du jeu promotionnel Ticket de grattage des Chanvriers Bretons.";
+  "Règlement officiel du jeu promotionnel Ticket de grattage des Chanvriers Bretons.";
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildCmsStaticPageMetadata({

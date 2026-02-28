@@ -106,7 +106,7 @@ export function CheckoutButton({
         return;
       }
 
-      setSuccess(data.orderId ? `Commande ${data.orderId} enregistree.` : "Commande enregistree.");
+      setSuccess(data.orderId ? `Commande ${data.orderId} enregistrée.` : "Commande enregistrée.");
       onSuccess?.();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inconnue.");

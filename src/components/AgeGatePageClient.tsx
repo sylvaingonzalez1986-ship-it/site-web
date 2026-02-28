@@ -34,13 +34,13 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
       });
       if (!response.ok) {
         const data = (await response.json().catch(() => null)) as { error?: string } | null;
-        setError(data?.error ?? "Verification impossible.");
+        setError(data?.error ?? "Vérification impossible.");
         return;
       }
 
       window.location.assign(nextPath);
     } catch {
-      setError("Verification impossible.");
+      setError("Vérification impossible.");
     } finally {
       setLoading(false);
     }
@@ -69,7 +69,7 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
                   onClick={confirmMajority}
                   disabled={loading}
                 >
-                  {loading ? "Verification..." : "Oui, j'ai 18 ans ou plus"}
+                  {loading ? "Vérification..." : "Oui, j'ai 18 ans ou plus"}
                 </button>
                 <button
                   type="button"

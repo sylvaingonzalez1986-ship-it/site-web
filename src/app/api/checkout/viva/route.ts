@@ -120,6 +120,7 @@ type ResolvedCheckoutItem = {
   quantity: number;
   lineTotal: number;
   vatRate: 5.5 | 20;
+  bonusPoints?: number;
   parentPackId?: string;
   parentPackName?: string;
 };
@@ -211,6 +212,7 @@ async function resolveCheckoutItems(
             quantity: item.quantity,
             lineTotal: Number((safeComponentUnitPrice * item.quantity).toFixed(2)),
             vatRate: sanitizeOrderVatRate(distributed.vatRate),
+            bonusPoints: component.bonusPoints,
             parentPackId: product.id,
             parentPackName: sanitizeText(product.name, 120) || "Pack",
           });
@@ -234,6 +236,7 @@ async function resolveCheckoutItems(
       quantity: item.quantity,
       lineTotal: Number((unitPrice * item.quantity).toFixed(2)),
       vatRate: sanitizeOrderVatRate(product.vatRate),
+      bonusPoints: product.bonusPoints,
     });
   }
 
@@ -454,7 +457,7 @@ export async function POST(request: Request) {
 
     const promo = await previewPromoCodeByBackend(customerId, promoCode);
     if (!promo) {
-      return NextResponse.json({ error: "Code promo invalide ou deja utilise." }, { status: 400 });
+      return NextResponse.json({ error: "Code promo invalide ou déjà utilisé." }, { status: 400 });
     }
 
     const store = await readStoreByBackend();
@@ -766,7 +769,7 @@ export async function POST(request: Request) {
     const promo = await previewPromoCodeByBackend(customerId, promoCode);
     if (!promo) {
       return NextResponse.json(
-        { error: "Code promo invalide ou deja utilise." },
+        { error: "Code promo invalide ou déjà utilisé." },
         { status: 400 },
       );
     }
@@ -794,7 +797,7 @@ export async function POST(request: Request) {
     });
     if (!ticketBenefit) {
       return NextResponse.json(
-        { error: "Ticket gagnant invalide ou deja utilise." },
+        { error: "Ticket gagnant invalide ou déjà utilisé." },
         { status: 400 },
       );
     }
@@ -992,6 +995,7 @@ export async function POST(request: Request) {
         unitPriceHt: item.unitPriceHt,
         lineTotalHt: item.lineTotalHt,
         lineVatAmount: item.lineVatAmount,
+        bonusPoints: item.bonusPoints,
         parentPackId: item.parentPackId,
         parentPackName: item.parentPackName,
         quantity: item.quantity,
@@ -1051,7 +1055,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({
-      message: "Commande enregistree. Redirection vers Viva.",
+      message: "Commande enregistrée. Redirection vers Viva.",
       orderId: order.id,
       redirectUrl: `${selectedEndpoint.checkoutBase}/web/checkout?ref=${orderCode}`,
     });
@@ -1060,8 +1064,8 @@ export async function POST(request: Request) {
     const message =
       error instanceof Error
         ? error.message
-        : "Echec connexion Viva Smart Checkout.";
-    const status = message.includes("Code promo invalide ou deja utilise.") ? 409 : 502;
+        : "Échec connexion Viva Smart Checkout.";
+    const status = message.includes("Code promo invalide ou déjà utilisé.") ? 409 : 502;
     return NextResponse.json(
       {
         error: message,

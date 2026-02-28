@@ -282,13 +282,13 @@ export function ScratchCard({
   const revealLabel = useMemo(() => {
     if (!result) {
       return demo
-        ? "Demo: gratte le personnage jusqu'au bout"
-        : "Gratte le personnage jusqu'au bout pour reveler le lot";
+        ? "Démo : gratte le personnage jusqu'au bout"
+        : "Gratte le personnage jusqu'au bout pour révéler le lot";
     }
     if (demo) {
-      return result.isWin ? "Demo: gain fictif affiche" : "Demo: ticket fictif sans gain";
+      return result.isWin ? "Démo : gain fictif affiché" : "Démo : ticket fictif sans gain";
     }
-    return result.isWin ? "Ticket valide: gain confirme" : "Ticket valide: sans gain";
+    return result.isWin ? "Ticket valide : gain confirmé" : "Ticket valide : sans gain";
   }, [demo, result]);
 
   return (
@@ -353,7 +353,7 @@ export function ScratchCard({
                     onClick={() => void submitScratch()}
                     disabled={submitting}
                   >
-                    {submitting ? "Verification..." : "Reveler le lot"}
+                    {submitting ? "Vérification..." : "Révéler le lot"}
                   </button>
                 </div>
               )}

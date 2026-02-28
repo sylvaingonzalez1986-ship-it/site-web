@@ -49,12 +49,12 @@ export async function GET(
   }
 
   if (order.customerId !== session.customerId) {
-    return NextResponse.json({ error: "Acces interdit." }, { status: 403 });
+    return NextResponse.json({ error: "Accès interdit." }, { status: 403 });
   }
 
   if (!isInvoiceEligibleOrder(order)) {
     return NextResponse.json(
-      { error: "Facture indisponible tant que la commande n'est pas payee." },
+      { error: "Facture indisponible tant que la commande n'est pas payée." },
       { status: 409 },
     );
   }

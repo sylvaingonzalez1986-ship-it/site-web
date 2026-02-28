@@ -336,7 +336,7 @@ export async function createCustomer(input: {
     const store = await readCustomersStore();
     const exists = store.customers.some((customer) => customer.email === email);
     if (exists) {
-      throw new Error("Cet email est deja utilise.");
+      throw new Error("Cet email est déjà utilisé.");
     }
 
     const salt = randomBytes(16).toString("hex");
@@ -434,7 +434,7 @@ export async function updateCustomerProfile(
       throw new Error("Date de naissance invalide.");
     }
     if (!isAtLeast18(normalizedDateOfBirth)) {
-      throw new Error("Ce site est reserve aux personnes majeures (18+).");
+      throw new Error("Ce site est réservé aux personnes majeures (18+).");
     }
 
     nextInput.dateOfBirth = normalizedDateOfBirth;
@@ -557,7 +557,7 @@ export async function addPromoCode(
         (promo) => promo.code === normalizedPromo.code,
       );
       if (hasDuplicate) {
-        throw new Error("Ce code promo existe deja pour ce client.");
+        throw new Error("Ce code promo existe déjà pour ce client.");
       }
 
       updated = normalizeCustomer({

@@ -56,7 +56,7 @@ export async function POST(request: Request) {
           ok: false,
           email: result.subscriber.email,
           alreadySubscribed: result.alreadySubscribed,
-          error: "Inscription enregistree, mais email de confirmation indisponible.",
+          error: "Inscription enregistrée, mais email de confirmation indisponible.",
         },
         { status: 503 },
       );
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
   } catch (error) {
     if (error instanceof Error && error.message.includes("rpc_rate_limit_hit")) {
       return NextResponse.json(
-        { error: "Protection anti-abus indisponible. Reessaie plus tard." },
+        { error: "Protection anti-abus indisponible. Réessaie plus tard." },
         { status: 503 },
       );
     }

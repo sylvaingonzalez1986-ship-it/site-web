@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AgeGatePageClient } from "@/components/AgeGatePageClient";
 
 export const metadata: Metadata = {
-  title: "Verification d'age",
+  title: "Vérification d'âge",
   robots: {
     index: false,
     follow: false,

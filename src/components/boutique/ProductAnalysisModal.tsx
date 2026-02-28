@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { X } from "lucide-react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 type ProductAnalysisModalProps = {
@@ -72,7 +71,7 @@ export function ProductAnalysisModal({
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4">
+    <div className="fixed inset-0 z-[150] flex items-center justify-center bg-black/45 p-4">
       <button
         type="button"
         className="absolute inset-0"
@@ -95,10 +94,10 @@ export function ProductAnalysisModal({
           <button
             type="button"
             onClick={onClose}
-            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0"
+            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
             aria-label="Fermer"
           >
-            <X size={18} />
+            ✕
           </button>
         </div>
 

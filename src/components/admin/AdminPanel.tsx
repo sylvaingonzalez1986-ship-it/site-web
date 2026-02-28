@@ -18,10 +18,15 @@ import {
   FRENCH_REGIONS,
   getDepartmentByName,
 } from "@/data/france-geo";
+import {
+  PRODUCER_CLIMATE_OPTIONS,
+  PRODUCER_SOIL_OPTIONS,
+} from "@/data/producer-taxonomies";
 import { VAT_RATE_OPTIONS, categoryLabels, type Product, type ProductCategory, type VatRate } from "@/data/products";
 import { BlogImageUpload } from "@/components/admin/BlogImageUpload";
 import { ProductAnalysisUpload } from "@/components/admin/ProductAnalysisUpload";
 import { ProductImageUpload } from "@/components/admin/ProductImageUpload";
+import { ProductVideoUpload } from "@/components/admin/ProductVideoUpload";
 import { ProducerImageUpload } from "@/components/admin/ProducerImageUpload";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import {
@@ -43,10 +48,10 @@ const blogCategoryOptions = [...BLOG_CATEGORY_OPTIONS];
 const orderStatusLabels: Record<OrderStatus, string> = {
   new: "Nouvelle",
   pending_payment: "Paiement en attente",
-  paid: "Payee",
-  processing: "En preparation",
-  shipped: "Expediee",
-  cancelled: "Annulee",
+  paid: "Payée",
+  processing: "En préparation",
+  shipped: "Expédiée",
+  cancelled: "Annulée",
 };
 type AdminTab =
   | "commandes"
@@ -120,11 +125,13 @@ function makeProduct(): Product {
     category: "fleurs",
     price: 0,
     vatRate: 20,
+    weightGrams: undefined,
     image: "/product_flower.jpg",
     images: ["/product_flower.jpg"],
     analysisPdf: undefined,
     description: "Description du produit",
     badge: "",
+    bonusPoints: undefined,
   };
 }
 
@@ -138,6 +145,11 @@ function makeProducer(): Producer {
     department: "",
     region: "",
     website: "",
+    socialLinks: {
+      instagram: "",
+      facebook: "",
+      tiktok: "",
+    },
     cultureType: [],
     climate: "",
     soil: "",
@@ -221,6 +233,8 @@ export function AdminPanel() {
   const [orderStatusFilter, setOrderStatusFilter] = useState<"all" | OrderStatus>("all");
   const [orderDateFrom, setOrderDateFrom] = useState("");
   const [orderDateTo, setOrderDateTo] = useState("");
+  const [exportingMr, setExportingMr] = useState(false);
+  const [exportMrError, setExportMrError] = useState<string | null>(null);
   const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
   const [selectedProducerId, setSelectedProducerId] = useState<string | null>(null);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
@@ -279,11 +293,11 @@ export function AdminPanel() {
     [draft.products],
   );
   const ownProducts = useMemo(
-    () => productsWithIndex.filter(({ product }) => !product.producerId && !product.isPack),
+    () => productsWithIndex.filter(({ product }) => !product.producerId && !product.isPack && !product.id.startsWith("printful-")),
     [productsWithIndex],
   );
   const partnerProducts = useMemo(
-    () => productsWithIndex.filter(({ product }) => Boolean(product.producerId) && !product.isPack),
+    () => productsWithIndex.filter(({ product }) => Boolean(product.producerId) && !product.isPack && !product.id.startsWith("printful-")),
     [productsWithIndex],
   );
   const selectedProducer = useMemo(
@@ -301,13 +315,29 @@ export function AdminPanel() {
       ),
     [partnerProducts, selectedProducerId],
   );
+  const selectedProducerClimateInList = useMemo(
+    () =>
+      Boolean(
+        selectedProducer?.climate &&
+          PRODUCER_CLIMATE_OPTIONS.some((option) => option.value === selectedProducer.climate),
+      ),
+    [selectedProducer],
+  );
+  const selectedProducerSoilInList = useMemo(
+    () =>
+      Boolean(
+        selectedProducer?.soil &&
+          PRODUCER_SOIL_OPTIONS.some((option) => option.value === selectedProducer.soil),
+      ),
+    [selectedProducer],
+  );
 
   const loadStore = async () => {
     setStatus("Chargement...");
     const response = await fetch("/api/admin/store", { cache: "no-store" });
 
     if (!response.ok) {
-      setStatus("Impossible de charger les donnees.");
+      setStatus("Impossible de charger les données.");
       return;
     }
 
@@ -320,7 +350,7 @@ export function AdminPanel() {
 
       return data.blog[0]?.id ?? null;
     });
-    setStatus("Donnees chargees.");
+    setStatus("Données chargées.");
   };
 
   useEffect(() => {
@@ -371,7 +401,7 @@ export function AdminPanel() {
 
       const saved = (await response.json()) as CmsStore;
       setDraft(saved);
-      setStatus("Sauvegarde effectuee.");
+      setStatus("Sauvegarde effectuée.");
     } finally {
       setSaving(false);
     }
@@ -398,7 +428,7 @@ export function AdminPanel() {
       });
 
       if (!response.ok) {
-        setStatus("Erreur de mise a jour commande.");
+        setStatus("Erreur de mise à jour commande.");
         return;
       }
 
@@ -488,6 +518,75 @@ export function AdminPanel() {
     anchor.click();
     anchor.remove();
     URL.revokeObjectURL(url);
+  };
+
+  const updateMondialRelayConfig = (
+    patch: Partial<CmsStore["content"]["logistics"]["mondialRelay"]>,
+  ) => {
+    setDraft((current) => ({
+      ...current,
+      content: {
+        ...current.content,
+        logistics: {
+          ...current.content.logistics,
+          mondialRelay: {
+            ...current.content.logistics.mondialRelay,
+            ...patch,
+          },
+        },
+      },
+    }));
+  };
+
+  const exportMondialRelayCsv = async () => {
+    if (filteredOrders.length === 0) {
+      return;
+    }
+
+    setExportMrError(null);
+    setExportingMr(true);
+
+    try {
+      const response = await fetch("/api/admin/exports/mondial-relay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderIds: filteredOrders.map((order) => order.id),
+          collectionType: draft.content.logistics.mondialRelay.collectionType,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as
+          | { error?: string; details?: string[] }
+          | null;
+        const detailText = data?.details?.length
+          ? ` ${data.details.join(" | ")}`
+          : "";
+        setExportMrError((data?.error ?? "Export Mondial Relay impossible.") + detailText);
+        return;
+      }
+
+      const blob = await response.blob();
+      if (blob.size < 10) {
+        setExportMrError("Fichier CSV Mondial Relay vide.");
+        return;
+      }
+
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.setAttribute(
+        "download",
+        `mondial-relay-${new Date().toISOString().slice(0, 10)}.csv`,
+      );
+      document.body.append(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    } finally {
+      setExportingMr(false);
+    }
   };
 
   const logout = async () => {
@@ -758,6 +857,28 @@ export function AdminPanel() {
     });
   };
 
+  const updateProducerSocialLink = (
+    index: number,
+    network: keyof Producer["socialLinks"],
+    value: string,
+  ) => {
+    setDraft((current) => {
+      const next = [...current.producers];
+      const producer = next[index];
+      if (!producer) {
+        return current;
+      }
+      next[index] = {
+        ...producer,
+        socialLinks: {
+          ...producer.socialLinks,
+          [network]: value,
+        },
+      };
+      return { ...current, producers: next };
+    });
+  };
+
   const updateProducerRegion = (index: number, nextRegion: string) => {
     setDraft((current) => {
       const next = [...current.producers];
@@ -1002,6 +1123,14 @@ export function AdminPanel() {
             >
               Export CSV
             </button>
+            <button
+              type="button"
+              className="btn-cartoon btn-primary"
+              onClick={exportMondialRelayCsv}
+              disabled={filteredOrders.length === 0 || exportingMr}
+            >
+              {exportingMr ? "Export MR..." : "Export Mondial Relay"}
+            </button>
           </div>
 
           <div className="mt-4 grid gap-3 md:grid-cols-4">
@@ -1040,6 +1169,46 @@ export function AdminPanel() {
               />
             </div>
           </div>
+
+          <div className="mt-4 card-cartoon bg-white p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.1em] text-charcoal">
+              Parametres Mondial Relay
+            </p>
+            <div className="mt-3 grid gap-3 md:grid-cols-3">
+              <select
+                className="h-11 border-2 border-[#1a1a1a] bg-white px-3 text-sm"
+                value={draft.content.logistics.mondialRelay.collectionType}
+                onChange={(event) =>
+                  updateMondialRelayConfig({
+                    collectionType: event.target.value as "R" | "D",
+                  })
+                }
+              >
+                <option value="R">Collecte Point Relais</option>
+                <option value="D">Collecte Domicile</option>
+              </select>
+              <input
+                className="h-11 border-2 border-[#1a1a1a] bg-white px-3 text-sm"
+                value={draft.content.logistics.mondialRelay.collectionRelayId}
+                onChange={(event) =>
+                  updateMondialRelayConfig({ collectionRelayId: event.target.value })
+                }
+                placeholder="ID Point Relais collecte (6 chiffres)"
+              />
+              <input
+                className="h-11 border-2 border-[#1a1a1a] bg-white px-3 text-sm"
+                value={draft.content.logistics.mondialRelay.collectionCountry}
+                onChange={(event) =>
+                  updateMondialRelayConfig({ collectionCountry: event.target.value })
+                }
+                placeholder="Pays collecte (ISO, ex: FR)"
+              />
+            </div>
+          </div>
+
+          {exportMrError && (
+            <p className="mt-3 text-sm font-semibold text-red-700">{exportMrError}</p>
+          )}
 
           {filteredOrders.length === 0 && (
             <p className="mt-4 text-charcoal">
@@ -1100,8 +1269,8 @@ export function AdminPanel() {
                       {updatingOrderId === order.id
                         ? "..."
                         : order.paymentState === "paid"
-                          ? "Deja payee"
-                          : "Marquer payee"}
+                          ? "Déjà payée"
+                          : "Marquer payée"}
                     </button>
                   </div>
                 </div>
@@ -1163,7 +1332,7 @@ export function AdminPanel() {
                     <p className="font-semibold text-ink">{post.title}</p>
                     <p className="mt-1 text-xs text-charcoal">/{post.slug}</p>
                     <p className="mt-1 text-xs text-charcoal">
-                      {post.published ? "Publie" : "Brouillon"} -{" "}
+                      {post.published ? "Publié" : "Brouillon"} -{" "}
                       {new Date(post.updatedAt).toLocaleDateString("fr-FR")}
                     </p>
                   </button>
@@ -1182,7 +1351,7 @@ export function AdminPanel() {
 
             {!selectedBlog ? (
               <div className="card-cartoon bg-white p-5 text-charcoal">
-                Selectionne un article pour l&apos;editer.
+                Sélectionne un article pour l&apos;éditer.
               </div>
             ) : (
               <article className="card-cartoon bg-white p-5">
@@ -1222,7 +1391,7 @@ export function AdminPanel() {
                         updateBlogPost(selectedBlog.id, { published: event.target.checked })
                       }
                     />
-                    Publie
+                    Publié
                   </label>
                 </div>
 
@@ -1251,7 +1420,7 @@ export function AdminPanel() {
                   />
                 </div>
                 <p className="mt-3 text-xs text-charcoal">
-                  Cree le {new Date(selectedBlog.createdAt).toLocaleString("fr-FR")} - Modifie le{" "}
+                  Créé le {new Date(selectedBlog.createdAt).toLocaleString("fr-FR")} - Modifié le{" "}
                   {new Date(selectedBlog.updatedAt).toLocaleString("fr-FR")}
                 </p>
               </article>
@@ -1275,7 +1444,7 @@ export function AdminPanel() {
               )}
               {ownProducts.map(({ product, index }) => (
                 <article key={`${product.id}-${index}`} className="card-cartoon bg-white p-4">
-                  <div className="grid gap-3 md:grid-cols-7">
+                  <div className="grid gap-3 md:grid-cols-8">
                     <input
                       className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
                       value={product.id}
@@ -1309,6 +1478,23 @@ export function AdminPanel() {
                       onChange={(e) => updateProduct(index, "price", Number(e.target.value) || 0)}
                       placeholder="prix"
                     />
+                    <input
+                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                      value={Number.isFinite(product.weightGrams) ? product.weightGrams : ""}
+                      type="number"
+                      min={0}
+                      step={1}
+                      onChange={(event) => {
+                        const raw = event.target.value;
+                        if (!raw) {
+                          updateProduct(index, "weightGrams", undefined);
+                          return;
+                        }
+                        const parsed = Math.max(0, Math.round(Number(raw) || 0));
+                        updateProduct(index, "weightGrams", parsed > 0 ? parsed : undefined);
+                      }}
+                      placeholder="poids (g)"
+                    />
                     <select
                       className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
                       value={product.vatRate ?? 20}
@@ -1321,10 +1507,14 @@ export function AdminPanel() {
                       ))}
                     </select>
                   </div>
-                  <div className="mt-3 grid gap-3 md:grid-cols-2">
+                  <div className="mt-3 grid gap-3 md:grid-cols-3">
                     <ProductImageUpload
                       images={product.images ?? [product.image]}
                       onChange={(nextImagePaths) => updateProductImages(index, nextImagePaths)}
+                    />
+                    <ProductVideoUpload
+                      value={product.videoUrl}
+                      onChange={(nextVideoUrl) => updateProduct(index, "videoUrl", nextVideoUrl)}
                     />
                     <ProductAnalysisUpload
                       value={product.analysisPdf}
@@ -1341,6 +1531,25 @@ export function AdminPanel() {
                       placeholder="badge"
                     />
                   </div>
+                  <label className="mt-3 block text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+                    Points bonus
+                    <input
+                      className="mt-1 h-10 w-full border-2 border-[#1a1a1a] px-2 text-sm"
+                      value={product.bonusPoints ?? ""}
+                      type="number"
+                      min={0}
+                      step={1}
+                      onChange={(event) => {
+                        const raw = event.target.value;
+                        updateProduct(
+                          index,
+                          "bonusPoints",
+                          raw === "" ? undefined : Math.max(0, Math.floor(Number(raw) || 0)),
+                        );
+                      }}
+                      placeholder="Points bonus"
+                    />
+                  </label>
                   {renderVariantEditor(product, index)}
                   <div className="mt-3 grid gap-3 md:grid-cols-[auto,1fr] md:items-center">
                     <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
@@ -1507,6 +1716,42 @@ export function AdminPanel() {
                           }
                           placeholder="website (https://...)"
                         />
+                        <input
+                          className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                          value={selectedProducer.socialLinks?.instagram ?? ""}
+                          onChange={(event) =>
+                            updateProducerSocialLink(
+                              selectedProducerIndex,
+                              "instagram",
+                              event.target.value,
+                            )
+                          }
+                          placeholder="instagram (https://...)"
+                        />
+                        <input
+                          className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                          value={selectedProducer.socialLinks?.facebook ?? ""}
+                          onChange={(event) =>
+                            updateProducerSocialLink(
+                              selectedProducerIndex,
+                              "facebook",
+                              event.target.value,
+                            )
+                          }
+                          placeholder="facebook (https://...)"
+                        />
+                        <input
+                          className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                          value={selectedProducer.socialLinks?.tiktok ?? ""}
+                          onChange={(event) =>
+                            updateProducerSocialLink(
+                              selectedProducerIndex,
+                              "tiktok",
+                              event.target.value,
+                            )
+                          }
+                          placeholder="tiktok (https://...)"
+                        />
                       </div>
 
                       <textarea
@@ -1546,22 +1791,44 @@ export function AdminPanel() {
                         </div>
 
                         <div className="grid gap-3 md:grid-cols-2">
-                          <input
+                          <select
                             className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
                             value={selectedProducer.climate}
                             onChange={(event) =>
                               updateProducer(selectedProducerIndex, "climate", event.target.value)
                             }
-                            placeholder="climat (ex: Oceanique)"
-                          />
-                          <input
+                          >
+                            <option value="">Climat principal</option>
+                            {selectedProducer.climate && !selectedProducerClimateInList && (
+                              <option value={selectedProducer.climate}>
+                                {`Valeur actuelle: ${selectedProducer.climate}`}
+                              </option>
+                            )}
+                            {PRODUCER_CLIMATE_OPTIONS.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                          <select
                             className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
                             value={selectedProducer.soil}
                             onChange={(event) =>
                               updateProducer(selectedProducerIndex, "soil", event.target.value)
                             }
-                            placeholder="sol / terroir"
-                          />
+                          >
+                            <option value="">Type de sol (familles agriculteur)</option>
+                            {selectedProducer.soil && !selectedProducerSoilInList && (
+                              <option value={selectedProducer.soil}>
+                                {`Valeur actuelle: ${selectedProducer.soil}`}
+                              </option>
+                            )}
+                            {PRODUCER_SOIL_OPTIONS.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
                           <input
                             className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
                             value={selectedProducer.altitude}
@@ -1724,6 +1991,25 @@ export function AdminPanel() {
                                 placeholder="badge"
                               />
                             </div>
+                            <label className="mt-3 block text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+                              Points bonus
+                              <input
+                                className="mt-1 h-10 w-full border-2 border-[#1a1a1a] px-2 text-sm"
+                                value={product.bonusPoints ?? ""}
+                                type="number"
+                                min={0}
+                                step={1}
+                                onChange={(event) => {
+                                  const raw = event.target.value;
+                                  updateProduct(
+                                    index,
+                                    "bonusPoints",
+                                    raw === "" ? undefined : Math.max(0, Math.floor(Number(raw) || 0)),
+                                  );
+                                }}
+                                placeholder="Points bonus"
+                              />
+                            </label>
                             {renderVariantEditor(product, index)}
                             <div className="mt-3 grid gap-3 md:grid-cols-[auto,1fr] md:items-center">
                               <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">

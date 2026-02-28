@@ -1,6 +1,6 @@
 "use client";
 
-import { Minus, Plus, Trash2, X } from "lucide-react";
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CheckoutButton } from "@/components/CheckoutButton";
@@ -65,6 +65,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     authLoading,
     addToCart,
     decreaseQuantity,
+    setQuantity,
     removeFromCart,
     clearCart,
   } = useCart();
@@ -233,6 +234,25 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     () => Number((checkoutAmount + shippingFee).toFixed(2)),
     [checkoutAmount, shippingFee],
   );
+  const earnedProductBonusPoints = useMemo(
+    () =>
+      items.reduce((total, item) => {
+        const bonusPoints =
+          Number.isFinite(Number(item.bonusPoints)) && Number(item.bonusPoints) > 0
+            ? Math.floor(Number(item.bonusPoints))
+            : 0;
+        return total + bonusPoints;
+      }, 0),
+    [items],
+  );
+  const earnedBaseLoyaltyPoints = useMemo(
+    () => Math.max(0, Math.floor(finalAmountToPay)),
+    [finalAmountToPay],
+  );
+  const earnedTotalLoyaltyPoints = useMemo(
+    () => earnedBaseLoyaltyPoints + earnedProductBonusPoints,
+    [earnedBaseLoyaltyPoints, earnedProductBonusPoints],
+  );
   const lotteryTicketThreshold = useMemo(() => {
     const threshold = Number(lotteryConfig?.ticketThresholdEuros ?? 20);
     if (!Number.isFinite(threshold) || threshold <= 0) {
@@ -356,7 +376,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       );
     } catch {
       setPromoPreview(null);
-      setPromoError("Impossible de verifier le code promo.");
+      setPromoError("Impossible de vérifier le code promo.");
     } finally {
       setPromoLoading(false);
     }
@@ -368,7 +388,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     setPromoError(null);
 
     if (!selectedLotteryTicketId) {
-      setLotteryError("Selectionne un ticket gagnant.");
+      setLotteryError("Sélectionne un ticket gagnant.");
       return;
     }
 
@@ -433,12 +453,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       setPromoSuccess(null);
       setLotterySuccess(
         data.rewardType === "discount"
-          ? `Ticket ${data.ticketNumber} applique (${data.lotteryDiscountPercent ?? 0}% de reduction).`
-          : `Ticket ${data.ticketNumber} applique (lot ajoute a la commande).`,
+          ? `Ticket ${data.ticketNumber} appliqué (${data.lotteryDiscountPercent ?? 0}% de réduction).`
+          : `Ticket ${data.ticketNumber} appliqué (lot ajouté à la commande).`,
       );
     } catch {
       setLotteryPreview(null);
-      setLotteryError("Impossible de verifier le ticket gagnant.");
+      setLotteryError("Impossible de vérifier le ticket gagnant.");
     } finally {
       setLotteryLoading(false);
     }
@@ -478,11 +498,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           <h2 className="text-2xl font-extrabold">Ton Panier ({totalItems})</h2>
           <button
             type="button"
-            className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3"
+            className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3 text-2xl font-bold leading-none"
             onClick={onClose}
             aria-label="Fermer"
           >
-            <X size={16} />
+            ✕
           </button>
         </div>
 
@@ -491,7 +511,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             {items.length === 0 && (
               <div className="cartoon-panel bg-white p-5 text-sm">
                 {authLoading
-                  ? "Verification de la session..."
+                  ? "Vérification de la session..."
                   : isAuthenticated
                     ? "Ton panier est vide. Ajoute quelques produits fun."
                     : "Connecte-toi pour ajouter des produits au panier."}
@@ -541,7 +561,19 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   >
                     <Minus size={16} />
                   </button>
-                  <span className="min-w-8 text-center font-bold">{item.quantity}</span>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    max={999}
+                    value={item.quantity}
+                    onChange={(e) => {
+                      const v = Number.parseInt(e.target.value, 10);
+                      if (!Number.isNaN(v) && v >= 1) setQuantity(item.id, v);
+                    }}
+                    className="h-[44px] w-16 border-2 border-[#1a1a1a] bg-white text-center text-sm font-bold"
+                    aria-label={`Quantité ${item.name}`}
+                  />
                   <button
                     type="button"
                     onClick={() => {
@@ -582,7 +614,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
                   value={shippingPhone}
                   onChange={(event) => setShippingPhone(event.target.value)}
-                  placeholder="Telephone"
+                  placeholder="Téléphone"
                 />
                 <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-2">
                   <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">
@@ -725,19 +757,19 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           </div>
           {displayedBadgeDiscountPercent > 0 && (
             <div className="mt-2 text-sm text-green-700">
-              Reduction fidelite ({loyalty.currentBadge.label}): -{formatPrice(displayedBadgeDiscountAmount)} (
+              Réduction fidélité ({loyalty.currentBadge.label}): -{formatPrice(displayedBadgeDiscountAmount)} (
               {displayedBadgeDiscountPercent}%)
             </div>
           )}
           {hasAutoReferralDiscount && (
             <div className="mt-2 text-sm text-green-700">
-              Remise filleul premiere commande: -{formatPrice(referralAutoDiscountAmount)} (
+              Remise filleul première commande: -{formatPrice(referralAutoDiscountAmount)} (
               {REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_PERCENT}%)
             </div>
           )}
           {promoPreview && (
             <div className="mt-2 text-sm text-green-700">
-              Reduction code {promoPreview.code}: -{formatPrice(promoPreview.promoDiscountAmount)} (
+              Réduction code {promoPreview.code}: -{formatPrice(promoPreview.promoDiscountAmount)} (
               {promoPreview.promoDiscountPercent}%)
             </div>
           )}
@@ -749,7 +781,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           )}
           {lotteryPreview?.rewardType === "gift" && (
             <div className="mt-2 text-sm text-green-700">
-              Ticket {lotteryPreview.ticketNumber}: lot ajoute ({lotteryPreview.giftLabel ?? lotteryPreview.prizeName})
+              Ticket {lotteryPreview.ticketNumber}: lot ajouté ({lotteryPreview.giftLabel ?? lotteryPreview.prizeName})
             </div>
           )}
           <div className="mt-2 flex items-center justify-between text-sm text-ink">
@@ -759,11 +791,25 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             </span>
           </div>
           <div className="mt-1 text-sm font-semibold text-ink">
-            A payer: {formatPrice(finalAmountToPay)} TTC
+            À payer: {formatPrice(finalAmountToPay)} TTC
+          </div>
+          <div className="mt-3 rounded border-2 border-[#1a1a1a] bg-[#fff7d6] p-3">
+            <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">
+              Points fidélité après achat
+            </p>
+            <p className="mt-1 text-sm font-semibold text-ink">
+              Tu vas gagner {earnedTotalLoyaltyPoints} point{earnedTotalLoyaltyPoints > 1 ? "s" : ""}.
+            </p>
+            <p className="mt-1 text-xs text-charcoal">
+              {earnedBaseLoyaltyPoints} point{earnedBaseLoyaltyPoints > 1 ? "s" : ""} via 1€ dépensé = 1 point
+              {earnedProductBonusPoints > 0
+                ? ` + ${earnedProductBonusPoints} point${earnedProductBonusPoints > 1 ? "s" : ""} bonus produit`
+                : ""}.
+            </p>
           </div>
           <div className="mt-3 rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
             <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">
-              Tickets loterie apres achat
+              Tickets loterie après achat
             </p>
             {!isAuthenticated ? (
               <p className="mt-1 text-sm text-charcoal">
@@ -775,7 +821,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               </p>
             ) : !lotteryConfig.isActive ? (
               <p className="mt-1 text-sm text-charcoal">
-                Loterie actuellement desactivee.
+                Loterie actuellement désactivée.
               </p>
             ) : (
               <>
@@ -783,11 +829,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   Tu vas gagner {estimatedEarnedTickets} ticket{estimatedEarnedTickets > 1 ? "s" : ""}.
                 </p>
                 <p className="mt-1 text-xs text-charcoal">
-                  Regle: 1 ticket par tranche de {formatPrice(lotteryTicketThreshold)} TTC payee.
+                  Règle: 1 ticket par tranche de {formatPrice(lotteryTicketThreshold)} TTC payée.
                 </p>
                 {missingForNextTicket !== null && (
                   <p className="mt-1 text-xs text-charcoal">
-                    Encore {formatPrice(missingForNextTicket)} TTC pour 1 ticket supplementaire.
+                    Encore {formatPrice(missingForNextTicket)} TTC pour 1 ticket supplémentaire.
                   </p>
                 )}
               </>
@@ -847,21 +893,21 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             {!canCheckout && items.length > 0 && (
               <p className="mt-2 text-xs font-semibold text-charcoal">
                 {deliveryMethod === "relay" && !selectedRelayPoint
-                  ? "Selectionne un Point Relais pour payer."
-                  : "Completer les informations de livraison pour payer."}
+                  ? "Sélectionne un Point Relais pour payer."
+                  : "Compléter les informations de livraison pour payer."}
               </p>
             )}
             {!authLoading && isAuthenticated && !checkoutEligibility.allowed && (
               <div className="mt-2 space-y-2">
                 <p className="text-xs font-semibold text-charcoal">
-                  {checkoutEligibility.error ?? "Profil non eligible a la commande."}
+                  {checkoutEligibility.error ?? "Profil non éligible à la commande."}
                 </p>
                 <button
                   type="button"
                   onClick={goToProfile}
                   className="btn-cartoon btn-secondary h-9 px-3 text-xs"
                 >
-                  Completer mon profil
+                  Compléter mon profil
                 </button>
               </div>
             )}

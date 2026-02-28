@@ -3,9 +3,10 @@ import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { issueInvoiceForOrder } from "@/lib/invoice-store";
 import { mintLotteryTicketsForOrderByBackend } from "@/lib/lottery-backend";
-import { updateOrderPaymentByVivaOrderCodeByBackend } from "@/lib/order-backend";
+import { applyOrderLoyaltyBonusByBackend, updateOrderPaymentByVivaOrderCodeByBackend } from "@/lib/order-backend";
 import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
 import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { claimWebhookEvent } from "@/lib/webhook-idempotency";
 
 export const runtime = "nodejs";
 
@@ -204,6 +205,20 @@ export async function POST(request: Request) {
     );
   }
 
+  // --- Idempotency check: skip if this transaction was already processed ---
+  const idempotencyKey = parsed.transactionId || `oc_${parsed.orderCode}`;
+  const isNew = await claimWebhookEvent({
+    provider: "viva",
+    externalId: idempotencyKey,
+    eventType: String(parsed.eventTypeId ?? paymentState),
+  });
+  if (!isNew) {
+    return NextResponse.json(
+      { ok: true, ignored: true, reason: "duplicate_event" },
+      { status: 200 },
+    );
+  }
+
   const updated = await updateOrderPaymentByVivaOrderCodeByBackend({
     orderCode: parsed.orderCode,
     paymentState,
@@ -219,6 +234,7 @@ export async function POST(request: Request) {
 
   if (updated.paymentState === "paid") {
     await issueInvoiceForOrder(updated.id);
+    await applyOrderLoyaltyBonusByBackend(updated.id);
 
     if (updated.customerId) {
       await mintLotteryTicketsForOrderByBackend({

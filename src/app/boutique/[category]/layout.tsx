@@ -8,51 +8,57 @@ const categoryMeta: Record<
   { title: string; description: string; label: string }
 > = {
   "fleurs-cbd": {
-    title: "Fleurs CBD Bio Pas Cher | Qualite Premium",
+    title: "Fleurs CBD Bio Bretagne Pas Cher | Qualité Premium",
     description:
-      "Achetez des fleurs CBD bio pas cher. Qualite premium, aromes naturels, analyses en laboratoire. Livraison rapide en France.",
+      "Achetez des fleurs CBD bio pas cher en Bretagne. Qualité premium, arômes naturels, analysées en laboratoire. Shop CBD breton, livraison rapide en France.",
     label: "Fleurs CBD",
   },
   "resines-cbd": {
-    title: "Resines CBD Bio | Qualite Premium",
+    title: "Résines CBD Bio Bretagne | Qualité Premium Pas Cher",
     description:
-      "Achetez des resines CBD bio pas cher. Texture et aromes maitrises, analyses en laboratoire. Livraison rapide en France.",
-    label: "Resines CBD",
+      "Résines CBD bio de qualité premium. Texture et arômes maîtrisés, analyses en laboratoire. Shop CBD breton, livraison rapide en France.",
+    label: "Résines CBD",
   },
   "huiles-cbd": {
-    title: "Huiles CBD Bio | Full Spectrum et Broad Spectrum",
+    title: "Huiles CBD Bio | Full Spectrum et Broad Spectrum Bretagne",
     description:
-      "Huiles CBD bio full spectrum et broad spectrum a petit prix. Shop CBD breton, livraison France.",
+      "Huiles CBD bio full spectrum et broad spectrum à petit prix. Shop CBD breton, producteurs de qualité, livraison rapide en France.",
     label: "Huiles CBD",
   },
   "e-liquide-cbd": {
-    title: "E-liquides CBD | Vape CBD",
+    title: "E-liquides CBD | Vape CBD Bretagne",
     description:
-      "E-liquides CBD au profil aromatique maitrise et dosage transparent. Livraison rapide en France.",
+      "E-liquides CBD au profil aromatique maîtrisé et dosage transparent. Shop CBD breton, livraison rapide en France.",
     label: "E-liquides CBD",
   },
   "cosmetiques-cbd": {
-    title: "Cosmetiques CBD Bio | Baumes, Cremes et Soins au Chanvre",
+    title: "Cosmétiques CBD Bio | Baumes, Crèmes et Soins au Chanvre Breton",
     description:
-      "Cosmetiques CBD bio : baumes reparateurs, cremes hydratantes et huiles de massage au chanvre.",
-    label: "Cosmetiques CBD",
+      "Cosmétiques CBD bio : baumes réparateurs, crèmes hydratantes et huiles de massage au chanvre. Soins naturels bretons.",
+    label: "Cosmétiques CBD",
   },
   "tisane-cbd": {
-    title: "Tisane CBD Bio | Infusions au Chanvre",
+    title: "Tisane CBD Bio | Infusions au Chanvre Breton",
     description:
-      "Tisanes et infusions CBD bio au chanvre. Relaxation et plaisir au quotidien.",
+      "Tisanes et infusions CBD bio au chanvre breton. Relaxation et plaisir au quotidien. Livraison rapide en France.",
     label: "Tisane CBD",
+  },
+  "miam-cbd": {
+    title: "Miam CBD | Produits Gourmands au Chanvre Breton",
+    description:
+      "Produits alimentaires et gourmandises CBD bio au chanvre breton. Plaisir gustatif et bien-être au quotidien. Livraison rapide en France.",
+    label: "Miam CBD",
   },
   "alimentaire-cbd": {
-    title: "Tisane CBD Bio | Infusions au Chanvre",
+    title: "Alimentaire CBD Bio | Produits au Chanvre Breton",
     description:
-      "Tisanes et infusions CBD bio au chanvre. Relaxation et plaisir au quotidien.",
-    label: "Tisane CBD",
+      "Produits alimentaires CBD bio au chanvre breton. Bien-être et plaisir gustatif au quotidien. Livraison rapide en France.",
+    label: "Alimentaire CBD",
   },
   "accessoires-cbd": {
-    title: "Accessoires CBD | Grinders, Pochons et Kits Decouverte",
+    title: "Accessoires CBD | Grinders, Pochons et Kits Découverte",
     description:
-      "Accessoires CBD de qualite : grinders, pochons hermetiques, plateaux et kits decouverte.",
+      "Accessoires CBD de qualité : grinders, pochons hermétiques, plateaux et kits découverte. Shop CBD breton.",
     label: "Accessoires CBD",
   },
 };
@@ -66,7 +72,7 @@ export async function generateMetadata({
   const meta = categoryMeta[category];
 
   if (!meta) {
-    return { title: "Categorie introuvable" };
+    return { title: "Catégorie introuvable" };
   }
 
   return {

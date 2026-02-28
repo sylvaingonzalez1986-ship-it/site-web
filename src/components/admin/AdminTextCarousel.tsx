@@ -5,8 +5,6 @@ import {
   ArrowUp,
   Award,
   BookOpen,
-  ChevronLeft,
-  ChevronRight,
   Eye,
   EyeOff,
   Home,
@@ -88,7 +86,7 @@ const NATIVE_TEXT_FIELDS: Record<SectionPageKey, Record<string, TextField[]>> = 
       { path: "home.appStoreLabel", label: "Label App Store", placeholder: "App Store", type: "input" },
       { path: "home.playStoreLabel", label: "Label Google Play", placeholder: "Google Play", type: "input" },
       { path: "home.appProducerTitle", label: "Titre Bloc Producteurs", placeholder: "Pour les producteurs", type: "input" },
-      { path: "home.appProducerDescription", label: "Description Bloc Producteurs", placeholder: "Rejoignez le reseau des chanvriers bretons", type: "textarea", minHeightClass: "min-h-20" },
+      { path: "home.appProducerDescription", label: "Description Bloc Producteurs", placeholder: "Rejoignez le réseau des chanvriers bretons", type: "textarea", minHeightClass: "min-h-20" },
     ],
     story: [
       { path: "home.storyTitle", label: "Titre Histoire", placeholder: "Titre histoire", type: "input" },
@@ -124,15 +122,15 @@ const NATIVE_TEXT_FIELDS: Record<SectionPageKey, Record<string, TextField[]>> = 
       { path: "application.eyebrow", label: "Eyebrow", placeholder: "App eyebrow", type: "input" },
       { path: "application.title", label: "Titre", placeholder: "App titre", type: "input" },
       { path: "application.description", label: "Description", placeholder: "App description", type: "textarea", minHeightClass: "min-h-20" },
-      { path: "application.heroPrimaryButtonLabel", label: "Label Bouton Principal", placeholder: "App Store - Bientot", type: "input" },
-      { path: "application.heroSecondaryButtonLabel", label: "Label Bouton Secondaire", placeholder: "Google Play - Bientot", type: "input" },
+      { path: "application.heroPrimaryButtonLabel", label: "Label Bouton Principal", placeholder: "App Store - Bientôt", type: "input" },
+      { path: "application.heroSecondaryButtonLabel", label: "Label Bouton Secondaire", placeholder: "Google Play - Bientôt", type: "input" },
     ],
     features: [
-      { path: "application.feature1Title", label: "Feature 1 Titre", placeholder: "Fidelite", type: "input" },
+      { path: "application.feature1Title", label: "Feature 1 Titre", placeholder: "Fidélité", type: "input" },
       { path: "application.feature1Description", label: "Feature 1 Description", placeholder: "Description feature 1", type: "textarea", minHeightClass: "min-h-20" },
       { path: "application.feature2Title", label: "Feature 2 Titre", placeholder: "Commande rapide", type: "input" },
       { path: "application.feature2Description", label: "Feature 2 Description", placeholder: "Description feature 2", type: "textarea", minHeightClass: "min-h-20" },
-      { path: "application.feature3Title", label: "Feature 3 Titre", placeholder: "Communaute", type: "input" },
+      { path: "application.feature3Title", label: "Feature 3 Titre", placeholder: "Communauté", type: "input" },
       { path: "application.feature3Description", label: "Feature 3 Description", placeholder: "Description feature 3", type: "textarea", minHeightClass: "min-h-20" },
       { path: "application.feature4Title", label: "Feature 4 Titre", placeholder: "Actus locales", type: "input" },
       { path: "application.feature4Description", label: "Feature 4 Description", placeholder: "Description feature 4", type: "textarea", minHeightClass: "min-h-20" },
@@ -141,7 +139,7 @@ const NATIVE_TEXT_FIELDS: Record<SectionPageKey, Record<string, TextField[]>> = 
       { path: "application.newsletterTitle", label: "Titre Newsletter", placeholder: "Titre newsletter", type: "input" },
       { path: "application.newsletterDescription", label: "Description Newsletter", placeholder: "Description newsletter", type: "textarea", minHeightClass: "min-h-20" },
       { path: "application.newsletterEmailPlaceholder", label: "Placeholder Email", placeholder: "Ton e-mail", type: "input" },
-      { path: "application.newsletterSubmitLabel", label: "Label Bouton Newsletter", placeholder: "Me prevenir", type: "input" },
+      { path: "application.newsletterSubmitLabel", label: "Label Bouton Newsletter", placeholder: "Me prévenir", type: "input" },
     ],
   },
   blog: {
@@ -153,9 +151,9 @@ const NATIVE_TEXT_FIELDS: Record<SectionPageKey, Record<string, TextField[]>> = 
       { path: "blog.breadcrumbBlogLabel", label: "Breadcrumb Blog", placeholder: "Blog", type: "input" },
     ],
     posts: [
-      { path: "blog.postsEmptyMessage", label: "Message Aucune Publication", placeholder: "Aucun article publie pour le moment.", type: "textarea", minHeightClass: "min-h-20" },
+      { path: "blog.postsEmptyMessage", label: "Message Aucune Publication", placeholder: "Aucun article publié pour le moment.", type: "textarea", minHeightClass: "min-h-20" },
       { path: "blog.postsReadMoreLabel", label: "Label Lire l'article", placeholder: "Lire l'article", type: "input" },
-      { path: "blog.postPublishedPrefix", label: "Prefixe Date Publication", placeholder: "Publie le", type: "input" },
+      { path: "blog.postPublishedPrefix", label: "Préfixe Date Publication", placeholder: "Publié le", type: "input" },
       { path: "blog.postBackLabel", label: "Label Retour Blog", placeholder: "Retour au blog", type: "input" },
     ],
   },
@@ -687,8 +685,8 @@ export function AdminTextCarousel({ draft, setDraft }: AdminTextCarouselProps) {
   return (
     <section className="cartoon-border bg-cream p-6 md:p-8" role="region" aria-roledescription="carousel" aria-label="Edition textes par page" tabIndex={0} onKeyDown={onKeyDown}>
       <div className="flex items-center justify-between gap-4">
-        <button type="button" className="btn-cartoon btn-secondary admin-carousel-arrow" onClick={() => goToSlide(currentSlide - 1)} disabled={currentSlide === 0} aria-label="Slide precedente">
-          <ChevronLeft size={18} />
+        <button type="button" className="btn-cartoon btn-secondary admin-carousel-arrow text-2xl font-bold leading-none" onClick={() => goToSlide(currentSlide - 1)} disabled={currentSlide === 0} aria-label="Slide precedente">
+          ‹
         </button>
 
         <div className="flex flex-1 flex-col items-center gap-2 text-center">
@@ -711,8 +709,8 @@ export function AdminTextCarousel({ draft, setDraft }: AdminTextCarouselProps) {
           </div>
         </div>
 
-        <button type="button" className="btn-cartoon btn-secondary admin-carousel-arrow" onClick={() => goToSlide(currentSlide + 1)} disabled={currentSlide === totalSlides - 1} aria-label="Slide suivante">
-          <ChevronRight size={18} />
+        <button type="button" className="btn-cartoon btn-secondary admin-carousel-arrow text-2xl font-bold leading-none" onClick={() => goToSlide(currentSlide + 1)} disabled={currentSlide === totalSlides - 1} aria-label="Slide suivante">
+          ›
         </button>
       </div>
 

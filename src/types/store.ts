@@ -27,6 +27,7 @@ export type OrderItem = {
   unitPriceHt: number;
   lineTotalHt: number;
   lineVatAmount: number;
+  bonusPoints?: number;
   parentPackId?: string;
   parentPackName?: string;
 };
@@ -118,6 +119,11 @@ export type Producer = {
   department: string;
   region: string;
   website: string;
+  socialLinks: {
+    instagram?: string;
+    facebook?: string;
+    tiktok?: string;
+  };
   cultureType: ProducerCultureType[];
   climate: string;
   soil: string;
@@ -276,6 +282,13 @@ export type SiteContent = {
     breadcrumbBlogLabel: string;
     postPublishedPrefix: string;
     postBackLabel: string;
+  };
+  logistics: {
+    mondialRelay: {
+      collectionType: "R" | "D";
+      collectionRelayId: string;
+      collectionCountry: string;
+    };
   };
   profile: {
     badgeBenefitsModalTitle: string;

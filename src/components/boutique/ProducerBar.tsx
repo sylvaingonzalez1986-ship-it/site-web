@@ -14,7 +14,6 @@ type ProducerBarProps = {
   addButtonLabel: string;
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
-  onOpenQuickView?: (productId: string, sourceProducts: Product[]) => void;
 };
 
 export function ProducerBar({
@@ -23,7 +22,6 @@ export function ProducerBar({
   addButtonLabel,
   producerPartnerLabel,
   producerWebsiteLabel,
-  onOpenQuickView,
 }: ProducerBarProps) {
   const [selectedProducerId, setSelectedProducerId] = useState<string | null>(null);
 
@@ -61,9 +59,12 @@ export function ProducerBar({
     return null;
   }
 
+  /* Only duplicate cards for infinite loop when there are enough to overflow */
+  const needsLoop = producersWithProducts.length > 4;
+
   return (
     <div className="mt-6">
-      <ProducerCarousel itemCount={producersWithProducts.length}>
+      <ProducerCarousel itemCount={producersWithProducts.length} loop={needsLoop}>
         {/* Real items */}
         {producersWithProducts.map((producer) => (
           <ProducerTcgCard
@@ -73,15 +74,16 @@ export function ProducerBar({
             onClick={() => onBadgeClick(producer.id)}
           />
         ))}
-        {/* Cloned items for infinite loop on desktop */}
-        {producersWithProducts.map((producer) => (
-          <ProducerTcgCard
-            key={`clone-${producer.id}`}
-            producer={producer}
-            isSelected={selectedProducerId === producer.id}
-            onClick={() => onBadgeClick(producer.id)}
-          />
-        ))}
+        {/* Cloned items for infinite loop on desktop — only when enough cards */}
+        {needsLoop &&
+          producersWithProducts.map((producer) => (
+            <ProducerTcgCard
+              key={`clone-${producer.id}`}
+              producer={producer}
+              isSelected={selectedProducerId === producer.id}
+              onClick={() => onBadgeClick(producer.id)}
+            />
+          ))}
       </ProducerCarousel>
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -93,11 +95,6 @@ export function ProducerBar({
               product.producerId ? producerById.get(product.producerId) : undefined
             }
             addButtonLabel={addButtonLabel}
-            onOpenQuickView={
-              onOpenQuickView
-                ? () => onOpenQuickView(product.id, products)
-                : undefined
-            }
           />
         ))}
       </div>
@@ -110,7 +107,6 @@ export function ProducerBar({
         addButtonLabel={addButtonLabel}
         producerPartnerLabel={producerPartnerLabel}
         producerWebsiteLabel={producerWebsiteLabel}
-        onOpenQuickView={onOpenQuickView}
         onClose={() => setSelectedProducerId(null)}
         onSelectProducer={setSelectedProducerId}
       />

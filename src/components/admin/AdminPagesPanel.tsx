@@ -79,9 +79,9 @@ export function AdminPagesPanel() {
         }
         return nextPages[0]?.id ?? null;
       });
-      setStatusMessage("Pages chargees.");
+      setStatusMessage("Pages chargées.");
     } catch {
-      setStatusMessage("Erreur reseau pendant le chargement des pages.");
+      setStatusMessage("Erreur réseau pendant le chargement des pages.");
     } finally {
       setLoading(false);
     }
@@ -142,9 +142,9 @@ export function AdminPagesPanel() {
       setNewPageTitle("");
       setNewPageSlug("");
       notifyCmsPagesUpdated();
-      setStatusMessage("Page creee.");
+      setStatusMessage("Page créée.");
     } catch {
-      setStatusMessage("Erreur reseau pendant la creation.");
+      setStatusMessage("Erreur réseau pendant la création.");
     } finally {
       setSaving(false);
     }
@@ -187,9 +187,9 @@ export function AdminPagesPanel() {
       const updated = data as CmsPage;
       setPages((current) => current.map((page) => (page.id === updated.id ? updated : page)));
       notifyCmsPagesUpdated();
-      setStatusMessage("Page sauvegardee.");
+      setStatusMessage("Page sauvegardée.");
     } catch {
-      setStatusMessage("Erreur reseau pendant la sauvegarde.");
+      setStatusMessage("Erreur réseau pendant la sauvegarde.");
     } finally {
       setSaving(false);
     }
@@ -217,9 +217,9 @@ export function AdminPagesPanel() {
       const updated = data as CmsPage;
       setPages((current) => current.map((page) => (page.id === updated.id ? updated : page)));
       notifyCmsPagesUpdated();
-      setStatusMessage("Page archivee.");
+      setStatusMessage("Page archivée.");
     } catch {
-      setStatusMessage("Erreur reseau pendant l'archivage.");
+      setStatusMessage("Erreur réseau pendant l'archivage.");
     } finally {
       setSaving(false);
     }
@@ -263,9 +263,9 @@ export function AdminPagesPanel() {
       setPages((current) => [...current, created]);
       setSelectedPageId(created.id);
       notifyCmsPagesUpdated();
-      setStatusMessage("Page dupliquee.");
+      setStatusMessage("Page dupliquée.");
     } catch {
-      setStatusMessage("Erreur reseau pendant la duplication.");
+      setStatusMessage("Erreur réseau pendant la duplication.");
     } finally {
       setSaving(false);
     }

@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { isInvoiceEligibleOrder } from "@/lib/invoice-utils";
 import { getDeliveryMethodLabel } from "@/lib/shipping";
@@ -108,22 +107,22 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
       if (!response.ok) {
         try {
           const data = (await response.json()) as { error?: string };
-          setInvoiceError(data.error ?? "Impossible de telecharger la facture.");
+          setInvoiceError(data.error ?? "Impossible de télécharger la facture.");
         } catch {
-          setInvoiceError("Impossible de telecharger la facture.");
+          setInvoiceError("Impossible de télécharger la facture.");
         }
         return;
       }
 
       const contentType = response.headers.get("content-type") ?? "";
       if (!contentType.toLowerCase().includes("application/pdf")) {
-        setInvoiceError("Le fichier recu n'est pas une facture PDF valide.");
+        setInvoiceError("Le fichier reçu n'est pas une facture PDF valide.");
         return;
       }
 
       const blob = await response.blob();
       if (blob.size < 100) {
-        setInvoiceError("Facture vide recue. Reessayez dans quelques secondes.");
+        setInvoiceError("Facture vide reçue. Réessayez dans quelques secondes.");
         return;
       }
 
@@ -173,11 +172,11 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
           </div>
           <button
             type="button"
-            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0"
+            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
             onClick={onClose}
             aria-label="Fermer"
           >
-            <X size={18} />
+            ✕
           </button>
         </div>
 
@@ -310,11 +309,11 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
             disabled={!canDownloadInvoice || invoiceLoading}
             onClick={downloadInvoice}
           >
-            {invoiceLoading ? "Telechargement..." : "Telecharger la facture"}
+            {invoiceLoading ? "Téléchargement..." : "Télécharger la facture"}
           </button>
           {!canDownloadInvoice && (
             <p className="mt-2 text-sm text-charcoal">
-              Facture disponible uniquement pour les commandes payees.
+              Facture disponible uniquement pour les commandes payées.
             </p>
           )}
           {invoiceError && (

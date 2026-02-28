@@ -451,7 +451,7 @@ function MobileLegalSection({ home, zIndex }: { home: HomeContent; zIndex: numbe
             <div className="absolute left-1/2 bottom-0 z-10 h-[92%] w-[96%] -translate-x-1/2">
               <Image
                 src="/sylvain.png"
-                alt="Sylvain"
+                alt="Sylvain, fondateur chanvrier breton – boutique CBD légal en France"
                 fill
                 sizes="68vw"
                 className="object-contain object-bottom drop-shadow-[0_8px_10px_rgba(26,26,26,0.28)]"
@@ -516,15 +516,15 @@ function MobileProductsSection({
                     {hasPromo ? (
                       <div className="mt-1 flex flex-col text-xs uppercase tracking-wide">
                         <span className="price-original">
-                          {home.productsPricePrefix} {formatPrice(product.originalPrice)} TTC
+                          {home.productsPricePrefix} {formatPrice(product.originalPrice)}{product.category === "fleurs" && " / g"} TTC
                         </span>
                         <span className="price-promo">
-                          {home.productsPricePrefix} {formatPrice(product.price)} TTC
+                          {home.productsPricePrefix} {formatPrice(product.price)}{product.category === "fleurs" && " / g"} TTC
                         </span>
                       </div>
                     ) : (
                       <p className="mt-1 text-xs uppercase tracking-wide text-charcoal">
-                        {home.productsPricePrefix} {formatPrice(product.price)} TTC
+                        {home.productsPricePrefix} {formatPrice(product.price)}{product.category === "fleurs" && " / g"} TTC
                       </p>
                     )}
                     <Link
@@ -717,7 +717,7 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
             >
               <Image
                 src="/charles.png"
-                alt="Charles"
+                alt="Charles, mascotte Les Chanvriers Bretons – CBD bio cultivé en Bretagne"
                 fill
                 priority
                 sizes="(max-width: 768px) 60vw, 34vw"
@@ -885,7 +885,7 @@ function LegalPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: numbe
         <div className="legal-character absolute left-1/2 bottom-0 z-10 h-[92%] w-[96%] -translate-x-1/2">
           <Image
             src="/sylvain.png"
-            alt="Sylvain"
+            alt="Sylvain, fondateur chanvrier breton – boutique CBD légal en France"
             fill
             className="object-contain object-bottom drop-shadow-[0_8px_10px_rgba(26,26,26,0.28)]"
           />
@@ -1085,12 +1085,12 @@ function ProductsPinnedSection({
                 <h3 className="font-display text-lg text-ink">{product.name}</h3>
                 {hasPromo ? (
                   <div className="mt-1 flex flex-col text-xs uppercase tracking-wide">
-                    <span className="price-original">{home.productsPricePrefix} {formatPrice(product.originalPrice)} TTC</span>
-                    <span className="price-promo">{home.productsPricePrefix} {formatPrice(product.price)} TTC</span>
+                    <span className="price-original">{home.productsPricePrefix} {formatPrice(product.originalPrice)}{product.category === "fleurs" && " / g"} TTC</span>
+                    <span className="price-promo">{home.productsPricePrefix} {formatPrice(product.price)}{product.category === "fleurs" && " / g"} TTC</span>
                   </div>
                 ) : (
                   <p className="mt-1 text-xs uppercase tracking-wide text-charcoal">
-                    {home.productsPricePrefix} {formatPrice(product.price)} TTC
+                    {home.productsPricePrefix} {formatPrice(product.price)}{product.category === "fleurs" && " / g"} TTC
                   </p>
                 )}
                 <button className="mt-3 flex min-h-[44px] w-full items-center justify-center gap-2 border-2 border-[#1a1a1a] bg-orange py-3 text-xs font-bold uppercase text-white">

@@ -503,17 +503,6 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
 
   const isRouteReady = !currentStep.route || pathname === currentStep.route;
   const safeStepIndex = clampIndex(currentStepIndex);
-  const handleMissingTarget = useCallback(() => {
-    trackTutorialEvent("missing_target", {
-      stepId: currentStep.id,
-      stepIndex: safeStepIndex,
-      totalSteps: tutorialSteps.length,
-      pathname,
-      source: "auto_skip",
-    });
-    nextStep();
-  }, [currentStep.id, nextStep, pathname, safeStepIndex, tutorialSteps.length]);
-
   return (
     <TutorialContext.Provider value={contextValue}>
       {children}
@@ -526,7 +515,6 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
         onNext={nextStep}
         onPrev={prevStep}
         onSkip={() => skipTutorial("skip_button")}
-        onMissingTarget={handleMissingTarget}
       />
     </TutorialContext.Provider>
   );

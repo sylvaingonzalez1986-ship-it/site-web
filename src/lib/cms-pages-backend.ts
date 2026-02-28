@@ -30,7 +30,7 @@ function ensureCmsPagesEnabled(): void {
 
 function assertSlugAllowedForCmsCrud(slug: string): void {
   if (isCmsSlugReserved(slug) && !isCmsStaticOverrideSlug(slug)) {
-    throw new Error("Slug reserve. Choisis un autre slug.");
+    throw new Error("Slug réservé. Choisis un autre slug.");
   }
 }
 

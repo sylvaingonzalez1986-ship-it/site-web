@@ -5,9 +5,9 @@ import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-st
 
 const CMS_SLUG = "politique-confidentialite";
 const CANONICAL_PATH = "/politique-confidentialite";
-const FALLBACK_TITLE = "Politique de confidentialite";
+const FALLBACK_TITLE = "Politique de confidentialité";
 const FALLBACK_DESCRIPTION =
-  "Politique de confidentialite du site Les Chanvriers Bretons relative a la collecte et au traitement des donnees personnelles.";
+  "Politique de confidentialité du site Les Chanvriers Bretons relative à la collecte et au traitement des données personnelles.";
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildCmsStaticPageMetadata({

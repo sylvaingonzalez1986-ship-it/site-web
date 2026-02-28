@@ -34,10 +34,10 @@ type AdminCustomerDetail = {
 const orderStatusLabels: Record<OrderStatus, string> = {
   new: "Nouvelle",
   pending_payment: "Paiement en attente",
-  paid: "Payee",
-  processing: "En preparation",
-  shipped: "Expediee",
-  cancelled: "Annulee",
+  paid: "Payée",
+  processing: "En préparation",
+  shipped: "Expédiée",
+  cancelled: "Annulée",
 };
 
 function getInitials(firstName: string, lastName: string): string {
@@ -307,7 +307,7 @@ export function AdminCustomersPanel() {
                     Inscrit le {new Date(detail.customer.createdAt).toLocaleDateString("fr-FR")}
                   </p>
                   <p className="text-xs text-charcoal">
-                    Date de naissance: {detail.customer.dateOfBirth || "Non renseigne"}
+                    Date de naissance: {detail.customer.dateOfBirth || "Non renseigné"}
                   </p>
                 </div>
                 <div className="ml-auto flex items-center gap-3">
@@ -327,10 +327,10 @@ export function AdminCustomersPanel() {
             <form onSubmit={saveCustomer} className="card-cartoon bg-white p-5">
               <h3 className="font-display text-2xl text-ink">Informations client</h3>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
-                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={firstName} onChange={(event) => setFirstName(event.target.value)} placeholder="Prenom" />
+                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={firstName} onChange={(event) => setFirstName(event.target.value)} placeholder="Prénom" />
                 <input className="h-11 border-2 border-[#1a1a1a] px-3" value={lastName} onChange={(event) => setLastName(event.target.value)} placeholder="Nom" />
                 <input className="h-11 border-2 border-[#1a1a1a] bg-[#f4f4f4] px-3 md:col-span-2" value={detail.customer.email} readOnly />
-                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="Telephone" />
+                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="Téléphone" />
                 <input className="h-11 border-2 border-[#1a1a1a] px-3 md:col-span-2" value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Adresse" />
                 <input className="h-11 border-2 border-[#1a1a1a] px-3" value={city} onChange={(event) => setCity(event.target.value)} placeholder="Ville" />
                 <input className="h-11 border-2 border-[#1a1a1a] px-3" value={postalCode} onChange={(event) => setPostalCode(event.target.value)} placeholder="Code postal" />

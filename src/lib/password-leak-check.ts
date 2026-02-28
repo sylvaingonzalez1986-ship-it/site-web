@@ -117,7 +117,7 @@ export async function assertPasswordNotLeaked(password: string): Promise<void> {
   if (result.compromised) {
     if (mode === "enforce") {
       throw new Error(
-        "Ce mot de passe est trop expose (donnees compromises connues). Choisis-en un autre.",
+        "Ce mot de passe est trop exposé (données compromises connues). Choisis-en un autre.",
       );
     }
 

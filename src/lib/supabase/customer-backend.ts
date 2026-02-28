@@ -452,7 +452,7 @@ export async function registerSupabaseCustomer(input: {
   if (createUserResult.error || !createUserResult.data.user) {
     const message = createUserResult.error?.message ?? "Erreur inscription.";
     if (message.toLowerCase().includes("already")) {
-      throw new Error("Cet email est deja utilise.");
+      throw new Error("Cet email est déjà utilisé.");
     }
     throw new Error(message);
   }
@@ -633,7 +633,7 @@ export async function adminUpdateSupabaseCustomer(
     throw new Error("Date de naissance invalide.");
   }
   if (dateOfBirth && !isAtLeast18(dateOfBirth)) {
-    throw new Error("Ce site est reserve aux personnes majeures (18+).");
+    throw new Error("Ce site est réservé aux personnes majeures (18+).");
   }
 
   const supabase = createSupabaseServiceClient();
@@ -724,7 +724,7 @@ export async function addSupabasePromoCode(
   if (insertResult.error) {
     const message = insertResult.error.message.toLowerCase();
     if (message.includes("duplicate")) {
-      throw new Error("Ce code promo existe deja pour ce client.");
+      throw new Error("Ce code promo existe déjà pour ce client.");
     }
     throw new Error(insertResult.error.message);
   }
@@ -814,7 +814,7 @@ export async function createTemporarySupabaseUserFromLegacy(input: {
   failIfError(createUser.error, "create temporary supabase user");
   const userId = createUser.data.user?.id;
   if (!userId) {
-    throw new Error("Impossible de creer l'utilisateur Supabase.");
+    throw new Error("Impossible de créer l'utilisateur Supabase.");
   }
 
   await ensureProfileRow({

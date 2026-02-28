@@ -1,14 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
+import { useMemo, useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
 import { isRemoteImageUrl } from "@/lib/image-source";
 
 type ProductImageCarouselProps = {
   images: string[];
   alt: string;
   badge?: string;
+  bonusPoints?: number;
   promoText?: string;
   className?: string;
   sizes?: string;
@@ -22,6 +22,7 @@ export function ProductImageCarousel({
   images,
   alt,
   badge,
+  bonusPoints,
   promoText,
   className = "",
   sizes = "(max-width: 768px) 94vw, 33vw",
@@ -50,15 +51,12 @@ export function ProductImageCarousel({
   const touchStartYRef = useRef<number | null>(null);
 
   const hasMultipleImages = sanitizedImages.length > 1;
+  const safeBonusPoints =
+    Number.isFinite(Number(bonusPoints)) && Number(bonusPoints) > 0
+      ? Math.floor(Number(bonusPoints))
+      : 0;
 
-  useEffect(() => {
-    setCurrentIndex((current) => Math.min(current, sanitizedImages.length - 1));
-    setDragOffset(0);
-    setIsSwiping(false);
-    setFailedRemoteImages(new Set());
-    touchStartXRef.current = null;
-    touchStartYRef.current = null;
-  }, [sanitizedImages.length]);
+  const activeIndex = Math.max(0, Math.min(currentIndex, sanitizedImages.length - 1));
 
   const goToIndex = (nextIndex: number) => {
     if (!hasMultipleImages) {
@@ -68,8 +66,8 @@ export function ProductImageCarousel({
     setCurrentIndex(bounded);
   };
 
-  const goPrev = () => goToIndex(currentIndex - 1);
-  const goNext = () => goToIndex(currentIndex + 1);
+  const goPrev = () => goToIndex(activeIndex - 1);
+  const goNext = () => goToIndex(activeIndex + 1);
 
   const resetSwipe = () => {
     setIsSwiping(false);
@@ -136,7 +134,7 @@ export function ProductImageCarousel({
     }
   };
 
-  const trackTransform = `translate3d(calc(${-currentIndex * 100}% + ${dragOffset}px), 0, 0)`;
+  const trackTransform = `translate3d(calc(${-activeIndex * 100}% + ${dragOffset}px), 0, 0)`;
 
   return (
     <div
@@ -182,6 +180,7 @@ export function ProductImageCarousel({
                 alt={hasMultipleImages ? `${alt} - photo ${index + 1}` : alt}
                 fill
                 sizes={sizes}
+                unoptimized={isRemoteImageUrl(image)}
                 className="object-cover transition-transform duration-300 group-hover/product-carousel:scale-105"
               />
             )}
@@ -199,32 +198,37 @@ export function ProductImageCarousel({
           {promoText}
         </span>
       )}
+      {safeBonusPoints > 0 && (
+        <span className="pill-cartoon absolute bottom-3 left-3 z-10 border-[#1a1a1a] bg-yellow px-3 py-1 text-xs font-bold text-ink">
+          +{safeBonusPoints} pts {"\u2605"}
+        </span>
+      )}
 
-      {hasMultipleImages && currentIndex > 0 && (
+      {hasMultipleImages && activeIndex > 0 && (
         <button
           type="button"
-          className="product-carousel-arrow product-carousel-arrow--left"
+          className="product-carousel-arrow product-carousel-arrow--left text-xl font-bold leading-none"
           onClick={(event) => {
             event.stopPropagation();
             goPrev();
           }}
           aria-label="Photo precedente"
         >
-          <ChevronLeft size={18} />
+          ‹
         </button>
       )}
 
-      {hasMultipleImages && currentIndex < sanitizedImages.length - 1 && (
+      {hasMultipleImages && activeIndex < sanitizedImages.length - 1 && (
         <button
           type="button"
-          className="product-carousel-arrow product-carousel-arrow--right"
+          className="product-carousel-arrow product-carousel-arrow--right text-xl font-bold leading-none"
           onClick={(event) => {
             event.stopPropagation();
             goNext();
           }}
           aria-label="Photo suivante"
         >
-          <ChevronRight size={18} />
+          ›
         </button>
       )}
 
@@ -240,10 +244,10 @@ export function ProductImageCarousel({
                 goToIndex(index);
               }}
               aria-label={`Afficher photo ${index + 1}`}
-              aria-current={index === currentIndex ? "true" : "false"}
+              aria-current={index === activeIndex ? "true" : "false"}
             >
               <span
-                className={`product-carousel-dot ${index === currentIndex ? "product-carousel-dot--active" : ""}`}
+                className={`product-carousel-dot ${index === activeIndex ? "product-carousel-dot--active" : ""}`}
               />
             </button>
           ))}

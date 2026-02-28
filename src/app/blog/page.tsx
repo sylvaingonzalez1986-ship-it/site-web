@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { CustomSection } from "@/components/CustomSection";
@@ -6,11 +7,26 @@ import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
 import type { BlogPageSection } from "@/types/store";
 
+export const metadata: Metadata = {
+  title: "Blog CBD | Guides, Actualités et Conseils Chanvre Bio Breton",
+  description:
+    "Retrouvez nos guides, actualités et conseils autour du CBD bio breton. Législation CBD en France, bien-être au chanvre, astuces et nouveautés des Chanvriers Bretons.",
+  alternates: {
+    canonical: "https://leschanvriersbretons.com/blog",
+  },
+  openGraph: {
+    title: "Blog CBD — Les Chanvriers Bretons",
+    description:
+      "Guides, actualités et conseils autour du CBD bio. Législation, bien-être et nouveautés chanvre breton.",
+    url: "https://leschanvriersbretons.com/blog",
+  },
+};
+
 const blogCategoryLabels: Record<string, string> = {
   guide: "Guide",
-  actualite: "Actualite",
-  "bien-etre": "Bien-etre",
-  legislation: "Legislation",
+  actualite: "Actualité",
+  "bien-etre": "Bien-être",
+  legislation: "Législation",
 };
 
 export default async function BlogPage() {

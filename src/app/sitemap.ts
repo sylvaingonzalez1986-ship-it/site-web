@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next";
 import { readPublishedCmsPagesByBackend } from "@/lib/cms-pages-backend";
-import { getPublishedBlogPostsByBackend } from "@/lib/data-backend";
+import {
+  getPublishedBlogPostsByBackend,
+  readPublicStoreByBackend,
+} from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
 
 const categories = [
@@ -10,14 +13,27 @@ const categories = [
   "e-liquide-cbd",
   "cosmetiques-cbd",
   "tisane-cbd",
+  "miam-cbd",
   "accessoires-cbd",
 ];
 
+const categorySlugs: Record<string, string> = {
+  fleurs: "fleurs-cbd",
+  resines: "resines-cbd",
+  huiles: "huiles-cbd",
+  "e-liquide": "e-liquide-cbd",
+  cosmetiques: "cosmetiques-cbd",
+  alimentaire: "tisane-cbd",
+  miam: "miam-cbd",
+  accessoires: "accessoires-cbd",
+};
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getSiteUrl();
-  const [posts, cmsPages] = await Promise.all([
+  const [posts, cmsPages, store] = await Promise.all([
     getPublishedBlogPostsByBackend(),
     readPublishedCmsPagesByBackend(),
+    readPublicStoreByBackend(),
   ]);
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -40,16 +56,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.85,
     },
     {
-      url: `${baseUrl}/application`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/fidelite`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/cgv`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/mentions-legales`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/politique-confidentialite`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/politique-cookies`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
     },
   ];
 
@@ -74,5 +108,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...categoryPages, ...blogPages, ...cmsDynamicPages];
+  const productPages: MetadataRoute.Sitemap = store.products
+    .filter((product) => {
+      const catSlug = categorySlugs[product.category];
+      return !!catSlug;
+    })
+    .map((product) => ({
+      url: `${baseUrl}/boutique/${categorySlugs[product.category]}/${product.id}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.75,
+    }));
+
+  return [
+    ...staticPages,
+    ...categoryPages,
+    ...productPages,
+    ...blogPages,
+    ...cmsDynamicPages,
+  ];
 }

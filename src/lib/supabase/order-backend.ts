@@ -64,6 +64,12 @@ type ApplyInventoryResult = {
   processed_items?: number;
 };
 
+type ApplyLoyaltyBonusResult = {
+  applied: boolean;
+  reason?: string;
+  bonus_points?: number;
+};
+
 async function applyOrderInventoryInSupabase(orderId: string): Promise<void> {
   const safeOrderId = orderId.trim();
   if (!safeOrderId) {
@@ -81,7 +87,7 @@ async function applyOrderInventoryInSupabase(orderId: string): Promise<void> {
       throw new Error("Commande introuvable pour inventaire.");
     }
     if (message.includes("order_not_paid")) {
-      throw new Error("Commande non payee: inventaire non applique.");
+      throw new Error("Commande non payée : inventaire non appliqué.");
     }
     if (message.includes("inventory_insufficient_variant")) {
       throw new Error("Stock variante insuffisant.");
@@ -160,6 +166,10 @@ export async function appendOrderToSupabase(input: AppendOrderInput): Promise<Cm
     line_total_ht: item.lineTotalHt ?? null,
     line_vat_amount: item.lineVatAmount ?? null,
     vat_rate: item.vatRate ?? 20,
+    bonus_points:
+      Number.isFinite(Number(item.bonusPoints)) && Number(item.bonusPoints) >= 0
+        ? Math.floor(Number(item.bonusPoints))
+        : null,
     parent_pack_id: item.parentPackId ?? null,
     parent_pack_name: item.parentPackName ?? null,
   }));
@@ -183,7 +193,7 @@ export async function appendOrderToSupabase(input: AppendOrderInput): Promise<Cm
   });
   if (error) {
     if (error.message.includes("PROMO_NOT_AVAILABLE")) {
-      throw new Error("Code promo invalide ou deja utilise.");
+      throw new Error("Code promo invalide ou déjà utilisé.");
     }
     failIfError(error, "rpc_create_order");
   }
@@ -194,7 +204,7 @@ export async function appendOrderToSupabase(input: AppendOrderInput): Promise<Cm
 
   const created = await findOrderById(insertedOrderId);
   if (!created) {
-    throw new Error("Commande creee mais introuvable apres insertion Supabase.");
+    throw new Error("Commande créée mais introuvable après insertion Supabase.");
   }
 
   return created;
@@ -275,4 +285,30 @@ export async function updateOrderPaymentByVivaOrderCodeInSupabase(input: {
   }
 
   return updatedOrder;
+}
+
+export async function applyOrderLoyaltyBonusInSupabase(
+  orderId: string,
+): Promise<{ applied: boolean; reason?: string; bonusPoints: number }> {
+  const safeOrderId = orderId.trim();
+  if (!safeOrderId) {
+    return { applied: false, reason: "missing_order_id", bonusPoints: 0 };
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase.rpc("rpc_apply_order_loyalty_bonus", {
+    p_order_id: safeOrderId,
+  });
+
+  failIfError(result.error, "rpc_apply_order_loyalty_bonus");
+
+  const payload = (result.data ?? null) as ApplyLoyaltyBonusResult | null;
+  return {
+    applied: payload?.applied === true,
+    reason: payload?.reason,
+    bonusPoints:
+      Number.isFinite(Number(payload?.bonus_points))
+        ? Math.max(0, Math.floor(Number(payload?.bonus_points)))
+        : 0,
+  };
 }

@@ -16,9 +16,10 @@ type CartContextValue = {
   totalPrice: number;
   isAuthenticated: boolean;
   authLoading: boolean;
-  addToCart: (product: Product, variantId?: string) => boolean;
+  addToCart: (product: Product, variantId?: string, quantity?: number) => boolean;
   removeFromCart: (productId: string) => void;
   decreaseQuantity: (productId: string) => void;
+  setQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
 };
 
@@ -65,10 +66,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     };
   }, [pathname]);
 
-  const addToCart = (product: Product, variantId?: string): boolean => {
+  const addToCart = (product: Product, variantId?: string, quantity: number = 1): boolean => {
     if (!isAuthenticated) {
       return false;
     }
+
+    const qty = Math.max(1, Math.round(quantity));
 
     const [baseProductId, embeddedVariantId = ""] = product.id.split("::", 2);
     const variantKey = variantId || embeddedVariantId;
@@ -101,13 +104,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             id: cartProductId,
             name: cartProductName,
             price: cartProductPrice,
-            quantity: 1,
+            quantity: qty,
           },
         ];
       }
 
       return current.map((item) =>
-        item.id === cartProductId ? { ...item, quantity: item.quantity + 1 } : item,
+        item.id === cartProductId ? { ...item, quantity: item.quantity + qty } : item,
       );
     });
 
@@ -134,6 +137,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  const setQuantity = (productId: string, quantity: number) => {
+    const qty = Math.max(1, Math.round(quantity));
+    setItems((current) =>
+      current.map((item) =>
+        item.id === productId ? { ...item, quantity: qty } : item,
+      ),
+    );
+  };
+
   const clearCart = () => {
     setItems([]);
   };
@@ -148,6 +160,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       addToCart,
       removeFromCart,
       decreaseQuantity,
+      setQuantity,
       clearCart,
     }),
     [authLoading, isAuthenticated, items],

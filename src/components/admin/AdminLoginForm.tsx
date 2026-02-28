@@ -3,6 +3,13 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
+function sanitizeNextUrl(value: string): string {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) {
+    return "/admin";
+  }
+  return value;
+}
+
 type AdminLoginFormProps = {
   nextUrl: string;
 };
@@ -31,7 +38,7 @@ export function AdminLoginForm({ nextUrl }: AdminLoginFormProps) {
         return;
       }
 
-      router.replace(nextUrl);
+      router.replace(sanitizeNextUrl(nextUrl));
     } finally {
       setLoading(false);
     }

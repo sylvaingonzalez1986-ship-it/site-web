@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { ProducerDetailPanel } from "@/components/boutique/ProducerDetailPanel";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { Product } from "@/data/products";
@@ -15,7 +14,6 @@ type ProducerTcgModalProps = {
   addButtonLabel: string;
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
-  onOpenQuickView?: (productId: string, sourceProducts: Product[]) => void;
   onClose: () => void;
   onSelectProducer: (producerId: string) => void;
 };
@@ -28,7 +26,6 @@ export function ProducerTcgModal({
   addButtonLabel,
   producerPartnerLabel,
   producerWebsiteLabel,
-  onOpenQuickView,
   onClose,
   onSelectProducer,
 }: ProducerTcgModalProps) {
@@ -133,34 +130,33 @@ export function ProducerTcgModal({
         <div className="producer-modal-controls">
           <button
             type="button"
-            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0"
+            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
             onClick={goToPrevious}
-            aria-label="Producteur précédent"
+            aria-label="Producteur precedent"
           >
-            <ChevronLeft size={18} />
+            {"<"}
           </button>
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
             {selectedIndex + 1} / {producers.length}
           </p>
           <button
             type="button"
-            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0"
+            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
             onClick={goToNext}
             aria-label="Producteur suivant"
           >
-            <ChevronRight size={18} />
+            {">"}
+          </button>
+          <button
+            ref={closeButtonRef}
+            type="button"
+            className="producer-modal-close btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
+            onClick={onClose}
+            aria-label="Fermer la fiche producteur"
+          >
+            x
           </button>
         </div>
-
-        <button
-          ref={closeButtonRef}
-          type="button"
-          className="producer-modal-close btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0"
-          onClick={onClose}
-          aria-label="Fermer la fiche producteur"
-        >
-          <X size={18} />
-        </button>
 
         <div className="producer-modal-content">
           <ProducerDetailPanel
@@ -169,8 +165,8 @@ export function ProducerTcgModal({
             addButtonLabel={addButtonLabel}
             producerPartnerLabel={producerPartnerLabel}
             producerWebsiteLabel={producerWebsiteLabel}
-            onOpenQuickView={onOpenQuickView}
             onClose={onClose}
+            showCloseButton={false}
           />
         </div>
       </div>

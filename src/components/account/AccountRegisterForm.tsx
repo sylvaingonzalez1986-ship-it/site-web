@@ -127,7 +127,7 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
         value={password}
         onChange={(event) => setPassword(event.target.value)}
-        placeholder="Mot de passe (8 caracteres minimum)"
+        placeholder="Mot de passe (8 caractères minimum)"
         required
       />
       <input
@@ -135,7 +135,7 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
         value={phone}
         onChange={(event) => setPhone(event.target.value)}
-        placeholder="Telephone (optionnel)"
+        placeholder="Téléphone (optionnel)"
       />
       <input
         type="text"
@@ -181,7 +181,7 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
         </p>
       )}
       <button type="submit" disabled={loading} className="btn-cartoon btn-primary h-12">
-        {loading ? "Creation..." : "Creer mon compte"}
+        {loading ? "Création..." : "Créer mon compte"}
       </button>
       {error && <p className="text-sm font-semibold text-red-700">{error}</p>}
     </form>

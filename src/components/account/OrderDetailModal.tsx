@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { formatPrice } from "@/lib/utils";
 import { isInvoiceEligibleOrder } from "@/lib/invoice-utils";
@@ -15,16 +14,16 @@ type OrderDetailModalProps = {
 const orderStatusLabels: Record<OrderStatus, string> = {
   new: "Nouvelle",
   pending_payment: "Paiement en attente",
-  paid: "Payee",
-  processing: "En preparation",
-  shipped: "Expediee",
-  cancelled: "Annulee",
+  paid: "Payée",
+  processing: "En préparation",
+  shipped: "Expédiée",
+  cancelled: "Annulée",
 };
 
 const paymentStateLabels: Record<CmsOrder["paymentState"], string> = {
   pending: "En attente",
-  paid: "Paye",
-  failed: "Echec",
+  paid: "Payé",
+  failed: "Échec",
   not_configured: "Validation manuelle",
 };
 
@@ -101,9 +100,9 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
       if (!response.ok) {
         try {
           const data = (await response.json()) as { error?: string };
-          setInvoiceError(data.error ?? "Impossible de telecharger la facture.");
+          setInvoiceError(data.error ?? "Impossible de télécharger la facture.");
         } catch {
-          setInvoiceError("Impossible de telecharger la facture.");
+          setInvoiceError("Impossible de télécharger la facture.");
         }
         return;
       }
@@ -166,11 +165,11 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
           </div>
           <button
             type="button"
-            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0"
+            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
             onClick={onClose}
             aria-label="Fermer"
           >
-            <X size={18} />
+            ✕
           </button>
         </div>
 
@@ -250,7 +249,7 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
             disabled={!canDownloadInvoice || invoiceLoading}
             onClick={downloadInvoice}
           >
-            {invoiceLoading ? "Telechargement..." : "Telecharger la facture"}
+            {invoiceLoading ? "Téléchargement..." : "Télécharger la facture"}
           </button>
           {!canDownloadInvoice && (
             <p className="mt-2 text-sm text-charcoal">

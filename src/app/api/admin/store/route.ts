@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
+import { logAuditEvent } from "@/lib/audit-log";
 import { cleanupUnusedBlogUploads } from "@/lib/blog-image-storage";
 import { readStoreByBackend, writeStoreByBackend } from "@/lib/data-backend";
 import { cleanupUnusedProductAnalyses } from "@/lib/product-analysis-storage";
 import { cleanupUnusedProductUploads } from "@/lib/product-image-storage";
+import { cleanupUnusedProductVideoUploads } from "@/lib/product-video-storage";
 import { cleanupUnusedProducerUploads } from "@/lib/producer-image-storage";
 import type { CmsStore } from "@/types/store";
 
@@ -56,6 +58,8 @@ export async function PUT(request: Request) {
       products: [...editableProducts, ...preservedPrintfulProducts],
     });
 
+    logAuditEvent({ eventType: "update_store", metadata: { productsCount: saved.products.length, producersCount: saved.producers.length, blogCount: saved.blog.length } });
+
     try {
       const blogStorageReferences = Array.from(
         new Set(
@@ -73,6 +77,11 @@ export async function PUT(request: Request) {
           product.image,
           ...(Array.isArray(product.images) ? product.images : []),
         ]),
+      );
+      await cleanupUnusedProductVideoUploads(
+        saved.products
+          .map((product) => product.videoUrl)
+          .filter((value): value is string => Boolean(value)),
       );
       await cleanupUnusedBlogUploads(blogStorageReferences);
       await cleanupUnusedProducerUploads(

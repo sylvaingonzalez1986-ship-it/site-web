@@ -71,7 +71,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ prize });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Creation lot impossible.";
+    const message = error instanceof Error ? error.message : "Création lot impossible.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }

@@ -124,13 +124,13 @@ export async function bindSupabaseReferralCode(input: {
       throw new Error("Code parrain introuvable.");
     }
     if (message.includes("referral_already_bound")) {
-      throw new Error("Un code parrain est deja associe a ton compte.");
+      throw new Error("Un code parrain est déjà associé à ton compte.");
     }
     if (message.includes("self_referral_forbidden")) {
       throw new Error("Tu ne peux pas utiliser ton propre code parrain.");
     }
     if (message.includes("referral_too_late")) {
-      throw new Error("Le code parrain doit etre applique avant la premiere commande payee.");
+      throw new Error("Le code parrain doit être appliqué avant la première commande payée.");
     }
     if (message.includes("referee_not_found")) {
       throw new Error("Compte introuvable pour le parrainage.");

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TutorialScratchDemo } from "@/components/tutorial/TutorialScratchDemo";
 import type { TutorialStep } from "@/data/tutorial-steps";
 
@@ -30,7 +30,6 @@ type TutorialOverlayProps = {
   onNext: () => void;
   onPrev: () => void;
   onSkip: () => void;
-  onMissingTarget: () => void;
 };
 
 const MIN_GAP = 14;
@@ -73,11 +72,9 @@ export function TutorialOverlay({
   onNext,
   onPrev,
   onSkip,
-  onMissingTarget,
 }: TutorialOverlayProps) {
   const [targetRect, setTargetRect] = useState<Rect | null>(null);
   const [viewportRect, setViewportRect] = useState<Rect>(getViewportRect());
-  const missingTargetTriggeredRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!active) {
@@ -119,11 +116,31 @@ export function TutorialOverlay({
     };
 
     computeRect();
+
+    // Poll for the target element every 500ms until found (handles race
+    // conditions after route changes where the DOM isn't ready yet).
+    let pollingInterval: ReturnType<typeof setInterval> | null = null;
+    if (step.target) {
+      pollingInterval = setInterval(() => {
+        const el = document.querySelector(step.target!);
+        if (el instanceof HTMLElement) {
+          computeRect();
+          if (pollingInterval) {
+            clearInterval(pollingInterval);
+            pollingInterval = null;
+          }
+        }
+      }, 500);
+    }
+
     window.addEventListener("resize", scheduleCompute);
     window.addEventListener("scroll", scheduleCompute, true);
 
     return () => {
       cancelAnimationFrame(animationFrame);
+      if (pollingInterval) {
+        clearInterval(pollingInterval);
+      }
       window.removeEventListener("resize", scheduleCompute);
       window.removeEventListener("scroll", scheduleCompute, true);
     };
@@ -145,29 +162,6 @@ export function TutorialOverlay({
       inline: "nearest",
     });
   }, [active, step.id, step.target]);
-
-  useEffect(() => {
-    if (!active || !step.target || targetRect) {
-      return;
-    }
-
-    if (missingTargetTriggeredRef.current === step.id) {
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      missingTargetTriggeredRef.current = step.id;
-      onMissingTarget();
-    }, 1800);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [active, onMissingTarget, step.id, step.target, targetRect]);
-
-  useEffect(() => {
-    missingTargetTriggeredRef.current = null;
-  }, [step.id]);
 
   const bubblePosition: BubblePosition = useMemo(() => {
     const isMobile = viewportRect.width < 768;

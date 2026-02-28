@@ -6,6 +6,9 @@ import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
 import { type ProductCategory } from "@/data/products";
 import { useCmsStore } from "@/hooks/useCmsStore";
+import { resolveProductProducer } from "@/lib/own-producer";
+import { dedupeProducts } from "@/lib/product-dedup";
+import type { Producer } from "@/types/store";
 
 const categoryMap: Record<string, { filter: ProductCategory; label: string }> = {
   "fleurs-cbd": { filter: "fleurs", label: "Fleurs CBD" },
@@ -15,6 +18,7 @@ const categoryMap: Record<string, { filter: ProductCategory; label: string }> = 
   "cosmetiques-cbd": { filter: "cosmetiques", label: "Cosmetiques CBD" },
   "tisane-cbd": { filter: "alimentaire", label: "Tisane CBD" },
   "alimentaire-cbd": { filter: "alimentaire", label: "Tisane CBD" }, // legacy slug
+  "miam-cbd": { filter: "miam", label: "Miam CBD" },
   "accessoires-cbd": { filter: "accessoires", label: "Accessoires CBD" },
 };
 
@@ -22,15 +26,20 @@ export default function CategoryPage() {
   const params = useParams();
   const slug = params.category as string;
   const { store, loading } = useCmsStore();
-
   const categoryInfo = categoryMap[slug];
+  const uniqueProducts = useMemo(() => dedupeProducts(store.products), [store.products]);
+
+  const producersById = useMemo(
+    () => new Map<string, Producer>(store.producers.map((producer) => [producer.id, producer])),
+    [store.producers],
+  );
 
   const filteredProducts = useMemo(
     () =>
       categoryInfo
-        ? store.products.filter((p) => p.category === categoryInfo.filter && !p.producerId)
+        ? uniqueProducts.filter((product) => product.category === categoryInfo.filter)
         : [],
-    [categoryInfo, store.products],
+    [categoryInfo, uniqueProducts],
   );
 
   if (!categoryInfo) {
@@ -76,6 +85,7 @@ export default function CategoryPage() {
             <ProductCard
               key={product.id}
               product={product}
+              producer={resolveProductProducer(product, producersById)}
               addButtonLabel={store.content.boutique.addButtonLabel}
             />
           ))}
@@ -83,7 +93,7 @@ export default function CategoryPage() {
 
         {filteredProducts.length === 0 && !loading && (
           <div className="cartoon-border mt-6 bg-cream p-6 text-center text-charcoal">
-            Aucun produit dans cette categorie pour le moment.
+            Aucun produit dans cette catégorie pour le moment.
           </div>
         )}
 
@@ -91,6 +101,8 @@ export default function CategoryPage() {
           <h2 className="font-display text-2xl text-ink">{getCategorySeoTitle(slug)}</h2>
           <div className="mt-4 space-y-3 text-charcoal leading-relaxed">{getCategorySeoText(slug)}</div>
         </div>
+
+
       </div>
     </section>
   );
@@ -99,35 +111,38 @@ export default function CategoryPage() {
 function getCategoryDescription(slug: string): string {
   const descriptions: Record<string, string> = {
     "fleurs-cbd":
-      "Decouvrez notre selection de fleurs CBD bio, cultivees avec soin. Aromes naturels, qualite premium, prix pas cher.",
+      "Découvrez notre sélection de fleurs CBD bio bretonnes, cultivées avec soin. Arômes naturels, qualité premium, prix pas cher.",
     "resines-cbd":
-      "Decouvrez notre selection de resines CBD bio, texture et aromes maitrises, avec analyses laboratoire.",
+      "Découvrez notre sélection de résines CBD bio, texture et arômes maîtrisés, avec analyses laboratoire.",
     "huiles-cbd":
-      "Nos huiles CBD bio full spectrum et broad spectrum, faciles a doser. Ideales pour la relaxation et le bien-etre au quotidien.",
+      "Nos huiles CBD bio full spectrum et broad spectrum, faciles à doser. Idéales pour la relaxation et le bien-être au quotidien.",
     "e-liquide-cbd":
-      "E-liquides CBD au profil aromatique maitrise pour vapotage, selectionnes avec exigence et transparence.",
+      "E-liquides CBD au profil aromatique maîtrisé pour vapotage, sélectionnés avec exigence et transparence.",
     "cosmetiques-cbd":
-      "Soins visage et corps au CBD bio : baumes, cremes et huiles de massage. Le chanvre au service de votre peau.",
+      "Soins visage et corps au CBD bio : baumes, crèmes et huiles de massage. Le chanvre breton au service de votre peau.",
     "tisane-cbd":
-      "Infusions et tisanes au chanvre, gourmandes et relaxantes, pour integrer le CBD a votre routine.",
+      "Infusions et tisanes au chanvre breton, gourmandes et relaxantes, pour intégrer le CBD à votre routine.",
     "alimentaire-cbd":
-      "Infusions et tisanes au chanvre, gourmandes et relaxantes, pour integrer le CBD a votre routine.",
+      "Infusions et tisanes au chanvre breton, gourmandes et relaxantes, pour intégrer le CBD à votre routine.",
+    "miam-cbd":
+      "Produits alimentaires et gourmandises au chanvre breton, pour intégrer le CBD à votre quotidien.",
     "accessoires-cbd":
-      "Grinders, pochons, plateaux et kits decouverte. Tout l'essentiel pour profiter de vos produits CBD.",
+      "Grinders, pochons, plateaux et kits découverte. Tout l'essentiel pour profiter de vos produits CBD.",
   };
   return descriptions[slug] ?? "";
 }
 
 function getCategorySeoTitle(slug: string): string {
   const titles: Record<string, string> = {
-    "fleurs-cbd": "Pourquoi choisir nos fleurs CBD bio ?",
-    "resines-cbd": "Pourquoi choisir nos resines CBD bio ?",
+    "fleurs-cbd": "Pourquoi choisir nos fleurs CBD ?",
+    "resines-cbd": "Pourquoi choisir nos résines CBD bio ?",
     "huiles-cbd": "Comment bien choisir son huile CBD ?",
     "e-liquide-cbd": "Bien choisir son e-liquide CBD",
     "cosmetiques-cbd": "Les bienfaits du CBD pour la peau",
     "tisane-cbd": "Le CBD dans vos tisanes et infusions",
     "alimentaire-cbd": "Le CBD dans vos tisanes et infusions",
-    "accessoires-cbd": "Bien s'equiper pour le CBD",
+    "miam-cbd": "Le CBD dans vos produits gourmands",
+    "accessoires-cbd": "Bien s'équiper pour le CBD",
   };
   return titles[slug] ?? "";
 }
@@ -137,25 +152,28 @@ function getCategorySeoText(slug: string): React.ReactNode {
     "fleurs-cbd": (
       <>
         <p>
-          Nos fleurs CBD bio sont selectionnees aupres de producteurs europeens
-          respectant des normes strictes. Chaque lot est analyse en laboratoire
-          pour garantir un taux de THC conforme a la legislation.
+          Nos fleurs CBD sont sélectionnées auprès de producteurs français
+          respectant des normes strictes. Chaque lot est analysé en
+          laboratoire pour garantir un taux de THC conforme à la législation
+          française.
         </p>
         <p>
-          Que vous cherchiez une fleur CBD pas chere pour un usage quotidien,
-          notre shop CBD breton propose des produits adaptes a tous les budgets.
+          Que vous cherchiez une fleur CBD pas chère pour un usage quotidien,
+          notre shop CBD propose des produits adaptés à tous les budgets
+          avec livraison rapide en France.
         </p>
       </>
     ),
     "resines-cbd": (
       <>
         <p>
-          Nos resines CBD sont selectionnees pour leur profil aromatique, leur
-          texture et leur regularite. Chaque lot est controle en laboratoire.
+          Nos résines CBD sont sélectionnées pour leur profil aromatique, leur
+          texture et leur régularité. Chaque lot est contrôlé en laboratoire
+          pour garantir une qualité irréprochable.
         </p>
         <p>
-          Une categorie dediee resines permet de comparer simplement les
-          references sans melanger avec les fleurs.
+          Notre catégorie dédiée résines permet de comparer simplement les
+          références sans mélanger avec les fleurs CBD.
         </p>
       </>
     ),
@@ -163,73 +181,86 @@ function getCategorySeoText(slug: string): React.ReactNode {
       <>
         <p>
           L&apos;huile CBD est un format populaire pour profiter des bienfaits du
-          cannabidiol. Nos huiles CBD bio sont disponibles en differentes
-          concentrations pour s&apos;adapter a vos besoins.
+          cannabidiol. Nos huiles CBD bio sont disponibles en différentes
+          concentrations pour s&apos;adapter à vos besoins.
         </p>
         <p>
-          Full spectrum ou broad spectrum, nos huiles conservent des molecules
-          naturelles du chanvre pour un effet d&apos;entourage optimal.
+          Full spectrum ou broad spectrum, nos huiles conservent les molécules
+          naturelles du chanvre breton pour un effet d&apos;entourage optimal.
         </p>
       </>
     ),
     "e-liquide-cbd": (
       <>
         <p>
-          Nos e-liquides CBD sont proposes avec des profils aromatiques clairs
+          Nos e-liquides CBD sont proposés avec des profils aromatiques clairs
           et des dosages transparents pour un usage confortable.
         </p>
         <p>
-          Cette categorie regroupe uniquement les references de vape, pour une
-          navigation plus simple et plus propre.
+          Cette catégorie regroupe uniquement les références de vape CBD, pour
+          une navigation plus simple et plus propre.
         </p>
       </>
     ),
     "cosmetiques-cbd": (
       <>
         <p>
-          Le CBD possede des proprietes apaisantes qui en font un allie ideal
-          pour les soins de la peau. Nos cosmetiques CBD bio combinent chanvre
-          et ingredients naturels.
+          Le CBD possède des propriétés apaisantes qui en font un allié idéal
+          pour les soins de la peau. Nos cosmétiques CBD bio combinent chanvre
+          breton et ingrédients naturels.
         </p>
         <p>
-          Baumes, cremes et huiles de massage : notre gamme cosmetique CBD est
-          formulee pour tous les types de peau.
+          Baumes, crèmes et huiles de massage : notre gamme cosmétique CBD est
+          formulée pour tous les types de peau.
         </p>
       </>
     ),
     "tisane-cbd": (
       <>
         <p>
-          Integrez le chanvre dans votre routine bien-etre avec nos tisanes et
-          infusions selectionnees pour la detente et le plaisir gustatif.
+          Intégrez le chanvre breton dans votre routine bien-être avec nos
+          tisanes et infusions sélectionnées pour la détente et le plaisir
+          gustatif.
         </p>
         <p>
-          Cette categorie rassemble les formats boisson chaude au meme endroit
+          Cette catégorie rassemble les formats boisson chaude au même endroit
           pour une lecture plus claire.
+        </p>
+      </>
+    ),
+    "miam-cbd": (
+      <>
+        <p>
+          Découvrez notre gamme Miam : produits gourmands et alimentaires au
+          chanvre breton, sélectionnés pour le plaisir et le bien-être.
+        </p>
+        <p>
+          Cette catégorie rassemble les produits alimentaires CBD pour une
+          navigation simplifiée.
         </p>
       </>
     ),
     "alimentaire-cbd": (
       <>
         <p>
-          Integrez le chanvre dans votre routine bien-etre avec nos tisanes et
-          infusions selectionnees pour la detente et le plaisir gustatif.
+          Découvrez nos produits alimentaires au chanvre breton, sélectionnés
+          pour le bien-être et le plaisir gustatif au quotidien.
         </p>
         <p>
-          Cette categorie rassemble les formats boisson chaude au meme endroit
-          pour une lecture plus claire.
+          Cette catégorie rassemble les produits alimentaires CBD au même
+          endroit pour une navigation simplifiée.
         </p>
       </>
     ),
     "accessoires-cbd": (
       <>
         <p>
-          Completez votre experience CBD avec nos accessoires de qualite :
+          Complétez votre expérience CBD avec nos accessoires de qualité :
           grinders, pochons et plateaux pour un usage pratique.
         </p>
         <p>
-          Notre kit decouverte est parfait pour les debutants qui souhaitent
-          explorer l&apos;univers CBD avec tout le necessaire.
+          Notre kit découverte est parfait pour les débutants qui souhaitent
+          explorer l&apos;univers CBD avec tout le nécessaire.
         </p>
       </>
     ),

@@ -7,6 +7,7 @@ import {
   BLOG_IMAGE_UPLOAD_MAX_BYTES,
   isSupportedBlogImageMimeType,
 } from "@/lib/blog-image-policy";
+import { isRemoteImageUrl } from "@/lib/image-source";
 
 type BlogImageUploadProps = {
   value: string;
@@ -152,7 +153,18 @@ export function BlogImageUpload({ value, onChange }: BlogImageUploadProps) {
       <div className="grid gap-2 md:grid-cols-[120px,1fr]">
         <div className="relative h-[90px] overflow-hidden rounded border-2 border-[#1a1a1a] bg-white">
           {value ? (
-            <Image src={value} alt="Apercu image de couverture" fill sizes="120px" className="object-cover" />
+            isRemoteImageUrl(value) ? (
+              <img
+                src={value}
+                alt="Apercu image de couverture"
+                className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <Image src={value} alt="Apercu image de couverture" fill sizes="120px" className="object-cover" />
+            )
           ) : (
             <div className="flex h-full w-full items-center justify-center text-xs text-charcoal">
               Sans image

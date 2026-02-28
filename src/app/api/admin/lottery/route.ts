@@ -54,7 +54,7 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ config, stats });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Mise a jour loterie impossible.";
+    const message = error instanceof Error ? error.message : "Mise à jour loterie impossible.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }

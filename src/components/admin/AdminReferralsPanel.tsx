@@ -32,9 +32,9 @@ export function AdminReferralsPanel() {
 
       const payload = (await response.json()) as { overview?: AdminReferralOverview };
       setOverview(payload.overview ?? null);
-      setStatus("Donnees parrainage chargees.");
+      setStatus("Données parrainage chargées.");
     } catch {
-      setStatus("Erreur reseau sur le parrainage.");
+      setStatus("Erreur réseau sur le parrainage.");
       setOverview(null);
     } finally {
       setLoading(false);

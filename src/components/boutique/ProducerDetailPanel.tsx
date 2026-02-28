@@ -1,8 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { ProductCard } from "@/components/ProductCard";
+import { ProducerSocialLinks } from "@/components/boutique/ProducerSocialLinks";
+import {
+  PRODUCER_CLIMATE_DETAILS,
+  PRODUCER_CLIMATE_OPTIONS,
+  PRODUCER_SOIL_DETAILS,
+  PRODUCER_SOIL_OPTIONS,
+} from "@/data/producer-taxonomies";
 import type { Product } from "@/data/products";
 import { isRemoteImageUrl } from "@/lib/image-source";
 import { PRODUCER_CULTURE_LABELS, type Producer } from "@/types/store";
@@ -13,8 +20,8 @@ type ProducerDetailPanelProps = {
   addButtonLabel: string;
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
-  onOpenQuickView?: (productId: string, sourceProducts: Product[]) => void;
   onClose: () => void;
+  showCloseButton?: boolean;
 };
 
 export function ProducerDetailPanel({
@@ -23,15 +30,48 @@ export function ProducerDetailPanel({
   addButtonLabel,
   producerPartnerLabel,
   producerWebsiteLabel,
-  onOpenQuickView,
   onClose,
+  showCloseButton = true,
 }: ProducerDetailPanelProps) {
+  const [openMobilePopover, setOpenMobilePopover] = useState<"climate" | "soil" | null>(null);
+
+  useEffect(() => {
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) {
+        setOpenMobilePopover(null);
+        return;
+      }
+
+      if (target.closest("[data-producer-popover='trigger']") || target.closest("[data-producer-popover='content']")) {
+        return;
+      }
+
+      setOpenMobilePopover(null);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, []);
+
   const producerLocation =
     [producer.department, producer.region].filter(Boolean).join(", ") ||
     producer.location;
   const cultureTypes = producer.cultureType ?? [];
   const certifications = producer.certifications ?? [];
   const longDescription = producer.philosophy?.trim() || producer.description;
+  const climateOption = PRODUCER_CLIMATE_OPTIONS.find(
+    (option) => option.value === producer.climate,
+  );
+  const soilOption = PRODUCER_SOIL_OPTIONS.find(
+    (option) => option.value === producer.soil,
+  );
+  const climateLabel = climateOption?.label ?? producer.climate ?? "—";
+  const soilLabel = soilOption?.label ?? producer.soil ?? "—";
+  const climateDetails = PRODUCER_CLIMATE_DETAILS[producer.climate] ?? [];
+  const soilDetails = PRODUCER_SOIL_DETAILS[producer.soil] ?? [];
 
   return (
     <section
@@ -69,23 +109,119 @@ export function ProducerDetailPanel({
                 ))}
               </div>
             )}
-            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-charcoal">
+            <div className="producer-detail-description mt-3 w-full">
               {longDescription}
-            </p>
-            <div className="mt-3 grid gap-2 text-xs text-charcoal md:grid-cols-2">
-              {(producer.climate || producer.soil || producer.altitude || producer.speciality) && (
+            </div>
+            <div className="mt-3 grid gap-2 text-xs text-charcoal sm:grid-cols-2">
+              {(producer.climate || producer.soil) && (
                 <>
-                  <p>
-                    <span className="font-semibold text-ink">Climat :</span> {producer.climate || "—"}
+                  <p className="producer-detail-metric">
+                    <span className="font-semibold text-ink">Climat :</span>{" "}
+                    {climateDetails.length > 0 ? (
+                      <span className="group relative inline-flex items-center gap-1">
+                        <span className="font-medium text-ink">{climateLabel}</span>
+                        <button
+                          type="button"
+                          data-producer-popover="trigger"
+                          onClick={() =>
+                            setOpenMobilePopover((current) =>
+                              current === "climate" ? null : "climate",
+                            )
+                          }
+                          className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#1a1a1a] text-[10px] leading-none text-ink md:hidden"
+                          aria-label="Afficher le détail du climat"
+                        >
+                          i
+                        </button>
+                        <span
+                          aria-hidden="true"
+                          className="hidden h-4 w-4 cursor-help items-center justify-center rounded-full border border-[#1a1a1a] text-[10px] leading-none text-ink md:inline-flex"
+                        >
+                          i
+                        </span>
+                        <span className="pointer-events-none absolute left-0 top-[calc(100%+6px)] z-20 hidden w-80 max-w-[85vw] rounded-md border-2 border-[#1a1a1a] bg-cream p-3 text-xs text-charcoal shadow-[4px_4px_0_#1a1a1a] group-hover:block">
+                          <span className="font-semibold text-ink">{climateLabel}</span>
+                          <span className="mt-2 block space-y-1">
+                            {climateDetails.map((detail) => (
+                              <span key={detail} className="block">
+                                • {detail}
+                              </span>
+                            ))}
+                          </span>
+                        </span>
+                        {openMobilePopover === "climate" && (
+                          <span
+                            data-producer-popover="content"
+                            className="absolute left-0 top-[calc(100%+6px)] z-20 w-80 max-w-[85vw] rounded-md border-2 border-[#1a1a1a] bg-cream p-3 text-xs text-charcoal shadow-[4px_4px_0_#1a1a1a] md:hidden"
+                          >
+                            <span className="font-semibold text-ink">{climateLabel}</span>
+                            <span className="mt-2 block space-y-1">
+                              {climateDetails.map((detail) => (
+                                <span key={detail} className="block">
+                                  • {detail}
+                                </span>
+                              ))}
+                            </span>
+                          </span>
+                        )}
+                      </span>
+                    ) : (
+                      <span>{climateLabel}</span>
+                    )}
                   </p>
-                  <p>
-                    <span className="font-semibold text-ink">Sol :</span> {producer.soil || "—"}
-                  </p>
-                  <p>
-                    <span className="font-semibold text-ink">Altitude :</span> {producer.altitude || "—"}
-                  </p>
-                  <p>
-                    <span className="font-semibold text-ink">Spécialité :</span> {producer.speciality || "—"}
+                  <p className="producer-detail-metric">
+                    <span className="font-semibold text-ink">Sol :</span>{" "}
+                    {soilDetails.length > 0 ? (
+                      <span className="group relative inline-flex items-center gap-1">
+                        <span className="font-medium text-ink">{soilLabel}</span>
+                        <button
+                          type="button"
+                          data-producer-popover="trigger"
+                          onClick={() =>
+                            setOpenMobilePopover((current) =>
+                              current === "soil" ? null : "soil",
+                            )
+                          }
+                          className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#1a1a1a] text-[10px] leading-none text-ink md:hidden"
+                          aria-label="Afficher le détail du sol"
+                        >
+                          i
+                        </button>
+                        <span
+                          aria-hidden="true"
+                          className="hidden h-4 w-4 cursor-help items-center justify-center rounded-full border border-[#1a1a1a] text-[10px] leading-none text-ink md:inline-flex"
+                        >
+                          i
+                        </span>
+                        <span className="pointer-events-none absolute left-0 top-[calc(100%+6px)] z-20 hidden w-80 max-w-[85vw] rounded-md border-2 border-[#1a1a1a] bg-cream p-3 text-xs text-charcoal shadow-[4px_4px_0_#1a1a1a] group-hover:block">
+                          <span className="font-semibold text-ink">{soilLabel}</span>
+                          <span className="mt-2 block space-y-1">
+                            {soilDetails.map((detail) => (
+                              <span key={detail} className="block">
+                                • {detail}
+                              </span>
+                            ))}
+                          </span>
+                        </span>
+                        {openMobilePopover === "soil" && (
+                          <span
+                            data-producer-popover="content"
+                            className="absolute left-0 top-[calc(100%+6px)] z-20 w-80 max-w-[85vw] rounded-md border-2 border-[#1a1a1a] bg-cream p-3 text-xs text-charcoal shadow-[4px_4px_0_#1a1a1a] md:hidden"
+                          >
+                            <span className="font-semibold text-ink">{soilLabel}</span>
+                            <span className="mt-2 block space-y-1">
+                              {soilDetails.map((detail) => (
+                                <span key={detail} className="block">
+                                  • {detail}
+                                </span>
+                              ))}
+                            </span>
+                          </span>
+                        )}
+                      </span>
+                    ) : (
+                      <span>{soilLabel}</span>
+                    )}
                   </p>
                 </>
               )}
@@ -116,17 +252,23 @@ export function ProducerDetailPanel({
                   {producerWebsiteLabel}
                 </a>
               )}
+              <ProducerSocialLinks
+                links={producer.socialLinks}
+                producerName={producer.name}
+              />
             </div>
           </div>
         </div>
-        <button
+        {showCloseButton && (
+          <button
           type="button"
           onClick={onClose}
-          className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0"
+          className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
           aria-label="Fermer la fiche producteur"
         >
-          <X size={18} />
+          ✕
         </button>
+          )}
       </div>
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -136,11 +278,6 @@ export function ProducerDetailPanel({
             product={product}
             producer={producer}
             addButtonLabel={addButtonLabel}
-            onOpenQuickView={
-              onOpenQuickView
-                ? () => onOpenQuickView(product.id, products)
-                : undefined
-            }
           />
         ))}
       </div>

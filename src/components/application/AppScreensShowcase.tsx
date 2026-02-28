@@ -7,23 +7,23 @@ const APP_SCREEN_ITEMS = [
   {
     id: "market",
     src: "/app/screens/market-list.png",
-    alt: "Screenshot Les Chanvriers Unis - Marche local",
-    title: "Marche Local",
-    caption: "Selection de departement et producteurs",
+    alt: "Screenshot Les Chanvriers Unis - Marché local",
+    title: "Marché Local",
+    caption: "Sélection de département et producteurs",
   },
   {
     id: "lottery",
     src: "/app/screens/lottery.png",
     alt: "Screenshot Les Chanvriers Unis - Tirage",
     title: "Tirage",
-    caption: "Systeme de raretes et tickets",
+    caption: "Système de raretés et tickets",
   },
   {
     id: "producer",
     src: "/app/screens/producer-card.png",
     alt: "Screenshot Les Chanvriers Unis - Fiche producteur",
     title: "Fiche Producteur",
-    caption: "Profil detaille et produits en direct",
+    caption: "Profil détaillé et produits en direct",
   },
 ] as const;
 
@@ -34,11 +34,11 @@ export function AppScreensShowcase() {
     <div className="cartoon-border app-showcase bg-cream p-6 md:p-8">
       <div className="mb-6 md:mb-8">
         <p className="pill-cartoon px-4 py-2 text-xs uppercase tracking-[0.12em]">
-          Experience mobile
+          Expérience mobile
         </p>
         <h2 className="mt-4 font-display text-3xl text-ink md:text-4xl">Les Chanvriers Unis en action</h2>
         <p className="mt-2 max-w-2xl text-sm text-charcoal md:text-base">
-          Une mise en scene claire du parcours client: marche local, tirage et fiche producteur.
+          Une mise en scène claire du parcours client: marché local, tirage et fiche producteur.
         </p>
       </div>
 

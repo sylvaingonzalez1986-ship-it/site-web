@@ -5,6 +5,7 @@ export type ProductCategory =
   | "e-liquide"
   | "cosmetiques"
   | "alimentaire"
+  | "miam"
   | "accessoires";
 
 export const VAT_RATE_OPTIONS = [5.5, 20] as const;
@@ -20,12 +21,15 @@ export type Product = {
   promoPercent?: number;
   isPack?: boolean;
   packProductIds?: string[];
+  weightGrams?: number;
+  videoUrl?: string;
   image: string;
   images?: string[];
   producerId?: string;
   analysisPdf?: string;
   description: string;
   badge?: string;
+  bonusPoints?: number;
   trackStock?: boolean;
   stockQuantity?: number;
   variantLabel?: string;
@@ -46,6 +50,7 @@ export const categoryLabels: Record<ProductCategory, string> = {
   "e-liquide": "E-liquides",
   cosmetiques: "Cosmetiques",
   alimentaire: "Tisane",
+  miam: "Miam",
   accessoires: "Accessoires",
 };
 
@@ -82,7 +87,7 @@ export const products: Product[] = [
     price: 49.9,
     vatRate: 20,
     image: productImages.flower,
-    description: "Format genereux pour un usage regulier.",
+    description: "Format généreux pour un usage régulier.",
   },
   {
     id: "huile-10-full",

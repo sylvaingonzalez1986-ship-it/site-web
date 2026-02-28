@@ -32,7 +32,7 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "boutique-intro",
     title: "Direction la boutique",
-    text: "On passe maintenant a la boutique pour voir les trois onglets de selection.",
+    text: "On passe maintenant à la boutique pour voir les trois onglets de sélection.",
     route: "/",
   },
   {
@@ -46,7 +46,7 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "boutique-mes-voisins",
     title: "Mes voisins",
-    text: "Les Chanvriers Bretons, c'est aussi mes voisins: petits producteurs bretons de qualite.",
+    text: "Les Chanvriers Bretons, c'est aussi mes voisins: petits producteurs bretons de qualité.",
     target: '[data-tutorial="tab-mes-voisins"]',
     spotlightPadding: 8,
     route: "/boutique",
@@ -54,7 +54,7 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "boutique-copains",
     title: "Les copains",
-    text: "Rencontres partageant les memes valeurs, partout en France. Le terroir compte: une meme variete s'exprime differemment selon son sol et son climat.",
+    text: "Rencontres partageant les mêmes valeurs, partout en France. Le terroir compte: une même variété s'exprime différemment selon son sol et son climat.",
     target: '[data-tutorial="tab-les-copains"]',
     spotlightPadding: 8,
     route: "/boutique",
@@ -62,15 +62,15 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "boutique-filtres",
     title: "Filtres de la boutique",
-    text: "Tu peux filtrer rapidement par categorie ou promotions.",
+    text: "Tu peux filtrer rapidement par catégorie ou promotions.",
     target: '[data-tutorial="category-filter"]',
     spotlightPadding: 10,
     route: "/boutique",
   },
   {
     id: "loyalty",
-    title: "Systeme de badges et avantages",
-    text: "1 EUR depense = 1 point. Tu montes en palier au fil des commandes.",
+    title: "Système de badges et avantages",
+    text: "1 EUR dépensé = 1 point. Tu montes en palier au fil des commandes.",
     details: [
       "Bronze (100 pts): 2%",
       "Argent (500 pts): 4% + livraison offerte",
@@ -83,10 +83,10 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "referral",
     title: "Parrainage",
-    text: "A l'inscription, un filleul peut saisir un code parrain dans ce champ.",
+    text: "À l'inscription, un filleul peut saisir un code parrain dans ce champ.",
     details: [
-      "Ton code personnel est visible dans ton profil, section Fidelite > Parrainage.",
-      "Les points bonus sont credites apres la premiere commande payee du filleul.",
+      "Ton code personnel est visible dans ton profil, section Fidélité > Parrainage.",
+      "Les points bonus sont crédités après la première commande payée du filleul.",
     ],
     target: '[data-tutorial="referral-code-input"]',
     spotlightPadding: 10,
@@ -97,8 +97,8 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
     title: "Ton espace parrainage",
     text: "Dans ton profil, tu peux copier ton lien de parrainage, suivre tes filleuls et voir tes points bonus.",
     details: [
-      "Section disponible uniquement si tu es connecte.",
-      "Les gains sont traces apres validation de la premiere commande payee du filleul.",
+      "Section disponible uniquement si tu es connecté.",
+      "Les gains sont tracés après validation de la première commande payée du filleul.",
     ],
     target: '[data-tutorial="profile-referral"]',
     spotlightPadding: 10,
@@ -107,11 +107,11 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   },
   {
     id: "tickets",
-    title: "Tickets a gratter",
-    text: "Tu gagnes 1 ticket tous les 20 EUR TTC de commande payee, puis tu grattes depuis ton profil.",
+    title: "Tickets à gratter",
+    text: "Tu gagnes 1 ticket tous les 20 EUR TTC de commande payée, puis tu grattes depuis ton profil.",
     details: [
-      "Lots communs, rares, epiques et legendaires.",
-      "Le jackpot: 1 an de conso. Details dans le reglement du jeu.",
+      "Lots communs, rares, épiques et légendaires.",
+      "Le jackpot: 1 an de conso. Détails dans le règlement du jeu.",
     ],
     target: '[data-tutorial="ticket-promo-band"]',
     spotlightPadding: 12,
@@ -120,14 +120,14 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "tickets-demo",
     title: "Mini demo ticket",
-    text: "Essaie ici: gratte la carte pour voir le comportement en conditions reelles (resultat fictif).",
+    text: "Essaie ici: gratte la carte pour voir le comportement en conditions réelles (résultat fictif).",
     route: "/",
     variant: "scratch-demo",
   },
   {
     id: "finish",
     title: "C'est parti",
-    text: "Tu peux relancer ce tutoriel a tout moment via le bouton ? dans la barre du haut ou depuis ton profil.",
+    text: "Tu peux relancer ce tutoriel à tout moment via le bouton ? dans la barre du haut ou depuis ton profil.",
     route: "/",
   },
 ];

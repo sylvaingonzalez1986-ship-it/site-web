@@ -1,7 +1,9 @@
 "use client";
 
+import type { KeyboardEvent } from "react";
 import Image from "next/image";
 import { isRemoteImageUrl } from "@/lib/image-source";
+import { ProducerSocialLinks } from "@/components/boutique/ProducerSocialLinks";
 import {
   PRODUCER_CULTURE_LABELS,
   type Producer,
@@ -44,10 +46,19 @@ export function ProducerTcgCard({
   const hasHolo = rarity >= 4;
   const description = producer.philosophy?.trim() || producer.description;
 
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onClick?.();
+    }
+  };
+
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={onClick}
+      onKeyDown={onKeyDown}
       className={`tcg-card ${hasHolo ? "tcg-card--holographic" : ""} ${isSelected ? "tcg-card--selected" : ""}`}
       aria-pressed={isSelected}
     >
@@ -92,14 +103,6 @@ export function ProducerTcgCard({
             <span className="tcg-stat-label">Sol</span>
             <span className="tcg-stat-value">{producer.soil || "—"}</span>
           </div>
-          <div className="tcg-stat">
-            <span className="tcg-stat-label">Altitude</span>
-            <span className="tcg-stat-value">{producer.altitude || "—"}</span>
-          </div>
-          <div className="tcg-stat">
-            <span className="tcg-stat-label">Spécialité</span>
-            <span className="tcg-stat-value">{producer.speciality || "—"}</span>
-          </div>
         </div>
 
         {certifications.length > 0 && (
@@ -113,6 +116,13 @@ export function ProducerTcgCard({
         )}
 
         <div className="tcg-card-description">{description}</div>
+
+        <ProducerSocialLinks
+          links={producer.socialLinks}
+          producerName={producer.name}
+          compact
+          stopPropagation
+        />
 
         <footer className="tcg-card-footer">
           <span className="tcg-card-footer-text">
@@ -128,6 +138,6 @@ export function ProducerTcgCard({
           </div>
         </footer>
       </div>
-    </button>
+    </div>
   );
 }

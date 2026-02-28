@@ -1,3 +1,5 @@
+import { Buffer } from "node:buffer";
+import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import {
   ADMIN_COOKIE_NAME,
@@ -6,8 +8,20 @@ import {
   getAdminPassword,
 } from "@/lib/admin-auth";
 import { isAllowedAdminEmail, normalizeEmail } from "@/lib/admin-allowlist";
+import { logAuditEvent } from "@/lib/audit-log";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+
+function safePasswordEquals(received: string, expected: string): boolean {
+  const receivedBuffer = Buffer.from(received);
+  const expectedBuffer = Buffer.from(expected);
+
+  if (receivedBuffer.length !== expectedBuffer.length) {
+    return false;
+  }
+
+  return timingSafeEqual(receivedBuffer, expectedBuffer);
+}
 
 export async function POST(request: Request) {
   try {
@@ -35,15 +49,19 @@ export async function POST(request: Request) {
     const sessionEmail = normalizeEmail(customerSession?.customer.email);
 
     if (!customerSession || !isAllowedAdminEmail(sessionEmail)) {
+      logAuditEvent({ eventType: "admin_login_failed", actorEmail: sessionEmail, ip, metadata: { reason: "email_not_allowed" } });
       return NextResponse.json(
-        { error: "Acces admin reserve au compte autorise." },
+        { error: "Accès admin réservé au compte autorisé." },
         { status: 403 },
       );
     }
 
-    if (!payload.password || payload.password !== configuredPassword) {
+    if (!payload.password || !safePasswordEquals(payload.password, configuredPassword)) {
+      logAuditEvent({ eventType: "admin_login_failed", actorEmail: sessionEmail, ip, metadata: { reason: "wrong_password" } });
       return NextResponse.json({ error: "Mot de passe invalide." }, { status: 401 });
     }
+
+    logAuditEvent({ eventType: "admin_login", actorEmail: sessionEmail, ip });
 
     const sessionToken = await createAdminSessionToken();
     const response = NextResponse.json({ success: true });

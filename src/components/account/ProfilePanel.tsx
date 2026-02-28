@@ -26,16 +26,16 @@ import type { CmsOrder, OrderStatus } from "@/types/store";
 const orderStatusLabels: Record<OrderStatus, string> = {
   new: "Nouvelle",
   pending_payment: "Paiement en attente",
-  paid: "Payee",
-  processing: "En preparation",
-  shipped: "Expediee",
-  cancelled: "Annulee",
+  paid: "Payée",
+  processing: "En préparation",
+  shipped: "Expédiée",
+  cancelled: "Annulée",
 };
 
 const paymentStateLabels: Record<CmsOrder["paymentState"], string> = {
   pending: "En attente",
-  paid: "Paye",
-  failed: "Echec",
+  paid: "Payé",
+  failed: "Échec",
   not_configured: "Validation manuelle",
 };
 
@@ -48,7 +48,7 @@ type ProfileTabDefinition = {
 };
 
 const profileTabs: ProfileTabDefinition[] = [
-  { key: "fidelite", label: "Fidelite", icon: Award },
+  { key: "fidelite", label: "Fidélité", icon: Award },
   { key: "loterie", label: "Loterie", icon: Ticket },
   { key: "commandes", label: "Commandes", icon: ShoppingBag },
   { key: "infos", label: "Mes infos", icon: UserIcon },
@@ -273,7 +273,7 @@ export function ProfilePanel() {
       });
 
       if (!response.ok) {
-        setStatus("Erreur mise a jour profil.");
+        setStatus("Erreur mise à jour profil.");
         return;
       }
 
@@ -320,7 +320,7 @@ export function ProfilePanel() {
         setUser(data.user);
       }
       setReferralCodeInput("");
-      setReferralStatus("Code parrain applique.");
+      setReferralStatus("Code parrain appliqué.");
       await refresh({ silent: true });
     } finally {
       setReferralLoading(false);
@@ -407,7 +407,7 @@ export function ProfilePanel() {
               <p className="mt-1 text-2xl font-bold text-ink">{loyalty.points}</p>
             </div>
             <div className="card-cartoon bg-white p-4">
-              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points bonus admin</p>
+              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points bonus</p>
               <p className="mt-1 text-2xl font-bold text-ink">{user.loyaltyPoints}</p>
             </div>
             <div className="card-cartoon bg-white p-4">
@@ -803,7 +803,7 @@ export function ProfilePanel() {
                 />
                 <input
                   className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
-                  placeholder="Telephone"
+                  placeholder="Téléphone"
                   value={phone}
                   onChange={(event) => setPhone(event.target.value)}
                 />

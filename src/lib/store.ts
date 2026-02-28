@@ -11,7 +11,9 @@ import { normalizeBlogImagePath } from "@/lib/blog-image-storage";
 import { INVOICE_SETTINGS } from "@/lib/invoice-config";
 import { normalizeProductAnalysisPath } from "@/lib/product-analysis-storage";
 import { normalizeProductImagePath } from "@/lib/product-image-storage";
+import { normalizeProductVideoPath } from "@/lib/product-video-storage";
 import { normalizeProducerImagePath } from "@/lib/producer-image-storage";
+import { normalizeExternalUrl } from "@/lib/external-url";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import { computeFromTtc, computeOrderTaxTotals, sanitizeOrderVatRate } from "@/lib/tax";
 import {
@@ -120,23 +122,43 @@ function normalizeProductImages(product: Product): string[] {
 }
 
 function sanitizeWebsite(value: string | undefined): string {
-  if (!value?.trim()) {
-    return "";
+  return normalizeExternalUrl(value);
+}
+
+function normalizeProducerSocialLinks(
+  value: Producer["socialLinks"] | undefined,
+): Producer["socialLinks"] {
+  if (!value || typeof value !== "object") {
+    return {};
   }
 
-  try {
-    const url = new URL(value.trim());
-    if (url.protocol !== "http:" && url.protocol !== "https:") {
-      return "";
-    }
-    return url.href.slice(0, 512);
-  } catch {
-    return "";
-  }
+  return {
+    instagram: normalizeExternalUrl(value.instagram),
+    facebook: normalizeExternalUrl(value.facebook),
+    tiktok: normalizeExternalUrl(value.tiktok),
+  };
 }
 
 function roundMoney(value: number): number {
   return Number(value.toFixed(2));
+}
+
+function normalizeWeightGrams(value: unknown): number | undefined {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return undefined;
+  }
+
+  return Math.round(parsed);
+}
+
+function normalizeBonusPoints(value: unknown): number | undefined {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    return undefined;
+  }
+
+  return Math.floor(parsed);
 }
 
 function normalizePositivePrice(value: unknown): number | undefined {
@@ -244,6 +266,7 @@ function normalizeProducer(producer: Producer, index: number): Producer {
     department,
     region,
     website: sanitizeWebsite(producer.website),
+    socialLinks: normalizeProducerSocialLinks(producer.socialLinks),
     cultureType: normalizeProducerCultureTypes(producer.cultureType),
     climate: producer.climate?.trim() || "",
     soil: producer.soil?.trim() || "",
@@ -278,6 +301,8 @@ function normalizeProduct(
   const safeVatRate = normalizeVatRate(product.vatRate);
   const safePromoPercent = normalizePromoPercent(product.promoPercent);
   const safeOriginalPrice = normalizePositivePrice(product.originalPrice);
+  const safeWeightGrams = normalizeWeightGrams(product.weightGrams);
+  const safeVideoUrl = normalizeProductVideoPath(product.videoUrl);
   const isPack = product.isPack === true ? true : undefined;
   const seenPackIds = new Set<string>();
   const safePackProductIds = Array.isArray(product.packProductIds)
@@ -303,6 +328,8 @@ function normalizeProduct(
     category: safeCategory,
     price: safePrice,
     vatRate: isPack ? undefined : safeVatRate,
+    weightGrams: safeWeightGrams,
+    videoUrl: safeVideoUrl,
     originalPrice: hasConsistentPromo ? safeOriginalPrice : undefined,
     promoPercent: hasConsistentPromo ? safePromoPercent : undefined,
     isPack,
@@ -316,6 +343,7 @@ function normalizeProduct(
     analysisPdf: normalizeProductAnalysisPath(product.analysisPdf),
     description: product.description || "",
     badge: product.badge || undefined,
+    bonusPoints: normalizeBonusPoints(product.bonusPoints),
   };
 }
 
@@ -356,6 +384,7 @@ function normalizeOrderItem(item: OrderItem): OrderItem {
   const unitPrice = lineTotal > 0 ? Number((lineTotal / quantity).toFixed(4)) : 0;
   const taxSplit = computeFromTtc(lineTotal, vatRate, { taxable: isTaxableStore });
   const unitPriceHt = quantity > 0 ? roundMoney(taxSplit.ht / quantity) : 0;
+  const bonusPoints = normalizeBonusPoints(item.bonusPoints);
   const parentPackId = item.parentPackId?.trim() || undefined;
   const parentPackName = item.parentPackName?.trim() || undefined;
 
@@ -369,6 +398,7 @@ function normalizeOrderItem(item: OrderItem): OrderItem {
     vatRate,
     lineTotalHt: taxSplit.ht,
     lineVatAmount: taxSplit.vat,
+    bonusPoints,
     parentPackId,
     parentPackName,
   };
@@ -691,6 +721,10 @@ function normalizeStore(input: CmsStore, options?: { touchUpdatedAt?: boolean })
         ...defaultStore.content.blog,
         ...input.content?.blog,
       },
+      logistics: {
+        ...defaultStore.content.logistics,
+        ...input.content?.logistics,
+      },
       profile: {
         ...defaultStore.content.profile,
         ...input.content?.profile,
@@ -795,6 +829,7 @@ export async function appendOrder(input: {
     unitPriceHt?: number;
     lineTotalHt?: number;
     lineVatAmount?: number;
+    bonusPoints?: number;
     parentPackId?: string;
     parentPackName?: string;
   }>;
@@ -850,6 +885,7 @@ export async function appendOrder(input: {
       unitPriceHt: item.unitPriceHt ?? 0,
       lineTotalHt: item.lineTotalHt ?? 0,
       lineVatAmount: item.lineVatAmount ?? 0,
+      bonusPoints: item.bonusPoints,
       parentPackId: item.parentPackId,
       parentPackName: item.parentPackName,
     }),
