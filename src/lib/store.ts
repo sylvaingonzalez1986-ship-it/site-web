@@ -9,6 +9,7 @@ import { NATIVE_SECTION_DEFINITIONS, createDefaultPageSections } from "@/data/se
 import { defaultStore } from "@/data/default-store";
 import { normalizeBlogImagePath } from "@/lib/blog-image-storage";
 import { INVOICE_SETTINGS } from "@/lib/invoice-config";
+import { mergeOwnProducer } from "@/lib/own-producer";
 import { normalizeProductAnalysisPath } from "@/lib/product-analysis-storage";
 import { normalizeProductImagePath } from "@/lib/product-image-storage";
 import { normalizeProductVideoPath } from "@/lib/product-video-storage";
@@ -21,14 +22,10 @@ import {
   BLOG_CATEGORY_OPTIONS,
   ORDER_STATUS_OPTIONS,
   PRODUCER_CULTURE_TYPES,
-  type ApplicationSection,
   type BlogCategory,
-  type BlogPageSection,
   type BlogPost,
-  type BoutiqueSection,
   type CmsOrder,
   type CmsStore,
-  type HomeSection,
   type OrderItem,
   type OrderStatus,
   type PageSections,
@@ -277,6 +274,10 @@ function normalizeProducer(producer: Producer, index: number): Producer {
     experience: producer.experience?.trim() || "",
     founded: producer.founded?.trim() || "",
   };
+}
+
+function normalizeOwnProducer(value: unknown): Producer {
+  return normalizeProducer(mergeOwnProducer(value), -1);
 }
 
 function normalizeProduct(
@@ -712,7 +713,14 @@ function normalizeStore(input: CmsStore, options?: { touchUpdatedAt?: boolean })
       ...defaultStore.content,
       ...input.content,
       home: { ...defaultStore.content.home, ...input.content?.home },
-      boutique: { ...defaultStore.content.boutique, ...input.content?.boutique },
+      boutique: {
+        ...defaultStore.content.boutique,
+        ...input.content?.boutique,
+        ownProducerLabel:
+          input.content?.boutique?.ownProducerLabel?.trim() ||
+          defaultStore.content.boutique.ownProducerLabel,
+        ownProducer: normalizeOwnProducer(input.content?.boutique?.ownProducer),
+      },
       application: {
         ...defaultStore.content.application,
         ...input.content?.application,

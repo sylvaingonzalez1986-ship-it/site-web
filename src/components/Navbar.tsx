@@ -41,6 +41,7 @@ export function Navbar() {
   const links = useMemo(() => {
     const merged = [
       ...baseLinks,
+      { href: "/profil/collection", label: "Mon album" },
       ...cmsNavLinks,
       ...(isAllowedAdminEmail(user?.email) ? [{ href: "/application", label: "App" }] : []),
       ...(isAllowedAdminEmail(user?.email) ? [{ href: "/admin", label: "Admin" }] : []),

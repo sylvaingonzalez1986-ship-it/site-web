@@ -1,5 +1,6 @@
 import "server-only";
 
+import { createOrderId } from "@/lib/order-id";
 import type { AppendOrderInput } from "@/lib/orders-types";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { readStoreFromSupabase } from "@/lib/supabase/store-backend";
@@ -12,15 +13,6 @@ function failIfError(error: { message: string } | null, context: string): void {
   if (error) {
     throw new Error(`[supabase:${context}] ${error.message}`);
   }
-}
-
-function createOrderId(): string {
-  const date = new Date();
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  const random = Math.floor(Math.random() * 9000 + 1000);
-  return `ORD-${y}${m}${d}-${random}`;
 }
 
 async function findOrderById(orderId: string): Promise<CmsOrder | null> {
@@ -107,7 +99,7 @@ async function applyOrderInventoryInSupabase(orderId: string): Promise<void> {
 
 export async function appendOrderToSupabase(input: AppendOrderInput): Promise<CmsOrder> {
   const supabase = createSupabaseServiceClient();
-  const orderId = createOrderId();
+  const orderId = input.orderId?.trim() || createOrderId();
   const rawCustomerId = input.customer?.id?.trim() || null;
   const isUuidCustomerId = Boolean(rawCustomerId && UUID_PATTERN.test(rawCustomerId));
 

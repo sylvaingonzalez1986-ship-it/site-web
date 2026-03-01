@@ -85,7 +85,10 @@ export async function PUT(request: Request) {
       );
       await cleanupUnusedBlogUploads(blogStorageReferences);
       await cleanupUnusedProducerUploads(
-        saved.producers.map((producer) => producer.image).filter(Boolean),
+        [
+          saved.content.boutique.ownProducer.image,
+          ...saved.producers.map((producer) => producer.image),
+        ].filter(Boolean),
       );
       await cleanupUnusedProductAnalyses(
         saved.products

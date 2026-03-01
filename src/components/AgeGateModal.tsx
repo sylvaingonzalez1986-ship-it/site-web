@@ -6,6 +6,7 @@ import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 const AGE_GATE_COOKIE_NAME = "age_verified";
 const AGE_GATE_MAX_AGE_SECONDS = 60 * 60 * 24;
+const AGE_VERIFIED_EVENT = "lcb:age-verified";
 const CRAWLER_USER_AGENT_PATTERN =
   /(googlebot|bingbot|duckduckbot|yandex(bot)?|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slurp|applebot)/i;
 
@@ -57,15 +58,29 @@ export function AgeGateModal() {
   useBodyScrollLock(open && shouldDisplayOnPage);
 
   useEffect(() => {
-    setMounted(true);
+    const animationFrame = window.requestAnimationFrame(() => {
+      setMounted(true);
+    });
+    const closeGate = () => {
+      window.requestAnimationFrame(() => {
+        setOpen(false);
+      });
+    };
+
     if (isCrawlerUserAgent()) {
-      setOpen(false);
-      return;
+      closeGate();
+      return () => {
+        window.cancelAnimationFrame(animationFrame);
+      };
     }
 
     if (hasAgeVerifiedCookie()) {
-      setOpen(false);
+      closeGate();
     }
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+    };
   }, []);
 
   if (!mounted || !open || !shouldDisplayOnPage) {
@@ -88,6 +103,7 @@ export function AgeGateModal() {
                   className="btn-cartoon btn-primary h-12"
                   onClick={() => {
                     setAgeVerifiedCookie();
+                    window.dispatchEvent(new Event(AGE_VERIFIED_EVENT));
                     setOpen(false);
                   }}
                 >

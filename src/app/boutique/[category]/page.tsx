@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
 import { type ProductCategory } from "@/data/products";
 import { useCmsStore } from "@/hooks/useCmsStore";
-import { resolveProductProducer } from "@/lib/own-producer";
+import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
 import { dedupeProducts } from "@/lib/product-dedup";
 import type { Producer } from "@/types/store";
 
@@ -28,6 +28,7 @@ export default function CategoryPage() {
   const { store, loading } = useCmsStore();
   const categoryInfo = categoryMap[slug];
   const uniqueProducts = useMemo(() => dedupeProducts(store.products), [store.products]);
+  const ownProducer = useMemo(() => getOwnProducer(store.content.boutique), [store.content.boutique]);
 
   const producersById = useMemo(
     () => new Map<string, Producer>(store.producers.map((producer) => [producer.id, producer])),
@@ -85,7 +86,7 @@ export default function CategoryPage() {
             <ProductCard
               key={product.id}
               product={product}
-              producer={resolveProductProducer(product, producersById)}
+              producer={resolveProductProducer(product, producersById, ownProducer)}
               addButtonLabel={store.content.boutique.addButtonLabel}
             />
           ))}

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+const AGE_VERIFIED_EVENT = "lcb:age-verified";
+
 function sanitizeNextPath(value: string | null): string {
   if (!value) {
     return "/";
@@ -34,13 +36,14 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
       });
       if (!response.ok) {
         const data = (await response.json().catch(() => null)) as { error?: string } | null;
-        setError(data?.error ?? "Vérification impossible.");
+        setError(data?.error ?? "Verification impossible.");
         return;
       }
 
+      window.dispatchEvent(new Event(AGE_VERIFIED_EVENT));
       window.location.assign(nextPath);
     } catch {
-      setError("Vérification impossible.");
+      setError("Verification impossible.");
     } finally {
       setLoading(false);
     }
@@ -69,7 +72,7 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
                   onClick={confirmMajority}
                   disabled={loading}
                 >
-                  {loading ? "Vérification..." : "Oui, j'ai 18 ans ou plus"}
+                  {loading ? "Verification..." : "Oui, j'ai 18 ans ou plus"}
                 </button>
                 <button
                   type="button"
@@ -92,7 +95,7 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
             </div>
           )}
 
-          {error && <p className="mt-4 text-sm font-semibold text-red-700">{error}</p>}
+          {error ? <p className="mt-4 text-sm font-semibold text-red-700">{error}</p> : null}
         </div>
       </div>
     </section>

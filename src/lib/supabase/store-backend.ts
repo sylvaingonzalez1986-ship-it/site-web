@@ -3,6 +3,8 @@ import "server-only";
 import { Buffer } from "node:buffer";
 import { defaultStore } from "@/data/default-store";
 import type { Product, VatRate } from "@/data/products";
+import { mergeOwnProducer } from "@/lib/own-producer";
+import { normalizeProducerImagePath } from "@/lib/producer-image-storage";
 import { normalizeProductAnalysisPath } from "@/lib/product-analysis-storage";
 import { normalizeProductImagePath } from "@/lib/product-image-storage";
 import { normalizeProductVideoPath } from "@/lib/product-video-storage";
@@ -341,6 +343,41 @@ function mapProducerRow(row: Record<string, unknown>): Producer {
   };
 }
 
+function sanitizeProducerContent(value: unknown): Producer {
+  const producer = mergeOwnProducer(value);
+  const region = sanitizeDisplayText(producer.region);
+  const department = sanitizeDisplayText(producer.department);
+  const location =
+    sanitizeDisplayText(producer.location) ||
+    [department, region].filter(Boolean).join(", ") ||
+    "France";
+
+  return {
+    id: toStringValue(producer.id) || producer.id,
+    name: sanitizeDisplayText(producer.name, "Producteur sans nom"),
+    description: sanitizeDisplayText(producer.description),
+    image: normalizeProducerImagePath(toStringValue(producer.image)),
+    location,
+    department,
+    region,
+    website: normalizeExternalUrl(toStringValue(producer.website)),
+    socialLinks: {
+      instagram: normalizeExternalUrl(toStringValue(producer.socialLinks?.instagram)),
+      facebook: normalizeExternalUrl(toStringValue(producer.socialLinks?.facebook)),
+      tiktok: normalizeExternalUrl(toStringValue(producer.socialLinks?.tiktok)),
+    },
+    cultureType: sanitizeProducerCultureTypes(producer.cultureType),
+    climate: sanitizeDisplayText(producer.climate),
+    soil: sanitizeDisplayText(producer.soil),
+    altitude: sanitizeDisplayText(producer.altitude),
+    certifications: sanitizeProducerCertifications(producer.certifications),
+    speciality: sanitizeDisplayText(producer.speciality),
+    philosophy: sanitizeDisplayText(producer.philosophy),
+    experience: sanitizeDisplayText(producer.experience),
+    founded: sanitizeDisplayText(producer.founded),
+  };
+}
+
 function mapOrderItemRow(row: Record<string, unknown>): OrderItem {
   return {
     productId: toStringValue(row.product_id) || "unknown",
@@ -530,6 +567,12 @@ function mergeContent(row: Record<string, unknown> | null): SiteContent {
     boutique: {
       ...defaultStore.content.boutique,
       ...safeBoutique,
+      ownProducerLabel:
+        typeof safeBoutique.ownProducerLabel === "string" &&
+        safeBoutique.ownProducerLabel.trim().length > 0
+          ? safeBoutique.ownProducerLabel.trim()
+          : defaultStore.content.boutique.ownProducerLabel,
+      ownProducer: sanitizeProducerContent(safeBoutique.ownProducer),
     },
     application: {
       ...defaultStore.content.application,

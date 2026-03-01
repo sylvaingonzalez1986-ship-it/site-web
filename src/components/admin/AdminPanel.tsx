@@ -300,6 +300,7 @@ export function AdminPanel() {
     () => productsWithIndex.filter(({ product }) => Boolean(product.producerId) && !product.isPack && !product.id.startsWith("printful-")),
     [productsWithIndex],
   );
+  const ownProducer = draft.content.boutique.ownProducer;
   const selectedProducer = useMemo(
     () => draft.producers.find((producer) => producer.id === selectedProducerId) ?? null,
     [draft.producers, selectedProducerId],
@@ -330,6 +331,22 @@ export function AdminPanel() {
           PRODUCER_SOIL_OPTIONS.some((option) => option.value === selectedProducer.soil),
       ),
     [selectedProducer],
+  );
+  const ownProducerClimateInList = useMemo(
+    () =>
+      Boolean(
+        ownProducer?.climate &&
+          PRODUCER_CLIMATE_OPTIONS.some((option) => option.value === ownProducer.climate),
+      ),
+    [ownProducer],
+  );
+  const ownProducerSoilInList = useMemo(
+    () =>
+      Boolean(
+        ownProducer?.soil &&
+          PRODUCER_SOIL_OPTIONS.some((option) => option.value === ownProducer.soil),
+      ),
+    [ownProducer],
   );
 
   const loadStore = async () => {
@@ -857,6 +874,22 @@ export function AdminPanel() {
     });
   };
 
+  const updateOwnProducer = <K extends keyof Producer>(key: K, value: Producer[K]) => {
+    setDraft((current) => ({
+      ...current,
+      content: {
+        ...current.content,
+        boutique: {
+          ...current.content.boutique,
+          ownProducer: {
+            ...current.content.boutique.ownProducer,
+            [key]: value,
+          },
+        },
+      },
+    }));
+  };
+
   const updateProducerSocialLink = (
     index: number,
     network: keyof Producer["socialLinks"],
@@ -877,6 +910,28 @@ export function AdminPanel() {
       };
       return { ...current, producers: next };
     });
+  };
+
+  const updateOwnProducerSocialLink = (
+    network: keyof Producer["socialLinks"],
+    value: string,
+  ) => {
+    setDraft((current) => ({
+      ...current,
+      content: {
+        ...current.content,
+        boutique: {
+          ...current.content.boutique,
+          ownProducer: {
+            ...current.content.boutique.ownProducer,
+            socialLinks: {
+              ...current.content.boutique.ownProducer.socialLinks,
+              [network]: value,
+            },
+          },
+        },
+      },
+    }));
   };
 
   const updateProducerRegion = (index: number, nextRegion: string) => {
@@ -906,6 +961,35 @@ export function AdminPanel() {
     });
   };
 
+  const updateOwnProducerRegion = (nextRegion: string) => {
+    setDraft((current) => {
+      const producer = current.content.boutique.ownProducer;
+      const departmentBelongsToRegion =
+        !producer.department ||
+        FRENCH_DEPARTMENTS.some(
+          (department) =>
+            department.name === producer.department && department.region === nextRegion,
+        );
+      const nextDepartment = departmentBelongsToRegion ? producer.department : "";
+
+      return {
+        ...current,
+        content: {
+          ...current.content,
+          boutique: {
+            ...current.content.boutique,
+            ownProducer: {
+              ...producer,
+              region: nextRegion,
+              department: nextDepartment,
+              location: formatProducerLocation(nextDepartment, nextRegion),
+            },
+          },
+        },
+      };
+    });
+  };
+
   const updateProducerDepartment = (index: number, nextDepartment: string) => {
     setDraft((current) => {
       const next = [...current.producers];
@@ -925,6 +1009,30 @@ export function AdminPanel() {
       };
 
       return { ...current, producers: next };
+    });
+  };
+
+  const updateOwnProducerDepartment = (nextDepartment: string) => {
+    setDraft((current) => {
+      const producer = current.content.boutique.ownProducer;
+      const selectedDepartment = getDepartmentByName(nextDepartment);
+      const nextRegion = selectedDepartment?.region ?? producer.region;
+
+      return {
+        ...current,
+        content: {
+          ...current.content,
+          boutique: {
+            ...current.content.boutique,
+            ownProducer: {
+              ...producer,
+              department: nextDepartment,
+              region: nextRegion,
+              location: formatProducerLocation(nextDepartment, nextRegion),
+            },
+          },
+        },
+      };
     });
   };
 
@@ -950,6 +1058,33 @@ export function AdminPanel() {
       };
 
       return { ...current, producers: next };
+    });
+  };
+
+  const toggleOwnProducerCultureType = (cultureType: ProducerCultureType) => {
+    setDraft((current) => {
+      const producer = current.content.boutique.ownProducer;
+      const currentCultureTypes = Array.isArray(producer.cultureType)
+        ? producer.cultureType
+        : [];
+      const hasCultureType = currentCultureTypes.includes(cultureType);
+      const nextCultureTypes = hasCultureType
+        ? currentCultureTypes.filter((entry) => entry !== cultureType)
+        : [...currentCultureTypes, cultureType];
+
+      return {
+        ...current,
+        content: {
+          ...current.content,
+          boutique: {
+            ...current.content.boutique,
+            ownProducer: {
+              ...producer,
+              cultureType: nextCultureTypes,
+            },
+          },
+        },
+      };
     });
   };
 
@@ -1437,6 +1572,214 @@ export function AdminPanel() {
                 Ajouter un produit
               </button>
             </div>
+
+            <article className="card-cartoon mt-6 bg-white p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h3 className="font-display text-2xl">Carte TCG maison</h3>
+                  <p className="mt-1 text-sm text-charcoal">
+                    Cette fiche s&apos;affiche sur l&apos;onglet Mes produits.
+                  </p>
+                </div>
+                <span className="pill-cartoon bg-yellow px-3 py-1 text-xs uppercase tracking-[0.08em] text-ink">
+                  {draft.content.boutique.ownProducerLabel}
+                </span>
+              </div>
+
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <input
+                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                  value={ownProducer.name}
+                  onChange={(event) => updateOwnProducer("name", event.target.value)}
+                  placeholder="nom producteur"
+                />
+                <input
+                  className="h-10 border-2 border-[#1a1a1a] bg-[#f4f4f4] px-2 text-sm"
+                  value={formatProducerLocation(ownProducer.department, ownProducer.region)}
+                  readOnly
+                  placeholder="localisation"
+                />
+                <select
+                  className="h-10 border-2 border-[#1a1a1a] bg-white px-2 text-sm"
+                  value={ownProducer.region}
+                  onChange={(event) => updateOwnProducerRegion(event.target.value)}
+                >
+                  <option value="">-- Region --</option>
+                  {FRENCH_REGIONS.map((region) => (
+                    <option key={region} value={region}>
+                      {region}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className="h-10 border-2 border-[#1a1a1a] bg-white px-2 text-sm"
+                  value={ownProducer.department}
+                  onChange={(event) => updateOwnProducerDepartment(event.target.value)}
+                >
+                  <option value="">-- Departement --</option>
+                  {(ownProducer.region
+                    ? FRENCH_DEPARTMENTS.filter(
+                        (department) => department.region === ownProducer.region,
+                      )
+                    : FRENCH_DEPARTMENTS
+                  ).map((department) => (
+                    <option key={department.code} value={department.name}>
+                      {department.code} - {department.name}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                  value={ownProducer.website}
+                  onChange={(event) => updateOwnProducer("website", event.target.value)}
+                  placeholder="website (https://...)"
+                />
+                <input
+                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                  value={ownProducer.socialLinks?.instagram ?? ""}
+                  onChange={(event) =>
+                    updateOwnProducerSocialLink("instagram", event.target.value)
+                  }
+                  placeholder="instagram (https://...)"
+                />
+                <input
+                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                  value={ownProducer.socialLinks?.facebook ?? ""}
+                  onChange={(event) =>
+                    updateOwnProducerSocialLink("facebook", event.target.value)
+                  }
+                  placeholder="facebook (https://...)"
+                />
+                <input
+                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                  value={ownProducer.socialLinks?.tiktok ?? ""}
+                  onChange={(event) =>
+                    updateOwnProducerSocialLink("tiktok", event.target.value)
+                  }
+                  placeholder="tiktok (https://...)"
+                />
+              </div>
+
+              <textarea
+                className="mt-3 min-h-20 w-full border-2 border-[#1a1a1a] p-2 text-sm"
+                value={ownProducer.description}
+                onChange={(event) => updateOwnProducer("description", event.target.value)}
+                placeholder="description"
+              />
+
+              <div className="admin-field-group mt-4 grid gap-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-charcoal">
+                  Donnees carte TCG
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {PRODUCER_CULTURE_TYPES.map((cultureType) => {
+                    const active = (ownProducer.cultureType ?? []).includes(cultureType);
+                    return (
+                      <button
+                        key={cultureType}
+                        type="button"
+                        onClick={() => toggleOwnProducerCultureType(cultureType)}
+                        className={`pill-cartoon px-3 py-1 text-xs uppercase tracking-[0.08em] transition-colors ${
+                          active
+                            ? "bg-[#1a1a1a] text-white"
+                            : "bg-white text-ink hover:bg-[#f4f4f4]"
+                        }`}
+                        aria-pressed={active}
+                      >
+                        {PRODUCER_CULTURE_LABELS[cultureType]}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="grid gap-3 md:grid-cols-2">
+                  <select
+                    className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                    value={ownProducer.climate}
+                    onChange={(event) => updateOwnProducer("climate", event.target.value)}
+                  >
+                    <option value="">Climat principal</option>
+                    {ownProducer.climate && !ownProducerClimateInList && (
+                      <option value={ownProducer.climate}>
+                        {`Valeur actuelle: ${ownProducer.climate}`}
+                      </option>
+                    )}
+                    {PRODUCER_CLIMATE_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                    value={ownProducer.soil}
+                    onChange={(event) => updateOwnProducer("soil", event.target.value)}
+                  >
+                    <option value="">Type de sol (familles agriculteur)</option>
+                    {ownProducer.soil && !ownProducerSoilInList && (
+                      <option value={ownProducer.soil}>
+                        {`Valeur actuelle: ${ownProducer.soil}`}
+                      </option>
+                    )}
+                    {PRODUCER_SOIL_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                    value={ownProducer.altitude}
+                    onChange={(event) => updateOwnProducer("altitude", event.target.value)}
+                    placeholder="altitude"
+                  />
+                  <input
+                    className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                    value={ownProducer.speciality}
+                    onChange={(event) => updateOwnProducer("speciality", event.target.value)}
+                    placeholder="specialite"
+                  />
+                  <input
+                    className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                    value={ownProducer.experience}
+                    onChange={(event) => updateOwnProducer("experience", event.target.value)}
+                    placeholder="experience (ex: 8 ans)"
+                  />
+                  <input
+                    className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                    value={ownProducer.founded}
+                    onChange={(event) => updateOwnProducer("founded", event.target.value)}
+                    placeholder="annee de creation"
+                  />
+                </div>
+
+                <input
+                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                  value={(ownProducer.certifications ?? []).join(", ")}
+                  onChange={(event) =>
+                    updateOwnProducer(
+                      "certifications",
+                      parseProducerCertificationsInput(event.target.value),
+                    )
+                  }
+                  placeholder="certifications (separees par des virgules)"
+                />
+
+                <textarea
+                  className="min-h-16 w-full border-2 border-[#1a1a1a] p-2 text-sm"
+                  value={ownProducer.philosophy}
+                  onChange={(event) => updateOwnProducer("philosophy", event.target.value)}
+                  placeholder="philosophie (phrase courte)"
+                />
+              </div>
+
+              <div className="mt-3">
+                <ProducerImageUpload
+                  value={ownProducer.image}
+                  onChange={(nextImagePath) => updateOwnProducer("image", nextImagePath)}
+                />
+              </div>
+            </article>
 
             <div className="mt-6 grid gap-4">
               {ownProducts.length === 0 && (

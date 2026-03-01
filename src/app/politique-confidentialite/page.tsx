@@ -238,10 +238,10 @@ export default async function PolitiqueConfidentialitePage() {
             <section>
               <h2 className="font-display text-2xl">Article 10 - Données liees au jeu promotionnel</h2>
               <p className="mt-2">
-                Dans le cadre du jeu promotionnel &quot;Ticket de grattage&quot;, le Site traite des données
-                nécessaires a l&apos;attribution des tickets et des gains : identifiant client,
-                identifiant commande, montant de commande, numero de ticket, résultat de grattage,
-                date de grattage et journaux anti-fraude.
+                Dans le cadre du jeu promotionnel &quot;Booster Pack&quot;, le Site traite des données
+                nécessaires a l&apos;attribution des packs et des gains : identifiant client,
+                identifiant commande, montant de commande, numero de pack, résultat d&apos;ouverture,
+                date d&apos;ouverture et journaux anti-fraude.
               </p>
               <p className="mt-2">
                 Ces données sont conservees pour assurer la preuve des operations promotionnelles,

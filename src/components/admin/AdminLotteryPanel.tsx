@@ -1,124 +1,106 @@
-﻿﻿"use client";
+"use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
-import type { LotteryConfig, LotteryPrize, LotteryPrizeRarity, LotteryStats } from "@/types/lottery";
+import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
+import { LotteryCardImageUpload } from "@/components/admin/LotteryCardImageUpload";
+import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
+import type {
+  LotteryCardDefinition,
+  LotteryCardRarity,
+  LotteryConfig,
+  LotteryStats,
+} from "@/types/lottery";
 
-const rarityLabels: Record<LotteryPrizeRarity, string> = {
-  common: "Commun",
-  rare: "Rare",
-  epic: "Épique",
-  legendary: "Légendaire",
+type AdminCustomerListItem = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
 };
 
-const rarityBadgeClass: Record<LotteryPrizeRarity, string> = {
-  common: "bg-[#e9e2d4] text-ink",
-  rare: "bg-[#cdeae3] text-[#0a7b61]",
-  epic: "bg-[#fbe4b5] text-[#8a4b00]",
-  legendary: "bg-[#f5d2d2] text-[#8a1f1f]",
-};
-
-type PrizeDraft = {
+type CardDraft = {
+  code: string;
+  cardNumber: string;
   name: string;
+  rarity: LotteryCardRarity;
+  visualPrompt: string;
   description: string;
-  rarity: LotteryPrizeRarity;
-  probabilityPercent: string;
   imageUrl: string;
-  valueEuros: string;
-  stock: string;
   isActive: boolean;
 };
 
-function emptyPrizeDraft(): PrizeDraft {
-  return {
-    name: "",
-    description: "",
-    rarity: "common",
-    probabilityPercent: "0",
-    imageUrl: "",
-    valueEuros: "0",
-    stock: "",
-    isActive: true,
-  };
-}
+const rarityLabels: Record<LotteryCardRarity, string> = {
+  common: "Commune",
+  silver: "Silver",
+  gold: "Gold",
+  epic: "Epique",
+  legendary: "Legendaire",
+};
 
-function toProbabilityFromPercent(value: string): number {
-  const parsed = Number(value);
-  if (!Number.isFinite(parsed)) {
-    return NaN;
-  }
-
-  return Number((parsed / 100).toFixed(6));
-}
-
-function toMoney(value: string): number {
-  const parsed = Number(value);
-  if (!Number.isFinite(parsed)) {
-    return NaN;
-  }
-
-  return Number(parsed.toFixed(2));
-}
-
-function toStock(value: string): number | null {
-  const trimmed = value.trim();
-  if (!trimmed) {
-    return null;
-  }
-
-  const parsed = Number(trimmed);
-  if (!Number.isFinite(parsed)) {
-    return NaN;
-  }
-
-  return Math.max(0, Math.floor(parsed));
-}
-
-function formatPercent(value: number): string {
-  return `${(value * 100).toFixed(2)}%`;
-}
+const emptyCardDraft = (): CardDraft => ({
+  code: "",
+  cardNumber: "",
+  name: "",
+  rarity: "common",
+  visualPrompt: "",
+  description: "",
+  imageUrl: "",
+  isActive: true,
+});
 
 export function AdminLotteryPanel() {
   const [config, setConfig] = useState<LotteryConfig | null>(null);
-  const [prizes, setPrizes] = useState<LotteryPrize[]>([]);
+  const [cards, setCards] = useState<LotteryCardDefinition[]>([]);
   const [stats, setStats] = useState<LotteryStats | null>(null);
-  const [newPrize, setNewPrize] = useState<PrizeDraft>(emptyPrizeDraft());
+  const [customers, setCustomers] = useState<AdminCustomerListItem[]>([]);
+  const [status, setStatus] = useState("Chargement loterie...");
   const [loading, setLoading] = useState(true);
-  const [savingConfig, setSavingConfig] = useState(false);
-  const [creatingPrize, setCreatingPrize] = useState(false);
-  const [savingPrizeId, setSavingPrizeId] = useState<string | null>(null);
-  const [deletingPrizeId, setDeletingPrizeId] = useState<string | null>(null);
-  const [status, setStatus] = useState<string>("Chargement loterie...");
-
-  const activeProbabilityTotal = useMemo(
-    () => prizes.filter((prize) => prize.isActive).reduce((sum, prize) => sum + prize.probability, 0),
-    [prizes],
-  );
+  const [selectedCardId, setSelectedCardId] = useState<string>("");
+  const [cardDraft, setCardDraft] = useState<CardDraft>(emptyCardDraft());
+  const [selectedCustomerId, setSelectedCustomerId] = useState("");
+  const [manualTicketCount, setManualTicketCount] = useState("1");
+  const [manualTicketReason, setManualTicketReason] = useState("Attribution manuelle loterie");
+  const [grantingTickets, setGrantingTickets] = useState(false);
+  const [savingCard, setSavingCard] = useState(false);
+  const [archivingCardId, setArchivingCardId] = useState<string | null>(null);
 
   const loadData = async () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/admin/lottery", { cache: "no-store" });
-      if (!response.ok) {
-        const data = (await response.json().catch(() => null)) as
-          | { error?: string }
-          | null;
-        setStatus(data?.error ?? "Impossible de charger la loterie.");
+      const [lotteryResponse, customersResponse] = await Promise.all([
+        fetch("/api/admin/lottery", { cache: "no-store" }),
+        fetch("/api/admin/customers", { cache: "no-store" }),
+      ]);
+
+      const lotteryPayload = (await lotteryResponse.json()) as {
+        config?: LotteryConfig;
+        cards?: LotteryCardDefinition[];
+        stats?: LotteryStats;
+        error?: string;
+      };
+
+      if (!lotteryResponse.ok || !lotteryPayload.config) {
+        setStatus(lotteryPayload.error ?? "Impossible de charger la loterie.");
         return;
       }
 
-      const data = (await response.json()) as {
-        config: LotteryConfig;
-        prizes: LotteryPrize[];
-        stats: LotteryStats;
-      };
+      const nextCards = (lotteryPayload.cards ?? []).sort((left, right) => left.cardNumber - right.cardNumber);
+      setConfig(lotteryPayload.config);
+      setCards(nextCards);
+      setStats(lotteryPayload.stats ?? null);
 
-      setConfig(data.config);
-      setPrizes(data.prizes);
-      setStats(data.stats);
-      setStatus("Loterie chargée.");
+      if (customersResponse.ok) {
+        const customersPayload = (await customersResponse.json()) as { customers?: AdminCustomerListItem[] };
+        setCustomers(customersPayload.customers ?? []);
+      }
+
+      setSelectedCardId((current) =>
+        current && nextCards.some((card) => card.id === current) ? current : nextCards[0]?.id ?? "",
+      );
+      setStatus("Loterie chargee.");
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Erreur de chargement loterie.");
+      setStatus(error instanceof Error ? error.message : "Erreur de chargement.");
     } finally {
       setLoading(false);
     }
@@ -128,552 +110,568 @@ export function AdminLotteryPanel() {
     void loadData();
   }, []);
 
+  const selectedCard = useMemo(
+    () => cards.find((card) => card.id === selectedCardId) ?? null,
+    [cards, selectedCardId],
+  );
+
+  useEffect(() => {
+    if (!selectedCard) {
+      setCardDraft(emptyCardDraft());
+      return;
+    }
+
+    setCardDraft({
+      code: selectedCard.code,
+      cardNumber: String(selectedCard.cardNumber),
+      name: selectedCard.name,
+      rarity: selectedCard.rarity,
+      visualPrompt: selectedCard.visualPrompt,
+      description: selectedCard.description,
+      imageUrl: selectedCard.imageUrl,
+      isActive: selectedCard.isActive,
+    });
+  }, [selectedCard]);
+
   const saveConfig = async () => {
     if (!config) {
       return;
     }
 
-    setSavingConfig(true);
-    setStatus("Sauvegarde configuration loterie...");
+    const response = await fetch("/api/admin/lottery", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        eurosPerTicket: config.eurosPerTicket,
+        maxTicketsPerOrder: config.maxTicketsPerOrder,
+        collectionTitle: config.collectionTitle,
+        albumSubtitle: config.albumSubtitle,
+        albumBoosterTitle: config.albumBoosterTitle,
+        albumBoosterDescription: config.albumBoosterDescription,
+        commonWeight: config.cardWeights.common,
+        silverWeight: config.cardWeights.silver,
+        goldWeight: config.cardWeights.gold,
+        epicWeight: config.cardWeights.epic,
+        legendaryWeight: config.cardWeights.legendary,
+        isActive: config.isActive,
+      }),
+    });
 
-    try {
-      const response = await fetch("/api/admin/lottery", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ticketThresholdEuros: config.ticketThresholdEuros,
-          isActive: config.isActive,
-        }),
-      });
-
-      const data = (await response.json()) as {
-        config: LotteryConfig;
-        stats: LotteryStats;
-        error: string;
-      };
-
-      if (!response.ok || !data.config) {
-        setStatus(data.error ?? "Erreur sauvegarde loterie.");
-        return;
-      }
-
-      setConfig(data.config);
-      if (data.stats) {
-        setStats(data.stats);
-      }
-      setStatus("Configuration loterie sauvegardée.");
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Erreur sauvegarde loterie.");
-    } finally {
-      setSavingConfig(false);
-    }
-  };
-
-  const createPrize = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const probability = toProbabilityFromPercent(newPrize.probabilityPercent);
-    const valueEuros = toMoney(newPrize.valueEuros);
-    const stock = toStock(newPrize.stock);
-
-    if (!Number.isFinite(probability) || !Number.isFinite(valueEuros) || (stock !== null && Number.isNaN(stock))) {
-      setStatus("Valeurs lot invalides.");
+    const payload = (await response.json()) as { config?: LotteryConfig; error?: string };
+    if (!response.ok || !payload.config) {
+      setStatus(payload.error ?? "Sauvegarde configuration impossible.");
       return;
     }
 
-    setCreatingPrize(true);
-    setStatus("Creation du lot...");
+    setConfig(payload.config);
+    setStatus("Configuration sauvegardee.");
+    await loadData();
+  };
+
+  const saveCard = async () => {
+    setSavingCard(true);
 
     try {
-      const response = await fetch("/api/admin/lottery/prizes", {
+      const response = await fetch(
+        selectedCardId ? `/api/admin/lottery/cards/${encodeURIComponent(selectedCardId)}` : "/api/admin/lottery/cards",
+        {
+          method: selectedCardId ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            code: cardDraft.code,
+            cardNumber: Number(cardDraft.cardNumber),
+            name: cardDraft.name,
+            rarity: cardDraft.rarity,
+            visualPrompt: cardDraft.visualPrompt,
+            description: cardDraft.description,
+            imageUrl: cardDraft.imageUrl,
+            isActive: cardDraft.isActive,
+          }),
+        },
+      );
+
+      const payload = (await response.json()) as { card?: LotteryCardDefinition; error?: string };
+      if (!response.ok || !payload.card) {
+        setStatus(payload.error ?? "Sauvegarde carte impossible.");
+        return;
+      }
+
+      setSelectedCardId(payload.card.id);
+      setStatus(selectedCardId ? "Carte mise a jour." : "Carte creee.");
+      await loadData();
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Erreur sauvegarde carte.");
+    } finally {
+      setSavingCard(false);
+    }
+  };
+
+  const archiveCard = async (cardId: string) => {
+    setArchivingCardId(cardId);
+
+    try {
+      const response = await fetch(`/api/admin/lottery/cards/${encodeURIComponent(cardId)}`, {
+        method: "DELETE",
+      });
+      const payload = (await response.json()) as { success?: boolean; error?: string };
+      if (!response.ok || payload.success !== true) {
+        setStatus(payload.error ?? "Archivage carte impossible.");
+        return;
+      }
+
+      if (selectedCardId === cardId) {
+        setSelectedCardId("");
+      }
+      setStatus("Carte archivee.");
+      await loadData();
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Erreur archivage carte.");
+    } finally {
+      setArchivingCardId(null);
+    }
+  };
+
+  const grantTickets = async () => {
+    if (!selectedCustomerId) {
+      setStatus("Selectionne un client pour attribuer des packs.");
+      return;
+    }
+
+    setGrantingTickets(true);
+    try {
+      const response = await fetch(`/api/admin/customers/${encodeURIComponent(selectedCustomerId)}/tickets`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: newPrize.name,
-          description: newPrize.description,
-          rarity: newPrize.rarity,
-          probability,
-          imageUrl: newPrize.imageUrl,
-          valueEuros,
-          stock,
-          isActive: newPrize.isActive,
+          ticketCount: Number(manualTicketCount),
+          reason: manualTicketReason.trim() || "Attribution manuelle loterie",
         }),
       });
 
-      const data = (await response.json()) as { prize: LotteryPrize; error: string };
-
-      const createdPrize = data.prize;
-      if (!response.ok || !createdPrize) {
-        setStatus(data.error ?? "Impossible de créer le lot.");
+      const payload = (await response.json()) as { granted?: number; error?: string };
+      if (!response.ok || !payload.granted) {
+        setStatus(payload.error ?? "Attribution packs impossible.");
         return;
       }
 
-      setPrizes((current) => [...current, createdPrize]);
-      setNewPrize(emptyPrizeDraft());
-      setStatus("Lot créé.");
+      setManualTicketCount("1");
+      setManualTicketReason("Attribution manuelle loterie");
+      setStatus(`${payload.granted} pack(s) attribue(s).`);
       await loadData();
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Erreur création lot.");
+      setStatus(error instanceof Error ? error.message : "Erreur attribution packs.");
     } finally {
-      setCreatingPrize(false);
+      setGrantingTickets(false);
     }
   };
 
-  const updatePrizeField = <K extends keyof LotteryPrize>(
-    prizeId: string,
-    key: K,
-    value: LotteryPrize[K],
-  ) => {
-    setPrizes((current) =>
-      current.map((prize) => (prize.id === prizeId ? { ...prize, [key]: value } : prize)),
-    );
-  };
-
-  const savePrize = async (prize: LotteryPrize) => {
-    setSavingPrizeId(prize.id);
-    setStatus(`Sauvegarde du lot ${prize.name}...`);
-
-    try {
-      const response = await fetch(`/api/admin/lottery/prizes/${encodeURIComponent(prize.id)}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: prize.name,
-          description: prize.description,
-          rarity: prize.rarity,
-          probability: prize.probability,
-          imageUrl: prize.imageUrl,
-          valueEuros: prize.valueEuros,
-          stock: prize.stock,
-          isActive: prize.isActive,
-        }),
-      });
-
-      const data = (await response.json()) as { prize: LotteryPrize; error: string };
-
-      const updatedPrize = data.prize;
-      if (!response.ok || !updatedPrize) {
-      setStatus("Erreur mise à jour lot.");
-        return;
-      }
-
-      setPrizes((current) =>
-        current.map((item) => (item.id === updatedPrize.id ? updatedPrize : item)),
-      );
-      setStatus(`Lot ${updatedPrize.name} mis à jour.`);
-      await loadData();
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Erreur mise à jour lot.");
-    } finally {
-      setSavingPrizeId(null);
-    }
-  };
-
-  const deletePrize = async (prize: LotteryPrize) => {
-    const confirmed = window.confirm(`Supprimer le lot \"${prize.name}\" `);
-    if (!confirmed) {
-      return;
-    }
-
-    setDeletingPrizeId(prize.id);
-    setStatus(`Suppression du lot ${prize.name}...`);
-
-    try {
-      const response = await fetch(`/api/admin/lottery/prizes/${encodeURIComponent(prize.id)}`, {
-        method: "DELETE",
-      });
-
-      const data = (await response.json()) as { success: boolean; error: string };
-      if (!response.ok || !data.success) {
-        setStatus(data.error ?? "Suppression lot impossible.");
-        return;
-      }
-
-      setPrizes((current) => current.filter((item) => item.id !== prize.id));
-      setStatus("Lot supprimé.");
-      await loadData();
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Erreur suppression lot.");
-    } finally {
-      setDeletingPrizeId(null);
-    }
-  };
+  const activeCards = cards.filter((card) => card.isActive);
 
   return (
-    <div className="cartoon-border bg-cream p-6 md:p-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-display text-3xl">Loterie</h2>
-        <button
-          type="button"
-          className="btn-cartoon btn-secondary"
-          onClick={() => void loadData()}
-          disabled={loading}
-        >
-          Rafraichir
-        </button>
-      </div>
+    <div className="grid gap-6">
+      <section className="card-cartoon bg-white p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h3 className="font-display text-2xl text-ink">Configuration TCG</h3>
+            <p className="mt-1 text-sm text-charcoal">
+              1 pack = 3 cartes tirees. Les poids ci-dessous pilotent la rarete de chaque carte a l&apos;ouverture.
+            </p>
+          </div>
+          <p className="text-sm font-semibold text-ink">{status}</p>
+        </div>
 
-      <p className="mt-2 text-sm text-charcoal">{status}</p>
-
-      {loading && <p className="mt-4 text-charcoal">Chargement...</p>}
-
-      {!loading && config && (
-        <>
-          <section className="card-cartoon mt-6 bg-white p-5">
-            <h3 className="font-display text-2xl text-ink">Configuration</h3>
-            <div className="mt-4 grid gap-3 md:grid-cols-3">
-              <label className="grid gap-1 text-xs uppercase tracking-[0.08em] text-charcoal">
-                Seuil euros TTC / ticket
+        {config && (
+          <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <label className="grid gap-1 text-sm">
+              <span className="font-semibold text-ink">Euros par pack</span>
+              <input
+                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                type="number"
+                min={1}
+                value={config.eurosPerTicket}
+                onChange={(event) =>
+                  setConfig({ ...config, eurosPerTicket: Number(event.target.value) || config.eurosPerTicket })
+                }
+              />
+            </label>
+            <label className="grid gap-1 text-sm">
+              <span className="font-semibold text-ink">Max packs / commande</span>
+              <input
+                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                type="number"
+                min={1}
+                value={config.maxTicketsPerOrder}
+                onChange={(event) =>
+                  setConfig({
+                    ...config,
+                    maxTicketsPerOrder: Number(event.target.value) || config.maxTicketsPerOrder,
+                  })
+                }
+              />
+            </label>
+            <label className="grid gap-1 text-sm md:col-span-2">
+              <span className="font-semibold text-ink">Titre collection</span>
+              <input
+                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                value={config.collectionTitle}
+                onChange={(event) => setConfig({ ...config, collectionTitle: event.target.value })}
+              />
+            </label>
+            <label className="grid gap-1 text-sm md:col-span-2">
+              <span className="font-semibold text-ink">Sous-titre album</span>
+              <input
+                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                value={config.albumSubtitle}
+                onChange={(event) => setConfig({ ...config, albumSubtitle: event.target.value })}
+              />
+            </label>
+            <label className="grid gap-1 text-sm md:col-span-2">
+              <span className="font-semibold text-ink">Titre bloc boosters</span>
+              <input
+                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                value={config.albumBoosterTitle}
+                onChange={(event) => setConfig({ ...config, albumBoosterTitle: event.target.value })}
+              />
+            </label>
+            <label className="grid gap-1 text-sm md:col-span-2 xl:col-span-4">
+              <span className="font-semibold text-ink">Description bloc boosters</span>
+              <textarea
+                className="min-h-[88px] border-2 border-[#1a1a1a] px-3 py-2 text-sm"
+                value={config.albumBoosterDescription}
+                onChange={(event) => setConfig({ ...config, albumBoosterDescription: event.target.value })}
+              />
+            </label>
+            {(["common", "silver", "gold", "epic", "legendary"] as const).map((rarity) => (
+              <label key={rarity} className="grid gap-1 text-sm">
+                <span className="font-semibold text-ink">Poids {rarityLabels[rarity]}</span>
                 <input
                   className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
                   type="number"
-                  min={1}
-                  step="0.01"
-                  value={config.ticketThresholdEuros}
+                  min={0}
+                  value={config.cardWeights[rarity]}
                   onChange={(event) =>
-                    setConfig((current) =>
-                      current
-                        ? {
-                            ...current,
-                            ticketThresholdEuros: Number(event.target.value) || current.ticketThresholdEuros,
-                          }
-                        : current,
-                    )
+                    setConfig({
+                      ...config,
+                      cardWeights: {
+                        ...config.cardWeights,
+                        [rarity]: Number(event.target.value) || 0,
+                      },
+                    })
                   }
                 />
               </label>
-
-              <label className="flex items-center gap-2 border-2 border-[#1a1a1a] px-3 py-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={config.isActive}
-                  onChange={(event) =>
-                    setConfig((current) =>
-                      current ? { ...current, isActive: event.target.checked } : current,
-                    )
-                  }
-                />
-                Loterie active
-              </label>
-
-              <div className="flex items-end">
-                <button
-                  type="button"
-                  className="btn-cartoon btn-primary h-10"
-                  onClick={() => void saveConfig()}
-                  disabled={savingConfig}
-                >
-                  {savingConfig ? "Sauvegarde..." : "Sauvegarder"}
-                </button>
-              </div>
-            </div>
-          </section>
-
-          <section className="card-cartoon mt-6 bg-white p-5">
-            <h3 className="font-display text-2xl text-ink">Lots</h3>
-            <p className="mt-2 text-sm text-charcoal">
-              Probabilite active totale: <span className="font-semibold text-ink">{formatPercent(activeProbabilityTotal)}</span>
-            </p>
-            {activeProbabilityTotal > 1 && (
-              <p className="mt-2 text-sm font-semibold text-red-700">
-                La somme des probabilites actives depasse 100%.
-              </p>
-            )}
-
-            <form className="mt-5 grid gap-3 md:grid-cols-7" onSubmit={createPrize}>
+            ))}
+            <label className="flex items-center gap-2 text-sm font-semibold text-ink">
               <input
-                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
-                placeholder="Nom du lot"
-                value={newPrize.name}
-                onChange={(event) => setNewPrize((current) => ({ ...current, name: event.target.value }))}
-                required
+                type="checkbox"
+                checked={config.isActive}
+                onChange={(event) => setConfig({ ...config, isActive: event.target.checked })}
               />
+              Collection active
+            </label>
+          </div>
+        )}
+
+        <button type="button" className="btn-cartoon btn-primary mt-4 h-10 px-4 text-xs" onClick={() => void saveConfig()}>
+          Sauvegarder
+        </button>
+      </section>
+
+      <section className="card-cartoon bg-white p-5">
+        <h3 className="font-display text-2xl text-ink">Attribuer des packs</h3>
+        <div className="mt-4 grid gap-3 md:grid-cols-[1fr_140px_1fr_auto]">
+          <select
+            className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+            value={selectedCustomerId}
+            onChange={(event) => setSelectedCustomerId(event.target.value)}
+          >
+            <option value="">Selectionner un client</option>
+            {customers.map((customer) => (
+              <option key={customer.id} value={customer.id}>
+                {customer.email} - {customer.firstName} {customer.lastName}
+              </option>
+            ))}
+          </select>
+          <input
+            className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+            type="number"
+            min={1}
+            value={manualTicketCount}
+            onChange={(event) => setManualTicketCount(event.target.value)}
+          />
+          <input
+            className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+            value={manualTicketReason}
+            onChange={(event) => setManualTicketReason(event.target.value)}
+          />
+          <button
+            type="button"
+            className="btn-cartoon btn-secondary h-10 px-4 text-xs"
+            onClick={() => void grantTickets()}
+            disabled={grantingTickets}
+          >
+            {grantingTickets ? "..." : "Attribuer"}
+          </button>
+        </div>
+      </section>
+
+      <section className="card-cartoon bg-white p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h3 className="font-display text-2xl text-ink">Cartes TCG</h3>
+            <p className="mt-1 text-sm text-charcoal">
+              Le set complet est seedé en base. Tu pourras ajouter les illustrations plus tard.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="btn-cartoon btn-secondary h-10 px-4 text-xs"
+            onClick={() => {
+              setSelectedCardId("");
+              setCardDraft(emptyCardDraft());
+            }}
+          >
+            Nouvelle carte
+          </button>
+        </div>
+
+        <div className="mt-4 grid gap-5 xl:grid-cols-[360px_1fr]">
+          <div className="card-cartoon bg-[#f9f7f2] p-4">
+            <label className="grid gap-1 text-sm">
+              <span className="font-semibold text-ink">Carte existante</span>
               <select
                 className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                value={newPrize.rarity}
-                onChange={(event) =>
-                  setNewPrize((current) => ({ ...current, rarity: event.target.value as LotteryPrizeRarity }))
-                }
+                value={selectedCardId}
+                onChange={(event) => setSelectedCardId(event.target.value)}
               >
-                {Object.entries(rarityLabels).map(([rarity, label]) => (
-                  <option key={rarity} value={rarity}>
-                    {label}
+                <option value="">Nouvelle carte</option>
+                {cards.map((card) => (
+                  <option key={card.id} value={card.id}>
+                    #{card.cardNumber} - {card.name}
                   </option>
                 ))}
               </select>
-              <input
-                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                type="number"
-                min={0}
-                max={100}
-                step="0.01"
-                placeholder="Proba %"
-                value={newPrize.probabilityPercent}
-                onChange={(event) =>
-                  setNewPrize((current) => ({ ...current, probabilityPercent: event.target.value }))
-                }
-              />
-              <input
-                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                type="number"
-                min={0}
-                step="0.01"
-                placeholder="Valeur €"
-                value={newPrize.valueEuros}
-                onChange={(event) => setNewPrize((current) => ({ ...current, valueEuros: event.target.value }))}
-              />
-              <input
-                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                type="number"
-                min={0}
-                step={1}
-                placeholder="Stock (vide = infini)"
-                value={newPrize.stock}
-                onChange={(event) => setNewPrize((current) => ({ ...current, stock: event.target.value }))}
-              />
-              <button
-                type="submit"
-                className="btn-cartoon btn-secondary h-10"
-                disabled={creatingPrize}
-              >
-                {creatingPrize ? "Creation..." : "Ajouter"}
-              </button>
+            </label>
 
-              <textarea
-                className="min-h-20 border-2 border-[#1a1a1a] p-2 text-sm md:col-span-5"
-                placeholder="Description"
-                value={newPrize.description}
-                onChange={(event) => setNewPrize((current) => ({ ...current, description: event.target.value }))}
-              />
-              <input
-                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
-                placeholder="Image URL (optionnel)"
-                value={newPrize.imageUrl}
-                onChange={(event) => setNewPrize((current) => ({ ...current, imageUrl: event.target.value }))}
-              />
-              <label className="md:col-span-7 flex items-center gap-2 text-sm text-charcoal">
+            <div className="mt-4 grid gap-3">
+              <label className="grid gap-1 text-sm">
+                <span className="font-semibold text-ink">Code</span>
+                <input
+                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                  value={cardDraft.code}
+                  onChange={(event) => setCardDraft({ ...cardDraft, code: event.target.value })}
+                />
+              </label>
+              <div className="grid gap-3 md:grid-cols-2">
+                <label className="grid gap-1 text-sm">
+                  <span className="font-semibold text-ink">Numero</span>
+                  <input
+                    className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                    type="number"
+                    min={1}
+                    value={cardDraft.cardNumber}
+                    onChange={(event) => setCardDraft({ ...cardDraft, cardNumber: event.target.value })}
+                  />
+                </label>
+                <label className="grid gap-1 text-sm">
+                  <span className="font-semibold text-ink">Rarete</span>
+                  <select
+                    className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                    value={cardDraft.rarity}
+                    onChange={(event) =>
+                      setCardDraft({ ...cardDraft, rarity: event.target.value as LotteryCardRarity })
+                    }
+                  >
+                    {(["common", "silver", "gold", "epic", "legendary"] as const).map((rarity) => (
+                      <option key={rarity} value={rarity}>
+                        {rarityLabels[rarity]}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              <label className="grid gap-1 text-sm">
+                <span className="font-semibold text-ink">Nom</span>
+                <input
+                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                  value={cardDraft.name}
+                  onChange={(event) => setCardDraft({ ...cardDraft, name: event.target.value })}
+                />
+              </label>
+              <label className="grid gap-1 text-sm">
+                <span className="font-semibold text-ink">Illustration</span>
+                <LotteryCardImageUpload
+                  value={cardDraft.imageUrl}
+                  onChange={(imageUrl) => setCardDraft({ ...cardDraft, imageUrl })}
+                />
+              </label>
+              <label className="grid gap-1 text-sm">
+                <span className="font-semibold text-ink">URL image manuelle</span>
+                <input
+                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                  value={cardDraft.imageUrl}
+                  onChange={(event) => setCardDraft({ ...cardDraft, imageUrl: event.target.value })}
+                />
+              </label>
+              <label className="grid gap-1 text-sm">
+                <span className="font-semibold text-ink">Prompt visuel</span>
+                <textarea
+                  className="min-h-[120px] border-2 border-[#1a1a1a] px-3 py-2 text-sm"
+                  value={cardDraft.visualPrompt}
+                  onChange={(event) => setCardDraft({ ...cardDraft, visualPrompt: event.target.value })}
+                />
+              </label>
+              <label className="grid gap-1 text-sm">
+                <span className="font-semibold text-ink">Description</span>
+                <textarea
+                  className="min-h-[120px] border-2 border-[#1a1a1a] px-3 py-2 text-sm"
+                  value={cardDraft.description}
+                  onChange={(event) => setCardDraft({ ...cardDraft, description: event.target.value })}
+                />
+              </label>
+              <label className="flex items-center gap-2 text-sm font-semibold text-ink">
                 <input
                   type="checkbox"
-                  checked={newPrize.isActive}
-                  onChange={(event) => setNewPrize((current) => ({ ...current, isActive: event.target.checked }))}
+                  checked={cardDraft.isActive}
+                  onChange={(event) => setCardDraft({ ...cardDraft, isActive: event.target.checked })}
                 />
-                Lot actif
+                Carte active
               </label>
-            </form>
-
-            <div className="mt-6 grid gap-4">
-              {prizes.length === 0 && <p className="text-sm text-charcoal">Aucun lot configure.</p>}
-
-              {prizes.map((prize) => (
-                <article key={prize.id} className="card-cartoon bg-[#f9f7f2] p-4">
-                  <div className="grid gap-3 md:grid-cols-7">
-                    <input
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
-                      value={prize.name}
-                      onChange={(event) => updatePrizeField(prize.id, "name", event.target.value)}
-                    />
-                    <select
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                      value={prize.rarity}
-                      onChange={(event) =>
-                        updatePrizeField(prize.id, "rarity", event.target.value as LotteryPrizeRarity)
-                      }
-                    >
-                      {Object.entries(rarityLabels).map(([rarity, label]) => (
-                        <option key={rarity} value={rarity}>
-                          {label}
-                        </option>
-                      ))}
-                    </select>
-                    <input
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                      type="number"
-                      min={0}
-                      max={100}
-                      step="0.01"
-                      value={(prize.probability * 100).toFixed(4)}
-                      onChange={(event) =>
-                        updatePrizeField(
-                          prize.id,
-                          "probability",
-                          Math.max(0, Number((Number(event.target.value) / 100).toFixed(6)) || 0),
-                        )
-                      }
-                    />
-                    <input
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                      type="number"
-                      min={0}
-                      step="0.01"
-                      value={prize.valueEuros}
-                      onChange={(event) =>
-                        updatePrizeField(prize.id, "valueEuros", Number(event.target.value) || 0)
-                      }
-                    />
-                    <input
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                      type="number"
-                      min={0}
-                      step={1}
-                      value={prize.stock ?? ""}
-                      placeholder="infini"
-                      onChange={(event) => {
-                        const nextValue = event.target.value.trim();
-                        updatePrizeField(
-                          prize.id,
-                          "stock",
-                          nextValue ? Math.max(0, Math.floor(Number(nextValue) || 0)) : null,
-                        );
-                      }}
-                    />
-                    <label className="flex items-center gap-2 border-2 border-[#1a1a1a] px-3 py-2 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={prize.isActive}
-                        onChange={(event) => updatePrizeField(prize.id, "isActive", event.target.checked)}
-                      />
-                      Actif
-                    </label>
-                  </div>
-
-                  <textarea
-                    className="mt-3 min-h-20 w-full border-2 border-[#1a1a1a] p-2 text-sm"
-                    value={prize.description}
-                    onChange={(event) => updatePrizeField(prize.id, "description", event.target.value)}
-                  />
-
-                  <input
-                    className="mt-3 h-10 w-full border-2 border-[#1a1a1a] px-2 text-sm"
-                    placeholder="Image URL"
-                    value={prize.imageUrl}
-                    onChange={(event) => updatePrizeField(prize.id, "imageUrl", event.target.value)}
-                  />
-
-                  <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-                    <span className={`pill-cartoon px-3 py-1 text-xs ${rarityBadgeClass[prize.rarity]}`}>
-                      {rarityLabels[prize.rarity]} - {formatPercent(prize.probability)}
-                    </span>
-                    <div className="flex gap-2">
-                      <button
-                        type="button"
-                        className="btn-cartoon btn-secondary h-9 px-3 text-xs"
-                        disabled={savingPrizeId === prize.id}
-                        onClick={() => void savePrize(prize)}
-                      >
-                        {savingPrizeId === prize.id ? "Sauvegarde..." : "Sauvegarder"}
-                      </button>
-                      <button
-                        type="button"
-                        className="btn-cartoon btn-primary h-9 px-3 text-xs"
-                        disabled={deletingPrizeId === prize.id}
-                        onClick={() => void deletePrize(prize)}
-                      >
-                        {deletingPrizeId === prize.id ? "Suppression..." : "Supprimer"}
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              ))}
             </div>
-          </section>
 
-          {stats && (
-            <section className="card-cartoon mt-6 bg-white p-5">
-              <h3 className="font-display text-2xl text-ink">Statistiques</h3>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button
+                type="button"
+                className="btn-cartoon btn-primary h-10 px-4 text-xs"
+                onClick={() => void saveCard()}
+                disabled={savingCard}
+              >
+                {savingCard ? "..." : selectedCardId ? "Mettre a jour" : "Creer la carte"}
+              </button>
+              {selectedCardId && (
+                <button
+                  type="button"
+                  className="btn-cartoon btn-secondary h-10 px-4 text-xs"
+                  onClick={() => void archiveCard(selectedCardId)}
+                  disabled={archivingCardId === selectedCardId}
+                >
+                  {archivingCardId === selectedCardId ? "..." : "Archiver"}
+                </button>
+              )}
+            </div>
+          </div>
 
-              <div className="mt-4 grid gap-3 md:grid-cols-5">
-                <div className="card-cartoon bg-[#f9f7f2] p-3">
-                  <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Tickets</p>
-                  <p className="mt-1 text-xl font-semibold text-ink">{stats.totalTickets}</p>
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {cards.map((card) => (
+              <button
+                key={card.id}
+                type="button"
+                className={`card-cartoon p-4 text-left ${
+                  selectedCardId === card.id ? "bg-[#fff1d6]" : "bg-[#f9f7f2]"
+                }`}
+                onClick={() => setSelectedCardId(card.id)}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-[0.1em] text-charcoal">
+                      #{card.cardNumber} - {rarityLabels[card.rarity]}
+                    </p>
+                    <p className="mt-1 text-lg font-semibold text-ink">{card.name}</p>
+                  </div>
+                  <span className="pill-cartoon px-2 py-1 text-xs">{card.isActive ? "Actif" : "Inactif"}</span>
                 </div>
-                <div className="card-cartoon bg-[#f9f7f2] p-3">
-                  <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Disponibles</p>
-                  <p className="mt-1 text-xl font-semibold text-ink">{stats.availableTickets}</p>
-                </div>
-                <div className="card-cartoon bg-[#f9f7f2] p-3">
-                  <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Grattes</p>
-                  <p className="mt-1 text-xl font-semibold text-ink">{stats.scratchedTickets}</p>
-                </div>
-                <div className="card-cartoon bg-[#f9f7f2] p-3">
-                  <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Gagnants</p>
-                  <p className="mt-1 text-xl font-semibold text-ink">{stats.winningTickets}</p>
-                </div>
-                <div className="card-cartoon bg-[#f9f7f2] p-3">
-                  <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Taux de gain</p>
-                  <p className="mt-1 text-xl font-semibold text-ink">{formatPercent(stats.winRate)}</p>
-                </div>
-              </div>
-
-              <div className="mt-5 grid gap-3 md:grid-cols-2">
-                <div className="card-cartoon bg-[#f9f7f2] p-3">
-                  <h4 className="font-semibold text-ink">Gains par raret</h4>
-                  <ul className="mt-2 grid gap-1 text-sm text-charcoal">
-                    {stats.byRarity.map((entry) => (
-                      <li key={entry.rarity}>
-                        {rarityLabels[entry.rarity]}: <span className="font-semibold text-ink">{entry.wins}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="card-cartoon bg-[#f9f7f2] p-3">
-                  <h4 className="font-semibold text-ink">Lots les plus gagnes</h4>
-                  {stats.byPrize.length === 0 ? (
-                    <p className="mt-2 text-sm text-charcoal">Aucun gain enregistre.</p>
+                <div className="mt-3 relative h-40 overflow-hidden rounded-[14px] border-2 border-[#1a1a1a] bg-white">
+                  {isRenderableImageSource(card.imageUrl) ? (
+                    isRemoteImageUrl(card.imageUrl) ? (
+                      <img
+                        src={card.imageUrl}
+                        alt={`Carte ${card.name}`}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <Image src={card.imageUrl} alt={`Carte ${card.name}`} fill sizes="240px" className="object-cover" />
+                    )
                   ) : (
-                    <ul className="mt-2 grid gap-1 text-sm text-charcoal">
-                      {stats.byPrize.slice(0, 8).map((entry) => (
-                        <li key={entry.prizeId}>
-                          {entry.prizeName} ({rarityLabels[entry.rarity]}):{" "}
-                          <span className="font-semibold text-ink">{entry.wins}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="flex h-full items-center justify-center text-xs font-semibold text-charcoal">
+                      Sans illustration
+                    </div>
                   )}
                 </div>
-              </div>
+                <p className="mt-2 text-xs text-charcoal line-clamp-3">{card.description}</p>
+                <p className="mt-2 font-mono text-[11px] text-charcoal">{card.code}</p>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <div className="mt-5 card-cartoon bg-[#f9f7f2] p-3">
-                <h4 className="font-semibold text-ink">Derniers grattages</h4>
-                {stats.recentScratches.length === 0 ? (
-                  <p className="mt-2 text-sm text-charcoal">Aucun grattage pour le moment.</p>
-                ) : (
-                  <div className="mt-2 overflow-x-auto">
-                    <table className="w-full min-w-[520px] border-collapse text-left text-xs">
-                      <thead>
-                        <tr>
-                          <th className="border border-[#1a1a1a] px-2 py-1">Ticket</th>
-                          <th className="border border-[#1a1a1a] px-2 py-1">Commande</th>
-                          <th className="border border-[#1a1a1a] px-2 py-1">Résultat</th>
-                          <th className="border border-[#1a1a1a] px-2 py-1">Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {stats.recentScratches.map((entry) => (
-                          <tr key={`${entry.ticketNumber}-${entry.scratchedAt}`}>
-                            <td className="border border-[#1a1a1a] px-2 py-1">{entry.ticketNumber}</td>
-                            <td className="border border-[#1a1a1a] px-2 py-1">{entry.orderId ?? "-"}</td>
-                            <td className="border border-[#1a1a1a] px-2 py-1">
-                              {entry.isWin ? `${entry.prizeName ?? "Gain"} (${entry.rarity ? rarityLabels[entry.rarity] : "-"})` : "Perdu"}
-                            </td>
-                            <td className="border border-[#1a1a1a] px-2 py-1">
-                              {new Date(entry.scratchedAt).toLocaleString("fr-FR")}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+      {stats && (
+        <section className="card-cartoon bg-white p-5">
+          <h3 className="font-display text-2xl text-ink">Statistiques</h3>
+          <div className="mt-4 grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+            <div className="card-cartoon bg-[#f9f7f2] p-3">
+              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Packs</p>
+              <p className="mt-1 text-xl font-semibold text-ink">{stats.totalTickets}</p>
+            </div>
+            <div className="card-cartoon bg-[#f9f7f2] p-3">
+              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Disponibles</p>
+              <p className="mt-1 text-xl font-semibold text-ink">{stats.availableTickets}</p>
+            </div>
+            <div className="card-cartoon bg-[#f9f7f2] p-3">
+              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Ouverts</p>
+              <p className="mt-1 text-xl font-semibold text-ink">{stats.scratchedTickets}</p>
+            </div>
+            <div className="card-cartoon bg-[#f9f7f2] p-3">
+              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Copies obtenues</p>
+              <p className="mt-1 text-xl font-semibold text-ink">{stats.totalCollectedCopies}</p>
+            </div>
+            <div className="card-cartoon bg-[#f9f7f2] p-3">
+              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Cartes uniques</p>
+              <p className="mt-1 text-xl font-semibold text-ink">
+                {stats.uniqueCollectedCards}/{stats.totalCardDefinitions}
+              </p>
+            </div>
+            <div className="card-cartoon bg-[#f9f7f2] p-3">
+              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Completion</p>
+              <p className="mt-1 text-xl font-semibold text-ink">{stats.completionPercent}%</p>
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+            {stats.byCardRarity.map((entry) => (
+              <div key={entry.rarity} className="card-cartoon bg-[#fff8ea] p-3">
+                <p className="text-sm font-semibold text-ink">{rarityLabels[entry.rarity]}</p>
+                <p className="mt-1 text-xs text-charcoal">
+                  {entry.ownedUnique}/{entry.defined} cartes uniques
+                </p>
+                <p className="mt-1 text-xs text-charcoal">{entry.ownedCopies} copies totales</p>
               </div>
-            </section>
-          )}
-        </>
+            ))}
+          </div>
+
+          <div className="mt-4 grid gap-2">
+            {stats.recentScratches.map((entry) => (
+              <div key={`${entry.ticketNumber}-${entry.scratchedAt}`} className="card-cartoon bg-[#f9f7f2] p-3">
+                <p className="font-mono text-xs text-ink">{entry.ticketNumber}</p>
+                <p className="mt-1 text-sm text-charcoal">
+                  {entry.cardName ? `#${entry.cardNumber} - ${entry.cardName}` : "Carte inconnue"}{" "}
+                  {entry.cardRarity ? `(${rarityLabels[entry.cardRarity]})` : ""}
+                </p>
+                <p className="mt-1 text-xs text-charcoal">
+                  {new Date(entry.scratchedAt).toLocaleString("fr-FR")}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {!loading && activeCards.length === 0 && (
+        <p className="text-sm font-semibold text-ink">Aucune carte active pour le moment.</p>
       )}
     </div>
   );
 }
-
-
-
-

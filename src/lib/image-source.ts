@@ -1,4 +1,4 @@
-﻿export function isRemoteImageUrl(value: string | undefined | null): boolean {
+export function isRemoteImageUrl(value: string | undefined | null): boolean {
   if (!value) {
     return false;
   }
@@ -11,4 +11,14 @@
   }
 }
 
+export function isLocalImagePath(value: string | undefined | null): boolean {
+  if (!value) {
+    return false;
+  }
 
+  return value.startsWith("/");
+}
+
+export function isRenderableImageSource(value: string | undefined | null): boolean {
+  return isRemoteImageUrl(value) || isLocalImagePath(value);
+}

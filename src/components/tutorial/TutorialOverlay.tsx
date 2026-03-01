@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import { TutorialScratchDemo } from "@/components/tutorial/TutorialScratchDemo";
+import { TutorialPackDemo } from "@/components/tutorial/TutorialPackDemo";
 import type { TutorialStep } from "@/data/tutorial-steps";
 
 type Rect = {
@@ -34,6 +34,8 @@ type TutorialOverlayProps = {
 
 const MIN_GAP = 14;
 const DEFAULT_SPOTLIGHT_PADDING = 10;
+const DEFAULT_BUBBLE_HEIGHT = 320;
+const PACK_DEMO_BUBBLE_HEIGHT = 620;
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
@@ -64,6 +66,128 @@ function getViewportRect(): Rect {
   };
 }
 
+function computeSpotlightRect(step: TutorialStep): Rect | null {
+  if (typeof window === "undefined" || !step.target) {
+    return null;
+  }
+
+  const element = document.querySelector(step.target);
+  if (!(element instanceof HTMLElement)) {
+    return null;
+  }
+
+  const elementRect = element.getBoundingClientRect();
+  const padding = step.spotlightPadding ?? DEFAULT_SPOTLIGHT_PADDING;
+
+  return {
+    top: Math.max(elementRect.top - padding, 0),
+    left: Math.max(elementRect.left - padding, 0),
+    width: Math.min(elementRect.width + padding * 2, window.innerWidth),
+    height: Math.min(elementRect.height + padding * 2, window.innerHeight),
+    right: Math.min(elementRect.right + padding, window.innerWidth),
+    bottom: Math.min(elementRect.bottom + padding, window.innerHeight),
+  };
+}
+
+function useSpotlightRect(active: boolean, step: TutorialStep) {
+  const [viewportRect, setViewportRect] = useState<Rect>(getViewportRect);
+  const [targetRect, setTargetRect] = useState<Rect | null>(null);
+
+  useEffect(() => {
+    if (!active) {
+      return;
+    }
+
+    let animationFrame = 0;
+
+    const update = () => {
+      setViewportRect(getViewportRect());
+      setTargetRect(computeSpotlightRect(step));
+      animationFrame = window.requestAnimationFrame(update);
+    };
+
+    update();
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+    };
+  }, [active, step]);
+
+  return { viewportRect, targetRect };
+}
+
+function computeBubblePosition(step: TutorialStep, viewportRect: Rect, targetRect: Rect | null): BubblePosition {
+  const isPackDemo = step.variant === "pack-demo" || step.variant === "scratch-demo";
+  const isMobile = viewportRect.width < 768;
+  const estimatedBubbleHeight = step.variant === "pack-demo" ? PACK_DEMO_BUBBLE_HEIGHT : DEFAULT_BUBBLE_HEIGHT;
+
+  if (isMobile) {
+    return {
+      left: 12,
+      right: 12,
+      top: 12,
+      bottom: 12,
+    };
+  }
+
+  const bubbleWidth = Math.min(isPackDemo ? 560 : 430, viewportRect.width - MIN_GAP * 2);
+  if (isPackDemo) {
+    return {
+      width: bubbleWidth,
+      left: clamp((viewportRect.width - bubbleWidth) / 2, MIN_GAP, viewportRect.width - bubbleWidth - MIN_GAP),
+      top: 12,
+      bottom: 12,
+    };
+  }
+
+  if (!targetRect) {
+    return {
+      width: bubbleWidth,
+      left: clamp((viewportRect.width - bubbleWidth) / 2, MIN_GAP, viewportRect.width - bubbleWidth - MIN_GAP),
+      top: clamp(
+        (viewportRect.height - estimatedBubbleHeight) / 2,
+        MIN_GAP,
+        viewportRect.height - estimatedBubbleHeight - MIN_GAP,
+      ),
+    };
+  }
+
+  const preferredTop = targetRect.bottom + 18;
+  const hasRoomBelow = preferredTop + estimatedBubbleHeight < viewportRect.height;
+  const hasRoomAbove = targetRect.top - estimatedBubbleHeight > MIN_GAP;
+  const left = clamp(
+    targetRect.left + targetRect.width / 2 - bubbleWidth / 2,
+    MIN_GAP,
+    viewportRect.width - bubbleWidth - MIN_GAP,
+  );
+
+  if (hasRoomBelow) {
+    return {
+      width: bubbleWidth,
+      top: preferredTop,
+      left,
+    };
+  }
+
+  if (hasRoomAbove) {
+    return {
+      width: bubbleWidth,
+      top: targetRect.top - estimatedBubbleHeight,
+      left,
+    };
+  }
+
+  return {
+    width: bubbleWidth,
+    top: clamp(
+      (viewportRect.height - estimatedBubbleHeight) / 2,
+      MIN_GAP,
+      viewportRect.height - estimatedBubbleHeight - MIN_GAP,
+    ),
+    left,
+  };
+}
+
 export function TutorialOverlay({
   active,
   step,
@@ -73,78 +197,7 @@ export function TutorialOverlay({
   onPrev,
   onSkip,
 }: TutorialOverlayProps) {
-  const [targetRect, setTargetRect] = useState<Rect | null>(null);
-  const [viewportRect, setViewportRect] = useState<Rect>(getViewportRect());
-
-  useEffect(() => {
-    if (!active) {
-      return;
-    }
-
-    let animationFrame = 0;
-
-    const computeRect = () => {
-      setViewportRect(getViewportRect());
-      if (!step.target) {
-        setTargetRect(null);
-        return;
-      }
-
-      const element = document.querySelector(step.target);
-      if (!(element instanceof HTMLElement)) {
-        setTargetRect(null);
-        return;
-      }
-
-      const elementRect = element.getBoundingClientRect();
-      const padding = step.spotlightPadding ?? DEFAULT_SPOTLIGHT_PADDING;
-      const nextRect: Rect = {
-        top: Math.max(elementRect.top - padding, 0),
-        left: Math.max(elementRect.left - padding, 0),
-        width: Math.min(elementRect.width + padding * 2, window.innerWidth),
-        height: Math.min(elementRect.height + padding * 2, window.innerHeight),
-        right: Math.min(elementRect.right + padding, window.innerWidth),
-        bottom: Math.min(elementRect.bottom + padding, window.innerHeight),
-      };
-
-      setTargetRect(nextRect);
-    };
-
-    const scheduleCompute = () => {
-      cancelAnimationFrame(animationFrame);
-      animationFrame = window.requestAnimationFrame(computeRect);
-    };
-
-    computeRect();
-
-    // Poll for the target element every 500ms until found (handles race
-    // conditions after route changes where the DOM isn't ready yet).
-    let pollingInterval: ReturnType<typeof setInterval> | null = null;
-    if (step.target) {
-      pollingInterval = setInterval(() => {
-        const el = document.querySelector(step.target!);
-        if (el instanceof HTMLElement) {
-          computeRect();
-          if (pollingInterval) {
-            clearInterval(pollingInterval);
-            pollingInterval = null;
-          }
-        }
-      }, 500);
-    }
-
-    window.addEventListener("resize", scheduleCompute);
-    window.addEventListener("scroll", scheduleCompute, true);
-
-    return () => {
-      cancelAnimationFrame(animationFrame);
-      if (pollingInterval) {
-        clearInterval(pollingInterval);
-      }
-      window.removeEventListener("resize", scheduleCompute);
-      window.removeEventListener("scroll", scheduleCompute, true);
-    };
-  }, [active, step.id, step.target, step.spotlightPadding]);
+  const { viewportRect, targetRect } = useSpotlightRect(active, step);
 
   useEffect(() => {
     if (!active || !step.target) {
@@ -163,61 +216,10 @@ export function TutorialOverlay({
     });
   }, [active, step.id, step.target]);
 
-  const bubblePosition: BubblePosition = useMemo(() => {
-    const isMobile = viewportRect.width < 768;
-    const estimatedBubbleHeight = step.variant === "scratch-demo" ? 560 : 300;
-    if (isMobile) {
-      return {
-        left: 12,
-        right: 12,
-        bottom: 12,
-      };
-    }
-
-    const bubbleWidth = Math.min(430, viewportRect.width - MIN_GAP * 2);
-    if (!targetRect) {
-      return {
-        width: bubbleWidth,
-        left: clamp((viewportRect.width - bubbleWidth) / 2, MIN_GAP, viewportRect.width - bubbleWidth - MIN_GAP),
-        top: clamp(viewportRect.height * 0.18, MIN_GAP, viewportRect.height - estimatedBubbleHeight),
-      };
-    }
-
-    const preferredTop = targetRect.bottom + 18;
-    const hasRoomBelow = preferredTop + estimatedBubbleHeight < viewportRect.height;
-    const hasRoomAbove = targetRect.top - estimatedBubbleHeight > MIN_GAP;
-    const left = clamp(
-      targetRect.left + targetRect.width / 2 - bubbleWidth / 2,
-      MIN_GAP,
-      viewportRect.width - bubbleWidth - MIN_GAP,
-    );
-
-    if (hasRoomBelow) {
-      return {
-        width: bubbleWidth,
-        top: preferredTop,
-        left,
-      };
-    }
-
-    if (hasRoomAbove) {
-      return {
-        width: bubbleWidth,
-        top: targetRect.top - estimatedBubbleHeight,
-        left,
-      };
-    }
-
-    return {
-      width: bubbleWidth,
-      top: clamp(
-        (viewportRect.height - estimatedBubbleHeight) / 2,
-        MIN_GAP,
-        viewportRect.height - estimatedBubbleHeight - MIN_GAP,
-      ),
-      left,
-    };
-  }, [step.variant, targetRect, viewportRect.height, viewportRect.width]);
+  const bubblePosition = useMemo(
+    () => computeBubblePosition(step, viewportRect, targetRect),
+    [step, targetRect, viewportRect],
+  );
 
   if (!active) {
     return null;
@@ -225,6 +227,7 @@ export function TutorialOverlay({
 
   const progressLabel = `${stepIndex + 1}/${totalSteps}`;
   const canGoBack = stepIndex > 0;
+  const isPackDemo = step.variant === "pack-demo" || step.variant === "scratch-demo";
 
   return (
     <div className="fixed inset-0 z-[100]" role="dialog" aria-modal="true" aria-label="Tutoriel guide">
@@ -283,34 +286,36 @@ export function TutorialOverlay({
           width: bubblePosition.width,
         }}
       >
-        <div className="cartoon-border max-h-[calc(100vh-24px)] overflow-y-auto bg-cream p-4 text-ink md:p-5">
-          <div className="flex items-start gap-3">
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-white">
-              <Image src="/charles.png" alt="Charles" fill sizes="64px" className="object-cover" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">Tutoriel {progressLabel}</p>
-              <h2 className="mt-1 font-display text-2xl leading-tight">{step.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-charcoal">{step.text}</p>
-              {step.details && step.details.length > 0 && (
-                <ul className="mt-3 grid gap-1 text-sm text-ink">
-                  {step.details.map((line) => (
-                    <li key={line}>- {line}</li>
-                  ))}
-                </ul>
-              )}
-              {step.variant === "scratch-demo" && <TutorialScratchDemo />}
+        <div className="cartoon-border flex h-full max-h-[calc(100vh-24px)] flex-col bg-cream p-4 text-ink md:p-5">
+          <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+            <div className="flex items-start gap-3">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-white">
+                <Image src="/charles.png" alt="Charles" fill sizes="64px" className="object-cover" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">Tutoriel {progressLabel}</p>
+                <h2 className="mt-1 font-display text-2xl leading-tight">{step.title}</h2>
+                <p className="mt-2 text-sm leading-relaxed text-charcoal">{step.text}</p>
+                {step.details && step.details.length > 0 ? (
+                  <ul className="mt-3 grid gap-1 text-sm text-ink">
+                    {step.details.map((line) => (
+                      <li key={line}>- {line}</li>
+                    ))}
+                  </ul>
+                ) : null}
+                {isPackDemo ? <TutorialPackDemo /> : null}
+              </div>
             </div>
           </div>
 
-          <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full border border-[#1a1a1a] bg-white">
+          <div className="mt-4 h-1.5 w-full shrink-0 overflow-hidden rounded-full border border-[#1a1a1a] bg-white">
             <div
               className="h-full bg-[#d35400] transition-all duration-300"
               style={{ width: `${((stepIndex + 1) / totalSteps) * 100}%` }}
             />
           </div>
 
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+          <div className="mt-4 flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-[#1a1a1a]/10 pt-3">
             <button type="button" className="btn-cartoon btn-secondary h-10 px-3 text-xs" onClick={onSkip}>
               Passer
             </button>

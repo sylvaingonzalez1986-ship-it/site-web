@@ -13,9 +13,11 @@ import {
   isBadgeEligibleForFreeShipping,
 } from "@/lib/loyalty-tier-benefits";
 import {
-  getRedeemableLotteryTicketBenefitByBackend,
-  redeemLotteryTicketForOrderByBackend,
+  getRedeemableLotteryRewardClaimBenefitByBackend,
+  releaseLotteryRewardClaimsForOrderByBackend,
+  reserveLotteryRewardClaimForOrderByBackend,
 } from "@/lib/lottery-backend";
+import { createOrderId } from "@/lib/order-id";
 import { appendOrderByBackend } from "@/lib/order-backend";
 import { getAvailableQuantity } from "@/lib/product-stock";
 import {
@@ -40,7 +42,7 @@ type CheckoutItemPayload = {
 };
 
 type CheckoutPayload = {
-  action?: "checkout" | "validate_promo" | "validate_ticket";
+  action?: "checkout" | "validate_promo" | "validate_reward_claim";
   amount?: number;
   itemsCount?: number;
   items?: CheckoutItemPayload[];
@@ -60,7 +62,7 @@ type CheckoutPayload = {
   relayCity?: string;
   relayCountry?: string;
   promoCode?: string;
-  lotteryTicketId?: string;
+  lotteryRewardClaimId?: string;
 };
 
 type VivaTokenResponse = {
@@ -270,7 +272,7 @@ function sanitizePromoCode(value: unknown): string {
   return value.trim().toUpperCase().slice(0, 24);
 }
 
-function sanitizeLotteryTicketId(value: unknown): string {
+function sanitizeLotteryRewardClaimId(value: unknown): string {
   if (typeof value !== "string") {
     return "";
   }
@@ -442,7 +444,7 @@ export async function POST(request: Request) {
   const customerId = session?.customerId;
   const customer = session?.customer ?? null;
   const promoCode = sanitizePromoCode(payload.promoCode);
-  const lotteryTicketId = sanitizeLotteryTicketId(payload.lotteryTicketId);
+  const lotteryRewardClaimId = sanitizeLotteryRewardClaimId(payload.lotteryRewardClaimId);
 
   if (action === "validate_promo") {
     if (!promoCode) {
@@ -512,7 +514,7 @@ export async function POST(request: Request) {
     });
   }
 
-  if (action === "validate_ticket") {
+  if (action === "validate_reward_claim") {
     if (!customerId) {
       return NextResponse.json(
         { error: "Connecte-toi pour utiliser un ticket gagnant." },
@@ -520,8 +522,8 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!lotteryTicketId) {
-      return NextResponse.json({ error: "Ticket manquant." }, { status: 400 });
+    if (!lotteryRewardClaimId) {
+      return NextResponse.json({ error: "Lot manquant." }, { status: 400 });
     }
 
     const store = await readStoreByBackend();
@@ -557,20 +559,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Montant invalide." }, { status: 400 });
     }
 
-    const ticketBenefit = await getRedeemableLotteryTicketBenefitByBackend({
+    const rewardClaimBenefit = await getRedeemableLotteryRewardClaimBenefitByBackend({
       userId: customerId,
-      ticketId: lotteryTicketId,
+      claimId: lotteryRewardClaimId,
     });
-    if (!ticketBenefit) {
+    if (!rewardClaimBenefit) {
       return NextResponse.json({ error: "Ticket gagnant invalide ou déjà utilise." }, { status: 400 });
     }
 
     const safeSubtotal = Number(subtotal.toFixed(2));
     const badgeDiscountAmount = Number(((safeSubtotal * badgeDiscountPercent) / 100).toFixed(2));
     const subtotalAfterBadge = Number(Math.max(safeSubtotal - badgeDiscountAmount, 0).toFixed(2));
-    const isDiscount = ticketBenefit.benefit.rewardType === "discount";
+    const isDiscount = rewardClaimBenefit.rewardType === "discount";
     const lotteryDiscountPercent = isDiscount
-      ? (ticketBenefit.benefit.discountPercent ?? 0)
+      ? (rewardClaimBenefit.discountPercent ?? 0)
       : 0;
     const lotteryDiscountAmount = Number(
       ((subtotalAfterBadge * lotteryDiscountPercent) / 100).toFixed(2),
@@ -579,13 +581,14 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       valid: true,
-      ticketId: ticketBenefit.ticketId,
-      ticketNumber: ticketBenefit.ticketNumber,
-      rewardType: ticketBenefit.benefit.rewardType,
-      prizeName: ticketBenefit.prizeName,
+      claimId: rewardClaimBenefit.claimId,
+      rewardType: rewardClaimBenefit.rewardType,
+      rewardTitle: rewardClaimBenefit.title,
+      rewardDescription: rewardClaimBenefit.description,
+      generatedCode: rewardClaimBenefit.generatedCode,
       giftLabel:
-        ticketBenefit.benefit.rewardType === "gift"
-          ? ticketBenefit.benefit.giftLabel
+        rewardClaimBenefit.rewardType === "gift"
+          ? rewardClaimBenefit.giftLabel
           : undefined,
       lotteryDiscountPercent,
       lotteryDiscountAmount,
@@ -722,7 +725,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 503 });
   }
 
-  if (promoCode && lotteryTicketId) {
+  if (promoCode && lotteryRewardClaimId) {
     return NextResponse.json(
       { error: "Le code promo et le ticket gagnant ne sont pas cumulables." },
       { status: 400 },
@@ -737,12 +740,11 @@ export async function POST(request: Request) {
         consumeCode?: boolean;
       }
     | null = null;
-  let appliedTicket:
+  let appliedRewardClaim:
     | {
-        ticketId: string;
-        ticketNumber: string;
-        prizeName: string;
-        prizeDescription: string;
+        claimId: string;
+        title: string;
+        description: string;
         rewardType: "discount" | "gift";
         discountPercent: number;
         discountAmount: number;
@@ -783,7 +785,7 @@ export async function POST(request: Request) {
     requestedDiscountAmount = Number((requestedBadgeDiscountAmount + discountAmount).toFixed(2));
   }
 
-  if (lotteryTicketId) {
+  if (lotteryRewardClaimId) {
     if (!customerId) {
       return NextResponse.json(
         { error: "Connecte-toi pour utiliser un ticket gagnant." },
@@ -791,38 +793,37 @@ export async function POST(request: Request) {
       );
     }
 
-    const ticketBenefit = await getRedeemableLotteryTicketBenefitByBackend({
+    const rewardClaimBenefit = await getRedeemableLotteryRewardClaimBenefitByBackend({
       userId: customerId,
-      ticketId: lotteryTicketId,
+      claimId: lotteryRewardClaimId,
     });
-    if (!ticketBenefit) {
+    if (!rewardClaimBenefit) {
       return NextResponse.json(
         { error: "Ticket gagnant invalide ou déjà utilisé." },
         { status: 400 },
       );
     }
 
-    const isDiscount = ticketBenefit.benefit.rewardType === "discount";
+    const isDiscount = rewardClaimBenefit.rewardType === "discount";
     const discountPercent = isDiscount
-      ? (ticketBenefit.benefit.discountPercent ?? 0)
+      ? (rewardClaimBenefit.discountPercent ?? 0)
       : 0;
     const discountAmount = Number(((subtotalAfterBadge * discountPercent) / 100).toFixed(2));
-    appliedTicket = {
-      ticketId: ticketBenefit.ticketId,
-      ticketNumber: ticketBenefit.ticketNumber,
-      prizeName: ticketBenefit.prizeName,
-      prizeDescription: ticketBenefit.prizeDescription,
-      rewardType: ticketBenefit.benefit.rewardType,
+    appliedRewardClaim = {
+      claimId: rewardClaimBenefit.claimId,
+      title: rewardClaimBenefit.title,
+      description: rewardClaimBenefit.description,
+      rewardType: rewardClaimBenefit.rewardType,
       discountPercent,
       discountAmount,
-      giftLabel: ticketBenefit.benefit.rewardType === "gift"
-        ? ticketBenefit.benefit.giftLabel
+      giftLabel: rewardClaimBenefit.rewardType === "gift"
+        ? rewardClaimBenefit.giftLabel
         : undefined,
     };
     requestedDiscountAmount = Number((requestedBadgeDiscountAmount + discountAmount).toFixed(2));
   }
 
-  if (!appliedPromo && !appliedTicket && customerId) {
+  if (!appliedPromo && !appliedRewardClaim && customerId) {
     const isReferralAutoDiscountEligible = await isReferralFirstOrderDiscountEligibleByBackend({
       userId: customerId,
       hasManualDiscount: false,
@@ -880,9 +881,9 @@ export async function POST(request: Request) {
       discountAmount: effectiveDiscountAmount,
     };
   }
-  if (appliedTicket && appliedTicket.rewardType === "discount") {
-    appliedTicket = {
-      ...appliedTicket,
+  if (appliedRewardClaim && appliedRewardClaim.rewardType === "discount") {
+    appliedRewardClaim = {
+      ...appliedRewardClaim,
       discountAmount: effectiveDiscountAmount,
     };
   }
@@ -896,10 +897,10 @@ export async function POST(request: Request) {
       lineVatAmount: taxSplit.vat,
     };
   });
-  if (appliedTicket && appliedTicket.rewardType === "gift") {
+  if (appliedRewardClaim && appliedRewardClaim.rewardType === "gift") {
     finalizedItemsWithTax.push({
-      id: `gift-ticket-${appliedTicket.ticketId}`,
-      name: `Lot ticket: ${appliedTicket.giftLabel ?? appliedTicket.prizeName}`,
+      id: `gift-reward-${appliedRewardClaim.claimId}`,
+      name: `Lot ticket: ${appliedRewardClaim.giftLabel ?? appliedRewardClaim.title}`,
       unitPrice: 0,
       quantity: 1,
       lineTotal: 0,
@@ -1038,19 +1039,15 @@ export async function POST(request: Request) {
       },
     });
 
-    if (appliedTicket && customerId) {
+    if (appliedRewardClaim && customerId) {
       try {
-        await redeemLotteryTicketForOrderByBackend({
+        await reserveLotteryRewardClaimForOrderByBackend({
           userId: customerId,
-          ticketId: appliedTicket.ticketId,
+          claimId: appliedRewardClaim.claimId,
           orderId: order.id,
-          rewardLabel:
-            appliedTicket.rewardType === "discount"
-              ? `${appliedTicket.discountPercent}% sur la commande`
-              : appliedTicket.giftLabel ?? appliedTicket.prizeName,
         });
-      } catch (ticketError) {
-        console.error("Ticket redemption error:", ticketError);
+      } catch (claimError) {
+        console.error("Reward claim reservation error:", claimError);
       }
     }
 

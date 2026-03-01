@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Award, Copy, Gift, ShoppingBag, Tag, Ticket, User as UserIcon, Users, type LucideIcon } from "lucide-react";
+import { Award, Copy, Gift, ShoppingBag, Tag, User as UserIcon, Users, type LucideIcon } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { LoyaltyBadgeSummary } from "@/components/account/LoyaltyBadgeSummary";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
-import { LotterySection } from "@/components/account/LotterySection";
 import { OrderDetailModal } from "@/components/account/OrderDetailModal";
 import { useTutorial } from "@/components/tutorial/TutorialProvider";
 import { useCmsStore } from "@/hooks/useCmsStore";
@@ -39,7 +38,7 @@ const paymentStateLabels: Record<CmsOrder["paymentState"], string> = {
   not_configured: "Validation manuelle",
 };
 
-type ProfileTab = "fidelite" | "loterie" | "commandes" | "infos" | "promos";
+type ProfileTab = "fidelite" | "commandes" | "infos" | "promos";
 
 type ProfileTabDefinition = {
   key: ProfileTab;
@@ -49,7 +48,6 @@ type ProfileTabDefinition = {
 
 const profileTabs: ProfileTabDefinition[] = [
   { key: "fidelite", label: "Fidélité", icon: Award },
-  { key: "loterie", label: "Loterie", icon: Ticket },
   { key: "commandes", label: "Commandes", icon: ShoppingBag },
   { key: "infos", label: "Mes infos", icon: UserIcon },
   { key: "promos", label: "Promos", icon: Tag },
@@ -60,7 +58,12 @@ function parseProfileTab(value: string | null): ProfileTab | null {
     return null;
   }
 
-  if (value === "fidelite" || value === "loterie" || value === "commandes" || value === "infos" || value === "promos") {
+  if (
+    value === "fidelite" ||
+    value === "commandes" ||
+    value === "infos" ||
+    value === "promos"
+  ) {
     return value;
   }
 
@@ -359,10 +362,6 @@ export function ProfilePanel() {
   };
 
   const getTabNotification = (tab: ProfileTab): string | null => {
-    if (tab === "loterie" && availableTicketCount > 0) {
-      return formatNotificationBadge(availableTicketCount);
-    }
-
     if (tab === "infos" && !user.dateOfBirth) {
       return "!";
     }
@@ -529,29 +528,6 @@ export function ProfilePanel() {
                 ) : (
                   <p className="mt-6 text-sm font-semibold text-ink">Niveau maximal atteint.</p>
                 )}
-              </div>
-
-              <div className="mt-4 card-cartoon bg-white p-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.08em] text-charcoal">
-                      Tickets de grattage
-                    </p>
-                    <p className="mt-1 text-sm font-semibold text-ink">
-                      {availableTicketCount} disponible{availableTicketCount > 1 ? "s" : ""} / {tickets.length} total
-                    </p>
-                    {!lotteryConfig?.isActive && (
-                      <p className="mt-1 text-xs text-charcoal">Loterie actuellement desactivee.</p>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTabAndSync("loterie")}
-                    className="btn-cartoon btn-secondary inline-flex h-10 items-center justify-center px-3 text-xs leading-none"
-                  >
-                    Ouvrir mes tickets
-                  </button>
-                </div>
               </div>
 
               <div className="mt-4 card-cartoon bg-white p-4" data-tutorial="profile-referral">
@@ -726,10 +702,6 @@ export function ProfilePanel() {
                 </div>
               </div>
             </>
-          )}
-
-          {activeTab === "loterie" && (
-            <LotterySection tickets={tickets} config={lotteryConfig} onRefresh={refresh} />
           )}
 
           {activeTab === "commandes" && (

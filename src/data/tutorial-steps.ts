@@ -6,11 +6,11 @@ export type TutorialStep = {
   target?: string;
   spotlightPadding?: number;
   route?: string;
-  variant?: "default" | "scratch-demo";
+  variant?: "default" | "pack-demo" | "scratch-demo";
   requiresAuth?: boolean;
 };
 
-export const TUTORIAL_VERSION = 5;
+export const TUTORIAL_VERSION = 6;
 
 export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
@@ -32,7 +32,7 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "boutique-intro",
     title: "Direction la boutique",
-    text: "On passe maintenant à la boutique pour voir les trois onglets de sélection.",
+    text: "On passe maintenant a la boutique pour voir les trois onglets de selection.",
     route: "/",
   },
   {
@@ -46,7 +46,7 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "boutique-mes-voisins",
     title: "Mes voisins",
-    text: "Les Chanvriers Bretons, c'est aussi mes voisins: petits producteurs bretons de qualité.",
+    text: "Les Chanvriers Bretons, c'est aussi mes voisins: petits producteurs bretons de qualite.",
     target: '[data-tutorial="tab-mes-voisins"]',
     spotlightPadding: 8,
     route: "/boutique",
@@ -54,7 +54,7 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "boutique-copains",
     title: "Les copains",
-    text: "Rencontres partageant les mêmes valeurs, partout en France. Le terroir compte: une même variété s'exprime différemment selon son sol et son climat.",
+    text: "Des rencontres partageant les memes valeurs partout en France. Le terroir compte autant que la variete.",
     target: '[data-tutorial="tab-les-copains"]',
     spotlightPadding: 8,
     route: "/boutique",
@@ -62,15 +62,15 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "boutique-filtres",
     title: "Filtres de la boutique",
-    text: "Tu peux filtrer rapidement par catégorie ou promotions.",
+    text: "Tu peux filtrer rapidement par categorie ou promotions.",
     target: '[data-tutorial="category-filter"]',
     spotlightPadding: 10,
     route: "/boutique",
   },
   {
     id: "loyalty",
-    title: "Système de badges et avantages",
-    text: "1 EUR dépensé = 1 point. Tu montes en palier au fil des commandes.",
+    title: "Systeme de badges et avantages",
+    text: "1 EUR depense = 1 point. Tu montes en palier au fil des commandes.",
     details: [
       "Bronze (100 pts): 2%",
       "Argent (500 pts): 4% + livraison offerte",
@@ -83,10 +83,10 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "referral",
     title: "Parrainage",
-    text: "À l'inscription, un filleul peut saisir un code parrain dans ce champ.",
+    text: "A l'inscription, un filleul peut saisir un code parrain dans ce champ.",
     details: [
-      "Ton code personnel est visible dans ton profil, section Fidélité > Parrainage.",
-      "Les points bonus sont crédités après la première commande payée du filleul.",
+      "Ton code personnel est visible dans ton profil, section Fidelite > Parrainage.",
+      "Les points bonus sont credites apres la premiere commande payee du filleul.",
     ],
     target: '[data-tutorial="referral-code-input"]',
     spotlightPadding: 10,
@@ -97,8 +97,8 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
     title: "Ton espace parrainage",
     text: "Dans ton profil, tu peux copier ton lien de parrainage, suivre tes filleuls et voir tes points bonus.",
     details: [
-      "Section disponible uniquement si tu es connecté.",
-      "Les gains sont tracés après validation de la première commande payée du filleul.",
+      "Section disponible uniquement si tu es connecte.",
+      "Les gains sont traces apres validation de la premiere commande payee du filleul.",
     ],
     target: '[data-tutorial="profile-referral"]',
     spotlightPadding: 10,
@@ -107,11 +107,12 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   },
   {
     id: "tickets",
-    title: "Tickets à gratter",
-    text: "Tu gagnes 1 ticket tous les 20 EUR TTC de commande payée, puis tu grattes depuis ton profil.",
+    title: "Boosters TCG",
+    text: "Tu gagnes 1 pack par tranche de depense affichee sur le site. Chaque booster revele 3 cartes de la collection Hemp Heroes 2026.",
     details: [
-      "Lots communs, rares, épiques et légendaires.",
-      "Le jackpot: 1 an de conso. Détails dans le règlement du jeu.",
+      "Les cartes peuvent etre communes, silver, gold, epiques ou legendaires.",
+      "Les doublons comptent aussi dans ta collection.",
+      "Le reglement complet est disponible sur la page dediee.",
     ],
     target: '[data-tutorial="ticket-promo-band"]',
     spotlightPadding: 12,
@@ -119,15 +120,19 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   },
   {
     id: "tickets-demo",
-    title: "Mini demo ticket",
-    text: "Essaie ici: gratte la carte pour voir le comportement en conditions réelles (résultat fictif).",
+    title: "Mini demo booster",
+    text: "Essaie ici: ouvre un booster demo et retourne les 3 cartes comme dans l'experience reelle.",
+    details: [
+      "Le resultat est fictif.",
+      "Le tutoriel avance ensuite normalement.",
+    ],
     route: "/",
-    variant: "scratch-demo",
+    variant: "pack-demo",
   },
   {
     id: "finish",
     title: "C'est parti",
-    text: "Tu peux relancer ce tutoriel à tout moment via le bouton ? dans la barre du haut ou depuis ton profil.",
+    text: "Tu peux relancer ce tutoriel a tout moment via le bouton dans ton profil.",
     route: "/",
   },
 ];

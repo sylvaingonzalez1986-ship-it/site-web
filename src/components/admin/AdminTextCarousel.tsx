@@ -109,6 +109,7 @@ const NATIVE_TEXT_FIELDS: Record<SectionPageKey, Record<string, TextField[]>> = 
     products: [
       { path: "boutique.emptyMessage", label: "Message Liste Vide", placeholder: "Message liste vide", type: "textarea", minHeightClass: "min-h-20" },
       { path: "boutique.addButtonLabel", label: "Label Bouton Ajouter", placeholder: "Ajouter", type: "input" },
+      { path: "boutique.ownProducerLabel", label: "Label Producteur Maison", placeholder: "Producteur maison", type: "input" },
     ],
     copains: [
       { path: "boutique.copainsSectionTitle", label: "Titre Section Copains", placeholder: "Titre section copains", type: "input" },

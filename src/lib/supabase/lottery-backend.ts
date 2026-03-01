@@ -1,19 +1,56 @@
-﻿﻿import "server-only";
+import "server-only";
 
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import type {
+  LotteryAlbumCard,
+  LotteryAlbumPageSlot,
+  LotteryAlbumPageWithSlots,
+  LotteryBurnableRarity,
+  LotteryCardCollection,
+  LotteryCardDefinition,
+  LotteryCardRarity,
+  LotteryCollectedCard,
+  LotteryCollectionAlbum,
+  LotteryCollectionAlbumSummary,
+  LotteryCollectionAvailableClaim,
+  LotteryCollectionCardSlot,
+  LotteryCollectionPageRewardOption,
+  LotteryCollectionPageState,
+  LotteryCollectionRewardStatus,
   LotteryConfig,
-  LotteryPrize,
-  LotteryPrizeRarity,
+  LotteryDuplicateGroup,
+  LotteryInventory,
+  LotteryRewardClaim,
+  LotteryRewardClaimBenefit,
+  LotteryRewardDefinition,
+  LotteryRewardKind,
+  LotteryRewardLevel,
+  LotteryRewardRule,
   LotteryStats,
-  LotteryTicketBenefit,
+  LotteryStickerRarity,
   LotteryTicket,
   ScratchResult,
 } from "@/types/lottery";
+import {
+  LOTTERY_COLLECTION_PAGE_ORDER,
+  LOTTERY_COLLECTION_PAGE_META,
+  LOTTERY_DUPLICATE_BURN_RULES,
+  isBurnableRarity,
+} from "@/lib/lottery-collection";
 
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const ALLOWED_RARITIES: readonly LotteryPrizeRarity[] = ["common", "rare", "epic", "legendary"];
+
+const STICKER_RARITIES: readonly LotteryStickerRarity[] = ["common", "rare", "epic"];
+const CARD_RARITIES: readonly LotteryCardRarity[] = ["common", "silver", "gold", "epic", "legendary"];
+const REWARD_LEVELS: readonly LotteryRewardLevel[] = ["common", "rare", "epic", "legendary"];
+const REWARD_KINDS: readonly LotteryRewardKind[] = [
+  "discount_percent",
+  "gift_weight_grams",
+  "gift_product",
+  "physical_item",
+  "custom",
+];
 
 function failIfError(error: { message: string } | null, context: string): void {
   if (error) {
@@ -34,8 +71,9 @@ function toMoney(value: unknown, fallback = 0): number {
   return Number(toNumber(value, fallback).toFixed(2));
 }
 
-function toProbability(value: unknown, fallback = 0): number {
-  return Number(toNumber(value, fallback).toFixed(6));
+function toInteger(value: unknown, fallback = 0): number {
+  const parsed = Math.floor(toNumber(value, fallback));
+  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
 function toText(value: unknown, fallback = ""): string {
@@ -47,147 +85,248 @@ function toNullableText(value: unknown): string | undefined {
   return text ? text : undefined;
 }
 
-function parsePercentFromText(...values: Array<string | undefined>): number | null {
-  const merged = values
-    .filter((value): value is string => Boolean(value && value.trim()))
-    .join(" ")
-    .replace(",", ".");
-  const match = merged.match(/(\d{1,3}(?:\.\d{1,2})?)\s*%/i);
-  if (!match) {
-    return null;
-  }
-
-  const parsed = Number(match[1]);
-  if (!Number.isFinite(parsed) || parsed <= 0 || parsed > 100) {
-    return null;
-  }
-
-  return Number(parsed.toFixed(2));
+function parseStickerRarity(value: unknown): LotteryStickerRarity {
+  const rarity = toText(value) as LotteryStickerRarity;
+  return STICKER_RARITIES.includes(rarity) ? rarity : "common";
 }
 
-function resolveLotteryTicketBenefit(input: {
-  prizeName: string;
-  prizeDescription: string;
-}): LotteryTicketBenefit {
-  const prizeName = toText(input.prizeName).trim();
-  const prizeDescription = toText(input.prizeDescription).trim();
-  const percent = parsePercentFromText(prizeName, prizeDescription);
+function parseCardRarity(value: unknown): LotteryCardRarity {
+  const rarity = toText(value) as LotteryCardRarity;
+  return CARD_RARITIES.includes(rarity) ? rarity : "common";
+}
 
-  if (percent !== null) {
-    return {
-      rewardType: "discount",
-      discountPercent: percent,
-    };
-  }
+function parseRewardLevel(value: unknown): LotteryRewardLevel {
+  const level = toText(value) as LotteryRewardLevel;
+  return REWARD_LEVELS.includes(level) ? level : "common";
+}
 
-  const giftLabel = prizeName || prizeDescription || "Lot physique offert";
+function parseRewardKind(value: unknown): LotteryRewardKind {
+  const kind = toText(value) as LotteryRewardKind;
+  return REWARD_KINDS.includes(kind) ? kind : "custom";
+}
+
+function buildEmptyCardCountByRarity(): Record<LotteryCardRarity, number> {
   return {
-    rewardType: "gift",
-    giftLabel,
+    common: 0,
+    silver: 0,
+    gold: 0,
+    epic: 0,
+    legendary: 0,
   };
 }
 
-function parseRarity(value: unknown): LotteryPrizeRarity {
-  const rarity = toText(value) as LotteryPrizeRarity;
-  if (ALLOWED_RARITIES.includes(rarity)) {
-    return rarity;
-  }
-
-  return "common";
+function sanitizeRewardCode(value: unknown): string | undefined {
+  const code = toText(value).trim().toUpperCase();
+  return code ? code : undefined;
 }
 
-function sanitizeName(value: unknown): string {
-  const name = toText(value).trim().slice(0, 120);
-  if (!name) {
-    throw new Error("Nom du lot obligatoire.");
-  }
-  return name;
-}
+function mapRewardSnapshotRow(value: unknown) {
+  const row = typeof value === "object" && value !== null ? (value as Record<string, unknown>) : {};
 
-function sanitizeDescription(value: unknown): string {
-  return toText(value).trim().slice(0, 1000);
-}
-
-function sanitizeImageUrl(value: unknown): string {
-  return toText(value).trim().slice(0, 1024);
-}
-
-function sanitizeRarity(value: unknown): LotteryPrizeRarity {
-  const rarity = toText(value).trim() as LotteryPrizeRarity;
-  if (!ALLOWED_RARITIES.includes(rarity)) {
-    throw new Error("Raret de lot invalide.");
-  }
-  return rarity;
-}
-
-function sanitizeProbability(value: unknown): number {
-  const probability = Number(value);
-  if (!Number.isFinite(probability)) {
-    throw new Error("Probabilite invalide.");
-  }
-
-  const rounded = Number(probability.toFixed(6));
-  if (rounded < 0 || rounded > 1) {
-    throw new Error("La probabilite doit être comprise entre 0 et 1.");
-  }
-
-  return rounded;
-}
-
-function sanitizeValueEuros(value: unknown): number {
-  const money = Number(value);
-  if (!Number.isFinite(money) || money < 0) {
-    throw new Error("Valeur du lot invalide.");
-  }
-
-  return Number(money.toFixed(2));
-}
-
-function sanitizeStock(value: unknown): number | null {
-  if (value === null || value === undefined || value === "") {
-    return null;
-  }
-
-  const stock = Number(value);
-  if (!Number.isFinite(stock)) {
-    throw new Error("Stock invalide.");
-  }
-
-  const rounded = Math.floor(stock);
-  if (rounded < 0) {
-    throw new Error("Le stock ne peut pas être negatif.");
-  }
-
-  return rounded;
-}
-
-function mapConfigRow(row: Record<string, unknown> | null): LotteryConfig {
   return {
-    ticketThresholdEuros: toMoney(row?.ticket_threshold_euros, 20),
-    isActive: row?.is_active === true,
-    updatedAt: toText(row?.updated_at, new Date().toISOString()),
+    rewardDefinitionId: toNullableText(row.rewardDefinitionId ?? row.reward_definition_id),
+    title: toText(row.title, "Lot"),
+    description: toText(row.description),
+    level: row.level ? parseRewardLevel(row.level) : undefined,
+    kind: row.kind ? parseRewardKind(row.kind) : undefined,
+    imageUrl: toText(row.imageUrl ?? row.image_url),
+    discountPercent:
+      Number.isFinite(Number(row.discountPercent ?? row.discount_percent))
+        ? Math.max(0, Math.floor(Number(row.discountPercent ?? row.discount_percent)))
+        : undefined,
+    giftWeightGrams:
+      Number.isFinite(Number(row.giftWeightGrams ?? row.gift_weight_grams))
+        ? Math.max(0, Math.floor(Number(row.giftWeightGrams ?? row.gift_weight_grams)))
+        : undefined,
+    giftProductSku: toNullableText(row.giftProductSku ?? row.gift_product_sku),
+    giftLabel: toNullableText(row.giftLabel ?? row.gift_label),
+    customPayload:
+      typeof row.customPayload === "object" && row.customPayload !== null
+        ? (row.customPayload as Record<string, unknown>)
+        : typeof row.custom_payload === "object" && row.custom_payload !== null
+          ? (row.custom_payload as Record<string, unknown>)
+          : {},
+    deleted: row.deleted === true,
   };
 }
 
-function mapPrizeRow(row: Record<string, unknown>): LotteryPrize {
+function mapRewardDefinitionRow(row: Record<string, unknown>): LotteryRewardDefinition {
   return {
     id: toText(row.id),
-    name: toText(row.name),
+    code: toText(row.code),
+    level: parseRewardLevel(row.level),
+    kind: parseRewardKind(row.kind),
+    title: toText(row.title),
     description: toText(row.description),
-    rarity: parseRarity(row.rarity),
-    probability: toProbability(row.probability),
     imageUrl: toText(row.image_url),
-    valueEuros: toMoney(row.value_euros),
-    stock: row.stock === null || row.stock === undefined ? null : Math.max(0, Math.floor(toNumber(row.stock))),
+    discountPercent:
+      Number.isFinite(Number(row.discount_percent)) ? Math.max(0, Math.floor(Number(row.discount_percent))) : undefined,
+    giftWeightGrams:
+      Number.isFinite(Number(row.gift_weight_grams)) ? Math.max(0, Math.floor(Number(row.gift_weight_grams))) : undefined,
+    giftProductSku: toNullableText(row.gift_product_sku),
+    giftLabel: toNullableText(row.gift_label),
+    customPayload:
+      typeof row.custom_payload === "object" && row.custom_payload !== null
+        ? (row.custom_payload as Record<string, unknown>)
+        : {},
+    isActive: row.is_active === true,
+    deletedAt: toNullableText(row.deleted_at),
+    replacementRewardDefinitionId: toNullableText(row.replacement_reward_definition_id),
+    createdAt: toText(row.created_at, new Date().toISOString()),
+    updatedAt: toText(row.updated_at, new Date().toISOString()),
+  };
+}
+
+function mapCardCollectionRow(row: Record<string, unknown>): LotteryCardCollection {
+  return {
+    id: toText(row.id),
+    code: toText(row.code),
+    title: toText(row.title, "Hemp Heroes 2026 Collection"),
     isActive: row.is_active === true,
     createdAt: toText(row.created_at, new Date().toISOString()),
     updatedAt: toText(row.updated_at, new Date().toISOString()),
   };
 }
 
-function mapTicketRow(row: Record<string, unknown>): LotteryTicket {
-  const prizeRaw = row.lottery_prizes as Record<string, unknown> | null | undefined;
+function mapCardDefinitionRow(row: Record<string, unknown>): LotteryCardDefinition {
+  const collectionRow =
+    row.lottery_card_collections && typeof row.lottery_card_collections === "object"
+      ? (row.lottery_card_collections as Record<string, unknown>)
+      : null;
 
+  return {
+    id: toText(row.id),
+    collectionId: toText(row.collection_id),
+    collectionCode: toText(collectionRow?.code ?? row.collection_code, "HEMP_HEROES_2026"),
+    collectionTitle: toText(collectionRow?.title ?? row.collection_title, "Hemp Heroes 2026 Collection"),
+    code: toText(row.code),
+    cardNumber: Math.max(1, toInteger(row.card_number, 1)),
+    name: toText(row.name),
+    rarity: parseCardRarity(row.rarity),
+    visualPrompt: toText(row.visual_prompt),
+    description: toText(row.description),
+    imageUrl: toText(row.image_url),
+    isActive: row.is_active === true,
+    createdAt: toText(row.created_at, new Date().toISOString()),
+    updatedAt: toText(row.updated_at, new Date().toISOString()),
+  };
+}
+
+function buildCollectedCard(
+  definition: LotteryCardDefinition,
+  stats?: { ownedCount?: number; firstOwnedAt?: string; lastOwnedAt?: string },
+): LotteryCollectedCard {
+  const ownedCount = Math.max(0, toInteger(stats?.ownedCount, 0));
+  return {
+    ...definition,
+    ownedCount,
+    firstOwnedAt: stats?.firstOwnedAt,
+    lastOwnedAt: stats?.lastOwnedAt,
+    isOwned: ownedCount > 0,
+    isDuplicate: ownedCount > 1,
+  };
+}
+
+function mapAlbumCardRow(row: Record<string, unknown>): LotteryAlbumCard {
+  return {
+    id: toText(row.id),
+    code: toText(row.code),
+    title: toText(row.title),
+    subtitle: toNullableText(row.subtitle),
+    imageUrl: toText(row.image_url),
+    seriesLabel: toText(row.series_label, "Serie 2026"),
+    cardNumber: Math.max(1, toInteger(row.card_number, 1)),
+    rarity: parseStickerRarity(row.rarity),
+    isActive: row.is_active === true,
+    archivedAt: toNullableText(row.archived_at),
+    createdAt: toText(row.created_at, new Date().toISOString()),
+    updatedAt: toText(row.updated_at, new Date().toISOString()),
+  };
+}
+
+function mapAlbumPageSlotRow(row: Record<string, unknown>): LotteryAlbumPageSlot {
+  const cardRaw = row.lottery_album_cards as Record<string, unknown> | null;
+
+  return {
+    id: toText(row.id),
+    pageId: toText(row.page_id),
+    slotIndex: Math.max(1, toInteger(row.slot_index, 1)),
+    cardId: toNullableText(row.card_id),
+    label: toNullableText(row.label),
+    createdAt: toText(row.created_at, new Date().toISOString()),
+    updatedAt: toText(row.updated_at, new Date().toISOString()),
+    card: cardRaw ? mapAlbumCardRow(cardRaw) : undefined,
+  };
+}
+
+function mapAlbumPageRow(row: Record<string, unknown>): LotteryAlbumPageWithSlots {
+  const slotsRaw = Array.isArray(row.lottery_album_page_slots)
+    ? (row.lottery_album_page_slots as Record<string, unknown>[])
+    : [];
+
+  return {
+    id: toText(row.id),
+    code: toText(row.code),
+    title: toText(row.title),
+    collectionTitle: toText(row.collection_title, "Collection"),
+    rarity: parseStickerRarity(row.rarity),
+    pageNumber: Math.max(1, toInteger(row.page_number, 1)),
+    isActive: row.is_active === true,
+    archivedAt: toNullableText(row.archived_at),
+    createdAt: toText(row.created_at, new Date().toISOString()),
+    updatedAt: toText(row.updated_at, new Date().toISOString()),
+    slots: slotsRaw
+      .map((slot) => mapAlbumPageSlotRow(slot))
+      .sort((left, right) => left.slotIndex - right.slotIndex),
+  };
+}
+
+function mapRewardRuleRow(row: Record<string, unknown>): LotteryRewardRule {
+  const rewardRaw = row.lottery_reward_definitions as Record<string, unknown> | null;
+  const albumPageRaw = row.lottery_album_pages as Record<string, unknown> | null;
+
+  return {
+    id: toText(row.id),
+    stickerRarity: parseStickerRarity(row.sticker_rarity),
+    stickersRequired: Math.max(1, toInteger(row.stickers_required, 10)),
+    rewardDefinitionId: toText(row.reward_definition_id),
+    albumPageId: toNullableText(row.album_page_id),
+    isActive: row.is_active === true,
+    priority: toInteger(row.priority, 100),
+    createdAt: toText(row.created_at, new Date().toISOString()),
+    updatedAt: toText(row.updated_at, new Date().toISOString()),
+    reward: rewardRaw ? mapRewardDefinitionRow(rewardRaw) : undefined,
+    albumPage: albumPageRaw ? mapAlbumPageRow(albumPageRaw) : undefined,
+  };
+}
+
+function mapRewardClaimRow(row: Record<string, unknown>): LotteryRewardClaim {
+  return {
+    id: toText(row.id),
+    userId: toText(row.user_id),
+    rewardLineId: toNullableText(row.reward_line_id),
+    sourceTicketId: toNullableText(row.source_ticket_id),
+    rewardDefinitionId: toNullableText(row.reward_definition_id),
+    status: toText(row.status, "available") as LotteryRewardClaim["status"],
+    generatedCode: sanitizeRewardCode(row.generated_code),
+    discountPercent:
+      Number.isFinite(Number(row.discount_percent)) ? Math.max(0, Math.floor(Number(row.discount_percent))) : undefined,
+    giftWeightGrams:
+      Number.isFinite(Number(row.gift_weight_grams)) ? Math.max(0, Math.floor(Number(row.gift_weight_grams))) : undefined,
+    giftProductSku: toNullableText(row.gift_product_sku),
+    giftLabel: toNullableText(row.gift_label),
+    reservedOrderId: toNullableText(row.reserved_order_id),
+    reservedAt: toNullableText(row.reserved_at),
+    reservedUntil: toNullableText(row.reserved_until),
+    usedOrderId: toNullableText(row.used_order_id),
+    usedAt: toNullableText(row.used_at),
+    fulfilledAt: toNullableText(row.fulfilled_at),
+    createdAt: toText(row.created_at, new Date().toISOString()),
+    reward: mapRewardSnapshotRow(row.reward_snapshot),
+  };
+}
+
+function mapTicketRow(row: Record<string, unknown>, card?: LotteryCardDefinition): LotteryTicket {
   return {
     id: toText(row.id),
     userId: toText(row.user_id),
@@ -195,276 +334,817 @@ function mapTicketRow(row: Record<string, unknown>): LotteryTicket {
     ticketNumber: toText(row.ticket_number),
     orderAmount: toMoney(row.order_amount),
     status: toText(row.status, "available") as LotteryTicket["status"],
-    prizeId: toNullableText(row.prize_id),
-    isWin: typeof row.is_win === "boolean" ? row.is_win : undefined,
+    cardDefinitionId: toNullableText(row.card_definition_id),
+    cardRarity: row.card_rarity ? parseCardRarity(row.card_rarity) : undefined,
     scratchedAt: toNullableText(row.scratched_at),
-    redeemedAt: toNullableText(row.redeemed_at),
-    redeemedOrderId: toNullableText(row.redeemed_order_id),
     createdAt: toText(row.created_at, new Date().toISOString()),
-    prize: prizeRaw
-      ? {
-          id: toText(prizeRaw.id),
-          name: toText(prizeRaw.name),
-          description: toText(prizeRaw.description),
-          rarity: parseRarity(prizeRaw.rarity),
-          imageUrl: toText(prizeRaw.image_url),
-          valueEuros: toMoney(prizeRaw.value_euros),
-        }
-      : undefined,
+    card,
   };
 }
 
-async function ensureProbabilityBudget(input: {
-  probability: number;
-  isActive: boolean;
-  excludePrizeId?: string;
-}): Promise<void> {
-  if (!input.isActive) {
-    return;
+function mapScratchCardRow(
+  raw: Record<string, unknown>,
+  scratchedAt: string,
+  fallbackOwnedCount = 1,
+): LotteryCollectedCard {
+  const cardDefinition = mapCardDefinitionRow({
+    id: raw.definitionId ?? raw.id,
+    collection_id: raw.collectionId,
+    collection_code: raw.collectionCode,
+    collection_title: raw.collectionTitle,
+    code: raw.code,
+    card_number: raw.cardNumber,
+    name: raw.name,
+    rarity: raw.rarity,
+    visual_prompt: raw.visualPrompt,
+    description: raw.description,
+    image_url: raw.imageUrl,
+    is_active: true,
+    created_at: scratchedAt,
+    updated_at: scratchedAt,
+  });
+
+  return buildCollectedCard(cardDefinition, {
+    ownedCount: Math.max(1, toInteger(raw.ownedCount, fallbackOwnedCount)),
+    firstOwnedAt: toNullableText(raw.firstOwnedAt),
+    lastOwnedAt: toNullableText(raw.lastOwnedAt),
+  });
+}
+
+function mapConfigRow(row: Record<string, unknown> | null): LotteryConfig {
+  return {
+    eurosPerTicket: toMoney(row?.euros_per_ticket, 5),
+    maxTicketsPerOrder: Math.max(1, toInteger(row?.max_tickets_per_order, 4)),
+    collectionTitle: toText(row?.collection_title, "Hemp Heroes 2026 Collection"),
+    albumSubtitle: toText(
+      row?.album_subtitle,
+      "Ta collection de cartes. Complete chaque page pour debloquer ses recompenses.",
+    ),
+    albumBoosterTitle: toText(row?.album_booster_title, "packs a ouvrir"),
+    albumBoosterDescription: toText(
+      row?.album_booster_description,
+      "Ouvre un booster depuis l'album pour reveler les 3 cartes sans quitter cette page.",
+    ),
+    cardWeights: {
+      common: Math.max(0, toInteger(row?.common_weight, 33)),
+      silver: Math.max(0, toInteger(row?.silver_weight, 10)),
+      gold: Math.max(0, toInteger(row?.gold_weight, 5)),
+      epic: Math.max(0, toInteger(row?.epic_weight, 3)),
+      legendary: Math.max(0, toInteger(row?.legendary_weight, 1)),
+    },
+    isActive: row?.is_active === true,
+    updatedAt: toText(row?.updated_at, new Date().toISOString()),
+  };
+}
+
+const ALBUM_PAGE_SELECT =
+  "*,lottery_album_page_slots(*,lottery_album_cards(*))";
+
+function buildClaimBenefit(claim: LotteryRewardClaim): LotteryRewardClaimBenefit | null {
+  const title = claim.reward.title;
+  const description = claim.reward.description;
+  const generatedCode = claim.generatedCode;
+
+  if (claim.reward.kind === "discount_percent" && claim.discountPercent && claim.discountPercent > 0) {
+    return {
+      rewardType: "discount",
+      claimId: claim.id,
+      title,
+      description,
+      generatedCode,
+      discountPercent: claim.discountPercent,
+    };
   }
 
-  const supabase = createSupabaseServiceClient();
-  const result = await supabase
-    .from("lottery_prizes")
-    .select("id,probability,is_active");
-
-  failIfError(result.error, "list lottery_prizes for budget");
-
-  const sumWithoutCurrent = (result.data ?? []).reduce((sum, rawRow) => {
-    const row = rawRow as Record<string, unknown>;
-    const id = toText(row.id);
-    const isActive = row.is_active === true;
-
-    if (!isActive) {
-      return sum;
-    }
-
-    if (input.excludePrizeId && id === input.excludePrizeId) {
-      return sum;
-    }
-
-    return sum + toProbability(row.probability);
-  }, 0);
-
-  const total = Number((sumWithoutCurrent + input.probability).toFixed(6));
-  if (total > 1) {
-    throw new Error("La somme des probabilites actives depasse 100%.");
+  const giftLabel = claim.giftLabel ?? claim.reward.giftLabel ?? title;
+  if (!giftLabel) {
+    return null;
   }
+
+  return {
+    rewardType: "gift",
+    claimId: claim.id,
+    title,
+    description,
+    generatedCode,
+    giftLabel,
+    giftWeightGrams: claim.giftWeightGrams ?? claim.reward.giftWeightGrams,
+    giftProductSku: claim.giftProductSku ?? claim.reward.giftProductSku,
+  };
 }
 
 export async function getLotteryConfigFromSupabase(): Promise<LotteryConfig> {
   const supabase = createSupabaseServiceClient();
 
   const result = await supabase
-    .from("lottery_config")
-    .select("ticket_threshold_euros,is_active,updated_at")
+    .from("lottery_game_config")
+    .select(
+      "euros_per_ticket,max_tickets_per_order,collection_title,album_subtitle,album_booster_title,album_booster_description,common_weight,silver_weight,gold_weight,epic_weight,legendary_weight,is_active,updated_at",
+    )
     .eq("id", 1)
     .maybeSingle();
 
-  failIfError(result.error, "read lottery_config");
-
-  if (result.data) {
-    return mapConfigRow(result.data as Record<string, unknown>);
-  }
-
-  const upsert = await supabase
-    .from("lottery_config")
-    .upsert({ id: 1, ticket_threshold_euros: 20, is_active: true }, { onConflict: "id" })
-    .select("ticket_threshold_euros,is_active,updated_at")
-    .single();
-
-  failIfError(upsert.error, "upsert lottery_config default");
-  return mapConfigRow(upsert.data as Record<string, unknown>);
+  failIfError(result.error, "read lottery_game_config");
+  return mapConfigRow((result.data ?? null) as Record<string, unknown> | null);
 }
 
 export async function updateLotteryConfigInSupabase(input: {
-  ticketThresholdEuros: number;
+  eurosPerTicket: number;
+  maxTicketsPerOrder: number;
+  collectionTitle: string;
+  albumSubtitle: string;
+  albumBoosterTitle: string;
+  albumBoosterDescription: string;
+  commonWeight: number;
+  silverWeight: number;
+  goldWeight: number;
+  epicWeight: number;
+  legendaryWeight: number;
   isActive: boolean;
 }): Promise<LotteryConfig> {
-  const threshold = Number(input.ticketThresholdEuros);
-  if (!Number.isFinite(threshold) || threshold <= 0) {
-    throw new Error("Seuil ticket invalide.");
-  }
-
   const supabase = createSupabaseServiceClient();
+
   const result = await supabase
-    .from("lottery_config")
+    .from("lottery_game_config")
     .upsert(
       {
         id: 1,
-        ticket_threshold_euros: Number(threshold.toFixed(2)),
+        euros_per_ticket: toMoney(input.eurosPerTicket, 5),
+        max_tickets_per_order: Math.max(1, Math.min(20, Math.floor(input.maxTicketsPerOrder))),
+        collection_title: toText(input.collectionTitle).trim() || "Hemp Heroes 2026 Collection",
+        album_subtitle:
+          toText(input.albumSubtitle).trim() ||
+          "Ta collection de cartes. Complete chaque page pour debloquer ses recompenses.",
+        album_booster_title: toText(input.albumBoosterTitle).trim() || "packs a ouvrir",
+        album_booster_description:
+          toText(input.albumBoosterDescription).trim() ||
+          "Ouvre un booster depuis l'album pour reveler les 3 cartes sans quitter cette page.",
+        common_weight: Math.max(0, Math.floor(input.commonWeight)),
+        silver_weight: Math.max(0, Math.floor(input.silverWeight)),
+        gold_weight: Math.max(0, Math.floor(input.goldWeight)),
+        epic_weight: Math.max(0, Math.floor(input.epicWeight)),
+        legendary_weight: Math.max(0, Math.floor(input.legendaryWeight)),
         is_active: input.isActive === true,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "id" },
     )
-    .select("ticket_threshold_euros,is_active,updated_at")
+    .select(
+      "euros_per_ticket,max_tickets_per_order,collection_title,album_subtitle,album_booster_title,album_booster_description,common_weight,silver_weight,gold_weight,epic_weight,legendary_weight,is_active,updated_at",
+    )
     .single();
 
-  failIfError(result.error, "upsert lottery_config");
+  failIfError(result.error, "upsert lottery_game_config");
   return mapConfigRow(result.data as Record<string, unknown>);
 }
 
-export async function listLotteryPrizesFromSupabase(): Promise<LotteryPrize[]> {
+async function getDefaultLotteryCardCollectionFromSupabase(): Promise<LotteryCardCollection> {
   const supabase = createSupabaseServiceClient();
   const result = await supabase
-    .from("lottery_prizes")
-    .select("id,name,description,rarity,probability,image_url,value_euros,stock,is_active,created_at,updated_at")
-    .order("created_at", { ascending: true });
-
-  failIfError(result.error, "list lottery_prizes");
-
-  return (result.data ?? []).map((rawRow) => mapPrizeRow(rawRow as Record<string, unknown>));
-}
-
-export async function createLotteryPrizeInSupabase(input: {
-  name: string;
-  description: string;
-  rarity: LotteryPrizeRarity;
-  probability: number;
-  imageUrl: string;
-  valueEuros: number;
-  stock: number | null;
-  isActive: boolean;
-}): Promise<LotteryPrize> {
-  const name = sanitizeName(input.name);
-  const description = sanitizeDescription(input.description);
-  const rarity = sanitizeRarity(input.rarity);
-  const probability = sanitizeProbability(input.probability);
-  const imageUrl = sanitizeImageUrl(input.imageUrl);
-  const valueEuros = sanitizeValueEuros(input.valueEuros);
-  const stock = sanitizeStock(input.stock);
-  const isActive = input.isActive !== false;
-
-  await ensureProbabilityBudget({
-    probability,
-    isActive,
-  });
-
-  const supabase = createSupabaseServiceClient();
-  const result = await supabase
-    .from("lottery_prizes")
-    .insert({
-      name,
-      description,
-      rarity,
-      probability,
-      image_url: imageUrl,
-      value_euros: valueEuros,
-      stock,
-      is_active: isActive,
-      updated_at: new Date().toISOString(),
-    })
-    .select("id,name,description,rarity,probability,image_url,value_euros,stock,is_active,created_at,updated_at")
-    .single();
-
-  failIfError(result.error, "insert lottery_prize");
-  return mapPrizeRow(result.data as Record<string, unknown>);
-}
-
-export async function updateLotteryPrizeInSupabase(
-  prizeId: string,
-  input: {
-    name: string;
-    description: string;
-    rarity: LotteryPrizeRarity;
-    probability: number;
-    imageUrl: string;
-    valueEuros: number;
-    stock: number | null;
-    isActive: boolean;
-  },
-): Promise<LotteryPrize | null> {
-  const safePrizeId = prizeId.trim();
-  if (!safePrizeId || !isValidUuid(safePrizeId)) {
-    throw new Error("Lot invalide.");
-  }
-
-  const supabase = createSupabaseServiceClient();
-  const existing = await supabase
-    .from("lottery_prizes")
-    .select("id,name,description,rarity,probability,image_url,value_euros,stock,is_active,created_at,updated_at")
-    .eq("id", safePrizeId)
+    .from("lottery_card_collections")
+    .select("*")
+    .eq("is_active", true)
+    .order("created_at", { ascending: true })
+    .limit(1)
     .maybeSingle();
 
-  failIfError(existing.error, "read lottery_prize before update");
-  if (!existing.data) {
-    return null;
+  failIfError(result.error, "read lottery_card_collections default");
+  if (!result.data) {
+    throw new Error("Aucune collection TCG active.");
   }
 
-  const current = mapPrizeRow(existing.data as Record<string, unknown>);
-
-  const next = {
-    name: input.name === undefined ? current.name : sanitizeName(input.name),
-    description:
-      input.description === undefined
-        ? current.description
-        : sanitizeDescription(input.description),
-    rarity: input.rarity === undefined ? current.rarity : sanitizeRarity(input.rarity),
-    probability:
-      input.probability === undefined
-        ? current.probability
-        : sanitizeProbability(input.probability),
-    imageUrl: input.imageUrl === undefined ? current.imageUrl : sanitizeImageUrl(input.imageUrl),
-    valueEuros:
-      input.valueEuros === undefined ? current.valueEuros : sanitizeValueEuros(input.valueEuros),
-    stock: input.stock === undefined ? current.stock : sanitizeStock(input.stock),
-    isActive: input.isActive === undefined ? current.isActive : input.isActive === true,
-  };
-
-  await ensureProbabilityBudget({
-    probability: next.probability,
-    isActive: next.isActive,
-    excludePrizeId: safePrizeId,
-  });
-
-  const result = await supabase
-    .from("lottery_prizes")
-    .update({
-      name: next.name,
-      description: next.description,
-      rarity: next.rarity,
-      probability: next.probability,
-      image_url: next.imageUrl,
-      value_euros: next.valueEuros,
-      stock: next.stock,
-      is_active: next.isActive,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", safePrizeId)
-    .select("id,name,description,rarity,probability,image_url,value_euros,stock,is_active,created_at,updated_at")
-    .single();
-
-  failIfError(result.error, "update lottery_prize");
-  return mapPrizeRow(result.data as Record<string, unknown>);
+  return mapCardCollectionRow(result.data as Record<string, unknown>);
 }
 
-export async function deleteLotteryPrizeInSupabase(prizeId: string): Promise<boolean> {
-  const safePrizeId = prizeId.trim();
-  if (!safePrizeId || !isValidUuid(safePrizeId)) {
+export async function listLotteryCardDefinitionsFromSupabase(): Promise<LotteryCardDefinition[]> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_card_definitions")
+    .select("*,lottery_card_collections(*)")
+    .order("card_number", { ascending: true })
+    .order("created_at", { ascending: true });
+
+  failIfError(result.error, "list lottery_card_definitions");
+  return (result.data ?? []).map((row) => mapCardDefinitionRow(row as Record<string, unknown>));
+}
+
+export async function createLotteryCardDefinitionInSupabase(input: {
+  code: string;
+  cardNumber: number;
+  name: string;
+  rarity: LotteryCardRarity;
+  visualPrompt?: string | null;
+  description?: string | null;
+  imageUrl?: string | null;
+  isActive: boolean;
+}): Promise<LotteryCardDefinition> {
+  const collection = await getDefaultLotteryCardCollectionFromSupabase();
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_card_definitions")
+    .insert({
+      collection_id: collection.id,
+      code: toText(input.code).trim().toUpperCase(),
+      card_number: Math.max(1, Math.min(9999, Math.floor(input.cardNumber))),
+      name: toText(input.name).trim(),
+      rarity: input.rarity,
+      visual_prompt: toText(input.visualPrompt).trim(),
+      description: toText(input.description).trim(),
+      image_url: toText(input.imageUrl).trim(),
+      is_active: input.isActive === true,
+    })
+    .select("*,lottery_card_collections(*)")
+    .single();
+
+  failIfError(result.error, "insert lottery_card_definitions");
+  return mapCardDefinitionRow(result.data as Record<string, unknown>);
+}
+
+export async function updateLotteryCardDefinitionInSupabase(
+  cardId: string,
+  input: {
+    code: string;
+    cardNumber: number;
+    name: string;
+    rarity: LotteryCardRarity;
+    visualPrompt?: string | null;
+    description?: string | null;
+    imageUrl?: string | null;
+    isActive: boolean;
+  },
+): Promise<LotteryCardDefinition | null> {
+  const safeCardId = cardId.trim();
+  if (!isValidUuid(safeCardId)) {
+    throw new Error("Carte TCG invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_card_definitions")
+    .update({
+      code: toText(input.code).trim().toUpperCase(),
+      card_number: Math.max(1, Math.min(9999, Math.floor(input.cardNumber))),
+      name: toText(input.name).trim(),
+      rarity: input.rarity,
+      visual_prompt: toText(input.visualPrompt).trim(),
+      description: toText(input.description).trim(),
+      image_url: toText(input.imageUrl).trim(),
+      is_active: input.isActive === true,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", safeCardId)
+    .select("*,lottery_card_collections(*)")
+    .maybeSingle();
+
+  failIfError(result.error, "update lottery_card_definitions");
+  return result.data ? mapCardDefinitionRow(result.data as Record<string, unknown>) : null;
+}
+
+export async function archiveLotteryCardDefinitionInSupabase(cardId: string): Promise<boolean> {
+  const safeCardId = cardId.trim();
+  if (!isValidUuid(safeCardId)) {
     return false;
   }
 
   const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_card_definitions")
+    .update({
+      is_active: false,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", safeCardId)
+    .select("id")
+    .maybeSingle();
 
-  const usage = await supabase
-    .from("lottery_tickets")
-    .select("id", { count: "exact", head: true })
-    .eq("prize_id", safePrizeId);
+  failIfError(result.error, "archive lottery_card_definitions");
+  return Boolean(result.data);
+}
 
-  failIfError(usage.error, "count lottery_prize usage");
+export async function listLotteryRewardDefinitionsFromSupabase(): Promise<LotteryRewardDefinition[]> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_reward_definitions")
+    .select("*")
+    .order("created_at", { ascending: true });
 
-  if ((usage.count ?? 0) > 0) {
-    throw new Error("Ce lot a déjà été attribué. Désactive-le au lieu de le supprimer.");
+  failIfError(result.error, "list lottery_reward_definitions");
+  return (result.data ?? []).map((row) => mapRewardDefinitionRow(row as Record<string, unknown>));
+}
+
+export async function listLotteryAlbumCardsFromSupabase(): Promise<LotteryAlbumCard[]> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_album_cards")
+    .select("*")
+    .order("rarity", { ascending: true })
+    .order("card_number", { ascending: true })
+    .order("created_at", { ascending: true });
+
+  failIfError(result.error, "list lottery_album_cards");
+  return (result.data ?? []).map((row) => mapAlbumCardRow(row as Record<string, unknown>));
+}
+
+export async function createLotteryAlbumCardInSupabase(input: {
+  code: string;
+  title: string;
+  subtitle?: string | null;
+  imageUrl?: string | null;
+  seriesLabel?: string | null;
+  cardNumber: number;
+  rarity: LotteryStickerRarity;
+  isActive: boolean;
+}): Promise<LotteryAlbumCard> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_album_cards")
+    .insert({
+      code: toText(input.code).trim().toUpperCase(),
+      title: toText(input.title).trim(),
+      subtitle: toNullableText(input.subtitle),
+      image_url: toText(input.imageUrl).trim(),
+      series_label: toText(input.seriesLabel).trim() || "Serie 2026",
+      card_number: Math.max(1, Math.min(9999, Math.floor(input.cardNumber))),
+      rarity: input.rarity,
+      is_active: input.isActive === true,
+    })
+    .select("*")
+    .single();
+
+  failIfError(result.error, "insert lottery_album_card");
+  return mapAlbumCardRow(result.data as Record<string, unknown>);
+}
+
+export async function updateLotteryAlbumCardInSupabase(
+  cardId: string,
+  input: {
+    code: string;
+    title: string;
+    subtitle?: string | null;
+    imageUrl?: string | null;
+    seriesLabel?: string | null;
+    cardNumber: number;
+    rarity: LotteryStickerRarity;
+    isActive: boolean;
+  },
+): Promise<LotteryAlbumCard | null> {
+  const safeCardId = cardId.trim();
+  if (!isValidUuid(safeCardId)) {
+    throw new Error("Carte album invalide.");
   }
 
+  const supabase = createSupabaseServiceClient();
   const result = await supabase
-    .from("lottery_prizes")
-    .delete()
-    .eq("id", safePrizeId);
+    .from("lottery_album_cards")
+    .update({
+      code: toText(input.code).trim().toUpperCase(),
+      title: toText(input.title).trim(),
+      subtitle: toNullableText(input.subtitle),
+      image_url: toText(input.imageUrl).trim(),
+      series_label: toText(input.seriesLabel).trim() || "Serie 2026",
+      card_number: Math.max(1, Math.min(9999, Math.floor(input.cardNumber))),
+      rarity: input.rarity,
+      is_active: input.isActive === true,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", safeCardId)
+    .select("*")
+    .maybeSingle();
 
-  failIfError(result.error, "delete lottery_prize");
+  failIfError(result.error, "update lottery_album_card");
+  return result.data ? mapAlbumCardRow(result.data as Record<string, unknown>) : null;
+}
+
+export async function archiveLotteryAlbumCardInSupabase(cardId: string): Promise<boolean> {
+  const safeCardId = cardId.trim();
+  if (!isValidUuid(safeCardId)) {
+    return false;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_album_cards")
+    .update({
+      is_active: false,
+      archived_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", safeCardId)
+    .select("id")
+    .maybeSingle();
+
+  failIfError(result.error, "archive lottery_album_card");
+  return Boolean(result.data);
+}
+
+export async function listLotteryAlbumPagesFromSupabase(): Promise<LotteryAlbumPageWithSlots[]> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_album_pages")
+    .select(ALBUM_PAGE_SELECT)
+    .order("rarity", { ascending: true })
+    .order("page_number", { ascending: true })
+    .order("created_at", { ascending: true });
+
+  failIfError(result.error, "list lottery_album_pages");
+  return (result.data ?? []).map((row) => mapAlbumPageRow(row as Record<string, unknown>));
+}
+
+async function replaceLotteryAlbumPageSlots(
+  pageId: string,
+  slots: Array<{ slotIndex: number; cardId?: string | null; label?: string | null }>,
+): Promise<void> {
+  const supabase = createSupabaseServiceClient();
+
+  const deleteResult = await supabase.from("lottery_album_page_slots").delete().eq("page_id", pageId);
+  failIfError(deleteResult.error, "delete lottery_album_page_slots");
+
+  const normalizedSlots = slots
+    .map((slot) => ({
+      page_id: pageId,
+      slot_index: Math.max(1, Math.min(100, Math.floor(slot.slotIndex))),
+      card_id: slot.cardId?.trim() || null,
+      label: toNullableText(slot.label),
+    }))
+    .sort((left, right) => left.slot_index - right.slot_index);
+
+  if (normalizedSlots.length < 1) {
+    return;
+  }
+
+  const insertResult = await supabase.from("lottery_album_page_slots").insert(normalizedSlots);
+  failIfError(insertResult.error, "insert lottery_album_page_slots");
+}
+
+export async function createLotteryAlbumPageInSupabase(input: {
+  code: string;
+  title: string;
+  collectionTitle: string;
+  rarity: LotteryStickerRarity;
+  pageNumber: number;
+  isActive: boolean;
+  slots?: Array<{ slotIndex: number; cardId?: string | null; label?: string | null }>;
+}): Promise<LotteryAlbumPageWithSlots> {
+  const supabase = createSupabaseServiceClient();
+  const pageResult = await supabase
+    .from("lottery_album_pages")
+    .insert({
+      code: toText(input.code).trim().toUpperCase(),
+      title: toText(input.title).trim(),
+      collection_title: toText(input.collectionTitle).trim() || "Collection",
+      rarity: input.rarity,
+      page_number: Math.max(1, Math.min(999, Math.floor(input.pageNumber))),
+      is_active: input.isActive === true,
+    })
+    .select(ALBUM_PAGE_SELECT)
+    .single();
+
+  failIfError(pageResult.error, "insert lottery_album_page");
+
+  const page = mapAlbumPageRow(pageResult.data as Record<string, unknown>);
+  if (input.slots && input.slots.length > 0) {
+    await replaceLotteryAlbumPageSlots(page.id, input.slots);
+    return getLotteryAlbumPageByIdFromSupabase(page.id);
+  }
+
+  return page;
+}
+
+export async function getLotteryAlbumPageByIdFromSupabase(pageId: string): Promise<LotteryAlbumPageWithSlots> {
+  const safePageId = pageId.trim();
+  if (!isValidUuid(safePageId)) {
+    throw new Error("Page album invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_album_pages")
+    .select(ALBUM_PAGE_SELECT)
+    .eq("id", safePageId)
+    .single();
+
+  failIfError(result.error, "read lottery_album_page");
+  return mapAlbumPageRow(result.data as Record<string, unknown>);
+}
+
+export async function updateLotteryAlbumPageInSupabase(
+  pageId: string,
+  input: {
+    code: string;
+    title: string;
+    collectionTitle: string;
+    rarity: LotteryStickerRarity;
+    pageNumber: number;
+    isActive: boolean;
+    slots: Array<{ slotIndex: number; cardId?: string | null; label?: string | null }>;
+  },
+): Promise<LotteryAlbumPageWithSlots | null> {
+  const safePageId = pageId.trim();
+  if (!isValidUuid(safePageId)) {
+    throw new Error("Page album invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const pageResult = await supabase
+    .from("lottery_album_pages")
+    .update({
+      code: toText(input.code).trim().toUpperCase(),
+      title: toText(input.title).trim(),
+      collection_title: toText(input.collectionTitle).trim() || "Collection",
+      rarity: input.rarity,
+      page_number: Math.max(1, Math.min(999, Math.floor(input.pageNumber))),
+      is_active: input.isActive === true,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", safePageId)
+    .select("id")
+    .maybeSingle();
+
+  failIfError(pageResult.error, "update lottery_album_page");
+  if (!pageResult.data) {
+    return null;
+  }
+
+  await replaceLotteryAlbumPageSlots(safePageId, input.slots);
+  return getLotteryAlbumPageByIdFromSupabase(safePageId);
+}
+
+export async function archiveLotteryAlbumPageInSupabase(pageId: string): Promise<boolean> {
+  const safePageId = pageId.trim();
+  if (!isValidUuid(safePageId)) {
+    return false;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const pageResult = await supabase
+    .from("lottery_album_pages")
+    .update({
+      is_active: false,
+      archived_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", safePageId)
+    .select("id")
+    .maybeSingle();
+
+  failIfError(pageResult.error, "archive lottery_album_page");
+  if (!pageResult.data) {
+    return false;
+  }
+
+  const rulesResult = await supabase
+    .from("lottery_reward_rules")
+    .update({
+      album_page_id: null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("album_page_id", safePageId);
+
+  failIfError(rulesResult.error, "clear lottery_reward_rules album_page_id");
   return true;
+}
+
+export async function createLotteryRewardDefinitionInSupabase(input: {
+  code: string;
+  level: LotteryRewardLevel;
+  kind: LotteryRewardKind;
+  title: string;
+  description: string;
+  imageUrl?: string;
+  discountPercent?: number | null;
+  giftWeightGrams?: number | null;
+  giftProductSku?: string | null;
+  giftLabel?: string | null;
+  customPayload?: Record<string, unknown>;
+  isActive: boolean;
+}): Promise<LotteryRewardDefinition> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_reward_definitions")
+    .insert({
+      code: toText(input.code).trim().toUpperCase(),
+      level: input.level,
+      kind: input.kind,
+      title: toText(input.title).trim(),
+      description: toText(input.description).trim(),
+      image_url: toText(input.imageUrl).trim(),
+      discount_percent:
+        Number.isFinite(Number(input.discountPercent)) && Number(input.discountPercent) > 0
+          ? Math.floor(Number(input.discountPercent))
+          : null,
+      gift_weight_grams:
+        Number.isFinite(Number(input.giftWeightGrams)) && Number(input.giftWeightGrams) > 0
+          ? Math.floor(Number(input.giftWeightGrams))
+          : null,
+      gift_product_sku: toNullableText(input.giftProductSku),
+      gift_label: toNullableText(input.giftLabel),
+      custom_payload: input.customPayload ?? {},
+      is_active: input.isActive === true,
+    })
+    .select("*")
+    .single();
+
+  failIfError(result.error, "insert lottery_reward_definition");
+  return mapRewardDefinitionRow(result.data as Record<string, unknown>);
+}
+
+export async function updateLotteryRewardDefinitionInSupabase(
+  rewardId: string,
+  input: {
+    code: string;
+    level: LotteryRewardLevel;
+    kind: LotteryRewardKind;
+    title: string;
+    description: string;
+    imageUrl?: string;
+    discountPercent?: number | null;
+    giftWeightGrams?: number | null;
+    giftProductSku?: string | null;
+    giftLabel?: string | null;
+    customPayload?: Record<string, unknown>;
+    isActive: boolean;
+    replacementRewardDefinitionId?: string | null;
+  },
+): Promise<LotteryRewardDefinition | null> {
+  const safeRewardId = rewardId.trim();
+  if (!isValidUuid(safeRewardId)) {
+    throw new Error("Lot invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const replacementRewardDefinitionId = input.replacementRewardDefinitionId?.trim() || null;
+
+  const result = await supabase
+    .from("lottery_reward_definitions")
+    .update({
+      code: toText(input.code).trim().toUpperCase(),
+      level: input.level,
+      kind: input.kind,
+      title: toText(input.title).trim(),
+      description: toText(input.description).trim(),
+      image_url: toText(input.imageUrl).trim(),
+      discount_percent:
+        Number.isFinite(Number(input.discountPercent)) && Number(input.discountPercent) > 0
+          ? Math.floor(Number(input.discountPercent))
+          : null,
+      gift_weight_grams:
+        Number.isFinite(Number(input.giftWeightGrams)) && Number(input.giftWeightGrams) > 0
+          ? Math.floor(Number(input.giftWeightGrams))
+          : null,
+      gift_product_sku: toNullableText(input.giftProductSku),
+      gift_label: toNullableText(input.giftLabel),
+      custom_payload: input.customPayload ?? {},
+      is_active: input.isActive === true,
+      replacement_reward_definition_id:
+        replacementRewardDefinitionId && isValidUuid(replacementRewardDefinitionId)
+          ? replacementRewardDefinitionId
+          : null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", safeRewardId)
+    .select("*")
+    .maybeSingle();
+
+  failIfError(result.error, "update lottery_reward_definition");
+  return result.data ? mapRewardDefinitionRow(result.data as Record<string, unknown>) : null;
+}
+
+export async function archiveLotteryRewardDefinitionInSupabase(input: {
+  rewardId: string;
+  replacementRewardDefinitionId?: string | null;
+}): Promise<boolean> {
+  const rewardId = input.rewardId.trim();
+  if (!isValidUuid(rewardId)) {
+    return false;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const replacementRewardDefinitionId = input.replacementRewardDefinitionId?.trim() || null;
+
+  const updateDefinition = await supabase
+    .from("lottery_reward_definitions")
+    .update({
+      is_active: false,
+      deleted_at: new Date().toISOString(),
+      replacement_reward_definition_id:
+        replacementRewardDefinitionId && isValidUuid(replacementRewardDefinitionId)
+          ? replacementRewardDefinitionId
+          : null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", rewardId)
+    .select("id")
+    .maybeSingle();
+
+  failIfError(updateDefinition.error, "archive lottery_reward_definition");
+  if (!updateDefinition.data) {
+    return false;
+  }
+
+  if (replacementRewardDefinitionId && isValidUuid(replacementRewardDefinitionId)) {
+    const rulesUpdate = await supabase
+      .from("lottery_reward_rules")
+      .update({
+        reward_definition_id: replacementRewardDefinitionId,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("reward_definition_id", rewardId)
+      .eq("is_active", true);
+
+    failIfError(rulesUpdate.error, "reassign lottery_reward_rules");
+  } else {
+    const deactivateRules = await supabase
+      .from("lottery_reward_rules")
+      .update({
+        is_active: false,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("reward_definition_id", rewardId)
+      .eq("is_active", true);
+
+    failIfError(deactivateRules.error, "deactivate lottery_reward_rules");
+  }
+
+  return true;
+}
+
+export async function listLotteryRewardRulesFromSupabase(): Promise<LotteryRewardRule[]> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_reward_rules")
+    .select("*,lottery_reward_definitions(*),lottery_album_pages(" + ALBUM_PAGE_SELECT + ")")
+    .order("sticker_rarity", { ascending: true })
+    .order("priority", { ascending: true })
+    .order("created_at", { ascending: true });
+
+  failIfError(result.error, "list lottery_reward_rules");
+  const rows = Array.isArray(result.data) ? ((result.data as unknown) as Record<string, unknown>[]) : [];
+  return rows.map((row) => mapRewardRuleRow(row));
+}
+
+export async function upsertLotteryRewardRuleInSupabase(input: {
+  ruleId?: string;
+  stickerRarity: LotteryStickerRarity;
+  stickersRequired: number;
+  rewardDefinitionId: string;
+  albumPageId?: string | null;
+  isActive: boolean;
+  priority: number;
+}): Promise<LotteryRewardRule> {
+  const supabase = createSupabaseServiceClient();
+  const ruleId = input.ruleId?.trim();
+  const payload = {
+    sticker_rarity: input.stickerRarity,
+    stickers_required: Math.max(1, Math.min(100, Math.floor(input.stickersRequired))),
+    reward_definition_id: input.rewardDefinitionId.trim(),
+    album_page_id: input.albumPageId?.trim() || null,
+    is_active: input.isActive === true,
+    priority: Math.max(1, Math.floor(input.priority)),
+    updated_at: new Date().toISOString(),
+  };
+
+  const result =
+    ruleId && isValidUuid(ruleId)
+      ? await supabase
+          .from("lottery_reward_rules")
+          .update(payload)
+          .eq("id", ruleId)
+          .select("*,lottery_reward_definitions(*),lottery_album_pages(" + ALBUM_PAGE_SELECT + ")")
+          .single()
+      : await supabase
+          .from("lottery_reward_rules")
+          .insert(payload)
+          .select("*,lottery_reward_definitions(*),lottery_album_pages(" + ALBUM_PAGE_SELECT + ")")
+          .single();
+
+  const ruleRow = result.data as unknown;
+  failIfError(result.error, "upsert lottery_reward_rule");
+  if (!ruleRow || typeof ruleRow !== "object" || Array.isArray(ruleRow)) {
+    throw new Error("Regle loterie introuvable apres sauvegarde.");
+  }
+
+  return mapRewardRuleRow(ruleRow as Record<string, unknown>);
+}
+
+export async function deactivateLotteryRewardRuleInSupabase(ruleId: string): Promise<boolean> {
+  const safeRuleId = ruleId.trim();
+  if (!isValidUuid(safeRuleId)) {
+    return false;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_reward_rules")
+    .update({
+      is_active: false,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", safeRuleId)
+    .select("id")
+    .maybeSingle();
+
+  failIfError(result.error, "deactivate lottery_reward_rule");
+  return Boolean(result.data);
 }
 
 export async function mintLotteryTicketsForOrderInSupabase(input: {
@@ -474,9 +1154,7 @@ export async function mintLotteryTicketsForOrderInSupabase(input: {
 }): Promise<number> {
   const userId = input.userId.trim();
   const orderId = input.orderId.trim();
-  const orderAmount = toMoney(input.orderAmount, 0);
-
-  if (!isValidUuid(userId) || !orderId || orderAmount <= 0) {
+  if (!isValidUuid(userId) || !orderId) {
     return 0;
   }
 
@@ -484,11 +1162,11 @@ export async function mintLotteryTicketsForOrderInSupabase(input: {
   const result = await supabase.rpc("rpc_mint_lottery_tickets", {
     p_user_id: userId,
     p_order_id: orderId,
-    p_order_amount: orderAmount,
+    p_order_amount: toMoney(input.orderAmount),
   });
 
   failIfError(result.error, "rpc_mint_lottery_tickets");
-  return Math.max(0, Math.floor(toNumber(result.data, 0)));
+  return Math.max(0, toInteger(result.data, 0));
 }
 
 export async function grantLotteryTicketsToCustomerInSupabase(input: {
@@ -498,24 +1176,16 @@ export async function grantLotteryTicketsToCustomerInSupabase(input: {
   adminEmail: string;
 }): Promise<number> {
   const userId = input.userId.trim();
-  const ticketCount = Math.floor(Number(input.ticketCount));
-  const reason = toText(input.reason).trim().slice(0, 300);
-  const adminEmail = toText(input.adminEmail).trim().slice(0, 200);
-
   if (!isValidUuid(userId)) {
     throw new Error("Client invalide.");
-  }
-
-  if (!Number.isFinite(ticketCount) || ticketCount < 1 || ticketCount > 200) {
-    throw new Error("Nombre de tickets invalide (1-200).");
   }
 
   const supabase = createSupabaseServiceClient();
   const result = await supabase.rpc("rpc_admin_grant_lottery_tickets", {
     p_user_id: userId,
-    p_ticket_count: ticketCount,
-    p_reason: reason || null,
-    p_admin_email: adminEmail || null,
+    p_ticket_count: Math.floor(input.ticketCount),
+    p_reason: toText(input.reason).trim() || null,
+    p_admin_email: toText(input.adminEmail).trim() || null,
   });
 
   if (result.error) {
@@ -529,7 +1199,7 @@ export async function grantLotteryTicketsToCustomerInSupabase(input: {
     throw new Error(`[supabase:rpc_admin_grant_lottery_tickets] ${message}`);
   }
 
-  return Math.max(0, Math.floor(toNumber(result.data, 0)));
+  return Math.max(0, toInteger(result.data, 0));
 }
 
 export async function getLotteryTicketsForCustomerFromSupabase(userId: string): Promise<LotteryTicket[]> {
@@ -541,108 +1211,748 @@ export async function getLotteryTicketsForCustomerFromSupabase(userId: string): 
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("lottery_tickets")
-    .select(
-      "id,user_id,order_id,ticket_number,order_amount,status,prize_id,is_win,scratched_at,redeemed_at,redeemed_order_id,created_at,lottery_prizes(id,name,description,rarity,image_url,value_euros)",
-    )
+    .select("*")
     .eq("user_id", safeUserId)
     .order("created_at", { ascending: false });
 
   failIfError(result.error, "list lottery_tickets by user");
+  const rows = (result.data ?? []) as Record<string, unknown>[];
+  const scratchedTicketIds = rows
+    .map((row) => toText(row.id))
+    .filter((value) => Boolean(value));
+  const cardIds = new Set<string>();
+  for (const row of rows) {
+    const cardId = toNullableText(row.card_definition_id);
+    if (cardId) {
+      cardIds.add(cardId);
+    }
+  }
 
-  return (result.data ?? []).map((rawRow) => mapTicketRow(rawRow as Record<string, unknown>));
+  const ticketCardMap = new Map<string, Array<{ definitionId: string; packSlot: number }>>();
+  if (scratchedTicketIds.length > 0) {
+    const instanceResult = await supabase
+      .from("lottery_card_instances")
+      .select("ticket_id,pack_slot,card_definition_id")
+      .eq("user_id", safeUserId)
+      .in("ticket_id", scratchedTicketIds);
+
+    failIfError(instanceResult.error, "list lottery_card_instances for tickets");
+    for (const raw of instanceResult.data ?? []) {
+      const row = raw as Record<string, unknown>;
+      const ticketId = toText(row.ticket_id);
+      const definitionId = toText(row.card_definition_id);
+      if (!ticketId || !definitionId) {
+        continue;
+      }
+      cardIds.add(definitionId);
+      const current = ticketCardMap.get(ticketId) ?? [];
+      current.push({
+        definitionId,
+        packSlot: Math.max(1, toInteger(row.pack_slot, current.length + 1)),
+      });
+      ticketCardMap.set(ticketId, current);
+    }
+  }
+
+  const cardMap = new Map<string, LotteryCardDefinition>();
+  if (cardIds.size > 0) {
+    const cardResult = await supabase
+      .from("lottery_card_definitions")
+      .select("*,lottery_card_collections(*)")
+      .in("id", [...cardIds]);
+
+    failIfError(cardResult.error, "list lottery_card_definitions for tickets");
+    for (const raw of cardResult.data ?? []) {
+      const definition = mapCardDefinitionRow(raw as Record<string, unknown>);
+      cardMap.set(definition.id, definition);
+    }
+  }
+
+  const ownedCountByDefinition = new Map<string, number>();
+  for (const entries of ticketCardMap.values()) {
+    for (const entry of entries) {
+      ownedCountByDefinition.set(entry.definitionId, (ownedCountByDefinition.get(entry.definitionId) ?? 0) + 1);
+    }
+  }
+
+  return rows.map((row) => {
+    const ticket = mapTicketRow(row, cardMap.get(toText(row.card_definition_id)));
+    const cards = (ticketCardMap.get(ticket.id) ?? [])
+      .sort((left, right) => left.packSlot - right.packSlot)
+      .map((entry) => {
+        const definition = cardMap.get(entry.definitionId);
+        if (!definition) {
+          return null;
+        }
+
+        return buildCollectedCard(definition, {
+          ownedCount: Math.max(1, ownedCountByDefinition.get(entry.definitionId) ?? 1),
+        });
+      })
+      .filter((value): value is LotteryCollectedCard => value !== null);
+
+    return cards.length > 0 ? { ...ticket, cards } : ticket;
+  });
 }
 
-export async function getRedeemableLotteryTicketBenefitFromSupabase(input: {
+export async function getLotteryInventoryForCustomerFromSupabase(userId: string): Promise<LotteryInventory> {
+  const safeUserId = userId.trim();
+  if (!isValidUuid(safeUserId)) {
+    return {
+      collection: null,
+      cards: [],
+      totalCards: 0,
+      uniqueOwned: 0,
+      totalOwnedCopies: 0,
+      duplicateCopies: 0,
+      completionPercent: 0,
+      byRarity: CARD_RARITIES.map((rarity) => ({
+        rarity,
+        totalCards: 0,
+        ownedUnique: 0,
+        ownedCopies: 0,
+      })),
+      availableClaims: [],
+      earnedLines: [],
+      recentLines: [],
+      frozenLines: [],
+    };
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const [collectionResult, definitionsResult, instancesResult, burnLogsResult, completionsResult] = await Promise.all([
+    supabase
+      .from("lottery_card_collections")
+      .select("*")
+      .eq("is_active", true)
+      .order("created_at", { ascending: true })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("lottery_card_definitions")
+      .select("*,lottery_card_collections(*)")
+      .order("card_number", { ascending: true })
+      .order("created_at", { ascending: true }),
+    supabase
+      .from("lottery_card_instances")
+      .select("card_definition_id,created_at")
+      .eq("user_id", safeUserId),
+    supabase
+      .from("lottery_collection_burn_log")
+      .select("reward_claim_id")
+      .eq("user_id", safeUserId),
+    supabase
+      .from("lottery_collection_page_completions")
+      .select("reward_claim_id")
+      .eq("user_id", safeUserId),
+  ]);
+
+  failIfError(collectionResult.error, "read lottery_card_collections inventory");
+  failIfError(definitionsResult.error, "list lottery_card_definitions inventory");
+  failIfError(instancesResult.error, "list lottery_card_instances inventory");
+
+  const collection = collectionResult.data
+    ? mapCardCollectionRow(collectionResult.data as Record<string, unknown>)
+    : null;
+  const definitions = (definitionsResult.data ?? []).map((row) => mapCardDefinitionRow(row as Record<string, unknown>));
+  const ownedStats = new Map<string, { ownedCount: number; firstOwnedAt?: string; lastOwnedAt?: string }>();
+  for (const raw of instancesResult.data ?? []) {
+    const row = raw as Record<string, unknown>;
+    const definitionId = toText(row.card_definition_id);
+    const createdAt = toText(row.created_at, new Date().toISOString());
+    const current = ownedStats.get(definitionId) ?? { ownedCount: 0 };
+    current.ownedCount += 1;
+    current.firstOwnedAt =
+      !current.firstOwnedAt || createdAt < current.firstOwnedAt ? createdAt : current.firstOwnedAt;
+    current.lastOwnedAt =
+      !current.lastOwnedAt || createdAt > current.lastOwnedAt ? createdAt : current.lastOwnedAt;
+    ownedStats.set(definitionId, current);
+  }
+
+  const cards = definitions.map((definition) => buildCollectedCard(definition, ownedStats.get(definition.id)));
+  const totalOwnedCopies = cards.reduce((sum, card) => sum + card.ownedCount, 0);
+  const uniqueOwned = cards.filter((card) => card.isOwned).length;
+  const totalCards = cards.length;
+  const duplicateCopies = Math.max(0, totalOwnedCopies - uniqueOwned);
+  const completionPercent = totalCards > 0 ? Math.round((uniqueOwned / totalCards) * 100) : 0;
+
+  // Collect all claim IDs from burn logs and page completions
+  const allClaimIds = new Set<string>();
+  for (const raw of (burnLogsResult.data ?? []) as Record<string, unknown>[]) {
+    const claimId = toNullableText(raw.reward_claim_id);
+    if (claimId) allClaimIds.add(claimId);
+  }
+  for (const raw of (completionsResult.data ?? []) as Record<string, unknown>[]) {
+    const claimId = toNullableText(raw.reward_claim_id);
+    if (claimId) allClaimIds.add(claimId);
+  }
+
+  // Fetch available claims
+  const availableClaims: LotteryRewardClaim[] = [];
+  if (allClaimIds.size > 0) {
+    const claimsResult = await supabase
+      .from("lottery_reward_claims")
+      .select("*")
+      .in("id", Array.from(allClaimIds))
+      .eq("status", "available");
+    if (claimsResult.data) {
+      for (const raw of claimsResult.data as Record<string, unknown>[]) {
+        availableClaims.push(mapRewardClaimRow(raw));
+      }
+    }
+  }
+
+  return {
+    collection,
+    cards,
+    totalCards,
+    uniqueOwned,
+    totalOwnedCopies,
+    duplicateCopies,
+    completionPercent,
+    byRarity: CARD_RARITIES.map((rarity) => {
+      const rarityCards = cards.filter((card) => card.rarity === rarity);
+      return {
+        rarity,
+        totalCards: rarityCards.length,
+        ownedUnique: rarityCards.filter((card) => card.isOwned).length,
+        ownedCopies: rarityCards.reduce((sum, card) => sum + card.ownedCount, 0),
+      };
+    }),
+    availableClaims,
+    earnedLines: [],
+    recentLines: [],
+    frozenLines: [],
+  };
+}
+
+export async function burnLotteryRewardLineInSupabase(input: {
   userId: string;
-  ticketId: string;
-}): Promise<{
-  ticketId: string;
-  ticketNumber: string;
-  prizeName: string;
-  prizeDescription: string;
-  benefit: LotteryTicketBenefit;
-} | null> {
+  lineId: string;
+}): Promise<LotteryRewardClaim> {
   const userId = input.userId.trim();
-  const ticketId = input.ticketId.trim();
-  if (!isValidUuid(userId) || !isValidUuid(ticketId)) {
+  const lineId = input.lineId.trim();
+  if (!isValidUuid(userId) || !isValidUuid(lineId)) {
+    throw new Error("Ligne loterie invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase.rpc("rpc_burn_lottery_reward_line", {
+    p_line_id: lineId,
+    p_user_id: userId,
+  });
+
+  if (result.error) {
+    const message = result.error.message || "Burn loterie impossible.";
+    if (message.includes("reward_line_not_found")) {
+      throw new Error("lottery_reward_line_not_found");
+    }
+    if (message.includes("reward_line_unavailable")) {
+      throw new Error("lottery_reward_line_unavailable");
+    }
+    if (message.includes("reward_line_frozen")) {
+      throw new Error("lottery_reward_line_frozen");
+    }
+    throw new Error(`[supabase:rpc_burn_lottery_reward_line] ${message}`);
+  }
+
+  const claimRow =
+    typeof result.data === "object" && result.data !== null
+      ? (result.data as Record<string, unknown>)
+      : null;
+  if (!claimRow) {
+    throw new Error("Bon loterie introuvable.");
+  }
+
+  return mapRewardClaimRow(claimRow);
+}
+
+/* ─────────────────────────────────────────────
+   TCG Collection Album — Supabase adapter
+   ───────────────────────────────────────────── */
+
+export async function getCollectionAlbumForCustomerFromSupabase(
+  userId: string,
+): Promise<LotteryCollectionAlbum> {
+  const safeUserId = userId.trim();
+  const supabase = createSupabaseServiceClient();
+
+  // 1. Fetch collection, definitions, instances, page completions, reward options, burn logs — in parallel
+  const [
+    collectionResult,
+    definitionsResult,
+    instancesResult,
+    completionsResult,
+    rewardOptionsResult,
+    configResult,
+    burnLogsResult,
+  ] = await Promise.all([
+    supabase
+      .from("lottery_card_collections")
+      .select("*")
+      .eq("is_active", true)
+      .order("created_at", { ascending: true })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("lottery_card_definitions")
+      .select("*,lottery_card_collections(*)")
+      .eq("is_active", true)
+      .order("card_number", { ascending: true }),
+    isValidUuid(safeUserId)
+      ? supabase
+          .from("lottery_card_instances")
+          .select("id,card_definition_id,created_at")
+          .eq("user_id", safeUserId)
+      : Promise.resolve({ data: [] as Record<string, unknown>[], error: null }),
+    isValidUuid(safeUserId)
+      ? supabase
+          .from("lottery_collection_page_completions")
+          .select("*")
+          .eq("user_id", safeUserId)
+      : Promise.resolve({ data: [] as Record<string, unknown>[], error: null }),
+    supabase
+      .from("lottery_collection_page_reward_options")
+      .select("*,lottery_reward_definitions(*)")
+      .eq("is_active", true)
+      .order("priority", { ascending: true }),
+    supabase
+      .from("lottery_game_config")
+      .select("collection_title")
+      .eq("id", 1)
+      .maybeSingle(),
+    isValidUuid(safeUserId)
+      ? supabase
+          .from("lottery_collection_burn_log")
+          .select("*")
+          .eq("user_id", safeUserId)
+          .order("created_at", { ascending: false })
+      : Promise.resolve({ data: [] as Record<string, unknown>[], error: null }),
+  ]);
+
+  failIfError(collectionResult.error, "read lottery_card_collections album");
+  failIfError(definitionsResult.error, "list lottery_card_definitions album");
+  failIfError(configResult.error, "read lottery_game_config album title");
+  if ("error" in instancesResult && instancesResult.error) {
+    failIfError(instancesResult.error, "list lottery_card_instances album");
+  }
+
+  const collection = collectionResult.data
+    ? mapCardCollectionRow(collectionResult.data as Record<string, unknown>)
+    : null;
+  const configuredCollectionTitle = toText(
+    (configResult.data as Record<string, unknown> | null)?.collection_title,
+    "",
+  ).trim();
+  const definitions = (definitionsResult.data ?? []).map((row) =>
+    mapCardDefinitionRow(row as Record<string, unknown>),
+  );
+
+  // 2. Build ownership stats per definition + per-definition instance list (for burn)
+  const ownedStats = new Map<string, { ownedCount: number; firstOwnedAt?: string; lastOwnedAt?: string }>();
+  const instancesByDefinition = new Map<string, Array<{ instanceId: string; createdAt: string }>>();
+  for (const raw of (instancesResult.data ?? []) as Record<string, unknown>[]) {
+    const definitionId = toText(raw.card_definition_id);
+    const instanceId = toText(raw.id);
+    const createdAt = toText(raw.created_at, new Date().toISOString());
+    const current = ownedStats.get(definitionId) ?? { ownedCount: 0 };
+    current.ownedCount += 1;
+    current.firstOwnedAt =
+      !current.firstOwnedAt || createdAt < current.firstOwnedAt ? createdAt : current.firstOwnedAt;
+    current.lastOwnedAt =
+      !current.lastOwnedAt || createdAt > current.lastOwnedAt ? createdAt : current.lastOwnedAt;
+    ownedStats.set(definitionId, current);
+    const instances = instancesByDefinition.get(definitionId) ?? [];
+    instances.push({ instanceId, createdAt });
+    instancesByDefinition.set(definitionId, instances);
+  }
+
+  // 3. Build collected cards
+  const cards = definitions.map((def) => buildCollectedCard(def, ownedStats.get(def.id)));
+
+  // 4. Parse completions
+  const completions = new Map<
+    LotteryCardRarity,
+    { completedAt: string; claimedAt?: string; rewardClaimId?: string; selectedRewardDefinitionId?: string }
+  >();
+  for (const raw of (completionsResult.data ?? []) as Record<string, unknown>[]) {
+    const rarity = parseCardRarity(raw.page_rarity);
+    completions.set(rarity, {
+      completedAt: toText(raw.completed_at, new Date().toISOString()),
+      claimedAt: toNullableText(raw.claimed_at),
+      rewardClaimId: toNullableText(raw.reward_claim_id),
+      selectedRewardDefinitionId: toNullableText(raw.selected_reward_definition_id),
+    });
+  }
+
+  // 5. Parse reward options by page rarity
+  const rewardOptionsByRarity = new Map<LotteryCardRarity, LotteryCollectionPageRewardOption[]>();
+  for (const raw of (rewardOptionsResult.data ?? []) as Record<string, unknown>[]) {
+    const rarity = parseCardRarity(raw.page_rarity);
+    const rewardRow =
+      raw.lottery_reward_definitions && typeof raw.lottery_reward_definitions === "object"
+        ? (raw.lottery_reward_definitions as Record<string, unknown>)
+        : null;
+    if (!rewardRow) continue;
+    const list = rewardOptionsByRarity.get(rarity) ?? [];
+    list.push({
+      rewardDefinitionId: toText(rewardRow.id),
+      code: toText(rewardRow.code),
+      title: toText(rewardRow.title),
+      description: toText(rewardRow.description),
+      kind: parseRewardKind(rewardRow.kind),
+      imageUrl: toText(rewardRow.image_url),
+      discountPercent: rewardRow.discount_percent != null ? toNumber(rewardRow.discount_percent) : undefined,
+      giftWeightGrams: rewardRow.gift_weight_grams != null ? toNumber(rewardRow.gift_weight_grams) : undefined,
+      giftProductSku: toNullableText(rewardRow.gift_product_sku),
+      giftLabel: toNullableText(rewardRow.gift_label),
+      customPayload: (rewardRow.custom_payload && typeof rewardRow.custom_payload === "object"
+        ? rewardRow.custom_payload
+        : {}) as Record<string, unknown>,
+      priority: toInteger(raw.priority, 100),
+      isActive: raw.is_active === true,
+    });
+    rewardOptionsByRarity.set(rarity, list);
+  }
+
+  // 6. Parse burn logs → collect claim IDs by rarity
+  const burnClaimsByRarity = new Map<LotteryCardRarity, string[]>();
+  for (const raw of (burnLogsResult.data ?? []) as Record<string, unknown>[]) {
+    const rarity = parseCardRarity(raw.rarity);
+    const claimId = toNullableText(raw.reward_claim_id);
+    if (claimId) {
+      const list = burnClaimsByRarity.get(rarity) ?? [];
+      list.push(claimId);
+      burnClaimsByRarity.set(rarity, list);
+    }
+  }
+
+  // 7. Collect all claim IDs and fetch available claims
+  const allClaimIds = new Set<string>();
+  for (const comp of completions.values()) {
+    if (comp.rewardClaimId) allClaimIds.add(comp.rewardClaimId);
+  }
+  for (const ids of burnClaimsByRarity.values()) {
+    for (const id of ids) allClaimIds.add(id);
+  }
+
+  const claimMap = new Map<string, LotteryRewardClaim>();
+  if (allClaimIds.size > 0) {
+    const claimsResult = await supabase
+      .from("lottery_reward_claims")
+      .select("*")
+      .in("id", Array.from(allClaimIds))
+      .eq("status", "available");
+    if (claimsResult.data) {
+      for (const raw of claimsResult.data as Record<string, unknown>[]) {
+        const claim = mapRewardClaimRow(raw);
+        claimMap.set(claim.id, claim);
+      }
+    }
+  }
+
+  // 8. Build pages
+  const pages: LotteryCollectionPageState[] = LOTTERY_COLLECTION_PAGE_ORDER.map((rarity) => {
+    const meta = LOTTERY_COLLECTION_PAGE_META[rarity];
+    const pageCards = cards.filter((c) => c.rarity === rarity);
+    const totalSlots = pageCards.length;
+    const ownedUnique = pageCards.filter((c) => c.isOwned).length;
+    const ownedCopies = pageCards.reduce((sum, c) => sum + c.ownedCount, 0);
+    const duplicateCopies = Math.max(0, ownedCopies - ownedUnique);
+    const missingCount = totalSlots - ownedUnique;
+    const completionPercent = totalSlots > 0 ? Math.round((ownedUnique / totalSlots) * 100) : 0;
+    const isComplete = totalSlots > 0 && ownedUnique >= totalSlots;
+
+    const comp = completions.get(rarity);
+
+    // Reward status
+    let rewardStatus: LotteryCollectionRewardStatus = "locked";
+    if (comp?.claimedAt) {
+      rewardStatus = "claimed";
+    } else if (isComplete) {
+      rewardStatus = "claimable";
+    }
+
+    // Burn offer (only for burnable rarities)
+    const burnOffer = isBurnableRarity(rarity) ? LOTTERY_DUPLICATE_BURN_RULES[rarity] : null;
+
+    // Slots
+    const slots: LotteryCollectionCardSlot[] = pageCards.map((card, idx) => {
+      const instances = instancesByDefinition.get(card.id) ?? [];
+      // Sort oldest first; first copy is "kept", rest are burnable
+      const sorted = [...instances].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+      const burnableInstances = sorted.slice(1);
+      return {
+        slotIndex: idx + 1,
+        cardDefinitionId: card.id,
+        code: card.code,
+        cardNumber: card.cardNumber,
+        name: card.name,
+        rarity: card.rarity,
+        imageUrl: card.imageUrl,
+        description: card.description,
+        isOwned: card.isOwned,
+        ownedCount: card.ownedCount,
+        burnableCount: burnableInstances.length,
+        burnableInstanceIds: burnableInstances.map((i) => i.instanceId),
+        firstOwnedAt: card.firstOwnedAt,
+        lastOwnedAt: card.lastOwnedAt,
+      };
+    });
+
+    // Duplicate groups (cards with burnableCount > 0, burnable rarities only)
+    const duplicateGroups: LotteryDuplicateGroup[] = isBurnableRarity(rarity)
+      ? slots
+          .filter((s) => s.burnableCount > 0)
+          .map((s) => ({
+            cardDefinitionId: s.cardDefinitionId,
+            code: s.code,
+            cardNumber: s.cardNumber,
+            name: s.name,
+            rarity: rarity as LotteryBurnableRarity,
+            imageUrl: s.imageUrl,
+            duplicateCount: s.burnableCount,
+            burnableInstanceIds: s.burnableInstanceIds,
+          }))
+      : [];
+
+    return {
+      rarity,
+      pageNumber: meta.pageNumber,
+      label: meta.label,
+      title: meta.title,
+      totalSlots,
+      ownedUnique,
+      missingCount,
+      duplicateCopies,
+      completionPercent,
+      isComplete,
+      rewardStatus,
+      completedAt: comp?.completedAt,
+      claimedAt: comp?.claimedAt,
+      selectedRewardDefinitionId: comp?.selectedRewardDefinitionId,
+      rewardClaimId: comp?.rewardClaimId,
+      rewardOptions: rewardOptionsByRarity.get(rarity) ?? [],
+      burnOffer,
+      slots,
+      duplicateGroups,
+    };
+  });
+
+  // 9. Build available claims
+  const availableClaims: LotteryCollectionAvailableClaim[] = [];
+  for (const [rarity, comp] of completions.entries()) {
+    if (comp.rewardClaimId) {
+      const claim = claimMap.get(comp.rewardClaimId);
+      if (claim) {
+        availableClaims.push({ source: "page_completion", sourceRarity: rarity, claim });
+      }
+    }
+  }
+  for (const [rarity, claimIds] of burnClaimsByRarity.entries()) {
+    for (const claimId of claimIds) {
+      const claim = claimMap.get(claimId);
+      if (claim) {
+        availableClaims.push({ source: "duplicate_burn", sourceRarity: rarity, claim });
+      }
+    }
+  }
+
+  // 10. Summary
+  const totalCards = cards.length;
+  const uniqueOwned = cards.filter((c) => c.isOwned).length;
+  const totalOwnedCopies = cards.reduce((sum, c) => sum + c.ownedCount, 0);
+  const summary: LotteryCollectionAlbumSummary = {
+    totalCards,
+    ownedUnique: uniqueOwned,
+    totalOwnedCopies,
+    duplicateCopies: Math.max(0, totalOwnedCopies - uniqueOwned),
+    completionPercent: totalCards > 0 ? Math.round((uniqueOwned / totalCards) * 100) : 0,
+    completedPages: pages.filter((p) => p.isComplete).length,
+    claimablePages: pages.filter((p) => p.rewardStatus === "claimable").length,
+    availableClaims: availableClaims.length,
+  };
+
+  return {
+    collectionId: collection?.id ?? "",
+    collectionCode: collection?.code ?? "HEMP_HEROES_2026",
+    collectionTitle:
+      configuredCollectionTitle.length > 0
+        ? configuredCollectionTitle
+        : (collection?.title ?? "Hemp Heroes 2026 Collection"),
+    isActive: collection?.isActive ?? false,
+    pageOrder: LOTTERY_COLLECTION_PAGE_ORDER,
+    summary,
+    pages,
+    availableClaims,
+    generatedAt: new Date().toISOString(),
+  };
+}
+
+export async function claimCollectionPageRewardFromSupabase(input: {
+  userId: string;
+  pageRarity: LotteryCardRarity;
+  rewardDefinitionId: string;
+}): Promise<LotteryRewardClaim> {
+  const userId = input.userId.trim();
+  if (!isValidUuid(userId)) throw new Error("Identifiant utilisateur invalide.");
+  if (!isValidUuid(input.rewardDefinitionId)) throw new Error("Identifiant de récompense invalide.");
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase.rpc("rpc_claim_collection_page_reward", {
+    p_user_id: userId,
+    p_page_rarity: input.pageRarity,
+    p_reward_definition_id: input.rewardDefinitionId,
+  });
+
+  if (result.error) {
+    const msg = result.error.message || "";
+    if (msg.includes("not_complete")) throw new Error("page_not_complete");
+    if (msg.includes("already_claimed")) throw new Error("page_already_claimed");
+    if (msg.includes("option_not_found") || msg.includes("definition_invalid"))
+      throw new Error("invalid_reward_choice");
+    throw new Error(`[supabase:rpc_claim_collection_page_reward] ${msg}`);
+  }
+
+  const claimRow =
+    result.data && typeof result.data === "object" && !Array.isArray(result.data)
+      ? (result.data as Record<string, unknown>)
+      : null;
+  if (!claimRow) {
+    throw new Error("Réponse invalide du serveur (claim).");
+  }
+
+  return mapRewardClaimRow(claimRow);
+}
+
+export async function burnDuplicateCardsFromSupabase(input: {
+  userId: string;
+  rarity: LotteryBurnableRarity;
+  instanceIds: string[];
+  discountPercent: number;
+}): Promise<LotteryRewardClaim> {
+  const userId = input.userId.trim();
+  if (!isValidUuid(userId)) throw new Error("Identifiant utilisateur invalide.");
+  for (const id of input.instanceIds) {
+    if (!isValidUuid(id)) throw new Error("Identifiant d'instance invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase.rpc("rpc_burn_duplicate_cards", {
+    p_user_id: userId,
+    p_rarity: input.rarity,
+    p_instance_ids: input.instanceIds,
+    p_discount_percent: input.discountPercent,
+  });
+
+  if (result.error) {
+    const msg = result.error.message || "";
+    if (msg.includes("legendary")) throw new Error("burn_legendary_not_allowed");
+    if (msg.includes("exactly")) throw new Error("wrong_instance_count");
+    if (msg.includes("last_copy")) throw new Error("burn_would_remove_last_copy");
+    if (msg.includes("invalid")) throw new Error("invalid_instances");
+    throw new Error(`[supabase:rpc_burn_duplicate_cards] ${msg}`);
+  }
+
+  const claimRow =
+    result.data && typeof result.data === "object" && !Array.isArray(result.data)
+      ? (result.data as Record<string, unknown>)
+      : null;
+  if (!claimRow) {
+    throw new Error("Réponse invalide du serveur (burn claim).");
+  }
+
+  return mapRewardClaimRow(claimRow);
+}
+
+export async function getRedeemableLotteryRewardClaimBenefitFromSupabase(input: {
+  userId: string;
+  claimId: string;
+}): Promise<LotteryRewardClaimBenefit | null> {
+  const userId = input.userId.trim();
+  const claimId = input.claimId.trim();
+  if (!isValidUuid(userId) || !isValidUuid(claimId)) {
     return null;
   }
 
   const supabase = createSupabaseServiceClient();
+  await supabase.rpc("lottery_release_expired_claim_reservations", {
+    p_user_id: userId,
+  });
+
   const result = await supabase
-    .from("lottery_tickets")
-    .select(
-      "id,user_id,ticket_number,status,is_win,scratched_at,redeemed_at,lottery_prizes(name,description)",
-    )
-    .eq("id", ticketId)
+    .from("lottery_reward_claims")
+    .select("*")
+    .eq("id", claimId)
     .eq("user_id", userId)
     .maybeSingle();
 
-  failIfError(result.error, "read redeemable lottery_ticket");
+  failIfError(result.error, "read lottery_reward_claim");
   if (!result.data) {
     return null;
   }
 
-  const row = result.data as Record<string, unknown>;
-  const isWinning = row.is_win === true;
-  const isScratched = toText(row.status) === "scratched";
-  const redeemedAt = toNullableText(row.redeemed_at);
-  const prizeRaw = row.lottery_prizes as Record<string, unknown> | null;
-  const prizeName = toText(prizeRaw?.name).trim();
-  const prizeDescription = toText(prizeRaw?.description).trim();
-
-  if (!isWinning || !isScratched || redeemedAt || !prizeName) {
+  const claim = mapRewardClaimRow(result.data as Record<string, unknown>);
+  if (claim.status !== "available") {
     return null;
   }
 
-  return {
-    ticketId: toText(row.id),
-    ticketNumber: toText(row.ticket_number),
-    prizeName,
-    prizeDescription,
-    benefit: resolveLotteryTicketBenefit({
-      prizeName,
-      prizeDescription,
-    }),
-  };
+  return buildClaimBenefit(claim);
 }
 
-export async function redeemLotteryTicketForOrderInSupabase(input: {
+export async function reserveLotteryRewardClaimForOrderInSupabase(input: {
   userId: string;
-  ticketId: string;
+  claimId: string;
   orderId: string;
-  rewardLabel: string;
 }): Promise<void> {
-  const userId = input.userId.trim();
-  const ticketId = input.ticketId.trim();
-  const orderId = input.orderId.trim();
-  const rewardLabel = toText(input.rewardLabel).trim().slice(0, 240);
-
-  if (!isValidUuid(userId) || !isValidUuid(ticketId) || !orderId) {
-    throw new Error("Payload ticket invalide.");
-  }
-
   const supabase = createSupabaseServiceClient();
-  const result = await supabase.rpc("rpc_redeem_lottery_ticket", {
-    p_ticket_id: ticketId,
-    p_user_id: userId,
-    p_order_id: orderId,
-    p_reward_label: rewardLabel || null,
+  const result = await supabase.rpc("rpc_reserve_lottery_reward_claim", {
+    p_claim_id: input.claimId.trim(),
+    p_user_id: input.userId.trim(),
+    p_order_id: input.orderId.trim(),
+    p_reservation_minutes: 120,
   });
 
   if (result.error) {
-    const message = result.error.message || "Consommation ticket impossible.";
-    if (message.includes("ticket_already_redeemed")) {
-      throw new Error("ticket_already_redeemed");
+    const message = result.error.message || "Reservation lot impossible.";
+    if (message.includes("reward_claim_not_found")) {
+      throw new Error("lottery_reward_claim_not_found");
     }
-    if (message.includes("ticket_not_winning_or_not_scratched")) {
-      throw new Error("ticket_not_redeemable");
+    if (message.includes("reward_claim_unavailable") || message.includes("reward_claim_already_reserved")) {
+      throw new Error("lottery_reward_claim_unavailable");
     }
-    if (message.includes("ticket_not_found")) {
-      throw new Error("ticket_not_found");
-    }
-    throw new Error(`[supabase:rpc_redeem_lottery_ticket] ${message}`);
+    throw new Error(`[supabase:rpc_reserve_lottery_reward_claim] ${message}`);
   }
+}
+
+export async function consumeLotteryRewardClaimsForOrderInSupabase(orderId: string): Promise<number> {
+  const safeOrderId = orderId.trim();
+  if (!safeOrderId) {
+    return 0;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase.rpc("rpc_consume_lottery_reward_claims_for_order", {
+    p_order_id: safeOrderId,
+  });
+
+  failIfError(result.error, "rpc_consume_lottery_reward_claims_for_order");
+  return Math.max(0, toInteger(result.data, 0));
+}
+
+export async function releaseLotteryRewardClaimsForOrderInSupabase(orderId: string): Promise<number> {
+  const safeOrderId = orderId.trim();
+  if (!safeOrderId) {
+    return 0;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase.rpc("rpc_release_lottery_reward_claims_for_order", {
+    p_order_id: safeOrderId,
+  });
+
+  failIfError(result.error, "rpc_release_lottery_reward_claims_for_order");
+  return Math.max(0, toInteger(result.data, 0));
 }
 
 export async function scratchLotteryTicketInSupabase(input: {
@@ -651,7 +1961,6 @@ export async function scratchLotteryTicketInSupabase(input: {
 }): Promise<ScratchResult> {
   const userId = input.userId.trim();
   const ticketId = input.ticketId.trim();
-
   if (!isValidUuid(userId) || !isValidUuid(ticketId)) {
     throw new Error("Ticket invalide.");
   }
@@ -667,143 +1976,177 @@ export async function scratchLotteryTicketInSupabase(input: {
     if (message.includes("ticket_not_found_or_already_scratched")) {
       throw new Error("ticket_not_found_or_already_scratched");
     }
-
     throw new Error(`[supabase:rpc_scratch_ticket] ${message}`);
   }
 
-  const row = Array.isArray(result.data) ? result.data[0] : null;
-  if (!row || typeof row !== "object") {
-    throw new Error("Résultat de grattage introuvable.");
+  const payload = (result.data ?? null) as Record<string, unknown> | null;
+  if (!payload) {
+    throw new Error("Resultat de grattage introuvable.");
   }
 
-  const ticketRow = row as Record<string, unknown>;
-  const isWin = ticketRow.is_win === true;
+  const cardRaw =
+    typeof payload.card === "object" && payload.card !== null
+      ? (payload.card as Record<string, unknown>)
+      : {};
+  const cardsRaw = Array.isArray(payload.cards)
+    ? (payload.cards as Record<string, unknown>[])
+    : cardRaw && Object.keys(cardRaw).length > 0
+      ? [cardRaw]
+      : [];
+  const inventoryRaw =
+    typeof payload.inventory === "object" && payload.inventory !== null
+      ? (payload.inventory as Record<string, unknown>)
+      : {};
+  const scratchedAt = toText(payload.scratchedAt, new Date().toISOString());
+  const cards = cardsRaw.map((raw) => mapScratchCardRow(raw, scratchedAt));
+  const primaryCard = cards[0]
+    ? cardRaw && Object.keys(cardRaw).length > 0
+      ? mapScratchCardRow(cardRaw, scratchedAt, cards[0].ownedCount)
+      : cards[0]
+    : mapScratchCardRow(cardRaw, scratchedAt);
 
   return {
-    ticketId: toText(ticketRow.ticket_id),
-    ticketNumber: toText(ticketRow.ticket_number),
-    isWin,
-    scratchedAt: toText(ticketRow.scratched_at, new Date().toISOString()),
-    prize: isWin
-      ? {
-          id: toText(ticketRow.prize_id),
-          name: toText(ticketRow.prize_name),
-          description: toText(ticketRow.prize_description),
-          rarity: parseRarity(ticketRow.prize_rarity),
-          imageUrl: toText(ticketRow.prize_image_url),
-          valueEuros: toMoney(ticketRow.prize_value_euros),
-        }
-      : undefined,
+    ticketId: toText(payload.ticketId),
+    ticketNumber: toText(payload.ticketNumber),
+    scratchedAt,
+    card: primaryCard,
+    cards: cards.length > 0 ? cards : [primaryCard],
+    inventory: {
+      totalCards: Math.max(0, toInteger(inventoryRaw.totalCards, 0)),
+      uniqueOwned: Math.max(0, toInteger(inventoryRaw.uniqueOwned, 0)),
+      totalOwnedCopies: Math.max(0, toInteger(inventoryRaw.totalOwnedCopies, 0)),
+      duplicateCopies: Math.max(0, toInteger(inventoryRaw.duplicateCopies, 0)),
+      byRarity: {
+        common: Math.max(0, toInteger(inventoryRaw.common, 0)),
+        silver: Math.max(0, toInteger(inventoryRaw.silver, 0)),
+        gold: Math.max(0, toInteger(inventoryRaw.gold, 0)),
+        epic: Math.max(0, toInteger(inventoryRaw.epic, 0)),
+        legendary: Math.max(0, toInteger(inventoryRaw.legendary, 0)),
+      },
+    },
   };
 }
 
 export async function getLotteryStatsFromSupabase(): Promise<LotteryStats> {
   const supabase = createSupabaseServiceClient();
-
   const [
-    totalResult,
-    availableResult,
-    scratchedResult,
-    winsResult,
-    winnersByPrizeResult,
-    recentResult,
+    totalTicketsResult,
+    availableTicketsResult,
+    scratchedTicketsResult,
+    cardDefinitionsResult,
+    cardInstancesResult,
+    recentScratchesResult,
   ] = await Promise.all([
     supabase.from("lottery_tickets").select("id", { count: "exact", head: true }),
+    supabase.from("lottery_tickets").select("id", { count: "exact", head: true }).eq("status", "available"),
+    supabase.from("lottery_tickets").select("id", { count: "exact", head: true }).eq("status", "scratched"),
+    supabase.from("lottery_card_definitions").select("id,rarity"),
+    supabase.from("lottery_card_instances").select("card_definition_id"),
     supabase
       .from("lottery_tickets")
-      .select("id", { count: "exact", head: true })
-      .eq("status", "available"),
-    supabase
-      .from("lottery_tickets")
-      .select("id", { count: "exact", head: true })
-      .eq("status", "scratched"),
-    supabase
-      .from("lottery_tickets")
-      .select("id", { count: "exact", head: true })
-      .eq("is_win", true),
-    supabase
-      .from("lottery_tickets")
-      .select("prize_id,lottery_prizes(name,rarity)")
-      .eq("is_win", true)
-      .not("prize_id", "is", null),
-    supabase
-      .from("lottery_tickets")
-      .select("ticket_number,order_id,scratched_at,is_win,lottery_prizes(name,rarity)")
+      .select("ticket_number,order_id,scratched_at,card_definition_id,card_rarity")
       .eq("status", "scratched")
       .order("scratched_at", { ascending: false })
       .limit(20),
   ]);
 
-  failIfError(totalResult.error, "count lottery_tickets total");
-  failIfError(availableResult.error, "count lottery_tickets available");
-  failIfError(scratchedResult.error, "count lottery_tickets scratched");
-  failIfError(winsResult.error, "count lottery_tickets wins");
-  failIfError(winnersByPrizeResult.error, "list lottery winners by prize");
-  failIfError(recentResult.error, "list lottery recent scratches");
+  failIfError(totalTicketsResult.error, "count lottery tickets total");
+  failIfError(availableTicketsResult.error, "count lottery tickets available");
+  failIfError(scratchedTicketsResult.error, "count lottery tickets scratched");
+  failIfError(cardDefinitionsResult.error, "list lottery card definitions stats");
+  failIfError(cardInstancesResult.error, "list lottery card instances stats");
+  failIfError(recentScratchesResult.error, "list lottery recent scratches");
 
-  const totalTickets = totalResult.count ?? 0;
-  const availableTickets = availableResult.count ?? 0;
-  const scratchedTickets = scratchedResult.count ?? 0;
-  const winningTickets = winsResult.count ?? 0;
-
-  const byPrizeMap = new Map<string, { prizeId: string; prizeName: string; rarity: LotteryPrizeRarity; wins: number }>();
-  const byRarityMap = new Map<LotteryPrizeRarity, number>();
-
-  for (const rawRow of winnersByPrizeResult.data ?? []) {
-    const row = rawRow as Record<string, unknown>;
-    const prizeId = toText(row.prize_id);
-    const prizeRaw = row.lottery_prizes as Record<string, unknown> | null;
-    const prizeName = toText(prizeRaw?.name, "Lot");
-    const rarity = parseRarity(prizeRaw?.rarity);
-
-    if (!prizeId) {
-      continue;
-    }
-
-    const existing = byPrizeMap.get(prizeId);
-    if (existing) {
-      existing.wins += 1;
-    } else {
-      byPrizeMap.set(prizeId, {
-        prizeId,
-        prizeName,
-        rarity,
-        wins: 1,
-      });
-    }
-
-    byRarityMap.set(rarity, (byRarityMap.get(rarity) ?? 0) + 1);
+  const definedByRarity = buildEmptyCardCountByRarity();
+  for (const raw of cardDefinitionsResult.data ?? []) {
+    const row = raw as Record<string, unknown>;
+    definedByRarity[parseCardRarity(row.rarity)] += 1;
   }
 
-  const recentScratches = (recentResult.data ?? []).map((rawRow) => {
-    const row = rawRow as Record<string, unknown>;
-    const prizeRaw = row.lottery_prizes as Record<string, unknown> | null;
+  const ownedCopiesByRarity = buildEmptyCardCountByRarity();
+  const ownedUniqueByDefinition = new Set<string>();
+  for (const raw of cardInstancesResult.data ?? []) {
+    const row = raw as Record<string, unknown>;
+    const definitionId = toText(row.card_definition_id);
+    if (definitionId) {
+      ownedUniqueByDefinition.add(definitionId);
+    }
+  }
 
-    return {
-      ticketNumber: toText(row.ticket_number),
-      orderId: toNullableText(row.order_id),
-      scratchedAt: toText(row.scratched_at, new Date().toISOString()),
-      isWin: row.is_win === true,
-      prizeName: toNullableText(prizeRaw?.name),
-      rarity: prizeRaw?.rarity ? parseRarity(prizeRaw.rarity) : undefined,
-    };
-  });
+  const cardDefinitionMap = new Map<string, LotteryCardRarity>();
+  for (const raw of cardDefinitionsResult.data ?? []) {
+    const row = raw as Record<string, unknown>;
+    cardDefinitionMap.set(toText(row.id), parseCardRarity(row.rarity));
+  }
+
+  const ownedUniqueCountByRarity = buildEmptyCardCountByRarity();
+  for (const definitionId of ownedUniqueByDefinition) {
+    const rarity = cardDefinitionMap.get(definitionId);
+    if (rarity) {
+      ownedUniqueCountByRarity[rarity] += 1;
+    }
+  }
+
+  for (const raw of cardInstancesResult.data ?? []) {
+    const row = raw as Record<string, unknown>;
+    const rarity = cardDefinitionMap.get(toText(row.card_definition_id));
+    if (rarity) {
+      ownedCopiesByRarity[rarity] += 1;
+    }
+  }
+
+  const totalCardDefinitions = (cardDefinitionsResult.data ?? []).length;
+  const uniqueCollectedCards = ownedUniqueByDefinition.size;
+  const totalCollectedCopies = (cardInstancesResult.data ?? []).length;
+  const completionPercent =
+    totalCardDefinitions > 0 ? Math.round((uniqueCollectedCards / totalCardDefinitions) * 100) : 0;
+
+  const recentRows = (recentScratchesResult.data ?? []) as Record<string, unknown>[];
+  const recentCardIds = [
+    ...new Set(
+      recentRows
+        .map((row) => toNullableText(row.card_definition_id))
+        .filter((value): value is string => Boolean(value)),
+    ),
+  ];
+  const recentCardMap = new Map<string, LotteryCardDefinition>();
+  if (recentCardIds.length > 0) {
+    const recentCardResult = await supabase
+      .from("lottery_card_definitions")
+      .select("*,lottery_card_collections(*)")
+      .in("id", recentCardIds);
+    failIfError(recentCardResult.error, "list lottery card definitions recent");
+    for (const raw of recentCardResult.data ?? []) {
+      const definition = mapCardDefinitionRow(raw as Record<string, unknown>);
+      recentCardMap.set(definition.id, definition);
+    }
+  }
 
   return {
-    totalTickets,
-    availableTickets,
-    scratchedTickets,
-    winningTickets,
-    winRate: scratchedTickets > 0 ? Number((winningTickets / scratchedTickets).toFixed(4)) : 0,
-    byRarity: ALLOWED_RARITIES.map((rarity) => ({ rarity, wins: byRarityMap.get(rarity) ?? 0 })),
-    byPrize: [...byPrizeMap.values()].sort((a, b) => b.wins - a.wins),
-    recentScratches,
+    totalTickets: totalTicketsResult.count ?? 0,
+    availableTickets: availableTicketsResult.count ?? 0,
+    scratchedTickets: scratchedTicketsResult.count ?? 0,
+    totalCollectedCopies,
+    uniqueCollectedCards,
+    totalCardDefinitions,
+    completionPercent,
+    byCardRarity: CARD_RARITIES.map((rarity) => ({
+      rarity,
+      defined: definedByRarity[rarity],
+      ownedUnique: ownedUniqueCountByRarity[rarity],
+      ownedCopies: ownedCopiesByRarity[rarity],
+    })),
+    recentScratches: recentRows.map((raw) => {
+      const row = raw as Record<string, unknown>;
+      const card = recentCardMap.get(toText(row.card_definition_id));
+      return {
+        ticketNumber: toText(row.ticket_number),
+        orderId: toNullableText(row.order_id),
+        scratchedAt: toText(row.scratched_at, new Date().toISOString()),
+        cardName: card?.name,
+        cardNumber: card?.cardNumber,
+        cardRarity: row.card_rarity ? parseCardRarity(row.card_rarity) : card?.rarity,
+      };
+    }),
   };
 }
-
-
-
-
-
-
-

@@ -188,7 +188,7 @@ export default async function CgvPage() {
             <section>
               <h2 className="font-display text-2xl">Article 12 - Jeu promotionnel</h2>
               <p className="mt-2">
-                Le site peut proposer un jeu promotionnel de type machine a gratter reserve aux
+                Le site peut proposer un jeu promotionnel de type booster pack reserve aux
                 personnes majeures. Les conditions de participation, les probabilites et les
                 modalites d&apos;attribution des lots sont detaillees dans le{" "}
                 <Link href="/reglement-jeu-promo" className="underline">

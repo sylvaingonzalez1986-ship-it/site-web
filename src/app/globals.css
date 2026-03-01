@@ -368,6 +368,22 @@ h4 {
   padding-left: 0.8rem;
 }
 
+.lottery-slot-footer {
+  min-height: 3.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.lottery-slot-title {
+  display: -webkit-box;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  word-break: break-word;
+}
+
 .cartoon-chip,
 .pill-cartoon {
   display: inline-flex;

@@ -1,5 +1,6 @@
 ﻿import { products } from "@/data/products";
 import { createDefaultPageSections } from "@/data/sections";
+import { DEFAULT_OWN_PRODUCER } from "@/lib/own-producer";
 import type { CmsStore } from "@/types/store";
 
 export const defaultStore: CmsStore = {
@@ -57,6 +58,8 @@ export const defaultStore: CmsStore = {
       copainsSectionTitle: "Le Coin des Copains",
       copainsSectionDescription:
         "Découvre les produits de nos producteurs partenaires partout en France.",
+      ownProducerLabel: "Producteur maison",
+      ownProducer: DEFAULT_OWN_PRODUCER,
       producerPartnerLabel: "Producteur Partenaire",
       producerWebsiteLabel: "Voir le site",
     },

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
 import type { CmsOrder } from "@/types/store";
 import type { PublicCustomer } from "@/types/customer";
-import type { LotteryConfig, LotteryTicket } from "@/types/lottery";
+import type { LotteryConfig, LotteryInventory, LotteryTicket } from "@/types/lottery";
 import type { LoyaltySummary } from "@/types/loyalty";
 
 export function useCustomerSession() {
@@ -14,6 +14,7 @@ export function useCustomerSession() {
   const [orders, setOrders] = useState<CmsOrder[]>([]);
   const [loyalty, setLoyalty] = useState<LoyaltySummary>(buildEmptyLoyaltySummary());
   const [tickets, setTickets] = useState<LotteryTicket[]>([]);
+  const [lotteryInventory, setLotteryInventory] = useState<LotteryInventory | null>(null);
   const [lotteryConfig, setLotteryConfig] = useState<LotteryConfig | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -31,6 +32,7 @@ export function useCustomerSession() {
         setOrders([]);
         setLoyalty(buildEmptyLoyaltySummary());
         setTickets([]);
+        setLotteryInventory(null);
         setLotteryConfig(null);
         return;
       }
@@ -55,12 +57,15 @@ export function useCustomerSession() {
       if (ticketsResponse.ok) {
         const ticketsData = (await ticketsResponse.json()) as {
           tickets?: LotteryTicket[];
+          inventory?: LotteryInventory | null;
           config?: LotteryConfig | null;
         };
         setTickets(ticketsData.tickets ?? []);
+        setLotteryInventory(ticketsData.inventory ?? null);
         setLotteryConfig(ticketsData.config ?? null);
       } else {
         setTickets([]);
+        setLotteryInventory(null);
         setLotteryConfig(null);
       }
     } finally {
@@ -99,6 +104,7 @@ export function useCustomerSession() {
     orders,
     loyalty,
     tickets,
+    lotteryInventory,
     lotteryConfig,
     availableTicketCount: tickets.filter((ticket) => ticket.status === "available").length,
     loading,

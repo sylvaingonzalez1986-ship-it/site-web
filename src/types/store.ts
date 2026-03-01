@@ -250,6 +250,8 @@ export type SiteContent = {
     addButtonLabel: string;
     copainsSectionTitle: string;
     copainsSectionDescription: string;
+    ownProducerLabel: string;
+    ownProducer: Producer;
     producerPartnerLabel: string;
     producerWebsiteLabel: string;
   };

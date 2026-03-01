@@ -127,7 +127,7 @@ export default async function MentionsLegalesPage() {
             <section>
               <h2 className="font-display text-2xl">Jeu promotionnel</h2>
               <p className="mt-2">
-                Le site peut proposer un jeu promotionnel de type &quot;machine a gratter&quot;.
+                Le site peut proposer un jeu promotionnel de type &quot;booster pack&quot;.
               </p>
               <p className="mt-2">
                 Les conditions de participation, la liste des lots et les modalites d&apos;attribution

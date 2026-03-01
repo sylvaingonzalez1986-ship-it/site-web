@@ -34,7 +34,7 @@ type CheckoutButtonProps = {
   items: CheckoutItemPayload[];
   shipping: CheckoutShippingPayload;
   promoCode?: string;
-  lotteryTicketId?: string;
+  lotteryRewardClaimId?: string;
   disabled?: boolean;
   onSuccess?: () => void;
 };
@@ -46,7 +46,7 @@ export function CheckoutButton({
   items,
   shipping,
   promoCode,
-  lotteryTicketId,
+  lotteryRewardClaimId,
   disabled = false,
   onSuccess,
 }: CheckoutButtonProps) {
@@ -86,7 +86,7 @@ export function CheckoutButton({
           relayCity: shipping.relayCity,
           relayCountry: shipping.relayCountry,
           promoCode: promoCode || undefined,
-          lotteryTicketId: lotteryTicketId || undefined,
+          lotteryRewardClaimId: lotteryRewardClaimId || undefined,
         }),
       });
 

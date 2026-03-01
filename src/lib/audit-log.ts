@@ -9,6 +9,7 @@ export type AuditEventType =
   | "upload_product_image"
   | "upload_blog_image"
   | "upload_producer_image"
+  | "upload_lottery_card_image"
   | "upload_product_analysis"
   | "update_store"
   | "update_order"

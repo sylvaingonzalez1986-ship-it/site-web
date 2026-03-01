@@ -1,0 +1,522 @@
+﻿[
+    {
+        "code":  "HH2026-001",
+        "cardNumber":  1,
+        "name":  "L\u0027Arbre Mere - Toutes Varietes",
+        "rarity":  "legendary",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Legendary rarity feeling. Majestic sacred presence, mythic central composition, strongest premium aura. The character has a majestic tree-shaped body with rainbow-colored leaves and holds a glowing earth globe between its hands. Clean bright minimal background with a soft vintage glow and mythic atmosphere. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "La source mythique de tous les cannabinoides. Ce specimen imaginaire contient un spectre complet parfait et concentre l\u0027ADN botanique de toutes les varietes de chanvre existantes.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-002",
+        "cardNumber":  2,
+        "name":  "Charlotte\u0027s Web",
+        "rarity":  "epic",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Epic rarity feeling. Theatrical heroic energy, elevated stage-like composition, premium but not divine. The character sits on a huge golden spider web, wears a superhero cape, and strikes a heroic pose. Clean bright minimal background with subtle theatrical depth and a premium heroic atmosphere. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Variete pionniere mondialement connue pour sa richesse en CBD et son role historique aux Etats-Unis dans la democratisation du chanvre bien-etre.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-003",
+        "cardNumber":  3,
+        "name":  "Cannatonic",
+        "rarity":  "epic",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Epic rarity feeling. Theatrical heroic energy, elevated stage-like composition, premium but not divine. The character wears a majestic wizard cape and juggles several sparkling magic potion bottles. Clean bright minimal background with subtle theatrical depth and a premium heroic atmosphere. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "L\u0027une des toutes premieres varietes espagnoles a offrir un ratio CBD:THC de 1:1, celebre pour ses aromes terriens profonds et boises.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-004",
+        "cardNumber":  4,
+        "name":  "Harlequin",
+        "rarity":  "epic",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Epic rarity feeling. Theatrical heroic energy, elevated stage-like composition, premium but not divine. The character wears a colorful royal jester costume and plays a large lute on a theatrical stage. Clean bright minimal background with subtle theatrical depth and a premium heroic atmosphere. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Souche a dominance sativa extremement reputee pour la constance de ses niveaux de CBD et ses saveurs complexes de mangue douce et de musc.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-005",
+        "cardNumber":  5,
+        "name":  "ACDC",
+        "rarity":  "gold",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Gold rarity feeling. Premium, flashy, energetic, playful collectible mood. The character wears a leather jacket, plays an electric guitar crackling with lightning, and sings into a microphone. Clean bright minimal background with vibrant energy and a premium playful atmosphere. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Phenotype exceptionnel de Cannatonic, cette variete atteint des sommets en concentration de CBD avec un arome distinctif de citronnelle.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-006",
+        "cardNumber":  6,
+        "name":  "Sour Space Candy",
+        "rarity":  "gold",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Gold rarity feeling. Premium, flashy, energetic, playful collectible mood. The character wears a full retro space suit, floats in zero gravity, and bites into a giant candy cane. Clean bright minimal background with vibrant energy and a premium playful atmosphere. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Croisement entre Sour Tsunami et Early Resin Berry, offrant un profil de saveurs unique rappelant les fruits confits et le diesel.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-007",
+        "cardNumber":  7,
+        "name":  "Hawaiian Haze",
+        "rarity":  "gold",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Gold rarity feeling. Premium, flashy, energetic, playful collectible mood. The character wears a vibrant floral shirt, a Hawaiian flower lei, and sips from a coconut through a straw. Clean bright minimal background with vibrant energy and a premium playful atmosphere. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Une variete sativa qui transporte sous les tropiques grace a ses aromes intenses d\u0027ananas, de peche et de fleurs exotiques.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-008",
+        "cardNumber":  8,
+        "name":  "Lifter",
+        "rarity":  "gold",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Gold rarity feeling. Premium, flashy, energetic, playful collectible mood. The character wears a sports headband and triumphantly lifts enormous circus dumbbells. Clean bright minimal background with vibrant energy and a premium playful atmosphere. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Connue pour son effet revigorant sur l\u0027esprit, cette souche degage des aromes puissants de poivre noir et de fromage doux.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-009",
+        "cardNumber":  9,
+        "name":  "Elektra",
+        "rarity":  "gold",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Gold rarity feeling. Premium, flashy, energetic, playful collectible mood. The character wears a superhero eye mask and shoots small lightning bolts from its gloved fingertips. Clean bright minimal background with vibrant energy and a premium playful atmosphere. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Nee du croisement entre ACDC et Early Resin Berry, elle brille par ses notes surprenantes de chocolat, de vin rouge et d\u0027agrumes.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-010",
+        "cardNumber":  10,
+        "name":  "Suver Haze",
+        "rarity":  "silver",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Silver rarity feeling. Elegant, refined, poised, polished vintage charm. The character wears a deerstalker detective hat and carefully examines a leaf with a magnifying glass. Clean bright minimal background with refined vintage atmosphere and very light decorative context. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Riche en farnesene et en caryophyllene, cette souche offre des parfums tres epices et relaxants de pomme verte.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-011",
+        "cardNumber":  11,
+        "name":  "Cherry Wine",
+        "rarity":  "silver",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Silver rarity feeling. Elegant, refined, poised, polished vintage charm. The character elegantly holds a large wine glass filled with sparkling cherry juice. Clean bright minimal background with refined vintage atmosphere and very light decorative context. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Un croisement complexe offrant des aromes profonds de cerises mures, de fromage et de poivre noir.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-012",
+        "cardNumber":  12,
+        "name":  "Ringo\u0027s Gift",
+        "rarity":  "silver",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Silver rarity feeling. Elegant, refined, poised, polished vintage charm. The character happily presents a beautiful wrapped gift box tied with a ribbon. Clean bright minimal background with refined vintage atmosphere and very light decorative context. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Nommee en l\u0027honneur du pionnier cannabique Lawrence Ringo, elle se distingue par un parfum rafraichissant de menthe et de terre.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-013",
+        "cardNumber":  13,
+        "name":  "Remedy",
+        "rarity":  "silver",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Silver rarity feeling. Elegant, refined, poised, polished vintage charm. The character wears a vintage nurse headband and gently holds an oversized old-fashioned thermometer. Clean bright minimal background with refined vintage atmosphere and very light decorative context. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Dominante indica parfaite pour une utilisation en soiree, caracterisee par de doux aromes de citron et de resine de pin.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-014",
+        "cardNumber":  14,
+        "name":  "Sour Tsunami",
+        "rarity":  "silver",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Silver rarity feeling. Elegant, refined, poised, polished vintage charm. The character skillfully surfs on a large stylized wave using a simple wooden board. Clean bright minimal background with refined vintage atmosphere and very light decorative context. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "L\u0027une des toutes premieres varietes stabilisees pour un haut taux de CBD, au gout prononce de diesel et d\u0027agrumes.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-015",
+        "cardNumber":  15,
+        "name":  "Harle-Tsu",
+        "rarity":  "silver",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Silver rarity feeling. Elegant, refined, poised, polished vintage charm. The character wears a slim martial arts headband and stands in a poised fighting stance. Clean bright minimal background with refined vintage atmosphere and very light decorative context. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Croisement prime alliant merveilleusement la douceur de Harlequin au mordant de Sour Tsunami.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-016",
+        "cardNumber":  16,
+        "name":  "Stephen Hawking Kush",
+        "rarity":  "silver",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Silver rarity feeling. Elegant, refined, poised, polished vintage charm. The character wears small round glasses, holds a piece of chalk, and points toward a vintage blackboard. Clean bright minimal background with refined vintage atmosphere and very light decorative context. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Variete sedative a dominance indica, offrant des aromes vibrants de fruits rouges, de cerise et de menthe.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-017",
+        "cardNumber":  17,
+        "name":  "Pennywise",
+        "rarity":  "silver",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Silver rarity feeling. Elegant, refined, poised, polished vintage charm. The character wears a small round clown nose and holds a balloon by its string. Clean bright minimal background with refined vintage atmosphere and very light decorative context. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Croisement entre Harlequin et Jack the Ripper, cette souche surprend par ses aromes torrefies de cafe et de poivre.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-018",
+        "cardNumber":  18,
+        "name":  "Sweet and Sour Widow",
+        "rarity":  "silver",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Silver rarity feeling. Elegant, refined, poised, polished vintage charm. The character wears an elegant black lace widow veil with a mysterious vintage attitude. Clean bright minimal background with refined vintage atmosphere and very light decorative context. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Profil terpenique unique et robuste, degageant des notes etonnantes d\u0027oignon frais et de terre humide.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-019",
+        "cardNumber":  19,
+        "name":  "Special Sauce",
+        "rarity":  "silver",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Silver rarity feeling. Elegant, refined, poised, polished vintage charm. The character proudly holds a ladle dripping with a mysterious glossy sauce. Clean bright minimal background with refined vintage atmosphere and very light decorative context. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Creee en Oregon, celebre pour ses bourgeons resineux et son profil riche en myrcene et farnesene.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-020",
+        "cardNumber":  20,
+        "name":  "Strawberry CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character carries a small wicker basket overflowing with wild strawberries. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Souche tres gourmande dont le bouquet aromatique evoque immanquablement la confiture de fraise et les sous-bois.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-021",
+        "cardNumber":  21,
+        "name":  "Amnesia Haze CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character gently swings a pocket watch from side to side as if playfully hypnotizing someone. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Version repensee (sans THC) de la legendaire sativa hollandaise, conservant ses intenses effluves citronnees.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-022",
+        "cardNumber":  22,
+        "name":  "White Widow CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character is covered with cartoon snowflakes and shivers inside a large cozy scarf. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Une icone celebre pour sa dense couverture de trichomes blancs et son gout boise et epice.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-023",
+        "cardNumber":  23,
+        "name":  "Skywalker OG CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character proudly raises a glowing sci-fi laser sword in a playful heroic pose. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Variete aux notes prononcees de pin, de terre et de carburant, procurant une detente intergalactique profonde.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-024",
+        "cardNumber":  24,
+        "name":  "Bubba Kush CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character wears a small golden crown and a grand ermine royal cape, standing proudly like a tiny cartoon king. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Souche royale indica particulierement reputee pour ses saveurs sombres et profondes de cafe torrefie.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-025",
+        "cardNumber":  25,
+        "name":  "OG Kush CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character wears a thick gold chain and carries a vintage boombox on one shoulder with a cool relaxed attitude. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "La legende de la cote ouest americaine, croisee pour offrir un pur profil chanvrier citronne et boise.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-026",
+        "cardNumber":  26,
+        "name":  "Gelato CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character happily eats a huge three-scoop ice cream cone that is slowly melting. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Le dessert botanique par excellence, melant des saveurs cremeuses, sucrees et des nuances de fruits des bois.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-027",
+        "cardNumber":  27,
+        "name":  "Gorilla Glue CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character has both gloved hands stuck together with thick stretchy glue and pulls hard to separate them. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Connue pour la production d\u0027une resine extremement collante qui embaume le pin citronne.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-028",
+        "cardNumber":  28,
+        "name":  "Blue Dream CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character wears a long sleepy nightcap and lovingly hugs a small fluffy cloud. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Sativa californienne douce et onirique, exhalant de merveilleux aromes de myrtille fraichement cueillie.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-029",
+        "cardNumber":  29,
+        "name":  "Pineapple Express CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character rides a pineapple fitted with small train wheels, sitting on it proudly like a silly tropical vehicle. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Un voyage tropical immediat grace a ses terpenes dominants fruites, melant l\u0027ananas sucre au cedre.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-030",
+        "cardNumber":  30,
+        "name":  "Lemon Haze CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character squeezes a giant lemon with both hands, with eyes comically squinting from the sour intensity. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Explosion d\u0027agrumes vifs, cette souche est plebiscitee en journee pour sa fraicheur et sa vivacite.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-031",
+        "cardNumber":  31,
+        "name":  "Critical Mass CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character wears a yellow construction helmet and innocently holds a large fake stick of dynamite in a playful cartoon way. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Connue pour ses rendements massifs et lourds, exhalant un riche parfum de terre humide.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-032",
+        "cardNumber":  32,
+        "name":  "Super Lemon Haze CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character wears a flowing superhero cape marked with a lemon wedge symbol and strikes a playful heroic pose. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Une variante survitaminee en limonene, offrant un gout tres prononce de citronnade acidulee.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-033",
+        "cardNumber":  33,
+        "name":  "Skunk CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character wears a vintage gas mask hanging around the neck and has a cartoon skunk tail. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Une genetique resolument old-school dont le parfum acre, terreux et piquant reste reconnaissable.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-034",
+        "cardNumber":  34,
+        "name":  "Afghan CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character calmly sits cross-legged while levitating above a beautiful flying carpet. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Heritage botanique pur des montagnes de l\u0027Hindu Kush, offrant des notes resineuses et d\u0027encens lourd.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-035",
+        "cardNumber":  35,
+        "name":  "Cheese CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character proudly holds an enormous yellow cartoon cheese wedge with large round holes. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Genetique d\u0027origine britannique mondialement reconnue pour son parfum tres puissant et muscle de fromage affine.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-036",
+        "cardNumber":  36,
+        "name":  "Mango Haze CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character joyfully juggles three ripe mangoes in the air. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Une pepite tropicale qui entremele la rondeur de la mangue sucree a une subtile touche epicee.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-037",
+        "cardNumber":  37,
+        "name":  "Dinamed CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character proudly holds a large glowing DNA strand like a scientific discovery. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Premiere variete pure CBD creee par Dinafem, reconnue pour sa stabilite genetique et son gout d\u0027orange douce.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-038",
+        "cardNumber":  38,
+        "name":  "Baox",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character holds a rustic old wooden warrior shield in a proud but simple defensive pose. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Croisement entre Hindu Kush et Otto II, c\u0027est une souche robuste aux profils terreux et boises tres marques.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-039",
+        "cardNumber":  39,
+        "name":  "Berry Blossom",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character gently holds a beautiful bouquet of pink flowers mixed with small wild berries. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Hybride tres floral offrant des notes douces de framboise et de pin apaisant.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-040",
+        "cardNumber":  40,
+        "name":  "The Wife",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character wears a vintage floral grandmother-style apron and holds a rolling pin with a warm homey attitude. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Souche mere mythique dans la creation de nombreuses genetiques CBD, celebre pour ses notes de cerise.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-041",
+        "cardNumber":  41,
+        "name":  "Therapy CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character lies comfortably on a tiny psychoanalyst couch while taking notes in a playful self-reflective way. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Creee pour maximiser le potentiel therapeutique sans psychoactivite, elle offre des aromes de fruits tropicaux.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-042",
+        "cardNumber":  42,
+        "name":  "Dancehall",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character wears disco bell-bottom pants and scratches an old vintage turntable with playful rhythm. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Issue de genetiques espagnoles, elle stimule l\u0027humeur avec son arome piquant de poivre et d\u0027ananas.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-043",
+        "cardNumber":  43,
+        "name":  "Frank\u0027s Gift",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character wears a neat bow tie and presents a pretty ribbon-wrapped gift box with a polite cheerful smile. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Phenotype de Skunk Haze offrant des taux de CBD massifs, prisee pour ses effets relaxants corporels.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-044",
+        "cardNumber":  44,
+        "name":  "Valentine X",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character has small wings on its back and shoots a heart-shaped arrow with a bow in a playful cupid-like pose. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Nommee en l\u0027honneur de St. Valentine, c\u0027est une variation puissante d\u0027ACDC au profil de pin parfume.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-045",
+        "cardNumber":  45,
+        "name":  "Carmagnola",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character rolls a large old-fashioned wooden cart wheel like a classic farm-era prop. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Variete italienne historique, l\u0027une des plus anciennes lignees de chanvre, avec des notes tres terreuses.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-046",
+        "cardNumber":  46,
+        "name":  "Cherry Abacus",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character counts on an old-fashioned abacus whose beads are bright red cherries. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Melange parfait entre la genetique Abacus et des notes fruitees de cerise confite et de cola.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-047",
+        "cardNumber":  47,
+        "name":  "Magic Bullet",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character wears a tall magician top hat and pulls out a shiny bullet-shaped object like a stage magic trick. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Variete reputee pour sa croissance rapide et sa forte teneur en myrcene, ideale pour la detente.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-048",
+        "cardNumber":  48,
+        "name":  "Otto II",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character holds an oversized mechanic wrench with greasy hands, like a friendly old-cartoon repairman. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Stabilisee dans le Colorado, elle produit des aromes complexes de poivre noir et de bois de cedre.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-049",
+        "cardNumber":  49,
+        "name":  "Swiss Dream CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character blows with all its strength into a huge wooden alpine horn. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Variete suisse tres florale et epicee, garantissant un taux de THC ultra-bas tout en preservant des aromes forts.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-050",
+        "cardNumber":  50,
+        "name":  "CB Dream",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character proudly holds up a large woven dreamcatcher decorated with feathers. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Hybride doux aux dominantes indica, apprecie pour combattre le stress grace a son profil de pin et de citron.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-051",
+        "cardNumber":  51,
+        "name":  "CBD Kush",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character carries a small oriental lantern releasing a thick soft cloud of smoke. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Fruit d\u0027une collaboration avec CBD Crew, elle croise Kandy Kush pour des saveurs douces et boisees.",
+        "imageUrl":  "",
+        "isActive":  true
+    },
+    {
+        "code":  "HH2026-052",
+        "cardNumber":  52,
+        "name":  "Diesel CBD",
+        "rarity":  "common",
+        "visualPrompt":  "Vertical trading card illustration, 2:3 ratio. 1930s retro cartoon style, rubber hose animation, Cuphead-inspired aesthetic. Anthropomorphic CBD hemp flower character with large expressive black pie-cut eyes, a big cheerful smile, thin black noodle arms and legs, thick white worker gloves, oversized vintage shoes. Very thick black outlines, clean vector-like lineart, flat colors, subtle retro halftone stippling dots for shadows. Common rarity feeling. Simple, charming, approachable, readable everyday cartoon energy. The character proudly leans against an old 1930s vintage gas pump with a relaxed confident attitude. Clean bright minimal background with a subtle vintage setting matching the prop, never cluttered. No text, no logo, no border, no card frame, no watermark, no interface, no extra characters, no realistic rendering, no 3D look. Keep the character centered and highly readable for a collectible card set.",
+        "description":  "Conserve le parfum acre et carburant caracteristique de sa lignee, pour une detente maximale.",
+        "imageUrl":  "",
+        "isActive":  true
+    }
+]

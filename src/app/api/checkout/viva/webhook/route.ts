@@ -2,7 +2,11 @@ import { Buffer } from "node:buffer";
 import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { issueInvoiceForOrder } from "@/lib/invoice-store";
-import { mintLotteryTicketsForOrderByBackend } from "@/lib/lottery-backend";
+import {
+  consumeLotteryRewardClaimsForOrderByBackend,
+  mintLotteryTicketsForOrderByBackend,
+  releaseLotteryRewardClaimsForOrderByBackend,
+} from "@/lib/lottery-backend";
 import { applyOrderLoyaltyBonusByBackend, updateOrderPaymentByVivaOrderCodeByBackend } from "@/lib/order-backend";
 import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
 import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
@@ -232,7 +236,12 @@ export async function POST(request: Request) {
     );
   }
 
+  if (updated.paymentState === "failed") {
+    await releaseLotteryRewardClaimsForOrderByBackend(updated.id);
+  }
+
   if (updated.paymentState === "paid") {
+    await consumeLotteryRewardClaimsForOrderByBackend(updated.id);
     await issueInvoiceForOrder(updated.id);
     await applyOrderLoyaltyBonusByBackend(updated.id);
 

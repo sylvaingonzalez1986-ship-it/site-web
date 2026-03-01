@@ -61,7 +61,7 @@ export default function BoutiquePage() {
   const [showcaseMode, setShowcaseMode] = useState<ShowcaseMode>("products");
   const [selectedOwnProducerId, setSelectedOwnProducerId] = useState<string | null>(null);
   const uniqueProducts = useMemo(() => dedupeProducts(store.products), [store.products]);
-  const ownProducer = useMemo(() => getOwnProducer(), []);
+  const ownProducer = useMemo(() => getOwnProducer(boutique), [boutique]);
 
   const ownProducts = useMemo(
     () =>
@@ -348,7 +348,7 @@ export default function BoutiquePage() {
                     <ProductCard
                       key={product.id}
                       product={product}
-                      producer={resolveProductProducer(product, producersById)}
+                      producer={resolveProductProducer(product, producersById, ownProducer)}
                       addButtonLabel={boutique.addButtonLabel}
                     />
                   ))}
@@ -360,7 +360,7 @@ export default function BoutiquePage() {
                   selectedProducerId={selectedOwnProducerId}
                   productsByProducerId={ownProductsByProducerId}
                   addButtonLabel={boutique.addButtonLabel}
-                  producerPartnerLabel="Producteur maison"
+                  producerPartnerLabel={boutique.ownProducerLabel}
                   producerWebsiteLabel={boutique.producerWebsiteLabel}
                   onClose={() => setSelectedOwnProducerId(null)}
                   onSelectProducer={setSelectedOwnProducerId}

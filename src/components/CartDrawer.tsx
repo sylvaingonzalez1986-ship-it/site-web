@@ -43,10 +43,11 @@ type PromoPreview = {
 };
 
 type LotteryPreview = {
-  ticketId: string;
-  ticketNumber: string;
+  claimId: string;
   rewardType: "discount" | "gift";
-  prizeName: string;
+  rewardTitle: string;
+  rewardDescription: string;
+  generatedCode?: string;
   giftLabel?: string;
   lotteryDiscountPercent: number;
   lotteryDiscountAmount: number;
@@ -69,7 +70,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     removeFromCart,
     clearCart,
   } = useCart();
-  const { user, orders, loyalty, tickets, lotteryConfig, loading: customerSessionLoading } = useCustomerSession();
+  const { user, orders, loyalty, lotteryInventory, lotteryConfig, loading: customerSessionLoading } = useCustomerSession();
   const { store: cmsStore } = useCmsStore();
 
   const [shippingName, setShippingName] = useState("");
@@ -86,7 +87,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const [promoError, setPromoError] = useState<string | null>(null);
   const [promoSuccess, setPromoSuccess] = useState<string | null>(null);
   const [promoPreview, setPromoPreview] = useState<PromoPreview | null>(null);
-  const [selectedLotteryTicketId, setSelectedLotteryTicketId] = useState("");
+  const [selectedLotteryRewardClaimId, setSelectedLotteryRewardClaimId] = useState("");
   const [lotteryLoading, setLotteryLoading] = useState(false);
   const [lotteryError, setLotteryError] = useState<string | null>(null);
   const [lotterySuccess, setLotterySuccess] = useState<string | null>(null);
@@ -131,7 +132,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     () => Number(Math.max(totalPrice - badgeDiscountAmount, 0).toFixed(2)),
     [badgeDiscountAmount, totalPrice],
   );
-  const hasManualDiscountChoice = promoCode.trim().length > 0 || selectedLotteryTicketId.length > 0;
+  const hasManualDiscountChoice = promoCode.trim().length > 0 || selectedLotteryRewardClaimId.length > 0;
   const hasPaidOrders = useMemo(
     () => orders.some((order) => order.paymentState === "paid" || order.paymentState === "not_configured"),
     [orders],
@@ -176,16 +177,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     [referralAutoDiscountAmount, totalAfterBadgeDiscount],
   );
 
-  const redeemableWinningTickets = useMemo(
+  const availableRewardClaims = useMemo(
     () =>
-      tickets.filter(
-        (ticket) =>
-          ticket.status === "scratched" &&
-          ticket.isWin === true &&
-          !ticket.redeemedAt &&
-          Boolean(ticket.prize?.name),
-      ),
-    [tickets],
+      (lotteryInventory?.availableClaims ?? []).filter((claim) => claim.status === "available"),
+    [lotteryInventory?.availableClaims],
   );
 
   useEffect(() => {
@@ -198,17 +193,17 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     setLotteryPreview(null);
     setLotteryError(null);
     setLotterySuccess(null);
-  }, [selectedLotteryTicketId, totalPrice, badgeDiscountPercent]);
+  }, [selectedLotteryRewardClaimId, totalPrice, badgeDiscountPercent]);
 
   useEffect(() => {
     if (
-      selectedLotteryTicketId &&
-      !redeemableWinningTickets.some((ticket) => ticket.id === selectedLotteryTicketId)
+      selectedLotteryRewardClaimId &&
+      !availableRewardClaims.some((claim) => claim.id === selectedLotteryRewardClaimId)
     ) {
-      setSelectedLotteryTicketId("");
+      setSelectedLotteryRewardClaimId("");
       setLotteryPreview(null);
     }
-  }, [redeemableWinningTickets, selectedLotteryTicketId]);
+  }, [availableRewardClaims, selectedLotteryRewardClaimId]);
 
   const checkoutAmount =
     lotteryPreview?.discountedTotal ??
@@ -254,22 +249,35 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     [earnedBaseLoyaltyPoints, earnedProductBonusPoints],
   );
   const lotteryTicketThreshold = useMemo(() => {
-    const threshold = Number(lotteryConfig?.ticketThresholdEuros ?? 20);
+    const threshold = Number(lotteryConfig?.eurosPerTicket ?? 5);
     if (!Number.isFinite(threshold) || threshold <= 0) {
-      return 20;
+      return 5;
     }
 
     return threshold;
-  }, [lotteryConfig?.ticketThresholdEuros]);
+  }, [lotteryConfig?.eurosPerTicket]);
   const estimatedEarnedTickets = useMemo(() => {
     if (!isAuthenticated || !lotteryConfig?.isActive) {
       return 0;
     }
 
-    return Math.floor(Math.max(finalAmountToPay, 0) / lotteryTicketThreshold);
-  }, [finalAmountToPay, isAuthenticated, lotteryConfig?.isActive, lotteryTicketThreshold]);
+    return Math.min(
+      lotteryConfig.maxTicketsPerOrder,
+      Math.floor(Math.max(finalAmountToPay, 0) / lotteryTicketThreshold),
+    );
+  }, [
+    finalAmountToPay,
+    isAuthenticated,
+    lotteryConfig?.isActive,
+    lotteryConfig?.maxTicketsPerOrder,
+    lotteryTicketThreshold,
+  ]);
   const missingForNextTicket = useMemo(() => {
     if (!isAuthenticated || !lotteryConfig?.isActive) {
+      return null;
+    }
+
+    if (estimatedEarnedTickets >= (lotteryConfig?.maxTicketsPerOrder ?? 0)) {
       return null;
     }
 
@@ -277,7 +285,14 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     const remainder = safeAmount % lotteryTicketThreshold;
     const missing = remainder === 0 ? lotteryTicketThreshold : lotteryTicketThreshold - remainder;
     return Number(missing.toFixed(2));
-  }, [finalAmountToPay, isAuthenticated, lotteryConfig?.isActive, lotteryTicketThreshold]);
+  }, [
+    estimatedEarnedTickets,
+    finalAmountToPay,
+    isAuthenticated,
+    lotteryConfig?.isActive,
+    lotteryConfig?.maxTicketsPerOrder,
+    lotteryTicketThreshold,
+  ]);
   const displayedBadgeDiscountPercent =
     lotteryPreview?.badgeDiscountPercent ?? promoPreview?.badgeDiscountPercent ?? badgeDiscountPercent;
   const displayedBadgeDiscountAmount =
@@ -317,8 +332,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     setPromoSuccess(null);
     setLotteryError(null);
 
-    if (selectedLotteryTicketId) {
-      setPromoError("Le ticket gagnant n'est pas cumulable avec un code promo.");
+    if (selectedLotteryRewardClaimId) {
+      setPromoError("Le bon loterie n'est pas cumulable avec un code promo.");
       return;
     }
 
@@ -382,18 +397,18 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     }
   };
 
-  const applyLotteryTicket = async () => {
+  const applyLotteryRewardClaim = async () => {
     setLotteryError(null);
     setLotterySuccess(null);
     setPromoError(null);
 
-    if (!selectedLotteryTicketId) {
-      setLotteryError("Sélectionne un ticket gagnant.");
+    if (!selectedLotteryRewardClaimId) {
+      setLotteryError("Selectionne un bon loterie.");
       return;
     }
 
     if (promoCode.trim()) {
-      setLotteryError("Le ticket gagnant n'est pas cumulable avec un code promo.");
+      setLotteryError("Le bon loterie n'est pas cumulable avec un code promo.");
       return;
     }
 
@@ -405,22 +420,23 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          action: "validate_ticket",
+          action: "validate_reward_claim",
           amount: totalPrice,
           items: items.map((item) => ({
             id: item.id,
             quantity: item.quantity,
           })),
-          lotteryTicketId: selectedLotteryTicketId,
+          lotteryRewardClaimId: selectedLotteryRewardClaimId,
         }),
       });
 
       const data = (await response.json()) as {
         valid?: boolean;
-        ticketId?: string;
-        ticketNumber?: string;
+        claimId?: string;
         rewardType?: "discount" | "gift";
-        prizeName?: string;
+        rewardTitle?: string;
+        rewardDescription?: string;
+        generatedCode?: string;
         giftLabel?: string;
         lotteryDiscountPercent?: number;
         lotteryDiscountAmount?: number;
@@ -430,17 +446,18 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         error?: string;
       };
 
-      if (!response.ok || !data.valid || !data.ticketId || !data.ticketNumber || !data.rewardType || !data.prizeName) {
+      if (!response.ok || !data.valid || !data.claimId || !data.rewardType || !data.rewardTitle) {
         setLotteryPreview(null);
-        setLotteryError(data.error ?? "Ticket gagnant invalide.");
+        setLotteryError(data.error ?? "Bon loterie invalide.");
         return;
       }
 
       setLotteryPreview({
-        ticketId: data.ticketId,
-        ticketNumber: data.ticketNumber,
+        claimId: data.claimId,
         rewardType: data.rewardType,
-        prizeName: data.prizeName,
+        rewardTitle: data.rewardTitle,
+        rewardDescription: data.rewardDescription ?? "",
+        generatedCode: data.generatedCode,
         giftLabel: data.giftLabel,
         lotteryDiscountPercent: data.lotteryDiscountPercent ?? 0,
         lotteryDiscountAmount: data.lotteryDiscountAmount ?? 0,
@@ -453,12 +470,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       setPromoSuccess(null);
       setLotterySuccess(
         data.rewardType === "discount"
-          ? `Ticket ${data.ticketNumber} appliqué (${data.lotteryDiscountPercent ?? 0}% de réduction).`
-          : `Ticket ${data.ticketNumber} appliqué (lot ajouté à la commande).`,
+          ? `Bon ${data.rewardTitle} applique (${data.lotteryDiscountPercent ?? 0}% de reduction).`
+          : `Bon ${data.rewardTitle} applique (cadeau ajoute a la commande).`,
       );
     } catch {
       setLotteryPreview(null);
-      setLotteryError("Impossible de vérifier le ticket gagnant.");
+      setLotteryError("Impossible de verifier le bon loterie.");
     } finally {
       setLotteryLoading(false);
     }
@@ -691,16 +708,16 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                       const value = event.target.value.toUpperCase();
                       setPromoCode(value);
                       if (value.trim()) {
-                        setSelectedLotteryTicketId("");
+                        setSelectedLotteryRewardClaimId("");
                       }
                     }}
                     placeholder="Code promo (optionnel)"
-                    disabled={Boolean(selectedLotteryTicketId)}
+                    disabled={Boolean(selectedLotteryRewardClaimId)}
                   />
                   <button
                     type="button"
                     className="btn-cartoon btn-secondary h-10 px-3 text-xs"
-                    disabled={promoLoading || items.length === 0 || Boolean(selectedLotteryTicketId)}
+                    disabled={promoLoading || items.length === 0 || Boolean(selectedLotteryRewardClaimId)}
                     onClick={applyPromoCode}
                   >
                     {promoLoading ? "..." : "Appliquer"}
@@ -709,10 +726,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 <div className="grid grid-cols-[1fr,auto] gap-2">
                   <select
                     className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
-                    value={selectedLotteryTicketId}
+                    value={selectedLotteryRewardClaimId}
                     onChange={(event) => {
                       const nextId = event.target.value;
-                      setSelectedLotteryTicketId(nextId);
+                      setSelectedLotteryRewardClaimId(nextId);
                       if (nextId) {
                         setPromoCode("");
                         setPromoPreview(null);
@@ -720,22 +737,22 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                         setPromoSuccess(null);
                       }
                     }}
-                    disabled={redeemableWinningTickets.length === 0 || promoCode.trim().length > 0}
+                    disabled={availableRewardClaims.length === 0 || promoCode.trim().length > 0}
                   >
-                    <option value="">Ticket gagnant (optionnel)</option>
-                    {redeemableWinningTickets.map((ticket) => (
-                      <option key={ticket.id} value={ticket.id}>
-                        {ticket.ticketNumber} - {ticket.prize?.name ?? "Lot"}
+                    <option value="">Bon loterie (optionnel)</option>
+                    {availableRewardClaims.map((claim) => (
+                      <option key={claim.id} value={claim.id}>
+                        {claim.reward.title}
                       </option>
                     ))}
                   </select>
                   <button
                     type="button"
                     className="btn-cartoon btn-secondary h-10 px-3 text-xs"
-                    disabled={lotteryLoading || !selectedLotteryTicketId || items.length === 0 || promoCode.trim().length > 0}
-                    onClick={applyLotteryTicket}
+                    disabled={lotteryLoading || !selectedLotteryRewardClaimId || items.length === 0 || promoCode.trim().length > 0}
+                    onClick={applyLotteryRewardClaim}
                   >
-                    {lotteryLoading ? "..." : "Utiliser ticket"}
+                    {lotteryLoading ? "..." : "Utiliser bon"}
                   </button>
                 </div>
                 {promoError && <p className="text-sm font-semibold text-red-700">{promoError}</p>}
@@ -775,13 +792,13 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           )}
           {lotteryPreview?.rewardType === "discount" && (
             <div className="mt-2 text-sm text-green-700">
-              Ticket {lotteryPreview.ticketNumber}: -{formatPrice(lotteryPreview.lotteryDiscountAmount)} (
+              Bon {lotteryPreview.rewardTitle}: -{formatPrice(lotteryPreview.lotteryDiscountAmount)} (
               {lotteryPreview.lotteryDiscountPercent}%)
             </div>
           )}
           {lotteryPreview?.rewardType === "gift" && (
             <div className="mt-2 text-sm text-green-700">
-              Ticket {lotteryPreview.ticketNumber}: lot ajouté ({lotteryPreview.giftLabel ?? lotteryPreview.prizeName})
+              Bon {lotteryPreview.rewardTitle}: lot ajoute ({lotteryPreview.giftLabel ?? lotteryPreview.rewardTitle})
             </div>
           )}
           <div className="mt-2 flex items-center justify-between text-sm text-ink">
@@ -809,11 +826,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           </div>
           <div className="mt-3 rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
             <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">
-              Tickets loterie après achat
+              Packs loterie après achat
             </p>
             {!isAuthenticated ? (
               <p className="mt-1 text-sm text-charcoal">
-                Connecte-toi pour cumuler des tickets.
+                Connecte-toi pour cumuler des packs.
               </p>
             ) : !lotteryConfig ? (
               <p className="mt-1 text-sm text-charcoal">
@@ -826,14 +843,14 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             ) : (
               <>
                 <p className="mt-1 text-sm font-semibold text-ink">
-                  Tu vas gagner {estimatedEarnedTickets} ticket{estimatedEarnedTickets > 1 ? "s" : ""}.
+                  Tu vas gagner {estimatedEarnedTickets} pack{estimatedEarnedTickets > 1 ? "s" : ""}.
                 </p>
                 <p className="mt-1 text-xs text-charcoal">
-                  Règle: 1 ticket par tranche de {formatPrice(lotteryTicketThreshold)} TTC payée.
+                  Règle: 1 pack par tranche de {formatPrice(lotteryTicketThreshold)} TTC payée.
                 </p>
                 {missingForNextTicket !== null && (
                   <p className="mt-1 text-xs text-charcoal">
-                    Encore {formatPrice(missingForNextTicket)} TTC pour 1 ticket supplémentaire.
+                    Encore {formatPrice(missingForNextTicket)} TTC pour 1 pack supplémentaire.
                   </p>
                 )}
               </>
@@ -871,7 +888,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   deliveryMethod === "relay" ? selectedRelayPoint?.country : undefined,
               }}
               promoCode={promoPreview?.code || undefined}
-              lotteryTicketId={lotteryPreview?.ticketId || undefined}
+              lotteryRewardClaimId={lotteryPreview?.claimId || undefined}
               disabled={!canCheckout || authLoading || !isAuthenticated || !checkoutEligibility.allowed}
               onSuccess={() => {
                 clearCart();
@@ -879,7 +896,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 setPromoPreview(null);
                 setPromoError(null);
                 setPromoSuccess(null);
-                setSelectedLotteryTicketId("");
+                setSelectedLotteryRewardClaimId("");
                 setLotteryPreview(null);
                 setLotteryError(null);
                 setLotterySuccess(null);

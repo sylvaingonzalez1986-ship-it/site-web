@@ -19,7 +19,7 @@ export async function POST(
 
   if (!session.customer.dateOfBirth || !isAtLeast18(session.customer.dateOfBirth)) {
     return NextResponse.json(
-      { error: "Grattage reserve aux personnes majeures (18+)." },
+      { error: "Ouverture de pack reservee aux personnes majeures (18+)." },
       { status: 403 },
     );
   }
@@ -35,7 +35,7 @@ export async function POST(
 
   if (!rateLimit.allowed) {
     return NextResponse.json(
-      { error: "Trop de tentatives de grattage. Réessaie dans un instant." },
+      { error: "Trop de tentatives d'ouverture. Reessaie dans un instant." },
       {
         status: 429,
         headers: {
@@ -53,11 +53,11 @@ export async function POST(
 
     return NextResponse.json(result);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Erreur grattage.";
+    const message = error instanceof Error ? error.message : "Erreur ouverture pack.";
 
     if (message.includes("ticket_not_found_or_already_scratched")) {
       return NextResponse.json(
-        { error: "Ticket introuvable ou déjà gratte." },
+        { error: "Pack introuvable ou deja ouvert." },
         { status: 409 },
       );
     }

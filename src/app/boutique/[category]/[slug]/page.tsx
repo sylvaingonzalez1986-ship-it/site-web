@@ -45,7 +45,7 @@ async function findProduct(
 
   const producer = product.producerId
     ? store.producers.find((pr) => pr.id === product.producerId)
-    : getOwnProducer();
+    : getOwnProducer(store.content.boutique);
 
   // Build same-category product list (deduplicated, stable order)
   const seen = new Set<string>();

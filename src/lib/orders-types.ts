@@ -2,6 +2,7 @@ import type { VatRate } from "@/data/products";
 import type { CmsOrder, OrderStatus } from "@/types/store";
 
 export type AppendOrderInput = {
+  orderId?: string;
   items: Array<{
     productId: string;
     name: string;

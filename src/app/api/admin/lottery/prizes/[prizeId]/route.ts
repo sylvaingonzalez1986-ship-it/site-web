@@ -1,29 +1,12 @@
-﻿﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import {
-  deleteLotteryPrizeByBackend,
-  updateLotteryPrizeByBackend,
+  archiveLotteryRewardDefinitionByBackend,
+  updateLotteryRewardDefinitionByBackend,
 } from "@/lib/lottery-backend";
-import type { LotteryPrizeRarity } from "@/types/lottery";
+import type { LotteryRewardKind, LotteryRewardLevel } from "@/types/lottery";
 
 export const runtime = "nodejs";
-
-function normalizeProbabilityInput(value: unknown): number {
-  if (value === undefined) {
-    return NaN;
-  }
-
-  const probability = Number(value);
-  if (!Number.isFinite(probability)) {
-    return NaN;
-  }
-
-  if (probability > 1 && probability <= 100) {
-    return probability / 100;
-  }
-
-  return probability;
-}
 
 export async function PUT(
   request: Request,
@@ -38,32 +21,42 @@ export async function PUT(
 
   try {
     const payload = (await request.json()) as {
-      name: string;
+      code: string;
+      level: LotteryRewardLevel;
+      kind: LotteryRewardKind;
+      title: string;
       description: string;
-      rarity: LotteryPrizeRarity;
-      probability: number;
-      imageUrl: string;
-      valueEuros: number;
-      stock: number | null;
+      imageUrl?: string;
+      discountPercent?: number | null;
+      giftWeightGrams?: number | null;
+      giftProductSku?: string | null;
+      giftLabel?: string | null;
+      customPayload?: Record<string, unknown>;
       isActive: boolean;
+      replacementRewardDefinitionId?: string | null;
     };
 
-    const prize = await updateLotteryPrizeByBackend(prizeId, {
-      name: payload.name,
+    const rewardDefinition = await updateLotteryRewardDefinitionByBackend(prizeId, {
+      code: payload.code,
+      level: payload.level,
+      kind: payload.kind,
+      title: payload.title,
       description: payload.description,
-      rarity: payload.rarity,
-      probability: normalizeProbabilityInput(payload.probability),
       imageUrl: payload.imageUrl,
-      valueEuros: payload.valueEuros,
-      stock: payload.stock,
+      discountPercent: payload.discountPercent,
+      giftWeightGrams: payload.giftWeightGrams,
+      giftProductSku: payload.giftProductSku,
+      giftLabel: payload.giftLabel,
+      customPayload: payload.customPayload,
       isActive: payload.isActive,
+      replacementRewardDefinitionId: payload.replacementRewardDefinitionId,
     });
 
-    if (!prize) {
+    if (!rewardDefinition) {
       return NextResponse.json({ error: "Lot introuvable." }, { status: 404 });
     }
 
-    return NextResponse.json({ prize });
+    return NextResponse.json({ rewardDefinition });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Mise à jour lot impossible.";
     return NextResponse.json({ error: message }, { status: 400 });
@@ -71,7 +64,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ prizeId: string }> },
 ) {
   const denied = await denyIfNotAdminApi();
@@ -82,8 +75,14 @@ export async function DELETE(
   const { prizeId } = await params;
 
   try {
-    const deleted = await deleteLotteryPrizeByBackend(prizeId);
-    if (!deleted) {
+    const payload = (await request.json().catch(() => null)) as
+      | { replacementRewardDefinitionId?: string | null }
+      | null;
+    const archived = await archiveLotteryRewardDefinitionByBackend({
+      rewardId: prizeId,
+      replacementRewardDefinitionId: payload?.replacementRewardDefinitionId,
+    });
+    if (!archived) {
       return NextResponse.json({ error: "Lot introuvable." }, { status: 404 });
     }
 
@@ -93,7 +92,3 @@ export async function DELETE(
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
-
-
-
-

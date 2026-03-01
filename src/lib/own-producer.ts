@@ -1,9 +1,9 @@
 import type { Product } from "@/data/products";
-import type { Producer } from "@/types/store";
+import type { Producer, SiteContent } from "@/types/store";
 
 export const OWN_PRODUCER_ID = "les-chanvriers-bretons";
 
-const OWN_PRODUCER: Producer = {
+export const DEFAULT_OWN_PRODUCER: Producer = {
   id: OWN_PRODUCER_ID,
   name: "Les Chanvriers Bretons",
   description:
@@ -30,16 +30,43 @@ const OWN_PRODUCER: Producer = {
   founded: "2024",
 };
 
-export function getOwnProducer(): Producer {
-  return OWN_PRODUCER;
+export function mergeOwnProducer(value: unknown): Producer {
+  const candidate =
+    value && typeof value === "object" && !Array.isArray(value)
+      ? (value as Partial<Producer>)
+      : {};
+  const socialLinks =
+    candidate.socialLinks && typeof candidate.socialLinks === "object"
+      ? candidate.socialLinks
+      : {};
+
+  return {
+    ...DEFAULT_OWN_PRODUCER,
+    ...candidate,
+    id:
+      typeof candidate.id === "string" && candidate.id.trim().length > 0
+        ? candidate.id.trim()
+        : OWN_PRODUCER_ID,
+    socialLinks: {
+      ...DEFAULT_OWN_PRODUCER.socialLinks,
+      ...socialLinks,
+    },
+  };
+}
+
+export function getOwnProducer(
+  boutique?: Pick<SiteContent["boutique"], "ownProducer"> | null,
+): Producer {
+  return mergeOwnProducer(boutique?.ownProducer);
 }
 
 export function resolveProductProducer(
   product: Product,
   producerById: ReadonlyMap<string, Producer>,
+  ownProducer = DEFAULT_OWN_PRODUCER,
 ): Producer | undefined {
   if (!product.producerId) {
-    return OWN_PRODUCER;
+    return ownProducer;
   }
 
   return producerById.get(product.producerId);
