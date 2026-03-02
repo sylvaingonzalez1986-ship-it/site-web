@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { applyCustomerProfilePatch } from "@/lib/account-profile";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export async function PATCH(request: Request) {
   const session = await getCurrentCustomerSessionByBackend();
@@ -10,9 +10,20 @@ export async function PATCH(request: Request) {
   }
 
   const ip = getRequestIp(request);
-  const rl = await hitRateLimit({ key: `profile_patch:${ip}`, windowSeconds: 300, maxHits: 10 });
+  const rateLimitKey = `profile_patch:${ip}`;
+  const rl = await hitRateLimit({ key: rateLimitKey, windowSeconds: 300, maxHits: 10 });
   if (!rl.allowed) {
-    return NextResponse.json({ error: "Trop de requêtes." }, { status: 429 });
+    logRateLimitRejection({
+      endpoint: "PATCH /api/account/profile",
+      key: rateLimitKey,
+      ip,
+      actorEmail: session.customer.email,
+      retryAfterSeconds: rl.retryAfterSeconds,
+      maxHits: 10,
+      windowSeconds: 300,
+    });
+
+    return NextResponse.json({ error: "Trop de requetes." }, { status: 429 });
   }
 
   try {

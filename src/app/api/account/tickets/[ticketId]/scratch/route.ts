@@ -1,10 +1,10 @@
-﻿﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import {
   getCurrentCustomerSessionByBackend,
   isAtLeast18,
 } from "@/lib/customer-backend";
 import { scratchLotteryTicketByBackend } from "@/lib/lottery-backend";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
 
@@ -14,7 +14,7 @@ export async function POST(
 ) {
   const session = await getCurrentCustomerSessionByBackend();
   if (!session) {
-    return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
+    return NextResponse.json({ error: "Non autorise." }, { status: 401 });
   }
 
   if (!session.customer.dateOfBirth || !isAtLeast18(session.customer.dateOfBirth)) {
@@ -27,13 +27,20 @@ export async function POST(
   const { ticketId } = await params;
 
   const ip = getRequestIp(request);
-  const rateLimit = await hitRateLimit({
-    key: `lottery_scratch:${session.customerId}:${ticketId}:${ip}`,
-    windowSeconds: 1,
-    maxHits: 1,
-  });
+  const rateLimitKey = `lottery_scratch:${session.customerId}:${ticketId}:${ip}`;
+  const rateLimit = await hitRateLimit({ key: rateLimitKey, windowSeconds: 1, maxHits: 1 });
 
   if (!rateLimit.allowed) {
+    logRateLimitRejection({
+      endpoint: "POST /api/account/tickets/[ticketId]/scratch",
+      key: rateLimitKey,
+      ip,
+      actorEmail: session.customer.email,
+      retryAfterSeconds: rateLimit.retryAfterSeconds,
+      maxHits: 1,
+      windowSeconds: 1,
+    });
+
     return NextResponse.json(
       { error: "Trop de tentatives d'ouverture. Reessaie dans un instant." },
       {
@@ -65,5 +72,3 @@ export async function POST(
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
-
-

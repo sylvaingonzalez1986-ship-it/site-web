@@ -1,6 +1,6 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { sendContactRequestEmail } from "@/lib/newsletter-email";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
 
@@ -42,12 +42,19 @@ export async function POST(request: Request) {
     }
 
     const ip = getRequestIp(request);
-    const rateLimit = await hitRateLimit({
-      key: `contact_form:${ip}:${email}`,
-      windowSeconds: 15 * 60,
-      maxHits: 5,
-    });
+    const rateLimitKey = `contact_form:${ip}:${email}`;
+    const rateLimit = await hitRateLimit({ key: rateLimitKey, windowSeconds: 15 * 60, maxHits: 5 });
     if (!rateLimit.allowed) {
+      logRateLimitRejection({
+        endpoint: "POST /api/contact",
+        key: rateLimitKey,
+        ip,
+        actorEmail: email,
+        retryAfterSeconds: rateLimit.retryAfterSeconds,
+        maxHits: 5,
+        windowSeconds: 15 * 60,
+      });
+
       return NextResponse.json(
         { error: "Trop de messages envoyes. Reessaie plus tard." },
         {

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend, isAtLeast18 } from "@/lib/customer-backend";
 import { burnLotteryRewardLineByBackend } from "@/lib/lottery-backend";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
 
@@ -23,13 +23,20 @@ export async function POST(
 
   const { lineId } = await params;
   const ip = getRequestIp(request);
-  const rateLimit = await hitRateLimit({
-    key: `lottery_burn:${session.customerId}:${lineId}:${ip}`,
-    windowSeconds: 10,
-    maxHits: 5,
-  });
+  const rateLimitKey = `lottery_burn:${session.customerId}:${lineId}:${ip}`;
+  const rateLimit = await hitRateLimit({ key: rateLimitKey, windowSeconds: 10, maxHits: 5 });
 
   if (!rateLimit.allowed) {
+    logRateLimitRejection({
+      endpoint: "POST /api/account/lottery/lines/[lineId]/burn",
+      key: rateLimitKey,
+      ip,
+      actorEmail: session.customer.email,
+      retryAfterSeconds: rateLimit.retryAfterSeconds,
+      maxHits: 5,
+      windowSeconds: 10,
+    });
+
     return NextResponse.json(
       { error: "Trop de tentatives. Reessaie dans un instant." },
       {

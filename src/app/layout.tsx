@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, Shrikhand, Space_Grotesk } from "next/font/google";
-import { AgeGateModal } from "@/components/AgeGateModal";
 import { Footer } from "@/components/Footer";
 import {
   LocalBusinessJsonLd,
@@ -129,7 +128,6 @@ export default function RootLayout({
       <body
         className={`${bodyFont.variable} ${displayFont.variable} ${handwrittenFont.variable} bg-mint text-ink antialiased`}
       >
-        <AgeGateModal />
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />
         <WebSiteJsonLd />

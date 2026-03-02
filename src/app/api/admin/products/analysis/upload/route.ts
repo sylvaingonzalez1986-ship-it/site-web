@@ -5,7 +5,7 @@ import {
   ProductAnalysisUploadError,
   saveProductAnalysisUpload,
 } from "@/lib/product-analysis-storage";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
 
@@ -14,9 +14,19 @@ export async function POST(request: Request) {
   if (denied) return denied;
 
   const ip = getRequestIp(request);
-  const rl = await hitRateLimit({ key: `upload_product_analysis:${ip}`, windowSeconds: 60, maxHits: 10 });
+  const rateLimitKey = `upload_product_analysis:${ip}`;
+  const rl = await hitRateLimit({ key: rateLimitKey, windowSeconds: 60, maxHits: 10 });
   if (!rl.allowed) {
-    return NextResponse.json({ error: "Trop de requêtes." }, { status: 429 });
+    logRateLimitRejection({
+      endpoint: "POST /api/admin/products/analysis/upload",
+      key: rateLimitKey,
+      ip,
+      retryAfterSeconds: rl.retryAfterSeconds,
+      maxHits: 10,
+      windowSeconds: 60,
+    });
+
+    return NextResponse.json({ error: "Trop de requetes." }, { status: 429 });
   }
 
   try {
@@ -43,4 +53,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

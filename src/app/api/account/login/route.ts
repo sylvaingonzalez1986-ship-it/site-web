@@ -9,7 +9,8 @@ import {
   clearLegacyCustomerCookie,
   loginCustomerByBackend,
 } from "@/lib/customer-backend";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { logAuditEvent } from "@/lib/audit-log";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export async function POST(request: Request) {
   try {
@@ -25,6 +26,16 @@ export async function POST(request: Request) {
       maxHits: 15,
     });
     if (!rateLimit.allowed) {
+      logRateLimitRejection({
+        endpoint: "POST /api/account/login",
+        key: `account_login:${ip}:${email || "unknown"}`,
+        ip,
+        actorEmail: email || undefined,
+        retryAfterSeconds: rateLimit.retryAfterSeconds,
+        maxHits: 15,
+        windowSeconds: 10 * 60,
+      });
+
       return NextResponse.json(
         { error: "Trop de tentatives. Reessaie plus tard." },
         {
@@ -46,10 +57,24 @@ export async function POST(request: Request) {
     });
 
     if (!result) {
+      logAuditEvent({
+        eventType: "customer_login_failed",
+        actorEmail: email || undefined,
+        ip,
+        metadata: { reason: "invalid_credentials" },
+      });
+
       return NextResponse.json({ error: "Email ou mot de passe invalide." }, { status: 401 });
     }
 
     await clearLegacyCustomerCookie();
+
+    logAuditEvent({
+      eventType: "customer_login",
+      actorEmail: result.customer.email,
+      ip,
+      metadata: { customerId: result.customer.id },
+    });
 
     const response = NextResponse.json({ user: result.customer });
 

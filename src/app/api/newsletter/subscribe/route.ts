@@ -1,10 +1,10 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import {
   markNewsletterSubscriberContactedByBackend,
   subscribeNewsletterByBackend,
 } from "@/lib/newsletter-backend";
 import { sendNewsletterConfirmationEmail } from "@/lib/newsletter-email";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
 
@@ -22,12 +22,19 @@ export async function POST(request: Request) {
     const source = typeof payload.source === "string" ? payload.source : "application";
 
     const ip = getRequestIp(request);
-    const rateLimit = await hitRateLimit({
-      key: `newsletter_subscribe:${ip}:${email || "unknown"}`,
-      windowSeconds: 15 * 60,
-      maxHits: 8,
-    });
+    const rateLimitKey = `newsletter_subscribe:${ip}:${email || "unknown"}`;
+    const rateLimit = await hitRateLimit({ key: rateLimitKey, windowSeconds: 15 * 60, maxHits: 8 });
     if (!rateLimit.allowed) {
+      logRateLimitRejection({
+        endpoint: "POST /api/newsletter/subscribe",
+        key: rateLimitKey,
+        ip,
+        actorEmail: email || undefined,
+        retryAfterSeconds: rateLimit.retryAfterSeconds,
+        maxHits: 8,
+        windowSeconds: 15 * 60,
+      });
+
       return NextResponse.json(
         { error: "Trop de tentatives. Reessaie plus tard." },
         {
@@ -56,7 +63,7 @@ export async function POST(request: Request) {
           ok: false,
           email: result.subscriber.email,
           alreadySubscribed: result.alreadySubscribed,
-          error: "Inscription enregistrée, mais email de confirmation indisponible.",
+          error: "Inscription enregistree, mais email de confirmation indisponible.",
         },
         { status: 503 },
       );
@@ -70,7 +77,7 @@ export async function POST(request: Request) {
   } catch (error) {
     if (error instanceof Error && error.message.includes("rpc_rate_limit_hit")) {
       return NextResponse.json(
-        { error: "Protection anti-abus indisponible. Réessaie plus tard." },
+        { error: "Protection anti-abus indisponible. Reessaie plus tard." },
         { status: 503 },
       );
     }

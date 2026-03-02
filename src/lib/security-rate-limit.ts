@@ -1,5 +1,6 @@
 import "server-only";
 
+import { logAuditEvent } from "@/lib/audit-log";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 
 type RateLimitOptions = {
@@ -14,12 +15,25 @@ type RateLimitDecision = {
   retryAfterSeconds: number;
 };
 
+type RateLimitRejectionLogEntry = {
+  endpoint: string;
+  key: string;
+  ip: string;
+  actorEmail?: string;
+  retryAfterSeconds: number;
+  maxHits: number;
+  windowSeconds: number;
+};
+
 type LocalRateBucket = {
   hits: number;
   startedAt: number;
 };
 
 const LOCAL_BUCKETS = new Map<string, LocalRateBucket>();
+const IPV4_PATTERN =
+  /^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/;
+const IPV6_PATTERN = /^(?:[A-F0-9]{1,4}:){1,7}[A-F0-9]{1,4}$/i;
 
 function sanitizeRateLimitKey(rawKey: string): string {
   return rawKey.trim().slice(0, 180);
@@ -30,7 +44,29 @@ function parseInteger(value: unknown, fallback: number): number {
   return Number.isFinite(parsed) ? Math.floor(parsed) : fallback;
 }
 
-function useLocalFallbackRateLimit(options: RateLimitOptions): RateLimitDecision {
+function normalizeCandidateIp(value: string | null | undefined): string | null {
+  if (!value) {
+    return null;
+  }
+
+  const trimmed = value.trim().slice(0, 128);
+  if (!trimmed || trimmed.toLowerCase() === "unknown") {
+    return null;
+  }
+
+  const bracketless = trimmed.replace(/^\[|\]$/g, "");
+  const withoutPort = bracketless.includes(":") && bracketless.includes(".")
+    ? bracketless.replace(/:\d+$/, "")
+    : bracketless;
+
+  if (IPV4_PATTERN.test(withoutPort) || IPV6_PATTERN.test(withoutPort)) {
+    return withoutPort;
+  }
+
+  return null;
+}
+
+function applyLocalFallbackRateLimit(options: RateLimitOptions): RateLimitDecision {
   const now = Date.now();
   const key = sanitizeRateLimitKey(options.key);
   const existing = LOCAL_BUCKETS.get(key);
@@ -66,10 +102,15 @@ function useLocalFallbackRateLimit(options: RateLimitOptions): RateLimitDecision
 export function getRequestIp(request: Request): string {
   const xForwardedFor = request.headers.get("x-forwarded-for");
   if (xForwardedFor) {
-    return xForwardedFor.split(",")[0]?.trim() || "unknown";
+    for (const candidate of xForwardedFor.split(",")) {
+      const normalized = normalizeCandidateIp(candidate);
+      if (normalized) {
+        return normalized;
+      }
+    }
   }
 
-  return request.headers.get("x-real-ip")?.trim() || "unknown";
+  return normalizeCandidateIp(request.headers.get("x-real-ip")) ?? "unknown";
 }
 
 export async function hitRateLimit(options: RateLimitOptions): Promise<RateLimitDecision> {
@@ -94,7 +135,7 @@ export async function hitRateLimit(options: RateLimitOptions): Promise<RateLimit
       message.includes("rpc_rate_limit_hit") &&
       (message.includes("Could not find") || message.includes("does not exist"))
     ) {
-      return useLocalFallbackRateLimit({
+      return applyLocalFallbackRateLimit({
         key: safeKey,
         windowSeconds: safeWindowSeconds,
         maxHits: safeMaxHits,
@@ -118,4 +159,19 @@ export async function hitRateLimit(options: RateLimitOptions): Promise<RateLimit
     remaining: Math.max(parseInteger(row.remaining, 0), 0),
     retryAfterSeconds: Math.max(parseInteger(row.retry_after_seconds, 0), 0),
   };
+}
+
+export function logRateLimitRejection(entry: RateLimitRejectionLogEntry): void {
+  logAuditEvent({
+    eventType: "rate_limit_rejected",
+    actorEmail: entry.actorEmail,
+    ip: entry.ip,
+    metadata: {
+      endpoint: entry.endpoint.trim().slice(0, 120),
+      key: sanitizeRateLimitKey(entry.key),
+      retryAfterSeconds: Math.max(0, Math.floor(entry.retryAfterSeconds)),
+      maxHits: Math.max(1, Math.floor(entry.maxHits)),
+      windowSeconds: Math.max(1, Math.floor(entry.windowSeconds)),
+    },
+  });
 }

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { logAuditEvent } from "@/lib/audit-log";
 import { getCurrentCustomerSessionByBackend, isAtLeast18 } from "@/lib/customer-backend";
 import { burnDuplicateCardsByBackend } from "@/lib/lottery-backend";
 import { isBurnableRarity, LOTTERY_DUPLICATE_BURN_RULES } from "@/lib/lottery-collection";
@@ -59,6 +60,19 @@ export async function POST(request: NextRequest) {
       rewardChoice,
       discountPercent: burnRules.discountPercent,
       giftWeightGrams: burnRules.giftWeightGrams,
+    });
+
+    logAuditEvent({
+      eventType: "customer_burn_duplicates",
+      actorEmail: session.customer.email,
+      ip,
+      metadata: {
+        customerId: session.customerId,
+        rarity,
+        rewardChoice,
+        instanceCount: instanceIds.length,
+        claimId: claim.id,
+      },
     });
 
     return NextResponse.json({ claim });

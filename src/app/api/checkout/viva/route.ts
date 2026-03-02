@@ -14,10 +14,8 @@ import {
 } from "@/lib/loyalty-tier-benefits";
 import {
   getRedeemableLotteryRewardClaimBenefitByBackend,
-  releaseLotteryRewardClaimsForOrderByBackend,
   reserveLotteryRewardClaimForOrderByBackend,
 } from "@/lib/lottery-backend";
-import { createOrderId } from "@/lib/order-id";
 import { appendOrderByBackend, getCustomerOrdersForLoyaltyByBackend } from "@/lib/order-backend";
 import { getAvailableQuantity } from "@/lib/product-stock";
 import {
@@ -26,13 +24,14 @@ import {
   REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_PERCENT,
 } from "@/lib/referral-first-order-discount";
 import { isReferralFirstOrderDiscountEligibleByBackend } from "@/lib/referral-backend";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import {
   computeShippingFee,
   getShippingPricingConfig,
   type DeliveryMethod,
 } from "@/lib/shipping";
 import { applyDiscountOnLines, computeFromTtc, computeOrderTaxTotals, distributePackDiscount, sanitizeOrderVatRate } from "@/lib/tax";
-import type { CmsStore, PublicStoreResponse } from "@/types/store";
+import type { CmsStore } from "@/types/store";
 
 type CheckoutItemPayload = {
   id: string;
@@ -426,6 +425,7 @@ export async function POST(request: Request) {
   const customer = session?.customer ?? null;
   const promoCode = sanitizePromoCode(payload.promoCode);
   const lotteryRewardClaimId = sanitizeLotteryRewardClaimId(payload.lotteryRewardClaimId);
+  const ip = getRequestIp(request);
 
   if (action === "validate_promo") {
     if (!promoCode) {
@@ -586,6 +586,23 @@ export async function POST(request: Request) {
   if (!customerId || !customer) {
     return NextResponse.json({ error: "Connexion requise pour commander." }, { status: 401 });
   }
+
+  const rateLimitKey = `checkout_viva:${customerId}:${ip}`;
+  const rl = await hitRateLimit({ key: rateLimitKey, windowSeconds: 60, maxHits: 5 });
+  if (!rl.allowed) {
+    logRateLimitRejection({
+      endpoint: "POST /api/checkout/viva",
+      key: rateLimitKey,
+      ip,
+      actorEmail: customer.email,
+      retryAfterSeconds: rl.retryAfterSeconds,
+      maxHits: 5,
+      windowSeconds: 60,
+    });
+
+    return NextResponse.json({ error: "Trop de requetes." }, { status: 429 });
+  }
+
   if (!customer.dateOfBirth) {
     return NextResponse.json(
       { error: "Date de naissance requise pour commander (18+)." },

@@ -1,12 +1,11 @@
 ﻿import "server-only";
 
-import { createHash, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
+import { scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
 
 const scrypt = promisify(scryptCallback);
 
 const HASH_PREFIX = "scrypt";
-const MIN_PASSWORD_LENGTH = 12;
 const MAX_PASSWORD_LENGTH = 256;
 
 type ParsedPasswordHash = {
@@ -14,26 +13,8 @@ type ParsedPasswordHash = {
   derivedKey: Buffer;
 };
 
-function isStrongPassword(value: string): boolean {
-  if (value.length < MIN_PASSWORD_LENGTH) {
-    return false;
-  }
-
-  return (
-    /[a-z]/.test(value) &&
-    /[A-Z]/.test(value) &&
-    /\d/.test(value) &&
-    /[^A-Za-z0-9]/.test(value)
-  );
-}
-
 function getConfiguredAdminPasswordHash(): string | null {
   const value = process.env.ADMIN_PASSWORD_HASH?.trim() ?? "";
-  return value ? value : null;
-}
-
-function getLegacyAdminPassword(): string | null {
-  const value = process.env.ADMIN_PASSWORD?.trim() ?? "";
   return value ? value : null;
 }
 
@@ -60,12 +41,6 @@ function parsePasswordHash(value: string): ParsedPasswordHash | null {
   }
 }
 
-function constantTimeCompareStrings(left: string, right: string): boolean {
-  const leftHash = createHash("sha256").update(left, "utf8").digest();
-  const rightHash = createHash("sha256").update(right, "utf8").digest();
-  return timingSafeEqual(leftHash, rightHash);
-}
-
 async function verifyScryptHash(candidate: string, hashValue: string): Promise<boolean> {
   const parsed = parsePasswordHash(hashValue);
   if (!parsed) {
@@ -90,26 +65,11 @@ export async function verifyAdminPassword(candidate: unknown): Promise<boolean> 
   }
 
   const configuredHash = getConfiguredAdminPasswordHash();
-  if (configuredHash) {
-    return verifyScryptHash(candidate, configuredHash);
-  }
-
-  const legacyPassword = getLegacyAdminPassword();
-  if (!legacyPassword) {
+  if (!configuredHash) {
     throw new Error("ADMIN_PASSWORD_HASH manquant. Definis un hash scrypt pour sécuriser l'accès admin.");
   }
 
-  if (process.env.NODE_ENV === "production") {
-    throw new Error("ADMIN_PASSWORD_HASH obligatoire en production. Le fallback ADMIN_PASSWORD est désactive.");
-  }
-
-  if (!isStrongPassword(legacyPassword)) {
-    throw new Error(
-      `ADMIN_PASSWORD trop faible. Utilise au moins ${MIN_PASSWORD_LENGTH} caracteres avec majuscule, minuscule, chiffre et caractere special.`,
-    );
-  }
-
-  return constantTimeCompareStrings(candidate, legacyPassword);
+  return verifyScryptHash(candidate, configuredHash);
 }
 
 

@@ -6,6 +6,14 @@ export type AuditEventType =
   | "admin_login"
   | "admin_login_failed"
   | "admin_logout"
+  | "customer_login"
+  | "customer_login_failed"
+  | "customer_register"
+  | "customer_bind_referral"
+  | "customer_burn_duplicates"
+  | "customer_claim_reward"
+  | "customer_purchase_packs_with_points"
+  | "rate_limit_rejected"
   | "upload_product_image"
   | "upload_blog_image"
   | "upload_producer_image"
@@ -15,7 +23,8 @@ export type AuditEventType =
   | "update_store"
   | "update_order"
   | "add_promo_code"
-  | "review_mission_submission";
+  | "review_mission_submission"
+  | "welcome_pack_claimed";
 
 type AuditLogEntry = {
   eventType: AuditEventType;

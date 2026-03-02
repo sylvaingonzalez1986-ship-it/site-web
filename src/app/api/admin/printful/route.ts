@@ -4,7 +4,7 @@ import {
   getPrintfulAdminSnapshotByBackend,
   syncPrintfulCatalogByBackend,
 } from "@/lib/printful-backend";
-import { hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
 
@@ -23,7 +23,7 @@ export async function GET() {
   }
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   const denied = await denyIfNotAdminApi();
   if (denied) {
     return denied;
@@ -34,12 +34,24 @@ export async function POST() {
     return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   }
 
+  const ip = getRequestIp(request);
+  const rateLimitKey = `admin:printful:sync:${adminContext.customerId}`;
   const rateLimit = await hitRateLimit({
-    key: `admin:printful:sync:${adminContext.customerId}`,
+    key: rateLimitKey,
     windowSeconds: 600,
     maxHits: 6,
   });
   if (!rateLimit.allowed) {
+    logRateLimitRejection({
+      endpoint: "POST /api/admin/printful",
+      key: rateLimitKey,
+      ip,
+      actorEmail: adminContext.email,
+      retryAfterSeconds: rateLimit.retryAfterSeconds,
+      maxHits: 6,
+      windowSeconds: 600,
+    });
+
     return NextResponse.json(
       {
         error: "Trop de synchronisations. Réessaie dans quelques minutes.",

@@ -20,7 +20,6 @@ import { trackTutorialEvent } from "@/lib/tutorial-analytics";
 import type { CmsPage } from "@/types/cms-pages";
 
 const TUTORIAL_STORAGE_KEY = "lcb_tutorial_state";
-const AGE_GATE_COOKIE_NAME = "age_verified";
 const AUTO_START_DELAY_MS = 1500;
 const CMS_PAGES_UPDATED_EVENT = "lcb:cms-pages-updated";
 const AGE_VERIFIED_EVENT = "lcb:age-verified";
@@ -137,17 +136,6 @@ function resolveTutorialEnabled(): boolean {
   return true;
 }
 
-function hasAgeVerifiedCookie(): boolean {
-  if (typeof document === "undefined") {
-    return false;
-  }
-
-  return document.cookie
-    .split(";")
-    .map((chunk) => chunk.trim())
-    .some((chunk) => chunk === `${AGE_GATE_COOKIE_NAME}=true`);
-}
-
 function clampStepIndex(index: number, totalSteps: number): number {
   const maxIndex = Math.max(totalSteps - 1, 0);
   return Math.min(Math.max(index, 0), maxIndex);
@@ -211,7 +199,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
   const { isAuthenticated, authLoading } = useCart();
   const [tutorialCmsPages, setTutorialCmsPages] = useState<CmsPage[]>([]);
   const [tutorialCmsLoaded, setTutorialCmsLoaded] = useState(false);
-  const [ageVerified, setAgeVerified] = useState<boolean>(() => hasAgeVerifiedCookie());
+  const [ageVerified, setAgeVerified] = useState(false);
   const [state, dispatch] = useReducer(tutorialReducer, INITIAL_TUTORIAL_STATE);
   const isEnabled = useMemo(() => resolveTutorialEnabled(), []);
   const lastViewedStepRef = useRef<string | null>(null);
@@ -254,6 +242,10 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
       window.removeEventListener(AGE_VERIFIED_EVENT, onAgeVerified);
     };
   }, [loadTutorialCmsPages]);
+
+  useEffect(() => {
+    setAgeVerified(pathname !== "/age-gate");
+  }, [pathname]);
 
   const cmsOverriddenTutorialSteps = useMemo(
     () => applyTutorialCmsPageOverrides(HOME_TUTORIAL_STEPS, tutorialCmsPages),

@@ -1,5 +1,5 @@
 export const ADMIN_COOKIE_NAME = "lcb_admin_session";
-export const ADMIN_SESSION_MAX_AGE_SECONDS = 60 * 60 * 12;
+export const ADMIN_SESSION_MAX_AGE_SECONDS = 60 * 60 * 4;
 
 const ADMIN_SESSION_TOKEN_VERSION = 1;
 const DEFAULT_ADMIN_COOKIE_PATH = "/";
@@ -12,7 +12,7 @@ type AdminSessionPayload = {
 
 let cachedSigningKeyPromise: Promise<CryptoKey> | null = null;
 
-function requireEnv(name: "ADMIN_PASSWORD" | "ADMIN_SESSION_SECRET"): string {
+function requireEnv(name: "ADMIN_SESSION_SECRET"): string {
   const value = process.env[name]?.trim();
   if (!value) {
     throw new Error(`${name} manquant.`);
@@ -95,10 +95,6 @@ async function getSigningKey(): Promise<CryptoKey> {
   );
 
   return cachedSigningKeyPromise;
-}
-
-export function getAdminPassword(): string {
-  return requireEnv("ADMIN_PASSWORD");
 }
 
 export async function createAdminSessionToken(

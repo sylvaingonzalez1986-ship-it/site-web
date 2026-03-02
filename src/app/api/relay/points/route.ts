@@ -1,7 +1,7 @@
 ﻿import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import type { MondialRelayPoint } from "@/lib/shipping";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
 
@@ -287,6 +287,15 @@ export async function GET(request: Request) {
       maxHits: 20,
     });
     if (!rateLimit.allowed) {
+      logRateLimitRejection({
+        endpoint: "GET /api/relay/points",
+        key: `relay_lookup:${ip}:${postalCode}`,
+        ip,
+        retryAfterSeconds: rateLimit.retryAfterSeconds,
+        maxHits: 20,
+        windowSeconds: 60,
+      });
+
       return NextResponse.json(
         { error: "Trop de recherches Point Relais. Réessaie dans un instant." },
         {

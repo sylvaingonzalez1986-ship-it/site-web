@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { logAuditEvent } from "@/lib/audit-log";
 import { LotteryCardImageUploadError, saveLotteryCardImageUpload } from "@/lib/lottery-card-image-storage";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
 
@@ -15,8 +15,18 @@ export async function POST(request: Request) {
   const ip = getRequestIp(request);
 
   try {
-    const rl = await hitRateLimit({ key: `upload_lottery_card_image:${ip}`, windowSeconds: 60, maxHits: 10 });
+    const rateLimitKey = `upload_lottery_card_image:${ip}`;
+    const rl = await hitRateLimit({ key: rateLimitKey, windowSeconds: 60, maxHits: 10 });
     if (!rl.allowed) {
+      logRateLimitRejection({
+        endpoint: "POST /api/admin/lottery/cards/upload",
+        key: rateLimitKey,
+        ip,
+        retryAfterSeconds: rl.retryAfterSeconds,
+        maxHits: 10,
+        windowSeconds: 60,
+      });
+
       return NextResponse.json({ error: "Trop de requetes." }, { status: 429 });
     }
 

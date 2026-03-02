@@ -4,7 +4,7 @@ import {
   publishPrintfulProductToStoreByBackend,
   unpublishPrintfulProductFromStoreByBackend,
 } from "@/lib/printful-backend";
-import { hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
 
@@ -23,7 +23,7 @@ function parseSyncProductId(raw: string): number | null {
 }
 
 export async function PUT(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ syncProductId: string }> },
 ) {
   const denied = await denyIfNotAdminApi();
@@ -42,12 +42,24 @@ export async function PUT(
     return NextResponse.json({ error: "Produit Printful invalide." }, { status: 400 });
   }
 
+  const ip = getRequestIp(request);
+  const publishRateLimitKey = `admin:printful:publish-product:${adminContext.customerId}`;
   const rateLimit = await hitRateLimit({
-    key: `admin:printful:publish-product:${adminContext.customerId}`,
+    key: publishRateLimitKey,
     windowSeconds: 60,
     maxHits: 100,
   });
   if (!rateLimit.allowed) {
+    logRateLimitRejection({
+      endpoint: "PUT /api/admin/printful/products/[syncProductId]",
+      key: publishRateLimitKey,
+      ip,
+      actorEmail: adminContext.email,
+      retryAfterSeconds: rateLimit.retryAfterSeconds,
+      maxHits: 100,
+      windowSeconds: 60,
+    });
+
     return NextResponse.json({ error: "Trop d'actions. Ralentis." }, { status: 429 });
   }
 
@@ -63,7 +75,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ syncProductId: string }> },
 ) {
   const denied = await denyIfNotAdminApi();
@@ -82,12 +94,24 @@ export async function DELETE(
     return NextResponse.json({ error: "Produit Printful invalide." }, { status: 400 });
   }
 
+  const ip = getRequestIp(request);
+  const unpublishRateLimitKey = `admin:printful:unpublish-product:${adminContext.customerId}`;
   const rateLimit = await hitRateLimit({
-    key: `admin:printful:unpublish-product:${adminContext.customerId}`,
+    key: unpublishRateLimitKey,
     windowSeconds: 60,
     maxHits: 100,
   });
   if (!rateLimit.allowed) {
+    logRateLimitRejection({
+      endpoint: "DELETE /api/admin/printful/products/[syncProductId]",
+      key: unpublishRateLimitKey,
+      ip,
+      actorEmail: adminContext.email,
+      retryAfterSeconds: rateLimit.retryAfterSeconds,
+      maxHits: 100,
+      windowSeconds: 60,
+    });
+
     return NextResponse.json({ error: "Trop d'actions. Ralentis." }, { status: 429 });
   }
 

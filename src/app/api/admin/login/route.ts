@@ -1,27 +1,14 @@
-import { Buffer } from "node:buffer";
-import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import {
   ADMIN_COOKIE_NAME,
   createAdminSessionToken,
   getAdminCookieOptions,
-  getAdminPassword,
 } from "@/lib/admin-auth";
 import { isAllowedAdminEmail, normalizeEmail } from "@/lib/admin-allowlist";
 import { logAuditEvent } from "@/lib/audit-log";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
-
-function safePasswordEquals(received: string, expected: string): boolean {
-  const receivedBuffer = Buffer.from(received);
-  const expectedBuffer = Buffer.from(expected);
-
-  if (receivedBuffer.length !== expectedBuffer.length) {
-    return false;
-  }
-
-  return timingSafeEqual(receivedBuffer, expectedBuffer);
-}
+import { verifyAdminPassword } from "@/lib/admin-password";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export async function POST(request: Request) {
   try {
@@ -32,6 +19,15 @@ export async function POST(request: Request) {
       maxHits: 10,
     });
     if (!rateLimit.allowed) {
+      logRateLimitRejection({
+        endpoint: "POST /api/admin/login",
+        key: `admin_login:${ip}`,
+        ip,
+        retryAfterSeconds: rateLimit.retryAfterSeconds,
+        maxHits: 10,
+        windowSeconds: 10 * 60,
+      });
+
       return NextResponse.json(
         { error: "Trop de tentatives. Reessaie plus tard." },
         {
@@ -44,7 +40,6 @@ export async function POST(request: Request) {
     }
 
     const payload = (await request.json()) as { password?: string };
-    const configuredPassword = getAdminPassword();
     const customerSession = await getCurrentCustomerSessionByBackend();
     const sessionEmail = normalizeEmail(customerSession?.customer.email);
 
@@ -56,7 +51,8 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!payload.password || !safePasswordEquals(payload.password, configuredPassword)) {
+    const passwordValid = await verifyAdminPassword(payload.password);
+    if (!passwordValid) {
       logAuditEvent({ eventType: "admin_login_failed", actorEmail: sessionEmail, ip, metadata: { reason: "wrong_password" } });
       return NextResponse.json({ error: "Mot de passe invalide." }, { status: 401 });
     }

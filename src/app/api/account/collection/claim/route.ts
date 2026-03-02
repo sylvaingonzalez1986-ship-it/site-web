@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { logAuditEvent } from "@/lib/audit-log";
 import { getCurrentCustomerSessionByBackend, isAtLeast18 } from "@/lib/customer-backend";
 import { claimCollectionPageRewardByBackend } from "@/lib/lottery-backend";
 import { isValidCollectionPageRarity } from "@/lib/lottery-collection";
@@ -53,6 +54,18 @@ export async function POST(request: NextRequest) {
       userId: session.customerId,
       pageRarity,
       rewardDefinitionId,
+    });
+
+    logAuditEvent({
+      eventType: "customer_claim_reward",
+      actorEmail: session.customer.email,
+      ip,
+      metadata: {
+        customerId: session.customerId,
+        pageRarity,
+        rewardDefinitionId,
+        claimId: claim.id,
+      },
     });
 
     return NextResponse.json({ claim });

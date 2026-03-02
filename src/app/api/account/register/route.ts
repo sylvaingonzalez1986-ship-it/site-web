@@ -11,7 +11,8 @@ import {
   normalizeDateOfBirth,
   registerCustomerByBackend,
 } from "@/lib/customer-backend";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { logAuditEvent } from "@/lib/audit-log";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export async function POST(request: Request) {
   try {
@@ -36,6 +37,16 @@ export async function POST(request: Request) {
       maxHits: 10,
     });
     if (!rateLimit.allowed) {
+      logRateLimitRejection({
+        endpoint: "POST /api/account/register",
+        key: `account_register:${ip}:${email || "unknown"}`,
+        ip,
+        actorEmail: email || undefined,
+        retryAfterSeconds: rateLimit.retryAfterSeconds,
+        maxHits: 10,
+        windowSeconds: 15 * 60,
+      });
+
       return NextResponse.json(
         { error: "Trop de tentatives. Reessaie plus tard." },
         {
@@ -77,6 +88,16 @@ export async function POST(request: Request) {
     });
 
     await clearLegacyCustomerCookie();
+
+    logAuditEvent({
+      eventType: "customer_register",
+      actorEmail: result.customer.email,
+      ip,
+      metadata: {
+        customerId: result.customer.id,
+        usedReferralCode: Boolean(payload.referralCode?.trim()),
+      },
+    });
 
     const response = NextResponse.json({ user: result.customer });
 

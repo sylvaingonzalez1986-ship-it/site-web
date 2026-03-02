@@ -13,6 +13,7 @@ export async function POST(request: Request) {
   response.cookies.set({
     name: AGE_GATE_COOKIE_NAME,
     value: "true",
+    httpOnly: true,
     maxAge: AGE_GATE_MAX_AGE_SECONDS,
     path: "/",
     sameSite: "lax",

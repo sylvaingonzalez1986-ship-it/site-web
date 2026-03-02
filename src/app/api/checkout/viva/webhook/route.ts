@@ -9,7 +9,7 @@ import {
 } from "@/lib/lottery-backend";
 import { applyOrderLoyaltyBonusByBackend, updateOrderPaymentByVivaOrderCodeByBackend } from "@/lib/order-backend";
 import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { claimWebhookEvent } from "@/lib/webhook-idempotency";
 
 export const runtime = "nodejs";
@@ -160,6 +160,15 @@ export async function POST(request: Request) {
   }
 
   if (!rateLimit.allowed) {
+    logRateLimitRejection({
+      endpoint: "POST /api/checkout/viva/webhook",
+      key: `viva_webhook:${ip}`,
+      ip,
+      retryAfterSeconds: rateLimit.retryAfterSeconds,
+      maxHits: 120,
+      windowSeconds: 60,
+    });
+
     return NextResponse.json(
       { error: "Trop de requetes webhook." },
       {

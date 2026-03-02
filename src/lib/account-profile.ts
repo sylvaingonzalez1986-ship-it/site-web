@@ -14,26 +14,74 @@ export type CustomerProfilePatch = {
   country?: string;
 };
 
+function expectOptionalString(
+  source: Record<string, unknown>,
+  key: keyof CustomerProfilePatch,
+  options?: {
+    maxLength?: number;
+    pattern?: RegExp;
+    errorMessage?: string;
+  },
+): string | undefined {
+  const value = source[key];
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  if (options?.maxLength && trimmed.length > options.maxLength) {
+    throw new Error(options.errorMessage ?? `Champ ${String(key)} trop long.`);
+  }
+  if (trimmed && options?.pattern && !options.pattern.test(trimmed)) {
+    throw new Error(options.errorMessage ?? `Champ ${String(key)} invalide.`);
+  }
+
+  return value;
+}
+
 export function parseCustomerProfilePatch(payload: unknown): CustomerProfilePatch {
   const source =
     payload && typeof payload === "object"
       ? (payload as Record<string, unknown>)
       : {};
 
-  const readString = (key: keyof CustomerProfilePatch): string | undefined => {
-    const value = source[key];
-    return typeof value === "string" ? value : undefined;
-  };
-
   return {
-    firstName: readString("firstName"),
-    lastName: readString("lastName"),
-    dateOfBirth: readString("dateOfBirth"),
-    phone: readString("phone"),
-    address: readString("address"),
-    city: readString("city"),
-    postalCode: readString("postalCode"),
-    country: readString("country"),
+    firstName: expectOptionalString(source, "firstName", {
+      maxLength: 80,
+      errorMessage: "Prenom trop long.",
+    }),
+    lastName: expectOptionalString(source, "lastName", {
+      maxLength: 80,
+      errorMessage: "Nom trop long.",
+    }),
+    dateOfBirth: expectOptionalString(source, "dateOfBirth", {
+      maxLength: 10,
+      pattern: /^\d{4}-\d{2}-\d{2}$/,
+      errorMessage: "Date de naissance invalide.",
+    }),
+    phone: expectOptionalString(source, "phone", {
+      maxLength: 40,
+      pattern: /^[\d+().\-\s]*$/,
+      errorMessage: "Telephone invalide.",
+    }),
+    address: expectOptionalString(source, "address", {
+      maxLength: 180,
+      errorMessage: "Adresse trop longue.",
+    }),
+    city: expectOptionalString(source, "city", {
+      maxLength: 120,
+      errorMessage: "Ville trop longue.",
+    }),
+    postalCode: expectOptionalString(source, "postalCode", {
+      maxLength: 16,
+      pattern: /^[A-Za-z0-9\s-]*$/,
+      errorMessage: "Code postal invalide.",
+    }),
+    country: expectOptionalString(source, "country", {
+      maxLength: 80,
+      pattern: /^[A-Za-zÀ-ÿ\s.'-]*$/u,
+      errorMessage: "Pays invalide.",
+    }),
   };
 }
 
