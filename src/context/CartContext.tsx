@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname } from "next/navigation";
 import type { Product } from "@/data/products";
 import { getSelectableVariantOptions } from "@/lib/product-stock";
 import type { PublicCustomer } from "@/types/customer";
@@ -26,7 +25,6 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
   const [items, setItems] = useState<CartLine[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
@@ -64,7 +62,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return () => {
       mounted = false;
     };
-  }, [pathname]);
+  }, []);
 
   const addToCart = (product: Product, variantId?: string, quantity: number = 1): boolean => {
     if (!isAuthenticated) {

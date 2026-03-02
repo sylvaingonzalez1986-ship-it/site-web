@@ -3,6 +3,10 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { mkdir, readdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
+import {
+  ProductAnalysisRedactionError,
+  sanitizeProductAnalysisPdf,
+} from "@/lib/product-analysis-redaction";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import {
   PRODUCT_ANALYSIS_PUBLIC_UPLOAD_PREFIX,
@@ -83,7 +87,7 @@ function isSupportedRemotePdfUrl(filePath: string): boolean {
   }
 }
 
-function useSupabaseStorageBackend(): boolean {
+function isSupabaseStorageBackendEnabled(): boolean {
   return true;
 }
 
@@ -164,13 +168,26 @@ export async function saveProductAnalysisUpload(file: File): Promise<string> {
     );
   }
 
+  let uploadBytes = Buffer.from(arrayBuffer);
+
+  try {
+    const sanitized = await sanitizeProductAnalysisPdf(bytes);
+    uploadBytes = Buffer.from(sanitized.bytes);
+  } catch (error) {
+    if (error instanceof ProductAnalysisRedactionError) {
+      throw new ProductAnalysisUploadError(error.message, 422);
+    }
+
+    throw error;
+  }
+
   const fileName = `${randomUUID()}.${detected.extension}`;
 
-  if (useSupabaseStorageBackend()) {
+  if (isSupabaseStorageBackendEnabled()) {
     const supabase = createSupabaseServiceClient();
     const uploadResult = await supabase.storage
       .from(PRODUCT_ANALYSIS_BUCKET)
-      .upload(fileName, Buffer.from(arrayBuffer), {
+      .upload(fileName, uploadBytes, {
         contentType: detected.mimeType,
         upsert: false,
       });
@@ -192,13 +209,13 @@ export async function saveProductAnalysisUpload(file: File): Promise<string> {
 
   await mkdir(PRODUCT_ANALYSIS_UPLOAD_DIR, { recursive: true });
   const targetPath = path.join(PRODUCT_ANALYSIS_UPLOAD_DIR, fileName);
-  await writeFile(targetPath, Buffer.from(arrayBuffer));
+  await writeFile(targetPath, uploadBytes);
 
   return `${PRODUCT_ANALYSIS_PUBLIC_UPLOAD_PREFIX}${fileName}`;
 }
 
 export async function cleanupUnusedProductAnalyses(filePaths: string[]): Promise<void> {
-  if (useSupabaseStorageBackend()) {
+  if (isSupabaseStorageBackendEnabled()) {
     const supabase = createSupabaseServiceClient();
     const referencedObjects = new Set(
       filePaths

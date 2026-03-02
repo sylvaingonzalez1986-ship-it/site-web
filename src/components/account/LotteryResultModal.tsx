@@ -56,8 +56,7 @@ export function LotteryResultSummary({ result }: LotteryResultSummaryProps) {
               key={`${card.id}-${index}`}
               className={`rounded-[18px] border-2 border-[#1a1a1a] p-3 shadow-[6px_6px_0_rgba(26,26,26,0.15)] ${rarityBadgeClasses[card.rarity]}`}
             >
-              <div className="flex items-start justify-between gap-3">
-                <p className="truncate text-[10px] font-black uppercase tracking-[0.1em]">{card.collectionTitle}</p>
+              <div className="flex items-start justify-end gap-3">
                 <span className="rounded-full border-2 border-current px-2 py-1 text-[10px] font-black">
                   #{card.cardNumber}
                 </span>

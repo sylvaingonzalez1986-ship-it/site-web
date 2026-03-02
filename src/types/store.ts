@@ -63,6 +63,7 @@ export type CmsOrder = {
   relayPostalCode?: string;
   relayCity?: string;
   relayCountry?: string;
+  trackingNumber?: string;
   promoCode?: string;
   discountPercent?: number;
   discountAmount?: number;

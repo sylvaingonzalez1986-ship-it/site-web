@@ -6,6 +6,7 @@ import type {
   LotteryAlbumPageSlot,
   LotteryAlbumPageWithSlots,
   LotteryBurnableRarity,
+  LotteryDuplicateBurnChoice,
   LotteryCardCollection,
   LotteryCardDefinition,
   LotteryCardRarity,
@@ -35,6 +36,8 @@ import {
   LOTTERY_COLLECTION_PAGE_ORDER,
   LOTTERY_COLLECTION_PAGE_META,
   LOTTERY_DUPLICATE_BURN_RULES,
+  LOTTERY_POINTS_PACK_COST,
+  LOTTERY_POINTS_PACK_MAX_PER_PURCHASE,
   isBurnableRarity,
 } from "@/lib/lottery-collection";
 
@@ -376,6 +379,7 @@ function mapConfigRow(row: Record<string, unknown> | null): LotteryConfig {
     eurosPerTicket: toMoney(row?.euros_per_ticket, 5),
     maxTicketsPerOrder: Math.max(1, toInteger(row?.max_tickets_per_order, 4)),
     collectionTitle: toText(row?.collection_title, "Hemp Heroes 2026 Collection"),
+    seasonLabel: toText(row?.season_label, "Saison 1"),
     albumSubtitle: toText(
       row?.album_subtitle,
       "Ta collection de cartes. Complete chaque page pour debloquer ses recompenses.",
@@ -439,7 +443,7 @@ export async function getLotteryConfigFromSupabase(): Promise<LotteryConfig> {
   const result = await supabase
     .from("lottery_game_config")
     .select(
-      "euros_per_ticket,max_tickets_per_order,collection_title,album_subtitle,album_booster_title,album_booster_description,common_weight,silver_weight,gold_weight,epic_weight,legendary_weight,is_active,updated_at",
+      "euros_per_ticket,max_tickets_per_order,collection_title,season_label,album_subtitle,album_booster_title,album_booster_description,common_weight,silver_weight,gold_weight,epic_weight,legendary_weight,is_active,updated_at",
     )
     .eq("id", 1)
     .maybeSingle();
@@ -452,6 +456,7 @@ export async function updateLotteryConfigInSupabase(input: {
   eurosPerTicket: number;
   maxTicketsPerOrder: number;
   collectionTitle: string;
+  seasonLabel: string;
   albumSubtitle: string;
   albumBoosterTitle: string;
   albumBoosterDescription: string;
@@ -472,6 +477,7 @@ export async function updateLotteryConfigInSupabase(input: {
         euros_per_ticket: toMoney(input.eurosPerTicket, 5),
         max_tickets_per_order: Math.max(1, Math.min(20, Math.floor(input.maxTicketsPerOrder))),
         collection_title: toText(input.collectionTitle).trim() || "Hemp Heroes 2026 Collection",
+        season_label: toText(input.seasonLabel).trim(),
         album_subtitle:
           toText(input.albumSubtitle).trim() ||
           "Ta collection de cartes. Complete chaque page pour debloquer ses recompenses.",
@@ -490,7 +496,7 @@ export async function updateLotteryConfigInSupabase(input: {
       { onConflict: "id" },
     )
     .select(
-      "euros_per_ticket,max_tickets_per_order,collection_title,album_subtitle,album_booster_title,album_booster_description,common_weight,silver_weight,gold_weight,epic_weight,legendary_weight,is_active,updated_at",
+      "euros_per_ticket,max_tickets_per_order,collection_title,season_label,album_subtitle,album_booster_title,album_booster_description,common_weight,silver_weight,gold_weight,epic_weight,legendary_weight,is_active,updated_at",
     )
     .single();
 
@@ -1202,6 +1208,46 @@ export async function grantLotteryTicketsToCustomerInSupabase(input: {
   return Math.max(0, toInteger(result.data, 0));
 }
 
+export async function purchaseLotteryPacksWithPointsInSupabase(input: {
+  userId: string;
+  packCount: number;
+  basePoints: number;
+}): Promise<number> {
+  const userId = input.userId.trim();
+  if (!isValidUuid(userId)) {
+    throw new Error("Client invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase.rpc("rpc_purchase_lottery_packs_with_points", {
+    p_user_id: userId,
+    p_pack_count: Math.floor(input.packCount),
+    p_cost_per_pack: LOTTERY_POINTS_PACK_COST,
+    p_base_points: Math.max(0, Math.floor(input.basePoints)),
+  });
+
+  if (result.error) {
+    const message = result.error.message || "Achat packs impossible.";
+    if (message.includes("customer_not_found")) {
+      throw new Error("Client introuvable.");
+    }
+    if (message.includes("invalid_pack_count")) {
+      throw new Error(
+        `Nombre de packs invalide (1-${LOTTERY_POINTS_PACK_MAX_PER_PURCHASE}).`,
+      );
+    }
+    if (message.includes("insufficient_points")) {
+      throw new Error("Points insuffisants.");
+    }
+    if (message.includes("invalid_cost_per_pack")) {
+      throw new Error("Configuration achat packs invalide.");
+    }
+    throw new Error(`[supabase:rpc_purchase_lottery_packs_with_points] ${message}`);
+  }
+
+  return Math.max(0, toInteger(result.data, 0));
+}
+
 export async function getLotteryTicketsForCustomerFromSupabase(userId: string): Promise<LotteryTicket[]> {
   const safeUserId = userId.trim();
   if (!isValidUuid(safeUserId)) {
@@ -1829,7 +1875,9 @@ export async function burnDuplicateCardsFromSupabase(input: {
   userId: string;
   rarity: LotteryBurnableRarity;
   instanceIds: string[];
+  rewardChoice: LotteryDuplicateBurnChoice;
   discountPercent: number;
+  giftWeightGrams: number;
 }): Promise<LotteryRewardClaim> {
   const userId = input.userId.trim();
   if (!isValidUuid(userId)) throw new Error("Identifiant utilisateur invalide.");
@@ -1842,11 +1890,17 @@ export async function burnDuplicateCardsFromSupabase(input: {
     p_user_id: userId,
     p_rarity: input.rarity,
     p_instance_ids: input.instanceIds,
+    p_reward_kind: input.rewardChoice === "gift" ? "gift_weight_grams" : "discount_percent",
     p_discount_percent: input.discountPercent,
+    p_gift_weight_grams: input.giftWeightGrams,
+    p_gift_label: `${input.giftWeightGrams}g offerts`,
   });
 
   if (result.error) {
     const msg = result.error.message || "";
+    if (msg.includes("reward_kind_invalid")) throw new Error("burn_reward_kind_invalid");
+    if (msg.includes("discount_invalid")) throw new Error("burn_discount_invalid");
+    if (msg.includes("gift_invalid")) throw new Error("burn_gift_invalid");
     if (msg.includes("legendary")) throw new Error("burn_legendary_not_allowed");
     if (msg.includes("exactly")) throw new Error("wrong_instance_count");
     if (msg.includes("last_copy")) throw new Error("burn_would_remove_last_copy");

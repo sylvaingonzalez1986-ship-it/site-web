@@ -7,6 +7,7 @@ import { AdminTextCarousel } from "@/components/admin/AdminTextCarousel";
 import { AdminSeasonGalleryManager } from "@/components/admin/AdminSeasonGalleryManager";
 import { AdminPagesPanel } from "@/components/admin/AdminPagesPanel";
 import { AdminCustomersPanel } from "@/components/admin/AdminCustomersPanel";
+import { AdminMissionsPanel } from "@/components/admin/AdminMissionsPanel";
 import { AdminReferralsPanel } from "@/components/admin/AdminReferralsPanel";
 import { AdminPromosPanel } from "@/components/admin/AdminPromosPanel";
 import { AdminLotteryPanel } from "@/components/admin/AdminLotteryPanel";
@@ -57,6 +58,7 @@ type AdminTab =
   | "commandes"
   | "clients"
   | "parrainage"
+  | "missions"
   | "promos"
   | "loterie"
   | "newsletter"
@@ -71,6 +73,7 @@ const adminTabs: AdminTab[] = [
   "commandes",
   "clients",
   "parrainage",
+  "missions",
   "promos",
   "loterie",
   "newsletter",
@@ -86,6 +89,7 @@ const tabLabels: Record<AdminTab, string> = {
   commandes: "Commandes",
   clients: "Clients",
   parrainage: "Parrainage",
+  missions: "Missions",
   promos: "Promos",
   loterie: "Loterie",
   newsletter: "Newsletter",
@@ -433,6 +437,20 @@ export function AdminPanel() {
     }));
   };
 
+  const updateOrderTrackingDraft = (orderId: string, nextTrackingNumber: string) => {
+    setDraft((current) => ({
+      ...current,
+      orders: current.orders.map((order) =>
+        order.id === orderId
+          ? {
+              ...order,
+              trackingNumber: nextTrackingNumber.trim() || undefined,
+            }
+          : order,
+      ),
+    }));
+  };
+
   const saveOrderStatus = async (order: CmsOrder) => {
     setUpdatingOrderId(order.id);
     setStatus(`Mise a jour statut ${order.id}...`);
@@ -441,7 +459,10 @@ export function AdminPanel() {
       const response = await fetch(`/api/admin/orders/${encodeURIComponent(order.id)}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: order.status }),
+        body: JSON.stringify({
+          status: order.status,
+          trackingNumber: order.trackingNumber ?? "",
+        }),
       });
 
       if (!response.ok) {
@@ -1366,9 +1387,12 @@ export function AdminPanel() {
                       Client: {order.customerName || "Invite"}{order.customerEmail ? ` - ${order.customerEmail}` : ""}
                     </p>
                     <p className="text-xs text-charcoal">Paiement: {order.paymentState}</p>
+                    {order.trackingNumber && (
+                      <p className="text-xs text-charcoal">Suivi: {order.trackingNumber}</p>
+                    )}
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <button
                       type="button"
                       onClick={() => setSelectedOrderId(order.id)}
@@ -1387,6 +1411,16 @@ export function AdminPanel() {
                         </option>
                       ))}
                     </select>
+                    {(order.status === "processing" || order.status === "shipped") && (
+                      <input
+                        className="h-10 min-w-[180px] border-2 border-[#1a1a1a] px-2 text-sm"
+                        value={order.trackingNumber ?? ""}
+                        onChange={(event) =>
+                          updateOrderTrackingDraft(order.id, event.target.value)
+                        }
+                        placeholder="Numero de suivi"
+                      />
+                    )}
                     <button
                       type="button"
                       onClick={() => saveOrderStatus(order)}
@@ -1427,6 +1461,8 @@ export function AdminPanel() {
         {activeTab === "clients" && <AdminCustomersPanel />}
 
         {activeTab === "parrainage" && <AdminReferralsPanel />}
+
+        {activeTab === "missions" && <AdminMissionsPanel />}
 
         {activeTab === "promos" && (
           <AdminPromosPanel draft={draft} setDraft={setDraft} />

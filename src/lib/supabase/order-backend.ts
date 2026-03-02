@@ -20,6 +20,10 @@ async function findOrderById(orderId: string): Promise<CmsOrder | null> {
   return store.orders.find((order) => order.id === orderId) ?? null;
 }
 
+export async function getOrderByIdInSupabase(orderId: string): Promise<CmsOrder | null> {
+  return findOrderById(orderId);
+}
+
 async function findOrderByVivaOrderCode(orderCode: number): Promise<CmsOrder | null> {
   const store = await readStoreFromSupabase();
   return store.orders.find((order) => order.vivaOrderCode === orderCode) ?? null;
@@ -209,6 +213,34 @@ export async function updateOrderStatusInSupabase(
   const supabase = createSupabaseServiceClient();
   const { error } = await supabase.from("orders").update({ status }).eq("id", orderId);
   failIfError(error, "update order status");
+  return findOrderById(orderId);
+}
+
+export async function updateOrderAdminFieldsInSupabase(
+  orderId: string,
+  input: {
+    status?: OrderStatus;
+    trackingNumber?: string | null;
+  },
+): Promise<CmsOrder | null> {
+  const supabase = createSupabaseServiceClient();
+  const patch: Record<string, string | null> = {};
+
+  if (input.status) {
+    patch.status = input.status;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(input, "trackingNumber")) {
+    const trackingNumber = input.trackingNumber?.trim();
+    patch.tracking_number = trackingNumber || null;
+  }
+
+  if (Object.keys(patch).length === 0) {
+    return findOrderById(orderId);
+  }
+
+  const { error } = await supabase.from("orders").update(patch).eq("id", orderId);
+  failIfError(error, "update order admin fields");
   return findOrderById(orderId);
 }
 

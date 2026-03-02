@@ -290,7 +290,7 @@ export function TutorialOverlay({
           <div className="min-h-0 flex-1 overflow-y-auto pr-1">
             <div className="flex items-start gap-3">
               <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-white">
-                <Image src="/charles.png" alt="Charles" fill sizes="64px" className="object-cover" />
+                <Image src="/sylvain.png" alt="Sylvain" fill sizes="64px" className="object-cover" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">Tutoriel {progressLabel}</p>

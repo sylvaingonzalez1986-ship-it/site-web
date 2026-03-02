@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
 import type { CmsOrder } from "@/types/store";
@@ -9,7 +9,9 @@ import type { LotteryConfig, LotteryInventory, LotteryTicket } from "@/types/lot
 import type { LoyaltySummary } from "@/types/loyalty";
 
 export function useCustomerSession() {
+  const REFRESH_COOLDOWN_MS = 30_000;
   const pathname = usePathname();
+  const lastRefreshAtRef = useRef(0);
   const [user, setUser] = useState<PublicCustomer | null>(null);
   const [orders, setOrders] = useState<CmsOrder[]>([]);
   const [loyalty, setLoyalty] = useState<LoyaltySummary>(buildEmptyLoyaltySummary());
@@ -18,8 +20,15 @@ export function useCustomerSession() {
   const [lotteryConfig, setLotteryConfig] = useState<LotteryConfig | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const refresh = useCallback(async (options?: { silent?: boolean }) => {
+  const refresh = useCallback(async (options?: { silent?: boolean; force?: boolean }) => {
     const silent = options?.silent === true;
+    const force = options?.force === true;
+    const now = Date.now();
+    if (!force && now - lastRefreshAtRef.current < REFRESH_COOLDOWN_MS) {
+      return;
+    }
+    lastRefreshAtRef.current = now;
+
     if (!silent) {
       setLoading(true);
     }
@@ -76,17 +85,21 @@ export function useCustomerSession() {
   }, []);
 
   useEffect(() => {
+    void refresh({ force: true });
+  }, [refresh]);
+
+  useEffect(() => {
     void refresh();
   }, [refresh, pathname]);
 
   useEffect(() => {
     const onFocus = () => {
-      void refresh();
+      void refresh({ silent: true });
     };
 
     const onVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        void refresh();
+        void refresh({ silent: true });
       }
     };
 

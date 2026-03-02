@@ -36,11 +36,24 @@ export function OrganizationJsonLd() {
     "@type": "Organization",
     name: BUSINESS_NAME,
     url: baseUrl,
-    logo: `${baseUrl}/charles.png`,
+    logo: `${baseUrl}/sylvain.png`,
     description:
-      "Shop CBD bio breton pas cher en Bretagne. Fleurs CBD indoor et greenhouse, huiles CBD spectre complet, résines, cosmétiques et tisanes au chanvre naturel breton. CBD artisanal et légal.",
+      "Producteur CBD en Bretagne. Fleurs de CBD direct producteur, huiles spectre complet, résines et tisanes chanvre artisanales. CBD naturel cultivé sans pesticide, achat en circuit court. Livraison rapide France.",
     email: BUSINESS_EMAIL,
     telephone: BUSINESS_PHONE,
+    founder: {
+      "@type": "Person",
+      name: "Sylvain",
+      jobTitle: "Chanvrier breton",
+    },
+    knowsAbout: [
+      "CBD naturel",
+      "Chanvre breton",
+      "Culture de chanvre sans pesticide",
+      "Circuit court CBD",
+      "Fleurs de CBD",
+      "Tisanes chanvre artisanales",
+    ],
     areaServed: [
       { "@type": "Country", name: "France" },
       { "@type": "AdministrativeArea", name: "Bretagne" },
@@ -65,21 +78,28 @@ export function LocalBusinessJsonLd() {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "OnlineStore",
+    "@type": ["OnlineStore", "LocalBusiness"],
     name: BUSINESS_NAME,
     url: baseUrl,
-    logo: `${baseUrl}/charles.png`,
-    image: `${baseUrl}/charles.png`,
+    logo: `${baseUrl}/sylvain.png`,
+    image: `${baseUrl}/sylvain.png`,
     description:
-      "Boutique CBD bio breton en Bretagne. Fleurs CBD indoor et greenhouse, huiles CBD spectre complet, résines CBD naturelles, cosmétiques et tisanes au chanvre bio breton. CBD artisanal, naturel et légal. Livraison rapide en France.",
+      "Boutique CBD naturel direct producteur breton. Fleurs de CBD, résines, huiles spectre complet, tisanes chanvre artisanales. Achat CBD circuit court, français, sans pesticide, cultivé en Bretagne. Livraison rapide en France.",
     email: BUSINESS_EMAIL,
     telephone: BUSINESS_PHONE,
     priceRange: "€5 - €80",
     currenciesAccepted: "EUR",
+    keywords:
+      "cbd naturel, cbd breton, producteur cbd bretagne, fleur de cbd direct producteur, achat cbd circuit court, cbd français sans pesticide, tisane chanvre artisanale",
     areaServed: [
       { "@type": "Country", name: "France" },
       { "@type": "AdministrativeArea", name: "Bretagne" },
     ],
+    address: {
+      "@type": "PostalAddress",
+      addressRegion: "Bretagne",
+      addressCountry: "FR",
+    },
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: [
@@ -291,7 +311,7 @@ export function ArticleJsonLd({
       name: BUSINESS_NAME,
       logo: {
         "@type": "ImageObject",
-        url: `${baseUrl}/charles.png`,
+        url: `${baseUrl}/sylvain.png`,
       },
     },
   };

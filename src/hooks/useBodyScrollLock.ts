@@ -4,11 +4,9 @@ import { useEffect } from "react";
 
 let lockCount = 0;
 let lockedScrollY = 0;
-let previousOverflow = "";
-let previousPosition = "";
-let previousTop = "";
-let previousWidth = "";
-let previousPaddingRight = "";
+let prevHtmlOverflow = "";
+let prevBodyOverflow = "";
+let prevBodyPaddingRight = "";
 
 function lockBodyScroll() {
   if (typeof window === "undefined") {
@@ -16,20 +14,19 @@ function lockBodyScroll() {
   }
 
   if (lockCount === 0) {
+    const html = document.documentElement;
     const body = document.body;
     lockedScrollY = window.scrollY;
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth = window.innerWidth - html.clientWidth;
 
-    previousOverflow = body.style.overflow;
-    previousPosition = body.style.position;
-    previousTop = body.style.top;
-    previousWidth = body.style.width;
-    previousPaddingRight = body.style.paddingRight;
+    prevHtmlOverflow = html.style.overflow;
+    prevBodyOverflow = body.style.overflow;
+    prevBodyPaddingRight = body.style.paddingRight;
 
+    // Use overflow:hidden on both html & body — no position:fixed.
+    // position:fixed on <body> kills touch-scrolling inside modals on iOS Safari.
+    html.style.overflow = "hidden";
     body.style.overflow = "hidden";
-    body.style.position = "fixed";
-    body.style.top = `-${lockedScrollY}px`;
-    body.style.width = "100%";
     if (scrollbarWidth > 0) {
       body.style.paddingRight = `${scrollbarWidth}px`;
     }
@@ -48,12 +45,11 @@ function unlockBodyScroll() {
     return;
   }
 
+  const html = document.documentElement;
   const body = document.body;
-  body.style.overflow = previousOverflow;
-  body.style.position = previousPosition;
-  body.style.top = previousTop;
-  body.style.width = previousWidth;
-  body.style.paddingRight = previousPaddingRight;
+  html.style.overflow = prevHtmlOverflow;
+  body.style.overflow = prevBodyOverflow;
+  body.style.paddingRight = prevBodyPaddingRight;
   window.scrollTo(0, lockedScrollY);
 }
 

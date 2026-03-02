@@ -35,6 +35,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error.message }, { status: error.status });
     }
 
+    console.error("upload_product_analysis_failed", error);
+
     return NextResponse.json(
       { error: "Impossible d'envoyer le PDF d'analyse." },
       { status: 500 },

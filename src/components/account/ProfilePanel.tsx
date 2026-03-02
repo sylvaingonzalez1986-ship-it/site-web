@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { Award, Copy, Gift, ShoppingBag, Tag, User as UserIcon, Users, type LucideIcon } from "lucide-react";
+import { Award, Copy, Gift, ShoppingBag, Star, Tag, User as UserIcon, Users, type LucideIcon } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { LoyaltyBadgeSummary } from "@/components/account/LoyaltyBadgeSummary";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
+import { MissionsSection } from "@/components/account/MissionsSection";
 import { OrderDetailModal } from "@/components/account/OrderDetailModal";
 import { useTutorial } from "@/components/tutorial/TutorialProvider";
 import { useCmsStore } from "@/hooks/useCmsStore";
@@ -38,7 +39,7 @@ const paymentStateLabels: Record<CmsOrder["paymentState"], string> = {
   not_configured: "Validation manuelle",
 };
 
-type ProfileTab = "fidelite" | "commandes" | "infos" | "promos";
+type ProfileTab = "fidelite" | "missions" | "commandes" | "infos" | "promos";
 
 type ProfileTabDefinition = {
   key: ProfileTab;
@@ -48,6 +49,7 @@ type ProfileTabDefinition = {
 
 const profileTabs: ProfileTabDefinition[] = [
   { key: "fidelite", label: "Fidélité", icon: Award },
+  { key: "missions", label: "Missions", icon: Star },
   { key: "commandes", label: "Commandes", icon: ShoppingBag },
   { key: "infos", label: "Mes infos", icon: UserIcon },
   { key: "promos", label: "Promos", icon: Tag },
@@ -60,6 +62,7 @@ function parseProfileTab(value: string | null): ProfileTab | null {
 
   if (
     value === "fidelite" ||
+    value === "missions" ||
     value === "commandes" ||
     value === "infos" ||
     value === "promos"
@@ -91,9 +94,6 @@ export function ProfilePanel() {
   const {
     user,
     orders,
-    tickets,
-    lotteryConfig,
-    availableTicketCount,
     loyalty,
     loading,
     refresh,
@@ -402,12 +402,12 @@ export function ProfilePanel() {
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <div className="card-cartoon bg-white p-4">
-              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points</p>
+              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points cumules</p>
               <p className="mt-1 text-2xl font-bold text-ink">{loyalty.points}</p>
             </div>
             <div className="card-cartoon bg-white p-4">
-              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points bonus</p>
-              <p className="mt-1 text-2xl font-bold text-ink">{user.loyaltyPoints}</p>
+              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points disponibles</p>
+              <p className="mt-1 text-2xl font-bold text-ink">{loyalty.spendablePoints}</p>
             </div>
             <div className="card-cartoon bg-white p-4">
               <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Euros comptabilises</p>
@@ -703,6 +703,8 @@ export function ProfilePanel() {
               </div>
             </>
           )}
+
+          {activeTab === "missions" && <MissionsSection />}
 
           {activeTab === "commandes" && (
             <>

@@ -14,7 +14,11 @@ export async function GET() {
 
   const store = await readStoreByBackend();
   const orders = store.orders.filter((order) => order.customerId === session.customerId);
-  const loyalty = buildLoyaltySummaryWithBonus(orders, session.customer.loyaltyPoints ?? 0);
+  const loyalty = buildLoyaltySummaryWithBonus(
+    orders,
+    session.customer.loyaltyPoints ?? 0,
+    session.customer.loyaltyPointsSpent ?? 0,
+  );
 
   return NextResponse.json({ orders, loyalty });
 }

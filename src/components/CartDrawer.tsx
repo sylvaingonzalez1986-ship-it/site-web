@@ -764,97 +764,60 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           </div>
         </div>
 
-        <div className="cartoon-panel mt-3 shrink-0 bg-white p-4">
-          <div className="flex items-center justify-between text-lg font-extrabold">
+        <div className="cartoon-panel mt-2 shrink-0 bg-white p-3">
+          <div className="flex items-center justify-between text-base font-extrabold">
             <span>Total panier</span>
             <span>{formatPrice(totalPrice)} TTC</span>
           </div>
-          <div className="mt-1 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
             Livraison: {deliveryMethod === "relay" ? "Point relais" : "Domicile"}
           </div>
           {displayedBadgeDiscountPercent > 0 && (
-            <div className="mt-2 text-sm text-green-700">
-              Réduction fidélité ({loyalty.currentBadge.label}): -{formatPrice(displayedBadgeDiscountAmount)} (
-              {displayedBadgeDiscountPercent}%)
+            <div className="mt-1 text-xs text-green-700">
+              Fidélité ({loyalty.currentBadge.label}): -{formatPrice(displayedBadgeDiscountAmount)} ({displayedBadgeDiscountPercent}%)
             </div>
           )}
           {hasAutoReferralDiscount && (
-            <div className="mt-2 text-sm text-green-700">
-              Remise filleul première commande: -{formatPrice(referralAutoDiscountAmount)} (
-              {REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_PERCENT}%)
+            <div className="mt-1 text-xs text-green-700">
+              Filleul 1ère commande: -{formatPrice(referralAutoDiscountAmount)} ({REFERRAL_FIRST_ORDER_AUTO_DISCOUNT_PERCENT}%)
             </div>
           )}
           {promoPreview && (
-            <div className="mt-2 text-sm text-green-700">
-              Réduction code {promoPreview.code}: -{formatPrice(promoPreview.promoDiscountAmount)} (
-              {promoPreview.promoDiscountPercent}%)
+            <div className="mt-1 text-xs text-green-700">
+              Code {promoPreview.code}: -{formatPrice(promoPreview.promoDiscountAmount)} ({promoPreview.promoDiscountPercent}%)
             </div>
           )}
           {lotteryPreview?.rewardType === "discount" && (
-            <div className="mt-2 text-sm text-green-700">
-              Bon {lotteryPreview.rewardTitle}: -{formatPrice(lotteryPreview.lotteryDiscountAmount)} (
-              {lotteryPreview.lotteryDiscountPercent}%)
+            <div className="mt-1 text-xs text-green-700">
+              Bon {lotteryPreview.rewardTitle}: -{formatPrice(lotteryPreview.lotteryDiscountAmount)} ({lotteryPreview.lotteryDiscountPercent}%)
             </div>
           )}
           {lotteryPreview?.rewardType === "gift" && (
-            <div className="mt-2 text-sm text-green-700">
-              Bon {lotteryPreview.rewardTitle}: lot ajoute ({lotteryPreview.giftLabel ?? lotteryPreview.rewardTitle})
+            <div className="mt-1 text-xs text-green-700">
+              Bon {lotteryPreview.rewardTitle}: lot ajouté
             </div>
           )}
-          <div className="mt-2 flex items-center justify-between text-sm text-ink">
+          <div className="mt-1 flex items-center justify-between text-xs text-ink">
             <span>Livraison</span>
-            <span>
-              {shippingFee <= 0 ? "Offerte (hors badge Bronze)" : formatPrice(shippingFee)}
-            </span>
+            <span>{shippingFee <= 0 ? "Offerte" : formatPrice(shippingFee)}</span>
           </div>
-          <div className="mt-1 text-sm font-semibold text-ink">
-            À payer: {formatPrice(finalAmountToPay)} TTC
+          <div className="mt-1 flex items-center justify-between text-sm font-bold text-ink">
+            <span>À payer</span>
+            <span>{formatPrice(finalAmountToPay)} TTC</span>
           </div>
-          <div className="mt-3 rounded border-2 border-[#1a1a1a] bg-[#fff7d6] p-3">
-            <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">
-              Points fidélité après achat
-            </p>
-            <p className="mt-1 text-sm font-semibold text-ink">
-              Tu vas gagner {earnedTotalLoyaltyPoints} point{earnedTotalLoyaltyPoints > 1 ? "s" : ""}.
-            </p>
-            <p className="mt-1 text-xs text-charcoal">
-              {earnedBaseLoyaltyPoints} point{earnedBaseLoyaltyPoints > 1 ? "s" : ""} via 1€ dépensé = 1 point
-              {earnedProductBonusPoints > 0
-                ? ` + ${earnedProductBonusPoints} point${earnedProductBonusPoints > 1 ? "s" : ""} bonus produit`
-                : ""}.
-            </p>
-          </div>
-          <div className="mt-3 rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
-            <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">
-              Packs loterie après achat
-            </p>
-            {!isAuthenticated ? (
-              <p className="mt-1 text-sm text-charcoal">
-                Connecte-toi pour cumuler des packs.
-              </p>
-            ) : !lotteryConfig ? (
-              <p className="mt-1 text-sm text-charcoal">
-                Configuration loterie indisponible pour le moment.
-              </p>
-            ) : !lotteryConfig.isActive ? (
-              <p className="mt-1 text-sm text-charcoal">
-                Loterie actuellement désactivée.
-              </p>
-            ) : (
-              <>
-                <p className="mt-1 text-sm font-semibold text-ink">
-                  Tu vas gagner {estimatedEarnedTickets} pack{estimatedEarnedTickets > 1 ? "s" : ""}.
-                </p>
-                <p className="mt-1 text-xs text-charcoal">
-                  Règle: 1 pack par tranche de {formatPrice(lotteryTicketThreshold)} TTC payée.
-                </p>
-                {missingForNextTicket !== null && (
-                  <p className="mt-1 text-xs text-charcoal">
-                    Encore {formatPrice(missingForNextTicket)} TTC pour 1 pack supplémentaire.
-                  </p>
-                )}
-              </>
-            )}
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            <div className="rounded border border-[#1a1a1a] bg-[#fff7d6] px-2 py-1.5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.06em] text-charcoal">Fidélité</p>
+              <p className="text-xs font-semibold text-ink">+{earnedTotalLoyaltyPoints} pt{earnedTotalLoyaltyPoints > 1 ? "s" : ""}</p>
+            </div>
+            <div className="rounded border border-[#1a1a1a] bg-[#f7f4ee] px-2 py-1.5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.06em] text-charcoal">Packs</p>
+              {!isAuthenticated || !lotteryConfig?.isActive ? (
+                <p className="text-xs text-charcoal">—</p>
+              ) : (
+                <p className="text-xs font-semibold text-ink">+{estimatedEarnedTickets} pack{estimatedEarnedTickets > 1 ? "s" : ""}</p>
+              )}
+            </div>
           </div>
           <div className="mt-3">
             <CheckoutButton

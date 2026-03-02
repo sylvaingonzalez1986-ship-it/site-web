@@ -16,7 +16,11 @@ export async function GET() {
 
   const list = customers.map((customer) => {
     const orders = store.orders.filter((order) => order.customerId === customer.id);
-    const loyalty = buildLoyaltySummaryWithBonus(orders, customer.loyaltyPoints);
+    const loyalty = buildLoyaltySummaryWithBonus(
+      orders,
+      customer.loyaltyPoints,
+      customer.loyaltyPointsSpent,
+    );
 
     return {
       id: customer.id,

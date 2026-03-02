@@ -151,16 +151,64 @@ export async function applySupabaseReferralRewardOnPaidOrder(input: {
     return false;
   }
 
-  const config = getReferralRewardConfig();
   const supabase = createSupabaseServiceClient();
+
+  // Check order total >= 20€ (requirement: filleul first order >= €20)
+  const orderResult = await supabase
+    .from("orders")
+    .select("id,customer_id,total_amount")
+    .eq("id", orderId)
+    .maybeSingle();
+  failIfError(orderResult.error, "fetch order for referral check");
+
+  if (!orderResult.data) {
+    return false;
+  }
+
+  const orderRow = orderResult.data as { id: string; customer_id: string | null; total_amount: number };
+  const orderTotal = Number(orderRow.total_amount) || 0;
+  if (orderTotal < 20) {
+    return false;
+  }
+
+  const config = getReferralRewardConfig();
+
+  // Referrer points = 0 → parrain chooses via pending reward (50pts ou 5 packs)
+  // Referee still gets their points immediately
   const result = await supabase.rpc("rpc_apply_referral_reward_on_paid_order", {
     p_order_id: orderId,
-    p_referrer_points: config.referrerPoints,
+    p_referrer_points: 0,
     p_referee_points: config.refereePoints,
   });
   failIfError(result.error, "rpc_apply_referral_reward_on_paid_order");
 
-  return result.data === true;
+  if (result.data !== true) {
+    return false;
+  }
+
+  // Create a pending reward choice for the referrer
+  const refereeId = orderRow.customer_id;
+  if (refereeId) {
+    const profileResult = await supabase
+      .from("profiles")
+      .select("referred_by")
+      .eq("id", refereeId)
+      .maybeSingle();
+
+    const referrerId = (profileResult.data as { referred_by?: string } | null)?.referred_by;
+    if (referrerId) {
+      const { createReferralPendingRewardInSupabase } = await import(
+        "@/lib/supabase/missions-backend"
+      );
+      await createReferralPendingRewardInSupabase({
+        referrerId,
+        refereeId,
+        orderId,
+      });
+    }
+  }
+
+  return true;
 }
 
 export async function getSupabaseReferralFirstOrderDiscountEligibility(input: {

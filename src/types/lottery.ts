@@ -21,6 +21,7 @@ export type LotteryConfig = {
   eurosPerTicket: number;
   maxTicketsPerOrder: number;
   collectionTitle: string;
+  seasonLabel: string;
   albumSubtitle: string;
   albumBoosterTitle: string;
   albumBoosterDescription: string;
@@ -255,6 +256,8 @@ export type LotteryRewardClaimBenefit =
       giftProductSku?: string;
     };
 
+export type LotteryDuplicateBurnChoice = "discount" | "gift";
+
 export type ScratchResult = {
   ticketId: string;
   ticketNumber: string;
@@ -366,7 +369,7 @@ export type LotteryCollectionPageState = {
   selectedRewardDefinitionId?: string;
   rewardClaimId?: string;
   rewardOptions: LotteryCollectionPageRewardOption[];
-  burnOffer: { duplicatesRequired: 5; discountPercent: number } | null;
+  burnOffer: { duplicatesRequired: number; discountPercent: number; giftWeightGrams: number } | null;
   slots: LotteryCollectionCardSlot[];
   duplicateGroups: LotteryDuplicateGroup[];
 };

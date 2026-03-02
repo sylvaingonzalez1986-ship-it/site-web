@@ -4,6 +4,8 @@ import type { AppendOrderInput } from "@/lib/orders-types";
 import {
   applyOrderLoyaltyBonusInSupabase,
   appendOrderToSupabase,
+  getOrderByIdInSupabase,
+  updateOrderAdminFieldsInSupabase,
   updateOrderPaymentByVivaOrderCodeInSupabase,
   updateOrderPaymentStateInSupabase,
   updateOrderStatusInSupabase,
@@ -19,6 +21,20 @@ export async function updateOrderStatusByBackend(
   status: OrderStatus,
 ): Promise<CmsOrder | null> {
   return updateOrderStatusInSupabase(orderId, status);
+}
+
+export async function getOrderByIdByBackend(orderId: string): Promise<CmsOrder | null> {
+  return getOrderByIdInSupabase(orderId);
+}
+
+export async function updateOrderAdminFieldsByBackend(
+  orderId: string,
+  input: {
+    status?: OrderStatus;
+    trackingNumber?: string | null;
+  },
+): Promise<CmsOrder | null> {
+  return updateOrderAdminFieldsInSupabase(orderId, input);
 }
 
 export async function updateOrderPaymentStateByBackend(

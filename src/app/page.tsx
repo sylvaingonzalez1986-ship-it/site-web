@@ -2,16 +2,18 @@
 import { HomePinnedExperience } from "@/components/home/HomePinnedExperience";
 
 export const metadata: Metadata = {
-  title: "Shop CBD Bio Breton Pas Cher | Fleurs, Huiles, Résines CBD Bretagne",
+  title:
+    "CBD Naturel Direct Producteur Bretagne | Fleurs de CBD, Huiles & Tisanes Chanvre Artisanales",
   description:
-    "Découvrez Les Chanvriers Bretons, votre shop CBD bio breton pas cher. Fleurs CBD, huiles spectre complet, résines, cosmétiques et tisanes au chanvre breton. Producteurs locaux, livraison rapide en France.",
+    "Découvrez Les Chanvriers Bretons, producteur CBD en Bretagne. Fleurs de CBD direct producteur, huiles spectre complet, tisanes chanvre artisanales. Achat CBD circuit court, français, sans pesticide. Livraison rapide France.",
   alternates: {
     canonical: "https://leschanvriersbretons.com",
   },
   openGraph: {
-    title: "Les Chanvriers Bretons | Shop CBD Bio Breton Pas Cher",
+    title:
+      "Les Chanvriers Bretons | CBD Naturel Direct Producteur Bretagne",
     description:
-      "CBD bio Bretagne : fleurs, résines, huiles, cosmétiques et tisanes au chanvre breton. Qualité premium, prix pas cher, livraison rapide France.",
+      "CBD breton en circuit court : fleurs de CBD direct producteur, tisanes chanvre artisanales, huiles & résines. CBD français sans pesticide, livraison rapide France.",
     url: "https://leschanvriersbretons.com",
   },
 };

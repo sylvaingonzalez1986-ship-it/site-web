@@ -28,7 +28,11 @@ async function buildCustomerDetail(customerId: string) {
     .filter((order) => order.customerId === customer.id)
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   const baseLoyalty = buildLoyaltySummary(orders);
-  const loyalty = buildLoyaltySummaryWithBonus(orders, customer.loyaltyPoints);
+  const loyalty = buildLoyaltySummaryWithBonus(
+    orders,
+    customer.loyaltyPoints,
+    customer.loyaltyPointsSpent,
+  );
 
   return {
     customer,
@@ -37,6 +41,8 @@ async function buildCustomerDetail(customerId: string) {
       ...loyalty,
       basePoints: baseLoyalty.points,
       bonusPoints: customer.loyaltyPoints,
+      spentPoints: customer.loyaltyPointsSpent,
+      spendablePoints: loyalty.spendablePoints,
       totalPoints: loyalty.points,
     },
   };

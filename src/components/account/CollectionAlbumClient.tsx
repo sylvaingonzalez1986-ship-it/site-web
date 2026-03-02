@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal";
+import { QuantitySelector } from "@/components/QuantitySelector";
 import { AlbumPage } from "@/components/lottery/AlbumPage";
 import { AlbumPager } from "@/components/lottery/AlbumPager";
 import { AlbumShell } from "@/components/lottery/AlbumShell";
@@ -9,8 +11,14 @@ import { CardDetailModal } from "@/components/lottery/CardDetailModal";
 import { DuplicateBurnDrawer } from "@/components/lottery/DuplicateBurnDrawer";
 import { PageRewardDrawer } from "@/components/lottery/PageRewardDrawer";
 import { useLotteryExperience } from "@/hooks/useLotteryExperience";
+import {
+  LOTTERY_DUPLICATE_BURN_RULES,
+  LOTTERY_POINTS_PACK_COST,
+  LOTTERY_POINTS_PACK_MAX_PER_PURCHASE,
+} from "@/lib/lottery-collection";
 import type {
   LotteryCollectionCardSlot,
+  LotteryDuplicateBurnChoice,
   LotteryCollectionPageRarity,
   LotteryCollectionPageState,
   LotteryDuplicateGroup,
@@ -30,10 +38,12 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     album,
     tickets,
     config,
+    loyalty,
     loading,
     error,
     acting,
     refreshAll,
+    purchasePacksWithPoints,
     openPack,
     claimPageReward,
     burnDuplicates,
@@ -47,6 +57,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     group: LotteryDuplicateGroup;
   } | null>(null);
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
+  const [packPurchaseQty, setPackPurchaseQty] = useState(1);
 
   const availableTickets = useMemo(
     () => tickets.filter((ticket) => ticket.status === "available"),
@@ -62,6 +73,18 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     // available to scratched, otherwise the reveal step unmounts immediately.
     return tickets.find((ticket) => ticket.id === selectedTicketId) ?? null;
   }, [tickets, selectedTicketId]);
+
+  const maxPurchasablePacks = useMemo(
+    () =>
+      Math.min(
+        LOTTERY_POINTS_PACK_MAX_PER_PURCHASE,
+        Math.floor(loyalty.spendablePoints / LOTTERY_POINTS_PACK_COST),
+      ),
+    [loyalty.spendablePoints],
+  );
+
+  const effectivePackPurchaseQty =
+    maxPurchasablePacks < 1 ? 1 : Math.min(packPurchaseQty, maxPurchasablePacks);
 
   if (loading && !album) {
     if (embedded) {
@@ -131,51 +154,104 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     setRewardDrawerPage(null);
   };
 
-  const handleBurnDuplicates = async (group: LotteryDuplicateGroup) => {
-    const ids = group.burnableInstanceIds.slice(0, 5);
-    await burnDuplicates(group.rarity, ids);
+  const handleBurnDuplicates = async (group: LotteryDuplicateGroup, rewardChoice: LotteryDuplicateBurnChoice) => {
+    const ids = group.burnableInstanceIds.slice(0, LOTTERY_DUPLICATE_BURN_RULES[group.rarity].duplicatesRequired);
+    await burnDuplicates(group.rarity, ids, rewardChoice);
     setBurnDrawerGroup(null);
+  };
+
+  const handlePurchasePacks = async () => {
+    if (maxPurchasablePacks < 1) {
+      return;
+    }
+
+    await purchasePacksWithPoints(effectivePackPurchaseQty);
   };
 
   const albumBody = (
     <>
       <div className="space-y-4">
         {availableTickets.length > 0 && (
-          <div className="cartoon-border bg-[#fff8e8] p-4">
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.08em] text-charcoal">Boosters disponibles</p>
-                <h2 className="mt-1 font-display text-2xl text-ink">
-                  {availableTickets.length} {config?.albumBoosterTitle?.trim() || `pack${availableTickets.length > 1 ? "s" : ""} a ouvrir`}
-                </h2>
-                <p className="mt-1 text-sm text-charcoal">
-                  {config?.albumBoosterDescription?.trim() || "Ouvre un booster depuis l'album pour reveler les 3 cartes sans quitter cette page."}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {availableTickets.slice(0, 3).map((ticket) => (
-                  <button
-                    key={ticket.id}
-                    type="button"
-                    className="btn-cartoon btn-primary inline-flex min-h-[44px] items-center px-4 text-xs leading-none"
-                    onClick={() => setSelectedTicketId(ticket.id)}
-                  >
-                    Ouvrir {ticket.ticketNumber}
-                  </button>
-                ))}
-              </div>
+          <button
+            type="button"
+            className="group flex w-full items-center gap-4 rounded-2xl border-[3px] border-[#1a1a1a] bg-[#fff8e8] p-3 pr-6 shadow-[4px_4px_0_rgba(26,26,26,0.12)] transition-transform hover:-translate-y-0.5 hover:shadow-[4px_6px_0_rgba(26,26,26,0.16)] active:translate-y-0"
+            onClick={() => setSelectedTicketId(availableTickets[0].id)}
+          >
+            <div className="relative h-20 w-14 shrink-0">
+              <Image
+                src="/app/lottery/sealed-booster-pack.png"
+                alt="Booster scellé"
+                fill
+                sizes="56px"
+                className="object-contain drop-shadow-md transition-transform group-hover:scale-105"
+              />
+            </div>
+            <div className="text-left">
+              <p className="text-xs font-black uppercase tracking-[0.08em] text-charcoal">Boosters disponibles</p>
+              <p className="mt-1 font-display text-2xl leading-tight text-ink">
+                {availableTickets.length} pack{availableTickets.length > 1 ? "s" : ""}
+              </p>
+              <p className="mt-0.5 text-xs text-charcoal">Appuyez pour ouvrir</p>
+            </div>
+          </button>
+        )}
+
+        <div className="cartoon-border bg-[#eef6ff] p-4">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.08em] text-[#24508a]">
+                Boutique de packs
+              </p>
+              <p className="mt-1 font-display text-2xl leading-tight text-ink">
+                {loyalty.spendablePoints} pts disponibles
+              </p>
+              <p className="mt-1 text-sm text-charcoal">
+                {LOTTERY_POINTS_PACK_COST} pts par pack. Maximum{" "}
+                {LOTTERY_POINTS_PACK_MAX_PER_PURCHASE} packs par achat.
+              </p>
+            </div>
+            <div className="rounded-2xl border-2 border-[#1a1a1a] bg-white px-3 py-2 text-right">
+              <p className="text-[11px] font-black uppercase tracking-[0.08em] text-charcoal">
+                Points cumules
+              </p>
+              <p className="mt-1 text-lg font-bold text-ink">{loyalty.points}</p>
             </div>
           </div>
-        )}
+
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <QuantitySelector
+              value={effectivePackPurchaseQty}
+              min={1}
+              max={Math.max(1, maxPurchasablePacks)}
+              onChange={setPackPurchaseQty}
+              compact
+            />
+            <button
+              type="button"
+              className="btn-cartoon btn-primary inline-flex min-h-[44px] items-center justify-center px-4 disabled:opacity-50"
+              disabled={acting || maxPurchasablePacks < 1}
+              onClick={() => void handlePurchasePacks()}
+            >
+              Acheter {effectivePackPurchaseQty} pack{effectivePackPurchaseQty > 1 ? "s" : ""} -{" "}
+              {effectivePackPurchaseQty * LOTTERY_POINTS_PACK_COST} pts
+            </button>
+          </div>
+
+          <p className="mt-3 text-xs text-charcoal">
+            {maxPurchasablePacks > 0
+              ? `Tu peux acheter jusqu'a ${maxPurchasablePacks} pack${maxPurchasablePacks > 1 ? "s" : ""} maintenant.`
+              : `Il te faut au moins ${LOTTERY_POINTS_PACK_COST} points disponibles pour acheter un pack.`}
+          </p>
+        </div>
 
         {(() => {
           const claimablePages = album.pages.filter((p) => p.rewardStatus === "claimable");
           if (claimablePages.length === 0) return null;
           return (
             <div className="cartoon-border bg-[#e7f4e8] p-4">
-              <p className="text-xs font-black uppercase tracking-[0.08em] text-[#1f6f3a]">Recompenses disponibles</p>
+              <p className="text-xs font-black uppercase tracking-[0.08em] text-[#1f6f3a]">Récompenses disponibles</p>
               <p className="mt-1 text-sm text-charcoal">
-                {claimablePages.length} page{claimablePages.length > 1 ? "s" : ""} complete{claimablePages.length > 1 ? "s" : ""} — reclame tes lots !
+                {claimablePages.length} page{claimablePages.length > 1 ? "s" : ""} complète{claimablePages.length > 1 ? "s" : ""} — réclame tes lots !
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {claimablePages.map((page) => (
@@ -215,7 +291,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
             <div className="cartoon-border bg-[#fff5da] p-4">
               <p className="text-xs font-black uppercase tracking-[0.08em] text-[#9a6700]">Recyclage de doublons</p>
               <p className="mt-1 text-sm text-charcoal">
-                {allBurnableGroups.length} carte{allBurnableGroups.length > 1 ? "s" : ""} recyclable{allBurnableGroups.length > 1 ? "s" : ""} — echange 5 doublons contre un code promo.
+                {allBurnableGroups.length} carte{allBurnableGroups.length > 1 ? "s" : ""} recyclable{allBurnableGroups.length > 1 ? "s" : ""} — échange 10 doublons d&apos;une meme carte contre une reduction ou des grammes offerts.
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {allBurnableGroups.slice(0, 6).map(({ page, group }) => (
@@ -238,6 +314,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
           album={album}
           embedded={embedded}
           subtitle={config?.albumSubtitle}
+          seasonLabel={config?.seasonLabel}
         >
           <AlbumPager pages={album.pages} activeIndex={activePageIndex} onPageChange={setActivePageIndex} />
 

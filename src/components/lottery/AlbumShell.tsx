@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import type { ReactNode } from "react";
 import type { LotteryCollectionAlbum } from "@/types/lottery";
 
@@ -9,42 +8,45 @@ type AlbumShellProps = {
   children: ReactNode;
   embedded?: boolean;
   subtitle?: string;
+  seasonLabel?: string;
 };
 
-export function AlbumShell({ album, children, embedded = false, subtitle }: AlbumShellProps) {
+export function AlbumShell({ album, children, embedded = false, subtitle, seasonLabel }: AlbumShellProps) {
   const { summary } = album;
-  const resolvedSubtitle = subtitle?.trim() || "Ta collection de cartes. Complete chaque page pour debloquer ses recompenses.";
+  const resolvedSubtitle = subtitle?.trim() || "Ta collection de cartes. Complète chaque page pour débloquer ses récompenses.";
+  const resolvedSeasonLabel = seasonLabel?.trim();
 
   return (
     <div className="space-y-6">
       <div className="cartoon-border bg-cream p-6 md:p-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
+            {resolvedSeasonLabel && (
+              <span className="inline-flex rounded-full bg-forest/15 px-3 py-1 text-[11px] font-black uppercase tracking-[0.12em] text-forest">
+                {resolvedSeasonLabel}
+              </span>
+            )}
             {embedded ? (
-              <h2 className="font-display text-3xl text-ink md:text-4xl">{album.collectionTitle}</h2>
+              <h2 className={`${resolvedSeasonLabel ? "mt-2 " : ""}font-display text-3xl text-ink md:text-4xl`}>
+                {album.collectionTitle}
+              </h2>
             ) : (
-              <h1 className="font-display text-3xl text-ink md:text-4xl">{album.collectionTitle}</h1>
+              <h1 className={`${resolvedSeasonLabel ? "mt-2 " : ""}font-display text-3xl text-ink md:text-4xl`}>
+                {album.collectionTitle}
+              </h1>
             )}
             <p className="mt-1 text-sm text-charcoal">
               {resolvedSubtitle}
             </p>
           </div>
-          {!embedded && (
-            <Link
-              href="/profil"
-              className="btn-cartoon btn-secondary inline-flex min-h-[44px] items-center whitespace-nowrap px-4 text-sm"
-            >
-              Retour au profil
-            </Link>
-          )}
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <SummaryStat label="Cartes" value={`${summary.ownedUnique} / ${summary.totalCards}`} />
-          <SummaryStat label="Completion" value={`${summary.completionPercent}%`} />
-          <SummaryStat label="Pages completes" value={String(summary.completedPages)} />
+          <SummaryStat label="Complétion" value={`${summary.completionPercent}%`} />
+          <SummaryStat label="Pages complètes" value={String(summary.completedPages)} />
           <SummaryStat
-            label="Recompenses"
+            label="Récompenses"
             value={String(summary.availableClaims)}
             highlight={summary.availableClaims > 0}
           />

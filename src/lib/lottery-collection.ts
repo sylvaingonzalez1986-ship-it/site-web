@@ -45,13 +45,16 @@ export const LOTTERY_COLLECTION_PAGE_META: Record<
 
 export const LOTTERY_DUPLICATE_BURN_RULES: Record<
   LotteryBurnableRarity,
-  { duplicatesRequired: 5; discountPercent: number }
+  { duplicatesRequired: number; discountPercent: number; giftWeightGrams: number }
 > = {
-  common: { duplicatesRequired: 5, discountPercent: 10 },
-  silver: { duplicatesRequired: 5, discountPercent: 20 },
-  gold: { duplicatesRequired: 5, discountPercent: 30 },
-  epic: { duplicatesRequired: 5, discountPercent: 50 },
+  common: { duplicatesRequired: 10, discountPercent: 10, giftWeightGrams: 3 },
+  silver: { duplicatesRequired: 10, discountPercent: 20, giftWeightGrams: 10 },
+  gold: { duplicatesRequired: 10, discountPercent: 30, giftWeightGrams: 20 },
+  epic: { duplicatesRequired: 10, discountPercent: 50, giftWeightGrams: 50 },
 };
+
+export const LOTTERY_POINTS_PACK_COST = 100;
+export const LOTTERY_POINTS_PACK_MAX_PER_PURCHASE = 50;
 
 /* ──────── Helpers ──────── */
 

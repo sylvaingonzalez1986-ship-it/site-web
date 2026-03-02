@@ -21,6 +21,7 @@ export async function GET() {
       eurosPerTicket: 5,
       maxTicketsPerOrder: 4,
       collectionTitle: "Hemp Heroes 2026 Collection",
+      seasonLabel: "Saison 1",
       albumSubtitle: "Ta collection de cartes. Complete chaque page pour debloquer ses recompenses.",
       albumBoosterTitle: "packs a ouvrir",
       albumBoosterDescription: "Ouvre un booster depuis l'album pour reveler les 3 cartes sans quitter cette page.",
@@ -94,6 +95,7 @@ export async function PUT(request: Request) {
       eurosPerTicket: number;
       maxTicketsPerOrder: number;
       collectionTitle: string;
+      seasonLabel: string;
       albumSubtitle: string;
       albumBoosterTitle: string;
       albumBoosterDescription: string;
@@ -114,6 +116,7 @@ export async function PUT(request: Request) {
       !Number.isFinite(payload.epicWeight) ||
       !Number.isFinite(payload.legendaryWeight) ||
       typeof payload.collectionTitle !== "string" ||
+      typeof payload.seasonLabel !== "string" ||
       typeof payload.albumSubtitle !== "string" ||
       typeof payload.albumBoosterTitle !== "string" ||
       typeof payload.albumBoosterDescription !== "string" ||
@@ -126,6 +129,7 @@ export async function PUT(request: Request) {
       eurosPerTicket: Number(payload.eurosPerTicket),
       maxTicketsPerOrder: Number(payload.maxTicketsPerOrder),
       collectionTitle: payload.collectionTitle,
+      seasonLabel: payload.seasonLabel,
       albumSubtitle: payload.albumSubtitle,
       albumBoosterTitle: payload.albumBoosterTitle,
       albumBoosterDescription: payload.albumBoosterDescription,

@@ -1,6 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { BreadcrumbJsonLd, FaqJsonLd, ProductListJsonLd } from "@/components/JsonLd";
-import { readStoreByBackend } from "@/lib/data-backend";
+import { readPublicStoreByBackend } from "@/lib/data-backend";
 
 const CBD_FAQ = [
   {
@@ -28,19 +28,31 @@ const CBD_FAQ = [
     answer:
       "Oui, Les Chanvriers Bretons livrent dans toute la France métropolitaine. Nous proposons une livraison rapide et suivie pour tous nos produits CBD bio bretons.",
   },
+  {
+    question: "Pourquoi acheter du CBD en circuit court chez un producteur breton ?",
+    answer:
+      "Acheter du CBD en circuit court chez un producteur breton comme Les Chanvriers Bretons, c'est soutenir l'agriculture locale, garantir la traçabilité du produit et profiter d'un CBD naturel cultivé sans pesticide, au juste prix.",
+  },
+  {
+    question: "Vos tisanes chanvre sont-elles artisanales ?",
+    answer:
+      "Oui, nos tisanes chanvre artisanales sont élaborées en petite série à partir de chanvre breton cultivé sans pesticide. Chaque lot est analysé en laboratoire pour garantir un produit naturel et conforme.",
+  },
 ];
 
 export const metadata: Metadata = {
-  title: "Boutique CBD Bio Breton Pas Cher | Fleurs, Résines, Huiles CBD Bretagne",
+  title:
+    "Boutique CBD Naturel | Fleurs de CBD Direct Producteur Breton, Tisanes Chanvre Artisanales",
   description:
-    "Achetez du CBD bio breton pas cher : fleurs CBD, résines, huiles spectre complet, e-liquides, cosmétiques et tisanes. Qualité premium, producteurs bretons, livraison rapide en France.",
+    "Achat CBD circuit court : fleurs de CBD direct producteur breton, résines, huiles spectre complet, tisanes chanvre artisanales. CBD français sans pesticide, livraison rapide en France.",
   alternates: {
     canonical: "https://leschanvriersbretons.com/boutique",
   },
   openGraph: {
-    title: "Boutique CBD Bio Breton Pas Cher — Les Chanvriers Bretons",
+    title:
+      "Boutique CBD Naturel Direct Producteur — Les Chanvriers Bretons",
     description:
-      "Tous nos produits CBD bio bretons au meilleur prix. Fleurs, résines, huiles, e-liquides, cosmétiques et tisanes CBD. Livraison rapide en France.",
+      "Tous nos produits CBD naturel breton en circuit court. Fleurs de CBD, résines, huiles, tisanes chanvre artisanales. CBD français sans pesticide, livraison rapide France.",
     url: "https://leschanvriersbretons.com/boutique",
   },
 };
@@ -48,7 +60,7 @@ export const metadata: Metadata = {
 export default async function BoutiqueLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const store = await readStoreByBackend();
+  const store = await readPublicStoreByBackend();
 
   return (
     <>

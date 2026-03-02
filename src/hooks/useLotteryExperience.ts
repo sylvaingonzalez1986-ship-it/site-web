@@ -1,21 +1,25 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
 import type {
   LotteryBurnableRarity,
   LotteryCollectionAlbum,
   LotteryCollectionPageRarity,
   LotteryConfig,
+  LotteryDuplicateBurnChoice,
   LotteryInventory,
   LotteryRewardClaim,
   LotteryTicket,
   ScratchResult,
 } from "@/types/lottery";
+import type { LoyaltySummary } from "@/types/loyalty";
 
 type TicketsPayload = {
   tickets?: LotteryTicket[];
   inventory?: LotteryInventory | null;
   config?: LotteryConfig | null;
+  loyalty?: LoyaltySummary;
   error?: string;
 };
 
@@ -27,11 +31,13 @@ type LotteryExperienceState = {
   tickets: LotteryTicket[];
   inventory: LotteryInventory | null;
   config: LotteryConfig | null;
+  loyalty: LoyaltySummary;
   album: LotteryCollectionAlbum | null;
   loading: boolean;
   error: string | null;
   acting: boolean;
   refreshAll: (options?: { silent?: boolean }) => Promise<void>;
+  purchasePacksWithPoints: (packCount: number) => Promise<number>;
   openPack: (ticketId: string) => Promise<ScratchResult>;
   claimPageReward: (
     pageRarity: LotteryCollectionPageRarity,
@@ -40,6 +46,7 @@ type LotteryExperienceState = {
   burnDuplicates: (
     rarity: LotteryBurnableRarity,
     instanceIds: string[],
+    rewardChoice: LotteryDuplicateBurnChoice,
   ) => Promise<LotteryRewardClaim>;
 };
 
@@ -47,6 +54,7 @@ export function useLotteryExperience(): LotteryExperienceState {
   const [tickets, setTickets] = useState<LotteryTicket[]>([]);
   const [inventory, setInventory] = useState<LotteryInventory | null>(null);
   const [config, setConfig] = useState<LotteryConfig | null>(null);
+  const [loyalty, setLoyalty] = useState<LoyaltySummary>(buildEmptyLoyaltySummary());
   const [album, setAlbum] = useState<LotteryCollectionAlbum | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -78,6 +86,7 @@ export function useLotteryExperience(): LotteryExperienceState {
         setTickets(ticketsBody?.tickets ?? []);
         setInventory(ticketsBody?.inventory ?? null);
         setConfig(ticketsBody?.config ?? null);
+        setLoyalty(ticketsBody?.loyalty ?? buildEmptyLoyaltySummary());
       }
 
       if (collectionResponse.ok) {
@@ -86,6 +95,7 @@ export function useLotteryExperience(): LotteryExperienceState {
 
       if (!ticketsResponse.ok) {
         setError(ticketsBody?.error ?? "Impossible de charger les boosters.");
+        setLoyalty(buildEmptyLoyaltySummary());
       } else if (!collectionResponse.ok) {
         setError(collectionBody?.error ?? "Impossible de charger l'album.");
       }
@@ -142,6 +152,30 @@ export function useLotteryExperience(): LotteryExperienceState {
     [refreshAll],
   );
 
+  const purchasePacksWithPoints = useCallback(
+    async (packCount: number): Promise<number> => {
+      setActing(true);
+      try {
+        const response = await fetch("/api/account/tickets", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ packCount }),
+        });
+
+        const payload = (await response.json()) as { granted?: number; error?: string };
+        if (!response.ok || !Number.isInteger(payload.granted)) {
+          throw new Error(payload.error ?? "Achat packs impossible.");
+        }
+
+        await refreshAll({ silent: true });
+        return Math.max(0, payload.granted ?? 0);
+      } finally {
+        setActing(false);
+      }
+    },
+    [refreshAll],
+  );
+
   const claimPageReward = useCallback(
     async (pageRarity: LotteryCollectionPageRarity, rewardDefinitionId: string): Promise<LotteryRewardClaim> => {
       setActing(true);
@@ -167,13 +201,17 @@ export function useLotteryExperience(): LotteryExperienceState {
   );
 
   const burnDuplicates = useCallback(
-    async (rarity: LotteryBurnableRarity, instanceIds: string[]): Promise<LotteryRewardClaim> => {
+    async (
+      rarity: LotteryBurnableRarity,
+      instanceIds: string[],
+      rewardChoice: LotteryDuplicateBurnChoice,
+    ): Promise<LotteryRewardClaim> => {
       setActing(true);
       try {
         const response = await fetch("/api/account/collection/burn", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ rarity, instanceIds }),
+          body: JSON.stringify({ rarity, instanceIds, rewardChoice }),
         });
 
         const payload = (await response.json()) as { claim?: LotteryRewardClaim; error?: string };
@@ -194,11 +232,13 @@ export function useLotteryExperience(): LotteryExperienceState {
     tickets,
     inventory,
     config,
+    loyalty,
     album,
     loading,
     error,
     acting,
     refreshAll,
+    purchasePacksWithPoints,
     openPack,
     claimPageReward,
     burnDuplicates,

@@ -439,6 +439,7 @@ function mapOrderRow(
     relayPostalCode: toOptionalString(row.relay_postal_code),
     relayCity: toOptionalString(row.relay_city),
     relayCountry: toOptionalString(row.relay_country),
+    trackingNumber: toOptionalString(row.tracking_number),
     promoCode: toOptionalString(row.promo_code),
     discountPercent: Number.isFinite(Number(row.discount_percent))
       ? Number(row.discount_percent)
@@ -952,14 +953,66 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
 }
 
 export async function readPublicStoreFromSupabase(): Promise<PublicStoreResponse> {
-  const store = await readStoreFromSupabase();
+  const supabase = createSupabaseServiceClient();
+
+  const [
+    producersResult,
+    productsResult,
+    packComponentsResult,
+    blogResult,
+    siteContentResult,
+    sectionsResult,
+  ] = await Promise.all([
+    supabase.from("producers").select("*").order("position", { ascending: true }),
+    supabase.from("products").select("*").order("position", { ascending: true }),
+    supabase.from("pack_components").select("*"),
+    supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
+    supabase.from("site_content").select("*").eq("id", 1).maybeSingle(),
+    supabase.from("page_sections").select("*").eq("id", 1).maybeSingle(),
+  ]);
+
+  failIfError(producersResult.error, "read public producers");
+  failIfError(productsResult.error, "read public products");
+  failIfError(packComponentsResult.error, "read public pack_components");
+  failIfError(blogResult.error, "read public blog_posts");
+  failIfError(siteContentResult.error, "read public site_content");
+  failIfError(sectionsResult.error, "read public page_sections");
+
+  const packProductIdsByPackId = new Map<string, string[]>();
+  for (const rawRow of packComponentsResult.data ?? []) {
+    const row = toObject(rawRow);
+    const packId = toStringValue(row.pack_id);
+    const productId = toStringValue(row.product_id);
+    if (!packId || !productId) {
+      continue;
+    }
+
+    const list = packProductIdsByPackId.get(packId) ?? [];
+    if (!list.includes(productId)) {
+      list.push(productId);
+    }
+    packProductIdsByPackId.set(packId, list);
+  }
+
+  const products = (productsResult.data ?? []).map((row) =>
+    mapProductRow(toObject(row), packProductIdsByPackId),
+  );
+
+  const producers = (producersResult.data ?? []).map((row) => mapProducerRow(toObject(row)));
+  const blog = (blogResult.data ?? []).map((row) => mapBlogRow(toObject(row)));
+  const content = mergeContent(siteContentResult.data ? toObject(siteContentResult.data) : null);
+  const sections = mergeSections(sectionsResult.data ? toObject(sectionsResult.data) : null);
+  const updatedAt = siteContentResult.data?.updated_at
+    ? toIsoString(siteContentResult.data.updated_at)
+    : new Date().toISOString();
+
   return {
-    content: store.content,
-    sections: filterVisibleSections(store.sections),
-    products: store.products,
-    blog: store.blog.filter((post) => post.published),
-    producers: store.producers,
-    updatedAt: store.updatedAt,
+    content,
+    sections: filterVisibleSections(sections),
+    products,
+    blog: blog.filter((post) => post.published),
+    producers,
+    updatedAt,
   };
 }
 

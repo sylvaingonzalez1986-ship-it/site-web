@@ -7,7 +7,13 @@ import {
   mintLotteryTicketsForOrderByBackend,
   releaseLotteryRewardClaimsForOrderByBackend,
 } from "@/lib/lottery-backend";
-import { applyOrderLoyaltyBonusByBackend, updateOrderPaymentStateByBackend, updateOrderStatusByBackend } from "@/lib/order-backend";
+import { sendOrderProcessingEmail, sendOrderShippedEmail } from "@/lib/order-email";
+import {
+  applyOrderLoyaltyBonusByBackend,
+  getOrderByIdByBackend,
+  updateOrderAdminFieldsByBackend,
+  updateOrderPaymentStateByBackend,
+} from "@/lib/order-backend";
 import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
 import type { CmsOrder, OrderStatus } from "@/types/store";
 
@@ -26,16 +32,27 @@ export async function PATCH(
     const payload = (await request.json()) as {
       status?: OrderStatus;
       paymentState?: CmsOrder["paymentState"];
+      trackingNumber?: string | null;
     };
 
-    if (!payload.status && !payload.paymentState) {
+    const hasTrackingUpdate = Object.prototype.hasOwnProperty.call(payload, "trackingNumber");
+
+    if (!payload.status && !payload.paymentState && !hasTrackingUpdate) {
       return NextResponse.json({ error: "Aucune modification demandee." }, { status: 400 });
+    }
+
+    const previousOrder = await getOrderByIdByBackend(orderId);
+    if (!previousOrder) {
+      return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
     }
 
     let updated: CmsOrder | null = null;
 
-    if (payload.status) {
-      updated = await updateOrderStatusByBackend(orderId, payload.status);
+    if (payload.status || hasTrackingUpdate) {
+      updated = await updateOrderAdminFieldsByBackend(orderId, {
+        status: payload.status,
+        trackingNumber: hasTrackingUpdate ? payload.trackingNumber ?? null : undefined,
+      });
       if (!updated) {
         return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
       }
@@ -72,6 +89,28 @@ export async function PATCH(
 
     if (!updated) {
       return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
+    }
+
+    if (
+      payload.status &&
+      previousOrder.status !== updated.status &&
+      updated.customerEmail
+    ) {
+      if (updated.status === "processing") {
+        try {
+          await sendOrderProcessingEmail(updated);
+        } catch (error) {
+          console.error("sendOrderProcessingEmail failed:", error);
+        }
+      }
+
+      if (updated.status === "shipped") {
+        try {
+          await sendOrderShippedEmail(updated);
+        } catch (error) {
+          console.error("sendOrderShippedEmail failed:", error);
+        }
+      }
     }
 
     logAuditEvent({ eventType: "update_order", metadata: { orderId, status: payload.status, paymentState: payload.paymentState } });

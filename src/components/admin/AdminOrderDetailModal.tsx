@@ -190,6 +190,11 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
           <span className="pill-cartoon px-3 py-1">
             Livraison: {getDeliveryMethodLabel(deliveryMethod)}
           </span>
+          {order.trackingNumber && (
+            <span className="pill-cartoon px-3 py-1">
+              Suivi: {order.trackingNumber}
+            </span>
+          )}
         </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -226,8 +231,11 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
                   {[order.relayAddress, order.relayPostalCode, order.relayCity, order.relayCountry]
                     .filter(Boolean)
                     .join(", ")}
-                </p>
-              </div>
+                  </p>
+                </div>
+            )}
+            {order.trackingNumber && (
+              <p className="mt-3 text-sm text-ink">Numero de suivi : {order.trackingNumber}</p>
             )}
           </div>
         </div>

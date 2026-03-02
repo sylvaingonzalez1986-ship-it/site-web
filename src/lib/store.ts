@@ -446,6 +446,7 @@ function normalizeOrder(order: CmsOrder, index: number): CmsOrder {
     relayPostalCode: order.relayPostalCode?.trim() || undefined,
     relayCity: order.relayCity?.trim() || undefined,
     relayCountry: order.relayCountry?.trim() || undefined,
+    trackingNumber: order.trackingNumber?.trim() || undefined,
     promoCode: order.promoCode?.trim().toUpperCase() || undefined,
     discountPercent,
     discountAmount,

@@ -15,6 +15,11 @@ export type LoyaltyBadge = {
 
 export type LoyaltySummary = {
   points: number;
+  basePoints: number;
+  bonusPoints: number;
+  spentPoints: number;
+  spendablePoints: number;
+  totalPoints: number;
   totalEligibleSpend: number;
   eligibleOrdersCount: number;
   currentBadge: LoyaltyBadge;

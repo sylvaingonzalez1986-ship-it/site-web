@@ -6,6 +6,7 @@ const supabaseHostname = process.env.NEXT_PUBLIC_SUPABASE_URL
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  serverExternalPackages: ["@napi-rs/canvas"],
   async headers() {
     const supabaseOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "") || "";
     const vivaOrigin = "https://www.vivapayments.com";
@@ -73,6 +74,8 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/*": [
       "./node_modules/pdfkit/js/data/**",
+      "./node_modules/@napi-rs/**",
+      "./node_modules/pdfjs-dist/standard_fonts/**",
     ],
     "/api/account/orders/[orderId]/invoice": [
       "./node_modules/pdfkit/js/data/**",

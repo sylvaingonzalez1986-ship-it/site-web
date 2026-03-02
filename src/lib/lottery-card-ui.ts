@@ -10,8 +10,8 @@ export const rarityLabels: Record<LotteryCardRarity, string> = {
   common: "Commune",
   silver: "Silver",
   gold: "Gold",
-  epic: "Epique",
-  legendary: "Legendaire",
+  epic: "Épique",
+  legendary: "Légendaire",
 };
 
 /** Ordered list of rarities (album page order). */

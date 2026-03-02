@@ -125,7 +125,7 @@ export function CheckoutButton({
       >
         {loading
           ? "Connexion a Viva..."
-          : `Payer ${new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(amountToPay)} avec Viva`}
+          : "Payer Par CB"}
       </button>
       {error && <p className="mt-2 text-sm font-semibold text-red-700">{error}</p>}
       {success && <p className="mt-2 text-sm font-semibold text-green-700">{success}</p>}

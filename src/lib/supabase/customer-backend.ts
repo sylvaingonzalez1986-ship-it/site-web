@@ -198,6 +198,7 @@ type ProfileRow = {
   country: string;
   notes: string;
   loyalty_points: number;
+  loyalty_points_spent: number;
   referral_code: string;
   referred_by_code: string | null;
   referral_bound_at: string | null;
@@ -222,6 +223,9 @@ function mapProfileToPublicCustomer(
     postalCode: profile.postal_code || "",
     country: profile.country || DEFAULT_COUNTRY,
     loyaltyPoints: Number.isFinite(profile.loyalty_points) ? profile.loyalty_points : 0,
+    loyaltyPointsSpent: Number.isFinite(profile.loyalty_points_spent)
+      ? Math.max(0, Math.round(profile.loyalty_points_spent))
+      : 0,
     promoCodes,
     referralCode:
       typeof profile.referral_code === "string" ? profile.referral_code.trim().toUpperCase() : undefined,
@@ -292,6 +296,7 @@ async function ensureProfileRow(input: {
     country: sanitizeCountry(input.country),
     notes: "",
     loyalty_points: 0,
+    loyalty_points_spent: 0,
     referral_code: generateReferralCodeFromUserId(input.userId),
   };
 

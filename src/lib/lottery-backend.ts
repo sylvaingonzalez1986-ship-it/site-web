@@ -25,6 +25,7 @@ import {
   listLotteryRewardDefinitionsFromSupabase,
   listLotteryRewardRulesFromSupabase,
   mintLotteryTicketsForOrderInSupabase,
+  purchaseLotteryPacksWithPointsInSupabase,
   releaseLotteryRewardClaimsForOrderInSupabase,
   reserveLotteryRewardClaimForOrderInSupabase,
   scratchLotteryTicketInSupabase,
@@ -42,6 +43,7 @@ import type {
   LotteryAlbumCard,
   LotteryAlbumPageWithSlots,
   LotteryBurnableRarity,
+  LotteryDuplicateBurnChoice,
   LotteryCardDefinition,
   LotteryCardRarity,
   LotteryCollectionAlbum,
@@ -74,6 +76,14 @@ export async function grantLotteryTicketsToCustomerByBackend(input: {
   adminEmail: string;
 }): Promise<number> {
   return grantLotteryTicketsToCustomerInSupabase(input);
+}
+
+export async function purchaseLotteryPacksWithPointsByBackend(input: {
+  userId: string;
+  packCount: number;
+  basePoints: number;
+}): Promise<number> {
+  return purchaseLotteryPacksWithPointsInSupabase(input);
 }
 
 export async function getLotteryTicketsForCustomerByBackend(userId: string): Promise<LotteryTicket[]> {
@@ -129,6 +139,7 @@ export async function updateLotteryConfigByBackend(input: {
   eurosPerTicket: number;
   maxTicketsPerOrder: number;
   collectionTitle: string;
+  seasonLabel: string;
   albumSubtitle: string;
   albumBoosterTitle: string;
   albumBoosterDescription: string;
@@ -348,7 +359,9 @@ export async function burnDuplicateCardsByBackend(input: {
   userId: string;
   rarity: LotteryBurnableRarity;
   instanceIds: string[];
+  rewardChoice: LotteryDuplicateBurnChoice;
   discountPercent: number;
+  giftWeightGrams: number;
 }): Promise<LotteryRewardClaim> {
   return burnDuplicateCardsFromSupabase(input);
 }

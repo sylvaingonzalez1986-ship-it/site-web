@@ -10,13 +10,13 @@ export type TutorialStep = {
   requiresAuth?: boolean;
 };
 
-export const TUTORIAL_VERSION = 6;
+export const TUTORIAL_VERSION = 7;
 
 export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "welcome",
     title: "Bienvenue chez Les Chanvriers Bretons",
-    text: "Charles t'accompagne pour une visite rapide du site.",
+    text: "Sylvain t'accompagne pour une visite rapide du site.",
     target: '[data-tutorial="home-hero"]',
     spotlightPadding: 12,
     route: "/",

@@ -22,6 +22,7 @@ export function ProductAnalysisUpload({ value, onChange }: ProductAnalysisUpload
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const validateClientFile = (file: File): string | null => {
     if (
@@ -49,12 +50,14 @@ export function ProductAnalysisUpload({ value, onChange }: ProductAnalysisUpload
 
     const validationError = validateClientFile(file);
     if (validationError) {
+      setNotice(null);
       setError(validationError);
       return;
     }
 
     setIsUploading(true);
     setError(null);
+    setNotice(null);
 
     try {
       const formData = new FormData();
@@ -78,6 +81,7 @@ export function ProductAnalysisUpload({ value, onChange }: ProductAnalysisUpload
       }
 
       onChange(payload.analysisPath);
+      setNotice("PDF uploade. Clique sur Sauvegarder pour enregistrer le produit.");
     } catch {
       setError("Echec de l'envoi du PDF.");
     } finally {
@@ -142,7 +146,13 @@ export function ProductAnalysisUpload({ value, onChange }: ProductAnalysisUpload
             {isUploading ? "Envoi..." : "Choisir un PDF"}
           </button>
         </div>
-        <p className="mt-2 text-xs text-charcoal">PDF uniquement - {formatMaxSizeLabel()}</p>
+        <p className="mt-2 text-xs text-charcoal">
+          PDF uniquement - {formatMaxSizeLabel()} - l&apos;adresse postale detectee est masquee
+          automatiquement.
+        </p>
+        <p className="mt-1 text-[11px] text-charcoal/80">
+          Les PDF image/scannes sans texte exploitable sont refuses pour securite.
+        </p>
         <input
           ref={inputRef}
           type="file"
@@ -174,12 +184,17 @@ export function ProductAnalysisUpload({ value, onChange }: ProductAnalysisUpload
           type="button"
           className="btn-cartoon btn-primary h-10 px-3 text-xs"
           disabled={!value}
-          onClick={() => onChange(undefined)}
+          onClick={() => {
+            setError(null);
+            setNotice(null);
+            onChange(undefined);
+          }}
         >
           Retirer
         </button>
       </div>
 
+      {notice && <p className="text-xs font-semibold text-[#0a7b61]">{notice}</p>}
       {error && <p className="text-xs font-semibold text-[#9f1d1d]">{error}</p>}
     </div>
   );

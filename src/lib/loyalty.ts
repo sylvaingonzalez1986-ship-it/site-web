@@ -91,6 +91,11 @@ export function buildLoyaltySummary(orders: CmsOrder[]): LoyaltySummary {
 
   return {
     points,
+    basePoints: points,
+    bonusPoints: 0,
+    spentPoints: 0,
+    spendablePoints: points,
+    totalPoints: points,
     totalEligibleSpend,
     eligibleOrdersCount: eligibleOrders.length,
     currentBadge,
@@ -104,10 +109,13 @@ export function buildLoyaltySummary(orders: CmsOrder[]): LoyaltySummary {
 export function buildLoyaltySummaryWithBonus(
   orders: CmsOrder[],
   bonusPoints: number,
+  spentPoints = 0,
 ): LoyaltySummary {
   const base = buildLoyaltySummary(orders);
   const safeBonus = Number.isFinite(bonusPoints) ? Math.round(bonusPoints) : 0;
+  const safeSpent = Number.isFinite(spentPoints) ? Math.max(0, Math.round(spentPoints)) : 0;
   const totalPoints = Math.max(0, base.points + safeBonus);
+  const spendablePoints = Math.max(0, totalPoints - safeSpent);
 
   const badges = LOYALTY_BADGE_DEFINITIONS.map((definition) =>
     toBadge(totalPoints, definition),
@@ -137,6 +145,11 @@ export function buildLoyaltySummaryWithBonus(
   return {
     ...base,
     points: totalPoints,
+    basePoints: base.points,
+    bonusPoints: safeBonus,
+    spentPoints: safeSpent,
+    spendablePoints,
+    totalPoints,
     currentBadge,
     nextBadge,
     pointsToNextBadge,

@@ -210,6 +210,10 @@ function normalizeCustomer(input: Partial<Customer>): Customer {
     country: sanitizeCountry(input.country),
     notes: sanitizeText(input.notes, MAX_NOTES_LENGTH),
     loyaltyPoints: sanitizeLoyaltyBonus(input.loyaltyPoints),
+    loyaltyPointsSpent: Math.max(
+      0,
+      Number.isFinite(input.loyaltyPointsSpent) ? Math.round(Number(input.loyaltyPointsSpent)) : 0,
+    ),
     promoCodes,
     passwordHash: typeof input.passwordHash === "string" ? input.passwordHash : "",
     passwordSalt: typeof input.passwordSalt === "string" ? input.passwordSalt : "",
@@ -258,6 +262,7 @@ function toPublicCustomer(customer: Customer): PublicCustomer {
     postalCode: customer.postalCode,
     country: customer.country,
     loyaltyPoints: customer.loyaltyPoints,
+    loyaltyPointsSpent: customer.loyaltyPointsSpent,
     promoCodes: customer.promoCodes,
     createdAt: customer.createdAt,
   };
@@ -355,6 +360,7 @@ export async function createCustomer(input: {
       country: input.country,
       notes: "",
       loyaltyPoints: 0,
+      loyaltyPointsSpent: 0,
       promoCodes: [],
       passwordHash,
       passwordSalt: salt,
@@ -457,6 +463,7 @@ export async function updateCustomerProfile(
     postalCode: updated.postalCode,
     country: updated.country,
     loyaltyPoints: updated.loyaltyPoints,
+    loyaltyPointsSpent: updated.loyaltyPointsSpent,
     promoCodes: updated.promoCodes,
     createdAt: updated.createdAt,
   };

@@ -13,9 +13,14 @@ type CardDetailModalProps = {
 
 export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
   useBodyScrollLock(true);
-  const normalizedImageUrl = slot.imageUrl.startsWith("/") || isRemoteImageUrl(slot.imageUrl)
-    ? slot.imageUrl
-    : `/${slot.imageUrl}`;
+  const rawImageUrl = slot.imageUrl.trim();
+  const normalizedImageUrl = rawImageUrl
+    ? rawImageUrl.startsWith("/") || isRemoteImageUrl(rawImageUrl)
+      ? rawImageUrl
+      : `/${rawImageUrl}`
+    : "";
+  const hasRenderableImage = isRenderableImageSource(normalizedImageUrl);
+  const imageAlt = slot.isOwned ? slot.name : `Carte mystere #${slot.cardNumber}`;
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
@@ -32,19 +37,36 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
           x
         </button>
 
-        {isRenderableImageSource(normalizedImageUrl) ? (
+        {hasRenderableImage ? (
           <div className="relative aspect-[3/4] w-full overflow-hidden">
             {isRemoteImageUrl(normalizedImageUrl) ? (
               <img
                 src={normalizedImageUrl}
-                alt={slot.name}
-                className="h-full w-full object-cover"
+                alt={imageAlt}
+                className={`h-full w-full object-cover ${slot.isOwned ? "" : "grayscale brightness-[0.25]"}`}
                 loading="lazy"
                 decoding="async"
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <Image src={normalizedImageUrl} alt={slot.name} fill className="object-cover" sizes="(max-width: 640px) 90vw, 384px" priority />
+              <Image
+                src={normalizedImageUrl}
+                alt={imageAlt}
+                fill
+                className={`object-cover ${slot.isOwned ? "" : "grayscale brightness-[0.25]"}`}
+                sizes="(max-width: 640px) 90vw, 384px"
+                priority
+              />
+            )}
+
+            {!slot.isOwned && (
+              <>
+                <div className="pointer-events-none absolute inset-0 bg-black/40" />
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),rgba(255,255,255,0))]" />
+                <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                  <span className="font-display text-8xl leading-none text-white/85">?</span>
+                </div>
+              </>
             )}
           </div>
         ) : (
@@ -70,7 +92,7 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
 
           {slot.isOwned && (
             <div className="flex flex-wrap gap-2 pt-1 text-xs">
-              <span className="pill-cartoon bg-ink/10 px-2 py-0.5 text-ink">Possedee x{slot.ownedCount}</span>
+              <span className="pill-cartoon bg-ink/10 px-2 py-0.5 text-ink">Possédée x{slot.ownedCount}</span>
               {slot.burnableCount > 0 && (
                 <span className="pill-cartoon bg-amber-100 px-2 py-0.5 text-amber-800">
                   burn {slot.burnableCount}
@@ -86,7 +108,7 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
 
           {!slot.isOwned && (
             <p className="text-sm italic text-charcoal/60">
-              Tu n&apos;as pas encore cette carte. Continue a ouvrir des boosters.
+              Tu n&apos;as pas encore cette carte. Continue à ouvrir des boosters.
             </p>
           )}
         </div>

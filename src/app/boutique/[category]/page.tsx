@@ -112,37 +112,37 @@ export default function CategoryPage() {
 function getCategoryDescription(slug: string): string {
   const descriptions: Record<string, string> = {
     "fleurs-cbd":
-      "Découvrez notre sélection de fleurs CBD bio bretonnes, cultivées avec soin. Arômes naturels, qualité premium, prix pas cher.",
+      "Fleurs de CBD direct producteur breton, cultivées naturellement sans pesticide. CBD naturel en circuit court, qualité analysée en laboratoire.",
     "resines-cbd":
-      "Découvrez notre sélection de résines CBD bio, texture et arômes maîtrisés, avec analyses laboratoire.",
+      "Résines CBD naturelles sélectionnées auprès de producteurs français. Texture et arômes maîtrisés, CBD breton sans pesticide, analyses laboratoire.",
     "huiles-cbd":
-      "Nos huiles CBD bio full spectrum et broad spectrum, faciles à doser. Idéales pour la relaxation et le bien-être au quotidien.",
+      "Huiles CBD naturelles full spectrum et broad spectrum, direct producteur breton. CBD facile à doser, idéal pour la relaxation et le bien-être au quotidien.",
     "e-liquide-cbd":
-      "E-liquides CBD au profil aromatique maîtrisé pour vapotage, sélectionnés avec exigence et transparence.",
+      "E-liquides CBD au profil aromatique maîtrisé, sélectionnés avec exigence auprès de producteurs français. Vapotage CBD naturel et transparent.",
     "cosmetiques-cbd":
-      "Soins visage et corps au CBD bio : baumes, crèmes et huiles de massage. Le chanvre breton au service de votre peau.",
+      "Soins visage et corps au CBD naturel breton : baumes, crèmes et huiles de massage. Le chanvre cultivé en Bretagne au service de votre peau.",
     "tisane-cbd":
-      "Infusions et tisanes au chanvre breton, gourmandes et relaxantes, pour intégrer le CBD à votre routine.",
+      "Tisanes chanvre artisanales et infusions CBD bretonnes, gourmandes et relaxantes. Circuit court, sans pesticide, pour intégrer le CBD naturel à votre routine.",
     "alimentaire-cbd":
-      "Infusions et tisanes au chanvre breton, gourmandes et relaxantes, pour intégrer le CBD à votre routine.",
+      "Tisanes chanvre artisanales et infusions CBD bretonnes, gourmandes et relaxantes. Circuit court, sans pesticide, pour intégrer le CBD naturel à votre routine.",
     "miam-cbd":
-      "Produits alimentaires et gourmandises au chanvre breton, pour intégrer le CBD à votre quotidien.",
+      "Produits gourmands au chanvre breton, CBD naturel et artisanal. Découvrez le terroir breton dans votre assiette, en circuit court.",
     "accessoires-cbd":
-      "Grinders, pochons, plateaux et kits découverte. Tout l'essentiel pour profiter de vos produits CBD.",
+      "Grinders, pochons, plateaux et kits découverte. Tout l'essentiel pour profiter de vos produits CBD naturels.",
   };
   return descriptions[slug] ?? "";
 }
 
 function getCategorySeoTitle(slug: string): string {
   const titles: Record<string, string> = {
-    "fleurs-cbd": "Pourquoi choisir nos fleurs CBD ?",
-    "resines-cbd": "Pourquoi choisir nos résines CBD bio ?",
-    "huiles-cbd": "Comment bien choisir son huile CBD ?",
-    "e-liquide-cbd": "Bien choisir son e-liquide CBD",
-    "cosmetiques-cbd": "Les bienfaits du CBD pour la peau",
-    "tisane-cbd": "Le CBD dans vos tisanes et infusions",
-    "alimentaire-cbd": "Le CBD dans vos tisanes et infusions",
-    "miam-cbd": "Le CBD dans vos produits gourmands",
+    "fleurs-cbd": "Pourquoi acheter ses fleurs de CBD direct producteur breton ?",
+    "resines-cbd": "Résines CBD naturelles : le circuit court sans pesticide",
+    "huiles-cbd": "Comment bien choisir son huile CBD naturelle ?",
+    "e-liquide-cbd": "Bien choisir son e-liquide CBD français",
+    "cosmetiques-cbd": "Les bienfaits du CBD naturel breton pour la peau",
+    "tisane-cbd": "Tisanes chanvre artisanales : le CBD dans votre tasse",
+    "alimentaire-cbd": "Tisanes chanvre artisanales : le CBD dans votre tasse",
+    "miam-cbd": "Le CBD breton dans vos produits gourmands",
     "accessoires-cbd": "Bien s'équiper pour le CBD",
   };
   return titles[slug] ?? "";
@@ -153,41 +153,42 @@ function getCategorySeoText(slug: string): React.ReactNode {
     "fleurs-cbd": (
       <>
         <p>
-          Nos fleurs CBD sont sélectionnées auprès de producteurs français
-          respectant des normes strictes. Chaque lot est analysé en
-          laboratoire pour garantir un taux de THC conforme à la législation
-          française.
+          Nos fleurs de CBD sont cultivées en direct par des producteurs bretons et
+          français qui travaillent sans pesticide, dans le respect du terroir.
+          Chaque lot est analysé en laboratoire pour garantir un taux de THC
+          conforme à la réglementation française et un CBD naturel de qualité.
         </p>
         <p>
-          Que vous cherchiez une fleur CBD pas chère pour un usage quotidien,
-          notre shop CBD propose des produits adaptés à tous les budgets
-          avec livraison rapide en France.
+          En achetant vos fleurs de CBD direct producteur, vous soutenez le circuit
+          court et la production locale en Bretagne. Notre boutique vous offre un
+          accès transparent à du CBD breton authentique, livré rapidement partout en France.
         </p>
       </>
     ),
     "resines-cbd": (
       <>
         <p>
-          Nos résines CBD sont sélectionnées pour leur profil aromatique, leur
-          texture et leur régularité. Chaque lot est contrôlé en laboratoire
-          pour garantir une qualité irréprochable.
+          Nos résines CBD sont sélectionnées auprès de producteurs français pour
+          leur profil aromatique et leur texture. Chaque lot est contrôlé en
+          laboratoire, sans pesticide, pour un CBD naturel et irréprochable.
         </p>
         <p>
-          Notre catégorie dédiée résines permet de comparer simplement les
-          références sans mélanger avec les fleurs CBD.
+          Achat CBD circuit court : en choisissant nos résines, vous profitez d'un
+          produit breton artisanal au juste prix, livré rapidement en France.
         </p>
       </>
     ),
     "huiles-cbd": (
       <>
         <p>
-          L&apos;huile CBD est un format populaire pour profiter des bienfaits du
-          cannabidiol. Nos huiles CBD bio sont disponibles en différentes
-          concentrations pour s&apos;adapter à vos besoins.
+          L&apos;huile CBD est un format idéal pour profiter du cannabidiol au quotidien.
+          Nos huiles CBD naturelles sont proposées en full spectrum et broad spectrum,
+          issues de chanvre breton cultivé sans pesticide.
         </p>
         <p>
-          Full spectrum ou broad spectrum, nos huiles conservent les molécules
-          naturelles du chanvre breton pour un effet d&apos;entourage optimal.
+          Direct producteur en Bretagne, nos huiles conservent l'ensemble des
+          molécules naturelles du chanvre pour un effet d&apos;entourage optimal.
+          Achat CBD en circuit court, livraison rapide France.
         </p>
       </>
     ),
@@ -195,61 +196,63 @@ function getCategorySeoText(slug: string): React.ReactNode {
       <>
         <p>
           Nos e-liquides CBD sont proposés avec des profils aromatiques clairs
-          et des dosages transparents pour un usage confortable.
+          et des dosages transparents, sélectionnés auprès de producteurs français
+          respectant une démarche sans pesticide.
         </p>
         <p>
-          Cette catégorie regroupe uniquement les références de vape CBD, pour
-          une navigation plus simple et plus propre.
+          Cette catégorie regroupe uniquement les références de vape CBD naturel,
+          pour une navigation simple et un achat CBD en toute confiance.
         </p>
       </>
     ),
     "cosmetiques-cbd": (
       <>
         <p>
-          Le CBD possède des propriétés apaisantes qui en font un allié idéal
-          pour les soins de la peau. Nos cosmétiques CBD bio combinent chanvre
-          breton et ingrédients naturels.
+          Le CBD naturel possède des propriétés apaisantes idéales pour les soins
+          de la peau. Nos cosmétiques combinent chanvre breton cultivé sans pesticide
+          et ingrédients naturels sélectionnés.
         </p>
         <p>
           Baumes, crèmes et huiles de massage : notre gamme cosmétique CBD est
-          formulée pour tous les types de peau.
+          formulée pour tous les types de peau, en circuit court depuis la Bretagne.
         </p>
       </>
     ),
     "tisane-cbd": (
       <>
         <p>
-          Intégrez le chanvre breton dans votre routine bien-être avec nos
-          tisanes et infusions sélectionnées pour la détente et le plaisir
-          gustatif.
+          Nos tisanes chanvre artisanales sont élaborées avec du chanvre breton
+          cultivé sans pesticide, pour une infusion CBD naturelle, gourmande et
+          relaxante. Le terroir breton dans votre tasse.
         </p>
         <p>
-          Cette catégorie rassemble les formats boisson chaude au même endroit
-          pour une lecture plus claire.
+          Achat CBD circuit court : chaque tisane chanvre artisanale est produite
+          en petite série par des producteurs locaux, pour une qualité et une
+          traçabilité irréprochables. Livraison rapide France.
         </p>
       </>
     ),
     "miam-cbd": (
       <>
         <p>
-          Découvrez notre gamme Miam : produits gourmands et alimentaires au
-          chanvre breton, sélectionnés pour le plaisir et le bien-être.
+          Découvrez notre gamme Miam : produits gourmands au chanvre breton,
+          CBD naturel et artisanal. Circuit court et terroir breton dans votre assiette.
         </p>
         <p>
           Cette catégorie rassemble les produits alimentaires CBD pour une
-          navigation simplifiée.
+          navigation simplifiée et un achat CBD en confiance.
         </p>
       </>
     ),
     "alimentaire-cbd": (
       <>
         <p>
-          Découvrez nos produits alimentaires au chanvre breton, sélectionnés
-          pour le bien-être et le plaisir gustatif au quotidien.
+          Nos produits alimentaires au chanvre breton sont sélectionnés en circuit
+          court, pour le bien-être et le plaisir gustatif. CBD naturel, sans pesticide.
         </p>
         <p>
-          Cette catégorie rassemble les produits alimentaires CBD au même
-          endroit pour une navigation simplifiée.
+          Tisanes chanvre artisanales et infusions CBD pour intégrer le cannabidiol
+          à votre quotidien. Livraison rapide France.
         </p>
       </>
     ),

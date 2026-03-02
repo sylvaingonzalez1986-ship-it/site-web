@@ -145,6 +145,7 @@ export function AdminLotteryPanel() {
         eurosPerTicket: config.eurosPerTicket,
         maxTicketsPerOrder: config.maxTicketsPerOrder,
         collectionTitle: config.collectionTitle,
+        seasonLabel: config.seasonLabel,
         albumSubtitle: config.albumSubtitle,
         albumBoosterTitle: config.albumBoosterTitle,
         albumBoosterDescription: config.albumBoosterDescription,
@@ -315,6 +316,15 @@ export function AdminLotteryPanel() {
                 className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
                 value={config.collectionTitle}
                 onChange={(event) => setConfig({ ...config, collectionTitle: event.target.value })}
+              />
+            </label>
+            <label className="grid gap-1 text-sm md:col-span-2">
+              <span className="font-semibold text-ink">Label saison</span>
+              <input
+                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                value={config.seasonLabel}
+                onChange={(event) => setConfig({ ...config, seasonLabel: event.target.value })}
+                placeholder="Saison 1"
               />
             </label>
             <label className="grid gap-1 text-sm md:col-span-2">

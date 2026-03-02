@@ -13,9 +13,13 @@ type AlbumCardSlotProps = {
 export function AlbumCardSlot({ slot, onClick }: AlbumCardSlotProps) {
   const accent = rarityAccentColor[slot.rarity];
   const cardBg = rarityCardClasses[slot.rarity];
-  const normalizedImageUrl = slot.imageUrl.startsWith("/") || isRemoteImageUrl(slot.imageUrl)
-    ? slot.imageUrl
-    : `/${slot.imageUrl}`;
+  const rawImageUrl = slot.imageUrl.trim();
+  const normalizedImageUrl = rawImageUrl
+    ? rawImageUrl.startsWith("/") || isRemoteImageUrl(rawImageUrl)
+      ? rawImageUrl
+      : `/${rawImageUrl}`
+    : "";
+  const hasRenderableImage = isRenderableImageSource(normalizedImageUrl);
 
   if (!slot.isOwned) {
     return (
@@ -25,13 +29,48 @@ export function AlbumCardSlot({ slot, onClick }: AlbumCardSlotProps) {
         className="group relative flex aspect-[0.72] flex-col overflow-hidden rounded-[18px] border-2 border-dashed border-ink/20 bg-[#efe7d8] transition-all hover:border-ink/35 hover:bg-[#eadfce]"
         title={`#${slot.cardNumber} - carte manquante`}
       >
-        <div className="flex flex-1 items-center justify-center bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.55),rgba(255,255,255,0))] px-3">
-          <div className="text-center">
-            <span className="block text-4xl font-display leading-none text-ink/25">?</span>
-            <span className="mt-2 block text-[11px] font-black uppercase tracking-[0.08em] text-charcoal/55">
-              Carte manquante
-            </span>
-          </div>
+        <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden px-3">
+          {hasRenderableImage ? (
+            <>
+              {isRemoteImageUrl(normalizedImageUrl) ? (
+                <img
+                  src={normalizedImageUrl}
+                  alt={`Carte mystère #${slot.cardNumber}`}
+                  className="h-full w-full object-cover grayscale brightness-[0.25] transition-[filter] duration-300 group-hover:brightness-[0.35]"
+                  loading="lazy"
+                  decoding="async"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <Image
+                  src={normalizedImageUrl}
+                  alt={`Carte mystère #${slot.cardNumber}`}
+                  fill
+                  className="object-cover grayscale brightness-[0.25] transition-[filter] duration-300 group-hover:brightness-[0.35]"
+                  sizes="(max-width: 640px) 42vw, (max-width: 768px) 28vw, (max-width: 1280px) 18vw, 14vw"
+                />
+              )}
+              <div className="pointer-events-none absolute inset-0 bg-black/40" />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),rgba(255,255,255,0))]" />
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                  <span className="block text-5xl font-display leading-none text-white/85">?</span>
+                  <span className="mt-2 block text-[11px] font-black uppercase tracking-[0.08em] text-white/80">
+                    Carte manquante
+                  </span>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.55),rgba(255,255,255,0))]">
+              <div className="text-center">
+                <span className="block text-4xl font-display leading-none text-ink/25">?</span>
+                <span className="mt-2 block text-[11px] font-black uppercase tracking-[0.08em] text-charcoal/55">
+                  Carte manquante
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="border-t-2 border-ink/10 bg-white/65 px-2 py-2 text-center">
@@ -50,7 +89,7 @@ export function AlbumCardSlot({ slot, onClick }: AlbumCardSlotProps) {
       title={`#${slot.cardNumber} ${slot.name}`}
     >
       <div className="relative min-h-0 flex-1 overflow-hidden">
-        {isRenderableImageSource(normalizedImageUrl) ? (
+        {hasRenderableImage ? (
           isRemoteImageUrl(normalizedImageUrl) ? (
             <img
               src={normalizedImageUrl}

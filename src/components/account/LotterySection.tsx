@@ -218,8 +218,7 @@ export function LotterySection() {
                   >
                     {card.isOwned ? (
                       <div>
-                        <p className="text-[11px] font-black uppercase tracking-[0.08em]">{card.collectionTitle}</p>
-                        <p className="mt-2 text-lg font-black leading-tight">{card.name}</p>
+                        <p className="text-lg font-black leading-tight">{card.name}</p>
                       </div>
                     ) : (
                       <div>
@@ -248,24 +247,27 @@ export function LotterySection() {
 
       {!loading && config?.isActive && availableTickets.length > 0 && (
         <section className="mt-6">
-          <h3 className="font-display text-2xl">Boosters a ouvrir</h3>
-          <div className="mt-3 grid gap-2 md:grid-cols-2">
-            {availableTickets.map((ticket) => (
-              <article key={ticket.id} className="card-cartoon flex items-center justify-between bg-white p-3">
-                <div>
-                  <p className="font-mono text-xs text-ink">{ticket.ticketNumber}</p>
-                  <p className="text-xs text-charcoal">1 ouverture = 3 cartes revelees</p>
-                </div>
-                <button
-                  type="button"
-                  className="btn-cartoon btn-primary h-10 px-3 text-xs"
-                  onClick={() => setSelectedTicketId(ticket.id)}
-                >
-                  Ouvrir
-                </button>
-              </article>
-            ))}
-          </div>
+          <button
+            type="button"
+            className="group flex items-center gap-4 rounded-2xl border-[3px] border-[#1a1a1a] bg-white p-3 pr-6 shadow-[4px_4px_0_rgba(26,26,26,0.12)] transition-transform hover:-translate-y-0.5 hover:shadow-[4px_6px_0_rgba(26,26,26,0.16)] active:translate-y-0"
+            onClick={() => setSelectedTicketId(availableTickets[0].id)}
+          >
+            <div className="relative h-20 w-14 shrink-0">
+              <Image
+                src="/app/lottery/sealed-booster-pack.png"
+                alt="Booster scelle"
+                fill
+                sizes="56px"
+                className="object-contain drop-shadow-md transition-transform group-hover:scale-105"
+              />
+            </div>
+            <div className="text-left">
+              <p className="font-display text-xl leading-tight text-ink">
+                {availableTickets.length} pack{availableTickets.length > 1 ? "s" : ""} disponible{availableTickets.length > 1 ? "s" : ""}
+              </p>
+              <p className="mt-0.5 text-xs text-charcoal">Appuyez pour ouvrir</p>
+            </div>
+          </button>
         </section>
       )}
 
