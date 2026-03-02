@@ -45,7 +45,7 @@ const HOME_SECTION_ORDER: Record<string, number> = {
 
 export function HomePinnedExperience() {
   const snapTriggerRef = useRef<ScrollTrigger | null>(null);
-  const { store } = useCmsStore();
+  const { store, loading } = useCmsStore();
   const [isMobileViewport, setIsMobileViewport] = useState<boolean | null>(null);
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
@@ -355,7 +355,7 @@ export function HomePinnedExperience() {
     }
   };
 
-  if (isMobileViewport === null) {
+  if (isMobileViewport === null || loading) {
     return (
       <section className="section-band bg-mint halftone-overlay paper-grain pt-28">
         <div className="retro-container">
@@ -453,11 +453,10 @@ export function HomePinnedExperience() {
 }
 
 function MobileHeroSection({ home, zIndex }: { home: HomeContent; zIndex: number }) {
-  const heroLines = [home.heroLine1, home.heroLine2, home.heroLine3]
+  const renderedHeroLines = [home.heroLine1, home.heroLine2, home.heroLine3]
     .map((line) => line.trim())
     .filter(Boolean)
     .slice(0, 3);
-  const renderedHeroLines = heroLines.length > 0 ? heroLines : ["BIENVENUE"];
 
   return (
     <section
@@ -630,11 +629,10 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
   const headlineRef = useRef<HTMLDivElement>(null);
   const subheadlineRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  const heroLines = [home.heroLine1, home.heroLine2, home.heroLine3]
+  const renderedHeroLines = [home.heroLine1, home.heroLine2, home.heroLine3]
     .map((line) => line.trim())
     .filter(Boolean)
     .slice(0, 3);
-  const renderedHeroLines = heroLines.length > 0 ? heroLines : ["BIENVENUE"];
 
   useLayoutEffect(() => {
     const section = sectionRef.current;

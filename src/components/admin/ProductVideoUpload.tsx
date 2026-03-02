@@ -41,7 +41,7 @@ export function ProductVideoUpload({ value, onChange }: ProductVideoUploadProps)
   return (
     <div className="grid gap-2">
       <p className="text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
-        Video produit (2-3s, boucle)
+        Video fiche produit (courte, bouclee et compressee)
       </p>
       {value ? (
         <div className="grid gap-2 rounded-[12px] border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
@@ -84,6 +84,11 @@ export function ProductVideoUpload({ value, onChange }: ProductVideoUploadProps)
 
       {error && (
         <p className="text-xs font-semibold text-red-700">{error}</p>
+      )}
+      {!error && (
+        <p className="text-[11px] text-charcoal">
+          Ideal pour les fleurs: petite video courte, convertie en MP4 optimise pour limiter le stockage.
+        </p>
       )}
     </div>
   );

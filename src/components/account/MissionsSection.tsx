@@ -11,6 +11,7 @@ import {
   Star,
   X,
 } from "lucide-react";
+import { MISSION_PROOF_ACCEPT_ATTRIBUTE } from "@/lib/mission-proof-policy";
 import type {
   MissionWithUserStatus,
   ReferralPendingReward,
@@ -54,21 +55,46 @@ function SubmitMissionModal({
   onSubmitted: () => void;
 }) {
   const [proofText, setProofText] = useState("");
+  const [proofFile, setProofFile] = useState<File | null>(null);
+  const [proofPreviewUrl, setProofPreviewUrl] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!proofFile) {
+      setProofPreviewUrl(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(proofFile);
+    setProofPreviewUrl(objectUrl);
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [proofFile]);
+
   const submit = async () => {
+    if (mission.requiresProof && !proofFile) {
+      setError("Ajoute une capture d'ecran avant d'envoyer.");
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
 
     try {
+      const formData = new FormData();
+      formData.set("missionId", mission.id);
+      if (proofText.trim()) {
+        formData.set("proofText", proofText.trim());
+      }
+      if (proofFile) {
+        formData.set("file", proofFile);
+      }
+
       const response = await fetch("/api/account/missions", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          missionId: mission.id,
-          proofText: proofText.trim() || undefined,
-        }),
+        body: formData,
       });
 
       const data = (await response.json()) as { error?: string };
@@ -105,6 +131,41 @@ function SubmitMissionModal({
             <p className="mt-1 text-sm text-ink">{mission.proofInstructions}</p>
           </div>
         )}
+
+        <div className="mt-4">
+          <label className="text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+            Capture d&apos;ecran {mission.requiresProof ? "(requise)" : "(optionnelle)"}
+          </label>
+          <div className="mt-1 rounded border-2 border-dashed border-[#1a1a1a] bg-white p-3">
+            <input
+              type="file"
+              accept={MISSION_PROOF_ACCEPT_ATTRIBUTE}
+              disabled={submitting}
+              onChange={(event) => {
+                const nextFile = event.target.files?.[0] ?? null;
+                setProofFile(nextFile);
+              }}
+              className="block w-full text-sm text-charcoal file:mr-3 file:rounded file:border-0 file:bg-[#0a7b61] file:px-3 file:py-2 file:text-xs file:font-bold file:text-white"
+            />
+            <p className="mt-2 text-[11px] text-charcoal">
+              Tu peux prendre une photo ou choisir une capture depuis ta bibliotheque. Formats pris en charge: JPG, PNG ou WEBP.
+            </p>
+            {proofFile && (
+              <p className="mt-2 text-xs font-semibold text-ink">
+                {proofFile.name} ({Math.max(1, Math.round(proofFile.size / 1024))} KB)
+              </p>
+            )}
+            {proofPreviewUrl && (
+              <div className="mt-3 overflow-hidden rounded border border-[#1a1a1a] bg-[#f7f4ee]">
+                <img
+                  src={proofPreviewUrl}
+                  alt="Apercu de la preuve"
+                  className="h-48 w-full object-contain bg-[#f7f4ee]"
+                />
+              </div>
+            )}
+          </div>
+        </div>
 
         <div className="mt-4">
           <label className="text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">

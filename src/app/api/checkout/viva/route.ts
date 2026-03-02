@@ -5,7 +5,7 @@ import {
   isAtLeast18,
   previewPromoCodeByBackend,
 } from "@/lib/customer-backend";
-import { readStoreByBackend } from "@/lib/data-backend";
+import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { INVOICE_SETTINGS } from "@/lib/invoice-config";
 import { buildLoyaltySummaryWithBonus } from "@/lib/loyalty";
 import {
@@ -18,7 +18,7 @@ import {
   reserveLotteryRewardClaimForOrderByBackend,
 } from "@/lib/lottery-backend";
 import { createOrderId } from "@/lib/order-id";
-import { appendOrderByBackend } from "@/lib/order-backend";
+import { appendOrderByBackend, getCustomerOrdersForLoyaltyByBackend } from "@/lib/order-backend";
 import { getAvailableQuantity } from "@/lib/product-stock";
 import {
   computeReferralFirstOrderDiscountAmount,
@@ -32,7 +32,7 @@ import {
   type DeliveryMethod,
 } from "@/lib/shipping";
 import { applyDiscountOnLines, computeFromTtc, computeOrderTaxTotals, distributePackDiscount, sanitizeOrderVatRate } from "@/lib/tax";
-import type { CmsStore } from "@/types/store";
+import type { CmsStore, PublicStoreResponse } from "@/types/store";
 
 type CheckoutItemPayload = {
   id: string;
@@ -78,25 +78,6 @@ type VivaSummaryItem = {
   quantity: number;
 };
 
-function getCustomerOrdersForLoyalty(input: {
-  store: CmsStore;
-  customerId: string;
-  customerEmail: string;
-}): CmsStore["orders"] {
-  const safeCustomerEmail = input.customerEmail.trim().toLowerCase();
-  return input.store.orders.filter((order) => {
-    if (order.customerId && order.customerId === input.customerId) {
-      return true;
-    }
-
-    if (!order.customerId && order.customerEmail) {
-      return order.customerEmail.trim().toLowerCase() === safeCustomerEmail;
-    }
-
-    return false;
-  });
-}
-
 function buildVivaItemSummary(items: VivaSummaryItem[]): {
   customerTrns: string;
   merchantTrns: string;
@@ -129,7 +110,7 @@ type ResolvedCheckoutItem = {
 
 async function resolveCheckoutItems(
   items: CheckoutItemPayload[],
-  storeOverride?: CmsStore,
+  storeOverride?: Pick<CmsStore, "products">,
 ): Promise<ResolvedCheckoutItem[]> {
   const normalizedPayloadItems = items
     .map((item) => ({
@@ -145,7 +126,7 @@ async function resolveCheckoutItems(
     return [];
   }
 
-  const store = storeOverride ?? (await readStoreByBackend());
+  const store = storeOverride ?? (await readPublicStoreByBackend());
   const productsById = new Map(store.products.map((product) => [product.id, product]));
 
   const resolvedItems: ResolvedCheckoutItem[] = [];
@@ -462,15 +443,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Code promo invalide ou déjà utilisé." }, { status: 400 });
     }
 
-    const store = await readStoreByBackend();
-    const customerOrders = getCustomerOrdersForLoyalty({
-      store,
+    const store = await readPublicStoreByBackend();
+    const customerOrders = await getCustomerOrdersForLoyaltyByBackend({
       customerId,
       customerEmail: customer?.email ?? "",
     });
     const loyaltySummary = buildLoyaltySummaryWithBonus(
       customerOrders,
       customer?.loyaltyPoints ?? 0,
+      customer?.loyaltyPointsSpent ?? 0,
     );
     const badgeDiscountPercent = loyaltySummary.currentBadge.unlocked
       ? getBadgeDiscountPercent(store.content.profile, loyaltySummary.currentBadge.id)
@@ -526,15 +507,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Lot manquant." }, { status: 400 });
     }
 
-    const store = await readStoreByBackend();
-    const customerOrders = getCustomerOrdersForLoyalty({
-      store,
+    const store = await readPublicStoreByBackend();
+    const customerOrders = await getCustomerOrdersForLoyaltyByBackend({
       customerId,
       customerEmail: customer?.email ?? "",
     });
     const loyaltySummary = buildLoyaltySummaryWithBonus(
       customerOrders,
       customer?.loyaltyPoints ?? 0,
+      customer?.loyaltyPointsSpent ?? 0,
     );
     const badgeDiscountPercent = loyaltySummary.currentBadge.unlocked
       ? getBadgeDiscountPercent(store.content.profile, loyaltySummary.currentBadge.id)
@@ -618,7 +599,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const store = await readStoreByBackend();
+  const store = await readPublicStoreByBackend();
 
   let resolvedItems: ResolvedCheckoutItem[];
   try {
@@ -634,14 +615,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Panier invalide." }, { status: 400 });
   }
 
-  const customerOrders = getCustomerOrdersForLoyalty({
-    store,
+  const customerOrders = await getCustomerOrdersForLoyaltyByBackend({
     customerId,
     customerEmail: customer.email,
   });
   const loyaltySummary = buildLoyaltySummaryWithBonus(
     customerOrders,
     customer.loyaltyPoints ?? 0,
+    customer.loyaltyPointsSpent ?? 0,
   );
   const badgeDiscountPercent = loyaltySummary.currentBadge.unlocked
     ? getBadgeDiscountPercent(store.content.profile, loyaltySummary.currentBadge.id)

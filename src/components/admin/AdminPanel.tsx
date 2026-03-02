@@ -2350,10 +2350,14 @@ export function AdminPanel() {
                                 ))}
                               </select>
                             </div>
-                            <div className="mt-3 grid gap-3 md:grid-cols-2">
+                            <div className="mt-3 grid gap-3 md:grid-cols-3">
                               <ProductImageUpload
                                 images={product.images ?? [product.image]}
                                 onChange={(nextImagePaths) => updateProductImages(index, nextImagePaths)}
+                              />
+                              <ProductVideoUpload
+                                value={product.videoUrl}
+                                onChange={(nextVideoUrl) => updateProduct(index, "videoUrl", nextVideoUrl)}
                               />
                               <ProductAnalysisUpload
                                 value={product.analysisPdf}

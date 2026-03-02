@@ -404,6 +404,27 @@ function mapConfigRow(row: Record<string, unknown> | null): LotteryConfig {
 const ALBUM_PAGE_SELECT =
   "*,lottery_album_page_slots(*,lottery_album_cards(*))";
 
+const SELECT_CARD_COLLECTION_COLUMNS =
+  "id,code,title,is_active,created_at,updated_at";
+
+const SELECT_REWARD_DEFINITION_COLUMNS =
+  "id,code,level,kind,title,description,image_url,discount_percent,gift_weight_grams,gift_product_sku,gift_label,custom_payload,is_active,deleted_at,replacement_reward_definition_id,created_at,updated_at";
+
+const SELECT_ALBUM_CARD_COLUMNS =
+  "id,code,title,subtitle,image_url,series_label,card_number,rarity,is_active,archived_at,created_at,updated_at";
+
+const SELECT_TICKET_COLUMNS =
+  "id,user_id,order_id,ticket_number,order_amount,status,card_definition_id,card_rarity,scratched_at,created_at";
+
+const SELECT_REWARD_CLAIM_COLUMNS =
+  "id,user_id,reward_line_id,source_ticket_id,reward_definition_id,status,generated_code,discount_percent,gift_weight_grams,gift_product_sku,gift_label,reserved_order_id,reserved_at,reserved_until,used_order_id,used_at,fulfilled_at,created_at,reward_snapshot";
+
+const SELECT_PAGE_COMPLETION_COLUMNS =
+  "page_rarity,completed_at,claimed_at,reward_claim_id,selected_reward_definition_id";
+
+const SELECT_BURN_LOG_COLUMNS =
+  "rarity,reward_claim_id,created_at";
+
 function buildClaimBenefit(claim: LotteryRewardClaim): LotteryRewardClaimBenefit | null {
   const title = claim.reward.title;
   const description = claim.reward.description;
@@ -508,7 +529,7 @@ async function getDefaultLotteryCardCollectionFromSupabase(): Promise<LotteryCar
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("lottery_card_collections")
-    .select("*")
+    .select(SELECT_CARD_COLLECTION_COLUMNS)
     .eq("is_active", true)
     .order("created_at", { ascending: true })
     .limit(1)
@@ -631,7 +652,7 @@ export async function listLotteryRewardDefinitionsFromSupabase(): Promise<Lotter
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("lottery_reward_definitions")
-    .select("*")
+    .select(SELECT_REWARD_DEFINITION_COLUMNS)
     .order("created_at", { ascending: true });
 
   failIfError(result.error, "list lottery_reward_definitions");
@@ -642,7 +663,7 @@ export async function listLotteryAlbumCardsFromSupabase(): Promise<LotteryAlbumC
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("lottery_album_cards")
-    .select("*")
+    .select(SELECT_ALBUM_CARD_COLUMNS)
     .order("rarity", { ascending: true })
     .order("card_number", { ascending: true })
     .order("created_at", { ascending: true });
@@ -674,7 +695,7 @@ export async function createLotteryAlbumCardInSupabase(input: {
       rarity: input.rarity,
       is_active: input.isActive === true,
     })
-    .select("*")
+    .select(SELECT_ALBUM_CARD_COLUMNS)
     .single();
 
   failIfError(result.error, "insert lottery_album_card");
@@ -714,7 +735,7 @@ export async function updateLotteryAlbumCardInSupabase(
       updated_at: new Date().toISOString(),
     })
     .eq("id", safeCardId)
-    .select("*")
+    .select(SELECT_ALBUM_CARD_COLUMNS)
     .maybeSingle();
 
   failIfError(result.error, "update lottery_album_card");
@@ -947,7 +968,7 @@ export async function createLotteryRewardDefinitionInSupabase(input: {
       custom_payload: input.customPayload ?? {},
       is_active: input.isActive === true,
     })
-    .select("*")
+    .select(SELECT_REWARD_DEFINITION_COLUMNS)
     .single();
 
   failIfError(result.error, "insert lottery_reward_definition");
@@ -1008,7 +1029,7 @@ export async function updateLotteryRewardDefinitionInSupabase(
       updated_at: new Date().toISOString(),
     })
     .eq("id", safeRewardId)
-    .select("*")
+    .select(SELECT_REWARD_DEFINITION_COLUMNS)
     .maybeSingle();
 
   failIfError(result.error, "update lottery_reward_definition");
@@ -1257,7 +1278,7 @@ export async function getLotteryTicketsForCustomerFromSupabase(userId: string): 
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("lottery_tickets")
-    .select("*")
+    .select(SELECT_TICKET_COLUMNS)
     .eq("user_id", safeUserId)
     .order("created_at", { ascending: false });
 
@@ -1369,7 +1390,7 @@ export async function getLotteryInventoryForCustomerFromSupabase(userId: string)
   const [collectionResult, definitionsResult, instancesResult, burnLogsResult, completionsResult] = await Promise.all([
     supabase
       .from("lottery_card_collections")
-      .select("*")
+      .select(SELECT_CARD_COLLECTION_COLUMNS)
       .eq("is_active", true)
       .order("created_at", { ascending: true })
       .limit(1)
@@ -1438,7 +1459,7 @@ export async function getLotteryInventoryForCustomerFromSupabase(userId: string)
   if (allClaimIds.size > 0) {
     const claimsResult = await supabase
       .from("lottery_reward_claims")
-      .select("*")
+      .select(SELECT_REWARD_CLAIM_COLUMNS)
       .in("id", Array.from(allClaimIds))
       .eq("status", "available");
     if (claimsResult.data) {
@@ -1535,7 +1556,7 @@ export async function getCollectionAlbumForCustomerFromSupabase(
   ] = await Promise.all([
     supabase
       .from("lottery_card_collections")
-      .select("*")
+      .select(SELECT_CARD_COLLECTION_COLUMNS)
       .eq("is_active", true)
       .order("created_at", { ascending: true })
       .limit(1)
@@ -1554,7 +1575,7 @@ export async function getCollectionAlbumForCustomerFromSupabase(
     isValidUuid(safeUserId)
       ? supabase
           .from("lottery_collection_page_completions")
-          .select("*")
+          .select(SELECT_PAGE_COMPLETION_COLUMNS)
           .eq("user_id", safeUserId)
       : Promise.resolve({ data: [] as Record<string, unknown>[], error: null }),
     supabase
@@ -1570,7 +1591,7 @@ export async function getCollectionAlbumForCustomerFromSupabase(
     isValidUuid(safeUserId)
       ? supabase
           .from("lottery_collection_burn_log")
-          .select("*")
+          .select(SELECT_BURN_LOG_COLUMNS)
           .eq("user_id", safeUserId)
           .order("created_at", { ascending: false })
       : Promise.resolve({ data: [] as Record<string, unknown>[], error: null }),
@@ -1686,7 +1707,7 @@ export async function getCollectionAlbumForCustomerFromSupabase(
   if (allClaimIds.size > 0) {
     const claimsResult = await supabase
       .from("lottery_reward_claims")
-      .select("*")
+      .select(SELECT_REWARD_CLAIM_COLUMNS)
       .in("id", Array.from(allClaimIds))
       .eq("status", "available");
     if (claimsResult.data) {
@@ -1936,7 +1957,7 @@ export async function getRedeemableLotteryRewardClaimBenefitFromSupabase(input: 
 
   const result = await supabase
     .from("lottery_reward_claims")
-    .select("*")
+    .select(SELECT_REWARD_CLAIM_COLUMNS)
     .eq("id", claimId)
     .eq("user_id", userId)
     .maybeSingle();

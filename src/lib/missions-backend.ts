@@ -29,6 +29,9 @@ export async function submitMissionProofByBackend(input: {
   userId: string;
   missionId: string;
   proofUrl?: string;
+  proofStoragePath?: string;
+  proofContentType?: string;
+  proofFileSize?: number;
   proofText?: string;
 }): Promise<MissionSubmission> {
   return submitMissionProofInSupabase(input);

@@ -42,6 +42,136 @@ const validPaymentState = new Set<CmsStore["orders"][number]["paymentState"]>([
 const validProducerCultureTypes = new Set<ProducerCultureType>(PRODUCER_CULTURE_TYPES);
 const MOJIBAKE_CHARS_REGEX = /[ÃÂâ�]/g;
 
+const SELECT_PRODUCERS_COLUMNS = [
+  "id",
+  "name",
+  "description",
+  "image",
+  "location",
+  "department",
+  "region",
+  "website",
+  "instagram",
+  "facebook",
+  "tiktok",
+  "culture_type",
+  "climate",
+  "soil",
+  "altitude",
+  "certifications",
+  "speciality",
+  "philosophy",
+  "experience",
+  "founded",
+].join(",");
+
+const SELECT_PRODUCTS_COLUMNS = [
+  "id",
+  "name",
+  "category",
+  "price",
+  "vat_rate",
+  "original_price",
+  "promo_percent",
+  "is_pack",
+  "weight_grams",
+  "video_url",
+  "image",
+  "images",
+  "producer_id",
+  "analysis_pdf",
+  "description",
+  "badge",
+  "bonus_points",
+  "track_stock",
+  "stock_quantity",
+  "variant_label",
+  "variant_options",
+].join(",");
+
+const SELECT_BLOG_COLUMNS = [
+  "id",
+  "title",
+  "slug",
+  "excerpt",
+  "content",
+  "cover_image",
+  "category",
+  "published",
+  "created_at",
+  "updated_at",
+].join(",");
+
+const SELECT_SITE_CONTENT_COLUMNS = [
+  "id",
+  "home",
+  "boutique",
+  "application",
+  "blog",
+  "profile",
+  "footer",
+  "updated_at",
+].join(",");
+
+const SELECT_PAGE_SECTIONS_COLUMNS = [
+  "id",
+  "home",
+  "boutique",
+  "application",
+  "blog",
+].join(",");
+
+const SELECT_ORDERS_COLUMNS = [
+  "id",
+  "created_at",
+  "status",
+  "payment_state",
+  "viva_order_code",
+  "viva_transaction_id",
+  "customer_id",
+  "legacy_customer_id",
+  "customer_email",
+  "customer_name",
+  "shipping_address",
+  "shipping_city",
+  "shipping_postal_code",
+  "shipping_country",
+  "shipping_phone",
+  "delivery_method",
+  "delivery_fee",
+  "relay_id",
+  "relay_name",
+  "relay_address",
+  "relay_postal_code",
+  "relay_city",
+  "relay_country",
+  "tracking_number",
+  "promo_code",
+  "discount_percent",
+  "discount_amount",
+  "items_count",
+  "total_ht",
+  "total_vat",
+  "vat_breakdown",
+  "total_amount",
+].join(",");
+
+const SELECT_ORDER_ITEMS_COLUMNS = [
+  "order_id",
+  "product_id",
+  "name",
+  "unit_price",
+  "unit_price_ht",
+  "quantity",
+  "line_total",
+  "line_total_ht",
+  "line_vat_amount",
+  "vat_rate",
+  "bonus_points",
+  "parent_pack_id",
+  "parent_pack_name",
+].join(",");
+
 function failIfError(error: { message: string } | null, context: string): void {
   if (error) {
     throw new Error(`[supabase:${context}] ${error.message}`);
@@ -636,13 +766,33 @@ export async function readStoreFromSupabase(): Promise<CmsStore> {
     sectionsResult,
     ordersResult,
   ] = await Promise.all([
-    supabase.from("producers").select("*").order("position", { ascending: true }),
-    supabase.from("products").select("*").order("position", { ascending: true }),
-    supabase.from("pack_components").select("*"),
-    supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
-    supabase.from("site_content").select("*").eq("id", 1).maybeSingle(),
-    supabase.from("page_sections").select("*").eq("id", 1).maybeSingle(),
-    supabase.from("orders").select("*").order("created_at", { ascending: false }),
+    supabase
+      .from("producers")
+      .select(SELECT_PRODUCERS_COLUMNS)
+      .order("position", { ascending: true }),
+    supabase
+      .from("products")
+      .select(SELECT_PRODUCTS_COLUMNS)
+      .order("position", { ascending: true }),
+    supabase.from("pack_components").select("pack_id,product_id"),
+    supabase
+      .from("blog_posts")
+      .select(SELECT_BLOG_COLUMNS)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("site_content")
+      .select(SELECT_SITE_CONTENT_COLUMNS)
+      .eq("id", 1)
+      .maybeSingle(),
+    supabase
+      .from("page_sections")
+      .select(SELECT_PAGE_SECTIONS_COLUMNS)
+      .eq("id", 1)
+      .maybeSingle(),
+    supabase
+      .from("orders")
+      .select(SELECT_ORDERS_COLUMNS)
+      .order("created_at", { ascending: false }),
   ]);
 
   failIfError(producersResult.error, "read producers");
@@ -685,7 +835,7 @@ export async function readStoreFromSupabase(): Promise<CmsStore> {
   if (orderIds.length > 0) {
     const itemsResult = await supabase
       .from("order_items")
-      .select("*")
+      .select(SELECT_ORDER_ITEMS_COLUMNS)
       .in("order_id", orderIds)
       .order("id", { ascending: true });
 
@@ -706,10 +856,11 @@ export async function readStoreFromSupabase(): Promise<CmsStore> {
   }
 
   const orders = orderRows.map((row) => mapOrderRow(row, orderItemsByOrderId));
-  const content = mergeContent(siteContentResult.data ? toObject(siteContentResult.data) : null);
+  const siteContentRow = siteContentResult.data ? toObject(siteContentResult.data) : null;
+  const content = mergeContent(siteContentRow);
   const sections = mergeSections(sectionsResult.data ? toObject(sectionsResult.data) : null);
-  const updatedAt = siteContentResult.data?.updated_at
-    ? toIsoString(siteContentResult.data.updated_at)
+  const updatedAt = siteContentRow?.updated_at
+    ? toIsoString(siteContentRow.updated_at)
     : new Date().toISOString();
 
   return {
@@ -963,12 +1114,29 @@ export async function readPublicStoreFromSupabase(): Promise<PublicStoreResponse
     siteContentResult,
     sectionsResult,
   ] = await Promise.all([
-    supabase.from("producers").select("*").order("position", { ascending: true }),
-    supabase.from("products").select("*").order("position", { ascending: true }),
-    supabase.from("pack_components").select("*"),
-    supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
-    supabase.from("site_content").select("*").eq("id", 1).maybeSingle(),
-    supabase.from("page_sections").select("*").eq("id", 1).maybeSingle(),
+    supabase
+      .from("producers")
+      .select(SELECT_PRODUCERS_COLUMNS)
+      .order("position", { ascending: true }),
+    supabase
+      .from("products")
+      .select(SELECT_PRODUCTS_COLUMNS)
+      .order("position", { ascending: true }),
+    supabase.from("pack_components").select("pack_id,product_id"),
+    supabase
+      .from("blog_posts")
+      .select(SELECT_BLOG_COLUMNS)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("site_content")
+      .select(SELECT_SITE_CONTENT_COLUMNS)
+      .eq("id", 1)
+      .maybeSingle(),
+    supabase
+      .from("page_sections")
+      .select(SELECT_PAGE_SECTIONS_COLUMNS)
+      .eq("id", 1)
+      .maybeSingle(),
   ]);
 
   failIfError(producersResult.error, "read public producers");
@@ -1000,10 +1168,11 @@ export async function readPublicStoreFromSupabase(): Promise<PublicStoreResponse
 
   const producers = (producersResult.data ?? []).map((row) => mapProducerRow(toObject(row)));
   const blog = (blogResult.data ?? []).map((row) => mapBlogRow(toObject(row)));
-  const content = mergeContent(siteContentResult.data ? toObject(siteContentResult.data) : null);
+  const siteContentRow = siteContentResult.data ? toObject(siteContentResult.data) : null;
+  const content = mergeContent(siteContentRow);
   const sections = mergeSections(sectionsResult.data ? toObject(sectionsResult.data) : null);
-  const updatedAt = siteContentResult.data?.updated_at
-    ? toIsoString(siteContentResult.data.updated_at)
+  const updatedAt = siteContentRow?.updated_at
+    ? toIsoString(siteContentRow.updated_at)
     : new Date().toISOString();
 
   return {
@@ -1020,7 +1189,7 @@ export async function getPublishedBlogPostsFromSupabase(): Promise<BlogPost[]> {
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("blog_posts")
-    .select("*")
+    .select(SELECT_BLOG_COLUMNS)
     .eq("published", true)
     .order("created_at", { ascending: false });
 
@@ -1037,7 +1206,7 @@ export async function getBlogPostBySlugFromSupabase(slug: string): Promise<BlogP
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("blog_posts")
-    .select("*")
+    .select(SELECT_BLOG_COLUMNS)
     .eq("slug", safeSlug)
     .eq("published", true)
     .maybeSingle();

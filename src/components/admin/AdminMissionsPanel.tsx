@@ -30,6 +30,7 @@ export function AdminMissionsPanel() {
   const [status, setStatus] = useState<string | null>(null);
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [filter, setFilter] = useState<"all" | "pending" | "approved" | "rejected">("pending");
+  const [notesById, setNotesById] = useState<Record<string, string>>({});
 
   const loadData = async () => {
     setLoading(true);
@@ -44,6 +45,13 @@ export function AdminMissionsPanel() {
 
       const payload = (await response.json()) as { overview?: AdminMissionsOverview };
       setOverview(payload.overview ?? null);
+      setNotesById((current) => {
+        const next: Record<string, string> = {};
+        for (const submission of payload.overview?.submissions ?? []) {
+          next[submission.id] = current[submission.id] ?? submission.adminNote ?? "";
+        }
+        return next;
+      });
     } catch {
       setStatus("Erreur réseau.");
     } finally {
@@ -64,6 +72,7 @@ export function AdminMissionsPanel() {
         body: JSON.stringify({
           submissionId: submission.id,
           action,
+          adminNote: notesById[submission.id]?.trim() || undefined,
         }),
       });
 
@@ -186,6 +195,18 @@ export function AdminMissionsPanel() {
                     </div>
                   )}
 
+                  {sub.proofSignedUrl && (
+                    <div className="mt-3 overflow-hidden rounded border border-[#1a1a1a] bg-[#f7f4ee]">
+                      <a href={sub.proofSignedUrl} target="_blank" rel="noopener noreferrer">
+                        <img
+                          src={sub.proofSignedUrl}
+                          alt={`Preuve mission ${sub.missionTitle}`}
+                          className="h-56 w-full object-contain bg-[#f7f4ee]"
+                        />
+                      </a>
+                    </div>
+                  )}
+
                   {sub.proofUrl && (
                     <p className="mt-1 text-xs">
                       <a
@@ -206,33 +227,52 @@ export function AdminMissionsPanel() {
                   )}
 
                   {sub.status === "pending" && (
-                    <div className="mt-3 flex gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleReview(sub, "approve")}
-                        disabled={processingId === sub.id}
-                        className="btn-cartoon inline-flex h-8 items-center justify-center gap-1 bg-green-600 px-3 text-xs text-white leading-none hover:bg-green-700"
-                      >
-                        {processingId === sub.id ? (
-                          <Loader2 className="h-3 w-3 animate-spin" />
-                        ) : (
-                          <Check size={14} />
-                        )}
-                        Approuver
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleReview(sub, "reject")}
-                        disabled={processingId === sub.id}
-                        className="btn-cartoon inline-flex h-8 items-center justify-center gap-1 bg-red-600 px-3 text-xs text-white leading-none hover:bg-red-700"
-                      >
-                        {processingId === sub.id ? (
-                          <Loader2 className="h-3 w-3 animate-spin" />
-                        ) : (
-                          <X size={14} />
-                        )}
-                        Refuser
-                      </button>
+                    <div className="mt-3 space-y-3">
+                      <div>
+                        <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
+                          Note admin
+                        </label>
+                        <textarea
+                          value={notesById[sub.id] ?? ""}
+                          onChange={(event) =>
+                            setNotesById((current) => ({
+                              ...current,
+                              [sub.id]: event.target.value,
+                            }))
+                          }
+                          disabled={processingId === sub.id}
+                          className="mt-1 h-20 w-full resize-none rounded border border-[#1a1a1a] bg-[#f7f4ee] px-3 py-2 text-sm text-ink"
+                          placeholder="Note interne sur la preuve..."
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleReview(sub, "approve")}
+                          disabled={processingId === sub.id}
+                          className="btn-cartoon inline-flex h-8 items-center justify-center gap-1 bg-green-600 px-3 text-xs text-white leading-none hover:bg-green-700"
+                        >
+                          {processingId === sub.id ? (
+                            <Loader2 className="h-3 w-3 animate-spin" />
+                          ) : (
+                            <Check size={14} />
+                          )}
+                          Approuver
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleReview(sub, "reject")}
+                          disabled={processingId === sub.id}
+                          className="btn-cartoon inline-flex h-8 items-center justify-center gap-1 bg-red-600 px-3 text-xs text-white leading-none hover:bg-red-700"
+                        >
+                          {processingId === sub.id ? (
+                            <Loader2 className="h-3 w-3 animate-spin" />
+                          ) : (
+                            <X size={14} />
+                          )}
+                          Refuser
+                        </button>
+                      </div>
                     </div>
                   )}
                 </article>

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi, getValidatedAdminContext } from "@/lib/admin-guard";
+import { logAuditEvent } from "@/lib/audit-log";
 import {
   getAdminMissionsOverviewByBackend,
   getAdminReferralPendingRewardsByBackend,
@@ -62,6 +63,15 @@ export async function POST(request: Request) {
       action,
       adminEmail: context.email,
       adminNote: payload.adminNote,
+    });
+
+    logAuditEvent({
+      eventType: "review_mission_submission",
+      actorEmail: context.email,
+      metadata: {
+        submissionId,
+        action,
+      },
     });
 
     return NextResponse.json({ ok: true });

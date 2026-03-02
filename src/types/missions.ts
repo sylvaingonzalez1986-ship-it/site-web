@@ -25,6 +25,10 @@ export type MissionSubmission = {
   userId: string;
   missionId: string;
   proofUrl: string | null;
+  proofStoragePath: string | null;
+  proofContentType: string | null;
+  proofFileSize: number | null;
+  proofUploadedAt: string | null;
   proofText: string | null;
   status: MissionSubmissionStatus;
   adminNote: string | null;
@@ -59,6 +63,7 @@ export type AdminMissionSubmissionView = MissionSubmission & {
   userName: string;
   missionTitle: string;
   missionSlug: string;
+  proofSignedUrl: string | null;
 };
 
 export type AdminMissionsOverview = {

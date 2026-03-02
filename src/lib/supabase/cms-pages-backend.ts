@@ -19,6 +19,24 @@ const validStyles = new Set<string>(SECTION_STYLE_OPTIONS);
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const MAX_SECTIONS = 24;
 
+const SELECT_CMS_PAGE_COLUMNS = [
+  "id",
+  "slug",
+  "title",
+  "description",
+  "status",
+  "sections",
+  "seo_title",
+  "seo_description",
+  "show_in_nav",
+  "show_in_footer",
+  "nav_label",
+  "footer_label",
+  "position",
+  "created_at",
+  "updated_at",
+].join(",");
+
 function failIfError(error: { message: string } | null, context: string): void {
   if (error) {
     throw new Error(`[supabase:${context}] ${error.message}`);
@@ -206,7 +224,7 @@ export async function readAdminCmsPagesFromSupabase(): Promise<CmsPage[]> {
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("cms_pages")
-    .select("*")
+    .select(SELECT_CMS_PAGE_COLUMNS)
     .order("position", { ascending: true })
     .order("created_at", { ascending: false });
   failIfError(result.error, "read cms_pages admin");
@@ -218,7 +236,7 @@ export async function readPublishedCmsPagesFromSupabase(): Promise<CmsPage[]> {
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("cms_pages")
-    .select("*")
+    .select(SELECT_CMS_PAGE_COLUMNS)
     .eq("status", "published")
     .order("position", { ascending: true })
     .order("created_at", { ascending: false });
@@ -231,7 +249,7 @@ export async function readTutorialCmsPagesFromSupabase(): Promise<CmsPage[]> {
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("cms_pages")
-    .select("*")
+    .select(SELECT_CMS_PAGE_COLUMNS)
     .like("slug", `${TUTORIAL_CMS_SLUG_PREFIX}%`)
     .order("position", { ascending: true })
     .order("created_at", { ascending: false });
@@ -251,7 +269,7 @@ export async function getPublishedCmsPageBySlugFromSupabase(
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("cms_pages")
-    .select("*")
+    .select(SELECT_CMS_PAGE_COLUMNS)
     .eq("slug", safeSlug)
     .eq("status", "published")
     .maybeSingle();
@@ -270,7 +288,7 @@ export async function createCmsPageInSupabase(input: CmsPageCreateInput): Promis
   const result = await supabase
     .from("cms_pages")
     .insert(row)
-    .select("*")
+    .select(SELECT_CMS_PAGE_COLUMNS)
     .single();
   failIfError(result.error, "insert cms_page");
 
@@ -292,7 +310,7 @@ export async function updateCmsPageInSupabase(
     .from("cms_pages")
     .update(patch)
     .eq("id", safeId)
-    .select("*")
+    .select(SELECT_CMS_PAGE_COLUMNS)
     .maybeSingle();
   failIfError(result.error, "update cms_page");
 

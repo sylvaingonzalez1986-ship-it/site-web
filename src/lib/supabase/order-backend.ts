@@ -3,11 +3,61 @@ import "server-only";
 import { createOrderId } from "@/lib/order-id";
 import type { AppendOrderInput } from "@/lib/orders-types";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
-import { readStoreFromSupabase } from "@/lib/supabase/store-backend";
-import type { CmsOrder, OrderStatus } from "@/types/store";
+import type { CmsOrder, OrderItem, OrderStatus } from "@/types/store";
 
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+const SELECT_ORDERS_COLUMNS = [
+  "id",
+  "created_at",
+  "status",
+  "payment_state",
+  "viva_order_code",
+  "viva_transaction_id",
+  "customer_id",
+  "legacy_customer_id",
+  "customer_email",
+  "customer_name",
+  "shipping_address",
+  "shipping_city",
+  "shipping_postal_code",
+  "shipping_country",
+  "shipping_phone",
+  "delivery_method",
+  "delivery_fee",
+  "relay_id",
+  "relay_name",
+  "relay_address",
+  "relay_postal_code",
+  "relay_city",
+  "relay_country",
+  "tracking_number",
+  "promo_code",
+  "discount_percent",
+  "discount_amount",
+  "items_count",
+  "total_ht",
+  "total_vat",
+  "vat_breakdown",
+  "total_amount",
+].join(",");
+
+const SELECT_ORDER_ITEMS_COLUMNS = [
+  "order_id",
+  "product_id",
+  "name",
+  "unit_price",
+  "unit_price_ht",
+  "quantity",
+  "line_total",
+  "line_total_ht",
+  "line_vat_amount",
+  "vat_rate",
+  "bonus_points",
+  "parent_pack_id",
+  "parent_pack_name",
+].join(",");
 
 function failIfError(error: { message: string } | null, context: string): void {
   if (error) {
@@ -15,18 +65,251 @@ function failIfError(error: { message: string } | null, context: string): void {
   }
 }
 
+function toText(value: unknown): string {
+  return typeof value === "string" ? value : "";
+}
+
+function toOptionalText(value: unknown): string | undefined {
+  const text = toText(value).trim();
+  return text ? text : undefined;
+}
+
+function toNumber(value: unknown, fallback = 0): number {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function toIsoString(value: unknown): string {
+  const text = toText(value);
+  if (!text) {
+    return new Date().toISOString();
+  }
+
+  const parsed = Date.parse(text);
+  if (!Number.isFinite(parsed)) {
+    return new Date().toISOString();
+  }
+
+  return new Date(parsed).toISOString();
+}
+
+function toOrderStatus(value: unknown): OrderStatus {
+  const status = toText(value);
+  if (
+    status === "new" ||
+    status === "pending_payment" ||
+    status === "paid" ||
+    status === "processing" ||
+    status === "shipped" ||
+    status === "cancelled"
+  ) {
+    return status;
+  }
+
+  return "new";
+}
+
+function toPaymentState(value: unknown): CmsOrder["paymentState"] {
+  const paymentState = toText(value);
+  if (
+    paymentState === "pending" ||
+    paymentState === "paid" ||
+    paymentState === "failed" ||
+    paymentState === "not_configured"
+  ) {
+    return paymentState;
+  }
+
+  return "pending";
+}
+
+function mapOrderRowForLoyalty(row: Record<string, unknown>): CmsOrder {
+  return {
+    id: toText(row.id),
+    createdAt: toIsoString(row.created_at),
+    status: toOrderStatus(row.status),
+    paymentProvider: "viva",
+    paymentState: toPaymentState(row.payment_state),
+    vivaOrderCode:
+      Number.isFinite(Number(row.viva_order_code)) && Number(row.viva_order_code) > 0
+        ? Math.floor(Number(row.viva_order_code))
+        : undefined,
+    vivaTransactionId: toOptionalText(row.viva_transaction_id),
+    source: "web",
+    customerId: toOptionalText(row.customer_id) ?? toOptionalText(row.legacy_customer_id),
+    customerEmail: toOptionalText(row.customer_email),
+    customerName: toOptionalText(row.customer_name),
+    shippingAddress: toOptionalText(row.shipping_address),
+    shippingCity: toOptionalText(row.shipping_city),
+    shippingPostalCode: toOptionalText(row.shipping_postal_code),
+    shippingCountry: toOptionalText(row.shipping_country),
+    shippingPhone: toOptionalText(row.shipping_phone),
+    deliveryMethod: row.delivery_method === "relay" ? "relay" : "home",
+    deliveryFee: Math.max(0, toNumber(row.delivery_fee, 0)),
+    relayId: toOptionalText(row.relay_id),
+    relayName: toOptionalText(row.relay_name),
+    relayAddress: toOptionalText(row.relay_address),
+    relayPostalCode: toOptionalText(row.relay_postal_code),
+    relayCity: toOptionalText(row.relay_city),
+    relayCountry: toOptionalText(row.relay_country),
+    trackingNumber: toOptionalText(row.tracking_number),
+    promoCode: toOptionalText(row.promo_code),
+    discountPercent: Math.max(0, toNumber(row.discount_percent, 0)),
+    discountAmount: Math.max(0, toNumber(row.discount_amount, 0)),
+    itemsCount: Math.max(0, Math.floor(toNumber(row.items_count, 0))),
+    totalHt: Math.max(0, toNumber(row.total_ht, 0)),
+    totalVat: Math.max(0, toNumber(row.total_vat, 0)),
+    vatBreakdown: Array.isArray(row.vat_breakdown) ? (row.vat_breakdown as CmsOrder["vatBreakdown"]) : [],
+    totalAmount: Math.max(0, toNumber(row.total_amount, 0)),
+    items: [],
+  };
+}
+
+function mapOrderItemRow(row: Record<string, unknown>): OrderItem {
+  return {
+    productId: toText(row.product_id) || "unknown",
+    name: toText(row.name) || "Produit",
+    unitPrice: Number(toNumber(row.unit_price, 0).toFixed(4)),
+    unitPriceHt: Number(toNumber(row.unit_price_ht, 0).toFixed(2)),
+    quantity: Math.max(1, Math.floor(toNumber(row.quantity, 1))),
+    lineTotal: Number(toNumber(row.line_total, 0).toFixed(2)),
+    lineTotalHt: Number(toNumber(row.line_total_ht, 0).toFixed(2)),
+    lineVatAmount: Number(toNumber(row.line_vat_amount, 0).toFixed(2)),
+    vatRate: Math.max(0, toNumber(row.vat_rate, 20)) as OrderItem["vatRate"],
+    bonusPoints:
+      Number.isFinite(Number(row.bonus_points)) && Number(row.bonus_points) >= 0
+        ? Math.floor(Number(row.bonus_points))
+        : undefined,
+    parentPackId: toOptionalText(row.parent_pack_id),
+    parentPackName: toOptionalText(row.parent_pack_name),
+  };
+}
+
+async function getOrderItemsByOrderId(orderId: string): Promise<OrderItem[]> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("order_items")
+    .select(SELECT_ORDER_ITEMS_COLUMNS)
+    .eq("order_id", orderId)
+    .order("id", { ascending: true });
+  failIfError(result.error, "read order_items for order");
+
+  return (result.data ?? []).map((row) =>
+    mapOrderItemRow(row as unknown as Record<string, unknown>),
+  );
+}
+
+async function getOrderByFilterFromSupabase(input: {
+  orderId?: string;
+  vivaOrderCode?: number;
+}): Promise<CmsOrder | null> {
+  const supabase = createSupabaseServiceClient();
+  let query = supabase.from("orders").select(SELECT_ORDERS_COLUMNS);
+
+  if (input.orderId) {
+    query = query.eq("id", input.orderId);
+  }
+
+  if (Number.isFinite(input.vivaOrderCode)) {
+    query = query.eq("viva_order_code", Math.floor(input.vivaOrderCode as number));
+  }
+
+  const orderResult = await query.maybeSingle();
+  failIfError(orderResult.error, "read order by filter");
+
+  if (!orderResult.data) {
+    return null;
+  }
+
+  const row = orderResult.data as unknown as Record<string, unknown>;
+  const order = mapOrderRowForLoyalty(row);
+  const items = await getOrderItemsByOrderId(order.id);
+
+  return {
+    ...order,
+    items,
+    itemsCount: Number.isFinite(Number(row.items_count))
+      ? Math.max(0, Math.floor(Number(row.items_count)))
+      : items.reduce((acc, item) => acc + item.quantity, 0),
+    totalAmount: Number(toNumber(row.total_amount, items.reduce((acc, item) => acc + item.lineTotal, 0)).toFixed(2)),
+  };
+}
+
 async function findOrderById(orderId: string): Promise<CmsOrder | null> {
-  const store = await readStoreFromSupabase();
-  return store.orders.find((order) => order.id === orderId) ?? null;
+  const safeOrderId = orderId.trim();
+  if (!safeOrderId) {
+    return null;
+  }
+
+  return getOrderByFilterFromSupabase({ orderId: safeOrderId });
 }
 
 export async function getOrderByIdInSupabase(orderId: string): Promise<CmsOrder | null> {
   return findOrderById(orderId);
 }
 
+export async function listCustomerOrdersForLoyaltyInSupabase(input: {
+  customerId: string;
+  customerEmail?: string;
+}): Promise<CmsOrder[]> {
+  const safeCustomerId = input.customerId.trim();
+  const safeCustomerEmail = (input.customerEmail ?? "").trim().toLowerCase();
+  if (!safeCustomerId || !UUID_PATTERN.test(safeCustomerId)) {
+    return [];
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const byCustomerIdPromise = supabase
+    .from("orders")
+    .select(SELECT_ORDERS_COLUMNS)
+    .eq("customer_id", safeCustomerId)
+    .order("created_at", { ascending: false });
+
+  const byEmailPromise = safeCustomerEmail
+    ? supabase
+        .from("orders")
+      .select(SELECT_ORDERS_COLUMNS)
+        .is("customer_id", null)
+        .ilike("customer_email", safeCustomerEmail)
+        .order("created_at", { ascending: false })
+    : Promise.resolve({ data: [], error: null } as {
+        data: Array<Record<string, unknown>>;
+        error: { message: string } | null;
+      });
+
+  const [byCustomerIdResult, byEmailResult] = await Promise.all([
+    byCustomerIdPromise,
+    byEmailPromise,
+  ]);
+
+  failIfError(byCustomerIdResult.error, "list customer orders by customer_id");
+  failIfError(byEmailResult.error, "list customer orders by email");
+
+  const rows = [...(byCustomerIdResult.data ?? []), ...(byEmailResult.data ?? [])].map(
+    (row) => row as unknown as Record<string, unknown>,
+  );
+  const seenIds = new Set<string>();
+  const orders: CmsOrder[] = [];
+
+  for (const row of rows) {
+    const id = toText(row.id);
+    if (!id || seenIds.has(id)) {
+      continue;
+    }
+
+    seenIds.add(id);
+    orders.push(mapOrderRowForLoyalty(row));
+  }
+
+  return orders;
+}
+
 async function findOrderByVivaOrderCode(orderCode: number): Promise<CmsOrder | null> {
-  const store = await readStoreFromSupabase();
-  return store.orders.find((order) => order.vivaOrderCode === orderCode) ?? null;
+  if (!Number.isFinite(orderCode) || orderCode <= 0) {
+    return null;
+  }
+
+  return getOrderByFilterFromSupabase({ vivaOrderCode: orderCode });
 }
 
 function computeNextStatusFromPaymentState(

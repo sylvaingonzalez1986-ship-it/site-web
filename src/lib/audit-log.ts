@@ -11,9 +11,11 @@ export type AuditEventType =
   | "upload_producer_image"
   | "upload_lottery_card_image"
   | "upload_product_analysis"
+  | "upload_mission_proof"
   | "update_store"
   | "update_order"
-  | "add_promo_code";
+  | "add_promo_code"
+  | "review_mission_submission";
 
 type AuditLogEntry = {
   eventType: AuditEventType;

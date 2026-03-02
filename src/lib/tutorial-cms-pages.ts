@@ -97,10 +97,15 @@ export function applyTutorialCmsPageOverrides(
     }
   }
 
-  return steps.map((step) => {
+  const resolved = steps.map((step, index) => {
     const page = pageBySlug.get(toStepSlug(step.id));
     if (!page) {
-      return step;
+      return {
+        step,
+        position: TUTORIAL_POSITION_BASE + index,
+        orderIndex: index,
+        enabled: true,
+      };
     }
 
     const title = page.title.trim() || step.title;
@@ -128,10 +133,26 @@ export function applyTutorialCmsPageOverrides(
           : step.details;
 
     return {
-      ...step,
-      title,
-      text,
-      details,
+      step: {
+        ...step,
+        title,
+        text,
+        details,
+      },
+      position: page.position,
+      orderIndex: index,
+      enabled: page.status !== "archived",
     };
   });
+
+  return resolved
+    .filter((entry) => entry.enabled)
+    .sort((left, right) => {
+      if (left.position !== right.position) {
+        return left.position - right.position;
+      }
+
+      return left.orderIndex - right.orderIndex;
+    })
+    .map((entry) => entry.step);
 }

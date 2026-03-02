@@ -8,7 +8,7 @@ import { useCmsPages } from "@/hooks/useCmsPages";
 import { useCmsStore } from "@/hooks/useCmsStore";
 
 export function Footer() {
-  const { store } = useCmsStore();
+  const { store, loading } = useCmsStore();
   const { pages: cmsPages } = useCmsPages();
   const footer = store.content.footer;
   const [contactOpen, setContactOpen] = useState(false);
@@ -30,6 +30,16 @@ export function Footer() {
       }))
       .filter((link) => !staticHrefs.has(link.href));
   }, [cmsPages]);
+
+  if (loading) {
+    return (
+      <footer className="border-t-2 border-[#1a1a1a] bg-yellow py-10 halftone-overlay paper-grain">
+        <div className="retro-container">
+          <div className="cartoon-border bg-cream p-5 md:p-7" />
+        </div>
+      </footer>
+    );
+  }
 
   return (
     <>

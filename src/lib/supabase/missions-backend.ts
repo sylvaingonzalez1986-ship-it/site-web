@@ -1,5 +1,6 @@
 import "server-only";
 
+import { createMissionProofSignedUrl, deleteMissionProof } from "@/lib/mission-proof-storage";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { grantLotteryTicketsToCustomerInSupabase } from "@/lib/supabase/lottery-backend";
 import type {
@@ -13,6 +14,51 @@ import type {
   ReferralPendingReward,
   SocialMission,
 } from "@/types/missions";
+
+const SELECT_SOCIAL_MISSIONS_COLUMNS = [
+  "id",
+  "slug",
+  "title",
+  "description",
+  "icon",
+  "reward_type",
+  "reward_amount",
+  "max_completions_per_user",
+  "requires_proof",
+  "proof_instructions",
+  "is_active",
+  "sort_order",
+].join(",");
+
+const SELECT_MISSION_SUBMISSIONS_COLUMNS = [
+  "id",
+  "user_id",
+  "mission_id",
+  "proof_url",
+  "proof_storage_path",
+  "proof_content_type",
+  "proof_file_size",
+  "proof_uploaded_at",
+  "proof_text",
+  "status",
+  "admin_note",
+  "reviewed_by",
+  "reviewed_at",
+  "reward_granted",
+  "created_at",
+].join(",");
+
+const SELECT_REFERRAL_PENDING_COLUMNS = [
+  "id",
+  "referrer_id",
+  "referee_id",
+  "order_id",
+  "status",
+  "points_amount",
+  "packs_amount",
+  "chosen_at",
+  "created_at",
+].join(",");
 
 // ── Helpers ──
 
@@ -29,6 +75,15 @@ function toText(value: unknown): string {
 function toInt(value: unknown, fallback: number): number {
   const n = Number(value);
   return Number.isFinite(n) ? Math.round(n) : fallback;
+}
+
+function toNullableInt(value: unknown): number | null {
+  const n = Number(value);
+  if (!Number.isFinite(n)) {
+    return null;
+  }
+
+  return Math.max(0, Math.round(n));
 }
 
 // ── Row → domain mappers ──
@@ -56,6 +111,13 @@ function rowToSubmission(row: Record<string, unknown>): MissionSubmission {
     userId: toText(row.user_id),
     missionId: toText(row.mission_id),
     proofUrl: typeof row.proof_url === "string" ? row.proof_url : null,
+    proofStoragePath:
+      typeof row.proof_storage_path === "string" ? row.proof_storage_path : null,
+    proofContentType:
+      typeof row.proof_content_type === "string" ? row.proof_content_type : null,
+    proofFileSize: toNullableInt(row.proof_file_size),
+    proofUploadedAt:
+      typeof row.proof_uploaded_at === "string" ? row.proof_uploaded_at : null,
     proofText: typeof row.proof_text === "string" ? row.proof_text : null,
     status: (toText(row.status) || "pending") as MissionSubmissionStatus,
     adminNote: typeof row.admin_note === "string" ? row.admin_note : null,
@@ -90,12 +152,12 @@ export async function getCustomerMissionsFromSupabase(
   const [missionsResult, submissionsResult] = await Promise.all([
     supabase
       .from("social_missions")
-      .select("*")
+      .select(SELECT_SOCIAL_MISSIONS_COLUMNS)
       .eq("is_active", true)
       .order("sort_order", { ascending: true }),
     supabase
       .from("social_mission_submissions")
-      .select("*")
+      .select(SELECT_MISSION_SUBMISSIONS_COLUMNS)
       .eq("user_id", userId)
       .order("created_at", { ascending: false }),
   ]);
@@ -103,9 +165,11 @@ export async function getCustomerMissionsFromSupabase(
   failIfError(missionsResult.error, "list social_missions");
   failIfError(submissionsResult.error, "list user submissions");
 
-  const missions = ((missionsResult.data ?? []) as Record<string, unknown>[]).map(rowToMission);
-  const submissions = ((submissionsResult.data ?? []) as Record<string, unknown>[]).map(
-    rowToSubmission,
+  const missions = (missionsResult.data ?? []).map((row) =>
+    rowToMission(row as unknown as Record<string, unknown>),
+  );
+  const submissions = (submissionsResult.data ?? []).map((row) =>
+    rowToSubmission(row as unknown as Record<string, unknown>),
   );
 
   return missions.map((mission) => {
@@ -130,6 +194,9 @@ export async function submitMissionProofInSupabase(input: {
   userId: string;
   missionId: string;
   proofUrl?: string;
+  proofStoragePath?: string;
+  proofContentType?: string;
+  proofFileSize?: number;
   proofText?: string;
 }): Promise<MissionSubmission> {
   const userId = input.userId.trim();
@@ -143,7 +210,7 @@ export async function submitMissionProofInSupabase(input: {
   // Verify mission exists and is active
   const missionResult = await supabase
     .from("social_missions")
-    .select("id,max_completions_per_user")
+    .select("id,max_completions_per_user,requires_proof")
     .eq("id", missionId)
     .eq("is_active", true)
     .maybeSingle();
@@ -153,10 +220,9 @@ export async function submitMissionProofInSupabase(input: {
     throw new Error("Mission introuvable ou inactive.");
   }
 
-  const maxCompletions = toInt(
-    (missionResult.data as Record<string, unknown>).max_completions_per_user,
-    1,
-  );
+  const missionRow = missionResult.data as Record<string, unknown>;
+  const maxCompletions = toInt(missionRow.max_completions_per_user, 1);
+  const requiresProof = missionRow.requires_proof === true;
 
   // Check user hasn't exceeded max completions or has pending
   const existingResult = await supabase
@@ -178,20 +244,31 @@ export async function submitMissionProofInSupabase(input: {
     throw new Error("Tu as déjà une soumission en attente de validation pour cette mission.");
   }
 
+  if (requiresProof && !input.proofStoragePath?.trim()) {
+    throw new Error("Une capture d'ecran est requise pour cette mission.");
+  }
+
   const insertResult = await supabase
     .from("social_mission_submissions")
     .insert({
       user_id: userId,
       mission_id: missionId,
       proof_url: input.proofUrl?.trim() || null,
+      proof_storage_path: input.proofStoragePath?.trim() || null,
+      proof_content_type: input.proofContentType?.trim() || null,
+      proof_file_size:
+        typeof input.proofFileSize === "number" && Number.isFinite(input.proofFileSize)
+          ? Math.max(0, Math.floor(input.proofFileSize))
+          : null,
+      proof_uploaded_at: input.proofStoragePath?.trim() ? new Date().toISOString() : null,
       proof_text: input.proofText?.trim() || null,
       status: "pending",
     })
-    .select("*")
+    .select(SELECT_MISSION_SUBMISSIONS_COLUMNS)
     .single();
   failIfError(insertResult.error, "insert mission submission");
 
-  return rowToSubmission(insertResult.data as Record<string, unknown>);
+  return rowToSubmission(insertResult.data as unknown as Record<string, unknown>);
 }
 
 // ── Admin: overview of all submissions ──
@@ -202,11 +279,11 @@ export async function getAdminMissionsOverviewFromSupabase(): Promise<AdminMissi
   const [missionsResult, submissionsResult, usersResult] = await Promise.all([
     supabase
       .from("social_missions")
-      .select("*")
+      .select(SELECT_SOCIAL_MISSIONS_COLUMNS)
       .order("sort_order", { ascending: true }),
     supabase
       .from("social_mission_submissions")
-      .select("*")
+      .select(SELECT_MISSION_SUBMISSIONS_COLUMNS)
       .order("created_at", { ascending: false })
       .limit(300),
     supabase.auth.admin.listUsers(),
@@ -216,11 +293,13 @@ export async function getAdminMissionsOverviewFromSupabase(): Promise<AdminMissi
   failIfError(submissionsResult.error, "admin list submissions");
   failIfError(usersResult.error, "auth.admin.listUsers for missions");
 
-  const missions = ((missionsResult.data ?? []) as Record<string, unknown>[]).map(rowToMission);
+  const missions = (missionsResult.data ?? []).map((row) =>
+    rowToMission(row as unknown as Record<string, unknown>),
+  );
   const missionsById = new Map(missions.map((m) => [m.id, m]));
 
-  const rawSubmissions = ((submissionsResult.data ?? []) as Record<string, unknown>[]).map(
-    rowToSubmission,
+  const rawSubmissions = (submissionsResult.data ?? []).map((row) =>
+    rowToSubmission(row as unknown as Record<string, unknown>),
   );
 
   // Fetch profile names for unique user IDs
@@ -249,6 +328,17 @@ export async function getAdminMissionsOverviewFromSupabase(): Promise<AdminMissi
     }
   }
 
+  const signedUrlEntries = await Promise.all(
+    rawSubmissions.map(async (submission) => {
+      if (!submission.proofStoragePath) {
+        return [submission.id, null] as const;
+      }
+
+      return [submission.id, await createMissionProofSignedUrl(submission.proofStoragePath)] as const;
+    }),
+  );
+  const signedUrlById = new Map(signedUrlEntries);
+
   const submissions: AdminMissionSubmissionView[] = rawSubmissions.map((sub) => {
     const mission = missionsById.get(sub.missionId);
     const profile = profileNameById.get(sub.userId);
@@ -260,6 +350,7 @@ export async function getAdminMissionsOverviewFromSupabase(): Promise<AdminMissi
       userName: fullName,
       missionTitle: mission?.title ?? "Mission inconnue",
       missionSlug: mission?.slug ?? "",
+      proofSignedUrl: signedUrlById.get(sub.id) ?? null,
     };
   });
 
@@ -291,7 +382,7 @@ export async function reviewMissionSubmissionInSupabase(input: {
   // Fetch submission
   const subResult = await supabase
     .from("social_mission_submissions")
-    .select("*")
+    .select(SELECT_MISSION_SUBMISSIONS_COLUMNS)
     .eq("id", submissionId)
     .maybeSingle();
   failIfError(subResult.error, "fetch submission for review");
@@ -300,7 +391,7 @@ export async function reviewMissionSubmissionInSupabase(input: {
     throw new Error("Soumission introuvable.");
   }
 
-  const submission = rowToSubmission(subResult.data as Record<string, unknown>);
+  const submission = rowToSubmission(subResult.data as unknown as Record<string, unknown>);
 
   if (submission.status !== "pending") {
     throw new Error("Cette soumission a déjà été traitée.");
@@ -366,6 +457,30 @@ export async function reviewMissionSubmissionInSupabase(input: {
     })
     .eq("id", submissionId);
   failIfError(updateResult.error, "update mission submission status");
+
+  if (submission.proofStoragePath) {
+    try {
+      await deleteMissionProof(submission.proofStoragePath);
+
+      const cleanupResult = await supabase
+        .from("social_mission_submissions")
+        .update({
+          proof_url: null,
+          proof_storage_path: null,
+          proof_content_type: null,
+          proof_file_size: null,
+          proof_uploaded_at: null,
+        })
+        .eq("id", submissionId);
+      failIfError(cleanupResult.error, "cleanup mission proof metadata");
+    } catch (error) {
+      console.error("[missions] proof cleanup failed", {
+        submissionId,
+        proofStoragePath: submission.proofStoragePath,
+        error,
+      });
+    }
+  }
 }
 
 // ── Referral Pending Rewards ──
@@ -404,12 +519,14 @@ export async function getReferralPendingRewardsFromSupabase(
 
   const result = await supabase
     .from("referral_pending_rewards")
-    .select("*")
+    .select(SELECT_REFERRAL_PENDING_COLUMNS)
     .eq("referrer_id", referrerId)
     .order("created_at", { ascending: false });
   failIfError(result.error, "list referral_pending_rewards");
 
-  return ((result.data ?? []) as Record<string, unknown>[]).map(rowToReferralPending);
+  return (result.data ?? []).map((row) =>
+    rowToReferralPending(row as unknown as Record<string, unknown>),
+  );
 }
 
 export async function chooseReferralRewardInSupabase(input: {
@@ -422,7 +539,7 @@ export async function chooseReferralRewardInSupabase(input: {
   // Fetch the pending reward
   const pendingResult = await supabase
     .from("referral_pending_rewards")
-    .select("*")
+    .select(SELECT_REFERRAL_PENDING_COLUMNS)
     .eq("id", input.pendingRewardId)
     .eq("referrer_id", input.referrerId)
     .eq("status", "pending")
@@ -433,7 +550,7 @@ export async function chooseReferralRewardInSupabase(input: {
     throw new Error("Récompense introuvable ou déjà choisie.");
   }
 
-  const pending = rowToReferralPending(pendingResult.data as Record<string, unknown>);
+  const pending = rowToReferralPending(pendingResult.data as unknown as Record<string, unknown>);
 
   if (input.choice === "points") {
     // Grant loyalty points
@@ -484,10 +601,12 @@ export async function getAdminReferralPendingRewardsFromSupabase(): Promise<Refe
 
   const result = await supabase
     .from("referral_pending_rewards")
-    .select("*")
+    .select(SELECT_REFERRAL_PENDING_COLUMNS)
     .order("created_at", { ascending: false })
     .limit(200);
   failIfError(result.error, "admin list referral_pending_rewards");
 
-  return ((result.data ?? []) as Record<string, unknown>[]).map(rowToReferralPending);
+  return (result.data ?? []).map((row) =>
+    rowToReferralPending(row as unknown as Record<string, unknown>),
+  );
 }

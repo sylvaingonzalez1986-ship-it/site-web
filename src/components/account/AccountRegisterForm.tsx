@@ -173,7 +173,6 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
         value={referralCode}
         onChange={(event) => setReferralCode(event.target.value.toUpperCase())}
         placeholder="Code parrain (optionnel)"
-        data-tutorial="referral-code-input"
       />
       {referralCode.trim().length > 0 && (
         <p className="text-xs font-semibold text-charcoal">

@@ -2,7 +2,7 @@ import "server-only";
 
 import { randomUUID } from "node:crypto";
 import { spawn } from "node:child_process";
-import { access, mkdir, readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
+import { access, mkdir, mkdtemp, readdir, readFile, rm, stat, unlink, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import ffmpegPath from "ffmpeg-static";
@@ -22,6 +22,9 @@ const PRODUCT_VIDEO_PATH_REGEX = /^\/[a-zA-Z0-9/_-]+\.(mp4|mov)$/i;
 const PRODUCT_VIDEO_BUCKET = "product-videos";
 const PRODUCT_VIDEO_FILE_NAME_REGEX = /^[a-f0-9-]{36}\.(mp4|mov)$/i;
 const BOOMERANG_SEGMENT_SECONDS = 1.5;
+const PRODUCT_VIDEO_MAX_DIMENSION = 720;
+const PRODUCT_VIDEO_OUTPUT_FPS = 24;
+const PRODUCT_VIDEO_OUTPUT_CRF = 30;
 
 export class ProductVideoUploadError extends Error {
   constructor(
@@ -62,7 +65,7 @@ function isSupportedRemoteVideoUrl(videoPath: string): boolean {
   }
 }
 
-function useSupabaseStorageBackend(): boolean {
+function shouldUseSupabaseStorageBackend(): boolean {
   return true;
 }
 
@@ -156,13 +159,14 @@ export async function saveProductVideoUpload(file: File): Promise<string> {
   }
 
   const inputBuffer = Buffer.from(await file.arrayBuffer());
-  const tempDir = await mkdir(path.join(os.tmpdir(), "product-videos"), { recursive: true })
-    .then(() => path.join(os.tmpdir(), "product-videos"));
-  const inputExt = file.type === "video/quicktime" ? "mov" : "mp4";
-  const inputPath = path.join(tempDir, `${randomUUID()}.${inputExt}`);
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "product-video-"));
+  const inputPath =
+    file.type === "video/quicktime"
+      ? path.join(tempDir, "input.mov")
+      : path.join(tempDir, "input.mp4");
   let outputContentType = "video/mp4";
   let outputName = `${randomUUID()}.mp4`;
-  const outputPath = path.join(tempDir, outputName);
+  const outputPath = path.join(tempDir, "output.mp4");
 
   try {
     let outputBuffer: Buffer | null = null;
@@ -172,7 +176,7 @@ export async function saveProductVideoUpload(file: File): Promise<string> {
       const filter = [
         `[0:v]trim=0:${BOOMERANG_SEGMENT_SECONDS},setpts=PTS-STARTPTS[v0]`,
         `[v0]reverse,setpts=PTS-STARTPTS[v1]`,
-        `[v0][v1]concat=n=2:v=1:a=0,format=yuv420p[v]`,
+        `[v0][v1]concat=n=2:v=1:a=0,fps=${PRODUCT_VIDEO_OUTPUT_FPS},scale='min(${PRODUCT_VIDEO_MAX_DIMENSION},iw)':-2:flags=lanczos,format=yuv420p[v]`,
       ].join(";");
 
       try {
@@ -185,6 +189,14 @@ export async function saveProductVideoUpload(file: File): Promise<string> {
           "-map",
           "[v]",
           "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "veryfast",
+          "-crf",
+          String(PRODUCT_VIDEO_OUTPUT_CRF),
+          "-pix_fmt",
+          "yuv420p",
           "-movflags",
           "+faststart",
           outputPath,
@@ -234,7 +246,7 @@ export async function saveProductVideoUpload(file: File): Promise<string> {
       throw new ProductVideoUploadError("Conversion video echouee.", 500);
     }
 
-    if (useSupabaseStorageBackend()) {
+    if (shouldUseSupabaseStorageBackend()) {
       const supabase = createSupabaseServiceClient();
       const uploadResult = await supabase.storage
         .from(PRODUCT_VIDEO_BUCKET)
@@ -267,11 +279,12 @@ export async function saveProductVideoUpload(file: File): Promise<string> {
   } finally {
     await unlink(inputPath).catch(() => {});
     await unlink(outputPath).catch(() => {});
+    await rm(tempDir, { recursive: true, force: true }).catch(() => {});
   }
 }
 
 export async function cleanupUnusedProductVideoUploads(videoPaths: string[]): Promise<void> {
-  if (useSupabaseStorageBackend()) {
+  if (shouldUseSupabaseStorageBackend()) {
     const supabase = createSupabaseServiceClient();
     const referencedObjects = new Set(
       videoPaths

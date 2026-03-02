@@ -17,7 +17,6 @@ import {
   getPublishedCmsPageBySlugFromSupabase,
   readAdminCmsPagesFromSupabase,
   readPublishedCmsPagesFromSupabase,
-  readTutorialCmsPagesFromSupabase,
   updateCmsPageInSupabase,
 } from "@/lib/supabase/cms-pages-backend";
 import type { CmsPage, CmsPageCreateInput, CmsPageUpdateInput } from "@/types/cms-pages";
@@ -107,8 +106,18 @@ export async function readTutorialCmsPagesByBackend(): Promise<CmsPage[]> {
     return [];
   }
 
-  const pages = await readTutorialCmsPagesFromSupabase();
-  return pages.filter((page) => isTutorialCmsSlug(page.slug));
+  const adminPages = await readAdminCmsPagesFromSupabase();
+  const seeded = await ensureTutorialCmsPagesSeeded(adminPages);
+  const sourcePages = seeded ? await readAdminCmsPagesFromSupabase() : adminPages;
+  const allowedTutorialSlugs = new Set(
+    buildTutorialCmsPageSeedInputs(HOME_TUTORIAL_STEPS)
+      .map((page) => normalizeCmsSlug(page.slug))
+      .filter(Boolean),
+  );
+
+  return sourcePages.filter(
+    (page) => isTutorialCmsSlug(page.slug) && allowedTutorialSlugs.has(normalizeCmsSlug(page.slug)),
+  );
 }
 
 export async function getPublishedCmsPageBySlugByBackend(

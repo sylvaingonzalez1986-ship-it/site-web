@@ -13,6 +13,35 @@ const DEFAULT_COUNTRY = "France";
 const MAX_NOTES_LENGTH = 4000;
 const MAX_LOYALTY_BONUS_POINTS = 100000;
 
+const SELECT_PROFILE_COLUMNS = [
+  "id",
+  "first_name",
+  "last_name",
+  "date_of_birth",
+  "phone",
+  "address",
+  "city",
+  "postal_code",
+  "country",
+  "notes",
+  "loyalty_points",
+  "loyalty_points_spent",
+  "referral_code",
+  "referred_by_code",
+  "referral_bound_at",
+  "referral_rewarded_at",
+  "created_at",
+].join(",");
+
+const SELECT_PROMO_CODE_COLUMNS = [
+  "customer_id",
+  "code",
+  "discount_percent",
+  "used",
+  "created_at",
+  "used_at",
+].join(",");
+
 function failIfError(error: { message: string } | null, context: string): void {
   if (error) {
     throw new Error(`[supabase:${context}] ${error.message}`);
@@ -275,7 +304,7 @@ async function ensureProfileRow(input: {
   const supabase = createSupabaseServiceClient();
   const existing = await supabase
     .from("profiles")
-    .select("*")
+    .select(SELECT_PROFILE_COLUMNS)
     .eq("id", input.userId)
     .maybeSingle();
   failIfError(existing.error, "select profile");
@@ -303,7 +332,7 @@ async function ensureProfileRow(input: {
   const inserted = await supabase
     .from("profiles")
     .insert(insertRow)
-    .select("*")
+    .select(SELECT_PROFILE_COLUMNS)
     .single();
   failIfError(inserted.error, "insert profile");
   return inserted.data as unknown as ProfileRow;
@@ -313,14 +342,14 @@ async function loadPromoCodes(customerId: string): Promise<PromoCode[]> {
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("promo_codes")
-    .select("*")
+    .select(SELECT_PROMO_CODE_COLUMNS)
     .eq("customer_id", customerId)
     .order("created_at", { ascending: false });
   failIfError(result.error, "select promo_codes");
 
   const promoCodes: PromoCode[] = [];
   for (const rawRow of result.data ?? []) {
-    const row = rawRow as Record<string, unknown>;
+    const row = rawRow as unknown as Record<string, unknown>;
     const promo = mapPromoCodeRow(row);
     if (!promo) {
       continue;
@@ -339,13 +368,13 @@ async function loadPromoCodesByCustomerIds(customerIds: string[]): Promise<Map<s
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("promo_codes")
-    .select("*")
+    .select(SELECT_PROMO_CODE_COLUMNS)
     .in("customer_id", customerIds)
     .order("created_at", { ascending: false });
   failIfError(result.error, "select promo_codes by customer ids");
 
   for (const rawRow of result.data ?? []) {
-    const row = rawRow as Record<string, unknown>;
+    const row = rawRow as unknown as Record<string, unknown>;
     const customerId = typeof row.customer_id === "string" ? row.customer_id : "";
     if (!customerId) {
       continue;
@@ -517,7 +546,7 @@ export async function getSupabaseCustomerById(customerId: string): Promise<Publi
   const supabase = createSupabaseServiceClient();
   const profileResult = await supabase
     .from("profiles")
-    .select("*")
+    .select(SELECT_PROFILE_COLUMNS)
     .eq("id", safeId)
     .maybeSingle();
   failIfError(profileResult.error, "get profile by id");
@@ -542,7 +571,7 @@ export async function getSupabaseCustomerByIdFull(customerId: string): Promise<A
   const supabase = createSupabaseServiceClient();
   const profileResult = await supabase
     .from("profiles")
-    .select("*")
+    .select(SELECT_PROFILE_COLUMNS)
     .eq("id", safeId)
     .maybeSingle();
   failIfError(profileResult.error, "get full profile by id");
@@ -562,7 +591,7 @@ export async function getAllSupabaseCustomers(): Promise<AdminCustomer[]> {
   const supabase = createSupabaseServiceClient();
   const profilesResult = await supabase
     .from("profiles")
-    .select("*")
+    .select(SELECT_PROFILE_COLUMNS)
     .order("created_at", { ascending: false });
   failIfError(profilesResult.error, "list profiles");
 
@@ -682,7 +711,7 @@ export async function adminUpdateSupabaseCustomer(
     .from("profiles")
     .update(patch)
     .eq("id", safeId)
-    .select("*")
+    .select(SELECT_PROFILE_COLUMNS)
     .maybeSingle();
   failIfError(updateResult.error, "update profile");
   if (!updateResult.data) {
@@ -750,7 +779,7 @@ export async function previewSupabasePromoCode(
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("promo_codes")
-    .select("*")
+    .select(SELECT_PROMO_CODE_COLUMNS)
     .eq("customer_id", safeId)
     .eq("code", safeCode)
     .eq("used", false)
@@ -760,7 +789,7 @@ export async function previewSupabasePromoCode(
     return null;
   }
 
-  return mapPromoCodeRow(result.data as Record<string, unknown>);
+  return mapPromoCodeRow(result.data as unknown as Record<string, unknown>);
 }
 
 export async function consumeSupabasePromoCode(
@@ -783,7 +812,7 @@ export async function consumeSupabasePromoCode(
     .eq("customer_id", safeId)
     .eq("code", safeCode)
     .eq("used", false)
-    .select("*")
+    .select(SELECT_PROMO_CODE_COLUMNS)
     .maybeSingle();
   failIfError(updateResult.error, "consume promo code");
 
@@ -791,7 +820,7 @@ export async function consumeSupabasePromoCode(
     return null;
   }
 
-  return mapPromoCodeRow(updateResult.data as Record<string, unknown>);
+  return mapPromoCodeRow(updateResult.data as unknown as Record<string, unknown>);
 }
 
 export async function createTemporarySupabaseUserFromLegacy(input: {
