@@ -158,6 +158,15 @@ function normalizeBonusPoints(value: unknown): number | undefined {
   return Math.floor(parsed);
 }
 
+function normalizeNonNegativeInteger(value: unknown, fallback: number): number {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    return fallback;
+  }
+
+  return Math.floor(parsed);
+}
+
 function normalizePositivePrice(value: unknown): number | undefined {
   const price = Number(value);
   if (!Number.isFinite(price)) {
@@ -717,6 +726,10 @@ function normalizeStore(input: CmsStore, options?: { touchUpdatedAt?: boolean })
       boutique: {
         ...defaultStore.content.boutique,
         ...input.content?.boutique,
+        lowStockThresholdGrams: normalizeNonNegativeInteger(
+          input.content?.boutique?.lowStockThresholdGrams,
+          defaultStore.content.boutique.lowStockThresholdGrams,
+        ),
         ownProducerLabel:
           input.content?.boutique?.ownProducerLabel?.trim() ||
           defaultStore.content.boutique.ownProducerLabel,

@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import {
   getLotteryConfigByBackend,
+  listLotteryBonusDefinitionsByBackend,
   getLotteryStatsByBackend,
   listLotteryCardDefinitionsByBackend,
   updateLotteryConfigByBackend,
 } from "@/lib/lottery-backend";
+import type { LotteryBonusDefinition } from "@/types/lottery";
 import type { LotteryConfig } from "@/types/lottery";
 
 export const runtime = "nodejs";
@@ -25,21 +27,23 @@ export async function GET() {
       albumSubtitle: "Ta collection de cartes. Complete chaque page pour debloquer ses recompenses.",
       albumBoosterTitle: "packs a ouvrir",
       albumBoosterDescription: "Ouvre un booster depuis l'album pour reveler les 3 cartes sans quitter cette page.",
-      cardWeights: {
-        common: 33,
-        silver: 10,
-        gold: 5,
-        epic: 3,
-        legendary: 1,
+      cycleSize: 50000,
+      cardQuotas: {
+        common: 40000,
+        silver: 7000,
+        gold: 2000,
+        epic: 800,
+        legendary: 200,
       },
       isActive: true,
       updatedAt: new Date().toISOString(),
     };
 
-    const [configResult, cardsResult, statsResult] = await Promise.allSettled([
+    const [configResult, cardsResult, statsResult, bonusesResult] = await Promise.allSettled([
       getLotteryConfigByBackend(),
       listLotteryCardDefinitionsByBackend(),
       getLotteryStatsByBackend(),
+      listLotteryBonusDefinitionsByBackend(),
     ]);
 
     if (cardsResult.status === "rejected") {
@@ -72,9 +76,22 @@ export async function GET() {
             return null;
           })();
 
+      const bonuses: LotteryBonusDefinition[] =
+        bonusesResult.status === "fulfilled"
+          ? bonusesResult.value
+          : (() => {
+              warnings.push(
+                bonusesResult.reason instanceof Error
+                  ? bonusesResult.reason.message
+                  : "Cartes bonus indisponibles.",
+              );
+              return [];
+            })();
+
     return NextResponse.json({
       config,
       cards: cardsResult.value,
+        bonuses,
       stats,
       warning: warnings.length > 0 ? warnings.join(" | ") : undefined,
     });
@@ -99,22 +116,24 @@ export async function PUT(request: Request) {
       albumSubtitle: string;
       albumBoosterTitle: string;
       albumBoosterDescription: string;
-      commonWeight: number;
-      silverWeight: number;
-      goldWeight: number;
-      epicWeight: number;
-      legendaryWeight: number;
+      cycleSize: number;
+      commonQuota: number;
+      silverQuota: number;
+      goldQuota: number;
+      epicQuota: number;
+      legendaryQuota: number;
       isActive: boolean;
     };
 
     if (
       !Number.isFinite(payload.eurosPerTicket) ||
       !Number.isFinite(payload.maxTicketsPerOrder) ||
-      !Number.isFinite(payload.commonWeight) ||
-      !Number.isFinite(payload.silverWeight) ||
-      !Number.isFinite(payload.goldWeight) ||
-      !Number.isFinite(payload.epicWeight) ||
-      !Number.isFinite(payload.legendaryWeight) ||
+      !Number.isFinite(payload.cycleSize) ||
+      !Number.isFinite(payload.commonQuota) ||
+      !Number.isFinite(payload.silverQuota) ||
+      !Number.isFinite(payload.goldQuota) ||
+      !Number.isFinite(payload.epicQuota) ||
+      !Number.isFinite(payload.legendaryQuota) ||
       typeof payload.collectionTitle !== "string" ||
       typeof payload.seasonLabel !== "string" ||
       typeof payload.albumSubtitle !== "string" ||
@@ -133,11 +152,12 @@ export async function PUT(request: Request) {
       albumSubtitle: payload.albumSubtitle,
       albumBoosterTitle: payload.albumBoosterTitle,
       albumBoosterDescription: payload.albumBoosterDescription,
-      commonWeight: Number(payload.commonWeight),
-      silverWeight: Number(payload.silverWeight),
-      goldWeight: Number(payload.goldWeight),
-      epicWeight: Number(payload.epicWeight),
-      legendaryWeight: Number(payload.legendaryWeight),
+      cycleSize: Number(payload.cycleSize),
+      commonQuota: Number(payload.commonQuota),
+      silverQuota: Number(payload.silverQuota),
+      goldQuota: Number(payload.goldQuota),
+      epicQuota: Number(payload.epicQuota),
+      legendaryQuota: Number(payload.legendaryQuota),
       isActive: payload.isActive,
     });
 

@@ -324,6 +324,7 @@ export default function BoutiquePage() {
                 producers={store.producers}
                 products={displayedProducts}
                 addButtonLabel={boutique.addButtonLabel}
+                lowStockThresholdGrams={boutique.lowStockThresholdGrams}
                 producerPartnerLabel={boutique.producerPartnerLabel}
                 producerWebsiteLabel={boutique.producerWebsiteLabel}
               />
@@ -350,6 +351,7 @@ export default function BoutiquePage() {
                       product={product}
                       producer={resolveProductProducer(product, producersById, ownProducer)}
                       addButtonLabel={boutique.addButtonLabel}
+                      lowStockThresholdGrams={boutique.lowStockThresholdGrams}
                     />
                   ))}
                 </div>
@@ -360,6 +362,7 @@ export default function BoutiquePage() {
                   selectedProducerId={selectedOwnProducerId}
                   productsByProducerId={ownProductsByProducerId}
                   addButtonLabel={boutique.addButtonLabel}
+                  lowStockThresholdGrams={boutique.lowStockThresholdGrams}
                   producerPartnerLabel={boutique.ownProducerLabel}
                   producerWebsiteLabel={boutique.producerWebsiteLabel}
                   onClose={() => setSelectedOwnProducerId(null)}

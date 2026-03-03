@@ -34,6 +34,7 @@ function sleep(ms: number): Promise<void> {
 /* ------------------------------------------------------------------ */
 
 function RevealedCard({ card }: { card: ScratchResult["cards"][number] }) {
+  const isBonus = card.isBonus === true;
   return (
     <div
       className={`relative h-full overflow-hidden rounded-2xl border-[3px] border-[#1a1a1a] ${rarityShellClasses[card.rarity]} ${rarityGlowClasses[card.rarity]}`}
@@ -41,7 +42,7 @@ function RevealedCard({ card }: { card: ScratchResult["cards"][number] }) {
       <div className="flex h-full flex-col p-4 sm:p-5">
         <div className="flex items-start justify-end">
           <span className="shrink-0 rounded-full border-[1.5px] border-current px-2 py-0.5 text-xs font-black sm:text-sm">
-            #{card.cardNumber}
+            {isBonus ? "BONUS" : `#${card.cardNumber}`}
           </span>
         </div>
 
@@ -78,11 +79,11 @@ function RevealedCard({ card }: { card: ScratchResult["cards"][number] }) {
 
         <div className="mt-3 rounded-xl border-2 border-current/30 bg-white/50 px-3 py-2 text-center">
           <p className="text-xs font-black uppercase tracking-[0.1em] sm:text-sm">
-            {rarityLabels[card.rarity]}
+            {isBonus ? "Carte Bonus" : rarityLabels[card.rarity]}
           </p>
           <p className="mt-1 text-sm font-bold leading-tight sm:text-base">{card.name}</p>
           <p className="mt-0.5 text-xs font-semibold opacity-75 sm:text-sm">
-            {card.ownedCount > 1 ? `Doublon ×${card.ownedCount}` : "Nouvelle carte"}
+            {isBonus ? "Bon a choisir" : card.ownedCount > 1 ? `Doublon ×${card.ownedCount}` : "Nouvelle carte"}
           </p>
         </div>
       </div>
@@ -321,6 +322,7 @@ export function PackOpeningAnimation({
   const showCards = phase === "revealing" || phase === "done";
   const newCards = result ? result.cards.filter((c) => c.ownedCount <= 1).length : 0;
   const duplicates = result ? result.cards.length - newCards : 0;
+  const bonusWon = Boolean(result?.bonusPrize);
 
   /* ---------------------------------------------------------------- */
   /*  RENDER                                                           */
@@ -491,6 +493,12 @@ export function PackOpeningAnimation({
                   <span className="font-bold text-white/80">{newCards} nouvelle(s)</span>,{" "}
                   {duplicates} doublon(s)
                 </span>
+                {bonusWon && (
+                  <span>
+                    <span className="font-bold text-white/80">Bonus gagne</span>{" "}
+                    {result?.bonusPrize?.title}
+                  </span>
+                )}
               </div>
             </div>
           )}

@@ -5,32 +5,56 @@ import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
-import { getSelectableVariantOptions, isProductInStock } from "@/lib/product-stock";
 import type { Product } from "@/data/products";
+import {
+  formatRemainingGrams,
+  getSelectableVariantOptions,
+  getStockDisplayInfo,
+} from "@/lib/product-stock";
 
 type ProductDetailActionsProps = {
   product: Product;
+  lowStockThresholdGrams?: number;
 };
 
-export function ProductDetailActions({ product }: ProductDetailActionsProps) {
+function buildStockLimitMessage(productName: string, maxAvailable?: number): string {
+  if (typeof maxAvailable === "number" && maxAvailable > 0) {
+    return `Stock maximum atteint pour ${productName} (${maxAvailable} unite${maxAvailable > 1 ? "s" : ""} disponible${maxAvailable > 1 ? "s" : ""}).`;
+  }
+
+  return `Le stock disponible pour ${productName} est atteint.`;
+}
+
+export function ProductDetailActions({
+  product,
+  lowStockThresholdGrams = 0,
+}: ProductDetailActionsProps) {
   const router = useRouter();
   const { addToCart, authLoading } = useCart();
   const [qty, setQty] = useState(1);
   const [selectedVariantId, setSelectedVariantId] = useState<string>("");
+  const [stockError, setStockError] = useState<string | null>(null);
 
   const selectableVariants = getSelectableVariantOptions(product);
   const hasVariants = selectableVariants.length > 0;
   const selectedVariant =
     selectableVariants.find((v) => v.id === selectedVariantId) ??
     selectableVariants[0];
-  const inStock = isProductInStock(product);
+  const stockInfo = getStockDisplayInfo(product, lowStockThresholdGrams, selectedVariant?.id);
+  const inStock = !stockInfo.isOutOfStock;
 
   const handleAddToCart = () => {
     if (authLoading || !inStock) return;
 
-    const added = addToCart(product, selectedVariant?.id, qty);
-    if (added) {
+    const result = addToCart(product, selectedVariant?.id, qty);
+    if (result.ok) {
+      setStockError(null);
       setQty(1);
+      return;
+    }
+
+    if (result.reason === "stock_limit") {
+      setStockError(buildStockLimitMessage(product.name, result.maxAvailable));
       return;
     }
 
@@ -54,6 +78,7 @@ export function ProductDetailActions({ product }: ProductDetailActionsProps) {
             onChange={(e) => {
               setSelectedVariantId(e.target.value);
               setQty(1);
+              setStockError(null);
             }}
           >
             {selectableVariants.map((option) => (
@@ -65,8 +90,24 @@ export function ProductDetailActions({ product }: ProductDetailActionsProps) {
         </div>
       )}
 
+      {stockInfo.isLowStock && stockInfo.remainingGrams !== null && (
+        <div className="rounded border-2 border-[#7f1d1d] bg-[#f8d7da] px-4 py-3 text-sm font-bold text-[#7f1d1d]">
+          Plus que {formatRemainingGrams(stockInfo.remainingGrams)} disponible
+        </div>
+      )}
+      {stockError && <p className="text-sm font-semibold text-[#7f1d1d]">{stockError}</p>}
+
       <div className="flex flex-wrap items-center gap-3">
-        {inStock && <QuantitySelector value={qty} onChange={setQty} />}
+        {inStock && (
+          <QuantitySelector
+            value={qty}
+            onChange={(value) => {
+              setQty(value);
+              setStockError(null);
+            }}
+            max={stockInfo.maxPurchasableQty}
+          />
+        )}
         <button
           type="button"
           onClick={handleAddToCart}

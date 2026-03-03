@@ -12,6 +12,7 @@ type ProducerBarProps = {
   producers: Producer[];
   products: Product[];
   addButtonLabel: string;
+  lowStockThresholdGrams: number;
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
 };
@@ -20,6 +21,7 @@ export function ProducerBar({
   producers,
   products,
   addButtonLabel,
+  lowStockThresholdGrams,
   producerPartnerLabel,
   producerWebsiteLabel,
 }: ProducerBarProps) {
@@ -95,6 +97,7 @@ export function ProducerBar({
               product.producerId ? producerById.get(product.producerId) : undefined
             }
             addButtonLabel={addButtonLabel}
+            lowStockThresholdGrams={lowStockThresholdGrams}
           />
         ))}
       </div>
@@ -105,6 +108,7 @@ export function ProducerBar({
         selectedProducerId={selectedProducerId}
         productsByProducerId={productsByProducerId}
         addButtonLabel={addButtonLabel}
+        lowStockThresholdGrams={lowStockThresholdGrams}
         producerPartnerLabel={producerPartnerLabel}
         producerWebsiteLabel={producerWebsiteLabel}
         onClose={() => setSelectedProducerId(null)}

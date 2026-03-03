@@ -34,6 +34,7 @@ type FindProductResult = {
   nextProduct: SiblingProduct | null;
   currentIndex: number;
   totalInCategory: number;
+  lowStockThresholdGrams: number;
 };
 
 async function findProduct(
@@ -74,6 +75,7 @@ async function findProduct(
     nextProduct,
     currentIndex: idx,
     totalInCategory: total,
+    lowStockThresholdGrams: store.content.boutique.lowStockThresholdGrams,
   };
 }
 
@@ -136,7 +138,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const { product, producer, prevProduct, nextProduct, currentIndex, totalInCategory } = result;
+  const {
+    product,
+    producer,
+    prevProduct,
+    nextProduct,
+    currentIndex,
+    totalInCategory,
+    lowStockThresholdGrams,
+  } = result;
   const baseUrl = getSiteUrl();
   const catInfo = categorySlugMap[product.category];
   const categorySlug = catInfo?.slug ?? `${product.category}-cbd`;
@@ -267,7 +277,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </a>
               )}
 
-              <ProductDetailActions product={product} />
+              <ProductDetailActions
+                product={product}
+                lowStockThresholdGrams={lowStockThresholdGrams}
+              />
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link

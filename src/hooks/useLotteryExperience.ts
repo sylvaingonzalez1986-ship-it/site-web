@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
 import type {
   LotteryBurnableRarity,
+  LotteryBonusInstance,
   LotteryCollectionAlbum,
   LotteryCollectionPageRarity,
   LotteryConfig,
@@ -19,6 +20,7 @@ type TicketsPayload = {
   tickets?: LotteryTicket[];
   inventory?: LotteryInventory | null;
   config?: LotteryConfig | null;
+  bonuses?: LotteryBonusInstance[];
   loyalty?: LoyaltySummary;
   error?: string;
 };
@@ -31,6 +33,7 @@ type LotteryExperienceState = {
   tickets: LotteryTicket[];
   inventory: LotteryInventory | null;
   config: LotteryConfig | null;
+  bonuses: LotteryBonusInstance[];
   loyalty: LoyaltySummary;
   album: LotteryCollectionAlbum | null;
   loading: boolean;
@@ -54,6 +57,7 @@ export function useLotteryExperience(): LotteryExperienceState {
   const [tickets, setTickets] = useState<LotteryTicket[]>([]);
   const [inventory, setInventory] = useState<LotteryInventory | null>(null);
   const [config, setConfig] = useState<LotteryConfig | null>(null);
+  const [bonuses, setBonuses] = useState<LotteryBonusInstance[]>([]);
   const [loyalty, setLoyalty] = useState<LoyaltySummary>(buildEmptyLoyaltySummary());
   const [album, setAlbum] = useState<LotteryCollectionAlbum | null>(null);
   const [loading, setLoading] = useState(true);
@@ -86,6 +90,7 @@ export function useLotteryExperience(): LotteryExperienceState {
         setTickets(ticketsBody?.tickets ?? []);
         setInventory(ticketsBody?.inventory ?? null);
         setConfig(ticketsBody?.config ?? null);
+        setBonuses(ticketsBody?.bonuses ?? []);
         setLoyalty(ticketsBody?.loyalty ?? buildEmptyLoyaltySummary());
       }
 
@@ -232,6 +237,7 @@ export function useLotteryExperience(): LotteryExperienceState {
     tickets,
     inventory,
     config,
+    bonuses,
     loyalty,
     album,
     loading,

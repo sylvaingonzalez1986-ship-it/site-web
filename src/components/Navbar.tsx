@@ -25,6 +25,34 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hasWelcomePack, setHasWelcomePack] = useState(false);
+
+  // Fetch welcome-pack eligibility once when user is logged in
+  useEffect(() => {
+    if (!user) {
+      setHasWelcomePack(false);
+      return;
+    }
+    let cancelled = false;
+    fetch("/api/account/welcome-pack")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.eligible) {
+          setHasWelcomePack(true);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+
+  // Hide badge instantly when pack is claimed elsewhere on the page
+  useEffect(() => {
+    const hide = () => setHasWelcomePack(false);
+    window.addEventListener("welcome-pack-claimed", hide);
+    return () => window.removeEventListener("welcome-pack-claimed", hide);
+  }, []);
 
   const cmsNavLinks = useMemo(
     () =>
@@ -129,12 +157,13 @@ export function Navbar() {
           <nav className="hidden items-center gap-8 md:flex">
             {links.map((link) => {
               const isAccountLink = link.href === "/profil" || link.href === "/compte/connexion";
+              const isAlbumLink = link.href === "/profil/collection";
 
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`nav-link ${isAccountLink && user ? "inline-flex items-center gap-2" : ""}`}
+                  className={`nav-link ${isAccountLink && user ? "inline-flex items-center gap-2" : ""} ${isAlbumLink && hasWelcomePack ? "relative inline-flex items-center" : ""}`}
                   data-tutorial={
                     link.href === "/boutique"
                       ? "navbar-boutique"
@@ -144,6 +173,12 @@ export function Navbar() {
                   }
                 >
                   <span>{link.label}</span>
+                  {isAlbumLink && hasWelcomePack && (
+                    <span className="absolute -right-2.5 -top-1 flex h-3 w-3">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#27ae60] opacity-75" />
+                      <span className="relative inline-flex h-3 w-3 rounded-full bg-[#27ae60]" />
+                    </span>
+                  )}
                   {link.href === "/profil" && user && (
                     <span
                       className="inline-flex items-center"
@@ -187,13 +222,14 @@ export function Navbar() {
         <div className="safe-area-top safe-area-bottom safe-area-x flex h-full flex-col items-center justify-center gap-8 overflow-y-auto py-10">
           {links.map((link) => {
             const isAccountLink = link.href === "/profil" || link.href === "/compte/connexion";
+            const isAlbumLink = link.href === "/profil/collection";
 
             return (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`font-display text-3xl text-ink ${isAccountLink && user ? "inline-flex items-center gap-3" : ""}`}
+                className={`relative font-display text-3xl text-ink ${isAccountLink && user ? "inline-flex items-center gap-3" : ""}`}
                 data-tutorial={
                   link.href === "/boutique"
                     ? "navbar-boutique"
@@ -203,6 +239,12 @@ export function Navbar() {
                 }
               >
                 <span>{link.label}</span>
+                {isAlbumLink && hasWelcomePack && (
+                  <span className="absolute -right-4 -top-1 flex h-3 w-3">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#27ae60] opacity-75" />
+                    <span className="relative inline-flex h-3 w-3 rounded-full bg-[#27ae60]" />
+                  </span>
+                )}
                 {link.href === "/profil" && user && (
                   <span
                     className="inline-flex items-center"

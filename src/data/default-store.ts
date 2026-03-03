@@ -49,6 +49,7 @@ export const defaultStore: CmsStore = {
       description: "",
       emptyMessage: "",
       addButtonLabel: "",
+      lowStockThresholdGrams: 50,
       copainsSectionTitle: "",
       copainsSectionDescription: "",
       ownProducerLabel: "",

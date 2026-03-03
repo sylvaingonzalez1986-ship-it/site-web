@@ -633,11 +633,6 @@ h4 {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .hero-circle-group:hover .hero-circle-idle,
-  .hero-circle-group:focus-within .hero-circle-idle {
-    opacity: 0;
-  }
-
   .hero-circle-group:hover .hero-circle-hover-scene,
   .hero-circle-group:focus-within .hero-circle-hover-scene {
     opacity: 1;
@@ -645,12 +640,8 @@ h4 {
 }
 
 @media (hover: none), (pointer: coarse) {
-  .hero-circle-idle {
-    opacity: 0;
-  }
-
   .hero-circle-hover-scene {
-    opacity: 1;
+    opacity: 0;
   }
 }
 

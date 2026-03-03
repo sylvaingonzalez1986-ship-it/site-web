@@ -249,6 +249,7 @@ export type SiteContent = {
     description: string;
     emptyMessage: string;
     addButtonLabel: string;
+    lowStockThresholdGrams: number;
     copainsSectionTitle: string;
     copainsSectionDescription: string;
     ownProducerLabel: string;

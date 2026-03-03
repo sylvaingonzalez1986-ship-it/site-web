@@ -25,9 +25,72 @@ export type LotteryConfig = {
   albumSubtitle: string;
   albumBoosterTitle: string;
   albumBoosterDescription: string;
-  cardWeights: Record<LotteryCardRarity, number>;
+  cycleSize: number;
+  cardQuotas: Record<LotteryCardRarity, number>;
   isActive: boolean;
   updatedAt: string;
+};
+
+export type LotteryCycleSnapshot = {
+  cycleNumber: number;
+  totalPacks: number;
+  packsOpened: number;
+  remaining: Record<LotteryCardRarity, number>;
+};
+
+export type LotteryBonusOption = {
+  id: string;
+  bonusDefinitionId: string;
+  label: string;
+  kind: Extract<LotteryRewardKind, "gift_weight_grams" | "gift_product" | "custom">;
+  giftWeightGrams?: number;
+  giftProductSku?: string;
+  giftLabel?: string;
+  customPayload: Record<string, unknown>;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type LotteryBonusDefinition = {
+  id: string;
+  code: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  quotaPerCycle: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  options: LotteryBonusOption[];
+};
+
+export type LotteryBonusPrize = {
+  id: string;
+  code: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  bonusInstanceId: string;
+  packSlot: number;
+  options: LotteryBonusOption[];
+};
+
+export type LotteryBonusInstance = {
+  id: string;
+  userId: string;
+  ticketId: string;
+  cycleId: number;
+  bonusDefinitionId: string;
+  selectedOptionId?: string;
+  status: LotteryRewardClaimStatus;
+  generatedCode?: string;
+  reservedOrderId?: string;
+  usedOrderId?: string;
+  createdAt: string;
+  selectedAt?: string;
+  redeemedAt?: string;
+  bonus: LotteryBonusDefinition;
 };
 
 export type LotteryRewardDefinition = {
@@ -191,6 +254,9 @@ export type LotteryCollectedCard = LotteryCardDefinition & {
   lastOwnedAt?: string;
   isOwned: boolean;
   isDuplicate: boolean;
+  isBonus?: boolean;
+  bonusInstanceId?: string;
+  bonusOptions?: LotteryBonusOption[];
 };
 
 export type LotteryStickerInventory = Record<LotteryStickerRarity, number>;
@@ -271,6 +337,8 @@ export type ScratchResult = {
     duplicateCopies: number;
     byRarity: Record<LotteryCardRarity, number>;
   };
+  cycle?: LotteryCycleSnapshot;
+  bonusPrize?: LotteryBonusPrize;
 };
 
 export type LotteryStats = {

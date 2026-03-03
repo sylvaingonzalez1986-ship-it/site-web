@@ -18,6 +18,7 @@ type ProducerDetailPanelProps = {
   producer: Producer;
   products: Product[];
   addButtonLabel: string;
+  lowStockThresholdGrams: number;
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
   onClose: () => void;
@@ -28,6 +29,7 @@ export function ProducerDetailPanel({
   producer,
   products,
   addButtonLabel,
+  lowStockThresholdGrams,
   producerPartnerLabel,
   producerWebsiteLabel,
   onClose,
@@ -278,6 +280,7 @@ export function ProducerDetailPanel({
             product={product}
             producer={producer}
             addButtonLabel={addButtonLabel}
+            lowStockThresholdGrams={lowStockThresholdGrams}
           />
         ))}
       </div>

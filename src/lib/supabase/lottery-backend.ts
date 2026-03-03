@@ -5,6 +5,10 @@ import type {
   LotteryAlbumCard,
   LotteryAlbumPageSlot,
   LotteryAlbumPageWithSlots,
+  LotteryBonusDefinition,
+  LotteryBonusInstance,
+  LotteryBonusOption,
+  LotteryBonusPrize,
   LotteryBurnableRarity,
   LotteryDuplicateBurnChoice,
   LotteryCardCollection,
@@ -215,6 +219,53 @@ function mapCardDefinitionRow(row: Record<string, unknown>): LotteryCardDefiniti
   };
 }
 
+function mapBonusOptionRow(row: Record<string, unknown>): LotteryBonusOption {
+  const rawKind = toText(row.kind);
+  const kind: LotteryBonusOption["kind"] =
+    rawKind === "gift_weight_grams" || rawKind === "gift_product" ? rawKind : "custom";
+
+  return {
+    id: toText(row.id),
+    bonusDefinitionId: toText(row.bonus_definition_id),
+    label: toText(row.label),
+    kind,
+    giftWeightGrams:
+      Number.isFinite(Number(row.gift_weight_grams)) && Number(row.gift_weight_grams) > 0
+        ? Math.floor(Number(row.gift_weight_grams))
+        : undefined,
+    giftProductSku: toNullableText(row.gift_product_sku),
+    giftLabel: toNullableText(row.gift_label),
+    customPayload:
+      typeof row.custom_payload === "object" && row.custom_payload !== null
+        ? (row.custom_payload as Record<string, unknown>)
+        : {},
+    sortOrder: Math.max(0, toInteger(row.sort_order, 100)),
+    createdAt: toText(row.created_at, new Date().toISOString()),
+    updatedAt: toText(row.updated_at, new Date().toISOString()),
+  };
+}
+
+function mapBonusDefinitionRow(row: Record<string, unknown>): LotteryBonusDefinition {
+  const optionsRaw = Array.isArray(row.lottery_bonus_options)
+    ? (row.lottery_bonus_options as Record<string, unknown>[])
+    : [];
+
+  return {
+    id: toText(row.id),
+    code: toText(row.code),
+    title: toText(row.title),
+    description: toText(row.description),
+    imageUrl: toText(row.image_url),
+    quotaPerCycle: Math.max(0, toInteger(row.quota_per_cycle, 0)),
+    isActive: row.is_active === true,
+    createdAt: toText(row.created_at, new Date().toISOString()),
+    updatedAt: toText(row.updated_at, new Date().toISOString()),
+    options: optionsRaw
+      .map((item) => mapBonusOptionRow(item))
+      .sort((left, right) => left.sortOrder - right.sortOrder || left.label.localeCompare(right.label)),
+  };
+}
+
 function buildCollectedCard(
   definition: LotteryCardDefinition,
   stats?: { ownedCount?: number; firstOwnedAt?: string; lastOwnedAt?: string },
@@ -350,6 +401,57 @@ function mapScratchCardRow(
   scratchedAt: string,
   fallbackOwnedCount = 1,
 ): LotteryCollectedCard {
+  if (raw.isBonus === true) {
+    const pseudoCard = buildCollectedCard(
+      {
+        id: toText(raw.definitionId ?? raw.id),
+        collectionId: toText(raw.collectionId),
+        collectionCode: toText(raw.collectionCode, "BONUS"),
+        collectionTitle: toText(raw.collectionTitle, "Cartes Bonus"),
+        code: toText(raw.code, "BONUS"),
+        cardNumber: Math.max(0, toInteger(raw.cardNumber, 0)),
+        name: toText(raw.name, "Carte Bonus"),
+        rarity: parseCardRarity(raw.rarity ?? "legendary"),
+        visualPrompt: toText(raw.visualPrompt),
+        description: toText(raw.description),
+        imageUrl: toText(raw.imageUrl),
+        isActive: true,
+        createdAt: scratchedAt,
+        updatedAt: scratchedAt,
+      },
+      {
+        ownedCount: 1,
+        firstOwnedAt: scratchedAt,
+        lastOwnedAt: scratchedAt,
+      },
+    );
+
+    const optionsRaw = Array.isArray(raw.bonusOptions)
+      ? (raw.bonusOptions as Record<string, unknown>[])
+      : [];
+
+    return {
+      ...pseudoCard,
+      isBonus: true,
+      bonusInstanceId: toNullableText(raw.bonusInstanceId),
+      bonusOptions: optionsRaw.map((item) =>
+        mapBonusOptionRow({
+          id: item.id,
+          bonus_definition_id: item.bonusDefinitionId ?? item.bonus_definition_id ?? raw.id,
+          label: item.label,
+          kind: item.kind,
+          gift_weight_grams: item.giftWeightGrams ?? item.gift_weight_grams,
+          gift_product_sku: item.giftProductSku ?? item.gift_product_sku,
+          gift_label: item.giftLabel ?? item.gift_label,
+          custom_payload: item.customPayload ?? item.custom_payload,
+          sort_order: item.sortOrder ?? item.sort_order,
+          created_at: item.createdAt ?? item.created_at ?? scratchedAt,
+          updated_at: item.updatedAt ?? item.updated_at ?? scratchedAt,
+        }),
+      ),
+    };
+  }
+
   const cardDefinition = mapCardDefinitionRow({
     id: raw.definitionId ?? raw.id,
     collection_id: raw.collectionId,
@@ -389,12 +491,13 @@ function mapConfigRow(row: Record<string, unknown> | null): LotteryConfig {
       row?.album_booster_description,
       "Ouvre un booster depuis l'album pour reveler les 3 cartes sans quitter cette page.",
     ),
-    cardWeights: {
-      common: Math.max(0, toInteger(row?.common_weight, 33)),
-      silver: Math.max(0, toInteger(row?.silver_weight, 10)),
-      gold: Math.max(0, toInteger(row?.gold_weight, 5)),
-      epic: Math.max(0, toInteger(row?.epic_weight, 3)),
-      legendary: Math.max(0, toInteger(row?.legendary_weight, 1)),
+    cycleSize: Math.max(1, toInteger(row?.cycle_size, 50000)),
+    cardQuotas: {
+      common: Math.max(0, toInteger(row?.common_quota, 40000)),
+      silver: Math.max(0, toInteger(row?.silver_quota, 7000)),
+      gold: Math.max(0, toInteger(row?.gold_quota, 2000)),
+      epic: Math.max(0, toInteger(row?.epic_quota, 800)),
+      legendary: Math.max(0, toInteger(row?.legendary_quota, 200)),
     },
     isActive: row?.is_active === true,
     updatedAt: toText(row?.updated_at, new Date().toISOString()),
@@ -409,6 +512,17 @@ const SELECT_CARD_COLLECTION_COLUMNS =
 
 const SELECT_REWARD_DEFINITION_COLUMNS =
   "id,code,level,kind,title,description,image_url,discount_percent,gift_weight_grams,gift_product_sku,gift_label,custom_payload,is_active,deleted_at,replacement_reward_definition_id,created_at,updated_at";
+
+const SELECT_BONUS_DEFINITION_COLUMNS =
+  "id,code,title,description,image_url,quota_per_cycle,is_active,created_at,updated_at,lottery_bonus_options(id,bonus_definition_id,label,kind,gift_weight_grams,gift_product_sku,gift_label,custom_payload,sort_order,created_at,updated_at)";
+
+const SELECT_BONUS_OPTION_COLUMNS =
+  "id,bonus_definition_id,label,kind,gift_weight_grams,gift_product_sku,gift_label,custom_payload,sort_order,created_at,updated_at";
+
+const SELECT_BONUS_INSTANCE_COLUMNS =
+  "id,user_id,ticket_id,cycle_id,bonus_definition_id,selected_option_id,status,generated_code,reserved_order_id,used_order_id,created_at,selected_at,redeemed_at,lottery_bonus_definitions(" +
+  SELECT_BONUS_DEFINITION_COLUMNS +
+  ")";
 
 const SELECT_ALBUM_CARD_COLUMNS =
   "id,code,title,subtitle,image_url,series_label,card_number,rarity,is_active,archived_at,created_at,updated_at";
@@ -464,7 +578,7 @@ export async function getLotteryConfigFromSupabase(): Promise<LotteryConfig> {
   const result = await supabase
     .from("lottery_game_config")
     .select(
-      "euros_per_ticket,max_tickets_per_order,collection_title,season_label,album_subtitle,album_booster_title,album_booster_description,common_weight,silver_weight,gold_weight,epic_weight,legendary_weight,is_active,updated_at",
+      "euros_per_ticket,max_tickets_per_order,collection_title,season_label,album_subtitle,album_booster_title,album_booster_description,cycle_size,common_quota,silver_quota,gold_quota,epic_quota,legendary_quota,is_active,updated_at",
     )
     .eq("id", 1)
     .maybeSingle();
@@ -481,14 +595,28 @@ export async function updateLotteryConfigInSupabase(input: {
   albumSubtitle: string;
   albumBoosterTitle: string;
   albumBoosterDescription: string;
-  commonWeight: number;
-  silverWeight: number;
-  goldWeight: number;
-  epicWeight: number;
-  legendaryWeight: number;
+  cycleSize: number;
+  commonQuota: number;
+  silverQuota: number;
+  goldQuota: number;
+  epicQuota: number;
+  legendaryQuota: number;
   isActive: boolean;
 }): Promise<LotteryConfig> {
   const supabase = createSupabaseServiceClient();
+  const safeCycleSize = Math.max(1000, Math.min(5000000, Math.floor(input.cycleSize)));
+  const quotas = {
+    common: Math.max(0, Math.floor(input.commonQuota)),
+    silver: Math.max(0, Math.floor(input.silverQuota)),
+    gold: Math.max(0, Math.floor(input.goldQuota)),
+    epic: Math.max(0, Math.floor(input.epicQuota)),
+    legendary: Math.max(0, Math.floor(input.legendaryQuota)),
+  };
+
+  const quotaBudget = quotas.common + quotas.silver + quotas.gold + quotas.epic + quotas.legendary;
+  if (quotaBudget !== safeCycleSize) {
+    throw new Error(`Le total des quotas doit etre exactement ${safeCycleSize}.`);
+  }
 
   const result = await supabase
     .from("lottery_game_config")
@@ -506,18 +634,19 @@ export async function updateLotteryConfigInSupabase(input: {
         album_booster_description:
           toText(input.albumBoosterDescription).trim() ||
           "Ouvre un booster depuis l'album pour reveler les 3 cartes sans quitter cette page.",
-        common_weight: Math.max(0, Math.floor(input.commonWeight)),
-        silver_weight: Math.max(0, Math.floor(input.silverWeight)),
-        gold_weight: Math.max(0, Math.floor(input.goldWeight)),
-        epic_weight: Math.max(0, Math.floor(input.epicWeight)),
-        legendary_weight: Math.max(0, Math.floor(input.legendaryWeight)),
+        cycle_size: safeCycleSize,
+        common_quota: quotas.common,
+        silver_quota: quotas.silver,
+        gold_quota: quotas.gold,
+        epic_quota: quotas.epic,
+        legendary_quota: quotas.legendary,
         is_active: input.isActive === true,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "id" },
     )
     .select(
-      "euros_per_ticket,max_tickets_per_order,collection_title,season_label,album_subtitle,album_booster_title,album_booster_description,common_weight,silver_weight,gold_weight,epic_weight,legendary_weight,is_active,updated_at",
+      "euros_per_ticket,max_tickets_per_order,collection_title,season_label,album_subtitle,album_booster_title,album_booster_description,cycle_size,common_quota,silver_quota,gold_quota,epic_quota,legendary_quota,is_active,updated_at",
     )
     .single();
 
@@ -657,6 +786,297 @@ export async function listLotteryRewardDefinitionsFromSupabase(): Promise<Lotter
 
   failIfError(result.error, "list lottery_reward_definitions");
   return (result.data ?? []).map((row) => mapRewardDefinitionRow(row as Record<string, unknown>));
+}
+
+export async function listLotteryBonusDefinitionsFromSupabase(): Promise<LotteryBonusDefinition[]> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_bonus_definitions")
+    .select(SELECT_BONUS_DEFINITION_COLUMNS)
+    .order("created_at", { ascending: true });
+
+  failIfError(result.error, "list lottery_bonus_definitions");
+  return (result.data ?? []).map((row) => mapBonusDefinitionRow(row as Record<string, unknown>));
+}
+
+export async function createLotteryBonusDefinitionInSupabase(input: {
+  code: string;
+  title: string;
+  description?: string | null;
+  imageUrl?: string | null;
+  quotaPerCycle: number;
+  isActive: boolean;
+}): Promise<LotteryBonusDefinition> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_bonus_definitions")
+    .insert({
+      code: toText(input.code).trim().toUpperCase(),
+      title: toText(input.title).trim(),
+      description: toText(input.description).trim(),
+      image_url: toText(input.imageUrl).trim(),
+      quota_per_cycle: Math.max(0, Math.floor(input.quotaPerCycle)),
+      is_active: input.isActive === true,
+    })
+    .select(SELECT_BONUS_DEFINITION_COLUMNS)
+    .single();
+
+  failIfError(result.error, "insert lottery_bonus_definition");
+  return mapBonusDefinitionRow(result.data as Record<string, unknown>);
+}
+
+export async function updateLotteryBonusDefinitionInSupabase(
+  bonusId: string,
+  input: {
+    code: string;
+    title: string;
+    description?: string | null;
+    imageUrl?: string | null;
+    quotaPerCycle: number;
+    isActive: boolean;
+  },
+): Promise<LotteryBonusDefinition | null> {
+  const safeBonusId = bonusId.trim();
+  if (!isValidUuid(safeBonusId)) {
+    throw new Error("Carte bonus invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_bonus_definitions")
+    .update({
+      code: toText(input.code).trim().toUpperCase(),
+      title: toText(input.title).trim(),
+      description: toText(input.description).trim(),
+      image_url: toText(input.imageUrl).trim(),
+      quota_per_cycle: Math.max(0, Math.floor(input.quotaPerCycle)),
+      is_active: input.isActive === true,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", safeBonusId)
+    .select(SELECT_BONUS_DEFINITION_COLUMNS)
+    .maybeSingle();
+
+  failIfError(result.error, "update lottery_bonus_definition");
+  return result.data ? mapBonusDefinitionRow(result.data as Record<string, unknown>) : null;
+}
+
+export async function archiveLotteryBonusDefinitionInSupabase(bonusId: string): Promise<boolean> {
+  const safeBonusId = bonusId.trim();
+  if (!isValidUuid(safeBonusId)) {
+    return false;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_bonus_definitions")
+    .update({
+      is_active: false,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", safeBonusId)
+    .select("id")
+    .maybeSingle();
+
+  failIfError(result.error, "archive lottery_bonus_definition");
+  return Boolean(result.data);
+}
+
+export async function createLotteryBonusOptionInSupabase(input: {
+  bonusDefinitionId: string;
+  label: string;
+  kind: LotteryBonusOption["kind"];
+  giftWeightGrams?: number | null;
+  giftProductSku?: string | null;
+  giftLabel?: string | null;
+  customPayload?: Record<string, unknown>;
+  sortOrder?: number;
+}): Promise<LotteryBonusOption> {
+  const safeBonusDefinitionId = input.bonusDefinitionId.trim();
+  if (!isValidUuid(safeBonusDefinitionId)) {
+    throw new Error("Carte bonus invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_bonus_options")
+    .insert({
+      bonus_definition_id: safeBonusDefinitionId,
+      label: toText(input.label).trim(),
+      kind: input.kind,
+      gift_weight_grams:
+        Number.isFinite(Number(input.giftWeightGrams)) && Number(input.giftWeightGrams) > 0
+          ? Math.floor(Number(input.giftWeightGrams))
+          : null,
+      gift_product_sku: toNullableText(input.giftProductSku),
+      gift_label: toNullableText(input.giftLabel),
+      custom_payload: input.customPayload ?? {},
+      sort_order: Math.max(0, Math.floor(input.sortOrder ?? 100)),
+    })
+    .select(SELECT_BONUS_OPTION_COLUMNS)
+    .single();
+
+  failIfError(result.error, "insert lottery_bonus_option");
+  return mapBonusOptionRow(result.data as Record<string, unknown>);
+}
+
+export async function updateLotteryBonusOptionInSupabase(
+  optionId: string,
+  input: {
+    label: string;
+    kind: LotteryBonusOption["kind"];
+    giftWeightGrams?: number | null;
+    giftProductSku?: string | null;
+    giftLabel?: string | null;
+    customPayload?: Record<string, unknown>;
+    sortOrder?: number;
+  },
+): Promise<LotteryBonusOption | null> {
+  const safeOptionId = optionId.trim();
+  if (!isValidUuid(safeOptionId)) {
+    throw new Error("Option bonus invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_bonus_options")
+    .update({
+      label: toText(input.label).trim(),
+      kind: input.kind,
+      gift_weight_grams:
+        Number.isFinite(Number(input.giftWeightGrams)) && Number(input.giftWeightGrams) > 0
+          ? Math.floor(Number(input.giftWeightGrams))
+          : null,
+      gift_product_sku: toNullableText(input.giftProductSku),
+      gift_label: toNullableText(input.giftLabel),
+      custom_payload: input.customPayload ?? {},
+      sort_order: Math.max(0, Math.floor(input.sortOrder ?? 100)),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", safeOptionId)
+    .select(SELECT_BONUS_OPTION_COLUMNS)
+    .maybeSingle();
+
+  failIfError(result.error, "update lottery_bonus_option");
+  return result.data ? mapBonusOptionRow(result.data as Record<string, unknown>) : null;
+}
+
+export async function archiveLotteryBonusOptionInSupabase(optionId: string): Promise<boolean> {
+  const safeOptionId = optionId.trim();
+  if (!isValidUuid(safeOptionId)) {
+    return false;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_bonus_options")
+    .delete()
+    .eq("id", safeOptionId)
+    .select("id")
+    .maybeSingle();
+
+  failIfError(result.error, "delete lottery_bonus_option");
+  return Boolean(result.data);
+}
+
+function mapBonusInstanceRow(row: Record<string, unknown>): LotteryBonusInstance {
+  const definitionRaw =
+    row.lottery_bonus_definitions && typeof row.lottery_bonus_definitions === "object"
+      ? (row.lottery_bonus_definitions as Record<string, unknown>)
+      : null;
+
+  return {
+    id: toText(row.id),
+    userId: toText(row.user_id),
+    ticketId: toText(row.ticket_id),
+    cycleId: Math.max(1, toInteger(row.cycle_id, 1)),
+    bonusDefinitionId: toText(row.bonus_definition_id),
+    selectedOptionId: toNullableText(row.selected_option_id),
+    status: toText(row.status, "available") as LotteryBonusInstance["status"],
+    generatedCode: sanitizeRewardCode(row.generated_code),
+    reservedOrderId: toNullableText(row.reserved_order_id),
+    usedOrderId: toNullableText(row.used_order_id),
+    createdAt: toText(row.created_at, new Date().toISOString()),
+    selectedAt: toNullableText(row.selected_at),
+    redeemedAt: toNullableText(row.redeemed_at),
+    bonus: definitionRaw
+      ? mapBonusDefinitionRow(definitionRaw)
+      : {
+          id: toText(row.bonus_definition_id),
+          code: "BONUS",
+          title: "Carte Bonus",
+          description: "",
+          imageUrl: "",
+          quotaPerCycle: 0,
+          isActive: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          options: [],
+        },
+  };
+}
+
+export async function listLotteryBonusInstancesForCustomerFromSupabase(
+  userId: string,
+): Promise<LotteryBonusInstance[]> {
+  const safeUserId = userId.trim();
+  if (!isValidUuid(safeUserId)) {
+    return [];
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("lottery_bonus_instances")
+    .select(SELECT_BONUS_INSTANCE_COLUMNS)
+    .eq("user_id", safeUserId)
+    .order("created_at", { ascending: false });
+
+  failIfError(result.error, "list lottery_bonus_instances");
+  const rows = Array.isArray(result.data) ? ((result.data as unknown) as Record<string, unknown>[]) : [];
+  return rows.map((row) => mapBonusInstanceRow(row));
+}
+
+export async function selectLotteryBonusOptionForCustomerInSupabase(input: {
+  userId: string;
+  bonusInstanceId: string;
+  optionId: string;
+}): Promise<LotteryBonusInstance> {
+  const safeUserId = input.userId.trim();
+  const safeBonusInstanceId = input.bonusInstanceId.trim();
+  const safeOptionId = input.optionId.trim();
+  if (!isValidUuid(safeUserId) || !isValidUuid(safeBonusInstanceId) || !isValidUuid(safeOptionId)) {
+    throw new Error("Selection bonus invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const optionResult = await supabase
+    .from("lottery_bonus_options")
+    .select("id,bonus_definition_id")
+    .eq("id", safeOptionId)
+    .single();
+
+  failIfError(optionResult.error, "read lottery_bonus_option");
+
+  const updateResult = await supabase
+    .from("lottery_bonus_instances")
+    .update({
+      selected_option_id: safeOptionId,
+      selected_at: new Date().toISOString(),
+      status: "reserved",
+      generated_code: sanitizeRewardCode(`BNS-${safeBonusInstanceId.slice(0, 8)}`),
+    })
+    .eq("id", safeBonusInstanceId)
+    .eq("user_id", safeUserId)
+    .eq("bonus_definition_id", toText((optionResult.data as Record<string, unknown>).bonus_definition_id))
+    .select(SELECT_BONUS_INSTANCE_COLUMNS)
+    .single();
+
+  failIfError(updateResult.error, "update lottery_bonus_instance select option");
+  const updatedRow = (updateResult as { data?: unknown }).data;
+  if (!updatedRow || typeof updatedRow !== "object") {
+    throw new Error("Instance bonus introuvable.");
+  }
+  return mapBonusInstanceRow(updatedRow as Record<string, unknown>);
 }
 
 export async function listLotteryAlbumCardsFromSupabase(): Promise<LotteryAlbumCard[]> {
@@ -1227,6 +1647,44 @@ export async function grantLotteryTicketsToCustomerInSupabase(input: {
   }
 
   return Math.max(0, toInteger(result.data, 0));
+}
+
+/* ─── Welcome Pack (one-shot free pack) ─── */
+
+export async function getWelcomePackStatusFromSupabase(userId: string): Promise<{ eligible: boolean }> {
+  if (!isValidUuid(userId)) {
+    return { eligible: false };
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const { data } = await supabase
+    .from("lottery_welcome_pack_claims")
+    .select("user_id")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  return { eligible: !data };
+}
+
+export async function claimWelcomePackInSupabase(userId: string): Promise<{ granted: boolean }> {
+  if (!isValidUuid(userId)) {
+    throw new Error("Client invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase.rpc("rpc_claim_welcome_pack", {
+    p_user_id: userId,
+  });
+
+  if (result.error) {
+    const message = result.error.message || "Réclamation du pack impossible.";
+    if (message.includes("customer_not_found")) {
+      throw new Error("Client introuvable.");
+    }
+    throw new Error(`[supabase:rpc_claim_welcome_pack] ${message}`);
+  }
+
+  return { granted: result.data === true };
 }
 
 export async function purchaseLotteryPacksWithPointsInSupabase(input: {
@@ -2072,6 +2530,21 @@ export async function scratchLotteryTicketInSupabase(input: {
     typeof payload.inventory === "object" && payload.inventory !== null
       ? (payload.inventory as Record<string, unknown>)
       : {};
+  const cycleRaw =
+    typeof payload.cycle === "object" && payload.cycle !== null
+      ? (payload.cycle as Record<string, unknown>)
+      : null;
+  const cycleRemainingRaw =
+    cycleRaw && typeof cycleRaw.remaining === "object" && cycleRaw.remaining !== null
+      ? (cycleRaw.remaining as Record<string, unknown>)
+      : null;
+  const bonusRaw =
+    typeof payload.bonusPrize === "object" && payload.bonusPrize !== null
+      ? (payload.bonusPrize as Record<string, unknown>)
+      : null;
+  const bonusOptionsRaw = Array.isArray(bonusRaw?.options)
+    ? (bonusRaw?.options as Record<string, unknown>[])
+    : [];
   const scratchedAt = toText(payload.scratchedAt, new Date().toISOString());
   const cards = cardsRaw.map((raw) => mapScratchCardRow(raw, scratchedAt));
   const primaryCard = cards[0]
@@ -2099,6 +2572,46 @@ export async function scratchLotteryTicketInSupabase(input: {
         legendary: Math.max(0, toInteger(inventoryRaw.legendary, 0)),
       },
     },
+    cycle: cycleRaw
+      ? {
+          cycleNumber: Math.max(1, toInteger(cycleRaw.cycleNumber, 1)),
+          totalPacks: Math.max(1, toInteger(cycleRaw.totalPacks, 50000)),
+          packsOpened: Math.max(0, toInteger(cycleRaw.packsOpened, 0)),
+          remaining: {
+            common: Math.max(0, toInteger(cycleRemainingRaw?.common, 0)),
+            silver: Math.max(0, toInteger(cycleRemainingRaw?.silver, 0)),
+            gold: Math.max(0, toInteger(cycleRemainingRaw?.gold, 0)),
+            epic: Math.max(0, toInteger(cycleRemainingRaw?.epic, 0)),
+            legendary: Math.max(0, toInteger(cycleRemainingRaw?.legendary, 0)),
+          },
+        }
+      : undefined,
+    bonusPrize: bonusRaw
+      ? ({
+          id: toText(bonusRaw.id),
+          code: toText(bonusRaw.code),
+          title: toText(bonusRaw.title),
+          description: toText(bonusRaw.description),
+          imageUrl: toText(bonusRaw.imageUrl),
+          bonusInstanceId: toText(bonusRaw.bonusInstanceId),
+          packSlot: Math.max(1, Math.min(3, toInteger(bonusRaw.packSlot, 1))),
+          options: bonusOptionsRaw.map((item) =>
+            mapBonusOptionRow({
+              id: item.id,
+              bonus_definition_id: item.bonusDefinitionId ?? item.bonus_definition_id ?? bonusRaw.id,
+              label: item.label,
+              kind: item.kind,
+              gift_weight_grams: item.giftWeightGrams ?? item.gift_weight_grams,
+              gift_product_sku: item.giftProductSku ?? item.gift_product_sku,
+              gift_label: item.giftLabel ?? item.gift_label,
+              custom_payload: item.customPayload ?? item.custom_payload,
+              sort_order: item.sortOrder ?? item.sort_order,
+              created_at: item.createdAt ?? item.created_at ?? scratchedAt,
+              updated_at: item.updatedAt ?? item.updated_at ?? scratchedAt,
+            }),
+          ),
+        } as LotteryBonusPrize)
+      : undefined,
   };
 }
 

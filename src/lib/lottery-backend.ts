@@ -8,6 +8,8 @@ import {
   burnLotteryRewardLineInSupabase,
   consumeLotteryRewardClaimsForOrderInSupabase,
   createLotteryCardDefinitionInSupabase,
+  createLotteryBonusDefinitionInSupabase,
+  createLotteryBonusOptionInSupabase,
   createLotteryRewardDefinitionInSupabase,
   createLotteryAlbumCardInSupabase,
   createLotteryAlbumPageInSupabase,
@@ -20,6 +22,7 @@ import {
   getRedeemableLotteryRewardClaimBenefitFromSupabase,
   grantLotteryTicketsToCustomerInSupabase,
   listLotteryCardDefinitionsFromSupabase,
+  listLotteryBonusDefinitionsFromSupabase,
   listLotteryAlbumCardsFromSupabase,
   listLotteryAlbumPagesFromSupabase,
   listLotteryRewardDefinitionsFromSupabase,
@@ -30,6 +33,8 @@ import {
   reserveLotteryRewardClaimForOrderInSupabase,
   scratchLotteryTicketInSupabase,
   updateLotteryCardDefinitionInSupabase,
+  updateLotteryBonusDefinitionInSupabase,
+  updateLotteryBonusOptionInSupabase,
   updateLotteryConfigInSupabase,
   updateLotteryAlbumCardInSupabase,
   updateLotteryAlbumPageInSupabase,
@@ -38,6 +43,12 @@ import {
   getCollectionAlbumForCustomerFromSupabase,
   claimCollectionPageRewardFromSupabase,
   burnDuplicateCardsFromSupabase,
+  archiveLotteryBonusDefinitionInSupabase,
+  archiveLotteryBonusOptionInSupabase,
+  listLotteryBonusInstancesForCustomerFromSupabase,
+  selectLotteryBonusOptionForCustomerInSupabase,
+  getWelcomePackStatusFromSupabase,
+  claimWelcomePackInSupabase,
 } from "@/lib/supabase/lottery-backend";
 import type {
   LotteryAlbumCard,
@@ -46,6 +57,9 @@ import type {
   LotteryDuplicateBurnChoice,
   LotteryCardDefinition,
   LotteryCardRarity,
+  LotteryBonusDefinition,
+  LotteryBonusOption,
+  LotteryBonusInstance,
   LotteryCollectionAlbum,
   LotteryConfig,
   LotteryInventory,
@@ -143,14 +157,94 @@ export async function updateLotteryConfigByBackend(input: {
   albumSubtitle: string;
   albumBoosterTitle: string;
   albumBoosterDescription: string;
-  commonWeight: number;
-  silverWeight: number;
-  goldWeight: number;
-  epicWeight: number;
-  legendaryWeight: number;
+  cycleSize: number;
+  commonQuota: number;
+  silverQuota: number;
+  goldQuota: number;
+  epicQuota: number;
+  legendaryQuota: number;
   isActive: boolean;
 }): Promise<LotteryConfig> {
   return updateLotteryConfigInSupabase(input);
+}
+
+export async function listLotteryBonusDefinitionsByBackend(): Promise<LotteryBonusDefinition[]> {
+  return listLotteryBonusDefinitionsFromSupabase();
+}
+
+export async function createLotteryBonusDefinitionByBackend(input: {
+  code: string;
+  title: string;
+  description?: string | null;
+  imageUrl?: string | null;
+  quotaPerCycle: number;
+  isActive: boolean;
+}): Promise<LotteryBonusDefinition> {
+  return createLotteryBonusDefinitionInSupabase(input);
+}
+
+export async function updateLotteryBonusDefinitionByBackend(
+  bonusId: string,
+  input: {
+    code: string;
+    title: string;
+    description?: string | null;
+    imageUrl?: string | null;
+    quotaPerCycle: number;
+    isActive: boolean;
+  },
+): Promise<LotteryBonusDefinition | null> {
+  return updateLotteryBonusDefinitionInSupabase(bonusId, input);
+}
+
+export async function archiveLotteryBonusDefinitionByBackend(bonusId: string): Promise<boolean> {
+  return archiveLotteryBonusDefinitionInSupabase(bonusId);
+}
+
+export async function createLotteryBonusOptionByBackend(input: {
+  bonusDefinitionId: string;
+  label: string;
+  kind: LotteryBonusOption["kind"];
+  giftWeightGrams?: number | null;
+  giftProductSku?: string | null;
+  giftLabel?: string | null;
+  customPayload?: Record<string, unknown>;
+  sortOrder?: number;
+}): Promise<LotteryBonusOption> {
+  return createLotteryBonusOptionInSupabase(input);
+}
+
+export async function updateLotteryBonusOptionByBackend(
+  optionId: string,
+  input: {
+    label: string;
+    kind: LotteryBonusOption["kind"];
+    giftWeightGrams?: number | null;
+    giftProductSku?: string | null;
+    giftLabel?: string | null;
+    customPayload?: Record<string, unknown>;
+    sortOrder?: number;
+  },
+): Promise<LotteryBonusOption | null> {
+  return updateLotteryBonusOptionInSupabase(optionId, input);
+}
+
+export async function archiveLotteryBonusOptionByBackend(optionId: string): Promise<boolean> {
+  return archiveLotteryBonusOptionInSupabase(optionId);
+}
+
+export async function listLotteryBonusInstancesForCustomerByBackend(
+  userId: string,
+): Promise<LotteryBonusInstance[]> {
+  return listLotteryBonusInstancesForCustomerFromSupabase(userId);
+}
+
+export async function selectLotteryBonusOptionForCustomerByBackend(input: {
+  userId: string;
+  bonusInstanceId: string;
+  optionId: string;
+}): Promise<LotteryBonusInstance> {
+  return selectLotteryBonusOptionForCustomerInSupabase(input);
 }
 
 export async function listLotteryCardDefinitionsByBackend(): Promise<LotteryCardDefinition[]> {
@@ -337,6 +431,20 @@ export async function deactivateLotteryRewardRuleByBackend(ruleId: string): Prom
 
 export async function getLotteryStatsByBackend(): Promise<LotteryStats> {
   return getLotteryStatsFromSupabase();
+}
+
+/* ─── Welcome Pack ─── */
+
+export async function getWelcomePackStatusByBackend(
+  userId: string,
+): Promise<{ eligible: boolean }> {
+  return getWelcomePackStatusFromSupabase(userId);
+}
+
+export async function claimWelcomePackByBackend(
+  userId: string,
+): Promise<{ granted: boolean }> {
+  return claimWelcomePackInSupabase(userId);
 }
 
 /* ─── TCG Collection Album ─── */

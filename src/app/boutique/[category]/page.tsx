@@ -88,6 +88,7 @@ export default function CategoryPage() {
               product={product}
               producer={resolveProductProducer(product, producersById, ownProducer)}
               addButtonLabel={store.content.boutique.addButtonLabel}
+              lowStockThresholdGrams={store.content.boutique.lowStockThresholdGrams}
             />
           ))}
         </div>
@@ -173,7 +174,7 @@ function getCategorySeoText(slug: string): React.ReactNode {
           laboratoire, sans pesticide, pour un CBD naturel et irréprochable.
         </p>
         <p>
-          Achat CBD circuit court : en choisissant nos résines, vous profitez d'un
+          Achat CBD circuit court : en choisissant nos résines, vous profitez d&apos;un
           produit breton artisanal au juste prix, livré rapidement en France.
         </p>
       </>
@@ -186,7 +187,7 @@ function getCategorySeoText(slug: string): React.ReactNode {
           issues de chanvre breton cultivé sans pesticide.
         </p>
         <p>
-          Direct producteur en Bretagne, nos huiles conservent l'ensemble des
+          Direct producteur en Bretagne, nos huiles conservent l&apos;ensemble des
           molécules naturelles du chanvre pour un effet d&apos;entourage optimal.
           Achat CBD en circuit court, livraison rapide France.
         </p>

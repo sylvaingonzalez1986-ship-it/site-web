@@ -775,25 +775,29 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
             style={{ backgroundImage: `url(${HERO_FRAME_IDLE_SRC})` }}
             aria-hidden="true"
           />
-          <div className="hero-circle-hover-scene absolute inset-0 z-[3]" aria-hidden="true">
-            <div
-              className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${HERO_FRAME_SCENE_SRC})` }}
+          <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/10 via-transparent to-transparent" />
+          <div
+            ref={mascotRef}
+            className="pinned-mascot absolute left-1/2 bottom-0 z-[2] h-[92%] w-[96%] -translate-x-1/2"
+          >
+            <Image
+              src="/sylvain.png"
+              alt="Sylvain, fondateur Les Chanvriers Bretons – producteur CBD naturel en Bretagne"
+              fill
+              priority
+              sizes="(max-width: 768px) 60vw, 34vw"
+              className="object-contain object-bottom drop-shadow-[0_8px_10px_rgba(26,26,26,0.28)]"
             />
-            <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/10 via-transparent to-transparent" />
-            <div
-              ref={mascotRef}
-              className="pinned-mascot absolute left-1/2 bottom-0 z-10 h-[92%] w-[96%] -translate-x-1/2"
-            >
-              <Image
-                src="/sylvain.png"
-                alt="Sylvain, fondateur Les Chanvriers Bretons – producteur CBD naturel en Bretagne"
-                fill
-                priority
-                sizes="(max-width: 768px) 60vw, 34vw"
-                className="object-contain object-bottom drop-shadow-[0_8px_10px_rgba(26,26,26,0.28)]"
-              />
-            </div>
+          </div>
+          <div className="hero-circle-hover-scene absolute inset-0 z-[4] flex items-center justify-center" aria-hidden="true">
+            <div className="absolute inset-0 bg-cream/80 backdrop-blur-sm" />
+            <Image
+              src="/hero-circle-idle.png"
+              alt="Logo Les Chanvriers Bretons"
+              fill
+              sizes="34vw"
+              className="relative z-[1] object-cover drop-shadow-lg"
+            />
           </div>
         </div>
 

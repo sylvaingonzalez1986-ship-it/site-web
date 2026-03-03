@@ -14,6 +14,7 @@ import {
   getBadgeDiscountPercent,
   isBadgeEligibleForFreeShipping,
 } from "@/lib/loyalty-tier-benefits";
+import { getAvailableQuantity } from "@/lib/product-stock";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import {
   computeReferralFirstOrderDiscountAmount,
@@ -92,6 +93,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const [lotteryError, setLotteryError] = useState<string | null>(null);
   const [lotterySuccess, setLotterySuccess] = useState<string | null>(null);
   const [lotteryPreview, setLotteryPreview] = useState<LotteryPreview | null>(null);
+  const [cartError, setCartError] = useState<string | null>(null);
   const wasOpenRef = useRef(false);
   useBodyScrollLock(open);
 
@@ -113,7 +115,16 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     setShippingPostalCode(user?.postalCode ?? "");
     setShippingCountry(user?.country || "France");
     setSelectedRelayPoint(null);
+    setCartError(null);
   }, [open, user]);
+
+  const buildCartStockError = (productName: string, maxAvailable?: number) => {
+    if (typeof maxAvailable === "number" && maxAvailable > 0) {
+      return `Stock maximum atteint pour ${productName} (${maxAvailable} unite${maxAvailable > 1 ? "s" : ""} disponible${maxAvailable > 1 ? "s" : ""}).`;
+    }
+
+    return `Le stock disponible pour ${productName} est atteint.`;
+  };
 
   const badgeDiscountPercent = useMemo(() => {
     if (!isAuthenticated || !loyalty.currentBadge.unlocked) {
@@ -266,27 +277,6 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       Math.floor(Math.max(finalAmountToPay, 0) / lotteryTicketThreshold),
     );
   }, [
-    finalAmountToPay,
-    isAuthenticated,
-    lotteryConfig?.isActive,
-    lotteryConfig?.maxTicketsPerOrder,
-    lotteryTicketThreshold,
-  ]);
-  const missingForNextTicket = useMemo(() => {
-    if (!isAuthenticated || !lotteryConfig?.isActive) {
-      return null;
-    }
-
-    if (estimatedEarnedTickets >= (lotteryConfig?.maxTicketsPerOrder ?? 0)) {
-      return null;
-    }
-
-    const safeAmount = Math.max(finalAmountToPay, 0);
-    const remainder = safeAmount % lotteryTicketThreshold;
-    const missing = remainder === 0 ? lotteryTicketThreshold : lotteryTicketThreshold - remainder;
-    return Number(missing.toFixed(2));
-  }, [
-    estimatedEarnedTickets,
     finalAmountToPay,
     isAuthenticated,
     lotteryConfig?.isActive,
@@ -542,75 +532,113 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               </div>
             )}
 
-            {items.map((item) => (
-              <article key={item.id} className="cartoon-panel bg-white p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="font-bold">{item.name}</p>
-                    {hasActiveProductPromo(item) ? (
-                      <div className="text-sm">
-                        <span className="price-original">{formatPrice(item.originalPrice)}</span>{" "}
-                        <span className="price-promo">{formatPrice(item.price)}</span>{" "}
-                        <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
-                      </div>
-                    ) : (
-                      <p className="text-sm">
-                        {formatPrice(item.price)}{" "}
-                        <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
-                      </p>
-                    )}
+            {cartError && (
+              <div className="cartoon-panel border-[#7f1d1d] bg-[#f8d7da] p-4 text-sm font-semibold text-[#7f1d1d]">
+                {cartError}
+              </div>
+            )}
+
+            {items.map((item) => {
+              const [, itemVariantId = ""] = item.id.split("::", 2);
+              const itemAvailableQuantity = getAvailableQuantity(item, itemVariantId);
+
+              return (
+                <article key={item.id} className="cartoon-panel bg-white p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-bold">{item.name}</p>
+                      {hasActiveProductPromo(item) ? (
+                        <div className="text-sm">
+                          <span className="price-original">{formatPrice(item.originalPrice)}</span>{" "}
+                          <span className="price-promo">{formatPrice(item.price)}</span>{" "}
+                          <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
+                        </div>
+                      ) : (
+                        <p className="text-sm">
+                          {formatPrice(item.price)}{" "}
+                          <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCartError(null);
+                        removeFromCart(item.id);
+                      }}
+                      className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3"
+                      aria-label={`Retirer ${item.name}`}
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => removeFromCart(item.id)}
-                    className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3"
-                    aria-label={`Retirer ${item.name}`}
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-                <div className="mt-3 flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => decreaseQuantity(item.id)}
-                    className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3"
-                    aria-label={`Diminuer ${item.name}`}
-                  >
-                    <Minus size={16} />
-                  </button>
-                  <input
-                    type="number"
-                    inputMode="numeric"
-                    min={1}
-                    max={999}
-                    value={item.quantity}
-                    onChange={(e) => {
-                      const v = Number.parseInt(e.target.value, 10);
-                      if (!Number.isNaN(v) && v >= 1) setQuantity(item.id, v);
-                    }}
-                    className="h-[44px] w-16 border-2 border-[#1a1a1a] bg-white text-center text-sm font-bold"
-                    aria-label={`Quantité ${item.name}`}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const added = addToCart(item);
-                      if (!added) {
-                        goToLogin();
-                      }
-                    }}
-                    className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3"
-                    aria-label={`Augmenter ${item.name}`}
-                  >
-                    <Plus size={16} />
-                  </button>
-                  <p className="ml-auto font-bold">
-                    {formatPrice(item.quantity * item.price)}{" "}
-                    <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
-                  </p>
-                </div>
-              </article>
-            ))}
+                  <div className="mt-3 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCartError(null);
+                        decreaseQuantity(item.id);
+                      }}
+                      className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3"
+                      aria-label={`Diminuer ${item.name}`}
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      min={1}
+                      max={itemAvailableQuantity ?? 999}
+                      value={item.quantity}
+                      onChange={(e) => {
+                        const value = Number.parseInt(e.target.value, 10);
+                        if (Number.isNaN(value) || value < 1) {
+                          return;
+                        }
+
+                        const result = setQuantity(item.id, value);
+                        if (!result.ok && result.reason === "stock_limit") {
+                          setCartError(buildCartStockError(item.name, result.maxAvailable));
+                          return;
+                        }
+
+                        setCartError(null);
+                      }}
+                      className="h-[44px] w-16 border-2 border-[#1a1a1a] bg-white text-center text-sm font-bold"
+                      aria-label={`Quantite ${item.name}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const result = addToCart(item);
+                        if (result.ok) {
+                          setCartError(null);
+                          return;
+                        }
+
+                        if (result.reason === "stock_limit") {
+                          setCartError(buildCartStockError(item.name, result.maxAvailable));
+                          return;
+                        }
+
+                        if (result.reason === "unauthenticated") {
+                          goToLogin();
+                        }
+                      }}
+                      disabled={itemAvailableQuantity !== null && item.quantity >= itemAvailableQuantity}
+                      className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3 disabled:cursor-not-allowed disabled:opacity-60"
+                      aria-label={`Augmenter ${item.name}`}
+                    >
+                      <Plus size={16} />
+                    </button>
+                    <p className="ml-auto font-bold">
+                      {formatPrice(item.quantity * item.price)}{" "}
+                      <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
+                    </p>
+                  </div>
+                </article>
+              );
+            })}
 
             <div className="cartoon-panel bg-white p-4">
               <div className="mt-4 grid gap-2">

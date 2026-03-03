@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { AlbumPage } from "@/components/lottery/AlbumPage";
@@ -58,6 +58,45 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   } | null>(null);
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
   const [packPurchaseQty, setPackPurchaseQty] = useState(1);
+
+  /* ── Welcome pack one-shot CTA ── */
+  const [welcomeEligible, setWelcomeEligible] = useState(false);
+  const [welcomeClaiming, setWelcomeClaiming] = useState(false);
+  const [welcomeJustClaimed, setWelcomeJustClaimed] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/account/welcome-pack")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.eligible) {
+          setWelcomeEligible(true);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleClaimWelcomePack = useCallback(async () => {
+    if (welcomeClaiming || !welcomeEligible) return;
+    setWelcomeClaiming(true);
+    try {
+      const res = await fetch("/api/account/welcome-pack", { method: "POST" });
+      const data = await res.json();
+      if (data?.granted) {
+        setWelcomeJustClaimed(true);
+        setWelcomeEligible(false);
+        window.dispatchEvent(new Event("welcome-pack-claimed"));
+        refreshAll();
+      }
+    } catch {
+      // silently ignore — user can retry
+    } finally {
+      setWelcomeClaiming(false);
+    }
+  }, [welcomeClaiming, welcomeEligible, refreshAll]);
 
   const availableTickets = useMemo(
     () => tickets.filter((ticket) => ticket.status === "available"),
@@ -171,6 +210,35 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   const albumBody = (
     <>
       <div className="space-y-4">
+        {/* ── Welcome pack one-shot CTA ── */}
+        {welcomeEligible && !welcomeJustClaimed && (
+          <button
+            type="button"
+            disabled={welcomeClaiming}
+            onClick={handleClaimWelcomePack}
+            className="group flex w-full items-center gap-4 rounded-2xl border-[3px] border-dashed border-[#27ae60] bg-[#eafaf1] p-3 pr-6 shadow-[4px_4px_0_rgba(39,174,96,0.15)] transition-transform hover:-translate-y-0.5 hover:shadow-[4px_6px_0_rgba(39,174,96,0.22)] active:translate-y-0"
+          >
+            <span className="text-4xl leading-none">🎁</span>
+            <div className="text-left">
+              <p className="text-xs font-black uppercase tracking-[0.08em] text-[#27ae60]">Cadeau de bienvenue</p>
+              <p className="mt-1 font-display text-xl leading-tight text-ink">
+                {welcomeClaiming ? "Attribution en cours…" : "Récupérer mon pack gratuit"}
+              </p>
+              <p className="mt-0.5 text-xs text-charcoal">1 booster offert pour ton inscription !</p>
+            </div>
+          </button>
+        )}
+
+        {welcomeJustClaimed && (
+          <div className="flex w-full items-center gap-4 rounded-2xl border-[3px] border-[#27ae60] bg-[#eafaf1] p-3 pr-6">
+            <span className="text-4xl leading-none">✅</span>
+            <div className="text-left">
+              <p className="font-display text-lg text-[#27ae60]">Pack récupéré !</p>
+              <p className="text-xs text-charcoal">Ouvre-le ci-dessous pour découvrir tes cartes.</p>
+            </div>
+          </div>
+        )}
+
         {availableTickets.length > 0 && (
           <button
             type="button"

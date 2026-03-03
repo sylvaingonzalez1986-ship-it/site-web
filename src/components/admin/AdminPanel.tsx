@@ -911,6 +911,19 @@ export function AdminPanel() {
     }));
   };
 
+  const updateBoutiqueLowStockThreshold = (value: number) => {
+    setDraft((current) => ({
+      ...current,
+      content: {
+        ...current.content,
+        boutique: {
+          ...current.content.boutique,
+          lowStockThresholdGrams: Math.max(0, Math.floor(value)),
+        },
+      },
+    }));
+  };
+
   const updateProducerSocialLink = (
     index: number,
     network: keyof Producer["socialLinks"],
@@ -1607,6 +1620,26 @@ export function AdminPanel() {
               <button type="button" className="btn-cartoon btn-secondary" onClick={addProduct}>
                 Ajouter un produit
               </button>
+            </div>
+
+            <div className="cartoon-panel mt-6 bg-white p-4">
+              <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-charcoal">
+                Seuil alerte stock bas (en g)
+              </label>
+              <p className="mt-1 text-sm text-charcoal">
+                Affiche “Plus que Xg disponible” sur les fleurs et resines quand le stock restant passe sous ce seuil.
+              </p>
+              <input
+                type="number"
+                min={0}
+                step={1}
+                className="mt-3 h-10 w-full max-w-[220px] border-2 border-[#1a1a1a] px-3 text-sm"
+                value={draft.content.boutique.lowStockThresholdGrams}
+                onChange={(event) =>
+                  updateBoutiqueLowStockThreshold(Number(event.target.value) || 0)
+                }
+                placeholder="50"
+              />
             </div>
 
             <article className="card-cartoon mt-6 bg-white p-4">

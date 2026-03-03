@@ -23,6 +23,19 @@ type NewPackDraft = {
   productIds: string[];
 };
 
+type ProductWithIndex = {
+  product: Product;
+  index: number;
+};
+
+type CategoryProductGroup = {
+  category: ProductCategory;
+  label: string;
+  items: ProductWithIndex[];
+};
+
+type PromoCategoryFilter = "all" | ProductCategory;
+
 function roundMoney(value: number): number {
   return Number(value.toFixed(2));
 }
@@ -94,8 +107,19 @@ function createInitialPackDraft(): NewPackDraft {
   };
 }
 
+function groupProductsByCategory(items: ProductWithIndex[]): CategoryProductGroup[] {
+  return productCategoryOptions
+    .map((category) => ({
+      category,
+      label: categoryLabels[category],
+      items: items.filter(({ product }) => product.category === category),
+    }))
+    .filter((group) => group.items.length > 0);
+}
+
 export function AdminPromosPanel({ draft, setDraft }: AdminPromosPanelProps) {
   const [productSearch, setProductSearch] = useState("");
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<PromoCategoryFilter>("all");
   const [promoInputs, setPromoInputs] = useState<Record<string, string>>({});
   const [packForm, setPackForm] = useState<NewPackDraft>(createInitialPackDraft());
   const [packError, setPackError] = useState<string | null>(null);
@@ -121,6 +145,29 @@ export function AdminPromosPanel({ draft, setDraft }: AdminPromosPanelProps) {
     );
   }, [productSearch, standardProductsWithIndex]);
 
+  const groupedStandardProducts = useMemo(
+    () => groupProductsByCategory(filteredStandardProducts),
+    [filteredStandardProducts],
+  );
+
+  const availableCategoryFilters = useMemo(
+    () => [
+      "all" as const,
+      ...productCategoryOptions.filter((category) =>
+        standardProductsWithIndex.some(({ product }) => product.category === category),
+      ),
+    ],
+    [standardProductsWithIndex],
+  );
+
+  const visibleStandardGroups = useMemo(() => {
+    if (selectedCategoryFilter === "all") {
+      return groupedStandardProducts;
+    }
+
+    return groupedStandardProducts.filter((group) => group.category === selectedCategoryFilter);
+  }, [groupedStandardProducts, selectedCategoryFilter]);
+
   const packProductsWithIndex = useMemo(
     () => productsWithIndex.filter(({ product }) => product.isPack),
     [productsWithIndex],
@@ -135,6 +182,19 @@ export function AdminPromosPanel({ draft, setDraft }: AdminPromosPanelProps) {
     () => draft.products.filter((product) => !product.isPack),
     [draft.products],
   );
+
+  const groupedNonPackProducts = useMemo(
+    () => groupProductsByCategory(standardProductsWithIndex),
+    [standardProductsWithIndex],
+  );
+
+  const visibleNonPackGroups = useMemo(() => {
+    if (selectedCategoryFilter === "all") {
+      return groupedNonPackProducts;
+    }
+
+    return groupedNonPackProducts.filter((group) => group.category === selectedCategoryFilter);
+  }, [groupedNonPackProducts, selectedCategoryFilter]);
 
   const nonPackProductsById = useMemo(
     () => new Map(nonPackProducts.map((product) => [product.id, product])),
@@ -358,6 +418,34 @@ export function AdminPromosPanel({ draft, setDraft }: AdminPromosPanelProps) {
         </div>
 
         <div className="mt-4">
+          <div className="mb-4 overflow-hidden rounded border-2 border-[#1a1a1a] bg-white">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9">
+              {availableCategoryFilters.map((category) => {
+                const isActive = selectedCategoryFilter === category;
+                const label = category === "all" ? "Tous" : categoryLabels[category];
+
+                return (
+                  <button
+                    key={category}
+                    type="button"
+                    className={`min-h-[48px] border-b-2 px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors md:text-xs ${
+                      isActive
+                        ? "bg-[#0a7b61] text-white"
+                        : "text-ink hover:bg-[#f2ede2]"
+                    } ${
+                      category !== availableCategoryFilters[availableCategoryFilters.length - 1]
+                        ? "border-r-2 border-[#1a1a1a]"
+                        : ""
+                    } border-b-0`}
+                    onClick={() => setSelectedCategoryFilter(category)}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <input
             className="h-10 w-full border-2 border-[#1a1a1a] bg-white px-3 text-sm md:max-w-md"
             value={productSearch}
@@ -367,61 +455,72 @@ export function AdminPromosPanel({ draft, setDraft }: AdminPromosPanelProps) {
         </div>
 
         <div className="mt-6 grid gap-4">
-          {filteredStandardProducts.length === 0 && (
+          {visibleStandardGroups.length === 0 && (
             <p className="text-charcoal">Aucun produit correspondant.</p>
           )}
-          {filteredStandardProducts.map(({ product, index }) => (
-            <article key={`${product.id}-${index}`} className="card-cartoon bg-white p-4">
-              <div className="grid gap-3 md:grid-cols-[1fr,auto] md:items-center">
-                <div>
-                  <p className="font-display text-2xl text-ink">{product.name}</p>
-                  <p className="text-sm text-charcoal">{categoryLabels[product.category]}</p>
-                  <div className="mt-1 flex items-center gap-2">
-                    {hasActiveProductPromo(product) ? (
-                      <>
-                        <span className="price-original text-sm">{formatPrice(product.originalPrice)}</span>
-                        <span className="price-promo text-lg">{formatPrice(product.price)}</span>
-                        <span className="pill-cartoon bg-orange px-2 py-1 text-[10px] text-white">
-                          Moins {product.promoPercent}%
-                        </span>
-                      </>
-                    ) : (
-                      <span className="text-lg font-bold text-ink">{formatPrice(product.price)}</span>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center gap-2">
-                  {hasActiveProductPromo(product) ? (
-                    <button
-                      type="button"
-                      className="btn-cartoon btn-primary h-10 px-3 text-xs"
-                      onClick={() => removePromo(index)}
-                    >
-                      Retirer la promo
-                    </button>
-                  ) : (
-                    <>
-                      <input
-                        className="h-10 w-24 border-2 border-[#1a1a1a] px-2 text-sm"
-                        type="number"
-                        min={1}
-                        max={99}
-                        value={promoInputs[product.id] ?? ""}
-                        onChange={(event) => setPromoInput(product.id, event.target.value)}
-                        placeholder="%"
-                      />
-                      <button
-                        type="button"
-                        className="btn-cartoon btn-secondary h-10 px-3 text-xs"
-                        onClick={() => applyPromo(index, product.id)}
-                      >
-                        Appliquer
-                      </button>
-                    </>
-                  )}
-                </div>
+          {visibleStandardGroups.map((group) => (
+            <section key={group.category} className="grid gap-4">
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded border-2 border-[#1a1a1a] bg-yellow px-4 py-3">
+                <h3 className="font-display text-2xl text-ink">{group.label}</h3>
+                <span className="pill-cartoon bg-white px-3 py-1 text-xs uppercase tracking-[0.08em] text-ink">
+                  {group.items.length} produit{group.items.length > 1 ? "s" : ""}
+                </span>
               </div>
-            </article>
+
+              {group.items.map(({ product, index }) => (
+                <article key={`${product.id}-${index}`} className="card-cartoon bg-white p-4">
+                  <div className="grid gap-3 md:grid-cols-[1fr,auto] md:items-center">
+                    <div>
+                      <p className="font-display text-2xl text-ink">{product.name}</p>
+                      <p className="text-sm text-charcoal">{categoryLabels[product.category]}</p>
+                      <div className="mt-1 flex items-center gap-2">
+                        {hasActiveProductPromo(product) ? (
+                          <>
+                            <span className="price-original text-sm">{formatPrice(product.originalPrice)}</span>
+                            <span className="price-promo text-lg">{formatPrice(product.price)}</span>
+                            <span className="pill-cartoon bg-orange px-2 py-1 text-[10px] text-white">
+                              Moins {product.promoPercent}%
+                            </span>
+                          </>
+                        ) : (
+                          <span className="text-lg font-bold text-ink">{formatPrice(product.price)}</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {hasActiveProductPromo(product) ? (
+                        <button
+                          type="button"
+                          className="btn-cartoon btn-primary h-10 px-3 text-xs"
+                          onClick={() => removePromo(index)}
+                        >
+                          Retirer la promo
+                        </button>
+                      ) : (
+                        <>
+                          <input
+                            className="h-10 w-24 border-2 border-[#1a1a1a] px-2 text-sm"
+                            type="number"
+                            min={1}
+                            max={99}
+                            value={promoInputs[product.id] ?? ""}
+                            onChange={(event) => setPromoInput(product.id, event.target.value)}
+                            placeholder="%"
+                          />
+                          <button
+                            type="button"
+                            className="btn-cartoon btn-secondary h-10 px-3 text-xs"
+                            onClick={() => applyPromo(index, product.id)}
+                          >
+                            Appliquer
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </section>
           ))}
         </div>
       </div>
@@ -477,29 +576,36 @@ export function AdminPromosPanel({ draft, setDraft }: AdminPromosPanelProps) {
               <p className="text-xs font-bold uppercase tracking-[0.1em] text-charcoal">
                 Produits dans le pack
               </p>
-              <div className="mt-2 grid max-h-56 gap-2 overflow-y-auto pr-1">
-                {nonPackProducts.map((product) => {
-                  const checked = packForm.productIds.includes(product.id);
-                  return (
-                    <label key={product.id} className="flex items-center gap-2 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={() =>
-                          setPackForm((current) => ({
-                            ...current,
-                            productIds: checked
-                              ? current.productIds.filter((id) => id !== product.id)
-                              : [...current.productIds, product.id],
-                          }))
-                        }
-                      />
-                      <span className="min-w-0 truncate">{product.name}</span>
-                      <span className="ml-auto text-xs text-charcoal">{formatPrice(product.price)}</span>
-                      <span className="text-[10px] font-semibold text-charcoal">TVA {product.vatRate ?? 20}%</span>
-                    </label>
-                  );
-                })}
+              <div className="mt-2 grid max-h-56 gap-3 overflow-y-auto pr-1">
+                {visibleNonPackGroups.map((group) => (
+                  <div key={`create-pack-${group.category}`} className="grid gap-2">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">
+                      {group.label}
+                    </p>
+                    {group.items.map(({ product }) => {
+                      const checked = packForm.productIds.includes(product.id);
+                      return (
+                        <label key={product.id} className="flex items-center gap-2 text-sm">
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() =>
+                              setPackForm((current) => ({
+                                ...current,
+                                productIds: checked
+                                  ? current.productIds.filter((id) => id !== product.id)
+                                  : [...current.productIds, product.id],
+                              }))
+                            }
+                          />
+                          <span className="min-w-0 truncate">{product.name}</span>
+                          <span className="ml-auto text-xs text-charcoal">{formatPrice(product.price)}</span>
+                          <span className="text-[10px] font-semibold text-charcoal">TVA {product.vatRate ?? 20}%</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -508,7 +614,7 @@ export function AdminPromosPanel({ draft, setDraft }: AdminPromosPanelProps) {
                 Prix du pack
               </p>
               <p className="mt-2 text-sm text-charcoal">
-                Prix d'origine: <strong>{formatPrice(newPackOriginalPrice)}</strong>
+                Prix d&apos;origine: <strong>{formatPrice(newPackOriginalPrice)}</strong>
               </p>
               <input
                 className="mt-2 h-10 w-full border-2 border-[#1a1a1a] bg-white px-2 text-sm"
@@ -582,23 +688,30 @@ export function AdminPromosPanel({ draft, setDraft }: AdminPromosPanelProps) {
                     Produits composants
                   </p>
                   <div className="mt-1 grid max-h-44 gap-2 overflow-y-auto rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-2">
-                    {nonPackProducts.map((candidate) => {
-                      const checked = (product.packProductIds ?? []).includes(candidate.id);
-                      return (
-                        <label key={`${product.id}-${candidate.id}`} className="flex items-center gap-2 text-sm">
-                          <input
-                            type="checkbox"
-                            checked={checked}
-                            onChange={() => togglePackComponent(index, candidate.id)}
-                          />
-                          <span className="min-w-0 truncate">{candidate.name}</span>
-                          <span className="ml-auto text-xs text-charcoal">
-                            {formatPrice(candidate.price)}
-                          </span>
-                          <span className="text-[10px] font-semibold text-charcoal">TVA {candidate.vatRate ?? 20}%</span>
-                        </label>
-                      );
-                    })}
+                    {visibleNonPackGroups.map((group) => (
+                      <div key={`${product.id}-${group.category}`} className="grid gap-2">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">
+                          {group.label}
+                        </p>
+                        {group.items.map(({ product: candidate }) => {
+                          const checked = (product.packProductIds ?? []).includes(candidate.id);
+                          return (
+                            <label key={`${product.id}-${candidate.id}`} className="flex items-center gap-2 text-sm">
+                              <input
+                                type="checkbox"
+                                checked={checked}
+                                onChange={() => togglePackComponent(index, candidate.id)}
+                              />
+                              <span className="min-w-0 truncate">{candidate.name}</span>
+                              <span className="ml-auto text-xs text-charcoal">
+                                {formatPrice(candidate.price)}
+                              </span>
+                              <span className="text-[10px] font-semibold text-charcoal">TVA {candidate.vatRate ?? 20}%</span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

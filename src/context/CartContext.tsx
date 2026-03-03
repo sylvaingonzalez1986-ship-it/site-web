@@ -1,13 +1,17 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import type { Product } from "@/data/products";
-import { getSelectableVariantOptions } from "@/lib/product-stock";
+import { getAvailableQuantity, getSelectableVariantOptions } from "@/lib/product-stock";
 import type { PublicCustomer } from "@/types/customer";
 
 type CartLine = Product & {
   quantity: number;
 };
+
+export type CartActionResult =
+  | { ok: true }
+  | { ok: false; reason: "unauthenticated" | "invalid_product" | "stock_limit"; maxAvailable?: number };
 
 type CartContextValue = {
   items: CartLine[];
@@ -15,10 +19,10 @@ type CartContextValue = {
   totalPrice: number;
   isAuthenticated: boolean;
   authLoading: boolean;
-  addToCart: (product: Product, variantId?: string, quantity?: number) => boolean;
+  addToCart: (product: Product, variantId?: string, quantity?: number) => CartActionResult;
   removeFromCart: (productId: string) => void;
   decreaseQuantity: (productId: string) => void;
-  setQuantity: (productId: string, quantity: number) => void;
+  setQuantity: (productId: string, quantity: number) => CartActionResult;
   clearCart: () => void;
 };
 
@@ -64,35 +68,54 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const addToCart = (product: Product, variantId?: string, quantity: number = 1): boolean => {
+  const addToCart = (product: Product, variantId?: string, quantity: number = 1): CartActionResult => {
     if (!isAuthenticated) {
-      return false;
+      return { ok: false, reason: "unauthenticated" };
     }
 
     const qty = Math.max(1, Math.round(quantity));
-
-    const [baseProductId, embeddedVariantId = ""] = product.id.split("::", 2);
-    const variantKey = variantId || embeddedVariantId;
-    const selectableVariants = Array.isArray(product.variantOptions)
-      ? getSelectableVariantOptions(product)
-      : [];
-    const variant = variantKey
-      ? selectableVariants.find((option) => option.id === variantKey)
-      : selectableVariants[0];
-    const normalizedBaseId = baseProductId || product.id;
-    const cartProductId = variant ? `${normalizedBaseId}::${variant.id}` : normalizedBaseId;
-    const cartProductName = variant
-      ? embeddedVariantId
-        ? product.name
-        : `${product.name} - ${variant.label}`
-      : product.name;
-    const cartProductPrice = variant ? variant.price : product.price;
-
-    if (!Number.isFinite(cartProductPrice) || cartProductPrice < 0) {
-      return false;
-    }
+    let result: CartActionResult = { ok: true };
 
     setItems((current) => {
+      const [baseProductId, embeddedVariantId = ""] = product.id.split("::", 2);
+      const variantKey = variantId || embeddedVariantId;
+      const allVariants = Array.isArray(product.variantOptions) ? product.variantOptions : [];
+      const selectableVariants = Array.isArray(product.variantOptions)
+        ? getSelectableVariantOptions(product)
+        : [];
+      const variant = variantKey
+        ? allVariants.find((option) => option.id === variantKey)
+        : selectableVariants[0];
+      const normalizedBaseId = baseProductId || product.id;
+      const cartProductId = variant ? `${normalizedBaseId}::${variant.id}` : normalizedBaseId;
+      const cartProductName = variant
+        ? embeddedVariantId
+          ? product.name
+          : `${product.name} - ${variant.label}`
+        : product.name;
+      const cartProductPrice = variant ? variant.price : product.price;
+
+      if (variantKey && !variant) {
+        result = { ok: false, reason: "invalid_product" };
+        return current;
+      }
+
+      if (!Number.isFinite(cartProductPrice) || cartProductPrice < 0) {
+        result = { ok: false, reason: "invalid_product" };
+        return current;
+      }
+
+      const existingQuantity = current.find((item) => item.id === cartProductId)?.quantity ?? 0;
+      const availableQuantity = getAvailableQuantity(product, variantKey);
+      if (availableQuantity !== null && existingQuantity + qty > availableQuantity) {
+        result = {
+          ok: false,
+          reason: "stock_limit",
+          maxAvailable: availableQuantity,
+        };
+        return current;
+      }
+
       const existing = current.find((item) => item.id === cartProductId);
       if (!existing) {
         return [
@@ -112,7 +135,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       );
     });
 
-    return true;
+    return result;
   };
 
   const removeFromCart = (productId: string) => {
@@ -135,34 +158,58 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  const setQuantity = (productId: string, quantity: number) => {
+  const setQuantity = (productId: string, quantity: number): CartActionResult => {
     const qty = Math.max(1, Math.round(quantity));
-    setItems((current) =>
-      current.map((item) =>
-        item.id === productId ? { ...item, quantity: qty } : item,
-      ),
-    );
+    let result: CartActionResult = { ok: true };
+
+    setItems((current) => {
+      const targetItem = current.find((item) => item.id === productId);
+      if (!targetItem) {
+        result = { ok: false, reason: "invalid_product" };
+        return current;
+      }
+
+      const [, embeddedVariantId = ""] = targetItem.id.split("::", 2);
+      const availableQuantity = getAvailableQuantity(targetItem, embeddedVariantId);
+      const nextQuantity =
+        availableQuantity !== null ? Math.min(qty, availableQuantity) : qty;
+
+      if (availableQuantity !== null && qty > availableQuantity) {
+        result = {
+          ok: false,
+          reason: "stock_limit",
+          maxAvailable: availableQuantity,
+        };
+      }
+
+      if (nextQuantity <= 0) {
+        return current.filter((item) => item.id !== productId);
+      }
+
+      return current.map((item) =>
+        item.id === productId ? { ...item, quantity: nextQuantity } : item,
+      );
+    });
+
+    return result;
   };
 
   const clearCart = () => {
     setItems([]);
   };
 
-  const value = useMemo(
-    () => ({
-      items,
-      isAuthenticated,
-      authLoading,
-      totalItems: items.reduce((acc, item) => acc + item.quantity, 0),
-      totalPrice: items.reduce((acc, item) => acc + item.price * item.quantity, 0),
-      addToCart,
-      removeFromCart,
-      decreaseQuantity,
-      setQuantity,
-      clearCart,
-    }),
-    [authLoading, isAuthenticated, items],
-  );
+  const value: CartContextValue = {
+    items,
+    isAuthenticated,
+    authLoading,
+    totalItems: items.reduce((acc, item) => acc + item.quantity, 0),
+    totalPrice: items.reduce((acc, item) => acc + item.price * item.quantity, 0),
+    addToCart,
+    removeFromCart,
+    decreaseQuantity,
+    setQuantity,
+    clearCart,
+  };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

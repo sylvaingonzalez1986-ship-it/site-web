@@ -12,7 +12,11 @@ import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import { categoryLabels, type Product } from "@/data/products";
 import { isRemoteImageUrl } from "@/lib/image-source";
-import { isProductInStock } from "@/lib/product-stock";
+import {
+  formatRemainingGrams,
+  getStockDisplayInfo,
+  isProductInStock,
+} from "@/lib/product-stock";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { formatPrice } from "@/lib/utils";
 import type { Producer } from "@/types/store";
@@ -32,22 +36,34 @@ type ProductCardProps = {
   product: Product;
   producer?: Producer;
   addButtonLabel?: string;
+  lowStockThresholdGrams?: number;
 };
+
+function buildStockLimitMessage(productName: string, maxAvailable?: number): string {
+  if (typeof maxAvailable === "number" && maxAvailable > 0) {
+    return `Stock maximum atteint pour ${productName} (${maxAvailable} unite${maxAvailable > 1 ? "s" : ""} disponible${maxAvailable > 1 ? "s" : ""}).`;
+  }
+
+  return `Le stock disponible pour ${productName} est atteint.`;
+}
 
 export function ProductCard({
   product,
   producer,
   addButtonLabel = "Ajouter",
+  lowStockThresholdGrams = 0,
 }: ProductCardProps) {
   const router = useRouter();
   const { addToCart, authLoading } = useCart();
   const [analysisOpen, setAnalysisOpen] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
   const [qty, setQty] = useState(1);
+  const [stockError, setStockError] = useState<string | null>(null);
   const allImages = product.images?.length ? product.images : [product.image];
   const hasPromo = hasActiveProductPromo(product);
   const inStock = isProductInStock(product);
   const requiresVariantChoice = (product.variantOptions?.length ?? 0) > 0;
+  const stockInfo = getStockDisplayInfo(product, lowStockThresholdGrams);
   const producerLocation = producer
     ? [producer.department, producer.region].filter(Boolean).join(", ") || producer.location
     : "";
@@ -63,9 +79,15 @@ export function ProductCard({
       return;
     }
 
-    const added = addToCart(product, undefined, qty);
-    if (added) {
+    const result = addToCart(product, undefined, qty);
+    if (result.ok) {
+      setStockError(null);
       setQty(1);
+      return;
+    }
+
+    if (result.reason === "stock_limit") {
+      setStockError(buildStockLimitMessage(product.name, result.maxAvailable));
       return;
     }
 
@@ -121,6 +143,11 @@ export function ProductCard({
               Rupture
             </span>
           )}
+          {inStock && stockInfo.isLowStock && stockInfo.remainingGrams !== null && (
+            <span className="pill-cartoon border-[#7f1d1d] bg-[#f8d7da] px-2 py-1 text-[10px] uppercase tracking-[0.1em] text-[#7f1d1d]">
+              Plus que {formatRemainingGrams(stockInfo.remainingGrams)}
+            </span>
+          )}
           {product.isPack && (
             <span className="pill-cartoon px-2 py-1 text-[10px] uppercase tracking-[0.1em]">
               Pack
@@ -128,6 +155,9 @@ export function ProductCard({
           )}
         </div>
         <div className="product-card-description mt-2">{product.description}</div>
+        {stockError && (
+          <p className="mt-3 text-sm font-semibold text-[#7f1d1d]">{stockError}</p>
+        )}
         {(product.analysisPdf || product.videoUrl) && (
           <div className="mt-3 flex flex-wrap gap-2">
             {product.analysisPdf && (
@@ -174,7 +204,15 @@ export function ProductCard({
               Voir
             </Link>
             {!requiresVariantChoice && inStock && (
-              <QuantitySelector value={qty} onChange={setQty} compact />
+              <QuantitySelector
+                value={qty}
+                onChange={(value) => {
+                  setQty(value);
+                  setStockError(null);
+                }}
+                max={stockInfo.maxPurchasableQty}
+                compact
+              />
             )}
             <button
               type="button"

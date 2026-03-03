@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { ProducerDetailPanel } from "@/components/boutique/ProducerDetailPanel";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { Product } from "@/data/products";
@@ -12,6 +12,7 @@ type ProducerTcgModalProps = {
   selectedProducerId: string | null;
   productsByProducerId: Map<string, Product[]>;
   addButtonLabel: string;
+  lowStockThresholdGrams: number;
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
   onClose: () => void;
@@ -24,6 +25,7 @@ export function ProducerTcgModal({
   selectedProducerId,
   productsByProducerId,
   addButtonLabel,
+  lowStockThresholdGrams,
   producerPartnerLabel,
   producerWebsiteLabel,
   onClose,
@@ -46,21 +48,21 @@ export function ProducerTcgModal({
     ? productsByProducerId.get(selectedProducer.id) ?? []
     : [];
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     if (selectedIndex < 0 || producers.length === 0) {
       return;
     }
     const previousIndex = (selectedIndex - 1 + producers.length) % producers.length;
     onSelectProducer(producers[previousIndex].id);
-  };
+  }, [onSelectProducer, producers, selectedIndex]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     if (selectedIndex < 0 || producers.length === 0) {
       return;
     }
     const nextIndex = (selectedIndex + 1) % producers.length;
     onSelectProducer(producers[nextIndex].id);
-  };
+  }, [onSelectProducer, producers, selectedIndex]);
 
   useEffect(() => {
     if (!open) {
@@ -87,7 +89,7 @@ export function ProducerTcgModal({
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [open, onClose, selectedIndex, producers]);
+  }, [goToNext, goToPrevious, onClose, open]);
 
   if (!open || !selectedProducer) {
     return null;
@@ -163,6 +165,7 @@ export function ProducerTcgModal({
             producer={selectedProducer}
             products={selectedProducts}
             addButtonLabel={addButtonLabel}
+            lowStockThresholdGrams={lowStockThresholdGrams}
             producerPartnerLabel={producerPartnerLabel}
             producerWebsiteLabel={producerWebsiteLabel}
             onClose={onClose}
