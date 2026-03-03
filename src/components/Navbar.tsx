@@ -2,15 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ShoppingCart } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { CartDrawer } from "@/components/CartDrawer";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
 import { useCart } from "@/context/CartContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useCmsPages } from "@/hooks/useCmsPages";
-import { useCustomerSession } from "@/hooks/useCustomerSession";
 import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
+
+const CartDrawer = dynamic(
+  () => import("@/components/CartDrawer").then((mod) => mod.CartDrawer),
+  { ssr: false },
+);
 
 const baseLinks = [
   { href: "/", label: "Accueil" },
@@ -19,37 +23,20 @@ const baseLinks = [
 ];
 
 export function Navbar() {
-  const { totalItems } = useCart();
-  const { user, loyalty } = useCustomerSession();
+  const { totalItems, user, loyalty, hasWelcomePack } = useCart();
   const { pages: cmsPages } = useCmsPages();
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [hasWelcomePack, setHasWelcomePack] = useState(false);
+  const [hideWelcomePackBadge, setHideWelcomePackBadge] = useState(false);
 
-  // Fetch welcome-pack eligibility once when user is logged in
   useEffect(() => {
-    if (!user) {
-      setHasWelcomePack(false);
-      return;
-    }
-    let cancelled = false;
-    fetch("/api/account/welcome-pack")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (!cancelled && data?.eligible) {
-          setHasWelcomePack(true);
-        }
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [user]);
+    setHideWelcomePackBadge(false);
+  }, [hasWelcomePack]);
 
   // Hide badge instantly when pack is claimed elsewhere on the page
   useEffect(() => {
-    const hide = () => setHasWelcomePack(false);
+    const hide = () => setHideWelcomePackBadge(true);
     window.addEventListener("welcome-pack-claimed", hide);
     return () => window.removeEventListener("welcome-pack-claimed", hide);
   }, []);
@@ -158,12 +145,13 @@ export function Navbar() {
             {links.map((link) => {
               const isAccountLink = link.href === "/profil" || link.href === "/compte/connexion";
               const isAlbumLink = link.href === "/profil/collection";
+              const showWelcomePackBadge = isAlbumLink && hasWelcomePack && !hideWelcomePackBadge;
 
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`nav-link ${isAccountLink && user ? "inline-flex items-center gap-2" : ""} ${isAlbumLink && hasWelcomePack ? "relative inline-flex items-center" : ""}`}
+                  className={`nav-link ${isAccountLink && user ? "inline-flex items-center gap-2" : ""} ${showWelcomePackBadge ? "relative inline-flex items-center" : ""}`}
                   data-tutorial={
                     link.href === "/boutique"
                       ? "navbar-boutique"
@@ -173,7 +161,7 @@ export function Navbar() {
                   }
                 >
                   <span>{link.label}</span>
-                  {isAlbumLink && hasWelcomePack && (
+                  {showWelcomePackBadge && (
                     <span className="absolute -right-2.5 -top-1 flex h-3 w-3">
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#27ae60] opacity-75" />
                       <span className="relative inline-flex h-3 w-3 rounded-full bg-[#27ae60]" />
@@ -223,6 +211,7 @@ export function Navbar() {
           {links.map((link) => {
             const isAccountLink = link.href === "/profil" || link.href === "/compte/connexion";
             const isAlbumLink = link.href === "/profil/collection";
+            const showWelcomePackBadge = isAlbumLink && hasWelcomePack && !hideWelcomePackBadge;
 
             return (
               <Link
@@ -239,7 +228,7 @@ export function Navbar() {
                 }
               >
                 <span>{link.label}</span>
-                {isAlbumLink && hasWelcomePack && (
+                {showWelcomePackBadge && (
                   <span className="absolute -right-4 -top-1 flex h-3 w-3">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#27ae60] opacity-75" />
                     <span className="relative inline-flex h-3 w-3 rounded-full bg-[#27ae60]" />

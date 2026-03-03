@@ -20,6 +20,19 @@ export type SocialMission = {
   sortOrder: number;
 };
 
+export type SocialMissionEditorInput = {
+  slug: string;
+  title: string;
+  description: string;
+  icon: MissionIcon;
+  rewardType: MissionRewardType;
+  rewardAmount: number;
+  maxCompletionsPerUser: number;
+  requiresProof: boolean;
+  proofInstructions: string | null;
+  isActive: boolean;
+};
+
 export type MissionSubmission = {
   id: string;
   userId: string;
@@ -56,6 +69,12 @@ export type ReferralPendingReward = {
   createdAt: string;
 };
 
+export type ReferralRewardSettings = {
+  pointsAmount: number;
+  packsAmount: number;
+  updatedAt: string | null;
+};
+
 // ── Admin Types ──
 
 export type AdminMissionSubmissionView = MissionSubmission & {
@@ -73,4 +92,11 @@ export type AdminMissionsOverview = {
   approvedSubmissions: number;
   rejectedSubmissions: number;
   submissions: AdminMissionSubmissionView[];
+};
+
+export type AdminMissionsDashboard = {
+  overview: AdminMissionsOverview;
+  missions: SocialMission[];
+  pendingReferrals: ReferralPendingReward[];
+  referralSettings: ReferralRewardSettings;
 };

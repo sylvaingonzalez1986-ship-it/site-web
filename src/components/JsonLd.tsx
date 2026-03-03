@@ -12,6 +12,14 @@ type ArticleJsonLdProps = {
   category?: string;
 };
 
+function resolveProductAvailability(product: Product): string {
+  if (product.trackStock && typeof product.stockQuantity === "number" && product.stockQuantity <= 0) {
+    return "https://schema.org/OutOfStock";
+  }
+
+  return "https://schema.org/InStock";
+}
+
 const BUSINESS_NAME = "Les Chanvriers Bretons";
 const BUSINESS_EMAIL = "leschanvriersbretons@gmail.com";
 const BUSINESS_PHONE =
@@ -174,6 +182,56 @@ export function BreadcrumbJsonLd({
   );
 }
 
+export function CollectionPageJsonLd({
+  name,
+  description,
+  url,
+  products,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  products: Product[];
+}) {
+  const baseUrl = getSiteUrl();
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name,
+    description,
+    url,
+    mainEntity: {
+      "@type": "ItemList",
+      name,
+      numberOfItems: products.length,
+      itemListElement: products.map((product, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `${baseUrl}/boutique/${
+          {
+            fleurs: "fleurs-cbd",
+            resines: "resines-cbd",
+            huiles: "huiles-cbd",
+            "e-liquide": "e-liquide-cbd",
+            cosmetiques: "cosmetiques-cbd",
+            alimentaire: "tisane-cbd",
+            miam: "miam-cbd",
+            accessoires: "accessoires-cbd",
+          }[product.category] ?? `${product.category}-cbd`
+        }/${product.id}`,
+      })),
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
+    />
+  );
+}
+
 export function ProductListJsonLd({
   products,
   producers = [],
@@ -194,6 +252,7 @@ export function ProductListJsonLd({
       position: index + 1,
       item: {
         "@type": "Product",
+        sku: product.id,
         name: product.name,
         description: product.description,
         image: `${baseUrl}${product.images?.[0] ?? product.image}`,
@@ -208,7 +267,7 @@ export function ProductListJsonLd({
           "@type": "Offer",
           price: product.price,
           priceCurrency: "EUR",
-          availability: "https://schema.org/InStock",
+          availability: resolveProductAvailability(product),
           seller: {
             "@type": "Organization",
             name: BUSINESS_NAME,
@@ -226,7 +285,13 @@ export function ProductListJsonLd({
   );
 }
 
-export function ProductJsonLd({ product }: { product: Product }) {
+export function ProductJsonLd({
+  product,
+  producer,
+}: {
+  product: Product;
+  producer?: { name: string };
+}) {
   const baseUrl = getSiteUrl();
 
   const categorySlugs: Record<string, string> = {
@@ -249,19 +314,20 @@ export function ProductJsonLd({ product }: { product: Product }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
+    sku: product.id,
     name: product.name,
     description: product.description,
     image: fullImageUrl,
     url: productUrl,
     brand: {
       "@type": "Brand",
-      name: BUSINESS_NAME,
+      name: producer?.name ?? BUSINESS_NAME,
     },
     offers: {
       "@type": "Offer",
       price: product.price,
       priceCurrency: "EUR",
-      availability: "https://schema.org/InStock",
+      availability: resolveProductAvailability(product),
       url: productUrl,
       seller: {
         "@type": "Organization",

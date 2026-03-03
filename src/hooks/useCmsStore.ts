@@ -13,28 +13,57 @@ const defaultPublicStore: PublicStoreResponse = {
   updatedAt: defaultStore.updatedAt,
 };
 
+let publicStoreCache: PublicStoreResponse | null = null;
+let publicStorePromise: Promise<PublicStoreResponse> | null = null;
+
+async function loadPublicStore(): Promise<PublicStoreResponse> {
+  if (publicStoreCache) {
+    return publicStoreCache;
+  }
+
+  if (!publicStorePromise) {
+    publicStorePromise = fetch("/api/public/store", { cache: "force-cache" })
+      .then(async (response) => {
+        if (!response.ok) {
+          return defaultPublicStore;
+        }
+
+        const data = (await response.json()) as PublicStoreResponse;
+        return data;
+      })
+      .catch(() => defaultPublicStore)
+      .then((data) => {
+        publicStoreCache = data;
+        return data;
+      })
+      .finally(() => {
+        publicStorePromise = null;
+      });
+  }
+
+  return publicStorePromise;
+}
+
 export function useCmsStore() {
-  const [store, setStore] = useState<PublicStoreResponse>(defaultPublicStore);
-  const [loading, setLoading] = useState(true);
+  const [store, setStore] = useState<PublicStoreResponse>(publicStoreCache ?? defaultPublicStore);
+  const [loading, setLoading] = useState(publicStoreCache === null);
 
   useEffect(() => {
     let mounted = true;
 
-    const load = async () => {
-      try {
-        const response = await fetch("/api/public/store", { cache: "no-store" });
-        if (!response.ok) {
-          return;
-        }
+    if (publicStoreCache) {
+      setStore(publicStoreCache);
+      setLoading(false);
+      return () => {
+        mounted = false;
+      };
+    }
 
-        const data = (await response.json()) as PublicStoreResponse;
-        if (mounted) {
-          setStore(data);
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
+    const load = async () => {
+      const data = await loadPublicStore();
+      if (mounted) {
+        setStore(data);
+        setLoading(false);
       }
     };
 

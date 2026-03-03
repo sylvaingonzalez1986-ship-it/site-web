@@ -356,7 +356,7 @@ export function MissionsSection() {
 
   return (
     <>
-      <h2 className="font-display text-3xl">Missions sociales</h2>
+      <h2 className="font-display text-3xl">Missions</h2>
       <p className="mt-2 text-sm text-charcoal">
         Complete des missions pour gagner des packs de cartes Hemp Heroes !
       </p>

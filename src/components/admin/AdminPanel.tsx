@@ -2369,6 +2369,23 @@ export function AdminPanel() {
                                 onChange={(e) => updateProduct(index, "price", Number(e.target.value) || 0)}
                                 placeholder="prix"
                               />
+                              <input
+                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                                value={Number.isFinite(product.weightGrams) ? product.weightGrams : ""}
+                                type="number"
+                                min={0}
+                                step={1}
+                                onChange={(event) => {
+                                  const raw = event.target.value;
+                                  if (!raw) {
+                                    updateProduct(index, "weightGrams", undefined);
+                                    return;
+                                  }
+                                  const parsed = Math.max(0, Math.round(Number(raw) || 0));
+                                  updateProduct(index, "weightGrams", parsed > 0 ? parsed : undefined);
+                                }}
+                                placeholder="poids (g)"
+                              />
                               <select
                                 className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
                                 value={product.vatRate ?? 20}

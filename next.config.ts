@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
       `media-src 'self' blob: ${supabaseOrigin}`,
       `font-src 'self' data:`,
       `connect-src 'self' ${supabaseOrigin} ${vivaOrigin}`,
-      `frame-src ${vivaOrigin}`,
+      `frame-src ${vivaOrigin} ${supabaseOrigin}`,
       "frame-ancestors 'none'",
       "object-src 'none'",
       "base-uri 'self'",
@@ -57,6 +57,11 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    localPatterns: [
+      {
+        pathname: "/**",
+      },
+    ],
     remotePatterns: [
       ...(supabaseHostname
         ? [

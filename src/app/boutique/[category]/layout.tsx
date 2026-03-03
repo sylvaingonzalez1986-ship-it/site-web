@@ -8,13 +8,13 @@ const categoryMeta: Record<
   { title: string; description: string; label: string }
 > = {
   "fleurs-cbd": {
-    title: "Fleurs CBD Bio Bretagne Pas Cher | Qualité Premium",
+    title: "Fleurs CBD Bio Bretagne | Qualité Premium Direct Producteur",
     description:
       "Achetez des fleurs CBD bio pas cher en Bretagne. Qualité premium, arômes naturels, analysées en laboratoire. Shop CBD breton, livraison rapide en France.",
     label: "Fleurs CBD",
   },
   "resines-cbd": {
-    title: "Résines CBD Bio Bretagne | Qualité Premium Pas Cher",
+    title: "Résines CBD Bio Bretagne | Qualité Premium Direct Producteur",
     description:
       "Résines CBD bio de qualité premium. Texture et arômes maîtrisés, analyses en laboratoire. Shop CBD breton, livraison rapide en France.",
     label: "Résines CBD",

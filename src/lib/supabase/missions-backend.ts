@@ -11,8 +11,10 @@ import type {
   MissionSubmission,
   MissionSubmissionStatus,
   MissionWithUserStatus,
+  ReferralRewardSettings,
   ReferralPendingReward,
   SocialMission,
+  SocialMissionEditorInput,
 } from "@/types/missions";
 
 const SELECT_SOCIAL_MISSIONS_COLUMNS = [
@@ -60,12 +62,44 @@ const SELECT_REFERRAL_PENDING_COLUMNS = [
   "created_at",
 ].join(",");
 
+const SELECT_REFERRAL_REWARD_SETTINGS_COLUMNS = [
+  "id",
+  "points_amount",
+  "packs_amount",
+  "updated_at",
+].join(",");
+
+const DEFAULT_REFERRAL_REWARD_SETTINGS = {
+  pointsAmount: 50,
+  packsAmount: 5,
+} as const;
+
+const MISSION_ICON_VALUES = new Set<MissionIcon>([
+  "instagram",
+  "facebook",
+  "tiktok",
+  "camera",
+  "star",
+]);
+
+const MISSION_REWARD_TYPE_VALUES = new Set<MissionRewardType>(["packs", "points"]);
+
 // ── Helpers ──
 
 function failIfError(error: { message: string } | null, context: string): void {
   if (error) {
     throw new Error(`[supabase:${context}] ${error.message}`);
   }
+}
+
+function isMissingReferralRewardSettingsTable(error: { message: string } | null): boolean {
+  const message = error?.message ?? "";
+  return (
+    message.includes("referral_reward_settings") &&
+    (message.includes("does not exist") ||
+      message.includes("Could not find the table") ||
+      message.includes("relation"))
+  );
 }
 
 function toText(value: unknown): string {
@@ -84,6 +118,72 @@ function toNullableInt(value: unknown): number | null {
   }
 
   return Math.max(0, Math.round(n));
+}
+
+function toBoolean(value: unknown, fallback = false): boolean {
+  return typeof value === "boolean" ? value : fallback;
+}
+
+function normalizeSlug(value: unknown): string {
+  const raw = toText(value).trim().toLowerCase();
+  if (!raw) {
+    return "";
+  }
+
+  return raw
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function toMissionIcon(value: unknown): MissionIcon {
+  const icon = toText(value) as MissionIcon;
+  return MISSION_ICON_VALUES.has(icon) ? icon : "star";
+}
+
+function toMissionRewardType(value: unknown): MissionRewardType {
+  const rewardType = toText(value) as MissionRewardType;
+  return MISSION_REWARD_TYPE_VALUES.has(rewardType) ? rewardType : "packs";
+}
+
+function normalizeMissionEditorInput(input: SocialMissionEditorInput): SocialMissionEditorInput {
+  const slug = normalizeSlug(input.slug);
+  const title = toText(input.title).trim();
+  const description = toText(input.description).trim();
+  const rewardAmount = Math.max(1, toInt(input.rewardAmount, 1));
+  const maxCompletionsPerUser = Math.max(1, toInt(input.maxCompletionsPerUser, 1));
+  const requiresProof = toBoolean(input.requiresProof, true);
+  const proofInstructions = toText(input.proofInstructions).trim();
+
+  if (!slug) {
+    throw new Error("Le slug de mission est requis.");
+  }
+
+  if (!title) {
+    throw new Error("Le titre de mission est requis.");
+  }
+
+  if (!description) {
+    throw new Error("La description de mission est requise.");
+  }
+
+  if (requiresProof && !proofInstructions) {
+    throw new Error("Les instructions de preuve sont requises.");
+  }
+
+  return {
+    slug,
+    title,
+    description,
+    icon: toMissionIcon(input.icon),
+    rewardType: toMissionRewardType(input.rewardType),
+    rewardAmount,
+    maxCompletionsPerUser,
+    requiresProof,
+    proofInstructions: requiresProof ? proofInstructions : null,
+    isActive: toBoolean(input.isActive, true),
+  };
 }
 
 // ── Row → domain mappers ──
@@ -139,6 +239,14 @@ function rowToReferralPending(row: Record<string, unknown>): ReferralPendingRewa
     packsAmount: toInt(row.packs_amount, 5),
     chosenAt: typeof row.chosen_at === "string" ? row.chosen_at : null,
     createdAt: toText(row.created_at) || new Date().toISOString(),
+  };
+}
+
+function rowToReferralRewardSettings(row: Record<string, unknown>): ReferralRewardSettings {
+  return {
+    pointsAmount: toInt(row.points_amount, DEFAULT_REFERRAL_REWARD_SETTINGS.pointsAmount),
+    packsAmount: toInt(row.packs_amount, DEFAULT_REFERRAL_REWARD_SETTINGS.packsAmount),
+    updatedAt: typeof row.updated_at === "string" ? row.updated_at : null,
   };
 }
 
@@ -366,6 +474,221 @@ export async function getAdminMissionsOverviewFromSupabase(): Promise<AdminMissi
 
 // ── Admin: approve or reject a submission ──
 
+export async function getAdminSocialMissionsFromSupabase(): Promise<SocialMission[]> {
+  const supabase = createSupabaseServiceClient();
+
+  const result = await supabase
+    .from("social_missions")
+    .select(SELECT_SOCIAL_MISSIONS_COLUMNS)
+    .order("sort_order", { ascending: true });
+  failIfError(result.error, "admin list social_missions");
+
+  return (result.data ?? []).map((row) =>
+    rowToMission(row as unknown as Record<string, unknown>),
+  );
+}
+
+export async function createSocialMissionInSupabase(
+  input: SocialMissionEditorInput,
+): Promise<SocialMission> {
+  const supabase = createSupabaseServiceClient();
+  const mission = normalizeMissionEditorInput(input);
+
+  const lastMissionResult = await supabase
+    .from("social_missions")
+    .select("sort_order")
+    .order("sort_order", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  failIfError(lastMissionResult.error, "get last social_mission sort_order");
+
+  const nextSortOrder = toInt(lastMissionResult.data?.sort_order, 0) + 10;
+  const now = new Date().toISOString();
+
+  const result = await supabase
+    .from("social_missions")
+    .insert({
+      slug: mission.slug,
+      title: mission.title,
+      description: mission.description,
+      icon: mission.icon,
+      reward_type: mission.rewardType,
+      reward_amount: mission.rewardAmount,
+      max_completions_per_user: mission.maxCompletionsPerUser,
+      requires_proof: mission.requiresProof,
+      proof_instructions: mission.proofInstructions,
+      is_active: mission.isActive,
+      sort_order: nextSortOrder,
+      updated_at: now,
+    })
+    .select(SELECT_SOCIAL_MISSIONS_COLUMNS)
+    .maybeSingle();
+
+  if (result.error?.message.includes("social_missions_slug_key")) {
+    throw new Error("Une mission avec ce slug existe deja.");
+  }
+  failIfError(result.error, "create social_mission");
+
+  if (!result.data) {
+    throw new Error("La mission n'a pas pu etre creee.");
+  }
+
+  return rowToMission(result.data as unknown as Record<string, unknown>);
+}
+
+export async function updateSocialMissionInSupabase(input: {
+  missionId: string;
+  mission: SocialMissionEditorInput;
+}): Promise<SocialMission> {
+  const missionId = input.missionId.trim();
+  if (!missionId) {
+    throw new Error("Mission invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const mission = normalizeMissionEditorInput(input.mission);
+
+  const result = await supabase
+    .from("social_missions")
+    .update({
+      slug: mission.slug,
+      title: mission.title,
+      description: mission.description,
+      icon: mission.icon,
+      reward_type: mission.rewardType,
+      reward_amount: mission.rewardAmount,
+      max_completions_per_user: mission.maxCompletionsPerUser,
+      requires_proof: mission.requiresProof,
+      proof_instructions: mission.proofInstructions,
+      is_active: mission.isActive,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", missionId)
+    .select(SELECT_SOCIAL_MISSIONS_COLUMNS)
+    .maybeSingle();
+
+  if (result.error?.message.includes("social_missions_slug_key")) {
+    throw new Error("Une mission avec ce slug existe deja.");
+  }
+  failIfError(result.error, "update social_mission");
+
+  if (!result.data) {
+    throw new Error("Mission introuvable.");
+  }
+
+  return rowToMission(result.data as unknown as Record<string, unknown>);
+}
+
+export async function reorderSocialMissionsInSupabase(
+  missionIds: string[],
+): Promise<SocialMission[]> {
+  const cleanedIds = missionIds.map((id) => id.trim()).filter(Boolean);
+  if (cleanedIds.length === 0) {
+    throw new Error("Ordre des missions invalide.");
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const now = new Date().toISOString();
+
+  const results = await Promise.all(
+    cleanedIds.map((missionId, index) =>
+      supabase
+        .from("social_missions")
+        .update({
+          sort_order: (index + 1) * 10,
+          updated_at: now,
+        })
+        .eq("id", missionId),
+    ),
+  );
+
+  for (const result of results) {
+    failIfError(result.error, "reorder social_missions");
+  }
+
+  return getAdminSocialMissionsFromSupabase();
+}
+
+export async function getReferralRewardSettingsFromSupabase(): Promise<ReferralRewardSettings> {
+  const supabase = createSupabaseServiceClient();
+
+  const result = await supabase
+    .from("referral_reward_settings")
+    .select(SELECT_REFERRAL_REWARD_SETTINGS_COLUMNS)
+    .eq("id", "default")
+    .maybeSingle();
+  if (isMissingReferralRewardSettingsTable(result.error)) {
+    return {
+      ...DEFAULT_REFERRAL_REWARD_SETTINGS,
+      updatedAt: null,
+    };
+  }
+  failIfError(result.error, "get referral_reward_settings");
+
+  if (result.data) {
+    return rowToReferralRewardSettings(result.data as unknown as Record<string, unknown>);
+  }
+
+  const insertResult = await supabase
+    .from("referral_reward_settings")
+    .upsert({
+      id: "default",
+      points_amount: DEFAULT_REFERRAL_REWARD_SETTINGS.pointsAmount,
+      packs_amount: DEFAULT_REFERRAL_REWARD_SETTINGS.packsAmount,
+      updated_at: new Date().toISOString(),
+    })
+    .select(SELECT_REFERRAL_REWARD_SETTINGS_COLUMNS)
+    .maybeSingle();
+  failIfError(insertResult.error, "create default referral_reward_settings");
+
+  if (!insertResult.data) {
+    return {
+      ...DEFAULT_REFERRAL_REWARD_SETTINGS,
+      updatedAt: null,
+    };
+  }
+
+  return rowToReferralRewardSettings(insertResult.data as unknown as Record<string, unknown>);
+}
+
+export async function updateReferralRewardSettingsInSupabase(input: {
+  pointsAmount: number;
+  packsAmount: number;
+}): Promise<ReferralRewardSettings> {
+  const pointsAmount = Math.max(
+    1,
+    toInt(input.pointsAmount, DEFAULT_REFERRAL_REWARD_SETTINGS.pointsAmount),
+  );
+  const packsAmount = Math.max(
+    1,
+    toInt(input.packsAmount, DEFAULT_REFERRAL_REWARD_SETTINGS.packsAmount),
+  );
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("referral_reward_settings")
+    .upsert({
+      id: "default",
+      points_amount: pointsAmount,
+      packs_amount: packsAmount,
+      updated_at: new Date().toISOString(),
+    })
+    .select(SELECT_REFERRAL_REWARD_SETTINGS_COLUMNS)
+    .maybeSingle();
+  if (isMissingReferralRewardSettingsTable(result.error)) {
+    throw new Error(
+      "La table referral_reward_settings est absente. Applique d'abord la migration Supabase recente.",
+    );
+  }
+  failIfError(result.error, "update referral_reward_settings");
+
+  if (!result.data) {
+    throw new Error("La configuration de parrainage n'a pas pu etre enregistree.");
+  }
+
+  return rowToReferralRewardSettings(result.data as unknown as Record<string, unknown>);
+}
+
 export async function reviewMissionSubmissionInSupabase(input: {
   submissionId: string;
   action: "approve" | "reject";
@@ -418,7 +741,7 @@ export async function reviewMissionSubmissionInSupabase(input: {
         await grantLotteryTicketsToCustomerInSupabase({
           userId: submission.userId,
           ticketCount: mission.reward_amount,
-          reason: `Mission sociale: ${submission.missionId}`,
+          reason: `Mission: ${submission.missionId}`,
           adminEmail: input.adminEmail,
         });
         rewardGranted = true;
@@ -491,6 +814,7 @@ export async function createReferralPendingRewardInSupabase(input: {
   orderId: string;
 }): Promise<void> {
   const supabase = createSupabaseServiceClient();
+  const settings = await getReferralRewardSettingsFromSupabase();
 
   const result = await supabase
     .from("referral_pending_rewards")
@@ -499,8 +823,8 @@ export async function createReferralPendingRewardInSupabase(input: {
       referee_id: input.refereeId,
       order_id: input.orderId,
       status: "pending",
-      points_amount: 50,
-      packs_amount: 5,
+      points_amount: settings.pointsAmount,
+      packs_amount: settings.packsAmount,
     })
     .select("id")
     .maybeSingle();

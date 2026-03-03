@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import {
   archiveCmsPageByBackend,
+  invalidateCmsPagesCache,
   updateCmsPageByBackend,
 } from "@/lib/cms-pages-backend";
 import { isCmsPagesEnabledServer } from "@/lib/cms-pages-feature";
@@ -30,6 +31,8 @@ export async function PATCH(
       return NextResponse.json({ error: "Page introuvable." }, { status: 404 });
     }
 
+    invalidateCmsPagesCache();
+
     return NextResponse.json(updated);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Payload invalide.";
@@ -54,6 +57,8 @@ export async function DELETE(
   if (!archived) {
     return NextResponse.json({ error: "Page introuvable." }, { status: 404 });
   }
+
+  invalidateCmsPagesCache();
 
   return NextResponse.json(archived);
 }

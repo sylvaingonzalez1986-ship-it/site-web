@@ -106,30 +106,32 @@ export function ProducerTcgModal({
       <div
         className="producer-modal-shell"
         onClick={(event) => event.stopPropagation()}
-        onTouchStart={(event) => {
-          touchStartXRef.current = event.touches[0]?.clientX ?? null;
-        }}
-        onTouchEnd={(event) => {
-          if (touchStartXRef.current === null) {
-            return;
-          }
-
-          const endX = event.changedTouches[0]?.clientX ?? touchStartXRef.current;
-          const diffX = endX - touchStartXRef.current;
-          touchStartXRef.current = null;
-
-          if (Math.abs(diffX) < 50) {
-            return;
-          }
-
-          if (diffX > 0) {
-            goToPrevious();
-          } else {
-            goToNext();
-          }
-        }}
       >
-        <div className="producer-modal-controls">
+        <div
+          className="producer-modal-controls"
+          onTouchStart={(event) => {
+            touchStartXRef.current = event.touches[0]?.clientX ?? null;
+          }}
+          onTouchEnd={(event) => {
+            if (touchStartXRef.current === null) {
+              return;
+            }
+
+            const endX = event.changedTouches[0]?.clientX ?? touchStartXRef.current;
+            const diffX = endX - touchStartXRef.current;
+            touchStartXRef.current = null;
+
+            if (Math.abs(diffX) < 50) {
+              return;
+            }
+
+            if (diffX > 0) {
+              goToPrevious();
+            } else {
+              goToNext();
+            }
+          }}
+        >
           <button
             type="button"
             className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"

@@ -3,8 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Apple,
   ArrowRight,
@@ -21,12 +19,53 @@ import { HomeBadgePromoBand } from "@/components/home/HomeBadgePromoBand";
 import { HomeSeasonGallery } from "@/components/home/HomeSeasonGallery";
 import { HomeTicketPromoBand } from "@/components/home/HomeTicketPromoBand";
 import type { Product } from "@/data/products";
-import { useCmsStore } from "@/hooks/useCmsStore";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { formatPrice } from "@/lib/utils";
-import type { CmsStore, HomeSection } from "@/types/store";
+import type { CmsStore, HomeSection, PublicStoreResponse } from "@/types/store";
 
-gsap.registerPlugin(ScrollTrigger);
+type GsapRuntime = {
+  gsap: (typeof import("gsap"))["gsap"];
+  ScrollTrigger: (typeof import("gsap/ScrollTrigger"))["ScrollTrigger"];
+};
+
+let gsapRuntimePromise: Promise<GsapRuntime> | null = null;
+
+function loadGsapRuntime(): Promise<GsapRuntime> {
+  if (!gsapRuntimePromise) {
+    gsapRuntimePromise = Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
+      ([gsapModule, scrollTriggerModule]) => {
+        const runtime = {
+          gsap: gsapModule.gsap,
+          ScrollTrigger: scrollTriggerModule.ScrollTrigger,
+        };
+        runtime.gsap.registerPlugin(runtime.ScrollTrigger);
+        return runtime;
+      },
+    );
+  }
+
+  return gsapRuntimePromise;
+}
+
+function useGsapRuntime() {
+  const [runtime, setRuntime] = useState<GsapRuntime | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    void loadGsapRuntime().then((resolvedRuntime) => {
+      if (active) {
+        setRuntime(resolvedRuntime);
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return runtime;
+}
+
 type HomeContent = CmsStore["content"]["home"];
 const HERO_ASSET_VERSION = "20260216-4";
 const HERO_FRAME_IDLE_SRC = `/hero-bretagne-bg.png?v=${HERO_ASSET_VERSION}`;
@@ -43,10 +82,15 @@ const HOME_SECTION_ORDER: Record<string, number> = {
   custom: 6,
 };
 
-export function HomePinnedExperience() {
-  const snapTriggerRef = useRef<ScrollTrigger | null>(null);
-  const { store, loading } = useCmsStore();
-  const [isMobileViewport, setIsMobileViewport] = useState<boolean | null>(null);
+type HomePinnedExperienceProps = {
+  initialStore: PublicStoreResponse;
+};
+
+export function HomePinnedExperience({ initialStore }: HomePinnedExperienceProps) {
+  const gsapRuntime = useGsapRuntime();
+  const snapTriggerRef = useRef<{ kill: () => void } | null>(null);
+  const store = initialStore;
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactMessage, setContactMessage] = useState("");
@@ -86,9 +130,11 @@ export function HomePinnedExperience() {
   }, []);
 
   useEffect(() => {
-    if (isMobileViewport !== false) {
+    if (isMobileViewport !== false || !gsapRuntime) {
       return;
     }
+
+    const { gsap, ScrollTrigger } = gsapRuntime;
 
     const mm = gsap.matchMedia();
 
@@ -153,7 +199,7 @@ export function HomePinnedExperience() {
       snapTriggerRef.current?.kill();
       snapTriggerRef.current = null;
     };
-  }, [homeSectionsKey, isMobileViewport, store.updatedAt]);
+  }, [gsapRuntime, homeSectionsKey, isMobileViewport, store.updatedAt]);
 
   const submitHomeContact = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -355,16 +401,6 @@ export function HomePinnedExperience() {
     }
   };
 
-  if (isMobileViewport === null || loading) {
-    return (
-      <section className="section-band bg-mint halftone-overlay paper-grain pt-28">
-        <div className="retro-container">
-          <div className="cartoon-border bg-cream p-6 text-sm text-charcoal">Chargement...</div>
-        </div>
-      </section>
-    );
-  }
-
   if (isMobileViewport) {
     return (
       <div className="relative overflow-x-hidden">
@@ -476,9 +512,13 @@ function MobileHeroSection({ home, zIndex }: { home: HomeContent; zIndex: number
 
           <div className="hero-circle-group relative mx-auto mt-4 h-[72vw] w-[72vw] max-h-[330px] max-w-[330px] overflow-hidden rounded-full bg-cream cartoon-border outline outline-[6px] outline-white">
             <div className="absolute inset-0 z-0 bg-cream" aria-hidden="true" />
-            <div
-              className="absolute inset-0 z-[1] bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${HERO_FRAME_IDLE_SRC})` }}
+            <Image
+              src={HERO_FRAME_IDLE_SRC}
+              alt=""
+              fill
+              priority
+              sizes="72vw"
+              className="absolute inset-0 z-[1] object-cover"
               aria-hidden="true"
             />
             <div className="absolute inset-0 z-[2] bg-gradient-to-t from-[#1a1a1a]/10 via-transparent to-transparent" />
@@ -513,9 +553,12 @@ function MobileLegalSection({ home, zIndex }: { home: HomeContent; zIndex: numbe
       <div className="retro-container">
         <div className="cartoon-border bg-cream p-5">
           <div className="relative mx-auto h-[68vw] w-[68vw] max-h-[310px] max-w-[310px] overflow-hidden rounded-full bg-cream cartoon-border outline outline-[6px] outline-white">
-            <div
-              className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${LEGAL_FRAME_BG_SRC})` }}
+            <Image
+              src={LEGAL_FRAME_BG_SRC}
+              alt=""
+              fill
+              sizes="68vw"
+              className="absolute inset-0 z-0 object-cover"
               aria-hidden="true"
             />
             <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/15 via-transparent to-transparent" />
@@ -623,6 +666,7 @@ function MobileProductsSection({
 }
 
 function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number }) {
+  const gsapRuntime = useGsapRuntime();
   const sectionRef = useRef<HTMLElement>(null);
   const mascotRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -635,6 +679,11 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
     .slice(0, 3);
 
   useLayoutEffect(() => {
+    if (!gsapRuntime) {
+      return;
+    }
+
+    const { gsap } = gsapRuntime;
     const section = sectionRef.current;
     const mascot = mascotRef.current;
     const card = cardRef.current;
@@ -651,40 +700,11 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
     const mm = gsap.matchMedia();
     const ctx = gsap.context(() => {
       mm.add("(min-width: 769px)", () => {
-        const loadTl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-        loadTl.fromTo(
-          card,
-          { x: "-40vw", scale: 0.9, opacity: 0 },
-          { x: 0, scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.4)" },
-        );
-
-        loadTl.fromTo(
-          mascot,
-          { y: "20vh", scale: 0.85, opacity: 0 },
-          { y: 0, scale: 1, opacity: 1, duration: 0.9, ease: "back.out(1.6)" },
-          "-=0.5",
-        );
-
-        loadTl.fromTo(
-          lines,
-          { x: "35vw", opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.7, stagger: 0.08 },
-          "-=0.6",
-        );
-
-        loadTl.fromTo(
-          subheadline,
-          { y: "6vh", opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6 },
-          "-=0.4",
-        );
-        loadTl.fromTo(
-          ctaChildren,
-          { y: "6vh", opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6, stagger: 0.06 },
-          "-=0.3",
-        );
+        gsap.set(card, { x: 0, scale: 1, opacity: 1 });
+        gsap.set(mascot, { y: 0, scale: 1, opacity: 1 });
+        gsap.set(lines, { x: 0, y: 0, opacity: 1 });
+        gsap.set(subheadline, { y: 0, opacity: 1 });
+        gsap.set(ctaChildren, { y: 0, opacity: 1 });
 
         const scrollTl = gsap.timeline({
           scrollTrigger: {
@@ -730,33 +750,13 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
           0.74,
         );
       });
-
-      mm.add("(max-width: 768px)", () => {
-        const mobileTargets = [card, mascot, ...Array.from(lines), subheadline, ...ctaChildren];
-        gsap.fromTo(
-          mobileTargets,
-          { autoAlpha: 0, y: 24 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.55,
-            stagger: 0.06,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 80%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      });
     }, section);
 
     return () => {
       mm.revert();
       ctx.revert();
     };
-  }, []);
+  }, [gsapRuntime]);
 
   return (
     <section
@@ -770,9 +770,13 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
           className="hero-circle-group absolute left-[8vw] top-[15vh] h-[38vw] w-[38vw] max-h-[70vh] max-w-[70vh] overflow-hidden rounded-full bg-cream cartoon-border outline outline-[8px] outline-white z-10"
         >
           <div className="absolute inset-0 z-0 bg-cream" aria-hidden="true" />
-          <div
-            className="hero-circle-idle absolute inset-0 z-[1] bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${HERO_FRAME_IDLE_SRC})` }}
+          <Image
+            src={HERO_FRAME_IDLE_SRC}
+            alt=""
+            fill
+            priority
+            sizes="(max-width: 768px) 60vw, 34vw"
+            className="hero-circle-idle absolute inset-0 z-[1] object-cover"
             aria-hidden="true"
           />
           <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/10 via-transparent to-transparent" />
@@ -840,6 +844,7 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
 }
 
 function LegalPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number }) {
+  const gsapRuntime = useGsapRuntime();
   const sectionRef = useRef<HTMLElement>(null);
   const mascotRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
@@ -847,6 +852,11 @@ function LegalPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: numbe
   const pillsRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
+    if (!gsapRuntime) {
+      return;
+    }
+
+    const { gsap } = gsapRuntime;
     const section = sectionRef.current;
     const mascot = mascotRef.current;
     const headline = headlineRef.current;
@@ -938,7 +948,7 @@ function LegalPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: numbe
       mm.revert();
       ctx.revert();
     };
-  }, []);
+  }, [gsapRuntime]);
 
   return (
     <section
@@ -950,9 +960,12 @@ function LegalPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: numbe
         ref={mascotRef}
         className="legal-circle-group pinned-mascot absolute right-[8vw] top-[15vh] h-[38vw] w-[38vw] max-h-[70vh] max-w-[70vh] overflow-hidden rounded-full bg-cream cartoon-border outline outline-[8px] outline-white z-10"
       >
-        <div
-          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${LEGAL_FRAME_BG_SRC})` }}
+        <Image
+          src={LEGAL_FRAME_BG_SRC}
+          alt=""
+          fill
+          sizes="(max-width: 768px) 60vw, 34vw"
+          className="absolute inset-0 z-0 object-cover"
           aria-hidden="true"
         />
         <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/15 via-transparent to-transparent" />
@@ -1012,6 +1025,7 @@ function ProductsPinnedSection({
   home: HomeContent;
   zIndex: number;
 }) {
+  const gsapRuntime = useGsapRuntime();
   const sectionRef = useRef<HTMLElement>(null);
   const mascotRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
@@ -1019,6 +1033,11 @@ function ProductsPinnedSection({
   const ctaRef = useRef<HTMLAnchorElement>(null);
 
   useLayoutEffect(() => {
+    if (!gsapRuntime) {
+      return;
+    }
+
+    const { gsap } = gsapRuntime;
     const section = sectionRef.current;
     const mascot = mascotRef.current;
     const headline = headlineRef.current;
@@ -1110,7 +1129,7 @@ function ProductsPinnedSection({
       mm.revert();
       ctx.revert();
     };
-  }, []);
+  }, [gsapRuntime]);
 
   return (
     <section
@@ -1123,9 +1142,12 @@ function ProductsPinnedSection({
         ref={mascotRef}
         className="products-circle-group pinned-mascot absolute left-[8vw] top-[15vh] h-[38vw] w-[38vw] max-h-[70vh] max-w-[70vh] overflow-hidden rounded-full bg-cream cartoon-border outline outline-[8px] outline-white z-10"
       >
-        <div
-          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${PRODUCTS_FRAME_BG_SRC})` }}
+        <Image
+          src={PRODUCTS_FRAME_BG_SRC}
+          alt=""
+          fill
+          sizes="(max-width: 768px) 60vw, 34vw"
+          className="absolute inset-0 z-0 object-cover"
           aria-hidden="true"
         />
         <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/12 via-transparent to-transparent" />
@@ -1203,6 +1225,7 @@ function AppPinnedSection({
   zIndex: number;
   home: HomeContent;
 }) {
+  const gsapRuntime = useGsapRuntime();
   const sectionRef = useRef<HTMLElement>(null);
   const mascotRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
@@ -1210,6 +1233,11 @@ function AppPinnedSection({
   const badgesRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
+    if (!gsapRuntime) {
+      return;
+    }
+
+    const { gsap } = gsapRuntime;
     const section = sectionRef.current;
     const mascot = mascotRef.current;
     const headline = headlineRef.current;
@@ -1311,7 +1339,7 @@ function AppPinnedSection({
       mm.revert();
       ctx.revert();
     };
-  }, []);
+  }, [gsapRuntime]);
 
   return (
     <section

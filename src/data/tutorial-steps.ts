@@ -168,7 +168,7 @@ export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "missions-intro",
     title: "Les missions dans ton profil",
-    text: "Le profil contient aussi des missions sociales: Instagram, Facebook, TikTok et d'autres actions ponctuelles.",
+    text: "Le profil contient aussi des missions: Instagram, Facebook, TikTok et d'autres actions ponctuelles.",
     details: [
       "Chaque mission validee peut te rapporter des packs ou des points.",
       "Tu peux les utiliser pour accelerer ta collection ou ta fidelite.",

@@ -2,7 +2,12 @@ import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { logAuditEvent } from "@/lib/audit-log";
 import { cleanupUnusedBlogUploads } from "@/lib/blog-image-storage";
-import { readStoreByBackend, writeStoreByBackend } from "@/lib/data-backend";
+import {
+  invalidateBlogPostsCache,
+  invalidatePublicStoreCache,
+  readStoreByBackend,
+  writeStoreByBackend,
+} from "@/lib/data-backend";
 import { cleanupUnusedProductAnalyses } from "@/lib/product-analysis-storage";
 import { cleanupUnusedProductUploads } from "@/lib/product-image-storage";
 import { cleanupUnusedProductVideoUploads } from "@/lib/product-video-storage";
@@ -98,6 +103,9 @@ export async function PUT(request: Request) {
     } catch (error) {
       console.error("Erreur nettoyage images CMS:", error);
     }
+
+    invalidatePublicStoreCache();
+    invalidateBlogPostsCache();
 
     return NextResponse.json(saved);
   } catch (error) {

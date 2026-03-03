@@ -1,5 +1,7 @@
 import "server-only";
 
+import { revalidateTag, unstable_cache } from "next/cache";
+
 import { HOME_TUTORIAL_STEPS } from "@/data/tutorial-steps";
 import {
   normalizeCmsSlug,
@@ -20,6 +22,42 @@ import {
   updateCmsPageInSupabase,
 } from "@/lib/supabase/cms-pages-backend";
 import type { CmsPage, CmsPageCreateInput, CmsPageUpdateInput } from "@/types/cms-pages";
+
+export const CMS_PAGES_CACHE_TAG = "cms-pages";
+export const CMS_TUTORIAL_PAGES_CACHE_TAG = "cms-tutorial-pages";
+
+const readPublishedCmsPagesCached = unstable_cache(
+  async () => readPublishedCmsPagesFromSupabase(),
+  ["read-published-cms-pages"],
+  {
+    revalidate: 60,
+    tags: [CMS_PAGES_CACHE_TAG],
+  },
+);
+
+const readTutorialCmsPagesCached = unstable_cache(
+  async () => {
+    const adminPages = await readAdminCmsPagesFromSupabase();
+    const seeded = await ensureTutorialCmsPagesSeeded(adminPages);
+    const sourcePages = seeded ? await readAdminCmsPagesFromSupabase() : adminPages;
+    const allowedTutorialSlugs = new Set(
+      buildTutorialCmsPageSeedInputs(HOME_TUTORIAL_STEPS)
+        .map((page) => normalizeCmsSlug(page.slug))
+        .filter(Boolean),
+    );
+
+    return sourcePages.filter(
+      (page) =>
+        isTutorialCmsSlug(page.slug) &&
+        allowedTutorialSlugs.has(normalizeCmsSlug(page.slug)),
+    );
+  },
+  ["read-tutorial-cms-pages"],
+  {
+    revalidate: 60,
+    tags: [CMS_TUTORIAL_PAGES_CACHE_TAG, CMS_PAGES_CACHE_TAG],
+  },
+);
 
 function ensureCmsPagesEnabled(): void {
   if (!isCmsPagesEnabledServer()) {
@@ -98,7 +136,7 @@ export async function readPublishedCmsPagesByBackend(): Promise<CmsPage[]> {
     return [];
   }
 
-  return readPublishedCmsPagesFromSupabase();
+  return readPublishedCmsPagesCached();
 }
 
 export async function readTutorialCmsPagesByBackend(): Promise<CmsPage[]> {
@@ -106,18 +144,7 @@ export async function readTutorialCmsPagesByBackend(): Promise<CmsPage[]> {
     return [];
   }
 
-  const adminPages = await readAdminCmsPagesFromSupabase();
-  const seeded = await ensureTutorialCmsPagesSeeded(adminPages);
-  const sourcePages = seeded ? await readAdminCmsPagesFromSupabase() : adminPages;
-  const allowedTutorialSlugs = new Set(
-    buildTutorialCmsPageSeedInputs(HOME_TUTORIAL_STEPS)
-      .map((page) => normalizeCmsSlug(page.slug))
-      .filter(Boolean),
-  );
-
-  return sourcePages.filter(
-    (page) => isTutorialCmsSlug(page.slug) && allowedTutorialSlugs.has(normalizeCmsSlug(page.slug)),
-  );
+  return readTutorialCmsPagesCached();
 }
 
 export async function getPublishedCmsPageBySlugByBackend(
@@ -154,4 +181,9 @@ export async function updateCmsPageByBackend(
 export async function archiveCmsPageByBackend(pageId: string): Promise<CmsPage | null> {
   ensureCmsPagesEnabled();
   return archiveCmsPageInSupabase(pageId);
+}
+
+export function invalidateCmsPagesCache(): void {
+  revalidateTag(CMS_PAGES_CACHE_TAG, "max");
+  revalidateTag(CMS_TUTORIAL_PAGES_CACHE_TAG, "max");
 }

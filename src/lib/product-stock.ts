@@ -123,8 +123,14 @@ function getRemainingGramsForSimpleProduct(product: Product): number | null {
   }
 
   const stockQuantity = normalizeStockQuantity(product.stockQuantity);
-  const unitWeightGrams = normalizeWeightGrams(product.weightGrams);
-  if (stockQuantity === null || unitWeightGrams === null) {
+  if (stockQuantity === null) {
+    return null;
+  }
+
+  const unitWeightGrams =
+    normalizeWeightGrams(product.weightGrams) ??
+    (isLowStockEligibleCategory(product) ? 1 : null);
+  if (unitWeightGrams === null) {
     return null;
   }
 

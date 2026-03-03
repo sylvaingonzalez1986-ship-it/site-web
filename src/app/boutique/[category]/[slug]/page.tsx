@@ -10,6 +10,8 @@ import { getSiteUrl } from "@/lib/site-url";
 import { isRemoteImageUrl } from "@/lib/image-source";
 import type { Product } from "@/data/products";
 
+export const revalidate = 120;
+
 const categorySlugMap: Record<string, { slug: string; label: string }> = {
   fleurs: { slug: "fleurs-cbd", label: "Fleurs CBD" },
   resines: { slug: "resines-cbd", label: "Résines CBD" },
@@ -173,7 +175,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           { name: product.name, url: canonicalUrl },
         ]}
       />
-      <ProductJsonLd product={product} />
+      <ProductJsonLd product={product} producer={producer} />
 
       <div className="retro-container">
         {/* Breadcrumb navigation */}
@@ -266,16 +268,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {product.description}
               </p>
 
-              {product.analysisPdf && (
-                <a
-                  href={product.analysisPdf}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-cartoon btn-secondary mt-4 inline-flex h-10 w-fit items-center gap-2 px-4 text-xs"
-                >
-                  📄 Voir l&apos;analyse laboratoire
-                </a>
-              )}
 
               <ProductDetailActions
                 product={product}

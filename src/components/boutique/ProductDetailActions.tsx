@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
+import { ProductAnalysisModal } from "@/components/boutique/ProductAnalysisModal";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import type { Product } from "@/data/products";
@@ -34,6 +35,8 @@ export function ProductDetailActions({
   const [qty, setQty] = useState(1);
   const [selectedVariantId, setSelectedVariantId] = useState<string>("");
   const [stockError, setStockError] = useState<string | null>(null);
+  const [analysisOpen, setAnalysisOpen] = useState(false);
+  const closeAnalysis = useCallback(() => setAnalysisOpen(false), []);
 
   const selectableVariants = getSelectableVariantOptions(product);
   const hasVariants = selectableVariants.length > 0;
@@ -117,6 +120,24 @@ export function ProductDetailActions({
           <Plus size={16} /> {inStock ? "Ajouter au panier" : "Rupture de stock"}
         </button>
       </div>
+
+      {product.analysisPdf && (
+        <>
+          <button
+            type="button"
+            onClick={() => setAnalysisOpen(true)}
+            className="btn-cartoon btn-secondary inline-flex h-10 w-fit items-center gap-2 px-4 text-xs"
+          >
+            📄 Voir l&apos;analyse laboratoire
+          </button>
+          <ProductAnalysisModal
+            open={analysisOpen}
+            productName={product.name}
+            analysisUrl={product.analysisPdf}
+            onClose={closeAnalysis}
+          />
+        </>
+      )}
     </div>
   );
 }

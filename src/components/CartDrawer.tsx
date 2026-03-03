@@ -1,14 +1,12 @@
 "use client";
 
 import { Minus, Plus, Trash2 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CheckoutButton } from "@/components/CheckoutButton";
-import { MondialRelayPicker } from "@/components/MondialRelayPicker";
 import { useCart } from "@/context/CartContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useCmsStore } from "@/hooks/useCmsStore";
-import { useCustomerSession } from "@/hooks/useCustomerSession";
 import { getCustomerCheckoutEligibility } from "@/lib/customer-checkout-eligibility";
 import {
   getBadgeDiscountPercent,
@@ -28,6 +26,16 @@ import {
   type MondialRelayPoint,
 } from "@/lib/shipping";
 import { formatPrice } from "@/lib/utils";
+
+const CheckoutButton = dynamic(
+  () => import("@/components/CheckoutButton").then((mod) => mod.CheckoutButton),
+  { ssr: false },
+);
+
+const MondialRelayPicker = dynamic(
+  () => import("@/components/MondialRelayPicker").then((mod) => mod.MondialRelayPicker),
+  { ssr: false },
+);
 
 type CartDrawerProps = {
   open: boolean;
@@ -65,13 +73,18 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     totalPrice,
     isAuthenticated,
     authLoading,
+    sessionLoading,
+    user,
+    orders,
+    loyalty,
+    lotteryInventory,
+    lotteryConfig,
     addToCart,
     decreaseQuantity,
     setQuantity,
     removeFromCart,
     clearCart,
   } = useCart();
-  const { user, orders, loyalty, lotteryInventory, lotteryConfig, loading: customerSessionLoading } = useCustomerSession();
   const { store: cmsStore } = useCmsStore();
 
   const [shippingName, setShippingName] = useState("");
@@ -152,7 +165,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     () =>
       isAuthenticated &&
       !authLoading &&
-      !customerSessionLoading &&
+      !sessionLoading &&
       !promoPreview &&
       !lotteryPreview &&
       isReferralFirstOrderDiscountEligible({
@@ -163,7 +176,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       }),
     [
       authLoading,
-      customerSessionLoading,
+      sessionLoading,
       hasManualDiscountChoice,
       hasPaidOrders,
       isAuthenticated,

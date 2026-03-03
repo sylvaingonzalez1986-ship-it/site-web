@@ -13,6 +13,7 @@ import {
 type LoyaltyBadgeSummaryProps = {
   title?: string;
   description?: string;
+  headingLevel?: "h1" | "h2";
 };
 
 const publicLoyaltySummary = buildEmptyLoyaltySummary();
@@ -20,13 +21,15 @@ const publicLoyaltySummary = buildEmptyLoyaltySummary();
 export function LoyaltyBadgeSummary({
   title = "Resume des badges",
   description = "1 EUR depense = 1 point. Monte de palier pour debloquer plus d'avantages.",
+  headingLevel = "h1",
 }: LoyaltyBadgeSummaryProps) {
   const { store } = useCmsStore();
   const profileContent = store.content.profile;
+  const Heading = headingLevel;
 
   return (
     <article className="cartoon-border bg-cream p-6 md:p-8">
-      <h1 className="section-title">{title}</h1>
+      <Heading className="section-title">{title}</Heading>
       <p className="mt-3 text-sm leading-relaxed text-charcoal md:text-base">{description}</p>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">

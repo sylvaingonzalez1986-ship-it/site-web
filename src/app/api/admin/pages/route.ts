@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import {
   createCmsPageByBackend,
+  invalidateCmsPagesCache,
   readAdminCmsPagesByBackend,
 } from "@/lib/cms-pages-backend";
 import { isCmsPagesEnabledServer } from "@/lib/cms-pages-feature";
@@ -34,6 +35,7 @@ export async function POST(request: Request) {
   try {
     const payload = (await request.json()) as CmsPageCreateInput;
     const page = await createCmsPageByBackend(payload);
+    invalidateCmsPagesCache();
     return NextResponse.json(page, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Payload invalide.";

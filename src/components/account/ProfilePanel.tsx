@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Award, Copy, Gift, ShoppingBag, Star, Tag, User as UserIcon, Users, type LucideIcon } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { LoyaltyBadgeSummary } from "@/components/account/LoyaltyBadgeSummary";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
@@ -49,7 +49,6 @@ type ProfileTabDefinition = {
 
 const profileTabs: ProfileTabDefinition[] = [
   { key: "fidelite", label: "Fidélité", icon: Award },
-  { key: "missions", label: "Missions", icon: Star },
   { key: "commandes", label: "Commandes", icon: ShoppingBag },
   { key: "infos", label: "Mes infos", icon: UserIcon },
   { key: "promos", label: "Promos", icon: Tag },
@@ -119,6 +118,7 @@ export function ProfilePanel() {
   const [referralStatus, setReferralStatus] = useState<string | null>(null);
   const [referralError, setReferralError] = useState<string | null>(null);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
+  const activePanelRef = useRef<HTMLElement | null>(null);
 
   const sortedOrders = useMemo(
     () => [...orders].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)),
@@ -209,6 +209,32 @@ export function ProfilePanel() {
       active = false;
     };
   }, [user]);
+
+  useEffect(() => {
+    if (activeTab !== "missions") {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      const panel = activePanelRef.current;
+      if (!panel) {
+        return;
+      }
+
+      const navbar = document.querySelector<HTMLElement>("header[data-tutorial='navbar']");
+      const navbarOffset = navbar ? navbar.getBoundingClientRect().height + 12 : 24;
+      const top = panel.getBoundingClientRect().top + window.scrollY - navbarOffset;
+
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: "smooth",
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [activeTab]);
 
   if (loading) {
     return (
@@ -350,6 +376,20 @@ export function ProfilePanel() {
   };
 
   const setActiveTabAndSync = (tab: ProfileTab) => {
+    if (tab === "missions" && activeTab === "missions") {
+      const panel = activePanelRef.current;
+      if (panel && typeof window !== "undefined") {
+        const navbar = document.querySelector<HTMLElement>("header[data-tutorial='navbar']");
+        const navbarOffset = navbar ? navbar.getBoundingClientRect().height + 12 : 24;
+        const top = panel.getBoundingClientRect().top + window.scrollY - navbarOffset;
+        window.scrollTo({
+          top: Math.max(0, top),
+          behavior: "smooth",
+        });
+      }
+      return;
+    }
+
     setActiveTab(tab);
 
     const nextParams =
@@ -399,6 +439,37 @@ export function ProfilePanel() {
               <p className="text-xs text-charcoal">Membre depuis le {memberSince}</p>
             </div>
           </div>
+
+          <button
+            id="profile-missions-shortcut"
+            type="button"
+            onClick={() => setActiveTabAndSync("missions")}
+            className={`mt-5 block w-full rounded-[0.2rem] border-[3px] border-[#1a1a1a] p-4 text-left transition-all duration-200 ${
+              activeTab === "missions"
+                ? "bg-[linear-gradient(135deg,#fff1c9_0%,#f6ead2_100%)] shadow-[8px_8px_0_rgba(26,26,26,0.22)]"
+                : "bg-[linear-gradient(135deg,#fff7e4_0%,#f5eee0_100%)] shadow-[6px_6px_0_rgba(26,26,26,0.18)] hover:-translate-y-[2px] hover:shadow-[8px_8px_0_rgba(26,26,26,0.22)]"
+            }`}
+          >
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[linear-gradient(180deg,#f6cf81_0%,#ecb95d_100%)] text-ink shadow-[0_2px_0_rgba(255,255,255,0.35)_inset]">
+                  <Star className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-charcoal/80">
+                    Profil
+                  </p>
+                  <p className="font-display text-2xl leading-none text-ink">Missions</p>
+                  <p className="text-sm text-charcoal">
+                    Instagram, TikTok et autres actions pour gagner des packs ou des points.
+                  </p>
+                </div>
+              </div>
+              <span className="inline-flex shrink-0 items-center rounded-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-ink shadow-[0_1px_0_rgba(255,255,255,0.45)_inset]">
+                Voir les missions
+              </span>
+            </div>
+          </button>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <div className="card-cartoon bg-white p-4">
@@ -480,9 +551,12 @@ export function ProfilePanel() {
         </article>
 
         <article
+          ref={activePanelRef}
           id={`profile-tabpanel-${activeTab}`}
-          role="tabpanel"
-          aria-labelledby={`profile-tab-${activeTab}`}
+          role={activeTab === "missions" ? undefined : "tabpanel"}
+          aria-labelledby={
+            activeTab === "missions" ? "profile-missions-shortcut" : `profile-tab-${activeTab}`
+          }
           className="cartoon-border bg-cream p-6 md:p-8"
         >
           {activeTab === "fidelite" && (

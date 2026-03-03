@@ -7,6 +7,8 @@ import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
 import type { BlogPageSection } from "@/types/store";
 
+export const revalidate = 120;
+
 export const metadata: Metadata = {
   title: "Blog CBD | Guides, Actualités et Conseils Chanvre Bio Breton",
   description:

@@ -1,11 +1,11 @@
-﻿"use client";
-
-import { useMemo } from "react";
-import { useParams } from "next/navigation";
+﻿import type { ReactNode } from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { CollectionPageJsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { type ProductCategory } from "@/data/products";
-import { useCmsStore } from "@/hooks/useCmsStore";
+import { readPublicStoreByBackend } from "@/lib/data-backend";
+import { getSiteUrl } from "@/lib/site-url";
 import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
 import { dedupeProducts } from "@/lib/product-dedup";
 import type { Producer } from "@/types/store";
@@ -17,50 +17,64 @@ const categoryMap: Record<string, { filter: ProductCategory; label: string }> = 
   "e-liquide-cbd": { filter: "e-liquide", label: "E-liquides CBD" },
   "cosmetiques-cbd": { filter: "cosmetiques", label: "Cosmetiques CBD" },
   "tisane-cbd": { filter: "alimentaire", label: "Tisane CBD" },
-  "alimentaire-cbd": { filter: "alimentaire", label: "Tisane CBD" }, // legacy slug
+  "alimentaire-cbd": { filter: "alimentaire", label: "Tisane CBD" },
   "miam-cbd": { filter: "miam", label: "Miam CBD" },
   "accessoires-cbd": { filter: "accessoires", label: "Accessoires CBD" },
 };
 
-export default function CategoryPage() {
-  const params = useParams();
-  const slug = params.category as string;
-  const { store, loading } = useCmsStore();
+const relatedCategoryLinks: Record<string, string[]> = {
+  "fleurs-cbd": ["resines-cbd", "huiles-cbd", "tisane-cbd"],
+  "resines-cbd": ["fleurs-cbd", "huiles-cbd"],
+  "huiles-cbd": ["fleurs-cbd", "cosmetiques-cbd", "tisane-cbd"],
+  "e-liquide-cbd": ["fleurs-cbd", "resines-cbd"],
+  "cosmetiques-cbd": ["huiles-cbd", "tisane-cbd"],
+  "tisane-cbd": ["huiles-cbd", "miam-cbd"],
+  "alimentaire-cbd": ["huiles-cbd", "miam-cbd"],
+  "miam-cbd": ["tisane-cbd", "fleurs-cbd"],
+  "accessoires-cbd": ["fleurs-cbd", "huiles-cbd"],
+};
+
+export function generateStaticParams() {
+  return Object.keys(categoryMap).map((category) => ({ category }));
+}
+
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}) {
+  const { category: slug } = await params;
   const categoryInfo = categoryMap[slug];
-  const uniqueProducts = useMemo(() => dedupeProducts(store.products), [store.products]);
-  const ownProducer = useMemo(() => getOwnProducer(store.content.boutique), [store.content.boutique]);
-
-  const producersById = useMemo(
-    () => new Map<string, Producer>(store.producers.map((producer) => [producer.id, producer])),
-    [store.producers],
-  );
-
-  const filteredProducts = useMemo(
-    () =>
-      categoryInfo
-        ? uniqueProducts.filter((product) => product.category === categoryInfo.filter)
-        : [],
-    [categoryInfo, uniqueProducts],
-  );
 
   if (!categoryInfo) {
-    return (
-      <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
-        <div className="retro-container">
-          <div className="cartoon-border bg-cream p-8 text-center">
-            <h1 className="section-title text-ink">Categorie introuvable</h1>
-            <p className="mt-4 text-lg text-charcoal">Cette categorie n&apos;existe pas.</p>
-            <Link href="/boutique" className="btn-cartoon btn-primary mt-6 inline-block">
-              Retour a la boutique
-            </Link>
-          </div>
-        </div>
-      </section>
-    );
+    notFound();
   }
+
+  const store = await readPublicStoreByBackend();
+  const uniqueProducts = dedupeProducts(store.products);
+  const ownProducer = getOwnProducer(store.content.boutique);
+  const producersById = new Map<string, Producer>(
+    store.producers.map((producer) => [producer.id, producer]),
+  );
+
+  const filteredProducts = uniqueProducts.filter(
+    (product) => product.category === categoryInfo.filter,
+  );
+  const baseUrl = getSiteUrl();
+  const categoryDescription = getCategoryDescription(slug);
+  const relatedLinks = (relatedCategoryLinks[slug] ?? [])
+    .map((relatedSlug) => ({ href: `/boutique/${relatedSlug}`, label: categoryMap[relatedSlug]?.label }))
+    .filter((link): link is { href: string; label: string } => Boolean(link.label));
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
+      <CollectionPageJsonLd
+        name={categoryInfo.label}
+        description={categoryDescription}
+        url={`${baseUrl}/boutique/${slug}`}
+        products={filteredProducts}
+      />
+
       <div className="retro-container">
         <div className="cartoon-border bg-cream p-8">
           <nav className="mb-4 text-sm text-charcoal" aria-label="Fil d'Ariane">
@@ -77,7 +91,7 @@ export default function CategoryPage() {
 
           <h1 className="section-title text-ink">{categoryInfo.label}</h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-charcoal">
-            {getCategoryDescription(slug)}
+            {categoryDescription}
           </p>
         </div>
 
@@ -93,7 +107,7 @@ export default function CategoryPage() {
           ))}
         </div>
 
-        {filteredProducts.length === 0 && !loading && (
+        {filteredProducts.length === 0 && (
           <div className="cartoon-border mt-6 bg-cream p-6 text-center text-charcoal">
             Aucun produit dans cette catégorie pour le moment.
           </div>
@@ -104,7 +118,22 @@ export default function CategoryPage() {
           <div className="mt-4 space-y-3 text-charcoal leading-relaxed">{getCategorySeoText(slug)}</div>
         </div>
 
-
+        {relatedLinks.length > 0 && (
+          <div className="cartoon-border mt-8 bg-cream p-6">
+            <h2 className="font-display text-2xl text-ink">Vous aimerez aussi</h2>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {relatedLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="pill-cartoon inline-flex min-h-[40px] items-center justify-center px-4 text-xs uppercase tracking-[0.08em]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -149,8 +178,8 @@ function getCategorySeoTitle(slug: string): string {
   return titles[slug] ?? "";
 }
 
-function getCategorySeoText(slug: string): React.ReactNode {
-  const texts: Record<string, React.ReactNode> = {
+function getCategorySeoText(slug: string): ReactNode {
+  const texts: Record<string, ReactNode> = {
     "fleurs-cbd": (
       <>
         <p>

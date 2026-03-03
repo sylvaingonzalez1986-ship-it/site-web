@@ -23,7 +23,11 @@ const GAP = 16; // matches gap-4 (1rem)
  * (done by the parent passing duplicated elements) and silently
  * reset scrollLeft when crossing the seam.
  */
-export function ProducerCarousel({ itemCount, loop = true, children }: ProducerCarouselProps) {
+export function ProducerCarousel({
+  itemCount,
+  loop = true,
+  children,
+}: ProducerCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
   const dirRef = useRef<-1 | 1>(1);
@@ -56,23 +60,19 @@ export function ProducerCarousel({ itemCount, loop = true, children }: ProducerC
     }
   }, [getRealWidth]);
 
-  /* ---- rAF scroll loop ---- */
-  const tick = useCallback(() => {
+  function tick() {
     const track = trackRef.current;
     if (!track) return;
     track.scrollLeft += dirRef.current * SCROLL_SPEED;
     clampScroll();
     rafRef.current = requestAnimationFrame(tick);
-  }, [clampScroll]);
+  }
 
-  const startScroll = useCallback(
-    (direction: -1 | 1) => {
-      dirRef.current = direction;
-      if (rafRef.current !== null) return; // already running
-      rafRef.current = requestAnimationFrame(tick);
-    },
-    [tick],
-  );
+  function startScroll(direction: -1 | 1) {
+    dirRef.current = direction;
+    if (rafRef.current !== null) return; // already running
+    rafRef.current = requestAnimationFrame(tick);
+  }
 
   const stopScroll = useCallback(() => {
     if (rafRef.current !== null) {

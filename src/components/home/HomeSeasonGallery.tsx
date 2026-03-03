@@ -50,9 +50,12 @@ export function HomeSeasonGallery({
             <div className="relative mx-auto h-[230px] w-[230px] sm:h-[270px] sm:w-[270px]">
               <div className="absolute -left-2 -top-2 h-full w-full rounded-[2rem] border-2 border-[#1a1a1a]/80 bg-[#ead6b6]" />
               <div className="absolute inset-0 overflow-hidden rounded-[2rem] border-[3px] border-[#1a1a1a] bg-[#f7f4ee] shadow-[6px_6px_0_rgba(26,26,26,0.2)]">
-                <div
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                  style={{ backgroundImage: `url(${decorativeBackgroundSrc})` }}
+                <Image
+                  src={decorativeBackgroundSrc}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 230px, 270px"
+                  className="absolute inset-0 object-cover"
                   aria-hidden="true"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]/20 via-transparent to-transparent" />

@@ -6,6 +6,8 @@ import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getBlogPostBySlugByBackend, readPublicStoreByBackend } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
 
+export const revalidate = 300;
+
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
@@ -15,6 +17,27 @@ const blogCategoryLabels: Record<string, string> = {
   actualite: "Actualité",
   "bien-etre": "Bien-être",
   legislation: "Législation",
+};
+
+const blogCategoryShopLinks: Record<string, Array<{ href: string; label: string }>> = {
+  guide: [
+    { href: "/boutique/fleurs-cbd", label: "Découvrir nos Fleurs CBD" },
+    { href: "/boutique/huiles-cbd", label: "Voir nos Huiles CBD" },
+    { href: "/boutique/tisane-cbd", label: "Explorer nos Tisanes CBD" },
+  ],
+  actualite: [
+    { href: "/boutique", label: "Voir toute la boutique CBD" },
+    { href: "/boutique/fleurs-cbd", label: "Nouveautés Fleurs CBD" },
+  ],
+  "bien-etre": [
+    { href: "/boutique/huiles-cbd", label: "Huiles CBD bien-être" },
+    { href: "/boutique/tisane-cbd", label: "Tisanes chanvre relaxation" },
+    { href: "/boutique/cosmetiques-cbd", label: "Cosmétiques CBD" },
+  ],
+  legislation: [
+    { href: "/boutique/fleurs-cbd", label: "Fleurs CBD conformes" },
+    { href: "/boutique/resines-cbd", label: "Résines CBD analysées" },
+  ],
 };
 
 export async function generateMetadata({
@@ -72,6 +95,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     .split(/\n{2,}/)
     .map((item) => item.trim())
     .filter(Boolean);
+  const relatedShopLinks = blogCategoryShopLinks[post.category] ?? [
+    { href: "/boutique", label: "Voir la boutique CBD" },
+  ];
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
@@ -137,6 +163,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               ) : (
                 <p>{post.excerpt}</p>
               )}
+            </div>
+
+            <div className="cartoon-border mt-8 bg-white p-5">
+              <h2 className="font-display text-2xl text-ink">Produits associés</h2>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {relatedShopLinks.map((link) => (
+                  <Link
+                    key={`${post.id}-${link.href}`}
+                    href={link.href}
+                    className="btn-cartoon btn-secondary inline-flex h-10 items-center px-4 text-xs"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </div>
 
             <div className="mt-8">

@@ -1,8 +1,13 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { Product } from "@/data/products";
+import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
 import { getAvailableQuantity, getSelectableVariantOptions } from "@/lib/product-stock";
+import type { LoyaltySummary } from "@/types/loyalty";
+import type { LotteryConfig, LotteryInventory, LotteryTicket } from "@/types/lottery";
+import type { CmsOrder } from "@/types/store";
 import type { PublicCustomer } from "@/types/customer";
 
 type CartLine = Product & {
@@ -19,6 +24,18 @@ type CartContextValue = {
   totalPrice: number;
   isAuthenticated: boolean;
   authLoading: boolean;
+  sessionLoading: boolean;
+  user: PublicCustomer | null;
+  orders: CmsOrder[];
+  loyalty: LoyaltySummary;
+  tickets: LotteryTicket[];
+  lotteryInventory: LotteryInventory | null;
+  lotteryConfig: LotteryConfig | null;
+  availableTicketCount: number;
+  hasWelcomePack: boolean;
+  refreshSession: (options?: { silent?: boolean; force?: boolean }) => Promise<void>;
+  setUser: (user: PublicCustomer | null) => void;
+  setOrders: (orders: CmsOrder[]) => void;
   addToCart: (product: Product, variantId?: string, quantity?: number) => CartActionResult;
   removeFromCart: (productId: string) => void;
   decreaseQuantity: (productId: string) => void;
@@ -29,44 +46,158 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const REFRESH_COOLDOWN_MS = 30_000;
+  const lastRefreshAtRef = useRef(0);
   const [items, setItems] = useState<CartLine[]>([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<PublicCustomer | null>(null);
+  const [orders, setOrders] = useState<CmsOrder[]>([]);
+  const [loyalty, setLoyalty] = useState<LoyaltySummary>(buildEmptyLoyaltySummary());
+  const [tickets, setTickets] = useState<LotteryTicket[]>([]);
+  const [lotteryInventory, setLotteryInventory] = useState<LotteryInventory | null>(null);
+  const [lotteryConfig, setLotteryConfig] = useState<LotteryConfig | null>(null);
+  const [hasWelcomePack, setHasWelcomePack] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
+  const isAuthenticated = Boolean(user);
+
+  const scheduleIdleRefresh = useCallback((task: () => void) => {
+    const idleWindow = window as Window & {
+      requestIdleCallback?: (callback: () => void, options?: { timeout?: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    if (typeof idleWindow.requestIdleCallback === "function") {
+      const idleId = idleWindow.requestIdleCallback(task, { timeout: 1200 });
+      return () => {
+        if (typeof idleWindow.cancelIdleCallback === "function") {
+          idleWindow.cancelIdleCallback(idleId);
+        }
+      };
+    }
+
+    const timeoutId = window.setTimeout(task, 220);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
+
+  const refreshSession = useCallback(async (options?: { silent?: boolean; force?: boolean }) => {
+    const silent = options?.silent === true;
+    const force = options?.force === true;
+    const now = Date.now();
+    if (!force && now - lastRefreshAtRef.current < REFRESH_COOLDOWN_MS) {
+      return;
+    }
+    lastRefreshAtRef.current = now;
+
+    if (!silent) {
+      setAuthLoading(true);
+    }
+
+    try {
+      const meResponse = await fetch("/api/account/me", { cache: "no-store" });
+      if (!meResponse.ok) {
+        setUser(null);
+        setOrders([]);
+        setLoyalty(buildEmptyLoyaltySummary());
+        setTickets([]);
+        setLotteryInventory(null);
+        setLotteryConfig(null);
+        setHasWelcomePack(false);
+        return;
+      }
+
+      const meData = (await meResponse.json()) as { user: PublicCustomer | null };
+      const nextUser = meData.user ?? null;
+      setUser(nextUser);
+
+      if (!nextUser) {
+        setOrders([]);
+        setLoyalty(buildEmptyLoyaltySummary());
+        setTickets([]);
+        setLotteryInventory(null);
+        setLotteryConfig(null);
+        setHasWelcomePack(false);
+        return;
+      }
+
+      const [ordersResponse, ticketsResponse, welcomePackResponse] = await Promise.all([
+        fetch("/api/account/orders", { cache: "no-store" }),
+        fetch("/api/account/tickets", { cache: "no-store" }),
+        fetch("/api/account/welcome-pack", { cache: "no-store" }),
+      ]);
+
+      if (ordersResponse.ok) {
+        const ordersData = (await ordersResponse.json()) as {
+          orders?: CmsOrder[];
+          loyalty?: LoyaltySummary;
+        };
+        setOrders(Array.isArray(ordersData.orders) ? ordersData.orders : []);
+        setLoyalty(ordersData.loyalty ?? buildEmptyLoyaltySummary());
+      } else {
+        setOrders([]);
+        setLoyalty(buildEmptyLoyaltySummary());
+      }
+
+      if (ticketsResponse.ok) {
+        const ticketsData = (await ticketsResponse.json()) as {
+          tickets?: LotteryTicket[];
+          inventory?: LotteryInventory | null;
+          config?: LotteryConfig | null;
+        };
+        setTickets(ticketsData.tickets ?? []);
+        setLotteryInventory(ticketsData.inventory ?? null);
+        setLotteryConfig(ticketsData.config ?? null);
+      } else {
+        setTickets([]);
+        setLotteryInventory(null);
+        setLotteryConfig(null);
+      }
+
+      if (welcomePackResponse.ok) {
+        const welcomePackData = (await welcomePackResponse.json()) as { eligible?: boolean };
+        setHasWelcomePack(Boolean(welcomePackData.eligible));
+      } else {
+        setHasWelcomePack(false);
+      }
+    } finally {
+      if (!silent) {
+        setAuthLoading(false);
+      }
+    }
+  }, []);
 
   useEffect(() => {
-    let mounted = true;
+    const cancel = scheduleIdleRefresh(() => {
+      void refreshSession({ force: true });
+    });
+    return cancel;
+  }, [refreshSession, scheduleIdleRefresh]);
 
-    const loadSession = async () => {
-      try {
-        const response = await fetch("/api/account/me", { cache: "no-store" });
-        if (!response.ok) {
-          if (mounted) {
-            setIsAuthenticated(false);
-          }
-          return;
-        }
+  useEffect(() => {
+    const cancel = scheduleIdleRefresh(() => {
+      void refreshSession({ silent: true });
+    });
+    return cancel;
+  }, [pathname, refreshSession, scheduleIdleRefresh]);
 
-        const data = (await response.json()) as { user: PublicCustomer | null };
-        if (mounted) {
-          setIsAuthenticated(Boolean(data.user));
-        }
-      } catch {
-        if (mounted) {
-          setIsAuthenticated(false);
-        }
-      } finally {
-        if (mounted) {
-          setAuthLoading(false);
-        }
+  useEffect(() => {
+    const onFocus = () => {
+      void refreshSession({ silent: true });
+    };
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        void refreshSession({ silent: true });
       }
     };
 
-    void loadSession();
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
-      mounted = false;
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, []);
+  }, [refreshSession]);
 
   const addToCart = (product: Product, variantId?: string, quantity: number = 1): CartActionResult => {
     if (!isAuthenticated) {
@@ -200,8 +331,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const value: CartContextValue = {
     items,
+    user,
+    orders,
+    loyalty,
+    tickets,
+    lotteryInventory,
+    lotteryConfig,
+    hasWelcomePack,
     isAuthenticated,
     authLoading,
+    sessionLoading: authLoading,
+    availableTicketCount: tickets.filter((ticket) => ticket.status === "available").length,
+    refreshSession,
+    setUser,
+    setOrders,
     totalItems: items.reduce((acc, item) => acc + item.quantity, 0),
     totalPrice: items.reduce((acc, item) => acc + item.price * item.quantity, 0),
     addToCart,

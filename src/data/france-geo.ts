@@ -25,6 +25,104 @@ export const FRENCH_REGIONS = [
   "Provence-Alpes-Cote d'Azur",
 ] as const;
 
+export type FrenchRegion = (typeof FRENCH_REGIONS)[number];
+
+export const METROPOLITAN_FRENCH_REGIONS: FrenchRegion[] = [
+  "Auvergne-Rhone-Alpes",
+  "Bourgogne-Franche-Comte",
+  "Bretagne",
+  "Centre-Val de Loire",
+  "Corse",
+  "Grand Est",
+  "Hauts-de-France",
+  "Ile-de-France",
+  "Normandie",
+  "Nouvelle-Aquitaine",
+  "Occitanie",
+  "Pays de la Loire",
+  "Provence-Alpes-Cote d'Azur",
+];
+
+export const DOM_TOM_REGIONS: FrenchRegion[] = [
+  "Guadeloupe",
+  "Guyane",
+  "La Reunion",
+  "Martinique",
+  "Mayotte",
+];
+
+export const FRENCH_REGION_LABELS: Record<FrenchRegion, string> = {
+  "Auvergne-Rhone-Alpes": "Auvergne-Rh\u00f4ne-Alpes",
+  "Bourgogne-Franche-Comte": "Bourgogne-Franche-Comt\u00e9",
+  Bretagne: "Bretagne",
+  "Centre-Val de Loire": "Centre-Val de Loire",
+  Corse: "Corse",
+  "Grand Est": "Grand Est",
+  Guadeloupe: "Guadeloupe",
+  Guyane: "Guyane",
+  "Hauts-de-France": "Hauts-de-France",
+  "Ile-de-France": "\u00cele-de-France",
+  "La Reunion": "La R\u00e9union",
+  Martinique: "Martinique",
+  Mayotte: "Mayotte",
+  Normandie: "Normandie",
+  "Nouvelle-Aquitaine": "Nouvelle-Aquitaine",
+  Occitanie: "Occitanie",
+  "Pays de la Loire": "Pays de la Loire",
+  "Provence-Alpes-Cote d'Azur": "Provence-Alpes-C\u00f4te d'Azur",
+};
+
+const FRENCH_REGION_NORMALIZED_LOOKUP: Record<string, FrenchRegion> = {
+  "auvergne rhone alpes": "Auvergne-Rhone-Alpes",
+  "auvergne-rhone-alpes": "Auvergne-Rhone-Alpes",
+  "bourgogne franche comte": "Bourgogne-Franche-Comte",
+  "bourgogne-franche-comte": "Bourgogne-Franche-Comte",
+  bretagne: "Bretagne",
+  "centre val de loire": "Centre-Val de Loire",
+  "centre-val de loire": "Centre-Val de Loire",
+  "centre-val-de-loire": "Centre-Val de Loire",
+  corse: "Corse",
+  "grand est": "Grand Est",
+  "grand-est": "Grand Est",
+  guadeloupe: "Guadeloupe",
+  guyane: "Guyane",
+  "hauts de france": "Hauts-de-France",
+  "hauts-de-france": "Hauts-de-France",
+  "ile de france": "Ile-de-France",
+  "ile-de-france": "Ile-de-France",
+  "la reunion": "La Reunion",
+  "la-reunion": "La Reunion",
+  martinique: "Martinique",
+  mayotte: "Mayotte",
+  normandie: "Normandie",
+  "nouvelle aquitaine": "Nouvelle-Aquitaine",
+  "nouvelle-aquitaine": "Nouvelle-Aquitaine",
+  occitanie: "Occitanie",
+  "pays de la loire": "Pays de la Loire",
+  "pays-de-la-loire": "Pays de la Loire",
+  "provence alpes cote d azur": "Provence-Alpes-Cote d'Azur",
+  "provence-alpes-cote-d-azur": "Provence-Alpes-Cote d'Azur",
+  "provence alpes cote d'azur": "Provence-Alpes-Cote d'Azur",
+  "provence-alpes-cote d'azur": "Provence-Alpes-Cote d'Azur",
+  paca: "Provence-Alpes-Cote d'Azur",
+};
+
+export function normalizeRegionKey(value: string | undefined): string {
+  return (value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/-/g, " ")
+    .replace(/['’]/g, " ")
+    .replace(/\s+/g, " ")
+    .toLowerCase()
+    .trim();
+}
+
+export function resolveFrenchRegion(value: string | undefined): FrenchRegion | null {
+  const normalized = normalizeRegionKey(value);
+  return FRENCH_REGION_NORMALIZED_LOOKUP[normalized] ?? null;
+}
+
 export const FRENCH_DEPARTMENTS: FrenchDepartment[] = [
   { code: "01", name: "Ain", region: "Auvergne-Rhone-Alpes" },
   { code: "02", name: "Aisne", region: "Hauts-de-France" },

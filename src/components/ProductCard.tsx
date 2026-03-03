@@ -3,10 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
-import { ProductAnalysisModal } from "@/components/boutique/ProductAnalysisModal";
-import { ProductVideoModal } from "@/components/boutique/ProductVideoModal";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
@@ -20,6 +19,16 @@ import {
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { formatPrice } from "@/lib/utils";
 import type { Producer } from "@/types/store";
+
+const ProductAnalysisModal = dynamic(
+  () => import("@/components/boutique/ProductAnalysisModal").then((mod) => mod.ProductAnalysisModal),
+  { ssr: false },
+);
+
+const ProductVideoModal = dynamic(
+  () => import("@/components/boutique/ProductVideoModal").then((mod) => mod.ProductVideoModal),
+  { ssr: false },
+);
 
 const categorySlugs: Record<string, string> = {
   fleurs: "fleurs-cbd",
@@ -37,6 +46,7 @@ type ProductCardProps = {
   producer?: Producer;
   addButtonLabel?: string;
   lowStockThresholdGrams?: number;
+  imagePriority?: boolean;
 };
 
 function buildStockLimitMessage(productName: string, maxAvailable?: number): string {
@@ -52,6 +62,7 @@ export function ProductCard({
   producer,
   addButtonLabel = "Ajouter",
   lowStockThresholdGrams = 0,
+  imagePriority = false,
 }: ProductCardProps) {
   const router = useRouter();
   const { addToCart, authLoading } = useCart();
@@ -106,6 +117,7 @@ export function ProductCard({
         badge={product.badge}
         bonusPoints={product.bonusPoints}
         promoText={hasPromo ? `Moins ${product.promoPercent}%` : undefined}
+        priority={imagePriority}
         className="border-b-2 border-[#1a1a1a]"
         sizes="(max-width: 768px) 94vw, (max-width: 1200px) 45vw, 33vw"
       />

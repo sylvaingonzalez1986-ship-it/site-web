@@ -23,6 +23,10 @@ export type AuditEventType =
   | "update_store"
   | "update_order"
   | "add_promo_code"
+  | "create_mission"
+  | "update_mission"
+  | "reorder_missions"
+  | "update_referral_reward_settings"
   | "review_mission_submission"
   | "welcome_pack_claimed";
 

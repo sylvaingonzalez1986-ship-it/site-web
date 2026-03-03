@@ -15,13 +15,21 @@ export default function FidelitePage() {
   const nextUrl = "/profil?tab=fidelite";
   const loginHref = `/compte/connexion?next=${encodeURIComponent(nextUrl)}`;
   const registerHref = `/compte/inscription?next=${encodeURIComponent(nextUrl)}`;
+  const pageDescription =
+    "Le principe est simple : 1 EUR dépensé = 1 point. Plus ton palier monte, plus tes avantages augmentent.";
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-36">
       <div className="retro-container grid gap-6">
+        <header className="cartoon-border bg-cream p-6 md:p-8">
+          <h1 className="section-title">PROGRAMME FIDÉLITÉ</h1>
+          <p className="mt-3 text-sm leading-relaxed text-charcoal md:text-base">{pageDescription}</p>
+        </header>
+
         <LoyaltyBadgeSummary
-          title="PROGRAMME FIDÉLITÉ"
-          description="Le principe est simple : 1 EUR dépensé = 1 point. Plus ton palier monte, plus tes avantages augmentent."
+          title="Résumé des badges"
+          description={pageDescription}
+          headingLevel="h2"
         />
 
         <article className="cartoon-border bg-cream p-6">
