@@ -143,7 +143,14 @@ function readWebhookToken(request: Request): string {
 }
 
 export async function GET() {
-  return NextResponse.json({ ok: true });
+  const verificationKey = process.env.VIVA_WEBHOOK_TOKEN?.trim() || "";
+  if (!verificationKey) {
+    return NextResponse.json({ ok: true });
+  }
+  return new NextResponse(verificationKey, {
+    status: 200,
+    headers: { "Content-Type": "text/plain" },
+  });
 }
 
 export async function POST(request: Request) {
