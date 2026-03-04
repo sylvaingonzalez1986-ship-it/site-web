@@ -36,6 +36,8 @@ const SELECT_ORDERS_COLUMNS = [
   "promo_code",
   "discount_percent",
   "discount_amount",
+  "loyalty_badge_id",
+  "extra_lottery_tickets",
   "items_count",
   "total_ht",
   "total_vat",
@@ -156,6 +158,8 @@ function mapOrderRowForLoyalty(row: Record<string, unknown>): CmsOrder {
     promoCode: toOptionalText(row.promo_code),
     discountPercent: Math.max(0, toNumber(row.discount_percent, 0)),
     discountAmount: Math.max(0, toNumber(row.discount_amount, 0)),
+    loyaltyBadgeId: toOptionalText(row.loyalty_badge_id),
+    extraLotteryTickets: Math.max(0, Math.floor(toNumber(row.extra_lottery_tickets, 0))),
     itemsCount: Math.max(0, Math.floor(toNumber(row.items_count, 0))),
     totalHt: Math.max(0, toNumber(row.total_ht, 0)),
     totalVat: Math.max(0, toNumber(row.total_vat, 0)),
@@ -426,6 +430,12 @@ export async function appendOrderToSupabase(input: AppendOrderInput): Promise<Cm
     promo_code: input.promo?.code?.trim().toUpperCase() || null,
     discount_percent: input.promo?.discountPercent ?? null,
     discount_amount: input.promo?.discountAmount ?? null,
+    loyalty_badge_id: input.loyaltySnapshot?.badgeId?.trim() || null,
+    extra_lottery_tickets:
+      Number.isFinite(Number(input.loyaltySnapshot?.extraLotteryTickets)) &&
+      Number(input.loyaltySnapshot?.extraLotteryTickets) > 0
+        ? Math.floor(Number(input.loyaltySnapshot?.extraLotteryTickets))
+        : 0,
     items_count: input.itemsCount,
     total_ht: input.totalHt ?? null,
     total_vat: input.totalVat ?? null,

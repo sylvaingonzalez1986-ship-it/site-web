@@ -67,6 +67,8 @@ export type CmsOrder = {
   promoCode?: string;
   discountPercent?: number;
   discountAmount?: number;
+  loyaltyBadgeId?: string;
+  extraLotteryTickets?: number;
   itemsCount: number;
   totalHt: number;
   totalVat: number;

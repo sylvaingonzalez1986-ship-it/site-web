@@ -93,6 +93,11 @@ export default async function ReglementJeuPromoPage() {
                 panier au moment de leur utilisation.
               </p>
               <p className="mt-2">
+                La recompense legendaire correspond a 12 bons d&apos;achat de 50 euros, emis a raison
+                d&apos;un bon par mois pendant 12 mois, valables sur l&apos;ensemble de la boutique. Les
+                frais de port restent a la charge du gagnant.
+              </p>
+              <p className="mt-2">
                 Les lots ne sont ni echangeables contre especes, ni cessibles. Delai de remise :
                 30 jours maximum sauf force majeure.
               </p>
@@ -141,7 +146,7 @@ export default async function ReglementJeuPromoPage() {
             </section>
           </div>
 
-          <p className="mt-8 text-xs text-charcoal">Version en vigueur : 25 fevrier 2026</p>
+          <p className="mt-8 text-xs text-charcoal">Version en vigueur : 4 mars 2026</p>
         </article>
       </div>
     </section>

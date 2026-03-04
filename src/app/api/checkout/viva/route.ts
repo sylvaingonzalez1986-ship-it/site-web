@@ -12,8 +12,10 @@ import {
   getBadgeDiscountPercent,
   isBadgeEligibleForFreeShipping,
 } from "@/lib/loyalty-tier-benefits";
+import { computeLotteryTicketBreakdown } from "@/lib/lottery-ticket-calculations";
 import {
   getRedeemableLotteryRewardClaimBenefitByBackend,
+  getLotteryConfigByBackend,
   reserveLotteryRewardClaimForOrderByBackend,
 } from "@/lib/lottery-backend";
 import { appendOrderByBackend, getCustomerOrdersForLoyaltyByBackend } from "@/lib/order-backend";
@@ -873,6 +875,13 @@ export async function POST(request: Request) {
     ignoreFreeThreshold: true,
   });
   const totalAmount = Number((itemsTotalAmount + shippingFee).toFixed(2));
+  const lotteryConfig = await getLotteryConfigByBackend();
+  const ticketBreakdown = computeLotteryTicketBreakdown({
+    orderAmount: totalAmount,
+    config: lotteryConfig,
+    badgeId: loyaltySummary.currentBadge.id,
+    badgeUnlocked: loyaltySummary.currentBadge.unlocked,
+  });
   if (appliedPromo) {
     appliedPromo = {
       ...appliedPromo,
@@ -1032,6 +1041,10 @@ export async function POST(request: Request) {
         relayCountry: requestedDeliveryMethod === "relay" ? relayCountry : undefined,
       },
       promo: appliedPromo,
+      loyaltySnapshot: {
+        badgeId: loyaltySummary.currentBadge.id,
+        extraLotteryTickets: ticketBreakdown.bonusTickets,
+      },
       viva: {
         orderCode,
       },

@@ -10,31 +10,31 @@ const LOYALTY_BADGE_DEFINITIONS: Array<{
   {
     id: "decouverte",
     label: "Bronze",
-    description: "Entrée dans le programme fidélité.",
+    description: "1% permanent et 1 pack booster extra par commande.",
     minPoints: 100,
   },
   {
     id: "explorateur",
     label: "Argent",
-    description: "Tu passes au niveau client régulier.",
+    description: "4% permanent, livraison offerte et 3 packs bonus.",
     minPoints: 500,
   },
   {
     id: "connaisseur",
     label: "Or",
-    description: "Un niveau premium bien établi.",
+    description: "6% permanent, livraison offerte et 5 packs bonus.",
     minPoints: 1000,
   },
   {
     id: "ambassadeur",
     label: "Platine",
-    description: "Tu fais partie des meilleurs clients.",
+    description: "8% permanent, 10 packs bonus, anniversaire et ventes privees.",
     minPoints: 1500,
   },
   {
     id: "legende",
     label: "Diamant",
-    description: "Le sommet du programme fidélité.",
+    description: "10% permanent, 20 packs bonus, anniversaire, Noel et ventes privees.",
     minPoints: 2000,
   },
 ];

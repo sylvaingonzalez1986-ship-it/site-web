@@ -184,7 +184,7 @@ export function AdminSeasonGalleryManager({
 
       <p className="mt-2 text-sm text-charcoal">
         {seasonGalleryImages.length}/{MAX_SEASON_GALLERY_IMAGES} images. Pense a cliquer sur
-        "Sauvegarder" en haut apres modification.
+        &quot;Sauvegarder&quot; en haut apres modification.
       </p>
 
       <input
@@ -265,4 +265,3 @@ export function AdminSeasonGalleryManager({
     </section>
   );
 }
-

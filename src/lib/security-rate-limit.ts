@@ -66,7 +66,7 @@ function normalizeCandidateIp(value: string | null | undefined): string | null {
   return null;
 }
 
-function applyLocalFallbackRateLimit(options: RateLimitOptions): RateLimitDecision {
+export function applyLocalFallbackRateLimit(options: RateLimitOptions): RateLimitDecision {
   const now = Date.now();
   const key = sanitizeRateLimitKey(options.key);
   const existing = LOCAL_BUCKETS.get(key);

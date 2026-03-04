@@ -4,14 +4,19 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { CartBenefitSummaryModal } from "@/components/cart/CartBenefitSummaryModal";
 import { useCart } from "@/context/CartContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useCmsStore } from "@/hooks/useCmsStore";
 import { getCustomerCheckoutEligibility } from "@/lib/customer-checkout-eligibility";
 import {
   getBadgeDiscountPercent,
+  getBadgeExtraBoosterPacksPerOrder,
+  getBadgeBenefitsText,
   isBadgeEligibleForFreeShipping,
+  parseBadgeBenefitsLines,
 } from "@/lib/loyalty-tier-benefits";
+import { computeLotteryTicketBreakdown } from "@/lib/lottery-ticket-calculations";
 import { getAvailableQuantity } from "@/lib/product-stock";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import {
@@ -107,6 +112,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const [lotterySuccess, setLotterySuccess] = useState<string | null>(null);
   const [lotteryPreview, setLotteryPreview] = useState<LotteryPreview | null>(null);
   const [cartError, setCartError] = useState<string | null>(null);
+  const [summaryModal, setSummaryModal] = useState<"loyalty" | "packs" | null>(null);
   const wasOpenRef = useRef(false);
   useBodyScrollLock(open);
 
@@ -203,7 +209,13 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
   const availableRewardClaims = useMemo(
     () =>
-      (lotteryInventory?.availableClaims ?? []).filter((claim) => claim.status === "available"),
+      (lotteryInventory?.availableClaims ?? []).filter((claim) => {
+        if (claim.status !== "available") {
+          return false;
+        }
+
+        return claim.reward.customPayload?.checkoutRedeemable !== false;
+      }),
     [lotteryInventory?.availableClaims],
   );
 
@@ -272,34 +284,61 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     () => earnedBaseLoyaltyPoints + earnedProductBonusPoints,
     [earnedBaseLoyaltyPoints, earnedProductBonusPoints],
   );
-  const lotteryTicketThreshold = useMemo(() => {
-    const threshold = Number(lotteryConfig?.eurosPerTicket ?? 5);
-    if (!Number.isFinite(threshold) || threshold <= 0) {
-      return 5;
-    }
-
-    return threshold;
-  }, [lotteryConfig?.eurosPerTicket]);
-  const estimatedEarnedTickets = useMemo(() => {
-    if (!isAuthenticated || !lotteryConfig?.isActive) {
-      return 0;
-    }
-
-    return Math.min(
-      lotteryConfig.maxTicketsPerOrder,
-      Math.floor(Math.max(finalAmountToPay, 0) / lotteryTicketThreshold),
-    );
-  }, [
+  const ticketBreakdown = useMemo(() => computeLotteryTicketBreakdown({
+    orderAmount: finalAmountToPay,
+    config: lotteryConfig,
+    badgeId: loyalty.currentBadge.id,
+    badgeUnlocked: isAuthenticated && loyalty.currentBadge.unlocked,
+  }), [
     finalAmountToPay,
     isAuthenticated,
-    lotteryConfig?.isActive,
-    lotteryConfig?.maxTicketsPerOrder,
-    lotteryTicketThreshold,
+    loyalty.currentBadge.id,
+    loyalty.currentBadge.unlocked,
+    lotteryConfig,
   ]);
+  const estimatedEarnedTickets = ticketBreakdown.totalTickets;
   const displayedBadgeDiscountPercent =
     lotteryPreview?.badgeDiscountPercent ?? promoPreview?.badgeDiscountPercent ?? badgeDiscountPercent;
   const displayedBadgeDiscountAmount =
     lotteryPreview?.badgeDiscountAmount ?? promoPreview?.badgeDiscountAmount ?? badgeDiscountAmount;
+  const loyaltyBenefitLines = useMemo(() => {
+    const lines = parseBadgeBenefitsLines(getBadgeBenefitsText(cmsStore.content.profile, loyalty.currentBadge.id));
+    return [
+      `Badge actif : ${loyalty.currentBadge.label}`,
+      `Reduction automatique : ${displayedBadgeDiscountPercent}%`,
+      `Livraison offerte : ${hasFreeShippingByBadge ? "Oui" : "Non"}`,
+      `Points gagnes sur cette commande : ${earnedTotalLoyaltyPoints}`,
+      ...lines,
+    ];
+  }, [
+    cmsStore.content.profile,
+    displayedBadgeDiscountPercent,
+    earnedTotalLoyaltyPoints,
+    hasFreeShippingByBadge,
+    loyalty.currentBadge.id,
+    loyalty.currentBadge.label,
+  ]);
+  const packsBenefitLines = useMemo(() => {
+    const badgeExtraPacks = loyalty.currentBadge.unlocked
+      ? getBadgeExtraBoosterPacksPerOrder(loyalty.currentBadge.id)
+      : 0;
+
+    return [
+      `Base commande : ${ticketBreakdown.baseTickets} pack${ticketBreakdown.baseTickets > 1 ? "s" : ""}`,
+      `Bonus badge ${loyalty.currentBadge.label} : ${badgeExtraPacks} pack${badgeExtraPacks > 1 ? "s" : ""}`,
+      `Total sur cette commande : ${ticketBreakdown.totalTickets} pack${ticketBreakdown.totalTickets > 1 ? "s" : ""}`,
+      `Regle de base : 1 pack tous les ${ticketBreakdown.thresholdEur.toFixed(2)} EUR TTC`,
+      `Plafond packs de base : ${ticketBreakdown.maxBaseTicketsPerOrder} par commande`,
+    ];
+  }, [
+    loyalty.currentBadge.id,
+    loyalty.currentBadge.label,
+    loyalty.currentBadge.unlocked,
+    ticketBreakdown.baseTickets,
+    ticketBreakdown.maxBaseTicketsPerOrder,
+    ticketBreakdown.thresholdEur,
+    ticketBreakdown.totalTickets,
+  ]);
   const checkoutEligibility = useMemo(
     () => (user ? getCustomerCheckoutEligibility(user) : { allowed: false }),
     [user],
@@ -847,18 +886,26 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             <span>{formatPrice(finalAmountToPay)} TTC</span>
           </div>
           <div className="mt-2 grid grid-cols-2 gap-2">
-            <div className="rounded border border-[#1a1a1a] bg-[#fff7d6] px-2 py-1.5">
+            <button
+              type="button"
+              onClick={() => setSummaryModal("loyalty")}
+              className="rounded border border-[#1a1a1a] bg-[#fff7d6] px-2 py-1.5 text-left transition-transform duration-150 hover:-translate-y-[1px]"
+            >
               <p className="text-[10px] font-bold uppercase tracking-[0.06em] text-charcoal">Fidélité</p>
               <p className="text-xs font-semibold text-ink">+{earnedTotalLoyaltyPoints} pt{earnedTotalLoyaltyPoints > 1 ? "s" : ""}</p>
-            </div>
-            <div className="rounded border border-[#1a1a1a] bg-[#f7f4ee] px-2 py-1.5">
+            </button>
+            <button
+              type="button"
+              onClick={() => setSummaryModal("packs")}
+              className="rounded border border-[#1a1a1a] bg-[#f7f4ee] px-2 py-1.5 text-left transition-transform duration-150 hover:-translate-y-[1px]"
+            >
               <p className="text-[10px] font-bold uppercase tracking-[0.06em] text-charcoal">Packs</p>
               {!isAuthenticated || !lotteryConfig?.isActive ? (
                 <p className="text-xs text-charcoal">—</p>
               ) : (
                 <p className="text-xs font-semibold text-ink">+{estimatedEarnedTickets} pack{estimatedEarnedTickets > 1 ? "s" : ""}</p>
               )}
-            </div>
+            </button>
           </div>
           <div className="mt-3">
             <CheckoutButton
@@ -935,6 +982,22 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           </div>
         </div>
       </aside>
+      <CartBenefitSummaryModal
+        open={summaryModal === "loyalty"}
+        onClose={() => setSummaryModal(null)}
+        eyebrow="Fidelite"
+        title={loyalty.currentBadge.label}
+        hint="Le recapitulatif applique automatiquement les avantages de ton badge sur cette commande."
+        lines={loyaltyBenefitLines}
+      />
+      <CartBenefitSummaryModal
+        open={summaryModal === "packs"}
+        onClose={() => setSummaryModal(null)}
+        eyebrow="Packs booster"
+        title="Recap packs"
+        hint="Les packs bonus badge s'ajoutent aux packs de base generes par le montant de la commande."
+        lines={packsBenefitLines}
+      />
     </>
   );
 }

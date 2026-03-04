@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   Apple,
   ArrowRight,
@@ -13,15 +13,22 @@ import {
   ShoppingCart,
   Truck,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
 import { CustomSection } from "@/components/CustomSection";
 import { HomeBadgePromoBand } from "@/components/home/HomeBadgePromoBand";
 import { HomeSeasonGallery } from "@/components/home/HomeSeasonGallery";
 import { HomeTicketPromoBand } from "@/components/home/HomeTicketPromoBand";
 import type { Product } from "@/data/products";
+import { sortOwnProductsFirst } from "@/lib/own-producer";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { formatPrice } from "@/lib/utils";
 import type { CmsStore, HomeSection, PublicStoreResponse } from "@/types/store";
+
+const HomeContactForm = dynamic(
+  () => import("@/components/home/HomeContactForm").then((m) => m.HomeContactForm),
+  { ssr: false },
+);
 
 type GsapRuntime = {
   gsap: (typeof import("gsap"))["gsap"];
@@ -47,10 +54,11 @@ function loadGsapRuntime(): Promise<GsapRuntime> {
   return gsapRuntimePromise;
 }
 
-function useGsapRuntime() {
+function useGsapRuntime(enabled = true) {
   const [runtime, setRuntime] = useState<GsapRuntime | null>(null);
 
   useEffect(() => {
+    if (!enabled) return;
     let active = true;
     void loadGsapRuntime().then((resolvedRuntime) => {
       if (active) {
@@ -61,7 +69,7 @@ function useGsapRuntime() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [enabled]);
 
   return runtime;
 }
@@ -87,18 +95,13 @@ type HomePinnedExperienceProps = {
 };
 
 export function HomePinnedExperience({ initialStore }: HomePinnedExperienceProps) {
-  const gsapRuntime = useGsapRuntime();
+  const [isMobileViewport, setIsMobileViewport] = useState<boolean | null>(null);
+  const isDesktop = isMobileViewport === false;
+  const gsapRuntime = useGsapRuntime(isDesktop);
   const snapTriggerRef = useRef<{ kill: () => void } | null>(null);
   const store = initialStore;
-  const [isMobileViewport, setIsMobileViewport] = useState(false);
-  const [contactName, setContactName] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [contactMessage, setContactMessage] = useState("");
-  const [contactLoading, setContactLoading] = useState(false);
-  const [contactSuccess, setContactSuccess] = useState<string | null>(null);
-  const [contactError, setContactError] = useState<string | null>(null);
   const home = store.content.home;
-  const featuredProducts = store.products.slice(0, 3);
+  const featuredProducts = sortOwnProductsFirst(store.products).slice(0, 3);
   const homeSections = useMemo(() => {
     return store.sections.home
       .map((section, index) => ({ section, index }))
@@ -201,52 +204,6 @@ export function HomePinnedExperience({ initialStore }: HomePinnedExperienceProps
     };
   }, [gsapRuntime, homeSectionsKey, isMobileViewport, store.updatedAt]);
 
-  const submitHomeContact = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setContactError(null);
-    setContactSuccess(null);
-
-    const name = contactName.trim();
-    const email = contactEmail.trim().toLowerCase();
-    const message = contactMessage.trim();
-
-    if (name.length < 2 || email.length === 0 || message.length < 10) {
-      setContactError("Complète le formulaire avant l'envoi.");
-      return;
-    }
-
-    setContactLoading(true);
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          phone: "",
-          message,
-        }),
-      });
-
-      const data = (await response.json()) as { ok?: boolean; error?: string };
-      if (!response.ok || !data.ok) {
-        setContactError(data.error ?? "Envoi impossible. Réessaie plus tard.");
-        return;
-      }
-
-      setContactSuccess("Message envoyé. Nous reviendrons vers toi rapidement.");
-      setContactName("");
-      setContactEmail("");
-      setContactMessage("");
-    } catch {
-      setContactError("Erreur réseau. Réessaie dans quelques minutes.");
-    } finally {
-      setContactLoading(false);
-    }
-  };
-
   const renderHomeSection = (section: HomeSection, index: number) => {
     const zIndex = (index + 1) * 10;
 
@@ -306,40 +263,7 @@ export function HomePinnedExperience({ initialStore }: HomePinnedExperienceProps
               <p className="mt-4 max-w-2xl text-lg text-charcoal">
                 {home.contactDescription}
               </p>
-              <form className="mt-6 grid gap-3 md:grid-cols-2" onSubmit={submitHomeContact}>
-                <input
-                  className="h-12 border-2 border-[#1a1a1a] bg-white px-4 text-base"
-                  placeholder={home.contactNamePlaceholder}
-                  value={contactName}
-                  onChange={(event) => setContactName(event.target.value)}
-                />
-                <input
-                  type="email"
-                  className="h-12 border-2 border-[#1a1a1a] bg-white px-4 text-base"
-                  placeholder={home.contactEmailPlaceholder}
-                  value={contactEmail}
-                  onChange={(event) => setContactEmail(event.target.value)}
-                />
-                <textarea
-                  className="min-h-28 border-2 border-[#1a1a1a] bg-white p-4 text-base md:col-span-2"
-                  placeholder="Ton message"
-                  value={contactMessage}
-                  onChange={(event) => setContactMessage(event.target.value)}
-                />
-                {contactError && (
-                  <p className="text-sm font-semibold text-red-700 md:col-span-2">{contactError}</p>
-                )}
-                {contactSuccess && (
-                  <p className="text-sm font-semibold text-green-700 md:col-span-2">{contactSuccess}</p>
-                )}
-                <button
-                  type="submit"
-                  className="btn-cartoon btn-primary h-12 disabled:cursor-not-allowed disabled:opacity-60"
-                  disabled={contactLoading}
-                >
-                  {contactLoading ? "Envoi..." : home.contactSubmitLabel}
-                </button>
-              </form>
+              <HomeContactForm home={home} />
             </div>
           </section>
         );
@@ -401,53 +325,19 @@ export function HomePinnedExperience({ initialStore }: HomePinnedExperienceProps
     }
   };
 
-  if (isMobileViewport) {
-    return (
-      <div className="relative overflow-x-hidden">
-        {homeSections.map((section, index) => renderMobileHomeSection(section, index))}
-
-        {/* SEO – crawlable paragraph about the agricultural approach */}
-        <section className="section-band bg-cream paper-grain py-12" style={{ zIndex: (homeSections.length + 1) * 10 }}>
-          <div className="retro-container">
-            <div className="cartoon-border bg-white/80 p-6">
-              <h2 className="font-display text-2xl text-ink">
-                CBD naturel direct producteur en Bretagne
-              </h2>
-              <div className="mt-4 space-y-3 text-base leading-relaxed text-charcoal">
-                <p>
-                  Les Chanvriers Bretons, c&apos;est avant tout une aventure de{" "}
-                  <strong>producteur CBD en Bretagne</strong>. Sur notre exploitation,
-                  nous cultivons du chanvre naturel, sans pesticide, avec le savoir-faire
-                  du terroir breton. Notre boutique vous propose notre petite production
-                  à prix juste, celle de nos voisins bretons et celle de quelques
-                  producteurs français sélectionnés — parce qu&apos;on a tellement de
-                  terroir à découvrir.
-                </p>
-                <p>
-                  En achetant vos <strong>fleurs de CBD direct producteur</strong>, vos
-                  huiles spectre complet ou vos{" "}
-                  <strong>tisanes chanvre artisanales</strong>, vous faites le choix d&apos;un{" "}
-                  <strong>achat CBD en circuit court</strong>, transparent et traçable.
-                  Chaque lot est analysé en laboratoire pour garantir un{" "}
-                  <strong>CBD français sans pesticide</strong>, conforme à la
-                  réglementation en vigueur.
-                </p>
-                <p>
-                  De la graine à votre porte, nous maîtrisons la chaîne :{" "}
-                  <strong>CBD naturel</strong>, <strong>CBD breton</strong>, livré
-                  rapidement partout en France. Bienvenue chez les chanvriers.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    );
-  }
-
   return (
     <div className="relative overflow-x-hidden">
-      {homeSections.map((section, index) => renderHomeSection(section, index))}
+      {/* Mobile layout – visible ≤768px, hidden on desktop */}
+      <div className="md:hidden">
+        {homeSections.map((section, index) => renderMobileHomeSection(section, index))}
+      </div>
+
+      {/* Desktop layout – only mounted after hydration confirms ≥769px */}
+      {isMobileViewport === false && (
+        <div className="hidden md:block">
+          {homeSections.map((section, index) => renderHomeSection(section, index))}
+        </div>
+      )}
 
       {/* SEO – crawlable paragraph about the agricultural approach */}
       <section className="section-band bg-cream paper-grain py-12" style={{ zIndex: (homeSections.length + 1) * 10 }}>

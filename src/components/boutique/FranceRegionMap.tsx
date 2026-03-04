@@ -21,7 +21,7 @@ import {
 
 type FranceRegionMapProps = {
   selectedRegion: FrenchRegion | null;
-  onRegionClick: (region: FrenchRegion) => void;
+  onRegionClick: (region: FrenchRegion, source?: { x: number; y: number }) => void;
   producerCountByRegion: Partial<Record<FrenchRegion, number>>;
 };
 
@@ -81,7 +81,6 @@ export function FranceRegionMap({
   producerCountByRegion,
 }: FranceRegionMapProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [hoveredRegion, setHoveredRegion] = useState<FrenchRegion | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState>(null);
 
   const fillByRegion = useMemo(() => {
@@ -115,12 +114,10 @@ export function FranceRegionMap({
   };
 
   const handleMouseMove = (region: FrenchRegion, event: MouseEvent<SVGPathElement>) => {
-    setHoveredRegion(region);
     showTooltip(region, event.clientX, event.clientY);
   };
 
   const handleFocus = (region: FrenchRegion, event: FocusEvent<SVGPathElement>) => {
-    setHoveredRegion(region);
     const rect = event.currentTarget.getBoundingClientRect();
     showTooltip(region, rect.left + rect.width / 2, rect.top + rect.height / 2);
   };
@@ -132,6 +129,21 @@ export function FranceRegionMap({
         onRegionClick(region);
       }
     };
+
+  const handleRegionClick = (
+    region: FrenchRegion,
+    event: MouseEvent<SVGPathElement> | MouseEvent<HTMLButtonElement>,
+  ) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    const source = rect
+      ? {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top,
+        }
+      : undefined;
+
+    onRegionClick(region, source);
+  };
 
   return (
     <div ref={containerRef} className="region-map-shell">
@@ -154,7 +166,6 @@ export function FranceRegionMap({
           const labelX = feature.labelX + (labelOffset?.x ?? 0);
           const labelY = feature.labelY + (labelOffset?.y ?? 0);
           const textAnchor = labelOffset?.textAnchor ?? "middle";
-          const pinActive = hoveredRegion === region || isSelected;
 
           return (
             <g key={region} className="region-map-region">
@@ -171,23 +182,21 @@ export function FranceRegionMap({
                     "--region-hover-fill": getRegionHoverFill(baseFill),
                   } as CSSProperties
                 }
-                onClick={() => onRegionClick(region)}
+                onClick={(event) => handleRegionClick(region, event)}
                 onKeyDown={handleKeyDown(region)}
                 onMouseMove={(event) => handleMouseMove(region, event)}
                 onMouseLeave={() => {
-                  setHoveredRegion((current) => (current === region ? null : current));
                   hideTooltip();
                 }}
                 onFocus={(event) => handleFocus(region, event)}
                 onBlur={() => {
-                  setHoveredRegion((current) => (current === region ? null : current));
                   hideTooltip();
                 }}
               />
 
               {hasProducers && (
                 <g
-                  className={`region-pin ${pinActive ? "region-pin--active" : ""}`}
+                  className="region-pin"
                   transform={`translate(${feature.labelX}, ${feature.labelY - 18})`}
                 >
                   <path d="M0 -10C4.5 -10 8 -6.5 8 -2C8 3 0 11 0 11S-8 3 -8 -2C-8 -6.5 -4.5 -10 0 -10Z" />
@@ -232,7 +241,7 @@ export function FranceRegionMap({
               key={region}
               type="button"
               className={`region-domtom-card cartoon-border-sm ${isSelected ? "region-domtom-card--selected" : ""}`}
-              onClick={() => onRegionClick(region)}
+              onClick={(event) => handleRegionClick(region, event)}
               onKeyDown={handleKeyDown(region)}
               aria-pressed={isSelected}
             >

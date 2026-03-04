@@ -30,10 +30,6 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hideWelcomePackBadge, setHideWelcomePackBadge] = useState(false);
 
-  useEffect(() => {
-    setHideWelcomePackBadge(false);
-  }, [hasWelcomePack]);
-
   // Hide badge instantly when pack is claimed elsewhere on the page
   useEffect(() => {
     const hide = () => setHideWelcomePackBadge(true);
@@ -137,7 +133,6 @@ export function Navbar() {
               height={44}
               sizes="44px"
               className="h-11 w-11 object-contain"
-              priority
             />
           </Link>
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getBlogPostBySlugByBackend, readPublicStoreByBackend } from "@/lib/data-backend";
+import { shouldUseNativeImg } from "@/lib/image-source";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const revalidate = 300;
@@ -144,14 +145,25 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         <article className="cartoon-border mt-8 overflow-hidden bg-cream">
           <div className="relative aspect-[16/8] border-b-2 border-[#1a1a1a]">
-            <Image
-              src={post.coverImage}
-              alt={post.title}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
+            {shouldUseNativeImg(post.coverImage) ? (
+              <img
+                src={post.coverImage}
+                alt={post.title}
+                className="absolute inset-0 h-full w-full object-cover"
+                loading="eager"
+                decoding="async"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <Image
+                src={post.coverImage}
+                alt={post.title}
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+              />
+            )}
           </div>
 
           <div className="p-8">

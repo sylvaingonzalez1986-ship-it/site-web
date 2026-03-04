@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
@@ -43,13 +43,8 @@ export function ProductAnalysisModal({
   analysisUrl,
   onClose,
 }: ProductAnalysisModalProps) {
-  const [mounted, setMounted] = useState(false);
   const safeUrl = useMemo(() => normalizeAnalysisUrl(analysisUrl), [analysisUrl]);
   useBodyScrollLock(open);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (!open) {
@@ -66,7 +61,7 @@ export function ProductAnalysisModal({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open, onClose]);
 
-  if (!mounted || !open || !safeUrl) {
+  if (!open || !safeUrl || typeof document === "undefined") {
     return null;
   }
 

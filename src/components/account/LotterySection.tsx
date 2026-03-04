@@ -127,7 +127,7 @@ export function LotterySection() {
           <p className="mt-2 text-sm text-charcoal">
             Operation promotionnelle reservee aux personnes majeures (18+). 1 pack par tranche de{" "}
             {config ? `${config.eurosPerTicket.toFixed(2)} EUR TTC` : "X EUR TTC"}, dans la limite de{" "}
-            {config?.maxTicketsPerOrder ?? "X"} packs par commande.
+            {config?.maxTicketsPerOrder ?? "X"} packs de base par commande, hors bonus lies au badge fidelite.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.08em] text-charcoal">

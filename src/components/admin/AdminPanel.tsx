@@ -1,19 +1,13 @@
 ﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { defaultStore } from "@/data/default-store";
 import { AdminTextCarousel } from "@/components/admin/AdminTextCarousel";
 import { AdminSeasonGalleryManager } from "@/components/admin/AdminSeasonGalleryManager";
-import { AdminPagesPanel } from "@/components/admin/AdminPagesPanel";
-import { AdminCustomersPanel } from "@/components/admin/AdminCustomersPanel";
-import { AdminMissionsPanel } from "@/components/admin/AdminMissionsPanel";
-import { AdminReferralsPanel } from "@/components/admin/AdminReferralsPanel";
 import { AdminPromosPanel } from "@/components/admin/AdminPromosPanel";
-import { AdminLotteryPanel } from "@/components/admin/AdminLotteryPanel";
-import { AdminNewsletterPanel } from "@/components/admin/AdminNewsletterPanel";
 import { AdminOrderDetailModal } from "@/components/admin/AdminOrderDetailModal";
-import { AdminPrintfulPanel } from "@/components/admin/AdminPrintfulPanel";
 import {
   FRENCH_DEPARTMENTS,
   FRENCH_REGIONS,
@@ -24,11 +18,6 @@ import {
   PRODUCER_SOIL_OPTIONS,
 } from "@/data/producer-taxonomies";
 import { VAT_RATE_OPTIONS, categoryLabels, type Product, type ProductCategory, type VatRate } from "@/data/products";
-import { BlogImageUpload } from "@/components/admin/BlogImageUpload";
-import { ProductAnalysisUpload } from "@/components/admin/ProductAnalysisUpload";
-import { ProductImageUpload } from "@/components/admin/ProductImageUpload";
-import { ProductVideoUpload } from "@/components/admin/ProductVideoUpload";
-import { ProducerImageUpload } from "@/components/admin/ProducerImageUpload";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import {
   BLOG_CATEGORY_OPTIONS,
@@ -46,6 +35,26 @@ import {
 
 const productCategoryOptions = Object.keys(categoryLabels) as ProductCategory[];
 const blogCategoryOptions = [...BLOG_CATEGORY_OPTIONS];
+
+const AdminPanelLoading = () => (
+  <div className="cartoon-border bg-cream p-8">
+    <div className="h-8 w-1/3 animate-pulse rounded bg-[#e8e3da]" />
+    <div className="mt-4 h-4 w-2/3 animate-pulse rounded bg-[#e8e3da]" />
+  </div>
+);
+
+const AdminPagesPanel = dynamic(() => import("@/components/admin/AdminPagesPanel").then((m) => m.AdminPagesPanel), { loading: AdminPanelLoading });
+const AdminCustomersPanel = dynamic(() => import("@/components/admin/AdminCustomersPanel").then((m) => m.AdminCustomersPanel), { loading: AdminPanelLoading });
+const AdminReferralsPanel = dynamic(() => import("@/components/admin/AdminReferralsPanel").then((m) => m.AdminReferralsPanel), { loading: AdminPanelLoading });
+const AdminMissionsPanel = dynamic(() => import("@/components/admin/AdminMissionsPanel").then((m) => m.AdminMissionsPanel), { loading: AdminPanelLoading });
+const AdminLotteryPanel = dynamic(() => import("@/components/admin/AdminLotteryPanel").then((m) => m.AdminLotteryPanel), { loading: AdminPanelLoading });
+const AdminNewsletterPanel = dynamic(() => import("@/components/admin/AdminNewsletterPanel").then((m) => m.AdminNewsletterPanel), { loading: AdminPanelLoading });
+const AdminPrintfulPanel = dynamic(() => import("@/components/admin/AdminPrintfulPanel").then((m) => m.AdminPrintfulPanel), { loading: AdminPanelLoading });
+const BlogImageUpload = dynamic(() => import("@/components/admin/BlogImageUpload").then((m) => m.BlogImageUpload));
+const ProductAnalysisUpload = dynamic(() => import("@/components/admin/ProductAnalysisUpload").then((m) => m.ProductAnalysisUpload));
+const ProductImageUpload = dynamic(() => import("@/components/admin/ProductImageUpload").then((m) => m.ProductImageUpload));
+const ProductVideoUpload = dynamic(() => import("@/components/admin/ProductVideoUpload").then((m) => m.ProductVideoUpload));
+const ProducerImageUpload = dynamic(() => import("@/components/admin/ProducerImageUpload").then((m) => m.ProducerImageUpload));
 const orderStatusLabels: Record<OrderStatus, string> = {
   new: "Nouvelle",
   pending_payment: "Paiement en attente",

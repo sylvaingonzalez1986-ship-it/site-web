@@ -5,7 +5,6 @@ import { spawn } from "node:child_process";
 import { access, mkdir, mkdtemp, readdir, readFile, rm, stat, unlink, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import ffmpegPath from "ffmpeg-static";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import {
   PRODUCT_VIDEO_PUBLIC_UPLOAD_PREFIX,
@@ -93,11 +92,16 @@ function isUploadProductVideoPath(videoPath: string): boolean {
   return PRODUCT_VIDEO_FILE_NAME_REGEX.test(fileName);
 }
 
-async function runFfmpeg(args: string[]): Promise<void> {
-  const binaryPath = ffmpegPath;
-  if (!binaryPath) {
+async function getFfmpegPath(): Promise<string> {
+  const { default: ffmpegPath } = await import("ffmpeg-static");
+  if (!ffmpegPath) {
     throw new ProductVideoUploadError("ffmpeg indisponible.", 503);
   }
+  return ffmpegPath;
+}
+
+async function runFfmpeg(args: string[]): Promise<void> {
+  const binaryPath = await getFfmpegPath();
 
   await new Promise<void>((resolve, reject) => {
     const proc = spawn(binaryPath, args, { windowsHide: true });
@@ -117,12 +121,9 @@ async function runFfmpeg(args: string[]): Promise<void> {
 }
 
 async function hasUsableFfmpegBinary(): Promise<boolean> {
-  if (!ffmpegPath) {
-    return false;
-  }
-
   try {
-    await access(ffmpegPath);
+    const binaryPath = await getFfmpegPath();
+    await access(binaryPath);
     return true;
   } catch {
     return false;

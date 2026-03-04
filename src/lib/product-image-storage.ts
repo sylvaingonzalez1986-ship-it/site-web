@@ -116,7 +116,7 @@ function isSupportedRemoteImageUrl(imagePath: string): boolean {
   }
 }
 
-function useSupabaseStorageBackend(): boolean {
+function isSupabaseStorageBackendEnabled(): boolean {
   return true;
 }
 
@@ -189,7 +189,7 @@ export async function saveProductImageUpload(file: File): Promise<string> {
 
   const fileName = `${randomUUID()}.${detected.extension}`;
 
-  if (useSupabaseStorageBackend()) {
+  if (isSupabaseStorageBackendEnabled()) {
     const supabase = createSupabaseServiceClient();
     const uploadResult = await supabase.storage
       .from(PRODUCT_IMAGE_BUCKET)
@@ -218,7 +218,7 @@ export async function saveProductImageUpload(file: File): Promise<string> {
 }
 
 export async function cleanupUnusedProductUploads(imagePaths: string[]): Promise<void> {
-  if (useSupabaseStorageBackend()) {
+  if (isSupabaseStorageBackendEnabled()) {
     const supabase = createSupabaseServiceClient();
     const referencedObjects = new Set(
       imagePaths

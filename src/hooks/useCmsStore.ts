@@ -52,8 +52,6 @@ export function useCmsStore() {
     let mounted = true;
 
     if (publicStoreCache) {
-      setStore(publicStoreCache);
-      setLoading(false);
       return () => {
         mounted = false;
       };

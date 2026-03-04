@@ -54,3 +54,8 @@ data/*.json
 
 # local supabase cli temp files
 supabase/.temp/
+
+# local scratch files
+tmp*
+tmp/
+tmp_supabase_push/

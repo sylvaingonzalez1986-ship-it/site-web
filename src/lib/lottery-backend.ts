@@ -79,6 +79,7 @@ export async function mintLotteryTicketsForOrderByBackend(input: {
   userId: string;
   orderId: string;
   orderAmount: number;
+  bonusTicketCount?: number;
 }): Promise<number> {
   return mintLotteryTicketsForOrderInSupabase(input);
 }

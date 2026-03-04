@@ -11,7 +11,7 @@ import {
   PRODUCER_SOIL_OPTIONS,
 } from "@/data/producer-taxonomies";
 import type { Product } from "@/data/products";
-import { isRemoteImageUrl } from "@/lib/image-source";
+import { shouldUseNativeImg } from "@/lib/image-source";
 import { PRODUCER_CULTURE_LABELS, type Producer } from "@/types/store";
 
 type ProducerDetailPanelProps = {
@@ -74,6 +74,7 @@ export function ProducerDetailPanel({
   const soilLabel = soilOption?.label ?? producer.soil ?? "—";
   const climateDetails = PRODUCER_CLIMATE_DETAILS[producer.climate] ?? [];
   const soilDetails = PRODUCER_SOIL_DETAILS[producer.soil] ?? [];
+  const useNativeImg = shouldUseNativeImg(producer.image);
 
   return (
     <section
@@ -83,14 +84,24 @@ export function ProducerDetailPanel({
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-md border-2 border-[#1a1a1a] bg-white md:h-28 md:w-28">
-            <Image
-              src={producer.image}
-              alt={producer.name}
-              fill
-              sizes="112px"
-              unoptimized={isRemoteImageUrl(producer.image)}
-              className="object-cover"
-            />
+            {useNativeImg ? (
+              <img
+                src={producer.image}
+                alt={producer.name}
+                className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <Image
+                src={producer.image}
+                alt={producer.name}
+                fill
+                sizes="112px"
+                className="object-cover"
+              />
+            )}
           </div>
           <div>
             <p className="pill-cartoon bg-yellow px-3 py-1 text-xs uppercase tracking-[0.12em]">

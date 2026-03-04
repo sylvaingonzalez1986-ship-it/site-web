@@ -15,18 +15,21 @@ const bodyFont = Space_Grotesk({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "optional",
 });
 
 const displayFont = Shrikhand({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["400"],
+  display: "optional",
 });
 
 const handwrittenFont = Caveat({
   variable: "--font-handwritten",
   subsets: ["latin"],
   weight: ["700"],
+  display: "optional",
 });
 
 export const metadata: Metadata = {
@@ -118,6 +121,8 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "") || "";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -125,6 +130,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
+      <head>
+        {supabaseUrl && (
+          <>
+            <link rel="preconnect" href={supabaseUrl} crossOrigin="anonymous" />
+            <link rel="dns-prefetch" href={supabaseUrl} />
+          </>
+        )}
+      </head>
       <body
         className={`${bodyFont.variable} ${displayFont.variable} ${handwrittenFont.variable} bg-mint text-ink antialiased`}
       >

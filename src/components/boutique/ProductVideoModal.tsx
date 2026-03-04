@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
@@ -17,12 +17,7 @@ export function ProductVideoModal({
   productName,
   onClose,
 }: ProductVideoModalProps) {
-  const [mounted, setMounted] = useState(false);
   useBodyScrollLock(open);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -37,7 +32,7 @@ export function ProductVideoModal({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open, onClose]);
 
-  if (!mounted || !open) return null;
+  if (typeof document === "undefined" || !open) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-[150] flex items-center justify-center bg-black/70 p-4">
@@ -71,6 +66,7 @@ export function ProductVideoModal({
             src={videoUrl}
             controls
             autoPlay
+            loop
             playsInline
             className="h-full w-full"
           />

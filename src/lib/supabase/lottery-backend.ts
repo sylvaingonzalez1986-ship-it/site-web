@@ -543,6 +543,12 @@ function buildClaimBenefit(claim: LotteryRewardClaim): LotteryRewardClaimBenefit
   const title = claim.reward.title;
   const description = claim.reward.description;
   const generatedCode = claim.generatedCode;
+  const customPayload = claim.reward.customPayload ?? {};
+  const checkoutRedeemable = customPayload.checkoutRedeemable;
+
+  if (checkoutRedeemable === false) {
+    return null;
+  }
 
   if (claim.reward.kind === "discount_percent" && claim.discountPercent && claim.discountPercent > 0) {
     return {
@@ -1598,6 +1604,7 @@ export async function mintLotteryTicketsForOrderInSupabase(input: {
   userId: string;
   orderId: string;
   orderAmount: number;
+  bonusTicketCount?: number;
 }): Promise<number> {
   const userId = input.userId.trim();
   const orderId = input.orderId.trim();
@@ -1610,6 +1617,7 @@ export async function mintLotteryTicketsForOrderInSupabase(input: {
     p_user_id: userId,
     p_order_id: orderId,
     p_order_amount: toMoney(input.orderAmount),
+    p_bonus_ticket_count: Math.max(0, Math.floor(input.bonusTicketCount ?? 0)),
   });
 
   failIfError(result.error, "rpc_mint_lottery_tickets");

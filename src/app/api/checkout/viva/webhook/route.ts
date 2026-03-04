@@ -259,6 +259,7 @@ export async function POST(request: Request) {
         userId: updated.customerId,
         orderId: updated.id,
         orderAmount: updated.totalAmount,
+        bonusTicketCount: updated.extraLotteryTickets ?? 0,
       });
       try {
         await applyReferralRewardForPaidOrderByBackend({ orderId: updated.id });

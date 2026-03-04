@@ -51,6 +51,10 @@ export type AppendOrderInput = {
     discountAmount: number;
     consumeCode?: boolean;
   } | null;
+  loyaltySnapshot?: {
+    badgeId: string;
+    extraLotteryTickets: number;
+  } | null;
   viva?: {
     orderCode: number;
     transactionId?: string;

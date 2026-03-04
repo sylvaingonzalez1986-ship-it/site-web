@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { FranceRegionMap } from "@/components/boutique/FranceRegionMap";
 import { ProducerTcgShowcase } from "@/components/boutique/ProducerTcgShowcase";
@@ -37,6 +37,15 @@ export function RegionProducerShowcase({
 }: RegionProducerShowcaseProps) {
   const [selectedRegion, setSelectedRegion] = useState<FrenchRegion | null>(null);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const [regionFlight, setRegionFlight] = useState<{
+    key: number;
+    startX: number;
+    startY: number;
+    deltaX: number;
+    deltaY: number;
+  } | null>(null);
+  const showcaseRef = useRef<HTMLDivElement | null>(null);
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const cardsSectionRef = useRef<HTMLDivElement | null>(null);
   const emptySectionRef = useRef<HTMLDivElement | null>(null);
 
@@ -159,8 +168,8 @@ export function RegionProducerShowcase({
   const selectedLabel = selectedRegion ? FRENCH_REGION_LABELS[selectedRegion] : null;
   const shouldShowDesktopPanel = !isMobileViewport && selectedRegion !== null;
 
-  useEffect(() => {
-    if (!selectedRegion || isMobileViewport) {
+  const scrollToDesktopContent = useCallback(() => {
+    if (isMobileViewport || !selectedRegion) {
       return;
     }
 
@@ -169,24 +178,86 @@ export function RegionProducerShowcase({
       return;
     }
 
-    const frame = window.requestAnimationFrame(() => {
-      const navbar = document.querySelector<HTMLElement>("header[data-tutorial='navbar']");
-      const navbarOffset = navbar ? navbar.getBoundingClientRect().height + 12 : 24;
-      const top = scrollTarget.getBoundingClientRect().top + window.scrollY - navbarOffset;
-      window.scrollTo({
-        top: Math.max(0, top),
-        behavior: "smooth",
+    const navbar = document.querySelector<HTMLElement>("header[data-tutorial='navbar']");
+    const navbarOffset = navbar ? navbar.getBoundingClientRect().height + 12 : 24;
+    const top = scrollTarget.getBoundingClientRect().top + window.scrollY - navbarOffset;
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: "smooth",
+    });
+  }, [isMobileViewport, selectedCount, selectedRegion]);
+
+  const triggerRegionFlight = useCallback(
+    (source?: { x: number; y: number }) => {
+      if (isMobileViewport || !source || !showcaseRef.current || !mapContainerRef.current) {
+        return;
+      }
+
+      const showcaseRect = showcaseRef.current.getBoundingClientRect();
+      const mapRect = mapContainerRef.current.getBoundingClientRect();
+
+      const startX = mapRect.left - showcaseRect.left + source.x;
+      const startY = mapRect.top - showcaseRect.top + source.y;
+      const targetX = mapRect.left - showcaseRect.left + mapRect.width * 0.52;
+      const targetY =
+        mapRect.top -
+        showcaseRect.top +
+        mapRect.height +
+        Math.min(150, Math.max(96, showcaseRect.height * 0.16));
+
+      setRegionFlight({
+        key: Date.now(),
+        startX,
+        startY,
+        deltaX: targetX - startX,
+        deltaY: targetY - startY,
       });
+    },
+    [isMobileViewport],
+  );
+
+  const handleRegionSelection = useCallback(
+    (region: FrenchRegion, source?: { x: number; y: number }) => {
+      setSelectedRegion(region);
+
+      window.requestAnimationFrame(() => {
+        triggerRegionFlight(source);
+      });
+    },
+    [triggerRegionFlight],
+  );
+
+  useEffect(() => {
+    if (!selectedRegion || isMobileViewport) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      scrollToDesktopContent();
     });
 
     return () => {
       window.cancelAnimationFrame(frame);
     };
-  }, [isMobileViewport, selectedCount, selectedRegion]);
+  }, [isMobileViewport, scrollToDesktopContent, selectedRegion]);
+
+  useEffect(() => {
+    if (!regionFlight) {
+      return;
+    }
+
+    const timeout = window.setTimeout(() => {
+      setRegionFlight(null);
+    }, 1050);
+
+    return () => {
+      window.clearTimeout(timeout);
+    };
+  }, [regionFlight]);
 
   return (
-    <div className="region-showcase">
-      <div className="region-map-container cartoon-panel halftone-overlay paper-grain">
+    <div ref={showcaseRef} className="region-showcase">
+      <div ref={mapContainerRef} className="region-map-container cartoon-panel halftone-overlay paper-grain">
         <div className="region-map-intro">
           <p className="section-title region-map-title text-ink">Nos producteurs de France</p>
           <p className="region-map-subtitle font-handwritten text-charcoal">
@@ -196,7 +267,7 @@ export function RegionProducerShowcase({
 
         <FranceRegionMap
           selectedRegion={selectedRegion}
-          onRegionClick={setSelectedRegion}
+          onRegionClick={handleRegionSelection}
           producerCountByRegion={producerCountByRegion}
         />
 
@@ -216,6 +287,25 @@ export function RegionProducerShowcase({
         ) : null}
       </div>
 
+      {regionFlight ? (
+        <div
+          key={regionFlight.key}
+          className="region-flight"
+          style={
+            {
+              "--region-flight-start-x": `${regionFlight.startX}px`,
+              "--region-flight-start-y": `${regionFlight.startY}px`,
+              "--region-flight-delta-x": `${regionFlight.deltaX}px`,
+              "--region-flight-delta-y": `${regionFlight.deltaY}px`,
+            } as CSSProperties
+          }
+          aria-hidden="true"
+        >
+          <span className="region-flight__trail" />
+          <span className="region-flight__dot" />
+        </div>
+      ) : null}
+
       {shouldShowDesktopPanel ? (
         <div className="region-showcase-panel">
           <div className="region-showcase-meta cartoon-border bg-cream">
@@ -225,13 +315,15 @@ export function RegionProducerShowcase({
                 {selectedCount} producteur{selectedCount > 1 ? "s" : ""}
               </p>
             </div>
-            <button
-              type="button"
-              className="btn-cartoon btn-secondary region-reset-button"
-              onClick={() => setSelectedRegion(null)}
-            >
-              Voir tous les producteurs
-            </button>
+            <div className="region-showcase-actions">
+              <button
+                type="button"
+                className="btn-cartoon btn-secondary region-reset-button"
+                onClick={() => setSelectedRegion(null)}
+              >
+                Voir tous les producteurs
+              </button>
+            </div>
           </div>
 
           {selectedCount === 0 ? (

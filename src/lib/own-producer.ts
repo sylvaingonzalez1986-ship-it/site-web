@@ -71,3 +71,23 @@ export function resolveProductProducer(
 
   return producerById.get(product.producerId);
 }
+
+export function isOwnProduct(product: Product): boolean {
+  return !product.producerId || product.producerId === OWN_PRODUCER_ID;
+}
+
+export function sortOwnProductsFirst(products: Product[]): Product[] {
+  const ownProducts: Product[] = [];
+  const partnerProducts: Product[] = [];
+
+  for (const product of products) {
+    if (isOwnProduct(product)) {
+      ownProducts.push(product);
+      continue;
+    }
+
+    partnerProducts.push(product);
+  }
+
+  return [...ownProducts, ...partnerProducts];
+}

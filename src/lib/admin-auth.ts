@@ -42,12 +42,12 @@ function hexToBytes(value: string): Uint8Array | null {
   return output;
 }
 
-function encodePayload(payload: AdminSessionPayload): string {
+export function encodeAdminSessionPayload(payload: AdminSessionPayload): string {
   const encoded = new TextEncoder().encode(JSON.stringify(payload));
   return bytesToHex(encoded);
 }
 
-function decodePayload(encodedPayload: string): AdminSessionPayload | null {
+export function decodeAdminSessionPayload(encodedPayload: string): AdminSessionPayload | null {
   const bytes = hexToBytes(encodedPayload);
   if (!bytes) {
     return null;
@@ -107,7 +107,7 @@ export async function createAdminSessionToken(
     nonce: crypto.randomUUID(),
   };
 
-  const encodedPayload = encodePayload(payload);
+  const encodedPayload = encodeAdminSessionPayload(payload);
   const signature = await crypto.subtle.sign(
     "HMAC",
     key,
@@ -128,7 +128,7 @@ export async function verifyAdminSessionToken(token: string | undefined): Promis
     return false;
   }
 
-  const payload = decodePayload(encodedPayload);
+  const payload = decodeAdminSessionPayload(encodedPayload);
   if (!payload) {
     return false;
   }

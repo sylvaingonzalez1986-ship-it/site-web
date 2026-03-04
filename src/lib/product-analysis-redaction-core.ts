@@ -1,8 +1,4 @@
 import path from "node:path";
-import { createCanvas } from "@napi-rs/canvas";
-import { PDFDocument } from "pdf-lib";
-import { getDocument, VerbosityLevel } from "pdfjs-dist/legacy/build/pdf.mjs";
-import { WorkerMessageHandler } from "pdfjs-dist/legacy/build/pdf.worker.mjs";
 
 const PAGE_RENDER_SCALE = 2;
 const REDACTION_PADDING = 8;
@@ -54,23 +50,40 @@ export class ProductAnalysisRedactionError extends Error {
   }
 }
 
-const globalPdfWorker = globalThis as typeof globalThis & {
-  pdfjsWorker?: { WorkerMessageHandler?: typeof WorkerMessageHandler };
-};
+let pdfjsLoaded = false;
 
-globalPdfWorker.pdfjsWorker ??= {};
-globalPdfWorker.pdfjsWorker.WorkerMessageHandler = WorkerMessageHandler;
+async function ensurePdfjsWorker(): Promise<void> {
+  if (pdfjsLoaded) return;
+  const { WorkerMessageHandler } = await import(
+    "pdfjs-dist/legacy/build/pdf.worker.mjs"
+  );
+  const g = globalThis as typeof globalThis & {
+    pdfjsWorker?: { WorkerMessageHandler?: typeof WorkerMessageHandler };
+  };
+  g.pdfjsWorker ??= {};
+  g.pdfjsWorker.WorkerMessageHandler = WorkerMessageHandler;
+  pdfjsLoaded = true;
+}
 
-function getPdfDocumentInit(data: Uint8Array): Parameters<typeof getDocument>[0] {
+async function loadPdfjs() {
+  await ensurePdfjsWorker();
+  return await import("pdfjs-dist/legacy/build/pdf.mjs");
+}
+
+async function getPdfDocumentInit(data: Uint8Array) {
+  const { VerbosityLevel, getDocument } = await loadPdfjs();
   const standardFontsDir =
     `${path.join(process.cwd(), "node_modules", "pdfjs-dist", "standard_fonts").replace(/\\/g, "/")}/`;
 
   return {
-    data,
-    useSystemFonts: true,
-    standardFontDataUrl: standardFontsDir,
-    verbosity: VerbosityLevel.ERRORS,
-  } as Parameters<typeof getDocument>[0];
+    getDocument,
+    init: {
+      data,
+      useSystemFonts: true,
+      standardFontDataUrl: standardFontsDir,
+      verbosity: VerbosityLevel.ERRORS,
+    } as Parameters<typeof getDocument>[0],
+  };
 }
 
 function toRedactionError(error: unknown): ProductAnalysisRedactionError {
@@ -325,7 +338,10 @@ function convertPdfRectToCanvasRect(
 }
 
 async function renderRedactedPdf(bytes: Uint8Array, redactionBlocksByPage: Rect[][]): Promise<Uint8Array> {
-  const loadingTask = getDocument(getPdfDocumentInit(bytes.slice()));
+  const { createCanvas } = await import("@napi-rs/canvas");
+  const { PDFDocument } = await import("pdf-lib");
+  const { getDocument, init } = await getPdfDocumentInit(bytes.slice());
+  const loadingTask = getDocument(init);
   const sourcePdf = await loadingTask.promise;
   const targetPdf = await PDFDocument.create();
 
@@ -382,10 +398,11 @@ async function renderRedactedPdf(bytes: Uint8Array, redactionBlocksByPage: Rect[
 export async function sanitizeProductAnalysisPdf(
   bytes: Uint8Array,
 ): Promise<{ bytes: Uint8Array; redactionCount: number }> {
+  const { getDocument, init } = await getPdfDocumentInit(bytes.slice());
   let loadingTask: ReturnType<typeof getDocument> | undefined;
 
   try {
-    loadingTask = getDocument(getPdfDocumentInit(bytes.slice()));
+    loadingTask = getDocument(init);
 
     const pdf = await loadingTask.promise;
     const redactionBlocksByPage: Rect[][] = [];

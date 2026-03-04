@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest",
+    "test:ci": "vitest run",
     "seed:supabase": "node scripts/seed-supabase-from-json.mjs",
     "migrate:customers:supabase": "node scripts/migrate-customers-to-supabase-auth.mjs",
     "link:orders:supabase": "node scripts/link-orders-to-supabase-customers.mjs",
@@ -16,34 +18,36 @@
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.95",
+    "@sentry/nextjs": "^10.42.0",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.95.3",
-    "@types/d3-geo": "^3.1.0",
     "@types/nodemailer": "^6.4.19",
-    "d3-geo": "^3.1.1",
     "ffmpeg-static": "^5.2.0",
     "gsap": "^3.14.2",
     "lucide-react": "^0.564.0",
     "next": "16.1.6",
-    "nodemailer": "^6.10.0",
+    "nodemailer": "^8.0.1",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.5.207",
     "pdfkit": "^0.17.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "server-only": "^0.0.1",
-    "simple-icons": "^16.9.0"
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.1.6",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pdfkit": "^0.17.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "chrome-launcher": "^1.2.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "lighthouse": "^13.0.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.18"
   }
 }

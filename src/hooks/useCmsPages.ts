@@ -37,27 +37,21 @@ async function loadCmsPages(): Promise<CmsPage[]> {
 
 export function useCmsPages() {
   const [pages, setPages] = useState<CmsPage[]>(cmsPagesCache ?? []);
-  const [loading, setLoading] = useState(false);
   const enabled = useMemo(() => isCmsPagesEnabledClient(), []);
+  const [loading, setLoading] = useState(enabled && cmsPagesCache === null);
 
   useEffect(() => {
     if (!enabled) {
-      setPages([]);
-      setLoading(false);
       return;
     }
 
     let mounted = true;
 
     if (cmsPagesCache) {
-      setPages(cmsPagesCache);
-      setLoading(false);
       return () => {
         mounted = false;
       };
     }
-
-    setLoading(true);
 
     const load = async () => {
       const data = await loadCmsPages();

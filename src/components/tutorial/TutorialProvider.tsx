@@ -574,7 +574,6 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
       {children}
       {currentStep ? (
         <TutorialOverlay
-          key={currentStep.id}
           active={isEnabled && isActive && isRouteReady}
           step={currentStep}
           stepIndex={safeStepIndex}

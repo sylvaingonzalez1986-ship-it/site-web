@@ -7,15 +7,19 @@ import { CustomSection } from "@/components/CustomSection";
 import { ProductCard } from "@/components/ProductCard";
 import { ProducerBar } from "@/components/boutique/ProducerBar";
 import { ProducerTcgCard } from "@/components/boutique/ProducerTcgCard";
-import { ProducerTcgModal } from "@/components/boutique/ProducerTcgModal";
 import { categoryLabels, type Product, type ProductCategory } from "@/data/products";
-import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
-import { dedupeProducts } from "@/lib/product-dedup";
+import { resolveProductProducer, sortOwnProductsFirst } from "@/lib/own-producer";
 import { hasActiveProductPromo } from "@/lib/product-promo";
-import type { BoutiqueSection, PublicStoreResponse } from "@/types/store";
+import { mergeUniqueProductsById } from "@/lib/boutique-helpers";
+import type { BoutiqueSection, Producer, PublicStoreResponse } from "@/types/store";
 
 const RegionProducerShowcase = dynamic(
   () => import("@/components/boutique/RegionProducerShowcase").then((mod) => mod.RegionProducerShowcase),
+  { ssr: false },
+);
+
+const ProducerTcgModal = dynamic(
+  () => import("@/components/boutique/ProducerTcgModal").then((mod) => mod.ProducerTcgModal),
   { ssr: false },
 );
 
@@ -23,114 +27,33 @@ type Filter = "all" | "promos" | ProductCategory;
 type ShowcaseMode = "products" | "neighbors" | "copains" | "regions";
 
 type BoutiquePageClientProps = {
-  initialStore: PublicStoreResponse;
+  boutique: PublicStoreResponse["content"]["boutique"];
+  producers: Producer[];
+  ownProducer: Producer;
+  ownProducts: Product[];
+  partnerProducts: Product[];
+  voisinProducts: Product[];
+  copainsProducts: Product[];
+  globalAccessoriesProducts: Product[];
+  boutiqueSections: BoutiqueSection[];
 };
 
-function isPrintfulProduct(product: Product): boolean {
-  return product.id.startsWith("printful-p-") || product.id.startsWith("printful-v-");
-}
-
-function normalizeGeoLabel(value: string | undefined): string {
-  return (value ?? "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim();
-}
-
-function matchesDepartmentCode(label: string, code: string): boolean {
-  return (
-    label === code ||
-    label.startsWith(`${code} `) ||
-    label.startsWith(`${code}-`) ||
-    label.includes(`(${code})`) ||
-    label.endsWith(` ${code}`)
-  );
-}
-
-function mergeUniqueProductsById(products: Product[]): Product[] {
-  const seen = new Set<string>();
-  const merged: Product[] = [];
-
-  for (const product of products) {
-    if (seen.has(product.id)) {
-      continue;
-    }
-    seen.add(product.id);
-    merged.push(product);
-  }
-
-  return merged;
-}
-
-export function BoutiquePageClient({ initialStore }: BoutiquePageClientProps) {
-  const store = initialStore;
+export function BoutiquePageClient({
+  boutique,
+  producers,
+  ownProducer,
+  ownProducts,
+  partnerProducts,
+  voisinProducts,
+  copainsProducts,
+  globalAccessoriesProducts,
+  boutiqueSections,
+}: BoutiquePageClientProps) {
   const loading = false;
-  const boutique = store.content.boutique;
   const [filter, setFilter] = useState<Filter>("all");
   const [showcaseMode, setShowcaseMode] = useState<ShowcaseMode>("products");
   const [selectedOwnProducerId, setSelectedOwnProducerId] = useState<string | null>(null);
-  const uniqueProducts = useMemo(() => dedupeProducts(store.products), [store.products]);
-  const ownProducer = useMemo(() => getOwnProducer(boutique), [boutique]);
 
-  const ownProducts = useMemo(
-    () =>
-      uniqueProducts.filter(
-        (product) => !product.producerId && !isPrintfulProduct(product),
-      ),
-    [uniqueProducts],
-  );
-
-  const partnerProducts = useMemo(
-    () =>
-      uniqueProducts.filter(
-        (product) => product.producerId && !isPrintfulProduct(product),
-      ),
-    [uniqueProducts],
-  );
-
-  const neighborProducerIds = useMemo(() => {
-    const ids = new Set<string>();
-
-    for (const producer of store.producers) {
-      const region = normalizeGeoLabel(producer.region);
-      const department = normalizeGeoLabel(producer.department);
-      const isBretagne = region.includes("bretagne");
-      const isLoireAtlantique =
-        department.includes("loire-atlantique") ||
-        department.includes("loire atlantique") ||
-        matchesDepartmentCode(department, "44");
-      const isMayenne =
-        department.includes("mayenne") || matchesDepartmentCode(department, "53");
-
-      if (isBretagne || isLoireAtlantique || isMayenne) {
-        ids.add(producer.id);
-      }
-    }
-
-    return ids;
-  }, [store.producers]);
-
-  const voisinProducts = useMemo(
-    () =>
-      partnerProducts.filter(
-        (product) => product.producerId && neighborProducerIds.has(product.producerId),
-      ),
-    [neighborProducerIds, partnerProducts],
-  );
-
-  const copainsProducts = useMemo(
-    () =>
-      partnerProducts.filter(
-        (product) => product.producerId && !neighborProducerIds.has(product.producerId),
-      ),
-    [neighborProducerIds, partnerProducts],
-  );
-
-  const globalAccessoriesProducts = useMemo(
-    () => uniqueProducts.filter((product) => product.category === "accessoires"),
-    [uniqueProducts],
-  );
   const modeProducts = useMemo(() => {
     if (showcaseMode === "neighbors") {
       return voisinProducts;
@@ -188,12 +111,14 @@ export function BoutiquePageClient({ initialStore }: BoutiquePageClientProps) {
 
   const displayedProducts = useMemo(() => {
     if (effectiveFilter === "accessoires") {
-      return globalAccessoriesProducts;
+      return sortOwnProductsFirst(globalAccessoriesProducts);
     }
 
     if (effectiveFilter === "promos") {
-      return mergeUniqueProductsById([...modeProducts, ...globalAccessoriesProducts]).filter((product) =>
-        hasActiveProductPromo(product),
+      return sortOwnProductsFirst(
+        mergeUniqueProductsById([...modeProducts, ...globalAccessoriesProducts]).filter((product) =>
+          hasActiveProductPromo(product),
+        ),
       );
     }
 
@@ -210,18 +135,13 @@ export function BoutiquePageClient({ initialStore }: BoutiquePageClientProps) {
   );
 
   const producersById = useMemo(
-    () => new Map(store.producers.map((producer) => [producer.id, producer])),
-    [store.producers],
+    () => new Map(producers.map((producer) => [producer.id, producer])),
+    [producers],
   );
 
   const ownProductsByProducerId = useMemo(
     () => new Map([[ownProducer.id, displayedOwnProducts]]),
     [displayedOwnProducts, ownProducer.id],
-  );
-
-  const boutiqueSections = useMemo(
-    () => store.sections.boutique.filter((section) => section.visible),
-    [store.sections.boutique],
   );
 
   const renderBoutiqueSection = (section: BoutiqueSection, index: number) => {
@@ -309,7 +229,7 @@ export function BoutiquePageClient({ initialStore }: BoutiquePageClientProps) {
           return (
             <div key={section.id} className={spacingClass}>
               <RegionProducerShowcase
-                producers={store.producers}
+                producers={producers}
                 products={partnerProducts}
                 ownProducer={ownProducer}
                 ownProducts={ownProducts}
@@ -361,7 +281,7 @@ export function BoutiquePageClient({ initialStore }: BoutiquePageClientProps) {
 
             {isPartnerMode && hasProducerProducts ? (
               <ProducerBar
-                producers={store.producers}
+                producers={producers}
                 products={displayedProducts}
                 addButtonLabel={boutique.addButtonLabel}
                 lowStockThresholdGrams={boutique.lowStockThresholdGrams}
@@ -375,6 +295,7 @@ export function BoutiquePageClient({ initialStore }: BoutiquePageClientProps) {
                     <ProducerTcgCard
                       producer={ownProducer}
                       isSelected={selectedOwnProducerId === ownProducer.id}
+                      imagePriority
                       onClick={() =>
                         setSelectedOwnProducerId((current) =>
                           current === ownProducer.id ? null : ownProducer.id,
@@ -392,7 +313,7 @@ export function BoutiquePageClient({ initialStore }: BoutiquePageClientProps) {
                       producer={resolveProductProducer(product, producersById, ownProducer)}
                       addButtonLabel={boutique.addButtonLabel}
                       lowStockThresholdGrams={boutique.lowStockThresholdGrams}
-                      imagePriority={index < 2}
+                      imagePriority={index === 0}
                     />
                   ))}
                 </div>

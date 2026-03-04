@@ -6,7 +6,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { type ProductCategory } from "@/data/products";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
-import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
+import { getOwnProducer, resolveProductProducer, sortOwnProductsFirst } from "@/lib/own-producer";
 import { dedupeProducts } from "@/lib/product-dedup";
 import type { Producer } from "@/types/store";
 
@@ -57,8 +57,8 @@ export default async function CategoryPage({
     store.producers.map((producer) => [producer.id, producer]),
   );
 
-  const filteredProducts = uniqueProducts.filter(
-    (product) => product.category === categoryInfo.filter,
+  const filteredProducts = sortOwnProductsFirst(
+    uniqueProducts.filter((product) => product.category === categoryInfo.filter),
   );
   const baseUrl = getSiteUrl();
   const categoryDescription = getCategoryDescription(slug);

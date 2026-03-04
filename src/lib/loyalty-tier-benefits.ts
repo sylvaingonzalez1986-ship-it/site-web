@@ -59,16 +59,90 @@ export const LOYALTY_TIER_BENEFITS_FIELDS: Array<{
   },
 ];
 
-export function getBadgeBenefitsText(
-  profileContent: SiteContent["profile"],
-  badgeId: LoyaltyBadgeId,
-): string {
-  const field = LOYALTY_TIER_BENEFITS_FIELDS.find((item) => item.id === badgeId);
-  if (!field) {
-    return "";
+const BADGE_TIER_BENEFITS: Record<
+  LoyaltyBadgeId,
+  {
+    discountPercent: number;
+    freeShipping: boolean;
+    extraBoosterPacksPerOrder: number;
+    birthdayGiftEligible: boolean;
+    decemberGiftEligible: boolean;
+    privateSalesEligible: boolean;
+  }
+> = {
+  decouverte: {
+    discountPercent: 1,
+    freeShipping: false,
+    extraBoosterPacksPerOrder: 1,
+    birthdayGiftEligible: false,
+    decemberGiftEligible: false,
+    privateSalesEligible: false,
+  },
+  explorateur: {
+    discountPercent: 4,
+    freeShipping: true,
+    extraBoosterPacksPerOrder: 3,
+    birthdayGiftEligible: false,
+    decemberGiftEligible: false,
+    privateSalesEligible: false,
+  },
+  connaisseur: {
+    discountPercent: 6,
+    freeShipping: true,
+    extraBoosterPacksPerOrder: 5,
+    birthdayGiftEligible: false,
+    decemberGiftEligible: false,
+    privateSalesEligible: false,
+  },
+  ambassadeur: {
+    discountPercent: 8,
+    freeShipping: true,
+    extraBoosterPacksPerOrder: 10,
+    birthdayGiftEligible: true,
+    decemberGiftEligible: false,
+    privateSalesEligible: true,
+  },
+  legende: {
+    discountPercent: 10,
+    freeShipping: true,
+    extraBoosterPacksPerOrder: 20,
+    birthdayGiftEligible: true,
+    decemberGiftEligible: true,
+    privateSalesEligible: true,
+  },
+};
+
+export function getCanonicalBadgeBenefitsLines(badgeId: LoyaltyBadgeId): string[] {
+  const perks = BADGE_TIER_BENEFITS[badgeId];
+  const lines = [
+    `${perks.discountPercent}% de reduction permanente`,
+    `${perks.extraBoosterPacksPerOrder} pack${perks.extraBoosterPacksPerOrder > 1 ? "s" : ""} booster extra par commande`,
+  ];
+
+  if (perks.freeShipping) {
+    lines.splice(1, 0, "Livraison offerte");
   }
 
-  return profileContent[field.contentKey] ?? "";
+  if (perks.birthdayGiftEligible) {
+    lines.push("1 cadeau d'anniversaire pour toute commande passee le mois de ton anniversaire");
+  }
+
+  if (perks.decemberGiftEligible) {
+    lines.push("1 cadeau de Noel pour toute commande passee au mois de decembre");
+  }
+
+  if (perks.privateSalesEligible) {
+    lines.push("Acces aux ventes privees");
+  }
+
+  return lines;
+}
+
+export function getBadgeBenefitsText(
+  _profileContent: SiteContent["profile"],
+  badgeId: LoyaltyBadgeId,
+): string {
+  return getCanonicalBadgeBenefitsLines(badgeId).join("\n");
 }
 
 export function parseBadgeBenefitsLines(rawBenefits: string): string[] {
@@ -89,15 +163,10 @@ export function sanitizeLoyaltyTierDiscountPercent(value: unknown): number {
 }
 
 export function getBadgeDiscountPercent(
-  profileContent: SiteContent["profile"],
+  _profileContent: SiteContent["profile"],
   badgeId: LoyaltyBadgeId,
 ): number {
-  const field = LOYALTY_TIER_BENEFITS_FIELDS.find((item) => item.id === badgeId);
-  if (!field) {
-    return 0;
-  }
-
-  return sanitizeLoyaltyTierDiscountPercent(profileContent[field.discountKey]);
+  return BADGE_TIER_BENEFITS[badgeId]?.discountPercent ?? 0;
 }
 
 export function isBadgeEligibleForFreeShipping(
@@ -114,8 +183,22 @@ export function isBadgeEligibleForFreeShipping(
 export function isBadgeTierEligibleForFreeShipping(
   badgeId: LoyaltyBadgeId,
 ): boolean {
-  return badgeId !== "decouverte";
+  return BADGE_TIER_BENEFITS[badgeId]?.freeShipping ?? false;
 }
 
+export function getBadgeExtraBoosterPacksPerOrder(badgeId: LoyaltyBadgeId): number {
+  return BADGE_TIER_BENEFITS[badgeId]?.extraBoosterPacksPerOrder ?? 0;
+}
 
+export function hasBadgeBirthdayGiftBenefit(badgeId: LoyaltyBadgeId): boolean {
+  return BADGE_TIER_BENEFITS[badgeId]?.birthdayGiftEligible ?? false;
+}
+
+export function hasBadgeDecemberGiftBenefit(badgeId: LoyaltyBadgeId): boolean {
+  return BADGE_TIER_BENEFITS[badgeId]?.decemberGiftEligible ?? false;
+}
+
+export function hasBadgePrivateSalesBenefit(badgeId: LoyaltyBadgeId): boolean {
+  return BADGE_TIER_BENEFITS[badgeId]?.privateSalesEligible ?? false;
+}
 

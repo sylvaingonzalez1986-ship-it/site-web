@@ -2,8 +2,8 @@
 
 import type { KeyboardEvent } from "react";
 import Image from "next/image";
-import { isRemoteImageUrl } from "@/lib/image-source";
 import { ProducerSocialLinks } from "@/components/boutique/ProducerSocialLinks";
+import { shouldUseNativeImg } from "@/lib/image-source";
 import {
   PRODUCER_CULTURE_LABELS,
   type Producer,
@@ -14,6 +14,7 @@ type ProducerTcgCardProps = {
   producer: Producer;
   isSelected?: boolean;
   onClick?: () => void;
+  imagePriority?: boolean;
 };
 
 const CULTURE_SHORT_LABELS: Record<ProducerCultureType, string> = {
@@ -38,6 +39,7 @@ export function ProducerTcgCard({
   producer,
   isSelected = false,
   onClick,
+  imagePriority = false,
 }: ProducerTcgCardProps) {
   const location = [producer.department, producer.region].filter(Boolean).join(", ") || producer.location;
   const cultureTypes = producer.cultureType ?? [];
@@ -45,6 +47,7 @@ export function ProducerTcgCard({
   const rarity = computeRarity(producer);
   const hasHolo = rarity >= 4;
   const description = producer.philosophy?.trim() || producer.description;
+  const useNativeImg = shouldUseNativeImg(producer.image);
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter" || event.key === " ") {
@@ -81,14 +84,25 @@ export function ProducerTcgCard({
         </header>
 
         <div className="tcg-card-image-frame">
-          <Image
-            src={producer.image}
-            alt={producer.name}
-            fill
-            sizes="300px"
-            unoptimized={isRemoteImageUrl(producer.image)}
-            className="object-cover"
-          />
+          {useNativeImg ? (
+            <img
+              src={producer.image}
+              alt={producer.name}
+              className="absolute inset-0 h-full w-full object-cover"
+              loading={imagePriority ? "eager" : "lazy"}
+              decoding="async"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <Image
+              src={producer.image}
+              alt={producer.name}
+              fill
+              sizes="300px"
+              priority={imagePriority}
+              className="object-cover"
+            />
+          )}
           <div className="tcg-card-location-ribbon">
             <span className="tcg-card-location-text">{location}</span>
           </div>
