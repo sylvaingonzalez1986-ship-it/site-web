@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import {
   bindSupabaseReferralCodeSafe,
   clearSupabaseSignupTransientMetadata,
@@ -76,10 +77,22 @@ export async function GET(request: Request) {
     await supabase.auth.signOut();
 
     redirectUrl.searchParams.set("verified", "true");
-    return NextResponse.redirect(redirectUrl);
+    const response = NextResponse.redirect(redirectUrl);
+
+    const cookieStore = await cookies();
+    for (const cookie of cookieStore.getAll()) {
+      if (cookie.name.startsWith("sb-") && cookie.name.includes("-auth-token")) {
+        response.cookies.set(cookie.name, "", {
+          maxAge: 0,
+          expires: new Date(0),
+          path: "/",
+        });
+      }
+    }
+
+    return response;
   } catch {
     redirectUrl.searchParams.set("error", "verification_invalide");
     return NextResponse.redirect(redirectUrl);
   }
 }
-
