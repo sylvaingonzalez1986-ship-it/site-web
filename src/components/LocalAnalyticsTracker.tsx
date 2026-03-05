@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 type TutorialEventDetail = {
@@ -46,7 +46,7 @@ function postAnalyticsEvent(input: {
   });
 }
 
-export function LocalAnalyticsTracker() {
+function LocalAnalyticsTrackerInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const lastViewKeyRef = useRef<string>("");
@@ -104,4 +104,12 @@ export function LocalAnalyticsTracker() {
   }, [pathname]);
 
   return null;
+}
+
+export function LocalAnalyticsTracker() {
+  return (
+    <Suspense fallback={null}>
+      <LocalAnalyticsTrackerInner />
+    </Suspense>
+  );
 }

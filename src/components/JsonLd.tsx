@@ -10,6 +10,9 @@ type ArticleJsonLdProps = {
   datePublished: string;
   dateModified: string;
   category?: string;
+  wordCount?: number;
+  ratingValue?: number;
+  ratingCount?: number;
 };
 
 function resolveProductAvailability(product: Product): string {
@@ -352,6 +355,9 @@ export function ArticleJsonLd({
   datePublished,
   dateModified,
   category,
+  wordCount,
+  ratingValue,
+  ratingCount,
 }: ArticleJsonLdProps) {
   const baseUrl = getSiteUrl();
 
@@ -380,6 +386,21 @@ export function ArticleJsonLd({
         url: `${baseUrl}/sylvain.png`,
       },
     },
+    wordCount: typeof wordCount === "number" && Number.isFinite(wordCount) ? wordCount : undefined,
+    aggregateRating:
+      typeof ratingValue === "number" &&
+      Number.isFinite(ratingValue) &&
+      typeof ratingCount === "number" &&
+      Number.isFinite(ratingCount) &&
+      ratingCount > 0
+        ? {
+            "@type": "AggregateRating",
+            ratingValue: Number(ratingValue.toFixed(2)),
+            bestRating: 5,
+            worstRating: 1,
+            ratingCount: Math.max(0, Math.floor(ratingCount)),
+          }
+        : undefined,
   };
 
   return (

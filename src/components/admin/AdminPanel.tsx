@@ -47,6 +47,7 @@ const AdminPagesPanel = dynamic(() => import("@/components/admin/AdminPagesPanel
 const AdminCustomersPanel = dynamic(() => import("@/components/admin/AdminCustomersPanel").then((m) => m.AdminCustomersPanel), { loading: AdminPanelLoading });
 const AdminReferralsPanel = dynamic(() => import("@/components/admin/AdminReferralsPanel").then((m) => m.AdminReferralsPanel), { loading: AdminPanelLoading });
 const AdminAnalyticsPanel = dynamic(() => import("@/components/admin/AdminAnalyticsPanel").then((m) => m.AdminAnalyticsPanel), { loading: AdminPanelLoading });
+const AdminBlogCommentsPanel = dynamic(() => import("@/components/admin/AdminBlogCommentsPanel").then((m) => m.AdminBlogCommentsPanel), { loading: AdminPanelLoading });
 const AdminMissionsPanel = dynamic(() => import("@/components/admin/AdminMissionsPanel").then((m) => m.AdminMissionsPanel), { loading: AdminPanelLoading });
 const AdminLotteryPanel = dynamic(() => import("@/components/admin/AdminLotteryPanel").then((m) => m.AdminLotteryPanel), { loading: AdminPanelLoading });
 const AdminNewsletterPanel = dynamic(() => import("@/components/admin/AdminNewsletterPanel").then((m) => m.AdminNewsletterPanel), { loading: AdminPanelLoading });
@@ -106,6 +107,7 @@ type AdminTab =
   | "produits"
   | "copains"
   | "blog"
+  | "blog_comments"
   | "pages"
   | "textes";
 
@@ -122,6 +124,7 @@ const adminTabs: AdminTab[] = [
   "produits",
   "copains",
   "blog",
+  "blog_comments",
   "pages",
   "textes",
 ];
@@ -139,6 +142,7 @@ const tabLabels: Record<AdminTab, string> = {
   produits: "Mes Produits",
   copains: "Coin des Copains",
   blog: "Blog",
+  blog_comments: "Commentaires",
   pages: "Pages",
   textes: "Textes",
 };
@@ -1537,6 +1541,8 @@ export function AdminPanel() {
         {activeTab === "newsletter" && <AdminNewsletterPanel />}
 
         {activeTab === "printful" && <AdminPrintfulPanel />}
+
+        {activeTab === "blog_comments" && <AdminBlogCommentsPanel />}
 
         {activeTab === "blog" && (
         <div className="cartoon-border bg-cream p-6 md:p-8">

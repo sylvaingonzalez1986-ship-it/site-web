@@ -2,9 +2,15 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BlogCommentSection } from "@/components/blog/BlogCommentSection";
+import { BlogRelatedPosts } from "@/components/blog/BlogRelatedPosts";
+import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
+import { BlogStarRating } from "@/components/blog/BlogStarRating";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { getBlogRatingStats } from "@/lib/blog-interactions-backend";
 import { getBlogPostBySlugByBackend, readPublicStoreByBackend } from "@/lib/data-backend";
 import { shouldUseNativeImg } from "@/lib/image-source";
+import { computeReadingTimeMinutes } from "@/lib/reading-time";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const revalidate = 300;
@@ -15,35 +21,40 @@ type BlogPostPageProps = {
 
 const blogCategoryLabels: Record<string, string> = {
   guide: "Guide",
-  actualite: "Actualité",
-  "bien-etre": "Bien-être",
-  legislation: "Législation",
+  actualite: "Actualite",
+  "bien-etre": "Bien-etre",
+  legislation: "Legislation",
 };
 
 const blogCategoryShopLinks: Record<string, Array<{ href: string; label: string }>> = {
   guide: [
-    { href: "/boutique/fleurs-cbd", label: "Découvrir nos Fleurs CBD" },
+    { href: "/boutique/fleurs-cbd", label: "Decouvrir nos Fleurs CBD" },
     { href: "/boutique/huiles-cbd", label: "Voir nos Huiles CBD" },
     { href: "/boutique/tisane-cbd", label: "Explorer nos Tisanes CBD" },
   ],
   actualite: [
     { href: "/boutique", label: "Voir toute la boutique CBD" },
-    { href: "/boutique/fleurs-cbd", label: "Nouveautés Fleurs CBD" },
+    { href: "/boutique/fleurs-cbd", label: "Nouveautes Fleurs CBD" },
   ],
   "bien-etre": [
-    { href: "/boutique/huiles-cbd", label: "Huiles CBD bien-être" },
+    { href: "/boutique/huiles-cbd", label: "Huiles CBD bien-etre" },
     { href: "/boutique/tisane-cbd", label: "Tisanes chanvre relaxation" },
-    { href: "/boutique/cosmetiques-cbd", label: "Cosmétiques CBD" },
+    { href: "/boutique/cosmetiques-cbd", label: "Cosmetiques CBD" },
   ],
   legislation: [
     { href: "/boutique/fleurs-cbd", label: "Fleurs CBD conformes" },
-    { href: "/boutique/resines-cbd", label: "Résines CBD analysées" },
+    { href: "/boutique/resines-cbd", label: "Resines CBD analysees" },
   ],
 };
 
-export async function generateMetadata({
-  params,
-}: BlogPostPageProps): Promise<Metadata> {
+function asAbsoluteUrl(baseUrl: string, image: string): string {
+  if (image.startsWith("http://") || image.startsWith("https://")) {
+    return image;
+  }
+  return `${baseUrl}${image}`;
+}
+
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getBlogPostBySlugByBackend(slug);
 
@@ -56,25 +67,24 @@ export async function generateMetadata({
 
   const baseUrl = getSiteUrl();
   const canonicalUrl = `${baseUrl}/blog/${post.slug}`;
+  const coverImage = asAbsoluteUrl(baseUrl, post.coverImage);
 
   return {
     title: post.title,
     description: post.excerpt,
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    alternates: { canonical: canonicalUrl },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       url: canonicalUrl,
       type: "article",
-      images: [{ url: `${baseUrl}${post.coverImage}` }],
+      images: [{ url: coverImage }],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.excerpt,
-      images: [`${baseUrl}${post.coverImage}`],
+      images: [coverImage],
     },
   };
 }
@@ -90,15 +100,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const store = await readPublicStoreByBackend();
   const blogContent = store.content.blog;
-
   const canonicalUrl = `${baseUrl}/blog/${post.slug}`;
   const paragraphs = post.content
     .split(/\n{2,}/)
     .map((item) => item.trim())
     .filter(Boolean);
-  const relatedShopLinks = blogCategoryShopLinks[post.category] ?? [
-    { href: "/boutique", label: "Voir la boutique CBD" },
-  ];
+  const readingMinutes = computeReadingTimeMinutes(post.content);
+  const relatedShopLinks = blogCategoryShopLinks[post.category] ?? [{ href: "/boutique", label: "Voir la boutique CBD" }];
+  const coverImage = asAbsoluteUrl(baseUrl, post.coverImage);
+  const ratingStats = await getBlogRatingStats(post.id);
+  const wordCount = post.content.trim() ? post.content.trim().split(/\s+/).filter(Boolean).length : 0;
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
@@ -113,10 +124,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         title={post.title}
         description={post.excerpt}
         url={canonicalUrl}
-        image={`${baseUrl}${post.coverImage}`}
+        image={coverImage}
         datePublished={post.createdAt}
         dateModified={post.updatedAt}
         category={blogCategoryLabels[post.category] ?? post.category}
+        wordCount={wordCount}
+        ratingValue={ratingStats.averageRating}
+        ratingCount={ratingStats.totalRatings}
       />
 
       <div className="retro-container">
@@ -138,7 +152,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </p>
           <h1 className="section-title mt-5 text-ink">{post.title}</h1>
           <p className="mt-2 text-sm text-charcoal">
-            {blogContent.postPublishedPrefix} {new Date(post.createdAt).toLocaleDateString("fr-FR")}
+            {blogContent.postPublishedPrefix} {new Date(post.createdAt).toLocaleDateString("fr-FR")} -{" "}
+            {readingMinutes} min de lecture
           </p>
           <p className="mt-4 text-lg leading-relaxed text-charcoal">{post.excerpt}</p>
         </div>
@@ -155,30 +170,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <Image
-                src={post.coverImage}
-                alt={post.title}
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover"
-              />
+              <Image src={post.coverImage} alt={post.title} fill priority sizes="100vw" className="object-cover" />
             )}
           </div>
 
           <div className="p-8">
-            <div className="grid gap-5 text-base leading-relaxed text-charcoal">
+            <BlogShareButtons url={canonicalUrl} title={post.title} excerpt={post.excerpt} />
+
+            <div className="mt-6 grid gap-5 text-base leading-relaxed text-charcoal">
               {paragraphs.length > 0 ? (
-                paragraphs.map((paragraph, index) => (
-                  <p key={`${post.id}-paragraph-${index}`}>{paragraph}</p>
-                ))
+                paragraphs.map((paragraph, index) => <p key={`${post.id}-paragraph-${index}`}>{paragraph}</p>)
               ) : (
                 <p>{post.excerpt}</p>
               )}
             </div>
 
             <div className="cartoon-border mt-8 bg-white p-5">
-              <h2 className="font-display text-2xl text-ink">Produits associés</h2>
+              <h2 className="font-display text-2xl text-ink">Produits associes</h2>
               <div className="mt-4 flex flex-wrap gap-2">
                 {relatedShopLinks.map((link) => (
                   <Link
@@ -190,6 +198,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   </Link>
                 ))}
               </div>
+            </div>
+
+            <div className="mt-8">
+              <BlogStarRating postId={post.id} />
+            </div>
+
+            <div className="mt-8">
+              <BlogRelatedPosts currentPostId={post.id} currentCategory={post.category} posts={store.blog} />
+            </div>
+
+            <div className="mt-8">
+              <BlogCommentSection postId={post.id} />
             </div>
 
             <div className="mt-8">
