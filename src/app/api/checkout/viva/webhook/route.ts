@@ -147,10 +147,7 @@ export async function GET() {
   if (!verificationKey) {
     return NextResponse.json({ ok: true });
   }
-  return new NextResponse(verificationKey, {
-    status: 200,
-    headers: { "Content-Type": "text/plain" },
-  });
+  return NextResponse.json({ Key: verificationKey });
 }
 
 export async function POST(request: Request) {
