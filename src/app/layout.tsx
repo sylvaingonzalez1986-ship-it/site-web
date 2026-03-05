@@ -6,9 +6,12 @@ import {
   OrganizationJsonLd,
   WebSiteJsonLd,
 } from "@/components/JsonLd";
+import { CookieConsentBanner } from "@/components/CookieConsentBanner";
+import { MatomoScript } from "@/components/MatomoScript";
 import { Navbar } from "@/components/Navbar";
 import { TutorialProvider } from "@/components/tutorial/TutorialProvider";
 import { CartProvider } from "@/context/CartContext";
+import { CookieConsentProvider } from "@/context/CookieConsentContext";
 import "./globals.css";
 
 const bodyFont = Space_Grotesk({
@@ -144,15 +147,19 @@ export default function RootLayout({
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />
         <WebSiteJsonLd />
-        <CartProvider>
-          <TutorialProvider>
-            <div className="site-background min-h-screen">
-              <Navbar />
-              <main>{children}</main>
-              <Footer />
-            </div>
-          </TutorialProvider>
-        </CartProvider>
+        <CookieConsentProvider>
+          <CartProvider>
+            <TutorialProvider>
+              <div className="site-background min-h-screen">
+                <Navbar />
+                <main>{children}</main>
+                <Footer />
+              </div>
+            </TutorialProvider>
+          </CartProvider>
+          <MatomoScript />
+          <CookieConsentBanner />
+        </CookieConsentProvider>
       </body>
     </html>
   );

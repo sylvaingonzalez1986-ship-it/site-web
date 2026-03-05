@@ -29,14 +29,30 @@ const paymentStateLabels: Record<CmsOrder["paymentState"], string> = {
 
 function getStatusClass(status: OrderStatus): string {
   switch (status) {
+    case "pending_payment":
+      return "bg-[#ffe8e8] text-[#7a1010]";
     case "paid":
     case "processing":
+      return "bg-[#fff1db] text-[#7c4a00]";
     case "shipped":
-      return "bg-[#e8f7f2]";
+      return "bg-[#e8f7f2] text-[#0f5b3f]";
     case "cancelled":
-      return "bg-[#ffe8e8]";
+      return "bg-[#ffe8e8] text-[#7a1010]";
     default:
-      return "bg-[#f7f4ee]";
+      return "bg-[#f7f4ee] text-ink";
+  }
+}
+
+function getPaymentStateClass(paymentState: CmsOrder["paymentState"]): string {
+  switch (paymentState) {
+    case "pending":
+      return "bg-[#ffe8e8] text-[#7a1010]";
+    case "paid":
+      return "bg-[#fff1db] text-[#7c4a00]";
+    case "failed":
+      return "bg-[#ffe8e8] text-[#7a1010]";
+    default:
+      return "bg-[#f7f4ee] text-ink";
   }
 }
 
@@ -177,7 +193,7 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
           <span className={`pill-cartoon px-3 py-1 ${getStatusClass(order.status)}`}>
             Statut: {orderStatusLabels[order.status]}
           </span>
-          <span className="pill-cartoon px-3 py-1">
+          <span className={`pill-cartoon px-3 py-1 ${getPaymentStateClass(order.paymentState)}`}>
             Paiement: {paymentStateLabels[order.paymentState]}
           </span>
         </div>

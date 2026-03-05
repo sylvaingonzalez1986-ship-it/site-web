@@ -63,6 +63,35 @@ const orderStatusLabels: Record<OrderStatus, string> = {
   shipped: "Expédiée",
   cancelled: "Annulée",
 };
+
+function getOrderStatusColorClass(status: OrderStatus): string {
+  switch (status) {
+    case "pending_payment":
+      return "bg-[#ffe8e8] text-[#7a1010]";
+    case "paid":
+    case "processing":
+      return "bg-[#fff1db] text-[#7c4a00]";
+    case "shipped":
+      return "bg-[#e8f7f2] text-[#0f5b3f]";
+    case "cancelled":
+      return "bg-[#ffe8e8] text-[#7a1010]";
+    default:
+      return "bg-[#f7f4ee] text-ink";
+  }
+}
+
+function getPaymentStateColorClass(paymentState: CmsOrder["paymentState"]): string {
+  switch (paymentState) {
+    case "pending":
+      return "bg-[#ffe8e8] text-[#7a1010]";
+    case "paid":
+      return "bg-[#fff1db] text-[#7c4a00]";
+    case "failed":
+      return "bg-[#ffe8e8] text-[#7a1010]";
+    default:
+      return "bg-[#f7f4ee] text-ink";
+  }
+}
 type AdminTab =
   | "commandes"
   | "clients"
@@ -1408,7 +1437,14 @@ export function AdminPanel() {
                     <p className="text-xs text-charcoal">
                       Client: {order.customerName || "Invite"}{order.customerEmail ? ` - ${order.customerEmail}` : ""}
                     </p>
-                    <p className="text-xs text-charcoal">Paiement: {order.paymentState}</p>
+                    <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.08em]">
+                      <span className={`pill-cartoon px-3 py-1 ${getOrderStatusColorClass(order.status)}`}>
+                        {orderStatusLabels[order.status]}
+                      </span>
+                      <span className={`pill-cartoon px-3 py-1 ${getPaymentStateColorClass(order.paymentState)}`}>
+                        Paiement: {order.paymentState}
+                      </span>
+                    </div>
                     {order.trackingNumber && (
                       <p className="text-xs text-charcoal">Suivi: {order.trackingNumber}</p>
                     )}
