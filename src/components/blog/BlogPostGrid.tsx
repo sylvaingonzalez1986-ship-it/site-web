@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { shouldUseNativeImg } from "@/lib/image-source";
 import type { BlogPost } from "@/types/store";
@@ -20,7 +20,7 @@ type BlogPostGridProps = {
   emptyLabel: string;
 };
 
-export function BlogPostGrid({ posts, readMoreLabel, emptyLabel }: BlogPostGridProps) {
+function BlogPostGridInner({ posts, readMoreLabel, emptyLabel }: BlogPostGridProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -133,5 +133,13 @@ export function BlogPostGrid({ posts, readMoreLabel, emptyLabel }: BlogPostGridP
         </div>
       )}
     </div>
+  );
+}
+
+export function BlogPostGrid(props: BlogPostGridProps) {
+  return (
+    <Suspense fallback={null}>
+      <BlogPostGridInner {...props} />
+    </Suspense>
   );
 }
