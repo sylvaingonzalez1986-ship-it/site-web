@@ -38,7 +38,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Fichier trop volumineux." }, { status: 413 });
   }
 
-  const objectName = `${randomUUID()}.mp4`;
+  const extension = contentType === "video/quicktime" ? "mov" : "mp4";
+  const objectName = `${randomUUID()}.${extension}`;
 
   const supabase = createSupabaseServiceClient();
 
