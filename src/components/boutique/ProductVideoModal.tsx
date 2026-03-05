@@ -85,8 +85,25 @@ export function ProductVideoModal({
             onLoadedData={() => setPlaybackError(null)}
           />
           {playbackError && (
-            <div className="border-t-2 border-[#1a1a1a] bg-cream p-3 text-xs font-semibold text-red-700">
-              {playbackError}
+            <div className="border-t-2 border-[#1a1a1a] bg-cream p-3">
+              <p className="text-xs font-semibold text-red-700">{playbackError}</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <a
+                  href={videoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-cartoon btn-secondary inline-flex h-9 items-center px-3 text-xs"
+                >
+                  Ouvrir la video
+                </a>
+                <a
+                  href={videoUrl}
+                  download
+                  className="btn-cartoon btn-primary inline-flex h-9 items-center px-3 text-xs"
+                >
+                  Telecharger
+                </a>
+              </div>
             </div>
           )}
         </div>

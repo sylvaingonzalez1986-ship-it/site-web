@@ -179,7 +179,7 @@ export function ProductVideoUpload({ value, onChange }: ProductVideoUploadProps)
             <li>- Resolution conseillee: 720p</li>
             <li>- Duree conseillee: 6-12 secondes</li>
             <li>- Taille conseillee: &lt; 12 Mo</li>
-            <li>- iPhone .MOV accepte, mais MP4 reste le plus compatible</li>
+            <li>- iPhone .MOV accepte (compatibilite lecture selon navigateur)</li>
             <li>- Astuce: preset HandBrake &quot;Fast 720p30&quot;</li>
           </ul>
         </div>
