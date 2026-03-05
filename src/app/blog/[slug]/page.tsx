@@ -24,6 +24,7 @@ const blogCategoryLabels: Record<string, string> = {
   actualite: "Actualite",
   "bien-etre": "Bien-etre",
   legislation: "Legislation",
+  chronique: "Chronique d'un chanvrier",
 };
 
 const blogCategoryShopLinks: Record<string, Array<{ href: string; label: string }>> = {
@@ -44,6 +45,10 @@ const blogCategoryShopLinks: Record<string, Array<{ href: string; label: string 
   legislation: [
     { href: "/boutique/fleurs-cbd", label: "Fleurs CBD conformes" },
     { href: "/boutique/resines-cbd", label: "Resines CBD analysees" },
+  ],
+  chronique: [
+    { href: "/boutique", label: "Decouvrir notre boutique" },
+    { href: "/boutique/fleurs-cbd", label: "Nos Fleurs CBD" },
   ],
 };
 

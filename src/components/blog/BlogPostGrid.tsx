@@ -12,6 +12,7 @@ const blogCategoryLabels: Record<string, string> = {
   actualite: "Actualite",
   "bien-etre": "Bien-etre",
   legislation: "Legislation",
+  chronique: "Chronique d'un chanvrier",
 };
 
 type BlogPostGridProps = {
