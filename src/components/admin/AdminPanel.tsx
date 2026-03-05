@@ -46,6 +46,7 @@ const AdminPanelLoading = () => (
 const AdminPagesPanel = dynamic(() => import("@/components/admin/AdminPagesPanel").then((m) => m.AdminPagesPanel), { loading: AdminPanelLoading });
 const AdminCustomersPanel = dynamic(() => import("@/components/admin/AdminCustomersPanel").then((m) => m.AdminCustomersPanel), { loading: AdminPanelLoading });
 const AdminReferralsPanel = dynamic(() => import("@/components/admin/AdminReferralsPanel").then((m) => m.AdminReferralsPanel), { loading: AdminPanelLoading });
+const AdminAnalyticsPanel = dynamic(() => import("@/components/admin/AdminAnalyticsPanel").then((m) => m.AdminAnalyticsPanel), { loading: AdminPanelLoading });
 const AdminMissionsPanel = dynamic(() => import("@/components/admin/AdminMissionsPanel").then((m) => m.AdminMissionsPanel), { loading: AdminPanelLoading });
 const AdminLotteryPanel = dynamic(() => import("@/components/admin/AdminLotteryPanel").then((m) => m.AdminLotteryPanel), { loading: AdminPanelLoading });
 const AdminNewsletterPanel = dynamic(() => import("@/components/admin/AdminNewsletterPanel").then((m) => m.AdminNewsletterPanel), { loading: AdminPanelLoading });
@@ -96,6 +97,7 @@ type AdminTab =
   | "commandes"
   | "clients"
   | "parrainage"
+  | "analytics"
   | "missions"
   | "promos"
   | "loterie"
@@ -111,6 +113,7 @@ const adminTabs: AdminTab[] = [
   "commandes",
   "clients",
   "parrainage",
+  "analytics",
   "missions",
   "promos",
   "loterie",
@@ -127,6 +130,7 @@ const tabLabels: Record<AdminTab, string> = {
   commandes: "Commandes",
   clients: "Clients",
   parrainage: "Parrainage",
+  analytics: "Analytics",
   missions: "Missions",
   promos: "Promos",
   loterie: "Loterie",
@@ -1519,6 +1523,8 @@ export function AdminPanel() {
         {activeTab === "clients" && <AdminCustomersPanel />}
 
         {activeTab === "parrainage" && <AdminReferralsPanel />}
+
+        {activeTab === "analytics" && <AdminAnalyticsPanel />}
 
         {activeTab === "missions" && <AdminMissionsPanel />}
 
