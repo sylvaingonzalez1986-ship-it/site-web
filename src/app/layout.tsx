@@ -11,7 +11,6 @@ import { LocalAnalyticsTracker } from "@/components/LocalAnalyticsTracker";
 import { Navbar } from "@/components/Navbar";
 import { TutorialProvider } from "@/components/tutorial/TutorialProvider";
 import { CartProvider } from "@/context/CartContext";
-import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const bodyFont = Space_Grotesk({
@@ -149,7 +148,6 @@ export default function RootLayout({
         <WebSiteJsonLd />
         <Suspense fallback={null}>
           <LocalAnalyticsTracker />
-        <Analytics />
         </Suspense>
         <CartProvider>
           <TutorialProvider>
