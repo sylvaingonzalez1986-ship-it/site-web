@@ -56,7 +56,24 @@ export async function POST(request: Request) {
       password: payload.password,
     });
 
-    if (!result) {
+    if ("error" in result) {
+      if (result.error === "email_not_confirmed") {
+        logAuditEvent({
+          eventType: "customer_login_failed",
+          actorEmail: email || undefined,
+          ip,
+          metadata: { reason: "email_not_confirmed" },
+        });
+
+        return NextResponse.json(
+          {
+            error:
+              "Votre email n'est pas verifie. Consultez votre boite mail puis cliquez sur le lien de confirmation.",
+          },
+          { status: 401 },
+        );
+      }
+
       logAuditEvent({
         eventType: "customer_login_failed",
         actorEmail: email || undefined,

@@ -108,6 +108,7 @@ export async function middleware(request: NextRequest) {
   const isCustomerAuthPage =
     pathname === "/compte/connexion" || pathname === "/compte/inscription";
   const isCustomerApi = pathname.startsWith("/api/account");
+  const isAuthCallbackApi = pathname === "/api/auth/callback";
   const isCheckoutApi = pathname.startsWith("/api/checkout");
   const isCheckoutWebhookApi = pathname === "/api/checkout/viva/webhook";
   const isCustomerAuthApi =
@@ -148,7 +149,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 });
   }
 
-  if (isAdminLoginApi || isAdminLogoutApi || isCustomerAuthApi) {
+  if (isAdminLoginApi || isAdminLogoutApi || isCustomerAuthApi || isAuthCallbackApi) {
     return NextResponse.next();
   }
 
@@ -210,6 +211,7 @@ export const config = {
     "/profil",
     "/compte/:path*",
     "/api/account/:path*",
+    "/api/auth/:path*",
     "/api/checkout/:path*",
   ],
 };

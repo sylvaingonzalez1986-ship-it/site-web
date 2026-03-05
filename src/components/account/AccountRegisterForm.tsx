@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type AccountRegisterFormProps = {
   nextUrl: string;
@@ -9,7 +9,7 @@ type AccountRegisterFormProps = {
 };
 
 export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: AccountRegisterFormProps) {
-  const router = useRouter();
+  void nextUrl;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
@@ -23,6 +23,7 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
   const [referralCode, setReferralCode] = useState(initialReferralCode);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [verificationEmail, setVerificationEmail] = useState<string | null>(null);
 
   const isAtLeast18Client = (dateValue: string): boolean => {
     if (!dateValue) {
@@ -79,8 +80,8 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
         setError(data.error || "Inscription impossible.");
         return;
       }
-
-      router.replace(nextUrl);
+      const data = (await response.json()) as { email?: string };
+      setVerificationEmail(data.email ?? email);
     } finally {
       setLoading(false);
     }
@@ -183,6 +184,20 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
         {loading ? "Création..." : "Créer mon compte"}
       </button>
       {error && <p className="text-sm font-semibold text-red-700">{error}</p>}
+      {verificationEmail && (
+        <div className="cartoon-border-sm bg-mint/30 p-3 text-sm text-charcoal">
+          <p className="font-semibold">
+            Un email de verification a ete envoye a {verificationEmail}.
+          </p>
+          <p className="mt-1">
+            Clique sur le lien recu, puis connecte-toi ici :{" "}
+            <Link href="/compte/connexion" className="font-semibold text-ink underline">
+              aller a la connexion
+            </Link>
+            .
+          </p>
+        </div>
+      )}
     </form>
   );
 }

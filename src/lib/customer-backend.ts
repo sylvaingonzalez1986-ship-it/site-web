@@ -15,7 +15,7 @@ import {
   logoutSupabaseCustomer,
   normalizeDateOfBirth,
   previewSupabasePromoCode,
-  registerSupabaseCustomer,
+  registerSupabaseCustomerWithEmailVerification,
   updateSupabaseCustomerProfile,
 } from "@/lib/supabase/customer-backend";
 import type { AdminCustomer, PromoCode, PublicCustomer } from "@/types/customer";
@@ -30,7 +30,10 @@ export async function getCurrentCustomerSessionByBackend(): Promise<{
 export async function loginCustomerByBackend(input: {
   email: string;
   password: string;
-}): Promise<{ customer: PublicCustomer; customerId: string } | null> {
+}): Promise<
+  | { customer: PublicCustomer; customerId: string }
+  | { error: "email_not_confirmed" | "invalid_credentials" }
+> {
   return loginSupabaseCustomer(input);
 }
 
@@ -46,8 +49,8 @@ export async function registerCustomerByBackend(input: {
   city?: string;
   postalCode?: string;
   country?: string;
-}): Promise<{ customer: PublicCustomer; customerId: string }> {
-  return registerSupabaseCustomer(input);
+}): Promise<{ needsEmailVerification: true; email: string }> {
+  return registerSupabaseCustomerWithEmailVerification(input);
 }
 
 export async function logoutCustomerByBackend(): Promise<void> {

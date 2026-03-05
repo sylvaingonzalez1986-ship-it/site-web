@@ -420,10 +420,13 @@ export async function getCurrentSupabaseSessionCustomer(): Promise<{
 export async function loginSupabaseCustomer(input: {
   email: string;
   password: string;
-}): Promise<{ customer: PublicCustomer; customerId: string } | null> {
+}): Promise<
+  | { customer: PublicCustomer; customerId: string }
+  | { error: "email_not_confirmed" | "invalid_credentials" }
+> {
   const email = normalizeEmail(input.email);
   if (!email || !input.password) {
-    return null;
+    return { error: "invalid_credentials" };
   }
 
   const supabaseServer = await createSupabaseServerClient();
@@ -433,7 +436,11 @@ export async function loginSupabaseCustomer(input: {
   });
 
   if (loginResult.error || !loginResult.data.user) {
-    return null;
+    const message = (loginResult.error?.message ?? "").toLowerCase();
+    if (message.includes("email not confirmed")) {
+      return { error: "email_not_confirmed" };
+    }
+    return { error: "invalid_credentials" };
   }
 
   const user = loginResult.data.user;
@@ -443,7 +450,7 @@ export async function loginSupabaseCustomer(input: {
   return { customer, customerId: user.id };
 }
 
-export async function registerSupabaseCustomer(input: {
+export async function registerSupabaseCustomerWithEmailVerification(input: {
   email: string;
   firstName: string;
   lastName: string;
@@ -455,7 +462,7 @@ export async function registerSupabaseCustomer(input: {
   city?: string;
   postalCode?: string;
   country?: string;
-}): Promise<{ customer: PublicCustomer; customerId: string }> {
+}): Promise<{ needsEmailVerification: true; email: string }> {
   const email = normalizeEmail(input.email);
   const firstName = sanitizeText(input.firstName, 80);
   const lastName = sanitizeText(input.lastName, 80);
@@ -472,14 +479,22 @@ export async function registerSupabaseCustomer(input: {
 
   await assertPasswordNotLeaked(input.password);
 
-  const supabaseService = createSupabaseServiceClient();
-  const createUserResult = await supabaseService.auth.admin.createUser({
+  const supabaseServer = await createSupabaseServerClient();
+  const createUserResult = await supabaseServer.auth.signUp({
     email,
     password: input.password,
-    email_confirm: true,
-    user_metadata: {
-      firstName,
-      lastName,
+    options: {
+      data: {
+        firstName,
+        lastName,
+        dateOfBirth,
+        phone: sanitizePhone(input.phone),
+        address: sanitizeText(input.address, 180),
+        city: sanitizeText(input.city, 120),
+        postalCode: sanitizePostalCode(input.postalCode),
+        country: sanitizeCountry(input.country),
+        referralCode: referralCode || "",
+      },
     },
   });
 
@@ -491,42 +506,58 @@ export async function registerSupabaseCustomer(input: {
     throw new Error(message);
   }
 
-  const userId = createUserResult.data.user.id;
-  let profile: ProfileRow;
-  try {
-    profile = await ensureProfileRow({
-      userId,
-      firstName,
-      lastName,
-      dateOfBirth,
-      phone: input.phone,
-      address: input.address,
-      city: input.city,
-      postalCode: input.postalCode,
-      country: input.country,
-    });
+  return { needsEmailVerification: true, email };
+}
 
-    if (referralCode) {
-      await bindSupabaseReferralCode({
-        refereeId: userId,
-        referralCode,
-      });
-      profile = (await ensureProfileRow({ userId })) as ProfileRow;
-    }
-  } catch (error) {
-    await supabaseService.auth.admin.deleteUser(userId);
-    throw error;
+export async function ensureSupabaseProfileRow(input: {
+  userId: string;
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  country?: string;
+}): Promise<ProfileRow> {
+  return ensureProfileRow(input);
+}
+
+export async function bindSupabaseReferralCodeSafe(input: {
+  refereeId: string;
+  referralCode: string;
+}): Promise<void> {
+  await bindSupabaseReferralCode(input);
+}
+
+export async function clearSupabaseSignupTransientMetadata(userId: string): Promise<void> {
+  const safeUserId = userId.trim();
+  if (!safeUserId) {
+    return;
   }
 
-  const supabaseServer = await createSupabaseServerClient();
-  const signInResult = await supabaseServer.auth.signInWithPassword({
-    email,
-    password: input.password,
-  });
-  failIfError(signInResult.error, "signIn after register");
+  const supabase = createSupabaseServiceClient();
+  const userResult = await supabase.auth.admin.getUserById(safeUserId);
+  failIfError(userResult.error, "auth.admin.getUserById(clear metadata)");
 
-  const customer = mapProfileToPublicCustomer(profile, email, []);
-  return { customer, customerId: userId };
+  const currentMetadata =
+    (userResult.data.user?.user_metadata as Record<string, unknown> | undefined) ?? {};
+
+  const cleanedMetadata = {
+    ...currentMetadata,
+    referralCode: null,
+    dateOfBirth: null,
+    phone: null,
+    address: null,
+    city: null,
+    postalCode: null,
+    country: null,
+  };
+
+  const updateResult = await supabase.auth.admin.updateUserById(safeUserId, {
+    user_metadata: cleanedMetadata,
+  });
+  failIfError(updateResult.error, "auth.admin.updateUserById(clear metadata)");
 }
 
 export async function logoutSupabaseCustomer(): Promise<void> {

@@ -1,11 +1,5 @@
 import { NextResponse } from "next/server";
 import {
-  ADMIN_COOKIE_NAME,
-  createAdminSessionToken,
-  getAdminCookieOptions,
-} from "@/lib/admin-auth";
-import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
-import {
   clearLegacyCustomerCookie,
   isAtLeast18,
   normalizeDateOfBirth,
@@ -91,30 +85,22 @@ export async function POST(request: Request) {
 
     logAuditEvent({
       eventType: "customer_register",
-      actorEmail: result.customer.email,
+      actorEmail: email || undefined,
       ip,
       metadata: {
-        customerId: result.customer.id,
+        needsEmailVerification: true,
         usedReferralCode: Boolean(payload.referralCode?.trim()),
       },
     });
 
-    const response = NextResponse.json({ user: result.customer });
-
-    if (isAllowedAdminEmail(result.customer.email)) {
-      try {
-        const adminSessionToken = await createAdminSessionToken();
-        response.cookies.set({
-          name: ADMIN_COOKIE_NAME,
-          value: adminSessionToken,
-          ...getAdminCookieOptions(),
-        });
-      } catch (error) {
-        console.error("Admin session bootstrap failed on account register:", error);
-      }
-    }
-
-    return response;
+    return NextResponse.json(
+      {
+        needsEmailVerification: result.needsEmailVerification,
+        email: result.email,
+        message: "Email de verification envoye.",
+      },
+      { status: 200 },
+    );
   } catch (error) {
     if (error instanceof Error && error.message.includes("rpc_rate_limit_hit")) {
       return NextResponse.json(

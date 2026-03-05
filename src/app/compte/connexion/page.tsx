@@ -4,11 +4,12 @@ import { AccountLoginForm } from "@/components/account/AccountLoginForm";
 export default async function AccountLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string; ref?: string }>;
+  searchParams: Promise<{ next?: string; ref?: string; verified?: string }>;
 }) {
   const params = await searchParams;
   const nextUrl = params.next || "/profil";
   const referralCode = params.ref || "";
+  const isVerified = params.verified === "true";
   const registerHref = `/compte/inscription?next=${encodeURIComponent(nextUrl)}${referralCode ? `&ref=${encodeURIComponent(referralCode)}` : ""}`;
 
   return (
@@ -19,6 +20,11 @@ export default async function AccountLoginPage({
           <p className="mt-3 text-charcoal">
             Connecte-toi pour acceder a ton profil, ton historique et tes futures commandes.
           </p>
+          {isVerified && (
+            <p className="mt-3 rounded-md border border-[#1a1a1a] bg-mint/30 px-3 py-2 text-sm font-semibold text-charcoal">
+              Compte verifie. Tu peux maintenant te connecter.
+            </p>
+          )}
 
           <AccountLoginForm nextUrl={nextUrl} />
 
