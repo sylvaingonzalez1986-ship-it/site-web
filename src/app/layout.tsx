@@ -6,6 +6,7 @@ import {
   OrganizationJsonLd,
   WebSiteJsonLd,
 } from "@/components/JsonLd";
+import { LocalAnalyticsTracker } from "@/components/LocalAnalyticsTracker";
 import { Navbar } from "@/components/Navbar";
 import { TutorialProvider } from "@/components/tutorial/TutorialProvider";
 import { CartProvider } from "@/context/CartContext";
@@ -144,6 +145,7 @@ export default function RootLayout({
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />
         <WebSiteJsonLd />
+        <LocalAnalyticsTracker />
         <CartProvider>
           <TutorialProvider>
             <div className="site-background min-h-screen">
