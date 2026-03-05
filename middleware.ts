@@ -19,7 +19,14 @@ function hasCustomerSession(request: NextRequest): boolean {
   return request.cookies
     .getAll()
     .some((cookie) => {
-      if (!cookie.name.startsWith("sb-") || !cookie.name.includes("-auth-token")) {
+      if (!cookie.name.startsWith("sb-")) {
+        return false;
+      }
+
+      // Accept only real Supabase session cookies:
+      // sb-<project-ref>-auth-token
+      // sb-<project-ref>-auth-token.0 / .1 / ...
+      if (!/^sb-[a-z0-9-]+-auth-token(?:\.\d+)?$/i.test(cookie.name)) {
         return false;
       }
 
