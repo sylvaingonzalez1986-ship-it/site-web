@@ -255,7 +255,7 @@ export function BoutiquePageClient({
               <div className="cartoon-border mb-6 bg-[#d7f0e8] p-8">
                 <h2 className="font-display text-4xl text-ink">Mes voisins</h2>
                 <p className="mt-3 max-w-3xl text-charcoal">
-                  Producteurs bretons et du 44. Parce que oui, Nantes fait partie de la Bretagne historique et que sans un mar&eacute;chal s&eacute;nile, ce d&eacute;partement serait toujours breton.
+                  Producteurs bretons et du 44. Parce que oui, Nantes fait partie de la Bretagne historique.
                 </p>
               </div>
             )}
