@@ -951,6 +951,7 @@ export function ProfilePanel() {
               )}
             </>
           )}
+
         </article>
       </div>
       <OrderDetailModal order={selectedOrder} onClose={() => setSelectedOrder(null)} />

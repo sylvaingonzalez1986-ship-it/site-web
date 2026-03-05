@@ -120,6 +120,46 @@ export function AdminAnalyticsPanel() {
             </article>
           </div>
 
+          <div className="grid gap-4 lg:grid-cols-2">
+            <article className="card-cartoon bg-white p-4">
+              <h3 className="font-display text-2xl text-ink">Dernier lieu de connexion</h3>
+              {overview.latestConnection ? (
+                <div className="mt-3 rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
+                  <p className="text-sm font-semibold text-ink">
+                    {overview.latestConnection.city} ({overview.latestConnection.regionCode}) -{" "}
+                    {overview.latestConnection.countryCode}
+                  </p>
+                  <p className="mt-1 text-xs text-charcoal">
+                    {formatDate(overview.latestConnection.createdAt)}
+                  </p>
+                </div>
+              ) : (
+                <p className="mt-3 text-sm text-charcoal">Localisation non disponible.</p>
+              )}
+            </article>
+
+            <article className="card-cartoon bg-white p-4">
+              <h3 className="font-display text-2xl text-ink">Top lieux (30 jours)</h3>
+              {overview.topLocations30d.length === 0 ? (
+                <p className="mt-3 text-sm text-charcoal">Aucune donnee de localisation.</p>
+              ) : (
+                <div className="mt-3 grid gap-2">
+                  {overview.topLocations30d.map((loc) => (
+                    <div
+                      key={`${loc.countryCode}-${loc.regionCode}-${loc.city}`}
+                      className="flex items-center justify-between gap-3 rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] px-3 py-2"
+                    >
+                      <p className="truncate text-sm text-ink">
+                        {loc.city} ({loc.regionCode}) - {loc.countryCode}
+                      </p>
+                      <span className="pill-cartoon px-2 py-1 text-xs">{loc.count}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </article>
+          </div>
+
           <article className="card-cartoon bg-white p-4">
             <h3 className="font-display text-2xl text-ink">Evenements (30 jours)</h3>
             {overview.eventsByName30d.length === 0 ? (

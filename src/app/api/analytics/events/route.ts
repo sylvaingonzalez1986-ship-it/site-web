@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { logRateLimitRejection, getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
-import { logLocalAnalyticsEvent, sanitizeLocalAnalyticsEvent } from "@/lib/local-analytics";
+import {
+  logLocalAnalyticsEvent,
+  sanitizeLocalAnalyticsEvent,
+  sanitizeOptionalGeoField,
+} from "@/lib/local-analytics";
 
 export const runtime = "nodejs";
 
@@ -19,6 +23,20 @@ export async function POST(request: Request) {
     if (!row) {
       return NextResponse.json({ error: "Payload analytics invalide." }, { status: 400 });
     }
+
+    const headers = request.headers;
+    const countryCode = sanitizeOptionalGeoField(headers.get("x-vercel-ip-country"), 8);
+    const regionCode = sanitizeOptionalGeoField(headers.get("x-vercel-ip-country-region"), 32);
+    const city = sanitizeOptionalGeoField(headers.get("x-vercel-ip-city"), 120);
+    const userAgent = sanitizeOptionalGeoField(headers.get("user-agent"), 300);
+
+    const rowWithGeo = {
+      ...row,
+      country_code: countryCode,
+      region_code: regionCode,
+      city,
+      user_agent: userAgent,
+    };
 
     const ip = getRequestIp(request);
     const rateLimitKey = `analytics_event:${ip}:${row.event_name}`;
@@ -43,7 +61,7 @@ export async function POST(request: Request) {
       );
     }
 
-    await logLocalAnalyticsEvent(row);
+    await logLocalAnalyticsEvent(rowWithGeo);
     return NextResponse.json({ ok: true });
   } catch (error) {
     if (error instanceof Error) {

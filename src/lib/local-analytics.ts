@@ -16,6 +16,10 @@ type LocalAnalyticsEventRow = {
   source: string;
   metadata: Record<string, unknown>;
   referrer: string | null;
+  country_code?: string | null;
+  region_code?: string | null;
+  city?: string | null;
+  user_agent?: string | null;
 };
 
 function sanitizeText(value: unknown, maxLength: number): string {
@@ -89,4 +93,12 @@ export async function logLocalAnalyticsEvent(row: LocalAnalyticsEventRow): Promi
   if (error) {
     throw new Error(`[supabase:analytics_events] ${error.message}`);
   }
+}
+
+export function sanitizeOptionalGeoField(value: string | null | undefined, maxLength: number): string | null {
+  if (!value) {
+    return null;
+  }
+  const sanitized = sanitizeText(value, maxLength);
+  return sanitized || null;
 }
