@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, Shrikhand, Space_Grotesk } from "next/font/google";
+import { Suspense } from "react";
 import { Footer } from "@/components/Footer";
 import {
   LocalBusinessJsonLd,
@@ -145,7 +146,9 @@ export default function RootLayout({
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />
         <WebSiteJsonLd />
-        <LocalAnalyticsTracker />
+        <Suspense fallback={null}>
+          <LocalAnalyticsTracker />
+        </Suspense>
         <CartProvider>
           <TutorialProvider>
             <div className="site-background min-h-screen">
