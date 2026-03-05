@@ -161,6 +161,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {readingMinutes} min de lecture
           </p>
           <p className="mt-4 text-lg leading-relaxed text-charcoal">{post.excerpt}</p>
+          <div className="mt-6">
+            <BlogStarRating postId={post.id} />
+          </div>
         </div>
 
         <article className="cartoon-border mt-8 overflow-hidden bg-cream">
@@ -203,10 +206,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   </Link>
                 ))}
               </div>
-            </div>
-
-            <div className="mt-8">
-              <BlogStarRating postId={post.id} />
             </div>
 
             <div className="mt-8">
