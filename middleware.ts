@@ -18,7 +18,18 @@ async function isAdminAuthorized(request: NextRequest): Promise<boolean> {
 function hasCustomerSession(request: NextRequest): boolean {
   return request.cookies
     .getAll()
-    .some((cookie) => cookie.name.startsWith("sb-") && cookie.name.includes("-auth-token"));
+    .some((cookie) => {
+      if (!cookie.name.startsWith("sb-") || !cookie.name.includes("-auth-token")) {
+        return false;
+      }
+
+      const value = (cookie.value ?? "").trim().toLowerCase();
+      if (!value || value === "deleted" || value === "null" || value === "undefined") {
+        return false;
+      }
+
+      return true;
+    });
 }
 
 function hasAgeGateCookie(request: NextRequest): boolean {
