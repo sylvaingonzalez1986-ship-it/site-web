@@ -137,7 +137,7 @@ export function ProductVideoUpload({ value, onChange }: ProductVideoUploadProps)
         <label className="flex h-11 cursor-pointer items-center justify-center rounded-[10px] border-2 border-dashed border-[#1a1a1a] bg-white text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
           <input
             type="file"
-            accept="video/mp4,video/quicktime"
+            accept="video/mp4"
             className="hidden"
             onChange={(event) => {
               const file = event.target.files?.[0];
@@ -179,6 +179,7 @@ export function ProductVideoUpload({ value, onChange }: ProductVideoUploadProps)
             <li>- Resolution conseillee: 720p</li>
             <li>- Duree conseillee: 6-12 secondes</li>
             <li>- Taille conseillee: &lt; 12 Mo</li>
+            <li>- Eviter MOV/HEVC (souvent non lisible selon navigateur)</li>
             <li>- Astuce: preset HandBrake &quot;Fast 720p30&quot;</li>
           </ul>
         </div>

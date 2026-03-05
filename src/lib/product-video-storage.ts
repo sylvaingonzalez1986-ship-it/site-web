@@ -161,12 +161,9 @@ export async function saveProductVideoUpload(file: File): Promise<string> {
 
   const inputBuffer = Buffer.from(await file.arrayBuffer());
   const tempDir = await mkdtemp(path.join(os.tmpdir(), "product-video-"));
-  const inputPath =
-    file.type === "video/quicktime"
-      ? path.join(tempDir, "input.mov")
-      : path.join(tempDir, "input.mp4");
-  let outputContentType = "video/mp4";
-  let outputName = `${randomUUID()}.mp4`;
+  const inputPath = path.join(tempDir, "input.mp4");
+  const outputContentType = "video/mp4";
+  const outputName = `${randomUUID()}.mp4`;
   const outputPath = path.join(tempDir, "output.mp4");
 
   try {
@@ -206,10 +203,6 @@ export async function saveProductVideoUpload(file: File): Promise<string> {
         const spawnError = error as NodeJS.ErrnoException;
         if (spawnError?.code === "ENOENT" && file.type === "video/mp4") {
           outputBuffer = inputBuffer;
-        } else if (spawnError?.code === "ENOENT" && file.type === "video/quicktime") {
-          outputContentType = "video/quicktime";
-          outputName = `${randomUUID()}.mov`;
-          outputBuffer = inputBuffer;
         } else if (spawnError?.code === "ENOENT") {
           throw new ProductVideoUploadError(
             "Conversion video indisponible sur le serveur pour ce format.",
@@ -231,10 +224,6 @@ export async function saveProductVideoUpload(file: File): Promise<string> {
         outputBuffer = await readFile(outputPath);
       }
     } else if (file.type === "video/mp4") {
-      outputBuffer = inputBuffer;
-    } else if (file.type === "video/quicktime") {
-      outputContentType = "video/quicktime";
-      outputName = `${randomUUID()}.mov`;
       outputBuffer = inputBuffer;
     } else {
       throw new ProductVideoUploadError(

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
@@ -18,6 +19,7 @@ export function ProductVideoModal({
   onClose,
 }: ProductVideoModalProps) {
   useBodyScrollLock(open);
+  const [playbackError, setPlaybackError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -41,7 +43,10 @@ export function ProductVideoModal({
         type="button"
         className="absolute inset-0"
         aria-label="Fermer la vidéo"
-        onClick={onClose}
+        onClick={() => {
+          setPlaybackError(null);
+          onClose();
+        }}
       />
 
       {/* Modal */}
@@ -53,7 +58,10 @@ export function ProductVideoModal({
           </p>
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => {
+              setPlaybackError(null);
+              onClose();
+            }}
             className="btn-cartoon btn-secondary flex-shrink-0 px-3 py-1 text-sm"
           >
             ✕ Fermer
@@ -69,7 +77,18 @@ export function ProductVideoModal({
             loop
             playsInline
             className="h-full w-full"
+            onError={() =>
+              setPlaybackError(
+                "Lecture impossible sur cet appareil. Utilise une video MP4 (H.264/AAC).",
+              )
+            }
+            onLoadedData={() => setPlaybackError(null)}
           />
+          {playbackError && (
+            <div className="border-t-2 border-[#1a1a1a] bg-cream p-3 text-xs font-semibold text-red-700">
+              {playbackError}
+            </div>
+          )}
         </div>
       </div>
     </div>,

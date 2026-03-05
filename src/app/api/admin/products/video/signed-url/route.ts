@@ -10,8 +10,6 @@ import {
 export const runtime = "nodejs";
 
 const PRODUCT_VIDEO_BUCKET = "product-videos";
-const SIGNED_URL_EXPIRES_IN = 120;
-
 export async function POST(request: Request) {
   const denied = await denyIfNotAdminApi();
   if (denied) {
@@ -40,8 +38,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Fichier trop volumineux." }, { status: 413 });
   }
 
-  const extension = contentType === "video/quicktime" ? "mov" : "mp4";
-  const objectName = `${randomUUID()}.${extension}`;
+  const objectName = `${randomUUID()}.mp4`;
 
   const supabase = createSupabaseServiceClient();
 
