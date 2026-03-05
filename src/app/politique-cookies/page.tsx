@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { CookiePreferencesButton } from "@/components/cookies/CookiePreferencesButton";
 import { CmsPageRenderer } from "@/components/cms/CmsPageRenderer";
 import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-static-pages";
 
@@ -54,7 +53,7 @@ export default async function PolitiqueCookiesPage() {
 
             <section>
               <h2 className="font-display text-2xl">Article 2 - Cookies utilises</h2>
-              <p className="mt-2">Le site utilise des cookies techniques et, sur choix, analytics.</p>
+              <p className="mt-2">Le site utilise uniquement des cookies techniques strictement necessaires.</p>
               <div className="mt-3 max-w-full overflow-x-auto">
                 <table className="w-full min-w-[700px] border-collapse text-left text-xs sm:text-sm">
                   <thead>
@@ -90,14 +89,6 @@ export default async function PolitiqueCookiesPage() {
                       </td>
                       <td className="border border-[#1a1a1a] px-3 py-2">12 heures maximum</td>
                     </tr>
-                    <tr>
-                      <td className="border border-[#1a1a1a] px-3 py-2 font-mono text-[11px]">lcb_cookie_consent</td>
-                      <td className="border border-[#1a1a1a] px-3 py-2">Preference</td>
-                      <td className="border border-[#1a1a1a] px-3 py-2">
-                        Memoriser votre choix de consentement (analytics accepte ou refuse).
-                      </td>
-                      <td className="border border-[#1a1a1a] px-3 py-2">13 mois maximum</td>
-                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -107,26 +98,23 @@ export default async function PolitiqueCookiesPage() {
               <h2 className="font-display text-2xl">Article 3 - Base legale</h2>
               <p className="mt-2">
                 Les cookies techniques sont necessaires au fonctionnement et a la securite du site.
-                Les cookies analytics sont actives uniquement apres votre consentement explicite.
               </p>
             </section>
 
             <section>
               <h2 className="font-display text-2xl">Article 4 - Gestion des cookies</h2>
               <p className="mt-2">
-                Vous pouvez refuser, accepter ou personnaliser vos cookies depuis le bandeau. Le
-                blocage des cookies techniques peut limiter l&apos;acces au compte, au panier, a
-                l&apos;espace admin ou au processus de commande.
+                Le blocage des cookies techniques via votre navigateur peut limiter l&apos;acces au
+                compte, au panier, a l&apos;espace admin ou au processus de commande.
               </p>
             </section>
 
             <section>
               <h2 className="font-display text-2xl">Article 5 - Mesure d&apos;audience</h2>
               <p className="mt-2">
-                Matomo Cloud peut etre utilise pour la mesure d&apos;audience uniquement apres votre
-                choix dans le bandeau cookies.
+                A ce jour, aucun tracker tiers de mesure d&apos;audience n&apos;est active par defaut.
+                Si un outil local est ajoute, cette politique sera mise a jour.
               </p>
-              <CookiePreferencesButton />
             </section>
 
             <section>
