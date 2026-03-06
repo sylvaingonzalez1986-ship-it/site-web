@@ -6,6 +6,8 @@ import { formatPrice } from "@/lib/utils";
 import type { AdminCustomer } from "@/types/customer";
 import type { LoyaltySummary } from "@/types/loyalty";
 import type { CmsOrder, OrderStatus } from "@/types/store";
+import type { AdminCustomerCollectionSummary } from "@/types/lottery";
+import { rarityAccentColor, rarityLabels, RARITY_ORDER } from "@/lib/lottery-card-ui";
 
 type AdminCustomerListItem = {
   id: string;
@@ -40,6 +42,16 @@ const orderStatusLabels: Record<OrderStatus, string> = {
   cancelled: "Annulée",
 };
 
+const collectionRewardStatusLabels: Record<"locked" | "claimable" | "claimed", string> = {
+  locked: "Verrouillée",
+  claimable: "Récompense disponible",
+  claimed: "Récompensée",
+};
+
+function formatPercent(value: number): string {
+  return `${Math.round(value)}%`;
+}
+
 function getInitials(firstName: string, lastName: string): string {
   const first = firstName.trim().charAt(0);
   const last = lastName.trim().charAt(0);
@@ -62,6 +74,8 @@ export function AdminCustomersPanel() {
   const [ticketGrantCount, setTicketGrantCount] = useState("1");
   const [ticketGrantReason, setTicketGrantReason] = useState("Attribution manuelle admin");
   const [grantingTickets, setGrantingTickets] = useState(false);
+  const [collectionSummary, setCollectionSummary] = useState<AdminCustomerCollectionSummary | null>(null);
+  const [loadingCollection, setLoadingCollection] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -91,23 +105,38 @@ export function AdminCustomersPanel() {
 
   const loadCustomerDetail = async (customerId: string) => {
     setLoadingDetail(true);
+    setLoadingCollection(true);
     setStatus(null);
+    setCollectionSummary(null);
 
     try {
-      const response = await fetch(`/api/admin/customers/${encodeURIComponent(customerId)}`, {
-        cache: "no-store",
-      });
+      const [customerResponse, collectionResponse] = await Promise.all([
+        fetch(`/api/admin/customers/${encodeURIComponent(customerId)}`, {
+          cache: "no-store",
+        }),
+        fetch(`/api/admin/customers/${encodeURIComponent(customerId)}/collection`, {
+          cache: "no-store",
+        }),
+      ]);
 
-      if (!response.ok) {
+      if (!customerResponse.ok) {
         setStatus("Impossible de charger la fiche client.");
         setDetail(null);
         return;
       }
 
-      const data = (await response.json()) as AdminCustomerDetail;
+      const data = (await customerResponse.json()) as AdminCustomerDetail;
       setDetail(data);
+
+      if (collectionResponse.ok) {
+        const collectionData = (await collectionResponse.json()) as AdminCustomerCollectionSummary;
+        setCollectionSummary(collectionData);
+      } else {
+        setCollectionSummary(null);
+      }
     } finally {
       setLoadingDetail(false);
+      setLoadingCollection(false);
     }
   };
 
@@ -118,6 +147,8 @@ export function AdminCustomersPanel() {
   useEffect(() => {
     if (!selectedCustomerId) {
       setDetail(null);
+      setCollectionSummary(null);
+      setLoadingCollection(false);
       return;
     }
 
@@ -432,6 +463,83 @@ export function AdminCustomersPanel() {
               <p className="mt-3 text-xs text-charcoal">
                 Attribution manuelle de packs promotionnels (1 a 200).
               </p>
+            </article>
+
+            <article className="card-cartoon bg-white p-5">
+              <h3 className="font-display text-2xl text-ink">Collection Hemp Heroes</h3>
+              <p className="mt-1 text-sm text-charcoal">{collectionSummary?.collectionTitle ?? "Album client"}</p>
+
+              {loadingCollection && !collectionSummary ? (
+                <p className="mt-3 text-sm text-charcoal">Chargement de la collection...</p>
+              ) : null}
+
+              {!loadingCollection && !collectionSummary && (
+                <p className="mt-3 text-sm text-charcoal">Aucune carte dans la collection.</p>
+              )}
+
+              {collectionSummary ? (
+                <>
+                  <div className="mt-4 grid gap-2 text-sm md:grid-cols-2">
+                    <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
+                      <p className="text-charcoal">Collection unique</p>
+                      <p className="text-lg font-semibold text-ink">
+                        {collectionSummary.summary.ownedUnique} / {collectionSummary.summary.totalCards} cartes
+                      </p>
+                      <p className="text-xs text-charcoal">
+                        Complétion {formatPercent(collectionSummary.summary.completionPercent)}
+                      </p>
+                    </div>
+                    <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
+                      <p className="text-charcoal">Copies possédées</p>
+                      <p className="text-lg font-semibold text-ink">
+                        {collectionSummary.summary.totalOwnedCopies}
+                      </p>
+                      <p className="text-xs text-charcoal">
+                        Doublons : {collectionSummary.summary.duplicateCopies}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-4 overflow-hidden rounded border-2 border-[#1a1a1a]">
+                    <div className="grid border-b border-[#1a1a1a] bg-[#efebe4] px-3 py-2 text-xs font-semibold text-ink md:grid-cols-[1fr,0.9fr,0.75fr,0.75fr,1fr]">
+                      <p>Rareté</p>
+                      <p className="text-right">Possédées</p>
+                      <p className="text-right">Doublons</p>
+                      <p className="text-right">Complétion</p>
+                      <p>Récompense</p>
+                    </div>
+                    {RARITY_ORDER.map((rarity) => {
+                      const pageSummary = collectionSummary.pages.find((entry) => entry.rarity === rarity);
+                      if (!pageSummary) {
+                        return null;
+                      }
+
+                      return (
+                        <div key={rarity} className="grid items-center gap-2 border-b border-[#dedede] px-3 py-3 text-sm last:border-b-0 md:grid-cols-[1fr,0.9fr,0.75fr,0.75fr,1fr]">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className="inline-block h-3 w-3 rounded-full border border-[#1a1a1a]"
+                              style={{ backgroundColor: rarityAccentColor[rarity] }}
+                              aria-hidden="true"
+                            />
+                            <p>
+                              <span className="font-semibold">{rarityLabels[rarity]}</span>{" "}
+                              <span className="text-xs text-charcoal">{pageSummary.label}</span>
+                            </p>
+                          </div>
+                          <p className="text-right">
+                            {pageSummary.ownedUnique} / {pageSummary.totalSlots - pageSummary.missingCount}
+                          </p>
+                          <p className="text-right">{pageSummary.duplicateCopies}</p>
+                          <p className="text-right">{formatPercent(pageSummary.completionPercent)}</p>
+                          <p className="text-xs capitalize">
+                            {collectionRewardStatusLabels[pageSummary.rewardStatus]}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : null}
             </article>
 
             <article className="card-cartoon bg-white p-5">

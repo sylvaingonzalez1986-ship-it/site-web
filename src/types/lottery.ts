@@ -459,6 +459,25 @@ export type LotteryCollectionAlbumSummary = {
   availableClaims: number;
 };
 
+export type AdminCustomerCollectionSummary = {
+  collectionTitle: string;
+  summary: LotteryCollectionAlbumSummary;
+  pages: AdminCustomerCollectionPageSummary[];
+};
+
+export type AdminCustomerCollectionPageSummary = {
+  rarity: LotteryCollectionPageRarity;
+  label: string;
+  title: string;
+  totalSlots: number;
+  ownedUnique: number;
+  missingCount: number;
+  duplicateCopies: number;
+  completionPercent: number;
+  isComplete: boolean;
+  rewardStatus: LotteryCollectionRewardStatus;
+};
+
 export type LotteryCollectionAlbum = {
   collectionId: string;
   collectionCode: string;
