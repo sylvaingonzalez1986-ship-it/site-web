@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -117,7 +117,7 @@ export function LotterySection() {
     return payload;
   };
 
-  const collectionTitle = inventory?.collection?.title || config?.collectionTitle || "Hemp Heroes 2026 Collection";
+  const collectionTitle = inventory?.collection?.title || config?.collectionTitle || "Kanab Quest Collection";
 
   return (
     <div className="cartoon-border bg-cream p-8">

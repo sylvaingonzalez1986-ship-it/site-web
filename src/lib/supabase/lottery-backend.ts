@@ -1,4 +1,4 @@
-import "server-only";
+﻿import "server-only";
 
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import type {
@@ -188,7 +188,7 @@ function mapCardCollectionRow(row: Record<string, unknown>): LotteryCardCollecti
   return {
     id: toText(row.id),
     code: toText(row.code),
-    title: toText(row.title, "Hemp Heroes 2026 Collection"),
+    title: toText(row.title, "Kanab Quest Collection"),
     isActive: row.is_active === true,
     createdAt: toText(row.created_at, new Date().toISOString()),
     updatedAt: toText(row.updated_at, new Date().toISOString()),
@@ -205,7 +205,7 @@ function mapCardDefinitionRow(row: Record<string, unknown>): LotteryCardDefiniti
     id: toText(row.id),
     collectionId: toText(row.collection_id),
     collectionCode: toText(collectionRow?.code ?? row.collection_code, "HEMP_HEROES_2026"),
-    collectionTitle: toText(collectionRow?.title ?? row.collection_title, "Hemp Heroes 2026 Collection"),
+    collectionTitle: toText(collectionRow?.title ?? row.collection_title, "Kanab Quest Collection"),
     code: toText(row.code),
     cardNumber: Math.max(1, toInteger(row.card_number, 1)),
     name: toText(row.name),
@@ -480,7 +480,7 @@ function mapConfigRow(row: Record<string, unknown> | null): LotteryConfig {
   return {
     eurosPerTicket: toMoney(row?.euros_per_ticket, 5),
     maxTicketsPerOrder: Math.max(1, toInteger(row?.max_tickets_per_order, 4)),
-    collectionTitle: toText(row?.collection_title, "Hemp Heroes 2026 Collection"),
+    collectionTitle: toText(row?.collection_title, "Kanab Quest Collection"),
     seasonLabel: toText(row?.season_label, "Saison 1"),
     albumSubtitle: toText(
       row?.album_subtitle,
@@ -631,7 +631,7 @@ export async function updateLotteryConfigInSupabase(input: {
         id: 1,
         euros_per_ticket: toMoney(input.eurosPerTicket, 5),
         max_tickets_per_order: Math.max(1, Math.min(20, Math.floor(input.maxTicketsPerOrder))),
-        collection_title: toText(input.collectionTitle).trim() || "Hemp Heroes 2026 Collection",
+        collection_title: toText(input.collectionTitle).trim() || "Kanab Quest Collection",
         season_label: toText(input.seasonLabel).trim(),
         album_subtitle:
           toText(input.albumSubtitle).trim() ||
@@ -1657,7 +1657,7 @@ export async function grantLotteryTicketsToCustomerInSupabase(input: {
   return Math.max(0, toInteger(result.data, 0));
 }
 
-/* ─── Welcome Pack (one-shot free pack) ─── */
+/* â”€â”€â”€ Welcome Pack (one-shot free pack) â”€â”€â”€ */
 
 export async function getWelcomePackStatusFromSupabase(userId: string): Promise<{ eligible: boolean }> {
   if (!isValidUuid(userId)) {
@@ -1685,7 +1685,7 @@ export async function claimWelcomePackInSupabase(userId: string): Promise<{ gran
   });
 
   if (result.error) {
-    const message = result.error.message || "Réclamation du pack impossible.";
+    const message = result.error.message || "RÃ©clamation du pack impossible.";
     if (message.includes("customer_not_found")) {
       throw new Error("Client introuvable.");
     }
@@ -2000,9 +2000,9 @@ export async function burnLotteryRewardLineInSupabase(input: {
   return mapRewardClaimRow(claimRow);
 }
 
-/* ─────────────────────────────────────────────
-   TCG Collection Album — Supabase adapter
-   ───────────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   TCG Collection Album â€” Supabase adapter
+   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 export async function getCollectionAlbumForCustomerFromSupabase(
   userId: string,
@@ -2010,7 +2010,7 @@ export async function getCollectionAlbumForCustomerFromSupabase(
   const safeUserId = userId.trim();
   const supabase = createSupabaseServiceClient();
 
-  // 1. Fetch collection, definitions, instances, page completions, reward options, burn logs — in parallel
+  // 1. Fetch collection, definitions, instances, page completions, reward options, burn logs â€” in parallel
   const [
     collectionResult,
     definitionsResult,
@@ -2148,7 +2148,7 @@ export async function getCollectionAlbumForCustomerFromSupabase(
     rewardOptionsByRarity.set(rarity, list);
   }
 
-  // 6. Parse burn logs → collect claim IDs by rarity
+  // 6. Parse burn logs â†’ collect claim IDs by rarity
   const burnClaimsByRarity = new Map<LotteryCardRarity, string[]>();
   for (const raw of (burnLogsResult.data ?? []) as Record<string, unknown>[]) {
     const rarity = parseCardRarity(raw.rarity);
@@ -2312,7 +2312,7 @@ export async function getCollectionAlbumForCustomerFromSupabase(
     collectionTitle:
       configuredCollectionTitle.length > 0
         ? configuredCollectionTitle
-        : (collection?.title ?? "Hemp Heroes 2026 Collection"),
+        : (collection?.title ?? "Kanab Quest Collection"),
     isActive: collection?.isActive ?? false,
     pageOrder: LOTTERY_COLLECTION_PAGE_ORDER,
     summary,
@@ -2329,7 +2329,7 @@ export async function claimCollectionPageRewardFromSupabase(input: {
 }): Promise<LotteryRewardClaim> {
   const userId = input.userId.trim();
   if (!isValidUuid(userId)) throw new Error("Identifiant utilisateur invalide.");
-  if (!isValidUuid(input.rewardDefinitionId)) throw new Error("Identifiant de récompense invalide.");
+  if (!isValidUuid(input.rewardDefinitionId)) throw new Error("Identifiant de rÃ©compense invalide.");
 
   const supabase = createSupabaseServiceClient();
   const result = await supabase.rpc("rpc_claim_collection_page_reward", {
@@ -2352,7 +2352,7 @@ export async function claimCollectionPageRewardFromSupabase(input: {
       ? (result.data as Record<string, unknown>)
       : null;
   if (!claimRow) {
-    throw new Error("Réponse invalide du serveur (claim).");
+    throw new Error("RÃ©ponse invalide du serveur (claim).");
   }
 
   return mapRewardClaimRow(claimRow);
@@ -2400,7 +2400,7 @@ export async function burnDuplicateCardsFromSupabase(input: {
       ? (result.data as Record<string, unknown>)
       : null;
   if (!claimRow) {
-    throw new Error("Réponse invalide du serveur (burn claim).");
+    throw new Error("RÃ©ponse invalide du serveur (burn claim).");
   }
 
   return mapRewardClaimRow(claimRow);

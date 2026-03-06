@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -17,7 +17,7 @@ import type {
   ReferralPendingReward,
 } from "@/types/missions";
 
-// ── Icon resolver ──
+// â”€â”€ Icon resolver â”€â”€
 
 function MissionIcon({ icon, className }: { icon: string; className?: string }) {
   const cls = className ?? "h-5 w-5";
@@ -43,7 +43,7 @@ function MissionIcon({ icon, className }: { icon: string; className?: string }) 
   }
 }
 
-// ── Submission modal ──
+// â”€â”€ Submission modal â”€â”€
 
 function SubmitMissionModal({
   mission,
@@ -105,7 +105,7 @@ function SubmitMissionModal({
 
       onSubmitted();
     } catch {
-      setError("Erreur réseau.");
+      setError("Erreur rÃ©seau.");
     } finally {
       setSubmitting(false);
     }
@@ -209,7 +209,7 @@ function SubmitMissionModal({
   );
 }
 
-// ── Referral choice modal ──
+// â”€â”€ Referral choice modal â”€â”€
 
 function ReferralChoiceModal({
   reward,
@@ -245,7 +245,7 @@ function ReferralChoiceModal({
 
       onChosen();
     } catch {
-      setError("Erreur réseau.");
+      setError("Erreur rÃ©seau.");
     } finally {
       setChoosing(false);
     }
@@ -255,14 +255,14 @@ function ReferralChoiceModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <div className="cartoon-border w-full max-w-md bg-cream p-6">
         <div className="flex items-center justify-between gap-2">
-          <h3 className="font-display text-xl text-ink">Récompense parrainage</h3>
+          <h3 className="font-display text-xl text-ink">RÃ©compense parrainage</h3>
           <button type="button" onClick={onClose} className="text-charcoal hover:text-ink">
             <X size={20} />
           </button>
         </div>
 
         <p className="mt-3 text-sm text-charcoal">
-          Ton filleul a passé sa première commande ! Choisis ta récompense :
+          Ton filleul a passÃ© sa premiÃ¨re commande ! Choisis ta rÃ©compense :
         </p>
 
         {error && <p className="mt-2 text-xs font-semibold text-red-700">{error}</p>}
@@ -276,7 +276,7 @@ function ReferralChoiceModal({
           >
             <p className="text-lg font-bold text-ink">{reward.pointsAmount} points bonus</p>
             <p className="text-sm text-charcoal">
-              Ajoute {reward.pointsAmount} points à ton solde fidélité
+              Ajoute {reward.pointsAmount} points Ã  ton solde fidÃ©litÃ©
             </p>
           </button>
 
@@ -288,7 +288,7 @@ function ReferralChoiceModal({
           >
             <p className="text-lg font-bold text-ink">{reward.packsAmount} packs de cartes</p>
             <p className="text-sm text-charcoal">
-              Reçois {reward.packsAmount} packs Hemp Heroes à gratter
+              ReÃ§ois {reward.packsAmount} packs Kanab Quest Ã  gratter
             </p>
           </button>
         </div>
@@ -303,7 +303,7 @@ function ReferralChoiceModal({
   );
 }
 
-// ── Main Missions Section ──
+// â”€â”€ Main Missions Section â”€â”€
 
 export function MissionsSection() {
   const [missions, setMissions] = useState<MissionWithUserStatus[]>([]);
@@ -358,7 +358,7 @@ export function MissionsSection() {
     <>
       <h2 className="font-display text-3xl">Missions</h2>
       <p className="mt-2 text-sm text-charcoal">
-        Complete des missions pour gagner des packs de cartes Hemp Heroes !
+        Complete des missions pour gagner des packs de cartes Kanab Quest !
       </p>
 
       {/* Pending referral choice alerts */}
@@ -372,7 +372,7 @@ export function MissionsSection() {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="flex items-center gap-2 text-sm font-semibold text-ink">
-                    <Gift size={16} /> Récompense parrainage en attente
+                    <Gift size={16} /> RÃ©compense parrainage en attente
                   </p>
                   <p className="mt-1 text-xs text-charcoal">
                     Choisis entre {reward.pointsAmount} points ou {reward.packsAmount} packs
@@ -395,7 +395,7 @@ export function MissionsSection() {
       {pendingRewards.filter((r) => r.status !== "pending").length > 0 && (
         <div className="mt-4">
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
-            Récompenses parrainage passées
+            RÃ©compenses parrainage passÃ©es
           </p>
           <div className="mt-2 grid gap-2">
             {pendingRewards
@@ -447,7 +447,7 @@ export function MissionsSection() {
                     </span>
                     {isCompleted && (
                       <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700">
-                        <Check size={14} /> Complétée
+                        <Check size={14} /> ComplÃ©tÃ©e
                       </span>
                     )}
                     {hasPending && !isCompleted && (
@@ -457,7 +457,7 @@ export function MissionsSection() {
                     )}
                     {isRejected && !isCompleted && !hasPending && (
                       <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-700">
-                        <X size={14} /> Refusée
+                        <X size={14} /> RefusÃ©e
                       </span>
                     )}
                   </div>
@@ -476,7 +476,7 @@ export function MissionsSection() {
 
               {isRejected && mission.canSubmit && !isCompleted && (
                 <p className="mt-1 text-[11px] text-charcoal">
-                  Ta soumission précédente a été refusée. Tu peux réessayer.
+                  Ta soumission prÃ©cÃ©dente a Ã©tÃ© refusÃ©e. Tu peux rÃ©essayer.
                 </p>
               )}
             </article>

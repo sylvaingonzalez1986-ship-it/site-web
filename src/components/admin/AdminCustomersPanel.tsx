@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
@@ -37,16 +37,16 @@ type AdminCustomerDetail = {
 const orderStatusLabels: Record<OrderStatus, string> = {
   new: "Nouvelle",
   pending_payment: "Paiement en attente",
-  paid: "Payée",
-  processing: "En préparation",
-  shipped: "Expédiée",
-  cancelled: "Annulée",
+  paid: "PayÃ©e",
+  processing: "En prÃ©paration",
+  shipped: "ExpÃ©diÃ©e",
+  cancelled: "AnnulÃ©e",
 };
 
 const collectionRewardStatusLabels: Record<"locked" | "claimable" | "claimed", string> = {
-  locked: "Verrouillée",
-  claimable: "Récompense disponible",
-  claimed: "Récompensée",
+  locked: "VerrouillÃ©e",
+  claimable: "RÃ©compense disponible",
+  claimed: "RÃ©compensÃ©e",
 };
 
 function formatPercent(value: number): string {
@@ -355,7 +355,7 @@ export function AdminCustomersPanel() {
                     Inscrit le {new Date(detail.customer.createdAt).toLocaleDateString("fr-FR")}
                   </p>
                   <p className="text-xs text-charcoal">
-                    Date de naissance: {detail.customer.dateOfBirth || "Non renseigné"}
+                    Date de naissance: {detail.customer.dateOfBirth || "Non renseignÃ©"}
                   </p>
                 </div>
                 <div className="ml-auto flex items-center gap-3">
@@ -378,10 +378,10 @@ export function AdminCustomersPanel() {
             <form onSubmit={saveCustomer} className="card-cartoon bg-white p-5">
               <h3 className="font-display text-2xl text-ink">Informations client</h3>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
-                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={firstName} onChange={(event) => setFirstName(event.target.value)} placeholder="Prénom" />
+                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={firstName} onChange={(event) => setFirstName(event.target.value)} placeholder="PrÃ©nom" />
                 <input className="h-11 border-2 border-[#1a1a1a] px-3" value={lastName} onChange={(event) => setLastName(event.target.value)} placeholder="Nom" />
                 <input className="h-11 border-2 border-[#1a1a1a] bg-[#f4f4f4] px-3 md:col-span-2" value={detail.customer.email} readOnly />
-                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="Téléphone" />
+                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="TÃ©lÃ©phone" />
                 <input className="h-11 border-2 border-[#1a1a1a] px-3 md:col-span-2" value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Adresse" />
                 <input className="h-11 border-2 border-[#1a1a1a] px-3" value={city} onChange={(event) => setCity(event.target.value)} placeholder="Ville" />
                 <input className="h-11 border-2 border-[#1a1a1a] px-3" value={postalCode} onChange={(event) => setPostalCode(event.target.value)} placeholder="Code postal" />
@@ -481,7 +481,7 @@ export function AdminCustomersPanel() {
             </article>
 
             <article className="card-cartoon bg-white p-5">
-              <h3 className="font-display text-2xl text-ink">Collection Hemp Heroes</h3>
+              <h3 className="font-display text-2xl text-ink">Collection Kanab Quest</h3>
               <p className="mt-1 text-sm text-charcoal">{collectionSummary?.collectionTitle ?? "Album client"}</p>
 
               {loadingCollection && !collectionSummary ? (
@@ -501,11 +501,11 @@ export function AdminCustomersPanel() {
                         {collectionSummary.summary.ownedUnique} / {collectionSummary.summary.totalCards} cartes
                       </p>
                       <p className="text-xs text-charcoal">
-                        Complétion {formatPercent(collectionSummary.summary.completionPercent)}
+                        ComplÃ©tion {formatPercent(collectionSummary.summary.completionPercent)}
                       </p>
                     </div>
                     <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
-                      <p className="text-charcoal">Copies possédées</p>
+                      <p className="text-charcoal">Copies possÃ©dÃ©es</p>
                       <p className="text-lg font-semibold text-ink">
                         {collectionSummary.summary.totalOwnedCopies}
                       </p>
@@ -516,11 +516,11 @@ export function AdminCustomersPanel() {
                   </div>
                   <div className="mt-4 overflow-hidden rounded border-2 border-[#1a1a1a]">
                     <div className="grid border-b border-[#1a1a1a] bg-[#efebe4] px-3 py-2 text-xs font-semibold text-ink md:grid-cols-[1fr,0.9fr,0.75fr,0.75fr,1fr]">
-                      <p>Rareté</p>
-                      <p className="text-right">Possédées</p>
+                      <p>RaretÃ©</p>
+                      <p className="text-right">PossÃ©dÃ©es</p>
                       <p className="text-right">Doublons</p>
-                      <p className="text-right">Complétion</p>
-                      <p>Récompense</p>
+                      <p className="text-right">ComplÃ©tion</p>
+                      <p>RÃ©compense</p>
                     </div>
                     {RARITY_ORDER.map((rarity) => {
                       const pageSummary = collectionSummary.pages.find((entry) => entry.rarity === rarity);

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import {
   getLotteryConfigByBackend,
@@ -22,7 +22,7 @@ export async function GET() {
     const defaultConfig: LotteryConfig = {
       eurosPerTicket: 5,
       maxTicketsPerOrder: 4,
-      collectionTitle: "Hemp Heroes 2026 Collection",
+      collectionTitle: "Kanab Quest Collection",
       seasonLabel: "Saison 1",
       albumSubtitle: "Ta collection de cartes. Complete chaque page pour debloquer ses recompenses.",
       albumBoosterTitle: "packs a ouvrir",
