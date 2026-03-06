@@ -43,6 +43,10 @@ function buildPdfBuffer(doc: PDFKit.PDFDocument): Promise<Buffer> {
   });
 }
 
+/** Dark navy ink — avoids pure black so the PDF prints correctly on
+ *  printers that only have colour cartridges installed. */
+const INK_COLOR = "#00205B";
+
 /* ------------------------------------------------------------------ */
 /*  PDF generation – PDFKit is lazy-loaded at first call              */
 /* ------------------------------------------------------------------ */
@@ -93,6 +97,7 @@ export async function generateInvoicePdf(
   /* ---------- build PDF ---------- */
 
   const doc = new PDFDocument({ size: "A4", margin: 48 });
+  doc.fillColor(INK_COLOR);
   const pdfPromise = buildPdfBuffer(doc);
 
   // --- Company header ---
@@ -177,7 +182,7 @@ export async function generateInvoicePdf(
   }
 
   // --- Totals ---
-  doc.moveTo(48, y).lineTo(547, y).stroke("#111111");
+  doc.moveTo(48, y).lineTo(547, y).strokeColor(INK_COLOR).stroke();
   y += 10;
   doc.text("Sous-total TTC", xUnitHt - 10, y, { width: 120 });
   doc.text(formatMoney(itemsSubTotalTtc), xTotalHt, y);
