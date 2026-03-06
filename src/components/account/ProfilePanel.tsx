@@ -14,8 +14,7 @@ import { useCustomerSession } from "@/hooks/useCustomerSession";
 import {
   getBadgeBenefitsText,
   getBadgeDiscountPercent,
-  isBadgeEligibleForFreeShipping,
-  isBadgeTierEligibleForFreeShipping,
+  getBadgeFreeShippingThreshold,
   parseBadgeBenefitsLines,
 } from "@/lib/loyalty-tier-benefits";
 import { formatPrice } from "@/lib/utils";
@@ -602,12 +601,19 @@ export function ProfilePanel() {
                     <h2 className="font-display text-3xl text-ink">{loyalty.currentBadge.label}</h2>
                     <p className="text-sm text-charcoal">{loyalty.currentBadge.description}</p>
                     <p className="mt-1 text-xs font-semibold text-ink">
-                      {isBadgeEligibleForFreeShipping(
-                        loyalty.currentBadge.id,
-                        loyalty.currentBadge.unlocked,
-                      )
-                        ? "Livraison offerte active (hors badge Bronze)"
-                        : "Livraison offerte pour tous les badges sauf Bronze"}
+                      {(() => {
+                        const threshold = getBadgeFreeShippingThreshold(
+                          loyalty.currentBadge.id,
+                          loyalty.currentBadge.unlocked,
+                        );
+                        if (threshold === null) {
+                          return "Livraison offerte active";
+                        }
+                        if (typeof threshold === "number") {
+                          return `Livraison offerte des ${threshold} EUR`;
+                        }
+                        return "Debloque ce badge pour activer l'avantage livraison";
+                      })()}
                     </p>
                     {!loyalty.currentBadge.unlocked && (
                       <p className="mt-1 text-xs font-semibold text-charcoal">A debloquer</p>
@@ -769,9 +775,16 @@ export function ProfilePanel() {
                           </p>
                           <p className="mt-1 text-xs font-semibold text-ink">
                             Livraison offerte:{" "}
-                            {isBadgeTierEligibleForFreeShipping(badge.id)
-                              ? "Oui"
-                              : "Non"}
+                            {(() => {
+                              const threshold = getBadgeFreeShippingThreshold(badge.id, true);
+                              if (threshold === null) {
+                                return "Oui";
+                              }
+                              if (typeof threshold === "number") {
+                                return `Des ${threshold} EUR`;
+                              }
+                              return "Non";
+                            })()}
                           </p>
                           <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
                             {popupHint}

@@ -63,7 +63,7 @@ const BADGE_TIER_BENEFITS: Record<
   LoyaltyBadgeId,
   {
     discountPercent: number;
-    freeShipping: boolean;
+    freeShippingThresholdEur: number | null;
     extraBoosterPacksPerOrder: number;
     birthdayGiftEligible: boolean;
     decemberGiftEligible: boolean;
@@ -72,7 +72,7 @@ const BADGE_TIER_BENEFITS: Record<
 > = {
   decouverte: {
     discountPercent: 1,
-    freeShipping: false,
+    freeShippingThresholdEur: 69,
     extraBoosterPacksPerOrder: 1,
     birthdayGiftEligible: false,
     decemberGiftEligible: false,
@@ -80,7 +80,7 @@ const BADGE_TIER_BENEFITS: Record<
   },
   explorateur: {
     discountPercent: 4,
-    freeShipping: true,
+    freeShippingThresholdEur: 45,
     extraBoosterPacksPerOrder: 3,
     birthdayGiftEligible: false,
     decemberGiftEligible: false,
@@ -88,7 +88,7 @@ const BADGE_TIER_BENEFITS: Record<
   },
   connaisseur: {
     discountPercent: 6,
-    freeShipping: true,
+    freeShippingThresholdEur: 30,
     extraBoosterPacksPerOrder: 5,
     birthdayGiftEligible: false,
     decemberGiftEligible: false,
@@ -96,7 +96,7 @@ const BADGE_TIER_BENEFITS: Record<
   },
   ambassadeur: {
     discountPercent: 8,
-    freeShipping: true,
+    freeShippingThresholdEur: null,
     extraBoosterPacksPerOrder: 10,
     birthdayGiftEligible: true,
     decemberGiftEligible: false,
@@ -104,7 +104,7 @@ const BADGE_TIER_BENEFITS: Record<
   },
   legende: {
     discountPercent: 10,
-    freeShipping: true,
+    freeShippingThresholdEur: null,
     extraBoosterPacksPerOrder: 20,
     birthdayGiftEligible: true,
     decemberGiftEligible: true,
@@ -119,9 +119,13 @@ export function getCanonicalBadgeBenefitsLines(badgeId: LoyaltyBadgeId): string[
     `${perks.extraBoosterPacksPerOrder} pack${perks.extraBoosterPacksPerOrder > 1 ? "s" : ""} booster extra par commande`,
   ];
 
-  if (perks.freeShipping) {
-    lines.splice(1, 0, "Livraison offerte");
-  }
+  lines.splice(
+    1,
+    0,
+    perks.freeShippingThresholdEur === null
+      ? "Livraison offerte"
+      : `Livraison offerte des ${perks.freeShippingThresholdEur} EUR`,
+  );
 
   if (perks.birthdayGiftEligible) {
     lines.push("1 cadeau d'anniversaire pour toute commande passee le mois de ton anniversaire");
@@ -173,17 +177,23 @@ export function isBadgeEligibleForFreeShipping(
   badgeId: LoyaltyBadgeId,
   unlocked: boolean,
 ): boolean {
-  if (!unlocked) {
-    return false;
-  }
-
-  return isBadgeTierEligibleForFreeShipping(badgeId);
+  return getBadgeFreeShippingThreshold(badgeId, unlocked) === null;
 }
 
 export function isBadgeTierEligibleForFreeShipping(
   badgeId: LoyaltyBadgeId,
 ): boolean {
-  return BADGE_TIER_BENEFITS[badgeId]?.freeShipping ?? false;
+  return getBadgeFreeShippingThreshold(badgeId, true) === null;
+}
+
+export function getBadgeFreeShippingThreshold(
+  badgeId: LoyaltyBadgeId,
+  unlocked: boolean,
+): number | null | undefined {
+  if (!unlocked) {
+    return undefined;
+  }
+  return BADGE_TIER_BENEFITS[badgeId]?.freeShippingThresholdEur;
 }
 
 export function getBadgeExtraBoosterPacksPerOrder(badgeId: LoyaltyBadgeId): number {

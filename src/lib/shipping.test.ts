@@ -70,7 +70,27 @@ describe("shipping", () => {
         method: "relay",
         subtotalAfterDiscount: 10,
         config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 69 },
-        isMemberFreeShippingEligible: true,
+        badgeFreeShippingThresholdEur: null,
+      }),
+    ).toBe(0);
+  });
+
+  it("uses badge threshold when provided", () => {
+    expect(
+      computeShippingFee({
+        method: "home",
+        subtotalAfterDiscount: 44.99,
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 69 },
+        badgeFreeShippingThresholdEur: 45,
+      }),
+    ).toBe(6.9);
+
+    expect(
+      computeShippingFee({
+        method: "home",
+        subtotalAfterDiscount: 45,
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 69 },
+        badgeFreeShippingThresholdEur: 45,
       }),
     ).toBe(0);
   });

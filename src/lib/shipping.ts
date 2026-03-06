@@ -61,19 +61,22 @@ export function computeShippingFee(input: {
   method: DeliveryMethod;
   subtotalAfterDiscount: number;
   config: ShippingPricingConfig;
-  isMemberFreeShippingEligible?: boolean;
-  ignoreFreeThreshold?: boolean;
+  badgeFreeShippingThresholdEur?: number | null;
 }): number {
   const config = input.config || getShippingPricingConfig();
   const safeSubtotal = Math.max(0, Number(input.subtotalAfterDiscount) || 0);
-  const isMemberFreeShippingEligible = input.isMemberFreeShippingEligible === true;
-  const ignoreFreeThreshold = input.ignoreFreeThreshold === true;
+  const badgeFreeShippingThresholdEur = input.badgeFreeShippingThresholdEur;
 
-  if (isMemberFreeShippingEligible) {
+  if (badgeFreeShippingThresholdEur === null) {
     return 0;
   }
 
-  if (!ignoreFreeThreshold && safeSubtotal >= config.freeShippingThresholdEur) {
+  const effectiveThreshold =
+    typeof badgeFreeShippingThresholdEur === "number"
+      ? Math.max(0, badgeFreeShippingThresholdEur)
+      : config.freeShippingThresholdEur;
+
+  if (safeSubtotal >= effectiveThreshold) {
     return 0;
   }
 

@@ -13,7 +13,7 @@ import {
   getBadgeDiscountPercent,
   getBadgeExtraBoosterPacksPerOrder,
   getBadgeBenefitsText,
-  isBadgeEligibleForFreeShipping,
+  getBadgeFreeShippingThreshold,
   parseBadgeBenefitsLines,
 } from "@/lib/loyalty-tier-benefits";
 import { computeLotteryTicketBreakdown } from "@/lib/lottery-ticket-calculations";
@@ -246,8 +246,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     promoPreview?.discountedTotal ??
     (hasAutoReferralDiscount ? totalAfterAutoReferralDiscount : totalAfterBadgeDiscount);
   const shippingPricingConfig = useMemo(() => getShippingPricingConfig(), []);
-  const hasFreeShippingByBadge = useMemo(
-    () => isBadgeEligibleForFreeShipping(loyalty.currentBadge.id, loyalty.currentBadge.unlocked),
+  const badgeFreeShippingThreshold = useMemo(
+    () => getBadgeFreeShippingThreshold(loyalty.currentBadge.id, loyalty.currentBadge.unlocked),
     [loyalty.currentBadge.id, loyalty.currentBadge.unlocked],
   );
   const shippingFee = useMemo(
@@ -256,10 +256,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         method: deliveryMethod,
         subtotalAfterDiscount: checkoutAmount,
         config: shippingPricingConfig,
-        isMemberFreeShippingEligible: hasFreeShippingByBadge,
-        ignoreFreeThreshold: true,
+        badgeFreeShippingThresholdEur: badgeFreeShippingThreshold,
       }),
-    [checkoutAmount, deliveryMethod, hasFreeShippingByBadge, shippingPricingConfig],
+    [badgeFreeShippingThreshold, checkoutAmount, deliveryMethod, shippingPricingConfig],
   );
   const finalAmountToPay = useMemo(
     () => Number((checkoutAmount + shippingFee).toFixed(2)),
@@ -306,7 +305,13 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     return [
       `Badge actif : ${loyalty.currentBadge.label}`,
       `Reduction automatique : ${displayedBadgeDiscountPercent}%`,
-      `Livraison offerte : ${hasFreeShippingByBadge ? "Oui" : "Non"}`,
+      `Livraison : ${
+        badgeFreeShippingThreshold === null
+          ? "Offerte"
+          : typeof badgeFreeShippingThreshold === "number"
+            ? `Offerte des ${badgeFreeShippingThreshold} EUR`
+            : "Seuil standard"
+      }`,
       `Points gagnes sur cette commande : ${earnedTotalLoyaltyPoints}`,
       ...lines,
     ];
@@ -314,7 +319,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     cmsStore.content.profile,
     displayedBadgeDiscountPercent,
     earnedTotalLoyaltyPoints,
-    hasFreeShippingByBadge,
+    badgeFreeShippingThreshold,
     loyalty.currentBadge.id,
     loyalty.currentBadge.label,
   ]);

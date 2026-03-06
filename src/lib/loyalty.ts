@@ -16,13 +16,13 @@ const LOYALTY_BADGE_DEFINITIONS: Array<{
   {
     id: "explorateur",
     label: "Argent",
-    description: "4% permanent, livraison offerte et 3 packs bonus.",
+    description: "4% permanent, livraison offerte des 45 EUR et 3 packs bonus.",
     minPoints: 500,
   },
   {
     id: "connaisseur",
     label: "Or",
-    description: "6% permanent, livraison offerte et 5 packs bonus.",
+    description: "6% permanent, livraison offerte des 30 EUR et 5 packs bonus.",
     minPoints: 1000,
   },
   {
