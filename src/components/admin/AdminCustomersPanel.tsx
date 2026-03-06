@@ -8,6 +8,7 @@ import type { LoyaltySummary } from "@/types/loyalty";
 import type { CmsOrder, OrderStatus } from "@/types/store";
 import type { AdminCustomerCollectionSummary } from "@/types/lottery";
 import { rarityAccentColor, rarityLabels, RARITY_ORDER } from "@/lib/lottery-card-ui";
+import { getBadgeFreeShippingThreshold } from "@/lib/loyalty-tier-benefits";
 
 type AdminCustomerListItem = {
   id: string;
@@ -50,6 +51,17 @@ const collectionRewardStatusLabels: Record<"locked" | "claimable" | "claimed", s
 
 function formatPercent(value: number): string {
   return `${Math.round(value)}%`;
+}
+
+function getShippingBenefitLabel(badgeId: LoyaltySummary["currentBadge"]["id"], unlocked: boolean): string {
+  const threshold = getBadgeFreeShippingThreshold(badgeId, unlocked);
+  if (threshold === null) {
+    return "Livraison offerte";
+  }
+  if (typeof threshold === "number") {
+    return `Livraison offerte des ${threshold} EUR`;
+  }
+  return "Livraison standard";
 }
 
 function getInitials(firstName: string, lastName: string): string {
@@ -355,6 +367,9 @@ export function AdminCustomersPanel() {
                   <div>
                     <p className="text-sm font-semibold text-ink">{detail.loyalty.currentBadge.label}</p>
                     <p className="text-xs text-charcoal">{detail.loyalty.totalPoints} points</p>
+                    <p className="mt-1 text-xs text-charcoal">
+                      {getShippingBenefitLabel(detail.loyalty.currentBadge.id, detail.loyalty.currentBadge.unlocked)}
+                    </p>
                   </div>
                 </div>
               </div>
