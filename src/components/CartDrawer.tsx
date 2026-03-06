@@ -84,6 +84,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     loyalty,
     lotteryInventory,
     lotteryConfig,
+    refreshSession,
     addToCart,
     decreaseQuantity,
     setQuantity,
@@ -135,7 +136,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     setShippingCountry(user?.country || "France");
     setSelectedRelayPoint(null);
     setCartError(null);
-  }, [open, user]);
+    if (isAuthenticated) {
+      void refreshSession({ silent: true, force: true });
+    }
+  }, [isAuthenticated, open, refreshSession, user]);
 
   const buildCartStockError = (productName: string, maxAvailable?: number) => {
     if (typeof maxAvailable === "number" && maxAvailable > 0) {
@@ -264,6 +268,25 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     () => Number((checkoutAmount + shippingFee).toFixed(2)),
     [checkoutAmount, shippingFee],
   );
+  const shippingThresholdLabel = useMemo(() => {
+    if (badgeFreeShippingThreshold === null) {
+      return "Livraison offerte (badge)";
+    }
+    if (typeof badgeFreeShippingThreshold === "number") {
+      return `Livraison offerte des ${badgeFreeShippingThreshold} EUR`;
+    }
+    return `Livraison offerte des ${shippingPricingConfig.freeShippingThresholdEur} EUR`;
+  }, [badgeFreeShippingThreshold, shippingPricingConfig.freeShippingThresholdEur]);
+  const shippingRemainingAmount = useMemo(() => {
+    if (shippingFee <= 0) {
+      return 0;
+    }
+    const threshold =
+      typeof badgeFreeShippingThreshold === "number"
+        ? badgeFreeShippingThreshold
+        : shippingPricingConfig.freeShippingThresholdEur;
+    return Number(Math.max(threshold - checkoutAmount, 0).toFixed(2));
+  }, [badgeFreeShippingThreshold, checkoutAmount, shippingFee, shippingPricingConfig.freeShippingThresholdEur]);
   const earnedProductBonusPoints = useMemo(
     () =>
       items.reduce((total, item) => {
@@ -856,6 +879,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           </div>
           <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
             Livraison: {deliveryMethod === "relay" ? "Point relais" : "Domicile"}
+          </div>
+          <div className="mt-1 text-[11px] font-semibold text-charcoal">
+            {shippingThresholdLabel}
+            {shippingRemainingAmount > 0 ? ` (encore ${formatPrice(shippingRemainingAmount)})` : ""}
           </div>
           {displayedBadgeDiscountPercent > 0 && (
             <div className="mt-1 text-xs text-green-700">
