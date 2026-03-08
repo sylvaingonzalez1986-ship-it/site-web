@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { Instagram, Mail } from "lucide-react";
-import { useMemo, useState } from "react";
-import { ContactRequestModal } from "@/components/ContactRequestModal";
+import { useMemo } from "react";
 import { useCmsPages } from "@/hooks/useCmsPages";
 import { useCmsStore } from "@/hooks/useCmsStore";
 
@@ -11,7 +10,6 @@ export function Footer() {
   const { store, loading } = useCmsStore();
   const { pages: cmsPages } = useCmsPages();
   const footer = store.content.footer;
-  const [contactOpen, setContactOpen] = useState(false);
   const dynamicFooterLinks = useMemo(() => {
     const staticHrefs = new Set([
       "/mentions-legales",
@@ -42,8 +40,7 @@ export function Footer() {
   }
 
   return (
-    <>
-      <footer className="border-t-2 border-[#1a1a1a] bg-yellow py-10 halftone-overlay paper-grain">
+    <footer className="border-t-2 border-[#1a1a1a] bg-yellow py-10 halftone-overlay paper-grain">
         <div className="retro-container">
           <div className="cartoon-border bg-cream p-5 md:p-7">
             <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr_1fr] lg:items-start">
@@ -63,14 +60,14 @@ export function Footer() {
                   CBD naturel, breton et légal.
                 </p>
 
-                <div className="mt-4 flex flex-wrap items-stretch gap-3">
-                  <button
-                    type="button"
+              <div className="mt-4 flex flex-wrap items-stretch gap-3">
+                  <a
+                    href="mailto:leschanvriersbretons@gmail.com"
                     className="btn-cartoon btn-secondary inline-flex min-h-[44px] w-full items-center justify-center gap-2 px-4 text-center text-xs leading-none sm:w-auto"
-                    onClick={() => setContactOpen(true)}
+                    aria-label="Écrire un email à Les Chanvriers Bretons"
                   >
                     <Mail size={14} /> Nous contacter
-                  </button>
+                  </a>
                   <Link
                     href="https://www.instagram.com/leschanvriersbretons"
                     target="_blank"
@@ -189,8 +186,5 @@ export function Footer() {
           </div>
         </div>
       </footer>
-
-      <ContactRequestModal open={contactOpen} onClose={() => setContactOpen(false)} />
-    </>
   );
 }

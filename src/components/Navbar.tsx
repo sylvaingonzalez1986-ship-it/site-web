@@ -23,7 +23,8 @@ const baseLinks = [
 ];
 
 export function Navbar() {
-  const { totalItems, user, loyalty, hasWelcomePack } = useCart();
+  const { totalItems, user, loyalty, hasWelcomePack, sessionLoading } = useCart();
+  const isAuthenticated = Boolean(user);
   const { pages: cmsPages } = useCmsPages();
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -140,7 +141,8 @@ export function Navbar() {
             {links.map((link) => {
               const isAccountLink = link.href === "/profil" || link.href === "/compte/connexion";
               const isAlbumLink = link.href === "/profil/collection";
-              const showWelcomePackBadge = isAlbumLink && hasWelcomePack && !hideWelcomePackBadge;
+              const showWelcomePackBadge =
+                isAlbumLink && !hideWelcomePackBadge && (!sessionLoading ? (isAuthenticated ? hasWelcomePack : true) : false);
 
               return (
                 <Link
@@ -205,8 +207,9 @@ export function Navbar() {
         <div className="safe-area-top safe-area-bottom safe-area-x flex h-full flex-col items-center justify-center gap-8 overflow-y-auto py-10">
           {links.map((link) => {
             const isAccountLink = link.href === "/profil" || link.href === "/compte/connexion";
-            const isAlbumLink = link.href === "/profil/collection";
-            const showWelcomePackBadge = isAlbumLink && hasWelcomePack && !hideWelcomePackBadge;
+              const isAlbumLink = link.href === "/profil/collection";
+              const showWelcomePackBadge =
+                isAlbumLink && !hideWelcomePackBadge && (!sessionLoading ? (isAuthenticated ? hasWelcomePack : true) : false);
 
             return (
               <Link

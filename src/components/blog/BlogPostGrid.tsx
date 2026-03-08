@@ -88,12 +88,12 @@ function BlogPostGridInner({ posts, readMoreLabel, emptyLabel }: BlogPostGridPro
           {filteredPosts.map((post) => (
             <article key={post.id} className="card-cartoon overflow-hidden bg-cream">
               <Link href={`/blog/${post.slug}`} className="block">
-                <div className="relative aspect-[4/3] border-b-2 border-[#1a1a1a]">
+                <div className="relative aspect-[4/3] border-b-2 border-[#1a1a1a] bg-[#f7f4ee]">
                   {shouldUseNativeImg(post.coverImage) ? (
                     <img
                       src={post.coverImage}
                       alt={post.title}
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                      className="absolute inset-0 h-full w-full object-contain transition-transform duration-300 hover:scale-105"
                       loading="lazy"
                       decoding="async"
                       referrerPolicy="no-referrer"
@@ -104,7 +104,7 @@ function BlogPostGridInner({ posts, readMoreLabel, emptyLabel }: BlogPostGridPro
                       alt={post.title}
                       fill
                       sizes="(max-width: 1024px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-300 hover:scale-105"
+                      className="object-contain transition-transform duration-300 hover:scale-105"
                     />
                   )}
                 </div>

@@ -26,12 +26,12 @@ export function BlogRelatedPosts({ currentPostId, currentCategory, posts }: Blog
         {related.map((post) => (
           <article key={post.id} className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee]">
             <Link href={`/blog/${post.slug}`} className="block">
-              <div className="relative aspect-[4/3] border-b-2 border-[#1a1a1a]">
+              <div className="relative aspect-[4/3] border-b-2 border-[#1a1a1a] bg-[#f7f4ee]">
                 {shouldUseNativeImg(post.coverImage) ? (
                   <img
                     src={post.coverImage}
                     alt={post.title}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-contain"
                     loading="lazy"
                     decoding="async"
                     referrerPolicy="no-referrer"
@@ -42,7 +42,7 @@ export function BlogRelatedPosts({ currentPostId, currentCategory, posts }: Blog
                     alt={post.title}
                     fill
                     sizes="(max-width: 1024px) 50vw, 33vw"
-                    className="object-cover"
+                    className="object-contain"
                   />
                 )}
               </div>

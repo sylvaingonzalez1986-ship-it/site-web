@@ -7,13 +7,13 @@ import {
   Apple,
   ArrowRight,
   FlaskConical,
+  Mail,
   Play,
   Shield,
   ShoppingBag,
   ShoppingCart,
   Truck,
 } from "lucide-react";
-import dynamic from "next/dynamic";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
 import { CustomSection } from "@/components/CustomSection";
 import { HomeBadgePromoBand } from "@/components/home/HomeBadgePromoBand";
@@ -24,11 +24,6 @@ import { sortOwnProductsFirst } from "@/lib/own-producer";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { formatPrice } from "@/lib/utils";
 import type { CmsStore, HomeSection, PublicStoreResponse } from "@/types/store";
-
-const HomeContactForm = dynamic(
-  () => import("@/components/home/HomeContactForm").then((m) => m.HomeContactForm),
-  { ssr: false },
-);
 
 type GsapRuntime = {
   gsap: (typeof import("gsap"))["gsap"];
@@ -263,7 +258,12 @@ export function HomePinnedExperience({ initialStore }: HomePinnedExperienceProps
               <p className="mt-4 max-w-2xl text-lg text-charcoal">
                 {home.contactDescription}
               </p>
-              <HomeContactForm home={home} />
+              <a
+                href="mailto:leschanvriersbretons@gmail.com"
+                className="btn-cartoon btn-primary mt-6 inline-flex min-h-[48px] items-center justify-center gap-2 px-4 text-sm"
+              >
+                <Mail className="h-5 w-5" /> Écris-nous par email
+              </a>
             </div>
           </section>
         );

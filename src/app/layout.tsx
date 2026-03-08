@@ -36,6 +36,14 @@ const handwrittenFont = Caveat({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://leschanvriersbretons.com"),
+  icons: {
+    icon: [
+      { url: "/app-character-cropped.png", type: "image/png", sizes: "192x192" },
+      { url: "/app-character-cropped.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/app-character-cropped.png", type: "image/png", sizes: "180x180" }],
+    shortcut: ["/app-character-cropped.png"],
+  },
   title: {
     default:
       "Les Chanvriers Bretons | CBD Naturel Direct Producteur Bretagne - Livraison France",

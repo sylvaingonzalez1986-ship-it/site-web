@@ -167,18 +167,25 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
 
         <article className="cartoon-border mt-8 overflow-hidden bg-cream">
-          <div className="relative aspect-[16/8] border-b-2 border-[#1a1a1a]">
+          <div className="relative aspect-[16/8] border-b-2 border-[#1a1a1a] bg-[#f7f4ee]">
             {shouldUseNativeImg(post.coverImage) ? (
               <img
                 src={post.coverImage}
                 alt={post.title}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-contain"
                 loading="eager"
                 decoding="async"
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <Image src={post.coverImage} alt={post.title} fill priority sizes="100vw" className="object-cover" />
+              <Image
+                src={post.coverImage}
+                alt={post.title}
+                fill
+                priority
+                sizes="100vw"
+                className="object-contain"
+              />
             )}
           </div>
 
