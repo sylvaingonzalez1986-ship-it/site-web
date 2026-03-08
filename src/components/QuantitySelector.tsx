@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Minus, Plus } from "lucide-react";
 
@@ -9,6 +9,7 @@ type QuantitySelectorProps = {
   onChange: (qty: number) => void;
   /** Compact mode for tight spaces (cart drawer) */
   compact?: boolean;
+  disabled?: boolean;
 };
 
 export function QuantitySelector({
@@ -17,6 +18,7 @@ export function QuantitySelector({
   max = 999,
   onChange,
   compact = false,
+  disabled = false,
 }: QuantitySelectorProps) {
   const clamp = (n: number) => Math.max(min, Math.min(max, Math.round(n)));
 
@@ -44,9 +46,9 @@ export function QuantitySelector({
       <button
         type="button"
         onClick={() => onChange(clamp(value - 1))}
-        disabled={value <= min}
+        disabled={disabled || value <= min}
         className={`${btnClass} disabled:opacity-40`}
-        aria-label="Diminuer la quantité"
+        aria-label="Diminuer la quantite"
       >
         <Minus size={compact ? 14 : 16} />
       </button>
@@ -56,17 +58,18 @@ export function QuantitySelector({
         min={min}
         max={max}
         value={value}
+        disabled={disabled}
         onChange={(e) => handleInputChange(e.target.value)}
         onBlur={handleBlur}
         className={inputClass}
-        aria-label="Quantité"
+        aria-label="Quantite"
       />
       <button
         type="button"
         onClick={() => onChange(clamp(value + 1))}
-        disabled={value >= max}
+        disabled={disabled || value >= max}
         className={`${btnClass} disabled:opacity-40`}
-        aria-label="Augmenter la quantité"
+        aria-label="Augmenter la quantite"
       >
         <Plus size={compact ? 14 : 16} />
       </button>

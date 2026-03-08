@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useCart } from "@/context/CartContext";
 import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
 import type {
   LotteryBurnableRarity,
@@ -29,6 +30,12 @@ type CollectionPayload = LotteryCollectionAlbum & {
   error?: string;
 };
 
+type PublicCollectionPreviewPayload = {
+  album?: LotteryCollectionAlbum | null;
+  config?: LotteryConfig | null;
+  error?: string;
+};
+
 type LotteryExperienceState = {
   tickets: LotteryTicket[];
   inventory: LotteryInventory | null;
@@ -54,6 +61,7 @@ type LotteryExperienceState = {
 };
 
 export function useLotteryExperience(): LotteryExperienceState {
+  const { isAuthenticated, authLoading } = useCart();
   const [tickets, setTickets] = useState<LotteryTicket[]>([]);
   const [inventory, setInventory] = useState<LotteryInventory | null>(null);
   const [config, setConfig] = useState<LotteryConfig | null>(null);
@@ -65,6 +73,10 @@ export function useLotteryExperience(): LotteryExperienceState {
   const [acting, setActing] = useState(false);
 
   const refreshAll = useCallback(async (options?: { silent?: boolean }) => {
+    if (authLoading) {
+      return;
+    }
+
     const silent = options?.silent === true;
     if (!silent) {
       setLoading(true);
@@ -72,6 +84,23 @@ export function useLotteryExperience(): LotteryExperienceState {
     setError(null);
 
     try {
+      if (!isAuthenticated) {
+        const response = await fetch("/api/public/collection-preview", { cache: "no-store" });
+        const payload = (await response.json().catch(() => null)) as PublicCollectionPreviewPayload | null;
+
+        if (!response.ok || !payload?.album) {
+          throw new Error(payload?.error ?? "Impossible de charger l'album.");
+        }
+
+        setTickets([]);
+        setInventory(null);
+        setBonuses([]);
+        setLoyalty(buildEmptyLoyaltySummary());
+        setConfig(payload.config ?? null);
+        setAlbum(payload.album);
+        return;
+      }
+
       const [ticketsResponse, collectionResponse] = await Promise.all([
         fetch("/api/account/tickets", { cache: "no-store" }),
         fetch("/api/account/collection", { cache: "no-store" }),
@@ -113,11 +142,15 @@ export function useLotteryExperience(): LotteryExperienceState {
         setLoading(false);
       }
     }
-  }, []);
+  }, [authLoading, isAuthenticated]);
 
   useEffect(() => {
+    if (authLoading) {
+      return;
+    }
+
     void refreshAll();
-  }, [refreshAll]);
+  }, [authLoading, refreshAll]);
 
   const openPack = useCallback(
     async (ticketId: string): Promise<ScratchResult> => {

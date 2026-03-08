@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import { AlbumCardSlot } from "@/components/lottery/AlbumCardSlot";
@@ -16,9 +16,10 @@ type AlbumPageProps = {
   onSlotClick: (slot: LotteryCollectionCardSlot) => void;
   onClaimClick: () => void;
   onBurnClick: (group: LotteryDuplicateGroup) => void;
+  isPreview?: boolean;
 };
 
-export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick }: AlbumPageProps) {
+export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick, isPreview = false }: AlbumPageProps) {
   const accent = rarityAccentColor[page.rarity];
   const burnableGroups = page.duplicateGroups.filter(
     (group) => group.burnableInstanceIds.length >= (page.burnOffer?.duplicatesRequired ?? 10),
@@ -68,9 +69,9 @@ export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick }: Albu
                   Réclamé
                 </span>
                 <div className="min-w-0">
-                  <p className="text-[11px] font-black uppercase tracking-[0.1em] text-[#1f6f3a]">Lot réclamé</p>
+                  <p className="text-[11px] font-black uppercase tracking-[0.1em] text-[#1f6f3a]">Lot rÃƒÂ©clamÃƒÂ©</p>
                   <p className="truncate text-sm font-semibold text-ink">
-                    {selectedReward?.title ?? "Récompense de page réclamée"}
+                    {selectedReward?.title ?? "RÃƒÂ©compense de page rÃƒÂ©clamÃƒÂ©e"}
                   </p>
                 </div>
               </div>
@@ -91,21 +92,26 @@ export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick }: Albu
                       page.rewardStatus === "claimable" ? "text-[#1f6f3a]" : "text-charcoal/60"
                     }`}
                   >
-                    {page.rewardStatus === "claimable" ? "Page complète" : "Lot à débloquer"}
+                    {page.rewardStatus === "claimable" ? "Page complÃƒÂ¨te" : "Lot ÃƒÂ  dÃƒÂ©bloquer"}
                   </p>
                   <p className="mt-1 text-sm font-semibold text-ink">
                     {page.rewardStatus === "claimable"
                       ? "Choisis ton lot :"
-                      : "Complète cette page pour débloquer :"}
+                      : "ComplÃƒÂ¨te cette page pour dÃƒÂ©bloquer :"}
                   </p>
                 </div>
                 {page.rewardStatus === "claimable" && page.rewardOptions.length > 0 && (
                   <button
                     type="button"
-                    onClick={onClaimClick}
+                    onClick={() => {
+                      if (!isPreview) {
+                        onClaimClick();
+                      }
+                    }}
+                    disabled={isPreview}
                     className="btn-cartoon btn-primary inline-flex min-h-[44px] items-center justify-center px-4 text-sm"
                   >
-                    Réclamer ma récompense
+                    RÃƒÂ©clamer ma rÃƒÂ©compense
                   </button>
                 )}
               </div>
@@ -116,7 +122,7 @@ export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick }: Albu
                     <RewardOptionPreview
                       key={option.rewardDefinitionId}
                       option={option}
-                      interactive={page.rewardStatus === "claimable"}
+                      interactive={page.rewardStatus === "claimable" && !isPreview}
                       dimmed={page.rewardStatus === "locked"}
                       onClick={onClaimClick}
                     />
@@ -133,7 +139,7 @@ export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick }: Albu
               }`}
             >
               <p className="font-semibold">
-                Recycle {page.burnOffer.duplicatesRequired} doublons d&apos;une même carte contre -{page.burnOffer.discountPercent}%
+                Recycle {page.burnOffer.duplicatesRequired} doublons d&apos;une mÃƒÂªme carte contre -{page.burnOffer.discountPercent}%
                 ou {page.burnOffer.giftWeightGrams}g offerts.
               </p>
             </div>
@@ -143,7 +149,16 @@ export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick }: Albu
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {page.slots.map((slot) => (
-          <AlbumCardSlot key={slot.cardDefinitionId} slot={slot} onClick={() => onSlotClick(slot)} />
+          <AlbumCardSlot
+            key={slot.cardDefinitionId}
+            slot={slot}
+            interactive={!isPreview}
+            onClick={() => {
+              if (!isPreview) {
+                onSlotClick(slot);
+              }
+            }}
+          />
         ))}
       </div>
 
@@ -153,14 +168,19 @@ export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick }: Albu
             Recycler des doublons (-{page.burnOffer.discountPercent}% ou {page.burnOffer.giftWeightGrams}g)
           </h3>
           <p className="mt-1 text-xs text-[#8b6d2b]">
-            Échange {page.burnOffer.duplicatesRequired} copies en trop d&apos;une même carte contre une réduction ou des grammes offerts.
+            Ãƒâ€°change {page.burnOffer.duplicatesRequired} copies en trop d&apos;une mÃƒÂªme carte contre une rÃƒÂ©duction ou des grammes offerts.
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {burnableGroups.map((group) => (
               <button
                 key={group.cardDefinitionId}
                 type="button"
-                onClick={() => onBurnClick(group)}
+                disabled={isPreview}
+                onClick={() => {
+                  if (!isPreview) {
+                    onBurnClick(group);
+                  }
+                }}
                 className="btn-cartoon inline-flex items-center gap-2 border-2 border-[#e0bc67] bg-[#ffe7a8] px-3 py-1.5 text-xs text-[#6f4b00] hover:bg-[#ffdf8e]"
               >
                 <span className="max-w-[10rem] truncate font-semibold">{group.name}</span>
@@ -245,3 +265,5 @@ function RewardOptionPreview({
     </button>
   );
 }
+
+

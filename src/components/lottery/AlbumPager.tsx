@@ -7,9 +7,10 @@ type AlbumPagerProps = {
   pages: LotteryCollectionPageState[];
   activeIndex: number;
   onPageChange: (index: number) => void;
+  isPreview?: boolean;
 };
 
-export function AlbumPager({ pages, activeIndex, onPageChange }: AlbumPagerProps) {
+export function AlbumPager({ pages, activeIndex, onPageChange, isPreview = false }: AlbumPagerProps) {
   return (
     <nav className="cartoon-border bg-cream p-3" aria-label="Pages de l'album">
       <div className="flex flex-wrap justify-center gap-2">
@@ -22,12 +23,18 @@ export function AlbumPager({ pages, activeIndex, onPageChange }: AlbumPagerProps
             <button
               key={page.rarity}
               type="button"
-              onClick={() => onPageChange(index)}
+              onClick={() => {
+                if (!isPreview) {
+                  onPageChange(index);
+                }
+              }}
+              disabled={isPreview}
               className={`relative flex min-w-[110px] flex-col items-center rounded-xl border-2 px-3 py-2 text-sm transition-all duration-200 ${
                 active
                   ? "scale-105 border-ink bg-[#efe7d8] shadow-md"
-                  : "border-ink/15 bg-cream hover:border-ink/40 hover:bg-[#f4ecde]"
+                  : `border-ink/15 bg-cream ${isPreview ? "" : "hover:border-ink/40 hover:bg-[#f4ecde]"}`
               }`}
+              aria-disabled={isPreview || undefined}
               style={active ? { borderColor: accent } : undefined}
               aria-current={active ? "page" : undefined}
             >
