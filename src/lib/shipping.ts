@@ -19,6 +19,16 @@ function toMoney(value: number): number {
   return Number(value.toFixed(2));
 }
 
+function formatThresholdAmount(value: number): string {
+  const safeValue = toMoney(Math.max(0, value));
+  const hasDecimals = !Number.isInteger(safeValue);
+
+  return `${new Intl.NumberFormat("fr-FR", {
+    minimumFractionDigits: hasDecimals ? 2 : 0,
+    maximumFractionDigits: 2,
+  }).format(safeValue)} EUR`;
+}
+
 function parseNonNegativeNumber(value: string | undefined, fallback: number): number {
   const num = Number(value);
   if (!Number.isFinite(num) || num < 0) {
@@ -81,6 +91,22 @@ export function computeShippingFee(input: {
   }
 
   return toMoney(input.method === "relay" ? config.relayFeeEur : config.homeFeeEur);
+}
+
+export function getFreeShippingProgressMessage(input: {
+  shippingFee: number;
+  shippingRemainingAmount: number;
+  badgeFreeShippingThresholdEur?: number | null;
+}): string {
+  if (input.badgeFreeShippingThresholdEur === null) {
+    return "Ton badge t'offre la livraison gratuite.";
+  }
+
+  if (input.shippingFee <= 0) {
+    return "La livraison est offerte.";
+  }
+
+  return `Plus que ${formatThresholdAmount(input.shippingRemainingAmount)} avant la livraison gratuite.`;
 }
 
 export function getDeliveryMethodLabel(method: DeliveryMethod): string {

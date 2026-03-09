@@ -26,6 +26,7 @@ import {
 } from "@/lib/referral-first-order-discount";
 import {
   computeShippingFee,
+  getFreeShippingProgressMessage,
   getShippingPricingConfig,
   type DeliveryMethod,
   type MondialRelayPoint,
@@ -268,15 +269,6 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     () => Number((checkoutAmount + shippingFee).toFixed(2)),
     [checkoutAmount, shippingFee],
   );
-  const shippingThresholdLabel = useMemo(() => {
-    if (badgeFreeShippingThreshold === null) {
-      return "Livraison offerte (badge)";
-    }
-    if (typeof badgeFreeShippingThreshold === "number") {
-      return `Livraison offerte des ${badgeFreeShippingThreshold} EUR`;
-    }
-    return `Livraison offerte des ${shippingPricingConfig.freeShippingThresholdEur} EUR`;
-  }, [badgeFreeShippingThreshold, shippingPricingConfig.freeShippingThresholdEur]);
   const shippingRemainingAmount = useMemo(() => {
     if (shippingFee <= 0) {
       return 0;
@@ -287,6 +279,15 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         : shippingPricingConfig.freeShippingThresholdEur;
     return Number(Math.max(threshold - checkoutAmount, 0).toFixed(2));
   }, [badgeFreeShippingThreshold, checkoutAmount, shippingFee, shippingPricingConfig.freeShippingThresholdEur]);
+  const shippingProgressMessage = useMemo(
+    () =>
+      getFreeShippingProgressMessage({
+        shippingFee,
+        shippingRemainingAmount,
+        badgeFreeShippingThresholdEur: badgeFreeShippingThreshold,
+      }),
+    [badgeFreeShippingThreshold, shippingFee, shippingRemainingAmount],
+  );
   const earnedProductBonusPoints = useMemo(
     () =>
       items.reduce((total, item) => {
@@ -881,8 +882,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             Livraison: {deliveryMethod === "relay" ? "Point relais" : "Domicile"}
           </div>
           <div className="mt-1 text-[11px] font-semibold text-charcoal">
-            {shippingThresholdLabel}
-            {shippingRemainingAmount > 0 ? ` (encore ${formatPrice(shippingRemainingAmount)})` : ""}
+            {shippingProgressMessage}
           </div>
           {displayedBadgeDiscountPercent > 0 && (
             <div className="mt-1 text-xs text-green-700">

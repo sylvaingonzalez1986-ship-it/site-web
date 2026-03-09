@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import {
   computeShippingFee,
+  getFreeShippingProgressMessage,
   getShippingPricingConfig,
 } from "@/lib/shipping";
 
@@ -93,5 +94,33 @@ describe("shipping", () => {
         badgeFreeShippingThresholdEur: 45,
       }),
     ).toBe(0);
+  });
+
+  it("formats the remaining amount before free shipping", () => {
+    expect(
+      getFreeShippingProgressMessage({
+        shippingFee: 6.9,
+        shippingRemainingAmount: 39,
+      }),
+    ).toBe("Plus que 39 EUR avant la livraison gratuite.");
+  });
+
+  it("reports free shipping when the threshold is reached", () => {
+    expect(
+      getFreeShippingProgressMessage({
+        shippingFee: 0,
+        shippingRemainingAmount: 0,
+      }),
+    ).toBe("La livraison est offerte.");
+  });
+
+  it("reports badge-based free shipping", () => {
+    expect(
+      getFreeShippingProgressMessage({
+        shippingFee: 0,
+        shippingRemainingAmount: 0,
+        badgeFreeShippingThresholdEur: null,
+      }),
+    ).toBe("Ton badge t'offre la livraison gratuite.");
   });
 });
