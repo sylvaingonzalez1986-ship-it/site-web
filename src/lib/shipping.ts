@@ -47,7 +47,7 @@ export function getShippingPricingConfig(): ShippingPricingConfig {
   );
   const freeShippingThresholdEur = parseNonNegativeNumber(
     resolveEnvValue("SHIPPING_FREE_THRESHOLD_EUR", "NEXT_PUBLIC_SHIPPING_FREE_THRESHOLD_EUR"),
-    69,
+    89,
   );
 
   return {

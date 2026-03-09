@@ -30,7 +30,7 @@ describe("shipping", () => {
     expect(getShippingPricingConfig()).toEqual({
       homeFeeEur: 6.9,
       relayFeeEur: 4.9,
-      freeShippingThresholdEur: 69,
+      freeShippingThresholdEur: 89,
     });
   });
 
@@ -39,7 +39,7 @@ describe("shipping", () => {
       computeShippingFee({
         method: "home",
         subtotalAfterDiscount: 40,
-        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 69 },
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
       }),
     ).toBe(6.9);
   });
@@ -49,7 +49,7 @@ describe("shipping", () => {
       computeShippingFee({
         method: "relay",
         subtotalAfterDiscount: 40,
-        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 69 },
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
       }),
     ).toBe(4.9);
   });
@@ -58,8 +58,8 @@ describe("shipping", () => {
     expect(
       computeShippingFee({
         method: "home",
-        subtotalAfterDiscount: 69,
-        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 69 },
+        subtotalAfterDiscount: 89,
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
       }),
     ).toBe(0);
   });
@@ -69,7 +69,7 @@ describe("shipping", () => {
       computeShippingFee({
         method: "relay",
         subtotalAfterDiscount: 10,
-        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 69 },
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
         badgeFreeShippingThresholdEur: null,
       }),
     ).toBe(0);
@@ -80,7 +80,7 @@ describe("shipping", () => {
       computeShippingFee({
         method: "home",
         subtotalAfterDiscount: 44.99,
-        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 69 },
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
         badgeFreeShippingThresholdEur: 45,
       }),
     ).toBe(6.9);
@@ -89,7 +89,7 @@ describe("shipping", () => {
       computeShippingFee({
         method: "home",
         subtotalAfterDiscount: 45,
-        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 69 },
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
         badgeFreeShippingThresholdEur: 45,
       }),
     ).toBe(0);
