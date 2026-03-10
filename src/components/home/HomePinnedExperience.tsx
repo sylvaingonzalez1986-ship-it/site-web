@@ -96,7 +96,13 @@ export function HomePinnedExperience({ initialStore }: HomePinnedExperienceProps
   const snapTriggerRef = useRef<{ kill: () => void } | null>(null);
   const store = initialStore;
   const home = store.content.home;
-  const featuredProducts = sortOwnProductsFirst(store.products).slice(0, 3);
+  const featuredProducts = useMemo(
+    () =>
+      sortOwnProductsFirst(
+        store.products.filter((product) => product.category === "fleurs"),
+      ).slice(0, 3),
+    [store.products],
+  );
   const homeSections = useMemo(() => {
     return store.sections.home
       .map((section, index) => ({ section, index }))
