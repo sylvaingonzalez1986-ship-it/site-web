@@ -9,9 +9,9 @@ import {
 } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
+import { getCityData, getNearbyCities } from "@/lib/local-seo-data";
 import { dedupeProducts } from "@/lib/product-dedup";
 import { getSiteUrl } from "@/lib/site-url";
-import { getCityData } from "@/lib/local-seo-data";
 
 type LocalCityPageProps = {
   slug: string;
@@ -163,6 +163,7 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
   const variations = cityProductVariations[slug] || cityProductVariations["cbd-rennes"];
   const store = await readPublicStoreByBackend();
   const featuredProducts = selectFeaturedProducts(store.products);
+  const nearbyCities = getNearbyCities(slug);
   const producerById = new Map(store.producers.map((producer) => [producer.id, producer]));
   const faqItems = [
     {
@@ -311,6 +312,26 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
             </Link>
           </div>
         </div>
+
+        {nearbyCities.length > 0 && (
+          <div className="cartoon-border mt-8 bg-cream p-6">
+            <h2 className="mb-4 text-2xl font-display text-ink">CBD dans les villes proches</h2>
+            <p className="mb-4 text-sm leading-relaxed text-charcoal">
+              Vous cherchez aussi du CBD naturel dans d'autres villes bretonnes proches de {cityData.name} ? Consultez aussi nos pages locales pour renforcer votre recherche par zone géographique.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {nearbyCities.map((nearbyCity) => (
+                <Link
+                  key={nearbyCity.slug}
+                  href={`/${nearbyCity.slug}`}
+                  className="pill-cartoon inline-flex items-center justify-center px-4 py-2 text-xs uppercase tracking-[0.08em]"
+                >
+                  CBD {nearbyCity.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="cartoon-border mt-8 space-y-3 bg-cream p-6 text-sm text-charcoal">
           <p>

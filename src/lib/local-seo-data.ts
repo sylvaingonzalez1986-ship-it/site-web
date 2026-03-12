@@ -74,3 +74,23 @@ export const bretonCities = [
 export function getCityData(slug: string) {
   return bretonCities.find((city) => city.slug === slug);
 }
+
+const nearbyCityMap: Record<string, string[]> = {
+  "cbd-rennes": ["cbd-vitre", "cbd-fougeres", "cbd-saint-malo", "cbd-redon"],
+  "cbd-quimper": ["cbd-brest", "cbd-lorient", "cbd-vannes", "cbd-saint-brieuc"],
+  "cbd-brest": ["cbd-quimper", "cbd-saint-brieuc", "cbd-lorient", "cbd-vannes"],
+  "cbd-vannes": ["cbd-lorient", "cbd-redon", "cbd-quimper", "cbd-rennes"],
+  "cbd-lorient": ["cbd-vannes", "cbd-quimper", "cbd-brest", "cbd-redon"],
+  "cbd-saint-brieuc": ["cbd-saint-malo", "cbd-brest", "cbd-rennes", "cbd-quimper"],
+  "cbd-saint-malo": ["cbd-rennes", "cbd-saint-brieuc", "cbd-fougeres", "cbd-vitre"],
+  "cbd-fougeres": ["cbd-rennes", "cbd-vitre", "cbd-saint-malo", "cbd-redon"],
+  "cbd-vitre": ["cbd-rennes", "cbd-fougeres", "cbd-redon", "cbd-saint-malo"],
+  "cbd-redon": ["cbd-rennes", "cbd-vannes", "cbd-vitre", "cbd-fougeres"],
+};
+
+export function getNearbyCities(slug: string) {
+  const nearbySlugs = nearbyCityMap[slug] ?? [];
+  return nearbySlugs
+    .map((nearbySlug) => getCityData(nearbySlug))
+    .filter((city): city is NonNullable<ReturnType<typeof getCityData>> => Boolean(city));
+}
