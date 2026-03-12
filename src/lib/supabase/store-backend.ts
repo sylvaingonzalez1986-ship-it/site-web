@@ -1,8 +1,14 @@
-import "server-only";
+﻿import "server-only";
 
 import { Buffer } from "node:buffer";
 import { defaultStore } from "@/data/default-store";
-import type { Product, VatRate } from "@/data/products";
+import {
+  PRODUCT_CULTURE_TYPES,
+  isProductCultureModeEligible,
+  type Product,
+  type ProductCultureType,
+  type VatRate,
+} from "@/data/products";
 import { mergeOwnProducer } from "@/lib/own-producer";
 import { normalizeProducerImagePath } from "@/lib/producer-image-storage";
 import { normalizeProductAnalysisPath } from "@/lib/product-analysis-storage";
@@ -40,7 +46,8 @@ const validPaymentState = new Set<CmsStore["orders"][number]["paymentState"]>([
   "not_configured",
 ]);
 const validProducerCultureTypes = new Set<ProducerCultureType>(PRODUCER_CULTURE_TYPES);
-const MOJIBAKE_CHARS_REGEX = /[ÃÂâ�]/g;
+const validProductCultureTypes = new Set<ProductCultureType>(PRODUCT_CULTURE_TYPES);
+const MOJIBAKE_CHARS_REGEX = /[ÃƒÃ‚Ã¢ï¿½]/g;
 
 const SELECT_PRODUCERS_COLUMNS = [
   "id",
@@ -69,6 +76,7 @@ const SELECT_PRODUCTS_COLUMNS = [
   "id",
   "name",
   "category",
+  "culture_type",
   "price",
   "vat_rate",
   "original_price",
@@ -280,6 +288,15 @@ function sanitizeProducerCultureTypes(value: unknown): ProducerCultureType[] {
   }
 
   return normalized;
+}
+
+function sanitizeProductCultureType(value: unknown): ProductCultureType | undefined {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const candidate = value.trim().toLowerCase() as ProductCultureType;
+  return validProductCultureTypes.has(candidate) ? candidate : undefined;
 }
 
 function sanitizeProducerCertifications(value: unknown): string[] {
@@ -617,6 +634,7 @@ function mapProductRow(
 ): Product {
   const id = toStringValue(row.id);
   const isPack = row.is_pack === true;
+  const category = (toStringValue(row.category) as Product["category"]) || "fleurs";
   const images = toStringArray(row.images);
   const fallbackImage = toStringValue(row.image);
   const normalizedImages = images.length > 0
@@ -631,11 +649,15 @@ function mapProductRow(
   const videoUrl = normalizeProductVideoPath(toOptionalString(row.video_url) ?? "");
   const variantLabel = toOptionalString(sanitizeDisplayText(row.variant_label));
   const variantOptions = sanitizeVariantOptions(row.variant_options);
+  const cultureMode = isProductCultureModeEligible(category)
+    ? sanitizeProductCultureType(row.culture_type)
+    : undefined;
 
   return {
     id,
     name: sanitizeDisplayText(row.name, "Produit sans nom"),
-    category: (toStringValue(row.category) as Product["category"]) || "fleurs",
+    category,
+    cultureMode,
     price: Number(toNumber(row.price, 0).toFixed(2)),
     vatRate: isPack ? undefined : toVatRate(row.vat_rate),
     originalPrice: Number.isFinite(Number(row.original_price))
@@ -929,6 +951,7 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
 
   const productRows = editableProducts.map((product, index) => {
     const normalizedImages = normalizeProductImagesForPersistence(product);
+    const category = product.category;
     const safePrice = toNonNegativeMoney(product.price);
     const safeOriginalPrice = toPositiveMoneyOrNull(product.originalPrice);
     const safePromoPercent = toPromoPercentOrNull(product.promoPercent);
@@ -952,11 +975,15 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
             toNonNegativeIntegerOrUndefined(option.stockQuantity) ?? null,
         }))
       : null;
+    const cultureMode = isProductCultureModeEligible(category)
+      ? sanitizeProductCultureType(product.cultureMode)
+      : undefined;
 
     return {
       id: product.id,
       name: sanitizeDisplayText(product.name),
-      category: product.category,
+      category,
+      culture_type: cultureMode ?? null,
       price: safePrice,
       vat_rate: product.vatRate ?? 20,
       original_price: hasConsistentPromo ? safeOriginalPrice : null,
@@ -1218,3 +1245,5 @@ export async function getBlogPostBySlugFromSupabase(slug: string): Promise<BlogP
 
   return mapBlogRow(toObject(result.data));
 }
+
+

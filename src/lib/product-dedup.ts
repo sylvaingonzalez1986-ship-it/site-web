@@ -4,6 +4,7 @@ export function getProductDedupKey(product: Product): string {
   return [
     product.name.trim().toLowerCase(),
     product.category,
+    product.cultureMode ?? "",
     Number(product.price || 0).toFixed(2),
     product.producerId ?? "",
     product.isPack ? "pack" : "single",

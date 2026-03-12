@@ -4,11 +4,12 @@ import { notFound } from "next/navigation";
 import { BreadcrumbJsonLd, ProductJsonLd } from "@/components/JsonLd";
 import { ProductDetailActions } from "@/components/boutique/ProductDetailActions";
 import { ProductImageGallery } from "@/components/boutique/ProductImageGallery";
+import { ProductCultureBadge } from "@/components/ProductCultureBadge";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getOwnProducer } from "@/lib/own-producer";
 import { getSiteUrl } from "@/lib/site-url";
 import { isRemoteImageUrl } from "@/lib/image-source";
-import type { Product } from "@/data/products";
+import { isProductCultureModeEligible, type Product } from "@/data/products";
 
 export const revalidate = 120;
 
@@ -164,6 +165,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const allImages = product.images?.length ? product.images : [product.image];
   const brandName = producer?.name ?? "Les Chanvriers Bretons";
+  const showCultureBadge =
+    isProductCultureModeEligible(product.category) && Boolean(product.cultureMode);
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
@@ -218,13 +221,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {product.name}
               </h1>
 
-              {producer && (
-                <p className="mt-2 text-sm text-charcoal">
-                  Par{" "}
-                  <span className="font-semibold text-ink">
-                    {brandName}
-                  </span>
-                </p>
+              {(producer || showCultureBadge) && (
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  {producer && (
+                    <p className="text-sm text-charcoal">
+                      Par{" "}
+                      <span className="font-semibold text-ink">
+                        {brandName}
+                      </span>
+                    </p>
+                  )}
+                  {showCultureBadge && (
+                    <ProductCultureBadge
+                      cultureMode={product.cultureMode!}
+                      className="text-xs md:text-sm"
+                    />
+                  )}
+                </div>
               )}
 
               <div className="mt-4 flex items-baseline gap-3">

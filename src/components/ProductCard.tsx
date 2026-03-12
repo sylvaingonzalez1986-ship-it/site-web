@@ -2,7 +2,12 @@
 import Link from "next/link";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
 import { ProductCardActions } from "@/components/ProductCardActions";
-import { categoryLabels, type Product } from "@/data/products";
+import { ProductCultureBadge } from "@/components/ProductCultureBadge";
+import {
+  categoryLabels,
+  isProductCultureModeEligible,
+  type Product,
+} from "@/data/products";
 import {
   formatRemainingGrams,
   getStockDisplayInfo,
@@ -50,6 +55,8 @@ export function ProductCard({
     ? [producer.department, producer.region].filter(Boolean).join(", ") || producer.location
     : "";
   const productHref = `/boutique/${categorySlugs[product.category] ?? `${product.category}-cbd`}/${product.id}`;
+  const showCultureBadge =
+    isProductCultureModeEligible(product.category) && Boolean(product.cultureMode);
 
   const safeBonusPoints =
     Number.isFinite(Number(product.bonusPoints)) && Number(product.bonusPoints) > 0
@@ -99,9 +106,17 @@ export function ProductCard({
       )}
 
       <div className="product-card-body p-5">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-charcoal">
-          {categoryLabels[product.category]}
-        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-xs font-bold uppercase tracking-[0.12em] text-charcoal">
+            {categoryLabels[product.category]}
+          </p>
+          {showCultureBadge && (
+            <ProductCultureBadge
+              cultureMode={product.cultureMode!}
+              className="text-[10px] md:text-[11px]"
+            />
+          )}
+        </div>
         {producer && (
           <div className="cartoon-border mt-3 flex items-center gap-2 bg-yellow px-3 py-2">
             <div className="relative h-8 w-8 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-white">

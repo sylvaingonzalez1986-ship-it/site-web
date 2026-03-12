@@ -11,10 +11,31 @@ export type ProductCategory =
 export const VAT_RATE_OPTIONS = [5.5, 20] as const;
 export type VatRate = (typeof VAT_RATE_OPTIONS)[number];
 
+export const PRODUCT_CULTURE_TYPES = [
+  "indoor",
+  "greenhouse",
+  "outdoor",
+] as const;
+
+export type ProductCultureType = (typeof PRODUCT_CULTURE_TYPES)[number];
+
+export const PRODUCT_CULTURE_LABELS: Record<ProductCultureType, string> = {
+  indoor: "Indoor",
+  greenhouse: "Greenhouse",
+  outdoor: "Outdoor",
+};
+
+const CULTURE_MODE_ELIGIBLE_CATEGORIES = new Set<ProductCategory>(["fleurs", "resines"]);
+
+export function isProductCultureModeEligible(category: ProductCategory): boolean {
+  return CULTURE_MODE_ELIGIBLE_CATEGORIES.has(category);
+}
+
 export type Product = {
   id: string;
   name: string;
   category: ProductCategory;
+  cultureMode?: ProductCultureType;
   price: number;
   vatRate?: VatRate;
   originalPrice?: number;
@@ -65,6 +86,7 @@ export const products: Product[] = [
     id: "fleur-etoile-2g",
     name: "Fleur Etoile 2g",
     category: "fleurs",
+    cultureMode: "indoor",
     price: 14.9,
     vatRate: 20,
     image: productImages.flower,
@@ -75,6 +97,7 @@ export const products: Product[] = [
     id: "resine-armor-5g",
     name: "Resine Armor 5g",
     category: "resines",
+    cultureMode: "greenhouse",
     price: 24.9,
     vatRate: 20,
     image: productImages.resin,
@@ -84,6 +107,7 @@ export const products: Product[] = [
     id: "fleur-korrigan-10g",
     name: "Fleur Korrigan 10g",
     category: "fleurs",
+    cultureMode: "outdoor",
     price: 49.9,
     vatRate: 20,
     image: productImages.flower,

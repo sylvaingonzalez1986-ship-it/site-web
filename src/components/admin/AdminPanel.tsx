@@ -17,7 +17,17 @@ import {
   PRODUCER_CLIMATE_OPTIONS,
   PRODUCER_SOIL_OPTIONS,
 } from "@/data/producer-taxonomies";
-import { VAT_RATE_OPTIONS, categoryLabels, type Product, type ProductCategory, type VatRate } from "@/data/products";
+import {
+  PRODUCT_CULTURE_LABELS,
+  PRODUCT_CULTURE_TYPES,
+  VAT_RATE_OPTIONS,
+  categoryLabels,
+  isProductCultureModeEligible,
+  type Product,
+  type ProductCategory,
+  type ProductCultureType,
+  type VatRate,
+} from "@/data/products";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import {
   BLOG_CATEGORY_OPTIONS,
@@ -173,6 +183,7 @@ function makeProduct(): Product {
     id: `product-${Date.now()}`,
     name: "Nouveau produit",
     category: "fleurs",
+    cultureMode: "greenhouse",
     price: 0,
     vatRate: 20,
     weightGrams: undefined,
@@ -183,6 +194,16 @@ function makeProduct(): Product {
     badge: "",
     bonusPoints: undefined,
   };
+}
+
+function getDefaultCultureModeForCategory(
+  category: ProductCategory,
+): ProductCultureType | undefined {
+  if (!isProductCultureModeEligible(category)) {
+    return undefined;
+  }
+
+  return "greenhouse";
 }
 
 function makeProducer(): Producer {
@@ -454,11 +475,36 @@ export function AdminPanel() {
     setSaving(true);
     setStatus("Sauvegarde en cours...");
 
+    const nextDraft: CmsStore = {
+      ...draft,
+      products: draft.products.map((product) => {
+        if (product.isPack || product.id.startsWith("printful-")) {
+          return product;
+        }
+
+        if (!isProductCultureModeEligible(product.category)) {
+          if (!product.cultureMode) {
+            return product;
+          }
+          return { ...product, cultureMode: undefined };
+        }
+
+        if (product.cultureMode) {
+          return product;
+        }
+
+        return {
+          ...product,
+          cultureMode: getDefaultCultureModeForCategory(product.category),
+        };
+      }),
+    };
+
     try {
       const response = await fetch("/api/admin/store", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(draft),
+        body: JSON.stringify(nextDraft),
       });
 
       if (!response.ok) {
@@ -685,7 +731,19 @@ export function AdminPanel() {
   ) => {
     setDraft((current) => {
       const next = [...current.products];
-      next[index] = { ...next[index], [key]: value };
+      const currentProduct = next[index];
+      if (!currentProduct) {
+        return current;
+      }
+
+      const updatedProduct = { ...currentProduct, [key]: value } as Product;
+      if (!isProductCultureModeEligible(updatedProduct.category)) {
+        updatedProduct.cultureMode = undefined;
+      } else if (!updatedProduct.cultureMode) {
+        updatedProduct.cultureMode = getDefaultCultureModeForCategory(updatedProduct.category);
+      }
+
+      next[index] = updatedProduct;
       return { ...current, products: next };
     });
   };
@@ -742,6 +800,34 @@ export function AdminPanel() {
       };
       return { ...current, products: next };
     });
+  };
+
+  const renderProductCultureModeField = (product: Product, index: number) => {
+    if (!isProductCultureModeEligible(product.category)) {
+      return null;
+    }
+
+    const cultureMode =
+      product.cultureMode ?? getDefaultCultureModeForCategory(product.category);
+
+    return (
+      <label className="mt-3 block text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+        Mode de culture
+        <select
+          className="mt-1 h-10 w-full border-2 border-[#1a1a1a] bg-white px-2 text-sm"
+          value={cultureMode ?? ""}
+          onChange={(event) =>
+            updateProduct(index, "cultureMode", event.target.value as ProductCultureType)
+          }
+        >
+          {PRODUCT_CULTURE_TYPES.map((cultureType) => (
+            <option key={cultureType} value={cultureType}>
+              {PRODUCT_CULTURE_LABELS[cultureType]}
+            </option>
+          ))}
+        </select>
+      </label>
+    );
   };
 
   const addVariantOptionToProduct = (productIndex: number) => {
@@ -2000,6 +2086,7 @@ export function AdminPanel() {
                       placeholder="badge"
                     />
                   </div>
+                  {renderProductCultureModeField(product, index)}
                   <label className="mt-3 block text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
                     Points bonus
                     <input
@@ -2481,6 +2568,7 @@ export function AdminPanel() {
                                 placeholder="badge"
                               />
                             </div>
+                            {renderProductCultureModeField(product, index)}
                             <label className="mt-3 block text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
                               Points bonus
                               <input
