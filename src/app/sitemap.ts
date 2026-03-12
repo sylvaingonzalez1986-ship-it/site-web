@@ -5,6 +5,7 @@ import {
   readPublicStoreByBackend,
 } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
+import { bretonCities } from "@/lib/local-seo-data";
 
 const categories = [
   "fleurs-cbd",
@@ -120,11 +121,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.75,
     }));
 
+  const localCityPages: MetadataRoute.Sitemap = bretonCities.map((city) => ({
+    url: `${baseUrl}/${city.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.65,
+  }));
+
   return [
     ...staticPages,
     ...categoryPages,
     ...productPages,
     ...blogPages,
     ...cmsDynamicPages,
+    ...localCityPages,
   ];
 }

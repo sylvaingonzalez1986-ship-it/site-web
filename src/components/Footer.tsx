@@ -182,6 +182,33 @@ export function Footer() {
                   ))}
                 </div>
               </div>
+
+              <div className="cartoon-border-sm bg-[#f7f4ee] p-4">
+                <p className="text-xs font-bold uppercase tracking-[0.09em] text-charcoal">
+                  CBD en Bretagne
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1">
+                  <Link href="/cbd-rennes" className="text-[11px] text-ink hover:underline">Rennes</Link>
+                  <span className="text-[11px] text-charcoal">·</span>
+                  <Link href="/cbd-quimper" className="text-[11px] text-ink hover:underline">Quimper</Link>
+                  <span className="text-[11px] text-charcoal">·</span>
+                  <Link href="/cbd-brest" className="text-[11px] text-ink hover:underline">Brest</Link>
+                  <span className="text-[11px] text-charcoal">·</span>
+                  <Link href="/cbd-vannes" className="text-[11px] text-ink hover:underline">Vannes</Link>
+                  <br className="w-full" />
+                  <Link href="/cbd-lorient" className="text-[11px] text-ink hover:underline">Lorient</Link>
+                  <span className="text-[11px] text-charcoal">·</span>
+                  <Link href="/cbd-saint-brieuc" className="text-[11px] text-ink hover:underline">St-Brieuc</Link>
+                  <span className="text-[11px] text-charcoal">·</span>
+                  <Link href="/cbd-saint-malo" className="text-[11px] text-ink hover:underline">St-Malo</Link>
+                  <span className="text-[11px] text-charcoal">·</span>
+                  <Link href="/cbd-fougeres" className="text-[11px] text-ink hover:underline">Fougères</Link>
+                  <br className="w-full" />
+                  <Link href="/cbd-vitre" className="text-[11px] text-ink hover:underline">Vitré</Link>
+                  <span className="text-[11px] text-charcoal">·</span>
+                  <Link href="/cbd-redon" className="text-[11px] text-ink hover:underline">Redon</Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
