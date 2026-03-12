@@ -9,7 +9,11 @@ import {
 } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
-import { getCityData, getNearbyCities } from "@/lib/local-seo-data";
+import {
+  getCityData,
+  getCityEditorialContent,
+  getNearbyCities,
+} from "@/lib/local-seo-data";
 import { dedupeProducts } from "@/lib/product-dedup";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -161,6 +165,7 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
   const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/${cityData.slug}`;
   const variations = cityProductVariations[slug] || cityProductVariations["cbd-rennes"];
+  const editorialContent = getCityEditorialContent(slug);
   const store = await readPublicStoreByBackend();
   const featuredProducts = selectFeaturedProducts(store.products);
   const nearbyCities = getNearbyCities(slug);
@@ -242,6 +247,17 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
             <p className="text-sm leading-relaxed text-charcoal">{variations.tisaneIntro}</p>
           </div>
         </div>
+
+        {editorialContent && (
+          <div className="cartoon-border mt-8 bg-cream p-6">
+            <h2 className="mb-4 text-2xl font-display text-ink">{editorialContent.title}</h2>
+            <div className="space-y-4 text-sm leading-relaxed text-charcoal">
+              {editorialContent.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="cartoon-border mt-10 bg-cream p-8">
           <h2 className="mb-6 text-3xl font-display text-ink">Pourquoi choisir le CBD breton à {cityData.name} ?</h2>
