@@ -171,7 +171,6 @@ export default async function LocalCityPage({ params }: LocalCityPageProps) {
               <p><strong>✓ Cultivation sans pesticide</strong></p>
               <p><strong>✓ Analyse laboratoire certifiée</strong></p>
               <p><strong>✓ Arômes authentiques préservés</strong></p>
-              <p className="text-ink font-bold pt-2">À partir de 12€ les 3g</p>
             </div>
           </Link>
 
@@ -188,7 +187,6 @@ export default async function LocalCityPage({ params }: LocalCityPageProps) {
               <p><strong>✓ Dosage facile (compte-gouttes)</strong></p>
               <p><strong>✓ Absorption rapide et efficace</strong></p>
               <p><strong>✓ Spectre complet de cannabinoïdes</strong></p>
-              <p className="text-ink font-bold pt-2">À partir de 18€ les 10ml</p>
             </div>
           </Link>
 
@@ -205,7 +203,6 @@ export default async function LocalCityPage({ params }: LocalCityPageProps) {
               <p><strong>✓ Concentration CBD maximale</strong></p>
               <p><strong>✓ Texture crémeuse naturelle</strong></p>
               <p><strong>✓ Extraction CO2 supercritique</strong></p>
-              <p className="text-ink font-bold pt-2">À partir de 15€ les 3g</p>
             </div>
           </Link>
 
@@ -222,7 +219,6 @@ export default async function LocalCityPage({ params }: LocalCityPageProps) {
               <p><strong>✓ Recette traditionnelle bretonne</strong></p>
               <p><strong>✓ Ingrédients naturels sélectionnés</strong></p>
               <p><strong>✓ Effet relaxant immédiat</strong></p>
-              <p className="text-ink font-bold pt-2">À partir de 8€ la boîte (10/12 sachets)</p>
             </div>
           </Link>
         </div>
