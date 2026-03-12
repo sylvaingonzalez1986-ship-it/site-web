@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useMemo } from "react";
 import { createPortal } from "react-dom";
-import { shouldUseNativeImg } from "@/lib/image-source";
 import type { Producer } from "@/types/store";
 
 type ProducerHoverCardProps = {
@@ -13,7 +12,6 @@ type ProducerHoverCardProps = {
 };
 
 export function ProducerHoverCard({ producer, x, y }: ProducerHoverCardProps) {
-  const useNativeImg = shouldUseNativeImg(producer.image);
   const producerLocation = useMemo(
     () =>
       [producer.department, producer.region].filter(Boolean).join(", ") ||
@@ -33,24 +31,13 @@ export function ProducerHoverCard({ producer, x, y }: ProducerHoverCardProps) {
     >
       <div className="flex items-start gap-3">
         <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md border-2 border-[#1a1a1a] bg-white">
-          {useNativeImg ? (
-            <img
-              src={producer.image}
-              alt={producer.name}
-              className="absolute inset-0 h-full w-full object-cover"
-              loading="lazy"
-              decoding="async"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <Image
-              src={producer.image}
-              alt={producer.name}
-              fill
-              sizes="64px"
-              className="object-cover"
-            />
-          )}
+          <Image
+            src={producer.image}
+            alt={producer.name}
+            fill
+            sizes="64px"
+            className="object-cover"
+          />
         </div>
         <div className="min-w-0">
           <p className="font-display text-xl leading-none text-ink">{producer.name}</p>

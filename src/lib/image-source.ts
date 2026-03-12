@@ -23,18 +23,10 @@ export function isRenderableImageSource(value: string | undefined | null): boole
   return isRemoteImageUrl(value) || isLocalImagePath(value);
 }
 
-export function shouldUseNativeImg(value: string | undefined | null): boolean {
-  if (!isRemoteImageUrl(value)) {
-    return false;
-  }
-
-  try {
-    const url = new URL(value ?? "");
-    const isSupabaseHost = url.hostname === "supabase.co" || url.hostname.endsWith(".supabase.co");
-    const isStorageObject = url.pathname.includes("/storage/v1/object/public/");
-
-    return isSupabaseHost && isStorageObject;
-  } catch {
-    return false;
-  }
+/**
+ * All remote images come from domains configured in next.config.ts remotePatterns
+ * (Supabase, Wixstatic, Printful CDN), so Next.js Image handles them natively.
+ */
+export function shouldUseNativeImg(): boolean {
+  return false;
 }

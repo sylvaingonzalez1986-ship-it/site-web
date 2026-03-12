@@ -39,25 +39,14 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
 
         {hasRenderableImage ? (
           <div className="relative aspect-[3/4] w-full overflow-hidden">
-            {isRemoteImageUrl(normalizedImageUrl) ? (
-              <img
-                src={normalizedImageUrl}
-                alt={imageAlt}
-                className={`h-full w-full object-cover ${slot.isOwned ? "" : "grayscale brightness-[0.25]"}`}
-                loading="lazy"
-                decoding="async"
-                referrerPolicy="no-referrer"
-              />
-            ) : (
-              <Image
-                src={normalizedImageUrl}
-                alt={imageAlt}
-                fill
-                className={`object-cover ${slot.isOwned ? "" : "grayscale brightness-[0.25]"}`}
-                sizes="(max-width: 640px) 90vw, 384px"
-                priority
-              />
-            )}
+            <Image
+              src={normalizedImageUrl}
+              alt={imageAlt}
+              fill
+              className={`object-cover ${slot.isOwned ? "" : "grayscale brightness-[0.25]"}`}
+              sizes="(max-width: 640px) 90vw, 384px"
+              priority
+            />
 
             {!slot.isOwned && (
               <>

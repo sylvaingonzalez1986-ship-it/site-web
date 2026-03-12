@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
 import { ProductCardActions } from "@/components/ProductCardActions";
 import { categoryLabels, type Product } from "@/data/products";
-import { isRemoteImageUrl } from "@/lib/image-source";
 import {
   formatRemainingGrams,
   getStockDisplayInfo,
@@ -43,8 +42,6 @@ export function ProductCard({
   const allImages = product.images?.length ? product.images : [product.image];
   const firstImage = allImages[0];
   const hasMultipleImages = allImages.length > 1;
-  const isRemoteProductImage = isRemoteImageUrl(firstImage);
-  const isRemoteProducerImage = isRemoteImageUrl(producer?.image);
   const hasPromo = hasActiveProductPromo(product);
   const inStock = isProductInStock(product);
   const requiresVariantChoice = (product.variantOptions?.length ?? 0) > 0;
@@ -75,25 +72,14 @@ export function ProductCard({
         />
       ) : (
         <div className="relative aspect-square overflow-hidden border-b-2 border-[#1a1a1a]">
-          {isRemoteProductImage ? (
-            <img
-              src={firstImage}
-              alt={product.name}
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-              loading={imagePriority ? "eager" : "lazy"}
-              decoding="async"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <Image
-              src={firstImage}
-              alt={product.name}
-              fill
-              sizes={IMAGE_SIZES}
-              priority={imagePriority}
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-          )}
+          <Image
+            src={firstImage}
+            alt={product.name}
+            fill
+            sizes={IMAGE_SIZES}
+            priority={imagePriority}
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
           {product.badge && (
             <span className="absolute left-3 top-3 z-10 border-2 border-[#1a1a1a] bg-[#f7f4ee] px-3 py-1 text-xs font-bold uppercase tracking-wide">
               {product.badge}
@@ -119,24 +105,13 @@ export function ProductCard({
         {producer && (
           <div className="cartoon-border mt-3 flex items-center gap-2 bg-yellow px-3 py-2">
             <div className="relative h-8 w-8 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-white">
-              {isRemoteProducerImage ? (
-                <img
-                  src={producer.image}
-                  alt={producer.name}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <Image
-                  src={producer.image}
-                  alt={producer.name}
-                  fill
-                  sizes="32px"
-                  className="object-cover"
-                />
-              )}
+              <Image
+                src={producer.image}
+                alt={producer.name}
+                fill
+                sizes="32px"
+                className="object-cover"
+              />
             </div>
             <div className="min-w-0">
               <p className="truncate text-xs font-bold text-ink">{producer.name}</p>

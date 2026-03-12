@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal";
 import { LotteryResultModal } from "@/components/account/LotteryResultModal";
 import { useLotteryExperience } from "@/hooks/useLotteryExperience";
-import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
+import { isRenderableImageSource } from "@/lib/image-source";
 import { rarityCardClasses, rarityLabels } from "@/lib/lottery-card-ui";
 import type { LotteryCollectedCard, LotteryTicket, ScratchResult } from "@/types/lottery";
 
@@ -196,18 +196,13 @@ export function LotterySection() {
               <div className="mt-3 rounded-[14px] border-2 border-current/40 bg-white/55 p-3">
                 <div className="relative flex min-h-[112px] items-center justify-center overflow-hidden rounded-[10px] border-2 border-current/25 bg-white/45 p-3 text-center">
                   {card.isOwned && isRenderableImageSource(card.imageUrl) ? (
-                    isRemoteImageUrl(card.imageUrl) ? (
-                      <img
-                        src={card.imageUrl}
-                        alt={card.name}
-                        className="absolute inset-0 h-full w-full object-cover"
-                        loading="lazy"
-                        decoding="async"
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <Image src={card.imageUrl} alt={card.name} fill sizes="220px" className="object-cover" />
-                    )
+                    <Image
+                      src={card.imageUrl}
+                      alt={card.name}
+                      fill
+                      sizes="220px"
+                      className="object-cover"
+                    />
                   ) : null}
                   <div
                     className={`relative z-10 ${

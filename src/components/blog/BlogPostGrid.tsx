@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { shouldUseNativeImg } from "@/lib/image-source";
 import type { BlogPost } from "@/types/store";
 
 const blogCategoryLabels: Record<string, string> = {
@@ -89,24 +88,13 @@ function BlogPostGridInner({ posts, readMoreLabel, emptyLabel }: BlogPostGridPro
             <article key={post.id} className="card-cartoon overflow-hidden bg-cream">
               <Link href={`/blog/${post.slug}`} className="block">
                 <div className="relative aspect-[4/3] border-b-2 border-[#1a1a1a] bg-[#f7f4ee]">
-                  {shouldUseNativeImg(post.coverImage) ? (
-                    <img
-                      src={post.coverImage}
-                      alt={post.title}
-                      className="absolute inset-0 h-full w-full object-contain transition-transform duration-300 hover:scale-105"
-                      loading="lazy"
-                      decoding="async"
-                      referrerPolicy="no-referrer"
-                    />
-                  ) : (
-                    <Image
-                      src={post.coverImage}
-                      alt={post.title}
-                      fill
-                      sizes="(max-width: 1024px) 50vw, 33vw"
-                      className="object-contain transition-transform duration-300 hover:scale-105"
-                    />
-                  )}
+                  <Image
+                    src={post.coverImage}
+                    alt={post.title}
+                    fill
+                    sizes="(max-width: 1024px) 50vw, 33vw"
+                    className="object-contain transition-transform duration-300 hover:scale-105"
+                  />
                 </div>
               </Link>
               <div className="p-5">

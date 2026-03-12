@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
+import { isRenderableImageSource } from "@/lib/image-source";
 import { rarityLabels, rarityShellClasses, rarityGlowClasses } from "@/lib/lottery-card-ui";
 import type { ScratchResult } from "@/types/lottery";
 import { PackSwipeCut } from "@/components/lottery/PackSwipeCut";
@@ -50,24 +50,13 @@ function RevealedCard({ card }: { card: ScratchResult["cards"][number] }) {
           <div className="relative h-full min-h-0">
             {isRenderableImageSource(card.imageUrl) ? (
               <div className="absolute inset-3">
-                {isRemoteImageUrl(card.imageUrl) ? (
-                  <img
-                    src={card.imageUrl}
-                    alt={card.name}
-                    className="h-full w-full object-contain object-center"
-                    loading="lazy"
-                    decoding="async"
-                    referrerPolicy="no-referrer"
-                  />
-                ) : (
-                  <Image
-                    src={card.imageUrl}
-                    alt={card.name}
-                    fill
-                    sizes="(max-width: 768px) 70vw, 400px"
-                    className="object-contain object-center"
-                  />
-                )}
+                <Image
+                  src={card.imageUrl}
+                  alt={card.name}
+                  fill
+                  sizes="(max-width: 768px) 70vw, 400px"
+                  className="object-contain object-center"
+                />
               </div>
             ) : (
               <div className="flex h-full items-center justify-center px-4 text-center">

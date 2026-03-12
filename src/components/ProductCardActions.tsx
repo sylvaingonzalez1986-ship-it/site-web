@@ -8,7 +8,6 @@ import { Plus } from "lucide-react";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import type { Product } from "@/data/products";
-import { hasActiveProductPromo } from "@/lib/product-promo";
 import { formatPrice } from "@/lib/utils";
 
 const ProductAnalysisModal = dynamic(

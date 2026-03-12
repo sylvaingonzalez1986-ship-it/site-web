@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useMemo, useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
-import { isRemoteImageUrl } from "@/lib/image-source";
 
 type ProductImageCarouselProps = {
   images: string[];
@@ -158,49 +157,27 @@ export function ProductImageCarousel({
         {sanitizedImages.map((image, index) => {
           const shouldPrioritizeFrame = priority && index === 0;
           const imageSrc = failedRemoteImages.has(image) ? FALLBACK_IMAGE_SRC : image;
-          const isRemoteFrame = isRemoteImageUrl(imageSrc);
 
           return (
             <div key={`${image}-${index}`} className="relative min-w-full">
-              {isRemoteFrame ? (
-                <img
-                  src={imageSrc}
-                  alt={hasMultipleImages ? `${alt} - photo ${index + 1}` : alt}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover/product-carousel:scale-105"
-                  loading={shouldPrioritizeFrame ? "eager" : "lazy"}
-                  decoding="async"
-                  referrerPolicy="no-referrer"
-                  onError={() => {
-                    setFailedRemoteImages((current) => {
-                      if (current.has(image)) {
-                        return current;
-                      }
-                      const next = new Set(current);
-                      next.add(image);
-                      return next;
-                    });
-                  }}
-                />
-              ) : (
-                <Image
-                  src={imageSrc}
-                  alt={hasMultipleImages ? `${alt} - photo ${index + 1}` : alt}
-                  fill
-                  sizes={sizes}
-                  priority={shouldPrioritizeFrame}
-                  className="object-cover transition-transform duration-300 group-hover/product-carousel:scale-105"
-                  onError={() => {
-                    setFailedRemoteImages((current) => {
-                      if (current.has(image)) {
-                        return current;
-                      }
-                      const next = new Set(current);
-                      next.add(image);
-                      return next;
-                    });
-                  }}
-                />
-              )}
+              <Image
+                src={imageSrc}
+                alt={hasMultipleImages ? `${alt} - photo ${index + 1}` : alt}
+                fill
+                sizes={sizes}
+                priority={shouldPrioritizeFrame}
+                className="object-cover transition-transform duration-300 group-hover/product-carousel:scale-105"
+                onError={() => {
+                  setFailedRemoteImages((current) => {
+                    if (current.has(image)) {
+                      return current;
+                    }
+                    const next = new Set(current);
+                    next.add(image);
+                    return next;
+                  });
+                }}
+              />
             </div>
           );
         })}

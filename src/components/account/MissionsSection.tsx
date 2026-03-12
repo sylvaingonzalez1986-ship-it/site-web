@@ -157,6 +157,8 @@ function SubmitMissionModal({
             )}
             {proofPreviewUrl && (
               <div className="mt-3 overflow-hidden rounded border border-[#1a1a1a] bg-[#f7f4ee]">
+                {/* Preview uses an object URL, so native img is the most reliable option here. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={proofPreviewUrl}
                   alt="Apercu de la preuve"

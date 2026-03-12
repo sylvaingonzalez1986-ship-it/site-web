@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
-import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
+import { isRenderableImageSource } from "@/lib/image-source";
 import { rarityLabels } from "@/lib/lottery-card-ui";
 import type { ScratchResult } from "@/types/lottery";
 
@@ -64,18 +64,7 @@ export function LotteryResultSummary({ result }: LotteryResultSummaryProps) {
               <div className="mt-3 overflow-hidden rounded-[14px] border-2 border-current/50 bg-white/55">
                 <div className="relative h-[180px] bg-white/45">
                   {isRenderableImageSource(card.imageUrl) ? (
-                    isRemoteImageUrl(card.imageUrl) ? (
-                      <img
-                        src={card.imageUrl}
-                        alt={card.name}
-                        className="absolute inset-0 h-full w-full object-cover"
-                        loading="lazy"
-                        decoding="async"
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <Image src={card.imageUrl} alt={card.name} fill sizes="220px" className="object-cover" />
-                    )
+                    <Image src={card.imageUrl} alt={card.name} fill sizes="220px" className="object-cover" />
                   ) : null}
                 </div>
                 <div className="p-3 text-center">

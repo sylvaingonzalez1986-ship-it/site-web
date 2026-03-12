@@ -1100,6 +1100,7 @@ export function AdminLotteryPanel() {
                 <div className="mt-3 relative h-40 overflow-hidden rounded-[14px] border-2 border-[#1a1a1a] bg-white">
                   {isRenderableImageSource(card.imageUrl) ? (
                     isRemoteImageUrl(card.imageUrl) ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={card.imageUrl}
                         alt={`Carte ${card.name}`}

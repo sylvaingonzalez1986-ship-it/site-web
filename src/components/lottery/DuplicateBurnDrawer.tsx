@@ -68,18 +68,13 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
           <div className="flex items-center gap-4 rounded-xl border-2 border-ink/10 bg-cream-dark/15 p-4">
             {isRenderableImageSource(normalizedImageUrl) ? (
               <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg">
-                {isRemoteImageUrl(normalizedImageUrl) ? (
-                  <img
-                    src={normalizedImageUrl}
-                    alt={group.name}
-                    className="h-full w-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                    referrerPolicy="no-referrer"
-                  />
-                ) : (
-                  <Image src={normalizedImageUrl} alt={group.name} fill className="object-cover" sizes="64px" />
-                )}
+                <Image
+                  src={normalizedImageUrl}
+                  alt={group.name}
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                />
               </div>
             ) : (
               <div className="flex h-20 w-16 items-center justify-center rounded-lg bg-cream-dark/30">

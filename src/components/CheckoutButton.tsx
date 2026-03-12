@@ -41,7 +41,6 @@ type CheckoutButtonProps = {
 
 export function CheckoutButton({
   amount,
-  amountToPay,
   itemsCount,
   items,
   shipping,

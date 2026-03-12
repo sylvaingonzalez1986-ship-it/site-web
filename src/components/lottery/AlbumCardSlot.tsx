@@ -35,24 +35,13 @@ const MissingCardSlot = ({
     <>
       {hasRenderableImage ? (
         <>
-          {isRemoteImageUrl(normalizedImageUrl) ? (
-            <img
-              src={normalizedImageUrl}
-              alt={`Carte mystère #${slot.cardNumber}`}
-              className={`${imageClass} ${interactive ? "group-hover:brightness-[0.35]" : ""}`}
-              loading="lazy"
-              decoding="async"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <Image
-              src={normalizedImageUrl}
-              alt={`Carte mystère #${slot.cardNumber}`}
-              fill
-              className={`${imageClass} ${interactive ? "group-hover:brightness-[0.35]" : ""}`}
-              sizes="(max-width: 640px) 42vw, (max-width: 768px) 28vw, (max-width: 1280px) 18vw, 14vw"
-            />
-          )}
+          <Image
+            src={normalizedImageUrl}
+            alt={`Carte mystère #${slot.cardNumber}`}
+            fill
+            className={`${imageClass} ${interactive ? "group-hover:brightness-[0.35]" : ""}`}
+            sizes="(max-width: 640px) 42vw, (max-width: 768px) 28vw, (max-width: 1280px) 18vw, 14vw"
+          />
           <div className="pointer-events-none absolute inset-0 bg-black/40" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),rgba(255,255,255,0))]" />
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
@@ -133,16 +122,6 @@ export function AlbumCardSlot({ slot, onClick, interactive = true }: AlbumCardSl
     <>
       <div className="relative min-h-0 flex-1 overflow-hidden">
         {hasRenderableImage ? (
-          isRemoteImageUrl(normalizedImageUrl) ? (
-            <img
-              src={normalizedImageUrl}
-              alt={slot.name}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-              loading="lazy"
-              decoding="async"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
             <Image
               src={normalizedImageUrl}
               alt={slot.name}
@@ -150,7 +129,6 @@ export function AlbumCardSlot({ slot, onClick, interactive = true }: AlbumCardSl
               className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
               sizes="(max-width: 640px) 42vw, (max-width: 768px) 28vw, (max-width: 1280px) 18vw, 14vw"
             />
-          )
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-white/25">
             <span className="text-4xl">[]</span>

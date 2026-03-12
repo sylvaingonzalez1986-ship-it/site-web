@@ -938,6 +938,8 @@ export function AdminMissionsPanel() {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
+                          {/* Signed proof URLs are best rendered with native img in admin moderation. */}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={submission.proofSignedUrl}
                             alt={`Preuve mission ${submission.missionTitle}`}

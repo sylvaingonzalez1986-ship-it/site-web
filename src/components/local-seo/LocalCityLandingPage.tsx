@@ -12,6 +12,7 @@ import { readPublicStoreByBackend } from "@/lib/data-backend";
 import {
   getCityData,
   getCityEditorialContent,
+  getCityFaq,
   getNearbyCities,
 } from "@/lib/local-seo-data";
 import { dedupeProducts } from "@/lib/product-dedup";
@@ -169,24 +170,8 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
   const store = await readPublicStoreByBackend();
   const featuredProducts = selectFeaturedProducts(store.products);
   const nearbyCities = getNearbyCities(slug);
+  const faqItems = getCityFaq(slug);
   const producerById = new Map(store.producers.map((producer) => [producer.id, producer]));
-  const faqItems = [
-    {
-      question: `Le CBD est-il légal à ${cityData.name} ?`,
-      answer:
-        "Oui. Notre CBD breton est conforme à la réglementation française avec un THC sous le seuil autorisé et des analyses laboratoire à l'appui.",
-    },
-    {
-      question: `Combien de temps pour recevoir une commande à ${cityData.name} ?`,
-      answer:
-        "Les expéditions sont préparées rapidement et livrées en France métropolitaine avec suivi, dans un emballage discret.",
-    },
-    {
-      question: "Quel produit choisir entre fleurs, huiles, résines et tisanes ?",
-      answer:
-        "Les fleurs conviennent à ceux qui recherchent le profil naturel du chanvre, les huiles offrent un usage simple, les résines une concentration plus marquée et les tisanes une approche plus douce.",
-    },
-  ];
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
@@ -271,13 +256,13 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
             <div>
               <h3 className="mb-3 text-lg font-display text-ink">Naturel et responsable</h3>
               <p className="text-sm leading-relaxed text-charcoal">
-                Culture sans pesticide ni chimie lourde. Notre CBD breton respecte l'environnement, le terroir et une logique de production propre.
+                Culture sans pesticide ni chimie lourde. Notre CBD breton respecte l&apos;environnement, le terroir et une logique de production propre.
               </p>
             </div>
             <div>
               <h3 className="mb-3 text-lg font-display text-ink">Prix producteur direct</h3>
               <p className="text-sm leading-relaxed text-charcoal">
-                Circuit court et vente directe. Vous achetez un CBD naturel sans surcouche d'intermédiaires, avec une logique de qualité avant volume.
+                Circuit court et vente directe. Vous achetez un CBD naturel sans surcouche d&apos;intermédiaires, avec une logique de qualité avant volume.
               </p>
             </div>
           </div>
@@ -292,7 +277,7 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
             Notre approche est simple : proposer des fleurs CBD, des huiles naturelles, des résines et des tisanes chanvre artisanales avec un niveau de transparence élevé.
           </p>
           <p className="leading-relaxed text-charcoal">
-            Acheter chez Les Chanvriers Bretons, c'est soutenir une agriculture locale responsable en {cityData.department} et plus largement en Bretagne.
+            Acheter chez Les Chanvriers Bretons, c&apos;est soutenir une agriculture locale responsable en {cityData.department} et plus largement en Bretagne.
           </p>
         </div>
 
@@ -333,7 +318,7 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
           <div className="cartoon-border mt-8 bg-cream p-6">
             <h2 className="mb-4 text-2xl font-display text-ink">CBD dans les villes proches</h2>
             <p className="mb-4 text-sm leading-relaxed text-charcoal">
-              Vous cherchez aussi du CBD naturel dans d'autres villes bretonnes proches de {cityData.name} ? Consultez aussi nos pages locales pour renforcer votre recherche par zone géographique.
+              Vous cherchez aussi du CBD naturel dans d&apos;autres villes bretonnes proches de {cityData.name} ? Consultez aussi nos pages locales pour renforcer votre recherche par zone géographique.
             </p>
             <div className="flex flex-wrap gap-2">
               {nearbyCities.map((nearbyCity) => (

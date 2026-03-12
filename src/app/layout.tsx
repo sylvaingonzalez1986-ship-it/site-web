@@ -10,6 +10,7 @@ import {
 import { LocalAnalyticsTracker } from "@/components/LocalAnalyticsTracker";
 import { Navbar } from "@/components/Navbar";
 import { TutorialProvider } from "@/components/tutorial/TutorialProvider";
+import { WebVitals } from "@/components/WebVitals";
 import { CartProvider } from "@/context/CartContext";
 import "./globals.css";
 
@@ -17,21 +18,24 @@ const bodyFont = Space_Grotesk({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  display: "optional",
+  display: "swap",
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
 });
 
 const displayFont = Shrikhand({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["400"],
-  display: "optional",
+  display: "swap",
+  fallback: ["Georgia", "Times New Roman", "serif"],
 });
 
 const handwrittenFont = Caveat({
   variable: "--font-handwritten",
   subsets: ["latin"],
   weight: ["700"],
-  display: "optional",
+  display: "swap",
+  fallback: ["cursive", "Comic Sans MS"],
 });
 
 export const metadata: Metadata = {
@@ -157,6 +161,7 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <LocalAnalyticsTracker />
         </Suspense>
+        <WebVitals />
         <CartProvider>
           <TutorialProvider>
             <div className="site-background min-h-screen">

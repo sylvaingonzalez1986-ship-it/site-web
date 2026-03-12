@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { shouldUseNativeImg } from "@/lib/image-source";
 import { ProductVideoModal } from "./ProductVideoModal";
 
 type ProductImageGalleryProps = {
@@ -25,7 +24,6 @@ export function ProductImageGallery({
   const mediaItems = images.map((src) => ({ type: "image" as const, src }));
   const current = mediaItems[selectedIndex] ?? mediaItems[0];
   const currentSrc = current?.src ?? images[0] ?? "";
-  const useNativeCurrentImage = shouldUseNativeImg(currentSrc);
   const safeBonusPoints =
     Number.isFinite(Number(bonusPoints)) && Number(bonusPoints) > 0
       ? Math.floor(Number(bonusPoints))
@@ -42,25 +40,14 @@ export function ProductImageGallery({
         />
       )}
       <div className="relative aspect-square overflow-hidden rounded-xl border-2 border-[#1a1a1a]">
-        {useNativeCurrentImage ? (
-          <img
-            src={currentSrc}
-            alt={productName}
-            className="absolute inset-0 h-full w-full object-cover"
-            loading="eager"
-            decoding="async"
-            referrerPolicy="no-referrer"
-          />
-        ) : (
-          <Image
-            src={currentSrc}
-            alt={productName}
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover"
-          />
-        )}
+        <Image
+          src={currentSrc}
+          alt={productName}
+          fill
+          priority
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover"
+        />
         {badge && (
           <span className="absolute left-3 top-3 rounded-full bg-accent px-3 py-1 text-xs font-bold text-ink">
             {badge}
@@ -86,24 +73,13 @@ export function ProductImageGallery({
                   : "border-[#1a1a1a] hover:border-[#d35400]"
               }`}
             >
-              {shouldUseNativeImg(item.src) ? (
-                <img
-                  src={item.src}
-                  alt={`${productName} - vue ${idx + 1}`}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <Image
-                  src={item.src}
-                  alt={`${productName} - vue ${idx + 1}`}
-                  fill
-                  sizes="80px"
-                  className="object-cover"
-                />
-              )}
+              <Image
+                src={item.src}
+                alt={`${productName} - vue ${idx + 1}`}
+                fill
+                sizes="80px"
+                className="object-cover"
+              />
             </button>
           ))}
         </div>

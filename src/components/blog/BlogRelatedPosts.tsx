@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { shouldUseNativeImg } from "@/lib/image-source";
 import type { BlogPost } from "@/types/store";
 
 type BlogRelatedPostsProps = {
@@ -27,24 +26,13 @@ export function BlogRelatedPosts({ currentPostId, currentCategory, posts }: Blog
           <article key={post.id} className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee]">
             <Link href={`/blog/${post.slug}`} className="block">
               <div className="relative aspect-[4/3] border-b-2 border-[#1a1a1a] bg-[#f7f4ee]">
-                {shouldUseNativeImg(post.coverImage) ? (
-                  <img
-                    src={post.coverImage}
-                    alt={post.title}
-                    className="absolute inset-0 h-full w-full object-contain"
-                    loading="lazy"
-                    decoding="async"
-                    referrerPolicy="no-referrer"
-                  />
-                ) : (
-                  <Image
-                    src={post.coverImage}
-                    alt={post.title}
-                    fill
-                    sizes="(max-width: 1024px) 50vw, 33vw"
-                    className="object-contain"
-                  />
-                )}
+                <Image
+                  src={post.coverImage}
+                  alt={post.title}
+                  fill
+                  sizes="(max-width: 1024px) 50vw, 33vw"
+                  className="object-contain"
+                />
               </div>
               <div className="p-3">
                 <p className="text-sm font-semibold text-ink">{post.title}</p>

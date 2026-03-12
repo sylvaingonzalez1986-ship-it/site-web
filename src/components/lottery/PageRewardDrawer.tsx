@@ -83,24 +83,13 @@ export function PageRewardDrawer({ page, acting, onClaim, onClose }: PageRewardD
 
                     return (
                       <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
-                        {isRemoteImageUrl(normalizedImageUrl) ? (
-                          <img
-                            src={normalizedImageUrl}
-                            alt={option.title}
-                            className="h-full w-full object-cover"
-                            loading="lazy"
-                            decoding="async"
-                            referrerPolicy="no-referrer"
-                          />
-                        ) : (
-                          <Image
-                            src={normalizedImageUrl}
-                            alt={option.title}
-                            fill
-                            className="object-cover"
-                            sizes="64px"
-                          />
-                        )}
+                        <Image
+                          src={normalizedImageUrl}
+                          alt={option.title}
+                          fill
+                          sizes="64px"
+                          className="object-cover"
+                        />
                       </div>
                     );
                   })()}

@@ -3,7 +3,6 @@
 import type { KeyboardEvent } from "react";
 import Image from "next/image";
 import { ProducerSocialLinks } from "@/components/boutique/ProducerSocialLinks";
-import { shouldUseNativeImg } from "@/lib/image-source";
 import {
   PRODUCER_CULTURE_LABELS,
   type Producer,
@@ -47,8 +46,6 @@ export function ProducerTcgCard({
   const rarity = computeRarity(producer);
   const hasHolo = rarity >= 4;
   const description = producer.philosophy?.trim() || producer.description;
-  const useNativeImg = shouldUseNativeImg(producer.image);
-
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -84,25 +81,14 @@ export function ProducerTcgCard({
         </header>
 
         <div className="tcg-card-image-frame">
-          {useNativeImg ? (
-            <img
-              src={producer.image}
-              alt={producer.name}
-              className="absolute inset-0 h-full w-full object-cover"
-              loading={imagePriority ? "eager" : "lazy"}
-              decoding="async"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <Image
-              src={producer.image}
-              alt={producer.name}
-              fill
-              sizes="300px"
-              priority={imagePriority}
-              className="object-cover"
-            />
-          )}
+          <Image
+            src={producer.image}
+            alt={producer.name}
+            fill
+            sizes="300px"
+            priority={imagePriority}
+            className="object-cover"
+          />
           <div className="tcg-card-location-ribbon">
             <span className="tcg-card-location-text">{location}</span>
           </div>

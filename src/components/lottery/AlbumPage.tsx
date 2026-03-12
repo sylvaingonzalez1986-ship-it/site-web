@@ -221,18 +221,7 @@ function RewardOptionPreview({
     <div className="flex items-start gap-3">
       {hasRenderableImage && (
         <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-ink/10 bg-[#efe7d8]">
-          {isRemoteImageUrl(normalizedImageUrl) ? (
-            <img
-              src={normalizedImageUrl}
-              alt={option.title}
-              className="h-full w-full object-cover"
-              loading="lazy"
-              decoding="async"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <Image src={normalizedImageUrl} alt={option.title} fill className="object-cover" sizes="64px" />
-          )}
+          <Image src={normalizedImageUrl} alt={option.title} fill className="object-cover" sizes="64px" />
         </div>
       )}
 
