@@ -5,13 +5,19 @@ import {
   BreadcrumbJsonLd,
   CityServiceJsonLd,
   FaqJsonLd,
+  ProductListJsonLd,
 } from "@/components/JsonLd";
+import { ProductCard } from "@/components/ProductCard";
+import { readPublicStoreByBackend } from "@/lib/data-backend";
+import { dedupeProducts } from "@/lib/product-dedup";
 import { getSiteUrl } from "@/lib/site-url";
 import { getCityData } from "@/lib/local-seo-data";
 
 type LocalCityPageProps = {
   slug: string;
 };
+
+const featuredCategoryOrder = ["fleurs", "huiles", "resines", "alimentaire"] as const;
 
 const cityProductVariations: Record<
   string,
@@ -128,7 +134,24 @@ export function getLocalCityMetadata(slug: string): Metadata {
   };
 }
 
-export function LocalCityLandingPage({ slug }: LocalCityPageProps) {
+function selectFeaturedProducts(
+  products: Awaited<ReturnType<typeof readPublicStoreByBackend>>["products"],
+) {
+  const uniqueProducts = dedupeProducts(products);
+  const featured = featuredCategoryOrder
+    .map((category) => uniqueProducts.find((product) => product.category === category))
+    .filter((product): product is (typeof uniqueProducts)[number] => Boolean(product));
+
+  if (featured.length >= 4) {
+    return featured.slice(0, 4);
+  }
+
+  const selectedIds = new Set(featured.map((product) => product.id));
+  const fallback = uniqueProducts.filter((product) => !selectedIds.has(product.id)).slice(0, 4 - featured.length);
+  return [...featured, ...fallback];
+}
+
+export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
   const cityData = getCityData(slug);
 
   if (!cityData) {
@@ -138,6 +161,9 @@ export function LocalCityLandingPage({ slug }: LocalCityPageProps) {
   const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/${cityData.slug}`;
   const variations = cityProductVariations[slug] || cityProductVariations["cbd-rennes"];
+  const store = await readPublicStoreByBackend();
+  const featuredProducts = selectFeaturedProducts(store.products);
+  const producerById = new Map(store.producers.map((producer) => [producer.id, producer]));
   const faqItems = [
     {
       question: `Le CBD est-il légal à ${cityData.name} ?`,
@@ -171,6 +197,7 @@ export function LocalCityLandingPage({ slug }: LocalCityPageProps) {
         description={cityData.description}
       />
       <FaqJsonLd questions={faqItems} />
+      <ProductListJsonLd products={featuredProducts} producers={store.producers} />
       <div className="retro-container">
         <div className="cartoon-border bg-cream p-8">
           <nav className="mb-4 text-sm text-charcoal" aria-label="Fil d'Ariane">
@@ -185,58 +212,34 @@ export function LocalCityLandingPage({ slug }: LocalCityPageProps) {
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-charcoal">{variations.intro}</p>
         </div>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
-          <Link
-            href="/boutique/fleurs-cbd"
-            className="cartoon-border bg-cream p-6 transition-colors hover:bg-[#f0fef9]"
-          >
-            <h2 className="mb-3 text-2xl font-display text-ink">Fleurs CBD</h2>
-            <p className="mb-3 text-sm text-charcoal">{variations.fleurIntro}</p>
-            <div className="space-y-2 text-xs text-charcoal">
-              <p><strong>✓ Culture sans pesticide</strong></p>
-              <p><strong>✓ Analyse laboratoire certifiée</strong></p>
-              <p><strong>✓ Arômes authentiques préservés</strong></p>
-            </div>
-          </Link>
+        <div className="cartoon-border mt-10 bg-cream p-8">
+          <h2 className="mb-3 text-3xl font-display text-ink">Produits CBD disponibles à {cityData.name}</h2>
+          <p className="max-w-3xl text-charcoal">
+            Voici une sélection de produits réellement disponibles sur la boutique. Vous retrouvez selon les stocks des fleurs CBD, huiles, résines et tisanes chanvre avec livraison vers {cityData.name}.
+          </p>
+        </div>
 
-          <Link
-            href="/boutique/huiles-cbd"
-            className="cartoon-border bg-cream p-6 transition-colors hover:bg-[#f0fef9]"
-          >
-            <h2 className="mb-3 text-2xl font-display text-ink">Huiles CBD Full Spectrum</h2>
-            <p className="mb-3 text-sm text-charcoal">{variations.huilleIntro}</p>
-            <div className="space-y-2 text-xs text-charcoal">
-              <p><strong>✓ Dosage facile</strong></p>
-              <p><strong>✓ Absorption rapide et efficace</strong></p>
-              <p><strong>✓ Spectre complet de cannabinoïdes</strong></p>
-            </div>
-          </Link>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          {featuredProducts.map((product, index) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              producer={product.producerId ? producerById.get(product.producerId) : undefined}
+              addButtonLabel={store.content.boutique.addButtonLabel}
+              lowStockThresholdGrams={store.content.boutique.lowStockThresholdGrams}
+              imagePriority={index < 2}
+            />
+          ))}
+        </div>
 
-          <Link
-            href="/boutique/resines-cbd"
-            className="cartoon-border bg-cream p-6 transition-colors hover:bg-[#f0fef9]"
-          >
-            <h2 className="mb-3 text-2xl font-display text-ink">Résines CBD</h2>
-            <p className="mb-3 text-sm text-charcoal">{variations.resinIntro}</p>
-            <div className="space-y-2 text-xs text-charcoal">
-              <p><strong>✓ Concentration CBD maximale</strong></p>
-              <p><strong>✓ Texture naturelle</strong></p>
-              <p><strong>✓ Extraction soignée</strong></p>
-            </div>
-          </Link>
-
-          <Link
-            href="/boutique/tisane-cbd"
-            className="cartoon-border bg-cream p-6 transition-colors hover:bg-[#f0fef9]"
-          >
-            <h2 className="mb-3 text-2xl font-display text-ink">Tisanes Chanvre Artisanales</h2>
-            <p className="mb-3 text-sm text-charcoal">{variations.tisaneIntro}</p>
-            <div className="space-y-2 text-xs text-charcoal">
-              <p><strong>✓ Recette traditionnelle bretonne</strong></p>
-              <p><strong>✓ Ingrédients naturels sélectionnés</strong></p>
-              <p><strong>✓ Effet relaxant immédiat</strong></p>
-            </div>
-          </Link>
+        <div className="cartoon-border mt-8 bg-cream p-6">
+          <h2 className="mb-4 text-2xl font-display text-ink">Formats les plus recherchés à {cityData.name}</h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            <p className="text-sm leading-relaxed text-charcoal">{variations.fleurIntro}</p>
+            <p className="text-sm leading-relaxed text-charcoal">{variations.huilleIntro}</p>
+            <p className="text-sm leading-relaxed text-charcoal">{variations.resinIntro}</p>
+            <p className="text-sm leading-relaxed text-charcoal">{variations.tisaneIntro}</p>
+          </div>
         </div>
 
         <div className="cartoon-border mt-10 bg-cream p-8">
