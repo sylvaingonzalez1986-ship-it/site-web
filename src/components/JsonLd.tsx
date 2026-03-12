@@ -185,6 +185,66 @@ export function BreadcrumbJsonLd({
   );
 }
 
+export function CityServiceJsonLd({
+  city,
+  department,
+  url,
+  description,
+}: {
+  city: string;
+  department: string;
+  url: string;
+  description: string;
+}) {
+  const baseUrl = getSiteUrl();
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": ["OnlineStore", "LocalBusiness"],
+    name: `${BUSINESS_NAME} ${city}`,
+    url,
+    mainEntityOfPage: url,
+    image: `${baseUrl}/sylvain.png`,
+    logo: `${baseUrl}/sylvain.png`,
+    description,
+    email: BUSINESS_EMAIL,
+    telephone: BUSINESS_PHONE,
+    areaServed: [
+      { "@type": "City", name: city },
+      { "@type": "AdministrativeArea", name: department },
+      { "@type": "AdministrativeArea", name: "Bretagne" },
+      { "@type": "Country", name: "France" },
+    ],
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: city,
+      addressRegion: department,
+      addressCountry: "FR",
+    },
+    knowsAbout: [
+      `CBD ${city}`,
+      `fleurs CBD ${city}`,
+      `huiles CBD ${city}`,
+      `résines CBD ${city}`,
+      `tisanes chanvre ${city}`,
+      "CBD naturel",
+      "producteur CBD Bretagne",
+    ],
+    sameAs: [
+      "https://www.instagram.com/leschanvriersbretons",
+      "https://www.facebook.com/leschanvriersbretons",
+      "https://www.tiktok.com/@leschanvriersbretons",
+    ],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
+    />
+  );
+}
+
 export function CollectionPageJsonLd({
   name,
   description,

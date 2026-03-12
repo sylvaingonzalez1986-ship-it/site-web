@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import {
+  BreadcrumbJsonLd,
+  CityServiceJsonLd,
+  FaqJsonLd,
+} from "@/components/JsonLd";
 import { getSiteUrl } from "@/lib/site-url";
 import { getCityData } from "@/lib/local-seo-data";
 
@@ -130,10 +135,42 @@ export function LocalCityLandingPage({ slug }: LocalCityPageProps) {
     notFound();
   }
 
+  const baseUrl = getSiteUrl();
+  const pageUrl = `${baseUrl}/${cityData.slug}`;
   const variations = cityProductVariations[slug] || cityProductVariations["cbd-rennes"];
+  const faqItems = [
+    {
+      question: `Le CBD est-il légal à ${cityData.name} ?`,
+      answer:
+        "Oui. Notre CBD breton est conforme à la réglementation française avec un THC sous le seuil autorisé et des analyses laboratoire à l'appui.",
+    },
+    {
+      question: `Combien de temps pour recevoir une commande à ${cityData.name} ?`,
+      answer:
+        "Les expéditions sont préparées rapidement et livrées en France métropolitaine avec suivi, dans un emballage discret.",
+    },
+    {
+      question: "Quel produit choisir entre fleurs, huiles, résines et tisanes ?",
+      answer:
+        "Les fleurs conviennent à ceux qui recherchent le profil naturel du chanvre, les huiles offrent un usage simple, les résines une concentration plus marquée et les tisanes une approche plus douce.",
+    },
+  ];
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", url: baseUrl },
+          { name: `CBD ${cityData.name}`, url: pageUrl },
+        ]}
+      />
+      <CityServiceJsonLd
+        city={cityData.name}
+        department={cityData.department}
+        url={pageUrl}
+        description={cityData.description}
+      />
+      <FaqJsonLd questions={faqItems} />
       <div className="retro-container">
         <div className="cartoon-border bg-cream p-8">
           <nav className="mb-4 text-sm text-charcoal" aria-label="Fil d'Ariane">
@@ -242,24 +279,12 @@ export function LocalCityLandingPage({ slug }: LocalCityPageProps) {
         <div className="cartoon-border mt-8 bg-cream p-6">
           <h2 className="mb-4 text-2xl font-display text-ink">Questions fréquentes sur le CBD à {cityData.name}</h2>
           <div className="space-y-4">
-            <div>
-              <h3 className="mb-2 font-bold text-ink">Le CBD est-il légal à {cityData.name} ?</h3>
-              <p className="text-sm text-charcoal">
-                Oui. Notre CBD breton est conforme à la réglementation française avec un THC sous le seuil autorisé et des analyses laboratoire à l'appui.
-              </p>
-            </div>
-            <div>
-              <h3 className="mb-2 font-bold text-ink">Combien de temps pour recevoir une commande à {cityData.name} ?</h3>
-              <p className="text-sm text-charcoal">
-                Les expéditions sont préparées rapidement et livrées en France métropolitaine avec suivi, dans un emballage discret.
-              </p>
-            </div>
-            <div>
-              <h3 className="mb-2 font-bold text-ink">Quel produit choisir entre fleurs, huiles, résines et tisanes ?</h3>
-              <p className="text-sm text-charcoal">
-                Les fleurs conviennent à ceux qui recherchent le profil naturel du chanvre, les huiles offrent un usage simple, les résines une concentration plus marquée et les tisanes une approche plus douce.
-              </p>
-            </div>
+            {faqItems.map((item) => (
+              <div key={item.question}>
+                <h3 className="mb-2 font-bold text-ink">{item.question}</h3>
+                <p className="text-sm text-charcoal">{item.answer}</p>
+              </div>
+            ))}
           </div>
         </div>
 
