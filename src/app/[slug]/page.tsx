@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CmsPageRenderer } from "@/components/cms/CmsPageRenderer";
+import {
+  getLocalCityMetadata,
+  isLocalCitySlug,
+  LocalCityLandingPage,
+} from "@/components/local-seo/LocalCityLandingPage";
 import { getPublishedCmsPageBySlugByBackend } from "@/lib/cms-pages-backend";
 import { isCmsPagesEnabledServer } from "@/lib/cms-pages-feature";
 import { isCmsSlugReserved } from "@/lib/cms-pages-slugs";
@@ -12,6 +17,10 @@ type CmsDynamicPageProps = {
 
 export async function generateMetadata({ params }: CmsDynamicPageProps): Promise<Metadata> {
   const { slug } = await params;
+
+  if (isLocalCitySlug(slug)) {
+    return getLocalCityMetadata(slug);
+  }
 
   if (!isCmsPagesEnabledServer() || isCmsSlugReserved(slug)) {
     return {
@@ -50,6 +59,10 @@ export async function generateMetadata({ params }: CmsDynamicPageProps): Promise
 
 export default async function CmsDynamicPage({ params }: CmsDynamicPageProps) {
   const { slug } = await params;
+
+  if (isLocalCitySlug(slug)) {
+    return <LocalCityLandingPage slug={slug} />;
+  }
 
   if (!isCmsPagesEnabledServer() || isCmsSlugReserved(slug)) {
     notFound();
