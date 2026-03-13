@@ -6,6 +6,30 @@ const AGE_GATE_COOKIE_NAME = "age_verified";
 const CRAWLER_USER_AGENT_PATTERN =
   /(googlebot|bingbot|duckduckbot|yandex(bot)?|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slurp|applebot|pinterestbot|discordbot|whatsapp|petalbot|ahrefsbot|semrushbot)/i;
 
+const SUPABASE_HOSTNAME = "eyowwwpdmfrulhkpvlnf.supabase.co";
+const SUPABASE_CSP_SOURCES = `https://${SUPABASE_HOSTNAME} https://*.supabase.co`;
+const VIVA_ORIGIN = "https://www.vivapayments.com";
+
+function buildCspHeader(nonce: string): string {
+  const isProd = process.env.NODE_ENV === "production";
+  const directives = [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}' ${VIVA_ORIGIN}`,
+    `style-src 'self' 'unsafe-inline'`,
+    `img-src 'self' data: blob: ${SUPABASE_CSP_SOURCES} https://static.wixstatic.com https://files.cdn.printful.com`,
+    `media-src 'self' blob: ${SUPABASE_CSP_SOURCES}`,
+    `font-src 'self' data:`,
+    `connect-src 'self' ${SUPABASE_CSP_SOURCES} ${VIVA_ORIGIN}`,
+    `frame-src ${VIVA_ORIGIN} ${SUPABASE_CSP_SOURCES}`,
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    ...(isProd ? ["upgrade-insecure-requests"] : []),
+  ];
+  return directives.join("; ");
+}
+
 async function isAdminAuthorized(request: NextRequest): Promise<boolean> {
   try {
     const token = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
@@ -39,8 +63,43 @@ function hasCustomerSession(request: NextRequest): boolean {
     });
 }
 
-function hasAgeGateCookie(request: NextRequest): boolean {
-  return request.cookies.get(AGE_GATE_COOKIE_NAME)?.value === "true";
+let cachedAgeGateKeyPromise: Promise<CryptoKey> | null = null;
+
+function getAgeGateSigningKey(): Promise<CryptoKey> {
+  if (!cachedAgeGateKeyPromise) {
+    const secret = process.env.ADMIN_SESSION_SECRET?.trim() || "fallback";
+    cachedAgeGateKeyPromise = crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(secret),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"],
+    );
+  }
+  return cachedAgeGateKeyPromise;
+}
+
+async function verifyAgeGateCookie(request: NextRequest): Promise<boolean> {
+  const value = request.cookies.get(AGE_GATE_COOKIE_NAME)?.value ?? "";
+  if (!value.startsWith("true.")) {
+    // Accept legacy unsigned cookie during transition period
+    return value === "true";
+  }
+  const receivedSig = value.slice(5);
+  if (receivedSig.length !== 16) {
+    return false;
+  }
+  try {
+    const key = await getAgeGateSigningKey();
+    const sigBuf = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode("age_verified:true"));
+    const expectedSig = Array.from(new Uint8Array(sigBuf))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("")
+      .slice(0, 16);
+    return receivedSig === expectedSig;
+  } catch {
+    return false;
+  }
 }
 
 function isCrawlerRequest(request: NextRequest): boolean {
@@ -106,8 +165,10 @@ function isValidOrigin(request: NextRequest): boolean {
 
 export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+  const nonce = crypto.randomUUID().replace(/-/g, "");
+  const cspHeader = buildCspHeader(nonce);
   const customerAuthenticated = hasCustomerSession(request);
-  const ageVerified = hasAgeGateCookie(request);
+  const ageVerified = await verifyAgeGateCookie(request);
   const isCrawler = isCrawlerRequest(request);
   const isDocumentNavigation = isDocumentNavigationRequest(request);
 
@@ -214,22 +275,16 @@ export async function middleware(request: NextRequest) {
     return NextResponse.json({ error: "Connexion requise." }, { status: 401 });
   }
 
-  return NextResponse.next();
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-nonce", nonce);
+
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
+  response.headers.set("Content-Security-Policy", cspHeader);
+  return response;
 }
 
 export const config = {
   matcher: [
-    "/",
-    "/admin/:path*",
-    "/age-gate",
-    "/application/:path*",
-    "/boutique/:path*",
-    "/blog/:path*",
-    "/api/admin/:path*",
-    "/profil",
-    "/compte/:path*",
-    "/api/account/:path*",
-    "/api/auth/:path*",
-    "/api/checkout/:path*",
+    "/((?!_next/static|_next/image|favicon\\.ico|app/|uploads/|robots\\.txt|sitemap\\.xml).*)",
   ],
 };

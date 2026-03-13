@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, Shrikhand, Space_Grotesk } from "next/font/google";
+import { headers } from "next/headers";
 import { Suspense } from "react";
 import { Footer } from "@/components/Footer";
 import {
@@ -137,13 +138,14 @@ export const viewport: Viewport = {
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "") || "";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
-    <html lang="fr">
+    <html lang="fr" nonce={nonce}>
       <head>
         {supabaseUrl && (
           <>

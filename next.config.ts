@@ -16,8 +16,6 @@ const isNonEmptyString = (value: string | null): value is string => Boolean(valu
 const supabaseHostnames = Array.from(
   new Set([DEFAULT_SUPABASE_HOSTNAME, configuredSupabaseHostname].filter(isNonEmptyString)),
 );
-const supabaseOrigins = supabaseHostnames.map((hostname) => `https://${hostname}`);
-const supabaseCspSources = Array.from(new Set([...supabaseOrigins, "https://*.supabase.co"])).join(" ");
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
@@ -26,24 +24,6 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ["@napi-rs/canvas"],
   async headers() {
-    const vivaOrigin = "https://www.vivapayments.com";
-    const isProd = process.env.NODE_ENV === "production";
-    const cspDirectives = [
-      "default-src 'self'",
-      `script-src 'self' 'unsafe-inline' ${vivaOrigin}`,
-      `style-src 'self' 'unsafe-inline'`,
-      `img-src 'self' data: blob: ${supabaseCspSources} https://static.wixstatic.com https://files.cdn.printful.com`,
-      `media-src 'self' blob: ${supabaseCspSources}`,
-      `font-src 'self' data:`,
-      `connect-src 'self' ${supabaseCspSources} ${vivaOrigin}`,
-      `frame-src ${vivaOrigin} ${supabaseCspSources}`,
-      "frame-ancestors 'none'",
-      "object-src 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-      ...(isProd ? ["upgrade-insecure-requests"] : []),
-    ].join("; ");
-
     return [
       {
         source: "/(.*)",
@@ -63,12 +43,9 @@ const nextConfig: NextConfig = {
             value: "camera=(), microphone=(), geolocation=()",
           },
           { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+          { key: "Vary", value: "Origin" },
           { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
           { key: "X-DNS-Prefetch-Control", value: "on" },
-          {
-            key: "Content-Security-Policy",
-            value: cspDirectives,
-          },
         ],
       },
     ];

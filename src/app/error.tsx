@@ -10,7 +10,7 @@ type RootErrorProps = {
 
 export default function RootError({ error, reset }: RootErrorProps) {
   useEffect(() => {
-    console.error(error);
+    // Sentry captures this error automatically via the global error boundary
   }, [error]);
 
   return (

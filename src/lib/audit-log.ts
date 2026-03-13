@@ -22,13 +22,16 @@ export type AuditEventType =
   | "upload_mission_proof"
   | "update_store"
   | "update_order"
+  | "archive_order"
   | "add_promo_code"
   | "create_mission"
   | "update_mission"
   | "reorder_missions"
   | "update_referral_reward_settings"
   | "review_mission_submission"
-  | "welcome_pack_claimed";
+  | "welcome_pack_claimed"
+  | "viva_webhook_verification"
+  | "rate_limit_fallback_activated";
 
 type AuditLogEntry = {
   eventType: AuditEventType;

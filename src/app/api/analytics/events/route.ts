@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rejectOversizedBody } from "@/lib/body-size-guard";
 import { logRateLimitRejection, getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
 import {
   logLocalAnalyticsEvent,
@@ -18,6 +19,9 @@ export async function POST(request: Request) {
   }
 
   try {
+    const rejected = rejectOversizedBody(request);
+    if (rejected) return rejected;
+
     const payload = await request.json().catch(() => null);
     const row = sanitizeLocalAnalyticsEvent(payload);
     if (!row) {

@@ -9,6 +9,7 @@ import {
 } from "@/lib/lottery-backend";
 import { applyOrderLoyaltyBonusByBackend, updateOrderPaymentByVivaOrderCodeByBackend } from "@/lib/order-backend";
 import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
+import { logAuditEvent } from "@/lib/audit-log";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { claimWebhookEvent } from "@/lib/webhook-idempotency";
 
@@ -142,7 +143,18 @@ function readWebhookToken(request: Request): string {
   return headerToken?.trim() || "";
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  const ip = getRequestIp(request);
+  let rl;
+  try {
+    rl = await hitRateLimit({ key: `viva_webhook_get:${ip}`, windowSeconds: 60, maxHits: 5 });
+  } catch {
+    return NextResponse.json({ error: "Service indisponible." }, { status: 503 });
+  }
+  if (!rl.allowed) {
+    return NextResponse.json({ error: "Too many requests." }, { status: 429, headers: { "Retry-After": String(rl.retryAfterSeconds) } });
+  }
+  logAuditEvent({ eventType: "viva_webhook_verification", ip });
   const verificationKey = process.env.VIVA_WEBHOOK_TOKEN?.trim() || "";
   if (!verificationKey) {
     return NextResponse.json({ ok: true });

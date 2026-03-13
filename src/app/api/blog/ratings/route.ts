@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rejectOversizedBody } from "@/lib/body-size-guard";
 import { getBlogRatingStats, upsertBlogRating } from "@/lib/blog-interactions-backend";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
@@ -22,6 +23,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const rejected = rejectOversizedBody(request);
+  if (rejected) return rejected;
+
   const session = await getCurrentCustomerSessionByBackend();
   if (!session) {
     return NextResponse.json({ error: "Connexion requise." }, { status: 401 });

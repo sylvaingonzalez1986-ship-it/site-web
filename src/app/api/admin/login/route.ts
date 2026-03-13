@@ -6,12 +6,17 @@ import {
 } from "@/lib/admin-auth";
 import { isAllowedAdminEmail, normalizeEmail } from "@/lib/admin-allowlist";
 import { logAuditEvent } from "@/lib/audit-log";
+import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { isAdminTotpEnabled, verifyAdminTotp } from "@/lib/admin-totp";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { verifyAdminPassword } from "@/lib/admin-password";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export async function POST(request: Request) {
   try {
+    const rejected = rejectOversizedBody(request);
+    if (rejected) return rejected;
+
     const ip = getRequestIp(request);
     const rateLimit = await hitRateLimit({
       key: `admin_login:${ip}`,
@@ -39,7 +44,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const payload = (await request.json()) as { password?: string };
+    const payload = (await request.json()) as { password?: string; totp?: string };
     const customerSession = await getCurrentCustomerSessionByBackend();
     const sessionEmail = normalizeEmail(customerSession?.customer.email);
 
@@ -55,6 +60,17 @@ export async function POST(request: Request) {
     if (!passwordValid) {
       logAuditEvent({ eventType: "admin_login_failed", actorEmail: sessionEmail, ip, metadata: { reason: "wrong_password" } });
       return NextResponse.json({ error: "Mot de passe invalide." }, { status: 401 });
+    }
+
+    if (isAdminTotpEnabled()) {
+      if (!payload.totp) {
+        return NextResponse.json({ requireTotp: true }, { status: 200 });
+      }
+
+      if (!verifyAdminTotp(payload.totp)) {
+        logAuditEvent({ eventType: "admin_login_failed", actorEmail: sessionEmail, ip, metadata: { reason: "invalid_totp" } });
+        return NextResponse.json({ error: "Code TOTP invalide." }, { status: 401 });
+      }
     }
 
     logAuditEvent({ eventType: "admin_login", actorEmail: sessionEmail, ip });

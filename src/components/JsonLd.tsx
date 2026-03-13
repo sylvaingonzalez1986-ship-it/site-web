@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import type { Product } from "@/data/products";
 import { getSiteUrl } from "@/lib/site-url";
 import type { Producer } from "@/types/store";
@@ -39,7 +40,26 @@ function safeJsonLdStringify(value: unknown): string {
     .replace(/\u2029/g, "\\u2029");
 }
 
-export function OrganizationJsonLd() {
+async function getNonce(): Promise<string | undefined> {
+  try {
+    return (await headers()).get("x-nonce") ?? undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function JsonLdScript({ nonce, data }: { nonce: string | undefined; data: unknown }) {
+  return (
+    <script
+      type="application/ld+json"
+      nonce={nonce}
+      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(data) }}
+    />
+  );
+}
+
+export async function OrganizationJsonLd() {
+  const nonce = await getNonce();
   const baseUrl = getSiteUrl();
 
   const jsonLd = {
@@ -76,15 +96,11 @@ export function OrganizationJsonLd() {
     ],
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
-    />
-  );
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
 
-export function LocalBusinessJsonLd() {
+export async function LocalBusinessJsonLd() {
+  const nonce = await getNonce();
   const baseUrl = getSiteUrl();
 
   const jsonLd = {
@@ -127,15 +143,11 @@ export function LocalBusinessJsonLd() {
     ],
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
-    />
-  );
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
 
-export function WebSiteJsonLd() {
+export async function WebSiteJsonLd() {
+  const nonce = await getNonce();
   const baseUrl = getSiteUrl();
 
   const jsonLd = {
@@ -153,19 +165,15 @@ export function WebSiteJsonLd() {
     },
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
-    />
-  );
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
 
-export function BreadcrumbJsonLd({
+export async function BreadcrumbJsonLd({
   items,
 }: {
   items: { name: string; url: string }[];
 }) {
+  const nonce = await getNonce();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -177,15 +185,10 @@ export function BreadcrumbJsonLd({
     })),
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
-    />
-  );
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
 
-export function CityServiceJsonLd({
+export async function CityServiceJsonLd({
   city,
   department,
   url,
@@ -196,6 +199,7 @@ export function CityServiceJsonLd({
   url: string;
   description: string;
 }) {
+  const nonce = await getNonce();
   const baseUrl = getSiteUrl();
 
   const jsonLd = {
@@ -237,15 +241,10 @@ export function CityServiceJsonLd({
     ],
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
-    />
-  );
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
 
-export function CollectionPageJsonLd({
+export async function CollectionPageJsonLd({
   name,
   description,
   url,
@@ -256,6 +255,7 @@ export function CollectionPageJsonLd({
   url: string;
   products: Product[];
 }) {
+  const nonce = await getNonce();
   const baseUrl = getSiteUrl();
 
   const jsonLd = {
@@ -287,21 +287,17 @@ export function CollectionPageJsonLd({
     },
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
-    />
-  );
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
 
-export function ProductListJsonLd({
+export async function ProductListJsonLd({
   products,
   producers = [],
 }: {
   products: Product[];
   producers?: Producer[];
 }) {
+  const nonce = await getNonce();
   const baseUrl = getSiteUrl();
   const producerById = new Map(producers.map((producer) => [producer.id, producer]));
 
@@ -340,21 +336,17 @@ export function ProductListJsonLd({
     })),
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
-    />
-  );
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
 
-export function ProductJsonLd({
+export async function ProductJsonLd({
   product,
   producer,
 }: {
   product: Product;
   producer?: { name: string };
 }) {
+  const nonce = await getNonce();
   const baseUrl = getSiteUrl();
 
   const categorySlugs: Record<string, string> = {
@@ -399,15 +391,10 @@ export function ProductJsonLd({
     },
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
-    />
-  );
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
 
-export function ArticleJsonLd({
+export async function ArticleJsonLd({
   title,
   description,
   url,
@@ -419,6 +406,7 @@ export function ArticleJsonLd({
   ratingValue,
   ratingCount,
 }: ArticleJsonLdProps) {
+  const nonce = await getNonce();
   const baseUrl = getSiteUrl();
 
   const jsonLd = {
@@ -463,19 +451,15 @@ export function ArticleJsonLd({
         : undefined,
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
-    />
-  );
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
 
-export function FaqJsonLd({
+export async function FaqJsonLd({
   questions,
 }: {
   questions: { question: string; answer: string }[];
 }) {
+  const nonce = await getNonce();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -489,10 +473,5 @@ export function FaqJsonLd({
     })),
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
-    />
-  );
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }

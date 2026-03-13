@@ -10,16 +10,47 @@ import {
   loginCustomerByBackend,
 } from "@/lib/customer-backend";
 import { logAuditEvent } from "@/lib/audit-log";
+import { rejectOversizedBody } from "@/lib/body-size-guard";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export async function POST(request: Request) {
   try {
+    const rejected = rejectOversizedBody(request);
+    if (rejected) return rejected;
+
     const payload = (await request.json()) as {
       email?: string;
       password?: string;
     };
     const email = typeof payload.email === "string" ? payload.email.trim().toLowerCase() : "";
     const ip = getRequestIp(request);
+
+    const ipRateLimit = await hitRateLimit({
+      key: `account_login_ip:${ip}`,
+      windowSeconds: 10 * 60,
+      maxHits: 30,
+    });
+    if (!ipRateLimit.allowed) {
+      logRateLimitRejection({
+        endpoint: "POST /api/account/login",
+        key: `account_login_ip:${ip}`,
+        ip,
+        retryAfterSeconds: ipRateLimit.retryAfterSeconds,
+        maxHits: 30,
+        windowSeconds: 10 * 60,
+      });
+
+      return NextResponse.json(
+        { error: "Trop de tentatives. Reessaie plus tard." },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(ipRateLimit.retryAfterSeconds),
+          },
+        },
+      );
+    }
+
     const rateLimit = await hitRateLimit({
       key: `account_login:${ip}:${email || "unknown"}`,
       windowSeconds: 10 * 60,

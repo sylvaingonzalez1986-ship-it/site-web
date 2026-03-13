@@ -135,6 +135,10 @@ export async function hitRateLimit(options: RateLimitOptions): Promise<RateLimit
       message.includes("rpc_rate_limit_hit") &&
       (message.includes("Could not find") || message.includes("does not exist"))
     ) {
+      logAuditEvent({
+        eventType: "rate_limit_fallback_activated",
+        metadata: { key: safeKey, error: message.slice(0, 200) },
+      });
       return applyLocalFallbackRateLimit({
         key: safeKey,
         windowSeconds: safeWindowSeconds,

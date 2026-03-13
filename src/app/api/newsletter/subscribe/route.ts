@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rejectOversizedBody } from "@/lib/body-size-guard";
 import {
   markNewsletterSubscriberContactedByBackend,
   subscribeNewsletterByBackend,
@@ -10,6 +11,9 @@ export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {
+    const rejected = rejectOversizedBody(request);
+    if (rejected) return rejected;
+
     const payload = (await request.json().catch(() => null)) as
       | { email: string; source: string }
       | null;
