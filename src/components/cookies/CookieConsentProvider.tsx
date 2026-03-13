@@ -6,6 +6,7 @@ import {
   useCallback,
   useContext,
   useMemo,
+  useReducer,
   useState,
   useSyncExternalStore,
   type ReactNode,
@@ -57,6 +58,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const hydrated = useIsHydrated();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [, bumpConsentRevision] = useReducer((value: number) => value + 1, 0);
 
   const hideConsentUi = shouldHideConsentUi(pathname);
   const consent = hydrated ? getConsentFromCookie() : null;
@@ -65,6 +67,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
 
   const updateConsent = useCallback((selections: Partial<CookieConsentSelections>) => {
     setConsentCookie(selections);
+    bumpConsentRevision();
     setSettingsOpen(false);
   }, []);
 
@@ -86,6 +89,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
 
   const revokeConsent = useCallback(() => {
     revokeConsentCookie();
+    bumpConsentRevision();
     setSettingsOpen(true);
   }, []);
 
