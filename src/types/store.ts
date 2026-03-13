@@ -83,6 +83,7 @@ export const BLOG_CATEGORY_OPTIONS = [
   "bien-etre",
   "legislation",
   "chronique",
+  "miam",
 ] as const;
 
 export type BlogCategory = (typeof BLOG_CATEGORY_OPTIONS)[number];

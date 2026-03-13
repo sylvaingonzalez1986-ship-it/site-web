@@ -7,6 +7,7 @@ import { BlogRelatedPosts } from "@/components/blog/BlogRelatedPosts";
 import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
 import { BlogStarRating } from "@/components/blog/BlogStarRating";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { BLOG_CATEGORY_LABELS, BLOG_CATEGORY_SHOP_LINKS } from "@/lib/blog-categories";
 import { getBlogRatingStats } from "@/lib/blog-interactions-backend";
 import { getBlogPostBySlugByBackend, readPublicStoreByBackend } from "@/lib/data-backend";
 import { computeReadingTimeMinutes } from "@/lib/reading-time";
@@ -16,39 +17,6 @@ export const revalidate = 300;
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
-};
-
-const blogCategoryLabels: Record<string, string> = {
-  guide: "Guide",
-  actualite: "Actualite",
-  "bien-etre": "Bien-etre",
-  legislation: "Legislation",
-  chronique: "Chronique d'un chanvrier",
-};
-
-const blogCategoryShopLinks: Record<string, Array<{ href: string; label: string }>> = {
-  guide: [
-    { href: "/boutique/fleurs-cbd", label: "Decouvrir nos Fleurs CBD" },
-    { href: "/boutique/huiles-cbd", label: "Voir nos Huiles CBD" },
-    { href: "/boutique/tisane-cbd", label: "Explorer nos Tisanes CBD" },
-  ],
-  actualite: [
-    { href: "/boutique", label: "Voir toute la boutique CBD" },
-    { href: "/boutique/fleurs-cbd", label: "Nouveautes Fleurs CBD" },
-  ],
-  "bien-etre": [
-    { href: "/boutique/huiles-cbd", label: "Huiles CBD bien-etre" },
-    { href: "/boutique/tisane-cbd", label: "Tisanes chanvre relaxation" },
-    { href: "/boutique/cosmetiques-cbd", label: "Cosmetiques CBD" },
-  ],
-  legislation: [
-    { href: "/boutique/fleurs-cbd", label: "Fleurs CBD conformes" },
-    { href: "/boutique/resines-cbd", label: "Resines CBD analysees" },
-  ],
-  chronique: [
-    { href: "/boutique", label: "Decouvrir notre boutique" },
-    { href: "/boutique/fleurs-cbd", label: "Nos Fleurs CBD" },
-  ],
 };
 
 function asAbsoluteUrl(baseUrl: string, image: string): string {
@@ -110,7 +78,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     .map((item) => item.trim())
     .filter(Boolean);
   const readingMinutes = computeReadingTimeMinutes(post.content);
-  const relatedShopLinks = blogCategoryShopLinks[post.category] ?? [{ href: "/boutique", label: "Voir la boutique CBD" }];
+  const relatedShopLinks = BLOG_CATEGORY_SHOP_LINKS[post.category] ?? [{ href: "/boutique", label: "Voir la boutique CBD" }];
   const coverImage = asAbsoluteUrl(baseUrl, post.coverImage);
   const ratingStats = await getBlogRatingStats(post.id);
   const wordCount = post.content.trim() ? post.content.trim().split(/\s+/).filter(Boolean).length : 0;
@@ -131,7 +99,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         image={coverImage}
         datePublished={post.createdAt}
         dateModified={post.updatedAt}
-        category={blogCategoryLabels[post.category] ?? post.category}
+        category={BLOG_CATEGORY_LABELS[post.category]}
         wordCount={wordCount}
         ratingValue={ratingStats.averageRating}
         ratingCount={ratingStats.totalRatings}
@@ -152,7 +120,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </nav>
 
           <p className="pill-cartoon inline-flex px-4 py-2 text-xs uppercase tracking-[0.12em]">
-            {blogCategoryLabels[post.category] ?? post.category}
+            {BLOG_CATEGORY_LABELS[post.category]}
           </p>
           <h1 className="section-title mt-5 text-ink">{post.title}</h1>
           <p className="mt-2 text-sm text-charcoal">

@@ -28,6 +28,7 @@ import {
   type ProductCultureType,
   type VatRate,
 } from "@/data/products";
+import { BLOG_CATEGORY_LABELS } from "@/lib/blog-categories";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import {
   BLOG_CATEGORY_OPTIONS,
@@ -1706,7 +1707,7 @@ export function AdminPanel() {
                   >
                     {blogCategoryOptions.map((category) => (
                       <option key={category} value={category}>
-                        {category}
+                        {BLOG_CATEGORY_LABELS[category]}
                       </option>
                     ))}
                   </select>
