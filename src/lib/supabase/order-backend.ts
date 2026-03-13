@@ -13,6 +13,8 @@ const SELECT_ORDERS_COLUMNS = [
   "created_at",
   "status",
   "payment_state",
+  "archived_at",
+  "archived_reason",
   "viva_order_code",
   "viva_transaction_id",
   "customer_id",
@@ -132,6 +134,8 @@ function mapOrderRowForLoyalty(row: Record<string, unknown>): CmsOrder {
     status: toOrderStatus(row.status),
     paymentProvider: "viva",
     paymentState: toPaymentState(row.payment_state),
+    archivedAt: toOptionalText(row.archived_at),
+    archivedReason: toOptionalText(row.archived_reason),
     vivaOrderCode:
       Number.isFinite(Number(row.viva_order_code)) && Number(row.viva_order_code) > 0
         ? Math.floor(Number(row.viva_order_code))
@@ -602,6 +606,25 @@ export async function updateOrderPaymentByVivaOrderCodeInSupabase(input: {
   }
 
   return updatedOrder;
+}
+
+export async function archiveIncompleteOrderInSupabase(input: {
+  orderId: string;
+  reason?: string;
+}): Promise<CmsOrder | null> {
+  const safeOrderId = input.orderId.trim();
+  if (!safeOrderId) {
+    return null;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const { error } = await supabase.rpc("rpc_archive_incomplete_order", {
+    p_order_id: safeOrderId,
+    p_reason: input.reason?.trim() || null,
+  });
+
+  failIfError(error, "rpc_archive_incomplete_order");
+  return findOrderById(safeOrderId);
 }
 
 export async function applyOrderLoyaltyBonusInSupabase(

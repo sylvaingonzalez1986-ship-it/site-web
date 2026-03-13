@@ -134,6 +134,8 @@ const SELECT_ORDERS_COLUMNS = [
   "created_at",
   "status",
   "payment_state",
+  "archived_at",
+  "archived_reason",
   "viva_order_code",
   "viva_transaction_id",
   "customer_id",
@@ -562,6 +564,8 @@ function mapOrderRow(
     paymentState: validPaymentState.has(paymentStateCandidate)
       ? paymentStateCandidate
       : "pending",
+    archivedAt: toOptionalString(row.archived_at),
+    archivedReason: toOptionalString(row.archived_reason),
     vivaOrderCode: Number.isFinite(Number(row.viva_order_code))
       ? Math.floor(Number(row.viva_order_code))
       : undefined,
@@ -814,6 +818,7 @@ export async function readStoreFromSupabase(): Promise<CmsStore> {
     supabase
       .from("orders")
       .select(SELECT_ORDERS_COLUMNS)
+      .is("archived_at", null)
       .order("created_at", { ascending: false }),
   ]);
 

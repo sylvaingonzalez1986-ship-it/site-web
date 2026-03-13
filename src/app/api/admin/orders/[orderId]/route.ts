@@ -8,8 +8,10 @@ import {
   releaseLotteryRewardClaimsForOrderByBackend,
 } from "@/lib/lottery-backend";
 import { sendOrderProcessingEmail, sendOrderShippedEmail } from "@/lib/order-email";
+import { canArchiveIncompleteOrder } from "@/lib/order-lifecycle";
 import {
   applyOrderLoyaltyBonusByBackend,
+  archiveIncompleteOrderByBackend,
   getOrderByIdByBackend,
   updateOrderAdminFieldsByBackend,
   updateOrderPaymentStateByBackend,
@@ -44,6 +46,13 @@ export async function PATCH(
     const previousOrder = await getOrderByIdByBackend(orderId);
     if (!previousOrder) {
       return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
+    }
+
+    if (previousOrder.archivedAt) {
+      return NextResponse.json(
+        { error: "Cette commande a deja ete retiree de la liste." },
+        { status: 409 },
+      );
     }
 
     let updated: CmsOrder | null = null;
@@ -119,5 +128,50 @@ export async function PATCH(
     return NextResponse.json(updated);
   } catch {
     return NextResponse.json({ error: "Payload invalide." }, { status: 400 });
+  }
+}
+
+export async function DELETE(
+  _: Request,
+  { params }: { params: Promise<{ orderId: string }> },
+) {
+  const denied = await denyIfNotAdminApi();
+  if (denied) {
+    return denied;
+  }
+
+  const { orderId } = await params;
+  const order = await getOrderByIdByBackend(orderId);
+
+  if (!order) {
+    return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
+  }
+
+  if (!canArchiveIncompleteOrder(order)) {
+    return NextResponse.json(
+      { error: "Seules les commandes non finalisees peuvent etre retirees." },
+      { status: 409 },
+    );
+  }
+
+  try {
+    const archivedOrder = await archiveIncompleteOrderByBackend({
+      orderId,
+      reason: "admin_removed_incomplete",
+    });
+
+    if (!archivedOrder) {
+      return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
+    }
+
+    logAuditEvent({
+      eventType: "archive_order",
+      metadata: { orderId, archivedReason: archivedOrder.archivedReason ?? "admin_removed_incomplete" },
+    });
+
+    return NextResponse.json(archivedOrder);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Archivage impossible.";
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 }

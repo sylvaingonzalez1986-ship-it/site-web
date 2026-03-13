@@ -3,6 +3,7 @@ import "server-only";
 import type { AppendOrderInput } from "@/lib/orders-types";
 import {
   applyOrderLoyaltyBonusInSupabase,
+  archiveIncompleteOrderInSupabase,
   appendOrderToSupabase,
   getOrderByIdInSupabase,
   listCustomerOrdersForLoyaltyInSupabase,
@@ -58,6 +59,13 @@ export async function updateOrderPaymentByVivaOrderCodeByBackend(input: {
   transactionId?: string;
 }): Promise<CmsOrder | null> {
   return updateOrderPaymentByVivaOrderCodeInSupabase(input);
+}
+
+export async function archiveIncompleteOrderByBackend(input: {
+  orderId: string;
+  reason?: string;
+}): Promise<CmsOrder | null> {
+  return archiveIncompleteOrderInSupabase(input);
 }
 
 export async function applyOrderLoyaltyBonusByBackend(

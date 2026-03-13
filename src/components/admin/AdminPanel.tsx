@@ -29,6 +29,7 @@ import {
   type VatRate,
 } from "@/data/products";
 import { BLOG_CATEGORY_LABELS } from "@/lib/blog-categories";
+import { canArchiveIncompleteOrder } from "@/lib/order-lifecycle";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import {
   BLOG_CATEGORY_OPTIONS,
@@ -597,6 +598,46 @@ export function AdminPanel() {
         orders: current.orders.map((item) => (item.id === updated.id ? updated : item)),
       }));
       setStatus(`Commande ${updated.id} marquee payee.`);
+    } finally {
+      setUpdatingOrderId(null);
+    }
+  };
+
+  const removeIncompleteOrder = async (order: CmsOrder) => {
+    if (!canArchiveIncompleteOrder(order)) {
+      setStatus("Seules les commandes non finalisees peuvent etre retirees.");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Retirer ${order.id} de la liste des commandes ? Cette action archive la commande incomplete.`,
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    setUpdatingOrderId(order.id);
+    setStatus(`Retrait de ${order.id}...`);
+
+    try {
+      const response = await fetch(`/api/admin/orders/${encodeURIComponent(order.id)}`, {
+        method: "DELETE",
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+        setStatus(payload?.error ?? "Erreur de retrait commande.");
+        return;
+      }
+
+      const archived = (await response.json()) as CmsOrder;
+      setDraft((current) => ({
+        ...current,
+        orders: current.orders.filter((item) => item.id !== archived.id),
+      }));
+      setSelectedOrderId((current) => (current === archived.id ? null : current));
+      setStatus(`Commande ${archived.id} retiree de la liste.`);
     } finally {
       setUpdatingOrderId(null);
     }
@@ -1594,6 +1635,16 @@ export function AdminPanel() {
                           ? "Déjà payée"
                           : "Marquer payée"}
                     </button>
+                    {canArchiveIncompleteOrder(order) && (
+                      <button
+                        type="button"
+                        onClick={() => removeIncompleteOrder(order)}
+                        disabled={updatingOrderId === order.id}
+                        className="btn-cartoon btn-secondary"
+                      >
+                        {updatingOrderId === order.id ? "..." : "Retirer"}
+                      </button>
+                    )}
                   </div>
                 </div>
 
