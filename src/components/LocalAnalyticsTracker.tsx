@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useCookieConsent } from "@/components/cookies/CookieConsentProvider";
 
 type TutorialEventDetail = {
   event?: string;
@@ -50,8 +51,19 @@ function LocalAnalyticsTrackerInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const lastViewKeyRef = useRef<string>("");
+  const { hasConsent } = useCookieConsent();
+  const analyticsAllowed = hasConsent("analytics");
 
   useEffect(() => {
+    if (!analyticsAllowed) {
+      lastViewKeyRef.current = "";
+    }
+  }, [analyticsAllowed]);
+
+  useEffect(() => {
+    if (!analyticsAllowed) {
+      return;
+    }
     if (!pathname) {
       return;
     }
@@ -74,9 +86,16 @@ function LocalAnalyticsTrackerInner() {
         search: search || "",
       },
     });
-  }, [pathname, searchParams]);
+  }, [analyticsAllowed, pathname, searchParams]);
 
   useEffect(() => {
+    if (!analyticsAllowed) {
+      return;
+    }
+
+    // Future third-party scripts must follow the same gating:
+    // analytics tools => hasConsent("analytics")
+    // marketing tools => hasConsent("marketing")
     const onTutorial = (event: Event) => {
       const detail = (event as CustomEvent<TutorialEventDetail>).detail;
       const rawEventName = typeof detail?.event === "string" ? detail.event : "tutorial_event";
@@ -101,7 +120,7 @@ function LocalAnalyticsTrackerInner() {
 
     window.addEventListener("lcb:tutorial", onTutorial as EventListener);
     return () => window.removeEventListener("lcb:tutorial", onTutorial as EventListener);
-  }, [pathname]);
+  }, [analyticsAllowed, pathname]);
 
   return null;
 }

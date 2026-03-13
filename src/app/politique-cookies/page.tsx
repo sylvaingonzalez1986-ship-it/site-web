@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import { CmsPageRenderer } from "@/components/cms/CmsPageRenderer";
-import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-static-pages";
+import {
+  COOKIE_CONSENT_COOKIE_NAME,
+  COOKIE_CONSENT_DURATION_LABEL,
+} from "@/components/cookies/cookie-consent-config";
+import { buildCmsStaticPageMetadata } from "@/lib/cms-static-pages";
 
 const CMS_SLUG = "politique-cookies";
 const CANONICAL_PATH = "/politique-cookies";
@@ -17,12 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default async function PolitiqueCookiesPage() {
-  const cmsPage = await getStaticCmsPageBySlug(CMS_SLUG);
-  if (cmsPage) {
-    return <CmsPageRenderer page={cmsPage} />;
-  }
-
+export default function PolitiqueCookiesPage() {
   return (
     <section className="section-band bg-cream halftone-overlay paper-grain pt-32">
       <div className="retro-container">
@@ -53,7 +51,11 @@ export default async function PolitiqueCookiesPage() {
 
             <section>
               <h2 className="font-display text-2xl">Article 2 - Cookies utilises</h2>
-              <p className="mt-2">Le site utilise uniquement des cookies techniques strictement necessaires.</p>
+              <p className="mt-2">
+                Le site utilise des cookies strictement necessaires et un cookie de preference pour
+                memoriser votre choix de consentement. Les categories analytiques et marketing
+                restent desactivees tant que vous ne les avez pas acceptees.
+              </p>
               <div className="mt-3 max-w-full overflow-x-auto">
                 <table className="w-full min-w-[700px] border-collapse text-left text-xs sm:text-sm">
                   <thead>
@@ -72,6 +74,19 @@ export default async function PolitiqueCookiesPage() {
                         Memoriser la verification de majorite (18+).
                       </td>
                       <td className="border border-[#1a1a1a] px-3 py-2">24 heures</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-[#1a1a1a] px-3 py-2 font-mono text-[11px]">
+                        {COOKIE_CONSENT_COOKIE_NAME}
+                      </td>
+                      <td className="border border-[#1a1a1a] px-3 py-2">Technique</td>
+                      <td className="border border-[#1a1a1a] px-3 py-2">
+                        Memoriser votre choix de consentement et rouvrir facilement les
+                        preferences cookies.
+                      </td>
+                      <td className="border border-[#1a1a1a] px-3 py-2">
+                        {COOKIE_CONSENT_DURATION_LABEL}
+                      </td>
                     </tr>
                     <tr>
                       <td className="border border-[#1a1a1a] px-3 py-2 font-mono text-[11px]">sb-...-auth-token</td>
@@ -112,8 +127,14 @@ export default async function PolitiqueCookiesPage() {
             <section>
               <h2 className="font-display text-2xl">Article 5 - Mesure d&apos;audience</h2>
               <p className="mt-2">
-                A ce jour, aucun tracker tiers de mesure d&apos;audience n&apos;est active par defaut.
-                Si un outil local est ajoute, cette politique sera mise a jour.
+                A ce jour, aucune mesure d&apos;audience non necessaire n&apos;est activee sans votre
+                accord. Si des statistiques de visite sont activees, elles ne le seront qu&apos;apres
+                consentement a la categorie analytique.
+              </p>
+              <p className="mt-2">
+                Vous pouvez accepter, refuser ou personnaliser vos preferences depuis le modal de
+                consentement puis les modifier a tout moment via le bouton cookies affiche en bas a
+                gauche de l&apos;ecran.
               </p>
             </section>
 
@@ -127,7 +148,7 @@ export default async function PolitiqueCookiesPage() {
             </section>
           </div>
 
-          <p className="mt-8 text-xs text-charcoal">Version en vigueur : 5 mars 2026</p>
+          <p className="mt-8 text-xs text-charcoal">Version en vigueur : 13 mars 2026</p>
         </article>
       </div>
     </section>

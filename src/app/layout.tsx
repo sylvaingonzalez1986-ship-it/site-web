@@ -10,6 +10,7 @@ import {
 } from "@/components/JsonLd";
 import { LocalAnalyticsTracker } from "@/components/LocalAnalyticsTracker";
 import { Navbar } from "@/components/Navbar";
+import { CookieConsentProvider } from "@/components/cookies/CookieConsentProvider";
 import { TutorialProvider } from "@/components/tutorial/TutorialProvider";
 import { WebVitals } from "@/components/WebVitals";
 import { CartProvider } from "@/context/CartContext";
@@ -160,18 +161,20 @@ export default async function RootLayout({
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />
         <WebSiteJsonLd />
-        <Suspense fallback={null}>
-          <LocalAnalyticsTracker />
-        </Suspense>
         <WebVitals />
         <CartProvider>
-          <TutorialProvider>
-            <div className="site-background min-h-screen">
-              <Navbar />
-              <main>{children}</main>
-              <Footer />
-            </div>
-          </TutorialProvider>
+          <CookieConsentProvider>
+            <Suspense fallback={null}>
+              <LocalAnalyticsTracker />
+            </Suspense>
+            <TutorialProvider>
+              <div className="site-background min-h-screen">
+                <Navbar />
+                <main>{children}</main>
+                <Footer />
+              </div>
+            </TutorialProvider>
+          </CookieConsentProvider>
         </CartProvider>
       </body>
     </html>
