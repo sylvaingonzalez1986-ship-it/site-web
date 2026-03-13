@@ -18,7 +18,6 @@ import {
   type CookieConsentState,
 } from "@/components/cookies/cookie-consent-config";
 import { CookieConsentModal } from "@/components/cookies/CookieConsentModal";
-import { CookieSettingsButton } from "@/components/cookies/CookieSettingsButton";
 import {
   getConsentFromCookie,
   revokeConsent as revokeConsentCookie,
@@ -116,8 +115,6 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
     [consent, hasConsent, openSettings, revokeConsent, showBanner, updateConsent],
   );
 
-  const showSettingsButton = hydrated && !hideConsentUi && !showBanner && consent !== null;
-
   return (
     <CookieConsentContext.Provider value={contextValue}>
       {children}
@@ -142,7 +139,6 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
         onSave={updateConsent}
         onRequestClose={closeSettings}
       />
-      {showSettingsButton ? <CookieSettingsButton onClick={openSettings} /> : null}
     </CookieConsentContext.Provider>
   );
 }

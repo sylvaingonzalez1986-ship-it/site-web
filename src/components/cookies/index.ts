@@ -13,7 +13,6 @@ export {
 } from "@/components/cookies/cookie-consent-config";
 export { CookieConsentModal } from "@/components/cookies/CookieConsentModal";
 export { CookieConsentProvider, useCookieConsent } from "@/components/cookies/CookieConsentProvider";
-export { CookieSettingsButton } from "@/components/cookies/CookieSettingsButton";
 export {
   getConsentFromCookie,
   hasValidConsent,
