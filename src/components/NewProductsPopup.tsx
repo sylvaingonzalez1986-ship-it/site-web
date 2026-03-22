@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Sparkles } from "lucide-react";
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
 import { categoryLabels, isProductCultureModeEligible } from "@/data/products";
 import { useCmsStore } from "@/hooks/useCmsStore";
@@ -204,16 +203,9 @@ export function NewProductsPopup() {
       >
         <div className="flex items-start justify-between gap-4 border-b-2 border-[#1a1a1a] bg-[linear-gradient(135deg,#ffe07a_0%,#ffd14a_48%,#fff0b8_100%)] px-5 py-5 md:px-7">
           <div>
-            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-charcoal">
-              <Sparkles className="h-4 w-4" aria-hidden="true" />
-              Nouveautes en vitrine
-            </p>
-            <h2 id={titleId} className="mt-3 font-display text-3xl leading-none text-ink md:text-4xl">
-              Les produits mis en avant
+            <h2 id={titleId} className="font-display text-3xl leading-none text-ink md:text-4xl">
+              Nouveauté
             </h2>
-            <p className="mt-3 max-w-2xl text-sm text-charcoal md:text-base">
-              Cette fenetre affiche uniquement les produits coches depuis l&apos;administration.
-            </p>
           </div>
           <button
             ref={closeButtonRef}
