@@ -425,9 +425,8 @@ export async function sanitizeProductAnalysisPdf(
     }
 
     if (totalTextLines === 0) {
-      throw new ProductAnalysisRedactionError(
-        "Le PDF ne contient pas de texte exploitable. Redaction automatique impossible.",
-      );
+      // Scanned/image-only PDFs are accepted, but cannot be auto-redacted.
+      return { bytes, redactionCount: 0 };
     }
 
     if (totalRedactions === 0) {

@@ -151,7 +151,8 @@ export function ProductAnalysisUpload({ value, onChange }: ProductAnalysisUpload
           automatiquement.
         </p>
         <p className="mt-1 text-[11px] text-charcoal/80">
-          Les PDF image/scannes sans texte exploitable sont refuses pour securite.
+          Les PDF image/scannes sont acceptes, mais sans texte exploitable aucun masquage
+          automatique n&apos;est possible.
         </p>
         <input
           ref={inputRef}
