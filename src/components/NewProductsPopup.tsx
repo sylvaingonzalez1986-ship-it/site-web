@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Sparkles } from "lucide-react";
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
@@ -94,7 +94,6 @@ export function NewProductsPopup() {
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState(false);
-  const [ready, setReady] = useState(false);
 
   const featuredProducts = useMemo(
     () => store.products.filter((product) => product.featuredInPopup === true).slice(0, 4),
@@ -106,22 +105,18 @@ export function NewProductsPopup() {
     return `${store.updatedAt || "no-update"}:${ids}`;
   }, [featuredProducts, store.updatedAt]);
 
-  const dismiss = () => {
+  const dismiss = useCallback(() => {
     writeStoredPopupState({
       signature: featuredSignature,
       dismissedAt: Date.now(),
     });
     setOpen(false);
-  };
+  }, [featuredSignature]);
 
   useBodyScrollLock(open);
 
   useEffect(() => {
-    setReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (!ready || loading || pathname.startsWith("/admin") || featuredProducts.length === 0) {
+    if (loading || pathname.startsWith("/admin") || featuredProducts.length === 0) {
       return;
     }
 
@@ -141,7 +136,7 @@ export function NewProductsPopup() {
     return () => {
       window.clearTimeout(timer);
     };
-  }, [featuredProducts.length, featuredSignature, loading, pathname, ready]);
+  }, [featuredProducts.length, featuredSignature, loading, pathname]);
 
   useEffect(() => {
     if (!open) {
@@ -191,9 +186,9 @@ export function NewProductsPopup() {
       document.removeEventListener("keydown", onKeyDown);
       previousActive?.focus();
     };
-  }, [open, featuredSignature]);
+  }, [dismiss, open]);
 
-  if (!ready || !open || featuredProducts.length === 0) {
+  if (!open || featuredProducts.length === 0) {
     return null;
   }
 
@@ -217,7 +212,7 @@ export function NewProductsPopup() {
               Les produits mis en avant
             </h2>
             <p className="mt-3 max-w-2xl text-sm text-charcoal md:text-base">
-              Cette fenetre affiche uniquement les produits coches depuis l'administration.
+              Cette fenetre affiche uniquement les produits coches depuis l&apos;administration.
             </p>
           </div>
           <button

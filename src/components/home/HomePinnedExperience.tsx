@@ -72,7 +72,6 @@ function useGsapRuntime(enabled = true) {
 type HomeContent = CmsStore["content"]["home"];
 const HERO_ASSET_VERSION = "20260216-4";
 const HERO_FRAME_IDLE_SRC = `/hero-bretagne-bg.png?v=${HERO_ASSET_VERSION}`;
-const HERO_FRAME_SCENE_SRC = `/hero-bretagne-bg.png?v=${HERO_ASSET_VERSION}`;
 const LEGAL_FRAME_BG_SRC = `/legal-circle-bg.png?v=${HERO_ASSET_VERSION}`;
 const PRODUCTS_FRAME_BG_SRC = `/products-circle-bg.png?v=${HERO_ASSET_VERSION}`;
 const HOME_ALLOWED_TYPES = new Set(["hero", "products", "custom"]);
@@ -443,53 +442,6 @@ function MobileHeroSection({ home, zIndex }: { home: HomeContent; zIndex: number
   );
 }
 
-function MobileLegalSection({ home, zIndex }: { home: HomeContent; zIndex: number }) {
-  return (
-    <section className="section-band bg-yellow halftone-overlay paper-grain" style={{ zIndex }}>
-      <div className="retro-container">
-        <div className="cartoon-border bg-cream p-5">
-          <div className="relative mx-auto h-[68vw] w-[68vw] max-h-[310px] max-w-[310px] overflow-hidden rounded-full bg-cream cartoon-border outline outline-[6px] outline-white">
-            <Image
-              src={LEGAL_FRAME_BG_SRC}
-              alt=""
-              fill
-              sizes="68vw"
-              className="absolute inset-0 z-0 object-cover"
-              aria-hidden="true"
-            />
-            <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/15 via-transparent to-transparent" />
-            <div className="absolute left-1/2 bottom-0 z-10 h-[92%] w-[96%] -translate-x-1/2">
-              <Image
-                src="/sylvain.png"
-                alt="Sylvain, fondateur et producteur CBD Bretagne – achat CBD circuit court sans pesticide"
-                fill
-                sizes="68vw"
-                className="object-contain object-bottom drop-shadow-[0_8px_10px_rgba(26,26,26,0.28)]"
-              />
-            </div>
-          </div>
-          <h2 className="pinned-title mt-4 leading-none text-ink">
-            <span className="headline-line block text-[clamp(34px,12vw,58px)]">{home.legalLine1}</span>
-            <span className="headline-line block text-[clamp(34px,12vw,58px)]">{home.legalLine2}</span>
-          </h2>
-          <p className="mt-3 text-base leading-relaxed text-charcoal">{home.legalDescription}</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <div className="pill-cartoon flex items-center gap-2 px-3 py-2 text-xs">
-              <Shield className="h-4 w-4" /> {home.legalPillThc}
-            </div>
-            <div className="pill-cartoon flex items-center gap-2 px-3 py-2 text-xs">
-              <FlaskConical className="h-4 w-4" /> {home.legalPillLab}
-            </div>
-            <div className="pill-cartoon flex items-center gap-2 px-3 py-2 text-xs">
-              <Truck className="h-4 w-4" /> {home.legalPillDelivery}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function MobileProductsSection({
   featuredProducts,
   home,
@@ -620,7 +572,12 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
           },
         });
 
-        scrollTl.fromTo(card, { x: 0, opacity: 1 }, { x: "-30vw", opacity: 0, ease: "power2.in" }, 0.7);
+        scrollTl.fromTo(
+          card,
+          { x: 0, opacity: 1 },
+          { x: "-30vw", opacity: 0, ease: "power2.in" },
+          0.7,
+        );
         scrollTl.fromTo(
           mascot,
           { y: 0, scale: 1, opacity: 1 },
@@ -661,45 +618,45 @@ function HeroPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: number
       style={{ zIndex }}
       data-tutorial="home-hero"
     >
+      <div
+        ref={cardRef}
+        className="hero-circle-group absolute left-[8vw] top-[15vh] h-[38vw] w-[38vw] max-h-[70vh] max-w-[70vh] overflow-hidden rounded-full bg-cream cartoon-border outline outline-[8px] outline-white z-10"
+      >
+        <div className="absolute inset-0 z-0 bg-cream" aria-hidden="true" />
+        <Image
+          src={HERO_FRAME_IDLE_SRC}
+          alt=""
+          fill
+          priority
+          sizes="(max-width: 768px) 60vw, 34vw"
+          className="hero-circle-idle absolute inset-0 z-[1] object-cover"
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/10 via-transparent to-transparent" />
         <div
-          ref={cardRef}
-          className="hero-circle-group absolute left-[8vw] top-[15vh] h-[38vw] w-[38vw] max-h-[70vh] max-w-[70vh] overflow-hidden rounded-full bg-cream cartoon-border outline outline-[8px] outline-white z-10"
+          ref={mascotRef}
+          className="pinned-mascot absolute left-1/2 bottom-0 z-[2] h-[92%] w-[96%] -translate-x-1/2"
         >
-          <div className="absolute inset-0 z-0 bg-cream" aria-hidden="true" />
           <Image
-            src={HERO_FRAME_IDLE_SRC}
-            alt=""
+            src="/sylvain.png"
+            alt="Sylvain, fondateur Les Chanvriers Bretons – producteur CBD naturel en Bretagne"
             fill
             priority
             sizes="(max-width: 768px) 60vw, 34vw"
-            className="hero-circle-idle absolute inset-0 z-[1] object-cover"
-            aria-hidden="true"
+            className="object-contain object-bottom drop-shadow-[0_8px_10px_rgba(26,26,26,0.28)]"
           />
-          <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#1a1a1a]/10 via-transparent to-transparent" />
-          <div
-            ref={mascotRef}
-            className="pinned-mascot absolute left-1/2 bottom-0 z-[2] h-[92%] w-[96%] -translate-x-1/2"
-          >
-            <Image
-              src="/sylvain.png"
-              alt="Sylvain, fondateur Les Chanvriers Bretons – producteur CBD naturel en Bretagne"
-              fill
-              priority
-              sizes="(max-width: 768px) 60vw, 34vw"
-              className="object-contain object-bottom drop-shadow-[0_8px_10px_rgba(26,26,26,0.28)]"
-            />
-          </div>
-          <div className="hero-circle-hover-scene absolute inset-0 z-[4] flex items-center justify-center" aria-hidden="true">
-            <div className="absolute inset-0 bg-cream/80 backdrop-blur-sm" />
-            <Image
-              src="/hero-circle-idle.png"
-              alt="Logo Les Chanvriers Bretons"
-              fill
-              sizes="34vw"
-              className="relative z-[1] object-cover drop-shadow-lg"
-            />
-          </div>
         </div>
+        <div className="hero-circle-hover-scene absolute inset-0 z-[4] flex items-center justify-center" aria-hidden="true">
+          <div className="absolute inset-0 bg-cream/80 backdrop-blur-sm" />
+          <Image
+            src="/hero-circle-idle.png"
+            alt="Logo Les Chanvriers Bretons"
+            fill
+            sizes="34vw"
+            className="relative z-[1] object-cover drop-shadow-lg"
+          />
+        </div>
+      </div>
 
       <div ref={headlineRef} className="pinned-headline absolute left-[52vw] top-[14vh] w-[42vw] z-20">
         <h1 className="pinned-title leading-[0.92] tracking-[0.01em] text-ink">
@@ -979,7 +936,6 @@ function ProductsPinnedSection({
           0.1,
         );
         scrollTl.fromTo(cta, { y: "10vh", opacity: 0 }, { y: 0, opacity: 1, ease: "power2.out" }, 0.2);
-
         scrollTl.fromTo(
           mascot,
           { x: 0, y: 0, rotation: 0, opacity: 1 },

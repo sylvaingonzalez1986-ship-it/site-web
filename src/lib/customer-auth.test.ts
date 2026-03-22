@@ -1,20 +1,21 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { CUSTOMER_COOKIE_NAME, getCustomerCookieOptions } from "@/lib/customer-auth";
 
-const originalNodeEnv = process.env.NODE_ENV;
+const mutableEnv = process.env as Record<string, string | undefined>;
+const originalNodeEnv = mutableEnv.NODE_ENV;
 
 afterEach(() => {
   if (originalNodeEnv === undefined) {
-    delete process.env.NODE_ENV;
+    Reflect.deleteProperty(mutableEnv, "NODE_ENV");
     return;
   }
 
-  process.env.NODE_ENV = originalNodeEnv;
+  mutableEnv.NODE_ENV = originalNodeEnv;
 });
 
 describe("customer-auth", () => {
   it("returns secure cookies in production", () => {
-    process.env.NODE_ENV = "production";
+    mutableEnv.NODE_ENV = "production";
 
     expect(CUSTOMER_COOKIE_NAME).toBe("lcb_customer_session");
     expect(getCustomerCookieOptions()).toEqual({
@@ -27,7 +28,7 @@ describe("customer-auth", () => {
   });
 
   it("returns non-secure cookies outside production and accepts a custom max age", () => {
-    process.env.NODE_ENV = "development";
+    mutableEnv.NODE_ENV = "development";
 
     expect(getCustomerCookieOptions(600)).toEqual({
       httpOnly: true,
