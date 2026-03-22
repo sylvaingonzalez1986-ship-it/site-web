@@ -142,7 +142,7 @@ export default async function CategoryPage({
 function getCategoryDescription(slug: string): string {
   const descriptions: Record<string, string> = {
     "fleurs-cbd":
-      "Fleurs de CBD direct producteur breton, cultivées naturellement sans pesticide. CBD naturel en circuit court, qualité analysée en laboratoire.",
+      "Fleurs de CBD direct producteur français, cultivées naturellement sans pesticide. CBD naturel en circuit court, qualité analysée en laboratoire.",
     "resines-cbd":
       "Résines CBD naturelles sélectionnées auprès de producteurs français. Texture et arômes maîtrisés, CBD breton sans pesticide, analyses laboratoire.",
     "huiles-cbd":
