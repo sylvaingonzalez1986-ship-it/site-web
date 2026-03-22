@@ -242,7 +242,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if ((isAdminPage || isAdminApi) && !adminAuthorized) {
+  if ((isAdminPage || isAdminApi) && !adminAuthorized && !isAdminLoginPage) {
     if (isAdminApi) {
       return NextResponse.json({ error: "Non autorise." }, { status: 401 });
     }
