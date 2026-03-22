@@ -51,6 +51,7 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    unoptimized: process.env.NODE_ENV !== "production",
     formats: ["image/avif", "image/webp"],
     localPatterns: [
       {
@@ -58,6 +59,11 @@ const nextConfig: NextConfig = {
       },
     ],
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
       ...supabaseHostnames.map((hostname) => ({
         protocol: "https" as const,
         hostname,

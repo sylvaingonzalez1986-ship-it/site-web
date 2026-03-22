@@ -311,6 +311,12 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
             >
               Lire nos guides CBD
             </Link>
+            <Link
+              href="/cbd-naturel"
+              className="btn-cartoon btn-secondary inline-flex items-center justify-center px-6 py-3 text-sm uppercase tracking-[0.08em]"
+            >
+              CBD Naturel
+            </Link>
           </div>
         </div>
 

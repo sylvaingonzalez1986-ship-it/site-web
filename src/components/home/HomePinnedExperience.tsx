@@ -7,13 +7,13 @@ import {
   Apple,
   ArrowRight,
   FlaskConical,
-  Mail,
   Play,
   Shield,
   ShoppingBag,
   ShoppingCart,
   Truck,
 } from "lucide-react";
+import { ContactEmailButton } from "@/components/ContactEmailButton";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
 import { CustomSection } from "@/components/CustomSection";
 import { HomeBadgePromoBand } from "@/components/home/HomeBadgePromoBand";
@@ -264,12 +264,12 @@ export function HomePinnedExperience({ initialStore }: HomePinnedExperienceProps
               <p className="mt-4 max-w-2xl text-lg text-charcoal">
                 {home.contactDescription}
               </p>
-              <a
-                href="mailto:leschanvriersbretons@gmail.com"
-                className="btn-cartoon btn-primary mt-6 inline-flex min-h-[48px] items-center justify-center gap-2 px-4 text-sm"
-              >
-                <Mail className="h-5 w-5" /> Écris-nous par email
-              </a>
+              <ContactEmailButton
+                label="Écris-nous par email"
+                buttonClassName="btn-cartoon btn-primary mt-6 inline-flex min-h-[48px] items-center justify-center gap-2 px-4 text-sm"
+                iconClassName="h-5 w-5"
+                statusClassName="mt-3 max-w-md text-sm font-semibold text-ink"
+              />
             </div>
           </section>
         );

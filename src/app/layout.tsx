@@ -9,6 +9,7 @@ import {
   WebSiteJsonLd,
 } from "@/components/JsonLd";
 import { LocalAnalyticsTracker } from "@/components/LocalAnalyticsTracker";
+import { NewProductsPopup } from "@/components/NewProductsPopup";
 import { Navbar } from "@/components/Navbar";
 import { CookieConsentProvider } from "@/components/cookies/CookieConsentProvider";
 import { TutorialProvider } from "@/components/tutorial/TutorialProvider";
@@ -173,6 +174,7 @@ export default async function RootLayout({
                 <main>{children}</main>
                 <Footer />
               </div>
+              <NewProductsPopup />
             </TutorialProvider>
           </CookieConsentProvider>
         </CartProvider>

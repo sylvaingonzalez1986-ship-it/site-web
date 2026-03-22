@@ -50,6 +50,7 @@ export type Product = {
   analysisPdf?: string;
   description: string;
   badge?: string;
+  featuredInPopup?: boolean;
   bonusPoints?: number;
   trackStock?: boolean;
   stockQuantity?: number;

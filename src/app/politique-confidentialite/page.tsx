@@ -73,6 +73,11 @@ export default async function PolitiqueConfidentialitePage() {
                 Vous pouvez exercer vos droits à tout moment (accès, rectification, suppression,
                 opposition, limitation) en ecrivant a : leschanvriersbretons@gmail.com.
               </p>
+              <p className="mt-2">
+                Depuis votre espace client, un export JSON de vos données est disponible dans la
+                section <strong>Mes infos</strong> du profil. Les autres demandes restent possibles
+                par e-mail.
+              </p>
             </section>
 
             <section>
@@ -198,6 +203,18 @@ export default async function PolitiqueConfidentialitePage() {
                         Interet legitime (sécurité du Site).
                       </td>
                     </tr>
+                    <tr>
+                      <td className="border border-[#1a1a1a] px-3 py-2 font-mono text-[11px]">
+                        lcb_cookie_consent
+                      </td>
+                      <td className="border border-[#1a1a1a] px-3 py-2">
+                        Memoriser vos preferences de consentement cookies.
+                      </td>
+                      <td className="border border-[#1a1a1a] px-3 py-2">13 mois maximum</td>
+                      <td className="border border-[#1a1a1a] px-3 py-2">
+                        Respect d&apos;une obligation legale en matiere de consentement.
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -220,6 +237,14 @@ export default async function PolitiqueConfidentialitePage() {
 
             <section>
               <h2 className="font-display text-2xl">Article 9 - Exercice de vos droits</h2>
+              <p className="mt-2">
+                Si vous disposez d&apos;un compte client, vous pouvez deja exporter une copie de vos
+                données depuis la page{" "}
+                <Link href="/profil?tab=infos" className="underline">
+                  Profil &gt; Mes infos
+                </Link>
+                .
+              </p>
               <p className="mt-2">
                 Pour toute question ou demande relative a vos données personnelles :
                 <br />

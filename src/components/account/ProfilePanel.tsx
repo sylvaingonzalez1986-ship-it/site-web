@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Award, Copy, Gift, ShoppingBag, Star, Tag, User as UserIcon, Users, type LucideIcon } from "lucide-react";
+import { Award, Copy, Download, Gift, ShoppingBag, Star, Tag, User as UserIcon, Users, type LucideIcon } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { LoyaltyBadgeSummary } from "@/components/account/LoyaltyBadgeSummary";
@@ -138,6 +138,12 @@ export function ProfilePanel() {
   const [country, setCountry] = useState("France");
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
+  const [exportingData, setExportingData] = useState(false);
+  const [exportStatus, setExportStatus] = useState<string | null>(null);
+  const [deleteConfirmationEmail, setDeleteConfirmationEmail] = useState("");
+  const [deleteStatus, setDeleteStatus] = useState<string | null>(null);
+  const [deletingAccount, setDeletingAccount] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<CmsOrder | null>(null);
   const [activeTab, setActiveTab] = useState<ProfileTab>("fidelite");
   const [referralSummary, setReferralSummary] = useState<ReferralSummary | null>(null);
@@ -401,6 +407,68 @@ export function ProfilePanel() {
   const logout = async () => {
     await fetch("/api/account/logout", { method: "POST" });
     router.replace("/");
+  };
+
+  const downloadPersonalData = async () => {
+    setExportStatus(null);
+    setExportingData(true);
+
+    try {
+      const response = await fetch("/api/account/export", {
+        method: "GET",
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+        setExportStatus(payload?.error || "Impossible de generer l'export pour le moment.");
+        return;
+      }
+
+      const blob = await response.blob();
+      const objectUrl = window.URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      const filename = response.headers
+        .get("content-disposition")
+        ?.match(/filename="?([^";]+)"?/)?.[1] || "mes-donnees.json";
+
+      anchor.href = objectUrl;
+      anchor.download = filename;
+      document.body.append(anchor);
+      anchor.click();
+      anchor.remove();
+      window.URL.revokeObjectURL(objectUrl);
+      setExportStatus("Export genere. Le telechargement a demarre.");
+    } finally {
+      setExportingData(false);
+    }
+  };
+
+  const requestAccountDeletion = async () => {
+    setDeleteStatus(null);
+    setDeletingAccount(true);
+
+    try {
+      const response = await fetch("/api/account/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirmEmail: deleteConfirmationEmail }),
+      });
+
+      const payload = (await response.json().catch(() => null)) as
+        | { error?: string; success?: boolean }
+        | null;
+
+      if (!response.ok) {
+        setDeleteStatus(payload?.error || "Suppression impossible pour le moment.");
+        return;
+      }
+
+      router.replace("/?accountDeleted=true");
+      router.refresh();
+    } finally {
+      setDeletingAccount(false);
+    }
   };
 
   const setActiveTabAndSync = (tab: ProfileTab) => {
@@ -941,6 +1009,105 @@ export function ProfilePanel() {
                   Renseigne ta date de naissance pour pouvoir passer commande (18+ requis).
                 </p>
               )}
+
+              <div className="mt-8 grid gap-4 md:grid-cols-2">
+                <article className="card-cartoon bg-white p-5">
+                  <div className="flex items-start gap-3">
+                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[#fff7e4] text-ink">
+                      <Download className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                    <div>
+                      <h3 className="text-lg font-bold text-ink">Exporter mes donnees</h3>
+                      <p className="mt-1 text-sm leading-relaxed text-charcoal">
+                        Telecharge une copie JSON des donnees associees a ton compte.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={downloadPersonalData}
+                    disabled={exportingData}
+                    className="btn-cartoon btn-secondary mt-4 inline-flex h-11 items-center justify-center px-4 text-xs leading-none"
+                  >
+                    {exportingData ? "Preparation..." : "Telecharger mes donnees"}
+                  </button>
+                  {exportStatus && (
+                    <p className="mt-3 text-sm font-semibold text-ink">{exportStatus}</p>
+                  )}
+                </article>
+
+                <article className="card-cartoon bg-[#fff7e4] p-5">
+                  <h3 className="text-lg font-bold text-ink">Vie privee</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-charcoal">
+                    Consulte la politique de confidentialite et la politique cookies pour comprendre
+                    les traitements appliques a tes donnees.
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Link href="/politique-confidentialite" className="btn-cartoon btn-secondary inline-flex h-11 items-center justify-center px-4 text-xs leading-none">
+                      Politique de confidentialite
+                    </Link>
+                    <Link href="/politique-cookies" className="btn-cartoon btn-secondary inline-flex h-11 items-center justify-center px-4 text-xs leading-none">
+                      Politique cookies
+                    </Link>
+                  </div>
+                </article>
+              </div>
+
+              <article className="card-cartoon mt-6 border-[3px] border-[#7a1010] bg-[#fff1f1] p-5">
+                <h3 className="text-lg font-bold text-[#7a1010]">Zone sensible</h3>
+                <p className="mt-2 text-sm leading-relaxed text-charcoal">
+                  La suppression du compte est irreversible. Les commandes sont conservees pour les
+                  obligations comptables, mais les donnees personnelles associees sont anonymisees.
+                </p>
+                {!showDeleteConfirmation ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDeleteStatus(null);
+                      setShowDeleteConfirmation(true);
+                    }}
+                    className="btn-cartoon mt-4 inline-flex h-11 items-center justify-center bg-[#7a1010] px-4 text-xs leading-none text-white"
+                  >
+                    Supprimer mon compte
+                  </button>
+                ) : (
+                  <div className="mt-4 grid gap-3">
+                    <p className="text-sm font-semibold text-ink">
+                      Saisis ton e-mail pour confirmer : {user.email}
+                    </p>
+                    <input
+                      className="h-12 border-2 border-[#7a1010] bg-white px-3 text-base"
+                      placeholder="Confirme ton e-mail"
+                      value={deleteConfirmationEmail}
+                      onChange={(event) => setDeleteConfirmationEmail(event.target.value)}
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={requestAccountDeletion}
+                        disabled={deletingAccount}
+                        className="btn-cartoon inline-flex h-11 items-center justify-center bg-[#7a1010] px-4 text-xs leading-none text-white disabled:opacity-60"
+                      >
+                        {deletingAccount ? "Suppression..." : "Confirmer la suppression"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowDeleteConfirmation(false);
+                          setDeleteConfirmationEmail("");
+                          setDeleteStatus(null);
+                        }}
+                        className="btn-cartoon btn-secondary inline-flex h-11 items-center justify-center px-4 text-xs leading-none"
+                      >
+                        Annuler
+                      </button>
+                    </div>
+                    {deleteStatus && (
+                      <p className="text-sm font-semibold text-[#7a1010]">{deleteStatus}</p>
+                    )}
+                  </div>
+                )}
+              </article>
             </>
           )}
 

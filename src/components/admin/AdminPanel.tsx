@@ -194,6 +194,7 @@ function makeProduct(): Product {
     analysisPdf: undefined,
     description: "Description du produit",
     badge: "",
+    featuredInPopup: false,
     bonusPoints: undefined,
   };
 }
@@ -2163,6 +2164,16 @@ export function AdminPanel() {
                     <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
                       <input
                         type="checkbox"
+                        checked={product.featuredInPopup === true}
+                        onChange={(event) =>
+                          updateProduct(index, "featuredInPopup", event.target.checked)
+                        }
+                      />
+                      Popup nouveautes
+                    </label>
+                    <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+                      <input
+                        type="checkbox"
                         checked={product.trackStock === true}
                         onChange={(event) => {
                           const enabled = event.target.checked;
@@ -2642,6 +2653,16 @@ export function AdminPanel() {
                             </label>
                             {renderVariantEditor(product, index)}
                             <div className="mt-3 grid gap-3 md:grid-cols-[auto,1fr] md:items-center">
+                              <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+                                <input
+                                  type="checkbox"
+                                  checked={product.featuredInPopup === true}
+                                  onChange={(event) =>
+                                    updateProduct(index, "featuredInPopup", event.target.checked)
+                                  }
+                                />
+                                Popup nouveautes
+                              </label>
                               <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
                                 <input
                                   type="checkbox"
