@@ -47,7 +47,7 @@ vi.mock("@/lib/supabase/admin", () => {
 });
 
 function createPdfFile(bytes: Uint8Array, type = "application/pdf"): File {
-  return new File([bytes], "analysis.pdf", { type });
+  return new File([bytes as BlobPart], "analysis.pdf", { type });
 }
 
 describe("product-analysis-storage", () => {
