@@ -92,7 +92,9 @@ export function NewProductsPopup() {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const productsContainerRef = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState(false);
+  const [activeProductIndex, setActiveProductIndex] = useState(0);
 
   const featuredProducts = useMemo(
     () => store.products.filter((product) => product.featuredInPopup === true).slice(0, 4),
@@ -109,6 +111,7 @@ export function NewProductsPopup() {
       signature: featuredSignature,
       dismissedAt: Date.now(),
     });
+    setActiveProductIndex(0);
     setOpen(false);
   }, [featuredSignature]);
 
@@ -129,6 +132,7 @@ export function NewProductsPopup() {
     }
 
     const timer = window.setTimeout(() => {
+      setActiveProductIndex(0);
       setOpen(true);
     }, POPUP_OPEN_DELAY_MS);
 
@@ -187,23 +191,59 @@ export function NewProductsPopup() {
     };
   }, [dismiss, open]);
 
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const container = productsContainerRef.current;
+    if (!container) {
+      return;
+    }
+
+    container.scrollTo({ left: 0, top: 0, behavior: "auto" });
+  }, [featuredSignature, open]);
+
+  const handleProductsScroll = useCallback(() => {
+    const container = productsContainerRef.current;
+    if (!container) {
+      return;
+    }
+
+    const children = Array.from(container.children) as HTMLElement[];
+    if (children.length === 0) {
+      return;
+    }
+
+    const viewportCenter = container.scrollLeft + container.clientWidth / 2;
+    const nearestIndex = children.reduce((closestIndex, child, index) => {
+      const closestCenter = children[closestIndex]!.offsetLeft + children[closestIndex]!.clientWidth / 2;
+      const nextCenter = child.offsetLeft + child.clientWidth / 2;
+      const closestDistance = Math.abs(closestCenter - viewportCenter);
+      const nextDistance = Math.abs(nextCenter - viewportCenter);
+      return nextDistance < closestDistance ? index : closestIndex;
+    }, 0);
+
+    setActiveProductIndex(nearestIndex);
+  }, []);
+
   if (!open || featuredProducts.length === 0) {
     return null;
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-[90] flex items-center justify-center bg-[rgba(15,23,42,0.58)] p-4 md:p-6">
+    <div className="fixed inset-0 z-[90] flex items-end justify-center bg-[rgba(15,23,42,0.58)] p-0 sm:items-center sm:p-4 md:p-6">
       <div className="absolute inset-0" onClick={dismiss} aria-hidden="true" />
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative z-10 flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-[28px] border-2 border-[#1a1a1a] bg-[#fff8ec] shadow-[10px_10px_0_#1a1a1a]"
+        className="safe-area-bottom relative z-10 flex max-h-[85dvh] w-full max-w-5xl flex-col overflow-hidden rounded-t-[28px] border-2 border-b-0 border-[#1a1a1a] bg-[#fff8ec] shadow-[10px_10px_0_#1a1a1a] sm:max-h-[90dvh] sm:rounded-[28px] sm:border-b-2"
       >
-        <div className="flex items-start justify-between gap-4 border-b-2 border-[#1a1a1a] bg-[linear-gradient(135deg,#ffe07a_0%,#ffd14a_48%,#fff0b8_100%)] px-5 py-5 md:px-7">
+        <div className="flex items-start justify-between gap-3 border-b-2 border-[#1a1a1a] bg-[linear-gradient(135deg,#ffe07a_0%,#ffd14a_48%,#fff0b8_100%)] px-4 py-3 sm:px-5 sm:py-5 md:px-7">
           <div>
-            <h2 id={titleId} className="font-display text-3xl leading-none text-ink md:text-4xl">
+            <h2 id={titleId} className="font-display text-2xl leading-none text-ink sm:text-3xl md:text-4xl">
               Nouveauté
             </h2>
           </div>
@@ -211,30 +251,40 @@ export function NewProductsPopup() {
             ref={closeButtonRef}
             type="button"
             onClick={dismiss}
-            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl leading-none"
+            className="btn-cartoon btn-secondary inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-0 text-2xl leading-none"
             aria-label="Fermer"
           >
             ×
           </button>
         </div>
 
-        <div className="grid gap-4 overflow-y-auto p-5 md:grid-cols-2 md:p-7 xl:grid-cols-4">
+        <div className="px-4 pb-2 pt-3 sm:hidden">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
+            Balaye pour voir les autres produits
+          </p>
+        </div>
+
+        <div
+          ref={productsContainerRef}
+          onScroll={handleProductsScroll}
+          className="flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-visible px-4 pb-5 scroll-px-4 scroll-smooth overscroll-x-contain [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] [touch-action:pan-x] [&::-webkit-scrollbar]:hidden sm:grid sm:flex-none sm:grid-cols-2 sm:gap-4 sm:overflow-x-visible sm:overflow-y-auto sm:p-7 xl:grid-cols-4"
+        >
           {featuredProducts.map((product) => (
             <article
               key={product.id}
-              className="overflow-hidden rounded-[24px] border-2 border-[#1a1a1a] bg-white shadow-[5px_5px_0_#1a1a1a]"
+              className="min-w-[78vw] shrink-0 snap-center snap-always overflow-hidden rounded-[24px] border-2 border-[#1a1a1a] bg-white shadow-[5px_5px_0_#1a1a1a] sm:min-w-0 sm:shrink sm:snap-none"
             >
-              <div className="relative aspect-[4/3] border-b-2 border-[#1a1a1a] bg-[#f3ead8]">
+              <div className="relative aspect-[3/2] border-b-2 border-[#1a1a1a] bg-[#f3ead8] sm:aspect-[4/3]">
                 <Image
                   src={product.images?.[0] ?? product.image}
                   alt={product.name}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                  sizes="(max-width: 639px) 78vw, (max-width: 1280px) 50vw, 25vw"
                   className="object-cover"
                 />
               </div>
 
-              <div className="space-y-4 p-4">
+              <div className="space-y-3 p-3 sm:space-y-4 sm:p-4">
                 <div className="flex flex-wrap gap-2">
                   <span className="pill-cartoon bg-[#fff4bf] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-ink">
                     {categoryLabels[product.category] ?? product.category}
@@ -245,14 +295,16 @@ export function NewProductsPopup() {
                 </div>
 
                 <div>
-                  <h3 className="font-display text-2xl leading-none text-ink">{product.name}</h3>
+                  <h3 className="font-display text-xl leading-none text-ink sm:text-2xl">{product.name}</h3>
                   <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-charcoal">
                     {product.description}
                   </p>
                 </div>
 
                 <div className="flex items-center justify-between gap-3">
-                  <p className="font-display text-2xl leading-none text-ink">{formatPrice(product.price)}</p>
+                  <p className="font-display text-xl leading-none text-ink sm:text-2xl">
+                    {formatPrice(product.price)}
+                  </p>
                   <Link
                     href={`/boutique/${categorySlugs[product.category] ?? `${product.category}-cbd`}/${product.id}`}
                     onClick={dismiss}
@@ -265,6 +317,20 @@ export function NewProductsPopup() {
             </article>
           ))}
         </div>
+
+        {featuredProducts.length > 1 ? (
+          <div className="flex items-center justify-center gap-2 px-4 pb-4 sm:hidden">
+            {featuredProducts.map((product, index) => (
+              <span
+                key={product.id}
+                className={`h-2.5 w-2.5 rounded-full border border-[#1a1a1a] transition-colors ${
+                  index === activeProductIndex ? "bg-[#1a1a1a]" : "bg-[#fff8ec]"
+                }`}
+                aria-hidden="true"
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
     </div>,
     document.body,
