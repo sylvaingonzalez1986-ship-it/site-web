@@ -3,9 +3,17 @@ import "server-only";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import type { IssuedInvoice } from "@/types/invoice";
 
+function toInvoiceIssuanceMessage(errorMessage: string): string {
+  if (errorMessage.includes("invoices_invoice_number_key")) {
+    return "Le compteur de factures est desynchronise. Appliquez la migration de resynchronisation puis reessayez.";
+  }
+
+  return errorMessage;
+}
+
 function failIfError(error: { message: string } | null, context: string): void {
   if (error) {
-    throw new Error(`[supabase:${context}] ${error.message}`);
+    throw new Error(`[supabase:${context}] ${toInvoiceIssuanceMessage(error.message)}`);
   }
 }
 

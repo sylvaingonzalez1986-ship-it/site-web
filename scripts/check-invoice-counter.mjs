@@ -57,8 +57,7 @@ async function main() {
     throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY.");
   }
 
-  const year = safeNumber(process.env.INVOICE_CHECK_YEAR, 2026);
-  const expectedNextSequence = safeNumber(process.env.INVOICE_EXPECTED_NEXT_SEQUENCE, 41);
+  const year = safeNumber(process.env.INVOICE_CHECK_YEAR, new Date().getFullYear());
 
   const supabase = createClient(url, serviceRole, { auth: { persistSession: false, autoRefreshToken: false } });
 
@@ -77,6 +76,11 @@ async function main() {
   if (invoiceError) throw new Error(`invoices query failed: ${invoiceError.message}`);
 
   const sequenceSet = new Set(invoiceRows.map((r) => Number(r.sequence)));
+  const maxSequence = invoiceRows.reduce(
+    (currentMax, row) => Math.max(currentMax, safeNumber(row.sequence, 0)),
+    0,
+  );
+  const expectedNextSequence = maxSequence + 1;
 
   const hasSequence1 = sequenceSet.has(1);
   const hasSequence40 = sequenceSet.has(40);
@@ -86,6 +90,8 @@ async function main() {
   console.log(`Year ${year}`);
   console.log(`Counter row: ${counter ? `${counter.next_sequence}` : "missing"}`);
   console.log(`Invoices count: ${invoiceRows.length}`);
+  console.log(`Max sequence: ${maxSequence}`);
+  console.log(`Expected next sequence: ${expectedNextSequence}`);
   console.log(`Has sequence 1: ${hasSequence1 ? `yes (${seq1Invoice ?? "missing number"})` : "no"}`);
   console.log(`Has sequence 40: ${hasSequence40 ? `yes (${seq40Invoice ?? "missing number"})` : "no"}`);
 
