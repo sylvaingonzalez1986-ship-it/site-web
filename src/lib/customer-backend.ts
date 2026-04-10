@@ -15,7 +15,9 @@ import {
   logoutSupabaseCustomer,
   normalizeDateOfBirth,
   previewSupabasePromoCode,
+  requestSupabasePasswordReset,
   registerSupabaseCustomerWithEmailVerification,
+  resetSupabaseCustomerPassword,
   updateSupabaseCustomerProfile,
 } from "@/lib/supabase/customer-backend";
 import type { AdminCustomer, PromoCode, PublicCustomer } from "@/types/customer";
@@ -55,6 +57,19 @@ export async function registerCustomerByBackend(input: {
 
 export async function logoutCustomerByBackend(): Promise<void> {
   await logoutSupabaseCustomer();
+}
+
+export async function requestCustomerPasswordResetByBackend(input: {
+  email: string;
+  redirectTo: string;
+}): Promise<void> {
+  await requestSupabasePasswordReset(input);
+}
+
+export async function resetCustomerPasswordByBackend(input: {
+  password: string;
+}): Promise<{ email: string }> {
+  return resetSupabaseCustomerPassword(input);
 }
 
 export async function clearLegacyCustomerCookie(): Promise<void> {

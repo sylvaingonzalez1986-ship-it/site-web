@@ -1,9 +1,12 @@
 import "server-only";
 
 import { randomUUID } from "node:crypto";
+import { createClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { assertPasswordNotLeaked } from "@/lib/password-leak-check";
 import { bindSupabaseReferralCode } from "@/lib/supabase/referral-backend";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
+import { getSupabaseEnv } from "@/lib/supabase/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { AdminCustomer, PromoCode, PublicCustomer } from "@/types/customer";
 
@@ -12,6 +15,7 @@ const DATE_OF_BIRTH_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const DEFAULT_COUNTRY = "France";
 const MAX_NOTES_LENGTH = 4000;
 const MAX_LOYALTY_BONUS_POINTS = 100000;
+let passwordResetClient: SupabaseClient | null = null;
 
 const SELECT_PROFILE_COLUMNS = [
   "id",
@@ -77,6 +81,23 @@ function sanitizePhone(value: unknown): string {
     .trim()
     .replace(/[^\d+().\-\s]/g, "")
     .slice(0, 40);
+}
+
+function createSupabasePasswordResetClient(): SupabaseClient {
+  if (passwordResetClient) {
+    return passwordResetClient;
+  }
+
+  const { url, anonKey } = getSupabaseEnv();
+  passwordResetClient = createClient(url, anonKey, {
+    auth: {
+      flowType: "implicit",
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+
+  return passwordResetClient;
 }
 
 function sanitizePostalCode(value: unknown): string {
@@ -501,7 +522,7 @@ export async function registerSupabaseCustomerWithEmailVerification(input: {
   if (createUserResult.error || !createUserResult.data.user) {
     const message = createUserResult.error?.message ?? "Erreur inscription.";
     if (message.toLowerCase().includes("already")) {
-      throw new Error("Cet email est déjà utilisé.");
+      throw new Error("Cet email est dÃ©jÃ  utilisÃ©.");
     }
     throw new Error(message);
   }
@@ -566,6 +587,85 @@ export async function logoutSupabaseCustomer(): Promise<void> {
   if (logoutResult.error && !isAuthSessionMissingError(logoutResult.error)) {
     failIfError(logoutResult.error, "auth.signOut");
   }
+}
+
+export async function requestSupabasePasswordReset(input: {
+  email: string;
+  redirectTo: string;
+}): Promise<void> {
+  const email = normalizeEmail(input.email);
+  const redirectTo = input.redirectTo.trim();
+  if (!email || !redirectTo) {
+    throw new Error("Informations invalides.");
+  }
+
+  const supabase = createSupabasePasswordResetClient();
+  const result = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo,
+  });
+  if (result.error) {
+    const message = result.error.message.toLowerCase();
+    if (message.includes("email rate limit exceeded")) {
+      throw new Error("password_reset_email_rate_limited");
+    }
+    failIfError(result.error, "auth.resetPasswordForEmail");
+  }
+}
+
+function isPasswordResetSessionError(error: { message: string } | null): boolean {
+  const message = (error?.message ?? "").toLowerCase();
+  if (!message) {
+    return false;
+  }
+
+  return (
+    message.includes("auth session missing") ||
+    message.includes("session not found") ||
+    message.includes("session missing") ||
+    message.includes("refresh token") ||
+    message.includes("invalid jwt") ||
+    message.includes("jwt expired")
+  );
+}
+
+export async function resetSupabaseCustomerPassword(input: {
+  password: string;
+}): Promise<{ email: string }> {
+  const password = input.password;
+  if (typeof password !== "string" || password.length < 8) {
+    throw new Error("Le mot de passe doit contenir au moins 8 caractÃ¨res.");
+  }
+
+  await assertPasswordNotLeaked(password);
+
+  const supabaseServer = await createSupabaseServerClient();
+  const userResult = await supabaseServer.auth.getUser();
+  if (userResult.error) {
+    if (isAuthSessionMissingError(userResult.error) || isPasswordResetSessionError(userResult.error)) {
+      throw new Error("password_reset_session_invalid");
+    }
+    failIfError(userResult.error, "auth.getUser(password reset)");
+  }
+
+  const currentUser = userResult.data.user;
+  if (!currentUser) {
+    throw new Error("password_reset_session_invalid");
+  }
+
+  const updateResult = await supabaseServer.auth.updateUser({ password });
+  if (updateResult.error) {
+    if (isPasswordResetSessionError(updateResult.error)) {
+      throw new Error("password_reset_session_invalid");
+    }
+    failIfError(updateResult.error, "auth.updateUser(password reset)");
+  }
+
+  const logoutResult = await supabaseServer.auth.signOut();
+  if (logoutResult.error && !isAuthSessionMissingError(logoutResult.error)) {
+    failIfError(logoutResult.error, "auth.signOut(password reset)");
+  }
+
+  return { email: updateResult.data.user?.email ?? currentUser.email ?? "" };
 }
 
 export async function getSupabaseCustomerById(customerId: string): Promise<PublicCustomer | null> {
@@ -698,7 +798,7 @@ export async function adminUpdateSupabaseCustomer(
     throw new Error("Date de naissance invalide.");
   }
   if (dateOfBirth && !isAtLeast18(dateOfBirth)) {
-    throw new Error("Ce site est réservé aux personnes majeures (18+).");
+    throw new Error("Ce site est rÃ©servÃ© aux personnes majeures (18+).");
   }
 
   const supabase = createSupabaseServiceClient();
@@ -789,7 +889,7 @@ export async function addSupabasePromoCode(
   if (insertResult.error) {
     const message = insertResult.error.message.toLowerCase();
     if (message.includes("duplicate")) {
-      throw new Error("Ce code promo existe déjà pour ce client.");
+      throw new Error("Ce code promo existe dÃ©jÃ  pour ce client.");
     }
     throw new Error(insertResult.error.message);
   }
@@ -879,7 +979,7 @@ export async function createTemporarySupabaseUserFromLegacy(input: {
   failIfError(createUser.error, "create temporary supabase user");
   const userId = createUser.data.user?.id;
   if (!userId) {
-    throw new Error("Impossible de créer l'utilisateur Supabase.");
+    throw new Error("Impossible de crÃ©er l'utilisateur Supabase.");
   }
 
   await ensureProfileRow({

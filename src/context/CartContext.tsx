@@ -47,6 +47,8 @@ const CartContext = createContext<CartContextValue | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const isAuthRecoveryPage =
+    pathname === "/compte/reinitialiser-mot-de-passe" || pathname === "/compte/mot-de-passe-oublie";
   const REFRESH_COOLDOWN_MS = 30_000;
   const lastRefreshAtRef = useRef(0);
   const [items, setItems] = useState<CartLine[]>([]);
@@ -166,20 +168,33 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
+    if (isAuthRecoveryPage) {
+      setAuthLoading(false);
+      return;
+    }
+
     const cancel = scheduleIdleRefresh(() => {
       void refreshSession({ force: true });
     });
     return cancel;
-  }, [refreshSession, scheduleIdleRefresh]);
+  }, [isAuthRecoveryPage, refreshSession, scheduleIdleRefresh]);
 
   useEffect(() => {
+    if (isAuthRecoveryPage) {
+      return;
+    }
+
     const cancel = scheduleIdleRefresh(() => {
       void refreshSession({ silent: true });
     });
     return cancel;
-  }, [pathname, refreshSession, scheduleIdleRefresh]);
+  }, [isAuthRecoveryPage, pathname, refreshSession, scheduleIdleRefresh]);
 
   useEffect(() => {
+    if (isAuthRecoveryPage) {
+      return;
+    }
+
     const onFocus = () => {
       void refreshSession({ silent: true });
     };
@@ -197,7 +212,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, [refreshSession]);
+  }, [isAuthRecoveryPage, refreshSession]);
 
   const addToCart = (product: Product, variantId?: string, quantity: number = 1): CartActionResult => {
     if (!isAuthenticated) {

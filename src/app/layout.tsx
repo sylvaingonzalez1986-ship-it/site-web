@@ -11,6 +11,7 @@ import {
 import { LocalAnalyticsTracker } from "@/components/LocalAnalyticsTracker";
 import { NewProductsPopup } from "@/components/NewProductsPopup";
 import { Navbar } from "@/components/Navbar";
+import { SupabaseRecoveryRedirect } from "@/components/SupabaseRecoveryRedirect";
 import { CookieConsentProvider } from "@/components/cookies/CookieConsentProvider";
 import { TutorialProvider } from "@/components/tutorial/TutorialProvider";
 import { WebVitals } from "@/components/WebVitals";
@@ -165,6 +166,7 @@ export default async function RootLayout({
         <WebVitals />
         <CartProvider>
           <CookieConsentProvider>
+            <SupabaseRecoveryRedirect />
             <Suspense fallback={null}>
               <LocalAnalyticsTracker />
             </Suspense>

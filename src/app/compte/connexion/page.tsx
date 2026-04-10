@@ -1,16 +1,19 @@
 ﻿import Link from "next/link";
 import { AccountLoginForm } from "@/components/account/AccountLoginForm";
+import { sanitizeNextPath } from "@/lib/safe-next-path";
 
 export default async function AccountLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string; ref?: string; verified?: string }>;
+  searchParams: Promise<{ next?: string; ref?: string; verified?: string; passwordReset?: string }>;
 }) {
   const params = await searchParams;
-  const nextUrl = params.next || "/profil";
+  const nextUrl = sanitizeNextPath(params.next, "/profil");
   const referralCode = params.ref || "";
   const isVerified = params.verified === "true";
+  const passwordReset = params.passwordReset === "true";
   const registerHref = `/compte/inscription?next=${encodeURIComponent(nextUrl)}${referralCode ? `&ref=${encodeURIComponent(referralCode)}` : ""}`;
+  const forgotPasswordHref = `/compte/mot-de-passe-oublie?next=${encodeURIComponent(nextUrl)}`;
 
   return (
     <section className="section-band bg-yellow halftone-overlay paper-grain pt-36">
@@ -25,8 +28,19 @@ export default async function AccountLoginPage({
               Compte verifie. Tu peux maintenant te connecter.
             </p>
           )}
+          {passwordReset && (
+            <p className="mt-3 rounded-md border border-[#1a1a1a] bg-mint/30 px-3 py-2 text-sm font-semibold text-charcoal">
+              Mot de passe mis a jour. Tu peux maintenant te connecter.
+            </p>
+          )}
 
           <AccountLoginForm nextUrl={nextUrl} />
+
+          <p className="mt-3 text-sm text-charcoal">
+            <Link href={forgotPasswordHref} className="font-semibold text-ink underline">
+              Mot de passe oublie ?
+            </Link>
+          </p>
 
           <p className="mt-4 text-sm text-charcoal">
             Pas de compte ?{" "}

@@ -9,6 +9,8 @@ export type AuditEventType =
   | "customer_login"
   | "customer_login_failed"
   | "customer_register"
+  | "customer_password_reset_requested"
+  | "customer_password_reset_completed"
   | "customer_data_export"
   | "customer_account_deleted"
   | "customer_bind_referral"

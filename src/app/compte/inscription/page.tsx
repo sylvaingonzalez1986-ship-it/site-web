@@ -1,5 +1,6 @@
 ﻿import Link from "next/link";
 import { AccountRegisterForm } from "@/components/account/AccountRegisterForm";
+import { sanitizeNextPath } from "@/lib/safe-next-path";
 
 export default async function AccountRegisterPage({
   searchParams,
@@ -7,7 +8,7 @@ export default async function AccountRegisterPage({
   searchParams: Promise<{ next?: string; ref?: string }>;
 }) {
   const params = await searchParams;
-  const nextUrl = params.next || "/profil";
+  const nextUrl = sanitizeNextPath(params.next, "/profil");
   const initialReferralCode = params.ref || "";
   const loginHref = `/compte/connexion?next=${encodeURIComponent(nextUrl)}${initialReferralCode ? `&ref=${encodeURIComponent(initialReferralCode)}` : ""}`;
 

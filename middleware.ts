@@ -184,8 +184,6 @@ export async function middleware(request: NextRequest) {
     : false;
 
   const isProfilePage = pathname === "/profil";
-  const isCustomerAuthPage =
-    pathname === "/compte/connexion" || pathname === "/compte/inscription";
   const isCustomerApi = pathname.startsWith("/api/account");
   const isAuthCallbackApi = pathname === "/api/auth/callback";
   const isCheckoutApi = pathname.startsWith("/api/checkout");
@@ -193,7 +191,8 @@ export async function middleware(request: NextRequest) {
   const isCustomerAuthApi =
     pathname === "/api/account/login" ||
     pathname === "/api/account/register" ||
-    pathname === "/api/account/logout";
+    pathname === "/api/account/logout" ||
+    pathname === "/api/account/password-reset/request";
   const isAgeGatePage = pathname === "/age-gate";
 
   if (isAgeGatePage && ageVerified && isDocumentNavigation) {
@@ -252,9 +251,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isCustomerAuthPage && customerAuthenticated) {
-    return NextResponse.redirect(new URL("/profil", request.url));
-  }
 
   if ((isProfilePage || isCustomerApi) && !customerAuthenticated) {
     if (isCustomerApi) {

@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import {
   ADMIN_COOKIE_NAME,
@@ -8,11 +9,15 @@ import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
 import { applyCustomerProfilePatch } from "@/lib/account-profile";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
+import { clearSupabaseAuthCookies } from "@/lib/supabase-auth-cookies";
 
 export async function GET() {
   const session = await getCurrentCustomerSessionByBackend();
   if (!session) {
-    return NextResponse.json({ user: null }, { status: 401 });
+    const response = NextResponse.json({ user: null }, { status: 401 });
+    const cookieStore = await cookies();
+    clearSupabaseAuthCookies(response, cookieStore);
+    return response;
   }
 
   const response = NextResponse.json({ user: session.customer });
