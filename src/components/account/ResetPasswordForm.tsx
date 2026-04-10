@@ -1,16 +1,23 @@
 "use client";
 
-import type { Session } from "@supabase/supabase-js";
 import Link from "next/link";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 type ResetPasswordFormProps = {
   nextUrl: string;
 };
 
 type ResetPhase = "checking" | "ready" | "invalid";
+
+type RecoveryPayload =
+  | {
+      tokenHash: string;
+    }
+  | {
+      accessToken: string;
+      refreshToken: string;
+    };
 
 function hasRecoveryMarker(url: URL): boolean {
   return (
@@ -27,11 +34,32 @@ function cleanRecoveryUrl(): void {
   url.searchParams.delete("code");
   url.searchParams.delete("type");
   url.searchParams.delete("token_hash");
+  url.searchParams.delete("access_token");
+  url.searchParams.delete("refresh_token");
   url.searchParams.delete("redirect_to");
   url.searchParams.delete("error");
   url.searchParams.delete("error_code");
   url.searchParams.delete("error_description");
   window.history.replaceState({}, document.title, `${url.pathname}${url.search}`);
+}
+
+function parseRecoveryPayload(url: URL): RecoveryPayload | null {
+  const hashParams = new URLSearchParams(url.hash.startsWith("#") ? url.hash.slice(1) : url.hash);
+  const tokenHash = url.searchParams.get("token_hash")?.trim() || "";
+  const otpType = url.searchParams.get("type")?.trim() || hashParams.get("type")?.trim() || "";
+  if (tokenHash && otpType === "recovery") {
+    return { tokenHash };
+  }
+
+  const accessToken =
+    hashParams.get("access_token")?.trim() || url.searchParams.get("access_token")?.trim() || "";
+  const refreshToken =
+    hashParams.get("refresh_token")?.trim() || url.searchParams.get("refresh_token")?.trim() || "";
+  if (accessToken && refreshToken && (!otpType || otpType === "recovery")) {
+    return { accessToken, refreshToken };
+  }
+
+  return null;
 }
 
 export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
@@ -41,87 +69,28 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
   const [phase, setPhase] = useState<ResetPhase>("checking");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const recoveryDetectedRef = useRef(false);
+  const [recoveryPayload, setRecoveryPayload] = useState<RecoveryPayload | null>(null);
 
   useEffect(() => {
-    const supabase = createSupabaseBrowserClient();
-    let active = true;
     const currentUrl = new URL(window.location.href);
-    recoveryDetectedRef.current = hasRecoveryMarker(currentUrl);
-
-    const markReadyFromSession = (session: Session | null) => {
-      if (!active || !session || !recoveryDetectedRef.current) {
-        return;
-      }
-
-      cleanRecoveryUrl();
-      setError(null);
-      setPhase("ready");
-    };
-
-    const authSubscription = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY") {
-        recoveryDetectedRef.current = true;
-      }
-
-      if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN" || event === "INITIAL_SESSION") {
-        markReadyFromSession(session);
-      }
-    });
-
-    async function bootstrapRecovery() {
-      const tokenHash = currentUrl.searchParams.get("token_hash");
-      const otpType = currentUrl.searchParams.get("type");
-
-      // Let the browser client auto-handle standard recovery callback URLs.
-      // Only verify token_hash links manually when they are explicitly present.
-      if (tokenHash && otpType === "recovery") {
-        recoveryDetectedRef.current = true;
-        const verifyResult = await supabase.auth.verifyOtp({
-          token_hash: tokenHash,
-          type: "recovery",
-        });
-        if (verifyResult.error) {
-          if (!active) {
-            return;
-          }
-
-          cleanRecoveryUrl();
-          setPhase("invalid");
-          setError("Lien invalide ou expire. Redemande un nouvel email.");
-          return;
-        }
-      }
-
-      const initialSession = await supabase.auth.getSession();
-      if (initialSession.data.session && recoveryDetectedRef.current) {
-        markReadyFromSession(initialSession.data.session);
-        return;
-      }
-
-      for (let attempt = 0; attempt < 4; attempt += 1) {
-        await new Promise((resolve) => window.setTimeout(resolve, 250));
-        if (!active) {
-          return;
-        }
-
-        const fallbackSession = await supabase.auth.getSession();
-        if (fallbackSession.data.session && recoveryDetectedRef.current) {
-          markReadyFromSession(fallbackSession.data.session);
-          return;
-        }
-      }
-
+    if (!hasRecoveryMarker(currentUrl)) {
       setPhase("invalid");
       setError("Lien invalide ou expire. Redemande un nouvel email.");
+      return;
     }
 
-    void bootstrapRecovery();
+    const nextRecoveryPayload = parseRecoveryPayload(currentUrl);
+    if (!nextRecoveryPayload) {
+      cleanRecoveryUrl();
+      setPhase("invalid");
+      setError("Lien invalide ou expire. Redemande un nouvel email.");
+      return;
+    }
 
-    return () => {
-      active = false;
-      authSubscription.data.subscription.unsubscribe();
-    };
+    setRecoveryPayload(nextRecoveryPayload);
+    cleanRecoveryUrl();
+    setError(null);
+    setPhase("ready");
   }, []);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -138,13 +107,26 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
       return;
     }
 
+    if (!recoveryPayload) {
+      setError("Lien invalide ou expire. Redemande un nouvel email.");
+      return;
+    }
+
     setLoading(true);
 
     try {
       const response = await fetch("/api/account/password-reset/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify(
+          "tokenHash" in recoveryPayload
+            ? { password, tokenHash: recoveryPayload.tokenHash }
+            : {
+                password,
+                accessToken: recoveryPayload.accessToken,
+                refreshToken: recoveryPayload.refreshToken,
+              },
+        ),
       });
 
       const data = (await response.json()) as { error?: string };

@@ -15,7 +15,6 @@ const DATE_OF_BIRTH_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const DEFAULT_COUNTRY = "France";
 const MAX_NOTES_LENGTH = 4000;
 const MAX_LOYALTY_BONUS_POINTS = 100000;
-let passwordResetClient: SupabaseClient | null = null;
 
 const SELECT_PROFILE_COLUMNS = [
   "id",
@@ -84,20 +83,14 @@ function sanitizePhone(value: unknown): string {
 }
 
 function createSupabasePasswordResetClient(): SupabaseClient {
-  if (passwordResetClient) {
-    return passwordResetClient;
-  }
-
   const { url, anonKey } = getSupabaseEnv();
-  passwordResetClient = createClient(url, anonKey, {
+  return createClient(url, anonKey, {
     auth: {
       flowType: "implicit",
       autoRefreshToken: false,
       persistSession: false,
     },
   });
-
-  return passwordResetClient;
 }
 
 function sanitizePostalCode(value: unknown): string {
@@ -522,7 +515,7 @@ export async function registerSupabaseCustomerWithEmailVerification(input: {
   if (createUserResult.error || !createUserResult.data.user) {
     const message = createUserResult.error?.message ?? "Erreur inscription.";
     if (message.toLowerCase().includes("already")) {
-      throw new Error("Cet email est dÃ©jÃ  utilisÃ©.");
+      throw new Error("Cet email est deja utilise.");
     }
     throw new Error(message);
   }
@@ -624,35 +617,63 @@ function isPasswordResetSessionError(error: { message: string } | null): boolean
     message.includes("session missing") ||
     message.includes("refresh token") ||
     message.includes("invalid jwt") ||
-    message.includes("jwt expired")
+    message.includes("jwt expired") ||
+    message.includes("invalid grant") ||
+    message.includes("token") ||
+    message.includes("otp") ||
+    message.includes("expired")
   );
 }
-
 export async function resetSupabaseCustomerPassword(input: {
   password: string;
+  tokenHash?: string;
+  accessToken?: string;
+  refreshToken?: string;
 }): Promise<{ email: string }> {
   const password = input.password;
   if (typeof password !== "string" || password.length < 8) {
-    throw new Error("Le mot de passe doit contenir au moins 8 caractÃ¨res.");
+    throw new Error("Le mot de passe doit contenir au moins 8 caracteres.");
   }
 
   await assertPasswordNotLeaked(password);
 
-  const supabaseServer = await createSupabaseServerClient();
-  const userResult = await supabaseServer.auth.getUser();
-  if (userResult.error) {
-    if (isAuthSessionMissingError(userResult.error) || isPasswordResetSessionError(userResult.error)) {
-      throw new Error("password_reset_session_invalid");
-    }
-    failIfError(userResult.error, "auth.getUser(password reset)");
-  }
+  const tokenHash = input.tokenHash?.trim() ?? "";
+  const accessToken = input.accessToken?.trim() ?? "";
+  const refreshToken = input.refreshToken?.trim() ?? "";
+  const supabase = createSupabasePasswordResetClient();
 
-  const currentUser = userResult.data.user;
-  if (!currentUser) {
+  let email = "";
+  if (tokenHash) {
+    const verifyResult = await supabase.auth.verifyOtp({
+      token_hash: tokenHash,
+      type: "recovery",
+    });
+    if (verifyResult.error) {
+      if (isPasswordResetSessionError(verifyResult.error)) {
+        throw new Error("password_reset_session_invalid");
+      }
+      failIfError(verifyResult.error, "auth.verifyOtp(password reset)");
+    }
+
+    email = verifyResult.data.user?.email ?? verifyResult.data.session?.user?.email ?? "";
+  } else if (accessToken && refreshToken) {
+    const sessionResult = await supabase.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    });
+    if (sessionResult.error) {
+      if (isPasswordResetSessionError(sessionResult.error)) {
+        throw new Error("password_reset_session_invalid");
+      }
+      failIfError(sessionResult.error, "auth.setSession(password reset)");
+    }
+
+    email = sessionResult.data.user?.email ?? sessionResult.data.session?.user?.email ?? "";
+  } else {
     throw new Error("password_reset_session_invalid");
   }
 
-  const updateResult = await supabaseServer.auth.updateUser({ password });
+  const updateResult = await supabase.auth.updateUser({ password });
   if (updateResult.error) {
     if (isPasswordResetSessionError(updateResult.error)) {
       throw new Error("password_reset_session_invalid");
@@ -660,12 +681,12 @@ export async function resetSupabaseCustomerPassword(input: {
     failIfError(updateResult.error, "auth.updateUser(password reset)");
   }
 
-  const logoutResult = await supabaseServer.auth.signOut();
+  const logoutResult = await supabase.auth.signOut();
   if (logoutResult.error && !isAuthSessionMissingError(logoutResult.error)) {
     failIfError(logoutResult.error, "auth.signOut(password reset)");
   }
 
-  return { email: updateResult.data.user?.email ?? currentUser.email ?? "" };
+  return { email: updateResult.data.user?.email ?? email };
 }
 
 export async function getSupabaseCustomerById(customerId: string): Promise<PublicCustomer | null> {
@@ -798,7 +819,7 @@ export async function adminUpdateSupabaseCustomer(
     throw new Error("Date de naissance invalide.");
   }
   if (dateOfBirth && !isAtLeast18(dateOfBirth)) {
-    throw new Error("Ce site est rÃ©servÃ© aux personnes majeures (18+).");
+    throw new Error("Ce site est reserve aux personnes majeures (18+).");
   }
 
   const supabase = createSupabaseServiceClient();
@@ -889,7 +910,7 @@ export async function addSupabasePromoCode(
   if (insertResult.error) {
     const message = insertResult.error.message.toLowerCase();
     if (message.includes("duplicate")) {
-      throw new Error("Ce code promo existe dÃ©jÃ  pour ce client.");
+      throw new Error("Ce code promo existe deja pour ce client.");
     }
     throw new Error(insertResult.error.message);
   }
@@ -979,7 +1000,7 @@ export async function createTemporarySupabaseUserFromLegacy(input: {
   failIfError(createUser.error, "create temporary supabase user");
   const userId = createUser.data.user?.id;
   if (!userId) {
-    throw new Error("Impossible de crÃ©er l'utilisateur Supabase.");
+    throw new Error("Impossible de creer l'utilisateur Supabase.");
   }
 
   await ensureProfileRow({

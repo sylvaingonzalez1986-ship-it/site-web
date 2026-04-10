@@ -6,12 +6,18 @@ const {
   mockRejectOversizedBody,
   mockGetRequestIp,
   mockLogAuditEvent,
+  mockCookies,
 } = vi.hoisted(() => ({
   mockResetCustomerPasswordByBackend: vi.fn(),
   mockClearLegacyCustomerCookie: vi.fn(),
   mockRejectOversizedBody: vi.fn(),
   mockGetRequestIp: vi.fn(() => "127.0.0.1"),
   mockLogAuditEvent: vi.fn(),
+  mockCookies: vi.fn(async () => ({ getAll: () => [] })),
+}));
+
+vi.mock("next/headers", () => ({
+  cookies: mockCookies,
 }));
 
 vi.mock("@/lib/customer-backend", () => ({
@@ -37,6 +43,7 @@ describe("POST /api/account/password-reset/confirm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockRejectOversizedBody.mockReturnValue(null);
+    mockCookies.mockResolvedValue({ getAll: () => [] });
   });
 
   it("returns 400 when the password is too short", async () => {
@@ -55,6 +62,22 @@ describe("POST /api/account/password-reset/confirm", () => {
     expect(mockResetCustomerPasswordByBackend).not.toHaveBeenCalled();
   });
 
+  it("returns 401 when no recovery proof is provided", async () => {
+    const response = await POST(
+      new Request("https://example.test/api/account/password-reset/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: "ValidPass123!" }),
+      }),
+    );
+
+    expect(response.status).toBe(401);
+    await expect(response.json()).resolves.toEqual({
+      error: "Lien invalide ou expire. Redemande un nouvel email.",
+    });
+    expect(mockResetCustomerPasswordByBackend).not.toHaveBeenCalled();
+  });
+
   it("returns 401 when the recovery session is missing or expired", async () => {
     mockResetCustomerPasswordByBackend.mockRejectedValue(new Error("password_reset_session_invalid"));
 
@@ -62,7 +85,11 @@ describe("POST /api/account/password-reset/confirm", () => {
       new Request("https://example.test/api/account/password-reset/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: "ValidPass123!" }),
+        body: JSON.stringify({
+          password: "ValidPass123!",
+          accessToken: "access-token",
+          refreshToken: "refresh-token",
+        }),
       }),
     );
 
@@ -79,7 +106,11 @@ describe("POST /api/account/password-reset/confirm", () => {
       new Request("https://example.test/api/account/password-reset/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: "ValidPass123!" }),
+        body: JSON.stringify({
+          password: "ValidPass123!",
+          accessToken: "access-token",
+          refreshToken: "refresh-token",
+        }),
       }),
     );
 
@@ -87,6 +118,9 @@ describe("POST /api/account/password-reset/confirm", () => {
     await expect(response.json()).resolves.toEqual({ success: true });
     expect(mockResetCustomerPasswordByBackend).toHaveBeenCalledWith({
       password: "ValidPass123!",
+      accessToken: "access-token",
+      refreshToken: "refresh-token",
+      tokenHash: undefined,
     });
     expect(mockClearLegacyCustomerCookie).toHaveBeenCalledOnce();
     expect(mockLogAuditEvent).toHaveBeenCalledWith(

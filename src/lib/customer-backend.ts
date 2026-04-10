@@ -68,6 +68,9 @@ export async function requestCustomerPasswordResetByBackend(input: {
 
 export async function resetCustomerPasswordByBackend(input: {
   password: string;
+  tokenHash?: string;
+  accessToken?: string;
+  refreshToken?: string;
 }): Promise<{ email: string }> {
   return resetSupabaseCustomerPassword(input);
 }

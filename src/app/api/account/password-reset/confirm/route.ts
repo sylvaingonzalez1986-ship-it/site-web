@@ -1,4 +1,4 @@
-﻿import { cookies } from "next/headers";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
 import { rejectOversizedBody } from "@/lib/body-size-guard";
@@ -13,7 +13,14 @@ export async function POST(request: Request) {
 
     const payload = (await request.json()) as {
       password?: string;
+      tokenHash?: string;
+      accessToken?: string;
+      refreshToken?: string;
     };
+
+    const tokenHash = typeof payload.tokenHash === "string" ? payload.tokenHash.trim() : "";
+    const accessToken = typeof payload.accessToken === "string" ? payload.accessToken.trim() : "";
+    const refreshToken = typeof payload.refreshToken === "string" ? payload.refreshToken.trim() : "";
 
     if (typeof payload.password !== "string" || payload.password.length < 8) {
       return NextResponse.json(
@@ -22,8 +29,18 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!tokenHash && (!accessToken || !refreshToken)) {
+      return NextResponse.json(
+        { error: "Lien invalide ou expire. Redemande un nouvel email." },
+        { status: 401 },
+      );
+    }
+
     const result = await resetCustomerPasswordByBackend({
       password: payload.password,
+      tokenHash: tokenHash || undefined,
+      accessToken: accessToken || undefined,
+      refreshToken: refreshToken || undefined,
     });
     await clearLegacyCustomerCookie();
     const response = NextResponse.json({ success: true });
