@@ -192,7 +192,8 @@ export async function middleware(request: NextRequest) {
     pathname === "/api/account/login" ||
     pathname === "/api/account/register" ||
     pathname === "/api/account/logout" ||
-    pathname === "/api/account/password-reset/request";
+    pathname === "/api/account/password-reset/request" ||
+    pathname === "/api/account/password-reset/confirm";
   const isAgeGatePage = pathname === "/age-gate";
 
   if (isAgeGatePage && ageVerified && isDocumentNavigation) {
