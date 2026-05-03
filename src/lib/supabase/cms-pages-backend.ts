@@ -3,6 +3,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { normalizeCmsSlug } from "@/lib/cms-pages-slugs";
+import { sanitizeDisplayText } from "@/lib/text-encoding-repair";
 import { TUTORIAL_CMS_SLUG_PREFIX } from "@/lib/tutorial-cms-pages";
 import {
   CMS_PAGE_STATUS_VALUES,
@@ -70,7 +71,7 @@ function sanitizeText(value: unknown, maxLength: number): string {
     return "";
   }
 
-  return value.trim().slice(0, maxLength);
+  return sanitizeDisplayText(value).trim().slice(0, maxLength);
 }
 
 function toIsoString(value: unknown): string {

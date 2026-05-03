@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ClipboardEvent } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { defaultStore } from "@/data/default-store";
@@ -28,6 +28,7 @@ import {
   type ProductCultureType,
   type VatRate,
 } from "@/data/products";
+import { handleAdminTextPaste } from "@/lib/admin-text-input";
 import { BLOG_CATEGORY_LABELS } from "@/lib/blog-categories";
 import { canArchiveIncompleteOrder } from "@/lib/order-lifecycle";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
@@ -444,6 +445,15 @@ export function AdminPanel() {
     setStatus("Données chargées.");
   };
 
+  const handlePasteCapture = (event: ClipboardEvent<HTMLElement>) => {
+    handleAdminTextPaste(event, (replacementCount) => {
+      setStatus(
+        `Collage bloqué: ${replacementCount} caractère(s) � détecté(s). ` +
+          "Recopie le texte depuis une source UTF-8 propre avant de sauvegarder.",
+      );
+    });
+  };
+
   useEffect(() => {
     void loadStore();
   }, []);
@@ -506,12 +516,13 @@ export function AdminPanel() {
     try {
       const response = await fetch("/api/admin/store", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify(nextDraft),
       });
 
       if (!response.ok) {
-        setStatus("Erreur de sauvegarde.");
+        const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+        setStatus(payload?.error ?? "Erreur de sauvegarde.");
         return;
       }
 
@@ -1405,7 +1416,10 @@ export function AdminPanel() {
   };
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
+    <section
+      className="section-band bg-mint halftone-overlay paper-grain pt-32"
+      onPasteCapture={handlePasteCapture}
+    >
       <div className="retro-container grid gap-8">
         <div className="cartoon-border bg-cream p-6 md:p-8">
           <h1 className="section-title">ADMIN BOUTIQUE</h1>

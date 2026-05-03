@@ -1,6 +1,5 @@
 ﻿import "server-only";
 
-import { Buffer } from "node:buffer";
 import { defaultStore } from "@/data/default-store";
 import {
   PRODUCT_CULTURE_TYPES,
@@ -18,6 +17,7 @@ import { normalizeExternalUrl } from "@/lib/external-url";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { sanitizeOrderVatRate } from "@/lib/tax";
+import { sanitizeDisplayText, sanitizeNestedText } from "@/lib/text-encoding-repair";
 import {
   PRODUCER_CULTURE_TYPES,
   type BlogPost,
@@ -47,8 +47,6 @@ const validPaymentState = new Set<CmsStore["orders"][number]["paymentState"]>([
 ]);
 const validProducerCultureTypes = new Set<ProducerCultureType>(PRODUCER_CULTURE_TYPES);
 const validProductCultureTypes = new Set<ProductCultureType>(PRODUCT_CULTURE_TYPES);
-const MOJIBAKE_CHARS_REGEX = /[ÃƒÃ‚Ã¢ï¿½]/g;
-
 const SELECT_PRODUCERS_COLUMNS = [
   "id",
   "name",
@@ -187,46 +185,6 @@ function failIfError(error: { message: string } | null, context: string): void {
   if (error) {
     throw new Error(`[supabase:${context}] ${error.message}`);
   }
-}
-
-function repairLikelyMojibake(value: string): string {
-  const originalNoise = (value.match(MOJIBAKE_CHARS_REGEX) ?? []).length;
-  if (originalNoise === 0) {
-    return value;
-  }
-
-  try {
-    const repaired = Buffer.from(value, "latin1").toString("utf8");
-    const repairedNoise = (repaired.match(MOJIBAKE_CHARS_REGEX) ?? []).length;
-    return repairedNoise < originalNoise ? repaired : value;
-  } catch {
-    return value;
-  }
-}
-
-function sanitizeDisplayText(value: unknown, fallback = ""): string {
-  const text = typeof value === "string" ? value : fallback;
-  return repairLikelyMojibake(text);
-}
-
-function sanitizeNestedText<T>(value: T): T {
-  if (typeof value === "string") {
-    return repairLikelyMojibake(value) as T;
-  }
-
-  if (Array.isArray(value)) {
-    return value.map((item) => sanitizeNestedText(item)) as T;
-  }
-
-  if (value && typeof value === "object") {
-    const entries = Object.entries(value as Record<string, unknown>).map(([key, item]) => [
-      key,
-      sanitizeNestedText(item),
-    ]);
-    return Object.fromEntries(entries) as T;
-  }
-
-  return value;
 }
 
 function toNumber(value: unknown, fallback = 0): number {
@@ -1114,12 +1072,12 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
 
   const contentRow = {
     id: 1,
-    home: nextStore.content.home,
-    boutique: nextStore.content.boutique,
-    application: nextStore.content.application,
-    blog: nextStore.content.blog,
-    profile: nextStore.content.profile,
-    footer: nextStore.content.footer,
+    home: sanitizeNestedText(nextStore.content.home),
+    boutique: sanitizeNestedText(nextStore.content.boutique),
+    application: sanitizeNestedText(nextStore.content.application),
+    blog: sanitizeNestedText(nextStore.content.blog),
+    profile: sanitizeNestedText(nextStore.content.profile),
+    footer: sanitizeNestedText(nextStore.content.footer),
     updated_at: new Date().toISOString(),
   };
   const upsertContent = await supabase.from("site_content").upsert(contentRow, { onConflict: "id" });

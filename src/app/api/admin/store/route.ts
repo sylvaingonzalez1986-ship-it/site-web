@@ -12,6 +12,7 @@ import { cleanupUnusedProductAnalyses } from "@/lib/product-analysis-storage";
 import { cleanupUnusedProductUploads } from "@/lib/product-image-storage";
 import { cleanupUnusedProductVideoUploads } from "@/lib/product-video-storage";
 import { cleanupUnusedProducerUploads } from "@/lib/producer-image-storage";
+import { countReplacementCharacters } from "@/lib/text-encoding-repair";
 import type { CmsStore } from "@/types/store";
 
 export const runtime = "nodejs";
@@ -48,6 +49,23 @@ export async function PUT(request: Request) {
 
   try {
     const payload = (await request.json()) as CmsStore;
+    const replacementCharacterCount = countReplacementCharacters({
+      blog: payload.blog,
+      content: payload.content,
+      producers: payload.producers,
+      products: payload.products,
+    });
+    if (replacementCharacterCount > 0) {
+      return NextResponse.json(
+        {
+          error:
+            `Texte invalide: ${replacementCharacterCount} caractère(s) � détecté(s). ` +
+            "Ces caractères indiquent que les accents sont déjà perdus avant sauvegarde.",
+        },
+        { status: 400 },
+      );
+    }
+
     const current = await readStoreByBackend();
     const incomingProducts = Array.isArray(payload.products) ? payload.products : [];
     const editableProducts = incomingProducts.filter(
