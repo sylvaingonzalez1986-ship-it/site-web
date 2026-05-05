@@ -209,7 +209,7 @@ async function getOrderItemsByOrderId(orderId: string): Promise<OrderItem[]> {
 
 async function getOrderByFilterFromSupabase(input: {
   orderId?: string;
-  vivaOrderCode?: number;
+  vivaOrderCode?: string | number;
 }): Promise<CmsOrder | null> {
   const supabase = createSupabaseServiceClient();
   let query = supabase.from("orders").select(SELECT_ORDERS_COLUMNS);
@@ -218,8 +218,9 @@ async function getOrderByFilterFromSupabase(input: {
     query = query.eq("id", input.orderId);
   }
 
-  if (Number.isFinite(input.vivaOrderCode)) {
-    query = query.eq("viva_order_code", Math.floor(input.vivaOrderCode as number));
+  const vivaOrderCode = normalizeVivaOrderCode(input.vivaOrderCode);
+  if (vivaOrderCode) {
+    query = query.eq("viva_order_code", vivaOrderCode);
   }
 
   const orderResult = await query.maybeSingle();
@@ -254,6 +255,34 @@ async function findOrderById(orderId: string): Promise<CmsOrder | null> {
 
 export async function getOrderByIdInSupabase(orderId: string): Promise<CmsOrder | null> {
   return findOrderById(orderId);
+}
+
+function normalizeVivaOrderCode(value: string | number | undefined): string | null {
+  if (typeof value === "number") {
+    if (!Number.isFinite(value) || value <= 0) {
+      return null;
+    }
+
+    return String(Math.floor(value));
+  }
+
+  const text = value?.trim() ?? "";
+  if (!/^\d{1,32}$/.test(text)) {
+    return null;
+  }
+
+  return text.replace(/^0+(?=\d)/, "");
+}
+
+export async function getOrderByVivaOrderCodeInSupabase(
+  orderCode: string | number,
+): Promise<CmsOrder | null> {
+  const safeOrderCode = normalizeVivaOrderCode(orderCode);
+  if (!safeOrderCode) {
+    return null;
+  }
+
+  return getOrderByFilterFromSupabase({ vivaOrderCode: safeOrderCode });
 }
 
 export async function listCustomerOrdersForLoyaltyInSupabase(input: {
@@ -312,12 +341,13 @@ export async function listCustomerOrdersForLoyaltyInSupabase(input: {
   return orders;
 }
 
-async function findOrderByVivaOrderCode(orderCode: number): Promise<CmsOrder | null> {
-  if (!Number.isFinite(orderCode) || orderCode <= 0) {
+async function findOrderByVivaOrderCode(orderCode: string | number): Promise<CmsOrder | null> {
+  const safeOrderCode = normalizeVivaOrderCode(orderCode);
+  if (!safeOrderCode) {
     return null;
   }
 
-  return getOrderByFilterFromSupabase({ vivaOrderCode: orderCode });
+  return getOrderByFilterFromSupabase({ vivaOrderCode: safeOrderCode });
 }
 
 function computeNextStatusFromPaymentState(

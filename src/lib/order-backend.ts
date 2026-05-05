@@ -5,6 +5,7 @@ import {
   applyOrderLoyaltyBonusInSupabase,
   archiveIncompleteOrderInSupabase,
   appendOrderToSupabase,
+  getOrderByVivaOrderCodeInSupabase,
   getOrderByIdInSupabase,
   listCustomerOrdersForLoyaltyInSupabase,
   updateOrderAdminFieldsInSupabase,
@@ -27,6 +28,12 @@ export async function updateOrderStatusByBackend(
 
 export async function getOrderByIdByBackend(orderId: string): Promise<CmsOrder | null> {
   return getOrderByIdInSupabase(orderId);
+}
+
+export async function getOrderByVivaOrderCodeByBackend(
+  orderCode: string | number,
+): Promise<CmsOrder | null> {
+  return getOrderByVivaOrderCodeInSupabase(orderCode);
 }
 
 export async function getCustomerOrdersForLoyaltyByBackend(input: {
