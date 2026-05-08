@@ -86,6 +86,16 @@ function writeStoredPopupState(value: StoredPopupState) {
   window.localStorage.setItem(POPUP_STORAGE_KEY, JSON.stringify(value));
 }
 
+function isPaymentReturnPath(pathname: string): boolean {
+  return (
+    pathname.startsWith("/paiement") ||
+    pathname.startsWith("/checkout") ||
+    pathname.startsWith("/payment") ||
+    pathname === "/success" ||
+    pathname === "/failure"
+  );
+}
+
 export function NewProductsPopup() {
   const { store, loading } = useCmsStore();
   const pathname = usePathname();
@@ -118,7 +128,12 @@ export function NewProductsPopup() {
   useBodyScrollLock(open);
 
   useEffect(() => {
-    if (loading || pathname.startsWith("/admin") || featuredProducts.length === 0) {
+    if (
+      loading ||
+      pathname.startsWith("/admin") ||
+      isPaymentReturnPath(pathname) ||
+      featuredProducts.length === 0
+    ) {
       return;
     }
 

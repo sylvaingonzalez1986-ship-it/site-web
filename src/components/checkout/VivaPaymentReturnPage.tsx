@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { VivaPaymentReturnEffects } from "@/components/checkout/VivaPaymentReturnEffects";
 import { getOrderByVivaOrderCodeByBackend } from "@/lib/order-backend";
 import { formatPrice } from "@/lib/utils";
@@ -18,6 +17,9 @@ type PaymentCopy = {
   toneClassName: string;
   statusLabel: string;
 };
+
+const paymentReturnActionClassName =
+  "btn-cartoon inline-flex min-h-[48px] items-center justify-center px-5 text-center";
 
 function firstParam(value: string | string[] | undefined): string {
   if (Array.isArray(value)) {
@@ -199,12 +201,22 @@ export async function VivaPaymentReturnPage({
           )}
 
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/profil" className="btn-cartoon btn-primary">
-              Voir mon profil
-            </Link>
-            <Link href="/boutique" className="btn-cartoon btn-secondary">
-              Retour boutique
-            </Link>
+            <form action="/profil" method="get">
+              <button
+                type="submit"
+                className={`${paymentReturnActionClassName} btn-primary cursor-pointer`}
+              >
+                Voir mon profil
+              </button>
+            </form>
+            <form action="/boutique" method="get">
+              <button
+                type="submit"
+                className={`${paymentReturnActionClassName} btn-secondary cursor-pointer`}
+              >
+                Retour boutique
+              </button>
+            </form>
           </div>
         </div>
       </div>
