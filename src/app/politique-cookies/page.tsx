@@ -127,9 +127,9 @@ export default function PolitiqueCookiesPage() {
             <section>
               <h2 className="font-display text-2xl">Article 5 - Mesure d&apos;audience</h2>
               <p className="mt-2">
-                A ce jour, aucune mesure d&apos;audience non necessaire n&apos;est activee sans votre
-                accord. Si des statistiques de visite sont activees, elles ne le seront qu&apos;apres
-                consentement a la categorie analytique.
+                La mesure d&apos;audience est assuree par Vercel Analytics uniquement apres votre
+                consentement a la categorie analytique. L&apos;ancien suivi local en base Supabase
+                n&apos;est plus utilise.
               </p>
               <p className="mt-2">
                 Vous pouvez accepter, refuser ou personnaliser vos preferences depuis le modal de

@@ -1,19 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, Shrikhand, Space_Grotesk } from "next/font/google";
 import { headers } from "next/headers";
-import { Suspense } from "react";
 import { Footer } from "@/components/Footer";
 import {
   LocalBusinessJsonLd,
   OrganizationJsonLd,
   WebSiteJsonLd,
 } from "@/components/JsonLd";
-import { LocalAnalyticsTracker } from "@/components/LocalAnalyticsTracker";
 import { NewProductsPopup } from "@/components/NewProductsPopup";
 import { Navbar } from "@/components/Navbar";
 import { SupabaseRecoveryRedirect } from "@/components/SupabaseRecoveryRedirect";
 import { CookieConsentProvider } from "@/components/cookies/CookieConsentProvider";
 import { TutorialProvider } from "@/components/tutorial/TutorialProvider";
+import { VercelAnalytics } from "@/components/VercelAnalytics";
 import { WebVitals } from "@/components/WebVitals";
 import { CartProvider } from "@/context/CartContext";
 import "./globals.css";
@@ -167,9 +166,7 @@ export default async function RootLayout({
         <CartProvider>
           <CookieConsentProvider>
             <SupabaseRecoveryRedirect />
-            <Suspense fallback={null}>
-              <LocalAnalyticsTracker />
-            </Suspense>
+            <VercelAnalytics />
             <TutorialProvider>
               <div className="site-background min-h-screen">
                 <Navbar />
