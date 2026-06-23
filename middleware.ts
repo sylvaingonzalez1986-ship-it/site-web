@@ -127,6 +127,7 @@ function shouldEnforceAgeGate(pathname: string): boolean {
     pathname === "/profil" ||
     pathname.startsWith("/compte") ||
     pathname.startsWith("/application") ||
+    pathname.startsWith("/bete-de-concours") ||
     pathname.startsWith("/boutique") ||
     pathname.startsWith("/blog")
   );
@@ -185,6 +186,7 @@ export async function middleware(request: NextRequest) {
 
   const isProfilePage = pathname === "/profil";
   const isCustomerApi = pathname.startsWith("/api/account");
+  const isContestApi = pathname.startsWith("/api/contest");
   const isAuthCallbackApi = pathname === "/api/auth/callback";
   const isCheckoutApi = pathname.startsWith("/api/checkout");
   const isCheckoutWebhookApi = pathname === "/api/checkout/viva/webhook";
@@ -217,6 +219,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 });
   }
   if (isCustomerApi && MUTATIVE_METHODS.has(request.method) && !isValidOrigin(request)) {
+    return NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 });
+  }
+  if (isContestApi && MUTATIVE_METHODS.has(request.method) && !isValidOrigin(request)) {
     return NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 });
   }
   if (

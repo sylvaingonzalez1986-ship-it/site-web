@@ -214,6 +214,7 @@ function normalizeCustomer(input: Partial<Customer>): Customer {
       0,
       Number.isFinite(input.loyaltyPointsSpent) ? Math.round(Number(input.loyaltyPointsSpent)) : 0,
     ),
+    contestBetaEnabled: input.contestBetaEnabled === true,
     promoCodes,
     passwordHash: typeof input.passwordHash === "string" ? input.passwordHash : "",
     passwordSalt: typeof input.passwordSalt === "string" ? input.passwordSalt : "",
@@ -263,6 +264,7 @@ function toPublicCustomer(customer: Customer): PublicCustomer {
     country: customer.country,
     loyaltyPoints: customer.loyaltyPoints,
     loyaltyPointsSpent: customer.loyaltyPointsSpent,
+    contestBetaEnabled: customer.contestBetaEnabled,
     promoCodes: customer.promoCodes,
     createdAt: customer.createdAt,
   };
@@ -361,6 +363,7 @@ export async function createCustomer(input: {
       notes: "",
       loyaltyPoints: 0,
       loyaltyPointsSpent: 0,
+      contestBetaEnabled: false,
       promoCodes: [],
       passwordHash,
       passwordSalt: salt,
@@ -464,6 +467,7 @@ export async function updateCustomerProfile(
     country: updated.country,
     loyaltyPoints: updated.loyaltyPoints,
     loyaltyPointsSpent: updated.loyaltyPointsSpent,
+    contestBetaEnabled: updated.contestBetaEnabled,
     promoCodes: updated.promoCodes,
     createdAt: updated.createdAt,
   };
@@ -482,6 +486,7 @@ export async function adminUpdateCustomer(
     country?: string;
     notes?: string;
     loyaltyPoints?: number;
+    contestBetaEnabled?: boolean;
   },
 ): Promise<AdminCustomer | null> {
   if (!customerId) {
@@ -522,6 +527,10 @@ export async function adminUpdateCustomer(
           typeof input.loyaltyPoints === "number"
             ? input.loyaltyPoints
             : customer.loyaltyPoints,
+        contestBetaEnabled:
+          typeof input.contestBetaEnabled === "boolean"
+            ? input.contestBetaEnabled
+            : customer.contestBetaEnabled,
       });
 
       return updated;

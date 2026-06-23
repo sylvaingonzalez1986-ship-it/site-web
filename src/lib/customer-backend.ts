@@ -125,6 +125,7 @@ export async function adminUpdateCustomerByBackend(
     country?: string;
     notes?: string;
     loyaltyPoints?: number;
+    contestBetaEnabled?: boolean;
   },
 ): Promise<AdminCustomer | null> {
   return adminUpdateSupabaseCustomer(customerId, input);

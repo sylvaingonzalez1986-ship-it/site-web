@@ -1,0 +1,5 @@
+export const CONTEST_SCORE_MIN = 1;
+export const CONTEST_SCORE_MAX = 100;
+export const CONTEST_SCORE_DEFAULT = 70;
+export const CONTEST_SCORE_STRONG_THRESHOLD = 85;
+export const CONTEST_SCORE_RARITY_DOTS = 5;

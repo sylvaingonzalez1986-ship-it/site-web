@@ -20,6 +20,7 @@ export type Customer = {
   notes: string;
   loyaltyPoints: number;
   loyaltyPointsSpent: number;
+  contestBetaEnabled: boolean;
   promoCodes: PromoCode[];
   passwordHash: string;
   passwordSalt: string;
@@ -39,6 +40,7 @@ export type PublicCustomer = {
   country: string;
   loyaltyPoints: number;
   loyaltyPointsSpent: number;
+  contestBetaEnabled: boolean;
   promoCodes: PromoCode[];
   referralCode?: string;
   referredByCode?: string;

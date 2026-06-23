@@ -19,8 +19,16 @@ const CartDrawer = dynamic(
 const baseLinks = [
   { href: "/", label: "Accueil" },
   { href: "/boutique", label: "Boutique" },
+  { href: "/bete-de-concours", label: "Concours" },
   { href: "/blog", label: "Blog" },
 ];
+
+function isExplicitlyEnabled(raw: string | undefined): boolean {
+  const normalized = raw?.trim().toLowerCase();
+  return normalized === "1" || normalized === "true" || normalized === "on" || normalized === "yes";
+}
+
+const contestBetaAccessRestricted = isExplicitlyEnabled(process.env.NEXT_PUBLIC_CONTEST_BETA_ACCESS_ENABLED);
 
 export function Navbar() {
   const { totalItems, user, loyalty, hasWelcomePack, sessionLoading } = useCart();
@@ -51,8 +59,15 @@ export function Navbar() {
   );
 
   const links = useMemo(() => {
+    const canSeeContestLink =
+      !contestBetaAccessRestricted ||
+      user?.contestBetaEnabled === true ||
+      isAllowedAdminEmail(user?.email);
+    const visibleBaseLinks = canSeeContestLink
+      ? baseLinks
+      : baseLinks.filter((link) => link.href !== "/bete-de-concours");
     const merged = [
-      ...baseLinks,
+      ...visibleBaseLinks,
       { href: "/profil/collection", label: "Mon album" },
       ...cmsNavLinks,
       ...(isAllowedAdminEmail(user?.email) ? [{ href: "/application", label: "App" }] : []),

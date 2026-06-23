@@ -21,6 +21,7 @@ type AdminCustomerListItem = {
   ordersCount: number;
   totalSpent: number;
   loyaltyPoints: number;
+  contestBetaEnabled: boolean;
   currentBadge: LoyaltySummary["currentBadge"];
 };
 
@@ -98,6 +99,7 @@ export function AdminCustomersPanel() {
   const [country, setCountry] = useState("France");
   const [notes, setNotes] = useState("");
   const [loyaltyPoints, setLoyaltyPoints] = useState("0");
+  const [contestBetaEnabled, setContestBetaEnabled] = useState(false);
 
   const loadCustomers = async () => {
     setLoadingList(true);
@@ -181,6 +183,7 @@ export function AdminCustomersPanel() {
     setCountry(detail.customer.country || "France");
     setNotes(detail.customer.notes);
     setLoyaltyPoints(String(detail.customer.loyaltyPoints));
+    setContestBetaEnabled(detail.customer.contestBetaEnabled);
   }, [detail]);
 
   const filteredCustomers = useMemo(() => {
@@ -233,6 +236,7 @@ export function AdminCustomersPanel() {
           country,
           notes,
           loyaltyPoints: Number(loyaltyPoints),
+          contestBetaEnabled,
         }),
       });
 
@@ -402,6 +406,15 @@ export function AdminCustomersPanel() {
                   onChange={(event) => setLoyaltyPoints(event.target.value)}
                   placeholder="Points bonus"
                 />
+                <label className="flex min-h-11 items-center gap-3 border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-2 text-sm font-semibold text-ink">
+                  <input
+                    type="checkbox"
+                    className="h-5 w-5 accent-[#118575]"
+                    checked={contestBetaEnabled}
+                    onChange={(event) => setContestBetaEnabled(event.target.checked)}
+                  />
+                  Acces beta Bete de concours
+                </label>
               </div>
 
               <div className="mt-4 flex flex-wrap gap-3 text-sm text-charcoal">
@@ -409,6 +422,9 @@ export function AdminCustomersPanel() {
                 <span className="pill-cartoon px-3 py-1">Points bonus: {detail.loyalty.bonusPoints}</span>
                 <span className="pill-cartoon px-3 py-1">Total: {detail.loyalty.totalPoints}</span>
                 <span className="pill-cartoon px-3 py-1">Commandes: {detail.orders.length}</span>
+                {detail.customer.contestBetaEnabled ? (
+                  <span className="pill-cartoon bg-yellow px-3 py-1 text-ink">Beta concours active</span>
+                ) : null}
               </div>
 
               <button type="submit" disabled={saving} className="btn-cartoon btn-primary mt-4">
@@ -634,6 +650,11 @@ export function AdminCustomersPanel() {
                   </p>
                   <p className="truncate text-sm text-charcoal">{customer.email}</p>
                 </div>
+                {customer.contestBetaEnabled ? (
+                  <span className="rounded-full border-2 border-[#1a1a1a] bg-yellow px-3 py-1 text-xs font-black uppercase tracking-[0.08em] text-ink">
+                    Beta concours
+                  </span>
+                ) : null}
                 <div className="flex items-center gap-2">
                   <LoyaltyBadgeIllustration
                     badgeId={customer.currentBadge.id}

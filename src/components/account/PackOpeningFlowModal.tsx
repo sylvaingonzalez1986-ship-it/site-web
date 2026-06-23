@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { PackOpeningAnimation } from "@/components/lottery/PackOpeningAnimation";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { LotteryTicket, ScratchResult } from "@/types/lottery";
@@ -9,9 +10,10 @@ type PackOpeningFlowModalProps = {
   ticket: LotteryTicket | null;
   onClose: () => void;
   onOpen: (ticketId: string) => Promise<ScratchResult>;
+  inline?: boolean;
 };
 
-export function PackOpeningFlowModal({ ticket, onClose, onOpen }: PackOpeningFlowModalProps) {
+export function PackOpeningFlowModal({ ticket, onClose, onOpen, inline = false }: PackOpeningFlowModalProps) {
   useBodyScrollLock(Boolean(ticket));
 
   useEffect(() => {
@@ -25,8 +27,12 @@ export function PackOpeningFlowModal({ ticket, onClose, onOpen }: PackOpeningFlo
 
   if (!ticket) return null;
 
-  return (
-    <div className="fixed inset-0 z-[220] bg-black">
+  const modalClassName = inline
+    ? "contest-pack-opening-modal contest-pack-opening-modal-inline"
+    : "contest-pack-opening-modal contest-pack-opening-modal-global";
+
+  const modal = (
+    <div className={modalClassName}>
       {/* Close — always visible */}
       <button
         type="button"
@@ -45,4 +51,12 @@ export function PackOpeningFlowModal({ ticket, onClose, onOpen }: PackOpeningFlo
       />
     </div>
   );
+
+  if (inline) {
+    return modal;
+  }
+
+  if (typeof document === "undefined") return null;
+
+  return createPortal(modal, document.body);
 }

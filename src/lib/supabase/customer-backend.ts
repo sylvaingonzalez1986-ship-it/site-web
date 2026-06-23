@@ -45,10 +45,23 @@ const SELECT_PROMO_CODE_COLUMNS = [
   "used_at",
 ].join(",");
 
+const SELECT_CONTEST_BETA_TESTER_COLUMNS = [
+  "customer_id",
+  "enabled",
+].join(",");
+
 function failIfError(error: { message: string } | null, context: string): void {
   if (error) {
     throw new Error(`[supabase:${context}] ${error.message}`);
   }
+}
+
+function isMissingContestBetaTableError(error: { message: string } | null): boolean {
+  const message = error?.message.toLowerCase() ?? "";
+  return (
+    message.includes("contest_beta_testers") &&
+    (message.includes("does not exist") || message.includes("schema cache"))
+  );
 }
 
 function isAuthSessionMissingError(error: { message: string } | null): boolean {
@@ -253,6 +266,7 @@ function mapProfileToPublicCustomer(
   profile: ProfileRow,
   email: string,
   promoCodes: PromoCode[],
+  contestBetaEnabled = false,
 ): PublicCustomer {
   return {
     id: profile.id,
@@ -269,6 +283,7 @@ function mapProfileToPublicCustomer(
     loyaltyPointsSpent: Number.isFinite(profile.loyalty_points_spent)
       ? Math.max(0, Math.round(profile.loyalty_points_spent))
       : 0,
+    contestBetaEnabled,
     promoCodes,
     referralCode:
       typeof profile.referral_code === "string" ? profile.referral_code.trim().toUpperCase() : undefined,
@@ -297,9 +312,10 @@ function mapProfileToAdminCustomer(
   profile: ProfileRow,
   email: string,
   promoCodes: PromoCode[],
+  contestBetaEnabled = false,
 ): AdminCustomer {
   return {
-    ...mapProfileToPublicCustomer(profile, email, promoCodes),
+    ...mapProfileToPublicCustomer(profile, email, promoCodes, contestBetaEnabled),
     notes: typeof profile.notes === "string" ? profile.notes : "",
   };
 }
@@ -407,6 +423,68 @@ async function loadPromoCodesByCustomerIds(customerIds: string[]): Promise<Map<s
   return map;
 }
 
+async function loadContestBetaTesterEnabled(customerId: string): Promise<boolean> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("contest_beta_testers")
+    .select(SELECT_CONTEST_BETA_TESTER_COLUMNS)
+    .eq("customer_id", customerId)
+    .maybeSingle();
+  if (isMissingContestBetaTableError(result.error)) {
+    return false;
+  }
+  failIfError(result.error, "select contest beta tester");
+
+  const row = result.data as unknown as Record<string, unknown> | null;
+  return row?.enabled === true;
+}
+
+async function loadContestBetaTesterMap(customerIds: string[]): Promise<Map<string, boolean>> {
+  const map = new Map<string, boolean>();
+  if (customerIds.length === 0) {
+    return map;
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("contest_beta_testers")
+    .select(SELECT_CONTEST_BETA_TESTER_COLUMNS)
+    .in("customer_id", customerIds);
+  if (isMissingContestBetaTableError(result.error)) {
+    return map;
+  }
+  failIfError(result.error, "select contest beta testers");
+
+  for (const rawRow of result.data ?? []) {
+    const row = rawRow as unknown as Record<string, unknown>;
+    const customerId = typeof row.customer_id === "string" ? row.customer_id : "";
+    if (!customerId) {
+      continue;
+    }
+    map.set(customerId, row.enabled === true);
+  }
+
+  return map;
+}
+
+async function setContestBetaTesterEnabled(customerId: string, enabled: boolean): Promise<void> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase
+    .from("contest_beta_testers")
+    .upsert(
+      {
+        customer_id: customerId,
+        enabled,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "customer_id" },
+    );
+  if (isMissingContestBetaTableError(result.error)) {
+    throw new Error("Migration contest_beta_testers manquante.");
+  }
+  failIfError(result.error, "upsert contest beta tester");
+}
+
 export async function getCurrentSupabaseSessionCustomer(): Promise<{
   customerId: string;
   customer: PublicCustomer;
@@ -427,7 +505,8 @@ export async function getCurrentSupabaseSessionCustomer(): Promise<{
 
   const profile = await ensureProfileRow({ userId: user.id });
   const promoCodes = await loadPromoCodes(user.id);
-  const customer = mapProfileToPublicCustomer(profile, user.email ?? "", promoCodes);
+  const contestBetaEnabled = await loadContestBetaTesterEnabled(user.id);
+  const customer = mapProfileToPublicCustomer(profile, user.email ?? "", promoCodes, contestBetaEnabled);
   return { customerId: user.id, customer };
 }
 
@@ -460,7 +539,8 @@ export async function loginSupabaseCustomer(input: {
   const user = loginResult.data.user;
   const profile = await ensureProfileRow({ userId: user.id });
   const promoCodes = await loadPromoCodes(user.id);
-  const customer = mapProfileToPublicCustomer(profile, user.email ?? email, promoCodes);
+  const contestBetaEnabled = await loadContestBetaTesterEnabled(user.id);
+  const customer = mapProfileToPublicCustomer(profile, user.email ?? email, promoCodes, contestBetaEnabled);
   return { customer, customerId: user.id };
 }
 
@@ -711,7 +791,13 @@ export async function getSupabaseCustomerById(customerId: string): Promise<Publi
   const email = userResult.data.user?.email ?? "";
 
   const promoCodes = await loadPromoCodes(safeId);
-  return mapProfileToPublicCustomer(profileResult.data as unknown as ProfileRow, email, promoCodes);
+  const contestBetaEnabled = await loadContestBetaTesterEnabled(safeId);
+  return mapProfileToPublicCustomer(
+    profileResult.data as unknown as ProfileRow,
+    email,
+    promoCodes,
+    contestBetaEnabled,
+  );
 }
 
 export async function getSupabaseCustomerByIdFull(customerId: string): Promise<AdminCustomer | null> {
@@ -736,7 +822,13 @@ export async function getSupabaseCustomerByIdFull(customerId: string): Promise<A
   const email = userResult.data.user?.email ?? "";
 
   const promoCodes = await loadPromoCodes(safeId);
-  return mapProfileToAdminCustomer(profileResult.data as unknown as ProfileRow, email, promoCodes);
+  const contestBetaEnabled = await loadContestBetaTesterEnabled(safeId);
+  return mapProfileToAdminCustomer(
+    profileResult.data as unknown as ProfileRow,
+    email,
+    promoCodes,
+    contestBetaEnabled,
+  );
 }
 
 export async function getAllSupabaseCustomers(): Promise<AdminCustomer[]> {
@@ -749,7 +841,10 @@ export async function getAllSupabaseCustomers(): Promise<AdminCustomer[]> {
 
   const profiles = (profilesResult.data ?? []) as unknown as ProfileRow[];
   const ids = profiles.map((profile) => profile.id);
-  const promoById = await loadPromoCodesByCustomerIds(ids);
+  const [promoById, contestBetaById] = await Promise.all([
+    loadPromoCodesByCustomerIds(ids),
+    loadContestBetaTesterMap(ids),
+  ]);
 
   const listUsersResult = await supabase.auth.admin.listUsers();
   failIfError(listUsersResult.error, "auth.admin.listUsers");
@@ -766,6 +861,7 @@ export async function getAllSupabaseCustomers(): Promise<AdminCustomer[]> {
       profile,
       emailById.get(profile.id) ?? "",
       promoById.get(profile.id) ?? [],
+      contestBetaById.get(profile.id) === true,
     ),
   );
 }
@@ -806,6 +902,7 @@ export async function adminUpdateSupabaseCustomer(
     country?: string;
     notes?: string;
     loyaltyPoints?: number;
+    contestBetaEnabled?: boolean;
   },
 ): Promise<AdminCustomer | null> {
   const safeId = customerId.trim();
@@ -855,7 +952,12 @@ export async function adminUpdateSupabaseCustomer(
     patch.loyalty_points = sanitizeLoyaltyBonus(input.loyaltyPoints);
   }
 
+  const shouldUpdateContestBeta = typeof input.contestBetaEnabled === "boolean";
+
   if (Object.keys(patch).length === 0) {
+    if (shouldUpdateContestBeta) {
+      await setContestBetaTesterEnabled(safeId, input.contestBetaEnabled === true);
+    }
     return getSupabaseCustomerByIdFull(safeId);
   }
 
@@ -874,8 +976,12 @@ export async function adminUpdateSupabaseCustomer(
   failIfError(userResult.error, "auth.admin.getUserById");
   const email = userResult.data.user?.email ?? "";
   const promoCodes = await loadPromoCodes(safeId);
+  if (shouldUpdateContestBeta) {
+    await setContestBetaTesterEnabled(safeId, input.contestBetaEnabled === true);
+  }
+  const contestBetaEnabled = await loadContestBetaTesterEnabled(safeId);
 
-  return mapProfileToAdminCustomer(updateResult.data as unknown as ProfileRow, email, promoCodes);
+  return mapProfileToAdminCustomer(updateResult.data as unknown as ProfileRow, email, promoCodes, contestBetaEnabled);
 }
 
 export async function addSupabasePromoCode(

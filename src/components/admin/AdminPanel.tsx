@@ -49,6 +49,16 @@ import {
 const productCategoryOptions = Object.keys(categoryLabels) as ProductCategory[];
 const blogCategoryOptions = [...BLOG_CATEGORY_OPTIONS];
 
+function isExplicitlyEnabled(raw: string | undefined): boolean {
+  const normalized = raw?.trim().toLowerCase();
+  return normalized === "1" || normalized === "true" || normalized === "on" || normalized === "yes";
+}
+
+const contestAdminEnabled =
+  isExplicitlyEnabled(process.env.NEXT_PUBLIC_CONTEST_FEATURE_ENABLED) &&
+  (process.env.NODE_ENV !== "production" ||
+    isExplicitlyEnabled(process.env.NEXT_PUBLIC_CONTEST_FEATURE_ALLOW_PRODUCTION));
+
 const AdminPanelLoading = () => (
   <div className="cartoon-border bg-cream p-8">
     <div className="h-8 w-1/3 animate-pulse rounded bg-[#e8e3da]" />
@@ -60,6 +70,7 @@ const AdminPagesPanel = dynamic(() => import("@/components/admin/AdminPagesPanel
 const AdminCustomersPanel = dynamic(() => import("@/components/admin/AdminCustomersPanel").then((m) => m.AdminCustomersPanel), { loading: AdminPanelLoading });
 const AdminReferralsPanel = dynamic(() => import("@/components/admin/AdminReferralsPanel").then((m) => m.AdminReferralsPanel), { loading: AdminPanelLoading });
 const AdminBlogCommentsPanel = dynamic(() => import("@/components/admin/AdminBlogCommentsPanel").then((m) => m.AdminBlogCommentsPanel), { loading: AdminPanelLoading });
+const AdminContestPanel = dynamic(() => import("@/components/admin/AdminContestPanel").then((m) => m.AdminContestPanel), { loading: AdminPanelLoading });
 const AdminMissionsPanel = dynamic(() => import("@/components/admin/AdminMissionsPanel").then((m) => m.AdminMissionsPanel), { loading: AdminPanelLoading });
 const AdminLotteryPanel = dynamic(() => import("@/components/admin/AdminLotteryPanel").then((m) => m.AdminLotteryPanel), { loading: AdminPanelLoading });
 const AdminNewsletterPanel = dynamic(() => import("@/components/admin/AdminNewsletterPanel").then((m) => m.AdminNewsletterPanel), { loading: AdminPanelLoading });
@@ -115,6 +126,7 @@ type AdminTab =
   | "loterie"
   | "newsletter"
   | "printful"
+  | "concours"
   | "produits"
   | "copains"
   | "blog"
@@ -131,6 +143,7 @@ const adminTabs: AdminTab[] = [
   "loterie",
   "newsletter",
   "printful",
+  ...(contestAdminEnabled ? (["concours"] as const) : []),
   "produits",
   "copains",
   "blog",
@@ -148,6 +161,7 @@ const tabLabels: Record<AdminTab, string> = {
   loterie: "Loterie",
   newsletter: "Newsletter",
   printful: "Printful",
+  concours: "Bete de concours",
   produits: "Mes Produits",
   copains: "Coin des Copains",
   blog: "Blog",
@@ -1464,6 +1478,10 @@ export function AdminPanel() {
         )}
 
         {activeTab === "pages" && <AdminPagesPanel />}
+
+        {activeTab === "concours" && (
+          <AdminContestPanel products={draft.products} producers={draft.producers} />
+        )}
 
         {activeTab === "commandes" && (
         <div className="cartoon-border bg-cream p-6 md:p-8">

@@ -16,6 +16,7 @@ type CustomerPatchPayload = {
   country?: string;
   notes?: string;
   loyaltyPoints?: number;
+  contestBetaEnabled?: boolean;
 };
 
 async function buildCustomerDetail(customerId: string) {

@@ -33,6 +33,7 @@ export async function GET() {
       ordersCount: orders.length,
       totalSpent: Number(orders.reduce((sum, order) => sum + order.totalAmount, 0).toFixed(2)),
       loyaltyPoints: loyalty.points,
+      contestBetaEnabled: customer.contestBetaEnabled,
       currentBadge: loyalty.currentBadge,
     };
   });
