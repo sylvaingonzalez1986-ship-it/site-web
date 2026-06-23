@@ -30,6 +30,10 @@ function isExplicitlyEnabled(raw: string | undefined): boolean {
 
 const contestBetaAccessRestricted = isExplicitlyEnabled(process.env.NEXT_PUBLIC_CONTEST_BETA_ACCESS_ENABLED);
 
+type ContestAccessResponse = {
+  canAccess?: boolean;
+};
+
 export function Navbar() {
   const { totalItems, user, loyalty, hasWelcomePack, sessionLoading } = useCart();
   const isAuthenticated = Boolean(user);
@@ -38,6 +42,7 @@ export function Navbar() {
   const [cartOpen, setCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [hideWelcomePackBadge, setHideWelcomePackBadge] = useState(false);
+  const [contestAccessAllowed, setContestAccessAllowed] = useState<boolean | null>(null);
 
   // Hide badge instantly when pack is claimed elsewhere on the page
   useEffect(() => {
@@ -58,9 +63,61 @@ export function Navbar() {
     [cmsPages],
   );
 
+  useEffect(() => {
+    const hasContestAccessFromUser =
+      user?.contestBetaEnabled === true || isAllowedAdminEmail(user?.email);
+
+    if (!contestBetaAccessRestricted || !isAuthenticated) {
+      setContestAccessAllowed(null);
+      return;
+    }
+
+    if (hasContestAccessFromUser) {
+      setContestAccessAllowed(true);
+      return;
+    }
+
+    let cancelled = false;
+    const controller = new AbortController();
+
+    const refreshContestAccess = async () => {
+      try {
+        const response = await fetch("/api/contest/access", {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+        if (!response.ok) {
+          if (!cancelled) {
+            setContestAccessAllowed(false);
+          }
+          return;
+        }
+
+        const data = (await response.json()) as ContestAccessResponse;
+        if (!cancelled) {
+          setContestAccessAllowed(data.canAccess === true);
+        }
+      } catch (error) {
+        if (!cancelled && !(error instanceof DOMException && error.name === "AbortError")) {
+          setContestAccessAllowed(false);
+        }
+      }
+    };
+
+    void refreshContestAccess();
+    window.addEventListener("focus", refreshContestAccess);
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+      window.removeEventListener("focus", refreshContestAccess);
+    };
+  }, [isAuthenticated, user?.contestBetaEnabled, user?.email]);
+
   const links = useMemo(() => {
     const canSeeContestLink =
       !contestBetaAccessRestricted ||
+      contestAccessAllowed === true ||
       user?.contestBetaEnabled === true ||
       isAllowedAdminEmail(user?.email);
     const visibleBaseLinks = canSeeContestLink
@@ -85,7 +142,7 @@ export function Navbar() {
     }
 
     return Array.from(byHref.values());
-  }, [cmsNavLinks, user]);
+  }, [cmsNavLinks, contestAccessAllowed, user]);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 56);
