@@ -35,7 +35,17 @@ export type AuditEventType =
   | "review_mission_submission"
   | "welcome_pack_claimed"
   | "viva_webhook_verification"
-  | "rate_limit_fallback_activated";
+  | "rate_limit_fallback_activated"
+  | "contest_profile_upsert"
+  | "contest_review_submit"
+  | "contest_review_update"
+  | "contest_review_vote"
+  | "contest_review_moderated"
+  | "contest_badge_reward_claim"
+  | "contest_season_created"
+  | "contest_entry_created"
+  | "contest_entry_updated"
+  | "contest_entry_deleted";
 
 type AuditLogEntry = {
   eventType: AuditEventType;
