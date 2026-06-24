@@ -107,6 +107,10 @@ describe("contest-public-api", () => {
         createdAt: "2026-06-01T09:00:00.000Z",
         updatedAt: "2026-06-01T10:00:00.000Z",
         stats: {
+          entryId: "entry-1",
+          seasonId: "season-1",
+          category: "outdoor",
+          track: "concours",
           approvedReviewCount: 1,
           averageScore: 8,
           criterionAverages: {},
