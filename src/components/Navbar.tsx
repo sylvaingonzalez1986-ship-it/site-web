@@ -34,6 +34,11 @@ type ContestAccessResponse = {
   canAccess?: boolean;
 };
 
+type ContestAccessCheck = {
+  key: string;
+  canAccess: boolean;
+};
+
 export function Navbar() {
   const { totalItems, user, loyalty, hasWelcomePack, sessionLoading } = useCart();
   const isAuthenticated = Boolean(user);
@@ -42,7 +47,8 @@ export function Navbar() {
   const [cartOpen, setCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [hideWelcomePackBadge, setHideWelcomePackBadge] = useState(false);
-  const [contestAccessAllowed, setContestAccessAllowed] = useState<boolean | null>(null);
+  const [contestAccessCheck, setContestAccessCheck] = useState<ContestAccessCheck | null>(null);
+  const contestAccessKey = user?.id || user?.email || "";
 
   // Hide badge instantly when pack is claimed elsewhere on the page
   useEffect(() => {
@@ -67,13 +73,12 @@ export function Navbar() {
     const hasContestAccessFromUser =
       user?.contestBetaEnabled === true || isAllowedAdminEmail(user?.email);
 
-    if (!contestBetaAccessRestricted || !isAuthenticated) {
-      setContestAccessAllowed(null);
-      return;
-    }
-
-    if (hasContestAccessFromUser) {
-      setContestAccessAllowed(true);
+    if (
+      !contestBetaAccessRestricted ||
+      !isAuthenticated ||
+      hasContestAccessFromUser ||
+      !contestAccessKey
+    ) {
       return;
     }
 
@@ -88,18 +93,18 @@ export function Navbar() {
         });
         if (!response.ok) {
           if (!cancelled) {
-            setContestAccessAllowed(false);
+            setContestAccessCheck({ key: contestAccessKey, canAccess: false });
           }
           return;
         }
 
         const data = (await response.json()) as ContestAccessResponse;
         if (!cancelled) {
-          setContestAccessAllowed(data.canAccess === true);
+          setContestAccessCheck({ key: contestAccessKey, canAccess: data.canAccess === true });
         }
       } catch (error) {
         if (!cancelled && !(error instanceof DOMException && error.name === "AbortError")) {
-          setContestAccessAllowed(false);
+          setContestAccessCheck({ key: contestAccessKey, canAccess: false });
         }
       }
     };
@@ -112,9 +117,11 @@ export function Navbar() {
       controller.abort();
       window.removeEventListener("focus", refreshContestAccess);
     };
-  }, [isAuthenticated, user?.contestBetaEnabled, user?.email]);
+  }, [contestAccessKey, isAuthenticated, user?.contestBetaEnabled, user?.email]);
 
   const links = useMemo(() => {
+    const contestAccessAllowed =
+      contestAccessCheck?.key === contestAccessKey && contestAccessCheck.canAccess;
     const canSeeContestLink =
       !contestBetaAccessRestricted ||
       contestAccessAllowed === true ||
@@ -142,7 +149,7 @@ export function Navbar() {
     }
 
     return Array.from(byHref.values());
-  }, [cmsNavLinks, contestAccessAllowed, user]);
+  }, [cmsNavLinks, contestAccessCheck, contestAccessKey, user]);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 56);
