@@ -951,6 +951,7 @@ h4 {
 
 .contest-station-board-track {
   animation: contest-station-scroll 16s linear infinite;
+  will-change: transform;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1944,7 +1945,6 @@ h4 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .contest-station-board-track,
   .contest-review-marquee-track {
     animation: none;
   }
@@ -2184,6 +2184,10 @@ h4 {
 
   .contest-station-board {
     box-shadow: 3px 3px 0 rgba(23, 19, 14, 0.28);
+  }
+
+  .contest-station-board-track {
+    animation: contest-station-scroll 12s linear infinite;
   }
 
   .contest-station-board-header {
