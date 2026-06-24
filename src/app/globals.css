@@ -953,9 +953,11 @@ h4 {
   animation: contest-station-scroll 16s linear infinite;
 }
 
-.contest-station-board:hover .contest-station-board-track,
-.contest-station-board:focus-within .contest-station-board-track {
-  animation-play-state: paused;
+@media (hover: hover) and (pointer: fine) {
+  .contest-station-board:hover .contest-station-board-track,
+  .contest-station-board:focus-within .contest-station-board-track {
+    animation-play-state: paused;
+  }
 }
 
 .contest-station-row {
