@@ -194,6 +194,10 @@ export function Footer() {
                   CBD Naturel
                 </Link>
                 <span className="text-[11px] text-charcoal">·</span>
+                <Link href="/cbd-pas-cher" className="text-[11px] font-bold text-ink hover:underline">
+                  CBD pas cher
+                </Link>
+                <span className="text-[11px] text-charcoal">·</span>
                 <Link href="/cbd-rennes" className="text-[11px] text-ink hover:underline">
                   Rennes
                 </Link>
