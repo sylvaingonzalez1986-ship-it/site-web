@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef } from "react";
+import { createPortal } from "react-dom";
 import { ProducerDetailPanel } from "@/components/boutique/ProducerDetailPanel";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { Product } from "@/data/products";
@@ -91,11 +92,11 @@ export function ProducerTcgModal({
     };
   }, [goToNext, goToPrevious, onClose, open]);
 
-  if (!open || !selectedProducer) {
+  if (!open || !selectedProducer || typeof document === "undefined") {
     return null;
   }
 
-  return (
+  return createPortal(
     <div
       className="producer-modal-overlay"
       role="dialog"
@@ -158,7 +159,7 @@ export function ProducerTcgModal({
             onClick={onClose}
             aria-label="Fermer la fiche producteur"
           >
-            x
+            ×
           </button>
         </div>
 
@@ -175,6 +176,7 @@ export function ProducerTcgModal({
           />
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

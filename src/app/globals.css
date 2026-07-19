@@ -8185,7 +8185,7 @@ body.contest-guide-open .contest-hub-flipbook .contest-guide-flipbook .contest-n
 .producer-modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 130;
+  z-index: 500;
   background: rgba(26, 26, 26, 0.62);
   backdrop-filter: blur(2px);
   display: flex;
@@ -8210,6 +8210,8 @@ body.contest-guide-open .contest-hub-flipbook .contest-guide-flipbook .contest-n
 }
 
 .producer-modal-controls {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: auto 1fr auto auto;
   align-items: center;
@@ -8225,6 +8227,8 @@ body.contest-guide-open .contest-hub-flipbook .contest-guide-flipbook .contest-n
 .producer-modal-close {
   position: static;
   justify-self: end;
+  display: inline-flex;
+  visibility: visible;
 }
 
 .producer-modal-controls > p {
@@ -8254,6 +8258,12 @@ body.contest-guide-open .contest-hub-flipbook .contest-guide-flipbook .contest-n
 }
 
 @media (max-width: 768px) {
+  .producer-modal-controls {
+    grid-template-columns: 44px minmax(0, 1fr) 44px 44px;
+    padding-right: max(0.65rem, env(safe-area-inset-right));
+    padding-left: max(0.65rem, env(safe-area-inset-left));
+  }
+
   .producer-modal-shell {
     height: 100dvh;
     max-height: 100dvh;
