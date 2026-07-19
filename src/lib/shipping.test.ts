@@ -2,7 +2,8 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import {
   computeShippingFee,
-  getFreeShippingProgressMessage,
+  getRelayFreeShippingProgressMessage,
+  getRelayFreeShippingThreshold,
   getShippingPricingConfig,
 } from "@/lib/shipping";
 
@@ -45,6 +46,42 @@ describe("shipping", () => {
     ).toBe(6.9);
   });
 
+  it("keeps the standard home fee below the badge threshold", () => {
+    expect(
+      computeShippingFee({
+        method: "home",
+        subtotalAfterDiscount: 40,
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
+        badgeRelayFreeShippingThresholdEur: 45,
+        badgeHomeFeeEur: 2.5,
+      }),
+    ).toBe(6.9);
+  });
+
+  it("returns the badge home fee once its threshold is reached", () => {
+    expect(
+      computeShippingFee({
+        method: "home",
+        subtotalAfterDiscount: 45,
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
+        badgeRelayFreeShippingThresholdEur: 45,
+        badgeHomeFeeEur: 2.5,
+      }),
+    ).toBe(2.5);
+  });
+
+  it("returns free home delivery for eligible badges", () => {
+    expect(
+      computeShippingFee({
+        method: "home",
+        subtotalAfterDiscount: 10,
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
+        badgeRelayFreeShippingThresholdEur: null,
+        badgeHomeFeeEur: 0,
+      }),
+    ).toBe(0);
+  });
+
   it("returns relay fee below threshold", () => {
     expect(
       computeShippingFee({
@@ -55,72 +92,94 @@ describe("shipping", () => {
     ).toBe(4.9);
   });
 
-  it("returns free shipping once threshold is reached", () => {
+  it("returns free relay shipping once threshold is reached", () => {
     expect(
       computeShippingFee({
-        method: "home",
+        method: "relay",
         subtotalAfterDiscount: 89,
         config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
       }),
     ).toBe(0);
   });
 
-  it("returns free shipping for eligible members regardless of subtotal", () => {
+  it("returns free relay shipping for eligible members regardless of subtotal", () => {
     expect(
       computeShippingFee({
         method: "relay",
         subtotalAfterDiscount: 10,
         config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
-        badgeFreeShippingThresholdEur: null,
+        badgeRelayFreeShippingThresholdEur: null,
       }),
     ).toBe(0);
   });
 
-  it("uses badge threshold when provided", () => {
+  it("uses badge relay threshold when provided", () => {
     expect(
       computeShippingFee({
-        method: "home",
+        method: "relay",
         subtotalAfterDiscount: 44.99,
         config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
-        badgeFreeShippingThresholdEur: 45,
+        badgeRelayFreeShippingThresholdEur: 45,
       }),
-    ).toBe(6.9);
+    ).toBe(4.9);
 
     expect(
       computeShippingFee({
-        method: "home",
+        method: "relay",
         subtotalAfterDiscount: 45,
         config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
-        badgeFreeShippingThresholdEur: 45,
+        badgeRelayFreeShippingThresholdEur: 45,
       }),
     ).toBe(0);
   });
 
-  it("formats the remaining amount before free shipping", () => {
+  it("returns the effective relay threshold for standard and badge levels", () => {
     expect(
-      getFreeShippingProgressMessage({
-        shippingFee: 6.9,
+      getRelayFreeShippingThreshold({
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
+      }),
+    ).toBe(89);
+
+    expect(
+      getRelayFreeShippingThreshold({
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
+        badgeRelayFreeShippingThresholdEur: 45,
+      }),
+    ).toBe(45);
+
+    expect(
+      getRelayFreeShippingThreshold({
+        config: { homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 },
+        badgeRelayFreeShippingThresholdEur: null,
+      }),
+    ).toBeNull();
+  });
+
+  it("formats the remaining amount before relay free shipping", () => {
+    expect(
+      getRelayFreeShippingProgressMessage({
+        shippingFee: 4.9,
         shippingRemainingAmount: 39,
       }),
-    ).toBe("Plus que 39 EUR avant la livraison gratuite.");
+    ).toBe("Plus que 39 EUR avant le point relais offert.");
   });
 
-  it("reports free shipping when the threshold is reached", () => {
+  it("reports free relay shipping when the threshold is reached", () => {
     expect(
-      getFreeShippingProgressMessage({
+      getRelayFreeShippingProgressMessage({
         shippingFee: 0,
         shippingRemainingAmount: 0,
       }),
-    ).toBe("La livraison est offerte.");
+    ).toBe("Le point relais est offert.");
   });
 
-  it("reports badge-based free shipping", () => {
+  it("reports badge-based free relay shipping", () => {
     expect(
-      getFreeShippingProgressMessage({
+      getRelayFreeShippingProgressMessage({
         shippingFee: 0,
         shippingRemainingAmount: 0,
-        badgeFreeShippingThresholdEur: null,
+        badgeRelayFreeShippingThresholdEur: null,
       }),
-    ).toBe("Ton badge t'offre la livraison gratuite.");
+    ).toBe("Ton badge t'offre le point relais.");
   });
 });

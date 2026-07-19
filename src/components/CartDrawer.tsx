@@ -13,7 +13,8 @@ import {
   getBadgeDiscountPercent,
   getBadgeExtraBoosterPacksPerOrder,
   getBadgeBenefitsText,
-  getBadgeFreeShippingThreshold,
+  getBadgeHomeDeliveryFeeEur,
+  getBadgeRelayFreeShippingThreshold,
   parseBadgeBenefitsLines,
 } from "@/lib/loyalty-tier-benefits";
 import { computeLotteryTicketBreakdown } from "@/lib/lottery-ticket-calculations";
@@ -26,7 +27,8 @@ import {
 } from "@/lib/referral-first-order-discount";
 import {
   computeShippingFee,
-  getFreeShippingProgressMessage,
+  getRelayFreeShippingProgressMessage,
+  getRelayFreeShippingThreshold,
   getShippingPricingConfig,
   type DeliveryMethod,
   type MondialRelayPoint,
@@ -251,43 +253,74 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     promoPreview?.discountedTotal ??
     (hasAutoReferralDiscount ? totalAfterAutoReferralDiscount : totalAfterBadgeDiscount);
   const shippingPricingConfig = useMemo(() => getShippingPricingConfig(), []);
-  const badgeFreeShippingThreshold = useMemo(
-    () => getBadgeFreeShippingThreshold(loyalty.currentBadge.id, loyalty.currentBadge.unlocked),
+  const badgeRelayFreeShippingThreshold = useMemo(
+    () => getBadgeRelayFreeShippingThreshold(loyalty.currentBadge.id, loyalty.currentBadge.unlocked),
     [loyalty.currentBadge.id, loyalty.currentBadge.unlocked],
   );
-  const shippingFee = useMemo(
+  const badgeHomeDeliveryFeeEur = useMemo(
+    () => getBadgeHomeDeliveryFeeEur(loyalty.currentBadge.id, loyalty.currentBadge.unlocked),
+    [loyalty.currentBadge.id, loyalty.currentBadge.unlocked],
+  );
+  const homeShippingFee = useMemo(
     () =>
       computeShippingFee({
-        method: deliveryMethod,
+        method: "home",
         subtotalAfterDiscount: checkoutAmount,
         config: shippingPricingConfig,
-        badgeFreeShippingThresholdEur: badgeFreeShippingThreshold,
+        badgeRelayFreeShippingThresholdEur: badgeRelayFreeShippingThreshold,
+        badgeHomeFeeEur: badgeHomeDeliveryFeeEur,
       }),
-    [badgeFreeShippingThreshold, checkoutAmount, deliveryMethod, shippingPricingConfig],
+    [badgeHomeDeliveryFeeEur, badgeRelayFreeShippingThreshold, checkoutAmount, shippingPricingConfig],
+  );
+  const relayShippingFee = useMemo(
+    () =>
+      computeShippingFee({
+        method: "relay",
+        subtotalAfterDiscount: checkoutAmount,
+        config: shippingPricingConfig,
+        badgeRelayFreeShippingThresholdEur: badgeRelayFreeShippingThreshold,
+      }),
+    [badgeRelayFreeShippingThreshold, checkoutAmount, shippingPricingConfig],
+  );
+  const shippingFee = deliveryMethod === "relay" ? relayShippingFee : homeShippingFee;
+  const relayFreeShippingThreshold = useMemo(
+    () =>
+      getRelayFreeShippingThreshold({
+        config: shippingPricingConfig,
+        badgeRelayFreeShippingThresholdEur: badgeRelayFreeShippingThreshold,
+      }),
+    [badgeRelayFreeShippingThreshold, shippingPricingConfig],
   );
   const finalAmountToPay = useMemo(
     () => Number((checkoutAmount + shippingFee).toFixed(2)),
     [checkoutAmount, shippingFee],
   );
-  const shippingRemainingAmount = useMemo(() => {
-    if (shippingFee <= 0) {
+  const relayRemainingAmount = useMemo(() => {
+    if (relayShippingFee <= 0 || relayFreeShippingThreshold === null) {
       return 0;
     }
-    const threshold =
-      typeof badgeFreeShippingThreshold === "number"
-        ? badgeFreeShippingThreshold
-        : shippingPricingConfig.freeShippingThresholdEur;
-    return Number(Math.max(threshold - checkoutAmount, 0).toFixed(2));
-  }, [badgeFreeShippingThreshold, checkoutAmount, shippingFee, shippingPricingConfig.freeShippingThresholdEur]);
+    return Number(Math.max(relayFreeShippingThreshold - checkoutAmount, 0).toFixed(2));
+  }, [checkoutAmount, relayFreeShippingThreshold, relayShippingFee]);
   const shippingProgressMessage = useMemo(
     () =>
-      getFreeShippingProgressMessage({
-        shippingFee,
-        shippingRemainingAmount,
-        badgeFreeShippingThresholdEur: badgeFreeShippingThreshold,
+      getRelayFreeShippingProgressMessage({
+        shippingFee: relayShippingFee,
+        shippingRemainingAmount: relayRemainingAmount,
+        badgeRelayFreeShippingThresholdEur: badgeRelayFreeShippingThreshold,
       }),
-    [badgeFreeShippingThreshold, shippingFee, shippingRemainingAmount],
+    [badgeRelayFreeShippingThreshold, relayRemainingAmount, relayShippingFee],
   );
+  const homeDeliveryExplanation = useMemo(() => {
+    if (homeShippingFee <= 0) {
+      return "Ton niveau t'offre la livraison a domicile.";
+    }
+
+    if (typeof badgeHomeDeliveryFeeEur === "number" && checkoutAmount < (relayFreeShippingThreshold ?? 0)) {
+      return "Le tarif reduit a domicile s'applique des que le seuil de ton niveau est atteint.";
+    }
+
+    return "Le tarif reduit de ton niveau est applique a la livraison a domicile.";
+  }, [badgeHomeDeliveryFeeEur, checkoutAmount, homeShippingFee, relayFreeShippingThreshold]);
   const earnedProductBonusPoints = useMemo(
     () =>
       items.reduce((total, item) => {
@@ -330,11 +363,15 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       `Badge actif : ${loyalty.currentBadge.label}`,
       `Reduction automatique : ${displayedBadgeDiscountPercent}%`,
       `Livraison : ${
-        badgeFreeShippingThreshold === null
-          ? "Offerte"
-          : typeof badgeFreeShippingThreshold === "number"
-            ? `Offerte des ${badgeFreeShippingThreshold} EUR`
-            : "Seuil standard"
+        relayFreeShippingThreshold === null
+          ? "Point relais offert"
+          : `Point relais offert des ${relayFreeShippingThreshold} EUR`
+      } / ${
+        homeShippingFee <= 0
+          ? "Domicile offert"
+          : typeof badgeHomeDeliveryFeeEur === "number"
+            ? `Domicile a ${formatPrice(homeShippingFee)}`
+            : "Domicile au tarif standard"
       }`,
       `Points gagnes sur cette commande : ${earnedTotalLoyaltyPoints}`,
       ...lines,
@@ -343,9 +380,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     cmsStore.content.profile,
     displayedBadgeDiscountPercent,
     earnedTotalLoyaltyPoints,
-    badgeFreeShippingThreshold,
+    badgeHomeDeliveryFeeEur,
     loyalty.currentBadge.id,
     loyalty.currentBadge.label,
+    homeShippingFee,
+    relayFreeShippingThreshold,
   ]);
   const packsBenefitLines = useMemo(() => {
     const badgeExtraPacks = loyalty.currentBadge.unlocked
@@ -579,7 +618,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
       <aside
         className={`safe-area-top safe-area-bottom safe-area-x fixed right-0 top-0 z-50 flex h-[100vh] h-[100dvh] max-h-[100dvh] w-full max-w-[96vw] flex-col overflow-hidden border-l-4 border-[#1a1a2e] bg-[#fff8f0] p-4 transition-transform duration-300 md:max-w-2xl lg:max-w-3xl ${
-          open ? "translate-x-0" : "translate-x-full"
+          open ? "pointer-events-auto translate-x-0" : "pointer-events-none translate-x-full"
         }`}
       >
         <div className="shrink-0 flex items-center justify-between">
@@ -756,7 +795,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                       }`}
                       onClick={() => setDeliveryMethod("home")}
                     >
-                      Domicile
+                      Domicile {homeShippingFee <= 0 ? "(offert)" : `(${formatPrice(homeShippingFee)})`}
                     </button>
                     <button
                       type="button"
@@ -767,9 +806,15 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                       }`}
                       onClick={() => setDeliveryMethod("relay")}
                     >
-                      Point relais
+                      Point relais {relayShippingFee <= 0 ? "(offert)" : `(${formatPrice(relayShippingFee)})`}
                     </button>
                   </div>
+                  <p className="mt-2 text-xs leading-relaxed text-charcoal">
+                    {homeDeliveryExplanation}
+                  </p>
+                  <p className="mt-1 text-xs font-semibold text-charcoal">
+                    {shippingProgressMessage}
+                  </p>
                 </div>
                 {deliveryMethod === "home" && (
                   <input
@@ -848,7 +893,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     }}
                     disabled={availableRewardClaims.length === 0 || promoCode.trim().length > 0}
                   >
-                    <option value="">Bon loterie (optionnel)</option>
+                    <option value="">Bon / cadeau (optionnel)</option>
                     {availableRewardClaims.map((claim) => (
                       <option key={claim.id} value={claim.id}>
                         {claim.reward.title}
@@ -861,7 +906,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     disabled={lotteryLoading || !selectedLotteryRewardClaimId || items.length === 0 || promoCode.trim().length > 0}
                     onClick={applyLotteryRewardClaim}
                   >
-                    {lotteryLoading ? "..." : "Utiliser bon"}
+                    {lotteryLoading ? "..." : "Utiliser"}
                   </button>
                 </div>
                 {promoError && <p className="text-sm font-semibold text-red-700">{promoError}</p>}
@@ -880,6 +925,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           </div>
           <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
             Livraison: {deliveryMethod === "relay" ? "Point relais" : "Domicile"}
+          </div>
+          <div className="mt-1 text-[11px] font-semibold text-charcoal">
+            {homeDeliveryExplanation}
           </div>
           <div className="mt-1 text-[11px] font-semibold text-charcoal">
             {shippingProgressMessage}

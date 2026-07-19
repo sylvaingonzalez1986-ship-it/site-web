@@ -67,46 +67,71 @@ export function getShippingPricingConfig(): ShippingPricingConfig {
   };
 }
 
+export function getRelayFreeShippingThreshold(input: {
+  config: ShippingPricingConfig;
+  badgeRelayFreeShippingThresholdEur?: number | null;
+}): number | null {
+  if (input.badgeRelayFreeShippingThresholdEur === null) {
+    return null;
+  }
+
+  if (typeof input.badgeRelayFreeShippingThresholdEur === "number") {
+    return Math.max(0, input.badgeRelayFreeShippingThresholdEur);
+  }
+
+  return input.config.freeShippingThresholdEur;
+}
+
 export function computeShippingFee(input: {
   method: DeliveryMethod;
   subtotalAfterDiscount: number;
   config: ShippingPricingConfig;
-  badgeFreeShippingThresholdEur?: number | null;
+  badgeRelayFreeShippingThresholdEur?: number | null;
+  badgeHomeFeeEur?: number;
 }): number {
   const config = input.config || getShippingPricingConfig();
   const safeSubtotal = Math.max(0, Number(input.subtotalAfterDiscount) || 0);
-  const badgeFreeShippingThresholdEur = input.badgeFreeShippingThresholdEur;
 
-  if (badgeFreeShippingThresholdEur === null) {
+  if (input.method === "home") {
+    if (typeof input.badgeHomeFeeEur === "number") {
+      const badgeThreshold = getRelayFreeShippingThreshold({
+        config,
+        badgeRelayFreeShippingThresholdEur: input.badgeRelayFreeShippingThresholdEur,
+      });
+      if (badgeThreshold === null || safeSubtotal >= badgeThreshold) {
+        return toMoney(Math.max(0, input.badgeHomeFeeEur));
+      }
+    }
+
+    return toMoney(config.homeFeeEur);
+  }
+
+  const effectiveThreshold = getRelayFreeShippingThreshold({
+    config,
+    badgeRelayFreeShippingThresholdEur: input.badgeRelayFreeShippingThresholdEur,
+  });
+
+  if (effectiveThreshold === null || safeSubtotal >= effectiveThreshold) {
     return 0;
   }
 
-  const effectiveThreshold =
-    typeof badgeFreeShippingThresholdEur === "number"
-      ? Math.max(0, badgeFreeShippingThresholdEur)
-      : config.freeShippingThresholdEur;
-
-  if (safeSubtotal >= effectiveThreshold) {
-    return 0;
-  }
-
-  return toMoney(input.method === "relay" ? config.relayFeeEur : config.homeFeeEur);
+  return toMoney(config.relayFeeEur);
 }
 
-export function getFreeShippingProgressMessage(input: {
+export function getRelayFreeShippingProgressMessage(input: {
   shippingFee: number;
   shippingRemainingAmount: number;
-  badgeFreeShippingThresholdEur?: number | null;
+  badgeRelayFreeShippingThresholdEur?: number | null;
 }): string {
-  if (input.badgeFreeShippingThresholdEur === null) {
-    return "Ton badge t'offre la livraison gratuite.";
+  if (input.badgeRelayFreeShippingThresholdEur === null) {
+    return "Ton badge t'offre le point relais.";
   }
 
   if (input.shippingFee <= 0) {
-    return "La livraison est offerte.";
+    return "Le point relais est offert.";
   }
 
-  return `Plus que ${formatThresholdAmount(input.shippingRemainingAmount)} avant la livraison gratuite.`;
+  return `Plus que ${formatThresholdAmount(input.shippingRemainingAmount)} avant le point relais offert.`;
 }
 
 export function getDeliveryMethodLabel(method: DeliveryMethod): string {

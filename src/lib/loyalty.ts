@@ -16,25 +16,25 @@ const LOYALTY_BADGE_DEFINITIONS: Array<{
   {
     id: "explorateur",
     label: "Argent",
-    description: "4% permanent, livraison offerte des 45 EUR et 3 packs bonus.",
+    description: "4% permanent, point relais offert des 45 EUR, domicile a 2,50 EUR et 3 packs bonus.",
     minPoints: 500,
   },
   {
     id: "connaisseur",
     label: "Or",
-    description: "6% permanent, livraison offerte des 30 EUR et 5 packs bonus.",
+    description: "6% permanent, point relais offert des 30 EUR, domicile a 2,50 EUR et 5 packs bonus.",
     minPoints: 1000,
   },
   {
     id: "ambassadeur",
     label: "Platine",
-    description: "8% permanent, 10 packs bonus, anniversaire et ventes privees.",
+    description: "8% permanent, point relais et domicile offerts, 10 packs bonus, anniversaire et ventes privees.",
     minPoints: 1500,
   },
   {
     id: "legende",
     label: "Diamant",
-    description: "10% permanent, 20 packs bonus, anniversaire, Noel et ventes privees.",
+    description: "10% permanent, point relais et domicile offerts, 20 packs bonus, anniversaire, Noel et ventes privees.",
     minPoints: 2000,
   },
 ];

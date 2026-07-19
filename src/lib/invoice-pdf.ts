@@ -2,6 +2,8 @@ import type { CmsOrder } from "@/types/store";
 import type { IssuedInvoice } from "@/types/invoice";
 import { INVOICE_COMPANY, INVOICE_SETTINGS, getInvoiceLegalFooter } from "@/lib/invoice-config";
 import { computeFromTtc, computeOrderTaxTotals, sanitizeOrderVatRate } from "@/lib/tax";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                             */
@@ -46,6 +48,37 @@ function buildPdfBuffer(doc: PDFKit.PDFDocument): Promise<Buffer> {
 /** Dark navy ink — avoids pure black so the PDF prints correctly on
  *  printers that only have colour cartridges installed. */
 const INK_COLOR = "#00205B";
+const INVOICE_LOGO_PATH = path.join(process.cwd(), "public", "invoice-logo.png");
+
+let invoiceLogoDataUriPromise: Promise<string | null> | null = null;
+
+async function tintLogoDataUri(logoBuffer: Buffer, color: string): Promise<string> {
+  const { createCanvas, loadImage } = await import("@napi-rs/canvas");
+  const logo = await loadImage(logoBuffer);
+  const canvas = createCanvas(logo.width, logo.height);
+  const context = canvas.getContext("2d");
+
+  context.drawImage(logo, 0, 0);
+  context.globalCompositeOperation = "source-in";
+  context.fillStyle = color;
+  context.fillRect(0, 0, logo.width, logo.height);
+
+  const tintedLogoBuffer = await canvas.encode("png");
+  return `data:image/png;base64,${tintedLogoBuffer.toString("base64")}`;
+}
+
+async function getInvoiceLogoDataUri(): Promise<string | null> {
+  invoiceLogoDataUriPromise ??= readFile(INVOICE_LOGO_PATH)
+    .then(async (logoBuffer) => {
+      try {
+        return await tintLogoDataUri(logoBuffer, INK_COLOR);
+      } catch {
+        return `data:image/png;base64,${logoBuffer.toString("base64")}`;
+      }
+    })
+    .catch(() => null);
+  return invoiceLogoDataUriPromise;
+}
 
 /* ------------------------------------------------------------------ */
 /*  PDF generation – PDFKit is lazy-loaded at first call              */
@@ -101,16 +134,27 @@ export async function generateInvoicePdf(
   const pdfPromise = buildPdfBuffer(doc);
 
   // --- Company header ---
-  doc.fontSize(17).text(INVOICE_COMPANY.legalName, { align: "left" });
+  const logoDataUri = await getInvoiceLogoDataUri();
+  const headerTop = 42;
+  const logoSize = 76;
+  const logoX = 48;
+  const companyX = logoDataUri ? logoX + logoSize + 18 : logoX;
+  const companyY = logoDataUri ? headerTop + 18 : headerTop;
+
+  if (logoDataUri) {
+    doc.image(logoDataUri, logoX, headerTop, {
+      fit: [logoSize, logoSize],
+    });
+  }
+
+  doc.font("Helvetica-Bold").fontSize(17).text(INVOICE_COMPANY.legalName, companyX, companyY, {
+    align: "left",
+  });
   doc
+    .font("Helvetica")
     .fontSize(10)
-    .text(INVOICE_COMPANY.legalForm)
-    .text(INVOICE_COMPANY.addressLine)
-    .text(`SIRET: ${INVOICE_COMPANY.siret}`)
-    .text(`SIREN: ${INVOICE_COMPANY.siren}`)
-    .text(`TVA: ${INVOICE_COMPANY.vatNumber}`)
-    .text(`RCS: ${INVOICE_COMPANY.rcs}`)
-    .text(`NAF: ${INVOICE_COMPANY.nafCode}`);
+    .text(`SIRET: ${INVOICE_COMPANY.siret}`, companyX, doc.y + 4, { align: "left" });
+  doc.y = Math.max(doc.y, headerTop + logoSize + 14);
 
   // --- Invoice meta ---
   doc.moveDown(1.1);
@@ -225,10 +269,6 @@ export async function generateInvoicePdf(
   // --- Legal footer ---
   doc.moveDown(2);
   doc.fontSize(9).text(getInvoiceLegalFooter(), { align: "left" });
-  doc
-    .fontSize(9)
-    .text(`${INVOICE_COMPANY.legalName} - ${INVOICE_COMPANY.legalForm}`, { align: "left" })
-    .text(`RCS ${INVOICE_COMPANY.rcs}`, { align: "left" });
 
   doc.end();
   return pdfPromise;

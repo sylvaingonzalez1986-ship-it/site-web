@@ -10,7 +10,8 @@ import { INVOICE_SETTINGS } from "@/lib/invoice-config";
 import { buildLoyaltySummaryWithBonus } from "@/lib/loyalty";
 import {
   getBadgeDiscountPercent,
-  getBadgeFreeShippingThreshold,
+  getBadgeHomeDeliveryFeeEur,
+  getBadgeRelayFreeShippingThreshold,
 } from "@/lib/loyalty-tier-benefits";
 import { computeLotteryTicketBreakdown } from "@/lib/lottery-ticket-calculations";
 import {
@@ -646,7 +647,11 @@ export async function POST(request: Request) {
   const badgeDiscountPercent = loyaltySummary.currentBadge.unlocked
     ? getBadgeDiscountPercent(store.content.profile, loyaltySummary.currentBadge.id)
     : 0;
-  const badgeFreeShippingThreshold = getBadgeFreeShippingThreshold(
+  const badgeRelayFreeShippingThreshold = getBadgeRelayFreeShippingThreshold(
+    loyaltySummary.currentBadge.id,
+    loyaltySummary.currentBadge.unlocked,
+  );
+  const badgeHomeDeliveryFeeEur = getBadgeHomeDeliveryFeeEur(
     loyaltySummary.currentBadge.id,
     loyaltySummary.currentBadge.unlocked,
   );
@@ -871,7 +876,8 @@ export async function POST(request: Request) {
     method: requestedDeliveryMethod,
     subtotalAfterDiscount: itemsTotalAmount,
     config: shippingPricingConfig,
-    badgeFreeShippingThresholdEur: badgeFreeShippingThreshold,
+    badgeRelayFreeShippingThresholdEur: badgeRelayFreeShippingThreshold,
+    badgeHomeFeeEur: badgeHomeDeliveryFeeEur,
   });
   const totalAmount = Number((itemsTotalAmount + shippingFee).toFixed(2));
   const lotteryConfig = await getLotteryConfigByBackend();

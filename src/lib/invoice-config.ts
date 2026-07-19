@@ -23,5 +23,5 @@ export function getInvoiceLegalFooter(): string {
     return "TVA non applicable, art. 293 B du CGI";
   }
 
-  return `TVA applicable - N° intracommunautaire: ${INVOICE_COMPANY.vatNumber}.`;
+  return "TVA applicable.";
 }
