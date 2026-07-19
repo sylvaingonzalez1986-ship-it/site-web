@@ -5,6 +5,7 @@ import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
 import { rarityAccentColor, rarityCardClasses, rarityLabels } from "@/lib/lottery-card-ui";
 import type { LotteryCollectionCardSlot } from "@/types/lottery";
+import styles from "./AlbumExperience.module.css";
 
 type CardDetailModalProps = {
   slot: LotteryCollectionCardSlot;
@@ -23,18 +24,24 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
   const imageAlt = slot.isOwned ? slot.name : `Carte mystere #${slot.cardNumber}`;
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+    <div
+      className={styles.modalBackdrop}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="card-detail-title"
+      onClick={onClose}
+    >
       <div
-        className={`relative w-full max-w-sm overflow-hidden rounded-2xl border-2 border-ink/20 shadow-xl ${rarityCardClasses[slot.rarity]}`}
+        className={`${styles.modalShell} max-w-sm ${rarityCardClasses[slot.rarity]}`}
         onClick={(event) => event.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/30 text-white hover:bg-black/50"
+          className={styles.modalClose}
           aria-label="Fermer"
         >
-          x
+          ✕
         </button>
 
         {hasRenderableImage ? (
@@ -66,7 +73,7 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
 
         <div className="space-y-2 p-5">
           <div className="flex items-center justify-between gap-3">
-            <h3 className="font-display text-xl text-ink">{slot.isOwned ? slot.name : "Carte inconnue"}</h3>
+            <h3 id="card-detail-title" className="font-display text-xl text-ink">{slot.isOwned ? slot.name : "Carte inconnue"}</h3>
             <span
               className="rounded-full px-2 py-0.5 text-xs font-bold text-white"
               style={{ backgroundColor: rarityAccentColor[slot.rarity] }}
@@ -84,7 +91,7 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
               <span className="pill-cartoon bg-ink/10 px-2 py-0.5 text-ink">Possédée x{slot.ownedCount}</span>
               {slot.burnableCount > 0 && (
                 <span className="pill-cartoon bg-amber-100 px-2 py-0.5 text-amber-800">
-                  burn {slot.burnableCount}
+                  recyclable x{slot.burnableCount}
                 </span>
               )}
               {slot.firstOwnedAt && (

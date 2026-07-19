@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Recycle } from "lucide-react";
 import { useState } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
@@ -10,6 +11,7 @@ import type {
   LotteryDuplicateBurnChoice,
   LotteryDuplicateGroup,
 } from "@/types/lottery";
+import styles from "./AlbumExperience.module.css";
 
 type DuplicateBurnDrawerProps = {
   page: LotteryCollectionPageState;
@@ -36,16 +38,19 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 sm:items-center sm:p-4"
+      className={styles.modalBackdrop}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="duplicate-burn-title"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-md rounded-t-2xl bg-cream shadow-xl sm:rounded-2xl"
+        className={styles.modalShell}
         onClick={(event) => event.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-ink/10 text-ink hover:bg-ink/20"
+          className={styles.modalClose}
           aria-label="Fermer"
         >
           x
@@ -53,10 +58,10 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
 
         <div className="space-y-5 p-6">
           <div className="text-center">
-            <p className="text-4xl">burn</p>
-            <h3 className="mt-2 font-display text-xl text-ink">Recycler des doublons</h3>
+            <Recycle className="mx-auto h-10 w-10 text-forest" aria-hidden="true" />
+            <h3 id="duplicate-burn-title" className="mt-2 font-display text-xl text-ink">Recycler des doublons</h3>
             <p className="mt-1 text-sm text-charcoal">
-              Echange <span className="font-bold">{burnOffer.duplicatesRequired} doublons</span> de{" "}
+              Échange <span className="font-bold">{burnOffer.duplicatesRequired} doublons</span> de{" "}
               <span className="font-semibold" style={{ color: accent }}>
                 {group.name}
               </span>{" "}
@@ -105,9 +110,9 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
               }`}
             >
               <p className="text-xs font-black uppercase tracking-[0.08em] text-forest">Option 1</p>
-              <p className="mt-1 font-display text-sm text-ink">Code promo de reduction</p>
+              <p className="mt-1 font-display text-sm text-ink">Code promo de réduction</p>
               <p className="mt-1 text-sm text-charcoal">
-                Recois un code personnel de <span className="font-bold text-forest">-{burnOffer.discountPercent}%</span>.
+                Reçois un code personnel de <span className="font-bold text-forest">-{burnOffer.discountPercent}%</span>.
               </p>
             </button>
 
@@ -123,21 +128,21 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
               <p className="text-xs font-black uppercase tracking-[0.08em] text-amber-700">Option 2</p>
               <p className="mt-1 font-display text-sm text-ink">Cadeau en grammes</p>
               <p className="mt-1 text-sm text-charcoal">
-                Recois <span className="font-bold text-amber-700">{burnOffer.giftWeightGrams}g offerts</span>.
+                Reçois <span className="font-bold text-amber-700">{burnOffer.giftWeightGrams}g offerts</span>.
               </p>
             </button>
           </div>
 
           <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-center">
             <p className="text-sm text-amber-800">
-              <span className="font-bold">{burnOffer.duplicatesRequired}</span> cartes seront detruites -&gt;
+              <span className="font-bold">{burnOffer.duplicatesRequired}</span> cartes seront détruites -&gt;
               {rewardChoice === "discount" ? (
                 <>
-                  {" "}tu recois un code <span className="font-bold text-forest">-{burnOffer.discountPercent}%</span>
+                  {" "}tu reçois un code <span className="font-bold text-forest">-{burnOffer.discountPercent}%</span>
                 </>
               ) : (
                 <>
-                  {" "}tu recois <span className="font-bold text-amber-700">{burnOffer.giftWeightGrams}g offerts</span>
+                  {" "}tu reçois <span className="font-bold text-amber-700">{burnOffer.giftWeightGrams}g offerts</span>
                 </>
               )}
             </p>

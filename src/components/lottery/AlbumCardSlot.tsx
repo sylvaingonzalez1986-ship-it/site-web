@@ -5,6 +5,7 @@ import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
 import { rarityAccentColor, rarityCardClasses } from "@/lib/lottery-card-ui";
 import type { ReactNode } from "react";
 import type { LotteryCollectionCardSlot } from "@/types/lottery";
+import styles from "./AlbumExperience.module.css";
 
 type AlbumCardSlotProps = {
   slot: LotteryCollectionCardSlot;
@@ -28,7 +29,7 @@ const MissingCardSlot = ({
   cardFooter: ReactNode;
 }) => {
   const containerClassName =
-    "group relative flex aspect-[0.72] flex-col overflow-hidden rounded-[18px] border-2 border-dashed border-ink/20 bg-[#efe7d8] transition-all";
+    `group ${styles.cardSlot} ${styles.missingSlot}`;
   const imageClass = "h-full w-full object-cover grayscale brightness-[0.25] transition-[filter] duration-300";
 
   const interactiveImage = (
@@ -63,7 +64,6 @@ const MissingCardSlot = ({
           </div>
         </div>
       )}
-      {cardFooter}
     </>
   );
 
@@ -71,6 +71,7 @@ const MissingCardSlot = ({
     return (
       <div className={containerClassName} title={`#${slot.cardNumber} - carte manquante`}>
         <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden px-3">{interactiveImage}</div>
+        {cardFooter}
       </div>
     );
   }
@@ -100,7 +101,7 @@ export function AlbumCardSlot({ slot, onClick, interactive = true }: AlbumCardSl
   const hasRenderableImage = isRenderableImageSource(normalizedImageUrl);
 
   const cardFooter = (
-    <div className="border-t-2 border-ink/10 bg-white/65 px-2 py-2 text-center">
+    <div className={styles.cardFooter}>
       <p className="text-[10px] font-black uppercase tracking-[0.08em] text-charcoal/65">Case #{slot.cardNumber}</p>
     </div>
   );
@@ -137,27 +138,24 @@ export function AlbumCardSlot({ slot, onClick, interactive = true }: AlbumCardSl
 
         <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-[linear-gradient(180deg,rgba(0,0,0,0.32),rgba(0,0,0,0))]" />
 
-        <span className="absolute left-2 top-2 rounded-full border border-white/50 bg-black/45 px-2 py-1 text-[10px] font-black text-white">
+        <span className={styles.cardNumber}>
           #{slot.cardNumber}
         </span>
 
         {slot.ownedCount > 1 && (
-          <span
-            className="absolute right-2 top-2 flex h-6 min-w-[24px] items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-white"
-            style={{ backgroundColor: accent }}
-          >
+          <span className={styles.cardCount} style={{ backgroundColor: accent }}>
             x{slot.ownedCount}
           </span>
         )}
 
         {slot.burnableCount > 0 && (
-          <span className="absolute left-2 bottom-2 flex h-5 min-w-[24px] items-center justify-center rounded-full bg-amber-300 px-1.5 text-[10px] font-black text-amber-900">
-            burn
+          <span className={styles.cardBurn}>
+            recyclable
           </span>
         )}
       </div>
 
-      <div className="lottery-slot-footer border-t-2 border-ink/10 bg-white/72 px-2.5 py-2">
+      <div className={`${styles.cardFooter} lottery-slot-footer`}>
         <p className="lottery-slot-title text-left text-[11px] font-semibold leading-[1.2] text-ink">{slot.name}</p>
       </div>
     </>
@@ -166,7 +164,7 @@ export function AlbumCardSlot({ slot, onClick, interactive = true }: AlbumCardSl
   if (!interactive) {
     return (
       <div
-        className={`group relative flex aspect-[0.72] min-w-0 flex-col overflow-hidden rounded-[18px] border-2 border-ink/20 transition-all ${cardBg}`}
+        className={`group ${styles.cardSlot} ${styles.ownedSlot} ${cardBg}`}
         style={{ borderColor: `${accent}55` }}
         title={`#${slot.cardNumber} ${slot.name}`}
       >
@@ -179,7 +177,7 @@ export function AlbumCardSlot({ slot, onClick, interactive = true }: AlbumCardSl
     <button
       type="button"
       onClick={onClick}
-      className={`group relative flex aspect-[0.72] min-w-0 flex-col overflow-hidden rounded-[18px] border-2 border-ink/20 transition-all hover:-translate-y-1 hover:shadow-md ${cardBg}`}
+      className={`group ${styles.cardSlot} ${styles.ownedSlot} ${cardBg}`}
       style={{ borderColor: `${accent}55` }}
       title={`#${slot.cardNumber} ${slot.name}`}
     >

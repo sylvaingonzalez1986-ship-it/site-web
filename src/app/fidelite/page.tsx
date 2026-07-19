@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LoyaltyBadgeSummary } from "@/components/account/LoyaltyBadgeSummary";
+import { EditorialWorldHero } from "@/components/EditorialWorldHero";
 
 export const metadata: Metadata = {
   title: "Programme fidélité",
@@ -21,10 +22,14 @@ export default function FidelitePage() {
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-36">
       <div className="retro-container grid gap-6">
-        <header className="cartoon-border bg-cream p-6 md:p-8">
-          <h1 className="section-title">PROGRAMME FIDÉLITÉ</h1>
-          <p className="mt-3 text-sm leading-relaxed text-charcoal md:text-base">{pageDescription}</p>
-        </header>
+        <EditorialWorldHero
+          world="progress"
+          eyebrow="Tes avantages"
+          title="PROGRAMME FIDÉLITÉ"
+          description={pageDescription}
+          imageSrc="/mascots/loyalty-progress.png"
+          imageAlt="Charles présente les différents paliers du programme fidélité"
+        />
 
         <LoyaltyBadgeSummary
           title="Résumé des badges"
@@ -51,4 +56,3 @@ export default function FidelitePage() {
     </section>
   );
 }
-

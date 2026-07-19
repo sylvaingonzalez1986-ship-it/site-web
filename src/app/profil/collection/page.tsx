@@ -4,7 +4,7 @@ import { CollectionAlbumClient } from "@/components/account/CollectionAlbumClien
 export const metadata: Metadata = {
   title: "Mon album — Kanab Quest",
   description:
-    "Album de collection Kanab Quest — complète tes pages, burn tes doublons et débloque des lots.",
+    "Album de collection Kanab Quest — complète tes pages, recycle tes doublons et débloque des récompenses.",
 };
 
 export default async function CollectionPage() {

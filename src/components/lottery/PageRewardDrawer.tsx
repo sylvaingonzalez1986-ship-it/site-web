@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Gift } from "lucide-react";
 import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
 import { rarityAccentColor, rarityLabels } from "@/lib/lottery-card-ui";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
@@ -8,6 +9,7 @@ import type {
   LotteryCollectionPageRarity,
   LotteryCollectionPageState,
 } from "@/types/lottery";
+import styles from "./AlbumExperience.module.css";
 
 type PageRewardDrawerProps = {
   page: LotteryCollectionPageState;
@@ -26,17 +28,20 @@ export function PageRewardDrawer({ page, acting, onClaim, onClose }: PageRewardD
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 sm:items-center sm:p-4"
+      className={styles.modalBackdrop}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="page-reward-title"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-md rounded-t-2xl bg-cream shadow-xl sm:rounded-2xl"
+        className={styles.modalShell}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-ink/10 text-ink hover:bg-ink/20"
+          className={styles.modalClose}
           aria-label="Fermer"
         >
           ✕
@@ -45,8 +50,8 @@ export function PageRewardDrawer({ page, acting, onClaim, onClose }: PageRewardD
         <div className="p-6 space-y-5">
           {/* Title */}
           <div className="text-center">
-            <p className="text-4xl">🎉</p>
-            <h3 className="font-display text-xl text-ink mt-2">
+            <Gift className="mx-auto h-10 w-10 text-forest" aria-hidden="true" />
+            <h3 id="page-reward-title" className="font-display text-xl text-ink mt-2">
               Page {page.label} complète !
             </h3>
             <p className="mt-1 text-sm text-charcoal">
@@ -64,7 +69,7 @@ export function PageRewardDrawer({ page, acting, onClaim, onClose }: PageRewardD
                 key={option.rewardDefinitionId}
                 disabled={acting}
                 onClick={() => onClaim(page.rarity, option.rewardDefinitionId)}
-                className="group w-full cartoon-border bg-cream p-4 text-left transition-all hover:bg-cream-dark/20 hover:shadow-md disabled:opacity-50"
+                className="group w-full border-2 border-[#003f30] bg-[#fffaf1] p-4 text-left transition-all hover:bg-[#fff4cb] disabled:opacity-50"
               >
                 <div className="flex gap-3">
                   {(() => {

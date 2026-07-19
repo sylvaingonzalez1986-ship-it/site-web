@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ChevronRight, Gift, Recycle, Sparkles, Ticket, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal";
@@ -13,6 +14,7 @@ import { CardDetailModal } from "@/components/lottery/CardDetailModal";
 import { DuplicateBurnDrawer } from "@/components/lottery/DuplicateBurnDrawer";
 import { PageRewardDrawer } from "@/components/lottery/PageRewardDrawer";
 import { useLotteryExperience } from "@/hooks/useLotteryExperience";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import {
   LOTTERY_DUPLICATE_BURN_RULES,
   LOTTERY_POINTS_PACK_COST,
@@ -26,6 +28,7 @@ import type {
   LotteryDuplicateGroup,
   LotteryTicket,
 } from "@/types/lottery";
+import albumStyles from "@/components/lottery/AlbumExperience.module.css";
 
 export function CollectionAlbumClient() {
   return <CollectionAlbumContent embedded={false} />;
@@ -34,6 +37,58 @@ export function CollectionAlbumClient() {
 type CollectionAlbumContentProps = {
   embedded?: boolean;
 };
+
+type BurnableAlbumGroup = {
+  page: LotteryCollectionPageState;
+  group: LotteryDuplicateGroup;
+};
+
+function DuplicateManagerModal({
+  items,
+  onSelect,
+  onClose,
+}: {
+  items: BurnableAlbumGroup[];
+  onSelect: (item: BurnableAlbumGroup) => void;
+  onClose: () => void;
+}) {
+  useBodyScrollLock(true);
+
+  return (
+    <div className={albumStyles.modalBackdrop} role="dialog" aria-modal="true" aria-labelledby="duplicate-manager-title" onClick={onClose}>
+      <div className={albumStyles.modalShell} onClick={(event) => event.stopPropagation()}>
+        <button type="button" className={albumStyles.modalClose} onClick={onClose} aria-label="Fermer">
+          <X aria-hidden="true" />
+        </button>
+        <div className="p-5 sm:p-6">
+          <p className={albumStyles.kicker}>Recyclage des doublons</p>
+          <h2 id="duplicate-manager-title" className="pr-12 font-display text-3xl uppercase leading-none text-ink">
+            Choisis une carte.
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-charcoal">
+            Chaque ligne peut être recyclée contre une réduction ou des grammes offerts.
+          </p>
+          <div className={albumStyles.managerList}>
+            {items.map((item) => (
+              <button
+                key={`${item.page.rarity}-${item.group.cardDefinitionId}`}
+                type="button"
+                className={albumStyles.managerItem}
+                onClick={() => onSelect(item)}
+              >
+                <span>
+                  <strong className="block text-sm text-ink">{item.group.name}</strong>
+                  <small className="mt-1 block text-xs text-charcoal">Page {item.page.label}</small>
+                </span>
+                <strong>x{item.group.duplicateCount}</strong>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function CollectionAlbumContent({ embedded = false }: CollectionAlbumContentProps) {
   const { isAuthenticated, authLoading } = useCart();
@@ -61,6 +116,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   } | null>(null);
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
   const [packPurchaseQty, setPackPurchaseQty] = useState(1);
+  const [isDuplicateManagerOpen, setIsDuplicateManagerOpen] = useState(false);
 
   /* — Welcome pack one-shot CTA — */
   const [welcomeEligible, setWelcomeEligible] = useState(false);
@@ -138,20 +194,20 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     <div className="absolute inset-0 z-10">
       <div className="absolute inset-0 bg-[#f6efe2]/45 backdrop-blur-[1.5px]" />
       <div className="relative flex justify-center px-4 pt-6 md:px-6 md:pt-10">
-        <div className="cartoon-border w-full max-w-md bg-cream p-6 text-center shadow-[8px_8px_0_rgba(26,26,26,0.12)]">
+        <div className={`${albumStyles.modalShell} p-6 text-center`}>
           <p className="font-display text-2xl leading-tight text-ink">Crée ton compte pour commencer ta collection</p>
           <p className="mt-3 text-sm text-charcoal">
             Ouvre tes boosters, collectionne tes cartes et suis ta progression dans ton album.
           </p>
           <Link
             href="/compte/inscription?next=/profil/collection"
-            className="btn-cartoon btn-primary mt-5 inline-flex min-h-[44px] items-center justify-center px-5"
+            className={`${albumStyles.primaryButton} mt-5`}
           >
             Créer mon compte
           </Link>
           <Link
             href="/compte/connexion?next=/profil/collection"
-            className="btn-cartoon btn-secondary mt-3 inline-flex min-h-[44px] items-center justify-center px-5"
+            className={`${albumStyles.secondaryButton} mt-3`}
           >
             Se connecter
           </Link>
@@ -163,17 +219,19 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   if (loading && !album) {
     if (embedded) {
       return (
-        <div className="cartoon-border bg-cream p-10 text-center">
-          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-forest border-t-transparent" />
-          <p className="mt-3 font-display text-ink">Chargement de ta collection...</p>
+        <div className={albumStyles.experience}>
+          <div className={albumStyles.statusCard}>
+            <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-forest border-t-transparent" />
+            <p className="mt-3 font-display text-ink">Chargement de ta collection...</p>
+          </div>
         </div>
       );
     }
 
     return (
-      <section className="section-band bg-mint halftone-overlay paper-grain pt-36">
-        <div className="retro-container max-w-5xl">
-          <div className="cartoon-border bg-cream p-10 text-center">
+      <section className={albumStyles.pageShell}>
+        <div className={albumStyles.pageInner}>
+          <div className={albumStyles.statusCard}>
             <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-forest border-t-transparent" />
             <p className="mt-3 font-display text-ink">Chargement de ta collection...</p>
           </div>
@@ -185,28 +243,27 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   if (error && !album) {
     if (embedded) {
       return (
-        <div className="cartoon-border bg-cream p-8 text-center">
-          <p className="font-display text-lg text-red-600">{error}</p>
-          <button
-            className="btn-cartoon btn-primary mt-4 inline-flex min-h-[44px] items-center px-4"
-            onClick={() => refreshAll()}
-          >
-            Reessayer
-          </button>
+        <div className={albumStyles.experience}>
+          <div className={albumStyles.statusCard}>
+            <p className="font-display text-lg text-red-600">{error}</p>
+            <button className={`${albumStyles.primaryButton} mt-4`} onClick={() => refreshAll()}>
+              Réessayer
+            </button>
+          </div>
         </div>
       );
     }
 
     return (
-      <section className="section-band bg-mint halftone-overlay paper-grain pt-36">
-        <div className="retro-container max-w-5xl">
-          <div className="cartoon-border bg-cream p-8 text-center">
+      <section className={albumStyles.pageShell}>
+        <div className={albumStyles.pageInner}>
+          <div className={albumStyles.statusCard}>
             <p className="font-display text-lg text-red-600">{error}</p>
             <button
-              className="btn-cartoon btn-primary mt-4 inline-flex min-h-[44px] items-center px-4"
+              className={`${albumStyles.primaryButton} mt-4`}
               onClick={() => refreshAll()}
             >
-              Reessayer
+              Réessayer
             </button>
           </div>
         </div>
@@ -222,6 +279,14 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   if (!activePage) {
     return null;
   }
+
+  const claimablePages = album.pages.filter((page) => page.rewardStatus === "claimable");
+  const allBurnableGroups: BurnableAlbumGroup[] = album.pages.flatMap((page) => {
+    if (!page.burnOffer) return [];
+    return page.duplicateGroups
+      .filter((group) => group.burnableInstanceIds.length >= page.burnOffer!.duplicatesRequired)
+      .map((group) => ({ page, group }));
+  });
 
   const handleClaimReward = async (pageRarity: LotteryCollectionPageRarity, rewardDefinitionId: string) => {
     await claimPageReward(pageRarity, rewardDefinitionId);
@@ -243,90 +308,106 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   };
 
   const albumBody = (
-    <div className={isAlbumPreview ? "pointer-events-none opacity-80 grayscale" : ""}>
-      <div className="space-y-4">
-        {/* — Welcome pack one-shot CTA — */}
+    <div className={`${albumStyles.experience} ${isAlbumPreview ? "pointer-events-none opacity-80 grayscale" : ""}`}>
+      <header className={albumStyles.hero}>
+        <div className={albumStyles.heroCopy}>
+          <p className={albumStyles.kicker}>Kanab Quest · collection à compléter</p>
+          {embedded ? (
+            <h2 className={albumStyles.heroTitle}>Mon <span>album.</span></h2>
+          ) : (
+            <h1 className={albumStyles.heroTitle}>Mon <span>album.</span></h1>
+          )}
+          <p className={albumStyles.heroLead}>
+            Ouvre tes boosters, complète chaque page et débloque les récompenses de la collection.
+          </p>
+        </div>
+        <div className={albumStyles.heroArt} aria-hidden="true">
+          <span className={albumStyles.heroCircle} />
+          <Image
+            src="/app/lottery/charles-booster-presentation-v2.png"
+            alt=""
+            width={1024}
+            height={1536}
+            sizes="(max-width: 767px) 160px, 315px"
+            className={albumStyles.heroPresentation}
+          />
+        </div>
+      </header>
+
+      <section className={albumStyles.summaryBar} aria-label="Résumé de la collection">
+        <div className={albumStyles.summaryStat}>
+          <span>Cartes</span>
+          <strong>{album.summary.ownedUnique}/{album.summary.totalCards}</strong>
+        </div>
+        <div className={albumStyles.summaryStat}>
+          <span>Album complété</span>
+          <strong>{album.summary.completionPercent}%</strong>
+        </div>
+        <div className={albumStyles.summaryStat}>
+          <span>Boosters</span>
+          <strong>{availableTickets.length}</strong>
+        </div>
+        <div className={`${albumStyles.summaryStat} ${claimablePages.length > 0 ? albumStyles.summaryStatHighlight : ""}`}>
+          <span>Récompenses</span>
+          <strong>{claimablePages.length}</strong>
+        </div>
+      </section>
+
+      <div>
         {isAuthenticated && welcomeEligible && !welcomeJustClaimed && (
           <button
             type="button"
             disabled={welcomeClaiming}
             onClick={handleClaimWelcomePack}
-            className="group flex w-full items-center gap-4 rounded-2xl border-[3px] border-dashed border-[#27ae60] bg-[#eafaf1] p-3 pr-6 shadow-[4px_4px_0_rgba(39,174,96,0.15)] transition-transform hover:-translate-y-0.5 hover:shadow-[4px_6px_0_rgba(39,174,96,0.22)] active:translate-y-0"
+            className={albumStyles.notice}
           >
-            <span className="text-4xl leading-none">🎁</span>
-            <div className="text-left">
-              <p className="text-xs font-black uppercase tracking-[0.08em] text-[#27ae60]">Cadeau de bienvenue</p>
-              <p className="mt-1 font-display text-xl leading-tight text-ink">
-                {welcomeClaiming ? "Attribution en cours…" : "Récupérer mon pack gratuit"}
-              </p>
-              <p className="mt-0.5 text-xs text-charcoal">1 booster offert pour ton inscription !</p>
+            <span className={albumStyles.noticeIcon}>🎁</span>
+            <div>
+              <p>Cadeau de bienvenue</p>
+              <strong>{welcomeClaiming ? "Attribution en cours…" : "Récupérer mon booster gratuit"}</strong>
             </div>
           </button>
         )}
 
         {welcomeJustClaimed && (
-          <div className="flex w-full items-center gap-4 rounded-2xl border-[3px] border-[#27ae60] bg-[#eafaf1] p-3 pr-6">
-            <span className="text-4xl leading-none">✅</span>
-            <div className="text-left">
-              <p className="font-display text-lg text-[#27ae60]">Pack récupéré !</p>
-              <p className="text-xs text-charcoal">Ouvre-le ci-dessous pour découvrir tes cartes.</p>
-            </div>
-          </div>
-        )}
-
-        {availableTickets.length > 0 && (
-          <button
-            type="button"
-            className="group flex w-full items-center gap-4 rounded-2xl border-[3px] border-[#1a1a1a] bg-[#fff8e8] p-3 pr-6 shadow-[4px_4px_0_rgba(26,26,26,0.12)] transition-transform hover:-translate-y-0.5 hover:shadow-[4px_6px_0_rgba(26,26,26,0.16)] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70"
-            disabled={isAlbumPreview}
-            onClick={() => {
-              if (!isAlbumPreview) {
-                setSelectedTicketId(availableTickets[0].id);
-              }
-            }}
-          >
-            <div className="relative h-20 w-14 shrink-0">
-              <Image
-                src="/app/lottery/sealed-booster-pack.png"
-                alt="Booster scellé"
-                fill
-                sizes="56px"
-                className="object-contain drop-shadow-md transition-transform group-hover:scale-105"
-              />
-            </div>
-            <div className="text-left">
-              <p className="text-xs font-black uppercase tracking-[0.08em] text-charcoal">Boosters disponibles</p>
-              <p className="mt-1 font-display text-2xl leading-tight text-ink">
-                {availableTickets.length} pack{availableTickets.length > 1 ? "s" : ""}
-              </p>
-              <p className="mt-0.5 text-xs text-charcoal">Appuyez pour ouvrir</p>
-            </div>
-          </button>
-        )}
-
-        <div className="cartoon-border bg-[#eef6ff] p-4">
-          <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className={albumStyles.notice}>
+            <span className={albumStyles.noticeIcon}>✓</span>
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.08em] text-[#24508a]">
-                Boutique de packs
-              </p>
-              <p className="mt-1 font-display text-2xl leading-tight text-ink">
-                {loyalty.spendablePoints} pts disponibles
-              </p>
-              <p className="mt-1 text-sm text-charcoal">
-                {LOTTERY_POINTS_PACK_COST} pts par pack. Maximum{" "}
-                {LOTTERY_POINTS_PACK_MAX_PER_PURCHASE} packs par achat.
-              </p>
-            </div>
-            <div className="rounded-2xl border-2 border-[#1a1a1a] bg-white px-3 py-2 text-right">
-              <p className="text-[11px] font-black uppercase tracking-[0.08em] text-charcoal">
-                Points cumules
-              </p>
-              <p className="mt-1 text-lg font-bold text-ink">{loyalty.points}</p>
+              <p>Booster ajouté</p>
+              <strong>Ton cadeau est prêt à être ouvert.</strong>
             </div>
           </div>
+        )}
+      </div>
 
-          <div className="mt-4 flex flex-wrap items-center gap-3">
+      <section className={albumStyles.actionGrid} aria-label="Actions de l'album">
+        <button
+          type="button"
+          className={`${albumStyles.actionCard} ${availableTickets.length === 0 ? albumStyles.actionCardMuted : ""}`}
+          disabled={isAlbumPreview || availableTickets.length === 0}
+          onClick={() => availableTickets[0] && setSelectedTicketId(availableTickets[0].id)}
+        >
+          <span>
+            <span className={albumStyles.actionHeader}>
+              <span className={albumStyles.actionIcon}><Ticket aria-hidden="true" /></span>
+              <strong className={albumStyles.actionValue}>{availableTickets.length}</strong>
+            </span>
+            <h2>Mes boosters</h2>
+            <p>{availableTickets.length > 0 ? "Un booster est prêt à être ouvert." : "Aucun booster disponible actuellement."}</p>
+          </span>
+          <span className={albumStyles.actionLink}>Ouvrir maintenant <ChevronRight aria-hidden="true" /></span>
+        </button>
+
+        <div className={albumStyles.actionCard}>
+          <span>
+            <span className={albumStyles.actionHeader}>
+              <span className={albumStyles.actionIcon}><Sparkles aria-hidden="true" /></span>
+              <strong className={albumStyles.actionValue}>{loyalty.spendablePoints}</strong>
+            </span>
+            <h2>Points disponibles</h2>
+            <p>{LOTTERY_POINTS_PACK_COST} points permettent d’obtenir un booster.</p>
+          </span>
+          <div className={albumStyles.pointsControls}>
             <QuantitySelector
               value={effectivePackPurchaseQty}
               min={1}
@@ -337,121 +418,76 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
             />
             <button
               type="button"
-              className="btn-cartoon btn-primary inline-flex min-h-[44px] items-center justify-center px-4 disabled:opacity-50"
               disabled={isAlbumPreview || acting || maxPurchasablePacks < 1}
               onClick={() => void handlePurchasePacks()}
             >
-              Acheter {effectivePackPurchaseQty} pack{effectivePackPurchaseQty > 1 ? "s" : ""} -{" "}
-              {effectivePackPurchaseQty * LOTTERY_POINTS_PACK_COST} pts
+              Acheter {effectivePackPurchaseQty}
             </button>
           </div>
-
-          <p className="mt-3 text-xs text-charcoal">
-            {maxPurchasablePacks > 0
-              ? `Tu peux acheter jusqu'a ${maxPurchasablePacks} pack${maxPurchasablePacks > 1 ? "s" : ""} maintenant.`
-              : `Il te faut au moins ${LOTTERY_POINTS_PACK_COST} points disponibles pour acheter un pack.`}
-          </p>
         </div>
 
-        {(() => {
-          const claimablePages = album.pages.filter((p) => p.rewardStatus === "claimable");
-          if (claimablePages.length === 0) return null;
-          return (
-            <div className="cartoon-border bg-[#e7f4e8] p-4">
-              <p className="text-xs font-black uppercase tracking-[0.08em] text-[#1f6f3a]">Récompenses disponibles</p>
-              <p className="mt-1 text-sm text-charcoal">
-                {claimablePages.length} page{claimablePages.length > 1 ? "s" : ""} complète{claimablePages.length > 1 ? "s" : ""} — réclame tes lots !
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {claimablePages.map((page) => (
-                  <button
-                    key={page.rarity}
-                    type="button"
-                    disabled={isAlbumPreview}
-                    className={`btn-cartoon inline-flex items-center gap-2 border-2 border-[#2d9e5b] bg-[#d4f5dc] px-3 py-1.5 text-xs text-[#1a5c32] ${
-                      isAlbumPreview ? "cursor-not-allowed opacity-70" : "hover:bg-[#c0eeca]"
-                    }`}
-                    onClick={() => {
-                      if (isAlbumPreview) return;
-                      const pageIndex = album.pages.findIndex((p) => p.rarity === page.rarity);
-                      if (pageIndex >= 0) setActivePageIndex(pageIndex);
-                      setRewardDrawerPage(page);
-                    }}
-                  >
-                    <span className="font-semibold">{page.title}</span>
-                    <span className="rounded bg-white/55 px-1.5 py-0.5 text-[10px] font-bold">
-                      {page.rewardOptions.length} lot{page.rewardOptions.length > 1 ? "s" : ""}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          );
-        })()}
-
-        {(() => {
-          const allBurnableGroups: Array<{ page: LotteryCollectionPageState; group: LotteryDuplicateGroup }> = [];
-          for (const page of album.pages) {
-            if (!page.burnOffer) continue;
-            for (const group of page.duplicateGroups) {
-              if (group.burnableInstanceIds.length >= page.burnOffer.duplicatesRequired) {
-                allBurnableGroups.push({ page, group });
-              }
-            }
-          }
-          if (allBurnableGroups.length === 0) return null;
-          return (
-            <div className="cartoon-border bg-[#fff5da] p-4">
-              <p className="text-xs font-black uppercase tracking-[0.08em] text-[#9a6700]">Recyclage de doublons</p>
-              <p className="mt-1 text-sm text-charcoal">
-                {allBurnableGroups.length} carte{allBurnableGroups.length > 1 ? "s" : ""} recyclables{allBurnableGroups.length > 1 ? "s" : ""} — échange 10 doublons d&apos;une même carte contre une réduction ou des grammes offerts.
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {allBurnableGroups.slice(0, 6).map(({ page, group }) => (
-                  <button
-                    key={group.cardDefinitionId}
-                    type="button"
-                    disabled={isAlbumPreview}
-                    className={`btn-cartoon inline-flex items-center gap-2 border-2 border-[#e0bc67] bg-[#ffe7a8] px-3 py-1.5 text-xs text-[#6f4b00] ${
-                      isAlbumPreview ? "cursor-not-allowed opacity-70" : "hover:bg-[#ffdf8e]"
-                    }`}
-                    onClick={() => {
-                      if (!isAlbumPreview) {
-                        setBurnDrawerGroup({ page, group });
-                      }
-                    }}
-                  >
-                    <span className="max-w-[10rem] truncate font-semibold">{group.name}</span>
-                    <span className="rounded bg-white/55 px-1.5 py-0.5 text-[10px] font-bold">x{group.duplicateCount}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          );
-        })()}
-
-        <AlbumShell
-          album={album}
-          embedded={embedded}
-          subtitle={config?.albumSubtitle}
-          seasonLabel={config?.seasonLabel}
+        <button
+          type="button"
+          className={`${albumStyles.actionCard} ${claimablePages.length === 0 ? albumStyles.actionCardMuted : ""}`}
+          disabled={isAlbumPreview || claimablePages.length === 0}
+          onClick={() => {
+            const page = claimablePages[0];
+            if (!page) return;
+            const pageIndex = album.pages.findIndex((candidate) => candidate.rarity === page.rarity);
+            if (pageIndex >= 0) setActivePageIndex(pageIndex);
+            setRewardDrawerPage(page);
+          }}
         >
-          <AlbumPager
-            pages={album.pages}
-            activeIndex={activePageIndex}
-            isPreview={isAlbumPreview}
-            onPageChange={setActivePageIndex}
-          />
+          <span>
+            <span className={albumStyles.actionHeader}>
+              <span className={albumStyles.actionIcon}><Gift aria-hidden="true" /></span>
+              <strong className={albumStyles.actionValue}>{claimablePages.length}</strong>
+            </span>
+            <h2>Récompenses</h2>
+            <p>{claimablePages.length > 0 ? "Une page complète attend ton choix." : "Complète une page pour débloquer son lot."}</p>
+          </span>
+          <span className={albumStyles.actionLink}>Voir mes gains <ChevronRight aria-hidden="true" /></span>
+        </button>
 
-          <AlbumPage
-            page={activePage}
-            isPreview={isAlbumPreview}
-            onSlotClick={setSelectedSlot}
-            onClaimClick={() => setRewardDrawerPage(activePage)}
-            onBurnClick={(group: LotteryDuplicateGroup) => setBurnDrawerGroup({ page: activePage, group })}
-          />
-        </AlbumShell>
-      </div>
+        <button
+          type="button"
+          className={`${albumStyles.actionCard} ${allBurnableGroups.length === 0 ? albumStyles.actionCardMuted : ""}`}
+          disabled={isAlbumPreview || allBurnableGroups.length === 0}
+          onClick={() => setIsDuplicateManagerOpen(true)}
+        >
+          <span>
+            <span className={albumStyles.actionHeader}>
+              <span className={albumStyles.actionIcon}><Recycle aria-hidden="true" /></span>
+              <strong className={albumStyles.actionValue}>{allBurnableGroups.length}</strong>
+            </span>
+            <h2>Doublons recyclables</h2>
+            <p>{allBurnableGroups.length > 0 ? "Transforme tes copies en réduction ou en cadeau." : "Continue à collectionner pour recycler tes copies."}</p>
+          </span>
+          <span className={albumStyles.actionLink}>Gérer mes doublons <ChevronRight aria-hidden="true" /></span>
+        </button>
+      </section>
+
+      <AlbumShell
+        album={album}
+        embedded={embedded}
+        subtitle={config?.albumSubtitle}
+        seasonLabel={config?.seasonLabel}
+      >
+        <AlbumPager
+          pages={album.pages}
+          activeIndex={activePageIndex}
+          isPreview={isAlbumPreview}
+          onPageChange={setActivePageIndex}
+        />
+
+        <AlbumPage
+          page={activePage}
+          isPreview={isAlbumPreview}
+          onSlotClick={setSelectedSlot}
+          onClaimClick={() => setRewardDrawerPage(activePage)}
+          onBurnClick={(group: LotteryDuplicateGroup) => setBurnDrawerGroup({ page: activePage, group })}
+        />
+      </AlbumShell>
 
       {selectedSlot && <CardDetailModal slot={selectedSlot} onClose={() => setSelectedSlot(null)} />}
 
@@ -474,6 +510,17 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
         />
       )}
 
+      {isDuplicateManagerOpen && allBurnableGroups.length > 0 ? (
+        <DuplicateManagerModal
+          items={allBurnableGroups}
+          onClose={() => setIsDuplicateManagerOpen(false)}
+          onSelect={(item) => {
+            setIsDuplicateManagerOpen(false);
+            setBurnDrawerGroup(item);
+          }}
+        />
+      ) : null}
+
       <PackOpeningFlowModal
         ticket={activeTicket}
         onClose={() => setSelectedTicketId(null)}
@@ -492,8 +539,8 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   }
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-36 pb-20">
-      <div className="retro-container max-w-5xl">
+    <section data-world="album" className={albumStyles.pageShell}>
+      <div className={albumStyles.pageInner}>
         <div className="relative">
           {albumBody}
           {previewOverlay}

@@ -415,7 +415,7 @@ export function PackOpeningAnimation({
             {/* Current card — large, centered */}
             <div className="h-full max-h-[72vh] w-full max-w-sm">
               <FlipCard
-                key={result.cards[currentCardIndex].id}
+                key={`${result.ticketId}-${currentCardIndex}-${result.cards[currentCardIndex].id}`}
                 card={result.cards[currentCardIndex]}
                 revealed={revealedIndexes.includes(currentCardIndex)}
                 canReveal={phase === "revealing" && !revealedIndexes.includes(currentCardIndex)}
@@ -435,7 +435,7 @@ export function PackOpeningAnimation({
           <div className="flex items-center justify-center gap-2 pb-2">
             {result.cards.map((card, i) => (
               <button
-                key={card.id}
+                key={`${result.ticketId}-${i}-${card.id}`}
                 type="button"
                 className={`h-2.5 w-2.5 rounded-full transition-all ${
                   i === currentCardIndex

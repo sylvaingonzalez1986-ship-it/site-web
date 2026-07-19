@@ -358,9 +358,9 @@ export function MissionsSection() {
 
   return (
     <>
-      <h2 className="font-display text-3xl">Missions</h2>
+      <h2 data-world="quests" className="world-title font-display text-3xl">Mes quêtes</h2>
       <p className="mt-2 text-sm text-charcoal">
-        Complete des missions pour gagner des packs de cartes Kanab Quest !
+        Complète tes quêtes pour gagner des packs de cartes Kanab Quest.
       </p>
 
       {/* Pending referral choice alerts */}
