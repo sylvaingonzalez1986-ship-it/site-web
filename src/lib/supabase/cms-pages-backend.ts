@@ -4,7 +4,6 @@ import { randomUUID } from "node:crypto";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { normalizeCmsSlug } from "@/lib/cms-pages-slugs";
 import { sanitizeDisplayText } from "@/lib/text-encoding-repair";
-import { TUTORIAL_CMS_SLUG_PREFIX } from "@/lib/tutorial-cms-pages";
 import {
   CMS_PAGE_STATUS_VALUES,
   type CmsPage,
@@ -242,19 +241,6 @@ export async function readPublishedCmsPagesFromSupabase(): Promise<CmsPage[]> {
     .order("position", { ascending: true })
     .order("created_at", { ascending: false });
   failIfError(result.error, "read cms_pages published");
-
-  return (result.data ?? []).map((row) => mapRowToCmsPage(toObject(row)));
-}
-
-export async function readTutorialCmsPagesFromSupabase(): Promise<CmsPage[]> {
-  const supabase = createSupabaseServiceClient();
-  const result = await supabase
-    .from("cms_pages")
-    .select(SELECT_CMS_PAGE_COLUMNS)
-    .like("slug", `${TUTORIAL_CMS_SLUG_PREFIX}%`)
-    .order("position", { ascending: true })
-    .order("created_at", { ascending: false });
-  failIfError(result.error, "read cms_pages tutorial");
 
   return (result.data ?? []).map((row) => mapRowToCmsPage(toObject(row)));
 }

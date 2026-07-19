@@ -8,83 +8,72 @@ export type TutorialStep = {
   requiresAuth?: boolean;
 };
 
-export const TUTORIAL_VERSION = 9;
+export const TUTORIAL_VERSION = 12;
 
 export const HOME_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "welcome",
-    title: "Bienvenue dans l'arene",
-    text: "Ici c'est du CBD francais, vendu au gramme, sans emballage inutile. Et y'a du loot.",
+    title: "Bienvenue chez les Chanvriers",
+    text: "Je te fais le tour en quelques etapes: la boutique, ton album de cartes et le lien avec l'onglet Concours.",
     details: [
-      "Ce tuto dure 30 secondes. Tu peux le relancer depuis ton profil.",
+      "Tu peux passer le tutoriel a tout moment.",
+      "Tu peux aussi le relancer plus tard depuis ton profil.",
+      "Chaque etape t'emmene directement au bon endroit du site.",
     ],
     route: "/",
   },
   {
     id: "boutique",
-    title: "Le shop — Du vrac, du vrai",
-    text: "",
+    title: "Boutique",
+    text: "Dans la boutique, tu retrouves les produits par univers pour choisir plus vite ce qui te correspond.",
     details: [
-      "3 univers: Ma prod' (sol vivant, Bretagne), Mes voisins (producteurs bretons), Les copains (partenaires France entiere).",
-      "Filtre par categorie: fleurs, resines, huiles, promos… tu vas droit au but.",
-      "Chaque fiche produit affiche l'origine, le producteur et les analyses labo.",
+      "Les categories t'aident a filtrer les fleurs, resines, packs et accessoires.",
+      "Les fiches produit indiquent les infos utiles avant d'ajouter au panier.",
+      "Certains lots premium peuvent aussi etre suivis dans l'onglet Concours.",
     ],
     route: "/boutique",
   },
   {
-    id: "loyalty",
-    title: "Chaque achat = XP",
-    text: "1 EUR dépensé = 1 point. Plus tu commandes, plus tu montes de niveau. 5 badges à débloquer, chacun avec ses avantages.",
+    id: "collection",
+    title: "Ton album de cartes",
+    text: "L'onglet Mon album rassemble tes boosters, tes cartes et ta progression Kanab Quest.",
     details: [
-      "Bronze (100 pts): 1% de réduction automatique + 1 pack booster extra / commande.",
-      "Argent (500 pts): 4% de réduction automatique + livraison offerte + 3 packs booster extra / commande.",
-      "Or (1000 pts): 6% de réduction automatique + livraison offerte + 5 packs booster extra / commande.",
-      "Platine (1500 pts): 8% de réduction automatique + livraison offerte + 10 packs booster + cadeau anniversaire + ventes privées.",
-      "Diamant (2000 pts): 10% de réduction automatique + livraison offerte + 20 packs booster + cadeau anniversaire + cadeau de Noël + ventes privées.",
+      "Tu ouvres tes boosters pour reveler de nouvelles cartes.",
+      "Les cartes obtenues restent dans ta collection.",
+      "Les doublons peuvent servir a debloquer des avantages quand une regle le permet.",
     ],
-    route: "/",
-  },
-  {
-    id: "tcg-album",
-    title: "Kanab Quest — Collectionne-les tous",
-    text: "Chaque commande drop des packs de 3 cartes. Remplis l'album par pages de rarete pour debloquer des lots.",
-    details: [
-      "5 raretes: Common, Silver, Gold, Epic, Legendary.",
-      "Complete une page = recompense debloquee.",
-      "Ton album a son propre onglet dans la nav. Tes missions sont dans ton profil.",
-    ],
-    route: "/",
-  },
-  {
-    id: "tcg-burn",
-    title: "Doublons = monnaie d'echange",
-    text: "Tes doublons ne sont pas inutiles. Brule-les contre des reductions ou des grammes offerts.",
-    details: [
-      "10 doublons Common = -10% ou 3g offerts.",
-      "10 doublons Silver = -20% ou 10g offerts.",
-      "10 doublons Gold = -30% ou 20g offerts.",
-      "10 doublons Epic = -50% ou 50g offerts.",
-      "Tu peux aussi acheter des packs avec tes points: 100 pts/pack.",
-    ],
-    route: "/",
+    route: "/profil/collection",
   },
   {
     id: "pack-demo",
-    title: "Ouvre ton premier pack",
-    text: "Glisse pour ouvrir le pack, retourne les 3 cartes. C'est une demo, mais le feeling est le meme.",
+    title: "Un booster, ca donne quoi ?",
+    text: "Voici un exemple rapide: tu ouvres un booster, puis les cartes revelees rejoignent ton album.",
     details: [
-      "GG si tu drop une Legendary.",
+      "La rarete des cartes rend la collection plus fun.",
+      "Les cartes manquantes t'aident a voir ce qu'il te reste a trouver.",
     ],
-    route: "/",
+    route: "/profil/collection",
     variant: "pack-demo",
   },
   {
-    id: "finish",
-    title: "GG, t'es pret",
-    text: "Boutique, album, fidelite: tout est en place. A toi de jouer.",
+    id: "contest",
+    title: "L'onglet Concours",
+    text: "Le Concours met en avant les lots premium avec des avis, des classements et des profils de testeurs.",
     details: [
-      "Ton album est accessible depuis la nav, tes missions depuis ton profil.",
-      "Tu peux relancer ce tuto a tout moment.",
+      "Tu peux comparer les lots en concours avant de choisir.",
+      "Les retours clients aident a suivre les favoris de la saison.",
+      "Les recompenses et badges du concours peuvent renvoyer vers ton album.",
+    ],
+    route: "/arene",
+  },
+  {
+    id: "finish",
+    title: "Tu es pret",
+    text: "Le plus important: Boutique pour choisir, Mon album pour collectionner, Concours pour suivre les lots premium.",
+    details: [
+      "Commence par la boutique si tu veux commander.",
+      "Passe par Mon album pour ouvrir tes boosters.",
+      "Va dans Concours pour suivre les classements et les avis.",
     ],
     route: "/",
   },

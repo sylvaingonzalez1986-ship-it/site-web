@@ -1,5 +1,5 @@
 ﻿import type { Metadata } from "next";
-import { HomePinnedExperience } from "@/components/home/HomePinnedExperience";
+import { HomeEditorialExperience } from "@/components/home/HomeEditorialExperience";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 
 export const metadata: Metadata = {
@@ -22,5 +22,5 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const store = await readPublicStoreByBackend();
 
-  return <HomePinnedExperience initialStore={store} />;
+  return <HomeEditorialExperience initialStore={store} />;
 }

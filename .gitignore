@@ -59,3 +59,5 @@ supabase/.temp/
 tmp*
 tmp/
 tmp_supabase_push/
+.env*.local
+.next-dev*.log

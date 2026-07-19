@@ -168,6 +168,319 @@ h4 {
   border-radius: 4px;
 }
 
+/* Visual refresh v2 — preserves the original hand-drawn cartoon identity. */
+.site-background {
+  background: var(--mint);
+}
+
+.section-band {
+  isolation: isolate;
+}
+
+.section-band::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background:
+    radial-gradient(circle at 4% 16%, rgba(247, 244, 238, 0.2) 0 92px, transparent 94px),
+    radial-gradient(circle at 96% 78%, rgba(244, 194, 111, 0.2) 0 130px, transparent 132px);
+}
+
+.game-navbar.is-scrolled {
+  border-bottom: 2px solid var(--ink);
+  background: rgba(247, 244, 238, 0.96);
+  box-shadow: 0 5px 0 rgba(26, 26, 26, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.game-brand {
+  max-width: 190px;
+  line-height: 0.92;
+}
+
+.game-nav-links .nav-link {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  padding: 0.45rem 0.65rem;
+  border: 2px solid transparent;
+  border-radius: 9px;
+  font-size: 0.69rem;
+  font-weight: 800;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+  transition: transform 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.game-nav-links .nav-link:hover {
+  border-color: var(--ink);
+  background: var(--cream);
+  box-shadow: 3px 3px 0 rgba(26, 26, 26, 0.2);
+  transform: translate(-1px, -2px) rotate(-1deg);
+}
+
+.game-mobile-nav {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(244, 194, 111, 0.32) 0 120px, transparent 122px),
+    var(--cream);
+}
+
+.cartoon-panel,
+.card-cartoon {
+  overflow: hidden;
+}
+
+.card-cartoon {
+  position: relative;
+}
+
+.card-cartoon::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 6px;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(90deg, var(--teal) 0 42%, var(--yellow) 42% 72%, var(--orange) 72%);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.card-cartoon:hover::after {
+  opacity: 1;
+}
+
+.btn-cartoon {
+  border-radius: 8px;
+}
+
+.btn-cartoon:hover {
+  transform: translate(-2px, -3px) rotate(-0.6deg);
+}
+
+.world-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px 34px 4px 34px;
+}
+
+.world-hero::after {
+  position: absolute;
+  top: -42px;
+  right: -32px;
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  content: "";
+  opacity: 0.14;
+  background: var(--world-color, var(--yellow));
+}
+
+[data-world="market"] { --world-color: var(--yellow); }
+[data-world="arena"] { --world-color: #eb765d; }
+[data-world="album"] { --world-color: #d8c2ef; }
+[data-world="quests"] { --world-color: #bfe8cb; }
+[data-world="progress"] { --world-color: #80cfc3; }
+[data-world="journal"] { --world-color: var(--beige); }
+
+.world-title {
+  display: inline-block;
+  padding-bottom: 0.35rem;
+  border-bottom: 6px solid var(--world-color, var(--yellow));
+}
+
+.game-world-section {
+  background-color: var(--mint);
+}
+
+.product-card.card-cartoon {
+  border-radius: 4px 22px 4px 22px;
+}
+
+.product-card .product-card-body {
+  background:
+    linear-gradient(135deg, transparent 0 92%, rgba(46, 139, 120, 0.12) 92%),
+    var(--cream);
+}
+
+.product-card h3 {
+  line-height: 1.05;
+}
+
+.product-card-description {
+  border-color: rgba(26, 26, 26, 0.16);
+  background: rgba(255, 255, 255, 0.62);
+}
+
+@media (max-width: 1180px) {
+  .game-brand {
+    display: none;
+  }
+
+  .game-nav-links {
+    gap: 0;
+  }
+
+  .game-nav-links .nav-link {
+    padding-inline: 0.45rem;
+    font-size: 0.63rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .world-hero {
+    border-radius: 4px 22px 4px 22px;
+  }
+
+  .product-card.card-cartoon {
+    border-radius: 4px 18px 4px 18px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Character-led world headers
+   Shared with Boutique, Blog and Fidélité. The illustration changes with the
+   page while the poster typography, palette and responsive structure remain.
+   -------------------------------------------------------------------------- */
+.editorial-world-hero {
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.editorial-world-hero::before,
+.editorial-world-hero::after {
+  display: none;
+}
+
+.editorial-world-hero__intro {
+  display: grid;
+  min-height: 320px;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 310px);
+  grid-template-areas:
+    "copy character"
+    "description character";
+  align-items: center;
+  column-gap: clamp(1.5rem, 4vw, 4rem);
+  row-gap: 1.25rem;
+}
+
+.editorial-world-hero__copy {
+  position: relative;
+  z-index: 2;
+  grid-area: copy;
+}
+
+.editorial-world-hero__copy .section-title {
+  max-width: 820px;
+  font-size: clamp(4rem, 7.6vw, 8rem);
+  line-height: 0.82;
+}
+
+.editorial-world-hero__description {
+  grid-area: description;
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(1rem, 1.55vw, 1.2rem);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.editorial-world-hero__character {
+  position: relative;
+  align-self: stretch;
+  grid-area: character;
+  min-height: 320px;
+}
+
+.editorial-world-hero__character::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(26vw, 300px);
+  aspect-ratio: 1;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: var(--yellow);
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.editorial-world-hero__character img {
+  position: absolute;
+  right: 50%;
+  bottom: -2.5rem;
+  z-index: 1;
+  width: min(100%, 300px);
+  height: calc(100% + 3rem);
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(8px 10px 0 rgba(17, 21, 18, 0.14));
+  transform: translateX(50%);
+}
+
+.editorial-world-hero__content {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-top: clamp(1.25rem, 2vw, 1.75rem);
+  border-top: 3px solid var(--teal);
+}
+
+@media (max-width: 768px) {
+  .editorial-world-hero {
+    padding: 1.25rem;
+  }
+
+  .editorial-world-hero__intro {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr) 108px;
+    grid-template-areas:
+      "copy character"
+      "description description";
+    align-items: center;
+    column-gap: 0.5rem;
+    row-gap: 1rem;
+  }
+
+  .editorial-world-hero__copy .section-title {
+    font-size: clamp(3.1rem, 15.5vw, 4.75rem);
+  }
+
+  .editorial-world-hero__description {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .editorial-world-hero__character {
+    min-height: 120px;
+  }
+
+  .editorial-world-hero__character::before {
+    width: min(26vw, 104px);
+  }
+
+  .editorial-world-hero__character img {
+    bottom: 0;
+    width: min(25vw, 100px);
+    height: 120px;
+  }
+
+  .editorial-world-hero__content {
+    margin-top: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-nav-links .nav-link,
+  .card-cartoon::after {
+    transition: none;
+  }
+}
+
 .product-culture-badge {
   display: inline-flex;
   align-items: center;
@@ -1593,6 +1906,36 @@ h4 {
 }
 
 @media (max-width: 640px) {
+  .contest-profile-illustrated-layout {
+    grid-template-columns: minmax(76px, 96px) minmax(0, 1fr);
+    column-gap: 0.75rem;
+  }
+
+  .contest-profile-illustrated-layout > .contest-mascot-button,
+  .contest-profile-illustrated-layout > .contest-mascot-scene {
+    grid-row: 1;
+  }
+
+  .contest-profile-illustrated-layout > .grid {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+  }
+
+  .contest-profile-illustrated-layout > .grid > div {
+    box-sizing: border-box;
+    min-width: 0;
+    padding-right: 0.4rem;
+    padding-left: 0.4rem;
+  }
+
+  .contest-profile-illustrated-layout > .grid p {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    line-height: 1.1;
+  }
+
   .contest-hub-panel-dialog {
     padding-top: calc(env(safe-area-inset-top, 0px) + 1rem);
     padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 4.75rem);
@@ -8493,5 +8836,832 @@ body.contest-guide-open .contest-hub-flipbook .contest-guide-flipbook .contest-n
     background: rgba(255, 248, 226, 0.96);
     padding-top: 0.35rem;
     padding-bottom: 0.16rem;
+  }
+}
+@media not all {
+/* --------------------------------------------------------------------------
+   Game world visual system
+   Shared, presentation-only layer. Feature-specific screens keep their own
+   layouts while inheriting the same palette, depth and interaction language.
+   -------------------------------------------------------------------------- */
+:root {
+  --mint: #b9d6b0;
+  --yellow: #f6c84f;
+  --orange: #e55d35;
+  --teal: #167d6b;
+  --beige: #d9ae7b;
+  --cream: #fff9e9;
+  --ink: #17221d;
+  --charcoal: #425049;
+  --game-sky: #dff3e7;
+  --game-forest: #1d5a46;
+  --game-ocean: #397f9f;
+  --game-violet: #8065ae;
+  --game-panel: rgba(255, 249, 233, 0.94);
+  --game-line: 2px solid var(--ink);
+  --game-shadow-sm: 3px 4px 0 rgba(23, 34, 29, 0.2);
+  --game-shadow: 6px 8px 0 rgba(23, 34, 29, 0.2);
+  --game-shadow-hover: 8px 11px 0 rgba(23, 34, 29, 0.24);
+  --game-radius-sm: 12px;
+  --game-radius: 20px;
+  --game-radius-lg: 30px;
+}
+
+body {
+  background: var(--game-sky);
+}
+
+.site-background {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 10% 4%, rgba(255, 255, 255, 0.72), transparent 22rem),
+    radial-gradient(circle at 92% 18%, rgba(246, 200, 79, 0.2), transparent 24rem),
+    linear-gradient(180deg, var(--game-sky), var(--mint) 38%, #a9c99e 100%);
+}
+
+/* Cheerful platformer scenery: original CSS textures, no external game assets. */
+.site-background::after {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: -1;
+  height: 24vh;
+  min-height: 150px;
+  pointer-events: none;
+  content: "";
+  opacity: 0.36;
+  background:
+    radial-gradient(ellipse at 8% 100%, #4f9d64 0 24%, transparent 25%),
+    radial-gradient(ellipse at 23% 110%, #74bd6d 0 31%, transparent 32%),
+    radial-gradient(ellipse at 52% 108%, #4f9d64 0 25%, transparent 26%),
+    radial-gradient(ellipse at 76% 112%, #74bd6d 0 33%, transparent 34%),
+    radial-gradient(ellipse at 96% 105%, #4f9d64 0 24%, transparent 25%);
+}
+
+.halftone-overlay::before {
+  opacity: 0.2;
+  background-image:
+    radial-gradient(circle at 12px 12px, rgba(255, 255, 255, 0.72) 0 7px, transparent 8px),
+    radial-gradient(circle at 22px 13px, rgba(255, 255, 255, 0.72) 0 10px, transparent 11px),
+    radial-gradient(circle at 33px 12px, rgba(255, 255, 255, 0.72) 0 7px, transparent 8px);
+  background-position: 5% 9%, 68% 18%;
+  background-size: 220px 120px, 290px 150px;
+  background-repeat: no-repeat;
+}
+
+.paper-grain::after {
+  opacity: 0.16;
+  background-image:
+    linear-gradient(45deg, rgba(23, 34, 29, 0.18) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(23, 34, 29, 0.18) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.42) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.42) 75%);
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  background-size: 20px 20px;
+  mix-blend-mode: soft-light;
+}
+
+.site-background::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  opacity: 0.22;
+  background-image:
+    radial-gradient(circle, rgba(23, 34, 29, 0.35) 1px, transparent 1.5px),
+    linear-gradient(115deg, transparent 48%, rgba(255, 255, 255, 0.35) 50%, transparent 52%);
+  background-position: 0 0, 0 0;
+  background-size: 22px 22px, 140px 140px;
+  mask-image: linear-gradient(to bottom, #000, transparent 75%);
+}
+
+.section-band.bg-mint {
+  background-color: transparent;
+  background-image:
+    radial-gradient(circle at 8% 14%, rgba(255, 255, 255, 0.52), transparent 28%),
+    linear-gradient(180deg, rgba(185, 214, 176, 0.78), rgba(223, 243, 231, 0.52));
+}
+
+.section-band.bg-yellow {
+  background-color: #f7cd54;
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.18) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(255, 255, 255, 0.18) 25%, transparent 25%),
+    linear-gradient(45deg, rgba(157, 95, 24, 0.1) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(157, 95, 24, 0.1) 25%, #f7cd54 25%);
+  background-position: 12px 0, 12px 0, 0 0, 0 0;
+  background-size: 24px 24px;
+}
+
+.section-band.bg-cream {
+  background-color: var(--cream);
+  background-image:
+    linear-gradient(90deg, rgba(23, 34, 29, 0.035) 1px, transparent 1px),
+    linear-gradient(rgba(23, 34, 29, 0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.cartoon-border,
+.cartoon-panel,
+.card-cartoon {
+  border: var(--game-line);
+  border-radius: var(--game-radius);
+  box-shadow: var(--game-shadow);
+}
+
+.cartoon-border-sm {
+  border: var(--game-line);
+  border-radius: var(--game-radius-sm);
+  box-shadow: var(--game-shadow-sm);
+}
+
+.cartoon-panel,
+.card-cartoon {
+  background: var(--game-panel);
+}
+
+.card-cartoon {
+  position: relative;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 180ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 180ms ease;
+}
+
+.card-cartoon:hover {
+  transform: translateY(-5px);
+  border-color: var(--game-forest);
+  box-shadow: var(--game-shadow-hover);
+}
+
+.btn-cartoon {
+  position: relative;
+  overflow: hidden;
+  min-height: 46px;
+  border: var(--game-line);
+  border-radius: 14px;
+  box-shadow: 0 4px 0 var(--ink), 0 7px 14px rgba(23, 34, 29, 0.14);
+  transform: translateY(0);
+  transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+}
+
+.btn-cartoon::after {
+  position: absolute;
+  inset: 2px 5px auto;
+  height: 32%;
+  pointer-events: none;
+  border-radius: 10px;
+  content: "";
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42), transparent);
+}
+
+.btn-cartoon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--ink), 0 10px 18px rgba(23, 34, 29, 0.18);
+  filter: saturate(1.06);
+}
+
+.btn-cartoon:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--ink), 0 3px 8px rgba(23, 34, 29, 0.12);
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #f47a50, var(--orange));
+  color: #fffdf5;
+}
+
+.btn-secondary {
+  background: linear-gradient(180deg, #fffef7, #f5ead0);
+}
+
+.pill-cartoon {
+  border: var(--game-line);
+  border-radius: 999px;
+  box-shadow: 2px 3px 0 rgba(23, 34, 29, 0.2);
+}
+
+.section-title,
+.pinned-title {
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  text-shadow: 0 3px 0 rgba(255, 255, 255, 0.52);
+}
+
+/* Navigation: compact game HUD on desktop, illustrated panel on mobile. */
+.game-navbar.is-scrolled {
+  border-bottom: 2px solid rgba(23, 34, 29, 0.9);
+  background: rgba(255, 249, 233, 0.88);
+  box-shadow: 0 5px 0 rgba(23, 34, 29, 0.1), 0 14px 30px rgba(23, 34, 29, 0.1);
+  backdrop-filter: blur(14px) saturate(1.25);
+}
+
+.game-brand {
+  position: relative;
+  max-width: 190px;
+  line-height: 0.95;
+  text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.8);
+}
+
+.game-nav-links .nav-link {
+  position: relative;
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  padding: 0.5rem 0.72rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.035em;
+  white-space: nowrap;
+  transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.game-nav-links .nav-link:hover {
+  border-color: var(--ink);
+  background: rgba(255, 249, 233, 0.92);
+  box-shadow: 2px 3px 0 rgba(23, 34, 29, 0.18);
+  transform: translateY(-2px);
+}
+
+.game-mobile-nav {
+  background:
+    radial-gradient(circle at 50% 28%, rgba(246, 200, 79, 0.28), transparent 34%),
+    radial-gradient(circle, rgba(23, 34, 29, 0.1) 1px, transparent 1.5px),
+    linear-gradient(160deg, #fff9e9, #dff3e7);
+  background-size: auto, 18px 18px, auto;
+}
+
+/* World headers share one structure while retaining distinct accents. */
+.world-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--game-radius-lg);
+  background:
+    radial-gradient(circle at 92% 12%, color-mix(in srgb, var(--world-accent, var(--yellow)) 35%, transparent), transparent 28%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), var(--cream));
+}
+
+.world-hero::after {
+  position: absolute;
+  right: -28px;
+  bottom: -34px;
+  z-index: -1;
+  width: 190px;
+  height: 94px;
+  pointer-events: none;
+  border: 2px solid rgba(23, 34, 29, 0.16);
+  border-radius: 50% 50% 0 0;
+  content: "";
+  background:
+    radial-gradient(circle at 28% 38%, rgba(255, 255, 255, 0.58) 0 5px, transparent 6px),
+    radial-gradient(circle at 60% 56%, rgba(255, 255, 255, 0.42) 0 4px, transparent 5px),
+    linear-gradient(180deg, color-mix(in srgb, var(--world-accent) 78%, white), var(--world-accent));
+  box-shadow: inset 0 8px 0 rgba(255, 255, 255, 0.18);
+}
+
+.world-hero::before,
+.world-title::before {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  background: var(--world-accent, var(--yellow));
+}
+
+.world-hero::before {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: -1;
+  width: 72px;
+  height: 72px;
+  border: var(--game-line);
+  border-radius: 22px;
+  content: var(--world-symbol, "✦");
+  font-family: var(--font-display), cursive;
+  font-size: 2rem;
+  box-shadow: 4px 5px 0 rgba(23, 34, 29, 0.2);
+  transform: rotate(7deg);
+}
+
+[data-world="market"] { --world-accent: #f6c84f; --world-symbol: "◆"; }
+[data-world="arena"] { --world-accent: #ed765c; --world-symbol: "★"; }
+[data-world="album"] { --world-accent: #a98bd1; --world-symbol: "✦"; }
+[data-world="quests"] { --world-accent: #78c99e; --world-symbol: "✓"; }
+[data-world="progress"] { --world-accent: #68b8d4; --world-symbol: "↑"; }
+[data-world="journal"] { --world-accent: #e7ad6f; --world-symbol: "✎"; }
+
+.world-title {
+  --world-accent: #78c99e;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.game-world-section {
+  background-image:
+    radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--world-accent) 24%, transparent), transparent 30rem),
+    radial-gradient(circle at 7% 24%, rgba(255, 255, 255, 0.48), transparent 24rem),
+    linear-gradient(180deg, rgba(223, 243, 231, 0.78), rgba(185, 214, 176, 0.66));
+}
+
+.world-title::before {
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 auto;
+  border: var(--game-line);
+  border-radius: 11px;
+  content: var(--world-symbol, "✓");
+  font-family: var(--font-body), sans-serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  box-shadow: 2px 3px 0 rgba(23, 34, 29, 0.2);
+}
+
+/* Product cards become collectible objects without changing their content. */
+.product-card.card-cartoon {
+  overflow: hidden;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #fffef8, #f9efd9);
+}
+
+.product-card.card-cartoon > :first-child {
+  background-image:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.24) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.24) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(23, 34, 29, 0.045) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(23, 34, 29, 0.045) 75%);
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  background-size: 16px 16px;
+}
+
+.game-navbar.is-scrolled::after {
+  position: absolute;
+  right: 0;
+  bottom: -5px;
+  left: 0;
+  height: 5px;
+  pointer-events: none;
+  content: "";
+  background: repeating-linear-gradient(90deg, var(--game-forest) 0 18px, #79bd6b 18px 36px);
+}
+
+.product-card.card-cartoon::before {
+  position: absolute;
+  inset: 7px;
+  z-index: 2;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 15px;
+  content: "";
+}
+
+.product-card .aspect-square,
+.product-card [class*="aspect-"] {
+  background:
+    radial-gradient(circle at 50% 38%, #fff 0, #f2ead7 58%, #d9cab0 100%);
+}
+
+.product-card-body {
+  position: relative;
+  z-index: 3;
+}
+
+.product-card-description {
+  border: 0;
+  border-top: 1px dashed rgba(23, 34, 29, 0.24);
+  border-bottom: 1px dashed rgba(23, 34, 29, 0.24);
+  border-radius: 0;
+  background: transparent;
+  padding: 0.65rem 0;
+}
+
+@media (max-width: 1180px) {
+  .game-brand {
+    display: none;
+  }
+
+  .game-nav-links {
+    gap: 0;
+  }
+
+  .game-nav-links .nav-link {
+    padding-inline: 0.48rem;
+    font-size: 0.64rem;
+  }
+
+  .game-brand {
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-band {
+    padding-block: 2.25rem;
+  }
+
+  .section-band.pt-28,
+  .section-band.pt-32,
+  .section-band.pt-36 {
+    padding-top: 7.5rem;
+  }
+
+  .cartoon-border,
+  .cartoon-panel,
+  .card-cartoon {
+    border-radius: 16px;
+    box-shadow: 4px 5px 0 rgba(23, 34, 29, 0.2);
+  }
+
+  .world-hero {
+    border-radius: 22px;
+  }
+
+  .world-hero::before {
+    width: 52px;
+    height: 52px;
+    font-size: 1.4rem;
+    opacity: 0.82;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-cartoon,
+  .btn-cartoon,
+  .game-nav-links .nav-link {
+    transition: none;
+  }
+
+  .card-cartoon:hover,
+  .btn-cartoon:hover,
+  .game-nav-links .nav-link:hover {
+    transform: none;
+  }
+}
+}
+
+/* Identity-preserving studio-cartoon finish.
+   Inspired by modern character-led sites: clean staging and soft volume,
+   while retaining the Breton palette, ink outlines and existing artwork. */
+.site-background {
+  background:
+    radial-gradient(circle at 5% 10%, #f7f4ee 0 9rem, transparent 9.2rem),
+    radial-gradient(circle at 94% 24%, #f4c26f 0 8rem, transparent 8.2rem),
+    linear-gradient(180deg, #cbd8b4 0%, var(--mint) 42%, #d9c1ec 100%);
+}
+
+.section-band.bg-mint {
+  background-color: transparent;
+}
+
+.game-navbar.is-scrolled {
+  border-bottom: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.game-navbar.is-scrolled .retro-container {
+  width: min(1240px, 94vw);
+  padding: 0.45rem 0.65rem 0.45rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: rgba(247, 244, 238, 0.94);
+  box-shadow: 0 12px 30px rgba(26, 26, 26, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+.game-nav-links .nav-link {
+  border-radius: 999px;
+}
+
+.game-nav-links .nav-link:hover {
+  background: var(--yellow);
+  transform: scale(1.04);
+}
+
+.cartoon-border,
+.cartoon-panel,
+.card-cartoon {
+  border-color: var(--ink);
+}
+
+.card-cartoon {
+  border-radius: 28px;
+  box-shadow: 0 14px 34px rgba(26, 26, 26, 0.12);
+}
+
+.card-cartoon:hover {
+  transform: translateY(-7px) rotate(-0.35deg);
+  box-shadow: 0 22px 44px rgba(26, 26, 26, 0.16);
+}
+
+.card-cartoon::after {
+  display: none;
+}
+
+.btn-cartoon {
+  border-radius: 999px;
+  box-shadow: none;
+}
+
+.btn-cartoon:hover {
+  transform: translateY(-3px) scale(1.025);
+  box-shadow: 0 10px 20px rgba(26, 26, 26, 0.16);
+}
+
+.world-hero {
+  min-height: 280px;
+  border-radius: 36px;
+  background: var(--cream);
+  box-shadow: 0 22px 54px rgba(26, 26, 26, 0.12);
+}
+
+.world-hero::after {
+  top: 50%;
+  right: 28px;
+  bottom: auto;
+  width: 210px;
+  height: 210px;
+  border: 0;
+  border-radius: 0;
+  opacity: 0.22;
+  background-color: var(--world-color, var(--yellow));
+  -webkit-mask: url("/cannabis-leaf.svg") center / contain no-repeat;
+  mask: url("/cannabis-leaf.svg") center / contain no-repeat;
+  box-shadow: none;
+  transform: translateY(-50%) rotate(8deg);
+}
+
+.product-card.card-cartoon {
+  border-radius: 30px;
+  background: var(--cream);
+}
+
+.product-card .product-card-body {
+  background: var(--cream);
+}
+
+.product-card .aspect-square,
+.product-card [class*="aspect-square"] {
+  background: radial-gradient(circle at 50% 42%, #fff 0 32%, #e8e1d2 82%);
+}
+
+.product-card-description {
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.game-world-section {
+  background:
+    radial-gradient(circle at 10% 14%, rgba(247, 244, 238, 0.46) 0 10rem, transparent 20rem),
+    radial-gradient(circle at 90% 82%, color-mix(in srgb, var(--world-color, var(--yellow)) 28%, transparent) 0 14rem, transparent 26rem),
+    var(--mint);
+}
+
+.hero-circle-group {
+  border-width: 3px;
+  box-shadow: 0 24px 50px rgba(26, 26, 26, 0.2);
+}
+
+.pinned-title,
+.section-title {
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+#products.section-band {
+  background:
+    radial-gradient(circle at 92% 15%, rgba(255, 255, 255, 0.42) 0 8rem, transparent 8.2rem),
+    #f4c26f;
+}
+
+.product-card:nth-child(3n + 1) { --card-pop: #bfe8cb; }
+.product-card:nth-child(3n + 2) { --card-pop: #ffe19b; }
+.product-card:nth-child(3n + 3) { --card-pop: #d8c2ef; }
+
+.product-card .product-card-body {
+  border-top: 8px solid var(--card-pop, var(--mint));
+}
+
+@media (max-width: 768px) {
+  .game-navbar.is-scrolled .retro-container {
+    width: min(94vw, 680px);
+    padding: 0.35rem 0.45rem;
+    border-radius: 16px;
+  }
+
+  .world-hero {
+    min-height: 0;
+    border-radius: 22px;
+  }
+
+  .world-hero::after {
+    top: 50%;
+    right: 10px;
+    bottom: auto;
+    width: 130px;
+    height: 130px;
+    opacity: 0.16;
+  }
+
+  .product-card.card-cartoon {
+    border-radius: 20px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Poster identity v3
+   Shared brand layer: the homepage introduces the editorial language and the
+   rest of the site inherits the same type, palette, borders and controls.
+   -------------------------------------------------------------------------- */
+:root {
+  --mint: #dfe6d4;
+  --yellow: #f4c43d;
+  --orange: #ce5a30;
+  --teal: #00563f;
+  --beige: #d7a374;
+  --cream: #f6f0e6;
+  --ink: #111512;
+  --charcoal: #343b36;
+}
+
+body,
+.site-background {
+  background: var(--cream);
+}
+
+.font-display,
+.section-title,
+.pinned-title,
+.world-title {
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+
+.section-title,
+.pinned-title,
+.world-title {
+  line-height: 0.9;
+  text-transform: uppercase;
+  text-shadow: none;
+}
+
+.game-navbar.is-scrolled .retro-container {
+  width: min(1240px, 94vw);
+  padding: 0.42rem 0.55rem 0.42rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: rgba(246, 240, 230, 0.96);
+  box-shadow: 5px 5px 0 rgba(17, 21, 18, 0.16);
+  backdrop-filter: blur(12px);
+}
+
+.game-brand {
+  color: var(--teal);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.game-nav-links .nav-link {
+  border-radius: 0;
+  font-weight: 900;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.game-nav-links .nav-link:hover {
+  border-color: var(--ink);
+  border-radius: 0;
+  background: var(--yellow);
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: translate(-1px, -1px);
+}
+
+.game-mobile-nav {
+  background:
+    radial-gradient(circle at 86% 18%, rgba(0, 86, 63, 0.12) 0 8rem, transparent 8.1rem),
+    radial-gradient(rgba(17, 21, 18, 0.16) 0.6px, transparent 0.7px),
+    var(--cream);
+  background-size: auto, 6px 6px, auto;
+}
+
+.game-mobile-nav a {
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.cartoon-border,
+.cartoon-panel,
+.card-cartoon,
+.cartoon-border-sm,
+.world-hero,
+.product-card.card-cartoon {
+  border-color: var(--ink);
+  border-radius: 0;
+}
+
+.cartoon-border,
+.cartoon-panel,
+.card-cartoon {
+  box-shadow: 6px 6px 0 rgba(17, 21, 18, 0.18);
+}
+
+.cartoon-border-sm {
+  box-shadow: 4px 4px 0 rgba(17, 21, 18, 0.15);
+}
+
+.card-cartoon,
+.product-card.card-cartoon {
+  background: var(--cream);
+}
+
+.card-cartoon:hover {
+  border-color: var(--ink);
+  border-radius: 0;
+  box-shadow: 9px 9px 0 rgba(17, 21, 18, 0.22);
+  transform: translate(-2px, -3px);
+}
+
+.product-card .product-card-body {
+  border-top-color: var(--teal);
+  background: var(--cream);
+}
+
+.btn-cartoon,
+.pill-cartoon {
+  border-radius: 0;
+  font-weight: 900;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  background: var(--teal);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.btn-cartoon:hover {
+  box-shadow: 5px 5px 0 var(--ink);
+  transform: translate(-2px, -2px);
+}
+
+.world-hero {
+  border-radius: 0;
+  background: var(--cream);
+  box-shadow: 7px 7px 0 rgba(17, 21, 18, 0.16);
+}
+
+.world-title {
+  display: inline;
+  padding-bottom: 0.2rem;
+  border-bottom: 6px solid var(--world-color, var(--teal));
+}
+
+.section-band.bg-mint,
+.game-world-section {
+  background:
+    radial-gradient(circle at 92% 10%, rgba(0, 86, 63, 0.08) 0 9rem, transparent 9.1rem),
+    var(--cream);
+}
+
+.section-band.bg-yellow,
+footer.bg-yellow {
+  background: var(--yellow);
+}
+
+.section-band.bg-cream {
+  background: var(--cream);
+}
+
+footer .cartoon-border {
+  border-radius: 0;
+  background: var(--cream);
+}
+
+@media (max-width: 768px) {
+  .game-navbar.is-scrolled .retro-container {
+    width: min(94vw, 680px);
+    padding: 0.35rem 0.45rem;
+    border-radius: 0;
+  }
+
+  .cartoon-border,
+  .cartoon-panel,
+  .card-cartoon,
+  .cartoon-border-sm,
+  .world-hero,
+  .product-card.card-cartoon {
+    border-radius: 0;
   }
 }

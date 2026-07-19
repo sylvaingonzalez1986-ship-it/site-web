@@ -157,7 +157,7 @@ export function TutorialOverlay({
                   className="btn-cartoon btn-primary h-9 px-3 text-xs"
                   onClick={onNext}
                 >
-                  {isLast ? "C&apos;est parti !" : "Suivant"}
+                  {isLast ? "C'est parti !" : "Suivant"}
                 </button>
               </div>
             </div>

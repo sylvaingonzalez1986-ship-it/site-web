@@ -15,13 +15,10 @@ import {
 import { TutorialOverlay } from "@/components/tutorial/TutorialOverlay";
 import { HOME_TUTORIAL_STEPS, TUTORIAL_VERSION, type TutorialStep } from "@/data/tutorial-steps";
 import { useCart } from "@/context/CartContext";
-import { applyTutorialCmsPageOverrides } from "@/lib/tutorial-cms-pages";
 import { trackTutorialEvent } from "@/lib/tutorial-analytics";
-import type { CmsPage } from "@/types/cms-pages";
 
 const TUTORIAL_STORAGE_KEY = "lcb_tutorial_state";
 const AUTO_START_DELAY_MS = 1500;
-const CMS_PAGES_UPDATED_EVENT = "lcb:cms-pages-updated";
 const AGE_VERIFIED_EVENT = "lcb:age-verified";
 
 type PersistedTutorialState = {
@@ -197,65 +194,31 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const { isAuthenticated, authLoading } = useCart();
-  const [tutorialCmsPages, setTutorialCmsPages] = useState<CmsPage[]>([]);
-  const [tutorialCmsLoaded, setTutorialCmsLoaded] = useState(false);
   const [ageVerified, setAgeVerified] = useState(false);
   const [state, dispatch] = useReducer(tutorialReducer, INITIAL_TUTORIAL_STATE);
   const isEnabled = useMemo(() => resolveTutorialEnabled(), []);
   const lastViewedStepRef = useRef<string | null>(null);
 
-  const loadTutorialCmsPages = useCallback(async () => {
-    try {
-      const response = await fetch("/api/public/tutorial", { cache: "no-store" });
-      if (!response.ok) {
-        setTutorialCmsPages([]);
-        return;
-      }
-
-      const payload = (await response.json()) as { pages?: CmsPage[] };
-      setTutorialCmsPages(Array.isArray(payload.pages) ? payload.pages : []);
-    } catch {
-      setTutorialCmsPages([]);
-    } finally {
-      setTutorialCmsLoaded(true);
-    }
-  }, []);
-
   useEffect(() => {
-    void loadTutorialCmsPages();
-  }, [loadTutorialCmsPages]);
-
-  useEffect(() => {
-    const onCmsPagesUpdated = () => {
-      void loadTutorialCmsPages();
-    };
-
     const onAgeVerified = () => {
       setAgeVerified(true);
     };
 
-    window.addEventListener(CMS_PAGES_UPDATED_EVENT, onCmsPagesUpdated);
     window.addEventListener(AGE_VERIFIED_EVENT, onAgeVerified);
 
     return () => {
-      window.removeEventListener(CMS_PAGES_UPDATED_EVENT, onCmsPagesUpdated);
       window.removeEventListener(AGE_VERIFIED_EVENT, onAgeVerified);
     };
-  }, [loadTutorialCmsPages]);
+  }, []);
 
   useEffect(() => {
     setAgeVerified(pathname !== "/age-gate");
   }, [pathname]);
 
-  const cmsOverriddenTutorialSteps = useMemo(
-    () => applyTutorialCmsPageOverrides(HOME_TUTORIAL_STEPS, tutorialCmsPages),
-    [tutorialCmsPages],
-  );
-
   const tutorialSteps = useMemo(() => {
-    const filtered = cmsOverriddenTutorialSteps.filter((step) => !step.requiresAuth || isAuthenticated);
-    return filtered.length > 0 ? filtered : cmsOverriddenTutorialSteps;
-  }, [cmsOverriddenTutorialSteps, isAuthenticated]);
+    const filtered = HOME_TUTORIAL_STEPS.filter((step) => !step.requiresAuth || isAuthenticated);
+    return filtered.length > 0 ? filtered : HOME_TUTORIAL_STEPS;
+  }, [isAuthenticated]);
 
   const clampIndex = useCallback(
     (index: number) => clampStepIndex(index, tutorialSteps.length),
@@ -445,7 +408,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
   const isActive = state.phase === "active";
 
   useEffect(() => {
-    if (!isEnabled || authLoading || !tutorialCmsLoaded || tutorialSteps.length === 0) {
+    if (!isEnabled || authLoading || tutorialSteps.length === 0) {
       return;
     }
 
@@ -502,7 +465,6 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
     startTutorialAt,
     state.phase,
     state.source,
-    tutorialCmsLoaded,
     tutorialSteps.length,
   ]);
 

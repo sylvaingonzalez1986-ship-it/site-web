@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" role="img" aria-label="Feuille de cannabis">
+  <g fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M110 174C105 135 106 92 110 34C114 92 115 135 110 174Z"/>
+    <path d="M106 137C82 108 66 78 62 43C88 60 104 88 110 119Z"/>
+    <path d="M114 137C138 108 154 78 158 43C132 60 116 88 110 119Z"/>
+    <path d="M103 143C73 127 48 106 32 78C63 81 89 99 108 125Z"/>
+    <path d="M117 143C147 127 172 106 188 78C157 81 131 99 112 125Z"/>
+    <path d="M103 151C78 148 55 140 36 124C62 119 87 126 108 140Z"/>
+    <path d="M117 151C142 148 165 140 184 124C158 119 133 126 112 140Z"/>
+    <path d="M110 174L110 202" fill="none" stroke-width="9"/>
+  </g>
+</svg>

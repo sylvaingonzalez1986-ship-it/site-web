@@ -2,17 +2,11 @@ import "server-only";
 
 import { revalidateTag, unstable_cache } from "next/cache";
 
-import { HOME_TUTORIAL_STEPS } from "@/data/tutorial-steps";
 import {
-  normalizeCmsSlug,
   isCmsSlugReserved,
   isCmsStaticOverrideSlug,
 } from "@/lib/cms-pages-slugs";
 import { isCmsPagesEnabledServer } from "@/lib/cms-pages-feature";
-import {
-  buildTutorialCmsPageSeedInputs,
-  isTutorialCmsSlug,
-} from "@/lib/tutorial-cms-pages";
 import {
   archiveCmsPageInSupabase,
   createCmsPageInSupabase,
@@ -24,7 +18,6 @@ import {
 import type { CmsPage, CmsPageCreateInput, CmsPageUpdateInput } from "@/types/cms-pages";
 
 export const CMS_PAGES_CACHE_TAG = "cms-pages";
-export const CMS_TUTORIAL_PAGES_CACHE_TAG = "cms-tutorial-pages";
 
 const readPublishedCmsPagesCached = unstable_cache(
   async () => readPublishedCmsPagesFromSupabase(),
@@ -32,30 +25,6 @@ const readPublishedCmsPagesCached = unstable_cache(
   {
     revalidate: 60,
     tags: [CMS_PAGES_CACHE_TAG],
-  },
-);
-
-const readTutorialCmsPagesCached = unstable_cache(
-  async () => {
-    const adminPages = await readAdminCmsPagesFromSupabase();
-    const seeded = await ensureTutorialCmsPagesSeeded(adminPages);
-    const sourcePages = seeded ? await readAdminCmsPagesFromSupabase() : adminPages;
-    const allowedTutorialSlugs = new Set(
-      buildTutorialCmsPageSeedInputs(HOME_TUTORIAL_STEPS)
-        .map((page) => normalizeCmsSlug(page.slug))
-        .filter(Boolean),
-    );
-
-    return sourcePages.filter(
-      (page) =>
-        isTutorialCmsSlug(page.slug) &&
-        allowedTutorialSlugs.has(normalizeCmsSlug(page.slug)),
-    );
-  },
-  ["read-tutorial-cms-pages"],
-  {
-    revalidate: 60,
-    tags: [CMS_TUTORIAL_PAGES_CACHE_TAG, CMS_PAGES_CACHE_TAG],
   },
 );
 
@@ -75,57 +44,9 @@ type GetPublishedCmsPageOptions = {
   allowReserved?: boolean;
 };
 
-function isDuplicateSlugError(error: unknown): boolean {
-  if (!(error instanceof Error)) {
-    return false;
-  }
-
-  const message = error.message.toLowerCase();
-  return (
-    message.includes("duplicate key") ||
-    message.includes("already exists") ||
-    message.includes("unique constraint")
-  );
-}
-
-async function ensureTutorialCmsPagesSeeded(existingPages: CmsPage[]): Promise<boolean> {
-  const existingSlugs = new Set<string>(
-    existingPages.map((page) => normalizeCmsSlug(page.slug)).filter(Boolean),
-  );
-  const tutorialSeeds = buildTutorialCmsPageSeedInputs(HOME_TUTORIAL_STEPS);
-  let created = false;
-
-  for (const seed of tutorialSeeds) {
-    const normalizedSlug = normalizeCmsSlug(seed.slug);
-    if (!normalizedSlug || existingSlugs.has(normalizedSlug)) {
-      continue;
-    }
-
-    try {
-      await createCmsPageInSupabase(seed);
-      created = true;
-      existingSlugs.add(normalizedSlug);
-    } catch (error) {
-      if (isDuplicateSlugError(error)) {
-        existingSlugs.add(normalizedSlug);
-        continue;
-      }
-      throw error;
-    }
-  }
-
-  return created;
-}
-
 export async function readAdminCmsPagesByBackend(): Promise<CmsPage[]> {
   if (!isCmsPagesEnabledServer()) {
     return [];
-  }
-
-  const pages = await readAdminCmsPagesFromSupabase();
-  const seeded = await ensureTutorialCmsPagesSeeded(pages);
-  if (!seeded) {
-    return pages;
   }
 
   return readAdminCmsPagesFromSupabase();
@@ -137,14 +58,6 @@ export async function readPublishedCmsPagesByBackend(): Promise<CmsPage[]> {
   }
 
   return readPublishedCmsPagesCached();
-}
-
-export async function readTutorialCmsPagesByBackend(): Promise<CmsPage[]> {
-  if (!isCmsPagesEnabledServer()) {
-    return [];
-  }
-
-  return readTutorialCmsPagesCached();
 }
 
 export async function getPublishedCmsPageBySlugByBackend(
@@ -185,5 +98,4 @@ export async function archiveCmsPageByBackend(pageId: string): Promise<CmsPage |
 
 export function invalidateCmsPagesCache(): void {
   revalidateTag(CMS_PAGES_CACHE_TAG, "max");
-  revalidateTag(CMS_TUTORIAL_PAGES_CACHE_TAG, "max");
 }

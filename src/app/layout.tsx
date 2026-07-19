@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Caveat, Shrikhand, Space_Grotesk } from "next/font/google";
+import { Barlow_Condensed, Caveat, Space_Grotesk } from "next/font/google";
 import { headers } from "next/headers";
 import { Footer } from "@/components/Footer";
 import {
@@ -25,12 +25,12 @@ const bodyFont = Space_Grotesk({
   fallback: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
 });
 
-const displayFont = Shrikhand({
+const displayFont = Barlow_Condensed({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["700", "800", "900"],
   display: "swap",
-  fallback: ["Georgia", "Times New Roman", "serif"],
+  fallback: ["Arial Narrow", "Impact", "sans-serif"],
 });
 
 const handwrittenFont = Caveat({
@@ -162,6 +162,47 @@ export default async function RootLayout({
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />
         <WebSiteJsonLd />
+        {process.env.NODE_ENV !== "production" && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function () {
+                  if (!/([?&])navdebug=1(&|$)/.test(window.location.search)) return;
+                  function show(message) {
+                    var existing = document.getElementById("nav-debug-inline");
+                    var node = existing || document.createElement("div");
+                    node.id = "nav-debug-inline";
+                    node.style.position = "fixed";
+                    node.style.left = "8px";
+                    node.style.right = "8px";
+                    node.style.top = "96px";
+                    node.style.zIndex = "99999";
+                    node.style.padding = "8px";
+                    node.style.border = "2px solid #1a1a1a";
+                    node.style.background = "#fff7d6";
+                    node.style.color = "#1a1a1a";
+                    node.style.font = "700 11px system-ui, sans-serif";
+                    node.textContent = message;
+                    if (!existing) document.body.appendChild(node);
+                  }
+                  if (document.readyState === "loading") {
+                    document.addEventListener("DOMContentLoaded", function () {
+                      show("inline-js-ok / react-not-yet");
+                    });
+                  } else {
+                    show("inline-js-ok / react-not-yet");
+                  }
+                  window.addEventListener("error", function (event) {
+                    show("js-error: " + (event.message || "unknown"));
+                  });
+                  window.addEventListener("unhandledrejection", function (event) {
+                    show("promise-error: " + ((event.reason && event.reason.message) || event.reason || "unknown"));
+                  });
+                })();
+              `,
+            }}
+          />
+        )}
         <WebVitals />
         <CartProvider>
           <CookieConsentProvider>
@@ -170,7 +211,7 @@ export default async function RootLayout({
             <TutorialProvider>
               <div className="site-background min-h-screen">
                 <Navbar />
-                <main>{children}</main>
+                <main className="relative z-0">{children}</main>
                 <Footer />
               </div>
               <NewProductsPopup />
