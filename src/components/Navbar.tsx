@@ -28,7 +28,14 @@ function isExplicitlyEnabled(raw: string | undefined): boolean {
   return normalized === "1" || normalized === "true" || normalized === "on" || normalized === "yes";
 }
 
-const contestBetaAccessRestricted = isExplicitlyEnabled(process.env.NEXT_PUBLIC_CONTEST_BETA_ACCESS_ENABLED);
+function isExplicitlyDisabled(raw: string | undefined): boolean {
+  const normalized = raw?.trim().toLowerCase();
+  return normalized === "0" || normalized === "false" || normalized === "off" || normalized === "no";
+}
+
+const contestBetaAccessRestricted = !isExplicitlyDisabled(
+  process.env.NEXT_PUBLIC_CONTEST_BETA_ACCESS_ENABLED,
+);
 
 type ContestAccessResponse = {
   canAccess?: boolean;

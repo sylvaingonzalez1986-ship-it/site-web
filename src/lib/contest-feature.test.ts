@@ -77,7 +77,7 @@ describe("contest-feature", () => {
 
   it("keeps beta access restricted to admins and selected customers", async () => {
     mutableEnv.CONTEST_FEATURE_ENABLED = "true";
-    mutableEnv.CONTEST_BETA_ACCESS_ENABLED = "true";
+    Reflect.deleteProperty(mutableEnv, "CONTEST_BETA_ACCESS_ENABLED");
 
     const { canCustomerAccessContestFeatureServer } = await loadContestFeatureModule();
 
@@ -95,5 +95,14 @@ describe("contest-feature", () => {
       }),
     ).toBe(true);
     expect(canCustomerAccessContestFeatureServer(null, { adminAuthorized: true })).toBe(true);
+  });
+
+  it("opens beta access only when restriction is explicitly disabled", async () => {
+    mutableEnv.CONTEST_FEATURE_ENABLED = "true";
+    mutableEnv.CONTEST_BETA_ACCESS_ENABLED = "false";
+
+    const { canCustomerAccessContestFeatureServer } = await loadContestFeatureModule();
+
+    expect(canCustomerAccessContestFeatureServer(null)).toBe(true);
   });
 });

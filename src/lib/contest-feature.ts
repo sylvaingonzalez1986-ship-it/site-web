@@ -11,6 +11,11 @@ function isExplicitlyEnabled(raw: string | undefined): boolean {
   return normalized === "1" || normalized === "true" || normalized === "on" || normalized === "yes";
 }
 
+function isExplicitlyDisabled(raw: string | undefined): boolean {
+  const normalized = raw?.trim().toLowerCase();
+  return normalized === "0" || normalized === "false" || normalized === "off" || normalized === "no";
+}
+
 export function isContestFeatureEnabledServer(): boolean {
   if (!isExplicitlyEnabled(process.env.CONTEST_FEATURE_ENABLED)) {
     return false;
@@ -24,7 +29,7 @@ export function isContestFeatureEnabledServer(): boolean {
 }
 
 export function isContestBetaAccessRestrictedServer(): boolean {
-  return isExplicitlyEnabled(process.env.CONTEST_BETA_ACCESS_ENABLED);
+  return !isExplicitlyDisabled(process.env.CONTEST_BETA_ACCESS_ENABLED);
 }
 
 export function canCustomerAccessContestFeatureServer(
