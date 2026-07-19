@@ -8,7 +8,10 @@ import type { LoyaltySummary } from "@/types/loyalty";
 import type { CmsOrder, OrderStatus } from "@/types/store";
 import type { AdminCustomerCollectionSummary } from "@/types/lottery";
 import { rarityAccentColor, rarityLabels, RARITY_ORDER } from "@/lib/lottery-card-ui";
-import { getBadgeFreeShippingThreshold } from "@/lib/loyalty-tier-benefits";
+import {
+  getBadgeTierHomeDeliveryBenefitLabel,
+  getBadgeTierRelayBenefitLabel,
+} from "@/lib/loyalty-tier-benefits";
 
 type AdminCustomerListItem = {
   id: string;
@@ -55,14 +58,11 @@ function formatPercent(value: number): string {
 }
 
 function getShippingBenefitLabel(badgeId: LoyaltySummary["currentBadge"]["id"], unlocked: boolean): string {
-  const threshold = getBadgeFreeShippingThreshold(badgeId, unlocked);
-  if (threshold === null) {
-    return "Livraison offerte";
+  if (unlocked) {
+    return `${getBadgeTierRelayBenefitLabel(badgeId)} / ${getBadgeTierHomeDeliveryBenefitLabel(badgeId)}`;
   }
-  if (typeof threshold === "number") {
-    return `Livraison offerte des ${threshold} EUR`;
-  }
-  return "Livraison standard";
+
+  return "Point relais au seuil standard / Domicile au tarif standard";
 }
 
 function getInitials(firstName: string, lastName: string): string {
@@ -413,7 +413,7 @@ export function AdminCustomersPanel() {
                     checked={contestBetaEnabled}
                     onChange={(event) => setContestBetaEnabled(event.target.checked)}
                   />
-                  Acces beta Bete de concours
+                  Accès bêta L&apos;Arène
                 </label>
               </div>
 

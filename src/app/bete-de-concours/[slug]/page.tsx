@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { ContestDetailClient } from "@/components/contest/ContestDetailClient";
 import { ContestSchemaUnavailable } from "@/components/contest/ContestSchemaUnavailable";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
@@ -40,7 +40,7 @@ export async function generateMetadata({
 }: ContestDetailPageProps): Promise<Metadata> {
   if (!isContestFeatureEnabledServer() || isContestBetaAccessRestrictedServer()) {
     return {
-      title: "Bête de concours",
+      title: "L'Arène",
       robots: { index: false, follow: false },
     };
   }
@@ -52,7 +52,7 @@ export async function generateMetadata({
   } catch (error) {
     if (isContestSchemaMissingError(error)) {
       return {
-        title: "Bête de concours indisponible",
+        title: "L'Arène indisponible",
         robots: { index: false, follow: false },
       };
     }
@@ -66,10 +66,13 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${detail.entry.title} - Bête de concours`,
+    title: `${detail.entry.title} - L'Arène`,
     description:
       detail.entry.story.trim().slice(0, 150) ||
       "Fiche lot premium avec classement saisonnier, carnet de dégustation et critiques clients.",
+    alternates: {
+      canonical: `/arene/${detail.entry.slug}`,
+    },
     robots: {
       index: false,
       follow: false,
@@ -77,7 +80,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function ContestDetailPage({ params }: ContestDetailPageProps) {
+export async function ContestArenaDetailPage({ params }: ContestDetailPageProps) {
   const { slug } = await params;
   let detail = null;
   let session: Awaited<ReturnType<typeof getOptionalContestSession>> = null;
@@ -86,7 +89,7 @@ export default async function ContestDetailPage({ params }: ContestDetailPagePro
     const adminAuthorized = await isCurrentRequestAdminAuthorized();
     if (!canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
       if (isContestFeatureEnabledServer() && isContestBetaAccessRestrictedServer() && !session && !adminAuthorized) {
-        redirect(`/compte/connexion?next=${encodeURIComponent(`/bete-de-concours/${slug}`)}`);
+        redirect(`/compte/connexion?next=${encodeURIComponent(`/arene/${slug}`)}`);
       }
       notFound();
     }
@@ -105,7 +108,7 @@ export default async function ContestDetailPage({ params }: ContestDetailPagePro
 
   const store = await readPublicStoreByBackend();
   const product = store.products.find((item) => item.id === detail.entry.productId) ?? null;
-  const loginHref = `/compte/connexion?next=${encodeURIComponent(`/bete-de-concours/${detail.entry.slug}`)}`;
+  const loginHref = `/compte/connexion?next=${encodeURIComponent(`/arene/${detail.entry.slug}`)}`;
 
   return (
     <ContestDetailClient
@@ -116,4 +119,9 @@ export default async function ContestDetailPage({ params }: ContestDetailPagePro
       isAuthenticated={Boolean(session?.customerId)}
     />
   );
+}
+
+export default async function LegacyContestDetailPage({ params }: ContestDetailPageProps) {
+  const { slug } = await params;
+  permanentRedirect(`/arene/${encodeURIComponent(slug)}`);
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { ContestSchemaUnavailable } from "@/components/contest/ContestSchemaUnavailable";
 import {
   canCustomerAccessContestFeatureServer,
@@ -26,6 +26,7 @@ import {
   getContestReviewAverage,
 } from "@/lib/contest-ui";
 import { CONTEST_SCORE_MAX } from "@/lib/contest-score";
+import arenaSubpageStyles from "@/components/contest/ContestArenaSubpage.module.css";
 import type { PublicCustomer } from "@/types/customer";
 
 export const revalidate = 60;
@@ -53,7 +54,8 @@ async function getOptionalContestSession(): Promise<{
 export async function generateMetadata({ params }: TesterProfilePageProps): Promise<Metadata> {
   const { pseudo } = await params;
   return {
-    title: `${decodeURIComponent(pseudo)} - Profil testeur`,
+    title: `${decodeURIComponent(pseudo)} - Testeur de L'Arène`,
+    alternates: { canonical: `/arene/profils/${encodeURIComponent(pseudo)}` },
     robots: { index: false, follow: false },
   };
 }
@@ -98,14 +100,14 @@ function ProgressCard({ profile }: { profile: ContestPublicTesterProfile }) {
   );
 }
 
-export default async function TesterProfilePage({ params, searchParams }: TesterProfilePageProps) {
+export async function ArenaTesterProfilePage({ params, searchParams }: TesterProfilePageProps) {
   const { pseudo } = await params;
   const { season, track } = await searchParams;
   const session = await getOptionalContestSession();
   const adminAuthorized = await isCurrentRequestAdminAuthorized();
   if (!canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
     if (isContestFeatureEnabledServer() && isContestBetaAccessRestrictedServer() && !session && !adminAuthorized) {
-      redirect(`/compte/connexion?next=${encodeURIComponent(`/bete-de-concours/profils/${pseudo}`)}`);
+      redirect(`/compte/connexion?next=${encodeURIComponent(`/arene/profils/${pseudo}`)}`);
     }
     notFound();
   }
@@ -139,15 +141,15 @@ export default async function TesterProfilePage({ params, searchParams }: Tester
     contestParams.set("track", safeTrack);
   }
   const contestQuery = contestParams.toString();
-  const contestHref = contestQuery ? `/bete-de-concours?${contestQuery}` : "/bete-de-concours";
+  const contestHref = contestQuery ? `/arene?${contestQuery}` : "/arene";
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-36 pb-20">
-      <div className="retro-container space-y-6">
+    <section className={arenaSubpageStyles.page}>
+      <div className={`retro-container ${arenaSubpageStyles.container}`}>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <nav className="text-sm text-charcoal" aria-label="Fil d'Ariane">
             <Link href={contestHref} className="underline hover:text-ink">
-              Bete de concours
+              L&apos;Arène
             </Link>
             {" > "}
             <span className="font-bold text-ink">{profile.profile.pseudo}</span>
@@ -196,7 +198,7 @@ export default async function TesterProfilePage({ params, searchParams }: Tester
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <Link
-                          href={review.entrySlug ? `/bete-de-concours/${review.entrySlug}` : "/bete-de-concours"}
+                          href={review.entrySlug ? `/arene/${review.entrySlug}` : "/arene"}
                           className="text-sm font-black text-ink underline"
                         >
                           {review.entryTitle ?? review.entryId}
@@ -226,4 +228,13 @@ export default async function TesterProfilePage({ params, searchParams }: Tester
       </div>
     </section>
   );
+}
+
+export default async function LegacyTesterProfilePage({ params, searchParams }: TesterProfilePageProps) {
+  const { pseudo } = await params;
+  const queryParams = await searchParams;
+  const query = new URLSearchParams();
+  if (queryParams.season) query.set("season", queryParams.season);
+  if (queryParams.track) query.set("track", queryParams.track);
+  permanentRedirect(`/arene/profils/${encodeURIComponent(pseudo)}${query.size ? `?${query.toString()}` : ""}`);
 }

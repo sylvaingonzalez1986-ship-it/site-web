@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import arenaSubpageStyles from "@/components/contest/ContestArenaSubpage.module.css";
 import { useState } from "react";
 import { ChevronDown, ThumbsDown, ThumbsUp } from "lucide-react";
 import { ProductDetailActions } from "@/components/boutique/ProductDetailActions";
@@ -163,15 +164,15 @@ export function ContestDetailClient({
   };
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-36 pb-20">
-      <div className="retro-container space-y-6">
+    <section className={arenaSubpageStyles.page}>
+      <div className={`retro-container ${arenaSubpageStyles.container}`}>
         <nav className="text-sm text-charcoal" aria-label="Fil d'Ariane">
           <Link href="/" className="underline hover:text-ink">
             Accueil
           </Link>
           {" > "}
-          <Link href="/bete-de-concours" className="underline hover:text-ink">
-            Bête de concours
+          <Link href="/arene" className="underline hover:text-ink">
+            L&apos;Arène
           </Link>
           {" > "}
           <span className="font-bold text-ink">{detail.entry.title}</span>
@@ -407,7 +408,7 @@ export function ContestDetailClient({
                 <h2 className="font-display text-3xl leading-none text-ink">Carnets publiés</h2>
               </div>
               <Link
-                href="/bete-de-concours"
+                href="/arene"
                 className="btn-cartoon btn-secondary inline-flex min-h-[42px] items-center justify-center px-4 text-xs leading-none"
               >
                 Retour au classement
@@ -449,7 +450,7 @@ export function ContestDetailClient({
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div className="space-y-1">
                       <Link
-                        href={`/bete-de-concours/profils/${encodeURIComponent(selectedPublicReview.pseudo)}`}
+                        href={`/arene/profils/${encodeURIComponent(selectedPublicReview.pseudo)}`}
                         className="text-[11px] font-black uppercase tracking-[0.12em] text-charcoal underline"
                       >
                         {selectedPublicReview.pseudo}
@@ -578,7 +579,7 @@ export function ContestDetailClient({
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div className="space-y-1">
                         <Link
-                          href={`/bete-de-concours/profils/${encodeURIComponent(review.pseudo)}`}
+                          href={`/arene/profils/${encodeURIComponent(review.pseudo)}`}
                           className="text-[11px] font-black uppercase tracking-[0.12em] text-charcoal underline"
                         >
                           {review.pseudo}

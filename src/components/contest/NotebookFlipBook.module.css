@@ -1,0 +1,707 @@
+.editorial {
+  --editorial-cream: #f6f0e6;
+  --editorial-paper: #fffaf1;
+  --editorial-paper-warm: #eee3d2;
+  --editorial-green: #00563f;
+  --editorial-green-dark: #003f2f;
+  --editorial-yellow: #f4c43d;
+  --editorial-ink: #111512;
+  --editorial-muted: #4d554f;
+  min-width: 0;
+  color: var(--editorial-ink);
+  font-family: var(--font-body), Arial, sans-serif;
+}
+
+.editorial :global(.contest-notebook-cover-button) {
+  gap: 0.8rem;
+  padding: 0.4rem;
+}
+
+.editorial :global(.contest-notebook-cover-shell) {
+  position: relative;
+  display: grid;
+  width: min(48vw, 276px);
+  aspect-ratio: 0.72;
+  align-content: stretch;
+  overflow: hidden;
+  border: 3px solid var(--editorial-ink);
+  border-radius: 7px 18px 18px 7px;
+  background: var(--editorial-green);
+  box-shadow:
+    10px 12px 0 rgba(17, 21, 18, 0.92),
+    inset -8px 0 0 rgba(0, 0, 0, 0.08);
+  filter: none;
+  isolation: isolate;
+  transform: rotate(-1deg);
+}
+
+.editorial :global(.contest-notebook-cover-shell)::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 4;
+  width: 23px;
+  border-right: 3px solid var(--editorial-ink);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08), transparent 50%),
+    var(--editorial-green-dark);
+  content: "";
+}
+
+.editorial :global(.contest-notebook-cover-shell)::after {
+  display: none;
+}
+
+.editorial :global(.contest-editorial-cover) {
+  position: relative;
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: 1.2rem 1rem 1rem 2.25rem;
+}
+
+.editorial :global(.contest-editorial-cover-label) {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 0.42rem;
+  border: 3px solid var(--editorial-ink);
+  border-radius: 5px;
+  background: var(--editorial-cream);
+  box-shadow: 4px 4px 0 var(--editorial-ink);
+  padding: 0.9rem 0.8rem;
+  text-align: left;
+}
+
+.editorial :global(.contest-editorial-cover-kicker) {
+  color: var(--editorial-green);
+  font-size: 0.58rem;
+  font-weight: 950;
+  letter-spacing: 0.15em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.editorial :global(.contest-editorial-cover-title) {
+  color: var(--editorial-ink);
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: clamp(1.55rem, 3vw, 1.85rem);
+  font-weight: 950;
+  letter-spacing: -0.025em;
+  line-height: 0.84;
+  overflow-wrap: normal;
+  text-transform: uppercase;
+  text-wrap: balance;
+  word-break: normal;
+}
+
+.editorial :global(.contest-editorial-cover-title > span) {
+  display: block;
+  white-space: nowrap;
+}
+
+.editorial :global(.contest-editorial-cover-title > span:last-child) {
+  font-size: 0.84em;
+}
+
+.editorial :global(.contest-editorial-cover-line) {
+  display: block;
+  width: 54px;
+  height: 7px;
+  border: 2px solid var(--editorial-ink);
+  border-radius: 1px;
+  background: var(--editorial-yellow);
+}
+
+.editorial :global(.contest-editorial-cover-art) {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.editorial :global(.contest-editorial-cover-art img) {
+  width: min(70%, 132px);
+  height: auto;
+  max-height: 172px;
+  object-fit: contain;
+  object-position: bottom right;
+}
+
+.editorial :global(.contest-editorial-cover-footer) {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.72);
+  color: white;
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  padding-top: 0.65rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.editorial :global(.contest-editorial-cover-footer strong) {
+  border: 2px solid var(--editorial-ink);
+  border-radius: 3px;
+  background: var(--editorial-yellow);
+  color: var(--editorial-ink);
+  padding: 0.34rem 0.45rem;
+  font-size: 0.52rem;
+}
+
+.editorial :global(.contest-notebook-cover-hint) {
+  min-height: 44px;
+  border: 2px solid var(--editorial-ink);
+  border-radius: 4px;
+  background: var(--editorial-yellow);
+  box-shadow: 4px 4px 0 var(--editorial-ink);
+  color: var(--editorial-ink);
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+}
+
+.editorial:global(.contest-notebook-modal)[open] {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(244, 196, 61, 0.22), transparent 26%),
+    radial-gradient(circle at 88% 86%, rgba(0, 86, 63, 0.15), transparent 30%),
+    var(--editorial-cream) !important;
+  color: var(--editorial-ink);
+}
+
+.editorial :global(.contest-notebook-close-button) {
+  border: 2px solid var(--editorial-ink) !important;
+  border-radius: 4px !important;
+  background: var(--editorial-paper) !important;
+  box-shadow: 3px 3px 0 var(--editorial-ink) !important;
+  color: var(--editorial-ink) !important;
+}
+
+.editorial :global(.contest-notebook-mobile-toolbar) {
+  display: none;
+}
+
+.editorial :global(.contest-notebook-spread) {
+  border: 3px solid var(--editorial-ink) !important;
+  border-radius: 9px 18px 18px 9px !important;
+  background: var(--editorial-green) !important;
+  box-shadow:
+    11px 13px 0 rgba(17, 21, 18, 0.92),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.14) !important;
+  padding: 0.58rem !important;
+}
+
+.editorial :global(.contest-notebook-spread)::before {
+  inset: 7px !important;
+  border: 1px solid rgba(17, 21, 18, 0.4);
+  border-radius: 5px 13px 13px 5px !important;
+  box-shadow: none !important;
+}
+
+.editorial :global(.contest-notebook-spread)::after {
+  display: none !important;
+}
+
+.editorial :global(.contest-notebook-page),
+.editorial :global(.contest-lab-page-left),
+.editorial :global(.contest-lab-page-right) {
+  border-radius: 5px !important;
+  background-color: var(--editorial-paper) !important;
+  background-image:
+    linear-gradient(rgba(0, 86, 63, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 86, 63, 0.025) 1px, transparent 1px),
+    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.7), transparent 34%) !important;
+  background-size: 38px 38px, 38px 38px, 100% 100% !important;
+  box-shadow: none !important;
+}
+
+.editorial :global(.contest-notebook-page-left) {
+  border-radius: 6px 0 0 6px !important;
+}
+
+.editorial :global(.contest-notebook-page-right) {
+  border-radius: 0 12px 12px 0 !important;
+  background-color: #fffdf7 !important;
+}
+
+.editorial :global(.contest-notebook-page)::before {
+  width: 32px !important;
+  opacity: 0.45;
+}
+
+.editorial :global(.contest-notebook-page)::after {
+  inset: 12px !important;
+  border: 2px solid var(--editorial-ink) !important;
+  border-radius: 5px !important;
+  box-shadow: inset 0 0 0 4px var(--editorial-paper) !important;
+}
+
+.editorial :global(.contest-inner-frame) {
+  display: none !important;
+}
+
+.editorial :global(.contest-notebook-fold) {
+  top: 0.58rem !important;
+  bottom: 0.58rem !important;
+  width: 18px !important;
+  background: linear-gradient(
+    90deg,
+    rgba(17, 21, 18, 0.22),
+    rgba(255, 255, 255, 0.55) 45%,
+    rgba(17, 21, 18, 0.32) 53%,
+    rgba(17, 21, 18, 0.08)
+  ) !important;
+  box-shadow:
+    -5px 0 10px rgba(17, 21, 18, 0.1),
+    5px 0 10px rgba(17, 21, 18, 0.12) !important;
+}
+
+.editorial :global(.contest-page-corner) {
+  width: 34px;
+  height: 34px;
+  background:
+    linear-gradient(135deg, transparent 50%, rgba(17, 21, 18, 0.1) 51%),
+    linear-gradient(135deg, transparent 48%, var(--editorial-paper-warm) 49%);
+  box-shadow: -2px -2px 5px rgba(17, 21, 18, 0.08);
+}
+
+.editorial :global(.contest-notebook-page-inner) {
+  color: var(--editorial-ink);
+  font-family: var(--font-body), Arial, sans-serif !important;
+  padding: clamp(1.5rem, 2.2vw, 2.4rem) !important;
+}
+
+.editorial :global(.contest-notebook-page-inner h1),
+.editorial :global(.contest-notebook-page-inner h2),
+.editorial :global(.contest-notebook-page-inner h3),
+.editorial :global(.contest-notebook-page-inner h4),
+.editorial :global(.contest-notebook-carousel-title) {
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif !important;
+  font-weight: 950 !important;
+  overflow-wrap: normal !important;
+  text-transform: uppercase;
+  word-break: normal !important;
+  hyphens: none;
+}
+
+.editorial :global(.contest-notebook-page-inner h1),
+.editorial :global(.contest-notebook-page-inner h2),
+.editorial :global(.contest-notebook-page-inner h3) {
+  text-wrap: balance;
+}
+
+.editorial :global(.contest-lab-terminal-bar) {
+  min-height: 40px;
+  border: 2px solid var(--editorial-ink) !important;
+  border-radius: 4px !important;
+  background: var(--editorial-green) !important;
+  box-shadow: 3px 3px 0 var(--editorial-ink) !important;
+  color: white !important;
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif !important;
+  font-size: 0.76rem !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.07em !important;
+}
+
+.editorial :global(.contest-lab-specimen-card) {
+  overflow: hidden;
+  border: 2px solid var(--editorial-ink) !important;
+  border-radius: 5px !important;
+  background: var(--editorial-cream) !important;
+  box-shadow: 4px 4px 0 var(--editorial-ink) !important;
+}
+
+.editorial :global(.contest-lab-specimen-card)::before {
+  display: none !important;
+}
+
+.editorial :global(.contest-lab-specimen-header) {
+  border-bottom: 2px solid var(--editorial-ink) !important;
+  background: var(--editorial-yellow) !important;
+  padding: 0.8rem !important;
+}
+
+.editorial :global(.contest-lab-specimen-header p) {
+  color: var(--editorial-green) !important;
+}
+
+.editorial :global(.contest-lab-specimen-header h3) {
+  max-width: 100%;
+  margin-top: 0.22rem;
+  overflow: visible !important;
+  color: var(--editorial-ink) !important;
+  font-size: clamp(0.92rem, 1.6vw, 1.2rem) !important;
+  line-height: 0.94 !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  text-wrap: balance;
+}
+
+.editorial :global(.contest-lab-specimen-header > span),
+.editorial :global(.contest-lab-unlock-chip) {
+  border: 2px solid var(--editorial-ink) !important;
+  border-radius: 3px !important;
+  background: var(--editorial-paper) !important;
+  color: var(--editorial-ink) !important;
+}
+
+.editorial :global(.contest-lab-specimen-media) {
+  border: 2px solid var(--editorial-ink) !important;
+  border-radius: 4px !important;
+  background: var(--editorial-paper-warm) !important;
+  box-shadow: none !important;
+}
+
+.editorial :global(.contest-lab-scanlines) {
+  display: none !important;
+}
+
+.editorial :global(.contest-notebook-view-tabs) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 !important;
+  overflow: hidden;
+  border: 2px solid var(--editorial-ink) !important;
+  border-radius: 4px !important;
+  background: var(--editorial-paper) !important;
+  box-shadow: 3px 3px 0 var(--editorial-ink) !important;
+  padding: 0 !important;
+}
+
+.editorial :global(.contest-notebook-view-tabs button) {
+  min-height: 46px;
+  border: 0 !important;
+  border-right: 2px solid var(--editorial-ink) !important;
+  border-radius: 0 !important;
+  background: var(--editorial-paper) !important;
+  color: var(--editorial-ink) !important;
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif !important;
+}
+
+.editorial :global(.contest-notebook-view-tabs button:last-child) {
+  border-right: 0 !important;
+}
+
+.editorial :global(.contest-notebook-view-tabs button span) {
+  overflow: visible !important;
+  font-size: clamp(0.66rem, 1.3vw, 0.82rem) !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.05em !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+}
+
+.editorial :global(.contest-notebook-view-tabs button strong) {
+  color: var(--editorial-green) !important;
+  font-size: 0.58rem !important;
+}
+
+.editorial :global(.contest-notebook-view-tabs .contest-notebook-view-tab-active),
+.editorial :global(.contest-notebook-view-tabs button:hover),
+.editorial :global(.contest-notebook-view-tabs button:focus-visible) {
+  background: var(--editorial-yellow) !important;
+  color: var(--editorial-ink) !important;
+}
+
+.editorial :global(.contest-lab-sheet-header),
+.editorial :global(.contest-lab-detail-card),
+.editorial :global(.contest-lab-status-panel),
+.editorial :global(.contest-lab-locked-panel),
+.editorial :global(.contest-notebook-booster-guide),
+.editorial :global(.contest-notebook-collection-dashboard),
+.editorial :global(.contest-notebook-badge-gallery),
+.editorial :global(.contest-notebook-notes-body) {
+  border-color: var(--editorial-ink) !important;
+  border-radius: 4px !important;
+  background: var(--editorial-cream) !important;
+  background-image: none !important;
+  box-shadow: 3px 3px 0 rgba(17, 21, 18, 0.18) !important;
+}
+
+.editorial :global(.contest-lab-sheet-header h2) {
+  max-width: 100%;
+  font-size: clamp(1rem, 2.3vw, 1.5rem) !important;
+  line-height: 0.95 !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none;
+}
+
+.editorial :global(.contest-lab-chip-row span),
+.editorial :global(.contest-notebook-collection-stats > div),
+.editorial :global(.contest-notebook-booster-guide-steps > div) {
+  border-color: var(--editorial-ink) !important;
+  border-radius: 3px !important;
+  background: var(--editorial-paper) !important;
+}
+
+.editorial :global(.contest-lab-analysis-strip) {
+  border: 2px solid var(--editorial-ink) !important;
+  border-radius: 4px !important;
+  background: var(--editorial-paper) !important;
+  box-shadow: none !important;
+}
+
+.editorial :global(.contest-lab-analysis-strip a),
+.editorial :global(.contest-lab-analysis-strip em) {
+  border-radius: 3px !important;
+  background: var(--editorial-green) !important;
+  color: white !important;
+}
+
+.editorial :global(.contest-notebook-bookmarks) {
+  width: min(1180px, calc(100vw - 8rem));
+  margin: 0 auto;
+}
+
+.editorial :global(.contest-notebook-carousel) {
+  width: 100%;
+  gap: 0.5rem;
+  border: 2px solid var(--editorial-ink);
+  border-radius: 5px;
+  background: var(--editorial-green);
+  box-shadow: 4px 4px 0 var(--editorial-ink);
+  padding: 0.48rem;
+}
+
+.editorial :global(.contest-notebook-carousel-rail) {
+  gap: 0.45rem;
+  padding: 0.1rem 0.05rem 0.3rem;
+}
+
+.editorial :global(.contest-notebook-carousel-arrow) {
+  width: 42px;
+  height: 42px;
+  flex-basis: 42px;
+  border: 2px solid var(--editorial-ink) !important;
+  border-radius: 3px !important;
+  background: var(--editorial-yellow) !important;
+  box-shadow: 2px 2px 0 var(--editorial-ink) !important;
+  color: var(--editorial-ink) !important;
+}
+
+.editorial :global(.contest-notebook-carousel-card) {
+  min-height: 72px;
+  flex-basis: clamp(150px, 25vw, 210px);
+  gap: 0.2rem;
+  border: 2px solid var(--editorial-ink) !important;
+  border-radius: 4px !important;
+  background: var(--editorial-paper) !important;
+  box-shadow: 2px 2px 0 var(--editorial-ink) !important;
+  color: var(--editorial-ink) !important;
+  padding: 0.62rem 0.72rem;
+}
+
+.editorial :global(.contest-notebook-carousel-card)::after {
+  display: none;
+}
+
+.editorial :global(.contest-notebook-carousel-card-active) {
+  background: var(--editorial-yellow) !important;
+  box-shadow: 4px 4px 0 var(--editorial-ink) !important;
+  transform: translateY(-2px);
+}
+
+.editorial :global(.contest-notebook-carousel-card-locked) {
+  background: var(--editorial-paper-warm) !important;
+  opacity: 0.72;
+}
+
+.editorial :global(.contest-notebook-carousel-card-collection) {
+  background: var(--editorial-green-dark) !important;
+  color: white !important;
+}
+
+.editorial :global(.contest-notebook-carousel-card-collection.contest-notebook-carousel-card-active) {
+  background: var(--editorial-yellow) !important;
+  color: var(--editorial-ink) !important;
+}
+
+.editorial :global(.contest-notebook-carousel-kicker),
+.editorial :global(.contest-notebook-carousel-state) {
+  border-radius: 2px !important;
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+}
+
+.editorial :global(.contest-notebook-carousel-kicker) {
+  background: transparent !important;
+}
+
+.editorial :global(.contest-notebook-carousel-title) {
+  overflow: visible !important;
+  font-size: clamp(0.76rem, 1.5vw, 0.98rem) !important;
+  line-height: 0.94 !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+}
+
+.editorial :global(.contest-notebook-carousel-state) {
+  background: var(--editorial-green) !important;
+  color: white !important;
+}
+
+.editorial :global(.contest-notebook-carousel-card-collection .contest-notebook-carousel-state) {
+  background: var(--editorial-yellow) !important;
+  color: var(--editorial-ink) !important;
+}
+
+.editorial :global(.contest-notebook-flip-controls) {
+  border: 2px solid var(--editorial-ink);
+  border-radius: 4px;
+  background: var(--editorial-paper);
+  color: var(--editorial-ink);
+}
+
+.editorial :global(.contest-notebook-flip-button) {
+  border-radius: 3px !important;
+  color: var(--editorial-ink) !important;
+}
+
+.editorial :global(.btn-cartoon) {
+  border-radius: 4px !important;
+  box-shadow: 3px 3px 0 var(--editorial-ink) !important;
+}
+
+@media (min-width: 1024px) {
+  .editorial:global(.contest-notebook-modal)[open] {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 3rem) !important;
+  }
+
+  .editorial :global(.contest-notebook-spread-flip) {
+    width: min(1180px, calc(100vw - 8rem));
+    height: min(76vh, 760px);
+    min-height: 570px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .editorial:global(.contest-notebook-modal)[open] {
+    background: var(--editorial-cream) !important;
+    padding-inline: 0.65rem !important;
+  }
+
+  .editorial :global(.contest-notebook-bookmarks) {
+    width: 100%;
+  }
+
+  .editorial :global(.contest-notebook-spread) {
+    box-shadow: 5px 6px 0 var(--editorial-ink) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .editorial :global(.contest-notebook-mobile-toolbar) {
+    z-index: 270;
+    display: block;
+    width: 100%;
+    flex: 0 0 auto;
+    padding: 0 0.1rem;
+  }
+
+  .editorial :global(.contest-notebook-page-inner .contest-notebook-view-tabs) {
+    display: none !important;
+  }
+
+  .editorial :global(.contest-notebook-cover-shell) {
+    width: min(62vw, 222px);
+    border-radius: 5px 14px 14px 5px;
+    box-shadow: 7px 8px 0 var(--editorial-ink);
+  }
+
+  .editorial :global(.contest-editorial-cover) {
+    padding: 0.85rem 0.7rem 0.75rem 1.85rem;
+  }
+
+  .editorial :global(.contest-editorial-cover-label) {
+    padding: 0.7rem 0.6rem;
+  }
+
+  .editorial :global(.contest-editorial-cover-title) {
+    font-size: clamp(1.38rem, 7vw, 1.65rem);
+  }
+
+  .editorial :global(.contest-editorial-cover-art img) {
+    width: min(66%, 100px);
+    max-height: 126px;
+  }
+
+  .editorial :global(.contest-notebook-spread) {
+    border-width: 2px !important;
+    border-radius: 5px 10px 10px 5px !important;
+    padding: 0.32rem !important;
+  }
+
+  .editorial :global(.contest-notebook-page) {
+    border-radius: 4px !important;
+  }
+
+  .editorial :global(.contest-notebook-page)::after {
+    inset: 6px !important;
+    border-radius: 3px !important;
+    box-shadow: inset 0 0 0 2px var(--editorial-paper) !important;
+  }
+
+  .editorial :global(.contest-notebook-page-inner) {
+    padding: 0.85rem !important;
+  }
+
+  .editorial :global(.contest-notebook-page-inner h1),
+  .editorial :global(.contest-notebook-page-inner h2),
+  .editorial :global(.contest-notebook-page-inner h3) {
+    font-size: clamp(1rem, 6.4vw, 1.5rem) !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: none !important;
+  }
+
+  .editorial :global(.contest-lab-specimen-header h3) {
+    font-size: clamp(0.84rem, 4.2vw, 1.02rem) !important;
+  }
+
+  .editorial :global(.contest-notebook-view-tabs button span) {
+    font-size: clamp(0.6rem, 2.8vw, 0.72rem) !important;
+  }
+
+  .editorial :global(.contest-notebook-carousel) {
+    gap: 0.3rem;
+    border-width: 2px;
+    box-shadow: 3px 3px 0 var(--editorial-ink);
+    padding: 0.32rem;
+  }
+
+  .editorial :global(.contest-notebook-carousel-arrow) {
+    width: 36px !important;
+    height: 36px !important;
+    flex-basis: 36px !important;
+  }
+
+  .editorial :global(.contest-notebook-carousel-card) {
+    min-height: 64px !important;
+    flex-basis: clamp(132px, 49vw, 176px) !important;
+    padding: 0.5rem 0.56rem !important;
+  }
+
+  .editorial :global(.contest-notebook-carousel-title) {
+    font-size: clamp(0.7rem, 3.4vw, 0.86rem) !important;
+  }
+
+  .editorial :global(.contest-notebook-carousel-state),
+  .editorial :global(.contest-notebook-carousel-kicker) {
+    font-size: 0.5rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial :global(.contest-notebook-cover-shell),
+  .editorial :global(.contest-notebook-carousel-card),
+  .editorial :global(.contest-notebook-carousel-arrow) {
+    transition: none !important;
+  }
+}

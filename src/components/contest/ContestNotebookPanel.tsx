@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { NotebookFlipBook } from "@/components/contest/NotebookFlipBook";
 import { ContestReviewSkillRadar } from "@/components/contest/ContestReviewSkillRadar";
+import styles from "./ContestNotebookPanel.module.css";
 import {
   CONTEST_AROMA_TAG_LABELS,
   CONTEST_AROMA_TAGS,
@@ -33,7 +33,6 @@ import {
   CONTEST_SCORE_MAX,
   CONTEST_SCORE_MIN,
 } from "@/lib/contest-score";
-import { getContestEntryAnalysisUrl } from "@/lib/contest-analysis";
 import {
   CANNABIS_TERPENE_OPTIONS,
   normalizeContestTerpene,
@@ -72,6 +71,14 @@ const GUIDE_PAGES = [
   "Goût",
   "Verdict",
 ] as const;
+
+const GUIDE_PAGE_MASCOTS: readonly TastingStepMascotKey[] = [
+  "start",
+  "aspect",
+  "smell",
+  "taste",
+  "verdict",
+];
 
 const QUICK_STEP_SUMMARY = [
   "Choisis ton mode de dégustation.",
@@ -115,8 +122,6 @@ const SCORE_GROUPS: Array<{
     criteria: ["overall_impression"],
   },
 ];
-
-const TERPENE_SWATCHES = ["#d35400", "#0f5b3f", "#f6c744", "#7f5fbf", "#2f8fbd", "#c65377"];
 
 const TASTING_STEP_MASCOTS: Record<TastingStepMascotKey, string> = {
   start: "/contest/mascot/tasting/tasting-start.png",
@@ -202,12 +207,6 @@ function getTechnicalText(value: unknown, fallback = "Non renseigne"): string {
   return typeof value === "string" && value.trim() ? value.trim() : fallback;
 }
 
-function getTechnicalList(value: unknown): string[] {
-  return Array.isArray(value)
-    ? value.filter((item): item is string => typeof item === "string" && item.trim().length > 0)
-    : [];
-}
-
 function ScoreSlider({
   criterion,
   value,
@@ -220,12 +219,12 @@ function ScoreSlider({
   disabled?: boolean;
 }) {
   return (
-    <label className="contest-score-card">
-      <div className="flex items-start justify-between gap-3 sm:items-center">
-        <span className="text-sm font-semibold leading-relaxed text-ink">
+    <label className={styles.scoreCard}>
+      <div className={styles.scoreTop}>
+        <span className={styles.scoreLabel}>
           {CONTEST_SCORE_CRITERION_LABELS[criterion]}
         </span>
-        <span className="contest-score-pill">
+        <span className={styles.scorePill}>
           {value}/{CONTEST_SCORE_MAX}
         </span>
       </div>
@@ -237,9 +236,9 @@ function ScoreSlider({
         value={value}
         onChange={(event) => onChange(criterion, Number(event.target.value))}
         disabled={disabled}
-        className="contest-score-range disabled:cursor-default"
+        className={styles.scoreRange}
       />
-      <p className="contest-score-hint">{getScoreHint(value)}</p>
+      <p className={styles.scoreHint}>{getScoreHint(value)}</p>
     </label>
   );
 }
@@ -271,28 +270,29 @@ function GuideCard({
   children: ReactNode;
   tone?: "white" | "cream" | "yellow";
 }) {
-  const toneClass =
-    tone === "yellow" ? "bg-yellow" : tone === "cream" ? "bg-[#fffaf0]" : "bg-white";
+  const toneClass = tone === "yellow"
+    ? styles.guideCardYellow
+    : tone === "cream"
+      ? styles.guideCardCream
+      : "";
 
   return (
-    <div className={`rounded border-2 border-[#1a1a1a] ${toneClass} p-4`}>
+    <div className={`${styles.guideCard} ${toneClass}`}>
       {eyebrow ? (
-        <p className="text-[10px] font-black uppercase tracking-[0.16em] text-charcoal">
-          {eyebrow}
-        </p>
+        <p className={styles.cardEyebrow}>{eyebrow}</p>
       ) : null}
-      <h4 className="text-base font-black leading-tight text-ink">{title}</h4>
-      <div className="mt-3 text-sm leading-relaxed text-charcoal">{children}</div>
+      <h4 className={styles.cardTitle}>{title}</h4>
+      <div className={styles.cardBody}>{children}</div>
     </div>
   );
 }
 
 function GuideBullets({ items }: { items: string[] }) {
   return (
-    <ul className="space-y-2">
+    <ul className={styles.bullets}>
       {items.map((item) => (
-        <li key={item} className="flex gap-2">
-          <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#d35400]" />
+        <li key={item} className={styles.bullet}>
+          <span aria-hidden="true" className={styles.bulletMark} />
           <span>{item}</span>
         </li>
       ))}
@@ -338,7 +338,7 @@ function CriterionGuideCard({
   score: number;
 }) {
   return (
-    <article className="rounded border-2 border-[#1a1a1a] bg-white p-4">
+    <article className={styles.criterionCard}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-[10px] font-black uppercase tracking-[0.16em] text-charcoal">
@@ -394,7 +394,7 @@ function CriterionGuideStack({
   scores: ReviewScoreMap;
 }) {
   return (
-    <div className="max-h-[620px] space-y-3 overflow-y-auto pr-2">
+    <div className={styles.criterionStack}>
       {criteria.map((criterion) => (
         <CriterionGuideCard
           key={criterion}
@@ -429,18 +429,10 @@ function QuickHelp({
   title?: string;
   children: ReactNode;
 }) {
-  const isDefaultHelp = title === "Besoin d'aide ?";
-
   return (
-    <details
-      className={`contest-guide-help-card ${
-        isDefaultHelp ? "contest-guide-help-card-centered" : ""
-      } rounded border-2 border-[#1a1a1a] bg-white p-3`}
-    >
-      <summary className="cursor-pointer text-xs font-black uppercase tracking-[0.12em] text-ink">
-        {title}
-      </summary>
-      <div className="mt-3 grid gap-3 text-sm leading-relaxed text-charcoal">{children}</div>
+    <details className={styles.helpCard}>
+      <summary>{title}</summary>
+      <div className={styles.helpContent}>{children}</div>
     </details>
   );
 }
@@ -453,10 +445,7 @@ function ContestTastingStepMascot({
   compact?: boolean;
 }) {
   return (
-    <div
-      className={`contest-tasting-step-mascot ${compact ? "contest-tasting-step-mascot-compact" : ""}`}
-      aria-hidden="true"
-    >
+    <div className={compact ? styles.compactMascot : styles.stepMascot} aria-hidden="true">
       <Image
         src={TASTING_STEP_MASCOTS[step]}
         alt=""
@@ -481,17 +470,11 @@ function QuickStepIntro({
   mascotStep?: TastingStepMascotKey;
 }) {
   return (
-    <div
-      className={`contest-tasting-step-intro rounded border-2 border-[#1a1a1a] bg-yellow p-4 ${
-        mascotStep ? "contest-tasting-step-intro-has-mascot" : ""
-      }`}
-    >
-      <div className="contest-tasting-step-intro-copy">
-        <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#6d4b00]">
-          {eyebrow}
-        </p>
-        <h3 className="mt-1 text-2xl font-black leading-tight text-ink">{title}</h3>
-        <p className="mt-2 text-sm font-semibold leading-relaxed text-charcoal">{body}</p>
+    <div className={styles.stepIntro}>
+      <div className={styles.stepIntroCopy}>
+        <p className={styles.eyebrow}>{eyebrow}</p>
+        <h3 className={styles.stepTitle}>{title}</h3>
+        <p className={styles.stepBody}>{body}</p>
       </div>
       {mascotStep ? <ContestTastingStepMascot step={mascotStep} /> : null}
     </div>
@@ -510,7 +493,7 @@ function ScoreSliderStack({
   disabled: boolean;
 }) {
   return (
-    <div className="grid gap-3">
+    <div className={styles.scoreStack}>
       {criteria.map((criterion) => (
         <ScoreSlider
           key={criterion}
@@ -524,7 +507,7 @@ function ScoreSliderStack({
   );
 }
 
-function NotebookSpread({
+function TastingContentGrid({
   left,
   right,
 }: {
@@ -532,48 +515,11 @@ function NotebookSpread({
   right: ReactNode;
 }) {
   return (
-    <NotebookFlipBook
-      left={left}
-      right={right}
-      className="contest-guide-flipbook contest-lab-notebook"
-      leftPageClassName="contest-lab-page-left"
-      rightPageClassName="contest-lab-page-right"
-      leftInnerProps={{ className: "contest-guide-page-scroll" }}
-      rightInnerProps={{ className: "contest-guide-page-scroll" }}
-      labels={{ previous: "Action", next: "Aide", pageLabel: "Pages du guide concours" }}
-    />
-  );
-}
-
-function NotebookInlineSpread({
-  left,
-  right,
-}: {
-  left: ReactNode;
-  right: ReactNode;
-}) {
-  return (
-    <div className="contest-guide-flipbook contest-lab-notebook contest-notes-inline-spread">
-      <div className="contest-notebook-flip-viewport">
-        <div className="contest-notebook-spread contest-notebook-spread-flip">
-          <div className="contest-notebook-page-track">
-            <div className="contest-notebook-page contest-notebook-page-left contest-lab-page-left">
-              <div className="contest-inner-frame" aria-hidden="true" />
-              <div className="contest-page-corner contest-page-corner-left" aria-hidden="true" />
-              <div className="contest-notebook-page-inner contest-guide-page-scroll space-y-4">
-                {left}
-              </div>
-            </div>
-            <div className="contest-notebook-page contest-notebook-page-right contest-lab-page-right">
-              <div className="contest-inner-frame" aria-hidden="true" />
-              <div className="contest-page-corner contest-page-corner-right" aria-hidden="true" />
-              <div className="contest-notebook-page-inner contest-guide-page-scroll space-y-4">
-                {right}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className={styles.stepGrid}>
+      <div className={styles.stepPrimary}>{left}</div>
+      <aside className={styles.stepAside} aria-label="Conseils pour cette étape">
+        {right}
+      </aside>
     </div>
   );
 }
@@ -606,6 +552,7 @@ export function ContestNotebookPanel({
   );
   const [pageIndex, setPageIndex] = useState(0);
   const inlineGuideRef = useRef<HTMLElement | null>(null);
+  const launchButtonRef = useRef<HTMLButtonElement | null>(null);
   const [pseudo, setPseudo] = useState(viewerProfile?.pseudo ?? "");
   const [profileMessage, setProfileMessage] = useState<string | null>(null);
   const [profileError, setProfileError] = useState<string | null>(null);
@@ -650,8 +597,6 @@ export function ContestNotebookPanel({
   };
   const isConcoursEntry = entry.track === "concours";
   const quickStepSummary = isConcoursEntry ? QUICK_STEP_SUMMARY : QUICK_STEP_SUMMARY_REGULAR;
-  const indoorCulture = getTechnicalList(technicalSheet.indoorCulture);
-  const analysisUrl = getContestEntryAnalysisUrl(entry);
   const expectedTerpenes = useMemo(
     () => (isConcoursEntry ? normalizeTerpeneSelection(entry.technicalSheet.dominantTerpenes) : []),
     [entry.technicalSheet.dominantTerpenes, isConcoursEntry],
@@ -748,6 +693,10 @@ export function ContestNotebookPanel({
     setIsGuideOpen(false);
     onCloseGuide?.();
 
+    if (!isInlineDisplayMode) {
+      window.requestAnimationFrame(() => launchButtonRef.current?.focus());
+    }
+
     if (searchParams.get("edit") !== "notes") {
       return;
     }
@@ -756,16 +705,7 @@ export function ContestNotebookPanel({
     params.delete("edit");
     const query = params.toString();
     router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
-  }, [onCloseGuide, pathname, router, searchParams]);
-
-  const handleCloseGuidePress = useCallback(
-    (event: { preventDefault: () => void; stopPropagation: () => void }) => {
-      event.preventDefault();
-      event.stopPropagation();
-      closeGuide();
-    },
-    [closeGuide],
-  );
+  }, [isInlineDisplayMode, onCloseGuide, pathname, router, searchParams]);
 
   useEffect(() => {
     if (!isGuideOpen) {
@@ -775,14 +715,46 @@ export function ContestNotebookPanel({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closeGuide();
+        return;
+      }
+
+      if (event.key !== "Tab" || isInlineDisplayMode || !inlineGuideRef.current) {
+        return;
+      }
+
+      const focusableElements = Array.from(
+        inlineGuideRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => element.getClientRects().length > 0);
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+      if (!firstElement || !lastElement) {
+        return;
+      }
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
+    const focusFrame = isInlineDisplayMode
+      ? null
+      : window.requestAnimationFrame(() => {
+          inlineGuideRef.current?.querySelector<HTMLElement>("[data-tasting-close]")?.focus();
+        });
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      if (focusFrame !== null) {
+        window.cancelAnimationFrame(focusFrame);
+      }
     };
-  }, [closeGuide, isGuideOpen]);
+  }, [closeGuide, isGuideOpen, isInlineDisplayMode]);
 
   useEffect(() => {
     if (!isGuideOpen || isInlineDisplayMode) {
@@ -893,22 +865,13 @@ export function ContestNotebookPanel({
       return;
     }
 
+    const scrollViewport = root.querySelector<HTMLElement>("[data-tasting-scroll]");
+    if (scrollViewport) {
+      scrollViewport.scrollTop = 0;
+      return;
+    }
+
     root.scrollTop = 0;
-    [
-      root.closest<HTMLElement>(".contest-notebook-notes-body"),
-      root.closest<HTMLElement>(".contest-notebook-page-inner"),
-    ].forEach((element) => {
-      if (element) {
-        element.scrollTop = 0;
-      }
-    });
-    root
-      .querySelectorAll<HTMLElement>(
-        ".contest-notes-inline-page, .contest-guide-page-scroll, .contest-notebook-page-inner, .contest-guide-page-shell-verdict",
-      )
-      .forEach((element) => {
-        element.scrollTop = 0;
-      });
   }, []);
 
   useEffect(() => {
@@ -1297,92 +1260,90 @@ export function ContestNotebookPanel({
     );
   };
 
-  const renderInlineGuide = () => (
+  const renderNotebookShell = () => (
     <section
       ref={inlineGuideRef}
-      className={`contest-notes-inline-guide${isSpreadDisplayMode ? " contest-notes-inline-guide-spread" : ""}`}
-      aria-label="Mes notes de degustation"
+      className={`${styles.notebook} ${isInlineDisplayMode ? styles.inlineNotebook : ""}`}
+      aria-label={`Carnet de dégustation de ${entry.title}`}
     >
-      {!isSpreadDisplayMode ? (
-        <div className="contest-notes-inline-guide-header">
-          <div className="min-w-0">
-            <p>
-              Page {pageIndex + 1} / {GUIDE_PAGES.length}
-            </p>
-            <h3>{GUIDE_PAGES[pageIndex]}</h3>
+      <header className={styles.notebookHeader}>
+        <div className={styles.headerIdentity}>
+          <ContestTastingStepMascot step={GUIDE_PAGE_MASCOTS[pageIndex]} compact />
+          <div className={styles.headerCopy}>
+            <p className={styles.eyebrow}>Étape {pageIndex + 1} sur {GUIDE_PAGES.length}</p>
+            <h2 className={styles.notebookTitle}>Carnet de dégustation</h2>
+            <p className={styles.notebookSubtitle}>{entry.title}</p>
+          </div>
+        </div>
+        <div className={styles.headerActions}>
+          <div
+            className={styles.headerScore}
+            aria-label={`Score actuel ${formatContestAverage(visibleScoreAverage)} sur ${CONTEST_SCORE_MAX}`}
+          >
+            {formatContestAverage(visibleScoreAverage)}/{CONTEST_SCORE_MAX}
           </div>
           <button
             type="button"
             onClick={closeGuide}
-            className="contest-notes-inline-close"
-            aria-label="Retour au resume des notes"
+            className={styles.closeButton}
+            data-tasting-close
+            aria-label={isInlineDisplayMode ? "Retour au résumé des notes" : "Fermer le carnet"}
           >
-            Retour
+            {isInlineDisplayMode ? "Résumé" : "Fermer"}
           </button>
         </div>
-      ) : (
-        <button
-          type="button"
-          onClick={closeGuide}
-          className="contest-notes-spread-return"
-          aria-label="Retour au resume des notes"
-        >
-          Resume
-        </button>
-      )}
+      </header>
 
-      <nav className="contest-guide-bookmarks contest-notes-inline-bookmarks" aria-label="Etapes de notation">
+      <nav className={styles.stepNav} aria-label="Étapes de notation">
         {GUIDE_PAGES.map((page, index) => (
           <button
             key={page}
             type="button"
             onClick={() => goToGuidePage(index)}
-            className={`contest-guide-bookmark ${
-              index === pageIndex ? "contest-guide-bookmark-active contest-notes-inline-bookmark-active" : ""
-            }`}
+            className={`${styles.stepTab} ${index === pageIndex ? styles.stepTabActive : ""}`}
             aria-current={index === pageIndex ? "page" : undefined}
+            aria-label={`Étape ${index + 1} : ${page}`}
           >
-            {page}
+            <span className={styles.stepTabNumber}>{index + 1}</span>
+            <span className={styles.stepTabLabel}>{page}</span>
           </button>
         ))}
       </nav>
 
-      <div
-        key={pageIndex}
-        className={`contest-guide-page-shell contest-notes-inline-page ${
-          pageIndex === GUIDE_PAGES.length - 1
-            ? "contest-notes-inline-page-verdict"
-            : ""
-        } ${
-          isReviewReadOnly && pageIndex === GUIDE_PAGES.length - 1
-            ? "contest-guide-page-shell-verdict"
-            : ""
-        }`}
-      >
+      <div key={pageIndex} className={styles.contentViewport} data-tasting-scroll>
         {renderGuidePage()}
       </div>
 
-      <div className="contest-notes-inline-footer">
+      <footer className={styles.notebookFooter}>
         <button
           type="button"
           onClick={goToPreviousPage}
           disabled={pageIndex === 0}
-          className="btn-cartoon btn-secondary"
+          className={styles.navButton}
         >
-          Page precedente
+          Précédent
         </button>
-        <div aria-hidden="true">
-          <span style={{ width: `${((pageIndex + 1) / GUIDE_PAGES.length) * 100}%` }} />
+        <div className={styles.progress} aria-live="polite">
+          <div className={styles.progressLabel}>
+            <span>{GUIDE_PAGES[pageIndex]}</span>
+            <span>{pageIndex + 1}/{GUIDE_PAGES.length}</span>
+          </div>
+          <div className={styles.progressTrack} aria-hidden="true">
+            <span
+              className={styles.progressFill}
+              style={{ width: `${((pageIndex + 1) / GUIDE_PAGES.length) * 100}%` }}
+            />
+          </div>
         </div>
         <button
           type="button"
           onClick={goToNextPage}
           disabled={pageIndex === GUIDE_PAGES.length - 1}
-          className="btn-cartoon btn-primary"
+          className={`${styles.navButton} ${styles.navButtonPrimary}`}
         >
-          Page suivante
+          Suivant
         </button>
-      </div>
+      </footer>
     </section>
   );
 
@@ -1400,7 +1361,7 @@ export function ContestNotebookPanel({
     const aromaCriteria = SCORE_GROUPS.find((group) => group.page === "aroma")?.criteria ?? [];
     const tastingCriteria = SCORE_GROUPS.find((group) => group.page === "tasting")?.criteria ?? [];
     const verdictCriteria = SCORE_GROUPS.find((group) => group.page === "verdict")?.criteria ?? [];
-    const GuideSpread = isInlineDisplayMode ? NotebookInlineSpread : NotebookSpread;
+    const GuideSpread = TastingContentGrid;
 
     if (pageIndex === 0) {
       return (
@@ -1585,32 +1546,37 @@ export function ContestNotebookPanel({
                         : "Trouve le combo exact pour viser le bonus boosters."}
                     </p>
                   ) : null}
-                  <div className="mt-4 grid max-h-[300px] gap-2 overflow-y-auto pr-2 sm:grid-cols-2">
-                    {CANNABIS_TERPENE_OPTIONS.map((terpene) => {
-                      const checked = visibleSelectedTerpenes.includes(terpene.code);
-                      return (
-                        <label
-                          key={terpene.code}
-                          className={`flex items-center gap-3 rounded border-2 px-3 py-2 ${
-                            checked
-                              ? "border-[#1a1a1a] bg-white"
-                              : "border-[#1a1a1a] bg-[#fffaf0]"
-                          }`}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={checked}
-                            onChange={() => handleToggleTerpene(terpene.code)}
-                            disabled={isReviewReadOnly}
-                            className="h-4 w-4 accent-[#d35400]"
-                          />
-                          <span className="text-sm font-semibold leading-tight text-ink">
-                            {terpene.label}
-                          </span>
-                        </label>
-                      );
-                    })}
-                  </div>
+                  <details className="mt-4 rounded border-2 border-[#1a1a1a] bg-[#fffaf0] p-3">
+                    <summary className="cursor-pointer text-xs font-black uppercase tracking-[0.1em] text-ink">
+                      Choisir mes terpènes ({visibleSelectedTerpenes.length})
+                    </summary>
+                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                      {CANNABIS_TERPENE_OPTIONS.map((terpene) => {
+                        const checked = visibleSelectedTerpenes.includes(terpene.code);
+                        return (
+                          <label
+                            key={terpene.code}
+                            className={`flex min-h-[44px] items-center gap-3 rounded border-2 px-3 py-2 ${
+                              checked
+                                ? "border-[#1a1a1a] bg-white"
+                                : "border-[#1a1a1a] bg-[#f6f0e6]"
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() => handleToggleTerpene(terpene.code)}
+                              disabled={isReviewReadOnly}
+                              className="h-5 w-5 accent-[#00563f]"
+                            />
+                            <span className="text-sm font-semibold leading-tight text-ink">
+                              {terpene.label}
+                            </span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </details>
                 </div>
               ) : null}
               <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
@@ -1787,661 +1753,74 @@ export function ContestNotebookPanel({
       );
     }
 
-    switch (pageIndex) {
-      case 0:
-        return (
-          <GuideSpread
-            left={
-              <>
-                <h3 className="font-display text-4xl leading-none text-ink">{entry.title}</h3>
-                <p className="text-sm leading-relaxed text-charcoal">
-                  Ton carnet est un compagnon de dégustation. Il t&apos;aide à observer, sentir,
-                  goûter et noter une fleur CBD sans avoir besoin d&apos;être expert.
-                </p>
-                <GuideCard title="La règle du concours" eyebrow="Analyse et dégustation" tone="yellow">
-                  <GuideBullets items={CONTEST_CBD_TASTING_RULES} />
-                </GuideCard>
-                <GuideCard title="Le bon rythme" eyebrow="Observe, nomme, note" tone="cream">
-                  Chaque double-page garde la méthode à gauche et la note à donner à droite.
-                  Lis le critère, fais l&apos;observation demandée, puis règle la jauge. La note
-                  doit récompenser la qualité sensorielle, pas une attente d&apos;effet.
-                </GuideCard>
-              </>
-            }
-            right={
-              <>
-                <div className="rounded border-2 border-[#1a1a1a] bg-yellow p-4">
-                  <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#6d4b00]">
-                    Score live
-                  </p>
-                  <p className="mt-3 text-4xl font-black text-ink">{formatContestAverage(visibleScoreAverage)}</p>
-                  <p className="text-sm font-bold text-ink">/ {CONTEST_SCORE_MAX}</p>
-                </div>
-                <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
-                  <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                    Progression
-                  </p>
-                  <div className="mt-3 grid gap-2">
-                    {SCORE_GROUPS.map((group) => (
-                      <div
-                        key={group.page}
-                        className="rounded border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-2 text-sm font-semibold text-charcoal"
-                      >
-                        {group.title}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </>
-            }
-          />
-        );
-      case 1:
-        return (
-          <GuideSpread
-            left={
-              <>
-                <div className="rounded border-2 border-[#17130e] bg-white p-4">
-                  <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                    Identité de la fleur
-                  </p>
-                  <h3 className="mt-2 font-display text-3xl leading-none text-ink">
-                    {getTechnicalText(technicalSheet.variety, entry.title)}
-                  </h3>
-                </div>
-                <div className="grid gap-3">
-                  {[
-                    ["Sol", getTechnicalText(technicalSheet.soil)],
-                    ["Culture", CONTEST_ENTRY_CATEGORY_LABELS[entry.category]],
-                    ["Récolte", formatHarvestDate(technicalSheet.harvestDate)],
-                  ].map(([label, value]) => (
-                    <div key={label} className="rounded border-2 border-[#1a1a1a] bg-[#fffaf0] px-4 py-3">
-                      <p className="text-[10px] font-black uppercase tracking-[0.14em] text-charcoal">{label}</p>
-                      <p className="mt-1 text-sm font-bold leading-relaxed text-ink">{value}</p>
-                    </div>
-                  ))}
-                </div>
-                {entry.category === "indoor" && indoorCulture.length > 0 ? (
-                  <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
-                    <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                      Setup indoor
-                    </p>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {indoorCulture.map((option) => (
-                        <span
-                          key={option}
-                          className="rounded-full border-2 border-[#1a1a1a] bg-yellow px-3 py-1 text-[11px] font-black uppercase tracking-[0.08em] text-ink"
-                        >
-                          {option}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
-                <div className="grid gap-3">
-                  {CONTEST_PREPARATION_GUIDE.map((section) => (
-                    <GuideCard key={section.title} title={section.title} eyebrow="Préparation" tone="cream">
-                      <p>{section.body}</p>
-                      <div className="mt-3">
-                        <GuideBullets items={section.bullets} />
-                      </div>
-                    </GuideCard>
-                  ))}
-                </div>
-              </>
-            }
-            right={
-              <>
-                <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
-                  <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                    Analyse laboratoire
-                  </p>
-                  {analysisUrl ? (
-                    <div className="mt-3 rounded border-2 border-[#1a1a1a] bg-[#f0fff3] p-3">
-                      <p className="text-sm font-black uppercase tracking-[0.08em] text-ink">
-                        Disponible
-                      </p>
-                      <p className="mt-2 text-xs leading-relaxed text-charcoal">
-                        Le document d&apos;analyse est consultable pour verifier la tracabilite du lot.
-                      </p>
-                      <a
-                        href={analysisUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="btn-cartoon btn-secondary mt-3 inline-flex min-h-[38px] items-center justify-center px-4 text-[11px] leading-none"
-                      >
-                        Consulter l&apos;analyse
-                      </a>
-                    </div>
-                  ) : (
-                    <p className="mt-3 text-sm leading-relaxed text-charcoal">
-                      Analyse en attente pour cette fleur. La fiche reste centree sur la degustation.
-                    </p>
-                  )}
-                </div>
-                <div className="rounded border-2 border-[#17130e] bg-[#f0fff3] p-4 text-sm leading-relaxed text-charcoal">
-                  <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#1f5a2f]">
-                    Cadre de dégustation
-                  </p>
-                  <p className="mt-2">
-                    Les lots concours sont selectionnes comme fleurs conformes. La note se concentre sur
-                     l&apos;aspect, l&apos;odeur, le gout et le verdict, pas sur des taux.
-                  </p>
-                </div>
-                <div className="rounded border-2 border-[#17130e] bg-[#fffaf0] p-4 text-sm leading-relaxed text-charcoal">
-                  Garde le même rituel entre les lots: même matériel, même calme, même attention.
-                  Ces informations donnent le contexte avant de noter.
-                </div>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {CONTEST_CONSUMPTION_METHODS.map((method) => (
-                    <button
-                      key={method}
-                      type="button"
-                      onClick={() => {
-                        if (!isReviewReadOnly) {
-                          setConsumptionMethod(method);
-                        }
-                      }}
-                      disabled={isReviewReadOnly}
-                      className={`flex min-h-[72px] items-start rounded border-2 px-3 py-3 text-left ${
-                        visibleConsumptionMethod === method
-                          ? "border-[#1a1a1a] bg-yellow text-ink"
-                          : "border-[#1a1a1a] bg-[#f7f4ee] text-charcoal"
-                      } disabled:cursor-default`}
-                    >
-                      <span className="text-sm font-black uppercase leading-tight tracking-[0.08em]">
-                        {CONTEST_CONSUMPTION_METHOD_LABELS[method]}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-                <input
-                  type="text"
-                  value={visibleConsumptionDetails}
-                  onChange={(event) => setConsumptionDetails(event.target.value)}
-                  readOnly={isReviewReadOnly}
-                  placeholder="Optionnel: dosage, température, roulage, matériel..."
-                  className="h-12 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 text-sm text-ink"
-                />
-              </>
-            }
-          />
-        );
-      case 2:
-        return (
-          <GuideSpread
-            left={
-              <>
-                <GuideCard title="Inspection visuelle" eyebrow="Avant de sentir" tone="yellow">
-                  Une belle fleur de concours ne doit pas seulement être jolie. Elle doit
-                  annoncer une dégustation propre: structure nette, manucure lisible, trichomes
-                  préservés et curing cohérent.
-                </GuideCard>
-                <CriterionGuideStack
-                  criteria={SCORE_GROUPS.find((group) => group.page === "visual")?.criteria ?? []}
-                  scores={visibleScores}
-                />
-              </>
-            }
-            right={
-              <>
-                {SCORE_GROUPS.find((group) => group.page === "visual")?.criteria.map((criterion) => (
-                  <ScoreSlider
-                    key={criterion}
-                    criterion={criterion}
-                    value={visibleScores[criterion]}
-                    onChange={handleScoreChange}
-                    disabled={isReviewReadOnly}
-                  />
-                ))}
-              </>
-            }
-          />
-        );
-      case 3:
-        return (
-          <GuideSpread
-            left={
-              <>
-                <GuideCard title="Nez et terpènes" eyebrow="Sentir avant de cocher" tone="yellow">
-                  Les terpènes donnent des pistes: pin, citron, poivre, fleur, bois, menthe.
-                  Mais l&apos;arôme final vient d&apos;un mélange plus large de composés volatils. Sens
-                  d&apos;abord la fleur, choisis ensuite les mots et les terpènes les plus probables.
-                </GuideCard>
-                <CriterionGuideStack
-                  criteria={SCORE_GROUPS.find((group) => group.page === "aroma")?.criteria ?? []}
-                  scores={visibleScores}
-                />
-                <GuideCard title="Familles aromatiques utiles" eyebrow="Lexique rapide" tone="cream">
-                  <AromaLexiconGrid />
-                </GuideCard>
-                <div className="grid max-h-[360px] gap-3 overflow-y-auto pr-2 sm:grid-cols-2">
-                  {CANNABIS_TERPENE_OPTIONS.map((terpene, index) => (
-                    <div key={terpene.code} className="rounded border-2 border-[#1a1a1a] bg-white p-3">
-                      <div
-                        className="h-2 rounded-full border border-[#1a1a1a]"
-                        style={{ backgroundColor: TERPENE_SWATCHES[index % TERPENE_SWATCHES.length] }}
-                      />
-                      <p className="mt-3 text-sm font-black uppercase tracking-[0.08em] text-ink">
-                        {terpene.label}
-                      </p>
-                      <p className="mt-1 text-xs leading-relaxed text-charcoal">{terpene.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </>
-            }
-            right={
-              <>
-                <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <p className="text-sm font-black uppercase tracking-[0.1em] text-ink">
-                      Combo terpènes
-                    </p>
-                    <span className="rounded-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-1 text-xs font-black text-ink">
-                      {visibleSelectedTerpenes.length} cochés
-                    </span>
-                  </div>
-                  <div className="mt-4 grid max-h-[330px] gap-2 overflow-y-auto pr-2 sm:grid-cols-2">
-                    {CANNABIS_TERPENE_OPTIONS.map((terpene) => {
-                      const checked = visibleSelectedTerpenes.includes(terpene.code);
-                      return (
-                        <label
-                          key={terpene.code}
-                          className={`flex items-start gap-3 rounded border-2 px-3 py-3 ${
-                            checked
-                              ? "border-[#1a1a1a] bg-yellow"
-                              : "border-[#1a1a1a] bg-[#f7f4ee]"
-                          }`}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={checked}
-                            onChange={() => handleToggleTerpene(terpene.code)}
-                            disabled={isReviewReadOnly}
-                            className="mt-0.5 h-4 w-4 accent-[#d35400]"
-                          />
-                          <span className="text-sm font-semibold leading-tight text-ink">
-                            {terpene.label}
-                          </span>
-                        </label>
-                      );
-                    })}
-                  </div>
-                  {expectedTerpenes.length > 0 ? (
-                    <div
-                      className={`mt-4 rounded border-2 border-[#1a1a1a] px-4 py-3 text-sm font-black ${
-                        visibleTerpeneRewardUnlocked
-                          ? "bg-yellow text-ink"
-                          : "bg-[#fffaf0] text-charcoal"
-                      }`}
-                    >
-                      {visibleTerpeneRewardUnlocked
-                        ? "Combo exact: le badge Nez Absolu débloque 3 packs booster après validation."
-                        : "Si tu trouves les terpènes les plus probables et que ta critique est validée, tu débloques 3 packs booster."}
-                    </div>
-                  ) : null}
-                  <p className="mt-2 text-xs font-semibold leading-relaxed text-charcoal">
-                    Le combo parfait récompense ton nez, pas une puissance d&apos;effet. Trois combos parfaits débloquent Nez Divin et 6 packs booster.
-                  </p>
-                </div>
-                {SCORE_GROUPS.find((group) => group.page === "aroma")?.criteria.map((criterion) => (
-                  <ScoreSlider
-                    key={criterion}
-                    criterion={criterion}
-                    value={visibleScores[criterion]}
-                    onChange={handleScoreChange}
-                    disabled={isReviewReadOnly}
-                  />
-                ))}
-                <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
-              <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                Arômes perçus
-              </p>
-              <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                {CONTEST_AROMA_TAGS.map((tag) => {
-                  const checked = visibleSelectedTags.includes(tag);
-                  return (
-                    <label
-                      key={tag}
-                      className={`flex items-start gap-3 rounded border-2 px-3 py-3 ${
-                        checked
-                          ? "border-[#1a1a1a] bg-[#fff0c9]"
-                          : "border-[#1a1a1a] bg-[#f7f4ee]"
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={() => handleToggleTag(tag)}
-                        disabled={isReviewReadOnly}
-                        className="mt-0.5 h-4 w-4 accent-[#d35400]"
-                      />
-                      <span className="text-sm font-semibold leading-tight text-ink">
-                        {CONTEST_AROMA_TAG_LABELS[tag]}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-              {visibleSelectedTags.includes("other") ? (
-                <input
-                  type="text"
-                  value={visibleOtherAromaLabel}
-                  onChange={(event) => setOtherAromaLabel(event.target.value)}
-                  readOnly={isReviewReadOnly}
-                  placeholder="Autre arôme détecté"
-                  className="mt-3 h-12 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 text-sm text-ink"
-                />
-              ) : null}
-                </div>
-              </>
-            }
-          />
-        );
-      case 4:
-        return (
-          <GuideSpread
-            left={
-              <>
-                <GuideCard title="Dégustation" eyebrow="Bouche, confort, longueur" tone="yellow">
-                  Le goût doit prolonger le nez. Une note haute demande une bouche lisible,
-                  une dégustation confortable et une persistance qui reste agréable après la prise.
-                </GuideCard>
-                <CriterionGuideStack
-                  criteria={SCORE_GROUPS.find((group) => group.page === "tasting")?.criteria ?? []}
-                  scores={visibleScores}
-                />
-                <GuideCard title="Selon ton matériel" eyebrow="Contexte important" tone="cream">
-                  Le vaporisateur met souvent mieux en avant les nuances aromatiques. La combustion
-                  juge davantage la douceur, la régularité et l&apos;absence d&apos;âcreté. Le tabac change
-                  fortement le goût: note-le dans le champ contexte si tu l&apos;utilises.
-                </GuideCard>
-              </>
-            }
-            right={
-              <>
-                {SCORE_GROUPS.find((group) => group.page === "tasting")?.criteria.map((criterion) => (
-                  <ScoreSlider
-                    key={criterion}
-                    criterion={criterion}
-                    value={visibleScores[criterion]}
-                    onChange={handleScoreChange}
-                    disabled={isReviewReadOnly}
-                  />
-                ))}
-              </>
-            }
-          />
-        );
-      case 5:
-        return (
-          <GuideSpread
-            left={
-              <>
-                <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
-                  <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                    Standards fleur de concours
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-charcoal">
-                    Ces repères aident à noter avec exigence sans chercher le 10 automatique.
-                  </p>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <GuideCard title="Signaux positifs" eyebrow="Ce qui mérite de monter" tone="cream">
-                    <GuideBullets items={CONTEST_STANDARD_GUIDE.positives} />
-                  </GuideCard>
-                  <GuideCard title="Signaux d'alerte" eyebrow="Ce qui doit faire baisser" tone="white">
-                    <GuideBullets items={CONTEST_STANDARD_GUIDE.redFlags} />
-                  </GuideCard>
-                </div>
-              </>
-            }
-            right={
-              <>
-                <GuideCard title="Calibrage anti 100 automatique" eyebrow="Relire avant verdict" tone="yellow">
-                  Relis tes notes précédentes avant le verdict final. Si une fleur a un défaut net,
-                  la note globale doit le refléter même si un critère isolé est bon.
-                </GuideCard>
-                <div className="grid gap-2">
-                  {CONTEST_SCORE_CRITERIA.map((criterion) => (
-                    <div
-                      key={criterion}
-                      className="flex items-center justify-between gap-3 rounded border-2 border-[#1a1a1a] bg-white px-3 py-2 text-sm"
-                    >
-                      <span className="font-semibold text-charcoal">
-                        {CONTEST_SCORE_CRITERION_LABELS[criterion]}
-                      </span>
-                      <span className="rounded-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-1 text-xs font-black text-ink">
-                        {visibleScores[criterion]}/{CONTEST_SCORE_MAX}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </>
-            }
-          />
-        );
-      case 6:
-      default:
-        return (
-          <GuideSpread
-            left={
-              <>
-                <GuideCard title="Verdict final" eyebrow="Synthèse sensorielle" tone="yellow">
-                  Le verdict doit raconter l&apos;expérience complète: ce que tu as vu, senti,
-                  goûté, puis ce qui reste après la dégustation. Une critique courte mais
-                  précise vaut mieux qu&apos;un long texte vague.
-                </GuideCard>
-                <CriterionGuideStack
-                  criteria={SCORE_GROUPS.find((group) => group.page === "verdict")?.criteria ?? []}
-                  scores={visibleScores}
-                />
-                <GuideCard title="Structure de critique" eyebrow="4 phrases utiles" tone="cream">
-                  <GuideBullets items={CONTEST_VERDICT_GUIDE} />
-                </GuideCard>
-              </>
-            }
-            right={
-              <>
-                {SCORE_GROUPS.find((group) => group.page === "verdict")?.criteria.map((criterion) => (
-                  <ScoreSlider
-                    key={criterion}
-                    criterion={criterion}
-                    value={visibleScores[criterion]}
-                    onChange={handleScoreChange}
-                    disabled={isReviewReadOnly}
-                  />
-                ))}
-                <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
-                  <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                    Critique rédigée
-                  </p>
-                  <textarea
-                    value={visibleComment}
-                    onChange={(event) => setComment(event.target.value)}
-                    readOnly={isReviewReadOnly}
-                    maxLength={2000}
-                    rows={6}
-                    placeholder="Décris l'aspect visuel, le nez, la bouche, la combustion ou la vapeur, puis ton impression sensorielle générale. Ne note pas l'effet ou la puissance."
-                    className="mt-3 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-3 text-sm leading-relaxed text-ink"
-                  />
-                </div>
-                {isReviewReadOnly ? null : (
-                  <button
-                    type="button"
-                    onClick={submitReview}
-                    disabled={isPending}
-                    className="btn-cartoon btn-primary inline-flex min-h-[48px] items-center justify-center px-6 text-xs leading-none disabled:opacity-60"
-                  >
-                    {isPending ? "Envoi..." : isEditingReview ? "Enregistrer mes modifications" : "Soumettre mon guide"}
-                  </button>
-                )}
-                {reviewMessage ? <p className="text-sm font-semibold text-[#1f5a2f]">{reviewMessage}</p> : null}
-                {reviewError ? <p className="text-sm font-semibold text-[#7a1010]">{reviewError}</p> : null}
-              </>
-            }
-          />
-        );
-    }
+    return null;
   };
 
   const shouldRenderInlineGuide = isInlineDisplayMode && isGuideOpen;
 
   return (
-    <div
-      className={
-        isInlineDisplayMode
-          ? shouldRenderInlineGuide
-            ? `contest-notebook-notes-trigger contest-notebook-notes-trigger-open${
-                isSpreadDisplayMode ? " contest-notebook-notes-trigger-spread" : ""
-              }`
-            : `contest-notebook-notes-trigger flex min-h-[180px] items-center justify-center${
-                isSpreadDisplayMode ? " contest-notebook-notes-trigger-spread" : ""
-              }`
-          : "cartoon-border bg-cream p-5 md:p-6"
-      }
-    >
+    <div className={`${styles.panelRoot} ${isInlineDisplayMode ? styles.inlinePanelRoot : ""}`}>
       {isInlineDisplayMode ? (
-        shouldRenderInlineGuide ? renderInlineGuide() : renderNotesTabContent()
+        shouldRenderInlineGuide ? renderNotebookShell() : renderNotesTabContent()
       ) : (
-        <>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <div className="space-y-1">
-              <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                Guide dégustation
-              </p>
-              <h2 className="font-display text-3xl leading-none text-ink">Cahier du jury client</h2>
-            </div>
-            <div className="self-start rounded-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-2 text-sm font-black text-ink">
-              {formatContestAverage(viewerReview ? getContestReviewAverage(viewerReview.scores) : scoreAverage)} /{" "}
-              {CONTEST_SCORE_MAX}
+        <section className={styles.teaser} aria-label="Carnet de dégustation">
+          <div className={styles.teaserTop}>
+            <p className={styles.eyebrow}>Jury client · {entry.season?.label ?? "Saison active"}</p>
+            <div className={styles.teaserScore}>
+              {formatContestAverage(viewerReview ? getContestReviewAverage(viewerReview.scores) : scoreAverage)}/{CONTEST_SCORE_MAX}
             </div>
           </div>
-
-          <p className="mt-3 text-sm leading-relaxed text-charcoal">{notebookIntro}</p>
-
-          <button
-            type="button"
-            onClick={openGuide}
-            className="mt-5 block w-full text-left"
-            aria-label="Ouvrir le guide de dégustation"
-          >
-            <div className="mx-auto max-w-[320px]">
-              <Image
-                src="/contest/notebook-cover-lab-gaming-cutout.png"
-                alt="Mon cahier de notes"
-                width={863}
-                height={1330}
-                priority
-                className="contest-notebook-cover-image h-auto w-full transition hover:translate-x-[-2px] hover:translate-y-[-2px]"
-              />
-              <div className="mt-3 flex flex-wrap gap-2">
-                <span className="rounded-full border-2 border-[#17130e] bg-white px-3 py-1 text-[10px] font-black uppercase tracking-[0.08em] text-ink">
-                  {entry.season?.label ?? "Saison active"}
-                </span>
-                <span className="rounded-full border-2 border-[#17130e] bg-[#f0fff3] px-3 py-1 text-[10px] font-black uppercase tracking-[0.08em] text-ink">
-                  Jury client
-                </span>
-                <span className="rounded-full border-2 border-[#17130e] bg-[#fff7df] px-3 py-1 text-[10px] font-black uppercase tracking-[0.08em] text-ink">
-                  {entry.title}
-                </span>
+          <div className={styles.teaserBody}>
+            <div className={styles.teaserCopy}>
+              <h2 className={styles.teaserTitle}>Carnet de dégustation</h2>
+              <p className={styles.teaserText}>{notebookIntro}</p>
+              <div className={styles.teaserMeta} aria-label="Informations du carnet">
+                <span className={styles.chip}>{entry.title}</span>
+                <span className={styles.chip}>Environ 2 minutes</span>
+              </div>
+              <button
+                ref={launchButtonRef}
+                type="button"
+                onClick={openGuide}
+                className={styles.teaserAction}
+                aria-label="Ouvrir le carnet de dégustation"
+              >
+                {viewerReview ? "Ouvrir mes notes" : "Commencer la dégustation"}
+              </button>
+            </div>
+            <div className={styles.teaserArt} aria-hidden="true">
+              <div className={styles.teaserMascot}>
+                <Image
+                  src={TASTING_STEP_MASCOTS.start}
+                  alt=""
+                  width={408}
+                  height={771}
+                  sizes="(max-width: 767px) 70px, 112px"
+                  className="h-auto w-full"
+                />
               </div>
             </div>
-          </button>
-        </>
+          </div>
+        </section>
       )}
 
       {isGuideOpen && !isInlineDisplayMode ? (
         <div
-          className="contest-guide-overlay fixed inset-0 z-[10000] flex items-center justify-center bg-black/65 px-3 py-6"
+          className={styles.modalOverlay}
           role="dialog"
+          aria-modal="true"
+          aria-label={`Carnet de dégustation de ${entry.title}`}
           onClick={(event) => {
             if (event.target === event.currentTarget) {
               closeGuide();
             }
           }}
-          aria-modal="true"
-          aria-label="Guide de dégustation"
         >
-          <button
-            type="button"
-            onPointerDown={(event) => event.stopPropagation()}
-            onMouseDown={(event) => event.stopPropagation()}
-            onTouchStart={(event) => event.stopPropagation()}
-            onClick={handleCloseGuidePress}
-            className="contest-guide-floating-close rounded-full border-2 border-[#1a1a1a] bg-white px-3 py-2 text-xs font-black uppercase text-ink"
-            aria-label="Fermer le guide de dégustation"
-          >
-            Fermer
-          </button>
           <div
-            className="contest-guide-panel max-h-[96vh] w-full max-w-[min(96vw,1500px)] overflow-hidden rounded-2xl border-4 border-[#1a1a1a] bg-cream shadow-[10px_10px_0_#1a1a1a]"
+            className={styles.modalPanel}
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="contest-guide-header flex items-start justify-between gap-4 border-b-4 border-[#1a1a1a] bg-yellow px-4 py-3">
-              <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#6d4b00]">
-                  Page {pageIndex + 1} / {GUIDE_PAGES.length}
-                </p>
-                <h3 className="text-xl font-black text-ink">{GUIDE_PAGES[pageIndex]}</h3>
-              </div>
-            </div>
-
-            <div className="contest-guide-body max-h-[calc(96vh-136px)] overflow-y-auto p-4 md:p-6">
-              <div className="contest-guide-layout">
-                <nav className="contest-guide-bookmarks" aria-label="Marque-pages du guide">
-                  {GUIDE_PAGES.map((page, index) => (
-                    <button
-                      key={page}
-                      type="button"
-                      onClick={() => goToGuidePage(index)}
-                      className={`contest-guide-bookmark ${
-                        index === pageIndex ? "contest-guide-bookmark-active" : ""
-                      }`}
-                      aria-current={index === pageIndex ? "page" : undefined}
-                    >
-                      {page}
-                    </button>
-                  ))}
-                </nav>
-                <div
-                  key={pageIndex}
-                  className={`contest-guide-page-shell min-h-[420px] ${
-                    isReviewReadOnly && pageIndex === GUIDE_PAGES.length - 1
-                      ? "contest-guide-page-shell-verdict"
-                      : ""
-                  }`}
-                >
-                  {renderGuidePage()}
-                </div>
-              </div>
-            </div>
-
-            <div className="contest-guide-footer flex items-center justify-between gap-3 border-t-4 border-[#1a1a1a] bg-white px-4 py-3">
-              <button
-                type="button"
-                onClick={goToPreviousPage}
-                disabled={pageIndex === 0}
-                className="btn-cartoon btn-secondary inline-flex min-h-[42px] items-center justify-center px-4 text-xs leading-none disabled:opacity-50"
-              >
-                Page précédente
-              </button>
-              <div className="h-3 flex-1 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-[#f7f4ee]">
-                <div
-                  className="h-full bg-[#d35400]"
-                  style={{ width: `${((pageIndex + 1) / GUIDE_PAGES.length) * 100}%` }}
-                />
-              </div>
-              <button
-                type="button"
-                onClick={goToNextPage}
-                disabled={pageIndex === GUIDE_PAGES.length - 1}
-                className="btn-cartoon btn-primary inline-flex min-h-[42px] items-center justify-center px-4 text-xs leading-none disabled:opacity-50"
-              >
-                Page suivante
-              </button>
-            </div>
+            {renderNotebookShell()}
           </div>
         </div>
       ) : null}

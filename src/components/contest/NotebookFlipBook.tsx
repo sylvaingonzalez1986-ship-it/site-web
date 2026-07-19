@@ -11,6 +11,7 @@ import {
   type Ref,
   type TouchEvent as ReactTouchEvent,
 } from "react";
+import styles from "./NotebookFlipBook.module.css";
 
 type NotebookFlipBookLabels = {
   previous?: string;
@@ -25,6 +26,7 @@ type NotebookFlipBookProps = {
   spreadOverlay?: ReactNode;
   dialogOverlay?: ReactNode;
   sideTabs?: ReactNode;
+  mobileToolbar?: ReactNode;
   className?: string;
   leftPageClassName?: string;
   rightPageClassName?: string;
@@ -37,6 +39,7 @@ type NotebookFlipBookProps = {
   coverOpenPage?: 0 | 1;
   onActivePageChange?: (page: 0 | 1) => void;
   labels?: NotebookFlipBookLabels;
+  variant?: "default" | "editorial";
 };
 
 type NotebookPageInnerProps = Omit<HTMLAttributes<HTMLDivElement>, "children">;
@@ -50,6 +53,7 @@ export function NotebookFlipBook({
   spreadOverlay,
   dialogOverlay,
   sideTabs,
+  mobileToolbar,
   className,
   leftPageClassName,
   rightPageClassName,
@@ -62,6 +66,7 @@ export function NotebookFlipBook({
   coverOpenPage = initialPage,
   onActivePageChange,
   labels,
+  variant = "default",
 }: NotebookFlipBookProps) {
   const [internalPage, setInternalPage] = useState<0 | 1>(cover ? coverOpenPage : initialPage);
   const [isCoverOpen, setIsCoverOpen] = useState(!cover);
@@ -76,6 +81,7 @@ export function NotebookFlipBook({
   const currentPage = activePage ?? internalPage;
   const isControlled = typeof activePage === "number";
   const hasSideTabs = Boolean(sideTabs);
+  const variantClassName = variant === "editorial" ? styles.editorial : "";
   const { className: leftInnerClassName, ...leftInnerRest } = leftInnerProps ?? {};
   const { className: rightInnerClassName, ...rightInnerRest } = rightInnerProps ?? {};
 
@@ -443,6 +449,10 @@ export function NotebookFlipBook({
           </button>
         ) : null}
 
+        {mobileToolbar ? (
+          <div className="contest-notebook-mobile-toolbar">{mobileToolbar}</div>
+        ) : null}
+
         <div className="contest-notebook-flip-viewport">
           <div
             onTouchStart={handleTouchStart}
@@ -510,25 +520,27 @@ export function NotebookFlipBook({
   );
 
   const modalProps = {
-    className: "contest-notebook-modal contest-notebook-flipbook",
+    className: `contest-notebook-modal contest-notebook-flipbook ${variantClassName}`,
     "data-active-page": currentPage,
     "data-cover-open": isCoverOpen ? "true" : "false",
     "data-has-cover": cover ? "true" : "false",
     "data-has-spread-overlay": spreadOverlay ? "true" : "false",
     "data-has-side-tabs": hasSideTabs ? "true" : "false",
     "data-turning": turnDirection ?? undefined,
+    "data-notebook-variant": variant,
     "aria-label": labels?.pageLabel ?? "Carnet concours",
   };
 
   return (
     <div
-      className={`contest-notebook-flipbook ${className ?? ""}`}
+      className={`contest-notebook-flipbook ${variantClassName} ${className ?? ""}`}
       data-active-page={currentPage}
       data-cover-open={isCoverOpen ? "true" : "false"}
       data-has-cover={cover ? "true" : "false"}
       data-has-spread-overlay={spreadOverlay ? "true" : "false"}
       data-has-side-tabs={hasSideTabs ? "true" : "false"}
       data-turning={turnDirection ?? undefined}
+      data-notebook-variant={variant}
     >
       {cover ? (
         <button

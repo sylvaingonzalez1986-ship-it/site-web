@@ -1,0 +1,98 @@
+.page {
+  --arena-green: #00563f;
+  --arena-cream: #f6f0e6;
+  --arena-paper: #fffaf1;
+  --arena-yellow: #f4c43d;
+  --arena-ink: #111512;
+  min-height: 100svh;
+  padding: clamp(7rem, 11vw, 9rem) 0 clamp(4rem, 8vw, 7rem);
+  background:
+    radial-gradient(circle at 88% 9%, rgba(0, 86, 63, 0.08) 0 10rem, transparent 10.15rem),
+    radial-gradient(rgba(17, 21, 18, 0.11) 0.55px, transparent 0.55px),
+    var(--arena-cream);
+  background-size: auto, 5px 5px, auto;
+  color: var(--arena-ink);
+}
+
+.container {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.page :global(.cartoon-border) {
+  border: 2px solid var(--arena-ink);
+  border-radius: 0;
+  background: var(--arena-paper);
+  box-shadow: 5px 5px 0 var(--arena-ink);
+}
+
+.page :global(.rounded),
+.page :global(.rounded-full) {
+  border-radius: 2px;
+}
+
+.page :global(.rounded-full) {
+  border-radius: 999px;
+}
+
+.page :global(.btn-cartoon) {
+  border-radius: 0;
+}
+
+.page h1,
+.page h2,
+.page h3 {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+.page h1,
+.page h2 {
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.page h1 {
+  color: var(--arena-green);
+}
+
+.page :global(.bg-yellow) {
+  background: var(--arena-yellow);
+}
+
+.page :global(.bg-teal) {
+  background: var(--arena-green);
+}
+
+.page a:focus-visible,
+.page button:focus-visible {
+  outline: 3px solid var(--arena-yellow);
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .page {
+    padding: 6rem 0 3.5rem;
+  }
+
+  .container {
+    gap: 1rem;
+  }
+
+  .page :global(.cartoon-border) {
+    box-shadow: 3px 3px 0 var(--arena-ink);
+  }
+
+  .page h1 {
+    font-size: clamp(2.7rem, 14vw, 4rem);
+    line-height: 0.86;
+  }
+
+  .page h2 {
+    font-size: clamp(2rem, 10vw, 3rem);
+    line-height: 0.9;
+  }
+}

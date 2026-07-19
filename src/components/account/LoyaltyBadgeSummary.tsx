@@ -6,7 +6,8 @@ import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
 import {
   getBadgeBenefitsText,
   getBadgeDiscountPercent,
-  getBadgeFreeShippingThreshold,
+  getBadgeTierHomeDeliveryBenefitLabel,
+  getBadgeTierRelayBenefitLabel,
   parseBadgeBenefitsLines,
 } from "@/lib/loyalty-tier-benefits";
 
@@ -57,16 +58,7 @@ export function LoyaltyBadgeSummary({
                 <p>
                   Livraison:{" "}
                   <span className="font-semibold">
-                    {(() => {
-                      const threshold = getBadgeFreeShippingThreshold(badge.id, true);
-                      if (threshold === null) {
-                        return "Offerte";
-                      }
-                      if (typeof threshold === "number") {
-                        return `Offerte des ${threshold} EUR`;
-                      }
-                      return "Standard";
-                    })()}
+                    {`${getBadgeTierRelayBenefitLabel(badge.id)} / ${getBadgeTierHomeDeliveryBenefitLabel(badge.id)}`}
                   </span>
                 </p>
               </div>

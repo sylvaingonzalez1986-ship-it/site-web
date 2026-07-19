@@ -20,6 +20,7 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   CircleHelp,
   FileCheck2,
   ThumbsDown,
@@ -30,6 +31,7 @@ import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal"
 import { NotebookFlipBook } from "@/components/contest/NotebookFlipBook";
 import { ContestNotebookPanel } from "@/components/contest/ContestNotebookPanel";
 import { ContestReviewSkillRadar } from "@/components/contest/ContestReviewSkillRadar";
+import arenaStyles from "@/components/contest/ContestArena.module.css";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import { categoryLabels, type Product, type ProductCategory } from "@/data/products";
@@ -55,8 +57,10 @@ import {
 } from "@/types/contest";
 import type {
   PublicContestNotebookUnlock,
+  PublicContestEntryDetail,
   PublicContestProfile,
   PublicContestProfileBadge,
+  PublicContestReview,
   PublicContestTesterProgress,
   PublicContestTesterRankingItem,
   ViewerContestReview,
@@ -102,15 +106,6 @@ type TestedFlowerCardItem = {
   unlock: PublicContestNotebookUnlock;
   entryIndex: number;
 };
-
-const BOOKMARK_COLORS = [
-  "bg-[#ffd447] text-[#17130e]",
-  "bg-[#18c58f] text-[#06251f]",
-  "bg-[#ff8a4c] text-[#2b1206]",
-  "bg-[#7d63ff] text-[#fffaf0]",
-  "bg-[#15b8d6] text-[#062833]",
-  "bg-[#ff5f87] text-[#fffaf0]",
-];
 
 export const CONTEST_BADGE_CATALOG = [
   {
@@ -203,44 +198,47 @@ function ContestMascotScene({
   );
 }
 
-function ContestMascotButton({
+function ArenaCharacter({
   variant,
   ariaLabel,
-  caption,
-  className = "",
-  sceneClassName = "",
   onClick,
   onHoverPreview,
   onHoverEnd,
 }: {
-  variant: keyof typeof CONTEST_MASCOT_SCENES;
+  variant: "profile" | "leaderboard";
   ariaLabel: string;
-  caption?: string;
-  className?: string;
-  sceneClassName?: string;
-  onClick: () => void;
+  onClick?: () => void;
   onHoverPreview?: () => void;
   onHoverEnd?: () => void;
 }) {
+  const image = (
+    <Image
+      src={variant === "profile" ? "/charles.png" : "/sylvain.png"}
+      alt=""
+      width={1536}
+      height={2048}
+      sizes="92px"
+    />
+  );
+
+  if (!onClick) {
+    return <div className={`${arenaStyles.arenaCharacter} contest-mascot-button`} aria-hidden="true">{image}</div>;
+  }
+
   return (
     <button
       type="button"
+      className={`${arenaStyles.arenaCharacter} contest-mascot-button`}
+      aria-label={ariaLabel}
       onClick={onClick}
       onPointerEnter={(event) => {
-        if (event.pointerType === "mouse") {
-          onHoverPreview?.();
-        }
+        if (event.pointerType === "mouse") onHoverPreview?.();
       }}
       onPointerLeave={(event) => {
-        if (event.pointerType === "mouse") {
-          onHoverEnd?.();
-        }
+        if (event.pointerType === "mouse") onHoverEnd?.();
       }}
-      className={`contest-mascot-button ${className}`}
-      aria-label={ariaLabel}
     >
-      <ContestMascotScene variant={variant} className={sceneClassName} />
-      {caption ? <span className="contest-mascot-button-label">{caption}</span> : null}
+      {image}
     </button>
   );
 }
@@ -467,7 +465,7 @@ function ContestTesterProfileDetails({
       <div className="grid gap-3 text-sm leading-relaxed text-charcoal">
         <p>Connecte-toi pour activer ton profil testeur, suivre tes niveaux et debloquer tes badges.</p>
         <Link
-          href="/compte/connexion?next=%2Fbete-de-concours"
+          href="/compte/connexion?next=%2Farene"
           className="btn-cartoon btn-primary inline-flex min-h-[42px] items-center justify-center px-4 text-xs leading-none"
         >
           Voir mon profil
@@ -493,24 +491,24 @@ function ContestTesterProfileDetails({
 
   return (
     <div className="grid gap-3">
-      <div className="grid gap-2 sm:grid-cols-2">
-        <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
-          <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">Niveau actuel</p>
-          <p className="mt-1 text-lg font-black text-ink">{progress.currentLevel.label}</p>
+      <div className={arenaStyles.progressStatsGrid}>
+        <div className={arenaStyles.progressStatCard}>
+          <p className={arenaStyles.progressStatLabel}>Niveau actuel</p>
+          <p className={arenaStyles.progressStatValue}>{progress.currentLevel.label}</p>
         </div>
-        <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
-          <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">Prochain palier</p>
-          <p className="mt-1 text-lg font-black text-ink">
+        <div className={arenaStyles.progressStatCard}>
+          <p className={arenaStyles.progressStatLabel}>Prochain palier</p>
+          <p className={arenaStyles.progressStatValue}>
             {progress.nextLevel ? `${progress.pointsToNextLevel} pts` : "Niveau max"}
           </p>
         </div>
-        <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
-          <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">Rang saison</p>
-          <p className="mt-1 text-lg font-black text-ink">{progress.seasonRank ? `#${progress.seasonRank}` : "-"}</p>
+        <div className={arenaStyles.progressStatCard}>
+          <p className={arenaStyles.progressStatLabel}>Rang saison</p>
+          <p className={arenaStyles.progressStatValue}>{progress.seasonRank ? `#${progress.seasonRank}` : "-"}</p>
         </div>
-        <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
-          <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">Rang global</p>
-          <p className="mt-1 text-lg font-black text-ink">{progress.globalRank ? `#${progress.globalRank}` : "-"}</p>
+        <div className={arenaStyles.progressStatCard}>
+          <p className={arenaStyles.progressStatLabel}>Rang global</p>
+          <p className={arenaStyles.progressStatValue}>{progress.globalRank ? `#${progress.globalRank}` : "-"}</p>
         </div>
       </div>
       <div className="rounded border-2 border-[#1a1a1a] bg-yellow p-3 text-xs font-black uppercase leading-relaxed tracking-[0.08em] text-ink">
@@ -630,16 +628,16 @@ function ContestNotebookCollectionDashboard({
       <div className="contest-notebook-collection-header">
         <div className="min-w-0">
           <p className="text-[10px] font-black uppercase tracking-[0.14em] text-charcoal">
-            Kanab Quest Lab
+            Collection de cartes
           </p>
-          <h3 className="mt-1 text-xl font-black leading-tight text-ink">Dashboard collection</h3>
+          <h3 className="mt-1 text-xl font-black leading-tight text-ink">Progression de l&apos;album</h3>
           <p className="mt-1 truncate text-xs font-semibold text-charcoal">{collectionTitle}</p>
         </div>
         <span className="contest-notebook-collection-chip">{completionPercent}%</span>
       </div>
 
       <div className="mt-3 h-4 overflow-hidden rounded-full border-2 border-[#17130e] bg-white">
-        <div className="h-full bg-[#118575]" style={{ width: `${completionPercent}%` }} />
+        <div className="h-full bg-[#00563f]" style={{ width: `${completionPercent}%` }} />
       </div>
 
       <div className="contest-notebook-collection-stats">
@@ -709,7 +707,7 @@ function ContestNotebookCollectionDashboard({
           </button>
         ) : (
           <Link
-            href="/compte/connexion?next=%2Fbete-de-concours"
+            href="/compte/connexion?next=%2Farene"
             className="contest-notebook-booster-button"
           >
             <span className="min-w-0 text-left">
@@ -815,7 +813,7 @@ function ContestNotebookCollectionTab({
           <p className="text-[10px] font-black uppercase tracking-[0.14em] text-charcoal">
             Collection et badges
           </p>
-          <h2 className="mt-1 text-xl font-black leading-tight text-ink">Dashboard collection</h2>
+          <h2 className="mt-1 text-xl font-black leading-tight text-ink">Album et récompenses</h2>
         </div>
         <span className="contest-lab-unlock-chip contest-lab-unlock-chip-ok">
           <Award size={14} />
@@ -932,7 +930,6 @@ function ContestNotebookEntryCarousel({
         {entries.map((entry, index) => {
           const label = getContestBookmarkLabel(entry);
           const unlocked = unlockByEntryId.has(entry.id);
-          const color = BOOKMARK_COLORS[index % BOOKMARK_COLORS.length];
           const isActive = activeView !== "collection" && index === activeIndex;
 
           return (
@@ -943,7 +940,7 @@ function ContestNotebookEntryCarousel({
               }}
               type="button"
               onClick={() => onSelectEntry(index)}
-              className={`contest-notebook-carousel-card ${color} ${
+              className={`contest-notebook-carousel-card ${
                 isActive ? "contest-notebook-carousel-card-active" : ""
               } ${unlocked ? "" : "contest-notebook-carousel-card-locked"}`}
               title={label}
@@ -1227,14 +1224,14 @@ function ContestLabEntryPage({
   return (
     <div className="contest-lab-entry-page">
       <div className="contest-lab-terminal-bar">
-        <span>Kanab Quest Lab</span>
+        <span>Carnet de dégustation</span>
         <span>{CONTEST_ENTRY_CATEGORY_LABELS[entry.category]}</span>
       </div>
 
       <article className="contest-lab-specimen-card contest-lab-specimen-card-identity">
         <div className="contest-lab-specimen-header">
           <div className="min-w-0">
-            <p>Specimen card</p>
+            <p>Fiche variété</p>
             <h3>{entry.title}</h3>
           </div>
           <span>{entry.season?.label ?? "Saison"}</span>
@@ -1419,30 +1416,46 @@ function ContestStationRankingBoard({
   onSelectEntry: (entryId: string) => void;
 }) {
   const displayEntries = entries.length > 0 ? entries : [];
-  const loopEntries = displayEntries.length > 0 ? [...displayEntries, ...displayEntries] : [];
   const categoryLabel = CONTEST_ENTRY_CATEGORY_LABELS[activeCategory];
+  const windowRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollRanking = (direction: -1 | 1) => {
+    windowRef.current?.scrollBy({ top: direction * 168, behavior: "smooth" });
+  };
 
   return (
     <div className="contest-station-board" aria-label={`Classement ${categoryLabel}`}>
+      <div className="contest-station-board-toolbar">
+        <strong>{displayEntries.length} lot{displayEntries.length > 1 ? "s" : ""} classé{displayEntries.length > 1 ? "s" : ""}</strong>
+        <span>Fais défiler puis clique pour lire les critiques.</span>
+        <div>
+          <button type="button" onClick={() => scrollRanking(-1)} aria-label="Voir les lots précédents">
+            <ChevronUp aria-hidden="true" />
+          </button>
+          <button type="button" onClick={() => scrollRanking(1)} aria-label="Voir les lots suivants">
+            <ChevronDown aria-hidden="true" />
+          </button>
+        </div>
+      </div>
       <div className="contest-station-board-header">
         <span>Classement {categoryLabel}</span>
         <span>Score /{CONTEST_SCORE_MAX}</span>
         <span>Avis</span>
       </div>
-      <div className="contest-station-board-window">
-        {loopEntries.length > 0 ? (
+      <div ref={windowRef} className="contest-station-board-window" tabIndex={0}>
+        {displayEntries.length > 0 ? (
           <div className="contest-station-board-track">
-            {loopEntries.map((entry, index) => {
-              const rank = getContestCategoryRank(entry, index % displayEntries.length);
+            {displayEntries.map((entry, index) => {
+              const rank = getContestCategoryRank(entry, index);
               const selected = entry.id === selectedEntryId;
 
               return (
                 <button
-                  key={`${entry.id}-${index}`}
+                  key={entry.id}
                   type="button"
                   onClick={() => onSelectEntry(entry.id)}
                   className={`contest-station-row ${selected ? "contest-station-row-active" : ""}`}
-                  aria-label={`Ouvrir ${entry.title} dans le carnet`}
+                  aria-label={`Ouvrir les critiques de ${entry.title}`}
                 >
                   <span className="contest-station-rank">{String(rank).padStart(2, "0")}</span>
                   <span className="contest-station-title">{entry.title}</span>
@@ -1457,6 +1470,105 @@ function ContestStationRankingBoard({
         ) : (
           <div className="contest-station-empty">En attente des notes {categoryLabel}</div>
         )}
+      </div>
+    </div>
+  );
+}
+
+function ContestRankingReviewsModal({
+  entry,
+  reviews,
+  loading,
+  error,
+  onClose,
+  onSelectReview,
+}: {
+  entry: ContestEntrySummary;
+  reviews: PublicContestReview[];
+  loading: boolean;
+  error?: string | null;
+  onClose: () => void;
+  onSelectReview: (review: PublicContestReview) => void;
+}) {
+  useEffect(() => {
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
+  const rank = entry.ranking?.seasonCategoryRank;
+
+  return (
+    <div
+      className={arenaStyles.rankingModalBackdrop}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ranking-reviews-title"
+      onClick={onClose}
+    >
+      <div className={arenaStyles.rankingModal} onClick={(event) => event.stopPropagation()}>
+        <button type="button" className={arenaStyles.rankingModalClose} onClick={onClose} aria-label="Fermer les critiques">
+          <X aria-hidden="true" />
+        </button>
+
+        <header className={arenaStyles.rankingModalHeader}>
+          <div className={arenaStyles.rankingModalImage}>
+            <Image
+              src={entry.imageUrl || entry.product?.image || "/product_flower.jpg"}
+              alt=""
+              fill
+              sizes="(max-width: 680px) 96px, 150px"
+            />
+            {rank ? <span>#{String(rank).padStart(2, "0")}</span> : null}
+          </div>
+          <div>
+            <p>{CONTEST_ENTRY_CATEGORY_LABELS[entry.category]} · {entry.producer?.name ?? "Producteur français"}</p>
+            <h2 id="ranking-reviews-title">{entry.title}</h2>
+            <div className={arenaStyles.rankingModalStats}>
+              <strong>{formatContestAverage(entry.stats.averageScore)}/{CONTEST_SCORE_MAX}</strong>
+              <span>{entry.stats.approvedReviewCount} critique{entry.stats.approvedReviewCount > 1 ? "s" : ""}</span>
+            </div>
+          </div>
+        </header>
+
+        <div className={arenaStyles.rankingModalBody}>
+          <div className={arenaStyles.rankingModalIntro}>
+            <p>Les verdicts de la communauté</p>
+            <span>Clique sur une critique pour afficher toutes les notes et les arômes.</span>
+          </div>
+
+          {loading ? <div className={arenaStyles.rankingModalState}>Chargement des critiques…</div> : null}
+          {!loading && error ? <div className={arenaStyles.rankingModalState}>{error}</div> : null}
+          {!loading && !error && reviews.length === 0 ? (
+            <div className={arenaStyles.rankingModalState}>Aucune critique détaillée n’est encore publiée pour ce lot.</div>
+          ) : null}
+
+          {!loading && !error && reviews.length > 0 ? (
+            <div className={arenaStyles.rankingReviewList}>
+              {reviews.map((review) => (
+                <button
+                  key={review.id}
+                  type="button"
+                  className={arenaStyles.rankingReviewCard}
+                  onClick={() => onSelectReview(review)}
+                >
+                  <span className={arenaStyles.rankingReviewTopline}>
+                    <strong>{review.pseudo}</strong>
+                    <span>{formatContestDate(review.reviewedAt ?? review.createdAt)}</span>
+                  </span>
+                  <span className={arenaStyles.rankingReviewScore}>
+                    {formatContestAverage(getContestReviewAverage(review.scores))}/{CONTEST_SCORE_MAX}
+                    <small>{CONTEST_CONSUMPTION_METHOD_LABELS[review.consumptionMethod]}</small>
+                  </span>
+                  <span className={arenaStyles.rankingReviewQuote}>&quot;{review.comment}&quot;</span>
+                  <span className={arenaStyles.rankingReviewAction}>Voir le détail <ChevronRight aria-hidden="true" /></span>
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );
@@ -1707,24 +1819,16 @@ function ContestTesterProfileCard({
             <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Profil testeur</p>
             <h2 className="mt-1 font-display text-3xl leading-none text-ink">Connecte-toi</h2>
           </div>
-          {onMascotClick ? (
-            <ContestMascotButton
-              variant="profile"
-              ariaLabel="Ouvrir le profil testeur"
-              sceneClassName="contest-mascot-scene-compact"
-              onClick={onMascotClick}
-              onHoverPreview={onMascotHover}
-              onHoverEnd={onMascotLeave}
-            />
-          ) : (
-            <ContestMascotScene
-              variant="profile"
-              className="contest-mascot-scene-compact"
-            />
-          )}
+          <ArenaCharacter
+            variant="profile"
+            ariaLabel="Ouvrir le profil testeur"
+            onClick={onMascotClick}
+            onHoverPreview={onMascotHover}
+            onHoverEnd={onMascotLeave}
+          />
         </div>
         <Link
-          href="/compte/connexion?next=%2Fbete-de-concours"
+          href="/compte/connexion?next=%2Farene"
           className="btn-cartoon btn-primary mt-4 inline-flex min-h-[42px] items-center justify-center px-4 text-xs leading-none"
         >
           Voir mon profil
@@ -1741,21 +1845,13 @@ function ContestTesterProfileCard({
             <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Profil testeur</p>
             <h2 className="mt-1 font-display text-3xl leading-none text-ink">Pseudo requis</h2>
           </div>
-          {onMascotClick ? (
-            <ContestMascotButton
-              variant="profile"
-              ariaLabel="Ouvrir le profil testeur"
-              sceneClassName="contest-mascot-scene-compact"
-              onClick={onMascotClick}
-              onHoverPreview={onMascotHover}
-              onHoverEnd={onMascotLeave}
-            />
-          ) : (
-            <ContestMascotScene
-              variant="profile"
-              className="contest-mascot-scene-compact"
-            />
-          )}
+          <ArenaCharacter
+            variant="profile"
+            ariaLabel="Ouvrir le profil testeur"
+            onClick={onMascotClick}
+            onHoverPreview={onMascotHover}
+            onHoverEnd={onMascotLeave}
+          />
         </div>
         <ContestProfileSetupForm className="mt-4" />
       </div>
@@ -1770,18 +1866,13 @@ function ContestTesterProfileCard({
           <h2 className="mt-1 font-display text-3xl leading-none text-ink">{progress.pseudo}</h2>
           <p className="mt-2 text-sm font-bold text-charcoal">{progress.currentLevel.label}</p>
         </div>
-        {onMascotClick ? (
-          <ContestMascotButton
-            variant="profile"
-            ariaLabel="Ouvrir le profil testeur"
-            sceneClassName="contest-mascot-scene-compact sm:contest-mascot-scene-auto"
-            onClick={onMascotClick}
-            onHoverPreview={onMascotHover}
-            onHoverEnd={onMascotLeave}
-          />
-        ) : (
-          <ContestMascotScene variant="profile" className="contest-mascot-scene-compact sm:contest-mascot-scene-auto" />
-        )}
+        <ArenaCharacter
+          variant="profile"
+          ariaLabel="Ouvrir le profil testeur"
+          onClick={onMascotClick}
+          onHoverPreview={onMascotHover}
+          onHoverEnd={onMascotLeave}
+        />
         <div className="grid grid-cols-3 gap-2 text-center">
           <div className="rounded border-2 border-[#1a1a1a] bg-white px-3 py-2">
             <p className="text-[10px] font-black uppercase tracking-[0.08em] text-charcoal">Points</p>
@@ -1851,21 +1942,15 @@ function ContestTesterLeaderboard({
             Classement testeurs
           </h2>
         </div>
-        {compact ? null : onMascotClick ? (
-            <ContestMascotButton
-              variant="leaderboard"
-              ariaLabel="Ouvrir le classement testeurs"
-              sceneClassName="contest-mascot-scene-compact"
-              onClick={onMascotClick}
-              onHoverPreview={onMascotHover}
-              onHoverEnd={onMascotLeave}
-            />
-          ) : (
-            <ContestMascotScene
-              variant="leaderboard"
-              className="contest-mascot-scene-compact"
-            />
-          )}
+        {compact ? null : (
+          <ArenaCharacter
+            variant="leaderboard"
+            ariaLabel="Ouvrir le classement testeurs"
+            onClick={onMascotClick}
+            onHoverPreview={onMascotHover}
+            onHoverEnd={onMascotLeave}
+          />
+        )}
         <div
           className={`contest-leaderboard-scope-switch rounded border-2 border-[#1a1a1a] bg-white p-1 ${
             compact ? "contest-leaderboard-scope-switch-compact" : ""
@@ -1897,7 +1982,7 @@ function ContestTesterLeaderboard({
               profileParams.set("track", profileTrack);
             }
             const query = profileParams.toString();
-            const profileHref = `/bete-de-concours/profils/${encodeURIComponent(item.pseudo)}${query ? `?${query}` : ""}`;
+            const profileHref = `/arene/profils/${encodeURIComponent(item.pseudo)}${query ? `?${query}` : ""}`;
 
             return (
               <Link
@@ -2101,6 +2186,11 @@ export function ContestHubClient({
   const [viewerBadges, setViewerBadges] = useState(initialViewerBadges);
   const [feedItems, setFeedItems] = useState(feed);
   const [selectedFeedReviewId, setSelectedFeedReviewId] = useState<string | null>(null);
+  const [selectedRankingEntryId, setSelectedRankingEntryId] = useState<string | null>(null);
+  const [rankingModalReviews, setRankingModalReviews] = useState<PublicContestReview[]>([]);
+  const [rankingModalLoading, setRankingModalLoading] = useState(false);
+  const [rankingModalError, setRankingModalError] = useState<string | null>(null);
+  const rankingReviewsRequestRef = useRef<AbortController | null>(null);
   const [activeMascotPanel, setActiveMascotPanel] = useState<ContestMascotPanel | null>(null);
   const [isMobileLeaderboardOpen, setIsMobileLeaderboardOpen] = useState(false);
   const [hoverMascotPanel, setHoverMascotPanel] = useState<ContestMascotPanel | null>(null);
@@ -2166,18 +2256,27 @@ export function ContestHubClient({
   const selectedFeedReview = selectedFeedReviewId
     ? feedItems.find((item) => item.reviewId === selectedFeedReviewId) ?? null
     : null;
+  const selectedRankingEntry = selectedRankingEntryId
+    ? stationRankingEntries.find((entry) => entry.id === selectedRankingEntryId) ?? null
+    : null;
   const availableContestPackTickets = useMemo(
     () => lottery.tickets.filter((ticket) => ticket.status === "available"),
     [lottery.tickets],
   );
   const unlockedBadgeCount = useMemo(() => getUnlockedContestBadgeCount(viewerBadges), [viewerBadges]);
-  const isHubModalOpen = Boolean(selectedFeedReview);
-  const visibleHoverMascotPanel = activeMascotPanel || selectedFeedReview ? null : hoverMascotPanel;
+  const isHubModalOpen = Boolean(selectedFeedReview || selectedRankingEntry);
+  const visibleHoverMascotPanel = activeMascotPanel || selectedFeedReview || selectedRankingEntry ? null : hoverMascotPanel;
 
   useEffect(() => {
+    rankingReviewsRequestRef.current?.abort();
     setFeedItems(feed);
     setSelectedFeedReviewId(null);
+    setSelectedRankingEntryId(null);
+    setRankingModalReviews([]);
+    setRankingModalError(null);
   }, [feed]);
+
+  useEffect(() => () => rankingReviewsRequestRef.current?.abort(), []);
 
   useEffect(() => {
     if (!isHubModalOpen) {
@@ -2353,6 +2452,81 @@ export function ContestHubClient({
     }
   };
 
+  const openRankingEntryReviews = async (entryId: string) => {
+    const entry = stationRankingEntries.find((item) => item.id === entryId);
+    if (!entry) return;
+
+    rankingReviewsRequestRef.current?.abort();
+    const controller = new AbortController();
+    rankingReviewsRequestRef.current = controller;
+    setSelectedRankingEntryId(entry.id);
+    setRankingModalReviews([]);
+    setRankingModalError(null);
+    setRankingModalLoading(true);
+
+    try {
+      const response = await fetch(`/api/contest/entries/${encodeURIComponent(entry.slug)}`, {
+        cache: "no-store",
+        signal: controller.signal,
+      });
+      const payload = (await response.json().catch(() => null)) as
+        | (Partial<PublicContestEntryDetail> & { error?: string })
+        | null;
+
+      if (!response.ok || !Array.isArray(payload?.reviews)) {
+        setRankingModalError(payload?.error ?? "Impossible de charger les critiques de ce lot.");
+        return;
+      }
+
+      setRankingModalReviews(payload.reviews);
+    } catch (error) {
+      if (!(error instanceof DOMException && error.name === "AbortError")) {
+        setRankingModalError("Erreur réseau pendant le chargement des critiques.");
+      }
+    } finally {
+      if (!controller.signal.aborted) setRankingModalLoading(false);
+    }
+  };
+
+  const closeRankingReviews = () => {
+    rankingReviewsRequestRef.current?.abort();
+    setSelectedRankingEntryId(null);
+    setRankingModalReviews([]);
+    setRankingModalLoading(false);
+    setRankingModalError(null);
+  };
+
+  const openRankingReviewDetail = (review: PublicContestReview) => {
+    const entry = selectedRankingEntry;
+    if (!entry) return;
+
+    const item: ContestFeedItem = {
+      reviewId: review.id,
+      entryId: entry.id,
+      entrySlug: entry.slug,
+      entryTitle: entry.title,
+      entryImageUrl: entry.imageUrl || entry.product?.image,
+      seasonCode: review.seasonCode ?? selectedSeasonCode ?? "active",
+      seasonLabel: review.seasonLabel ?? entry.season?.label ?? "Saison active",
+      category: review.category ?? entry.category,
+      track: review.track ?? entry.track,
+      pseudo: review.pseudo,
+      comment: review.comment,
+      excerpt: review.comment.length > 180 ? `${review.comment.slice(0, 177)}...` : review.comment,
+      consumptionMethod: review.consumptionMethod,
+      scores: review.scores,
+      aromaTags: review.aromaTags,
+      voteSummary: review.voteSummary,
+      createdAt: review.createdAt,
+      validatedAt: review.reviewedAt ?? review.createdAt,
+    };
+
+    setFeedItems((current) => current.some((feedItem) => feedItem.reviewId === item.reviewId) ? current : [...current, item]);
+    setSelectedRankingEntryId(null);
+    setRankingModalReviews([]);
+    setSelectedFeedReviewId(item.reviewId);
+  };
+
   const claimBadgeReward = async (badgeId: string) => {
     setBadgeMessage(null);
     setBadgeError(null);
@@ -2387,18 +2561,6 @@ export function ContestHubClient({
     }
   };
 
-  const changeSeason = (nextSeasonCode: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (nextSeasonCode) {
-      params.set("season", nextSeasonCode);
-    } else {
-      params.delete("season");
-    }
-
-    const query = params.toString();
-    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
-  };
-
   const changeTrack = (nextTrack: ContestEntryTrack) => {
     const params = new URLSearchParams(searchParams.toString());
     if (nextTrack === "regular") {
@@ -2412,13 +2574,16 @@ export function ContestHubClient({
   };
 
   const changeCategory = (nextCategory: ContestEntryCategory) => {
-    if (nextCategory === activeCategory && searchParams.get("category") === nextCategory) {
-      return;
-    }
-
     const params = new URLSearchParams(searchParams.toString());
     params.set("category", nextCategory);
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
 
+  const changeSeason = (nextSeasonCode: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (nextSeasonCode) params.set("season", nextSeasonCode);
+    else params.delete("season");
     const query = params.toString();
     router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
   };
@@ -2429,7 +2594,7 @@ export function ContestHubClient({
   };
 
   const previewMascotPanel = (panel: ContestMascotPanel) => {
-    if (selectedFeedReview || activeMascotPanel) {
+    if (selectedFeedReview || selectedRankingEntry || activeMascotPanel) {
       return;
     }
 
@@ -2441,161 +2606,220 @@ export function ContestHubClient({
   };
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-36 pb-20">
-      <div className="retro-container contest-hub-page-shell flex flex-col gap-8">
-        <div className="contest-hub-intro space-y-4">
-          <div className="contest-hub-title-lockup">
-            <h1 className="contest-hub-title" data-text="Bête de concours">
-              Bête de concours
+    <section data-world="arena" className={arenaStyles.page}>
+      <header className={arenaStyles.hero}>
+        <div className={arenaStyles.noise} aria-hidden="true" />
+        <div className={`retro-container ${arenaStyles.heroGrid}`}>
+          <div className={arenaStyles.heroCopy}>
+            <h1 className={arenaStyles.heroTitle}>
+              L&apos;<span className={arenaStyles.heroTitleAccent}>Arène.</span>
             </h1>
+            <div className={arenaStyles.heroRule} aria-hidden="true" />
+            <p className={arenaStyles.heroLead}>
+              Goûte les lots en lice, note-les dans ton carnet et aide les meilleures fleurs de
+              la saison à monter sur le podium.
+            </p>
+            <div className={arenaStyles.heroActions}>
+              <a href="#classement-arene" className={arenaStyles.primaryAction}>
+                Voir le classement <ChevronDown size={17} aria-hidden="true" />
+              </a>
+              <a href="#carnet-arene" className={arenaStyles.secondaryAction}>
+                Ouvrir mon carnet <ChevronRight size={17} aria-hidden="true" />
+              </a>
+            </div>
+            <ul className={arenaStyles.heroProofs} aria-label="Principes de l'Arène">
+              <li>Lots de saison</li>
+              <li>Avis vérifiés</li>
+              <li>Récompenses à gagner</li>
+            </ul>
           </div>
-          <div className="contest-hub-intro-panel cartoon-border bg-cream p-5 md:p-6">
-            <div className="contest-hub-intro-grid grid gap-5 sm:grid-cols-[minmax(0,1fr)_132px] lg:grid-cols-[170px_minmax(0,1fr)] lg:items-center lg:justify-start">
-              <div className="contest-hub-intro-copy space-y-3">
-                <p className="text-sm leading-relaxed text-charcoal md:text-base">
-                  Ici, tu goûtes des pépites de saison, tu donnes ton avis dans ton carnet de
-                  dégustation. Les boosters se gagnent uniquement avec tes critiques validées sur les
-                  variétés Concours.
-                </p>
-              </div>
 
-              <ContestMascotButton
-                variant="intro"
-                ariaLabel="Ouvrir le mode d'emploi Bete de concours"
-                className="contest-hub-intro-mascot mx-auto sm:mx-0 lg:justify-self-center"
-                onClick={() => openMascotPanel("intro")}
-                onHoverPreview={() => previewMascotPanel("intro")}
-                onHoverEnd={() => closeMascotPreview("intro")}
-              />
+          <div className={arenaStyles.heroArt} aria-hidden="true">
+            <span className={arenaStyles.heroCircle} />
+            <Image
+              src="/contest/mascot/arena-duo.png"
+              alt=""
+              width={1536}
+              height={1024}
+              priority
+              sizes="(max-width: 767px) 320px, 620px"
+              className={arenaStyles.heroDuo}
+            />
+            <span className={arenaStyles.heroBadge}>À toi de noter</span>
+          </div>
+        </div>
+      </header>
 
-              <div className="contest-hub-intro-controls">
-                <div className="contest-filter-stack">
-                  <div className="contest-track-switch grid grid-cols-2 rounded border-2 border-[#1a1a1a] bg-white p-1">
-                    {CONTEST_ENTRY_TRACKS.map((track) => (
-                      <button
-                        key={track}
-                        type="button"
-                        onClick={() => changeTrack(track)}
-                        className={`contest-track-switch-button min-h-[38px] px-3 text-xs font-black uppercase tracking-[0.08em] ${
-                          selectedTrack === track ? "bg-yellow text-ink" : "text-charcoal"
-                        }`}
-                      >
-                        {CONTEST_ENTRY_TRACK_LABELS[track]}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="contest-category-control">
-                    <span className="contest-category-control-label">Culture</span>
-                    <div className="contest-category-switch" aria-label="Categorie de culture">
-                      {CONTEST_ENTRY_CATEGORIES.map((category) => {
-                        const count = categoryCounts[category] ?? 0;
-                        const isActive = category === activeCategory;
-                        const isDisabled = count === 0 && !isActive;
-
-                        return (
-                          <button
-                            key={category}
-                            type="button"
-                            disabled={isDisabled}
-                            aria-pressed={isActive}
-                            aria-label={`Afficher les lots ${CONTEST_ENTRY_CATEGORY_LABELS[category]}`}
-                            onClick={() => changeCategory(category)}
-                            className={`contest-category-button contest-category-button--${category} ${
-                              isActive ? "contest-category-button-active" : ""
-                            }`}
-                          >
-                            <span>{CONTEST_ENTRY_CATEGORY_LABELS[category]}</span>
-                            <span className="contest-category-count">{count}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-                <div className="contest-season-control">
-                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                  Saison de récolte
-                </label>
-                <select
-                  value={selectedSeasonCode ?? ""}
-                  onChange={(event) => changeSeason(event.target.value)}
-                  className="h-12 w-full border-2 border-[#1a1a1a] bg-white px-3 text-sm font-semibold text-ink"
-                >
-                  {seasons.map((season) => (
-                    <option key={season.id} value={season.code}>
-                      {season.label}
-                    </option>
-                  ))}
-                </select>
-                </div>
-              </div>
+      <div className={`retro-container ${arenaStyles.content}`}>
+        <section aria-labelledby="arena-how-title">
+          <div className={arenaStyles.sectionHeading}>
+            <div>
+              <h2 id="arena-how-title" className={arenaStyles.sectionTitle}>
+                Comment ça <span>marche ?</span>
+              </h2>
             </div>
           </div>
+          <div className={arenaStyles.howGrid}>
+            {[
+              ["1", "Achète ton lot", "Commande une fleur de la saison : son achat débloque sa fiche de dégustation dans ton carnet."],
+              ["2", "Remplis ton carnet", "Observe, sens, goûte et note chaque critère à ton rythme."],
+              ["3", "Donne ton verdict", "Ton avis validé compte dans le classement et fait progresser ton profil."],
+            ].map(([number, title, text]) => (
+              <article key={number} className={arenaStyles.howCard}>
+                <span className={arenaStyles.howNumber}>{number}</span>
+                <h3 className={arenaStyles.cardTitle}>{title}</h3>
+                <p>{text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <div className={arenaStyles.mobileActions}>
+          <button type="button" onClick={() => openMascotPanel("profile")}>Mon profil</button>
+          <button type="button" onClick={() => setIsMobileLeaderboardOpen(true)}>Top testeurs</button>
         </div>
 
-        <div className="contest-hub-mobile-actions grid grid-cols-2 gap-3 md:hidden">
-          <ContestMascotButton
-            variant="profile"
-            ariaLabel="Ouvrir le profil testeur"
-            caption="Profil"
-            sceneClassName="contest-mascot-scene-compact"
-            onClick={() => openMascotPanel("profile")}
-          />
-          <ContestMascotButton
-            variant="leaderboard"
-            ariaLabel="Ouvrir le classement testeurs"
-            caption="Classement"
-            sceneClassName="contest-mascot-scene-compact"
-            onClick={() => setIsMobileLeaderboardOpen(true)}
-          />
-        </div>
+        <section className={arenaStyles.personalPanel} aria-labelledby="arena-profile-title">
+          <div className={arenaStyles.sectionHeading}>
+            <div>
+              <p className={arenaStyles.sectionKicker}>Ton coin dans l’Arène</p>
+              <h2 id="arena-profile-title" className={arenaStyles.sectionTitle}>
+                Ta progression. <span>Ton rang.</span>
+              </h2>
+            </div>
+            <p className={arenaStyles.sectionLead}>
+              Chaque critique validée fait progresser ton profil, tes badges et ton album.
+            </p>
+          </div>
+          <div className={arenaStyles.personalGrid}>
+            <ContestTesterProfileCard
+              progress={viewerProgress}
+              isAuthenticated={isAuthenticated}
+              onMascotClick={() => openMascotPanel("profile")}
+              onMascotHover={() => previewMascotPanel("profile")}
+              onMascotLeave={() => closeMascotPreview("profile")}
+            />
+            <ContestTesterLeaderboard
+              seasonItems={testerSeasonRankings}
+              globalItems={testerGlobalRankings}
+              profileSeasonCode={selectedSeasonCode}
+              profileTrack={selectedTrack}
+              onMascotClick={() => openMascotPanel("leaderboard")}
+              onMascotHover={() => previewMascotPanel("leaderboard")}
+              onMascotLeave={() => closeMascotPreview("leaderboard")}
+            />
+          </div>
+        </section>
 
-        <div className="contest-hub-dashboard-cards hidden gap-6 md:grid xl:grid-cols-[minmax(0,1fr)_420px]">
-          <ContestTesterProfileCard
-            progress={viewerProgress}
-            isAuthenticated={isAuthenticated}
-            onMascotClick={() => openMascotPanel("profile")}
-            onMascotHover={() => previewMascotPanel("profile")}
-            onMascotLeave={() => closeMascotPreview("profile")}
-          />
-          <ContestTesterLeaderboard
-            seasonItems={testerSeasonRankings}
-            globalItems={testerGlobalRankings}
-            profileSeasonCode={selectedSeasonCode}
-            profileTrack={selectedTrack}
-            onMascotClick={() => openMascotPanel("leaderboard")}
-            onMascotHover={() => previewMascotPanel("leaderboard")}
-            onMascotLeave={() => closeMascotPreview("leaderboard")}
-          />
-        </div>
-
-        <div className="contest-hub-overview-block cartoon-border bg-[#f2dfbd] p-4 md:p-6">
-          <div className="contest-hub-overview-row grid gap-3">
-            <div className="min-w-0 space-y-3">
+        <section id="classement-arene" className={arenaStyles.rankingSection} aria-labelledby="arena-ranking-title">
+          <div className={arenaStyles.sectionHeading}>
+            <div>
+              <p className={arenaStyles.sectionKicker}>Verdicts de la communauté</p>
+              <h2 id="arena-ranking-title" className={arenaStyles.sectionTitle}>
+                Le classement. <span>Sans blabla.</span>
+              </h2>
+            </div>
+            <p className={arenaStyles.sectionLead}>
+              Les scores viennent des carnets validés. Clique sur un lot ou un avis pour voir le détail.
+            </p>
+          </div>
+          <div className={arenaStyles.rankingFilters}>
+            <div className={arenaStyles.controlGroup}>
+              <span className={arenaStyles.controlLabel}>Épreuve</span>
+              <div className={arenaStyles.trackSwitch} aria-label="Épreuve du classement">
+                {CONTEST_ENTRY_TRACKS.map((track) => (
+                  <button
+                    key={track}
+                    type="button"
+                    aria-pressed={selectedTrack === track}
+                    onClick={() => changeTrack(track)}
+                    className={`${arenaStyles.filterButton} ${selectedTrack === track ? arenaStyles.filterButtonActive : ""}`}
+                  >
+                    {CONTEST_ENTRY_TRACK_LABELS[track]}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className={arenaStyles.controlGroup}>
+              <span className={arenaStyles.controlLabel}>Culture</span>
+              <div className={arenaStyles.categorySwitch} aria-label="Catégorie de culture">
+                {CONTEST_ENTRY_CATEGORIES.map((category) => {
+                  const count = categoryCounts[category] ?? 0;
+                  const isActive = category === activeCategory;
+                  return (
+                    <button
+                      key={category}
+                      type="button"
+                      disabled={count === 0 && !isActive}
+                      aria-pressed={isActive}
+                      onClick={() => changeCategory(category)}
+                      className={`${arenaStyles.filterButton} ${isActive ? arenaStyles.filterButtonActive : ""}`}
+                    >
+                      <span>{CONTEST_ENTRY_CATEGORY_LABELS[category]}</span>
+                      <span className={arenaStyles.filterCount}>{count}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <label className={arenaStyles.controlGroup}>
+              <span className={arenaStyles.controlLabel}>Saison</span>
+              <select
+                value={selectedSeasonCode ?? ""}
+                onChange={(event) => changeSeason(event.target.value)}
+                className={arenaStyles.seasonSelect}
+              >
+                {seasons.map((season) => (
+                  <option key={season.id} value={season.code}>{season.label}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className={arenaStyles.scoreAndReviews}>
+            <div className={arenaStyles.scorePanel}>
               <ContestStationRankingBoard
                 entries={stationRankingEntries}
                 activeCategory={activeCategory}
-                selectedEntryId={selectedEntry?.id}
-                onSelectEntry={(entryId) => {
-                  const nextIndex = entries.findIndex((entry) => entry.id === entryId);
-                  if (nextIndex >= 0) {
-                    selectEntryByIndex(nextIndex);
-                  }
-                }}
+                selectedEntryId={selectedRankingEntry?.id}
+                onSelectEntry={(entryId) => void openRankingEntryReviews(entryId)}
               />
+            </div>
+            <div className={arenaStyles.reviewPanel}>
               <ContestReviewMarquee
                 items={feedItems}
                 onSelectReview={(item) => setSelectedFeedReviewId(item.reviewId)}
               />
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="contest-hub-main-block cartoon-border bg-[#f2dfbd] p-4 md:p-6">
+        <section id="carnet-arene" className={arenaStyles.notebookPanel} aria-labelledby="arena-notebook-title">
+          <div className={arenaStyles.notebookIntro}>
+            <div>
+              <p className={arenaStyles.sectionKicker}>Ton outil de dégustation</p>
+              <h2 id="arena-notebook-title" className={arenaStyles.sectionTitle}>
+                Ton carnet. <span>Ton verdict.</span>
+              </h2>
+              <p className={arenaStyles.sectionLead}>
+                Retrouve la fiche du lot, tes notes et ta collection dans un seul carnet.
+              </p>
+            </div>
+            <div className={arenaStyles.notebookCharacter} aria-hidden="true">
+              <Image
+                src="/contest/mascot/tasting/tasting-start.png"
+                alt=""
+                width={408}
+                height={771}
+                sizes="92px"
+              />
+            </div>
+          </div>
+          <div className={arenaStyles.notebookStage}>
           {selectedEntry ? (
             <div className="contest-hub-spread-wrap relative">
               <NotebookFlipBook
                 className="contest-hub-flipbook contest-lab-notebook"
+                variant="editorial"
                 leftPageClassName="contest-lab-page-left"
                 rightPageClassName="contest-lab-page-right"
                 labels={{ previous: "Lot", next: "Onglets", pageLabel: "Pages du carnet concours" }}
@@ -2605,14 +2829,28 @@ export function ContestHubClient({
                 cover={
                   <>
                     <span className="contest-notebook-cover-shell" aria-hidden="true">
-                      <Image
-                        src="/contest/notebook-cover-lab-gaming-cutout.png"
-                        alt=""
-                        width={863}
-                        height={1330}
-                        priority
-                        className="contest-notebook-cover-image"
-                      />
+                      <span className="contest-editorial-cover">
+                        <span className="contest-editorial-cover-label">
+                          <span className="contest-editorial-cover-title">
+                            <span>Mon carnet</span>
+                            <span>de dégustation</span>
+                          </span>
+                          <span className="contest-editorial-cover-line" />
+                        </span>
+                        <span className="contest-editorial-cover-art">
+                          <Image
+                            src="/contest/mascot/tasting/tasting-start.png"
+                            alt=""
+                            width={408}
+                            height={771}
+                            priority
+                            sizes="(max-width: 767px) 100px, 132px"
+                          />
+                        </span>
+                        <span className="contest-editorial-cover-footer">
+                          <span>{selectedEntry.season?.label ?? "Saison active"}</span>
+                        </span>
+                      </span>
                     </span>
                     <span className="contest-notebook-cover-hint">Ouvrir mon carnet</span>
                   </>
@@ -2658,6 +2896,14 @@ export function ContestHubClient({
                     unlockedBadgeCount={unlockedBadgeCount}
                     onSelectEntry={selectEntryByIndex}
                     onOpenCollection={() => changeNotebookView("collection")}
+                  />
+                }
+                mobileToolbar={
+                  <ContestNotebookViewTabs
+                    activeView={notebookView}
+                    availableTicketCount={availableContestPackTickets.length}
+                    unlockedBadgeCount={unlockedBadgeCount}
+                    onChange={changeNotebookView}
                   />
                 }
                 right={
@@ -2728,7 +2974,7 @@ export function ContestHubClient({
                     <div className="contest-lab-sheet-header">
                       <div className="min-w-0">
                         <p className="text-[10px] font-black uppercase tracking-[0.14em] text-charcoal">
-                          Fiche de lab
+                          Fiche du lot
                         </p>
                         <h2 className="mt-1 text-xl font-black leading-tight text-ink">
                           {getContestBookmarkLabel(selectedEntry)}
@@ -2812,20 +3058,23 @@ export function ContestHubClient({
               Aucune fleur {CONTEST_ENTRY_CATEGORY_LABELS[activeCategory]} publiee pour cette saison.
             </div>
           )}
-        </div>
+          </div>
+        </section>
 
-        <ContestTestedFlowerCarousel
-          items={testedFlowerCards}
-          selectedEntryId={selectedEntry?.id}
-          onOpenEntryNotes={(item) => {
-            selectEntryByIndex(item.entryIndex);
-            changeNotebookView("notes");
-          }}
-        />
+        <section className={arenaStyles.testedPanel} aria-label="Fleurs déjà dégustées">
+          <ContestTestedFlowerCarousel
+            items={testedFlowerCards}
+            selectedEntryId={selectedEntry?.id}
+            onOpenEntryNotes={(item) => {
+              selectEntryByIndex(item.entryIndex);
+              changeNotebookView("notes");
+            }}
+          />
+        </section>
       </div>
 
       {visibleHoverMascotPanel === "intro" ? (
-        <ContestHubHoverPreview eyebrow="Mode d'emploi" title="Bete de concours">
+        <ContestHubHoverPreview eyebrow="Mode d'emploi" title="L'Arène">
           <ContestIntroPopupContent />
         </ContestHubHoverPreview>
       ) : null}
@@ -2845,7 +3094,7 @@ export function ContestHubClient({
       {activeMascotPanel === "intro" ? (
         <ContestHubPanelModal
           eyebrow="Mode d'emploi"
-          title="Bete de concours"
+          title="L'Arène"
           onClose={() => setActiveMascotPanel(null)}
         >
           <ContestIntroPopupContent />
@@ -2893,6 +3142,17 @@ export function ContestHubClient({
             />
           </div>
         </ContestHubPanelModal>
+      ) : null}
+
+      {selectedRankingEntry ? (
+        <ContestRankingReviewsModal
+          entry={selectedRankingEntry}
+          reviews={rankingModalReviews}
+          loading={rankingModalLoading}
+          error={rankingModalError}
+          onClose={closeRankingReviews}
+          onSelectReview={openRankingReviewDetail}
+        />
       ) : null}
 
       {selectedFeedReview ? (

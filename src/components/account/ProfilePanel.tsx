@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Award, Copy, Download, Gift, ShoppingBag, Star, Tag, User as UserIcon, Users, type LucideIcon } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
@@ -14,13 +15,15 @@ import { useCustomerSession } from "@/hooks/useCustomerSession";
 import {
   getBadgeBenefitsText,
   getBadgeDiscountPercent,
-  getBadgeFreeShippingThreshold,
+  getBadgeTierHomeDeliveryBenefitLabel,
+  getBadgeTierRelayBenefitLabel,
   parseBadgeBenefitsLines,
 } from "@/lib/loyalty-tier-benefits";
 import { formatPrice } from "@/lib/utils";
 import type { PublicCustomer } from "@/types/customer";
 import type { ReferralSummary } from "@/types/referral";
 import type { CmsOrder, OrderStatus } from "@/types/store";
+import styles from "./ProfilePanel.module.css";
 
 const orderStatusLabels: Record<OrderStatus, string> = {
   new: "Nouvelle",
@@ -72,14 +75,16 @@ type ProfileTab = "fidelite" | "missions" | "commandes" | "infos" | "promos";
 type ProfileTabDefinition = {
   key: ProfileTab;
   label: string;
+  bookmarkLabel: string;
   icon: LucideIcon;
 };
 
 const profileTabs: ProfileTabDefinition[] = [
-  { key: "fidelite", label: "Fidélité", icon: Award },
-  { key: "commandes", label: "Commandes", icon: ShoppingBag },
-  { key: "infos", label: "Mes infos", icon: UserIcon },
-  { key: "promos", label: "Promos", icon: Tag },
+  { key: "fidelite", label: "Progression", bookmarkLabel: "Progression", icon: Award },
+  { key: "missions", label: "Quêtes", bookmarkLabel: "Quêtes", icon: Star },
+  { key: "commandes", label: "Commandes", bookmarkLabel: "Cmdes", icon: ShoppingBag },
+  { key: "infos", label: "Mes infos", bookmarkLabel: "Infos", icon: UserIcon },
+  { key: "promos", label: "Promos", bookmarkLabel: "Promos", icon: Tag },
 ];
 
 function parseProfileTab(value: string | null): ProfileTab | null {
@@ -152,7 +157,7 @@ export function ProfilePanel() {
   const [referralStatus, setReferralStatus] = useState<string | null>(null);
   const [referralError, setReferralError] = useState<string | null>(null);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
-  const activePanelRef = useRef<HTMLElement | null>(null);
+  const activePanelRef = useRef<HTMLDivElement | null>(null);
 
   const sortedOrders = useMemo(
     () => [...orders].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)),
@@ -272,9 +277,9 @@ export function ProfilePanel() {
 
   if (loading) {
     return (
-      <section className="section-band bg-mint halftone-overlay paper-grain pt-36">
-        <div className="retro-container">
-          <div className="cartoon-border bg-cream p-8">Chargement du profil...</div>
+      <section className={styles.page}>
+        <div className={styles.stateShell}>
+          <div className={styles.stateCard}>Chargement du profil...</div>
         </div>
       </section>
     );
@@ -285,30 +290,32 @@ export function ProfilePanel() {
     const loginHref = `/compte/connexion?next=${encodeURIComponent(nextUrl)}`;
 
     return (
-      <section className="section-band bg-mint halftone-overlay paper-grain pt-36">
-        <div className="retro-container grid gap-6">
-          <article className="cartoon-border bg-cream p-6 md:p-8">
-            <h1 className="section-title">PROFIL</h1>
-            <p className="mt-3 text-sm leading-relaxed text-charcoal md:text-base">
-              Connecte-toi pour acceder a ton espace client. En attendant, tu peux deja consulter
-              le resume du programme fidelite.
+      <section className={styles.page}>
+        <div className={styles.stateShell}>
+          <article className={styles.stateCard}>
+            <p className={styles.eyebrow}>Ton espace personnel</p>
+            <h1>Mon <span>profil.</span></h1>
+            <p>
+              Connecte-toi pour retrouver ta progression, tes quêtes, tes commandes et tes récompenses.
             </p>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className={styles.stateActions}>
               <Link
                 href="/fidelite"
-                className="btn-cartoon btn-secondary inline-flex h-10 items-center justify-center px-4 text-xs leading-none"
+                className={styles.secondaryAction}
               >
-                Voir le resume badges
+                Découvrir la progression
               </Link>
               <Link
                 href={loginHref}
-                className="btn-cartoon btn-primary inline-flex h-10 items-center justify-center px-4 text-xs leading-none"
+                className={styles.primaryAction}
               >
                 Se connecter
               </Link>
             </div>
           </article>
-          <LoyaltyBadgeSummary />
+          <div className={styles.publicSummary}>
+            <LoyaltyBadgeSummary />
+          </div>
         </div>
       </section>
     );
@@ -517,144 +524,165 @@ export function ProfilePanel() {
   const popupTitle = profileContent.badgeBenefitsModalTitle.trim() || "Avantages du palier";
   const popupHint =
     profileContent.badgeBenefitsModalHint.trim() || "Chaque ligne correspond a un avantage.";
+  const activeTabDefinition = profileTabs.find((tab) => tab.key === activeTab) ?? profileTabs[0];
+  const ActiveTabIcon = activeTabDefinition.icon;
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-36">
-      <div className="retro-container grid gap-8">
-        <article className="cartoon-border bg-cream p-6 md:p-8">
-          <h1 className="section-title">MON PROFIL</h1>
-          <div className="mt-6 flex flex-wrap items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[#fff] font-display text-2xl text-ink">
-              {getInitials(user.firstName, user.lastName)}
-            </div>
-            <div>
-              <p className="text-lg font-semibold text-ink">
-                {user.firstName} {user.lastName}
-              </p>
-              <p className="text-sm text-charcoal">{user.email}</p>
-              <p className="text-xs text-charcoal">Membre depuis le {memberSince}</p>
-            </div>
-          </div>
+    <section className={styles.page}>
+      <div className={styles.hero}>
+        <div className={styles.heroCopy}>
+          <p className={styles.eyebrow}>Ton espace personnel</p>
+          <h1 className={styles.heroTitle}>
+            Mon <span>profil.</span>
+          </h1>
+          <p className={styles.heroLead}>
+            Ta progression, tes quêtes et tout ce qui concerne ton compte sont réunis ici.
+          </p>
+        </div>
+        <div className={styles.heroArt} aria-hidden="true">
+          <span className={styles.heroCircle} />
+          <Image
+            src="/charles.png"
+            alt=""
+            width={1536}
+            height={2048}
+            sizes="(max-width: 720px) 112px, 180px"
+            priority
+          />
+        </div>
+      </div>
 
-          <button
-            id="profile-missions-shortcut"
-            type="button"
-            onClick={() => setActiveTabAndSync("missions")}
-            className={`mt-5 block w-full rounded-[0.2rem] border-[3px] border-[#1a1a1a] p-4 text-left transition-all duration-200 ${
-              activeTab === "missions"
-                ? "bg-[linear-gradient(135deg,#fff1c9_0%,#f6ead2_100%)] shadow-[8px_8px_0_rgba(26,26,26,0.22)]"
-                : "bg-[linear-gradient(135deg,#fff7e4_0%,#f5eee0_100%)] shadow-[6px_6px_0_rgba(26,26,26,0.18)] hover:-translate-y-[2px] hover:shadow-[8px_8px_0_rgba(26,26,26,0.22)]"
-            }`}
-          >
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex min-w-0 items-center gap-3">
-                <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[linear-gradient(180deg,#f6cf81_0%,#ecb95d_100%)] text-ink shadow-[0_2px_0_rgba(255,255,255,0.35)_inset]">
-                  <Star className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-charcoal/80">
-                    Profil
-                  </p>
-                  <p className="font-display text-2xl leading-none text-ink">Missions</p>
-                  <p className="text-sm text-charcoal">
-                    Instagram, TikTok et autres actions pour gagner des packs ou des points.
-                  </p>
-                </div>
-              </div>
-              <span className="inline-flex shrink-0 items-center rounded-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-ink shadow-[0_1px_0_rgba(255,255,255,0.45)_inset]">
-                Voir les missions
-              </span>
-            </div>
-          </button>
+      <div className={styles.shell}>
+        <div className={styles.tabs} role="tablist" aria-label="Sections du profil">
+          {profileTabs.map((tab) => {
+            const isActive = activeTab === tab.key;
+            const Icon = tab.icon;
+            const notification = getTabNotification(tab.key);
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="card-cartoon bg-white p-4">
-              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points cumules</p>
-              <p className="mt-1 text-2xl font-bold text-ink">{loyalty.points}</p>
-            </div>
-            <div className="card-cartoon bg-white p-4">
-              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points disponibles</p>
-              <p className="mt-1 text-2xl font-bold text-ink">{loyalty.spendablePoints}</p>
-            </div>
-            <div className="card-cartoon bg-white p-4">
-              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Euros comptabilises</p>
-              <p className="mt-1 text-2xl font-bold text-ink">{formatPrice(loyalty.totalEligibleSpend)}</p>
-            </div>
-            <div className="card-cartoon bg-white p-4">
-              <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Commandes eligibles</p>
-              <p className="mt-1 text-2xl font-bold text-ink">{loyalty.eligibleOrdersCount}</p>
-            </div>
-          </div>
-
-          <div className="mt-6 flex flex-wrap justify-end gap-2">
-            {tutorialEnabled && (
+            return (
               <button
+                key={tab.key}
+                id={`profile-tab-${tab.key}`}
                 type="button"
-                onClick={restartTutorial}
-                className="btn-cartoon btn-secondary inline-flex items-center justify-center leading-none"
-                data-tutorial="profile-replay"
+                role="tab"
+                aria-selected={isActive}
+                aria-controls={`profile-tabpanel-${tab.key}`}
+                onClick={() => setActiveTabAndSync(tab.key)}
+                className={isActive ? styles.tabActive : undefined}
+                data-tutorial={tab.key === "missions" ? "profile-missions-shortcut" : undefined}
               >
-                Revoir le tutoriel
+                <Icon aria-hidden="true" />
+                <span>{tab.label}</span>
+                {notification ? <strong>{notification}</strong> : null}
               </button>
-            )}
-            <button
-              type="button"
-              onClick={logout}
-              className="btn-cartoon btn-secondary inline-flex items-center justify-center leading-none"
-            >
-              Se deconnecter
-            </button>
-          </div>
-        </article>
+            );
+          })}
+        </div>
 
-        <article className="cartoon-border bg-cream p-4 md:p-6">
+        <div className={styles.profileGrid}>
+          <aside className={styles.summaryPanel} aria-label="Résumé du profil">
+                  <div className="rounded border-2 border-[#17130e] bg-white p-4">
+                    <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
+                      Fiche client
+                    </p>
+                    <div className="mt-4 flex flex-wrap items-center gap-4">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#17130e] bg-[#fffaf0] font-display text-2xl text-ink">
+                        {getInitials(user.firstName, user.lastName)}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-lg font-black text-ink">
+                          {user.firstName} {user.lastName}
+                        </p>
+                        <p className="break-all text-sm text-charcoal">{user.email}</p>
+                        <p className="text-xs font-semibold text-charcoal">Membre depuis le {memberSince}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="rounded border-2 border-[#17130e] bg-[#fff7df] p-3">
+                      <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">
+                        Points cumules
+                      </p>
+                      <p className="mt-1 text-2xl font-black text-ink">{loyalty.points}</p>
+                    </div>
+                    <div className="rounded border-2 border-[#17130e] bg-[#fff7df] p-3">
+                      <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">
+                        Disponibles
+                      </p>
+                      <p className="mt-1 text-2xl font-black text-ink">{loyalty.spendablePoints}</p>
+                    </div>
+                    <div className="rounded border-2 border-[#17130e] bg-[#fff7df] p-3">
+                      <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">
+                        Euros comptabilises
+                      </p>
+                      <p className="mt-1 text-xl font-black text-ink">{formatPrice(loyalty.totalEligibleSpend)}</p>
+                    </div>
+                    <div className="rounded border-2 border-[#17130e] bg-[#fff7df] p-3">
+                      <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">
+                        Commandes eligibles
+                      </p>
+                      <p className="mt-1 text-2xl font-black text-ink">{loyalty.eligibleOrdersCount}</p>
+                    </div>
+                  </div>
+
+                  <div className="rounded border-2 border-[#17130e] bg-white p-4">
+                    <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
+                      Badge actuel
+                    </p>
+                    <div className="mt-3 flex items-center gap-3">
+                      <LoyaltyBadgeIllustration
+                        badgeId={loyalty.currentBadge.id}
+                        unlocked={loyalty.currentBadge.unlocked}
+                        size="md"
+                      />
+                      <div>
+                        <p className="font-display text-3xl leading-none text-ink">
+                          {loyalty.currentBadge.label}
+                        </p>
+                        <p className="mt-1 text-sm leading-relaxed text-charcoal">
+                          {loyalty.currentBadge.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {tutorialEnabled && (
+                      <button
+                        type="button"
+                        onClick={restartTutorial}
+                        className="btn-cartoon btn-secondary inline-flex min-h-11 items-center justify-center px-4 text-xs leading-none"
+                        data-tutorial="profile-replay"
+                      >
+                        Revoir le tutoriel
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={logout}
+                      className="btn-cartoon btn-secondary inline-flex min-h-11 items-center justify-center px-4 text-xs leading-none"
+                    >
+                      Se deconnecter
+                    </button>
+                  </div>
+          </aside>
+
           <div
-            className="flex flex-nowrap gap-2 overflow-x-auto md:flex-wrap"
-            role="tablist"
-            aria-label="Sections du profil"
+            ref={activePanelRef}
+            id={`profile-tabpanel-${activeTab}`}
+            role="tabpanel"
+            aria-labelledby={`profile-tab-${activeTab}`}
+            className={styles.activePanel}
           >
-            {profileTabs.map((tab) => {
-              const isActive = activeTab === tab.key;
-              const Icon = tab.icon;
-              const notification = getTabNotification(tab.key);
+            <div className={styles.panelHeading}>
+              <span><ActiveTabIcon aria-hidden="true" /></span>
+              <div>
+                <p>Mon espace</p>
+                <h2>{activeTabDefinition.label}</h2>
+              </div>
+            </div>
 
-              return (
-                <button
-                  key={tab.key}
-                  id={`profile-tab-${tab.key}`}
-                  type="button"
-                  role="tab"
-                  aria-selected={isActive}
-                  aria-controls={`profile-tabpanel-${tab.key}`}
-                  className={`pill-cartoon relative flex min-h-[44px] shrink-0 items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-[0.09em] transition-colors ${
-                    isActive
-                      ? "bg-[#1a1a1a] text-white"
-                      : "border-2 border-[#1a1a1a] bg-white text-ink hover:bg-[#f0f0f0]"
-                  }`}
-                  onClick={() => setActiveTabAndSync(tab.key)}
-                >
-                  <Icon className="h-4 w-4" aria-hidden="true" />
-                  <span>{tab.label}</span>
-                  {notification && (
-                    <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--orange)] px-1 text-[10px] font-bold text-white">
-                      {notification}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </article>
-
-        <article
-          ref={activePanelRef}
-          id={`profile-tabpanel-${activeTab}`}
-          role={activeTab === "missions" ? undefined : "tabpanel"}
-          aria-labelledby={
-            activeTab === "missions" ? "profile-missions-shortcut" : `profile-tab-${activeTab}`
-          }
-          className="cartoon-border bg-cream p-6 md:p-8"
-        >
           {activeTab === "fidelite" && (
             <>
               <div className="card-cartoon bg-white p-6">
@@ -670,16 +698,10 @@ export function ProfilePanel() {
                     <p className="text-sm text-charcoal">{loyalty.currentBadge.description}</p>
                     <p className="mt-1 text-xs font-semibold text-ink">
                       {(() => {
-                        const threshold = getBadgeFreeShippingThreshold(
-                          loyalty.currentBadge.id,
-                          loyalty.currentBadge.unlocked,
-                        );
-                        if (threshold === null) {
-                          return "Livraison offerte active";
+                        if (loyalty.currentBadge.unlocked) {
+                          return `${getBadgeTierRelayBenefitLabel(loyalty.currentBadge.id)} / ${getBadgeTierHomeDeliveryBenefitLabel(loyalty.currentBadge.id)}`;
                         }
-                        if (typeof threshold === "number") {
-                          return `Livraison offerte des ${threshold} EUR`;
-                        }
+
                         return "Debloque ce badge pour activer l'avantage livraison";
                       })()}
                     </p>
@@ -830,7 +852,7 @@ export function ProfilePanel() {
                         </p>
                         <p className="mt-2 text-xs font-semibold text-charcoal">Survole pour voir les avantages</p>
                       </article>
-                      <div className="pointer-events-none invisible absolute left-1/2 top-full z-20 mt-3 w-[min(20rem,90vw)] -translate-x-1/2 opacity-0 transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                      <div className="pointer-events-none invisible absolute bottom-full left-1/2 z-20 mb-3 w-[min(20rem,90vw)] -translate-x-1/2 opacity-0 transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
                         <div className="card-cartoon bg-white p-4 text-left shadow-lg">
                           <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">
                             {popupTitle}
@@ -842,17 +864,7 @@ export function ProfilePanel() {
                             Reduction permanente: {getBadgeDiscountPercent(profileContent, badge.id)}%
                           </p>
                           <p className="mt-1 text-xs font-semibold text-ink">
-                            Livraison offerte:{" "}
-                            {(() => {
-                              const threshold = getBadgeFreeShippingThreshold(badge.id, true);
-                              if (threshold === null) {
-                                return "Oui";
-                              }
-                              if (typeof threshold === "number") {
-                                return `Des ${threshold} EUR`;
-                              }
-                              return "Non";
-                            })()}
+                            Livraison: {`${getBadgeTierRelayBenefitLabel(badge.id)} / ${getBadgeTierHomeDeliveryBenefitLabel(badge.id)}`}
                           </p>
                           <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
                             {popupHint}
@@ -1132,7 +1144,8 @@ export function ProfilePanel() {
             </>
           )}
 
-        </article>
+          </div>
+        </div>
       </div>
       <OrderDetailModal order={selectedOrder} onClose={() => setSelectedOrder(null)} />
     </section>

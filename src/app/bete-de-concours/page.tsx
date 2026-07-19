@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { ContestHubClient } from "@/components/contest/ContestHubClient";
 import { ContestSchemaUnavailable } from "@/components/contest/ContestSchemaUnavailable";
 import {
@@ -103,16 +103,19 @@ async function getOptionalContestSession(): Promise<{
 }
 
 export const metadata: Metadata = {
-  title: "Bête de concours",
+  title: "L'Arène - concours et dégustation CBD",
   description:
-    "Hub local de dégustation pour les lots premium: classement saisonnier, carrousel des fleurs et critiques clients modérées.",
+    "L'Arène réunit les lots CBD de saison, les carnets de dégustation, les avis vérifiés et le classement de la communauté.",
+  alternates: {
+    canonical: "/arene",
+  },
   robots: {
     index: false,
     follow: false,
   },
 };
 
-export default async function ContestHubPage({ searchParams }: ContestHubPageProps) {
+export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
   try {
     const params = await searchParams;
     const requestedCategory = parseCategory(params.category);
@@ -121,7 +124,7 @@ export default async function ContestHubPage({ searchParams }: ContestHubPagePro
     const adminAuthorized = await isCurrentRequestAdminAuthorized();
     if (!canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
       if (isContestFeatureEnabledServer() && isContestBetaAccessRestrictedServer() && !session && !adminAuthorized) {
-        const nextPath = `/bete-de-concours${params.season || params.category || selectedTrack !== "regular" ? `?${new URLSearchParams(
+        const nextPath = `/arene${params.season || params.category || selectedTrack !== "regular" ? `?${new URLSearchParams(
           Object.entries({
             season: params.season,
             category: params.category,
@@ -201,4 +204,13 @@ export default async function ContestHubPage({ searchParams }: ContestHubPagePro
     }
     throw error;
   }
+}
+
+export default async function LegacyContestHubPage({ searchParams }: ContestHubPageProps) {
+  const params = await searchParams;
+  const query = new URLSearchParams();
+  if (params.season) query.set("season", params.season);
+  if (params.category) query.set("category", params.category);
+  if (params.track) query.set("track", params.track);
+  permanentRedirect(`/arene${query.size ? `?${query.toString()}` : ""}`);
 }

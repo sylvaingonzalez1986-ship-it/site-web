@@ -850,7 +850,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
       <div className="cartoon-border bg-cream p-6 md:p-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="font-display text-3xl text-ink">Bete de concours</h2>
+            <h2 className="font-display text-3xl text-ink">L&apos;Arène</h2>
             <p className="mt-2 text-sm text-charcoal">
               Cree les saisons, rattache des produits existants aux lots premium et modere les avis.
             </p>
@@ -1203,7 +1203,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
                   </label>
                   {selectedEntry?.slug && (
                     <a
-                      href={`/bete-de-concours/${selectedEntry.slug}`}
+                      href={`/arene/${selectedEntry.slug}`}
                       target="_blank"
                       rel="noreferrer"
                       className="text-sm font-semibold text-[#0f5b3f] underline-offset-2 hover:underline"

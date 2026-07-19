@@ -69,7 +69,12 @@ function isAuthSessionMissingError(error: { message: string } | null): boolean {
     return false;
   }
 
-  return error.message.toLowerCase().includes("auth session missing");
+  const message = error.message.toLowerCase();
+  return (
+    message.includes("auth session missing") ||
+    message.includes("invalid refresh token") ||
+    message.includes("refresh token not found")
+  );
 }
 
 function normalizeEmail(email: string): string {

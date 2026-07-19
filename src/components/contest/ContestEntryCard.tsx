@@ -98,7 +98,7 @@ export function ContestEntryCard({
         <header className="tcg-card-header">
           <div className="min-w-0">
             <p className="text-[10px] font-black uppercase tracking-[0.14em] text-charcoal">
-              Bête de concours
+              L&apos;Arène
             </p>
             <h3 className="tcg-card-name" title={entry.title}>
               {entry.title}

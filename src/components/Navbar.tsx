@@ -18,9 +18,9 @@ const CartDrawer = dynamic(
 
 const baseLinks = [
   { href: "/", label: "Accueil" },
-  { href: "/boutique", label: "Boutique" },
-  { href: "/bete-de-concours", label: "Concours" },
-  { href: "/blog", label: "Blog" },
+  { href: "/boutique", label: "Le Marché" },
+  { href: "/arene", label: "L’Arène" },
+  { href: "/blog", label: "Le Journal" },
 ];
 
 function isExplicitlyEnabled(raw: string | undefined): boolean {
@@ -129,12 +129,11 @@ export function Navbar() {
       isAllowedAdminEmail(user?.email);
     const visibleBaseLinks = canSeeContestLink
       ? baseLinks
-      : baseLinks.filter((link) => link.href !== "/bete-de-concours");
+      : baseLinks.filter((link) => link.href !== "/arene");
     const merged = [
       ...visibleBaseLinks,
-      { href: "/profil/collection", label: "Mon album" },
+      { href: "/profil/collection", label: "L’Album" },
       ...cmsNavLinks,
-      ...(isAllowedAdminEmail(user?.email) ? [{ href: "/application", label: "App" }] : []),
       ...(isAllowedAdminEmail(user?.email) ? [{ href: "/admin", label: "Admin" }] : []),
       user
         ? { href: "/profil", label: "Profil" }
@@ -179,9 +178,9 @@ export function Navbar() {
     <>
       <header
         data-tutorial="navbar"
-        className={`safe-area-top safe-area-x fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
+        className={`game-navbar safe-area-top safe-area-x fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? "bg-[#f7f4ee]/95 border-b-2 border-[#1a1a1a] py-3 backdrop-blur"
+            ? "is-scrolled py-3"
             : "bg-transparent py-6"
         }`}
       >
@@ -197,7 +196,7 @@ export function Navbar() {
             {menuOpen ? "✕" : "☰"}
           </button>
 
-          <Link href="/" className="hidden font-display text-xl text-ink md:block md:text-2xl">
+          <Link href="/" className="game-brand hidden font-display text-xl text-ink md:block md:text-2xl">
             Les Chanvriers Bretons
           </Link>
 
@@ -216,7 +215,7 @@ export function Navbar() {
             />
           </Link>
 
-          <nav className="hidden items-center gap-8 md:flex">
+          <nav className="game-nav-links hidden items-center gap-2 md:flex">
             {links.map((link) => {
               const isAccountLink = link.href === "/profil" || link.href === "/compte/connexion";
               const isAlbumLink = link.href === "/profil/collection";
@@ -279,8 +278,8 @@ export function Navbar() {
 
       <div
         id="mobile-nav"
-        className={`fixed inset-0 z-30 bg-[#f7f4ee] transition-transform duration-300 md:hidden ${
-          menuOpen ? "translate-x-0" : "translate-x-full"
+        className={`game-mobile-nav fixed inset-0 z-30 transition-transform duration-300 md:hidden ${
+          menuOpen ? "pointer-events-auto translate-x-0" : "pointer-events-none translate-x-full"
         }`}
       >
         <div className="safe-area-top safe-area-bottom safe-area-x flex h-full flex-col items-center justify-center gap-8 overflow-y-auto py-10">
