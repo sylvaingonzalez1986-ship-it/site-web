@@ -1,0 +1,54 @@
+# robots.txt - Les Chanvriers Bretons
+# Mise à jour: Avril 2026
+
+# Autoriser tous les crawlers sur le contenu public
+User-agent: *
+Allow: /
+Allow: /boutique/
+Allow: /blog/
+Allow: /cbd-naturel
+Allow: /fidelite
+
+# Bloquer les zones privées et techniques
+Disallow: /api/
+Disallow: /application/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /uploads/private/
+
+# Bloquer les fichiers temporaires et de développement
+Disallow: /*.json$
+Disallow: /tmp/
+Disallow: /scripts/
+
+# Autoriser les assets publics essentiels
+Allow: /_next/static/
+Allow: /_next/image/
+
+# Sitemap principal
+Sitemap: https://leschanvriersbretons.com/sitemap.xml
+
+# Délai de crawl pour protéger les ressources serveur
+Crawl-delay: 1
+
+# Règles spécifiques pour les principaux crawlers
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Bloquer les mauvais bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

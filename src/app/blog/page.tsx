@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { BlogPostGrid } from "@/components/blog/BlogPostGrid";
 import { CustomSection } from "@/components/CustomSection";
+import { EditorialWorldHero } from "@/components/EditorialWorldHero";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
@@ -35,15 +36,16 @@ export default async function BlogPage() {
     switch (section.type) {
       case "header":
         return (
-          <div key={section.id} className={`cartoon-border bg-cream p-8 ${spacingClass}`}>
-            <p className="pill-cartoon px-4 py-2 text-xs uppercase tracking-[0.12em]">
-              {store.content.blog.eyebrow}
-            </p>
-            <h1 className="section-title mt-5 text-ink">{store.content.blog.title}</h1>
-            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-charcoal">
-              {store.content.blog.description}
-            </p>
-          </div>
+          <EditorialWorldHero
+            key={section.id}
+            world="journal"
+            eyebrow={store.content.blog.eyebrow}
+            title={store.content.blog.title}
+            description={store.content.blog.description}
+            imageSrc="/mascots/blog-journal.png"
+            imageAlt="Sylvain prépare un article dans son carnet de terrain"
+            className={spacingClass}
+          />
         );
       case "posts":
         return (

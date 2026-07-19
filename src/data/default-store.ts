@@ -104,12 +104,12 @@ export const defaultStore: CmsStore = {
       ambassadeurDiscountPercent: 8,
       legendeDiscountPercent: 10,
       decouverteBenefits: "1% de reduction permanente\n1 pack booster extra par commande",
-      explorateurBenefits: "4% de reduction permanente\nLivraison offerte\n3 packs booster extra par commande",
-      connaisseurBenefits: "6% de reduction permanente\nLivraison offerte\n5 packs booster extra par commande",
+      explorateurBenefits: "4% de reduction permanente\nPoint relais offert des 45 EUR\nLivraison a domicile a 2,50 EUR\n3 packs booster extra par commande",
+      connaisseurBenefits: "6% de reduction permanente\nPoint relais offert des 30 EUR\nLivraison a domicile a 2,50 EUR\n5 packs booster extra par commande",
       ambassadeurBenefits:
-        "8% de reduction permanente\nLivraison offerte\n10 packs booster extra par commande\n1 cadeau d'anniversaire pour toute commande passee le mois de ton anniversaire\nAcces aux ventes privees",
+        "8% de reduction permanente\nPoint relais offert\nLivraison a domicile offerte\n10 packs booster extra par commande\n1 cadeau d'anniversaire pour toute commande passee le mois de ton anniversaire\nAcces aux ventes privees",
       legendeBenefits:
-        "10% de reduction permanente\nLivraison offerte\n20 packs booster extra par commande\n1 cadeau d'anniversaire pour toute commande passee le mois de ton anniversaire\n1 cadeau de Noel pour toute commande passee au mois de decembre\nAcces aux ventes privees",
+        "10% de reduction permanente\nPoint relais offert\nLivraison a domicile offerte\n20 packs booster extra par commande\n1 cadeau d'anniversaire pour toute commande passee le mois de ton anniversaire\n1 cadeau de Noel pour toute commande passee au mois de decembre\nAcces aux ventes privees",
     },
     footer: {
       copyright: "",

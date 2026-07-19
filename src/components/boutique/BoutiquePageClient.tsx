@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { CustomSection } from "@/components/CustomSection";
+import { EditorialWorldHero } from "@/components/EditorialWorldHero";
 import { ProductCard } from "@/components/ProductCard";
 import { ProducerBar } from "@/components/boutique/ProducerBar";
 import { ProducerTcgCard } from "@/components/boutique/ProducerTcgCard";
@@ -150,12 +151,16 @@ export function BoutiquePageClient({
     switch (section.type) {
       case "header":
         return (
-          <div key={section.id} className={`cartoon-border bg-cream p-8 ${spacingClass}`}>
-            <p className="pill-cartoon px-4 py-2 text-xs uppercase tracking-[0.12em]">{boutique.eyebrow}</p>
-            <h1 className="section-title mt-5 text-center text-ink">Chanvre Naturel</h1>
-            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-charcoal">
-              {boutique.description}
-            </p>
+          <EditorialWorldHero
+            key={section.id}
+            world="market"
+            eyebrow={boutique.eyebrow}
+            title="Chanvre Naturel"
+            description={boutique.description}
+            imageSrc="/mascots/boutique-market.png"
+            imageAlt="Charles présente la sélection de produits de la boutique"
+            className={spacingClass}
+          >
             <div className="mt-6">
               <div className="mx-auto mb-5 w-full max-w-3xl">
                 <div className="grid w-full grid-cols-2 overflow-hidden rounded border-2 border-[#1a1a1a] bg-white sm:grid-cols-4">
@@ -222,7 +227,7 @@ export function BoutiquePageClient({
                 <CategoryFilter selected={effectiveFilter} filters={availableFilters} onChange={setFilter} />
               )}
             </div>
-          </div>
+          </EditorialWorldHero>
         );
       case "products": {
         if (showcaseMode === "regions") {
