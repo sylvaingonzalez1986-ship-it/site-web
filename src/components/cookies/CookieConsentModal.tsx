@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
@@ -9,6 +10,7 @@ import {
   type CookieConsentSelections,
 } from "@/components/cookies/cookie-consent-config";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import styles from "@/components/FirstVisitExperience.module.css";
 
 type CookieConsentModalProps = {
   open: boolean;
@@ -53,9 +55,7 @@ function ToggleRow({
 
   return (
     <div
-      className={`rounded-[0.2rem] border-2 border-[#1a1a1a] p-4 ${
-        disabled ? "bg-[#ece7d8]" : "bg-white"
-      }`}
+      className={`${styles.option} ${disabled ? "bg-[#ece7d8]" : "bg-white/80"}`}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
@@ -72,7 +72,7 @@ function ToggleRow({
           disabled={disabled}
           onClick={() => onToggle(category.key)}
           className={`relative inline-flex h-11 w-20 shrink-0 items-center rounded-full border-2 border-[#1a1a1a] px-1 transition-colors ${
-            checked ? "bg-[#0a7b61]" : "bg-[#d7d2c2]"
+            checked ? "bg-[#254f40]" : "bg-[#d7d2c2]"
           } ${disabled ? "cursor-not-allowed opacity-80" : "cursor-pointer"}`}
         >
           <span
@@ -172,7 +172,7 @@ export function CookieConsentModal({
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/65 p-4">
+    <div className={styles.backdrop}>
       <div
         ref={modalRef}
         role="dialog"
@@ -180,37 +180,28 @@ export function CookieConsentModal({
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
         tabIndex={-1}
-        className="cartoon-border relative w-full max-w-2xl bg-[#fff9ef] p-5 shadow-[10px_10px_0_rgba(26,26,26,0.28)] md:p-6"
+        className={styles.dialog}
       >
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-charcoal">
-              Preferences cookies
-            </p>
-            <h2 id={titleId} className="mt-1 font-display text-3xl leading-tight text-ink md:text-4xl">
-              Choisissez vos cookies
-            </h2>
-            <p id={descriptionId} className="mt-3 text-sm leading-relaxed text-charcoal md:text-base">
+        <div className={styles.hero}>
+          <div className={styles.heroCopy}>
+            <p className={styles.eyebrow}>Votre visite, vos choix</p>
+            <h2 id={titleId} className={styles.title}>Des cookies sans cachotterie.</h2>
+          </div>
+          <Image className={styles.heroVisual} src="/mascots/home-thinking.png" alt="" width={150} height={150} />
+          {dismissible ? (
+            <button type="button" onClick={onRequestClose} className={styles.close} aria-label="Fermer les preferences cookies">×</button>
+          ) : null}
+        </div>
+        <div className={styles.content}>
+            <p id={descriptionId} className={styles.intro}>
               Les cookies strictement necessaires restent actifs pour assurer la securite, la
               session, le panier et la verification d&apos;age. Les autres categories ne sont activees
               qu&apos;apres votre choix.
             </p>
-          </div>
-          {dismissible ? (
-            <button
-              type="button"
-              onClick={onRequestClose}
-              className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3 text-xl font-bold"
-              aria-label="Fermer les preferences cookies"
-            >
-              X
-            </button>
-          ) : null}
-        </div>
 
         {!detailed ? (
           <>
-            <div className="mt-5 rounded-[0.2rem] border-2 border-[#1a1a1a] bg-white p-4 text-sm leading-relaxed text-ink">
+            <div className={`${styles.notice} text-sm leading-relaxed text-ink`}>
               <p>
                 Vous pouvez accepter, refuser ou personnaliser les cookies non necessaires. Votre
                 choix reste modifiable a tout moment depuis le bouton cookies en bas de
@@ -223,14 +214,14 @@ export function CookieConsentModal({
                 ref={primaryActionRef}
                 type="button"
                 onClick={onAcceptAll}
-                className="btn-cartoon btn-primary min-h-[52px] text-sm"
+                className={`${styles.primary} text-sm`}
               >
                 Tout accepter
               </button>
               <button
                 type="button"
                 onClick={onRejectAll}
-                className="btn-cartoon btn-secondary min-h-[52px] text-sm"
+                className={`${styles.secondary} text-sm`}
               >
                 Tout refuser
               </button>
@@ -240,13 +231,13 @@ export function CookieConsentModal({
               <button
                 type="button"
                 onClick={() => setDetailed(true)}
-                className="text-sm font-bold uppercase tracking-[0.08em] text-[#0a7b61] underline underline-offset-4"
+                className={styles.textLink}
               >
                 Personnaliser
               </button>
               <Link
                 href="/politique-cookies"
-                className="text-sm font-semibold text-charcoal underline underline-offset-4"
+                className={styles.textLink}
               >
                 Lire la politique cookies
               </Link>
@@ -275,14 +266,14 @@ export function CookieConsentModal({
                 <button
                   type="button"
                   onClick={onAcceptAll}
-                  className="btn-cartoon btn-secondary min-h-[48px] px-4 text-xs"
+                  className={`${styles.secondary} min-h-[48px] text-xs`}
                 >
                   Tout accepter
                 </button>
                 <button
                   type="button"
                   onClick={onRejectAll}
-                  className="btn-cartoon btn-secondary min-h-[48px] px-4 text-xs"
+                  className={`${styles.secondary} min-h-[48px] text-xs`}
                 >
                   Tout refuser
                 </button>
@@ -291,7 +282,7 @@ export function CookieConsentModal({
                 ref={primaryActionRef}
                 type="button"
                 onClick={() => onSave(draftSelections)}
-                className="btn-cartoon btn-primary min-h-[52px] px-5 text-sm"
+                className={`${styles.primary} text-sm`}
               >
                 Enregistrer
               </button>
@@ -302,7 +293,7 @@ export function CookieConsentModal({
                 <button
                   type="button"
                   onClick={() => setDetailed(false)}
-                  className="text-sm font-semibold text-charcoal underline underline-offset-4"
+                  className={styles.textLink}
                 >
                   Retour
                 </button>
@@ -313,13 +304,14 @@ export function CookieConsentModal({
               )}
               <Link
                 href="/politique-cookies"
-                className="text-sm font-semibold text-charcoal underline underline-offset-4"
+                className={styles.textLink}
               >
                 Politique cookies
               </Link>
             </div>
           </>
         )}
+        </div>
       </div>
     </div>,
     document.body,

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import styles from "@/components/FirstVisitExperience.module.css";
 
 const AGE_VERIFIED_EVENT = "lcb:age-verified";
 
@@ -50,25 +52,26 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
   };
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-36">
-      <div className="retro-container">
-        <div className="cartoon-border bg-cream p-8 md:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.12em] text-charcoal">
-            Verification obligatoire
-          </p>
-          <h1 className="mt-3 font-display text-4xl leading-tight text-ink md:text-5xl">
-            Avez-vous 18 ans ou plus ?
-          </h1>
+    <section className="min-h-dvh bg-[#254f40] px-4 pb-10 pt-28 md:pt-36">
+      <div className={`${styles.dialog} mx-auto`}>
+        <div className={styles.hero}>
+          <div className={styles.heroCopy}>
+            <p className={styles.eyebrow}>Bienvenue chez nous</p>
+            <h1 className={styles.title}>Avant d&apos;entrer, une seule question.</h1>
+          </div>
+          <Image className={styles.heroVisual} src="/mascots/home-welcome.png" alt="" width={150} height={150} priority />
+        </div>
+        <div className={styles.content}>
 
           {!denied ? (
             <>
-              <p className="mt-4 max-w-2xl text-base text-charcoal">
-                L&apos;acces a ce site est reserve aux personnes majeures.
+              <p className={styles.intro}>
+                Nos produits sont réservés aux adultes. Confirmez simplement que vous avez 18 ans ou plus.
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
                 <button
                   type="button"
-                  className="btn-cartoon btn-primary h-12 px-5"
+                  className={styles.primary}
                   onClick={confirmMajority}
                   disabled={loading}
                 >
@@ -76,7 +79,7 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
                 </button>
                 <button
                   type="button"
-                  className="btn-cartoon btn-secondary h-12 px-5"
+                  className={styles.secondary}
                   onClick={() => setDenied(true)}
                   disabled={loading}
                 >
@@ -85,7 +88,7 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
               </div>
             </>
           ) : (
-            <div className="mt-6 card-cartoon bg-white p-5">
+            <div className={`${styles.notice} mt-6`}>
               <p className="font-semibold text-ink">
                 Ce site est reserve aux personnes majeures.
               </p>

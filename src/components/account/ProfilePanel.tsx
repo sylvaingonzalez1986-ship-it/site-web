@@ -9,7 +9,6 @@ import { LoyaltyBadgeSummary } from "@/components/account/LoyaltyBadgeSummary";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
 import { MissionsSection } from "@/components/account/MissionsSection";
 import { OrderDetailModal } from "@/components/account/OrderDetailModal";
-import { useTutorial } from "@/components/tutorial/TutorialProvider";
 import { useCmsStore } from "@/hooks/useCmsStore";
 import { useCustomerSession } from "@/hooks/useCustomerSession";
 import {
@@ -122,7 +121,6 @@ function getInitials(firstName: string, lastName: string): string {
 export function ProfilePanel() {
   const router = useRouter();
   const pathname = usePathname();
-  const { isEnabled: tutorialEnabled, restartTutorial } = useTutorial();
   const {
     user,
     orders,
@@ -648,16 +646,6 @@ export function ProfilePanel() {
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    {tutorialEnabled && (
-                      <button
-                        type="button"
-                        onClick={restartTutorial}
-                        className="btn-cartoon btn-secondary inline-flex min-h-11 items-center justify-center px-4 text-xs leading-none"
-                        data-tutorial="profile-replay"
-                      >
-                        Revoir le tutoriel
-                      </button>
-                    )}
                     <button
                       type="button"
                       onClick={logout}

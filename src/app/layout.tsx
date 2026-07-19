@@ -11,7 +11,6 @@ import { NewProductsPopup } from "@/components/NewProductsPopup";
 import { Navbar } from "@/components/Navbar";
 import { SupabaseRecoveryRedirect } from "@/components/SupabaseRecoveryRedirect";
 import { CookieConsentProvider } from "@/components/cookies/CookieConsentProvider";
-import { TutorialProvider } from "@/components/tutorial/TutorialProvider";
 import { VercelAnalytics } from "@/components/VercelAnalytics";
 import { WebVitals } from "@/components/WebVitals";
 import { CartProvider } from "@/context/CartContext";
@@ -208,14 +207,12 @@ export default async function RootLayout({
           <CookieConsentProvider>
             <SupabaseRecoveryRedirect />
             <VercelAnalytics />
-            <TutorialProvider>
-              <div className="site-background min-h-screen">
-                <Navbar />
-                <main className="relative z-0">{children}</main>
-                <Footer />
-              </div>
-              <NewProductsPopup />
-            </TutorialProvider>
+            <div className="site-background min-h-screen">
+              <Navbar />
+              <main className="relative z-0">{children}</main>
+              <Footer />
+            </div>
+            <NewProductsPopup />
           </CookieConsentProvider>
         </CartProvider>
       </body>

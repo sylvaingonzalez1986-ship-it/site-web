@@ -19,7 +19,6 @@ type PackOpeningAnimationProps = {
   onContinue?: (result: ScratchResult) => void;
   disabled?: boolean;
   demo?: boolean;
-  /** @deprecated kept for TutorialPackDemo compat — ignored */
   compact?: boolean;
 };
 

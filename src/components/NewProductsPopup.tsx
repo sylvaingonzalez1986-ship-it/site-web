@@ -9,6 +9,7 @@ import { ProductCultureBadge } from "@/components/ProductCultureBadge";
 import { categoryLabels, isProductCultureModeEligible } from "@/data/products";
 import { useCmsStore } from "@/hooks/useCmsStore";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import firstVisitStyles from "@/components/FirstVisitExperience.module.css";
 
 const POPUP_STORAGE_KEY = "lcb_new_products_popup";
 const POPUP_DISMISS_MS = 24 * 60 * 60 * 1000;
@@ -247,26 +248,28 @@ export function NewProductsPopup() {
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-[90] flex items-end justify-center bg-[rgba(15,23,42,0.58)] p-0 sm:items-center sm:p-4 md:p-6">
+    <div className={firstVisitStyles.backdrop}>
       <div className="absolute inset-0" onClick={dismiss} aria-hidden="true" />
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="safe-area-bottom relative z-10 flex max-h-[85dvh] w-full max-w-5xl flex-col overflow-hidden rounded-t-[28px] border-2 border-b-0 border-[#1a1a1a] bg-[#fff8ec] shadow-[10px_10px_0_#1a1a1a] sm:max-h-[90dvh] sm:rounded-[28px] sm:border-b-2"
+        className={`${firstVisitStyles.dialog} safe-area-bottom z-10 flex max-w-5xl flex-col overflow-hidden`}
       >
-        <div className="flex items-start justify-between gap-3 border-b-2 border-[#1a1a1a] bg-[linear-gradient(135deg,#ffe07a_0%,#ffd14a_48%,#fff0b8_100%)] px-4 py-3 sm:px-5 sm:py-5 md:px-7">
-          <div>
-            <h2 id={titleId} className="font-display text-2xl leading-none text-ink sm:text-3xl md:text-4xl">
-              Nouveauté
+        <div className={firstVisitStyles.hero}>
+          <div className={firstVisitStyles.heroCopy}>
+            <p className={firstVisitStyles.eyebrow}>Fraîchement arrivé au marché</p>
+            <h2 id={titleId} className={firstVisitStyles.title}>
+              Les nouveautés des copains.
             </h2>
           </div>
+          <Image className={firstVisitStyles.heroVisual} src="/mascots/boutique-market.png" alt="" width={150} height={150} />
           <button
             ref={closeButtonRef}
             type="button"
             onClick={dismiss}
-            className="btn-cartoon btn-secondary inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-0 text-2xl leading-none"
+            className={firstVisitStyles.close}
             aria-label="Fermer"
           >
             ×
