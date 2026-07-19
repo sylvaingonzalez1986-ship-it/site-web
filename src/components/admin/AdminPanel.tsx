@@ -67,6 +67,7 @@ const AdminPanelLoading = () => (
 );
 
 const AdminPagesPanel = dynamic(() => import("@/components/admin/AdminPagesPanel").then((m) => m.AdminPagesPanel), { loading: AdminPanelLoading });
+const AdminSalesDashboardPanel = dynamic(() => import("@/components/admin/AdminSalesDashboardPanel").then((m) => m.AdminSalesDashboardPanel), { loading: AdminPanelLoading });
 const AdminCustomersPanel = dynamic(() => import("@/components/admin/AdminCustomersPanel").then((m) => m.AdminCustomersPanel), { loading: AdminPanelLoading });
 const AdminReferralsPanel = dynamic(() => import("@/components/admin/AdminReferralsPanel").then((m) => m.AdminReferralsPanel), { loading: AdminPanelLoading });
 const AdminBlogCommentsPanel = dynamic(() => import("@/components/admin/AdminBlogCommentsPanel").then((m) => m.AdminBlogCommentsPanel), { loading: AdminPanelLoading });
@@ -119,6 +120,7 @@ function getPaymentStateColorClass(paymentState: CmsOrder["paymentState"]): stri
 }
 type AdminTab =
   | "commandes"
+  | "ventes"
   | "clients"
   | "parrainage"
   | "missions"
@@ -136,6 +138,7 @@ type AdminTab =
 
 const adminTabs: AdminTab[] = [
   "commandes",
+  "ventes",
   "clients",
   "parrainage",
   "missions",
@@ -154,6 +157,7 @@ const adminTabs: AdminTab[] = [
 
 const tabLabels: Record<AdminTab, string> = {
   commandes: "Commandes",
+  ventes: "Ventes",
   clients: "Clients",
   parrainage: "Parrainage",
   missions: "Missions",
@@ -161,7 +165,7 @@ const tabLabels: Record<AdminTab, string> = {
   loterie: "Loterie",
   newsletter: "Newsletter",
   printful: "Printful",
-  concours: "Bete de concours",
+  concours: "L'Arène",
   produits: "Mes Produits",
   copains: "Coin des Copains",
   blog: "Blog",
@@ -1690,6 +1694,8 @@ export function AdminPanel() {
           </div>
         </div>
         )}
+
+        {activeTab === "ventes" && <AdminSalesDashboardPanel />}
 
         {activeTab === "clients" && <AdminCustomersPanel />}
 
