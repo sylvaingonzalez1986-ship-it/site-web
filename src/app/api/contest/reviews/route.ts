@@ -13,6 +13,7 @@ import { sanitizeViewerContestReview } from "@/lib/contest-public-api";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import type { ContestReviewSubmissionInput } from "@/types/contest";
+import { getPublicContestError } from "@/lib/contest-api-error";
 
 export const runtime = "nodejs";
 
@@ -115,7 +116,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: CONTEST_SCHEMA_MISSING_MESSAGE }, { status: 503 });
     }
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Impossible de soumettre l'avis." },
+      { error: getPublicContestError(error, "Impossible de soumettre l'avis.") },
       { status: 400 },
     );
   }
@@ -192,7 +193,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: CONTEST_SCHEMA_MISSING_MESSAGE }, { status: 503 });
     }
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Impossible de modifier l'avis." },
+      { error: getPublicContestError(error, "Impossible de modifier l'avis.") },
       { status: 400 },
     );
   }

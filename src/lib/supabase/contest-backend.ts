@@ -156,7 +156,7 @@ const CONTEST_BADGE_REWARDS = {
     id: "contest-badge-premier-carnet",
     code: "premier-carnet",
     label: "Premier Carnet",
-    description: "Fais valider ta premiere critique Bete de concours.",
+    description: "Fais valider ta première critique dans L'Arène.",
     icon: "book-open",
     boosterPacks: 1,
   },
@@ -297,7 +297,7 @@ type ContestReviewRow = Record<string, unknown>;
 type ContestShopFlowerRow = Record<string, unknown>;
 
 export const CONTEST_SCHEMA_MISSING_MESSAGE =
-  "Le schema Bete de concours n'est pas encore migre sur ce projet Supabase.";
+  "Le schéma de L'Arène n'est pas encore migré sur ce projet Supabase.";
 
 export class ContestSchemaMissingError extends Error {
   constructor() {
@@ -2325,7 +2325,8 @@ export async function getPublicContestEntries(input: {
     .select(SELECT_ENTRY_COLUMNS)
     .eq("is_published", true)
     .order("position", { ascending: true })
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(200);
 
   if (selectedSeason) {
     query = query.eq("season_id", selectedSeason.id);
@@ -2771,61 +2772,23 @@ export async function submitContestReview(input: {
   const consumptionDetails = sanitizeConsumptionDetails(input.payload.consumptionDetails);
 
   const supabase = createSupabaseServiceClient();
-  const insertReview = await supabase
-    .from("contest_reviews")
-    .insert({
-      entry_id: entry.id,
-      season_id: entry.seasonId,
-      customer_id: safeCustomerId,
-      pseudo_snapshot: profile.pseudo,
-      consumption_method: consumptionMethod,
-      consumption_details: consumptionDetails,
-      comment,
-      status: "pending",
-    })
-    .select(SELECT_REVIEW_COLUMNS)
-    .single();
-
-  failIfError(insertReview.error, "create contest review");
-  const reviewRow = toRow(insertReview.data);
-  if (!reviewRow) {
+  const atomicInsert = await supabase.rpc("rpc_create_contest_review_atomic", {
+    p_entry_id: entry.id,
+    p_season_id: entry.seasonId,
+    p_customer_id: safeCustomerId,
+    p_pseudo_snapshot: profile.pseudo,
+    p_consumption_method: consumptionMethod,
+    p_consumption_details: consumptionDetails,
+    p_comment: comment,
+    p_scores: scores,
+    p_aroma_tags: aromaTags,
+    p_terpene_guesses: terpeneGuesses,
+  });
+  failIfError(atomicInsert.error, "create contest review atomically");
+  const reviewId = toText(atomicInsert.data);
+  const reviewRow = await getContestReviewRowByEntryAndCustomer(entry.id, safeCustomerId);
+  if (!reviewId || !reviewRow || toText(reviewRow.id) !== reviewId) {
     throw new Error("Avis introuvable apres creation.");
-  }
-
-  try {
-    const scoreRows = scores.map((score) => ({
-      review_id: toText(reviewRow.id),
-      criterion: score.criterion,
-      score: score.score,
-    }));
-
-    const scoreInsert = await supabase.from("contest_review_scores").insert(scoreRows);
-    failIfError(scoreInsert.error, "create contest review scores");
-
-    if (aromaTags.length > 0) {
-      const aromaInsert = await supabase.from("contest_review_aroma_tags").insert(
-        aromaTags.map((tag) => ({
-          review_id: toText(reviewRow.id),
-          tag: tag.tag,
-          custom_label: tag.customLabel ?? null,
-        })),
-      );
-      failIfError(aromaInsert.error, "create contest review aroma tags");
-    }
-
-    if (terpeneGuesses.length > 0) {
-      const terpeneInsert = await supabase.from("contest_review_terpene_guesses").insert(
-        terpeneGuesses.map((terpene) => ({
-          review_id: toText(reviewRow.id),
-          terpene,
-        })),
-      );
-      failIfError(terpeneInsert.error, "create contest review terpene guesses");
-    }
-
-  } catch (error) {
-    await supabase.from("contest_reviews").delete().eq("id", toText(reviewRow.id));
-    throw error;
   }
 
   const hydrated = await hydrateReviews([reviewRow], {
@@ -2900,67 +2863,21 @@ export async function updateContestReview(input: {
   const reviewId = toText(existingReview.id);
   const supabase = createSupabaseServiceClient();
 
-  const updateReview = await supabase
-    .from("contest_reviews")
-    .update({
-      pseudo_snapshot: profile.pseudo,
-      consumption_method: consumptionMethod,
-      consumption_details: consumptionDetails,
-      comment,
-      status: "pending",
-      admin_note: "",
-      reviewed_by: null,
-      reviewed_at: null,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", reviewId)
-    .eq("customer_id", safeCustomerId)
-    .select(SELECT_REVIEW_COLUMNS)
-    .single();
-
-  failIfError(updateReview.error, "update contest review");
-  const reviewRow = toRow(updateReview.data);
-  if (!reviewRow) {
+  const atomicUpdate = await supabase.rpc("rpc_update_contest_review_atomic", {
+    p_review_id: reviewId,
+    p_customer_id: safeCustomerId,
+    p_pseudo_snapshot: profile.pseudo,
+    p_consumption_method: consumptionMethod,
+    p_consumption_details: consumptionDetails,
+    p_comment: comment,
+    p_scores: scores,
+    p_aroma_tags: aromaTags,
+    p_terpene_guesses: terpeneGuesses,
+  });
+  failIfError(atomicUpdate.error, "update contest review atomically");
+  const reviewRow = await getContestReviewRowByEntryAndCustomer(entry.id, safeCustomerId);
+  if (!reviewRow || toText(atomicUpdate.data) !== reviewId) {
     throw new Error("Avis introuvable apres modification.");
-  }
-
-  const deleteScores = await supabase.from("contest_review_scores").delete().eq("review_id", reviewId);
-  failIfError(deleteScores.error, "delete contest review scores");
-
-  const deleteAromas = await supabase.from("contest_review_aroma_tags").delete().eq("review_id", reviewId);
-  failIfError(deleteAromas.error, "delete contest review aroma tags");
-
-  const deleteTerpenes = await supabase.from("contest_review_terpene_guesses").delete().eq("review_id", reviewId);
-  failIfError(deleteTerpenes.error, "delete contest review terpene guesses");
-
-  const scoreRows = scores.map((score) => ({
-    review_id: reviewId,
-    criterion: score.criterion,
-    score: score.score,
-  }));
-
-  const scoreInsert = await supabase.from("contest_review_scores").insert(scoreRows);
-  failIfError(scoreInsert.error, "replace contest review scores");
-
-  if (aromaTags.length > 0) {
-    const aromaInsert = await supabase.from("contest_review_aroma_tags").insert(
-      aromaTags.map((tag) => ({
-        review_id: reviewId,
-        tag: tag.tag,
-        custom_label: tag.customLabel ?? null,
-      })),
-    );
-    failIfError(aromaInsert.error, "replace contest review aroma tags");
-  }
-
-  if (terpeneGuesses.length > 0) {
-    const terpeneInsert = await supabase.from("contest_review_terpene_guesses").insert(
-      terpeneGuesses.map((terpene) => ({
-        review_id: reviewId,
-        terpene,
-      })),
-    );
-    failIfError(terpeneInsert.error, "replace contest review terpene guesses");
   }
 
   const hydrated = await hydrateReviews([reviewRow], {
@@ -3126,7 +3043,7 @@ export async function getContestFeed(input: {
     .neq("comment", "")
     .order("reviewed_at", { ascending: true, nullsFirst: false })
     .order("created_at", { ascending: true })
-    .limit(80);
+    .limit(Math.min(Math.max(limit * 2, limit), 40));
 
   failIfError(reviewResult.error, "read contest feed reviews");
   const hydrated = await hydrateReviews(toRowArray(reviewResult.data), {

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:mobile": "next dev --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -16,7 +17,8 @@
     "migrate:uploads:supabase": "node scripts/migrate-local-uploads-to-supabase-storage.mjs",
     "cleanup:uploads:supabase": "node scripts/cleanup-supabase-storage-orphans.mjs",
     "redact:analyses:supabase": "node scripts/redact-product-analyses.mjs",
-    "check:invoice-counter": "node scripts/check-invoice-counter.mjs"
+    "check:invoice-counter": "node scripts/check-invoice-counter.mjs",
+    "load-test:arena": "node scripts/load-test-arena.mjs"
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.95",

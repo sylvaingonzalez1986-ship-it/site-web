@@ -10,6 +10,7 @@ import { getContestFeatureAccessDeniedResponse } from "@/lib/contest-feature";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import type { ContestReviewVoteValue } from "@/types/contest";
+import { getPublicContestError } from "@/lib/contest-api-error";
 
 export const runtime = "nodejs";
 
@@ -93,7 +94,7 @@ export async function POST(request: Request, context: RouteContext) {
       return NextResponse.json({ error: CONTEST_SCHEMA_MISSING_MESSAGE }, { status: 503 });
     }
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Vote impossible." },
+      { error: getPublicContestError(error, "Vote impossible.") },
       { status: 400 },
     );
   }

@@ -5,7 +5,10 @@ const AGE_GATE_COOKIE_NAME = "age_verified";
 const AGE_GATE_MAX_AGE_SECONDS = 60 * 60 * 24;
 
 function signAgeGateValue(): string {
-  const secret = process.env.ADMIN_SESSION_SECRET?.trim() || "fallback";
+  const secret = process.env.ADMIN_SESSION_SECRET?.trim();
+  if (!secret) {
+    throw new Error("ADMIN_SESSION_SECRET manquant.");
+  }
   const sig = createHmac("sha256", secret).update("age_verified:true").digest("hex").slice(0, 16);
   return `true.${sig}`;
 }

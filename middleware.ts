@@ -12,6 +12,7 @@ const VIVA_ORIGIN = "https://www.vivapayments.com";
 
 function buildCspHeader(nonce: string): string {
   const isProd = process.env.NODE_ENV === "production";
+  const devConnectSources = isProd ? "" : " ws:";
   const directives = [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' ${VIVA_ORIGIN}`,
@@ -19,7 +20,7 @@ function buildCspHeader(nonce: string): string {
     `img-src 'self' data: blob: ${SUPABASE_CSP_SOURCES} https://static.wixstatic.com https://files.cdn.printful.com`,
     `media-src 'self' blob: ${SUPABASE_CSP_SOURCES}`,
     `font-src 'self' data:`,
-    `connect-src 'self' ${SUPABASE_CSP_SOURCES} ${VIVA_ORIGIN}`,
+    `connect-src 'self'${devConnectSources} ${SUPABASE_CSP_SOURCES} ${VIVA_ORIGIN}`,
     `frame-src ${VIVA_ORIGIN} ${SUPABASE_CSP_SOURCES}`,
     "frame-ancestors 'none'",
     "object-src 'none'",
@@ -67,7 +68,10 @@ let cachedAgeGateKeyPromise: Promise<CryptoKey> | null = null;
 
 function getAgeGateSigningKey(): Promise<CryptoKey> {
   if (!cachedAgeGateKeyPromise) {
-    const secret = process.env.ADMIN_SESSION_SECRET?.trim() || "fallback";
+    const secret = process.env.ADMIN_SESSION_SECRET?.trim();
+    if (!secret) {
+      return Promise.reject(new Error("ADMIN_SESSION_SECRET manquant."));
+    }
     cachedAgeGateKeyPromise = crypto.subtle.importKey(
       "raw",
       new TextEncoder().encode(secret),
@@ -82,8 +86,7 @@ function getAgeGateSigningKey(): Promise<CryptoKey> {
 async function verifyAgeGateCookie(request: NextRequest): Promise<boolean> {
   const value = request.cookies.get(AGE_GATE_COOKIE_NAME)?.value ?? "";
   if (!value.startsWith("true.")) {
-    // Accept legacy unsigned cookie during transition period
-    return value === "true";
+    return false;
   }
   const receivedSig = value.slice(5);
   if (receivedSig.length !== 16) {
@@ -121,15 +124,28 @@ function isDocumentNavigationRequest(request: NextRequest): boolean {
   return accept.includes("text/html");
 }
 
-function shouldEnforceAgeGate(pathname: string): boolean {
+export function shouldEnforceAgeGate(pathname: string): boolean {
   return (
     pathname === "/" ||
     pathname === "/profil" ||
     pathname.startsWith("/compte") ||
-    pathname.startsWith("/application") ||
     pathname.startsWith("/bete-de-concours") ||
+    pathname.startsWith("/arene") ||
     pathname.startsWith("/boutique") ||
     pathname.startsWith("/blog")
+  );
+}
+
+export function shouldValidateMutativeOrigin(pathname: string, method: string): boolean {
+  if (!MUTATIVE_METHODS.has(method)) {
+    return false;
+  }
+
+  return (
+    pathname.startsWith("/api/admin") ||
+    pathname.startsWith("/api/account") ||
+    pathname.startsWith("/api/contest") ||
+    (pathname.startsWith("/api/checkout") && pathname !== "/api/checkout/viva/webhook")
   );
 }
 
@@ -168,27 +184,28 @@ export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const nonce = crypto.randomUUID().replace(/-/g, "");
   const cspHeader = buildCspHeader(nonce);
+  const secure = <T extends NextResponse>(response: T): T => {
+    response.headers.set("Content-Security-Policy", cspHeader);
+    return response;
+  };
   const customerAuthenticated = hasCustomerSession(request);
   const ageVerified = await verifyAgeGateCookie(request);
   const isCrawler = isCrawlerRequest(request);
   const isDocumentNavigation = isDocumentNavigationRequest(request);
 
-  const isApplicationPage = pathname.startsWith("/application");
   const isAdminPage = pathname.startsWith("/admin");
   const isAdminApi = pathname.startsWith("/api/admin");
   const isAdminLoginPage = pathname === "/admin/login";
   const isAdminLoginApi = pathname === "/api/admin/login";
   const isAdminLogoutApi = pathname === "/api/admin/logout";
-  const needsAdminSessionCheck = isApplicationPage || isAdminPage || isAdminApi || isAdminLoginPage;
+  const needsAdminSessionCheck = isAdminPage || isAdminApi || isAdminLoginPage;
   const adminAuthorized = needsAdminSessionCheck
     ? await isAdminAuthorized(request)
     : false;
 
   const isProfilePage = pathname === "/profil";
   const isCustomerApi = pathname.startsWith("/api/account");
-  const isContestApi = pathname.startsWith("/api/contest");
   const isAuthCallbackApi = pathname === "/api/auth/callback";
-  const isCheckoutApi = pathname.startsWith("/api/checkout");
   const isCheckoutWebhookApi = pathname === "/api/checkout/viva/webhook";
   const isCustomerAuthApi =
     pathname === "/api/account/login" ||
@@ -200,7 +217,7 @@ export async function middleware(request: NextRequest) {
 
   if (isAgeGatePage && ageVerified && isDocumentNavigation) {
     const nextPath = sanitizeNextPath(request.nextUrl.searchParams.get("next"));
-    return NextResponse.redirect(new URL(nextPath, request.url));
+    return secure(NextResponse.redirect(new URL(nextPath, request.url)));
   }
 
   if (
@@ -212,81 +229,60 @@ export async function middleware(request: NextRequest) {
   ) {
     const ageGateUrl = new URL("/age-gate", request.url);
     ageGateUrl.searchParams.set("next", `${pathname}${search}`);
-    return NextResponse.redirect(ageGateUrl);
+    return secure(NextResponse.redirect(ageGateUrl));
   }
 
-  if (isAdminApi && MUTATIVE_METHODS.has(request.method) && !isValidOrigin(request)) {
-    return NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 });
-  }
-  if (isCustomerApi && MUTATIVE_METHODS.has(request.method) && !isValidOrigin(request)) {
-    return NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 });
-  }
-  if (isContestApi && MUTATIVE_METHODS.has(request.method) && !isValidOrigin(request)) {
-    return NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 });
-  }
-  if (
-    isCheckoutApi &&
-    !isCheckoutWebhookApi &&
-    MUTATIVE_METHODS.has(request.method) &&
-    !isValidOrigin(request)
-  ) {
-    return NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 });
+  if (shouldValidateMutativeOrigin(pathname, request.method) && !isValidOrigin(request)) {
+    return secure(NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 }));
   }
 
   if (isAdminLoginApi || isAdminLogoutApi || isCustomerAuthApi || isAuthCallbackApi) {
-    return NextResponse.next();
+    return secure(NextResponse.next());
   }
 
   if (isAdminLoginPage && adminAuthorized) {
-    return NextResponse.redirect(new URL("/admin", request.url));
-  }
-
-  if (isApplicationPage && !adminAuthorized) {
-    const loginUrl = new URL("/admin/login", request.url);
-    loginUrl.searchParams.set("next", `${pathname}${search}`);
-    return NextResponse.redirect(loginUrl);
+    return secure(NextResponse.redirect(new URL("/admin", request.url)));
   }
 
   if ((isAdminPage || isAdminApi) && !adminAuthorized && !isAdminLoginPage) {
     if (isAdminApi) {
-      return NextResponse.json({ error: "Non autorise." }, { status: 401 });
+      return secure(NextResponse.json({ error: "Non autorise." }, { status: 401 }));
     }
 
     const loginUrl = new URL("/admin/login", request.url);
     loginUrl.searchParams.set("next", `${pathname}${search}`);
-    return NextResponse.redirect(loginUrl);
+    return secure(NextResponse.redirect(loginUrl));
   }
 
 
   if ((isProfilePage || isCustomerApi) && !customerAuthenticated) {
     if (isCustomerApi) {
-      return NextResponse.json({ error: "Non autorise." }, { status: 401 });
+      return secure(NextResponse.json({ error: "Non autorise." }, { status: 401 }));
     }
 
     const loginUrl = new URL("/compte/connexion", request.url);
     loginUrl.searchParams.set("next", `${pathname}${search}`);
-    return NextResponse.redirect(loginUrl);
+    return secure(NextResponse.redirect(loginUrl));
   }
 
   if (
-    isCheckoutApi &&
+    pathname.startsWith("/api/checkout") &&
     !isCheckoutWebhookApi &&
     MUTATIVE_METHODS.has(request.method) &&
     !customerAuthenticated
   ) {
-    return NextResponse.json({ error: "Connexion requise." }, { status: 401 });
+    return secure(NextResponse.json({ error: "Connexion requise." }, { status: 401 }));
   }
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });
-  response.headers.set("Content-Security-Policy", cspHeader);
-  return response;
+  return secure(response);
 }
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon\\.ico|app/|uploads/|robots\\.txt|sitemap\\.xml).*)",
+    "/((?!_next/|favicon\\.ico|app/|uploads/|robots\\.txt|sitemap\\.xml).*)",
   ],
 };

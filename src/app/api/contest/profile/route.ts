@@ -9,6 +9,7 @@ import {
 } from "@/lib/contest-backend";
 import { getContestFeatureAccessDeniedResponse } from "@/lib/contest-feature";
 import { sanitizePublicContestProfile } from "@/lib/contest-public-api";
+import { getPublicContestError } from "@/lib/contest-api-error";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
@@ -95,7 +96,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: CONTEST_SCHEMA_MISSING_MESSAGE }, { status: 503 });
     }
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Pseudo invalide." },
+      { error: getPublicContestError(error, "Pseudo invalide.") },
       { status: 400 },
     );
   }

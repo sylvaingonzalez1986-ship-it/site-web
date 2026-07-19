@@ -19,6 +19,7 @@ const supabaseHostnames = Array.from(
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  allowedDevOrigins: ["127.0.0.1", "192.168.*.*", "10.*.*.*", "172.*.*.*"],
   experimental: {
     optimizePackageImports: ["lucide-react", "simple-icons"],
   },
