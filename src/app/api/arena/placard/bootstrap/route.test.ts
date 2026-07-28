@@ -3,18 +3,18 @@ import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 const {
   getCurrentCustomerSessionByBackend,
   getKqPlayerCollectionSnapshot,
-  getKqPlayerOwnedBuddieCodes,
+  getKqPlayerOwnedBuddies,
   getKqPlayerHeritageSnapshot,
 } = vi.hoisted(() => ({
   getCurrentCustomerSessionByBackend: vi.fn(),
   getKqPlayerCollectionSnapshot: vi.fn(),
-  getKqPlayerOwnedBuddieCodes: vi.fn(),
+  getKqPlayerOwnedBuddies: vi.fn(),
   getKqPlayerHeritageSnapshot: vi.fn(),
 }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
   getKqPlayerCollectionSnapshot,
-  getKqPlayerOwnedBuddieCodes,
+  getKqPlayerOwnedBuddies,
   getKqPlayerHeritageSnapshot,
 }));
 
@@ -29,7 +29,14 @@ describe("GET /api/arena/placard/bootstrap", () => {
     process.env.KQ_PLAYER_API_LIVE = "true";
     getCurrentCustomerSessionByBackend.mockResolvedValue({ customerId });
     getKqPlayerCollectionSnapshot.mockResolvedValue({ inventory: { "BOTTE-001": 1 } });
-    getKqPlayerOwnedBuddieCodes.mockResolvedValue(["HH2026-003"]);
+    getKqPlayerOwnedBuddies.mockResolvedValue([{
+      code: "HH2026-003",
+      name: "Buddie test",
+      rarity: "common",
+      cardNumber: 3,
+      imageUrl: "/cards/buddie-test.webp",
+      ownedCopies: 1,
+    }]);
     getKqPlayerHeritageSnapshot.mockResolvedValue({
       collectionActive: false,
       fragmentBalance: 0,
@@ -52,11 +59,12 @@ describe("GET /api/arena/placard/bootstrap", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(getKqPlayerCollectionSnapshot).toHaveBeenCalledWith(customerId);
-    expect(getKqPlayerOwnedBuddieCodes).toHaveBeenCalledWith(customerId);
+    expect(getKqPlayerOwnedBuddies).toHaveBeenCalledWith(customerId);
     expect(getKqPlayerHeritageSnapshot).toHaveBeenCalledWith(customerId);
     expect(await response.json()).toMatchObject({
       collection: { inventory: { "BOTTE-001": 1 } },
       ownedBuddieCodes: ["HH2026-003"],
+      ownedBuddies: [{ code: "HH2026-003", imageUrl: "/cards/buddie-test.webp", ownedCopies: 1 }],
       warnings: [],
     });
   });
