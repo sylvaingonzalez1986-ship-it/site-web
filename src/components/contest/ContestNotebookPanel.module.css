@@ -665,6 +665,24 @@
   font-size: max(16px, 0.9rem);
 }
 
+.verdictTextarea {
+  display: block;
+  width: 100%;
+  min-height: 150px;
+  max-height: 50dvh;
+  overflow-y: auto;
+  color: var(--notebook-ink);
+  caret-color: var(--notebook-green);
+  resize: vertical;
+  scroll-margin-block: 22dvh;
+  -webkit-text-fill-color: var(--notebook-ink);
+}
+
+.verdictTextarea::placeholder {
+  color: #666b66;
+  opacity: 1;
+}
+
 .notebook button:focus-visible,
 .notebook input:focus-visible,
 .notebook textarea:focus-visible,
@@ -736,6 +754,15 @@
 @media (max-width: 767px) {
   .inlinePanelRoot {
     height: auto;
+  }
+
+  .verdictTextarea {
+    height: 190px;
+    min-height: 190px;
+    max-height: 42dvh;
+    padding: 0.9rem;
+    line-height: 1.5;
+    touch-action: manipulation;
   }
 
   .modalOverlay {

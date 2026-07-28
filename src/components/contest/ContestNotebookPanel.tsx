@@ -1714,11 +1714,15 @@ export function ContestNotebookPanel({
                 <textarea
                   value={visibleComment}
                   onChange={(event) => setComment(event.target.value)}
+                  onFocus={(event) => {
+                    const field = event.currentTarget;
+                    window.setTimeout(() => field.scrollIntoView({ behavior: "smooth", block: "center" }), 280);
+                  }}
                   readOnly={isReviewReadOnly}
                   maxLength={2000}
                   rows={5}
                   placeholder="Ex: Belle fleur, nez fruité, bouche douce, bonne impression générale."
-                  className="mt-3 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-3 text-sm leading-relaxed text-ink"
+                  className={`${styles.verdictTextarea} mt-3 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-3 text-sm leading-relaxed text-ink`}
                 />
               </div>
               {isReviewReadOnly ? null : (
