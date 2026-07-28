@@ -307,7 +307,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     await purchasePacksWithPoints(effectivePackPurchaseQty);
   };
 
-  const albumBody = (
+  const buddiesAlbumBody = (
     <div className={`${albumStyles.experience} ${isAlbumPreview ? "pointer-events-none opacity-80 grayscale" : ""}`}>
       <header className={albumStyles.hero}>
         <div className={albumStyles.heroCopy}>
@@ -528,6 +528,8 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
       />
     </div>
   );
+
+  const albumBody = buddiesAlbumBody;
 
   if (embedded) {
     return (

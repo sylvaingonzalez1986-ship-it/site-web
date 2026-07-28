@@ -2077,9 +2077,9 @@ export async function getCollectionAlbumForCustomerFromSupabase(
     (configResult.data as Record<string, unknown> | null)?.collection_title,
     "",
   ).trim();
-  const definitions = (definitionsResult.data ?? []).map((row) =>
-    mapCardDefinitionRow(row as Record<string, unknown>),
-  );
+  const definitions = (definitionsResult.data ?? [])
+    .map((row) => mapCardDefinitionRow(row as Record<string, unknown>))
+    .filter((definition) => !collection || definition.collectionId === collection.id);
 
   // 2. Build ownership stats per definition + per-definition instance list (for burn)
   const ownedStats = new Map<string, { ownedCount: number; firstOwnedAt?: string; lastOwnedAt?: string }>();

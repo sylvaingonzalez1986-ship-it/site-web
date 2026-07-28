@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
+import { syncKqNotebookRewardsForCustomer } from "@/lib/supabase/kanab-quest-notebook-rewards-backend";
 import { CONTEST_SCORE_MAX, CONTEST_SCORE_MIN } from "@/lib/contest-score";
 import { CANNABIS_TERPENE_CODES, normalizeContestTerpene } from "@/lib/contest-terpenes";
 import {
@@ -3374,7 +3375,9 @@ export async function moderateContestReview(input: {
   if (moderatedReview) {
     await syncContestTesterPointsForReview(safeReviewId);
     if (input.status === "approved") {
-      await syncContestBadgeRewardsForCustomer(toText(moderatedReview.customer_id));
+      const customerId = toText(moderatedReview.customer_id);
+      await syncContestBadgeRewardsForCustomer(customerId);
+      await syncKqNotebookRewardsForCustomer(customerId);
     }
   }
 }

@@ -17,14 +17,17 @@ import {
 import {
   ArrowRightLeft,
   Award,
+  BookOpen,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   ChevronUp,
   CircleHelp,
   FileCheck2,
+  Sprout,
   ThumbsDown,
   ThumbsUp,
+  Trophy,
   X,
 } from "lucide-react";
 import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal";
@@ -36,6 +39,9 @@ import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import { categoryLabels, type Product, type ProductCategory } from "@/data/products";
 import { useLotteryExperience } from "@/hooks/useLotteryExperience";
+import { KQ_CARDS } from "@/lib/kanab-quest-game";
+import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
+import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import {
   CONTEST_AROMA_TAG_LABELS,
   CONTEST_CONSUMPTION_METHOD_LABELS,
@@ -92,6 +98,8 @@ type ContestHubClientProps = {
   testerSeasonRankings: PublicContestTesterRankingItem[];
   testerGlobalRankings: PublicContestTesterRankingItem[];
   isAuthenticated: boolean;
+  isAdminAuthorized: boolean;
+  isPlacardPlayerEnabled: boolean;
 };
 
 type ContestMascotPanel = "intro" | "profile" | "leaderboard";
@@ -105,6 +113,29 @@ type TestedFlowerCardItem = {
   review: ViewerContestReview;
   unlock: PublicContestNotebookUnlock;
   entryIndex: number;
+};
+
+type PlacardRankingEntry = {
+  rank: number;
+  pseudo: string;
+  rating: number;
+  seasonPoints: number;
+  wins: number;
+  losses: number;
+  streak: number;
+};
+
+type PlacardPlayerProgress = {
+  rank: number | null;
+  rating: number;
+  seasonPoints: number;
+  wins: number;
+  losses: number;
+  streak: number;
+  burnedFlowers: number;
+  league: string;
+  leagueProgress: number;
+  pointsToNextLeague: number;
 };
 
 export const CONTEST_BADGE_CATALOG = [
@@ -139,21 +170,21 @@ export const CONTEST_BADGE_CATALOG = [
 ] as const;
 
 const CONTEST_ACHIEVEMENT_BADGE_CATALOG = [
-  { id: "contest-badge-premier-carnet", code: "premier-carnet", label: "Premier Carnet", condition: "Fais valider ta premiere critique concours.", rewardPacks: 1 },
-  { id: "contest-badge-gouteur-regulier", code: "gouteur-regulier", label: "Gouteur Regulier", condition: "Fais valider 3 critiques concours.", rewardPacks: 2 },
-  { id: "contest-badge-marathon-des-lots", code: "marathon-des-lots", label: "Marathon des Lots", condition: "Fais valider 10 critiques concours.", rewardPacks: 4 },
-  { id: "contest-badge-premiere-piste", code: "premiere-piste", label: "Premiere Piste", condition: "Trouve 1 terpene dominant sur une fleur concours.", rewardPacks: 1 },
-  { id: "contest-badge-combo-aromatique", code: "combo-aromatique", label: "Combo Aromatique", condition: "Trouve 3 terpenes corrects sur une critique concours.", rewardPacks: 3 },
-  { id: "contest-badge-nez-absolu", code: "nez-absolu", label: "Nez Absolu", condition: "Trouve tous les terpenes dominants d'une fleur concours.", rewardPacks: 3 },
-  { id: "contest-badge-nez-divin", code: "nez-divin", label: "Nez Divin", condition: "Obtiens Nez Absolu sur 3 critiques concours.", rewardPacks: 6 },
-  { id: "contest-badge-tour-de-saison", code: "tour-de-saison", label: "Tour de Saison", condition: "Fais valider 3 critiques concours sur une meme saison.", rewardPacks: 2 },
-  { id: "contest-badge-expert-outdoor", code: "expert-outdoor", label: "Expert Outdoor", condition: "Fais valider 3 critiques concours outdoor.", rewardPacks: 1 },
-  { id: "contest-badge-expert-greenhouse", code: "expert-greenhouse", label: "Expert Greenhouse", condition: "Fais valider 3 critiques concours greenhouse.", rewardPacks: 1 },
-  { id: "contest-badge-expert-indoor", code: "expert-indoor", label: "Expert Indoor", condition: "Fais valider 3 critiques concours indoor.", rewardPacks: 1 },
-  { id: "contest-badge-critique-utile", code: "critique-utile", label: "Critique Utile", condition: "Une critique concours est marquee utile par l'admin.", rewardPacks: 1 },
-  { id: "contest-badge-plume-dor", code: "plume-dor", label: "Plume d'Or", condition: "Une critique concours est marquee excellente.", rewardPacks: 3 },
-  { id: "contest-badge-voix-respectee", code: "voix-respectee", label: "Voix Respectee", condition: "Recois 25 pouces haut sur des critiques concours.", rewardPacks: 2 },
-  { id: "contest-badge-validateur-serieux", code: "validateur-serieux", label: "Validateur Serieux", condition: "Vote sur 25 critiques concours d'autres testeurs.", rewardPacks: 1 },
+  { id: "contest-badge-premier-carnet", code: "premier-carnet", label: "Première dégustation", condition: "Fais valider ta première critique concours.", rewardPacks: 1, rewardFamily: "botte", rewardLabel: "1 booster La Botte" },
+  { id: "contest-badge-gouteur-regulier", code: "gouteur-regulier", label: "Goûteur régulier", condition: "Fais valider 3 critiques concours.", rewardPacks: 2, rewardFamily: "botte", rewardLabel: "1 booster La Botte + 2 Coups de pouce" },
+  { id: "contest-badge-marathon-des-lots", code: "marathon-des-lots", label: "Marathon des lots", condition: "Fais valider 10 critiques concours.", rewardPacks: 4, rewardFamily: "buddies", rewardLabel: "4 boosters Kanab Quest" },
+  { id: "contest-badge-premiere-piste", code: "premiere-piste", label: "Première piste", condition: "Identifie 1 terpène dominant.", rewardPacks: 1, rewardFamily: "botte", rewardLabel: "1 booster La Botte" },
+  { id: "contest-badge-combo-aromatique", code: "combo-aromatique", label: "Combo aromatique", condition: "Identifie 3 terpènes sur une même critique.", rewardPacks: 3, rewardFamily: "botte", rewardLabel: "1 booster La Botte + 1 Coup de pouce" },
+  { id: "contest-badge-nez-absolu", code: "nez-absolu", label: "Nez absolu", condition: "Identifie tous les terpènes dominants d’une fleur.", rewardPacks: 3, rewardFamily: "botte", rewardLabel: "2 boosters La Botte + 1 Coup de pouce" },
+  { id: "contest-badge-nez-divin", code: "nez-divin", label: "Nez divin", condition: "Obtiens Nez absolu sur 3 critiques.", rewardPacks: 6, rewardFamily: "buddies", rewardLabel: "6 boosters Kanab Quest" },
+  { id: "contest-badge-tour-de-saison", code: "tour-de-saison", label: "Tour de saison", condition: "Teste 3 fleurs différentes pendant la même saison.", rewardPacks: 2, rewardFamily: "buddies", rewardLabel: "2 boosters Kanab Quest" },
+  { id: "contest-badge-expert-outdoor", code: "expert-outdoor", label: "Expert Outdoor", condition: "Fais valider 3 critiques Outdoor.", rewardPacks: 1, rewardFamily: "botte", rewardLabel: "1 booster La Botte + 1 Coup de pouce" },
+  { id: "contest-badge-expert-greenhouse", code: "expert-greenhouse", label: "Expert Greenhouse", condition: "Fais valider 3 critiques Greenhouse.", rewardPacks: 1, rewardFamily: "botte", rewardLabel: "1 booster La Botte + 1 Coup de pouce" },
+  { id: "contest-badge-expert-indoor", code: "expert-indoor", label: "Expert Indoor", condition: "Fais valider 3 critiques Indoor.", rewardPacks: 1, rewardFamily: "botte", rewardLabel: "1 booster La Botte + 1 Coup de pouce" },
+  { id: "contest-badge-critique-utile", code: "critique-utile", label: "Critique utile", condition: "Obtiens la validation « utile » de l’équipe.", rewardPacks: 1, rewardFamily: "botte", rewardLabel: "1 Coup de pouce" },
+  { id: "contest-badge-plume-dor", code: "plume-dor", label: "Plume d’or", condition: "Obtiens la distinction « excellente critique ».", rewardPacks: 3, rewardFamily: "buddies", rewardLabel: "3 boosters Kanab Quest" },
+  { id: "contest-badge-voix-respectee", code: "voix-respectee", label: "Voix respectée", condition: "Reçois 25 votes positifs sur tes critiques.", rewardPacks: 2, rewardFamily: "buddies", rewardLabel: "2 boosters Kanab Quest" },
+  { id: "contest-badge-validateur-serieux", code: "validateur-serieux", label: "Validateur sérieux", condition: "Vote sur 25 critiques d’autres testeurs.", rewardPacks: 1, rewardFamily: "botte", rewardLabel: "1 Coup de pouce" },
 ] as const;
 
 const CONTEST_MASCOT_SCENES = {
@@ -781,6 +812,65 @@ function getUnlockedContestBadgeCount(badges: PublicContestProfileBadge[]) {
   ).length;
 }
 
+function ContestBotteCollection({ isAuthenticated }: { isAuthenticated: boolean }) {
+  const [snapshot, setSnapshot] = useState<{
+    collection?: { cards?: Array<{ code: string; ownedCopies: number }> };
+    heritage?: { cards?: Array<{ code: string; ownedCopies: number }>; fragmentBalance?: number } | null;
+  } | null>(null);
+  const [loading, setLoading] = useState(isAuthenticated);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const controller = new AbortController();
+    fetch("/api/arena/placard/bootstrap", { cache: "no-store", signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Collection indisponible");
+        setSnapshot(await response.json());
+      })
+      .catch(() => setSnapshot(null))
+      .finally(() => setLoading(false));
+    return () => controller.abort();
+  }, [isAuthenticated]);
+
+  const supportCopies = new Map((snapshot?.collection?.cards ?? []).map((card) => [card.code, Number(card.ownedCopies)]));
+  const heritageCopies = new Map((snapshot?.heritage?.cards ?? []).map((card) => [card.code, Number(card.ownedCopies)]));
+  const supportOwned = KQ_CARDS.filter((card) => (supportCopies.get(card.code) ?? 0) > 0).length;
+  const heritageOwned = KQ_HERITAGE_CARDS.filter((card) => (heritageCopies.get(card.code) ?? 0) > 0).length;
+
+  if (!isAuthenticated) return <div className="rounded border-2 border-ink bg-white p-5 text-sm font-bold">Connecte-toi pour voir tes cartes La Botte et tes Héritages.</div>;
+  if (loading) return <div className="rounded border-2 border-ink bg-white p-5 text-sm font-bold">Chargement de La Botte…</div>;
+
+  const renderCard = (card: { code: string; name: string; rarity: string; description: string }, copies: number, permanent: boolean) => {
+    const artwork = getKqCardArtwork(card.code);
+    return <article key={card.code} className={`w-40 shrink-0 rounded border-2 border-ink p-2 shadow-[3px_3px_0_#1a1a1a] ${copies > 0 ? "bg-white" : "bg-[#dedbd2] opacity-75"}`}>
+      {artwork ? <div className="relative aspect-[2/3] overflow-hidden border border-ink"><Image src={artwork} alt={`Carte ${card.name}`} fill sizes="160px" className="object-cover" /></div> : null}
+      <span className="mt-2 block text-[9px] font-black uppercase tracking-wider text-green">{permanent ? "Héritage permanent" : "La Botte · consommable"}</span>
+      <strong className="mt-1 block text-sm leading-tight">{card.name}</strong>
+      <small className="mt-1 block text-[10px] leading-snug text-charcoal">{card.description}</small>
+      <b className="mt-2 block text-xs">{copies > 0 ? `Possédée ×${copies}` : "À découvrir"}</b>
+    </article>;
+  };
+
+  return <div className="grid gap-5">
+    <div className="grid gap-3 sm:grid-cols-3">
+      <b className="border-2 border-ink bg-white p-3">{supportOwned}/36<small className="block font-normal">cartes La Botte découvertes</small></b>
+      <b className="border-2 border-ink bg-white p-3">{heritageOwned}/12<small className="block font-normal">Héritages découverts</small></b>
+      <b className="border-2 border-ink bg-white p-3">{snapshot?.heritage?.fragmentBalance ?? 0}<small className="block font-normal">fragments Héritage</small></b>
+    </div>
+    <section>
+      <h3 className="font-display text-xl uppercase">La Botte du Chanvrier</h3>
+      <p className="text-xs font-semibold text-charcoal">Ces cartes améliorent tes cultures et brûlent lorsque tu les utilises.</p>
+      <div className="mt-3 flex gap-3 overflow-x-auto pb-3">{KQ_CARDS.map((card) => renderCard(card, supportCopies.get(card.code) ?? 0, false))}</div>
+    </section>
+    <section>
+      <h3 className="font-display text-xl uppercase">Héritages de concours</h3>
+      <p className="text-xs font-semibold text-charcoal">Ces pouvoirs sont permanents : ils ne brûlent jamais.</p>
+      <div className="mt-3 flex gap-3 overflow-x-auto pb-3">{KQ_HERITAGE_CARDS.map((card) => renderCard(card, heritageCopies.get(card.code) ?? 0, true))}</div>
+    </section>
+    <a href="#placard-arene" className="inline-flex min-h-11 items-center justify-center border-2 border-ink bg-green px-4 text-xs font-black uppercase text-white shadow-[3px_3px_0_#1a1a1a]">Découvrir le fonctionnement du Placard</a>
+  </div>;
+}
+
 function ContestNotebookCollectionTab({
   lottery,
   isAuthenticated,
@@ -805,15 +895,16 @@ function ContestNotebookCollectionTab({
   onClaimBadge: (badgeId: string) => void;
 }) {
   const unlockedBadgeCount = getUnlockedContestBadgeCount(badges);
+  const [collectionFamily, setCollectionFamily] = useState<"buddies" | "botte">("buddies");
 
   return (
     <div className="contest-notebook-collection-tab">
       <div className="contest-lab-sheet-header">
         <div className="min-w-0">
           <p className="text-[10px] font-black uppercase tracking-[0.14em] text-charcoal">
-            Collection et badges
+            Deux collections distinctes
           </p>
-          <h2 className="mt-1 text-xl font-black leading-tight text-ink">Album et récompenses</h2>
+          <h2 className="mt-1 text-xl font-black leading-tight text-ink">Mes collections Kanab Quest</h2>
         </div>
         <span className="contest-lab-unlock-chip contest-lab-unlock-chip-ok">
           <Award size={14} />
@@ -821,14 +912,17 @@ function ContestNotebookCollectionTab({
         </span>
       </div>
 
-      <div className="contest-notebook-booster-guide">
+      <div className="grid grid-cols-2 gap-2">
+        <button type="button" aria-pressed={collectionFamily === "buddies"} onClick={() => setCollectionFamily("buddies")} className={`min-h-12 border-2 border-ink px-3 text-xs font-black uppercase ${collectionFamily === "buddies" ? "bg-yellow shadow-[3px_3px_0_#1a1a1a]" : "bg-white"}`}>Buddies · Collection</button>
+        <button type="button" aria-pressed={collectionFamily === "botte"} onClick={() => setCollectionFamily("botte")} className={`min-h-12 border-2 border-ink px-3 text-xs font-black uppercase ${collectionFamily === "botte" ? "bg-green text-white shadow-[3px_3px_0_#1a1a1a]" : "bg-white"}`}>La Botte · Jeu</button>
+      </div>
+
+      {collectionFamily === "buddies" ? <><div className="contest-notebook-booster-guide">
         <div className="contest-notebook-booster-guide-main">
-          <span>Objectif gros lot</span>
-          <strong>Jusqu&apos;a 1 an de conso</strong>
+          <span>Collection Buddies</span>
+          <strong>Les cartes des boosters Kanab Quest</strong>
           <p>
-            Les packs boosters se gagnent avec tes actions de testeur sur les varietes Concours.
-            Plus tes critiques Concours sont utiles et precises, plus tu debloques de badges,
-            de packs et de chances d&apos;avancer dans la collection.
+            Complète ton album principal et ses pages pour progresser vers les récompenses Kanab Quest.
           </p>
         </div>
         <div className="contest-notebook-booster-guide-steps" aria-label="Comment gagner des packs booster">
@@ -853,8 +947,13 @@ function ContestNotebookCollectionTab({
         availableTicketCount={availableTicketCount}
         status={status}
         onOpenNextPack={onOpenNextPack}
-      />
+      /></> : <ContestBotteCollection isAuthenticated={isAuthenticated} />}
 
+      <div className="mt-4 border-t-2 border-ink pt-4">
+        <p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Missions de dégustation · cible 70/30</p>
+        <h3 className="font-display text-xl uppercase">Des gains utiles dans les deux collections</h3>
+        <p className="mt-1 text-xs font-semibold text-charcoal">La majorité des missions nourrit le Placard. Les grands défis offrent encore des boosters Buddies.</p>
+      </div>
       <ContestBadgeGallery
         badges={badges}
         isAuthenticated={isAuthenticated}
@@ -1811,6 +1910,31 @@ function ContestTesterProfileCard({
   onMascotHover?: () => void;
   onMascotLeave?: () => void;
 }) {
+  const [placardProgress, setPlacardProgress] = useState<PlacardPlayerProgress | null>(null);
+  const [placardProgressLoaded, setPlacardProgressLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated || placardProgressLoaded) return;
+    const controller = new AbortController();
+    let cancelled = false;
+    void fetch("/api/arena/placard/me", { cache: "no-store", signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Progression indisponible");
+        const payload = await response.json() as { progress?: PlacardPlayerProgress | null };
+        if (!cancelled) setPlacardProgress(payload.progress ?? null);
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+      })
+      .finally(() => {
+        if (!cancelled) setPlacardProgressLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [isAuthenticated, placardProgressLoaded]);
+
   if (!isAuthenticated) {
     return (
       <div className="cartoon-border bg-cream p-5 md:p-6">
@@ -1907,6 +2031,19 @@ function ContestTesterProfileCard({
             : "Tous les niveaux de points sont atteints."}
         </p>
       </div>
+
+      <div className={arenaStyles.placardProfileSummary}>
+        <div>
+          <p>Progression Placard</p>
+          <strong>{placardProgress ? `${placardProgress.league} · ${placardProgress.wins} V / ${placardProgress.losses} D` : "Saison de culture"}</strong>
+          <small>{placardProgress ? `${placardProgress.pointsToNextLeague} point(s) de cote avant le palier suivant · ${placardProgress.burnedFlowers} Fleur(s) passée(s) au jury.` : "Crée des Fleurs, relève les défis et affronte les autres joueurs pour entrer au classement."}</small>
+        </div>
+        <dl>
+          <div><dt>Ligue</dt><dd>{placardProgress?.league ?? (placardProgressLoaded ? "Non classé" : "…")}</dd></div>
+          <div><dt>Cote</dt><dd>{placardProgress?.rating ?? "—"}</dd></div>
+          <div><dt>Rang saison</dt><dd>{placardProgress?.rank ? `#${placardProgress.rank}` : "—"}</dd></div>
+        </dl>
+      </div>
     </div>
   );
 }
@@ -1931,7 +2068,36 @@ function ContestTesterLeaderboard({
   compact?: boolean;
 }) {
   const [scope, setScope] = useState<"season" | "global">("season");
+  const [rankingType, setRankingType] = useState<"tasting" | "placard">("tasting");
+  const [placardEntries, setPlacardEntries] = useState<PlacardRankingEntry[]>([]);
+  const [placardRankingLoaded, setPlacardRankingLoaded] = useState(false);
+  const [placardRankingUnavailable, setPlacardRankingUnavailable] = useState(false);
   const items = scope === "season" ? seasonItems : globalItems;
+  const isPlacardRanking = rankingType === "placard";
+
+  useEffect(() => {
+    if (!isPlacardRanking || placardRankingLoaded) return;
+    const controller = new AbortController();
+    let cancelled = false;
+    void fetch("/api/arena/placard/rankings", { signal: controller.signal })
+      .then(async (response) => {
+        const payload = await response.json() as { entries?: PlacardRankingEntry[] };
+        if (!response.ok) throw new Error("Classement indisponible");
+        setPlacardEntries(Array.isArray(payload.entries) ? payload.entries : []);
+        setPlacardRankingUnavailable(false);
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setPlacardRankingUnavailable(true);
+      })
+      .finally(() => {
+        if (!cancelled) setPlacardRankingLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [isPlacardRanking, placardRankingLoaded]);
 
   return (
     <div className="cartoon-border bg-cream p-4 md:p-6">
@@ -1939,7 +2105,7 @@ function ContestTesterLeaderboard({
         <div>
           <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Top testeurs</p>
           <h2 className={`font-display leading-none text-ink ${compact ? "text-2xl" : "text-3xl"}`}>
-            Classement testeurs
+            {isPlacardRanking ? "Classement Placard" : "Classement dégustation"}
           </h2>
         </div>
         {compact ? null : (
@@ -1971,8 +2137,48 @@ function ContestTesterLeaderboard({
         </div>
       </div>
 
+      <div className={arenaStyles.personalRankingTypeSwitch} aria-label="Type de classement">
+        <button type="button" aria-pressed={!isPlacardRanking} data-active={!isPlacardRanking || undefined} onClick={() => setRankingType("tasting")}>
+          Dégustation
+          <small>Avis validés</small>
+        </button>
+        <button type="button" aria-pressed={isPlacardRanking} data-active={isPlacardRanking || undefined} onClick={() => setRankingType("placard")}>
+          Placard
+          <small>Cultures &amp; duels</small>
+        </button>
+      </div>
+
+      {isPlacardRanking ? (
+        <p className="mt-3 text-xs font-semibold text-charcoal">
+          En cas d’égalité : meilleure cote, puis points de saison, victoires et identifiant stable.
+        </p>
+      ) : null}
+
       <div className="mt-5 grid gap-2">
-        {items.length > 0 ? (
+        {isPlacardRanking && !placardRankingLoaded ? (
+          <div className={arenaStyles.placardRankingEmpty}>
+            <span>Classement Placard</span>
+            <strong>Chargement du snapshot quotidien…</strong>
+            <p>Les résultats sont consolidés une fois par jour afin de garder l’Arène rapide.</p>
+          </div>
+        ) : isPlacardRanking && placardEntries.length > 0 ? (
+          placardEntries.slice(0, compact ? 5 : 10).map((item) => (
+            <div key={`placard-${item.rank}-${item.pseudo}`} className="grid grid-cols-[48px_minmax(0,1fr)_72px] items-center gap-3 rounded border-2 border-[#1a1a1a] bg-white px-3 py-3 shadow-[2px_2px_0_#1a1a1a]">
+              <span className="rounded-full border-2 border-[#1a1a1a] bg-yellow px-2 py-1 text-center text-sm font-black text-ink">#{item.rank}</span>
+              <span className="min-w-0">
+                <span className="block truncate text-sm font-black text-ink">{item.pseudo}</span>
+                <span className="block truncate text-xs font-semibold text-charcoal">{item.wins} V · {item.losses} D · série {item.streak}</span>
+              </span>
+              <span className="text-right"><strong className="block text-sm font-black text-ink">{item.rating}</strong><small className="text-[10px] font-bold uppercase text-charcoal">{item.seasonPoints} pts</small></span>
+            </div>
+          ))
+        ) : isPlacardRanking ? (
+          <div className={arenaStyles.placardRankingEmpty}>
+            <span>{placardRankingUnavailable ? "Classement momentanément indisponible" : "Saison Placard ouverte"}</span>
+            <strong>Pas encore de cultivateur classé</strong>
+            <p>Les premières victoires et participations feront apparaître les cultivateurs dans ce classement quotidien.</p>
+          </div>
+        ) : items.length > 0 ? (
           items.map((item) => {
             const profileParams = new URLSearchParams();
             if (scope === "season" && profileSeasonCode) {
@@ -2005,7 +2211,7 @@ function ContestTesterLeaderboard({
           })
         ) : (
           <div className="rounded border-2 border-dashed border-[#1a1a1a] bg-white p-5 text-sm text-charcoal">
-            Aucun testeur classe pour le moment.
+            Aucun testeur classé pour le moment.
           </div>
         )}
       </div>
@@ -2100,7 +2306,6 @@ function ContestBadgeGallery({
         {CONTEST_ACHIEVEMENT_BADGE_CATALOG.map((badge) => {
           const unlocked = unlockedBadges.get(badge.code) ?? unlockedBadges.get(badge.id);
           const claimed = Boolean(unlocked?.rewardClaimedAt);
-          const rewardPacks = unlocked?.rewardPackCount || badge.rewardPacks;
 
           return (
             <div
@@ -2121,27 +2326,29 @@ function ContestBadgeGallery({
                 <p className="mt-2 text-xs font-semibold leading-relaxed text-charcoal">
                   {badge.condition}
                 </p>
-                <p className="mt-2 rounded border-2 border-[#1a1a1a] bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.08em] text-ink">
-                  {rewardPacks} pack{rewardPacks > 1 ? "s" : ""} booster offert{rewardPacks > 1 ? "s" : ""}
+                <p className={`mt-2 rounded border-2 border-[#1a1a1a] px-3 py-2 text-[11px] font-black uppercase tracking-[0.08em] text-ink ${badge.rewardFamily === "botte" ? "bg-[#e8f4e7]" : "bg-[#fff0a8]"}`}>
+                  {badge.rewardLabel}
                 </p>
               </div>
 
-              {unlocked ? (
-                claimed ? (
-                  <div className="mt-3 min-h-[38px] rounded border-2 border-[#1a1a1a] bg-white px-3 py-2 text-center text-[11px] font-black uppercase text-charcoal">
-                    Récompense réclamée
-                  </div>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => onClaim(badge.id)}
-                    disabled={claimingBadgeId === badge.id}
-                    className="btn-cartoon btn-primary mt-3 inline-flex min-h-[38px] items-center justify-center px-3 text-[11px] leading-none disabled:opacity-60"
-                  >
-                    {claimingBadgeId === badge.id ? "Attribution..." : "Réclamer les packs"}
-                  </button>
-                )
+              {unlocked ? (badge.rewardFamily === "botte" ? (
+                <div className="mt-3 min-h-[38px] rounded border-2 border-[#1a1a1a] bg-[#e8f4e7] px-3 py-2 text-center text-[11px] font-black uppercase text-green">
+                  Gain Placard prévu au lancement
+                </div>
+              ) : claimed ? (
+                <div className="mt-3 min-h-[38px] rounded border-2 border-[#1a1a1a] bg-white px-3 py-2 text-center text-[11px] font-black uppercase text-charcoal">
+                  Récompense réclamée
+                </div>
               ) : (
+                <button
+                  type="button"
+                  onClick={() => onClaim(badge.id)}
+                  disabled={claimingBadgeId === badge.id}
+                  className="btn-cartoon btn-primary mt-3 inline-flex min-h-[38px] items-center justify-center px-3 text-[11px] leading-none disabled:opacity-60"
+                >
+                  {claimingBadgeId === badge.id ? "Attribution..." : "Réclamer les boosters"}
+                </button>
+              )) : (
                 <div className="mt-3 min-h-[38px] rounded border-2 border-dashed border-[#1a1a1a] bg-white/70 px-3 py-2 text-center text-[11px] font-black uppercase text-charcoal">
                   {isAuthenticated ? "Objectif à remplir" : "Connexion requise"}
                 </div>
@@ -2171,6 +2378,8 @@ export function ContestHubClient({
   testerSeasonRankings,
   testerGlobalRankings,
   isAuthenticated,
+  isAdminAuthorized,
+  isPlacardPlayerEnabled,
 }: ContestHubClientProps) {
   const router = useRouter();
   const { addToCart, authLoading } = useCart();
@@ -2616,8 +2825,8 @@ export function ContestHubClient({
             </h1>
             <div className={arenaStyles.heroRule} aria-hidden="true" />
             <p className={arenaStyles.heroLead}>
-              Goûte les lots en lice, note-les dans ton carnet et aide les meilleures fleurs de
-              la saison à monter sur le podium.
+              Trois espaces, une seule progression : remplis ton Carnet, joue tes cartes dans le
+              Placard, puis mesure-toi aux autres dans les classements de la saison.
             </p>
             <div className={arenaStyles.heroActions}>
               <a href="#classement-arene" className={arenaStyles.primaryAction}>
@@ -2626,10 +2835,20 @@ export function ContestHubClient({
               <a href="#carnet-arene" className={arenaStyles.secondaryAction}>
                 Ouvrir mon carnet <ChevronRight size={17} aria-hidden="true" />
               </a>
+              {isPlacardPlayerEnabled && isAuthenticated ? (
+                <Link href="/arene/placard" className={arenaStyles.placardAction}>
+                  Ouvrir le Placard <ChevronRight size={17} aria-hidden="true" />
+                </Link>
+              ) : isAdminAuthorized ? (
+                <Link href="/admin/placard" className={arenaStyles.placardAction}>
+                  Tester le Placard <ChevronRight size={17} aria-hidden="true" />
+                </Link>
+              ) : null}
             </div>
             <ul className={arenaStyles.heroProofs} aria-label="Principes de l'Arène">
               <li>Lots de saison</li>
               <li>Avis vérifiés</li>
+              <li>Placard &amp; cartes</li>
               <li>Récompenses à gagner</li>
             </ul>
           </div>
@@ -2651,19 +2870,61 @@ export function ContestHubClient({
       </header>
 
       <div className={`retro-container ${arenaStyles.content}`}>
+        <nav className={arenaStyles.arenaHub} aria-labelledby="arena-hub-title">
+          <div className={arenaStyles.arenaHubHeading}>
+            <p className={arenaStyles.sectionKicker}>Choisis ton espace</p>
+            <h2 id="arena-hub-title">Que veux-tu faire ?</h2>
+            <p>Tu peux commencer où tu veux. Le Carnet nourrit le Placard, et le Placard te fait entrer dans les classements.</p>
+          </div>
+          <div className={arenaStyles.arenaHubCards}>
+            <a href="#carnet-arene" className={arenaStyles.arenaHubCard} data-space="carnet">
+              <span><b>1</b><BookOpen aria-hidden="true" /></span>
+              <strong>Mon Carnet</strong>
+              <p>Déguster, noter et faire valider mes critiques.</p>
+              <small>À gagner : profil, badges et avantages Placard</small>
+              <em>Ouvrir le Carnet <ChevronDown aria-hidden="true" /></em>
+            </a>
+            {isPlacardPlayerEnabled && isAuthenticated ? (
+              <Link href="/arene/placard" className={arenaStyles.arenaHubCard} data-space="placard">
+                <span><b>2</b><Sprout aria-hidden="true" /></span>
+                <strong>Mon Placard</strong>
+                <p>Composer mon deck, cultiver et créer une Fleur.</p>
+                <small>À gagner : EXP d’Arène et Fleurs de concours</small>
+                <em>Jouer maintenant <ChevronRight aria-hidden="true" /></em>
+              </Link>
+            ) : (
+              <a href="#placard-arene" className={arenaStyles.arenaHubCard} data-space="placard">
+                <span><b>2</b><Sprout aria-hidden="true" /></span>
+                <strong>Le Placard</strong>
+                <p>Découvrir le jeu de cartes et la culture.</p>
+                <small>{isPlacardPlayerEnabled ? "Connexion requise pour jouer" : "Accès joueur bientôt disponible"}</small>
+                <em>Découvrir <ChevronDown aria-hidden="true" /></em>
+              </a>
+            )}
+            <a href="#classement-arene" className={arenaStyles.arenaHubCard} data-space="classements">
+              <span><b>3</b><Trophy aria-hidden="true" /></span>
+              <strong>Les Classements</strong>
+              <p>Voir les meilleurs testeurs, cultivateurs et Fleurs.</p>
+              <small>Deux progressions distinctes, une même saison</small>
+              <em>Voir les rangs <ChevronDown aria-hidden="true" /></em>
+            </a>
+          </div>
+          <p className={arenaStyles.arenaHubLoop}><strong>Carnet</strong><span>débloque des avantages</span><strong>Placard</strong><span>produit des Fleurs</span><strong>Classements</strong></p>
+        </nav>
+
         <section aria-labelledby="arena-how-title">
           <div className={arenaStyles.sectionHeading}>
             <div>
               <h2 id="arena-how-title" className={arenaStyles.sectionTitle}>
-                Comment ça <span>marche ?</span>
+                Une boucle. <span>Trois actions.</span>
               </h2>
             </div>
           </div>
           <div className={arenaStyles.howGrid}>
             {[
-              ["1", "Achète ton lot", "Commande une fleur de la saison : son achat débloque sa fiche de dégustation dans ton carnet."],
-              ["2", "Remplis ton carnet", "Observe, sens, goûte et note chaque critère à ton rythme."],
-              ["3", "Donne ton verdict", "Ton avis validé compte dans le classement et fait progresser ton profil."],
+              ["1", "Déguste", "Note les fleurs de saison dans ton Carnet."],
+              ["2", "Cultive", "Utilise tes avantages et tes cartes dans le Placard."],
+              ["3", "Affronte", "Présente ta Fleur au jury et progresse dans les classements."],
             ].map(([number, title, text]) => (
               <article key={number} className={arenaStyles.howCard}>
                 <span className={arenaStyles.howNumber}>{number}</span>
@@ -2671,6 +2932,57 @@ export function ContestHubClient({
                 <p>{text}</p>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section id="placard-arene" className={arenaStyles.placardSection} aria-labelledby="arena-placard-title">
+          <div className={arenaStyles.placardIntro}>
+            <div className={arenaStyles.placardCopy}>
+              <p className={arenaStyles.sectionKicker}>Le jeu de L’Arène</p>
+              <h2 id="arena-placard-title" className={arenaStyles.sectionTitle}>
+                Du carnet au <span>Placard.</span>
+              </h2>
+              <p className={arenaStyles.placardLead}>
+                Tes dégustations débloquent des avantages. Utilise-les avec tes cartes pour cultiver
+                une Fleur unique, puis présente-la au jury.
+              </p>
+              <div className={arenaStyles.placardStatus}>
+                <span>{isPlacardPlayerEnabled ? "Saison ouverte" : "Accès en test"}</span>
+                <p>{isPlacardPlayerEnabled
+                  ? "Crée ta Fleur, affronte un joueur ou un bot et gagne de l’EXP d’Arène."
+                  : "Le Placard est actuellement réservé à l’administration avant son ouverture aux joueurs."}</p>
+              </div>
+              {isPlacardPlayerEnabled && isAuthenticated ? (
+                <Link href="/arene/placard" className={arenaStyles.placardPlayAction}>
+                  Jouer au Placard <ChevronRight size={18} aria-hidden="true" />
+                </Link>
+              ) : isPlacardPlayerEnabled ? (
+                <Link href="/compte/connexion?next=%2Farene%2Fplacard" className={arenaStyles.placardPlayAction}>
+                  Se connecter pour jouer <ChevronRight size={18} aria-hidden="true" />
+                </Link>
+              ) : isAdminAuthorized ? (
+                <Link href="/admin/placard" className={arenaStyles.placardPlayAction}>
+                  Tester le Placard <ChevronRight size={18} aria-hidden="true" />
+                </Link>
+              ) : null}
+            </div>
+            <div className={arenaStyles.placardVisual} aria-hidden="true">
+              <span />
+              <Image
+                src="/sylvain-culture-hero.png"
+                alt=""
+                width={1152}
+                height={1365}
+                sizes="(max-width: 767px) 78vw, 380px"
+              />
+            </div>
+          </div>
+
+          <div className={arenaStyles.placardSummary}>
+            <span><Trophy aria-hidden="true" /><strong>Deux façons de briller</strong></span>
+            <p><b>Classement testeurs :</b> tes dégustations.</p>
+            <p><b>Classement Placard :</b> tes cultures et tes duels.</p>
+            <small>Les récompenses de fin de saison seront précisées dans le règlement officiel.</small>
           </div>
         </section>
 
@@ -2688,7 +3000,8 @@ export function ContestHubClient({
               </h2>
             </div>
             <p className={arenaStyles.sectionLead}>
-              Chaque critique validée fait progresser ton profil, tes badges et ton album.
+              Tes critiques font progresser ton profil de dégustation. Tes cultures et tes duels
+              construiront séparément ton rang Placard.
             </p>
           </div>
           <div className={arenaStyles.personalGrid}>

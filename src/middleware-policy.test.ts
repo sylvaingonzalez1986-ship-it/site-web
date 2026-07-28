@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { shouldEnforceAgeGate, shouldValidateMutativeOrigin } from "../middleware";
+import { isAdminRestrictedPage, shouldEnforceAgeGate, shouldValidateMutativeOrigin } from "../middleware";
 
 describe("middleware policy helpers", () => {
   it("enforces the age gate on contest pages", () => {
@@ -20,5 +20,14 @@ describe("middleware policy helpers", () => {
   it("keeps checkout webhooks exempt from browser origin validation", () => {
     expect(shouldValidateMutativeOrigin("/api/checkout/viva", "POST")).toBe(true);
     expect(shouldValidateMutativeOrigin("/api/checkout/viva/webhook", "POST")).toBe(false);
+  });
+
+  it("protects both the admin Placard and its legacy local entry page", () => {
+    expect(isAdminRestrictedPage("/admin/placard")).toBe(true);
+    expect(isAdminRestrictedPage("/dev/placard")).toBe(true);
+    expect(isAdminRestrictedPage("/dev/placard/card-back.webp")).toBe(true);
+    expect(isAdminRestrictedPage("/dev/placard/characters/sylvain.webp")).toBe(true);
+    expect(isAdminRestrictedPage("/dev/placard-preview")).toBe(false);
+    expect(isAdminRestrictedPage("/arene")).toBe(false);
   });
 });

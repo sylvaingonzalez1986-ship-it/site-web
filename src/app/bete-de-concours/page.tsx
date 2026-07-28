@@ -21,6 +21,7 @@ import {
   isContestSchemaMissingError,
 } from "@/lib/contest-backend";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
+import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 import {
   CONTEST_ENTRY_CATEGORIES,
   CONTEST_ENTRY_TRACKS,
@@ -196,6 +197,8 @@ export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
         testerSeasonRankings={testerSeasonRankings.items.map(sanitizePublicContestRankingItem)}
         testerGlobalRankings={testerGlobalRankings.items.map(sanitizePublicContestRankingItem)}
         isAuthenticated={Boolean(session?.customerId)}
+        isAdminAuthorized={adminAuthorized}
+        isPlacardPlayerEnabled={isKqPlayerApiEnabled()}
       />
     );
   } catch (error) {

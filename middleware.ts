@@ -149,6 +149,10 @@ export function shouldValidateMutativeOrigin(pathname: string, method: string): 
   );
 }
 
+export function isAdminRestrictedPage(pathname: string): boolean {
+  return pathname.startsWith("/admin") || pathname === "/dev/placard" || pathname.startsWith("/dev/placard/");
+}
+
 function sanitizeNextPath(value: string | null): string {
   if (!value) {
     return "/";
@@ -193,7 +197,7 @@ export async function middleware(request: NextRequest) {
   const isCrawler = isCrawlerRequest(request);
   const isDocumentNavigation = isDocumentNavigationRequest(request);
 
-  const isAdminPage = pathname.startsWith("/admin");
+  const isAdminPage = isAdminRestrictedPage(pathname);
   const isAdminApi = pathname.startsWith("/api/admin");
   const isAdminLoginPage = pathname === "/admin/login";
   const isAdminLoginApi = pathname === "/api/admin/login";

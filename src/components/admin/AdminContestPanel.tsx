@@ -3,6 +3,7 @@
 import { Check, Plus, RefreshCcw, Save, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ProductImageUpload } from "@/components/admin/ProductImageUpload";
+import { AdminPlacardOperationsPanel } from "@/components/admin/AdminPlacardOperationsPanel";
 import type { Product } from "@/data/products";
 import {
   CANNABIS_CANNABINOID_CODES,
@@ -397,6 +398,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
   const [loadingMoreReviews, setLoadingMoreReviews] = useState(false);
   const [notesByReviewId, setNotesByReviewId] = useState<Record<string, string>>({});
   const [qualityByReviewId, setQualityByReviewId] = useState<Record<string, ContestReviewQualityMark>>({});
+  const [placardOpen, setPlacardOpen] = useState(false);
   const entryFormRef = useRef<HTMLDivElement | null>(null);
 
   const loadData = async (
@@ -882,6 +884,28 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
           <p className="mt-3 text-sm text-charcoal">Chargement du tableau de bord concours...</p>
         )}
       </div>
+
+      <section className="cartoon-border bg-[#e8f4e7] p-5 md:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-green">Kanab Quest</p>
+            <h3 className="mt-1 font-display text-2xl text-ink">Gestion du Placard</h3>
+            <p className="mt-1 text-sm text-charcoal">
+              Collections, récompenses, saisons et préparation du lancement.
+            </p>
+          </div>
+          <button
+            className={placardOpen ? "btn-cartoon btn-secondary" : "btn-cartoon btn-primary"}
+            type="button"
+            aria-expanded={placardOpen}
+            onClick={() => setPlacardOpen((current) => !current)}
+          >
+            {placardOpen ? "Fermer la gestion" : "Gérer le Placard"}
+          </button>
+        </div>
+      </section>
+
+      {placardOpen ? <AdminPlacardOperationsPanel /> : null}
 
       <div className="grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
         <section className="cartoon-border bg-cream p-6">

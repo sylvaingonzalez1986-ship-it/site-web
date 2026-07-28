@@ -18,7 +18,10 @@
     "cleanup:uploads:supabase": "node scripts/cleanup-supabase-storage-orphans.mjs",
     "redact:analyses:supabase": "node scripts/redact-product-analyses.mjs",
     "check:invoice-counter": "node scripts/check-invoice-counter.mjs",
-    "load-test:arena": "node scripts/load-test-arena.mjs"
+    "load-test:arena": "node scripts/load-test-arena.mjs",
+    "load-test:placard": "node scripts/load-test-placard.mjs",
+    "smoke-test:placard:transactions": "node scripts/smoke-test-placard-transactions.mjs",
+    "audit:placard:mobile": "node scripts/audit-placard-mobile.mjs"
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.95",
