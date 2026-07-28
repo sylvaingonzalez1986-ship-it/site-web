@@ -8302,6 +8302,34 @@ body.contest-guide-open .contest-hub-flipbook .contest-guide-flipbook .contest-n
 }
 
 @media (max-width: 767px) {
+  .contest-notebook-modal[data-keyboard-open="true"][open] {
+    justify-content: flex-start !important;
+    gap: 0.25rem !important;
+    padding: max(0.25rem, env(safe-area-inset-top, 0px)) 0.35rem 0.25rem !important;
+  }
+
+  .contest-notebook-modal[data-keyboard-open="true"][open] .contest-notebook-mobile-toolbar,
+  .contest-notebook-modal[data-keyboard-open="true"][open] > .contest-notebook-bookmarks,
+  .contest-notebook-modal[data-keyboard-open="true"][open] > .contest-notebook-flip-controls {
+    display: none !important;
+  }
+
+  .contest-notebook-modal[data-keyboard-open="true"][open] .contest-notebook-flip-viewport {
+    flex: 1 1 100% !important;
+    min-height: 0 !important;
+  }
+
+  .contest-notebook-modal[data-keyboard-open="true"][open] .contest-notebook-notes-body {
+    scroll-padding-block: 0.75rem;
+  }
+
+  .contest-notebook-modal[data-keyboard-open="true"][open] textarea {
+    height: 170px !important;
+    min-height: 150px !important;
+    max-height: none !important;
+    scroll-margin-block: 0.75rem;
+  }
+
   .contest-lab-notes-view .contest-lab-sheet-header {
     display: none !important;
   }

@@ -201,17 +201,48 @@ export function NotebookFlipBook({
       return;
     }
 
+    let focusedFieldScrollTimer: number | null = null;
+
     const syncVisibleViewport = () => {
       const visibleViewport = window.visualViewport;
       const top = visibleViewport?.offsetTop ?? 0;
       const left = visibleViewport?.offsetLeft ?? 0;
       const width = visibleViewport?.width ?? window.innerWidth;
       const height = visibleViewport?.height ?? window.innerHeight;
+      const activeField =
+        document.activeElement instanceof HTMLElement &&
+        document.activeElement.matches(
+          'textarea, input[type="text"], input[type="search"], input[type="email"], input:not([type])',
+        )
+          ? document.activeElement
+          : null;
+      const keyboardOpen =
+        window.innerWidth <= 767 &&
+        (Boolean(activeField) ||
+          (Boolean(visibleViewport) &&
+            window.innerHeight - height > Math.max(120, window.innerHeight * 0.18)));
 
       modal.style.setProperty("--contest-notebook-viewport-top", `${top}px`);
       modal.style.setProperty("--contest-notebook-viewport-left", `${left}px`);
       modal.style.setProperty("--contest-notebook-viewport-width", `${width}px`);
       modal.style.setProperty("--contest-notebook-viewport-height", `${height}px`);
+      modal.dataset.keyboardOpen = keyboardOpen ? "true" : "false";
+
+      if (keyboardOpen && activeField) {
+        if (focusedFieldScrollTimer !== null) {
+          window.clearTimeout(focusedFieldScrollTimer);
+        }
+        focusedFieldScrollTimer = window.setTimeout(() => {
+          if (
+            document.activeElement instanceof HTMLElement &&
+            document.activeElement.matches(
+              'textarea, input[type="text"], input[type="search"], input[type="email"], input:not([type])',
+            )
+          ) {
+            document.activeElement.scrollIntoView({ block: "center", behavior: "smooth" });
+          }
+        }, 80);
+      }
     };
 
     syncVisibleViewport();
@@ -219,12 +250,20 @@ export function NotebookFlipBook({
     const visibleViewport = window.visualViewport;
     visibleViewport?.addEventListener("resize", syncVisibleViewport);
     visibleViewport?.addEventListener("scroll", syncVisibleViewport);
+    modal.addEventListener("focusin", syncVisibleViewport);
+    modal.addEventListener("focusout", syncVisibleViewport);
     window.addEventListener("resize", syncVisibleViewport);
     window.addEventListener("orientationchange", syncVisibleViewport);
 
     return () => {
+      if (focusedFieldScrollTimer !== null) {
+        window.clearTimeout(focusedFieldScrollTimer);
+      }
+      delete modal.dataset.keyboardOpen;
       visibleViewport?.removeEventListener("resize", syncVisibleViewport);
       visibleViewport?.removeEventListener("scroll", syncVisibleViewport);
+      modal.removeEventListener("focusin", syncVisibleViewport);
+      modal.removeEventListener("focusout", syncVisibleViewport);
       window.removeEventListener("resize", syncVisibleViewport);
       window.removeEventListener("orientationchange", syncVisibleViewport);
     };
