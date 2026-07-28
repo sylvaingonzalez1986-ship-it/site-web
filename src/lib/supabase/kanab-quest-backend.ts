@@ -706,20 +706,21 @@ export function mapKqStartRunResult(data: unknown) {
   const receipt = payload?.burnReceipt && typeof payload.burnReceipt === "object"
     ? payload.burnReceipt as Record<string, unknown>
     : null;
-  if (!run?.id || !receipt?.id || !receipt.card_instance_id || !receipt.card_code || !receipt.burned_at) {
+  if (!run?.id || (receipt && (!receipt.id || !receipt.card_instance_id || !receipt.card_code || !receipt.burned_at))) {
     throw new Error("Reçu de démarrage Supabase invalide.");
   }
   return {
     runId: String(run.id),
     cultureTokenBalance: Number(payload?.cultureTokenBalance ?? 0),
-    burnReceipt: {
+    freeSubstrate: payload?.freeSubstrate === true,
+    burnReceipt: receipt ? {
       id: String(receipt.id),
       cardInstanceId: String(receipt.card_instance_id),
       cardCode: String(receipt.card_code),
       stageIndex: Number(receipt.stage_index),
       useKind: String(receipt.use_kind),
       burnedAt: String(receipt.burned_at),
-    },
+    } : null,
   };
 }
 
@@ -728,7 +729,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   if (!KQ_BUDDIES.some((buddie) => buddie.code === input.buddieCode)) {
     throw new Error("Buddie invalide.");
   }
-  if (!Array.isArray(input.deckCodes) || input.deckCodes.length < 2 || input.deckCodes.length > 250) {
+  if (!Array.isArray(input.deckCodes) || input.deckCodes.length < 1 || input.deckCodes.length > 250) {
     throw new Error("Deck invalide.");
   }
   const cultureTokens = Math.floor(input.cultureTokens ?? 0);

@@ -161,6 +161,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
     })).toEqual({
       runId: "run-1",
       cultureTokenBalance: 4,
+      freeSubstrate: false,
       burnReceipt: {
         id: "burn-1",
         cardInstanceId: "copy-1",
@@ -169,6 +170,20 @@ describe("Kanab Quest Supabase inventory mapping", () => {
         useKind: "substrate",
         burnedAt: "2026-07-25T09:00:00.000Z",
       },
+    });
+  });
+
+  it("accepts a run started with the free standard substrate", () => {
+    expect(mapKqStartRunResult({
+      run: { id: "run-free" },
+      cultureTokenBalance: 0,
+      freeSubstrate: true,
+      burnReceipt: null,
+    })).toEqual({
+      runId: "run-free",
+      cultureTokenBalance: 0,
+      freeSubstrate: true,
+      burnReceipt: null,
     });
   });
 
