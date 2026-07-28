@@ -10,11 +10,12 @@ export const metadata: Metadata = {
 };
 
 type AgeGatePageProps = {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export default function AgeGatePage({ searchParams }: AgeGatePageProps) {
-  const nextParam = searchParams?.next;
+export default async function AgeGatePage({ searchParams }: AgeGatePageProps) {
+  const resolvedSearchParams = await searchParams;
+  const nextParam = resolvedSearchParams?.next;
   const nextPathParam = Array.isArray(nextParam) ? nextParam[0] : nextParam ?? null;
   return <AgeGatePageClient nextPathParam={nextPathParam} />;
 }
