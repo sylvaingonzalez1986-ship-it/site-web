@@ -22,6 +22,7 @@ export function KqSupportBoosterShop() {
   const [pending, setPending] = useState<"load" | "claim" | "buy" | "open" | null>("load");
   const [notice, setNotice] = useState("");
   const [localPreview, setLocalPreview] = useState(false);
+  const [welcomeChecked, setWelcomeChecked] = useState(false);
 
   const refresh = useCallback(async () => {
     const response = await fetch("/api/arena/placard/boosters", { cache: "no-store" });
@@ -76,6 +77,14 @@ export function KqSupportBoosterShop() {
     }
   };
 
+  useEffect(() => {
+    if (!shop || welcomeChecked || !shop.collectionActive || shop.welcomeClaimed) return;
+    setWelcomeChecked(true);
+    void claimWelcome();
+    // The welcome grant is idempotent server-side and intentionally runs only once.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shop, welcomeChecked]);
+
   const open = async () => {
     const entitlement = shop?.availableEntitlements[0];
     if (!entitlement) return;
@@ -110,10 +119,11 @@ export function KqSupportBoosterShop() {
     setNotice("Prévisualisation locale : aucun point débité et aucune carte créée dans Supabase.");
   };
 
-  if (!shop && pending === "load") return null;
+  const welcomeEntitlement = shop?.availableEntitlements.find((item) => item.source === "welcome_pack");
+  const nextEntitlement = welcomeEntitlement ?? shop?.availableEntitlements[0];
 
   return (
-    <section className="mx-auto mt-8 max-w-5xl border-2 border-ink bg-[#fff3c4] p-4 shadow-[5px_5px_0_#1a1a1a]">
+    <section id="boutique-la-botte" className="mx-auto mt-8 max-w-5xl border-2 border-ink bg-[#fff3c4] p-4 shadow-[5px_5px_0_#1a1a1a]">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.14em] text-green">Boutique de L’Arène</p>
@@ -134,32 +144,75 @@ export function KqSupportBoosterShop() {
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-3">
-        {!shop?.welcomeClaimed ? (
+      {pending === "load" && !shop ? (
+        <p className="mt-4 border-2 border-ink bg-white p-4 text-sm font-black" role="status">
+          Chargement de tes boosters La Botte…
+        </p>
+      ) : null}
+
+      <div className="mt-4 grid gap-3 md:grid-cols-2">
+        <article className="flex min-h-40 flex-col justify-between border-2 border-ink bg-white p-4 shadow-[3px_3px_0_#1a1a1a]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.12em] text-green">Cadeau de bienvenue</p>
+            <h3 className="mt-1 font-display text-2xl uppercase">
+              {welcomeEntitlement ? "Ton booster offert est prêt" : shop?.welcomeClaimed ? "Booster déjà récupéré" : "1 booster offert"}
+            </h3>
+            <p className="mt-2 text-sm font-semibold text-charcoal">
+              {welcomeEntitlement
+                ? `${welcomeEntitlement.cardCount} cartes La Botte t’attendent.`
+                : shop?.welcomeClaimed
+                  ? "Ce cadeau unique a déjà été ouvert ou se trouve dans tes boosters disponibles."
+                  : "Il est ajouté automatiquement une seule fois à ton compte."}
+            </p>
+          </div>
+          {!shop?.welcomeClaimed ? (
+            <button
+              type="button"
+              disabled={!shop?.collectionActive || pending !== null}
+              onClick={() => void claimWelcome()}
+              className="mt-4 inline-flex min-h-12 items-center justify-center gap-2 border-2 border-ink bg-white px-4 font-black uppercase shadow-[3px_3px_0_#1a1a1a] disabled:opacity-45"
+            >
+              <Gift /> {pending === "claim" ? "Attribution…" : "Récupérer mon booster offert"}
+            </button>
+          ) : welcomeEntitlement ? (
+            <button
+              type="button"
+              disabled={!shop?.collectionActive || pending !== null}
+              onClick={() => void open()}
+              className="mt-4 inline-flex min-h-12 items-center justify-center gap-2 border-2 border-ink bg-green px-4 font-black uppercase text-white shadow-[3px_3px_0_#1a1a1a] disabled:opacity-45"
+            >
+              <PackageOpen /> {pending === "open" ? "Ouverture…" : `Ouvrir mes ${welcomeEntitlement.cardCount} cartes offertes`}
+            </button>
+          ) : null}
+        </article>
+
+        <article className="flex min-h-40 flex-col justify-between border-2 border-ink bg-yellow p-4 shadow-[3px_3px_0_#1a1a1a]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.12em] text-green">Boutique avec tes points</p>
+            <h3 className="mt-1 font-display text-2xl uppercase">1 booster = {shop?.costPerPack ?? 5} points</h3>
+            <p className="mt-2 text-sm font-semibold text-charcoal">
+              Tu disposes de <strong>{shop?.spendablePoints ?? 0} point(s)</strong>. Chaque booster contient 10 cartes La Botte.
+            </p>
+          </div>
           <button
             type="button"
-            disabled={!shop?.collectionActive || pending !== null}
-            onClick={() => void claimWelcome()}
-            className="inline-flex min-h-12 items-center gap-2 border-2 border-ink bg-white px-4 font-black uppercase shadow-[3px_3px_0_#1a1a1a] disabled:opacity-45"
+            disabled={!shop?.collectionActive || pending !== null || (shop?.spendablePoints ?? 0) < (shop?.costPerPack ?? 5)}
+            onClick={() => void purchase()}
+            className="mt-4 inline-flex min-h-12 items-center justify-center gap-2 border-2 border-ink bg-white px-4 font-black uppercase shadow-[3px_3px_0_#1a1a1a] disabled:opacity-45"
           >
-            <Gift /> {pending === "claim" ? "Réclamation…" : "Réclamer mon booster offert"}
+            <ShoppingBag /> {pending === "buy" ? "Achat…" : (shop?.spendablePoints ?? 0) < (shop?.costPerPack ?? 5) ? `Encore ${(shop?.costPerPack ?? 5) - (shop?.spendablePoints ?? 0)} point(s)` : `Acheter pour ${shop?.costPerPack ?? 5} points`}
           </button>
-        ) : null}
+        </article>
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-3">
         <button
           type="button"
-          disabled={!shop?.collectionActive || pending !== null || (shop?.spendablePoints ?? 0) < (shop?.costPerPack ?? 5)}
-          onClick={() => void purchase()}
-          className="inline-flex min-h-12 items-center gap-2 border-2 border-ink bg-yellow px-4 font-black uppercase shadow-[3px_3px_0_#1a1a1a] disabled:opacity-45"
-        >
-          <ShoppingBag /> {pending === "buy" ? "Achat…" : `Acheter · ${shop?.costPerPack ?? 5} points`}
-        </button>
-        <button
-          type="button"
-          disabled={!shop?.collectionActive || pending !== null || (shop?.availableEntitlements.length ?? 0) === 0}
+          disabled={!shop?.collectionActive || pending !== null || !nextEntitlement}
           onClick={() => void open()}
           className="inline-flex min-h-12 items-center gap-2 border-2 border-ink bg-green px-4 font-black uppercase text-white shadow-[3px_3px_0_#1a1a1a] disabled:opacity-45"
         >
-          <PackageOpen /> {pending === "open" ? "Ouverture…" : `Ouvrir ${shop?.availableEntitlements[0]?.cardCount ?? 10} cartes · ${shop?.availableEntitlements.length ?? 0} disponible(s)`}
+          <PackageOpen /> {pending === "open" ? "Ouverture…" : nextEntitlement ? `Ouvrir un booster de ${nextEntitlement.cardCount} cartes · ${shop?.availableEntitlements.length ?? 0} disponible(s)` : "Aucun booster à ouvrir"}
         </button>
         {!shop?.collectionActive && localPreview ? (
           <button
