@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Dices, Flame, RotateCcw, Sparkles, Star, Swords, Trophy, Zap } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   advanceKqStage,
   activateKqHeritage,
@@ -217,6 +217,7 @@ export function KanabQuestDicePrototype({
   const verdictTimerRef = useRef<number | null>(null);
   const repositoryRef = useRef<KqRepository | null>(null);
   const remoteInventoryRef = useRef<Record<string, number>>({});
+  const mobileViewportRef = useRef<{ scrollY: number } | null>(null);
   const [revealedRounds, setRevealedRounds] = useState(0);
   const [deckNotice, setDeckNotice] = useState("");
   const [deckFilter, setDeckFilter] = useState<"all" | "equipment" | "know-how" | "luck">("all");
@@ -566,7 +567,28 @@ export function KanabQuestDicePrototype({
     && (state.handRedrawsUsed ?? 0) < redrawLimit
     && !state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.category !== "substrate");
 
+  const preserveMobileViewport = () => {
+    if (typeof window === "undefined" || !window.matchMedia("(max-width: 760px)").matches) return;
+    mobileViewportRef.current = { scrollY: window.scrollY };
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
+  useLayoutEffect(() => {
+    const snapshot = mobileViewportRef.current;
+    if (!snapshot) return;
+    mobileViewportRef.current = null;
+
+    window.scrollTo({ top: snapshot.scrollY, left: 0, behavior: "auto" });
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: snapshot.scrollY, left: 0, behavior: "auto" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [state.phase, state.stageIndex, state.dice, state.usedCards.length]);
+
   const applyGameAction = async (action: "roll" | "resolve" | "advance" | "redraw" | "heritage") => {
+    preserveMobileViewport();
     if (!remoteBurnsEnabled) {
       setState((current) => action === "roll" ? rollKqDice(current) : action === "resolve" ? resolveKqStage(current) : action === "advance" ? advanceKqStage(current) : action === "redraw" ? redrawKqHand(current) : activateKqHeritage(current));
       return;
@@ -947,6 +969,7 @@ export function KanabQuestDicePrototype({
 
   const playAndBurnCard = async (code: string) => {
     if ((activeInventory[code] ?? 0) <= 0) return;
+    preserveMobileViewport();
     if (remoteBurnsEnabled) {
       if (!remoteRunId) {
         setRemoteNotice("Cette culture n’est pas reliée à Supabase. Recommence-la en mode Burns Supabase.");
