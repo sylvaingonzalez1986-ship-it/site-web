@@ -44,11 +44,12 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://leschanvriersbretons.com"),
   icons: {
     icon: [
-      { url: "/app-character-cropped.png", type: "image/png", sizes: "192x192" },
-      { url: "/app-character-cropped.png", type: "image/png", sizes: "512x512" },
+      { url: "/les-chanvriers-bretons-logo.png", type: "image/png", sizes: "800x800" },
     ],
-    apple: [{ url: "/app-character-cropped.png", type: "image/png", sizes: "180x180" }],
-    shortcut: ["/app-character-cropped.png"],
+    apple: [
+      { url: "/les-chanvriers-bretons-logo.png", type: "image/png", sizes: "800x800" },
+    ],
+    shortcut: ["/les-chanvriers-bretons-logo.png"],
   },
   title: {
     default:
