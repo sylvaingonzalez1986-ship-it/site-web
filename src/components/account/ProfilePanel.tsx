@@ -938,6 +938,18 @@ export function ProfilePanel() {
           {activeTab === "infos" && (
             <>
               <h2 className="font-display text-3xl">Mes informations</h2>
+              {!user.dateOfBirth && (
+                <div
+                  className="mt-4 border-2 border-red-700 bg-red-50 p-4 text-sm text-red-900"
+                  role="alert"
+                >
+                  <p className="font-bold">Action requise pour commander</p>
+                  <p className="mt-1">
+                    Renseignez votre date de naissance ci-dessous. Elle est obligatoire pour
+                    confirmer que vous avez 18 ans ou plus et débloquer la commande.
+                  </p>
+                </div>
+              )}
               <form onSubmit={onSubmit} className="mt-6 grid gap-3 md:grid-cols-2">
                 <input
                   className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
@@ -957,13 +969,25 @@ export function ProfilePanel() {
                   readOnly
                   placeholder="Email"
                 />
-                <input
-                  className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base md:col-span-2"
-                  type="date"
-                  value={dateOfBirth}
-                  onChange={(event) => setDateOfBirth(event.target.value)}
-                  placeholder="Date de naissance"
-                />
+                <label className="grid gap-1.5 md:col-span-2">
+                  <span className="text-sm font-bold text-ink">
+                    Date de naissance <span className="text-red-700">(obligatoire pour commander)</span>
+                  </span>
+                  <input
+                    className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    type="date"
+                    value={dateOfBirth}
+                    onChange={(event) => setDateOfBirth(event.target.value)}
+                    aria-describedby="profile-date-of-birth-help"
+                    required
+                  />
+                  <span
+                    id="profile-date-of-birth-help"
+                    className="text-xs font-semibold text-charcoal"
+                  >
+                    Réservé aux personnes majeures (18 ans et plus).
+                  </span>
+                </label>
                 <input
                   className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
                   placeholder="Téléphone"
@@ -1004,12 +1028,6 @@ export function ProfilePanel() {
               </form>
 
               {status && <p className="mt-3 text-sm font-semibold text-green-700">{status}</p>}
-              {!user.dateOfBirth && (
-                <p className="mt-2 text-sm font-semibold text-red-700">
-                  Renseigne ta date de naissance pour pouvoir passer commande (18+ requis).
-                </p>
-              )}
-
               <div className="mt-8 grid gap-4 md:grid-cols-2">
                 <article className="card-cartoon bg-white p-5">
                   <div className="flex items-start gap-3">

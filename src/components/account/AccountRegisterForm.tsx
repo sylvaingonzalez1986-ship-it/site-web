@@ -107,13 +107,22 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
           required
         />
       </div>
-      <input
-        type="date"
-        className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
-        value={dateOfBirth}
-        onChange={(event) => setDateOfBirth(event.target.value)}
-        required
-      />
+      <label className="grid gap-1.5">
+        <span className="text-sm font-bold text-ink">
+          Date de naissance <span className="text-red-700">(obligatoire)</span>
+        </span>
+        <input
+          type="date"
+          className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+          value={dateOfBirth}
+          onChange={(event) => setDateOfBirth(event.target.value)}
+          aria-describedby="date-of-birth-help"
+          required
+        />
+        <span id="date-of-birth-help" className="text-xs font-semibold text-charcoal">
+          Vous devez avoir 18 ans ou plus pour pouvoir passer commande.
+        </span>
+      </label>
       <input
         type="email"
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"

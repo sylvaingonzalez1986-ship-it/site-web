@@ -602,7 +602,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
   const goToProfile = () => {
     onClose();
-    router.push("/profil");
+    router.push("/profil?tab=infos");
   };
 
   return (
