@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { RefreshCcw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { AdminProducerRewardCampaigns } from "@/components/admin/AdminProducerRewardCampaigns";
+import { AdminBotteCatalogEditor } from "@/components/admin/AdminBotteCatalogEditor";
+import { AdminHeritageCatalogEditor } from "@/components/admin/AdminHeritageCatalogEditor";
 
 type Readiness = {
   contentReady: boolean;
@@ -120,7 +123,7 @@ export function AdminPlacardOperationsPanel() {
       heritage: "les tirages Héritage rétroactifs",
       season: "la distribution des récompenses de saison",
     };
-    if (!window.confirm(`Confirmer ${labels[kind]} ? Cette opération écrit dans Supabase.`)) return;
+    if (!window.confirm(`Confirmer ${labels[kind]} ? Cette opération modifie les données enregistrées.`)) return;
     setAction(kind);
     setStatus("");
     try {
@@ -221,6 +224,9 @@ export function AdminPlacardOperationsPanel() {
       </div>
 
       <div className="grid gap-5 xl:grid-cols-2">
+        <AdminBotteCatalogEditor />
+        <AdminHeritageCatalogEditor />
+        <AdminProducerRewardCampaigns />
         <article className="cartoon-border bg-[#fff0c9] p-6">
           <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Fin de saison</p>
           <h4 className="mt-1 font-display text-2xl">{Number(season?.eligiblePlayers ?? 0)} joueur(s) éligible(s)</h4>

@@ -93,6 +93,25 @@ type BotBattleResult = {
     imageUrl: string;
   };
 };
+type OfficialBattleResult = {
+  battleId: string;
+  winner: "player" | "opponent";
+  burnedAt: string;
+  rounds: KqOfficialBattle["rounds"];
+  playerVariety: string;
+  opponentVariety: string;
+  challengePoints: number;
+  completedChallengeTitles: string[];
+  pvpBoosterGranted: boolean;
+  pvpBoosterCardCount: number;
+  rankProfile: null | {
+    rating: number;
+    seasonPoints: number;
+    wins: number;
+    losses: number;
+    streak: number;
+  };
+};
 
 const CATEGORY_LABELS: Record<KqSupportCard["category"], string> = {
   substrate: "Substrat", pbi: "Auxiliaire PBI", equipment: "Équipement", "know-how": "Savoir-faire", luck: "Coup de chance",
@@ -294,6 +313,7 @@ export function KanabQuestDicePrototype({
   const [pendingRemoteBattle, setPendingRemoteBattle] = useState(false);
   const [officialBattles, setOfficialBattles] = useState<KqOfficialBattle[]>([]);
   const [pendingOfficialVerdictId, setPendingOfficialVerdictId] = useState<string | null>(null);
+  const [officialBattleResult, setOfficialBattleResult] = useState<OfficialBattleResult | null>(null);
   const [officialChallengeReward, setOfficialChallengeReward] = useState<{ points: number; titles: string[] } | null>(null);
   const [remoteAction, setRemoteAction] = useState<"start" | "card" | "game" | null>(null);
   const [remoteNotice, setRemoteNotice] = useState("");
@@ -426,7 +446,7 @@ export function KanabQuestDicePrototype({
         setRemoteInventory(inventory);
         setRemoteCollection({
           loading: false,
-          error: payload.collection ? "" : "Inventaire Supabase indisponible.",
+          error: payload.collection ? "" : "Inventaire distant indisponible.",
           ownerFound: collection.ownerFound === true,
           collectionActive: collection.collectionActive === true,
           totalCopies: Object.values(inventory).reduce((sum, count) => sum + count, 0),
@@ -483,7 +503,7 @@ export function KanabQuestDicePrototype({
           setSelectedSubstrate((current) => (currentRemoteInventory[current] ?? 0) > 0
             ? current
             : KQ_CARDS.find((card) => card.category === "substrate" && (currentRemoteInventory[card.code] ?? 0) > 0)?.code ?? current);
-          setRemoteNotice("Mode Supabase prêt · aucune culture active à reprendre.");
+          setRemoteNotice("Mode officiel prêt · aucune culture active à reprendre.");
         } else {
           const receipts = activeRun.burnReceipts.map((receipt) => toLocalReceipt(receipt, activeRun.state.seed));
           setRemoteRunId(activeRun.runId);
@@ -494,7 +514,7 @@ export function KanabQuestDicePrototype({
           setSelectedCards(activeRun.state.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")));
           setBurnHistory((history) => [...receipts, ...history.filter((entry) => !receipts.some((receipt) => receipt.id === entry.id))].slice(0, 100));
           setSetupOpen(false);
-          setRemoteNotice(`Culture Supabase reprise · ${receipts.length} reçu${receipts.length > 1 ? "s" : ""} vérifié${receipts.length > 1 ? "s" : ""}.`);
+          setRemoteNotice(`Culture officielle reprise · ${receipts.length} reçu${receipts.length > 1 ? "s" : ""} vérifié${receipts.length > 1 ? "s" : ""}.`);
         }
         const matchingFlower = flowers.find((flower) => flower.runId === activeRun?.runId)
           ?? flowers.find((flower) => flower.id === window.sessionStorage.getItem(`${sessionStoragePrefix}-remote-flower-id`));
@@ -669,8 +689,8 @@ export function KanabQuestDicePrototype({
     setRemoteBurnsEnabled(enabled);
     if (enabled && selectedHeritage && !remoteHeritageOwnedCodes.includes(selectedHeritage)) setSelectedHeritage("");
     setRemoteNotice(enabled
-      ? "Mode Supabase armé : chaque confirmation brûlera une vraie copie."
-      : "Mode simulation locale : aucune copie Supabase ne sera touchée.");
+      ? "Mode officiel activé : chaque confirmation brûlera une vraie copie."
+      : "Mode simulation locale : aucune copie enregistrée ne sera touchée.");
     window.sessionStorage.setItem(`${sessionStoragePrefix}-remote-burns`, enabled ? "1" : "0");
   };
 
@@ -853,10 +873,24 @@ export function KanabQuestDicePrototype({
     setMatchmakingLoading(true);
     try {
       const verdict = await finalizeKqRemoteBattle(pendingOfficialVerdictId, remoteRequest);
+      const resolvedBattle = officialBattles.find((battle) => battle.id === verdict.battleId);
       setOfficialBattles((battles) => battles.map((battle) => battle.id === verdict.battleId ? {
         ...battle, status: "verdict", rounds: verdict.rounds, winner: verdict.winner, verdictAt: verdict.burnedAt,
         playerFlower: { ...battle.playerFlower }, opponentFlower: { ...battle.opponentFlower },
       } : battle));
+      setOfficialBattleResult({
+        battleId: verdict.battleId,
+        winner: verdict.winner,
+        burnedAt: verdict.burnedAt,
+        rounds: verdict.rounds,
+        playerVariety: resolvedBattle?.playerFlower.variety ?? "Ta Fleur",
+        opponentVariety: resolvedBattle?.opponentFlower.variety ?? "Fleur adverse",
+        challengePoints: verdict.challengePoints,
+        completedChallengeTitles: verdict.completedChallenges.map((challenge) => challenge.title),
+        pvpBoosterGranted: verdict.pvpBoosterGranted,
+        pvpBoosterCardCount: verdict.pvpBoosterCardCount,
+        rankProfile: verdict.rankProfile,
+      });
       setOfficialFlowers((flowers) => flowers.map((flower) => flower.id === officialBattles.find((battle) => battle.id === verdict.battleId)?.playerFlower.id ? { ...flower, status: "burned" } : flower));
       setOfficialChallengeReward({
         points: verdict.challengePoints,
@@ -930,7 +964,7 @@ export function KanabQuestDicePrototype({
         setPendingStart(false);
         setSetupOpen(false);
       } catch (error) {
-        setRemoteNotice(error instanceof Error ? error.message : "Démarrage Supabase impossible.");
+        setRemoteNotice(error instanceof Error ? error.message : "Démarrage distant impossible.");
       } finally {
         setRemoteAction(null);
       }
@@ -972,7 +1006,7 @@ export function KanabQuestDicePrototype({
     preserveMobileViewport();
     if (remoteBurnsEnabled) {
       if (!remoteRunId) {
-        setRemoteNotice("Cette culture n’est pas reliée à Supabase. Recommence-la en mode Burns Supabase.");
+        setRemoteNotice("Cette culture n’est pas enregistrée. Recommence-la en mode officiel.");
         setPendingBurnCode(null);
         return;
       }
@@ -990,7 +1024,7 @@ export function KanabQuestDicePrototype({
         setRemoteNotice(`${KQ_CARDS.find((card) => card.code === code)?.name ?? code} appliquée · reçu ${receipt.id.slice(0, 8)}.`);
         setPendingBurnCode(null);
       } catch (error) {
-        setRemoteNotice(error instanceof Error ? error.message : "Burn Supabase impossible.");
+        setRemoteNotice(error instanceof Error ? error.message : "Validation distante impossible.");
       } finally {
         setRemoteAction(null);
       }
@@ -1142,10 +1176,10 @@ export function KanabQuestDicePrototype({
         <section className={styles.setupPanel}>
           <header className={styles.setupHero}><div className={styles.setupHeroCopy}><span>Le Placard Kanab Quest{isPlayerMode ? "" : " · local"}</span><h1>Prépare <em>ta culture.</em></h1><i aria-hidden="true" /><p>Choisis ta variété, ton substrat et tes cartes. Puis lance la partie.</p><button type="button" className={styles.guideReplay} onClick={() => setShowOnboarding(true)}>Règles en 1 minute</button></div><div className={styles.setupHeroArt} aria-hidden="true"><span /><Image src="/sylvain-culture-hero.png" alt="" width={1152} height={1365} priority sizes="(max-width: 760px) 72vw, 390px" /></div></header>
           {showAdminOperations ? <div className={styles.remoteCollectionStatus} data-error={remoteCollection.error || undefined}>
-            <span>{isPlayerMode ? "Mes cartes La Botte" : "Supabase · test admin"}</span>
+            <span>{isPlayerMode ? "Mes cartes La Botte" : "Données sécurisées · test admin"}</span>
             {remoteCollection.loading ? <strong>Chargement de tes cartes…</strong> : remoteCollection.error ? <strong>{remoteCollection.error}</strong> : <strong>{remoteCollection.totalCopies} carte{remoteCollection.totalCopies > 1 ? "s" : ""} disponible{remoteCollection.totalCopies > 1 ? "s" : ""}</strong>}
             <small>{remoteCollection.loading ? "Connexion à ton album…" : remoteCollection.error ? "Ta collection est momentanément indisponible." : isPlayerMode ? "Seules les cartes réellement jouées seront brûlées." : `${remoteCollection.ownerFound ? "Compte admin retrouvé" : "Aucun compte collection associé"} · collection ${remoteCollection.collectionActive ? "active" : "inactive"}.`}</small>
-            {!isPlayerMode ? <button type="button" className={styles.remoteModeButton} disabled={remoteCollection.loading || !remoteCollection.ownerFound || remoteAction !== null} data-active={remoteBurnsEnabled || undefined} aria-pressed={remoteBurnsEnabled} onClick={() => setRemoteMode(!remoteBurnsEnabled)}>{remoteBurnsEnabled ? "🔥 Burns Supabase activés" : "Simulation locale"}</button> : null}
+            {!isPlayerMode ? <button type="button" className={styles.remoteModeButton} disabled={remoteCollection.loading || !remoteCollection.ownerFound || remoteAction !== null} data-active={remoteBurnsEnabled || undefined} aria-pressed={remoteBurnsEnabled} onClick={() => setRemoteMode(!remoteBurnsEnabled)}>{remoteBurnsEnabled ? "🔥 Burns officiels activés" : "Simulation locale"}</button> : null}
           </div> : null}
           <nav className={styles.mobileSetupNav} aria-label="Sections du Placard">
             <a href="#placard-preparation">Préparer</a>
@@ -1187,8 +1221,8 @@ export function KanabQuestDicePrototype({
             <div><b>Buddies · album habituel</b><b>La Botte · 10 cartes</b><b>Prix La Botte · 5 points</b></div>
             <p>Les points gagnés avec les achats servent dans les deux boutiques, avec un tarif propre à La Botte. Les Héritages restent exclusivement liés aux fleurs concours.</p>
           </details>
-          {!isPlayerMode && (showAdminOperations || showPackLab) ? <details className={styles.boosterLab} open={showPackLab || undefined}><summary>Prévisualisation locale · Booster La Botte</summary><div><div><span>Boutique de L’Arène</span><strong>Booster La Botte · 10 cartes</strong><p>Aperçu local uniquement : aucune carte n’est créée dans Supabase.</p></div><aside><button type="button" onClick={openTestBooster}><Sparkles /> Ouvrir un booster test</button></aside></div></details> : null}
-          {lastBooster.length > 0 ? <div className={styles.boosterReveal} aria-live="polite">{lastBooster.map((card, index) => <article key={`${card.code}-${index}`} data-rarity={card.rarity}><CardArtwork code={card.code} name={card.name} /><span>{card.rarity}</span><strong>{card.name}</strong><small>{remoteBurnsEnabled ? "Aperçu local · aucune copie Supabase créée" : `Tu en possèdes maintenant ${inventory[card.code] ?? 0}`}</small></article>)}</div> : null}
+          {!isPlayerMode && (showAdminOperations || showPackLab) ? <details className={styles.boosterLab} open={showPackLab || undefined}><summary>Prévisualisation locale · Booster La Botte</summary><div><div><span>Boutique de L’Arène</span><strong>Booster La Botte · 10 cartes</strong><p>Aperçu local uniquement : aucune carte n’est enregistrée.</p></div><aside><button type="button" onClick={openTestBooster}><Sparkles /> Ouvrir un booster test</button></aside></div></details> : null}
+          {lastBooster.length > 0 ? <div className={styles.boosterReveal} aria-live="polite">{lastBooster.map((card, index) => <article key={`${card.code}-${index}`} data-rarity={card.rarity}><CardArtwork code={card.code} name={card.name} /><span>{card.rarity}</span><strong>{card.name}</strong><small>{remoteBurnsEnabled ? "Aperçu local · aucune copie enregistrée" : `Tu en possèdes maintenant ${inventory[card.code] ?? 0}`}</small></article>)}</div> : null}
           {burnHistory.length > 0 ? <div className={styles.burnArchive}><Flame /><span><small>Registre permanent · {burnHistory.length} burns</small><strong>Cartes les plus utilisées</strong><div>{mostBurned.map(([code, count]) => <b key={code}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code} ×{count}</b>)}</div></span></div> : null}
           <h2 id="placard-preparation">1. Ton Buddie</h2>
           <div className={styles.buddieChoices}>{KQ_BUDDIES.filter((buddie) => !isPlayerMode || ownedBuddieCodes.includes(buddie.code)).map((buddie) => { const artwork = ownedBuddieArtwork[buddie.code]; return <button key={buddie.code} type="button" data-selected={selectedBuddie === buddie.code || undefined} aria-pressed={selectedBuddie === buddie.code} onClick={() => setSelectedBuddie(buddie.code)}>{artwork?.imageUrl ? <span className={styles.buddieArtwork}><Image src={artwork.imageUrl} alt={`Carte ${buddie.name}`} fill sizes="(max-width: 760px) 220px, 260px" className="object-cover" /></span> : null}<span>Kanab Quest #{buddie.cardNumber}</span><strong>{buddie.name}</strong><em>{buddie.rarity}{artwork?.ownedCopies ? ` · ×${artwork.ownedCopies}` : ""}</em><p>{buddie.ability}</p></button>; })}</div>
@@ -1207,14 +1241,36 @@ export function KanabQuestDicePrototype({
           <div className={styles.pbiReserve}><span>Réserve PBI de l’album · automatique</span><div>{pbiReserve.map((card) => <strong key={card.code} data-empty={(activeInventory[card.code] ?? 0) <= 0 || undefined}>{card.name} <small>×{activeInventory[card.code] ?? 0}</small></strong>)}</div><p>Ces cartes ne prennent aucune place dans le deck. Elles apparaissent seulement après identification d’un ravageur. Une référence à zéro ne peut plus intervenir.</p></div>
           {remoteBurnsEnabled ? <div className={styles.cultureTokenPicker}><span>Jetons Coup de pouce{isPlayerMode ? "" : " · portefeuille test"}</span><strong>{remoteCollection.cultureTokenBalance} disponible{remoteCollection.cultureTokenBalance > 1 ? "s" : ""}</strong><p>Chaque jeton consommé donne +1 XP au départ. Maximum 2 par culture.</p><div>{[0, 1, 2].map((count) => <button key={count} type="button" disabled={count > remoteCollection.cultureTokenBalance} data-selected={selectedCultureTokens === count || undefined} aria-pressed={selectedCultureTokens === count} onClick={() => setSelectedCultureTokens(count)}>{count === 0 ? "Sans jeton" : `${count} jeton${count > 1 ? "s" : ""} · ${1 + count} XP`}</button>)}</div></div> : null}
           <div className={styles.setupFooter}><span>{hasOwnedSubstrate ? "🔥 Le Substrat choisi brûle au départ. Ensuite, seules les cartes réellement jouées brûlent." : "✓ Substrat standard gratuit. Les cartes La Botte sont entièrement facultatives."}</span><button type="button" className={styles.primaryButton} disabled={(hasOwnedSubstrate && (activeInventory[selectedSubstrate] ?? 0) <= 0) || (isPlayerMode && !ownedBuddieCodes.includes(selectedBuddie)) || remoteAction !== null} onClick={() => setPendingStart(true)}>Commencer avec {selectedCards.length === 0 ? "aucune carte" : `${selectedCards.length} carte${selectedCards.length > 1 ? "s" : ""}`}</button></div>
-          {remoteBurnsEnabled ? <section id="placard-reserve" className={styles.officialFlowerReserve}><header><span>Réserve officielle</span><h2>Mes Fleurs d’Arène</h2><p>{officialFlowers.length} Fleur{officialFlowers.length > 1 ? "s" : ""} enregistrée{officialFlowers.length > 1 ? "s" : ""} dans Supabase.</p></header>{officialFlowers.length > 0 ? <div>{officialFlowers.map((flower) => <article key={flower.id} data-status={flower.status} data-selected={matchFlowerId === flower.id || undefined}><span>{flower.status === "available" ? "Disponible" : flower.status === "locked" ? "En duel" : "Brûlée"}</span><strong>{flower.varietyName}</strong><small>Qualité {flower.quality} · {flower.id.slice(0, 8)}</small><div>{Object.entries(flower.stats).map(([stat, value]) => <b key={stat}><small>{FLOWER_STAT_LABELS[stat as keyof typeof FLOWER_STAT_LABELS] ?? stat}</small>{value}</b>)}</div>{flower.status === "available" ? <button type="button" disabled={matchmakingLoading} onClick={() => void findOfficialRivals(flower.id)}><Swords /> Chercher un adversaire</button> : null}</article>)}</div> : <p className={styles.emptyFlowerReserve}>Termine une culture Supabase pour créer ta première Fleur officielle.</p>}{matchFlowerId && flowerRivals.length > 0 ? <div className={styles.remoteRivals}><span>{flowerRivals[0]?.opponentType === "bot" ? `Entraînement bots · ${flowerRivals[0].remainingBotDuels ?? 0}/10 restants · +0,1 EXP` : "Adversaires compatibles · ±8 qualité"}</span>{flowerRivals.map((rival) => <button key={rival.flowerId} type="button" data-selected={selectedRemoteRivalId === rival.flowerId || undefined} onClick={() => setSelectedRemoteRivalId(rival.flowerId)}><strong>{rival.opponentType === "bot" ? `🤖 ${rival.opponentName}` : rival.varietyName}</strong><small>{rival.varietyName} · Qualité {rival.quality}{rival.opponentType === "bot" ? " · 0,1 EXP" : ""}</small></button>)}<button type="button" className={styles.remoteBattleButton} disabled={!selectedRemoteRivalId || matchmakingLoading} onClick={() => setPendingRemoteBattle(true)}><Swords /> {flowerRivals.find((rival) => rival.flowerId === selectedRemoteRivalId)?.opponentType === "bot" ? "Affronter ce bot" : "Préparer ce duel"}</button></div> : null}</section> : null}
-          {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}><span>Jury officiel</span><h2>Mes duels Supabase</h2>{officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}{officialBattles.map((officialBattle) => <article key={officialBattle.id} data-status={officialBattle.status} data-opponent={officialBattle.opponentType}><header><div><strong>{officialBattle.playerFlower.variety}</strong><small>Ta Fleur</small></div><b>VS</b><div><strong>{officialBattle.opponentFlower.variety}</strong><small>{officialBattle.opponentType === "bot" ? "🤖 Entraînement" : "Adversaire"}</small></div></header>{officialBattle.status === "locked" ? <><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(officialBattle.id)}><Trophy /> Demander le verdict</button></> : officialBattle.status === "cancelled" ? <><h3>Duel expiré</h3><p>Aucun verdict, aucun burn et aucun point. Les deux Fleurs sont redevenues disponibles.</p><small>Engagement annulé après 48 heures · {formatKqDate(officialBattle.lockedAt)}</small></> : <><h3>{officialBattle.winner === "player" ? "Victoire" : "Défaite"}{officialBattle.opponentType === "bot" ? " d’entraînement" : " officielle"}</h3><div className={styles.officialRounds}>{officialBattle.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div><small>{officialBattle.opponentType === "bot" ? `Ta Fleur brûlée · +${Number(officialBattle.experienceAwarded ?? 0.1).toLocaleString("fr-FR")} EXP d’Arène` : "Deux Fleurs brûlées · +1 EXP d’Arène"} · {formatKqDate(officialBattle.verdictAt)}</small></>}</article>)}</section> : null}
+          {remoteBurnsEnabled ? <section id="placard-reserve" className={styles.officialFlowerReserve}><header><span>Réserve officielle</span><h2>Mes Fleurs d’Arène</h2><p>{officialFlowers.length} Fleur{officialFlowers.length > 1 ? "s" : ""} officielle{officialFlowers.length > 1 ? "s" : ""} enregistrée{officialFlowers.length > 1 ? "s" : ""}.</p></header>{officialFlowers.length > 0 ? <div>{officialFlowers.map((flower) => <article key={flower.id} data-status={flower.status} data-selected={matchFlowerId === flower.id || undefined}><span>{flower.status === "available" ? "Disponible" : flower.status === "locked" ? "En duel" : "Brûlée"}</span><strong>{flower.varietyName}</strong><small>Qualité {flower.quality} · {flower.id.slice(0, 8)}</small><div>{Object.entries(flower.stats).map(([stat, value]) => <b key={stat}><small>{FLOWER_STAT_LABELS[stat as keyof typeof FLOWER_STAT_LABELS] ?? stat}</small>{value}</b>)}</div>{flower.status === "available" ? <button type="button" disabled={matchmakingLoading} onClick={() => void findOfficialRivals(flower.id)}><Swords /> Chercher un adversaire</button> : null}</article>)}</div> : <p className={styles.emptyFlowerReserve}>Termine une culture officielle pour créer ta première Fleur officielle.</p>}{matchFlowerId && flowerRivals.length > 0 ? <div className={styles.remoteRivals}><span>{flowerRivals[0]?.opponentType === "bot" ? `Entraînement bots · ${flowerRivals[0].remainingBotDuels ?? 0}/10 restants · +0,1 EXP` : "Adversaires compatibles · ±8 qualité"}</span>{flowerRivals.map((rival) => <button key={rival.flowerId} type="button" data-selected={selectedRemoteRivalId === rival.flowerId || undefined} onClick={() => setSelectedRemoteRivalId(rival.flowerId)}><strong>{rival.opponentType === "bot" ? `🤖 ${rival.opponentName}` : rival.varietyName}</strong><small>{rival.varietyName} · Qualité {rival.quality}{rival.opponentType === "bot" ? " · 0,1 EXP" : ""}</small></button>)}<button type="button" className={styles.remoteBattleButton} disabled={!selectedRemoteRivalId || matchmakingLoading} onClick={() => setPendingRemoteBattle(true)}><Swords /> {flowerRivals.find((rival) => rival.flowerId === selectedRemoteRivalId)?.opponentType === "bot" ? "Affronter ce bot" : "Préparer ce duel"}</button></div> : null}</section> : null}
+          {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}><span>Jury officiel</span><h2>Mes duels officiels</h2>{officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}{officialBattles.map((officialBattle) => <article key={officialBattle.id} data-status={officialBattle.status} data-opponent={officialBattle.opponentType}><header><div><strong>{officialBattle.playerFlower.variety}</strong><small>Ta Fleur</small></div><b>VS</b><div><strong>{officialBattle.opponentFlower.variety}</strong><small>{officialBattle.opponentType === "bot" ? "🤖 Entraînement" : "Adversaire"}</small></div></header>{officialBattle.status === "locked" ? <><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(officialBattle.id)}><Trophy /> Demander le verdict</button></> : officialBattle.status === "cancelled" ? <><h3>Duel expiré</h3><p>Aucun verdict, aucun burn et aucun point. Les deux Fleurs sont redevenues disponibles.</p><small>Engagement annulé après 48 heures · {formatKqDate(officialBattle.lockedAt)}</small></> : <><h3>{officialBattle.winner === "player" ? "Victoire" : "Défaite"}{officialBattle.opponentType === "bot" ? " d’entraînement" : " officielle"}</h3><div className={styles.officialRounds}>{officialBattle.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div><small>{officialBattle.opponentType === "bot" ? `Ta Fleur brûlée · +${Number(officialBattle.experienceAwarded ?? 0.1).toLocaleString("fr-FR")} EXP d’Arène` : "Deux Fleurs brûlées · +1 EXP d’Arène"} · {formatKqDate(officialBattle.verdictAt)}</small></>}</article>)}</section> : null}
           {battleHistory.length > 0 ? <section className={styles.battleHistory}><span>Archives locales</span><h2>Derniers concours</h2><div>{battleHistory.slice(0, 5).map((receipt) => <article key={receipt.id}><Flame /><span><strong>{receipt.playerFlower.variety} vs {receipt.opponentFlower.variety}</strong><small>{receipt.winner === "player" ? "Victoire" : "Défaite"} · brûlées le {formatKqDate(receipt.burnedAt)}</small></span><b>{receipt.rounds.filter((round) => round.winner === "player").length}–{receipt.rounds.filter((round) => round.winner === "opponent").length}</b></article>)}</div></section> : null}
         </section>
         {showOnboarding ? <div className={styles.onboardingBackdrop} role="presentation"><section className={styles.onboarding} role="dialog" aria-modal="true" aria-labelledby="kq-guide-title"><span>Guide express · 1 minute</span><h2 id="kq-guide-title">De l’album à l’arène</h2><div><article><Sparkles /><b>1. Compose</b><p>Choisis ton Buddie, un Substrat et les copies La Botte de ta collection. Un gros deck est polyvalent, un petit deck est régulier.</p></article><article><Dices /><b>2. Lance</b><p>À chaque étape, dix cartes sont piochées. Joue au maximum une préparation, lance trois dés, puis utilise éventuellement une réaction.</p></article><article><Flame /><b>3. Brûle</b><p>Le Substrat brûle au départ. Ensuite, seule chaque copie réellement jouée disparaît. Les cartes inutilisées retournent dans la rotation.</p></article><article><Swords /><b>4. Affronte</b><p>La récolte devient une Fleur unique. Choisis un rival, découvre les trois verdicts du jury, puis les deux Fleurs sont brûlées.</p></article></div><button type="button" className={styles.primaryButton} onClick={closeOnboarding}>J’ai compris · préparer mon deck</button></section></div> : null}
-          {pendingStart ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingStart(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="substrate-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>{hasOwnedSubstrate ? remoteBurnsEnabled ? "Burn réel Supabase" : "Simulation locale" : "Démarrage gratuit"}</span><h2 id="substrate-burn-title">{hasOwnedSubstrate ? "Brûler le Substrat ?" : "Commencer sans carte La Botte ?"}</h2><p>{hasOwnedSubstrate ? `Une copie de ${substrates.find((card) => card.code === selectedSubstrate)?.name} sera détruite.` : "Le Substrat standard est fourni gratuitement et aucune carte ne sera détruite au lancement."} Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingStart(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : hasOwnedSubstrate ? "Brûler et commencer" : "Commencer gratuitement"}</button></div></section></div> : null}
+          {pendingStart ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingStart(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="substrate-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>{hasOwnedSubstrate ? remoteBurnsEnabled ? "Burn officiel" : "Simulation locale" : "Démarrage gratuit"}</span><h2 id="substrate-burn-title">{hasOwnedSubstrate ? "Brûler le Substrat ?" : "Commencer sans carte La Botte ?"}</h2><p>{hasOwnedSubstrate ? `Une copie de ${substrates.find((card) => card.code === selectedSubstrate)?.name} sera détruite.` : "Le Substrat standard est fourni gratuitement et aucune carte ne sera détruite au lancement."} Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingStart(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : hasOwnedSubstrate ? "Brûler et commencer" : "Commencer gratuitement"}</button></div></section></div> : null}
           {pendingRemoteBattle ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingRemoteBattle(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="remote-battle-title" onClick={(event) => event.stopPropagation()}><Swords /><span>{flowerRivals.find((rival) => rival.flowerId === selectedRemoteRivalId)?.opponentType === "bot" ? "Entraînement contre un bot" : "Engagement officiel"}</span><h2 id="remote-battle-title">{flowerRivals.find((rival) => rival.flowerId === selectedRemoteRivalId)?.opponentType === "bot" ? "Envoyer cette Fleur au jury ?" : "Verrouiller les deux Fleurs ?"}</h2><p>{flowerRivals.find((rival) => rival.flowerId === selectedRemoteRivalId)?.opponentType === "bot" ? "Le verdict est immédiat et brûlera ta Fleur. Tu gagneras 0,1 EXP d’Arène, sans modifier ton Elo, tes points de saison ni ta série." : "Ta Fleur et la Fleur adverse deviendront indisponibles pour tout autre duel jusqu’au verdict du jury."}</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingRemoteBattle(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void confirmRemoteBattle()}><Swords /> {matchmakingLoading ? "Jury en cours…" : "Confirmer le duel"}</button></div></section></div> : null}
           {botBattleResult ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => setBotBattleResult(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="bot-result-title" onClick={(event) => event.stopPropagation()}><button type="button" className={styles.resultCloseButton} aria-label="Fermer le verdict" onClick={() => setBotBattleResult(null)}>Fermer ×</button><Trophy /><span>Verdict d’entraînement · {botBattleResult.todayCount}/{botBattleResult.dailyLimit}</span><h2 id="bot-result-title">{botBattleResult.winner === "player" ? "Victoire !" : "Défaite"}</h2><p>Face à {botBattleResult.opponentName} avec {botBattleResult.varietyName}.</p><div className={styles.officialRounds}>{botBattleResult.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><small>{round.explanation}</small><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div>{botBattleResult.rewardCard ? <div className={styles.botCardReward}><span>Carte gagnée · ajoutée à ton inventaire</span><div className={styles.botCardRewardArt}><Image src={getKqCardArtwork(botBattleResult.rewardCard.code) ?? botBattleResult.rewardCard.imageUrl} alt={`Carte ${botBattleResult.rewardCard.name}`} fill sizes="180px" /></div><strong>{botBattleResult.rewardCard.name}</strong><small>{botBattleResult.rewardCard.description}</small></div> : null}<div className={styles.tradeoff}><p><b>Récompense</b>+{botBattleResult.experienceAwarded.toLocaleString("fr-FR")} EXP d’Arène{botBattleResult.rewardCard ? " · 1 carte La Botte" : ""}</p><p><b>Résultat</b>{botBattleResult.rounds.filter((round) => round.winner === "player").length}–{botBattleResult.rounds.filter((round) => round.winner === "opponent").length} · Fleur brûlée</p></div><small>Verdict enregistré · {formatKqDate(botBattleResult.burnedAt)} · reçu {botBattleResult.battleId.slice(0, 8)}</small><div><button type="button" className={styles.burnButton} onClick={() => setBotBattleResult(null)}>Continuer</button></div></section></div> : null}
+          {officialBattleResult ? (
+            <div className={styles.burnConfirmBackdrop} data-verdict-result role="presentation" onClick={() => setOfficialBattleResult(null)}>
+              <section className={styles.burnConfirm} data-victory={officialBattleResult.winner === "player" || undefined} role="dialog" aria-modal="true" aria-labelledby="official-result-title" onClick={(event) => event.stopPropagation()}>
+                <button type="button" className={styles.resultCloseButton} aria-label="Fermer le verdict" onClick={() => setOfficialBattleResult(null)}>Fermer ×</button>
+                <Trophy />
+                <span>Verdict officiel · reçu {officialBattleResult.battleId.slice(0, 8)}</span>
+                <h2 id="official-result-title">{officialBattleResult.winner === "player" ? "Victoire !" : "Défaite"}</h2>
+                <p>{officialBattleResult.playerVariety} face à {officialBattleResult.opponentVariety}.</p>
+                <strong className={styles.verdictScore}>{officialBattleResult.rounds.filter((round) => round.winner === "player").length} – {officialBattleResult.rounds.filter((round) => round.winner === "opponent").length}</strong>
+                <div className={styles.officialRounds}>{officialBattleResult.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><small>{round.explanation}</small><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div>
+                <div className={styles.officialResultRewards}>
+                  <p><b>Arène</b>+1 EXP · deux Fleurs brûlées</p>
+                  <p><b>Défis</b>{officialBattleResult.challengePoints > 0 ? `+${officialBattleResult.challengePoints} points` : "Aucun point supplémentaire"}</p>
+                  {officialBattleResult.pvpBoosterGranted ? <p data-highlight><b>Récompense</b>Booster La Botte · {officialBattleResult.pvpBoosterCardCount} cartes</p> : null}
+                </div>
+                {officialBattleResult.completedChallengeTitles.length > 0 ? <small>Défis réussis : {officialBattleResult.completedChallengeTitles.join(" · ")}</small> : null}
+                {officialBattleResult.rankProfile ? <div className={styles.resultRankSummary}><span><strong>{officialBattleResult.rankProfile.rating}</strong><small>Cote</small></span><span><strong>{officialBattleResult.rankProfile.seasonPoints}</strong><small>Points saison</small></span><span><strong>{officialBattleResult.rankProfile.wins}–{officialBattleResult.rankProfile.losses}</strong><small>Victoires–défaites</small></span></div> : null}
+                <small>Verdict enregistré le {formatKqDate(officialBattleResult.burnedAt)}</small>
+                <div><button type="button" className={styles.burnButton} onClick={() => setOfficialBattleResult(null)}>Continuer</button></div>
+              </section>
+            </div>
+          ) : null}
           {pendingOfficialVerdictId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingOfficialVerdictId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="official-verdict-title" onClick={(event) => event.stopPropagation()}><Flame /><span>Verdict officiel irréversible</span><h2 id="official-verdict-title">Brûler les deux Fleurs ?</h2><p>Le serveur calculera les trois manches, désignera le gagnant, mettra le classement à jour puis brûlera définitivement les deux Fleurs.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(null)}>Retour</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void confirmOfficialVerdict()}><Flame /> {matchmakingLoading ? "Jury en cours…" : "Confirmer le verdict"}</button></div></section></div> : null}
       </main>
     );
@@ -1416,7 +1472,7 @@ export function KanabQuestDicePrototype({
         const card = KQ_CARDS.find((item) => item.code === pendingBurnCode);
         if (!card) return null;
         const tradeoff = getKqCardTradeoff(card);
-        return <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingBurnCode(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="burn-confirm-title" onClick={(event) => event.stopPropagation()}><Flame /><span>{remoteBurnsEnabled ? "Burn réel Supabase" : "Simulation locale"}</span><h2 id="burn-confirm-title">Brûler {card.name} ?</h2><p>Cette action détruit une copie de ton album. Il t’en reste {activeInventory[card.code] ?? 0}.</p><div className={styles.tradeoff}><p><b>Avantage</b>{tradeoff.benefit}</p><p><b>Risque</b>{tradeoff.risk}</p></div>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingBurnCode(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null} onClick={() => void playAndBurnCard(card.code)}><Flame /> {remoteAction === "card" ? "Confirmation…" : "Brûler et jouer"}</button></div></section></div>;
+        return <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingBurnCode(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="burn-confirm-title" onClick={(event) => event.stopPropagation()}><Flame /><span>{remoteBurnsEnabled ? "Burn officiel" : "Simulation locale"}</span><h2 id="burn-confirm-title">Brûler {card.name} ?</h2><p>Cette action détruit une copie de ton album. Il t’en reste {activeInventory[card.code] ?? 0}.</p><div className={styles.tradeoff}><p><b>Avantage</b>{tradeoff.benefit}</p><p><b>Risque</b>{tradeoff.risk}</p></div>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingBurnCode(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null} onClick={() => void playAndBurnCard(card.code)}><Flame /> {remoteAction === "card" ? "Confirmation…" : "Brûler et jouer"}</button></div></section></div>;
       })() : null}
 
       <div className={styles.mobileTurnBar} aria-label="Action principale du tour">

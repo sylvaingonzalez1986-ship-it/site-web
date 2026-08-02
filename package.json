@@ -21,7 +21,8 @@
     "load-test:arena": "node scripts/load-test-arena.mjs",
     "load-test:placard": "node scripts/load-test-placard.mjs",
     "smoke-test:placard:transactions": "node scripts/smoke-test-placard-transactions.mjs",
-    "audit:placard:mobile": "node scripts/audit-placard-mobile.mjs"
+    "audit:placard:mobile": "node scripts/audit-placard-mobile.mjs",
+    "audit:arena:mobile": "node scripts/audit-arena-mobile.mjs"
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.95",

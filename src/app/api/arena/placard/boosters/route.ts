@@ -13,6 +13,13 @@ import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 
 export const runtime = "nodejs";
 
+function publicBoosterError(error: unknown, fallback: string) {
+  const message = error instanceof Error ? error.message : fallback;
+  return message.startsWith("[supabase:")
+    ? { message: "Service momentanément indisponible.", status: 500 }
+    : { message, status: 400 };
+}
+
 async function getContext() {
   const session = await getCurrentCustomerSessionByBackend();
   if (!session) return null;
@@ -68,8 +75,8 @@ export async function POST(request: Request) {
     });
     return NextResponse.json(purchase);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Achat La Botte impossible.";
-    return NextResponse.json({ error: message }, { status: message.startsWith("[supabase:") ? 500 : 400 });
+    const failure = publicBoosterError(error, "Achat La Botte impossible.");
+    return NextResponse.json({ error: failure.message }, { status: failure.status });
   }
 }
 
@@ -90,8 +97,8 @@ export async function PUT(request: Request) {
   try {
     return NextResponse.json(await claimKqWelcomeSupportBooster(context.session.customerId));
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Réclamation impossible.";
-    return NextResponse.json({ error: message }, { status: message.startsWith("[supabase:") ? 500 : 400 });
+    const failure = publicBoosterError(error, "Réclamation impossible.");
+    return NextResponse.json({ error: failure.message }, { status: failure.status });
   }
 }
 
@@ -119,7 +126,7 @@ export async function PATCH(request: Request) {
     );
     return NextResponse.json(opening);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Ouverture La Botte impossible.";
-    return NextResponse.json({ error: message }, { status: message.startsWith("[supabase:") ? 500 : 400 });
+    const failure = publicBoosterError(error, "Ouverture La Botte impossible.");
+    return NextResponse.json({ error: failure.message }, { status: failure.status });
   }
 }

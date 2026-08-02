@@ -116,7 +116,7 @@ export function KqSupportBoosterShop() {
       rarity: card.rarity,
       imageUrl: getKqCardArtwork(card.code) ?? undefined,
     })));
-    setNotice("Prévisualisation locale : aucun point débité et aucune carte créée dans Supabase.");
+    setNotice("Prévisualisation locale : aucun point débité et aucune carte enregistrée.");
   };
 
   const welcomeEntitlement = shop?.availableEntitlements.find((item) => item.source === "welcome_pack");

@@ -14,6 +14,7 @@ import { buildKqSeasonRewardPreview, KQ_SEASON_REWARDS_LIVE } from "@/lib/kanab-
 import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 import { LOTTERY_POINTS_PACK_MAX_PER_PURCHASE } from "@/lib/lottery-collection";
 import { KQ_SUPPORT_BOOSTER_POINTS_COST } from "@/lib/kanab-quest-booster";
+import { calculateArenaScore } from "@/lib/arena-ranking";
 
 const BOTTE_COLLECTION_CODE = "BOTTE_DU_CHANVRIER_2026";
 const KQ_INITIAL_SEASON_CODE = "KQ-2026-S1";
@@ -1421,6 +1422,84 @@ export async function getKqPublicLeaderboard() {
       losses: Number(entry.losses ?? 0),
       streak: Number(entry.streak ?? 0),
     })),
+  };
+}
+
+export async function getKqPublicArenaLeaderboard() {
+  const supabase = createSupabaseServiceClient();
+  const seasonCode = await getKqActiveSeasonCode();
+  const [snapshotResult, contestSeasonResult] = await Promise.all([
+    supabase.rpc("rpc_kq_refresh_daily_leaderboard", { p_season_code: seasonCode }),
+    supabase.from("contest_seasons").select("id,code,label").eq("status", "active")
+      .order("starts_at", { ascending: false }).limit(1).maybeSingle(),
+  ]);
+  if (snapshotResult.error) throw new Error(`[supabase:rpc_kq_refresh_daily_leaderboard] ${snapshotResult.error.message}`);
+  if (contestSeasonResult.error) throw new Error(`[supabase:contest_seasons:active] ${contestSeasonResult.error.message}`);
+
+  const snapshot = snapshotResult.data as Record<string, unknown> | null;
+  const rawPlacard = Array.isArray(snapshot?.leaderboard)
+    ? snapshot.leaderboard as Array<Record<string, unknown>>
+    : [];
+  const userIds = rawPlacard.map((entry) => String(entry.userId ?? "")).filter(Boolean);
+  const contestSeasonId = String(contestSeasonResult.data?.id ?? "");
+  const [profilesResult, notebookResult] = await Promise.all([
+    userIds.length
+      ? supabase.from("contest_profiles").select("customer_id,pseudo").in("customer_id", userIds)
+      : Promise.resolve({ data: [], error: null }),
+    userIds.length && contestSeasonId
+      ? supabase.from("contest_tester_rankings_by_season")
+          .select("customer_id,season_points,approved_review_count")
+          .eq("season_id", contestSeasonId).in("customer_id", userIds)
+      : Promise.resolve({ data: [], error: null }),
+  ]);
+  if (profilesResult.error) throw new Error(`[supabase:contest_profiles] ${profilesResult.error.message}`);
+  if (notebookResult.error) throw new Error(`[supabase:contest_tester_rankings_by_season] ${notebookResult.error.message}`);
+
+  const pseudoByUser = new Map((profilesResult.data ?? []).map((row) => [String(row.customer_id), String(row.pseudo)]));
+  const notebookByUser = new Map((notebookResult.data ?? []).map((row) => [String(row.customer_id), row]));
+  const scored = rawPlacard.map((entry) => {
+    const userId = String(entry.userId ?? "");
+    const wins = Number(entry.wins ?? 0);
+    const losses = Number(entry.losses ?? 0);
+    const notebook = notebookByUser.get(userId);
+    const score = calculateArenaScore({
+      notebookSeasonPoints: Number(notebook?.season_points ?? 0),
+      placardSeasonPoints: Number(entry.seasonPoints ?? 0),
+      placardRating: Number(entry.rating ?? 1000),
+      placardBattles: wins + losses,
+    });
+    return {
+      userId,
+      pseudo: pseudoByUser.get(userId) ?? "Cultivateur anonyme",
+      score: score.total,
+      notebookScore: score.notebook,
+      placardScore: score.placard,
+      approvedReviewCount: Number(notebook?.approved_review_count ?? 0),
+      rating: Number(entry.rating ?? 1000),
+      wins,
+      losses,
+      eligible: score.eligible,
+    };
+  }).filter((entry) => entry.eligible)
+    .sort((a, b) => b.score - a.score || b.rating - a.rating || a.userId.localeCompare(b.userId))
+    .map((entry, index) => ({
+      rank: index + 1,
+      pseudo: entry.pseudo,
+      score: entry.score,
+      notebookScore: entry.notebookScore,
+      placardScore: entry.placardScore,
+      approvedReviewCount: entry.approvedReviewCount,
+      rating: entry.rating,
+      wins: entry.wins,
+      losses: entry.losses,
+    }));
+
+  return {
+    seasonCode,
+    contestSeasonCode: contestSeasonResult.data?.code ?? null,
+    generatedAt: snapshot?.generated_at ? String(snapshot.generated_at) : new Date().toISOString(),
+    formulaVersion: "arena-v1",
+    entries: scored,
   };
 }
 

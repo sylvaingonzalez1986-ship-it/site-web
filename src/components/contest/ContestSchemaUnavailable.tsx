@@ -12,7 +12,7 @@ export function ContestSchemaUnavailable({ compact = false }: ContestSchemaUnava
           <h1 className="section-title">{compact ? "MODULE INDISPONIBLE" : "BETE DE CONCOURS INDISPONIBLE"}</h1>
           <p className="mt-4 text-charcoal">{CONTEST_SCHEMA_MISSING_MESSAGE}</p>
           <p className="mt-3 text-sm text-charcoal">
-            La base Supabase actuellement ciblée par ton environnement local ne contient pas encore les tables
+            La base de données actuellement ciblée par ton environnement local ne contient pas encore les tables
             `contest_*`. Tant que la migration `20260421000100_bete_de_concours.sql` n&apos;est pas appliquée sur ce
             projet, le module ne peut pas fonctionner sur cette base.
           </p>

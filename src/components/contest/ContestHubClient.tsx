@@ -34,6 +34,8 @@ import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal"
 import { NotebookFlipBook } from "@/components/contest/NotebookFlipBook";
 import { ContestNotebookPanel } from "@/components/contest/ContestNotebookPanel";
 import { ContestReviewSkillRadar } from "@/components/contest/ContestReviewSkillRadar";
+import { ArenaNavigation, type ContestArenaView } from "@/components/contest/ArenaNavigation";
+import { ProducerRewardJourney } from "@/components/contest/ProducerRewardJourney";
 import arenaStyles from "@/components/contest/ContestArena.module.css";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
@@ -100,6 +102,7 @@ type ContestHubClientProps = {
   isAuthenticated: boolean;
   isAdminAuthorized: boolean;
   isPlacardPlayerEnabled: boolean;
+  initialView: ContestArenaView;
 };
 
 type ContestMascotPanel = "intro" | "profile" | "leaderboard";
@@ -123,6 +126,18 @@ type PlacardRankingEntry = {
   wins: number;
   losses: number;
   streak: number;
+};
+
+type ArenaRankingEntry = {
+  rank: number;
+  pseudo: string;
+  score: number;
+  notebookScore: number;
+  placardScore: number;
+  approvedReviewCount: number;
+  rating: number;
+  wins: number;
+  losses: number;
 };
 
 type PlacardPlayerProgress = {
@@ -2068,12 +2083,54 @@ function ContestTesterLeaderboard({
   compact?: boolean;
 }) {
   const [scope, setScope] = useState<"season" | "global">("season");
-  const [rankingType, setRankingType] = useState<"tasting" | "placard">("tasting");
+  const [rankingType, setRankingType] = useState<"general" | "tasting" | "placard">("general");
+  const [arenaEntries, setArenaEntries] = useState<ArenaRankingEntry[]>([]);
+  const [arenaRankingLoaded, setArenaRankingLoaded] = useState(false);
+  const [arenaRankingUnavailable, setArenaRankingUnavailable] = useState(false);
+  const [remoteTastingItems, setRemoteTastingItems] = useState({ season: seasonItems, global: globalItems });
+  const [tastingLoaded, setTastingLoaded] = useState({ season: seasonItems.length > 0, global: globalItems.length > 0 });
   const [placardEntries, setPlacardEntries] = useState<PlacardRankingEntry[]>([]);
   const [placardRankingLoaded, setPlacardRankingLoaded] = useState(false);
   const [placardRankingUnavailable, setPlacardRankingUnavailable] = useState(false);
-  const items = scope === "season" ? seasonItems : globalItems;
+  const items = remoteTastingItems[scope];
   const isPlacardRanking = rankingType === "placard";
+  const isGeneralRanking = rankingType === "general";
+
+  useEffect(() => {
+    if (rankingType !== "tasting" || tastingLoaded[scope]) return;
+    const controller = new AbortController();
+    const params = new URLSearchParams({ scope, limit: "10" });
+    if (scope === "season" && profileSeasonCode) params.set("season", profileSeasonCode);
+    void fetch(`/api/contest/testers/rankings?${params}`, { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Classement dégustation indisponible");
+        const payload = await response.json() as { items?: PublicContestTesterRankingItem[] };
+        setRemoteTastingItems((current) => ({ ...current, [scope]: Array.isArray(payload.items) ? payload.items : [] }));
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+      })
+      .finally(() => setTastingLoaded((current) => ({ ...current, [scope]: true })));
+    return () => controller.abort();
+  }, [profileSeasonCode, rankingType, scope, tastingLoaded]);
+
+  useEffect(() => {
+    if (!isGeneralRanking || arenaRankingLoaded) return;
+    const controller = new AbortController();
+    void fetch("/api/arena/rankings", { signal: controller.signal })
+      .then(async (response) => {
+        const payload = await response.json() as { entries?: ArenaRankingEntry[] };
+        if (!response.ok) throw new Error("Classement indisponible");
+        setArenaEntries(Array.isArray(payload.entries) ? payload.entries : []);
+        setArenaRankingUnavailable(false);
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setArenaRankingUnavailable(true);
+      })
+      .finally(() => setArenaRankingLoaded(true));
+    return () => controller.abort();
+  }, [arenaRankingLoaded, isGeneralRanking]);
 
   useEffect(() => {
     if (!isPlacardRanking || placardRankingLoaded) return;
@@ -2103,9 +2160,9 @@ function ContestTesterLeaderboard({
     <div className="cartoon-border bg-cream p-4 md:p-6">
       <div className={compact ? "grid gap-3" : "contest-leaderboard-illustrated-header"}>
         <div>
-          <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Top testeurs</p>
+          <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">{isGeneralRanking ? "Top Arène" : "Top testeurs"}</p>
           <h2 className={`font-display leading-none text-ink ${compact ? "text-2xl" : "text-3xl"}`}>
-            {isPlacardRanking ? "Classement Placard" : "Classement dégustation"}
+            {isGeneralRanking ? "Classement général" : isPlacardRanking ? "Classement Placard" : "Classement dégustation"}
           </h2>
         </div>
         {compact ? null : (
@@ -2117,7 +2174,7 @@ function ContestTesterLeaderboard({
             onHoverEnd={onMascotLeave}
           />
         )}
-        <div
+        {isGeneralRanking ? null : <div
           className={`contest-leaderboard-scope-switch rounded border-2 border-[#1a1a1a] bg-white p-1 ${
             compact ? "contest-leaderboard-scope-switch-compact" : ""
           }`}
@@ -2134,11 +2191,15 @@ function ContestTesterLeaderboard({
               {nextScope === "season" ? "Saison" : "Global"}
             </button>
           ))}
-        </div>
+        </div>}
       </div>
 
       <div className={arenaStyles.personalRankingTypeSwitch} aria-label="Type de classement">
-        <button type="button" aria-pressed={!isPlacardRanking} data-active={!isPlacardRanking || undefined} onClick={() => setRankingType("tasting")}>
+        <button type="button" aria-pressed={isGeneralRanking} data-active={isGeneralRanking || undefined} onClick={() => setRankingType("general")}>
+          Général
+          <small>Carnet + Placard</small>
+        </button>
+        <button type="button" aria-pressed={rankingType === "tasting"} data-active={rankingType === "tasting" || undefined} onClick={() => setRankingType("tasting")}>
           Dégustation
           <small>Avis validés</small>
         </button>
@@ -2154,8 +2215,30 @@ function ContestTesterLeaderboard({
         </p>
       ) : null}
 
+      {isGeneralRanking ? (
+        <p className="mt-3 text-xs font-semibold text-charcoal">
+          Score sur 1 000 : Carnet 300 points maximum, activité et cote Placard 700. Une partie terminée est requise.
+        </p>
+      ) : null}
+
       <div className="mt-5 grid gap-2">
-        {isPlacardRanking && !placardRankingLoaded ? (
+        {isGeneralRanking && !arenaRankingLoaded ? (
+          <div className={arenaStyles.placardRankingEmpty}>
+            <span>Classement général</span><strong>Calcul du score Arène…</strong>
+          </div>
+        ) : isGeneralRanking && arenaEntries.length > 0 ? (
+          arenaEntries.slice(0, compact ? 5 : 10).map((item) => (
+            <div key={`arena-${item.rank}-${item.pseudo}`} className="grid grid-cols-[48px_minmax(0,1fr)_72px] items-center gap-3 rounded border-2 border-[#1a1a1a] bg-white px-3 py-3 shadow-[2px_2px_0_#1a1a1a]">
+              <span className="rounded-full border-2 border-[#1a1a1a] bg-yellow px-2 py-1 text-center text-sm font-black text-ink">#{item.rank}</span>
+              <span className="min-w-0"><span className="block truncate text-sm font-black text-ink">{item.pseudo}</span><span className="block truncate text-xs font-semibold text-charcoal">Carnet {item.notebookScore} · Placard {item.placardScore}</span></span>
+              <span className="text-right"><strong className="block text-sm font-black text-ink">{item.score}</strong><small className="text-[10px] font-bold uppercase text-charcoal">pts Arène</small></span>
+            </div>
+          ))
+        ) : isGeneralRanking ? (
+          <div className={arenaStyles.placardRankingEmpty}>
+            <span>{arenaRankingUnavailable ? "Classement momentanément indisponible" : "Saison ouverte"}</span><strong>Pas encore de joueur classé</strong><p>Il faut terminer une partie au Placard pour entrer au classement général.</p>
+          </div>
+        ) : isPlacardRanking && !placardRankingLoaded ? (
           <div className={arenaStyles.placardRankingEmpty}>
             <span>Classement Placard</span>
             <strong>Chargement du snapshot quotidien…</strong>
@@ -2380,12 +2463,14 @@ export function ContestHubClient({
   isAuthenticated,
   isAdminAuthorized,
   isPlacardPlayerEnabled,
+  initialView,
 }: ContestHubClientProps) {
   const router = useRouter();
   const { addToCart, authLoading } = useCart();
   const lottery = useLotteryExperience();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [activeArenaView, setActiveArenaView] = useState<ContestArenaView>(initialView);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [notebookPage, setNotebookPage] = useState<0 | 1>(0);
   const [notebookView, setNotebookView] = useState<ContestNotebookView>("lab");
@@ -2415,6 +2500,10 @@ export function ContestHubClient({
   const selectedUnlock = selectedEntry
     ? notebookUnlocks.find((unlock) => unlock.entryId === selectedEntry.id)
     : undefined;
+
+  useEffect(() => {
+    setActiveArenaView(initialView);
+  }, [initialView]);
 
   const unlockByEntryId = useMemo(
     () => new Map(notebookUnlocks.map((unlock) => [unlock.entryId, unlock])),
@@ -2553,6 +2642,16 @@ export function ContestHubClient({
   const changeNotebookView = (view: ContestNotebookView) => {
     setNotebookPage(1);
     setNotebookView(view);
+  };
+
+  const changeArenaView = (view: ContestArenaView) => {
+    setActiveArenaView(view);
+    const nextParams = new URLSearchParams(searchParams.toString());
+    if (view === "jouer") nextParams.delete("vue");
+    else nextParams.set("vue", view);
+    const query = nextParams.toString();
+    router.replace(`${pathname}${query ? `?${query}` : ""}`, { scroll: false });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const openNextContestPack = () => {
@@ -2829,12 +2928,12 @@ export function ContestHubClient({
               Placard, puis mesure-toi aux autres dans les classements de la saison.
             </p>
             <div className={arenaStyles.heroActions}>
-              <a href="#classement-arene" className={arenaStyles.primaryAction}>
+              <button type="button" onClick={() => changeArenaView("classement")} className={arenaStyles.primaryAction}>
                 Voir le classement <ChevronDown size={17} aria-hidden="true" />
-              </a>
-              <a href="#carnet-arene" className={arenaStyles.secondaryAction}>
+              </button>
+              <button type="button" onClick={() => changeArenaView("carnet")} className={arenaStyles.secondaryAction}>
                 Ouvrir mon carnet <ChevronRight size={17} aria-hidden="true" />
-              </a>
+              </button>
               {isPlacardPlayerEnabled && isAuthenticated ? (
                 <Link href="/arene/placard" className={arenaStyles.placardAction}>
                   Ouvrir le Placard <ChevronRight size={17} aria-hidden="true" />
@@ -2860,7 +2959,6 @@ export function ContestHubClient({
               alt=""
               width={1536}
               height={1024}
-              priority
               sizes="(max-width: 767px) 320px, 620px"
               className={arenaStyles.heroDuo}
             />
@@ -2870,7 +2968,9 @@ export function ContestHubClient({
       </header>
 
       <div className={`retro-container ${arenaStyles.content}`}>
-        <nav className={arenaStyles.arenaHub} aria-labelledby="arena-hub-title">
+        <ArenaNavigation activeView={activeArenaView} onChange={changeArenaView} />
+
+        <nav hidden className={arenaStyles.arenaHub} aria-labelledby="arena-hub-title">
           <div className={arenaStyles.arenaHubHeading}>
             <p className={arenaStyles.sectionKicker}>Choisis ton espace</p>
             <h2 id="arena-hub-title">Que veux-tu faire ?</h2>
@@ -2912,7 +3012,7 @@ export function ContestHubClient({
           <p className={arenaStyles.arenaHubLoop}><strong>Carnet</strong><span>débloque des avantages</span><strong>Placard</strong><span>produit des Fleurs</span><strong>Classements</strong></p>
         </nav>
 
-        <section aria-labelledby="arena-how-title">
+        <section hidden aria-labelledby="arena-how-title">
           <div className={arenaStyles.sectionHeading}>
             <div>
               <h2 id="arena-how-title" className={arenaStyles.sectionTitle}>
@@ -2935,7 +3035,7 @@ export function ContestHubClient({
           </div>
         </section>
 
-        <section id="placard-arene" className={arenaStyles.placardSection} aria-labelledby="arena-placard-title">
+        <section hidden={activeArenaView !== "jouer"} id="placard-arene" className={arenaStyles.placardSection} aria-labelledby="arena-placard-title">
           <div className={arenaStyles.placardIntro}>
             <div className={arenaStyles.placardCopy}>
               <p className={arenaStyles.sectionKicker}>Le jeu de L’Arène</p>
@@ -2986,50 +3086,43 @@ export function ContestHubClient({
           </div>
         </section>
 
-        <div className={arenaStyles.mobileActions}>
-          <button type="button" onClick={() => openMascotPanel("profile")}>Mon profil</button>
-          <button type="button" onClick={() => setIsMobileLeaderboardOpen(true)}>Top testeurs</button>
-        </div>
-
-        <section className={arenaStyles.personalPanel} aria-labelledby="arena-profile-title">
+        <section hidden={activeArenaView !== "classement"} className={arenaStyles.playerRankingSection} aria-labelledby="arena-player-ranking-title">
           <div className={arenaStyles.sectionHeading}>
             <div>
-              <p className={arenaStyles.sectionKicker}>Ton coin dans l’Arène</p>
-              <h2 id="arena-profile-title" className={arenaStyles.sectionTitle}>
-                Ta progression. <span>Ton rang.</span>
+              <p className={arenaStyles.sectionKicker}>Rangs des joueurs</p>
+              <h2 id="arena-player-ranking-title" className={arenaStyles.sectionTitle}>
+                Un objectif. <span>Deux contributions.</span>
               </h2>
             </div>
             <p className={arenaStyles.sectionLead}>
-              Tes critiques font progresser ton profil de dégustation. Tes cultures et tes duels
-              construiront séparément ton rang Placard.
+              Le Carnet débloque tes avantages de jeu. Retrouve ici ta progression dégustation et ton rang Placard sans mélanger leurs règles actuelles.
             </p>
           </div>
-          <div className={arenaStyles.personalGrid}>
-            <ContestTesterProfileCard
-              progress={viewerProgress}
-              isAuthenticated={isAuthenticated}
-              onMascotClick={() => openMascotPanel("profile")}
-              onMascotHover={() => previewMascotPanel("profile")}
-              onMascotLeave={() => closeMascotPreview("profile")}
-            />
+          {activeArenaView === "classement" ? <>
+            <div className={arenaStyles.personalGrid}>
+              <ContestTesterProfileCard
+                progress={viewerProgress}
+                isAuthenticated={isAuthenticated}
+                onMascotClick={() => openMascotPanel("profile")}
+                onMascotHover={() => previewMascotPanel("profile")}
+                onMascotLeave={() => closeMascotPreview("profile")}
+              />
+            </div>
             <ContestTesterLeaderboard
               seasonItems={testerSeasonRankings}
               globalItems={testerGlobalRankings}
               profileSeasonCode={selectedSeasonCode}
               profileTrack={selectedTrack}
-              onMascotClick={() => openMascotPanel("leaderboard")}
-              onMascotHover={() => previewMascotPanel("leaderboard")}
-              onMascotLeave={() => closeMascotPreview("leaderboard")}
             />
-          </div>
+          </> : null}
         </section>
 
-        <section id="classement-arene" className={arenaStyles.rankingSection} aria-labelledby="arena-ranking-title">
+        <section hidden={activeArenaView !== "carnet"} id="classement-arene" className={arenaStyles.rankingSection} aria-labelledby="arena-ranking-title">
           <div className={arenaStyles.sectionHeading}>
             <div>
               <p className={arenaStyles.sectionKicker}>Verdicts de la communauté</p>
               <h2 id="arena-ranking-title" className={arenaStyles.sectionTitle}>
-                Le classement. <span>Sans blabla.</span>
+                Palmarès des fleurs. <span>Selon le jury.</span>
               </h2>
             </div>
             <p className={arenaStyles.sectionLead}>
@@ -3106,7 +3199,11 @@ export function ContestHubClient({
           </div>
         </section>
 
-        <section id="carnet-arene" className={arenaStyles.notebookPanel} aria-labelledby="arena-notebook-title">
+        <div hidden={activeArenaView !== "carnet"}>
+          {activeArenaView === "carnet" ? <ProducerRewardJourney isAuthenticated={isAuthenticated} /> : null}
+        </div>
+
+        <section hidden={activeArenaView !== "carnet"} id="carnet-arene" className={arenaStyles.notebookPanel} aria-labelledby="arena-notebook-title">
           <div className={arenaStyles.notebookIntro}>
             <div>
               <p className={arenaStyles.sectionKicker}>Ton outil de dégustation</p>
@@ -3374,7 +3471,7 @@ export function ContestHubClient({
           </div>
         </section>
 
-        <section className={arenaStyles.testedPanel} aria-label="Fleurs déjà dégustées">
+        <section hidden={activeArenaView !== "carnet"} className={arenaStyles.testedPanel} aria-label="Fleurs déjà dégustées">
           <ContestTestedFlowerCarousel
             items={testedFlowerCards}
             selectedEntryId={selectedEntry?.id}

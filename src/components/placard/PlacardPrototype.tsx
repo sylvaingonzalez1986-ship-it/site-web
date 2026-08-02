@@ -195,7 +195,7 @@ export function PlacardPrototype() {
     <main className={styles.page}>
       <section className={styles.hero}>
         <div>
-          <p className={styles.kicker}>Prototype local · aucune donnée Supabase</p>
+          <p className={styles.kicker}>Prototype local · aucune donnée enregistrée</p>
           <h1>Le Placard</h1>
           <p>Choisis un Buddie, conduis sa culture et révèle ta première carte Récolte.</p>
         </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect, redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { ContestHubClient } from "@/components/contest/ContestHubClient";
 import { ContestSchemaUnavailable } from "@/components/contest/ContestSchemaUnavailable";
 import {
@@ -16,12 +17,12 @@ import {
   getContestRankings,
   getContestSeasons,
   getContestTesterProgress,
-  getContestTesterRankings,
   getPublicContestEntries,
   isContestSchemaMissingError,
 } from "@/lib/contest-backend";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isSupabaseAuthCookieName } from "@/lib/supabase-auth-cookies";
 import {
   CONTEST_ENTRY_CATEGORIES,
   CONTEST_ENTRY_TRACKS,
@@ -40,8 +41,14 @@ import type { PublicCustomer } from "@/types/customer";
 export const revalidate = 60;
 
 type ContestHubPageProps = {
-  searchParams: Promise<{ season?: string; category?: string; track?: string }>;
+  searchParams: Promise<{ season?: string; category?: string; track?: string; vue?: string }>;
 };
+
+type ContestArenaView = "jouer" | "carnet" | "classement";
+
+function parseArenaView(value?: string): ContestArenaView {
+  return value === "carnet" || value === "classement" ? value : "jouer";
+}
 
 type ContestCategoryCounts = Record<ContestEntryCategory, number>;
 
@@ -92,6 +99,11 @@ async function getOptionalContestSession(): Promise<{
   customerId: string;
   customer: PublicCustomer;
 } | null> {
+  const cookieStore = await cookies();
+  if (!cookieStore.getAll().some((cookie) => isSupabaseAuthCookieName(cookie.name))) {
+    return null;
+  }
+
   try {
     return await getCurrentCustomerSessionByBackend();
   } catch (error) {
@@ -119,10 +131,13 @@ export const metadata: Metadata = {
 export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
   try {
     const params = await searchParams;
+    const arenaView = parseArenaView(params.vue);
     const requestedCategory = parseCategory(params.category);
     const selectedTrack = parseTrack(params.track);
-    const session = await getOptionalContestSession();
-    const adminAuthorized = await isCurrentRequestAdminAuthorized();
+    const [session, adminAuthorized] = await Promise.all([
+      getOptionalContestSession(),
+      isCurrentRequestAdminAuthorized(),
+    ]);
     if (!canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
       if (isContestFeatureEnabledServer() && isContestBetaAccessRestrictedServer() && !session && !adminAuthorized) {
         const nextPath = `/arene${params.season || params.category || selectedTrack !== "regular" ? `?${new URLSearchParams(
@@ -137,10 +152,9 @@ export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
       notFound();
     }
 
-    const entryPayload = await getPublicContestEntries({
-      seasonCode: params.season,
-      track: selectedTrack,
-    });
+    const entryPayload = arenaView === "carnet"
+      ? await getPublicContestEntries({ seasonCode: params.season, track: selectedTrack })
+      : { entries: [], selectedSeason: null };
     const selectedSeasonCode = entryPayload.selectedSeason?.code ?? params.season;
     const categoryCounts = getContestCategoryCounts(entryPayload.entries);
     const activeCategory = resolveActiveContestCategory(categoryCounts, requestedCategory);
@@ -157,27 +171,29 @@ export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
       testerSeasonRankings,
       testerGlobalRankings,
     ] = await Promise.all([
-      getContestSeasons(),
-      getContestRankings({ seasonCode: selectedSeasonCode, category: activeCategory, track: selectedTrack, limit: 12 }),
-      getContestFeed({
+      arenaView === "carnet" ? getContestSeasons() : Promise.resolve([]),
+      arenaView === "carnet"
+        ? getContestRankings({ seasonCode: selectedSeasonCode, category: activeCategory, track: selectedTrack, limit: 12 })
+        : Promise.resolve({ entries: [] }),
+      arenaView === "carnet" ? getContestFeed({
         seasonCode: selectedSeasonCode,
         category: activeCategory,
         track: selectedTrack,
         limit: 18,
         viewerCustomerId: session?.customerId,
-      }),
-      getContestNotebookUnlocks({
+      }) : Promise.resolve({ items: [] }),
+      arenaView === "carnet" ? getContestNotebookUnlocks({
         customerId: session?.customerId,
         customerEmail: session?.customer.email,
         seasonCode: selectedSeasonCode,
-      }),
-      session?.customerId ? getContestProfile(session.customerId) : null,
-      session?.customerId ? getContestProfileBadges(session.customerId, { syncRewards: false }) : [],
-      session?.customerId
+      }) : Promise.resolve([]),
+      arenaView === "carnet" && session?.customerId ? getContestProfile(session.customerId) : null,
+      arenaView === "carnet" && session?.customerId ? getContestProfileBadges(session.customerId, { syncRewards: false }) : [],
+      arenaView === "jouer" && session?.customerId
         ? getContestTesterProgress({ customerId: session.customerId, seasonCode: selectedSeasonCode })
         : null,
-      getContestTesterRankings({ scope: "season", seasonCode: selectedSeasonCode, limit: 10 }),
-      getContestTesterRankings({ scope: "global", limit: 10 }),
+      Promise.resolve({ items: [] }),
+      Promise.resolve({ items: [] }),
     ]);
 
     return (
@@ -199,6 +215,7 @@ export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
         isAuthenticated={Boolean(session?.customerId)}
         isAdminAuthorized={adminAuthorized}
         isPlacardPlayerEnabled={isKqPlayerApiEnabled()}
+        initialView={arenaView}
       />
     );
   } catch (error) {
@@ -215,5 +232,6 @@ export default async function LegacyContestHubPage({ searchParams }: ContestHubP
   if (params.season) query.set("season", params.season);
   if (params.category) query.set("category", params.category);
   if (params.track) query.set("track", params.track);
+  if (params.vue) query.set("vue", params.vue);
   permanentRedirect(`/arene${query.size ? `?${query.toString()}` : ""}`);
 }
