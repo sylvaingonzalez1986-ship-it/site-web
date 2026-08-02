@@ -69,14 +69,14 @@ const artworkByCode = {
   "BOTTE-034": "botte-034-retour-calme-v1.png",
   "BOTTE-035": "botte-035-quarantaine-preventive-v1.png",
   "BOTTE-036": "botte-036-bac-retention-v1.png",
-  "HERITAGE-001": "heritage-001-racines-solides-v1.png",
-  "HERITAGE-002": "heritage-002-reserve-jardinier-v1.png",
-  "HERITAGE-003": "heritage-003-main-prevoyante-v1.png",
-  "HERITAGE-004": "heritage-004-climat-stable-v1.png",
-  "HERITAGE-005": "heritage-005-second-regard-v1.png",
-  "HERITAGE-006": "heritage-006-reprise-vigoureuse-v1.png",
-  "HERITAGE-007": "heritage-007-instinct-cultivateur-v1.png",
-  "HERITAGE-008": "heritage-008-bouclier-biologique-v1.png",
+  "HERITAGE-001": "heritage-001-racines-solides-producer-v2.webp",
+  "HERITAGE-002": "heritage-002-reserve-jardinier-producer-v2.webp",
+  "HERITAGE-003": "heritage-003-main-prevoyante-producer-v2.webp",
+  "HERITAGE-004": "heritage-004-climat-stable-producer-v2.webp",
+  "HERITAGE-005": "heritage-005-second-regard-producer-v2.webp",
+  "HERITAGE-006": "heritage-006-reprise-vigoureuse-producer-v2.webp",
+  "HERITAGE-007": "heritage-007-instinct-cultivateur-producer-v2.webp",
+  "HERITAGE-008": "heritage-008-bouclier-biologique-producer-v2.webp",
   "HERITAGE-009": "heritage-009-floraison-maitrisee-v1.png",
   "HERITAGE-010": "heritage-010-affinage-patient-v1.png",
   "HERITAGE-011": "heritage-011-canopy-legacy-v1.png",
@@ -159,17 +159,17 @@ function wrapText(ctx, text, maxWidth, maxLines) {
   return lines;
 }
 
-function drawCover(ctx, image, x, y, width, height) {
+function drawCover(ctx, image, x, y, width, height, focalY = 0.5) {
   const scale = Math.max(width / image.width, height / image.height);
   const sourceWidth = width / scale;
   const sourceHeight = height / scale;
   const sourceX = (image.width - sourceWidth) / 2;
-  const sourceY = (image.height - sourceHeight) / 2;
+  const sourceY = Math.min(image.height - sourceHeight, Math.max(0, image.height * focalY - sourceHeight / 2));
   ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
 }
 
 function slugFromArtwork(file) {
-  return file.replace(/-v1\.png$/, "");
+  return path.parse(file).name.replace(/-v(\d+)$/, "-front-v$1");
 }
 
 async function renderCard(card) {
@@ -209,7 +209,7 @@ async function renderCard(card) {
   ctx.save();
   roundedRect(ctx, 92, 194, 840, 730, 30);
   ctx.clip();
-  drawCover(ctx, art, 92, 194, 840, 730);
+  drawCover(ctx, art, 92, 194, 840, 730, artFile.includes("-producer-") ? 0.35 : 0.5);
   ctx.restore();
   roundedRect(ctx, 92, 194, 840, 730, 30);
   ctx.strokeStyle = "#111512";
@@ -257,8 +257,8 @@ async function renderCard(card) {
 
   const png = canvas.toBuffer("image/png");
   const slug = slugFromArtwork(artFile);
-  const pngPath = path.join(OUT_DIR, `${slug}-front-v1.png`);
-  const webpPath = path.join(OUT_DIR, `${slug}-front-v1.webp`);
+  const pngPath = path.join(OUT_DIR, `${slug}.png`);
+  const webpPath = path.join(OUT_DIR, `${slug}.webp`);
   await writeFile(pngPath, png);
   await sharp(png).webp({ quality: 90, effort: 5 }).toFile(webpPath);
   return { code: card.code, pngPath, webpPath };
@@ -269,6 +269,9 @@ const gameSource = await readFile(path.join(ROOT, "src", "lib", "kanab-quest-gam
 const heritageSource = await readFile(path.join(ROOT, "src", "lib", "kanab-quest-heritage.ts"), "utf8");
 const supportCards = extractArray(gameSource, "export const KQ_CARDS").map((card) => ({ ...card }));
 const heritageCards = extractArray(heritageSource, "export const KQ_HERITAGE_CARDS").map((card) => ({ ...card, category: "heritage", xpCost: 0 }));
+const requestedCodes = new Set((process.env.KQ_CARD_CODES ?? "").split(",").map((code) => code.trim()).filter(Boolean));
 const results = [];
-for (const card of [...supportCards, ...heritageCards]) results.push(await renderCard(card));
+for (const card of [...supportCards, ...heritageCards].filter((card) => requestedCodes.size === 0 || requestedCodes.has(card.code))) {
+  results.push(await renderCard(card));
+}
 console.log(`Cartes générées : ${results.length} rectos PNG + WebP dans ${OUT_DIR}`);

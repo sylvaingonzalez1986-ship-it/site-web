@@ -35,14 +35,14 @@ export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
   "BOTTE-034": "/app/kanab-quest/cards/botte-034-retour-calme-v1.webp",
   "BOTTE-035": "/app/kanab-quest/cards/botte-035-quarantaine-preventive-v1.webp",
   "BOTTE-036": "/app/kanab-quest/cards/botte-036-bac-retention-v1.webp",
-  "HERITAGE-001": "/app/kanab-quest/cards/heritage-001-racines-solides-v1.webp",
-  "HERITAGE-002": "/app/kanab-quest/cards/heritage-002-reserve-jardinier-v1.webp",
-  "HERITAGE-003": "/app/kanab-quest/cards/heritage-003-main-prevoyante-v1.webp",
-  "HERITAGE-004": "/app/kanab-quest/cards/heritage-004-climat-stable-v1.webp",
-  "HERITAGE-005": "/app/kanab-quest/cards/heritage-005-second-regard-v1.webp",
-  "HERITAGE-006": "/app/kanab-quest/cards/heritage-006-reprise-vigoureuse-v1.webp",
-  "HERITAGE-007": "/app/kanab-quest/cards/heritage-007-instinct-cultivateur-v1.webp",
-  "HERITAGE-008": "/app/kanab-quest/cards/heritage-008-bouclier-biologique-v1.webp",
+  "HERITAGE-001": "/app/kanab-quest/cards/heritage-001-racines-solides-producer-v2.webp",
+  "HERITAGE-002": "/app/kanab-quest/cards/heritage-002-reserve-jardinier-producer-v2.webp",
+  "HERITAGE-003": "/app/kanab-quest/cards/heritage-003-main-prevoyante-producer-v2.webp",
+  "HERITAGE-004": "/app/kanab-quest/cards/heritage-004-climat-stable-producer-v2.webp",
+  "HERITAGE-005": "/app/kanab-quest/cards/heritage-005-second-regard-producer-v2.webp",
+  "HERITAGE-006": "/app/kanab-quest/cards/heritage-006-reprise-vigoureuse-producer-v2.webp",
+  "HERITAGE-007": "/app/kanab-quest/cards/heritage-007-instinct-cultivateur-producer-v2.webp",
+  "HERITAGE-008": "/app/kanab-quest/cards/heritage-008-bouclier-biologique-producer-v2.webp",
   "HERITAGE-009": "/app/kanab-quest/cards/heritage-009-floraison-maitrisee-v1.webp",
   "HERITAGE-010": "/app/kanab-quest/cards/heritage-010-affinage-patient-v1.webp",
   "HERITAGE-011": "/app/kanab-quest/cards/heritage-011-canopy-legacy-v1.webp",
@@ -52,7 +52,7 @@ export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
 export const KQ_CARD_ARTWORK: Readonly<Record<string, string>> = Object.fromEntries(
   Object.entries(KQ_CARD_ILLUSTRATIONS).map(([code, source]) => [
     code,
-    source.replace("/cards/", "/card-fronts/").replace("-v1.webp", "-front-v1.webp"),
+    source.replace("/cards/", "/card-fronts/").replace(/-v(\d+)\.webp$/, "-front-v$1.webp"),
   ]),
 );
 
