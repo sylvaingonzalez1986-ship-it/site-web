@@ -45,11 +45,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   });
   it("reports missing artwork while confirming the system is safely dormant", () => {
     const report = buildKqLaunchReadiness({
-      heritageCards: [
-        ...Array.from({ length: 6 }, () => ({ rarity: "common", image_url: "", is_active: false })),
-        ...Array.from({ length: 4 }, () => ({ rarity: "rare", image_url: "", is_active: false })),
-        ...Array.from({ length: 2 }, () => ({ rarity: "epic", image_url: "", is_active: false })),
-      ],
+      heritageCards: Array.from({ length: 12 }, () => ({ image_url: "", is_active: false })),
       supportCards: Array.from({ length: 36 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
       supportCollectionActive: false,
       notebookRules: Array.from({ length: 15 }, () => ({ is_active: false })),
@@ -69,11 +65,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   });
   it("detects unsafe season rewards before launch", () => {
     const report = buildKqLaunchReadiness({
-      heritageCards: [
-        ...Array.from({ length: 6 }, (_, index) => ({ rarity: "common", image_url: `/h-common-${index}.webp`, is_active: false })),
-        ...Array.from({ length: 4 }, (_, index) => ({ rarity: "rare", image_url: `/h-rare-${index}.webp`, is_active: false })),
-        ...Array.from({ length: 2 }, (_, index) => ({ rarity: "epic", image_url: `/h-epic-${index}.webp`, is_active: false })),
-      ],
+      heritageCards: Array.from({ length: 12 }, (_, index) => ({ image_url: `/h-${index}.webp`, is_active: false })),
       supportCards: Array.from({ length: 36 }, () => ({ image_url: "/card.webp", is_active: false })),
       supportCollectionActive: false,
       notebookRules: Array.from({ length: 15 }, () => ({ is_active: false })),
@@ -90,11 +82,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   });
   it("distinguishes complete content from a safely activatable launch", () => {
     const report = buildKqLaunchReadiness({
-      heritageCards: [
-        ...Array.from({ length: 6 }, (_, index) => ({ rarity: "common", image_url: `/h-common-${index}.webp`, is_active: false })),
-        ...Array.from({ length: 4 }, (_, index) => ({ rarity: "rare", image_url: `/h-rare-${index}.webp`, is_active: false })),
-        ...Array.from({ length: 2 }, (_, index) => ({ rarity: "epic", image_url: `/h-epic-${index}.webp`, is_active: false })),
-      ],
+      heritageCards: Array.from({ length: 12 }, (_, index) => ({ image_url: `/h-${index}.webp`, is_active: false })),
       supportCards: Array.from({ length: 36 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: true })),
       supportCollectionActive: true,
       notebookRules: Array.from({ length: 15 }, () => ({ is_active: false })),

@@ -9,12 +9,12 @@ export async function PUT(request: Request, { params }: { params: Promise<{ code
   try {
     const { code } = await params;
     const value = await request.json() as Record<string, unknown>;
-    if (["name", "rarity", "description", "imageUrl", "advantage", "drawback"].some((key) => typeof value[key] !== "string")
+    if (["name", "description", "imageUrl", "advantage", "drawback"].some((key) => typeof value[key] !== "string")
       || typeof value.isActive !== "boolean") {
       return NextResponse.json({ error: "Carte Héritage invalide." }, { status: 400 });
     }
     return NextResponse.json(await updateKqHeritageCard({
-      code, name: String(value.name), rarity: String(value.rarity), description: String(value.description),
+      code, name: String(value.name), description: String(value.description),
       imageUrl: String(value.imageUrl), advantage: String(value.advantage), drawback: String(value.drawback),
       isActive: value.isActive,
     }));

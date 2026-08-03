@@ -24,7 +24,6 @@ describe("GET /api/admin/placard/heritage", () => {
     getKqAdminHeritageSnapshot.mockResolvedValue({
       collectionActive: false,
       totalPulls: 0,
-      pullsWithoutRare: 0,
       cards: [],
       draws: [],
     });

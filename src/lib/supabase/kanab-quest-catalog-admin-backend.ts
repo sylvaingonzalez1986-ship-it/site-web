@@ -25,7 +25,7 @@ export async function getKqBotteCatalogAdmin() {
   if (rulesResult.error) throw new Error(`[data:botte-rules] ${rulesResult.error.message}`);
   const ruleByCardId = new Map((rulesResult.data ?? []).map((rule) => [String(rule.card_definition_id), rule]));
   const heritageResult = await client.from("kq_heritage_card_definitions")
-    .select("code,name,rarity,timing,effect_code,description,image_url,is_active,advantage,drawback")
+    .select("code,name,timing,effect_code,description,image_url,is_active,advantage,drawback")
     .order("code", { ascending: true });
   if (heritageResult.error) throw new Error(`[data:heritage-cards] ${heritageResult.error.message}`);
   return {
@@ -49,7 +49,7 @@ export async function getKqBotteCatalogAdmin() {
     }),
     supportedEffects: [...new Set(KQ_CARDS.map((card) => card.effect))],
     heritages: (heritageResult.data ?? []).map((card) => ({
-      code: String(card.code), name: String(card.name), rarity: String(card.rarity), timing: String(card.timing),
+      code: String(card.code), name: String(card.name), timing: String(card.timing),
       effect: String(card.effect_code), description: String(card.description), imageUrl: String(card.image_url ?? ""),
       isActive: card.is_active === true, advantage: String(card.advantage ?? card.description),
       drawback: String(card.drawback ?? ""),
@@ -95,20 +95,19 @@ export async function updateKqBotteCard(input: {
 }
 
 export async function updateKqHeritageCard(input: {
-  code: string; name: string; rarity: string; description: string; imageUrl: string; isActive: boolean;
+  code: string; name: string; description: string; imageUrl: string; isActive: boolean;
   advantage: string; drawback: string;
 }) {
   const code = input.code.trim();
   const name = cleanText(input.name, 120);
   const advantage = cleanText(input.advantage, 500);
   if (!/^HERITAGE-[0-9]{3}$/.test(code) || name.length < 3 || advantage.length < 3
-    || !["common", "rare", "epic"].includes(input.rarity)
     || !KQ_HERITAGE_CARDS.some((card) => card.code === code)) {
     throw new Error("Carte Héritage invalide.");
   }
   const client = createSupabaseServiceClient();
   const update = await client.rpc("rpc_kq_update_heritage_card_editorial", {
-    p_code: code, p_name: name, p_rarity: input.rarity,
+    p_code: code, p_name: name,
     p_description: cleanText(input.description, 500), p_image_url: cleanText(input.imageUrl, 2000),
     p_is_active: input.isActive, p_advantage: advantage, p_drawback: cleanText(input.drawback, 500),
   });

@@ -169,14 +169,17 @@ function drawCover(ctx, image, x, y, width, height, focalY = 0.5) {
 }
 
 function slugFromArtwork(file) {
-  return path.parse(file).name.replace(/-v(\d+)$/, "-front-v$1");
+  const base = path.parse(file).name;
+  const versioned = base.match(/^(.*)-v(\d+)$/);
+  if (!versioned) return `${base}-front`;
+  return `${versioned[1]}-front-v${process.env.KQ_CARD_FRONT_VERSION?.trim() || versioned[2]}`;
 }
 
 async function renderCard(card) {
   const category = categoryStyle[card.category];
-  const rarity = rarityStyle[card.rarity];
+  const rarity = card.category === "heritage" ? null : rarityStyle[card.rarity];
   const artFile = artworkByCode[card.code];
-  if (!category || !rarity || !artFile) throw new Error(`Métadonnées incomplètes pour ${card.code}`);
+  if (!category || (card.category !== "heritage" && !rarity) || !artFile) throw new Error(`Métadonnées incomplètes pour ${card.code}`);
   const art = await loadImage(path.join(ART_DIR, artFile));
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext("2d");
@@ -191,20 +194,22 @@ async function renderCard(card) {
   roundedRect(ctx, 70, 70, 884, 1396, 46);
   fillStroke(ctx, "#f8f0dc", "#111512", 8);
 
-  roundedRect(ctx, 92, 92, 840, 82, 24);
+  roundedRect(ctx, 92, 92, card.category === "heritage" ? 840 : 670, 82, 24);
   fillStroke(ctx, category.dark, "#111512", 5);
   ctx.fillStyle = "#fff8e8";
   ctx.font = "900 29px Arial";
   ctx.textBaseline = "middle";
   ctx.fillText(category.label, 124, 133);
 
-  roundedRect(ctx, 785, 102, 125, 62, 18);
-  fillStroke(ctx, rarity.color, "#111512", 4);
-  ctx.fillStyle = "#111512";
-  ctx.font = "900 19px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText(rarity.label, 847, 133);
-  ctx.textAlign = "left";
+  if (rarity) {
+    roundedRect(ctx, 785, 102, 125, 62, 18);
+    fillStroke(ctx, rarity.color, "#111512", 4);
+    ctx.fillStyle = "#111512";
+    ctx.font = "900 19px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(rarity.label, 847, 133);
+    ctx.textAlign = "left";
+  }
 
   ctx.save();
   roundedRect(ctx, 92, 194, 840, 730, 30);

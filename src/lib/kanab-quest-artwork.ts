@@ -52,7 +52,10 @@ export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
 export const KQ_CARD_ARTWORK: Readonly<Record<string, string>> = Object.fromEntries(
   Object.entries(KQ_CARD_ILLUSTRATIONS).map(([code, source]) => [
     code,
-    source.replace("/cards/", "/card-fronts/").replace(/-v(\d+)\.webp$/, "-front-v$1.webp"),
+    source.replace("/cards/", "/card-fronts/").replace(
+      /-v(\d+)\.webp$/,
+      code.startsWith("HERITAGE-") ? "-front-v3.webp" : "-front-v$1.webp",
+    ),
   ]),
 );
 

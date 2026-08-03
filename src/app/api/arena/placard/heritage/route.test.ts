@@ -41,7 +41,7 @@ describe("GET /api/arena/placard/heritage", () => {
       eligiblePurchaseUnits: 8,
       draws: [{ id: "private-draw" }],
       cards: [{
-        code: "HERITAGE-001", name: "Mémoire du sol", rarity: "rare",
+        code: "HERITAGE-001", name: "Mémoire du sol",
         description: "Effet", imageUrl: "", isActive: true, ownedCopies: 1,
         effectCode: "private-effect",
       }],
@@ -50,6 +50,7 @@ describe("GET /api/arena/placard/heritage", () => {
     expect(response.status).toBe(200);
     const body = await response.json();
     expect(body.cards[0]).not.toHaveProperty("effectCode");
+    expect(body.cards[0]).not.toHaveProperty("rarity");
     expect(body).not.toHaveProperty("draws");
     expect(body).not.toHaveProperty("eligiblePurchaseUnits");
     expect(getKqPlayerHeritageSnapshot).toHaveBeenCalledWith(customerId);

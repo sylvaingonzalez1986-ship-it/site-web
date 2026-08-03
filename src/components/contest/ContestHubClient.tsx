@@ -855,7 +855,7 @@ function ContestBotteCollection({ isAuthenticated }: { isAuthenticated: boolean 
   if (!isAuthenticated) return <div className="rounded border-2 border-ink bg-white p-5 text-sm font-bold">Connecte-toi pour voir tes cartes La Botte et tes Héritages.</div>;
   if (loading) return <div className="rounded border-2 border-ink bg-white p-5 text-sm font-bold">Chargement de La Botte…</div>;
 
-  const renderCard = (card: { code: string; name: string; rarity: string; description: string }, copies: number, permanent: boolean) => {
+  const renderCard = (card: { code: string; name: string; description: string }, copies: number, permanent: boolean) => {
     const artwork = getKqCardArtwork(card.code);
     return <article key={card.code} className={`w-40 shrink-0 rounded border-2 border-ink p-2 shadow-[3px_3px_0_#1a1a1a] ${copies > 0 ? "bg-white" : "bg-[#dedbd2] opacity-75"}`}>
       {artwork ? <div className="relative aspect-[2/3] overflow-hidden border border-ink"><Image src={artwork} alt={`Carte ${card.name}`} fill sizes="160px" className="object-cover" /></div> : null}

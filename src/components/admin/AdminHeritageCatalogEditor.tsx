@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { LotteryCardImageUpload } from "@/components/admin/LotteryCardImageUpload";
 
 type Heritage = {
-  code: string; name: string; rarity: string; timing: string; effect: string; description: string;
+  code: string; name: string; timing: string; effect: string; description: string;
   imageUrl: string; isActive: boolean; advantage: string; drawback: string;
 };
 
@@ -48,14 +48,13 @@ export function AdminHeritageCatalogEditor() {
     {status ? <p className="mt-3 border-2 border-ink bg-white p-3 text-sm font-bold" role="status">{status}</p> : null}
     <div className="mt-5 grid gap-5 lg:grid-cols-[280px_1fr]">
       <div className="max-h-[650px] overflow-y-auto border-2 border-ink bg-white p-2" aria-label="Cartes Héritage">
-        {cards.map((card) => <button type="button" key={card.code} onClick={() => { setSelectedCode(card.code); setDraft(null); }} className={`mb-2 flex w-full items-center gap-3 border-2 p-3 text-left ${selectedCode === card.code ? "border-green bg-mint" : "border-ink bg-cream"}`}><span className="min-w-0 flex-1"><strong className="block truncate">{card.name}</strong><small>{card.code} · {card.rarity}</small></span><i className={`h-3 w-3 rounded-full border border-ink ${card.isActive ? "bg-green" : "bg-white"}`} /></button>)}
+        {cards.map((card) => <button type="button" key={card.code} onClick={() => { setSelectedCode(card.code); setDraft(null); }} className={`mb-2 flex w-full items-center gap-3 border-2 p-3 text-left ${selectedCode === card.code ? "border-green bg-mint" : "border-ink bg-cream"}`}><span className="min-w-0 flex-1"><strong className="block truncate">{card.name}</strong><small>{card.code}</small></span><i className={`h-3 w-3 rounded-full border border-ink ${card.isActive ? "bg-green" : "bg-white"}`} /></button>)}
         {cards.length === 0 ? <p className="p-3 text-sm">Aucune carte disponible.</p> : null}
       </div>
       {activeDraft ? <div className="border-2 border-ink bg-white p-4">
         <div className="flex flex-wrap justify-between gap-3"><div><small className="font-black">{activeDraft.code}</small><h5 className="font-display text-2xl">Configuration Héritage</h5></div><label className="flex items-center gap-2 font-bold"><input type="checkbox" checked={activeDraft.isActive} onChange={(event) => setDraft({ ...activeDraft, isActive: event.target.checked })} /> Active</label></div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <label className="grid gap-1 text-sm font-bold">Nom<input className="border-2 border-ink p-2" value={activeDraft.name} onChange={(event) => setDraft({ ...activeDraft, name: event.target.value })} /></label>
-          <label className="grid gap-1 text-sm font-bold">Rareté<select className="border-2 border-ink p-2" value={activeDraft.rarity} onChange={(event) => setDraft({ ...activeDraft, rarity: event.target.value })}><option value="common">Commune</option><option value="rare">Rare</option><option value="epic">Épique</option></select></label>
+          <label className="grid gap-1 text-sm font-bold sm:col-span-2">Nom<input className="border-2 border-ink p-2" value={activeDraft.name} onChange={(event) => setDraft({ ...activeDraft, name: event.target.value })} /></label>
           <label className="grid gap-1 text-sm font-bold sm:col-span-2">Description courte<textarea className="min-h-20 border-2 border-ink p-2" value={activeDraft.description} onChange={(event) => setDraft({ ...activeDraft, description: event.target.value })} /></label>
           <label className="grid gap-1 text-sm font-bold"><span className="text-green">Avantage</span><textarea className="min-h-24 border-2 border-green p-2" value={activeDraft.advantage} onChange={(event) => setDraft({ ...activeDraft, advantage: event.target.value })} /></label>
           <label className="grid gap-1 text-sm font-bold"><span className="text-red-700">Inconvénient</span><textarea className="min-h-24 border-2 border-red-700 p-2" placeholder="Limite ou contrepartie éventuelle" value={activeDraft.drawback} onChange={(event) => setDraft({ ...activeDraft, drawback: event.target.value })} /></label>

@@ -20,7 +20,6 @@ export async function GET() {
       cards: snapshot.cards.map((card) => ({
         code: card.code,
         name: card.name,
-        rarity: card.rarity,
         description: card.description,
         imageUrl: card.imageUrl,
         isActive: card.isActive,

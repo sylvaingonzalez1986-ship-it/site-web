@@ -297,14 +297,14 @@ export async function getKqPlayerHeritageSnapshot(ownerId: string) {
   const supabase = createSupabaseServiceClient();
   const [definitionsResult, drawsResult, stateResult, ordersResult, entriesResult, fragmentWalletResult, fragmentLedgerResult] = await Promise.all([
     supabase.from("kq_heritage_card_definitions")
-      .select("code,name,rarity,timing,effect_code,description,image_url,is_active")
+      .select("code,name,timing,effect_code,description,image_url,is_active")
       .order("code", { ascending: true }),
     supabase.from("kq_heritage_draws")
-      .select("id,order_item_id,unit_index,card_code,rarity,was_duplicate,source,drawn_at")
+      .select("id,order_item_id,unit_index,card_code,was_duplicate,source,drawn_at")
       .eq("user_id", ownerId)
       .order("drawn_at", { ascending: false }),
     supabase.from("kq_heritage_player_state")
-      .select("pulls_without_rare,total_pulls")
+      .select("total_pulls")
       .eq("user_id", ownerId)
       .maybeSingle(),
     supabase.from("orders").select("id")
@@ -340,7 +340,6 @@ export async function getKqPlayerHeritageSnapshot(ownerId: string) {
     collectionActive: (definitionsResult.data ?? []).some((card) => card.is_active === true),
     purchaseDrawsLive: KQ_HERITAGE_PURCHASE_DRAWS_LIVE,
     totalPulls: Number(stateResult.data?.total_pulls ?? drawsResult.data?.length ?? 0),
-    pullsWithoutRare: Number(stateResult.data?.pulls_without_rare ?? 0),
     eligiblePurchaseUnits: eligibleUnits,
     attributedPurchaseUnits: attributedUnits,
     pendingPurchaseUnits: Math.max(0, eligibleUnits - attributedUnits),
@@ -354,7 +353,6 @@ export async function getKqPlayerHeritageSnapshot(ownerId: string) {
     cards: (definitionsResult.data ?? []).map((card) => ({
       code: String(card.code),
       name: String(card.name),
-      rarity: String(card.rarity),
       timing: String(card.timing),
       effectCode: String(card.effect_code),
       description: String(card.description),
@@ -367,7 +365,6 @@ export async function getKqPlayerHeritageSnapshot(ownerId: string) {
       orderItemId: Number(draw.order_item_id),
       unitIndex: Number(draw.unit_index),
       cardCode: String(draw.card_code),
-      rarity: String(draw.rarity),
       duplicate: draw.was_duplicate === true,
       source: String(draw.source ?? "purchase"),
       drawnAt: String(draw.drawn_at),
@@ -393,16 +390,24 @@ export async function craftKqAdminHeritageCard(adminEmail: string, cardCode: str
   if (result.error) {
     const message = result.error.message || "Fabrication impossible.";
     if (message.includes("kq_heritage_collection_inactive")) throw new Error("La fabrication Héritage n’est pas encore active.");
-    if (message.includes("kq_heritage_epic_not_craftable")) throw new Error("Les Héritages épiques ne peuvent pas être fabriqués.");
     if (message.includes("kq_heritage_already_owned")) throw new Error("Cet Héritage est déjà dans la collection.");
     if (message.includes("kq_heritage_fragments_insufficient")) throw new Error("Solde de fragments insuffisant.");
     throw new Error(`[supabase:rpc_kq_craft_heritage_card] ${message}`);
   }
-  return result.data;
+  const data = result.data as { draw?: Record<string, unknown>; fragmentBalance?: number } | null;
+  const draw = data?.draw;
+  return {
+    fragmentBalance: Number(data?.fragmentBalance ?? 0),
+    draw: draw ? {
+      id: String(draw.id ?? ""),
+      cardCode: String(draw.card_code ?? ""),
+      source: String(draw.source ?? "craft"),
+    } : null,
+  };
 }
 
 type KqLaunchReadinessInput = {
-  heritageCards: Array<{ rarity: string; image_url: string; is_active: boolean }>;
+  heritageCards: Array<{ image_url: string; is_active: boolean }>;
   supportCards: Array<{ image_url: string; is_active: boolean }>;
   supportCollectionActive: boolean;
   notebookRules: Array<{ is_active: boolean }>;
@@ -418,15 +423,11 @@ export function isKqFinalArtworkUrl(value: string) {
 }
 
 export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
-  const heritageRarityCounts = input.heritageCards.reduce<Record<string, number>>((counts, card) => {
-    counts[card.rarity] = (counts[card.rarity] ?? 0) + 1;
-    return counts;
-  }, {});
   const heritageArtwork = input.heritageCards.map((card) => card.image_url.trim().toLowerCase()).filter(isKqFinalArtworkUrl);
   const supportArtwork = input.supportCards.map((card) => card.image_url.trim().toLowerCase()).filter(isKqFinalArtworkUrl);
   const contentChecks = [
     { code: "public-rules-approved", label: "Règlement public, lots et probabilités validés", ready: input.publicRulesApproved },
-    { code: "heritage-catalog", label: "Catalogue Héritage 6 / 4 / 2", ready: input.heritageCards.length === 12 && heritageRarityCounts.common === 6 && heritageRarityCounts.rare === 4 && heritageRarityCounts.epic === 2 },
+    { code: "heritage-catalog", label: "Catalogue Héritage · 12 cartes de valeur égale", ready: input.heritageCards.length === 12 },
     { code: "heritage-art", label: "12 illustrations Héritage distinctes", ready: heritageArtwork.length === 12 && new Set(heritageArtwork).size === 12 },
     { code: "support-catalog", label: "36 cartes La Botte", ready: input.supportCards.length === 36 },
     { code: "support-art", label: "36 illustrations La Botte distinctes", ready: supportArtwork.length === 36 && new Set(supportArtwork).size === 36 },
@@ -477,7 +478,7 @@ export async function getKqAdminLaunchReadiness(adminEmail: string) {
     .select("id,is_active").eq("code", BOTTE_COLLECTION_CODE).maybeSingle();
   if (collectionResult.error || !collectionResult.data) throw new Error("Collection La Botte introuvable.");
   const [heritageResult, supportResult, rulesResult, seasonRulesResult, seasonGrantsResult] = await Promise.all([
-    supabase.from("kq_heritage_card_definitions").select("rarity,image_url,is_active"),
+    supabase.from("kq_heritage_card_definitions").select("image_url,is_active"),
     supabase.from("lottery_card_definitions").select("image_url,is_active").eq("collection_id", collectionResult.data.id),
     supabase.from("kq_notebook_reward_rules").select("is_active"),
     supabase.from("kq_season_reward_rules").select("tier_code,is_active").eq("season_code", seasonCode),
@@ -489,7 +490,7 @@ export async function getKqAdminLaunchReadiness(adminEmail: string) {
   if (seasonRulesResult.error) throw new Error(`[supabase:kq_season_reward_rules] ${seasonRulesResult.error.message}`);
   if (seasonGrantsResult.error) throw new Error(`[supabase:kq_season_reward_grants] ${seasonGrantsResult.error.message}`);
   return buildKqLaunchReadiness({
-    heritageCards: (heritageResult.data ?? []).map((card) => ({ rarity: String(card.rarity), image_url: String(card.image_url ?? ""), is_active: card.is_active === true })),
+    heritageCards: (heritageResult.data ?? []).map((card) => ({ image_url: String(card.image_url ?? ""), is_active: card.is_active === true })),
     supportCards: (supportResult.data ?? []).map((card) => ({ image_url: String(card.image_url ?? ""), is_active: card.is_active === true })),
     supportCollectionActive: collectionResult.data.is_active === true,
     notebookRules: (rulesResult.data ?? []).map((rule) => ({ is_active: rule.is_active === true })),
@@ -671,7 +672,6 @@ export async function getKqAdminLaunchReadinessFromSnapshots(
   if (seasonGrantsResult.error) throw new Error(`[supabase:kq_season_reward_grants] ${seasonGrantsResult.error.message}`);
   return buildKqLaunchReadiness({
     heritageCards: heritage.cards.map((card) => ({
-      rarity: card.rarity,
       image_url: card.imageUrl,
       is_active: card.isActive,
     })),
