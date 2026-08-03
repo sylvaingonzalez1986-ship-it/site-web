@@ -7,6 +7,7 @@ import { useState } from "react";
 import { ChevronDown, ThumbsDown, ThumbsUp } from "lucide-react";
 import { ProductDetailActions } from "@/components/boutique/ProductDetailActions";
 import { ContestEntryCard } from "@/components/contest/ContestEntryCard";
+import { ContestHeritageUnlockCard } from "@/components/contest/ContestHeritageUnlockCard";
 import { ContestNotebookPanel } from "@/components/contest/ContestNotebookPanel";
 import {
   ContestReviewTicker,
@@ -246,6 +247,11 @@ export function ContestDetailClient({
                 )}
               </div>
             </div>
+
+            <ContestHeritageUnlockCard
+              entryId={detail.entry.id}
+              isAuthenticated={isAuthenticated}
+            />
 
             <div className="cartoon-border bg-cream p-5 md:p-6">
               <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">

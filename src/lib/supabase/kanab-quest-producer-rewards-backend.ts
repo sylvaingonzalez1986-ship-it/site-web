@@ -135,6 +135,43 @@ export async function getKqProducerRewardProgressForCustomer(
   });
 }
 
+export async function claimKqProducerHeritageForCustomer(input: {
+  customerId: string;
+  campaignId: string;
+  entryId: string;
+}) {
+  const customerId = input.customerId.trim();
+  const campaignId = input.campaignId.trim();
+  const entryId = input.entryId.trim();
+  if (!/^[0-9a-f-]{36}$/i.test(customerId) || !/^[0-9a-f-]{36}$/i.test(campaignId)
+    || entryId.length === 0 || entryId.length > 200) {
+    throw new Error("Demande de déblocage invalide.");
+  }
+  const client = createSupabaseServiceClient();
+  const result = await client.rpc("rpc_kq_claim_producer_heritage", {
+    p_user_id: customerId,
+    p_campaign_id: campaignId,
+    p_entry_id: entryId,
+  });
+  if (result.error) {
+    const message = result.error.message || "";
+    if (message.includes("kq_producer_heritage_incomplete")) {
+      throw new Error("Tous les avis requis doivent être validés avant le déblocage.");
+    }
+    if (message.includes("kq_producer_heritage_unavailable")) {
+      throw new Error("Cette carte Héritage n’est pas disponible.");
+    }
+    throw new Error("Déblocage de la carte Héritage impossible.");
+  }
+  const receipt = result.data && typeof result.data === "object" && !Array.isArray(result.data)
+    ? result.data as Record<string, unknown>
+    : {};
+  return {
+    cardCode: String(receipt.cardCode ?? ""),
+    alreadyGranted: receipt.alreadyGranted === true,
+  };
+}
+
 export type KqProducerRewardAdminSnapshot = {
   producers: Array<{ id: string; name: string; image: string }>;
   entries: Array<{ id: string; title: string; producerId: string; track: "regular" | "concours" }>;

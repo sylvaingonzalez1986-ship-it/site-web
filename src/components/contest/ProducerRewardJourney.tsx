@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Check, Gift, LockKeyhole, PackageOpen, Sprout } from "lucide-react";
 import type { KqProducerRewardProgress } from "@/lib/kanab-quest-producer-rewards";
 
@@ -8,21 +8,31 @@ export function ProducerRewardJourney({ isAuthenticated }: { isAuthenticated: bo
   const [campaigns, setCampaigns] = useState<KqProducerRewardProgress[]>([]);
   const [loaded, setLoaded] = useState(false);
 
+  const fetchCampaigns = useCallback(async (signal?: AbortSignal) => {
+    const response = await fetch("/api/contest/producer-rewards", { cache: "no-store", signal });
+    if (!response.ok) throw new Error("Progression indisponible");
+    const payload = await response.json() as { campaigns?: KqProducerRewardProgress[] };
+    return Array.isArray(payload.campaigns) ? payload.campaigns : [];
+  }, []);
+
   useEffect(() => {
     if (!isAuthenticated) return;
     const controller = new AbortController();
-    void fetch("/api/contest/producer-rewards", { cache: "no-store", signal: controller.signal })
-      .then(async (response) => {
-        if (!response.ok) throw new Error("Progression indisponible");
-        const payload = await response.json() as { campaigns?: KqProducerRewardProgress[] };
-        setCampaigns(Array.isArray(payload.campaigns) ? payload.campaigns : []);
-      })
+    const refresh = () => {
+      void fetchCampaigns().then(setCampaigns).catch(() => setCampaigns([]));
+    };
+    window.addEventListener("kq:producer-rewards-changed", refresh);
+    void fetchCampaigns(controller.signal)
+      .then(setCampaigns)
       .catch((error: unknown) => {
         if (!(error instanceof DOMException && error.name === "AbortError")) setCampaigns([]);
       })
       .finally(() => setLoaded(true));
-    return () => controller.abort();
-  }, [isAuthenticated]);
+    return () => {
+      controller.abort();
+      window.removeEventListener("kq:producer-rewards-changed", refresh);
+    };
+  }, [isAuthenticated, fetchCampaigns]);
 
   if (!isAuthenticated || (loaded && campaigns.length === 0)) return null;
 
@@ -33,7 +43,7 @@ export function ProducerRewardJourney({ isAuthenticated }: { isAuthenticated: bo
           <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Carnet → Placard</p>
           <h2 id="producer-journey-title" className="mt-1 font-display text-3xl uppercase leading-none text-ink">Parcours des producteurs</h2>
         </div>
-        <p className="max-w-lg text-sm font-semibold text-charcoal">Chaque avis validé offre un booster La Botte de 10 cartes. Termine le parcours d’un producteur pour obtenir son Héritage.</p>
+        <p className="max-w-lg text-sm font-semibold text-charcoal">Chaque avis validé offre un booster La Botte de 10 cartes. Termine le parcours d’un producteur, puis débloque son Héritage depuis la fiche d’une de ses fleurs.</p>
       </header>
       {!loaded ? <div className="mt-5 h-24 animate-pulse rounded bg-white/70" aria-label="Chargement des parcours" /> : (
         <div className="mt-5 grid gap-4 lg:grid-cols-2">

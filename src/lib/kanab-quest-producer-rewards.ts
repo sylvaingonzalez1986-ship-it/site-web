@@ -30,6 +30,13 @@ export type KqProducerNotebookRewardReceipt = {
   heritageCodes: string[];
 };
 
+export function findKqProducerRewardForEntry(
+  campaigns: readonly KqProducerRewardProgress[],
+  entryId: string,
+) {
+  return campaigns.find((campaign) => campaign.entries.some((entry) => entry.entryId === entryId)) ?? null;
+}
+
 function isExplicitlyEnabled(value: string | undefined): boolean {
   return ["1", "true", "on", "yes"].includes(value?.trim().toLowerCase() ?? "");
 }

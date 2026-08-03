@@ -36,6 +36,7 @@ import { ContestNotebookPanel } from "@/components/contest/ContestNotebookPanel"
 import { ContestReviewSkillRadar } from "@/components/contest/ContestReviewSkillRadar";
 import { ArenaNavigation, type ContestArenaView } from "@/components/contest/ArenaNavigation";
 import { ProducerRewardJourney } from "@/components/contest/ProducerRewardJourney";
+import { ContestHeritageUnlockCard } from "@/components/contest/ContestHeritageUnlockCard";
 import arenaStyles from "@/components/contest/ContestArena.module.css";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
@@ -3401,6 +3402,11 @@ export function ContestHubClient({
                     </div>
 
                     <ContestLabDetailsPanel entry={selectedEntry} />
+
+                    <ContestHeritageUnlockCard
+                      entryId={selectedEntry.id}
+                      isAuthenticated={isAuthenticated}
+                    />
 
                     {selectedUnlock?.review ? (
                       <div className="contest-lab-status-panel text-sm leading-relaxed text-charcoal">

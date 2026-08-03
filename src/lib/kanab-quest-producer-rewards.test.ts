@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { buildKqProducerRewardProgress } from "@/lib/kanab-quest-producer-rewards";
+import {
+  buildKqProducerRewardProgress,
+  findKqProducerRewardForEntry,
+} from "@/lib/kanab-quest-producer-rewards";
 
 const base = {
   campaignId: "campaign-1",
@@ -50,5 +53,16 @@ describe("producer notebook reward progress", () => {
       heritageGranted: false,
     });
     expect(progress.completed).toBe(false);
+  });
+
+  it("links every flower sheet to its producer Heritage campaign", () => {
+    const progress = buildKqProducerRewardProgress({
+      ...base,
+      approvedEntryIds: [],
+      rewardedEntryIds: [],
+      heritageGranted: false,
+    });
+    expect(findKqProducerRewardForEntry([progress], "regular-2")?.heritageCode).toBe("HERITAGE-001");
+    expect(findKqProducerRewardForEntry([progress], "unknown")).toBeNull();
   });
 });
