@@ -1,28 +1,28 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Check, Gift, LockKeyhole, PackageOpen, Sprout } from "lucide-react";
 import type { KqProducerRewardProgress } from "@/lib/kanab-quest-producer-rewards";
+
+async function fetchProducerRewardCampaigns(signal?: AbortSignal) {
+  const response = await fetch("/api/contest/producer-rewards", { cache: "no-store", signal });
+  if (!response.ok) throw new Error("Progression indisponible");
+  const payload = await response.json() as { campaigns?: KqProducerRewardProgress[] };
+  return Array.isArray(payload.campaigns) ? payload.campaigns : [];
+}
 
 export function ProducerRewardJourney({ isAuthenticated }: { isAuthenticated: boolean }) {
   const [campaigns, setCampaigns] = useState<KqProducerRewardProgress[]>([]);
   const [loaded, setLoaded] = useState(false);
 
-  const fetchCampaigns = useCallback(async (signal?: AbortSignal) => {
-    const response = await fetch("/api/contest/producer-rewards", { cache: "no-store", signal });
-    if (!response.ok) throw new Error("Progression indisponible");
-    const payload = await response.json() as { campaigns?: KqProducerRewardProgress[] };
-    return Array.isArray(payload.campaigns) ? payload.campaigns : [];
-  }, []);
-
   useEffect(() => {
     if (!isAuthenticated) return;
     const controller = new AbortController();
     const refresh = () => {
-      void fetchCampaigns().then(setCampaigns).catch(() => setCampaigns([]));
+      void fetchProducerRewardCampaigns().then(setCampaigns).catch(() => setCampaigns([]));
     };
     window.addEventListener("kq:producer-rewards-changed", refresh);
-    void fetchCampaigns(controller.signal)
+    void fetchProducerRewardCampaigns(controller.signal)
       .then(setCampaigns)
       .catch((error: unknown) => {
         if (!(error instanceof DOMException && error.name === "AbortError")) setCampaigns([]);
@@ -32,7 +32,7 @@ export function ProducerRewardJourney({ isAuthenticated }: { isAuthenticated: bo
       controller.abort();
       window.removeEventListener("kq:producer-rewards-changed", refresh);
     };
-  }, [isAuthenticated, fetchCampaigns]);
+  }, [isAuthenticated]);
 
   if (!isAuthenticated || (loaded && campaigns.length === 0)) return null;
 
