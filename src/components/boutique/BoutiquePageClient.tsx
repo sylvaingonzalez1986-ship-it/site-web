@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { CustomSection } from "@/components/CustomSection";
 import { EditorialWorldHero } from "@/components/EditorialWorldHero";
@@ -50,6 +50,8 @@ export function BoutiquePageClient({
   globalAccessoriesProducts,
   boutiqueSections,
 }: BoutiquePageClientProps) {
+  const productsCarouselRef = useRef<HTMLDivElement>(null);
+  const [productSlide, setProductSlide] = useState(0);
   const loading = false;
   const [filter, setFilter] = useState<Filter>("all");
   const [showcaseMode, setShowcaseMode] = useState<ShowcaseMode>("products");
@@ -129,6 +131,33 @@ export function BoutiquePageClient({
 
     return modeProducts.filter((item) => item.category === effectiveFilter);
   }, [effectiveFilter, globalAccessoriesProducts, modeProducts]);
+
+  const currentProductSlide = Math.min(productSlide, Math.max(0, displayedProducts.length - 1));
+
+  const goToProductSlide = (index: number) => {
+    const viewport = productsCarouselRef.current;
+    if (!viewport) return;
+
+    const nextIndex = Math.max(0, Math.min(index, displayedProducts.length - 1));
+    const slide = viewport.children.item(nextIndex) as HTMLElement | null;
+    if (!slide) return;
+
+    viewport.scrollTo({ left: slide.offsetLeft, behavior: "smooth" });
+    setProductSlide(nextIndex);
+  };
+
+  const syncProductSlide = () => {
+    const viewport = productsCarouselRef.current;
+    if (!viewport || viewport.children.length === 0) return;
+
+    const slides = Array.from(viewport.children) as HTMLElement[];
+    const closestIndex = slides.reduce((bestIndex, slide, index) =>
+      Math.abs(slide.offsetLeft - viewport.scrollLeft) <
+      Math.abs(slides[bestIndex].offsetLeft - viewport.scrollLeft)
+        ? index
+        : bestIndex, 0);
+    setProductSlide(closestIndex);
+  };
 
   const displayedOwnProducts = useMemo(
     () => displayedProducts.filter((product) => !product.producerId),
@@ -310,7 +339,53 @@ export function BoutiquePageClient({
                   </div>
                 )}
 
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <div
+                  key={`${showcaseMode}-${effectiveFilter}`}
+                  ref={productsCarouselRef}
+                  onScroll={syncProductSlide}
+                  aria-label="Carrousel des produits"
+                  className="flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-2 pr-[12vw] touch-pan-x sm:hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                >
+                  {displayedProducts.map((product, index) => (
+                    <div key={product.id} className="min-w-[82vw] snap-start">
+                      <ProductCard
+                        product={product}
+                        producer={resolveProductProducer(product, producersById, ownProducer)}
+                        addButtonLabel={boutique.addButtonLabel}
+                        lowStockThresholdGrams={boutique.lowStockThresholdGrams}
+                        imagePriority={index === 0}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {displayedProducts.length > 1 && (
+                  <div className="mt-3 flex items-center justify-between gap-3 sm:hidden" aria-label="Navigation du carrousel">
+                    <button
+                      type="button"
+                      onClick={() => goToProductSlide(currentProductSlide - 1)}
+                      disabled={currentProductSlide === 0}
+                      aria-label="Produit précédent"
+                      className="btn-cartoon btn-secondary inline-flex h-11 w-11 items-center justify-center text-xl disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      ←
+                    </button>
+                    <span className="text-xs font-bold uppercase tracking-[0.1em] text-charcoal" aria-live="polite">
+                      Produit {currentProductSlide + 1} sur {displayedProducts.length}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => goToProductSlide(currentProductSlide + 1)}
+                      disabled={currentProductSlide === displayedProducts.length - 1}
+                      aria-label="Produit suivant"
+                      className="btn-cartoon btn-secondary inline-flex h-11 w-11 items-center justify-center text-xl disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      →
+                    </button>
+                  </div>
+                )}
+
+                <div className="hidden gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-3">
                   {displayedProducts.map((product, index) => (
                     <ProductCard
                       key={product.id}
