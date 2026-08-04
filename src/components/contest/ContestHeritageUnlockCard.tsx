@@ -108,22 +108,31 @@ export function ContestHeritageUnlockCard({
 
   return (
     <aside className="mt-4 overflow-hidden rounded border-2 border-ink bg-[#f7edcf] shadow-[3px_3px_0_#17130e]" aria-labelledby={`heritage-${campaign.campaignId}`}>
-      <div className="grid grid-cols-[84px_1fr] gap-3 p-3 sm:grid-cols-[112px_1fr] sm:p-4">
-        <div className="relative aspect-[2/3] overflow-hidden rounded border-2 border-ink bg-white">
-          {campaign.heritageImage ? <Image src={campaign.heritageImage} alt={`Carte Héritage ${campaign.heritageName}`} fill sizes="112px" className="object-cover" /> : <Sparkles className="absolute inset-0 m-auto" aria-hidden="true" />}
+      <div className="p-3 sm:p-4">
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <div className="min-w-0">
+            <p className="text-[10px] font-black uppercase tracking-[0.13em] text-[#7d4b11]">Récompense du producteur</p>
+            <h3 id={`heritage-${campaign.campaignId}`} className="mt-1 font-display text-xl uppercase leading-none text-ink">{campaign.heritageName}</h3>
+          </div>
+          <span className={`inline-flex min-h-8 items-center gap-1.5 rounded-full border-2 border-ink px-2.5 py-1 text-[10px] font-black uppercase leading-tight ${campaign.heritageGranted ? "bg-green text-white" : campaign.completed ? "bg-yellow text-ink" : "bg-white text-ink"}`}>
+            {campaign.heritageGranted ? <Gift size={14} aria-hidden="true" /> : campaign.completed ? <Check size={14} aria-hidden="true" /> : <LockKeyhole size={14} aria-hidden="true" />}
+            {stateLabel}
+          </span>
         </div>
-        <div className="min-w-0">
-          <p className="text-[10px] font-black uppercase tracking-[0.13em] text-[#7d4b11]">Récompense du producteur</p>
-          <h3 id={`heritage-${campaign.campaignId}`} className="mt-1 font-display text-xl uppercase leading-none text-ink">{campaign.heritageName}</h3>
-          <p className="mt-2 text-xs font-semibold leading-relaxed text-charcoal">{campaign.heritageDescription}</p>
-          <div className="mt-3 flex items-center gap-2 text-xs font-black text-ink">
-            {campaign.heritageGranted ? <Gift size={17} aria-hidden="true" /> : campaign.completed ? <Check size={17} aria-hidden="true" /> : <LockKeyhole size={17} aria-hidden="true" />}
-            <span>{stateLabel}</span>
+
+        <div className="mt-4 grid items-start gap-4 sm:grid-cols-[minmax(150px,190px)_minmax(0,1fr)]">
+          <div className="relative mx-auto aspect-[2/3] w-full max-w-[210px] overflow-hidden rounded border-2 border-ink bg-white shadow-[3px_3px_0_rgba(23,19,14,0.18)]">
+            {campaign.heritageImage ? <Image src={campaign.heritageImage} alt={`Carte Héritage ${campaign.heritageName}`} fill sizes="(max-width: 639px) 210px, 190px" className="object-contain" /> : <Sparkles className="absolute inset-0 m-auto" aria-hidden="true" />}
           </div>
-          <div className="mt-2 h-2 overflow-hidden rounded-full border border-ink bg-white" aria-label={`${campaign.reviewedCount} fleurs validées sur ${campaign.requiredCount}`}>
-            <span className="block h-full bg-green" style={{ width: `${campaign.requiredCount ? (campaign.reviewedCount / campaign.requiredCount) * 100 : 0}%` }} />
+
+          <div className="min-w-0 rounded border-2 border-ink/20 bg-white/60 p-3">
+            <p className="mt-2 text-xs font-semibold leading-relaxed text-charcoal">{campaign.heritageDescription}</p>
+            <div className="mt-4 h-3 overflow-hidden rounded-full border-2 border-ink bg-white" aria-label={`${campaign.reviewedCount} fleurs validées sur ${campaign.requiredCount}`}>
+              <span className="block h-full bg-green" style={{ width: `${campaign.requiredCount ? (campaign.reviewedCount / campaign.requiredCount) * 100 : 0}%` }} />
+            </div>
+            <small className="mt-2 block font-bold leading-snug text-charcoal">{campaign.reviewedCount}/{campaign.requiredCount} fleurs goûtées et validées</small>
+            {!campaign.heritageGranted && !campaign.completed ? <p className="mt-3 text-xs font-black leading-snug text-ink">Goûte et fais valider les {campaign.requiredCount} fleurs de ce producteur pour débloquer cette carte.</p> : null}
           </div>
-          <small className="mt-1 block font-bold text-charcoal">{campaign.reviewedCount}/{campaign.requiredCount} fleurs goûtées et validées</small>
         </div>
       </div>
       <div className="border-t-2 border-ink bg-white p-3">
