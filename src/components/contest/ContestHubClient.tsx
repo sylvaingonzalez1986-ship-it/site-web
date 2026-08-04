@@ -3401,12 +3401,12 @@ export function ContestHubClient({
                       </span>
                     </div>
 
-                    <ContestLabDetailsPanel entry={selectedEntry} />
-
                     <ContestHeritageUnlockCard
                       entryId={selectedEntry.id}
                       isAuthenticated={isAuthenticated}
                     />
+
+                    <ContestLabDetailsPanel entry={selectedEntry} />
 
                     {selectedUnlock?.review ? (
                       <div className="contest-lab-status-panel text-sm leading-relaxed text-charcoal">

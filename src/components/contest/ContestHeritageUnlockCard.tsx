@@ -90,7 +90,14 @@ export function ContestHeritageUnlockCard({
       </aside>
     );
   }
-  if (!campaign) return error ? <p className="mt-4 text-xs font-bold text-red-800">{error}</p> : null;
+  if (!campaign) {
+    return (
+      <aside className="mt-4 rounded border-2 border-dashed border-ink bg-cream p-4 text-sm text-charcoal">
+        <strong className="block text-ink">Carte Héritage du producteur</strong>
+        <p className="mt-1">{error ?? "Aucune carte n’est encore associée à cette fleur. Son producteur doit d’abord être renseigné et son parcours activé."}</p>
+      </aside>
+    );
+  }
 
   const missing = Math.max(0, campaign.requiredCount - campaign.reviewedCount);
   const stateLabel = campaign.heritageGranted
