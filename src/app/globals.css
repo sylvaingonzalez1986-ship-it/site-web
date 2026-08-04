@@ -3404,6 +3404,8 @@ body.contest-notebook-open header[data-tutorial="navbar"] {
 
 .contest-notebook-view-tabs {
   display: grid;
+  width: 100%;
+  flex: 0 0 auto;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.45rem;
   border: 2px solid var(--contest-lab-ink);

@@ -43,7 +43,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
       blockers: ["Aucune prochaine saison planifiée"],
     });
   });
-  it("reports missing artwork while confirming the system is safely dormant", () => {
+  it("reports missing artwork while confirming the activated rewards are not dormant", () => {
     const report = buildKqLaunchReadiness({
       heritageCards: Array.from({ length: 12 }, () => ({ image_url: "", is_active: false })),
       supportCards: Array.from({ length: 36 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
@@ -58,17 +58,18 @@ describe("Kanab Quest Supabase inventory mapping", () => {
       label: "Accès joueur au Placard encore fermé",
       ready: true,
     });
-    expect(report.safelyDormant).toBe(true);
+    expect(report.safelyDormant).toBe(false);
     expect(report.contentReady).toBe(false);
     expect(report.readyForActivation).toBe(false);
-    expect(report.blockers).toEqual(["12 illustrations Héritage distinctes"]);
+    expect(report.blockers).toContain("12 illustrations Héritage distinctes");
+    expect(report.blockers).toContain("2 missions carnet → Placard actives");
   });
   it("detects unsafe season rewards before launch", () => {
     const report = buildKqLaunchReadiness({
       heritageCards: Array.from({ length: 12 }, (_, index) => ({ image_url: `/h-${index}.webp`, is_active: false })),
       supportCards: Array.from({ length: 36 }, () => ({ image_url: "/card.webp", is_active: false })),
       supportCollectionActive: false,
-      notebookRules: Array.from({ length: 15 }, () => ({ is_active: false })),
+      notebookRules: Array.from({ length: 2 }, () => ({ is_active: true })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code, index) => ({ tier_code, is_active: index === 0 })),
       seasonGrantCount: 1,
       publicRulesApproved: true,
@@ -85,7 +86,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
       heritageCards: Array.from({ length: 12 }, (_, index) => ({ image_url: `/h-${index}.webp`, is_active: false })),
       supportCards: Array.from({ length: 36 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: true })),
       supportCollectionActive: true,
-      notebookRules: Array.from({ length: 15 }, () => ({ is_active: false })),
+      notebookRules: Array.from({ length: 2 }, () => ({ is_active: true })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
       seasonGrantCount: 0,
       publicRulesApproved: true,
@@ -101,24 +102,24 @@ describe("Kanab Quest Supabase inventory mapping", () => {
       "Exécuter les rétro-attributions Carnet puis Héritage par lots depuis l’interface admin",
     );
   });
-  it("previews dormant notebook rewards without granting them", () => {
+  it("previews only the two active notebook missions", () => {
     expect(buildKqNotebookRewardPreview(
       [
         { id: 11, badge_id: "badge-first" },
-        { id: 12, badge_id: "badge-useful" },
+        { id: 12, badge_id: "badge-aroma" },
       ],
       [
         { id: "badge-first", code: "premier-carnet", label: "Premier Carnet" },
-        { id: "badge-useful", code: "critique-utile", label: "Critique Utile" },
+        { id: "badge-aroma", code: "combo-aromatique", label: "Combo Aromatique" },
       ],
       [11],
     )).toMatchObject({
-      rewardsLive: false,
+      rewardsLive: true,
       unlockedBadges: 2,
       alreadyGranted: 1,
       pendingBadges: 1,
-      pendingSupportBoosters: 0,
-      pendingCultureTokens: 1,
+      pendingSupportBoosters: 1,
+      pendingCultureTokens: 0,
     });
   });
   it("counts physical copies and ignores unrelated definitions", () => {

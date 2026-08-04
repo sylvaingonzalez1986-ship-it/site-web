@@ -37,13 +37,9 @@ export function findKqProducerRewardForEntry(
   return campaigns.find((campaign) => campaign.entries.some((entry) => entry.entryId === entryId)) ?? null;
 }
 
-function isExplicitlyEnabled(value: string | undefined): boolean {
-  return ["1", "true", "on", "yes"].includes(value?.trim().toLowerCase() ?? "");
-}
-
-// The database migration and UI can safely ship before attribution is enabled.
-export const KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE =
-  isExplicitlyEnabled(process.env.KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE);
+// Producer cards are now awarded by the paid-purchase pipeline. Keeping the
+// former per-review pipeline off prevents duplicate or contradictory rewards.
+export const KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE = false;
 
 export function buildKqProducerRewardProgress(input: {
   campaignId: string;

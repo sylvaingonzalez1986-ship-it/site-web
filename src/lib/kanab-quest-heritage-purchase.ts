@@ -1,4 +1,4 @@
-export const KQ_HERITAGE_PURCHASE_DRAWS_LIVE: boolean = false;
+export const KQ_HERITAGE_PURCHASE_DRAWS_LIVE: boolean = true;
 
 export type KqHeritagePurchaseItem = {
   id: number;

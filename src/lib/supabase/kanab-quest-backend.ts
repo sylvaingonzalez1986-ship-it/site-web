@@ -431,7 +431,7 @@ export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
     { code: "heritage-art", label: "12 illustrations Héritage distinctes", ready: heritageArtwork.length === 12 && new Set(heritageArtwork).size === 12 },
     { code: "support-catalog", label: "36 cartes La Botte", ready: input.supportCards.length === 36 },
     { code: "support-art", label: "36 illustrations La Botte distinctes", ready: supportArtwork.length === 36 && new Set(supportArtwork).size === 36 },
-    { code: "notebook-rules", label: "15 règles carnet → Placard", ready: input.notebookRules.length === 15 },
+    { code: "notebook-rules", label: "2 missions carnet → Placard actives", ready: input.notebookRules.filter((rule) => rule.is_active).length === 2 },
     { code: "season-rules", label: "4 paliers de récompenses de saison", ready: input.seasonRules.length === 4 && new Set(input.seasonRules.map((rule) => rule.tier_code)).size === 4 },
     { code: "season-no-early-grants", label: "Aucune récompense de saison prématurée", ready: input.seasonGrantCount === 0 },
   ];
@@ -460,7 +460,7 @@ export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
       "Faire valider puis publier PLACARD-RULES-DRAFT avec les lots, dates et probabilités Héritage",
       "Vérifier les 48 illustrations et tous les écrans client sur la version de lancement",
       "Ouvrir la fenêtre coordonnée et activer les collections La Botte et Héritage",
-      "Activer les 15 règles Carnet et les 4 paliers de saison dans Supabase",
+      "Contrôler les 2 missions Carnet et les 4 paliers de saison dans Supabase",
       "Basculer ensemble KQ_NOTEBOOK_REWARDS_LIVE, KQ_SEASON_REWARDS_LIVE et KQ_HERITAGE_PURCHASE_DRAWS_LIVE",
       "Exécuter les rétro-attributions Carnet puis Héritage par lots depuis l’interface admin",
       "Contrôler les reçus, les soldes et un parcours complet avant d’ouvrir le Placard aux clients",
