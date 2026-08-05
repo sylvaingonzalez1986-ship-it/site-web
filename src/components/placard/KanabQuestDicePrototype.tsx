@@ -251,8 +251,6 @@ export function KanabQuestDicePrototype({
   const [remoteInventory, setRemoteInventory] = useState<Record<string, number>>({});
   const [remoteHeritageOwnedCodes, setRemoteHeritageOwnedCodes] = useState<string[]>([]);
   const [remoteHeritageActive, setRemoteHeritageActive] = useState(false);
-  const [remoteHeritagePurchaseDrawsLive, setRemoteHeritagePurchaseDrawsLive] = useState(false);
-  const [remoteHeritagePurchaseStatus, setRemoteHeritagePurchaseStatus] = useState({ eligible: 0, attributed: 0, pending: 0 });
   const [remoteHeritageFragments, setRemoteHeritageFragments] = useState(0);
   const [launchReadiness, setLaunchReadiness] = useState<null | {
     contentReady: boolean;
@@ -299,8 +297,6 @@ export function KanabQuestDicePrototype({
   const [seasonDistributionPending, setSeasonDistributionPending] = useState(false);
   const [notebookRetroCursor, setNotebookRetroCursor] = useState<number | null>(0);
   const [notebookRetroPending, setNotebookRetroPending] = useState(false);
-  const [heritageRetroCursor, setHeritageRetroCursor] = useState<number | null>(0);
-  const [heritageRetroPending, setHeritageRetroPending] = useState(false);
   const [remoteBurnsEnabled, setRemoteBurnsEnabled] = useState(isPlayerMode);
   const [remoteRunId, setRemoteRunId] = useState<string | null>(null);
   const [persistedFlowerId, setPersistedFlowerId] = useState<string | null>(null);
@@ -423,12 +419,6 @@ export function KanabQuestDicePrototype({
           .filter((card) => card.isActive === true && Number(card.ownedCopies ?? 0) > 0)
           .map((card) => String(card.code ?? "")).filter(Boolean));
         setRemoteHeritageActive(heritage.collectionActive === true);
-        setRemoteHeritagePurchaseDrawsLive(heritage.purchaseDrawsLive === true);
-        setRemoteHeritagePurchaseStatus({
-          eligible: Number(heritage.eligiblePurchaseUnits ?? 0),
-          attributed: Number(heritage.attributedPurchaseUnits ?? 0),
-          pending: Number(heritage.pendingPurchaseUnits ?? 0),
-        });
         setRemoteHeritageFragments(Number(heritage.fragmentBalance ?? 0));
         const collection = payload.collection ?? {};
         if (isPlayerMode) {
@@ -581,7 +571,7 @@ export function KanabQuestDicePrototype({
   const handCodes = useMemo(() => getKqHandCodes(state), [state]);
   const supportDeckSize = state.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")).length;
   const burnedSupportCount = state.usedCards.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")).length;
-  const redrawLimit = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode)?.effect === "extra-redraw" ? 2 : 1;
+  const redrawLimit = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode)?.effect === "two-extra-redraws" ? 3 : 1;
   const canRedrawHand = state.phase === "prepare"
     && !state.preparationPlayed
     && (state.handRedrawsUsed ?? 0) < redrawLimit
@@ -830,41 +820,6 @@ export function KanabQuestDicePrototype({
       setRemoteNotice(error instanceof Error ? error.message : "Rétro-attribution Carnet impossible.");
     } finally {
       setNotebookRetroPending(false);
-    }
-  };
-
-  const runHeritageRetroBatch = async () => {
-    if (!remoteHeritagePurchaseDrawsLive || heritageRetroCursor === null || heritageRetroPending) return;
-    if (heritageRetroCursor === 0 && !window.confirm("Lancer les tirages Héritage rétroactifs des achats concours payés, par lots de 25 lignes ?")) return;
-    setHeritageRetroPending(true);
-    setRemoteNotice("");
-    try {
-      const response = await fetch("/api/admin/placard/heritage/retro", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ cursor: heritageRetroCursor }),
-      });
-      const payload = await response.json() as {
-        error?: string;
-        eligibleUnits?: number;
-        awarded?: number;
-        alreadyAwarded?: number;
-        nextCursor?: number | null;
-      };
-      if (!response.ok) throw new Error(payload.error || "Rétro-attribution Héritage impossible.");
-      setHeritageRetroCursor(payload.nextCursor ?? null);
-      const awarded = Number(payload.awarded ?? 0);
-      const alreadyAwarded = Number(payload.alreadyAwarded ?? 0);
-      setRemoteHeritagePurchaseStatus((current) => ({
-        ...current,
-        attributed: current.attributed + awarded,
-        pending: Math.max(0, current.pending - awarded),
-      }));
-      setRemoteNotice(`Lot Héritage traité · ${Number(payload.eligibleUnits ?? 0)} unité(s) éligible(s) · ${awarded} nouveau${awarded > 1 ? "x" : ""} tirage${awarded > 1 ? "s" : ""} · ${alreadyAwarded} déjà attribué${alreadyAwarded > 1 ? "s" : ""}.${payload.nextCursor == null ? " Rétro-attribution terminée." : " Un lot suivant est disponible."}`);
-    } catch (error) {
-      setRemoteNotice(error instanceof Error ? error.message : "Rétro-attribution Héritage impossible.");
-    } finally {
-      setHeritageRetroPending(false);
     }
   };
 
@@ -1206,7 +1161,7 @@ export function KanabQuestDicePrototype({
               <Link href="/profil/collection">Voir mon album</Link>
             </aside>
           ) : null}
-          <details className={styles.heritagePreview}><summary><span>Collection permanente</span><strong>Héritages de concours · galerie des 12 cartes</strong><small>{remoteBurnsEnabled ? remoteHeritageActive ? `${remoteHeritageOwnedCodes.length}/12 possédée(s) · ${remoteHeritageFragments} fragments` : `Dormante · ${remoteHeritagePurchaseStatus.pending} tirage(s) potentiel(s) en attente` : "Galerie locale complète"}</small></summary><p>Un Héritage ne brûle jamais. Toutes les cartes ont la même valeur : choisis uniquement le pouvoir adapté à ta culture.</p>{remoteBurnsEnabled ? <aside className={styles.heritagePurchaseAudit}><b>{remoteHeritagePurchaseStatus.eligible}<small>unités éligibles</small></b><b>{remoteHeritagePurchaseStatus.attributed}<small>déjà attribuées</small></b><b>{remoteHeritagePurchaseStatus.pending}<small>en attente d’activation</small></b><b>{remoteHeritageFragments}<small>fragments de doublons</small></b></aside> : null}<button type="button" className={styles.heritageRetroButton} disabled={!remoteHeritagePurchaseDrawsLive || heritageRetroCursor === null || heritageRetroPending} title={!remoteHeritagePurchaseDrawsLive ? "Le verrou KQ_HERITAGE_PURCHASE_DRAWS_LIVE est désactivé." : undefined} onClick={() => void runHeritageRetroBatch()}>{heritageRetroPending ? "Traitement du lot…" : !remoteHeritagePurchaseDrawsLive ? "Tirages rétroactifs verrouillés" : heritageRetroCursor === null ? "Rétro-attribution terminée" : heritageRetroCursor === 0 ? "Lancer les tirages rétroactifs" : "Traiter le lot suivant"}</button><div><article className={styles.heritageClassic} data-selected={!selectedHeritage || undefined}><span>Sans Héritage</span><strong>Culture classique</strong><p>Aucun pouvoir permanent équipé.</p><button type="button" aria-pressed={!selectedHeritage} onClick={() => setSelectedHeritage("")}>{!selectedHeritage ? "Sélectionnée" : "Choisir"}</button></article>{KQ_HERITAGE_CARDS.map((card) => { const remotelyOwned = remoteHeritageOwnedCodes.includes(card.code); const disabled = remoteBurnsEnabled && !remotelyOwned; const selected = selectedHeritage === card.code; return <article key={card.code} data-selected={selected || undefined} data-locked={disabled || undefined}><span>{card.timing === "passive" ? "Passif" : "1 fois/culture"}</span><CardArtwork code={card.code} name={card.name} /><strong>{card.name}</strong><p>{card.description}</p><small>{disabled ? "🔒 À découvrir" : selected ? "✓ Pouvoir équipé" : "Disponible dans ta collection"}</small><button type="button" disabled={disabled} aria-pressed={selected} onClick={() => setSelectedHeritage(card.code)}>{disabled ? "Non possédée" : selected ? "Équipée" : "Équiper"}</button></article>; })}</div></details>
+          <details className={styles.heritagePreview}><summary><span>Collection permanente</span><strong>Héritages de producteurs · galerie des 12 cartes</strong><small>{remoteBurnsEnabled ? remoteHeritageActive ? `${remoteHeritageOwnedCodes.length}/12 possédée(s) · ${remoteHeritageFragments} fragments` : "Collection en attente d’activation" : "Galerie locale complète"}</small></summary><p>Chaque carte est débloquée quand l’avis sur une fleur éligible du producteur est validé. Un Héritage ne brûle jamais : choisis le pouvoir adapté à ta culture.</p><div><article className={styles.heritageClassic} data-selected={!selectedHeritage || undefined}><span>Sans Héritage</span><strong>Culture classique</strong><p>Aucun pouvoir permanent équipé.</p><button type="button" aria-pressed={!selectedHeritage} onClick={() => setSelectedHeritage("")}>{!selectedHeritage ? "Sélectionnée" : "Choisir"}</button></article>{KQ_HERITAGE_CARDS.map((card) => { const remotelyOwned = remoteHeritageOwnedCodes.includes(card.code); const disabled = remoteBurnsEnabled && !remotelyOwned; const selected = selectedHeritage === card.code; return <article key={card.code} data-selected={selected || undefined} data-locked={disabled || undefined}><span>{card.timing === "passive" ? "Passif" : "1 fois/culture"}</span><CardArtwork code={card.code} name={card.name} /><strong>{card.name}</strong><p>{card.description}</p><small>{disabled ? "🔒 Avis à faire valider" : selected ? "✓ Pouvoir équipé" : "Disponible dans ta collection"}</small><button type="button" disabled={disabled} aria-pressed={selected} onClick={() => setSelectedHeritage(card.code)}>{disabled ? "Non possédée" : selected ? "Équipée" : "Équiper"}</button></article>; })}</div></details>
           <section id="placard-saison" className={styles.arenaDashboard}>
             <div><span>Arène Kanab Quest</span><h2>{isPlayerMode ? `Ta saison${officialRankProgress?.seasonCode ? ` · ${officialRankProgress.seasonCode}` : ""}` : "Ta saison locale"}</h2><p>{displayedPointsToNext > 0 ? `${displayedPointsToNext} points de cote avant la ligue suivante.` : isPlayerMode ? "Joue un duel officiel pour entrer dans le classement." : "Palier maximal atteint dans le prototype."}</p><div className={styles.leagueProgress}><i style={{ width: `${displayedLeagueProgress}%` }} /></div><small className={styles.nextBooster}>{3 - (displayedStreak % 3)} victoire{3 - (displayedStreak % 3) > 1 ? "s" : ""} de suite avant le prochain booster</small></div>
             <div className={styles.arenaStats}><span><strong>#{displayedRank ?? "–"}</strong><small>Classement</small></span><span><strong>{displayedLeague}</strong><small>Ligue</small></span><span><strong>{displayedRating}</strong><small>Cote</small></span><span><strong>{displayedSeasonPoints}</strong><small>Points</small></span><span><strong>{displayedArenaExperience.toLocaleString("fr-FR")}</strong><small>EXP Arène</small></span><span><strong>{displayedWins}–{displayedLosses}</strong><small>Bilan</small></span><span><strong>{displayedStreak}</strong><small>Série</small></span></div>
@@ -1460,7 +1415,7 @@ export function KanabQuestDicePrototype({
         <header><div><span>Album Kanab Quest</span><h2>Ta main · La Botte</h2></div><p>{handCodes.length} copie{handCodes.length > 1 ? "s" : ""} distribuée{handCodes.length > 1 ? "s" : ""} · {Math.max(0, supportDeckSize - burnedSupportCount)} copie{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""} non brûlée{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""}. Les doublons occupent plusieurs places dans la main.</p></header>
         <div className={styles.cardColorLegend} aria-label="Code couleur des cartes"><span data-category="equipment">Équipement</span><span data-category="know-how">Savoir-faire</span><span data-category="luck">Chance</span><span data-category="pbi">Auxiliaire PBI</span></div>
         <div className={styles.handActions}><span>{(state.handRedrawsUsed ?? 0) < redrawLimit ? `${redrawLimit - (state.handRedrawsUsed ?? 0)} changement${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""} de main disponible${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""}.` : "Changement de main déjà utilisé pour cette culture."}</span><button type="button" disabled={!canRedrawHand || remoteAction !== null} onClick={() => void applyGameAction("redraw")}><RotateCcw /> Changer ma main</button></div>
-        {(state.heritageReserveCodes?.length ?? 0) > 0 ? <section className={styles.heritageHandExchange}><header><Sparkles /><span><strong>Main prévoyante · 12 cartes vues</strong><small>Choisis une carte de ta main, puis une carte de réserve à faire entrer. Tu peux recommencer avant le lancer.</small></span></header><div><div><b>Ta main · 10</b>{handCodes.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={remoteAction !== null} data-selected={heritageSwapOutIndex === index || undefined} onClick={() => setHeritageSwapOutIndex(index)}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</button>)}</div><div><b>Réserve · 2</b>{state.heritageReserveCodes?.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={heritageSwapOutIndex === null || remoteAction !== null} onClick={() => void swapHeritageCard(index)}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}<small>{remoteAction === "game" ? "Confirmation…" : heritageSwapOutIndex === null ? "Choisis d’abord une carte à sortir" : "Faire entrer"}</small></button>)}</div></div></section> : null}
+        {(state.heritageReserveCodes?.length ?? 0) > 0 ? <section className={styles.heritageHandExchange}><header><Sparkles /><span><strong>Main prévoyante · 13 cartes vues</strong><small>Choisis une carte de ta main, puis une carte de réserve à faire entrer. Tu peux recommencer avant le lancer.</small></span></header><div><div><b>Ta main · 10</b>{handCodes.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={remoteAction !== null} data-selected={heritageSwapOutIndex === index || undefined} onClick={() => setHeritageSwapOutIndex(index)}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</button>)}</div><div><b>Réserve · 3</b>{state.heritageReserveCodes?.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={heritageSwapOutIndex === null || remoteAction !== null} onClick={() => void swapHeritageCard(index)}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}<small>{remoteAction === "game" ? "Confirmation…" : heritageSwapOutIndex === null ? "Choisis d’abord une carte à sortir" : "Faire entrer"}</small></button>)}</div></div></section> : null}
         {state.revealedPest ? <div className={styles.pestReveal}><strong>🔎 {PEST_LABELS[state.revealedPest]} révélés</strong><span>{availableCards.filter((card) => card.category === "pbi").length} auxiliaire(s) compatible(s) de ta collection affiché(s).</span></div> : situation.pest ? <div className={styles.pestHidden}><strong>Ravageur inconnu</strong><span>Joue la Loupe d’inspection avant les dés pour ouvrir la réserve PBI.</span></div> : null}
         <div className={styles.substrate}><Sparkles /><span><small>Substrat actif</small><strong>{activeSubstrate.name}</strong><em>{activeSubstrate.description}</em></span></div>
         {activeHeritage ? <div className={styles.activeHeritage} data-used={state.heritageUsed || undefined}><Sparkles /><span><small>Héritage permanent · ne brûle pas</small><strong>{activeHeritage.name}</strong><em>{activeHeritage.description}</em></span>{activeHeritage.timing === "once-per-run" ? <button type="button" disabled={!heritagePermission.allowed || remoteAction !== null} onClick={() => void applyGameAction("heritage")}>{state.heritageUsed ? "Déjà utilisé" : state.heritageArmed ? "Pouvoir armé" : heritagePermission.allowed ? remoteAction === "game" ? "Activation…" : "Activer" : heritagePermission.reason}</button> : <b>Passif</b>}</div> : null}

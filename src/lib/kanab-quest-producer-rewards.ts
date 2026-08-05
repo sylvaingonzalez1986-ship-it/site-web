@@ -37,9 +37,9 @@ export function findKqProducerRewardForEntry(
   return campaigns.find((campaign) => campaign.entries.some((entry) => entry.entryId === entryId)) ?? null;
 }
 
-// Producer cards are now awarded by the paid-purchase pipeline. Keeping the
-// former per-review pipeline off prevents duplicate or contradictory rewards.
-export const KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE = false;
+// Producer Heritage cards are awarded automatically after an eligible review
+// is approved. The database operation is idempotent per customer and producer.
+export const KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE = true;
 
 export function buildKqProducerRewardProgress(input: {
   campaignId: string;
@@ -72,7 +72,7 @@ export function buildKqProducerRewardProgress(input: {
     heritageName: input.heritageName,
     heritageDescription: input.heritageDescription,
     heritageImage: input.heritageImage ?? "",
-    completed: entries.length > 0 && reviewedCount === entries.length,
+    completed: reviewedCount > 0,
     heritageGranted: input.heritageGranted,
     reviewedCount,
     requiredCount: entries.length,

@@ -1,4 +1,6 @@
-export const KQ_HERITAGE_PURCHASE_DRAWS_LIVE: boolean = true;
+// Legacy purchase draws stay dormant: producer Heritage cards are unlocked by
+// an approved tasting review, never by payment alone.
+export const KQ_HERITAGE_PURCHASE_DRAWS_LIVE: boolean = false;
 
 export type KqHeritagePurchaseItem = {
   id: number;

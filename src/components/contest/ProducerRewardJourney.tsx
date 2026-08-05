@@ -60,7 +60,7 @@ export function ProducerRewardJourney({
           <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Carnet → Placard</p>
           <h2 id="producer-journey-title" className="mt-1 font-display text-3xl uppercase leading-none text-ink">Collection du producteur</h2>
         </div>
-        <p className="max-w-lg break-words text-sm font-semibold text-charcoal">Chaque producteur possède une carte Héritage. Achète l’une de ses fleurs éligibles pour la débloquer automatiquement.</p>
+        <p className="max-w-lg break-words text-sm font-semibold text-charcoal">Chaque producteur possède une carte Héritage. Fais valider ton avis sur l’une de ses fleurs éligibles pour la débloquer automatiquement.</p>
       </header>
       {!loaded ? <div className="mt-5 h-24 animate-pulse rounded bg-white/70" aria-label="Chargement des parcours" /> : (
         <div className="mt-5 min-w-0">
@@ -105,7 +105,7 @@ export function ProducerRewardJourney({
                   <footer className="mt-4 border-t-2 border-dashed border-ink/30 pt-3">
                     <strong className="block break-words text-sm text-ink">Héritage : {campaign.heritageName}</strong>
                     <p className="mt-1 break-words text-xs font-semibold leading-relaxed text-charcoal">{campaign.heritageDescription}</p>
-                    <p className="mt-2 break-words text-xs font-black text-ink">{campaign.heritageGranted ? "Carte débloquée et disponible dans ton album." : "Achète une des fleurs ci-dessus pour révéler cette carte."}</p>
+                    <p className="mt-2 break-words text-xs font-black text-ink">{campaign.heritageGranted ? "Carte débloquée et disponible dans ton album." : "Fais valider ton avis sur une des fleurs ci-dessus pour révéler cette carte."}</p>
                   </footer>
                 </div>
               </div>

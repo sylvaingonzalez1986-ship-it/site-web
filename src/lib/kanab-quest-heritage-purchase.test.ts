@@ -5,9 +5,9 @@ import {
   KQ_HERITAGE_PURCHASE_DRAWS_LIVE,
 } from "@/lib/kanab-quest-heritage-purchase";
 
-describe("Kanab Quest purchase Heritage awards", () => {
-  it("enables Heritage attribution for verified paid purchases", () => {
-    expect(KQ_HERITAGE_PURCHASE_DRAWS_LIVE).toBe(true);
+describe("Kanab Quest legacy purchase Heritage awards", () => {
+  it("keeps paid-purchase attribution disabled", () => {
+    expect(KQ_HERITAGE_PURCHASE_DRAWS_LIVE).toBe(false);
   });
 
   it("normalizes variant product identifiers", () => {

@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   drawKqHeritageCard,
@@ -10,6 +12,15 @@ describe("Kanab Quest heritage cards", () => {
   it("ships twelve permanent cards without rarity", () => {
     expect(KQ_HERITAGE_CARDS).toHaveLength(12);
     expect(KQ_HERITAGE_CARDS.every((card) => !("rarity" in card))).toBe(true);
+  });
+
+  it("keeps the database catalogue aligned with every stronger power", () => {
+    const migration = fs.readFileSync(path.join(process.cwd(), "supabase/migrations/20260805000200_kq_stronger_heritage_powers.sql"), "utf8");
+    KQ_HERITAGE_CARDS.forEach((card) => {
+      expect(migration).toContain(`'${card.code}'`);
+      expect(migration).toContain(`'${card.effect}'`);
+      expect(migration).toContain(card.description.replaceAll("'", "''"));
+    });
   });
 
   it("uses one identical duplicate reward and crafting cost", () => {

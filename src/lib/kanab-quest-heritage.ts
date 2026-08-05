@@ -5,34 +5,34 @@ export type KqHeritageCard = {
   name: string;
   timing: KqHeritageTiming;
   effect:
-    | "root-danger-shield"
-    | "starting-xp"
-    | "opening-draw-twelve"
-    | "climate-pressure-shield"
-    | "extra-redraw"
-    | "failure-xp"
-    | "reroll-neutral"
-    | "free-pest-inspection"
-    | "flower-neutral-success"
-    | "drying-reroll-lowest"
-    | "ignore-roll-dangers"
-    | "four-keep-three";
+    | "root-danger-to-spark"
+    | "starting-xp-two"
+    | "opening-draw-thirteen"
+    | "climate-danger-to-spark"
+    | "two-extra-redraws"
+    | "failure-to-fragile"
+    | "neutral-to-spark"
+    | "free-pest-mastery"
+    | "flower-neutrals-to-success"
+    | "drying-lowest-to-spark"
+    | "dangers-to-success"
+    | "five-keep-three";
   description: string;
 };
 
 export const KQ_HERITAGE_CARDS: readonly KqHeritageCard[] = [
-  { code: "HERITAGE-001", name: "Racines solides", timing: "once-per-run", effect: "root-danger-shield", description: "Annule le premier Danger pendant l’Enracinement." },
-  { code: "HERITAGE-002", name: "Réserve du jardinier", timing: "passive", effect: "starting-xp", description: "Commence chaque culture avec 1 XP supplémentaire." },
-  { code: "HERITAGE-003", name: "Main prévoyante", timing: "once-per-run", effect: "opening-draw-twelve", description: "À la première étape, pioche 12 cartes et conserve une main de 10." },
-  { code: "HERITAGE-004", name: "Climat stable", timing: "once-per-run", effect: "climate-pressure-shield", description: "Ignore la première hausse de pression provoquée par le climat." },
-  { code: "HERITAGE-005", name: "Second regard", timing: "passive", effect: "extra-redraw", description: "Accorde un changement de main supplémentaire par culture." },
-  { code: "HERITAGE-006", name: "Reprise vigoureuse", timing: "once-per-run", effect: "failure-xp", description: "Après le premier échec de la culture, récupère 1 XP." },
-  { code: "HERITAGE-007", name: "Instinct du cultivateur", timing: "once-per-run", effect: "reroll-neutral", description: "Après un lancer, relance un dé neutre." },
-  { code: "HERITAGE-008", name: "Bouclier biologique", timing: "once-per-run", effect: "free-pest-inspection", description: "La première inspection révèle le ravageur sans coût supplémentaire." },
-  { code: "HERITAGE-009", name: "Floraison maîtrisée", timing: "once-per-run", effect: "flower-neutral-success", description: "Pendant la Floraison, transforme un résultat neutre en réussite." },
-  { code: "HERITAGE-010", name: "Affinage patient", timing: "once-per-run", effect: "drying-reroll-lowest", description: "À la dernière étape, relance le dé le plus faible." },
-  { code: "HERITAGE-011", name: "Héritage de la canopée", timing: "once-per-run", effect: "ignore-roll-dangers", description: "Ignore tous les Dangers d’un lancer, sans créer d’Étincelle." },
-  { code: "HERITAGE-012", name: "Signature du maître", timing: "once-per-run", effect: "four-keep-three", description: "Ajoute un quatrième dé et conserve les trois meilleurs." },
+  { code: "HERITAGE-001", name: "Racines solides", timing: "once-per-run", effect: "root-danger-to-spark", description: "Le premier Danger en Enracinement devient une Étincelle." },
+  { code: "HERITAGE-002", name: "Réserve du jardinier", timing: "passive", effect: "starting-xp-two", description: "Commence chaque culture avec 2 XP supplémentaires." },
+  { code: "HERITAGE-003", name: "Main prévoyante", timing: "once-per-run", effect: "opening-draw-thirteen", description: "À la première étape, pioche 13 cartes et conserve une main de 10." },
+  { code: "HERITAGE-004", name: "Climat stable", timing: "once-per-run", effect: "climate-danger-to-spark", description: "Le premier Danger d’une situation Climat devient une Étincelle." },
+  { code: "HERITAGE-005", name: "Second regard", timing: "passive", effect: "two-extra-redraws", description: "Accorde deux changements de main supplémentaires par culture." },
+  { code: "HERITAGE-006", name: "Reprise vigoureuse", timing: "once-per-run", effect: "failure-to-fragile", description: "Le premier échec de la culture devient un résultat Fragile." },
+  { code: "HERITAGE-007", name: "Instinct du cultivateur", timing: "once-per-run", effect: "neutral-to-spark", description: "Après un lancer, transforme un dé neutre en Étincelle." },
+  { code: "HERITAGE-008", name: "Bouclier biologique", timing: "once-per-run", effect: "free-pest-mastery", description: "Révèle gratuitement le premier ravageur et accorde 2 XP." },
+  { code: "HERITAGE-009", name: "Floraison maîtrisée", timing: "once-per-run", effect: "flower-neutrals-to-success", description: "Pendant la Floraison, transforme tous les dés neutres en réussites." },
+  { code: "HERITAGE-010", name: "Affinage patient", timing: "once-per-run", effect: "drying-lowest-to-spark", description: "À la dernière étape, transforme le dé le plus faible en Étincelle." },
+  { code: "HERITAGE-011", name: "Héritage de la canopée", timing: "once-per-run", effect: "dangers-to-success", description: "Transforme tous les Dangers d’un lancer en réussites." },
+  { code: "HERITAGE-012", name: "Signature du maître", timing: "once-per-run", effect: "five-keep-three", description: "Lance cinq dés et conserve les trois meilleurs." },
 ] as const;
 
 export const KQ_HERITAGE_DUPLICATE_FRAGMENTS = 1;

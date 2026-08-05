@@ -9,18 +9,31 @@ import {
 } from "@/lib/supabase/kanab-quest-producer-rewards-backend";
 
 describe("producer notebook reward backend", () => {
-  it("does not access persistence while the launch lock is closed", async () => {
+  it("awards the producer Heritage through the approved-review RPC", async () => {
+    const rpc = vi.fn().mockResolvedValue({
+      data: {
+        flowerBoosterGranted: false,
+        boosterCardCount: 0,
+        heritageGranted: 1,
+        heritageCodes: ["HERITAGE-001"],
+      },
+      error: null,
+    });
+    mocks.client.mockReturnValue({ rpc });
     await expect(syncKqProducerNotebookRewardsForReview({
       customerId: "11111111-1111-1111-1111-111111111111",
       reviewId: "22222222-2222-2222-2222-222222222222",
     })).resolves.toEqual({
-      live: false,
+      live: true,
       flowerBoosterGranted: false,
       boosterCardCount: 0,
-      heritageGranted: 0,
-      heritageCodes: [],
+      heritageGranted: 1,
+      heritageCodes: ["HERITAGE-001"],
     });
-    expect(mocks.client).not.toHaveBeenCalled();
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_grant_producer_notebook_rewards", {
+      p_user_id: "11111111-1111-1111-1111-111111111111",
+      p_review_id: "22222222-2222-2222-2222-222222222222",
+    });
   });
 
   it("claims through the atomic server operation without accepting a card code", async () => {

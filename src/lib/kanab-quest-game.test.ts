@@ -394,7 +394,7 @@ describe("Kanab Quest dice prototype", () => {
 
   it("applies permanent Heritage starting XP without burning a card", () => {
     const state = startKqGame(12, { heritageCode: "HERITAGE-002" });
-    expect(state.xp).toBe(2);
+    expect(state.xp).toBe(3);
     expect(state.heritageUsed).toBe(false);
     expect(state.usedCards).not.toContain("HERITAGE-002");
   });
@@ -403,11 +403,12 @@ describe("Kanab Quest dice prototype", () => {
     const started = startKqGame(12, { heritageCode: "HERITAGE-005" });
     const first = redrawKqHand(started);
     const second = redrawKqHand(first);
-    expect(second.handRedrawsUsed).toBe(2);
-    expect(redrawKqHand(second)).toBe(second);
+    const third = redrawKqHand(second);
+    expect(third.handRedrawsUsed).toBe(3);
+    expect(redrawKqHand(third)).toBe(third);
   });
 
-  it("arms and consumes Signature du maître on a four-die roll", () => {
+  it("arms and consumes Signature du maître on a five-die roll", () => {
     const started = startKqGame(12, { heritageCode: "HERITAGE-012" });
     expect(canActivateKqHeritage(started).allowed).toBe(true);
     const armed = activateKqHeritage(started);
@@ -416,21 +417,22 @@ describe("Kanab Quest dice prototype", () => {
     expect(rolled.heritageUsed).toBe(true);
     expect(rolled.heritageArmed).toBe(false);
     expect(rolled.bonusDie).not.toBeNull();
+    expect(rolled.effectNotices?.some((notice) => notice.includes("5 dés lancés"))).toBe(true);
   });
 
   it("only consumes Floraison maîtrisée when its neutral die can change", () => {
     const base = startKqGame(12, { heritageCode: "HERITAGE-009" });
-    const state: KqGameState = { ...base, stageIndex: 3, phase: "rolled", dice: [2, 4, 5] };
+    const state: KqGameState = { ...base, stageIndex: 3, phase: "rolled", dice: [2, 3, 5] };
     const activated = activateKqHeritage(state);
     expect(activated.dice).toEqual([4, 4, 5]);
     expect(activated.heritageUsed).toBe(true);
   });
 
-  it("lets Main prévoyante exchange two reserve cards without burning them", () => {
-    const supportCodes = KQ_CARDS.filter((card) => card.category !== "substrate" && card.category !== "pbi").slice(0, 12).map((card) => card.code);
+  it("lets Main prévoyante exchange three reserve cards without burning them", () => {
+    const supportCodes = KQ_CARDS.filter((card) => card.category !== "substrate" && card.category !== "pbi").slice(0, 13).map((card) => card.code);
     const started = startKqGame(44, { heritageCode: "HERITAGE-003", deckCodes: ["BOTTE-001", ...supportCodes] });
     expect(started.handCodes).toHaveLength(10);
-    expect(started.heritageReserveCodes).toHaveLength(2);
+    expect(started.heritageReserveCodes).toHaveLength(3);
     const outgoing = started.handCodes![0];
     const incoming = started.heritageReserveCodes![0];
     const swapped = swapKqHeritageHandCard(started, 0, 0);
@@ -445,11 +447,12 @@ describe("Kanab Quest dice prototype", () => {
     for (let seed = 1; seed <= 100 && !protectedRoll; seed += 1) {
       const base = startKqGame(seed, { heritageCode: "HERITAGE-001" });
       const rolled = rollKqDice({ ...base, stageIndex: 1 });
-      if (rolled.dice?.includes(1)) protectedRoll = rolled;
+      if (rolled.heritageUsed) protectedRoll = rolled;
     }
     expect(protectedRoll).not.toBeNull();
     expect(protectedRoll?.heritageUsed).toBe(true);
-    expect(protectedRoll?.cancelledDangers).toBeGreaterThanOrEqual(1);
+    expect(protectedRoll?.dice).toContain(6);
+    expect(protectedRoll?.effectNotices?.some((notice) => notice.includes("Danger devient une Étincelle"))).toBe(true);
   });
 
   it("does not consume Racines solides when another protection covers every Danger", () => {
@@ -469,36 +472,36 @@ describe("Kanab Quest dice prototype", () => {
     expect(protectedByEquipment?.heritageUsed).toBe(false);
   });
 
-  it("uses Climat stable only when climate Danger would raise pressure", () => {
-    const base = startKqGame(7, { heritageCode: "HERITAGE-004" });
-    const state: KqGameState = {
-      ...base,
-      phase: "rolled",
-      dice: [1, 4, 4],
-      situationCodes: ["SIT-007", ...base.situationCodes.slice(1)],
-    };
-    const resolved = resolveKqStage(state);
-    expect(resolved.pressure).toBe(0);
-    expect(resolved.heritageUsed).toBe(true);
+  it("turns the first climate Danger into a Spark with Climat stable", () => {
+    let protectedRoll: KqGameState | null = null;
+    for (let seed = 1; seed <= 200 && !protectedRoll; seed += 1) {
+      const base = startKqGame(seed, { heritageCode: "HERITAGE-004" });
+      const rolled = rollKqDice({ ...base, situationCodes: ["SIT-007", ...base.situationCodes.slice(1)] });
+      if (rolled.heritageUsed) protectedRoll = rolled;
+    }
+    expect(protectedRoll).not.toBeNull();
+    expect(protectedRoll?.dice).toContain(6);
+    expect(previewKqResolution(protectedRoll!)?.sparks).toBeGreaterThanOrEqual(1);
   });
 
-  it("grants Reprise vigoureuse XP after the first failure only", () => {
+  it("turns the first failure into Fragile with Reprise vigoureuse", () => {
     const base = startKqGame(8, { heritageCode: "HERITAGE-006" });
     const failed = resolveKqStage({ ...base, phase: "rolled", dice: [1, 1, 1] });
-    expect(failed.lastOutcome).toBe("failure");
-    expect(failed.xp).toBe(base.xp + 2);
+    expect(failed.lastOutcome).toBe("fragile");
+    expect(failed.quality).toBe(base.quality + 1);
+    expect(failed.xp).toBe(base.xp + 1);
     expect(failed.heritageUsed).toBe(true);
     const failedAgain = resolveKqStage({ ...failed, phase: "rolled", dice: [1, 1, 1] });
     expect(failedAgain.xp).toBe(failed.xp + 1);
   });
 
-  it("relances a neutral die with Instinct du cultivateur", () => {
+  it("turns a neutral die into a Spark with Instinct du cultivateur", () => {
     const base = startKqGame(9, { heritageCode: "HERITAGE-007" });
     const state: KqGameState = { ...base, phase: "rolled", dice: [2, 4, 5] };
     const activated = activateKqHeritage(state);
     expect(activated.heritageUsed).toBe(true);
-    expect(activated.rollNonce).toBe(state.rollNonce + 1);
-    expect(activated.dice?.slice(1)).toEqual([4, 5]);
+    expect(activated.rollNonce).toBe(state.rollNonce);
+    expect(activated.dice).toEqual([6, 4, 5]);
   });
 
   it("reveals a real pest for free with Bouclier biologique", () => {
@@ -511,10 +514,10 @@ describe("Kanab Quest dice prototype", () => {
     const activated = activateKqHeritage(state);
     expect(activated.revealedPest).toBe("aphids");
     expect(activated.heritageUsed).toBe(true);
-    expect(activated.xp).toBe(state.xp);
+    expect(activated.xp).toBe(state.xp + 2);
   });
 
-  it("rerolls the lowest die only during Affinage patient", () => {
+  it("turns the lowest die into a Spark only during Affinage patient", () => {
     const base = startKqGame(11, { heritageCode: "HERITAGE-010" });
     const state: KqGameState = {
       ...base,
@@ -524,15 +527,16 @@ describe("Kanab Quest dice prototype", () => {
     };
     const activated = activateKqHeritage(state);
     expect(activated.heritageUsed).toBe(true);
-    expect(activated.rollNonce).toBe(state.rollNonce + 1);
-    expect(activated.dice?.slice(1)).toEqual([4, 5]);
+    expect(activated.rollNonce).toBe(state.rollNonce);
+    expect(activated.dice).toEqual([6, 4, 5]);
   });
 
-  it("cancels every Danger in one roll with Héritage de la canopée", () => {
+  it("turns every Danger into a success with Héritage de la canopée", () => {
     const base = startKqGame(13, { heritageCode: "HERITAGE-011" });
     const state: KqGameState = { ...base, phase: "rolled", dice: [1, 1, 4] };
     const activated = activateKqHeritage(state);
-    expect(activated.cancelledDangers).toBe(2);
+    expect(activated.dice).toEqual([4, 4, 4]);
+    expect(activated.cancelledDangers).toBe(0);
     expect(previewKqResolution(activated)?.dangers).toBe(0);
     expect(activated.heritageUsed).toBe(true);
   });
@@ -542,7 +546,7 @@ describe("Kanab Quest dice prototype", () => {
     const safeRoll: KqGameState = { ...base, phase: "rolled", dice: [4, 5, 6] };
     expect(canActivateKqHeritage(safeRoll)).toEqual({
       allowed: false,
-      reason: "Aucun Danger non protégé à ignorer.",
+      reason: "Aucun Danger non protégé à transformer.",
     });
     expect(activateKqHeritage(safeRoll)).toBe(safeRoll);
     const alreadyProtected: KqGameState = { ...base, phase: "rolled", dice: [1, 4, 5], cancelledDangers: 1 };

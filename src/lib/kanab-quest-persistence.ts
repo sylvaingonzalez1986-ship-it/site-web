@@ -29,9 +29,9 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (state.completedAt !== undefined && (typeof state.completedAt !== "string" || Number.isNaN(Date.parse(state.completedAt)))) return null;
     if (!Array.isArray(state.deckCodes) || state.deckCodes.some((code) => typeof code !== "string" || !knownCards.has(code))) return null;
     if (state.handCodes !== undefined && (!Array.isArray(state.handCodes) || state.handCodes.length > KQ_HAND_SIZE || state.handCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
-    if (state.heritageReserveCodes !== undefined && (!Array.isArray(state.heritageReserveCodes) || state.heritageReserveCodes.length > 2 || state.heritageReserveCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
-    const heritageAllowsSecondRedraw = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode)?.effect === "extra-redraw";
-    const persistedRedrawLimit = heritageAllowsSecondRedraw ? 2 : 1;
+    if (state.heritageReserveCodes !== undefined && (!Array.isArray(state.heritageReserveCodes) || state.heritageReserveCodes.length > 3 || state.heritageReserveCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
+    const heritageAllowsThreeRedraws = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode)?.effect === "two-extra-redraws";
+    const persistedRedrawLimit = heritageAllowsThreeRedraws ? 3 : 1;
     if (state.handRedrawsUsed !== undefined && (!Number.isInteger(state.handRedrawsUsed) || Number(state.handRedrawsUsed) < 0 || Number(state.handRedrawsUsed) > persistedRedrawLimit)) return null;
     if (state.heritageCode !== undefined && (typeof state.heritageCode !== "string" || !KQ_HERITAGE_CARDS.some((card) => card.code === state.heritageCode))) return null;
     if (state.heritageUsed !== undefined && typeof state.heritageUsed !== "boolean") return null;
@@ -55,7 +55,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     })) return null;
     if (state.heritageReserveCodes !== undefined) {
       const heritage = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode);
-      if (heritage?.effect !== "opening-draw-twelve" || state.stageIndex !== 0 || state.heritageUsed === true) return null;
+      if (heritage?.effect !== "opening-draw-thirteen" || state.stageIndex !== 0 || state.heritageUsed === true) return null;
       if (state.heritageReserveCodes.some((code) => {
         const card = KQ_CARDS.find((item) => item.code === code);
         return !card || card.category === "substrate" || card.category === "pbi" || (deckCounts[code] ?? 0) <= 0;

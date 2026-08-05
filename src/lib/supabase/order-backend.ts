@@ -3,7 +3,6 @@ import "server-only";
 import { createOrderId } from "@/lib/order-id";
 import type { AppendOrderInput } from "@/lib/orders-types";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
-import { awardKqHeritageForPaidOrder } from "@/lib/supabase/kanab-quest-heritage-purchase-backend";
 import type { CmsOrder, OrderItem, OrderStatus } from "@/types/store";
 
 const UUID_PATTERN =
@@ -604,7 +603,6 @@ export async function updateOrderPaymentStateInSupabase(
 
   if (paymentState === "paid") {
     await applyOrderInventoryInSupabase(orderId);
-    await awardKqHeritageForPaidOrder(orderId);
   }
 
   return findOrderById(orderId);

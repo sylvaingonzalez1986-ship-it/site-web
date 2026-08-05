@@ -99,7 +99,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
     expect(report.readyForActivation).toBe(false);
     expect(report.blockers).toContain("Collection La Botte encore inactive");
     expect(report.activationStillRequired).toContain(
-      "Exécuter les rétro-attributions Carnet puis Héritage par lots depuis l’interface admin",
+      "Exécuter les rétro-attributions des missions Carnet puis des avis producteurs depuis l’interface admin",
     );
   });
   it("previews only the two active notebook missions", () => {

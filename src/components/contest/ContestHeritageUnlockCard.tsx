@@ -83,7 +83,7 @@ export function ContestHeritageUnlockCard({
 
           <div className="min-w-0 rounded border-2 border-ink/20 bg-white/60 p-3">
             <p className="mt-2 text-xs font-semibold leading-relaxed text-charcoal">{campaign.heritageDescription}</p>
-            <p className="mt-3 text-xs font-black leading-snug text-ink">{campaign.heritageGranted ? "Cette carte permanente est disponible dans ton album." : `Achète cette fleur ou une autre fleur de ${campaign.producerName} pour débloquer automatiquement la carte.`}</p>
+            <p className="mt-3 text-xs font-black leading-snug text-ink">{campaign.heritageGranted ? "Cette carte permanente est disponible dans ton album." : `Fais valider ton avis sur cette fleur ou une autre fleur de ${campaign.producerName} pour débloquer automatiquement la carte.`}</p>
           </div>
         </div>
       </div>

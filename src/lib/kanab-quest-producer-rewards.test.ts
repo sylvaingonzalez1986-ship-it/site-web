@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   buildKqProducerRewardProgress,
@@ -18,8 +20,13 @@ const base = {
   ],
 };
 
+const approvedReviewMigration = readFileSync(
+  join(process.cwd(), "supabase/migrations/20260805000100_kq_heritage_on_approved_review.sql"),
+  "utf8",
+);
+
 describe("producer notebook reward progress", () => {
-  it("keeps Regular and Concours entries in the same frozen campaign", () => {
+  it("unlocks a producer campaign after any eligible approved review", () => {
     const progress = buildKqProducerRewardProgress({
       ...base,
       approvedEntryIds: ["regular-1", "regular-2"],
@@ -28,12 +35,12 @@ describe("producer notebook reward progress", () => {
     });
     expect(progress.reviewedCount).toBe(2);
     expect(progress.requiredCount).toBe(3);
-    expect(progress.completed).toBe(false);
+    expect(progress.completed).toBe(true);
     expect(progress.entries[0]?.boosterGranted).toBe(true);
     expect(progress.entries[2]?.track).toBe("concours");
   });
 
-  it("completes only after every configured flower has an approved review", () => {
+  it("stays unlocked when every configured flower has an approved review", () => {
     const progress = buildKqProducerRewardProgress({
       ...base,
       approvedEntryIds: base.entries.map((entry) => entry.entryId),
@@ -64,5 +71,15 @@ describe("producer notebook reward progress", () => {
     });
     expect(findKqProducerRewardForEntry([progress], "regular-2")?.heritageCode).toBe("HERITAGE-001");
     expect(findKqProducerRewardForEntry([progress], "unknown")).toBeNull();
+  });
+
+  it("grants Heritage from one approved eligible review without a flower booster", () => {
+    expect(approvedReviewMigration).toContain("campaign_entry.entry_id = v_entry.id");
+    expect(approvedReviewMigration).toContain("AND status = 'approved'");
+    expect(approvedReviewMigration).toContain("'heritageGranted', 1");
+    expect(approvedReviewMigration).not.toContain("INSERT INTO public.kq_support_booster_entitlements");
+    expect(approvedReviewMigration).toContain(
+      "REVOKE ALL ON FUNCTION public.rpc_kq_draw_heritage_for_purchase",
+    );
   });
 });
