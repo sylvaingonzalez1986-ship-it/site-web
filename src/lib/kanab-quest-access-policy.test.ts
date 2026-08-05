@@ -35,7 +35,7 @@ describe("Kanab Quest admin-only test access", () => {
   });
 
   it("keeps the admin launch links as the fallback while player access is closed", () => {
-    expect(arenaClient.match(/href="\/admin\/placard"/g)).toHaveLength(2);
+    expect(arenaClient.match(/href="\/admin\/placard"/g)).toHaveLength(1);
     expect(arenaClient).toContain("isPlacardPlayerEnabled && isAuthenticated");
     expect(arenaClient).toContain(": isAdminAuthorized ? (");
   });

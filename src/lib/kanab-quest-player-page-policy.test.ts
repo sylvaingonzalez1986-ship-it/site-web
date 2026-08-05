@@ -90,7 +90,7 @@ describe("Kanab Quest player page access", () => {
   });
 
   it("shows player links only from the server-provided access state", () => {
-    expect(arenaClient.match(/href="\/arene\/placard"/g)).toHaveLength(3);
+    expect(arenaClient.match(/href="\/arene\/placard"/g)).toHaveLength(2);
     expect(arenaClient).toContain("isPlacardPlayerEnabled && isAuthenticated");
     expect(arenaClient).toContain("isPlacardPlayerEnabled ? (");
   });

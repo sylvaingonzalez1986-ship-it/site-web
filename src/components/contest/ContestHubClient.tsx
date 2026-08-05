@@ -2850,12 +2850,6 @@ export function ContestHubClient({
               Trois espaces, une seule progression : remplis ton Carnet, joue tes cartes dans le
               Placard, puis mesure-toi aux autres dans les classements de la saison.
             </p>
-            <ul className={arenaStyles.heroProofs} aria-label="Principes de l'Arène">
-              <li>Lots de saison</li>
-              <li>Avis vérifiés</li>
-              <li>Placard &amp; cartes</li>
-              <li>Récompenses à gagner</li>
-            </ul>
           </div>
 
           <div className={arenaStyles.heroArt} aria-hidden="true">

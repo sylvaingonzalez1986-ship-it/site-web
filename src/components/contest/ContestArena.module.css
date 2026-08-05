@@ -113,15 +113,6 @@
   line-height: 1.5;
 }
 
-.heroProofs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem 1rem;
-  margin: 1.4rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
 .placardSection {
   margin-top: clamp(3rem, 7vw, 6rem);
   border: 2px solid var(--arena-ink);
@@ -447,27 +438,6 @@
   .placardRankings aside {
     grid-column: auto;
   }
-}
-
-.heroProofs li {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.68rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.heroProofs li::before {
-  display: grid;
-  width: 18px;
-  height: 18px;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--arena-green);
-  color: white;
-  content: "✓";
-  font-size: 0.7rem;
 }
 
 .heroArt {
@@ -1663,8 +1633,7 @@
     text-align: center;
   }
 
-  .eyebrow,
-  .heroProofs {
+  .eyebrow {
     justify-content: center;
   }
 
@@ -1686,8 +1655,6 @@
     margin-left: auto;
     margin-top: 1rem;
   }
-
-  .heroProofs { display: none; }
 
   .heroArt {
     min-height: min(92vw, 390px);
