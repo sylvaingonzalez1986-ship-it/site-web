@@ -315,6 +315,7 @@ export function BoutiquePageClient({
 
             {isPartnerMode && hasProducerProducts ? (
               <ProducerBar
+                key={`${showcaseMode}-${effectiveFilter}`}
                 producers={producers}
                 products={displayedProducts}
                 addButtonLabel={boutique.addButtonLabel}
