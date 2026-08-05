@@ -17,7 +17,7 @@ export function HomeTicketPromoBand({ zIndex }: HomeTicketPromoBandProps) {
       <div className="retro-container">
         <div className="home-editorial-promo__panel cartoon-border-sm p-4 md:p-6">
           <p className="home-editorial-promo__eyebrow">Booster promo</p>
-          <h2 className="home-editorial-promo__title mt-2 font-display text-3xl leading-none text-ink md:text-5xl">
+          <h2 className="home-editorial-promo__title mt-2 font-display text-3xl text-ink md:text-5xl">
             600 euros de bon d&apos;achat a gagner
           </h2>
           <p className="home-editorial-promo__description mt-3 max-w-4xl text-sm leading-relaxed text-charcoal md:text-base">

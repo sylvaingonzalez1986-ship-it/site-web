@@ -24,7 +24,7 @@ export function HomeBadgePromoBand({ zIndex }: HomeBadgePromoBandProps) {
           <p className="home-editorial-promo__eyebrow">
             Badge fidélité
           </p>
-          <h2 className="home-editorial-promo__title mt-2 font-display text-3xl leading-none text-ink md:text-5xl">
+          <h2 className="home-editorial-promo__title mt-2 font-display text-3xl text-ink md:text-5xl">
             Plus tu commandes, plus tu b&eacute;n&eacute;ficies d&apos;avantages.
           </h2>
           <p className="home-editorial-promo__description mt-3 max-w-4xl text-sm leading-relaxed text-charcoal md:text-base">
