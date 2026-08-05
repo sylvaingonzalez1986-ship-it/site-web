@@ -113,58 +113,6 @@
   line-height: 1.5;
 }
 
-.heroActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-top: 1.8rem;
-}
-
-.primaryAction,
-.secondaryAction,
-.placardAction {
-  display: inline-flex;
-  min-height: 52px;
-  align-items: center;
-  justify-content: center;
-  gap: 0.7rem;
-  border: 2px solid var(--arena-ink);
-  padding: 0.8rem 1.1rem;
-  font-size: 0.76rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: transform 160ms ease, box-shadow 160ms ease;
-}
-
-.primaryAction {
-  background: var(--arena-green);
-  box-shadow: 5px 5px 0 var(--arena-ink);
-  color: white;
-}
-
-.secondaryAction {
-  background: var(--arena-paper);
-  color: var(--arena-ink);
-}
-
-.placardAction {
-  background: var(--arena-yellow);
-  box-shadow: 5px 5px 0 var(--arena-ink);
-  color: var(--arena-ink);
-}
-
-.primaryAction:hover,
-.secondaryAction:hover,
-.placardAction:hover,
-.primaryAction:focus-visible,
-.secondaryAction:focus-visible,
-.placardAction:focus-visible {
-  outline: none;
-  box-shadow: 2px 2px 0 var(--arena-ink);
-  transform: translate(3px, 3px);
-}
-
 .heroProofs {
   display: flex;
   flex-wrap: wrap;
@@ -527,49 +475,15 @@
   min-height: clamp(420px, 44vw, 620px);
 }
 
-.heroCircle {
-  position: absolute;
-  top: 7%;
-  left: 50%;
-  width: min(92%, 530px);
-  aspect-ratio: 1;
-  border: 3px solid var(--arena-ink);
-  border-radius: 50%;
-  background: var(--arena-yellow);
-  transform: translateX(-50%);
-}
-
 .heroDuo {
   position: absolute;
   z-index: 1;
   bottom: 2%;
   left: 50%;
-  width: min(96%, 620px);
+  width: min(100%, 620px);
   height: auto;
   object-fit: contain;
   transform: translateX(-50%);
-}
-
-.heroBadge {
-  position: absolute;
-  z-index: 2;
-  top: 9%;
-  left: 4%;
-  display: grid;
-  width: 118px;
-  aspect-ratio: 1;
-  place-items: center;
-  border: 3px solid var(--arena-ink);
-  border-radius: 50%;
-  background: var(--arena-paper);
-  box-shadow: 6px 6px 0 var(--arena-green);
-  color: var(--arena-green);
-  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
-  font-size: 1.55rem;
-  font-weight: 900;
-  line-height: 0.88;
-  text-align: center;
-  text-transform: uppercase;
 }
 
 .content {
@@ -1750,7 +1664,6 @@
   }
 
   .eyebrow,
-  .heroActions,
   .heroProofs {
     justify-content: center;
   }
@@ -1774,33 +1687,16 @@
     margin-top: 1rem;
   }
 
-  .heroActions {
-    display: none;
-  }
-
-  .heroArt,
   .heroProofs { display: none; }
 
-  .heroCircle {
-    top: 0;
-    right: auto;
-    left: 50%;
-    width: 70%;
+  .heroArt {
+    min-height: min(92vw, 390px);
   }
 
   .heroDuo {
-    bottom: 1%;
-    width: 90%;
-    max-width: 320px;
-  }
-
-  .heroBadge {
-    top: 1%;
-    left: 4%;
-    width: 72px;
-    border-width: 2px;
-    box-shadow: 3px 3px 0 var(--arena-green);
-    font-size: 0.95rem;
+    bottom: 0;
+    width: min(96%, 390px);
+    max-width: none;
   }
 
   .content {
@@ -2049,8 +1945,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .primaryAction,
-  .secondaryAction,
   .entryCard,
   .entryMedia img {
     transition: none;

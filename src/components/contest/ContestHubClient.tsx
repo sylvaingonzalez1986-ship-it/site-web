@@ -2850,23 +2850,6 @@ export function ContestHubClient({
               Trois espaces, une seule progression : remplis ton Carnet, joue tes cartes dans le
               Placard, puis mesure-toi aux autres dans les classements de la saison.
             </p>
-            <div className={arenaStyles.heroActions}>
-              <button type="button" onClick={() => changeArenaView("classement")} className={arenaStyles.primaryAction}>
-                Voir le classement <ChevronDown size={17} aria-hidden="true" />
-              </button>
-              <button type="button" onClick={() => changeArenaView("carnet")} className={arenaStyles.secondaryAction}>
-                Ouvrir mon carnet <ChevronRight size={17} aria-hidden="true" />
-              </button>
-              {isPlacardPlayerEnabled && isAuthenticated ? (
-                <Link href="/arene/placard" className={arenaStyles.placardAction}>
-                  Ouvrir le Placard <ChevronRight size={17} aria-hidden="true" />
-                </Link>
-              ) : isAdminAuthorized ? (
-                <Link href="/admin/placard" className={arenaStyles.placardAction}>
-                  Tester le Placard <ChevronRight size={17} aria-hidden="true" />
-                </Link>
-              ) : null}
-            </div>
             <ul className={arenaStyles.heroProofs} aria-label="Principes de l'Arène">
               <li>Lots de saison</li>
               <li>Avis vérifiés</li>
@@ -2876,16 +2859,14 @@ export function ContestHubClient({
           </div>
 
           <div className={arenaStyles.heroArt} aria-hidden="true">
-            <span className={arenaStyles.heroCircle} />
             <Image
-              src="/contest/mascot/arena-duo.png"
+              src="/contest/mascot/arena-journey-v2.png"
               alt=""
-              width={1536}
-              height={1024}
-              sizes="(max-width: 767px) 320px, 620px"
+              width={1254}
+              height={1254}
+              sizes="(max-width: 767px) 92vw, 620px"
               className={arenaStyles.heroDuo}
             />
-            <span className={arenaStyles.heroBadge}>À toi de noter</span>
           </div>
         </div>
       </header>
