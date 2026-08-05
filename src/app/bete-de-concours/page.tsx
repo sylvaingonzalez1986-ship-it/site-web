@@ -47,7 +47,7 @@ type ContestHubPageProps = {
 type ContestArenaView = "jouer" | "carnet" | "classement";
 
 function parseArenaView(value?: string): ContestArenaView {
-  return value === "carnet" || value === "classement" ? value : "jouer";
+  return value === "jouer" || value === "classement" ? value : "carnet";
 }
 
 type ContestCategoryCounts = Record<ContestEntryCategory, number>;

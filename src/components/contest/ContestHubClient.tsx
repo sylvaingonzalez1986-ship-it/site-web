@@ -2633,7 +2633,7 @@ export function ContestHubClient({
   const changeArenaView = (view: ContestArenaView) => {
     setActiveArenaView(view);
     const nextParams = new URLSearchParams(searchParams.toString());
-    if (view === "jouer") nextParams.delete("vue");
+    if (view === "carnet") nextParams.delete("vue");
     else nextParams.set("vue", view);
     const query = nextParams.toString();
     router.replace(`${pathname}${query ? `?${query}` : ""}`, { scroll: false });
