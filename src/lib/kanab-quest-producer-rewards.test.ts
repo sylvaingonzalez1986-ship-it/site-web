@@ -24,6 +24,10 @@ const approvedReviewMigration = readFileSync(
   join(process.cwd(), "supabase/migrations/20260805000100_kq_heritage_on_approved_review.sql"),
   "utf8",
 );
+const approvedReviewBackfillMigration = readFileSync(
+  join(process.cwd(), "supabase/migrations/20260805000300_kq_backfill_approved_review_heritage.sql"),
+  "utf8",
+);
 
 describe("producer notebook reward progress", () => {
   it("unlocks a producer campaign after any eligible approved review", () => {
@@ -81,5 +85,11 @@ describe("producer notebook reward progress", () => {
     expect(approvedReviewMigration).toContain(
       "REVOKE ALL ON FUNCTION public.rpc_kq_draw_heritage_for_purchase",
     );
+  });
+
+  it("reconciles reviews approved before Heritage activation", () => {
+    expect(approvedReviewBackfillMigration).toContain("WHERE review.status = 'approved'");
+    expect(approvedReviewBackfillMigration).toContain("rpc_kq_grant_producer_notebook_rewards");
+    expect(approvedReviewBackfillMigration).toContain("campaign.status = 'active'");
   });
 });

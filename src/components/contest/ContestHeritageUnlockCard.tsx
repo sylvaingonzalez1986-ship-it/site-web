@@ -60,7 +60,7 @@ export function ContestHeritageUnlockCard({
 
   const stateLabel = campaign.heritageGranted
     ? "Carte débloquée"
-    : "À débloquer par achat";
+    : "Avis à faire valider";
 
   return (
     <aside className="mt-4 overflow-hidden rounded border-2 border-ink bg-[#f7edcf] shadow-[3px_3px_0_#17130e]" aria-labelledby={`heritage-${campaign.campaignId}`}>
@@ -92,7 +92,7 @@ export function ContestHeritageUnlockCard({
           <Link href="/arene/placard" className="inline-flex min-h-11 w-full items-center justify-center border-2 border-ink bg-green px-4 text-xs font-black uppercase text-white shadow-[2px_2px_0_#17130e]">Équiper dans le Placard</Link>
         ) : (
           <div className="flex min-h-11 w-full items-center justify-center border-2 border-ink bg-[#ded8ca] px-4 text-center text-xs font-black uppercase text-ink">
-            Carte débloquée après confirmation du paiement
+            Carte débloquée après validation de l’avis
           </div>
         )}
         {error ? <p className="mt-2 text-xs font-bold text-red-800" role="alert">{error}</p> : null}
