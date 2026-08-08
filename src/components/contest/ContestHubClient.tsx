@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -24,6 +25,9 @@ import {
   ChevronUp,
   CircleHelp,
   FileCheck2,
+  Gift,
+  LockKeyhole,
+  PackageOpen,
   Sprout,
   ThumbsDown,
   ThumbsUp,
@@ -42,6 +46,10 @@ import { categoryLabels, type Product, type ProductCategory } from "@/data/produ
 import { useLotteryExperience } from "@/hooks/useLotteryExperience";
 import { KQ_CARDS } from "@/lib/kanab-quest-game";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
+import {
+  findKqProducerRewardForEntry,
+  type KqProducerRewardProgress,
+} from "@/lib/kanab-quest-producer-rewards";
 import {
   CONTEST_AROMA_TAG_LABELS,
   CONTEST_CONSUMPTION_METHOD_LABELS,
@@ -772,12 +780,12 @@ export function ContestNotebookCollectionDashboard({
 
 function ContestNotebookViewTabs({
   activeView,
-  availableTicketCount,
+  availablePackCount,
   unlockedBadgeCount,
   onChange,
 }: {
   activeView: ContestNotebookView;
-  availableTicketCount: number;
+  availablePackCount: number;
   unlockedBadgeCount: number;
   onChange: (view: ContestNotebookView) => void;
 }) {
@@ -800,8 +808,8 @@ function ContestNotebookViewTabs({
           <span>{tab.label}</span>
           {tab.view === "collection" ? (
             <strong>
-              {availableTicketCount > 0
-                ? `${availableTicketCount} pack${availableTicketCount > 1 ? "s" : ""}`
+              {availablePackCount > 0
+                ? `${availablePackCount} pack${availablePackCount > 1 ? "s" : ""}`
                 : tab.hint}
             </strong>
           ) : null}
@@ -884,31 +892,104 @@ function ContestNotebookMissionCards({
 function ContestBotteCollection({
   isAuthenticated,
   entryId,
+  entryTitle,
+  entryTrack,
+  reviewApproved,
 }: {
   isAuthenticated: boolean;
   entryId: string;
+  entryTitle: string;
+  entryTrack: ContestEntryTrack;
+  reviewApproved: boolean;
 }) {
   const [snapshot, setSnapshot] = useState<{
     collection?: { cards?: Array<{ code: string; ownedCopies: number }> };
     heritage?: { cards?: Array<{ code: string; ownedCopies: number }>; fragmentBalance?: number } | null;
   } | null>(null);
+  const [shop, setShop] = useState<{
+    availableEntitlements: Array<{ id: string; source: string; cardCount: number; createdAt: string }>;
+  } | null>(null);
+  const [campaigns, setCampaigns] = useState<KqProducerRewardProgress[]>([]);
+  const [openedCards, setOpenedCards] = useState<Array<{
+    code: string;
+    name: string;
+    rarity: string;
+    imageUrl?: string;
+  }>>([]);
   const [loading, setLoading] = useState(isAuthenticated);
+  const [opening, setOpening] = useState(false);
+  const [notice, setNotice] = useState("");
+
+  const refreshCollection = useCallback(async (signal?: AbortSignal) => {
+    const [bootstrapResponse, boostersResponse] = await Promise.all([
+      fetch("/api/arena/placard/bootstrap", { cache: "no-store", signal }),
+      fetch("/api/arena/placard/boosters", { cache: "no-store", signal }),
+    ]);
+    if (!bootstrapResponse.ok) throw new Error("Collection indisponible");
+    if (!boostersResponse.ok) throw new Error("Coffre indisponible");
+    const [nextSnapshot, nextShop] = await Promise.all([
+      bootstrapResponse.json(),
+      boostersResponse.json(),
+    ]);
+    setSnapshot(nextSnapshot);
+    setShop(nextShop);
+  }, []);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
     const controller = new AbortController();
-    fetch("/api/arena/placard/bootstrap", { cache: "no-store", signal: controller.signal })
-      .then(async (response) => {
-        if (!response.ok) throw new Error("Collection indisponible");
-        setSnapshot(await response.json());
+    void refreshCollection(controller.signal)
+      .catch((error: unknown) => {
+        if (!(error instanceof DOMException && error.name === "AbortError")) {
+          setSnapshot(null);
+          setShop(null);
+          setNotice("Le coffre est momentanément indisponible.");
+        }
       })
-      .catch(() => setSnapshot(null))
       .finally(() => setLoading(false));
     return () => controller.abort();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, refreshCollection]);
 
   const supportCopies = new Map((snapshot?.collection?.cards ?? []).map((card) => [card.code, Number(card.ownedCopies)]));
   const supportOwned = KQ_CARDS.filter((card) => (supportCopies.get(card.code) ?? 0) > 0).length;
+  const selectedCampaign = findKqProducerRewardForEntry(campaigns, entryId);
+  const selectedFlower = selectedCampaign?.entries.find((entry) => entry.entryId === entryId) ?? null;
+  const availableTenCardPacks = (shop?.availableEntitlements ?? []).filter((item) => item.cardCount === 10);
+  const selectedFlowerEntitlementId = selectedFlower?.packReward.availableEntitlementIds[0];
+  const nextEntitlement = availableTenCardPacks.find((item) => item.id === selectedFlowerEntitlementId)
+    ?? availableTenCardPacks[0]
+    ?? null;
+
+  const openNextPack = async () => {
+    if (!nextEntitlement || opening) return;
+    setOpening(true);
+    setNotice("");
+    try {
+      const response = await fetch("/api/arena/placard/boosters", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ entitlementId: nextEntitlement.id }),
+      });
+      const payload = await response.json() as {
+        cards?: Array<{ code: string; name: string; rarity: string; imageUrl?: string }>;
+        error?: string;
+      };
+      if (!response.ok) throw new Error(payload.error || "Ouverture impossible.");
+      setOpenedCards(payload.cards ?? []);
+      await refreshCollection();
+      window.dispatchEvent(new Event("kq:boosters-updated"));
+      window.dispatchEvent(new Event("kq:collection-updated"));
+      window.dispatchEvent(new Event("kq:producer-rewards-changed"));
+      setNotice(`${payload.cards?.length ?? 10} cartes La Botte ont rejoint ton inventaire.`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Ouverture impossible.");
+    } finally {
+      setOpening(false);
+    }
+  };
 
   if (!isAuthenticated) return <div className="rounded border-2 border-ink bg-white p-5 text-sm font-bold">Connecte-toi pour voir tes cartes La Botte et tes Héritages.</div>;
   if (loading) return <div className="rounded border-2 border-ink bg-white p-5 text-sm font-bold">Chargement de La Botte…</div>;
@@ -924,16 +1005,110 @@ function ContestBotteCollection({
     </article>;
   };
 
-  return <div className="grid gap-5">
-    <ProducerRewardJourney isAuthenticated={isAuthenticated} entryId={entryId} embedded />
+  const flowerPackReward = selectedFlower?.packReward ?? {
+    eligible: entryTrack === "concours",
+    totalPacks: entryTrack === "concours" ? 5 : 0,
+    grantedPacks: 0,
+    availablePacks: 0,
+    openedPacks: 0,
+    availableEntitlementIds: [],
+  };
+  const flowerPackStatus = !flowerPackReward?.eligible
+    ? "regular"
+    : flowerPackReward.availablePacks > 0
+      ? "ready"
+      : flowerPackReward.openedPacks >= flowerPackReward.totalPacks
+        ? "opened"
+        : (selectedFlower?.reviewed ?? reviewApproved)
+          ? "pending"
+          : "locked";
+
+  return <div className="grid min-w-0 gap-5">
+    <ProducerRewardJourney
+      isAuthenticated={isAuthenticated}
+      entryId={entryId}
+      embedded
+      onCampaignsChange={setCampaigns}
+    />
+
+    <section
+      className={`min-w-0 overflow-hidden rounded border-2 border-ink p-4 shadow-[4px_4px_0_#17130e] ${
+        flowerPackStatus === "ready" ? "bg-[#dff2df]" : flowerPackStatus === "opened" ? "bg-[#fff3c4]" : "bg-[#e2e0da]"
+      }`}
+      aria-labelledby="contest-botte-chest-title"
+    >
+      <div className="grid min-w-0 gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+        <div className="min-w-0">
+          <p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Récompense fleur concours</p>
+          <h3 id="contest-botte-chest-title" className="mt-1 break-words font-display text-2xl uppercase leading-none text-ink">Coffre La Botte</h3>
+          <p className="mt-2 max-w-xl text-xs font-semibold leading-relaxed text-charcoal">
+            {flowerPackStatus === "ready"
+              ? `${selectedFlower?.title ?? entryTitle} a débloqué ses 5 packs. Ouvre-les un par un, chacun contient 10 cartes.`
+              : flowerPackStatus === "opened"
+                ? `Les 5 packs de ${selectedFlower?.title ?? entryTitle} ont été ouverts.`
+                : flowerPackStatus === "pending"
+                  ? "Ton avis est validé. Les cinq packs sont en cours d’attribution."
+                  : flowerPackStatus === "locked"
+                    ? "Fais valider ton avis sur cette fleur concours pour débloquer 5 packs de 10 cartes."
+                    : "Les cinq packs sont réservés aux fleurs concours. Tes packs de mission restent disponibles dans ce coffre."}
+          </p>
+        </div>
+        <div className={`mx-auto grid h-24 w-28 place-items-center rounded border-2 border-ink shadow-[3px_3px_0_#17130e] sm:mx-0 ${flowerPackStatus === "ready" ? "bg-green text-white" : "bg-white text-charcoal"}`}>
+          {flowerPackStatus === "ready" ? <PackageOpen size={46} aria-hidden="true" /> : flowerPackStatus === "opened" ? <Gift size={46} aria-hidden="true" /> : <LockKeyhole size={42} aria-hidden="true" />}
+        </div>
+      </div>
+
+      {flowerPackReward?.eligible ? (
+        <div className="mt-4 grid grid-cols-5 gap-1.5" aria-label="Progression des cinq packs de cette fleur">
+          {Array.from({ length: flowerPackReward.totalPacks }, (_, index) => {
+            const opened = index < flowerPackReward.openedPacks;
+            const ready = !opened && index < flowerPackReward.openedPacks + flowerPackReward.availablePacks;
+            return <span key={index} className={`grid min-h-11 place-items-center rounded border-2 border-ink text-[10px] font-black uppercase ${opened ? "bg-yellow" : ready ? "bg-green text-white" : "bg-white/50 text-charcoal"}`} title={opened ? "Pack ouvert" : ready ? "Pack prêt" : "Pack verrouillé"}>
+              {opened ? "Ouvert" : ready ? `Pack ${index + 1}` : <LockKeyhole size={15} aria-label="Verrouillé" />}
+            </span>;
+          })}
+        </div>
+      ) : null}
+
+      <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-xs font-black text-ink">{availableTenCardPacks.length} pack{availableTenCardPacks.length > 1 ? "s" : ""} de 10 cartes disponible{availableTenCardPacks.length > 1 ? "s" : ""}</p>
+        <button type="button" disabled={!nextEntitlement || opening} onClick={() => void openNextPack()} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded border-2 border-ink bg-yellow px-4 text-xs font-black uppercase shadow-[3px_3px_0_#17130e] disabled:cursor-not-allowed disabled:bg-white disabled:opacity-55 sm:w-auto">
+          <PackageOpen size={20} aria-hidden="true" />
+          {opening ? "Ouverture…" : nextEntitlement ? "Ouvrir un pack" : "Aucun pack à ouvrir"}
+        </button>
+      </div>
+      {notice ? <p className="mt-3 text-xs font-bold text-ink" role="status">{notice}</p> : null}
+
+      {openedCards.length > 0 ? (
+        <div className="mt-5 border-t-2 border-dashed border-ink pt-4" aria-live="polite">
+          <div className="flex items-center justify-between gap-3">
+            <div><p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Pack ouvert</p><h4 className="font-display text-xl uppercase">Tes 10 nouvelles cartes</h4></div>
+            <button type="button" onClick={() => setOpenedCards([])} className="grid h-11 w-11 shrink-0 place-items-center rounded border-2 border-ink bg-white" aria-label="Fermer les cartes révélées"><X size={20} /></button>
+          </div>
+          <div className="mt-3 overflow-x-auto pb-3">
+            <div className="grid w-max grid-flow-col auto-cols-[9rem] gap-3 md:w-full md:grid-flow-row md:grid-cols-5">
+              {openedCards.map((card, index) => {
+                const artwork = getKqCardArtwork(card.code) ?? card.imageUrl;
+                return <article key={`${card.code}-${index}`} className="min-w-0 rounded border-2 border-ink bg-white p-2 shadow-[2px_2px_0_#17130e]">
+                  {artwork ? <div className="relative aspect-[2/3] overflow-hidden rounded border border-ink"><Image src={artwork} alt={`Carte ${card.name}`} fill sizes="(max-width: 767px) 144px, 180px" className="object-contain" /></div> : null}
+                  <small className="mt-2 block truncate text-[9px] font-black uppercase text-green">{card.rarity}</small>
+                  <strong className="mt-0.5 block text-xs leading-tight">{card.name}</strong>
+                </article>;
+              })}
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </section>
+
     <section className="rounded border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#17130e]">
       <div className="flex items-center justify-between gap-3">
-        <div><p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Inventaire</p><h3 className="font-display text-xl uppercase">Le coffre La Botte</h3></div>
+        <div><p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Cartes possédées</p><h3 className="font-display text-xl uppercase">Inventaire La Botte</h3></div>
         <b className="text-lg">{supportOwned}/{KQ_CARDS.length}</b>
       </div>
-      <p className="mt-1 text-xs font-semibold text-charcoal">Tes cartes de jeu sont rangées ici. Ouvre le coffre pour consulter tous tes exemplaires.</p>
+      <p className="mt-1 text-xs font-semibold text-charcoal">Consulte ici toutes les cartes déjà révélées et le nombre d’exemplaires possédés.</p>
       <details className="mt-3 border-t-2 border-dashed border-ink pt-3">
-        <summary className="flex min-h-11 cursor-pointer items-center justify-center border-2 border-ink bg-yellow px-4 text-xs font-black uppercase shadow-[2px_2px_0_#17130e]">Ouvrir le coffre</summary>
+        <summary className="flex min-h-11 cursor-pointer items-center justify-center border-2 border-ink bg-yellow px-4 text-xs font-black uppercase shadow-[2px_2px_0_#17130e]">Voir l&apos;inventaire</summary>
         <div className="mt-3 flex gap-3 overflow-x-auto pb-3">{KQ_CARDS.map((card) => renderCard(card, supportCopies.get(card.code) ?? 0))}</div>
       </details>
     </section>
@@ -944,10 +1119,16 @@ function ContestNotebookCollectionTab({
   isAuthenticated,
   badges,
   entryId,
+  entryTitle,
+  entryTrack,
+  reviewApproved,
 }: {
   isAuthenticated: boolean;
   badges: PublicContestProfileBadge[];
   entryId: string;
+  entryTitle: string;
+  entryTrack: ContestEntryTrack;
+  reviewApproved: boolean;
 }) {
   return (
     <div className="contest-notebook-collection-tab">
@@ -959,7 +1140,13 @@ function ContestNotebookCollectionTab({
           <h2 className="mt-1 text-xl font-black leading-tight text-ink">Héritages &amp; coffre La Botte</h2>
         </div>
       </div>
-      <ContestBotteCollection isAuthenticated={isAuthenticated} entryId={entryId} />
+      <ContestBotteCollection
+        isAuthenticated={isAuthenticated}
+        entryId={entryId}
+        entryTitle={entryTitle}
+        entryTrack={entryTrack}
+        reviewApproved={reviewApproved}
+      />
 
       <div className="mt-4 border-t-2 border-ink pt-4">
         <p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Missions de dégustation</p>
@@ -2458,13 +2645,13 @@ export function ContestHubClient({
 }: ContestHubClientProps) {
   const router = useRouter();
   const { addToCart, authLoading } = useCart();
-  const lottery = useLotteryExperience();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [activeArenaView, setActiveArenaView] = useState<ContestArenaView>(initialView);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [notebookPage, setNotebookPage] = useState<0 | 1>(0);
   const [notebookView, setNotebookView] = useState<ContestNotebookView>("lab");
+  const [availableBottePackCount, setAvailableBottePackCount] = useState(0);
   const [isNotesSpreadGuideOpen, setIsNotesSpreadGuideOpen] = useState(false);
   const [lockedQty, setLockedQty] = useState(1);
   const [cartMessage, setCartMessage] = useState<string | null>(null);
@@ -2543,10 +2730,6 @@ export function ContestHubClient({
   const selectedRankingEntry = selectedRankingEntryId
     ? stationRankingEntries.find((entry) => entry.id === selectedRankingEntryId) ?? null
     : null;
-  const availableContestPackTickets = useMemo(
-    () => lottery.tickets.filter((ticket) => ticket.status === "available"),
-    [lottery.tickets],
-  );
   const unlockedBadgeCount = useMemo(() => getUnlockedContestBadgeCount(viewerBadges), [viewerBadges]);
   const isHubModalOpen = Boolean(selectedFeedReview || selectedRankingEntry);
   const visibleHoverMascotPanel = activeMascotPanel || selectedFeedReview || selectedRankingEntry ? null : hoverMascotPanel;
@@ -2561,6 +2744,37 @@ export function ContestHubClient({
   }, [feed]);
 
   useEffect(() => () => rankingReviewsRequestRef.current?.abort(), []);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setAvailableBottePackCount(0);
+      return;
+    }
+    const controller = new AbortController();
+    const refreshPackCount = async (signal?: AbortSignal) => {
+      try {
+        const response = await fetch("/api/arena/placard/boosters", { cache: "no-store", signal });
+        if (!response.ok) return;
+        const payload = await response.json() as {
+          availableEntitlements?: Array<{ cardCount?: number }>;
+        };
+        setAvailableBottePackCount(
+          (payload.availableEntitlements ?? []).filter((item) => Number(item.cardCount) === 10).length,
+        );
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) {
+          setAvailableBottePackCount(0);
+        }
+      }
+    };
+    const handleUpdate = () => void refreshPackCount();
+    window.addEventListener("kq:boosters-updated", handleUpdate);
+    void refreshPackCount(controller.signal);
+    return () => {
+      controller.abort();
+      window.removeEventListener("kq:boosters-updated", handleUpdate);
+    };
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (!isHubModalOpen) {
@@ -3200,7 +3414,7 @@ export function ContestHubClient({
                 mobileToolbar={
                   <ContestNotebookViewTabs
                     activeView={notebookView}
-                    availableTicketCount={availableContestPackTickets.length}
+                    availablePackCount={availableBottePackCount}
                     unlockedBadgeCount={unlockedBadgeCount}
                     onChange={changeNotebookView}
                   />
@@ -3210,7 +3424,7 @@ export function ContestHubClient({
                     <div className="contest-notebook-notes-view contest-lab-notes-view !flex h-full min-h-0 flex-col gap-3">
                       <ContestNotebookViewTabs
                         activeView={notebookView}
-                        availableTicketCount={availableContestPackTickets.length}
+                        availablePackCount={availableBottePackCount}
                         unlockedBadgeCount={unlockedBadgeCount}
                         onChange={changeNotebookView}
                       />
@@ -3245,7 +3459,7 @@ export function ContestHubClient({
                     <div className="contest-lab-dashboard-page">
                       <ContestNotebookViewTabs
                         activeView={notebookView}
-                        availableTicketCount={availableContestPackTickets.length}
+                        availablePackCount={availableBottePackCount}
                         unlockedBadgeCount={unlockedBadgeCount}
                         onChange={changeNotebookView}
                       />
@@ -3253,13 +3467,16 @@ export function ContestHubClient({
                         isAuthenticated={isAuthenticated}
                         badges={viewerBadges}
                         entryId={selectedEntry.id}
+                        entryTitle={selectedEntry.title}
+                        entryTrack={selectedEntry.track}
+                        reviewApproved={selectedUnlock?.review?.status === "approved"}
                       />
                     </div>
                   ) : (
                   <div className="contest-lab-dashboard-page">
                     <ContestNotebookViewTabs
                       activeView={notebookView}
-                      availableTicketCount={availableContestPackTickets.length}
+                      availablePackCount={availableBottePackCount}
                       unlockedBadgeCount={unlockedBadgeCount}
                       onChange={changeNotebookView}
                     />

@@ -20,10 +20,12 @@ export function ProducerRewardJourney({
   isAuthenticated,
   embedded = false,
   entryId,
+  onCampaignsChange,
 }: {
   isAuthenticated: boolean;
   embedded?: boolean;
   entryId?: string;
+  onCampaignsChange?: (campaigns: KqProducerRewardProgress[]) => void;
 }) {
   const [campaigns, setCampaigns] = useState<KqProducerRewardProgress[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -31,21 +33,25 @@ export function ProducerRewardJourney({
   useEffect(() => {
     if (!isAuthenticated) return;
     const controller = new AbortController();
+    const updateCampaigns = (nextCampaigns: KqProducerRewardProgress[]) => {
+      setCampaigns(nextCampaigns);
+      onCampaignsChange?.(nextCampaigns);
+    };
     const refresh = () => {
-      void fetchProducerRewardCampaigns().then(setCampaigns).catch(() => setCampaigns([]));
+      void fetchProducerRewardCampaigns().then(updateCampaigns).catch(() => updateCampaigns([]));
     };
     window.addEventListener("kq:producer-rewards-changed", refresh);
     void fetchProducerRewardCampaigns(controller.signal)
-      .then(setCampaigns)
+      .then(updateCampaigns)
       .catch((error: unknown) => {
-        if (!(error instanceof DOMException && error.name === "AbortError")) setCampaigns([]);
+        if (!(error instanceof DOMException && error.name === "AbortError")) updateCampaigns([]);
       })
       .finally(() => setLoaded(true));
     return () => {
       controller.abort();
       window.removeEventListener("kq:producer-rewards-changed", refresh);
     };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, onCampaignsChange]);
 
   if (!isAuthenticated || (loaded && campaigns.length === 0)) return null;
   const selectedCampaign = entryId

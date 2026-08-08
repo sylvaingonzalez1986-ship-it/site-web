@@ -28,19 +28,23 @@ const approvedReviewBackfillMigration = readFileSync(
   join(process.cwd(), "supabase/migrations/20260805000300_kq_backfill_approved_review_heritage.sql"),
   "utf8",
 );
+const fiveContestFlowerPacksMigration = readFileSync(
+  join(process.cwd(), "supabase/migrations/20260808000100_kq_five_contest_flower_packs.sql"),
+  "utf8",
+);
 
 describe("producer notebook reward progress", () => {
   it("unlocks a producer campaign after any eligible approved review", () => {
     const progress = buildKqProducerRewardProgress({
       ...base,
       approvedEntryIds: ["regular-1", "regular-2"],
-      rewardedEntryIds: ["regular-1"],
+      rewardedEntryIds: [],
       heritageGranted: false,
     });
     expect(progress.reviewedCount).toBe(2);
     expect(progress.requiredCount).toBe(3);
     expect(progress.completed).toBe(true);
-    expect(progress.entries[0]?.boosterGranted).toBe(true);
+    expect(progress.entries[0]?.boosterGranted).toBe(false);
     expect(progress.entries[2]?.track).toBe("concours");
   });
 
@@ -53,6 +57,30 @@ describe("producer notebook reward progress", () => {
     });
     expect(progress.completed).toBe(true);
     expect(progress.heritageGranted).toBe(true);
+  });
+
+  it("tracks five independently openable packs only for contest flowers", () => {
+    const progress = buildKqProducerRewardProgress({
+      ...base,
+      approvedEntryIds: ["regular-1", "contest-1"],
+      rewardedEntryIds: ["contest-1"],
+      packProgressByEntryId: new Map([["contest-1", {
+        grantedPacks: 5,
+        availablePacks: 3,
+        openedPacks: 2,
+        availableEntitlementIds: ["pack-3", "pack-4", "pack-5"],
+      }]]),
+      heritageGranted: true,
+    });
+    expect(progress.entries[0]?.packReward).toMatchObject({ eligible: false, totalPacks: 0 });
+    expect(progress.entries[2]?.packReward).toEqual({
+      eligible: true,
+      totalPacks: 5,
+      grantedPacks: 5,
+      availablePacks: 3,
+      openedPacks: 2,
+      availableEntitlementIds: ["pack-3", "pack-4", "pack-5"],
+    });
   });
 
   it("never completes an empty campaign", () => {
@@ -77,7 +105,7 @@ describe("producer notebook reward progress", () => {
     expect(findKqProducerRewardForEntry([progress], "unknown")).toBeNull();
   });
 
-  it("grants Heritage from one approved eligible review without a flower booster", () => {
+  it("keeps Heritage tied to an approved eligible review", () => {
     expect(approvedReviewMigration).toContain("campaign_entry.entry_id = v_entry.id");
     expect(approvedReviewMigration).toContain("AND status = 'approved'");
     expect(approvedReviewMigration).toContain("'heritageGranted', 1");
@@ -85,6 +113,15 @@ describe("producer notebook reward progress", () => {
     expect(approvedReviewMigration).toContain(
       "REVOKE ALL ON FUNCTION public.rpc_kq_draw_heritage_for_purchase",
     );
+  });
+
+  it("grants five ten-card packs for each approved contest flower idempotently", () => {
+    expect(fiveContestFlowerPacksMigration).toContain("IF v_entry.track = 'concours'");
+    expect(fiveContestFlowerPacksMigration).toContain("FOR v_pack_index IN 2..5 LOOP");
+    expect(fiveContestFlowerPacksMigration).toContain("card_count");
+    expect(fiveContestFlowerPacksMigration).toContain("ON CONFLICT (reward_key) DO UPDATE");
+    expect(fiveContestFlowerPacksMigration).toContain("PRIMARY KEY (flower_grant_id, pack_index)");
+    expect(fiveContestFlowerPacksMigration).toContain("WHERE review.status = 'approved'");
   });
 
   it("reconciles reviews approved before Heritage activation", () => {

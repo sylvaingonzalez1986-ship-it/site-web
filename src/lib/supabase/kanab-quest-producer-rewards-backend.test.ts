@@ -13,6 +13,8 @@ describe("producer notebook reward backend", () => {
     const rpc = vi.fn().mockResolvedValue({
       data: {
         flowerBoosterGranted: false,
+        flowerBoostersGranted: 0,
+        flowerBoostersTotal: 0,
         boosterCardCount: 0,
         heritageGranted: 1,
         heritageCodes: ["HERITAGE-001"],
@@ -26,6 +28,8 @@ describe("producer notebook reward backend", () => {
     })).resolves.toEqual({
       live: true,
       flowerBoosterGranted: false,
+      flowerBoostersGranted: 0,
+      flowerBoostersTotal: 0,
       boosterCardCount: 0,
       heritageGranted: 1,
       heritageCodes: ["HERITAGE-001"],

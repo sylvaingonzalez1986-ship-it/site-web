@@ -11,6 +11,8 @@ import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 const EMPTY_RECEIPT: KqProducerNotebookRewardReceipt = {
   live: false,
   flowerBoosterGranted: false,
+  flowerBoostersGranted: 0,
+  flowerBoostersTotal: 0,
   boosterCardCount: 0,
   heritageGranted: 0,
   heritageCodes: [],
@@ -38,6 +40,8 @@ export async function syncKqProducerNotebookRewardsForReview(input: {
   return {
     live: true,
     flowerBoosterGranted: receipt.flowerBoosterGranted === true,
+    flowerBoostersGranted: Number(receipt.flowerBoostersGranted ?? 0),
+    flowerBoostersTotal: Number(receipt.flowerBoostersTotal ?? 0),
     boosterCardCount: Number(receipt.boosterCardCount ?? 0),
     heritageGranted: Number(receipt.heritageGranted ?? 0),
     heritageCodes: Array.isArray(receipt.heritageCodes)
@@ -87,7 +91,7 @@ export async function getKqProducerRewardProgressForCustomer(
           .eq("status", "approved").in("entry_id", entryIds)
       : Promise.resolve({ data: [], error: null }),
     entryIds.length
-      ? client.from("kq_notebook_flower_reward_grants").select("entry_id")
+      ? client.from("kq_notebook_flower_reward_grants").select("id,entry_id,entitlement_id")
           .eq("user_id", safeCustomerId).in("entry_id", entryIds)
       : Promise.resolve({ data: [], error: null }),
   ]);
@@ -95,11 +99,58 @@ export async function getKqProducerRewardProgressForCustomer(
   if (reviewsResult.error) throw new Error(`[data:producer-reward-reviews] ${reviewsResult.error.message}`);
   if (flowerGrantsResult.error) throw new Error(`[data:flower-reward-grants] ${flowerGrantsResult.error.message}`);
 
+  const flowerGrants = flowerGrantsResult.data ?? [];
+  const flowerGrantIds = flowerGrants.map((row) => String(row.id));
+  const flowerPacksResult = flowerGrantIds.length
+    ? await client.from("kq_notebook_flower_reward_packs")
+        .select("flower_grant_id,pack_index,entitlement_id")
+        .in("flower_grant_id", flowerGrantIds).order("pack_index", { ascending: true })
+    : { data: [], error: null };
+  if (flowerPacksResult.error) throw new Error(`[data:flower-reward-packs] ${flowerPacksResult.error.message}`);
+
+  const packRows = [...(flowerPacksResult.data ?? [])];
+  for (const grant of flowerGrants) {
+    if (!packRows.some((row) => String(row.flower_grant_id) === String(grant.id))) {
+      packRows.push({
+        flower_grant_id: String(grant.id),
+        pack_index: 1,
+        entitlement_id: String(grant.entitlement_id),
+      });
+    }
+  }
+  const entitlementIds = [...new Set(packRows.map((row) => String(row.entitlement_id)))];
+  const entitlementsResult = entitlementIds.length
+    ? await client.from("kq_support_booster_entitlements").select("id,status")
+        .in("id", entitlementIds)
+    : { data: [], error: null };
+  if (entitlementsResult.error) throw new Error(`[data:flower-reward-entitlements] ${entitlementsResult.error.message}`);
+
   const producerById = new Map((producersResult.data ?? []).map((row) => [String(row.id), row]));
   const definitionByCode = new Map((definitionsResult.data ?? []).map((row) => [String(row.code), row]));
   const entryById = new Map((entriesResult.data ?? []).map((row) => [String(row.id), row]));
   const approvedEntryIds = (reviewsResult.data ?? []).map((row) => String(row.entry_id));
-  const rewardedEntryIds = (flowerGrantsResult.data ?? []).map((row) => String(row.entry_id));
+  const rewardedEntryIds = flowerGrants.map((row) => String(row.entry_id));
+  const entitlementStatusById = new Map(
+    (entitlementsResult.data ?? []).map((row) => [String(row.id), String(row.status)]),
+  );
+  const packProgressByEntryId = new Map<string, {
+    grantedPacks: number;
+    availablePacks: number;
+    openedPacks: number;
+    availableEntitlementIds: string[];
+  }>();
+  for (const grant of flowerGrants) {
+    const rows = packRows.filter((row) => String(row.flower_grant_id) === String(grant.id));
+    const availableEntitlementIds = rows
+      .filter((row) => entitlementStatusById.get(String(row.entitlement_id)) === "available")
+      .map((row) => String(row.entitlement_id));
+    packProgressByEntryId.set(String(grant.entry_id), {
+      grantedPacks: rows.length,
+      availablePacks: availableEntitlementIds.length,
+      openedPacks: rows.filter((row) => entitlementStatusById.get(String(row.entitlement_id)) === "opened").length,
+      availableEntitlementIds,
+    });
+  }
   const grantedCampaignIds = new Set((heritageGrantsResult.data ?? []).map((row) => String(row.campaign_id)));
 
   return campaigns.flatMap((campaign) => {
@@ -130,6 +181,7 @@ export async function getKqProducerRewardProgressForCustomer(
       entries,
       approvedEntryIds,
       rewardedEntryIds,
+      packProgressByEntryId,
       heritageGranted: grantedCampaignIds.has(campaignId),
     })];
   });
@@ -264,7 +316,7 @@ export async function syncKqProducerNotebookRewardBatch(offset = 0) {
       customerId: String(review.customer_id),
       reviewId: String(review.id),
     });
-    if (receipt.flowerBoosterGranted) flowerBoostersGranted += 1;
+    flowerBoostersGranted += receipt.flowerBoostersGranted;
     heritagesGranted += receipt.heritageGranted;
   }
   return {
