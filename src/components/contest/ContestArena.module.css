@@ -869,7 +869,7 @@
 
 .rankingFilters {
   display: grid;
-  grid-template-columns: minmax(180px, 0.8fr) minmax(280px, 1.2fr) minmax(180px, 0.7fr);
+  grid-template-columns: minmax(280px, 1.2fr) minmax(180px, 0.7fr);
   align-items: end;
   gap: 0.75rem;
   margin: 0 0 1rem;
@@ -1525,6 +1525,57 @@
   padding-top: 1.2rem;
 }
 
+.notebookTrackTabs {
+  display: grid;
+  width: min(100%, 620px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  margin: 0 auto 1rem;
+  border: 2px solid var(--arena-ink);
+  background: var(--arena-ink);
+  padding: 4px;
+}
+
+.notebookTrackTab {
+  display: grid;
+  min-width: 0;
+  min-height: 54px;
+  place-content: center;
+  gap: 0.22rem;
+  border: 2px solid transparent;
+  background: var(--arena-paper);
+  color: var(--arena-ink);
+  padding: 0.55rem 0.7rem;
+  text-align: center;
+  transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.notebookTrackTab span {
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: 1rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.notebookTrackTabRegular[aria-pressed="true"] {
+  border-color: #003f2f;
+  background: #00563f;
+  color: white;
+}
+
+.notebookTrackTabContest[aria-pressed="true"] {
+  border-color: #724407;
+  background: #d5a02d;
+  color: #17130e;
+}
+
+.notebookTrackTab:hover,
+.notebookTrackTab:focus-visible {
+  transform: translateY(-1px);
+}
+
 .notebookStage :global(.contest-hub-spread-wrap),
 .notebookStage :global(.contest-hub-flipbook) {
   width: 100%;
@@ -1578,9 +1629,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .rankingFilters > :last-child {
-    grid-column: 1 / -1;
-  }
 }
 
 @media (max-width: 767px) {
@@ -1723,9 +1771,6 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .rankingFilters > :last-child {
-    grid-column: auto;
-  }
 
   .filterButton {
     justify-content: space-between;

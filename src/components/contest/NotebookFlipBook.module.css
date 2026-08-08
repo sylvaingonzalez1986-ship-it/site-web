@@ -12,6 +12,16 @@
   font-family: var(--font-body), Arial, sans-serif;
 }
 
+.editorial[data-notebook-tone="gold"] {
+  --editorial-cream: #fff7e4;
+  --editorial-paper: #fffaf0;
+  --editorial-paper-warm: #f2dfb0;
+  --editorial-green: #b67812;
+  --editorial-green-dark: #724407;
+  --editorial-yellow: #f6d36f;
+  --editorial-muted: #665335;
+}
+
 .editorial :global(.contest-notebook-cover-button) {
   gap: 0.8rem;
   padding: 0.4rem;

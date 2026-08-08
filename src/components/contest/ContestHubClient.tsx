@@ -3243,22 +3243,6 @@ export function ContestHubClient({
           </div>
           <div className={arenaStyles.rankingFilters}>
             <div className={arenaStyles.controlGroup}>
-              <span className={arenaStyles.controlLabel}>Épreuve</span>
-              <div className={arenaStyles.trackSwitch} aria-label="Épreuve du classement">
-                {CONTEST_ENTRY_TRACKS.map((track) => (
-                  <button
-                    key={track}
-                    type="button"
-                    aria-pressed={selectedTrack === track}
-                    onClick={() => changeTrack(track)}
-                    className={`${arenaStyles.filterButton} ${selectedTrack === track ? arenaStyles.filterButtonActive : ""}`}
-                  >
-                    {CONTEST_ENTRY_TRACK_LABELS[track]}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className={arenaStyles.controlGroup}>
               <span className={arenaStyles.controlLabel}>Culture</span>
               <div className={arenaStyles.categorySwitch} aria-label="Catégorie de culture">
                 {CONTEST_ENTRY_CATEGORIES.map((category) => {
@@ -3335,15 +3319,31 @@ export function ContestHubClient({
               />
             </div>
           </div>
+          <nav className={arenaStyles.notebookTrackTabs} aria-label="Choisir le carnet de dégustation">
+            {CONTEST_ENTRY_TRACKS.map((track) => (
+              <button
+                key={track}
+                type="button"
+                aria-pressed={selectedTrack === track}
+                onClick={() => changeTrack(track)}
+                className={`${arenaStyles.notebookTrackTab} ${
+                  track === "concours" ? arenaStyles.notebookTrackTabContest : arenaStyles.notebookTrackTabRegular
+                }`}
+              >
+                <span>{CONTEST_ENTRY_TRACK_LABELS[track]}</span>
+              </button>
+            ))}
+          </nav>
           <div className={arenaStyles.notebookStage}>
           {selectedEntry ? (
             <div className="contest-hub-spread-wrap relative">
               <NotebookFlipBook
                 className="contest-hub-flipbook contest-lab-notebook"
                 variant="editorial"
+                tone={selectedTrack === "concours" ? "gold" : "green"}
                 leftPageClassName="contest-lab-page-left"
                 rightPageClassName="contest-lab-page-right"
-                labels={{ previous: "Lot", next: "Onglets", pageLabel: "Pages du carnet concours" }}
+                labels={{ previous: "Lot", next: "Onglets", pageLabel: `Pages du carnet ${CONTEST_ENTRY_TRACK_LABELS[selectedTrack]}` }}
                 activePage={notebookPage}
                 onActivePageChange={changeNotebookPage}
                 coverOpenPage={0}
@@ -3370,6 +3370,7 @@ export function ContestHubClient({
                         </span>
                         <span className="contest-editorial-cover-footer">
                           <span>{selectedEntry.season?.label ?? "Saison active"}</span>
+                          <strong>{CONTEST_ENTRY_TRACK_LABELS[selectedTrack]}</strong>
                         </span>
                       </span>
                     </span>

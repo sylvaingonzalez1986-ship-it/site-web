@@ -40,6 +40,7 @@ type NotebookFlipBookProps = {
   onActivePageChange?: (page: 0 | 1) => void;
   labels?: NotebookFlipBookLabels;
   variant?: "default" | "editorial";
+  tone?: "green" | "gold";
 };
 
 type NotebookPageInnerProps = Omit<HTMLAttributes<HTMLDivElement>, "children">;
@@ -67,6 +68,7 @@ export function NotebookFlipBook({
   onActivePageChange,
   labels,
   variant = "default",
+  tone = "green",
 }: NotebookFlipBookProps) {
   const [internalPage, setInternalPage] = useState<0 | 1>(cover ? coverOpenPage : initialPage);
   const [isCoverOpen, setIsCoverOpen] = useState(!cover);
@@ -567,6 +569,7 @@ export function NotebookFlipBook({
     "data-has-side-tabs": hasSideTabs ? "true" : "false",
     "data-turning": turnDirection ?? undefined,
     "data-notebook-variant": variant,
+    "data-notebook-tone": tone,
     "aria-label": labels?.pageLabel ?? "Carnet concours",
   };
 
@@ -580,6 +583,7 @@ export function NotebookFlipBook({
       data-has-side-tabs={hasSideTabs ? "true" : "false"}
       data-turning={turnDirection ?? undefined}
       data-notebook-variant={variant}
+      data-notebook-tone={tone}
     >
       {cover ? (
         <button
