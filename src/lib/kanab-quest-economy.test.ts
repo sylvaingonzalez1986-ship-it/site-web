@@ -4,9 +4,9 @@ import { KQ_CARDS } from "@/lib/kanab-quest-game";
 
 describe("Kanab Quest card economy", () => {
   it("explains the opening-hand tradeoff of a larger deck", () => {
-    expect(getKqOpeningHandChance(10, 1)).toBe(100);
-    expect(getKqOpeningHandChance(20, 1)).toBe(50);
-    expect(getKqOpeningHandChance(20, 2)).toBe(76);
+    expect(getKqOpeningHandChance(10, 1)).toBe(50);
+    expect(getKqOpeningHandChance(20, 1)).toBe(25);
+    expect(getKqOpeningHandChance(20, 2)).toBe(45);
     expect(getKqOpeningHandChance(0, 0)).toBe(0);
   });
 

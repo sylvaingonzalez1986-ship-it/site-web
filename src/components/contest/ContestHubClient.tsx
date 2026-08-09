@@ -3296,12 +3296,12 @@ export function ContestHubClient({
         <section hidden={activeArenaView !== "carnet"} id="carnet-arene" className={arenaStyles.notebookPanel} aria-labelledby="arena-notebook-title">
           <div className={arenaStyles.notebookIntro}>
             <div>
-              <p className={arenaStyles.sectionKicker}>Ton outil de dégustation</p>
+              <p className={arenaStyles.sectionKicker}>Carnet de dégustation</p>
               <h2 id="arena-notebook-title" className={arenaStyles.sectionTitle}>
-                Ton carnet. <span>Ton verdict.</span>
+                Note. <span>Collectionne. Joue.</span>
               </h2>
               <p className={arenaStyles.sectionLead}>
-                Retrouve la fiche du lot, tes notes et ta collection dans un seul carnet.
+                Note les fleurs que tu achètes, étoffe ta collection de cartes et joue-les dans le Placard. Chaque fleur Concours te rapporte 5 packs de cartes de plus qu’une fleur Regular.
               </p>
             </div>
             <div className={arenaStyles.notebookCharacter} aria-hidden="true">

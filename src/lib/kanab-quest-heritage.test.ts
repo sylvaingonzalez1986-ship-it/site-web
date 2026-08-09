@@ -15,11 +15,14 @@ describe("Kanab Quest heritage cards", () => {
   });
 
   it("keeps the database catalogue aligned with every stronger power", () => {
-    const migration = fs.readFileSync(path.join(process.cwd(), "supabase/migrations/20260805000200_kq_stronger_heritage_powers.sql"), "utf8");
+    const migrations = [
+      "20260805000200_kq_stronger_heritage_powers.sql",
+      "20260809000100_kq_five_card_hand.sql",
+    ].map((fileName) => fs.readFileSync(path.join(process.cwd(), "supabase/migrations", fileName), "utf8")).join("\n");
     KQ_HERITAGE_CARDS.forEach((card) => {
-      expect(migration).toContain(`'${card.code}'`);
-      expect(migration).toContain(`'${card.effect}'`);
-      expect(migration).toContain(card.description.replaceAll("'", "''"));
+      expect(migrations).toContain(`'${card.code}'`);
+      expect(migrations).toContain(`'${card.effect}'`);
+      expect(migrations).toContain(card.description.replaceAll("'", "''"));
     });
   });
 

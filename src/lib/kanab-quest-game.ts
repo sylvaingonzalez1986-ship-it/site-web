@@ -9,7 +9,8 @@ export type KqSupportEffect = "reroll-neutral" | "pbi-success" | "pbi-strong-suc
 export type KqSituationTag = "roots" | "water" | "climate" | "pest" | "flower" | "harvest" | "drying";
 export type KqPest = "aphids" | "mites" | "thrips";
 export type KqBuddieEffect = "opening-four-dice" | "flower-neutral-success" | "climate-danger-shield";
-export const KQ_HAND_SIZE = 10;
+export const KQ_HAND_SIZE = 5;
+export const KQ_HERITAGE_RESERVE_SIZE = 3;
 const KQ_EFFECT_NOTICE_LIMIT = 12;
 
 function appendKqEffectNotice(notices: string[] | undefined, notice: string) {
@@ -313,7 +314,7 @@ export function startKqGame(
     preparationPlayed: false, reactionPlayed: false, revealedPest: null, playedThisStage: [substrate.code], usedCards: [substrate.code],
     traits: [], combos: [], lastOutcome: null, history: [],
   };
-  const openingDraw = drawKqAvailableHandCodes(initialState, heritage?.effect === "opening-draw-thirteen" ? 13 : KQ_HAND_SIZE);
+  const openingDraw = drawKqAvailableHandCodes(initialState, heritage?.effect === "opening-hand-reserve" ? KQ_HAND_SIZE + KQ_HERITAGE_RESERVE_SIZE : KQ_HAND_SIZE);
   return {
     ...initialState,
     handCodes: openingDraw.slice(0, KQ_HAND_SIZE),
@@ -392,7 +393,7 @@ export function swapKqHeritageHandCard(state: KqGameState, handIndex: number, re
   const hand = getKqHandCodes(state);
   const reserve = state.heritageReserveCodes ?? [];
   if (
-    heritage?.effect !== "opening-draw-thirteen"
+    heritage?.effect !== "opening-hand-reserve"
     || state.stageIndex !== 0
     || state.phase !== "prepare"
     || state.heritageUsed
@@ -411,7 +412,7 @@ export function swapKqHeritageHandCard(state: KqGameState, handIndex: number, re
     ...state,
     handCodes: nextHand,
     heritageReserveCodes: nextReserve,
-    effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} : échange effectué, la main reste à 10 cartes.`),
+    effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} : échange effectué, la main reste à ${KQ_HAND_SIZE} cartes.`),
   };
 }
 
@@ -577,7 +578,7 @@ export function rollKqDice(state: KqGameState): KqGameState {
   const cancelledDangers = (playedEffects.includes("cancel-danger") ? 1 : 0)
     + (getKqBuddieEffect(state.varietyCode) === "climate-danger-shield" && situation.tags.includes("climate") ? 1 : 0);
   const heritage = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode);
-  const openingHandConsumed = !state.heritageUsed && heritage?.effect === "opening-draw-thirteen" && state.stageIndex === 0;
+  const openingHandConsumed = !state.heritageUsed && heritage?.effect === "opening-hand-reserve" && state.stageIndex === 0;
   const rootSpark = !state.heritageUsed
     && heritage?.effect === "root-danger-to-spark"
     && KQ_STAGES[state.stageIndex] === "Enracinement"

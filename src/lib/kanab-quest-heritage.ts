@@ -7,7 +7,7 @@ export type KqHeritageCard = {
   effect:
     | "root-danger-to-spark"
     | "starting-xp-two"
-    | "opening-draw-thirteen"
+    | "opening-hand-reserve"
     | "climate-danger-to-spark"
     | "two-extra-redraws"
     | "failure-to-fragile"
@@ -23,7 +23,7 @@ export type KqHeritageCard = {
 export const KQ_HERITAGE_CARDS: readonly KqHeritageCard[] = [
   { code: "HERITAGE-001", name: "Racines solides", timing: "once-per-run", effect: "root-danger-to-spark", description: "Le premier Danger en Enracinement devient une Étincelle." },
   { code: "HERITAGE-002", name: "Réserve du jardinier", timing: "passive", effect: "starting-xp-two", description: "Commence chaque culture avec 2 XP supplémentaires." },
-  { code: "HERITAGE-003", name: "Main prévoyante", timing: "once-per-run", effect: "opening-draw-thirteen", description: "À la première étape, pioche 13 cartes et conserve une main de 10." },
+  { code: "HERITAGE-003", name: "Main prévoyante", timing: "once-per-run", effect: "opening-hand-reserve", description: "À la première étape, pioche 8 cartes et compose une main de 5." },
   { code: "HERITAGE-004", name: "Climat stable", timing: "once-per-run", effect: "climate-danger-to-spark", description: "Le premier Danger d’une situation Climat devient une Étincelle." },
   { code: "HERITAGE-005", name: "Second regard", timing: "passive", effect: "two-extra-redraws", description: "Accorde deux changements de main supplémentaires par culture." },
   { code: "HERITAGE-006", name: "Reprise vigoureuse", timing: "once-per-run", effect: "failure-to-fragile", description: "Le premier échec de la culture devient un résultat Fragile." },

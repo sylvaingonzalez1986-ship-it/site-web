@@ -222,9 +222,9 @@ export function KanabQuestDicePrototype({
   const [selectedBuddie, setSelectedBuddie] = useState(KQ_BUDDIES[0].code);
   const [selectedSubstrate, setSelectedSubstrate] = useState("BOTTE-001");
   const [selectedCards, setSelectedCards] = useState<string[]>(["BOTTE-003", "BOTTE-004", "BOTTE-005", "BOTTE-006"]);
-  const [selectedCultureTokens, setSelectedCultureTokens] = useState(0);
   const [selectedHeritage, setSelectedHeritage] = useState("");
   const [heritageSwapOutIndex, setHeritageSwapOutIndex] = useState<number | null>(null);
+  const [heritageExchangeTab, setHeritageExchangeTab] = useState<"hand" | "reserve">("hand");
   const [rankProfile, setRankProfile] = useState<KqRankProfile>(() => createKqRankProfile());
   const [selectedRivalId, setSelectedRivalId] = useState("rival-maya");
   const [pendingBurnCode, setPendingBurnCode] = useState<string | null>(null);
@@ -630,6 +630,7 @@ export function KanabQuestDicePrototype({
       const nextState = swapKqHeritageHandCard(state, heritageSwapOutIndex, reserveIndex);
       setState(nextState);
       setHeritageSwapOutIndex(null);
+      setHeritageExchangeTab("hand");
       await repositoryRef.current?.saveGame(nextState);
       return;
     }
@@ -639,6 +640,7 @@ export function KanabQuestDicePrototype({
       const result = await swapKqRemoteHeritageCard(remoteRunId, heritageSwapOutIndex, reserveIndex, remoteRequest);
       setState(result.state);
       setHeritageSwapOutIndex(null);
+      setHeritageExchangeTab("hand");
       setRemoteNotice("Échange Main prévoyante confirmé par le serveur.");
     } catch (error) {
       setRemoteNotice(error instanceof Error ? error.message : "Échange impossible.");
@@ -894,7 +896,7 @@ export function KanabQuestDicePrototype({
         const result = await startKqRemoteRun({
           buddieCode: selectedBuddie,
           deckCodes: [selectedSubstrate, ...selectedCards],
-          cultureTokens: selectedCultureTokens,
+          cultureTokens: 0,
           heritageCode: selectedHeritage || undefined,
         }, remoteRequest);
         const nextInventory = result.freeSubstrate
@@ -905,7 +907,6 @@ export function KanabQuestDicePrototype({
         remoteInventoryRef.current = nextInventory;
         setRemoteInventory(nextInventory);
         setRemoteCollection((current) => ({ ...current, cultureTokenBalance: result.cultureTokenBalance }));
-        setSelectedCultureTokens(0);
         if (result.burnReceipt) {
           const receipt = toLocalReceipt(result.burnReceipt, result.state.seed);
           setBurnHistory((history) => [receipt, ...history.filter((entry) => entry.id !== receipt.id)].slice(0, 100));
@@ -1194,7 +1195,6 @@ export function KanabQuestDicePrototype({
           <div className={styles.deckFilters} aria-label="Filtrer les cartes La Botte">{([['all', 'Toutes'], ['equipment', 'Équipement'], ['know-how', 'Savoir-faire'], ['luck', 'Chance']] as const).map(([value, label]) => <button key={value} type="button" data-selected={deckFilter === value || undefined} aria-pressed={deckFilter === value} onClick={() => setDeckFilter(value)}>{label}</button>)}</div>
           <div className={styles.deckChoices}>{supportCards.map((card) => { const challengeFit = getKqCardChallengeFit(card, rewardableDailyChallenges.map((challenge) => challenge.code)); const selectedCopies = selectedCards.filter((code) => code === card.code).length; const ownedCopies = activeInventory[card.code] ?? 0; const drawChance = getKqOpeningHandChance(selectedCards.length, selectedCopies); return <article key={card.code} className={styles.deckChoiceCard} data-selected={selectedCopies > 0 || undefined} data-empty={ownedCopies <= 0 || undefined} data-challenge-fit={challengeFit || undefined}><CardArtwork code={card.code} name={card.name} /><span>{CATEGORY_LABELS[card.category]}</span>{challengeFit ? <i className={styles.challengeFit}><Star /> Aide défi</i> : null}<strong>{card.name}</strong><p>{card.description}</p><em>{ownedCopies} copie(s) · {card.xpCost} XP</em>{selectedCopies > 0 ? <small className={styles.drawChance}>{drawChance}% dans la première main</small> : null}<div><button type="button" aria-label={`Retirer une copie de ${card.name}`} disabled={selectedCopies <= 0} onClick={() => removeCardCopy(card.code)}>−</button><b>{selectedCopies} / {ownedCopies}</b><button type="button" aria-label={`Ajouter une copie de ${card.name}`} disabled={selectedCopies >= ownedCopies} onClick={() => addCardCopy(card.code)}>+</button></div></article>; })}</div>
           <div className={styles.pbiReserve}><span>Réserve PBI de l’album · automatique</span><div>{pbiReserve.map((card) => <strong key={card.code} data-empty={(activeInventory[card.code] ?? 0) <= 0 || undefined}>{card.name} <small>×{activeInventory[card.code] ?? 0}</small></strong>)}</div><p>Ces cartes ne prennent aucune place dans le deck. Elles apparaissent seulement après identification d’un ravageur. Une référence à zéro ne peut plus intervenir.</p></div>
-          {remoteBurnsEnabled ? <div className={styles.cultureTokenPicker}><span>Jetons Coup de pouce{isPlayerMode ? "" : " · portefeuille test"}</span><strong>{remoteCollection.cultureTokenBalance} disponible{remoteCollection.cultureTokenBalance > 1 ? "s" : ""}</strong><p>Chaque jeton consommé donne +1 XP au départ. Maximum 2 par culture.</p><div>{[0, 1, 2].map((count) => <button key={count} type="button" disabled={count > remoteCollection.cultureTokenBalance} data-selected={selectedCultureTokens === count || undefined} aria-pressed={selectedCultureTokens === count} onClick={() => setSelectedCultureTokens(count)}>{count === 0 ? "Sans jeton" : `${count} jeton${count > 1 ? "s" : ""} · ${1 + count} XP`}</button>)}</div></div> : null}
           <div className={styles.setupFooter}><span>{hasOwnedSubstrate ? "🔥 Le Substrat choisi brûle au départ. Ensuite, seules les cartes réellement jouées brûlent." : "✓ Substrat standard gratuit. Les cartes La Botte sont entièrement facultatives."}</span><button type="button" className={styles.primaryButton} disabled={(hasOwnedSubstrate && (activeInventory[selectedSubstrate] ?? 0) <= 0) || (isPlayerMode && !ownedBuddieCodes.includes(selectedBuddie)) || remoteAction !== null} onClick={() => setPendingStart(true)}>Commencer avec {selectedCards.length === 0 ? "aucune carte" : `${selectedCards.length} carte${selectedCards.length > 1 ? "s" : ""}`}</button></div>
           {remoteBurnsEnabled ? <section id="placard-reserve" className={styles.officialFlowerReserve}><header><span>Réserve officielle</span><h2>Mes Fleurs d’Arène</h2><p>{officialFlowers.length} Fleur{officialFlowers.length > 1 ? "s" : ""} officielle{officialFlowers.length > 1 ? "s" : ""} enregistrée{officialFlowers.length > 1 ? "s" : ""}.</p></header>{officialFlowers.length > 0 ? <div>{officialFlowers.map((flower) => <article key={flower.id} data-status={flower.status} data-selected={matchFlowerId === flower.id || undefined}><span>{flower.status === "available" ? "Disponible" : flower.status === "locked" ? "En duel" : "Brûlée"}</span><strong>{flower.varietyName}</strong><small>Qualité {flower.quality} · {flower.id.slice(0, 8)}</small><div>{Object.entries(flower.stats).map(([stat, value]) => <b key={stat}><small>{FLOWER_STAT_LABELS[stat as keyof typeof FLOWER_STAT_LABELS] ?? stat}</small>{value}</b>)}</div>{flower.status === "available" ? <button type="button" disabled={matchmakingLoading} onClick={() => void findOfficialRivals(flower.id)}><Swords /> Chercher un adversaire</button> : null}</article>)}</div> : <p className={styles.emptyFlowerReserve}>Termine une culture officielle pour créer ta première Fleur officielle.</p>}{matchFlowerId && flowerRivals.length > 0 ? <div className={styles.remoteRivals}><span>{flowerRivals[0]?.opponentType === "bot" ? `Entraînement bots · ${flowerRivals[0].remainingBotDuels ?? 0}/10 restants · +0,1 EXP` : "Adversaires compatibles · ±8 qualité"}</span>{flowerRivals.map((rival) => <button key={rival.flowerId} type="button" data-selected={selectedRemoteRivalId === rival.flowerId || undefined} onClick={() => setSelectedRemoteRivalId(rival.flowerId)}><strong>{rival.opponentType === "bot" ? `🤖 ${rival.opponentName}` : rival.varietyName}</strong><small>{rival.varietyName} · Qualité {rival.quality}{rival.opponentType === "bot" ? " · 0,1 EXP" : ""}</small></button>)}<button type="button" className={styles.remoteBattleButton} disabled={!selectedRemoteRivalId || matchmakingLoading} onClick={() => setPendingRemoteBattle(true)}><Swords /> {flowerRivals.find((rival) => rival.flowerId === selectedRemoteRivalId)?.opponentType === "bot" ? "Affronter ce bot" : "Préparer ce duel"}</button></div> : null}</section> : null}
           {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}><span>Jury officiel</span><h2>Mes duels officiels</h2>{officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}{officialBattles.map((officialBattle) => <article key={officialBattle.id} data-status={officialBattle.status} data-opponent={officialBattle.opponentType}><header><div><strong>{officialBattle.playerFlower.variety}</strong><small>Ta Fleur</small></div><b>VS</b><div><strong>{officialBattle.opponentFlower.variety}</strong><small>{officialBattle.opponentType === "bot" ? "🤖 Entraînement" : "Adversaire"}</small></div></header>{officialBattle.status === "locked" ? <><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(officialBattle.id)}><Trophy /> Demander le verdict</button></> : officialBattle.status === "cancelled" ? <><h3>Duel expiré</h3><p>Aucun verdict, aucun burn et aucun point. Les deux Fleurs sont redevenues disponibles.</p><small>Engagement annulé après 48 heures · {formatKqDate(officialBattle.lockedAt)}</small></> : <><h3>{officialBattle.winner === "player" ? "Victoire" : "Défaite"}{officialBattle.opponentType === "bot" ? " d’entraînement" : " officielle"}</h3><div className={styles.officialRounds}>{officialBattle.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div><small>{officialBattle.opponentType === "bot" ? `Ta Fleur brûlée · +${Number(officialBattle.experienceAwarded ?? 0.1).toLocaleString("fr-FR")} EXP d’Arène` : "Deux Fleurs brûlées · +1 EXP d’Arène"} · {formatKqDate(officialBattle.verdictAt)}</small></>}</article>)}</section> : null}
@@ -1347,6 +1347,25 @@ export function KanabQuestDicePrototype({
         {KQ_STAGES.map((stage, index) => <span key={stage} data-current={index === state.stageIndex || undefined} data-done={index < state.stageIndex || undefined} aria-current={index === state.stageIndex ? "step" : undefined}><b>{index + 1}</b><small>{stage}</small></span>)}
       </nav>
 
+      {activeHeritage ? (
+        <aside className={styles.heritageInPlay} data-used={state.heritageUsed || undefined} data-armed={state.heritageArmed || undefined} aria-label={`Héritage équipé : ${activeHeritage.name}`}>
+          <CardArtwork code={activeHeritage.code} name={activeHeritage.name} />
+          <div>
+            <span>Héritage équipé · ne brûle pas</span>
+            <strong>{activeHeritage.name}</strong>
+            <p>{activeHeritage.description}</p>
+          </div>
+          <footer>
+            <small>{activeHeritage.timing === "passive" ? "Passif actif" : state.heritageUsed ? "Pouvoir utilisé" : state.heritageArmed ? "Pouvoir armé" : heritagePermission.allowed ? "Pouvoir disponible" : "Déclenchement automatique"}</small>
+            {activeHeritage.timing === "once-per-run" ? (
+              <button type="button" disabled={!heritagePermission.allowed || remoteAction !== null} onClick={() => void applyGameAction("heritage")}>
+                {state.heritageUsed ? "Déjà utilisé" : state.heritageArmed ? "Pouvoir armé" : heritagePermission.allowed ? remoteAction === "game" ? "Activation…" : "Activer le pouvoir" : heritagePermission.reason}
+              </button>
+            ) : <b>Actif pendant toute la culture</b>}
+          </footer>
+        </aside>
+      ) : null}
+
       <nav className={styles.mobilePlayTabs} aria-label="Sections de la partie">
         <button type="button" data-active={mobilePlayTab === "culture" || undefined} aria-pressed={mobilePlayTab === "culture"} onClick={() => setMobilePlayTab("culture")}><Sparkles /><span>Culture</span><small>{state.stageIndex + 1}/6</small></button>
         <button type="button" data-active={mobilePlayTab === "dice" || undefined} aria-pressed={mobilePlayTab === "dice"} onClick={() => setMobilePlayTab("dice")}><Dices /><span>Dés</span><small>{state.phase === "prepare" ? "À lancer" : state.phase === "rolled" ? "À valider" : "Résolu"}</small></button>
@@ -1415,10 +1434,21 @@ export function KanabQuestDicePrototype({
         <header><div><span>Album Kanab Quest</span><h2>Ta main · La Botte</h2></div><p>{handCodes.length} copie{handCodes.length > 1 ? "s" : ""} distribuée{handCodes.length > 1 ? "s" : ""} · {Math.max(0, supportDeckSize - burnedSupportCount)} copie{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""} non brûlée{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""}. Les doublons occupent plusieurs places dans la main.</p></header>
         <div className={styles.cardColorLegend} aria-label="Code couleur des cartes"><span data-category="equipment">Équipement</span><span data-category="know-how">Savoir-faire</span><span data-category="luck">Chance</span><span data-category="pbi">Auxiliaire PBI</span></div>
         <div className={styles.handActions}><span>{(state.handRedrawsUsed ?? 0) < redrawLimit ? `${redrawLimit - (state.handRedrawsUsed ?? 0)} changement${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""} de main disponible${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""}.` : "Changement de main déjà utilisé pour cette culture."}</span><button type="button" disabled={!canRedrawHand || remoteAction !== null} onClick={() => void applyGameAction("redraw")}><RotateCcw /> Changer ma main</button></div>
-        {(state.heritageReserveCodes?.length ?? 0) > 0 ? <section className={styles.heritageHandExchange}><header><Sparkles /><span><strong>Main prévoyante · 13 cartes vues</strong><small>Choisis une carte de ta main, puis une carte de réserve à faire entrer. Tu peux recommencer avant le lancer.</small></span></header><div><div><b>Ta main · 10</b>{handCodes.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={remoteAction !== null} data-selected={heritageSwapOutIndex === index || undefined} onClick={() => setHeritageSwapOutIndex(index)}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</button>)}</div><div><b>Réserve · 3</b>{state.heritageReserveCodes?.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={heritageSwapOutIndex === null || remoteAction !== null} onClick={() => void swapHeritageCard(index)}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}<small>{remoteAction === "game" ? "Confirmation…" : heritageSwapOutIndex === null ? "Choisis d’abord une carte à sortir" : "Faire entrer"}</small></button>)}</div></div></section> : null}
+        {(state.heritageReserveCodes?.length ?? 0) > 0 ? (
+          <section className={styles.heritageHandExchange}>
+            <header><Sparkles /><span><strong>Main prévoyante · 8 cartes vues</strong><small>Choisis une carte de ta main, puis une carte de réserve à faire entrer. Tu peux recommencer avant le lancer.</small></span></header>
+            <nav className={styles.heritageExchangeTabs} aria-label="Main prévoyante">
+              <button type="button" data-active={heritageExchangeTab === "hand" || undefined} aria-pressed={heritageExchangeTab === "hand"} onClick={() => setHeritageExchangeTab("hand")}>Ma main <small>{handCodes.length} cartes</small></button>
+              <button type="button" data-active={heritageExchangeTab === "reserve" || undefined} aria-pressed={heritageExchangeTab === "reserve"} onClick={() => setHeritageExchangeTab("reserve")}>Ma réserve <small>{state.heritageReserveCodes?.length ?? 0} cartes</small></button>
+            </nav>
+            <div className={styles.heritageExchangePanels}>
+              <div data-active={heritageExchangeTab === "hand" || undefined}><b>Choisis la carte à sortir</b>{handCodes.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={remoteAction !== null} data-selected={heritageSwapOutIndex === index || undefined} onClick={() => { setHeritageSwapOutIndex(index); setHeritageExchangeTab("reserve"); }}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</button>)}</div>
+              <div data-active={heritageExchangeTab === "reserve" || undefined}><b>Choisis la carte à faire entrer</b>{state.heritageReserveCodes?.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={heritageSwapOutIndex === null || remoteAction !== null} onClick={() => void swapHeritageCard(index)}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}<small>{remoteAction === "game" ? "Confirmation…" : heritageSwapOutIndex === null ? "Choisis d’abord une carte à sortir" : "Faire entrer"}</small></button>)}</div>
+            </div>
+          </section>
+        ) : null}
         {state.revealedPest ? <div className={styles.pestReveal}><strong>🔎 {PEST_LABELS[state.revealedPest]} révélés</strong><span>{availableCards.filter((card) => card.category === "pbi").length} auxiliaire(s) compatible(s) de ta collection affiché(s).</span></div> : situation.pest ? <div className={styles.pestHidden}><strong>Ravageur inconnu</strong><span>Joue la Loupe d’inspection avant les dés pour ouvrir la réserve PBI.</span></div> : null}
         <div className={styles.substrate}><Sparkles /><span><small>Substrat actif</small><strong>{activeSubstrate.name}</strong><em>{activeSubstrate.description}</em></span></div>
-        {activeHeritage ? <div className={styles.activeHeritage} data-used={state.heritageUsed || undefined}><Sparkles /><span><small>Héritage permanent · ne brûle pas</small><strong>{activeHeritage.name}</strong><em>{activeHeritage.description}</em></span>{activeHeritage.timing === "once-per-run" ? <button type="button" disabled={!heritagePermission.allowed || remoteAction !== null} onClick={() => void applyGameAction("heritage")}>{state.heritageUsed ? "Déjà utilisé" : state.heritageArmed ? "Pouvoir armé" : heritagePermission.allowed ? remoteAction === "game" ? "Activation…" : "Activer" : heritagePermission.reason}</button> : <b>Passif</b>}</div> : null}
         <div className={styles.cardRow}>{availableCards.map((card) => { const usedCopies = state.usedCards.filter((code) => code === card.code).length; const deckCopies = card.category === "pbi" ? 0 : Math.max(0, state.deckCodes.filter((code) => code === card.code).length - usedCopies); return <SupportCard key={card.code} card={card} state={state} copies={activeInventory[card.code] ?? 0} handCopies={card.category === "pbi" ? 0 : handCodes.filter((code) => code === card.code).length} deckCopies={deckCopies} serverValidatedCopy={remoteBurnsEnabled && card.category !== "pbi" && deckCopies > 0} onPlay={setPendingBurnCode} />; })}</div>
         <div className={styles.ashes}><Flame /><span><small>Cendres de cette culture · {state.usedCards.length} copie{state.usedCards.length === 1 ? "" : "s"} brûlée{state.usedCards.length === 1 ? "" : "s"}</small><div>{state.usedCards.map((code, index) => <b key={`${code}-${index}`}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</b>)}</div></span></div>
       </section>

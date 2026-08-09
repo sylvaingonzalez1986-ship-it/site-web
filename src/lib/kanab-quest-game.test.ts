@@ -66,9 +66,9 @@ describe("Kanab Quest dice prototype", () => {
     expect(canPlayKqCard({ ...state, preparationPlayed: false }, KQ_CARDS.find((card) => card.code === "BOTTE-017")!).allowed).toBe(false);
   });
 
-  it("draws a deterministic ten-card hand from an unlimited deck", () => {
+  it("draws a deterministic five-card hand from an unlimited deck", () => {
     const state = startKqGame(77, { deckCodes: ["BOTTE-001", "BOTTE-003", "BOTTE-004", "BOTTE-005", "BOTTE-006", "BOTTE-013", "BOTTE-014", "BOTTE-015", "BOTTE-016", "BOTTE-017", "BOTTE-018", "BOTTE-024"] });
-    expect(getKqHandCodes(state)).toHaveLength(10);
+    expect(getKqHandCodes(state)).toHaveLength(5);
     expect(getKqHandCodes(state)).toEqual(getKqHandCodes(state));
     expect(getKqVisibleActionCards(state).map((card) => card.code).sort()).toEqual([...new Set(getKqHandCodes(state))].sort());
   });
@@ -429,9 +429,9 @@ describe("Kanab Quest dice prototype", () => {
   });
 
   it("lets Main prévoyante exchange three reserve cards without burning them", () => {
-    const supportCodes = KQ_CARDS.filter((card) => card.category !== "substrate" && card.category !== "pbi").slice(0, 13).map((card) => card.code);
+    const supportCodes = KQ_CARDS.filter((card) => card.category !== "substrate" && card.category !== "pbi").slice(0, 8).map((card) => card.code);
     const started = startKqGame(44, { heritageCode: "HERITAGE-003", deckCodes: ["BOTTE-001", ...supportCodes] });
-    expect(started.handCodes).toHaveLength(10);
+    expect(started.handCodes).toHaveLength(5);
     expect(started.heritageReserveCodes).toHaveLength(3);
     const outgoing = started.handCodes![0];
     const incoming = started.heritageReserveCodes![0];

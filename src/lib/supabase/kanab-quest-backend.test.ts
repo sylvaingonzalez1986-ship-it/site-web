@@ -220,7 +220,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   it("validates Main prévoyante exchanges on the trusted server engine", () => {
     const supportCodes = KQ_CARDS
       .filter((card) => card.category !== "substrate" && card.category !== "pbi")
-      .slice(0, 12)
+      .slice(0, 8)
       .map((card) => card.code);
     const state = startKqGame(44, {
       heritageCode: "HERITAGE-003",

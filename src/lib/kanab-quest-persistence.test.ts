@@ -23,14 +23,14 @@ describe("Kanab Quest persistence and integrity", () => {
   it("keeps repeated Main prévoyante exchanges reloadable", () => {
     const supportCodes = KQ_CARDS
       .filter((card) => card.category !== "substrate" && card.category !== "pbi")
-      .slice(0, 12)
+      .slice(0, 8)
       .map((card) => card.code);
     let state = startKqGame(44, {
       heritageCode: "HERITAGE-003",
       deckCodes: ["BOTTE-001", ...supportCodes],
     });
     for (let index = 0; index < 20; index += 1) {
-      state = swapKqHeritageHandCard(state, index % 10, index % 2);
+      state = swapKqHeritageHandCard(state, index % 5, index % 2);
     }
     expect(state.effectNotices).toHaveLength(12);
     expect(parseKqGameSave(encodeKqSave(state))).toEqual(state);
@@ -58,6 +58,11 @@ describe("Kanab Quest persistence and integrity", () => {
 
   it("rejects an oversized persisted hand", () => {
     expect(parseKqGameSave(encodeKqSave({ ...startKqGame(1), handCodes: Array.from({ length: 11 }, () => "BOTTE-003") }))).toBeNull();
+  });
+
+  it("reduces a legacy ten-card hand to the current five-card limit", () => {
+    const legacyHand = Array.from({ length: 10 }, () => "BOTTE-003");
+    expect(parseKqGameSave(encodeKqSave({ ...startKqGame(1), handCodes: legacyHand }))?.handCodes).toHaveLength(5);
   });
 
   it("rejects more than one persisted mulligan", () => {

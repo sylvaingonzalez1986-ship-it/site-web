@@ -1,9 +1,10 @@
-import { getKqHandCodes, KQ_CARDS, KQ_HAND_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState } from "@/lib/kanab-quest-game";
+import { getKqHandCodes, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState } from "@/lib/kanab-quest-game";
 import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
 import type { KqBattle } from "@/lib/kanab-quest-battle";
 import type { KqRankProfile } from "@/lib/kanab-quest-ranking";
 
 type SaveEnvelope<T> = { version: 1; payload: T };
+const KQ_LEGACY_HAND_SIZE = 10;
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === "object" && value !== null;
 const isFiniteNumber = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value);
@@ -28,8 +29,8 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (state.startedAt !== undefined && (typeof state.startedAt !== "string" || Number.isNaN(Date.parse(state.startedAt)))) return null;
     if (state.completedAt !== undefined && (typeof state.completedAt !== "string" || Number.isNaN(Date.parse(state.completedAt)))) return null;
     if (!Array.isArray(state.deckCodes) || state.deckCodes.some((code) => typeof code !== "string" || !knownCards.has(code))) return null;
-    if (state.handCodes !== undefined && (!Array.isArray(state.handCodes) || state.handCodes.length > KQ_HAND_SIZE || state.handCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
-    if (state.heritageReserveCodes !== undefined && (!Array.isArray(state.heritageReserveCodes) || state.heritageReserveCodes.length > 3 || state.heritageReserveCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
+    if (state.handCodes !== undefined && (!Array.isArray(state.handCodes) || state.handCodes.length > KQ_LEGACY_HAND_SIZE || state.handCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
+    if (state.heritageReserveCodes !== undefined && (!Array.isArray(state.heritageReserveCodes) || state.heritageReserveCodes.length > KQ_HERITAGE_RESERVE_SIZE || state.heritageReserveCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
     const heritageAllowsThreeRedraws = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode)?.effect === "two-extra-redraws";
     const persistedRedrawLimit = heritageAllowsThreeRedraws ? 3 : 1;
     if (state.handRedrawsUsed !== undefined && (!Number.isInteger(state.handRedrawsUsed) || Number(state.handRedrawsUsed) < 0 || Number(state.handRedrawsUsed) > persistedRedrawLimit)) return null;
@@ -55,7 +56,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     })) return null;
     if (state.heritageReserveCodes !== undefined) {
       const heritage = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode);
-      if (heritage?.effect !== "opening-draw-thirteen" || state.stageIndex !== 0 || state.heritageUsed === true) return null;
+      if (heritage?.effect !== "opening-hand-reserve" || state.stageIndex !== 0 || state.heritageUsed === true) return null;
       if (state.heritageReserveCodes.some((code) => {
         const card = KQ_CARDS.find((item) => item.code === code);
         return !card || card.category === "substrate" || card.category === "pbi" || (deckCounts[code] ?? 0) <= 0;
@@ -66,7 +67,12 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (state.effectNotices !== undefined && (!Array.isArray(state.effectNotices) || state.effectNotices.length > 12 || state.effectNotices.some((notice) => typeof notice !== "string" || notice.length > 240))) return null;
     if (!isFiniteNumber(state.pressure) || state.pressure < 0 || state.pressure > 4 || !isFiniteNumber(state.cancelledDangers) || state.cancelledDangers < 0) return null;
     if (typeof state.preparationPlayed !== "boolean" || typeof state.reactionPlayed !== "boolean") return null;
-    return state as unknown as KqGameState;
+    return {
+      ...state,
+      ...(Array.isArray(state.handCodes) && state.handCodes.length > KQ_HAND_SIZE
+        ? { handCodes: state.handCodes.slice(0, KQ_HAND_SIZE) }
+        : {}),
+    } as unknown as KqGameState;
   } catch {
     return null;
   }
