@@ -2246,18 +2246,12 @@ function ContestTesterLeaderboard({
   globalItems,
   profileSeasonCode,
   profileTrack,
-  onMascotClick,
-  onMascotHover,
-  onMascotLeave,
   compact = false,
 }: {
   seasonItems: PublicContestTesterRankingItem[];
   globalItems: PublicContestTesterRankingItem[];
   profileSeasonCode?: string;
   profileTrack: ContestEntryTrack;
-  onMascotClick?: () => void;
-  onMascotHover?: () => void;
-  onMascotLeave?: () => void;
   compact?: boolean;
 }) {
   const [scope, setScope] = useState<"season" | "global">("season");
@@ -2270,6 +2264,7 @@ function ContestTesterLeaderboard({
   const [placardEntries, setPlacardEntries] = useState<PlacardRankingEntry[]>([]);
   const [placardRankingLoaded, setPlacardRankingLoaded] = useState(false);
   const [placardRankingUnavailable, setPlacardRankingUnavailable] = useState(false);
+  const rankingWindowRef = useRef<HTMLDivElement | null>(null);
   const items = remoteTastingItems[scope];
   const isPlacardRanking = rankingType === "placard";
   const isGeneralRanking = rankingType === "general";
@@ -2334,25 +2329,64 @@ function ContestTesterLeaderboard({
     };
   }, [isPlacardRanking, placardRankingLoaded]);
 
+  const limit = compact ? 5 : 10;
+  const rankingRows = isGeneralRanking
+    ? arenaEntries.slice(0, limit).map((item) => ({
+        key: `arena-${item.rank}-${item.pseudo}`,
+        rank: item.rank,
+        pseudo: item.pseudo,
+        detail: `Carnet ${item.notebookScore} · Placard ${item.placardScore}`,
+        score: String(item.score),
+        scoreLabel: "pts Arène",
+        href: "",
+      }))
+    : isPlacardRanking
+      ? placardEntries.slice(0, limit).map((item) => ({
+          key: `placard-${item.rank}-${item.pseudo}`,
+          rank: item.rank,
+          pseudo: item.pseudo,
+          detail: `${item.wins} V · ${item.losses} D · série ${item.streak}`,
+          score: String(item.rating),
+          scoreLabel: `${item.seasonPoints} pts`,
+          href: "",
+        }))
+      : items.slice(0, limit).map((item) => {
+          const profileParams = new URLSearchParams();
+          if (scope === "season" && profileSeasonCode) profileParams.set("season", profileSeasonCode);
+          if (profileTrack !== "regular") profileParams.set("track", profileTrack);
+          const query = profileParams.toString();
+          return {
+            key: `${scope}-${item.pseudo}-${item.rank}`,
+            rank: item.rank,
+            pseudo: item.pseudo,
+            detail: `${item.level.label} · ${item.approvedReviewCount} critique${item.approvedReviewCount > 1 ? "s" : ""}`,
+            score: String(item.totalPoints),
+            scoreLabel: "points",
+            href: `/arene/profils/${encodeURIComponent(item.pseudo)}${query ? `?${query}` : ""}`,
+          };
+        });
+  const rankingLoading = isGeneralRanking
+    ? !arenaRankingLoaded
+    : isPlacardRanking
+      ? !placardRankingLoaded
+      : !tastingLoaded[scope];
+  const rankingUnavailable = isGeneralRanking ? arenaRankingUnavailable : isPlacardRanking ? placardRankingUnavailable : false;
+  const rankingTitle = isGeneralRanking ? "Classement général" : isPlacardRanking ? "Classement Placard" : "Classement dégustation";
+  const rankingKicker = isGeneralRanking ? "Top Arène" : isPlacardRanking ? "Top cultivateurs" : "Top testeurs";
+  const scrollRanking = (direction: -1 | 1) => {
+    rankingWindowRef.current?.scrollBy({ top: direction * 168, behavior: "smooth" });
+  };
+
   return (
-    <div className="cartoon-border bg-cream p-4 md:p-6">
-      <div className={compact ? "grid gap-3" : "contest-leaderboard-illustrated-header"}>
+    <div className={`${arenaStyles.scorePanel} ${arenaStyles.playerLeaderboardPanel}`}>
+      <div className={arenaStyles.playerLeaderboardHeading}>
         <div>
-          <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">{isGeneralRanking ? "Top Arène" : "Top testeurs"}</p>
+          <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">{rankingKicker}</p>
           <h2 className={`font-display leading-none text-ink ${compact ? "text-2xl" : "text-3xl"}`}>
-            {isGeneralRanking ? "Classement général" : isPlacardRanking ? "Classement Placard" : "Classement dégustation"}
+            {rankingTitle}
           </h2>
         </div>
-        {compact ? null : (
-          <ArenaCharacter
-            variant="leaderboard"
-            ariaLabel="Ouvrir le classement testeurs"
-            onClick={onMascotClick}
-            onHoverPreview={onMascotHover}
-            onHoverEnd={onMascotLeave}
-          />
-        )}
-        {isGeneralRanking ? null : <div
+        {rankingType === "tasting" ? <div
           className={`contest-leaderboard-scope-switch rounded border-2 border-[#1a1a1a] bg-white p-1 ${
             compact ? "contest-leaderboard-scope-switch-compact" : ""
           }`}
@@ -2369,7 +2403,7 @@ function ContestTesterLeaderboard({
               {nextScope === "season" ? "Saison" : "Global"}
             </button>
           ))}
-        </div>}
+        </div> : null}
       </div>
 
       <div className={arenaStyles.personalRankingTypeSwitch} aria-label="Type de classement">
@@ -2399,82 +2433,43 @@ function ContestTesterLeaderboard({
         </p>
       ) : null}
 
-      <div className="mt-5 grid gap-2">
-        {isGeneralRanking && !arenaRankingLoaded ? (
-          <div className={arenaStyles.placardRankingEmpty}>
-            <span>Classement général</span><strong>Calcul du score Arène…</strong>
+      <div className={`contest-station-board ${arenaStyles.playerStationBoard}`} aria-label={rankingTitle}>
+        <div className="contest-station-board-toolbar">
+          <strong>{rankingRows.length} joueur{rankingRows.length > 1 ? "s" : ""} classé{rankingRows.length > 1 ? "s" : ""}</strong>
+          <span>Fais défiler le tableau pour parcourir les rangs.</span>
+          <div>
+            <button type="button" onClick={() => scrollRanking(-1)} aria-label="Voir les joueurs précédents"><ChevronUp aria-hidden="true" /></button>
+            <button type="button" onClick={() => scrollRanking(1)} aria-label="Voir les joueurs suivants"><ChevronDown aria-hidden="true" /></button>
           </div>
-        ) : isGeneralRanking && arenaEntries.length > 0 ? (
-          arenaEntries.slice(0, compact ? 5 : 10).map((item) => (
-            <div key={`arena-${item.rank}-${item.pseudo}`} className="grid grid-cols-[48px_minmax(0,1fr)_72px] items-center gap-3 rounded border-2 border-[#1a1a1a] bg-white px-3 py-3 shadow-[2px_2px_0_#1a1a1a]">
-              <span className="rounded-full border-2 border-[#1a1a1a] bg-yellow px-2 py-1 text-center text-sm font-black text-ink">#{item.rank}</span>
-              <span className="min-w-0"><span className="block truncate text-sm font-black text-ink">{item.pseudo}</span><span className="block truncate text-xs font-semibold text-charcoal">Carnet {item.notebookScore} · Placard {item.placardScore}</span></span>
-              <span className="text-right"><strong className="block text-sm font-black text-ink">{item.score}</strong><small className="text-[10px] font-bold uppercase text-charcoal">pts Arène</small></span>
+        </div>
+        <div className={`contest-station-board-header ${arenaStyles.playerStationHeader}`}>
+          <span>Classement joueurs</span>
+          <span>Score</span>
+        </div>
+        <div ref={rankingWindowRef} className="contest-station-board-window" tabIndex={0}>
+          {rankingLoading ? (
+            <div className={`contest-station-empty ${arenaStyles.playerRankingState}`}>Chargement du classement…</div>
+          ) : rankingRows.length > 0 ? (
+            <div className="contest-station-board-track">
+              {rankingRows.map((row) => {
+                const content = <>
+                  <span className="contest-station-rank">{String(row.rank).padStart(2, "0")}</span>
+                  <span className={`contest-station-title ${arenaStyles.playerStationIdentity}`}><strong>{row.pseudo}</strong><small>{row.detail}</small></span>
+                  <span className={`contest-station-score ${arenaStyles.playerStationScore}`}><strong>{row.score}</strong><small>{row.scoreLabel}</small></span>
+                </>;
+                return row.href ? (
+                  <Link key={row.key} href={row.href} className={`contest-station-row ${arenaStyles.playerStationRow}`} aria-label={`Voir le profil de ${row.pseudo}`}>{content}</Link>
+                ) : (
+                  <div key={row.key} className={`contest-station-row ${arenaStyles.playerStationRow}`}>{content}</div>
+                );
+              })}
             </div>
-          ))
-        ) : isGeneralRanking ? (
-          <div className={arenaStyles.placardRankingEmpty}>
-            <span>{arenaRankingUnavailable ? "Classement momentanément indisponible" : "Saison ouverte"}</span><strong>Pas encore de joueur classé</strong><p>Il faut terminer une partie au Placard pour entrer au classement général.</p>
-          </div>
-        ) : isPlacardRanking && !placardRankingLoaded ? (
-          <div className={arenaStyles.placardRankingEmpty}>
-            <span>Classement Placard</span>
-            <strong>Chargement du snapshot quotidien…</strong>
-            <p>Les résultats sont consolidés une fois par jour afin de garder l’Arène rapide.</p>
-          </div>
-        ) : isPlacardRanking && placardEntries.length > 0 ? (
-          placardEntries.slice(0, compact ? 5 : 10).map((item) => (
-            <div key={`placard-${item.rank}-${item.pseudo}`} className="grid grid-cols-[48px_minmax(0,1fr)_72px] items-center gap-3 rounded border-2 border-[#1a1a1a] bg-white px-3 py-3 shadow-[2px_2px_0_#1a1a1a]">
-              <span className="rounded-full border-2 border-[#1a1a1a] bg-yellow px-2 py-1 text-center text-sm font-black text-ink">#{item.rank}</span>
-              <span className="min-w-0">
-                <span className="block truncate text-sm font-black text-ink">{item.pseudo}</span>
-                <span className="block truncate text-xs font-semibold text-charcoal">{item.wins} V · {item.losses} D · série {item.streak}</span>
-              </span>
-              <span className="text-right"><strong className="block text-sm font-black text-ink">{item.rating}</strong><small className="text-[10px] font-bold uppercase text-charcoal">{item.seasonPoints} pts</small></span>
+          ) : (
+            <div className={`contest-station-empty ${arenaStyles.playerRankingState}`}>
+              {rankingUnavailable ? "Classement momentanément indisponible." : isPlacardRanking ? "Pas encore de cultivateur classé." : isGeneralRanking ? "Pas encore de joueur classé." : "Aucun testeur classé pour le moment."}
             </div>
-          ))
-        ) : isPlacardRanking ? (
-          <div className={arenaStyles.placardRankingEmpty}>
-            <span>{placardRankingUnavailable ? "Classement momentanément indisponible" : "Saison Placard ouverte"}</span>
-            <strong>Pas encore de cultivateur classé</strong>
-            <p>Les premières victoires et participations feront apparaître les cultivateurs dans ce classement quotidien.</p>
-          </div>
-        ) : items.length > 0 ? (
-          items.map((item) => {
-            const profileParams = new URLSearchParams();
-            if (scope === "season" && profileSeasonCode) {
-              profileParams.set("season", profileSeasonCode);
-            }
-            if (profileTrack !== "regular") {
-              profileParams.set("track", profileTrack);
-            }
-            const query = profileParams.toString();
-            const profileHref = `/arene/profils/${encodeURIComponent(item.pseudo)}${query ? `?${query}` : ""}`;
-
-            return (
-              <Link
-                key={`${scope}-${item.pseudo}-${item.rank}`}
-                href={profileHref}
-                className="grid grid-cols-[48px_minmax(0,1fr)_72px] items-center gap-3 rounded border-2 border-[#1a1a1a] bg-white px-3 py-3 shadow-[2px_2px_0_#1a1a1a]"
-              >
-                <span className="rounded-full border-2 border-[#1a1a1a] bg-yellow px-2 py-1 text-center text-sm font-black text-ink">
-                  #{item.rank}
-                </span>
-                <span className="min-w-0">
-                  <span className="block truncate text-sm font-black text-ink">{item.pseudo}</span>
-                  <span className="block truncate text-xs font-semibold text-charcoal">
-                    {item.level.label} / {item.approvedReviewCount} critique(s)
-                  </span>
-                </span>
-                <span className="text-right text-sm font-black text-ink">{item.totalPoints} pts</span>
-              </Link>
-            );
-          })
-        ) : (
-          <div className="rounded border-2 border-dashed border-[#1a1a1a] bg-white p-5 text-sm text-charcoal">
-            Aucun testeur classé pour le moment.
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

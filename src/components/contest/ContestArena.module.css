@@ -996,6 +996,93 @@
   background: var(--arena-yellow);
 }
 
+.playerLeaderboardPanel {
+  margin-top: 1rem;
+  background: var(--arena-paper);
+}
+
+.playerLeaderboardHeading {
+  display: flex;
+  min-width: 0;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.playerLeaderboardHeading > div:first-child {
+  min-width: 0;
+}
+
+.playerLeaderboardHeading :global(.contest-leaderboard-scope-switch) {
+  width: min(100%, 280px);
+  flex: 0 1 280px;
+}
+
+.playerStationBoard {
+  margin-top: 1rem;
+}
+
+.playerStationBoard :global(.contest-station-board-header).playerStationHeader {
+  grid-template-columns: minmax(0, 1fr) 92px;
+}
+
+.playerStationBoard :global(.contest-station-row).playerStationRow {
+  min-height: 58px;
+  grid-template-columns: 34px minmax(0, 1fr) 92px;
+  cursor: default;
+  text-decoration: none;
+}
+
+.playerStationBoard a.playerStationRow {
+  cursor: pointer;
+}
+
+.playerStationIdentity,
+.playerStationScore {
+  display: grid;
+  min-width: 0;
+  gap: 0.22rem;
+}
+
+.playerStationIdentity strong,
+.playerStationIdentity small,
+.playerStationScore strong,
+.playerStationScore small {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playerStationIdentity strong,
+.playerStationScore strong {
+  font-size: 0.76rem;
+  line-height: 1;
+}
+
+.playerStationIdentity small,
+.playerStationScore small {
+  color: #cfc4af;
+  font-family: var(--font-body), Arial, sans-serif;
+  font-size: 0.57rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  text-transform: none;
+}
+
+.playerStationScore {
+  text-align: center;
+}
+
+.playerRankingState {
+  display: grid;
+  min-height: 112px;
+  place-items: center;
+  line-height: 1.35;
+}
+
 .rankingModalBackdrop {
   position: fixed;
   inset: 0;
@@ -1811,6 +1898,24 @@
     height: 250px;
     max-height: 48vh;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .playerLeaderboardHeading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .playerLeaderboardHeading :global(.contest-leaderboard-scope-switch) {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .playerStationBoard :global(.contest-station-board-header).playerStationHeader {
+    grid-template-columns: minmax(0, 1fr) 72px;
+  }
+
+  .playerStationBoard :global(.contest-station-row).playerStationRow {
+    grid-template-columns: 30px minmax(0, 1fr) 72px;
   }
 
   .rankingModalBackdrop {
