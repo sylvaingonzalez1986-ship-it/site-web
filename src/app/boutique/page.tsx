@@ -1,6 +1,5 @@
 ﻿import { BoutiquePageClient } from "@/components/boutique/BoutiquePageClient";
 import { dedupeProducts } from "@/lib/product-dedup";
-import { SeoGuideLinks } from "@/components/seo/SeoGuideLinks";
 import { getOwnProducer } from "@/lib/own-producer";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import {
@@ -43,24 +42,17 @@ export default async function BoutiquePage() {
   );
 
   return (
-    <>
-      <BoutiquePageClient
-        boutique={boutique}
-        producers={store.producers}
-        ownProducer={ownProducer}
-        ownProducts={ownProducts}
-        partnerProducts={partnerProducts}
-        voisinProducts={voisinProducts}
-        copainsProducts={copainsProducts}
-        globalAccessoriesProducts={globalAccessoriesProducts}
-        boutiqueSections={boutiqueSections}
-        tastingSummariesByProductId={tastingSummariesByProductId}
-      />
-      <div className="section-band bg-cream py-10">
-        <div className="retro-container">
-          <SeoGuideLinks />
-        </div>
-      </div>
-    </>
+    <BoutiquePageClient
+      boutique={boutique}
+      producers={store.producers}
+      ownProducer={ownProducer}
+      ownProducts={ownProducts}
+      partnerProducts={partnerProducts}
+      voisinProducts={voisinProducts}
+      copainsProducts={copainsProducts}
+      globalAccessoriesProducts={globalAccessoriesProducts}
+      boutiqueSections={boutiqueSections}
+      tastingSummariesByProductId={tastingSummariesByProductId}
+    />
   );
 }

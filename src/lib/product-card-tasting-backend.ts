@@ -6,10 +6,15 @@ import {
   sanitizePublicContestProductTastingSummary,
   type PublicContestProductTastingSummary,
 } from "@/lib/contest-public-api";
+import { isProductTastingStorefrontEnabled } from "@/lib/product-tasting-feature";
 
 export async function getProductCardTastingSummaries(
   productIds: string[],
 ): Promise<Record<string, PublicContestProductTastingSummary>> {
+  if (!isProductTastingStorefrontEnabled()) {
+    return {};
+  }
+
   if (!isContestFeatureEnabledServer() || productIds.length === 0) {
     return {};
   }

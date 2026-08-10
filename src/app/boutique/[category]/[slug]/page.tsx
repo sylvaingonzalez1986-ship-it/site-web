@@ -6,9 +6,9 @@ import { ProductDetailActions } from "@/components/boutique/ProductDetailActions
 import { ProductImageGallery } from "@/components/boutique/ProductImageGallery";
 import { ProductTastingBadge, ProductTastingSection } from "@/components/boutique/ProductTastingSection";
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
-import { SeoGuideLinks } from "@/components/seo/SeoGuideLinks";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getOwnProducer } from "@/lib/own-producer";
+import { isProductTastingStorefrontEnabled } from "@/lib/product-tasting-feature";
 import { getSiteUrl } from "@/lib/site-url";
 import { isRemoteImageUrl } from "@/lib/image-source";
 import { isProductCultureModeEligible, type Product } from "@/data/products";
@@ -94,7 +94,7 @@ async function findProduct(
 async function findProductTastingSummary(
   productId: string,
 ): Promise<PublicContestProductTastingSummary | null> {
-  if (!isContestFeatureEnabledServer()) {
+  if (!isProductTastingStorefrontEnabled() || !isContestFeatureEnabledServer()) {
     return null;
   }
 
@@ -331,8 +331,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             showArenaLink={!isContestBetaAccessRestrictedServer()}
           />
         ) : null}
-
-        <SeoGuideLinks className="mt-8" />
 
         {/* Prev / Next same-category navigation */}
         {totalInCategory > 1 && (

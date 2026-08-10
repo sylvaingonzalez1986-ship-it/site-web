@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CollectionPageJsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
-import { SeoGuideLinks } from "@/components/seo/SeoGuideLinks";
 import { type ProductCategory } from "@/data/products";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
@@ -123,8 +122,6 @@ export default async function CategoryPage({
           <h2 className="font-display text-2xl text-ink">{getCategorySeoTitle(slug)}</h2>
           <div className="mt-4 space-y-3 text-charcoal leading-relaxed">{getCategorySeoText(slug)}</div>
         </div>
-
-        <SeoGuideLinks className="mt-8" />
 
         {relatedLinks.length > 0 && (
           <div className="cartoon-border mt-8 bg-cream p-6">
