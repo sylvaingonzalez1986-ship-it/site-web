@@ -97,9 +97,18 @@ function isPaymentReturnPath(pathname: string): boolean {
   );
 }
 
+function isPopupExcludedPath(pathname: string): boolean {
+  return pathname.startsWith("/admin") || pathname.startsWith("/arene") || isPaymentReturnPath(pathname);
+}
+
 export function NewProductsPopup() {
-  const { store, loading } = useCmsStore();
   const pathname = usePathname();
+  if (isPopupExcludedPath(pathname)) return null;
+  return <NewProductsPopupContent pathname={pathname} />;
+}
+
+function NewProductsPopupContent({ pathname }: { pathname: string }) {
+  const { store, loading } = useCmsStore();
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -131,8 +140,7 @@ export function NewProductsPopup() {
   useEffect(() => {
     if (
       loading ||
-      pathname.startsWith("/admin") ||
-      isPaymentReturnPath(pathname) ||
+      isPopupExcludedPath(pathname) ||
       featuredProducts.length === 0
     ) {
       return;

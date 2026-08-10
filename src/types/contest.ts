@@ -409,6 +409,11 @@ export type ContestEntryDetail = {
   eligibility: ContestReviewEligibility;
 };
 
+export type ContestProductTastingSummary = {
+  entry: ContestEntrySummary;
+  reviews: ContestReview[];
+};
+
 export type ContestNotebookUnlock = {
   entryId: string;
   reviewId?: string | null;

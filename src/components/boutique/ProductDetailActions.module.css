@@ -1,0 +1,54 @@
+.panel {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 3px solid var(--ink);
+  background: color-mix(in srgb, var(--teal) 8%, var(--cream));
+  box-shadow: 5px 5px 0 rgba(17, 21, 18, 0.16);
+}
+
+.heading {
+  margin-bottom: 0.9rem;
+  color: var(--teal);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.select {
+  width: 100%;
+  min-height: 48px;
+  border: 2px solid var(--ink);
+  background: #fff;
+  padding: 0 0.8rem;
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.add {
+  min-height: 48px;
+  flex: 1 1 190px;
+  justify-content: center;
+}
+
+.analysis {
+  width: 100%;
+  justify-content: center;
+}
+
+.alert {
+  border: 2px solid #7f1d1d;
+  background: #f8d7da;
+  padding: 0.75rem 1rem;
+  color: #7f1d1d;
+  font-size: 0.85rem;
+  font-weight: 900;
+}

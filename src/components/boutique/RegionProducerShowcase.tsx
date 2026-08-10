@@ -11,6 +11,7 @@ import {
   type FrenchRegion,
 } from "@/data/france-geo";
 import type { Product } from "@/data/products";
+import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import { resolveProductProducer } from "@/lib/own-producer";
 import type { Producer } from "@/types/store";
 
@@ -23,6 +24,7 @@ type RegionProducerShowcaseProps = {
   lowStockThresholdGrams: number;
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
+  tastingSummariesByProductId: Record<string, PublicContestProductTastingSummary>;
 };
 
 export function RegionProducerShowcase({
@@ -34,6 +36,7 @@ export function RegionProducerShowcase({
   lowStockThresholdGrams,
   producerPartnerLabel,
   producerWebsiteLabel,
+  tastingSummariesByProductId,
 }: RegionProducerShowcaseProps) {
   const [selectedRegion, setSelectedRegion] = useState<FrenchRegion | null>(null);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
@@ -282,6 +285,7 @@ export function RegionProducerShowcase({
             lowStockThresholdGrams={lowStockThresholdGrams}
             producerPartnerLabel={producerPartnerLabel}
             producerWebsiteLabel={producerWebsiteLabel}
+            tastingSummariesByProductId={tastingSummariesByProductId}
             onClose={() => setSelectedRegion(null)}
           />
         ) : null}
@@ -351,6 +355,7 @@ export function RegionProducerShowcase({
                   lowStockThresholdGrams={lowStockThresholdGrams}
                   producerPartnerLabel={producerPartnerLabel}
                   producerWebsiteLabel={producerWebsiteLabel}
+                  tastingSummariesByProductId={tastingSummariesByProductId}
                 />
               </div>
 
@@ -363,6 +368,7 @@ export function RegionProducerShowcase({
                       producer={resolveProductProducer(product, producerById, ownProducer)}
                       addButtonLabel={addButtonLabel}
                       lowStockThresholdGrams={lowStockThresholdGrams}
+                      tastingSummary={tastingSummariesByProductId[product.id]}
                     />
                   ))}
                 </div>

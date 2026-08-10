@@ -13,6 +13,7 @@ import { resolveProductProducer, sortOwnProductsFirst } from "@/lib/own-producer
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { mergeUniqueProductsById } from "@/lib/boutique-helpers";
 import type { BoutiqueSection, Producer, PublicStoreResponse } from "@/types/store";
+import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 
 const RegionProducerShowcase = dynamic(
   () => import("@/components/boutique/RegionProducerShowcase").then((mod) => mod.RegionProducerShowcase),
@@ -37,6 +38,7 @@ type BoutiquePageClientProps = {
   copainsProducts: Product[];
   globalAccessoriesProducts: Product[];
   boutiqueSections: BoutiqueSection[];
+  tastingSummariesByProductId: Record<string, PublicContestProductTastingSummary>;
 };
 
 export function BoutiquePageClient({
@@ -49,6 +51,7 @@ export function BoutiquePageClient({
   copainsProducts,
   globalAccessoriesProducts,
   boutiqueSections,
+  tastingSummariesByProductId,
 }: BoutiquePageClientProps) {
   const loading = false;
   const [filter, setFilter] = useState<Filter>("all");
@@ -242,6 +245,7 @@ export function BoutiquePageClient({
                 lowStockThresholdGrams={boutique.lowStockThresholdGrams}
                 producerPartnerLabel={boutique.producerPartnerLabel}
                 producerWebsiteLabel={boutique.producerWebsiteLabel}
+                tastingSummariesByProductId={tastingSummariesByProductId}
               />
             </div>
           );
@@ -292,6 +296,7 @@ export function BoutiquePageClient({
                 lowStockThresholdGrams={boutique.lowStockThresholdGrams}
                 producerPartnerLabel={boutique.producerPartnerLabel}
                 producerWebsiteLabel={boutique.producerWebsiteLabel}
+                tastingSummariesByProductId={tastingSummariesByProductId}
               />
             ) : (
               <>
@@ -319,6 +324,7 @@ export function BoutiquePageClient({
                       addButtonLabel={boutique.addButtonLabel}
                       lowStockThresholdGrams={boutique.lowStockThresholdGrams}
                       imagePriority={index === 0}
+                      tastingSummary={tastingSummariesByProductId[product.id]}
                     />
                   ))}
                 </div>
@@ -332,6 +338,7 @@ export function BoutiquePageClient({
                   lowStockThresholdGrams={boutique.lowStockThresholdGrams}
                   producerPartnerLabel={boutique.ownProducerLabel}
                   producerWebsiteLabel={boutique.producerWebsiteLabel}
+                  tastingSummariesByProductId={tastingSummariesByProductId}
                   onClose={() => setSelectedOwnProducerId(null)}
                   onSelectProducer={setSelectedOwnProducerId}
                 />

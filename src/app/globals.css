@@ -236,23 +236,6 @@ h4 {
   position: relative;
 }
 
-.card-cartoon::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 6px;
-  pointer-events: none;
-  content: "";
-  background: linear-gradient(90deg, var(--teal) 0 42%, var(--yellow) 42% 72%, var(--orange) 72%);
-  opacity: 0;
-  transition: opacity 180ms ease;
-}
-
-.card-cartoon:hover::after {
-  opacity: 1;
-}
-
 .btn-cartoon {
   border-radius: 8px;
 }
@@ -8289,6 +8272,31 @@ body.contest-guide-open .contest-hub-flipbook .contest-guide-flipbook .contest-n
 
 .producer-modal-controls > p {
   text-align: center;
+}
+
+.producer-modal-controls > button {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  min-height: 40px;
+  overflow: visible;
+  padding: 0;
+  color: var(--ink);
+}
+
+.producer-modal-controls > button::after {
+  display: none;
+}
+
+.producer-modal-controls > button > svg {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: currentColor;
+  stroke: currentColor;
 }
 
 .producer-modal-content {

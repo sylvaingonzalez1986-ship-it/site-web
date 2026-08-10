@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Instagram } from "lucide-react";
+import { ArrowRight, Instagram, MapPin } from "lucide-react";
 import { useMemo } from "react";
 import {
   ContactEmailButton,
@@ -10,6 +10,53 @@ import {
 } from "@/components/ContactEmailButton";
 import { useCmsPages } from "@/hooks/useCmsPages";
 import { useCmsStore } from "@/hooks/useCmsStore";
+import styles from "./Footer.module.css";
+
+const MARKET_LINKS = [
+  { href: "/boutique/fleurs-cbd", label: "Fleurs CBD" },
+  { href: "/boutique/resines-cbd", label: "Résines CBD" },
+  { href: "/boutique/huiles-cbd", label: "Huiles CBD" },
+  { href: "/boutique/e-liquide-cbd", label: "E-liquides CBD" },
+  { href: "/boutique/cosmetiques-cbd", label: "Cosmétiques CBD" },
+  { href: "/boutique/tisane-cbd", label: "Tisanes CBD" },
+  { href: "/boutique/miam-cbd", label: "Miam CBD" },
+  { href: "/blog", label: "Le blog CBD" },
+] as const;
+
+const REGIONAL_LINKS = [
+  { href: "/cbd-naturel", label: "CBD naturel" },
+  { href: "/cbd-pas-cher", label: "CBD pas cher" },
+  { href: "/cbd-rennes", label: "Rennes" },
+  { href: "/cbd-quimper", label: "Quimper" },
+  { href: "/cbd-brest", label: "Brest" },
+  { href: "/cbd-vannes", label: "Vannes" },
+  { href: "/cbd-lorient", label: "Lorient" },
+  { href: "/cbd-saint-brieuc", label: "Saint-Brieuc" },
+  { href: "/cbd-saint-malo", label: "Saint-Malo" },
+  { href: "/cbd-fougeres", label: "Fougères" },
+  { href: "/cbd-vitre", label: "Vitré" },
+  { href: "/cbd-redon", label: "Redon" },
+] as const;
+
+type FooterLink = {
+  href: string;
+  label: string;
+};
+
+function FooterLinkList({ links }: { links: FooterLink[] | readonly FooterLink[] }) {
+  return (
+    <ul className={styles.linkList}>
+      {links.map((link) => (
+        <li key={link.href}>
+          <Link href={link.href} className={styles.navLink}>
+            <span>{link.label}</span>
+            <ArrowRight size={15} strokeWidth={2.25} aria-hidden="true" />
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export function Footer() {
   const { store, loading } = useCmsStore();
@@ -35,211 +82,98 @@ export function Footer() {
       .filter((link) => !staticHrefs.has(link.href));
   }, [cmsPages]);
 
+  const legalLinks = useMemo<FooterLink[]>(
+    () => [
+      { href: "/mentions-legales", label: footer.legalLabel },
+      { href: "/politique-confidentialite", label: footer.privacyLabel },
+      { href: "/politique-cookies", label: "Politique cookies" },
+      { href: "/cgv", label: "Conditions générales de vente" },
+      { href: "/reglement-jeu-promo", label: "Règlement jeu promo" },
+      ...dynamicFooterLinks,
+    ],
+    [dynamicFooterLinks, footer.legalLabel, footer.privacyLabel],
+  );
+
   if (loading) {
     return (
-      <footer className="border-t-2 border-[#1a1a1a] bg-yellow py-10 halftone-overlay paper-grain">
-        <div className="retro-container">
-          <div className="cartoon-border bg-cream p-5 md:p-7" />
+      <footer className={styles.footer}>
+        <div className={`retro-container ${styles.inner}`}>
+          <div className={styles.loading} />
         </div>
       </footer>
     );
   }
 
   return (
-    <footer className="border-t-2 border-[#1a1a1a] bg-yellow py-10 halftone-overlay paper-grain">
-      <div className="retro-container">
-        <div className="cartoon-border bg-cream p-5 md:p-7">
-          <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr_1fr] lg:items-start">
-            <div>
-              <p className="text-sm font-semibold text-ink">Les Chanvriers Bretons</p>
-              <p className="mt-1 text-xs text-charcoal">{footer.copyright}</p>
-              <p className="mt-2 text-xs text-charcoal">
-                Nous contacter:{" "}
-                <a
-                  href={CONTACT_MAILTO}
-                  className="font-semibold underline decoration-2 underline-offset-2 hover:text-ink"
-                >
-                  {CONTACT_EMAIL}
-                </a>
-              </p>
-              <p className="mt-2 text-xs text-charcoal">CBD naturel, breton et légal.</p>
+    <footer className={styles.footer}>
+      <div className={`retro-container ${styles.inner}`}>
+        <div className={styles.top}>
+          <section className={styles.brand} aria-labelledby="footer-brand-title">
+            <p className={styles.eyebrow}>
+              <MapPin size={15} strokeWidth={2.4} aria-hidden="true" />
+              Cultivé en Bretagne
+            </p>
+            <h2 id="footer-brand-title" className={styles.brandTitle}>
+              Les Chanvriers
+              <span>Bretons</span>
+            </h2>
+            <p className={styles.lead}>
+              Du CBD naturel, local et traçable, proposé directement par celles et ceux qui le cultivent.
+            </p>
 
-              <div className="mt-4 flex flex-wrap items-start gap-3">
-                <ContactEmailButton
-                  label="Nous contacter"
-                  buttonClassName="btn-cartoon btn-secondary inline-flex min-h-[44px] w-full items-center justify-center gap-2 px-4 text-center text-xs leading-none sm:w-auto"
-                  statusClassName="max-w-[280px] text-xs font-semibold text-ink"
-                />
-                <Link
-                  href="https://www.instagram.com/leschanvriersbretons"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-cartoon btn-secondary inline-flex min-h-[44px] w-full items-center justify-center gap-2 px-4 text-center text-xs leading-none sm:w-auto"
-                  aria-label="Instagram"
-                >
-                  <Instagram size={14} /> Instagram
-                </Link>
-              </div>
+            <div className={styles.actions}>
+              <ContactEmailButton
+                label="Nous contacter"
+                buttonClassName={styles.actionPrimary}
+                iconClassName={styles.actionIcon}
+                statusClassName={styles.contactStatus}
+              />
+              <Link
+                href="https://www.instagram.com/leschanvriersbretons"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.actionSecondary}
+                aria-label="Instagram des Chanvriers Bretons"
+              >
+                <Instagram size={17} aria-hidden="true" />
+                Instagram
+              </Link>
             </div>
+          </section>
 
-            <div className="cartoon-border-sm bg-[#f7f4ee] p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.09em] text-charcoal">
-                Boutique & Blog
-              </p>
-              <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                <Link
-                  href="/boutique/fleurs-cbd"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
-                >
-                  Fleurs CBD
-                </Link>
-                <Link
-                  href="/boutique/resines-cbd"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
-                >
-                  Resines CBD
-                </Link>
-                <Link
-                  href="/boutique/huiles-cbd"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
-                >
-                  Huiles CBD
-                </Link>
-                <Link
-                  href="/boutique/e-liquide-cbd"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
-                >
-                  E-liquides CBD
-                </Link>
-                <Link
-                  href="/boutique/cosmetiques-cbd"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
-                >
-                  Cosmetiques CBD
-                </Link>
-                <Link
-                  href="/boutique/tisane-cbd"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
-                >
-                  Tisanes CBD
-                </Link>
-                <Link
-                  href="/boutique/miam-cbd"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
-                >
-                  Miam CBD
-                </Link>
-                <Link
-                  href="/blog"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2] sm:col-span-2"
-                >
-                  Blog CBD
-                </Link>
-              </div>
-            </div>
+          <nav className={styles.navigation} aria-label="Navigation du pied de page">
+            <section className={styles.column}>
+              <p className={styles.columnIndex}>01</p>
+              <h3 className={styles.columnTitle}>Le marché</h3>
+              <FooterLinkList links={MARKET_LINKS} />
+            </section>
 
-            <div className="cartoon-border-sm bg-[#f7f4ee] p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.09em] text-charcoal">
-                Informations légales
-              </p>
-              <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                <Link
-                  href="/mentions-legales"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
-                >
-                  {footer.legalLabel}
-                </Link>
-                <Link
-                  href="/politique-confidentialite"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
-                >
-                  {footer.privacyLabel}
-                </Link>
-                <Link
-                  href="/politique-cookies"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
-                >
-                  Politique cookies
-                </Link>
-                <Link
-                  href="/cgv"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2]"
-                >
-                  CGV
-                </Link>
-                <Link
-                  href="/reglement-jeu-promo"
-                  className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2] sm:col-span-2"
-                >
-                  Règlement jeu promo
-                </Link>
-                {dynamicFooterLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="inline-flex min-h-[40px] items-center justify-center border-2 border-[#1a1a1a] bg-white px-3 text-xs font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-[#e8f7f2] sm:col-span-2"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
+            <section className={styles.column}>
+              <p className={styles.columnIndex}>02</p>
+              <h3 className={styles.columnTitle}>Informations</h3>
+              <FooterLinkList links={legalLinks} />
+            </section>
+          </nav>
+        </div>
 
-            <div className="cartoon-border-sm bg-[#f7f4ee] p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.09em] text-charcoal">
-                CBD en Bretagne
-              </p>
-              <div className="mt-3 flex flex-wrap gap-1">
-                <Link href="/cbd-naturel" className="text-[11px] font-bold text-ink hover:underline">
-                  CBD Naturel
-                </Link>
-                <span className="text-[11px] text-charcoal">·</span>
-                <Link href="/cbd-pas-cher" className="text-[11px] font-bold text-ink hover:underline">
-                  CBD pas cher
-                </Link>
-                <span className="text-[11px] text-charcoal">·</span>
-                <Link href="/cbd-rennes" className="text-[11px] text-ink hover:underline">
-                  Rennes
-                </Link>
-                <span className="text-[11px] text-charcoal">·</span>
-                <Link href="/cbd-quimper" className="text-[11px] text-ink hover:underline">
-                  Quimper
-                </Link>
-                <span className="text-[11px] text-charcoal">·</span>
-                <Link href="/cbd-brest" className="text-[11px] text-ink hover:underline">
-                  Brest
-                </Link>
-                <span className="text-[11px] text-charcoal">·</span>
-                <Link href="/cbd-vannes" className="text-[11px] text-ink hover:underline">
-                  Vannes
-                </Link>
-                <br className="w-full" />
-                <Link href="/cbd-lorient" className="text-[11px] text-ink hover:underline">
-                  Lorient
-                </Link>
-                <span className="text-[11px] text-charcoal">·</span>
-                <Link href="/cbd-saint-brieuc" className="text-[11px] text-ink hover:underline">
-                  St-Brieuc
-                </Link>
-                <span className="text-[11px] text-charcoal">·</span>
-                <Link href="/cbd-saint-malo" className="text-[11px] text-ink hover:underline">
-                  St-Malo
-                </Link>
-                <span className="text-[11px] text-charcoal">·</span>
-                <Link href="/cbd-fougeres" className="text-[11px] text-ink hover:underline">
-                  Fougères
-                </Link>
-                <br className="w-full" />
-                <Link href="/cbd-vitre" className="text-[11px] text-ink hover:underline">
-                  Vitré
-                </Link>
-                <span className="text-[11px] text-charcoal">·</span>
-                <Link href="/cbd-redon" className="text-[11px] text-ink hover:underline">
-                  Redon
-                </Link>
-              </div>
-            </div>
+        <nav className={styles.regional} aria-label="CBD en Bretagne">
+          <div className={styles.regionalHeading}>
+            <p className={styles.columnIndex}>03</p>
+            <h3>CBD en Bretagne</h3>
           </div>
+          <div className={styles.regionalLinks}>
+            {REGIONAL_LINKS.map((link) => (
+              <Link key={link.href} href={link.href}>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </nav>
+
+        <div className={styles.bottom}>
+          <p>{footer.copyright}</p>
+          <a href={CONTACT_MAILTO}>{CONTACT_EMAIL}</a>
+          <p>CBD naturel · Bretagne · Circuit court</p>
         </div>
       </div>
     </footer>

@@ -62,7 +62,10 @@ export async function getBlogPostBySlugByBackend(slug: string): Promise<BlogPost
 }
 
 export function invalidatePublicStoreCache(): void {
-  revalidateTag(PUBLIC_STORE_CACHE_TAG, "max");
+  // Admin catalog updates must be visible on the very next storefront request.
+  // The `max` profile uses stale-while-revalidate, which can serve the previous
+  // product list once (or longer when traffic is low) after a successful save.
+  revalidateTag(PUBLIC_STORE_CACHE_TAG, { expire: 0 });
 }
 
 export function invalidateBlogPostsCache(): void {

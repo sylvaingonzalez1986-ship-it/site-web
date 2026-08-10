@@ -12,6 +12,7 @@ import {
   getSelectableVariantOptions,
   getStockDisplayInfo,
 } from "@/lib/product-stock";
+import styles from "./ProductDetailActions.module.css";
 
 type ProductDetailActionsProps = {
   product: Product;
@@ -69,14 +70,16 @@ export function ProductDetailActions({
   };
 
   return (
-    <div className="mt-6 space-y-4">
+    <div className={styles.panel}>
+      <p className={styles.heading}>Choisir et commander</p>
+      <div className="space-y-4">
       {hasVariants && (
         <div>
           <label className="mb-1 block text-[11px] font-bold uppercase tracking-[0.09em] text-charcoal">
             {product.variantLabel?.trim() || "Taille"}
           </label>
           <select
-            className="h-10 w-full border-2 border-[#1a1a1a] bg-white px-3 text-sm"
+            className={styles.select}
             value={selectedVariant?.id ?? ""}
             onChange={(e) => {
               setSelectedVariantId(e.target.value);
@@ -94,13 +97,13 @@ export function ProductDetailActions({
       )}
 
       {stockInfo.isLowStock && stockInfo.remainingGrams !== null && (
-        <div className="rounded border-2 border-[#7f1d1d] bg-[#f8d7da] px-4 py-3 text-sm font-bold text-[#7f1d1d]">
+        <div className={styles.alert}>
           Plus que {formatRemainingGrams(stockInfo.remainingGrams)} disponible
         </div>
       )}
       {stockError && <p className="text-sm font-semibold text-[#7f1d1d]">{stockError}</p>}
 
-      <div className="flex flex-wrap items-center gap-3">
+      <div className={styles.controls}>
         {inStock && (
           <QuantitySelector
             value={qty}
@@ -115,7 +118,7 @@ export function ProductDetailActions({
           type="button"
           onClick={handleAddToCart}
           disabled={authLoading || !inStock}
-          className="btn-cartoon btn-primary inline-flex min-h-[44px] items-center gap-2 px-6 py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60"
+          className={`btn-cartoon btn-primary inline-flex items-center gap-2 px-6 py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60 ${styles.add}`}
         >
           <Plus size={16} /> {inStock ? "Ajouter au panier" : "Rupture de stock"}
         </button>
@@ -126,7 +129,7 @@ export function ProductDetailActions({
           <button
             type="button"
             onClick={() => setAnalysisOpen(true)}
-            className="btn-cartoon btn-secondary inline-flex h-10 w-fit items-center gap-2 px-4 text-xs"
+            className={`btn-cartoon btn-secondary inline-flex min-h-11 items-center gap-2 px-4 text-xs ${styles.analysis}`}
           >
             📄 Voir l&apos;analyse laboratoire
           </button>
@@ -138,6 +141,7 @@ export function ProductDetailActions({
           />
         </>
       )}
+      </div>
     </div>
   );
 }

@@ -89,12 +89,12 @@ export function ProductCardActions({
         <p className="mt-3 text-sm font-semibold text-[#7f1d1d]">{stockError}</p>
       )}
       {(product.analysisPdf || product.videoUrl) && (
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap gap-2 border-t border-[#1a1a1a]/25 pb-4 pt-3">
           {product.analysisPdf && (
             <button
               type="button"
               onClick={() => setAnalysisOpen(true)}
-              className="inline-flex min-h-[38px] items-center rounded-full border-2 border-[#1a1a1a] bg-[#e8f7f2] px-3 py-1 text-xs font-bold uppercase tracking-[0.1em] text-[#0a7b61] transition-colors hover:bg-[#d7f0e8]"
+              className="inline-flex min-h-[38px] items-center border-2 border-[#1a1a1a] bg-[#e8f7f2] px-3 py-1 text-[11px] font-black uppercase tracking-[0.1em] text-[#0a7b61] transition-colors hover:bg-[#d7f0e8]"
             >
               Analyse
             </button>
@@ -103,7 +103,7 @@ export function ProductCardActions({
             <button
               type="button"
               onClick={() => setVideoOpen(true)}
-              className="inline-flex min-h-[38px] items-center gap-1.5 rounded-full border-2 border-[#d35400] bg-[#fff3e8] px-3 py-1 text-xs font-bold uppercase tracking-[0.1em] text-[#d35400] transition-colors hover:bg-[#ffe8d0]"
+              className="inline-flex min-h-[38px] items-center gap-1.5 border-2 border-[#d35400] bg-[#fff3e8] px-3 py-1 text-[11px] font-black uppercase tracking-[0.1em] text-[#d35400] transition-colors hover:bg-[#ffe8d0]"
             >
               <span aria-hidden="true">▶</span> Vidéo
             </button>
@@ -111,25 +111,25 @@ export function ProductCardActions({
         </div>
       )}
 
-      <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+      <div className="mt-auto border-t-2 border-[#1a1a1a] pt-4">
         {hasPromo ? (
-          <div className="flex flex-col">
+          <div className="flex items-end gap-3">
             <span className="price-original text-sm">{formatPrice(product.originalPrice!)}{product.category === "fleurs" && " / g"}</span>
             <div className="flex items-end gap-2">
-              <span className="price-promo text-lg">{formatPrice(product.price)}{product.category === "fleurs" && " / g"}</span>
+              <span className="price-promo font-display text-2xl">{formatPrice(product.price)}{product.category === "fleurs" && " / g"}</span>
               <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
             </div>
           </div>
         ) : (
           <div className="flex items-end gap-2">
-            <p className="text-lg font-bold text-ink">{formatPrice(product.price)}{product.category === "fleurs" && " / g"}</p>
+            <p className="font-display text-2xl font-black text-ink">{formatPrice(product.price)}{product.category === "fleurs" && " / g"}</p>
             <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
           </div>
         )}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="mt-3 flex flex-wrap items-center gap-2">
           <Link
             href={productHref}
-            className="btn-cartoon btn-secondary inline-flex min-h-[44px] items-center px-4 py-3 text-xs"
+            className="btn-cartoon btn-secondary inline-flex min-h-[44px] flex-1 items-center justify-center px-4 py-3 text-xs"
           >
             Voir
           </Link>
@@ -148,7 +148,7 @@ export function ProductCardActions({
             type="button"
             onClick={handleAddToCart}
             disabled={authLoading || !inStock}
-            className="btn-cartoon btn-primary inline-flex min-h-[44px] items-center gap-2 px-4 py-3 text-xs disabled:cursor-not-allowed disabled:opacity-60"
+            className="btn-cartoon btn-primary inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 px-4 py-3 text-xs disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Plus size={15} />{" "}
             {inStock ? (requiresVariantChoice ? "Choisir format" : addButtonLabel) : "Rupture"}

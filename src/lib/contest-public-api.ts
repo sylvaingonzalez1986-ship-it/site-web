@@ -1,5 +1,6 @@
 import type {
   ContestEntryDetail,
+  ContestProductTastingSummary,
   ContestNotebookUnlock,
   ContestProfile,
   ContestProfileBadge,
@@ -26,6 +27,9 @@ export type PublicContestEntryDetail = Omit<
   viewerProfile: PublicContestProfile | null;
   viewerReview: ViewerContestReview | null;
   viewerBadges: PublicContestProfileBadge[];
+};
+export type PublicContestProductTastingSummary = Omit<ContestProductTastingSummary, "reviews"> & {
+  reviews: PublicContestReview[];
 };
 export type PublicContestTesterProfile = Omit<
   ContestPublicTesterProfile,
@@ -87,6 +91,15 @@ export function sanitizePublicContestEntryDetail(detail: ContestEntryDetail): Pu
     viewerProfile: detail.viewerProfile ? sanitizePublicContestProfile(detail.viewerProfile) : null,
     viewerReview: detail.viewerReview ? sanitizeViewerContestReview(detail.viewerReview) : null,
     viewerBadges: detail.viewerBadges.map(sanitizePublicContestBadge),
+  };
+}
+
+export function sanitizePublicContestProductTastingSummary(
+  summary: ContestProductTastingSummary,
+): PublicContestProductTastingSummary {
+  return {
+    ...summary,
+    reviews: summary.reviews.map(sanitizePublicContestReview),
   };
 }
 

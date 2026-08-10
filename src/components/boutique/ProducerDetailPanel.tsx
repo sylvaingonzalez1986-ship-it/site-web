@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { ChevronDown, ExternalLink, MapPin, X } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { ProducerSocialLinks } from "@/components/boutique/ProducerSocialLinks";
 import {
@@ -11,7 +11,9 @@ import {
   PRODUCER_SOIL_OPTIONS,
 } from "@/data/producer-taxonomies";
 import type { Product } from "@/data/products";
+import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import { PRODUCER_CULTURE_LABELS, type Producer } from "@/types/store";
+import styles from "./ProducerDetailPanel.module.css";
 
 type ProducerDetailPanelProps = {
   producer: Producer;
@@ -22,7 +24,51 @@ type ProducerDetailPanelProps = {
   producerWebsiteLabel: string;
   onClose: () => void;
   showCloseButton?: boolean;
+  tastingSummariesByProductId?: Record<string, PublicContestProductTastingSummary>;
 };
+
+type ProducerFactProps = {
+  title: string;
+  value: string;
+  details: string[];
+};
+
+function ProducerFact({ title, value, details }: ProducerFactProps) {
+  if (details.length === 0) {
+    return (
+      <div className={styles.fact}>
+        <div className={styles.factSummary}>
+          <span>
+            <span className={styles.factTitle}>{title}</span>
+            <span className={styles.factValue}>{value}</span>
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <details className={`group ${styles.fact}`}>
+      <summary className={styles.factSummary}>
+        <span>
+          <span className={styles.factTitle}>{title}</span>
+          <span className={styles.factValue}>{value}</span>
+        </span>
+        <ChevronDown
+          size={18}
+          strokeWidth={2.5}
+          aria-hidden="true"
+          className="shrink-0 transition-transform group-open:rotate-180"
+        />
+      </summary>
+      <ul className={styles.factBody}>
+        {details.map((detail) => (
+          <li key={detail}>{detail}</li>
+        ))}
+      </ul>
+    </details>
+  );
+}
 
 export function ProducerDetailPanel({
   producer,
@@ -33,30 +79,8 @@ export function ProducerDetailPanel({
   producerWebsiteLabel,
   onClose,
   showCloseButton = true,
+  tastingSummariesByProductId = {},
 }: ProducerDetailPanelProps) {
-  const [openMobilePopover, setOpenMobilePopover] = useState<"climate" | "soil" | null>(null);
-
-  useEffect(() => {
-    const onPointerDown = (event: PointerEvent) => {
-      const target = event.target;
-      if (!(target instanceof Element)) {
-        setOpenMobilePopover(null);
-        return;
-      }
-
-      if (target.closest("[data-producer-popover='trigger']") || target.closest("[data-producer-popover='content']")) {
-        return;
-      }
-
-      setOpenMobilePopover(null);
-    };
-
-    document.addEventListener("pointerdown", onPointerDown);
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
-    };
-  }, []);
-
   const producerLocation =
     [producer.department, producer.region].filter(Boolean).join(", ") ||
     producer.location;
@@ -73,182 +97,68 @@ export function ProducerDetailPanel({
   const soilLabel = soilOption?.label ?? producer.soil ?? "—";
   const climateDetails = PRODUCER_CLIMATE_DETAILS[producer.climate] ?? [];
   const soilDetails = PRODUCER_SOIL_DETAILS[producer.soil] ?? [];
+
   return (
     <section
       id={`producer-panel-${producer.id}`}
-      className="producer-detail-enter cartoon-border mx-auto mt-6 bg-cream p-6 md:p-8"
+      className={`producer-detail-enter ${styles.panel}`}
+      aria-labelledby={`producer-title-${producer.id}`}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-start gap-4">
-          <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-md border-2 border-[#1a1a1a] bg-white md:h-28 md:w-28">
-            <Image
-              src={producer.image}
-              alt={producer.name}
-              fill
-              sizes="112px"
-              className="object-cover"
-            />
-          </div>
-          <div>
-            <p className="pill-cartoon bg-yellow px-3 py-1 text-xs uppercase tracking-[0.12em]">
-              {producerPartnerLabel}
-            </p>
-            <h3 className="mt-2 font-display text-3xl leading-none text-ink md:text-4xl">
-              {producer.name}
-            </h3>
-            {cultureTypes.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-2">
-                {cultureTypes.map((cultureType) => (
-                  <span
-                    key={cultureType}
-                    className="pill-cartoon bg-white px-3 py-1 text-xs uppercase tracking-[0.08em] text-ink"
-                  >
-                    {PRODUCER_CULTURE_LABELS[cultureType]}
-                  </span>
-                ))}
-              </div>
-            )}
-            <div className="producer-detail-description mt-3 w-full">
-              {longDescription}
+      <div className={styles.hero}>
+        <div className={styles.image}>
+          <Image
+            src={producer.image}
+            alt={producer.name}
+            fill
+            sizes="(max-width: 900px) 100vw, 42vw"
+            className={styles.photo}
+          />
+        </div>
+
+        <div className={styles.copy}>
+          <p className={styles.eyebrow}>{producerPartnerLabel}</p>
+          <h2 id={`producer-title-${producer.id}`} className={styles.title}>
+            {producer.name}
+          </h2>
+
+          <p className={styles.location}>
+            <MapPin size={16} strokeWidth={2.5} aria-hidden="true" />
+            {producerLocation}
+          </p>
+
+          {cultureTypes.length > 0 && (
+            <div className={styles.tags} aria-label="Types de culture">
+              {cultureTypes.map((cultureType) => (
+                <span key={cultureType} className={styles.tag}>
+                  {PRODUCER_CULTURE_LABELS[cultureType]}
+                </span>
+              ))}
             </div>
-            <div className="mt-3 grid gap-2 text-xs text-charcoal sm:grid-cols-2">
-              {(producer.climate || producer.soil) && (
-                <>
-                  <p className="producer-detail-metric">
-                    <span className="font-semibold text-ink">Climat :</span>{" "}
-                    {climateDetails.length > 0 ? (
-                      <span className="group relative inline-flex items-center gap-1">
-                        <span className="font-medium text-ink">{climateLabel}</span>
-                        <button
-                          type="button"
-                          data-producer-popover="trigger"
-                          onClick={() =>
-                            setOpenMobilePopover((current) =>
-                              current === "climate" ? null : "climate",
-                            )
-                          }
-                          className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#1a1a1a] text-[10px] leading-none text-ink md:hidden"
-                          aria-label="Afficher le détail du climat"
-                        >
-                          i
-                        </button>
-                        <span
-                          aria-hidden="true"
-                          className="hidden h-4 w-4 cursor-help items-center justify-center rounded-full border border-[#1a1a1a] text-[10px] leading-none text-ink md:inline-flex"
-                        >
-                          i
-                        </span>
-                        <span className="pointer-events-none absolute left-0 top-[calc(100%+6px)] z-20 hidden w-80 max-w-[85vw] rounded-md border-2 border-[#1a1a1a] bg-cream p-3 text-xs text-charcoal shadow-[4px_4px_0_#1a1a1a] group-hover:block">
-                          <span className="font-semibold text-ink">{climateLabel}</span>
-                          <span className="mt-2 block space-y-1">
-                            {climateDetails.map((detail) => (
-                              <span key={detail} className="block">
-                                • {detail}
-                              </span>
-                            ))}
-                          </span>
-                        </span>
-                        {openMobilePopover === "climate" && (
-                          <span
-                            data-producer-popover="content"
-                            className="absolute left-0 top-[calc(100%+6px)] z-20 w-80 max-w-[85vw] rounded-md border-2 border-[#1a1a1a] bg-cream p-3 text-xs text-charcoal shadow-[4px_4px_0_#1a1a1a] md:hidden"
-                          >
-                            <span className="font-semibold text-ink">{climateLabel}</span>
-                            <span className="mt-2 block space-y-1">
-                              {climateDetails.map((detail) => (
-                                <span key={detail} className="block">
-                                  • {detail}
-                                </span>
-                              ))}
-                            </span>
-                          </span>
-                        )}
-                      </span>
-                    ) : (
-                      <span>{climateLabel}</span>
-                    )}
-                  </p>
-                  <p className="producer-detail-metric">
-                    <span className="font-semibold text-ink">Sol :</span>{" "}
-                    {soilDetails.length > 0 ? (
-                      <span className="group relative inline-flex items-center gap-1">
-                        <span className="font-medium text-ink">{soilLabel}</span>
-                        <button
-                          type="button"
-                          data-producer-popover="trigger"
-                          onClick={() =>
-                            setOpenMobilePopover((current) =>
-                              current === "soil" ? null : "soil",
-                            )
-                          }
-                          className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#1a1a1a] text-[10px] leading-none text-ink md:hidden"
-                          aria-label="Afficher le détail du sol"
-                        >
-                          i
-                        </button>
-                        <span
-                          aria-hidden="true"
-                          className="hidden h-4 w-4 cursor-help items-center justify-center rounded-full border border-[#1a1a1a] text-[10px] leading-none text-ink md:inline-flex"
-                        >
-                          i
-                        </span>
-                        <span className="pointer-events-none absolute left-0 top-[calc(100%+6px)] z-20 hidden w-80 max-w-[85vw] rounded-md border-2 border-[#1a1a1a] bg-cream p-3 text-xs text-charcoal shadow-[4px_4px_0_#1a1a1a] group-hover:block">
-                          <span className="font-semibold text-ink">{soilLabel}</span>
-                          <span className="mt-2 block space-y-1">
-                            {soilDetails.map((detail) => (
-                              <span key={detail} className="block">
-                                • {detail}
-                              </span>
-                            ))}
-                          </span>
-                        </span>
-                        {openMobilePopover === "soil" && (
-                          <span
-                            data-producer-popover="content"
-                            className="absolute left-0 top-[calc(100%+6px)] z-20 w-80 max-w-[85vw] rounded-md border-2 border-[#1a1a1a] bg-cream p-3 text-xs text-charcoal shadow-[4px_4px_0_#1a1a1a] md:hidden"
-                          >
-                            <span className="font-semibold text-ink">{soilLabel}</span>
-                            <span className="mt-2 block space-y-1">
-                              {soilDetails.map((detail) => (
-                                <span key={detail} className="block">
-                                  • {detail}
-                                </span>
-                              ))}
-                            </span>
-                          </span>
-                        )}
-                      </span>
-                    ) : (
-                      <span>{soilLabel}</span>
-                    )}
-                  </p>
-                </>
-              )}
+          )}
+
+          <p className={styles.description}>{longDescription}</p>
+
+          {certifications.length > 0 && (
+            <div className={styles.tags} aria-label="Certifications">
+              {certifications.map((certification) => (
+                <span key={certification} className={`${styles.tag} bg-yellow`}>
+                  {certification}
+                </span>
+              ))}
             </div>
-            {certifications.length > 0 && (
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                {certifications.map((certification) => (
-                  <span
-                    key={certification}
-                    className="pill-cartoon bg-yellow px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink"
-                  >
-                    {certification}
-                  </span>
-                ))}
-              </div>
-            )}
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="pill-cartoon bg-white px-3 py-1 text-xs text-ink">
-                {producerLocation}
-              </span>
+          )}
+
+          {(producer.website || producer.socialLinks) && (
+            <div className={styles.links}>
               {producer.website && (
                 <a
                   href={producer.website}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="btn-cartoon btn-secondary px-3 py-1 text-xs"
+                  className="btn-cartoon btn-secondary inline-flex items-center gap-2 px-3 py-2 text-xs"
                 >
                   {producerWebsiteLabel}
+                  <ExternalLink size={14} aria-hidden="true" />
                 </a>
               )}
               <ProducerSocialLinks
@@ -256,30 +166,59 @@ export function ProducerDetailPanel({
                 producerName={producer.name}
               />
             </div>
-          </div>
+          )}
         </div>
+
         {showCloseButton && (
           <button
-          type="button"
-          onClick={onClose}
-          className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
-          aria-label="Fermer la fiche producteur"
-        >
-          ✕
-        </button>
-          )}
+            type="button"
+            onClick={onClose}
+            className={`btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 ${styles.close}`}
+            aria-label="Fermer la fiche producteur"
+          >
+            <X size={20} strokeWidth={2.5} aria-hidden="true" />
+          </button>
+        )}
       </div>
 
-      <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            producer={producer}
-            addButtonLabel={addButtonLabel}
-            lowStockThresholdGrams={lowStockThresholdGrams}
-          />
-        ))}
+      {(producer.climate || producer.soil) && (
+        <div className={styles.facts}>
+          {producer.climate && (
+            <ProducerFact title="Climat" value={climateLabel} details={climateDetails} />
+          )}
+          {producer.soil && (
+            <ProducerFact title="Sol" value={soilLabel} details={soilDetails} />
+          )}
+        </div>
+      )}
+
+      <div className={styles.products}>
+        <div className={styles.productsHeader}>
+          <div>
+            <p className={styles.eyebrow}>La sélection de</p>
+            <h3 className={styles.productsTitle}>{producer.name}</h3>
+          </div>
+          <p className={styles.eyebrow}>
+            {products.length} produit{products.length > 1 ? "s" : ""}
+          </p>
+        </div>
+
+        {products.length > 0 ? (
+          <div className={styles.productGrid}>
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                producer={producer}
+                addButtonLabel={addButtonLabel}
+                lowStockThresholdGrams={lowStockThresholdGrams}
+                tastingSummary={tastingSummariesByProductId[product.id]}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className={styles.empty}>Aucun produit disponible pour le moment.</p>
+        )}
       </div>
     </section>
   );

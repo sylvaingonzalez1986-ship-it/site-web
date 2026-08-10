@@ -4,12 +4,21 @@ import { notFound } from "next/navigation";
 import { BreadcrumbJsonLd, ProductJsonLd } from "@/components/JsonLd";
 import { ProductDetailActions } from "@/components/boutique/ProductDetailActions";
 import { ProductImageGallery } from "@/components/boutique/ProductImageGallery";
+import { ProductTastingBadge, ProductTastingSection } from "@/components/boutique/ProductTastingSection";
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
+import { SeoGuideLinks } from "@/components/seo/SeoGuideLinks";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getOwnProducer } from "@/lib/own-producer";
 import { getSiteUrl } from "@/lib/site-url";
 import { isRemoteImageUrl } from "@/lib/image-source";
 import { isProductCultureModeEligible, type Product } from "@/data/products";
+import { getContestProductTastingSummary, isContestSchemaMissingError } from "@/lib/contest-backend";
+import { isContestBetaAccessRestrictedServer, isContestFeatureEnabledServer } from "@/lib/contest-feature";
+import {
+  sanitizePublicContestProductTastingSummary,
+  type PublicContestProductTastingSummary,
+} from "@/lib/contest-public-api";
+import styles from "./ProductDetailPage.module.css";
 
 export const revalidate = 120;
 
@@ -82,6 +91,27 @@ async function findProduct(
   };
 }
 
+async function findProductTastingSummary(
+  productId: string,
+): Promise<PublicContestProductTastingSummary | null> {
+  if (!isContestFeatureEnabledServer()) {
+    return null;
+  }
+
+  try {
+    const summary = await getContestProductTastingSummary(productId);
+    return summary ? sanitizePublicContestProductTastingSummary(summary) : null;
+  } catch (error) {
+    if (isContestSchemaMissingError(error)) {
+      return null;
+    }
+
+    // The tasting module enriches the product page but must never prevent a purchase.
+    console.error("Unable to load product tasting summary", error);
+    return null;
+  }
+}
+
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
@@ -135,7 +165,10 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const result = await findProduct(slug);
+  const [result, tastingSummary] = await Promise.all([
+    findProduct(slug),
+    findProductTastingSummary(slug),
+  ]);
 
   if (!result) {
     notFound();
@@ -169,7 +202,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     isProductCultureModeEligible(product.category) && Boolean(product.cultureMode);
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
+    <section className={styles.page} data-world="market">
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", url: baseUrl },
@@ -178,55 +211,60 @@ export default async function ProductPage({ params }: ProductPageProps) {
           { name: product.name, url: canonicalUrl },
         ]}
       />
-      <ProductJsonLd product={product} producer={producer} />
+      <ProductJsonLd
+        product={product}
+        producer={producer}
+        aggregateRating={tastingSummary && tastingSummary.entry.stats.approvedReviewCount > 0 ? {
+          ratingValue: tastingSummary.entry.stats.averageScore,
+          ratingCount: tastingSummary.entry.stats.approvedReviewCount,
+          bestRating: 100,
+        } : undefined}
+      />
 
       <div className="retro-container">
         {/* Breadcrumb navigation */}
-        <nav
-          className="mb-6 text-sm text-charcoal"
-          aria-label="Fil d'Ariane"
-        >
-          <Link href="/" className="hover:text-ink underline">
+        <nav className={styles.breadcrumb} aria-label="Fil d'Ariane">
+          <Link href="/">
             Accueil
           </Link>
-          {" > "}
-          <Link href="/boutique" className="hover:text-ink underline">
-            Boutique
+          <span aria-hidden="true">/</span>
+          <Link href="/boutique">
+            Le Marché
           </Link>
-          {" > "}
-          <Link
-            href={`/boutique/${categorySlug}`}
-            className="hover:text-ink underline"
-          >
+          <span aria-hidden="true">/</span>
+          <Link href={`/boutique/${categorySlug}`}>
             {categoryLabel}
           </Link>
-          {" > "}
-          <span className="font-bold text-ink">{product.name}</span>
+          <span aria-hidden="true">/</span>
+          <span className="text-ink">{product.name}</span>
         </nav>
 
-        <div className="cartoon-border bg-cream p-6 md:p-8">
-          <div className="grid gap-8 md:grid-cols-2">
+        <article className={styles.shell}>
+          <div className={styles.grid}>
             {/* Product images */}
-            <ProductImageGallery
-              images={allImages}
-              videoUrl={product.videoUrl}
-              productName={`${product.name} — ${categoryLabel} CBD bio breton`}
-              badge={product.badge}
-              bonusPoints={product.bonusPoints}
-            />
+            <div className={styles.gallery}>
+              <ProductImageGallery
+                images={allImages}
+                videoUrl={product.videoUrl}
+                productName={`${product.name} — ${categoryLabel} CBD bio breton`}
+                badge={product.badge}
+                bonusPoints={product.bonusPoints}
+              />
+            </div>
 
             {/* Product info */}
-            <div className="flex flex-col">
-              <h1 className="font-display text-3xl text-ink md:text-4xl">
+            <div className={styles.info}>
+              <p className={styles.eyebrow}>{categoryLabel} · Sélection du Marché</p>
+              <h1 className={styles.title}>
                 {product.name}
               </h1>
 
               {(producer || showCultureBadge) && (
-                <div className="mt-2 flex flex-wrap items-center gap-2">
+                <div className={styles.meta}>
                   {producer && (
-                    <p className="text-sm text-charcoal">
+                    <p className="text-xs font-black uppercase tracking-[0.08em] text-charcoal">
                       Par{" "}
-                      <span className="font-semibold text-ink">
+                      <span className="text-ink">
                         {brandName}
                       </span>
                     </p>
@@ -240,46 +278,28 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
               )}
 
-              <div className="mt-4 flex items-baseline gap-3">
-                <span className="font-display text-3xl text-ink">
+              <div className={styles.pricePanel}>
+                <span className={styles.price}>
                   {product.price.toFixed(2)} €{product.category === "fleurs" && " / g"}
                 </span>
                 {product.originalPrice &&
                   product.originalPrice > product.price && (
-                    <span className="text-lg text-charcoal line-through">
+                    <span className="text-lg font-bold text-charcoal line-through">
                       {product.originalPrice.toFixed(2)} €{product.category === "fleurs" && " / g"}
                     </span>
                   )}
                 {product.promoPercent && product.promoPercent > 0 && (
-                  <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-bold text-ink">
+                  <span className="border-2 border-ink bg-yellow px-2 py-1 text-xs font-black uppercase text-ink">
                     -{product.promoPercent}%
                   </span>
                 )}
               </div>
 
-              {product.variantOptions && product.variantOptions.length > 0 && (
-                <div className="mt-4">
-                  <p className="text-sm font-semibold text-ink">
-                    {product.variantLabel ?? "Options"} :
-                  </p>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {product.variantOptions
-                      .filter((v) => v.enabled !== false)
-                      .map((variant) => (
-                        <span
-                          key={variant.id}
-                          className="rounded-full border border-[#1a1a1a] bg-mint px-3 py-1 text-xs font-medium text-ink"
-                        >
-                          {variant.label} — {variant.price.toFixed(2)} €
-                        </span>
-                      ))}
-                  </div>
-                </div>
-              )}
-
-              <p className="mt-6 text-base leading-relaxed text-charcoal">
+              <p className={styles.description}>
                 {product.description}
               </p>
+
+              {tastingSummary ? <ProductTastingBadge summary={tastingSummary} /> : null}
 
 
               <ProductDetailActions
@@ -287,7 +307,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 lowStockThresholdGrams={lowStockThresholdGrams}
               />
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className={styles.backLinks}>
                 <Link
                   href={`/boutique/${categorySlug}`}
                   className="btn-cartoon btn-secondary inline-flex h-10 items-center px-4 text-xs"
@@ -303,11 +323,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </div>
           </div>
-        </div>
+        </article>
+
+        {tastingSummary ? (
+          <ProductTastingSection
+            summary={tastingSummary}
+            showArenaLink={!isContestBetaAccessRestrictedServer()}
+          />
+        ) : null}
+
+        <SeoGuideLinks className="mt-8" />
 
         {/* Prev / Next same-category navigation */}
         {totalInCategory > 1 && (
-          <div className="cartoon-border mt-6 flex items-center justify-between bg-cream px-4 py-3">
+          <nav className={styles.pager} aria-label="Autres produits de la même catégorie">
             {prevHref ? (
               <Link
                 href={prevHref}
@@ -319,7 +348,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             ) : (
               <span />
             )}
-            <span className="text-xs font-semibold text-charcoal">
+            <span className={styles.pagerCount}>
               {currentIndex + 1} / {totalInCategory} — même catégorie
             </span>
             {nextHref ? (
@@ -333,7 +362,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             ) : (
               <span />
             )}
-          </div>
+          </nav>
         )}
       </div>
     </section>

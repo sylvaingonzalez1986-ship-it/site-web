@@ -3,11 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CollectionPageJsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
+import { SeoGuideLinks } from "@/components/seo/SeoGuideLinks";
 import { type ProductCategory } from "@/data/products";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
 import { getOwnProducer, resolveProductProducer, sortOwnProductsFirst } from "@/lib/own-producer";
 import { dedupeProducts } from "@/lib/product-dedup";
+import { getProductCardTastingSummaries } from "@/lib/product-card-tasting-backend";
 import type { Producer } from "@/types/store";
 
 const categoryMap: Record<string, { filter: ProductCategory; label: string }> = {
@@ -60,6 +62,9 @@ export default async function CategoryPage({
   const filteredProducts = sortOwnProductsFirst(
     uniqueProducts.filter((product) => product.category === categoryInfo.filter),
   );
+  const tastingSummariesByProductId = await getProductCardTastingSummaries(
+    filteredProducts.map((product) => product.id),
+  );
   const baseUrl = getSiteUrl();
   const categoryDescription = getCategoryDescription(slug);
   const relatedLinks = (relatedCategoryLinks[slug] ?? [])
@@ -103,6 +108,7 @@ export default async function CategoryPage({
               producer={resolveProductProducer(product, producersById, ownProducer)}
               addButtonLabel={store.content.boutique.addButtonLabel}
               lowStockThresholdGrams={store.content.boutique.lowStockThresholdGrams}
+              tastingSummary={tastingSummariesByProductId[product.id]}
             />
           ))}
         </div>
@@ -117,6 +123,8 @@ export default async function CategoryPage({
           <h2 className="font-display text-2xl text-ink">{getCategorySeoTitle(slug)}</h2>
           <div className="mt-4 space-y-3 text-charcoal leading-relaxed">{getCategorySeoText(slug)}</div>
         </div>
+
+        <SeoGuideLinks className="mt-8" />
 
         {relatedLinks.length > 0 && (
           <div className="cartoon-border mt-8 bg-cream p-6">

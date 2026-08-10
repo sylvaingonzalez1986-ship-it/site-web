@@ -5,6 +5,7 @@ import { syncKqNotebookRewardsForCustomer } from "@/lib/supabase/kanab-quest-not
 import { syncKqProducerNotebookRewardsForReview } from "@/lib/supabase/kanab-quest-producer-rewards-backend";
 import { CONTEST_SCORE_MAX, CONTEST_SCORE_MIN } from "@/lib/contest-score";
 import { CANNABIS_TERPENE_CODES, normalizeContestTerpene } from "@/lib/contest-terpenes";
+import { selectContestProductTastingEntry } from "@/lib/contest-product-tasting";
 import {
   CONTEST_AROMA_TAGS,
   CONTEST_CONSUMPTION_METHODS,
@@ -30,6 +31,7 @@ import {
   type ContestNotebookUnlock,
   type ContestProfileBadge,
   type ContestProfile,
+  type ContestProductTastingSummary,
   type ContestPublicTesterProfile,
   type ContestReview,
   type ContestReviewAromaSelection,
@@ -2367,6 +2369,95 @@ export async function getAdminContestEntries(
   failIfError(result.error, "read admin contest entries");
   const entries = await hydrateEntries(toRowArray(result.data));
   return buildAdminContestPaginatedResult(entries, result.count, pagination);
+}
+
+export async function getContestProductTastingSummary(
+  productId: string,
+): Promise<ContestProductTastingSummary | null> {
+  const safeProductId = productId.trim();
+  if (!safeProductId) {
+    return null;
+  }
+
+  const [summary] = await getContestProductTastingSummaries([safeProductId], 6);
+  return summary ?? null;
+}
+
+export async function getContestProductTastingSummaries(
+  productIds: string[],
+  reviewLimitPerProduct = 2,
+): Promise<ContestProductTastingSummary[]> {
+  const entries = await getContestProductTastingEntries(productIds);
+  if (entries.length === 0) {
+    return [];
+  }
+
+  const safeReviewLimit = Math.max(0, Math.min(6, Math.floor(reviewLimitPerProduct)));
+  if (safeReviewLimit === 0) {
+    return entries.map((entry) => ({ entry, reviews: [] }));
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const reviewsResult = await supabase
+    .from("contest_reviews")
+    .select(SELECT_REVIEW_COLUMNS)
+    .in("entry_id", entries.map((entry) => entry.id))
+    .eq("status", "approved")
+    .order("reviewed_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+
+  failIfError(reviewsResult.error, "read approved contest reviews by products");
+  const reviews = await hydrateReviews(toRowArray(reviewsResult.data), {
+    includeEntry: true,
+    includeSeason: true,
+  });
+  const reviewsByEntryId = new Map<string, ContestReview[]>();
+
+  for (const review of reviews) {
+    const entryReviews = reviewsByEntryId.get(review.entryId) ?? [];
+    if (entryReviews.length < safeReviewLimit) {
+      entryReviews.push(review);
+      reviewsByEntryId.set(review.entryId, entryReviews);
+    }
+  }
+
+  return entries.map((entry) => ({
+    entry,
+    reviews: reviewsByEntryId.get(entry.id) ?? [],
+  }));
+}
+
+export async function getContestProductTastingEntries(
+  productIds: string[],
+): Promise<ContestEntrySummary[]> {
+  const safeProductIds = uniqueStrings(productIds);
+  if (safeProductIds.length === 0) {
+    return [];
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const entriesResult = await supabase
+    .from("contest_entries")
+    .select(SELECT_ENTRY_COLUMNS)
+    .in("product_id", safeProductIds)
+    .eq("is_published", true)
+    .order("updated_at", { ascending: false })
+    .limit(1000);
+
+  failIfError(entriesResult.error, "read public contest entries by products");
+  const entries = await hydrateEntries(toRowArray(entriesResult.data));
+  const entriesByProductId = new Map<string, ContestEntrySummary[]>();
+
+  for (const entry of entries) {
+    const productEntries = entriesByProductId.get(entry.productId) ?? [];
+    productEntries.push(entry);
+    entriesByProductId.set(entry.productId, productEntries);
+  }
+
+  return safeProductIds.flatMap((productId) => {
+    const entry = selectContestProductTastingEntry(entriesByProductId.get(productId) ?? []);
+    return entry ? [entry] : [];
+  });
 }
 
 export async function getContestEntryDetailBySlug(

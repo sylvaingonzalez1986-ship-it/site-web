@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ProductVideoModal } from "./ProductVideoModal";
+import styles from "./ProductImageGallery.module.css";
 
 type ProductImageGalleryProps = {
   images: string[];
@@ -30,7 +31,7 @@ export function ProductImageGallery({
       : 0;
 
   return (
-    <div className="space-y-4">
+    <div className={styles.gallery}>
       {videoUrl && (
         <ProductVideoModal
           open={videoOpen}
@@ -39,7 +40,7 @@ export function ProductImageGallery({
           onClose={() => setVideoOpen(false)}
         />
       )}
-      <div className="relative aspect-square overflow-hidden rounded-xl border-2 border-[#1a1a1a]">
+      <div className={styles.main}>
         <Image
           src={currentSrc}
           alt={productName}
@@ -49,29 +50,25 @@ export function ProductImageGallery({
           className="object-cover"
         />
         {badge && (
-          <span className="absolute left-3 top-3 rounded-full bg-accent px-3 py-1 text-xs font-bold text-ink">
+          <span className={styles.badge}>
             {badge}
           </span>
         )}
         {safeBonusPoints > 0 && (
-          <span className="pill-cartoon absolute bottom-3 left-3 border-[#1a1a1a] bg-yellow px-3 py-1 text-xs font-bold text-ink">
+          <span className={styles.points}>
             +{safeBonusPoints} pts {"\u2605"}
           </span>
         )}
       </div>
 
       {mediaItems.length > 1 && (
-        <div className="flex justify-center gap-2 overflow-x-auto">
+        <div className={styles.thumbs}>
           {mediaItems.map((item, idx) => (
             <button
               key={item.src}
               type="button"
               onClick={() => setSelectedIndex(idx)}
-              className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border-2 transition-all ${
-                idx === selectedIndex
-                  ? "border-[#d35400] ring-2 ring-[#d35400]"
-                  : "border-[#1a1a1a] hover:border-[#d35400]"
-              }`}
+              className={`${styles.thumb} ${idx === selectedIndex ? styles.thumbActive : ""}`}
             >
               <Image
                 src={item.src}

@@ -1,0 +1,67 @@
+.gallery {
+  display: grid;
+  gap: 1rem;
+}
+
+.main {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 3px solid var(--ink);
+  background: #fff;
+  box-shadow: 6px 6px 0 rgba(17, 21, 18, 0.16);
+}
+
+.badge,
+.points {
+  position: absolute;
+  z-index: 10;
+  border: 2px solid var(--ink);
+  padding: 0.4rem 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badge {
+  top: 1rem;
+  left: 1rem;
+  background: var(--yellow);
+}
+
+.points {
+  bottom: 1rem;
+  left: 1rem;
+  background: var(--cream);
+}
+
+.thumbs {
+  display: flex;
+  gap: 0.65rem;
+  overflow-x: auto;
+  padding: 0.2rem 0.2rem 0.4rem;
+}
+
+.thumb {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  background: #fff;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.thumb:hover,
+.thumbActive {
+  box-shadow: 4px 4px 0 var(--teal);
+  transform: translate(-2px, -2px);
+}
+
+@media (max-width: 900px) {
+  .main {
+    aspect-ratio: 4 / 3;
+  }
+}

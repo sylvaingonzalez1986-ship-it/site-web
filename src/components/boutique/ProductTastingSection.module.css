@@ -1,0 +1,123 @@
+.panel {
+  margin-top: 1.5rem;
+  scroll-margin-top: 7rem;
+  border: 3px solid var(--ink);
+  background: var(--cream);
+  box-shadow: 7px 7px 0 rgba(17, 21, 18, 0.18);
+}
+
+.summary {
+  display: flex;
+  min-height: 104px;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--yellow) 42%, var(--cream)), var(--cream));
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.title {
+  margin-top: 0.25rem;
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.toggle {
+  display: inline-flex;
+  min-height: 44px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid var(--ink);
+  background: var(--yellow);
+  padding: 0.55rem 0.8rem;
+  box-shadow: 3px 3px 0 var(--ink);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.content {
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border-top: 3px solid var(--ink);
+}
+
+.stat {
+  display: flex;
+  min-height: 112px;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 2px solid var(--ink);
+  padding: 1rem;
+  box-shadow: 4px 4px 0 rgba(17, 21, 18, 0.16);
+}
+
+.criterion,
+.review,
+.reviewDetails,
+.empty {
+  border: 2px solid var(--ink);
+  background: #fff;
+}
+
+.criterion {
+  padding: 0.7rem;
+}
+
+.bar {
+  height: 8px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  background: #fff;
+}
+
+.review {
+  padding: 1rem;
+  box-shadow: 4px 4px 0 rgba(17, 21, 18, 0.16);
+}
+
+.score,
+.tag {
+  border: 1px solid var(--ink);
+  background: var(--yellow);
+  padding: 0.25rem 0.45rem;
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+
+.reviewDetails {
+  margin-top: 1rem;
+  background: color-mix(in srgb, var(--yellow) 12%, var(--cream));
+}
+
+.empty {
+  margin-top: 0.75rem;
+  padding: 1.5rem;
+  border-style: dashed;
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .panel {
+    box-shadow: 5px 5px 0 rgba(17, 21, 18, 0.18);
+  }
+
+  .toggle {
+    min-width: 44px;
+    justify-content: center;
+    padding-inline: 0.65rem;
+  }
+}

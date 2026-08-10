@@ -7,6 +7,7 @@ import { ProducerTcgModal } from "@/components/boutique/ProducerTcgModal";
 import { FRENCH_REGION_LABELS, type FrenchRegion } from "@/data/france-geo";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { Product } from "@/data/products";
+import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import type { Producer } from "@/types/store";
 
 type RegionCarouselOverlayProps = {
@@ -18,6 +19,7 @@ type RegionCarouselOverlayProps = {
   lowStockThresholdGrams: number;
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
+  tastingSummariesByProductId: Record<string, PublicContestProductTastingSummary>;
   onClose: () => void;
 };
 
@@ -30,6 +32,7 @@ export function RegionCarouselOverlay({
   lowStockThresholdGrams,
   producerPartnerLabel,
   producerWebsiteLabel,
+  tastingSummariesByProductId,
   onClose,
 }: RegionCarouselOverlayProps) {
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -269,6 +272,7 @@ export function RegionCarouselOverlay({
         lowStockThresholdGrams={lowStockThresholdGrams}
         producerPartnerLabel={producerPartnerLabel}
         producerWebsiteLabel={producerWebsiteLabel}
+        tastingSummariesByProductId={tastingSummariesByProductId}
         onClose={() => setSelectedProducerId(null)}
         onSelectProducer={handleSelectProducer}
       />

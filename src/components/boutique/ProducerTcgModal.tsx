@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { ProducerDetailPanel } from "@/components/boutique/ProducerDetailPanel";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { Product } from "@/data/products";
+import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import type { Producer } from "@/types/store";
 
 type ProducerTcgModalProps = {
@@ -16,6 +18,7 @@ type ProducerTcgModalProps = {
   lowStockThresholdGrams: number;
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
+  tastingSummariesByProductId?: Record<string, PublicContestProductTastingSummary>;
   onClose: () => void;
   onSelectProducer: (producerId: string) => void;
 };
@@ -29,6 +32,7 @@ export function ProducerTcgModal({
   lowStockThresholdGrams,
   producerPartnerLabel,
   producerWebsiteLabel,
+  tastingSummariesByProductId = {},
   onClose,
   onSelectProducer,
 }: ProducerTcgModalProps) {
@@ -137,12 +141,12 @@ export function ProducerTcgModal({
             type="button"
             className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
             onClick={goToPrevious}
-            aria-label="Producteur precedent"
+            aria-label="Producteur précédent"
           >
-            {"<"}
+            <ChevronLeft size={20} strokeWidth={2.5} aria-hidden="true" />
           </button>
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
-            {selectedIndex + 1} / {producers.length}
+            Producteurs · {selectedIndex + 1} / {producers.length}
           </p>
           <button
             type="button"
@@ -150,7 +154,7 @@ export function ProducerTcgModal({
             onClick={goToNext}
             aria-label="Producteur suivant"
           >
-            {">"}
+            <ChevronRight size={20} strokeWidth={2.5} aria-hidden="true" />
           </button>
           <button
             ref={closeButtonRef}
@@ -159,7 +163,7 @@ export function ProducerTcgModal({
             onClick={onClose}
             aria-label="Fermer la fiche producteur"
           >
-            ×
+            <X size={20} strokeWidth={2.5} aria-hidden="true" />
           </button>
         </div>
 
@@ -171,6 +175,7 @@ export function ProducerTcgModal({
             lowStockThresholdGrams={lowStockThresholdGrams}
             producerPartnerLabel={producerPartnerLabel}
             producerWebsiteLabel={producerWebsiteLabel}
+            tastingSummariesByProductId={tastingSummariesByProductId}
             onClose={onClose}
             showCloseButton={false}
           />

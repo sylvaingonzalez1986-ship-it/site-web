@@ -2,12 +2,14 @@
 
 import type { KeyboardEvent } from "react";
 import Image from "next/image";
+import { ArrowUpRight, Leaf } from "lucide-react";
 import { ProducerSocialLinks } from "@/components/boutique/ProducerSocialLinks";
 import {
   PRODUCER_CULTURE_LABELS,
   type Producer,
   type ProducerCultureType,
 } from "@/types/store";
+import styles from "./ProducerTcgCard.module.css";
 
 type ProducerTcgCardProps = {
   producer: Producer;
@@ -22,31 +24,19 @@ const CULTURE_SHORT_LABELS: Record<ProducerCultureType, string> = {
   outdoor: "OUT",
 };
 
-function computeRarity(producer: Producer): number {
-  const score = [
-    (producer.cultureType ?? []).length > 0,
-    (producer.certifications ?? []).length > 0,
-    (producer.climate ?? "").trim().length > 0,
-    (producer.soil ?? "").trim().length > 0,
-    (producer.experience ?? "").trim().length > 0,
-  ].filter(Boolean).length;
-
-  return Math.max(1, Math.min(5, score));
-}
-
 export function ProducerTcgCard({
   producer,
   isSelected = false,
   onClick,
   imagePriority = false,
 }: ProducerTcgCardProps) {
-  const location = [producer.department, producer.region].filter(Boolean).join(", ") || producer.location;
+  const location =
+    [producer.department, producer.region].filter(Boolean).join(", ") ||
+    producer.location;
   const cultureTypes = producer.cultureType ?? [];
   const certifications = producer.certifications ?? [];
-  const rarity = computeRarity(producer);
-  const hasHolo = rarity >= 4;
   const description = producer.philosophy?.trim() || producer.description;
-  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+  const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       onClick?.();
@@ -54,90 +44,98 @@ export function ProducerTcgCard({
   };
 
   return (
-    <div
+    <article
       role="button"
       tabIndex={0}
       onClick={onClick}
       onKeyDown={onKeyDown}
-      className={`tcg-card ${hasHolo ? "tcg-card--holographic" : ""} ${isSelected ? "tcg-card--selected" : ""}`}
+      className={`group ${styles.card} ${isSelected ? styles.selected : ""}`}
       aria-pressed={isSelected}
+      aria-label={`Découvrir la fiche de ${producer.name}`}
     >
-      <div className="tcg-card-inner">
-        <header className="tcg-card-header">
-          <h3 className="tcg-card-name" title={producer.name}>
-            {producer.name}
-          </h3>
-          <div className="tcg-card-culture-badges" aria-label="Type de culture">
-            {cultureTypes.map((cultureType) => (
+      <div className={styles.inner}>
+        <header className={styles.header}>
+          <div className={styles.identity}>
+            <h3 className={styles.title} title={producer.name}>
+              {producer.name}
+            </h3>
+          </div>
+
+          <div className={styles.energyBadges} aria-label="Types de culture">
+            {cultureTypes.slice(0, 3).map((cultureType) => (
               <span
                 key={cultureType}
-                className={`tcg-culture-badge tcg-culture-badge--${cultureType}`}
+                className={styles.energy}
                 title={PRODUCER_CULTURE_LABELS[cultureType]}
               >
                 {CULTURE_SHORT_LABELS[cultureType]}
               </span>
             ))}
+            {cultureTypes.length === 0 && (
+              <span className={styles.energy} title="Producteur">
+                <Leaf size={13} aria-hidden="true" />
+              </span>
+            )}
           </div>
         </header>
 
-        <div className="tcg-card-image-frame">
+        <div className={styles.imageFrame}>
           <Image
             src={producer.image}
             alt={producer.name}
             fill
-            sizes="300px"
+            sizes="330px"
             priority={imagePriority}
-            className="object-cover"
+            className={styles.photo}
           />
-          <div className="tcg-card-location-ribbon">
-            <span className="tcg-card-location-text">{location}</span>
+          <p className={styles.location}>{location}</p>
+        </div>
+
+        <div className={styles.stats}>
+          <div className={styles.stat}>
+            <span className={styles.statLabel}>Climat</span>
+            <span className={styles.statValue}>{producer.climate || "—"}</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statLabel}>Sol</span>
+            <span className={styles.statValue}>{producer.soil || "—"}</span>
           </div>
         </div>
 
-        <div className="tcg-card-stats">
-          <div className="tcg-stat">
-            <span className="tcg-stat-label">Climat</span>
-            <span className="tcg-stat-value">{producer.climate || "—"}</span>
-          </div>
-          <div className="tcg-stat">
-            <span className="tcg-stat-label">Sol</span>
-            <span className="tcg-stat-value">{producer.soil || "—"}</span>
-          </div>
-        </div>
-
-        {certifications.length > 0 && (
-          <div className="tcg-card-certifications">
-            {certifications.slice(0, 4).map((certification) => (
-              <span key={certification} className="tcg-cert-pill">
+        <div className={styles.certifications} aria-label="Certifications">
+          {certifications.length > 0 ? (
+            certifications.slice(0, 3).map((certification) => (
+              <span key={certification} className={styles.certification}>
                 {certification}
               </span>
-            ))}
-          </div>
-        )}
+            ))
+          ) : (
+            <span className={styles.certificationMuted}>Production locale</span>
+          )}
+        </div>
 
-        <div className="tcg-card-description">{description}</div>
+        <div className={styles.textBox}>
+          <span className={styles.textLabel}>Portrait</span>
+          <p className={styles.description}>{description}</p>
+        </div>
 
-        <ProducerSocialLinks
-          links={producer.socialLinks}
-          producerName={producer.name}
-          compact
-          stopPropagation
-        />
-
-        <footer className="tcg-card-footer">
-          <span className="tcg-card-footer-text">
-            {producer.founded ? `Depuis ${producer.founded}` : producer.experience || "Producteur"}
+        <footer className={styles.footer}>
+          <span className={styles.experience}>
+            {producer.founded
+              ? `Depuis ${producer.founded}`
+              : producer.experience || "Producteur"}
           </span>
-          <div className="tcg-card-rarity" aria-label={`Rareté ${rarity} sur 5`}>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <span
-                key={index}
-                className={`tcg-card-rarity-dot ${index < rarity ? "" : "tcg-card-rarity-dot--empty"}`}
-              />
-            ))}
-          </div>
+          <ProducerSocialLinks
+            links={producer.socialLinks}
+            producerName={producer.name}
+            compact
+            stopPropagation
+          />
+          <span className={styles.discover}>
+            Fiche <ArrowUpRight size={14} aria-hidden="true" />
+          </span>
         </footer>
       </div>
-    </div>
+    </article>
   );
 }

@@ -5,6 +5,7 @@ import { ProducerCarousel } from "@/components/boutique/ProducerCarousel";
 import { ProducerTcgCard } from "@/components/boutique/ProducerTcgCard";
 import { ProducerTcgModal } from "@/components/boutique/ProducerTcgModal";
 import type { Product } from "@/data/products";
+import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import type { Producer } from "@/types/store";
 
 type ProducerTcgShowcaseProps = {
@@ -15,6 +16,7 @@ type ProducerTcgShowcaseProps = {
   lowStockThresholdGrams: number;
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
+  tastingSummariesByProductId?: Record<string, PublicContestProductTastingSummary>;
   className?: string;
 };
 
@@ -26,6 +28,7 @@ export function ProducerTcgShowcase({
   lowStockThresholdGrams,
   producerPartnerLabel,
   producerWebsiteLabel,
+  tastingSummariesByProductId = {},
   className = "",
 }: ProducerTcgShowcaseProps) {
   const [selectedProducerId, setSelectedProducerId] = useState<string | null>(null);
@@ -89,6 +92,7 @@ export function ProducerTcgShowcase({
         lowStockThresholdGrams={lowStockThresholdGrams}
         producerPartnerLabel={producerPartnerLabel}
         producerWebsiteLabel={producerWebsiteLabel}
+        tastingSummariesByProductId={tastingSummariesByProductId}
         onClose={() => setSelectedProducerId(null)}
         onSelectProducer={setSelectedProducerId}
       />

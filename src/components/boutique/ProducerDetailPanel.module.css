@@ -1,0 +1,232 @@
+.panel {
+  width: min(1180px, 100%);
+  margin: 1.5rem auto 0;
+  border: 3px solid var(--ink);
+  background: var(--cream);
+  box-shadow: 8px 8px 0 rgba(17, 21, 18, 0.2);
+}
+
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(250px, 0.72fr) minmax(0, 1.28fr);
+  border-bottom: 3px solid var(--ink);
+}
+
+.image {
+  position: relative;
+  min-height: 360px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-right: 3px solid var(--ink);
+  background: #e9e2d5;
+}
+
+.photo {
+  object-fit: contain;
+  object-position: center;
+  padding: clamp(0.5rem, 2vw, 1rem);
+}
+
+.copy {
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.eyebrow {
+  color: var(--teal);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: 0.5rem;
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  line-height: 0.84;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.description {
+  margin-top: 1.25rem;
+  padding-block: 1rem;
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  color: var(--charcoal);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.tags,
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tag {
+  border: 1px solid var(--ink);
+  background: #fff;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 5;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border-bottom: 3px solid var(--ink);
+  background: color-mix(in srgb, var(--teal) 7%, var(--cream));
+}
+
+.fact {
+  border: 2px solid var(--ink);
+  background: #fff;
+}
+
+.factSummary {
+  display: flex;
+  min-height: 58px;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem;
+}
+
+.factSummary::-webkit-details-marker {
+  display: none;
+}
+
+.factSummary:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: -3px;
+}
+
+.factTitle {
+  color: var(--teal);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.factValue {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+.factBody {
+  padding: 0.75rem 0.75rem 0.75rem 1.75rem;
+  border-top: 2px solid var(--ink);
+  color: var(--charcoal);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.factBody li + li {
+  margin-top: 0.35rem;
+}
+
+.products {
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.productsHeader {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.productsTitle {
+  margin-top: 0.25rem;
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.empty {
+  border: 2px dashed var(--ink);
+  padding: 1.5rem;
+  color: var(--charcoal);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .image {
+    min-height: 300px;
+    aspect-ratio: 16 / 10;
+    border-right: 0;
+    border-bottom: 3px solid var(--ink);
+  }
+
+  .productGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .panel {
+    box-shadow: 5px 5px 0 rgba(17, 21, 18, 0.18);
+  }
+
+  .facts,
+  .productGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .image {
+    min-height: 240px;
+  }
+
+  .productsHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
