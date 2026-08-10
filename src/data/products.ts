@@ -33,6 +33,8 @@ export function isProductCultureModeEligible(category: ProductCategory): boolean
 
 export type Product = {
   id: string;
+  createdAt?: string;
+  updatedAt?: string;
   name: string;
   category: ProductCategory;
   cultureMode?: ProductCultureType;

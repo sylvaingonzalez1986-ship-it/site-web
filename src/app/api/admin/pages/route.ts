@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import {
   createCmsPageByBackend,
@@ -6,6 +6,7 @@ import {
   readAdminCmsPagesByBackend,
 } from "@/lib/cms-pages-backend";
 import { isCmsPagesEnabledServer } from "@/lib/cms-pages-feature";
+import { notifyIndexNow } from "@/lib/indexnow";
 import type { CmsPageCreateInput } from "@/types/cms-pages";
 
 export const runtime = "nodejs";
@@ -36,6 +37,9 @@ export async function POST(request: Request) {
     const payload = (await request.json()) as CmsPageCreateInput;
     const page = await createCmsPageByBackend(payload);
     invalidateCmsPagesCache();
+    if (page.status === "published") {
+      after(() => notifyIndexNow([`/${page.slug}`]));
+    }
     return NextResponse.json(page, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Payload invalide.";

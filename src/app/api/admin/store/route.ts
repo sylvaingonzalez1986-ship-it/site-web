@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { logAuditEvent } from "@/lib/audit-log";
 import { cleanupUnusedBlogUploads } from "@/lib/blog-image-storage";
@@ -12,6 +12,7 @@ import { cleanupUnusedProductAnalyses } from "@/lib/product-analysis-storage";
 import { cleanupUnusedProductUploads } from "@/lib/product-image-storage";
 import { cleanupUnusedProductVideoUploads } from "@/lib/product-video-storage";
 import { cleanupUnusedProducerUploads } from "@/lib/producer-image-storage";
+import { collectChangedStorefrontPaths, notifyIndexNow } from "@/lib/indexnow";
 import { countReplacementCharacters } from "@/lib/text-encoding-repair";
 import type { CmsStore } from "@/types/store";
 
@@ -124,6 +125,11 @@ export async function PUT(request: Request) {
 
     invalidatePublicStoreCache();
     invalidateBlogPostsCache();
+
+    const changedPublicPaths = collectChangedStorefrontPaths(current, saved);
+    if (changedPublicPaths.length > 0) {
+      after(() => notifyIndexNow(changedPublicPaths));
+    }
 
     return NextResponse.json(saved);
   } catch (error) {
