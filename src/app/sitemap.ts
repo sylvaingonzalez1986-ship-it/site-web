@@ -6,6 +6,7 @@ import {
 } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
 import { bretonCities } from "@/lib/local-seo-data";
+import { mostRecentSeoDate, parseSeoDate } from "@/lib/seo-sitemap";
 
 const categories = [
   "fleurs-cbd",
@@ -40,83 +41,85 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: `${baseUrl}/boutique`,
-      lastModified: new Date(),
+      lastModified: mostRecentSeoDate(
+        store.products.map((product) => product.updatedAt ?? product.createdAt),
+      ),
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/cbd-naturel`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/cbd-pas-cher`,
-      lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: mostRecentSeoDate(posts.map((post) => post.updatedAt)),
       changeFrequency: "daily",
       priority: 0.85,
     },
     {
       url: `${baseUrl}/fidelite`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
       url: `${baseUrl}/cgv`,
-      lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${baseUrl}/mentions-legales`,
-      lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${baseUrl}/politique-confidentialite`,
-      lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${baseUrl}/politique-cookies`,
-      lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.3,
     },
   ];
 
-  const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
-    url: `${baseUrl}/boutique/${cat}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }));
+  const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => {
+    const productCategory = Object.entries(categorySlugs).find(([, slug]) => slug === cat)?.[0];
+
+    return {
+      url: `${baseUrl}/boutique/${cat}`,
+      lastModified: mostRecentSeoDate(
+        store.products
+          .filter((product) => product.category === productCategory)
+          .map((product) => product.updatedAt ?? product.createdAt),
+      ),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    };
+  });
 
   const blogPages: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.updatedAt),
+    lastModified: parseSeoDate(post.updatedAt),
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }));
 
   const cmsDynamicPages: MetadataRoute.Sitemap = cmsPages.map((page) => ({
     url: `${baseUrl}/${page.slug}`,
-    lastModified: new Date(page.updatedAt),
+    lastModified: parseSeoDate(page.updatedAt),
     changeFrequency: "weekly" as const,
     priority: 0.6,
   }));
@@ -128,14 +131,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
     .map((product) => ({
       url: `${baseUrl}/boutique/${categorySlugs[product.category]}/${product.id}`,
-      lastModified: new Date(),
+      lastModified: parseSeoDate(product.updatedAt ?? product.createdAt),
       changeFrequency: "weekly" as const,
       priority: 0.75,
     }));
 
   const localCityPages: MetadataRoute.Sitemap = bretonCities.map((city) => ({
     url: `${baseUrl}/${city.slug}`,
-    lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.65,
   }));

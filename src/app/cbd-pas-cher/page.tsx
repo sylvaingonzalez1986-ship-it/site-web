@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BreadcrumbJsonLd, FaqJsonLd, ProductListJsonLd } from "@/components/JsonLd";
+import { BreadcrumbJsonLd, FaqJsonLd, ProductListJsonLd, WebPageJsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { dedupeProducts } from "@/lib/product-dedup";
@@ -44,6 +44,12 @@ export default async function CbdPasCherPage() {
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
       <BreadcrumbJsonLd items={[{ name: "Accueil", url: baseUrl }, { name: "CBD pas cher", url: pageUrl }]} />
+      <WebPageJsonLd
+        name="CBD pas cher et naturel au prix juste"
+        description="Comparer les prix et les formats de CBD naturel avec une origine, une traçabilité et des analyses clairement présentées."
+        url={pageUrl}
+        about={["CBD pas cher", "Prix du CBD", "CBD naturel", "Circuit court breton"]}
+      />
       <FaqJsonLd questions={FAQ_ITEMS} />
       <ProductListJsonLd products={affordableProducts} producers={store.producers} />
       <div className="retro-container">

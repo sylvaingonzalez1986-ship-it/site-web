@@ -24,12 +24,95 @@ function resolveProductAvailability(product: Product): string {
   return "https://schema.org/InStock";
 }
 
+const CATEGORY_SLUGS: Record<Product["category"], string> = {
+  fleurs: "fleurs-cbd",
+  resines: "resines-cbd",
+  huiles: "huiles-cbd",
+  "e-liquide": "e-liquide-cbd",
+  cosmetiques: "cosmetiques-cbd",
+  alimentaire: "tisane-cbd",
+  miam: "miam-cbd",
+  accessoires: "accessoires-cbd",
+};
+
+const CATEGORY_NAMES: Record<Product["category"], string> = {
+  fleurs: "Fleurs CBD",
+  resines: "Résines CBD",
+  huiles: "Huiles CBD",
+  "e-liquide": "E-liquides CBD",
+  cosmetiques: "Cosmétiques CBD",
+  alimentaire: "Tisanes CBD",
+  miam: "Produits gourmands CBD",
+  accessoires: "Accessoires CBD",
+};
+
 const BUSINESS_NAME = "Les Chanvriers Bretons";
 const BUSINESS_EMAIL = "leschanvriersbretons@gmail.com";
+const BUSINESS_LOGO_PATH = "/les-chanvriers-bretons-logo.png";
 const BUSINESS_PHONE =
   process.env.BUSINESS_PHONE?.trim() ||
   process.env.NEXT_PUBLIC_BUSINESS_PHONE?.trim() ||
   undefined;
+
+function absoluteUrl(baseUrl: string, value: string): string {
+  try {
+    return new URL(value, `${baseUrl}/`).toString();
+  } catch {
+    return `${baseUrl}${value.startsWith("/") ? value : `/${value}`}`;
+  }
+}
+
+function organizationId(baseUrl: string): string {
+  return `${baseUrl}/#organization`;
+}
+
+function websiteId(baseUrl: string): string {
+  return `${baseUrl}/#website`;
+}
+
+function founderId(baseUrl: string): string {
+  return `${baseUrl}/#founder`;
+}
+
+function getProductUrl(baseUrl: string, product: Pick<Product, "category" | "id">): string {
+  return `${baseUrl}/boutique/${CATEGORY_SLUGS[product.category]}/${product.id}`;
+}
+
+function buildProductOffers(product: Product, productUrl: string, baseUrl: string) {
+  const seller = { "@id": organizationId(baseUrl) };
+  const returnPolicy = { "@id": `${baseUrl}/#return-policy` };
+  const variants = product.variantOptions?.filter((option) => option.enabled !== false) ?? [];
+
+  if (variants.length === 0) {
+    return {
+      "@type": "Offer",
+      price: product.price,
+      priceCurrency: "EUR",
+      availability: resolveProductAvailability(product),
+      itemCondition: "https://schema.org/NewCondition",
+      url: productUrl,
+      seller,
+      hasMerchantReturnPolicy: returnPolicy,
+    };
+  }
+
+  return variants.map((option) => ({
+    "@type": "Offer",
+    sku: `${product.id}-${option.id}`,
+    name: `${product.name} — ${option.label}`,
+    price: option.price,
+    priceCurrency: "EUR",
+    availability:
+      option.inStock === false ||
+      (typeof option.stockQuantity === "number" && option.stockQuantity <= 0)
+        ? "https://schema.org/OutOfStock"
+        : "https://schema.org/InStock",
+    itemCondition: "https://schema.org/NewCondition",
+    url: productUrl,
+    seller,
+    hasMerchantReturnPolicy: returnPolicy,
+  }));
+}
 
 function safeJsonLdStringify(value: unknown): string {
   return JSON.stringify(value)
@@ -64,18 +147,41 @@ export async function OrganizationJsonLd() {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "OnlineStore",
+    "@id": organizationId(baseUrl),
     name: BUSINESS_NAME,
     url: baseUrl,
-    logo: `${baseUrl}/sylvain.png`,
+    logo: {
+      "@type": "ImageObject",
+      "@id": `${baseUrl}/#logo`,
+      url: `${baseUrl}${BUSINESS_LOGO_PATH}`,
+      contentUrl: `${baseUrl}${BUSINESS_LOGO_PATH}`,
+      width: 800,
+      height: 800,
+    },
+    image: { "@id": `${baseUrl}/#logo` },
     description:
       "Producteur CBD en Bretagne. Fleurs de CBD direct producteur, huiles spectre complet, résines et tisanes chanvre artisanales. CBD naturel cultivé sans pesticide, achat en circuit court. Livraison rapide France.",
     email: BUSINESS_EMAIL,
     telephone: BUSINESS_PHONE,
+    priceRange: "€5 - €80",
+    currenciesAccepted: "EUR",
     founder: {
       "@type": "Person",
+      "@id": founderId(baseUrl),
       name: "Sylvain",
       jobTitle: "Chanvrier breton",
+      image: `${baseUrl}/sylvain.png`,
+    },
+    hasMerchantReturnPolicy: {
+      "@type": "MerchantReturnPolicy",
+      "@id": `${baseUrl}/#return-policy`,
+      applicableCountry: "FR",
+      returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+      merchantReturnDays: 14,
+      returnMethod: "https://schema.org/ReturnByMail",
+      returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
+      merchantReturnLink: `${baseUrl}/cgv`,
     },
     knowsAbout: [
       "CBD naturel",
@@ -99,51 +205,10 @@ export async function OrganizationJsonLd() {
   return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
 
+// Compatibility export for deployments whose layout still imports the former
+// duplicate LocalBusiness graph. OrganizationJsonLd now carries the store data.
 export async function LocalBusinessJsonLd() {
-  const nonce = await getNonce();
-  const baseUrl = getSiteUrl();
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": ["OnlineStore", "LocalBusiness"],
-    name: BUSINESS_NAME,
-    url: baseUrl,
-    logo: `${baseUrl}/sylvain.png`,
-    image: `${baseUrl}/sylvain.png`,
-    description:
-      "Boutique CBD naturel direct producteur breton. Fleurs de CBD, résines, huiles spectre complet, tisanes chanvre artisanales. Achat CBD circuit court, français, sans pesticide, cultivé en Bretagne. Livraison rapide en France.",
-    email: BUSINESS_EMAIL,
-    telephone: BUSINESS_PHONE,
-    priceRange: "€5 - €80",
-    currenciesAccepted: "EUR",
-    keywords:
-      "cbd naturel, cbd breton, producteur cbd bretagne, fleur de cbd direct producteur, achat cbd circuit court, cbd français sans pesticide, tisane chanvre artisanale",
-    areaServed: [
-      { "@type": "Country", name: "France" },
-      { "@type": "AdministrativeArea", name: "Bretagne" },
-    ],
-    address: {
-      "@type": "PostalAddress",
-      addressRegion: "Bretagne",
-      addressCountry: "FR",
-    },
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: [
-        "Monday", "Tuesday", "Wednesday", "Thursday",
-        "Friday", "Saturday", "Sunday",
-      ],
-      opens: "00:00",
-      closes: "23:59",
-    },
-    sameAs: [
-      "https://www.instagram.com/leschanvriersbretons",
-      "https://www.facebook.com/leschanvriersbretons",
-      "https://www.tiktok.com/@leschanvriersbretons",
-    ],
-  };
-
-  return <JsonLdScript nonce={nonce} data={jsonLd} />;
+  return null;
 }
 
 export async function WebSiteJsonLd() {
@@ -153,8 +218,10 @@ export async function WebSiteJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": websiteId(baseUrl),
     name: BUSINESS_NAME,
     url: baseUrl,
+    publisher: { "@id": organizationId(baseUrl) },
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -163,6 +230,35 @@ export async function WebSiteJsonLd() {
       },
       "query-input": "required name=search_term_string",
     },
+  };
+
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
+}
+
+export async function WebPageJsonLd({
+  name,
+  description,
+  url,
+  about,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  about: string[];
+}) {
+  const nonce = await getNonce();
+  const baseUrl = getSiteUrl();
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": url,
+    url,
+    name,
+    description,
+    inLanguage: "fr-FR",
+    isPartOf: { "@id": websiteId(baseUrl) },
+    publisher: { "@id": organizationId(baseUrl) },
+    about: about.map((nameValue) => ({ "@type": "Thing", name: nameValue })),
   };
 
   return <JsonLdScript nonce={nonce} data={jsonLd} />;
@@ -204,41 +300,21 @@ export async function CityServiceJsonLd({
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": ["OnlineStore", "LocalBusiness"],
-    name: `${BUSINESS_NAME} ${city}`,
+    "@type": "Service",
+    "@id": `${url}#delivery-service`,
+    name: `Livraison de CBD à ${city}`,
     url,
-    mainEntityOfPage: url,
-    image: `${baseUrl}/sylvain.png`,
-    logo: `${baseUrl}/sylvain.png`,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
     description,
-    email: BUSINESS_EMAIL,
-    telephone: BUSINESS_PHONE,
+    serviceType: "Livraison de produits CBD",
+    provider: { "@id": organizationId(baseUrl) },
     areaServed: [
       { "@type": "City", name: city },
       { "@type": "AdministrativeArea", name: department },
       { "@type": "AdministrativeArea", name: "Bretagne" },
       { "@type": "Country", name: "France" },
     ],
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: city,
-      addressRegion: department,
-      addressCountry: "FR",
-    },
-    knowsAbout: [
-      `CBD ${city}`,
-      `fleurs CBD ${city}`,
-      `huiles CBD ${city}`,
-      `résines CBD ${city}`,
-      `tisanes chanvre ${city}`,
-      "CBD naturel",
-      "producteur CBD Bretagne",
-    ],
-    sameAs: [
-      "https://www.instagram.com/leschanvriersbretons",
-      "https://www.facebook.com/leschanvriersbretons",
-      "https://www.tiktok.com/@leschanvriersbretons",
-    ],
+    termsOfService: `${baseUrl}/cgv`,
   };
 
   return <JsonLdScript nonce={nonce} data={jsonLd} />;
@@ -271,18 +347,7 @@ export async function CollectionPageJsonLd({
       itemListElement: products.map((product, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        url: `${baseUrl}/boutique/${
-          {
-            fleurs: "fleurs-cbd",
-            resines: "resines-cbd",
-            huiles: "huiles-cbd",
-            "e-liquide": "e-liquide-cbd",
-            cosmetiques: "cosmetiques-cbd",
-            alimentaire: "tisane-cbd",
-            miam: "miam-cbd",
-            accessoires: "accessoires-cbd",
-          }[product.category] ?? `${product.category}-cbd`
-        }/${product.id}`,
+        url: getProductUrl(baseUrl, product),
       })),
     },
   };
@@ -306,15 +371,21 @@ export async function ProductListJsonLd({
     "@type": "ItemList",
     name: "Produits CBD - Les Chanvriers Bretons",
     numberOfItems: products.length,
-    itemListElement: products.map((product, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      item: {
-        "@type": "Product",
-        sku: product.id,
-        name: product.name,
-        description: product.description,
-        image: `${baseUrl}${product.images?.[0] ?? product.image}`,
+    itemListElement: products.map((product, index) => {
+      const productUrl = getProductUrl(baseUrl, product);
+
+      return {
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "Product",
+          "@id": `${productUrl}#product`,
+          sku: product.id,
+          name: product.name,
+          description: product.description,
+          image: absoluteUrl(baseUrl, product.images?.[0] ?? product.image),
+          url: productUrl,
+          category: CATEGORY_NAMES[product.category],
         brand: {
           "@type": "Brand",
           name:
@@ -322,18 +393,10 @@ export async function ProductListJsonLd({
               ? producerById.get(product.producerId)?.name
               : undefined) ?? BUSINESS_NAME,
         },
-        offers: {
-          "@type": "Offer",
-          price: product.price,
-          priceCurrency: "EUR",
-          availability: resolveProductAvailability(product),
-          seller: {
-            "@type": "Organization",
-            name: BUSINESS_NAME,
-          },
+          offers: buildProductOffers(product, productUrl, baseUrl),
         },
-      },
-    })),
+      };
+    }),
   };
 
   return <JsonLdScript nonce={nonce} data={jsonLd} />;
@@ -342,53 +405,71 @@ export async function ProductListJsonLd({
 export async function ProductJsonLd({
   product,
   producer,
+  aggregateRating,
 }: {
   product: Product;
-  producer?: { name: string };
+  producer?: { id?: string; name: string };
+  aggregateRating?: {
+    ratingValue: number;
+    ratingCount: number;
+    bestRating: number;
+  };
 }) {
   const nonce = await getNonce();
   const baseUrl = getSiteUrl();
 
-  const categorySlugs: Record<string, string> = {
-    fleurs: "fleurs-cbd",
-    resines: "resines-cbd",
-    huiles: "huiles-cbd",
-    "e-liquide": "e-liquide-cbd",
-    cosmetiques: "cosmetiques-cbd",
-    alimentaire: "tisane-cbd",
-    miam: "miam-cbd",
-    accessoires: "accessoires-cbd",
-  };
-  const catSlug = categorySlugs[product.category] ?? `${product.category}-cbd`;
-  const productUrl = `${baseUrl}/boutique/${catSlug}/${product.id}`;
-  const imageUrl = product.images?.[0] ?? product.image;
-  const fullImageUrl = imageUrl.startsWith("http")
-    ? imageUrl
-    : `${baseUrl}${imageUrl}`;
+  const productUrl = getProductUrl(baseUrl, product);
+  const productImages = (product.images?.length ? product.images : [product.image]).map((image) =>
+    absoluteUrl(baseUrl, image),
+  );
+  const additionalProperty = [
+    product.cultureMode
+      ? { "@type": "PropertyValue", name: "Mode de culture", value: product.cultureMode }
+      : undefined,
+    typeof product.weightGrams === "number"
+      ? { "@type": "PropertyValue", name: "Poids", value: product.weightGrams, unitCode: "GRM" }
+      : undefined,
+  ].filter(Boolean);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
+    "@id": `${productUrl}#product`,
     sku: product.id,
     name: product.name,
     description: product.description,
-    image: fullImageUrl,
+    image: productImages,
     url: productUrl,
+    category: CATEGORY_NAMES[product.category],
     brand: {
       "@type": "Brand",
       name: producer?.name ?? BUSINESS_NAME,
     },
-    offers: {
-      "@type": "Offer",
-      price: product.price,
-      priceCurrency: "EUR",
-      availability: resolveProductAvailability(product),
-      url: productUrl,
-      seller: {
-        "@type": "Organization",
-        name: BUSINESS_NAME,
+    manufacturer: producer
+      ? {
+          "@type": "Organization",
+          "@id": `${baseUrl}/#producer-${encodeURIComponent(producer.id ?? product.producerId ?? producer.name)}`,
+          name: producer.name,
+        }
+      : { "@id": organizationId(baseUrl) },
+    additionalProperty: additionalProperty.length > 0 ? additionalProperty : undefined,
+    subjectOf: product.analysisPdf
+      ? {
+          "@type": "DigitalDocument",
+          name: `Analyse laboratoire — ${product.name}`,
+          url: absoluteUrl(baseUrl, product.analysisPdf),
+        }
+      : undefined,
+    ...(aggregateRating ? {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: aggregateRating.ratingValue,
+        ratingCount: aggregateRating.ratingCount,
+        bestRating: aggregateRating.bestRating,
+        worstRating: 1,
       },
-    },
+    } : {}),
+    offers: buildProductOffers(product, productUrl, baseUrl),
   };
 
   return <JsonLdScript nonce={nonce} data={jsonLd} />;
@@ -423,15 +504,13 @@ export async function ArticleJsonLd({
       "@id": url,
     },
     author: {
-      "@type": "Organization",
-      name: BUSINESS_NAME,
+      "@id": organizationId(baseUrl),
     },
     publisher: {
-      "@type": "Organization",
-      name: BUSINESS_NAME,
+      "@id": organizationId(baseUrl),
       logo: {
         "@type": "ImageObject",
-        url: `${baseUrl}/sylvain.png`,
+        url: `${baseUrl}${BUSINESS_LOGO_PATH}`,
       },
     },
     wordCount: typeof wordCount === "number" && Number.isFinite(wordCount) ? wordCount : undefined,

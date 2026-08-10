@@ -4,6 +4,7 @@ import {
   BreadcrumbJsonLd,
   FaqJsonLd,
   ProductListJsonLd,
+  WebPageJsonLd,
 } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
@@ -150,6 +151,12 @@ export default async function CbdNaturelPage() {
           { name: "Accueil", url: baseUrl },
           { name: "CBD Naturel", url: pageUrl },
         ]}
+      />
+      <WebPageJsonLd
+        name="CBD naturel : origine, culture et traçabilité"
+        description="Comprendre le CBD naturel, sa culture, son origine bretonne, sa traçabilité et les analyses disponibles."
+        url={pageUrl}
+        about={["CBD naturel", "Chanvre breton", "Circuit court", "Traçabilité du CBD"]}
       />
       <FaqJsonLd questions={FAQ_ITEMS} />
       <ProductListJsonLd products={featuredProducts} producers={store.producers} />

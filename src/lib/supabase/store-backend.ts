@@ -70,8 +70,10 @@ const SELECT_PRODUCERS_COLUMNS = [
   "founded",
 ].join(",");
 
-const SELECT_PRODUCTS_COLUMNS = [
+const PRODUCT_COLUMNS = [
   "id",
+  "created_at",
+  "updated_at",
   "name",
   "category",
   "culture_type",
@@ -94,7 +96,11 @@ const SELECT_PRODUCTS_COLUMNS = [
   "stock_quantity",
   "variant_label",
   "variant_options",
-].join(",");
+];
+const SELECT_PRODUCTS_COLUMNS = PRODUCT_COLUMNS.join(",");
+const SELECT_PRODUCTS_WITHOUT_UPDATED_AT = PRODUCT_COLUMNS
+  .filter((column) => column !== "updated_at")
+  .join(",");
 
 const SELECT_BLOG_COLUMNS = [
   "id",
@@ -216,6 +222,46 @@ function toIsoString(value: unknown): string {
   }
 
   return new Date(parsed).toISOString();
+}
+
+function isMissingProductFreshnessColumn(
+  error: { code?: string; message: string } | null,
+): boolean {
+  return Boolean(
+    error &&
+      (error.code === "42703" || error.message.toLowerCase().includes("does not exist")) &&
+      error.message.includes("updated_at"),
+  );
+}
+
+async function selectProductRows(
+  supabase: ReturnType<typeof createSupabaseServiceClient>,
+) {
+  const result = await supabase
+    .from("products")
+    .select(SELECT_PRODUCTS_COLUMNS)
+    .order("position", { ascending: true });
+
+  if (!isMissingProductFreshnessColumn(result.error)) {
+    return result;
+  }
+
+  // Keeps deployments available while the additive migration is applied.
+  // The sitemap uses created_at until updated_at becomes available.
+  return supabase
+    .from("products")
+    .select(SELECT_PRODUCTS_WITHOUT_UPDATED_AT)
+    .order("position", { ascending: true });
+}
+
+function toOptionalIsoString(value: unknown): string | undefined {
+  const text = toStringValue(value);
+  if (!text) {
+    return undefined;
+  }
+
+  const parsed = Date.parse(text);
+  return Number.isFinite(parsed) ? new Date(parsed).toISOString() : undefined;
 }
 
 function toStringArray(value: unknown): string[] {
@@ -618,6 +664,8 @@ function mapProductRow(
 
   return {
     id,
+    createdAt: toOptionalIsoString(row.created_at),
+    updatedAt: toOptionalIsoString(row.updated_at),
     name: sanitizeDisplayText(row.name, "Produit sans nom"),
     category,
     cultureMode,
@@ -756,10 +804,7 @@ export async function readStoreFromSupabase(): Promise<CmsStore> {
       .from("producers")
       .select(SELECT_PRODUCERS_COLUMNS)
       .order("position", { ascending: true }),
-    supabase
-      .from("products")
-      .select(SELECT_PRODUCTS_COLUMNS)
-      .order("position", { ascending: true }),
+    selectProductRows(supabase),
     supabase.from("pack_components").select("pack_id,product_id"),
     supabase
       .from("blog_posts")
@@ -1111,10 +1156,7 @@ export async function readPublicStoreFromSupabase(): Promise<PublicStoreResponse
       .from("producers")
       .select(SELECT_PRODUCERS_COLUMNS)
       .order("position", { ascending: true }),
-    supabase
-      .from("products")
-      .select(SELECT_PRODUCTS_COLUMNS)
-      .order("position", { ascending: true }),
+    selectProductRows(supabase),
     supabase.from("pack_components").select("pack_id,product_id"),
     supabase
       .from("blog_posts")
