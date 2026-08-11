@@ -10,9 +10,8 @@ import {
 } from "@/data/products";
 import { mergeOwnProducer } from "@/lib/own-producer";
 import { normalizeProducerImagePath } from "@/lib/producer-image-storage";
-import { normalizeProductAnalysisPath } from "@/lib/product-analysis-storage";
+import { normalizeProductAnalysisPath, normalizeProductVideoPath } from "@/lib/product-media-paths";
 import { normalizeProductImagePath } from "@/lib/product-image-storage";
-import { normalizeProductVideoPath } from "@/lib/product-video-storage";
 import { normalizeExternalUrl } from "@/lib/external-url";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
