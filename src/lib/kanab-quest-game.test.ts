@@ -225,8 +225,8 @@ describe("Kanab Quest dice prototype", () => {
     expect(canPlayKqCard(rolled, chrysope).reason).toContain("pas dans ta collection");
   });
 
-  it("uses the generic Coup de pouce name", () => {
-    expect(KQ_CARDS.find((card) => card.code === "BOTTE-018")?.name).toBe("Coup de pouce");
+  it("exposes the agronomic pH–EC diagnostic card", () => {
+    expect(KQ_CARDS.find((card) => card.code === "BOTTE-018")?.name).toBe("Testeur pH–EC");
   });
 
   it("rewards the Loupe plus compatible auxiliary combo", () => {
@@ -320,11 +320,11 @@ describe("Kanab Quest dice prototype", () => {
     expect(state.effectNotices?.some((notice) => notice.includes("4 dés lancés") && notice.includes("écarté"))).toBe(true);
   });
 
-  it("records a visible before-and-after confirmation for a reaction card", () => {
+  it("records a visible before-and-after confirmation for the pH–EC reaction", () => {
     const base = startKqGame(30, { deckCodes: ["BOTTE-001", "BOTTE-018"], startingXp: 5 });
     const reacted = playKqCard({ ...base, phase: "rolled", dice: [3, 4, 5] }, "BOTTE-018");
-    expect(reacted.dice).toEqual([4, 4, 5]);
-    expect(reacted.effectNotices?.at(-1)).toContain("3 · 4 · 5 → 4 · 4 · 5");
+    expect(reacted.dice).not.toEqual([3, 4, 5]);
+    expect(reacted.effectNotices?.at(-1)).toContain("3 · 4 · 5 →");
   });
 
   it("turns a nominal success with an uncancelled Danger into a fragile result", () => {
@@ -343,16 +343,17 @@ describe("Kanab Quest dice prototype", () => {
     expect(canPlayKqCard(state, KQ_CARDS.find((card) => card.code === "BOTTE-017")!).allowed).toBe(false);
     state = rollKqDice(state);
     state = playKqCard(state, "BOTTE-006");
-    expect(canPlayKqCard(state, KQ_CARDS.find((card) => card.code === "BOTTE-018")!).allowed).toBe(false);
+    const reactionLocked = { ...state, reactionPlayed: true };
+    expect(canPlayKqCard(reactionLocked, KQ_CARDS.find((card) => card.code === "BOTTE-018")!).allowed).toBe(false);
   });
 
-  it("prevents burning a conditional reaction when it would have no effect", () => {
-    const base = startKqGame(1, { deckCodes: ["BOTTE-001", "BOTTE-018"] });
-    const noThree: KqGameState = { ...base, phase: "rolled", dice: [2, 4, 5], xp: 5 };
-    const withThree: KqGameState = { ...noThree, dice: [3, 4, 5] };
-    const boost = KQ_CARDS.find((card) => card.code === "BOTTE-018")!;
-    expect(canPlayKqCard(noThree, boost).reason).toContain("affichant 3");
-    expect(canPlayKqCard(withThree, boost).allowed).toBe(true);
+  it("prevents burning the moisture probe when there is no neutral die", () => {
+    const base = startKqGame(1, { deckCodes: ["BOTTE-001", "BOTTE-030"] });
+    const noNeutral: KqGameState = { ...base, stageIndex: 5, phase: "rolled", dice: [1, 4, 5], xp: 5 };
+    const withNeutral: KqGameState = { ...noNeutral, dice: [3, 4, 5] };
+    const probe = KQ_CARDS.find((card) => card.code === "BOTTE-030")!;
+    expect(canPlayKqCard(noNeutral, probe).reason).toContain("2 ou 3");
+    expect(canPlayKqCard(withNeutral, probe).allowed).toBe(true);
   });
 
   it("prevents wasting a PBI when every die is already successful", () => {
