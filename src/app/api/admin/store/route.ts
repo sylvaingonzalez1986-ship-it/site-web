@@ -8,9 +8,11 @@ import {
   readStoreByBackend,
   writeStoreByBackend,
 } from "@/lib/data-backend";
-import { cleanupUnusedProductAnalyses } from "@/lib/product-analysis-storage";
+import {
+  cleanupUnusedProductAnalyses,
+  cleanupUnusedProductVideoUploads,
+} from "@/lib/product-media-cleanup";
 import { cleanupUnusedProductUploads } from "@/lib/product-image-storage";
-import { cleanupUnusedProductVideoUploads } from "@/lib/product-video-storage";
 import { cleanupUnusedProducerUploads } from "@/lib/producer-image-storage";
 import { collectChangedStorefrontPaths, notifyIndexNow } from "@/lib/indexnow";
 import { countReplacementCharacters } from "@/lib/text-encoding-repair";
