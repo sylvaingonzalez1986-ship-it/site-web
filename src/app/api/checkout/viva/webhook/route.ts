@@ -1,5 +1,3 @@
-import { Buffer } from "node:buffer";
-import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { issueInvoiceForOrder } from "@/lib/invoice-store";
 import {
@@ -7,11 +5,25 @@ import {
   mintLotteryTicketsForOrderByBackend,
   releaseLotteryRewardClaimsForOrderByBackend,
 } from "@/lib/lottery-backend";
-import { applyOrderLoyaltyBonusByBackend, updateOrderPaymentByVivaOrderCodeByBackend } from "@/lib/order-backend";
+import {
+  applyOrderLoyaltyBonusByBackend,
+  finalizeVivaPaymentByBackend,
+  getOrderByVivaOrderCodeByBackend,
+  updateOrderPaymentByVivaOrderCodeByBackend,
+} from "@/lib/order-backend";
 import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
 import { logAuditEvent } from "@/lib/audit-log";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
-import { claimWebhookEvent } from "@/lib/webhook-idempotency";
+import {
+  beginWebhookEvent,
+  completeWebhookEvent,
+  failWebhookEvent,
+} from "@/lib/webhook-idempotency";
+import {
+  extractVivaOrderCodeFromJson,
+  getVivaConfig,
+  retrieveVivaTransaction,
+} from "@/lib/viva-payment";
 
 export const runtime = "nodejs";
 
@@ -19,7 +31,7 @@ type WebhookState = "paid" | "failed";
 
 type ParsedWebhookEvent = {
   eventTypeId: number | null;
-  orderCode: number | null;
+  orderCode: string;
   transactionId: string;
   sourceCode: string;
   statusId: string;
@@ -30,151 +42,102 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function toFiniteNumber(value: unknown): number | null {
-  if (typeof value === "number" && Number.isFinite(value)) {
-    return value;
-  }
-
-  if (typeof value === "string") {
-    const parsed = Number(value.trim());
-    return Number.isFinite(parsed) ? parsed : null;
-  }
-
-  return null;
+  const parsed = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 function toTrimmedString(value: unknown, maxLength: number): string {
-  if (typeof value !== "string") {
-    return "";
-  }
-
-  return value.trim().slice(0, maxLength);
+  return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
 }
 
 function readEventData(payload: Record<string, unknown>): Record<string, unknown> {
   const candidates = [payload.EventData, payload.eventData, payload.data, payload.Data];
-
-  for (const candidate of candidates) {
-    if (isRecord(candidate)) {
-      return candidate;
-    }
-  }
-
-  return {};
+  return candidates.find(isRecord) ?? {};
 }
 
-function parseWebhookPayload(rawPayload: unknown): ParsedWebhookEvent {
+function parseWebhookPayload(rawPayload: unknown, rawBody: string): ParsedWebhookEvent {
   const payload = isRecord(rawPayload) ? rawPayload : {};
   const eventData = readEventData(payload);
-
   const eventTypeId =
     toFiniteNumber(payload.EventTypeId) ??
     toFiniteNumber(payload.eventTypeId) ??
     toFiniteNumber(eventData.EventTypeId) ??
     toFiniteNumber(eventData.eventTypeId);
 
-  const orderCode =
-    toFiniteNumber(eventData.OrderCode) ??
-    toFiniteNumber(eventData.orderCode) ??
-    toFiniteNumber(payload.OrderCode) ??
-    toFiniteNumber(payload.orderCode);
-
-  const transactionId =
-    toTrimmedString(eventData.TransactionId, 128) ||
-    toTrimmedString(eventData.transactionId, 128) ||
-    toTrimmedString(payload.TransactionId, 128) ||
-    toTrimmedString(payload.transactionId, 128);
-
-  const sourceCode =
-    toTrimmedString(eventData.SourceCode, 64) ||
-    toTrimmedString(eventData.sourceCode, 64) ||
-    toTrimmedString(payload.SourceCode, 64) ||
-    toTrimmedString(payload.sourceCode, 64);
-
-  const statusId =
-    toTrimmedString(eventData.StatusId, 32) ||
-    toTrimmedString(eventData.statusId, 32) ||
-    toTrimmedString(payload.StatusId, 32) ||
-    toTrimmedString(payload.statusId, 32);
-
   return {
-    eventTypeId: eventTypeId ? Math.floor(eventTypeId) : null,
-    orderCode: orderCode ? Math.floor(orderCode) : null,
-    transactionId,
-    sourceCode,
-    statusId: statusId.toUpperCase(),
+    eventTypeId: eventTypeId === null ? null : Math.floor(eventTypeId),
+    orderCode: extractVivaOrderCodeFromJson(rawBody),
+    transactionId:
+      toTrimmedString(eventData.TransactionId, 64) ||
+      toTrimmedString(eventData.transactionId, 64) ||
+      toTrimmedString(payload.TransactionId, 64) ||
+      toTrimmedString(payload.transactionId, 64),
+    sourceCode:
+      toTrimmedString(eventData.SourceCode, 64) ||
+      toTrimmedString(eventData.sourceCode, 64) ||
+      toTrimmedString(payload.SourceCode, 64) ||
+      toTrimmedString(payload.sourceCode, 64),
+    statusId: (
+      toTrimmedString(eventData.StatusId, 16) ||
+      toTrimmedString(eventData.statusId, 16) ||
+      toTrimmedString(payload.StatusId, 16) ||
+      toTrimmedString(payload.statusId, 16)
+    ).toUpperCase(),
   };
 }
 
 function determinePaymentState(input: ParsedWebhookEvent): WebhookState | null {
-  // Viva webhooks:
-  // 1796 = Transaction Payment Created
-  // 1798 = Transaction Failed
-  if (input.eventTypeId === 1796) {
-    return "paid";
-  }
-  if (input.eventTypeId === 1798) {
-    return "failed";
-  }
-
-  // Fallback from transaction status codes.
-  if (input.statusId === "F" || input.statusId === "C") {
-    return "paid";
-  }
-  if (input.statusId === "E" || input.statusId === "X") {
-    return "failed";
-  }
-
+  if (input.eventTypeId === 1796) return "paid";
+  if (input.eventTypeId === 1798) return "failed";
+  if (input.statusId === "F" || input.statusId === "C") return "paid";
+  if (input.statusId === "E" || input.statusId === "X") return "failed";
   return null;
 }
 
-function safeTokenEquals(expected: string, received: string): boolean {
-  const expectedBuffer = Buffer.from(expected);
-  const receivedBuffer = Buffer.from(received);
-
-  if (expectedBuffer.length !== receivedBuffer.length) {
-    return false;
-  }
-
-  return timingSafeEqual(expectedBuffer, receivedBuffer);
-}
-
-function readWebhookToken(request: Request): string {
-  const headerToken = request.headers.get("x-viva-webhook-token");
-  return headerToken?.trim() || "";
+function isAllowedProviderIp(ip: string): boolean {
+  const configured = (process.env.VIVA_WEBHOOK_ALLOWED_IPS ?? "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+  return configured.length === 0 || configured.includes(ip);
 }
 
 export async function GET(request: Request) {
   const ip = getRequestIp(request);
-  let rl;
-  try {
-    rl = await hitRateLimit({ key: `viva_webhook_get:${ip}`, windowSeconds: 60, maxHits: 5 });
-  } catch {
-    return NextResponse.json({ error: "Service indisponible." }, { status: 503 });
+  const rateLimit = await hitRateLimit({
+    key: `viva_webhook_get:${ip}`,
+    windowSeconds: 60,
+    maxHits: 10,
+  });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "Too many requests." },
+      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } },
+    );
   }
-  if (!rl.allowed) {
-    return NextResponse.json({ error: "Too many requests." }, { status: 429, headers: { "Retry-After": String(rl.retryAfterSeconds) } });
+
+  const verificationKey =
+    process.env.VIVA_WEBHOOK_VERIFICATION_KEY?.trim() ||
+    process.env.VIVA_WEBHOOK_TOKEN?.trim() ||
+    "";
+  if (!verificationKey) {
+    return NextResponse.json({ error: "Webhook Viva non configure." }, { status: 503 });
   }
   logAuditEvent({ eventType: "viva_webhook_verification", ip });
-  const verificationKey = process.env.VIVA_WEBHOOK_TOKEN?.trim() || "";
-  if (!verificationKey) {
-    return NextResponse.json({ ok: true });
-  }
   return NextResponse.json({ Key: verificationKey });
 }
 
 export async function POST(request: Request) {
   const ip = getRequestIp(request);
-  let rateLimit;
-  try {
-    rateLimit = await hitRateLimit({
-      key: `viva_webhook:${ip}`,
-      windowSeconds: 60,
-      maxHits: 120,
-    });
-  } catch {
-    return NextResponse.json({ error: "Protection webhook indisponible." }, { status: 503 });
+  if (!isAllowedProviderIp(ip)) {
+    return NextResponse.json({ error: "Source webhook refusee." }, { status: 403 });
   }
 
+  const rateLimit = await hitRateLimit({
+    key: `viva_webhook:${ip}`,
+    windowSeconds: 60,
+    maxHits: 120,
+  });
   if (!rateLimit.allowed) {
     logRateLimitRejection({
       endpoint: "POST /api/checkout/viva/webhook",
@@ -184,48 +147,30 @@ export async function POST(request: Request) {
       maxHits: 120,
       windowSeconds: 60,
     });
-
     return NextResponse.json(
       { error: "Trop de requetes webhook." },
-      {
-        status: 429,
-        headers: {
-          "Retry-After": String(rateLimit.retryAfterSeconds),
-        },
-      },
+      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } },
     );
   }
 
-  const requiredToken = process.env.VIVA_WEBHOOK_TOKEN?.trim() || "";
-  if (!requiredToken) {
-    return NextResponse.json({ error: "Webhook Viva non configure." }, { status: 503 });
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (Number.isFinite(contentLength) && contentLength > 65_536) {
+    return NextResponse.json({ error: "Payload webhook trop volumineux." }, { status: 413 });
   }
 
-  const receivedToken = readWebhookToken(request);
-  if (!receivedToken || !safeTokenEquals(requiredToken, receivedToken)) {
-    return NextResponse.json({ error: "Webhook token invalide." }, { status: 401 });
-  }
-
+  let rawBody = "";
   let payload: unknown;
   try {
-    payload = await request.json();
+    rawBody = await request.text();
+    if (rawBody.length > 65_536) {
+      return NextResponse.json({ error: "Payload webhook trop volumineux." }, { status: 413 });
+    }
+    payload = JSON.parse(rawBody);
   } catch {
     return NextResponse.json({ error: "Payload webhook invalide." }, { status: 400 });
   }
 
-  const parsed = parseWebhookPayload(payload);
-  if (!parsed.orderCode) {
-    return NextResponse.json(
-      { ok: true, ignored: true, reason: "order_code_missing" },
-      { status: 200 },
-    );
-  }
-
-  const configuredSourceCode = process.env.VIVA_SOURCE_CODE?.trim() || "";
-  if (configuredSourceCode && parsed.sourceCode !== configuredSourceCode) {
-    return NextResponse.json({ error: "SourceCode webhook invalide." }, { status: 403 });
-  }
-
+  const parsed = parseWebhookPayload(payload, rawBody);
   const paymentState = determinePaymentState(parsed);
   if (!paymentState) {
     return NextResponse.json(
@@ -233,62 +178,129 @@ export async function POST(request: Request) {
       { status: 200 },
     );
   }
+  if (!parsed.orderCode || !parsed.transactionId) {
+    return NextResponse.json({ error: "Reference Viva incomplete." }, { status: 400 });
+  }
 
-  // --- Idempotency check: skip if this transaction was already processed ---
-  const idempotencyKey = parsed.transactionId || `oc_${parsed.orderCode}`;
-  const isNew = await claimWebhookEvent({
+  const config = getVivaConfig();
+  if (!config.isConfigured) {
+    console.error("Viva webhook configuration error:", config.configurationError);
+    return NextResponse.json({ error: "Webhook Viva indisponible." }, { status: 503 });
+  }
+  if (parsed.sourceCode && parsed.sourceCode !== config.sourceCode) {
+    return NextResponse.json({ error: "SourceCode webhook invalide." }, { status: 403 });
+  }
+
+  const order = await getOrderByVivaOrderCodeByBackend(parsed.orderCode);
+  if (!order) {
+    // Returning a retryable status avoids permanently losing an early provider callback.
+    return NextResponse.json({ error: "Commande pas encore disponible." }, { status: 503 });
+  }
+
+  let verified;
+  try {
+    verified = await retrieveVivaTransaction({
+      config,
+      transactionId: parsed.transactionId,
+    });
+  } catch (error) {
+    console.error("Unable to verify Viva transaction:", error);
+    return NextResponse.json({ error: "Transaction Viva non verifiable." }, { status: 503 });
+  }
+
+  const expectedAmount = Math.round(order.totalAmount * 100);
+  const expectedStatuses = paymentState === "paid" ? new Set(["F", "C"]) : new Set(["E", "X"]);
+  if (
+    verified.orderCode !== parsed.orderCode ||
+    verified.transactionId.toLowerCase() !== parsed.transactionId.toLowerCase() ||
+    verified.sourceCode !== config.sourceCode ||
+    verified.currencyCode !== "978" ||
+    verified.amountInMinorUnits !== expectedAmount ||
+    !expectedStatuses.has(verified.statusId)
+  ) {
+    logAuditEvent({
+      eventType: "viva_webhook_verification_failed",
+      ip,
+      metadata: { orderId: order.id },
+    });
+    return NextResponse.json({ error: "Transaction Viva incoherente." }, { status: 403 });
+  }
+
+  const eventKey = {
     provider: "viva",
-    externalId: idempotencyKey,
     eventType: String(parsed.eventTypeId ?? paymentState),
-  });
-  if (!isNew) {
+    externalId: verified.transactionId,
+  };
+  let claimState;
+  try {
+    claimState = await beginWebhookEvent(eventKey);
+  } catch (error) {
+    console.error("Unable to claim Viva webhook:", error);
+    return NextResponse.json({ error: "Idempotence webhook indisponible." }, { status: 503 });
+  }
+  if (claimState === "duplicate" || claimState === "busy") {
     return NextResponse.json(
-      { ok: true, ignored: true, reason: "duplicate_event" },
+      { ok: true, ignored: true, reason: claimState === "busy" ? "event_processing" : "duplicate_event" },
       { status: 200 },
     );
   }
 
-  const updated = await updateOrderPaymentByVivaOrderCodeByBackend({
-    orderCode: parsed.orderCode,
-    paymentState,
-    transactionId: parsed.transactionId || undefined,
-  });
-
-  if (!updated) {
-    return NextResponse.json(
-      { ok: true, ignored: true, reason: "order_not_found" },
-      { status: 200 },
-    );
-  }
-
-  if (updated.paymentState === "failed") {
-    await releaseLotteryRewardClaimsForOrderByBackend(updated.id);
-  }
-
-  if (updated.paymentState === "paid") {
-    await consumeLotteryRewardClaimsForOrderByBackend(updated.id);
-    await issueInvoiceForOrder(updated.id);
-    await applyOrderLoyaltyBonusByBackend(updated.id);
-
-    if (updated.customerId) {
-      await mintLotteryTicketsForOrderByBackend({
-        userId: updated.customerId,
-        orderId: updated.id,
-        orderAmount: updated.totalAmount,
-        bonusTicketCount: updated.extraLotteryTickets ?? 0,
+  try {
+    let updated = order;
+    let reviewRequired = false;
+    if (paymentState === "paid") {
+      const result = await finalizeVivaPaymentByBackend({
+        orderCode: verified.orderCode,
+        transactionId: verified.transactionId,
+        amountInMinorUnits: verified.amountInMinorUnits,
+        currencyCode: verified.currencyCode,
       });
-      try {
-        await applyReferralRewardForPaidOrderByBackend({ orderId: updated.id });
-      } catch (error) {
-        console.error("Referral reward application failed on webhook:", error);
+      if (!result.order) {
+        throw new Error("Commande introuvable pendant la finalisation Viva.");
       }
-    }
-  }
+      updated = result.order;
+      reviewRequired = result.reviewRequired;
 
-  return NextResponse.json({
-    ok: true,
-    orderId: updated.id,
-    paymentState: updated.paymentState,
-    status: updated.status,
-  });
+      await consumeLotteryRewardClaimsForOrderByBackend(updated.id);
+      await issueInvoiceForOrder(updated.id);
+      if (!reviewRequired) {
+        await applyOrderLoyaltyBonusByBackend(updated.id);
+        if (updated.customerId) {
+          await mintLotteryTicketsForOrderByBackend({
+            userId: updated.customerId,
+            orderId: updated.id,
+            orderAmount: updated.totalAmount,
+            bonusTicketCount: updated.extraLotteryTickets ?? 0,
+          });
+          await applyReferralRewardForPaidOrderByBackend({ orderId: updated.id });
+        }
+      } else {
+        console.error(`[viva-webhook] Paid order ${updated.id} requires inventory review.`);
+      }
+    } else {
+      const failedOrder = await updateOrderPaymentByVivaOrderCodeByBackend({
+        orderCode: verified.orderCode,
+        paymentState: "failed",
+        transactionId: verified.transactionId,
+      });
+      if (!failedOrder) {
+        throw new Error("Commande introuvable pendant le refus Viva.");
+      }
+      updated = failedOrder;
+      await releaseLotteryRewardClaimsForOrderByBackend(updated.id);
+    }
+
+    await completeWebhookEvent(eventKey);
+    return NextResponse.json({
+      ok: true,
+      orderId: updated.id,
+      paymentState: updated.paymentState,
+      status: updated.status,
+      reviewRequired,
+    });
+  } catch (error) {
+    await failWebhookEvent(eventKey, error);
+    console.error("Viva webhook processing failed:", error);
+    return NextResponse.json({ error: "Traitement webhook a reessayer." }, { status: 503 });
+  }
 }

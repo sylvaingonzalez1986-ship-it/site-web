@@ -213,6 +213,19 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
           )}
         </div>
 
+        {order.paymentReviewRequired && (
+          <div className="mt-4 border-2 border-red-700 bg-red-50 p-4 text-sm text-red-900" role="alert">
+            <p className="font-bold">Paiement confirme - revue manuelle obligatoire</p>
+            <p className="mt-1">
+              Le paiement Viva est enregistre, mais l&apos;application du stock a rencontre une anomalie.
+              Ne pas expedier avant reconciliation.
+            </p>
+            {order.paymentReviewReason && (
+              <p className="mt-2 break-words font-mono text-xs">{order.paymentReviewReason}</p>
+            )}
+          </div>
+        )}
+
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           <div className="card-cartoon bg-white p-4">
             <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">Client</p>

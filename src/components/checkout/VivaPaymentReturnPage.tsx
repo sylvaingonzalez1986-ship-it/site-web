@@ -1,6 +1,8 @@
 import { VivaPaymentReturnEffects } from "@/components/checkout/VivaPaymentReturnEffects";
+import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getOrderByVivaOrderCodeByBackend } from "@/lib/order-backend";
 import { formatPrice } from "@/lib/utils";
+import { buildVivaCheckoutUrl } from "@/lib/viva-payment";
 import type { CmsOrder } from "@/types/store";
 
 export type VivaPaymentReturnKind = "success" | "failure";
@@ -91,7 +93,7 @@ function buildCopy(input: {
       eyebrow: "Paiement Viva",
       title: "Paiement non valide",
       message:
-        "Le paiement n'a pas ete confirme par Viva. Tu peux revenir a la boutique et relancer le paiement si besoin.",
+        "Le paiement n'a pas ete confirme par Viva. Reprends la meme session ci-dessous : inutile de recreer la commande.",
       toneClassName: "bg-[#f8d7da] text-[#7f1d1d]",
       statusLabel: getPaymentStateLabel(input.order?.paymentState),
     };
@@ -110,10 +112,10 @@ function buildCopy(input: {
 
   return {
     eyebrow: "Paiement Viva",
-    title: "Paiement valide",
+    title: "Confirmation du paiement en cours",
     message:
-      "Viva a valide le retour de paiement. La confirmation definitive peut prendre quelques instants, le temps que le webhook mette la commande a jour.",
-    toneClassName: "bg-[#d4f5dc] text-[#1a5c32]",
+      "Nous verifions directement la transaction aupres de Viva. Garde cette page ouverte quelques instants et ne repasse pas de commande.",
+    toneClassName: "bg-[#fff5da] text-[#6f4b00]",
     statusLabel: getPaymentStateLabel(input.order?.paymentState),
   };
 }
@@ -123,16 +125,20 @@ export async function VivaPaymentReturnPage({
   searchParams,
 }: VivaPaymentReturnPageProps) {
   const vivaOrderCode = firstParam(searchParams?.s);
-  const vivaTransactionId = firstParam(searchParams?.t);
-  const eventId = firstParam(searchParams?.eventId);
   const cancelled =
     hasSearchParam(searchParams, "cancel") || Boolean(firstParam(searchParams?.cancel));
   let order: CmsOrder | null = null;
   let lookupFailed = false;
+  const session = await getCurrentCustomerSessionByBackend();
 
-  if (vivaOrderCode) {
+  if (vivaOrderCode && session) {
     try {
-      order = await getOrderByVivaOrderCodeByBackend(vivaOrderCode);
+      const candidate = await getOrderByVivaOrderCodeByBackend(vivaOrderCode);
+      const ownsOrder =
+        candidate?.customerId === session.customerId ||
+        (!candidate?.customerId &&
+          candidate?.customerEmail?.toLowerCase() === session.customer.email.toLowerCase());
+      order = ownsOrder ? candidate : null;
     } catch (error) {
       lookupFailed = true;
       console.error("Unable to load Viva return order:", error);
@@ -142,18 +148,21 @@ export async function VivaPaymentReturnPage({
   const copy = buildCopy({ kind, order, cancelled });
   const details = [
     order?.id ? { label: "Commande", value: order.id } : null,
-    vivaOrderCode ? { label: "Reference Viva", value: vivaOrderCode } : null,
-    vivaTransactionId || order?.vivaTransactionId
-      ? { label: "Transaction", value: vivaTransactionId || order?.vivaTransactionId || "" }
-      : null,
+    order?.vivaOrderCode ? { label: "Reference Viva", value: order.vivaOrderCode } : null,
     order ? { label: "Montant", value: `${formatPrice(order.totalAmount)} TTC` } : null,
     order ? { label: "Statut commande", value: getOrderStatusLabel(order.status) } : null,
-    eventId ? { label: "Code retour Viva", value: eventId } : null,
   ].filter((item): item is { label: string; value: string } => Boolean(item));
+  const resumePaymentUrl =
+    order && order.paymentState !== "paid" && order.vivaOrderCode
+      ? buildVivaCheckoutUrl(order.vivaOrderCode)
+      : "";
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-36 pb-16">
-      <VivaPaymentReturnEffects clearCart={kind === "success"} />
+      <VivaPaymentReturnEffects
+        clearCart={order?.paymentState === "paid"}
+        pollPayment={kind === "success" && order?.paymentState === "pending"}
+      />
       <div className="retro-container">
         <div className="cartoon-border mx-auto max-w-3xl bg-cream p-6 text-center md:p-8">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-charcoal">
@@ -187,6 +196,11 @@ export async function VivaPaymentReturnPage({
             </dl>
           )}
 
+          {!session && (
+            <p className="mx-auto mt-5 max-w-xl text-sm font-semibold text-charcoal">
+              Reconnecte-toi pour consulter les informations de ta commande en toute securite.
+            </p>
+          )}
           {!vivaOrderCode && (
             <p className="mx-auto mt-5 max-w-xl text-sm font-semibold text-charcoal">
               Le retour Viva ne contient pas de reference commande. Si ton paiement est passe,
@@ -201,10 +215,18 @@ export async function VivaPaymentReturnPage({
           )}
 
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+            {resumePaymentUrl && (
+              <a
+                href={resumePaymentUrl}
+                className={`${paymentReturnActionClassName} btn-primary`}
+              >
+                Reprendre ce paiement
+              </a>
+            )}
             <form action="/profil" method="get">
               <button
                 type="submit"
-                className={`${paymentReturnActionClassName} btn-primary cursor-pointer`}
+                className={`${paymentReturnActionClassName} btn-secondary cursor-pointer`}
               >
                 Voir mon profil
               </button>

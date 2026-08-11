@@ -571,9 +571,10 @@ function mapOrderRow(
       : "pending",
     archivedAt: toOptionalString(row.archived_at),
     archivedReason: toOptionalString(row.archived_reason),
-    vivaOrderCode: Number.isFinite(Number(row.viva_order_code))
-      ? Math.floor(Number(row.viva_order_code))
-      : undefined,
+    vivaOrderCode:
+      typeof row.viva_order_code === "string" && /^\d{1,32}$/.test(row.viva_order_code)
+        ? row.viva_order_code
+        : undefined,
     vivaTransactionId: toOptionalString(row.viva_transaction_id),
     source: "web",
     customerId: toOptionalString(row.customer_id) ?? toOptionalString(row.legacy_customer_id),
@@ -862,6 +863,35 @@ export async function readStoreFromSupabase(): Promise<CmsStore> {
   const orderIds = orderRows
     .map((row) => toStringValue(row.id))
     .filter((id) => id.length > 0);
+
+  if (orderIds.length > 0) {
+    const reviewResult = await supabase
+      .from("orders")
+      .select("id,payment_review_required,payment_review_reason")
+      .in("id", orderIds);
+
+    if (!reviewResult.error) {
+      const reviewByOrderId = new Map(
+        (reviewResult.data ?? []).map((row) => {
+          const review = toObject(row);
+          return [toStringValue(review.id), review] as const;
+        }),
+      );
+      for (const orderRow of orderRows) {
+        const review = reviewByOrderId.get(toStringValue(orderRow.id));
+        if (review) {
+          orderRow.payment_review_required = review.payment_review_required;
+          orderRow.payment_review_reason = review.payment_review_reason;
+        }
+      }
+    } else if (
+      reviewResult.error.code !== "42703" &&
+      reviewResult.error.code !== "PGRST204" &&
+      !reviewResult.error.message.includes("payment_review_required")
+    ) {
+      failIfError(reviewResult.error, "read order payment reviews");
+    }
+  }
 
   let orderItemsByOrderId = new Map<string, OrderItem[]>();
   if (orderIds.length > 0) {

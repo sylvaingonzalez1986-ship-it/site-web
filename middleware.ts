@@ -190,6 +190,10 @@ export async function middleware(request: NextRequest) {
   const cspHeader = buildCspHeader(nonce);
   const secure = <T extends NextResponse>(response: T): T => {
     response.headers.set("Content-Security-Policy", cspHeader);
+    if (pathname.startsWith("/paiement")) {
+      response.headers.set("Cache-Control", "private, no-store, max-age=0");
+      response.headers.set("Referrer-Policy", "no-referrer");
+    }
     return response;
   };
   const customerAuthenticated = hasCustomerSession(request);

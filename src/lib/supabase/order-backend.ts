@@ -136,10 +136,7 @@ function mapOrderRowForLoyalty(row: Record<string, unknown>): CmsOrder {
     paymentState: toPaymentState(row.payment_state),
     archivedAt: toOptionalText(row.archived_at),
     archivedReason: toOptionalText(row.archived_reason),
-    vivaOrderCode:
-      Number.isFinite(Number(row.viva_order_code)) && Number(row.viva_order_code) > 0
-        ? Math.floor(Number(row.viva_order_code))
-        : undefined,
+    vivaOrderCode: normalizeVivaOrderCode(toOptionalText(row.viva_order_code)) ?? undefined,
     vivaTransactionId: toOptionalText(row.viva_transaction_id),
     source: "web",
     customerId: toOptionalText(row.customer_id) ?? toOptionalText(row.legacy_customer_id),
@@ -259,7 +256,7 @@ export async function getOrderByIdInSupabase(orderId: string): Promise<CmsOrder 
 
 function normalizeVivaOrderCode(value: string | number | undefined): string | null {
   if (typeof value === "number") {
-    if (!Number.isFinite(value) || value <= 0) {
+    if (!Number.isSafeInteger(value) || value <= 0) {
       return null;
     }
 
@@ -434,10 +431,7 @@ export async function appendOrderToSupabase(input: AppendOrderInput): Promise<Cm
     status: input.status ?? "new",
     payment_provider: "viva",
     payment_state: input.paymentState,
-    viva_order_code:
-      input.viva && Number.isFinite(input.viva.orderCode) && input.viva.orderCode > 0
-        ? Math.floor(input.viva.orderCode)
-        : null,
+    viva_order_code: normalizeVivaOrderCode(input.viva?.orderCode) || null,
     viva_transaction_id: input.viva?.transactionId?.trim() || null,
     customer_id: isUuidCustomerId ? rawCustomerId : null,
     legacy_customer_id: isUuidCustomerId ? null : rawCustomerId,
@@ -609,15 +603,14 @@ export async function updateOrderPaymentStateInSupabase(
 }
 
 export async function updateOrderPaymentByVivaOrderCodeInSupabase(input: {
-  orderCode: number;
+  orderCode: string | number;
   paymentState: "paid" | "failed";
   transactionId?: string;
 }): Promise<CmsOrder | null> {
-  if (!Number.isFinite(input.orderCode) || input.orderCode <= 0) {
+  const safeOrderCode = normalizeVivaOrderCode(input.orderCode);
+  if (!safeOrderCode) {
     return null;
   }
-
-  const safeOrderCode = Math.floor(input.orderCode);
   const supabase = createSupabaseServiceClient();
   const { data: wasUpdated, error } = await supabase.rpc("rpc_update_payment", {
     p_viva_order_code: safeOrderCode,
@@ -636,6 +629,34 @@ export async function updateOrderPaymentByVivaOrderCodeInSupabase(input: {
   }
 
   return updatedOrder;
+}
+
+export async function finalizeVivaPaymentInSupabase(input: {
+  orderCode: string;
+  transactionId: string;
+  amountInMinorUnits: number;
+  currencyCode: string;
+}): Promise<{ order: CmsOrder | null; reviewRequired: boolean }> {
+  const safeOrderCode = normalizeVivaOrderCode(input.orderCode);
+  if (!safeOrderCode || !Number.isSafeInteger(input.amountInMinorUnits)) {
+    return { order: null, reviewRequired: false };
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase.rpc("rpc_finalize_viva_payment", {
+    p_viva_order_code: safeOrderCode,
+    p_viva_transaction_id: input.transactionId.trim(),
+    p_amount_minor: input.amountInMinorUnits,
+    p_currency_code: input.currencyCode.trim(),
+  });
+  failIfError(result.error, "rpc_finalize_viva_payment");
+
+  const payload = (result.data ?? {}) as Record<string, unknown>;
+  const orderId = toText(payload.order_id);
+  return {
+    order: orderId ? await findOrderById(orderId) : null,
+    reviewRequired: payload.review_required === true,
+  };
 }
 
 export async function archiveIncompleteOrderInSupabase(input: {

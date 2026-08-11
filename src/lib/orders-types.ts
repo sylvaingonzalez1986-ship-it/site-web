@@ -56,7 +56,7 @@ export type AppendOrderInput = {
     extraLotteryTickets: number;
   } | null;
   viva?: {
-    orderCode: number;
+    orderCode: string;
     transactionId?: string;
   } | null;
 };

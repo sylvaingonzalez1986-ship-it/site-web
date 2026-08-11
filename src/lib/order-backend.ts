@@ -5,6 +5,7 @@ import {
   applyOrderLoyaltyBonusInSupabase,
   archiveIncompleteOrderInSupabase,
   appendOrderToSupabase,
+  finalizeVivaPaymentInSupabase,
   getOrderByVivaOrderCodeInSupabase,
   getOrderByIdInSupabase,
   listCustomerOrdersForLoyaltyInSupabase,
@@ -61,11 +62,20 @@ export async function updateOrderPaymentStateByBackend(
 }
 
 export async function updateOrderPaymentByVivaOrderCodeByBackend(input: {
-  orderCode: number;
+  orderCode: string | number;
   paymentState: "paid" | "failed";
   transactionId?: string;
 }): Promise<CmsOrder | null> {
   return updateOrderPaymentByVivaOrderCodeInSupabase(input);
+}
+
+export async function finalizeVivaPaymentByBackend(input: {
+  orderCode: string;
+  transactionId: string;
+  amountInMinorUnits: number;
+  currencyCode: string;
+}): Promise<{ order: CmsOrder | null; reviewRequired: boolean }> {
+  return finalizeVivaPaymentInSupabase(input);
 }
 
 export async function archiveIncompleteOrderByBackend(input: {

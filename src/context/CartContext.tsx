@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { Product } from "@/data/products";
+import { readCartFromSession, saveCartToSession } from "@/lib/cart-session-storage";
 import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
 import { getAvailableQuantity, getSelectableVariantOptions } from "@/lib/product-stock";
 import type { LoyaltySummary } from "@/types/loyalty";
@@ -52,6 +53,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const REFRESH_COOLDOWN_MS = 30_000;
   const lastRefreshAtRef = useRef(0);
   const [items, setItems] = useState<CartLine[]>([]);
+  const [cartSessionReady, setCartSessionReady] = useState(false);
   const [user, setUser] = useState<PublicCustomer | null>(null);
   const [orders, setOrders] = useState<CmsOrder[]>([]);
   const [loyalty, setLoyalty] = useState<LoyaltySummary>(buildEmptyLoyaltySummary());
@@ -61,6 +63,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [hasWelcomePack, setHasWelcomePack] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
   const isAuthenticated = Boolean(user);
+
+  useEffect(() => {
+    const storedItems = readCartFromSession(window.sessionStorage);
+    setItems((current) => (current.length > 0 ? current : storedItems));
+    setCartSessionReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!cartSessionReady) return;
+    saveCartToSession(window.sessionStorage, items);
+  }, [cartSessionReady, items]);
 
   const scheduleIdleRefresh = useCallback((task: () => void) => {
     const idleWindow = window as Window & {

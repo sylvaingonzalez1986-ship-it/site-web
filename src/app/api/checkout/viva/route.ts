@@ -1,5 +1,10 @@
-import { Buffer } from "node:buffer";
 import { NextResponse } from "next/server";
+import {
+  beginCheckoutAttempt,
+  completeCheckoutAttempt,
+  createCheckoutFingerprint,
+  failCheckoutAttempt,
+} from "@/lib/checkout-attempt";
 import {
   getCurrentCustomerSessionByBackend,
   isAtLeast18,
@@ -19,7 +24,11 @@ import {
   getLotteryConfigByBackend,
   reserveLotteryRewardClaimForOrderByBackend,
 } from "@/lib/lottery-backend";
-import { appendOrderByBackend, getCustomerOrdersForLoyaltyByBackend } from "@/lib/order-backend";
+import {
+  appendOrderByBackend,
+  archiveIncompleteOrderByBackend,
+  getCustomerOrdersForLoyaltyByBackend,
+} from "@/lib/order-backend";
 import { getAvailableQuantity } from "@/lib/product-stock";
 import {
   computeReferralFirstOrderDiscountAmount,
@@ -34,6 +43,12 @@ import {
   type DeliveryMethod,
 } from "@/lib/shipping";
 import { applyDiscountOnLines, computeFromTtc, computeOrderTaxTotals, distributePackDiscount, sanitizeOrderVatRate } from "@/lib/tax";
+import {
+  buildVivaCheckoutUrl,
+  createVivaCheckoutOrder,
+  getVivaAccessToken,
+  getVivaConfig,
+} from "@/lib/viva-payment";
 import type { CmsStore } from "@/types/store";
 
 type CheckoutItemPayload = {
@@ -65,14 +80,7 @@ type CheckoutPayload = {
   relayCountry?: string;
   promoCode?: string;
   lotteryRewardClaimId?: string;
-};
-
-type VivaTokenResponse = {
-  access_token?: string;
-};
-
-type VivaCreateOrderResponse = {
-  orderCode?: number;
+  checkoutAttemptId?: string;
 };
 
 type VivaSummaryItem = {
@@ -110,19 +118,35 @@ type ResolvedCheckoutItem = {
   parentPackName?: string;
 };
 
+const UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 async function resolveCheckoutItems(
   items: CheckoutItemPayload[],
   storeOverride?: Pick<CmsStore, "products">,
 ): Promise<ResolvedCheckoutItem[]> {
+  if (items.length > 50) {
+    throw new Error("Le panier contient trop de lignes.");
+  }
+
+  const seenItemIds = new Set<string>();
   const normalizedPayloadItems = items
     .map((item) => ({
       id: sanitizeText(item.id, 120),
       quantity:
-        Number.isFinite(item.quantity) && Number(item.quantity) > 0
+        Number.isFinite(item.quantity) && Number(item.quantity) > 0 && Number(item.quantity) <= 99
           ? Math.floor(Number(item.quantity))
           : 0,
     }))
-    .filter((item) => item.id && item.quantity > 0);
+    .filter((item) => item.id && item.quantity > 0)
+    .map((item) => {
+      if (seenItemIds.has(item.id)) {
+        throw new Error(`Ligne dupliquee dans le panier: ${item.id}`);
+      }
+      seenItemIds.add(item.id);
+      return item;
+    });
 
   if (normalizedPayloadItems.length === 0) {
     return [];
@@ -260,65 +284,12 @@ function sanitizeLotteryRewardClaimId(value: unknown): string {
     return "";
   }
 
-  return value.trim();
+  const claimId = value.trim();
+  return UUID_PATTERN.test(claimId) ? claimId : "";
 }
 
 function sanitizeDeliveryMethod(value: unknown): DeliveryMethod {
   return value === "relay" ? "relay" : "home";
-}
-
-type VivaEndpointConfig = {
-  mode: "live" | "demo";
-  apiBase: string;
-  accountsBase: string;
-  checkoutBase: string;
-};
-
-type VivaConfig = {
-  isConfigured: boolean;
-  clientId: string;
-  clientSecret: string;
-  sourceCode: string;
-  candidates: VivaEndpointConfig[];
-};
-
-function getVivaConfig(): VivaConfig {
-  const env = process.env.VIVA_ENV?.trim().toLowerCase() || "auto";
-  const clientId = process.env.VIVA_CLIENT_ID?.trim() || "";
-  const clientSecret = process.env.VIVA_CLIENT_SECRET?.trim() || "";
-  const sourceCode = process.env.VIVA_SOURCE_CODE?.trim() || "";
-
-  const live: VivaEndpointConfig = {
-    mode: "live",
-    apiBase: "https://api.vivapayments.com",
-    accountsBase: "https://accounts.vivapayments.com",
-    checkoutBase: "https://www.vivapayments.com",
-  };
-
-  const demo: VivaEndpointConfig = {
-    mode: "demo",
-    apiBase: "https://demo-api.vivapayments.com",
-    accountsBase: "https://demo-accounts.vivapayments.com",
-    checkoutBase: "https://demo.vivapayments.com",
-  };
-
-  let candidates: VivaEndpointConfig[];
-  if (env === "live" || env === "production") {
-    candidates = [live];
-  } else if (env === "demo" || env === "sandbox") {
-    candidates = [demo];
-  } else {
-    // Auto mode: try live first, then demo.
-    candidates = [live, demo];
-  }
-
-  return {
-    isConfigured: Boolean(clientId && clientSecret && sourceCode),
-    clientId,
-    clientSecret,
-    sourceCode,
-    candidates,
-  };
 }
 
 function toCountryCode(country: string): string {
@@ -331,104 +302,55 @@ function toCountryCode(country: string): string {
     return "FR";
   }
 
-  return "FR";
-}
-
-async function getVivaAccessToken(
-  config: VivaConfig,
-  endpoint: VivaEndpointConfig,
-): Promise<string> {
-  const credentials = Buffer.from(`${config.clientId}:${config.clientSecret}`).toString("base64");
-  const response = await fetch(`${endpoint.accountsBase}/connect/token`, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${credentials}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: "grant_type=client_credentials",
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    const vivaError = await response.text().catch(() => "");
-    throw new Error(
-      `Echec authentification Viva (${endpoint.mode}, ${response.status}). ${vivaError.slice(0, 220)}`,
-    );
-  }
-
-  const data = (await response.json()) as VivaTokenResponse;
-  if (!data.access_token) {
-    throw new Error("Token Viva manquant.");
-  }
-
-  return data.access_token;
-}
-
-async function createVivaCheckoutOrder(input: {
-  config: VivaConfig;
-  endpoint: VivaEndpointConfig;
-  accessToken: string;
-  amount: number;
-  sourceCode: string;
-  customerName: string;
-  customerEmail: string;
-  customerPhone: string;
-  customerCountry: string;
-  merchantTrns: string;
-  customerTrns: string;
-}): Promise<number> {
-  const amountInMinorUnits = Math.round(input.amount * 100);
-  if (!Number.isFinite(amountInMinorUnits) || amountInMinorUnits <= 0) {
-    throw new Error("Montant Viva invalide.");
-  }
-
-  const response = await fetch(`${input.endpoint.apiBase}/checkout/v2/orders`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${input.accessToken}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      amount: amountInMinorUnits,
-      sourceCode: input.sourceCode,
-      customerTrns: input.customerTrns,
-      merchantTrns: input.merchantTrns,
-      customer: {
-        email: input.customerEmail,
-        fullName: input.customerName,
-        phone: input.customerPhone,
-        countryCode: toCountryCode(input.customerCountry),
-        requestLang: "fr-FR",
-      },
-    }),
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    const vivaError = await response.text().catch(() => "");
-    throw new Error(
-      `Creation commande Viva impossible (${input.endpoint.mode}, ${response.status}). ${vivaError.slice(0, 220)}`,
-    );
-  }
-
-  const data = (await response.json()) as VivaCreateOrderResponse;
-  if (!data.orderCode || !Number.isFinite(data.orderCode)) {
-    throw new Error("orderCode Viva introuvable.");
-  }
-
-  return data.orderCode;
+  return "";
 }
 
 export async function POST(request: Request) {
-  const payload = (await request.json()) as CheckoutPayload;
+  if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
+    return NextResponse.json({ error: "Format de requete invalide." }, { status: 415 });
+  }
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (Number.isFinite(contentLength) && contentLength > 65_536) {
+    return NextResponse.json({ error: "Requete trop volumineuse." }, { status: 413 });
+  }
+
+  let payload: CheckoutPayload;
+  try {
+    const rawBody = await request.text();
+    if (rawBody.length > 65_536) {
+      return NextResponse.json({ error: "Requete trop volumineuse." }, { status: 413 });
+    }
+    payload = JSON.parse(rawBody) as CheckoutPayload;
+  } catch {
+    return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 });
+  }
   const action = payload.action ?? "checkout";
+  if (action !== "checkout" && action !== "validate_promo" && action !== "validate_reward_claim") {
+    return NextResponse.json({ error: "Action checkout invalide." }, { status: 400 });
+  }
   const isTaxable = INVOICE_SETTINGS.vatMode === "taxable";
   const session = await getCurrentCustomerSessionByBackend();
   const customerId = session?.customerId;
   const customer = session?.customer ?? null;
   const promoCode = sanitizePromoCode(payload.promoCode);
   const lotteryRewardClaimId = sanitizeLotteryRewardClaimId(payload.lotteryRewardClaimId);
+  const checkoutAttemptId = sanitizeText(payload.checkoutAttemptId, 64);
   const ip = getRequestIp(request);
+
+  const validationRateLimit = await hitRateLimit({
+    key: `checkout_validation:${customerId ?? ip}:${ip}`,
+    windowSeconds: 60,
+    maxHits: 30,
+  });
+  if (!validationRateLimit.allowed) {
+    return NextResponse.json(
+      { error: "Trop de tentatives. Reessaie dans un instant." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(validationRateLimit.retryAfterSeconds) },
+      },
+    );
+  }
 
   if (action === "validate_promo") {
     if (!promoCode) {
@@ -589,6 +511,12 @@ export async function POST(request: Request) {
   if (!customerId || !customer) {
     return NextResponse.json({ error: "Connexion requise pour commander." }, { status: 401 });
   }
+  if (!UUID_PATTERN.test(checkoutAttemptId)) {
+    return NextResponse.json(
+      { error: "Session de paiement invalide. Recharge la page puis reessaie." },
+      { status: 400 },
+    );
+  }
 
   const rateLimitKey = `checkout_viva:${customerId}:${ip}`;
   const rl = await hitRateLimit({ key: rateLimitKey, windowSeconds: 60, maxHits: 5 });
@@ -683,6 +611,9 @@ export async function POST(request: Request) {
   const relayCity = sanitizeText(payload.relayCity, 120);
   const relayPostalCode = sanitizeText(payload.relayPostalCode, 16);
   const relayCountry = sanitizeText(payload.relayCountry, 80) || shippingCountry;
+  const shippingCountryCode = toCountryCode(
+    requestedDeliveryMethod === "relay" ? relayCountry : shippingCountry,
+  );
 
   if (
     !shippingName ||
@@ -694,6 +625,20 @@ export async function POST(request: Request) {
   ) {
     return NextResponse.json(
       { error: "Informations de livraison manquantes." },
+      { status: 400 },
+    );
+  }
+
+  if (
+    !EMAIL_PATTERN.test(shippingEmail) ||
+    shippingPhone.replace(/\D/g, "").length < 8 ||
+    !/^[A-Za-z0-9 -]{3,16}$/.test(
+      requestedDeliveryMethod === "relay" ? relayPostalCode : shippingPostalCode,
+    ) ||
+    !shippingCountryCode
+  ) {
+    return NextResponse.json(
+      { error: "Email, telephone, code postal ou pays invalide." },
       { status: 400 },
     );
   }
@@ -719,14 +664,15 @@ export async function POST(request: Request) {
     requestedDeliveryMethod === "relay" ? relayAddress : shippingAddressInput;
 
   const config = getVivaConfig();
-  const legacyConfigured = Boolean(
+  const basicAuthConfigured = Boolean(
     process.env.VIVA_MERCHANT_ID?.trim() && process.env.VIVA_API_KEY?.trim(),
   );
 
   if (!config.isConfigured) {
-    const message = legacyConfigured
-      ? "Configuration Viva obsolete detectee (merchant/api key). Configure VIVA_CLIENT_ID, VIVA_CLIENT_SECRET et VIVA_SOURCE_CODE."
-      : "Paiement carte indisponible: Viva Smart Checkout non configure.";
+    const message = basicAuthConfigured
+      ? "Les identifiants Merchant/API Viva servent a l'annulation mais ne suffisent pas au paiement. Configure aussi VIVA_CLIENT_ID, VIVA_CLIENT_SECRET et VIVA_SOURCE_CODE."
+      : "Paiement carte temporairement indisponible: configuration securisee incomplete.";
+    console.error("Viva configuration error:", config.configurationError);
     return NextResponse.json({ error: message }, { status: 503 });
   }
 
@@ -963,39 +909,81 @@ export async function POST(request: Request) {
     );
   }
 
+  const cartFingerprint = createCheckoutFingerprint({
+    items: finalizedItemsWithTax
+      .map((item) => ({ id: item.id, quantity: item.quantity, lineTotal: item.lineTotal }))
+      .sort((left, right) => left.id.localeCompare(right.id)),
+    totalAmount,
+    deliveryMethod: requestedDeliveryMethod,
+    shippingAddress,
+    shippingCity: requestedDeliveryMethod === "relay" ? relayCity : shippingCity,
+    shippingPostalCode:
+      requestedDeliveryMethod === "relay" ? relayPostalCode : shippingPostalCode,
+    shippingCountryCode,
+    relayId: requestedDeliveryMethod === "relay" ? relayId : undefined,
+    promoCode: appliedPromo?.code,
+    rewardClaimId: appliedRewardClaim?.claimId,
+  });
+
+  let attempt;
+  try {
+    attempt = await beginCheckoutAttempt({
+      attemptId: checkoutAttemptId,
+      customerId,
+      cartFingerprint,
+    });
+  } catch (error) {
+    console.error("Unable to begin checkout attempt:", error);
+    return NextResponse.json(
+      { error: "La session de paiement ne peut pas etre preparee pour le moment." },
+      { status: 503 },
+    );
+  }
+
+  if (attempt.action === "resume") {
+    return NextResponse.json({
+      message: "Reprise de la session de paiement existante.",
+      orderId: attempt.orderId,
+      redirectUrl: attempt.checkoutUrl,
+      resumed: true,
+    });
+  }
+  if (attempt.action === "busy") {
+    return NextResponse.json(
+      { error: "Le paiement est deja en cours de preparation. Patiente quelques secondes." },
+      { status: 409, headers: { "Retry-After": "3" } },
+    );
+  }
+  if (attempt.action === "completed") {
+    return NextResponse.json(
+      {
+        error: "Cette tentative a deja ete payee. Le panier va creer une nouvelle session.",
+        code: "checkout_attempt_completed",
+      },
+      { status: 409 },
+    );
+  }
+
+  let createdOrderId = "";
   try {
     const vivaSummary = buildVivaItemSummary(
       finalizedItemsWithTax.map((item) => ({ name: item.name, quantity: item.quantity })),
     );
-    let selectedEndpoint: VivaEndpointConfig | null = null;
-    let orderCode: number | null = null;
-    const errors: string[] = [];
-
-    for (const endpoint of config.candidates) {
-      try {
-        const accessToken = await getVivaAccessToken(config, endpoint);
-        orderCode = await createVivaCheckoutOrder({
-          config,
-          endpoint,
-          accessToken,
-          amount: totalAmount,
-          sourceCode: config.sourceCode,
-          customerName: shippingName,
-          customerEmail: shippingEmail,
-          customerPhone: shippingPhone,
-          customerCountry: shippingCountry,
-          merchantTrns: `${vivaSummary.merchantTrns} - ${new Date().toISOString()}`.slice(0, 512),
-          customerTrns: vivaSummary.customerTrns,
-        });
-        selectedEndpoint = endpoint;
-        break;
-      } catch (attemptError) {
-        errors.push(attemptError instanceof Error ? attemptError.message : "Erreur Viva inconnue.");
-      }
-    }
-
-    if (!selectedEndpoint || !orderCode) {
-      throw new Error(errors.join(" | ") || "Echec connexion Viva Smart Checkout.");
+    const accessToken = await getVivaAccessToken(config);
+    const orderCode = await createVivaCheckoutOrder({
+      config,
+      accessToken,
+      amount: totalAmount,
+      customerName: shippingName,
+      customerEmail: shippingEmail,
+      customerPhone: shippingPhone,
+      customerCountryCode: shippingCountryCode,
+      merchantTrns: `${vivaSummary.merchantTrns} - tentative ${checkoutAttemptId}`.slice(0, 512),
+      customerTrns: vivaSummary.customerTrns,
+    });
+    const checkoutUrl = buildVivaCheckoutUrl(orderCode, config);
+    if (!checkoutUrl) {
+      throw new Error("URL de paiement Viva invalide.");
     }
 
     const order = await appendOrderByBackend({
@@ -1054,36 +1042,57 @@ export async function POST(request: Request) {
         orderCode,
       },
     });
+    createdOrderId = order.id;
 
     if (appliedRewardClaim && customerId) {
-      try {
-        await reserveLotteryRewardClaimForOrderByBackend({
-          userId: customerId,
-          claimId: appliedRewardClaim.claimId,
-          orderId: order.id,
-        });
-      } catch (claimError) {
-        console.error("Reward claim reservation error:", claimError);
-      }
+      await reserveLotteryRewardClaimForOrderByBackend({
+        userId: customerId,
+        claimId: appliedRewardClaim.claimId,
+        orderId: order.id,
+      });
     }
+
+    await completeCheckoutAttempt({
+      attemptId: checkoutAttemptId,
+      customerId,
+      orderId: order.id,
+      orderCode,
+      checkoutUrl,
+    });
 
     return NextResponse.json({
       message: "Commande enregistrée. Redirection vers Viva.",
       orderId: order.id,
-      redirectUrl: `${selectedEndpoint.checkoutBase}/web/checkout?ref=${orderCode}`,
+      redirectUrl: checkoutUrl,
+      resumed: false,
     });
   } catch (error) {
-    console.error("Checkout Viva error:", error);
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Échec connexion Viva Smart Checkout.";
-    const status = message.includes("Code promo invalide ou déjà utilisé.") ? 409 : 502;
+    const supportReference = checkoutAttemptId.slice(0, 8).toUpperCase();
+    console.error(`Checkout Viva error [${supportReference}]:`, error);
+    if (createdOrderId) {
+      try {
+        await archiveIncompleteOrderByBackend({
+          orderId: createdOrderId,
+          reason: "checkout_initialization_failed",
+        });
+      } catch (archiveError) {
+        console.error(`Checkout archive error [${supportReference}]:`, archiveError);
+      }
+    }
+    try {
+      await failCheckoutAttempt({
+        attemptId: checkoutAttemptId,
+        customerId,
+        reason: error instanceof Error ? error.message : "checkout_failed",
+      });
+    } catch (attemptError) {
+      console.error(`Checkout attempt failure update [${supportReference}]:`, attemptError);
+    }
     return NextResponse.json(
       {
-        error: message,
+        error: `Le paiement n'a pas pu etre initialise. Reessaie sans recreer ton panier (ref. ${supportReference}).`,
       },
-      { status },
+      { status: 502 },
     );
   }
 }

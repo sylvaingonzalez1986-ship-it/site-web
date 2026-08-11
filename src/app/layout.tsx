@@ -12,6 +12,7 @@ import { Navbar } from "@/components/Navbar";
 import { SupabaseRecoveryRedirect } from "@/components/SupabaseRecoveryRedirect";
 import { CookieConsentProvider } from "@/components/cookies/CookieConsentProvider";
 import { VercelAnalytics } from "@/components/VercelAnalytics";
+import { PendingPaymentRecoveryModal } from "@/components/checkout/PendingPaymentRecoveryModal";
 import { WebVitals } from "@/components/WebVitals";
 import { CartProvider } from "@/context/CartContext";
 import "./globals.css";
@@ -208,6 +209,7 @@ export default async function RootLayout({
           <CookieConsentProvider>
             <SupabaseRecoveryRedirect />
             <VercelAnalytics />
+            <PendingPaymentRecoveryModal />
             <div className="site-background min-h-screen">
               <Navbar />
               <main className="relative z-0">{children}</main>

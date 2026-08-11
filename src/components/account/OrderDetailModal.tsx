@@ -259,6 +259,23 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
         </div>
 
         <div className="mt-6">
+          {order.paymentState !== "paid" &&
+            order.status !== "cancelled" &&
+            !order.archivedAt &&
+            order.vivaOrderCode && (
+              <div className="mb-4 card-cartoon bg-[#fff5da] p-4">
+                <p className="text-sm font-bold text-ink">Cette commande attend encore son paiement.</p>
+                <p className="mt-1 text-sm text-charcoal">
+                  Reprends la session existante : ne cree pas une nouvelle commande.
+                </p>
+                <a
+                  href={`/api/account/orders/${encodeURIComponent(order.id)}/resume-payment`}
+                  className="btn-cartoon btn-primary mt-3 inline-flex"
+                >
+                  Reprendre le paiement
+                </a>
+              </div>
+            )}
           <button
             type="button"
             className="btn-cartoon btn-primary"

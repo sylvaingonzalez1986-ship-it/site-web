@@ -165,6 +165,12 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
+    const openCart = () => setCartOpen(true);
+    window.addEventListener("cart:open", openCart);
+    return () => window.removeEventListener("cart:open", openCart);
+  }, []);
+
+  useEffect(() => {
     if (!menuOpen) {
       return;
     }

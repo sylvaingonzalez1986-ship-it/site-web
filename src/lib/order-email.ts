@@ -7,7 +7,12 @@ import {
   getTransporter,
 } from "@/lib/email-smtp";
 import { calculateOrderSubtotal } from "@/lib/invoice-utils";
+import { CANONICAL_SITE_URL } from "@/lib/site-url";
 import type { CmsOrder } from "@/types/store";
+
+const CUSTOMER_ORDERS_URL = `${CANONICAL_SITE_URL}/profil?tab=commandes`;
+const LEGAL_NOTICE_URL = `${CANONICAL_SITE_URL}/mentions-legales`;
+const PRIVACY_URL = `${CANONICAL_SITE_URL}/politique-confidentialite`;
 
 function formatPrice(value: number): string {
   return new Intl.NumberFormat("fr-FR", {
@@ -183,7 +188,7 @@ function buildEmailShell(input: {
               <p style="margin:0 0 10px;font-size:14px;line-height:1.7;color:#1a1a1a;">
                 Tu peux retrouver l'historique de ta commande dans ton espace client.
               </p>
-              <a href="https://leschanvriersbretons.fr/profil?tab=commandes" style="display:inline-block;padding:12px 16px;background:#0a7b61;color:#ffffff;text-decoration:none;border-radius:10px;font-weight:700;">
+              <a href="${CUSTOMER_ORDERS_URL}" style="display:inline-block;padding:12px 16px;background:#0a7b61;color:#ffffff;text-decoration:none;border-radius:10px;font-weight:700;">
                 Voir mes commandes
               </a>
             </div>
@@ -196,9 +201,9 @@ function buildEmailShell(input: {
         <tr>
           <td style="padding:18px 24px;background:#1a1a1a;color:#f7f4ee;font-size:12px;line-height:1.7;">
             Les Chanvriers Bretons — CBD Naturel Direct Producteur<br />
-            <a href="https://leschanvriersbretons.fr/mentions-legales" style="color:#f7f4ee;">Mentions légales</a>
+            <a href="${LEGAL_NOTICE_URL}" style="color:#f7f4ee;">Mentions légales</a>
             &nbsp;·&nbsp;
-            <a href="https://leschanvriersbretons.fr/politique-confidentialite" style="color:#f7f4ee;">Politique de confidentialité</a>
+            <a href="${PRIVACY_URL}" style="color:#f7f4ee;">Politique de confidentialité</a>
           </td>
         </tr>
       </table>
@@ -222,19 +227,19 @@ function buildProcessingEmail(order: CmsOrder) {
       `Ta commande est en cours de préparation.\n` +
       `Montant total: ${formatPrice(order.totalAmount)}\n` +
       `Sous-total articles: ${formatPrice(subtotal)}\n` +
-      `Voir mes commandes: https://leschanvriersbretons.fr/profil?tab=commandes\n`,
+      `Voir mes commandes: ${CUSTOMER_ORDERS_URL}\n`,
   };
 }
 
-function buildShippedEmail(order: CmsOrder) {
+export function buildShippedEmail(order: CmsOrder) {
   const trackingUrl = getTrackingUrl(order);
   const trackingNumber = order.trackingNumber?.trim() || "";
   return {
-    subject: `Commande #${order.id} expediée`,
+    subject: `Commande #${order.id} expédiée`,
     html: buildEmailShell({
-      preheader: `Ta commande ${order.id} a ete expediée.`,
-      title: "Commande expediée",
-      intro: "Bonne nouvelle : ta commande a quitté nos ateliers.",
+      preheader: `Ta commande ${order.id} est en route.`,
+      title: "Ta commande est en route",
+      intro: "Bonne nouvelle : ta commande a quitté nos ateliers et poursuit maintenant son chemin jusqu'à toi.",
       order,
       spotlightHtml: trackingNumber
         ? `
@@ -253,11 +258,11 @@ function buildShippedEmail(order: CmsOrder) {
         : "Aucun numero de suivi n'a ete renseigne pour cette expedition.",
     }),
     text:
-      `Commande #${order.id} expediée\n\n` +
-      `Ta commande a ete expediée.\n` +
+      `Commande #${order.id} expédiée\n\n` +
+      `Bonne nouvelle : ta commande est en route.\n` +
       (trackingNumber ? `Numero de suivi: ${trackingNumber}\n` : "") +
       (trackingUrl ? `Suivi: ${trackingUrl}\n` : "") +
-      `Voir mes commandes: https://leschanvriersbretons.fr/profil?tab=commandes\n`,
+      `Voir mes commandes: ${CUSTOMER_ORDERS_URL}\n`,
   };
 }
 

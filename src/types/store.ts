@@ -46,8 +46,10 @@ export type CmsOrder = {
   paymentState: "pending" | "paid" | "failed" | "not_configured";
   archivedAt?: string;
   archivedReason?: string;
-  vivaOrderCode?: number;
+  vivaOrderCode?: string;
   vivaTransactionId?: string;
+  paymentReviewRequired?: boolean;
+  paymentReviewReason?: string;
   source: "web";
   customerId?: string;
   customerEmail?: string;

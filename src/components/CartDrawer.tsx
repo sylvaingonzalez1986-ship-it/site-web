@@ -818,6 +818,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 </div>
                 {deliveryMethod === "home" && (
                   <input
+                    aria-label="Adresse de livraison"
                     className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
                     value={shippingAddress}
                     onChange={(event) => setShippingAddress(event.target.value)}
@@ -879,6 +880,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 </div>
                 <div className="grid grid-cols-[1fr,auto] gap-2">
                   <select
+                    aria-label="Bon ou cadeau à utiliser"
                     className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
                     value={selectedLotteryRewardClaimId}
                     onChange={(event) => {
@@ -988,6 +990,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             </button>
           </div>
           <div className="mt-3">
+            <ol className="mb-3 grid grid-cols-3 gap-1 text-center text-[10px] font-bold uppercase tracking-[0.04em] text-charcoal">
+              <li className="rounded border border-[#1a1a1a] bg-[#d4f5dc] px-1 py-2">1. Coordonnees</li>
+              <li className="rounded border border-[#1a1a1a] bg-[#d4f5dc] px-1 py-2">2. Recapitulatif</li>
+              <li className="rounded border border-[#1a1a1a] bg-[#fff5da] px-1 py-2">3. Paiement</li>
+            </ol>
             <CheckoutButton
               amount={totalPrice}
               amountToPay={finalAmountToPay}
@@ -998,6 +1005,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 price: item.price,
                 quantity: item.quantity,
               }))}
+              cartSnapshot={items}
               shipping={{
                 name: shippingName,
                 email: shippingEmail,
