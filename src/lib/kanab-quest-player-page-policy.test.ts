@@ -51,7 +51,7 @@ describe("Kanab Quest player page access", () => {
   it("mounts the customer-scoped game without duplicate overview requests", () => {
     expect(playerShell).not.toContain("fetch(");
     expect(playerShell).not.toContain("/api/admin/placard");
-    expect(playerShell).toContain('<KanabQuestDicePrototype apiScope="player"');
+    expect(playerShell).toMatch(/<KanabQuestDicePrototype\s+apiScope="player"/);
     expect(gameClient).toContain('"/api/arena/placard/bootstrap"');
     expect(gameClient).toContain('"/api/arena/placard/session"');
   });
@@ -90,7 +90,10 @@ describe("Kanab Quest player page access", () => {
   });
 
   it("shows player links only from the server-provided access state", () => {
-    expect(arenaClient.match(/href="\/arene\/placard"/g)).toHaveLength(2);
+    expect(arenaClient.match(/href="\/arene\/placard"/g)).toHaveLength(3);
+    expect(arenaClient).toContain(
+      'isPlacardPlayerEnabled ? <Link href="/arene/placard"',
+    );
     expect(arenaClient).toContain("isPlacardPlayerEnabled && isAuthenticated");
     expect(arenaClient).toContain("isPlacardPlayerEnabled ? (");
   });

@@ -24,11 +24,6 @@ const baseLinks = [
   { href: "/blog", label: "Le Journal" },
 ];
 
-function isExplicitlyEnabled(raw: string | undefined): boolean {
-  const normalized = raw?.trim().toLowerCase();
-  return normalized === "1" || normalized === "true" || normalized === "on" || normalized === "yes";
-}
-
 function isExplicitlyDisabled(raw: string | undefined): boolean {
   const normalized = raw?.trim().toLowerCase();
   return normalized === "0" || normalized === "false" || normalized === "off" || normalized === "no";
