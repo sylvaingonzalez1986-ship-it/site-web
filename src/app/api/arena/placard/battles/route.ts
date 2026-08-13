@@ -11,7 +11,7 @@ export async function GET() {
   if (!isKqPlayerApiEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }
-  const session = await getCurrentCustomerSessionByBackend();
+  const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
     return NextResponse.json({ battles: await getKqPlayerBattles(session.customerId, 12) }, {
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   if (!isKqPlayerApiEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }
-  const session = await getCurrentCustomerSessionByBackend();
+  const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   const ip = getRequestIp(request);
   const key = `kq_lock_battle:${session.customerId}:${ip}`;

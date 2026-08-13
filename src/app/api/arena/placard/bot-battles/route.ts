@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   if (!isKqPlayerApiEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
-  const session = await getCurrentCustomerSessionByBackend();
+  const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   const rateLimit = await hitRateLimit({
     key: `kq_bot_battle:${session.customerId}:${getRequestIp(request)}`,

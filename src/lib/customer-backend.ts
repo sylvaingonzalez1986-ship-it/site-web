@@ -8,6 +8,7 @@ import {
   consumeSupabasePromoCode,
   getAllSupabaseCustomers,
   getCurrentSupabaseSessionCustomer,
+  getCurrentSupabaseSessionIdentity,
   getSupabaseCustomerById,
   getSupabaseCustomerByIdFull,
   isAtLeast18,
@@ -22,11 +23,24 @@ import {
 } from "@/lib/supabase/customer-backend";
 import type { AdminCustomer, PromoCode, PublicCustomer } from "@/types/customer";
 
-export async function getCurrentCustomerSessionByBackend(): Promise<{
+type CustomerSession = {
   customerId: string;
   customer: PublicCustomer;
-} | null> {
-  return getCurrentSupabaseSessionCustomer();
+};
+
+type CustomerSessionIdentity = {
+  customerId: string;
+  customer: { email: string };
+};
+
+export function getCurrentCustomerSessionByBackend(mode: "identity"): Promise<CustomerSessionIdentity | null>;
+export function getCurrentCustomerSessionByBackend(): Promise<CustomerSession | null>;
+export async function getCurrentCustomerSessionByBackend(
+  mode?: "identity",
+): Promise<CustomerSession | CustomerSessionIdentity | null> {
+  return mode === "identity"
+    ? getCurrentSupabaseSessionIdentity()
+    : getCurrentSupabaseSessionCustomer();
 }
 
 export async function loginCustomerByBackend(input: {

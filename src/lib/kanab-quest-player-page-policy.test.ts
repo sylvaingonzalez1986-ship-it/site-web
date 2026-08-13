@@ -42,9 +42,10 @@ describe("Kanab Quest player page access", () => {
 
   it("checks the server flag before requiring a customer session", () => {
     const flagGuard = playerPage.indexOf("if (!isKqPlayerApiEnabled()) notFound()");
-    const sessionLookup = playerPage.indexOf("getCurrentCustomerSessionByBackend()");
+    const sessionLookup = playerPage.indexOf("getCurrentCustomerSessionByBackend(");
     expect(flagGuard).toBeGreaterThan(-1);
     expect(sessionLookup).toBeGreaterThan(flagGuard);
+    expect(playerPage).toContain('getCurrentCustomerSessionByBackend("identity")');
     expect(playerPage).toContain('redirect("/compte/connexion?next=%2Farene%2Fplacard")');
   });
 

@@ -21,12 +21,13 @@ export function ContestArenaHub() {
 
           <div className={styles.heroArt} aria-hidden="true">
             <Image
-              src="/contest/mascot/arena-journey-v2.png"
+              src="/contest/mascot/arena-journey-v2.webp"
               alt=""
               width={1254}
               height={1254}
               sizes="(max-width: 767px) 92vw, 560px"
               className={styles.heroDuo}
+              fetchPriority="high"
               priority
             />
           </div>

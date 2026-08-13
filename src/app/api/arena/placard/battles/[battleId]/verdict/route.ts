@@ -11,7 +11,7 @@ export async function POST(request: Request, context: { params: Promise<{ battle
   if (!isKqPlayerApiEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }
-  const session = await getCurrentCustomerSessionByBackend();
+  const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   const ip = getRequestIp(request);
   const key = `kq_battle_verdict:${session.customerId}:${ip}`;

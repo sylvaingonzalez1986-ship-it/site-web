@@ -112,6 +112,13 @@ type OfficialBattleResult = {
     streak: number;
   };
 };
+type PlayerSessionPayload = {
+  warnings?: string[];
+  activeRun?: Awaited<ReturnType<typeof getKqRemoteActiveRun>>["activeRun"];
+  flowers?: KqOfficialFlower[];
+  battles?: KqOfficialBattle[];
+  progress?: OfficialRankProgress | null;
+};
 
 const CATEGORY_LABELS: Record<KqSupportCard["category"], string> = {
   substrate: "Substrat", pbi: "Auxiliaire PBI", equipment: "Équipement", "know-how": "Savoir-faire", luck: "Coup de chance",
@@ -268,6 +275,7 @@ export function KanabQuestDicePrototype({
   const verdictTimerRef = useRef<number | null>(null);
   const repositoryRef = useRef<KqRepository | null>(null);
   const remoteInventoryRef = useRef<Record<string, number>>({});
+  const skipNextSessionFetchRef = useRef(false);
   const mobileViewportRef = useRef<{ scrollY: number } | null>(null);
   const [revealedRounds, setRevealedRounds] = useState(0);
   const [deckNotice, setDeckNotice] = useState("");
@@ -368,6 +376,47 @@ export function KanabQuestDicePrototype({
     }
   }, [isPlayerMode]);
 
+  const applyOfficialSessionPayload = useCallback((payload: PlayerSessionPayload) => {
+    const activeRun = payload.activeRun ?? null;
+    const flowers = payload.flowers ?? [];
+    setOfficialFlowers(flowers);
+    setOfficialBattles(payload.battles ?? []);
+    setOfficialRankProgress(payload.progress ?? null);
+    if (!activeRun) {
+      const currentRemoteInventory = remoteInventoryRef.current;
+      setRemoteRunId(null);
+      if (isPlayerMode) {
+        setState(startKqGame(Date.now()));
+        setBattle(null);
+        setSetupOpen(true);
+      }
+      window.sessionStorage.removeItem(`${sessionStoragePrefix}-remote-run-id`);
+      setSelectedCards((current) => sanitizeKqDeckSelection(current, currentRemoteInventory));
+      setSelectedSubstrate((current) => (currentRemoteInventory[current] ?? 0) > 0
+        ? current
+        : KQ_CARDS.find((card) => card.category === "substrate" && (currentRemoteInventory[card.code] ?? 0) > 0)?.code ?? current);
+      setRemoteNotice("");
+    } else {
+      const receipts = activeRun.burnReceipts.map((receipt) => toLocalReceipt(receipt, activeRun.state.seed));
+      setRemoteRunId(activeRun.runId);
+      window.sessionStorage.setItem(`${sessionStoragePrefix}-remote-run-id`, activeRun.runId);
+      setState(activeRun.state);
+      setSelectedBuddie(activeRun.state.varietyCode);
+      setSelectedSubstrate(activeRun.state.deckCodes.find((code) => KQ_CARDS.find((card) => card.code === code)?.category === "substrate") ?? "BOTTE-001");
+      setSelectedCards(activeRun.state.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")));
+      setBurnHistory((history) => [...receipts, ...history.filter((entry) => !receipts.some((receipt) => receipt.id === entry.id))].slice(0, 100));
+      setSetupOpen(false);
+      setRemoteNotice(`Culture officielle reprise · ${receipts.length} reçu${receipts.length > 1 ? "s" : ""} vérifié${receipts.length > 1 ? "s" : ""}.`);
+    }
+    const matchingFlower = flowers.find((flower) => flower.runId === activeRun?.runId)
+      ?? flowers.find((flower) => flower.id === window.sessionStorage.getItem(`${sessionStoragePrefix}-remote-flower-id`));
+    if (matchingFlower) {
+      setPersistedFlowerId(matchingFlower.id);
+      window.sessionStorage.setItem(`${sessionStoragePrefix}-remote-flower-id`, matchingFlower.id);
+    }
+    if ((payload.warnings?.length ?? 0) > 0) setRemoteNotice(payload.warnings!.join(" · "));
+  }, [isPlayerMode, sessionStoragePrefix]);
+
   useEffect(() => {
     const refreshCollection = () => setCollectionRefreshNonce((value) => value + 1);
     window.addEventListener("kq:collection-updated", refreshCollection);
@@ -445,6 +494,7 @@ export function KanabQuestDicePrototype({
           };
           ownedBuddieCodes?: string[];
           ownedBuddies?: Array<{ code: string; imageUrl?: string; ownedCopies?: number }>;
+          playerSession?: PlayerSessionPayload | null;
         };
         if (!response.ok) throw new Error(payload.error || "Initialisation Placard indisponible.");
         if ((payload.warnings?.length ?? 0) > 0) setRemoteNotice(payload.warnings!.join(" · "));
@@ -481,6 +531,12 @@ export function KanabQuestDicePrototype({
           cardCount: collection.cards?.length ?? 0,
           cultureTokenBalance: Math.max(0, Number(collection.cultureTokenBalance ?? 0)),
         });
+        if (isPlayerMode && payload.playerSession && (payload.playerSession.warnings?.length ?? 0) === 0) {
+          skipNextSessionFetchRef.current = true;
+          applyOfficialSessionPayload(payload.playerSession);
+          const warnings = [...(payload.warnings ?? []), ...(payload.playerSession.warnings ?? [])];
+          if (warnings.length > 0) setRemoteNotice(warnings.join(" · "));
+        }
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
@@ -489,12 +545,16 @@ export function KanabQuestDicePrototype({
         setRemoteCollection((current) => ({ ...current, loading: false, error: message }));
       });
     return () => controller.abort();
-  }, [collectionRefreshNonce, isPlayerMode, showAdminOperations]);
+  }, [applyOfficialSessionPayload, collectionRefreshNonce, isPlayerMode, showAdminOperations]);
 
   useEffect(() => {
     if (!remoteBurnsEnabled || remoteCollection.loading || !remoteCollection.ownerFound) {
       setOfficialFlowers([]);
       setOfficialBattles([]);
+      return;
+    }
+    if (isPlayerMode && skipNextSessionFetchRef.current) {
+      skipNextSessionFetchRef.current = false;
       return;
     }
     const controller = new AbortController();
@@ -1243,7 +1303,7 @@ export function KanabQuestDicePrototype({
           </div>
         ) : null}
         <section className={styles.setupPanel}>
-          <header className={styles.setupHero}><div className={styles.setupHeroCopy}><span>Le Placard Kanab Quest{isPlayerMode ? "" : " · local"}</span><h1>Prépare <em>ta culture.</em></h1><i aria-hidden="true" /><p>Choisis ta variété, ton substrat et tes cartes. Puis lance la partie.</p><button type="button" className={styles.guideReplay} onClick={() => setShowOnboarding(true)}>Règles en 1 minute</button></div><div className={styles.setupHeroArt} aria-hidden="true"><span /><Image src="/sylvain-culture-hero.png" alt="" width={1152} height={1365} priority sizes="(max-width: 760px) 72vw, 390px" /></div></header>
+          <header className={styles.setupHero}><div className={styles.setupHeroCopy}><span>Le Placard Kanab Quest{isPlayerMode ? "" : " · local"}</span><h1>Prépare <em>ta culture.</em></h1><i aria-hidden="true" /><p>Choisis ta variété, ton substrat et tes cartes. Puis lance la partie.</p><button type="button" className={styles.guideReplay} onClick={() => setShowOnboarding(true)}>Règles en 1 minute</button></div><div className={styles.setupHeroArt} aria-hidden="true"><span /><Image src="/sylvain-culture-hero.webp" alt="" width={1122} height={1402} priority sizes="(max-width: 760px) 72vw, 390px" /></div></header>
           {showAdminOperations && !isPlayerMode ? <div className={styles.remoteCollectionStatus} data-error={remoteCollection.error || undefined}>
             <span>{isPlayerMode ? "Mes cartes La Botte" : "Données sécurisées · test admin"}</span>
             {remoteCollection.loading ? <strong>Chargement de tes cartes…</strong> : remoteCollection.error ? <strong>{remoteCollection.error}</strong> : <strong>{remoteCollection.totalCopies} carte{remoteCollection.totalCopies > 1 ? "s" : ""} disponible{remoteCollection.totalCopies > 1 ? "s" : ""}</strong>}

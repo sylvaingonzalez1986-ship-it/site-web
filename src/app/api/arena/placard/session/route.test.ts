@@ -2,24 +2,15 @@ import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const {
   getCurrentCustomerSessionByBackend,
-  getKqPlayerActiveRun,
-  getKqPlayerFlowers,
-  getKqPlayerBattles,
-  getKqPlayerProgress,
+  getKqPlayerCoreSnapshot,
 } = vi.hoisted(() => ({
   getCurrentCustomerSessionByBackend: vi.fn(),
-  getKqPlayerActiveRun: vi.fn(),
-  getKqPlayerFlowers: vi.fn(),
-  getKqPlayerBattles: vi.fn(),
-  getKqPlayerProgress: vi.fn(),
+  getKqPlayerCoreSnapshot: vi.fn(),
 }));
 
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
-  getKqPlayerActiveRun,
-  getKqPlayerFlowers,
-  getKqPlayerBattles,
-  getKqPlayerProgress,
+  getKqPlayerCoreSnapshot,
 }));
 
 import { GET } from "@/app/api/arena/placard/session/route";
@@ -47,22 +38,21 @@ describe("GET /api/arena/placard/session", () => {
   it("requires an authenticated customer after activation", async () => {
     getCurrentCustomerSessionByBackend.mockResolvedValue(null);
     expect((await GET()).status).toBe(401);
-    expect(getKqPlayerActiveRun).not.toHaveBeenCalled();
+    expect(getKqPlayerCoreSnapshot).not.toHaveBeenCalled();
   });
 
   it("scopes every session read to the authenticated customer id", async () => {
     getCurrentCustomerSessionByBackend.mockResolvedValue({ customerId });
-    getKqPlayerActiveRun.mockResolvedValue({ runId: "run-1" });
-    getKqPlayerFlowers.mockResolvedValue([{ id: "flower-1" }]);
-    getKqPlayerBattles.mockResolvedValue([{ id: "battle-1" }]);
-    getKqPlayerProgress.mockResolvedValue({ rank: 4, rating: 1010 });
+    getKqPlayerCoreSnapshot.mockResolvedValue({
+      activeRun: { runId: "run-1" },
+      flowers: [{ id: "flower-1" }],
+      battles: [{ id: "battle-1" }],
+      progress: { rank: 4, rating: 1010 },
+    });
     const response = await GET();
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
-    expect(getKqPlayerActiveRun).toHaveBeenCalledWith(customerId);
-    expect(getKqPlayerFlowers).toHaveBeenCalledWith(customerId);
-    expect(getKqPlayerBattles).toHaveBeenCalledWith(customerId, 12);
-    expect(getKqPlayerProgress).toHaveBeenCalledWith(customerId);
+    expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
     expect(await response.json()).toMatchObject({
       activeRun: { runId: "run-1" },
       flowers: [{ id: "flower-1" }],
@@ -73,14 +63,11 @@ describe("GET /api/arena/placard/session", () => {
 
   it("keeps healthy private sections without exposing backend errors", async () => {
     getCurrentCustomerSessionByBackend.mockResolvedValue({ customerId });
-    getKqPlayerActiveRun.mockRejectedValue(new Error("secret database detail"));
-    getKqPlayerFlowers.mockResolvedValue([]);
-    getKqPlayerBattles.mockResolvedValue([]);
-    getKqPlayerProgress.mockResolvedValue(null);
+    getKqPlayerCoreSnapshot.mockRejectedValue(new Error("secret database detail"));
     const response = await GET();
     const payload = await response.json();
-    expect(response.status).toBe(200);
-    expect(payload.warnings).toEqual(["Culture indisponible."]);
+    expect(response.status).toBe(503);
+    expect(payload.warnings).toEqual(["Session de jeu indisponible."]);
     expect(JSON.stringify(payload)).not.toContain("secret database detail");
   });
 });

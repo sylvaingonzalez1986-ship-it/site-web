@@ -508,11 +508,43 @@ export async function getCurrentSupabaseSessionCustomer(): Promise<{
     return null;
   }
 
-  const profile = await ensureProfileRow({ userId: user.id });
-  const promoCodes = await loadPromoCodes(user.id);
-  const contestBetaEnabled = await loadContestBetaTesterEnabled(user.id);
+  const [profile, promoCodes, contestBetaEnabled] = await Promise.all([
+    ensureProfileRow({ userId: user.id }),
+    loadPromoCodes(user.id),
+    loadContestBetaTesterEnabled(user.id),
+  ]);
   const customer = mapProfileToPublicCustomer(profile, user.email ?? "", promoCodes, contestBetaEnabled);
   return { customerId: user.id, customer };
+}
+
+/**
+ * Validates the Supabase session without hydrating the complete customer
+ * profile. Game endpoints only need the immutable owner id and the email used
+ * in security logs; loading loyalty, promo and beta data for every dice action
+ * would add three unrelated database reads.
+ */
+export async function getCurrentSupabaseSessionIdentity(): Promise<{
+  customerId: string;
+  customer: { email: string };
+} | null> {
+  const supabaseServer = await createSupabaseServerClient();
+  const authResult = await supabaseServer.auth.getUser();
+  if (authResult.error) {
+    if (isAuthSessionMissingError(authResult.error)) {
+      return null;
+    }
+    failIfError(authResult.error, "auth.getUser");
+  }
+
+  const user = authResult.data.user;
+  if (!user) {
+    return null;
+  }
+
+  return {
+    customerId: user.id,
+    customer: { email: normalizeEmail(user.email ?? "") },
+  };
 }
 
 export async function loginSupabaseCustomer(input: {

@@ -77,15 +77,15 @@ export function Footer() {
       .sort((a, b) => a.position - b.position)
       .map((page) => ({
         href: `/${page.slug}`,
-        label: page.footerLabel.trim() || page.title,
+        label: page.footerLabel.trim() || page.title.trim() || page.slug,
       }))
       .filter((link) => !staticHrefs.has(link.href));
   }, [cmsPages]);
 
   const legalLinks = useMemo<FooterLink[]>(
     () => [
-      { href: "/mentions-legales", label: footer.legalLabel },
-      { href: "/politique-confidentialite", label: footer.privacyLabel },
+      { href: "/mentions-legales", label: footer.legalLabel.trim() || "Mentions légales" },
+      { href: "/politique-confidentialite", label: footer.privacyLabel.trim() || "Politique de confidentialité" },
       { href: "/politique-cookies", label: "Politique cookies" },
       { href: "/cgv", label: "Conditions générales de vente" },
       { href: "/reglement-jeu-promo", label: "Règlement jeu promo" },

@@ -1,8 +1,30 @@
 import { describe, expect, it } from "vitest";
-import { applyKqRunAction, buildKqLaunchReadiness, buildKqNotebookRewardPreview, countKqInventoryCopies, isKqFinalArtworkUrl, mapKqCardBurnResult, mapKqSeasonRolloverPreview, mapKqStartRunResult, prepareKqCardPlay } from "@/lib/supabase/kanab-quest-backend";
+import { applyKqRunAction, buildKqLaunchReadiness, buildKqNotebookRewardPreview, countKqInventoryCopies, isKqFinalArtworkUrl, mapKqCardBurnResult, mapKqPlayerCoreSnapshot, mapKqSeasonRolloverPreview, mapKqStartRunResult, prepareKqCardPlay } from "@/lib/supabase/kanab-quest-backend";
 import { KQ_CARDS, startKqGame } from "@/lib/kanab-quest-game";
 
 describe("Kanab Quest Supabase inventory mapping", () => {
+  it("maps the consolidated player snapshot and derives its league", () => {
+    expect(mapKqPlayerCoreSnapshot({
+      activeRun: null,
+      humanBattles: [],
+      botBattles: [],
+      flowers: [{
+        id: "flower-1", runId: "run-1", varietyCode: "VAR-1", varietyName: "Lifter",
+        quality: 81, traits: ["dense"], combos: [], stats: { vigor: 7 }, status: "available",
+        createdAt: "2026-08-13T10:00:00Z", lockedAt: null, burnedAt: null,
+      }],
+      progress: {
+        seasonCode: "KQ-2026-S1", rank: 8, rating: 1075, seasonPoints: 120,
+        wins: 5, losses: 2, streak: 2, burnedFlowers: 7, arenaExperience: 31,
+        leaderboardGeneratedAt: "2026-08-13", updatedAt: "2026-08-13T10:00:00Z",
+      },
+    })).toMatchObject({
+      activeRun: null,
+      flowers: [{ id: "flower-1", quality: 81, stats: { vigor: 7 } }],
+      battles: [],
+      progress: { rank: 8, rating: 1075, league: "Canopée", leagueProgress: 25, pointsToNextLeague: 75 },
+    });
+  });
   it("rejects draft artwork while accepting local and hosted final assets", () => {
     expect(isKqFinalArtworkUrl("/cards/botte-01.webp")).toBe(true);
     expect(isKqFinalArtworkUrl("https://cdn.test/cards/heritage-01.webp")).toBe(true);

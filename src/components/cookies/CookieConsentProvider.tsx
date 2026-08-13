@@ -53,15 +53,15 @@ function useIsHydrated(): boolean {
  * - analytics tools (GTM analytics, Matomo, GA) => hasConsent("analytics")
  * - marketing tools (Meta Pixel, ads, retargeting) => hasConsent("marketing")
  */
-export function CookieConsentProvider({ children }: { children: ReactNode }) {
+export function CookieConsentProvider({ children, initialConsent = null }: { children: ReactNode; initialConsent?: CookieConsentState | null }) {
   const pathname = usePathname();
   const hydrated = useIsHydrated();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [, bumpConsentRevision] = useReducer((value: number) => value + 1, 0);
 
   const hideConsentUi = shouldHideConsentUi(pathname);
-  const consent = hydrated ? getConsentFromCookie() : null;
-  const showBanner = hydrated && !hideConsentUi && (settingsOpen || consent === null);
+  const consent = hydrated ? getConsentFromCookie() : initialConsent;
+  const showBanner = !hideConsentUi && (settingsOpen || consent === null);
   const dismissible = settingsOpen && consent !== null;
 
   const updateConsent = useCallback((selections: Partial<CookieConsentSelections>) => {

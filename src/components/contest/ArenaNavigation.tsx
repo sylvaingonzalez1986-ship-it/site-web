@@ -1,5 +1,3 @@
-"use client";
-
 import { BookOpen, Sprout, Trophy } from "lucide-react";
 import Link from "next/link";
 import styles from "@/components/contest/ContestArena.module.css";

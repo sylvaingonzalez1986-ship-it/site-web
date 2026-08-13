@@ -33,13 +33,21 @@ describe("Kanab Quest player session ownership policy", () => {
     }
   });
 
+  it("uses the lightweight verified identity outside the loyalty shop", () => {
+    for (const route of playerRouteFiles) {
+      const relative = route.slice(playerRouteRoot.length).replaceAll("\\", "/");
+      if (relative === "/rankings/route.ts" || relative === "/boosters/route.ts") continue;
+      expect(readFileSync(route, "utf8"), route).toContain('getCurrentCustomerSessionByBackend("identity")');
+    }
+  });
+
   it("rate limits every player mutation after authentication", () => {
     const mutationRoutes = playerRouteFiles.filter((route) =>
       readFileSync(route, "utf8").includes("export async function POST"));
     expect(mutationRoutes.length).toBeGreaterThanOrEqual(5);
     for (const route of mutationRoutes) {
       const source = readFileSync(route, "utf8");
-      const sessionIndex = source.indexOf("getCurrentCustomerSessionByBackend()");
+      const sessionIndex = source.indexOf("getCurrentCustomerSessionByBackend(");
       const rateLimitIndex = source.indexOf("hitRateLimit(");
       expect(rateLimitIndex, route).toBeGreaterThan(sessionIndex);
       expect(source, route).toContain("Retry-After");

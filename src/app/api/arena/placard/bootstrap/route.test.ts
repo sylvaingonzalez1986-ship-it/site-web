@@ -5,17 +5,20 @@ const {
   getKqPlayerCollectionSnapshot,
   getKqPlayerOwnedBuddies,
   getKqPlayerHeritageSnapshot,
+  getKqPlayerCoreSnapshot,
 } = vi.hoisted(() => ({
   getCurrentCustomerSessionByBackend: vi.fn(),
   getKqPlayerCollectionSnapshot: vi.fn(),
   getKqPlayerOwnedBuddies: vi.fn(),
   getKqPlayerHeritageSnapshot: vi.fn(),
+  getKqPlayerCoreSnapshot: vi.fn(),
 }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
   getKqPlayerCollectionSnapshot,
   getKqPlayerOwnedBuddies,
   getKqPlayerHeritageSnapshot,
+  getKqPlayerCoreSnapshot,
 }));
 
 import { GET } from "@/app/api/arena/placard/bootstrap/route";
@@ -42,6 +45,7 @@ describe("GET /api/arena/placard/bootstrap", () => {
       fragmentBalance: 0,
       cards: [],
     });
+    getKqPlayerCoreSnapshot.mockResolvedValue({ activeRun: null, flowers: [], battles: [], progress: null });
   });
   afterAll(() => {
     if (previousFlag === undefined) delete process.env.KQ_PLAYER_API_LIVE;
@@ -54,17 +58,20 @@ describe("GET /api/arena/placard/bootstrap", () => {
     expect(getKqPlayerCollectionSnapshot).not.toHaveBeenCalled();
   });
 
-  it("loads the three collection views for one authenticated customer", async () => {
+  it("loads collection and game session in one authenticated request", async () => {
     const response = await GET();
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(getKqPlayerCollectionSnapshot).toHaveBeenCalledWith(customerId);
     expect(getKqPlayerOwnedBuddies).toHaveBeenCalledWith(customerId);
     expect(getKqPlayerHeritageSnapshot).toHaveBeenCalledWith(customerId);
+    expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
+    expect(getCurrentCustomerSessionByBackend).toHaveBeenCalledWith("identity");
     expect(await response.json()).toMatchObject({
       collection: { inventory: { "BOTTE-001": 1 } },
       ownedBuddieCodes: ["HH2026-003"],
       ownedBuddies: [{ code: "HH2026-003", imageUrl: "/cards/buddie-test.webp", ownedCopies: 1 }],
+      playerSession: { activeRun: null, flowers: [], battles: [], progress: null },
       warnings: [],
     });
   });

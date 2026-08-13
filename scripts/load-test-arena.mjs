@@ -3,6 +3,7 @@ const participants = Math.max(1, Number(process.env.LOAD_TEST_PARTICIPANTS || 50
 const rampMs = Math.max(0, Number(process.env.LOAD_TEST_RAMP_MS || 120000));
 const timeoutMs = Math.max(1000, Number(process.env.LOAD_TEST_TIMEOUT_MS || 10000));
 const paths = ["/arene", "/api/contest/seasons", "/api/contest/entries", "/api/contest/rankings?limit=12", "/api/contest/feed?limit=18"];
+const expectedStatus = Math.max(100, Number(process.env.LOAD_TEST_EXPECTED_STATUS || 200));
 
 function percentile(values, ratio) {
   if (values.length === 0) return 0;
@@ -19,7 +20,7 @@ async function request(path) {
       headers: { accept: path === "/arene" ? "text/html" : "application/json", "user-agent": "arena-load-test/1.0" },
     });
     await response.arrayBuffer();
-    return { duration: performance.now() - startedAt, ok: response.status < 500, status: response.status, path };
+    return { duration: performance.now() - startedAt, ok: response.status === expectedStatus, status: response.status, path };
   } catch (error) {
     return { duration: performance.now() - startedAt, ok: false, status: 0, path, error: String(error) };
   }
@@ -38,6 +39,17 @@ const jobs = Array.from({ length: participants }, (_, index) => new Promise((res
 const results = (await Promise.all(jobs)).flat();
 const durations = results.map((result) => result.duration);
 const failures = results.filter((result) => !result.ok);
+const byPath = Object.fromEntries(paths.map((path) => {
+  const rows = results.filter((result) => result.path === path);
+  const pathDurations = rows.map((result) => result.duration);
+  return [path, {
+    requests: rows.length,
+    errors: rows.filter((result) => !result.ok).length,
+    p50: Math.round(percentile(pathDurations, 0.5)),
+    p95: Math.round(percentile(pathDurations, 0.95)),
+    p99: Math.round(percentile(pathDurations, 0.99)),
+  }];
+}));
 const summary = {
   baseUrl,
   participants,
@@ -52,6 +64,8 @@ const summary = {
     max: Math.round(Math.max(...durations)),
   },
   statuses: Object.fromEntries([...new Set(results.map((result) => result.status))].map((status) => [status, results.filter((result) => result.status === status).length])),
+  expectedStatus,
+  byPath,
 };
 
 console.log(JSON.stringify(summary, null, 2));

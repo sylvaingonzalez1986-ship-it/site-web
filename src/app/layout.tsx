@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed, Caveat, Space_Grotesk } from "next/font/google";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { Footer } from "@/components/Footer";
 import {
-  LocalBusinessJsonLd,
   OrganizationJsonLd,
   WebSiteJsonLd,
 } from "@/components/JsonLd";
@@ -11,6 +10,8 @@ import { NewProductsPopup } from "@/components/NewProductsPopup";
 import { Navbar } from "@/components/Navbar";
 import { SupabaseRecoveryRedirect } from "@/components/SupabaseRecoveryRedirect";
 import { CookieConsentProvider } from "@/components/cookies/CookieConsentProvider";
+import { COOKIE_CONSENT_COOKIE_NAME } from "@/components/cookies/cookie-consent-config";
+import { parseConsentCookieValue } from "@/components/cookies/cookie-consent-utils";
 import { VercelAnalytics } from "@/components/VercelAnalytics";
 import { PendingPaymentRecoveryModal } from "@/components/checkout/PendingPaymentRecoveryModal";
 import { WebVitals } from "@/components/WebVitals";
@@ -21,7 +22,7 @@ const bodyFont = Space_Grotesk({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  display: "swap",
+  display: "optional",
   fallback: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
 });
 
@@ -147,6 +148,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const nonce = (await headers()).get("x-nonce") ?? undefined;
+  const initialCookieConsent = parseConsentCookieValue((await cookies()).get(COOKIE_CONSENT_COOKIE_NAME)?.value ?? "");
   return (
     <html lang="fr" nonce={nonce}>
       <head>
@@ -161,7 +163,6 @@ export default async function RootLayout({
         className={`${bodyFont.variable} ${displayFont.variable} ${handwrittenFont.variable} bg-mint text-ink antialiased`}
       >
         <OrganizationJsonLd />
-        <LocalBusinessJsonLd />
         <WebSiteJsonLd />
         {process.env.NODE_ENV !== "production" && (
           <script
@@ -206,7 +207,7 @@ export default async function RootLayout({
         )}
         <WebVitals />
         <CartProvider>
-          <CookieConsentProvider>
+          <CookieConsentProvider initialConsent={initialCookieConsent}>
             <SupabaseRecoveryRedirect />
             <VercelAnalytics />
             <PendingPaymentRecoveryModal />

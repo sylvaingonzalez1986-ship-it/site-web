@@ -3121,7 +3121,7 @@ export function ContestHubClient({
 
           <div className={arenaStyles.heroArt} aria-hidden="true">
             <Image
-              src="/contest/mascot/arena-journey-v2.png"
+              src="/contest/mascot/arena-journey-v2.webp"
               alt=""
               width={1254}
               height={1254}
@@ -3238,10 +3238,10 @@ export function ContestHubClient({
             <div className={arenaStyles.placardVisual} aria-hidden="true">
               <span />
               <Image
-                src="/sylvain-culture-hero.png"
+                src="/sylvain-culture-hero.webp"
                 alt=""
-                width={1152}
-                height={1365}
+                width={1122}
+                height={1402}
                 sizes="(max-width: 767px) 78vw, 380px"
               />
             </div>

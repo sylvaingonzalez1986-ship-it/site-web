@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function PlacardPlayerPage() {
   if (!isKqPlayerApiEnabled()) notFound();
-  const session = await getCurrentCustomerSessionByBackend();
+  const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) redirect("/compte/connexion?next=%2Farene%2Fplacard");
   return <PlacardPlayerShell />;
 }

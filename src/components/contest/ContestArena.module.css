@@ -560,6 +560,8 @@
 .page[data-surface="notebook"] .notebookIntro { display: none; }
 .page[data-surface="notebook"] .testedPanel { order: initial; }
 .page[data-surface="notebook-ranking"] .rankingSection { padding-top: 0; }
+.page[data-surface="notebook"] .notebookStage { min-height: min(720px, 76svh); }
+.page[data-surface="notebook-ranking"] .scorePanel { min-height: 430px; }
 
 .notebookSurfaceSections { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: .7rem; margin: 0; }
 .notebookSurfaceSections a { display: flex; min-height: 84px; align-items: center; gap: .75rem; padding: .75rem 1rem; border: 2px solid var(--arena-ink); background: #fff; box-shadow: 3px 3px 0 var(--arena-ink); color: var(--arena-ink); text-decoration: none; transition: transform .15s ease,box-shadow .15s ease; }
@@ -648,6 +650,8 @@
   .notebookSurfaceQuickNav { padding: 0 .65rem 1rem; }
   .page[data-surface="notebook"] .content,.page[data-surface="notebook-ranking"] .content { padding: .75rem .65rem 3rem; }
   .page[data-surface="notebook"] .notebookPanel,.page[data-surface="notebook"] .testedPanel { padding-inline: .55rem; }
+  .page[data-surface="notebook"] .notebookStage { min-height: 620px; }
+  .page[data-surface="notebook-ranking"] .scorePanel { min-height: 360px; }
   .notebookSurfaceSections { gap: .3rem; }
   .notebookSurfaceSections a { min-height: 70px; justify-content: center; flex-direction: column; gap: .25rem; padding: .45rem .2rem; text-align: center; }
   .notebookSurfaceSections a>svg { width: 22px; height: 22px; }

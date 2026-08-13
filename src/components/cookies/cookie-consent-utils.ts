@@ -89,6 +89,10 @@ export function getConsentFromCookie(): CookieConsentState | null {
     return null;
   }
 
+  return parseConsentCookieValue(encoded);
+}
+
+export function parseConsentCookieValue(encoded: string): CookieConsentState | null {
   try {
     const json = decodeBase64(decodeURIComponent(encoded));
     return normalizeConsentState(JSON.parse(json));

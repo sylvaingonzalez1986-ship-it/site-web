@@ -1,11 +1,29 @@
 "use client";
 
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowLeft, Gamepad2, ShoppingBag, Swords } from "lucide-react";
 import { useState } from "react";
-import { KanabQuestDicePrototype } from "./KanabQuestDicePrototype";
-import { KqSupportBoosterShop } from "./KqSupportBoosterShop";
+
+function PlacardViewLoading() {
+  return (
+    <div className="mx-auto grid min-h-[55vh] max-w-6xl place-items-center px-4 py-12" role="status">
+      <span className="border-2 border-ink bg-white px-5 py-4 font-black uppercase shadow-[4px_4px_0_#111]">
+        Chargement…
+      </span>
+    </div>
+  );
+}
+
+const KanabQuestDicePrototype = dynamic(
+  () => import("./KanabQuestDicePrototype").then((module) => module.KanabQuestDicePrototype),
+  { loading: PlacardViewLoading },
+);
+const KqSupportBoosterShop = dynamic(
+  () => import("./KqSupportBoosterShop").then((module) => module.KqSupportBoosterShop),
+  { loading: PlacardViewLoading },
+);
 
 type PlacardView = "hub" | "shop" | "game" | "arena";
 
@@ -15,7 +33,7 @@ const HUB_DESTINATIONS = [
     number: "01",
     eyebrow: "Collection",
     title: "La Boutique",
-    image: "/placard/booster-shop-front-v2.png",
+    image: "/placard/booster-shop-front-v2.webp",
     imageClassName: "object-cover object-center",
     icon: ShoppingBag,
     accent: "bg-yellow",
@@ -25,7 +43,7 @@ const HUB_DESTINATIONS = [
     number: "02",
     eyebrow: "Culture",
     title: "Le Jeu",
-    image: "/sylvain-culture-hero.png",
+    image: "/sylvain-culture-hero.webp",
     imageClassName: "object-contain object-center p-3 sm:p-5",
     icon: Gamepad2,
     accent: "bg-mint",
@@ -35,7 +53,7 @@ const HUB_DESTINATIONS = [
     number: "03",
     eyebrow: "Compétition",
     title: "Fleur vs Fleur",
-    image: "/contest/mascot/arena-duo.png",
+    image: "/contest/mascot/arena-duo.webp",
     imageClassName: "object-contain object-center p-3 sm:p-5",
     icon: Swords,
     accent: "bg-[#167d6b]",

@@ -9,10 +9,12 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request, context: { params: Promise<{ runId: string }> }) {
+  const startedAt = performance.now();
   if (!isKqPlayerApiEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }
-  const session = await getCurrentCustomerSessionByBackend();
+  const session = await getCurrentCustomerSessionByBackend("identity");
+  const authenticatedAt = performance.now();
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
 
   const ip = getRequestIp(request);
@@ -58,7 +60,10 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
   try {
     const result = await applyKqPlayerRunAction(session.customerId, runId, action, options);
     return NextResponse.json(result, {
-      headers: { "Cache-Control": "private, no-store, max-age=0" },
+      headers: {
+        "Cache-Control": "private, no-store, max-age=0",
+        "Server-Timing": `auth;dur=${(authenticatedAt - startedAt).toFixed(1)}, action;dur=${(performance.now() - authenticatedAt).toFixed(1)}`,
+      },
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Action impossible.";

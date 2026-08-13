@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import {
   COOKIE_CATEGORIES,
   type CookieCategory,
@@ -167,11 +166,11 @@ export function CookieConsentModal({
     };
   }, [dismissible, onRequestClose, open]);
 
-  if (!open || typeof document === "undefined") {
+  if (!open) {
     return null;
   }
 
-  return createPortal(
+  return (
     <div className={styles.backdrop}>
       <div
         ref={modalRef}
@@ -313,7 +312,6 @@ export function CookieConsentModal({
         )}
         </div>
       </div>
-    </div>,
-    document.body,
+    </div>
   );
 }

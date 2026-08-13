@@ -12,7 +12,7 @@ export async function GET() {
   }
   let session;
   try {
-    session = await getCurrentCustomerSessionByBackend();
+    session = await getCurrentCustomerSessionByBackend("identity");
   } catch {
     return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   }
