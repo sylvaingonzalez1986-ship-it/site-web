@@ -9,7 +9,7 @@ export async function GET() {
   if (!isKqPlayerApiEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   try {
     return NextResponse.json(await getKqPublicArenaLeaderboard(), {
-      headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800" },
+      headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
     });
   } catch {
     return NextResponse.json({ entries: [], unavailable: true, formulaVersion: "arena-v1" }, {

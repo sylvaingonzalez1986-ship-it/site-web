@@ -1,0 +1,30 @@
+@media (max-width: 639px) {
+  .interior {
+    object-position: center center;
+  }
+
+  .item {
+    bottom: 25.5dvh;
+    width: clamp(104px, 31vw, 132px);
+    transform-origin: 50% 82%;
+  }
+
+  .itemGift {
+    left: -1.5%;
+  }
+
+  .itemPacks {
+    left: 50%;
+    bottom: 25dvh;
+    width: clamp(118px, 35vw, 146px);
+    transform: translateX(-50%);
+  }
+
+  .itemRegister {
+    right: -1.5%;
+  }
+
+  .itemPacks:active {
+    transform: translateX(-50%) translateY(-0.5rem);
+  }
+}

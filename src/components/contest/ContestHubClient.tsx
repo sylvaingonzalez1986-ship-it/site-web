@@ -108,6 +108,7 @@ type ContestHubClientProps = {
   isAdminAuthorized: boolean;
   isPlacardPlayerEnabled: boolean;
   initialView: ContestArenaView;
+  surface?: "arena" | "notebook" | "notebook-ranking";
 };
 
 type ContestMascotPanel = "intro" | "profile" | "leaderboard";
@@ -2259,6 +2260,7 @@ function ContestTesterLeaderboard({
   const [arenaEntries, setArenaEntries] = useState<ArenaRankingEntry[]>([]);
   const [arenaRankingLoaded, setArenaRankingLoaded] = useState(false);
   const [arenaRankingUnavailable, setArenaRankingUnavailable] = useState(false);
+  const [arenaRankingRetry, setArenaRankingRetry] = useState(0);
   const [remoteTastingItems, setRemoteTastingItems] = useState({ season: seasonItems, global: globalItems });
   const [tastingLoaded, setTastingLoaded] = useState({ season: seasonItems.length > 0, global: globalItems.length > 0 });
   const [placardEntries, setPlacardEntries] = useState<PlacardRankingEntry[]>([]);
@@ -2290,20 +2292,34 @@ function ContestTesterLeaderboard({
   useEffect(() => {
     if (!isGeneralRanking || arenaRankingLoaded) return;
     const controller = new AbortController();
+    let cancelled = false;
     void fetch("/api/arena/rankings", { signal: controller.signal })
       .then(async (response) => {
         const payload = await response.json() as { entries?: ArenaRankingEntry[] };
         if (!response.ok) throw new Error("Classement indisponible");
+        if (cancelled) return;
         setArenaEntries(Array.isArray(payload.entries) ? payload.entries : []);
         setArenaRankingUnavailable(false);
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
+        if (cancelled) return;
         setArenaRankingUnavailable(true);
+        if (arenaRankingRetry < 3) {
+          window.setTimeout(() => {
+            setArenaRankingLoaded(false);
+            setArenaRankingRetry((current) => current + 1);
+          }, 2_000);
+        }
       })
-      .finally(() => setArenaRankingLoaded(true));
-    return () => controller.abort();
-  }, [arenaRankingLoaded, isGeneralRanking]);
+      .finally(() => {
+        if (!cancelled) setArenaRankingLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [arenaRankingLoaded, arenaRankingRetry, isGeneralRanking]);
 
   useEffect(() => {
     if (!isPlacardRanking || placardRankingLoaded) return;
@@ -2637,12 +2653,16 @@ export function ContestHubClient({
   isAdminAuthorized,
   isPlacardPlayerEnabled,
   initialView,
+  surface = "arena",
 }: ContestHubClientProps) {
   const router = useRouter();
   const { addToCart, authLoading } = useCart();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [activeArenaView, setActiveArenaView] = useState<ContestArenaView>(initialView);
+  const isNotebookDetailSurface = surface === "notebook";
+  const isFlowerRankingSurface = surface === "notebook-ranking";
+  const isNotebookSurface = isNotebookDetailSurface || isFlowerRankingSurface;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [notebookPage, setNotebookPage] = useState<0 | 1>(0);
   const [notebookView, setNotebookView] = useState<ContestNotebookView>("lab");
@@ -2839,16 +2859,6 @@ export function ContestHubClient({
     setNotebookView(view);
   };
 
-  const changeArenaView = (view: ContestArenaView) => {
-    setActiveArenaView(view);
-    const nextParams = new URLSearchParams(searchParams.toString());
-    if (view === "carnet") nextParams.delete("vue");
-    else nextParams.set("vue", view);
-    const query = nextParams.toString();
-    router.replace(`${pathname}${query ? `?${query}` : ""}`, { scroll: false });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const handleLockedAddToCart = () => {
     if (!selectedCartProduct) {
       setCartMessage("Produit lié introuvable pour ce lot.");
@@ -3013,6 +3023,22 @@ export function ContestHubClient({
     router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
   };
 
+  const getNotebookTrackHref = (nextTrack: ContestEntryTrack) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("track");
+    params.delete("vue");
+    const query = params.toString();
+    return `/arene/carnet/${nextTrack}${query ? `?${query}` : ""}`;
+  };
+
+  const getNotebookRankingHref = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("vue");
+    params.set("track", selectedTrack);
+    const query = params.toString();
+    return `/arene/carnet/classement${query ? `?${query}` : ""}`;
+  };
+
   const changeCategory = (nextCategory: ContestEntryCategory) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("category", nextCategory);
@@ -3046,7 +3072,39 @@ export function ContestHubClient({
   };
 
   return (
-    <section data-world="arena" className={arenaStyles.page}>
+    <section data-world="arena" data-surface={surface} className={arenaStyles.page}>
+      {isNotebookSurface ? (
+        <header className={arenaStyles.notebookSurfaceHeader}>
+          <nav aria-label="Navigation du Carnet">
+            <Link href="/arene/carnet" className={arenaStyles.notebookSurfaceBack}><ChevronLeft aria-hidden="true" /> Retour au Carnet</Link>
+            <strong>{isFlowerRankingSurface ? "Classement des fleurs" : "Mon Carnet"}</strong>
+            {isPlacardPlayerEnabled ? <Link href="/arene/placard" className={arenaStyles.notebookSurfacePlay}>Jouer <Sprout aria-hidden="true" /></Link> : <span />}
+          </nav>
+          <div className={arenaStyles.notebookSurfaceHero}>
+            <span>
+              <h1>{isFlowerRankingSurface ? "Classement des fleurs" : "Mon Carnet"}</h1>
+              {!isFlowerRankingSurface ? <p>Choisis une fleur, ouvre ton carnet et retrouve toutes tes dégustations au même endroit.</p> : null}
+            </span>
+            <Image src="/contest/mascot/tasting/tasting-start.png" alt="" width={408} height={771} priority sizes="110px" />
+          </div>
+          <div className={arenaStyles.notebookSurfaceQuickNav}>
+            <nav className={arenaStyles.notebookSurfaceSections} aria-label="Sections du Carnet">
+              <Link href={getNotebookTrackHref("regular")} data-active={isNotebookDetailSurface && selectedTrack === "regular" || undefined}>
+                <BookOpen aria-hidden="true" />
+                <span><strong>Regular</strong></span>
+              </Link>
+              <Link href={getNotebookTrackHref("concours")} data-active={isNotebookDetailSurface && selectedTrack === "concours" || undefined}>
+                <Award aria-hidden="true" />
+                <span><strong>Concours</strong></span>
+              </Link>
+              <Link href={getNotebookRankingHref()} data-active={isFlowerRankingSurface || undefined}>
+                <Trophy aria-hidden="true" />
+                <span><strong>Fleurs</strong></span>
+              </Link>
+            </nav>
+          </div>
+        </header>
+      ) : null}
       <header className={arenaStyles.hero}>
         <div className={arenaStyles.noise} aria-hidden="true" />
         <div className={`retro-container ${arenaStyles.heroGrid}`}>
@@ -3075,7 +3133,11 @@ export function ContestHubClient({
       </header>
 
       <div className={`retro-container ${arenaStyles.content}`}>
-        <ArenaNavigation activeView={activeArenaView} onChange={changeArenaView} />
+        {!isNotebookSurface ? (
+          <ArenaNavigation
+            activeView={activeArenaView}
+          />
+        ) : null}
 
         <nav hidden className={arenaStyles.arenaHub} aria-labelledby="arena-hub-title">
           <div className={arenaStyles.arenaHubHeading}>
@@ -3224,10 +3286,9 @@ export function ContestHubClient({
           </> : null}
         </section>
 
-        <section hidden={activeArenaView !== "carnet"} id="classement-arene" className={arenaStyles.rankingSection} aria-labelledby="arena-ranking-title">
+        <section hidden={activeArenaView !== "carnet" || isNotebookDetailSurface} id="classement-arene" className={arenaStyles.rankingSection} aria-labelledby="arena-ranking-title">
           <div className={arenaStyles.sectionHeading}>
             <div>
-              <p className={arenaStyles.sectionKicker}>Verdicts de la communauté</p>
               <h2 id="arena-ranking-title" className={arenaStyles.sectionTitle}>
                 Palmarès des fleurs. <span>Selon le jury.</span>
               </h2>
@@ -3237,6 +3298,24 @@ export function ContestHubClient({
             </p>
           </div>
           <div className={arenaStyles.rankingFilters}>
+            {isFlowerRankingSurface ? (
+              <div className={arenaStyles.controlGroup}>
+                <span className={arenaStyles.controlLabel}>Carnet</span>
+                <div className={arenaStyles.categorySwitch} aria-label="Type de carnet">
+                  {CONTEST_ENTRY_TRACKS.map((track) => (
+                    <button
+                      key={track}
+                      type="button"
+                      aria-pressed={selectedTrack === track}
+                      onClick={() => changeTrack(track)}
+                      className={`${arenaStyles.filterButton} ${selectedTrack === track ? arenaStyles.filterButtonActive : ""}`}
+                    >
+                      <span>{CONTEST_ENTRY_TRACK_LABELS[track]}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
             <div className={arenaStyles.controlGroup}>
               <span className={arenaStyles.controlLabel}>Culture</span>
               <div className={arenaStyles.categorySwitch} aria-label="Catégorie de culture">
@@ -3293,10 +3372,9 @@ export function ContestHubClient({
         <div hidden={activeArenaView !== "carnet"}>
         </div>
 
-        <section hidden={activeArenaView !== "carnet"} id="carnet-arene" className={arenaStyles.notebookPanel} aria-labelledby="arena-notebook-title">
+        <section hidden={activeArenaView !== "carnet" || isFlowerRankingSurface} id="carnet-arene" className={arenaStyles.notebookPanel} aria-labelledby="arena-notebook-title">
           <div className={arenaStyles.notebookIntro}>
             <div>
-              <p className={arenaStyles.sectionKicker}>Carnet de dégustation</p>
               <h2 id="arena-notebook-title" className={arenaStyles.sectionTitle}>
                 Note. <span>Collectionne. Joue.</span>
               </h2>
@@ -3314,21 +3392,46 @@ export function ContestHubClient({
               />
             </div>
           </div>
-          <nav className={arenaStyles.notebookTrackTabs} aria-label="Choisir le carnet de dégustation">
-            {CONTEST_ENTRY_TRACKS.map((track) => (
-              <button
-                key={track}
-                type="button"
-                aria-pressed={selectedTrack === track}
-                onClick={() => changeTrack(track)}
-                className={`${arenaStyles.notebookTrackTab} ${
-                  track === "concours" ? arenaStyles.notebookTrackTabContest : arenaStyles.notebookTrackTabRegular
-                }`}
-              >
-                <span>{CONTEST_ENTRY_TRACK_LABELS[track]}</span>
-              </button>
-            ))}
-          </nav>
+          {!isNotebookSurface ? (
+            <nav className={arenaStyles.notebookTrackTabs} aria-label="Choisir le carnet de dégustation">
+              {CONTEST_ENTRY_TRACKS.map((track) => (
+                <button
+                  key={track}
+                  type="button"
+                  aria-pressed={selectedTrack === track}
+                  onClick={() => changeTrack(track)}
+                  className={`${arenaStyles.notebookTrackTab} ${
+                    track === "concours" ? arenaStyles.notebookTrackTabContest : arenaStyles.notebookTrackTabRegular
+                  }`}
+                >
+                  <span>{CONTEST_ENTRY_TRACK_LABELS[track]}</span>
+                </button>
+              ))}
+            </nav>
+          ) : null}
+          {isNotebookSurface ? (
+            <div className={arenaStyles.notebookSurfaceFilters}>
+              <span>Choisir la culture</span>
+              <div aria-label="Catégorie de culture">
+                {CONTEST_ENTRY_CATEGORIES.map((category) => {
+                  const count = categoryCounts[category] ?? 0;
+                  const isActive = category === activeCategory;
+                  return (
+                    <button
+                      key={category}
+                      type="button"
+                      disabled={count === 0 && !isActive}
+                      aria-pressed={isActive}
+                      onClick={() => changeCategory(category)}
+                    >
+                      {CONTEST_ENTRY_CATEGORY_LABELS[category]}
+                      <small>{count}</small>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
           <div className={arenaStyles.notebookStage}>
           {selectedEntry ? (
             <div className="contest-hub-spread-wrap relative">
@@ -3566,7 +3669,7 @@ export function ContestHubClient({
           </div>
         </section>
 
-        <section hidden={activeArenaView !== "carnet"} className={arenaStyles.testedPanel} aria-label="Fleurs déjà dégustées">
+        <section hidden={activeArenaView !== "carnet" || isFlowerRankingSurface} className={arenaStyles.testedPanel} aria-label="Fleurs déjà dégustées">
           <ContestTestedFlowerCarousel
             items={testedFlowerCards}
             selectedEntryId={selectedEntry?.id}

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
@@ -47,6 +48,7 @@ type ContestAccessCheck = {
 };
 
 export function Navbar() {
+  const pathname = usePathname();
   const { totalItems, user, loyalty, hasWelcomePack, sessionLoading } = useCart();
   const isAuthenticated = Boolean(user);
   const { pages: cmsPages } = useCmsPages();
@@ -186,6 +188,12 @@ export function Navbar() {
   }, [menuOpen]);
 
   useBodyScrollLock(menuOpen);
+
+  // Les espaces de jeu possèdent leur propre navigation plein écran. Conserver
+  // ici la barre globale fixe la placerait au-dessus de leurs boutons et modales.
+  if (pathname === "/arene/placard" || pathname.startsWith("/arene/carnet")) {
+    return null;
+  }
 
   return (
     <>

@@ -1430,8 +1430,9 @@ export async function getKqPublicArenaLeaderboard() {
   const seasonCode = await getKqActiveSeasonCode();
   const [snapshotResult, contestSeasonResult] = await Promise.all([
     supabase.rpc("rpc_kq_refresh_daily_leaderboard", { p_season_code: seasonCode }),
-    supabase.from("contest_seasons").select("id,code,label").eq("status", "active")
-      .order("starts_at", { ascending: false }).limit(1).maybeSingle(),
+    supabase.from("contest_seasons").select("id,code,label").eq("is_active", true).eq("is_archived", false)
+      .order("harvest_start", { ascending: false, nullsFirst: false })
+      .order("year", { ascending: false }).limit(1).maybeSingle(),
   ]);
   if (snapshotResult.error) throw new Error(`[supabase:rpc_kq_refresh_daily_leaderboard] ${snapshotResult.error.message}`);
   if (contestSeasonResult.error) throw new Error(`[supabase:contest_seasons:active] ${contestSeasonResult.error.message}`);

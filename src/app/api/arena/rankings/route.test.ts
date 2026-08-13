@@ -26,7 +26,7 @@ describe("GET /api/arena/rankings", () => {
     const response = await GET();
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ formulaVersion: "arena-v1", entries: [{ rank: 1, pseudo: "Maya", score: 700 }] });
-    expect(response.headers.get("cache-control")).toContain("s-maxage=86400");
+    expect(response.headers.get("cache-control")).toContain("s-maxage=60");
   });
 
   it("does not leak backend errors", async () => {

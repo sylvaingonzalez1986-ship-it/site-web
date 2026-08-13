@@ -1,37 +1,34 @@
 "use client";
 
-import { BookOpen, ChevronRight, Sprout, Trophy } from "lucide-react";
+import { BookOpen, Sprout, Trophy } from "lucide-react";
+import Link from "next/link";
 import styles from "@/components/contest/ContestArena.module.css";
 
-export type ContestArenaView = "jouer" | "carnet" | "classement";
+export type ContestArenaView = "hub" | "jouer" | "carnet" | "classement";
 
 const VIEWS = [
-  { id: "carnet", label: "Carnet", Icon: BookOpen },
-  { id: "jouer", label: "Jouer", Icon: Sprout },
-  { id: "classement", label: "Classement", Icon: Trophy },
+  { id: "carnet", label: "Carnet", href: "/arene/carnet/regular", Icon: BookOpen },
+  { id: "jouer", label: "Jouer", href: "/arene/placard", Icon: Sprout },
+  { id: "classement", label: "Classement", href: "/arene?vue=classement", Icon: Trophy },
 ] as const;
 
-export function ArenaNavigation({ activeView, onChange }: {
+export function ArenaNavigation({ activeView }: {
   activeView: ContestArenaView;
-  onChange: (view: ContestArenaView) => void;
 }) {
   return (
-    <>
+    <div className={styles.arenaNavigation}>
       <nav className={styles.primaryTabs} aria-label="Espaces de l'Arène">
-        {VIEWS.map(({ id, label, Icon }) => (
-          <button key={id} type="button" className={activeView === id ? styles.primaryTabActive : undefined}
-            aria-current={activeView === id ? "page" : undefined} onClick={() => onChange(id)}>
+        {VIEWS.map(({ id, label, href, Icon }) => (
+          <Link
+            key={id}
+            href={href}
+            className={activeView === id ? styles.primaryTabActive : undefined}
+            aria-current={activeView === id ? "page" : undefined}
+          >
             <Icon aria-hidden="true" /><span>{label}</span>
-          </button>
+          </Link>
         ))}
       </nav>
-      <div className={styles.progressPromise} aria-label="Comment progresser dans l'Arène">
-        <span><BookOpen aria-hidden="true" /><strong>Remplis ton Carnet</strong></span>
-        <ChevronRight aria-hidden="true" />
-        <span><Sprout aria-hidden="true" /><strong>Joue au Placard</strong></span>
-        <ChevronRight aria-hidden="true" />
-        <span><Trophy aria-hidden="true" /><strong>Grimpe au classement</strong></span>
-      </div>
-    </>
+    </div>
   );
 }

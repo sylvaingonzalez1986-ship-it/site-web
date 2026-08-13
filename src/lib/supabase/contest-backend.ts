@@ -1597,7 +1597,7 @@ async function syncContestTesterPointsForReview(reviewId: string): Promise<void>
   failIfError(voteResult.error, "read contest votes for points");
 
   const entry = toRow(entryResult.data);
-  if (!entry || !isConcoursEntryTrack(entry.track)) {
+  if (!entry) {
     return;
   }
 
@@ -1610,13 +1610,13 @@ async function syncContestTesterPointsForReview(reviewId: string): Promise<void>
     points: 20,
   });
 
-  const expectedTerpenes = getDominantTerpeneCodes(sanitizeTechnicalSheet(entry.technical_sheet));
-  const guessedTerpenes = uniqueStrings(
-    toRowArray(terpeneGuessResult.data).map((row) => normalizeContestTerpene(toText(row.terpene))),
-  );
-  const correctTerpenes = expectedTerpenes
-    .filter((terpene) => guessedTerpenes.includes(terpene))
-    .slice(0, 5);
+  const correctTerpenes = isConcoursEntryTrack(entry.track)
+    ? getDominantTerpeneCodes(sanitizeTechnicalSheet(entry.technical_sheet))
+        .filter((terpene) => uniqueStrings(
+          toRowArray(terpeneGuessResult.data).map((row) => normalizeContestTerpene(toText(row.terpene))),
+        ).includes(terpene))
+        .slice(0, 5)
+    : [];
 
   for (const terpene of correctTerpenes) {
     await upsertContestTesterPoint({
@@ -3736,6 +3736,22 @@ export async function deleteContestEntry(entryId: string): Promise<ContestEntryS
 
   const voterIds = uniqueStrings(toRowArray(voteRows.data).map((row) => toOptionalText(row.voter_customer_id)));
   const affectedCustomerIds = uniqueStrings([...customerIds, ...voterIds]);
+
+  // Notebook rewards use restrictive foreign keys so that normal application
+  // flows cannot erase their history accidentally. An explicit admin entry
+  // deletion is the exception: detach the bookkeeping rows first while keeping
+  // any booster entitlement that has already been granted to the customer.
+  const deleteNotebookFlowerGrants = await supabase
+    .from("kq_notebook_flower_reward_grants")
+    .delete()
+    .eq("entry_id", safeEntryId);
+  failIfError(deleteNotebookFlowerGrants.error, "delete notebook flower grants for contest entry");
+
+  const deleteProducerRewardEntries = await supabase
+    .from("kq_producer_reward_entries")
+    .delete()
+    .eq("entry_id", safeEntryId);
+  failIfError(deleteProducerRewardEntries.error, "delete producer reward links for contest entry");
 
   if (reviewIds.length > 0) {
     const deletePoints = await supabase.from("contest_tester_points").delete().in("review_id", reviewIds);

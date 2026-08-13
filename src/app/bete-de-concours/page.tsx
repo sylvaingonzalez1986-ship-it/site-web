@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { ContestHubClient } from "@/components/contest/ContestHubClient";
+import { ContestArenaHub } from "@/components/contest/ContestArenaHub";
+import { ContestNotebookHub } from "@/components/contest/ContestNotebookHub";
 import { ContestSchemaUnavailable } from "@/components/contest/ContestSchemaUnavailable";
 import {
   canCustomerAccessContestFeatureServer,
@@ -42,6 +44,7 @@ export const revalidate = 60;
 
 type ContestHubPageProps = {
   searchParams: Promise<{ season?: string; category?: string; track?: string; vue?: string }>;
+  surface?: "arena" | "notebook" | "notebook-ranking" | "notebook-hub";
 };
 
 type ContestArenaView = "jouer" | "carnet" | "classement";
@@ -128,10 +131,10 @@ export const metadata: Metadata = {
   },
 };
 
-export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
+export async function ContestArenaPage({ searchParams, surface = "arena" }: ContestHubPageProps) {
   try {
     const params = await searchParams;
-    const arenaView = parseArenaView(params.vue);
+    const arenaView = surface === "arena" ? parseArenaView(params.vue) : "carnet";
     const requestedCategory = parseCategory(params.category);
     const selectedTrack = parseTrack(params.track);
     const [session, adminAuthorized] = await Promise.all([
@@ -140,16 +143,37 @@ export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
     ]);
     if (!canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
       if (isContestFeatureEnabledServer() && isContestBetaAccessRestrictedServer() && !session && !adminAuthorized) {
-        const nextPath = `/arene${params.season || params.category || selectedTrack !== "regular" ? `?${new URLSearchParams(
+        const basePath = surface === "arena"
+          ? "/arene"
+          : surface === "notebook"
+            ? `/arene/carnet/${selectedTrack}`
+            : surface === "notebook-ranking"
+              ? "/arene/carnet/classement"
+            : "/arene/carnet";
+        const nextPath = `${basePath}${params.season || params.category || selectedTrack !== "regular" ? `?${new URLSearchParams(
           Object.entries({
             season: params.season,
             category: params.category,
-            track: selectedTrack !== "regular" ? selectedTrack : undefined,
+            track: surface === "arena" && selectedTrack !== "regular" ? selectedTrack : undefined,
           }).filter((entry): entry is [string, string] => typeof entry[1] === "string"),
         ).toString()}` : ""}`;
         redirect(`/compte/connexion?next=${encodeURIComponent(nextPath)}`);
       }
       notFound();
+    }
+
+    if (surface === "notebook-hub") {
+      return <ContestNotebookHub isPlacardPlayerEnabled={isKqPlayerApiEnabled()} />;
+    }
+
+    if (surface === "arena" && !params.vue) {
+      return <ContestArenaHub />;
+    }
+    if (surface === "arena" && arenaView === "carnet") {
+      redirect("/arene/carnet");
+    }
+    if (surface === "arena" && arenaView === "jouer") {
+      redirect("/arene/placard");
     }
 
     const entryPayload = arenaView === "carnet"
@@ -159,6 +183,7 @@ export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
     const categoryCounts = getContestCategoryCounts(entryPayload.entries);
     const activeCategory = resolveActiveContestCategory(categoryCounts, requestedCategory);
     const visibleEntries = entryPayload.entries.filter((entry) => entry.category === activeCategory);
+    const includeCommunityPanels = arenaView === "carnet" && (surface === "arena" || surface === "notebook-ranking");
 
     const [
       seasons,
@@ -171,11 +196,11 @@ export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
       testerSeasonRankings,
       testerGlobalRankings,
     ] = await Promise.all([
-      arenaView === "carnet" ? getContestSeasons() : Promise.resolve([]),
-      arenaView === "carnet"
+      includeCommunityPanels ? getContestSeasons() : Promise.resolve([]),
+      includeCommunityPanels
         ? getContestRankings({ seasonCode: selectedSeasonCode, category: activeCategory, track: selectedTrack, limit: 12 })
         : Promise.resolve({ entries: [] }),
-      arenaView === "carnet" ? getContestFeed({
+      includeCommunityPanels ? getContestFeed({
         seasonCode: selectedSeasonCode,
         category: activeCategory,
         track: selectedTrack,
@@ -189,7 +214,7 @@ export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
       }) : Promise.resolve([]),
       arenaView === "carnet" && session?.customerId ? getContestProfile(session.customerId) : null,
       arenaView === "carnet" && session?.customerId ? getContestProfileBadges(session.customerId, { syncRewards: false }) : [],
-      arenaView === "jouer" && session?.customerId
+      session?.customerId
         ? getContestTesterProgress({ customerId: session.customerId, seasonCode: selectedSeasonCode })
         : null,
       Promise.resolve({ items: [] }),
@@ -216,6 +241,7 @@ export async function ContestArenaPage({ searchParams }: ContestHubPageProps) {
         isAdminAuthorized={adminAuthorized}
         isPlacardPlayerEnabled={isKqPlayerApiEnabled()}
         initialView={arenaView}
+        surface={surface}
       />
     );
   } catch (error) {
