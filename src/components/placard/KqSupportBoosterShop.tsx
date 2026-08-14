@@ -16,6 +16,14 @@ type ShopPayload = {
 };
 
 type OpenedCard = { code: string; name: string; rarity: string; imageUrl?: string };
+type ShopEntitlement = ShopPayload["availableEntitlements"][number];
+
+export function splitShopEntitlements(entitlements: ShopEntitlement[]) {
+  return {
+    duelRewards: entitlements.filter((entitlement) => entitlement.source === "pvp_win"),
+    shopPacks: entitlements.filter((entitlement) => entitlement.source !== "pvp_win"),
+  };
+}
 
 export function KqSupportBoosterShop({
   autoOpen = false,
@@ -116,8 +124,7 @@ export function KqSupportBoosterShop({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shop, welcomeChecked]);
 
-  const open = async () => {
-    const entitlement = shop?.availableEntitlements[0];
+  const openEntitlement = async (entitlement?: ShopEntitlement) => {
     if (!entitlement) return;
     setPending("open");
     setNotice("");
@@ -151,7 +158,9 @@ export function KqSupportBoosterShop({
   };
 
   const welcomeEntitlement = shop?.availableEntitlements.find((item) => item.source === "welcome_pack");
-  const nextEntitlement = welcomeEntitlement ?? shop?.availableEntitlements[0];
+  const { duelRewards, shopPacks } = splitShopEntitlements(shop?.availableEntitlements ?? []);
+  const nextDuelReward = duelRewards[0];
+  const nextShopPack = welcomeEntitlement ?? shopPacks[0];
 
   return (
     <section id="boutique-la-botte" className="mx-auto mt-8 max-w-5xl">
@@ -164,13 +173,13 @@ export function KqSupportBoosterShop({
       </button>
 
       {shopOpen ? <div className="fixed inset-0 z-[150] flex items-center justify-center overflow-hidden bg-[#10201b] p-0 backdrop-blur-sm sm:p-4" role="presentation" onClick={closeShop}><section role="dialog" aria-modal="true" aria-labelledby="kq-shop-title" onClick={(event) => event.stopPropagation()} className="relative h-[100dvh] w-full max-w-6xl overflow-hidden border-0 border-ink bg-[#f6f0e6] shadow-[9px_9px_0_#f4c43d] sm:aspect-[3/2] sm:h-auto sm:max-h-[calc(100vh-2rem)] sm:border-2">
-        <Image src="/placard/booster-shop-interior-v3.webp" alt="Intérieur de la boutique La Botte avec les cartes Kanab Quest exposées" fill priority sizes="(max-width: 768px) 100vw, 1152px" className={`${styles.interior} object-cover object-center sm:object-cover`} />
+        <Image src="/placard/booster-shop-interior-v4.webp" alt="Sylvain derrière le comptoir de la boutique La Botte, entouré de cartes Kanab Quest" fill priority sizes="(max-width: 768px) 100vw, 1152px" className={`${styles.interior} object-cover object-center sm:object-cover`} />
         <h2 id="kq-shop-title" className="sr-only">Boutique Booster La Botte</h2>
         <button type="button" aria-label="Quitter la boutique" onClick={closeShop} className="absolute right-2 top-2 z-40 grid h-10 w-10 place-items-center border-2 border-ink bg-white shadow-[3px_3px_0_#1a1a1a] sm:right-3 sm:top-3 sm:h-12 sm:w-12"><X /></button>
         <div className="absolute left-2 top-2 z-20 border-2 border-ink bg-yellow px-2 py-1 text-center shadow-[3px_3px_0_#1a1a1a] sm:left-3 sm:top-3 sm:px-4 sm:py-2"><b className="block text-lg sm:text-2xl">{shop?.spendablePoints ?? 0}</b><small className="text-[9px] font-black uppercase sm:text-xs">Tes points</small></div>
         <div className="absolute inset-0 z-20 sm:contents">
-          <button type="button" title={shop?.welcomeClaimed ? "Cadeau déjà récupéré" : "Récupérer le booster offert"} aria-label={shop?.welcomeClaimed ? "Cadeau booster déjà récupéré" : "Récupérer le booster offert"} disabled={shop?.welcomeClaimed || !shop?.collectionActive || pending !== null} onClick={() => void claimWelcome()} className={`${styles.item} ${styles.itemGift} group absolute aspect-square border-0 bg-transparent p-0 drop-shadow-[0_8px_5px_rgba(0,0,0,.55)] transition-all duration-200 active:-translate-y-2 focus-visible:rounded-full focus-visible:outline-4 focus-visible:outline-yellow disabled:grayscale disabled:opacity-55 sm:bottom-[23%] sm:left-[16%] sm:w-[17%] sm:hover:-translate-y-2`}><Image src="/placard/shop-item-gift-v2.webp" alt="" fill sizes="(max-width: 640px) 128px, 190px" className="object-contain" /></button>
-          <button type="button" title={nextEntitlement ? `Ouvrir un pack parmi ${shop?.availableEntitlements.length ?? 0}` : "Aucun pack disponible"} aria-label={nextEntitlement ? `Ouvrir un pack, ${shop?.availableEntitlements.length ?? 0} disponible(s)` : "Aucun pack disponible"} disabled={!shop?.collectionActive || pending !== null || !nextEntitlement} onClick={() => void open()} className={`${styles.item} ${styles.itemPacks} group absolute aspect-square border-0 bg-transparent p-0 drop-shadow-[0_8px_5px_rgba(0,0,0,.55)] transition-all duration-200 active:-translate-y-2 focus-visible:rounded-full focus-visible:outline-4 focus-visible:outline-yellow disabled:grayscale disabled:opacity-55 sm:bottom-[22%] sm:left-1/2 sm:w-[20%] sm:-translate-x-1/2 sm:hover:-translate-x-1/2 sm:hover:-translate-y-2`}><Image src="/placard/shop-item-packs-v2.webp" alt="" fill sizes="(max-width: 640px) 142px, 220px" className="object-contain" /></button>
+          <button type="button" title={nextDuelReward ? `Récupérer un pack de duel parmi ${duelRewards.length}` : "Aucun gain de duel à récupérer"} aria-label={nextDuelReward ? `Récupérer un pack de trois cartes gagné en duel, ${duelRewards.length} en attente` : "Aucun gain de duel à récupérer"} disabled={!shop?.collectionActive || pending !== null || !nextDuelReward} onClick={() => void openEntitlement(nextDuelReward)} className={`${styles.item} ${styles.itemDuelRewards} group absolute aspect-square border-0 bg-transparent p-0 drop-shadow-[0_8px_5px_rgba(0,0,0,.55)] transition-all duration-200 active:-translate-y-2 focus-visible:rounded-full focus-visible:outline-4 focus-visible:outline-yellow disabled:grayscale disabled:opacity-55 sm:bottom-[23%] sm:left-[15%] sm:w-[19%] sm:hover:-translate-y-2`}><Image src="/placard/shop-item-duel-rewards-v1.webp" alt="" fill sizes="(max-width: 640px) 138px, 215px" className="object-contain" />{duelRewards.length > 0 ? <span className={styles.itemBadge}>{duelRewards.length}</span> : null}</button>
+          <button type="button" title={nextShopPack ? `Ouvrir un pack parmi ${shopPacks.length}` : "Aucun pack disponible"} aria-label={nextShopPack ? `Ouvrir un pack, ${shopPacks.length} disponible(s)` : "Aucun pack disponible"} disabled={!shop?.collectionActive || pending !== null || !nextShopPack} onClick={() => void openEntitlement(nextShopPack)} className={`${styles.item} ${styles.itemPacks} group absolute aspect-square border-0 bg-transparent p-0 drop-shadow-[0_8px_5px_rgba(0,0,0,.55)] transition-all duration-200 active:-translate-y-2 focus-visible:rounded-full focus-visible:outline-4 focus-visible:outline-yellow disabled:grayscale disabled:opacity-55 sm:bottom-[22%] sm:left-1/2 sm:w-[20%] sm:-translate-x-1/2 sm:hover:-translate-x-1/2 sm:hover:-translate-y-2`}><Image src="/placard/shop-item-packs-v2.webp" alt="" fill sizes="(max-width: 640px) 142px, 220px" className="object-contain" /></button>
           <button type="button" title={`Acheter un booster pour ${shop?.costPerPack ?? 5} points`} aria-label={`Acheter un booster pour ${shop?.costPerPack ?? 5} points`} disabled={!shop?.collectionActive || pending !== null || (shop?.spendablePoints ?? 0) < (shop?.costPerPack ?? 5)} onClick={() => void purchase()} className={`${styles.item} ${styles.itemRegister} group absolute aspect-square border-0 bg-transparent p-0 drop-shadow-[0_8px_5px_rgba(0,0,0,.55)] transition-all duration-200 active:-translate-y-2 focus-visible:rounded-full focus-visible:outline-4 focus-visible:outline-yellow disabled:grayscale disabled:opacity-55 sm:bottom-[23%] sm:right-[15%] sm:w-[18%] sm:hover:-translate-y-2`}><Image src="/placard/shop-item-register-v2.webp" alt="" fill sizes="(max-width: 640px) 128px, 200px" className="object-contain" /></button>
         </div>
         {!shop?.collectionActive && localPreview ? <button type="button" onClick={openPreview} className="absolute left-3 top-24 z-20 border-2 border-ink bg-white px-3 py-2 text-xs font-black uppercase"><PackageOpen className="mr-1 inline w-4" />Test local</button> : null}

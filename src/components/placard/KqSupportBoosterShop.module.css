@@ -9,8 +9,9 @@
     transform-origin: 50% 82%;
   }
 
-  .itemGift {
-    left: -1.5%;
+  .itemDuelRewards {
+    left: -2%;
+    width: clamp(112px, 33vw, 138px);
   }
 
   .itemPacks {
@@ -27,4 +28,22 @@
   .itemPacks:active {
     transform: translateX(-50%) translateY(-0.5rem);
   }
+}
+
+.itemBadge {
+  position: absolute;
+  top: 4%;
+  right: 4%;
+  display: grid;
+  width: clamp(25px, 2.5vw, 34px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 2px solid #1a1a1a;
+  border-radius: 999px;
+  background: #f4c43d;
+  box-shadow: 2px 2px 0 #1a1a1a;
+  color: #1a1a1a;
+  font-size: clamp(0.65rem, 1.3vw, 0.82rem);
+  font-weight: 950;
+  line-height: 1;
 }
