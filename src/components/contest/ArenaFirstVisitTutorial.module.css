@@ -1,0 +1,319 @@
+.replayButton {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  margin: .85rem auto 0;
+  padding: .55rem .8rem;
+  border: 0;
+  background: transparent;
+  color: #00563f;
+  font-size: .72rem;
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.replayButton svg { width: 18px; }
+.replayButton:hover { color: #111512; }
+.replayButton:focus-visible { outline: 3px solid #f4c43d; outline-offset: 3px; }
+
+.backdrop {
+  position: fixed;
+  z-index: 180;
+  inset: 0;
+  display: grid;
+  padding: 1rem;
+  place-items: center;
+  background: rgba(12, 30, 24, .91);
+  backdrop-filter: blur(6px);
+  animation: arenaTutorialFade 180ms ease-out both;
+}
+
+.dialog {
+  width: min(960px, 100%);
+  max-height: calc(100dvh - 2rem);
+  overflow: hidden auto;
+  border: 3px solid #111512;
+  border-radius: 3px;
+  background: #fffaf1;
+  box-shadow: 9px 9px 0 #f4c43d;
+  color: #111512;
+  animation: arenaTutorialRise 220ms ease-out both;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem 1.25rem 1rem;
+  border-bottom: 3px solid #111512;
+  background: #e4efe8;
+}
+
+.header > div > span,
+.stepContent > span {
+  color: #00563f;
+  font-size: .65rem;
+  font-weight: 950;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.header h2 {
+  margin: .2rem 0 0;
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  font-weight: 900;
+  letter-spacing: -.035em;
+  line-height: .84;
+  text-transform: uppercase;
+}
+
+.header p {
+  margin: .6rem 0 0;
+  color: #39463f;
+  font-size: .78rem;
+  font-weight: 750;
+}
+
+.header > button {
+  display: grid;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  border: 2px solid #111512;
+  background: #fff;
+  box-shadow: 3px 3px 0 #111512;
+}
+
+.header > button:hover { background: #f4c43d; }
+.header > button svg { width: 21px; }
+
+.stepTabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3px;
+  padding: 3px;
+  border-bottom: 3px solid #111512;
+  background: #111512;
+}
+
+.stepTabs button {
+  display: flex;
+  min-height: 54px;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  border: 0;
+  background: #fffaf1;
+  color: #111512;
+  font-size: .76rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.stepTabs button b {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  border: 2px solid #111512;
+  background: #fff;
+  font-size: .66rem;
+}
+
+.stepTabs button[aria-current="step"] { background: #f4c43d; }
+.stepTabs button[aria-current="step"] b { background: #00563f; color: #fff; }
+
+.stepBody {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  min-height: 360px;
+  animation: arenaTutorialStep 180ms ease-out both;
+}
+
+.stepMarker {
+  position: relative;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  overflow: hidden;
+  border-right: 3px solid #111512;
+  background: #00563f;
+  color: #fff;
+}
+
+.stepMarker::after {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border: 28px solid rgba(244, 196, 61, .18);
+  border-radius: 50%;
+  content: "";
+}
+
+.stepMarker svg { z-index: 1; width: 54px; height: 54px; color: #f4c43d; }
+.stepMarker strong { z-index: 1; margin-top: .55rem; font-family: var(--font-display), Impact, sans-serif; font-size: 4.4rem; line-height: .8; }
+
+.stepContent { padding: 1.25rem; }
+
+.stepContent h3 {
+  max-width: 680px;
+  margin: .25rem 0 0;
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  font-weight: 900;
+  letter-spacing: -.025em;
+  line-height: .92;
+  text-transform: uppercase;
+}
+
+.stepContent > p {
+  margin: .55rem 0 1rem;
+  color: #435048;
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .6rem;
+}
+
+.features article {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: .6rem;
+  padding: .72rem;
+  border: 2px solid #111512;
+  background: #fff;
+  box-shadow: 3px 3px 0 #d9cba9;
+}
+
+.features article > svg { width: 28px; color: #00563f; }
+.features article strong { display: block; font-size: .76rem; }
+.features article p { margin: .2rem 0 0; color: #535b55; font-size: .66rem; font-weight: 650; line-height: 1.35; }
+
+.stepAction {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  margin-top: .9rem;
+  padding: .55rem .8rem;
+  border: 2px solid #111512;
+  background: #00563f;
+  box-shadow: 3px 3px 0 #111512;
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 950;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.stepAction:hover { transform: translateY(-2px); }
+.stepAction svg { width: 17px; }
+
+.scoreBand {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: center;
+  gap: .7rem;
+  padding: .8rem 1.2rem;
+  border-top: 3px solid #111512;
+  border-bottom: 3px solid #111512;
+  background: #f4c43d;
+}
+
+.scoreBand > svg { width: 36px; }
+.scoreBand p { margin: 0; font-size: .7rem; font-weight: 750; line-height: 1.4; }
+.scoreBand strong { display: block; font-size: .72rem; font-weight: 950; text-transform: uppercase; }
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .85rem 1.2rem 1rem;
+  background: #fff;
+}
+
+.footer button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  padding: .55rem .85rem;
+  border: 2px solid #111512;
+  background: #fff;
+  color: #111512;
+  font-size: .7rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.footer button svg { width: 17px; }
+.footer .primaryButton { background: #00563f; color: #fff; box-shadow: 3px 3px 0 #111512; }
+.footer button:focus-visible,
+.stepTabs button:focus-visible,
+.stepAction:focus-visible,
+.header > button:focus-visible { outline: 3px solid #f4c43d; outline-offset: 3px; }
+
+@media (max-width: 700px) {
+  .backdrop { align-items: end; padding: 0; }
+  .dialog { width: 100%; max-height: 100dvh; border: 0; border-radius: 0; box-shadow: none; }
+  .header { padding: .8rem 3.7rem .75rem .85rem; border-bottom-width: 2px; }
+  .header h2 { font-size: clamp(2.15rem, 12vw, 3.2rem); }
+  .header p { margin-top: .35rem; font-size: .7rem; }
+  .header > button { position: absolute; top: .65rem; right: .65rem; width: 40px; height: 40px; }
+  .stepTabs { border-bottom-width: 2px; }
+  .stepTabs button { min-height: 48px; font-size: .67rem; }
+  .stepBody { display: block; min-height: 0; }
+  .stepMarker { display: flex; min-height: 66px; align-items: center; justify-content: center; gap: .6rem; border-right: 0; border-bottom: 2px solid #111512; }
+  .stepMarker::after { width: 130px; height: 130px; border-width: 20px; }
+  .stepMarker svg { width: 32px; height: 32px; }
+  .stepMarker strong { margin: 0; font-size: 3rem; }
+  .stepContent { padding: .85rem; }
+  .stepContent h3 { font-size: clamp(1.8rem, 9vw, 2.45rem); }
+  .stepContent > p { margin-bottom: .7rem; font-size: .72rem; }
+  .features { grid-template-columns: minmax(0, 1fr); gap: .4rem; }
+  .features article { grid-template-columns: 28px minmax(0, 1fr); gap: .45rem; padding: .55rem; box-shadow: 2px 2px 0 #d9cba9; }
+  .features article > svg { width: 23px; }
+  .features article p { font-size: .62rem; }
+  .stepAction { width: 100%; margin-top: .65rem; }
+  .scoreBand { grid-template-columns: 32px minmax(0, 1fr); padding: .65rem .85rem; border-block-width: 2px; }
+  .scoreBand > svg { width: 28px; }
+  .scoreBand p { font-size: .62rem; }
+  .footer { padding: .65rem .85rem max(.75rem, env(safe-area-inset-bottom)); }
+  .footer button { padding-inline: .65rem; font-size: .64rem; }
+}
+
+@media (max-width: 380px) {
+  .header p { display: none; }
+  .header h2 { font-size: 2rem; }
+  .stepContent > p { display: none; }
+  .features article p { line-height: 1.25; }
+  .scoreBand p { line-height: 1.3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .dialog,
+  .stepBody { animation: none; }
+  .stepAction:hover { transform: none; }
+}
+
+@keyframes arenaTutorialFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes arenaTutorialRise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes arenaTutorialStep { from { opacity: .25; transform: translateX(8px); } to { opacity: 1; transform: translateX(0); } }

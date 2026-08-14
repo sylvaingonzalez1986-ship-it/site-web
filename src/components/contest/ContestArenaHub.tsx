@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ArenaNavigation } from "@/components/contest/ArenaNavigation";
+import { ArenaFirstVisitTutorial } from "@/components/contest/ArenaFirstVisitTutorial";
 import styles from "@/components/contest/ContestArena.module.css";
 
 export function ContestArenaHub() {
@@ -36,6 +37,7 @@ export function ContestArenaHub() {
 
       <div className={`retro-container ${styles.arenaLandingNavigation}`}>
         <ArenaNavigation activeView="hub" />
+        <ArenaFirstVisitTutorial />
       </div>
     </main>
   );
