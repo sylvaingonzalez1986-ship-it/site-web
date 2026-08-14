@@ -34,6 +34,32 @@ function formatMultiline(value: string): string {
   return escapeHtml(value).replaceAll("\n", "<br />");
 }
 
+function buildEmailButton(input: {
+  url: string;
+  label: string;
+  backgroundColor: string;
+  textColor: string;
+  marginTop?: number;
+}): string {
+  const safeUrl = escapeHtml(input.url);
+  const safeLabel = escapeHtml(input.label);
+  const marginTop = Math.max(0, Math.floor(input.marginTop ?? 0));
+
+  // A presentation table keeps the whole CTA clickable in Outlook as well as
+  // Gmail and mobile clients, even when they rewrite or strip some CSS.
+  return `
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:${marginTop}px;">
+      <tr>
+        <td align="center" bgcolor="${input.backgroundColor}" style="border-radius:10px;mso-padding-alt:12px 16px;">
+          <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:12px 16px;border-radius:10px;color:${input.textColor};font-family:Arial,sans-serif;font-size:14px;font-weight:700;line-height:1.2;text-decoration:none;">
+            ${safeLabel}
+          </a>
+        </td>
+      </tr>
+    </table>
+  `;
+}
+
 function formatAddressBlock(lines: Array<string | undefined>): string {
   const filtered = lines
     .map((line) => line?.trim() || "")
@@ -188,9 +214,16 @@ function buildEmailShell(input: {
               <p style="margin:0 0 10px;font-size:14px;line-height:1.7;color:#1a1a1a;">
                 Tu peux retrouver l'historique de ta commande dans ton espace client.
               </p>
-              <a href="${CUSTOMER_ORDERS_URL}" style="display:inline-block;padding:12px 16px;background:#0a7b61;color:#ffffff;text-decoration:none;border-radius:10px;font-weight:700;">
-                Voir mes commandes
-              </a>
+              ${buildEmailButton({
+                url: CUSTOMER_ORDERS_URL,
+                label: "Voir mes commandes",
+                backgroundColor: "#0a7b61",
+                textColor: "#ffffff",
+              })}
+              <p style="margin:10px 0 0;font-size:12px;line-height:1.5;color:#5a5a5a;word-break:break-all;">
+                Si le bouton ne s'ouvre pas, utilise ce lien :
+                <a href="${CUSTOMER_ORDERS_URL}" target="_blank" rel="noopener noreferrer" style="color:#0a7b61;text-decoration:underline;">${CUSTOMER_ORDERS_URL}</a>
+              </p>
             </div>
 
             ${input.footerNote
@@ -247,7 +280,16 @@ export function buildShippedEmail(order: CmsOrder) {
         <div style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;opacity:0.9;">Numero de suivi</div>
         <div style="margin-top:8px;font-size:24px;font-weight:800;letter-spacing:0.04em;">${escapeHtml(trackingNumber)}</div>
         ${trackingUrl
-          ? `<a href="${trackingUrl}" style="display:inline-block;margin-top:14px;padding:10px 14px;background:#ffffff;color:#0a7b61;text-decoration:none;border-radius:10px;font-weight:700;">Suivre mon colis</a>`
+          ? `${buildEmailButton({
+              url: trackingUrl,
+              label: "Suivre mon colis",
+              backgroundColor: "#ffffff",
+              textColor: "#0a7b61",
+              marginTop: 14,
+            })}
+            <div style="margin-top:10px;font-size:12px;line-height:1.5;word-break:break-all;">
+              <a href="${escapeHtml(trackingUrl)}" target="_blank" rel="noopener noreferrer" style="color:#ffffff;text-decoration:underline;">${escapeHtml(trackingUrl)}</a>
+            </div>`
           : `<div style="margin-top:12px;font-size:13px;line-height:1.6;opacity:0.95;">Conserve ce numero de suivi pour suivre l'expedition.</div>`}
       </div>`
         : "",

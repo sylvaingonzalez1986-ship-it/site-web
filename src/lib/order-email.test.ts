@@ -46,6 +46,9 @@ describe("shipped order email", () => {
     expect(email.html).toContain(
       'href="https://leschanvriersbretons.com/profil?tab=commandes"',
     );
+    expect(email.html).toContain('target="_blank"');
+    expect(email.html).toContain('mso-padding-alt:12px 16px');
+    expect(email.html).toContain("Si le bouton ne s'ouvre pas, utilise ce lien");
     expect(email.html).toContain("https://leschanvriersbretons.com/mentions-legales");
     expect(email.html).toContain("https://leschanvriersbretons.com/politique-confidentialite");
     expect(email.text).toContain(
@@ -62,5 +65,6 @@ describe("shipped order email", () => {
     expect(email.html).toContain(
       "https://www.mondialrelay.fr/suivi-de-colis?numColis=MR%20123%2F456",
     );
+    expect(email.html).toContain("Suivre mon colis");
   });
 });
