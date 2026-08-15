@@ -40,6 +40,7 @@ import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import { getKqFeedbackTone } from "@/lib/kanab-quest-feedback";
 import { applyKqRemoteAction, createKqScopedRequest, finalizeKqRemoteBattle, finalizeKqRemoteBotBattle, getKqRemoteActiveRun, getKqRemoteBattles, getKqRemoteFlowerRivals, getKqRemoteFlowers, lockKqRemoteBattle, playKqRemoteCard, startKqRemoteRun, swapKqRemoteHeritageCard, type KqApiBurnReceipt, type KqApiScope, type KqFlowerRival, type KqOfficialBattle, type KqOfficialFlower } from "@/lib/kanab-quest-api";
+import { KqPhysicsDice, type KqDiceMotionPhase, type KqPhysicsDiceHandle } from "./KqPhysicsDice";
 import styles from "./KanabQuestDicePrototype.module.css";
 
 const LOCAL_COLLECTION_CODES = KQ_CARDS.map((card) => card.code);
@@ -124,16 +125,114 @@ const CATEGORY_LABELS: Record<KqSupportCard["category"], string> = {
   substrate: "Substrat", pbi: "Auxiliaire PBI", equipment: "Équipement", "know-how": "Savoir-faire", luck: "Coup de chance",
 };
 
-const OUTCOME_COPY: Record<KqOutcome, { title: string; artAlt: string }> = {
-  critical: { title: "Réussite exceptionnelle !", artAlt: "Plant de cannabis luxuriant en pleine floraison" },
-  success: { title: "Étape remportée !", artAlt: "Plant de cannabis vigoureux et bien développé" },
-  fragile: { title: "Ça passe de justesse !", artAlt: "Plant de cannabis légèrement affaibli mais encore viable" },
-  failure: { title: "Complication… mais on continue !", artAlt: "Plant de cannabis flétri par une complication" },
+const OUTCOME_COPY: Record<KqOutcome, { title: string; artAlt: string; artSrc: string }> = {
+  critical: {
+    title: "Réussite exceptionnelle !",
+    artAlt: "Sylvain célèbre une réussite exceptionnelle devant une plante luxuriante",
+    artSrc: "/app/kanab-quest/reactions/sylvain-outcome-critical-v2.webp",
+  },
+  success: {
+    title: "Étape remportée !",
+    artAlt: "Sylvain lève le pouce après une étape de culture réussie",
+    artSrc: "/app/kanab-quest/reactions/sylvain-outcome-success-v1.webp",
+  },
+  fragile: {
+    title: "Ça passe de justesse !",
+    artAlt: "Sylvain souffle de soulagement après une réussite de justesse",
+    artSrc: "/app/kanab-quest/reactions/sylvain-outcome-fragile-v1.webp",
+  },
+  failure: {
+    title: "Complication… mais on continue !",
+    artAlt: "Sylvain intervient avec détermination sur une plante affaiblie",
+    artSrc: "/app/kanab-quest/reactions/sylvain-outcome-failure-v1.webp",
+  },
 };
 
 const PEST_LABELS = { aphids: "Pucerons", mites: "Acariens", thrips: "Thrips" } as const;
 const COVERAGE_LABELS = { roots: "Racines", water: "Eau", climate: "Climat", pest: "Ravageurs", flower: "Floraison", drying: "Séchage" } as const;
 const FLOWER_STAT_LABELS = { appearance: "Apparence", aroma: "Arômes", vigor: "Vigueur", mastery: "Maîtrise", regularity: "Régularité" } as const;
+type FlowerStatKey = keyof typeof FLOWER_STAT_LABELS;
+type FlowerTcgStatus = KqOfficialFlower["status"] | "new";
+
+const FLOWER_TCG_STATUS_COPY: Record<FlowerTcgStatus, { label: string; note: string }> = {
+  new: { label: "Nouvelle Fleur", note: "Usage unique · brûlée après son duel" },
+  available: { label: "Prête à jouer", note: "Usage unique · brûlée après son duel" },
+  locked: { label: "Duel engagé", note: "Verrouillée · burn au verdict" },
+  burned: { label: "Brûlée", note: "Carte consommée définitivement" },
+};
+
+function FlowerTcgCard({
+  varietyName,
+  varietyCode,
+  tier,
+  quality,
+  stats,
+  imageUrl,
+  reference,
+  status = "available",
+  selected = false,
+}: {
+  varietyName: string;
+  varietyCode?: string;
+  tier: string;
+  quality: number;
+  stats: Record<string, number>;
+  imageUrl?: string;
+  reference: string;
+  status?: FlowerTcgStatus;
+  selected?: boolean;
+}) {
+  const buddie = KQ_BUDDIES.find((item) => item.code === varietyCode || item.name === varietyName);
+  const statusCopy = FLOWER_TCG_STATUS_COPY[status];
+  const statKeys = Object.keys(FLOWER_STAT_LABELS) as FlowerStatKey[];
+
+  return (
+    <article
+      className={styles.flowerTcgCard}
+      data-status={status}
+      data-selected={selected || undefined}
+      aria-label={`Carte Fleur ${varietyName}, qualité ${quality}, ${statusCopy.label}`}
+    >
+      <header className={styles.flowerTcgHeader}>
+        <span>Kanab Quest · Carte Fleur</span>
+        <em>#{String(buddie?.cardNumber ?? 0).padStart(3, "0")}</em>
+      </header>
+      <div className={styles.flowerTcgArtwork}>
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={`Illustration du Buddie ${varietyName}`}
+            fill
+            sizes="(max-width: 700px) 82vw, 310px"
+          />
+        ) : (
+          <span className={styles.flowerTcgArtworkFallback} aria-hidden="true">
+            {varietyName.slice(0, 1)}
+          </span>
+        )}
+        <span className={styles.flowerTcgTier}>{tier}</span>
+        <span className={styles.flowerTcgQuality}><strong>{quality}</strong><small>Qualité</small></span>
+      </div>
+      <div className={styles.flowerTcgIdentity}>
+        <span>{buddie?.rarity ?? "Fleur officielle"}</span>
+        <h3>{varietyName}</h3>
+        <small>{reference}</small>
+      </div>
+      <dl className={styles.flowerTcgStats}>
+        {statKeys.map((stat) => (
+          <div key={stat}>
+            <dt>{FLOWER_STAT_LABELS[stat]}</dt>
+            <dd>{stats[stat] ?? 0}</dd>
+          </div>
+        ))}
+      </dl>
+      <footer className={styles.flowerTcgFooter}>
+        <span><Flame /> {statusCopy.label}</span>
+        <small>{statusCopy.note}</small>
+      </footer>
+    </article>
+  );
+}
 const STAGE_ILLUSTRATIONS: Record<(typeof KQ_STAGES)[number], { src: string; alt: string }> = {
   Germination: {
     src: "/app/kanab-quest/stages/sylvain-germination-v1.webp",
@@ -169,24 +268,41 @@ const DIE_PIP_POSITIONS: Record<number, readonly number[]> = {
   5: [1, 3, 5, 7, 9],
   6: [1, 3, 4, 6, 7, 9],
 };
+const DICE_ROLL_DURATION_MS = 1350;
+const DIE_SIDES = ["front", "back", "right", "left", "top", "bottom"] as const;
 
-function GameDie({ value, index, rolling = false }: { value: number | undefined; index: number; rolling?: boolean }) {
+const getDieFaceValues = (value: number | undefined) => {
+  if (!value) return [undefined, 6, 3, 4, 2, 5];
+  const opposite = 7 - value;
+  const remainingPairs = [[1, 6], [2, 5], [3, 4]].filter((pair) => !pair.includes(value));
+  return [value, opposite, remainingPairs[0][0], remainingPairs[0][1], remainingPairs[1][0], remainingPairs[1][1]];
+};
+
+function GameDie({ value, index, rolling = false, validated = false }: { value: number | undefined; index: number; rolling?: boolean; validated?: boolean }) {
   const rollingFaces = [2, 5, 6] as const;
   const renderedValue = rolling ? rollingFaces[index % rollingFaces.length] : value;
-  const pips = renderedValue ? DIE_PIP_POSITIONS[renderedValue] ?? [] : [];
+  const faceValues = getDieFaceValues(renderedValue);
 
   return (
     <span
       className={styles.gameDie}
-      data-kind={rolling ? "rolling" : dieKind(value)}
+      data-kind={rolling ? "rolling" : validated ? dieKind(value) : undefined}
       data-die-index={index + 1}
       aria-hidden="true"
     >
-      <span className={styles.dieFace}>
-        {pips.length > 0
-          ? pips.map((position) => <i key={position} data-position={position} />)
-          : <em className={styles.dieQuestion}>?</em>}
-        <span className={styles.dieShine} />
+      <span className={styles.dieCube}>
+        {DIE_SIDES.map((side, faceIndex) => {
+          const faceValue = faceValues[faceIndex];
+          const pips = faceValue ? DIE_PIP_POSITIONS[faceValue] ?? [] : [];
+          return (
+            <span key={side} className={styles.dieFace} data-side={side}>
+              {pips.length > 0
+                ? pips.map((position) => <i key={position} data-position={position} />)
+                : <em className={styles.dieQuestion}>?</em>}
+              <span className={styles.dieShine} />
+            </span>
+          );
+        })}
       </span>
     </span>
   );
@@ -241,11 +357,13 @@ export function KanabQuestDicePrototype({
   showAdminOperations = true,
   showPackLab = false,
   viewMode = "full",
+  onOpenArena,
 }: {
   apiScope?: KqApiScope;
   showAdminOperations?: boolean;
   showPackLab?: boolean;
   viewMode?: "full" | "game" | "arena";
+  onOpenArena?: () => void;
 }) {
   const isPlayerMode = apiScope === "player";
   const remoteRequest = useMemo(() => createKqScopedRequest(apiScope), [apiScope]);
@@ -253,6 +371,10 @@ export function KanabQuestDicePrototype({
   const [state, setState] = useState<KqGameState>(() => startKqGame(2026));
   const [hydrated, setHydrated] = useState(false);
   const [rolling, setRolling] = useState(false);
+  const [directDiceResult, setDirectDiceResult] = useState(false);
+  const [physicsDiceActive, setPhysicsDiceActive] = useState(false);
+  const [diceMotionPhase, setDiceMotionPhase] = useState<KqDiceMotionPhase>("idle");
+  const [diceVisualSyncing, setDiceVisualSyncing] = useState(false);
   const [battle, setBattle] = useState<KqBattle | null>(null);
   const [battleHistory, setBattleHistory] = useState<KqBattle[]>([]);
   const [burnHistory, setBurnHistory] = useState<KqBurnReceipt[]>([]);
@@ -272,6 +394,7 @@ export function KanabQuestDicePrototype({
   const [boosterNonce, setBoosterNonce] = useState(0);
   const [pendingBattleVerdict, setPendingBattleVerdict] = useState(false);
   const rollTimerRef = useRef<number | null>(null);
+  const physicsDiceRef = useRef<KqPhysicsDiceHandle | null>(null);
   const verdictTimerRef = useRef<number | null>(null);
   const repositoryRef = useRef<KqRepository | null>(null);
   const remoteInventoryRef = useRef<Record<string, number>>({});
@@ -433,6 +556,7 @@ export function KanabQuestDicePrototype({
     setRemoteRunId(window.sessionStorage.getItem(`${sessionStoragePrefix}-remote-run-id`));
     setPersistedFlowerId(window.sessionStorage.getItem(`${sessionStoragePrefix}-remote-flower-id`));
     setRemoteBurnsEnabled(isPlayerMode || window.sessionStorage.getItem(`${sessionStoragePrefix}-remote-burns`) === "1");
+    setDirectDiceResult(window.localStorage.getItem("kq-dice-direct-result") === "1");
     void repository.loadSession().then((snapshot) => {
       if (!isPlayerMode && snapshot.game) {
         setState(snapshot.game);
@@ -695,17 +819,41 @@ export function KanabQuestDicePrototype({
     return () => window.cancelAnimationFrame(frame);
   }, [state.phase, state.stageIndex, state.dice, state.usedCards.length]);
 
-  const applyGameAction = async (action: "roll" | "resolve" | "advance" | "redraw" | "heritage") => {
+  useEffect(() => {
+    if (state.phase !== "rolled" || !physicsDiceActive || !state.dice) return;
+    const values = state.bonusDie ? [...state.dice, state.bonusDie] : [...state.dice];
+    let cancelled = false;
+    const frame = window.requestAnimationFrame(() => {
+      setDiceVisualSyncing(true);
+      void physicsDiceRef.current?.sync(values).finally(() => {
+        if (!cancelled) setDiceVisualSyncing(false);
+      });
+    });
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(frame);
+    };
+  }, [physicsDiceActive, state.bonusDie, state.dice, state.phase]);
+
+  useEffect(() => {
+    if (state.phase !== "resolved" || !physicsDiceActive || !state.dice) return;
+    const values = state.bonusDie ? [...state.dice, state.bonusDie] : [...state.dice];
+    const frame = window.requestAnimationFrame(() => physicsDiceRef.current?.reveal(values));
+    return () => window.cancelAnimationFrame(frame);
+  }, [physicsDiceActive, state.bonusDie, state.dice, state.phase]);
+
+  const applyGameAction = async (action: "roll" | "resolve" | "advance" | "redraw" | "heritage", deferState = false): Promise<KqGameState | null> => {
     preserveMobileViewport();
     if (!remoteBurnsEnabled) {
-      setState((current) => action === "roll" ? rollKqDice(current) : action === "resolve" ? resolveKqStage(current) : action === "advance" ? advanceKqStage(current) : action === "redraw" ? redrawKqHand(current) : activateKqHeritage(current));
-      return;
+      const nextState = action === "roll" ? rollKqDice(state) : action === "resolve" ? resolveKqStage(state) : action === "advance" ? advanceKqStage(state) : action === "redraw" ? redrawKqHand(state) : activateKqHeritage(state);
+      if (!deferState) setState(nextState);
+      return nextState;
     }
-    if (!remoteRunId || remoteAction !== null) return;
+    if (!remoteRunId || remoteAction !== null) return null;
     setRemoteAction("game");
     try {
       const result = await applyKqRemoteAction(remoteRunId, action, remoteRequest);
-      setState(result.state);
+      if (!deferState) setState(result.state);
       if (result.persistedFlower?.id) {
         setPersistedFlowerId(result.persistedFlower.id);
         window.sessionStorage.setItem(`${sessionStoragePrefix}-remote-flower-id`, result.persistedFlower.id);
@@ -715,8 +863,10 @@ export function KanabQuestDicePrototype({
         setOfficialFlowers(refreshed.flowers);
       }
       setRemoteNotice(action === "roll" ? "Lancer confirmé par le serveur." : "");
+      return result.state;
     } catch (error) {
       setRemoteNotice(error instanceof Error ? error.message : "Synchronisation impossible.");
+      return null;
     } finally {
       setRemoteAction(null);
     }
@@ -747,15 +897,59 @@ export function KanabQuestDicePrototype({
     }
   };
 
-  const roll = () => {
+  const roll = async () => {
     if (rolling || state.phase !== "prepare") return;
+    if (directDiceResult || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setPhysicsDiceActive(false);
+      setDiceMotionPhase("idle");
+      await applyGameAction("roll");
+      return;
+    }
+
+    const startedAt = window.performance.now();
+    setDiceMotionPhase("preparing");
     setRolling(true);
-    rollTimerRef.current = window.setTimeout(() => {
-      void applyGameAction("roll").finally(() => {
+    const rolledState = await applyGameAction("roll", true);
+    if (!rolledState?.dice) {
+      setRolling(false);
+      setDiceMotionPhase("idle");
+      return;
+    }
+
+    const values = rolledState.bonusDie ? [...rolledState.dice, rolledState.bonusDie] : [...rolledState.dice];
+    const physicsDice = physicsDiceRef.current;
+    if (physicsDice) {
+      setPhysicsDiceActive(true);
+      await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+      const completed = await physicsDice.roll(values, setDiceMotionPhase);
+      if (completed) {
+        setState(rolledState);
         setRolling(false);
+        setDiceMotionPhase("idle");
+        return;
+      }
+      setPhysicsDiceActive(false);
+    }
+
+    setDiceMotionPhase("rolling");
+    const elapsed = window.performance.now() - startedAt;
+    await new Promise<void>((resolve) => {
+      rollTimerRef.current = window.setTimeout(() => {
         rollTimerRef.current = null;
-      });
-    }, 720);
+        resolve();
+      }, Math.max(0, DICE_ROLL_DURATION_MS - elapsed));
+    });
+    setState(rolledState);
+    setRolling(false);
+    setDiceMotionPhase("idle");
+  };
+
+  const toggleDirectDiceResult = () => {
+    setDirectDiceResult((current) => {
+      const next = !current;
+      window.localStorage.setItem("kq-dice-direct-result", next ? "1" : "0");
+      return next;
+    });
   };
 
   const reset = () => {
@@ -795,7 +989,6 @@ export function KanabQuestDicePrototype({
       setFlowerRivals(rivals);
       setSelectedRemoteRivalId(rivals[0]?.flowerId ?? null);
       if (rivals.length === 0) setRemoteNotice("Aucun rival humain disponible et tes 10 entraînements du jour sont déjà utilisés.");
-      else if (rivals[0]?.opponentType === "bot") setRemoteNotice(`Aucun joueur compatible : ${rivals.length} bots d’entraînement disponibles · ${rivals[0].remainingBotDuels ?? 0}/10 duels restants aujourd’hui.`);
     } catch (error) {
       setRemoteNotice(error instanceof Error ? error.message : "Matchmaking indisponible.");
     } finally {
@@ -1372,7 +1565,40 @@ export function KanabQuestDicePrototype({
           <div className={styles.deckChoices}>{supportCards.map((card) => { const challengeFit = getKqCardChallengeFit(card, rewardableDailyChallenges.map((challenge) => challenge.code)); const selectedCopies = selectedCards.filter((code) => code === card.code).length; const ownedCopies = activeInventory[card.code] ?? 0; const drawChance = getKqOpeningHandChance(selectedCards.length, selectedCopies); return <article key={card.code} className={styles.deckChoiceCard} data-selected={selectedCopies > 0 || undefined} data-empty={ownedCopies <= 0 || undefined} data-challenge-fit={challengeFit || undefined}><CardArtwork code={card.code} name={card.name} /><span>{CATEGORY_LABELS[card.category]}</span>{challengeFit ? <i className={styles.challengeFit}><Star /> Aide défi</i> : null}<strong>{card.name}</strong><p>{card.description}</p><em>{ownedCopies} copie(s) · {card.xpCost} XP</em>{selectedCopies > 0 ? <small className={styles.drawChance}>{drawChance}% dans la première main</small> : null}<div><button type="button" aria-label={`Retirer une copie de ${card.name}`} disabled={selectedCopies <= 0} onClick={() => removeCardCopy(card.code)}>−</button><b>{selectedCopies} / {ownedCopies}</b><button type="button" aria-label={`Ajouter une copie de ${card.name}`} disabled={selectedCopies >= ownedCopies} onClick={() => addCardCopy(card.code)}>+</button></div></article>; })}</div>
           <div className={styles.pbiReserve}><span>Réserve PBI de l’album · automatique</span><div>{pbiReserve.map((card) => <strong key={card.code} data-empty={(activeInventory[card.code] ?? 0) <= 0 || undefined}>{card.name} <small>×{activeInventory[card.code] ?? 0}</small></strong>)}</div><p>Ces cartes ne prennent aucune place dans le deck. Elles apparaissent seulement après identification d’un ravageur. Une référence à zéro ne peut plus intervenir.</p></div>
           <div className={styles.setupFooter}><span>{hasOwnedSubstrate ? "🔥 Le Substrat choisi brûle au départ. Ensuite, seules les cartes réellement jouées brûlent." : "✓ Substrat standard gratuit. Les cartes La Botte sont entièrement facultatives."}</span><button type="button" className={styles.primaryButton} disabled={(hasOwnedSubstrate && (activeInventory[selectedSubstrate] ?? 0) <= 0) || (isPlayerMode && !ownedBuddieCodes.includes(selectedBuddie)) || remoteAction !== null} onClick={() => setPendingStart(true)}>Commencer avec {selectedCards.length === 0 ? "aucune carte" : `${selectedCards.length} carte${selectedCards.length > 1 ? "s" : ""}`}</button></div>
-          {remoteBurnsEnabled ? <section id="placard-reserve" className={styles.officialFlowerReserve}><header><span>Réserve officielle</span><h2>Mes Fleurs d’Arène</h2><p>{officialFlowers.length} Fleur{officialFlowers.length > 1 ? "s" : ""} officielle{officialFlowers.length > 1 ? "s" : ""} enregistrée{officialFlowers.length > 1 ? "s" : ""}.</p></header>{officialFlowers.length > 0 ? <div>{officialFlowers.map((flower) => <article key={flower.id} data-status={flower.status} data-selected={matchFlowerId === flower.id || undefined}><span>{flower.status === "available" ? "Disponible" : flower.status === "locked" ? "En duel" : "Brûlée"}</span><strong>{flower.varietyName}</strong><small>Qualité {flower.quality} · {flower.id.slice(0, 8)}</small><div>{Object.entries(flower.stats).map(([stat, value]) => <b key={stat}><small>{FLOWER_STAT_LABELS[stat as keyof typeof FLOWER_STAT_LABELS] ?? stat}</small>{value}</b>)}</div>{flower.status === "available" ? <button type="button" disabled={matchmakingLoading} onClick={() => void findOfficialRivals(flower.id)}><Swords /> Chercher un adversaire</button> : null}</article>)}</div> : <p className={styles.emptyFlowerReserve}>Termine une culture officielle pour créer ta première Fleur officielle.</p>}{matchFlowerId && flowerRivals.length > 0 ? <div className={styles.remoteRivals}><span>{flowerRivals[0]?.opponentType === "bot" ? `Entraînement bots · ${flowerRivals[0].remainingBotDuels ?? 0}/10 restants · +0,1 EXP` : "Adversaires compatibles · ±8 qualité"}</span>{flowerRivals.map((rival) => <button key={rival.flowerId} type="button" data-selected={selectedRemoteRivalId === rival.flowerId || undefined} onClick={() => setSelectedRemoteRivalId(rival.flowerId)}><strong>{rival.opponentType === "bot" ? `🤖 ${rival.opponentName}` : rival.varietyName}</strong><small>{rival.varietyName} · Qualité {rival.quality}{rival.opponentType === "bot" ? " · 0,1 EXP" : ""}</small></button>)}<button type="button" className={styles.remoteBattleButton} disabled={!selectedRemoteRivalId || matchmakingLoading} onClick={() => setPendingRemoteBattle(true)}><Swords /> {flowerRivals.find((rival) => rival.flowerId === selectedRemoteRivalId)?.opponentType === "bot" ? "Affronter ce bot" : "Préparer ce duel"}</button></div> : null}</section> : null}
+          {remoteBurnsEnabled ? (
+            <section id="placard-reserve" className={styles.officialFlowerReserve}>
+              <header>
+                <span>Réserve officielle</span>
+                <h2>Mes Fleurs d’Arène</h2>
+                <p>{officialFlowers.length} Fleur{officialFlowers.length > 1 ? "s" : ""} officielle{officialFlowers.length > 1 ? "s" : ""} enregistrée{officialFlowers.length > 1 ? "s" : ""}. Chaque carte ne peut disputer qu’un seul duel.</p>
+              </header>
+              {officialFlowers.length > 0 ? (
+                <div className={styles.officialFlowerGrid}>
+                  {officialFlowers.map((flower) => (
+                    <div className={styles.officialFlowerSlot} key={flower.id}>
+                      <FlowerTcgCard
+                        varietyName={flower.varietyName}
+                        varietyCode={flower.varietyCode}
+                        tier={getKqHarvestTier(flower.quality)}
+                        quality={flower.quality}
+                        stats={flower.stats}
+                        imageUrl={ownedBuddieArtwork[flower.varietyCode]?.imageUrl}
+                        reference={`Fleur ${flower.id.slice(0, 8)}`}
+                        status={flower.status}
+                        selected={matchFlowerId === flower.id}
+                      />
+                      {flower.status === "available" ? (
+                        <button type="button" disabled={matchmakingLoading} onClick={() => void findOfficialRivals(flower.id)}>
+                          <Swords /> Jouer cette carte
+                        </button>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              ) : <p className={styles.emptyFlowerReserve}>Termine une culture officielle pour créer ta première Fleur officielle.</p>}
+              {matchFlowerId && flowerRivals.length > 0 ? <div className={styles.remoteRivals}><span>{flowerRivals[0]?.opponentType === "bot" ? `Entraînement bots · ${flowerRivals[0].remainingBotDuels ?? 0}/10 restants · +0,1 EXP` : "Adversaires compatibles · ±8 qualité"}</span>{flowerRivals.map((rival) => <button key={rival.flowerId} type="button" data-selected={selectedRemoteRivalId === rival.flowerId || undefined} onClick={() => setSelectedRemoteRivalId(rival.flowerId)}><strong>{rival.opponentType === "bot" ? `🤖 ${rival.opponentName}` : rival.varietyName}</strong><small>{rival.varietyName} · Qualité {rival.quality}{rival.opponentType === "bot" ? " · 0,1 EXP" : ""}</small></button>)}<button type="button" className={styles.remoteBattleButton} disabled={!selectedRemoteRivalId || matchmakingLoading} onClick={() => setPendingRemoteBattle(true)}><Swords /> {flowerRivals.find((rival) => rival.flowerId === selectedRemoteRivalId)?.opponentType === "bot" ? "Affronter ce bot" : "Préparer ce duel"}</button></div> : null}
+            </section>
+          ) : null}
           {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}><span>Jury officiel</span><h2>Mes duels officiels</h2>{officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}{officialBattles.map((officialBattle) => <article key={officialBattle.id} data-status={officialBattle.status} data-opponent={officialBattle.opponentType}><header><div><strong>{officialBattle.playerFlower.variety}</strong><small>Ta Fleur</small></div><b>VS</b><div><strong>{officialBattle.opponentFlower.variety}</strong><small>{officialBattle.opponentType === "bot" ? "🤖 Entraînement" : "Adversaire"}</small></div></header>{officialBattle.status === "locked" ? <><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(officialBattle.id)}><Trophy /> Demander le verdict</button></> : officialBattle.status === "cancelled" ? <><h3>Duel expiré</h3><p>Aucun verdict, aucun burn et aucun point. Les deux Fleurs sont redevenues disponibles.</p><small>Engagement annulé après 48 heures · {formatKqDate(officialBattle.lockedAt)}</small></> : <><h3>{officialBattle.winner === "player" ? "Victoire" : "Défaite"}{officialBattle.opponentType === "bot" ? " d’entraînement" : " officielle"}</h3><div className={styles.officialRounds}>{officialBattle.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div><small>{officialBattle.opponentType === "bot" ? `Ta Fleur brûlée · +${Number(officialBattle.experienceAwarded ?? 0.1).toLocaleString("fr-FR")} EXP d’Arène` : "Deux Fleurs brûlées · +1 EXP d’Arène"} · {formatKqDate(officialBattle.verdictAt)}</small></>}</article>)}</section> : null}
           {battleHistory.length > 0 ? <section className={styles.battleHistory}><span>Archives locales</span><h2>Derniers concours</h2><div>{battleHistory.slice(0, 5).map((receipt) => <article key={receipt.id}><Flame /><span><strong>{receipt.playerFlower.variety} vs {receipt.opponentFlower.variety}</strong><small>{receipt.winner === "player" ? "Victoire" : "Défaite"} · brûlées le {formatKqDate(receipt.burnedAt)}</small></span><b>{receipt.rounds.filter((round) => round.winner === "player").length}–{receipt.rounds.filter((round) => round.winner === "opponent").length}</b></article>)}</div></section> : null}
         </section>
@@ -1436,18 +1662,26 @@ export function KanabQuestDicePrototype({
           <section className={styles.traitsPanel}>
             <h2>Ta Fleur rejoint la réserve officielle</h2>
             <p>
-              Elle n’est pas brûlée maintenant. Tu pourras choisir un adversaire compatible depuis
-              ta réserve, puis confirmer séparément le duel et le verdict du jury.
+              Elle n’est pas brûlée maintenant. Elle reste dans ta réserve jusqu’à son premier duel,
+              puis le verdict la brûle définitivement.
             </p>
             <div className={styles.cultureReceipt}>
               <article><Flame /><span><small>Copies brûlées · {burnedCards.length}</small><div>{burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>)}</div></span></article>
               <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte conservée</em>}</div></span></article>
             </div>
-            <section className={styles.flowerCardPreview}>
-              <div><span>Carte Fleur · prête pour l’Arène</span><h2>{flower.variety}</h2><p>{flower.tier} · {flower.integrityCode}</p></div>
-              <div>{Object.entries(flower.stats).map(([stat, value]) => <span key={stat}><small>{FLOWER_STAT_LABELS[stat as keyof typeof FLOWER_STAT_LABELS]}</small><strong>{value}</strong></span>)}</div>
+            <section className={styles.harvestFlowerCard} aria-label="Carte Fleur obtenue">
+              <FlowerTcgCard
+                varietyName={flower.variety}
+                varietyCode={state.varietyCode}
+                tier={flower.tier}
+                quality={state.quality}
+                stats={flower.stats}
+                imageUrl={ownedBuddieArtwork[state.varietyCode]?.imageUrl}
+                reference={flower.integrityCode}
+                status="new"
+              />
             </section>
-            <button type="button" className={styles.primaryButton} onClick={reset}>
+            <button type="button" className={styles.primaryButton} onClick={onOpenArena ?? reset}>
               <Swords /> Voir ma réserve et choisir un rival
             </button>
           </section>
@@ -1470,9 +1704,17 @@ export function KanabQuestDicePrototype({
           <div className={styles.traitsList}>{state.traits.map((trait, index) => <span key={`${trait}-${index}`}><Star />{trait}</span>)}</div>
           {state.combos.length > 0 ? <div className={styles.comboList}>{state.combos.map((combo) => <span key={combo}><Sparkles />Combo · {combo}</span>)}</div> : null}
           <ol>{state.history.map((entry) => <li key={entry.stage}><strong>{entry.stage}</strong><span>{entry.dice.join(" + ")} · {entry.total}/{entry.target}</span><em>{entry.trait}</em></li>)}</ol>
-          <section className={styles.flowerCardPreview}>
-            <div><span>Carte Fleur · prête pour l’arène</span><h2>{flower.variety}</h2><p>{flower.tier} · {flower.integrityCode}</p></div>
-            <div>{Object.entries(flower.stats).map(([stat, value]) => <span key={stat}><small>{FLOWER_STAT_LABELS[stat as keyof typeof FLOWER_STAT_LABELS]}</small><strong>{value}</strong></span>)}</div>
+          <section className={styles.harvestFlowerCard} aria-label="Carte Fleur obtenue">
+            <FlowerTcgCard
+              varietyName={flower.variety}
+              varietyCode={state.varietyCode}
+              tier={flower.tier}
+              quality={state.quality}
+              stats={flower.stats}
+              imageUrl={ownedBuddieArtwork[state.varietyCode]?.imageUrl}
+              reference={flower.integrityCode}
+              status="new"
+            />
           </section>
           {!battle ? (
             <div className={styles.battleEntry}>
@@ -1580,21 +1822,15 @@ export function KanabQuestDicePrototype({
             <span>{[1, 2, 3, 4].map((level) => <i key={level} data-filled={level <= state.pressure || undefined} data-danger={level >= 3 || undefined} />)}</span>
             <small>{state.pressure >= 3 ? "Sous tension · +1 réussite requise" : "Culture stable · danger à partir de 3"} · un lancer parfait retire 1 Pression</small>
           </div>
-          <div className={styles.diceTray} data-rolling={rolling || undefined} data-result={state.phase === "rolled" || undefined}>
-            <Image
-              className={styles.diceTrayArt}
-              src="/app/kanab-quest/dice/dice-tray-v1.webp"
-              alt=""
-              fill
-              sizes="(max-width: 760px) 100vw, 620px"
-              aria-hidden="true"
-            />
+          <div className={styles.diceTray} data-phase={state.phase} data-motion-phase={diceMotionPhase} data-rolling={rolling || undefined} data-result={state.phase === "rolled" || undefined} data-direct-result={directDiceResult || undefined} data-physics={physicsDiceActive || undefined}>
+            {!directDiceResult ? <KqPhysicsDice ref={physicsDiceRef} /> : null}
+            {diceMotionPhase !== "idle" ? <span className={styles.diceMotionStatus} role="status" aria-live="polite"><i aria-hidden="true" /><small>{diceMotionPhase === "preparing" ? "Préparation du lancer" : diceMotionPhase === "rolling" ? "Lancer physique" : diceMotionPhase === "settling" ? "Derniers rebonds" : "Lecture du résultat"}</small></span> : null}
             <div className={styles.dice} role="status" aria-live="polite" aria-label={state.dice ? `Résultat des dés : ${state.dice[0]}, ${state.dice[1]} et ${state.dice[2]}${state.bonusDie ? `. Quatrième dé ${state.bonusDie} écarté` : ""}` : "Les dés n’ont pas encore été lancés"}>
-              <GameDie value={state.dice?.[0]} index={0} rolling={rolling} />
-              <GameDie value={state.dice?.[1]} index={1} rolling={rolling} />
-              <GameDie value={state.dice?.[2]} index={2} rolling={rolling} />
+              <GameDie value={state.dice?.[0]} index={0} rolling={rolling} validated={state.phase === "resolved"} />
+              <GameDie value={state.dice?.[1]} index={1} rolling={rolling} validated={state.phase === "resolved"} />
+              <GameDie value={state.dice?.[2]} index={2} rolling={rolling} validated={state.phase === "resolved"} />
             </div>
-            {state.bonusDie ? <span className={styles.discardedDie}><GameDie value={state.bonusDie} index={3} /><small>4e dé · écarté</small></span> : null}
+            {state.bonusDie && !physicsDiceActive ? <span className={styles.discardedDie}><GameDie value={state.bonusDie} index={3} validated={state.phase === "resolved"} /><small>4e dé · écarté</small></span> : null}
           </div>
           <div className={styles.diceLegend} aria-label="Légende des faces de dés">
             <span data-kind="danger"><b>1</b> Danger</span>
@@ -1602,6 +1838,17 @@ export function KanabQuestDicePrototype({
             <span data-kind="success"><b>4–5</b> Réussite</span>
             <span data-kind="spark"><b>6</b> Étincelle</span>
           </div>
+          <button
+            type="button"
+            className={styles.directResultToggle}
+            role="switch"
+            aria-checked={directDiceResult}
+            onClick={toggleDirectDiceResult}
+          >
+            <span aria-hidden="true"><i /></span>
+            <b>Résultat direct</b>
+            <small>Ignorer l’animation du lancer</small>
+          </button>
           {(state.effectNotices?.length ?? 0) > 0 ? <div className={styles.effectNotices} role="status" aria-live="polite" aria-atomic="true"><strong><Sparkles /> Résultat des effets</strong>{state.effectNotices?.map((notice, index) => { const kind = getKqEffectNoticeKind(notice); return <p key={`${notice}-${index}`} data-kind={kind}>{kind === "applied" ? "✓" : "○"} {notice}</p>; })}</div> : null}
           {state.phase === "prepare" ? (
             <><p>Prépare une carte si tu le souhaites, puis tente ta chance.</p><button type="button" className={styles.rollButton} onClick={roll} disabled={rolling || remoteAction !== null}><Dices />{rolling ? "Les dés roulent…" : "Lancer les dés"}</button></>
@@ -1611,12 +1858,19 @@ export function KanabQuestDicePrototype({
               <span>Réussites</span><strong>{preview.total}/{preview.target}</strong><small>{preview.dangers} Danger · {preview.sparks} Étincelle</small>
               <em className={styles.provisionalOutcome} data-outcome={preview.outcome}>Résultat provisoire · {OUTCOME_COPY[preview.outcome].title}</em>
               <p>Tu peux encore jouer une carte de réaction avant de valider.</p>
-              <button type="button" className={styles.primaryButton} disabled={remoteAction !== null} onClick={() => void applyGameAction("resolve")}>Valider le résultat</button>
+              <button type="button" className={styles.primaryButton} disabled={remoteAction !== null || diceVisualSyncing} onClick={() => void applyGameAction("resolve")}>{diceVisualSyncing ? "Mise à jour des dés…" : "Valider le résultat"}</button>
             </div>
           ) : null}
           {state.phase === "resolved" && outcomeCopy ? (
             <div className={styles.outcome} data-outcome={state.lastOutcome} role="status" aria-live="polite">
-              <span className={styles.outcomePlant} role="img" aria-label={outcomeCopy.artAlt} />
+              <span className={styles.outcomeReaction}>
+                <Image
+                  src={outcomeCopy.artSrc}
+                  alt={outcomeCopy.artAlt}
+                  fill
+                  sizes="(max-width: 760px) 170px, 220px"
+                />
+              </span>
               <h3>{outcomeCopy.title}</h3><strong>{state.traits.at(-1)}</strong>{(state.history.at(-1)?.combos?.length ?? 0) > 0 ? <small className={styles.comboNotice}><Sparkles aria-hidden="true" /> {state.history.at(-1)?.combos?.join(" · ")}</small> : null}{state.lastOutcome === "critical" ? <small className={styles.pressureRelief}>Pression −1 · la culture reprend son souffle</small> : null}<p>Tu disposes maintenant de {state.xp} XP.</p>
               <button type="button" className={styles.primaryButton} disabled={remoteAction !== null} onClick={() => void applyGameAction("advance")}>{state.stageIndex === KQ_STAGES.length - 1 ? "Révéler la Récolte" : "Étape suivante"}</button>
             </div>

@@ -96,6 +96,7 @@ export function PlacardPlayerShell() {
           <KanabQuestDicePrototype
             apiScope="player"
             viewMode={view === "arena" ? "arena" : "game"}
+            onOpenArena={() => setView("arena")}
           />
         )}
       </div>

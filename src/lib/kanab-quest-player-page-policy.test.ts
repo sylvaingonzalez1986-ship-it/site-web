@@ -75,6 +75,10 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient.slice(playerHarvestBranch, localBattleEntry)).toContain(
       "Elle n’est pas brûlée maintenant",
     );
+    expect(gameClient.slice(playerHarvestBranch, localBattleEntry)).toContain(
+      "onClick={onOpenArena ?? reset}",
+    );
+    expect(playerShell).toContain('onOpenArena={() => setView("arena")}');
   });
 
   it("cannot locally reset an active official culture", () => {

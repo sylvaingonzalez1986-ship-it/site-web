@@ -25,6 +25,7 @@
     "audit:arena:mobile": "node scripts/audit-arena-mobile.mjs"
   },
   "dependencies": {
+    "@3d-dice/dice-box-threejs": "^0.0.12",
     "@napi-rs/canvas": "^0.1.95",
     "@sentry/nextjs": "^10.42.0",
     "@supabase/ssr": "^0.8.0",
