@@ -105,10 +105,7 @@ export function ProducerDetailPanel({
       aria-labelledby={`producer-title-${producer.id}`}
     >
       <div className={styles.hero}>
-        <div
-          className={styles.image}
-          style={{ backgroundImage: `url("${producer.image}")` }}
-        >
+        <div className={styles.image}>
           <Image
             src={producer.image}
             alt={producer.name}

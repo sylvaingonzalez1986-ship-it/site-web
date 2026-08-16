@@ -79,10 +79,7 @@ export function ProducerTcgCard({
           </div>
         </header>
 
-        <div
-          className={styles.imageFrame}
-          style={{ backgroundImage: `url("${producer.image}")` }}
-        >
+        <div className={styles.imageFrame}>
           <Image
             src={producer.image}
             alt={producer.name}
