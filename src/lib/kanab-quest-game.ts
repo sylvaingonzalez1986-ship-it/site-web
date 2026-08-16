@@ -10,7 +10,7 @@ export type KqSupportEffect = "reroll-neutral" | "pbi-success" | "pbi-strong-suc
   | "harvest-four-quality" | "harvest-cool" | "danger-to-neutral" | "clean-cut";
 export type KqSituationTag = "roots" | "water" | "climate" | "pest" | "flower" | "harvest" | "drying";
 export type KqPest = "aphids" | "mites" | "thrips";
-export type KqBuddieEffect = "opening-four-dice" | "flower-neutral-success" | "climate-danger-shield";
+export type KqBuddieEffect = "none" | "starting-xp-1" | "starting-xp-2" | "starting-xp-3" | "starting-xp-4";
 export const KQ_HAND_SIZE = 5;
 export const KQ_HERITAGE_RESERVE_SIZE = 3;
 const KQ_EFFECT_NOTICE_LIMIT = 12;
@@ -35,6 +35,7 @@ export type KqBuddie = {
   rarity: "common" | "silver" | "gold" | "epic" | "legendary";
   ability: string;
   effect: KqBuddieEffect;
+  advantageLevel: 0 | 1 | 2 | 3 | 4;
 };
 
 export type KqSupportCard = {
@@ -128,18 +129,15 @@ const KQ_BUDDIE_NAMES = [
 ] as const;
 
 const KQ_BUDDIE_ABILITIES: Record<KqBuddieEffect, string> = {
-  "opening-four-dice": "Bon départ : lance 4 dés et garde les 3 meilleurs au premier lancer.",
-  "flower-neutral-success": "Floraison : transforme un dé neutre en réussite pendant la Floraison.",
-  "climate-danger-shield": "Résilience : annule un Danger sur les Situations Climat.",
+  none: "Buddie commun : aucun avantage de jeu.",
+  "starting-xp-1": "Avantage Argent I : +1 XP au départ de la culture.",
+  "starting-xp-2": "Avantage Or II : +2 XP au départ de la culture.",
+  "starting-xp-3": "Avantage Épique III : +3 XP au départ de la culture.",
+  "starting-xp-4": "Avantage Légendaire IV : +4 XP au départ de la culture.",
 };
 
 export const KQ_BUDDIES: KqBuddie[] = KQ_BUDDIE_NAMES.map((name, index) => {
   const cardNumber = index + 1;
-  const effect: KqBuddieEffect = cardNumber % 3 === 0
-    ? "opening-four-dice"
-    : cardNumber % 3 === 1
-      ? "flower-neutral-success"
-      : "climate-danger-shield";
   const rarity: KqBuddie["rarity"] = cardNumber === 1
     ? "legendary"
     : cardNumber <= 4
@@ -149,6 +147,12 @@ export const KQ_BUDDIES: KqBuddie[] = KQ_BUDDIE_NAMES.map((name, index) => {
         : cardNumber <= 19
           ? "silver"
           : "common";
+  const advantageLevel: KqBuddie["advantageLevel"] = rarity === "legendary" ? 4
+    : rarity === "epic" ? 3
+      : rarity === "gold" ? 2
+        : rarity === "silver" ? 1
+          : 0;
+  const effect: KqBuddieEffect = advantageLevel === 0 ? "none" : `starting-xp-${advantageLevel}` as KqBuddieEffect;
   return {
     code: `HH2026-${String(cardNumber).padStart(3, "0")}`,
     name,
@@ -156,6 +160,7 @@ export const KQ_BUDDIES: KqBuddie[] = KQ_BUDDIE_NAMES.map((name, index) => {
     rarity,
     ability: KQ_BUDDIE_ABILITIES[effect],
     effect,
+    advantageLevel,
   };
 });
 
@@ -264,10 +269,6 @@ export function getKqSituation(state: Pick<KqGameState, "stageIndex">) {
   return KQ_SITUATIONS.find((situation) => situation.code === code) ?? KQ_SITUATIONS.filter((situation) => situation.stage === KQ_STAGES[state.stageIndex])[0];
 }
 
-function getKqBuddieEffect(varietyCode: string) {
-  return KQ_BUDDIES.find((buddie) => buddie.code === varietyCode)?.effect;
-}
-
 export function buildKqScenarioPath(seed: number, recentSituationCodes: string[] = [], requiredTags: KqSituationTag[] = [], allowedPests: KqPest[] = []) {
   const path = KQ_STAGES.map((stage, stageIndex) => {
     const pool = KQ_SITUATIONS.filter((situation) => situation.stage === stage);
@@ -319,7 +320,10 @@ export function startKqGame(
     collectionCodes: config.collectionCodes ?? KQ_CARDS.map((card) => card.code),
     situationCodes,
     ...(heritage ? { heritageCode: heritage.code, heritageUsed: false, heritageArmed: false } : {}),
-    stageIndex: 0, phase: "prepare", xp: Math.max(1, config.startingXp ?? 1) + (heritage?.effect === "starting-xp-two" ? 2 : 0), quality: 0, dice: null, bonusDie: null, effectNotices: heritage?.effect === "starting-xp-two" ? [`${heritage.name} : +2 XP au départ.`] : [],
+    stageIndex: 0, phase: "prepare", xp: Math.max(1, config.startingXp ?? 1) + buddie.advantageLevel + (heritage?.effect === "starting-xp-two" ? 2 : 0), quality: 0, dice: null, bonusDie: null, effectNotices: [
+      ...(buddie.advantageLevel > 0 ? [`${buddie.name} : +${buddie.advantageLevel} XP au départ.`] : []),
+      ...(heritage?.effect === "starting-xp-two" ? [`${heritage.name} : +2 XP au départ.`] : []),
+    ],
     rollNonce: 0, pressure: 0, cancelledDangers: 0,
     preparationPlayed: false, reactionPlayed: false, revealedPest: null, playedThisStage: [substrate.code], usedCards: [substrate.code],
     traits: [], combos: [], lastOutcome: null, history: [],
@@ -568,9 +572,8 @@ export function rollKqDice(state: KqGameState): KqGameState {
   let nonce = state.rollNonce + 1;
   const playedEffects = state.playedThisStage.map((code) => KQ_CARDS.find((card) => card.code === code)).filter((card) => card?.timing !== "passive").map((card) => card?.effect);
   const mainVerte = playedEffects.includes("four-keep-three") || playedEffects.includes("harvest-four-quality");
-  const boostedOpening = getKqBuddieEffect(state.varietyCode) === "opening-four-dice" && state.stageIndex === 0;
   const heritageFiveDice = state.heritageArmed && KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode)?.effect === "five-keep-three";
-  const dieCount = heritageFiveDice ? 5 : mainVerte || boostedOpening ? 4 : 3;
+  const dieCount = heritageFiveDice ? 5 : mainVerte ? 4 : 3;
   let rolled = Array.from({ length: dieCount }, (_, index) => deterministicDie(state.seed, state.stageIndex, nonce, index));
   let bonusDie: number | null = null;
   const effectNotices = [...(state.effectNotices ?? [])];
@@ -580,7 +583,7 @@ export function rollKqDice(state: KqGameState): KqGameState {
     rolled = sorted.slice(0, 3);
     effectNotices.push(heritageFiveDice
       ? `Signature du maître : 5 dés lancés, les 2 moins bons écartés, les 3 meilleurs conservés.`
-      : `${mainVerte ? "Main verte" : state.varietyName} : 4 dés lancés, ${bonusDie} écarté, les 3 meilleurs conservés.`);
+      : `Main verte : 4 dés lancés, ${bonusDie} écarté, les 3 meilleurs conservés.`);
   }
   let dice = rolled as [number, number, number];
   const substrate = KQ_CARDS.find((card) => state.deckCodes.includes(card.code) && card.category === "substrate");
@@ -595,7 +598,7 @@ export function rollKqDice(state: KqGameState): KqGameState {
     }
     else effectNotices.push(`${playedEffects.includes("reroll-neutral") ? "Carte de relance" : substrate?.name ?? "Substrat"} : aucun dé neutre, relance non déclenchée.`);
   }
-  const convertNeutral = playedEffects.includes("neutral-to-success") || (getKqBuddieEffect(state.varietyCode) === "flower-neutral-success" && KQ_STAGES[state.stageIndex] === "Floraison");
+  const convertNeutral = playedEffects.includes("neutral-to-success");
   if (convertNeutral) {
     const index = dice.findIndex((die) => die === 2 || die === 3);
     if (index >= 0) {
@@ -605,9 +608,8 @@ export function rollKqDice(state: KqGameState): KqGameState {
     }
     else effectNotices.push("Transformation prête, mais aucun dé neutre : effet non déclenché.");
   }
-  const cancelledDangers = (playedEffects.includes("double-danger-shield") ? 2
-    : playedEffects.some((effect) => ["cancel-danger", "harvest-cool", "clean-cut"].includes(effect ?? "")) ? 1 : 0)
-    + (getKqBuddieEffect(state.varietyCode) === "climate-danger-shield" && situation.tags.includes("climate") ? 1 : 0);
+  const cancelledDangers = playedEffects.includes("double-danger-shield") ? 2
+    : playedEffects.some((effect) => ["cancel-danger", "harvest-cool", "clean-cut"].includes(effect ?? "")) ? 1 : 0;
   const heritage = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode);
   const openingHandConsumed = !state.heritageUsed && heritage?.effect === "opening-hand-reserve" && state.stageIndex === 0;
   const rootSpark = !state.heritageUsed

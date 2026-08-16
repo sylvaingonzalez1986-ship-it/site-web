@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createKqOpponent, lockKqBattle, resolveKqBattle, type KqFlowerCard } from "@/lib/kanab-quest-battle";
-import { applyKqBattleToRanking, compareKqStandings, createKqRankProfile, getKqLeague, getKqLocalLeaderboard, getKqMatchmaking, getKqRatingStake } from "@/lib/kanab-quest-ranking";
+import { applyKqBattleToRanking, compareKqStandings, createKqRankProfile, getKqArenaExperienceAward, getKqLeague, getKqLocalLeaderboard, getKqMatchmaking, getKqRatingStake, getKqSeasonPointStake } from "@/lib/kanab-quest-ranking";
 
 const playerFlower: KqFlowerCard = {
   id: "FLOWER-TEST", ownerName: "Toi", variety: "Cannatonic", tier: "Belle pousse", status: "available", createdAt: new Date(0).toISOString(), integrityCode: "KQ-TEST", traits: [],
@@ -9,14 +9,28 @@ const playerFlower: KqFlowerCard = {
 
 describe("Kanab Quest local ranking", () => {
   it("shows the exact rating risk and reward before a battle", () => {
-    expect(getKqRatingStake(1000, 1000)).toEqual({ win: 12, loss: -12 });
+    expect(getKqRatingStake(1000, 1000)).toEqual({ win: 16, loss: -16 });
     expect(getKqRatingStake(1000, 1120).win).toBeGreaterThan(getKqRatingStake(1000, 935).win);
     expect(Math.abs(getKqRatingStake(1000, 1120).loss)).toBeLessThan(Math.abs(getKqRatingStake(1000, 935).loss));
   });
 
-  it("turns rating into stable mainstream league milestones", () => {
-    expect(getKqLeague(1000)).toMatchObject({ name: "Pousse", pointsToNext: 50, progress: 50 });
-    expect(getKqLeague(1250)).toMatchObject({ name: "Grand Cru", pointsToNext: 0, progress: 100 });
+  it("turns rating into short league divisions", () => {
+    expect(getKqLeague(1000)).toMatchObject({ name: "Pousse II", pointsToNext: 50, progress: 0 });
+    expect(getKqLeague(1075)).toMatchObject({ name: "Pousse I", pointsToNext: 25, progress: 50 });
+    expect(getKqLeague(1400)).toMatchObject({ name: "Grand Cru", pointsToNext: 0, progress: 100 });
+  });
+
+  it("awards fewer season points for an expected win and more for an upset", () => {
+    expect(getKqSeasonPointStake(1000, 1000)).toEqual({ win: 20, loss: 5 });
+    expect(getKqSeasonPointStake(1200, 900).win).toBeLessThan(getKqSeasonPointStake(900, 1200).win);
+    expect(getKqSeasonPointStake(1000, 1000, 8).win - getKqSeasonPointStake(1000, 1000).win).toBe(6);
+  });
+
+  it("uses the jury score to distinguish Arena experience", () => {
+    const sweep = ["player", "player", "player"].map((winner, index) => ({ code: `${index}`, label: "", explanation: "", playerScore: 1, opponentScore: 0, winner: winner as "player" }));
+    const closeLoss = ["player", "opponent", "opponent"].map((winner, index) => ({ code: `${index}`, label: "", explanation: "", playerScore: 1, opponentScore: 0, winner: winner as "player" | "opponent" }));
+    expect(getKqArenaExperienceAward(sweep)).toBe(1.6);
+    expect(getKqArenaExperienceAward(closeLoss)).toBe(0.8);
   });
 
   it("offers the closest rivals first", () => {
@@ -54,12 +68,13 @@ describe("Kanab Quest local ranking", () => {
     expect(board.find((entry) => entry.isPlayer)!.rank).toBeLessThan(board.find((entry) => entry.id === "rival-maya")!.rank);
   });
 
-  it("uses wins then a stable id to resolve complete ties", () => {
+  it("uses wins, then fewer losses, then a stable id to resolve complete ties", () => {
     const standings = [
-      { id: "z-player", rating: 1000, seasonPoints: 25, wins: 2 },
-      { id: "b-player", rating: 1000, seasonPoints: 25, wins: 3 },
-      { id: "a-player", rating: 1000, seasonPoints: 25, wins: 3 },
+      { id: "z-player", rating: 1000, seasonPoints: 25, wins: 2, losses: 0 },
+      { id: "b-player", rating: 1000, seasonPoints: 25, wins: 3, losses: 2 },
+      { id: "a-player", rating: 1000, seasonPoints: 25, wins: 3, losses: 1 },
+      { id: "c-player", rating: 1000, seasonPoints: 25, wins: 3, losses: 1 },
     ].sort(compareKqStandings);
-    expect(standings.map((standing) => standing.id)).toEqual(["a-player", "b-player", "z-player"]);
+    expect(standings.map((standing) => standing.id)).toEqual(["a-player", "c-player", "b-player", "z-player"]);
   });
 });

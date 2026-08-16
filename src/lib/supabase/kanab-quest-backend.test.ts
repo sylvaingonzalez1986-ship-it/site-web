@@ -22,7 +22,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
       activeRun: null,
       flowers: [{ id: "flower-1", quality: 81, stats: { vigor: 7 } }],
       battles: [],
-      progress: { rank: 8, rating: 1075, league: "Canopée", leagueProgress: 25, pointsToNextLeague: 75 },
+      progress: { rank: 8, rating: 1075, league: "Pousse I", leagueProgress: 50, pointsToNextLeague: 25 },
     });
   });
   it("rejects draft artwork while accepting local and hosted final assets", () => {

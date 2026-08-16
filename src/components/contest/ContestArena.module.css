@@ -580,64 +580,6 @@
 .notebookSurfaceFilters button:disabled { cursor: not-allowed; opacity: .35; }
 .notebookSurfaceFilters button small { display: grid; width: 24px; height: 24px; place-items: center; border: 1px solid var(--arena-ink); background: var(--arena-cream); font-size: .6rem; }
 
-.notebookHub {
-  width: min(1180px, calc(100% - 2rem));
-  min-height: calc(100svh - 70px);
-  margin: 0 auto;
-  padding: clamp(1.5rem, 4vw, 3.5rem) 0 3rem;
-}
-
-.notebookHubIntro {
-  display: grid;
-  min-height: 190px;
-  grid-template-columns: minmax(0, 1fr) 150px;
-  align-items: end;
-  gap: 1rem;
-  border-bottom: 3px solid var(--arena-ink);
-}
-
-.notebookHubIntro small { color: var(--arena-green); font-size: .68rem; font-weight: 950; letter-spacing: .13em; text-transform: uppercase; }
-.notebookHubIntro h1 { margin: .3rem 0 0; font-family: var(--font-display), sans-serif; font-size: clamp(4rem, 9vw, 7.5rem); line-height: .82; text-transform: uppercase; }
-.notebookHubIntro p { margin: .85rem 0 1.35rem; color: var(--arena-muted); font-size: 1rem; font-weight: 800; }
-.notebookHubIntro img { justify-self: center; width: 126px; height: auto; max-height: 180px; object-fit: contain; object-position: bottom; }
-
-.notebookHubGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.15rem;
-  padding-top: 1.5rem;
-}
-
-.notebookHubGrid > a {
-  display: grid;
-  min-width: 0;
-  overflow: hidden;
-  border: 3px solid var(--arena-ink);
-  background: #fff;
-  box-shadow: 6px 6px 0 var(--arena-ink);
-  color: var(--arena-ink);
-  text-decoration: none;
-  transition: transform .16s ease, box-shadow .16s ease;
-}
-
-.notebookHubGrid > a:hover { transform: translateY(-4px); box-shadow: 9px 9px 0 var(--arena-ink); }
-.notebookHubGrid > a:focus-visible { outline: 4px solid var(--arena-green); outline-offset: 5px; }
-.notebookHubGrid > a[data-tone="regular"] .notebookHubArtwork { background: #dcefe5; }
-.notebookHubGrid > a[data-tone="concours"] .notebookHubArtwork { background: #f4c43d; }
-.notebookHubGrid > a[data-tone="classement"] .notebookHubArtwork { background: #e8d7c2; }
-
-.notebookHubArtwork { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 3px solid var(--arena-ink); }
-.notebookHubArtwork img { object-fit: contain; object-position: center bottom; padding: .65rem 1.2rem 0; }
-.notebookHubArtwork b { position: absolute; top: .65rem; left: .65rem; display: grid; width: 34px; height: 34px; place-items: center; border: 2px solid var(--arena-ink); background: #fff; box-shadow: 2px 2px 0 var(--arena-ink); font-size: .78rem; }
-
-.notebookHubCardCopy { display: flex; min-height: 190px; flex-direction: column; padding: 1rem; }
-.notebookHubCardCopy small { display: flex; align-items: center; gap: .35rem; color: var(--arena-green); font-size: .61rem; font-weight: 950; letter-spacing: .09em; text-transform: uppercase; }
-.notebookHubCardCopy small svg { width: 16px; height: 16px; }
-.notebookHubCardCopy strong { margin-top: .4rem; font-family: var(--font-display), sans-serif; font-size: clamp(1.7rem, 3vw, 2.45rem); line-height: .9; text-transform: uppercase; }
-.notebookHubCardCopy p { margin: .75rem 0 1rem; color: var(--arena-muted); font-size: .82rem; font-weight: 700; line-height: 1.45; }
-.notebookHubCardCopy em { display: flex; align-items: center; gap: .25rem; margin-top: auto; font-size: .74rem; font-style: normal; font-weight: 950; text-transform: uppercase; }
-.notebookHubCardCopy em svg { width: 17px; height: 17px; }
-
 @media(max-width:700px) {
   .notebookSurfaceHeader > nav { grid-template-columns: auto 1fr auto; min-height: 60px; gap: .4rem; padding: .5rem .65rem; }
   .notebookSurfaceHeader > nav a { min-height: 44px; padding: .45rem .55rem; font-size: 0; }
@@ -660,20 +602,6 @@
   .notebookSurfaceFilters > div { gap: .3rem; }
   .notebookSurfaceFilters button { min-width: 0; min-height: 46px; flex-direction: column; justify-content: center; gap: .15rem; padding: .35rem .2rem; font-size: .56rem; }
   .notebookSurfaceFilters button small { width: auto; height: auto; border: 0; background: transparent; }
-  .notebookHub { width: min(100% - 1.3rem, 620px); min-height: calc(100svh - 61px); padding: 1rem 0 2rem; }
-  .notebookHubIntro { min-height: 130px; grid-template-columns: minmax(0,1fr) 82px; }
-  .notebookHubIntro h1 { font-size: clamp(3rem, 16vw, 4.4rem); }
-  .notebookHubIntro p { margin: .5rem 0 .85rem; font-size: .78rem; }
-  .notebookHubIntro img { width: 72px; max-height: 112px; }
-  .notebookHubGrid { grid-template-columns: 1fr; gap: .85rem; padding-top: 1rem; }
-  .notebookHubGrid > a { grid-template-columns: 112px minmax(0,1fr); box-shadow: 4px 4px 0 var(--arena-ink); }
-  .notebookHubArtwork { height: 100%; min-height: 140px; aspect-ratio: auto; border-right: 3px solid var(--arena-ink); border-bottom: 0; }
-  .notebookHubArtwork img { padding: .5rem .15rem 0; }
-  .notebookHubArtwork b { top: .45rem; left: .45rem; width: 28px; height: 28px; font-size: .66rem; }
-  .notebookHubCardCopy { min-height: 140px; padding: .8rem; }
-  .notebookHubCardCopy strong { font-size: 1.55rem; }
-  .notebookHubCardCopy p { margin: .5rem 0 .65rem; font-size: .7rem; line-height: 1.35; }
-  .notebookHubCardCopy em { font-size: .65rem; }
 }
 
 .arenaHub {

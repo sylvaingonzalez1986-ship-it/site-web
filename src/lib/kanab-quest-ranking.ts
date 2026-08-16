@@ -31,12 +31,14 @@ export type KqRankableStanding = {
   rating: number;
   seasonPoints: number;
   wins: number;
+  losses?: number;
 };
 
 export function compareKqStandings(a: KqRankableStanding, b: KqRankableStanding) {
   return b.rating - a.rating
     || b.seasonPoints - a.seasonPoints
     || b.wins - a.wins
+    || (a.losses ?? 0) - (b.losses ?? 0)
     || a.id.localeCompare(b.id);
 }
 
@@ -62,17 +64,39 @@ export function getKqMatchmaking(profile: KqRankProfile, count = 3) {
 export function getKqRatingStake(playerRating: number, opponentRating: number) {
   const expected = 1 / (1 + 10 ** ((opponentRating - playerRating) / 400));
   return {
-    win: Math.round(24 * (1 - expected)),
-    loss: Math.round(-24 * expected),
+    win: Math.max(2, Math.round(32 * (1 - expected))),
+    loss: -Math.max(2, Math.round(32 * expected)),
   };
 }
 
+export function getKqSeasonPointStake(playerRating: number, opponentRating: number, streak = 0) {
+  const expected = 1 / (1 + 10 ** ((opponentRating - playerRating) / 400));
+  return {
+    win: Math.round(10 + 20 * (1 - expected)) + Math.min(6, Math.max(0, streak) * 2),
+    loss: Math.round(3 + 3 * (1 - expected)),
+  };
+}
+
+export function getKqArenaExperienceAward(rounds: KqBattle["rounds"]) {
+  const wonRounds = rounds.filter((round) => round.winner === "player").length;
+  if (wonRounds >= 2) return wonRounds === 3 ? 1.6 : 1.4;
+  return wonRounds === 1 ? 0.8 : 0.6;
+}
+
 const KQ_LEAGUES = [
-  { name: "Graine", minRating: 0, nextRating: 950 },
-  { name: "Pousse", minRating: 950, nextRating: 1050 },
-  { name: "Canopée", minRating: 1050, nextRating: 1150 },
-  { name: "Fleur", minRating: 1150, nextRating: 1250 },
-  { name: "Grand Cru", minRating: 1250, nextRating: null },
+  { name: "Graine III", minRating: 0, nextRating: 850 },
+  { name: "Graine II", minRating: 850, nextRating: 900 },
+  { name: "Graine I", minRating: 900, nextRating: 950 },
+  { name: "Pousse III", minRating: 950, nextRating: 1000 },
+  { name: "Pousse II", minRating: 1000, nextRating: 1050 },
+  { name: "Pousse I", minRating: 1050, nextRating: 1100 },
+  { name: "Canopée III", minRating: 1100, nextRating: 1150 },
+  { name: "Canopée II", minRating: 1150, nextRating: 1200 },
+  { name: "Canopée I", minRating: 1200, nextRating: 1250 },
+  { name: "Fleur III", minRating: 1250, nextRating: 1300 },
+  { name: "Fleur II", minRating: 1300, nextRating: 1350 },
+  { name: "Fleur I", minRating: 1350, nextRating: 1400 },
+  { name: "Grand Cru", minRating: 1400, nextRating: null },
 ] as const;
 
 export function getKqLeague(rating: number) {
@@ -89,8 +113,9 @@ export function applyKqBattleToRanking(profile: KqRankProfile, battle: KqBattle,
   if (battle.status !== "verdict" || !battle.winner || profile.processedBattleIds.includes(battle.id)) return profile;
   const won = battle.winner === "player";
   const stake = getKqRatingStake(profile.rating, opponentRating);
+  const seasonStake = getKqSeasonPointStake(profile.rating, opponentRating, profile.streak);
   const ratingDelta = won ? stake.win : stake.loss;
-  const seasonPointsDelta = won ? 25 + Math.min(10, profile.streak * 2) : 8;
+  const seasonPointsDelta = won ? seasonStake.win : seasonStake.loss;
   return {
     ...profile,
     rating: Math.max(100, profile.rating + ratingDelta),
@@ -109,7 +134,7 @@ export function applyKqBattleToRanking(profile: KqRankProfile, battle: KqBattle,
 
 export function getKqLocalLeaderboard(profile: KqRankProfile) {
   return [
-    ...KQ_RIVALS.map((rival) => ({ id: rival.id, name: rival.name, rating: rival.rating, seasonPoints: 0, wins: 0, isPlayer: false })),
-    { id: profile.playerId, name: profile.name, rating: profile.rating, seasonPoints: profile.seasonPoints, wins: profile.wins, isPlayer: true },
+    ...KQ_RIVALS.map((rival) => ({ id: rival.id, name: rival.name, rating: rival.rating, seasonPoints: 0, wins: 0, losses: 0, isPlayer: false })),
+    { id: profile.playerId, name: profile.name, rating: profile.rating, seasonPoints: profile.seasonPoints, wins: profile.wins, losses: profile.losses, isPlayer: true },
   ].sort(compareKqStandings).map((entry, index) => ({ ...entry, rank: index + 1 }));
 }

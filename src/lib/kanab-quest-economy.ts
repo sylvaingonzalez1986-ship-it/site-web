@@ -85,9 +85,11 @@ export function getKqCardChallengeFit(card: KqSupportCard, challengeCodes: strin
 }
 
 const RECOMMENDED_DECKS: Record<KqBuddieEffect, { substrate: string; support: string[] }> = {
-  "opening-four-dice": { substrate: "BOTTE-001", support: ["BOTTE-005", "BOTTE-006", "BOTTE-014", "BOTTE-018"] },
-  "flower-neutral-success": { substrate: "BOTTE-009", support: ["BOTTE-003", "BOTTE-004", "BOTTE-015", "BOTTE-006"] },
-  "climate-danger-shield": { substrate: "BOTTE-008", support: ["BOTTE-005", "BOTTE-004", "BOTTE-016", "BOTTE-018"] },
+  none: { substrate: "BOTTE-001", support: ["BOTTE-003", "BOTTE-005", "BOTTE-017", "BOTTE-006"] },
+  "starting-xp-1": { substrate: "BOTTE-001", support: ["BOTTE-005", "BOTTE-003", "BOTTE-017", "BOTTE-018"] },
+  "starting-xp-2": { substrate: "BOTTE-008", support: ["BOTTE-014", "BOTTE-015", "BOTTE-018", "BOTTE-006"] },
+  "starting-xp-3": { substrate: "BOTTE-009", support: ["BOTTE-004", "BOTTE-015", "BOTTE-017", "BOTTE-006"] },
+  "starting-xp-4": { substrate: "BOTTE-009", support: ["BOTTE-004", "BOTTE-006", "BOTTE-018", "BOTTE-017"] },
 };
 
 export function buildKqRecommendedDeck(effect: KqBuddieEffect, inventory: Record<string, number>, challengeCodes: string[] = []) {

@@ -56,7 +56,7 @@ describe("Kanab Quest card economy", () => {
   it("builds a four-card recommendation without exhausted copies", () => {
     const inventory = Object.fromEntries(Array.from({ length: 18 }, (_, index) => [`BOTTE-${String(index + 1).padStart(3, "0")}`, 1]));
     inventory["BOTTE-006"] = 0;
-    const deck = buildKqRecommendedDeck("opening-four-dice", inventory);
+    const deck = buildKqRecommendedDeck("starting-xp-1", inventory);
     expect(deck.support).toHaveLength(4);
     expect(deck.support).not.toContain("BOTTE-006");
     expect(deck.substrate).toBe("BOTTE-001");
@@ -72,7 +72,7 @@ describe("Kanab Quest card economy", () => {
 
   it("puts daily challenge support ahead of the Buddie fallback", () => {
     const inventory = Object.fromEntries(KQ_CARDS.map((card) => [card.code, 1]));
-    const deck = buildKqRecommendedDeck("opening-four-dice", inventory, ["biocontrol"]);
+    const deck = buildKqRecommendedDeck("starting-xp-1", inventory, ["biocontrol"]);
     expect(deck.support).toContain("BOTTE-004");
     expect(deck.support).toHaveLength(4);
   });

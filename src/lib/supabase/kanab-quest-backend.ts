@@ -5,7 +5,7 @@ import { activateKqHeritage, advanceKqStage, canPlayKqCard, getKqHarvestTier, KQ
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 import { createKqFlower, createKqOpponent, invertKqBattlePerspective, lockKqBattle, resolveKqBattle, type KqBattle, type KqFlowerCard } from "@/lib/kanab-quest-battle";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
-import { getKqLeague } from "@/lib/kanab-quest-ranking";
+import { getKqArenaExperienceAward, getKqLeague } from "@/lib/kanab-quest-ranking";
 import { evaluateKqChallenges } from "@/lib/kanab-quest-challenges";
 import { getKqNotebookReward, KQ_CULTURE_TOKEN_RUN_CAP, KQ_CULTURE_TOKEN_START_XP, KQ_NOTEBOOK_REWARDS_LIVE } from "@/lib/kanab-quest-notebook-rewards";
 import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
@@ -994,18 +994,19 @@ export function mapKqPlayerCoreSnapshot(data: unknown) {
     const playerFlower = mapSnapshotFlower(battle.playerFlower, "Toi");
     const opponentFlower = mapSnapshotFlower(battle.opponentFlower, "Adversaire");
     if (!playerFlower || !opponentFlower) return [];
+    const rounds = mapKqStoredBattleRounds(battle.rounds, battle.invertRounds === true);
     return [{
       id: String(battle.id),
       status: String(battle.status),
       seed: Number(battle.seed),
       playerFlower,
       opponentFlower,
-      rounds: mapKqStoredBattleRounds(battle.rounds, battle.invertRounds === true),
+      rounds,
       winner: battle.winner ? String(battle.winner) as "player" | "opponent" : null,
       lockedAt: String(battle.lockedAt),
       verdictAt: battle.verdictAt ? String(battle.verdictAt) : null,
       opponentType: "human" as const,
-      experienceAwarded: Number(battle.experienceAwarded ?? 0),
+      experienceAwarded: battle.status === "verdict" ? getKqArenaExperienceAward(rounds) : 0,
     }];
   });
   const botBattles = (Array.isArray(payload.botBattles) ? payload.botBattles : []).flatMap((entry) => {
@@ -1367,16 +1368,17 @@ export async function getKqPlayerBattles(ownerId: string, limit = 30) {
     const playerFlower = flowers.get(adminIsOne ? battle.flower_one_id : battle.flower_two_id);
     const opponentFlower = flowers.get(adminIsOne ? battle.flower_two_id : battle.flower_one_id);
     if (!playerFlower || !opponentFlower) return [];
+    const rounds = mapKqStoredBattleRounds(battle.rounds, !adminIsOne);
     return [{
       id: String(battle.id), status: String(battle.status), seed: Number(battle.seed),
       playerFlower: mapKqOfficialFlowerCard(playerFlower, "Toi"),
       opponentFlower: mapKqOfficialFlowerCard(opponentFlower, "Adversaire"),
-      rounds: mapKqStoredBattleRounds(battle.rounds, !adminIsOne),
+      rounds,
       winner: battle.winner_id ? (battle.winner_id === ownerId ? "player" : "opponent") : null,
       lockedAt: String(battle.locked_at),
       verdictAt: battle.verdict_at ? String(battle.verdict_at) : null,
       opponentType: "human" as const,
-      experienceAwarded: battle.status === "verdict" ? 1 : 0,
+      experienceAwarded: battle.status === "verdict" ? getKqArenaExperienceAward(rounds) : 0,
     }];
   });
   const botResult = await supabase.from("kq_bot_battles")
@@ -1460,6 +1462,7 @@ type KqAdminBattleVerdictReceipt = {
   rounds: KqBattle["rounds"];
   winner: "player" | "opponent";
   burnedAt: string;
+  experienceAwarded: number;
   challengePoints: number;
   opponentChallengePoints: number;
   completedChallenges: Array<{ code: string; title: string; points: number }>;
@@ -1518,6 +1521,7 @@ export async function finalizeKqPlayerBattle(
     return {
       battleId, status: "verdict" as const, rounds: stored.rounds,
       winner: stored.winner, burnedAt: stored.verdictAt,
+      experienceAwarded: getKqArenaExperienceAward(stored.rounds),
       challengePoints: 0, opponentChallengePoints: 0, completedChallenges: [],
       pvpBoosterGranted: false, pvpBoosterCardCount: 0,
       rankProfile: profileResult.data ? {
@@ -1592,6 +1596,7 @@ export async function finalizeKqPlayerBattle(
   return {
     battleId, status: "verdict", rounds: verdict.rounds, winner: verdict.winner,
     burnedAt: verdict.burnedAt,
+    experienceAwarded: getKqArenaExperienceAward(verdict.rounds),
     challengePoints: Number(verdictPayload.challengePoints ?? 0),
     opponentChallengePoints: Number(verdictPayload.opponentChallengePoints ?? 0),
     completedChallenges: challengeResults.filter((challenge) => challenge.completed).map((challenge) => ({

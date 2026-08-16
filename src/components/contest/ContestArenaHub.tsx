@@ -22,7 +22,7 @@ export function ContestArenaHub() {
 
           <div className={styles.heroArt} aria-hidden="true">
             <Image
-              src="/contest/mascot/arena-journey-v2.webp"
+              src="/contest/mascot/arena-journey-v3.webp"
               alt=""
               width={1254}
               height={1254}

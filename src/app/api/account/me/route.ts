@@ -11,8 +11,33 @@ import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { clearSupabaseAuthCookies } from "@/lib/supabase-auth-cookies";
 
+const ACCOUNT_UNAVAILABLE_HEADERS = {
+  "Cache-Control": "private, no-store, max-age=0",
+  "Retry-After": "5",
+};
+
+function isAccountServiceUnavailableError(error: unknown): boolean {
+  return error instanceof Error && (
+    error.message.startsWith("[supabase:")
+    || error.message.includes("fetch failed")
+  );
+}
+
+function accountUnavailableResponse() {
+  return NextResponse.json(
+    { error: "Service de compte momentanément indisponible. Réessaie dans quelques secondes." },
+    { status: 503, headers: ACCOUNT_UNAVAILABLE_HEADERS },
+  );
+}
+
 export async function GET() {
-  const session = await getCurrentCustomerSessionByBackend();
+  let session;
+  try {
+    session = await getCurrentCustomerSessionByBackend();
+  } catch (error) {
+    if (isAccountServiceUnavailableError(error)) return accountUnavailableResponse();
+    throw error;
+  }
   if (!session) {
     const response = NextResponse.json({ user: null }, { status: 401 });
     const cookieStore = await cookies();
@@ -39,14 +64,26 @@ export async function GET() {
 }
 
 export async function PATCH(request: Request) {
-  const session = await getCurrentCustomerSessionByBackend();
+  let session;
+  try {
+    session = await getCurrentCustomerSessionByBackend();
+  } catch (error) {
+    if (isAccountServiceUnavailableError(error)) return accountUnavailableResponse();
+    throw error;
+  }
   if (!session) {
     return NextResponse.json({ error: "Non autorise." }, { status: 401 });
   }
 
   const ip = getRequestIp(request);
   const rateLimitKey = `account_me_patch:${session.customerId}:${ip}`;
-  const rl = await hitRateLimit({ key: rateLimitKey, windowSeconds: 300, maxHits: 10 });
+  let rl;
+  try {
+    rl = await hitRateLimit({ key: rateLimitKey, windowSeconds: 300, maxHits: 10 });
+  } catch (error) {
+    if (isAccountServiceUnavailableError(error)) return accountUnavailableResponse();
+    throw error;
+  }
   if (!rl.allowed) {
     logRateLimitRejection({
       endpoint: "PATCH /api/account/me",
@@ -71,6 +108,7 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json({ user: updated });
   } catch (error) {
+    if (isAccountServiceUnavailableError(error)) return accountUnavailableResponse();
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Payload invalide." },
       { status: 400 },

@@ -34,6 +34,11 @@ et les reçus. Une culture terminée crée une seule Fleur avec ses statistiques
 traits et combos. La Fleur est distincte de la carte Buddie qui a servi de
 variété.
 
+Les avantages Buddies dépendent uniquement de leur rareté : Commun, aucun
+avantage ; Argent, +1 XP au départ ; Or, +2 XP ; Épique, +3 XP ; Légendaire,
++4 XP. Les statistiques de la Fleur et les notes du jury sont conservées au
+dixième afin de limiter les égalités sans inventer un bonus aléatoire caché.
+
 ## 3 bis. Boosters Kanab Quest
 
 - Les boosters Buddies restent inchangés dans l'album principal.
@@ -69,16 +74,26 @@ appliquer un nouveau gain.
 
 ## 5. Classement
 
-Le duel utilise une cote de type Elo avec un coefficient de 24. Le gagnant
-reçoit 25 points de saison, plus un bonus de série plafonné à 10 points. Le
-perdant reçoit 8 points de saison. Les défis quotidiens validés peuvent ajouter
-les points annoncés par leur fiche.
+Le duel utilise une cote de type Elo avec un coefficient de 32 et une variation
+minimale de deux points. Une victoire attendue contre une cote nettement plus
+faible rapporte moins qu'une victoire équilibrée ; battre une cote supérieure
+rapporte davantage. Les points de saison suivent la même difficulté : une
+victoire rapporte de 10 à 30 points avant le bonus de série, plafonné à 6, et
+une défaite rapporte de 3 à 6 points de participation. Les défis quotidiens
+validés peuvent ajouter les points annoncés par leur fiche.
+
+Les ligues Graine, Pousse, Canopée et Fleur sont divisées en III, II et I par
+paliers de 50 points de cote. Grand Cru commence à 1 400. L'EXP d'Arène dépend
+du score du duel humain : 1,6 pour une victoire 3–0, 1,4 pour une victoire 2–1,
+0,8 pour une défaite 1–2 et 0,6 pour une défaite 0–3. Un entraînement bot reste
+à 0,1 EXP et ne modifie ni la cote ni les points de saison.
 
 Le classement public est matérialisé au maximum une fois par jour. Un délai
 d'affichage ne modifie pas le verdict ni les soldes enregistrés.
 
 Les égalités sont départagées dans cet ordre : cote, points de saison, nombre
-de victoires, puis identifiant technique stable. Cette dernière clé ne donne
+de victoires, nombre de défaites le plus faible, puis identifiant technique
+stable. Cette dernière clé ne donne
 aucun avantage de jeu ; elle garantit seulement un rang unique et reproductible
 pour l'instantané quotidien, les récompenses et l'archive finale.
 

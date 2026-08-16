@@ -42,7 +42,8 @@ export type KqBattle = {
   burnedAt: string | null;
 };
 
-const clampStat = (value: number) => Math.max(35, Math.min(99, Math.round(value)));
+const roundTenth = (value: number) => Math.round(value * 10) / 10;
+const clampStat = (value: number) => Math.max(35, Math.min(99, roundTenth(value)));
 const outcomeValue: Record<KqOutcome, number> = { critical: 4, success: 3, fragile: 2, failure: 0 };
 type FlowerStat = keyof KqFlowerCard["stats"];
 
@@ -156,8 +157,8 @@ export function resolveKqBattle(battle: KqBattle, seed: number, verdictAt = new 
   const rounds = definitions.map((round, index) => {
     const playerBase = player[round.primary] * 0.65 + player[round.secondary] * 0.35;
     const opponentBase = opponent[round.primary] * 0.65 + opponent[round.secondary] * 0.35;
-    const playerScore = Math.round(playerBase + statNoise(seed, 10 + index));
-    const opponentScore = Math.round(opponentBase + statNoise(seed, 20 + index));
+    const playerScore = roundTenth(playerBase + statNoise(seed, 10 + index));
+    const opponentScore = roundTenth(opponentBase + statNoise(seed, 20 + index));
     const decision = resolveKqJuryWinner(playerScore, opponentScore, seed, index);
     return {
       code: round.code,

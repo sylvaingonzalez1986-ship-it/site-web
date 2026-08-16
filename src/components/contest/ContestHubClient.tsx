@@ -3076,7 +3076,7 @@ export function ContestHubClient({
       {isNotebookSurface ? (
         <header className={arenaStyles.notebookSurfaceHeader}>
           <nav aria-label="Navigation du Carnet">
-            <Link href="/arene/carnet" className={arenaStyles.notebookSurfaceBack}><ChevronLeft aria-hidden="true" /> Retour au Carnet</Link>
+            <Link href="/arene" className={arenaStyles.notebookSurfaceBack}><ChevronLeft aria-hidden="true" /> Retour à l’Arène</Link>
             <strong>{isFlowerRankingSurface ? "Classement des fleurs" : "Mon Carnet"}</strong>
             {isPlacardPlayerEnabled ? <Link href="/arene/placard" className={arenaStyles.notebookSurfacePlay}>Jouer <Sprout aria-hidden="true" /></Link> : <span />}
           </nav>
@@ -3121,7 +3121,7 @@ export function ContestHubClient({
 
           <div className={arenaStyles.heroArt} aria-hidden="true">
             <Image
-              src="/contest/mascot/arena-journey-v2.webp"
+              src="/contest/mascot/arena-journey-v3.webp"
               alt=""
               width={1254}
               height={1254}

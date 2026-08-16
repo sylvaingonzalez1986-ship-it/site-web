@@ -138,4 +138,3 @@ export function getDeliveryMethodLabel(method: DeliveryMethod): string {
   return method === "relay" ? "Point Relais Mondial Relay" : "Livraison à domicile";
 }
 
-

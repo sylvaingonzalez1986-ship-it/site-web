@@ -108,7 +108,7 @@ describe("Kanab Quest dice prototype", () => {
   });
 
   it("accepts a visible mission XP bonus without lowering card costs", () => {
-    expect(startKqGame(1, { startingXp: 2 }).xp).toBe(2);
+    expect(startKqGame(1, { varietyCode: "HH2026-020", startingXp: 2 }).xp).toBe(2);
     expect(KQ_CARDS.find((card) => card.code === "BOTTE-022")?.xpCost).toBe(3);
   });
 
@@ -119,10 +119,19 @@ describe("Kanab Quest dice prototype", () => {
     expect(canPlayKqCard(state, KQ_CARDS.find((card) => card.code === "BOTTE-005")!).reason).toContain("pas dans le deck");
   });
 
-  it("defines every playable Buddie through a reusable gameplay effect", () => {
+  it("ties every Buddie advantage strictly to its rarity", () => {
     expect(KQ_BUDDIES).toHaveLength(52);
-    expect(KQ_BUDDIES.every((buddie) => buddie.effect.length > 0)).toBe(true);
-    expect(new Set(KQ_BUDDIES.map((buddie) => buddie.effect))).toHaveLength(3);
+    const expectedAdvantages = { common: 0, silver: 1, gold: 2, epic: 3, legendary: 4 } as const;
+    expect(KQ_BUDDIES.every((buddie) => buddie.advantageLevel === expectedAdvantages[buddie.rarity])).toBe(true);
+    expect(KQ_BUDDIES.filter((buddie) => buddie.rarity === "common").every((buddie) => buddie.effect === "none")).toBe(true);
+  });
+
+  it("adds the visible Buddie advantage to the starting XP", () => {
+    expect(startKqGame(1, { varietyCode: "HH2026-020" }).xp).toBe(1);
+    expect(startKqGame(1, { varietyCode: "HH2026-010" }).xp).toBe(2);
+    expect(startKqGame(1, { varietyCode: "HH2026-005" }).xp).toBe(3);
+    expect(startKqGame(1, { varietyCode: "HH2026-002" }).xp).toBe(4);
+    expect(startKqGame(1, { varietyCode: "HH2026-001" }).xp).toBe(5);
   });
 
   it("can complete a deterministic culture with every playable Buddie", () => {
@@ -263,7 +272,7 @@ describe("Kanab Quest dice prototype", () => {
   });
 
   it("enforces timing, tags and XP", () => {
-    const state = startKqGame(1);
+    const state = startKqGame(1, { varietyCode: "HH2026-020" });
     const loupe = KQ_CARDS.find((card) => card.code === "BOTTE-004")!;
     const luck = KQ_CARDS.find((card) => card.code === "BOTTE-006")!;
     expect(canPlayKqCard(state, loupe).allowed).toBe(false);
@@ -394,7 +403,7 @@ describe("Kanab Quest dice prototype", () => {
   });
 
   it("applies permanent Heritage starting XP without burning a card", () => {
-    const state = startKqGame(12, { heritageCode: "HERITAGE-002" });
+    const state = startKqGame(12, { varietyCode: "HH2026-020", heritageCode: "HERITAGE-002" });
     expect(state.xp).toBe(3);
     expect(state.heritageUsed).toBe(false);
     expect(state.usedCards).not.toContain("HERITAGE-002");

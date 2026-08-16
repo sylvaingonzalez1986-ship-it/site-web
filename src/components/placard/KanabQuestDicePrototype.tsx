@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Dices, Flame, Gift, PackageOpen, RotateCcw, ShoppingBag, Sparkles, Star, Swords, Trophy, X, Zap } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dices, Flame, Gift, PackageOpen, RotateCcw, ShoppingBag, Sparkles, Star, Swords, Trophy, X, Zap } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   advanceKqStage,
@@ -34,7 +34,7 @@ import { createKqFlower, createKqOpponent, getKqJuryProgram, lockKqBattle, resol
 import { addKqBoosterToInventory, applyKqArenaStreakReward, openKqSupportBooster } from "@/lib/kanab-quest-booster";
 import { claimKqChallenges, evaluateKqChallenges, getKqChallengeProgress, getKqDailyChallenges, getKqGameChallengeDate } from "@/lib/kanab-quest-challenges";
 import { buildKqCollectionDeck, buildKqRecommendedDeck, getKqCardChallengeFit, getKqDeckCoverage, getKqOpeningHandChance, sanitizeKqDeckSelection, summarizeKqCardEconomy } from "@/lib/kanab-quest-economy";
-import { applyKqBattleToRanking, createKqRankProfile, getKqLeague, getKqLocalLeaderboard, getKqMatchmaking, getKqRatingStake, type KqRankProfile } from "@/lib/kanab-quest-ranking";
+import { applyKqBattleToRanking, createKqRankProfile, getKqLeague, getKqLocalLeaderboard, getKqMatchmaking, getKqRatingStake, getKqSeasonPointStake, type KqRankProfile } from "@/lib/kanab-quest-ranking";
 import { createLocalKqRepository, type KqBurnReceipt, type KqFavoriteDeck, type KqRepository } from "@/lib/kanab-quest-repository";
 import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
@@ -98,6 +98,7 @@ type OfficialBattleResult = {
   battleId: string;
   winner: "player" | "opponent";
   burnedAt: string;
+  experienceAwarded: number;
   rounds: KqOfficialBattle["rounds"];
   playerVariety: string;
   opponentVariety: string;
@@ -151,6 +152,8 @@ const OUTCOME_COPY: Record<KqOutcome, { title: string; artAlt: string; artSrc: s
 const PEST_LABELS = { aphids: "Pucerons", mites: "Acariens", thrips: "Thrips" } as const;
 const COVERAGE_LABELS = { roots: "Racines", water: "Eau", climate: "Climat", pest: "Ravageurs", flower: "Floraison", drying: "Séchage" } as const;
 const FLOWER_STAT_LABELS = { appearance: "Apparence", aroma: "Arômes", vigor: "Vigueur", mastery: "Maîtrise", regularity: "Régularité" } as const;
+const BUDDIE_RARITY_LABELS = { common: "Commun", silver: "Argent", gold: "Or", epic: "Épique", legendary: "Légendaire" } as const;
+const formatKqScore = (value: number) => value.toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 type FlowerStatKey = keyof typeof FLOWER_STAT_LABELS;
 type FlowerTcgStatus = KqOfficialFlower["status"] | "new";
 
@@ -214,7 +217,7 @@ function FlowerTcgCard({
         <span className={styles.flowerTcgQuality}><strong>{quality}</strong><small>Qualité</small></span>
       </div>
       <div className={styles.flowerTcgIdentity}>
-        <span>{buddie?.rarity ?? "Fleur officielle"}</span>
+        <span>{buddie ? BUDDIE_RARITY_LABELS[buddie.rarity] : "Fleur officielle"}</span>
         <h3>{varietyName}</h3>
         <small>{reference}</small>
       </div>
@@ -222,7 +225,7 @@ function FlowerTcgCard({
         {statKeys.map((stat) => (
           <div key={stat}>
             <dt>{FLOWER_STAT_LABELS[stat]}</dt>
-            <dd>{stats[stat] ?? 0}</dd>
+            <dd>{formatKqScore(stats[stat] ?? 0)}</dd>
           </div>
         ))}
       </dl>
@@ -395,6 +398,7 @@ export function KanabQuestDicePrototype({
   const [pendingBattleVerdict, setPendingBattleVerdict] = useState(false);
   const rollTimerRef = useRef<number | null>(null);
   const physicsDiceRef = useRef<KqPhysicsDiceHandle | null>(null);
+  const heritageCarouselRef = useRef<HTMLDivElement | null>(null);
   const verdictTimerRef = useRef<number | null>(null);
   const repositoryRef = useRef<KqRepository | null>(null);
   const remoteInventoryRef = useRef<Record<string, number>>({});
@@ -1130,6 +1134,7 @@ export function KanabQuestDicePrototype({
         battleId: verdict.battleId,
         winner: verdict.winner,
         burnedAt: verdict.burnedAt,
+        experienceAwarded: verdict.experienceAwarded,
         rounds: verdict.rounds,
         playerVariety: resolvedBattle?.playerFlower.variety ?? "Ta Fleur",
         opponentVariety: resolvedBattle?.opponentFlower.variety ?? "Fleur adverse",
@@ -1436,14 +1441,13 @@ export function KanabQuestDicePrototype({
                 <div>
                   <span>Étape 3 · Inventaire de jeu</span>
                   <h2 id="collection-title">Choisis tes cartes</h2>
-                  <p>Compose ta main La Botte et équipe, si tu le souhaites, une carte Héritage.</p>
+                  <p>Compose ta main La Botte. Tu choisiras ensuite ta carte Héritage producteur, juste après le coffre.</p>
                 </div>
                 <button type="button" aria-label="Fermer l’inventaire" onClick={() => setShowCollectionChest(false)}><X /></button>
               </header>
               <div className={styles.collectionModalSummary}>
                 <span><b>{selectedCards.length}</b> carte{selectedCards.length > 1 ? "s" : ""} dans ta main</span>
                 <span><b>{ownedBotteCount}</b> référence{ownedBotteCount > 1 ? "s" : ""} possédée{ownedBotteCount > 1 ? "s" : ""}</span>
-                <span><b>{selectedHeritage ? "1" : "0"}</b> Héritage équipé</span>
               </div>
               <div className={styles.collectionInventoryBody}>
                 <section className={styles.collectionInventorySection} aria-labelledby="botte-inventory-title">
@@ -1463,34 +1467,10 @@ export function KanabQuestDicePrototype({
                     })}
                   </div>
                 </section>
-                <section className={`${styles.collectionInventorySection} ${styles.collectionHeritageSection}`} aria-labelledby="heritage-inventory-title">
-                  <header>
-                    <div>
-                      <span>Option facultative · permanente</span>
-                      <h3 id="heritage-inventory-title">Cartes Héritage</h3>
-                      <p>Équipe un seul pouvoir permanent. Cette carte ne prend aucune place dans ta main et ne brûle jamais.</p>
-                      <small>{remoteBurnsEnabled ? remoteHeritageActive ? `${remoteHeritageOwnedCodes.length}/12 possédée(s) · ${remoteHeritageFragments} fragments` : "Collection en attente d’activation" : "Galerie locale complète"}</small>
-                    </div>
-                  </header>
-                  <div className={styles.collectionHeritageInventory}>
-                    <article className={styles.heritageClassic} data-selected={!selectedHeritage || undefined}>
-                      <span>Sans Héritage</span>
-                      <strong>Culture classique</strong>
-                      <p>Aucun pouvoir permanent équipé.</p>
-                      <button type="button" aria-pressed={!selectedHeritage} onClick={() => setSelectedHeritage("")}>{!selectedHeritage ? "Sélectionnée" : "Choisir"}</button>
-                    </article>
-                    {KQ_HERITAGE_CARDS.map((card) => {
-                      const remotelyOwned = remoteHeritageOwnedCodes.includes(card.code);
-                      const disabled = remoteBurnsEnabled && !remotelyOwned;
-                      const selected = selectedHeritage === card.code;
-                      return <article key={card.code} data-selected={selected || undefined} data-locked={disabled || undefined}><span>{card.timing === "passive" ? "Passif" : "1 fois/culture"}</span><CardArtwork code={card.code} name={card.name} /><strong>{card.name}</strong><p>{card.description}</p><small>{disabled ? "Avis à faire valider" : selected ? "Pouvoir équipé" : "Disponible"}</small><button type="button" disabled={disabled} aria-pressed={selected} onClick={() => setSelectedHeritage(card.code)}>{disabled ? "Non possédée" : selected ? "Équipée" : "Équiper"}</button></article>;
-                    })}
-                  </div>
-                </section>
               </div>
               <footer>
                 <p>Seules les cartes La Botte réellement jouées pendant la partie seront brûlées.</p>
-                <button type="button" className={styles.primaryButton} onClick={() => setShowCollectionChest(false)}>Valider ma sélection · {selectedCards.length} carte{selectedCards.length > 1 ? "s" : ""}{selectedHeritage ? " · 1 Héritage" : ""}</button>
+                <button type="button" className={styles.primaryButton} onClick={() => setShowCollectionChest(false)}>Valider ma sélection · {selectedCards.length} carte{selectedCards.length > 1 ? "s" : ""}</button>
               </footer>
             </section>
           </div>
@@ -1532,7 +1512,7 @@ export function KanabQuestDicePrototype({
             </header>
           ) : null}
           <section id="placard-saison" className={styles.arenaDashboard}>
-            <div><span>Arène Kanab Quest</span><h2>{isPlayerMode ? `Ta saison${officialRankProgress?.seasonCode ? ` · ${officialRankProgress.seasonCode}` : ""}` : "Ta saison locale"}</h2><p>{displayedPointsToNext > 0 ? `${displayedPointsToNext} points de cote avant la ligue suivante.` : isPlayerMode ? "Joue un duel officiel pour entrer dans le classement." : "Palier maximal atteint dans le prototype."}</p><div className={styles.leagueProgress}><i style={{ width: `${displayedLeagueProgress}%` }} /></div><small className={styles.nextBooster}>{3 - (displayedStreak % 3)} victoire{3 - (displayedStreak % 3) > 1 ? "s" : ""} de suite avant le prochain booster</small></div>
+            <div><span>Arène Kanab Quest</span><h2>{isPlayerMode ? `Ta saison${officialRankProgress?.seasonCode ? ` · ${officialRankProgress.seasonCode}` : ""}` : "Ta saison locale"}</h2><p>{displayedPointsToNext > 0 ? `${displayedPointsToNext} points de cote avant la ligue suivante.` : isPlayerMode ? "Joue un duel officiel pour entrer dans le classement." : "Palier maximal atteint dans le prototype."}</p><div className={styles.leagueProgress}><i style={{ width: `${displayedLeagueProgress}%` }} /></div><small className={styles.nextBooster}>{3 - (displayedStreak % 3)} victoire{3 - (displayedStreak % 3) > 1 ? "s" : ""} de suite avant le prochain booster · points ajustés à la cote adverse</small></div>
             <div className={styles.arenaStats}><span><strong>#{displayedRank ?? "–"}</strong><small>Classement</small></span><span><strong>{displayedLeague}</strong><small>Ligue</small></span><span><strong>{displayedRating}</strong><small>Cote</small></span><span><strong>{displayedSeasonPoints}</strong><small>Points</small></span><span><strong>{displayedArenaExperience.toLocaleString("fr-FR")}</strong><small>EXP Arène</small></span><span><strong>{displayedWins}–{displayedLosses}</strong><small>Bilan</small></span><span><strong>{displayedStreak}</strong><small>Série</small></span></div>
             <ol>{displayedLeaderboard.map((entry) => <li key={entry.id} data-player={entry.isPlayer || undefined}><b>#{entry.rank}</b><span>{entry.name}</span><strong>{entry.rating}</strong></li>)}</ol>
           </section>
@@ -1549,12 +1529,54 @@ export function KanabQuestDicePrototype({
           {lastBooster.length > 0 ? <div className={styles.boosterReveal} aria-live="polite">{lastBooster.map((card, index) => <article key={`${card.code}-${index}`} data-rarity={card.rarity}><CardArtwork code={card.code} name={card.name} /><span>{card.rarity}</span><strong>{card.name}</strong><small>{remoteBurnsEnabled ? "Aperçu local · aucune copie enregistrée" : `Tu en possèdes maintenant ${inventory[card.code] ?? 0}`}</small></article>)}</div> : null}
           {burnHistory.length > 0 ? <div className={styles.burnArchive}><Flame /><span><small>Registre permanent · {burnHistory.length} burns</small><strong>Cartes les plus utilisées</strong><div>{mostBurned.map(([code, count]) => <b key={code}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code} ×{count}</b>)}</div></span></div> : null}
           <h2 id="placard-preparation">1. Ton Buddie</h2>
-          <div className={styles.buddieChoices}>{KQ_BUDDIES.filter((buddie) => !isPlayerMode || ownedBuddieCodes.includes(buddie.code)).map((buddie) => { const artwork = ownedBuddieArtwork[buddie.code]; return <button key={buddie.code} type="button" data-selected={selectedBuddie === buddie.code || undefined} aria-pressed={selectedBuddie === buddie.code} onClick={() => setSelectedBuddie(buddie.code)}>{artwork?.imageUrl ? <span className={styles.buddieArtwork}><Image src={artwork.imageUrl} alt={`Carte ${buddie.name}`} fill sizes="(max-width: 760px) 220px, 260px" className="object-cover" /></span> : null}<span>Kanab Quest #{buddie.cardNumber}</span><strong>{buddie.name}</strong><em>{buddie.rarity}{artwork?.ownedCopies ? ` · ×${artwork.ownedCopies}` : ""}</em><p>{buddie.ability}</p></button>; })}</div>
+          <div className={styles.buddieChoices}>{KQ_BUDDIES.filter((buddie) => !isPlayerMode || ownedBuddieCodes.includes(buddie.code)).map((buddie) => { const artwork = ownedBuddieArtwork[buddie.code]; return <button key={buddie.code} type="button" data-selected={selectedBuddie === buddie.code || undefined} aria-pressed={selectedBuddie === buddie.code} onClick={() => setSelectedBuddie(buddie.code)}>{artwork?.imageUrl ? <span className={styles.buddieArtwork}><Image src={artwork.imageUrl} alt={`Carte ${buddie.name}`} fill sizes="(max-width: 760px) 220px, 260px" className="object-cover" /></span> : null}<span>Kanab Quest #{buddie.cardNumber}</span><strong>{buddie.name}</strong><em>{BUDDIE_RARITY_LABELS[buddie.rarity]}{artwork?.ownedCopies ? ` · ×${artwork.ownedCopies}` : ""}</em><p>{buddie.ability}</p></button>; })}</div>
           <div className={styles.deckAssistant}><span><Sparkles /><b>Première partie ?</b> Le deck conseillé utilise uniquement les copies encore disponibles et reste entièrement modifiable.</span><button type="button" onClick={applyRecommendedDeck}>Créer le deck conseillé</button></div>
           <h2>2. Ton Substrat</h2>
           {!hasOwnedSubstrate ? <p className={styles.deckNotice}><b>Substrat standard offert :</b> tu peux commencer sans aucune carte La Botte. Aucune carte ne sera brûlée au lancement.</p> : null}
           <div className={styles.substrateChoices}>{substrates.map((card) => <button key={card.code} type="button" disabled={hasOwnedSubstrate && (activeInventory[card.code] ?? 0) <= 0} data-selected={selectedSubstrate === card.code || undefined} aria-pressed={selectedSubstrate === card.code} onClick={() => setSelectedSubstrate(card.code)}><CardArtwork code={card.code} name={card.name} /><strong>{!hasOwnedSubstrate && card.code === selectedSubstrate ? "Substrat standard" : card.name}</strong><p>{card.description}</p><em>{!hasOwnedSubstrate && card.code === selectedSubstrate ? "Fourni gratuitement · aucun burn" : `${activeInventory[card.code] ?? 0} copie(s) · ${card.rarity}`}</em></button>)}</div>
-          {isPlayerMode ? <><h2 className={styles.collectionChestTitle}>3. Ton inventaire de jeu</h2><button type="button" className={styles.collectionChest} data-opening={chestOpening || undefined} aria-haspopup="dialog" aria-label="Ouvrir le coffre La Botte" onClick={openCollectionChest}><span className={styles.collectionChestArt}><Image src="/placard/collection-chest.png" alt="" fill sizes="220px" /></span><b>{chestOpening ? "Ouverture…" : "Ouvrir le coffre"}</b></button></> : null}
+          {isPlayerMode ? <>
+            <h2 className={styles.collectionChestTitle}>3. Ton inventaire de jeu</h2>
+            <button type="button" className={styles.collectionChest} data-opening={chestOpening || undefined} aria-haspopup="dialog" aria-label="Ouvrir le coffre La Botte" onClick={openCollectionChest}>
+              <span className={styles.collectionChestArt}><Image src="/placard/collection-chest.png" alt="" fill sizes="220px" /></span>
+              <b>{chestOpening ? "Ouverture…" : "Ouvrir le coffre"}</b>
+            </button>
+            <section className={styles.heritageCarouselSection} aria-labelledby="heritage-carousel-title">
+              <header>
+                <div>
+                  <span>4. Producteurs mis à l’honneur</span>
+                  <h2 id="heritage-carousel-title">Choisis ton Héritage</h2>
+                  <p>Équipe une carte producteur permanente. Elle ne prend aucune place dans ta main et ne brûle jamais.</p>
+                  <small>{remoteBurnsEnabled ? remoteHeritageActive ? `${remoteHeritageOwnedCodes.length}/12 possédée(s) · ${remoteHeritageFragments} fragments` : "Collection en attente d’activation" : "Galerie locale complète"}</small>
+                </div>
+                <nav className={styles.heritageCarouselControls} aria-label="Faire défiler les cartes Héritage">
+                  <button type="button" aria-label="Voir les cartes Héritage précédentes" onClick={() => heritageCarouselRef.current?.scrollBy({ left: -heritageCarouselRef.current.clientWidth, behavior: "smooth" })}><ChevronLeft /></button>
+                  <span>4 cartes à la fois</span>
+                  <button type="button" aria-label="Voir les cartes Héritage suivantes" onClick={() => heritageCarouselRef.current?.scrollBy({ left: heritageCarouselRef.current.clientWidth, behavior: "smooth" })}><ChevronRight /></button>
+                </nav>
+              </header>
+              <button type="button" className={styles.heritageClassicChoice} data-selected={!selectedHeritage || undefined} aria-pressed={!selectedHeritage} onClick={() => setSelectedHeritage("")}>
+                <span><strong>Culture classique</strong><small>Continuer sans pouvoir Héritage</small></span>
+                <b>{!selectedHeritage ? "Sélectionnée" : "Choisir"}</b>
+              </button>
+              <div ref={heritageCarouselRef} className={styles.heritageCarousel} role="list" tabIndex={0} aria-label="Cartes Héritage producteur">
+                {KQ_HERITAGE_CARDS.map((card) => {
+                  const remotelyOwned = remoteHeritageOwnedCodes.includes(card.code);
+                  const disabled = remoteBurnsEnabled && !remotelyOwned;
+                  const selected = selectedHeritage === card.code;
+                  return (
+                    <article className={styles.heritageCarouselCard} key={card.code} role="listitem" data-selected={selected || undefined} data-locked={disabled || undefined}>
+                      <CardArtwork code={card.code} name={card.name} />
+                      <span>Carte producteur · {card.timing === "passive" ? "passif" : "1 fois/culture"}</span>
+                      <strong>{card.name}</strong>
+                      <p>{card.description}</p>
+                      <small>{disabled ? "Non possédée" : selected ? "Pouvoir équipé" : "Disponible"}</small>
+                      <button type="button" disabled={disabled} aria-pressed={selected} onClick={() => setSelectedHeritage(card.code)}>{disabled ? "Non possédée" : selected ? "Équipée" : "Équiper"}</button>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          </> : null}
           <h2 className={styles.deckSectionTitle}>3. La Botte <small>{selectedCards.length} carte{selectedCards.length > 1 ? "s" : ""}</small></h2>
           <p className={`${styles.deckNotice} ${styles.deckSelectionNotice}`} role="status" aria-live="polite">{deckNotice || "Ajoute autant de copies que tu en possèdes. Chaque copie jouée sera brûlée."}</p>
           <div className={styles.deckOdds}><div><span>Taille du deck</span><strong>{selectedCards.length}</strong></div><div><span>Références différentes</span><strong>{selectedReferenceCount}</strong></div><p><b>À retenir :</b> plus le deck est grand, plus il offre de solutions, mais plus une carte précise devient difficile à piocher dans une main de dix.</p></div>
@@ -1599,7 +1621,7 @@ export function KanabQuestDicePrototype({
               {matchFlowerId && flowerRivals.length > 0 ? <div className={styles.remoteRivals}><span>{flowerRivals[0]?.opponentType === "bot" ? `Entraînement bots · ${flowerRivals[0].remainingBotDuels ?? 0}/10 restants · +0,1 EXP` : "Adversaires compatibles · ±8 qualité"}</span>{flowerRivals.map((rival) => <button key={rival.flowerId} type="button" data-selected={selectedRemoteRivalId === rival.flowerId || undefined} onClick={() => setSelectedRemoteRivalId(rival.flowerId)}><strong>{rival.opponentType === "bot" ? `🤖 ${rival.opponentName}` : rival.varietyName}</strong><small>{rival.varietyName} · Qualité {rival.quality}{rival.opponentType === "bot" ? " · 0,1 EXP" : ""}</small></button>)}<button type="button" className={styles.remoteBattleButton} disabled={!selectedRemoteRivalId || matchmakingLoading} onClick={() => setPendingRemoteBattle(true)}><Swords /> {flowerRivals.find((rival) => rival.flowerId === selectedRemoteRivalId)?.opponentType === "bot" ? "Affronter ce bot" : "Préparer ce duel"}</button></div> : null}
             </section>
           ) : null}
-          {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}><span>Jury officiel</span><h2>Mes duels officiels</h2>{officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}{officialBattles.map((officialBattle) => <article key={officialBattle.id} data-status={officialBattle.status} data-opponent={officialBattle.opponentType}><header><div><strong>{officialBattle.playerFlower.variety}</strong><small>Ta Fleur</small></div><b>VS</b><div><strong>{officialBattle.opponentFlower.variety}</strong><small>{officialBattle.opponentType === "bot" ? "🤖 Entraînement" : "Adversaire"}</small></div></header>{officialBattle.status === "locked" ? <><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(officialBattle.id)}><Trophy /> Demander le verdict</button></> : officialBattle.status === "cancelled" ? <><h3>Duel expiré</h3><p>Aucun verdict, aucun burn et aucun point. Les deux Fleurs sont redevenues disponibles.</p><small>Engagement annulé après 48 heures · {formatKqDate(officialBattle.lockedAt)}</small></> : <><h3>{officialBattle.winner === "player" ? "Victoire" : "Défaite"}{officialBattle.opponentType === "bot" ? " d’entraînement" : " officielle"}</h3><div className={styles.officialRounds}>{officialBattle.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div><small>{officialBattle.opponentType === "bot" ? `Ta Fleur brûlée · +${Number(officialBattle.experienceAwarded ?? 0.1).toLocaleString("fr-FR")} EXP d’Arène` : "Deux Fleurs brûlées · +1 EXP d’Arène"} · {formatKqDate(officialBattle.verdictAt)}</small></>}</article>)}</section> : null}
+          {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}><span>Jury officiel</span><h2>Mes duels officiels</h2>{officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}{officialBattles.map((officialBattle) => <article key={officialBattle.id} data-status={officialBattle.status} data-opponent={officialBattle.opponentType}><header><div><strong>{officialBattle.playerFlower.variety}</strong><small>Ta Fleur</small></div><b>VS</b><div><strong>{officialBattle.opponentFlower.variety}</strong><small>{officialBattle.opponentType === "bot" ? "🤖 Entraînement" : "Adversaire"}</small></div></header>{officialBattle.status === "locked" ? <><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(officialBattle.id)}><Trophy /> Demander le verdict</button></> : officialBattle.status === "cancelled" ? <><h3>Duel expiré</h3><p>Aucun verdict, aucun burn et aucun point. Les deux Fleurs sont redevenues disponibles.</p><small>Engagement annulé après 48 heures · {formatKqDate(officialBattle.lockedAt)}</small></> : <><h3>{officialBattle.winner === "player" ? "Victoire" : "Défaite"}{officialBattle.opponentType === "bot" ? " d’entraînement" : " officielle"}</h3><div className={styles.officialRounds}>{officialBattle.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div><small>{officialBattle.opponentType === "bot" ? `Ta Fleur brûlée · +${Number(officialBattle.experienceAwarded ?? 0.1).toLocaleString("fr-FR")} EXP d’Arène` : `Deux Fleurs brûlées · +${Number(officialBattle.experienceAwarded ?? 0).toLocaleString("fr-FR")} EXP d’Arène`} · {formatKqDate(officialBattle.verdictAt)}</small></>}</article>)}</section> : null}
           {battleHistory.length > 0 ? <section className={styles.battleHistory}><span>Archives locales</span><h2>Derniers concours</h2><div>{battleHistory.slice(0, 5).map((receipt) => <article key={receipt.id}><Flame /><span><strong>{receipt.playerFlower.variety} vs {receipt.opponentFlower.variety}</strong><small>{receipt.winner === "player" ? "Victoire" : "Défaite"} · brûlées le {formatKqDate(receipt.burnedAt)}</small></span><b>{receipt.rounds.filter((round) => round.winner === "player").length}–{receipt.rounds.filter((round) => round.winner === "opponent").length}</b></article>)}</div></section> : null}
         </section>
         {showOnboarding ? <div className={styles.onboardingBackdrop} role="presentation" onClick={closeOnboarding}><section className={styles.onboarding} role="dialog" aria-modal="true" aria-labelledby="kq-guide-title" aria-describedby="kq-guide-intro" onClick={(event) => event.stopPropagation()}><button type="button" className={styles.onboardingClose} aria-label="Fermer les règles" onClick={closeOnboarding}><X /></button><span>Le Placard · règles en 1 minute</span><h2 id="kq-guide-title">Cultive. Joue. Gagne.</h2><p id="kq-guide-intro" className={styles.onboardingIntro}>Construis ta collection, prépare la meilleure main et mesure ta stratégie à celle des autres joueurs.</p><div className={styles.onboardingSteps}><article><PackageOpen /><b>1. Ouvre tes packs</b><p>Retrouve dans <strong>Le Placard</strong> tous les packs que tu as gagnés et ouvre-les pour enrichir ta collection.</p></article><article><ShoppingBag /><b>2. Gagne des points</b><p>Chaque commande te rapporte des points. Utilise-les pour acheter de nouveaux packs et obtenir plus de cartes.</p></article><article><Dices /><b>3. Prépare ta main</b><p>Choisis soigneusement tes cartes et compose une main efficace pour performer au mieux pendant ta culture.</p></article><article><Swords /><b>4. Défie les joueurs</b><p>Affronte les autres joueurs : la meilleure stratégie l’emporte et te fait grimper au classement.</p></article><article><Gift /><b>5. Remporte des lots</b><p>Monte le plus haut possible avant la fin de la saison pour gagner les récompenses mises en jeu.</p></article></div><button type="button" className={styles.primaryButton} onClick={closeOnboarding}>C’est parti · préparer ma main</button></section></div> : null}
@@ -1617,7 +1639,7 @@ export function KanabQuestDicePrototype({
                 <strong className={styles.verdictScore}>{officialBattleResult.rounds.filter((round) => round.winner === "player").length} – {officialBattleResult.rounds.filter((round) => round.winner === "opponent").length}</strong>
                 <div className={styles.officialRounds}>{officialBattleResult.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><small>{round.explanation}</small><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div>
                 <div className={styles.officialResultRewards}>
-                  <p><b>Arène</b>+1 EXP · deux Fleurs brûlées</p>
+                  <p><b>Arène</b>+{officialBattleResult.experienceAwarded.toLocaleString("fr-FR")} EXP · deux Fleurs brûlées</p>
                   <p><b>Défis</b>{officialBattleResult.challengePoints > 0 ? `+${officialBattleResult.challengePoints} points` : "Aucun point supplémentaire"}</p>
                   {officialBattleResult.pvpBoosterGranted ? <p data-highlight><b>Récompense</b>Booster La Botte · {officialBattleResult.pvpBoosterCardCount} cartes</p> : null}
                 </div>
@@ -1719,7 +1741,7 @@ export function KanabQuestDicePrototype({
           {!battle ? (
             <div className={styles.battleEntry}>
               <div><Swords /><span><strong>Battle Fleur contre Fleur</strong><small>Les deux Fleurs seront verrouillées, puis brûlées après le verdict.</small></span></div>
-              <div className={styles.rivalChoices}>{matchmaking.map((rival) => { const stake = getKqRatingStake(rankProfile.rating, rival.rating); return <button key={rival.id} type="button" data-selected={selectedRival.id === rival.id || undefined} aria-pressed={selectedRival.id === rival.id} onClick={() => setSelectedRivalId(rival.id)}><strong>{rival.name}</strong><small>{rival.variety} · cote {rival.rating}</small><span><b>Victoire +{stake.win}</b><em>Défaite {stake.loss}</em></span></button>; })}</div>
+              <div className={styles.rivalChoices}>{matchmaking.map((rival) => { const stake = getKqRatingStake(rankProfile.rating, rival.rating); const seasonStake = getKqSeasonPointStake(rankProfile.rating, rival.rating, rankProfile.streak); return <button key={rival.id} type="button" data-selected={selectedRival.id === rival.id || undefined} aria-pressed={selectedRival.id === rival.id} onClick={() => setSelectedRivalId(rival.id)}><strong>{rival.name}</strong><small>{rival.variety} · cote {rival.rating}</small><span><b>Victoire +{stake.win} cote · +{seasonStake.win} saison</b><em>Défaite {stake.loss} cote · +{seasonStake.loss} saison</em></span></button>; })}</div>
               <button type="button" className={styles.primaryButton} onClick={() => setBattle(lockKqBattle(flower, createKqOpponent(state.seed + selectedRival.seedOffset, { ownerName: selectedRival.name, variety: selectedRival.variety, rating: selectedRival.rating }), state.seed, selectedRival.rating))}>Défier {selectedRival.name}</button>
             </div>
           ) : null}

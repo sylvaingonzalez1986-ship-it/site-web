@@ -22,6 +22,8 @@ describe("Kanab Quest flower battles", () => {
     expect(flower.status).toBe("available");
     expect(flower.createdAt).toBe("2026-07-24T10:00:00.000Z");
     expect(Object.values(flower.stats).every((stat) => stat >= 35 && stat <= 99)).toBe(true);
+    expect(Object.values(flower.stats).every((stat) => Number.isInteger(stat * 10))).toBe(true);
+    expect(Object.values(flower.stats).some((stat) => !Number.isInteger(stat))).toBe(true);
     expect(flower.traits).toHaveLength(6);
   });
 
@@ -41,6 +43,7 @@ describe("Kanab Quest flower battles", () => {
     const verdict = resolveKqBattle(locked, 42);
     expect(verdict.status).toBe("verdict");
     expect(verdict.rounds).toHaveLength(3);
+    expect(verdict.rounds.every((round) => Number.isInteger(round.playerScore * 10) && Number.isInteger(round.opponentScore * 10))).toBe(true);
     expect(verdict.playerFlower.status).toBe("burned");
     expect(verdict.opponentFlower.status).toBe("burned");
   });

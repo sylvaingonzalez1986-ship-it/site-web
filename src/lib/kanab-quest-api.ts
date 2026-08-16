@@ -146,6 +146,7 @@ export async function finalizeKqRemoteBattle(battleId: string, request: typeof f
   return readKqResponse<{
     battleId: string; status: "verdict"; rounds: KqOfficialBattle["rounds"];
     winner: "player" | "opponent"; burnedAt: string;
+    experienceAwarded: number;
     challengePoints: number;
     opponentChallengePoints: number;
     completedChallenges: Array<{ code: string; title: string; points: number }>;

@@ -3,13 +3,16 @@
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ArrowLeft, Gamepad2, ShoppingBag, Swords } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, Gamepad2, Hourglass, ShoppingBag, Swords } from "lucide-react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+
+const NAVIGATION_FEEDBACK_MS = 420;
 
 function PlacardViewLoading() {
   return (
     <div className="mx-auto grid min-h-[55vh] max-w-6xl place-items-center px-4 py-12" role="status">
-      <span className="border-2 border-ink bg-white px-5 py-4 font-black uppercase shadow-[4px_4px_0_#111]">
+      <span className="inline-flex items-center gap-3 border-2 border-ink bg-white px-5 py-4 font-black uppercase shadow-[4px_4px_0_#111]">
+        <Hourglass className="animate-spin motion-reduce:animate-none" aria-hidden="true" size={20} strokeWidth={2.7} />
         Chargement…
       </span>
     </div>
@@ -26,6 +29,13 @@ const KqSupportBoosterShop = dynamic(
 );
 
 type PlacardView = "hub" | "shop" | "game" | "arena";
+
+const PLACARD_VIEW_LABELS: Record<PlacardView, string> = {
+  hub: "du Placard",
+  shop: "de la Boutique",
+  game: "du Jeu",
+  arena: "de Fleur vs Fleur",
+};
 
 const HUB_DESTINATIONS = [
   {
@@ -62,6 +72,40 @@ const HUB_DESTINATIONS = [
 
 export function PlacardPlayerShell() {
   const [view, setView] = useState<PlacardView>("hub");
+  const [pendingView, setPendingView] = useState<PlacardView | null>(null);
+  const navigationTimerRef = useRef<number | null>(null);
+
+  const openView = useCallback((nextView: PlacardView) => {
+    if (nextView === view) return;
+    if (navigationTimerRef.current !== null) window.clearTimeout(navigationTimerRef.current);
+    setPendingView(nextView);
+    setView(nextView);
+    navigationTimerRef.current = window.setTimeout(() => {
+      setPendingView(null);
+      navigationTimerRef.current = null;
+    }, NAVIGATION_FEEDBACK_MS);
+  }, [view]);
+
+  useEffect(() => () => {
+    if (navigationTimerRef.current !== null) window.clearTimeout(navigationTimerRef.current);
+  }, []);
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [view]);
+
+  const navigationFeedback = pendingView ? (
+    <div
+      className="pointer-events-none fixed left-1/2 top-20 z-[120] -translate-x-1/2"
+      role="status"
+      aria-live="polite"
+    >
+      <span className="inline-flex items-center gap-2 whitespace-nowrap border-2 border-ink bg-yellow px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_#111]">
+        <Hourglass className="animate-spin motion-reduce:animate-none" aria-hidden="true" size={16} strokeWidth={3} />
+        Ouverture {PLACARD_VIEW_LABELS[pendingView]}…
+      </span>
+    </div>
+  ) : null;
 
   if (view !== "hub") {
     const currentTitle =
@@ -69,11 +113,12 @@ export function PlacardPlayerShell() {
 
     return (
       <div className="min-h-screen bg-cream text-ink">
+        {navigationFeedback}
         <nav className="sticky top-0 z-[80] border-b-2 border-ink bg-cream/95 px-3 py-3 backdrop-blur sm:px-5" aria-label="Navigation du Placard">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
             <button
               type="button"
-              onClick={() => setView("hub")}
+              onClick={() => openView("hub")}
               className="pointer-events-auto inline-flex min-h-11 touch-manipulation items-center gap-2 border-2 border-ink bg-white px-3 font-black uppercase shadow-[3px_3px_0_#111] transition hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#111]"
             >
               <ArrowLeft aria-hidden="true" size={18} strokeWidth={3} />
@@ -91,12 +136,12 @@ export function PlacardPlayerShell() {
         </nav>
 
         {view === "shop" ? (
-          <KqSupportBoosterShop autoOpen onExit={() => setView("hub")} />
+          <KqSupportBoosterShop autoOpen onExit={() => openView("hub")} />
         ) : (
           <KanabQuestDicePrototype
             apiScope="player"
             viewMode={view === "arena" ? "arena" : "game"}
-            onOpenArena={() => setView("arena")}
+            onOpenArena={() => openView("arena")}
           />
         )}
       </div>
@@ -105,6 +150,7 @@ export function PlacardPlayerShell() {
 
   return (
     <div className="min-h-screen bg-cream text-ink">
+      {navigationFeedback}
       <header className="border-b-2 border-ink px-4 py-6 sm:py-8">
         <div className="mx-auto flex max-w-6xl flex-wrap items-end justify-between gap-5">
           <div>
@@ -127,8 +173,7 @@ export function PlacardPlayerShell() {
       <main className="mx-auto max-w-6xl px-4 py-7 sm:py-10">
         <div className="mb-5 flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-[#167d6b]">3 espaces</p>
-            <h2 className="mt-1 font-display text-3xl uppercase leading-none sm:text-4xl">
+            <h2 className="font-display text-3xl uppercase leading-none sm:text-4xl">
               Que veux-tu faire ?
             </h2>
           </div>
@@ -141,7 +186,8 @@ export function PlacardPlayerShell() {
               <button
                 key={destination.id}
                 type="button"
-                onClick={() => setView(destination.id)}
+                onClick={() => openView(destination.id)}
+                aria-busy={pendingView === destination.id || undefined}
                 className="group grid grid-cols-[118px_1fr] overflow-hidden border-2 border-ink bg-white text-left shadow-[5px_5px_0_#111] transition duration-200 hover:-translate-y-1 hover:shadow-[8px_8px_0_#111] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#167d6b] sm:grid-cols-[160px_1fr] md:block"
                 aria-label={`Ouvrir ${destination.title}`}
               >

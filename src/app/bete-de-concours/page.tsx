@@ -3,7 +3,6 @@ import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { ContestHubClient } from "@/components/contest/ContestHubClient";
 import { ContestArenaHub } from "@/components/contest/ContestArenaHub";
-import { ContestNotebookHub } from "@/components/contest/ContestNotebookHub";
 import { ContestSchemaUnavailable } from "@/components/contest/ContestSchemaUnavailable";
 import {
   canCustomerAccessContestFeatureServer,
@@ -44,7 +43,7 @@ export const revalidate = 60;
 
 type ContestHubPageProps = {
   searchParams: Promise<{ season?: string; category?: string; track?: string; vue?: string }>;
-  surface?: "arena" | "notebook" | "notebook-ranking" | "notebook-hub";
+  surface?: "arena" | "notebook" | "notebook-ranking";
 };
 
 type ContestArenaView = "jouer" | "carnet" | "classement";
@@ -147,9 +146,7 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
           ? "/arene"
           : surface === "notebook"
             ? `/arene/carnet/${selectedTrack}`
-            : surface === "notebook-ranking"
-              ? "/arene/carnet/classement"
-            : "/arene/carnet";
+            : "/arene/carnet/classement";
         const nextPath = `${basePath}${params.season || params.category || selectedTrack !== "regular" ? `?${new URLSearchParams(
           Object.entries({
             season: params.season,
@@ -162,15 +159,11 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
       notFound();
     }
 
-    if (surface === "notebook-hub") {
-      return <ContestNotebookHub isPlacardPlayerEnabled={isKqPlayerApiEnabled()} />;
-    }
-
     if (surface === "arena" && !params.vue) {
       return <ContestArenaHub />;
     }
     if (surface === "arena" && arenaView === "carnet") {
-      redirect("/arene/carnet");
+      redirect("/arene/carnet/regular");
     }
     if (surface === "arena" && arenaView === "jouer") {
       redirect("/arene/placard");
