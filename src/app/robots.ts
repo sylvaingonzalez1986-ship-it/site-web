@@ -26,6 +26,17 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: [...PRIVATE_PATHS],
       },
+      {
+        // Claude uses separate agents for search and user-requested page retrieval.
+        userAgent: "Claude-SearchBot",
+        allow: "/",
+        disallow: [...PRIVATE_PATHS],
+      },
+      {
+        userAgent: "Claude-User",
+        allow: "/",
+        disallow: [...PRIVATE_PATHS],
+      },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
     host: baseUrl,

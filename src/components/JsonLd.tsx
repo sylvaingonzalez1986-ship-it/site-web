@@ -240,11 +240,13 @@ export async function WebPageJsonLd({
   description,
   url,
   about,
+  dateModified,
 }: {
   name: string;
   description: string;
   url: string;
   about: string[];
+  dateModified?: string;
 }) {
   const nonce = await getNonce();
   const baseUrl = getSiteUrl();
@@ -255,6 +257,7 @@ export async function WebPageJsonLd({
     url,
     name,
     description,
+    ...(dateModified ? { dateModified } : {}),
     inLanguage: "fr-FR",
     isPartOf: { "@id": websiteId(baseUrl) },
     publisher: { "@id": organizationId(baseUrl) },

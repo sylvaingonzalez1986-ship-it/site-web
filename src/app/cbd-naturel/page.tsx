@@ -15,6 +15,7 @@ import { bretonCities } from "@/lib/local-seo-data";
 import type { Producer } from "@/types/store";
 
 const PAGE_SLUG = "cbd-naturel";
+const LAST_REVIEWED = "2026-08-17";
 
 const FAQ_ITEMS = [
   {
@@ -157,6 +158,7 @@ export default async function CbdNaturelPage() {
         description="Comprendre le CBD naturel, sa culture, son origine bretonne, sa traçabilité et les analyses disponibles."
         url={pageUrl}
         about={["CBD naturel", "Chanvre breton", "Circuit court", "Traçabilité du CBD"]}
+        dateModified={LAST_REVIEWED}
       />
       <FaqJsonLd questions={FAQ_ITEMS} />
       <ProductListJsonLd products={featuredProducts} producers={store.producers} />
@@ -178,6 +180,36 @@ export default async function CbdNaturelPage() {
             Chez Les Chanvriers Bretons, le CBD naturel n&apos;est pas un argument marketing : c&apos;est une méthode
             de culture, un engagement de transparence et un circuit court réel, du champ à votre porte.
           </p>
+          <p className="mt-4 text-sm text-charcoal">
+            Contenu publié par Les Chanvriers Bretons · Vérifié le 17 août 2026
+          </p>
+        </div>
+
+        {/* Réponse courte, facilement extractible par les moteurs de réponse */}
+        <div className="cartoon-border mt-8 bg-white p-8" aria-labelledby="cbd-naturel-en-bref">
+          <h2 id="cbd-naturel-en-bref" className="mb-4 text-3xl font-display text-ink">
+            Le CBD naturel en bref
+          </h2>
+          <p className="max-w-4xl leading-relaxed text-charcoal">
+            Le CBD naturel est du cannabidiol provenant du chanvre, par opposition à une molécule produite
+            par synthèse. Pour choisir un produit traçable, vérifiez son origine, sa composition, le numéro de
+            lot et une analyse de laboratoire récente indiquant notamment sa teneur en cannabinoïdes. Le mot
+            « naturel » n&apos;est pas, à lui seul, une certification biologique ni une preuve de conformité.
+          </p>
+          <dl className="mt-6 grid gap-4 md:grid-cols-3">
+            <div>
+              <dt className="font-bold text-ink">Origine</dt>
+              <dd className="mt-1 text-sm leading-relaxed text-charcoal">Chanvre et producteur clairement identifiés.</dd>
+            </div>
+            <div>
+              <dt className="font-bold text-ink">Traçabilité</dt>
+              <dd className="mt-1 text-sm leading-relaxed text-charcoal">Lot relié à une analyse consultable et datée.</dd>
+            </div>
+            <div>
+              <dt className="font-bold text-ink">Composition</dt>
+              <dd className="mt-1 text-sm leading-relaxed text-charcoal">Ingrédients et cannabinoïdes ajoutés explicitement indiqués.</dd>
+            </div>
+          </dl>
         </div>
 
         {/* Qu'est-ce que le CBD naturel */}
