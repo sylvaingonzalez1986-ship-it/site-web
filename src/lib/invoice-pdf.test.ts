@@ -55,4 +55,28 @@ describe("invoice PDF CBD notice", () => {
     expect(pdfBuffer.subarray(0, 4).toString()).toBe("%PDF");
     expect(pdf.getPageCount()).toBe(1);
   });
+
+  it("keeps a typical multi-item invoice and both messages on one A4 page", async () => {
+    const items = Array.from({ length: 8 }, (_, index) => ({
+      ...order.items[0],
+      productId: `cbd-test-${index + 1}`,
+      name: `Fleur CBD artisanale ${index + 1}`,
+    }));
+    const pdfBuffer = await generateInvoicePdf(
+      { ...order, items, itemsCount: items.length },
+      issuedInvoice,
+      {
+        name: "Client Test",
+        email: "client@example.com",
+        phone: "0600000000",
+        address: "1 rue du Test",
+        city: "Quimper",
+        postalCode: "29000",
+        country: "France",
+      },
+    );
+    const pdf = await PdfLibDocument.load(pdfBuffer);
+
+    expect(pdf.getPageCount()).toBe(1);
+  });
 });

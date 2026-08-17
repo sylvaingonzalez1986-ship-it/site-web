@@ -218,13 +218,14 @@ export async function generateInvoicePdf(
   const xUnitHt = 345;
   const xRate = 430;
   const xTotalHt = 485;
-  doc.fontSize(10).text("Designation", xDesignation, startY);
+  doc.fontSize(9).text("Designation", xDesignation, startY);
   doc.text("Qte", xQty, startY);
   doc.text("P.U. HT", xUnitHt, startY);
   doc.text("TVA", xRate, startY);
   doc.text("Total HT", xTotalHt, startY);
 
-  let y = startY + 18;
+  let y = startY + 16;
+  doc.fontSize(8.8);
   for (const item of order.items) {
     const itemVatRate = sanitizeOrderVatRate(item.vatRate);
     const displayName = item.parentPackName
@@ -239,13 +240,18 @@ export async function generateInvoicePdf(
     const itemLineHt = Number.isFinite(item.lineTotalHt)
       ? item.lineTotalHt
       : fallbackSplit.ht;
-    doc.text(displayName, xDesignation, y, { width: 265 });
+    const rowHeight = Math.max(
+      15,
+      doc.heightOfString(displayName, { width: 245, lineGap: 0 }) + 3,
+    );
+    doc.text(displayName, xDesignation, y, { width: 245, lineGap: 0 });
     doc.text(String(item.quantity), xQty, y);
     doc.text(formatMoney(itemUnitHt), xUnitHt, y);
     doc.text(`${itemVatRate.toFixed(1)}%`, xRate, y);
     doc.text(formatMoney(itemLineHt), xTotalHt, y);
-    y += 18;
+    y += rowHeight;
   }
+  doc.fontSize(9);
 
   // --- Totals ---
   doc.moveTo(48, y).lineTo(547, y).strokeColor(INK_COLOR).stroke();
@@ -288,42 +294,50 @@ export async function generateInvoicePdf(
     doc.font("Helvetica");
   }
 
+  // --- Legal VAT footer, directly below invoice totals ---
+  const legalFooterY = Math.max(doc.y + 8, y + 24);
+  doc
+    .fillColor(INK_COLOR)
+    .font("Helvetica")
+    .fontSize(8.5)
+    .text(getInvoiceLegalFooter(), 48, legalFooterY, { width: 499, align: "left" });
+
   // --- Customer thank-you and CBD driving notice ---
   const messageX = 48;
   const messageWidth = 499;
-  const messagePadding = 12;
+  const messagePadding = 9;
   const messageTextWidth = messageWidth - messagePadding * 2;
-  const thankYouImageSize = thankYouImageDataUri ? 66 : 0;
-  const thankYouImageGap = thankYouImageDataUri ? 12 : 0;
+  const thankYouImageSize = thankYouImageDataUri ? 56 : 0;
+  const thankYouImageGap = thankYouImageDataUri ? 10 : 0;
   const thankYouTextWidth = messageTextWidth - thankYouImageSize - thankYouImageGap;
-  doc.font("Helvetica").fontSize(8.8);
+  doc.font("Helvetica").fontSize(8.2);
   const thankYouBodyHeight = doc.heightOfString(INVOICE_CUSTOMER_THANK_YOU.body, {
     width: thankYouTextWidth,
-    lineGap: 1.5,
+    lineGap: 1,
   });
-  const thankYouContentHeight = Math.max(thankYouImageSize, 13 + 7 + thankYouBodyHeight);
+  const thankYouContentHeight = Math.max(thankYouImageSize, 20 + thankYouBodyHeight);
   const thankYouHeight = messagePadding + thankYouContentHeight + messagePadding;
 
   const noticeBody = INVOICE_CBD_DRIVING_NOTICE.paragraphs
     .map((paragraph) => `- ${paragraph}`)
     .join("\n");
 
-  doc.font("Helvetica").fontSize(8.2);
+  doc.font("Helvetica").fontSize(7.5);
   const noticeBodyHeight = doc.heightOfString(noticeBody, {
     width: messageTextWidth,
-    lineGap: 1.5,
+    lineGap: 1,
   });
-  doc.font("Helvetica").fontSize(7.2);
+  doc.font("Helvetica").fontSize(6.5);
   const noticeSourceHeight = doc.heightOfString(INVOICE_CBD_DRIVING_NOTICE.source, {
     width: messageTextWidth,
   });
   const noticeHeight =
-    messagePadding + 13 + 7 + noticeBodyHeight + 7 + noticeSourceHeight + messagePadding;
+    messagePadding + 12 + 5 + noticeBodyHeight + 5 + noticeSourceHeight + messagePadding;
   const pageBottom = doc.page.height - 48;
-  const messageGap = 12;
-  let thankYouY = Math.max(doc.y + 22, y + 36);
+  const messageGap = 8;
+  let thankYouY = doc.y + 10;
 
-  if (thankYouY + thankYouHeight + messageGap + noticeHeight + 34 > pageBottom) {
+  if (thankYouY + thankYouHeight + messageGap + noticeHeight + 4 > pageBottom) {
     doc.addPage();
     doc.fillColor(INK_COLOR);
     thankYouY = 48;
@@ -343,23 +357,23 @@ export async function generateInvoicePdf(
   doc
     .fillColor("#006F70")
     .font("Helvetica-Bold")
-    .fontSize(10.5)
-    .text(INVOICE_CUSTOMER_THANK_YOU.title, thankYouTextX, thankYouY + messagePadding + 2, {
+    .fontSize(9.5)
+    .text(INVOICE_CUSTOMER_THANK_YOU.title, thankYouTextX, thankYouY + messagePadding + 1, {
       width: thankYouTextWidth,
       align: "left",
     });
   doc
     .fillColor(INK_COLOR)
     .font("Helvetica-Oblique")
-    .fontSize(8.8)
+    .fontSize(8.2)
     .text(
       INVOICE_CUSTOMER_THANK_YOU.body,
       thankYouTextX,
-      thankYouY + messagePadding + 22,
+      thankYouY + messagePadding + 19,
       {
         width: thankYouTextWidth,
         align: "left",
-        lineGap: 1.5,
+        lineGap: 1,
       },
     );
   doc.restore();
@@ -372,32 +386,27 @@ export async function generateInvoicePdf(
   doc
     .fillColor(INK_COLOR)
     .font("Helvetica-Bold")
-    .fontSize(10)
+    .fontSize(9)
     .text(INVOICE_CBD_DRIVING_NOTICE.title, messageX + messagePadding, noticeY + messagePadding, {
       width: messageTextWidth,
     });
-  let noticeTextY = noticeY + messagePadding + 20;
+  let noticeTextY = noticeY + messagePadding + 17;
   doc
     .font("Helvetica")
-    .fontSize(8.2)
+    .fontSize(7.5)
     .text(noticeBody, messageX + messagePadding, noticeTextY, {
       width: messageTextWidth,
-      lineGap: 1.5,
+      lineGap: 1,
     });
-  noticeTextY += noticeBodyHeight + 7;
+  noticeTextY += noticeBodyHeight + 5;
   doc
     .font("Helvetica-Oblique")
-    .fontSize(7.2)
+    .fontSize(6.5)
     .text(INVOICE_CBD_DRIVING_NOTICE.source, messageX + messagePadding, noticeTextY, {
       width: messageTextWidth,
     });
   doc.restore();
-  doc.y = noticeY + noticeHeight + 14;
-
-  // --- Legal footer ---
-  doc.fillColor(INK_COLOR).font("Helvetica").fontSize(9).text(getInvoiceLegalFooter(), {
-    align: "left",
-  });
+  doc.y = noticeY + noticeHeight;
 
   doc.end();
   return pdfPromise;
