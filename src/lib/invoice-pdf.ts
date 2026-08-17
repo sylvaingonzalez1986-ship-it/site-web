@@ -1,6 +1,12 @@
 import type { CmsOrder } from "@/types/store";
 import type { IssuedInvoice } from "@/types/invoice";
-import { INVOICE_COMPANY, INVOICE_SETTINGS, getInvoiceLegalFooter } from "@/lib/invoice-config";
+import {
+  INVOICE_CBD_DRIVING_NOTICE,
+  INVOICE_COMPANY,
+  INVOICE_CUSTOMER_THANK_YOU,
+  INVOICE_SETTINGS,
+  getInvoiceLegalFooter,
+} from "@/lib/invoice-config";
 import { computeFromTtc, computeOrderTaxTotals, sanitizeOrderVatRate } from "@/lib/tax";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
@@ -49,8 +55,14 @@ function buildPdfBuffer(doc: PDFKit.PDFDocument): Promise<Buffer> {
  *  printers that only have colour cartridges installed. */
 const INK_COLOR = "#00205B";
 const INVOICE_LOGO_PATH = path.join(process.cwd(), "public", "invoice-logo.png");
+const INVOICE_THANK_YOU_IMAGE_PATH = path.join(
+  process.cwd(),
+  "public",
+  "invoice-sylvain-thank-you-v1.png",
+);
 
 let invoiceLogoDataUriPromise: Promise<string | null> | null = null;
+let invoiceThankYouImageDataUriPromise: Promise<string | null> | null = null;
 
 async function tintLogoDataUri(logoBuffer: Buffer, color: string): Promise<string> {
   const { createCanvas, loadImage } = await import("@napi-rs/canvas");
@@ -78,6 +90,13 @@ async function getInvoiceLogoDataUri(): Promise<string | null> {
     })
     .catch(() => null);
   return invoiceLogoDataUriPromise;
+}
+
+async function getInvoiceThankYouImageDataUri(): Promise<string | null> {
+  invoiceThankYouImageDataUriPromise ??= readFile(INVOICE_THANK_YOU_IMAGE_PATH)
+    .then((imageBuffer) => `data:image/png;base64,${imageBuffer.toString("base64")}`)
+    .catch(() => null);
+  return invoiceThankYouImageDataUriPromise;
 }
 
 /* ------------------------------------------------------------------ */
@@ -134,7 +153,10 @@ export async function generateInvoicePdf(
   const pdfPromise = buildPdfBuffer(doc);
 
   // --- Company header ---
-  const logoDataUri = await getInvoiceLogoDataUri();
+  const [logoDataUri, thankYouImageDataUri] = await Promise.all([
+    getInvoiceLogoDataUri(),
+    getInvoiceThankYouImageDataUri(),
+  ]);
   const headerTop = 42;
   const logoSize = 76;
   const logoX = 48;
@@ -266,9 +288,116 @@ export async function generateInvoicePdf(
     doc.font("Helvetica");
   }
 
+  // --- Customer thank-you and CBD driving notice ---
+  const messageX = 48;
+  const messageWidth = 499;
+  const messagePadding = 12;
+  const messageTextWidth = messageWidth - messagePadding * 2;
+  const thankYouImageSize = thankYouImageDataUri ? 66 : 0;
+  const thankYouImageGap = thankYouImageDataUri ? 12 : 0;
+  const thankYouTextWidth = messageTextWidth - thankYouImageSize - thankYouImageGap;
+  doc.font("Helvetica").fontSize(8.8);
+  const thankYouBodyHeight = doc.heightOfString(INVOICE_CUSTOMER_THANK_YOU.body, {
+    width: thankYouTextWidth,
+    lineGap: 1.5,
+  });
+  const thankYouContentHeight = Math.max(thankYouImageSize, 13 + 7 + thankYouBodyHeight);
+  const thankYouHeight = messagePadding + thankYouContentHeight + messagePadding;
+
+  const noticeBody = INVOICE_CBD_DRIVING_NOTICE.paragraphs
+    .map((paragraph) => `- ${paragraph}`)
+    .join("\n");
+
+  doc.font("Helvetica").fontSize(8.2);
+  const noticeBodyHeight = doc.heightOfString(noticeBody, {
+    width: messageTextWidth,
+    lineGap: 1.5,
+  });
+  doc.font("Helvetica").fontSize(7.2);
+  const noticeSourceHeight = doc.heightOfString(INVOICE_CBD_DRIVING_NOTICE.source, {
+    width: messageTextWidth,
+  });
+  const noticeHeight =
+    messagePadding + 13 + 7 + noticeBodyHeight + 7 + noticeSourceHeight + messagePadding;
+  const pageBottom = doc.page.height - 48;
+  const messageGap = 12;
+  let thankYouY = Math.max(doc.y + 22, y + 36);
+
+  if (thankYouY + thankYouHeight + messageGap + noticeHeight + 34 > pageBottom) {
+    doc.addPage();
+    doc.fillColor(INK_COLOR);
+    thankYouY = 48;
+  }
+
+  doc.save();
+  doc
+    .roundedRect(messageX, thankYouY, messageWidth, thankYouHeight, 8)
+    .fillAndStroke("#E7F3EC", "#006F70");
+  if (thankYouImageDataUri) {
+    doc.image(thankYouImageDataUri, messageX + messagePadding, thankYouY + messagePadding, {
+      fit: [thankYouImageSize, thankYouImageSize],
+    });
+  }
+  const thankYouTextX =
+    messageX + messagePadding + thankYouImageSize + thankYouImageGap;
+  doc
+    .fillColor("#006F70")
+    .font("Helvetica-Bold")
+    .fontSize(10.5)
+    .text(INVOICE_CUSTOMER_THANK_YOU.title, thankYouTextX, thankYouY + messagePadding + 2, {
+      width: thankYouTextWidth,
+      align: "left",
+    });
+  doc
+    .fillColor(INK_COLOR)
+    .font("Helvetica-Oblique")
+    .fontSize(8.8)
+    .text(
+      INVOICE_CUSTOMER_THANK_YOU.body,
+      thankYouTextX,
+      thankYouY + messagePadding + 22,
+      {
+        width: thankYouTextWidth,
+        align: "left",
+        lineGap: 1.5,
+      },
+    );
+  doc.restore();
+
+  const noticeY = thankYouY + thankYouHeight + messageGap;
+  doc.save();
+  doc
+    .roundedRect(messageX, noticeY, messageWidth, noticeHeight, 8)
+    .fillAndStroke("#FFF4D6", INK_COLOR);
+  doc
+    .fillColor(INK_COLOR)
+    .font("Helvetica-Bold")
+    .fontSize(10)
+    .text(INVOICE_CBD_DRIVING_NOTICE.title, messageX + messagePadding, noticeY + messagePadding, {
+      width: messageTextWidth,
+    });
+  let noticeTextY = noticeY + messagePadding + 20;
+  doc
+    .font("Helvetica")
+    .fontSize(8.2)
+    .text(noticeBody, messageX + messagePadding, noticeTextY, {
+      width: messageTextWidth,
+      lineGap: 1.5,
+    });
+  noticeTextY += noticeBodyHeight + 7;
+  doc
+    .font("Helvetica-Oblique")
+    .fontSize(7.2)
+    .text(INVOICE_CBD_DRIVING_NOTICE.source, messageX + messagePadding, noticeTextY, {
+      width: messageTextWidth,
+    });
+  doc.restore();
+  doc.y = noticeY + noticeHeight + 14;
+
   // --- Legal footer ---
-  doc.moveDown(2);
-  doc.fontSize(9).text(getInvoiceLegalFooter(), { align: "left" });
+  doc.fillColor(INK_COLOR).font("Helvetica").fontSize(9).text(getInvoiceLegalFooter(), {
+    align: "left",
+  });
 
   doc.end();
   return pdfPromise;
