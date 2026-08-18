@@ -485,13 +485,21 @@
 .arenaLandingNavigation {
   position: relative;
   z-index: 3;
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
   padding-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.arenaLandingNavigation .arenaNavigation {
+  width: min(100%, 760px);
 }
 
 .arenaLandingNavigation .primaryTabs {
   position: relative;
   top: auto;
-  margin-top: -1rem;
+  width: 100%;
+  margin-top: clamp(1.25rem, 3vw, 2.25rem);
 }
 
 .notebookSurfaceHeader {
@@ -1858,7 +1866,7 @@
   .arenaLandingHero .heroGrid { gap: .35rem; }
   .arenaLandingHero .heroArt { min-height: min(74vw, 300px); }
   .arenaLandingNavigation { padding-inline: .65rem; padding-bottom: 2rem; }
-  .arenaLandingNavigation .primaryTabs { margin-top: -.35rem; }
+  .arenaLandingNavigation .primaryTabs { margin-top: .75rem; }
   .personalRankingTypeSwitch { gap: 0.25rem; }
   .personalRankingTypeSwitch button { padding-inline: 0.35rem; font-size: 0.62rem; }
   .placardSummary {

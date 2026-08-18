@@ -181,7 +181,24 @@
 @media(max-width:760px){.pestReveal,.pestHidden{align-items:flex-start;flex-direction:column}}
 .pbiReserve{margin-top:.8rem;padding:.75rem;border:2px dashed #1a1a1a;border-radius:13px;background:#e6f1e4}.pbiReserve>span{color:#066b66;font-size:.62rem;font-weight:950;letter-spacing:.05em;text-transform:uppercase}.pbiReserve>div{display:flex;flex-wrap:wrap;gap:.35rem;margin:.5rem 0}.pbiReserve strong{padding:.25rem .4rem;border:1px solid;border-radius:999px;background:#fff;font-size:.62rem}.pbiReserve p{margin:0;color:#57534d;font-size:.67rem}
 .comboList{display:flex!important;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}.traitsPanel>.comboList span{display:flex;padding:.3rem .5rem;border:2px solid #8a5a00;border-radius:999px;background:#fff3ce;color:#664300;font-size:.68rem;font-weight:900}.comboNotice{margin-top:.35rem;padding:.25rem .5rem;border:1px solid #8a5a00;border-radius:999px;background:#fff3ce;color:#664300;font-weight:900}
-.page button:focus-visible,.page summary:focus-visible{outline:4px solid #176f9b;outline-offset:3px}.mobileTurnBar,.mobilePlayTabs{display:none}
+.page button:focus-visible,.page summary:focus-visible{outline:4px solid #176f9b;outline-offset:3px}
+.mobilePlayTabs{position:sticky;top:.4rem;z-index:35;display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin:0 auto .8rem;padding:.35rem;border:2px solid var(--kq-ink,#1a1a1a);background:rgba(255,250,240,.96);box-shadow:3px 4px 0 var(--kq-ink,#1a1a1a);backdrop-filter:blur(10px)}
+.mobilePlayTabs button{display:flex;min-width:0;min-height:52px;flex-direction:column;align-items:center;justify-content:center;gap:.05rem;padding:.25rem .1rem;border:0;background:transparent;color:var(--kq-ink,#1a1a1a)}
+.mobilePlayTabs button[data-active]{background:var(--kq-yellow,#f4bc3c);box-shadow:inset 0 0 0 2px var(--kq-ink,#1a1a1a)}
+.mobilePlayTabs svg{width:17px;height:17px}
+.mobilePlayTabs span{font-size:.65rem;font-weight:950;text-transform:uppercase}
+.mobilePlayTabs small{max-width:100%;overflow:hidden;color:#59645d;font-size:.5rem;font-weight:800;text-overflow:ellipsis;white-space:nowrap}
+.mobileTabPanel{display:none}
+.mobileTabPanel[data-mobile-active]{display:flex}
+.gameGrid{display:block}
+.gameGrid .situationCard[data-mobile-active],.gameGrid .diceBoard[data-mobile-active]{display:flex}
+.gameGrid .situationCard[data-mobile-active]{flex-direction:column}
+.deckPanel[data-mobile-active]{display:block}
+.liveChallenges[data-mobile-active]{display:grid;grid-template-columns:1fr;margin:0}
+.liveChallenges[data-mobile-active]>span{min-height:42px}
+.liveChallenges[data-mobile-active] article{min-width:0}
+.mobileTurnBar{position:fixed;right:max(.55rem,calc((100vw - 760px)/2));bottom:calc(.5rem + env(safe-area-inset-bottom));left:max(.55rem,calc((100vw - 760px)/2));z-index:40;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:.5rem;padding:.45rem;border:2px solid #1a1a1a;border-radius:15px;background:rgba(255,250,240,.96);box-shadow:4px 5px 0 #1a1a1a;backdrop-filter:blur(10px)}
+.mobileTurnBar>span{display:flex;align-items:center;gap:.2rem;padding:.45rem;font-size:.72rem;font-weight:950}.mobileTurnBar svg{width:17px}.mobileTurnBar button{display:flex;min-height:48px;align-items:center;justify-content:center;gap:.35rem;border:2px solid #1a1a1a;border-radius:10px;background:#f4bc3c;font-size:.76rem;font-weight:950;text-transform:uppercase}
 .integrityCode{display:inline-block;margin-top:.35rem;padding:.2rem .35rem;border:1px solid #1a1a1a;border-radius:6px;background:#ffffff80;font-family:monospace;font-size:.58rem;font-weight:800}
 @media(max-width:760px){.page{overflow-anchor:none;padding-bottom:7rem;scroll-padding-bottom:7rem}.mobileTurnBar{position:fixed;right:.55rem;bottom:calc(.5rem + env(safe-area-inset-bottom));left:.55rem;z-index:40;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:.5rem;padding:.45rem;border:2px solid #1a1a1a;border-radius:15px;background:rgba(255,250,240,.96);box-shadow:4px 5px 0 #1a1a1a;backdrop-filter:blur(10px)}.mobileTurnBar>span{display:flex;align-items:center;gap:.2rem;padding:.45rem;font-size:.72rem;font-weight:950}.mobileTurnBar svg{width:17px}.mobileTurnBar button{display:flex;min-height:48px;align-items:center;justify-content:center;gap:.35rem;border:2px solid #1a1a1a;border-radius:10px;background:#f4bc3c;font-size:.76rem;font-weight:950;text-transform:uppercase}.supportCard,.buddieChoices button,.deckChoices button,.substrateChoices button{min-height:48px}.stageTrack,.cardRow,.buddieChoices,.deckChoices,.substrateChoices{-webkit-overflow-scrolling:touch;scrollbar-width:thin}}
 
