@@ -59,6 +59,7 @@ export async function GET() {
         code: card.code,
         ownedCopies: card.ownedCopies,
         isActive: card.isActive,
+        producerNames: card.producerNames,
       })),
       fragmentBalance: heritage.fragmentBalance,
     } : null,

@@ -15,6 +15,7 @@ import { normalizeProductImagePath } from "@/lib/product-image-storage";
 import { normalizeExternalUrl } from "@/lib/external-url";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
+import { deleteContestEntry } from "@/lib/supabase/contest-backend";
 import { sanitizeOrderVatRate } from "@/lib/tax";
 import { sanitizeDisplayText, sanitizeNestedText } from "@/lib/text-encoding-repair";
 import {
@@ -1072,6 +1073,19 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
     .map((row) => toStringValue(row.id));
 
   if (productIdsToDelete.length > 0) {
+    const linkedEntriesResult = await supabase
+      .from("contest_entries")
+      .select("id")
+      .in("product_id", productIdsToDelete);
+    failIfError(linkedEntriesResult.error, "select contest entries for removed products");
+
+    const linkedEntryIds = (linkedEntriesResult.data ?? [])
+      .map((row) => toStringValue((row as Record<string, unknown>).id))
+      .filter(Boolean);
+    for (const entryId of linkedEntryIds) {
+      await deleteContestEntry(entryId);
+    }
+
     const deleteProducts = await supabase.from("products").delete().in("id", productIdsToDelete);
     failIfError(deleteProducts.error, "delete removed products");
   }

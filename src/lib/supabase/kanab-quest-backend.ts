@@ -363,12 +363,39 @@ export async function getKqPlayerHeritageSnapshot(ownerId: string) {
   if (itemsResult.error) throw new Error(`[supabase:order_items] ${itemsResult.error.message}`);
   const contestProductIds = new Set(contestProductIdRows);
   const eligibleItems = (itemsResult.data ?? []).filter((item) => contestProductIds.has(String(item.product_id).trim().split("::", 1)[0]?.trim() ?? ""));
+  const eligibleProductIds = [...new Set(eligibleItems.map((item) => String(item.product_id).trim().split("::", 1)[0]?.trim()).filter(Boolean))];
+  const productsResult = eligibleProductIds.length > 0
+    ? await supabase.from("products").select("id,producer_id").in("id", eligibleProductIds)
+    : { data: [], error: null };
+  if (productsResult.error) throw new Error(`[supabase:products] ${productsResult.error.message}`);
+  const producerIds = [...new Set((productsResult.data ?? []).map((product) => String(product.producer_id ?? "")).filter(Boolean))];
+  const producersResult = producerIds.length > 0
+    ? await supabase.from("producers").select("id,name").in("id", producerIds)
+    : { data: [], error: null };
+  if (producersResult.error) throw new Error(`[supabase:producers] ${producersResult.error.message}`);
+  const producerNameById = new Map((producersResult.data ?? []).map((producer) => [String(producer.id), String(producer.name)]));
+  const producerNameByProductId = new Map((productsResult.data ?? []).flatMap((product) => {
+    const producerName = producerNameById.get(String(product.producer_id ?? ""));
+    return producerName ? [[String(product.id), producerName] as const] : [];
+  }));
+  const producerNameByOrderItemId = new Map(eligibleItems.flatMap((item) => {
+    const productId = String(item.product_id).trim().split("::", 1)[0]?.trim() ?? "";
+    const producerName = producerNameByProductId.get(productId);
+    return producerName ? [[Number(item.id), producerName] as const] : [];
+  }));
   const eligibleUnits = eligibleItems.reduce((sum, item) => sum + Number(item.quantity ?? 0), 0);
   const eligibleItemIds = new Set(eligibleItems.map((item) => Number(item.id)));
   const attributedUnits = (drawsResult.data ?? []).filter((draw) => eligibleItemIds.has(Number(draw.order_item_id))).length;
   const ownedCounts = (drawsResult.data ?? []).reduce<Record<string, number>>((counts, draw) => {
     counts[draw.card_code] = (counts[draw.card_code] ?? 0) + 1;
     return counts;
+  }, {});
+  const producerNamesByCard = (drawsResult.data ?? []).reduce<Record<string, string[]>>((names, draw) => {
+    const producerName = producerNameByOrderItemId.get(Number(draw.order_item_id));
+    if (!producerName) return names;
+    const cardNames = names[draw.card_code] ?? [];
+    if (!cardNames.includes(producerName)) names[draw.card_code] = [...cardNames, producerName];
+    return names;
   }, {});
   return {
     collectionActive: definitions.some((card) => card.is_active === true),
@@ -393,6 +420,7 @@ export async function getKqPlayerHeritageSnapshot(ownerId: string) {
       imageUrl: String(card.image_url ?? ""),
       isActive: card.is_active === true,
       ownedCopies: ownedCounts[card.code] ?? 0,
+      producerNames: producerNamesByCard[card.code] ?? [],
     })),
     draws: (drawsResult.data ?? []).map((draw) => ({
       id: String(draw.id),

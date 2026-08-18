@@ -1544,10 +1544,85 @@
   line-height: 1.05;
 }
 
+.personalRankingsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.personalRankingCard {
+  min-width: 0;
+  padding: 0.8rem;
+  border: 2px solid var(--arena-ink);
+  background: white;
+  box-shadow: 3px 3px 0 var(--arena-ink);
+}
+
+.personalRankingCard[data-ranking="tasting"] {
+  background: #fff7d8;
+}
+
+.personalRankingCard[data-ranking="placard"] {
+  background: #edf5ef;
+}
+
+.personalRankingCard[data-ranking="general"] {
+  background: #e8f1f7;
+}
+
+.personalRankingCard > p {
+  margin: 0;
+  color: var(--arena-muted);
+  font-size: 0.55rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.personalRankingCard h3 {
+  margin: 0.15rem 0 0.65rem;
+  color: var(--arena-ink);
+  font-size: 1.05rem;
+  font-weight: 950;
+}
+
+.personalRankingCard dl {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.personalRankingCard dl div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid color-mix(in srgb, var(--arena-ink) 24%, transparent);
+}
+
+.personalRankingCard dt {
+  color: var(--arena-muted);
+  font-size: 0.62rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.personalRankingCard dd {
+  margin: 0;
+  color: var(--arena-ink);
+  font-size: 0.85rem;
+  font-weight: 950;
+  text-align: right;
+}
+
+.tastingProgressSummary {
+  margin-top: 1rem;
+}
+
 .placardProfileSummary {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.9fr);
-  gap: 0.8rem;
   margin-top: 1rem;
   padding: 0.85rem;
   border: 2px solid var(--arena-ink);
@@ -1674,6 +1749,10 @@
 }
 
 @media (max-width: 700px) {
+  .personalRankingsGrid {
+    grid-template-columns: 1fr;
+  }
+
   .placardProfileSummary {
     grid-template-columns: 1fr;
   }

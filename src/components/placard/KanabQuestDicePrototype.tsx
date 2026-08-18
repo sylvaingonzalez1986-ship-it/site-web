@@ -318,11 +318,12 @@ const toLocalReceipt = (receipt: KqApiBurnReceipt, runSeed: number): KqBurnRecei
   useKind: receipt.useKind, burnedAt: receipt.burnedAt,
 });
 
-function CardArtwork({ code, name }: { code: string; name: string }) {
+function CardArtwork({ code, name, producerName }: { code: string; name: string; producerName?: string }) {
   const src = getKqCardArtwork(code);
   return src ? (
     <span className={styles.cardArtwork}>
       <Image src={src} alt={`Illustration de la carte ${name}`} fill sizes="(max-width: 760px) 190px, 220px" />
+      {producerName ? <b className={styles.cardArtworkProducer}>{producerName}</b> : null}
     </span>
   ) : null;
 }
@@ -419,6 +420,7 @@ export function KanabQuestDicePrototype({
   const [collectionRefreshNonce, setCollectionRefreshNonce] = useState(0);
   const [remoteInventory, setRemoteInventory] = useState<Record<string, number>>({});
   const [remoteHeritageOwnedCodes, setRemoteHeritageOwnedCodes] = useState<string[]>([]);
+  const [remoteHeritageProducerNames, setRemoteHeritageProducerNames] = useState<Record<string, string[]>>({});
   const [remoteHeritageActive, setRemoteHeritageActive] = useState(false);
   const [remoteHeritageFragments, setRemoteHeritageFragments] = useState(0);
   const [launchReadiness, setLaunchReadiness] = useState<null | {
@@ -607,7 +609,7 @@ export function KanabQuestDicePrototype({
           heritage?: null | {
             collectionActive?: boolean;
             purchaseDrawsLive?: boolean;
-            cards?: Array<{ code?: string; ownedCopies?: number; isActive?: boolean }>;
+            cards?: Array<{ code?: string; ownedCopies?: number; isActive?: boolean; producerNames?: string[] }>;
             eligiblePurchaseUnits?: number;
             attributedPurchaseUnits?: number;
             pendingPurchaseUnits?: number;
@@ -634,6 +636,10 @@ export function KanabQuestDicePrototype({
         setRemoteHeritageOwnedCodes((heritage.cards ?? [])
           .filter((card) => card.isActive === true && Number(card.ownedCopies ?? 0) > 0)
           .map((card) => String(card.code ?? "")).filter(Boolean));
+        setRemoteHeritageProducerNames(Object.fromEntries((heritage.cards ?? []).flatMap((card) => {
+          const code = String(card.code ?? "");
+          return code ? [[code, (card.producerNames ?? []).map(String).filter(Boolean)]] : [];
+        })));
         setRemoteHeritageActive(heritage.collectionActive === true);
         setRemoteHeritageFragments(Number(heritage.fragmentBalance ?? 0));
         const collection = payload.collection ?? {};
@@ -1476,7 +1482,7 @@ export function KanabQuestDicePrototype({
           </div>
         ) : null}
         <section className={styles.setupPanel}>
-          <header className={styles.setupHero}><div className={styles.setupHeroCopy}><span>Le Placard Kanab Quest{isPlayerMode ? "" : " · local"}</span><h1>Prépare <em>ta culture.</em></h1><i aria-hidden="true" /><p>Choisis ta variété, ton substrat et tes cartes. Puis lance la partie.</p><button type="button" className={styles.guideReplay} onClick={() => setShowOnboarding(true)}>Règles en 1 minute</button></div><div className={styles.setupHeroArt} aria-hidden="true"><span /><Image src="/sylvain-culture-hero.webp" alt="" width={1122} height={1402} priority sizes="(max-width: 760px) 72vw, 390px" /></div></header>
+          <header className={styles.setupHero}><div className={styles.setupHeroCopy}><span>Le Placard Kanab Quest{isPlayerMode ? "" : " · local"}</span><h1>Prépare <em>ta culture.</em></h1><i aria-hidden="true" /><p>Choisis ta variété, ton substrat et tes cartes. Puis lance la partie.</p></div><div className={styles.setupHeroArt} aria-hidden="true"><span /><Image src="/sylvain-culture-hero.webp" alt="" width={1122} height={1402} priority sizes="(max-width: 760px) 72vw, 390px" /></div></header>
           {showAdminOperations && !isPlayerMode ? <div className={styles.remoteCollectionStatus} data-error={remoteCollection.error || undefined}>
             <span>{isPlayerMode ? "Mes cartes La Botte" : "Données sécurisées · test admin"}</span>
             {remoteCollection.loading ? <strong>Chargement de tes cartes…</strong> : remoteCollection.error ? <strong>{remoteCollection.error}</strong> : <strong>{remoteCollection.totalCopies} carte{remoteCollection.totalCopies > 1 ? "s" : ""} disponible{remoteCollection.totalCopies > 1 ? "s" : ""}</strong>}
@@ -1563,9 +1569,11 @@ export function KanabQuestDicePrototype({
                   const remotelyOwned = remoteHeritageOwnedCodes.includes(card.code);
                   const disabled = remoteBurnsEnabled && !remotelyOwned;
                   const selected = selectedHeritage === card.code;
+                  const producerNames = remoteHeritageProducerNames[card.code] ?? [];
+                  const producerLabel = producerNames.length > 0 ? producerNames.join(" · ") : remotelyOwned ? "Héritage assemblé" : undefined;
                   return (
                     <article className={styles.heritageCarouselCard} key={card.code} role="listitem" data-selected={selected || undefined} data-locked={disabled || undefined}>
-                      <CardArtwork code={card.code} name={card.name} />
+                      <CardArtwork code={card.code} name={card.name} producerName={producerLabel} />
                       <span>Carte producteur · {card.timing === "passive" ? "passif" : "1 fois/culture"}</span>
                       <strong>{card.name}</strong>
                       <p>{card.description}</p>

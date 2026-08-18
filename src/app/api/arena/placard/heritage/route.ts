@@ -24,6 +24,7 @@ export async function GET() {
         imageUrl: card.imageUrl,
         isActive: card.isActive,
         ownedCopies: card.ownedCopies,
+        producerNames: card.producerNames,
       })),
     }, {
       headers: { "Cache-Control": "private, no-store, max-age=0" },

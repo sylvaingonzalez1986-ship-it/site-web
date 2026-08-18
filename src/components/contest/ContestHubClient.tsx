@@ -2106,6 +2106,8 @@ function ContestTesterProfileCard({
 }) {
   const [placardProgress, setPlacardProgress] = useState<PlacardPlayerProgress | null>(null);
   const [placardProgressLoaded, setPlacardProgressLoaded] = useState(false);
+  const [generalProgress, setGeneralProgress] = useState<ArenaRankingEntry | null>(null);
+  const [generalProgressLoaded, setGeneralProgressLoaded] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated || placardProgressLoaded) return;
@@ -2128,6 +2130,31 @@ function ContestTesterProfileCard({
       controller.abort();
     };
   }, [isAuthenticated, placardProgressLoaded]);
+
+  useEffect(() => {
+    if (!isAuthenticated || !progress || generalProgressLoaded) return;
+    const controller = new AbortController();
+    let cancelled = false;
+    void fetch("/api/arena/rankings", { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Classement général indisponible");
+        const payload = await response.json() as { entries?: ArenaRankingEntry[] };
+        const entry = Array.isArray(payload.entries)
+          ? payload.entries.find((item) => item.pseudo === progress.pseudo) ?? null
+          : null;
+        if (!cancelled) setGeneralProgress(entry);
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+      })
+      .finally(() => {
+        if (!cancelled) setGeneralProgressLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [generalProgressLoaded, isAuthenticated, progress]);
 
   if (!isAuthenticated) {
     return (
@@ -2191,23 +2218,40 @@ function ContestTesterProfileCard({
           onHoverPreview={onMascotHover}
           onHoverEnd={onMascotLeave}
         />
-        <div className="grid grid-cols-3 gap-2 text-center">
-          <div className="rounded border-2 border-[#1a1a1a] bg-white px-3 py-2">
-            <p className="text-[10px] font-black uppercase tracking-[0.08em] text-charcoal">Points</p>
-            <p className="text-lg font-black text-ink">{progress.totalPoints}</p>
-          </div>
-          <div className="rounded border-2 border-[#1a1a1a] bg-white px-3 py-2">
-            <p className="text-[10px] font-black uppercase tracking-[0.08em] text-charcoal">Saison</p>
-            <p className="text-lg font-black text-ink">{progress.seasonRank ? `#${progress.seasonRank}` : "-"}</p>
-          </div>
-          <div className="rounded border-2 border-[#1a1a1a] bg-white px-3 py-2">
-            <p className="text-[10px] font-black uppercase tracking-[0.08em] text-charcoal">Global</p>
-            <p className="text-lg font-black text-ink">{progress.globalRank ? `#${progress.globalRank}` : "-"}</p>
-          </div>
-        </div>
       </div>
 
-      <div className="mt-5">
+      <div className={arenaStyles.personalRankingsGrid}>
+        <section className={arenaStyles.personalRankingCard} data-ranking="tasting">
+          <p>Classement personnel</p>
+          <h3>Dégustation</h3>
+          <dl>
+            <div><dt>Points</dt><dd>{progress.totalPoints}</dd></div>
+            <div><dt>Rang saison</dt><dd>{progress.seasonRank ? `#${progress.seasonRank}` : "—"}</dd></div>
+            <div><dt>Rang global</dt><dd>{progress.globalRank ? `#${progress.globalRank}` : "—"}</dd></div>
+          </dl>
+        </section>
+
+        <section className={arenaStyles.personalRankingCard} data-ranking="placard">
+          <p>Classement personnel</p>
+          <h3>Placard</h3>
+          <dl>
+            <div><dt>Cote</dt><dd>{placardProgress?.rating ?? "—"}</dd></div>
+            <div><dt>Rang saison</dt><dd>{placardProgress?.rank ? `#${placardProgress.rank}` : placardProgressLoaded ? "Non classé" : "…"}</dd></div>
+            <div><dt>Ligue</dt><dd>{placardProgress?.league ?? "—"}</dd></div>
+          </dl>
+        </section>
+
+        <section className={arenaStyles.personalRankingCard} data-ranking="general">
+          <p>Classement personnel</p>
+          <h3>Général</h3>
+          <dl>
+            <div><dt>Score Arène</dt><dd>{generalProgress?.score ?? "—"}</dd></div>
+            <div><dt>Rang général</dt><dd>{generalProgress?.rank ? `#${generalProgress.rank}` : generalProgressLoaded ? "Non classé" : "…"}</dd></div>
+          </dl>
+        </section>
+      </div>
+
+      <div className={arenaStyles.tastingProgressSummary}>
         <div className="flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.08em] text-charcoal">
           <span>{progress.currentLevel.label}</span>
           <span>{progress.nextLevel ? progress.nextLevel.label : "Niveau max"}</span>
@@ -2232,11 +2276,6 @@ function ContestTesterProfileCard({
           <strong>{placardProgress ? `${placardProgress.league} · ${placardProgress.wins} V / ${placardProgress.losses} D` : "Saison de culture"}</strong>
           <small>{placardProgress ? `${placardProgress.pointsToNextLeague} point(s) de cote avant le palier suivant · ${placardProgress.burnedFlowers} Fleur(s) passée(s) au jury.` : "Crée des Fleurs, relève les défis et affronte les autres joueurs pour entrer au classement."}</small>
         </div>
-        <dl>
-          <div><dt>Ligue</dt><dd>{placardProgress?.league ?? (placardProgressLoaded ? "Non classé" : "…")}</dd></div>
-          <div><dt>Cote</dt><dd>{placardProgress?.rating ?? "—"}</dd></div>
-          <div><dt>Rang saison</dt><dd>{placardProgress?.rank ? `#${placardProgress.rank}` : "—"}</dd></div>
-        </dl>
       </div>
     </div>
   );
@@ -3257,15 +3296,9 @@ export function ContestHubClient({
 
         <section hidden={activeArenaView !== "classement"} className={arenaStyles.playerRankingSection} aria-labelledby="arena-player-ranking-title">
           <div className={arenaStyles.sectionHeading}>
-            <div>
-              <p className={arenaStyles.sectionKicker}>Rangs des joueurs</p>
-              <h2 id="arena-player-ranking-title" className={arenaStyles.sectionTitle}>
-                Un objectif. <span>Deux contributions.</span>
-              </h2>
-            </div>
-            <p className={arenaStyles.sectionLead}>
-              Le Carnet débloque tes avantages de jeu. Retrouve ici ta progression dégustation et ton rang Placard sans mélanger leurs règles actuelles.
-            </p>
+            <h2 id="arena-player-ranking-title" className={arenaStyles.sectionTitle}>
+              Rangs des joueurs
+            </h2>
           </div>
           {activeArenaView === "classement" ? <>
             <div className={arenaStyles.personalGrid}>
