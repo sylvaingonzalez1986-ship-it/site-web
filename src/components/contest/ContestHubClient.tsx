@@ -2251,31 +2251,34 @@ function ContestTesterProfileCard({
         </section>
       </div>
 
-      <div className={arenaStyles.tastingProgressSummary}>
-        <div className="flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.08em] text-charcoal">
-          <span>{progress.currentLevel.label}</span>
-          <span>{progress.nextLevel ? progress.nextLevel.label : "Niveau max"}</span>
-        </div>
-        <div className="mt-2 h-5 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-white">
-          <div
-            className="h-full bg-yellow"
-            style={{ width: `${progress.progressPercent}%` }}
-            aria-label={`Progression ${progress.progressPercent}%`}
-          />
-        </div>
-        <p className="mt-2 text-sm font-semibold text-charcoal">
-          {progress.nextLevel
-            ? `${progress.pointsToNextLevel} point(s) avant ${progress.nextLevel.label}.`
-            : "Tous les niveaux de points sont atteints."}
-        </p>
-      </div>
+      <div className={arenaStyles.personalProgressGrid}>
+        <section className={arenaStyles.tastingProgressSummary}>
+          <p className={arenaStyles.personalProgressLabel}>Progression dégustation</p>
+          <div className="flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.08em] text-charcoal">
+            <span>{progress.currentLevel.label}</span>
+            <span>{progress.nextLevel ? progress.nextLevel.label : "Niveau max"}</span>
+          </div>
+          <div className="mt-2 h-5 overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-white">
+            <div
+              className="h-full bg-yellow"
+              style={{ width: `${progress.progressPercent}%` }}
+              aria-label={`Progression ${progress.progressPercent}%`}
+            />
+          </div>
+          <p className="mt-2 text-sm font-semibold text-charcoal">
+            {progress.nextLevel
+              ? `${progress.pointsToNextLevel} point(s) avant ${progress.nextLevel.label}.`
+              : "Tous les niveaux de points sont atteints."}
+          </p>
+        </section>
 
-      <div className={arenaStyles.placardProfileSummary}>
-        <div>
-          <p>Progression Placard</p>
-          <strong>{placardProgress ? `${placardProgress.league} · ${placardProgress.wins} V / ${placardProgress.losses} D` : "Saison de culture"}</strong>
-          <small>{placardProgress ? `${placardProgress.pointsToNextLeague} point(s) de cote avant le palier suivant · ${placardProgress.burnedFlowers} Fleur(s) passée(s) au jury.` : "Crée des Fleurs, relève les défis et affronte les autres joueurs pour entrer au classement."}</small>
-        </div>
+        <section className={arenaStyles.placardProfileSummary}>
+          <div>
+            <p>Progression Placard</p>
+            <strong>{placardProgress ? `${placardProgress.league} · ${placardProgress.wins} V / ${placardProgress.losses} D` : "Saison de culture"}</strong>
+            <small>{placardProgress ? `${placardProgress.pointsToNextLeague} point(s) de cote avant le palier suivant · ${placardProgress.burnedFlowers} Fleur(s) passée(s) au jury.` : "Crée des Fleurs, relève les défis et affronte les autres joueurs pour entrer au classement."}</small>
+          </div>
+        </section>
       </div>
     </div>
   );
