@@ -70,6 +70,7 @@ export function Footer() {
       "/politique-cookies",
       "/cgv",
       "/reglement-jeu-promo",
+      "/a-propos",
     ]);
 
     return [...cmsPages]
@@ -88,6 +89,7 @@ export function Footer() {
       { href: "/politique-confidentialite", label: footer.privacyLabel.trim() || "Politique de confidentialité" },
       { href: "/politique-cookies", label: "Politique cookies" },
       { href: "/cgv", label: "Conditions générales de vente" },
+      { href: "/a-propos", label: "À propos et méthode" },
       { href: "/reglement-jeu-promo", label: "Règlement jeu promo" },
       ...dynamicFooterLinks,
     ],
@@ -111,14 +113,14 @@ export function Footer() {
           <section className={styles.brand} aria-labelledby="footer-brand-title">
             <p className={styles.eyebrow}>
               <MapPin size={15} strokeWidth={2.4} aria-hidden="true" />
-              Cultivé en Bretagne
+              Maison bretonne · producteurs identifiés
             </p>
             <h2 id="footer-brand-title" className={styles.brandTitle}>
               Les Chanvriers
               <span>Bretons</span>
             </h2>
             <p className={styles.lead}>
-              Du CBD naturel, local et traçable, proposé directement par celles et ceux qui le cultivent.
+              Notre production bretonne et des références de producteurs partenaires, distinguées sur chaque fiche.
             </p>
 
             <div className={styles.actions}>
@@ -173,7 +175,7 @@ export function Footer() {
         <div className={styles.bottom}>
           <p>{footer.copyright}</p>
           <a href={CONTACT_MAILTO}>{CONTACT_EMAIL}</a>
-          <p>CBD naturel · Bretagne · Circuit court</p>
+          <p>CBD naturel · Origines identifiées · Traçabilité par référence</p>
         </div>
       </div>
     </footer>

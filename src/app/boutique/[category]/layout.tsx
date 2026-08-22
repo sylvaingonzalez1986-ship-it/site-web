@@ -8,57 +8,57 @@ const categoryMeta: Record<
   { title: string; description: string; label: string }
 > = {
   "fleurs-cbd": {
-    title: "Fleurs CBD Bio Bretagne | Qualité Premium Direct Producteur",
+    title: "Fleurs CBD | Origine, culture et analyses disponibles",
     description:
-      "Achetez des fleurs CBD bio pas cher en Bretagne. Qualité premium, arômes naturels, analysées en laboratoire. Shop CBD breton, livraison rapide en France.",
+      "Découvrez nos fleurs CBD : producteur ou marque, origine, mode de culture, formats et analyses disponibles indiqués sur chaque fiche.",
     label: "Fleurs CBD",
   },
   "resines-cbd": {
-    title: "Résines CBD Bio Bretagne | Qualité Premium Direct Producteur",
+    title: "Résines CBD | Composition, origine et analyses",
     description:
-      "Résines CBD bio de qualité premium. Texture et arômes maîtrisés, analyses en laboratoire. Shop CBD breton, livraison rapide en France.",
+      "Découvrez nos résines CBD avec leur producteur ou marque, leur composition, leurs formats et les analyses disponibles par référence.",
     label: "Résines CBD",
   },
   "huiles-cbd": {
-    title: "Huiles CBD Bio | Full Spectrum et Broad Spectrum Bretagne",
+    title: "Huiles CBD | Composition et dosages indiqués",
     description:
-      "Huiles CBD bio full spectrum et broad spectrum à petit prix. Shop CBD breton, producteurs de qualité, livraison rapide en France.",
+      "Comparez les huiles CBD selon leur composition, leur dosage, leur marque ou producteur et les informations disponibles sur chaque fiche.",
     label: "Huiles CBD",
   },
   "e-liquide-cbd": {
-    title: "E-liquides CBD | Vape CBD Bretagne",
+    title: "E-liquides CBD | Composition et dosage",
     description:
-      "E-liquides CBD au profil aromatique maîtrisé et dosage transparent. Shop CBD breton, livraison rapide en France.",
+      "Consultez nos e-liquides CBD avec leur composition, leur dosage, leur marque et leurs précautions d'utilisation.",
     label: "E-liquides CBD",
   },
   "cosmetiques-cbd": {
-    title: "Cosmétiques CBD Bio | Baumes, Crèmes et Soins au Chanvre Breton",
+    title: "Cosmétiques CBD | Composition et utilisation",
     description:
-      "Cosmétiques CBD bio : baumes réparateurs, crèmes hydratantes et huiles de massage au chanvre. Soins naturels bretons.",
+      "Découvrez les cosmétiques au CBD et au chanvre. Composition, marque, format et conseils d'utilisation sont détaillés par produit.",
     label: "Cosmétiques CBD",
   },
   "tisane-cbd": {
-    title: "Tisane CBD Bio | Infusions au Chanvre Breton",
+    title: "Tisanes CBD et infusions au chanvre | Composition",
     description:
-      "Tisanes et infusions CBD bio au chanvre breton. Relaxation et plaisir au quotidien. Livraison rapide en France.",
+      "Tisanes CBD et infusions au chanvre : origine des ingrédients, composition, producteur ou marque et formats indiqués par référence.",
     label: "Tisane CBD",
   },
   "miam-cbd": {
-    title: "Miam CBD | Produits Gourmands au Chanvre Breton",
+    title: "Produits gourmands au CBD et au chanvre",
     description:
-      "Produits alimentaires et gourmandises CBD bio au chanvre breton. Plaisir gustatif et bien-être au quotidien. Livraison rapide en France.",
+      "Découvrez les produits gourmands au CBD et au chanvre avec leur composition, leur origine et leur marque indiquées sur chaque fiche.",
     label: "Miam CBD",
   },
   "alimentaire-cbd": {
-    title: "Alimentaire CBD Bio | Produits au Chanvre Breton",
+    title: "Produits alimentaires au CBD et au chanvre",
     description:
-      "Produits alimentaires CBD bio au chanvre breton. Bien-être et plaisir gustatif au quotidien. Livraison rapide en France.",
+      "Produits alimentaires au CBD et au chanvre : composition, origine, allergènes et marque à vérifier sur chaque référence.",
     label: "Alimentaire CBD",
   },
   "accessoires-cbd": {
-    title: "Accessoires CBD | Grinders, Pochons et Kits Découverte",
+    title: "Accessoires CBD | Grinders, conservation et découverte",
     description:
-      "Accessoires CBD de qualité : grinders, pochons hermétiques, plateaux et kits découverte. Shop CBD breton.",
+      "Accessoires pour préparer ou conserver les produits CBD : grinders, contenants, plateaux et kits disponibles dans la boutique.",
     label: "Accessoires CBD",
   },
 };

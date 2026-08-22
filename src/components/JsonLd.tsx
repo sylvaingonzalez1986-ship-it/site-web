@@ -47,7 +47,9 @@ const CATEGORY_NAMES: Record<Product["category"], string> = {
 };
 
 const BUSINESS_NAME = "Les Chanvriers Bretons";
+const BUSINESS_LEGAL_NAME = "Les Champs Bretons";
 const BUSINESS_EMAIL = "leschanvriersbretons@gmail.com";
+const BUSINESS_SIRET = "94236899400011";
 const BUSINESS_LOGO_PATH = "/les-chanvriers-bretons-logo.png";
 const BUSINESS_PHONE =
   process.env.BUSINESS_PHONE?.trim() ||
@@ -150,6 +152,7 @@ export async function OrganizationJsonLd() {
     "@type": "OnlineStore",
     "@id": organizationId(baseUrl),
     name: BUSINESS_NAME,
+    legalName: BUSINESS_LEGAL_NAME,
     url: baseUrl,
     logo: {
       "@type": "ImageObject",
@@ -161,16 +164,28 @@ export async function OrganizationJsonLd() {
     },
     image: { "@id": `${baseUrl}/#logo` },
     description:
-      "Producteur CBD en Bretagne. Fleurs de CBD direct producteur, huiles spectre complet, résines et tisanes chanvre artisanales. CBD naturel cultivé sans pesticide, achat en circuit court. Livraison rapide France.",
+      "Maison bretonne consacrée au CBD et au chanvre. Le catalogue distingue la production des Chanvriers Bretons des références de producteurs partenaires et présente l'origine, la composition et les analyses disponibles par produit.",
     email: BUSINESS_EMAIL,
     telephone: BUSINESS_PHONE,
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "SIRET",
+      value: BUSINESS_SIRET,
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer service",
+      email: BUSINESS_EMAIL,
+      availableLanguage: "fr",
+      areaServed: "FR",
+    },
     priceRange: "€5 - €80",
     currenciesAccepted: "EUR",
     founder: {
       "@type": "Person",
       "@id": founderId(baseUrl),
-      name: "Sylvain",
-      jobTitle: "Chanvrier breton",
+      name: "Sylvain Gonzalez",
+      jobTitle: "Responsable de publication",
       image: `${baseUrl}/sylvain.png`,
     },
     hasMerchantReturnPolicy: {
@@ -186,10 +201,10 @@ export async function OrganizationJsonLd() {
     knowsAbout: [
       "CBD naturel",
       "Chanvre breton",
-      "Culture de chanvre sans pesticide",
-      "Circuit court CBD",
+      "Traçabilité du CBD",
+      "Analyses de laboratoire du CBD",
       "Fleurs de CBD",
-      "Tisanes chanvre artisanales",
+      "Tisanes au chanvre",
     ],
     areaServed: [
       { "@type": "Country", name: "France" },

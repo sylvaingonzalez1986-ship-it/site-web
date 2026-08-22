@@ -23,7 +23,7 @@ export const DEFAULT_OWN_PRODUCER: Producer = {
   soil: "sol-limono-sableux",
   altitude: "Niveau de la mer",
   certifications: ["Selection maison", "Analyses labo"],
-  speciality: "CBD bio breton",
+  speciality: "Chanvre breton et traçabilité des lots",
   philosophy:
     "Des produits que nous signerions nous-memes: traces, coherents, et assez bons pour porter le nom de la maison.",
   experience: "Selection maison",

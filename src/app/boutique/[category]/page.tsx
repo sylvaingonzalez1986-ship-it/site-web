@@ -144,166 +144,106 @@ export default async function CategoryPage({
   );
 }
 
+type CategoryGuide = {
+  description: string;
+  title: string;
+  paragraphs: [string, string];
+};
+
+const categoryGuides: Record<string, CategoryGuide> = {
+  "fleurs-cbd": {
+    description:
+      "Comparez les fleurs CBD selon leur origine, leur producteur, leur mode de culture, leurs formats et les analyses disponibles.",
+    title: "Comment comparer des fleurs CBD ?",
+    paragraphs: [
+      "Vérifiez le producteur, l'origine du chanvre, le mode de culture déclaré, la composition et le numéro de lot. Une analyse récente doit pouvoir être rapprochée de la référence vendue lorsqu'elle est publiée.",
+      "Cette catégorie peut réunir notre production et des fleurs de producteurs partenaires. Le nom affiché sur chaque carte et chaque fiche permet de les distinguer.",
+    ],
+  },
+  "resines-cbd": {
+    description:
+      "Comparez les résines CBD selon leur producteur ou marque, leur composition, leur format et les analyses disponibles.",
+    title: "Comment lire une fiche de résine CBD ?",
+    paragraphs: [
+      "La texture ou le nom commercial ne suffisent pas à décrire une résine. Consultez la liste des ingrédients, les cannabinoïdes annoncés, l'origine et l'analyse correspondant au lot lorsqu'elle est disponible.",
+      "Les références partenaires sont attribuées à leur producteur. Cette distinction permet de ne pas confondre leur origine avec la production des Chanvriers Bretons.",
+    ],
+  },
+  "huiles-cbd": {
+    description:
+      "Comparez les huiles CBD selon leur dosage, leur type d'extrait, leur composition, leur marque et leur format.",
+    title: "Comment comparer des huiles CBD ?",
+    paragraphs: [
+      "Vérifiez la quantité totale, la concentration, l'huile support et le type d'extrait indiqué. Les mentions full spectrum, broad spectrum ou isolat décrivent des compositions différentes.",
+      "Consultez l'étiquette et l'analyse disponible pour vérifier les cannabinoïdes du produit. Si vous suivez un traitement, demandez conseil à un professionnel de santé.",
+    ],
+  },
+  "e-liquide-cbd": {
+    description:
+      "Comparez les e-liquides CBD selon leur dosage, leur composition, leur marque, leur format et leurs précautions d'utilisation.",
+    title: "Comment choisir un e-liquide CBD ?",
+    paragraphs: [
+      "Consultez la concentration en CBD, la liste des ingrédients, le volume et les consignes du fabricant. La fiche doit identifier clairement la marque ou le producteur de la référence.",
+      "Respectez le matériel compatible et les précautions indiquées sur l'emballage. Ces produits sont réservés aux adultes et ne doivent pas être présentés comme des traitements.",
+    ],
+  },
+  "cosmetiques-cbd": {
+    description:
+      "Comparez les cosmétiques au CBD selon leur composition, leur marque, leur format et leurs conseils d'utilisation.",
+    title: "Comment lire une fiche de cosmétique au CBD ?",
+    paragraphs: [
+      "Vérifiez la liste INCI, la quantité, la zone d'application et les précautions du fabricant. La présence de CBD ne permet pas, à elle seule, de déduire un effet thérapeutique.",
+      "L'origine et la marque varient selon les références. La fiche produit rassemble les informations disponibles pour le produit concerné.",
+    ],
+  },
+  "tisane-cbd": {
+    description:
+      "Comparez les tisanes et infusions au chanvre selon leurs ingrédients, leur origine, leur producteur et leurs conseils de préparation.",
+    title: "Comment comparer des tisanes au chanvre ?",
+    paragraphs: [
+      "Lisez la liste complète des plantes, les proportions lorsqu'elles sont indiquées, les allergènes éventuels et les conseils de préparation. L'origine doit être vérifiée référence par référence.",
+      "Le catalogue peut réunir des produits maison et des tisanes partenaires. Le producteur ou la marque affiché sur la fiche permet de les distinguer.",
+    ],
+  },
+  "alimentaire-cbd": {
+    description:
+      "Comparez les produits alimentaires au CBD ou au chanvre selon leur composition, leurs allergènes, leur origine et leur marque.",
+    title: "Comment vérifier un produit alimentaire au CBD ?",
+    paragraphs: [
+      "Consultez les ingrédients, les allergènes, la quantité, les conditions de conservation et les conseils d'utilisation. Les caractéristiques peuvent varier d'une référence à l'autre.",
+      "Le producteur ou la marque et l'origine disponible sont indiqués sur la fiche. L'étiquette du produit reçu reste la référence pour le lot concerné.",
+    ],
+  },
+  "miam-cbd": {
+    description:
+      "Découvrez les produits gourmands au CBD ou au chanvre avec leur composition, leurs allergènes, leur origine et leur marque.",
+    title: "Que vérifier sur un produit gourmand au CBD ?",
+    paragraphs: [
+      "Lisez la composition, les allergènes, la quantité et les conditions de conservation. Le mot naturel ne remplace pas ces informations ni l'étiquette du produit.",
+      "Les références peuvent provenir des Chanvriers Bretons ou de partenaires identifiés. Consultez la fiche pour connaître l'origine du produit concerné.",
+    ],
+  },
+  "accessoires-cbd": {
+    description:
+      "Grinders, contenants, plateaux et kits : comparez les accessoires selon leur usage, leurs dimensions et leurs matériaux.",
+    title: "Comment choisir un accessoire CBD ?",
+    paragraphs: [
+      "Choisissez selon l'usage prévu, les dimensions, les matériaux et les consignes d'entretien indiquées sur la fiche.",
+      "Pour la conservation, privilégiez un contenant fermé et suivez les instructions propres au produit CBD concerné.",
+    ],
+  },
+};
+
 function getCategoryDescription(slug: string): string {
-  const descriptions: Record<string, string> = {
-    "fleurs-cbd":
-      "Fleurs de CBD direct producteur français, cultivées naturellement sans pesticide. CBD naturel en circuit court, qualité analysée en laboratoire.",
-    "resines-cbd":
-      "Résines CBD naturelles sélectionnées auprès de producteurs français. Texture et arômes maîtrisés, CBD breton sans pesticide, analyses laboratoire.",
-    "huiles-cbd":
-      "Huiles CBD naturelles full spectrum et broad spectrum, direct producteur breton. CBD facile à doser, idéal pour la relaxation et le bien-être au quotidien.",
-    "e-liquide-cbd":
-      "E-liquides CBD au profil aromatique maîtrisé, sélectionnés avec exigence auprès de producteurs français. Vapotage CBD naturel et transparent.",
-    "cosmetiques-cbd":
-      "Soins visage et corps au CBD naturel breton : baumes, crèmes et huiles de massage. Le chanvre cultivé en Bretagne au service de votre peau.",
-    "tisane-cbd":
-      "Tisanes chanvre artisanales et infusions CBD bretonnes, gourmandes et relaxantes. Circuit court, sans pesticide, pour intégrer le CBD naturel à votre routine.",
-    "alimentaire-cbd":
-      "Tisanes chanvre artisanales et infusions CBD bretonnes, gourmandes et relaxantes. Circuit court, sans pesticide, pour intégrer le CBD naturel à votre routine.",
-    "miam-cbd":
-      "Produits gourmands au chanvre breton, CBD naturel et artisanal. Découvrez le terroir breton dans votre assiette, en circuit court.",
-    "accessoires-cbd":
-      "Grinders, pochons, plateaux et kits découverte. Tout l'essentiel pour profiter de vos produits CBD naturels.",
-  };
-  return descriptions[slug] ?? "";
+  return categoryGuides[slug]?.description ?? "";
 }
 
 function getCategorySeoTitle(slug: string): string {
-  const titles: Record<string, string> = {
-    "fleurs-cbd": "Pourquoi acheter ses fleurs de CBD direct producteur breton ?",
-    "resines-cbd": "Résines CBD naturelles : le circuit court sans pesticide",
-    "huiles-cbd": "Comment bien choisir son huile CBD naturelle ?",
-    "e-liquide-cbd": "Bien choisir son e-liquide CBD français",
-    "cosmetiques-cbd": "Les bienfaits du CBD naturel breton pour la peau",
-    "tisane-cbd": "Tisanes chanvre artisanales : le CBD dans votre tasse",
-    "alimentaire-cbd": "Tisanes chanvre artisanales : le CBD dans votre tasse",
-    "miam-cbd": "Le CBD breton dans vos produits gourmands",
-    "accessoires-cbd": "Bien s'équiper pour le CBD",
-  };
-  return titles[slug] ?? "";
+  return categoryGuides[slug]?.title ?? "";
 }
 
 function getCategorySeoText(slug: string): ReactNode {
-  const texts: Record<string, ReactNode> = {
-    "fleurs-cbd": (
-      <>
-        <p>
-          Nos fleurs de CBD sont cultivées en direct par des producteurs bretons et
-          français qui travaillent sans pesticide, dans le respect du terroir.
-          Chaque lot est analysé en laboratoire pour garantir un taux de THC
-          conforme à la réglementation française et un CBD naturel de qualité.
-        </p>
-        <p>
-          En achetant vos fleurs de CBD direct producteur, vous soutenez le circuit
-          court et la production locale en Bretagne. Notre boutique vous offre un
-          accès transparent à du CBD breton authentique, livré rapidement partout en France.
-        </p>
-      </>
-    ),
-    "resines-cbd": (
-      <>
-        <p>
-          Nos résines CBD sont sélectionnées auprès de producteurs français pour
-          leur profil aromatique et leur texture. Chaque lot est contrôlé en
-          laboratoire, sans pesticide, pour un CBD naturel et irréprochable.
-        </p>
-        <p>
-          Achat CBD circuit court : en choisissant nos résines, vous profitez d&apos;un
-          produit breton artisanal au juste prix, livré rapidement en France.
-        </p>
-      </>
-    ),
-    "huiles-cbd": (
-      <>
-        <p>
-          L&apos;huile CBD est un format idéal pour profiter du cannabidiol au quotidien.
-          Nos huiles CBD naturelles sont proposées en full spectrum et broad spectrum,
-          issues de chanvre breton cultivé sans pesticide.
-        </p>
-        <p>
-          Direct producteur en Bretagne, nos huiles conservent l&apos;ensemble des
-          molécules naturelles du chanvre pour un effet d&apos;entourage optimal.
-          Achat CBD en circuit court, livraison rapide France.
-        </p>
-      </>
-    ),
-    "e-liquide-cbd": (
-      <>
-        <p>
-          Nos e-liquides CBD sont proposés avec des profils aromatiques clairs
-          et des dosages transparents, sélectionnés auprès de producteurs français
-          respectant une démarche sans pesticide.
-        </p>
-        <p>
-          Cette catégorie regroupe uniquement les références de vape CBD naturel,
-          pour une navigation simple et un achat CBD en toute confiance.
-        </p>
-      </>
-    ),
-    "cosmetiques-cbd": (
-      <>
-        <p>
-          Le CBD naturel possède des propriétés apaisantes idéales pour les soins
-          de la peau. Nos cosmétiques combinent chanvre breton cultivé sans pesticide
-          et ingrédients naturels sélectionnés.
-        </p>
-        <p>
-          Baumes, crèmes et huiles de massage : notre gamme cosmétique CBD est
-          formulée pour tous les types de peau, en circuit court depuis la Bretagne.
-        </p>
-      </>
-    ),
-    "tisane-cbd": (
-      <>
-        <p>
-          Nos tisanes chanvre artisanales sont élaborées avec du chanvre breton
-          cultivé sans pesticide, pour une infusion CBD naturelle, gourmande et
-          relaxante. Le terroir breton dans votre tasse.
-        </p>
-        <p>
-          Achat CBD circuit court : chaque tisane chanvre artisanale est produite
-          en petite série par des producteurs locaux, pour une qualité et une
-          traçabilité irréprochables. Livraison rapide France.
-        </p>
-      </>
-    ),
-    "miam-cbd": (
-      <>
-        <p>
-          Découvrez notre gamme Miam : produits gourmands au chanvre breton,
-          CBD naturel et artisanal. Circuit court et terroir breton dans votre assiette.
-        </p>
-        <p>
-          Cette catégorie rassemble les produits alimentaires CBD pour une
-          navigation simplifiée et un achat CBD en confiance.
-        </p>
-      </>
-    ),
-    "alimentaire-cbd": (
-      <>
-        <p>
-          Nos produits alimentaires au chanvre breton sont sélectionnés en circuit
-          court, pour le bien-être et le plaisir gustatif. CBD naturel, sans pesticide.
-        </p>
-        <p>
-          Tisanes chanvre artisanales et infusions CBD pour intégrer le cannabidiol
-          à votre quotidien. Livraison rapide France.
-        </p>
-      </>
-    ),
-    "accessoires-cbd": (
-      <>
-        <p>
-          Complétez votre expérience CBD avec nos accessoires de qualité :
-          grinders, pochons et plateaux pour un usage pratique.
-        </p>
-        <p>
-          Notre kit découverte est parfait pour les débutants qui souhaitent
-          explorer l&apos;univers CBD avec tout le nécessaire.
-        </p>
-      </>
-    ),
-  };
-
-  return texts[slug] ?? null;
+  return categoryGuides[slug]?.paragraphs.map((paragraph) => (
+    <p key={paragraph}>{paragraph}</p>
+  )) ?? null;
 }

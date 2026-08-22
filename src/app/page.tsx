@@ -3,18 +3,16 @@ import { HomeEditorialExperience } from "@/components/home/HomeEditorialExperien
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 
 export const metadata: Metadata = {
-  title:
-    "CBD Naturel Direct Producteur Bretagne | Fleurs de CBD, Huiles & Tisanes Chanvre Artisanales",
+  title: "CBD naturel en Bretagne | Production et partenaires identifiés",
   description:
-    "Découvrez Les Chanvriers Bretons, producteur CBD en Bretagne. Fleurs de CBD direct producteur, huiles spectre complet, tisanes chanvre artisanales. Achat CBD circuit court, français, sans pesticide. Livraison rapide France.",
+    "Découvrez Les Chanvriers Bretons : production bretonne et références de producteurs partenaires, avec origine, composition et analyses disponibles par produit.",
   alternates: {
     canonical: "https://www.leschanvriersbretons.com",
   },
   openGraph: {
-    title:
-      "Les Chanvriers Bretons | CBD Naturel Direct Producteur Bretagne",
+    title: "Les Chanvriers Bretons | CBD naturel et traçable",
     description:
-      "CBD breton en circuit court : fleurs de CBD direct producteur, tisanes chanvre artisanales, huiles & résines. CBD français sans pesticide, livraison rapide France.",
+      "Production bretonne et producteurs partenaires clairement identifiés. Fleurs, résines, huiles et tisanes au chanvre.",
     url: "https://www.leschanvriersbretons.com",
   },
 };

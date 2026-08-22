@@ -61,12 +61,12 @@ const FAQ_ITEMS = [
 ];
 
 const CATEGORY_LINKS = [
-  { href: "/boutique/fleurs-cbd", label: "Fleurs CBD", description: "Fleurs de chanvre cultivées naturellement, arômes intacts et terpènes préservés." },
-  { href: "/boutique/huiles-cbd", label: "Huiles CBD", description: "Full spectrum et broad spectrum, extraction douce, dosage précis." },
-  { href: "/boutique/resines-cbd", label: "Résines CBD", description: "Concentration élevée, texture maîtrisée, saveurs authentiques." },
-  { href: "/boutique/tisane-cbd", label: "Tisanes Chanvre", description: "Infusions artisanales bretonnes, détente au quotidien." },
-  { href: "/boutique/cosmetiques-cbd", label: "Cosmétiques CBD", description: "Soins naturels au chanvre pour la peau et le corps." },
-  { href: "/boutique/miam-cbd", label: "Miam CBD", description: "Gourmandises au chanvre breton, plaisir et bien-être." },
+  { href: "/boutique/fleurs-cbd", label: "Fleurs CBD", description: "Origine, producteur, mode de culture et analyse disponibles selon la référence." },
+  { href: "/boutique/huiles-cbd", label: "Huiles CBD", description: "Composition, type d'extrait, dosage et marque indiqués sur chaque fiche." },
+  { href: "/boutique/resines-cbd", label: "Résines CBD", description: "Composition, origine, producteur ou marque et formats consultables par produit." },
+  { href: "/boutique/tisane-cbd", label: "Tisanes Chanvre", description: "Ingrédients, origine et conseils de préparation indiqués par référence." },
+  { href: "/boutique/cosmetiques-cbd", label: "Cosmétiques CBD", description: "Composition, marque, format et conseils d'utilisation à consulter sur la fiche." },
+  { href: "/boutique/miam-cbd", label: "Miam CBD", description: "Composition, allergènes, origine et marque détaillés selon le produit." },
 ];
 
 const featuredCategoryOrder = ["fleurs", "huiles", "resines", "alimentaire", "cosmetiques", "miam"] as const;
@@ -83,12 +83,12 @@ export const metadata: Metadata = {
     "cbd naturel france",
     "cbd naturel breton",
     "acheter cbd naturel",
-    "cbd sans pesticide",
+    "analyse cbd naturel",
     "cbd direct producteur",
     "chanvre naturel",
     "fleur cbd naturelle",
     "huile cbd naturelle",
-    "cbd bio breton",
+    "origine cbd naturel",
     "cbd circuit court",
     "cbd artisanal",
   ],
@@ -103,7 +103,7 @@ export const metadata: Metadata = {
         url: "/og-default.png",
         width: 1200,
         height: 630,
-        alt: "CBD Naturel – Les Chanvriers Bretons, producteur de chanvre en Bretagne",
+        alt: "CBD naturel – origine, composition et analyses",
       },
     ],
   },
@@ -181,7 +181,11 @@ export default async function CbdNaturelPage() {
             de producteurs partenaires en indiquant leur provenance sur chaque fiche produit.
           </p>
           <p className="mt-4 text-sm text-charcoal">
-            Contenu publié par Les Chanvriers Bretons · Vérifié le 22 août 2026
+            Contenu publié par{" "}
+            <Link href="/a-propos" className="underline hover:text-ink">
+              Les Chanvriers Bretons
+            </Link>{" "}
+            · Vérifié le 22 août 2026
           </p>
         </div>
 
@@ -241,7 +245,7 @@ export default async function CbdNaturelPage() {
         {/* Pourquoi choisir un CBD naturel */}
         <div className="cartoon-border mt-8 bg-cream p-8">
           <h2 className="mb-6 text-3xl font-display text-ink">
-            Pourquoi choisir un CBD naturel plutôt qu&apos;un CBD conventionnel ?
+            Quels critères vérifier pour choisir un CBD naturel ?
           </h2>
           <div className="grid gap-6 md:grid-cols-2">
             <div>

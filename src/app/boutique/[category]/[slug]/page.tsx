@@ -131,12 +131,12 @@ export async function generateMetadata({
   const canonicalUrl = `${baseUrl}/boutique/${catInfo?.slug ?? product.category}/${product.id}`;
   const brandName = producer?.name ?? "Les Chanvriers Bretons";
 
-  const title = `${product.name} | ${catInfo?.label ?? "CBD"} Naturel Direct Producteur Breton`;
+  const title = `${product.name} | ${catInfo?.label ?? "CBD"} — ${brandName}`;
   const description =
     product.description.length > 120
       ? `${product.description.slice(0, 117)}...`
       : product.description;
-  const metaDescription = `${product.name} — ${description} ${brandName}. CBD naturel breton, direct producteur, livraison rapide en France.`;
+  const metaDescription = `${product.name} — ${description} Producteur ou marque : ${brandName}. Consultez l'origine, la composition, les formats et l'analyse disponible.`;
 
   const imageUrl = product.images?.[0] ?? product.image;
   const ogImage = isRemoteImageUrl(imageUrl)
@@ -152,7 +152,7 @@ export async function generateMetadata({
       description: metaDescription.slice(0, 160),
       url: canonicalUrl,
       type: "website",
-      images: [{ url: ogImage, alt: `${product.name} – CBD naturel direct producteur breton` }],
+      images: [{ url: ogImage, alt: `${product.name} — ${brandName}` }],
     },
     twitter: {
       card: "summary_large_image",
@@ -246,7 +246,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <ProductImageGallery
                 images={allImages}
                 videoUrl={product.videoUrl}
-                productName={`${product.name} — ${categoryLabel} CBD bio breton`}
+                productName={`${product.name} — ${producer?.name ?? "Les Chanvriers Bretons"}`}
                 badge={product.badge}
                 bonusPoints={product.bonusPoints}
               />

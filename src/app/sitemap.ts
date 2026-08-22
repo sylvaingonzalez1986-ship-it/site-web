@@ -54,8 +54,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/cbd-naturel`,
+      lastModified: new Date("2026-08-22T00:00:00.000Z"),
       changeFrequency: "weekly",
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/a-propos`,
+      lastModified: new Date("2026-08-22T00:00:00.000Z"),
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/cbd-pas-cher`,
