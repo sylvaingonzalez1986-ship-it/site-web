@@ -214,6 +214,12 @@ export default async function CbdNaturelPage() {
               <dd className="mt-1 text-sm leading-relaxed text-charcoal">Ingrédients et cannabinoïdes ajoutés explicitement indiqués.</dd>
             </div>
           </dl>
+          <p className="mt-6 text-sm leading-relaxed text-charcoal">
+            Pour contrôler un document lot par lot, suivez notre guide{" "}
+            <Link href="/analyse-laboratoire-cbd" className="font-bold underline hover:text-ink">
+              comment lire une analyse laboratoire CBD
+            </Link>.
+          </p>
         </div>
 
         {/* Qu'est-ce que le CBD naturel */}

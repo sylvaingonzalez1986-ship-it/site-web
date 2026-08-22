@@ -97,7 +97,9 @@ export default function AboutPage() {
             <p>
               Pour une information précise, la fiche produit prévaut sur les pages générales. Elle peut
               indiquer l&apos;origine, le mode de culture, la composition, les formats et une analyse de
-              laboratoire lorsqu&apos;elle est disponible. Une certification n&apos;est mentionnée que lorsqu&apos;elle
+              laboratoire lorsqu&apos;elle est disponible. Notre guide explique aussi{" "}
+              <Link className="underline" href="/analyse-laboratoire-cbd">comment lire ce document</Link>.
+              Une certification n&apos;est mentionnée que lorsqu&apos;elle
               est attribuée au produit ou au producteur concerné.
             </p>
             <p>

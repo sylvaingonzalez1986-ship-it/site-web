@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
 import { ProductAnalysisModal } from "@/components/boutique/ProductAnalysisModal";
@@ -133,6 +134,12 @@ export function ProductDetailActions({
           >
             📄 Voir l&apos;analyse laboratoire
           </button>
+          <Link
+            href="/analyse-laboratoire-cbd"
+            className="inline-flex min-h-11 items-center px-2 text-xs font-bold underline hover:text-ink"
+          >
+            Comment lire ce document ?
+          </Link>
           <ProductAnalysisModal
             open={analysisOpen}
             productName={product.name}

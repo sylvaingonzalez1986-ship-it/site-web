@@ -65,6 +65,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/analyse-laboratoire-cbd`,
+      lastModified: new Date("2026-08-22T00:00:00.000Z"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/cbd-pas-cher`,
       changeFrequency: "daily",
       priority: 0.9,

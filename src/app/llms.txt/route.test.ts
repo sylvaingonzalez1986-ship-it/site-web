@@ -8,6 +8,7 @@ describe("llms.txt", () => {
     expect(content).toContain("# Les Chanvriers Bretons");
     expect(content).toContain("Éditeur légal : Les Champs Bretons");
     expect(content).toContain("https://www.leschanvriersbretons.com/cbd-naturel");
+    expect(content).toContain("https://www.leschanvriersbretons.com/analyse-laboratoire-cbd");
     expect(content).toContain("n'est pas une certification officielle");
   });
 

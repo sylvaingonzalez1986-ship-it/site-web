@@ -20,6 +20,7 @@ const MARKET_LINKS = [
   { href: "/boutique/cosmetiques-cbd", label: "Cosmétiques CBD" },
   { href: "/boutique/tisane-cbd", label: "Tisanes CBD" },
   { href: "/boutique/miam-cbd", label: "Miam CBD" },
+  { href: "/analyse-laboratoire-cbd", label: "Lire une analyse CBD" },
   { href: "/blog", label: "Le blog CBD" },
 ] as const;
 

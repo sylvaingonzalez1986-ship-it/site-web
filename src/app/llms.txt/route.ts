@@ -25,6 +25,7 @@ Zone desservie : France
 ## Pages de référence
 
 - Guide CBD naturel : ${baseUrl}/cbd-naturel
+- Lire une analyse laboratoire CBD : ${baseUrl}/analyse-laboratoire-cbd
 - Boutique et catalogue : ${baseUrl}/boutique
 - Fleurs CBD : ${baseUrl}/boutique/fleurs-cbd
 - Résines CBD : ${baseUrl}/boutique/resines-cbd
