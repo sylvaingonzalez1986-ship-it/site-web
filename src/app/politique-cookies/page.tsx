@@ -29,12 +29,12 @@ export default function PolitiqueCookiesPage() {
           <p className="mt-4 break-words text-sm leading-relaxed text-charcoal [overflow-wrap:anywhere]">
             Cette politique explique l&apos;usage des cookies sur le site{" "}
             <a
-              href="https://leschanvriersbretons.com"
+              href="https://www.leschanvriersbretons.com"
               className="break-all underline"
               target="_blank"
               rel="noreferrer"
             >
-              https://leschanvriersbretons.com
+              https://www.leschanvriersbretons.com
             </a>
             .
           </p>

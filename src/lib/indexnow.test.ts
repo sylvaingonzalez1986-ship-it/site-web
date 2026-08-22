@@ -54,10 +54,10 @@ describe("IndexNow", () => {
     expect(
       normalizeIndexNowUrls(
         ["/boutique", "https://example.com/injection", "/boutique#selection"],
-        "https://leschanvriersbretons.com",
+        "https://www.leschanvriersbretons.com",
       ),
     ).toEqual([
-      "https://leschanvriersbretons.com/boutique",
+      "https://www.leschanvriersbretons.com/boutique",
     ]);
   });
 
@@ -71,7 +71,7 @@ describe("IndexNow", () => {
 
     await expect(
       notifyIndexNow(["/boutique"], {
-        baseUrl: "https://leschanvriersbretons.com",
+        baseUrl: "https://www.leschanvriersbretons.com",
         key: "valid-indexnow-key-2026",
         fetchImpl,
       }),
@@ -79,10 +79,10 @@ describe("IndexNow", () => {
 
     const [, init] = fetchImpl.mock.calls[0];
     expect(JSON.parse(String(init?.body))).toEqual({
-      host: "leschanvriersbretons.com",
+      host: "www.leschanvriersbretons.com",
       key: "valid-indexnow-key-2026",
-      keyLocation: "https://leschanvriersbretons.com/indexnow-key.txt",
-      urlList: ["https://leschanvriersbretons.com/boutique"],
+      keyLocation: "https://www.leschanvriersbretons.com/indexnow-key.txt",
+      urlList: ["https://www.leschanvriersbretons.com/boutique"],
     });
   });
 });

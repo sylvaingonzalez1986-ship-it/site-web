@@ -12,7 +12,7 @@ export const DEFAULT_OWN_PRODUCER: Producer = {
   location: "Bretagne",
   department: "",
   region: "Bretagne",
-  website: "https://leschanvriersbretons.com",
+  website: "https://www.leschanvriersbretons.com",
   socialLinks: {
     instagram: "https://www.instagram.com/leschanvriersbretons",
     facebook: "https://www.facebook.com/leschanvriersbretons",

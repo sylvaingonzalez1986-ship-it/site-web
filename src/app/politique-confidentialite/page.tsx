@@ -31,12 +31,12 @@ export default async function PolitiqueConfidentialitePage() {
           <p className="mt-4 text-sm leading-relaxed text-charcoal">
             La presente politique de confidentialite est adaptee au site{" "}
             <a
-              href="https://leschanvriersbretons.com"
+              href="https://www.leschanvriersbretons.com"
               className="underline"
               target="_blank"
               rel="noreferrer"
             >
-              https://leschanvriersbretons.com
+              https://www.leschanvriersbretons.com
             </a>{" "}
             et decrit la maniere dont les données personnelles sont collectees, utilisees et
             protegees.
@@ -49,7 +49,7 @@ export default async function PolitiqueConfidentialitePage() {
                 Données personnelles : toute information relative a une personne physique
                 identifiee ou identifiable.
                 <br />
-                Site ou Service : le site https://leschanvriersbretons.com et l&apos;ensemble de ses
+                Site ou Service : le site https://www.leschanvriersbretons.com et l&apos;ensemble de ses
                 pages.
                 <br />
                 Editeur : SASU Les Champs Bretons, responsable de l&apos;edition et du contenu du Site.

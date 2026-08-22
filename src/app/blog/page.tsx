@@ -14,13 +14,13 @@ export const metadata: Metadata = {
   description:
     "Retrouvez nos guides, actualites et conseils autour du CBD bio breton. Legislation CBD en France, bien-etre au chanvre, astuces et nouveautes des Chanvriers Bretons.",
   alternates: {
-    canonical: "https://leschanvriersbretons.com/blog",
+    canonical: "https://www.leschanvriersbretons.com/blog",
   },
   openGraph: {
     title: "Blog CBD - Les Chanvriers Bretons",
     description:
       "Guides, actualites et conseils autour du CBD bio. Legislation, bien-etre et nouveautes chanvre breton.",
-    url: "https://leschanvriersbretons.com/blog",
+    url: "https://www.leschanvriersbretons.com/blog",
   },
 };
 

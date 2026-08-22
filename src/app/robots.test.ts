@@ -12,6 +12,6 @@ describe("robots metadata", () => {
         expect.objectContaining({ userAgent: "OAI-SearchBot", allow: "/" }),
       ]),
     );
-    expect(metadata.sitemap).toBe("https://leschanvriersbretons.com/sitemap.xml");
+    expect(metadata.sitemap).toBe("https://www.leschanvriersbretons.com/sitemap.xml");
   });
 });

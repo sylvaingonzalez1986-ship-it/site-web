@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
-const BASE_URL = "https://leschanvriersbretons.com";
+const BASE_URL = "https://www.leschanvriersbretons.com";
 
 const categoryMeta: Record<
   string,

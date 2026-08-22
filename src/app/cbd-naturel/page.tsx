@@ -15,48 +15,48 @@ import { bretonCities } from "@/lib/local-seo-data";
 import type { Producer } from "@/types/store";
 
 const PAGE_SLUG = "cbd-naturel";
-const LAST_REVIEWED = "2026-08-17";
+const LAST_REVIEWED = "2026-08-22";
 
 const FAQ_ITEMS = [
   {
     question: "Qu'est-ce que le CBD naturel ?",
     answer:
-      "Le CBD naturel désigne un cannabidiol extrait de plants de chanvre cultivés sans pesticide ni engrais chimique. Chez Les Chanvriers Bretons, le chanvre est cultivé en Bretagne selon des méthodes respectueuses du sol, sans OGM ni traitement synthétique. Le produit final conserve l'intégralité de ses cannabinoïdes, terpènes et flavonoïdes d'origine.",
+      "Le CBD est une molécule naturellement présente dans le chanvre. Dans le commerce, l'expression « CBD naturel » indique généralement que le cannabidiol provient de la plante plutôt que d'une synthèse chimique. Elle ne constitue toutefois ni un label officiel, ni une certification biologique, ni une preuve suffisante de conformité.",
   },
   {
     question: "Comment reconnaître un CBD vraiment naturel ?",
     answer:
-      "Un CBD naturel se distingue par trois critères vérifiables : des analyses laboratoire indépendantes publiées pour chaque lot, une traçabilité complète de la culture à la mise en vente, et l'absence d'additifs, solvants résiduels ou arômes artificiels. Chez un producteur direct, vous pouvez exiger ces informations.",
+      "Vérifiez l'identité du producteur, l'origine du chanvre, la liste complète des ingrédients, le numéro de lot et une analyse de laboratoire récente. Recherchez aussi les éventuels cannabinoïdes ajoutés, arômes ou supports. Le mot « naturel » ne remplace pas ces preuves.",
   },
   {
     question: "Le CBD naturel est-il légal en France ?",
     answer:
-      "Oui. Le CBD est légal en France à condition que le taux de THC soit inférieur au seuil réglementaire. Tous les produits des Chanvriers Bretons sont conformes à la législation française et accompagnés d'analyses laboratoire certifiant leur conformité.",
+      "La commercialisation dépend de la catégorie du produit, de sa composition, de son origine et des règles qui lui sont applicables. Le seuil de THC des variétés de chanvre autorisées n'est donc pas le seul critère à vérifier. Pour une information à jour, consultez les sources publiques citées sur cette page.",
   },
   {
     question: "Quelle est la différence entre CBD naturel et CBD de synthèse ?",
     answer:
-      "Le CBD naturel est extrait directement du plant de chanvre et conserve le spectre complet des molécules (effet d'entourage). Le CBD de synthèse est fabriqué chimiquement en laboratoire, il est souvent isolé et ne bénéficie pas du même profil moléculaire. Le CBD naturel offre une expérience plus riche et une meilleure tolérance.",
+      "Le CBD d'origine végétale est obtenu à partir du chanvre, tandis que le CBD de synthèse est produit par un procédé chimique. L'origine végétale ne signifie pas automatiquement « spectre complet » : un extrait de chanvre peut aussi être purifié en isolat. La composition et l'analyse du lot permettent de les distinguer.",
   },
   {
     question: "Pourquoi acheter du CBD naturel direct producteur ?",
     answer:
-      "Acheter du CBD naturel en direct du producteur garantit un prix juste sans surcoût intermédiaire, une traçabilité totale du champ à l'expédition, et un accompagnement personnalisé. En circuit court breton, vous soutenez aussi l'agriculture locale et réduisez l'empreinte carbone de votre achat.",
+      "La vente directe facilite le dialogue sur l'origine, la méthode de culture et le lot, mais elle ne dispense pas de vérifier les preuves. Chez Les Chanvriers Bretons, les fiches distinguent notre production bretonne des références sélectionnées auprès de producteurs partenaires.",
   },
   {
     question: "Quels formats de CBD naturel proposez-vous ?",
     answer:
-      "Nous proposons des fleurs de CBD naturelles, des résines, des huiles full spectrum et broad spectrum, des tisanes chanvre artisanales, des cosmétiques au CBD et des produits gourmands au chanvre. Chaque format conserve les propriétés naturelles du chanvre breton.",
+      "La boutique réunit notamment des fleurs, résines, huiles, tisanes et cosmétiques. Selon les références, le produit provient de notre production bretonne ou d'un producteur partenaire identifié. Consultez la fiche produit pour connaître l'origine, la composition et l'analyse disponible.",
   },
   {
     question: "Le CBD naturel a-t-il des effets secondaires ?",
     answer:
-      "Le CBD naturel est généralement très bien toléré. Les effets indésirables rapportés (somnolence légère, bouche sèche) sont rares et dépendent du dosage. Si vous suivez un traitement médical, consultez votre médecin avant utilisation. Nos produits ne contiennent aucun additif susceptible de provoquer des réactions indésirables.",
+      "Le CBD peut provoquer des effets indésirables et interagir avec certains médicaments. Si vous suivez un traitement, êtes enceinte ou allaitez, demandez conseil à un professionnel de santé. La consommation peut aussi exposer à un dépistage positif au THC : ne conduisez pas après en avoir consommé.",
   },
   {
     question: "Comment conserver le CBD naturel ?",
     answer:
-      "Conservez vos produits CBD naturels à l'abri de la lumière, de la chaleur et de l'humidité. Les fleurs et résines se gardent idéalement dans un contenant hermétique. Les huiles CBD se conservent au réfrigérateur après ouverture. Bien stocké, un produit CBD naturel conserve ses propriétés pendant 6 à 12 mois.",
+      "Suivez en priorité les instructions figurant sur l'emballage. En règle générale, conservez le produit fermé, au sec et à l'abri de la lumière et de la chaleur. Respectez sa date de durabilité et n'utilisez pas un produit dont l'aspect, l'odeur ou l'emballage s'est altéré.",
   },
 ];
 
@@ -72,11 +72,11 @@ const CATEGORY_LINKS = [
 const featuredCategoryOrder = ["fleurs", "huiles", "resines", "alimentaire", "cosmetiques", "miam"] as const;
 
 export const metadata: Metadata = {
-  title: "CBD Naturel | Chanvre Breton Sans Pesticide Direct Producteur",
+  title: "CBD naturel : origine, analyses et traçabilité",
   description:
-    "CBD naturel direct producteur breton : fleurs de CBD, huiles full spectrum, résines, tisanes chanvre artisanales. Chanvre cultivé sans pesticide en Bretagne. Circuit court, analyses laboratoire, livraison rapide France.",
+    "Comprendre le CBD naturel : origine végétale, analyses de lot, différences avec le bio et le CBD de synthèse. Production bretonne et partenaires identifiés.",
   alternates: {
-    canonical: `https://leschanvriersbretons.com/${PAGE_SLUG}`,
+    canonical: `https://www.leschanvriersbretons.com/${PAGE_SLUG}`,
   },
   keywords: [
     "cbd naturel",
@@ -93,10 +93,10 @@ export const metadata: Metadata = {
     "cbd artisanal",
   ],
   openGraph: {
-    title: "CBD Naturel – Chanvre Breton Direct Producteur | Les Chanvriers Bretons",
+    title: "CBD naturel : origine, analyses et traçabilité | Les Chanvriers Bretons",
     description:
-      "Découvrez le CBD naturel des Chanvriers Bretons : fleurs de CBD, huiles spectre complet, résines et tisanes chanvre artisanales. Chanvre cultivé en Bretagne sans pesticide, circuit court.",
-    url: `https://leschanvriersbretons.com/${PAGE_SLUG}`,
+      "Un guide pour vérifier l'origine, la composition et les analyses d'un produit CBD, avec une sélection de producteurs clairement identifiés.",
+    url: `https://www.leschanvriersbretons.com/${PAGE_SLUG}`,
     type: "website",
     images: [
       {
@@ -109,9 +109,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "CBD Naturel – Chanvre Breton Direct Producteur",
+    title: "CBD naturel : origine, analyses et traçabilité",
     description:
-      "Fleurs CBD, huiles, résines et tisanes chanvre naturelles. Direct producteur breton, sans pesticide, livraison rapide France.",
+      "Comment vérifier l'origine, la composition et l'analyse d'un produit CBD naturel.",
     images: ["/og-default.png"],
   },
 };
@@ -176,12 +176,12 @@ export default async function CbdNaturelPage() {
 
           <h1 className="section-title text-ink">CBD Naturel</h1>
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-charcoal">
-            Du chanvre cultivé en Bretagne sans pesticide, transformé avec soin et vendu en direct producteur.
-            Chez Les Chanvriers Bretons, le CBD naturel n&apos;est pas un argument marketing : c&apos;est une méthode
-            de culture, un engagement de transparence et un circuit court réel, du champ à votre porte.
+            Le CBD naturel ne se reconnaît pas à une promesse, mais à des informations vérifiables : origine,
+            composition, producteur et analyse du lot. Nous présentons notre production bretonne et les références
+            de producteurs partenaires en indiquant leur provenance sur chaque fiche produit.
           </p>
           <p className="mt-4 text-sm text-charcoal">
-            Contenu publié par Les Chanvriers Bretons · Vérifié le 17 août 2026
+            Contenu publié par Les Chanvriers Bretons · Vérifié le 22 août 2026
           </p>
         </div>
 
@@ -219,27 +219,21 @@ export default async function CbdNaturelPage() {
           </h2>
           <div className="space-y-4 leading-relaxed text-charcoal">
             <p>
-              Le CBD naturel est un cannabidiol issu de plants de chanvre (<em>Cannabis sativa L.</em>)
-              cultivés selon des pratiques agricoles respectueuses du vivant. Concrètement, cela signifie
-              qu&apos;aucun pesticide de synthèse, aucun herbicide chimique et aucun engrais artificiel
-              n&apos;intervient dans la culture. Le plant pousse dans un sol vivant, développe ses
-              cannabinoïdes et ses terpènes de manière organique, et le produit final conserve
-              l&apos;intégralité de son profil moléculaire.
+              Le CBD est une molécule naturellement présente dans le chanvre (<em>Cannabis sativa L.</em>).
+              Dans le commerce, l&apos;expression <strong>CBD naturel</strong> désigne généralement un cannabidiol
+              d&apos;origine végétale, par opposition à une molécule obtenue par synthèse chimique.
             </p>
             <p>
-              Chez Les Chanvriers Bretons, le CBD naturel est cultivé en Bretagne. Le terroir breton
-              — climat océanique, sols fertiles, rotation des cultures — offre des conditions idéales
-              pour un chanvre robuste et aromatique. Chaque récolte est analysée en laboratoire
-              indépendant pour certifier le taux de CBD, l&apos;absence de métaux lourds,
-              de pesticides résiduels et la conformité réglementaire du taux de THC.
+              Ce terme ne définit cependant ni une méthode agricole unique, ni un niveau de pureté garanti.
+              Il ne remplace pas une certification biologique et ne prouve pas, à lui seul, l&apos;absence de
+              pesticide, de solvant ou d&apos;additif. Pour évaluer un produit, il faut rapprocher sa fiche,
+              son numéro de lot et son analyse de laboratoire.
             </p>
             <p>
-              Le terme <strong>CBD naturel</strong> se distingue du CBD de synthèse (fabriqué chimiquement)
-              et du CBD issu de cultures intensives traitées. Il implique aussi une transformation douce :
-              extraction sans solvant agressif, séchage lent pour préserver les terpènes, conditionnement
-              sans additif. Le résultat est un produit qui conserve l&apos;effet d&apos;entourage —
-              la synergie entre cannabinoïdes, terpènes et flavonoïdes — reconnu pour optimiser
-              les bienfaits du CBD.
+              Chez Les Chanvriers Bretons, notre production est identifiée comme telle. Les autres références
+              sont rattachées au producteur partenaire concerné. Une origine végétale n&apos;implique pas non plus
+              automatiquement un spectre complet : la composition doit préciser s&apos;il s&apos;agit d&apos;un extrait
+              full spectrum, broad spectrum ou d&apos;un isolat.
             </p>
           </div>
         </div>
@@ -251,35 +245,31 @@ export default async function CbdNaturelPage() {
           </h2>
           <div className="grid gap-6 md:grid-cols-2">
             <div>
-              <h3 className="mb-2 text-lg font-display text-ink">Pureté et transparence</h3>
+              <h3 className="mb-2 text-lg font-display text-ink">Traçabilité vérifiable</h3>
               <p className="text-sm leading-relaxed text-charcoal">
-                Un CBD naturel garanti sans pesticide, sans solvant résiduel et sans additif.
-                Chaque lot est accompagné d&apos;une analyse laboratoire consultable.
-                Vous savez exactement ce que vous consommez.
+                Une fiche utile relie le produit à son origine, son producteur, sa composition et son lot.
+                L&apos;analyse disponible doit être suffisamment récente et correspondre à la référence vendue.
               </p>
             </div>
             <div>
-              <h3 className="mb-2 text-lg font-display text-ink">Effet d&apos;entourage préservé</h3>
+              <h3 className="mb-2 text-lg font-display text-ink">Composition lisible</h3>
               <p className="text-sm leading-relaxed text-charcoal">
-                La culture naturelle préserve le spectre complet des cannabinoïdes (CBD, CBG, CBN)
-                et des terpènes. Cette richesse moléculaire crée un effet d&apos;entourage
-                que le CBD isolé ne reproduit pas.
+                Le type d&apos;extrait, les ingrédients, les arômes et les cannabinoïdes ajoutés doivent être
+                explicitement indiqués. L&apos;origine végétale ne suffit pas à décrire la composition finale.
               </p>
             </div>
             <div>
-              <h3 className="mb-2 text-lg font-display text-ink">Respect de l&apos;environnement</h3>
+              <h3 className="mb-2 text-lg font-display text-ink">Méthode de culture documentée</h3>
               <p className="text-sm leading-relaxed text-charcoal">
-                Pas de produit chimique dans le sol, pas de pollution des nappes phréatiques.
-                Le chanvre est naturellement résistant et contribue à la régénération des sols.
-                Une culture qui respecte le vivant.
+                Une certification ou des informations précises sur la culture sont plus utiles qu&apos;une
+                mention générale « naturel ». Elles doivent être attribuées au producteur concerné.
               </p>
             </div>
             <div>
-              <h3 className="mb-2 text-lg font-display text-ink">Circuit court breton</h3>
+              <h3 className="mb-2 text-lg font-display text-ink">Circuit identifié</h3>
               <p className="text-sm leading-relaxed text-charcoal">
-                En achetant du CBD naturel direct producteur en Bretagne, vous supprimez
-                les intermédiaires, réduisez l&apos;empreinte carbone et soutenez
-                l&apos;agriculture locale. Prix juste, qualité vérifiable.
+                La vente directe facilite les questions sur la récolte et le lot. Pour une référence partenaire,
+                nous affichons le nom et la région du producteur afin de rendre le circuit compréhensible.
               </p>
             </div>
           </div>
@@ -288,11 +278,12 @@ export default async function CbdNaturelPage() {
         {/* Produits CBD naturel */}
         <div className="cartoon-border mt-10 bg-cream p-8">
           <h2 className="mb-3 text-3xl font-display text-ink">
-            Nos produits CBD naturels
+            Une sélection de produits disponibles
           </h2>
           <p className="mb-6 max-w-3xl text-charcoal">
-            Chaque produit est issu de chanvre breton cultivé sans pesticide. Fleurs séchées lentement,
-            huiles extraites en douceur, résines pressées artisanalement, tisanes composées à la main.
+            Cette sélection réunit notre production et des références de producteurs partenaires.
+            L&apos;origine affichée sur chaque carte permet de les distinguer ; consultez ensuite la fiche
+            pour vérifier la composition et l&apos;analyse disponible.
           </p>
         </div>
 
@@ -331,28 +322,22 @@ export default async function CbdNaturelPage() {
         {/* Comment nous cultivons */}
         <div className="cartoon-border mt-8 bg-cream p-8">
           <h2 className="mb-4 text-3xl font-display text-ink">
-            Comment est cultivé notre CBD naturel en Bretagne ?
+            Comment cultivons-nous notre chanvre en Bretagne ?
           </h2>
           <div className="space-y-4 leading-relaxed text-charcoal">
             <p>
-              Notre chanvre est cultivé en pleine terre bretonne, dans le respect des cycles naturels.
-              Pas de culture hors-sol, pas de lumière artificielle permanente, pas d&apos;accélérateur
-              chimique. Les plants bénéficient du climat océanique breton — une humidité régulière,
-              des températures douces et un ensoleillement suffisant — qui favorise un développement
-              lent et une concentration optimale en cannabinoïdes.
+              Notre production propre est cultivée en Bretagne. Cette présentation concerne uniquement
+              les produits rattachés aux Chanvriers Bretons ; les références partenaires suivent les méthodes
+              décrites sur leur fiche et portent le nom de leur producteur d&apos;origine.
             </p>
             <p>
-              La rotation des cultures, l&apos;utilisation de compost naturel et le désherbage mécanique
-              remplacent les intrants chimiques. Le résultat : un chanvre plus résistant, des arômes
-              plus complexes et un profil terpénique riche. Après récolte, le séchage se fait à basse
-              température pour préserver les molécules fragiles. Chaque lot est ensuite envoyé en
-              analyse laboratoire avant mise en vente.
+              Pour juger une méthode de culture, nous vous conseillons de rechercher des éléments précis :
+              localisation, type de culture, pratiques agricoles, certifications éventuelles, date de récolte
+              et analyse correspondant au lot. Ces informations sont plus fiables qu&apos;une promesse générale.
             </p>
             <p>
-              Cette approche demande plus de temps et de soin qu&apos;une culture conventionnelle.
-              Mais c&apos;est précisément ce qui distingue un <strong>CBD naturel</strong> d&apos;un
-              CBD produit en masse. Vous achetez un produit dont vous pouvez retracer chaque étape,
-              du semis à l&apos;expédition.
+              Nous enrichissons progressivement les fiches avec ces preuves. Lorsqu&apos;une analyse est publiée,
+              un bouton permet de la consulter depuis le produit concerné.
             </p>
           </div>
         </div>
@@ -364,26 +349,23 @@ export default async function CbdNaturelPage() {
           </h2>
           <div className="space-y-4 leading-relaxed text-charcoal">
             <p>
-              <strong>CBD naturel</strong> : issu de chanvre cultivé sans pesticide ni engrais chimique,
-              avec une transformation douce qui préserve le profil moléculaire complet. C&apos;est
-              l&apos;approche que nous privilégions chez Les Chanvriers Bretons.
+              <strong>CBD d&apos;origine végétale</strong> : extrait du chanvre. Le mot « naturel » n&apos;est pas
+              une certification officielle et doit être complété par l&apos;origine, la composition et l&apos;analyse.
             </p>
             <p>
               <strong>CBD bio</strong> : un CBD qui répond aux critères de la certification biologique
               européenne (AB ou équivalent). La certification bio implique des contrôles externes
-              réguliers. En France, la filière chanvre CBD bio est encore en structuration. Nos
-              pratiques agricoles sont alignées sur les exigences du bio, même si la certification
-              formelle suit son propre calendrier réglementaire.
+              réguliers. Une pratique annoncée comme proche du bio ne doit pas être présentée comme certifiée
+              si le produit ou le producteur ne dispose pas du label correspondant.
             </p>
             <p>
               <strong>CBD de synthèse</strong> : fabriqué en laboratoire par synthèse chimique.
-              Il reproduit la molécule de CBD mais sans les terpènes, flavonoïdes et cannabinoïdes
-              mineurs présents dans le plant. L&apos;effet d&apos;entourage est absent. Les risques
-              de résidus chimiques sont plus élevés et la traçabilité souvent opaque.
+              Il reproduit la molécule de CBD sans être extrait de la plante. Sa nature et sa composition
+              doivent être clairement déclarées au consommateur.
             </p>
             <p>
-              En résumé, le CBD naturel breton offre le meilleur compromis entre pureté, efficacité,
-              traçabilité et respect de l&apos;environnement.
+              Dans tous les cas, choisissez à partir de preuves vérifiables plutôt qu&apos;à partir du seul mot
+              « naturel ».
             </p>
           </div>
         </div>
@@ -403,12 +385,45 @@ export default async function CbdNaturelPage() {
           </div>
         </div>
 
+        <div className="cartoon-border mt-8 bg-white p-8">
+          <h2 className="mb-4 text-2xl font-display text-ink">Sources publiques et précautions</h2>
+          <p className="max-w-4xl text-sm leading-relaxed text-charcoal">
+            Les règles et connaissances évoluent. Pour vérifier la réglementation, les interactions
+            médicamenteuses et les précautions de conduite, consultez en priorité les informations publiques.
+          </p>
+          <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-charcoal">
+            <li>
+              <a
+                href="https://www.drogues-info-service.fr/Tout-savoir-sur-les-drogues/Le-dico-des-drogues/CBD-cannabidiol"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-ink"
+              >
+                Drogues Info Service — CBD : effets, interactions et cadre d&apos;usage
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.drogues.gouv.fr/le-cbd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-ink"
+              >
+                MILDECA — réglementation et points de vigilance sur le CBD
+              </a>
+            </li>
+          </ul>
+          <p className="mt-4 text-xs leading-relaxed text-charcoal">
+            Ces informations générales ne remplacent pas l&apos;avis d&apos;un professionnel de santé.
+          </p>
+        </div>
+
         {/* CTA boutique */}
         <div className="cartoon-border mt-8 bg-yellow p-6 text-center">
-          <h2 className="mb-4 text-2xl font-display text-ink">Découvrir notre CBD naturel breton</h2>
+          <h2 className="mb-4 text-2xl font-display text-ink">Comparer les produits et leur origine</h2>
           <p className="mb-6 text-charcoal">
-            Parcourez la boutique et choisissez le format qui vous convient. Fleurs, huiles, résines,
-            tisanes — tout est cultivé ou sélectionné avec la même exigence de naturalité.
+            Parcourez les fiches pour identifier le producteur, la région, la composition et les analyses
+            disponibles avant de choisir un format.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
@@ -454,21 +469,20 @@ export default async function CbdNaturelPage() {
           </div>
         </div>
 
-        {/* Bloc SEO de clôture */}
+        {/* Repères de clôture */}
         <div className="cartoon-border mt-8 space-y-3 bg-cream p-6 text-sm text-charcoal">
+          <h2 className="text-2xl font-display text-ink">Nos repères de transparence</h2>
           <p>
-            <strong>CBD naturel breton direct producteur :</strong> fleurs de CBD cultivées
-            sans pesticide, huiles full spectrum extraites en douceur, résines artisanales
-            et tisanes chanvre composées à la main en Bretagne.
+            <strong>Origine :</strong> notre production bretonne et les produits de partenaires sont
+            distingués par le nom et la localisation du producteur.
           </p>
           <p>
-            <strong>Achat CBD naturel en circuit court :</strong> pas d&apos;intermédiaire entre
-            le producteur et vous. Prix producteur, traçabilité complète, analyses laboratoire
-            pour chaque lot.
+            <strong>Analyse :</strong> lorsqu&apos;un document de laboratoire est disponible, il est relié
+            à la fiche du produit concerné.
           </p>
           <p>
-            <strong>Livraison CBD naturel France :</strong> expédition rapide depuis la Bretagne.
-            Livraison à domicile ou en point relais Mondial Relay dans toute la France métropolitaine.
+            <strong>Expédition :</strong> les commandes sont préparées en Bretagne puis livrées à domicile
+            ou en point relais en France métropolitaine.
           </p>
         </div>
       </div>

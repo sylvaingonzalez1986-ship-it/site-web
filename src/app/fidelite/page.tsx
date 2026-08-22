@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Découvre les badges fidélité Les Chanvriers Bretons : seuils, réductions et avantages par palier.",
   alternates: {
-    canonical: "https://leschanvriersbretons.com/fidelite",
+    canonical: "https://www.leschanvriersbretons.com/fidelite",
   },
 };
 

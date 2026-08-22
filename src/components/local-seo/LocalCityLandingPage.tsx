@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import {
   BreadcrumbJsonLd,
   CityServiceJsonLd,
-  FaqJsonLd,
   ProductListJsonLd,
 } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
@@ -12,7 +11,6 @@ import { readPublicStoreByBackend } from "@/lib/data-backend";
 import {
   getCityData,
   getCityEditorialContent,
-  getCityFaq,
   getNearbyCities,
 } from "@/lib/local-seo-data";
 import { dedupeProducts } from "@/lib/product-dedup";
@@ -165,12 +163,19 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
 
   const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/${cityData.slug}`;
-  const variations = cityProductVariations[slug] || cityProductVariations["cbd-rennes"];
+  const cityVariations = cityProductVariations[slug] || cityProductVariations["cbd-rennes"];
+  const variations = {
+    ...cityVariations,
+    intro: `Les commandes destinées à ${cityData.name} sont préparées en Bretagne. Chaque fiche indique le producteur et sa région afin de distinguer notre production des références partenaires.`,
+    fleurIntro: `Fleurs actuellement disponibles pour livraison vers ${cityData.name} : comparez le producteur, le mode de culture et l'analyse publiée.`,
+    huilleIntro: `Huiles disponibles pour ${cityData.name} : vérifiez le type d'extrait, la concentration et la liste complète des ingrédients.`,
+    tisaneIntro: `Tisanes disponibles pour ${cityData.name} : consultez la composition, l'origine des plantes et les conseils de préparation.`,
+    resinIntro: `Résines disponibles pour ${cityData.name} : vérifiez le producteur, la composition et le document d'analyse associé.`,
+  };
   const editorialContent = getCityEditorialContent(slug);
   const store = await readPublicStoreByBackend();
   const featuredProducts = selectFeaturedProducts(store.products);
   const nearbyCities = getNearbyCities(slug);
-  const faqItems = getCityFaq(slug);
   const producerById = new Map(store.producers.map((producer) => [producer.id, producer]));
 
   return (
@@ -187,7 +192,6 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
         url={pageUrl}
         description={cityData.description}
       />
-      <FaqJsonLd questions={faqItems} />
       <ProductListJsonLd products={featuredProducts} producers={store.producers} />
       <div className="retro-container">
         <div className="cartoon-border bg-cream p-8">
@@ -224,7 +228,7 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
         </div>
 
         <div className="cartoon-border mt-8 bg-cream p-6">
-          <h2 className="mb-4 text-2xl font-display text-ink">Formats les plus recherchés à {cityData.name}</h2>
+          <h2 className="mb-4 text-2xl font-display text-ink">Formats disponibles à {cityData.name}</h2>
           <div className="grid gap-4 md:grid-cols-2">
             <p className="text-sm leading-relaxed text-charcoal">{variations.fleurIntro}</p>
             <p className="text-sm leading-relaxed text-charcoal">{variations.huilleIntro}</p>
@@ -245,52 +249,40 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
         )}
 
         <div className="cartoon-border mt-10 bg-cream p-8">
-          <h2 className="mb-6 text-3xl font-display text-ink">Pourquoi choisir le CBD breton à {cityData.name} ?</h2>
+          <h2 className="mb-6 text-3xl font-display text-ink">Quels éléments vérifier avant de commander ?</h2>
           <div className="grid gap-6 md:grid-cols-3">
             <div>
-              <h3 className="mb-3 text-lg font-display text-ink">Qualité certifiée</h3>
+              <h3 className="mb-3 text-lg font-display text-ink">Analyse disponible</h3>
               <p className="text-sm leading-relaxed text-charcoal">
-                Chaque produit CBD est analysé en laboratoire. THC inférieur au seuil légal, conformité française, traçabilité claire.
+                Lorsqu&apos;une analyse de laboratoire est publiée, son lien apparaît sur la fiche du produit concerné.
               </p>
             </div>
             <div>
-              <h3 className="mb-3 text-lg font-display text-ink">Naturel et responsable</h3>
+              <h3 className="mb-3 text-lg font-display text-ink">Origine indiquée</h3>
               <p className="text-sm leading-relaxed text-charcoal">
-                Culture sans pesticide ni chimie lourde. Notre CBD breton respecte l&apos;environnement, le terroir et une logique de production propre.
+                Le nom et la région du producteur permettent de distinguer notre production bretonne des sélections partenaires.
               </p>
             </div>
             <div>
-              <h3 className="mb-3 text-lg font-display text-ink">Prix producteur direct</h3>
+              <h3 className="mb-3 text-lg font-display text-ink">Composition lisible</h3>
               <p className="text-sm leading-relaxed text-charcoal">
-                Circuit court et vente directe. Vous achetez un CBD naturel sans surcouche d&apos;intermédiaires, avec une logique de qualité avant volume.
+                Vérifiez les ingrédients, le type d&apos;extrait et les éventuels cannabinoïdes ou arômes ajoutés.
               </p>
             </div>
           </div>
         </div>
 
         <div className="cartoon-border mt-8 bg-cream p-6">
-          <h2 className="mb-4 text-2xl font-display text-ink">Producteur direct breton</h2>
+          <h2 className="mb-4 text-2xl font-display text-ink">Production bretonne et producteurs partenaires</h2>
           <p className="mb-4 leading-relaxed text-charcoal">
-            Les Chanvriers Bretons cultivent le chanvre en Bretagne et valorisent une chaîne courte, de la culture à la préparation des commandes livrées chez vous à {cityData.name}.
+            Les Chanvriers Bretons cultivent du chanvre en Bretagne et proposent aussi des références sélectionnées auprès de producteurs partenaires français.
           </p>
           <p className="mb-4 leading-relaxed text-charcoal">
-            Notre approche est simple : proposer des fleurs CBD, des huiles naturelles, des résines et des tisanes chanvre artisanales avec un niveau de transparence élevé.
+            La fiche de chaque produit affiche sa provenance. Les commandes à destination de {cityData.name} sont préparées puis expédiées depuis la Bretagne.
           </p>
           <p className="leading-relaxed text-charcoal">
-            Acheter chez Les Chanvriers Bretons, c&apos;est soutenir une agriculture locale responsable en {cityData.department} et plus largement en Bretagne.
+            Avant de commander, utilisez ces informations pour choisir en connaissance de cause plutôt que de vous fier au seul mot « naturel ».
           </p>
-        </div>
-
-        <div className="cartoon-border mt-8 bg-cream p-6">
-          <h2 className="mb-4 text-2xl font-display text-ink">Questions fréquentes sur le CBD à {cityData.name}</h2>
-          <div className="space-y-4">
-            {faqItems.map((item) => (
-              <div key={item.question}>
-                <h3 className="mb-2 font-bold text-ink">{item.question}</h3>
-                <p className="text-sm text-charcoal">{item.answer}</p>
-              </div>
-            ))}
-          </div>
         </div>
 
         <div className="cartoon-border mt-8 bg-yellow p-6 text-center">
@@ -324,7 +316,7 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
           <div className="cartoon-border mt-8 bg-cream p-6">
             <h2 className="mb-4 text-2xl font-display text-ink">CBD dans les villes proches</h2>
             <p className="mb-4 text-sm leading-relaxed text-charcoal">
-              Vous cherchez aussi du CBD naturel dans d&apos;autres villes bretonnes proches de {cityData.name} ? Consultez aussi nos pages locales pour renforcer votre recherche par zone géographique.
+              Consultez les informations de livraison et les produits disponibles pour d&apos;autres villes bretonnes proches de {cityData.name}.
             </p>
             <div className="flex flex-wrap gap-2">
               {nearbyCities.map((nearbyCity) => (
@@ -342,13 +334,13 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
 
         <div className="cartoon-border mt-8 space-y-3 bg-cream p-6 text-sm text-charcoal">
           <p>
-            <strong>CBD naturel livré à {cityData.name}, {cityData.department} :</strong> découvrez nos fleurs de CBD breton, huiles naturelles full spectrum, résines et tisanes chanvre artisanales.
+            <strong>Livraison à {cityData.name}, {cityData.department} :</strong> les catégories et stocks réellement disponibles sont affichés dans la boutique.
           </p>
           <p>
-            <strong>Achat en ligne en direct du producteur :</strong> chaque référence privilégie la qualité, la traçabilité et une approche naturelle du chanvre en Bretagne.
+            <strong>Origine :</strong> la production des Chanvriers Bretons et les références partenaires sont identifiées séparément sur les fiches.
           </p>
           <p>
-            <strong>Producteur CBD en Bretagne :</strong> Les Chanvriers Bretons mettent en avant un chanvre cultivé proprement, des transformations maîtrisées et une logistique adaptée à toute la région.
+            <strong>Preuves :</strong> vérifiez la composition et l&apos;analyse disponible avant de choisir un produit.
           </p>
         </div>
       </div>

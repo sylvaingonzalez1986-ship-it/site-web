@@ -43,7 +43,7 @@ const handwrittenFont = Caveat({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://leschanvriersbretons.com"),
+  metadataBase: new URL("https://www.leschanvriersbretons.com"),
   icons: {
     icon: [
       { url: "/les-chanvriers-bretons-logo.png", type: "image/png", sizes: "800x800" },
@@ -105,7 +105,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    url: "https://leschanvriersbretons.com",
+    url: "https://www.leschanvriersbretons.com",
     siteName: "Les Chanvriers Bretons",
     title: "Les Chanvriers Bretons | CBD Naturel Direct Producteur Bretagne",
     description:
@@ -127,9 +127,9 @@ export const metadata: Metadata = {
     images: ["/og-default.png"],
   },
   alternates: {
-    canonical: "https://leschanvriersbretons.com",
+    canonical: "https://www.leschanvriersbretons.com",
     languages: {
-      "fr-FR": "https://leschanvriersbretons.com",
+      "fr-FR": "https://www.leschanvriersbretons.com",
     },
   },
 };

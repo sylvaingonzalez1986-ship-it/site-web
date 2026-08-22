@@ -46,14 +46,14 @@ export const metadata: Metadata = {
   description:
     "Achat CBD circuit court : fleurs de CBD direct producteur breton, résines, huiles spectre complet, tisanes chanvre artisanales. CBD français sans pesticide, livraison rapide en France.",
   alternates: {
-    canonical: "https://leschanvriersbretons.com/boutique",
+    canonical: "https://www.leschanvriersbretons.com/boutique",
   },
   openGraph: {
     title:
       "Boutique CBD Naturel Direct Producteur — Les Chanvriers Bretons",
     description:
       "Tous nos produits CBD naturel breton en circuit court. Fleurs de CBD, résines, huiles, tisanes chanvre artisanales. CBD français sans pesticide, livraison rapide France.",
-    url: "https://leschanvriersbretons.com/boutique",
+    url: "https://www.leschanvriersbretons.com/boutique",
   },
 };
 
@@ -66,10 +66,10 @@ export default async function BoutiqueLayout({
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Accueil", url: "https://leschanvriersbretons.com" },
+          { name: "Accueil", url: "https://www.leschanvriersbretons.com" },
           {
             name: "Boutique CBD",
-            url: "https://leschanvriersbretons.com/boutique",
+            url: "https://www.leschanvriersbretons.com/boutique",
           },
         ]}
       />

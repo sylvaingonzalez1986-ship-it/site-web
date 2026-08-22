@@ -21,12 +21,12 @@ const FAQ_ITEMS = [
 export const metadata: Metadata = {
   title: "CBD Pas Cher et Naturel | Prix Justes Direct Producteur",
   description: "CBD pas cher et naturel en circuit court : fleurs, huiles, résines et tisanes à prix accessibles. Producteurs sélectionnés, traçabilité et livraison en France.",
-  alternates: { canonical: `https://leschanvriersbretons.com/${PAGE_SLUG}` },
+  alternates: { canonical: `https://www.leschanvriersbretons.com/${PAGE_SLUG}` },
   keywords: ["cbd pas cher", "cbd pas cher france", "acheter cbd pas cher", "fleur cbd pas cher", "huile cbd pas cher", "cbd naturel pas cher", "cbd prix producteur"],
   openGraph: {
     title: "CBD Pas Cher et Naturel à Prix Juste | Les Chanvriers Bretons",
     description: "Découvrez une sélection de CBD à prix accessible, classée du moins cher au plus cher, en circuit court et avec une origine transparente.",
-    url: `https://leschanvriersbretons.com/${PAGE_SLUG}`,
+    url: `https://www.leschanvriersbretons.com/${PAGE_SLUG}`,
     type: "website",
     images: [{ url: "/og-default.png", width: 1200, height: 630, alt: "CBD pas cher et naturel à prix juste" }],
   },

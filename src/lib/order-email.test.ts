@@ -44,15 +44,15 @@ describe("shipped order email", () => {
     const email = buildShippedEmail(shippedOrder);
 
     expect(email.html).toContain(
-      'href="https://leschanvriersbretons.com/profil?tab=commandes"',
+      'href="https://www.leschanvriersbretons.com/profil?tab=commandes"',
     );
     expect(email.html).toContain('target="_blank"');
     expect(email.html).toContain('mso-padding-alt:12px 16px');
     expect(email.html).toContain("Si le bouton ne s'ouvre pas, utilise ce lien");
-    expect(email.html).toContain("https://leschanvriersbretons.com/mentions-legales");
-    expect(email.html).toContain("https://leschanvriersbretons.com/politique-confidentialite");
+    expect(email.html).toContain("https://www.leschanvriersbretons.com/mentions-legales");
+    expect(email.html).toContain("https://www.leschanvriersbretons.com/politique-confidentialite");
     expect(email.text).toContain(
-      "Voir mes commandes: https://leschanvriersbretons.com/profil?tab=commandes",
+      "Voir mes commandes: https://www.leschanvriersbretons.com/profil?tab=commandes",
     );
     expect(`${email.html}\n${email.text}`).not.toContain("leschanvriersbretons.fr");
   });
