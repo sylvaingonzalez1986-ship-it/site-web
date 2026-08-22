@@ -226,8 +226,15 @@ export async function OrganizationJsonLd() {
     sameAs: [
       BUSINESS_IDENTITY.officialRegistryUrl,
       BUSINESS_IDENTITY.externalRegistryUrl,
+      BUSINESS_IDENTITY.externalMentions[0].url,
       ...BUSINESS_IDENTITY.socialProfileUrls,
     ],
+    subjectOf: BUSINESS_IDENTITY.externalMentions.map((mention) => ({
+      "@type": "WebPage",
+      name: mention.name,
+      url: mention.url,
+      description: mention.description,
+    })),
   };
 
   return <JsonLdScript nonce={nonce} data={jsonLd} />;

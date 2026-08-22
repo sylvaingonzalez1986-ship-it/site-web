@@ -20,4 +20,21 @@ export const BUSINESS_IDENTITY = {
     "https://www.facebook.com/leschanvriersbretons",
     "https://www.tiktok.com/@leschanvriersbretons",
   ],
+  externalMentions: [
+    {
+      name: "CBDMAPS — Les Chanvriers Bretons",
+      url: "https://cbd-maps.com/entreprise/les-chanvriers-bretons/",
+      description: "Fiche sectorielle externe consacrée aux Chanvriers Bretons.",
+    },
+    {
+      name: "Ultraweed — sites CBD référencés",
+      url: "https://ultraweed.fr/sites-references",
+      description: "Référencement externe de la boutique et de produits observés dans son catalogue.",
+    },
+    {
+      name: "Ultraweed — Platinum Panther",
+      url: "https://ultraweed.fr/variete/platinum-panther",
+      description: "Comparatif externe mentionnant une offre des Chanvriers Bretons.",
+    },
+  ],
 } as const;

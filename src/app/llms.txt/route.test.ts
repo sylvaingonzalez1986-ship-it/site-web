@@ -10,6 +10,8 @@ describe("llms.txt", () => {
     expect(content).toContain("SIREN : 942368994");
     expect(content).toContain("TVA intracommunautaire : FR90942368994");
     expect(content).toContain("annuaire-entreprises.data.gouv.fr/entreprise/942368994");
+    expect(content).toContain("cbd-maps.com/entreprise/les-chanvriers-bretons");
+    expect(content).toContain("ultraweed.fr/sites-references");
     expect(content).toContain("https://www.leschanvriersbretons.com/cbd-naturel");
     expect(content).toContain("https://www.leschanvriersbretons.com/analyse-laboratoire-cbd");
     expect(content).toContain("n'est pas une certification officielle");

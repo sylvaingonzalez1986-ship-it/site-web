@@ -122,6 +122,25 @@ export default function AboutPage() {
           </ul>
         </article>
 
+        <article className="cartoon-border mt-8 bg-cream p-6 md:p-10">
+          <h2 className="font-display text-3xl text-ink">Référencements sectoriels externes</h2>
+          <p className="mt-4 max-w-4xl leading-relaxed text-charcoal">
+            Des sites tiers mentionnent actuellement Les Chanvriers Bretons ou certaines offres du catalogue.
+            Ces références sont indépendantes : elles ne constituent ni un label, ni une certification, ni une
+            validation de l&apos;ensemble des produits. Leurs informations peuvent évoluer séparément du site officiel.
+          </p>
+          <ul className="mt-5 grid gap-4 md:grid-cols-3">
+            {BUSINESS_IDENTITY.externalMentions.map((mention) => (
+              <li key={mention.url} className="cartoon-border-sm bg-white p-5">
+                <a className="font-bold underline" href={mention.url} target="_blank" rel="noreferrer">
+                  {mention.name}
+                </a>
+                <p className="mt-2 text-sm text-charcoal">{mention.description}</p>
+              </li>
+            ))}
+          </ul>
+        </article>
+
         <article className="cartoon-border mt-8 bg-white p-6 md:p-10">
           <h2 className="font-display text-3xl text-ink">Production propre et producteurs partenaires</h2>
           <div className="mt-4 grid gap-4 leading-relaxed text-charcoal">

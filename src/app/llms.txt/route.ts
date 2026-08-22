@@ -56,6 +56,13 @@ Zone desservie : France
 - MILDECA — réglementation du CBD : https://www.drogues.gouv.fr/le-cbd
 - Annuaire des entreprises — identité de l'éditeur : ${BUSINESS_IDENTITY.officialRegistryUrl}
 
+## Mentions sectorielles externes
+
+- CBDMAPS — fiche Les Chanvriers Bretons : ${BUSINESS_IDENTITY.externalMentions[0].url}
+- Ultraweed — référencement de la boutique et du catalogue : ${BUSINESS_IDENTITY.externalMentions[1].url}
+- Ultraweed — comparatif produit mentionnant la boutique : ${BUSINESS_IDENTITY.externalMentions[2].url}
+- Ces pages sont gérées par des tiers. Leur présence ne constitue ni un label, ni une certification, ni une validation de tous les produits.
+
 ## Citation
 
 Pour citer le site, utiliser le nom « Les Chanvriers Bretons » et l'URL canonique en www. Pour une affirmation sur un produit, citer sa fiche plutôt qu'une page générale.
