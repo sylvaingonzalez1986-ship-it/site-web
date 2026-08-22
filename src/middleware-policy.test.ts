@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { isAdminRestrictedPage, shouldEnforceAgeGate, shouldValidateMutativeOrigin } from "../middleware";
+import {
+  isAdminRestrictedPage,
+  isRecognizedCrawlerUserAgent,
+  shouldEnforceAgeGate,
+  shouldValidateMutativeOrigin,
+} from "../middleware";
 
 describe("middleware policy helpers", () => {
   it("enforces the age gate on contest pages", () => {
@@ -9,6 +14,33 @@ describe("middleware policy helpers", () => {
     expect(shouldEnforceAgeGate("/bete-de-concours")).toBe(true);
     expect(shouldEnforceAgeGate("/bete-de-concours/lot-premium")).toBe(true);
     expect(shouldEnforceAgeGate("/bete-de-concours/profils/testeur")).toBe(true);
+  });
+
+  it("lets official OpenAI crawlers pass the age gate", () => {
+    expect(
+      isRecognizedCrawlerUserAgent(
+        "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OAI-SearchBot/1.4; +https://openai.com/searchbot",
+      ),
+    ).toBe(true);
+    expect(
+      isRecognizedCrawlerUserAgent(
+        "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ChatGPT-User/1.0; +https://openai.com/bot",
+      ),
+    ).toBe(true);
+    expect(
+      isRecognizedCrawlerUserAgent(
+        "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; GPTBot/1.4; +https://openai.com/gptbot",
+      ),
+    ).toBe(true);
+  });
+
+  it("keeps regular browsers behind the age gate", () => {
+    expect(
+      isRecognizedCrawlerUserAgent(
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36",
+      ),
+    ).toBe(false);
+    expect(isRecognizedCrawlerUserAgent(null)).toBe(false);
   });
 
   it("validates origins for mutative contest API requests", () => {

@@ -4,7 +4,7 @@ import { ADMIN_COOKIE_NAME, verifyAdminSessionToken } from "@/lib/admin-auth";
 const MUTATIVE_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 const AGE_GATE_COOKIE_NAME = "age_verified";
 const CRAWLER_USER_AGENT_PATTERN =
-  /(googlebot|bingbot|duckduckbot|yandex(bot)?|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slurp|applebot|pinterestbot|discordbot|whatsapp|petalbot|ahrefsbot|semrushbot)/i;
+  /(googlebot|bingbot|duckduckbot|yandex(bot)?|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slurp|applebot|pinterestbot|discordbot|whatsapp|petalbot|ahrefsbot|semrushbot|oai-searchbot|gptbot|chatgpt-user)/i;
 
 const SUPABASE_HOSTNAME = "eyowwwpdmfrulhkpvlnf.supabase.co";
 const SUPABASE_CSP_SOURCES = `https://${SUPABASE_HOSTNAME} https://*.supabase.co`;
@@ -105,9 +105,12 @@ async function verifyAgeGateCookie(request: NextRequest): Promise<boolean> {
   }
 }
 
+export function isRecognizedCrawlerUserAgent(userAgent: string | null | undefined): boolean {
+  return CRAWLER_USER_AGENT_PATTERN.test(userAgent ?? "");
+}
+
 function isCrawlerRequest(request: NextRequest): boolean {
-  const userAgent = request.headers.get("user-agent") || "";
-  return CRAWLER_USER_AGENT_PATTERN.test(userAgent);
+  return isRecognizedCrawlerUserAgent(request.headers.get("user-agent"));
 }
 
 function isDocumentNavigationRequest(request: NextRequest): boolean {
