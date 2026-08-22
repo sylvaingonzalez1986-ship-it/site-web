@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { BUSINESS_IDENTITY } from "@/lib/business-identity";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const revalidate = 86400;
@@ -14,11 +15,17 @@ Zone desservie : France
 
 ## Identité
 
-- Marque : Les Chanvriers Bretons
-- Éditeur légal : Les Champs Bretons
-- Responsable de publication : Sylvain Gonzalez
-- SIRET : 94236899400011
-- Contact : leschanvriersbretons@gmail.com
+- Marque : ${BUSINESS_IDENTITY.brandName}
+- Éditeur légal : ${BUSINESS_IDENTITY.legalName}
+- Président et responsable de publication : ${BUSINESS_IDENTITY.president}
+- SIREN : ${BUSINESS_IDENTITY.siren}
+- SIRET : ${BUSINESS_IDENTITY.siret}
+- TVA intracommunautaire : ${BUSINESS_IDENTITY.vatNumber}
+- Création de l'entreprise : ${BUSINESS_IDENTITY.foundingDate}
+- Siège social : ${BUSINESS_IDENTITY.address.streetAddress}, ${BUSINESS_IDENTITY.address.postalCode} ${BUSINESS_IDENTITY.address.addressLocality}, France
+- Contact : ${BUSINESS_IDENTITY.email}
+- Fiche officielle : ${BUSINESS_IDENTITY.officialRegistryUrl}
+- Fiche d'entreprise externe : ${BUSINESS_IDENTITY.externalRegistryUrl}
 - Présentation et méthode éditoriale : ${baseUrl}/a-propos
 - Mentions légales : ${baseUrl}/mentions-legales
 
@@ -47,6 +54,7 @@ Zone desservie : France
 
 - Drogues Info Service — CBD : https://www.drogues-info-service.fr/Tout-savoir-sur-les-drogues/Le-dico-des-drogues/CBD
 - MILDECA — réglementation du CBD : https://www.drogues.gouv.fr/le-cbd
+- Annuaire des entreprises — identité de l'éditeur : ${BUSINESS_IDENTITY.officialRegistryUrl}
 
 ## Citation
 

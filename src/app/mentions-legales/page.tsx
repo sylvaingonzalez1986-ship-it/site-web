@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BUSINESS_IDENTITY } from "@/lib/business-identity";
 import Link from "next/link";
 import { CmsPageRenderer } from "@/components/cms/CmsPageRenderer";
 import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-static-pages";
@@ -45,41 +46,57 @@ export default async function MentionsLegalesPage() {
 
           <div className="mt-6 grid gap-6 text-sm leading-relaxed text-ink">
             <section>
-              <h2 className="font-display text-2xl">Editeur du site</h2>
+              <h2 className="font-display text-2xl">Éditeur du site</h2>
               <p className="mt-2">
-                Nom de l&apos;entreprise : Les Champs Bretons
+                Nom de l&apos;entreprise : {BUSINESS_IDENTITY.legalName}
                 <br />
-                Gerant : Monsieur Sylvain Gonzalez
+                Président : Monsieur {BUSINESS_IDENTITY.president}
                 <br />
-                Adresse : 60 rue Francois 1er, 75008 Paris
+                Adresse : {BUSINESS_IDENTITY.address.streetAddress}, {BUSINESS_IDENTITY.address.postalCode}{" "}
+                {BUSINESS_IDENTITY.address.addressLocality}
                 <br />
-                SIRET : 94236899400011
+                SIREN : {BUSINESS_IDENTITY.siren}
                 <br />
-                TVA intracommunautaire : FR9094238994
+                SIRET : {BUSINESS_IDENTITY.siret}
                 <br />
-                Adresse e-mail : leschanvriersbretons@gmail.com
+                TVA intracommunautaire : {BUSINESS_IDENTITY.vatNumber}
+                <br />
+                Adresse e-mail : {BUSINESS_IDENTITY.email}
+                <br />
+                <a
+                  className="underline"
+                  href={BUSINESS_IDENTITY.officialRegistryUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Vérifier l&apos;immatriculation sur l&apos;Annuaire des entreprises
+                </a>
               </p>
             </section>
 
             <section>
               <h2 className="font-display text-2xl">Responsable de publication</h2>
               <p className="mt-2">
-                Responsable de la publication et webmaster : M. Sylvain Gonzalez
+                Responsable de la publication et webmaster : M. {BUSINESS_IDENTITY.president}
                 <br />
-                Contact : leschanvriersbretons@gmail.com
+                Contact : {BUSINESS_IDENTITY.email}
               </p>
             </section>
 
             <section>
-              <h2 className="font-display text-2xl">Hebergeur</h2>
+              <h2 className="font-display text-2xl">Hébergeur</h2>
               <p className="mt-2">
-                O2 Switch
+                Vercel Inc.
                 <br />
-                222-224 Boulevard Gustave Flaubert
+                440 N Barranca Avenue #4133
                 <br />
-                63000 Clermont-Ferrand
+                Covina, CA 91723
                 <br />
-                France
+                États-Unis
+                <br />
+                <a className="underline" href="https://vercel.com" target="_blank" rel="noreferrer">
+                  vercel.com
+                </a>
               </p>
             </section>
 
@@ -89,7 +106,7 @@ export default async function MentionsLegalesPage() {
                 Toute reproduction, representation, modification, publication ou adaptation totale
                 ou partielle des elements du site, quel que soit le moyen ou le procede utilise,
                 est interdite sans autorisation ecrite prealable a l&apos;adresse :
-                leschanvriersbretons@gmail.com.
+                {" "}{BUSINESS_IDENTITY.email}.
               </p>
               <p className="mt-2">
                 Toute exploitation non autorisée du site ou de l&apos;un quelconque des elements
@@ -100,28 +117,25 @@ export default async function MentionsLegalesPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-2xl">Règlement des litiges</h2>
+              <h2 className="font-display text-2xl">Réclamations et règlement des litiges</h2>
               <p className="mt-2">
-                La Commission europeenne fournit une plateforme de règlement des litiges en ligne
-                (ODR), accessible a l&apos;adresse :
-                {" "}
+                Pour toute réclamation, contactez d&apos;abord {BUSINESS_IDENTITY.email} afin de rechercher
+                une solution amiable.
+              </p>
+              <p className="mt-2">
+                La plateforme européenne de règlement en ligne des litiges (ODR) a été supprimée le 20
+                juillet 2025. Les informations actuelles sur les voies de recours et les organismes de
+                règlement extrajudiciaire sont publiées par la Commission européenne :{" "}
                 <a
-                  href="https://ec.europa.eu/consumers/odr/"
+                  href="https://consumer-redress.ec.europa.eu/index_fr"
                   className="underline"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  https://ec.europa.eu/consumers/odr/
+                  Recours des consommateurs dans l&apos;Union européenne
                 </a>
                 .
               </p>
-              <p className="mt-2">
-                En tant que client, vous avez toujours la possibilite de contacter le conseil
-                d&apos;arbitrage de la Commission europeenne. Nous ne sommes ni disposes a, ni
-                obliges de, participer a une procedure de règlement des litiges devant un conseil
-                d&apos;arbitrage de la consommation.
-              </p>
-              <p className="mt-2">Contact e-mail : leschanvriersbretons@gmail.com</p>
             </section>
 
             <section>

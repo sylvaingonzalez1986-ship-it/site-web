@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { CmsPageRenderer } from "@/components/cms/CmsPageRenderer";
+import { BUSINESS_IDENTITY } from "@/lib/business-identity";
 import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-static-pages";
 
 const CMS_SLUG = "reglement-jeu-promo";
@@ -28,19 +29,20 @@ export default async function ReglementJeuPromoPage() {
         <article className="cartoon-border bg-white p-6 md:p-10">
           <h1 className="section-title">REGLEMENT DU JEU PROMOTIONNEL</h1>
           <p className="mt-4 text-sm leading-relaxed text-charcoal">
-            Jeu promotionnel &quot;Booster Pack&quot; organise par Les Champs Bretons.
+            Jeu promotionnel &quot;Booster Pack&quot; organise par {BUSINESS_IDENTITY.legalName}.
           </p>
 
           <div className="mt-6 grid gap-6 text-sm leading-relaxed text-ink">
             <section>
               <h2 className="font-display text-2xl">Article 1 - Organisateur</h2>
               <p className="mt-2">
-                SASU Les Champs Bretons - SIRET 94236899400011 - TVA intracommunautaire
-                FR9094238994
+                SASU {BUSINESS_IDENTITY.legalName} - SIRET {BUSINESS_IDENTITY.siret} - TVA intracommunautaire{" "}
+                {BUSINESS_IDENTITY.vatNumber}
                 <br />
-                60 rue Francois 1er, 75008 Paris, France
+                {BUSINESS_IDENTITY.address.streetAddress}, {BUSINESS_IDENTITY.address.postalCode}{" "}
+                {BUSINESS_IDENTITY.address.addressLocality}, France
                 <br />
-                Contact : leschanvriersbretons@gmail.com
+                Contact : {BUSINESS_IDENTITY.email}
               </p>
             </section>
 

@@ -7,6 +7,9 @@ describe("llms.txt", () => {
 
     expect(content).toContain("# Les Chanvriers Bretons");
     expect(content).toContain("Éditeur légal : Les Champs Bretons");
+    expect(content).toContain("SIREN : 942368994");
+    expect(content).toContain("TVA intracommunautaire : FR90942368994");
+    expect(content).toContain("annuaire-entreprises.data.gouv.fr/entreprise/942368994");
     expect(content).toContain("https://www.leschanvriersbretons.com/cbd-naturel");
     expect(content).toContain("https://www.leschanvriersbretons.com/analyse-laboratoire-cbd");
     expect(content).toContain("n'est pas une certification officielle");

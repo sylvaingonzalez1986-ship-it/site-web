@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbJsonLd, WebPageJsonLd } from "@/components/JsonLd";
+import { BUSINESS_IDENTITY } from "@/lib/business-identity";
 import { getSiteUrl } from "@/lib/site-url";
 
 const LAST_REVIEWED = "2026-08-22";
@@ -53,10 +54,10 @@ export default function AboutPage() {
 
           <h1 className="section-title text-ink">Qui sommes-nous ?</h1>
           <p className="mt-4 max-w-4xl text-lg leading-relaxed text-charcoal">
-            Les Chanvriers Bretons est une marque dédiée au chanvre et au CBD. Le site est édité par
-            Les Champs Bretons et publié sous la responsabilité de Sylvain Gonzalez. Notre objectif est
-            de rendre chaque référence compréhensible : qui la produit, d&apos;où elle vient, ce qu&apos;elle
-            contient et quelles preuves sont consultables.
+            Les Chanvriers Bretons est une marque dédiée au chanvre et au CBD. Le site est édité par{" "}
+            {BUSINESS_IDENTITY.legalName} et publié sous la responsabilité de {BUSINESS_IDENTITY.president}. Notre
+            objectif est de rendre chaque référence compréhensible : qui la produit, d&apos;où elle vient, ce
+            qu&apos;elle contient et quelles preuves sont consultables.
           </p>
           <p className="mt-4 text-sm text-charcoal">
             Dernière vérification : <time dateTime={LAST_REVIEWED}>22 août 2026</time>
@@ -65,25 +66,60 @@ export default function AboutPage() {
           <dl className="mt-8 grid gap-5 md:grid-cols-2">
             <div className="cartoon-border-sm bg-white p-5">
               <dt className="font-display text-xl text-ink">Marque</dt>
-              <dd className="mt-2 text-charcoal">Les Chanvriers Bretons</dd>
+              <dd className="mt-2 text-charcoal">{BUSINESS_IDENTITY.brandName}</dd>
             </div>
             <div className="cartoon-border-sm bg-white p-5">
               <dt className="font-display text-xl text-ink">Éditeur légal</dt>
-              <dd className="mt-2 text-charcoal">Les Champs Bretons — SIRET 94236899400011</dd>
+              <dd className="mt-2 text-charcoal">
+                {BUSINESS_IDENTITY.legalName} — SIREN {BUSINESS_IDENTITY.siren} — SIRET {BUSINESS_IDENTITY.siret}
+              </dd>
             </div>
             <div className="cartoon-border-sm bg-white p-5">
               <dt className="font-display text-xl text-ink">Responsable de publication</dt>
-              <dd className="mt-2 text-charcoal">Sylvain Gonzalez</dd>
+              <dd className="mt-2 text-charcoal">{BUSINESS_IDENTITY.president}, président</dd>
             </div>
             <div className="cartoon-border-sm bg-white p-5">
               <dt className="font-display text-xl text-ink">Contact éditorial</dt>
               <dd className="mt-2 text-charcoal">
-                <a className="underline" href="mailto:leschanvriersbretons@gmail.com">
-                  leschanvriersbretons@gmail.com
+                <a className="underline" href={`mailto:${BUSINESS_IDENTITY.email}`}>
+                  {BUSINESS_IDENTITY.email}
                 </a>
               </dd>
             </div>
           </dl>
+        </article>
+
+        <article className="cartoon-border mt-8 bg-yellow p-6 md:p-10">
+          <h2 className="font-display text-3xl text-ink">Identité vérifiable hors de ce site</h2>
+          <p className="mt-4 max-w-4xl leading-relaxed text-charcoal">
+            Les identifiants légaux, la date de création et le dirigeant peuvent être contrôlés dans des
+            registres externes. Ces liens servent de références d&apos;identité pour distinguer la marque{" "}
+            Les Chanvriers Bretons de l&apos;éditeur légal {BUSINESS_IDENTITY.legalName}.
+          </p>
+          <ul className="mt-5 grid gap-4 md:grid-cols-2">
+            <li className="cartoon-border-sm bg-white p-5">
+              <a
+                className="font-bold underline"
+                href={BUSINESS_IDENTITY.officialRegistryUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Annuaire des entreprises — fiche officielle
+              </a>
+              <p className="mt-2 text-sm text-charcoal">SIREN {BUSINESS_IDENTITY.siren}, créé le 22 mars 2025.</p>
+            </li>
+            <li className="cartoon-border-sm bg-white p-5">
+              <a
+                className="font-bold underline"
+                href={BUSINESS_IDENTITY.externalRegistryUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Fiche d&apos;entreprise externe
+              </a>
+              <p className="mt-2 text-sm text-charcoal">Dénomination, SIRET et dirigeant publiquement recoupables.</p>
+            </li>
+          </ul>
         </article>
 
         <article className="cartoon-border mt-8 bg-white p-6 md:p-10">

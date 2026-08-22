@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import type { Product } from "@/data/products";
+import { BUSINESS_IDENTITY } from "@/lib/business-identity";
 import { getSiteUrl } from "@/lib/site-url";
 import type { Producer } from "@/types/store";
 
@@ -46,10 +47,9 @@ const CATEGORY_NAMES: Record<Product["category"], string> = {
   accessoires: "Accessoires CBD",
 };
 
-const BUSINESS_NAME = "Les Chanvriers Bretons";
-const BUSINESS_LEGAL_NAME = "Les Champs Bretons";
-const BUSINESS_EMAIL = "leschanvriersbretons@gmail.com";
-const BUSINESS_SIRET = "94236899400011";
+const BUSINESS_NAME = BUSINESS_IDENTITY.brandName;
+const BUSINESS_LEGAL_NAME = BUSINESS_IDENTITY.legalName;
+const BUSINESS_EMAIL = BUSINESS_IDENTITY.email;
 const BUSINESS_LOGO_PATH = "/les-chanvriers-bretons-logo.png";
 const BUSINESS_PHONE =
   process.env.BUSINESS_PHONE?.trim() ||
@@ -167,10 +167,23 @@ export async function OrganizationJsonLd() {
       "Maison bretonne consacrée au CBD et au chanvre. Le catalogue distingue la production des Chanvriers Bretons des références de producteurs partenaires et présente l'origine, la composition et les analyses disponibles par produit.",
     email: BUSINESS_EMAIL,
     telephone: BUSINESS_PHONE,
-    identifier: {
-      "@type": "PropertyValue",
-      propertyID: "SIRET",
-      value: BUSINESS_SIRET,
+    identifier: [
+      {
+        "@type": "PropertyValue",
+        propertyID: "SIREN",
+        value: BUSINESS_IDENTITY.siren,
+      },
+      {
+        "@type": "PropertyValue",
+        propertyID: "SIRET",
+        value: BUSINESS_IDENTITY.siret,
+      },
+    ],
+    vatID: BUSINESS_IDENTITY.vatNumber,
+    foundingDate: BUSINESS_IDENTITY.foundingDate,
+    address: {
+      "@type": "PostalAddress",
+      ...BUSINESS_IDENTITY.address,
     },
     contactPoint: {
       "@type": "ContactPoint",
@@ -184,8 +197,8 @@ export async function OrganizationJsonLd() {
     founder: {
       "@type": "Person",
       "@id": founderId(baseUrl),
-      name: "Sylvain Gonzalez",
-      jobTitle: "Responsable de publication",
+      name: BUSINESS_IDENTITY.president,
+      jobTitle: "Président et responsable de publication",
       image: `${baseUrl}/sylvain.png`,
     },
     hasMerchantReturnPolicy: {
@@ -211,9 +224,9 @@ export async function OrganizationJsonLd() {
       { "@type": "AdministrativeArea", name: "Bretagne" },
     ],
     sameAs: [
-      "https://www.instagram.com/leschanvriersbretons",
-      "https://www.facebook.com/leschanvriersbretons",
-      "https://www.tiktok.com/@leschanvriersbretons",
+      BUSINESS_IDENTITY.officialRegistryUrl,
+      BUSINESS_IDENTITY.externalRegistryUrl,
+      ...BUSINESS_IDENTITY.socialProfileUrls,
     ],
   };
 
