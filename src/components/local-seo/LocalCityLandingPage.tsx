@@ -4,14 +4,18 @@ import { notFound } from "next/navigation";
 import {
   BreadcrumbJsonLd,
   CityServiceJsonLd,
+  FaqJsonLd,
   ProductListJsonLd,
+  WebPageJsonLd,
 } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import {
   getCityData,
   getCityEditorialContent,
+  getCityFaq,
   getNearbyCities,
+  LOCAL_SEO_LAST_REVIEWED,
 } from "@/lib/local-seo-data";
 import { dedupeProducts } from "@/lib/product-dedup";
 import { getSiteUrl } from "@/lib/site-url";
@@ -21,88 +25,6 @@ type LocalCityPageProps = {
 };
 
 const featuredCategoryOrder = ["fleurs", "huiles", "resines", "alimentaire"] as const;
-
-const cityProductVariations: Record<
-  string,
-  {
-    intro: string;
-    fleurIntro: string;
-    huilleIntro: string;
-    tisaneIntro: string;
-    resinIntro: string;
-  }
-> = {
-  "cbd-rennes": {
-    intro: "À Rennes, capitale de la Bretagne, nous livrons rapidement nos produits CBD naturels aux habitants et entreprises de la région. Direct du producteur breton, sans pesticide.",
-    fleurIntro: "Les fleurs de CBD de Rennes sont cultivées en Bretagne selon les normes les plus strictes. Arômes intenses, taux de CBD analysé en laboratoire.",
-    huilleIntro: "Nos huiles CBD full spectrum à Rennes offrent une concentration optimale pour la relaxation quotidienne. Idéales pour les habitants de Rennes et d'Ille-et-Vilaine.",
-    tisaneIntro: "Tisanes chanvre artisanales bretonnes distribuées à Rennes. Infusions calmantes, sans THC.",
-    resinIntro: "Résines CBD comprimées de la Bretagne, livraison express à Rennes. Pureté garantie.",
-  },
-  "cbd-quimper": {
-    intro: "À Quimper dans le Finistère, découvrez le CBD naturel breton en direct du producteur. Circuit court, livraison rapide dans votre région.",
-    fleurIntro: "Fleurs de CBD bretonnes premium à Quimper. Cultivées sans pesticide selon les traditions agricoles bretonnes. Terpènes préservés, qualité garantie.",
-    huilleIntro: "Huiles CBD naturelles et bretonnes distribuées à Quimper. Spectre complet, extraction douce.",
-    tisaneIntro: "Tisanes chanvre artisanales du producteur breton à Quimper. Goût délicat, effets relaxants.",
-    resinIntro: "Résines CBD pures du terroir breton livrées à Quimper. Densité et saveur remarquables.",
-  },
-  "cbd-brest": {
-    intro: "À Brest, nous livrons rapidement votre CBD breton du producteur direct. Sans pesticide, naturel, légal et analysé.",
-    fleurIntro: "Fleurs CBD bretonnes de qualité supérieure à Brest. Sélection stricte, parfum authentique, CBD pur.",
-    huilleIntro: "Huiles CBD bretonnes à Brest. Full spectrum, prise sublinguale, absorption rapide. Bien-être immédiat.",
-    tisaneIntro: "Tisanes chanvre bretonnes servies à Brest. Recette artisanale, ingrédients naturels.",
-    resinIntro: "Résines CBD bretonnes à Brest en livraison rapide. Concentration CBD maximale.",
-  },
-  "cbd-vannes": {
-    intro: "À Vannes en Morbihan, le CBD naturel breton est disponible en direct du producteur. Livraison rapide, circuit court, sans intermédiaire.",
-    fleurIntro: "Fleurs de CBD pour Vannes issues du producteur breton. Cultivées localement sans pesticide, avec des arômes intenses.",
-    huilleIntro: "Huiles CBD à Vannes au spectre complet. Dosage facile, résultats rapides, bien-être durable.",
-    tisaneIntro: "Tisanes chanvre artisanales bretonnes à Vannes. Infusion relaxante, saveur boisée.",
-    resinIntro: "Résines CBD bretonnes à Vannes. Extraction soignée et qualité constante.",
-  },
-  "cbd-lorient": {
-    intro: "À Lorient, achetez votre CBD naturel breton direct du producteur. Livraison express, sans THC détectable au-delà du seuil légal.",
-    fleurIntro: "Fleurs de CBD pour Lorient issues du producteur breton. Qualité laboratoire, terpènes préservés.",
-    huilleIntro: "Huiles CBD bretonnes à Lorient. Sublingual, absorption rapide, bien-être quotidien.",
-    tisaneIntro: "Tisanes chanvre artisanales bretonnes servies à Lorient. Goût authentique, apaisement naturel.",
-    resinIntro: "Résines CBD bretonnes à Lorient. Texture crémeuse, saveur riche, concentration optimale.",
-  },
-  "cbd-saint-brieuc": {
-    intro: "À Saint-Brieuc, découvrez le CBD naturel breton du producteur. Dans les Côtes-d'Armor, profitez d'un CBD légal, frais et sans pesticide.",
-    fleurIntro: "Fleurs de CBD bretonnes à Saint-Brieuc. Arômes authentiques, culture sans chimie.",
-    huilleIntro: "Huiles CBD full spectrum bretonnes à Saint-Brieuc. Bien-être quotidien, dosage facile.",
-    tisaneIntro: "Tisanes chanvre artisanales à Saint-Brieuc. Recette traditionnelle, ingrédients purs.",
-    resinIntro: "Résines CBD bretonnes à Saint-Brieuc. Travail artisanal, puissance maîtrisée.",
-  },
-  "cbd-saint-malo": {
-    intro: "À Saint-Malo sur la côte bretonne, profitez d'un CBD naturel issu du producteur breton avec une livraison rapide. Légal, naturel, transparent.",
-    fleurIntro: "Fleurs de CBD bretonnes à Saint-Malo. Terroir côtier, qualité supérieure, profils aromatiques nets.",
-    huilleIntro: "Huiles CBD bretonnes à Saint-Malo. Usage simple, résultats rapides, formule naturelle.",
-    tisaneIntro: "Tisanes chanvre bretonnes artisanales à Saint-Malo. Infusion authentique et pure.",
-    resinIntro: "Résines CBD bretonnes à Saint-Malo. Extraction locale, puissance testée, constance garantie.",
-  },
-  "cbd-fougeres": {
-    intro: "À Fougères en Ille-et-Vilaine, achetez le CBD naturel breton du producteur direct. Sans intermédiaire, avec des prix producteurs cohérents.",
-    fleurIntro: "Fleurs de CBD bretonnes à Fougères. Qualité premium, culture responsable.",
-    huilleIntro: "Huiles CBD bretonnes à Fougères. Spectre complet, effets durables, absorption optimale.",
-    tisaneIntro: "Tisanes chanvre artisanales bretonnes à Fougères. Recette apaisante, ancrée dans le terroir.",
-    resinIntro: "Résines CBD bretonnes à Fougères. Densité marquée, saveur riche, pureté certifiée.",
-  },
-  "cbd-vitre": {
-    intro: "À Vitré, découvrez un CBD naturel breton issu du producteur. Circuit court, livraison rapide et transparence sur la qualité.",
-    fleurIntro: "Fleurs de CBD bretonnes à Vitré. Notes florales intenses, cannabinoïdes préservés.",
-    huilleIntro: "Huiles CBD bretonnes à Vitré. Full spectrum naturel, usage simple, bien-être immédiat.",
-    tisaneIntro: "Tisanes chanvre bretonnes à Vitré. Artisanat local, goût délicat, détente naturelle.",
-    resinIntro: "Résines CBD bretonnes à Vitré. Fabrication soignée, qualité artisanale.",
-  },
-  "cbd-redon": {
-    intro: "À Redon, le CBD naturel breton est livré directement depuis le producteur. Qualité certifiée, positionnement juste, légal en France.",
-    fleurIntro: "Fleurs de CBD bretonnes à Redon. Culture attentive, arômes authentiques, THC inférieur au seuil légal.",
-    huilleIntro: "Huiles CBD bretonnes à Redon. Spectre complet, goût naturel, bien-être durable.",
-    tisaneIntro: "Tisanes chanvre artisanales bretonnes à Redon. Infusion traditionnelle, relaxation douce.",
-    resinIntro: "Résines CBD bretonnes à Redon. Extraction soignée, pureté élevée, saveur boisée authentique.",
-  },
-};
 
 export function isLocalCitySlug(slug: string): boolean {
   return Boolean(getCityData(slug));
@@ -120,7 +42,7 @@ export function getLocalCityMetadata(slug: string): Metadata {
 
   const baseUrl = getSiteUrl();
   const canonicalUrl = `${baseUrl}/${cityData.slug}`;
-  const title = `${cityData.keywords.split(",")[0].trim()} | Les Chanvriers Bretons`;
+  const title = `${cityData.keywords.split(",")[0].trim()} : livraison, origine et analyses`;
 
   return {
     title,
@@ -129,7 +51,7 @@ export function getLocalCityMetadata(slug: string): Metadata {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title,
+      title: `${title} | Les Chanvriers Bretons`,
       description: cityData.description,
       url: canonicalUrl,
       type: "website",
@@ -163,9 +85,7 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
 
   const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/${cityData.slug}`;
-  const cityVariations = cityProductVariations[slug] || cityProductVariations["cbd-rennes"];
   const variations = {
-    ...cityVariations,
     intro: `Les commandes destinées à ${cityData.name} sont préparées en Bretagne. Chaque fiche indique le producteur et sa région afin de distinguer notre production des références partenaires.`,
     fleurIntro: `Fleurs actuellement disponibles pour livraison vers ${cityData.name} : comparez le producteur, le mode de culture et l'analyse publiée.`,
     huilleIntro: `Huiles disponibles pour ${cityData.name} : vérifiez le type d'extrait, la concentration et la liste complète des ingrédients.`,
@@ -173,6 +93,7 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
     resinIntro: `Résines disponibles pour ${cityData.name} : vérifiez le producteur, la composition et le document d'analyse associé.`,
   };
   const editorialContent = getCityEditorialContent(slug);
+  const faqItems = getCityFaq(slug);
   const store = await readPublicStoreByBackend();
   const featuredProducts = selectFeaturedProducts(store.products);
   const nearbyCities = getNearbyCities(slug);
@@ -192,6 +113,14 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
         url={pageUrl}
         description={cityData.description}
       />
+      <WebPageJsonLd
+        name={`CBD à ${cityData.name} : livraison, origine et analyses`}
+        description={cityData.description}
+        url={pageUrl}
+        about={["CBD naturel", `Livraison de CBD à ${cityData.name}`, "Origine du CBD", "Analyse de laboratoire CBD"]}
+        dateModified={LOCAL_SEO_LAST_REVIEWED}
+      />
+      <FaqJsonLd questions={faqItems} />
       <ProductListJsonLd products={featuredProducts} producers={store.producers} />
       <div className="retro-container">
         <div className="cartoon-border bg-cream p-8">
@@ -205,6 +134,9 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
 
           <h1 className="section-title text-ink">CBD Naturel à {cityData.name}</h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-charcoal">{variations.intro}</p>
+          <p className="mt-4 text-sm text-charcoal">
+            Dernière vérification : <time dateTime={LOCAL_SEO_LAST_REVIEWED}>22 août 2026</time>
+          </p>
         </div>
 
         <div className="cartoon-border mt-10 bg-cream p-8">
@@ -247,6 +179,23 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
             </div>
           </div>
         )}
+
+        <div className="cartoon-border mt-8 bg-white p-6 md:p-8">
+          <h2 className="mb-5 text-2xl font-display text-ink">Questions fréquentes sur le CBD à {cityData.name}</h2>
+          <div className="grid gap-4">
+            {faqItems.map((item) => (
+              <article key={item.question} className="cartoon-border-sm bg-cream p-5">
+                <h3 className="font-display text-lg text-ink">{item.question}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-charcoal">{item.answer}</p>
+              </article>
+            ))}
+          </div>
+          <p className="mt-5 text-sm leading-relaxed text-charcoal">
+            Pour approfondir, consultez notre guide sur le <Link className="underline" href="/cbd-naturel">CBD naturel</Link>,
+            notre méthode pour <Link className="underline" href="/analyse-laboratoire-cbd">lire une analyse de laboratoire</Link>
+            et la page <Link className="underline" href="/a-propos">qui sommes-nous</Link>.
+          </p>
+        </div>
 
         <div className="cartoon-border mt-10 bg-cream p-8">
           <h2 className="mb-6 text-3xl font-display text-ink">Quels éléments vérifier avant de commander ?</h2>

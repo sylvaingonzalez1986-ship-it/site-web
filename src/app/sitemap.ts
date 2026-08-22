@@ -5,7 +5,7 @@ import {
   readPublicStoreByBackend,
 } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
-import { bretonCities } from "@/lib/local-seo-data";
+import { bretonCities, LOCAL_SEO_LAST_REVIEWED } from "@/lib/local-seo-data";
 import { mostRecentSeoDate, parseSeoDate } from "@/lib/seo-sitemap";
 
 const categories = [
@@ -151,6 +151,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const localCityPages: MetadataRoute.Sitemap = bretonCities.map((city) => ({
     url: `${baseUrl}/${city.slug}`,
+    lastModified: new Date(`${LOCAL_SEO_LAST_REVIEWED}T00:00:00.000Z`),
     changeFrequency: "monthly" as const,
     priority: 0.65,
   }));
