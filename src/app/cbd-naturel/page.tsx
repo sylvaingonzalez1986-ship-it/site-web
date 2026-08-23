@@ -3,12 +3,14 @@ import Link from "next/link";
 import {
   ArticleJsonLd,
   BreadcrumbJsonLd,
+  DatasetJsonLd,
   FaqJsonLd,
   ProductListJsonLd,
   WebPageJsonLd,
 } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { getActiveCatalogCategories } from "@/lib/catalog-categories";
+import { buildCatalogTransparencySnapshot } from "@/lib/catalog-transparency";
 import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { dedupeProducts } from "@/lib/product-dedup";
@@ -194,6 +196,16 @@ function selectFeaturedProducts(
   return [...featured, ...fallback];
 }
 
+function formatCatalogObservationDate(value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return undefined;
+  return new Intl.DateTimeFormat("fr-FR", {
+    dateStyle: "long",
+    timeZone: "Europe/Paris",
+  }).format(date);
+}
+
 export default async function CbdNaturelPage() {
   const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/${PAGE_SLUG}`;
@@ -207,6 +219,13 @@ export default async function CbdNaturelPage() {
   const producersById = new Map<string, Producer>(
     store.producers.map((producer) => [producer.id, producer]),
   );
+  const transparencySnapshot = buildCatalogTransparencySnapshot(
+    store.products,
+    store.producers,
+    ownProducer,
+  );
+  const observationDate = formatCatalogObservationDate(transparencySnapshot.lastCatalogUpdate);
+  const transparencyDataUrl = `${pageUrl}/catalogue-transparence.json`;
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
@@ -233,6 +252,20 @@ export default async function CbdNaturelPage() {
         category="Guide CBD et traçabilité"
         about={["CBD naturel", "Cannabidiol", "Chanvre", "Traçabilité", "Analyse de laboratoire"]}
         citations={PUBLIC_SOURCES.map(({ name, url }) => ({ name, url }))}
+      />
+      <DatasetJsonLd
+        name="Observatoire de transparence du catalogue CBD"
+        description="Mesures calculées automatiquement à partir des références réellement publiées dans le catalogue des Chanvriers Bretons."
+        url={pageUrl}
+        distributionUrl={transparencyDataUrl}
+        isBasedOn={`${baseUrl}/boutique`}
+        dateModified={transparencySnapshot.lastCatalogUpdate}
+        variables={[
+          { name: "Références publiées", value: transparencySnapshot.publishedReferences },
+          { name: "Producteurs identifiés", value: transparencySnapshot.producerIdentified },
+          { name: "Origines identifiées", value: transparencySnapshot.originIdentified },
+          { name: "Analyses disponibles", value: transparencySnapshot.analysesAvailable },
+        ]}
       />
       <FaqJsonLd questions={FAQ_ITEMS} />
       <ProductListJsonLd products={featuredProducts} producers={store.producers} />
@@ -297,6 +330,89 @@ export default async function CbdNaturelPage() {
             {" "}Retrouvez enfin les termes techniques dans notre{" "}
             <Link href="/glossaire-cbd" className="font-bold underline hover:text-ink">
               glossaire du CBD
+            </Link>.
+          </p>
+        </div>
+
+        <div className="cartoon-border mt-8 bg-yellow p-6 md:p-8" aria-labelledby="observatoire-catalogue-cbd">
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-charcoal">Données originales du catalogue</p>
+          <h2 id="observatoire-catalogue-cbd" className="mt-2 text-3xl font-display text-ink">
+            Observatoire de transparence
+          </h2>
+          <p className="mt-4 max-w-4xl leading-relaxed text-charcoal">
+            Ces chiffres sont calculés automatiquement à partir des références réellement publiées, après
+            déduplication. Ils ne constituent ni une note de qualité ni une estimation commerciale.
+            {observationDate ? (
+              <> Dernière donnée catalogue observée le <time dateTime={transparencySnapshot.lastCatalogUpdate}>{observationDate}</time>.</>
+            ) : null}
+          </p>
+
+          <dl className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="cartoon-border-sm bg-white p-4">
+              <dt className="text-sm font-bold text-charcoal">Références publiées</dt>
+              <dd className="mt-1 text-3xl font-display text-ink">{transparencySnapshot.publishedReferences}</dd>
+            </div>
+            <div className="cartoon-border-sm bg-white p-4">
+              <dt className="text-sm font-bold text-charcoal">Producteur identifié</dt>
+              <dd className="mt-1 text-3xl font-display text-ink">
+                {transparencySnapshot.producerIdentified}/{transparencySnapshot.publishedReferences}
+              </dd>
+            </div>
+            <div className="cartoon-border-sm bg-white p-4">
+              <dt className="text-sm font-bold text-charcoal">Origine indiquée</dt>
+              <dd className="mt-1 text-3xl font-display text-ink">
+                {transparencySnapshot.originIdentified}/{transparencySnapshot.publishedReferences}
+              </dd>
+            </div>
+            <div className="cartoon-border-sm bg-white p-4">
+              <dt className="text-sm font-bold text-charcoal">Analyses accessibles</dt>
+              <dd className="mt-1 text-3xl font-display text-ink">{transparencySnapshot.analysesAvailable}</dd>
+            </div>
+            <div className="cartoon-border-sm bg-white p-4">
+              <dt className="text-sm font-bold text-charcoal">Production maison / partenaires</dt>
+              <dd className="mt-1 text-3xl font-display text-ink">
+                {transparencySnapshot.ownReferences}/{transparencySnapshot.partnerReferences}
+              </dd>
+            </div>
+            <div className="cartoon-border-sm bg-white p-4">
+              <dt className="text-sm font-bold text-charcoal">Producteurs distincts</dt>
+              <dd className="mt-1 text-3xl font-display text-ink">{transparencySnapshot.distinctProducers}</dd>
+            </div>
+          </dl>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full min-w-[560px] border-collapse bg-white text-left text-sm text-charcoal">
+              <caption className="sr-only">Références et analyses disponibles par catégorie</caption>
+              <thead>
+                <tr>
+                  <th scope="col" className="border border-ink p-3 text-ink">Catégorie</th>
+                  <th scope="col" className="border border-ink p-3 text-ink">Références publiées</th>
+                  <th scope="col" className="border border-ink p-3 text-ink">Analyses accessibles</th>
+                </tr>
+              </thead>
+              <tbody>
+                {transparencySnapshot.categories.map((category) => (
+                  <tr key={category.category}>
+                    <th scope="row" className="border border-ink p-3 font-bold text-ink">{category.label}</th>
+                    <td className="border border-ink p-3">{category.publishedReferences}</td>
+                    <td className="border border-ink p-3">{category.analysesAvailable}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {transparencySnapshot.unresolvedProducerReferences > 0 ? (
+            <p className="mt-4 text-sm font-bold text-charcoal">
+              {transparencySnapshot.unresolvedProducerReferences} référence(s) possède(nt) une association producteur à compléter.
+            </p>
+          ) : null}
+
+          <p className="mt-5 text-sm leading-relaxed text-charcoal">
+            « Analyse accessible » signifie qu&apos;un document public est relié à la fiche ; cela ne préjuge pas de son
+            périmètre. La méthode et les données sont disponibles dans le{" "}
+            <Link href="/cbd-naturel/catalogue-transparence.json" className="font-bold underline hover:text-ink">
+              jeu de données JSON
             </Link>.
           </p>
         </div>

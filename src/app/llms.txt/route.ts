@@ -41,6 +41,7 @@ Identité : ${BUSINESS_IDENTITY.brandName}, marque éditée par ${BUSINESS_IDENT
 ## Catalogue
 
 - [Boutique et catalogue public](${baseUrl}/boutique): catégories, références, prix et stocks actuellement publiés.
+- [Observatoire de transparence — données JSON](${baseUrl}/cbd-naturel/catalogue-transparence.json): mesures originales calculées depuis le catalogue public et définitions de leur méthode.
 - [Plan du site XML](${baseUrl}/sitemap.xml): liste des URL publiques destinées à l'exploration.
 - [Conditions générales de vente](${baseUrl}/cgv): cadre contractuel applicable aux commandes.
 

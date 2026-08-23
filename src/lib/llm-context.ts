@@ -44,6 +44,7 @@ Cette définition est la réponse éditoriale commune à toutes les versions du 
 ## Pages internes de référence
 
 - [Guide CBD naturel](${baseUrl}/cbd-naturel)
+- [Observatoire du catalogue — données JSON](${baseUrl}/cbd-naturel/catalogue-transparence.json)
 - [Glossaire du CBD et du chanvre](${baseUrl}/glossaire-cbd)
 - [Lire une analyse de laboratoire CBD](${baseUrl}/analyse-laboratoire-cbd)
 - [CBD breton et origine géographique](${baseUrl}/cbd-breton)

@@ -304,6 +304,54 @@ export async function WebPageJsonLd({
   return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
 
+export async function DatasetJsonLd({
+  name,
+  description,
+  url,
+  distributionUrl,
+  isBasedOn,
+  dateModified,
+  variables,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  distributionUrl: string;
+  isBasedOn: string;
+  dateModified?: string;
+  variables: Array<{ name: string; value: number }>;
+}) {
+  const nonce = await getNonce();
+  const baseUrl = getSiteUrl();
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${url}#catalog-transparency-dataset`,
+    name,
+    description,
+    url,
+    inLanguage: "fr-FR",
+    creator: { "@id": organizationId(baseUrl) },
+    publisher: { "@id": organizationId(baseUrl) },
+    ...(dateModified ? { dateModified } : {}),
+    isBasedOn,
+    measurementTechnique:
+      "Décompte automatique après déduplication des références présentes dans le catalogue public.",
+    variableMeasured: variables.map(({ name: variableName, value }) => ({
+      "@type": "PropertyValue",
+      name: variableName,
+      value,
+    })),
+    distribution: {
+      "@type": "DataDownload",
+      encodingFormat: "application/json",
+      contentUrl: distributionUrl,
+    },
+  };
+
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
+}
+
 export async function BreadcrumbJsonLd({
   items,
 }: {
