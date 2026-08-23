@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import type { Product } from "@/data/products";
 import { buildDiscoveryFeed } from "@/lib/discovery-feed";
@@ -53,5 +55,12 @@ describe("Atom discovery feed", () => {
     });
 
     expect(xml).not.toContain("/undated");
+  });
+
+  it("is advertised from the root HTML head", () => {
+    const layoutSource = readFileSync(join(process.cwd(), "src/app/layout.tsx"), "utf8");
+
+    expect(layoutSource).toContain('type="application/atom+xml"');
+    expect(layoutSource).toContain('href="/feed.xml"');
   });
 });

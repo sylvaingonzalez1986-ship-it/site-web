@@ -141,9 +141,6 @@ export const metadata: Metadata = {
     languages: {
       "fr-FR": "https://www.leschanvriersbretons.com",
     },
-    types: {
-      "application/atom+xml": "https://www.leschanvriersbretons.com/feed.xml",
-    },
   },
 };
 
@@ -165,6 +162,12 @@ export default async function RootLayout({
   return (
     <html lang="fr" nonce={nonce}>
       <head>
+        <link
+          rel="alternate"
+          type="application/atom+xml"
+          title="Les Chanvriers Bretons — guides et catalogue"
+          href="/feed.xml"
+        />
         {supabaseUrl && (
           <>
             <link rel="preconnect" href={supabaseUrl} crossOrigin="anonymous" />
