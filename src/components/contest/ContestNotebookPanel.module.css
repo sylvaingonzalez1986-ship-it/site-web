@@ -756,6 +756,10 @@
     height: auto;
   }
 
+  .notebookFooter {
+    display: none;
+  }
+
   .verdictTextarea {
     height: 190px;
     min-height: 190px;
