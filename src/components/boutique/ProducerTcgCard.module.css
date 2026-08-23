@@ -7,9 +7,7 @@
   overflow: hidden;
   border: 3px solid var(--ink);
   border-radius: 16px;
-  background:
-    radial-gradient(circle at 85% 8%, rgba(255, 216, 97, 0.38), transparent 23%),
-    var(--cream);
+  background: var(--cream);
   box-shadow: 7px 8px 0 rgba(17, 21, 18, 0.22);
   color: var(--ink);
   cursor: pointer;
@@ -123,8 +121,6 @@
 }
 
 .imageFrame {
-  --backdrop-start: #f6d980;
-  --backdrop-end: #c9dfd2;
   position: relative;
   isolation: isolate;
   flex: 0 0 auto;
@@ -132,20 +128,14 @@
   overflow: hidden;
   border: 3px solid var(--ink);
   border-radius: 7px;
-  background:
-    radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.72) 0 7%, transparent 8%),
-    radial-gradient(circle at 86% 80%, rgba(255, 216, 97, 0.58) 0 15%, transparent 16%),
-    linear-gradient(135deg, var(--backdrop-start), var(--backdrop-end));
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+  background: color-mix(in srgb, var(--ink) 4%, var(--cream));
 }
 
 .photo {
   z-index: 1;
   background: transparent;
-  filter: drop-shadow(0 6px 7px rgba(17, 21, 18, 0.2));
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  padding: 0.35rem;
 }
 
 .location {

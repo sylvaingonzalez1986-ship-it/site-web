@@ -14,27 +14,20 @@
 }
 
 .image {
-  --backdrop-start: #f6d980;
-  --backdrop-end: #c9dfd2;
   position: relative;
   isolation: isolate;
   min-height: 360px;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border-right: 3px solid var(--ink);
-  background:
-    radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.72) 0 7%, transparent 8%),
-    radial-gradient(circle at 86% 80%, rgba(255, 216, 97, 0.58) 0 15%, transparent 16%),
-    linear-gradient(135deg, var(--backdrop-start), var(--backdrop-end));
+  background: color-mix(in srgb, var(--ink) 4%, var(--cream));
 }
 
 .photo {
   z-index: 1;
   background: transparent;
-  filter: drop-shadow(0 10px 12px rgba(17, 21, 18, 0.2));
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  padding: clamp(0.5rem, 2vw, 1rem);
 }
 
 .copy {
