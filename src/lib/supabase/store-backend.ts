@@ -14,6 +14,7 @@ import { normalizeProductAnalysisPath, normalizeProductVideoPath } from "@/lib/p
 import { normalizeProductImagePath } from "@/lib/product-image-storage";
 import { normalizeExternalUrl } from "@/lib/external-url";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
+import { sanitizePublicProductCopy } from "@/lib/regulated-product-copy";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { deleteContestEntry } from "@/lib/supabase/contest-backend";
 import { sanitizeOrderVatRate } from "@/lib/tax";
@@ -1241,7 +1242,7 @@ export async function readPublicStoreFromSupabase(): Promise<PublicStoreResponse
   }
 
   const products = (productsResult.data ?? []).map((row) =>
-    mapProductRow(toObject(row), packProductIdsByPackId),
+    sanitizePublicProductCopy(mapProductRow(toObject(row), packProductIdsByPackId)),
   );
 
   const producers = (producersResult.data ?? []).map((row) => mapProducerRow(toObject(row)));
