@@ -55,6 +55,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.85,
     },
     {
+      url: `${baseUrl}/glossaire-cbd`,
+      lastModified: new Date("2026-08-23T00:00:00.000Z"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/a-propos`,
       lastModified: new Date("2026-08-22T00:00:00.000Z"),
       changeFrequency: "monthly",

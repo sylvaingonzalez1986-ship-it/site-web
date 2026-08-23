@@ -14,6 +14,7 @@ describe("llms.txt", () => {
     expect(content).toContain("ultraweed.fr/sites-references");
     expect(content).toContain("https://www.leschanvriersbretons.com/cbd-naturel");
     expect(content).toContain("https://www.leschanvriersbretons.com/cbd-breton");
+    expect(content).toContain("https://www.leschanvriersbretons.com/glossaire-cbd");
     expect(content).toContain("https://www.leschanvriersbretons.com/analyse-laboratoire-cbd");
     expect(content).toContain("n'est pas une certification officielle");
     expect(content).toContain("une page de catégorie vide ne constitue pas une offre commerciale");

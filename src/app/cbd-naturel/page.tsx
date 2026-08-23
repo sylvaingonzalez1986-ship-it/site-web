@@ -297,6 +297,10 @@ export default async function CbdNaturelPage() {
             <Link href="/cbd-breton" className="font-bold underline hover:text-ink">
               CBD breton
             </Link>.
+            {" "}Retrouvez enfin les termes techniques dans notre{" "}
+            <Link href="/glossaire-cbd" className="font-bold underline hover:text-ink">
+              glossaire du CBD
+            </Link>.
           </p>
         </div>
 

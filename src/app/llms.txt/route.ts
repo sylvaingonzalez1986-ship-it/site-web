@@ -33,6 +33,7 @@ Zone desservie : France
 
 - Guide CBD naturel : ${baseUrl}/cbd-naturel
 - Guide CBD breton et origine géographique : ${baseUrl}/cbd-breton
+- Glossaire du CBD et du chanvre : ${baseUrl}/glossaire-cbd
 - Lire une analyse laboratoire CBD : ${baseUrl}/analyse-laboratoire-cbd
 - Boutique et catalogue : ${baseUrl}/boutique
 - Blog et guides : ${baseUrl}/blog

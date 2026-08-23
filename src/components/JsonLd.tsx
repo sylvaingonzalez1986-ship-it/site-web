@@ -606,3 +606,42 @@ export async function FaqJsonLd({
 
   return <JsonLdScript nonce={nonce} data={jsonLd} />;
 }
+
+export async function DefinedTermSetJsonLd({
+  name,
+  description,
+  url,
+  terms,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  terms: Array<{
+    name: string;
+    description: string;
+    anchor: string;
+    aliases?: readonly string[];
+  }>;
+}) {
+  const nonce = await getNonce();
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "@id": `${url}#glossaire`,
+    name,
+    description,
+    url,
+    inLanguage: "fr-FR",
+    hasDefinedTerm: terms.map((term) => ({
+      "@type": "DefinedTerm",
+      "@id": `${url}#${term.anchor}`,
+      name: term.name,
+      description: term.description,
+      url: `${url}#${term.anchor}`,
+      alternateName: term.aliases,
+      inDefinedTermSet: { "@id": `${url}#glossaire` },
+    })),
+  };
+
+  return <JsonLdScript nonce={nonce} data={jsonLd} />;
+}

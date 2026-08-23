@@ -15,6 +15,7 @@ import styles from "./Footer.module.css";
 
 const MARKET_SUPPORT_LINKS = [
   { href: "/analyse-laboratoire-cbd", label: "Lire une analyse CBD" },
+  { href: "/glossaire-cbd", label: "Glossaire du CBD" },
   { href: "/blog", label: "Le blog CBD" },
 ] as const;
 
