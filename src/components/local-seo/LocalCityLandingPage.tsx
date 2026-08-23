@@ -117,7 +117,7 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
         name={`CBD à ${cityData.name} : livraison, origine et analyses`}
         description={cityData.description}
         url={pageUrl}
-        about={["CBD naturel", `Livraison de CBD à ${cityData.name}`, "Origine du CBD", "Analyse de laboratoire CBD"]}
+        about={[`CBD à ${cityData.name}`, `Livraison de CBD à ${cityData.name}`, "Origine du CBD", "Analyse de laboratoire CBD"]}
         dateModified={LOCAL_SEO_LAST_REVIEWED}
       />
       <FaqJsonLd questions={faqItems} />
@@ -132,16 +132,16 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
             <span className="font-bold text-ink">CBD {cityData.name}</span>
           </nav>
 
-          <h1 className="section-title text-ink">CBD Naturel à {cityData.name}</h1>
+          <h1 className="section-title text-ink">CBD à {cityData.name} : livraison et traçabilité</h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-charcoal">{variations.intro}</p>
           <p className="mt-4 text-sm text-charcoal">
             Dernière vérification : <time dateTime={LOCAL_SEO_LAST_REVIEWED}>23 août 2026</time>
           </p>
         </div>
 
-        <div className="cartoon-border mt-8 bg-white p-6 md:p-8" aria-labelledby="definition-cbd-naturel">
-          <h2 id="definition-cbd-naturel" className="mb-4 text-2xl font-display text-ink">
-            CBD naturel : la définition utilisée sur ce site
+        <div className="cartoon-border mt-8 bg-white p-6 md:p-8" aria-labelledby="verification-cbd-local">
+          <h2 id="verification-cbd-local" className="mb-4 text-2xl font-display text-ink">
+            Comment vérifier un CBD livré à {cityData.name} ?
           </h2>
           <p className="max-w-4xl leading-relaxed text-charcoal">{CBD_NATUREL_CANONICAL_ANSWER}</p>
           <p className="mt-4 text-sm text-charcoal">
@@ -274,7 +274,7 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
               href="/cbd-naturel"
               className="btn-cartoon btn-secondary inline-flex items-center justify-center px-6 py-3 text-sm uppercase tracking-[0.08em]"
             >
-              CBD Naturel
+              Guide CBD naturel
             </Link>
           </div>
         </div>

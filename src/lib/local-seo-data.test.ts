@@ -1,6 +1,13 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
 import { getCityFaq, LOCAL_SEO_LAST_REVIEWED } from "@/lib/local-seo-data";
+
+const localLandingSource = readFileSync(
+  join(process.cwd(), "src/components/local-seo/LocalCityLandingPage.tsx"),
+  "utf8",
+);
 
 describe("local SEO editorial data", () => {
   it("builds factual, city-specific answers", () => {
@@ -20,5 +27,11 @@ describe("local SEO editorial data", () => {
 
   it("exposes an ISO review date for page and sitemap metadata", () => {
     expect(LOCAL_SEO_LAST_REVIEWED).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  });
+
+  it("reserves the generic CBD naturel primary heading for the pillar page", () => {
+    expect(localLandingSource).toContain("CBD à {cityData.name} : livraison et traçabilité");
+    expect(localLandingSource).not.toMatch(/<h1[^>]*>CBD Naturel/iu);
+    expect(localLandingSource).not.toContain("CBD naturel : la définition utilisée sur ce site");
   });
 });
