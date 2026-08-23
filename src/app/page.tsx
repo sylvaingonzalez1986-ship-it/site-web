@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Les Chanvriers Bretons | CBD naturel et traçable",
     description:
-      "Production bretonne et producteurs partenaires clairement identifiés. Fleurs, résines, huiles et tisanes au chanvre.",
+      "Production bretonne et producteurs partenaires clairement identifiés. Le catalogue présente les catégories et références réellement disponibles.",
     url: "https://www.leschanvriersbretons.com",
   },
 };

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { CollectionPageJsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { type ProductCategory } from "@/data/products";
+import { getActiveCatalogCategories } from "@/lib/catalog-categories";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
 import { getOwnProducer, resolveProductProducer, sortOwnProductsFirst } from "@/lib/own-producer";
@@ -53,6 +54,9 @@ export default async function CategoryPage({
 
   const store = await readPublicStoreByBackend();
   const uniqueProducts = dedupeProducts(store.products);
+  const activeCategorySlugs = new Set<string>(
+    getActiveCatalogCategories(uniqueProducts).map(({ slug: activeSlug }) => activeSlug),
+  );
   const ownProducer = getOwnProducer(store.content.boutique);
   const producersById = new Map<string, Producer>(
     store.producers.map((producer) => [producer.id, producer]),
@@ -67,6 +71,7 @@ export default async function CategoryPage({
   const baseUrl = getSiteUrl();
   const categoryDescription = getCategoryDescription(slug);
   const relatedLinks = (relatedCategoryLinks[slug] ?? [])
+    .filter((relatedSlug) => activeCategorySlugs.has(relatedSlug))
     .map((relatedSlug) => ({ href: `/boutique/${relatedSlug}`, label: categoryMap[relatedSlug]?.label }))
     .filter((link): link is { href: string; label: string } => Boolean(link.label));
 

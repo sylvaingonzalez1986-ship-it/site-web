@@ -10,16 +10,10 @@ import {
 } from "@/components/ContactEmailButton";
 import { useCmsPages } from "@/hooks/useCmsPages";
 import { useCmsStore } from "@/hooks/useCmsStore";
+import { getActiveCatalogCategories } from "@/lib/catalog-categories";
 import styles from "./Footer.module.css";
 
-const MARKET_LINKS = [
-  { href: "/boutique/fleurs-cbd", label: "Fleurs CBD" },
-  { href: "/boutique/resines-cbd", label: "Résines CBD" },
-  { href: "/boutique/huiles-cbd", label: "Huiles CBD" },
-  { href: "/boutique/e-liquide-cbd", label: "E-liquides CBD" },
-  { href: "/boutique/cosmetiques-cbd", label: "Cosmétiques CBD" },
-  { href: "/boutique/tisane-cbd", label: "Tisanes CBD" },
-  { href: "/boutique/miam-cbd", label: "Miam CBD" },
+const MARKET_SUPPORT_LINKS = [
   { href: "/analyse-laboratoire-cbd", label: "Lire une analyse CBD" },
   { href: "/blog", label: "Le blog CBD" },
 ] as const;
@@ -64,6 +58,17 @@ export function Footer() {
   const { store, loading } = useCmsStore();
   const { pages: cmsPages } = useCmsPages();
   const footer = store.content.footer;
+
+  const marketLinks = useMemo<FooterLink[]>(
+    () => [
+      ...getActiveCatalogCategories(store.products).map(({ slug, label }) => ({
+        href: `/boutique/${slug}`,
+        label,
+      })),
+      ...MARKET_SUPPORT_LINKS,
+    ],
+    [store.products],
+  );
 
   const dynamicFooterLinks = useMemo(() => {
     const staticHrefs = new Set([
@@ -149,7 +154,7 @@ export function Footer() {
             <section className={styles.column}>
               <p className={styles.columnIndex}>01</p>
               <h3 className={styles.columnTitle}>Le marché</h3>
-              <FooterLinkList links={MARKET_LINKS} />
+              <FooterLinkList links={marketLinks} />
             </section>
 
             <section className={styles.column}>

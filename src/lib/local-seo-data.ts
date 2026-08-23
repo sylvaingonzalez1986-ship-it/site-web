@@ -24,7 +24,7 @@ export const bretonCities = [
     name: "Vannes",
     slug: "cbd-vannes",
     keywords: "CBD Vannes, acheter CBD Morbihan, fleur CBD Vannes",
-    description: "CBD livré à Vannes : fleurs, huiles, résines et tisanes avec origine et producteur indiqués sur les fiches.",
+    description: "CBD livré à Vannes : produits disponibles avec origine, composition et producteur indiqués sur les fiches.",
     department: "Morbihan",
   },
   {
@@ -71,7 +71,7 @@ export const bretonCities = [
   },
 ];
 
-export const LOCAL_SEO_LAST_REVIEWED = "2026-08-22";
+export const LOCAL_SEO_LAST_REVIEWED = "2026-08-23";
 
 export function getCityData(slug: string) {
   return bretonCities.find((city) => city.slug === slug);
@@ -88,7 +88,7 @@ const cityEditorialMap: Record<
     title: "Commander du CBD à Rennes depuis la Bretagne",
     paragraphs: [
       "Les commandes destinées à Rennes peuvent être livrées à domicile ou dans un point relais disponible au moment du choix du transport. Les produits en stock, leur prix et leur producteur sont affichés avant l'ajout au panier.",
-      "Avant de choisir une fleur, une huile, une résine ou une tisane, vérifiez l'origine indiquée sur la fiche. Notre production bretonne y est distinguée des références sélectionnées auprès de producteurs partenaires.",
+      "Avant de choisir une référence, vérifiez l'origine indiquée sur la fiche. Notre production bretonne y est distinguée des produits sélectionnés auprès de producteurs partenaires.",
     ],
   },
   "cbd-quimper": {
@@ -101,7 +101,7 @@ const cityEditorialMap: Record<
   "cbd-brest": {
     title: "Choisir et faire livrer du CBD à Brest",
     paragraphs: [
-      "Pour une livraison à Brest, commencez par comparer les catégories réellement en stock : fleurs, huiles, résines, tisanes ou cosmétiques. Le prix, le format et le producteur sont affichés sur chaque carte.",
+      "Pour une livraison à Brest, commencez par comparer les catégories réellement en stock. Le prix, le format et le producteur sont affichés sur chaque carte.",
       "Le nom Les Chanvriers Bretons ne signifie pas que toutes les références sont cultivées en Bretagne. Les produits partenaires affichent leur producteur et leur région afin de rendre cette distinction explicite.",
     ],
   },
@@ -122,7 +122,7 @@ const cityEditorialMap: Record<
   "cbd-saint-brieuc": {
     title: "CBD livré à Saint-Brieuc et dans les Côtes-d'Armor",
     paragraphs: [
-      "Les produits en stock peuvent être commandés depuis Saint-Brieuc avec les modes de livraison proposés pendant le parcours d'achat. Fleurs, résines, huiles et tisanes sont présentées séparément pour faciliter la comparaison.",
+      "Les produits en stock peuvent être commandés depuis Saint-Brieuc avec les modes de livraison proposés pendant le parcours d'achat. Les catégories actives sont présentées séparément pour faciliter la comparaison.",
       "Consultez la provenance affichée sur chaque fiche : certaines références viennent de notre production bretonne, d'autres de producteurs partenaires français clairement nommés.",
     ],
   },

@@ -5,7 +5,7 @@ import { readPublicStoreByBackend } from "@/lib/data-backend";
 export const metadata: Metadata = {
   title: "Boutique CBD naturel | Origine et producteurs identifiés",
   description:
-    "Fleurs, résines, huiles, tisanes et autres produits CBD. Production des Chanvriers Bretons et producteurs partenaires distingués sur chaque référence.",
+    "Catalogue CBD actualisé selon les références disponibles. Production des Chanvriers Bretons et producteurs partenaires distingués sur chaque fiche.",
   alternates: {
     canonical: "https://www.leschanvriersbretons.com/boutique",
   },

@@ -8,6 +8,7 @@ import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
 import { BlogStarRating } from "@/components/blog/BlogStarRating";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { BLOG_CATEGORY_LABELS, BLOG_CATEGORY_SHOP_LINKS } from "@/lib/blog-categories";
+import { getActiveCatalogCategories } from "@/lib/catalog-categories";
 import { getBlogRatingStats } from "@/lib/blog-interactions-backend";
 import { getBlogPostBySlugByBackend, readPublicStoreByBackend } from "@/lib/data-backend";
 import { computeReadingTimeMinutes } from "@/lib/reading-time";
@@ -78,7 +79,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     .map((item) => item.trim())
     .filter(Boolean);
   const readingMinutes = computeReadingTimeMinutes(post.content);
-  const relatedShopLinks = BLOG_CATEGORY_SHOP_LINKS[post.category] ?? [{ href: "/boutique", label: "Voir la boutique CBD" }];
+  const activeCategoryPaths = new Set(
+    getActiveCatalogCategories(store.products).map(({ slug: categorySlug }) => `/boutique/${categorySlug}`),
+  );
+  const configuredShopLinks = BLOG_CATEGORY_SHOP_LINKS[post.category] ?? [];
+  const activeShopLinks = configuredShopLinks.filter(
+    ({ href }) => href === "/boutique" || activeCategoryPaths.has(href),
+  );
+  const relatedShopLinks = activeShopLinks.length > 0
+    ? activeShopLinks
+    : [{ href: "/boutique", label: "Voir la boutique CBD" }];
   const coverImage = asAbsoluteUrl(baseUrl, post.coverImage);
   const ratingStats = await getBlogRatingStats(post.id);
   const wordCount = post.content.trim() ? post.content.trim().split(/\s+/).filter(Boolean).length : 0;

@@ -16,6 +16,10 @@ describe("llms.txt", () => {
     expect(content).toContain("https://www.leschanvriersbretons.com/cbd-breton");
     expect(content).toContain("https://www.leschanvriersbretons.com/analyse-laboratoire-cbd");
     expect(content).toContain("n'est pas une certification officielle");
+    expect(content).toContain("une page de catégorie vide ne constitue pas une offre commerciale");
+    expect(content).toContain("https://agriculture.gouv.fr/node/110883");
+    expect(content).not.toContain("/boutique/huiles-cbd");
+    expect(content).not.toContain("/boutique/tisane-cbd");
   });
 
   it("returns plain UTF-8 text", async () => {

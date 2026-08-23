@@ -354,9 +354,9 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
                 bretons et celle de producteurs français sélectionnés.
               </p>
               <p>
-                En choisissant vos <strong>fleurs de CBD direct producteur</strong>, huiles spectre complet ou
-                <strong> tisanes chanvre artisanales</strong>, vous privilégiez un <strong>achat CBD en circuit court</strong>,
-                transparent et traçable. Chaque lot est analysé en laboratoire et conforme à la réglementation en vigueur.
+                En choisissant une référence réellement disponible dans notre <strong>catalogue CBD</strong>, vous
+                privilégiez un <strong>achat CBD en circuit court</strong>, transparent et traçable. Chaque fiche
+                distingue le producteur, l’origine déclarée et l’analyse disponible pour le produit concerné.
               </p>
             </div>
             <div className={styles.seoActions}>

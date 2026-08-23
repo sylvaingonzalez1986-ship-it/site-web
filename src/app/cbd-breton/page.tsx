@@ -28,6 +28,10 @@ const PUBLIC_SOURCES = [
     url: "https://www.drogues-info-service.fr/Tout-savoir-sur-les-drogues/Le-dico-des-drogues/CBD-cannabidiol",
   },
   {
+    name: "Ministère de l’Agriculture — denrées alimentaires contenant du CBD",
+    url: "https://agriculture.gouv.fr/node/110883",
+  },
+  {
     name: "Annuaire des entreprises — identité de l’éditeur Les Champs Bretons",
     url: "https://annuaire-entreprises.data.gouv.fr/entreprise/942368994",
   },
@@ -279,7 +283,7 @@ export default async function CbdBretonPage() {
           <h2 id="cadre-legal-cbd-breton" className="mb-4 text-3xl font-display text-ink">Origine bretonne et conformité : deux vérifications séparées</h2>
           <div className="space-y-4 leading-relaxed text-charcoal">
             <p>La MILDECA indique notamment que la culture française concerne des variétés autorisées à teneur en THC inférieure ou égale à 0,3 %, cultivées par des agriculteurs actifs à partir de semences certifiées. Un produit fini reste soumis aux règles correspondant à sa composition et à son usage.</p>
-            <p>Drogues Info Service précise qu’en France, depuis le 15 mai 2026, le CBD présenté pour un usage alimentaire est concerné par l’application du cadre européen « Novel Food ». Une origine bretonne, un taux de THC conforme ou le mot « naturel » ne remplacent donc pas l’examen de la catégorie exacte.</p>
+            <p>Le ministère de l’Agriculture indique qu’en 2026 les denrées alimentaires incluant du CBD ne sont pas autorisées à la vente. Il distingue les graines de chanvre et leurs dérivés ainsi que les feuilles exclusivement destinées à l’infusion aqueuse, sous conditions et sans enrichissement en extraits de cannabinoïdes. Une origine bretonne, un taux de THC conforme ou le mot « naturel » ne remplacent donc pas l’examen de la composition et de l’usage exacts.</p>
             <p>Aucun produit CBD ne doit être présenté comme un médicament sans autorisation. Des traces de THC peuvent aussi conduire à un dépistage positif : ne conduisez pas après consommation et demandez conseil à un professionnel de santé en cas de traitement ou de situation particulière.</p>
           </div>
         </div>

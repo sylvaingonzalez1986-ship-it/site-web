@@ -8,6 +8,7 @@ import {
   WebPageJsonLd,
 } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
+import { getActiveCatalogCategories } from "@/lib/catalog-categories";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { dedupeProducts } from "@/lib/product-dedup";
 import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
@@ -39,6 +40,10 @@ const PUBLIC_SOURCES = [
   {
     name: "Drogues Info Service — CBD : effets, interactions et précautions",
     url: "https://www.drogues-info-service.fr/Tout-savoir-sur-les-drogues/Le-dico-des-drogues/CBD-cannabidiol",
+  },
+  {
+    name: "Ministère de l’Agriculture — denrées alimentaires contenant du CBD",
+    url: "https://agriculture.gouv.fr/node/110883",
   },
 ] as const;
 
@@ -84,7 +89,7 @@ const FAQ_ITEMS = [
   {
     question: "Le CBD naturel est-il légal en France ?",
     answer:
-      "La commercialisation dépend de la catégorie du produit, de sa composition, de son origine et des règles qui lui sont applicables. Le seuil de THC des variétés de chanvre autorisées n'est donc pas le seul critère à vérifier. Pour une information à jour, consultez les sources publiques citées sur cette page.",
+      "La commercialisation dépend de la catégorie, de la composition, de l'origine et de l'usage présenté. En mai 2026, le ministère de l'Agriculture a rappelé que les denrées alimentaires incluant du CBD ne sont pas autorisées. Il distingue notamment les graines et leurs dérivés ainsi que les feuilles exclusivement destinées à l'infusion aqueuse, sous conditions et sans enrichissement en cannabinoïdes. Le seuil de THC n'est donc pas le seul critère.",
   },
   {
     question: "Quelle est la différence entre CBD naturel et CBD de synthèse ?",
@@ -99,7 +104,7 @@ const FAQ_ITEMS = [
   {
     question: "Quels formats de CBD naturel proposez-vous ?",
     answer:
-      "La boutique réunit notamment des fleurs, résines, huiles, tisanes et cosmétiques. Selon les références, le produit provient de notre production bretonne ou d'un producteur partenaire identifié. Consultez la fiche produit pour connaître l'origine, la composition et l'analyse disponible.",
+      "Le catalogue évolue selon les références réellement publiées et leur disponibilité. La boutique affiche uniquement les produits actifs, avec leur catégorie, leur producteur ou marque, leur origine déclarée et les analyses disponibles. Une catégorie vide ne constitue pas une offre commerciale.",
   },
   {
     question: "Le CBD naturel a-t-il des effets secondaires ?",
@@ -114,15 +119,16 @@ const FAQ_ITEMS = [
 ];
 
 const CATEGORY_LINKS = [
-  { href: "/boutique/fleurs-cbd", label: "Fleurs CBD", description: "Origine, producteur, mode de culture et analyse disponibles selon la référence." },
-  { href: "/boutique/huiles-cbd", label: "Huiles CBD", description: "Composition, type d'extrait, dosage et marque indiqués sur chaque fiche." },
-  { href: "/boutique/resines-cbd", label: "Résines CBD", description: "Composition, origine, producteur ou marque et formats consultables par produit." },
-  { href: "/boutique/tisane-cbd", label: "Tisanes Chanvre", description: "Ingrédients, origine et conseils de préparation indiqués par référence." },
-  { href: "/boutique/cosmetiques-cbd", label: "Cosmétiques CBD", description: "Composition, marque, format et conseils d'utilisation à consulter sur la fiche." },
-  { href: "/boutique/miam-cbd", label: "Miam CBD", description: "Composition, allergènes, origine et marque détaillés selon le produit." },
+  { category: "fleurs", href: "/boutique/fleurs-cbd", label: "Fleurs CBD", description: "Origine, producteur, mode de culture et analyse disponibles selon la référence." },
+  { category: "resines", href: "/boutique/resines-cbd", label: "Résines CBD", description: "Composition, origine, producteur ou marque et formats consultables par produit." },
+  { category: "huiles", href: "/boutique/huiles-cbd", label: "Huiles CBD", description: "Composition, type d'extrait, dosage et usage déclaré indiqués sur chaque fiche." },
+  { category: "e-liquide", href: "/boutique/e-liquide-cbd", label: "E-liquides CBD", description: "Dosage, composition, volume, marque et précautions indiqués par référence." },
+  { category: "cosmetiques", href: "/boutique/cosmetiques-cbd", label: "Cosmétiques CBD", description: "Composition, marque, format et conseils d'utilisation à consulter sur la fiche." },
+  { category: "alimentaire", href: "/boutique/tisane-cbd", label: "Infusions au chanvre", description: "Ingrédients, origine et conformité à vérifier pour chaque référence." },
+  { category: "miam", href: "/boutique/miam-cbd", label: "Produits gourmands", description: "Composition, allergènes, origine et statut réglementaire détaillés selon le produit." },
 ];
 
-const featuredCategoryOrder = ["fleurs", "huiles", "resines", "alimentaire", "cosmetiques", "miam"] as const;
+const featuredCategoryOrder = ["fleurs", "e-liquide", "resines", "huiles", "cosmetiques", "alimentaire", "miam"] as const;
 
 export const metadata: Metadata = {
   title: "CBD naturel : origine, analyses et traçabilité",
@@ -192,6 +198,10 @@ export default async function CbdNaturelPage() {
   const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/${PAGE_SLUG}`;
   const store = await readPublicStoreByBackend();
+  const activeCategories = new Set<string>(
+    getActiveCatalogCategories(store.products).map(({ category }) => category),
+  );
+  const activeCategoryLinks = CATEGORY_LINKS.filter(({ category }) => activeCategories.has(category));
   const featuredProducts = selectFeaturedProducts(store.products);
   const ownProducer = getOwnProducer(store.content.boutique);
   const producersById = new Map<string, Producer>(
@@ -381,10 +391,10 @@ export default async function CbdNaturelPage() {
         {/* Catégories CBD naturel */}
         <div className="cartoon-border mt-8 bg-cream p-8">
           <h2 className="mb-6 text-3xl font-display text-ink">
-            Les formats de CBD naturel disponibles
+            Les formats actuellement présents dans le catalogue
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {CATEGORY_LINKS.map((cat) => (
+            {activeCategoryLinks.map((cat) => (
               <Link
                 key={cat.href}
                 href={cat.href}
@@ -444,6 +454,27 @@ export default async function CbdNaturelPage() {
             <p>
               Dans tous les cas, choisissez à partir de preuves vérifiables plutôt qu&apos;à partir du seul mot
               « naturel ».
+            </p>
+          </div>
+        </div>
+
+        <div className="cartoon-border mt-8 bg-yellow p-8" aria-labelledby="cadre-alimentaire-cbd-2026">
+          <h2 id="cadre-alimentaire-cbd-2026" className="mb-4 text-3xl font-display text-ink">
+            Produits alimentaires au CBD : point de vigilance 2026
+          </h2>
+          <div className="space-y-4 leading-relaxed text-charcoal">
+            <p>
+              Le ministère de l’Agriculture indique que les denrées alimentaires incluant du CBD dans leurs
+              ingrédients ne sont pas autorisées à la vente et font l’objet de contrôles renforcés en 2026.
+            </p>
+            <p>
+              Il distingue les graines de chanvre et leurs dérivés, ainsi que les feuilles exclusivement destinées
+              à la préparation d’une infusion aqueuse. Ces produits restent soumis à leurs propres conditions,
+              notamment aux teneurs maximales en THC, et ne doivent pas être enrichis en extraits de cannabinoïdes.
+            </p>
+            <p className="text-sm">
+              Une appellation commerciale comme « huile », « tisane » ou « naturel » ne suffit donc pas : la
+              composition et l’usage présenté sur la fiche et l’étiquette doivent être contrôlés référence par référence.
             </p>
           </div>
         </div>
@@ -560,7 +591,7 @@ export default async function CbdNaturelPage() {
           </h2>
           <p className="mb-4 text-sm leading-relaxed text-charcoal">
             Notre CBD naturel est expédié depuis la Bretagne vers toute la France. Retrouvez
-            nos pages locales pour chaque ville bretonne avec livraison rapide.
+            nos pages locales pour chaque ville bretonne avec les modes de livraison proposés lors de la commande.
           </p>
           <div className="flex flex-wrap gap-2">
             {bretonCities.map((city) => (

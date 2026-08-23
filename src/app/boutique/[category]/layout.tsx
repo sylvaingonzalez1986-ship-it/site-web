@@ -1,5 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { getCatalogCategoryBySlug } from "@/lib/catalog-categories";
+import { readPublicStoreByBackend } from "@/lib/data-backend";
 
 const BASE_URL = "https://www.leschanvriersbretons.com";
 
@@ -75,16 +77,26 @@ export async function generateMetadata({
     return { title: "Catégorie introuvable" };
   }
 
+  const canonicalCategory = category === "alimentaire-cbd" ? "tisane-cbd" : category;
+  const publicCategory = getCatalogCategoryBySlug(canonicalCategory);
+  const store = await readPublicStoreByBackend();
+  const hasPublishedProducts = Boolean(
+    publicCategory && store.products.some((product) => product.category === publicCategory.category),
+  );
+
   return {
     title: meta.title,
     description: meta.description,
     alternates: {
-      canonical: `${BASE_URL}/boutique/${category}`,
+      canonical: `${BASE_URL}/boutique/${canonicalCategory}`,
     },
+    robots: hasPublishedProducts
+      ? { index: true, follow: true }
+      : { index: false, follow: true },
     openGraph: {
       title: meta.title,
       description: meta.description,
-      url: `${BASE_URL}/boutique/${category}`,
+      url: `${BASE_URL}/boutique/${canonicalCategory}`,
     },
   };
 }

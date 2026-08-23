@@ -9,6 +9,7 @@ import {
   WebPageJsonLd,
 } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
+import { formatCatalogCategoryList, getActiveCatalogCategories } from "@/lib/catalog-categories";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import {
   getCityData,
@@ -24,7 +25,7 @@ type LocalCityPageProps = {
   slug: string;
 };
 
-const featuredCategoryOrder = ["fleurs", "huiles", "resines", "alimentaire"] as const;
+const featuredCategoryOrder = ["fleurs", "e-liquide", "resines", "huiles", "cosmetiques", "alimentaire"] as const;
 
 export function isLocalCitySlug(slug: string): boolean {
   return Boolean(getCityData(slug));
@@ -87,14 +88,12 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
   const pageUrl = `${baseUrl}/${cityData.slug}`;
   const variations = {
     intro: `Les commandes destinées à ${cityData.name} sont préparées en Bretagne. Chaque fiche indique le producteur et sa région afin de distinguer notre production des références partenaires.`,
-    fleurIntro: `Fleurs actuellement disponibles pour livraison vers ${cityData.name} : comparez le producteur, le mode de culture et l'analyse publiée.`,
-    huilleIntro: `Huiles disponibles pour ${cityData.name} : vérifiez le type d'extrait, la concentration et la liste complète des ingrédients.`,
-    tisaneIntro: `Tisanes disponibles pour ${cityData.name} : consultez la composition, l'origine des plantes et les conseils de préparation.`,
-    resinIntro: `Résines disponibles pour ${cityData.name} : vérifiez le producteur, la composition et le document d'analyse associé.`,
   };
   const editorialContent = getCityEditorialContent(slug);
   const faqItems = getCityFaq(slug);
   const store = await readPublicStoreByBackend();
+  const activeCatalogCategories = getActiveCatalogCategories(store.products);
+  const availableCategoryText = formatCatalogCategoryList(activeCatalogCategories);
   const featuredProducts = selectFeaturedProducts(store.products);
   const nearbyCities = getNearbyCities(slug);
   const producerById = new Map(store.producers.map((producer) => [producer.id, producer]));
@@ -135,14 +134,14 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
           <h1 className="section-title text-ink">CBD Naturel à {cityData.name}</h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-charcoal">{variations.intro}</p>
           <p className="mt-4 text-sm text-charcoal">
-            Dernière vérification : <time dateTime={LOCAL_SEO_LAST_REVIEWED}>22 août 2026</time>
+            Dernière vérification : <time dateTime={LOCAL_SEO_LAST_REVIEWED}>23 août 2026</time>
           </p>
         </div>
 
         <div className="cartoon-border mt-10 bg-cream p-8">
           <h2 className="mb-3 text-3xl font-display text-ink">Produits CBD disponibles à {cityData.name}</h2>
           <p className="max-w-3xl text-charcoal">
-            Voici une sélection de produits réellement disponibles sur la boutique. Vous retrouvez selon les stocks des fleurs CBD, huiles, résines et tisanes chanvre avec livraison vers {cityData.name}.
+            Cette sélection vient du catalogue public actuel : {availableCategoryText}, selon les stocks publiés, avec livraison vers {cityData.name}.
           </p>
         </div>
 
@@ -160,12 +159,18 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
         </div>
 
         <div className="cartoon-border mt-8 bg-cream p-6">
-          <h2 className="mb-4 text-2xl font-display text-ink">Formats disponibles à {cityData.name}</h2>
+          <h2 className="mb-4 text-2xl font-display text-ink">Catégories actuellement disponibles à {cityData.name}</h2>
           <div className="grid gap-4 md:grid-cols-2">
-            <p className="text-sm leading-relaxed text-charcoal">{variations.fleurIntro}</p>
-            <p className="text-sm leading-relaxed text-charcoal">{variations.huilleIntro}</p>
-            <p className="text-sm leading-relaxed text-charcoal">{variations.resinIntro}</p>
-            <p className="text-sm leading-relaxed text-charcoal">{variations.tisaneIntro}</p>
+            {activeCatalogCategories.map((category) => (
+              <Link
+                key={category.slug}
+                href={`/boutique/${category.slug}`}
+                className="cartoon-border-sm bg-white p-4 text-sm leading-relaxed text-charcoal hover:text-ink"
+              >
+                <strong className="block text-ink">{category.label}</strong>
+                Voir les références actuellement publiées, leur origine et les informations disponibles sur leur fiche.
+              </Link>
+            ))}
           </div>
         </div>
 
@@ -237,7 +242,7 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
         <div className="cartoon-border mt-8 bg-yellow p-6 text-center">
           <h2 className="mb-4 text-2xl font-display text-ink">Découvrir le CBD breton</h2>
           <p className="mb-6 text-charcoal">
-            Notre boutique est ouverte en continu avec livraison rapide vers {cityData.name}. Parcourez les catégories et choisissez le format qui vous convient.
+            Notre boutique est ouverte en continu avec les modes de livraison proposés pour {cityData.name}. Parcourez les catégories réellement disponibles et choisissez votre référence.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link

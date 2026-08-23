@@ -14,15 +14,15 @@ const FAQ_ITEMS = [
   { question: "Où acheter du CBD pas cher et de qualité ?", answer: "Privilégiez un vendeur qui affiche clairement l'origine, la composition, le prix et les analyses de ses produits. Le circuit court permet de proposer un CBD à prix accessible sans supprimer les contrôles de qualité." },
   { question: "Pourquoi votre CBD est-il proposé à prix juste ?", answer: "Notre modèle en circuit court limite les intermédiaires entre producteurs et clients. Nous privilégions des prix lisibles, des formats variés et des promotions ponctuelles plutôt qu'une qualité artificiellement gonflée par le marketing." },
   { question: "CBD pas cher signifie-t-il CBD de mauvaise qualité ?", answer: "Non. Un petit prix peut venir du format, du mode de culture ou d'un circuit de distribution plus court. Vérifiez toujours la traçabilité, le taux de THC réglementaire, la composition et les analyses disponibles." },
-  { question: "Quels produits CBD sont les moins chers ?", answer: "Les petits conditionnements, certaines fleurs cultivées en extérieur et les infusions figurent souvent parmi les choix les plus accessibles. La sélection affichée sur cette page est automatiquement classée par prix croissant." },
+  { question: "Quels produits CBD sont les moins chers ?", answer: "Les produits les moins chers dépendent du catalogue actif, du format et du conditionnement. La sélection affichée est calculée automatiquement à partir des références publiées et classée par prix croissant." },
   { question: "Livrez-vous le CBD pas cher partout en France ?", answer: "Oui, les produits disponibles sur notre boutique peuvent être expédiés en France métropolitaine, à domicile ou en point relais selon les options proposées lors de la commande." },
 ];
 
 export const metadata: Metadata = {
   title: "CBD Pas Cher et Naturel | Prix Justes Direct Producteur",
-  description: "CBD pas cher et naturel en circuit court : fleurs, huiles, résines et tisanes à prix accessibles. Producteurs sélectionnés, traçabilité et livraison en France.",
+  description: "CBD pas cher et naturel en circuit court : références réellement disponibles classées par prix. Producteurs identifiés, traçabilité et livraison en France.",
   alternates: { canonical: `https://www.leschanvriersbretons.com/${PAGE_SLUG}` },
-  keywords: ["cbd pas cher", "cbd pas cher france", "acheter cbd pas cher", "fleur cbd pas cher", "huile cbd pas cher", "cbd naturel pas cher", "cbd prix producteur"],
+  keywords: ["cbd pas cher", "cbd pas cher france", "acheter cbd pas cher", "fleur cbd pas cher", "e-liquide cbd", "cbd naturel pas cher", "cbd prix producteur"],
   openGraph: {
     title: "CBD Pas Cher et Naturel à Prix Juste | Les Chanvriers Bretons",
     description: "Découvrez une sélection de CBD à prix accessible, classée du moins cher au plus cher, en circuit court et avec une origine transparente.",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [{ url: "/og-default.png", width: 1200, height: 630, alt: "CBD pas cher et naturel à prix juste" }],
   },
-  twitter: { card: "summary_large_image", title: "CBD Pas Cher et Naturel à Prix Juste", description: "Fleurs, huiles, résines et tisanes CBD à prix accessibles en circuit court.", images: ["/og-default.png"] },
+  twitter: { card: "summary_large_image", title: "CBD Pas Cher et Naturel à Prix Juste", description: "Références CBD disponibles classées par prix croissant, en circuit court.", images: ["/og-default.png"] },
 };
 
 export default async function CbdPasCherPage() {

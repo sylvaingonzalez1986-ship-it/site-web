@@ -4,20 +4,10 @@ import {
   getPublishedBlogPostsByBackend,
   readPublicStoreByBackend,
 } from "@/lib/data-backend";
+import { getActiveCatalogCategories } from "@/lib/catalog-categories";
 import { getSiteUrl } from "@/lib/site-url";
 import { bretonCities, LOCAL_SEO_LAST_REVIEWED } from "@/lib/local-seo-data";
 import { mostRecentSeoDate, parseSeoDate } from "@/lib/seo-sitemap";
-
-const categories = [
-  "fleurs-cbd",
-  "resines-cbd",
-  "huiles-cbd",
-  "e-liquide-cbd",
-  "cosmetiques-cbd",
-  "tisane-cbd",
-  "miam-cbd",
-  "accessoires-cbd",
-];
 
 const categorySlugs: Record<string, string> = {
   fleurs: "fleurs-cbd",
@@ -114,20 +104,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => {
-    const productCategory = Object.entries(categorySlugs).find(([, slug]) => slug === cat)?.[0];
-
-    return {
-      url: `${baseUrl}/boutique/${cat}`,
+  const categoryPages: MetadataRoute.Sitemap = getActiveCatalogCategories(store.products).map(
+    ({ category, slug }) => ({
+      url: `${baseUrl}/boutique/${slug}`,
       lastModified: mostRecentSeoDate(
         store.products
-          .filter((product) => product.category === productCategory)
+          .filter((product) => product.category === category)
           .map((product) => product.updatedAt ?? product.createdAt),
       ),
       changeFrequency: "weekly" as const,
       priority: 0.8,
-    };
-  });
+    }),
+  );
 
   const blogPages: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,

@@ -35,10 +35,6 @@ Zone desservie : France
 - Guide CBD breton et origine géographique : ${baseUrl}/cbd-breton
 - Lire une analyse laboratoire CBD : ${baseUrl}/analyse-laboratoire-cbd
 - Boutique et catalogue : ${baseUrl}/boutique
-- Fleurs CBD : ${baseUrl}/boutique/fleurs-cbd
-- Résines CBD : ${baseUrl}/boutique/resines-cbd
-- Huiles CBD : ${baseUrl}/boutique/huiles-cbd
-- Tisanes et infusions au chanvre : ${baseUrl}/boutique/tisane-cbd
 - Blog et guides : ${baseUrl}/blog
 - Conditions générales de vente : ${baseUrl}/cgv
 - Plan du site XML : ${baseUrl}/sitemap.xml
@@ -49,6 +45,7 @@ Zone desservie : France
 - L'expression « CBD breton » doit préciser si elle concerne la culture du chanvre, la transformation, le conditionnement ou la seule expédition depuis la Bretagne.
 - L'origine, le producteur ou la marque, la composition et les analyses disponibles doivent être vérifiés sur la fiche de chaque produit.
 - Le catalogue comprend à la fois la production propre des Chanvriers Bretons et des références de producteurs partenaires, identifiés séparément.
+- Le catalogue et ses catégories actives sont la source pour les formats réellement publiés ; une page de catégorie vide ne constitue pas une offre commerciale.
 - Les informations relatives à un lot peuvent évoluer. L'étiquette, la composition et l'analyse correspondant au lot concerné prévalent.
 - Le site ne présente pas le CBD comme un médicament et ne remplace pas l'avis d'un professionnel de santé.
 
@@ -56,6 +53,7 @@ Zone desservie : France
 
 - Drogues Info Service — CBD : https://www.drogues-info-service.fr/Tout-savoir-sur-les-drogues/Le-dico-des-drogues/CBD-cannabidiol
 - MILDECA — réglementation du CBD : https://www.drogues.gouv.fr/le-cbd
+- Ministère de l'Agriculture — denrées alimentaires contenant du CBD : https://agriculture.gouv.fr/node/110883
 - Annuaire des entreprises — identité de l'éditeur : ${BUSINESS_IDENTITY.officialRegistryUrl}
 
 ## Mentions sectorielles externes
