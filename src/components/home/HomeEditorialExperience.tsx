@@ -18,6 +18,7 @@ import { CustomSection } from "@/components/CustomSection";
 import { ProductCard } from "@/components/ProductCard";
 import { HomeBadgePromoBand } from "@/components/home/HomeBadgePromoBand";
 import { HomeSeasonGallery } from "@/components/home/HomeSeasonGallery";
+import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
 import { sortOwnProductsFirst } from "@/lib/own-producer";
 import type { HomeSection, PublicStoreResponse } from "@/types/store";
 import styles from "./HomeEditorialExperience.module.css";
@@ -34,8 +35,8 @@ const sellingPoints = [
   },
   {
     icon: FlaskConical,
-    title: "100% naturel",
-    text: "100% transparent : des produits tracés, analysés et clairement présentés.",
+    title: "Traçabilité lisible",
+    text: "Origine, producteur, composition et analyses disponibles clairement présentés.",
   },
   {
     icon: Scale,
@@ -46,7 +47,7 @@ const sellingPoints = [
 
 const philosophy = [
   { icon: Scale, label: "Un prix juste", detail: "dès 1 gramme" },
-  { icon: Leaf, label: "Du naturel", detail: "pas du chimique" },
+  { icon: Leaf, label: "Des origines", detail: "producteurs identifiés" },
   { icon: MapPin, label: "Du local", detail: "breton et français" },
   { icon: Heart, label: "Du respect", detail: "pas du blabla" },
 ] as const;
@@ -84,8 +85,8 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
             <div className={styles.mobileHeroStage} aria-hidden="true">
               <span className={styles.mobileSun} />
               <span className={styles.mobilePriceStamp}>
-                <strong>100%</strong>
-                <small>naturel · 0 synthèse</small>
+                <strong>CBD</strong>
+                <small>origine identifiée</small>
               </span>
               <Image
                 src="/mascots/home-welcome.png"
@@ -110,15 +111,15 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
 
             <ul className={styles.heroProofs} aria-label="Nos engagements essentiels">
               <li><Check aria-hidden="true" /> Direct producteur</li>
-              <li><Check aria-hidden="true" /> Lots analysés</li>
+              <li><Check aria-hidden="true" /> Analyses disponibles</li>
               <li><Check aria-hidden="true" /> Livraison France</li>
             </ul>
           </div>
 
           <div className={styles.heroStage} aria-label="Sylvain, producteur de chanvre breton">
             <span className={styles.priceStamp}>
-              <strong>100%</strong>
-              <small>naturel · 0 synthèse</small>
+              <strong>CBD</strong>
+              <small>origine identifiée</small>
             </span>
             <span className={styles.sun} aria-hidden="true" />
             <span className={styles.heroScribble} aria-hidden="true">cultivé ici</span>
@@ -204,7 +205,7 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
               sizes="(max-width: 767px) 60vw, 38vw"
               className={styles.philosophyMascot}
             />
-            <p className={styles.handNote}>du vrai, du français,<br />du naturel.</p>
+            <p className={styles.handNote}>du clair, du français,<br />du traçable.</p>
           </div>
         </div>
       </section>
@@ -231,7 +232,7 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
               producteurs français. Plusieurs terroirs, plusieurs profils, les mêmes exigences.
             </p>
             <div className={styles.transparencyPoints}>
-              <p><ShieldCheck aria-hidden="true" /><span><strong>Traçabilité.</strong> Des origines claires et des analyses de laboratoire.</span></p>
+              <p><ShieldCheck aria-hidden="true" /><span><strong>Traçabilité.</strong> Des origines claires et les analyses disponibles sur les fiches.</span></p>
               <p><UsersRound aria-hidden="true" /><span><strong>Circuit court.</strong> Nos produits, ceux de nos voisins et de producteurs français choisis.</span></p>
               <p><Leaf aria-hidden="true" /><span><strong>Transparence.</strong> Pas de marketing trompeur, simplement ce qu&apos;il y a dans le sachet.</span></p>
             </div>
@@ -347,16 +348,11 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
             <p className={styles.kicker}>De la graine à votre porte</p>
             <h2 id="seo-home-title">CBD naturel direct producteur en Bretagne</h2>
             <div className={styles.seoColumns}>
+              <p>{CBD_NATUREL_CANONICAL_ANSWER}</p>
               <p>
-                Les Chanvriers Bretons, c&apos;est avant tout une aventure de <strong>producteur CBD en Bretagne</strong>.
-                Sur notre exploitation, nous cultivons du chanvre naturel, sans pesticide, avec le savoir-faire du
-                terroir breton. Notre boutique propose notre petite production à prix juste, celle de nos voisins
-                bretons et celle de producteurs français sélectionnés.
-              </p>
-              <p>
-                En choisissant une référence réellement disponible dans notre <strong>catalogue CBD</strong>, vous
-                privilégiez un <strong>achat CBD en circuit court</strong>, transparent et traçable. Chaque fiche
-                distingue le producteur, l’origine déclarée et l’analyse disponible pour le produit concerné.
+                Les Chanvriers Bretons cultivent du chanvre en Bretagne et proposent aussi des références de
+                producteurs partenaires français. Chaque fiche distingue le producteur, l&apos;origine déclarée,
+                la composition et l&apos;analyse disponible pour le produit concerné.
               </p>
             </div>
             <div className={styles.seoActions}>

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
 import { getCityFaq, LOCAL_SEO_LAST_REVIEWED } from "@/lib/local-seo-data";
 
 describe("local SEO editorial data", () => {
@@ -9,7 +10,7 @@ describe("local SEO editorial data", () => {
     expect(faq).toHaveLength(3);
     expect(content).toContain("Rennes");
     expect(content).toContain("producteurs partenaires");
-    expect(content).toContain("n'est pas un label officiel");
+    expect(content).toContain(CBD_NATUREL_CANONICAL_ANSWER);
     expect(content).not.toMatch(/100\s?%|sans pesticide|efficacit[ée]|bienfaits/i);
   });
 

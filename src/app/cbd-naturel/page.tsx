@@ -9,6 +9,7 @@ import {
 } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { getActiveCatalogCategories } from "@/lib/catalog-categories";
+import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { dedupeProducts } from "@/lib/product-dedup";
 import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
@@ -78,8 +79,7 @@ const COMPARISON_ROWS = [
 const FAQ_ITEMS = [
   {
     question: "Qu'est-ce que le CBD naturel ?",
-    answer:
-      "Le CBD est une molécule naturellement présente dans le chanvre. Dans le commerce, l'expression « CBD naturel » indique généralement que le cannabidiol provient de la plante plutôt que d'une synthèse chimique. Elle ne constitue toutefois ni un label officiel, ni une certification biologique, ni une preuve suffisante de conformité.",
+    answer: CBD_NATUREL_CANONICAL_ANSWER,
   },
   {
     question: "Comment reconnaître un CBD vraiment naturel ?",
@@ -269,10 +269,7 @@ export default async function CbdNaturelPage() {
             Le CBD naturel en bref
           </h2>
           <p className="max-w-4xl leading-relaxed text-charcoal">
-            Le CBD naturel est du cannabidiol provenant du chanvre, par opposition à une molécule produite
-            par synthèse. Pour choisir un produit traçable, vérifiez son origine, sa composition, le numéro de
-            lot et une analyse de laboratoire récente indiquant notamment sa teneur en cannabinoïdes. Le mot
-            « naturel » n&apos;est pas, à lui seul, une certification biologique ni une preuve de conformité.
+            {CBD_NATUREL_CANONICAL_ANSWER}
           </p>
           <dl className="mt-6 grid gap-4 md:grid-cols-3">
             <div>

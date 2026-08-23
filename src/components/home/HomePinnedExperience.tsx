@@ -20,6 +20,7 @@ import { HomeBadgePromoBand } from "@/components/home/HomeBadgePromoBand";
 import { HomeSeasonGallery } from "@/components/home/HomeSeasonGallery";
 import { HomeTicketPromoBand } from "@/components/home/HomeTicketPromoBand";
 import type { Product } from "@/data/products";
+import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
 import { sortOwnProductsFirst } from "@/lib/own-producer";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { formatPrice } from "@/lib/utils";
@@ -352,28 +353,16 @@ export function HomePinnedExperience({ initialStore }: HomePinnedExperienceProps
               CBD naturel direct producteur en Bretagne
             </h2>
             <div className="mt-4 space-y-3 text-base leading-relaxed text-charcoal">
+              <p>{CBD_NATUREL_CANONICAL_ANSWER}</p>
               <p>
-                Les Chanvriers Bretons, c&apos;est avant tout une aventure de{" "}
-                <strong>producteur CBD en Bretagne</strong>. Sur notre exploitation,
-                nous cultivons du chanvre naturel, sans pesticide, avec le savoir-faire
-                du terroir breton. Notre boutique vous propose notre petite production
-                à prix juste, celle de nos voisins bretons et celle de quelques
-                producteurs français sélectionnés — parce qu&apos;on a tellement de
-                terroir à découvrir.
+                Les Chanvriers Bretons cultivent du chanvre en Bretagne et proposent aussi
+                des références de producteurs partenaires français. Chaque fiche distingue
+                le producteur, l&apos;origine déclarée, la composition et l&apos;analyse disponible.
               </p>
               <p>
-                En achetant vos <strong>fleurs de CBD direct producteur</strong>, vos
-                huiles spectre complet ou vos{" "}
-                <strong>tisanes chanvre artisanales</strong>, vous faites le choix d&apos;un{" "}
-                <strong>achat CBD en circuit court</strong>, transparent et traçable.
-                Chaque lot est analysé en laboratoire pour garantir un{" "}
-                <strong>CBD français sans pesticide</strong>, conforme à la
-                réglementation en vigueur.
-              </p>
-              <p>
-                De la graine à votre porte, nous maîtrisons la chaîne :{" "}
-                <strong>CBD naturel</strong>, <strong>CBD breton</strong>, livré
-                rapidement partout en France. Bienvenue chez les chanvriers.
+                Pour comprendre le terme et contrôler les preuves utiles, consultez notre{" "}
+                <Link className="underline" href="/cbd-naturel">guide CBD naturel</Link> puis
+                la fiche de la référence concernée.
               </p>
             </div>
           </div>
@@ -825,7 +814,7 @@ function LegalPinnedSection({ home, zIndex }: { home: HomeContent; zIndex: numbe
         <div className="legal-character absolute left-1/2 bottom-0 z-10 h-[92%] w-[96%] -translate-x-1/2">
           <Image
             src="/sylvain.png"
-            alt="Sylvain, fondateur et producteur CBD Bretagne – CBD français sans pesticide, circuit court"
+            alt="Sylvain, fondateur et producteur de chanvre en Bretagne"
             fill
             className="object-contain object-bottom drop-shadow-[0_8px_10px_rgba(26,26,26,0.28)]"
           />

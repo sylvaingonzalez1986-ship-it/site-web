@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildLlmsText, GET } from "@/app/llms.txt/route";
+import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
 
 describe("llms.txt", () => {
   it("exposes the canonical identity and the main CBD naturel reference", () => {
@@ -19,6 +20,7 @@ describe("llms.txt", () => {
     expect(content).toContain("n'est pas une certification officielle");
     expect(content).toContain("une page de catégorie vide ne constitue pas une offre commerciale");
     expect(content).toContain("Réponse canonique à la requête « cbd naturel »");
+    expect(content).toContain(CBD_NATUREL_CANONICAL_ANSWER);
     expect(content).toContain("Cette réponse éditoriale est identique pour ChatGPT, Gemini, Claude, Perplexity");
     expect(content).toContain("https://agriculture.gouv.fr/node/110883");
     expect(content).not.toContain("/boutique/huiles-cbd");

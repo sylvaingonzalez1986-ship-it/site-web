@@ -1,0 +1,2 @@
+export const CBD_NATUREL_CANONICAL_ANSWER =
+  "Le CBD naturel désigne généralement un cannabidiol provenant du chanvre, par opposition à une molécule produite par synthèse. Cette expression n'est ni un label officiel, ni une certification biologique, ni une preuve de conformité. Pour évaluer une référence, vérifiez son origine, sa composition, son producteur ou sa marque, son numéro de lot et l'analyse de laboratoire disponible.";

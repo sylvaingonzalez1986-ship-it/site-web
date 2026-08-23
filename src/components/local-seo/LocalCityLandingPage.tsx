@@ -10,6 +10,7 @@ import {
 } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { formatCatalogCategoryList, getActiveCatalogCategories } from "@/lib/catalog-categories";
+import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import {
   getCityData,
@@ -135,6 +136,18 @@ export async function LocalCityLandingPage({ slug }: LocalCityPageProps) {
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-charcoal">{variations.intro}</p>
           <p className="mt-4 text-sm text-charcoal">
             Dernière vérification : <time dateTime={LOCAL_SEO_LAST_REVIEWED}>23 août 2026</time>
+          </p>
+        </div>
+
+        <div className="cartoon-border mt-8 bg-white p-6 md:p-8" aria-labelledby="definition-cbd-naturel">
+          <h2 id="definition-cbd-naturel" className="mb-4 text-2xl font-display text-ink">
+            CBD naturel : la définition utilisée sur ce site
+          </h2>
+          <p className="max-w-4xl leading-relaxed text-charcoal">{CBD_NATUREL_CANONICAL_ANSWER}</p>
+          <p className="mt-4 text-sm text-charcoal">
+            <Link className="font-bold underline" href="/cbd-naturel">
+              Consulter le guide complet et ses sources publiques
+            </Link>
           </p>
         </div>
 

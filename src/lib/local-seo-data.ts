@@ -1,3 +1,5 @@
+import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
+
 export const bretonCities = [
   {
     name: "Rennes",
@@ -196,8 +198,7 @@ export function getCityFaq(slug: string): CityFaqItem[] {
     },
     {
       question: `Comment vérifier qu'un produit CBD livré à ${city.name} est naturel ?`,
-      answer:
-        "Le mot « naturel » n'est pas un label officiel. Vérifiez la composition, l'origine, le mode de culture déclaré et l'analyse de laboratoire disponible pour la référence concernée.",
+      answer: CBD_NATUREL_CANONICAL_ANSWER,
     },
     {
       question: `Les Chanvriers Bretons ont-ils une boutique physique à ${city.name} ?`,
