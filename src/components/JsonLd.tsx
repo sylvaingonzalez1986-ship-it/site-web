@@ -15,6 +15,8 @@ type ArticleJsonLdProps = {
   wordCount?: number;
   ratingValue?: number;
   ratingCount?: number;
+  about?: string[];
+  citations?: { name: string; url: string }[];
 };
 
 function resolveProductAvailability(product: Product): string {
@@ -524,6 +526,8 @@ export async function ArticleJsonLd({
   wordCount,
   ratingValue,
   ratingCount,
+  about,
+  citations,
 }: ArticleJsonLdProps) {
   const nonce = await getNonce();
   const baseUrl = getSiteUrl();
@@ -531,12 +535,22 @@ export async function ArticleJsonLd({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `${url}#article`,
+    url,
     headline: title,
     description,
     image: [image],
     datePublished,
     dateModified,
+    inLanguage: "fr-FR",
+    isAccessibleForFree: true,
     articleSection: category,
+    about: about?.map((name) => ({ "@type": "Thing", name })),
+    citation: citations?.map((citation) => ({
+      "@type": "CreativeWork",
+      name: citation.name,
+      url: citation.url,
+    })),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": url,

@@ -54,7 +54,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/cbd-naturel`,
-      lastModified: new Date("2026-08-22T00:00:00.000Z"),
+      lastModified: new Date("2026-08-23T00:00:00.000Z"),
       changeFrequency: "weekly",
       priority: 0.9,
     },

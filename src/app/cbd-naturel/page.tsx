@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+  ArticleJsonLd,
   BreadcrumbJsonLd,
   FaqJsonLd,
   ProductListJsonLd,
@@ -15,7 +16,59 @@ import { bretonCities } from "@/lib/local-seo-data";
 import type { Producer } from "@/types/store";
 
 const PAGE_SLUG = "cbd-naturel";
-const LAST_REVIEWED = "2026-08-22";
+const FIRST_PUBLISHED = "2026-08-22";
+const LAST_REVIEWED = "2026-08-23";
+
+const PUBLIC_SOURCES = [
+  {
+    name: "OFDT — définition du cannabidiol (CBD)",
+    url: "https://www.ofdt.fr/glossaire/cbd-cannabidiol",
+  },
+  {
+    name: "MILDECA — cadre applicable au CBD",
+    url: "https://www.drogues.gouv.fr/le-cbd",
+  },
+  {
+    name: "MILDECA — étude de composition de produits CBD",
+    url: "https://www.drogues.gouv.fr/etude-cbd",
+  },
+  {
+    name: "Ministère de l’Agriculture — certification biologique",
+    url: "https://agriculture.gouv.fr/la-certification-en-agriculture-biologique",
+  },
+  {
+    name: "Drogues Info Service — CBD : effets, interactions et précautions",
+    url: "https://www.drogues-info-service.fr/Tout-savoir-sur-les-drogues/Le-dico-des-drogues/CBD-cannabidiol",
+  },
+] as const;
+
+const COMPARISON_ROWS = [
+  {
+    term: "CBD naturel",
+    meaning: "Expression commerciale généralement employée pour un cannabidiol provenant du chanvre.",
+    evidence: "Origine végétale, composition, producteur et analyse correspondant au lot.",
+  },
+  {
+    term: "CBD bio",
+    meaning: "Référence à une production ou à un produit relevant de la certification biologique applicable.",
+    evidence: "Logo autorisé, organisme certificateur et informations de certification vérifiables.",
+  },
+  {
+    term: "Sans molécule de synthèse",
+    meaning: "Allégation distincte de l’origine végétale et du caractère biologique.",
+    evidence: "Liste des ingrédients, procédé documenté et analyse couvrant les substances recherchées.",
+  },
+  {
+    term: "Full spectrum",
+    meaning: "Extrait présenté comme conservant plusieurs constituants naturellement présents dans le chanvre.",
+    evidence: "Type d’extrait déclaré et profil analytique détaillant les cannabinoïdes mesurés.",
+  },
+  {
+    term: "Analysé en laboratoire",
+    meaning: "Un échantillon a été testé pour les paramètres effectivement listés dans le rapport.",
+    evidence: "Laboratoire, date, méthode, numéro de rapport, lot et périmètre des essais.",
+  },
+] as const;
 
 const FAQ_ITEMS = [
   {
@@ -160,6 +213,17 @@ export default async function CbdNaturelPage() {
         about={["CBD naturel", "Chanvre breton", "Circuit court", "Traçabilité du CBD"]}
         dateModified={LAST_REVIEWED}
       />
+      <ArticleJsonLd
+        title="CBD naturel : origine, analyses et traçabilité"
+        description="Guide pour distinguer origine végétale, certification biologique, composition et analyse de lot d’un produit CBD."
+        url={pageUrl}
+        image={`${baseUrl}/og-default.png`}
+        datePublished={FIRST_PUBLISHED}
+        dateModified={LAST_REVIEWED}
+        category="Guide CBD et traçabilité"
+        about={["CBD naturel", "Cannabidiol", "Chanvre", "Traçabilité", "Analyse de laboratoire"]}
+        citations={PUBLIC_SOURCES.map(({ name, url }) => ({ name, url }))}
+      />
       <FaqJsonLd questions={FAQ_ITEMS} />
       <ProductListJsonLd products={featuredProducts} producers={store.producers} />
 
@@ -185,7 +249,7 @@ export default async function CbdNaturelPage() {
             <Link href="/a-propos" className="underline hover:text-ink">
               Les Chanvriers Bretons
             </Link>{" "}
-            · Vérifié le 22 août 2026
+            · <time dateTime={LAST_REVIEWED}>Vérifié le 23 août 2026</time>
           </p>
         </div>
 
@@ -395,6 +459,42 @@ export default async function CbdNaturelPage() {
           </div>
         </div>
 
+        <div className="cartoon-border mt-8 bg-white p-6 md:p-8" aria-labelledby="tableau-comparatif-cbd">
+          <h2 id="tableau-comparatif-cbd" className="mb-4 text-3xl font-display text-ink">
+            Quel justificatif demander pour chaque mention ?
+          </h2>
+          <p className="max-w-4xl leading-relaxed text-charcoal">
+            Ces expressions ne sont pas interchangeables. Le tableau sépare leur sens courant de la preuve
+            concrète à rechercher avant de comparer deux produits.
+          </p>
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full min-w-[720px] border-collapse text-left text-sm text-charcoal">
+              <caption className="sr-only">
+                Comparaison entre CBD naturel, CBD bio, absence de molécules de synthèse, full spectrum et analyse en laboratoire
+              </caption>
+              <thead>
+                <tr className="border-b-2 border-ink text-ink">
+                  <th scope="col" className="p-3 font-bold">Mention</th>
+                  <th scope="col" className="p-3 font-bold">Ce qu’elle décrit</th>
+                  <th scope="col" className="p-3 font-bold">Éléments à vérifier</th>
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARISON_ROWS.map((row) => (
+                  <tr key={row.term} className="border-b border-charcoal/30 align-top">
+                    <th scope="row" className="p-3 font-bold text-ink">{row.term}</th>
+                    <td className="p-3 leading-relaxed">{row.meaning}</td>
+                    <td className="p-3 leading-relaxed">{row.evidence}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-xs leading-relaxed text-charcoal">
+            Une analyse ne permet de conclure que sur l’échantillon, le lot et les paramètres indiqués dans le rapport.
+          </p>
+        </div>
+
         <div className="cartoon-border mt-8 bg-white p-8">
           <h2 className="mb-4 text-2xl font-display text-ink">Sources publiques et précautions</h2>
           <p className="max-w-4xl text-sm leading-relaxed text-charcoal">
@@ -402,26 +502,18 @@ export default async function CbdNaturelPage() {
             médicamenteuses et les précautions de conduite, consultez en priorité les informations publiques.
           </p>
           <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-charcoal">
-            <li>
-              <a
-                href="https://www.drogues-info-service.fr/Tout-savoir-sur-les-drogues/Le-dico-des-drogues/CBD-cannabidiol"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-ink"
-              >
-                Drogues Info Service — CBD : effets, interactions et cadre d&apos;usage
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.drogues.gouv.fr/le-cbd"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-ink"
-              >
-                MILDECA — réglementation et points de vigilance sur le CBD
-              </a>
-            </li>
+            {PUBLIC_SOURCES.map((source) => (
+              <li key={source.url}>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-ink"
+                >
+                  {source.name}
+                </a>
+              </li>
+            ))}
           </ul>
           <p className="mt-4 text-xs leading-relaxed text-charcoal">
             Ces informations générales ne remplacent pas l&apos;avis d&apos;un professionnel de santé.
