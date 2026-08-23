@@ -16,22 +16,18 @@ describe("middleware policy helpers", () => {
     expect(shouldEnforceAgeGate("/bete-de-concours/profils/testeur")).toBe(true);
   });
 
-  it("lets official OpenAI crawlers pass the age gate", () => {
-    expect(
-      isRecognizedCrawlerUserAgent(
-        "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OAI-SearchBot/1.4; +https://openai.com/searchbot",
-      ),
-    ).toBe(true);
-    expect(
-      isRecognizedCrawlerUserAgent(
-        "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ChatGPT-User/1.0; +https://openai.com/bot",
-      ),
-    ).toBe(true);
-    expect(
-      isRecognizedCrawlerUserAgent(
-        "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; GPTBot/1.4; +https://openai.com/gptbot",
-      ),
-    ).toBe(true);
+  it.each([
+    ["OAI-SearchBot", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OAI-SearchBot/1.4; +https://openai.com/searchbot"],
+    ["ChatGPT-User", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ChatGPT-User/1.0; +https://openai.com/bot"],
+    ["GPTBot", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; GPTBot/1.4; +https://openai.com/gptbot"],
+    ["Googlebot", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"],
+    ["Claude-SearchBot", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; Claude-SearchBot/1.0; +https://anthropic.com"],
+    ["Claude-User", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; Claude-User/1.0; +https://anthropic.com"],
+    ["ClaudeBot", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ClaudeBot/1.0; +https://anthropic.com"],
+    ["PerplexityBot", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot"],
+    ["Perplexity-User", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; Perplexity-User/1.0; +https://perplexity.ai/perplexity-user"],
+  ])("lets the official %s agent pass the age gate", (_name, userAgent) => {
+    expect(isRecognizedCrawlerUserAgent(userAgent)).toBe(true);
   });
 
   it("keeps regular browsers behind the age gate", () => {

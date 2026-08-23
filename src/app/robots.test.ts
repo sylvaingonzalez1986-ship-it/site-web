@@ -1,17 +1,19 @@
 import { describe, expect, it } from "vitest";
-import robots from "@/app/robots";
+import robots, { PUBLIC_CRAWLER_USER_AGENTS } from "@/app/robots";
 
 describe("robots metadata", () => {
-  it("keeps public pages crawlable and explicitly allows ChatGPT Search", () => {
+  it("keeps public pages crawlable for every declared answer engine", () => {
     const metadata = robots();
     const rules = Array.isArray(metadata.rules) ? metadata.rules : [metadata.rules];
 
-    expect(rules).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ userAgent: "*", allow: "/" }),
-        expect.objectContaining({ userAgent: "OAI-SearchBot", allow: "/" }),
-      ]),
-    );
+    expect(rules).toEqual(expect.arrayContaining([
+      expect.objectContaining({ userAgent: "*", allow: "/" }),
+    ]));
+    for (const userAgent of PUBLIC_CRAWLER_USER_AGENTS) {
+      expect(rules).toEqual(expect.arrayContaining([
+        expect.objectContaining({ userAgent, allow: "/", disallow: expect.arrayContaining(["/admin/", "/api/"]) }),
+      ]));
+    }
     expect(metadata.sitemap).toBe("https://www.leschanvriersbretons.com/sitemap.xml");
   });
 });

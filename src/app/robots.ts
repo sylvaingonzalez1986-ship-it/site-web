@@ -10,6 +10,20 @@ const PRIVATE_PATHS = [
   "/jeu",
 ] as const;
 
+export const PUBLIC_CRAWLER_USER_AGENTS = [
+  "OAI-SearchBot",
+  "ChatGPT-User",
+  "GPTBot",
+  "Googlebot",
+  // Google-Extended is a robots.txt product token, not a separate HTTP user agent.
+  "Google-Extended",
+  "Claude-SearchBot",
+  "Claude-User",
+  "ClaudeBot",
+  "PerplexityBot",
+  "Perplexity-User",
+] as const;
+
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = getSiteUrl();
 
@@ -20,23 +34,11 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: [...PRIVATE_PATHS],
       },
-      {
-        // ChatGPT Search discovery is independent from GPTBot training controls.
-        userAgent: "OAI-SearchBot",
+      ...PUBLIC_CRAWLER_USER_AGENTS.map((userAgent) => ({
+        userAgent,
         allow: "/",
         disallow: [...PRIVATE_PATHS],
-      },
-      {
-        // Claude uses separate agents for search and user-requested page retrieval.
-        userAgent: "Claude-SearchBot",
-        allow: "/",
-        disallow: [...PRIVATE_PATHS],
-      },
-      {
-        userAgent: "Claude-User",
-        allow: "/",
-        disallow: [...PRIVATE_PATHS],
-      },
+      })),
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
     host: baseUrl,

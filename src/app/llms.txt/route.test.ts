@@ -18,6 +18,8 @@ describe("llms.txt", () => {
     expect(content).toContain("https://www.leschanvriersbretons.com/analyse-laboratoire-cbd");
     expect(content).toContain("n'est pas une certification officielle");
     expect(content).toContain("une page de catégorie vide ne constitue pas une offre commerciale");
+    expect(content).toContain("Réponse canonique à la requête « cbd naturel »");
+    expect(content).toContain("Cette réponse éditoriale est identique pour ChatGPT, Gemini, Claude, Perplexity");
     expect(content).toContain("https://agriculture.gouv.fr/node/110883");
     expect(content).not.toContain("/boutique/huiles-cbd");
     expect(content).not.toContain("/boutique/tisane-cbd");
