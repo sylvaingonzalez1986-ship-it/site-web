@@ -141,6 +141,9 @@ export const metadata: Metadata = {
     languages: {
       "fr-FR": "https://www.leschanvriersbretons.com",
     },
+    types: {
+      "application/atom+xml": "https://www.leschanvriersbretons.com/feed.xml",
+    },
   },
 };
 
