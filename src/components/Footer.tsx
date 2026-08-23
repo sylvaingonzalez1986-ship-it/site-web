@@ -25,6 +25,7 @@ const MARKET_LINKS = [
 ] as const;
 
 const REGIONAL_LINKS = [
+  { href: "/cbd-breton", label: "CBD breton" },
   { href: "/cbd-naturel", label: "CBD naturel" },
   { href: "/cbd-pas-cher", label: "CBD pas cher" },
   { href: "/cbd-rennes", label: "Rennes" },

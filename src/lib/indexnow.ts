@@ -114,6 +114,7 @@ export function collectChangedStorefrontPaths(
   ) {
     paths.add("/boutique");
     paths.add("/cbd-naturel");
+    paths.add("/cbd-breton");
     paths.add("/cbd-pas-cher");
     for (const product of next.products) addProductUrls(paths, product);
   }

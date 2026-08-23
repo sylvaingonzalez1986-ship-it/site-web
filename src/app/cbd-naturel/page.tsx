@@ -283,6 +283,10 @@ export default async function CbdNaturelPage() {
             <Link href="/analyse-laboratoire-cbd" className="font-bold underline hover:text-ink">
               comment lire une analyse laboratoire CBD
             </Link>.
+            {" "}Pour distinguer l&apos;origine agricole du simple lieu d&apos;expédition, consultez aussi notre guide{" "}
+            <Link href="/cbd-breton" className="font-bold underline hover:text-ink">
+              CBD breton
+            </Link>.
           </p>
         </div>
 

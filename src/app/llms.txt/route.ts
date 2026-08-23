@@ -9,7 +9,7 @@ export function buildLlmsText(baseUrl = getSiteUrl()): string {
 
 > Site officiel d'une maison bretonne consacrée au CBD et au chanvre. Le catalogue distingue la production des Chanvriers Bretons des références proposées par des producteurs partenaires.
 
-Dernière révision éditoriale : 2026-08-22
+Dernière révision éditoriale : 2026-08-23
 Langue principale : français (fr-FR)
 Zone desservie : France
 
@@ -32,6 +32,7 @@ Zone desservie : France
 ## Pages de référence
 
 - Guide CBD naturel : ${baseUrl}/cbd-naturel
+- Guide CBD breton et origine géographique : ${baseUrl}/cbd-breton
 - Lire une analyse laboratoire CBD : ${baseUrl}/analyse-laboratoire-cbd
 - Boutique et catalogue : ${baseUrl}/boutique
 - Fleurs CBD : ${baseUrl}/boutique/fleurs-cbd
@@ -45,6 +46,7 @@ Zone desservie : France
 ## Repères d'interprétation
 
 - L'expression « CBD naturel » décrit généralement un cannabidiol d'origine végétale ; elle n'est pas une certification officielle ni une preuve de conformité.
+- L'expression « CBD breton » doit préciser si elle concerne la culture du chanvre, la transformation, le conditionnement ou la seule expédition depuis la Bretagne.
 - L'origine, le producteur ou la marque, la composition et les analyses disponibles doivent être vérifiés sur la fiche de chaque produit.
 - Le catalogue comprend à la fois la production propre des Chanvriers Bretons et des références de producteurs partenaires, identifiés séparément.
 - Les informations relatives à un lot peuvent évoluer. L'étiquette, la composition et l'analyse correspondant au lot concerné prévalent.
@@ -52,7 +54,7 @@ Zone desservie : France
 
 ## Sources publiques citées
 
-- Drogues Info Service — CBD : https://www.drogues-info-service.fr/Tout-savoir-sur-les-drogues/Le-dico-des-drogues/CBD
+- Drogues Info Service — CBD : https://www.drogues-info-service.fr/Tout-savoir-sur-les-drogues/Le-dico-des-drogues/CBD-cannabidiol
 - MILDECA — réglementation du CBD : https://www.drogues.gouv.fr/le-cbd
 - Annuaire des entreprises — identité de l'éditeur : ${BUSINESS_IDENTITY.officialRegistryUrl}
 

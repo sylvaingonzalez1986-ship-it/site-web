@@ -50,6 +50,16 @@ describe("IndexNow", () => {
     ]);
   });
 
+  it("notifies the regional pillar when producer information changes", () => {
+    const previous = store([product()]);
+    const next = {
+      ...store([product()]),
+      producers: [{ id: "breton-farm", name: "Ferme bretonne", region: "Bretagne" }],
+    } as CmsStore;
+
+    expect(collectChangedStorefrontPaths(previous, next)).toContain("/cbd-breton");
+  });
+
   it("rejects URLs outside the canonical origin", () => {
     expect(
       normalizeIndexNowUrls(
