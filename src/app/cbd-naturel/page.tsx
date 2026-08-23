@@ -10,7 +10,10 @@ import {
 } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { getActiveCatalogCategories } from "@/lib/catalog-categories";
-import { buildCatalogTransparencySnapshot } from "@/lib/catalog-transparency";
+import {
+  buildCatalogTransparencyObservations,
+  buildCatalogTransparencySnapshot,
+} from "@/lib/catalog-transparency";
 import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { dedupeProducts } from "@/lib/product-dedup";
@@ -224,6 +227,12 @@ export default async function CbdNaturelPage() {
     store.producers,
     ownProducer,
   );
+  const transparencyObservations = buildCatalogTransparencyObservations(
+    store.products,
+    store.producers,
+    baseUrl,
+    ownProducer,
+  );
   const observationDate = formatCatalogObservationDate(transparencySnapshot.lastCatalogUpdate);
   const transparencyDataUrl = `${pageUrl}/catalogue-transparence.json`;
 
@@ -407,6 +416,65 @@ export default async function CbdNaturelPage() {
               {transparencySnapshot.unresolvedProducerReferences} référence(s) possède(nt) une association producteur à compléter.
             </p>
           ) : null}
+
+          <details className="mt-6 rounded border-2 border-ink bg-white p-4">
+            <summary className="cursor-pointer font-display text-xl text-ink">
+              Consulter les {transparencyObservations.length} lignes de preuve
+            </summary>
+            <p className="mt-3 max-w-4xl text-sm leading-relaxed text-charcoal">
+              Chaque ligne correspond à une référence unique du catalogue public. Le statut d&apos;analyse indique
+              uniquement si un document est actuellement relié à la fiche produit.
+            </p>
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full min-w-[820px] border-collapse text-left text-sm text-charcoal">
+                <caption className="sr-only">
+                  Registre des références, producteurs, origines et analyses publiques
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col" className="border border-ink p-3 text-ink">Référence</th>
+                    <th scope="col" className="border border-ink p-3 text-ink">Catégorie</th>
+                    <th scope="col" className="border border-ink p-3 text-ink">Producteur</th>
+                    <th scope="col" className="border border-ink p-3 text-ink">Origine déclarée</th>
+                    <th scope="col" className="border border-ink p-3 text-ink">Analyse publique</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {transparencyObservations.map((observation) => (
+                    <tr key={observation.productUrl}>
+                      <th scope="row" className="border border-ink p-3 font-bold text-ink">
+                        <Link href={observation.productUrl} className="underline hover:text-charcoal">
+                          {observation.name}
+                        </Link>
+                      </th>
+                      <td className="border border-ink p-3">{observation.categoryLabel}</td>
+                      <td className="border border-ink p-3">
+                        {observation.producerName ?? "Association à compléter"}
+                        <span className="block text-xs">
+                          {observation.relationship === "own" ? "Production maison" : "Producteur partenaire"}
+                        </span>
+                      </td>
+                      <td className="border border-ink p-3">{observation.origin ?? "Non indiquée"}</td>
+                      <td className="border border-ink p-3">
+                        {observation.analysisUrl ? (
+                          <a
+                            href={observation.analysisUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-bold underline hover:text-ink"
+                          >
+                            Document accessible
+                          </a>
+                        ) : (
+                          "Non publiée"
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
 
           <p className="mt-5 text-sm leading-relaxed text-charcoal">
             « Analyse accessible » signifie qu&apos;un document public est relié à la fiche ; cela ne préjuge pas de son

@@ -1,5 +1,8 @@
 import type { Product } from "@/data/products";
-import { getActiveCatalogCategories } from "@/lib/catalog-categories";
+import {
+  getActiveCatalogCategories,
+  PUBLIC_CATALOG_CATEGORIES,
+} from "@/lib/catalog-categories";
 import { dedupeProducts } from "@/lib/product-dedup";
 import {
   DEFAULT_OWN_PRODUCER,
@@ -30,6 +33,20 @@ export type CatalogTransparencySnapshot = {
   categories: CatalogTransparencyCategory[];
 };
 
+export type CatalogTransparencyObservation = {
+  productId: string;
+  name: string;
+  category: Product["category"];
+  categoryLabel: string;
+  productUrl: string;
+  producerName: string | null;
+  relationship: "own" | "partner";
+  origin: string | null;
+  analysisAvailable: boolean;
+  analysisUrl: string | null;
+  lastUpdated: string | null;
+};
+
 export type CatalogTransparencyDocument = {
   schemaVersion: "1.0";
   name: string;
@@ -44,7 +61,16 @@ export type CatalogTransparencyDocument = {
     originIdentified: string;
     analysesAvailable: string;
   };
+  observationFields: {
+    productUrl: string;
+    producerName: string;
+    relationship: string;
+    origin: string;
+    analysisUrl: string;
+    lastUpdated: string;
+  };
   metrics: CatalogTransparencySnapshot;
+  observations: CatalogTransparencyObservation[];
 };
 
 function hasPublishedAnalysis(product: Product): boolean {
@@ -56,6 +82,55 @@ function hasProducerOrigin(producer: Producer | undefined): boolean {
   return [producer.location, producer.department, producer.region].some(
     (value) => typeof value === "string" && value.trim().length > 0,
   );
+}
+
+function formatProducerOrigin(producer: Producer | undefined): string | null {
+  if (!producer) return null;
+
+  const values = [producer.location, producer.department, producer.region]
+    .map((value) => value.trim())
+    .filter(Boolean)
+    .filter((value, index, allValues) =>
+      allValues.findIndex((candidate) => candidate.toLocaleLowerCase("fr") === value.toLocaleLowerCase("fr")) === index,
+    );
+
+  return values.length > 0 ? values.join(" · ") : null;
+}
+
+function absolutePublicUrl(value: string, baseUrl: string): string {
+  return new URL(value, `${baseUrl}/`).toString();
+}
+
+export function buildCatalogTransparencyObservations(
+  products: Product[],
+  producers: Producer[],
+  baseUrl: string,
+  ownProducer: Producer = DEFAULT_OWN_PRODUCER,
+): CatalogTransparencyObservation[] {
+  const producerById = new Map(producers.map((producer) => [producer.id, producer]));
+  const categoryByCode = new Map(
+    PUBLIC_CATALOG_CATEGORIES.map((category) => [category.category, category]),
+  );
+
+  return dedupeProducts(products).map((product) => {
+    const producer = resolveProductProducer(product, producerById, ownProducer);
+    const category = categoryByCode.get(product.category);
+    const analysisAvailable = hasPublishedAnalysis(product);
+
+    return {
+      productId: product.id,
+      name: product.name,
+      category: product.category,
+      categoryLabel: category?.label ?? product.category,
+      productUrl: `${baseUrl}/boutique/${category?.slug ?? product.category}/${product.id}`,
+      producerName: producer?.name.trim() || null,
+      relationship: isOwnProduct(product) ? "own" : "partner",
+      origin: formatProducerOrigin(producer),
+      analysisAvailable,
+      analysisUrl: analysisAvailable ? absolutePublicUrl(product.analysisPdf!, baseUrl) : null,
+      lastUpdated: product.updatedAt ?? product.createdAt ?? null,
+    };
+  });
 }
 
 export function buildCatalogTransparencySnapshot(
@@ -130,6 +205,7 @@ export function buildCatalogTransparencySnapshot(
 export function buildCatalogTransparencyDocument(
   snapshot: CatalogTransparencySnapshot,
   baseUrl: string,
+  observations: CatalogTransparencyObservation[] = [],
 ): CatalogTransparencyDocument {
   return {
     schemaVersion: "1.0",
@@ -139,7 +215,7 @@ export function buildCatalogTransparencyDocument(
     canonicalPage: `${baseUrl}/cbd-naturel`,
     catalogUrl: `${baseUrl}/boutique`,
     methodology:
-      "Décompte après déduplication du catalogue public. Une analyse est comptée uniquement lorsqu'un document est relié à la fiche. L'origine et le producteur proviennent de la fiche producteur associée.",
+      "Décompte après déduplication du catalogue public. Une analyse est comptée uniquement lorsqu'un document est relié à la fiche. L'origine et le producteur proviennent de la fiche producteur associée. Les observations permettent de rapprocher chaque total de ses références publiques.",
     dataAsOf: snapshot.lastCatalogUpdate ?? null,
     definitions: {
       publishedReferences: "Références uniques présentes dans le catalogue public.",
@@ -147,6 +223,15 @@ export function buildCatalogTransparencyDocument(
       originIdentified: "Références dont la fiche producteur comporte une localisation, un département ou une région.",
       analysesAvailable: "Références comportant un lien public vers un document d'analyse.",
     },
+    observationFields: {
+      productUrl: "URL canonique de la fiche produit publique.",
+      producerName: "Nom du producteur associé ; null lorsque l'association ne peut pas être résolue.",
+      relationship: "own pour la production propre, partner pour une référence partenaire.",
+      origin: "Localisation, département ou région déclarés sur la fiche producteur ; null en leur absence.",
+      analysisUrl: "URL du document d'analyse public relié à la référence ; null lorsqu'aucun document n'est publié.",
+      lastUpdated: "Date de dernière mise à jour de la référence lorsqu'elle est disponible.",
+    },
     metrics: snapshot,
+    observations,
   };
 }

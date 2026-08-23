@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { Product } from "@/data/products";
 import {
   buildCatalogTransparencyDocument,
+  buildCatalogTransparencyObservations,
   buildCatalogTransparencySnapshot,
 } from "@/lib/catalog-transparency";
 import { DEFAULT_OWN_PRODUCER } from "@/lib/own-producer";
@@ -79,14 +80,53 @@ describe("catalog transparency snapshot", () => {
 
   it("publishes explicit metric definitions with canonical URLs", () => {
     const snapshot = buildCatalogTransparencySnapshot(products, [partner]);
+    const observations = buildCatalogTransparencyObservations(
+      products,
+      [partner],
+      "https://www.leschanvriersbretons.com",
+    );
     const document = buildCatalogTransparencyDocument(
       snapshot,
       "https://www.leschanvriersbretons.com",
+      observations,
     );
 
     expect(document.canonicalPage).toBe("https://www.leschanvriersbretons.com/cbd-naturel");
     expect(document.dataAsOf).toBe("2026-08-22T12:00:00.000Z");
     expect(document.definitions.analysesAvailable).toContain("lien public");
     expect(document.metrics).toBe(snapshot);
+    expect(document.observations).toBe(observations);
+    expect(document.observationFields.analysisUrl).toContain("document d'analyse public");
+  });
+
+  it("links every aggregate to a public product-level observation", () => {
+    const observations = buildCatalogTransparencyObservations(
+      products,
+      [partner],
+      "https://www.leschanvriersbretons.com",
+    );
+
+    expect(observations).toHaveLength(3);
+    expect(observations[0]).toMatchObject({
+      productId: "own-flower",
+      productUrl: "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/own-flower",
+      producerName: "Les Chanvriers Bretons",
+      relationship: "own",
+      origin: "Bretagne",
+      analysisAvailable: true,
+      analysisUrl: "https://www.leschanvriersbretons.com/analysis.pdf",
+    });
+    expect(observations[1]).toMatchObject({
+      producerName: "Producteur partenaire",
+      relationship: "partner",
+      origin: "Jura · Bourgogne-Franche-Comté",
+      analysisAvailable: false,
+      analysisUrl: null,
+    });
+    expect(observations[2]).toMatchObject({
+      producerName: null,
+      origin: null,
+      relationship: "partner",
+    });
   });
 });

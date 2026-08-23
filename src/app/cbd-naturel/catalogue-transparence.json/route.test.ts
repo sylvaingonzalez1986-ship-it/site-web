@@ -41,5 +41,13 @@ describe("catalog transparency JSON", () => {
     expect(document.metrics.publishedReferences).toBe(1);
     expect(document.metrics.analysesAvailable).toBe(1);
     expect(document.definitions.analysesAvailable).toContain("lien public");
+    expect(document.observations).toHaveLength(1);
+    expect(document.observations[0]).toMatchObject({
+      name: "Fleur documentée",
+      productUrl: "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/flower-1",
+      producerName: "Les Chanvriers Bretons",
+      origin: "Bretagne",
+      analysisUrl: "https://www.leschanvriersbretons.com/analysis.pdf",
+    });
   });
 });
