@@ -9589,6 +9589,79 @@ body {
   --cream: #f6f0e6;
   --ink: #111512;
   --charcoal: #343b36;
+  --announcement-banner-height: calc(2.25rem + env(safe-area-inset-top, 0px));
+}
+
+/* Ruban de confiance : placé au-dessus de la navigation et animé sans JavaScript. */
+.announcement-banner {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  height: var(--announcement-banner-height);
+  overflow: hidden;
+  padding-top: env(safe-area-inset-top, 0px);
+  border-bottom: 2px solid var(--ink);
+  color: var(--cream);
+  background: var(--teal);
+}
+
+.announcement-banner__track {
+  display: flex;
+  width: max-content;
+  height: 2.25rem;
+  align-items: center;
+  animation: announcement-banner-scroll 38s linear infinite;
+  will-change: transform;
+}
+
+.announcement-banner__group {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
+.announcement-banner__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding-left: 1.4rem;
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.075em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.announcement-banner__separator {
+  color: var(--yellow);
+  font-size: 0.8em;
+}
+
+@keyframes announcement-banner-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .announcement-banner__track {
+    animation-duration: 29s;
+  }
+
+  .announcement-banner__item {
+    gap: 1rem;
+    padding-left: 1rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.065em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement-banner__track {
+    animation: none;
+  }
 }
 
 body,

@@ -24,6 +24,32 @@ const baseLinks = [
   { href: "/blog", label: "Le Journal" },
 ];
 
+const announcementMessage =
+  "Ici, rien que du chanvre naturel — sans cannabinoïdes de synthèse ni artifices. Votre santé passe avant tout. Tous nos produits sont traçables jusqu’à leur producteur.";
+
+function AnnouncementBanner() {
+  const repeatedMessages = Array.from({ length: 3 }, (_, index) => (
+    <span className="announcement-banner__item" key={index}>
+      <span>{announcementMessage}</span>
+      <span className="announcement-banner__separator" aria-hidden="true">
+        ✦
+      </span>
+    </span>
+  ));
+
+  return (
+    <aside
+      className="announcement-banner"
+      aria-label={announcementMessage}
+    >
+      <div className="announcement-banner__track" aria-hidden="true">
+        <div className="announcement-banner__group">{repeatedMessages}</div>
+        <div className="announcement-banner__group">{repeatedMessages}</div>
+      </div>
+    </aside>
+  );
+}
+
 function isExplicitlyDisabled(raw: string | undefined): boolean {
   const normalized = raw?.trim().toLowerCase();
   return normalized === "0" || normalized === "false" || normalized === "off" || normalized === "no";
@@ -44,6 +70,7 @@ type ContestAccessCheck = {
 
 export function Navbar() {
   const pathname = usePathname();
+  const showAnnouncement = pathname === "/";
   const { totalItems, user, loyalty, hasWelcomePack, sessionLoading } = useCart();
   const isAuthenticated = Boolean(user);
   const { pages: cmsPages } = useCmsPages();
@@ -192,9 +219,14 @@ export function Navbar() {
 
   return (
     <>
+      {showAnnouncement && <AnnouncementBanner />}
       <header
         data-tutorial="navbar"
-        className={`game-navbar safe-area-top safe-area-x fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
+        className={`game-navbar safe-area-x fixed inset-x-0 z-40 transition-all duration-300 ${
+          showAnnouncement
+            ? "top-[var(--announcement-banner-height)]"
+            : "safe-area-top top-0"
+        } ${
           isScrolled
             ? "is-scrolled py-3"
             : "bg-transparent py-6"
