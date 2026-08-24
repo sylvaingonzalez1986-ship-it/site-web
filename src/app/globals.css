@@ -9660,7 +9660,10 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .announcement-banner__track {
-    animation: none;
+    animation-name: announcement-banner-scroll !important;
+    animation-duration: 55s !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
   }
 }
 
