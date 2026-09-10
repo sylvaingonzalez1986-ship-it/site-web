@@ -1,4 +1,4 @@
-import { getKqHarvestTier, KQ_CARDS, type KqGameState, type KqOutcome } from "@/lib/kanab-quest-game";
+import { getKqCultureSystemSummary, getKqHarvestTier, KQ_CARDS, type KqGameState, type KqOutcome } from "@/lib/kanab-quest-game";
 import { createKqIntegrityCode } from "@/lib/kanab-quest-persistence";
 
 export type KqFlowerStatus = "available" | "locked" | "burned";
@@ -97,6 +97,7 @@ export function createKqFlower(state: KqGameState, ownerName = "Toi"): KqFlowerC
   const successes = state.history.filter((entry) => entry.outcome === "success" || entry.outcome === "critical").length;
   const failures = state.history.filter((entry) => entry.outcome === "failure").length;
   const playedSupportCount = state.usedCards.filter((code) => KQ_CARDS.find((card) => card.code === code)?.category !== "substrate").length;
+  const cultureSystem = getKqCultureSystemSummary(state.deckCodes);
   const base = 52 + state.quality * 2.4;
   return {
     id: `FLOWER-${state.seed}-${state.history.map((entry) => entry.dice.join("")).join("")}`,
@@ -106,13 +107,16 @@ export function createKqFlower(state: KqGameState, ownerName = "Toi"): KqFlowerC
     status: "available",
     createdAt: state.completedAt ?? state.startedAt ?? new Date(0).toISOString(),
     integrityCode: createKqIntegrityCode(state),
-    traits: [...state.traits],
+    traits: [...new Set([
+      ...state.traits,
+      ...(cultureSystem ? [`Mode de culture · ${cultureSystem.name}`] : []),
+    ])],
     stats: {
       appearance: clampStat(base + values[4] * 2 - failures * 2),
       aroma: clampStat(base + late * 1.5 + (state.traits.some((trait) => trait.includes("Arômes")) ? 4 : 0)),
       vigor: clampStat(base + early * 1.6),
       mastery: clampStat(48 + successes * 7 + playedSupportCount * 2 - failures * 3),
-      regularity: clampStat(72 + successes * 3 - failures * 9),
+      regularity: clampStat(72 + successes * 3 - failures * 9 + (state.equipment?.regularityPercent ?? 0)),
     },
   };
 }

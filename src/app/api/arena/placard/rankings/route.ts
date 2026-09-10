@@ -12,7 +12,7 @@ export async function GET() {
   try {
     return NextResponse.json(await getKqPublicLeaderboard(), {
       headers: {
-        "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
+        "Cache-Control": "no-store, max-age=0",
       },
     });
   } catch {
@@ -23,7 +23,7 @@ export async function GET() {
       unavailable: true,
     }, {
       status: 503,
-      headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
+      headers: { "Cache-Control": "no-store, max-age=0" },
     });
   }
 }

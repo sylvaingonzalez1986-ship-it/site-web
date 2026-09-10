@@ -18,17 +18,17 @@ describe("GET /api/arena/placard/rankings", () => {
     expect((await GET()).status).toBe(404);
     expect(getKqPublicLeaderboard).not.toHaveBeenCalled();
   });
-  it("serves the daily snapshot through a 24-hour shared cache", async () => {
+  it("does not cache reputation and ranking changes", async () => {
     getKqPublicLeaderboard.mockResolvedValue({ seasonCode: "KQ-2026-S1", entries: [{ rank: 1 }] });
     const response = await GET();
     expect(response.status).toBe(200);
-    expect(response.headers.get("cache-control")).toContain("s-maxage=86400");
-    expect(response.headers.get("cache-control")).toContain("stale-while-revalidate=604800");
+    expect(response.headers.get("cache-control")).toBe("no-store, max-age=0");
   });
   it("returns a short-lived empty fallback without leaking errors", async () => {
     getKqPublicLeaderboard.mockRejectedValue(new Error("private database detail"));
     const response = await GET();
     expect(response.status).toBe(503);
     expect(await response.json()).toMatchObject({ entries: [], unavailable: true });
+    expect(response.headers.get("cache-control")).toBe("no-store, max-age=0");
   });
 });

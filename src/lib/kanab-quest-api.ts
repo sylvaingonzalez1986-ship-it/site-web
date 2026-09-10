@@ -18,8 +18,9 @@ export type KqOfficialFlower = {
   traits: string[];
   combos: string[];
   stats: Record<string, number>;
-  status: "available" | "locked" | "burned";
+  status: "available" | "queued" | "locked" | "burned";
   createdAt: string;
+  queuedAt: string | null;
   lockedAt: string | null;
   burnedAt: string | null;
 };
@@ -51,6 +52,22 @@ export type KqOfficialBattle = {
   experienceAwarded?: number;
 };
 
+export type KqBattleVerdictReceipt = {
+  battleId: string;
+  status: "verdict";
+  rounds: KqOfficialBattle["rounds"];
+  winner: "player" | "opponent";
+  burnedAt: string;
+  experienceAwarded: number;
+  challengePoints: number;
+  opponentChallengePoints: number;
+  completedChallenges: Array<{ code: string; title: string; points: number }>;
+  pvpBoosterGranted: boolean;
+  pvpBoosterCardCount: number;
+  rankProfile: null | { rating: number; seasonPoints: number; wins: number; losses: number; streak: number; burnedFlowers: number };
+  replayed: boolean;
+};
+
 type ApiError = { error?: string };
 export type KqApiScope = "admin" | "player";
 
@@ -68,7 +85,12 @@ export function createKqScopedRequest(
 }
 
 async function readKqResponse<T>(response: Response): Promise<T> {
-  const payload = await response.json() as T & ApiError;
+  let payload: T & ApiError;
+  try {
+    payload = await response.json() as T & ApiError;
+  } catch {
+    throw new Error(`Réponse du Placard illisible (HTTP ${response.status}). Actualise la culture pour vérifier son état, sans relancer les dés.`);
+  }
   if (!response.ok) throw new Error(payload.error || "Le serveur du Placard ne répond pas.");
   return payload;
 }
@@ -102,19 +124,55 @@ export async function getKqRemoteFlowerRivals(flowerId: string, request: typeof 
   return readKqResponse<{ rivals: KqFlowerRival[] }>(response);
 }
 
-export async function lockKqRemoteBattle(flowerId: string, rivalFlowerId: string, request: typeof fetch = fetch) {
+export async function enqueueKqRemoteRandomBattle(flowerId: string, request: typeof fetch = fetch) {
   const response = await request("/api/admin/placard/battles", {
     method: "POST", headers: { "content-type": "application/json" },
-    body: JSON.stringify({ flowerId, rivalFlowerId }),
+    body: JSON.stringify({ action: "join", flowerId }),
   });
-  return readKqResponse<{ battleId: string; seed: number; status: string }>(response);
+  return readKqResponse<{
+    matchStatus: "queued";
+    flowerId: string;
+    queuedAt: string;
+    replayed: boolean;
+  } | {
+    matchStatus: "matched";
+    flowerId: string;
+    opponentFlowerId: string;
+    battleId: string;
+    matchedAt: string;
+    verdictPending: boolean;
+    verdict: KqBattleVerdictReceipt | null;
+  }>(response);
 }
 
-export async function finalizeKqRemoteBotBattle(flowerId: string, botCode: string, request: typeof fetch = fetch) {
+export async function pollKqRemoteRandomBattleQueue(flowerId: string, request: typeof fetch = fetch) {
+  const response = await request("/api/admin/placard/battles", {
+    method: "POST", headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "poll", flowerId }),
+  });
+  return readKqResponse<{
+    matchStatus: "idle" | "queued" | "matched";
+    flowerId?: string;
+    queuedAt?: string;
+    battleId?: string;
+    verdictPending?: boolean;
+    verdict?: KqBattleVerdictReceipt | null;
+  }>(response);
+}
+
+export async function leaveKqRemoteRandomBattleQueue(flowerId: string, request: typeof fetch = fetch) {
+  const response = await request("/api/admin/placard/battles", {
+    method: "POST", headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "leave", flowerId }),
+  });
+  return readKqResponse<{ left: boolean; flowerId: string; replayed: boolean }>(response);
+}
+
+export async function finalizeKqRemoteBotBattle(flowerId: string, request: typeof fetch = fetch) {
   const response = await request("/api/admin/placard/bot-battles", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ flowerId, botCode }),
+    body: JSON.stringify({ flowerId }),
   });
   return readKqResponse<{
     battleId: string;
@@ -126,6 +184,17 @@ export async function finalizeKqRemoteBotBattle(flowerId: string, botCode: strin
     todayCount: number;
     dailyLimit: number;
     opponentType: "bot";
+    opponentFlower: {
+      ownerName: string;
+      variety: string;
+    };
+    challengePoints: number;
+    claimedChallengeCodes: string[];
+    completedChallenges: Array<{
+      code: string;
+      title: string;
+      points: number;
+    }>;
     rewardCard: null | {
       code: string;
       name: string;
@@ -143,18 +212,7 @@ export async function getKqRemoteBattles(request: typeof fetch = fetch) {
 
 export async function finalizeKqRemoteBattle(battleId: string, request: typeof fetch = fetch) {
   const response = await request(`/api/admin/placard/battles/${encodeURIComponent(battleId)}/verdict`, { method: "POST" });
-  return readKqResponse<{
-    battleId: string; status: "verdict"; rounds: KqOfficialBattle["rounds"];
-    winner: "player" | "opponent"; burnedAt: string;
-    experienceAwarded: number;
-    challengePoints: number;
-    opponentChallengePoints: number;
-    completedChallenges: Array<{ code: string; title: string; points: number }>;
-    pvpBoosterGranted: boolean;
-    pvpBoosterCardCount: number;
-    rankProfile: null | { rating: number; seasonPoints: number; wins: number; losses: number; streak: number; burnedFlowers: number };
-    replayed: boolean;
-  }>(response);
+  return readKqResponse<KqBattleVerdictReceipt>(response);
 }
 
 export async function playKqRemoteCard(

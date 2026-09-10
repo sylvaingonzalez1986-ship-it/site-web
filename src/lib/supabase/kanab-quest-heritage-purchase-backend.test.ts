@@ -6,7 +6,12 @@ const { createSupabaseServiceClient } = vi.hoisted(() => ({
 
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient }));
 
-import { awardKqHeritageForPaidOrder, awardKqHeritagePurchaseBatch, KQ_HERITAGE_RETRO_BATCH_SIZE } from "@/lib/supabase/kanab-quest-heritage-purchase-backend";
+import {
+  awardKqHeritageForPaidOrder,
+  awardKqHeritagePurchaseBatch,
+  KQ_HERITAGE_RETRO_BATCH_SIZE,
+  previewKqHeritagePurchaseBatch,
+} from "@/lib/supabase/kanab-quest-heritage-purchase-backend";
 
 describe("Kanab Quest Heritage purchase hook", () => {
   it("does not award a card when an order is paid", async () => {
@@ -29,5 +34,61 @@ describe("Kanab Quest Heritage purchase hook", () => {
       alreadyAwarded: 0,
       nextCursor: null,
     });
+  });
+
+  it("previews pending purchase units while writes remain dormant", async () => {
+    const rpc = vi.fn();
+    createSupabaseServiceClient.mockReturnValue({
+      rpc,
+      from: vi.fn((table: string) => {
+        if (table === "order_items") {
+          return {
+            select: vi.fn(() => ({
+              order: vi.fn(() => ({
+                limit: vi.fn().mockResolvedValue({
+                  data: [{ id: 10, order_id: "order-1", product_id: "flower-1", quantity: 2 }],
+                  error: null,
+                }),
+              })),
+            })),
+          };
+        }
+        if (table === "contest_entries") {
+          return { select: vi.fn().mockResolvedValue({ data: [{ product_id: "flower-1" }], error: null }) };
+        }
+        if (table === "orders") {
+          return {
+            select: vi.fn(() => ({
+              in: vi.fn().mockResolvedValue({
+                data: [{
+                  id: "order-1",
+                  customer_id: "customer-1",
+                  payment_state: "paid",
+                  status: "paid",
+                }],
+                error: null,
+              }),
+            })),
+          };
+        }
+        return {
+          select: vi.fn(() => ({
+            in: vi.fn().mockResolvedValue({
+              data: [{ order_item_id: 10, unit_index: 1 }],
+              error: null,
+            }),
+          })),
+        };
+      }),
+    });
+    await expect(previewKqHeritagePurchaseBatch(0)).resolves.toEqual({
+      live: false,
+      processedItems: 1,
+      eligibleUnits: 2,
+      pendingUnits: 1,
+      alreadyAwarded: 1,
+      nextCursor: null,
+    });
+    expect(rpc).not.toHaveBeenCalled();
   });
 });

@@ -1,4 +1,5 @@
 .page {
+  composes: surface from "./ArenaRetro.module.css";
   --arena-green: #00563f;
   --arena-cream: #f6f0e6;
   --arena-paper: #fffaf1;
@@ -10,7 +11,7 @@
     radial-gradient(circle at 88% 9%, rgba(0, 86, 63, 0.08) 0 10rem, transparent 10.15rem),
     radial-gradient(rgba(17, 21, 18, 0.11) 0.55px, transparent 0.55px),
     var(--arena-cream);
-  background-size: auto, 5px 5px, auto;
+  background-size: auto, 32px 32px, auto;
   color: var(--arena-ink);
 }
 
@@ -21,9 +22,9 @@
 
 .page :global(.cartoon-border) {
   border: 2px solid var(--arena-ink);
-  border-radius: 0;
+  border-radius: 4px;
   background: var(--arena-paper);
-  box-shadow: 5px 5px 0 var(--arena-ink);
+  box-shadow: 0 4px 0 var(--arena-green);
 }
 
 .page :global(.rounded),

@@ -1,14 +1,23 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getValidatedAdminContext, getKqAdminNotebookRewardPreview, syncKqNotebookRewardBatch } = vi.hoisted(() => ({
+const {
+  getValidatedAdminContext,
+  getKqAdminNotebookRewardPreview,
+  previewKqNotebookRewardBatch,
+  syncKqNotebookRewardBatch,
+} = vi.hoisted(() => ({
   getValidatedAdminContext: vi.fn(),
   getKqAdminNotebookRewardPreview: vi.fn(),
+  previewKqNotebookRewardBatch: vi.fn(),
   syncKqNotebookRewardBatch: vi.fn(),
 }));
 
 vi.mock("@/lib/admin-guard", () => ({ getValidatedAdminContext }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({ getKqAdminNotebookRewardPreview }));
-vi.mock("@/lib/supabase/kanab-quest-notebook-rewards-backend", () => ({ syncKqNotebookRewardBatch }));
+vi.mock("@/lib/supabase/kanab-quest-notebook-rewards-backend", () => ({
+  previewKqNotebookRewardBatch,
+  syncKqNotebookRewardBatch,
+}));
 
 import { GET, POST } from "@/app/api/admin/placard/notebook-rewards/route";
 
@@ -19,7 +28,11 @@ const request = (body: unknown) => new Request("http://localhost/api/admin/placa
 });
 
 describe("GET /api/admin/placard/notebook-rewards", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env.KQ_RETRO_ADMIN_WRITES_ALLOWED;
+  });
+  afterEach(() => delete process.env.KQ_RETRO_ADMIN_WRITES_ALLOWED);
 
   it("refuses unauthenticated previews", async () => {
     getValidatedAdminContext.mockResolvedValue(null);
@@ -54,15 +67,63 @@ describe("GET /api/admin/placard/notebook-rewards", () => {
     expect(syncKqNotebookRewardBatch).not.toHaveBeenCalled();
   });
 
-  it("runs one private dormant batch with an explicit cursor", async () => {
+  it("previews one private batch without calling the write backend", async () => {
     getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
-    syncKqNotebookRewardBatch.mockResolvedValue({
-      live: false, processed: 0, granted: 0, alreadyGranted: 0, nextCursor: null,
+    previewKqNotebookRewardBatch.mockResolvedValue({
+      live: true, processed: 12, pending: 9, alreadyGranted: 3, nextCursor: 180,
     });
     const response = await POST(request({ cursor: 120 }));
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
+    expect(previewKqNotebookRewardBatch).toHaveBeenCalledWith(120);
+    expect(syncKqNotebookRewardBatch).not.toHaveBeenCalled();
+    expect(await response.json()).toMatchObject({ mode: "preview", writeAllowed: false, pending: 9 });
+  });
+
+  it("refuses an execution while the independent write gate is closed", async () => {
+    getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
+    const response = await POST(request({
+      cursor: 120,
+      execute: true,
+      confirmation: "EXECUTE_RETRO_BATCH",
+    }));
+    expect(response.status).toBe(409);
+    expect(syncKqNotebookRewardBatch).not.toHaveBeenCalled();
+  });
+
+  it("executes one confirmed batch when the write gate is open", async () => {
+    process.env.KQ_RETRO_ADMIN_WRITES_ALLOWED = "true";
+    getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
+    previewKqNotebookRewardBatch.mockResolvedValue({
+      live: true, processed: 9, pending: 9, alreadyGranted: 0, nextCursor: null,
+    });
+    syncKqNotebookRewardBatch.mockResolvedValue({
+      live: true, processed: 9, granted: 9, alreadyGranted: 0, nextCursor: null,
+    });
+    const response = await POST(request({
+      cursor: 120,
+      execute: true,
+      confirmation: "EXECUTE_RETRO_BATCH",
+      previewFingerprint: "notebook:120:9:9:0:end",
+    }));
+    expect(response.status).toBe(200);
     expect(syncKqNotebookRewardBatch).toHaveBeenCalledWith(120);
-    expect(await response.json()).toMatchObject({ live: false, processed: 0 });
+    expect(await response.json()).toMatchObject({ mode: "execute", writeAllowed: true, granted: 9 });
+  });
+
+  it("rejects a stale preview before calling the write backend", async () => {
+    process.env.KQ_RETRO_ADMIN_WRITES_ALLOWED = "true";
+    getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
+    previewKqNotebookRewardBatch.mockResolvedValue({
+      live: true, processed: 9, pending: 8, alreadyGranted: 1, nextCursor: null,
+    });
+    const response = await POST(request({
+      cursor: 120,
+      execute: true,
+      confirmation: "EXECUTE_RETRO_BATCH",
+      previewFingerprint: "notebook:120:9:9:0:end",
+    }));
+    expect(response.status).toBe(409);
+    expect(syncKqNotebookRewardBatch).not.toHaveBeenCalled();
   });
 });

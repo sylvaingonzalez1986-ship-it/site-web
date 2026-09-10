@@ -6,15 +6,22 @@ import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 import { createKqFlower, createKqOpponent, invertKqBattlePerspective, lockKqBattle, resolveKqBattle, type KqBattle, type KqFlowerCard } from "@/lib/kanab-quest-battle";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { getKqArenaExperienceAward, getKqLeague } from "@/lib/kanab-quest-ranking";
-import { evaluateKqChallenges } from "@/lib/kanab-quest-challenges";
+import { evaluateKqChallenges, getKqChallengeDayKey } from "@/lib/kanab-quest-challenges";
 import { getKqNotebookReward, KQ_CULTURE_TOKEN_RUN_CAP, KQ_CULTURE_TOKEN_START_XP, KQ_NOTEBOOK_REWARDS_LIVE } from "@/lib/kanab-quest-notebook-rewards";
-import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
+import { isKqHeritageEffect, isKqHeritageTiming, type KqHeritageCard } from "@/lib/kanab-quest-heritage";
 import { KQ_HERITAGE_PURCHASE_DRAWS_LIVE } from "@/lib/kanab-quest-heritage-purchase";
 import { buildKqSeasonRewardPreview, KQ_SEASON_REWARDS_LIVE } from "@/lib/kanab-quest-season-rewards";
-import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isKqPublicPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 import { LOTTERY_POINTS_PACK_MAX_PER_PURCHASE } from "@/lib/lottery-collection";
 import { KQ_SUPPORT_BOOSTER_POINTS_COST } from "@/lib/kanab-quest-booster";
 import { calculateArenaScore } from "@/lib/arena-ranking";
+import { auditKqEquipmentCatalog, type KqEquipmentCatalogRow } from "@/lib/kanab-quest-equipment";
+import { getKqEquipmentShopSnapshot } from "@/lib/supabase/kanab-quest-equipment-backend";
+import { getKqLaunchApprovalChecks, getKqLaunchApprovals, getKqLaunchDossier, type KqLaunchApprovals, type KqLaunchDossier } from "@/lib/kanab-quest-launch-approvals";
+import { buildKqRandomQueueHealth, type KqRandomQueueHealth } from "@/lib/kanab-quest-random-queue";
+import { KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE } from "@/lib/kanab-quest-producer-rewards";
+import { calculateKqPlacardScore } from "@/lib/kanab-quest-reputation";
+import { KQ_REWARD_BALANCE } from "@/lib/kanab-quest-reward-balance";
 
 const BOTTE_COLLECTION_CODE = "BOTTE_DU_CHANVRIER_2026";
 const KQ_INITIAL_SEASON_CODE = "KQ-2026-S1";
@@ -310,12 +317,15 @@ type KqHeritageDefinitionRow = {
   description: string;
   image_url: string | null;
   is_active: boolean;
+  producer_id: string | null;
+  producer_name: string | null;
+  producer_image: string | null;
 };
 
 async function getCachedKqHeritageDefinitions(): Promise<KqHeritageDefinitionRow[]> {
   return loadCachedKqReference("heritage-definitions", 60_000, async () => {
     const result = await createSupabaseServiceClient().from("kq_heritage_card_definitions")
-      .select("code,name,timing,effect_code,description,image_url,is_active")
+      .select("code,name,timing,effect_code,description,image_url,is_active,producer_id,producer_name,producer_image")
       .order("code", { ascending: true });
     if (result.error) throw new Error(`[supabase:kq_heritage_card_definitions] ${result.error.message}`);
     return (result.data ?? []) as KqHeritageDefinitionRow[];
@@ -420,7 +430,13 @@ export async function getKqPlayerHeritageSnapshot(ownerId: string) {
       imageUrl: String(card.image_url ?? ""),
       isActive: card.is_active === true,
       ownedCopies: ownedCounts[card.code] ?? 0,
-      producerNames: producerNamesByCard[card.code] ?? [],
+      producerId: card.producer_id ? String(card.producer_id) : null,
+      producerName: String(card.producer_name ?? ""),
+      producerImage: String(card.producer_image ?? ""),
+      producerNames: [...new Set([
+        ...(card.producer_name ? [String(card.producer_name)] : []),
+        ...(producerNamesByCard[card.code] ?? []),
+      ])],
     })),
     draws: (drawsResult.data ?? []).map((draw) => ({
       id: String(draw.id),
@@ -440,10 +456,9 @@ export async function getKqAdminHeritageSnapshot(adminEmail: string) {
   return getKqPlayerHeritageSnapshot(ownerId);
 }
 
-export async function craftKqAdminHeritageCard(adminEmail: string, cardCode: string) {
-  const ownerId = await findKqUserIdByEmail(adminEmail);
-  if (!ownerId) throw new Error("Compte collection admin introuvable.");
-  if (!KQ_HERITAGE_CARDS.some((card) => card.code === cardCode)) throw new Error("Héritage invalide.");
+async function craftKqHeritageCardForOwner(ownerId: string, cardCode: string) {
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Profil Héritage invalide.");
+  if (!/^HERITAGE-[0-9]{3,6}$/.test(cardCode)) throw new Error("Héritage invalide.");
   const supabase = createSupabaseServiceClient();
   const result = await supabase.rpc("rpc_kq_craft_heritage_card", {
     p_user_id: ownerId,
@@ -468,14 +483,34 @@ export async function craftKqAdminHeritageCard(adminEmail: string, cardCode: str
   };
 }
 
+export async function craftKqPlayerHeritageCard(ownerId: string, cardCode: string) {
+  return craftKqHeritageCardForOwner(ownerId, cardCode);
+}
+
+export async function craftKqAdminHeritageCard(adminEmail: string, cardCode: string) {
+  const ownerId = await findKqUserIdByEmail(adminEmail);
+  if (!ownerId) throw new Error("Compte collection admin introuvable.");
+  return craftKqHeritageCardForOwner(ownerId, cardCode);
+}
+
 type KqLaunchReadinessInput = {
-  heritageCards: Array<{ image_url: string; is_active: boolean }>;
+  heritageCards: Array<{ image_url: string; is_active: boolean; producer_id?: string | null; effect_code: string }>;
+  producerCount?: number;
   supportCards: Array<{ image_url: string; is_active: boolean }>;
   supportCollectionActive: boolean;
   notebookRules: Array<{ is_active: boolean }>;
   seasonRules: Array<{ tier_code: string; is_active: boolean }>;
   seasonGrantCount: number;
-  publicRulesApproved: boolean;
+  equipmentCatalog: KqEquipmentCatalogRow[];
+  launchApprovals: KqLaunchApprovals;
+  launchDossier: KqLaunchDossier;
+  featureFlags?: {
+    heritagePurchaseDrawsLive: boolean;
+    notebookRewardsLive: boolean;
+    producerNotebookRewardsLive: boolean;
+    seasonRewardsLive: boolean;
+    publicPlayerApiLive: boolean;
+  };
 };
 
 export function isKqFinalArtworkUrl(value: string) {
@@ -485,29 +520,44 @@ export function isKqFinalArtworkUrl(value: string) {
 }
 
 export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
-  const heritageArtwork = input.heritageCards.map((card) => card.image_url.trim().toLowerCase()).filter(isKqFinalArtworkUrl);
+  const expectedHeritageCount = input.producerCount ?? 12;
+  const producerHeritageCards = input.heritageCards.filter((card) => card.producer_id !== null);
+  const heritageEffects = producerHeritageCards.map((card) => card.effect_code);
+  const heritageArtwork = producerHeritageCards.map((card) => card.image_url.trim().toLowerCase()).filter(isKqFinalArtworkUrl);
   const supportArtwork = input.supportCards.map((card) => card.image_url.trim().toLowerCase()).filter(isKqFinalArtworkUrl);
+  const equipmentAudit = auditKqEquipmentCatalog(input.equipmentCatalog);
+  const featureFlags = input.featureFlags ?? {
+    heritagePurchaseDrawsLive: KQ_HERITAGE_PURCHASE_DRAWS_LIVE,
+    notebookRewardsLive: KQ_NOTEBOOK_REWARDS_LIVE,
+    producerNotebookRewardsLive: KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE,
+    seasonRewardsLive: KQ_SEASON_REWARDS_LIVE,
+    publicPlayerApiLive: isKqPublicPlayerApiEnabled(),
+  };
   const contentChecks = [
-    { code: "public-rules-approved", label: "Règlement public, lots et probabilités validés", ready: input.publicRulesApproved },
-    { code: "heritage-catalog", label: "Catalogue Héritage · 12 cartes de valeur égale", ready: input.heritageCards.length === 12 },
-    { code: "heritage-art", label: "12 illustrations Héritage distinctes", ready: heritageArtwork.length === 12 && new Set(heritageArtwork).size === 12 },
+    ...getKqLaunchApprovalChecks(input.launchApprovals, input.launchDossier),
+    { code: "equipment-price-sources", label: `${equipmentAudit.sourceCount} références matériel datées et vérifiables`, ready: equipmentAudit.sourcesReady },
+    { code: "equipment-db-prices", label: `${equipmentAudit.purchasableCount} prix boutique Supabase alignés sur le catalogue`, ready: equipmentAudit.databaseReady },
+    { code: "heritage-catalog", label: `Catalogue Héritage · ${expectedHeritageCount} producteur(s), une carte chacun`, ready: expectedHeritageCount > 0 && producerHeritageCards.length === expectedHeritageCount },
+    { code: "heritage-effects", label: `${expectedHeritageCount} pouvoirs Héritage distincts et pris en charge`, ready: heritageEffects.length === expectedHeritageCount && heritageEffects.every(isKqHeritageEffect) && new Set(heritageEffects).size === expectedHeritageCount },
+    { code: "heritage-art", label: `${expectedHeritageCount} illustrations Héritage producteur`, ready: heritageArtwork.length === expectedHeritageCount && new Set(heritageArtwork).size === expectedHeritageCount },
     { code: "support-catalog", label: "36 cartes La Botte", ready: input.supportCards.length === 36 },
     { code: "support-art", label: "36 illustrations La Botte distinctes", ready: supportArtwork.length === 36 && new Set(supportArtwork).size === 36 },
-    { code: "notebook-rules", label: "2 missions carnet → Placard actives", ready: input.notebookRules.filter((rule) => rule.is_active).length === 2 },
+    { code: "notebook-rules", label: "2 missions carnet → Placard configurées", ready: input.notebookRules.length === 2 },
     { code: "season-rules", label: "4 paliers de récompenses de saison", ready: input.seasonRules.length === 4 && new Set(input.seasonRules.map((rule) => rule.tier_code)).size === 4 },
     { code: "season-no-early-grants", label: "Aucune récompense de saison prématurée", ready: input.seasonGrantCount === 0 },
   ];
   const dormantChecks = [
     { code: "support-dormant", label: "Collection La Botte encore inactive", ready: !input.supportCollectionActive && input.supportCards.every((card) => !card.is_active) },
     { code: "heritage-dormant", label: "Collection Héritage encore inactive", ready: input.heritageCards.every((card) => !card.is_active) },
-    { code: "heritage-purchase-dormant", label: "Tirages Héritage après achat encore inactifs", ready: !KQ_HERITAGE_PURCHASE_DRAWS_LIVE },
-    { code: "notebook-dormant", label: "Récompenses du carnet encore inactives", ready: input.notebookRules.every((rule) => !rule.is_active) && !KQ_NOTEBOOK_REWARDS_LIVE },
-    { code: "season-dormant", label: "Récompenses de saison encore inactives", ready: input.seasonRules.every((rule) => !rule.is_active) && !KQ_SEASON_REWARDS_LIVE && input.seasonGrantCount === 0 },
+    { code: "heritage-purchase-dormant", label: "Tirages Héritage après achat encore inactifs", ready: !featureFlags.heritagePurchaseDrawsLive },
+    { code: "notebook-dormant", label: "Récompenses du carnet encore inactives", ready: input.notebookRules.every((rule) => !rule.is_active) && !featureFlags.notebookRewardsLive },
+    { code: "producer-rewards-dormant", label: "Récompenses des avis producteurs encore inactives", ready: !featureFlags.producerNotebookRewardsLive },
+    { code: "season-dormant", label: "Récompenses de saison encore inactives", ready: input.seasonRules.every((rule) => !rule.is_active) && !featureFlags.seasonRewardsLive && input.seasonGrantCount === 0 },
   ];
   dormantChecks.push({
     code: "player-access-dormant",
     label: "Accès joueur au Placard encore fermé",
-    ready: !isKqPlayerApiEnabled(),
+    ready: !featureFlags.publicPlayerApiLive,
   });
   const safelyDormant = dormantChecks.every((check) => check.ready);
   const contentReady = contentChecks.every((check) => check.ready);
@@ -516,11 +566,12 @@ export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
     contentReady,
     readyForActivation: contentReady && safelyDormant,
     safelyDormant,
+    launchDossier: input.launchDossier,
     checks,
     blockers: checks.filter((check) => !check.ready).map((check) => check.label),
     activationStillRequired: [
-      "Faire valider puis publier PLACARD-RULES-DRAFT avec les lots, dates et probabilités Héritage",
-      "Vérifier les 48 illustrations et tous les écrans client sur la version de lancement",
+      "Valider les cinq décisions du dossier de lancement puis publier PLACARD-RULES-DRAFT",
+      "Importer un rapport consolidé vert couvrant le socle graphique, chaque Héritage producteur actif et les 10 autres preuves de recette",
       "Ouvrir la fenêtre coordonnée et activer les collections La Botte et Héritage",
       "Contrôler les 2 missions Carnet et les 4 paliers de saison dans Supabase",
       "Basculer ensemble KQ_NOTEBOOK_REWARDS_LIVE, KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE et KQ_SEASON_REWARDS_LIVE",
@@ -539,26 +590,38 @@ export async function getKqAdminLaunchReadiness(adminEmail: string) {
   const collectionResult = await supabase.from("lottery_card_collections")
     .select("id,is_active").eq("code", BOTTE_COLLECTION_CODE).maybeSingle();
   if (collectionResult.error || !collectionResult.data) throw new Error("Collection La Botte introuvable.");
-  const [heritageResult, supportResult, rulesResult, seasonRulesResult, seasonGrantsResult] = await Promise.all([
-    supabase.from("kq_heritage_card_definitions").select("image_url,is_active"),
+  const [heritageResult, producerResult, supportResult, rulesResult, seasonRulesResult, seasonGrantsResult, equipmentResult] = await Promise.all([
+    supabase.from("kq_heritage_card_definitions").select("image_url,is_active,producer_id,effect_code").not("producer_id", "is", null),
+    supabase.from("producers").select("id", { count: "exact", head: true }),
     supabase.from("lottery_card_definitions").select("image_url,is_active").eq("collection_id", collectionResult.data.id),
     supabase.from("kq_notebook_reward_rules").select("is_active"),
     supabase.from("kq_season_reward_rules").select("tier_code,is_active").eq("season_code", seasonCode),
     supabase.from("kq_season_reward_grants").select("id", { count: "exact", head: true }).eq("season_code", seasonCode),
+    supabase.from("kq_equipment_catalog").select("code,price_cents,is_purchasable,is_active"),
   ]);
   if (heritageResult.error) throw new Error(`[supabase:kq_heritage_card_definitions] ${heritageResult.error.message}`);
+  if (producerResult.error) throw new Error(`[supabase:producers] ${producerResult.error.message}`);
   if (supportResult.error) throw new Error(`[supabase:lottery_card_definitions] ${supportResult.error.message}`);
   if (rulesResult.error) throw new Error(`[supabase:kq_notebook_reward_rules] ${rulesResult.error.message}`);
   if (seasonRulesResult.error) throw new Error(`[supabase:kq_season_reward_rules] ${seasonRulesResult.error.message}`);
   if (seasonGrantsResult.error) throw new Error(`[supabase:kq_season_reward_grants] ${seasonGrantsResult.error.message}`);
+  if (equipmentResult.error) throw new Error(`[supabase:kq_equipment_catalog] ${equipmentResult.error.message}`);
   return buildKqLaunchReadiness({
-    heritageCards: (heritageResult.data ?? []).map((card) => ({ image_url: String(card.image_url ?? ""), is_active: card.is_active === true })),
+    heritageCards: (heritageResult.data ?? []).map((card) => ({ image_url: String(card.image_url ?? ""), is_active: card.is_active === true, producer_id: card.producer_id ? String(card.producer_id) : null, effect_code: String(card.effect_code ?? "") })),
+    producerCount: producerResult.count ?? 0,
     supportCards: (supportResult.data ?? []).map((card) => ({ image_url: String(card.image_url ?? ""), is_active: card.is_active === true })),
     supportCollectionActive: collectionResult.data.is_active === true,
     notebookRules: (rulesResult.data ?? []).map((rule) => ({ is_active: rule.is_active === true })),
     seasonRules: (seasonRulesResult.data ?? []).map((rule) => ({ tier_code: String(rule.tier_code), is_active: rule.is_active === true })),
     seasonGrantCount: seasonGrantsResult.count ?? 0,
-    publicRulesApproved: process.env.KQ_PUBLIC_RULES_APPROVED?.trim().toLowerCase() === "true",
+    equipmentCatalog: (equipmentResult.data ?? []).map((equipment) => ({
+      code: String(equipment.code),
+      price_cents: Number(equipment.price_cents),
+      is_purchasable: equipment.is_purchasable === true,
+      is_active: equipment.is_active === true,
+    })),
+    launchApprovals: getKqLaunchApprovals(),
+    launchDossier: getKqLaunchDossier(),
   });
 }
 
@@ -751,19 +814,26 @@ export async function getKqAdminLaunchReadinessFromSnapshots(
 ) {
   const supabase = createSupabaseServiceClient();
   const seasonCode = await getKqActiveSeasonCode();
-  const [rulesResult, seasonRulesResult, seasonGrantsResult] = await Promise.all([
+  const [producerResult, rulesResult, seasonRulesResult, seasonGrantsResult, equipmentResult] = await Promise.all([
+    supabase.from("producers").select("id", { count: "exact", head: true }),
     supabase.from("kq_notebook_reward_rules").select("is_active"),
     supabase.from("kq_season_reward_rules").select("tier_code,is_active").eq("season_code", seasonCode),
     supabase.from("kq_season_reward_grants").select("id", { count: "exact", head: true }).eq("season_code", seasonCode),
+    supabase.from("kq_equipment_catalog").select("code,price_cents,is_purchasable,is_active"),
   ]);
+  if (producerResult.error) throw new Error(`[supabase:producers] ${producerResult.error.message}`);
   if (rulesResult.error) throw new Error(`[supabase:kq_notebook_reward_rules] ${rulesResult.error.message}`);
   if (seasonRulesResult.error) throw new Error(`[supabase:kq_season_reward_rules] ${seasonRulesResult.error.message}`);
   if (seasonGrantsResult.error) throw new Error(`[supabase:kq_season_reward_grants] ${seasonGrantsResult.error.message}`);
+  if (equipmentResult.error) throw new Error(`[supabase:kq_equipment_catalog] ${equipmentResult.error.message}`);
   return buildKqLaunchReadiness({
     heritageCards: heritage.cards.map((card) => ({
       image_url: card.imageUrl,
       is_active: card.isActive,
+      producer_id: card.producerId,
+      effect_code: card.effectCode,
     })),
+    producerCount: producerResult.count ?? 0,
     supportCards: collection.cards.map((card) => ({
       image_url: card.imageUrl,
       is_active: card.isActive,
@@ -775,7 +845,14 @@ export async function getKqAdminLaunchReadinessFromSnapshots(
       is_active: rule.is_active === true,
     })),
     seasonGrantCount: seasonGrantsResult.count ?? 0,
-    publicRulesApproved: process.env.KQ_PUBLIC_RULES_APPROVED?.trim().toLowerCase() === "true",
+    equipmentCatalog: (equipmentResult.data ?? []).map((equipment) => ({
+      code: String(equipment.code),
+      price_cents: Number(equipment.price_cents),
+      is_purchasable: equipment.is_purchasable === true,
+      is_active: equipment.is_active === true,
+    })),
+    launchApprovals: getKqLaunchApprovals(),
+    launchDossier: getKqLaunchDossier(),
   });
 }
 
@@ -827,18 +904,44 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     throw new Error("Nombre de jetons Coup de pouce invalide.");
   }
   const heritageCode = input.heritageCode?.trim() || undefined;
-  if (heritageCode && !KQ_HERITAGE_CARDS.some((card) => card.code === heritageCode)) {
-    throw new Error("Héritage invalide.");
+  let heritageCard: KqHeritageCard | undefined;
+  if (heritageCode) {
+    if (!/^HERITAGE-[0-9]{3,6}$/.test(heritageCode)) throw new Error("Héritage invalide.");
+    const definition = (await getCachedKqHeritageDefinitions())
+      .find((card) => card.code === heritageCode && card.is_active === true);
+    if (!definition || !isKqHeritageEffect(definition.effect_code) || !isKqHeritageTiming(definition.timing)) {
+      throw new Error("Cet Héritage n’est pas disponible.");
+    }
+    heritageCard = {
+      code: definition.code,
+      name: definition.name,
+      timing: definition.timing,
+      effect: definition.effect_code,
+      description: definition.description,
+      imageUrl: String(definition.image_url ?? ""),
+      ...(definition.producer_id ? { producerId: definition.producer_id } : {}),
+      ...(definition.producer_name ? { producerName: definition.producer_name } : {}),
+    };
   }
   const cards = input.deckCodes.map((code) => KQ_CARDS.find((card) => card.code === code));
   if (cards.some((card) => !card || card.category === "pbi")) {
     throw new Error("Le deck contient une carte interdite.");
   }
   if (cards.filter((card) => card?.category === "substrate").length !== 1) {
-    throw new Error("Le deck doit contenir exactement un Substrat.");
+    throw new Error("Le deck doit contenir exactement un mode de culture.");
   }
+  const selectedCultureSystem = cards.find((card) => card?.category === "substrate");
 
-  const collection = await getKqPlayerCollectionSnapshot(ownerId);
+  const [collection, equipmentShop] = await Promise.all([
+    getKqPlayerCollectionSnapshot(ownerId),
+    getKqEquipmentShopSnapshot(ownerId),
+  ]);
+  const ownsAnyCultureSystem = KQ_CARDS
+    .filter((card) => card.category === "substrate")
+    .some((card) => (collection.inventory[card.code] ?? 0) > 0);
+  if (!ownsAnyCultureSystem && selectedCultureSystem?.code !== "BOTTE-001") {
+    throw new Error("Le mode de culture gratuit est le Terreau horticole.");
+  }
   const collectionCodes = Object.entries(collection.inventory)
     .filter(([, copies]) => copies > 0)
     .map(([code]) => code);
@@ -849,6 +952,8 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     collectionCodes,
     startingXp: 1 + cultureTokens * KQ_CULTURE_TOKEN_START_XP,
     heritageCode,
+    heritageCard,
+    equipmentCodes: equipmentShop.equippedCodes,
   });
   const supabase = createSupabaseServiceClient();
   const result = await supabase.rpc("rpc_kq_start_run_with_heritage", {
@@ -917,13 +1022,22 @@ export async function getKqAdminActiveRun(adminEmail: string) {
 export async function getKqPlayerFlowers(ownerId: string) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
   const supabase = createSupabaseServiceClient();
-  const result = await supabase.from("kq_flowers")
-    .select("id,run_id,variety_code,variety_name,quality,traits,combos,battle_stats,status,created_at,locked_at,burned_at")
-    .eq("owner_id", ownerId)
-    .in("status", ["available", "locked"])
-    .order("created_at", { ascending: false })
-    .limit(40);
+  const [result, queueResult] = await Promise.all([
+    supabase.from("kq_flowers")
+      .select("id,run_id,variety_code,variety_name,quality,traits,combos,battle_stats,status,created_at,locked_at,burned_at")
+      .eq("owner_id", ownerId)
+      .in("status", ["available", "locked"])
+      .order("created_at", { ascending: false })
+      .limit(40),
+    supabase.from("kq_random_battle_queue")
+      .select("flower_id,queued_at")
+      .eq("owner_id", ownerId),
+  ]);
   if (result.error) throw new Error(`[supabase:kq_flowers] ${result.error.message}`);
+  if (queueResult.error) throw new Error(`[supabase:kq_random_battle_queue] ${queueResult.error.message}`);
+  const queuedFlowers = new Map((queueResult.data ?? []).map((entry) => (
+    [String(entry.flower_id), String(entry.queued_at)] as const
+  )));
   return (result.data ?? []).map((flower) => ({
     id: String(flower.id),
     runId: String(flower.run_id),
@@ -933,8 +1047,9 @@ export async function getKqPlayerFlowers(ownerId: string) {
     traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
     combos: Array.isArray(flower.combos) ? flower.combos.map(String) : [],
     stats: flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats : {},
-    status: String(flower.status),
+    status: queuedFlowers.has(String(flower.id)) ? "queued" : String(flower.status),
     createdAt: String(flower.created_at),
+    queuedAt: queuedFlowers.get(String(flower.id)) ?? null,
     lockedAt: flower.locked_at ? String(flower.locked_at) : null,
     burnedAt: flower.burned_at ? String(flower.burned_at) : null,
   }));
@@ -948,7 +1063,11 @@ function isMissingKqPlayerCoreSnapshotRpc(error: { code?: string; message?: stri
       && (message.includes("schema cache") || message.includes("does not exist") || message.includes("could not find")));
 }
 
-export function mapKqPlayerCoreSnapshot(data: unknown) {
+export function mapKqPlayerCoreSnapshot(
+  data: unknown,
+  queuedFlowers: Iterable<{ flowerId: string; queuedAt: string }> = [],
+  claimedChallengeCodes: Iterable<string> = [],
+) {
   if (!data || typeof data !== "object" || Array.isArray(data)) {
     throw new Error("Session Placard Supabase invalide.");
   }
@@ -978,6 +1097,7 @@ export function mapKqPlayerCoreSnapshot(data: unknown) {
       };
     }),
   } : null;
+  const queuedAtByFlowerId = new Map(Array.from(queuedFlowers, (flower) => [flower.flowerId, flower.queuedAt] as const));
   const flowers = (Array.isArray(payload.flowers) ? payload.flowers : []).map((entry) => {
     const flower = entry && typeof entry === "object" && !Array.isArray(entry)
       ? entry as Record<string, unknown>
@@ -991,8 +1111,9 @@ export function mapKqPlayerCoreSnapshot(data: unknown) {
       traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
       combos: Array.isArray(flower.combos) ? flower.combos.map(String) : [],
       stats: flower.stats && typeof flower.stats === "object" ? flower.stats : {},
-      status: String(flower.status),
+      status: queuedAtByFlowerId.has(String(flower.id)) ? "queued" : String(flower.status),
       createdAt: String(flower.createdAt),
+      queuedAt: queuedAtByFlowerId.get(String(flower.id)) ?? null,
       lockedAt: flower.lockedAt ? String(flower.lockedAt) : null,
       burnedAt: flower.burnedAt ? String(flower.burnedAt) : null,
     };
@@ -1082,17 +1203,44 @@ export function mapKqPlayerCoreSnapshot(data: unknown) {
     leaderboardGeneratedAt: rawProgress.leaderboardGeneratedAt
       ? String(rawProgress.leaderboardGeneratedAt)
       : null,
+    claimedChallengeCodes: [...new Set(Array.from(claimedChallengeCodes, String))],
     updatedAt: String(rawProgress.updatedAt),
   } : null;
   return { activeRun, flowers, battles, progress };
 }
 
+export function mapKqChallengeClaimKeys(rows: unknown) {
+  if (!Array.isArray(rows)) return [];
+  return [...new Set(rows.flatMap((entry) => {
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) return [];
+    const claim = entry as Record<string, unknown>;
+    const day = String(claim.challenge_day ?? "");
+    const code = String(claim.challenge_code ?? "");
+    return /^\d{4}-\d{2}-\d{2}$/.test(day) && /^[a-z0-9-]+$/.test(code)
+      ? [`${day}:${code}`]
+      : [];
+  }))];
+}
+
 export async function getKqPlayerCoreSnapshot(ownerId: string) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
-  const result = await createSupabaseServiceClient().rpc("rpc_kq_player_core_snapshot", {
-    p_user_id: ownerId,
-  });
-  if (!result.error) return mapKqPlayerCoreSnapshot(result.data);
+  const supabase = createSupabaseServiceClient();
+  const [result, queueResult, claimsResult] = await Promise.all([
+    supabase.rpc("rpc_kq_player_core_snapshot", { p_user_id: ownerId }),
+    supabase.from("kq_random_battle_queue").select("flower_id,queued_at").eq("owner_id", ownerId),
+    supabase.from("kq_daily_challenge_claims").select("challenge_day,challenge_code")
+      .eq("user_id", ownerId).order("challenge_day", { ascending: false }).limit(64),
+  ]);
+  if (queueResult.error) throw new Error(`[supabase:kq_random_battle_queue] ${queueResult.error.message}`);
+  if (claimsResult.error) throw new Error(`[supabase:kq_daily_challenge_claims] ${claimsResult.error.message}`);
+  if (!result.error) return mapKqPlayerCoreSnapshot(
+    result.data,
+    (queueResult.data ?? []).map((entry) => ({
+      flowerId: String(entry.flower_id),
+      queuedAt: String(entry.queued_at),
+    })),
+    mapKqChallengeClaimKeys(claimsResult.data),
+  );
   if (!isMissingKqPlayerCoreSnapshotRpc(result.error)) {
     throw new Error(`[supabase:rpc_kq_player_core_snapshot] ${result.error.message}`);
   }
@@ -1108,6 +1256,37 @@ export async function getKqPlayerCoreSnapshot(ownerId: string) {
 export async function getKqAdminFlowers(adminEmail: string) {
   const ownerId = await findKqUserIdByEmail(adminEmail);
   return ownerId ? getKqPlayerFlowers(ownerId) : [];
+}
+
+export async function getKqRandomBattleQueueHealth(): Promise<KqRandomQueueHealth> {
+  const supabase = createSupabaseServiceClient();
+  const queueResult = await supabase.from("kq_random_battle_queue")
+    .select("flower_id,queued_at")
+    .order("queued_at", { ascending: true })
+    .limit(1_001);
+  if (queueResult.error) throw new Error(`[supabase:kq_random_battle_queue] ${queueResult.error.message}`);
+
+  const rawQueueRows = queueResult.data ?? [];
+  const truncated = rawQueueRows.length > 1_000;
+  const queueRows = rawQueueRows.slice(0, 1_000).map((row) => ({
+    flowerId: String(row.flower_id),
+    queuedAt: String(row.queued_at),
+  }));
+  if (queueRows.length === 0) return buildKqRandomQueueHealth([], [], new Date(), truncated);
+
+  const flowersResult = await supabase.from("kq_flowers")
+    .select("id,quality")
+    .in("id", queueRows.map((row) => row.flowerId));
+  if (flowersResult.error) throw new Error(`[supabase:kq_flowers] ${flowersResult.error.message}`);
+  return buildKqRandomQueueHealth(
+    queueRows,
+    (flowersResult.data ?? []).map((flower) => ({
+      id: String(flower.id),
+      quality: Number(flower.quality),
+    })),
+    new Date(),
+    truncated,
+  );
 }
 
 export async function getKqAdminBotBattleDashboard() {
@@ -1159,6 +1338,18 @@ export async function getKqAdminBotBattleDashboard() {
   };
 }
 
+const KQ_TRAINING_BOTS = [
+  { code: "bot-sylvain", name: "Sylvain · Jardin d’essai", variety: "Harlequin", salt: 11 },
+  { code: "bot-charles", name: "Charles · Serre du club", variety: "Cannatonic", salt: 37 },
+  { code: "bot-maya", name: "Maya · Atelier botanique", variety: "Sour Tsunami", salt: 71 },
+] as const;
+
+export function getKqRandomTrainingBotCode(ownerId: string, flowerId: string, dayKey: string) {
+  const hash = [...`${ownerId}:${flowerId}:${dayKey}`]
+    .reduce((value, character) => ((value * 31) + character.charCodeAt(0)) | 0, 17);
+  return KQ_TRAINING_BOTS[Math.abs(hash) % KQ_TRAINING_BOTS.length].code;
+}
+
 export async function getKqPlayerFlowerRivals(ownerId: string, flowerId: string) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Fleur invalide.");
@@ -1168,30 +1359,6 @@ export async function getKqPlayerFlowerRivals(ownerId: string, flowerId: string)
   if (ownResult.error) throw new Error(`[supabase:kq_flowers] ${ownResult.error.message}`);
   if (!ownResult.data || ownResult.data.status !== "available") throw new Error("Cette Fleur n’est pas disponible.");
   const quality = Number(ownResult.data.quality);
-  const recentResult = await supabase.from("kq_battles")
-    .select("player_one_id,player_two_id")
-    .eq("status", "verdict")
-    .or(`player_one_id.eq.${ownerId},player_two_id.eq.${ownerId}`)
-    .gte("locked_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
-  if (recentResult.error) throw new Error(`[supabase:kq_battles:recent-rivals] ${recentResult.error.message}`);
-  const recentOpponentIds = new Set((recentResult.data ?? []).map((battle) =>
-    battle.player_one_id === ownerId ? String(battle.player_two_id) : String(battle.player_one_id)));
-  const result = await supabase.from("kq_flowers")
-    .select("id,owner_id,variety_name,quality,traits,battle_stats,created_at")
-    .eq("status", "available").neq("owner_id", ownerId)
-    .gte("quality", quality - 8).lte("quality", quality + 8)
-    .order("quality", { ascending: false }).order("created_at", { ascending: true }).limit(36);
-  if (result.error) throw new Error(`[supabase:kq_flowers:rivals] ${result.error.message}`);
-  const humanRivals = (result.data ?? []).filter((flower) => !recentOpponentIds.has(String(flower.owner_id))).slice(0, 12).map((flower) => ({
-    flowerId: String(flower.id),
-    varietyName: String(flower.variety_name),
-    quality: Number(flower.quality),
-    traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
-    stats: flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats : {},
-    createdAt: String(flower.created_at),
-    opponentType: "human" as const,
-  }));
-  if (humanRivals.length > 0) return humanRivals;
 
   const todayStart = new Date();
   todayStart.setUTCHours(0, 0, 0, 0);
@@ -1204,12 +1371,7 @@ export async function getKqPlayerFlowerRivals(ownerId: string, flowerId: string)
   if (remaining === 0) return [];
   const botSeed = Math.abs([...`${flowerId}:${new Date().toISOString().slice(0, 10)}`]
     .reduce((hash, char) => ((hash * 31) + char.charCodeAt(0)) | 0, 17));
-  const bots = [
-    { code: "bot-sylvain", name: "Sylvain · Jardin d’essai", variety: "Harlequin" },
-    { code: "bot-charles", name: "Charles · Serre du club", variety: "Cannatonic" },
-    { code: "bot-maya", name: "Maya · Atelier botanique", variety: "Sour Tsunami" },
-  ];
-  return bots.map((definition, index) => {
+  return KQ_TRAINING_BOTS.map((definition, index) => {
     const bot = createKqOpponent(botSeed + index * 97, {
       ownerName: definition.name,
       variety: definition.variety,
@@ -1224,28 +1386,29 @@ export async function getKqPlayerFlowerRivals(ownerId: string, flowerId: string)
       createdAt: new Date().toISOString(),
       opponentType: "bot" as const,
       opponentName: definition.name,
-      experienceReward: 0.1,
+      experienceReward: KQ_REWARD_BALANCE.training.arenaExperience.min,
       remainingBotDuels: remaining,
     };
   });
 }
 
-export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: string, botCode: string) {
+export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: string) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId) || !/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Duel d’entraînement invalide.");
-  const botDefinitions = {
-    "bot-sylvain": { name: "Sylvain · Jardin d’essai", variety: "Harlequin", salt: 11 },
-    "bot-charles": { name: "Charles · Serre du club", variety: "Cannatonic", salt: 37 },
-    "bot-maya": { name: "Maya · Atelier botanique", variety: "Sour Tsunami", salt: 71 },
-  } as const;
-  const definition = botDefinitions[botCode as keyof typeof botDefinitions];
-  if (!definition) throw new Error("Bot inconnu.");
+  const dayKey = getKqChallengeDayKey();
+  const botCode = getKqRandomTrainingBotCode(ownerId, flowerId, dayKey);
+  const definition = KQ_TRAINING_BOTS.find((bot) => bot.code === botCode)!;
   const supabase = createSupabaseServiceClient();
   const flowerResult = await supabase.from("kq_flowers")
-    .select("id,variety_name,quality,traits,battle_stats,status,created_at")
+    .select("id,run_id,variety_name,quality,traits,battle_stats,status,created_at")
     .eq("id", flowerId).eq("owner_id", ownerId).maybeSingle();
   if (flowerResult.error) throw new Error(`[supabase:kq_flowers:bot] ${flowerResult.error.message}`);
   if (!flowerResult.data || flowerResult.data.status !== "available") throw new Error("Ta Fleur n’est plus disponible.");
-  const row = flowerResult.data as KqFlowerBattleRow;
+  const row = flowerResult.data as KqFlowerBattleRow & { run_id: string };
+  const runResult = await supabase.from("kq_runs").select("state,challenge_day")
+    .eq("id", row.run_id).eq("user_id", ownerId).maybeSingle();
+  if (runResult.error) throw new Error(`[supabase:kq_runs:bot] ${runResult.error.message}`);
+  const game = runResult.data ? parseKqGameSave(encodeKqSave(runResult.data.state)) : null;
+  if (!game || !runResult.data?.challenge_day) throw new Error("État de culture du duel introuvable.");
   const playerFlower = mapKqOfficialFlowerCard(row, "Toi");
   const seed = Math.abs((Date.now() & 0x7fffffff) + definition.salt);
   const opponentFlower = createKqOpponent(seed, {
@@ -1255,7 +1418,12 @@ export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: strin
   });
   const verdict = resolveKqBattle(lockKqBattle(playerFlower, opponentFlower, seed), seed, new Date());
   if (!verdict.winner || !verdict.burnedAt) throw new Error("Le bot n’a pas produit de verdict.");
-  const result = await supabase.rpc("rpc_kq_finalize_bot_battle", {
+  const challengeDay = String(runResult.data.challenge_day);
+  const challengeResults = evaluateKqChallenges(game, verdict, new Date(`${challengeDay}T12:00:00Z`));
+  const completedChallengeCodes = challengeResults
+    .filter((challenge) => challenge.completed)
+    .map((challenge) => challenge.code);
+  const result = await supabase.rpc("rpc_kq_finalize_bot_battle_with_challenges", {
     p_user_id: ownerId,
     p_flower_id: flowerId,
     p_bot_code: botCode,
@@ -1263,12 +1431,14 @@ export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: strin
     p_seed: seed,
     p_rounds: verdict.rounds,
     p_winner: verdict.winner,
+    p_challenge_day: challengeDay,
+    p_challenge_codes: completedChallengeCodes,
   });
   if (result.error) {
     const message = result.error.message || "Duel d’entraînement impossible.";
     if (message.includes("kq_bot_daily_limit")) throw new Error("Tes 10 duels contre des bots ont déjà été joués aujourd’hui.");
     if (message.includes("kq_flower_unavailable")) throw new Error("Ta Fleur n’est plus disponible.");
-    throw new Error(`[supabase:rpc_kq_finalize_bot_battle] ${message}`);
+    throw new Error(`[supabase:rpc_kq_finalize_bot_battle_with_challenges] ${message}`);
   }
   const payload = result.data as Record<string, unknown>;
   const rewardPayload = payload.rewardCard && typeof payload.rewardCard === "object"
@@ -1280,12 +1450,21 @@ export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: strin
     rounds: verdict.rounds,
     winner: verdict.winner,
     burnedAt: String(payload.verdictAt),
-    experienceAwarded: Number(payload.experienceAwarded ?? 0.1),
+    experienceAwarded: Number(payload.experienceAwarded ?? KQ_REWARD_BALANCE.training.arenaExperience.min),
     todayCount: Number(payload.todayCount),
     dailyLimit: Number(payload.dailyLimit ?? 10),
     playerFlower,
     opponentFlower,
     opponentType: "bot" as const,
+    challengePoints: Number(payload.challengePoints ?? 0),
+    claimedChallengeCodes: Array.isArray(payload.claimedChallengeCodes)
+      ? payload.claimedChallengeCodes.map(String)
+      : [],
+    completedChallenges: challengeResults.filter((challenge) => challenge.completed).map((challenge) => ({
+      code: challenge.code,
+      title: challenge.title,
+      points: challenge.points,
+    })),
     rewardCard: rewardPayload ? {
       code: String(rewardPayload.code),
       name: String(rewardPayload.name),
@@ -1302,49 +1481,137 @@ export async function getKqAdminFlowerRivals(adminEmail: string, flowerId: strin
   return getKqPlayerFlowerRivals(ownerId, flowerId);
 }
 
-export async function lockKqPlayerBattle(ownerId: string, flowerId: string, rivalFlowerId: string) {
+export type KqRandomBattleQueueResult = {
+  matchStatus: "queued";
+  flowerId: string;
+  queuedAt: string;
+  replayed: boolean;
+} | {
+  matchStatus: "matched";
+  flowerId: string;
+  opponentFlowerId: string;
+  battleId: string;
+  matchedAt: string;
+  verdictPending: boolean;
+  verdict: KqAdminBattleVerdictReceipt | null;
+};
+
+export async function enqueueKqPlayerRandomBattle(
+  ownerId: string,
+  flowerId: string,
+): Promise<KqRandomBattleQueueResult> {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
-  if (![flowerId, rivalFlowerId].every((id) => /^[0-9a-f-]{36}$/i.test(id)) || flowerId === rivalFlowerId) {
-    throw new Error("Duel invalide.");
-  }
-  const supabase = createSupabaseServiceClient();
-  const ownResult = await supabase.from("kq_flowers").select("id,status,quality")
-    .eq("id", flowerId).eq("owner_id", ownerId).maybeSingle();
-  if (ownResult.error) throw new Error(`[supabase:kq_flowers] ${ownResult.error.message}`);
-  if (!ownResult.data || ownResult.data.status !== "available") throw new Error("Ta Fleur n’est plus disponible.");
-  const rivalResult = await supabase.from("kq_flowers").select("id,owner_id,status,quality")
-    .eq("id", rivalFlowerId).maybeSingle();
-  if (rivalResult.error) throw new Error(`[supabase:kq_flowers:rival] ${rivalResult.error.message}`);
-  if (!rivalResult.data || rivalResult.data.status !== "available" || rivalResult.data.owner_id === ownerId) {
-    throw new Error("La Fleur adverse n’est plus disponible.");
-  }
-  if (Math.abs(Number(rivalResult.data.quality) - Number(ownResult.data.quality)) > 8) {
-    throw new Error("Cette Fleur est hors de la plage de matchmaking.");
-  }
-  const result = await supabase.rpc("rpc_kq_lock_ranked_battle", {
-    p_challenger_id: ownerId,
-    p_flower_one_id: flowerId,
-    p_flower_two_id: rivalFlowerId,
+  if (!/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Fleur invalide.");
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_enqueue_random_battle", {
+    p_player_id: ownerId,
+    p_flower_id: flowerId,
   });
   if (result.error) {
-    const message = result.error.message || "Verrouillage du duel impossible.";
-    if (message.includes("Flower already used") || message.includes("Could not lock")) {
-      throw new Error("Une des Fleurs vient d’être engagée dans un autre duel.");
-    }
-    if (message.includes("Players must be distinct")) throw new Error("Les deux Fleurs doivent appartenir à des joueurs différents.");
-    if (message.includes("outside matchmaking range")) throw new Error("Cette Fleur est hors de la plage de matchmaking.");
-    if (message.includes("Ranked opponent cooldown")) throw new Error("Cet adversaire a déjà été affronté durant les dernières 24 heures.");
-    throw new Error(`[supabase:rpc_kq_lock_ranked_battle] ${message}`);
+    const message = result.error.message || "File de duel indisponible.";
+    if (message.includes("kq_random_queue_flower_not_owned")) throw new Error("Cette Fleur ne t’appartient pas.");
+    if (message.includes("kq_random_queue_owner_already_waiting")) throw new Error("Tu as déjà une Fleur dans la file aléatoire.");
+    if (message.includes("kq_random_queue_flower_unavailable")) throw new Error("Cette Fleur n’est plus disponible.");
+    if (message.includes("kq_random_queue_candidate_taken")) throw new Error("Un autre duel vient de prendre cette place. Relance la recherche.");
+    throw new Error(`[supabase:rpc_kq_enqueue_random_battle] ${message}`);
   }
-  const battle = result.data as Record<string, unknown> | null;
-  if (!battle?.id) throw new Error("Réponse de duel Supabase invalide.");
-  return { battleId: String(battle.id), seed: Number(battle.seed), status: String(battle.status) };
+  const payload = result.data && typeof result.data === "object" && !Array.isArray(result.data)
+    ? result.data as Record<string, unknown>
+    : {};
+  if (payload.matchStatus === "queued" && payload.flowerId && payload.queuedAt) {
+    return {
+      matchStatus: "queued",
+      flowerId: String(payload.flowerId),
+      queuedAt: String(payload.queuedAt),
+      replayed: payload.replayed === true,
+    };
+  }
+  if (payload.matchStatus !== "matched" || !payload.battleId || !payload.opponentFlowerId) {
+    throw new Error("Réponse de file aléatoire invalide.");
+  }
+  const battleId = String(payload.battleId);
+  try {
+    const verdict = await finalizeKqPlayerBattle(ownerId, battleId);
+    return {
+      matchStatus: "matched",
+      flowerId: String(payload.flowerId),
+      opponentFlowerId: String(payload.opponentFlowerId),
+      battleId,
+      matchedAt: String(payload.matchedAt),
+      verdictPending: false,
+      verdict,
+    };
+  } catch {
+    return {
+      matchStatus: "matched",
+      flowerId: String(payload.flowerId),
+      opponentFlowerId: String(payload.opponentFlowerId),
+      battleId,
+      matchedAt: String(payload.matchedAt),
+      verdictPending: true,
+      verdict: null,
+    };
+  }
 }
 
-export async function lockKqAdminBattle(adminEmail: string, flowerId: string, rivalFlowerId: string) {
+export async function reconcileKqPlayerRandomBattleQueue(
+  ownerId: string,
+  flowerId: string,
+): Promise<KqRandomBattleQueueResult | { matchStatus: "idle" }> {
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Fleur invalide.");
+  const queue = await createSupabaseServiceClient()
+    .from("kq_random_battle_queue")
+    .select("flower_id")
+    .eq("owner_id", ownerId)
+    .eq("flower_id", flowerId)
+    .maybeSingle();
+  if (queue.error) throw new Error(`[supabase:kq_random_battle_queue] ${queue.error.message}`);
+  return queue.data
+    ? enqueueKqPlayerRandomBattle(ownerId, flowerId)
+    : { matchStatus: "idle" };
+}
+
+export async function leaveKqPlayerRandomBattleQueue(ownerId: string, flowerId: string) {
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Fleur invalide.");
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_leave_random_battle_queue", {
+    p_player_id: ownerId,
+    p_flower_id: flowerId,
+  });
+  if (result.error) {
+    const message = result.error.message || "Sortie de file impossible.";
+    if (message.includes("kq_random_queue_already_matched")) {
+      throw new Error("Le duel vient d’être formé : cette Fleur ne peut plus quitter la file.");
+    }
+    if (message.includes("kq_random_queue_flower_not_owned")) throw new Error("Cette Fleur ne t’appartient pas.");
+    throw new Error(`[supabase:rpc_kq_leave_random_battle_queue] ${message}`);
+  }
+  const payload = result.data && typeof result.data === "object" && !Array.isArray(result.data)
+    ? result.data as Record<string, unknown>
+    : {};
+  return {
+    left: payload.left === true,
+    flowerId: String(payload.flowerId ?? flowerId),
+    replayed: payload.replayed === true,
+  };
+}
+
+export async function enqueueKqAdminRandomBattle(adminEmail: string, flowerId: string) {
   const ownerId = await findKqUserIdByEmail(adminEmail);
   if (!ownerId) throw new Error("Compte collection admin introuvable.");
-  return lockKqPlayerBattle(ownerId, flowerId, rivalFlowerId);
+  return enqueueKqPlayerRandomBattle(ownerId, flowerId);
+}
+
+export async function reconcileKqAdminRandomBattleQueue(adminEmail: string, flowerId: string) {
+  const ownerId = await findKqUserIdByEmail(adminEmail);
+  if (!ownerId) throw new Error("Compte collection admin introuvable.");
+  return reconcileKqPlayerRandomBattleQueue(ownerId, flowerId);
+}
+
+export async function leaveKqAdminRandomBattleQueue(adminEmail: string, flowerId: string) {
+  const ownerId = await findKqUserIdByEmail(adminEmail);
+  if (!ownerId) throw new Error("Compte collection admin introuvable.");
+  return leaveKqPlayerRandomBattleQueue(ownerId, flowerId);
 }
 
 type KqFlowerBattleRow = {
@@ -1671,19 +1938,26 @@ export async function getKqPublicLeaderboard() {
   return {
     seasonCode,
     generatedAt: snapshot?.generated_at ? String(snapshot.generated_at) : new Date().toISOString(),
-    entries: rawLeaderboard.map((entry, index) => ({
-      rank: Number(entry.rank ?? index + 1),
-      pseudo: pseudoByUser.get(String(entry.userId)) ?? `Cultivateur ${String(index + 1).padStart(2, "0")}`,
-      rating: Number(entry.rating ?? 1000),
-      seasonPoints: Number(entry.seasonPoints ?? 0),
-      wins: Number(entry.wins ?? 0),
-      losses: Number(entry.losses ?? 0),
-      streak: Number(entry.streak ?? 0),
-    })),
+    entries: rawLeaderboard.map((entry, index) => {
+      const rating = Number(entry.rating ?? 1000);
+      const seasonPoints = Number(entry.seasonPoints ?? 0);
+      const reputation = Number(entry.reputation ?? 0);
+      return {
+        rank: Number(entry.rank ?? index + 1),
+        pseudo: pseudoByUser.get(String(entry.userId)) ?? `Cultivateur ${String(index + 1).padStart(2, "0")}`,
+        placardScore: Number(entry.placardScore ?? calculateKqPlacardScore({ rating, seasonPoints, reputation }).score),
+        rating,
+        seasonPoints,
+        reputation,
+        wins: Number(entry.wins ?? 0),
+        losses: Number(entry.losses ?? 0),
+        streak: Number(entry.streak ?? 0),
+      };
+    }),
   };
 }
 
-export async function getKqPublicArenaLeaderboard() {
+export async function getKqArenaLeaderboardInternal() {
   const supabase = createSupabaseServiceClient();
   const seasonCode = await getKqActiveSeasonCode();
   const [snapshotResult, contestSeasonResult] = await Promise.all([
@@ -1742,6 +2016,7 @@ export async function getKqPublicArenaLeaderboard() {
   }).filter((entry) => entry.eligible)
     .sort((a, b) => b.score - a.score || b.rating - a.rating || a.userId.localeCompare(b.userId))
     .map((entry, index) => ({
+      userId: entry.userId,
       rank: index + 1,
       pseudo: entry.pseudo,
       score: entry.score,
@@ -1759,6 +2034,24 @@ export async function getKqPublicArenaLeaderboard() {
     generatedAt: snapshot?.generated_at ? String(snapshot.generated_at) : new Date().toISOString(),
     formulaVersion: "arena-v1",
     entries: scored,
+  };
+}
+
+export async function getKqPublicArenaLeaderboard() {
+  const leaderboard = await getKqArenaLeaderboardInternal();
+  return {
+    ...leaderboard,
+    entries: leaderboard.entries.map((entry) => ({
+      rank: entry.rank,
+      pseudo: entry.pseudo,
+      score: entry.score,
+      notebookScore: entry.notebookScore,
+      placardScore: entry.placardScore,
+      approvedReviewCount: entry.approvedReviewCount,
+      rating: entry.rating,
+      wins: entry.wins,
+      losses: entry.losses,
+    })),
   };
 }
 
@@ -1805,19 +2098,36 @@ export async function getKqPlayerProgress(userId: string) {
     .eq("user_id", userId).maybeSingle();
   if (profileResult.error) throw new Error(`[supabase:kq_rank_profiles] ${profileResult.error.message}`);
   if (!profileResult.data) return null;
-  const snapshotResult = await supabase.from("kq_leaderboard_snapshots")
-    .select("leaderboard,snapshot_date").eq("season_code", profileResult.data.season_code)
-    .order("snapshot_date", { ascending: false }).limit(1).maybeSingle();
-  if (snapshotResult.error) throw new Error(`[supabase:kq_leaderboard_snapshots] ${snapshotResult.error.message}`);
+  const [snapshotResult, walletResult, claimsResult] = await Promise.all([
+    supabase.rpc("rpc_kq_refresh_daily_leaderboard", {
+      p_season_code: profileResult.data.season_code,
+    }),
+    supabase.from("kq_equipment_wallets").select("reputation").eq("user_id", userId).maybeSingle(),
+    supabase.from("kq_daily_challenge_claims").select("challenge_day,challenge_code")
+      .eq("user_id", userId).order("challenge_day", { ascending: false }).limit(64),
+  ]);
+  if (snapshotResult.error) throw new Error(`[supabase:rpc_kq_refresh_daily_leaderboard] ${snapshotResult.error.message}`);
+  if (walletResult.error) throw new Error(`[supabase:kq_equipment_wallets] ${walletResult.error.message}`);
+  if (claimsResult.error) throw new Error(`[supabase:kq_daily_challenge_claims] ${claimsResult.error.message}`);
   const snapshot = Array.isArray(snapshotResult.data?.leaderboard)
     ? snapshotResult.data.leaderboard as Array<Record<string, unknown>> : [];
   const rankEntry = snapshot.find((entry) => String(entry.userId) === userId);
-  const league = getKqLeague(Number(profileResult.data.rating));
+  const rating = Number(profileResult.data.rating);
+  const seasonPoints = Number(profileResult.data.season_points);
+  const reputation = Number(walletResult.data?.reputation ?? 0);
+  const placardScore = Number(rankEntry?.placardScore ?? calculateKqPlacardScore({
+    rating,
+    seasonPoints,
+    reputation,
+  }).score);
+  const league = getKqLeague(rating);
   return {
     seasonCode: String(profileResult.data.season_code),
     rank: rankEntry ? Number(rankEntry.rank) : null,
-    rating: Number(profileResult.data.rating),
-    seasonPoints: Number(profileResult.data.season_points),
+    placardScore,
+    rating,
+    seasonPoints,
+    reputation,
     wins: Number(profileResult.data.wins),
     losses: Number(profileResult.data.losses),
     streak: Number(profileResult.data.streak),
@@ -1826,8 +2136,9 @@ export async function getKqPlayerProgress(userId: string) {
     league: league.name,
     leagueProgress: league.progress,
     pointsToNextLeague: league.pointsToNext,
-    leaderboardGeneratedAt: snapshotResult.data?.snapshot_date
-      ? String(snapshotResult.data.snapshot_date)
+    claimedChallengeCodes: mapKqChallengeClaimKeys(claimsResult.data),
+    leaderboardGeneratedAt: snapshotResult.data?.generated_at
+      ? String(snapshotResult.data.generated_at)
       : null,
     updatedAt: String(profileResult.data.updated_at),
   };

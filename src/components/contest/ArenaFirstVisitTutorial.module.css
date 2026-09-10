@@ -32,9 +32,11 @@
 }
 
 .dialog {
+  display: flex;
+  flex-direction: column;
   width: min(960px, 100%);
   max-height: calc(100dvh - 2rem);
-  overflow: hidden auto;
+  overflow: hidden;
   border: 3px solid #111512;
   border-radius: 3px;
   background: #fffaf1;
@@ -44,6 +46,7 @@
 }
 
 .header {
+  flex-shrink: 0;
   position: relative;
   display: flex;
   align-items: flex-start;
@@ -66,10 +69,10 @@
 .header h2 {
   margin: .2rem 0 0;
   font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
-  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 900;
   letter-spacing: -.035em;
-  line-height: .84;
+  line-height: 1.05;
   text-transform: uppercase;
 }
 
@@ -96,8 +99,9 @@
 .header > button svg { width: 21px; }
 
 .stepTabs {
+  flex-shrink: 0;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 3px;
   padding: 3px;
   border-bottom: 3px solid #111512;
@@ -106,14 +110,17 @@
 
 .stepTabs button {
   display: flex;
+  flex-direction: column;
+  padding: .4rem .15rem;
+  min-width: 0;
   min-height: 54px;
   align-items: center;
   justify-content: center;
-  gap: .55rem;
+  gap: .25rem;
   border: 0;
   background: #fffaf1;
   color: #111512;
-  font-size: .76rem;
+  font-size: .6rem;
   font-weight: 950;
   text-transform: uppercase;
 }
@@ -161,7 +168,21 @@
 .stepMarker svg { z-index: 1; width: 54px; height: 54px; color: #f4c43d; }
 .stepMarker strong { z-index: 1; margin-top: .55rem; font-family: var(--font-display), Impact, sans-serif; font-size: 4.4rem; line-height: .8; }
 
-.stepContent { padding: 1.25rem; }
+.scrollArea { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.stepContent { padding: 1.25rem; min-width: 0; }
+.stepContent h3:focus-visible { outline: 3px solid #00563f; outline-offset: 4px; }
+.stepContent .tip { padding: .65rem .8rem; border-left: 4px solid #00563f; background: #e4efe8; color: #173e31; font-size: .8rem; }
+.details { margin-top: .8rem; font-size: .8rem; line-height: 1.5; }
+.details summary { cursor: pointer; font-weight: 850; padding-block: .45rem; }
+.details summary:focus-visible { outline: 3px solid #00563f; }
+.details p { margin-block: .5rem; }
+.reputationTable { margin-top: 1rem; }
+.reputationTable table { width: 100%; border-collapse: collapse; font-size: .72rem; }
+.reputationTable caption { text-align: left; padding-bottom: .5rem; font-weight: 850; }
+.reputationTable th, .reputationTable td { border: 1px solid #00563f; padding: .5rem .35rem; text-align: center; }
+.reputationTable thead { background: #00563f; color: white; }
+.reputationTable tbody th { width: 40%; text-align: left; background: #e4efe8; }
+.reputationTable td { white-space: nowrap; }
 
 .stepContent h3 {
   max-width: 680px;
@@ -170,7 +191,7 @@
   font-size: clamp(2rem, 4vw, 3.1rem);
   font-weight: 900;
   letter-spacing: -.025em;
-  line-height: .92;
+  line-height: 1.05;
   text-transform: uppercase;
 }
 
@@ -201,7 +222,7 @@
 
 .features article > svg { width: 28px; color: #00563f; }
 .features article strong { display: block; font-size: .76rem; }
-.features article p { margin: .2rem 0 0; color: #535b55; font-size: .66rem; font-weight: 650; line-height: 1.35; }
+.features article p { margin: .2rem 0 0; color: #435048; font-size: .8rem; font-weight: 650; line-height: 1.45; }
 
 .stepAction {
   display: inline-flex;
@@ -240,6 +261,8 @@
 .scoreBand strong { display: block; font-size: .72rem; font-weight: 950; text-transform: uppercase; }
 
 .footer {
+  flex-shrink: 0;
+  border-top: 2px solid #111512;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -274,23 +297,26 @@
   .backdrop { align-items: end; padding: 0; }
   .dialog { width: 100%; max-height: 100dvh; border: 0; border-radius: 0; box-shadow: none; }
   .header { padding: .8rem 3.7rem .75rem .85rem; border-bottom-width: 2px; }
-  .header h2 { font-size: clamp(2.15rem, 12vw, 3.2rem); }
+  .header h2 { font-size: clamp(1.6rem, 8vw, 2.1rem); }
   .header p { margin-top: .35rem; font-size: .7rem; }
-  .header > button { position: absolute; top: .65rem; right: .65rem; width: 40px; height: 40px; }
-  .stepTabs { border-bottom-width: 2px; }
-  .stepTabs button { min-height: 48px; font-size: .67rem; }
+  .header > button { position: absolute; top: .65rem; right: .65rem; width: 44px; height: 44px; }
+  .stepTabs { border-bottom-width: 2px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .stepTabs button { min-height: 48px; font-size: .55rem; }
+  .stepTabs button b { width: 20px; height: 20px; font-size: .6rem; }
   .stepBody { display: block; min-height: 0; }
-  .stepMarker { display: flex; min-height: 66px; align-items: center; justify-content: center; gap: .6rem; border-right: 0; border-bottom: 2px solid #111512; }
+  .stepMarker { display: none; }
   .stepMarker::after { width: 130px; height: 130px; border-width: 20px; }
   .stepMarker svg { width: 32px; height: 32px; }
   .stepMarker strong { margin: 0; font-size: 3rem; }
   .stepContent { padding: .85rem; }
-  .stepContent h3 { font-size: clamp(1.8rem, 9vw, 2.45rem); }
+  .stepContent h3 { font-size: clamp(1.6rem, 8vw, 2.1rem); }
   .stepContent > p { margin-bottom: .7rem; font-size: .72rem; }
   .features { grid-template-columns: minmax(0, 1fr); gap: .4rem; }
   .features article { grid-template-columns: 28px minmax(0, 1fr); gap: .45rem; padding: .55rem; box-shadow: 2px 2px 0 #d9cba9; }
   .features article > svg { width: 23px; }
-  .features article p { font-size: .62rem; }
+  .features article p { font-size: .78rem; }
+  .reputationTable table { font-size: .62rem; }
+  .reputationTable th, .reputationTable td { padding: .4rem .2rem; }
   .stepAction { width: 100%; margin-top: .65rem; }
   .scoreBand { grid-template-columns: 32px minmax(0, 1fr); padding: .65rem .85rem; border-block-width: 2px; }
   .scoreBand > svg { width: 28px; }
@@ -301,8 +327,8 @@
 
 @media (max-width: 380px) {
   .header p { display: none; }
-  .header h2 { font-size: 2rem; }
-  .stepContent > p { display: none; }
+  .header h2 { font-size: 1.6rem; }
+  .stepContent > p { display: block; }
   .features article p { line-height: 1.25; }
   .scoreBand p { line-height: 1.3; }
 }

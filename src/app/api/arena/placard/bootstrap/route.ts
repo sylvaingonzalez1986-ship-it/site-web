@@ -7,6 +7,7 @@ import {
   getKqPlayerHeritageSnapshot,
   getKqPlayerOwnedBuddies,
 } from "@/lib/supabase/kanab-quest-backend";
+import { getKqEquipmentRoutePlan } from "@/lib/supabase/kanab-quest-equipment-backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,11 +26,13 @@ export async function GET() {
     buddiesResult,
     heritageResult,
     coreResult,
+    routePlanResult,
   ] = await Promise.allSettled([
     getKqPlayerCollectionSnapshot(session.customerId),
     getKqPlayerOwnedBuddies(session.customerId),
     getKqPlayerHeritageSnapshot(session.customerId),
     getKqPlayerCoreSnapshot(session.customerId),
+    getKqEquipmentRoutePlan(session.customerId),
   ] as const);
   if (collectionResult.status === "rejected" || buddiesResult.status === "rejected") {
     return NextResponse.json({ error: "Collection Placard indisponible." }, { status: 503 });
@@ -57,14 +60,25 @@ export async function GET() {
       collectionActive: heritage.collectionActive,
       cards: heritage.cards.map((card) => ({
         code: card.code,
+        name: card.name,
+        timing: card.timing,
+        effectCode: card.effectCode,
+        description: card.description,
+        imageUrl: card.imageUrl,
         ownedCopies: card.ownedCopies,
         isActive: card.isActive,
+        producerId: card.producerId,
+        producerName: card.producerName,
         producerNames: card.producerNames,
       })),
       fragmentBalance: heritage.fragmentBalance,
     } : null,
+    routePlan: routePlanResult.status === "fulfilled" ? routePlanResult.value : null,
     playerSession,
-    warnings: heritage ? [] : ["Héritages momentanément indisponibles."],
+    warnings: [
+      ...(heritage ? [] : ["Héritages momentanément indisponibles."]),
+      ...(routePlanResult.status === "fulfilled" ? [] : ["Objectif de filière momentanément indisponible."]),
+    ],
   }, {
     headers: {
       "Cache-Control": "private, no-store, max-age=0",

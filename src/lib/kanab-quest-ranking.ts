@@ -1,4 +1,5 @@
 import type { KqBattle } from "@/lib/kanab-quest-battle";
+import { KQ_REWARD_BALANCE } from "@/lib/kanab-quest-reward-balance";
 
 export type KqRankProfile = {
   playerId: string;
@@ -71,16 +72,18 @@ export function getKqRatingStake(playerRating: number, opponentRating: number) {
 
 export function getKqSeasonPointStake(playerRating: number, opponentRating: number, streak = 0) {
   const expected = 1 / (1 + 10 ** ((opponentRating - playerRating) / 400));
+  const rules = KQ_REWARD_BALANCE.seasonFormula;
   return {
-    win: Math.round(10 + 20 * (1 - expected)) + Math.min(6, Math.max(0, streak) * 2),
-    loss: Math.round(3 + 3 * (1 - expected)),
+    win: Math.round(rules.winBase + rules.winDifficultyRange * (1 - expected))
+      + Math.min(rules.streakBonusCap, Math.max(0, streak) * rules.streakStep),
+    loss: Math.round(rules.lossBase + rules.lossDifficultyRange * (1 - expected)),
   };
 }
 
 export function getKqArenaExperienceAward(rounds: KqBattle["rounds"]) {
   const wonRounds = rounds.filter((round) => round.winner === "player").length;
-  if (wonRounds >= 2) return wonRounds === 3 ? 1.6 : 1.4;
-  return wonRounds === 1 ? 0.8 : 0.6;
+  return KQ_REWARD_BALANCE.pvpExperienceByWonRounds[wonRounds as 0 | 1 | 2 | 3]
+    ?? KQ_REWARD_BALANCE.pvpExperienceByWonRounds[0];
 }
 
 const KQ_LEAGUES = [

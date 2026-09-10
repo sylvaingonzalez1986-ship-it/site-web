@@ -59,5 +59,16 @@ supabase/.temp/
 tmp*
 tmp/
 tmp_supabase_push/
+/output/placard-mobile-audits/
+/output/placard-mobile-manual-reviews/
+/output/placard-load-tests/
+/output/placard-smoke-tests/
+/output/placard-artwork-reviews/
+/output/placard-retro-evidence/
+/output/placard-launch-evidence/
+/output/placard-rehearsal-build/
+/output/placard-rehearsal-tools/
+/output/arena-retro/
+/output/reputation-test-tools/
 .env*.local
 .next-dev*.log

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { ArenaSceneHeader } from "./ArenaSceneHeader";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
@@ -24,6 +25,7 @@ import {
   ChevronRight,
   ChevronUp,
   CircleHelp,
+  Dices,
   FileCheck2,
   Gift,
   LockKeyhole,
@@ -37,7 +39,7 @@ import {
 import { NotebookFlipBook } from "@/components/contest/NotebookFlipBook";
 import { ContestNotebookPanel } from "@/components/contest/ContestNotebookPanel";
 import { ContestReviewSkillRadar } from "@/components/contest/ContestReviewSkillRadar";
-import { ArenaNavigation, type ContestArenaView } from "@/components/contest/ArenaNavigation";
+import { type ContestArenaView } from "@/components/contest/ArenaNavigation";
 import { ProducerRewardJourney } from "@/components/contest/ProducerRewardJourney";
 import arenaStyles from "@/components/contest/ContestArena.module.css";
 import { QuantitySelector } from "@/components/QuantitySelector";
@@ -45,7 +47,9 @@ import { useCart } from "@/context/CartContext";
 import { categoryLabels, type Product, type ProductCategory } from "@/data/products";
 import { useLotteryExperience } from "@/hooks/useLotteryExperience";
 import { KQ_CARDS } from "@/lib/kanab-quest-game";
+import { ARENA_CUSTOMER_REWARD_DICE_RATES } from "@/lib/arena-customer-rewards";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
+import { getKqReputationProgress } from "@/lib/kanab-quest-reputation";
 import {
   findKqProducerRewardForEntry,
   type KqProducerRewardProgress,
@@ -127,8 +131,10 @@ type TestedFlowerCardItem = {
 type PlacardRankingEntry = {
   rank: number;
   pseudo: string;
+  placardScore: number;
   rating: number;
   seasonPoints: number;
+  reputation: number;
   wins: number;
   losses: number;
   streak: number;
@@ -144,6 +150,44 @@ type ArenaRankingEntry = {
   rating: number;
   wins: number;
   losses: number;
+};
+
+type ArenaCustomerRewardPool = {
+  seasonCode: string;
+  status: string;
+  contributionRateBps: number;
+  poolGrams: number;
+  wholePoolGrams: number;
+  carriedGrams: number;
+  currentWeekGrams: number;
+  weeklyDice: {
+    startsOn: string | null;
+    endsOn: string | null;
+    rollCount: number;
+    average: number | null;
+    rateBps: number;
+    eligibleFlowerGrams: number;
+    contributionGrams: number;
+  };
+  startsAt: string | null;
+  endsAt: string | null;
+  updatedAt: string;
+  minimumHumanBattles: number;
+  eligiblePlayers: number;
+  milestone: { previousGrams: number; nextGrams: number; progressPercent: number };
+  topRewards: Array<{
+    leaderboardRank: number;
+    rewardRank: number;
+    pseudo: string;
+    shareBps: number;
+    estimatedGrams: number;
+  }>;
+  surpriseReward: {
+    shareBps: number;
+    estimatedGrams: number;
+    eligiblePlayers: number;
+    oneChancePerCustomer: boolean;
+  };
 };
 
 type PlacardPlayerProgress = {
@@ -2284,18 +2328,269 @@ function ContestTesterProfileCard({
   );
 }
 
+function formatArenaRewardGrams(value: number) {
+  return new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 1 }).format(Math.max(0, value));
+}
+
+function ArenaCustomerRewardPot({
+  rewardPool,
+  onRewardPoolChange,
+  loading,
+  unavailable,
+  viewerPseudo,
+  arenaEntries,
+}: {
+  rewardPool: ArenaCustomerRewardPool | null;
+  onRewardPoolChange: (pool: ArenaCustomerRewardPool) => void;
+  loading: boolean;
+  unavailable: boolean;
+  viewerPseudo?: string;
+  arenaEntries: ArenaRankingEntry[];
+}) {
+  const [diceState, setDiceState] = useState<{
+    eligible: boolean;
+    viewerRoll: number | null;
+  } | null>(null);
+  const [diceLoading, setDiceLoading] = useState(false);
+  const [diceRolling, setDiceRolling] = useState(false);
+  const [diceError, setDiceError] = useState("");
+  const viewerEntry = viewerPseudo
+    ? arenaEntries.find((entry) => entry.pseudo === viewerPseudo) ?? null
+    : null;
+  const viewerReward = viewerPseudo && rewardPool
+    ? rewardPool.topRewards.find((reward) => reward.pseudo === viewerPseudo) ?? null
+    : null;
+  const viewerBattles = viewerEntry ? viewerEntry.wins + viewerEntry.losses : 0;
+  const viewerIsSurpriseEligible = Boolean(
+    rewardPool && viewerEntry && !viewerReward
+      && viewerBattles >= rewardPool.minimumHumanBattles
+      && viewerEntry.rank > 10,
+  );
+  const visualProgressPercent = rewardPool?.milestone.progressPercent ?? 0;
+  const visualGaugeLabel = loading
+    ? "…"
+    : rewardPool
+      ? `${visualProgressPercent} %`
+      : "0 %";
+  const jarFillTopInset = 84 - (visualProgressPercent * 0.61);
+  const weeklyRatePercent = Math.max(1, Math.round((rewardPool?.weeklyDice.rateBps ?? 100) / 100));
+  const statusCopy = viewerReward
+    ? `Tu occupes la place récompensée #${viewerReward.rewardRank} · estimation ${viewerReward.estimatedGrams} g.`
+    : viewerIsSurpriseEligible
+      ? "Tu as une chance dans La Fleur Surprise, comme chaque participant éligible hors Top 10."
+      : viewerEntry && rewardPool && viewerBattles < rewardPool.minimumHumanBattles
+        ? `${rewardPool.minimumHumanBattles - viewerBattles} duel(s) officiel(s) à terminer pour devenir éligible.`
+        : viewerPseudo
+          ? "Entre au classement général pour rejoindre la récompense client."
+          : "Connecte-toi pour suivre ta place et ton éligibilité.";
+
+  useEffect(() => {
+    if (!viewerPseudo) {
+      setDiceState(null);
+      setDiceLoading(false);
+      return;
+    }
+    const controller = new AbortController();
+    setDiceLoading(true);
+    setDiceError("");
+    void fetch("/api/arena/rewards/dice", { cache: "no-store", signal: controller.signal })
+      .then(async (response) => {
+        const payload = await response.json() as {
+          eligible?: boolean;
+          viewerRoll?: number | null;
+          error?: string;
+        };
+        if (!response.ok) throw new Error(payload.error || "État du lancer indisponible.");
+        setDiceState({ eligible: payload.eligible === true, viewerRoll: payload.viewerRoll ?? null });
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setDiceError(error instanceof Error ? error.message : "État du lancer indisponible.");
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setDiceLoading(false);
+      });
+    return () => controller.abort();
+  }, [viewerPseudo, rewardPool?.weeklyDice.startsOn]);
+
+  const rollWeeklyDice = async () => {
+    if (diceRolling || diceState?.viewerRoll) return;
+    setDiceRolling(true);
+    setDiceError("");
+    try {
+      const response = await fetch("/api/arena/rewards/dice", { method: "POST" });
+      const payload = await response.json() as {
+        viewerRoll?: number;
+        pool?: ArenaCustomerRewardPool;
+        error?: string;
+      };
+      if (!response.ok) throw new Error(payload.error || "Lancer impossible.");
+      setDiceState({ eligible: true, viewerRoll: payload.viewerRoll ?? null });
+      if (payload.pool) onRewardPoolChange(payload.pool);
+    } catch (error) {
+      setDiceError(error instanceof Error ? error.message : "Lancer impossible.");
+    } finally {
+      setDiceRolling(false);
+    }
+  };
+
+  return (
+    <section className={arenaStyles.customerRewardPot} aria-labelledby="arena-customer-reward-title">
+      <div className={arenaStyles.customerRewardCopy}>
+        <div className={arenaStyles.customerRewardKicker}><Gift aria-hidden="true" /> Récompense de la communauté</div>
+        <h2 id="arena-customer-reward-title">Le Pot de la Canopée</h2>
+        <p className={arenaStyles.customerRewardIntro}>
+          <strong>Plus nos clients achètent de grammes, plus le pot se remplit.</strong>
+          <span>Chaque semaine, la moyenne des dés lancés par les joueurs décide de la part ajoutée au bocal.</span>
+        </p>
+        {loading ? (
+          <p className={arenaStyles.customerRewardLoading}>La récolte de la semaine est en cours de comptage…</p>
+        ) : rewardPool ? <>
+          <div className={arenaStyles.customerRewardAmount}>
+            <strong>{formatArenaRewardGrams(rewardPool.poolGrams)} g</strong>
+            <span>de fleurs dans le pot</span>
+          </div>
+          <div className={arenaStyles.customerRewardProgressHeader}>
+            <span>Palier {formatArenaRewardGrams(rewardPool.milestone.previousGrams)} g</span>
+            <b>Prochaine pousse · {formatArenaRewardGrams(rewardPool.milestone.nextGrams)} g</b>
+          </div>
+          <div
+            className={arenaStyles.customerRewardProgress}
+            role="progressbar"
+            aria-label={`Progression du pot vers ${rewardPool.milestone.nextGrams} grammes`}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={rewardPool.milestone.progressPercent}
+          >
+            <i style={{ width: `${rewardPool.milestone.progressPercent}%` }} />
+            <Sprout aria-hidden="true" />
+          </div>
+          <div className={arenaStyles.customerRewardWeek}>
+            <span><strong>+{formatArenaRewardGrams(rewardPool.currentWeekGrams)} g</strong><small>cette semaine</small></span>
+            <span><strong>{rewardPool.eligiblePlayers}</strong><small>joueurs éligibles</small></span>
+          </div>
+          <div className={arenaStyles.customerRewardSplit}>
+            <article>
+              <Trophy aria-hidden="true" />
+              <span><strong>90 % · Top 10</strong><small>Une part plus grande à chaque rang supérieur.</small></span>
+            </article>
+            <article data-surprise>
+              <Gift aria-hidden="true" />
+              <span><strong>10 % · Fleur Surprise</strong><small>{rewardPool.surpriseReward.estimatedGrams} g estimés · 1 chance par participant hors Top 10.</small></span>
+            </article>
+          </div>
+          <p className={arenaStyles.customerRewardViewer} data-eligible={Boolean(viewerReward || viewerIsSurpriseEligible) || undefined}>
+            {statusCopy}
+          </p>
+          <details className={arenaStyles.customerRewardRules}>
+            <summary>Voir la règle de partage</summary>
+            <p>
+              Le pot est un extra client lié à l’Arène : il n’est ni vendu, ni convertible en argent. Le classement
+              est arrêté à la clôture et demande {rewardPool.minimumHumanBattles} duels officiels minimum.
+            </p>
+            <div>
+              <span><b>#1</b>27 %</span>
+              <span><b>#2</b>18 %</span>
+              <span><b>#3</b>13,5 %</span>
+              <span><b>#4–5</b>6,75 % chacun</span>
+              <span><b>#6–10</b>3,6 % chacun</span>
+              <span><b>Hors Top 10</b>10 % pour une Fleur Surprise</span>
+            </div>
+          </details>
+          <small className={arenaStyles.customerRewardFootnote}>
+            Commandes payées uniquement, hors cadeaux et annulations · estimation jusqu’à la clôture officielle.
+          </small>
+        </> : (
+          <p className={arenaStyles.customerRewardLoading}>
+            {unavailable ? "Le compteur revient bientôt. Le classement reste disponible." : "Le pot démarre avec la prochaine semaine de ventes."}
+          </p>
+        )}
+      </div>
+      <div className={arenaStyles.customerRewardVisual}>
+        <div className={arenaStyles.customerRewardJarStage} aria-hidden="true">
+          <Image
+            className={arenaStyles.customerRewardJarBase}
+            src="/contest/mascot/arena-customer-reward-jar-v4-empty.webp"
+            alt=""
+            width={1200}
+            height={800}
+            sizes="(max-width: 767px) 100vw, 48vw"
+            priority={false}
+          />
+          <Image
+            className={arenaStyles.customerRewardJarFill}
+            src="/contest/mascot/arena-customer-reward-jar-v4-full.webp"
+            alt=""
+            width={1200}
+            height={800}
+            sizes="(max-width: 767px) 100vw, 48vw"
+            style={{ clipPath: `inset(${jarFillTopInset}% 0 0 0)` }}
+            priority={false}
+          />
+          <div className={arenaStyles.customerRewardJarReadout} data-loading={loading || undefined}>
+            <span><Sprout /> Remplissage</span>
+            <strong>{visualGaugeLabel}</strong>
+            <small>
+              {rewardPool
+                ? `${formatArenaRewardGrams(rewardPool.poolGrams)} / ${formatArenaRewardGrams(rewardPool.milestone.nextGrams)} g`
+                : "En attente"}
+            </small>
+          </div>
+        </div>
+        {rewardPool ? (
+          <section className={arenaStyles.customerRewardDice} aria-labelledby="arena-weekly-dice-title">
+            <div className={arenaStyles.customerRewardDiceHeading}>
+              <span><Dices aria-hidden="true" /></span>
+              <div>
+                <h3 id="arena-weekly-dice-title">Le dé collectif de la semaine</h3>
+                <p>Un lancer par joueur. La moyenne arrondie choisit le palier appliqué aux grammes achetés.</p>
+              </div>
+              <b>{weeklyRatePercent} %</b>
+            </div>
+            <div className={arenaStyles.customerRewardDiceRates} aria-label="Paliers du dé collectif">
+              {ARENA_CUSTOMER_REWARD_DICE_RATES.map((rate) => (
+                <span key={rate.rateBps} data-active={rate.rateBps === rewardPool.weeklyDice.rateBps || undefined}>
+                  <small>Dé {rate.diceResult}</small>
+                  <strong>{rate.ratePercent} %</strong>
+                </span>
+              ))}
+            </div>
+            <div className={arenaStyles.customerRewardDiceAction}>
+              <div aria-live="polite">
+                <strong>{rewardPool.weeklyDice.average === null ? "—" : rewardPool.weeklyDice.average.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} / 6</strong>
+                <small>Moyenne collective · {rewardPool.weeklyDice.rollCount} lancer{rewardPool.weeklyDice.rollCount > 1 ? "s" : ""}</small>
+              </div>
+              {diceLoading ? <span>Vérification…</span>
+                : diceState?.viewerRoll ? <span data-result>Ton dé : <b>{diceState.viewerRoll}</b></span>
+                  : diceState?.eligible ? (
+                    <button type="button" onClick={() => void rollWeeklyDice()} disabled={diceRolling}>
+                      <Dices aria-hidden="true" /> {diceRolling ? "Le dé roule…" : "Lancer mon dé"}
+                    </button>
+                  ) : viewerPseudo ? <span>Crée ton profil Placard pour participer.</span>
+                    : <span>Connecte-toi pour lancer ton dé.</span>}
+            </div>
+            {diceError ? <p className={arenaStyles.customerRewardDiceError} role="alert">{diceError}</p> : null}
+          </section>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
 function ContestTesterLeaderboard({
   seasonItems,
   globalItems,
   profileSeasonCode,
   profileTrack,
   compact = false,
+  viewerPseudo,
 }: {
   seasonItems: PublicContestTesterRankingItem[];
   globalItems: PublicContestTesterRankingItem[];
   profileSeasonCode?: string;
   profileTrack: ContestEntryTrack;
   compact?: boolean;
+  viewerPseudo?: string;
 }) {
   const [scope, setScope] = useState<"season" | "global">("season");
   const [rankingType, setRankingType] = useState<"general" | "tasting" | "placard">("general");
@@ -2308,6 +2603,9 @@ function ContestTesterLeaderboard({
   const [placardEntries, setPlacardEntries] = useState<PlacardRankingEntry[]>([]);
   const [placardRankingLoaded, setPlacardRankingLoaded] = useState(false);
   const [placardRankingUnavailable, setPlacardRankingUnavailable] = useState(false);
+  const [rewardPool, setRewardPool] = useState<ArenaCustomerRewardPool | null>(null);
+  const [rewardPoolLoaded, setRewardPoolLoaded] = useState(false);
+  const [rewardPoolUnavailable, setRewardPoolUnavailable] = useState(false);
   const rankingWindowRef = useRef<HTMLDivElement | null>(null);
   const items = remoteTastingItems[scope];
   const isPlacardRanking = rankingType === "placard";
@@ -2367,7 +2665,7 @@ function ContestTesterLeaderboard({
     if (!isPlacardRanking || placardRankingLoaded) return;
     const controller = new AbortController();
     let cancelled = false;
-    void fetch("/api/arena/placard/rankings", { signal: controller.signal })
+    void fetch("/api/arena/placard/rankings", { cache: "no-store", signal: controller.signal })
       .then(async (response) => {
         const payload = await response.json() as { entries?: PlacardRankingEntry[] };
         if (!response.ok) throw new Error("Classement indisponible");
@@ -2387,7 +2685,36 @@ function ContestTesterLeaderboard({
     };
   }, [isPlacardRanking, placardRankingLoaded]);
 
+  useEffect(() => {
+    if (compact || rewardPoolLoaded) return;
+    const controller = new AbortController();
+    let cancelled = false;
+    void fetch("/api/arena/rewards", { signal: controller.signal })
+      .then(async (response) => {
+        const payload = await response.json() as ArenaCustomerRewardPool;
+        if (!response.ok) throw new Error("Pot de récompenses indisponible");
+        if (!cancelled) {
+          setRewardPool(payload);
+          setRewardPoolUnavailable(false);
+        }
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        if (!cancelled) setRewardPoolUnavailable(true);
+      })
+      .finally(() => {
+        if (!cancelled) setRewardPoolLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [compact, rewardPoolLoaded]);
+
   const limit = compact ? 5 : 10;
+  const rewardByLeaderboardRank = new Map(
+    (rewardPool?.topRewards ?? []).map((reward) => [reward.leaderboardRank, reward]),
+  );
   const rankingRows = isGeneralRanking
     ? arenaEntries.slice(0, limit).map((item) => ({
         key: `arena-${item.rank}-${item.pseudo}`,
@@ -2396,6 +2723,7 @@ function ContestTesterLeaderboard({
         detail: `Carnet ${item.notebookScore} · Placard ${item.placardScore}`,
         score: String(item.score),
         scoreLabel: "pts Arène",
+        rewardGrams: rewardByLeaderboardRank.get(item.rank)?.estimatedGrams ?? null,
         href: "",
       }))
     : isPlacardRanking
@@ -2403,9 +2731,10 @@ function ContestTesterLeaderboard({
           key: `placard-${item.rank}-${item.pseudo}`,
           rank: item.rank,
           pseudo: item.pseudo,
-          detail: `${item.wins} V · ${item.losses} D · série ${item.streak}`,
-          score: String(item.rating),
-          scoreLabel: `${item.seasonPoints} pts`,
+          detail: `Cote ${item.rating} · ${item.seasonPoints} pts saison · ${getKqReputationProgress(item.reputation).tier.name} · ${item.reputation} réputation · ${item.wins} V · ${item.losses} D`,
+          score: String(item.placardScore),
+          scoreLabel: "Score Placard",
+          rewardGrams: null,
           href: "",
         }))
       : items.slice(0, limit).map((item) => {
@@ -2420,6 +2749,7 @@ function ContestTesterLeaderboard({
             detail: `${item.level.label} · ${item.approvedReviewCount} critique${item.approvedReviewCount > 1 ? "s" : ""}`,
             score: String(item.totalPoints),
             scoreLabel: "points",
+            rewardGrams: null,
             href: `/arene/profils/${encodeURIComponent(item.pseudo)}${query ? `?${query}` : ""}`,
           };
         });
@@ -2436,7 +2766,8 @@ function ContestTesterLeaderboard({
   };
 
   return (
-    <div className={`${arenaStyles.scorePanel} ${arenaStyles.playerLeaderboardPanel}`}>
+    <>
+      <div className={`${arenaStyles.scorePanel} ${arenaStyles.playerLeaderboardPanel}`}>
       <div className={arenaStyles.playerLeaderboardHeading}>
         <div>
           <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">{rankingKicker}</p>
@@ -2480,21 +2811,22 @@ function ContestTesterLeaderboard({
       </div>
 
       {isPlacardRanking ? (
-        <p className="mt-3 text-xs font-semibold text-charcoal">
-          En cas d’égalité : meilleure cote, puis points de saison, victoires et identifiant stable.
-        </p>
+        <details className={arenaStyles.rankingHelp}>
+          <summary>Départager les égalités</summary>
+          <p>En cas d’égalité : meilleure cote, puis points de saison, réputation qualité, victoires et défaites.</p>
+        </details>
       ) : null}
 
       {isGeneralRanking ? (
-        <p className="mt-3 text-xs font-semibold text-charcoal">
-          Score sur 1 000 : Carnet 300 points maximum, activité et cote Placard 700. Une partie terminée est requise.
-        </p>
+        <details className={arenaStyles.rankingHelp}>
+          <summary>Calcul du score</summary>
+          <p>Score sur 1 000 : Carnet 300 points maximum, activité et cote Placard 700. Une partie terminée est requise.</p>
+        </details>
       ) : null}
 
       <div className={`contest-station-board ${arenaStyles.playerStationBoard}`} aria-label={rankingTitle}>
         <div className="contest-station-board-toolbar">
           <strong>{rankingRows.length} joueur{rankingRows.length > 1 ? "s" : ""} classé{rankingRows.length > 1 ? "s" : ""}</strong>
-          <span>Fais défiler le tableau pour parcourir les rangs.</span>
           <div>
             <button type="button" onClick={() => scrollRanking(-1)} aria-label="Voir les joueurs précédents"><ChevronUp aria-hidden="true" /></button>
             <button type="button" onClick={() => scrollRanking(1)} aria-label="Voir les joueurs suivants"><ChevronDown aria-hidden="true" /></button>
@@ -2513,7 +2845,11 @@ function ContestTesterLeaderboard({
                 const content = <>
                   <span className="contest-station-rank">{String(row.rank).padStart(2, "0")}</span>
                   <span className={`contest-station-title ${arenaStyles.playerStationIdentity}`}><strong>{row.pseudo}</strong><small>{row.detail}</small></span>
-                  <span className={`contest-station-score ${arenaStyles.playerStationScore}`}><strong>{row.score}</strong><small>{row.scoreLabel}</small></span>
+                  <span className={`contest-station-score ${arenaStyles.playerStationScore}`}>
+                    <strong>{row.score}</strong>
+                    <small>{row.scoreLabel}</small>
+                    {row.rewardGrams !== null ? <em>≈ {row.rewardGrams} g</em> : null}
+                  </span>
                 </>;
                 return row.href ? (
                   <Link key={row.key} href={row.href} className={`contest-station-row ${arenaStyles.playerStationRow}`} aria-label={`Voir le profil de ${row.pseudo}`}>{content}</Link>
@@ -2529,7 +2865,20 @@ function ContestTesterLeaderboard({
           )}
         </div>
       </div>
-    </div>
+      </div>
+      {!compact && isGeneralRanking ? (
+        <div className={arenaStyles.customerRewardPlacement}>
+          <ArenaCustomerRewardPot
+            rewardPool={rewardPool}
+            onRewardPoolChange={setRewardPool}
+            loading={!rewardPoolLoaded}
+            unavailable={rewardPoolUnavailable}
+            viewerPseudo={viewerPseudo}
+            arenaEntries={arenaEntries}
+          />
+        </div>
+      ) : null}
+    </>
   );
 }
 
@@ -3115,20 +3464,14 @@ export function ContestHubClient({
 
   return (
     <section data-world="arena" data-surface={surface} className={arenaStyles.page}>
+      <ArenaSceneHeader
+        isPlacardPlayerEnabled={isPlacardPlayerEnabled}
+        mode={isNotebookSurface && !isFlowerRankingSurface ? "carnet" : "classement"}
+        title={isFlowerRankingSurface ? "Classement des fleurs" : isNotebookSurface ? "Dégustation" : "Classement"}
+        description={isNotebookSurface && !isFlowerRankingSurface ? "Tes fleurs. Tes notes. Ta collection." : "Les meilleurs de la saison."}
+      />
       {isNotebookSurface ? (
-        <header className={arenaStyles.notebookSurfaceHeader}>
-          <nav aria-label="Navigation du Carnet">
-            <Link href="/arene" className={arenaStyles.notebookSurfaceBack}><ChevronLeft aria-hidden="true" /> Retour à l’Arène</Link>
-            <strong>{isFlowerRankingSurface ? "Classement des fleurs" : "Mon Carnet"}</strong>
-            {isPlacardPlayerEnabled ? <Link href="/arene/placard" className={arenaStyles.notebookSurfacePlay}>Jouer <Sprout aria-hidden="true" /></Link> : <span />}
-          </nav>
-          <div className={arenaStyles.notebookSurfaceHero}>
-            <span>
-              <h1>{isFlowerRankingSurface ? "Classement des fleurs" : "Mon Carnet"}</h1>
-              {!isFlowerRankingSurface ? <p>Choisis une fleur, ouvre ton carnet et retrouve toutes tes dégustations au même endroit.</p> : null}
-            </span>
-            <Image src="/contest/mascot/tasting/tasting-start.png" alt="" width={408} height={771} priority sizes="110px" />
-          </div>
+        <div className={arenaStyles.notebookSurfaceHeader}>
           <div className={arenaStyles.notebookSurfaceQuickNav}>
             <nav className={arenaStyles.notebookSurfaceSections} aria-label="Sections du Carnet">
               <Link href={getNotebookTrackHref("regular")} data-active={isNotebookDetailSurface && selectedTrack === "regular" || undefined}>
@@ -3145,42 +3488,9 @@ export function ContestHubClient({
               </Link>
             </nav>
           </div>
-        </header>
-      ) : null}
-      <header className={arenaStyles.hero}>
-        <div className={arenaStyles.noise} aria-hidden="true" />
-        <div className={`retro-container ${arenaStyles.heroGrid}`}>
-          <div className={arenaStyles.heroCopy}>
-            <h1 className={arenaStyles.heroTitle}>
-              L&apos;<span className={arenaStyles.heroTitleAccent}>Arène.</span>
-            </h1>
-            <div className={arenaStyles.heroRule} aria-hidden="true" />
-            <p className={arenaStyles.heroLead}>
-              Trois espaces, une seule progression : remplis ton Carnet, joue tes cartes dans le
-              Placard, puis mesure-toi aux autres dans les classements de la saison.
-            </p>
-          </div>
-
-          <div className={arenaStyles.heroArt} aria-hidden="true">
-            <Image
-              src="/contest/mascot/arena-journey-v3.webp"
-              alt=""
-              width={1254}
-              height={1254}
-              sizes="(max-width: 767px) 92vw, 620px"
-              className={arenaStyles.heroDuo}
-            />
-          </div>
         </div>
-      </header>
-
+      ) : null}
       <div className={`retro-container ${arenaStyles.content}`}>
-        {!isNotebookSurface ? (
-          <ArenaNavigation
-            activeView={activeArenaView}
-          />
-        ) : null}
-
         <nav hidden className={arenaStyles.arenaHub} aria-labelledby="arena-hub-title">
           <div className={arenaStyles.arenaHubHeading}>
             <p className={arenaStyles.sectionKicker}>Choisis ton espace</p>
@@ -3254,8 +3564,7 @@ export function ContestHubClient({
                 Du carnet au <span>Placard.</span>
               </h2>
               <p className={arenaStyles.placardLead}>
-                Tes dégustations débloquent des avantages. Utilise-les avec tes cartes pour cultiver
-                une Fleur unique, puis présente-la au jury.
+                Cultive ta Fleur. Défie le jury.
               </p>
               <div className={arenaStyles.placardStatus}>
                 <span>{isPlacardPlayerEnabled ? "Saison ouverte" : "Accès en test"}</span>
@@ -3293,14 +3602,14 @@ export function ContestHubClient({
             <span><Trophy aria-hidden="true" /><strong>Deux façons de briller</strong></span>
             <p><b>Classement testeurs :</b> tes dégustations.</p>
             <p><b>Classement Placard :</b> tes cultures et tes duels.</p>
-            <small>Les récompenses de fin de saison seront précisées dans le règlement officiel.</small>
+            <small>Plus les clients achètent de grammes, plus le Pot de la Canopée se remplit. Chaque semaine, le dé collectif fixe la part ajoutée.</small>
           </div>
         </section>
 
         <section hidden={activeArenaView !== "classement"} className={arenaStyles.playerRankingSection} aria-labelledby="arena-player-ranking-title">
           <div className={arenaStyles.sectionHeading}>
             <h2 id="arena-player-ranking-title" className={arenaStyles.sectionTitle}>
-              Rangs des joueurs
+              Classement des joueurs
             </h2>
           </div>
           {activeArenaView === "classement" ? <>
@@ -3318,6 +3627,7 @@ export function ContestHubClient({
               globalItems={testerGlobalRankings}
               profileSeasonCode={selectedSeasonCode}
               profileTrack={selectedTrack}
+              viewerPseudo={viewerProgress?.pseudo}
             />
           </> : null}
         </section>
@@ -3326,11 +3636,11 @@ export function ContestHubClient({
           <div className={arenaStyles.sectionHeading}>
             <div>
               <h2 id="arena-ranking-title" className={arenaStyles.sectionTitle}>
-                Palmarès des fleurs. <span>Selon le jury.</span>
+                Palmarès <span>des fleurs.</span>
               </h2>
             </div>
             <p className={arenaStyles.sectionLead}>
-              Les scores viennent des carnets validés. Clique sur un lot ou un avis pour voir le détail.
+              Notes issues des carnets validés.
             </p>
           </div>
           <div className={arenaStyles.rankingFilters}>
@@ -3412,10 +3722,10 @@ export function ContestHubClient({
           <div className={arenaStyles.notebookIntro}>
             <div>
               <h2 id="arena-notebook-title" className={arenaStyles.sectionTitle}>
-                Note. <span>Collectionne. Joue.</span>
+                Tes <span>dégustations.</span>
               </h2>
               <p className={arenaStyles.sectionLead}>
-                Note les fleurs que tu achètes, étoffe ta collection de cartes et joue-les dans le Placard. Chaque fleur Concours te rapporte 5 packs de cartes de plus qu’une fleur Regular.
+                Une fleur Concours rapporte 5 packs de plus qu’une Regular.
               </p>
             </div>
             <div className={arenaStyles.notebookCharacter} aria-hidden="true">

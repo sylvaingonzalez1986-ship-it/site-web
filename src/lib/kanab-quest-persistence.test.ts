@@ -50,10 +50,34 @@ describe("Kanab Quest persistence and integrity", () => {
     expect(parseKqGameSave(encodeKqSave(canopy))).toEqual(canopy);
   });
 
+  it("round-trips a dynamic producer Heritage and rejects an unknown mechanic", () => {
+    const dynamic = startKqGame(12, {
+      heritageCard: {
+        code: "HERITAGE-013",
+        name: "Héritage de la Vallée",
+        timing: "once-per-run",
+        effect: "neutral-to-spark",
+        description: "Après un lancer, transforme un dé neutre en Étincelle.",
+        producerName: "Ferme de la Vallée",
+      },
+    });
+    expect(parseKqGameSave(encodeKqSave(dynamic))).toEqual(dynamic);
+    expect(parseKqGameSave(encodeKqSave({ ...dynamic, heritageEffect: "unknown-effect" }))).toBeNull();
+  });
+
   it("rejects malformed, unknown-version and impossible dice saves", () => {
     expect(parseKqGameSave("not-json")).toBeNull();
     expect(parseKqGameSave(JSON.stringify({ version: 2, payload: startKqGame(1) }))).toBeNull();
     expect(parseKqGameSave(encodeKqSave({ ...startKqGame(1), dice: [9, 1, 2] }))).toBeNull();
+  });
+
+  it("accepts stage reward receipts but rejects impossible reward metadata", () => {
+    const resolved = resolveKqStage({ ...startKqGame(22), phase: "rolled", dice: [4, 4, 5] });
+    expect(parseKqGameSave(encodeKqSave(resolved))).toEqual(resolved);
+    expect(parseKqGameSave(encodeKqSave({
+      ...resolved,
+      history: resolved.history.map((entry) => ({ ...entry, xpGain: 999 })),
+    }))).toBeNull();
   });
 
   it("rejects an oversized persisted hand", () => {
@@ -96,5 +120,6 @@ describe("Kanab Quest persistence and integrity", () => {
     expect(createKqIntegrityCode({ ...game, seed: game.seed + 1 })).not.toBe(createKqIntegrityCode(game));
     expect(createKqIntegrityCode({ ...game, usedCards: [...game.usedCards, "BOTTE-003"] })).not.toBe(createKqIntegrityCode(game));
     expect(createKqIntegrityCode({ ...game, quality: game.quality + 1 })).not.toBe(createKqIntegrityCode(game));
+    expect(createKqIntegrityCode({ ...game, history: game.history.map((entry, index) => index === 0 ? { ...entry, xpGain: (entry.xpGain ?? 0) + 1 } : entry) })).not.toBe(createKqIntegrityCode(game));
   });
 });

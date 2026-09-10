@@ -9,16 +9,19 @@ export async function PUT(request: Request, { params }: { params: Promise<{ code
   try {
     const { code } = await params;
     const value = await request.json() as Record<string, unknown>;
-    if (["name", "description", "imageUrl", "advantage", "drawback"].some((key) => typeof value[key] !== "string")
+    if (["name", "timing", "effect", "description", "imageUrl", "advantage", "drawback"].some((key) => typeof value[key] !== "string")
       || typeof value.isActive !== "boolean") {
       return NextResponse.json({ error: "Carte Héritage invalide." }, { status: 400 });
     }
     return NextResponse.json(await updateKqHeritageCard({
-      code, name: String(value.name), description: String(value.description),
+      code, name: String(value.name), timing: String(value.timing), effect: String(value.effect), description: String(value.description),
       imageUrl: String(value.imageUrl), advantage: String(value.advantage), drawback: String(value.drawback),
       isActive: value.isActive,
     }));
-  } catch {
-    return NextResponse.json({ error: "Enregistrement de la carte Héritage impossible." }, { status: 409 });
+  } catch (error) {
+    const message = error instanceof Error && error.message === "Ce pouvoir est déjà attribué à un autre producteur actif."
+      ? error.message
+      : "Enregistrement de la carte Héritage impossible.";
+    return NextResponse.json({ error: message }, { status: 409 });
   }
 }

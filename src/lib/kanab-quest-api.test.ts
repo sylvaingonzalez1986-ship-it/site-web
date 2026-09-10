@@ -1,7 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
-import { createKqScopedRequest, finalizeKqRemoteBattle, getKqRemoteActiveRun, getKqRemoteBattles, getKqRemoteFlowerRivals, getKqRemoteFlowers, lockKqRemoteBattle, playKqRemoteCard, startKqRemoteRun, swapKqRemoteHeritageCard } from "@/lib/kanab-quest-api";
+import { createKqScopedRequest, enqueueKqRemoteRandomBattle, finalizeKqRemoteBattle, finalizeKqRemoteBotBattle, getKqRemoteActiveRun, getKqRemoteBattles, getKqRemoteFlowerRivals, getKqRemoteFlowers, leaveKqRemoteRandomBattleQueue, playKqRemoteCard, pollKqRemoteRandomBattleQueue, startKqRemoteRun, swapKqRemoteHeritageCard } from "@/lib/kanab-quest-api";
 
 describe("Kanab Quest browser API", () => {
+  it("explains an HTML routing failure without leaking markup or retrying a mutation", async () => {
+    const request = vi.fn().mockResolvedValue(new Response('<!DOCTYPE html><title>Not found</title>', {
+      status: 404, headers: { 'content-type': 'text/html' },
+    }));
+    await expect(playKqRemoteCard('run-1', 'BOTTE-017', request)).rejects.toThrow('Réponse du Placard illisible (HTTP 404)');
+    expect(request).toHaveBeenCalledTimes(1);
+  });
   it("routes the same gameplay client to customer-scoped endpoints", async () => {
     const request = vi.fn().mockResolvedValue(new Response(JSON.stringify({ activeRun: null }), {
       status: 200, headers: { "content-type": "application/json" },
@@ -61,14 +68,58 @@ describe("Kanab Quest browser API", () => {
     expect(request).toHaveBeenCalledWith("/api/admin/placard/flowers", { cache: "no-store" });
   });
 
-  it("loads rivals and only locks a battle through an explicit POST", async () => {
+  it("loads training bots and joins or leaves the random queue explicitly", async () => {
     const request = vi.fn()
       .mockResolvedValueOnce(new Response(JSON.stringify({ rivals: [] }), { status: 200, headers: { "content-type": "application/json" } }))
-      .mockResolvedValueOnce(new Response(JSON.stringify({ battleId: "battle-1", seed: 4, status: "locked" }), { status: 201, headers: { "content-type": "application/json" } }));
+      .mockResolvedValueOnce(new Response(JSON.stringify({ matchStatus: "queued", flowerId: "flower-1", queuedAt: "2026-09-05T12:00:00Z" }), { status: 201, headers: { "content-type": "application/json" } }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ matchStatus: "queued", flowerId: "flower-1", queuedAt: "2026-09-05T12:00:00Z" }), { status: 200, headers: { "content-type": "application/json" } }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ left: true, flowerId: "flower-1" }), { status: 200, headers: { "content-type": "application/json" } }));
     await getKqRemoteFlowerRivals("flower-1", request);
-    await lockKqRemoteBattle("flower-1", "flower-2", request);
+    await enqueueKqRemoteRandomBattle("flower-1", request);
+    await pollKqRemoteRandomBattleQueue("flower-1", request);
+    await leaveKqRemoteRandomBattleQueue("flower-1", request);
     expect(request.mock.calls[0][0]).toContain("/rivals");
-    expect(request.mock.calls[1]).toEqual(["/api/admin/placard/battles", expect.objectContaining({ method: "POST" })]);
+    expect(request.mock.calls[1]).toEqual(["/api/admin/placard/battles", expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({ action: "join", flowerId: "flower-1" }),
+    })]);
+    expect(request.mock.calls[2]).toEqual(["/api/admin/placard/battles", expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({ action: "poll", flowerId: "flower-1" }),
+    })]);
+    expect(request.mock.calls[3]).toEqual(["/api/admin/placard/battles", expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({ action: "leave", flowerId: "flower-1" }),
+    })]);
+  });
+
+  it("starts bot training without sending a chosen opponent", async () => {
+    const request = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      battleId: "battle-1",
+      rounds: [],
+      winner: "player",
+      burnedAt: "2026-09-05T12:00:00Z",
+      experienceAwarded: 0.1,
+      todayCount: 1,
+      dailyLimit: 10,
+      opponentType: "bot",
+      opponentFlower: { ownerName: "Bot surprise", variety: "Harlequin" },
+      challengePoints: 15,
+      claimedChallengeCodes: ["clean-sweep"],
+      completedChallenges: [{ code: "clean-sweep", title: "Jury unanime", points: 15 }],
+      rewardCard: null,
+    }), { status: 201, headers: { "content-type": "application/json" } }));
+
+    const result = await finalizeKqRemoteBotBattle("flower-1", request);
+
+    expect(result.opponentFlower.ownerName).toBe("Bot surprise");
+    expect(result.challengePoints).toBe(15);
+    expect(result.completedChallenges).toHaveLength(1);
+    expect(request).toHaveBeenCalledWith("/api/admin/placard/bot-battles", expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({ flowerId: "flower-1" }),
+    }));
+    expect(request.mock.calls[0][1]?.body).not.toContain("botCode");
   });
 
   it("loads battles and requires a separate POST for the irreversible verdict", async () => {

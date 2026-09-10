@@ -20,6 +20,14 @@ export type KqNotebookRetroSyncResult = {
   nextCursor: number | null;
 };
 
+export type KqNotebookRetroPreviewResult = {
+  live: boolean;
+  processed: number;
+  pending: number;
+  alreadyGranted: number;
+  nextCursor: number | null;
+};
+
 export async function syncKqNotebookRewardsForCustomer(
   customerId: string,
 ): Promise<KqNotebookRewardSyncResult> {
@@ -87,12 +95,7 @@ export async function syncKqNotebookRewardsForCustomer(
   return { live: true, eligibleBadges: badges.length, granted, alreadyGranted };
 }
 
-export async function syncKqNotebookRewardBatch(
-  afterProfileBadgeId = 0,
-): Promise<KqNotebookRetroSyncResult> {
-  if (!KQ_NOTEBOOK_REWARDS_LIVE) {
-    return { live: false, processed: 0, granted: 0, alreadyGranted: 0, nextCursor: null };
-  }
+async function loadKqNotebookRetroBatch(afterProfileBadgeId: number) {
   const cursor = Number.isSafeInteger(afterProfileBadgeId) && afterProfileBadgeId >= 0
     ? afterProfileBadgeId
     : 0;
@@ -102,14 +105,14 @@ export async function syncKqNotebookRewardBatch(
   if (rulesResult.error) throw new Error(`[supabase:kq-notebook-retro-rules] ${rulesResult.error.message}`);
   const rewardCodes = (rulesResult.data ?? []).map((rule) => String(rule.badge_code));
   if (rewardCodes.length === 0) {
-    return { live: true, processed: 0, granted: 0, alreadyGranted: 0, nextCursor: null };
+    return { supabase, badges: [], grantedIds: new Set<number>(), nextCursor: null };
   }
   const definitionsResult = await supabase.from("contest_badges")
     .select("id").in("code", rewardCodes);
   if (definitionsResult.error) throw new Error(`[supabase:kq-notebook-retro-badges] ${definitionsResult.error.message}`);
   const definitionIds = (definitionsResult.data ?? []).map((badge) => String(badge.id));
   if (definitionIds.length === 0) {
-    return { live: true, processed: 0, granted: 0, alreadyGranted: 0, nextCursor: null };
+    return { supabase, badges: [], grantedIds: new Set<number>(), nextCursor: null };
   }
   let query = supabase.from("contest_profile_badges")
     .select("id,customer_id")
@@ -121,24 +124,64 @@ export async function syncKqNotebookRewardBatch(
   if (profileBadgesResult.error) {
     throw new Error(`[supabase:kq-notebook-retro-profile-badges] ${profileBadgesResult.error.message}`);
   }
-  const badges = profileBadgesResult.data ?? [];
+  const badges = (profileBadgesResult.data ?? []).map((badge) => ({
+    id: Number(badge.id),
+    customerId: String(badge.customer_id),
+  }));
+  const grantsResult = badges.length > 0
+    ? await supabase.from("kq_notebook_reward_grants")
+        .select("profile_badge_id")
+        .in("profile_badge_id", badges.map((badge) => badge.id))
+    : { data: [], error: null };
+  if (grantsResult.error) {
+    throw new Error(`[supabase:kq-notebook-retro-grants] ${grantsResult.error.message}`);
+  }
+  const lastId = badges.at(-1)?.id;
+  return {
+    supabase,
+    badges,
+    grantedIds: new Set((grantsResult.data ?? []).map((grant) => Number(grant.profile_badge_id))),
+    nextCursor: badges.length === KQ_NOTEBOOK_RETRO_BATCH_SIZE && lastId != null ? lastId : null,
+  };
+}
+
+export async function previewKqNotebookRewardBatch(
+  afterProfileBadgeId = 0,
+): Promise<KqNotebookRetroPreviewResult> {
+  const batch = await loadKqNotebookRetroBatch(afterProfileBadgeId);
+  const alreadyGranted = batch.badges.filter((badge) => batch.grantedIds.has(badge.id)).length;
+  return {
+    live: KQ_NOTEBOOK_REWARDS_LIVE,
+    processed: batch.badges.length,
+    pending: batch.badges.length - alreadyGranted,
+    alreadyGranted,
+    nextCursor: batch.nextCursor,
+  };
+}
+
+export async function syncKqNotebookRewardBatch(
+  afterProfileBadgeId = 0,
+): Promise<KqNotebookRetroSyncResult> {
+  if (!KQ_NOTEBOOK_REWARDS_LIVE) {
+    return { live: false, processed: 0, granted: 0, alreadyGranted: 0, nextCursor: null };
+  }
+  const batch = await loadKqNotebookRetroBatch(afterProfileBadgeId);
   let granted = 0;
   let alreadyGranted = 0;
-  for (const badge of badges) {
-    const result = await supabase.rpc("rpc_kq_grant_notebook_badge_reward", {
-      p_user_id: String(badge.customer_id),
-      p_profile_badge_id: Number(badge.id),
+  for (const badge of batch.badges) {
+    const result = await batch.supabase.rpc("rpc_kq_grant_notebook_badge_reward", {
+      p_user_id: badge.customerId,
+      p_profile_badge_id: badge.id,
     });
     if (result.error) throw new Error(`[supabase:rpc_kq_grant_notebook_badge_reward] ${result.error.message}`);
     if ((result.data as { alreadyGranted?: boolean } | null)?.alreadyGranted) alreadyGranted += 1;
     else granted += 1;
   }
-  const lastId = badges.at(-1)?.id;
   return {
     live: true,
-    processed: badges.length,
+    processed: batch.badges.length,
     granted,
     alreadyGranted,
-    nextCursor: badges.length === KQ_NOTEBOOK_RETRO_BATCH_SIZE && lastId != null ? Number(lastId) : null,
+    nextCursor: batch.nextCursor,
   };
 }

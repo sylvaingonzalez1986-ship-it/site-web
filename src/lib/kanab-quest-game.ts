@@ -1,4 +1,18 @@
-import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
+import {
+  KQ_HERITAGE_CARDS,
+  resolveKqHeritageCard,
+  type KqHeritageCard,
+  type KqHeritageEffect,
+  type KqHeritageTiming,
+} from "@/lib/kanab-quest-heritage";
+import {
+  getKqEquipmentDefinition,
+  summarizeKqEquipmentLoadout,
+} from "@/lib/kanab-quest-equipment";
+import {
+  calculateKqEquipmentQualityBonus,
+  calculateKqHarvestGrams,
+} from "@/lib/kanab-quest-market";
 
 export const KQ_STAGES = ["Germination", "Enracinement", "Croissance", "Floraison", "Récolte", "Séchage & affinage"] as const;
 
@@ -7,8 +21,12 @@ export type KqTiming = "passive" | "before-roll" | "after-roll";
 export type KqCardCategory = "substrate" | "pbi" | "equipment" | "know-how" | "luck";
 export type KqSupportEffect = "reroll-neutral" | "pbi-success" | "pbi-strong-success" | "pbi-success-xp" | "cancel-danger" | "reveal-pest" | "reroll-two-low" | "neutral-to-success" | "four-keep-three" | "three-to-success"
   | "water-test" | "pest-monitor" | "double-danger-shield" | "moisture-calibration"
-  | "harvest-four-quality" | "harvest-cool" | "danger-to-neutral" | "clean-cut";
-export type KqSituationTag = "roots" | "water" | "climate" | "pest" | "flower" | "harvest" | "drying";
+  | "harvest-four-quality" | "harvest-cool" | "danger-to-neutral" | "clean-cut"
+  | "compliance-clearance" | "illegal-power" | "bill-relief" | "theft-guard"
+  | "root-aeration" | "living-soil-buffer" | "starter-stability"
+  | "hydroponic-control" | "aeroponic-precision" | "perlite-drainage"
+  | "biochar-buffer" | "organic-feed" | "pbi-thrips-relief";
+export type KqSituationTag = "roots" | "water" | "climate" | "pest" | "flower" | "harvest" | "drying" | "energy" | "compliance" | "security";
 export type KqPest = "aphids" | "mites" | "thrips";
 export type KqBuddieEffect = "none" | "starting-xp-1" | "starting-xp-2" | "starting-xp-3" | "starting-xp-4";
 export const KQ_HAND_SIZE = 5;
@@ -51,6 +69,44 @@ export type KqSupportCard = {
   effect: KqSupportEffect;
 };
 
+export type KqCultureSystemProfile = {
+  cardCode: "BOTTE-001" | "BOTTE-007" | "BOTTE-008" | "BOTTE-009";
+  technique: string;
+  mastery: "Accessible" | "Technique" | "Expert" | "Patiente";
+  electricity: "Faible" | "Pompe continue" | "Critique";
+};
+
+export const KQ_CULTURE_SYSTEM_PROFILES: readonly KqCultureSystemProfile[] = [
+  {
+    cardCode: "BOTTE-001",
+    technique: "Mélange organique drainant",
+    mastery: "Accessible",
+    electricity: "Faible",
+  },
+  {
+    cardCode: "BOTTE-007",
+    technique: "Solution nutritive en circuit fermé",
+    mastery: "Technique",
+    electricity: "Pompe continue",
+  },
+  {
+    cardCode: "BOTTE-008",
+    technique: "Racines suspendues et brumisées",
+    mastery: "Expert",
+    electricity: "Critique",
+  },
+  {
+    cardCode: "BOTTE-009",
+    technique: "Écosystème organique biologiquement actif",
+    mastery: "Patiente",
+    electricity: "Faible",
+  },
+] as const;
+
+export function getKqCultureSystemProfile(cardCode: string) {
+  return KQ_CULTURE_SYSTEM_PROFILES.find((profile) => profile.cardCode === cardCode) ?? null;
+}
+
 export type KqSituation = {
   code: string;
   stage: KqStage;
@@ -59,12 +115,17 @@ export type KqSituation = {
   difficulty: 1 | 2 | 3;
   tags: KqSituationTag[];
   pest?: KqPest;
+  incident?: "electricity-bill" | "ddtm-inspection" | "crop-theft";
   successTrait: string;
   fragileTrait: string;
   failureTrait: string;
 };
 
 export type KqOutcome = "critical" | "success" | "fragile" | "failure";
+
+export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadout> & {
+  codes: string[];
+};
 
 export type KqGameState = {
   seed: number;
@@ -78,6 +139,11 @@ export type KqGameState = {
   heritageReserveCodes?: string[];
   handRedrawsUsed?: number;
   heritageCode?: string;
+  heritageName?: string;
+  heritageTiming?: KqHeritageTiming;
+  heritageEffect?: KqHeritageEffect;
+  heritageProducerName?: string;
+  heritageImageUrl?: string;
   heritageUsed?: boolean;
   heritageArmed?: boolean;
   collectionCodes: string[];
@@ -86,6 +152,11 @@ export type KqGameState = {
   phase: "prepare" | "rolled" | "resolved" | "complete";
   xp: number;
   quality: number;
+  equipment?: KqEquipmentRunProfile;
+  equipmentQualityBonus?: number;
+  harvestGrams?: number;
+  powerOutage?: boolean;
+  harvestLossPercent?: number;
   dice: [number, number, number] | null;
   bonusDie?: number | null;
   effectNotices?: string[];
@@ -112,8 +183,17 @@ export type KqGameState = {
     sparks?: number;
     pressureAfter?: number;
     combos?: string[];
+    qualityDelta?: number;
+    xpGain?: number;
+    harvestLossPercent?: number;
   }>;
 };
+
+export function getKqStateHeritage(state: Pick<KqGameState,
+  "heritageCode" | "heritageName" | "heritageTiming" | "heritageEffect" | "heritageProducerName" | "heritageImageUrl"
+>) {
+  return resolveKqHeritageCard(state);
+}
 
 const KQ_BUDDIE_NAMES = [
   "L’Arbre Mère - Toutes Variétés", "Charlotte’s Web", "Cannatonic", "Harlequin", "ACDC",
@@ -165,40 +245,40 @@ export const KQ_BUDDIES: KqBuddie[] = KQ_BUDDIE_NAMES.map((name, index) => {
 });
 
 export const KQ_CARDS: KqSupportCard[] = [
-  { code: "BOTTE-001", name: "Terreau universel", category: "substrate", rarity: "common", xpCost: 0, timing: "passive", description: "Relance un dé neutre sur une Situation Racines.", tags: ["roots"], effect: "reroll-neutral" },
+  { code: "BOTTE-001", name: "Terreau horticole", category: "substrate", rarity: "common", xpCost: 0, timing: "passive", description: "Sur Racines ou Eau, si aucun dé ne réussit, transforme le meilleur dé neutre en 4.", tags: ["roots", "water"], effect: "starter-stability" },
   { code: "BOTTE-002", name: "Chrysope affamée", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Transforme un dé faible en réussite contre pucerons ou thrips.", tags: ["pest"], targets: ["aphids", "thrips"], effect: "pbi-success" },
   { code: "BOTTE-003", name: "Petit ventilateur", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Annule un Danger sur une Situation Climat ou Séchage.", tags: ["climate", "drying"], effect: "cancel-danger" },
   { code: "BOTTE-004", name: "Loupe d’inspection", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Identifie un ravageur et ouvre ta réserve de cartes PBI.", tags: ["pest"], effect: "reveal-pest" },
   { code: "BOTTE-005", name: "Arrosage mesuré", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Relance un dé neutre sur une Situation Eau ou Racines.", tags: ["water", "roots"], effect: "reroll-neutral" },
   { code: "BOTTE-006", name: "Deuxième chance", category: "luck", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Relance les deux dés les plus faibles.", tags: [], effect: "reroll-two-low" },
-  { code: "BOTTE-007", name: "Fibre de coco", category: "substrate", rarity: "uncommon", xpCost: 0, timing: "passive", description: "Relance un dé neutre sur une Situation Eau.", tags: ["water"], effect: "reroll-neutral" },
-  { code: "BOTTE-008", name: "Mélange drainant", category: "substrate", rarity: "uncommon", xpCost: 0, timing: "passive", description: "Relance un dé neutre sur une Situation Eau ou Séchage.", tags: ["water", "drying"], effect: "reroll-neutral" },
-  { code: "BOTTE-009", name: "Terre vivante", category: "substrate", rarity: "rare", xpCost: 0, timing: "passive", description: "Relance un dé neutre sur une Situation Racines ou Ravageur.", tags: ["roots", "pest"], effect: "reroll-neutral" },
+  { code: "BOTTE-007", name: "Hydroponie recirculante", category: "substrate", rarity: "uncommon", xpCost: 0, timing: "passive", description: "Sur Eau ou Floraison, relance un dé neutre et garde la meilleure face ; une coupure arrête les pompes.", tags: ["water", "flower"], effect: "hydroponic-control" },
+  { code: "BOTTE-008", name: "Aéroponie haute pression", category: "substrate", rarity: "rare", xpCost: 0, timing: "passive", description: "Sur Racines, Eau ou Climat, transforme un dé neutre en 5 ; une coupure transforme les deux meilleurs dés en Dangers.", tags: ["roots", "water", "climate"], effect: "aeroponic-precision" },
+  { code: "BOTTE-009", name: "Sol vivant", category: "substrate", rarity: "rare", xpCost: 0, timing: "passive", description: "Sur Racines ou Ravageur, la vie du sol amortit le premier Danger en résultat neutre.", tags: ["roots", "pest"], effect: "living-soil-buffer" },
   { code: "BOTTE-010", name: "Coccinelle à sept points", category: "pbi", rarity: "rare", xpCost: 3, timing: "after-roll", description: "Transforme un dé faible en réussite forte contre les pucerons.", tags: ["pest"], targets: ["aphids"], effect: "pbi-strong-success" },
   { code: "BOTTE-011", name: "Amblyseius swirskii", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Transforme un dé faible en réussite contre des acariens ou thrips révélés.", tags: ["pest"], targets: ["mites", "thrips"], effect: "pbi-success" },
   { code: "BOTTE-012", name: "Aphidius colemani", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Transforme un dé faible en réussite contre les pucerons et rapporte +1 XP en cas de succès.", tags: ["pest"], targets: ["aphids"], effect: "pbi-success-xp" },
-  { code: "BOTTE-013", name: "Pot en tissu", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Relance un dé neutre sur une Situation Racines ou Eau.", tags: ["roots", "water"], effect: "reroll-neutral" },
+  { code: "BOTTE-013", name: "Pot en tissu", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Transforme un Danger en résultat neutre sur Racines ou Eau, mais gagne 1 Pression car le pot sèche vite.", tags: ["roots", "water"], effect: "root-aeration" },
   { code: "BOTTE-014", name: "Hygromètre vintage", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Annule un Danger sur une Situation Eau, Climat ou Séchage.", tags: ["water", "climate", "drying"], effect: "cancel-danger" },
   { code: "BOTTE-015", name: "Palissage doux", category: "know-how", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Transforme un dé neutre en réussite pendant la Floraison.", tags: ["flower"], effect: "neutral-to-success" },
   { code: "BOTTE-016", name: "Séchage patient", category: "know-how", rarity: "rare", xpCost: 2, timing: "before-roll", description: "Transforme un dé neutre en réussite pendant le Séchage.", tags: ["drying"], effect: "neutral-to-success" },
   { code: "BOTTE-017", name: "Main verte", category: "luck", rarity: "common", xpCost: 1, timing: "before-roll", description: "Lance quatre dés et conserve les trois meilleurs.", tags: [], effect: "four-keep-three" },
   { code: "BOTTE-018", name: "Testeur pH–EC", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Relance le dé le plus faible sur une Situation Eau ou Racines et gagne 1 XP si le résultat s’améliore.", tags: ["water", "roots"], effect: "water-test" },
-  { code: "BOTTE-019", name: "Perlite horticole", category: "substrate", rarity: "common", xpCost: 0, timing: "passive", description: "Relance un dé neutre sur une Situation Racines ou Eau.", tags: ["roots", "water"], effect: "reroll-neutral" },
-  { code: "BOTTE-020", name: "Biochar", category: "substrate", rarity: "uncommon", xpCost: 0, timing: "passive", description: "Relance un dé neutre sur une Situation Racines ou Séchage.", tags: ["roots", "drying"], effect: "reroll-neutral" },
-  { code: "BOTTE-021", name: "Compost mûr", category: "substrate", rarity: "rare", xpCost: 0, timing: "passive", description: "Relance un dé neutre sur une Situation Racines ou Ravageur.", tags: ["roots", "pest"], effect: "reroll-neutral" },
+  { code: "BOTTE-019", name: "Perlite calibrée", category: "equipment", rarity: "common", xpCost: 1, timing: "after-roll", description: "Sur Racines ou Eau, corrige le plus mauvais dé : un 1 devient 2, ou un 2 devient 4.", tags: ["roots", "water"], effect: "perlite-drainage" },
+  { code: "BOTTE-020", name: "Biochar inoculé", category: "know-how", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Sur Racines ou Ravageur, transforme le premier Danger en neutre et réduit la Pression de 1.", tags: ["roots", "pest"], effect: "biochar-buffer" },
+  { code: "BOTTE-021", name: "Engrais bio complet", category: "know-how", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Sur Racines ou Floraison, avec exactement deux réussites, transforme un dé neutre en Étincelle.", tags: ["roots", "flower"], effect: "organic-feed" },
   { code: "BOTTE-022", name: "Phytoseiulus persimilis", category: "pbi", rarity: "rare", xpCost: 3, timing: "after-roll", description: "Transforme un dé faible en réussite forte contre les acariens.", tags: ["pest"], targets: ["mites"], effect: "pbi-strong-success" },
-  { code: "BOTTE-023", name: "Orius laevigatus", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Transforme un dé faible en réussite contre les thrips.", tags: ["pest"], targets: ["thrips"], effect: "pbi-success" },
+  { code: "BOTTE-023", name: "Orius laevigatus", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Contre les thrips, transforme un dé faible en réussite et réduit la Pression de 1.", tags: ["pest"], targets: ["thrips"], effect: "pbi-thrips-relief" },
   { code: "BOTTE-024", name: "Tensiomètre", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Annule un Danger sur une Situation Eau.", tags: ["water"], effect: "cancel-danger" },
   { code: "BOTTE-025", name: "Plaque engluée de suivi", category: "equipment", rarity: "uncommon", xpCost: 1, timing: "before-roll", description: "Identifie le ravageur et récupère 1 XP pour préparer une réponse PBI.", tags: ["pest"], effect: "pest-monitor" },
   { code: "BOTTE-026", name: "Extracteur bien réglé", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Annule jusqu’à deux Dangers sur une Situation Climat ou Séchage.", tags: ["climate", "drying"], effect: "double-danger-shield" },
-  { code: "BOTTE-027", name: "Timer mécanique", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Transforme un dé neutre en réussite sur une Situation Floraison.", tags: ["flower"], effect: "neutral-to-success" },
-  { code: "BOTTE-028", name: "Taille apicale", category: "know-how", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Transforme un dé neutre en réussite sur une Situation Floraison.", tags: ["flower"], effect: "neutral-to-success" },
+  { code: "BOTTE-027", name: "Papiers en règle", category: "equipment", rarity: "rare", xpCost: 3, timing: "before-roll", description: "Face à un contrôle DDTM, présente le dossier complet : les trois dés deviennent des réussites.", tags: ["compliance"], effect: "compliance-clearance" },
+  { code: "BOTTE-028", name: "Branchement illégal", category: "luck", rarity: "uncommon", xpCost: 1, timing: "after-roll", description: "Après un mauvais jet sur la facture, transforme les deux dés les plus faibles en réussites mais gagne 2 Pression.", tags: ["energy"], effect: "illegal-power" },
   { code: "BOTTE-029", name: "Effeuillage mesuré", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Relance un dé neutre sur une Situation Floraison ou Climat.", tags: ["flower", "climate"], effect: "reroll-neutral" },
   { code: "BOTTE-030", name: "Sonde d’humidité", category: "equipment", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Pendant le Séchage, transforme un 2 en 4 ou un 3 en 5.", tags: ["drying"], effect: "moisture-calibration" },
-  { code: "BOTTE-031", name: "Drainage contrôlé", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Relance un dé neutre sur une Situation Eau ou Racines.", tags: ["water", "roots"], effect: "reroll-neutral" },
+  { code: "BOTTE-031", name: "Échéancier négocié", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Sur une Situation Énergie, réduit de 1 le nombre de réussites exigées par le créancier.", tags: ["energy"], effect: "bill-relief" },
   { code: "BOTTE-032", name: "Loupe à trichomes", category: "equipment", rarity: "rare", xpCost: 2, timing: "before-roll", description: "En Récolte, lance quatre dés, garde les trois meilleurs et gagne 1 Qualité en cas de réussite.", tags: ["harvest"], effect: "harvest-four-quality" },
   { code: "BOTTE-033", name: "Récolte au frais", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Annule un Danger en Récolte et réduit la Pression de 1 si la protection se déclenche.", tags: ["harvest", "climate"], effect: "harvest-cool" },
-  { code: "BOTTE-034", name: "Retour au calme", category: "luck", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Relance les deux dés les plus faibles.", tags: [], effect: "reroll-two-low" },
+  { code: "BOTTE-034", name: "Gros molosse", category: "equipment", rarity: "rare", xpCost: 2, timing: "before-roll", description: "Protège toute la récolte contre le Renard à deux pattes, quel que soit le résultat des dés.", tags: ["security"], effect: "theft-guard" },
   { code: "BOTTE-035", name: "Récolte par lots", category: "know-how", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "En Récolte, transforme un Danger en résultat neutre pour isoler la partie fragile du lot.", tags: ["harvest"], effect: "danger-to-neutral" },
   { code: "BOTTE-036", name: "Sécateur propre", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Annule un Danger en Récolte et rapporte 1 XP si l’étape est réussie.", tags: ["harvest"], effect: "clean-cut" },
 ];
@@ -219,9 +299,38 @@ export function getKqCardTradeoff(card: KqSupportCard) {
   if (card.effect === "harvest-cool") return { benefit: "Protège la récolte et fait retomber la Pression si nécessaire.", risk: "La baisse de Pression exige qu’un Danger soit effectivement annulé." };
   if (card.effect === "danger-to-neutral") return { benefit: "Isole un Danger sans garantir une réussite.", risk: "Occupe l’unique réaction et exige un Danger." };
   if (card.effect === "clean-cut") return { benefit: "Protège le lancer et rembourse 1 XP si la récolte réussit.", risk: "Réservée à la Récolte." };
+  if (card.effect === "compliance-clearance") return { benefit: "Garantit immédiatement trois réussites pendant le contrôle DDTM.", risk: "Coûte 3 XP et ne sert que sur cette Situation administrative." };
+  if (card.effect === "illegal-power") return { benefit: "Transforme les deux dés les plus faibles en réussites et évite la coupure.", risk: "Ajoute immédiatement 2 Pression et brûle la carte." };
+  if (card.effect === "bill-relief") return { benefit: "Réduit de 1 le seuil de réussite de la facture électrique.", risk: "Ne change aucune face de dé et reste réservé aux Situations Énergie." };
+  if (card.effect === "theft-guard") return { benefit: "Empêche toute perte de quantité lors du vol de récolte.", risk: "Ne change pas le verdict du jury et coûte 2 XP." };
+  if (card.effect === "root-aeration") return { benefit: "Transforme un Danger en résultat neutre sur Racines ou Eau.", risk: "Le pot sèche vite : jouer la carte ajoute immédiatement 1 Pression." };
+  if (card.effect === "living-soil-buffer") return { benefit: "La biologie du Sol vivant amortit automatiquement le premier Danger sur Racines ou Ravageur.", risk: "Le résultat devient seulement neutre et le système n'accélère pas les autres étapes." };
+  if (card.effect === "starter-stability") return { benefit: "Garantit une réussite à partir d’un dé neutre quand les Racines n’en obtiennent aucune.", risk: "Ne se déclenche ni si une réussite est déjà présente, ni sur un lancer composé uniquement de Dangers." };
+  if (card.effect === "hydroponic-control") return { benefit: "Relance un dé neutre sans jamais conserver un résultat inférieur sur Eau ou Floraison.", risk: "La circulation de la solution dépend de l'électricité." };
+  if (card.effect === "aeroponic-precision") return { benefit: "Transforme automatiquement un dé neutre en réussite forte sur trois familles de Situations.", risk: "Une coupure de courant transforme les deux meilleurs dés en Dangers." };
+  if (card.effect === "perlite-drainage") return { benefit: "Corrige le plus mauvais résultat : un Danger devient neutre ou un 2 devient réussite.", risk: "Ne transforme jamais un 1 directement en réussite et consomme la réaction." };
+  if (card.effect === "biochar-buffer") return { benefit: "Amortit un Danger et fait baisser la Pression si le tampon se déclenche.", risk: "Coûte 2 XP avant de savoir si un Danger sortira." };
+  if (card.effect === "organic-feed") return { benefit: "Convertit un résultat déjà solide en Étincelle et augmente le plafond de qualité.", risk: "Exige exactement deux réussites et un dé neutre après le lancer." };
+  if (card.effect === "pbi-thrips-relief") return { benefit: "Corrige un dé faible contre les thrips et réduit immédiatement la Pression de 1.", risk: "Ne cible que les thrips et brûle l’unique réaction de l’étape." };
   if (card.effect === "pbi-success-xp") return { benefit: "Transforme un dé faible en réussite et peut rapporter 1 XP supplémentaire.", risk: "Brûle une PBI de la réserve et utilise l’unique réaction." };
   if (card.category === "pbi") return { benefit: "Transforme un dé faible en réussite et neutralise le ravageur ciblé.", risk: "Brûle une PBI de la réserve et utilise l’unique réaction." };
   return { benefit: card.description, risk: "La copie est définitivement brûlée après utilisation." };
+}
+
+export function getKqCultureSystemSummary(deckCodes: readonly string[]) {
+  const card = KQ_CARDS.find((candidate) => (
+    candidate.category === "substrate" && deckCodes.includes(candidate.code)
+  ));
+  if (!card) return null;
+  const profile = getKqCultureSystemProfile(card.code);
+  if (!profile) return null;
+  return {
+    code: card.code,
+    name: card.name,
+    technique: profile.technique,
+    mastery: profile.mastery,
+    electricity: profile.electricity,
+  };
 }
 
 export const KQ_SITUATIONS: KqSituation[] = [
@@ -245,13 +354,13 @@ export const KQ_SITUATIONS: KqSituation[] = [
   { code: "SIT-018", stage: "Enracinement", name: "Pot qui retient l’eau", story: "L’eau s’évacue lentement et réduit l’air disponible autour des racines.", difficulty: 3, tags: ["water", "roots"], successTrait: "Drainage maîtrisé", fragileTrait: "Racines vigilantes", failureTrait: "Zone asphyxiée" },
   { code: "SIT-019", stage: "Enracinement", name: "Bord du pot colonisé", story: "Les racines atteignent rapidement les limites de leur espace.", difficulty: 2, tags: ["roots"], successTrait: "Chevelu dense", fragileTrait: "Racines contenues", failureTrait: "Croissance freinée" },
   { code: "SIT-020", stage: "Enracinement", name: "Arrosage trop rapproché", story: "Le substrat n’a pas eu le temps de retrouver son équilibre entre deux apports.", difficulty: 2, tags: ["water", "roots"], successTrait: "Cycle bien réglé", fragileTrait: "Rythme ajusté", failureTrait: "Racines paresseuses" },
-  { code: "SIT-021", stage: "Croissance", name: "Tiges qui s’étirent", story: "La plante prend de la hauteur plus vite qu’elle ne renforce sa structure.", difficulty: 2, tags: ["climate", "flower"], successTrait: "Port robuste", fragileTrait: "Silhouette élancée", failureTrait: "Tiges fragiles" },
+  { code: "SIT-021", stage: "Croissance", name: "La facture qui pique", story: "Le compteur a tourné avec les lampes. Si les dés ne passent pas, le fournisseur coupe le courant pour l’étape suivante.", difficulty: 2, tags: ["energy", "climate"], incident: "electricity-bill", successTrait: "Facture maîtrisée", fragileTrait: "Échéance tendue", failureTrait: "Courant coupé" },
   { code: "SIT-022", stage: "Floraison", name: "Air trop humide", story: "L’humidité reste haute au cœur des fleurs et demande une bonne circulation d’air.", difficulty: 3, tags: ["climate", "flower"], successTrait: "Fleurs bien aérées", fragileTrait: "Humidité contenue", failureTrait: "Floraison humide" },
   { code: "SIT-023", stage: "Floraison", name: "Branches chargées", story: "Le poids des fleurs met les branches les plus fines à l’épreuve.", difficulty: 2, tags: ["flower"], successTrait: "Charpente solide", fragileTrait: "Branches souples", failureTrait: "Port affaissé" },
-  { code: "SIT-024", stage: "Floraison", name: "Floraison irrégulière", story: "Les différentes zones de la plante n’avancent pas au même rythme.", difficulty: 2, tags: ["flower", "climate"], successTrait: "Canopée homogène", fragileTrait: "Fleurs contrastées", failureTrait: "Lot hétérogène" },
+  { code: "SIT-024", stage: "Floraison", name: "Contrôle DDTM", story: "Une contrôleuse demande les justificatifs pendant que Sylvain tente de retrouver le bon classeur.", difficulty: 3, tags: ["compliance"], incident: "ddtm-inspection", successTrait: "Dossier irréprochable", fragileTrait: "Papiers éparpillés", failureTrait: "Contrôle défavorable" },
   { code: "SIT-025", stage: "Récolte", name: "Trichomes contrastés", story: "Les signes de maturité ne racontent pas exactement la même histoire partout.", difficulty: 3, tags: ["harvest", "flower"], successTrait: "Lecture précise", fragileTrait: "Choix prudent", failureTrait: "Maturité mal estimée" },
   { code: "SIT-026", stage: "Récolte", name: "Matinée trop chaude", story: "La température monte rapidement et menace la fraîcheur aromatique du lot.", difficulty: 2, tags: ["harvest", "climate"], successTrait: "Fraîcheur préservée", fragileTrait: "Récolte accélérée", failureTrait: "Arômes échauffés" },
-  { code: "SIT-027", stage: "Récolte", name: "Tri délicat", story: "Quelques fleurs moins régulières doivent être séparées sans déclasser tout le lot.", difficulty: 2, tags: ["harvest"], successTrait: "Sélection exigeante", fragileTrait: "Lot honnête", failureTrait: "Sélection confuse" },
+  { code: "SIT-027", stage: "Récolte", name: "Renard à deux pattes", story: "Quelqu’un vient de repartir avec une caisse de la production. Sans protection, une partie du poids final disparaît.", difficulty: 3, tags: ["harvest", "security"], incident: "crop-theft", successTrait: "Voleur repoussé", fragileTrait: "Caisse entamée", failureTrait: "Production dérobée" },
   { code: "SIT-028", stage: "Séchage & affinage", name: "Air trop sec", story: "L’extérieur des fleurs sèche vite alors que leur cœur demande encore du temps.", difficulty: 3, tags: ["drying", "climate"], successTrait: "Séchage progressif", fragileTrait: "Surface sèche", failureTrait: "Fleurs cassantes" },
   { code: "SIT-029", stage: "Séchage & affinage", name: "Bocal trop rempli", story: "Le lot manque d’espace pour retrouver un équilibre homogène.", difficulty: 2, tags: ["drying"], successTrait: "Affinage homogène", fragileTrait: "Lot surveillé", failureTrait: "Affinage inégal" },
   { code: "SIT-030", stage: "Séchage & affinage", name: "Parfum encore vert", story: "Les premières notes végétales dominent encore et demandent de la patience.", difficulty: 2, tags: ["drying"], successTrait: "Bouquet affiné", fragileTrait: "Profil jeune", failureTrait: "Notes végétales" },
@@ -267,6 +376,70 @@ function deterministicDie(seed: number, stageIndex: number, nonce: number, dieIn
 export function getKqSituation(state: Pick<KqGameState, "stageIndex">) {
   const code = "situationCodes" in state ? (state as Pick<KqGameState, "situationCodes">).situationCodes[state.stageIndex] : undefined;
   return KQ_SITUATIONS.find((situation) => situation.code === code) ?? KQ_SITUATIONS.filter((situation) => situation.stage === KQ_STAGES[state.stageIndex])[0];
+}
+
+export type KqCultureSystemSituationStatus = {
+  tone: "active" | "neutral" | "danger";
+  label: string;
+  detail: string;
+};
+
+const KQ_CULTURE_TAG_LABELS: Partial<Record<KqSituationTag, string>> = {
+  roots: "Racines",
+  water: "Eau",
+  climate: "Climat",
+  pest: "Ravageurs",
+  flower: "Floraison",
+};
+
+export function getKqCultureSystemSituationStatus(
+  state: Pick<KqGameState, "deckCodes" | "stageIndex" | "situationCodes" | "powerOutage">,
+): KqCultureSystemSituationStatus | null {
+  const situation = getKqSituation(state);
+  const summary = getKqCultureSystemSummary(state.deckCodes);
+  const card = summary ? KQ_CARDS.find((candidate) => candidate.code === summary.code) : null;
+  if (!summary || !card) return null;
+
+  if (state.powerOutage && card.effect === "aeroponic-precision") {
+    return {
+      tone: "danger",
+      label: "Coupure critique",
+      detail: "Les pompes sont arrêtées : le bonus est suspendu et les deux meilleurs dés deviendront des Dangers.",
+    };
+  }
+  if (state.powerOutage && card.effect === "hydroponic-control") {
+    return {
+      tone: "danger",
+      label: "Pompe arrêtée",
+      detail: "La relance hydroponique est suspendue et la coupure transformera le meilleur dé en Danger.",
+    };
+  }
+  if (state.powerOutage) {
+    return {
+      tone: "danger",
+      label: "Coupure en cours",
+      detail: "Le mode garde sa règle passive, mais la coupure transformera le meilleur dé en Danger.",
+    };
+  }
+
+  const matches = card.tags.some((tag) => situation.tags.includes(tag));
+  if (matches) {
+    return {
+      tone: "active",
+      label: "Avantage actif",
+      detail: getKqCardTradeoff(card).benefit,
+    };
+  }
+  const specialties = card.tags
+    .map((tag) => KQ_CULTURE_TAG_LABELS[tag])
+    .filter((label): label is string => Boolean(label));
+  return {
+    tone: "neutral",
+    label: "Effet en veille",
+    detail: specialties.length > 0
+      ? `Ce mode intervient surtout sur : ${specialties.join(" · ")}.`
+      : "Ce mode n’intervient pas directement sur cette Situation.",
+  };
 }
 
 export function buildKqScenarioPath(seed: number, recentSituationCodes: string[] = [], requiredTags: KqSituationTag[] = [], allowedPests: KqPest[] = []) {
@@ -296,7 +469,7 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
 
 export function startKqGame(
   seed = Date.now(),
-  config: { varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string } = {},
+  config: { varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[] } = {},
 ): KqGameState {
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
   const requestedDeck = config.deckCodes ?? KQ_CARDS.slice(0, 6).map((card) => card.code);
@@ -314,17 +487,32 @@ export function startKqGame(
   if (!deckCodes.some((code) => KQ_CARDS.find((card) => card.code === code)?.category === "substrate")) deckCodes.unshift("BOTTE-001");
   const situationCodes = buildKqScenarioPath(clampSeed(seed), config.recentSituationCodes, config.requiredSituationTags, config.allowedPests);
   const substrate = KQ_CARDS.find((card) => deckCodes.includes(card.code) && card.category === "substrate") ?? KQ_CARDS[0];
-  const heritage = KQ_HERITAGE_CARDS.find((card) => card.code === config.heritageCode);
+  const heritage = config.heritageCard
+    ?? KQ_HERITAGE_CARDS.find((card) => card.code === config.heritageCode);
+  const equipmentCodes = [...new Set(config.equipmentCodes ?? [])]
+    .filter((code) => Boolean(getKqEquipmentDefinition(code)));
+  const equipment = { codes: equipmentCodes, ...summarizeKqEquipmentLoadout(equipmentCodes) };
   const initialState: KqGameState = {
     seed: clampSeed(seed), ...(config.challengeDayKey ? { challengeDayKey: config.challengeDayKey } : {}), ...(config.startedAt ? { startedAt: config.startedAt } : {}), varietyCode: buddie.code, varietyName: buddie.name, deckCodes,
     collectionCodes: config.collectionCodes ?? KQ_CARDS.map((card) => card.code),
     situationCodes,
-    ...(heritage ? { heritageCode: heritage.code, heritageUsed: false, heritageArmed: false } : {}),
-    stageIndex: 0, phase: "prepare", xp: Math.max(1, config.startingXp ?? 1) + buddie.advantageLevel + (heritage?.effect === "starting-xp-two" ? 2 : 0), quality: 0, dice: null, bonusDie: null, effectNotices: [
+    ...(heritage ? {
+      heritageCode: heritage.code,
+      heritageName: heritage.name,
+      heritageTiming: heritage.timing,
+      heritageEffect: heritage.effect,
+      ...(heritage.producerName ? { heritageProducerName: heritage.producerName } : {}),
+      ...(heritage.imageUrl ? { heritageImageUrl: heritage.imageUrl } : {}),
+      heritageUsed: false,
+      heritageArmed: false,
+    } : {}),
+    stageIndex: 0, phase: "prepare", xp: Math.max(1, config.startingXp ?? 1) + buddie.advantageLevel + (heritage?.effect === "starting-xp-two" ? 2 : 0), quality: 0, equipment, dice: null, bonusDie: null, effectNotices: [
       ...(buddie.advantageLevel > 0 ? [`${buddie.name} : +${buddie.advantageLevel} XP au départ.`] : []),
       ...(heritage?.effect === "starting-xp-two" ? [`${heritage.name} : +2 XP au départ.`] : []),
+      ...(equipmentCodes.length > 0 ? [`Installation : ${equipmentCodes.length} équipement${equipmentCodes.length > 1 ? "s" : ""} · ${equipment.powerWatts} W.`] : []),
+      ...(equipment.pressureDelta > 0 ? [`Grande installation : +${equipment.pressureDelta} Pression au départ.`] : []),
     ],
-    rollNonce: 0, pressure: 0, cancelledDangers: 0,
+    rollNonce: 0, pressure: Math.max(0, Math.min(4, equipment.pressureDelta)), cancelledDangers: 0, powerOutage: false, harvestLossPercent: 0,
     preparationPlayed: false, reactionPlayed: false, revealedPest: null, playedThisStage: [substrate.code], usedCards: [substrate.code],
     traits: [], combos: [], lastOutcome: null, history: [],
   };
@@ -360,7 +548,11 @@ export function canPlayKqCard(state: KqGameState, card: KqSupportCard) {
   if (card.effect === "three-to-success" && state.dice && !state.dice.includes(3)) return { allowed: false, reason: "Il faut un dé affichant 3 à transformer." };
   if (card.effect === "moisture-calibration" && state.dice && !state.dice.some((die) => die === 2 || die === 3)) return { allowed: false, reason: "Il faut un dé affichant 2 ou 3 à calibrer." };
   if (card.effect === "danger-to-neutral" && state.dice && !state.dice.includes(1)) return { allowed: false, reason: "Il faut un Danger à isoler." };
+  if (card.effect === "perlite-drainage" && state.dice && !state.dice.some((die) => die === 1 || die === 2)) return { allowed: false, reason: "Il faut un dé affichant 1 ou 2 à corriger." };
+  if (card.effect === "organic-feed" && state.dice && (state.dice.filter((die) => die >= 4).length !== 2 || !state.dice.some((die) => die === 2 || die === 3))) return { allowed: false, reason: "Il faut exactement deux réussites et un dé neutre." };
   if (card.effect === "reroll-two-low" && state.dice && state.dice.every((die) => die >= 4)) return { allowed: false, reason: "Aucun dé faible ne justifie cette relance." };
+  if (card.effect === "illegal-power" && situation.incident !== "electricity-bill") return { allowed: false, reason: "Cette prise de risque ne répond qu’à la facture électrique." };
+  if (card.effect === "illegal-power" && state.dice && ["success", "critical"].includes(previewKqResolution(state)?.outcome ?? "")) return { allowed: false, reason: "La facture est déjà maîtrisée : inutile de prendre ce risque." };
   if (card.category === "pbi" && state.dice && state.dice.every((die) => die >= 4)) return { allowed: false, reason: "Tous les dés sont déjà des réussites." };
   if (card.tags.length > 0 && !card.tags.some((tag) => situation.tags.includes(tag))) return { allowed: false, reason: "Cette carte ne répond pas à la Situation." };
   return { allowed: true, reason: card.timing === "before-roll" ? "Prépare le lancer." : "Peut modifier le résultat." };
@@ -398,14 +590,14 @@ export function getKqHandCodes(state: Pick<KqGameState, "deckCodes" | "usedCards
 
 export function redrawKqHand(state: KqGameState): KqGameState {
   const supportPlayedThisStage = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.category !== "substrate");
-  const redrawLimit = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode)?.effect === "two-extra-redraws" ? 3 : 1;
+  const redrawLimit = getKqStateHeritage(state)?.effect === "two-extra-redraws" ? 3 : 1;
   if (state.phase !== "prepare" || state.preparationPlayed || supportPlayedThisStage || (state.handRedrawsUsed ?? 0) >= redrawLimit) return state;
   const nextState = { ...state, handCodes: undefined, heritageReserveCodes: undefined, handRedrawsUsed: (state.handRedrawsUsed ?? 0) + 1 };
   return { ...nextState, handCodes: drawKqAvailableHandCodes(nextState) };
 }
 
 export function swapKqHeritageHandCard(state: KqGameState, handIndex: number, reserveIndex: number): KqGameState {
-  const heritage = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode);
+  const heritage = getKqStateHeritage(state);
   const hand = getKqHandCodes(state);
   const reserve = state.heritageReserveCodes ?? [];
   if (
@@ -433,7 +625,7 @@ export function swapKqHeritageHandCard(state: KqGameState, handIndex: number, re
 }
 
 export function canActivateKqHeritage(state: KqGameState) {
-  const heritage = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode);
+  const heritage = getKqStateHeritage(state);
   if (!heritage) return { allowed: false, reason: "Aucun Héritage équipé." };
   if (heritage.timing === "passive") return { allowed: false, reason: "Cet Héritage est passif." };
   if (state.heritageUsed) return { allowed: false, reason: "Cet Héritage a déjà été utilisé." };
@@ -450,12 +642,28 @@ export function canActivateKqHeritage(state: KqGameState) {
       : { allowed: false, reason: "Aucun ravageur caché à inspecter." };
   }
   if (state.phase !== "rolled" || !state.dice) return { allowed: false, reason: "À activer après le lancer." };
+  if (heritage.effect === "germination-lowest-to-strong" && state.stageIndex !== 0) return { allowed: false, reason: "Réservé à la Germination." };
+  if (heritage.effect === "rooting-pressure-reset" && state.stageIndex !== 1) return { allowed: false, reason: "Réservé à l’Enracinement." };
+  if (heritage.effect === "rooting-pressure-reset" && state.pressure <= 0) return { allowed: false, reason: "La Pression est déjà à zéro." };
+  if (heritage.effect === "growth-danger-reroll" && state.stageIndex !== 2) return { allowed: false, reason: "Réservé à la Croissance." };
+  if (heritage.effect === "growth-danger-reroll" && state.dice.filter((die) => die === 1).length <= state.cancelledDangers) return { allowed: false, reason: "Aucun Danger non protégé à relancer." };
+  if (heritage.effect === "flower-success-to-spark" && state.stageIndex !== 3) return { allowed: false, reason: "Réservé à la Floraison." };
+  if (heritage.effect === "flower-success-to-spark" && !state.dice.some((die) => die === 4 || die === 5)) return { allowed: false, reason: "Aucune réussite ordinaire à transformer." };
   if (heritage.effect === "flower-neutrals-to-success" && KQ_STAGES[state.stageIndex] !== "Floraison") return { allowed: false, reason: "Réservé à la Floraison." };
   if (heritage.effect === "drying-lowest-to-spark" && state.stageIndex !== KQ_STAGES.length - 1) return { allowed: false, reason: "Réservé au séchage et à l’affinage." };
   if (heritage.effect === "neutral-to-spark" && !state.dice.some((die) => die === 2 || die === 3)) return { allowed: false, reason: "Aucun dé neutre à transformer." };
   if (heritage.effect === "flower-neutrals-to-success" && !state.dice.some((die) => die === 2 || die === 3)) return { allowed: false, reason: "Aucun dé neutre à transformer." };
   if (heritage.effect === "dangers-to-success" && state.dice.filter((die) => die === 1).length <= state.cancelledDangers) return { allowed: false, reason: "Aucun Danger non protégé à transformer." };
-  return ["neutral-to-spark", "flower-neutrals-to-success", "drying-lowest-to-spark", "dangers-to-success"].includes(heritage.effect)
+  return [
+    "neutral-to-spark",
+    "flower-neutrals-to-success",
+    "drying-lowest-to-spark",
+    "dangers-to-success",
+    "germination-lowest-to-strong",
+    "rooting-pressure-reset",
+    "growth-danger-reroll",
+    "flower-success-to-spark",
+  ].includes(heritage.effect)
     ? { allowed: true, reason: "Pouvoir disponible." }
     : { allowed: false, reason: "Cet Héritage se déclenche automatiquement." };
 }
@@ -463,15 +671,23 @@ export function canActivateKqHeritage(state: KqGameState) {
 export function activateKqHeritage(state: KqGameState): KqGameState {
   const permission = canActivateKqHeritage(state);
   if (!permission.allowed) return state;
-  const heritage = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode)!;
+  const heritage = getKqStateHeritage(state)!;
   if (heritage.effect === "five-keep-three") {
     return { ...state, heritageArmed: true, effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} armée : le prochain lancer utilisera 5 dés.`) };
   }
   if (heritage.effect === "free-pest-mastery") {
     return { ...state, heritageUsed: true, xp: state.xp + 2, revealedPest: getKqSituation(state).pest ?? null, effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} : ravageur identifié gratuitement et +2 XP.`) };
   }
+  if (heritage.effect === "rooting-pressure-reset") {
+    return {
+      ...state,
+      pressure: 0,
+      heritageUsed: true,
+      effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} : la Pression retombe à zéro.`),
+    };
+  }
   const dice = [...state.dice!] as [number, number, number];
-  const rollNonce = state.rollNonce;
+  let rollNonce = state.rollNonce;
   let cancelledDangers = state.cancelledDangers;
   if (heritage.effect === "neutral-to-spark") {
     const index = dice.findIndex((die) => die === 2 || die === 3);
@@ -484,6 +700,19 @@ export function activateKqHeritage(state: KqGameState): KqGameState {
   } else if (heritage.effect === "dangers-to-success") {
     dice.splice(0, dice.length, ...dice.map((die) => die === 1 ? 4 : die) as [number, number, number]);
     cancelledDangers = 0;
+  } else if (heritage.effect === "germination-lowest-to-strong") {
+    const index = dice.indexOf(Math.min(...dice));
+    dice[index] = 5;
+  } else if (heritage.effect === "growth-danger-reroll") {
+    const dangerIndexes = dice.flatMap((die, index) => die === 1 ? [index] : []);
+    const index = dangerIndexes[Math.min(cancelledDangers, dangerIndexes.length - 1)];
+    if (index !== undefined) {
+      rollNonce += 1;
+      dice[index] = deterministicDie(state.seed, state.stageIndex, rollNonce, index);
+    }
+  } else if (heritage.effect === "flower-success-to-spark") {
+    const index = dice.findIndex((die) => die === 4 || die === 5);
+    dice[index] = 6;
   }
   return {
     ...state, dice, rollNonce, cancelledDangers, heritageUsed: true,
@@ -521,9 +750,13 @@ export function playKqCard(state: KqGameState, cardCode: string): KqGameState {
     dice = nextDice;
     rollNonce += 2;
   }
-  if (dice && ["pbi-success", "pbi-success-xp"].includes(card.effect)) {
+  let pressureRelief = 0;
+  if (dice && ["pbi-success", "pbi-success-xp", "pbi-thrips-relief"].includes(card.effect)) {
     const index = dice.findIndex((die) => die < 4);
-    if (index >= 0) dice = dice.map((die, dieIndex) => dieIndex === index ? 4 : die) as [number, number, number];
+    if (index >= 0) {
+      dice = dice.map((die, dieIndex) => dieIndex === index ? 4 : die) as [number, number, number];
+      if (card.effect === "pbi-thrips-relief") pressureRelief = 1;
+    }
   }
   if (dice && card.effect === "pbi-strong-success") {
     const index = dice.findIndex((die) => die < 4);
@@ -551,14 +784,28 @@ export function playKqCard(state: KqGameState, cardCode: string): KqGameState {
     const index = dice.findIndex((die) => die === 1);
     if (index >= 0) dice = dice.map((die, dieIndex) => dieIndex === index ? 3 : die) as [number, number, number];
   }
+  if (dice && card.effect === "perlite-drainage") {
+    const dangerIndex = dice.findIndex((die) => die === 1);
+    const index = dangerIndex >= 0 ? dangerIndex : dice.findIndex((die) => die === 2);
+    if (index >= 0) dice = dice.map((die, dieIndex) => dieIndex === index ? (die === 1 ? 2 : 4) : die) as [number, number, number];
+  }
+  if (dice && card.effect === "organic-feed") {
+    const index = dice.findIndex((die) => die === 2 || die === 3);
+    if (index >= 0) dice = dice.map((die, dieIndex) => dieIndex === index ? 6 : die) as [number, number, number];
+  }
+  if (dice && card.effect === "illegal-power") {
+    const indexes = [0, 1, 2].sort((left, right) => dice![left] - dice![right]).slice(0, 2);
+    dice = dice.map((die, index) => indexes.includes(index) ? 4 : die) as [number, number, number];
+  }
 
   const effectNotice = diceBefore && dice
-    ? `${card.name} : ${diceBefore.join(" · ")} → ${dice.join(" · ")}.`
+    ? `${card.name} : ${diceBefore.join(" · ")} → ${dice.join(" · ")}.${pressureRelief ? " Pression −1." : ""}`
     : ["reveal-pest", "pest-monitor"].includes(card.effect) && revealedPest
       ? `${card.name} : ${revealedPest === "aphids" ? "pucerons" : revealedPest === "mites" ? "acariens" : "thrips"} identifiés, réserve PBI ouverte.`
       : `${card.name} activée : ${card.description}`;
   return {
     ...state, xp: state.xp - card.xpCost + effectXpRefund, dice, rollNonce, revealedPest,
+    pressure: Math.max(0, Math.min(4, state.pressure + (card.effect === "illegal-power" ? 2 : card.effect === "root-aeration" ? 1 : 0) - pressureRelief)),
     preparationPlayed: state.preparationPlayed || card.timing === "before-roll",
     reactionPlayed: state.reactionPlayed || card.timing === "after-roll",
     playedThisStage: [...state.playedThisStage, card.code], usedCards: [...state.usedCards, card.code],
@@ -572,7 +819,7 @@ export function rollKqDice(state: KqGameState): KqGameState {
   let nonce = state.rollNonce + 1;
   const playedEffects = state.playedThisStage.map((code) => KQ_CARDS.find((card) => card.code === code)).filter((card) => card?.timing !== "passive").map((card) => card?.effect);
   const mainVerte = playedEffects.includes("four-keep-three") || playedEffects.includes("harvest-four-quality");
-  const heritageFiveDice = state.heritageArmed && KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode)?.effect === "five-keep-three";
+  const heritageFiveDice = state.heritageArmed && getKqStateHeritage(state)?.effect === "five-keep-three";
   const dieCount = heritageFiveDice ? 5 : mainVerte ? 4 : 3;
   let rolled = Array.from({ length: dieCount }, (_, index) => deterministicDie(state.seed, state.stageIndex, nonce, index));
   let bonusDie: number | null = null;
@@ -586,8 +833,10 @@ export function rollKqDice(state: KqGameState): KqGameState {
       : `Main verte : 4 dés lancés, ${bonusDie} écarté, les 3 meilleurs conservés.`);
   }
   let dice = rolled as [number, number, number];
+  let rollPressureRelief = 0;
   const substrate = KQ_CARDS.find((card) => state.deckCodes.includes(card.code) && card.category === "substrate");
-  const shouldRerollNeutral = substrate?.tags.some((tag) => situation.tags.includes(tag)) || playedEffects.includes("reroll-neutral");
+  const substrateMatches = substrate?.tags.some((tag) => situation.tags.includes(tag)) ?? false;
+  const shouldRerollNeutral = (substrate?.effect === "reroll-neutral" && substrateMatches) || playedEffects.includes("reroll-neutral");
   if (shouldRerollNeutral) {
     const index = dice.findIndex((die) => die === 2 || die === 3);
     if (index >= 0) {
@@ -597,6 +846,58 @@ export function rollKqDice(state: KqGameState): KqGameState {
       effectNotices.push(`${playedEffects.includes("reroll-neutral") ? "Carte de relance" : substrate?.name ?? "Substrat"} : dé neutre ${previous} relancé en ${dice[index]}.`);
     }
     else effectNotices.push(`${playedEffects.includes("reroll-neutral") ? "Carte de relance" : substrate?.name ?? "Substrat"} : aucun dé neutre, relance non déclenchée.`);
+  }
+  if (substrate?.effect === "hydroponic-control" && substrateMatches && !state.powerOutage) {
+    const index = dice.findIndex((die) => die === 2 || die === 3);
+    if (index >= 0) {
+      const previous = dice[index];
+      nonce += 1;
+      const rerolled = deterministicDie(state.seed, state.stageIndex, nonce, index);
+      dice = dice.map((die, dieIndex) => dieIndex === index ? Math.max(previous, rerolled) : die) as [number, number, number];
+      effectNotices.push(rerolled < previous
+        ? `Hydroponie : relance ${rerolled}, la face neutre ${previous} est conservée.`
+        : `Hydroponie : la face neutre ${previous} s’améliore en ${rerolled}.`);
+    } else effectNotices.push("Hydroponie : aucun dé neutre, correction pH–EC non déclenchée.");
+  }
+  if (substrate?.effect === "aeroponic-precision" && substrateMatches && !state.powerOutage) {
+    const threeIndex = dice.findIndex((die) => die === 3);
+    const index = threeIndex >= 0 ? threeIndex : dice.findIndex((die) => die === 2);
+    if (index >= 0) {
+      const previous = dice[index];
+      dice = dice.map((die, dieIndex) => dieIndex === index ? 5 : die) as [number, number, number];
+      effectNotices.push(`Aéroponie : la brumisation précise transforme le dé ${previous} en réussite forte.`);
+    } else effectNotices.push("Aéroponie : aucun dé neutre à pousser vers une réussite forte.");
+  }
+  if (substrate?.effect === "starter-stability" && substrateMatches && !dice.some((die) => die >= 4)) {
+    const neutralIndexes = dice.flatMap((die, index) => die === 2 || die === 3 ? [index] : []);
+    const index = neutralIndexes.sort((left, right) => dice[right] - dice[left])[0];
+    if (index !== undefined) {
+      const previous = dice[index];
+      dice = dice.map((die, dieIndex) => dieIndex === index ? 4 : die) as [number, number, number];
+      effectNotices.push(`Terreau horticole : aucune réussite, le meilleur dé neutre ${previous} devient 4.`);
+    } else effectNotices.push("Terreau horticole : aucun dé neutre à stabiliser dans ce lancer de Dangers.");
+  }
+  if (substrate?.effect === "living-soil-buffer" && substrateMatches) {
+    const index = dice.findIndex((die) => die === 1);
+    if (index >= 0) {
+      dice = dice.map((die, dieIndex) => dieIndex === index ? 3 : die) as [number, number, number];
+      effectNotices.push("Sol vivant : le premier Danger est amorti par le tampon biologique.");
+    } else effectNotices.push("Sol vivant : aucun Danger à amortir sur ce lancer.");
+  }
+  if (playedEffects.includes("root-aeration")) {
+    const index = dice.findIndex((die) => die === 1);
+    if (index >= 0) {
+      dice = dice.map((die, dieIndex) => dieIndex === index ? 3 : die) as [number, number, number];
+      effectNotices.push("Pot en tissu : un Danger devient neutre grâce à l’aération des racines.");
+    } else effectNotices.push("Pot en tissu : aucun Danger à amortir, mais le substrat sèche plus vite.");
+  }
+  if (playedEffects.includes("biochar-buffer")) {
+    const index = dice.findIndex((die) => die === 1);
+    if (index >= 0) {
+      dice = dice.map((die, dieIndex) => dieIndex === index ? 3 : die) as [number, number, number];
+      rollPressureRelief = 1;
+      effectNotices.push("Biochar inoculé : un Danger devient neutre et la Pression baisse de 1.");
+    } else effectNotices.push("Biochar inoculé : aucun Danger à tamponner, les 2 XP sont dépensés.");
   }
   const convertNeutral = playedEffects.includes("neutral-to-success");
   if (convertNeutral) {
@@ -608,9 +909,29 @@ export function rollKqDice(state: KqGameState): KqGameState {
     }
     else effectNotices.push("Transformation prête, mais aucun dé neutre : effet non déclenché.");
   }
-  const cancelledDangers = playedEffects.includes("double-danger-shield") ? 2
+  if (playedEffects.includes("compliance-clearance")) {
+    dice = [4, 4, 4];
+    effectNotices.push("Papiers en règle : dossier accepté, les trois dés deviennent des réussites.");
+  }
+  if (state.powerOutage) {
+    const affectedCount = substrate?.effect === "aeroponic-precision" ? 2 : 1;
+    const indexes = [0, 1, 2].sort((left, right) => dice[right] - dice[left]).slice(0, affectedCount);
+    const previous = indexes.map((index) => dice[index]).join(" et ");
+    dice = dice.map((die, dieIndex) => indexes.includes(dieIndex) ? 1 : die) as [number, number, number];
+    effectNotices.push(substrate?.effect === "aeroponic-precision"
+      ? `Coupure de courant : les pompes aéroponiques s'arrêtent, les dés ${previous} deviennent des Dangers.`
+      : `Coupure de courant : le meilleur dé ${previous} devient un Danger.`);
+  }
+  let cancelledDangers = playedEffects.includes("double-danger-shield") ? 2
     : playedEffects.some((effect) => ["cancel-danger", "harvest-cool", "clean-cut"].includes(effect ?? "")) ? 1 : 0;
-  const heritage = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode);
+  const heritage = getKqStateHeritage(state);
+  const heritageDangerShield = !state.heritageUsed
+    && heritage?.effect === "first-danger-shield"
+    && dice.filter((die) => die === 1).length > cancelledDangers;
+  if (heritageDangerShield) {
+    cancelledDangers += 1;
+    effectNotices.push(`${heritage.name} : un Danger non protégé est annulé.`);
+  }
   const openingHandConsumed = !state.heritageUsed && heritage?.effect === "opening-hand-reserve" && state.stageIndex === 0;
   const rootSpark = !state.heritageUsed
     && heritage?.effect === "root-danger-to-spark"
@@ -635,13 +956,14 @@ export function rollKqDice(state: KqGameState): KqGameState {
   }
   return {
     ...state,
+    pressure: Math.max(0, state.pressure - rollPressureRelief),
     phase: "rolled",
     rollNonce: nonce,
     cancelledDangers,
     dice,
     bonusDie,
     effectNotices: effectNotices.slice(-KQ_EFFECT_NOTICE_LIMIT),
-    heritageUsed: heritageFiveDice || automaticSpark ? true : state.heritageUsed,
+    heritageUsed: heritageFiveDice || automaticSpark || heritageDangerShield ? true : state.heritageUsed,
     ...(openingHandConsumed ? { heritageUsed: true, heritageReserveCodes: undefined } : {}),
     heritageArmed: false,
   };
@@ -650,7 +972,7 @@ export function rollKqDice(state: KqGameState): KqGameState {
 export function previewKqResolution(state: KqGameState) {
   const situation = getKqSituation(state);
   if (!situation || !state.dice) return null;
-  const target = Math.min(3, situation.difficulty + (state.pressure >= 3 ? 1 : 0));
+  const target = getKqStageTarget(state);
   const total = state.dice.filter((die) => die >= 4).length;
   const sparks = state.dice.filter((die) => die === 6).length;
   const dangers = Math.max(0, state.dice.filter((die) => die === 1).length - state.cancelledDangers);
@@ -658,46 +980,133 @@ export function previewKqResolution(state: KqGameState) {
   return { target, total, outcome, dangers, sparks };
 }
 
+export function getKqStageTarget(state: KqGameState) {
+  const situation = getKqSituation(state);
+  const billRelief = situation.tags.includes("energy")
+    && state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "bill-relief");
+  const calmRelief = state.pressure === 0 && getKqStateHeritage(state)?.effect === "calm-target-relief";
+  return Math.max(1, Math.min(3, situation.difficulty - (billRelief ? 1 : 0) - (calmRelief ? 1 : 0) + (state.pressure >= 3 ? 1 : 0)));
+}
+
 export function resolveKqStage(state: KqGameState): KqGameState {
   if (state.phase !== "rolled" || !state.dice) return state;
   const situation = getKqSituation(state);
   const result = previewKqResolution(state);
   if (!situation || !result) return state;
-  const heritage = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode);
+  const heritage = getKqStateHeritage(state);
   const failureRecovery = !state.heritageUsed && heritage?.effect === "failure-to-fragile" && result.outcome === "failure";
-  const effectiveOutcome: KqOutcome = failureRecovery ? "fragile" : result.outcome;
+  const dryingRecovery = !state.heritageUsed
+    && heritage?.effect === "drying-fragile-to-success"
+    && state.stageIndex === KQ_STAGES.length - 1
+    && result.outcome === "fragile";
+  const effectiveOutcome: KqOutcome = failureRecovery ? "fragile" : dryingRecovery ? "success" : result.outcome;
   const trait = effectiveOutcome === "critical" || effectiveOutcome === "success" ? situation.successTrait : effectiveOutcome === "fragile" ? situation.fragileTrait : situation.failureTrait;
   const harvestQualityBonus = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "harvest-four-quality")
     && (effectiveOutcome === "critical" || effectiveOutcome === "success") ? 1 : 0;
-  const qualityDelta = (effectiveOutcome === "critical" ? 3 : effectiveOutcome === "success" ? 2 : effectiveOutcome === "fragile" ? 1 : -1) + harvestQualityBonus;
+  const heritageQualityBonus = effectiveOutcome === "critical" && heritage?.effect === "critical-quality-boost" ? 1
+    : effectiveOutcome === "fragile" && heritage?.effect === "fragile-quality-boost" ? 1
+    : 0;
+  const qualityDelta = (effectiveOutcome === "critical" ? 3 : effectiveOutcome === "success" ? 2 : effectiveOutcome === "fragile" ? 1 : -1) + harvestQualityBonus + heritageQualityBonus;
   const aphidiusBonus = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "pbi-success-xp") && (result.outcome === "critical" || result.outcome === "success") ? 1 : 0;
   const playedPbi = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.category === "pbi");
   const stageCombos = [
     ...(state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "reveal-pest") && playedPbi ? ["PBI ciblée"] : []),
     ...(effectiveOutcome === "critical" ? ["Coup parfait"] : []),
     ...(state.playedThisStage.filter((code) => KQ_CARDS.find((card) => card.code === code)?.timing !== "passive").length >= 2 ? ["Main bien préparée"] : []),
+    ...(situation.incident === "ddtm-inspection" && state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "compliance-clearance") ? ["Dossier béton"] : []),
+    ...(situation.incident === "crop-theft" && state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "theft-guard") ? ["Gardien du lot"] : []),
+    ...(situation.incident === "electricity-bill" && (state.equipment?.unlocks.includes("power-backup") ?? false) && (effectiveOutcome === "fragile" || effectiveOutcome === "failure") ? ["Autonomie solaire"] : []),
   ];
   const newCombos = stageCombos.filter((combo) => !state.combos.includes(combo));
   const cleanCutBonus = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "clean-cut")
     && (effectiveOutcome === "critical" || effectiveOutcome === "success") ? 1 : 0;
-  const xpGain = (effectiveOutcome === "critical" ? 3 : effectiveOutcome === "success" ? 2 : 1) + result.sparks + aphidiusBonus + cleanCutBonus + (newCombos.includes("PBI ciblée") ? 1 : 0);
+  const firstSuccessfulStage = (effectiveOutcome === "critical" || effectiveOutcome === "success")
+    && !state.history.some((entry) => entry.outcome === "critical" || entry.outcome === "success");
+  const heritageXpBonus = heritage?.effect === "first-success-xp-two" && firstSuccessfulStage ? 2 : 0;
+  const xpGain = (effectiveOutcome === "critical" ? 3 : effectiveOutcome === "success" ? 2 : 1) + result.sparks + aphidiusBonus + cleanCutBonus + heritageXpBonus + (newCombos.includes("PBI ciblée") ? 1 : 0);
   const cooledHarvest = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "harvest-cool")
     && state.dice.filter((die) => die === 1).length > 0;
-  const pressureAfter = Math.max(0, Math.min(4, state.pressure + result.dangers - (effectiveOutcome === "critical" ? 1 : 0) - (cooledHarvest ? 1 : 0)));
-  const heritageNotice = failureRecovery ? `${heritage?.name} : le premier échec devient Fragile.` : null;
+  const pressureBeforeHeritage = Math.max(0, Math.min(4, state.pressure + result.dangers - (effectiveOutcome === "critical" ? 1 : 0) - (cooledHarvest ? 1 : 0)));
+  const sparkPressureRelief = !state.heritageUsed
+    && heritage?.effect === "spark-pressure-relief"
+    && result.sparks > 0
+    && pressureBeforeHeritage > 0;
+  const pressureAfter = Math.max(0, pressureBeforeHeritage - (sparkPressureRelief ? 2 : 0));
+  const heritageNotices = [
+    ...(failureRecovery ? [`${heritage?.name} : le premier échec devient Fragile.`] : []),
+    ...(dryingRecovery ? [`${heritage?.name} : le résultat Fragile de l’affinage devient une réussite.`] : []),
+    ...(heritageXpBonus > 0 ? [`${heritage?.name} : première réussite, +2 XP.`] : []),
+    ...(heritageQualityBonus > 0 ? [`${heritage?.name} : +1 Qualité sur ce résultat ${effectiveOutcome === "critical" ? "critique" : "Fragile"}.`] : []),
+    ...(sparkPressureRelief ? [`${heritage?.name} : l’Étincelle fait baisser la Pression de 2.`] : []),
+  ];
+  const hasPowerBackup = state.equipment?.unlocks.includes("power-backup") ?? false;
+  const billFailed = situation.incident === "electricity-bill" && (effectiveOutcome === "fragile" || effectiveOutcome === "failure");
+  const powerOutage = state.powerOutage ? false : billFailed && !hasPowerBackup;
+  const theftProtected = (state.equipment?.unlocks.includes("theft-protection") ?? false)
+    || state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "theft-guard")
+    || heritage?.effect === "harvest-theft-shield";
+  const theftLoss = situation.incident === "crop-theft" && !theftProtected
+    ? effectiveOutcome === "failure" ? 35 : effectiveOutcome === "fragile" ? 15 : 0
+    : 0;
+  const incidentNotices = [
+    ...(billFailed && hasPowerBackup ? ["Panneau solaire : la batterie prend le relais, aucune coupure."] : []),
+    ...(powerOutage ? ["Facture impayée : coupure de courant à la prochaine étape."] : []),
+    ...(situation.incident === "crop-theft" && theftProtected ? [
+      heritage?.effect === "harvest-theft-shield"
+        ? `${heritage.name} : la mémoire du gardien protège toute la récolte.`
+        : state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "theft-guard")
+          ? "Gros molosse : récolte intégralement protégée."
+          : "Caméra cabossée : le vol est stoppé avant la sortie.",
+    ] : []),
+    ...(theftLoss > 0 ? [`Renard à deux pattes : -${theftLoss} % sur le poids final.`] : []),
+  ];
+  const heritageEffectNotices = heritageNotices.reduce((notices, notice) => appendKqEffectNotice(notices, notice), state.effectNotices);
+  const nextNotices = incidentNotices.reduce((notices, notice) => appendKqEffectNotice(notices, notice), heritageEffectNotices);
   return {
     ...state, phase: "resolved", xp: state.xp + xpGain, quality: state.quality + qualityDelta,
     pressure: pressureAfter,
-    heritageUsed: failureRecovery ? true : state.heritageUsed,
-    effectNotices: heritageNotice ? appendKqEffectNotice(state.effectNotices, heritageNotice) : state.effectNotices,
+    powerOutage,
+    harvestLossPercent: Math.min(80, (state.harvestLossPercent ?? 0) + theftLoss),
+    heritageUsed: failureRecovery || dryingRecovery || sparkPressureRelief ? true : state.heritageUsed,
+    effectNotices: nextNotices,
     traits: [...state.traits, trait], combos: [...state.combos, ...newCombos], lastOutcome: effectiveOutcome,
-    history: [...state.history, { stage: situation.stage, situation: situation.name, dice: state.dice, total: result.total, target: result.target, outcome: effectiveOutcome, trait, dangers: result.dangers, sparks: result.sparks, pressureAfter, combos: newCombos }],
+    history: [...state.history, {
+      stage: situation.stage,
+      situation: situation.name,
+      dice: state.dice,
+      total: result.total,
+      target: result.target,
+      outcome: effectiveOutcome,
+      trait,
+      dangers: result.dangers,
+      sparks: result.sparks,
+      pressureAfter,
+      combos: newCombos,
+      qualityDelta,
+      xpGain,
+      harvestLossPercent: theftLoss,
+    }],
   };
 }
 
 export function advanceKqStage(state: KqGameState): KqGameState {
   if (state.phase !== "resolved") return state;
-  if (state.stageIndex >= KQ_STAGES.length - 1) return { ...state, phase: "complete", completedAt: state.completedAt ?? new Date().toISOString() };
+  if (state.stageIndex >= KQ_STAGES.length - 1) {
+    const projection = getKqRunProjection(state);
+    const { equipmentQualityBonus, projectedQuality: quality, harvestGrams } = projection;
+    const equipmentNotice = equipmentQualityBonus > 0 || (state.equipment?.quantityPercent ?? 0) > 0
+      ? `Matériel durable : +${equipmentQualityBonus} Qualité · récolte estimée ${harvestGrams.toLocaleString("fr-FR")} g.`
+      : `Récolte estimée : ${harvestGrams.toLocaleString("fr-FR")} g.`;
+    return {
+      ...state,
+      phase: "complete",
+      quality,
+      equipmentQualityBonus,
+      harvestGrams,
+      effectNotices: appendKqEffectNotice(state.effectNotices, equipmentNotice),
+      completedAt: state.completedAt ?? new Date().toISOString(),
+    };
+  }
   const stageIndex = state.stageIndex + 1;
   const substrate = KQ_CARDS.find((card) => state.deckCodes.includes(card.code) && card.category === "substrate");
   const nextState: KqGameState = {
@@ -708,9 +1117,103 @@ export function advanceKqStage(state: KqGameState): KqGameState {
   return { ...nextState, handCodes: drawKqAvailableHandCodes(nextState), heritageReserveCodes: undefined };
 }
 
+const KQ_HARVEST_TIERS = [
+  { minimumQuality: 0, name: "Récolte artisanale" },
+  { minimumQuality: 6, name: "Belle pousse" },
+  { minimumQuality: 10, name: "Qualité concours" },
+  { minimumQuality: 14, name: "Fleur légendaire" },
+] as const;
+
 export function getKqHarvestTier(quality: number) {
-  if (quality >= 14) return "Fleur légendaire";
-  if (quality >= 10) return "Qualité concours";
-  if (quality >= 6) return "Belle pousse";
-  return "Récolte artisanale";
+  return [...KQ_HARVEST_TIERS].reverse().find((tier) => quality >= tier.minimumQuality)?.name
+    ?? KQ_HARVEST_TIERS[0].name;
+}
+
+export type KqRunProjection = {
+  currentQuality: number;
+  equipmentQualityBonus: number;
+  projectedQuality: number;
+  tier: string;
+  nextTier: string | null;
+  qualityToNextTier: number;
+  successfulStages: number;
+  remainingStages: number;
+  harvestGrams: number;
+  harvestLossPercent: number;
+};
+
+export type KqHarvestBreakdown = {
+  stageQuality: number;
+  equipmentQualityBonus: number;
+  finalQuality: number;
+  successfulStages: number;
+  quantityPercent: number;
+  grossHarvestGrams: number;
+  harvestLossPercent: number;
+  lostHarvestGrams: number;
+  finalHarvestGrams: number;
+};
+
+/**
+ * Gives the player a transparent snapshot of the existing end-of-run formula.
+ * It only counts results already resolved; future stages remain deliberately
+ * unknown and can still raise or lower this projection.
+ */
+export function getKqRunProjection(state: KqGameState): KqRunProjection {
+  const successfulStages = state.history.filter((entry) => entry.outcome === "success" || entry.outcome === "critical").length;
+  const equipmentQualityBonus = state.phase === "complete"
+    ? state.equipmentQualityBonus ?? 0
+    : calculateKqEquipmentQualityBonus(state.equipment?.qualityMaxBonus ?? 0, successfulStages);
+  const projectedQuality = state.phase === "complete" ? state.quality : state.quality + equipmentQualityBonus;
+  const tierIndex = Math.max(0, KQ_HARVEST_TIERS.findLastIndex((tier) => projectedQuality >= tier.minimumQuality));
+  const nextTier = KQ_HARVEST_TIERS[tierIndex + 1] ?? null;
+  const harvestLossPercent = Math.max(0, Math.min(80, state.harvestLossPercent ?? 0));
+  const grossHarvestGrams = calculateKqHarvestGrams({
+    quality: projectedQuality,
+    successfulStages,
+    quantityPercent: state.equipment?.quantityPercent ?? 0,
+  });
+  const harvestGrams = state.phase === "complete" && state.harvestGrams !== undefined
+    ? state.harvestGrams
+    : Math.round(grossHarvestGrams * (1 - harvestLossPercent / 100) * 10) / 10;
+
+  return {
+    currentQuality: state.quality,
+    equipmentQualityBonus,
+    projectedQuality,
+    tier: KQ_HARVEST_TIERS[tierIndex].name,
+    nextTier: nextTier?.name ?? null,
+    qualityToNextTier: nextTier ? Math.max(0, nextTier.minimumQuality - projectedQuality) : 0,
+    successfulStages,
+    remainingStages: Math.max(0, KQ_STAGES.length - state.history.length),
+    harvestGrams,
+    harvestLossPercent,
+  };
+}
+
+/** Exact audit trail for the two formulas applied when a culture completes. */
+export function getKqHarvestBreakdown(state: KqGameState): KqHarvestBreakdown {
+  const successfulStages = state.history.filter((entry) => entry.outcome === "success" || entry.outcome === "critical").length;
+  const equipmentQualityBonus = state.equipmentQualityBonus
+    ?? calculateKqEquipmentQualityBonus(state.equipment?.qualityMaxBonus ?? 0, successfulStages);
+  const finalQuality = state.phase === "complete" ? state.quality : state.quality + equipmentQualityBonus;
+  const quantityPercent = state.equipment?.quantityPercent ?? 0;
+  const grossHarvestGrams = calculateKqHarvestGrams({ quality: finalQuality, successfulStages, quantityPercent });
+  const harvestLossPercent = Math.max(0, Math.min(80, state.harvestLossPercent ?? 0));
+  const calculatedFinalGrams = Math.round(grossHarvestGrams * (1 - harvestLossPercent / 100) * 10) / 10;
+  const finalHarvestGrams = state.phase === "complete" && state.harvestGrams !== undefined
+    ? state.harvestGrams
+    : calculatedFinalGrams;
+
+  return {
+    stageQuality: finalQuality - equipmentQualityBonus,
+    equipmentQualityBonus,
+    finalQuality,
+    successfulStages,
+    quantityPercent,
+    grossHarvestGrams,
+    harvestLossPercent,
+    lostHarvestGrams: Math.round(Math.max(0, grossHarvestGrams - finalHarvestGrams) * 10) / 10,
+    finalHarvestGrams,
+  };
 }

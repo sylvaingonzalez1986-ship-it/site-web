@@ -6,6 +6,7 @@ import { ChevronRight, Gift, Recycle, Sparkles, Ticket, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal";
+import { BotteAlbumCollection } from "@/components/account/BotteAlbumCollection";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { AlbumPage } from "@/components/lottery/AlbumPage";
 import { AlbumPager } from "@/components/lottery/AlbumPager";
@@ -547,6 +548,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
           {albumBody}
           {previewOverlay}
         </div>
+        {isAuthenticated ? <div className="mt-12"><BotteAlbumCollection isAuthenticated /></div> : null}
       </div>
     </section>
   );

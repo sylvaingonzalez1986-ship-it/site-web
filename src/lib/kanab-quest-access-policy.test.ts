@@ -59,5 +59,6 @@ describe("Kanab Quest admin-only test access", () => {
     expect(placardOperations).toContain('"/api/admin/placard/notebook-rewards"');
     expect(placardOperations).toContain('"/api/admin/placard/heritage/retro"');
     expect(placardOperations).toContain('"/api/admin/placard/season-rewards"');
+    expect(placardOperations).toContain("<AdminPlacardMobileReview />");
   });
 });

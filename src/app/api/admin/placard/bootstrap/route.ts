@@ -5,6 +5,7 @@ import {
   getKqAdminHeritageSnapshot,
   getKqAdminLaunchReadinessFromSnapshots,
   getKqAdminNotebookRewardPreview,
+  getKqRandomBattleQueueHealth,
   getKqAdminSeasonRewardPreview,
   getKqAdminSeasonRolloverPreview,
 } from "@/lib/supabase/kanab-quest-backend";
@@ -21,8 +22,9 @@ export async function GET() {
     getKqAdminCollectionSnapshot(admin.email),
     getKqAdminNotebookRewardPreview(admin.email),
     getKqAdminSeasonRolloverPreview(),
+    getKqRandomBattleQueueHealth(),
   ] as const);
-  const sourceLabels = ["Saison", "Héritages", "Collection", "Carnet", "Clôture de saison"] as const;
+  const sourceLabels = ["Saison", "Héritages", "Collection", "Carnet", "Clôture de saison", "File de duels"] as const;
   const warnings = sourceResults.flatMap((result, index) => result.status === "rejected"
     ? [`${sourceLabels[index]} : ${result.reason instanceof Error ? result.reason.message : "indisponible"}`]
     : []);
@@ -47,6 +49,7 @@ export async function GET() {
     collection: sourceResults[2].status === "fulfilled" ? sourceResults[2].value : null,
     notebookRewards: sourceResults[3].status === "fulfilled" ? sourceResults[3].value : null,
     seasonRollover: sourceResults[4].status === "fulfilled" ? sourceResults[4].value : null,
+    randomBattleQueue: sourceResults[5].status === "fulfilled" ? sourceResults[5].value : null,
     warnings,
   }, {
     headers: { "Cache-Control": "private, no-store, max-age=0" },

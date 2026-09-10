@@ -6,12 +6,14 @@ const {
   getKqPlayerOwnedBuddies,
   getKqPlayerHeritageSnapshot,
   getKqPlayerCoreSnapshot,
+  getKqEquipmentRoutePlan,
 } = vi.hoisted(() => ({
   getCurrentCustomerSessionByBackend: vi.fn(),
   getKqPlayerCollectionSnapshot: vi.fn(),
   getKqPlayerOwnedBuddies: vi.fn(),
   getKqPlayerHeritageSnapshot: vi.fn(),
   getKqPlayerCoreSnapshot: vi.fn(),
+  getKqEquipmentRoutePlan: vi.fn(),
 }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
@@ -20,6 +22,7 @@ vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
   getKqPlayerHeritageSnapshot,
   getKqPlayerCoreSnapshot,
 }));
+vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({ getKqEquipmentRoutePlan }));
 
 import { GET } from "@/app/api/arena/placard/bootstrap/route";
 
@@ -46,6 +49,7 @@ describe("GET /api/arena/placard/bootstrap", () => {
       cards: [],
     });
     getKqPlayerCoreSnapshot.mockResolvedValue({ activeRun: null, flowers: [], battles: [], progress: null });
+    getKqEquipmentRoutePlan.mockResolvedValue({ route: "rosin-signature", equipmentCode: "PRESS-20T" });
   });
   afterAll(() => {
     if (previousFlag === undefined) delete process.env.KQ_PLAYER_API_LIVE;
@@ -66,11 +70,13 @@ describe("GET /api/arena/placard/bootstrap", () => {
     expect(getKqPlayerOwnedBuddies).toHaveBeenCalledWith(customerId);
     expect(getKqPlayerHeritageSnapshot).toHaveBeenCalledWith(customerId);
     expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
+    expect(getKqEquipmentRoutePlan).toHaveBeenCalledWith(customerId);
     expect(getCurrentCustomerSessionByBackend).toHaveBeenCalledWith("identity");
     expect(await response.json()).toMatchObject({
       collection: { inventory: { "BOTTE-001": 1 } },
       ownedBuddieCodes: ["HH2026-003"],
       ownedBuddies: [{ code: "HH2026-003", imageUrl: "/cards/buddie-test.webp", ownedCopies: 1 }],
+      routePlan: { route: "rosin-signature", equipmentCode: "PRESS-20T" },
       playerSession: { activeRun: null, flowers: [], battles: [], progress: null },
       warnings: [],
     });
@@ -83,6 +89,16 @@ describe("GET /api/arena/placard/bootstrap", () => {
     expect(await response.json()).toMatchObject({
       heritage: null,
       warnings: ["Héritages momentanément indisponibles."],
+    });
+  });
+
+  it("keeps the game available when the saved route goal cannot be loaded", async () => {
+    getKqEquipmentRoutePlan.mockRejectedValue(new Error("private detail"));
+    const response = await GET();
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      routePlan: null,
+      warnings: ["Objectif de filière momentanément indisponible."],
     });
   });
 

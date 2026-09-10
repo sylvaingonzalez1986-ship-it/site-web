@@ -1,8 +1,76 @@
 import { describe, expect, it } from "vitest";
-import { applyKqRunAction, buildKqLaunchReadiness, buildKqNotebookRewardPreview, countKqInventoryCopies, isKqFinalArtworkUrl, mapKqCardBurnResult, mapKqPlayerCoreSnapshot, mapKqSeasonRolloverPreview, mapKqStartRunResult, prepareKqCardPlay } from "@/lib/supabase/kanab-quest-backend";
+import { applyKqRunAction, buildKqLaunchReadiness, buildKqNotebookRewardPreview, countKqInventoryCopies, getKqRandomTrainingBotCode, isKqFinalArtworkUrl, mapKqCardBurnResult, mapKqChallengeClaimKeys, mapKqPlayerCoreSnapshot, mapKqSeasonRolloverPreview, mapKqStartRunResult, prepareKqCardPlay } from "@/lib/supabase/kanab-quest-backend";
 import { KQ_CARDS, startKqGame } from "@/lib/kanab-quest-game";
+import { KQ_EQUIPMENT_CATALOG } from "@/lib/kanab-quest-equipment";
+import { KQ_HERITAGE_EFFECTS } from "@/lib/kanab-quest-heritage";
+import { getKqLaunchDossier, KQ_LAUNCH_ODDS_VERSION } from "@/lib/kanab-quest-launch-approvals";
+
+const APPROVED_LAUNCH_DECISIONS = {
+  seasonCalendarApproved: true,
+  seasonPrizesApproved: true,
+  seasonTerritoryApproved: true,
+  collectionOddsApproved: true,
+  publicRulesApproved: true,
+} as const;
+
+const ALIGNED_EQUIPMENT_CATALOG = KQ_EQUIPMENT_CATALOG.map((equipment) => ({
+  code: equipment.code,
+  price_cents: equipment.priceCents,
+  is_purchasable: equipment.purchasable,
+  is_active: true,
+}));
+
+const DORMANT_LAUNCH_FEATURES = {
+  heritagePurchaseDrawsLive: false,
+  notebookRewardsLive: false,
+  producerNotebookRewardsLive: false,
+  seasonRewardsLive: false,
+  publicPlayerApiLive: false,
+} as const;
+
+function heritageReadinessCards(imageAt: (index: number) => string) {
+  return Array.from({ length: 12 }, (_, index) => ({
+    image_url: imageAt(index),
+    is_active: false,
+    effect_code: KQ_HERITAGE_EFFECTS[index],
+  }));
+}
+
+const COMPLETE_LAUNCH_DOSSIER = getKqLaunchDossier({
+  KQ_LAUNCH_DOSSIER_JSON: JSON.stringify({
+    seasonCode: "KQ-2026-S1",
+    startsAt: "2026-10-01T10:00:00+02:00",
+    endsAt: "2026-11-01T18:00:00+01:00",
+    timezone: "Europe/Paris",
+    territory: "France métropolitaine",
+    minimumAge: 18,
+    eligibility: "Résidence principale en France métropolitaine.",
+    prizes: [
+      { tierCode: "champion", label: "Champion", quantity: 1, stock: 1, unitValueCents: 10_000, fulfillment: "Envoi suivi" },
+      { tierCode: "podium", label: "Podium", quantity: 3, stock: 3, unitValueCents: 5_000, fulfillment: "Envoi suivi" },
+      { tierCode: "finalist", label: "Finaliste", quantity: 10, stock: 10, unitValueCents: 1_000, fulfillment: "Envoi suivi" },
+      { tierCode: "participant", label: "Participant", quantity: 100, stock: 100, unitValueCents: 0, fulfillment: "Attribution numérique" },
+    ],
+    oddsVersion: KQ_LAUNCH_ODDS_VERSION,
+    publicRulesUrl: "https://leschanvriersbretons.com/reglement-jeu-promo",
+    contactEmail: "jeu@leschanvriersbretons.com",
+  }),
+});
 
 describe("Kanab Quest Supabase inventory mapping", () => {
+  it("draws one stable training bot without accepting a player choice", () => {
+    const first = getKqRandomTrainingBotCode(
+      "88888888-8888-8888-8888-888888888888",
+      "99999999-9999-9999-9999-999999999999",
+      "2026-09-05",
+    );
+    expect(first).toMatch(/^bot-(sylvain|charles|maya)$/);
+    expect(getKqRandomTrainingBotCode(
+      "88888888-8888-8888-8888-888888888888",
+      "99999999-9999-9999-9999-999999999999",
+      "2026-09-05",
+    )).toBe(first);
+  });
   it("maps the consolidated player snapshot and derives its league", () => {
     expect(mapKqPlayerCoreSnapshot({
       activeRun: null,
@@ -18,12 +86,20 @@ describe("Kanab Quest Supabase inventory mapping", () => {
         wins: 5, losses: 2, streak: 2, burnedFlowers: 7, arenaExperience: 31,
         leaderboardGeneratedAt: "2026-08-13", updatedAt: "2026-08-13T10:00:00Z",
       },
-    })).toMatchObject({
+    }, [{ flowerId: "flower-1", queuedAt: "2026-08-13T10:05:00Z" }], ["2026-09-07:clean-sweep"])).toMatchObject({
       activeRun: null,
-      flowers: [{ id: "flower-1", quality: 81, stats: { vigor: 7 } }],
+      flowers: [{ id: "flower-1", quality: 81, stats: { vigor: 7 }, status: "queued", queuedAt: "2026-08-13T10:05:00Z" }],
       battles: [],
-      progress: { rank: 8, rating: 1075, league: "Pousse I", leagueProgress: 50, pointsToNextLeague: 25 },
+      progress: { rank: 8, rating: 1075, league: "Pousse I", leagueProgress: 50, pointsToNextLeague: 25, claimedChallengeCodes: ["2026-09-07:clean-sweep"] },
     });
+  });
+  it("maps durable daily challenge receipts and rejects malformed rows", () => {
+    expect(mapKqChallengeClaimKeys([
+      { challenge_day: "2026-09-07", challenge_code: "clean-sweep" },
+      { challenge_day: "2026-09-07", challenge_code: "clean-sweep" },
+      { challenge_day: "bad-date", challenge_code: "jury-edge" },
+      null,
+    ])).toEqual(["2026-09-07:clean-sweep"]);
   });
   it("rejects draft artwork while accepting local and hosted final assets", () => {
     expect(isKqFinalArtworkUrl("/cards/botte-01.webp")).toBe(true);
@@ -40,10 +116,71 @@ describe("Kanab Quest Supabase inventory mapping", () => {
       notebookRules: [],
       seasonRules: [],
       seasonGrantCount: 0,
-      publicRulesApproved: false,
+      equipmentCatalog: ALIGNED_EQUIPMENT_CATALOG,
+      launchApprovals: {
+        ...APPROVED_LAUNCH_DECISIONS,
+        publicRulesApproved: false,
+      },
+      launchDossier: COMPLETE_LAUNCH_DOSSIER,
     });
     expect(report.contentReady).toBe(false);
-    expect(report.blockers).toContain("Règlement public, lots et probabilités validés");
+    expect(report.blockers).toContain("Règlement public relu et approuvé");
+  });
+  it("can become ready for activation with complete content and every public feature dormant", () => {
+    const report = buildKqLaunchReadiness({
+      heritageCards: heritageReadinessCards((index) => `/h-${index}.webp`),
+      supportCards: Array.from({ length: 36 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
+      supportCollectionActive: false,
+      notebookRules: Array.from({ length: 2 }, () => ({ is_active: false })),
+      seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
+      seasonGrantCount: 0,
+      equipmentCatalog: ALIGNED_EQUIPMENT_CATALOG,
+      launchApprovals: APPROVED_LAUNCH_DECISIONS,
+      launchDossier: COMPLETE_LAUNCH_DOSSIER,
+      featureFlags: DORMANT_LAUNCH_FEATURES,
+    });
+
+    expect(report).toMatchObject({ contentReady: true, safelyDormant: true, readyForActivation: true, blockers: [] });
+    expect(report.checks).toContainEqual({
+      code: "notebook-rules",
+      label: "2 missions carnet → Placard configurées",
+      ready: true,
+    });
+  });
+  it("blocks launch when two producer Heritages share a mechanic", () => {
+    const heritageCards = heritageReadinessCards((index) => `/h-${index}.webp`);
+    heritageCards[1] = { ...heritageCards[1], effect_code: heritageCards[0].effect_code };
+    const report = buildKqLaunchReadiness({
+      heritageCards,
+      supportCards: Array.from({ length: 36 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
+      supportCollectionActive: false,
+      notebookRules: Array.from({ length: 2 }, () => ({ is_active: false })),
+      seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
+      seasonGrantCount: 0,
+      equipmentCatalog: ALIGNED_EQUIPMENT_CATALOG,
+      launchApprovals: APPROVED_LAUNCH_DECISIONS,
+      launchDossier: COMPLETE_LAUNCH_DOSSIER,
+      featureFlags: DORMANT_LAUNCH_FEATURES,
+    });
+    expect(report.contentReady).toBe(false);
+    expect(report.blockers).toContain("12 pouvoirs Héritage distincts et pris en charge");
+  });
+  it("blocks activation when producer rewards are already live", () => {
+    const report = buildKqLaunchReadiness({
+      heritageCards: heritageReadinessCards((index) => `/h-${index}.webp`),
+      supportCards: Array.from({ length: 36 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
+      supportCollectionActive: false,
+      notebookRules: Array.from({ length: 2 }, () => ({ is_active: false })),
+      seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
+      seasonGrantCount: 0,
+      equipmentCatalog: ALIGNED_EQUIPMENT_CATALOG,
+      launchApprovals: APPROVED_LAUNCH_DECISIONS,
+      launchDossier: COMPLETE_LAUNCH_DOSSIER,
+      featureFlags: { ...DORMANT_LAUNCH_FEATURES, producerNotebookRewardsLive: true },
+    });
+
+    expect(report).toMatchObject({ contentReady: true, safelyDormant: false, readyForActivation: false });
+    expect(report.blockers).toContain("Récompenses des avis producteurs encore inactives");
   });
   it("explains every blocker before a season rollover", () => {
     expect(mapKqSeasonRolloverPreview("S1", "S2", {
@@ -67,13 +204,15 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   });
   it("reports missing artwork while confirming the activated rewards are not dormant", () => {
     const report = buildKqLaunchReadiness({
-      heritageCards: Array.from({ length: 12 }, () => ({ image_url: "", is_active: false })),
+      heritageCards: heritageReadinessCards(() => ""),
       supportCards: Array.from({ length: 36 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
       supportCollectionActive: false,
       notebookRules: Array.from({ length: 15 }, () => ({ is_active: false })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
       seasonGrantCount: 0,
-      publicRulesApproved: true,
+      equipmentCatalog: ALIGNED_EQUIPMENT_CATALOG,
+      launchApprovals: APPROVED_LAUNCH_DECISIONS,
+      launchDossier: COMPLETE_LAUNCH_DOSSIER,
     });
     expect(report.checks).toContainEqual({
       code: "player-access-dormant",
@@ -83,18 +222,20 @@ describe("Kanab Quest Supabase inventory mapping", () => {
     expect(report.safelyDormant).toBe(false);
     expect(report.contentReady).toBe(false);
     expect(report.readyForActivation).toBe(false);
-    expect(report.blockers).toContain("12 illustrations Héritage distinctes");
-    expect(report.blockers).toContain("2 missions carnet → Placard actives");
+    expect(report.blockers).toContain("12 illustrations Héritage producteur");
+    expect(report.blockers).toContain("2 missions carnet → Placard configurées");
   });
   it("detects unsafe season rewards before launch", () => {
     const report = buildKqLaunchReadiness({
-      heritageCards: Array.from({ length: 12 }, (_, index) => ({ image_url: `/h-${index}.webp`, is_active: false })),
+      heritageCards: heritageReadinessCards((index) => `/h-${index}.webp`),
       supportCards: Array.from({ length: 36 }, () => ({ image_url: "/card.webp", is_active: false })),
       supportCollectionActive: false,
       notebookRules: Array.from({ length: 2 }, () => ({ is_active: true })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code, index) => ({ tier_code, is_active: index === 0 })),
       seasonGrantCount: 1,
-      publicRulesApproved: true,
+      equipmentCatalog: ALIGNED_EQUIPMENT_CATALOG,
+      launchApprovals: APPROVED_LAUNCH_DECISIONS,
+      launchDossier: COMPLETE_LAUNCH_DOSSIER,
     });
     expect(report.blockers).toContain("36 illustrations La Botte distinctes");
     expect(report.safelyDormant).toBe(false);
@@ -105,13 +246,15 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   });
   it("distinguishes complete content from a safely activatable launch", () => {
     const report = buildKqLaunchReadiness({
-      heritageCards: Array.from({ length: 12 }, (_, index) => ({ image_url: `/h-${index}.webp`, is_active: false })),
+      heritageCards: heritageReadinessCards((index) => `/h-${index}.webp`),
       supportCards: Array.from({ length: 36 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: true })),
       supportCollectionActive: true,
       notebookRules: Array.from({ length: 2 }, () => ({ is_active: true })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
       seasonGrantCount: 0,
-      publicRulesApproved: true,
+      equipmentCatalog: ALIGNED_EQUIPMENT_CATALOG,
+      launchApprovals: APPROVED_LAUNCH_DECISIONS,
+      launchDossier: COMPLETE_LAUNCH_DOSSIER,
     });
     expect(report.activationStillRequired.at(-1)).toBe(
       "Basculer KQ_PLAYER_API_LIVE en dernier, puis effectuer le test fumée avec un compte client de recette",
@@ -123,6 +266,23 @@ describe("Kanab Quest Supabase inventory mapping", () => {
     expect(report.activationStillRequired).toContain(
       "Exécuter les rétro-attributions des missions Carnet puis des avis producteurs depuis l’interface admin",
     );
+  });
+  it("blocks launch when a Supabase checkout price diverges from the verified catalog", () => {
+    const report = buildKqLaunchReadiness({
+      heritageCards: heritageReadinessCards((index) => `/h-${index}.webp`),
+      supportCards: Array.from({ length: 36 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
+      supportCollectionActive: false,
+      notebookRules: Array.from({ length: 2 }, () => ({ is_active: true })),
+      seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
+      seasonGrantCount: 0,
+      equipmentCatalog: ALIGNED_EQUIPMENT_CATALOG.map((equipment) => (
+        equipment.code === "LED-300" ? { ...equipment, price_cents: 1 } : equipment
+      )),
+      launchApprovals: APPROVED_LAUNCH_DECISIONS,
+      launchDossier: COMPLETE_LAUNCH_DOSSIER,
+    });
+    expect(report.contentReady).toBe(false);
+    expect(report.blockers).toContain("19 prix boutique Supabase alignés sur le catalogue");
   });
   it("previews only the two active notebook missions", () => {
     expect(buildKqNotebookRewardPreview(

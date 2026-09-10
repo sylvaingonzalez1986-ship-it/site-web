@@ -6,6 +6,7 @@ const {
   getKqAdminHeritageSnapshot,
   getKqAdminLaunchReadinessFromSnapshots,
   getKqAdminNotebookRewardPreview,
+  getKqRandomBattleQueueHealth,
   getKqAdminSeasonRewardPreview,
   getKqAdminSeasonRolloverPreview,
 } = vi.hoisted(() => ({
@@ -14,6 +15,7 @@ const {
   getKqAdminHeritageSnapshot: vi.fn(),
   getKqAdminLaunchReadinessFromSnapshots: vi.fn(),
   getKqAdminNotebookRewardPreview: vi.fn(),
+  getKqRandomBattleQueueHealth: vi.fn(),
   getKqAdminSeasonRewardPreview: vi.fn(),
   getKqAdminSeasonRolloverPreview: vi.fn(),
 }));
@@ -24,6 +26,7 @@ vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
   getKqAdminHeritageSnapshot,
   getKqAdminLaunchReadinessFromSnapshots,
   getKqAdminNotebookRewardPreview,
+  getKqRandomBattleQueueHealth,
   getKqAdminSeasonRewardPreview,
   getKqAdminSeasonRolloverPreview,
 }));
@@ -47,6 +50,7 @@ describe("GET /api/admin/placard/bootstrap", () => {
     getKqAdminCollectionSnapshot.mockResolvedValue({ ownerFound: true });
     getKqAdminNotebookRewardPreview.mockResolvedValue({ rewardsLive: false, pendingBadges: 2 });
     getKqAdminSeasonRolloverPreview.mockResolvedValue({ ready: false, blockers: ["Planifier S2"] });
+    getKqRandomBattleQueueHealth.mockResolvedValue({ status: "healthy", waitingCount: 2 });
     const response = await GET();
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
@@ -57,6 +61,7 @@ describe("GET /api/admin/placard/bootstrap", () => {
       collection: { ownerFound: true },
       notebookRewards: { rewardsLive: false, pendingBadges: 2 },
       seasonRollover: { ready: false, blockers: ["Planifier S2"] },
+      randomBattleQueue: { status: "healthy", waitingCount: 2 },
       warnings: [],
     });
     expect(getKqAdminLaunchReadinessFromSnapshots).toHaveBeenCalledWith(
@@ -76,6 +81,7 @@ describe("GET /api/admin/placard/bootstrap", () => {
     getKqAdminCollectionSnapshot.mockResolvedValue({ ownerFound: true });
     getKqAdminNotebookRewardPreview.mockResolvedValue({ rewardsLive: false });
     getKqAdminSeasonRolloverPreview.mockResolvedValue({ ready: false });
+    getKqRandomBattleQueueHealth.mockResolvedValue({ status: "healthy", waitingCount: 0 });
     const response = await GET();
     const payload = await response.json();
     expect(response.status).toBe(200);
@@ -92,8 +98,9 @@ describe("GET /api/admin/placard/bootstrap", () => {
     getKqAdminCollectionSnapshot.mockRejectedValue(new Error("D"));
     getKqAdminNotebookRewardPreview.mockRejectedValue(new Error("E"));
     getKqAdminSeasonRolloverPreview.mockRejectedValue(new Error("F"));
+    getKqRandomBattleQueueHealth.mockRejectedValue(new Error("G"));
     const response = await GET();
     expect(response.status).toBe(503);
-    expect((await response.json()).warnings).toHaveLength(6);
+    expect((await response.json()).warnings).toHaveLength(7);
   });
 });

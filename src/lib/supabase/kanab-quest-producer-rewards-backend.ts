@@ -227,7 +227,7 @@ export async function claimKqProducerHeritageForCustomer(input: {
 export type KqProducerRewardAdminSnapshot = {
   producers: Array<{ id: string; name: string; image: string }>;
   entries: Array<{ id: string; title: string; producerId: string; track: "regular" | "concours" }>;
-  heritages: Array<{ code: string; name: string; description: string; effectCode: string; assignedProducerId: string | null }>;
+  heritages: Array<{ code: string; name: string; description: string; effectCode: string; producerId: string | null; isActive: boolean }>;
   campaigns: Array<{ id: string; producerId: string; heritageCode: string; version: number; status: "draft" | "active" | "archived"; entryIds: string[] }>;
 };
 
@@ -237,7 +237,7 @@ export async function getKqProducerRewardAdminSnapshot(): Promise<KqProducerRewa
     client.from("producers").select("id,name,image").order("name", { ascending: true }),
     client.from("contest_entries").select("id,title,producer_id,track,is_published")
       .eq("is_published", true).not("producer_id", "is", null).order("title", { ascending: true }),
-    client.from("kq_heritage_card_definitions").select("code,name,description,effect_code").order("code", { ascending: true }),
+    client.from("kq_heritage_card_definitions").select("code,name,description,effect_code,producer_id,is_active").order("code", { ascending: true }),
     client.from("kq_producer_reward_campaigns").select("id,producer_id,heritage_code,version,status")
       .order("created_at", { ascending: true }),
   ]);
@@ -252,9 +252,6 @@ export async function getKqProducerRewardAdminSnapshot(): Promise<KqProducerRewa
         .in("campaign_id", campaignIds).order("position", { ascending: true })
     : { data: [], error: null };
   if (requirementsResult.error) throw new Error(`[data:reward-admin-requirements] ${requirementsResult.error.message}`);
-  const assignedProducerByHeritage = new Map(campaigns
-    .filter((row) => row.status === "active")
-    .map((row) => [String(row.heritage_code), String(row.producer_id)]));
   return {
     producers: (producersResult.data ?? []).map((row) => ({ id: String(row.id), name: String(row.name), image: String(row.image ?? "") })),
     entries: (entriesResult.data ?? []).map((row) => ({
@@ -263,7 +260,8 @@ export async function getKqProducerRewardAdminSnapshot(): Promise<KqProducerRewa
     })),
     heritages: (heritagesResult.data ?? []).map((row) => ({
       code: String(row.code), name: String(row.name), description: String(row.description),
-      effectCode: String(row.effect_code), assignedProducerId: assignedProducerByHeritage.get(String(row.code)) ?? null,
+      effectCode: String(row.effect_code), producerId: row.producer_id ? String(row.producer_id) : null,
+      isActive: row.is_active === true,
     })),
     campaigns: campaigns.map((row) => ({
       id: String(row.id), producerId: String(row.producer_id), heritageCode: String(row.heritage_code),
@@ -282,7 +280,7 @@ export async function configureKqProducerRewardCampaign(input: {
   const producerId = input.producerId.trim();
   const heritageCode = input.heritageCode.trim();
   const entryIds = [...new Set(input.entryIds.map((entryId) => entryId.trim()).filter(Boolean))];
-  if (!producerId || !/^HERITAGE-[0-9]{3}$/.test(heritageCode) || entryIds.length === 0 || entryIds.length > 20) {
+  if (!producerId || !/^HERITAGE-[0-9]{3,6}$/.test(heritageCode) || entryIds.length === 0 || entryIds.length > 20) {
     throw new Error("Configuration du parcours invalide.");
   }
   const client = createSupabaseServiceClient();
@@ -296,17 +294,162 @@ export async function configureKqProducerRewardCampaign(input: {
   return result.data;
 }
 
+export const KQ_PRODUCER_RETRO_BATCH_SIZE = 50;
+
+export type KqProducerRetroPreview = {
+  live: boolean;
+  processed: number;
+  eligibleReviews: number;
+  pendingFlowerBoosters: number;
+  pendingHeritages: number;
+  alreadyComplete: number;
+  nextCursor: number | null;
+};
+
+function producerRewardKey(userId: string, value: string) {
+  return `${userId}:${value}`;
+}
+
+export async function previewKqProducerNotebookRewardBatch(offset = 0): Promise<KqProducerRetroPreview> {
+  const cursor = Number.isSafeInteger(offset) && offset >= 0 ? offset : 0;
+  const client = createSupabaseServiceClient();
+  const reviewsResult = await client.from("contest_reviews")
+    .select("id,customer_id,entry_id,created_at").eq("status", "approved")
+    .order("created_at", { ascending: true }).order("id", { ascending: true })
+    .range(cursor, cursor + KQ_PRODUCER_RETRO_BATCH_SIZE - 1);
+  if (reviewsResult.error) throw new Error(`[data:producer-reward-retro-preview] ${reviewsResult.error.message}`);
+  const reviews = (reviewsResult.data ?? []).map((review) => ({
+    id: String(review.id),
+    customerId: String(review.customer_id),
+    entryId: String(review.entry_id),
+  }));
+  if (reviews.length === 0) {
+    return {
+      live: KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE,
+      processed: 0,
+      eligibleReviews: 0,
+      pendingFlowerBoosters: 0,
+      pendingHeritages: 0,
+      alreadyComplete: 0,
+      nextCursor: null,
+    };
+  }
+  const entryIds = [...new Set(reviews.map((review) => review.entryId))];
+  const userIds = [...new Set(reviews.map((review) => review.customerId))];
+  const [entriesResult, campaignsResult, campaignEntriesResult, definitionsResult, flowerGrantsResult] = await Promise.all([
+    client.from("contest_entries").select("id,producer_id,track").in("id", entryIds),
+    client.from("kq_producer_reward_campaigns")
+      .select("id,producer_id,heritage_code").eq("status", "active"),
+    client.from("kq_producer_reward_entries").select("campaign_id,entry_id").in("entry_id", entryIds),
+    client.from("kq_heritage_card_definitions").select("code,is_active"),
+    client.from("kq_notebook_flower_reward_grants")
+      .select("id,user_id,entry_id").in("user_id", userIds).in("entry_id", entryIds),
+  ]);
+  if (entriesResult.error) throw new Error(`[data:producer-reward-retro-entries] ${entriesResult.error.message}`);
+  if (campaignsResult.error) throw new Error(`[data:producer-reward-retro-campaigns] ${campaignsResult.error.message}`);
+  if (campaignEntriesResult.error) throw new Error(`[data:producer-reward-retro-requirements] ${campaignEntriesResult.error.message}`);
+  if (definitionsResult.error) throw new Error(`[data:producer-reward-retro-heritages] ${definitionsResult.error.message}`);
+  if (flowerGrantsResult.error) throw new Error(`[data:producer-reward-retro-flower-grants] ${flowerGrantsResult.error.message}`);
+
+  const activeHeritageCodes = new Set((definitionsResult.data ?? [])
+    .filter((definition) => definition.is_active === true)
+    .map((definition) => String(definition.code)));
+  const campaignById = new Map((campaignsResult.data ?? [])
+    .filter((campaign) => activeHeritageCodes.has(String(campaign.heritage_code)))
+    .map((campaign) => [String(campaign.id), campaign]));
+  const campaignsByEntry = new Map<string, Array<{ id: string; producerId: string }>>();
+  for (const requirement of campaignEntriesResult.data ?? []) {
+    const campaign = campaignById.get(String(requirement.campaign_id));
+    if (!campaign) continue;
+    const entryId = String(requirement.entry_id);
+    const rows = campaignsByEntry.get(entryId) ?? [];
+    rows.push({ id: String(campaign.id), producerId: String(campaign.producer_id) });
+    campaignsByEntry.set(entryId, rows);
+  }
+  const entryById = new Map((entriesResult.data ?? []).map((entry) => [String(entry.id), {
+    producerId: String(entry.producer_id ?? ""),
+    track: entry.track === "concours" ? "concours" : "regular",
+  }]));
+  const flowerGrantByKey = new Map((flowerGrantsResult.data ?? []).map((grant) => [
+    producerRewardKey(String(grant.user_id), String(grant.entry_id)),
+    String(grant.id),
+  ]));
+  const flowerGrantIds = [...flowerGrantByKey.values()];
+  const packRowsResult = flowerGrantIds.length > 0
+    ? await client.from("kq_notebook_flower_reward_packs")
+        .select("flower_grant_id,pack_index").in("flower_grant_id", flowerGrantIds)
+    : { data: [], error: null };
+  if (packRowsResult.error) throw new Error(`[data:producer-reward-retro-packs] ${packRowsResult.error.message}`);
+  const packCountByGrantId = (packRowsResult.data ?? []).reduce<Map<string, number>>((counts, pack) => {
+    const grantId = String(pack.flower_grant_id);
+    counts.set(grantId, (counts.get(grantId) ?? 0) + 1);
+    return counts;
+  }, new Map());
+  const campaignIds = [...campaignById.keys()];
+  const heritageGrantsResult = campaignIds.length > 0
+    ? await client.from("kq_producer_heritage_reward_grants")
+        .select("user_id,campaign_id").in("user_id", userIds).in("campaign_id", campaignIds)
+    : { data: [], error: null };
+  if (heritageGrantsResult.error) throw new Error(`[data:producer-reward-retro-heritage-grants] ${heritageGrantsResult.error.message}`);
+  const heritageGrantKeys = new Set((heritageGrantsResult.data ?? []).map((grant) => producerRewardKey(
+    String(grant.user_id),
+    String(grant.campaign_id),
+  )));
+  const simulatedPackCounts = new Map<string, number>();
+  for (const [key, grantId] of flowerGrantByKey) simulatedPackCounts.set(key, packCountByGrantId.get(grantId) ?? 0);
+
+  let eligibleReviews = 0;
+  let pendingFlowerBoosters = 0;
+  let pendingHeritages = 0;
+  let alreadyComplete = 0;
+  for (const review of reviews) {
+    const entry = entryById.get(review.entryId);
+    if (!entry?.producerId) continue;
+    const campaign = (campaignsByEntry.get(review.entryId) ?? [])
+      .find((candidate) => candidate.producerId === entry.producerId);
+    const flowerEligible = entry.track === "concours";
+    if (!flowerEligible && !campaign) continue;
+    eligibleReviews += 1;
+    let newlyPlanned = 0;
+    if (flowerEligible) {
+      const key = producerRewardKey(review.customerId, review.entryId);
+      const currentPacks = simulatedPackCounts.get(key) ?? 0;
+      const missingPacks = Math.max(0, 5 - currentPacks);
+      pendingFlowerBoosters += missingPacks;
+      newlyPlanned += missingPacks;
+      simulatedPackCounts.set(key, 5);
+    }
+    if (campaign) {
+      const key = producerRewardKey(review.customerId, campaign.id);
+      if (!heritageGrantKeys.has(key)) {
+        pendingHeritages += 1;
+        newlyPlanned += 1;
+        heritageGrantKeys.add(key);
+      }
+    }
+    if (newlyPlanned === 0) alreadyComplete += 1;
+  }
+  return {
+    live: KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE,
+    processed: reviews.length,
+    eligibleReviews,
+    pendingFlowerBoosters,
+    pendingHeritages,
+    alreadyComplete,
+    nextCursor: reviews.length === KQ_PRODUCER_RETRO_BATCH_SIZE ? cursor + reviews.length : null,
+  };
+}
+
 export async function syncKqProducerNotebookRewardBatch(offset = 0) {
   if (!KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE) {
     return { live: false, processed: 0, flowerBoostersGranted: 0, heritagesGranted: 0, nextCursor: null as number | null };
   }
   const cursor = Number.isSafeInteger(offset) && offset >= 0 ? offset : 0;
-  const batchSize = 50;
   const client = createSupabaseServiceClient();
   const reviewsResult = await client.from("contest_reviews")
     .select("id,customer_id,created_at").eq("status", "approved")
     .order("created_at", { ascending: true }).order("id", { ascending: true })
-    .range(cursor, cursor + batchSize - 1);
+    .range(cursor, cursor + KQ_PRODUCER_RETRO_BATCH_SIZE - 1);
   if (reviewsResult.error) throw new Error(`[data:producer-reward-retro] ${reviewsResult.error.message}`);
   let flowerBoostersGranted = 0;
   let heritagesGranted = 0;
@@ -324,6 +467,6 @@ export async function syncKqProducerNotebookRewardBatch(offset = 0) {
     processed: reviews.length,
     flowerBoostersGranted,
     heritagesGranted,
-    nextCursor: reviews.length === batchSize ? cursor + reviews.length : null,
+    nextCursor: reviews.length === KQ_PRODUCER_RETRO_BATCH_SIZE ? cursor + reviews.length : null,
   };
 }

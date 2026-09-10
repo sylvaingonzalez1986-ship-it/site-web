@@ -18,13 +18,21 @@ describe("Kanab Quest flower battles", () => {
   });
 
   it("creates a stable flower snapshot from a completed culture", () => {
-    const flower = createKqFlower({ ...completedGame(), completedAt: "2026-07-24T10:00:00.000Z" });
+    const completed = { ...completedGame(), completedAt: "2026-07-24T10:00:00.000Z" };
+    const flower = createKqFlower(completed);
     expect(flower.status).toBe("available");
     expect(flower.createdAt).toBe("2026-07-24T10:00:00.000Z");
     expect(Object.values(flower.stats).every((stat) => stat >= 35 && stat <= 99)).toBe(true);
     expect(Object.values(flower.stats).every((stat) => Number.isInteger(stat * 10))).toBe(true);
     expect(Object.values(flower.stats).some((stat) => !Number.isInteger(stat))).toBe(true);
-    expect(flower.traits).toHaveLength(6);
+    expect(flower.traits).toHaveLength(7);
+    expect(flower.traits).toContain("Mode de culture · Terreau horticole");
+    const aeroponicFlower = createKqFlower({
+      ...completed,
+      deckCodes: completed.deckCodes.map((code) => code === "BOTTE-001" ? "BOTTE-008" : code),
+    });
+    expect(aeroponicFlower.stats).toEqual(flower.stats);
+    expect(aeroponicFlower.traits).toContain("Mode de culture · Aéroponie haute pression");
   });
 
   it("records the real jury time when both flowers burn", () => {

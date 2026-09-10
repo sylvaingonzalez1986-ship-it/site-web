@@ -1,7 +1,8 @@
 import "server-only";
 
 import { KQ_CARDS } from "@/lib/kanab-quest-game";
-import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
+import { isKqHeritageEffect, isKqHeritageTiming } from "@/lib/kanab-quest-heritage";
+import { buildKqHeritageAdminState } from "@/lib/kanab-quest-heritage-admin";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 
 const COLLECTION_CODE = "BOTTE_DU_CHANVRIER_2026";
@@ -25,9 +26,21 @@ export async function getKqBotteCatalogAdmin() {
   if (rulesResult.error) throw new Error(`[data:botte-rules] ${rulesResult.error.message}`);
   const ruleByCardId = new Map((rulesResult.data ?? []).map((rule) => [String(rule.card_definition_id), rule]));
   const heritageResult = await client.from("kq_heritage_card_definitions")
-    .select("code,name,timing,effect_code,description,image_url,is_active,advantage,drawback")
+    .select("code,name,timing,effect_code,description,image_url,is_active,advantage,drawback,producer_id,producer_name,producer_image,auto_managed")
     .order("code", { ascending: true });
   if (heritageResult.error) throw new Error(`[data:heritage-cards] ${heritageResult.error.message}`);
+  const heritages = (heritageResult.data ?? []).map((card) => ({
+    code: String(card.code), name: String(card.name), timing: String(card.timing),
+    effect: String(card.effect_code), description: String(card.description), imageUrl: String(card.image_url ?? ""),
+    isActive: card.is_active === true, advantage: String(card.advantage ?? card.description),
+    drawback: String(card.drawback ?? ""),
+    producerId: card.producer_id ? String(card.producer_id) : null,
+    producerName: String(card.producer_name ?? ""),
+    producerImage: String(card.producer_image ?? ""),
+    autoManaged: card.auto_managed === true,
+  }));
+  const heritageAdminState = buildKqHeritageAdminState(heritages);
+
   return {
     collection: {
       code: String(collectionResult.data.code), title: String(collectionResult.data.title),
@@ -48,12 +61,9 @@ export async function getKqBotteCatalogAdmin() {
       };
     }),
     supportedEffects: [...new Set(KQ_CARDS.map((card) => card.effect))],
-    heritages: (heritageResult.data ?? []).map((card) => ({
-      code: String(card.code), name: String(card.name), timing: String(card.timing),
-      effect: String(card.effect_code), description: String(card.description), imageUrl: String(card.image_url ?? ""),
-      isActive: card.is_active === true, advantage: String(card.advantage ?? card.description),
-      drawback: String(card.drawback ?? ""),
-    })),
+    supportedHeritageEffects: heritageAdminState.effectOptions,
+    heritageSummary: heritageAdminState.summary,
+    heritages,
   };
 }
 
@@ -95,22 +105,28 @@ export async function updateKqBotteCard(input: {
 }
 
 export async function updateKqHeritageCard(input: {
-  code: string; name: string; description: string; imageUrl: string; isActive: boolean;
+  code: string; name: string; timing: string; effect: string; description: string; imageUrl: string; isActive: boolean;
   advantage: string; drawback: string;
 }) {
   const code = input.code.trim();
   const name = cleanText(input.name, 120);
   const advantage = cleanText(input.advantage, 500);
-  if (!/^HERITAGE-[0-9]{3}$/.test(code) || name.length < 3 || advantage.length < 3
-    || !KQ_HERITAGE_CARDS.some((card) => card.code === code)) {
+  if (!/^HERITAGE-[0-9]{3,6}$/.test(code) || name.length < 3 || advantage.length < 3
+    || !isKqHeritageTiming(input.timing) || !isKqHeritageEffect(input.effect)) {
     throw new Error("Carte Héritage invalide.");
   }
   const client = createSupabaseServiceClient();
   const update = await client.rpc("rpc_kq_update_heritage_card_editorial", {
     p_code: code, p_name: name,
+    p_timing: input.timing, p_effect_code: input.effect,
     p_description: cleanText(input.description, 500), p_image_url: cleanText(input.imageUrl, 2000),
     p_is_active: input.isActive, p_advantage: advantage, p_drawback: cleanText(input.drawback, 500),
   });
-  if (update.error) throw new Error(`[data:update-heritage-card] ${update.error.message}`);
+  if (update.error) {
+    if (update.error.message.includes("kq_heritage_effect_already_used")) {
+      throw new Error("Ce pouvoir est déjà attribué à un autre producteur actif.");
+    }
+    throw new Error(`[data:update-heritage-card] ${update.error.message}`);
+  }
   return { saved: true };
 }

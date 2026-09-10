@@ -14,7 +14,7 @@ const categoryStyle = {
   pbi: { label: "AUXILIAIRE PBI", color: "#65bfd0", dark: "#105c6a", icon: "PBI" },
   equipment: { label: "ÉQUIPEMENT", color: "#e98a3c", dark: "#7a3514", icon: "OUTIL" },
   "know-how": { label: "SAVOIR-FAIRE", color: "#6fbd78", dark: "#245b2d", icon: "TECH" },
-  luck: { label: "COUP DE CHANCE", color: "#b98bcc", dark: "#623775", icon: "★" },
+  luck: { label: "COUP DE CHANCE", color: "#b98bcc", dark: "#623775", icon: "D6" },
   heritage: { label: "HÉRITAGE", color: "#e4bd51", dark: "#68470e", icon: "∞" },
 };
 
@@ -38,9 +38,9 @@ const artworkByCode = {
   "BOTTE-003": "botte-003-petit-ventilateur-v1.png",
   "BOTTE-004": "botte-004-loupe-inspection-v1.png",
   "BOTTE-005": "botte-005-arrosage-mesure-v1.png",
-  "BOTTE-006": "botte-006-deuxieme-chance-v1.png",
-  "BOTTE-007": "botte-007-fibre-coco-v1.png",
-  "BOTTE-008": "botte-008-melange-drainant-v1.png",
+  "BOTTE-006": "botte-006-deuxieme-chance-v2.webp",
+  "BOTTE-007": "botte-007-hydroponie-recirculante-v2.webp",
+  "BOTTE-008": "botte-008-aeroponie-haute-pression-v2.webp",
   "BOTTE-009": "botte-009-terre-vivante-v1.png",
   "BOTTE-010": "botte-010-coccinelle-sept-points-v1.png",
   "BOTTE-011": "botte-011-amblyseius-swirskii-v1.png",
@@ -53,20 +53,20 @@ const artworkByCode = {
   "BOTTE-018": "botte-018-testeur-ph-ec-v2.png",
   "BOTTE-019": "botte-019-perlite-horticole-v1.png",
   "BOTTE-020": "botte-020-biochar-v1.png",
-  "BOTTE-021": "botte-021-compost-mur-v1.png",
+  "BOTTE-021": "botte-021-engrais-bio-complet-v2.webp",
   "BOTTE-022": "botte-022-phytoseiulus-persimilis-v1.png",
   "BOTTE-023": "botte-023-orius-laevigatus-v1.png",
   "BOTTE-024": "botte-024-tensiometre-v1.png",
   "BOTTE-025": "botte-025-plaque-engluee-suivi-v2.png",
   "BOTTE-026": "botte-026-extracteur-bien-regle-v2.png",
-  "BOTTE-027": "botte-027-timer-mecanique-v1.png",
-  "BOTTE-028": "botte-028-taille-apicale-v1.png",
+  "BOTTE-027": "botte-027-papiers-en-regle-v3.webp",
+  "BOTTE-028": "botte-028-branchement-illegal-v3.webp",
   "BOTTE-029": "botte-029-effeuillage-mesure-v1.png",
   "BOTTE-030": "botte-030-sonde-humidite-v2.png",
-  "BOTTE-031": "botte-031-drainage-controle-v1.png",
+  "BOTTE-031": "botte-031-echeancier-negocie-v3.webp",
   "BOTTE-032": "botte-032-loupe-trichomes-v2.png",
   "BOTTE-033": "botte-033-recolte-frais-v2.png",
-  "BOTTE-034": "botte-034-retour-calme-v1.png",
+  "BOTTE-034": "botte-034-gros-molosse-v3.webp",
   "BOTTE-035": "botte-035-recolte-lots-v2.png",
   "BOTTE-036": "botte-036-secateur-propre-v2.png",
   "HERITAGE-001": "heritage-001-racines-solides-producer-v2.webp",
@@ -79,8 +79,8 @@ const artworkByCode = {
   "HERITAGE-008": "heritage-008-bouclier-biologique-producer-v2.webp",
   "HERITAGE-009": "heritage-009-floraison-maitrisee-v1.png",
   "HERITAGE-010": "heritage-010-affinage-patient-v1.png",
-  "HERITAGE-011": "heritage-011-canopy-legacy-v1.png",
-  "HERITAGE-012": "heritage-012-signature-maitre-v1.png",
+  "HERITAGE-011": "heritage-011-canopy-legacy-v2.webp",
+  "HERITAGE-012": "heritage-012-signature-maitre-v2.webp",
 };
 
 function extractArray(source, marker) {
@@ -205,7 +205,8 @@ async function renderCard(card) {
     roundedRect(ctx, 785, 102, 125, 62, 18);
     fillStroke(ctx, rarity.color, "#111512", 4);
     ctx.fillStyle = "#111512";
-    ctx.font = "900 19px Arial";
+    const raritySize = fitText(ctx, rarity.label, 105, 19, 12);
+    ctx.font = `900 ${raritySize}px Arial`;
     ctx.textAlign = "center";
     ctx.fillText(rarity.label, 847, 133);
     ctx.textAlign = "left";
@@ -274,7 +275,11 @@ const gameSource = await readFile(path.join(ROOT, "src", "lib", "kanab-quest-gam
 const heritageSource = await readFile(path.join(ROOT, "src", "lib", "kanab-quest-heritage.ts"), "utf8");
 const supportCards = extractArray(gameSource, "export const KQ_CARDS").map((card) => ({ ...card }));
 const heritageCards = extractArray(heritageSource, "export const KQ_HERITAGE_CARDS").map((card) => ({ ...card, category: "heritage", xpCost: 0 }));
-const requestedCodes = new Set((process.env.KQ_CARD_CODES ?? "").split(",").map((code) => code.trim()).filter(Boolean));
+const requestedCodes = new Set(
+  (process.argv.length > 2 ? process.argv.slice(2) : (process.env.KQ_CARD_CODES ?? "").split(","))
+    .map((code) => code.trim())
+    .filter(Boolean),
+);
 const results = [];
 for (const card of [...supportCards, ...heritageCards].filter((card) => requestedCodes.size === 0 || requestedCodes.has(card.code))) {
   results.push(await renderCard(card));

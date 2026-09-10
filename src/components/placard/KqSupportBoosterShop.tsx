@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { Flame, PackageOpen, X } from "lucide-react";
+import { Flame, PackageOpen, Wrench, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import { openKqSupportBooster } from "@/lib/kanab-quest-booster";
+import { createClientRequestKey } from "@/lib/client-request-key";
+import { KqEquipmentCatalogModal } from "./KqEquipmentCatalogModal";
 import styles from "./KqSupportBoosterShop.module.css";
 
 type ShopPayload = {
@@ -27,9 +29,13 @@ export function splitShopEntitlements(entitlements: ShopEntitlement[]) {
 
 export function KqSupportBoosterShop({
   autoOpen = false,
+  autoOpenEquipment = false,
+  initialEquipmentCode = null,
   onExit,
 }: {
   autoOpen?: boolean;
+  autoOpenEquipment?: boolean;
+  initialEquipmentCode?: string | null;
   onExit?: () => void;
 } = {}) {
   const [shop, setShop] = useState<ShopPayload | null>(null);
@@ -39,10 +45,12 @@ export function KqSupportBoosterShop({
   const [localPreview, setLocalPreview] = useState(false);
   const [welcomeChecked, setWelcomeChecked] = useState(false);
   const [shopOpen, setShopOpen] = useState(autoOpen);
+  const [equipmentCatalogOpen, setEquipmentCatalogOpen] = useState(autoOpenEquipment);
 
   const closeShop = useCallback(() => {
     setOpenedCards([]);
     setNotice("");
+    setEquipmentCatalogOpen(false);
     setShopOpen(false);
     onExit?.();
   }, [onExit]);
@@ -53,7 +61,8 @@ export function KqSupportBoosterShop({
     document.body.style.overflow = "hidden";
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      if (openedCards.length > 0) setOpenedCards([]);
+      if (equipmentCatalogOpen) setEquipmentCatalogOpen(false);
+      else if (openedCards.length > 0) setOpenedCards([]);
       else closeShop();
     };
     window.addEventListener("keydown", handleEscape);
@@ -61,7 +70,7 @@ export function KqSupportBoosterShop({
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleEscape);
     };
-  }, [closeShop, openedCards.length, shopOpen]);
+  }, [closeShop, equipmentCatalogOpen, openedCards.length, shopOpen]);
 
   const refresh = useCallback(async () => {
     const response = await fetch("/api/arena/placard/boosters", { cache: "no-store" });
@@ -87,7 +96,7 @@ export function KqSupportBoosterShop({
       const response = await fetch("/api/arena/placard/boosters", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ packCount: 1, requestKey: crypto.randomUUID() }),
+        body: JSON.stringify({ packCount: 1, requestKey: createClientRequestKey() }),
       });
       const payload = await response.json() as { error?: string };
       if (!response.ok) throw new Error(payload.error || "Achat impossible.");
@@ -182,10 +191,15 @@ export function KqSupportBoosterShop({
           <button type="button" title={nextShopPack ? `Ouvrir un pack parmi ${shopPacks.length}` : "Aucun pack disponible"} aria-label={nextShopPack ? `Ouvrir un pack, ${shopPacks.length} disponible(s)` : "Aucun pack disponible"} disabled={!shop?.collectionActive || pending !== null || !nextShopPack} onClick={() => void openEntitlement(nextShopPack)} className={`${styles.item} ${styles.itemPacks} group absolute aspect-square border-0 bg-transparent p-0 drop-shadow-[0_8px_5px_rgba(0,0,0,.55)] transition-all duration-200 active:-translate-y-2 focus-visible:rounded-full focus-visible:outline-4 focus-visible:outline-yellow disabled:grayscale disabled:opacity-55 sm:bottom-[22%] sm:left-1/2 sm:w-[20%] sm:-translate-x-1/2 sm:hover:-translate-x-1/2 sm:hover:-translate-y-2`}><Image src="/placard/shop-item-packs-v2.webp" alt="" fill sizes="(max-width: 640px) 142px, 220px" className="object-contain" /></button>
           <button type="button" title={`Acheter un booster pour ${shop?.costPerPack ?? 5} points`} aria-label={`Acheter un booster pour ${shop?.costPerPack ?? 5} points`} disabled={!shop?.collectionActive || pending !== null || (shop?.spendablePoints ?? 0) < (shop?.costPerPack ?? 5)} onClick={() => void purchase()} className={`${styles.item} ${styles.itemRegister} group absolute aspect-square border-0 bg-transparent p-0 drop-shadow-[0_8px_5px_rgba(0,0,0,.55)] transition-all duration-200 active:-translate-y-2 focus-visible:rounded-full focus-visible:outline-4 focus-visible:outline-yellow disabled:grayscale disabled:opacity-55 sm:bottom-[23%] sm:right-[15%] sm:w-[18%] sm:hover:-translate-y-2`}><Image src="/placard/shop-item-register-v2.webp" alt="" fill sizes="(max-width: 640px) 128px, 200px" className="object-contain" /></button>
         </div>
+        <button type="button" className={styles.catalogDeskButton} onClick={() => setEquipmentCatalogOpen(true)} aria-haspopup="dialog">
+          <span><Wrench aria-hidden="true" /><small>Nouveau rayon</small><strong>Catalogue matériel</strong></span>
+          <b>Tentes · LED · Climat · Transformation <i aria-hidden="true">→</i></b>
+        </button>
         {!shop?.collectionActive && localPreview ? <button type="button" onClick={openPreview} className="absolute left-3 top-24 z-20 border-2 border-ink bg-white px-3 py-2 text-xs font-black uppercase"><PackageOpen className="mr-1 inline w-4" />Test local</button> : null}
         {notice ? <p className="absolute left-1/2 top-20 z-20 w-[min(90%,520px)] -translate-x-1/2 border-2 border-ink bg-white/95 px-4 py-3 text-center text-sm font-bold shadow-[3px_3px_0_#1a1a1a]" role="status">{notice}</p> : null}
         {!shop?.collectionActive ? <p className="absolute bottom-24 left-1/2 z-10 -translate-x-1/2 text-sm font-bold text-white"><Flame className="mr-1 inline w-4" />Boutique fermée pendant les tests.</p> : null}
         {openedCards.length > 0 ? <div className="absolute inset-0 z-50 flex flex-col bg-[#081a14]/95 p-3 backdrop-blur-sm sm:p-6"><button type="button" aria-label="Fermer le pack ouvert" onClick={() => setOpenedCards([])} className="absolute right-3 top-3 z-10 grid h-11 w-11 place-items-center border-2 border-ink bg-white shadow-[3px_3px_0_#f4c43d]"><X /></button><header className="shrink-0 pr-14 text-center text-white"><small className="font-black uppercase tracking-[.14em] text-yellow">Pack débloqué</small><h3 className="font-display text-3xl uppercase sm:text-5xl">Tes nouvelles cartes</h3></header><div className="my-3 flex min-h-0 flex-1 items-center gap-2 overflow-x-auto px-1 pb-2 sm:gap-3">{openedCards.map((card, index) => { const src = getKqCardArtwork(card.code) ?? card.imageUrl; return <article key={`${card.code}-${index}`} className="w-28 shrink-0 border-2 border-[#d5a72d] bg-white p-1 shadow-[3px_3px_0_#d5a72d] sm:w-40">{src ? <div className="relative aspect-[2/3] overflow-hidden"><Image src={src} alt={card.name} fill sizes="160px" className="object-cover" /></div> : null}<small className="mt-1 block text-[9px] font-black uppercase text-green sm:text-xs">{card.rarity}</small><strong className="block text-[10px] sm:text-sm">{card.name}</strong></article>; })}</div><button type="button" onClick={() => { setOpenedCards([]); setNotice(""); }} className="mx-auto min-h-12 shrink-0 border-2 border-ink bg-yellow px-6 font-black uppercase shadow-[4px_4px_0_#fff]">Retour à la boutique</button></div> : null}
+        {equipmentCatalogOpen ? <KqEquipmentCatalogModal initialEquipmentCode={initialEquipmentCode} onClose={() => setEquipmentCatalogOpen(false)} /> : null}
       </section></div> : null}
     </section>
   );

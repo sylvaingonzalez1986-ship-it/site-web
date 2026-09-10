@@ -4,9 +4,9 @@ export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
   "BOTTE-003": "/app/kanab-quest/cards/botte-003-petit-ventilateur-v1.webp",
   "BOTTE-004": "/app/kanab-quest/cards/botte-004-loupe-inspection-v1.webp",
   "BOTTE-005": "/app/kanab-quest/cards/botte-005-arrosage-mesure-v1.webp",
-  "BOTTE-006": "/app/kanab-quest/cards/botte-006-deuxieme-chance-v1.webp",
-  "BOTTE-007": "/app/kanab-quest/cards/botte-007-fibre-coco-v1.webp",
-  "BOTTE-008": "/app/kanab-quest/cards/botte-008-melange-drainant-v1.webp",
+  "BOTTE-006": "/app/kanab-quest/cards/botte-006-deuxieme-chance-v2.webp",
+  "BOTTE-007": "/app/kanab-quest/cards/botte-007-hydroponie-recirculante-v2.webp",
+  "BOTTE-008": "/app/kanab-quest/cards/botte-008-aeroponie-haute-pression-v2.webp",
   "BOTTE-009": "/app/kanab-quest/cards/botte-009-terre-vivante-v1.webp",
   "BOTTE-010": "/app/kanab-quest/cards/botte-010-coccinelle-sept-points-v1.webp",
   "BOTTE-011": "/app/kanab-quest/cards/botte-011-amblyseius-swirskii-v1.webp",
@@ -19,20 +19,20 @@ export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
   "BOTTE-018": "/app/kanab-quest/cards/botte-018-testeur-ph-ec-v2.webp",
   "BOTTE-019": "/app/kanab-quest/cards/botte-019-perlite-horticole-v1.webp",
   "BOTTE-020": "/app/kanab-quest/cards/botte-020-biochar-v1.webp",
-  "BOTTE-021": "/app/kanab-quest/cards/botte-021-compost-mur-v1.webp",
+  "BOTTE-021": "/app/kanab-quest/cards/botte-021-engrais-bio-complet-v2.webp",
   "BOTTE-022": "/app/kanab-quest/cards/botte-022-phytoseiulus-persimilis-v1.webp",
   "BOTTE-023": "/app/kanab-quest/cards/botte-023-orius-laevigatus-v1.webp",
   "BOTTE-024": "/app/kanab-quest/cards/botte-024-tensiometre-v1.webp",
   "BOTTE-025": "/app/kanab-quest/cards/botte-025-plaque-engluee-suivi-v2.webp",
   "BOTTE-026": "/app/kanab-quest/cards/botte-026-extracteur-bien-regle-v2.webp",
-  "BOTTE-027": "/app/kanab-quest/cards/botte-027-timer-mecanique-v1.webp",
-  "BOTTE-028": "/app/kanab-quest/cards/botte-028-taille-apicale-v1.webp",
+  "BOTTE-027": "/app/kanab-quest/cards/botte-027-papiers-en-regle-v3.webp",
+  "BOTTE-028": "/app/kanab-quest/cards/botte-028-branchement-illegal-v3.webp",
   "BOTTE-029": "/app/kanab-quest/cards/botte-029-effeuillage-mesure-v1.webp",
   "BOTTE-030": "/app/kanab-quest/cards/botte-030-sonde-humidite-v2.webp",
-  "BOTTE-031": "/app/kanab-quest/cards/botte-031-drainage-controle-v1.webp",
+  "BOTTE-031": "/app/kanab-quest/cards/botte-031-echeancier-negocie-v3.webp",
   "BOTTE-032": "/app/kanab-quest/cards/botte-032-loupe-trichomes-v2.webp",
   "BOTTE-033": "/app/kanab-quest/cards/botte-033-recolte-frais-v2.webp",
-  "BOTTE-034": "/app/kanab-quest/cards/botte-034-retour-calme-v1.webp",
+  "BOTTE-034": "/app/kanab-quest/cards/botte-034-gros-molosse-v3.webp",
   "BOTTE-035": "/app/kanab-quest/cards/botte-035-recolte-lots-v2.webp",
   "BOTTE-036": "/app/kanab-quest/cards/botte-036-secateur-propre-v2.webp",
   "HERITAGE-001": "/app/kanab-quest/cards/heritage-001-racines-solides-producer-v2.webp",
@@ -45,18 +45,28 @@ export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
   "HERITAGE-008": "/app/kanab-quest/cards/heritage-008-bouclier-biologique-producer-v2.webp",
   "HERITAGE-009": "/app/kanab-quest/cards/heritage-009-floraison-maitrisee-v1.webp",
   "HERITAGE-010": "/app/kanab-quest/cards/heritage-010-affinage-patient-v1.webp",
-  "HERITAGE-011": "/app/kanab-quest/cards/heritage-011-canopy-legacy-v1.webp",
-  "HERITAGE-012": "/app/kanab-quest/cards/heritage-012-signature-maitre-v1.webp",
+  "HERITAGE-011": "/app/kanab-quest/cards/heritage-011-canopy-legacy-v2.webp",
+  "HERITAGE-012": "/app/kanab-quest/cards/heritage-012-signature-maitre-v2.webp",
+};
+
+const KQ_CARD_FRONT_VERSION_OVERRIDES: Readonly<Record<string, number>> = {
+  "HERITAGE-011": 4,
+  "HERITAGE-012": 4,
 };
 
 export const KQ_CARD_ARTWORK: Readonly<Record<string, string>> = Object.fromEntries(
-  Object.entries(KQ_CARD_ILLUSTRATIONS).map(([code, source]) => [
-    code,
-    source.replace("/cards/", "/card-fronts/").replace(
-      /-v(\d+)\.webp$/,
-      code.startsWith("HERITAGE-") ? "-front-v3.webp" : "-front-v$1.webp",
-    ),
-  ]),
+  Object.entries(KQ_CARD_ILLUSTRATIONS).map(([code, source]) => {
+    const override = KQ_CARD_FRONT_VERSION_OVERRIDES[code];
+    const frontSuffix = override
+      ? `-front-v${override}.webp`
+      : code.startsWith("HERITAGE-")
+        ? "-front-v3.webp"
+        : "-front-v$1.webp";
+    return [
+      code,
+      source.replace("/cards/", "/card-fronts/").replace(/-v(\d+)\.webp$/, frontSuffix),
+    ];
+  }),
 );
 
 export function getKqCardArtwork(code: string) {

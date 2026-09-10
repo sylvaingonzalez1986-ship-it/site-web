@@ -33,10 +33,9 @@ export async function POST(request: Request) {
   }
   const body = await request.json().catch(() => null) as null | Record<string, unknown>;
   const flowerId = typeof body?.flowerId === "string" ? body.flowerId : "";
-  const botCode = typeof body?.botCode === "string" ? body.botCode : "";
-  if (!flowerId || !botCode) return NextResponse.json({ error: "Fleur ou bot manquant." }, { status: 400 });
+  if (!flowerId) return NextResponse.json({ error: "Fleur manquante." }, { status: 400 });
   try {
-    return NextResponse.json(await finalizeKqPlayerBotBattle(session.customerId, flowerId, botCode), {
+    return NextResponse.json(await finalizeKqPlayerBotBattle(session.customerId, flowerId), {
       status: 201,
       headers: { "Cache-Control": "private, no-store, max-age=0" },
     });

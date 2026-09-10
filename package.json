@@ -22,6 +22,7 @@
     "load-test:placard": "node scripts/load-test-placard.mjs",
     "smoke-test:placard:transactions": "node scripts/smoke-test-placard-transactions.mjs",
     "audit:placard:mobile": "node scripts/audit-placard-mobile.mjs",
+    "verify:placard:launch-evidence": "node scripts/verify-placard-launch-evidence.mjs",
     "audit:arena:mobile": "node scripts/audit-arena-mobile.mjs"
   },
   "dependencies": {

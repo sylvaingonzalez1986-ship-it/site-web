@@ -1,5 +1,6 @@
-import { getKqHandCodes, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState } from "@/lib/kanab-quest-game";
-import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
+import { getKqHandCodes, getKqStateHeritage, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState } from "@/lib/kanab-quest-game";
+import { isKqHeritageEffect, isKqHeritageTiming } from "@/lib/kanab-quest-heritage";
+import { getKqEquipmentDefinition, summarizeKqEquipmentLoadout } from "@/lib/kanab-quest-equipment";
 import type { KqBattle } from "@/lib/kanab-quest-battle";
 import type { KqRankProfile } from "@/lib/kanab-quest-ranking";
 
@@ -24,6 +25,21 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     const knownSituations = new Set(KQ_SITUATIONS.map((situation) => situation.code));
     if (!isFiniteNumber(state.seed) || !isFiniteNumber(state.stageIndex) || state.stageIndex < 0 || state.stageIndex >= KQ_STAGES.length) return null;
     if (!phases.includes(String(state.phase)) || !isFiniteNumber(state.xp) || state.xp < 0 || !isFiniteNumber(state.quality)) return null;
+    if (state.harvestGrams !== undefined && (!isFiniteNumber(state.harvestGrams) || state.harvestGrams < 20 || state.harvestGrams > 500)) return null;
+    if (state.equipmentQualityBonus !== undefined && (!Number.isInteger(state.equipmentQualityBonus) || Number(state.equipmentQualityBonus) < 0 || Number(state.equipmentQualityBonus) > 20)) return null;
+    if (state.powerOutage !== undefined && typeof state.powerOutage !== "boolean") return null;
+    if (state.harvestLossPercent !== undefined && (!isFiniteNumber(state.harvestLossPercent) || state.harvestLossPercent < 0 || state.harvestLossPercent > 80)) return null;
+    if (state.equipment !== undefined) {
+      if (!isRecord(state.equipment) || !Array.isArray(state.equipment.codes) || state.equipment.codes.length > 10) return null;
+      const equipmentCodes = state.equipment.codes;
+      if (equipmentCodes.some((code) => typeof code !== "string" || !getKqEquipmentDefinition(code))) return null;
+      if (new Set(equipmentCodes).size !== equipmentCodes.length) return null;
+      const expected = summarizeKqEquipmentLoadout(equipmentCodes as string[]);
+      for (const field of ["quantityPercent", "qualityMaxBonus", "regularityPercent", "pressureDelta", "powerWatts", "energyDiscountPercent", "processingPrecision", "processingCapacityPercent"] as const) {
+        if (state.equipment[field] !== expected[field]) return null;
+      }
+      if (!Array.isArray(state.equipment.unlocks) || state.equipment.unlocks.join("|") !== expected.unlocks.join("|")) return null;
+    }
     if (typeof state.varietyCode !== "string" || typeof state.varietyName !== "string") return null;
     if (state.challengeDayKey !== undefined && (typeof state.challengeDayKey !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(state.challengeDayKey))) return null;
     if (state.startedAt !== undefined && (typeof state.startedAt !== "string" || Number.isNaN(Date.parse(state.startedAt)))) return null;
@@ -31,15 +47,31 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (!Array.isArray(state.deckCodes) || state.deckCodes.some((code) => typeof code !== "string" || !knownCards.has(code))) return null;
     if (state.handCodes !== undefined && (!Array.isArray(state.handCodes) || state.handCodes.length > KQ_LEGACY_HAND_SIZE || state.handCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
     if (state.heritageReserveCodes !== undefined && (!Array.isArray(state.heritageReserveCodes) || state.heritageReserveCodes.length > KQ_HERITAGE_RESERVE_SIZE || state.heritageReserveCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
-    const heritageAllowsThreeRedraws = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode)?.effect === "two-extra-redraws";
+    if (state.heritageCode !== undefined) {
+      if (typeof state.heritageCode !== "string" || !/^HERITAGE-[0-9]{3,6}$/.test(state.heritageCode)) return null;
+      if (state.heritageName !== undefined && (typeof state.heritageName !== "string" || state.heritageName.trim().length < 3 || state.heritageName.length > 120)) return null;
+      if (state.heritageTiming !== undefined && !isKqHeritageTiming(state.heritageTiming)) return null;
+      if (state.heritageEffect !== undefined && !isKqHeritageEffect(state.heritageEffect)) return null;
+      if (state.heritageProducerName !== undefined && (typeof state.heritageProducerName !== "string" || state.heritageProducerName.length > 120)) return null;
+      if (state.heritageImageUrl !== undefined && (typeof state.heritageImageUrl !== "string" || state.heritageImageUrl.length > 2000)) return null;
+      if (!getKqStateHeritage(state as KqGameState)) return null;
+    } else if ([state.heritageName, state.heritageTiming, state.heritageEffect, state.heritageProducerName, state.heritageImageUrl]
+      .some((value) => value !== undefined)) return null;
+    const heritageAllowsThreeRedraws = getKqStateHeritage(state as KqGameState)?.effect === "two-extra-redraws";
     const persistedRedrawLimit = heritageAllowsThreeRedraws ? 3 : 1;
     if (state.handRedrawsUsed !== undefined && (!Number.isInteger(state.handRedrawsUsed) || Number(state.handRedrawsUsed) < 0 || Number(state.handRedrawsUsed) > persistedRedrawLimit)) return null;
-    if (state.heritageCode !== undefined && (typeof state.heritageCode !== "string" || !KQ_HERITAGE_CARDS.some((card) => card.code === state.heritageCode))) return null;
     if (state.heritageUsed !== undefined && typeof state.heritageUsed !== "boolean") return null;
     if (state.heritageArmed !== undefined && typeof state.heritageArmed !== "boolean") return null;
     if (!Array.isArray(state.collectionCodes) || state.collectionCodes.some((code) => typeof code !== "string" || !knownCards.has(code))) return null;
     if (!Array.isArray(state.situationCodes) || state.situationCodes.length !== KQ_STAGES.length || state.situationCodes.some((code) => typeof code !== "string" || !knownSituations.has(code))) return null;
     if (!Array.isArray(state.history) || state.history.length > KQ_STAGES.length || !Array.isArray(state.traits) || !Array.isArray(state.combos)) return null;
+    if (state.history.some((entry) => {
+      if (!isRecord(entry)) return true;
+      if (entry.qualityDelta !== undefined && (!Number.isInteger(entry.qualityDelta) || Number(entry.qualityDelta) < -1 || Number(entry.qualityDelta) > 4)) return true;
+      if (entry.xpGain !== undefined && (!Number.isInteger(entry.xpGain) || Number(entry.xpGain) < 0 || Number(entry.xpGain) > 20)) return true;
+      if (entry.harvestLossPercent !== undefined && (!Number.isInteger(entry.harvestLossPercent) || Number(entry.harvestLossPercent) < 0 || Number(entry.harvestLossPercent) > 35)) return true;
+      return false;
+    })) return null;
     if (!Array.isArray(state.usedCards) || !Array.isArray(state.playedThisStage) || state.usedCards.some((code) => typeof code !== "string" || !knownCards.has(code)) || state.playedThisStage.some((code) => typeof code !== "string" || !knownCards.has(code))) return null;
     const expectedHistoryLength = state.phase === "complete" ? KQ_STAGES.length : Number(state.stageIndex) + (state.phase === "resolved" ? 1 : 0);
     if (state.history.length !== expectedHistoryLength) return null;
@@ -55,7 +87,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       return !card || card.category === "substrate" || card.category === "pbi" || (deckCounts[code] ?? 0) <= 0;
     })) return null;
     if (state.heritageReserveCodes !== undefined) {
-      const heritage = KQ_HERITAGE_CARDS.find((card) => card.code === state.heritageCode);
+      const heritage = getKqStateHeritage(state as KqGameState);
       if (heritage?.effect !== "opening-hand-reserve" || state.stageIndex !== 0 || state.heritageUsed === true) return null;
       if (state.heritageReserveCodes.some((code) => {
         const card = KQ_CARDS.find((item) => item.code === code);
@@ -127,9 +159,11 @@ export function parseKqRankSave(raw: string | null): KqRankProfile | null {
 
 export function createKqIntegrityCode(state: KqGameState) {
   const canonical = JSON.stringify({
-    seed: state.seed, varietyCode: state.varietyCode, deckCodes: state.deckCodes, handCodes: getKqHandCodes(state), heritageReserveCodes: state.heritageReserveCodes ?? [], handRedrawsUsed: state.handRedrawsUsed ?? 0, heritageCode: state.heritageCode ?? null, heritageUsed: state.heritageUsed ?? false, situationCodes: state.situationCodes,
+    seed: state.seed, varietyCode: state.varietyCode, deckCodes: state.deckCodes, handCodes: getKqHandCodes(state), heritageReserveCodes: state.heritageReserveCodes ?? [], handRedrawsUsed: state.handRedrawsUsed ?? 0, heritageCode: state.heritageCode ?? null, heritageName: state.heritageName ?? null, heritageTiming: state.heritageTiming ?? null, heritageEffect: state.heritageEffect ?? null, heritageProducerName: state.heritageProducerName ?? null, heritageImageUrl: state.heritageImageUrl ?? null, heritageUsed: state.heritageUsed ?? false, situationCodes: state.situationCodes,
     usedCards: state.usedCards, quality: state.quality, xp: state.xp, pressure: state.pressure, traits: state.traits, combos: state.combos, bonusDie: state.bonusDie ?? null, effectNotices: state.effectNotices ?? [],
-    history: state.history.map((entry) => ({ stage: entry.stage, dice: entry.dice, total: entry.total, target: entry.target, outcome: entry.outcome, trait: entry.trait, dangers: entry.dangers, sparks: entry.sparks, pressureAfter: entry.pressureAfter })),
+    equipmentCodes: state.equipment?.codes ?? [], equipmentQualityBonus: state.equipmentQualityBonus ?? 0, harvestGrams: state.harvestGrams ?? null,
+    powerOutage: state.powerOutage ?? false, harvestLossPercent: state.harvestLossPercent ?? 0,
+    history: state.history.map((entry) => ({ stage: entry.stage, dice: entry.dice, total: entry.total, target: entry.target, outcome: entry.outcome, trait: entry.trait, dangers: entry.dangers, sparks: entry.sparks, pressureAfter: entry.pressureAfter, qualityDelta: entry.qualityDelta, xpGain: entry.xpGain, harvestLossPercent: entry.harvestLossPercent })),
   });
   let hash = 2166136261;
   for (let index = 0; index < canonical.length; index += 1) {

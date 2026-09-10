@@ -6,12 +6,23 @@ import {
   KQ_HERITAGE_CARDS,
   KQ_HERITAGE_CRAFT_COST,
   KQ_HERITAGE_DUPLICATE_FRAGMENTS,
+  KQ_HERITAGE_EFFECTS,
+  KQ_HERITAGE_EFFECT_TEMPLATES,
 } from "@/lib/kanab-quest-heritage";
 
 describe("Kanab Quest heritage cards", () => {
-  it("ships twelve permanent cards without rarity", () => {
+  it("ships twelve reusable mechanic templates without rarity", () => {
     expect(KQ_HERITAGE_CARDS).toHaveLength(12);
     expect(KQ_HERITAGE_CARDS.every((card) => !("rarity" in card))).toBe(true);
+  });
+
+  it("offers twenty-four distinct producer powers with unique tradeoffs", () => {
+    expect(KQ_HERITAGE_EFFECT_TEMPLATES).toHaveLength(24);
+    expect(KQ_HERITAGE_EFFECTS).toHaveLength(24);
+    expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.effect)).size).toBe(24);
+    expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.description)).size).toBe(24);
+    expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.drawback)).size).toBe(24);
+    expect(KQ_HERITAGE_EFFECT_TEMPLATES.every((card) => card.description.length >= 40 && card.drawback.length >= 40)).toBe(true);
   });
 
   it("keeps the database catalogue aligned with every stronger power", () => {
@@ -45,5 +56,14 @@ describe("Kanab Quest heritage cards", () => {
     const second = drawKqHeritageCard({ seed: 9, ownedCodes });
     expect(first).toEqual(second);
     expect(first.duplicate).toBe(true);
+  });
+
+  it("draws from a producer-driven catalogue of any size", () => {
+    const cards = [
+      ...KQ_HERITAGE_CARDS,
+      { ...KQ_HERITAGE_CARDS[0], code: "HERITAGE-013", name: "Héritage du nouveau producteur" },
+    ];
+    const ownedCodes = cards.slice(0, -1).map((card) => card.code);
+    expect(drawKqHeritageCard({ seed: 8, ownedCodes, cards }).card.code).toBe("HERITAGE-013");
   });
 });

@@ -90,22 +90,23 @@ describe("Kanab Quest player session ownership policy", () => {
     expect(actionSection).not.toContain("adminEmail");
   });
 
-  it("matches and locks battles from an owned Flower only", () => {
-    const rivalSection = backend.slice(
+  it("queues one owned Flower without accepting or exposing a chosen human rival", () => {
+    const trainingSection = backend.slice(
       backend.indexOf("export async function getKqPlayerFlowerRivals"),
-      backend.indexOf("export async function getKqAdminFlowerRivals"),
+      backend.indexOf("export async function finalizeKqPlayerBotBattle"),
     );
-    const lockSection = backend.slice(
-      backend.indexOf("export async function lockKqPlayerBattle"),
-      backend.indexOf("export async function lockKqAdminBattle"),
+    const queueSection = backend.slice(
+      backend.indexOf("export async function enqueueKqPlayerRandomBattle"),
+      backend.indexOf("export async function enqueueKqAdminRandomBattle"),
     );
-    expect(rivalSection).toContain('.eq("owner_id", ownerId)');
-    expect(rivalSection).toContain("recentOpponentIds");
-    expect(lockSection).toContain('.eq("owner_id", ownerId)');
-    expect(lockSection).toContain('rpc("rpc_kq_lock_ranked_battle"');
-    expect(lockSection).toContain("p_challenger_id: ownerId");
-    const rivalResponse = rivalSection.slice(rivalSection.indexOf("return (result.data"), rivalSection.length);
-    expect(rivalResponse).not.toContain("ownerId:");
+    expect(trainingSection).toContain('.eq("owner_id", ownerId)');
+    expect(trainingSection).not.toContain('from("kq_flowers:rivals")');
+    expect(trainingSection).not.toContain("recentOpponentIds");
+    expect(queueSection).toContain('rpc("rpc_kq_enqueue_random_battle"');
+    expect(queueSection).toContain("p_player_id: ownerId");
+    expect(queueSection).toContain("p_flower_id: flowerId");
+    expect(queueSection).toContain('rpc("rpc_kq_leave_random_battle_queue"');
+    expect(queueSection).not.toContain("rivalFlowerId");
   });
 
   it("finalizes both Flowers, rankings and challenge claims from a participating player", () => {
@@ -159,13 +160,13 @@ describe("Kanab Quest player session ownership policy", () => {
     expect(battleSection).toContain(".maybeSingle()");
   });
 
-  it("reads player progress from the latest snapshot without refreshing the public leaderboard", () => {
+  it("refreshes the live leaderboard so reputation is immediately reflected", () => {
     const progressSection = backend.slice(
       backend.indexOf("export async function getKqPlayerProgress"),
       backend.indexOf("export function prepareKqCardPlay"),
     );
-    expect(progressSection).toContain('select("leaderboard,snapshot_date")');
     expect(progressSection).not.toContain("getKqPublicLeaderboard()");
-    expect(progressSection).not.toContain("rpc_kq_refresh_daily_leaderboard");
+    expect(progressSection).toContain("rpc_kq_refresh_daily_leaderboard");
+    expect(progressSection).toContain('select("reputation")');
   });
 });

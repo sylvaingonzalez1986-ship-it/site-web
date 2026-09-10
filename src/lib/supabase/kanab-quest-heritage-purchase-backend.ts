@@ -24,6 +24,15 @@ export type KqHeritageRetroAwardResult = {
   nextCursor: number | null;
 };
 
+export type KqHeritageRetroPreviewResult = {
+  live: boolean;
+  processedItems: number;
+  eligibleUnits: number;
+  pendingUnits: number;
+  alreadyAwarded: number;
+  nextCursor: number | null;
+};
+
 export async function awardKqHeritageForPaidOrder(
   orderId: string,
 ): Promise<KqHeritagePurchaseAwardResult> {
@@ -69,14 +78,11 @@ export async function awardKqHeritageForPaidOrder(
   return { live: true, planned: plan.length, awarded, alreadyAwarded };
 }
 
-export async function awardKqHeritagePurchaseBatch(
-  afterOrderItemId = 0,
-): Promise<KqHeritageRetroAwardResult> {
-  if (!KQ_HERITAGE_PURCHASE_DRAWS_LIVE) {
-    return {
-      live: false, processedItems: 0, eligibleUnits: 0, awarded: 0, alreadyAwarded: 0, nextCursor: null,
-    };
-  }
+function heritagePurchaseUnitKey(orderItemId: number, unitIndex: number) {
+  return `${orderItemId}:${unitIndex}`;
+}
+
+async function loadKqHeritageRetroBatch(afterOrderItemId: number) {
   const cursor = Number.isSafeInteger(afterOrderItemId) && afterOrderItemId >= 0 ? afterOrderItemId : 0;
   const supabase = createSupabaseServiceClient();
   let itemsQuery = supabase.from("order_items")
@@ -99,20 +105,67 @@ export async function awardKqHeritagePurchaseBatch(
   const paidOrders = new Map((ordersResult.data ?? [])
     .filter((order) => order.payment_state === "paid" && order.status !== "cancelled" && order.customer_id)
     .map((order) => [String(order.id), String(order.customer_id)]));
-  const planByOwner = items.flatMap((item) => {
+  const contestProductIds = (contestProductsResult.data ?? []).map((entry) => String(entry.product_id));
+  const plan = items.flatMap((item) => {
     const userId = paidOrders.get(String(item.order_id));
     if (!userId) return [];
     return buildKqHeritagePurchaseDrawPlan([{
       id: Number(item.id),
       productId: String(item.product_id),
       quantity: Number(item.quantity),
-    }], (contestProductsResult.data ?? []).map((entry) => String(entry.product_id)))
-      .map((draw) => ({ ...draw, userId }));
+    }], contestProductIds).map((draw) => ({ ...draw, userId }));
   });
+  const plannedItemIds = [...new Set(plan.map((draw) => draw.orderItemId))];
+  const drawsResult = plannedItemIds.length > 0
+    ? await supabase.from("kq_heritage_draws")
+        .select("order_item_id,unit_index")
+        .in("order_item_id", plannedItemIds)
+    : { data: [], error: null };
+  if (drawsResult.error) throw new Error(`[supabase:kq-heritage-retro-draws] ${drawsResult.error.message}`);
+  const awardedKeys = new Set((drawsResult.data ?? []).map((draw) => heritagePurchaseUnitKey(
+    Number(draw.order_item_id),
+    Number(draw.unit_index),
+  )));
+  const lastId = items.at(-1)?.id;
+  return {
+    supabase,
+    items,
+    plan,
+    awardedKeys,
+    nextCursor: items.length === KQ_HERITAGE_RETRO_BATCH_SIZE && lastId != null ? Number(lastId) : null,
+  };
+}
+
+export async function previewKqHeritagePurchaseBatch(
+  afterOrderItemId = 0,
+): Promise<KqHeritageRetroPreviewResult> {
+  const batch = await loadKqHeritageRetroBatch(afterOrderItemId);
+  const alreadyAwarded = batch.plan.filter((draw) => batch.awardedKeys.has(
+    heritagePurchaseUnitKey(draw.orderItemId, draw.unitIndex),
+  )).length;
+  return {
+    live: KQ_HERITAGE_PURCHASE_DRAWS_LIVE,
+    processedItems: batch.items.length,
+    eligibleUnits: batch.plan.length,
+    pendingUnits: batch.plan.length - alreadyAwarded,
+    alreadyAwarded,
+    nextCursor: batch.nextCursor,
+  };
+}
+
+export async function awardKqHeritagePurchaseBatch(
+  afterOrderItemId = 0,
+): Promise<KqHeritageRetroAwardResult> {
+  if (!KQ_HERITAGE_PURCHASE_DRAWS_LIVE) {
+    return {
+      live: false, processedItems: 0, eligibleUnits: 0, awarded: 0, alreadyAwarded: 0, nextCursor: null,
+    };
+  }
+  const batch = await loadKqHeritageRetroBatch(afterOrderItemId);
   let awarded = 0;
   let alreadyAwarded = 0;
-  for (const draw of planByOwner) {
-    const result = await supabase.rpc("rpc_kq_draw_heritage_for_purchase", {
+  for (const draw of batch.plan) {
+    const result = await batch.supabase.rpc("rpc_kq_draw_heritage_for_purchase", {
       p_user_id: draw.userId,
       p_order_item_id: draw.orderItemId,
       p_unit_index: draw.unitIndex,
@@ -121,13 +174,12 @@ export async function awardKqHeritagePurchaseBatch(
     if ((result.data as { alreadyDrawn?: boolean } | null)?.alreadyDrawn) alreadyAwarded += 1;
     else awarded += 1;
   }
-  const lastId = items.at(-1)?.id;
   return {
     live: true,
-    processedItems: items.length,
-    eligibleUnits: planByOwner.length,
+    processedItems: batch.items.length,
+    eligibleUnits: batch.plan.length,
     awarded,
     alreadyAwarded,
-    nextCursor: items.length === KQ_HERITAGE_RETRO_BATCH_SIZE && lastId != null ? Number(lastId) : null,
+    nextCursor: batch.nextCursor,
   };
 }

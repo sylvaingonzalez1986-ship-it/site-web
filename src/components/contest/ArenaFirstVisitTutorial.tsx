@@ -4,28 +4,19 @@ import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
-  BookOpenCheck,
   Boxes,
   CircleHelp,
-  Gift,
-  Layers3,
-  MessageSquareText,
-  ShoppingBag,
-  Sparkles,
-  Sprout,
-  Swords,
   Trophy,
-  UserRound,
   X,
-  type LucideIcon,
 } from "lucide-react";
 import { createPortal } from "react-dom";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useCookieConsent } from "@/components/cookies/CookieConsentProvider";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { ARENA_TUTORIAL_STEPS, ARENA_TUTORIAL_REPUTATION_ROWS } from "@/lib/arena-tutorial";
 import styles from "./ArenaFirstVisitTutorial.module.css";
 
-export const ARENA_TUTORIAL_STORAGE_KEY = "lcb_arena_tutorial_v1";
+export const ARENA_TUTORIAL_STORAGE_KEY = "lcb_arena_tutorial_v2";
 
 type TutorialStorage = Pick<Storage, "getItem" | "setItem">;
 
@@ -45,91 +36,14 @@ export function markArenaTutorialSeen(storage: TutorialStorage): void {
   }
 }
 
-type TutorialFeature = {
-  title: string;
-  description: string;
-  Icon: LucideIcon;
-};
-
-type TutorialStep = {
-  id: "carnet" | "placard";
-  number: string;
-  eyebrow: string;
-  title: string;
-  lead: string;
-  href: string;
-  action: string;
-  Icon: LucideIcon;
-  features: TutorialFeature[];
-};
-
-export const ARENA_TUTORIAL_STEPS: readonly TutorialStep[] = [
-  {
-    id: "carnet",
-    number: "01",
-    eyebrow: "Carnet de dégustation",
-    title: "Note les fleurs que tu as achetées.",
-    lead: "Retrouve tes fleurs dans le Carnet, goûte-les et attribue tes notes.",
-    href: "/arene/carnet/regular",
-    action: "Ouvrir mon Carnet",
-    Icon: BookOpenCheck,
-    features: [
-      {
-        title: "Donne tes notes",
-        description: "Évalue chaque fleur depuis sa fiche de dégustation.",
-        Icon: Sparkles,
-      },
-      {
-        title: "Laisse un avis",
-        description: "C’est optionnel, mais un avis validé peut débloquer des packs.",
-        Icon: MessageSquareText,
-      },
-      {
-        title: "Débloque les Héritages",
-        description: "Goûte les fleurs de chaque producteur pour obtenir sa carte Héritage.",
-        Icon: Gift,
-      },
-    ],
-  },
-  {
-    id: "placard",
-    number: "02",
-    eyebrow: "Le Placard Kanab Quest",
-    title: "Cultive, affronte et grimpe.",
-    lead: "Transforme ta collection en stratégie et tente de cultiver la meilleure Fleur.",
-    href: "/arene/placard",
-    action: "Jouer dans le Placard",
-    Icon: Sprout,
-    features: [
-      {
-        title: "Choisis ton Buddie",
-        description: "Sélectionne une carte Kanab Quest que tu possèdes.",
-        Icon: UserRound,
-      },
-      {
-        title: "Prépare ton deck",
-        description: "Compose une main stratégique adaptée à ta culture.",
-        Icon: Layers3,
-      },
-      {
-        title: "Achète des packs",
-        description: "Utilise les points gagnés lors de tes achats dans la boutique.",
-        Icon: ShoppingBag,
-      },
-      {
-        title: "Affronte les joueurs",
-        description: "Engage tes Fleurs en duel pour progresser au classement.",
-        Icon: Swords,
-      },
-    ],
-  },
-] as const;
+export { ARENA_TUTORIAL_STEPS };
 
 function getFocusableElements(container: HTMLElement | null): HTMLElement[] {
   if (!container) return [];
   return Array.from(container.querySelectorAll<HTMLElement>([
     "button:not([disabled])",
     "a[href]",
+    "summary",
     "[tabindex]:not([tabindex='-1'])",
   ].join(","))).filter((element) => !element.hasAttribute("hidden"));
 }
@@ -139,12 +53,20 @@ export function ArenaFirstVisitTutorial() {
   const titleId = useId();
   const descriptionId = useId();
   const dialogRef = useRef<HTMLElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const stepTitleRef = useRef<HTMLHeadingElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const checkedFirstVisitRef = useRef(false);
   const [open, setOpen] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const step = ARENA_TUTORIAL_STEPS[stepIndex] ?? ARENA_TUTORIAL_STEPS[0];
   const StepIcon = step.Icon;
+
+  const changeStep = (index: number) => {
+    setStepIndex(Math.max(0, Math.min(ARENA_TUTORIAL_STEPS.length - 1, index)));
+    scrollRef.current?.scrollTo({ top: 0, behavior: "instant" });
+    stepTitleRef.current?.focus({ preventScroll: true });
+  };
 
   const dismiss = useCallback(() => {
     markArenaTutorialSeen(window.localStorage);
@@ -213,9 +135,9 @@ export function ArenaFirstVisitTutorial() {
       >
         <header className={styles.header}>
           <div>
-            <span>Première visite · mode d’emploi</span>
-            <h2 id={titleId}>Bienvenue dans l’Arène.</h2>
-            <p id={descriptionId}>Deux espaces alimentent une seule progression.</p>
+            <span>Le guide de l’Arène · nouvelle édition</span>
+            <h2 id={titleId}>De la carte à la réputation.</h2>
+            <p id={descriptionId}>Huit étapes. Tu peux aller directement au sujet qui t’intéresse.</p>
           </div>
           <button ref={closeButtonRef} type="button" onClick={dismiss} aria-label="Fermer le tutoriel de l’Arène">
             <X aria-hidden="true" />
@@ -228,22 +150,23 @@ export function ArenaFirstVisitTutorial() {
               key={tutorialStep.id}
               type="button"
               aria-current={stepIndex === index ? "step" : undefined}
-              onClick={() => setStepIndex(index)}
+              onClick={() => changeStep(index)}
             >
               <b>{tutorialStep.number}</b>
-              <span>{tutorialStep.id === "carnet" ? "Le Carnet" : "Le Placard"}</span>
+              <span>{tutorialStep.label}</span>
             </button>
           ))}
         </nav>
 
-        <div className={styles.stepBody} key={step.id}>
+        <div className={styles.scrollArea} ref={scrollRef} data-tutorial-scroll>
+        <div className={styles.stepBody} data-tutorial-step={step.id}>
           <aside className={styles.stepMarker} aria-hidden="true">
             <StepIcon />
             <strong>{step.number}</strong>
           </aside>
           <div className={styles.stepContent}>
-            <span>{step.eyebrow}</span>
-            <h3>{step.title}</h3>
+            <span aria-live="polite">Étape {step.number} / {ARENA_TUTORIAL_STEPS.length} · {step.eyebrow}</span>
+            <h3 ref={stepTitleRef} tabIndex={-1}>{step.title}</h3>
             <p>{step.lead}</p>
             <div className={styles.features}>
               {step.features.map(({ title, description, Icon }) => (
@@ -256,31 +179,42 @@ export function ArenaFirstVisitTutorial() {
                 </article>
               ))}
             </div>
+            {step.id === "reputation" ? (
+              <div className={styles.reputationTable}>
+                <table>
+                  <caption>Note du jury / 10 · effet sur la réputation</caption>
+                  <thead><tr><th scope="col">Filière</th><th scope="col">Baisse</th><th scope="col">Stable</th><th scope="col">Hausse</th></tr></thead>
+                  <tbody>{ARENA_TUTORIAL_REPUTATION_ROWS.map((row) => <tr key={row.label}><th scope="row">{row.label}</th><td>{row.loss}</td><td>{row.neutral}</td><td>{row.gain}</td></tr>)}</tbody>
+                </table>
+              </div>
+            ) : null}
+            <p className={styles.tip}>{step.tip}</p>
+            {step.details ? <details key={step.id} className={styles.details}><summary>{step.details.title}</summary>{step.details.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</details> : null}
             <Link href={step.href} onClick={dismiss} className={styles.stepAction}>
               {step.action}<ArrowRight aria-hidden="true" />
             </Link>
           </div>
         </div>
 
-        <div className={styles.scoreBand}>
+        {step.id === "reputation" ? <div className={styles.scoreBand}>
           <Trophy aria-hidden="true" />
           <p>
-            <strong>Classement final</strong>
-            Les points du Carnet et tes performances dans le Placard comptent ensemble.
-            Des coffrets dégustation et des goodies sont à gagner en fin de saison.
+            <strong>La boucle du Placard</strong>
+            Équipe → cultive → duel → vends → réinvestis. La qualité fait la différence.
           </p>
+        </div> : null}
         </div>
 
         <footer className={styles.footer}>
           {stepIndex > 0 ? (
-            <button type="button" onClick={() => setStepIndex((current) => current - 1)}>
+            <button type="button" onClick={() => changeStep(stepIndex - 1)}>
               <ArrowLeft aria-hidden="true" />Retour
             </button>
           ) : (
             <button type="button" onClick={dismiss}>Voir plus tard</button>
           )}
           {stepIndex < ARENA_TUTORIAL_STEPS.length - 1 ? (
-            <button type="button" className={styles.primaryButton} onClick={() => setStepIndex((current) => current + 1)}>
+            <button type="button" className={styles.primaryButton} onClick={() => changeStep(stepIndex + 1)}>
               Étape suivante<ArrowRight aria-hidden="true" />
             </button>
           ) : (

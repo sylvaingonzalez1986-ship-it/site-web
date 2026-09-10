@@ -1,12 +1,23 @@
 "use client";
 
 import Image from "next/image";
+import { ArenaSceneHeader } from "../contest/ArenaSceneHeader";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ArrowLeft, Gamepad2, Hourglass, ShoppingBag, Swords } from "lucide-react";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ArrowLeft, Banknote, Gamepad2, Hourglass, ShoppingBag, Swords } from "lucide-react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { KqPlacardHud } from "./KqPlacardHud";
+import retro from "../contest/ArenaRetro.module.css";
 
 const NAVIGATION_FEEDBACK_MS = 420;
+const SCROLL_SETTLE_MS = 120;
+
+function resetPlacardScrollPosition() {
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+}
 
 function PlacardViewLoading() {
   return (
@@ -27,14 +38,38 @@ const KqSupportBoosterShop = dynamic(
   () => import("./KqSupportBoosterShop").then((module) => module.KqSupportBoosterShop),
   { loading: PlacardViewLoading },
 );
+const KqMarketDesk = dynamic(
+  () => import("./KqMarketDesk").then((module) => module.KqMarketDesk),
+  { loading: PlacardViewLoading },
+);
 
-type PlacardView = "hub" | "shop" | "game" | "arena";
+type PlacardView = "hub" | "shop" | "game" | "arena" | "market";
+type PlacardDeepLink = PlacardView | "shop-equipment";
+
+function isPlacardView(value: string | null): value is PlacardView {
+  return value === "hub" || value === "shop" || value === "game" || value === "arena" || value === "market";
+}
+
+function getPlacardDeepLink(): PlacardDeepLink {
+  const params = new URLSearchParams(window.location.search);
+  const requestedView = params.get("view");
+  if (!isPlacardView(requestedView)) return "hub";
+  return requestedView === "shop" && params.get("catalog") === "equipment"
+    ? "shop-equipment"
+    : requestedView;
+}
+
+function subscribePlacardLocation(onStoreChange: () => void) {
+  window.addEventListener("popstate", onStoreChange);
+  return () => window.removeEventListener("popstate", onStoreChange);
+}
 
 const PLACARD_VIEW_LABELS: Record<PlacardView, string> = {
   hub: "du Placard",
   shop: "de la Boutique",
   game: "du Jeu",
   arena: "de Fleur vs Fleur",
+  market: "du Comptoir des lots",
 };
 
 const HUB_DESTINATIONS = [
@@ -68,31 +103,87 @@ const HUB_DESTINATIONS = [
     icon: Swords,
     accent: "bg-[#167d6b]",
   },
+  {
+    id: "market" as const,
+    number: "04",
+    eyebrow: "Après jury",
+    title: "Le Marché",
+    image: "/mascots/boutique-market.png",
+    imageClassName: "object-contain object-center p-3 sm:p-5",
+    icon: Banknote,
+    accent: "bg-[#ef6f31]",
+  },
 ];
 
 export function PlacardPlayerShell() {
-  const [view, setView] = useState<PlacardView>("hub");
+  const deepLink = useSyncExternalStore<PlacardDeepLink>(
+    subscribePlacardLocation,
+    getPlacardDeepLink,
+    () => "hub",
+  );
+  const [selectedView, setSelectedView] = useState<PlacardView | null>(null);
   const [pendingView, setPendingView] = useState<PlacardView | null>(null);
+  const [equipmentCatalogRequested, setEquipmentCatalogRequested] = useState(false);
+  const [requestedEquipmentCode, setRequestedEquipmentCode] = useState<string | null>(null);
+  const [shopReturnView, setShopReturnView] = useState<PlacardView>("hub");
   const navigationTimerRef = useRef<number | null>(null);
+  const scrollFrameRef = useRef<number | null>(null);
+  const scrollTimerRef = useRef<number | null>(null);
+  const view: PlacardView = selectedView ?? (deepLink === "shop-equipment" ? "shop" : deepLink);
+  const autoOpenEquipmentCatalog = equipmentCatalogRequested
+    || (selectedView === null && deepLink === "shop-equipment");
+
+  const resetScroll = useCallback(() => {
+    if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
+    if (scrollTimerRef.current !== null) window.clearTimeout(scrollTimerRef.current);
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+    resetPlacardScrollPosition();
+    scrollFrameRef.current = window.requestAnimationFrame(() => {
+      resetPlacardScrollPosition();
+      scrollFrameRef.current = null;
+      scrollTimerRef.current = window.setTimeout(() => {
+        resetPlacardScrollPosition();
+        scrollTimerRef.current = null;
+      }, SCROLL_SETTLE_MS);
+    });
+  }, []);
 
   const openView = useCallback((nextView: PlacardView) => {
+    resetScroll();
     if (nextView === view) return;
     if (navigationTimerRef.current !== null) window.clearTimeout(navigationTimerRef.current);
     setPendingView(nextView);
-    setView(nextView);
+    setSelectedView(nextView);
     navigationTimerRef.current = window.setTimeout(() => {
       setPendingView(null);
       navigationTimerRef.current = null;
     }, NAVIGATION_FEEDBACK_MS);
-  }, [view]);
+  }, [resetScroll, view]);
+
+  const openEquipmentCatalog = useCallback((equipmentCode?: string) => {
+    setShopReturnView(view === "shop" ? "hub" : view);
+    setRequestedEquipmentCode(equipmentCode ?? null);
+    setEquipmentCatalogRequested(true);
+    openView("shop");
+  }, [openView, view]);
 
   useEffect(() => () => {
     if (navigationTimerRef.current !== null) window.clearTimeout(navigationTimerRef.current);
+    if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
+    if (scrollTimerRef.current !== null) window.clearTimeout(scrollTimerRef.current);
   }, []);
 
   useLayoutEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, [view]);
+    resetScroll();
+  }, [resetScroll, view]);
+
+  useEffect(() => {
+    const previousScrollRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+    return () => {
+      window.history.scrollRestoration = previousScrollRestoration;
+    };
+  }, []);
 
   const navigationFeedback = pendingView ? (
     <div
@@ -109,12 +200,12 @@ export function PlacardPlayerShell() {
 
   if (view !== "hub") {
     const currentTitle =
-      view === "shop" ? "La Boutique" : view === "game" ? "Le Jeu" : "Fleur vs Fleur";
+      view === "shop" ? "La Boutique" : view === "game" ? "Le Jeu" : view === "market" ? "Le Marché" : "Fleur vs Fleur";
 
     return (
-      <div className="min-h-screen bg-cream text-ink">
+      <div className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
         {navigationFeedback}
-        <nav className="sticky top-0 z-[80] border-b-2 border-ink bg-cream/95 px-3 py-3 backdrop-blur sm:px-5" aria-label="Navigation du Placard">
+        <nav className={`${retro.shellNav} sticky top-0 z-[80] border-b-2 border-ink bg-cream/95 px-3 py-3 backdrop-blur sm:px-5`} aria-label="Navigation du Placard">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
             <button
               type="button"
@@ -136,12 +227,24 @@ export function PlacardPlayerShell() {
         </nav>
 
         {view === "shop" ? (
-          <KqSupportBoosterShop autoOpen onExit={() => openView("hub")} />
+          <KqSupportBoosterShop
+            autoOpen
+            autoOpenEquipment={autoOpenEquipmentCatalog}
+            initialEquipmentCode={requestedEquipmentCode}
+            onExit={() => {
+              setEquipmentCatalogRequested(false);
+              setRequestedEquipmentCode(null);
+              openView(shopReturnView);
+            }}
+          />
+        ) : view === "market" ? (
+          <KqMarketDesk onOpenShop={openEquipmentCatalog} />
         ) : (
           <KanabQuestDicePrototype
             apiScope="player"
             viewMode={view === "arena" ? "arena" : "game"}
             onOpenArena={() => openView("arena")}
+            onOpenMarket={() => openView("market")}
           />
         )}
       </div>
@@ -149,37 +252,26 @@ export function PlacardPlayerShell() {
   }
 
   return (
-    <div className="min-h-screen bg-cream text-ink">
+    <div className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
       {navigationFeedback}
-      <header className="border-b-2 border-ink px-4 py-6 sm:py-8">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-end justify-between gap-5">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-charcoal">
-              Kanab Quest · L’Arène
-            </p>
-            <h1 className="mt-2 font-display text-5xl uppercase leading-[0.9] md:text-7xl">
-              Le Placard
-            </h1>
-          </div>
-          <Link
-            href="/arene"
-            className="inline-flex min-h-12 items-center border-2 border-ink bg-white px-5 font-black uppercase shadow-[4px_4px_0_#111] transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#111]"
-          >
-            Retour à L’Arène
-          </Link>
-        </div>
-      </header>
+      <ArenaSceneHeader mode="jouer" />
 
       <main className="mx-auto max-w-6xl px-4 py-7 sm:py-10">
+        <KqPlacardHud
+          onOpenShop={openEquipmentCatalog}
+          onOpenGame={() => openView("game")}
+          onOpenArena={() => openView("arena")}
+          onOpenMarket={() => openView("market")}
+        />
         <div className="mb-5 flex items-end justify-between gap-4">
           <div>
             <h2 className="font-display text-3xl uppercase leading-none sm:text-4xl">
-              Que veux-tu faire ?
+              Sélection du mode
             </h2>
           </div>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {HUB_DESTINATIONS.map((destination) => {
             const Icon = destination.icon;
             return (
@@ -188,7 +280,7 @@ export function PlacardPlayerShell() {
                 type="button"
                 onClick={() => openView(destination.id)}
                 aria-busy={pendingView === destination.id || undefined}
-                className="group grid grid-cols-[118px_1fr] overflow-hidden border-2 border-ink bg-white text-left shadow-[5px_5px_0_#111] transition duration-200 hover:-translate-y-1 hover:shadow-[8px_8px_0_#111] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#167d6b] sm:grid-cols-[160px_1fr] md:block"
+                className={`${retro.destination} group grid grid-cols-[118px_1fr] overflow-hidden border-2 bg-white text-left transition duration-200 hover:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#167d6b] sm:grid-cols-[160px_1fr] md:block`}
                 aria-label={`Ouvrir ${destination.title}`}
               >
                 <span className={`relative block min-h-36 overflow-hidden border-r-2 border-ink md:aspect-[16/10] md:min-h-0 md:border-b-2 md:border-r-0 ${destination.accent}`}>
@@ -196,6 +288,7 @@ export function PlacardPlayerShell() {
                     src={destination.image}
                     alt=""
                     fill
+                    loading={destination.id === "shop" ? "eager" : "lazy"}
                     sizes="(max-width: 767px) 100vw, 33vw"
                     className={`${destination.imageClassName} transition duration-300 group-hover:scale-[1.04]`}
                   />
