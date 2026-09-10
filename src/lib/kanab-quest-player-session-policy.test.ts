@@ -18,10 +18,10 @@ const playerRouteRoot = join(process.cwd(), "src/app/api/arena/placard");
 const playerRouteFiles = findRouteFiles(playerRouteRoot);
 
 describe("Kanab Quest player session ownership policy", () => {
-  it("keeps every player endpoint behind the global launch flag", () => {
+  it("checks access for the current request on every player endpoint", () => {
     expect(playerRouteFiles.length).toBeGreaterThanOrEqual(10);
     for (const route of playerRouteFiles) {
-      expect(readFileSync(route, "utf8"), route).toContain("isKqPlayerApiEnabled");
+      expect(readFileSync(route, "utf8"), route).toContain("!await isKqPlayerRequestEnabled()");
     }
   });
 

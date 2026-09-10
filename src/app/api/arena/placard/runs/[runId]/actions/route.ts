@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { applyKqPlayerRunAction, type KqRunAction } from "@/lib/supabase/kanab-quest-backend";
 
@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request, context: { params: Promise<{ runId: string }> }) {
   const startedAt = performance.now();
-  if (!isKqPlayerApiEnabled()) {
+  if (!await isKqPlayerRequestEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }
   const session = await getCurrentCustomerSessionByBackend("identity");

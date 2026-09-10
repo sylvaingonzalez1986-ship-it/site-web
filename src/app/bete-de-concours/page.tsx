@@ -22,7 +22,7 @@ import {
   isContestSchemaMissingError,
 } from "@/lib/contest-backend";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { isSupabaseAuthCookieName } from "@/lib/supabase-auth-cookies";
 import {
   CONTEST_ENTRY_CATEGORIES,
@@ -232,7 +232,7 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
         testerGlobalRankings={testerGlobalRankings.items.map(sanitizePublicContestRankingItem)}
         isAuthenticated={Boolean(session?.customerId)}
         isAdminAuthorized={adminAuthorized}
-        isPlacardPlayerEnabled={isKqPlayerApiEnabled()}
+        isPlacardPlayerEnabled={await isKqPlayerRequestEnabled()}
         initialView={arenaView}
         surface={surface}
       />

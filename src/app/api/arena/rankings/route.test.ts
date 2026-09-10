@@ -5,7 +5,7 @@ const mocks = vi.hoisted(() => ({
   leaderboard: vi.fn(),
 }));
 
-vi.mock("@/lib/kanab-quest-player-access", () => ({ isKqPlayerApiEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({ getKqPublicArenaLeaderboard: mocks.leaderboard }));
 
 import { GET } from "@/app/api/arena/rankings/route";
@@ -26,7 +26,7 @@ describe("GET /api/arena/rankings", () => {
     const response = await GET();
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ formulaVersion: "arena-v1", entries: [{ rank: 1, pseudo: "Maya", score: 700 }] });
-    expect(response.headers.get("cache-control")).toContain("s-maxage=60");
+    expect(response.headers.get("cache-control")).toContain("private, no-store");
   });
 
   it("does not leak backend errors", async () => {

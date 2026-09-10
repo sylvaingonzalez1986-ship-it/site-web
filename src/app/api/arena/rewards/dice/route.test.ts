@@ -9,7 +9,7 @@ const mocks = vi.hoisted(() => ({
   logRejection: vi.fn(),
 }));
 
-vi.mock("@/lib/kanab-quest-player-access", () => ({ isKqPlayerApiEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/security-rate-limit", () => ({
   getRequestIp: () => "127.0.0.1",

@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getKqPlayerFlowers } from "@/lib/supabase/kanab-quest-backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  if (!isKqPlayerApiEnabled()) {
+  if (!await isKqPlayerRequestEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }
   const session = await getCurrentCustomerSessionByBackend("identity");

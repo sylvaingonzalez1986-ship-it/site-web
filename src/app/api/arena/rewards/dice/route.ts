@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import {
   getArenaCustomerRewardDiceState,
@@ -11,7 +11,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 async function getPlayer() {
-  if (!isKqPlayerApiEnabled()) return {
+  if (!await isKqPlayerRequestEnabled()) return {
     ok: false as const,
     response: NextResponse.json({ error: "Introuvable." }, { status: 404 }),
   };

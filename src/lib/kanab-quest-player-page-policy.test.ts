@@ -116,8 +116,8 @@ describe("Kanab Quest player page access", () => {
     expect(isKqPlayerApiEnabled()).toBe(false);
   });
 
-  it("checks the server flag before requiring a customer session", () => {
-    const flagGuard = playerPage.indexOf("if (!isKqPlayerApiEnabled()) notFound()");
+  it("checks request access before requiring a player identity", () => {
+    const flagGuard = playerPage.indexOf("if (!await isKqPlayerRequestEnabled()) notFound()");
     const sessionLookup = playerPage.indexOf("getCurrentCustomerSessionByBackend(");
     expect(flagGuard).toBeGreaterThan(-1);
     expect(sessionLookup).toBeGreaterThan(flagGuard);
