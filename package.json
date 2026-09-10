@@ -36,7 +36,7 @@
     "ffmpeg-static": "^5.2.0",
     "gsap": "^3.14.2",
     "lucide-react": "^0.564.0",
-    "next": "16.2.12",
+    "next": "16.3.4",
     "nodemailer": "^9.0.1",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.5.207",
@@ -45,10 +45,10 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "server-only": "^0.0.1",
-    "sharp": "0.35.3"
+    "sharp": "0.35.4"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^16.2.1",
+    "@next/bundle-analyzer": "^16.3.4",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pdfkit": "^0.17.5",
@@ -58,7 +58,7 @@
     "babel-plugin-react-compiler": "1.0.0",
     "chrome-launcher": "^1.2.1",
     "eslint": "9.39.2",
-    "eslint-config-next": "16.2.1",
+    "eslint-config-next": "16.3.4",
     "lighthouse": "^13.0.3",
     "tailwindcss": "^4",
     "typescript": "^5",
@@ -69,7 +69,7 @@
     "eslint-plugin-react-hooks": "7.0.1",
     "minimatch": "10.2.6",
     "postcss": "8.5.23",
-    "sharp": "0.35.3",
+    "sharp": "0.35.4",
     "typescript-eslint": "8.46.0"
   }
 }
