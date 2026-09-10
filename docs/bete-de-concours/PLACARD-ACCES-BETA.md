@@ -9,6 +9,10 @@ Le module Arène doit être activé (`CONTEST_FEATURE_ENABLED` et, en production
 `CONTEST_FEATURE_ALLOW_PRODUCTION`). L'accès privé ne demande ni activation de
 `KQ_PLAYER_API_LIVE`, ni validation artificielle du dossier de lancement.
 
+Quand le module est actif, ouvrir `/arene/placard` sans session client valide
+redirige vers la connexion avec un retour au Placard. Une fois connecté, le
+compte doit toujours être admin ou bêta ; les autres comptes reçoivent une 404.
+
 Le contrôle `isKqPlayerRequestEnabled` est utilisé par la page Placard, ses API,
 les classements et les récompenses de l'Arène. Il relit les droits du compte à
 chaque requête, sans cache partagé. Désactiver l'accès bêta du compte révoque
