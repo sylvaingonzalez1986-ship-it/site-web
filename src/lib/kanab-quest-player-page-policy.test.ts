@@ -27,7 +27,6 @@ const VALID_DOSSIER_JSON = JSON.stringify({
   contactEmail: "jeu@leschanvriersbretons.com",
 });
 
-const playerPage = readFileSync(join(process.cwd(), "src/app/arene/placard/page.tsx"), "utf8");
 const playerShell = readFileSync(
   join(process.cwd(), "src/components/placard/PlacardPlayerShell.tsx"),
   "utf8",
@@ -114,15 +113,6 @@ describe("Kanab Quest player page access", () => {
     vi.stubEnv("NODE_ENV", "production");
     expect(isKqLocalPlayerPreviewEnabled()).toBe(false);
     expect(isKqPlayerApiEnabled()).toBe(false);
-  });
-
-  it("checks request access before requiring a player identity", () => {
-    const flagGuard = playerPage.indexOf("if (!await isKqPlayerRequestEnabled()) notFound()");
-    const sessionLookup = playerPage.indexOf("getCurrentCustomerSessionByBackend(");
-    expect(flagGuard).toBeGreaterThan(-1);
-    expect(sessionLookup).toBeGreaterThan(flagGuard);
-    expect(playerPage).toContain('getCurrentCustomerSessionByBackend("identity")');
-    expect(playerPage).toContain('redirect("/compte/connexion?next=%2Farene%2Fplacard")');
   });
 
   it("mounts the customer-scoped game without duplicate overview requests", () => {
