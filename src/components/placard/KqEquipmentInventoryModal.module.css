@@ -19,3 +19,9 @@
 .header, .slotGroup > header { background: var(--arcade-dark); }
 .header { box-shadow: none; border-bottom: 1px solid #fffaf140; }
 .categoryBar button[data-active] { background: var(--arcade-dark); color: var(--arcade-paper); box-shadow: inset 0 -3px var(--arcade-yellow); }
+
+.equipmentCard { grid-template-rows: auto auto auto; }
+.visual { grid-row: 1; }
+.visualImage { object-fit: contain; padding: 6px; }
+.upgradeSlot { grid-column: 1 / -1; min-width: 0; padding: 8px; }
+.equipmentCard > footer { grid-column: 1 / -1; }

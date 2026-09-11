@@ -282,7 +282,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
       launchDossier: COMPLETE_LAUNCH_DOSSIER,
     });
     expect(report.contentReady).toBe(false);
-    expect(report.blockers).toContain("19 prix boutique Supabase alignés sur le catalogue");
+    expect(report.blockers).toContain("12 prix boutique Supabase alignés sur le catalogue");
   });
   it("previews only the two active notebook missions", () => {
     expect(buildKqNotebookRewardPreview(

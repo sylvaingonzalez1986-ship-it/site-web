@@ -6,7 +6,7 @@ const { createSupabaseServiceClient } = vi.hoisted(() => ({
 
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient }));
 
-import { equipKqDurableEquipment } from "@/lib/supabase/kanab-quest-equipment-backend";
+import { equipKqDurableEquipment, upgradeKqDurableEquipment, purchaseKqDurableEquipment } from "@/lib/supabase/kanab-quest-equipment-backend";
 
 const USER_ID = "11000000-0000-4000-8000-000000000001";
 
@@ -28,6 +28,26 @@ function mockEquipmentOwnership(rows: Array<{ equipment_code: string; purchase_p
 describe("Kanab Quest durable equipment installation", () => {
   beforeEach(() => {
     createSupabaseServiceClient.mockReset();
+  });
+
+  it("sends only the session owner, expected level and idempotency key to the upgrade transaction", async () => {
+    const rpc = vi.fn().mockResolvedValue({ data: { level: 5, cashAfterCents: 1000 }, error: null });
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    const input = { userId: USER_ID, requestKey: "11000000-0000-4000-8000-000000000002", equipmentCode: "LED-300", expectedLevel: 4 };
+    await expect(upgradeKqDurableEquipment(input)).resolves.toMatchObject({ level: 5 });
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_upgrade_equipment", {
+      p_user_id: USER_ID, p_request_key: input.requestKey, p_equipment_code: "LED-300", p_expected_level: 4,
+    });
+    rpc.mockResolvedValue({ data: null, error: { message: "equipment_level_changed" } });
+    await expect(upgradeKqDurableEquipment(input)).rejects.toThrow("Le niveau a changé");
+  });
+
+  it("rejects retired purchases and upgrades before accessing the database", async () => {
+    const requestKey = "11000000-0000-4000-8000-000000000002";
+    await expect(purchaseKqDurableEquipment({ userId: USER_ID, requestKey, equipmentCodes: ["PRESS-20T"] })).rejects.toThrow("pas disponible");
+    await expect(upgradeKqDurableEquipment({ userId: USER_ID, requestKey, equipmentCode: "PRESS-20T", expectedLevel: 1 })).rejects.toThrow("non améliorable");
+    await expect(upgradeKqDurableEquipment({ userId: USER_ID, requestKey, equipmentCode: "LED-300", expectedLevel: 10 })).rejects.toThrow("maximal");
+    expect(createSupabaseServiceClient).not.toHaveBeenCalled();
   });
 
   it("rejects an installation before the RPC when the player does not own the equipment", async () => {

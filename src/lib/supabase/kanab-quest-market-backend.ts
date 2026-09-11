@@ -176,7 +176,7 @@ export async function getKqMarketSnapshot(userId: string) {
           ? getKqJuryScoreFromRounds(botRounds, "player")
           : getKqJuryScoreFromStats(flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats as Record<string, number> : {});
     const { harvestGrams } = getKqMarketRunSummary(runStates.get(String(flower.run_id)), Number(flower.quality));
-    const options = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equippedCodes });
+    const options = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: equipmentShop.levels });
     const prepared = await supabase.rpc("rpc_kq_prepare_market_lot", {
       p_user_id: userId,
       p_flower_id: flowerId,
@@ -238,7 +238,7 @@ export async function getKqMarketSnapshot(userId: string) {
     equippedCodes,
     routePlan: equipmentShop.routePlan,
     routeMasteries: equipmentShop.routeMasteries,
-    equipmentSummary: summarizeKqEquipmentLoadout(equippedCodes),
+    equipmentSummary: summarizeKqEquipmentLoadout(equippedCodes, equipmentShop.levels),
     lots,
   };
 }

@@ -20,9 +20,9 @@ export const KQ_MARKET_ROUTE_MINIMUM_LOADOUTS = {
   "static-sift": ["SIFT-TRAY", "STATIC-PLASMA"],
   "ice-water-hash": ["WASHER-25L"],
   "rosin-trial": ["PRESS-0600"],
-  "rosin-selection": ["PRESS-2T"],
-  "rosin-premium": ["PRESS-10T"],
-  "rosin-signature": ["PRESS-20T"],
+  "rosin-selection": ["PRESS-0600"],
+  "rosin-premium": ["PRESS-0600"],
+  "rosin-signature": ["PRESS-0600"],
   "hash-signature": ["WASHER-25L", "AUTO-SIEVE", "FREEZE-DRYER"],
 } as const satisfies Record<KqMarketRouteCode, readonly string[]>;
 
@@ -130,11 +130,13 @@ function getQuote(input: {
   juryScore: number;
   harvestGrams: number;
   equipmentCodes: string[];
+  equipmentLevels?: Record<string, number>;
 }): KqMarketQuote {
   const quote = quoteKqMarketRoutes({
     juryScore: input.juryScore,
     harvestGrams: input.harvestGrams,
     equipmentCodes: input.equipmentCodes,
+    equipmentLevels: input.equipmentLevels,
   }).find((option) => option.route === input.route);
   if (!quote) throw new Error(`Voie de marché inconnue : ${input.route}`);
   return quote;
@@ -268,7 +270,7 @@ export function buildKqEconomyBalanceReport(input: {
 
 export function getKqEquipmentPaybackScenarios(
   equipmentCode: string,
-  input: { ownedCodes?: string[]; cartCodes?: string[] } = {},
+  input: { ownedCodes?: string[]; cartCodes?: string[]; levels?: Record<string, number> } = {},
 ) {
   const report = buildKqEconomyBalanceReport(KQ_PLAYER_PAYBACK_REFERENCE);
   const owned = new Set(input.ownedCodes ?? []);
@@ -319,6 +321,7 @@ export function getKqEquipmentPaybackScenarios(
       if (!projectedEquipmentCodes.includes(equipmentCode)) return [];
 
       const quote = getQuote({
+        equipmentLevels: input.levels,
         route: projection.route,
         juryScore: report.juryScore,
         harvestGrams: report.harvestGrams,

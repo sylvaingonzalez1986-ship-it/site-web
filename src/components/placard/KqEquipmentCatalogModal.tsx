@@ -50,9 +50,13 @@ import {
   type KqEquipmentDefinition,
 } from "@/lib/kanab-quest-equipment";
 import styles from "./KqEquipmentCatalogModal.module.css";
+import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
+import { KqEquipmentTierBadge } from "./KqEquipmentTierBadge";
 
 type EquipmentSnapshot = {
   cashCents: number;
+  levels: Record<string, number>;
+  purchasedCodes: string[];
   reputation: number;
   ownedCodes: string[];
   equippedCodes: string[];
@@ -80,9 +84,9 @@ const CATEGORY_ICONS: Record<KqEquipmentCategory, typeof Box> = {
   security: Shield,
 };
 
-function EquipmentArtwork({ equipment }: { equipment: KqEquipmentDefinition }) {
+function EquipmentArtwork({ equipment, level = 1 }: { equipment: KqEquipmentDefinition; level?: number }) {
   const Icon = CATEGORY_ICONS[equipment.category];
-  const artwork = getKqEquipmentArtwork(equipment.code);
+  const artwork = getKqEquipmentArtwork(equipment.code, level);
   return (
     <span className={styles.productArtwork} data-category={equipment.category} data-has-artwork={artwork ? true : undefined}>
       {artwork ? (
@@ -100,6 +104,7 @@ function EquipmentArtwork({ equipment }: { equipment: KqEquipmentDefinition }) {
         </>
       )}
       <small>{equipment.specification}</small>
+      <KqEquipmentTierBadge level={level} />
     </span>
   );
 }
@@ -224,8 +229,9 @@ export function KqEquipmentCatalogModal({
     equippedCodes: snapshot.equippedCodes,
     cashCents: snapshot.cashCents,
   }) : null;
-  const currentLoadout = summarizeKqEquipmentLoadout(snapshot?.equippedCodes ?? []);
+  const currentLoadout = summarizeKqEquipmentLoadout(snapshot?.equippedCodes ?? [], snapshot?.levels);
   const projectedLoadout = projectKqEquipmentLoadout({
+    levels: snapshot?.levels,
     equippedCodes: snapshot?.equippedCodes ?? [],
     candidateCodes: cartCodes,
     ownedCodes: snapshot?.ownedCodes ?? [],
@@ -239,6 +245,7 @@ export function KqEquipmentCatalogModal({
     projectedUnlocks: projectedLoadout.unlocks,
   });
   const selectedProjection = selectedEquipment ? projectKqEquipmentLoadout({
+    levels: snapshot?.levels,
     equippedCodes: snapshot?.equippedCodes ?? [],
     candidateCodes: [...new Set([...cartCodes, selectedEquipment.code])],
     ownedCodes: snapshot?.ownedCodes ?? [],
@@ -265,17 +272,19 @@ export function KqEquipmentCatalogModal({
   );
   const selectedPaybackScenarios = useMemo(
     () => selectedEquipment ? getKqEquipmentPaybackScenarios(selectedEquipment.code, {
+      levels: snapshot?.levels,
       ownedCodes: snapshot?.ownedCodes ?? [],
       cartCodes,
     }) : [],
-    [cartCodes, selectedEquipment, snapshot?.ownedCodes],
+    [cartCodes, selectedEquipment, snapshot?.ownedCodes, snapshot?.levels],
   );
   const plannedRouteScenario = useMemo(() => routePlan
     ? getKqEquipmentPaybackScenarios(routePlan.equipmentCode, {
+      levels: snapshot?.levels,
       ownedCodes: snapshot?.ownedCodes ?? [],
       cartCodes,
     }).find((scenario) => scenario.route === routePlan.route) ?? null
-    : null, [cartCodes, routePlan, snapshot?.ownedCodes]);
+    : null, [cartCodes, routePlan, snapshot?.ownedCodes, snapshot?.levels]);
   const plannedRouteProgress = plannedRouteScenario ? getKqEquipmentInvestmentProgress({
     investmentCents: plannedRouteScenario.remainingInvestmentCents,
     cashCents: snapshot?.cashCents ?? 0,
@@ -451,7 +460,7 @@ export function KqEquipmentCatalogModal({
                   data-alternative={alternative || undefined}
                 >
                   <button type="button" className={styles.productMain} onClick={() => setSelectedCode(equipment.code)} aria-label={`Voir ${equipment.name}`}>
-                    <EquipmentArtwork equipment={equipment} />
+                    <EquipmentArtwork equipment={equipment} level={snapshot?.levels?.[equipment.code] ?? 1} />
                     <span className={styles.productCopy}>
                       {equipment.code === recommendedEquipmentCode ? <em className={styles.recommendedBadge}>Objectif conseillé</em> : alternative ? <em className={styles.alternativeBadge}>Modèle alternatif</em> : null}
                       <small>{KQ_EQUIPMENT_CATEGORY_LABELS[equipment.category]}</small>
@@ -525,7 +534,7 @@ export function KqEquipmentCatalogModal({
 
       {selectedEquipment ? <aside className={styles.detailPanel} aria-label={`Détails de ${selectedEquipment.name}`}>
         <button type="button" onClick={() => setSelectedCode(null)} aria-label="Fermer la fiche"><X /></button>
-        <EquipmentArtwork equipment={selectedEquipment} />
+        <EquipmentArtwork equipment={selectedEquipment} level={snapshot?.levels?.[selectedEquipment.code] ?? 1} />
         {selectedEquipment.code === recommendedEquipmentCode ? <em className={styles.recommendedBadge}>Objectif conseillé</em> : null}
         {selectedEquipment.code !== recommendedEquipmentCode && isKqEquipmentSuperseded(selectedEquipment.code, snapshot?.ownedCodes ?? []) ? <em className={styles.alternativeBadge}>Modèle alternatif · un modèle supérieur est déjà acquis</em> : null}
         <small>{KQ_EQUIPMENT_CATEGORY_LABELS[selectedEquipment.category]} · Durable</small>
@@ -533,6 +542,7 @@ export function KqEquipmentCatalogModal({
         <strong className={styles.detailPrice}>{selectedEquipment.purchasable ? formatKqCash(selectedEquipment.priceCents) : "Équipement fourni"}</strong>
         <p>{selectedEquipment.shortDescription}</p>
         <EquipmentBenefits equipment={selectedEquipment} />
+        {snapshot?.purchasedCodes?.includes(selectedEquipment.code) ? <KqEquipmentUpgrade key={selectedEquipment.code} code={selectedEquipment.code} level={snapshot.levels?.[selectedEquipment.code] ?? 1} cashCents={snapshot.cashCents} disabled={pending !== null} onUpdated={refresh} /> : <p>Achat au niveau 1 · améliorable jusqu’au niveau 10 · nouvelle apparence aux niveaux 5 et 10.</p>}
         <section className={styles.detailProjection} aria-label="Projection personnalisée dans ton atelier" data-blocked={selectedProjectionBlocked || undefined}>
           <h4>Dans ton atelier</h4>
           {snapshot?.equippedCodes.includes(selectedEquipment.code) ? <p><Check aria-hidden="true" />Cette pièce est installée : ses bonus sont déjà actifs.</p> : selectedProjectionBlocked ? <p><AlertTriangle aria-hidden="true" />Projection suspendue : règle d’abord le prérequis ou le conflit d’emplacement signalé.</p> : (

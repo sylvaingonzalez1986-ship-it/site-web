@@ -943,6 +943,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     heritageCode,
     heritageCard,
     equipmentCodes: equipmentShop.equippedCodes,
+    equipmentLevels: equipmentShop.levels,
   });
   const supabase = createSupabaseServiceClient();
   const result = await supabase.rpc("rpc_kq_start_run_with_heritage", {

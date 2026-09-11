@@ -94,6 +94,20 @@ export const KQ_EQUIPMENT_ARTWORK: Readonly<Record<string, KqEquipmentArtwork>> 
   },
 };
 
-export function getKqEquipmentArtwork(equipmentCode: string) {
-  return KQ_EQUIPMENT_ARTWORK[equipmentCode] ?? null;
+export function getKqEquipmentVisualTier(level = 1): 1 | 5 | 10 {
+  return level >= 10 ? 10 : level >= 5 ? 5 : 1;
+}
+
+const EVOLVING_MODELS: Record<string, readonly [string, string, string]> = {
+  "TENT-120": ["TENT-080-STARTER", "TENT-120", "TENT-150"],
+  "LED-300": ["LED-150-STARTER", "LED-300", "LED-500"],
+  "WASHER-25L": ["WASHER-25L", "WASHER-75G", "TSS-225"],
+  "PRESS-0600": ["PRESS-0600", "PRESS-10T", "PRESS-20T"],
+};
+
+export function getKqEquipmentArtwork(equipmentCode: string, level?: number) {
+  const tier = getKqEquipmentVisualTier(level);
+  const model = level === undefined ? equipmentCode : EVOLVING_MODELS[equipmentCode]?.[tier === 10 ? 2 : tier === 5 ? 1 : 0] ?? equipmentCode;
+  const artwork = KQ_EQUIPMENT_ARTWORK[model];
+  return artwork ? { ...artwork, alt: level === undefined ? artwork.alt : `${artwork.alt} · niveau ${level}` } : null;
 }

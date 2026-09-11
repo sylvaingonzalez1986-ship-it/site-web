@@ -20,6 +20,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { getKqEquipmentArtwork } from "@/lib/kanab-quest-equipment-artwork";
 import {
   getKqEquipmentDefinition,
+  getKqEquipmentAtLevel,
   getKqEquipmentImpactLabels,
   getKqEquipmentRequirementState,
   KQ_EQUIPMENT_CATEGORY_LABELS,
@@ -30,6 +31,8 @@ import {
   type KqEquipmentSlot,
 } from "@/lib/kanab-quest-equipment";
 import styles from "./KqEquipmentInventoryModal.module.css";
+import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
+import { KqEquipmentTierBadge } from "./KqEquipmentTierBadge";
 
 const SLOT_ORDER: readonly KqEquipmentSlot[] = [
   "tent",
@@ -60,8 +63,8 @@ type InventoryGroup = {
   equipment: KqEquipmentDefinition[];
 };
 
-function EquipmentVisual({ equipment }: { equipment: KqEquipmentDefinition }) {
-  const artwork = getKqEquipmentArtwork(equipment.code);
+function EquipmentVisual({ equipment, level = 1 }: { equipment: KqEquipmentDefinition; level?: number }) {
+  const artwork = getKqEquipmentArtwork(equipment.code, level);
   const Icon = CATEGORY_ICONS[equipment.category];
   return (
     <span className={styles.visual} data-category={equipment.category} data-has-artwork={artwork ? true : undefined}>
@@ -74,6 +77,7 @@ function EquipmentVisual({ equipment }: { equipment: KqEquipmentDefinition }) {
           className={styles.visualImage}
         />
       ) : <Icon aria-hidden="true" />}
+      <KqEquipmentTierBadge level={level} />
     </span>
   );
 }
@@ -82,6 +86,8 @@ export function KqEquipmentInventoryModal({
   ownedCodes,
   purchasedCodes,
   equippedCodes,
+  levels,
+  cashCents,
   loading,
   loadError,
   onClose,
@@ -91,6 +97,8 @@ export function KqEquipmentInventoryModal({
   ownedCodes: string[];
   purchasedCodes: string[];
   equippedCodes: string[];
+  levels: Record<string, number>;
+  cashCents: number;
   loading: boolean;
   loadError: string;
   onClose: () => void;
@@ -120,8 +128,8 @@ export function KqEquipmentInventoryModal({
   }, [onClose]);
 
   const ownedEquipment = useMemo(() => [...new Set(purchasedCodes)]
-    .map((code) => getKqEquipmentDefinition(code))
-    .filter((equipment): equipment is KqEquipmentDefinition => Boolean(equipment?.purchasable)), [purchasedCodes]);
+    .map((code) => getKqEquipmentAtLevel(code, levels[code]))
+    .filter((equipment): equipment is KqEquipmentDefinition => Boolean(equipment?.purchasable)), [purchasedCodes, levels]);
   const activeEquipment = useMemo(() => [...new Set(activeCodes)]
     .map((code) => getKqEquipmentDefinition(code))
     .filter((equipment): equipment is KqEquipmentDefinition => Boolean(equipment)), [activeCodes]);
@@ -234,7 +242,7 @@ export function KqEquipmentInventoryModal({
                     const impacts = getKqEquipmentImpactLabels(equipment).slice(0, 3);
                     return (
                       <article key={equipment.code} className={styles.equipmentCard} data-equipped={isEquipped || undefined}>
-                        <EquipmentVisual equipment={equipment} />
+                        <EquipmentVisual equipment={equipment} level={levels[equipment.code] ?? 1} />
                         <div className={styles.cardCopy}>
                           <span className={styles.status} data-equipped={isEquipped || undefined}>{isEquipped ? <><Check aria-hidden="true" />Installé</> : "En réserve"}</span>
                           <small>{KQ_EQUIPMENT_CATEGORY_LABELS[equipment.category]} · {equipment.specification}</small>
@@ -242,9 +250,11 @@ export function KqEquipmentInventoryModal({
                           <p>{equipment.benefit}</p>
                           <ul>{impacts.map((impact) => <li key={impact}><Check aria-hidden="true" />{impact}</li>)}</ul>
                           <em data-tradeoff>Contrepartie : {equipment.tradeoff}</em>
+
                           {!isEquipped && replacedEquipment ? <em>Remplace : {replacedEquipment.name}</em> : null}
                           {!requirementState.compatible ? <em data-warning>Prérequis : {requirementState.missing.map((requirement) => requirement.label).join(" · ")}</em> : null}
                         </div>
+                        <div className={styles.upgradeSlot}><KqEquipmentUpgrade code={equipment.code} level={levels[equipment.code] ?? 1} cashCents={cashCents} disabled={pendingCode !== null} onUpdated={onRetry} /></div>
                         <footer>
                           <button
                             type="button"
@@ -264,7 +274,7 @@ export function KqEquipmentInventoryModal({
         </div>
 
         <footer className={styles.footer}>
-          <p><strong>Un seul équipement actif par emplacement.</strong> Le matériel remplacé reste dans ton inventaire et peut être réinstallé plus tard.</p>
+          <p><strong>Un seul équipement actif par emplacement.</strong> Améliore chaque matériel jusqu’au niveau 10. Son apparence évolue aux niveaux 5 et 10.</p>
           <button type="button" onClick={openShop}><ShoppingBag aria-hidden="true" />Acheter du matériel</button>
         </footer>
       </section>

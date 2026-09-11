@@ -113,7 +113,7 @@ describe("Kanab Quest economy balance report", () => {
 
   it("tracks the real-world price anchors for every purchasable item", () => {
     const report = buildKqEconomyBalanceReport({ juryScore: 8, harvestGrams: 120 });
-    expect(report.priceAnchors.totalCount).toBe(19);
+    expect(report.priceAnchors.totalCount).toBe(12);
     expect(report.priceAnchors.alignedCount).toBe(report.priceAnchors.totalCount);
     expect(report.priceAnchors.items.every((item) => item.deviationPercent === 0)).toBe(true);
     expect(report.priceAnchors.checkedAt).toBe("2026-09-01");
@@ -123,16 +123,16 @@ describe("Kanab Quest economy balance report", () => {
 
   it("offers player-facing payback scenarios for every machine that opens a processing route", () => {
     expect(KQ_PLAYER_PAYBACK_REFERENCE).toEqual({ juryScore: 8.8, harvestGrams: 100 });
-    expect(getKqEquipmentPaybackScenarios("PRESS-20T").map((projection) => projection.route))
+    expect(getKqEquipmentPaybackScenarios("PRESS-0600").map((projection) => projection.route))
       .toEqual(["rosin-trial", "rosin-selection", "rosin-premium", "rosin-signature"]);
     expect(getKqEquipmentPaybackScenarios("AUTO-SIEVE").map((projection) => projection.route))
       .toEqual(["hash-signature"]);
-    expect(getKqEquipmentPaybackScenarios("WASHER-75G").map((projection) => projection.route))
+    expect(getKqEquipmentPaybackScenarios("WASHER-25L").map((projection) => projection.route))
       .toEqual(["ice-water-hash", "hash-signature"]);
-    expect(getKqEquipmentPaybackScenarios("TSS-225")[0]?.projectedEquipmentCodes)
-      .toContain("TSS-225");
+    expect(getKqEquipmentPaybackScenarios("WASHER-25L")[0]?.projectedEquipmentCodes)
+      .toContain("WASHER-25L");
     expect(getKqEquipmentPaybackScenarios("LED-300")).toEqual([]);
-    expect(getKqEquipmentPaybackScenarios("PRESS-20T")[0]?.paybackHarvests).toBeGreaterThan(0);
+    expect(getKqEquipmentPaybackScenarios("PRESS-0600")[0]?.paybackHarvests).toBeGreaterThan(0);
   });
 
   it("hides a lower model when the player already owns its superior replacement", () => {
@@ -140,13 +140,13 @@ describe("Kanab Quest economy balance report", () => {
     expect(getKqEquipmentPaybackScenarios("PRESS-2T", { ownedCodes: ["PRESS-10T"] })).toEqual([]);
   });
 
-  it("personalizes the remaining investment and accepts a superior owned machine", () => {
+  it("personalizes the remaining investment and reuses the unique owned machine", () => {
     const scenario = getKqEquipmentPaybackScenarios("AUTO-SIEVE", {
-      ownedCodes: ["WASHER-75G"],
+      ownedCodes: ["WASHER-25L"],
       cartCodes: ["FREEZE-DRYER"],
     })[0];
-    expect(scenario.projectedEquipmentCodes).toEqual(["WASHER-75G", "AUTO-SIEVE", "FREEZE-DRYER"]);
-    expect(scenario.projectedEquipmentCodes).not.toContain("WASHER-25L");
+    expect(scenario.projectedEquipmentCodes).toEqual(["WASHER-25L", "AUTO-SIEVE", "FREEZE-DRYER"]);
+    expect(new Set(scenario.projectedEquipmentCodes).size).toBe(3);
     expect(scenario.remainingEquipmentCodes).toEqual(["AUTO-SIEVE", "FREEZE-DRYER"]);
     expect(scenario.cartEquipmentCodes).toEqual(["FREEZE-DRYER"]);
     expect(scenario.missingAfterCartCodes).toEqual(["AUTO-SIEVE"]);
@@ -157,7 +157,7 @@ describe("Kanab Quest economy balance report", () => {
 
   it("marks a complete owned processing chain as ready without inventing a new cost", () => {
     const scenario = getKqEquipmentPaybackScenarios("AUTO-SIEVE", {
-      ownedCodes: ["WASHER-75G", "AUTO-SIEVE", "FREEZE-DRYER"],
+      ownedCodes: ["WASHER-25L", "AUTO-SIEVE", "FREEZE-DRYER"],
     })[0];
     expect(scenario.remainingEquipmentCodes).toEqual([]);
     expect(scenario.remainingInvestmentCents).toBe(0);

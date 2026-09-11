@@ -299,21 +299,21 @@ describe("Kanab Quest post-harvest market", () => {
     expect(getKqNextRouteMasteryGoal({
       completedRoute: "rosin-trial",
       masteredRoutes: ["rosin-trial"],
-      ownedCodes: ["PRESS-20T"],
+      ownedCodes: ["PRESS-0600"],
     })).toMatchObject({
       route: "rosin-selection",
-      equipmentCode: "PRESS-20T",
+      equipmentCode: "PRESS-0600",
       investmentRequired: false,
     });
     expect(getKqNextRouteMasteryGoal({
       completedRoute: "rosin-trial",
       masteredRoutes: ["rosin-trial", "rosin-selection"],
       ownedCodes: ["PRESS-0600"],
-    })).toMatchObject({ route: "rosin-premium", equipmentCode: "PRESS-10T" });
+    })).toMatchObject({ route: "rosin-premium", equipmentCode: "PRESS-0600" });
     expect(getKqNextRouteMasteryGoal({
       completedRoute: "rosin-signature",
       masteredRoutes: ["rosin-signature"],
-      ownedCodes: ["PRESS-20T"],
+      ownedCodes: ["PRESS-0600"],
     })).toBeNull();
   });
 
@@ -390,8 +390,8 @@ describe("Kanab Quest post-harvest market", () => {
       equipmentCode: "SIFT-TRAY",
       investmentRequired: true,
     });
-    expect(getKqRoutePlanEquipmentGoal({ route: "rosin-trial", ownedCodes: ["PRESS-20T"] })).toMatchObject({
-      equipmentCode: "PRESS-20T",
+    expect(getKqRoutePlanEquipmentGoal({ route: "rosin-trial", ownedCodes: ["PRESS-0600"] })).toMatchObject({
+      equipmentCode: "PRESS-0600",
       investmentRequired: false,
     });
     expect(getKqRoutePlanEquipmentGoal({ route: "hash-signature", ownedCodes: ["WASHER-25L"] })).toMatchObject({

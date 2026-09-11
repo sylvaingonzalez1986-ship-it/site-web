@@ -25,8 +25,8 @@ describe("Kanab Quest equipment artwork", () => {
       .map((equipment) => equipment.code)
       .sort();
 
-    expect(expectedCodes).toHaveLength(22);
-    expect(Object.keys(KQ_EQUIPMENT_ARTWORK).sort()).toEqual(expectedCodes);
+    expect(expectedCodes).toHaveLength(15);
+    expect(Object.keys(KQ_EQUIPMENT_ARTWORK)).toEqual(expect.arrayContaining(expectedCodes));
     ["AUTO-SIEVE", "WASHER-75G", "TSS-225", "STATIC-PLASMA"].forEach((code) => {
       expect(getKqEquipmentArtwork(code)?.src).toContain(`equipment-${code}-hero-v2.webp`);
     });

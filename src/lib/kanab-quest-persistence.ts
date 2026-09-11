@@ -30,15 +30,20 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (state.powerOutage !== undefined && typeof state.powerOutage !== "boolean") return null;
     if (state.harvestLossPercent !== undefined && (!isFiniteNumber(state.harvestLossPercent) || state.harvestLossPercent < 0 || state.harvestLossPercent > 80)) return null;
     if (state.equipment !== undefined) {
-      if (!isRecord(state.equipment) || !Array.isArray(state.equipment.codes) || state.equipment.codes.length > 10) return null;
+      if (!isRecord(state.equipment) || !Array.isArray(state.equipment.codes) || state.equipment.codes.length > 12) return null;
       const equipmentCodes = state.equipment.codes;
       if (equipmentCodes.some((code) => typeof code !== "string" || !getKqEquipmentDefinition(code))) return null;
       if (new Set(equipmentCodes).size !== equipmentCodes.length) return null;
-      const expected = summarizeKqEquipmentLoadout(equipmentCodes as string[]);
+      const levels = state.equipment.levels;
+      if (levels !== undefined && (!isRecord(levels) || Object.entries(levels).some(([code, level]) =>
+        !equipmentCodes.includes(code) || !Number.isInteger(level) || Number(level) < 1 || Number(level) > 10))) return null;
+      const expected = summarizeKqEquipmentLoadout(equipmentCodes as string[], levels as Record<string, number> | undefined);
       for (const field of ["quantityPercent", "qualityMaxBonus", "regularityPercent", "pressureDelta", "powerWatts", "energyDiscountPercent", "processingPrecision", "processingCapacityPercent"] as const) {
         if (state.equipment[field] !== expected[field]) return null;
       }
-      if (!Array.isArray(state.equipment.unlocks) || state.equipment.unlocks.join("|") !== expected.unlocks.join("|")) return null;
+      if (!Array.isArray(state.equipment.unlocks)) return null;
+      if (levels !== undefined ? state.equipment.unlocks.join("|") !== expected.unlocks.join("|")
+        : state.equipment.unlocks.some((unlock) => !expected.unlocks.includes(unlock as typeof expected.unlocks[number]))) return null;
     }
     if (typeof state.varietyCode !== "string" || typeof state.varietyName !== "string") return null;
     if (state.challengeDayKey !== undefined && (typeof state.challengeDayKey !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(state.challengeDayKey))) return null;

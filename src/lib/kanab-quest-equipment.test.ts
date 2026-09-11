@@ -167,7 +167,7 @@ describe("Kanab Quest durable equipment", () => {
       cashCents: 35_000,
       sort: "price-desc",
     });
-    expect(descending[0]?.code).toBe("TSS-225");
+    expect(descending[0]?.code).toBe("STATIC-PLASMA");
   });
 
   it("recognizes only compatible, unowned equipment inside the current budget", () => {
@@ -211,6 +211,7 @@ describe("Kanab Quest durable equipment", () => {
     const everythingExceptTheDowngrade = KQ_EQUIPMENT_CATALOG
       .filter((equipment) => equipment.code !== "TENT-120")
       .map((equipment) => equipment.code);
+    everythingExceptTheDowngrade.push("TENT-150");
     expect(getKqNextEquipmentGoal({
       ownedCodes: everythingExceptTheDowngrade,
       cashCents: 10_000_000,
@@ -275,8 +276,8 @@ describe("Kanab Quest durable equipment", () => {
     expect(auditKqEquipmentCatalog(ALIGNED_DATABASE_CATALOG)).toMatchObject({
       sourcesReady: true,
       databaseReady: true,
-      sourceCount: 22,
-      purchasableCount: 19,
+      sourceCount: 15,
+      purchasableCount: 12,
       mismatchedCodes: [],
     });
     expect(auditKqEquipmentCatalog(ALIGNED_DATABASE_CATALOG.map((row) => (

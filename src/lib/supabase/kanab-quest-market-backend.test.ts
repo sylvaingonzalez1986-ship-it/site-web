@@ -63,6 +63,7 @@ describe("Kanab Quest market sale receipt", () => {
     const ownedCodes = KQ_EQUIPMENT_CATALOG
       .filter((equipment) => equipment.code !== "TENT-120")
       .map((equipment) => equipment.code);
+    ownedCodes.push("TENT-150");
     expect(mapKqMarketSaleReceipt(receipt, ownedCodes)).toMatchObject({
       nextEquipmentGoal: null,
       equipmentProgression: {

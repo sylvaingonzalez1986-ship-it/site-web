@@ -118,21 +118,14 @@ sont pas incluses.
 | Équipement | Prix virtuel aligné US |
 | --- | ---: |
 | Tente renforcée 120 × 120 | 199 $US |
-| Grande tente 150 × 150 | 249 $US |
 | LED spéciale 300 W | 359 $US |
-| Cadre LED premium 500 W | 579 $US |
 | Extracteur EC 6 pouces | 149 $US |
 | Contrôleur climatique AI+ | 139 $US |
 | Pollinator à sec Resinator OG | 4 195 $US |
 | Ice washer Mini Osprey 2.0 | 5 995 $US |
 | Collecteur AutoSieve | 4 995 $US |
-| Ice washer Osprey 75 | 30 495 $US |
-| Séparateur automatisé TSS-225 | 79 400 $US |
 | Séparateur statique Plasmastatic | 22 800 $US |
-| Presse à rosin Lowtemp V2 | 3 695 $US |
-| Presse à rosin Pikes Peak V2 | 7 995 $US |
-| Presse à rosin Longs Peak | 11 495 $US |
-| Presse automatisée NugSmasher IQ Pro | 19 996 $US |
+| Presse à rosin | 3 695 $US |
 | Sécheur de hash HiLyph XL | 7 495 $US |
 | Panneau solaire et batterie | 1 149 $US |
 | Caméra cabossée | 69,99 $US |
@@ -140,9 +133,38 @@ sont pas incluses.
 La tente, l'éclairage et le climat modifient la quantité, la qualité maximale,
 la régularité, la pression ou la consommation. Les machines de transformation
 déterminent les voies disponibles, la part du lot traitable et la précision.
-Certaines installations imposent une compatibilité : la LED 500 W demande une
+Certaines installations imposent une compatibilité : le contrôleur climatique demande une
 extraction renforcée ; l'AutoSieve et le HiLyph demandent une laveuse ; le
 Plasmastatic demande le pollinator à sec.
+
+### Niveaux du matériel
+
+La boutique propose une seule référence par fonction, soit douze matériels achetables.
+Chaque achat commence au **niveau 1** et peut être amélioré jusqu’au **niveau 10**.
+Le coût du niveau suivant vaut 10 % du prix de base multiplié par le niveau actuel,
+arrondi au cent supérieur. Exemple : la caméra coûte 69,99 $US ; passer du niveau 1
+au niveau 2 coûte 7 $US. Les améliorations utilisent uniquement l’argent virtuel.
+
+Chaque niveau augmente un avantage : quantité, régularité ou transformation.
+Les bonus de quantité et régularité déjà présents augmentent de 10 % de leur valeur
+initiale par niveau (incrément arrondi à l’entier supérieur). La qualité maximale
+gagne un point aux niveaux 4, 7 et 10. La caméra et le secours solaire conservent
+leur protection complète et gagnent un point de régularité par niveau supplémentaire.
+Les bonus restent soumis aux plafonds habituels des statistiques et de récolte.
+
+La capacité de la presse gagne 8 points par niveau, celle de la laveuse 6 points,
+et celle des autres machines de transformation 2 points, sans dépasser 100 %.
+Chaque machine de transformation gagne aussi 2 % de valeur par niveau supplémentaire.
+Si une filière utilise plusieurs machines, la moyenne de leurs bonus de valeur
+s’applique au produit transformé ; le reliquat brut ou biomasse garde son prix habituel.
+Les seuils du jury continuent à conditionner l’accès aux filières.
+
+L’apparence évolue uniquement aux niveaux **5** et **10** : standard, amélioré, expert.
+Le matériel doit être installé pour appliquer ses bonus. Le niveau est enregistré
+au lancement d’une partie ; les transformations utilisent les niveaux installés
+au moment de la vente. Une requête rejouée ne peut pas débiter une seconde fois.
+Les anciens modèles sont regroupés dans la référence unique en conservant le meilleur
+palier déjà acheté, sans modifier le solde du joueur.
 
 ## 5. Incidents de culture
 
@@ -227,8 +249,7 @@ Le montant final dépend aussi de la note, de la capacité et de la précision d
 matériel installé. La partie non traitée est valorisée en lot brut lorsque la
 note du jury l'autorise ; elle retombe en biomasse dans le cas contraire. Hash
 tamisé demande le Pollinator ; Static Sift demande en plus le Plasmastatic ;
-Hash eau-glace demande une Laveuse ; les quatre Rosin demandent leur niveau de
-presse ; Hash Signature demande à la fois Laveuse, AutoSieve et HiLyph.
+Hash eau-glace demande une Laveuse ; les quatre Rosin demandent la presse à rosin et la note du jury requise ; Hash Signature demande à la fois Laveuse, AutoSieve et HiLyph.
 
 Une filière d'équipement peut être épinglée comme objectif. Son seuil reste
 visible pendant la culture sans convertir la Qualité de culture en note sur 10.

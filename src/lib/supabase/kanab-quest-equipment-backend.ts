@@ -2,6 +2,8 @@ import "server-only";
 
 import {
   getKqEquipmentDefinition,
+  getKqEquipmentAtLevel,
+  getKqEquipmentUpgradeCost,
   getKqEquipmentRequirementState,
   KQ_EQUIPMENT_CATALOG,
 } from "@/lib/kanab-quest-equipment";
@@ -24,6 +26,7 @@ export type KqEquipmentShopSnapshot = {
   ownedCodes: string[];
   purchasedCodes: string[];
   equippedCodes: string[];
+  levels: Record<string, number>;
   activeRun: boolean;
   readyLotCount: number;
   availableFlowerCount: number;
@@ -80,7 +83,7 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
 
   const [wallet, owned, loadout, activeRuns, readyLots, availableFlowers, routeMasteries] = await Promise.all([
     supabase.from("kq_equipment_wallets").select("cash_cents,reputation,planned_route_code,planned_equipment_code").eq("user_id", userId).single(),
-    supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents").eq("user_id", userId).order("acquired_at"),
+    supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,level").eq("user_id", userId).order("acquired_at"),
     supabase.from("kq_equipment_loadouts").select("equipment_code").eq("user_id", userId).order("slot"),
     supabase.from("kq_runs").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "active"),
     supabase.from("kq_market_lots").select("flower_id", { count: "exact", head: true }).eq("owner_id", userId).eq("status", "ready"),
@@ -98,9 +101,11 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
   if (availableFlowers.error) throw new Error(`[supabase:kq_flowers] ${availableFlowers.error.message}`);
   if (routeMasteries.error) throw new Error(`[supabase:kq_player_route_masteries] ${routeMasteries.error.message}`);
   const routePlan = parseKqEquipmentRoutePlan(wallet.data);
+  const levels = Object.fromEntries((owned.data ?? []).map((row) => [String(row.equipment_code), Number(row.level ?? 1)]));
 
   return {
     cashCents: Number(wallet.data.cash_cents ?? 0),
+    levels,
     reputation: Number(wallet.data.reputation ?? 0),
     ownedCodes: (owned.data ?? []).map((row) => String(row.equipment_code)),
     purchasedCodes: (owned.data ?? [])
@@ -123,7 +128,7 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
         masteredAt: String(row.mastered_at ?? ""),
       }];
     }),
-    catalog: KQ_EQUIPMENT_CATALOG,
+    catalog: KQ_EQUIPMENT_CATALOG.filter((item) => item.purchasable).map((item) => getKqEquipmentAtLevel(item.code, levels[item.code])!),
   };
 }
 
@@ -160,7 +165,7 @@ export async function purchaseKqDurableEquipment(input: {
   if (equipmentCodes.length !== input.equipmentCodes.length || equipmentCodes.length < 1 || equipmentCodes.length > 8) {
     throw new Error("Panier d’équipement invalide.");
   }
-  if (equipmentCodes.some((code) => !getKqEquipmentDefinition(code)?.purchasable)) {
+  if (equipmentCodes.some((code) => !KQ_EQUIPMENT_CATALOG.some((item) => item.code === code && item.purchasable))) {
     throw new Error("Un équipement du panier n’est pas disponible.");
   }
 
@@ -183,6 +188,30 @@ export async function purchaseKqDurableEquipment(input: {
     cashAfterCents: number;
     replayed: boolean;
   };
+}
+
+export async function upgradeKqDurableEquipment(input: {
+  userId: string; requestKey: string; equipmentCode: string; expectedLevel: number;
+}) {
+  assertUuid(input.userId, "Compte équipement invalide.");
+  assertUuid(input.requestKey, "Demande d’amélioration invalide.");
+  if (getKqEquipmentUpgradeCost(input.equipmentCode, input.expectedLevel) === null) {
+    throw new Error("Niveau maximal atteint ou équipement non améliorable.");
+  }
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_upgrade_equipment", {
+    p_user_id: input.userId, p_request_key: input.requestKey,
+    p_equipment_code: input.equipmentCode, p_expected_level: input.expectedLevel,
+  });
+  if (result.error) {
+    const message = result.error.message;
+    if (message.includes("insufficient_equipment_cash")) throw new Error("Solde insuffisant pour cette amélioration.");
+    if (message.includes("equipment_level_changed")) throw new Error("Le niveau a changé. Actualise le matériel avant de réessayer.");
+    if (message.includes("equipment_not_purchased")) throw new Error("Achète d’abord cet équipement.");
+    if (message.includes("equipment_max_level")) throw new Error("Niveau 10 déjà atteint.");
+    if (message.includes("equipment_upgrade_request_mismatch")) throw new Error("Demande d’amélioration déjà utilisée.");
+    throw new Error(`[supabase:rpc_kq_upgrade_equipment] ${message}`);
+  }
+  return result.data as { equipmentCode: string; level: number; priceCents: number; cashAfterCents: number; replayed: boolean };
 }
 
 export async function equipKqDurableEquipment(input: { userId: string; equipmentCode: string }) {

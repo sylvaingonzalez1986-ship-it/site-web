@@ -1,6 +1,6 @@
 import { KQ_CARD_ARTWORK } from "@/lib/kanab-quest-artwork";
-import { getKqEquipmentArtwork } from "@/lib/kanab-quest-equipment-artwork";
-import { KQ_EQUIPMENT_CATALOG } from "@/lib/kanab-quest-equipment";
+import { getKqEquipmentArtwork, KQ_EQUIPMENT_ARTWORK } from "@/lib/kanab-quest-equipment-artwork";
+import { getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { KQ_CARDS, KQ_SITUATIONS } from "@/lib/kanab-quest-game";
 import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
 import {
@@ -67,7 +67,9 @@ export const KQ_ARTWORK_REVIEW_ASSETS: readonly KqArtworkReviewAsset[] = [
     alt: KQ_POWER_OUTAGE_ARTWORK.alt,
     format: "square",
   },
-  ...KQ_EQUIPMENT_CATALOG.flatMap((equipment) => {
+  ...Object.keys(KQ_EQUIPMENT_ARTWORK).flatMap((code) => {
+    const equipment = getKqEquipmentDefinition(code);
+    if (!equipment) return [];
     const artwork = getKqEquipmentArtwork(equipment.code);
     if (!artwork) return [];
     return [{

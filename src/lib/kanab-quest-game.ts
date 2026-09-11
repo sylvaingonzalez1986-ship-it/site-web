@@ -7,6 +7,7 @@ import {
 } from "@/lib/kanab-quest-heritage";
 import {
   getKqEquipmentDefinition,
+  getKqEquipmentLevel,
   summarizeKqEquipmentLoadout,
 } from "@/lib/kanab-quest-equipment";
 import {
@@ -87,6 +88,7 @@ export type KqOutcome = "critical" | "success" | "fragile" | "failure";
 
 export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadout> & {
   codes: string[];
+  levels?: Record<string, number>;
 };
 
 export type KqGameState = {
@@ -381,7 +383,7 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
 
 export function startKqGame(
   seed = Date.now(),
-  config: { varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[] } = {},
+  config: { varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number> } = {},
 ): KqGameState {
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
   const requestedDeck = config.deckCodes ?? KQ_CARDS.slice(0, 6).map((card) => card.code);
@@ -394,7 +396,8 @@ export function startKqGame(
     ?? KQ_HERITAGE_CARDS.find((card) => card.code === config.heritageCode);
   const equipmentCodes = [...new Set(config.equipmentCodes ?? [])]
     .filter((code) => Boolean(getKqEquipmentDefinition(code)));
-  const equipment = { codes: equipmentCodes, ...summarizeKqEquipmentLoadout(equipmentCodes) };
+  const levels = Object.fromEntries(equipmentCodes.map((code) => [code, getKqEquipmentLevel(config.equipmentLevels?.[code])]));
+  const equipment = { codes: equipmentCodes, levels, ...summarizeKqEquipmentLoadout(equipmentCodes, levels) };
   const initialState: KqGameState = {
     seed: clampSeed(seed), ...(config.challengeDayKey ? { challengeDayKey: config.challengeDayKey } : {}), ...(config.startedAt ? { startedAt: config.startedAt } : {}), varietyCode: buddie.code, varietyName: buddie.name, deckCodes,
     collectionCodes: (config.collectionCodes ?? KQ_CARDS.map((card) => card.code)).filter((code) => !isKqRetiredSubstrate(code)),

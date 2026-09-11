@@ -1,5 +1,6 @@
 import {
   getKqEquipmentRequirementState,
+  getKqEquipmentAtLevel,
   KQ_EQUIPMENT_CATALOG,
   type KqEquipmentUnlock,
 } from "@/lib/kanab-quest-equipment";
@@ -357,11 +358,12 @@ export function calculateKqHarvestGrams(input: {
   return roundTenth(clamp(baseGrams * (1 + clamp(input.quantityPercent, 0, 250) / 100), 20, 500));
 }
 
-function getRouteEquipmentState(equipmentCodes: string[], route: KqMarketRouteDefinition) {
+function getRouteEquipmentState(equipmentCodes: string[], route: KqMarketRouteDefinition, levels: Record<string, number> = {}) {
   if (route.requiredUnlocks.length === 0) {
-    return { missingUnlocks: [] as KqEquipmentUnlock[], capacityPercent: 100, precision: 100 };
+    return { missingUnlocks: [] as KqEquipmentUnlock[], capacityPercent: 100, precision: 100, valueBonusPercent: 0 };
   }
-  const equipped = KQ_EQUIPMENT_CATALOG.filter((equipment) => equipmentCodes.includes(equipment.code));
+  const equipped = equipmentCodes.map((code) => getKqEquipmentAtLevel(code, levels[code]))
+    .filter((equipment): equipment is NonNullable<typeof equipment> => equipment !== null);
   const selected = route.requiredUnlocks.map((unlock) => equipped
     .filter((equipment) => equipment.unlocks.includes(unlock))
     .sort((left, right) => (right.effects.processingPrecision ?? 0) - (left.effects.processingPrecision ?? 0))[0] ?? null);
@@ -369,6 +371,8 @@ function getRouteEquipmentState(equipmentCodes: string[], route: KqMarketRouteDe
   const processingEquipment = selected.filter((equipment): equipment is NonNullable<typeof equipment> => equipment !== null);
   return {
     missingUnlocks,
+    valueBonusPercent: processingEquipment.length > 0
+      ? processingEquipment.reduce((sum, equipment) => sum + (equipment.effects.processingValueBonusPercent ?? 0), 0) / processingEquipment.length : 0,
     capacityPercent: processingEquipment.length > 0
       ? Math.min(...processingEquipment.map((equipment) => equipment.effects.processingCapacity ?? 0))
       : 0,
@@ -382,16 +386,17 @@ export function quoteKqMarketRoutes(input: {
   juryScore: number;
   harvestGrams: number;
   equipmentCodes: string[];
+  equipmentLevels?: Record<string, number>;
 }): KqMarketQuote[] {
   const juryScore = roundTenth(clamp(input.juryScore, 0, 10));
   const harvestGrams = roundTenth(clamp(input.harvestGrams, 0, 500));
   const rawRoute = KQ_MARKET_ROUTES.find((route) => route.code === "raw");
   if (!rawRoute) throw new Error("La voie de vente brute est absente du marché.");
-  const rawEquipment = getRouteEquipmentState(input.equipmentCodes, rawRoute);
+  const rawEquipment = getRouteEquipmentState(input.equipmentCodes, rawRoute, input.equipmentLevels);
   const rawRemainderAvailable = juryScore >= rawRoute.minimumJuryScore
     && rawEquipment.missingUnlocks.length === 0;
   return KQ_MARKET_ROUTES.map((route) => {
-    const equipment = getRouteEquipmentState(input.equipmentCodes, route);
+    const equipment = getRouteEquipmentState(input.equipmentCodes, route, input.equipmentLevels);
     const scoreBlocked = juryScore < route.minimumJuryScore;
     const equipmentBlocked = equipment.missingUnlocks.length > 0;
     const processingCapacityPercent = route.family === "hash" || route.family === "rosin"
@@ -410,7 +415,7 @@ export function quoteKqMarketRoutes(input: {
     const precisionFactor = route.family === "hash" || route.family === "rosin"
       ? clamp(0.82 + equipment.precision / 550, 0.82, 1)
       : 1;
-    const productValueCents = productGrams * route.basePriceCentsPerProductGram * juryFactor * precisionFactor;
+    const productValueCents = productGrams * route.basePriceCentsPerProductGram * juryFactor * precisionFactor * (1 + equipment.valueBonusPercent / 100);
     const remainderValueCents = remainderDestination === "raw"
       ? remainderGrams * rawRoute.basePriceCentsPerProductGram * juryFactor
       : remainderGrams * 30;
@@ -522,12 +527,12 @@ const KQ_ROUTE_MASTERY_BRANCHES: readonly (readonly KqMarketRouteCode[])[] = [
 const KQ_ROUTE_PIVOT_CODES: Partial<Record<KqMarketRouteCode, readonly string[]>> = {
   "dry-sift": ["SIFT-TRAY"],
   "static-sift": ["STATIC-PLASMA"],
-  "ice-water-hash": ["WASHER-25L", "WASHER-75G", "TSS-225"],
+  "ice-water-hash": ["WASHER-25L"],
   "hash-signature": ["AUTO-SIEVE", "FREEZE-DRYER", "WASHER-25L"],
-  "rosin-trial": ["PRESS-0600", "PRESS-2T", "PRESS-10T", "PRESS-20T"],
-  "rosin-selection": ["PRESS-2T", "PRESS-10T", "PRESS-20T"],
-  "rosin-premium": ["PRESS-10T", "PRESS-20T"],
-  "rosin-signature": ["PRESS-20T"],
+  "rosin-trial": ["PRESS-0600"],
+  "rosin-selection": ["PRESS-0600"],
+  "rosin-premium": ["PRESS-0600"],
+  "rosin-signature": ["PRESS-0600"],
 };
 
 export type KqRoutePlanEquipmentGoal = {
