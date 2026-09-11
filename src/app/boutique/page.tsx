@@ -1,5 +1,9 @@
 ﻿import { BoutiquePageClient } from "@/components/boutique/BoutiquePageClient";
 import { dedupeProducts } from "@/lib/product-dedup";
+import Link from "next/link";
+import { getActiveCatalogCategories } from "@/lib/catalog-categories";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
+import { getSiteUrl } from "@/lib/site-url";
 import { getOwnProducer } from "@/lib/own-producer";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import {
@@ -42,6 +46,12 @@ export default async function BoutiquePage() {
   );
 
   return (
+    <>
+    <BreadcrumbJsonLd items={[
+      { name: "Accueil", url: getSiteUrl() },
+      { name: "Boutique CBD", url: `${getSiteUrl()}/boutique` },
+    ]} />
+    <CollectionPageJsonLd name="Boutique CBD" description="Production bretonne et producteurs partenaires : catégories et références du catalogue." url={`${getSiteUrl()}/boutique`} products={uniqueProducts} />
     <BoutiquePageClient
       boutique={boutique}
       producers={store.producers}
@@ -54,5 +64,20 @@ export default async function BoutiquePage() {
       boutiqueSections={boutiqueSections}
       tastingSummariesByProductId={tastingSummariesByProductId}
     />
+    <section className="section-band bg-cream" aria-labelledby="catalogue-navigation-title">
+      <div className="retro-container">
+        <h2 id="catalogue-navigation-title" className="font-display text-3xl text-ink">Explorer le catalogue CBD</h2>
+        <p className="mt-3 max-w-3xl text-charcoal">Retrouvez toutes les références par catégorie, puis comparez les prix, les formats et les informations de chaque producteur.</p>
+        <nav aria-label="Catégories du catalogue" className="mt-5 flex flex-wrap gap-3">
+          {getActiveCatalogCategories(uniqueProducts).map(category => <Link key={category.slug} href={`/boutique/${category.slug}`} className="btn-cartoon btn-secondary px-5 py-3 text-sm">{category.label}</Link>)}
+        </nav>
+        <nav aria-label="Guides pour choisir votre CBD" className="mt-6 flex flex-wrap gap-5 text-sm font-bold text-ink">
+          <Link href="/cbd-pas-cher" className="underline underline-offset-4">CBD pas cher : comparer les prix</Link>
+          <Link href="/cbd-naturel" className="underline underline-offset-4">CBD naturel : origine et composition</Link>
+          <Link href="/cbd-breton" className="underline underline-offset-4">Notre production et le CBD breton</Link>
+        </nav>
+      </div>
+    </section>
+    </>
   );
 }

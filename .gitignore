@@ -72,6 +72,7 @@ tmp_supabase_push/
 /output/tasting-book/
 /output/placard-workshop/
 /output/site-css-check/
+/output/seo-audit/
 /output/next-dev-css-cache-backup/
 /output/reputation-test-tools/
 .env*.local

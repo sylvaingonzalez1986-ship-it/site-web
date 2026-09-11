@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { BreadcrumbJsonLd, ProductJsonLd } from "@/components/JsonLd";
 import { ProductDetailActions } from "@/components/boutique/ProductDetailActions";
 import { ProductImageGallery } from "@/components/boutique/ProductImageGallery";
@@ -10,6 +10,7 @@ import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getOwnProducer } from "@/lib/own-producer";
 import { isProductTastingStorefrontEnabled } from "@/lib/product-tasting-feature";
 import { getSiteUrl } from "@/lib/site-url";
+import { buildProductMetaDescription } from "@/lib/product-discovery";
 import { isRemoteImageUrl } from "@/lib/image-source";
 import { isProductCultureModeEligible, type Product } from "@/data/products";
 import { getContestProductTastingSummary, isContestSchemaMissingError } from "@/lib/contest-backend";
@@ -132,11 +133,7 @@ export async function generateMetadata({
   const brandName = producer?.name ?? "Les Chanvriers Bretons";
 
   const title = `${product.name} | ${catInfo?.label ?? "CBD"} — ${brandName}`;
-  const description =
-    product.description.length > 120
-      ? `${product.description.slice(0, 117)}...`
-      : product.description;
-  const metaDescription = `${product.name} — ${description} Producteur ou marque : ${brandName}. Consultez l'origine, la composition, les formats et l'analyse disponible.`;
+  const metaDescription = buildProductMetaDescription(product, brandName);
 
   const imageUrl = product.images?.[0] ?? product.image;
   const ogImage = isRemoteImageUrl(imageUrl)
@@ -164,7 +161,7 @@ export async function generateMetadata({
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { slug } = await params;
+  const { slug, category } = await params;
   const [result, tastingSummary] = await Promise.all([
     findProduct(slug),
     findProductTastingSummary(slug),
@@ -188,6 +185,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const categorySlug = catInfo?.slug ?? `${product.category}-cbd`;
   const categoryLabel = catInfo?.label ?? "CBD";
   const canonicalUrl = `${baseUrl}/boutique/${categorySlug}/${product.id}`;
+  if (category !== categorySlug) permanentRedirect(`/boutique/${categorySlug}/${product.id}`);
 
   const prevHref = prevProduct
     ? `/boutique/${categorySlugMap[prevProduct.category]?.slug ?? `${prevProduct.category}-cbd`}/${prevProduct.id}`
@@ -324,6 +322,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
         </article>
+
+        <nav aria-label="Conseils avant de choisir" className="mt-6 flex flex-wrap gap-4 text-sm font-bold text-ink">
+          <Link href="/cbd-pas-cher" className="underline underline-offset-4">Comparer les prix du CBD</Link>
+          <Link href="/cbd-naturel" className="underline underline-offset-4">Comprendre l’origine et la composition</Link>
+        </nav>
 
         {tastingSummary ? (
           <ProductTastingSection

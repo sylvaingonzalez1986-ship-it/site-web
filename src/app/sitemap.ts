@@ -44,7 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/cbd-naturel`,
-      lastModified: new Date("2026-08-23T00:00:00.000Z"),
+      lastModified: mostRecentSeoDate(["2026-09-11", ...store.products.map(product => product.updatedAt ?? product.createdAt)]),
       changeFrequency: "weekly",
       priority: 0.9,
     },
@@ -74,6 +74,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/cbd-pas-cher`,
+      lastModified: mostRecentSeoDate(["2026-09-11", ...store.products.map(product => product.updatedAt ?? product.createdAt)]),
       changeFrequency: "daily",
       priority: 0.9,
     },

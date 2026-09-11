@@ -17,7 +17,8 @@ import {
 import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { dedupeProducts } from "@/lib/product-dedup";
-import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
+import { isProductInStock } from "@/lib/product-stock";
+import { getOwnProducer, resolveProductProducer, sortOwnProductsFirst } from "@/lib/own-producer";
 import { getSiteUrl } from "@/lib/site-url";
 import { bretonCities } from "@/lib/local-seo-data";
 import type { Producer } from "@/types/store";
@@ -136,9 +137,9 @@ const CATEGORY_LINKS = [
 const featuredCategoryOrder = ["fleurs", "e-liquide", "resines", "huiles", "cosmetiques", "alimentaire", "miam"] as const;
 
 export const metadata: Metadata = {
-  title: "CBD naturel : origine, analyses et traçabilité",
+  title: "CBD naturel : fleurs et producteurs identifiés",
   description:
-    "Comprendre le CBD naturel : origine végétale, analyses de lot, différences avec le bio et le CBD de synthèse. Production bretonne et partenaires identifiés.",
+    "Découvrez notre CBD naturel : fleurs en stock, production bretonne et partenaires identifiés. Comparez l’origine, les formats, les prix et les analyses disponibles.",
   alternates: {
     canonical: `https://www.leschanvriersbretons.com/${PAGE_SLUG}`,
   },
@@ -157,7 +158,7 @@ export const metadata: Metadata = {
     "cbd artisanal",
   ],
   openGraph: {
-    title: "CBD naturel : origine, analyses et traçabilité | Les Chanvriers Bretons",
+    title: "CBD naturel : fleurs et producteurs identifiés | Les Chanvriers Bretons",
     description:
       "Un guide pour vérifier l'origine, la composition et les analyses d'un produit CBD, avec une sélection de producteurs clairement identifiés.",
     url: `https://www.leschanvriersbretons.com/${PAGE_SLUG}`,
@@ -183,7 +184,8 @@ export const metadata: Metadata = {
 function selectFeaturedProducts(
   products: Awaited<ReturnType<typeof readPublicStoreByBackend>>["products"],
 ) {
-  const uniqueProducts = dedupeProducts(products);
+  const uniqueProducts = sortOwnProductsFirst(dedupeProducts(products
+    .filter(product => product.category !== "accessoires" && isProductInStock(product))));
   const featured = featuredCategoryOrder
     .map((category) => uniqueProducts.find((product) => product.category === category))
     .filter((product): product is (typeof uniqueProducts)[number] => Boolean(product));
@@ -290,12 +292,16 @@ export default async function CbdNaturelPage() {
             <span className="font-bold text-ink">CBD Naturel</span>
           </nav>
 
-          <h1 className="section-title text-ink">CBD Naturel</h1>
+          <h1 className="section-title text-ink">CBD naturel : des producteurs identifiés</h1>
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-charcoal">
-            Le CBD naturel ne se reconnaît pas à une promesse, mais à des informations vérifiables : origine,
-            composition, producteur et analyse du lot. Nous présentons notre production bretonne et les références
-            de producteurs partenaires en indiquant leur provenance sur chaque fiche produit.
+            Découvrez notre production bretonne et une sélection de producteurs partenaires. Comparez l’origine,
+            les formats et les prix, puis consultez la composition et les analyses disponibles sur chaque fiche.
           </p>
+          <nav aria-label="Choisir votre CBD naturel" className="mt-6 flex flex-wrap gap-3">
+            <Link href="#selection-cbd-naturel" className="btn-cartoon btn-primary px-5 py-3 text-sm">Voir la sélection en stock</Link>
+            <Link href="/cbd-pas-cher" className="btn-cartoon btn-secondary px-5 py-3 text-sm">Comparer les prix du CBD</Link>
+            {activeCategoryLinks.map(category => <Link key={category.href} href={category.href} className="px-3 py-3 text-sm font-bold text-ink underline underline-offset-4">{category.label}</Link>)}
+          </nav>
           <p className="mt-4 text-sm text-charcoal">
             Contenu publié par{" "}
             <Link href="/a-propos" className="underline hover:text-ink">
@@ -303,6 +309,31 @@ export default async function CbdNaturelPage() {
             </Link>{" "}
             · <time dateTime={LAST_REVIEWED}>Vérifié le 23 août 2026</time>
           </p>
+        </div>
+
+        {/* Produits CBD naturel */}
+        <div id="selection-cbd-naturel" className="cartoon-border mt-8 scroll-mt-28 bg-cream p-5 sm:p-8">
+          <h2 className="mb-3 text-3xl font-display text-ink">
+            Une sélection de produits disponibles
+          </h2>
+          <p className="mb-6 max-w-3xl text-charcoal">
+            Cette sélection réunit notre production et des références de producteurs partenaires.
+            L&apos;origine affichée sur chaque carte permet de les distinguer ; consultez ensuite la fiche
+            pour vérifier la composition et l&apos;analyse disponible.
+          </p>
+        </div>
+
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {featuredProducts.map((product, index) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              producer={resolveProductProducer(product, producersById, ownProducer)}
+              addButtonLabel={store.content.boutique.addButtonLabel}
+              lowStockThresholdGrams={store.content.boutique.lowStockThresholdGrams}
+              imagePriority={index < 2}
+            />
+          ))}
         </div>
 
         {/* Réponse courte, facilement extractible par les moteurs de réponse */}
@@ -548,31 +579,6 @@ export default async function CbdNaturelPage() {
           </div>
         </div>
 
-        {/* Produits CBD naturel */}
-        <div className="cartoon-border mt-10 bg-cream p-8">
-          <h2 className="mb-3 text-3xl font-display text-ink">
-            Une sélection de produits disponibles
-          </h2>
-          <p className="mb-6 max-w-3xl text-charcoal">
-            Cette sélection réunit notre production et des références de producteurs partenaires.
-            L&apos;origine affichée sur chaque carte permet de les distinguer ; consultez ensuite la fiche
-            pour vérifier la composition et l&apos;analyse disponible.
-          </p>
-        </div>
-
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredProducts.map((product, index) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              producer={resolveProductProducer(product, producersById, ownProducer)}
-              addButtonLabel={store.content.boutique.addButtonLabel}
-              lowStockThresholdGrams={store.content.boutique.lowStockThresholdGrams}
-              imagePriority={index < 2}
-            />
-          ))}
-        </div>
-
         {/* Catégories CBD naturel */}
         <div className="cartoon-border mt-8 bg-cream p-8">
           <h2 className="mb-6 text-3xl font-display text-ink">
@@ -591,6 +597,17 @@ export default async function CbdNaturelPage() {
             ))}
           </div>
         </div>
+
+        <section id="modes-de-culture" className="cartoon-border mt-8 bg-cream p-5 sm:p-8" aria-labelledby="culture-fleurs-title">
+          <h2 id="culture-fleurs-title" className="font-display text-3xl text-ink">Fleurs CBD outdoor, greenhouse ou indoor : que comparer ?</h2>
+          <p className="mt-4 text-charcoal">Ces termes décrivent l’environnement de culture. Ils ne certifient ni une teneur en CBD, ni une origine française, ni une production biologique.</p>
+          <dl className="mt-5 grid gap-5 md:grid-cols-3">
+            <div><dt className="font-bold text-ink">Outdoor · en extérieur</dt><dd className="mt-2 text-sm text-charcoal">Culture à l’air libre. Consultez le lieu, le producteur, la récolte et le lot plutôt que de vous fier uniquement à cette mention.</dd></div>
+            <div><dt className="font-bold text-ink">Greenhouse · sous serre</dt><dd className="mt-2 text-sm text-charcoal">Culture sous serre. Les équipements et pratiques varient selon les producteurs ; la fiche précise les informations déclarées.</dd></div>
+            <div><dt className="font-bold text-ink">Indoor · en intérieur</dt><dd className="mt-2 text-sm text-charcoal">Culture en intérieur. Cette mention ne remplace pas la composition, le prix au gramme et les analyses correspondant au produit.</dd></div>
+          </dl>
+          <p className="mt-5 text-sm text-charcoal"><Link href="/boutique/fleurs-cbd" className="font-bold underline">Comparer les fleurs CBD</Link> ou consulter le <Link href="/cbd-pas-cher#prix-au-gramme" className="font-bold underline">tableau des prix au gramme</Link>. Les modes disponibles dépendent des références actuellement publiées.</p>
+        </section>
 
         {/* Comment nous cultivons */}
         <div className="cartoon-border mt-8 bg-cream p-8">

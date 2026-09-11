@@ -24,6 +24,13 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["lucide-react", "simple-icons"],
   },
   serverExternalPackages: ["@napi-rs/canvas"],
+  async redirects() {
+    return [{
+      source: "/boutique/alimentaire-cbd",
+      destination: "/boutique/tisane-cbd",
+      permanent: true,
+    }];
+  },
   async headers() {
     return [
       {

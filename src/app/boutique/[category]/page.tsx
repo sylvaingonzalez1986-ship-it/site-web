@@ -1,7 +1,7 @@
 ﻿import type { ReactNode } from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { CollectionPageJsonLd } from "@/components/JsonLd";
+import { notFound, permanentRedirect } from "next/navigation";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { type ProductCategory } from "@/data/products";
 import { getActiveCatalogCategories } from "@/lib/catalog-categories";
@@ -46,6 +46,7 @@ export default async function CategoryPage({
   params: Promise<{ category: string }>;
 }) {
   const { category: slug } = await params;
+  if (slug === "alimentaire-cbd") permanentRedirect("/boutique/tisane-cbd");
   const categoryInfo = categoryMap[slug];
 
   if (!categoryInfo) {
@@ -77,6 +78,11 @@ export default async function CategoryPage({
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
+      <BreadcrumbJsonLd items={[
+        { name: "Accueil", url: baseUrl },
+        { name: "Boutique CBD", url: `${baseUrl}/boutique` },
+        { name: categoryInfo.label, url: `${baseUrl}/boutique/${slug}` },
+      ]} />
       <CollectionPageJsonLd
         name={categoryInfo.label}
         description={categoryDescription}
@@ -102,6 +108,11 @@ export default async function CategoryPage({
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-charcoal">
             {categoryDescription}
           </p>
+          <nav aria-label="Conseils pour choisir votre CBD" className="mt-5 flex flex-wrap gap-3 text-sm font-bold text-ink">
+            <Link href="/cbd-pas-cher" className="underline underline-offset-4">Comparer les prix du CBD</Link>
+            <Link href="/cbd-naturel" className="underline underline-offset-4">Choisir un CBD naturel</Link>
+            <Link href="/analyse-laboratoire-cbd" className="underline underline-offset-4">Lire une analyse de lot</Link>
+          </nav>
         </div>
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

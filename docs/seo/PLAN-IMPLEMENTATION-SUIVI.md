@@ -2,6 +2,8 @@
 
 ## Les Chanvriers Bretons - Avril 2026
 
+> Document historique. L’état courant, les corrections et les validations du 11 septembre sont décrits dans [l’audit SEO 2026-09-11](./AUDIT-2026-09-11.md). Les cases ci-dessous ne reflètent pas les implémentations ultérieures ; les gains chiffrés annoncés dans ce plan n’ont pas été mesurés.
+
 ---
 
 ## ✅ ACTIONS COMPLÉTÉES

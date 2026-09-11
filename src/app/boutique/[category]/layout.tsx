@@ -1,5 +1,4 @@
 ﻿import type { Metadata } from "next";
-import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getCatalogCategoryBySlug } from "@/lib/catalog-categories";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 
@@ -101,28 +100,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryLayout({
+export default function CategoryLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ category: string }>;
 }) {
-  const { category } = await params;
-  const meta = categoryMeta[category];
-
-  return (
-    <>
-      {meta && (
-        <BreadcrumbJsonLd
-          items={[
-            { name: "Accueil", url: BASE_URL },
-            { name: "Boutique CBD", url: `${BASE_URL}/boutique` },
-            { name: meta.label, url: `${BASE_URL}/boutique/${category}` },
-          ]}
-        />
-      )}
-      {children}
-    </>
-  );
+  return children;
 }

@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import type { Product } from "@/data/products";
 import { BUSINESS_IDENTITY } from "@/lib/business-identity";
 import { getSiteUrl } from "@/lib/site-url";
+import { isProductInStock, isVariantOptionPurchasable } from "@/lib/product-stock";
 import type { Producer } from "@/types/store";
 
 type ArticleJsonLdProps = {
@@ -20,11 +21,7 @@ type ArticleJsonLdProps = {
 };
 
 function resolveProductAvailability(product: Product): string {
-  if (product.trackStock && typeof product.stockQuantity === "number" && product.stockQuantity <= 0) {
-    return "https://schema.org/OutOfStock";
-  }
-
-  return "https://schema.org/InStock";
+  return isProductInStock(product) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock";
 }
 
 const CATEGORY_SLUGS: Record<Product["category"], string> = {
@@ -85,9 +82,10 @@ function getProductUrl(baseUrl: string, product: Pick<Product, "category" | "id"
 function buildProductOffers(product: Product, productUrl: string, baseUrl: string) {
   const seller = { "@id": organizationId(baseUrl) };
   const returnPolicy = { "@id": `${baseUrl}/#return-policy` };
-  const variants = product.variantOptions?.filter((option) => option.enabled !== false) ?? [];
+  const variants = product.variantOptions?.filter((option) => option.enabled !== false && Number.isFinite(option.price) && option.price >= 0) ?? [];
 
-  if (variants.length === 0) {
+  if (!product.variantOptions?.length) {
+    if (!Number.isFinite(product.price) || product.price < 0) return undefined;
     return {
       "@type": "Offer",
       price: product.price,
@@ -106,11 +104,9 @@ function buildProductOffers(product: Product, productUrl: string, baseUrl: strin
     name: `${product.name} — ${option.label}`,
     price: option.price,
     priceCurrency: "EUR",
-    availability:
-      option.inStock === false ||
-      (typeof option.stockQuantity === "number" && option.stockQuantity <= 0)
-        ? "https://schema.org/OutOfStock"
-        : "https://schema.org/InStock",
+    availability: isVariantOptionPurchasable(option)
+      ? "https://schema.org/InStock"
+      : "https://schema.org/OutOfStock",
     itemCondition: "https://schema.org/NewCondition",
     url: productUrl,
     seller,
