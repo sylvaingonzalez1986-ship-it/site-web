@@ -1,5 +1,6 @@
 "use client";
 
+import { previewKqEnergyPayment } from "@/lib/kanab-quest-energy";
 import Image from "next/image";
 
 import {
@@ -69,12 +70,15 @@ type MarketLot = {
   status: "ready" | "sold";
   selectedRoute: KqMarketRouteCode | null;
   payoutCents: number | null;
+  electricityPaidCents?: number;
+  netPayoutCents?: number;
   reputationGain: number | null;
   burnedAt: string;
   settledAt: string | null;
 };
 
 type MarketSnapshot = {
+  electricityOutstandingCents?: number;
   cashCents: number;
   reputation: number;
   reputationRank: number;
@@ -101,6 +105,8 @@ type SaleReceipt = {
   flowerId: string;
   route: KqMarketRouteCode;
   payoutCents: number;
+  electricityPaidCents?: number;
+  netPayoutCents?: number;
   reputationGain: number;
   cashAfterCents: number;
   reputationAfter: number;
@@ -290,7 +296,8 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
     : null, [snapshot]);
   const pendingSalePreview = useMemo(() => {
     if (!snapshot || !pendingQuote) return null;
-    const cashAfterCents = snapshot.cashCents + pendingQuote.payoutCents;
+    const energyPayment = previewKqEnergyPayment(pendingQuote.payoutCents, snapshot.electricityOutstandingCents ?? 0);
+    const cashAfterCents = snapshot.cashCents + energyPayment.netPayoutCents;
     const nextRouteSaleCount = (snapshot.routeMasteries.find((mastery) => mastery.route === pendingQuote.route)?.saleCount ?? 0) + 1;
     const expertiseBonusReputation = getKqRouteExpertiseBonusReputation(pendingQuote.route, nextRouteSaleCount, pendingQuote.reputationGain);
     const { reputationGain, reputationAfter } = previewKqMarketReputation(snapshot.reputation, pendingQuote.reputationGain, expertiseBonusReputation);
@@ -304,11 +311,12 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
         projection: getKqEquipmentSaleFundingProjection({
           investmentCents: routeGoalScenario.remainingInvestmentCents,
           cashBeforeCents: snapshot.cashCents,
-          payoutCents: pendingQuote.payoutCents,
+          payoutCents: energyPayment.netPayoutCents,
         }),
       }
       : null;
     return {
+      ...energyPayment,
       cashAfterCents,
       reputationAfter,
       reputationGain,
@@ -348,8 +356,8 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
         equipmentCode: snapshot.routePlan.equipmentCode,
         projection: getKqEquipmentSaleFundingProjection({
           investmentCents: routeGoalScenario.remainingInvestmentCents,
-          cashBeforeCents: saleReceipt.cashAfterCents - saleReceipt.payoutCents,
-          payoutCents: saleReceipt.payoutCents,
+          cashBeforeCents: saleReceipt.cashAfterCents - (saleReceipt.netPayoutCents ?? saleReceipt.payoutCents),
+          payoutCents: saleReceipt.netPayoutCents ?? saleReceipt.payoutCents,
         }),
       }
       : null
@@ -382,6 +390,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
       setSnapshot((current) => current ? {
         ...current,
         cashCents: payload.cashAfterCents,
+        electricityOutstandingCents: Math.max(0, (current.electricityOutstandingCents ?? 0) - (payload.electricityPaidCents ?? 0)),
         reputation: payload.reputationAfter,
         routePlan: payload.routeMastery?.matchedPlan ? null : current.routePlan,
         routeMasteries: mergeKqRouteMasteryAfterSale(current.routeMasteries, payload, selectedLot.juryScore),
@@ -390,6 +399,8 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
           status: "sold",
           selectedRoute: payload.route,
           payoutCents: payload.payoutCents,
+          electricityPaidCents: payload.electricityPaidCents,
+          netPayoutCents: payload.netPayoutCents,
           reputationGain: payload.reputationGain,
           settledAt: new Date().toISOString(),
         } : lot),
@@ -397,7 +408,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
       setPendingQuote(null);
       saleRequestKeyRef.current = null;
       window.dispatchEvent(new Event("kq:market-updated"));
-      if (payload.routeMastery?.matchedPlan) window.dispatchEvent(new Event("kq:equipment-updated"));
+      window.dispatchEvent(new Event("kq:equipment-updated"));
     } catch (saleError) {
       setTransformation("idle");
       setError(saleError instanceof Error ? saleError.message : "Vente impossible.");
@@ -498,7 +509,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
             <details className={styles.cultureDetails}><summary>Origine du lot · {selectedLot.cultureSystemName ?? "Mode non archivé"}</summary><p>{selectedLot.cultureSystemTechnique ?? "Cette ancienne récolte ne contient pas encore le détail technique."}</p><p>Aucun bonus caché : le mode de culture décrit l’origine du lot.</p></details>
 
             {selectedLot.status === "sold" ? (
-              <div className={styles.soldSummary}><PackageCheck /><div><small>Lot valorisé le {formatDate(selectedLot.settledAt)}</small><h3>{selectedLot.options.find((option) => option.route === selectedLot.selectedRoute)?.name ?? selectedLot.selectedRoute}</h3><p><strong>+{formatKqCash(selectedLot.payoutCents ?? 0)}</strong><span>{formatKqReputationDelta(selectedLot.reputationGain ?? 0)} réputation</span></p></div></div>
+              <div className={styles.soldSummary}><PackageCheck /><div><small>Lot valorisé le {formatDate(selectedLot.settledAt)}</small><h3>{selectedLot.options.find((option) => option.route === selectedLot.selectedRoute)?.name ?? selectedLot.selectedRoute}</h3><p><strong>+{formatKqCash(selectedLot.netPayoutCents ?? selectedLot.payoutCents ?? 0)}</strong><span>{formatKqReputationDelta(selectedLot.reputationGain ?? 0)} réputation</span></p></div></div>
             ) : (
               <>
                 <div className={styles.routeHeading}><div><small>Choisis ton poste</small><h3>L’atelier de transformation</h3></div><button type="button" onClick={() => onOpenShop()}><ShoppingBag /> Équiper l’atelier</button></div>
@@ -594,7 +605,8 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
           <h2 id="market-confirm-title">{pendingQuote.name}</h2>
           <p>Le lot {selectedLot.varietyName} sera entièrement valorisé par cette filière. Ce choix ne pourra pas être annulé.</p>
           {error ? <p className={styles.modalError} role="alert">{error}</p> : null}
-          <div><span><small>Versement</small><strong>{formatKqCash(pendingQuote.payoutCents)}</strong></span><span><small>Réputation{pendingSalePreview?.expertiseBonusReputation ? " · prime de rang" : ""}</small><strong>{formatKqReputationDelta(pendingSalePreview?.reputationGain ?? pendingQuote.reputationGain)}</strong></span></div>
+          <div><span><small>Vente brute</small><strong>{formatKqCash(pendingQuote.payoutCents)}</strong></span><span><small>Réputation{pendingSalePreview?.expertiseBonusReputation ? " · prime de rang" : ""}</small><strong>{formatKqReputationDelta(pendingSalePreview?.reputationGain ?? pendingQuote.reputationGain)}</strong></span></div>
+          {pendingSalePreview && pendingSalePreview.electricityPaidCents > 0 ? <p className={styles.energySettlement}>Électricité réglée : −{formatKqCash(pendingSalePreview.electricityPaidCents)} · Dans ta caisse : <b>{formatKqCash(pendingSalePreview.netPayoutCents)}</b><br />Reste à payer : {formatKqCash(pendingSalePreview.electricityRemainingCents)}. Au maximum la moitié de cette vente rembourse tes factures.</p> : null}
           {pendingQuote.reputationGain < 0 ? <p className={styles.reputationWarning} role="alert">Qualité insuffisante pour cette filière : pénalité de {Math.abs(pendingQuote.reputationGain)} points, limitée à ta réputation disponible. La biomasse préserve ta réputation.</p> : null}
           {pendingSalePreview ? (
             <section className={styles.salePreview} aria-label="Progression après cette vente">
@@ -639,7 +651,8 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
           <PackageCheck />
           <small>Reçu #{saleReceipt.receiptId.slice(0, 8)}</small>
           <h2 id="market-receipt-title">Lot vendu</h2>
-          <strong>+{formatKqCash(saleReceipt.payoutCents)}</strong>
+          <strong>+{formatKqCash(saleReceipt.netPayoutCents ?? saleReceipt.payoutCents)}</strong>
+          {(saleReceipt.electricityPaidCents ?? 0) > 0 ? <p className={styles.energySettlement}>Vente brute : {formatKqCash(saleReceipt.payoutCents)} · Électricité réglée : −{formatKqCash(saleReceipt.electricityPaidCents ?? 0)}</p> : null}
           <span>{formatKqReputationDelta(saleReceipt.reputationGain)} réputation · solde {formatKqCash(saleReceipt.cashAfterCents)}</span>
           {receiptReputationProgress ? (
             <section className={`${styles.receiptGoal} ${styles.reputationGoal}`} data-promoted={receiptPromoted || undefined}>

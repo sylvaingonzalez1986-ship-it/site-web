@@ -8,7 +8,7 @@ const styles = readFileSync(join(process.cwd(), "src/components/placard/KqEquipm
 
 describe("Kanab Quest equipment inventory policy", () => {
   it("keeps only the selected dashboard section visible", () => {
-    expect(hud).toContain('useState<"overview" | "equipment" | "goals">("overview")');
+    expect(hud).toContain('useState<"overview" | "equipment" | "goals" | "energy">("overview")');
     expect(hud).toContain('aria-controls="placard-hud-content"');
     expect(hud).toContain('activeTab === "overview" ?');
     expect(hud).toContain('activeTab === "equipment" ?');

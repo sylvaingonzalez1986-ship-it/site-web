@@ -1,3 +1,4 @@
+import { isKqEnergyMode } from "@/lib/kanab-quest-energy";
 import { NextResponse } from "next/server";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
 import { getKqAdminActiveRun, startKqAdminRun } from "@/lib/supabase/kanab-quest-backend";
@@ -36,8 +37,9 @@ export async function POST(request: Request) {
   const cultureTokens = typeof body.cultureTokens === "number" ? body.cultureTokens : 0;
   const heritageCode = typeof body.heritageCode === "string" ? body.heritageCode : undefined;
 
+  if (body.energyMode !== undefined && !isKqEnergyMode(body.energyMode)) return NextResponse.json({ error: "Mode énergétique invalide." }, { status: 400 });
   try {
-    const result = await startKqAdminRun(admin.email, { buddieCode, deckCodes, cultureTokens, heritageCode });
+    const result = await startKqAdminRun(admin.email, { buddieCode, deckCodes, cultureTokens, heritageCode, energyMode: isKqEnergyMode(body.energyMode) ? body.energyMode : "balanced" });
     return NextResponse.json(result, {
       status: 201,
       headers: { "Cache-Control": "private, no-store, max-age=0" },

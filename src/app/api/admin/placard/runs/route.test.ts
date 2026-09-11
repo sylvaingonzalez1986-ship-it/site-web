@@ -37,6 +37,7 @@ describe("POST /api/admin/placard/runs", () => {
     }));
     expect(response.status).toBe(201);
     expect(startKqAdminRun).toHaveBeenCalledWith("admin@example.test", {
+      energyMode: "balanced",
       buddieCode: "HH2026-003",
       deckCodes: ["BOTTE-001", "BOTTE-003"],
       cultureTokens: 2,

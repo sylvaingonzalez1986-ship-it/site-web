@@ -664,6 +664,7 @@ export const KQ_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = LEGACY_EQU
   .filter((item) => !KQ_EQUIPMENT_REPLACEMENTS[item.code])
   .map((item) => ({
     ...item,
+    ...(item.slot === "tent" ? { unlocks: ["raw-sale"] as KqEquipmentUnlock[] } : {}),
     ...(item.code === "PRESS-0600" ? {
       name: "Presse à rosin",
       benefit: "Débloque les filières Rosin. Les niveaux augmentent la capacité et la valeur de transformation.",

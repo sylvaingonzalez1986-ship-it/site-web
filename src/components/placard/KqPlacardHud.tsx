@@ -32,6 +32,7 @@ import {
   type KqMarketRouteCode,
 } from "@/lib/kanab-quest-market";
 import { getKqReputationProgress } from "@/lib/kanab-quest-reputation";
+import { KqEnergyPanel } from "./KqEnergyPanel";
 import { KqEquipmentInventoryModal } from "./KqEquipmentInventoryModal";
 import styles from "./KqPlacardHud.module.css";
 
@@ -76,7 +77,7 @@ export function KqPlacardHud({
   const [missionError, setMissionError] = useState("");
   const [savingMission, setSavingMission] = useState(false);
   const [inventoryOpen, setInventoryOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "equipment" | "goals">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "equipment" | "goals" | "energy">("overview");
   const [refreshKey, setRefreshKey] = useState(0);
   const requestRefresh = useCallback(() => {
     setLoading(true);
@@ -207,7 +208,7 @@ export function KqPlacardHud({
     arena: "/contest/mascot/arena-scene-classement-v1.png",
     shop: "/placard/booster-shop-interior-v4.webp",
   };
-  const tabs = [{ id: "overview", label: "En bref" }, { id: "equipment", label: "Matériel" }, { id: "goals", label: "Objectifs" }] as const;
+  const tabs = [{ id: "overview", label: "En bref" }, { id: "equipment", label: "Matériel" }, { id: "goals", label: "Objectifs" }, { id: "energy", label: "Électricité" }] as const;
   const progressBar = (label: string, value: number) => <div className={styles.progressBar} role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={value}><span style={{ width: `${value}%` }} /></div>;
 
   return (
@@ -235,6 +236,7 @@ export function KqPlacardHud({
               <button type="button" onClick={onOpenMarket}><small>Étape 3 · Vente</small><strong>{snapshot?.readyLotCount ?? 0} lot{snapshot.readyLotCount > 1 ? "s" : ""}</strong></button>
             </nav>
           </> : null}
+          {activeTab === "energy" ? <KqEnergyPanel /> : null}
           {activeTab === "equipment" ? <>
             <div className={styles.sectionIntro}><Image src="/placard/collection-chest.png" alt="" width={100} height={100} sizes="80px" /><div><p>Ton matériel durable</p><h3>{summary.installed.length} équipement{summary.installed.length > 1 ? "s" : ""} installé{summary.installed.length > 1 ? "s" : ""}</h3><span>{summary.purchased.length ? `${summary.purchased.length} investissement${summary.purchased.length > 1 ? "s" : ""} acquis` : "Ton kit de départ est opérationnel."}</span></div></div>
             {preview.length ? <ul className={styles.equipmentList}>{preview.map((equipment) => <li key={equipment.code}><span>{equipment.name} · Niv. {snapshot?.levels?.[equipment.code] ?? 1}</span><small data-installed={equipment.equipped}>{equipment.equipped ? "Installé" : "En réserve"}</small></li>)}</ul> : <p className={styles.hint}>Retrouve tes équipements de base dans l’inventaire et choisis ceux à installer.</p>}

@@ -1,3 +1,4 @@
+import { isKqEnergyQuoteValid } from "@/lib/kanab-quest-energy";
 import { KQ_RETIRED_SUBSTRATE_CODES, isKqRetiredSubstrate, getKqHandCodes, getKqStateHeritage, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState } from "@/lib/kanab-quest-game";
 import { isKqHeritageEffect, isKqHeritageTiming } from "@/lib/kanab-quest-heritage";
 import { getKqEquipmentDefinition, summarizeKqEquipmentLoadout } from "@/lib/kanab-quest-equipment";
@@ -45,6 +46,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       if (levels !== undefined ? state.equipment.unlocks.join("|") !== expected.unlocks.join("|")
         : state.equipment.unlocks.some((unlock) => !expected.unlocks.includes(unlock as typeof expected.unlocks[number]))) return null;
     }
+    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined))) return null;
     if (typeof state.varietyCode !== "string" || typeof state.varietyName !== "string") return null;
     if (state.challengeDayKey !== undefined && (typeof state.challengeDayKey !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(state.challengeDayKey))) return null;
     if (state.startedAt !== undefined && (typeof state.startedAt !== "string" || Number.isNaN(Date.parse(state.startedAt)))) return null;

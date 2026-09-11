@@ -1,4 +1,5 @@
 import "server-only";
+import { isKqEnergyMode, type KqEnergyMode } from "@/lib/kanab-quest-energy";
 
 import { normalizeEmail } from "@/lib/admin-allowlist";
 import { activateKqHeritage, advanceKqStage, canPlayKqCard, getKqHarvestTier, KQ_BUDDIES, KQ_CARDS, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "@/lib/kanab-quest-game";
@@ -857,6 +858,8 @@ export async function getKqAdminLaunchReadinessFromSnapshots(
 }
 
 export type KqStartRunInput = {
+  energyMode?: KqEnergyMode;
+  expectedEnergyCents?: number;
   buddieCode: string;
   deckCodes: string[];
   cultureTokens?: number;
@@ -892,6 +895,7 @@ export function mapKqStartRunResult(data: unknown) {
 }
 
 export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) {
+  if (input.energyMode !== undefined && !isKqEnergyMode(input.energyMode)) throw new Error("Mode énergétique invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
   if (!KQ_BUDDIES.some((buddie) => buddie.code === input.buddieCode)) {
     throw new Error("Buddie invalide.");
@@ -944,7 +948,9 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     heritageCard,
     equipmentCodes: equipmentShop.equippedCodes,
     equipmentLevels: equipmentShop.levels,
+    energyMode: input.energyMode ?? "balanced",
   });
+  if (input.expectedEnergyCents !== undefined && input.expectedEnergyCents !== state.energy?.totalCents) throw new Error("L’installation a changé. Actualise le devis électrique avant de lancer.");
   const supabase = createSupabaseServiceClient();
   const result = await supabase.rpc("rpc_kq_start_run_with_heritage", {
     p_user_id: ownerId,

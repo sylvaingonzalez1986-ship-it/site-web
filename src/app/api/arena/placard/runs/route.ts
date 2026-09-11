@@ -1,3 +1,4 @@
+import { isKqEnergyMode } from "@/lib/kanab-quest-energy";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
@@ -60,7 +61,10 @@ export async function POST(request: Request) {
   if (!Array.isArray(body.deckCodes) || !body.deckCodes.every((code) => typeof code === "string")) {
     return NextResponse.json({ error: "Deck invalide." }, { status: 400 });
   }
+  if (body.energyMode !== undefined && !isKqEnergyMode(body.energyMode)) return NextResponse.json({ error: "Mode énergétique invalide." }, { status: 400 });
   const input = {
+    expectedEnergyCents: typeof body.expectedEnergyCents === "number" ? body.expectedEnergyCents : undefined,
+    energyMode: isKqEnergyMode(body.energyMode) ? body.energyMode : "balanced" as const,
     buddieCode: typeof body.buddieCode === "string" ? body.buddieCode : "",
     deckCodes: body.deckCodes as string[],
     cultureTokens: typeof body.cultureTokens === "number" ? body.cultureTokens : 0,

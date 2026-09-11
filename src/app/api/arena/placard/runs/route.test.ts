@@ -79,7 +79,7 @@ describe("POST /api/arena/placard/runs", () => {
     const response = await POST(request(payload));
     expect(response.status).toBe(201);
     expect(response.headers.get("cache-control")).toContain("no-store");
-    expect(startKqPlayerRun).toHaveBeenCalledWith(customerId, payload);
+    expect(startKqPlayerRun).toHaveBeenCalledWith(customerId, { ...payload, energyMode: "balanced", expectedEnergyCents: undefined });
   });
 
   it("rate limits repeated burn attempts per customer and IP", async () => {

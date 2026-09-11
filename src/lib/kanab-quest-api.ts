@@ -1,3 +1,4 @@
+import type { KqEnergyMode } from "@/lib/kanab-quest-energy";
 import type { KqGameState } from "@/lib/kanab-quest-game";
 
 export type KqApiBurnReceipt = {
@@ -96,7 +97,7 @@ async function readKqResponse<T>(response: Response): Promise<T> {
 }
 
 export async function startKqRemoteRun(
-  input: { buddieCode: string; deckCodes: string[]; cultureTokens?: number; heritageCode?: string },
+  input: { buddieCode: string; deckCodes: string[]; cultureTokens?: number; heritageCode?: string; energyMode?: KqEnergyMode; expectedEnergyCents?: number },
   request: typeof fetch = fetch,
 ) {
   const response = await request("/api/admin/placard/runs", {

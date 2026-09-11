@@ -13,7 +13,7 @@
 .stats span { display: grid; gap: 5px; min-width: 0; }
 .stats small { color: #c4dfce; font-size: 11px; line-height: 1.4; }
 .stats strong { font: 900 clamp(20px, 4vw, 28px)/1.15 var(--font-display), Impact, sans-serif; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 0 16px; }
+.tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 0 16px; }
 .tabs button { min-height: 48px; border: 0; border-bottom: 3px solid transparent; border-radius: 5px 5px 0 0; background: #003c30; color: #d0e5d5; font-size: 12px; font-weight: 800; }
 .tabs button[aria-pressed="true"] { border-bottom-color: var(--gold); background: var(--paper); color: var(--ink); }
 .content { padding: 20px; background: var(--paper); color: var(--ink); }

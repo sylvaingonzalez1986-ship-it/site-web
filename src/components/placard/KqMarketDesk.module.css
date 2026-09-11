@@ -477,3 +477,5 @@
 @media (prefers-reduced-motion: reduce) {
   .transformation *, .transformation *::before { animation: none !important; }
 }
+
+.energySettlement.energySettlement { padding: 12px; border: 2px solid #14232b; background: #fff3b5; color: #14232b; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }

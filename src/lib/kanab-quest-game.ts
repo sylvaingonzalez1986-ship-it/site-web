@@ -1,3 +1,4 @@
+import { quoteKqEnergy, applyKqEnergyHarvest, KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
 import {
   KQ_HERITAGE_CARDS,
   resolveKqHeritageCard,
@@ -92,6 +93,7 @@ export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadou
 };
 
 export type KqGameState = {
+  energy?: KqEnergyQuote;
   seed: number;
   challengeDayKey?: string;
   startedAt?: string;
@@ -236,10 +238,10 @@ const KQ_CARD_CATALOG: KqSupportCard[] = [
   { code: "BOTTE-025", name: "Plaque engluée de suivi", category: "equipment", rarity: "uncommon", xpCost: 1, timing: "before-roll", description: "Identifie le ravageur et récupère 1 XP pour préparer une réponse PBI.", tags: ["pest"], effect: "pest-monitor" },
   { code: "BOTTE-026", name: "Extracteur bien réglé", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Annule jusqu’à deux Dangers sur une Situation Climat ou Séchage.", tags: ["climate", "drying"], effect: "double-danger-shield" },
   { code: "BOTTE-027", name: "Papiers en règle", category: "equipment", rarity: "rare", xpCost: 3, timing: "before-roll", description: "Face à un contrôle DDTM, présente le dossier complet : les trois dés deviennent des réussites.", tags: ["compliance"], effect: "compliance-clearance" },
-  { code: "BOTTE-028", name: "Branchement illégal", category: "luck", rarity: "uncommon", xpCost: 1, timing: "after-roll", description: "Après un mauvais jet sur la facture, transforme les deux dés les plus faibles en réussites mais gagne 2 Pression.", tags: ["energy"], effect: "illegal-power" },
+  { code: "BOTTE-028", name: "Branchement illégal", category: "luck", rarity: "uncommon", xpCost: 1, timing: "after-roll", description: "Après un mauvais jet sur la surcharge électrique, transforme les deux dés les plus faibles en réussites mais gagne 2 Pression.", tags: ["energy"], effect: "illegal-power" },
   { code: "BOTTE-029", name: "Effeuillage mesuré", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Relance un dé neutre sur une Situation Floraison ou Climat.", tags: ["flower", "climate"], effect: "reroll-neutral" },
   { code: "BOTTE-030", name: "Sonde d’humidité", category: "equipment", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Pendant le Séchage, transforme un 2 en 4 ou un 3 en 5.", tags: ["drying"], effect: "moisture-calibration" },
-  { code: "BOTTE-031", name: "Échéancier négocié", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Sur une Situation Énergie, réduit de 1 le nombre de réussites exigées par le créancier.", tags: ["energy"], effect: "bill-relief" },
+  { code: "BOTTE-031", name: "Échéancier négocié", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Sur une Situation Énergie, réduit de 1 le nombre de réussites exigées pour stabiliser l’installation.", tags: ["energy"], effect: "bill-relief" },
   { code: "BOTTE-032", name: "Loupe à trichomes", category: "equipment", rarity: "rare", xpCost: 2, timing: "before-roll", description: "En Récolte, lance quatre dés, garde les trois meilleurs et gagne 1 Qualité en cas de réussite.", tags: ["harvest"], effect: "harvest-four-quality" },
   { code: "BOTTE-033", name: "Récolte au frais", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Annule un Danger en Récolte et réduit la Pression de 1 si la protection se déclenche.", tags: ["harvest", "climate"], effect: "harvest-cool" },
   { code: "BOTTE-034", name: "Gros molosse", category: "equipment", rarity: "rare", xpCost: 2, timing: "before-roll", description: "Protège toute la récolte contre le Renard à deux pattes, quel que soit le résultat des dés.", tags: ["security"], effect: "theft-guard" },
@@ -276,7 +278,7 @@ export function getKqCardTradeoff(card: KqSupportCard) {
   if (card.effect === "clean-cut") return { benefit: "Protège le lancer et rembourse 1 XP si la récolte réussit.", risk: "Réservée à la Récolte." };
   if (card.effect === "compliance-clearance") return { benefit: "Garantit immédiatement trois réussites pendant le contrôle DDTM.", risk: "Coûte 3 XP et ne sert que sur cette Situation administrative." };
   if (card.effect === "illegal-power") return { benefit: "Transforme les deux dés les plus faibles en réussites et évite la coupure.", risk: "Ajoute immédiatement 2 Pression et brûle la carte." };
-  if (card.effect === "bill-relief") return { benefit: "Réduit de 1 le seuil de réussite de la facture électrique.", risk: "Ne change aucune face de dé et reste réservé aux Situations Énergie." };
+  if (card.effect === "bill-relief") return { benefit: "Réduit de 1 le seuil de réussite face à la surcharge électrique.", risk: "Ne change aucune face de dé et reste réservé aux Situations Énergie." };
   if (card.effect === "theft-guard") return { benefit: "Empêche toute perte de quantité lors du vol de récolte.", risk: "Ne change pas le verdict du jury et coûte 2 XP." };
   if (card.effect === "root-aeration") return { benefit: "Transforme un Danger en résultat neutre sur Racines ou Eau.", risk: "Le pot sèche vite : jouer la carte ajoute immédiatement 1 Pression." };
   if (card.effect === "living-soil-buffer") return { benefit: "La biologie du Sol vivant amortit automatiquement le premier Danger sur Racines ou Ravageur.", risk: "Le résultat devient seulement neutre et le système n'accélère pas les autres étapes." };
@@ -318,7 +320,7 @@ export const KQ_SITUATIONS: KqSituation[] = [
   { code: "SIT-018", stage: "Enracinement", name: "Pot qui retient l’eau", story: "L’eau s’évacue lentement et réduit l’air disponible autour des racines.", difficulty: 3, tags: ["water", "roots"], successTrait: "Drainage maîtrisé", fragileTrait: "Racines vigilantes", failureTrait: "Zone asphyxiée" },
   { code: "SIT-019", stage: "Enracinement", name: "Bord du pot colonisé", story: "Les racines atteignent rapidement les limites de leur espace.", difficulty: 2, tags: ["roots"], successTrait: "Chevelu dense", fragileTrait: "Racines contenues", failureTrait: "Croissance freinée" },
   { code: "SIT-020", stage: "Enracinement", name: "Arrosage trop rapproché", story: "Le substrat n’a pas eu le temps de retrouver son équilibre entre deux apports.", difficulty: 2, tags: ["water", "roots"], successTrait: "Cycle bien réglé", fragileTrait: "Rythme ajusté", failureTrait: "Racines paresseuses" },
-  { code: "SIT-021", stage: "Croissance", name: "La facture qui pique", story: "Le compteur a tourné avec les lampes. Si les dés ne passent pas, le fournisseur coupe le courant pour l’étape suivante.", difficulty: 2, tags: ["energy", "climate"], incident: "electricity-bill", successTrait: "Facture maîtrisée", fragileTrait: "Échéance tendue", failureTrait: "Courant coupé" },
+  { code: "SIT-021", stage: "Croissance", name: "Surcharge au compteur", story: "L’installation électrique sature. Si les dés ne passent pas, une panne coupe le courant pour l’étape suivante. La facture du cycle sera calculée à la récolte.", difficulty: 2, tags: ["energy", "climate"], incident: "electricity-bill", successTrait: "Charge maîtrisée", fragileTrait: "Installation sous tension", failureTrait: "Courant coupé" },
   { code: "SIT-022", stage: "Floraison", name: "Air trop humide", story: "L’humidité reste haute au cœur des fleurs et demande une bonne circulation d’air.", difficulty: 3, tags: ["climate", "flower"], successTrait: "Fleurs bien aérées", fragileTrait: "Humidité contenue", failureTrait: "Floraison humide" },
   { code: "SIT-023", stage: "Floraison", name: "Branches chargées", story: "Le poids des fleurs met les branches les plus fines à l’épreuve.", difficulty: 2, tags: ["flower"], successTrait: "Charpente solide", fragileTrait: "Branches souples", failureTrait: "Port affaissé" },
   { code: "SIT-024", stage: "Floraison", name: "Contrôle DDTM", story: "Une contrôleuse demande les justificatifs pendant que Sylvain tente de retrouver le bon classeur.", difficulty: 3, tags: ["compliance"], incident: "ddtm-inspection", successTrait: "Dossier irréprochable", fragileTrait: "Papiers éparpillés", failureTrait: "Contrôle défavorable" },
@@ -383,7 +385,7 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
 
 export function startKqGame(
   seed = Date.now(),
-  config: { varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number> } = {},
+  config: { varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode } = {},
 ): KqGameState {
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
   const requestedDeck = config.deckCodes ?? KQ_CARDS.slice(0, 6).map((card) => card.code);
@@ -398,7 +400,9 @@ export function startKqGame(
     .filter((code) => Boolean(getKqEquipmentDefinition(code)));
   const levels = Object.fromEntries(equipmentCodes.map((code) => [code, getKqEquipmentLevel(config.equipmentLevels?.[code])]));
   const equipment = { codes: equipmentCodes, levels, ...summarizeKqEquipmentLoadout(equipmentCodes, levels) };
+  const energy = config.energyMode ? quoteKqEnergy(equipmentCodes, levels, config.energyMode) : undefined;
   const initialState: KqGameState = {
+    ...(energy ? { energy } : {}),
     seed: clampSeed(seed), ...(config.challengeDayKey ? { challengeDayKey: config.challengeDayKey } : {}), ...(config.startedAt ? { startedAt: config.startedAt } : {}), varietyCode: buddie.code, varietyName: buddie.name, deckCodes,
     collectionCodes: (config.collectionCodes ?? KQ_CARDS.map((card) => card.code)).filter((code) => !isKqRetiredSubstrate(code)),
     situationCodes,
@@ -418,7 +422,7 @@ export function startKqGame(
       ...(equipmentCodes.length > 0 ? [`Installation : ${equipmentCodes.length} équipement${equipmentCodes.length > 1 ? "s" : ""} · ${equipment.powerWatts} W.`] : []),
       ...(equipment.pressureDelta > 0 ? [`Grande installation : +${equipment.pressureDelta} Pression au départ.`] : []),
     ],
-    rollNonce: 0, pressure: Math.max(0, Math.min(4, equipment.pressureDelta)), cancelledDangers: 0, powerOutage: false, harvestLossPercent: 0,
+    rollNonce: 0, pressure: Math.max(0, Math.min(4, equipment.pressureDelta + (energy ? KQ_ENERGY_MODES[energy.mode].pressure : 0))), cancelledDangers: 0, powerOutage: false, harvestLossPercent: 0,
     preparationPlayed: false, reactionPlayed: false, revealedPest: null, playedThisStage: [], usedCards: [],
     traits: [], combos: [], lastOutcome: null, history: [],
   };
@@ -457,8 +461,8 @@ export function canPlayKqCard(state: KqGameState, card: KqSupportCard) {
   if (card.effect === "perlite-drainage" && state.dice && !state.dice.some((die) => die === 1 || die === 2)) return { allowed: false, reason: "Il faut un dé affichant 1 ou 2 à corriger." };
   if (card.effect === "organic-feed" && state.dice && (state.dice.filter((die) => die >= 4).length !== 2 || !state.dice.some((die) => die === 2 || die === 3))) return { allowed: false, reason: "Il faut exactement deux réussites et un dé neutre." };
   if (card.effect === "reroll-two-low" && state.dice && state.dice.every((die) => die >= 4)) return { allowed: false, reason: "Aucun dé faible ne justifie cette relance." };
-  if (card.effect === "illegal-power" && situation.incident !== "electricity-bill") return { allowed: false, reason: "Cette prise de risque ne répond qu’à la facture électrique." };
-  if (card.effect === "illegal-power" && state.dice && ["success", "critical"].includes(previewKqResolution(state)?.outcome ?? "")) return { allowed: false, reason: "La facture est déjà maîtrisée : inutile de prendre ce risque." };
+  if (card.effect === "illegal-power" && situation.incident !== "electricity-bill") return { allowed: false, reason: "Cette prise de risque ne répond qu’à la surcharge électrique." };
+  if (card.effect === "illegal-power" && state.dice && ["success", "critical"].includes(previewKqResolution(state)?.outcome ?? "")) return { allowed: false, reason: "La surcharge est déjà maîtrisée : inutile de prendre ce risque." };
   if (card.category === "pbi" && state.dice && state.dice.every((die) => die >= 4)) return { allowed: false, reason: "Tous les dés sont déjà des réussites." };
   if (card.tags.length > 0 && !card.tags.some((tag) => situation.tags.includes(tag))) return { allowed: false, reason: "Cette carte ne répond pas à la Situation." };
   return { allowed: true, reason: card.timing === "before-roll" ? "Prépare le lancer." : "Peut modifier le résultat." };
@@ -915,7 +919,7 @@ export function resolveKqStage(state: KqGameState): KqGameState {
     : 0;
   const incidentNotices = [
     ...(billFailed && hasPowerBackup ? ["Panneau solaire : la batterie prend le relais, aucune coupure."] : []),
-    ...(powerOutage ? ["Facture impayée : coupure de courant à la prochaine étape."] : []),
+    ...(powerOutage ? ["Surcharge électrique : coupure de courant à la prochaine étape."] : []),
     ...(situation.incident === "crop-theft" && theftProtected ? [
       heritage?.effect === "harvest-theft-shield"
         ? `${heritage.name} : la mémoire du gardien protège toute la récolte.`
@@ -1015,6 +1019,7 @@ export type KqHarvestBreakdown = {
   grossHarvestGrams: number;
   harvestLossPercent: number;
   lostHarvestGrams: number;
+  energyAdjustmentGrams: number;
   finalHarvestGrams: number;
 };
 
@@ -1039,7 +1044,7 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
   });
   const harvestGrams = state.phase === "complete" && state.harvestGrams !== undefined
     ? state.harvestGrams
-    : Math.round(grossHarvestGrams * (1 - harvestLossPercent / 100) * 10) / 10;
+    : applyKqEnergyHarvest(Math.round(grossHarvestGrams * (1 - harvestLossPercent / 100) * 10) / 10, state.energy);
 
   return {
     currentQuality: state.quality,
@@ -1064,7 +1069,8 @@ export function getKqHarvestBreakdown(state: KqGameState): KqHarvestBreakdown {
   const quantityPercent = state.equipment?.quantityPercent ?? 0;
   const grossHarvestGrams = calculateKqHarvestGrams({ quality: finalQuality, successfulStages, quantityPercent });
   const harvestLossPercent = Math.max(0, Math.min(80, state.harvestLossPercent ?? 0));
-  const calculatedFinalGrams = Math.round(grossHarvestGrams * (1 - harvestLossPercent / 100) * 10) / 10;
+  const afterIncidentGrams = Math.round(grossHarvestGrams * (1 - harvestLossPercent / 100) * 10) / 10;
+  const calculatedFinalGrams = applyKqEnergyHarvest(afterIncidentGrams, state.energy);
   const finalHarvestGrams = state.phase === "complete" && state.harvestGrams !== undefined
     ? state.harvestGrams
     : calculatedFinalGrams;
@@ -1077,7 +1083,8 @@ export function getKqHarvestBreakdown(state: KqGameState): KqHarvestBreakdown {
     quantityPercent,
     grossHarvestGrams,
     harvestLossPercent,
-    lostHarvestGrams: Math.round(Math.max(0, grossHarvestGrams - finalHarvestGrams) * 10) / 10,
+    lostHarvestGrams: Math.round(Math.max(0, grossHarvestGrams - afterIncidentGrams) * 10) / 10,
+    energyAdjustmentGrams: Math.round((finalHarvestGrams - afterIncidentGrams) * 10) / 10,
     finalHarvestGrams,
   };
 }

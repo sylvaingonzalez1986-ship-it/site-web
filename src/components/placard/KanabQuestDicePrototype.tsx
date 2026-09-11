@@ -1,4 +1,6 @@
 "use client";
+import { KqEnergyPanel } from "./KqEnergyPanel";
+import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -466,6 +468,7 @@ function HarvestScoreSheet({ state }: { state: KqGameState }) {
       <div className={styles.yieldEquation}>
         <span><small>Poids avant incident · quantité matériel {signed(breakdown.quantityPercent)} %</small><strong>{breakdown.grossHarvestGrams.toLocaleString("fr-FR")} g</strong></span>
         <span data-loss={breakdown.harvestLossPercent > 0 || undefined}><small>Pertes de récolte</small><strong>{breakdown.harvestLossPercent > 0 ? `−${breakdown.harvestLossPercent} % · −${breakdown.lostHarvestGrams.toLocaleString("fr-FR")} g` : "Aucune"}</strong></span>
+        {state.energy ? <span><small>Mode {KQ_ENERGY_MODES[state.energy.mode].name}</small><strong>{signed(breakdown.energyAdjustmentGrams)} g</strong></span> : null}
         <span data-final><small>Lot final</small><strong>{breakdown.finalHarvestGrams.toLocaleString("fr-FR")} g</strong></span>
       </div>
       <ol className={styles.harvestStageLedger}>
@@ -591,6 +594,8 @@ export function KanabQuestDicePrototype({
   const [notebookRetroCursor, setNotebookRetroCursor] = useState<number | null>(0);
   const [notebookRetroPending, setNotebookRetroPending] = useState(false);
   const [remoteBurnsEnabled, setRemoteBurnsEnabled] = useState(isPlayerMode);
+  const [energyMode, setEnergyMode] = useState<KqEnergyMode>("balanced");
+  const [energyEstimate, setEnergyEstimate] = useState<KqEnergyQuote | null>(null);
   const [remoteRunId, setRemoteRunId] = useState<string | null>(null);
   const [persistedFlowerId, setPersistedFlowerId] = useState<string | null>(null);
   const [officialFlowers, setOfficialFlowers] = useState<KqOfficialFlower[]>([]);
@@ -1482,6 +1487,7 @@ export function KanabQuestDicePrototype({
   };
 
   const startSelectedGame = async () => {
+    if (isPlayerMode && (!energyEstimate || energyEstimate.mode !== energyMode)) return;
     const currentDailyChallenges = getKqDailyChallenges();
     if (dailyChallenges[0]?.dayKey !== currentDailyChallenges[0]?.dayKey) {
       setDailyChallenges(currentDailyChallenges);
@@ -1497,6 +1503,8 @@ export function KanabQuestDicePrototype({
           buddieCode: selectedBuddie,
           deckCodes: [...selectedCards],
           cultureTokens: 0,
+          energyMode,
+          expectedEnergyCents: isPlayerMode ? energyEstimate?.totalCents : undefined,
           heritageCode: selectedHeritage || undefined,
         }, remoteRequest);
         const nextInventory = remoteInventory;
@@ -1967,7 +1975,7 @@ export function KanabQuestDicePrototype({
           {battleHistory.length > 0 ? <section className={styles.battleHistory}><span>Archives locales</span><h2>Derniers concours</h2><div>{battleHistory.slice(0, 5).map((receipt) => <article key={receipt.id}><Flame /><span><strong>{receipt.playerFlower.variety} vs {receipt.opponentFlower.variety}</strong><small>{receipt.winner === "player" ? "Victoire" : "Défaite"} · brûlées le {formatKqDate(receipt.burnedAt)}</small></span><b>{receipt.rounds.filter((round) => round.winner === "player").length}–{receipt.rounds.filter((round) => round.winner === "opponent").length}</b></article>)}</div></section> : null}
         </section>
         {showOnboarding ? <div className={styles.onboardingBackdrop} role="presentation" onClick={closeOnboarding}><section className={styles.onboarding} role="dialog" aria-modal="true" aria-labelledby="kq-guide-title" aria-describedby="kq-guide-intro" onClick={(event) => event.stopPropagation()}><button type="button" className={styles.onboardingClose} aria-label="Fermer les règles" onClick={closeOnboarding}><X /></button><span>Le Placard · la boucle en 1 minute</span><h2 id="kq-guide-title">Cultive. Transforme. Réinvestis.</h2><p id="kq-guide-intro" className={styles.onboardingIntro}>Tes choix de culture fabriquent une récolte unique. Sa qualité ouvre de meilleurs débouchés, finance ton atelier et construit ta réputation.</p><div className={styles.onboardingSteps}><article><ShoppingBag /><b>1. Prépare ton atelier</b><p>Tout pousse sur sol vivant. Choisis ton Buddie et tes cartes <strong>La Botte</strong>. Les équipements durables déjà achetés renforcent chaque nouvelle partie.</p></article><article><Dices /><b>2. Passe les 6 étapes</b><p>Lance les dés, réponds aux situations et dépense tes cartes au bon moment. Protège à la fois la <strong>qualité</strong> et la quantité récoltée.</p></article><article><Scale /><b>3. Affronte le jury</b><p>À la récolte, le jury note la fleur. La note détermine son palier, sa valeur brute et les transformations réellement accessibles.</p></article><article><Flame /><b>4. Choisis ton débouché</b><p>Vends le lot brut, transforme les belles fleurs en hash ou en rosin, ou écoule les lots ratés en biomasse. Chaque voie a son rendement.</p></article><article><Trophy /><b>5. Réinvestis intelligemment</b><p>Utilise ton argent pour améliorer tente, lumière et machines. La qualité vendue augmente aussi ta <strong>réputation</strong> et départage le classement.</p></article></div><button type="button" className={styles.primaryButton} onClick={closeOnboarding}>C’est parti · préparer mon atelier</button></section></div> : null}
-          {pendingStart ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingStart(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="culture-system-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>Démarrage sur sol vivant</span><h2 id="culture-system-burn-title">Commencer la culture ?</h2><p>Le sol vivant est inclus et aucune carte n’est consommée au lancement. Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingStart(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : "Commencer"}</button></div></section></div> : null}
+          {pendingStart ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingStart(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="culture-system-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>Démarrage sur sol vivant</span><h2 id="culture-system-burn-title">Commencer la culture ?</h2><p>Le sol vivant est inclus et aucune carte n’est consommée au lancement. Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{isPlayerMode ? <KqEnergyPanel disabled={remoteAction !== null} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingStart(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null || (isPlayerMode && (!energyEstimate || energyEstimate.mode !== energyMode))} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : "Commencer"}</button></div></section></div> : null}
           {pendingRandomQueueFlowerId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingRandomQueueFlowerId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="random-queue-title" onClick={(event) => event.stopPropagation()}><Swords /><span>Arène aléatoire · classée</span><h2 id="random-queue-title">Mettre cette Fleur à disposition ?</h2><p>Le serveur choisira au hasard une Fleur appartenant à un autre joueur, quelle que soit sa qualité. Tu pourras retirer la tienne tant qu’elle attend ; dès qu’un adversaire arrive, le jury se lance et les deux Fleurs brûlent automatiquement.</p><small>Gain garanti au verdict : {KQ_REWARD_BALANCE.pvp.directSeasonPoints.min} à {KQ_REWARD_BALANCE.pvp.directSeasonPoints.max} points de saison directs et {KQ_REWARD_BALANCE.pvp.arenaExperience.min} à {KQ_REWARD_BALANCE.pvp.arenaExperience.max} EXP. Le gagnant reçoit {KQ_REWARD_BALANCE.pvp.winnerCardCount} cartes La Botte.</small>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingRandomQueueFlowerId(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void joinRandomBattleQueue(pendingRandomQueueFlowerId)}><Swords /> {matchmakingLoading ? "Recherche…" : "Entrer dans la file"}</button></div></section></div> : null}
           {pendingTrainingFlowerId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingTrainingFlowerId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="remote-battle-title" onClick={(event) => event.stopPropagation()}><Swords /><span>Entraînement aléatoire</span><h2 id="remote-battle-title">Confier cette Fleur au jury ?</h2><p>Le serveur tirera le bot au hasard et le révélera avec le verdict. Le duel immédiat brûlera ta Fleur et rapportera {KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP d’Arène et une carte seulement en cas de victoire. Il ne modifie ni ton Elo ni ta série ; les défis du jour validés peuvent toutefois ajouter leurs points de saison.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingTrainingFlowerId(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void confirmRemoteBattle()}><Swords /> {matchmakingLoading ? "Tirage et jury…" : "Lancer l’entraînement"}</button></div></section></div> : null}
           {botBattleResult ? (
@@ -2060,6 +2068,7 @@ export function KanabQuestDicePrototype({
               <article><Flame /><span><small>Copies brûlées · {burnedCards.length}</small><div>{burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>)}</div></span></article>
               <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte conservée</em>}</div></span></article>
             </div>
+            {state.energy ? <KqEnergyPanel lockedQuote={state.energy} runId={remoteRunId} /> : null}
             <HarvestScoreSheet state={state} />
             <div className={styles.traitsList}>{flower.traits.map((trait, index) => <span key={`${trait}-${index}`}><Star />{trait}</span>)}</div>
             <section className={styles.harvestFlowerCard} aria-label="Carte Fleur obtenue">

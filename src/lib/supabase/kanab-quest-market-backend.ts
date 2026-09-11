@@ -1,4 +1,5 @@
 import "server-only";
+import { getKqEnergySummary } from "./kanab-quest-energy-backend";
 
 import {
   buildKqEquipmentGoalReceipt,
@@ -35,6 +36,8 @@ export type KqMarketRpcSaleReceipt = {
   flowerId: string;
   route: KqMarketRouteCode;
   payoutCents: number;
+  electricityPaidCents?: number;
+  netPayoutCents?: number;
   reputationGain: number;
   cashAfterCents: number;
   reputationAfter: number;
@@ -93,6 +96,8 @@ export type KqMarketLot = {
   status: "ready" | "sold";
   selectedRoute: KqMarketRouteCode | null;
   payoutCents: number | null;
+  electricityPaidCents: number;
+  netPayoutCents: number | null;
   reputationGain: number | null;
   burnedAt: string;
   settledAt: string | null;
@@ -162,6 +167,7 @@ export async function getKqMarketSnapshot(userId: string) {
   const humanTwo = new Map((humanTwoResult.data ?? []).map((battle) => [String(battle.flower_two_id), toRounds(battle.rounds)]));
   const bots = new Map((botResult.data ?? []).map((battle) => [String(battle.flower_id), toRounds(battle.rounds)]));
   const equippedCodes = equipmentShop.equippedCodes;
+  const energySummary = await getKqEnergySummary(userId);
 
   await Promise.all(flowers.map(async (flower) => {
     const flowerId = String(flower.id);
@@ -189,7 +195,7 @@ export async function getKqMarketSnapshot(userId: string) {
     if (prepared.error) throw new Error(`[supabase:rpc_kq_prepare_market_lot] ${prepared.error.message}`);
   }));
 
-  const [lotsResult, betterRankedResult] = await Promise.all([
+  const [lotsResult, betterRankedResult, receiptsResult] = await Promise.all([
     flowerIds.length > 0
       ? supabase.from("kq_market_lots")
         .select("flower_id,harvest_grams,jury_score,quality_band,equipment_codes,options,status,selected_route,payout_cents,reputation_gain,settled_at")
@@ -198,9 +204,12 @@ export async function getKqMarketSnapshot(userId: string) {
     supabase.from("kq_equipment_wallets")
       .select("user_id", { count: "exact", head: true })
       .gt("reputation", equipmentShop.reputation),
+    flowerIds.length > 0 ? supabase.from("kq_market_sale_receipts").select("flower_id,electricity_paid_cents").eq("owner_id", userId).in("flower_id", flowerIds) : emptyRows,
   ]);
   if (lotsResult.error) throw new Error(`[supabase:kq_market_lots] ${lotsResult.error.message}`);
   if (betterRankedResult.error) throw new Error(`[supabase:kq_equipment_wallets:rank] ${betterRankedResult.error.message}`);
+  if (receiptsResult.error) throw new Error(`[supabase:kq_market_sale_receipts] ${receiptsResult.error.message}`);
+  const paidEnergy = new Map((receiptsResult.data ?? []).map((receipt) => [String(receipt.flower_id), Number(receipt.electricity_paid_cents)]));
   const marketLots = new Map((lotsResult.data ?? []).map((lot) => [String(lot.flower_id), lot]));
 
   const lots: KqMarketLot[] = flowers.flatMap((flower) => {
@@ -224,6 +233,8 @@ export async function getKqMarketSnapshot(userId: string) {
       status: String(lot.status) as KqMarketLot["status"],
       selectedRoute: route && isKqMarketRouteCode(route) ? route : null,
       payoutCents: lot.payout_cents === null ? null : Number(lot.payout_cents),
+      electricityPaidCents: paidEnergy.get(String(flower.id)) ?? 0,
+      netPayoutCents: lot.payout_cents === null ? null : Number(lot.payout_cents) - (paidEnergy.get(String(flower.id)) ?? 0),
       reputationGain: lot.reputation_gain === null ? null : Number(lot.reputation_gain),
       burnedAt: String(flower.burned_at),
       settledAt: lot.settled_at ? String(lot.settled_at) : null,
@@ -239,6 +250,7 @@ export async function getKqMarketSnapshot(userId: string) {
     routePlan: equipmentShop.routePlan,
     routeMasteries: equipmentShop.routeMasteries,
     equipmentSummary: summarizeKqEquipmentLoadout(equippedCodes, equipmentShop.levels),
+    electricityOutstandingCents: energySummary.outstandingCents,
     lots,
   };
 }
