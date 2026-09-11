@@ -80,6 +80,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  outputFileTracingExcludes: {
+    // Uploads use Supabase and temporary files. The legacy local upload path
+    // otherwise pulls public illustrations into this function alongside FFmpeg.
+    // Public assets remain deployed separately and served by the CDN.
+    "/api/admin/products/video/upload": ["./public/**/*"],
+  },
   outputFileTracingIncludes: {
     "/api/admin/products/analysis/upload": [
       "./node_modules/@napi-rs/**",
