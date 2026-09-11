@@ -69,6 +69,10 @@ tmp_supabase_push/
 /output/placard-rehearsal-build/
 /output/placard-rehearsal-tools/
 /output/arena-retro/
+/output/tasting-book/
+/output/placard-workshop/
+/output/site-css-check/
+/output/next-dev-css-cache-backup/
 /output/reputation-test-tools/
 .env*.local
 .next-dev*.log

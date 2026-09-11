@@ -1,9 +1,8 @@
 ﻿"use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, Gift, Recycle, Sparkles, Ticket, X } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { ArrowLeft, ArrowUpRight, ChevronRight, Gift, Recycle, Sparkles, Ticket, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal";
 import { BotteAlbumCollection } from "@/components/account/BotteAlbumCollection";
@@ -30,6 +29,9 @@ import type {
   LotteryTicket,
 } from "@/types/lottery";
 import albumStyles from "@/components/lottery/AlbumExperience.module.css";
+import { AlbumArenaLobby, ALBUM_DESTINATIONS, type AlbumDestination } from "@/components/lottery/AlbumArenaLobby";
+import arenaStyles from "@/components/lottery/AlbumArena.module.css";
+import lobbyStyles from "@/components/contest/ArenaLobby.module.css";
 
 export function CollectionAlbumClient() {
   return <CollectionAlbumContent embedded={false} />;
@@ -92,6 +94,16 @@ function DuplicateManagerModal({
 }
 
 export function CollectionAlbumContent({ embedded = false }: CollectionAlbumContentProps) {
+  const screenRef = useRef<HTMLDivElement>(null);
+  const previousScreen = useRef("lobby");
+  const [screen, setScreen] = useState<"lobby" | AlbumDestination>("lobby");
+  const [collection, setCollection] = useState<"buddies" | "placard">("buddies");
+  useEffect(() => {
+    if (screen === previousScreen.current) return;
+    previousScreen.current = screen;
+    window.scrollTo({ top: 0, behavior: "instant" });
+    screenRef.current?.focus({ preventScroll: true });
+  }, [screen]);
   const { isAuthenticated, authLoading } = useCart();
   const {
     album,
@@ -194,7 +206,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   const previewOverlay = isAlbumPreview ? (
     <div className="absolute inset-0 z-10">
       <div className="absolute inset-0 bg-[#f6efe2]/45 backdrop-blur-[1.5px]" />
-      <div className="relative flex justify-center px-4 pt-6 md:px-6 md:pt-10">
+      <div className="relative flex justify-center px-4 pt-28 md:px-6 md:pt-32">
         <div className={`${albumStyles.modalShell} p-6 text-center`}>
           <p className="font-display text-2xl leading-tight text-ink">Crée ton compte pour commencer ta collection</p>
           <p className="mt-3 text-sm text-charcoal">
@@ -308,98 +320,65 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     await purchasePacksWithPoints(effectivePackPurchaseQty);
   };
 
+  const welcome = (welcomeEligible || welcomeJustClaimed) ? <div className={arenaStyles.welcome}>
+    {welcomeJustClaimed ? <span role="status">Ton booster gratuit est prêt à être ouvert.</span> :
+      <button type="button" disabled={welcomeClaiming} onClick={handleClaimWelcomePack}>
+        {welcomeClaiming ? "Attribution en cours…" : "Récupérer mon booster gratuit"}
+      </button>}
+  </div> : null;
+  const openAvailablePack = () => availableTickets[0] && setSelectedTicketId(availableTickets[0].id);
+  const screenTitle = screen === "cards" ? "Mes cartes." : screen === "boosters" ? "Mes boosters." : "Mes récompenses.";
+
   const buddiesAlbumBody = (
-    <div className={`${albumStyles.experience} ${isAlbumPreview ? "pointer-events-none opacity-80 grayscale" : ""}`}>
-      <header className={albumStyles.hero}>
-        <div className={albumStyles.heroCopy}>
-          <p className={albumStyles.kicker}>Kanab Quest · collection à compléter</p>
-          {embedded ? (
-            <h2 className={albumStyles.heroTitle}>Mon <span>album.</span></h2>
-          ) : (
-            <h1 className={albumStyles.heroTitle}>Mon <span>album.</span></h1>
-          )}
-          <p className={albumStyles.heroLead}>
-            Ouvre tes boosters, complète chaque page et débloque les récompenses de la collection.
-          </p>
-        </div>
-        <div className={albumStyles.heroArt} aria-hidden="true">
-          <span className={albumStyles.heroCircle} />
-          <Image
-            src="/app/lottery/charles-booster-presentation-v2.png"
-            alt=""
-            width={1024}
-            height={1536}
-            sizes="(max-width: 767px) 160px, 315px"
-            className={albumStyles.heroPresentation}
-          />
-        </div>
-      </header>
-
-      <section className={albumStyles.summaryBar} aria-label="Résumé de la collection">
-        <div className={albumStyles.summaryStat}>
-          <span>Cartes</span>
-          <strong>{album.summary.ownedUnique}/{album.summary.totalCards}</strong>
-        </div>
-        <div className={albumStyles.summaryStat}>
-          <span>Album complété</span>
-          <strong>{album.summary.completionPercent}%</strong>
-        </div>
-        <div className={albumStyles.summaryStat}>
-          <span>Boosters</span>
-          <strong>{availableTickets.length}</strong>
-        </div>
-        <div className={`${albumStyles.summaryStat} ${claimablePages.length > 0 ? albumStyles.summaryStatHighlight : ""}`}>
-          <span>Récompenses</span>
-          <strong>{claimablePages.length}</strong>
-        </div>
-      </section>
-
-      <div>
-        {isAuthenticated && welcomeEligible && !welcomeJustClaimed && (
-          <button
-            type="button"
-            disabled={welcomeClaiming}
-            onClick={handleClaimWelcomePack}
-            className={albumStyles.notice}
-          >
-            <span className={albumStyles.noticeIcon}>🎁</span>
-            <div>
-              <p>Cadeau de bienvenue</p>
-              <strong>{welcomeClaiming ? "Attribution en cours…" : "Récupérer mon booster gratuit"}</strong>
-            </div>
-          </button>
-        )}
-
-        {welcomeJustClaimed && (
-          <div className={albumStyles.notice}>
-            <span className={albumStyles.noticeIcon}>✓</span>
-            <div>
-              <p>Booster ajouté</p>
-              <strong>Ton cadeau est prêt à être ouvert.</strong>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <section className={albumStyles.actionGrid} aria-label="Actions de l'album">
-        <button
-          type="button"
-          className={`${albumStyles.actionCard} ${availableTickets.length === 0 ? albumStyles.actionCardMuted : ""}`}
-          disabled={isAlbumPreview || availableTickets.length === 0}
-          onClick={() => availableTickets[0] && setSelectedTicketId(availableTickets[0].id)}
+    <div ref={screenRef} tabIndex={-1} className={arenaStyles.root} data-album-screen={screen} inert={isAlbumPreview}>
+      {screen === "lobby" ? <AlbumArenaLobby
+        packs={availableTickets.length} owned={album.summary.ownedUnique} total={album.summary.totalCards}
+        rewards={claimablePages.length} points={loyalty.spendablePoints}
+        onNavigate={setScreen} onOpenPack={openAvailablePack} welcome={welcome}
+      /> : <div className={arenaStyles.workspace}>
+        <header className={`${lobbyStyles.topBar} ${arenaStyles.workspaceTop}`}>
+          <div className={lobbyStyles.brand}><span>Kanab Quest · Mon album</span><h1>{screenTitle}</h1></div>
+          <button type="button" className={lobbyStyles.sound} onClick={() => setScreen("lobby")}><ArrowLeft aria-hidden="true" /><span>Retour à l’album</span></button>
+        </header>
+        <nav className={`${lobbyStyles.modeSelector} ${arenaStyles.workspaceNav}`} aria-label="Espaces de l’album">
+          {ALBUM_DESTINATIONS.map(({ id, label, icon: Icon }) => <button key={id} type="button" aria-pressed={screen === id} onClick={() => setScreen(id)}><Icon aria-hidden="true" /><span>{label}</span></button>)}
+        </nav>
+        <div className={arenaStyles.workspaceBody}>
+          {screen === "cards" && <nav className={arenaStyles.collectionNav} aria-label="Collections">
+            <button type="button" aria-pressed={collection === "buddies"} onClick={() => setCollection("buddies")}>Les Buddies</button>
+            <button type="button" aria-pressed={collection === "placard"} onClick={() => setCollection("placard")}>La Botte & Héritages</button>
+          </nav>}
+          {screen === "cards" && collection === "placard" && <BotteAlbumCollection isAuthenticated={isAuthenticated} />}
+          {screen === "cards" && collection === "buddies" &&
+      <div className={albumStyles.collectionAnchor} aria-label="Mes cartes">
+        <AlbumShell
+          album={album}
+          embedded={embedded}
+          subtitle={config?.albumSubtitle}
+          seasonLabel={config?.seasonLabel}
         >
-          <span>
-            <span className={albumStyles.actionHeader}>
-              <span className={albumStyles.actionIcon}><Ticket aria-hidden="true" /></span>
-              <strong className={albumStyles.actionValue}>{availableTickets.length}</strong>
-            </span>
-            <h2>Mes boosters</h2>
-            <p>{availableTickets.length > 0 ? "Un booster est prêt à être ouvert." : "Aucun booster disponible actuellement."}</p>
-          </span>
-          <span className={albumStyles.actionLink}>Ouvrir maintenant <ChevronRight aria-hidden="true" /></span>
-        </button>
+          <AlbumPager pages={album.pages} activeIndex={activePageIndex} isPreview={isAlbumPreview} onPageChange={setActivePageIndex} />
+          <AlbumPage
+            page={activePage}
+            isPreview={isAlbumPreview}
+            onSlotClick={setSelectedSlot}
+            onClaimClick={() => setRewardDrawerPage(activePage)}
+            onBurnClick={(group: LotteryDuplicateGroup) => setBurnDrawerGroup({ page: activePage, group })}
+          />
+        </AlbumShell>
+      </div>}
 
-        <div className={albumStyles.actionCard}>
+      {screen === "boosters" && <>
+        <div className={arenaStyles.toolIntro}><Ticket aria-hidden="true" /><div><h2>La prochaine découverte.</h2><p>Ouvre tes boosters ou échange tes points pour agrandir ta collection.</p></div></div>
+        <div className={arenaStyles.boosterActions}>
+          {availableTickets.length > 0 && <button type="button" className={lobbyStyles.enter} onClick={openAvailablePack}>Ouvrir un booster <ArrowUpRight aria-hidden="true" /></button>}
+          <span>{availableTickets.length} booster{availableTickets.length > 1 ? "s" : ""} disponible{availableTickets.length > 1 ? "s" : ""}</span>
+          {welcome}
+        </div>
+      </>}
+      {screen === "rewards" && <div className={arenaStyles.toolIntro}><Gift aria-hidden="true" /><div><h2>À toi de choisir.</h2><p>Les pages complètes et les doublons réunis débloquent tes récompenses.</p></div></div>}
+      {screen !== "cards" && <section className={albumStyles.actionGrid} aria-label="Actions de l'album">
+        {screen === "boosters" && <div className={albumStyles.actionCard}>
           <span>
             <span className={albumStyles.actionHeader}>
               <span className={albumStyles.actionIcon}><Sparkles aria-hidden="true" /></span>
@@ -425,9 +404,9 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
               Acheter {effectivePackPurchaseQty}
             </button>
           </div>
-        </div>
+        </div>}
 
-        <button
+        {screen === "rewards" && <><button
           type="button"
           className={`${albumStyles.actionCard} ${claimablePages.length === 0 ? albumStyles.actionCardMuted : ""}`}
           disabled={isAlbumPreview || claimablePages.length === 0}
@@ -466,29 +445,10 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
           </span>
           <span className={albumStyles.actionLink}>Gérer mes doublons <ChevronRight aria-hidden="true" /></span>
         </button>
-      </section>
-
-      <AlbumShell
-        album={album}
-        embedded={embedded}
-        subtitle={config?.albumSubtitle}
-        seasonLabel={config?.seasonLabel}
-      >
-        <AlbumPager
-          pages={album.pages}
-          activeIndex={activePageIndex}
-          isPreview={isAlbumPreview}
-          onPageChange={setActivePageIndex}
-        />
-
-        <AlbumPage
-          page={activePage}
-          isPreview={isAlbumPreview}
-          onSlotClick={setSelectedSlot}
-          onClaimClick={() => setRewardDrawerPage(activePage)}
-          onBurnClick={(group: LotteryDuplicateGroup) => setBurnDrawerGroup({ page: activePage, group })}
-        />
-      </AlbumShell>
+        </>}
+      </section>}
+        </div>
+      </div>}
 
       {selectedSlot && <CardDetailModal slot={selectedSlot} onClose={() => setSelectedSlot(null)} />}
 
@@ -530,29 +490,10 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     </div>
   );
 
-  const albumBody = buddiesAlbumBody;
-
-  if (embedded) {
-    return (
-      <div className="relative">
-        {albumBody}
-        {previewOverlay}
-      </div>
-    );
-  }
-
   return (
-    <section data-world="album" className={albumStyles.pageShell}>
-      <div className={albumStyles.pageInner}>
-        <div className="relative">
-          {albumBody}
-          {previewOverlay}
-        </div>
-        {isAuthenticated ? <div className="mt-12"><BotteAlbumCollection isAuthenticated /></div> : null}
-      </div>
+    <section data-world="album" className="relative">
+      {buddiesAlbumBody}
+      {previewOverlay}
     </section>
   );
 }
-
-
-

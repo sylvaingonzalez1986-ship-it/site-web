@@ -31,10 +31,15 @@ const playerShell = readFileSync(
   join(process.cwd(), "src/components/placard/PlacardPlayerShell.tsx"),
   "utf8",
 );
+const placardLobby = readFileSync(
+  join(process.cwd(), "src/components/placard/KqPlacardLobby.tsx"),
+  "utf8",
+);
 const placardHud = readFileSync(
   join(process.cwd(), "src/components/placard/KqPlacardHud.tsx"),
   "utf8",
 );
+const hubActions = readFileSync(join(process.cwd(), "src/lib/kanab-quest-hub.ts"), "utf8");
 const boosterShop = readFileSync(
   join(process.cwd(), "src/components/placard/KqSupportBoosterShop.tsx"),
   "utf8",
@@ -50,7 +55,7 @@ const marketDesk = readFileSync(
 const gameClient = readFileSync(
   join(process.cwd(), "src/components/placard/KanabQuestDicePrototype.tsx"),
   "utf8",
-);
+).replace(/\r\n/g, "\n");
 const gameBackend = readFileSync(
   join(process.cwd(), "src/lib/supabase/kanab-quest-backend.ts"),
   "utf8",
@@ -121,7 +126,9 @@ describe("Kanab Quest player page access", () => {
     expect(playerShell).toMatch(/<KanabQuestDicePrototype\s+apiScope="player"/);
     expect(gameClient).toContain('"/api/arena/placard/bootstrap"');
     expect(gameClient).toContain('"/api/arena/placard/session"');
-    expect(playerShell).toContain('loading={destination.id === "shop" ? "eager" : "lazy"}');
+    expect(playerShell).toContain("<KqPlacardLobby");
+    expect(placardLobby).toContain('src={destination.image}');
+    expect(placardLobby).toContain('sizes="100vw" priority');
   });
 
   it("opens the recommended investment directly without forcing it into the cart", () => {
@@ -240,17 +247,11 @@ describe("Kanab Quest player page access", () => {
     expect(placardHud).toContain("onClick={onOpenMarket}");
   });
 
-  it("compares the four culture systems and reserves the free start for potting soil", () => {
-    expect(gameClient).toContain("Ton mode de culture");
-    expect(gameClient).toContain("cultureSystemTechnique");
-    expect(gameClient).toContain("Pilotage");
-    expect(gameClient).toContain("Électricité");
-    expect(gameClient).toContain('card.code !== "BOTTE-001"');
-    expect(gameClient).toContain('const cultureSystemCode = usesFreeSubstrate ? "BOTTE-001" : selectedSubstrate');
-    expect(gameClient).not.toContain("ton substrat et tes cartes");
-    expect(gameBackend).toContain('selectedCultureSystem?.code !== "BOTTE-001"');
-    expect(gameBackend).toContain("Le mode de culture gratuit est le Terreau horticole.");
-    expect(marketDesk).toContain("Trace de culture");
+  it("starts every culture on living soil without a substrate choice", () => {
+    expect(gameClient).toContain("Sol vivant inclus");
+    expect(gameClient).not.toContain("selectedSubstrate");
+    expect(gameBackend).not.toContain("ownsAnyCultureSystem");
+    expect(marketDesk).toContain("Origine du lot");
     expect(marketDesk).toContain("Aucun bonus caché");
     expect(gameClient).toContain("flower.traits.map");
     expect(gameClient).toContain("getKqCultureSystemSituationStatus(state)");
@@ -300,7 +301,7 @@ describe("Kanab Quest player page access", () => {
   });
 
   it("never asks the player to choose a human or training opponent", () => {
-    expect(placardHud).toContain("adversaire tiré au hasard");
+    expect(hubActions).toContain("adversaire tiré au hasard");
     expect(gameClient).toContain("Entraînement aléatoire");
     expect(gameClient).toContain("bot tiré au hasard");
     expect(gameClient).not.toContain("choisir un rival");
@@ -313,7 +314,7 @@ describe("Kanab Quest player page access", () => {
     const heritageCarousel = gameClient.indexOf('className={styles.heritageCarouselSection}');
     expect(chest).toBeGreaterThan(-1);
     expect(heritageCarousel).toBeGreaterThan(chest);
-    expect(gameClient).toContain("4. Producteurs mis à l’honneur");
+    expect(gameClient).toContain("Producteurs mis à l’honneur");
     expect(gameClient).toContain("4 cartes à la fois");
     expect(gameClient).toContain("heritageCarouselRef.current?.scrollBy");
   });

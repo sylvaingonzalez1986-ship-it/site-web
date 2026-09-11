@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import { KQ_CARDS } from "@/lib/kanab-quest-game";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import albumStyles from "@/components/lottery/AlbumExperience.module.css";
 
 type BotteSnapshot = {
   collection?: { cards?: Array<{ code: string; ownedCopies: number }> };
@@ -52,7 +53,7 @@ function CollectionCard({
 
   return (
     <article
-      className={`min-w-0 overflow-hidden rounded-xl border-2 border-ink shadow-[4px_4px_0_#1a1a1a] ${
+      className={`min-w-0 overflow-hidden border-2 border-ink shadow-[4px_4px_0_#1a1a1a] ${
         discovered ? "bg-white" : "bg-[#ddd8ce]"
       }`}
     >
@@ -224,13 +225,13 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
   }
 
   return (
-    <div className="grid gap-7">
-      <header className="rounded-2xl border-2 border-ink bg-[#dcebdd] p-5 shadow-[5px_5px_0_#1a1a1a] sm:p-7">
-        <p className="text-xs font-black uppercase tracking-[0.16em] text-green">Collection de jeu du Placard</p>
-        <h2 className="mt-2 font-display text-3xl uppercase leading-none text-ink sm:text-5xl">
+    <div className={albumStyles.gameCollection}>
+      <header className={albumStyles.gameCollectionHeader}>
+        <p className="text-xs font-black uppercase tracking-[0.16em] text-[#91d9c9]">Collection de jeu du Placard</p>
+        <h2 className="mt-2 font-display text-3xl uppercase leading-none text-[#fffaf1] sm:text-5xl">
           La Botte du Chanvrier
         </h2>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-charcoal">
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#e1f1e9]">
           Les cartes La Botte sont consommées quand tu les joues. Les Héritages restent dans ton
           album et peuvent accompagner plusieurs cultures.
         </p>
@@ -238,7 +239,7 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
 
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-3" aria-label="Progression La Botte">
         <div className="border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#1a1a1a]">
-          <strong className="font-display text-2xl text-ink">{supportOwned}/36</strong>
+          <strong className="font-display text-2xl text-ink">{supportOwned}/{KQ_CARDS.length}</strong>
           <span className="block text-xs text-charcoal">La Botte découvertes</span>
         </div>
         <div className="border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#1a1a1a]">
@@ -267,9 +268,9 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
 
       <section>
         <div className="mb-4">
-          <p className="text-xs font-black uppercase tracking-[0.14em] text-green">36 cartes à collectionner</p>
+          <p className="text-xs font-black uppercase tracking-[0.14em] text-green">{KQ_CARDS.length} cartes à collectionner</p>
           <h2 className="font-display text-2xl uppercase text-ink">Cartes La Botte</h2>
-          <p className="text-sm text-charcoal">Substrats, auxiliaires, équipements et savoir-faire pour tes cultures.</p>
+          <p className="text-sm text-charcoal">Auxiliaires, équipements et savoir-faire pour tes cultures sur sol vivant.</p>
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {KQ_CARDS.map((card) => (

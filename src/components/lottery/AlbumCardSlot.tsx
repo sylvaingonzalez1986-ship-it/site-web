@@ -143,7 +143,7 @@ export function AlbumCardSlot({ slot, onClick, interactive = true }: AlbumCardSl
         </span>
 
         {slot.ownedCount > 1 && (
-          <span className={styles.cardCount} style={{ backgroundColor: accent }}>
+          <span className={styles.cardCount} style={{ borderColor: accent }}>
             x{slot.ownedCount}
           </span>
         )}

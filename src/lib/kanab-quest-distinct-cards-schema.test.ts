@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { KQ_CARDS } from "@/lib/kanab-quest-game";
+import { KQ_CARDS, KQ_RETIRED_CARDS } from "@/lib/kanab-quest-game";
 
 const migration = readFileSync(
   join(process.cwd(), "supabase/migrations/20260901000100_kq_us_processing_and_culture_systems.sql"),
@@ -9,9 +9,9 @@ const migration = readFileSync(
 );
 
 describe("Kanab Quest cultivation systems migration", () => {
-  it("keeps the four systems and three organic amendments aligned with the source catalogue", () => {
+  it("keeps the four systems and three organic amendments aligned with the historical catalogue", () => {
     ["BOTTE-001", "BOTTE-007", "BOTTE-008", "BOTTE-009", "BOTTE-019", "BOTTE-020", "BOTTE-021"].forEach((code) => {
-      const card = KQ_CARDS.find((candidate) => candidate.code === code);
+      const card = [...KQ_CARDS, ...KQ_RETIRED_CARDS].find((candidate) => candidate.code === code);
       expect(card).toBeDefined();
       expect(migration).toContain(`'${card?.code}'`);
       expect(migration).toContain(`'${card?.effect}'`);

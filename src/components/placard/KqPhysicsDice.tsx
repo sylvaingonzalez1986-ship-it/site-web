@@ -29,6 +29,7 @@ type DiceBoxInstance = {
 
 type PhysicsTexture = { image?: HTMLCanvasElement; needsUpdate?: boolean };
 type PhysicsMaterial = {
+  shininess?: number;
   map?: PhysicsTexture;
   bumpMap?: PhysicsTexture | null;
   color?: { set: (color: string) => void };
@@ -59,20 +60,20 @@ type DiePalette = {
 };
 
 const IVORY_DIE_PALETTE: DiePalette = {
-  face: ["#fffdf6", "#fff5df", "#dfccb0"],
-  pip: ["#4a463f", "#171512", "#050605"],
-  pattern: "rgba(6,107,102,.11)",
-  edge: "#ead8bc",
+  face: ["#fff5da", "#fff5da", "#eadfbd"],
+  pip: ["#102f29", "#102f29", "#102f29"],
+  pattern: "rgba(16,47,41,.12)",
+  edge: "#102f29",
 };
 
 type ValidatedDieColors = { face: string; edge: string };
 
 const getValidatedDieColors = (value: number, index: number): ValidatedDieColors => {
-  if (index === 3) return { face: "#9a9388", edge: "#655f57" };
-  if (value === 1) return { face: "#e45a2a", edge: "#8e281c" };
-  if (value === 4 || value === 5) return { face: "#68b97a", edge: "#32714c" };
-  if (value === 6) return { face: "#f4bc3c", edge: "#a76808" };
-  return { face: "#fff7e4", edge: "#ead8bc" };
+  if (index === 3) return { face: "#9aa99c", edge: "#102f29" };
+  if (value === 1) return { face: "#f28468", edge: "#102f29" };
+  if (value === 4 || value === 5) return { face: "#54d5bb", edge: "#102f29" };
+  if (value === 6) return { face: "#f4c43d", edge: "#102f29" };
+  return { face: "#ffffff", edge: "#102f29" };
 };
 
 const paintKanabQuestFace = (material: PhysicsMaterial, value: number, palette = IVORY_DIE_PALETTE) => {
@@ -85,7 +86,7 @@ const paintKanabQuestFace = (material: PhysicsMaterial, value: number, palette =
   const height = canvas.height;
   const size = Math.min(width, height);
   const inset = size * 0.045;
-  const radius = size * 0.16;
+  const radius = size * 0.12;
 
   context.clearRect(0, 0, width, height);
   context.save();
@@ -131,22 +132,19 @@ const paintKanabQuestFace = (material: PhysicsMaterial, value: number, palette =
     context.beginPath();
     context.arc(centerX, centerY, pipRadius, 0, Math.PI * 2);
     context.fillStyle = pipGradient;
-    context.shadowColor = "rgba(255,255,255,.48)";
-    context.shadowOffsetX = -pipRadius * 0.16;
-    context.shadowOffsetY = -pipRadius * 0.16;
-    context.shadowBlur = pipRadius * 0.12;
     context.fill();
   });
   context.restore();
 
   context.beginPath();
   context.roundRect(inset, inset, width - inset * 2, height - inset * 2, radius);
-  context.lineWidth = Math.max(2, size * 0.025);
-  context.strokeStyle = "#171512";
+  context.lineWidth = Math.max(3, size * 0.04);
+  context.strokeStyle = palette.edge;
   context.stroke();
 
   if (material.map) material.map.needsUpdate = true;
   material.bumpMap = null;
+  material.shininess = 0;
   material.needsUpdate = true;
 };
 
@@ -208,17 +206,17 @@ export const KqPhysicsDice = forwardRef<KqPhysicsDiceHandle>(function KqPhysicsD
 
         const stage = document.getElementById(PHYSICS_DICE_STAGE_ID);
         if (!stage) throw new Error("Zone de lancer introuvable");
-        const responsiveDieScale = Math.max(72, Math.min(112, stage.clientWidth * 0.3));
+        const responsiveDieScale = Math.max(54, Math.min(100, stage.clientWidth * 0.22));
 
         const diceBox = new DiceBox(`#${PHYSICS_DICE_STAGE_ID}`, {
           sounds: false,
           shadows: true,
           theme_surface: "green-felt",
           theme_customColorset: {
-            name: "kanab-quest-ivory",
-            foreground: "#171512",
-            background: "#fff7e4",
-            outline: "#ead8bc",
+            name: "kanab-quest-arena",
+            foreground: "#102f29",
+            background: "#fff5da",
+            outline: "#102f29",
             texture: "none",
             material: "plastic",
           },
@@ -288,8 +286,10 @@ export const KqPhysicsDice = forwardRef<KqPhysicsDiceHandle>(function KqPhysicsD
           await new Promise<void>((resolve) => {
             const duration = 680;
             const startedAt = window.performance.now();
-            const stageWidth = Math.max(280, diceBox.display?.containerWidth ?? 420);
-            const spacing = Math.min((diceBox.baseScale ?? 100) * 1.32, stageWidth / (dice.length + 0.1));
+            // Dice Box uses containerWidth as the world's half-width.
+            // Leave room for rotated corners, including the fourth discarded die.
+            const stageWidth = diceBox.display?.containerWidth ?? 420;
+            const spacing = Math.min((diceBox.baseScale ?? 100) * 1.85, stageWidth * 1.7 / dice.length);
             const positions = dice.map((die, index) => ({
               fromX: die.position.x,
               fromY: die.position.y,

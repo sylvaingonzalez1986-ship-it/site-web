@@ -1,4 +1,4 @@
-import { getKqHandCodes, getKqStateHeritage, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState } from "@/lib/kanab-quest-game";
+import { KQ_RETIRED_SUBSTRATE_CODES, isKqRetiredSubstrate, getKqHandCodes, getKqStateHeritage, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState } from "@/lib/kanab-quest-game";
 import { isKqHeritageEffect, isKqHeritageTiming } from "@/lib/kanab-quest-heritage";
 import { getKqEquipmentDefinition, summarizeKqEquipmentLoadout } from "@/lib/kanab-quest-equipment";
 import type { KqBattle } from "@/lib/kanab-quest-battle";
@@ -21,7 +21,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (!isRecord(envelope) || envelope.version !== 1 || !isRecord(envelope.payload)) return null;
     const state = envelope.payload;
     const phases = ["prepare", "rolled", "resolved", "complete"];
-    const knownCards = new Set(KQ_CARDS.map((card) => card.code));
+    const knownCards = new Set<string>([...KQ_CARDS.map((card) => card.code), ...KQ_RETIRED_SUBSTRATE_CODES]);
     const knownSituations = new Set(KQ_SITUATIONS.map((situation) => situation.code));
     if (!isFiniteNumber(state.seed) || !isFiniteNumber(state.stageIndex) || state.stageIndex < 0 || state.stageIndex >= KQ_STAGES.length) return null;
     if (!phases.includes(String(state.phase)) || !isFiniteNumber(state.xp) || state.xp < 0 || !isFiniteNumber(state.quality)) return null;
@@ -101,6 +101,10 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (typeof state.preparationPlayed !== "boolean" || typeof state.reactionPlayed !== "boolean") return null;
     return {
       ...state,
+      deckCodes: state.deckCodes.filter((code) => !isKqRetiredSubstrate(String(code))),
+      collectionCodes: state.collectionCodes.filter((code) => !isKqRetiredSubstrate(String(code))),
+      playedThisStage: state.playedThisStage.filter((code) => !isKqRetiredSubstrate(String(code))),
+      usedCards: state.usedCards.filter((code) => !isKqRetiredSubstrate(String(code))),
       ...(Array.isArray(state.handCodes) && state.handCodes.length > KQ_HAND_SIZE
         ? { handCodes: state.handCodes.slice(0, KQ_HAND_SIZE) }
         : {}),

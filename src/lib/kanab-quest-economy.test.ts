@@ -59,7 +59,7 @@ describe("Kanab Quest card economy", () => {
     const deck = buildKqRecommendedDeck("starting-xp-1", inventory);
     expect(deck.support).toHaveLength(4);
     expect(deck.support).not.toContain("BOTTE-006");
-    expect(deck.substrate).toBe("BOTTE-001");
+    expect(deck).not.toHaveProperty("substrate");
   });
 
   it("marks only cards whose effect directly supports a daily objective", () => {

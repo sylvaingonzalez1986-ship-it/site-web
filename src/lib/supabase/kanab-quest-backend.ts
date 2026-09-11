@@ -540,8 +540,8 @@ export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
     { code: "heritage-catalog", label: `Catalogue Héritage · ${expectedHeritageCount} producteur(s), une carte chacun`, ready: expectedHeritageCount > 0 && producerHeritageCards.length === expectedHeritageCount },
     { code: "heritage-effects", label: `${expectedHeritageCount} pouvoirs Héritage distincts et pris en charge`, ready: heritageEffects.length === expectedHeritageCount && heritageEffects.every(isKqHeritageEffect) && new Set(heritageEffects).size === expectedHeritageCount },
     { code: "heritage-art", label: `${expectedHeritageCount} illustrations Héritage producteur`, ready: heritageArtwork.length === expectedHeritageCount && new Set(heritageArtwork).size === expectedHeritageCount },
-    { code: "support-catalog", label: "36 cartes La Botte", ready: input.supportCards.length === 36 },
-    { code: "support-art", label: "36 illustrations La Botte distinctes", ready: supportArtwork.length === 36 && new Set(supportArtwork).size === 36 },
+    { code: "support-catalog", label: `${KQ_CARDS.length} cartes La Botte`, ready: input.supportCards.length === KQ_CARDS.length },
+    { code: "support-art", label: `${KQ_CARDS.length} illustrations La Botte distinctes`, ready: supportArtwork.length === KQ_CARDS.length && new Set(supportArtwork).size === KQ_CARDS.length },
     { code: "notebook-rules", label: "2 missions carnet → Placard configurées", ready: input.notebookRules.length === 2 },
     { code: "season-rules", label: "4 paliers de récompenses de saison", ready: input.seasonRules.length === 4 && new Set(input.seasonRules.map((rule) => rule.tier_code)).size === 4 },
     { code: "season-no-early-grants", label: "Aucune récompense de saison prématurée", ready: input.seasonGrantCount === 0 },
@@ -593,7 +593,7 @@ export async function getKqAdminLaunchReadiness(adminEmail: string) {
   const [heritageResult, producerResult, supportResult, rulesResult, seasonRulesResult, seasonGrantsResult, equipmentResult] = await Promise.all([
     supabase.from("kq_heritage_card_definitions").select("image_url,is_active,producer_id,effect_code").not("producer_id", "is", null),
     supabase.from("producers").select("id", { count: "exact", head: true }),
-    supabase.from("lottery_card_definitions").select("image_url,is_active").eq("collection_id", collectionResult.data.id),
+    supabase.from("lottery_card_definitions").select("image_url,is_active").eq("collection_id", collectionResult.data.id).in("code", KQ_CARDS.map((card) => card.code)),
     supabase.from("kq_notebook_reward_rules").select("is_active"),
     supabase.from("kq_season_reward_rules").select("tier_code,is_active").eq("season_code", seasonCode),
     supabase.from("kq_season_reward_grants").select("id", { count: "exact", head: true }).eq("season_code", seasonCode),
@@ -693,7 +693,7 @@ async function getCachedKqBotteCatalog(): Promise<{
         id: String(collectionResult.data.id),
         is_active: collectionResult.data.is_active === true,
       },
-      definitions: (definitionsResult.data ?? []) as CardDefinitionRow[],
+      definitions: ((definitionsResult.data ?? []) as CardDefinitionRow[]).filter((definition) => KQ_CARDS.some((card) => card.code === definition.code)),
     };
   });
 }
@@ -896,7 +896,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   if (!KQ_BUDDIES.some((buddie) => buddie.code === input.buddieCode)) {
     throw new Error("Buddie invalide.");
   }
-  if (!Array.isArray(input.deckCodes) || input.deckCodes.length < 1 || input.deckCodes.length > 250) {
+  if (!Array.isArray(input.deckCodes) || input.deckCodes.length > 250) {
     throw new Error("Deck invalide.");
   }
   const cultureTokens = Math.floor(input.cultureTokens ?? 0);
@@ -927,21 +927,10 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   if (cards.some((card) => !card || card.category === "pbi")) {
     throw new Error("Le deck contient une carte interdite.");
   }
-  if (cards.filter((card) => card?.category === "substrate").length !== 1) {
-    throw new Error("Le deck doit contenir exactement un mode de culture.");
-  }
-  const selectedCultureSystem = cards.find((card) => card?.category === "substrate");
-
   const [collection, equipmentShop] = await Promise.all([
     getKqPlayerCollectionSnapshot(ownerId),
     getKqEquipmentShopSnapshot(ownerId),
   ]);
-  const ownsAnyCultureSystem = KQ_CARDS
-    .filter((card) => card.category === "substrate")
-    .some((card) => (collection.inventory[card.code] ?? 0) > 0);
-  if (!ownsAnyCultureSystem && selectedCultureSystem?.code !== "BOTTE-001") {
-    throw new Error("Le mode de culture gratuit est le Terreau horticole.");
-  }
   const collectionCodes = Object.entries(collection.inventory)
     .filter(([, copies]) => copies > 0)
     .map(([code]) => code);

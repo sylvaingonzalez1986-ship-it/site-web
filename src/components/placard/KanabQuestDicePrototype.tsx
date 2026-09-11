@@ -19,7 +19,7 @@ import {
   getKqStageTarget,
   getKqVisibleActionCards,
   getKqCardTradeoff,
-  getKqCultureSystemProfile,
+  KQ_LIVING_SOIL,
   getKqCultureSystemSituationStatus,
   getKqSituation,
   KQ_BUDDIES,
@@ -508,7 +508,6 @@ export function KanabQuestDicePrototype({
   const [inventory, setInventory] = useState<Record<string, number>>(() => ({ ...DEFAULT_LOCAL_INVENTORY }));
   const [setupOpen, setSetupOpen] = useState(true);
   const [selectedBuddie, setSelectedBuddie] = useState(KQ_BUDDIES[0].code);
-  const [selectedSubstrate, setSelectedSubstrate] = useState("BOTTE-001");
   const [selectedCards, setSelectedCards] = useState<string[]>(["BOTTE-003", "BOTTE-004", "BOTTE-005", "BOTTE-006"]);
   const [selectedHeritage, setSelectedHeritage] = useState("");
   const [heritageSwapOutIndex, setHeritageSwapOutIndex] = useState<number | null>(null);
@@ -654,9 +653,7 @@ export function KanabQuestDicePrototype({
       }
       window.sessionStorage.removeItem(`${sessionStoragePrefix}-remote-run-id`);
       setSelectedCards((current) => sanitizeKqDeckSelection(current, currentRemoteInventory));
-      setSelectedSubstrate((current) => (currentRemoteInventory[current] ?? 0) > 0
-        ? current
-        : KQ_CARDS.find((card) => card.category === "substrate" && (currentRemoteInventory[card.code] ?? 0) > 0)?.code ?? "BOTTE-001");
+
       setRemoteNotice("");
     } else {
       const receipts = activeRun.burnReceipts.map((receipt) => toLocalReceipt(receipt, activeRun.state.seed));
@@ -664,7 +661,7 @@ export function KanabQuestDicePrototype({
       window.sessionStorage.setItem(`${sessionStoragePrefix}-remote-run-id`, activeRun.runId);
       setState(activeRun.state);
       setSelectedBuddie(activeRun.state.varietyCode);
-      setSelectedSubstrate(activeRun.state.deckCodes.find((code) => KQ_CARDS.find((card) => card.code === code)?.category === "substrate") ?? "BOTTE-001");
+
       setSelectedCards(activeRun.state.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")));
       setBurnHistory((history) => [...receipts, ...history.filter((entry) => !receipts.some((receipt) => receipt.id === entry.id))].slice(0, 100));
       setSetupOpen(false);
@@ -717,7 +714,7 @@ export function KanabQuestDicePrototype({
       if (!isPlayerMode && snapshot.game) {
         setState(snapshot.game);
         setSelectedBuddie(snapshot.game.varietyCode);
-        setSelectedSubstrate(snapshot.game.deckCodes.find((code) => KQ_CARDS.find((card) => card.code === code)?.category === "substrate") ?? "BOTTE-001");
+
         setSelectedCards(snapshot.game.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")));
         setSetupOpen(false);
       }
@@ -913,9 +910,7 @@ export function KanabQuestDicePrototype({
           }
           window.sessionStorage.removeItem(`${sessionStoragePrefix}-remote-run-id`);
           setSelectedCards((current) => sanitizeKqDeckSelection(current, currentRemoteInventory));
-          setSelectedSubstrate((current) => (currentRemoteInventory[current] ?? 0) > 0
-            ? current
-            : KQ_CARDS.find((card) => card.category === "substrate" && (currentRemoteInventory[card.code] ?? 0) > 0)?.code ?? "BOTTE-001");
+
           setRemoteNotice("");
         } else {
           const receipts = activeRun.burnReceipts.map((receipt) => toLocalReceipt(receipt, activeRun.state.seed));
@@ -923,7 +918,7 @@ export function KanabQuestDicePrototype({
           window.sessionStorage.setItem(`${sessionStoragePrefix}-remote-run-id`, activeRun.runId);
           setState(activeRun.state);
           setSelectedBuddie(activeRun.state.varietyCode);
-          setSelectedSubstrate(activeRun.state.deckCodes.find((code) => KQ_CARDS.find((card) => card.code === code)?.category === "substrate") ?? "BOTTE-001");
+
           setSelectedCards(activeRun.state.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")));
           setBurnHistory((history) => [...receipts, ...history.filter((entry) => !receipts.some((receipt) => receipt.id === entry.id))].slice(0, 100));
           setSetupOpen(false);
@@ -1222,9 +1217,6 @@ export function KanabQuestDicePrototype({
     setBattle(null);
     setRolling(false);
     setSelectedCards((current) => sanitizeKqDeckSelection(current, activeInventory));
-    if ((activeInventory[selectedSubstrate] ?? 0) <= 0) {
-      setSelectedSubstrate(KQ_CARDS.find((card) => card.category === "substrate" && (activeInventory[card.code] ?? 0) > 0)?.code ?? "BOTTE-001");
-    }
     setSetupOpen(true);
     setPersistedFlowerId(null);
     window.sessionStorage.removeItem(`${sessionStoragePrefix}-remote-flower-id`);
@@ -1497,22 +1489,17 @@ export function KanabQuestDicePrototype({
       setPendingStart(false);
       return;
     }
-    const usesFreeSubstrate = !KQ_CARDS.some((card) => card.category === "substrate" && (activeInventory[card.code] ?? 0) > 0);
-    const cultureSystemCode = usesFreeSubstrate ? "BOTTE-001" : selectedSubstrate;
-    if (!usesFreeSubstrate && (activeInventory[selectedSubstrate] ?? 0) <= 0) return;
     if (remoteBurnsEnabled) {
       setRemoteAction("start");
       setRemoteNotice("");
       try {
         const result = await startKqRemoteRun({
           buddieCode: selectedBuddie,
-          deckCodes: [cultureSystemCode, ...selectedCards],
+          deckCodes: [...selectedCards],
           cultureTokens: 0,
           heritageCode: selectedHeritage || undefined,
         }, remoteRequest);
-        const nextInventory = result.freeSubstrate
-          ? remoteInventory
-          : { ...remoteInventory, [selectedSubstrate]: Math.max(0, (remoteInventory[selectedSubstrate] ?? 0) - 1) };
+        const nextInventory = remoteInventory;
         setState(result.state);
         setBattle(null);
         remoteInventoryRef.current = nextInventory;
@@ -1525,9 +1512,7 @@ export function KanabQuestDicePrototype({
         if (!isPlayerMode) void repositoryRef.current?.saveGame(result.state);
         setRemoteRunId(result.runId);
         window.sessionStorage.setItem(`${sessionStoragePrefix}-remote-run-id`, result.runId);
-        setRemoteNotice(result.freeSubstrate
-          ? "Culture lancée avec le Terreau horticole standard · aucune carte La Botte brûlée."
-          : `Mode de culture installé et carte brûlée · reçu ${result.burnReceipt?.id.slice(0, 8)}.`);
+        setRemoteNotice("Culture lancée sur sol vivant · aucune carte La Botte consommée au départ.");
         setPendingStart(false);
         setSetupOpen(false);
       } catch (error) {
@@ -1543,7 +1528,7 @@ export function KanabQuestDicePrototype({
       .flatMap((card) => card.targets ?? []))];
     const nextState = startKqGame(Date.now(), {
       varietyCode: selectedBuddie,
-      deckCodes: [cultureSystemCode, ...selectedCards],
+      deckCodes: [...selectedCards],
       collectionCodes: LOCAL_COLLECTION_CODES.filter((code) => (activeInventory[code] ?? 0) > 0),
       recentSituationCodes: state.situationCodes,
       challengeDayKey: dailyChallenges[0]?.dayKey,
@@ -1554,17 +1539,9 @@ export function KanabQuestDicePrototype({
       heritageCard: selectedHeritageCard,
       startedAt: new Date().toISOString(),
     });
-    const nextInventory = usesFreeSubstrate
-      ? inventory
-      : { ...inventory, [selectedSubstrate]: Math.max(0, (inventory[selectedSubstrate] ?? 0) - 1) };
     setState(nextState);
     setBattle(null);
-    setInventory(nextInventory);
-    if (!usesFreeSubstrate) {
-      const receipt: KqBurnReceipt = { id: `BURN-${nextState.seed}-0-${selectedSubstrate}-1`, cardCode: selectedSubstrate, runSeed: nextState.seed, stageIndex: 0, useKind: "substrate", burnedAt: new Date().toISOString() };
-      setBurnHistory((history) => [receipt, ...history.filter((entry) => entry.id !== receipt.id)].slice(0, 100));
-      void repositoryRef.current?.saveBurnTransaction(nextState, nextInventory, receipt);
-    }
+    void repositoryRef.current?.saveGame(nextState);
     setPendingStart(false);
     setSetupOpen(false);
   };
@@ -1636,7 +1613,7 @@ export function KanabQuestDicePrototype({
   };
 
   const saveFavoriteDeck = () => {
-    const favorite = { buddieCode: selectedBuddie, substrateCode: selectedSubstrate, supportCodes: [...selectedCards] };
+    const favorite = { buddieCode: selectedBuddie, supportCodes: [...selectedCards] };
     setFavoriteDeck(favorite);
     setDeckNotice(`Deck favori enregistré avec ${selectedCards.length} carte${selectedCards.length > 1 ? "s" : ""}.`);
     void repositoryRef.current?.saveFavoriteDeck(favorite);
@@ -1646,9 +1623,7 @@ export function KanabQuestDicePrototype({
     if (!favoriteDeck) return;
     const restoredCards = sanitizeKqDeckSelection(favoriteDeck.supportCodes, activeInventory);
     setSelectedBuddie(favoriteDeck.buddieCode);
-    setSelectedSubstrate((activeInventory[favoriteDeck.substrateCode] ?? 0) > 0
-      ? favoriteDeck.substrateCode
-      : KQ_CARDS.find((card) => card.category === "substrate" && (activeInventory[card.code] ?? 0) > 0)?.code ?? "BOTTE-001");
+
     setSelectedCards(restoredCards);
     const missing = favoriteDeck.supportCodes.length - restoredCards.length;
     setDeckNotice(missing > 0 ? `Deck favori restauré sans ${missing} copie${missing > 1 ? "s" : ""} épuisée${missing > 1 ? "s" : ""}.` : "Deck favori restauré.");
@@ -1678,7 +1653,7 @@ export function KanabQuestDicePrototype({
     const buddie = KQ_BUDDIES.find((item) => item.code === selectedBuddie);
     if (!buddie) return;
     const recommendation = buildKqRecommendedDeck(buddie.effect, activeInventory, rewardableDailyChallenges.map((challenge) => challenge.code));
-    setSelectedSubstrate(recommendation.substrate);
+
     setSelectedCards(recommendation.support);
     setDeckNotice("Deck conseillé appliqué : défis du jour + synergie du Buddie. Tu peux encore tout modifier.");
   };
@@ -1737,7 +1712,7 @@ export function KanabQuestDicePrototype({
       reputation: 0,
       reputationTier: getKqReputationProgress(0).tier.name,
     }));
-  const activeSubstrate = KQ_CARDS.find((card) => card.code === state.deckCodes.find((code) => KQ_CARDS.find((item) => item.code === code)?.category === "substrate")) ?? KQ_CARDS[0];
+  const activeSubstrate = KQ_LIVING_SOIL;
   const cultureSystemStatus = situation ? getKqCultureSystemSituationStatus(state) : null;
   const activeHeritage = getKqStateHeritage(state);
   const selectableHeritageCards: readonly KqHeritageCard[] = remoteHeritageCards.length > 0
@@ -1768,8 +1743,6 @@ export function KanabQuestDicePrototype({
 
   if (setupOpen || viewMode === "arena") {
     const supportCards = KQ_CARDS.filter((card) => card.timing !== "passive" && card.category !== "pbi" && (deckFilter === "all" || card.category === deckFilter));
-    const substrates = KQ_CARDS.filter((card) => card.category === "substrate");
-    const hasOwnedSubstrate = substrates.some((card) => (activeInventory[card.code] ?? 0) > 0);
     const pbiReserve = KQ_CARDS.filter((card) => card.category === "pbi");
     const ownedBotteCount = KQ_CARDS.filter((card) => (activeInventory[card.code] ?? 0) > 0).length;
     const totalBotteCopies = KQ_CARDS.reduce((sum, card) => sum + (activeInventory[card.code] ?? 0), 0);
@@ -1820,7 +1793,7 @@ export function KanabQuestDicePrototype({
           </div>
         ) : null}
         <section className={styles.setupPanel}>
-          <header className={styles.setupHero}><div className={styles.setupHeroCopy}><span>Le Placard Kanab Quest{isPlayerMode ? "" : " · local"}</span><h1>Prépare <em>ta culture.</em></h1><i aria-hidden="true" /><p>Choisis ta variété, ton mode de culture et tes cartes. Puis lance la partie.</p></div><div className={styles.setupHeroArt} aria-hidden="true"><span /><Image src="/sylvain-culture-hero.webp" alt="" width={1122} height={1402} priority sizes="(max-width: 760px) 72vw, 390px" /></div></header>
+          <header className={styles.setupHero}><div className={styles.setupHeroCopy}><span>Le Placard Kanab Quest{isPlayerMode ? "" : " · local"}</span><h1>Prépare <em>ta culture.</em></h1><i aria-hidden="true" /><p>Choisis ta variété et tes cartes. Tout pousse sur sol vivant.</p></div><div className={styles.setupHeroArt} aria-hidden="true"><span /><Image src="/contest/mascot/arena-scene-placard-v1.png" alt="" width={1536} height={1024} priority sizes="(max-width: 760px) 100vw, 520px" /></div></header>
           {showAdminOperations && !isPlayerMode ? <div className={styles.remoteCollectionStatus} data-error={remoteCollection.error || undefined}>
             <span>{isPlayerMode ? "Mes cartes La Botte" : "Données sécurisées · test admin"}</span>
             {remoteCollection.loading ? <strong>Chargement de tes cartes…</strong> : remoteCollection.error ? <strong>{remoteCollection.error}</strong> : <strong>{remoteCollection.totalCopies} carte{remoteCollection.totalCopies > 1 ? "s" : ""} disponible{remoteCollection.totalCopies > 1 ? "s" : ""}</strong>}
@@ -1874,19 +1847,9 @@ export function KanabQuestDicePrototype({
           <h2 id="placard-preparation">1. Ton Buddie</h2>
           <div className={styles.buddieChoices}>{KQ_BUDDIES.filter((buddie) => !isPlayerMode || ownedBuddieCodes.includes(buddie.code)).map((buddie) => { const artwork = ownedBuddieArtwork[buddie.code]; return <button key={buddie.code} type="button" data-selected={selectedBuddie === buddie.code || undefined} aria-pressed={selectedBuddie === buddie.code} onClick={() => setSelectedBuddie(buddie.code)}>{artwork?.imageUrl ? <span className={styles.buddieArtwork}><Image src={artwork.imageUrl} alt={`Carte ${buddie.name}`} fill sizes="(max-width: 760px) 220px, 260px" className="object-cover" /></span> : null}<span>Kanab Quest #{buddie.cardNumber}</span><strong>{buddie.name}</strong><em>{BUDDIE_RARITY_LABELS[buddie.rarity]}{artwork?.ownedCopies ? ` · ×${artwork.ownedCopies}` : ""}</em><p>{buddie.ability}</p></button>; })}</div>
           <div className={styles.deckAssistant}><span><Sparkles /><b>Première partie ?</b> Le deck conseillé utilise uniquement les copies encore disponibles et reste entièrement modifiable.</span><button type="button" onClick={applyRecommendedDeck}>Créer le deck conseillé</button></div>
-          <h2>2. Ton mode de culture</h2>
-          {!hasOwnedSubstrate ? <p className={styles.deckNotice}><b>Terreau horticole offert :</b> tu peux commencer sans aucune carte La Botte. Aucune carte ne sera brûlée au lancement.</p> : null}
-          <div className={styles.substrateChoices}>{substrates.map((card) => {
-            const profile = getKqCultureSystemProfile(card.code);
-            const tradeoff = getKqCardTradeoff(card);
-            const isFreeStarter = !hasOwnedSubstrate && card.code === "BOTTE-001";
-            const isUnavailable = hasOwnedSubstrate
-              ? (activeInventory[card.code] ?? 0) <= 0
-              : card.code !== "BOTTE-001";
-            return <button key={card.code} type="button" disabled={isUnavailable} data-locked={isUnavailable || undefined} data-selected={selectedSubstrate === card.code || undefined} aria-pressed={selectedSubstrate === card.code} onClick={() => setSelectedSubstrate(card.code)}><CardArtwork code={card.code} name={card.name} /><span className={styles.cultureSystemTechnique}>{profile?.technique}</span><strong>{isFreeStarter ? "Terreau horticole · mode standard" : card.name}</strong><div className={styles.cultureSystemSpecs}><span><b>Pilotage</b>{profile?.mastery}</span><span data-critical={profile?.electricity === "Critique" || undefined}><b>Électricité</b>{profile?.electricity}</span></div><div className={styles.cultureSystemTradeoffs}><p data-kind="benefit"><b>Avantage</b>{tradeoff.benefit}</p><p data-kind="risk"><b>Risque</b>{tradeoff.risk}</p></div><em>{isFreeStarter ? "Fourni gratuitement · aucun burn" : isUnavailable ? "Non possédé · aperçu" : `${activeInventory[card.code] ?? 0} copie(s) · ${card.rarity}`}</em></button>;
-          })}</div>
+          <p className={styles.deckNotice}><b>Sol vivant :</b> la base de toutes les cultures indoor. Aucune carte nécessaire au démarrage.</p>
           {isPlayerMode ? <>
-            <h2 className={styles.collectionChestTitle}>3. Ton inventaire de jeu</h2>
+            <h2 className={styles.collectionChestTitle}>2. Ton inventaire de jeu</h2>
             <button type="button" className={styles.collectionChest} data-opening={chestOpening || undefined} aria-haspopup="dialog" aria-label="Ouvrir le coffre La Botte" onClick={openCollectionChest}>
               <span className={styles.collectionChestArt}><Image src="/placard/collection-chest.png" alt="" fill sizes="220px" /></span>
               <b>{chestOpening ? "Ouverture…" : "Ouvrir le coffre"}</b>
@@ -1894,7 +1857,7 @@ export function KanabQuestDicePrototype({
             <section className={styles.heritageCarouselSection} aria-labelledby="heritage-carousel-title">
               <header>
                 <div>
-                  <span>4. Producteurs mis à l’honneur</span>
+                  <span>Producteurs mis à l’honneur</span>
                   <h2 id="heritage-carousel-title">Choisis ton Héritage</h2>
                   <p>Équipe une carte producteur permanente. Elle ne prend aucune place dans ta main et ne brûle jamais.</p>
                   <small>{remoteBurnsEnabled ? remoteHeritageActive ? `${remoteHeritageOwnedCodes.length}/${selectableHeritageCards.length} possédée(s) · ${remoteHeritageFragments} fragments` : "Collection en attente d’activation" : `${selectableHeritageCards.length} Héritage(s) producteur`}</small>
@@ -1930,7 +1893,7 @@ export function KanabQuestDicePrototype({
               </div>
             </section>
           </> : null}
-          <h2 className={styles.deckSectionTitle}>3. La Botte <small>{selectedCards.length} carte{selectedCards.length > 1 ? "s" : ""}</small></h2>
+          <h2 className={styles.deckSectionTitle}>{isPlayerMode ? "3" : "2"}. La Botte <small>{selectedCards.length} carte{selectedCards.length > 1 ? "s" : ""}</small></h2>
           <p className={`${styles.deckNotice} ${styles.deckSelectionNotice}`} role="status" aria-live="polite">{deckNotice || "Ajoute autant de copies que tu en possèdes. Chaque copie jouée sera brûlée."}</p>
           <div className={styles.deckOdds}><div><span>Taille du deck</span><strong>{selectedCards.length}</strong></div><div><span>Références différentes</span><strong>{selectedReferenceCount}</strong></div><p><b>À retenir :</b> plus le deck est grand, plus il offre de solutions, mais plus une carte précise devient difficile à piocher dans une main de cinq.</p></div>
           <div className={styles.deckCoverage}><span>Couverture des situations</span><div>{Object.entries(COVERAGE_LABELS).map(([tag, label]) => { const count = deckCoverage[tag as keyof typeof COVERAGE_LABELS]; return <b key={tag} data-empty={count === 0 || undefined}>{label}<small>{count}</small></b>; })}<b data-versatile><Sparkles /> Polyvalentes<small>{deckCoverage.versatile}</small></b></div><p>Un zéro signale un angle mort, pas une interdiction : les dés et les cartes polyvalentes permettent toujours de jouer.</p></div>
@@ -1939,7 +1902,7 @@ export function KanabQuestDicePrototype({
           <div className={styles.deckFilters} aria-label="Filtrer les cartes La Botte">{([['all', 'Toutes'], ['equipment', 'Équipement'], ['know-how', 'Savoir-faire'], ['luck', 'Chance']] as const).map(([value, label]) => <button key={value} type="button" data-selected={deckFilter === value || undefined} aria-pressed={deckFilter === value} onClick={() => setDeckFilter(value)}>{label}</button>)}</div>
           <div className={styles.deckChoices}>{supportCards.map((card) => { const challengeFit = getKqCardChallengeFit(card, rewardableDailyChallenges.map((challenge) => challenge.code)); const selectedCopies = selectedCards.filter((code) => code === card.code).length; const ownedCopies = activeInventory[card.code] ?? 0; const drawChance = getKqOpeningHandChance(selectedCards.length, selectedCopies); return <article key={card.code} className={styles.deckChoiceCard} data-selected={selectedCopies > 0 || undefined} data-empty={ownedCopies <= 0 || undefined} data-challenge-fit={challengeFit || undefined}><CardArtwork code={card.code} name={card.name} /><span>{CATEGORY_LABELS[card.category]}</span>{challengeFit ? <i className={styles.challengeFit}><Star /> Aide défi</i> : null}<strong>{card.name}</strong><p>{card.description}</p><em>{ownedCopies} copie(s) · {card.xpCost} XP</em>{selectedCopies > 0 ? <small className={styles.drawChance}>{drawChance}% dans la première main</small> : null}<div><button type="button" aria-label={`Retirer une copie de ${card.name}`} disabled={selectedCopies <= 0} onClick={() => removeCardCopy(card.code)}>−</button><b>{selectedCopies} / {ownedCopies}</b><button type="button" aria-label={`Ajouter une copie de ${card.name}`} disabled={selectedCopies >= ownedCopies} onClick={() => addCardCopy(card.code)}>+</button></div></article>; })}</div>
           <div className={styles.pbiReserve}><span>Réserve PBI de l’album · automatique</span><div>{pbiReserve.map((card) => <strong key={card.code} data-empty={(activeInventory[card.code] ?? 0) <= 0 || undefined}>{card.name} <small>×{activeInventory[card.code] ?? 0}</small></strong>)}</div><p>Ces cartes ne prennent aucune place dans le deck. Elles apparaissent seulement après identification d’un ravageur. Une référence à zéro ne peut plus intervenir.</p></div>
-          <div className={styles.setupFooter}><span>{hasOwnedSubstrate ? "🔥 La carte du mode choisi brûle au départ. Ensuite, seules les cartes réellement jouées brûlent." : "✓ Terreau horticole standard fourni. Les cartes La Botte sont entièrement facultatives."}</span><button type="button" className={styles.primaryButton} disabled={(hasOwnedSubstrate && (activeInventory[selectedSubstrate] ?? 0) <= 0) || (isPlayerMode && !ownedBuddieCodes.includes(selectedBuddie)) || remoteAction !== null} onClick={() => setPendingStart(true)}>Commencer avec {selectedCards.length === 0 ? "aucune carte" : `${selectedCards.length} carte${selectedCards.length > 1 ? "s" : ""}`}</button></div>
+          <div className={styles.setupFooter}><span>Sol vivant inclus. Seules les cartes jouées sont consommées.</span><button type="button" className={styles.primaryButton} disabled={(isPlayerMode && !ownedBuddieCodes.includes(selectedBuddie)) || remoteAction !== null} onClick={() => setPendingStart(true)}>Commencer avec {selectedCards.length === 0 ? "aucune carte" : `${selectedCards.length} carte${selectedCards.length > 1 ? "s" : ""}`}</button></div>
           {remoteBurnsEnabled ? (
             <section id="placard-reserve" className={styles.officialFlowerReserve}>
               <header>
@@ -2003,8 +1966,8 @@ export function KanabQuestDicePrototype({
           {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}><span>Jury officiel</span><h2>Mes duels officiels</h2>{officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}{officialBattles.map((officialBattle) => <article key={officialBattle.id} data-status={officialBattle.status} data-opponent={officialBattle.opponentType}><header><div><strong>{officialBattle.playerFlower.variety}</strong><small>Ta Fleur</small></div><b>VS</b><div><strong>{officialBattle.opponentFlower.variety}</strong><small>{officialBattle.opponentType === "bot" ? "🤖 Entraînement" : "Adversaire"}</small></div></header>{officialBattle.status === "locked" ? <><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(officialBattle.id)}><Trophy /> Demander le verdict</button></> : officialBattle.status === "cancelled" ? <><h3>Duel expiré</h3><p>Aucun verdict, aucun burn et aucun point. Les deux Fleurs sont redevenues disponibles.</p><small>Engagement annulé après 48 heures · {formatKqDate(officialBattle.lockedAt)}</small></> : <><h3>{officialBattle.winner === "player" ? "Victoire" : "Défaite"}{officialBattle.opponentType === "bot" ? " d’entraînement" : " officielle"}</h3><div className={styles.officialRounds}>{officialBattle.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div><small>{officialBattle.opponentType === "bot" ? `Ta Fleur brûlée · +${Number(officialBattle.experienceAwarded ?? KQ_REWARD_BALANCE.training.arenaExperience.min).toLocaleString("fr-FR")} EXP d’Arène` : `Deux Fleurs brûlées · +${Number(officialBattle.experienceAwarded ?? 0).toLocaleString("fr-FR")} EXP d’Arène`} · {formatKqDate(officialBattle.verdictAt)}</small></>}</article>)}</section> : null}
           {battleHistory.length > 0 ? <section className={styles.battleHistory}><span>Archives locales</span><h2>Derniers concours</h2><div>{battleHistory.slice(0, 5).map((receipt) => <article key={receipt.id}><Flame /><span><strong>{receipt.playerFlower.variety} vs {receipt.opponentFlower.variety}</strong><small>{receipt.winner === "player" ? "Victoire" : "Défaite"} · brûlées le {formatKqDate(receipt.burnedAt)}</small></span><b>{receipt.rounds.filter((round) => round.winner === "player").length}–{receipt.rounds.filter((round) => round.winner === "opponent").length}</b></article>)}</div></section> : null}
         </section>
-        {showOnboarding ? <div className={styles.onboardingBackdrop} role="presentation" onClick={closeOnboarding}><section className={styles.onboarding} role="dialog" aria-modal="true" aria-labelledby="kq-guide-title" aria-describedby="kq-guide-intro" onClick={(event) => event.stopPropagation()}><button type="button" className={styles.onboardingClose} aria-label="Fermer les règles" onClick={closeOnboarding}><X /></button><span>Le Placard · la boucle en 1 minute</span><h2 id="kq-guide-title">Cultive. Transforme. Réinvestis.</h2><p id="kq-guide-intro" className={styles.onboardingIntro}>Tes choix de culture fabriquent une récolte unique. Sa qualité ouvre de meilleurs débouchés, finance ton atelier et construit ta réputation.</p><div className={styles.onboardingSteps}><article><ShoppingBag /><b>1. Prépare ton atelier</b><p>Choisis ton mode de culture, ton Buddie et tes cartes <strong>La Botte</strong>. Les équipements durables déjà achetés renforcent chaque nouvelle partie.</p></article><article><Dices /><b>2. Passe les 6 étapes</b><p>Lance les dés, réponds aux situations et dépense tes cartes au bon moment. Protège à la fois la <strong>qualité</strong> et la quantité récoltée.</p></article><article><Scale /><b>3. Affronte le jury</b><p>À la récolte, le jury note la fleur. La note détermine son palier, sa valeur brute et les transformations réellement accessibles.</p></article><article><Flame /><b>4. Choisis ton débouché</b><p>Vends le lot brut, transforme les belles fleurs en hash ou en rosin, ou écoule les lots ratés en biomasse. Chaque voie a son rendement.</p></article><article><Trophy /><b>5. Réinvestis intelligemment</b><p>Utilise ton argent pour améliorer tente, lumière et machines. La qualité vendue augmente aussi ta <strong>réputation</strong> et départage le classement.</p></article></div><button type="button" className={styles.primaryButton} onClick={closeOnboarding}>C’est parti · préparer mon atelier</button></section></div> : null}
-          {pendingStart ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingStart(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="culture-system-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>{hasOwnedSubstrate ? remoteBurnsEnabled ? "Burn officiel" : "Simulation locale" : "Démarrage gratuit"}</span><h2 id="culture-system-burn-title">{hasOwnedSubstrate ? "Consommer la carte de culture ?" : "Installer le terreau standard ?"}</h2><p>{hasOwnedSubstrate ? `Une copie de ${substrates.find((card) => card.code === selectedSubstrate)?.name} sera brûlée pour installer ce mode.` : "Le Terreau horticole standard est fourni gratuitement et aucune carte ne sera détruite au lancement."} Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingStart(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : hasOwnedSubstrate ? "Installer et commencer" : "Commencer gratuitement"}</button></div></section></div> : null}
+        {showOnboarding ? <div className={styles.onboardingBackdrop} role="presentation" onClick={closeOnboarding}><section className={styles.onboarding} role="dialog" aria-modal="true" aria-labelledby="kq-guide-title" aria-describedby="kq-guide-intro" onClick={(event) => event.stopPropagation()}><button type="button" className={styles.onboardingClose} aria-label="Fermer les règles" onClick={closeOnboarding}><X /></button><span>Le Placard · la boucle en 1 minute</span><h2 id="kq-guide-title">Cultive. Transforme. Réinvestis.</h2><p id="kq-guide-intro" className={styles.onboardingIntro}>Tes choix de culture fabriquent une récolte unique. Sa qualité ouvre de meilleurs débouchés, finance ton atelier et construit ta réputation.</p><div className={styles.onboardingSteps}><article><ShoppingBag /><b>1. Prépare ton atelier</b><p>Tout pousse sur sol vivant. Choisis ton Buddie et tes cartes <strong>La Botte</strong>. Les équipements durables déjà achetés renforcent chaque nouvelle partie.</p></article><article><Dices /><b>2. Passe les 6 étapes</b><p>Lance les dés, réponds aux situations et dépense tes cartes au bon moment. Protège à la fois la <strong>qualité</strong> et la quantité récoltée.</p></article><article><Scale /><b>3. Affronte le jury</b><p>À la récolte, le jury note la fleur. La note détermine son palier, sa valeur brute et les transformations réellement accessibles.</p></article><article><Flame /><b>4. Choisis ton débouché</b><p>Vends le lot brut, transforme les belles fleurs en hash ou en rosin, ou écoule les lots ratés en biomasse. Chaque voie a son rendement.</p></article><article><Trophy /><b>5. Réinvestis intelligemment</b><p>Utilise ton argent pour améliorer tente, lumière et machines. La qualité vendue augmente aussi ta <strong>réputation</strong> et départage le classement.</p></article></div><button type="button" className={styles.primaryButton} onClick={closeOnboarding}>C’est parti · préparer mon atelier</button></section></div> : null}
+          {pendingStart ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingStart(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="culture-system-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>Démarrage sur sol vivant</span><h2 id="culture-system-burn-title">Commencer la culture ?</h2><p>Le sol vivant est inclus et aucune carte n’est consommée au lancement. Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingStart(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : "Commencer"}</button></div></section></div> : null}
           {pendingRandomQueueFlowerId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingRandomQueueFlowerId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="random-queue-title" onClick={(event) => event.stopPropagation()}><Swords /><span>Arène aléatoire · classée</span><h2 id="random-queue-title">Mettre cette Fleur à disposition ?</h2><p>Le serveur choisira au hasard une Fleur appartenant à un autre joueur, quelle que soit sa qualité. Tu pourras retirer la tienne tant qu’elle attend ; dès qu’un adversaire arrive, le jury se lance et les deux Fleurs brûlent automatiquement.</p><small>Gain garanti au verdict : {KQ_REWARD_BALANCE.pvp.directSeasonPoints.min} à {KQ_REWARD_BALANCE.pvp.directSeasonPoints.max} points de saison directs et {KQ_REWARD_BALANCE.pvp.arenaExperience.min} à {KQ_REWARD_BALANCE.pvp.arenaExperience.max} EXP. Le gagnant reçoit {KQ_REWARD_BALANCE.pvp.winnerCardCount} cartes La Botte.</small>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingRandomQueueFlowerId(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void joinRandomBattleQueue(pendingRandomQueueFlowerId)}><Swords /> {matchmakingLoading ? "Recherche…" : "Entrer dans la file"}</button></div></section></div> : null}
           {pendingTrainingFlowerId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingTrainingFlowerId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="remote-battle-title" onClick={(event) => event.stopPropagation()}><Swords /><span>Entraînement aléatoire</span><h2 id="remote-battle-title">Confier cette Fleur au jury ?</h2><p>Le serveur tirera le bot au hasard et le révélera avec le verdict. Le duel immédiat brûlera ta Fleur et rapportera {KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP d’Arène et une carte seulement en cas de victoire. Il ne modifie ni ton Elo ni ta série ; les défis du jour validés peuvent toutefois ajouter leurs points de saison.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingTrainingFlowerId(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void confirmRemoteBattle()}><Swords /> {matchmakingLoading ? "Tirage et jury…" : "Lancer l’entraînement"}</button></div></section></div> : null}
           {botBattleResult ? (
@@ -2355,7 +2318,7 @@ export function KanabQuestDicePrototype({
           </section>
         ) : null}
         {state.revealedPest ? <div className={styles.pestReveal}><strong>🔎 {PEST_LABELS[state.revealedPest]} révélés</strong><span>{availableCards.filter((card) => card.category === "pbi").length} auxiliaire(s) compatible(s) de ta collection affiché(s).</span></div> : situation.pest ? <div className={styles.pestHidden}><strong>Ravageur inconnu</strong><span>Joue la Loupe d’inspection avant les dés pour ouvrir la réserve PBI.</span></div> : null}
-        <div className={styles.substrate} data-tone={cultureSystemStatus?.tone}><Sparkles /><span><small>Mode de culture actif</small><strong>{activeSubstrate.name}</strong><em>{cultureSystemStatus?.detail ?? activeSubstrate.description}</em></span>{cultureSystemStatus ? <b className={styles.cultureSystemStatus}>{cultureSystemStatus.label}</b> : null}</div>
+        <div className={styles.substrate} data-tone={cultureSystemStatus?.tone}><Sparkles /><span><small>Culture indoor</small><strong>{activeSubstrate.name}</strong><em>{cultureSystemStatus?.detail ?? activeSubstrate.description}</em></span>{cultureSystemStatus ? <b className={styles.cultureSystemStatus}>{cultureSystemStatus.label}</b> : null}</div>
         <div className={styles.cardRow}>{availableCards.map((card) => { const usedCopies = state.usedCards.filter((code) => code === card.code).length; const deckCopies = card.category === "pbi" ? 0 : Math.max(0, state.deckCodes.filter((code) => code === card.code).length - usedCopies); return <SupportCard key={card.code} card={card} state={state} copies={activeInventory[card.code] ?? 0} handCopies={card.category === "pbi" ? 0 : handCodes.filter((code) => code === card.code).length} deckCopies={deckCopies} serverValidatedCopy={remoteBurnsEnabled && card.category !== "pbi" && deckCopies > 0} onPlay={setPendingBurnCode} />; })}</div>
         <div className={styles.ashes}><Flame /><span><small>Cendres de cette culture · {state.usedCards.length} copie{state.usedCards.length === 1 ? "" : "s"} brûlée{state.usedCards.length === 1 ? "" : "s"}</small><div>{state.usedCards.map((code, index) => <b key={`${code}-${index}`}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</b>)}</div></span></div>
       </section>

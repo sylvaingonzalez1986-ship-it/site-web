@@ -54,7 +54,7 @@ type ContestNotebookPanelProps = {
   eligibility: ContestReviewEligibility;
   loginHref: string;
   productHref?: string | null;
-  displayMode?: "card" | "button" | "spread";
+  displayMode?: "card" | "button" | "spread" | "book";
   defaultGuideOpen?: boolean;
   useDesktopSpreadGuide?: boolean;
   onOpenGuide?: () => void;
@@ -541,7 +541,8 @@ export function ContestNotebookPanel({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const isSpreadDisplayMode = displayMode === "spread";
-  const isInlineDisplayMode = displayMode === "button" || isSpreadDisplayMode;
+  const isBookDisplayMode = displayMode === "book";
+  const isInlineDisplayMode = displayMode === "button" || isSpreadDisplayMode || displayMode === "book";
   const shouldOpenReviewEditor =
     searchParams.get("edit") === "notes" &&
     (viewerReview?.status === "pending" || (!viewerReview && eligibility.eligible));
@@ -708,7 +709,7 @@ export function ContestNotebookPanel({
   }, [isInlineDisplayMode, onCloseGuide, pathname, router, searchParams]);
 
   useEffect(() => {
-    if (!isGuideOpen) {
+    if (!isGuideOpen || isBookDisplayMode) {
       return;
     }
 
@@ -754,7 +755,7 @@ export function ContestNotebookPanel({
         window.cancelAnimationFrame(focusFrame);
       }
     };
-  }, [closeGuide, isGuideOpen, isInlineDisplayMode]);
+  }, [closeGuide, isGuideOpen, isInlineDisplayMode, isBookDisplayMode]);
 
   useEffect(() => {
     if (!isGuideOpen || isInlineDisplayMode) {
@@ -978,6 +979,48 @@ export function ContestNotebookPanel({
     return null;
   };
 
+  const renderBookScoreSummary = () => (
+    <section className={styles.bookScoreSummary} aria-label="Comparaison de mes notes">
+      <div className={styles.bookScoreHeading}>
+        <div><p>Mon profil de dégustation</p><h3>Mes notes</h3></div>
+        <ContestTastingStepMascot step="verdict" compact />
+      </div>
+      <p className={styles.bookReviewStatus}>
+        {viewerReview ? CONTEST_REVIEW_STATUS_LABELS[viewerReview.status] : "Brouillon · notes non envoyées"}
+        {isEditingReview ? " · Modifications en cours" : ""}
+      </p>
+      <div className={styles.bookScoreTotals}>
+        <div data-score="player"><span>Ta note</span><strong>{formatContestAverage(visibleScoreAverage)}<small>/100</small></strong></div>
+        <div data-score="community"><span>Moyenne des joueurs</span><strong>{entry.stats.approvedReviewCount > 0 ? <>{formatContestAverage(entry.stats.averageScore)}<small>/100</small></> : "—"}</strong></div>
+      </div>
+      <ContestReviewSkillRadar
+        review={{ scores: CONTEST_SCORE_CRITERIA.map((criterion) => ({ criterion, score: visibleScores[criterion] })) }}
+        comparisonScores={entry.stats.approvedReviewCount > 0 ? entry.stats.criterionAverages : undefined}
+        showValues={false}
+        showTotals={false}
+      />
+      <p className={styles.bookScoreCaption}>{entry.stats.approvedReviewCount > 0
+        ? `Moyenne calculée sur ${entry.stats.approvedReviewCount} avis validé${entry.stats.approvedReviewCount > 1 ? "s" : ""}.`
+        : "Pas encore d’avis validé : la moyenne apparaîtra après les premières validations."}</p>
+    </section>
+  );
+
+  const renderBookNotes = () => (
+    <div className={styles.bookNotes} data-book-notes>
+      {renderBookScoreSummary()}
+      {visibleComment ? <section className={styles.bookWrittenNotes}><h3>Mes impressions</h3><p>{visibleComment}</p></section> : null}
+      {viewerReview?.adminNote ? <p className={styles.bookScoreCaption}>Retour de modération : {viewerReview.adminNote}</p> : null}
+      <div className={styles.bookNotesActions}>
+        <button type="button" className={styles.navButton} onClick={onCloseGuide}>Retour à la fleur</button>
+        <button type="button" className={`${styles.navButton} ${styles.navButtonPrimary}`} onClick={() => {
+          if (viewerReview?.status === "pending" && !isEditingReview) startReviewEdit();
+          else if (viewerReview && !isEditingReview) openGuide();
+          else setIsGuideOpen(true);
+        }}>{viewerReview?.status === "pending" ? "Modifier mes notes" : viewerReview ? "Lire mes notes" : "Continuer la dégustation"}</button>
+      </div>
+    </div>
+  );
+
   const renderExistingReview = () => {
     if (!viewerReview) {
       return null;
@@ -985,6 +1028,7 @@ export function ContestNotebookPanel({
 
     return (
       <div className="contest-guide-verdict-review space-y-4">
+        {isBookDisplayMode ? renderBookScoreSummary() : null}
         <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="space-y-1">
@@ -1337,11 +1381,11 @@ export function ContestNotebookPanel({
         </div>
         <button
           type="button"
-          onClick={goToNextPage}
-          disabled={pageIndex === GUIDE_PAGES.length - 1}
+          onClick={isBookDisplayMode && pageIndex === GUIDE_PAGES.length - 1 ? () => setIsGuideOpen(false) : goToNextPage}
+          disabled={!isBookDisplayMode && pageIndex === GUIDE_PAGES.length - 1}
           className={`${styles.navButton} ${styles.navButtonPrimary}`}
         >
-          Suivant
+          {isBookDisplayMode && pageIndex === GUIDE_PAGES.length - 1 ? "Mes notes" : "Suivant"}
         </button>
       </footer>
     </section>
@@ -1370,8 +1414,8 @@ export function ContestNotebookPanel({
             <>
               <QuickStepIntro
                 eyebrow="Mode rapide"
-                title="Note cette fleur en 2 minutes"
-                body="Tu peux avancer sans lire le guide complet. Les aides restent disponibles si tu bloques."
+                title={displayMode === "book" ? "Avant la première impression" : "Note cette fleur en 2 minutes"}
+                body={displayMode === "book" ? "Installe-toi, prépare ta fleur et choisis ton mode de dégustation. Avance à ton rythme." : "Tu peux avancer sans lire le guide complet. Les aides restent disponibles si tu bloques."}
                 mascotStep="start"
               />
               {isConcoursEntry ? (
@@ -1388,7 +1432,7 @@ export function ContestNotebookPanel({
                   </p>
                 </div>
               ) : null}
-              <div className="grid gap-2">
+              <div className="grid gap-2" hidden={displayMode === "book"}>
                 {quickStepSummary.map((step, index) => (
                   <div
                     key={step}
@@ -1681,7 +1725,7 @@ export function ContestNotebookPanel({
                 body="Donne ton impression générale. Une phrase suffit si tes notes sont claires."
                 mascotStep="verdict"
               />
-              <div className="rounded border-2 border-[#1a1a1a] bg-yellow p-4">
+              {isBookDisplayMode ? renderBookScoreSummary() : <div className="rounded border-2 border-[#1a1a1a] bg-yellow p-4">
                 <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#6d4b00]">
                   Score actuel
                 </p>
@@ -1689,7 +1733,7 @@ export function ContestNotebookPanel({
                   {formatContestAverage(visibleScoreAverage)}
                 </p>
                 <p className="text-sm font-bold text-ink">/ {CONTEST_SCORE_MAX}</p>
-              </div>
+              </div>}
               <ScoreSliderStack
                 criteria={verdictCriteria}
                 scores={visibleScores}
@@ -1763,9 +1807,9 @@ export function ContestNotebookPanel({
   const shouldRenderInlineGuide = isInlineDisplayMode && isGuideOpen;
 
   return (
-    <div className={`${styles.panelRoot} ${isInlineDisplayMode ? styles.inlinePanelRoot : ""}`}>
+    <div className={`${styles.panelRoot} ${isInlineDisplayMode ? styles.inlinePanelRoot : ""} ${displayMode === "book" ? styles.bookPanel : ""}`}>
       {isInlineDisplayMode ? (
-        shouldRenderInlineGuide ? renderNotebookShell() : renderNotesTabContent()
+        shouldRenderInlineGuide ? renderNotebookShell() : isBookDisplayMode ? renderBookNotes() : renderNotesTabContent()
       ) : (
         <section className={styles.teaser} aria-label="Carnet de dégustation">
           <div className={styles.teaserTop}>

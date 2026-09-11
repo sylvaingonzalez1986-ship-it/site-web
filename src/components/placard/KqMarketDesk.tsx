@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import {
   BadgeCheck,
   Banknote,
@@ -9,6 +11,8 @@ import {
   Flame,
   Gauge,
   LoaderCircle,
+  LockKeyhole,
+  Check,
   PackageCheck,
   Scale,
   ShoppingBag,
@@ -181,10 +185,43 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
   const [saleReceipt, setSaleReceipt] = useState<SaleReceipt | null>(null);
   const [loading, setLoading] = useState(true);
   const [selling, setSelling] = useState(false);
+  const [selectedRoute, setSelectedRoute] = useState<KqMarketRouteCode | null>(null);
+  const [transformation, setTransformation] = useState<"idle" | "working" | "complete">("idle");
+  const transformationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const saleInFlight = useRef(false);
   const [savingRouteGoal, setSavingRouteGoal] = useState(false);
   const [routeGoalError, setRouteGoalError] = useState("");
   const [error, setError] = useState("");
   const saleRequestKeyRef = useRef<string | null>(null);
+  const pageRef = useRef<HTMLElement>(null);
+  const modalOpen = Boolean(pendingQuote || saleReceipt || transformation !== "idle");
+
+  useEffect(() => {
+    if (!modalOpen) return;
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const modal = pageRef.current?.querySelector<HTMLElement>(transformation !== "idle" ? '[data-transformation]' : '[role="dialog"]');
+    const controls = () => Array.from(modal?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled)') ?? []).filter((el) => el.getClientRects().length > 0);
+    (controls()[0] ?? modal)?.focus({ preventScroll: true });
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        if (selling || transformation !== "idle") return;
+        saleRequestKeyRef.current = null;
+        setPendingQuote(null);
+        setSaleReceipt(null);
+      }
+      if (event.key !== "Tab") return;
+      const items = controls();
+      if (!items.length) { event.preventDefault(); modal?.focus(); return; }
+      const first = items[0]; const last = items[items.length - 1];
+      if (event.shiftKey && (document.activeElement === first || !modal?.contains(document.activeElement))) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && (document.activeElement === last || !modal?.contains(document.activeElement))) { event.preventDefault(); first.focus(); }
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => { document.body.style.overflow = previousOverflow; document.removeEventListener("keydown", handleKey); if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true }); };
+  }, [modalOpen, selling, transformation]);
 
   const loadMarket = useCallback(async () => {
     setLoading(true);
@@ -209,6 +246,8 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
   useEffect(() => {
     void loadMarket();
   }, [loadMarket]);
+
+  useEffect(() => () => { if (transformationTimer.current) clearTimeout(transformationTimer.current); }, []);
 
   const selectedLot = useMemo(
     () => snapshot?.lots.find((lot) => lot.flowerId === selectedFlowerId) ?? null,
@@ -237,6 +276,9 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
       ? prioritizeKqPinnedMarketRoute(selectedLot.options, snapshot?.routePlan?.route ?? expertiseMission?.route ?? null)
       : []
   ), [expertiseMission?.route, selectedLot, snapshot?.routePlan?.route]);
+  const activeQuote = displayedOptions.find((quote) => quote.route === selectedRoute)
+    ?? displayedOptions.find((quote) => quote.route === snapshot?.routePlan?.route)
+    ?? recommendation?.bestPayout ?? displayedOptions[0];
   const reputationProgress = useMemo(
     () => getKqReputationProgress(snapshot?.reputation ?? 0),
     [snapshot?.reputation],
@@ -314,10 +356,12 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
   ), [routeGoalScenario, saleReceipt, snapshot?.routePlan]);
 
   const confirmSale = async () => {
-    if (!selectedLot || !pendingQuote || selling) return;
+    if (!selectedLot || !pendingQuote || selling || saleInFlight.current) return;
+    saleInFlight.current = true;
     const requestKey = saleRequestKeyRef.current ?? createClientRequestKey();
     saleRequestKeyRef.current = requestKey;
     setSelling(true);
+    setTransformation("working");
     setError("");
     setRouteGoalError("");
     try {
@@ -333,6 +377,8 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
       const payload = await response.json() as SaleReceipt & { error?: string };
       if (!response.ok) throw new Error(payload.error || "La vente n’a pas été enregistrée.");
       setSaleReceipt(payload);
+      setTransformation("complete");
+      transformationTimer.current = setTimeout(() => setTransformation("idle"), 1400);
       setSnapshot((current) => current ? {
         ...current,
         cashCents: payload.cashAfterCents,
@@ -353,8 +399,10 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
       window.dispatchEvent(new Event("kq:market-updated"));
       if (payload.routeMastery?.matchedPlan) window.dispatchEvent(new Event("kq:equipment-updated"));
     } catch (saleError) {
+      setTransformation("idle");
       setError(saleError instanceof Error ? saleError.message : "Vente impossible.");
     } finally {
+      saleInFlight.current = false;
       setSelling(false);
     }
   };
@@ -391,12 +439,12 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
   };
 
   return (
-    <main className={styles.page}>
+    <main ref={pageRef} className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.heroCopy}>
-          <span>Après le verdict du jury</span>
+          <span>Le Placard · Atelier & marché</span>
           <h1>Le Marché</h1>
-          <p>La qualité fait ta réputation.</p>
+          <p>Ta récolte. Tes machines. Ton prochain palier.</p>
         </div>
         <div className={styles.walletGrid}>
           <article><CircleDollarSign /><span><small>Trésorerie</small><strong>{formatKqCash(snapshot?.cashCents ?? 0)}</strong></span></article>
@@ -419,6 +467,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
 
       {!loading && snapshot && snapshot.lots.length === 0 ? (
         <section className={styles.emptyState}>
+          <Image className={styles.emptyArt} src="/placard/market-workshop-v1.webp" alt="Atelier de transformation prêt à accueillir une récolte" width={1536} height={1024} sizes="(max-width: 900px) 100vw, 900px" />
           <Flame aria-hidden="true" />
           <span>Aucun lot à valoriser</span>
           <h2>Le jury t’attend</h2>
@@ -446,17 +495,27 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
               <div className={styles.juryScore}><Trophy /><strong>{selectedLot.juryScore.toFixed(1)}</strong><small>note jury / 10</small></div>
               <div className={styles.harvestWeight}><Scale /><strong>{selectedLot.harvestGrams.toLocaleString("fr-FR")} g</strong><small>lot disponible</small></div>
             </header>
-            <div className={styles.cultureSystemTrace}><Sparkles aria-hidden="true" /><span><small>Trace de culture</small><strong>{selectedLot.cultureSystemName ?? "Mode non archivé"}</strong><em>{selectedLot.cultureSystemTechnique ?? "Cette ancienne récolte ne contient pas encore le détail technique."}</em></span><b>Aucun bonus caché</b></div>
+            <details className={styles.cultureDetails}><summary>Origine du lot · {selectedLot.cultureSystemName ?? "Mode non archivé"}</summary><p>{selectedLot.cultureSystemTechnique ?? "Cette ancienne récolte ne contient pas encore le détail technique."}</p><p>Aucun bonus caché : le mode de culture décrit l’origine du lot.</p></details>
 
             {selectedLot.status === "sold" ? (
               <div className={styles.soldSummary}><PackageCheck /><div><small>Lot valorisé le {formatDate(selectedLot.settledAt)}</small><h3>{selectedLot.options.find((option) => option.route === selectedLot.selectedRoute)?.name ?? selectedLot.selectedRoute}</h3><p><strong>+{formatKqCash(selectedLot.payoutCents ?? 0)}</strong><span>{formatKqReputationDelta(selectedLot.reputationGain ?? 0)} réputation</span></p></div></div>
             ) : (
               <>
-                <div className={styles.routeHeading}><div><small>Choix irréversible</small><h3>Que devient ce lot ?</h3></div><button type="button" onClick={() => onOpenShop()}><ShoppingBag /> Équiper l’atelier</button></div>
+                <div className={styles.routeHeading}><div><small>Choisis ton poste</small><h3>L’atelier de transformation</h3></div><button type="button" onClick={() => onOpenShop()}><ShoppingBag /> Équiper l’atelier</button></div>
+                <section className={styles.workshopScene} aria-label="Atelier du lot sélectionné" data-family={activeQuote?.family}>
+                  <Image src="/placard/market-workshop-v1.webp" alt="Atelier de jeu avec une presse, des tamis et une laveuse" fill sizes="(max-width: 900px) 100vw, 900px" priority />
+                  <div className={styles.sceneCaption}><span>{activeQuote?.available ? <><Check size={15} /> Poste disponible</> : <><LockKeyhole size={15} /> Conditions à remplir</>}</span><strong>{activeQuote?.name}</strong><small>{activeQuote?.available ? "Prêt pour ce lot" : activeQuote?.blockedReason}</small></div>
+                </section>
+                <div className={styles.machineCount}><span>{displayedOptions.filter((quote) => quote.available).length} postes disponibles sur {displayedOptions.length}</span><span>Faire défiler →</span></div>
+                <nav className={styles.machineMenu} aria-label="Machines et filières">
+                  {displayedOptions.map((quote) => <button key={quote.route} type="button" aria-pressed={activeQuote?.route === quote.route} aria-label={`${quote.name} · ${quote.available ? "Disponible" : "Verrouillé"}`} data-available={quote.available} onClick={() => setSelectedRoute(quote.route)} aria-controls="market-machine-detail">
+                    <RouteIcon family={quote.family} /><strong>{quote.name}</strong><small>{quote.available ? <><Check size={12} /> Disponible</> : <><LockKeyhole size={12} /> Verrouillé</>}</small>
+                  </button>)}
+                </nav>
                 {recommendation ? (
-                  <section className={styles.decisionGuide} data-has-pinned={pinnedRouteStatus ? true : undefined} aria-label="Comparaison des voies disponibles">
+                  <details className={styles.comparison}><summary>Comparer les revenus et la réputation</summary><section className={styles.decisionGuide} data-has-pinned={pinnedRouteStatus ? true : undefined} aria-label="Comparaison des voies disponibles">
                     <header>
-                      <small>Lecture de Sylvain</small>
+                      <small>Conseil d’atelier</small>
                       <strong>{recommendation.oneClearWinner ? "Un choix se détache" : recommendation.bestReputation ? "Argent ou réputation ?" : "Sauver ce qui peut l’être"}</strong>
                     </header>
                     <article>
@@ -473,10 +532,10 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
                         <span><small>Filière épinglée</small><strong>{pinnedRouteStatus.name}</strong><b>{getPinnedRouteStatusLabel(pinnedRouteStatus)}</b></span>
                       </article>
                     ) : null}
-                  </section>
+                  </section></details>
                 ) : null}
-                <div className={styles.routeGrid}>
-                  {displayedOptions.map((quote) => {
+                <div className={styles.routeGrid} id="market-machine-detail" aria-live="polite">
+                  {displayedOptions.filter((quote) => quote.route === activeQuote?.route).map((quote) => {
                     const bestPayout = quote.available && recommendation?.bestPayout?.route === quote.route;
                     const bestReputation = quote.available && recommendation?.bestReputation?.route === quote.route;
                     const pinnedRoute = snapshot.routePlan?.route === quote.route;
@@ -529,7 +588,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
 
       {pendingQuote && selectedLot ? <div className={styles.modalBackdrop} role="presentation" onClick={() => { if (!selling) { saleRequestKeyRef.current = null; setPendingQuote(null); } }}>
         <section className={styles.confirmModal} role="dialog" aria-modal="true" aria-labelledby="market-confirm-title" onClick={(event) => event.stopPropagation()}>
-          <button type="button" onClick={() => { saleRequestKeyRef.current = null; setPendingQuote(null); }} aria-label="Fermer"><X /></button>
+          <button type="button" disabled={selling} onClick={() => { saleRequestKeyRef.current = null; setPendingQuote(null); }} aria-label="Fermer"><X /></button>
           <span><RouteIcon family={pendingQuote.family} /></span>
           <small>Bon de transformation définitif</small>
           <h2 id="market-confirm-title">{pendingQuote.name}</h2>
@@ -575,7 +634,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
         </section>
       </div> : null}
 
-      {saleReceipt ? <div className={styles.modalBackdrop} role="presentation" onClick={() => setSaleReceipt(null)}>
+      {saleReceipt && transformation === "idle" ? <div className={styles.modalBackdrop} role="presentation" onClick={() => setSaleReceipt(null)}>
         <section className={styles.receiptModal} role="dialog" aria-modal="true" aria-labelledby="market-receipt-title" onClick={(event) => event.stopPropagation()}>
           <PackageCheck />
           <small>Reçu #{saleReceipt.receiptId.slice(0, 8)}</small>
@@ -652,6 +711,11 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
           )}
           <button type="button" onClick={() => setSaleReceipt(null)}>Continuer</button>
         </section>
+      </div> : null}
+      {transformation !== "idle" ? <div className={styles.transformation} role="status" tabIndex={-1} aria-live="polite" aria-atomic="true" data-transformation data-phase={transformation}>
+        <div className={styles.transformationArt} aria-hidden="true"><span className={styles.inputLot}><Box /></span><div className={styles.animatedMachine} data-family={activeQuote?.family}><i /><RouteIcon family={activeQuote?.family ?? "rosin"} /><b /></div><span className={styles.outputLot}>{transformation === "complete" ? <Check /> : <Sparkles />}</span></div>
+        <strong>{transformation === "complete" ? "Lot valorisé !" : pendingQuote?.family === "flower" || pendingQuote?.family === "salvage" ? "Préparation du lot…" : "Transformation en cours…"}</strong>
+        <p>{transformation === "complete" ? `+${formatKqCash(saleReceipt?.payoutCents ?? 0)} · Vente confirmée` : "Validation de ton opération…"}</p>
       </div> : null}
     </main>
   );

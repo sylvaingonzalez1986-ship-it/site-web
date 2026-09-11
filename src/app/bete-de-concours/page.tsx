@@ -3,6 +3,7 @@ import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { ContestHubClient } from "@/components/contest/ContestHubClient";
 import { ContestArenaHub } from "@/components/contest/ContestArenaHub";
+import { ContestTastingBook } from "@/components/contest/ContestTastingBook";
 import { ContestSchemaUnavailable } from "@/components/contest/ContestSchemaUnavailable";
 import {
   canCustomerAccessContestFeatureServer,
@@ -170,7 +171,7 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
     }
 
     const entryPayload = arenaView === "carnet"
-      ? await getPublicContestEntries({ seasonCode: params.season, track: selectedTrack })
+      ? await getPublicContestEntries({ seasonCode: params.season, track: surface === "notebook" ? undefined : selectedTrack })
       : { entries: [], selectedSeason: null };
     const selectedSeasonCode = entryPayload.selectedSeason?.code ?? params.season;
     const categoryCounts = getContestCategoryCounts(entryPayload.entries);
@@ -213,6 +214,19 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
       Promise.resolve({ items: [] }),
       Promise.resolve({ items: [] }),
     ]);
+
+    if (surface === "notebook") {
+      return <ContestTastingBook
+        entries={entryPayload.entries}
+        unlocks={notebookUnlocks.map(sanitizePublicContestNotebookUnlock)}
+        viewerProfile={viewerProfile ? sanitizePublicContestProfile(viewerProfile) : null}
+        badges={viewerBadges.map(sanitizePublicContestBadge)}
+        isAuthenticated={Boolean(session?.customerId)}
+        seasonLabel={entryPayload.selectedSeason?.label ?? "Les dégustations de l’Arène"}
+        initialTrack={selectedTrack}
+        initialCategory={requestedCategory ?? "outdoor"}
+      />;
+    }
 
     return (
       <ContestHubClient

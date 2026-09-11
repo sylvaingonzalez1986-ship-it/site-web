@@ -1,12 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import { ArenaSceneHeader } from "../contest/ArenaSceneHeader";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ArrowLeft, Banknote, Gamepad2, Hourglass, ShoppingBag, Swords } from "lucide-react";
+import { ArrowLeft, Hourglass } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
-import { KqPlacardHud } from "./KqPlacardHud";
+import { KqPlacardLobby } from "./KqPlacardLobby";
 import retro from "../contest/ArenaRetro.module.css";
 
 const NAVIGATION_FEEDBACK_MS = 420;
@@ -71,49 +69,6 @@ const PLACARD_VIEW_LABELS: Record<PlacardView, string> = {
   arena: "de Fleur vs Fleur",
   market: "du Comptoir des lots",
 };
-
-const HUB_DESTINATIONS = [
-  {
-    id: "shop" as const,
-    number: "01",
-    eyebrow: "Collection",
-    title: "La Boutique",
-    image: "/placard/booster-shop-front-v2.webp",
-    imageClassName: "object-cover object-center",
-    icon: ShoppingBag,
-    accent: "bg-yellow",
-  },
-  {
-    id: "game" as const,
-    number: "02",
-    eyebrow: "Culture",
-    title: "Le Jeu",
-    image: "/sylvain-culture-hero.webp",
-    imageClassName: "object-contain object-center p-3 sm:p-5",
-    icon: Gamepad2,
-    accent: "bg-mint",
-  },
-  {
-    id: "arena" as const,
-    number: "03",
-    eyebrow: "Compétition",
-    title: "Fleur vs Fleur",
-    image: "/contest/mascot/arena-duo.webp",
-    imageClassName: "object-contain object-center p-3 sm:p-5",
-    icon: Swords,
-    accent: "bg-[#167d6b]",
-  },
-  {
-    id: "market" as const,
-    number: "04",
-    eyebrow: "Après jury",
-    title: "Le Marché",
-    image: "/mascots/boutique-market.png",
-    imageClassName: "object-contain object-center p-3 sm:p-5",
-    icon: Banknote,
-    accent: "bg-[#ef6f31]",
-  },
-];
 
 export function PlacardPlayerShell() {
   const deepLink = useSyncExternalStore<PlacardDeepLink>(
@@ -254,68 +209,7 @@ export function PlacardPlayerShell() {
   return (
     <div className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
       {navigationFeedback}
-      <ArenaSceneHeader mode="jouer" />
-
-      <main className="mx-auto max-w-6xl px-4 py-7 sm:py-10">
-        <KqPlacardHud
-          onOpenShop={openEquipmentCatalog}
-          onOpenGame={() => openView("game")}
-          onOpenArena={() => openView("arena")}
-          onOpenMarket={() => openView("market")}
-        />
-        <div className="mb-5 flex items-end justify-between gap-4">
-          <div>
-            <h2 className="font-display text-3xl uppercase leading-none sm:text-4xl">
-              Sélection du mode
-            </h2>
-          </div>
-        </div>
-
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {HUB_DESTINATIONS.map((destination) => {
-            const Icon = destination.icon;
-            return (
-              <button
-                key={destination.id}
-                type="button"
-                onClick={() => openView(destination.id)}
-                aria-busy={pendingView === destination.id || undefined}
-                className={`${retro.destination} group grid grid-cols-[118px_1fr] overflow-hidden border-2 bg-white text-left transition duration-200 hover:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#167d6b] sm:grid-cols-[160px_1fr] md:block`}
-                aria-label={`Ouvrir ${destination.title}`}
-              >
-                <span className={`relative block min-h-36 overflow-hidden border-r-2 border-ink md:aspect-[16/10] md:min-h-0 md:border-b-2 md:border-r-0 ${destination.accent}`}>
-                  <Image
-                    src={destination.image}
-                    alt=""
-                    fill
-                    loading={destination.id === "shop" ? "eager" : "lazy"}
-                    sizes="(max-width: 767px) 100vw, 33vw"
-                    className={`${destination.imageClassName} transition duration-300 group-hover:scale-[1.04]`}
-                  />
-                  <span className="absolute left-2 top-2 grid h-9 w-9 place-items-center border-2 border-ink bg-white shadow-[2px_2px_0_#111] md:left-3 md:top-3 md:h-11 md:w-11 md:shadow-[3px_3px_0_#111]">
-                    <Icon aria-hidden="true" size={20} strokeWidth={2.7} />
-                  </span>
-                  <span className="absolute bottom-2 left-2 border-2 border-ink bg-ink px-2 py-1 text-[10px] font-black text-white md:bottom-auto md:left-auto md:right-3 md:top-3 md:text-xs">
-                    {destination.number}
-                  </span>
-                </span>
-
-                <span className="flex min-h-36 flex-col p-3 sm:p-4 md:min-h-40 md:p-5">
-                  <span className="text-xs font-black uppercase tracking-[0.16em] text-[#167d6b]">
-                    {destination.eyebrow}
-                  </span>
-                  <span className="mt-1 font-display text-2xl uppercase leading-none md:text-3xl">
-                    {destination.title}
-                  </span>
-                  <span className="mt-auto pt-2 text-xs font-black uppercase md:pt-4 md:text-sm">
-                    Ouvrir <span aria-hidden="true">→</span>
-                  </span>
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </main>
+      <KqPlacardLobby onOpen={openView} onOpenEquipment={openEquipmentCatalog} />
     </div>
   );
 }

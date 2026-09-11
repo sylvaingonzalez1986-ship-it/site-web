@@ -56,7 +56,7 @@ export function PageRewardDrawer({ page, acting, onClaim, onClose }: PageRewardD
             </h3>
             <p className="mt-1 text-sm text-charcoal">
               Choisis ta récompense pour la page{" "}
-              <span className="font-semibold" style={{ color: accent }}>
+              <span className="font-semibold text-ink" style={{ borderBottom: `2px solid ${accent}` }}>
                 {rarityLabels[page.rarity]}
               </span>
             </p>

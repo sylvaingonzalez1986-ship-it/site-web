@@ -1,0 +1,273 @@
+{
+  "version": "v3",
+  "tool": "built-in image_gen",
+  "commonPrompt": "Use case: illustration-story. Create one square full-bleed 1536x1536 CARTOON game illustration. The supplied image is the STRICT STYLE AND CHARACTER REFERENCE: match Sylvain's established friendly stocky cartoon character, teal cap and overalls, rounded face, bold dark ink outlines, flat cream/teal/forest-green/golden-yellow colors, subtle printed halftone and limited cel shading. This must look drawn like the reference, NOT a photograph, NOT photorealism, NOT 3D, NOT painterly realism. The user wants believable equipment and situations WITHIN THIS EXACT CARTOON STYLE. Depict real recognizable horticultural objects at sensible scale and physically credible botanical problems. Keep mascot proportions stylized as in the reference; gestures calm and practical, no slapstick. The situation and material are the main subject; Sylvain can be small, partly seen, or only his illustrated hands in macro views. Main objects centered, readable at 300px. Single scene, no frames, labels, readable words, numbers, logos, panels, inset diagrams, fantasy machines, giant objects, ice cubes, rubber ducks, rescue buoys, magical clouds or human faces on plants. Return the generated image local file path. SETTING IS MANDATORY: a compact INDOOR GROW CUPBOARD, enclosed on three sides with opaque cream/silver reflective liner and dark upright frame, artificial white horticultural LED lighting, normal clip-on fan and a tidy extraction duct. Show cupboard door edges or poles so the small enclosed space is obvious. Any working shelf is inside the cupboard or immediately in front of its open door. NO greenhouse, glass roof, windows, daylight, sunlight, garden, outdoor vegetation, endless crop rows, large industrial room or scenery. Match the supplied cupboard illustration for enclosed layout, and the separate mascot for drawing style. At seedling stage the LED should be a small propagation fixture. At drying stage the lamp is off. Do not add irrelevant equipment to a closeup. No dice, floating game pieces or ornamental vines. Plant biology and all instruments must stay subordinate to the simple cartoon ink style.",
+  "scenes": [
+    {
+      "code": "SIT-001",
+      "slug": "depart-hesitant",
+      "alt": "Jeune pousse encore peu développée dans un plateau alvéolé, sous une lampe horticole de semis.",
+      "prompt": "Germination, hesitant start. Macro near tabletop of one small emerging hemp seedling with two cotyledons and a short stem in a proper black propagation cell tray. A few neighbouring seedlings are slightly larger. Natural dark peat substrate with some perlite. A compact propagation LED batten is softly visible above, mist spray bottle set aside, no watering in progress. The small seedling is the clear subject.",
+      "promptOverride": "Use case: illustration-story. Create one square full-bleed 1536x1536 CARTOON game illustration. The supplied image is the STRICT STYLE AND CHARACTER REFERENCE: match Sylvain's established friendly stocky cartoon character, teal cap and overalls, rounded face, bold dark ink outlines, flat cream/teal/forest-green/golden-yellow colors, subtle printed halftone and limited cel shading. This must look drawn like the reference, NOT a photograph, NOT photorealism, NOT 3D, NOT painterly realism. The user wants believable equipment and situations WITHIN THIS EXACT CARTOON STYLE. Depict real recognizable horticultural objects at sensible scale and physically credible botanical problems. Keep mascot proportions stylized as in the reference; gestures calm and practical, no slapstick. The situation and material are the main subject; Sylvain can be small, partly seen, or only his illustrated hands in macro views. Main objects centered, readable at 300px. Single scene, no frames, labels, readable words, numbers, logos, panels, inset diagrams, fantasy machines, giant objects, ice cubes, rubber ducks, rescue buoys, magical clouds or human faces on plants. Return the generated image local file path. SETTING IS MANDATORY: a compact INDOOR GROW CUPBOARD, enclosed on three sides with opaque cream/silver reflective liner and dark upright frame, artificial white horticultural LED lighting, normal clip-on fan and a tidy extraction duct. Show cupboard door edges or poles so the small enclosed space is obvious. Any working shelf is inside the cupboard or immediately in front of its open door. NO greenhouse, glass roof, windows, daylight, sunlight, garden, outdoor vegetation, endless crop rows, large industrial room or scenery. Match the supplied cupboard illustration for enclosed layout, and the separate mascot for drawing style. At seedling stage the LED should be a small propagation fixture. At drying stage the lamp is off. Do not add irrelevant equipment to a closeup.\nScene SIT-001: Inside the open small opaque indoor cupboard, Sylvain calmly observes a black propagation cell tray on its removable shelf, under a slim suspended nursery LED. One young seedling with two oval cotyledons is noticeably smaller than its neighbours. The opaque reflective liner, cupboard side frame and door edge MUST occupy the background. A small hand sprayer rests at the side with no spray. No greenhouse, windows, glass roof, sunlight, room full of plants, dice, mature flowers or floating objects. A cropped closer view of Sylvain at one side, main tray central.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-001-depart-hesitant-v3.webp"
+    },
+    {
+      "code": "SIT-002",
+      "slug": "substrat-compact",
+      "alt": "Motte dense sortie d’un pot de pépinière, avec peu de racines visibles et un transplantoir posé à côté.",
+      "prompt": "Rooting, compact substrate. Close clearly drawn cartoon view on a removable work shelf at the cupboard door: gloved hands hold an intact dense compact root ball just removed from a normal small black nursery pot. Sparse fine roots appear along its firm surface. Empty pot and a real stainless steel narrow transplanting trowel rest beside it. The young plant remains attached above. No cutaway, no imaginary underground view, no oversized roots.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-002-substrat-compact-v3.webp"
+    },
+    {
+      "code": "SIT-003",
+      "slug": "traces-sous-feuilles",
+      "alt": "Inspection du revers d’une feuille marquée à la loupe, sous l’éclairage du placard indoor.",
+      "prompt": "Growth, suspicious marks under leaves. Close up of adult fingers gently lifting a naturally sized hemp leaf to inspect its underside with a real folding pocket loupe. Slight curling and tiny sticky-looking marks along the veins, with a few indistinct tiny specks. Leaf in sharp focus, indoor grow cupboard simplified behind. Do not depict identifiable large insects: pest identification is hidden until a later game action. No magnified inset.",
+      "status": "installed",
+      "editPrompt": "Edit this existing cartoon game illustration. Correct only the growth stage of the potted plant: remove the visible flower clusters and replace them with ordinary young foliage. Keep the leaf inspection gesture, the exact cartoon character, indoor cupboard, equipment, palette, halftone texture and composition unchanged. No text.",
+      "output": "/app/kanab-quest/situations/situation-SIT-003-traces-sous-feuilles-v3.webp"
+    },
+    {
+      "code": "SIT-004",
+      "slug": "coup-de-chaud",
+      "alt": "Plante aux feuilles recourbées dans une tente équipée de barres LED, d’un ventilateur à pince et d’un thermo-hygromètre.",
+      "prompt": "Flowering heat stress. Naturally proportioned flowering hemp plant with slightly curled upward leaf margins in a black fabric pot and drainage tray. Real slim multi-bar aluminum horticultural LED hung from ratchet hangers, round grille clip-on fan on tent pole, extraction duct and compact thermo-hygrometer at canopy height. Partial grower in green workwear observes the meter. No visible heat waves, ice, handheld fan or dramatic orange glow.",
+      "status": "blocked-original-v2-retained",
+      "output": "/app/kanab-quest/situations/situation-SIT-004-coup-de-chaud-v2.webp"
+    },
+    {
+      "code": "SIT-005",
+      "slug": "fenetre-ideale",
+      "alt": "Observation d’une fleur arrivée à maturité avec une loupe, au-dessus d’un plateau de récolte propre.",
+      "prompt": "Harvest, observing maturity. Close view of a mature hemp flower still on its branch, naturally mixed light and brown floral hairs, normal tiny resin texture. One adult hand holds a small real jeweller's loupe near the flower, without cutting. Clean shallow horticultural harvest tray and closed pruning snips simplified in the background. Soft neutral artificial white LED light, patient inspection, no magical sunbeam or clock.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-005-fenetre-ideale-v3.webp"
+    },
+    {
+      "code": "SIT-006",
+      "slug": "lot-encore-humide",
+      "alt": "Contrôle d’une branche suspendue au séchoir, avec des fleurs encore souples et un hygromètre à proximité.",
+      "prompt": "Drying, batch still moist. Close view of gloved fingers lightly checking a short flexible stem bearing natural green hemp flowers on a stainless hanging drying rail. Other hanging branches softly behind, room thermo-hygrometer nearby with unreadable display. Stem bends slightly, flowers look fresh and supple rather than brittle. No glowing wet core, cutaway, dripping flowers or visible fog.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-006-lot-encore-humide-v3.webp"
+    },
+    {
+      "code": "SIT-007",
+      "slug": "nuit-fraiche",
+      "alt": "Jeunes pousses dans un placard indoor, avec tapis de semis et thermomètre lors d’une période fraîche.",
+      "prompt": "Germination, a cool early morning. Low view of small hemp seedlings in a real black cell tray on an unbranded propagation heat mat. A normal upright min-max thermometer at the side, unreadable display. Cool blue dim artificial room light through opaque reflective cupboard walls, subtle condensation on opaque liner. Seedlings slightly subdued, no blankets, scarves, snow or frost on the plants.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-007-nuit-fraiche-v3.webp"
+    },
+    {
+      "code": "SIT-008",
+      "slug": "reserve-irreguliere",
+      "alt": "Substrat présentant des zones claires et sombres dans un pot, observé avec une sonde d’humidité.",
+      "prompt": "Rooting, uneven substrate moisture. Close top-oblique view of a young hemp plant in a nursery pot: soil surface has distinct physically credible pale dry patches and darker moist patches. An adult hand holds a proper simple soil moisture probe above the pot, not a fantasy device. Potting bench and plain watering can softly behind. No root cutaway, no exaggerated desert cracks, no instructional diagram.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-008-reserve-irreguliere-v3.webp"
+    },
+    {
+      "code": "SIT-009",
+      "slug": "poussee-desordonnee",
+      "alt": "Jeune plante aux branches de hauteurs inégales, à côté de tuteurs et d’attaches horticoles souples.",
+      "prompt": "Vegetative growth, uneven structure. A naturally sized young hemp plant with uneven branching, one taller upright stem and several lower side branches leaning outward. Black fabric container. Real slender bamboo stakes and a roll of soft green horticultural ties rest on a bench beside it. Indoor grow cupboard artificial white LED light. Show the uneven plant before correction, no wild tentacle branches or struggling person.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-009-poussee-desordonnee-v3.webp"
+    },
+    {
+      "code": "SIT-010",
+      "slug": "canopee-trop-dense",
+      "alt": "Feuillage et fleurs serrés dans une canopée dense, devant un ventilateur de circulation à grille.",
+      "prompt": "Flowering, overcrowded canopy. Medium-close view into several closely spaced flowering hemp plants, overlapping normal leaves and dense branches with shaded interior. A real pole-mounted circulation fan with safety grille is visible at the side, partly obscured by foliage, with flexible air duct above. Natural green tones, professional indoor tent, no person lost in a jungle, no huge plants or impossible fan.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-010-canopee-trop-dense-v3.webp"
+    },
+    {
+      "code": "SIT-011",
+      "slug": "maturation-inegale",
+      "alt": "Deux fleurs d’une même plante présentant des maturités différentes, examinées à la loupe.",
+      "prompt": "Harvest, uneven maturity on the same plant. Close view of two naturally different hemp flower branches beside each other, one with predominantly fresh light floral hairs, one with more brown hairs. Adult hand gently supports one branch; a small inspection loupe is held nearby. Real crop in indoor grow cupboard, no colored sorting gimmicks, no giant amber crystals or split-screen comparison.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-011-maturation-inegale-v3.webp"
+    },
+    {
+      "code": "SIT-012",
+      "slug": "sechage-trop-presse",
+      "alt": "Branches au feuillage extérieur recroquevillé sur un rack de séchage, près d’un ventilateur de sol.",
+      "prompt": "Drying too quickly. Credible small drying room, fixed metal hanging rail and several short hemp branches whose outer leaves have curled and look papery while denser flowers remain intact. An ordinary floor circulation fan with grille is visible at one side, an ordinary thermo-hygrometer on a shelf. Quiet clearly drawn cartoon view of the problem, no flying rack, wind lines, rushing character, visible settings or instructions.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-012-sechage-trop-presse-v3.webp"
+    },
+    {
+      "code": "SIT-013",
+      "slug": "feuillage-ponctue",
+      "alt": "Feuille présentant de fines ponctuations claires, inspectée avec une loupe de poche.",
+      "prompt": "Vegetative growth, stippled leaf. Macro editorial view of a naturally shaped hemp leaf with numerous subtle pale pinprick stipples across its green surface. A plain pocket loupe and adult fingertips near the leaf provide real scale. Soft reflective cupboard background. No identifiable insects or webs that reveal the pest before the game inspection, no giant bugs, no inset diagram.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-013-feuillage-ponctue-v3.webp"
+    },
+    {
+      "code": "SIT-014",
+      "slug": "reflets-argentes",
+      "alt": "Jeunes feuilles marquées de stries argentées, sous une petite loupe d’inspection horticole.",
+      "prompt": "Vegetative growth, silvery leaf scars. Close view of two young hemp leaves with irregular fine silvery scrape-like streaks, natural leaf vein anatomy and edges. A real small inspection loupe held near but not covering the marks. Nursery bench simplified. No identifiable insects, no metallic mirror leaves, no reflected character faces, no diagram.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-014-reflets-argentes-v3.webp"
+    },
+    {
+      "code": "SIT-015",
+      "slug": "coque-tenace",
+      "alt": "Macro d’une plantule dont les cotylédons portent encore une petite coque de graine brune.",
+      "prompt": "Germination, retained seed shell. True macro composition of one tiny hemp seedling in a propagation cell, cotyledons still partly clasped by a small natural mottled brown seed shell. Moist textured peat and perlite, ordinary nursery tray edges for scale, adult hand holding a pocket loupe off to side. No intervention depicted, no helmet metaphor, giant seed, cartoon face or miniature person.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-015-coque-tenace-v3.webp"
+    },
+    {
+      "code": "SIT-016",
+      "slug": "surface-trop-seche",
+      "alt": "Surface claire et sèche d’un plateau de semis, avec de petites pousses et un pulvérisateur posé à côté.",
+      "prompt": "Germination, dry surface. Tabletop close view of propagation cell tray with a few small hemp seedlings and pale dry granular substrate at the top, slightly separated from cell edges. A normal hand pump fine-mist spray bottle stands beside the tray, not spraying. Natural white LED light inside the cupboard and physically credible peat texture. No desert landscape, dramatic cracked earth, clouds or running grower.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-016-surface-trop-seche-v3.webp"
+    },
+    {
+      "code": "SIT-017",
+      "slug": "exces-humidite",
+      "alt": "Semis dans un substrat sombre et saturé, avec de l’eau stagnante au fond du bac de propagation.",
+      "prompt": "Germination, excess moisture. Close side-oblique view of a real propagation tray with very dark visibly saturated peat cells, a little standing water in its shallow base tray, and a small seedling with drooping cotyledons. A clear propagation dome with condensation is set aside, normal scale. No duck, drowning roots, floating objects or fantasy cutaway.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-017-exces-humidite-v3.webp"
+    },
+    {
+      "code": "SIT-018",
+      "slug": "pot-retient-eau",
+      "alt": "Pot de pépinière et soucoupe contenant de l’eau stagnante, avec un substrat saturé et une plante affaissée.",
+      "prompt": "Rooting, water-retaining pot. Medium close view of a young hemp plant with lowered leaves in a real black rigid nursery pot, dark saturated soil visible at its top and standing water in the ordinary round saucer below. Proper lower drain holes near the pot rim, damp removable work shelf at the cupboard door. Focus on credible pot and pooling water. No flood, buoy, exposed floating roots or person pouring more water.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-018-pot-retient-eau-v3.webp"
+    },
+    {
+      "code": "SIT-019",
+      "slug": "bord-pot-colonise",
+      "alt": "Chevelu racinaire dense enroulé sur le pourtour d’une motte sortie d’un pot de pépinière.",
+      "prompt": "Rooting, root-bound container. Detailed physically credible closeup of two gloved hands gently holding a young plant's intact root ball out of a normal black nursery pot. Dense pale thin roots circle along the outer surface, with actual brown substrate visible between them. Empty undistorted plastic pot beside it on a bench. No bulging cartoon pot, thick tentacle roots, cutaway or diagram.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-019-bord-pot-colonise-v3.webp"
+    },
+    {
+      "code": "SIT-020",
+      "slug": "arrosage-trop-rapproche",
+      "alt": "Pot au substrat encore humide, observé avec une sonde tandis qu’un arrosoir reste posé sur le banc.",
+      "prompt": "Rooting, watering too frequently. Small potted hemp plant with lowered heavy leaves, soil still uniformly dark and damp. A grower's hand observes a simple moisture probe in the substrate. A normal compact watering can is set down beside the pot with no water being poured. Real cupboard shelf, restrained green work sleeve, no clock gag, no dramatic splashes or instructional settings.",
+      "status": "installed",
+      "promptSuffix": " This is a young vegetative plant, leaves only, no buds or flowers.",
+      "output": "/app/kanab-quest/situations/situation-SIT-020-arrosage-trop-rapproche-v3.webp"
+    },
+    {
+      "code": "SIT-021",
+      "slug": "facture-electricite",
+      "alt": "Facture et calculatrice sur un établi, devant un compteur électrique fermé et une installation LED.",
+      "prompt": "Electricity bill incident. Real tidy horticultural workbench with an ordinary electricity bill sheet, a calculator and closed document folder. At the back a closed safe electrical submeter enclosure and a glimpse of ordinary LED-lit growing racks, normal cables tidily routed. Adult in green workwear studies the paper with a hand on the calculator. Document print and displays illegible. No giant endless bill, sparks, spinning meter or electrical repair.",
+      "status": "installed",
+      "editPrompt": "Correct only the anatomical drawing error in this cartoon illustration: the character currently has three hands. Remove the hand near the chin and its extra arm, restoring the beige shirt in that area. Keep the two hands holding the paper and using the calculator. Exactly two arms and two hands. Preserve all other details, equipment, indoor cupboard, character, composition, colors and halftone illustration style.",
+      "output": "/app/kanab-quest/situations/situation-SIT-021-facture-electricite-v3.webp"
+    },
+    {
+      "code": "SIT-022",
+      "slug": "air-trop-humide",
+      "alt": "Canopée fleurie devant une paroi légèrement condensée, avec extracteur, gaine et hygromètre.",
+      "prompt": "Flowering, humid air. Flowering hemp canopy inside a physically credible reflective grow tent, small condensation droplets on a cool side surface behind, normal leaves slightly crowded. Recognizable cylindrical inline extractor connected to silver flexible duct near the top and a small thermo-hygrometer at plant height, display unreadable. Clear air without clouds or fog, normal plant scale, no wiping theatrical window circle.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-022-air-trop-humide-v3.webp"
+    },
+    {
+      "code": "SIT-023",
+      "slug": "branches-chargees",
+      "alt": "Branche courbée sous le poids de fleurs, près d’un filet de soutien horticole et d’un tuteur.",
+      "prompt": "Flowering, heavy branches. Close view of one naturally sized hemp branch bowed by several dense flowers, a visible slender stem and physically credible attachment to plant. A real horticultural support net with ordinary square mesh and slim stake nearby. A gloved hand gently supports the branch to inspect the bend. No weightlifter pose, huge flower, ropes like a crane or branch breaking explosively.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-023-branches-chargees-v3.webp"
+    },
+    {
+      "code": "SIT-024",
+      "slug": "controle-ddtm",
+      "alt": "Contrôle de documents près du placard indoor, avec une agente et le cultivateur cartoon.",
+      "prompt": "Routine agricultural inspection in France, fictional scene. Two cartoon adults at the entrance of a hemp indoor grow cupboard: a female inspector in practical neutral field jacket holding a clipboard and an adult grower in dark green workwear presenting a neatly open binder. A small worktable with ordinary traceability papers and open compact cupboard behind. Respectful calm professional interaction, no visible personal data, no readable text, no logos, no badge imitation, no police or exaggerated paperwork pile.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-024-controle-ddtm-v3.webp"
+    },
+    {
+      "code": "SIT-025",
+      "slug": "trichomes-contrastes",
+      "alt": "Inspection rapprochée de fleurs résineuses avec une loupe et un microscope numérique de poche.",
+      "prompt": "Harvest, contrasting trichomes. Close clearly drawn cartoon view of adult gloved hands observing two natural small hemp flowers with a compact real handheld digital inspection microscope and a pocket loupe on the bench. Tiny natural resin heads in the sharp foreground vary subtly in translucency, not giant crystals. Instruments physically credible and unbranded, simplified unreadable screen. No split-screen, optical fantasy, colored gems or diagram.",
+      "status": "installed",
+      "editPrompt": "Edit only the overhead lighting fixture in this cartoon game illustration. The suspended ceiling LED panel in the background must be switched OFF: its underside is dark gray, no glowing bulbs or yellow light beam. Preserve ambient room light so the cartoon remains legible. Keep every other element unchanged, including character, hands, inspection device, plants, jar, tools, reflective cupboard walls and illustration style.",
+      "output": "/app/kanab-quest/situations/situation-SIT-025-trichomes-contrastes-v3.webp"
+    },
+    {
+      "code": "SIT-026",
+      "slug": "matinee-trop-chaude",
+      "alt": "Caisses de récolte à la porte du placard indoor, dans une pièce devenue trop chaude.",
+      "prompt": "Harvest, morning getting warm. Ordinary shallow vented horticultural harvest crates with a modest layer of fresh hemp branches on a utility trolley near open indoor cupboard door. Strong natural late-morning indoor artificial light warms part of the floor, shaded workspace beyond, wall thermometer with unreadable display. A worker's gloved hand rests naturally on trolley. No parasol, running character, sweat marks or wilting giant flowers.",
+      "status": "installed",
+      "output": "/app/kanab-quest/situations/situation-SIT-026-matinee-trop-chaude-v3.webp"
+    },
+    {
+      "code": "SIT-027",
+      "slug": "renard-deux-pattes",
+      "alt": "Local de récolte avec une porte ouverte, une caisse manquante et une personne s’éloignant avec un bac.",
+      "prompt": "Crop theft incident, grounded narrative. View from inside a horticultural indoor cupboard storage space toward a partly open door. On a metal shelf, several vented harvest crates and one conspicuous empty space. A distant adult seen from behind is leaving with one ordinary green harvest crate, face unseen, no visible aggression. A small ordinary security camera above the doorway. No fox, animal shadow, burglar costume, weapons or instructions for theft.",
+      "status": "installed",
+      "promptSuffix": "Anatomy check: exactly two arms and two hands per person, no duplicate hands or limbs.",
+      "editPrompt": "Edit this fictional cartoon game illustration of someone discovering stolen inventory. Correct the setting and inventory: the green crates should have fitted opaque lids, hiding the contents, instead of visible lettuce. The departing person carries one closed crate through an ordinary room doorway BESIDE the open reflective indoor cupboard, not through the back wall of the cupboard. Keep the surprised mascot in the foreground, the security camera and the recognizable compact indoor cabinet with LED and ventilation. Same cartoon character design, dark outlines, forest green, teal, cream, gold and halftone. No extra limbs, no text.",
+      "output": "/app/kanab-quest/situations/situation-SIT-027-renard-deux-pattes-v3.webp"
+    },
+    {
+      "code": "SIT-028",
+      "slug": "air-trop-sec",
+      "alt": "Fleurs aux feuilles extérieures sèches sur un plateau de contrôle, près d’un thermo-hygromètre de séchoir.",
+      "prompt": "Drying, overly dry air. Close-up of a few hemp flowers on a clean shallow stainless inspection tray, outer small leaves curled and papery, a few natural tiny dry leaf fragments nearby. Compact real thermo-hygrometer beside tray, unreadable display, hanging drying branches softly behind. Subtle physically credible dryness, no disintegrating giant flower, no sand, dust clouds or diagram.",
+      "status": "installed",
+      "promptSuffix": "Anatomy check: exactly two arms and two hands per person, no duplicate hands or limbs.",
+      "output": "/app/kanab-quest/situations/situation-SIT-028-air-trop-sec-v3.webp"
+    },
+    {
+      "code": "SIT-029",
+      "slug": "bocal-trop-rempli",
+      "alt": "Bocal de conservation ordinaire rempli de fleurs tassées jusqu’au col, posé sur une table de contrôle.",
+      "prompt": "Curing, overfilled jar. Close tabletop view of one ordinary one-litre clear glass preserving jar packed too tightly with natural dried hemp flowers right up to its neck, without useful empty space. Correct scale screw lid rests flat beside it, normal hand at the jar for scale and a small stainless sample tray nearby. Real glass reflections, no giant jar, flying lid, compressed cartoon spring or overflowing explosion.",
+      "status": "installed",
+      "promptSuffix": "Anatomy check: exactly two arms and two hands per person, no duplicate hands or limbs.",
+      "editPrompt": "Edit only the overhead lighting fixture in this cartoon game illustration. The suspended ceiling LED panel must be switched OFF: dark gray underside, no glowing bulbs and no yellow beam. Keep soft ambient room lighting for legibility. Preserve everything else exactly, including character, jar, hands, material, indoor cupboard and halftone style.",
+      "output": "/app/kanab-quest/situations/situation-SIT-029-bocal-trop-rempli-v3.webp"
+    },
+    {
+      "code": "SIT-030",
+      "slug": "parfum-encore-vert",
+      "alt": "Contrôle olfactif d’un petit échantillon de fleurs, près d’un bocal ouvert et d’un carnet de suivi.",
+      "prompt": "Curing, aroma still vegetal. Calm clearly drawn cartoon close view of an adult in the established mascot proportions inspecting the scent of a small hemp flower sample held near the nose, eyes focused naturally. An open ordinary preserving jar, shallow sample dish and notebook on a tidy bench. Neutral green workwear, natural dried botanical textures. No vapor, green clouds, smell lines, exaggerated nose or expressive gag. No smoking or consumption.",
+      "status": "installed",
+      "promptSuffix": "Anatomy check: exactly two arms and two hands per person, no duplicate hands or limbs.",
+      "editPrompt": "Edit only the overhead lighting fixture in this cartoon game illustration. The suspended ceiling LED panel must be switched OFF: dark gray underside, no glowing bulbs and no yellow beam. Keep soft ambient room lighting for legibility. Preserve everything else exactly, including character, hands, drying net, material, jar, indoor cupboard and halftone style.",
+      "output": "/app/kanab-quest/situations/situation-SIT-030-parfum-encore-vert-v3.webp"
+    },
+    {
+      "code": "OUTAGE",
+      "slug": "status-coupure-courant",
+      "alt": "Tente de culture aux barres LED éteintes, éclairée par la lampe frontale d’un exploitant.",
+      "prompt": "Power outage, real horticultural room. Multi-bar aluminum LED fixture completely switched off above naturally sized hemp plants in a reflective grow tent. Adult in green workwear at edge wearing a modest headlamp illuminating a small part of plants and a closed control panel. Stationary clip fan and properly routed duct visible. Dim cool ambient light, restrained headlamp beam. No sparks, exposed wires, repair action, flashlight comedy or frightened cartoon face.",
+      "status": "installed",
+      "promptSuffix": "Anatomy check: exactly two arms and two hands per person, no duplicate hands or limbs.",
+      "output": "/app/kanab-quest/situations/status-coupure-courant-v3.webp"
+    }
+  ],
+  "environment": "Compact indoor grow cupboard only; no greenhouse or outdoor setting.",
+  "referenceImages": [
+    "public/contest/mascot/tasting/tasting-verdict.png",
+    "public/app/kanab-quest/situations/situation-SIT-001-depart-hesitant-v3.webp"
+  ]
+}

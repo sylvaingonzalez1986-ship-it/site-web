@@ -2,7 +2,7 @@
 
 import {
   Banknote,
-  ChevronDown,
+  ArrowRight,
   CircleAlert,
   PackageCheck,
   RefreshCw,
@@ -10,8 +10,8 @@ import {
   Sparkles,
   Target,
   Trophy,
-  Wrench,
 } from "lucide-react";
+import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   buildKqEquipmentHudSummary,
@@ -33,7 +33,7 @@ import {
 } from "@/lib/kanab-quest-market";
 import { getKqReputationProgress } from "@/lib/kanab-quest-reputation";
 import { KqEquipmentInventoryModal } from "./KqEquipmentInventoryModal";
-import retro from "../contest/ArenaRetro.module.css";
+import styles from "./KqPlacardHud.module.css";
 
 type EquipmentHudSnapshot = {
   cashCents: number;
@@ -75,7 +75,7 @@ export function KqPlacardHud({
   const [missionError, setMissionError] = useState("");
   const [savingMission, setSavingMission] = useState(false);
   const [inventoryOpen, setInventoryOpen] = useState(false);
-  const [hudExpanded, setHudExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState<"overview" | "equipment" | "goals">("overview");
   const [refreshKey, setRefreshKey] = useState(0);
   const requestRefresh = useCallback(() => {
     setLoading(true);
@@ -200,280 +200,79 @@ export function KqPlacardHud({
     }
   };
 
+  const actionArtwork = {
+    game: "/contest/mascot/arena-scene-placard-v1.png",
+    market: "/placard/market-workshop-v1.webp",
+    arena: "/contest/mascot/arena-scene-classement-v1.png",
+    shop: "/placard/booster-shop-interior-v4.webp",
+  };
+  const tabs = [{ id: "overview", label: "En bref" }, { id: "equipment", label: "Matériel" }, { id: "goals", label: "Objectifs" }] as const;
+  const progressBar = (label: string, value: number) => <div className={styles.progressBar} role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={value}><span style={{ width: `${value}%` }} /></div>;
+
   return (
     <>
-    <section
-      className={`${retro.hud} mb-6 overflow-hidden border-2 bg-[#e3f0e8]`}
-      aria-labelledby="placard-hud-title"
-      aria-busy={loading || undefined}
-    >
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-ink bg-green px-4 py-3 text-white">
-        <div className="flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center border-2 border-white bg-yellow text-ink shadow-[2px_2px_0_#fff]">
-            <Wrench aria-hidden="true" size={20} strokeWidth={2.8} />
-          </span>
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-yellow">Tableau de bord</p>
-            <h2 id="placard-hud-title" className="font-display text-2xl uppercase leading-none">Ton atelier</h2>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => setInventoryOpen(true)}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 border-2 border-white bg-yellow px-2 text-xs font-black uppercase text-ink shadow-[3px_3px_0_#fff] transition hover:-translate-y-0.5 sm:px-3"
-            title="Ouvrir l’inventaire"
-          >
-            <PackageCheck aria-hidden="true" size={17} strokeWidth={2.8} />
-            <span className="hidden sm:inline">Inventaire</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => onOpenShop()}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 border-2 border-white bg-white px-2 text-xs font-black uppercase text-ink shadow-[3px_3px_0_#f4c43d] transition hover:-translate-y-0.5 sm:px-3"
-            title="Ouvrir la boutique"
-          >
-            <ShoppingBag aria-hidden="true" size={16} strokeWidth={2.8} />
-            <span className="hidden sm:inline">Boutique</span>
-          </button>
-          <button
-            type="button"
-            aria-expanded={hudExpanded}
-            aria-controls="placard-hud-details"
-            onClick={() => setHudExpanded((current) => !current)}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 border-2 border-white bg-[#20251c] px-2 text-xs font-black uppercase text-white shadow-[3px_3px_0_#f4c43d] transition hover:-translate-y-0.5 sm:px-3"
-            title={hudExpanded ? "Replier le tableau de bord" : "Dérouler le tableau de bord"}
-          >
-            <ChevronDown className={`transition-transform ${hudExpanded ? "rotate-180" : ""}`} aria-hidden="true" size={18} strokeWidth={3} />
-            <span className="hidden sm:inline">{hudExpanded ? "Replier" : "Dérouler"}</span>
-          </button>
-        </div>
+    <section className={styles.dashboard} aria-labelledby="placard-hud-title" aria-busy={loading || undefined} data-placard-dashboard>
+      <header className={styles.header}>
+        <div><p>Tableau de bord</p><h2 id="placard-hud-title">Ton atelier</h2></div>
+        <button type="button" onClick={requestRefresh} disabled={loading} aria-label="Actualiser le tableau de bord"><RefreshCw size={18} aria-hidden="true" /></button>
       </header>
-
-      {!hudExpanded ? error ? (
-        <div className="flex min-h-16 items-center justify-between gap-3 bg-[#fff1dc] px-3 py-2" role="alert">
-          <span className="flex min-w-0 items-center gap-2 truncate text-xs font-bold"><CircleAlert aria-hidden="true" size={17} />Tableau de bord indisponible</span>
-          <button type="button" onClick={requestRefresh} className="inline-flex min-h-11 shrink-0 items-center gap-2 border-2 border-ink bg-white px-3 text-[10px] font-black uppercase shadow-[2px_2px_0_#111]"><RefreshCw aria-hidden="true" size={15} />Réessayer</button>
+      {error ? <div className={styles.error} role="alert"><CircleAlert size={22} aria-hidden="true" /><p>{error}</p><button type="button" onClick={requestRefresh}>Réessayer</button></div> : loading && !snapshot ? <p className={styles.loading} role="status">Ouverture de ton atelier…</p> : snapshot ? <>
+        <div className={styles.stats} aria-label="Résumé de l’atelier">
+          <div><Banknote size={21} aria-hidden="true" /><span><small>Disponible</small><strong>{formatKqCash(snapshot.cashCents)}</strong></span></div>
+          <div><Trophy size={21} aria-hidden="true" /><span><small>Réputation · {reputationProgress.tier.name}</small><strong>{reputationProgress.reputation}</strong></span></div>
         </div>
-      ) : (
-        <div className={`${retro.hudSummary} grid min-h-16 border-ink bg-white`} aria-label="Résumé de l’atelier">
-          <span className="flex min-w-0 items-center gap-2 border-r-2 border-ink px-3 py-2">
-            <Banknote className="shrink-0 text-[#167d6b]" aria-hidden="true" size={19} />
-            <span className="min-w-0"><small className="block text-[8px] font-black uppercase text-charcoal">Disponible</small><strong className="block truncate text-sm font-black sm:text-base">{loading ? "…" : formatKqCash(snapshot?.cashCents ?? 0)}</strong></span>
-          </span>
-          <span className="flex min-w-0 items-center gap-2 border-r-2 border-ink px-3 py-2">
-            <Trophy className="shrink-0 text-[#d58b00]" aria-hidden="true" size={18} />
-            <span className="min-w-0"><small className="block text-[8px] font-black uppercase text-charcoal">Réputation</small><strong className="block truncate text-sm font-black sm:text-base">{loading ? "…" : reputationProgress.reputation}</strong></span>
-          </span>
-          <button
-            type="button"
-            disabled={loading}
-            onClick={openDestination[nextAction.destination]}
-            className="inline-flex min-h-16 items-center justify-center gap-2 bg-yellow px-3 text-[10px] font-black uppercase transition hover:bg-[#ffd95b] disabled:cursor-wait disabled:opacity-60 sm:px-5"
-            aria-label={`${nextAction.title} · ${nextAction.buttonLabel}`}
-          >
-            <NextActionIcon aria-hidden="true" size={18} strokeWidth={2.8} />
-            <span className="hidden sm:inline">{nextAction.buttonLabel}</span>
-            <span className="sm:hidden">Continuer</span>
-          </button>
-        </div>
-      ) : null}
-
-      <div id="placard-hud-details" hidden={!hudExpanded}>
-      {error ? (
-        <div className="flex flex-wrap items-center justify-between gap-3 bg-[#fff1dc] px-4 py-4" role="alert">
-          <span className="flex items-center gap-2 text-sm font-bold"><CircleAlert aria-hidden="true" size={19} />{error}</span>
-          <button type="button" onClick={requestRefresh} className="inline-flex items-center gap-2 border-2 border-ink bg-white px-3 py-2 text-xs font-black uppercase shadow-[2px_2px_0_#111]"><RefreshCw aria-hidden="true" size={15} />Réessayer</button>
-        </div>
-      ) : (
-        <div>
-          {!loading ? (
-            <div className="grid gap-3 border-b-2 border-ink bg-yellow p-4 sm:grid-cols-[auto_1fr_auto] sm:items-center">
-              <span className="grid h-12 w-12 place-items-center border-2 border-ink bg-white shadow-[3px_3px_0_#111]">
-                <NextActionIcon aria-hidden="true" size={24} strokeWidth={2.7} />
-              </span>
-              <div>
-                <small className="block text-[10px] font-black uppercase tracking-[0.14em] text-[#76510b]">{nextAction.eyebrow} · action conseillée</small>
-                <strong className="block font-display text-xl uppercase leading-tight sm:text-2xl">{nextAction.title}</strong>
-                <p className="mt-1 max-w-3xl text-xs font-bold text-charcoal sm:text-sm">{nextAction.description}</p>
-              </div>
-              <button type="button" onClick={openDestination[nextAction.destination]} className="min-h-11 border-2 border-ink bg-white px-4 text-xs font-black uppercase shadow-[3px_3px_0_#111] transition hover:-translate-y-0.5">{nextAction.buttonLabel}</button>
-            </div>
-          ) : null}
-          {!loading ? (
-            <nav className="grid border-b-2 border-ink bg-[#d8e4d0] sm:grid-cols-3" aria-label="Cycle de production">
-              <button
-                type="button"
-                onClick={onOpenGame}
-                className={`group flex min-h-24 items-center gap-3 border-b-2 border-ink p-3 text-left transition hover:bg-yellow sm:border-b-0 sm:border-r-2 ${snapshot?.activeRun ? "bg-[#fff7cf]" : "bg-white"}`}
-              >
-                <span className="grid h-10 w-10 shrink-0 place-items-center border-2 border-ink bg-yellow shadow-[2px_2px_0_#111]"><Target aria-hidden="true" size={19} strokeWidth={2.8} /></span>
-                <span className="min-w-0"><small className="block text-[9px] font-black uppercase tracking-[0.12em] text-[#76510b]">Étape 1 · Culture</small><strong className="block font-display text-lg uppercase leading-none">{snapshot?.activeRun ? "En cours" : "Placard libre"}</strong><em className="mt-1 block text-[10px] font-bold not-italic text-charcoal">{snapshot?.activeRun ? "Reprendre la prochaine étape" : "Lancer une nouvelle récolte"}</em></span>
-              </button>
-              <button
-                type="button"
-                onClick={onOpenArena}
-                className={`group flex min-h-24 items-center gap-3 border-b-2 border-ink p-3 text-left transition hover:bg-yellow sm:border-b-0 sm:border-r-2 ${(snapshot?.availableFlowerCount ?? 0) > 0 ? "bg-[#fff7cf]" : "bg-white"}`}
-              >
-                <span className="grid h-10 w-10 shrink-0 place-items-center border-2 border-ink bg-[#167d6b] text-white shadow-[2px_2px_0_#111]"><Trophy aria-hidden="true" size={19} strokeWidth={2.8} /></span>
-                <span className="min-w-0"><small className="block text-[9px] font-black uppercase tracking-[0.12em] text-[#167d6b]">Étape 2 · Jury</small><strong className="block font-display text-lg uppercase leading-none">{snapshot?.availableFlowerCount ?? 0} Fleur{(snapshot?.availableFlowerCount ?? 0) > 1 ? "s" : ""} prête{(snapshot?.availableFlowerCount ?? 0) > 1 ? "s" : ""}</strong><em className="mt-1 block text-[10px] font-bold not-italic text-charcoal">Déposer une Fleur, adversaire tiré au hasard</em></span>
-              </button>
-              <button
-                type="button"
-                onClick={onOpenMarket}
-                className={`group flex min-h-24 items-center gap-3 p-3 text-left transition hover:bg-yellow ${(snapshot?.readyLotCount ?? 0) > 0 ? "bg-[#fff7cf]" : "bg-white"}`}
-              >
-                <span className="grid h-10 w-10 shrink-0 place-items-center border-2 border-ink bg-[#ef6f31] text-white shadow-[2px_2px_0_#111]"><Banknote aria-hidden="true" size={19} strokeWidth={2.8} /></span>
-                <span className="min-w-0"><small className="block text-[9px] font-black uppercase tracking-[0.12em] text-[#9b3e24]">Étape 3 · Vente</small><strong className="block font-display text-lg uppercase leading-none">{snapshot?.readyLotCount ?? 0} lot{(snapshot?.readyLotCount ?? 0) > 1 ? "s" : ""} à décider</strong><em className="mt-1 block text-[10px] font-bold not-italic text-charcoal">Vendre, transformer ou sauver en biomasse</em></span>
-              </button>
+        <nav className={styles.tabs} aria-label="Vues du tableau de bord">{tabs.map((tab) => <button key={tab.id} id={`hud-tab-${tab.id}`} type="button" aria-pressed={activeTab === tab.id} aria-controls="placard-hud-content" onClick={() => setActiveTab(tab.id)}>{tab.label}</button>)}</nav>
+        <div id="placard-hud-content" className={styles.content} role="region" aria-labelledby={`hud-tab-${activeTab}`}>
+          {activeTab === "overview" ? <>
+            <article className={styles.nextAction}>
+              <Image src={actionArtwork[nextAction.destination]} alt="" fill sizes="(max-width: 700px) 100vw, 850px" />
+              <div className={styles.actionCopy}><p><NextActionIcon size={15} aria-hidden="true" /> {nextAction.eyebrow}</p><h3>{nextAction.title}</h3><span>{nextAction.description}</span><button type="button" className={styles.primary} onClick={openDestination[nextAction.destination]}>{nextAction.buttonLabel}<ArrowRight size={18} aria-hidden="true" /></button></div>
+            </article>
+            <nav className={styles.cycle} aria-label="Cycle de production">
+              <button type="button" onClick={onOpenGame}><small>Étape 1 · Culture</small><strong>{snapshot?.activeRun ? "En cours" : "À démarrer"}</strong></button>
+              <button type="button" onClick={onOpenArena}><small>Étape 2 · Jury</small><strong>{snapshot?.availableFlowerCount ?? 0} fleur{snapshot.availableFlowerCount > 1 ? "s" : ""}</strong></button>
+              <button type="button" onClick={onOpenMarket}><small>Étape 3 · Vente</small><strong>{snapshot?.readyLotCount ?? 0} lot{snapshot.readyLotCount > 1 ? "s" : ""}</strong></button>
             </nav>
-          ) : null}
-          <div className="grid gap-0 lg:grid-cols-[1fr_1.65fr]">
-          <div className="grid grid-cols-2 border-b-2 border-ink bg-white lg:border-b-0 lg:border-r-2">
-            <article className="flex min-h-24 items-center gap-3 border-b-2 border-r-2 border-ink p-3">
-              <Banknote className="shrink-0 text-[#167d6b]" aria-hidden="true" size={25} strokeWidth={2.4} />
-              <span className="min-w-0"><small className="block text-[10px] font-black uppercase tracking-[0.08em] text-charcoal">Disponible</small><strong className="block truncate text-xl font-black sm:text-2xl">{loading ? "…" : formatKqCash(snapshot?.cashCents ?? 0)}</strong></span>
-            </article>
-            <article className="flex min-h-24 items-center gap-3 border-b-2 border-ink p-3">
-              <Trophy className="shrink-0 text-[#d58b00]" aria-hidden="true" size={24} strokeWidth={2.4} />
-              <div className="min-w-0 flex-1">
-                <small className="block text-[10px] font-black uppercase tracking-[0.08em] text-charcoal">Réputation</small>
-                <strong className="block text-xl font-black sm:text-2xl">{loading ? "…" : reputationProgress.reputation}</strong>
-                {!loading ? <><em className="block truncate text-[9px] font-black not-italic uppercase text-[#9a5b17]">{reputationProgress.tier.name}</em><span className="mt-1 block h-1.5 overflow-hidden border border-ink bg-white" role="progressbar" aria-label="Progression de réputation" aria-valuemin={0} aria-valuemax={100} aria-valuenow={reputationProgress.progressPercent}><i className="block h-full bg-yellow" style={{ width: `${reputationProgress.progressPercent}%` }} /></span></> : null}
-              </div>
-            </article>
-            <article className="flex min-h-20 items-center gap-3 border-r-2 border-ink p-3">
-              <PackageCheck className="shrink-0 text-[#167d6b]" aria-hidden="true" size={22} />
-              <span><small className="block text-[10px] font-black uppercase text-charcoal">Investissements</small><strong className="text-lg font-black">{loading ? "…" : summary.purchased.length}</strong></span>
-            </article>
-            <article className="flex min-h-20 items-center gap-3 p-3">
-              <Sparkles className="shrink-0 text-[#167d6b]" aria-hidden="true" size={22} />
-              <span><small className="block text-[10px] font-black uppercase text-charcoal">Installés</small><strong className="text-lg font-black">{loading ? "…" : summary.installed.length}</strong></span>
-            </article>
-          </div>
-
-          <div className="p-4">
-            <div className="mb-3 flex items-baseline justify-between gap-3">
-              <div><small className="block text-[10px] font-black uppercase tracking-[0.12em] text-[#167d6b]">Matériel acheté</small><strong className="font-display text-xl uppercase">Ton inventaire durable</strong></div>
-              {!loading && summary.purchased.length > 0 ? <span className="border-2 border-ink bg-yellow px-2 py-1 text-[10px] font-black uppercase">{summary.purchased.length} pièce{summary.purchased.length > 1 ? "s" : ""}</span> : null}
-            </div>
-            {loading ? (
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3"><i className="h-14 animate-pulse border-2 border-ink/30 bg-white/70 motion-reduce:animate-none" /><i className="h-14 animate-pulse border-2 border-ink/30 bg-white/70 motion-reduce:animate-none" /><i className="hidden h-14 animate-pulse border-2 border-ink/30 bg-white/70 motion-reduce:animate-none sm:block" /></div>
-            ) : summary.purchased.length === 0 ? (
-              <div className="border-2 border-dashed border-ink bg-white/70 p-3 text-sm"><strong className="block">Kit de départ opérationnel.</strong><span className="text-charcoal">Aucun investissement acheté pour le moment. Tu disposes déjà de {summary.installed.length} équipements de base installés.</span></div>
-            ) : (
-              <div className="flex flex-wrap gap-2">
-                {preview.map((equipment) => (
-                  <span key={equipment.code} className="min-w-0 max-w-full border-2 border-ink bg-white px-3 py-2 shadow-[2px_2px_0_#111]">
-                    <strong className="block max-w-52 truncate text-xs">{equipment.name}</strong>
-                    <small className={`block text-[9px] font-black uppercase ${equipment.equipped ? "text-[#167d6b]" : "text-[#9a5b17]"}`}>{equipment.equipped ? "Installé" : "En réserve"}</small>
-                  </span>
-                ))}
-                {hiddenCount > 0 ? <button type="button" onClick={() => setInventoryOpen(true)} className="min-h-11 border-2 border-ink bg-yellow px-3 py-2 text-xs font-black uppercase shadow-[2px_2px_0_#111]">+{hiddenCount} autre{hiddenCount > 1 ? "s" : ""} · voir l’inventaire</button> : null}
-              </div>
-            )}
-            {!loading ? (
-              <section className="mt-4 border-2 border-ink bg-[#d9f3ef] p-3 shadow-[3px_3px_0_#111]" aria-label="Filières maîtrisées">
-                <header className="flex flex-wrap items-center justify-between gap-3">
-                  <span className="flex min-w-0 items-center gap-2">
-                    <Trophy className="shrink-0 text-[#167d6b]" aria-hidden="true" size={21} strokeWidth={2.7} />
-                    <span className="min-w-0"><small className="block text-[9px] font-black uppercase tracking-[0.12em] text-[#167d6b]">Palmarès permanent</small><strong className="block font-display text-lg uppercase leading-none">Filières maîtrisées</strong></span>
-                  </span>
-                  <button type="button" onClick={onOpenMarket} className="border-2 border-ink bg-white px-2 py-1 text-[9px] font-black uppercase shadow-[2px_2px_0_#111]">{masteredRoutes.length}/{KQ_TRANSFORMATION_ROUTE_COUNT} · {masteredRouteSales} vente{masteredRouteSales > 1 ? "s" : ""}</button>
-                </header>
-                {expertiseMission ? (
-                  <article className="mt-3 grid gap-3 border-2 border-ink bg-[#fff7cf] p-3 sm:grid-cols-[auto_1fr_auto] sm:items-center" aria-label="Mission d’atelier">
-                    <Target className="text-[#d58b00]" aria-hidden="true" size={23} strokeWidth={2.7} />
-                    <div className="min-w-0">
-                      <small className="block text-[9px] font-black uppercase tracking-[0.1em] text-[#9a5b17]">{expertiseMission.source === "pinned" ? "Mission épinglée" : "Palier le plus proche"}</small>
-                      <strong className="block truncate text-xs uppercase">{expertiseMission.name} · viser {expertiseMission.targetTier.name}</strong>
-                      <span className="mt-2 block h-2 overflow-hidden border border-ink bg-white" role="progressbar" aria-label={`Mission ${expertiseMission.name}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={expertiseMission.progressPercent}><i className="block h-full bg-yellow" style={{ width: `${expertiseMission.progressPercent}%` }} /></span>
-                      <p className="mt-1 text-[9px] font-bold text-charcoal">Encore {expertiseMission.salesRemaining} vente{expertiseMission.salesRemaining > 1 ? "s" : ""}{expertiseMission.bonusReputation > 0 ? ` · prime +${expertiseMission.bonusReputation} réputation si qualité suffisante` : " · première maîtrise de la voie"}</p>
-                      {expertiseMission.source !== "pinned" && missionEquipmentGoal ? <p className="mt-1 text-[9px] font-black text-[#167d6b]">Pivot · {missionEquipmentGoal.equipmentName}{missionEquipmentGoal.investmentRequired ? " · à financer" : " · déjà possédé"}</p> : null}
-                    </div>
-                    {expertiseMission.source === "pinned" ? <button type="button" onClick={onOpenMarket} className="border-2 border-ink bg-white px-3 py-2 text-[9px] font-black uppercase shadow-[2px_2px_0_#111]">Voir les lots</button> : <button type="button" disabled={savingMission || !missionEquipmentGoal} onClick={() => void pinExpertiseMission()} className="border-2 border-ink bg-[#167d6b] px-3 py-2 text-[9px] font-black uppercase text-white shadow-[2px_2px_0_#111] disabled:cursor-wait disabled:opacity-60">{savingMission ? "Enregistrement…" : missionEquipmentGoal?.investmentRequired ? "Épingler et équiper" : "Épingler la mission"}</button>}
-                    {missionError ? <p className="text-[9px] font-black text-red-800 sm:col-span-3" role="alert">{missionError}</p> : null}
-                  </article>
-                ) : <p className="mt-3 border-2 border-ink bg-yellow p-3 text-[10px] font-black uppercase">Palmarès total · les huit filières sont au rang Maîtrise.</p>}
-                {masteredRoutes.length > 0 ? (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {masteredRoutes.map((mastery) => (
-                      <span key={mastery.route} className="border-2 border-ink bg-white px-2 py-1.5 shadow-[2px_2px_0_#167d6b]">
-                        <strong className="block max-w-44 truncate text-[10px] uppercase">{mastery.name}</strong>
-                        <small className="block text-[8px] font-black uppercase text-[#167d6b]">{mastery.expertise.tier.name} · ×{mastery.saleCount} · record {mastery.bestJuryScore.toFixed(1)}/10</small>
-                        <span className="mt-1 block h-1.5 overflow-hidden border border-ink bg-[#eee7d6]" role="progressbar" aria-label={`Expertise ${mastery.name}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={mastery.expertise.progressPercent}><i className="block h-full bg-yellow" style={{ width: `${mastery.expertise.progressPercent}%` }} /></span>
-                        <em className="mt-1 block text-[8px] font-bold not-italic text-charcoal">{mastery.expertise.nextTier ? `Encore ${mastery.expertise.salesToNext} pour ${mastery.expertise.nextTier.name}` : "Rang maximal"}</em>
-                      </span>
-                    ))}
-                  </div>
-                ) : <p className="mt-2 text-[10px] font-bold text-charcoal">Épingle une filière, atteins sa note au jury puis signe ta première vente pour ouvrir ce palmarès.</p>}
-              </section>
-            ) : null}
-            {!loading ? (
-              <div className="mt-4 border-2 border-ink bg-[#fff7cf] p-3">
-                {routeGoalScenario && routeGoalProgress && snapshot?.routePlan ? (
-                  <div className="grid gap-3 sm:grid-cols-[auto_1fr_auto] sm:items-center">
-                    <Target className="text-[#d58b00]" aria-hidden="true" size={24} strokeWidth={2.6} />
-                    <div className="min-w-0">
-                      <small className="block text-[10px] font-black uppercase tracking-[0.1em] text-[#9a5b17]">Filière épinglée · objectif sauvegardé</small>
-                      <strong className="block truncate text-sm">{routeGoalScenario.name} · jury ≥ {routeGoalScenario.minimumJuryScore.toFixed(1)}/10</strong>
-                      <p className="mt-1 text-[10px] font-bold leading-snug text-charcoal">+{formatKqCash(routeGoalScenario.comparisonDeltaCents)} par lot témoin face à la vente brute · {routeGoalScenario.projectedEquipmentNames.join(" · ")}</p>
-                      <div
-                        className="mt-2 h-2 overflow-hidden border border-ink bg-white"
-                        role="progressbar"
-                        aria-label="Progression du budget pour la filière épinglée"
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                        aria-valuenow={routeGoalProgress.progressPercent}
-                      >
-                        <i className="block h-full bg-yellow" style={{ width: `${routeGoalProgress.progressPercent}%` }} />
-                      </div>
-                      <small className="mt-1 block text-[10px] font-bold text-charcoal">
-                        {routeGoalScenario.remainingInvestmentCents === 0
-                          ? "Chaîne acquise · vérifie maintenant les installations"
-                          : routeGoalProgress.affordable
-                            ? `Budget atteint · ${formatKqCash(routeGoalScenario.remainingInvestmentCents)} à investir`
-                            : `Encore ${formatKqCash(routeGoalProgress.remainingCents)} à réunir`}
-                      </small>
-                    </div>
-                    <button type="button" onClick={() => onOpenShop(snapshot.routePlan?.equipmentCode)} className="border-2 border-ink bg-white px-3 py-2 text-[10px] font-black uppercase shadow-[2px_2px_0_#111]">Poursuivre la filière</button>
-                  </div>
-                ) : nextGoal ? (
-                  <div className="grid gap-3 sm:grid-cols-[auto_1fr_auto] sm:items-center">
-                    <Target className="text-[#d58b00]" aria-hidden="true" size={24} strokeWidth={2.6} />
-                    <div className="min-w-0">
-                      <small className="block text-[10px] font-black uppercase tracking-[0.1em] text-[#9a5b17]">Prochain investissement</small>
-                      <strong className="block truncate text-sm">{nextGoal.equipment.name} · {formatKqCash(nextGoal.equipment.priceCents)}</strong>
-                      <p className="mt-1 text-[10px] font-bold leading-snug text-charcoal">{nextGoal.equipment.benefit}</p>
-                      <div
-                        className="mt-2 h-2 overflow-hidden border border-ink bg-white"
-                        role="progressbar"
-                        aria-label="Progression du budget pour le prochain investissement"
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                        aria-valuenow={nextGoal.progressPercent}
-                      >
-                        <i className="block h-full bg-yellow" style={{ width: `${nextGoal.progressPercent}%` }} />
-                      </div>
-                      <small className="mt-1 block text-[10px] font-bold text-charcoal">
-                        {nextGoal.affordable ? "Budget atteint · disponible dans le catalogue" : `Encore ${formatKqCash(nextGoal.remainingCents)} à réunir`}
-                      </small>
-                    </div>
-                    <button type="button" onClick={() => onOpenShop(nextGoal.equipment.code)} className="border-2 border-ink bg-white px-3 py-2 text-[10px] font-black uppercase shadow-[2px_2px_0_#111]">Voir la fiche</button>
-                  </div>
-                ) : (
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <p className="flex items-center gap-2 text-sm font-bold"><Sparkles aria-hidden="true" size={18} />{equipmentProgression.catalogComplete ? "Atelier complet : tout le catalogue durable est acquis." : `Progression principale terminée : ${equipmentProgression.alternativeCount} modèle${equipmentProgression.alternativeCount > 1 ? "s" : ""} alternatif${equipmentProgression.alternativeCount > 1 ? "s" : ""} reste${equipmentProgression.alternativeCount > 1 ? "nt" : ""} disponible${equipmentProgression.alternativeCount > 1 ? "s" : ""}.`}</p>
-                    {!equipmentProgression.catalogComplete ? <button type="button" onClick={() => onOpenShop()} className="border-2 border-ink bg-white px-3 py-2 text-[10px] font-black uppercase shadow-[2px_2px_0_#111]">Voir les alternatives</button> : null}
-                  </div>
-                )}
-              </div>
-            ) : null}
-          </div>
+          </> : null}
+          {activeTab === "equipment" ? <>
+            <div className={styles.sectionIntro}><Image src="/placard/collection-chest.png" alt="" width={100} height={100} sizes="80px" /><div><p>Ton matériel durable</p><h3>{summary.installed.length} équipement{summary.installed.length > 1 ? "s" : ""} installé{summary.installed.length > 1 ? "s" : ""}</h3><span>{summary.purchased.length ? `${summary.purchased.length} investissement${summary.purchased.length > 1 ? "s" : ""} acquis` : "Ton kit de départ est opérationnel."}</span></div></div>
+            {preview.length ? <ul className={styles.equipmentList}>{preview.map((equipment) => <li key={equipment.code}><span>{equipment.name}</span><small data-installed={equipment.equipped}>{equipment.equipped ? "Installé" : "En réserve"}</small></li>)}</ul> : <p className={styles.hint}>Retrouve tes équipements de base dans l’inventaire et choisis ceux à installer.</p>}
+            {hiddenCount > 0 ? <p className={styles.hint}>Et {hiddenCount} autre{hiddenCount > 1 ? "s" : ""} dans ton inventaire.</p> : null}
+            <div className={styles.actions}><button type="button" className={styles.primary} onClick={() => setInventoryOpen(true)}><PackageCheck size={18} aria-hidden="true" /> Ouvrir l’Inventaire</button><button type="button" className={styles.secondary} onClick={() => onOpenShop()}><ShoppingBag size={17} aria-hidden="true" /> Boutique</button></div>
+          </> : null}
+          {activeTab === "goals" ? <>
+            <div className={styles.sectionIntro}><Image src="/contest/mascot/tasting/tasting-verdict.png" alt="" width={100} height={120} sizes="75px" /><div><p>Un palier à la fois</p><h3>Ton prochain objectif</h3><span>Construis ton atelier à ton rythme.</span></div></div>
+            <section className={styles.goal} aria-label="Prochain investissement">
+              {routeGoalScenario && routeGoalProgress && snapshot?.routePlan ? <>
+                <p>Filière épinglée · objectif sauvegardé</p><h4>{routeGoalScenario.name}</h4><span>Jury ≥ {routeGoalScenario.minimumJuryScore.toFixed(1)}/10</span>
+                {progressBar("Progression du budget pour la filière épinglée", routeGoalProgress.progressPercent)}
+                <p>{routeGoalScenario.remainingInvestmentCents === 0 ? "Chaîne acquise · vérifie les installations" : routeGoalProgress.affordable ? `Budget atteint · ${formatKqCash(routeGoalScenario.remainingInvestmentCents)} à investir` : `Encore ${formatKqCash(routeGoalProgress.remainingCents)} à réunir`}</p>
+                <button type="button" className={styles.primary} onClick={() => onOpenShop(snapshot.routePlan?.equipmentCode)}>Poursuivre la filière <ArrowRight size={17} aria-hidden="true" /></button>
+                <details className={styles.fundingDetails}><summary>Détails de l’investissement</summary><p>{routeGoalScenario.projectedEquipmentNames.join(" · ")}</p><p>{formatKqCash(routeGoalScenario.comparisonDeltaCents)} par lot témoin par rapport à la vente brute.</p></details>
+              </> : nextGoal ? <>
+                <h4>{nextGoal.equipment.name}</h4><span>{formatKqCash(nextGoal.equipment.priceCents)}</span>
+                {progressBar("Progression du budget pour le prochain investissement", nextGoal.progressPercent)}
+                <p>{nextGoal.affordable ? "Budget atteint · disponible dans le catalogue" : `Encore ${formatKqCash(nextGoal.remainingCents)} à réunir`}</p>
+                <button type="button" className={styles.primary} onClick={() => onOpenShop(nextGoal.equipment.code)}>Voir l’équipement <ArrowRight size={17} aria-hidden="true" /></button>
+                <details className={styles.fundingDetails}><summary>Ce que cet équipement apporte</summary><p>{nextGoal.equipment.benefit}</p></details>
+              </> : <><Sparkles size={26} aria-hidden="true" /><h4>Progression principale terminée</h4><p>{equipmentProgression.catalogComplete ? "Tout le catalogue durable est acquis." : `${equipmentProgression.alternativeCount} modèles alternatifs restent disponibles.`}</p>{!equipmentProgression.catalogComplete ? <button type="button" className={styles.secondary} onClick={() => onOpenShop()}>Voir les alternatives</button> : null}</>}
+            </section>
+            <details className={styles.detail} aria-label="Mission d’atelier"><summary>Mission d’atelier <small>{expertiseMission?.name ?? "Toutes terminées"}</small></summary>
+              {expertiseMission ? <div className={styles.detailBody}><h4>{expertiseMission.name} · {expertiseMission.targetTier.name}</h4>{progressBar(`Mission ${expertiseMission.name}`, expertiseMission.progressPercent)}<p>Encore {expertiseMission.salesRemaining} vente{expertiseMission.salesRemaining > 1 ? "s" : ""}{expertiseMission.bonusReputation > 0 ? ` · prime +${expertiseMission.bonusReputation} réputation si qualité suffisante` : " pour une première maîtrise"}.</p>
+                {missionEquipmentGoal ? <p>{missionEquipmentGoal.equipmentName} · {missionEquipmentGoal.investmentRequired ? "à financer" : "déjà possédé"}</p> : null}
+                {expertiseMission.source === "pinned" ? <button type="button" className={styles.secondary} onClick={onOpenMarket}>Voir les lots</button> : <button type="button" className={styles.secondary} disabled={savingMission || !missionEquipmentGoal} onClick={() => void pinExpertiseMission()}>{savingMission ? "Enregistrement…" : missionEquipmentGoal?.investmentRequired ? "Épingler et équiper" : "Épingler la mission"}</button>}
+                {missionError ? <p role="alert">{missionError}</p> : null}
+              </div> : <p className={styles.hint}>Les huit filières sont au rang Maîtrise.</p>}
+            </details>
+            <details className={styles.detail} aria-label="Filières maîtrisées"><summary>Palmarès permanent <small>{masteredRoutes.length}/{KQ_TRANSFORMATION_ROUTE_COUNT} filières</small></summary><div className={styles.detailBody}>
+              <p>{masteredRouteSales} vente{masteredRouteSales > 1 ? "s" : ""} en transformation.</p>
+              {masteredRoutes.length ? <ul className={styles.masteries}>{masteredRoutes.map((mastery) => <li key={mastery.route}><strong>{mastery.name}</strong><span>{mastery.expertise.tier.name} · {mastery.saleCount} ventes · record {mastery.bestJuryScore.toFixed(1)}/10</span>{progressBar(`Expertise ${mastery.name}`, mastery.expertise.progressPercent)}<small>{mastery.expertise.nextTier ? `Encore ${mastery.expertise.salesToNext} pour ${mastery.expertise.nextTier.name}` : "Rang maximal"}</small></li>)}</ul> : <p>Ta première transformation ouvrira ce palmarès.</p>}
+              <button type="button" className={styles.secondary} onClick={onOpenMarket}>Aller au marché</button>
+            </div></details>
+            <details className={styles.detail}><summary>Réputation <small>{reputationProgress.tier.name}</small></summary><div className={styles.detailBody}>{progressBar("Progression de réputation", reputationProgress.progressPercent)}<p>{reputationProgress.nextTier ? `${reputationProgress.pointsToNext} points avant ${reputationProgress.nextTier.name}.` : "Palier maximal atteint."}</p></div></details>
+          </> : null}
         </div>
-        </div>
-      )}
-      </div>
+      </> : null}
     </section>
     {inventoryOpen ? (
       <KqEquipmentInventoryModal

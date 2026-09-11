@@ -16,7 +16,7 @@ export const KQ_LOCAL_KEYS = {
   onboardingSeen: "kanab-quest-onboarding-seen-v1",
 } as const;
 
-export type KqFavoriteDeck = { buddieCode: string; substrateCode: string; supportCodes: string[] };
+export type KqFavoriteDeck = { buddieCode: string; substrateCode?: string; supportCodes: string[] };
 
 export type KqSessionSnapshot = {
   game: KqGameState | null;
@@ -78,13 +78,12 @@ export function createLocalKqRepository(storage: KeyValueStorage): KqRepository 
       const parsed: unknown = JSON.parse(storage.getItem(KQ_LOCAL_KEYS.favoriteDeck) ?? "null");
       if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return null;
       const deck = parsed as KqFavoriteDeck;
-      const substrate = KQ_CARDS.find((card) => card.code === deck.substrateCode);
-      if (!KQ_BUDDIES.some((buddie) => buddie.code === deck.buddieCode) || substrate?.category !== "substrate" || !Array.isArray(deck.supportCodes)) return null;
+      if (!KQ_BUDDIES.some((buddie) => buddie.code === deck.buddieCode) || !Array.isArray(deck.supportCodes)) return null;
       if (deck.supportCodes.some((code) => {
         const card = KQ_CARDS.find((item) => item.code === code);
         return !card || card.category === "substrate" || card.category === "pbi";
       })) return null;
-      return deck;
+      return { buddieCode: deck.buddieCode, supportCodes: deck.supportCodes };
     } catch { return null; }
   };
   const loadVerdictJournal = () => {

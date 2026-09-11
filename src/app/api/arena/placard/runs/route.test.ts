@@ -91,6 +91,18 @@ describe("POST /api/arena/placard/runs", () => {
     expect(logRateLimitRejection).toHaveBeenCalled();
   });
 
+  it("accepts an explicitly empty deck without a substrate", async () => {
+    startKqPlayerRun.mockResolvedValue({ runId: "run-soil", burnReceipt: null });
+    const response = await POST(request({ buddieCode: "HH2026-003", deckCodes: [] }));
+    expect(response.status).toBe(201);
+    expect(startKqPlayerRun).toHaveBeenCalledWith(customerId, expect.objectContaining({ deckCodes: [] }));
+  });
+
+  it.each([undefined, null, "BOTTE-017", [17]])("rejects malformed decks instead of silently starting with no cards: %j", async (deckCodes) => {
+    expect((await POST(request({ buddieCode: "HH2026-003", deckCodes }))).status).toBe(400);
+    expect(startKqPlayerRun).not.toHaveBeenCalled();
+  });
+
   it("does not expose unexpected Supabase errors", async () => {
     startKqPlayerRun.mockRejectedValue(new Error("[supabase:secret_table] private detail"));
     const response = await POST(request({

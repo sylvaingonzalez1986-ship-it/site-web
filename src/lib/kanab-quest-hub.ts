@@ -36,9 +36,9 @@ export function getKqPlacardNextAction(input: {
     return {
       destination: "arena",
       eyebrow: "Fleur disponible",
-      title: "Trouve un rival et demande le verdict",
-      description: `${input.availableFlowerCount} Fleur${input.availableFlowerCount > 1 ? "s sont prêtes" : " est prête"} à passer devant le jury.`,
-      buttonLabel: "Choisir un rival",
+      title: "Présente ta fleur au jury",
+      description: `${input.availableFlowerCount} Fleur${input.availableFlowerCount > 1 ? "s sont prêtes" : " est prête"} à passer devant le jury, face à un adversaire tiré au hasard.`,
+      buttonLabel: "Entrer dans la file",
     };
   }
   if (input.equipmentGoalAffordable) {

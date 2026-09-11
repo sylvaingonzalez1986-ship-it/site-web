@@ -7,13 +7,13 @@ const inventory = readFileSync(join(process.cwd(), "src/components/placard/KqEqu
 const styles = readFileSync(join(process.cwd(), "src/components/placard/KqEquipmentInventoryModal.module.css"), "utf8");
 
 describe("Kanab Quest equipment inventory policy", () => {
-  it("keeps the workshop HUD compact until the player expands it", () => {
-    expect(hud).toContain("const [hudExpanded, setHudExpanded] = useState(false)");
-    expect(hud).toContain('aria-controls="placard-hud-details"');
-    expect(hud).toContain("aria-expanded={hudExpanded}");
-    expect(hud).toContain('hidden={!hudExpanded}');
+  it("keeps only the selected dashboard section visible", () => {
+    expect(hud).toContain('useState<"overview" | "equipment" | "goals">("overview")');
+    expect(hud).toContain('aria-controls="placard-hud-content"');
+    expect(hud).toContain('activeTab === "overview" ?');
+    expect(hud).toContain('activeTab === "equipment" ?');
+    expect(hud).toContain('activeTab === "goals" ?');
     expect(hud).toContain('aria-label="Résumé de l’atelier"');
-    expect(hud).toContain('hudExpanded ? "Replier" : "Dérouler"');
   });
 
   it("opens a dedicated inventory from the Placard hub", () => {

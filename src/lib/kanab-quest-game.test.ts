@@ -14,13 +14,11 @@ import {
   getKqRunProjection,
   getKqVisibleActionCards,
   getKqCardTradeoff,
-  getKqCultureSystemProfile,
   getKqCultureSystemSituationStatus,
   getKqCultureSystemSummary,
   KQ_BUDDIES,
   KQ_CARDS,
   KQ_COLLECTIONS,
-  KQ_CULTURE_SYSTEM_PROFILES,
   KQ_SITUATIONS,
   KQ_STAGES,
   playKqCard,
@@ -70,12 +68,13 @@ describe("Kanab Quest dice prototype", () => {
     expect(rollKqDice(startKqGame(2026)).dice).toEqual(rollKqDice(startKqGame(2026)).dice);
   });
 
-  it("starts with an active substrate burned from the collection", () => {
-    const state = startKqGame(1);
-    expect(state.playedThisStage).toContain("BOTTE-001");
-    expect(state.usedCards).toContain("BOTTE-001");
+  it("starts on living soil without installing or burning a card", () => {
+    const state = startKqGame(1, { deckCodes: [] });
+    expect(state.deckCodes).toEqual([]);
+    expect(state.playedThisStage).toEqual([]);
+    expect(state.usedCards).toEqual([]);
+    expect(getKqCultureSystemSummary(state.deckCodes).name).toBe("Sol vivant");
   });
-
   it("keeps duplicate physical copies in the deck and spends them one by one", () => {
     let state = startKqGame(41, { deckCodes: ["BOTTE-001", "BOTTE-017", "BOTTE-017"], startingXp: 5 });
     expect(state.deckCodes.filter((code) => code === "BOTTE-017")).toHaveLength(2);
@@ -135,10 +134,10 @@ describe("Kanab Quest dice prototype", () => {
     expect(KQ_CARDS.find((card) => card.code === "BOTTE-022")?.xpCost).toBe(3);
   });
 
-  it("starts from a selected Buddie and album-built deck", () => {
+  it("starts from a selected Buddie and removes retired cards from its deck", () => {
     const state = startKqGame(1, { varietyCode: "HH2026-005", deckCodes: ["BOTTE-001", "BOTTE-003", "BOTTE-006"] });
     expect(state.varietyName).toBe("ACDC");
-    expect(state.deckCodes).toEqual(["BOTTE-001", "BOTTE-003", "BOTTE-006"]);
+    expect(state.deckCodes).toEqual(["BOTTE-003", "BOTTE-006"]);
     expect(canPlayKqCard(state, KQ_CARDS.find((card) => card.code === "BOTTE-005")!).reason).toContain("pas dans le deck");
   });
 
@@ -301,63 +300,21 @@ describe("Kanab Quest dice prototype", () => {
     expect(dominated).toEqual([]);
   });
 
-  it("gives the starter soil a conditional safety floor instead of a wider reroll", () => {
-    let stabilized: KqGameState | null = null;
-    for (let seed = 1; seed <= 500 && !stabilized; seed += 1) {
-      const base = startKqGame(seed, { deckCodes: ["BOTTE-001"] });
-      const rolled = rollKqDice({
-        ...base,
-        situationCodes: base.situationCodes.map((code, index) => index === 0 ? "SIT-001" : code),
-      });
-      if (rolled.effectNotices?.some((notice) => notice.includes("aucune réussite"))) stabilized = rolled;
+
+
+  it("uses the same soil and outage rules regardless of retired cards", () => {
+    for (const code of ["BOTTE-001", "BOTTE-007", "BOTTE-008", "BOTTE-009"]) {
+      const base = startKqGame(121, { deckCodes: [] });
+      const legacy = { ...base, deckCodes: [code] };
+      expect(rollKqDice(legacy).dice).toEqual(rollKqDice(base).dice);
+      expect(rollKqDice({ ...legacy, powerOutage: true }).dice).toEqual(rollKqDice({ ...base, powerOutage: true }).dice);
+      expect(() => playKqCard(legacy, code)).toThrow("Carte inconnue");
     }
-    expect(stabilized).not.toBeNull();
-    expect(stabilized?.dice?.filter((die) => die >= 4)).toHaveLength(1);
+    const state = startKqGame(121);
+    expect(getKqCultureSystemSituationStatus(state)).toMatchObject({ tone: "neutral", label: "Sol vivant" });
+    expect(getKqCultureSystemSituationStatus({ ...state, powerOutage: true })).toMatchObject({ tone: "danger", label: "Coupure en cours" });
   });
-
-  it("never lets hydroponic control lower its neutral face", () => {
-    const comparisons: Array<[number, number]> = [];
-    for (let seed = 1; seed <= 120; seed += 1) {
-      const base = startKqGame(seed, { deckCodes: ["BOTTE-007"] });
-      const rolled = rollKqDice({
-        ...base,
-        situationCodes: base.situationCodes.map((code, index) => index === 0 ? "SIT-001" : code),
-      });
-      for (const notice of rolled.effectNotices ?? []) {
-        const kept = notice.match(/relance (\d), la face neutre (\d) est conservée/);
-        const improved = notice.match(/face neutre (\d) s’améliore en (\d)/);
-        if (kept) comparisons.push([Number(kept[2]), Number(kept[2])]);
-        if (improved) comparisons.push([Number(improved[1]), Number(improved[2])]);
-      }
-    }
-    expect(comparisons.length).toBeGreaterThan(0);
-    expect(comparisons.every(([before, after]) => after >= before)).toBe(true);
-  });
-
-  it("explains when a cultivation system is active, idle or exposed to an outage", () => {
-    const base = startKqGame(121, { deckCodes: ["BOTTE-007"] });
-    const matching = {
-      ...base,
-      situationCodes: base.situationCodes.map((code, index) => index === 0 ? "SIT-001" : code),
-    };
-    expect(getKqCultureSystemSituationStatus(matching)).toMatchObject({
-      tone: "active",
-      label: "Avantage actif",
-    });
-    expect(getKqCultureSystemSituationStatus({
-      ...matching,
-      situationCodes: matching.situationCodes.map((code, index) => index === 0 ? "SIT-007" : code),
-    })).toMatchObject({
-      tone: "neutral",
-      label: "Effet en veille",
-    });
-    expect(getKqCultureSystemSituationStatus({ ...matching, powerOutage: true })).toMatchObject({
-      tone: "danger",
-      label: "Pompe arrêtée",
-    });
-  });
-
-  it("suspends the hydroponic reroll while the pump has no power", () => {
+  it("keeps the indoor outage penalty without retired hydroponic effects", () => {
     const base = startKqGame(122, { deckCodes: ["BOTTE-007"] });
     const rolled = rollKqDice({
       ...base,
@@ -406,39 +363,7 @@ describe("Kanab Quest dice prototype", () => {
     expect(result?.protected.effectNotices?.some((notice) => notice.includes("aération des racines"))).toBe(true);
   });
 
-  it("lets living soil buffer a Danger without rerolling dice", () => {
-    let result: { baseline: KqGameState; buffered: KqGameState } | null = null;
-    for (let seed = 1; seed <= 500 && !result; seed += 1) {
-      const baselineBase = startKqGame(seed, { deckCodes: ["BOTTE-008"] });
-      const baseline = rollKqDice({
-        ...baselineBase,
-        situationCodes: baselineBase.situationCodes.map((code, index) => index === 0 ? "SIT-003" : code),
-      });
-      if (!baseline.dice?.includes(1)) continue;
-      const livingBase = startKqGame(seed, { deckCodes: ["BOTTE-009"] });
-      const buffered = rollKqDice({
-        ...livingBase,
-        situationCodes: livingBase.situationCodes.map((code, index) => index === 0 ? "SIT-003" : code),
-      });
-      result = { baseline, buffered };
-    }
-    expect(result).not.toBeNull();
-    const expected = [...(result?.baseline.dice ?? [])];
-    expected[expected.indexOf(1)] = 3;
-    expect(result?.buffered.dice).toEqual(expected);
-    expect(result?.buffered.effectNotices?.some((notice) => notice.includes("tampon biologique"))).toBe(true);
-  });
 
-  it("makes aeroponics powerful while doubling the outage penalty", () => {
-    const base = startKqGame(41, { deckCodes: ["BOTTE-008"] });
-    const rolled = rollKqDice({
-      ...base,
-      powerOutage: true,
-      situationCodes: base.situationCodes.map((code, index) => index === 0 ? "SIT-001" : code),
-    });
-    expect(rolled.dice?.filter((die) => die === 1).length).toBeGreaterThanOrEqual(2);
-    expect(rolled.effectNotices?.some((notice) => notice.includes("pompes aéroponiques"))).toBe(true);
-  });
 
   it("uses organic fertilizer only to finish an already strong roll", () => {
     const base = startKqGame(42, { deckCodes: ["BOTTE-001", "BOTTE-021"], startingXp: 5 });
@@ -575,62 +500,24 @@ describe("Kanab Quest dice prototype", () => {
     expect(visiblePbi.some((card) => card.targets?.includes("aphids") && !card.targets?.includes("mites"))).toBe(false);
   });
 
-  it("exposes the complete 36-card set across all five families", () => {
-    expect(KQ_CARDS).toHaveLength(36);
-    expect(new Set(KQ_CARDS.map((card) => card.category)).size).toBe(5);
+  it("exposes the complete 32-card set across four families", () => {
+    expect(KQ_CARDS).toHaveLength(32);
+    expect(new Set(KQ_CARDS.map((card) => card.category)).size).toBe(4);
     expect(KQ_CARDS.every((card) => card.effect.length > 0)).toBe(true);
   });
 
-  it("offers exactly four real cultivation systems", () => {
-    const systems = KQ_CARDS.filter((card) => card.category === "substrate");
-    expect(systems.map((card) => card.name)).toEqual([
-      "Terreau horticole",
-      "Hydroponie recirculante",
-      "Aéroponie haute pression",
-      "Sol vivant",
-    ]);
-    expect(KQ_CULTURE_SYSTEM_PROFILES.map((profile) => profile.cardCode)).toEqual(
-      systems.map((card) => card.code),
-    );
-    expect(new Set(KQ_CULTURE_SYSTEM_PROFILES.map((profile) => profile.technique)).size).toBe(4);
-    expect(KQ_CULTURE_SYSTEM_PROFILES.every((profile) => (
-      profile.mastery.length > 0 && profile.electricity.length > 0
-    ))).toBe(true);
-    const tradeoffs = systems.map((card) => getKqCardTradeoff(card));
-    expect(new Set(tradeoffs.map((tradeoff) => tradeoff.benefit)).size).toBe(4);
-    expect(new Set(tradeoffs.map((tradeoff) => tradeoff.risk)).size).toBe(4);
-    expect(getKqCultureSystemProfile("BOTTE-404")).toBeNull();
-    expect(getKqCultureSystemSummary(["BOTTE-008", "BOTTE-017"])).toMatchObject({
-      code: "BOTTE-008",
-      name: "Aéroponie haute pression",
-      technique: "Racines suspendues et brumisées",
-      electricity: "Critique",
-    });
-    expect(getKqCultureSystemSummary(["BOTTE-017"])).toBeNull();
-  });
 
-  it("never lets any passive Substrate be replayed and burned as an active card", () => {
-    const substrateCards = KQ_CARDS.filter((card) => card.timing === "passive");
-    expect(substrateCards.length).toBeGreaterThan(0);
-    substrateCards.forEach((card) => {
-      const state = startKqGame(17, { deckCodes: [card.code, card.code, "BOTTE-017"] });
-      const permission = canPlayKqCard(state, card);
-      expect(permission.allowed, card.code).toBe(false);
-      expect(permission.reason, card.code).toContain("déjà actif");
-      expect(playKqCard(state, card.code), card.code).toBe(state);
-    });
-  });
 
   it("matches the complete support collection target", () => {
     expect(KQ_CARDS).toHaveLength(KQ_COLLECTIONS.support.alphaCards);
-    expect(KQ_COLLECTIONS.support.totalCards).toBe(36);
+    expect(KQ_COLLECTIONS.support.totalCards).toBe(32);
     expect(KQ_COLLECTIONS.buddies.totalCards).toBe(52);
   });
 
-  it("equips only one selected substrate", () => {
+  it("discards all retired substrates without consuming support cards", () => {
     const state = startKqGame(2, { varietyCode: "HH2026-005", deckCodes: ["BOTTE-007", "BOTTE-008", "BOTTE-017"] });
-    expect(state.deckCodes).toEqual(["BOTTE-007", "BOTTE-017"]);
-    expect(state.playedThisStage).toEqual(["BOTTE-007"]);
+    expect(state.deckCodes).toEqual(["BOTTE-017"]);
+    expect(state.playedThisStage).toEqual([]);
   });
 
   it("reveals a hidden pest with the loupe before opening compatible PBI collection cards", () => {

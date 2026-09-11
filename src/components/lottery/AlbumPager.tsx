@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { CSSProperties } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import { rarityAccentColor } from "@/lib/lottery-card-ui";
 import type { LotteryCollectionPageState } from "@/types/lottery";
 import styles from "./AlbumExperience.module.css";
@@ -14,6 +14,14 @@ type AlbumPagerProps = {
 };
 
 export function AlbumPager({ pages, activeIndex, onPageChange, isPreview = false }: AlbumPagerProps) {
+  const tabsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const tabs = tabsRef.current;
+    const active = tabs?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!tabs || !active) return;
+    // Scroll only the tab strip; keep the reader's position in the album.
+    tabs.scrollTo({ left: active.offsetLeft - tabs.offsetLeft - (tabs.clientWidth - active.clientWidth) / 2, behavior: "instant" });
+  }, [activeIndex]);
   const canGoPrevious = !isPreview && activeIndex > 0;
   const canGoNext = !isPreview && activeIndex < pages.length - 1;
 
@@ -28,7 +36,7 @@ export function AlbumPager({ pages, activeIndex, onPageChange, isPreview = false
       >
         <ChevronLeft aria-hidden="true" />
       </button>
-      <div className={styles.pagerTabs}>
+      <div ref={tabsRef} className={styles.pagerTabs}>
         {pages.map((page, index) => {
           const active = index === activeIndex;
           const accent = rarityAccentColor[page.rarity];

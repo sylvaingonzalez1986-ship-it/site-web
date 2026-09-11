@@ -1160,7 +1160,7 @@ function ContestBotteCollection({
   </div>;
 }
 
-function ContestNotebookCollectionTab({
+export function ContestNotebookCollectionTab({
   isAuthenticated,
   badges,
   entryId,

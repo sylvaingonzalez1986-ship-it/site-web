@@ -3,7 +3,7 @@
 .modalShell,
 .statusCard {
   --album-green: #00563f;
-  --album-green-dark: #003f30;
+  --album-green-dark: #102b28;
   --album-cream: #f6f0e6;
   --album-paper: #fffaf1;
   --album-yellow: #f4c43d;
@@ -15,6 +15,7 @@
   display: grid;
   min-width: 0;
   gap: clamp(1rem, 2.5vw, 1.75rem);
+  color: var(--album-ink);
 }
 
 .pageShell {
@@ -22,8 +23,8 @@
   padding: clamp(7rem, 11vw, 9rem) clamp(0.75rem, 3vw, 2.5rem) clamp(4rem, 8vw, 7rem);
   color: var(--album-ink);
   background:
-    radial-gradient(circle at 1px 1px, rgba(0, 86, 63, 0.09) 1px, transparent 1.5px) 0 0 / 21px 21px,
-    var(--album-cream);
+    radial-gradient(ellipse at 80% 0%, #146556 0%, transparent 55%),
+    #082e28;
 }
 
 .pageInner {
@@ -31,22 +32,49 @@
   margin-inline: auto;
 }
 
+.gameCollection {
+  display: grid;
+  gap: 1.5rem;
+  background: var(--album-paper);
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+  color: var(--album-ink);
+}
+
+.gameCollectionHeader {
+  background: #073a32;
+  border-bottom: 4px solid var(--album-yellow);
+  padding: clamp(1rem, 3vw, 1.75rem);
+}
+
 .hero {
   position: relative;
   display: grid;
-  min-height: 280px;
-  grid-template-columns: minmax(0, 1fr) minmax(230px, 320px);
+  min-height: 350px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 46%);
   overflow: hidden;
   border: 3px solid var(--album-green-dark);
-  background: var(--album-paper);
-  box-shadow: 9px 9px 0 var(--album-green-dark);
+  background: #073a32;
+  color: var(--album-paper);
+  box-shadow: 6px 6px 0 #071c1b;
+  border-bottom: 5px solid var(--album-yellow);
 }
+
+.hero::before {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, #69bea62b 1px, transparent 1.5px) 0 0 / 7px 7px;
+  mask-image: linear-gradient(110deg, #000, transparent 65%);
+  content: "";
+  pointer-events: none;
+}
+
+.hero .kicker { color: #91d9c9; }
 
 .heroCopy {
   position: relative;
   z-index: 2;
   align-self: center;
-  padding: clamp(1.5rem, 4vw, 3.5rem);
+  padding: clamp(1.25rem, 3vw, 2.5rem);
 }
 
 .kicker {
@@ -63,77 +91,78 @@
   font-family: var(--font-display), Impact, sans-serif;
   font-size: clamp(3.8rem, 9vw, 7.2rem);
   font-weight: 950;
-  line-height: 0.78;
+  line-height: 0.9;
   letter-spacing: -0.045em;
   text-transform: uppercase;
+  color: var(--album-paper);
+  text-shadow: 3px 4px 0 #071c1b;
 }
 
 .heroTitle span {
   display: block;
-  color: var(--album-green);
+  color: var(--album-yellow);
 }
 
 .heroLead {
-  max-width: 610px;
+  max-width: 410px;
   margin: 1.35rem 0 0;
-  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  font-size: 0.9rem;
   font-weight: 750;
   line-height: 1.45;
+  color: #e1f1e9;
 }
+
+.heroActions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.85rem; margin-top: 1.25rem; }
+.boosterButton, .browseButton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+  min-height: 48px; padding: 0.65rem 0.85rem; cursor: pointer;
+  font-size: 0.75rem; font-weight: 900; text-transform: uppercase;
+}
+.boosterButton { border: 2px solid #071c1b; background: var(--album-yellow); color: #102b28; box-shadow: 3px 3px 0 #071c1b; }
+.boosterButton span { display: grid; min-width: 24px; min-height: 24px; place-items: center; padding-inline: 4px; background: #102b28; color: var(--album-yellow); }
+.boosterButton:disabled { background: #c5d2c8; box-shadow: none; cursor: not-allowed; }
+.browseButton { border: 0; border-bottom: 1px solid #86baaa; color: var(--album-paper); background: transparent; padding-inline: 0; }
+.heroActions svg { width: 18px; height: 18px; flex-shrink: 0; }
+.experience button:focus-visible { outline: 3px solid #00988d; outline-offset: 3px; }
+.heroActions button:focus-visible { outline-color: var(--album-paper); }
+.collectionAnchor { min-width: 0; scroll-margin-top: 90px; }
+.collectionAnchor:focus-visible { outline: 3px solid var(--album-yellow); outline-offset: 5px; }
 
 .heroArt {
   position: relative;
-  align-self: end;
+  align-self: center;
   justify-self: center;
-  width: min(100%, 330px);
-  height: 270px;
-  transform: translate(clamp(-70px, -4vw, -36px), -34px);
-}
-
-.heroCircle {
-  position: absolute;
-  z-index: 0;
-  left: calc(50% - 74px);
-  top: 44%;
-  width: 190px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--album-yellow);
-  transform: translate(-50%, -50%);
+  width: 100%;
+  padding: 0.75rem 0.5rem;
 }
 
 .heroPresentation {
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  bottom: -84px;
-  width: 315px;
-  max-width: none;
+  display: block;
+  width: 100%;
   height: auto;
   object-fit: contain;
-  filter: drop-shadow(4px 5px 0 rgba(0, 63, 48, 0.18));
-  transform: translateX(-50%);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 92%, transparent);
 }
 
 .summaryBar {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  border: 3px solid var(--album-green-dark);
-  background: var(--album-green-dark);
-  gap: 2px;
-  box-shadow: 6px 6px 0 rgba(0, 63, 48, 0.2);
+  border-block: 1px solid #8caf9b66;
+  background: #073a32;
+  gap: 0;
 }
 
 .summaryStat {
   display: grid;
-  min-height: 82px;
+  min-height: 76px;
   align-content: center;
-  background: var(--album-paper);
+  color: var(--album-paper);
+  border-right: 1px solid #8caf9b55;
   padding: 0.75rem 1rem;
 }
 
 .summaryStat span {
-  color: var(--album-green);
+  color: #b0d3c6;
   font-size: 0.66rem;
   font-weight: 950;
   letter-spacing: 0.08em;
@@ -149,7 +178,10 @@
 
 .summaryStatHighlight {
   background: var(--album-yellow);
+  color: var(--album-ink);
 }
+.summaryStatHighlight span { color: var(--album-green-dark); }
+.summaryStat:last-child { border-right: 0; }
 
 .notice {
   display: flex;
@@ -204,8 +236,8 @@ button.notice {
 
 .actionGrid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.8rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
 }
 
 .actionCard {
@@ -214,13 +246,14 @@ button.notice {
   min-width: 0;
   min-height: 154px;
   align-content: space-between;
-  border: 2px solid var(--album-green-dark);
-  background: var(--album-paper);
-  padding: 0.9rem;
-  color: var(--album-ink);
+  border: 1px solid #fffaf16b;
+  background: #004b39;
+  padding: 1.25rem;
+  color: var(--album-paper);
   text-align: left;
-  box-shadow: 4px 4px 0 rgba(0, 63, 48, 0.18);
+  gap: 1rem;
 }
+.actionCard:only-child { grid-column: 1 / -1; max-width: 600px; width: 100%; }
 
 button.actionCard {
   cursor: pointer;
@@ -230,12 +263,12 @@ button.actionCard {
 button.actionCard:not(:disabled):hover,
 button.actionCard:not(:disabled):focus-visible {
   outline: none;
-  background: #fff4cb;
-  box-shadow: 5px 5px 0 var(--album-green);
+  background: #086449;
+  border-color: var(--album-yellow);
 }
 
 .actionCardMuted {
-  opacity: 0.66;
+  background: #003f30;
 }
 
 button.actionCard:disabled {
@@ -277,11 +310,12 @@ button.actionCard:disabled {
   font-weight: 950;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--album-paper);
 }
 
 .actionCard p {
   margin: 0.35rem 0 0;
-  color: #4b544e;
+  color: #cee1d4;
   font-size: 0.72rem;
   font-weight: 700;
   line-height: 1.35;
@@ -293,7 +327,7 @@ button.actionCard:disabled {
   justify-content: space-between;
   gap: 0.4rem;
   margin-top: 0.75rem;
-  color: var(--album-green);
+  color: var(--album-yellow);
   font-size: 0.65rem;
   font-weight: 950;
   letter-spacing: 0.06em;
@@ -311,36 +345,28 @@ button.actionCard:disabled {
   gap: 0.5rem;
   margin-top: 0.65rem;
 }
+.pointsControls input, .pointsControls > div button { color: var(--album-ink); min-height: 44px; }
 
 .pointsControls > button {
-  min-height: 40px;
-  border: 2px solid var(--album-green-dark);
-  background: var(--album-green);
+  min-height: 48px;
+  border: 2px solid var(--album-yellow);
+  background: var(--album-yellow);
   padding: 0.5rem 0.65rem;
-  color: white;
+  color: var(--album-green-dark);
   cursor: pointer;
   font-size: 0.64rem;
   font-weight: 950;
   text-transform: uppercase;
 }
+.pointsControls > button:disabled { background: #93afa0; border-color: #93afa0; cursor: not-allowed; }
 
 .book {
   position: relative;
-  border: 3px solid var(--album-green-dark);
-  background: var(--album-green);
-  padding: clamp(0.55rem, 1.5vw, 0.9rem);
-  box-shadow: 9px 9px 0 rgba(0, 63, 48, 0.28);
+  background: var(--album-paper);
 }
 
 .book::before {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  bottom: 0;
-  left: 17px;
-  width: 5px;
-  background: repeating-linear-gradient(180deg, var(--album-yellow) 0 14px, var(--album-green-dark) 14px 22px);
-  content: "";
+  display: none;
 }
 
 .bookHeader {
@@ -348,10 +374,9 @@ button.actionCard:disabled {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   gap: 1rem;
-  border: 2px solid var(--album-green-dark);
-  border-bottom: 0;
-  background: #f0dfad;
-  padding: 1rem 1rem 1rem 2rem;
+  color: var(--album-paper);
+  background: #003f30;
+  padding: 0 0 1.25rem;
 }
 
 .bookHeader h1,
@@ -361,12 +386,13 @@ button.actionCard:disabled {
   font-size: clamp(2rem, 5vw, 3.6rem);
   line-height: 0.9;
   text-transform: uppercase;
+  color: var(--album-paper);
 }
 
 .bookHeader p {
   max-width: 620px;
   margin: 0.5rem 0 0;
-  color: #4b544e;
+  color: #c1dcd0;
   font-size: 0.78rem;
   font-weight: 700;
 }
@@ -391,7 +417,7 @@ button.actionCard:disabled {
 
 .bookProgress strong {
   display: block;
-  color: var(--album-green);
+  color: var(--album-yellow);
   font-family: var(--font-display), Impact, sans-serif;
   font-size: 2rem;
   line-height: 1;
@@ -421,9 +447,8 @@ button.actionCard:disabled {
 .bookPages {
   display: grid;
   gap: 0.75rem;
-  border: 2px solid var(--album-green-dark);
-  background: #e7dcc9;
-  padding: 0.75rem 0.75rem 0.75rem 1.75rem;
+  background: var(--album-paper);
+  padding: 1rem;
 }
 
 .pager {
@@ -434,10 +459,9 @@ button.actionCard:disabled {
   grid-template-columns: 44px minmax(0, 1fr) 44px;
   align-items: stretch;
   gap: 0.5rem;
-  border: 2px solid var(--album-green-dark);
+  border-bottom: 2px solid var(--album-green-dark);
   background: var(--album-paper);
   padding: 0.45rem;
-  box-shadow: 3px 3px 0 rgba(0, 63, 48, 0.18);
 }
 
 .pagerArrow {
@@ -542,10 +566,7 @@ button.actionCard:disabled {
 }
 
 .albumPage {
-  border: 2px solid var(--album-green-dark);
-  background:
-    linear-gradient(90deg, rgba(0, 86, 63, 0.035) 1px, transparent 1px) 0 0 / 28px 100%,
-    var(--album-paper);
+  background: var(--album-paper);
   padding: clamp(0.85rem, 2.4vw, 1.5rem);
 }
 
@@ -564,6 +585,7 @@ button.actionCard:disabled {
   font-size: clamp(2rem, 5vw, 3.4rem);
   line-height: 0.9;
   text-transform: uppercase;
+  color: var(--album-green-dark);
 }
 
 .pageHeader p {
@@ -610,8 +632,8 @@ button.actionCard:disabled {
 }
 
 .contextCard {
-  border: 2px solid var(--album-green-dark);
-  background: #f4ead8;
+  border-top: 3px solid var(--album-green);
+  background: #e7eedf;
   padding: 0.85rem;
 }
 
@@ -880,6 +902,7 @@ button.cardSlot:focus-visible {
   .actionGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .pointsControls { flex-wrap: wrap; }
 
   .pageLayout {
     grid-template-columns: minmax(0, 1fr) 230px;
@@ -896,75 +919,73 @@ button.cardSlot:focus-visible {
   }
 
   .hero {
-    min-height: 220px;
-    grid-template-columns: minmax(0, 1fr) 115px;
-    box-shadow: 6px 6px 0 var(--album-green-dark);
+    display: block;
+    min-height: 0;
+    box-shadow: 4px 4px 0 #071c1b;
   }
 
   .heroCopy {
-    padding: 1.25rem 0.65rem 1.35rem 1rem;
+    padding: 1.1rem;
   }
 
   .heroTitle {
-    font-size: clamp(3rem, 16vw, 4.5rem);
+    position: relative;
+    z-index: 2;
+    min-height: 150px;
+    padding-top: 0.4rem;
+    font-size: clamp(2.8rem, 13vw, 4.5rem);
   }
 
   .heroLead {
-    margin-top: 0.8rem;
-    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
     line-height: 1.35;
   }
 
   .heroArt {
-    width: 115px;
-    height: 190px;
-    transform: none;
-  }
-
-  .heroCircle {
-    left: 1%;
-    top: 58%;
-    width: 90px;
+    position: absolute;
+    top: 3.2rem;
+    right: -0.4rem;
+    width: 62%;
+    max-width: 250px;
+    height: 155px;
+    padding: 0;
   }
 
   .heroPresentation {
-    left: 34%;
-    bottom: -42px;
-    width: 160px;
-    height: auto;
+    width: 100%;
+    height: 100%;
   }
+  .heroActions { gap: 0.25rem; margin-top: 0.85rem; }
+  .boosterButton { width: 100%; }
+  .browseButton { min-height: 44px; margin-inline: auto; }
+  .hero .kicker { font-size: 0.6rem; letter-spacing: 0.1em; }
 
   .summaryBar {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    box-shadow: 4px 4px 0 rgba(0, 63, 48, 0.18);
+    gap: 1px;
+    background: #3f6555;
   }
 
   .summaryStat {
     min-height: 68px;
     padding: 0.6rem 0.7rem;
+    border: 0;
+    background: #073a32;
   }
+  .summaryStatHighlight { background: var(--album-yellow); }
 
   .actionGrid {
-    display: flex;
-    width: calc(100% + 1.5rem);
-    margin-left: -0.75rem;
-    overflow-x: auto;
-    padding: 0.25rem 0.75rem 0.55rem;
-    scroll-snap-type: x mandatory;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .actionCard {
-    min-width: 218px;
-    min-height: 145px;
-    flex: 0 0 72vw;
-    scroll-snap-align: start;
+    min-height: 0;
+    padding: 1rem;
   }
 
   .book {
-    margin-inline: -0.35rem;
-    border-width: 2px;
-    padding: 0.4rem;
-    box-shadow: 5px 5px 0 rgba(0, 63, 48, 0.23);
+    margin: 0;
   }
 
   .book::before {
@@ -972,8 +993,8 @@ button.cardSlot:focus-visible {
   }
 
   .bookHeader {
-    grid-template-columns: minmax(0, 1fr) 100px;
-    padding: 0.8rem;
+    grid-template-columns: minmax(0, 1fr) 78px;
+    padding: 0.5rem 0 1rem;
   }
 
   .bookHeader p {
@@ -981,15 +1002,15 @@ button.cardSlot:focus-visible {
   }
 
   .bookProgress {
-    min-width: 100px;
+    min-width: 0;
   }
 
   .bookProgressBar {
-    width: 100px;
+    width: 100%;
   }
 
   .bookPages {
-    padding: 0.45rem;
+    padding: 0.3rem;
   }
 
   .pager {
@@ -1009,7 +1030,7 @@ button.cardSlot:focus-visible {
   }
 
   .albumPage {
-    padding: 0.7rem;
+    padding: 0.5rem;
   }
 
   .pageHeader {

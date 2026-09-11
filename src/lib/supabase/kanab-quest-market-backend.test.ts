@@ -28,9 +28,9 @@ describe("Kanab Quest market sale receipt", () => {
   it("carries the cultivation system into the commercial lot without changing its score", () => {
     const run = startKqGame(91, { deckCodes: ["BOTTE-009", "BOTTE-017"] });
     expect(getKqMarketRunSummary(run, 7)).toMatchObject({
-      cultureSystemCode: "BOTTE-009",
+      cultureSystemCode: "living-soil",
       cultureSystemName: "Sol vivant",
-      cultureSystemTechnique: "Écosystème organique biologiquement actif",
+      cultureSystemTechnique: "Culture indoor sur sol vivant",
     });
     expect(getKqMarketRunSummary(run, 7).harvestGrams).toBeGreaterThan(0);
   });

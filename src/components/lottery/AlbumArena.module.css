@@ -1,0 +1,49 @@
+.root {
+  --album-green: #00563f;
+  --album-green-dark: #003f30;
+  --album-paper: #fffaf1;
+  --album-yellow: #f4c43d;
+  --album-ink: #111512;
+  min-height: 100svh;
+  background: #003f30;
+  color: #fffaf1;
+}
+.lobby { background: #003f30; padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+.ambience { position: absolute; inset: 0; z-index: -2; background: radial-gradient(ellipse at 50% 42%, #3b8770 0%, #07543e 40%, #002d24 78%); }
+.stage { position: relative; min-height: 260px; isolation: isolate; overflow: hidden; }
+.halo { position: absolute; inset: 10% 20%; border-radius: 50%; background: radial-gradient(ellipse, #f4c43d40, transparent 70%); }
+.mascot { position: absolute; top: -25%; left: 0; width: 100%; height: 150%; object-fit: contain; filter: drop-shadow(0 18px 20px #001e1966); animation: arrive 650ms ease-out both; }
+.resources { display: flex; justify-content: center; align-items: center; gap: .5rem 1.5rem; flex-wrap: wrap; color: #c7ded1; font: 700 .7rem/1.5 ui-monospace, monospace; }
+.resources > button { display: inline-flex; align-items: center; gap: .4rem; padding: .4rem; border: 0; background: transparent; text-decoration: underline; text-underline-offset: 4px; font: inherit; }
+.welcome { width: 100%; display: flex; justify-content: center; }
+.welcome button { min-height: 44px; padding: .5rem 1rem; border: 1px solid #f4c43d; color: #f4c43d; background: #003f30; font: inherit; cursor: pointer; }
+.workspace { min-height: 100svh; padding: 5.75rem 0 max(2rem, env(safe-area-inset-bottom)); }
+.workspaceTop { max-width: 1200px; margin-inline: auto; }
+.workspaceTop h1 { color: #fffaf1; }
+.workspaceTop button { cursor: pointer; }
+.workspaceNav { grid-area: auto; max-width: 1120px; margin: .75rem auto 0; padding-inline: 1rem; }
+.workspaceBody { width: min(1120px, calc(100% - 2rem)); margin: 1.5rem auto 0; outline: none; }
+.workspaceBody:focus-visible { outline: 2px solid #f4c43d; outline-offset: 5px; }
+.collectionNav { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; border-bottom: 1px solid #fffaf140; }
+.collectionNav button { min-height: 48px; padding: .7rem 1rem; border: 0; border-bottom: 3px solid transparent; background: transparent; color: #c7ded1; font-size: .8rem; font-weight: 800; cursor: pointer; }
+.collectionNav button[aria-pressed="true"] { border-color: #f4c43d; color: #fffaf1; }
+.toolIntro { margin-bottom: 1.5rem; display: flex; gap: 1.25rem; align-items: center; border-bottom: 1px solid #fffaf140; padding-bottom: 1.5rem; }
+.toolIntro > svg { width: 48px; height: 48px; color: #f4c43d; flex-shrink: 0; }
+.toolIntro h2 { color: #fffaf1; font: 900 clamp(2rem, 5vw, 3rem)/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; margin: 0 0 .5rem; }
+.toolIntro p { color: #c7ded1; font-size: .9rem; line-height: 1.5; margin: 0; }
+.boosterActions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.boosterActions > button { grid-area: auto; cursor: pointer; }
+.boosterActions > span { font: 700 .75rem ui-monospace, monospace; color: #f4c43d; }
+.root :where(button, a):focus-visible { outline: 3px solid #f4c43d; outline-offset: 4px; }
+@keyframes arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (max-width: 700px) {
+  .stage { min-height: 240px; }
+  .resources { gap: .25rem 1rem; }
+  .workspaceBody { width: calc(100% - 1.25rem); margin-top: 1rem; }
+  .workspaceTop { gap: .5rem; padding-inline: 1rem; }
+  .workspaceTop h1 { font-size: 1.75rem; }
+  .workspaceNav { padding-inline: .65rem; }
+  .collectionNav button { flex: 1; padding-inline: .3rem; font-size: .75rem; }
+}
+@media (max-height: 700px) { .stage { min-height: 180px; } }
+@media (prefers-reduced-motion: reduce) { .mascot { animation: none; } }

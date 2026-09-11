@@ -57,11 +57,12 @@ export async function POST(request: Request) {
   const body = payload && typeof payload === "object" && !Array.isArray(payload)
     ? payload as Record<string, unknown>
     : {};
+  if (!Array.isArray(body.deckCodes) || !body.deckCodes.every((code) => typeof code === "string")) {
+    return NextResponse.json({ error: "Deck invalide." }, { status: 400 });
+  }
   const input = {
     buddieCode: typeof body.buddieCode === "string" ? body.buddieCode : "",
-    deckCodes: Array.isArray(body.deckCodes) && body.deckCodes.every((code) => typeof code === "string")
-      ? body.deckCodes as string[]
-      : [],
+    deckCodes: body.deckCodes as string[],
     cultureTokens: typeof body.cultureTokens === "number" ? body.cultureTokens : 0,
     heritageCode: typeof body.heritageCode === "string" ? body.heritageCode : undefined,
   };

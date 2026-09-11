@@ -16,7 +16,7 @@ type RadarScore = {
 };
 
 type ContestReviewSkillRadarProps = {
-  review: ViewerContestReview;
+  review: Pick<ViewerContestReview, "scores">;
   comparisonScores?: ContestCriterionAverages;
   compact?: boolean;
   showLegend?: boolean;
@@ -56,7 +56,7 @@ function buildInitialScores(): ReviewScoreMap {
   ) as ReviewScoreMap;
 }
 
-function buildScoresFromReview(review: ViewerContestReview): ReviewScoreMap {
+function buildScoresFromReview(review: Pick<ViewerContestReview, "scores">): ReviewScoreMap {
   const scores = buildInitialScores();
 
   for (const score of review.scores) {
@@ -83,7 +83,7 @@ function clampRadarScore(score: number): number {
   return Math.max(0, Math.min(CONTEST_SCORE_MAX, score));
 }
 
-function buildOrderedScoresFromReview(review: ViewerContestReview): RadarScore[] {
+function buildOrderedScoresFromReview(review: Pick<ViewerContestReview, "scores">): RadarScore[] {
   const scoreMap = buildScoresFromReview(review);
 
   return NOTES_SUMMARY_SCORE_ORDER.map((criterion) => ({

@@ -35,7 +35,7 @@ export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick, isPrev
     <article className={styles.albumPage}>
       <header className={styles.pageHeader}>
         <div>
-          <h2 style={{ color: accent }}>{repairLikelyMojibake(page.title)}</h2>
+          <h2>{repairLikelyMojibake(page.title)}</h2>
           <p>
             {page.missingCount > 0
               ? `${page.missingCount} carte${page.missingCount > 1 ? "s" : ""} à trouver`

@@ -65,7 +65,7 @@ describe("Kanab Quest local repository", () => {
   it("persists and removes a validated favorite deck", async () => {
     const storage = memoryStorage();
     const repository = createLocalKqRepository(storage);
-    const favorite = { buddieCode: "HH2026-005", substrateCode: "BOTTE-001", supportCodes: ["BOTTE-003", "BOTTE-003", "BOTTE-004"] };
+    const favorite = { buddieCode: "HH2026-005", supportCodes: ["BOTTE-003", "BOTTE-003", "BOTTE-004"] };
     await repository.saveFavoriteDeck(favorite);
     expect((await repository.loadSession()).favoriteDeck).toEqual(favorite);
     await repository.saveFavoriteDeck(null);

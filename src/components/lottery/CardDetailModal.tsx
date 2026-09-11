@@ -75,8 +75,8 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
           <div className="flex items-center justify-between gap-3">
             <h3 id="card-detail-title" className="font-display text-xl text-ink">{slot.isOwned ? slot.name : "Carte inconnue"}</h3>
             <span
-              className="rounded-full px-2 py-0.5 text-xs font-bold text-white"
-              style={{ backgroundColor: rarityAccentColor[slot.rarity] }}
+              className="border-2 bg-[#102b28] px-2 py-0.5 text-xs font-bold text-white"
+              style={{ borderColor: rarityAccentColor[slot.rarity] }}
             >
               #{slot.cardNumber}
             </span>

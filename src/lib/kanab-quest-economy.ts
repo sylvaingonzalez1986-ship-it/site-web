@@ -1,4 +1,4 @@
-import { KQ_CARDS, KQ_HAND_SIZE, type KqBuddieEffect, type KqGameState, type KqSupportCard } from "@/lib/kanab-quest-game";
+import { KQ_RETIRED_CARDS, KQ_CARDS, KQ_HAND_SIZE, type KqBuddieEffect, type KqGameState, type KqSupportCard } from "@/lib/kanab-quest-game";
 
 export function getKqOpeningHandChance(deckSize: number, copies: number, handSize = KQ_HAND_SIZE) {
   const safeDeckSize = Math.max(0, Math.floor(deckSize));
@@ -51,7 +51,7 @@ export function summarizeKqCardEconomy(state: Pick<KqGameState, "deckCodes" | "u
   });
   const categoryBurns = Object.fromEntries(["substrate", "pbi", "equipment", "know-how", "luck"].map((category) => [category, 0])) as Record<string, number>;
   burnedCodes.forEach((code) => {
-    const category = KQ_CARDS.find((card) => card.code === code)?.category;
+    const category = [...KQ_CARDS, ...KQ_RETIRED_CARDS].find((card) => card.code === code)?.category;
     if (category) categoryBurns[category] += 1;
   });
   return {
@@ -60,13 +60,14 @@ export function summarizeKqCardEconomy(state: Pick<KqGameState, "deckCodes" | "u
     totalBurned: burnedCodes.length,
     totalPreserved: preservedCodes.length,
     categoryBurns,
-    recommendedBoosterCards: Math.max(0, burnedCodes.length - 1),
+    recommendedBoosterCards: burnedCodes.length,
   };
 }
 
 export function sanitizeKqDeckSelection(selectedCodes: string[], inventory: Record<string, number>) {
   const selectedCounts: Record<string, number> = {};
   return selectedCodes.filter((code) => {
+    if (!KQ_CARDS.some((card) => card.code === code && card.category !== "pbi")) return false;
     selectedCounts[code] = (selectedCounts[code] ?? 0) + 1;
     return selectedCounts[code] <= (inventory[code] ?? 0);
   });
@@ -84,24 +85,21 @@ export function getKqCardChallengeFit(card: KqSupportCard, challengeCodes: strin
   return challengeCodes.some((code) => effectsByChallenge[code]?.includes(card.effect));
 }
 
-const RECOMMENDED_DECKS: Record<KqBuddieEffect, { substrate: string; support: string[] }> = {
-  none: { substrate: "BOTTE-001", support: ["BOTTE-003", "BOTTE-005", "BOTTE-017", "BOTTE-006"] },
-  "starting-xp-1": { substrate: "BOTTE-001", support: ["BOTTE-005", "BOTTE-003", "BOTTE-017", "BOTTE-018"] },
-  "starting-xp-2": { substrate: "BOTTE-008", support: ["BOTTE-014", "BOTTE-015", "BOTTE-018", "BOTTE-006"] },
-  "starting-xp-3": { substrate: "BOTTE-009", support: ["BOTTE-004", "BOTTE-015", "BOTTE-017", "BOTTE-006"] },
-  "starting-xp-4": { substrate: "BOTTE-009", support: ["BOTTE-004", "BOTTE-006", "BOTTE-018", "BOTTE-017"] },
+const RECOMMENDED_DECKS: Record<KqBuddieEffect, { support: string[] }> = {
+  none: { support: ["BOTTE-003", "BOTTE-005", "BOTTE-017", "BOTTE-006"] },
+  "starting-xp-1": { support: ["BOTTE-005", "BOTTE-003", "BOTTE-017", "BOTTE-018"] },
+  "starting-xp-2": { support: ["BOTTE-014", "BOTTE-015", "BOTTE-018", "BOTTE-006"] },
+  "starting-xp-3": { support: ["BOTTE-004", "BOTTE-015", "BOTTE-017", "BOTTE-006"] },
+  "starting-xp-4": { support: ["BOTTE-004", "BOTTE-006", "BOTTE-018", "BOTTE-017"] },
 };
 
 export function buildKqRecommendedDeck(effect: KqBuddieEffect, inventory: Record<string, number>, challengeCodes: string[] = []) {
   const preferred = RECOMMENDED_DECKS[effect];
   const available = (code: string) => (inventory[code] ?? 0) > 0;
-  const substrate = available(preferred.substrate)
-    ? preferred.substrate
-    : KQ_CARDS.find((card) => card.category === "substrate" && available(card.code))?.code ?? preferred.substrate;
   const playable = KQ_CARDS.filter((card) => card.category !== "substrate" && card.category !== "pbi" && available(card.code));
   const challengeSupport = playable.filter((card) => getKqCardChallengeFit(card, challengeCodes)).slice(0, 2).map((card) => card.code);
   const support = [...challengeSupport, ...preferred.support.filter(available), ...playable.map((card) => card.code)]
     .filter((code, index, codes) => codes.indexOf(code) === index)
     .slice(0, 4);
-  return { substrate, support };
+  return { support };
 }
