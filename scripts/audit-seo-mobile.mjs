@@ -38,7 +38,8 @@ try {
         await page.waitForSelector(confirm, { visible: true });
         await page.$eval(confirm, button => button.click());
         await page.waitForFunction(expected => location.pathname === expected, {}, path);
-        await page.waitForNetworkIdle({ idleTime: 500, timeout: 30000 });
+        await page.waitForSelector('article.product-card', { visible: true });
+        await page.evaluate(() => document.fonts.ready.then(() => undefined));
       }
       assert.equal(new URL(page.url()).pathname, path, 'Audit the requested page, not an interstitial');
       const reject = await page.$('button::-p-text(Tout refuser)');
