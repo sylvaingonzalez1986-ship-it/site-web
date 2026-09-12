@@ -14,6 +14,7 @@ import { hasActiveProductPromo } from "@/lib/product-promo";
 import { mergeUniqueProductsById } from "@/lib/boutique-helpers";
 import type { BoutiqueSection, Producer, PublicStoreResponse } from "@/types/store";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
+import styles from "./BoutiquePageClient.module.css";
 
 const RegionProducerShowcase = dynamic(
   () => import("@/components/boutique/RegionProducerShowcase").then((mod) => mod.RegionProducerShowcase),
@@ -166,10 +167,11 @@ export function BoutiquePageClient({
           >
             <div className="mt-6">
               <div className="mx-auto mb-5 w-full max-w-3xl">
-                <div className="grid w-full grid-cols-2 overflow-hidden rounded border-2 border-[#1a1a1a] bg-white sm:grid-cols-4">
+                <div className={`grid w-full grid-cols-2 overflow-hidden border-2 border-[#1a1a1a] bg-white sm:grid-cols-4 ${styles.navigation}`}>
                   <button
                     type="button"
                     data-tutorial="tab-mes-produits"
+                    aria-pressed={showcaseMode === "products"}
                     className={`flex min-h-[58px] items-center justify-center px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors md:px-4 md:text-sm md:tracking-[0.1em] ${
                       showcaseMode === "products"
                         ? "bg-[#0a7b61] text-white"
@@ -182,6 +184,7 @@ export function BoutiquePageClient({
                   <button
                     type="button"
                     data-tutorial="tab-mes-voisins"
+                    aria-pressed={showcaseMode === "neighbors"}
                     className={`flex min-h-[58px] items-center justify-center border-l-2 border-[#1a1a1a] px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors md:px-4 md:text-sm md:tracking-[0.1em] ${
                       showcaseMode === "neighbors"
                         ? "bg-[#0a7b61] text-white"
@@ -199,6 +202,7 @@ export function BoutiquePageClient({
                   <button
                     type="button"
                     data-tutorial="tab-les-copains"
+                    aria-pressed={showcaseMode === "copains"}
                     className={`flex min-h-[58px] items-center justify-center border-t-2 border-[#1a1a1a] px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors sm:border-t-0 sm:border-l-2 md:px-4 md:text-sm md:tracking-[0.1em] ${
                       showcaseMode === "copains"
                         ? "bg-[#0a7b61] text-white"
@@ -220,9 +224,10 @@ export function BoutiquePageClient({
                         ? "bg-[#0a7b61] text-white"
                         : "text-ink hover:bg-[#f2ede2]"
                     }`}
+                    aria-pressed={showcaseMode === "regions"}
                     onClick={() => setShowcaseMode("regions")}
                   >
-                    <span className="block">Par region</span>
+                    <span className="block">Par région</span>
                   </button>
                 </div>
               </div>
@@ -261,7 +266,7 @@ export function BoutiquePageClient({
         return (
           <div key={section.id} className={spacingClass}>
             {isNeighborsMode && (
-              <div className="cartoon-border mb-6 bg-[#d7f0e8] p-8">
+              <div className={styles.sectionIntro}>
                 <h2 className="font-display text-4xl text-ink">Mes voisins</h2>
                 <p className="mt-3 max-w-3xl text-charcoal">
                   Producteurs bretons et du 44. Parce que oui, Nantes fait partie de la Bretagne historique.
@@ -269,7 +274,7 @@ export function BoutiquePageClient({
               </div>
             )}
             {isCopainsMode && (
-              <div className="cartoon-border mb-6 bg-yellow p-8">
+              <div className={styles.sectionIntro}>
                 <h2 className="font-display text-4xl text-ink">
                   Les copains de France et de Navarre
                 </h2>
@@ -288,6 +293,10 @@ export function BoutiquePageClient({
               </div>
             )}
 
+            <div className={styles.catalogueHeading}>
+              <h2>{effectiveFilter === "all" ? "Tous les produits" : effectiveFilter === "promos" ? "Les bonnes affaires" : categoryLabels[effectiveFilter]}</h2>
+              <span>{displayedProducts.length} produit{displayedProducts.length > 1 ? "s" : ""}</span>
+            </div>
             {isPartnerMode && hasProducerProducts ? (
               <ProducerBar
                 producers={producers}
@@ -315,7 +324,7 @@ export function BoutiquePageClient({
                   </div>
                 )}
 
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
                   {displayedProducts.map((product, index) => (
                     <ProductCard
                       key={product.id}
@@ -377,7 +386,7 @@ export function BoutiquePageClient({
   };
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
+    <section className={`section-band paper-grain pt-32 ${styles.page}`}>
       <div className="retro-container">
         {boutiqueSections.map((section, index) => renderBoutiqueSection(section, index))}
       </div>

@@ -21,6 +21,7 @@ export function CategoryFilter({ selected, filters, onChange }: CategoryFilterPr
           <button
             key={filter}
             type="button"
+            aria-pressed={selected === filter}
             onClick={() => onChange(filter)}
             className={cn(
               "pill-cartoon min-h-[44px] px-4 py-2 text-sm uppercase tracking-wide transition",

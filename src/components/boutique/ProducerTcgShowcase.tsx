@@ -55,11 +55,9 @@ export function ProducerTcgShowcase({
     return null;
   }
 
-  const needsLoop = producers.length > 4;
-
   return (
     <div className={className}>
-      <ProducerCarousel itemCount={producers.length} loop={needsLoop}>
+      <ProducerCarousel itemCount={producers.length}>
         {producers.map((producer) => (
           <ProducerTcgCard
             key={producer.id}
@@ -70,17 +68,6 @@ export function ProducerTcgShowcase({
             }
           />
         ))}
-        {needsLoop &&
-          producers.map((producer) => (
-            <ProducerTcgCard
-              key={`clone-${producer.id}`}
-              producer={producer}
-              isSelected={selectedProducerId === producer.id}
-              onClick={() =>
-                setSelectedProducerId((current) => (current === producer.id ? null : producer.id))
-              }
-            />
-          ))}
       </ProducerCarousel>
 
       <ProducerTcgModal

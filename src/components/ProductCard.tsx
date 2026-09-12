@@ -40,7 +40,7 @@ const categorySlugs: Record<string, string> = {
   accessoires: "accessoires-cbd",
 };
 
-const IMAGE_SIZES = "(max-width: 640px) 94vw, (max-width: 1024px) 46vw, 31vw";
+const IMAGE_SIZES = "(max-width: 1024px) 46vw, 31vw";
 
 type ProductCardProps = {
   product: Product;

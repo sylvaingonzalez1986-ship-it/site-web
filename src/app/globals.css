@@ -6867,7 +6867,8 @@ body.contest-guide-open .contest-hub-flipbook .contest-guide-flipbook .contest-n
 
 .region-showcase-grid {
   display: grid;
-  gap: 1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.25rem);
   margin-top: 1.5rem;
 }
 

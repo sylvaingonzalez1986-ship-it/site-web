@@ -9,6 +9,7 @@ import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import type { Product } from "@/data/products";
 import { formatPrice } from "@/lib/utils";
+import styles from "./ProductCardActions.module.css";
 
 const ProductAnalysisModal = dynamic(
   () => import("@/components/boutique/ProductAnalysisModal").then((mod) => mod.ProductAnalysisModal),
@@ -111,7 +112,7 @@ export function ProductCardActions({
         </div>
       )}
 
-      <div className="mt-auto border-t-2 border-[#1a1a1a] pt-4">
+      <div className={`mt-auto border-t-2 border-[#1a1a1a] pt-4 ${styles.purchase}`}>
         {hasPromo ? (
           <div className="flex items-end gap-3">
             <span className="price-original text-sm">{formatPrice(product.originalPrice!)}{product.category === "fleurs" && " / g"}</span>
@@ -126,7 +127,7 @@ export function ProductCardActions({
             <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
           </div>
         )}
-        <div className="mt-3 flex flex-wrap items-center gap-2">
+        <div className={`mt-3 flex flex-wrap items-center gap-2 ${styles.controls}`}>
           <Link
             href={productHref}
             className="btn-cartoon btn-secondary inline-flex min-h-[44px] flex-1 items-center justify-center px-4 py-3 text-xs"

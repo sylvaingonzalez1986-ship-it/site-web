@@ -1,0 +1,20 @@
+.carousel { min-width: 0; padding: clamp(12px, 2vw, 24px); border: 2px solid var(--ink); background: #f6f0e6; box-shadow: 5px 5px 0 #11151220; }
+.header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+.eyebrow { color: #00563f; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; }
+.heading { font-family: var(--font-display); font-size: clamp(20px, 2.5vw, 30px); line-height: 1.1; margin-top: 4px; }
+.count { flex-shrink: 0; font-size: 12px; font-weight: 700; }
+.track { position: relative; display: flex; gap: 16px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: #00563f #e7dfd1; padding: 10px 4px 18px; }
+.carousel .track > * { flex: 0 0 270px; scroll-snap-align: start; }
+.track:focus-visible, .buttons button:focus-visible { outline: 3px solid #00563f; outline-offset: 4px; }
+.controls { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 12px; font-size: 12px; color: var(--charcoal); }
+.buttons { display: flex; gap: 8px; }
+.buttons button { display: grid; place-items: center; width: 44px; height: 44px; border: 2px solid var(--ink); background: #00563f; color: white; cursor: pointer; }
+.buttons button:hover:not(:disabled) { background: #003f30; }
+.buttons button:disabled { opacity: .3; cursor: default; }
+.few { flex-wrap: wrap; justify-content: center; }
+@media (max-width: 640px) {
+  .header { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .carousel .track > * { flex-basis: 82%; max-width: 280px; }
+  .carousel .few > * { flex-basis: 100%; }
+  .controls > span { max-width: 180px; }
+}
