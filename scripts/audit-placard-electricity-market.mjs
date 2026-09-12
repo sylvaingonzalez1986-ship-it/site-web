@@ -8,7 +8,7 @@ import {Launcher} from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 const root=process.cwd(), output=resolve(root,'output/cooking-animation');
 const modules={
-  'workshop-entry': `import React from 'react'; import {createRoot} from 'react-dom/client'; import '/src/app/globals.css';
+  'workshop-entry': `import React from 'react'; import {createRoot} from 'react-dom/client'; import '/src/app/globals.css'; import retro from '/src/components/contest/ArenaRetro.module.css';
     import {KqMarketDesk} from '/src/components/placard/KqMarketDesk'; import {KqPlacardLobby} from '/src/components/placard/KqPlacardLobby';
     import {KanabQuestDicePrototype} from '/src/components/placard/KanabQuestDicePrototype';
     import {quoteKqMarketRoutes} from '/src/lib/kanab-quest-market'; import {KQ_EQUIPMENT_CATALOG} from '/src/lib/kanab-quest-equipment';
@@ -31,7 +31,7 @@ const modules={
       return originalFetch(url,init);
     };
     function App(){const [view,setView]=React.useState(params.has('hub')?'hub':params.has('game')?'game':'market');return React.createElement(React.Fragment,null, view==='hub'?React.createElement(KqPlacardLobby,{onOpen:v=>{window.__opened=v;setView(v);},onOpenEquipment:()=>{window.__equipmentOpened=true;}}):view==='market'?React.createElement(KqMarketDesk,{onOpenShop:code=>{window.__equipmentOpened=code||true;}}):view==='game'?React.createElement(KanabQuestDicePrototype,{apiScope:'player',viewMode:'game',showAdminOperations:false}):React.createElement('p',null,'Destination : '+view));}
-    createRoot(document.getElementById('root')).render(React.createElement(App));`,
+    createRoot(document.getElementById('root')).render(React.createElement("div",{className:retro.surface},React.createElement(App)));`,
   'next/image': `import React from 'react'; export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}});}`,
   'next/link': `import React from 'react'; export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}`,
   'next/navigation': `export const useRouter=()=>({push:()=>{},refresh:()=>{},replace:()=>{}});export const usePathname=()=>'/arene/placard';export const useSearchParams=()=>new URLSearchParams();`,
@@ -65,10 +65,11 @@ try{
   if(width===390)await page.evaluate(()=>{window.__failSale=true;});
   await page.click('[role="dialog"] footer button:last-child');await page.waitForSelector('[data-transformation][data-phase="working"]');
   const sprite='[data-transformation] [class*="cookingSprite"]';
-  const first=await page.$eval(sprite,el=>getComputedStyle(el).backgroundPosition);
-  await new Promise(r=>setTimeout(r,300));
-  const second=await page.$eval(sprite,el=>getComputedStyle(el).backgroundPosition);
+  const first=await page.$eval(sprite,el=>getComputedStyle(el).transform);
+  await page.waitForFunction((selector,initial)=>{const img=document.querySelector(selector);return img && getComputedStyle(img).transform!==initial;},{timeout:1500},sprite,first);
+  const second=await page.$eval(sprite,el=>getComputedStyle(el).transform);
   assert.notEqual(first,second,'Sylvain must actually stir between animation frames');
+  assert.equal(await page.$eval(sprite,el=>el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0),true,'The character image must actually be visible');
   assert.equal((await layout()).overflow,false);
   await shot('transform-'+width);await page.keyboard.press('Escape');
   if(width===390){
@@ -83,6 +84,30 @@ try{
   await page.keyboard.press('Escape');assert.equal(await page.$$eval('[role="dialog"]',els=>els.length),0);
   assert.equal(await page.$$eval('[aria-label="Machines et filières"]',els=>els.length),0);
   results.push({width,...check,saleConfirmed:true,retryKeepsKey:width===390});
+ }
+ // A cold PC cache must not skip the character; a failed asset must not trap a paid sale.
+ for(const failArt of [false,true]){
+   const context=await browser.createBrowserContext(), desktop=await context.newPage();
+   await desktop.setViewport({width:1440,height:900});
+   await desktop.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'no-preference'}]);
+   await desktop.setRequestInterception(true);
+   desktop.on('request',r=>{if(r.url().includes('sylvain-cooking-sprites')){if(failArt)void r.abort();else setTimeout(()=>void r.continue(),4500);}else if(r.url().startsWith('http://127.0.0.1:3198')||r.url().startsWith('data:'))void r.continue();else void r.abort();});
+   await desktop.goto('http://127.0.0.1:3198/',{waitUntil:'domcontentloaded'});
+   await desktop.waitForSelector('button[aria-label="Hash tamisé · Disponible"]');
+   await desktop.click('button[aria-label="Hash tamisé · Disponible"]');
+   await desktop.click('#market-machine-detail > article > button');
+   await desktop.click('[role="dialog"] footer button:last-child');
+   if(!failArt){
+     await new Promise(r=>setTimeout(r,2200));
+     assert(await desktop.$('[data-transformation][data-phase="working"]'),'Wait for the artwork before completing');
+     await desktop.waitForFunction(()=>{const image=document.querySelector('[data-transformation] img');return image?.complete && image.naturalWidth>0;});
+     const visibleAt=Date.now();await desktop.waitForSelector('[data-phase="complete"]');
+     assert(Date.now()-visibleAt>=1700,'Leave enough time to see Sylvain after the image loads');
+     await desktop.screenshot({path:resolve(output,'slow-image-desktop.png')});
+   }else{await desktop.waitForSelector('[class*="cookingFallback"]');}
+   await desktop.waitForSelector('#market-receipt-title');
+   assert.equal(await desktop.evaluate(()=>window.__sales.length),1);
+   await context.close();
  }
  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
  await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});

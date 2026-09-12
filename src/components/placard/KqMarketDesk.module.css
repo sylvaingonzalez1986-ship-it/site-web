@@ -439,8 +439,9 @@
 .transformation { position: fixed; z-index: 220; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 20px; overflow-y: auto; background: #002d24f5; color: #fff5da; text-align: center; }
 .transformation > strong { font: 900 clamp(26px, 6vw, 42px)/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .transformation > p { font-size: 13px; color: #a8dcc4; }
-.cookingScene { position: relative; flex: 0 0 auto; width: min(78vw, 47dvh, 390px); aspect-ratio: 1; isolation: isolate; }
-.cookingSprite { position: absolute; inset: 0; border-radius: 16px; background: #003f30 url('/placard/sylvain-cooking-sprites-v1.webp') 0 0 / 200% 200% no-repeat; box-shadow: 0 14px 40px #001b2380; animation: sylvainStir 1.1s steps(1, end) infinite; }
+.cookingScene { position: relative; flex: 0 0 auto; width: min(78vw, 47vh, 390px); height: min(78vw, 47vh, 390px); width: min(78vw, 47dvh, 390px); height: min(78vw, 47dvh, 390px); isolation: isolate; }
+.cookingFrame { position: absolute; inset: 0; overflow: hidden; border-radius: 16px; background: #003f30; box-shadow: 0 14px 40px #001b2380; }
+.cookingFrame .cookingSprite { position: absolute; top: 0; left: 0; display: block; width: 200%; height: 200%; max-width: none; object-fit: fill; animation: sylvainStir 1.1s steps(1, end) infinite; }
 .cookingSteam { position: absolute; inset: 0; pointer-events: none; }
 .cookingSteam i { position: absolute; left: 65%; top: 49%; width: 8%; height: 16%; border: 3px solid #fff5da; border-inline-color: transparent; border-bottom-color: transparent; border-radius: 50%; opacity: 0; animation: cookingSteam 1.8s ease-out infinite; }
 .cookingSteam i:nth-child(2) { left: 72%; animation-delay: .6s; }
@@ -448,10 +449,10 @@
 .cookingSeal { position: absolute; right: -8px; bottom: -10px; display: grid; place-items: center; width: 58px; height: 58px; border: 3px solid #102f29; border-radius: 50%; background: #f4c43d; color: #102f29; box-shadow: 3px 4px 0 #102f29; transform: rotate(-8deg); }
 .cookingSeal svg { width: 30px; height: 30px; }
 .cookingRoute { max-width: 100%; margin-top: 4px; color: #f4c43d; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-.transformation[data-phase="complete"] .cookingSprite { animation: none; background-position: 100% 100%; }
+.transformation[data-phase="complete"] .cookingSprite { animation: none; transform: translate(-50%, -50%); }
 .transformation[data-phase="complete"] .cookingSteam { display: none; }
 .transformation[data-phase="complete"] .cookingSeal { background: #54d5bb; animation: cookingDone 400ms ease-out both; }
-@keyframes sylvainStir { 0%, 100% { background-position: 0 0; } 25% { background-position: 100% 0; } 50% { background-position: 0 100%; } 75% { background-position: 100% 100%; } }
+@keyframes sylvainStir { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(-50%, 0); } 50% { transform: translate(0, -50%); } 75% { transform: translate(-50%, -50%); } }
 @keyframes cookingSteam { 0% { opacity: 0; transform: translateY(0) rotate(-12deg) scale(.7); } 35% { opacity: .6; } 100% { opacity: 0; transform: translateY(-65px) rotate(15deg) scale(1.2); } }
 @keyframes cookingDone { from { transform: rotate(-25deg) scale(.6); } to { transform: rotate(-8deg) scale(1); } }
 @media (max-width: 900px) {
@@ -473,3 +474,6 @@
 }
 
 .energySettlement.energySettlement { padding: 12px; border: 2px solid #14232b; background: #fff3b5; color: #14232b; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+
+.cookingFallback { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 16px; background: #003f30; color: #f4c43d; }
+.cookingFallback svg { width: 45%; height: 45%; }

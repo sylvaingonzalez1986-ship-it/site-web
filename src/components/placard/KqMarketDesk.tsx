@@ -54,6 +54,29 @@ import {
 import { createClientRequestKey } from "@/lib/client-request-key";
 import styles from "./KqMarketDesk.module.css";
 
+const COOKING_ART_URL = "/placard/sylvain-cooking-sprites-v1.webp";
+
+// The API can finish before the sprite arrives on a cold cache or slow connection.
+// Bound this wait so a broken image can never prevent a confirmed sale's receipt.
+function waitForCookingArtwork(): Promise<{ loaded: boolean; visibleAt: number }> {
+  return new Promise((resolve) => {
+    const artwork = new window.Image();
+    let settled = false;
+    const finish = (loaded: boolean) => {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(timeout);
+      artwork.onload = null;
+      artwork.onerror = null;
+      resolve({ loaded, visibleAt: performance.now() });
+    };
+    const timeout = window.setTimeout(() => finish(false), 10000);
+    artwork.onload = () => { void artwork.decode().then(() => finish(true), () => finish(false)); };
+    artwork.onerror = () => finish(false);
+    artwork.src = COOKING_ART_URL;
+  });
+}
+
 type MarketLot = {
   flowerId: string;
   varietyCode: string;
@@ -193,6 +216,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
   const [selling, setSelling] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<KqMarketRouteCode | null>(null);
   const [transformation, setTransformation] = useState<"idle" | "working" | "complete">("idle");
+  const [cookingArtFailed, setCookingArtFailed] = useState(false);
   const transformationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const saleInFlight = useRef(false);
   const [savingRouteGoal, setSavingRouteGoal] = useState(false);
@@ -369,7 +393,8 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
     const requestKey = saleRequestKeyRef.current ?? createClientRequestKey();
     saleRequestKeyRef.current = requestKey;
     setSelling(true);
-    const cookingStartedAt = performance.now();
+    setCookingArtFailed(false);
+    const cookingArtworkReady = waitForCookingArtwork();
     setTransformation("working");
     setError("");
     setRouteGoalError("");
@@ -385,13 +410,15 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
       });
       const payload = await response.json() as SaleReceipt & { error?: string };
       if (!response.ok) throw new Error(payload.error || "La vente n’a pas été enregistrée.");
+      const artwork = await cookingArtworkReady;
+      setCookingArtFailed(!artwork.loaded);
       setSaleReceipt(payload);
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       // Let a short stirring loop finish even when the API answers immediately.
       transformationTimer.current = setTimeout(() => {
         setTransformation("complete");
         transformationTimer.current = setTimeout(() => setTransformation("idle"), reducedMotion ? 500 : 1400);
-      }, reducedMotion ? 0 : Math.max(0, 2000 - (performance.now() - cookingStartedAt)));
+      }, reducedMotion || !artwork.loaded ? 0 : Math.max(0, 2000 - (performance.now() - artwork.visibleAt)));
       setSnapshot((current) => current ? {
         ...current,
         cashCents: payload.cashAfterCents,
@@ -730,10 +757,10 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
           <button type="button" onClick={() => setSaleReceipt(null)}>Continuer</button>
         </section>
       </div> : null}
-      <link rel="preload" as="image" href="/placard/sylvain-cooking-sprites-v1.webp" />
+      <link rel="preload" as="image" href={COOKING_ART_URL} />
       {transformation !== "idle" ? <div className={styles.transformation} role="status" tabIndex={-1} aria-live="polite" aria-atomic="true" data-transformation data-phase={transformation}>
         <div className={styles.cookingScene} aria-hidden="true">
-          <div className={styles.cookingSprite} />
+          {cookingArtFailed ? <div className={styles.cookingFallback}><PackageCheck /></div> : <div className={styles.cookingFrame}><Image className={styles.cookingSprite} src={COOKING_ART_URL} alt="" width={1254} height={1254} unoptimized loading="eager" /></div>}
           <div className={styles.cookingSteam}><i /><i /><i /></div>
           <span className={styles.cookingSeal}>{transformation === "complete" ? <Check /> : <Flame />}</span>
         </div>
