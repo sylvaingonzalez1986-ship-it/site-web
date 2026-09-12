@@ -1,30 +1,20 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-
-const playerShell = readFileSync(
-  join(process.cwd(), "src/components/placard/PlacardPlayerShell.tsx"),
-  "utf8",
-);
-
-describe("Kanab Quest Placard navigation position", () => {
-  it("resets the viewport before and after every internal screen change", () => {
-    expect(playerShell).toContain("resetPlacardScrollPosition");
-    expect(playerShell).toContain("resetScroll();\n    if (nextView === view) return;");
-    expect(playerShell).toContain("window.requestAnimationFrame");
-    expect(playerShell).toContain("SCROLL_SETTLE_MS");
-    expect(playerShell).toContain("useLayoutEffect(() =>");
+const source = (file: string) => readFileSync(join(process.cwd(), "src", file), "utf8");
+describe("Game viewport integration", () => {
+  it("uses the same viewport guard in the Placard, game and arena", () => {
+    for (const file of ["components/placard/PlacardPlayerShell.tsx", "components/placard/KanabQuestDicePrototype.tsx", "components/contest/ContestHubClient.tsx"]) {
+      expect(source(file)).toContain("useGameViewport");
+    }
+    expect(source("components/placard/PlacardPlayerShell.tsx")).not.toContain("SCROLL_SETTLE_MS");
+    expect(source("components/placard/KanabQuestDicePrototype.tsx")).not.toContain("preserveMobileViewport");
   });
-
-  it("covers the scrolling element and mobile body fallbacks", () => {
-    expect(playerShell).toContain("document.scrollingElement.scrollTop = 0");
-    expect(playerShell).toContain("document.documentElement.scrollTop = 0");
-    expect(playerShell).toContain("document.body.scrollTop = 0");
-    expect(playerShell).toContain("document.activeElement.blur()");
-  });
-
-  it("prevents browser history from restoring the previous bottom position", () => {
-    expect(playerShell).toContain('window.history.scrollRestoration = "manual"');
-    expect(playerShell).toContain("previousScrollRestoration");
+  it("uses coordinated locks for nested game windows", () => {
+    for (const file of ["KqMarketDesk", "KqSupportBoosterShop", "KqEquipmentInventoryModal"]) {
+      expect(source("components/placard/" + file + ".tsx")).toContain("useBodyScrollLock");
+      expect(source("components/placard/" + file + ".tsx")).not.toContain('document.body.style.overflow =');
+    }
+    expect(source("hooks/useBodyScrollLock.ts")).not.toContain("window.scrollTo");
   });
 });

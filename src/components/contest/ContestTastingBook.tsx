@@ -1,5 +1,7 @@
 "use client";
 
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -59,10 +61,10 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
   const inFlower = view === "flower" || view === "tasting" || view === "rewards";
   const pageTitle = view === "contents" ? "Table des matières" : view === "flowers" ? CONTEST_ENTRY_CATEGORY_LABELS[chapter.category] : entry?.title ?? "Ta fleur";
 
+  useBodyScrollLock(true);
+
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
     const alreadyOpen = document.body.classList.contains("contest-notebook-open");
-    document.body.style.overflow = "hidden";
     document.body.classList.add("contest-notebook-open");
     const syncViewport = () => {
       const viewport = window.visualViewport;
@@ -74,7 +76,6 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
     window.visualViewport?.addEventListener("scroll", syncViewport);
     window.addEventListener("resize", syncViewport);
     return () => {
-      document.body.style.overflow = previousOverflow;
       if (!alreadyOpen) document.body.classList.remove("contest-notebook-open");
       window.visualViewport?.removeEventListener("resize", syncViewport);
       window.visualViewport?.removeEventListener("scroll", syncViewport);
@@ -96,7 +97,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
   const go = (next: View) => { setView(next); setTurn((value) => value + 1); };
   const openChapter = (next: Chapter) => { setChapter(next); go("flowers"); };
   const openFlower = (id: string) => { setEntryId(id); go("flower"); };
-  const close = () => { setOpening(false); setOpen(false); requestAnimationFrame(() => coverRef.current?.focus()); };
+  const close = () => { setOpening(false); setOpen(false); requestAnimationFrame(() => coverRef.current?.focus({ preventScroll: true })); };
   const startNotes = () => {
     if (!entry) return;
     setVisitedNotes((previous) => previous.includes(entry.id) ? previous : [...previous, entry.id]);

@@ -95,7 +95,7 @@ export function ArenaFirstVisitTutorial() {
   useEffect(() => {
     if (!open) return;
     const previousActive = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const focusTimer = window.setTimeout(() => closeButtonRef.current?.focus(), 0);
+    const focusTimer = window.setTimeout(() => closeButtonRef.current?.focus({ preventScroll: true }), 0);
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
@@ -118,7 +118,7 @@ export function ArenaFirstVisitTutorial() {
     return () => {
       window.clearTimeout(focusTimer);
       document.removeEventListener("keydown", handleKeyDown);
-      previousActive?.focus();
+      if (previousActive?.isConnected) previousActive.focus({ preventScroll: true });
     };
   }, [dismiss, open]);
 

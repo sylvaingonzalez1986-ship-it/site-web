@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 
 let lockCount = 0;
-let lockedScrollY = 0;
 let prevHtmlOverflow = "";
 let prevBodyOverflow = "";
 let prevBodyPaddingRight = "";
@@ -16,7 +15,6 @@ function lockBodyScroll() {
   if (lockCount === 0) {
     const html = document.documentElement;
     const body = document.body;
-    lockedScrollY = window.scrollY;
     const scrollbarWidth = window.innerWidth - html.clientWidth;
 
     prevHtmlOverflow = html.style.overflow;
@@ -50,11 +48,12 @@ function unlockBodyScroll() {
   html.style.overflow = prevHtmlOverflow;
   body.style.overflow = prevBodyOverflow;
   body.style.paddingRight = prevBodyPaddingRight;
-  window.scrollTo(0, lockedScrollY);
+  // Overflow locking keeps the current position. Restoring an opening-time
+  // snapshot here would override navigation that happened inside the modal.
 }
 
 export function useBodyScrollLock(locked: boolean) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!locked) {
       return;
     }

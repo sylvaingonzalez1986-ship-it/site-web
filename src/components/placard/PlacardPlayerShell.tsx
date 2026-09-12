@@ -3,19 +3,12 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowLeft, Hourglass } from "lucide-react";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { KqPlacardLobby } from "./KqPlacardLobby";
+import { useGameViewport } from "@/hooks/useGameViewport";
 import retro from "../contest/ArenaRetro.module.css";
 
 const NAVIGATION_FEEDBACK_MS = 420;
-const SCROLL_SETTLE_MS = 120;
-
-function resetPlacardScrollPosition() {
-  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
-}
 
 function PlacardViewLoading() {
   return (
@@ -82,29 +75,13 @@ export function PlacardPlayerShell() {
   const [requestedEquipmentCode, setRequestedEquipmentCode] = useState<string | null>(null);
   const [shopReturnView, setShopReturnView] = useState<PlacardView>("hub");
   const navigationTimerRef = useRef<number | null>(null);
-  const scrollFrameRef = useRef<number | null>(null);
-  const scrollTimerRef = useRef<number | null>(null);
   const view: PlacardView = selectedView ?? (deepLink === "shop-equipment" ? "shop" : deepLink);
   const autoOpenEquipmentCatalog = equipmentCatalogRequested
     || (selectedView === null && deepLink === "shop-equipment");
 
-  const resetScroll = useCallback(() => {
-    if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
-    if (scrollTimerRef.current !== null) window.clearTimeout(scrollTimerRef.current);
-    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
-    resetPlacardScrollPosition();
-    scrollFrameRef.current = window.requestAnimationFrame(() => {
-      resetPlacardScrollPosition();
-      scrollFrameRef.current = null;
-      scrollTimerRef.current = window.setTimeout(() => {
-        resetPlacardScrollPosition();
-        scrollTimerRef.current = null;
-      }, SCROLL_SETTLE_MS);
-    });
-  }, []);
+  const surfaceRef = useGameViewport<HTMLDivElement>(view);
 
   const openView = useCallback((nextView: PlacardView) => {
-    resetScroll();
     if (nextView === view) return;
     if (navigationTimerRef.current !== null) window.clearTimeout(navigationTimerRef.current);
     setPendingView(nextView);
@@ -113,7 +90,7 @@ export function PlacardPlayerShell() {
       setPendingView(null);
       navigationTimerRef.current = null;
     }, NAVIGATION_FEEDBACK_MS);
-  }, [resetScroll, view]);
+  }, [view]);
 
   const openEquipmentCatalog = useCallback((equipmentCode?: string) => {
     setShopReturnView(view === "shop" ? "hub" : view);
@@ -124,13 +101,7 @@ export function PlacardPlayerShell() {
 
   useEffect(() => () => {
     if (navigationTimerRef.current !== null) window.clearTimeout(navigationTimerRef.current);
-    if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
-    if (scrollTimerRef.current !== null) window.clearTimeout(scrollTimerRef.current);
   }, []);
-
-  useLayoutEffect(() => {
-    resetScroll();
-  }, [resetScroll, view]);
 
   useEffect(() => {
     const previousScrollRestoration = window.history.scrollRestoration;
@@ -158,7 +129,7 @@ export function PlacardPlayerShell() {
       view === "shop" ? "La Boutique" : view === "game" ? "Le Jeu" : view === "market" ? "Le Marché" : "Fleur vs Fleur";
 
     return (
-      <div className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
+      <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
         {navigationFeedback}
         <nav className={`${retro.shellNav} sticky top-0 z-[80] border-b-2 border-ink bg-cream/95 px-3 py-3 backdrop-blur sm:px-5`} aria-label="Navigation du Placard">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
@@ -207,7 +178,7 @@ export function PlacardPlayerShell() {
   }
 
   return (
-    <div className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
+    <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
       {navigationFeedback}
       <KqPlacardLobby onOpen={openView} onOpenEquipment={openEquipmentCatalog} />
     </div>

@@ -9,8 +9,7 @@ import puppeteer from 'puppeteer-core';
 const root=process.cwd(), output=resolve(root,'output/cooking-animation');
 const modules={
   'workshop-entry': `import React from 'react'; import {createRoot} from 'react-dom/client'; import '/src/app/globals.css'; import retro from '/src/components/contest/ArenaRetro.module.css';
-    import {KqMarketDesk} from '/src/components/placard/KqMarketDesk'; import {KqPlacardLobby} from '/src/components/placard/KqPlacardLobby';
-    import {KanabQuestDicePrototype} from '/src/components/placard/KanabQuestDicePrototype';
+    import {PlacardPlayerShell} from '/src/components/placard/PlacardPlayerShell';
     import {quoteKqMarketRoutes} from '/src/lib/kanab-quest-market'; import {KQ_EQUIPMENT_CATALOG} from '/src/lib/kanab-quest-equipment';
     const params=new URLSearchParams(location.search);
     const equipmentCodes=['TENT-080-STARTER',KQ_EQUIPMENT_CATALOG.find(e=>e.unlocks.includes('dry-sift')).code];
@@ -30,8 +29,9 @@ const modules={
       if(String(url).startsWith('/api/')) return new Response(JSON.stringify({error:'Données de progression indisponibles dans cette démonstration.'}),{status:503});
       return originalFetch(url,init);
     };
-    function App(){const [view,setView]=React.useState(params.has('hub')?'hub':params.has('game')?'game':'market');return React.createElement(React.Fragment,null, view==='hub'?React.createElement(KqPlacardLobby,{onOpen:v=>{window.__opened=v;setView(v);},onOpenEquipment:()=>{window.__equipmentOpened=true;}}):view==='market'?React.createElement(KqMarketDesk,{onOpenShop:code=>{window.__equipmentOpened=code||true;}}):view==='game'?React.createElement(KanabQuestDicePrototype,{apiScope:'player',viewMode:'game',showAdminOperations:false}):React.createElement('p',null,'Destination : '+view));}
-    createRoot(document.getElementById('root')).render(React.createElement("div",{className:retro.surface},React.createElement(App)));`,
+    params.set('view',params.has('hub')?'hub':params.has('game')?'game':'market');history.replaceState(null,'','?'+params);
+    createRoot(document.getElementById('root')).render(React.createElement("div",{className:retro.surface},React.createElement(PlacardPlayerShell),React.createElement("footer",{style:{height:1800,background:"#eee"}},"Pied de page permanent")));`,
+  'next/dynamic': `import React from 'react';export default function dynamic(loader,{loading:Loading}){const Component=React.lazy(async()=>({default:await loader()}));return props=>React.createElement(React.Suspense,{fallback:React.createElement(Loading)},React.createElement(Component,props));}`,
   'next/image': `import React from 'react'; export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}});}`,
   'next/link': `import React from 'react'; export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}`,
   'next/navigation': `export const useRouter=()=>({push:()=>{},refresh:()=>{},replace:()=>{}});export const usePathname=()=>'/arene/placard';export const useSearchParams=()=>new URLSearchParams();`,
@@ -51,6 +51,7 @@ try{
   await shot('hub-'+width);
   await page.click('nav[aria-label="Activités du Placard"] button:nth-child(2)');await shot('hub-market-'+width);
   await page.locator('::-p-text(Ouvrir le marché)').click();await page.waitForSelector('[aria-label="Machines et filières"]');
+  assert.equal(await page.evaluate(()=>scrollY),0,'Opening the market starts at the game, including after lazy loading');
   assert.equal(await page.$$eval('[aria-label="Machines et filières"] button',els=>els.length),10);
   assert.equal(await page.$$eval('#market-machine-detail > article',els=>els.length),1);
   await page.$eval('[aria-label="Atelier du lot sélectionné"]',el=>el.scrollIntoView({block:'center'}));await shot('market-'+width);
@@ -83,7 +84,12 @@ try{
   if(width===390)assert.equal(sales[0].requestKey,sales[1].requestKey);
   await page.keyboard.press('Escape');assert.equal(await page.$$eval('[role="dialog"]',els=>els.length),0);
   assert.equal(await page.$$eval('[aria-label="Machines et filières"]',els=>els.length),0);
-  results.push({width,...check,saleConfirmed:true,retryKeepsKey:width===390});
+  await page.waitForFunction(()=>document.querySelector('[data-placard-view]').getBoundingClientRect().bottom>100);
+  assert.equal(await page.evaluate(()=>document.documentElement.style.overflow),'');
+  await page.click('nav[aria-label="Navigation du Placard"] button');
+  await page.waitForSelector('[data-placard-view="hub"]');
+  assert.equal(await page.evaluate(()=>scrollY),0,'Returning to the dashboard must start at its top');
+  results.push({width,...check,gameStillVisibleAfterSale:true,saleConfirmed:true,retryKeepsKey:width===390});
  }
  // A cold PC cache must not skip the character; a failed asset must not trap a paid sale.
  for(const failArt of [false,true]){

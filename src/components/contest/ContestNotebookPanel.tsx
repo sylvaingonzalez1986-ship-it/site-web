@@ -695,7 +695,7 @@ export function ContestNotebookPanel({
     onCloseGuide?.();
 
     if (!isInlineDisplayMode) {
-      window.requestAnimationFrame(() => launchButtonRef.current?.focus());
+      window.requestAnimationFrame(() => launchButtonRef.current?.focus({ preventScroll: true }));
     }
 
     if (searchParams.get("edit") !== "notes") {

@@ -1,11 +1,13 @@
 "use client";
+
+import { useGameViewport } from "@/hooks/useGameViewport";
 import { KqEnergyPanel } from "./KqEnergyPanel";
 import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
 
 import Image from "next/image";
 import Link from "next/link";
 import { Banknote, ChevronLeft, ChevronRight, Dices, Flame, RotateCcw, Scale, ShoppingBag, Sparkles, Star, Swords, Target, Trophy, X, Zap } from "lucide-react";
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { playKqDiceAnimation } from "@/lib/kanab-quest-dice-animation";
 import {
   advanceKqStage,
@@ -528,7 +530,7 @@ export function KanabQuestDicePrototype({
   const repositoryRef = useRef<KqRepository | null>(null);
   const remoteInventoryRef = useRef<Record<string, number>>({});
   const skipNextSessionFetchRef = useRef(false);
-  const mobileViewportRef = useRef<{ scrollY: number } | null>(null);
+  const gameViewportRef = useGameViewport(`${viewMode}:${setupOpen ? "setup" : state.phase === "complete" ? "harvest" : "play"}`);
   const [revealedRounds, setRevealedRounds] = useState(0);
   const [deckNotice, setDeckNotice] = useState("");
   const [deckFilter, setDeckFilter] = useState<"all" | "equipment" | "know-how" | "luck">("all");
@@ -1043,26 +1045,6 @@ export function KanabQuestDicePrototype({
     && (state.handRedrawsUsed ?? 0) < redrawLimit
     && !state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.category !== "substrate");
 
-  const preserveMobileViewport = () => {
-    if (typeof window === "undefined" || !window.matchMedia("(max-width: 760px)").matches) return;
-    mobileViewportRef.current = { scrollY: window.scrollY };
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-  };
-
-  useLayoutEffect(() => {
-    const snapshot = mobileViewportRef.current;
-    if (!snapshot) return;
-    mobileViewportRef.current = null;
-
-    window.scrollTo({ top: snapshot.scrollY, left: 0, behavior: "auto" });
-    const frame = window.requestAnimationFrame(() => {
-      window.scrollTo({ top: snapshot.scrollY, left: 0, behavior: "auto" });
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [state.phase, state.stageIndex, state.dice, state.usedCards.length]);
-
   useEffect(() => {
     if (state.phase !== "rolled" || !physicsDiceActive || !state.dice) return;
     const values = state.bonusDie ? [...state.dice, state.bonusDie] : [...state.dice];
@@ -1087,7 +1069,6 @@ export function KanabQuestDicePrototype({
   }, [physicsDiceActive, state.bonusDie, state.dice, state.phase]);
 
   const applyGameAction = async (action: "roll" | "resolve" | "advance" | "redraw" | "heritage", deferState = false): Promise<KqGameState | null> => {
-    preserveMobileViewport();
     setGameActionError("");
     if (!remoteBurnsEnabled) {
       const nextState = action === "roll" ? rollKqDice(state) : action === "resolve" ? resolveKqStage(state) : action === "advance" ? advanceKqStage(state) : action === "redraw" ? redrawKqHand(state) : activateKqHeritage(state);
@@ -1556,7 +1537,6 @@ export function KanabQuestDicePrototype({
 
   const playAndBurnCard = async (code: string) => {
     if ((activeInventory[code] ?? 0) <= 0) return;
-    preserveMobileViewport();
     if (remoteBurnsEnabled) {
       if (!remoteRunId) {
         setRemoteNotice("Cette culture n’est pas enregistrée. Recommence-la en mode officiel.");
@@ -1747,7 +1727,7 @@ export function KanabQuestDicePrototype({
     void repositoryRef.current?.saveVerdictTransaction(verdict, nextProfile, nextInventory);
   };
 
-  if (!hydrated) return <main className={styles.page}><div className={styles.loading}>Ouverture de La Botte…</div></main>;
+  if (!hydrated) return <main ref={gameViewportRef} className={styles.page}><div className={styles.loading}>Ouverture de La Botte…</div></main>;
 
   if (setupOpen || viewMode === "arena") {
     const supportCards = KQ_CARDS.filter((card) => card.timing !== "passive" && card.category !== "pbi" && (deckFilter === "all" || card.category === deckFilter));
@@ -1758,7 +1738,7 @@ export function KanabQuestDicePrototype({
     const deckCoverage = getKqDeckCoverage(selectedCards);
     const mostBurned = Object.entries(burnHistory.reduce<Record<string, number>>((counts, receipt) => ({ ...counts, [receipt.cardCode]: (counts[receipt.cardCode] ?? 0) + 1 }), {})).sort((a, b) => b[1] - a[1]).slice(0, 3);
     return (
-      <main className={styles.page} data-player-mode={isPlayerMode || undefined} data-admin-operations={showAdminOperations || undefined} data-view-mode={viewMode}>
+      <main ref={gameViewportRef} className={styles.page} data-player-mode={isPlayerMode || undefined} data-admin-operations={showAdminOperations || undefined} data-view-mode={viewMode}>
         {showCollectionChest ? (
           <div className={styles.collectionModalBackdrop} role="presentation" onClick={() => setShowCollectionChest(false)}>
             <section className={styles.collectionModal} role="dialog" aria-modal="true" aria-labelledby="collection-title" onClick={(event) => event.stopPropagation()}>
@@ -2044,7 +2024,7 @@ export function KanabQuestDicePrototype({
     const preservedCards = economy.preservedCodes.map((code) => KQ_CARDS.find((card) => card.code === code)).filter((card): card is KqSupportCard => Boolean(card));
     if (isPlayerMode) {
       return (
-        <main className={styles.page} data-player-mode="true">
+        <main ref={gameViewportRef} className={styles.page} data-player-mode="true">
           <section className={styles.harvestHero}>
             <Image src="/dev/placard/charles.webp" width={180} height={210} alt="Charles présente la récolte" />
             <div>
@@ -2091,7 +2071,7 @@ export function KanabQuestDicePrototype({
       );
     }
     return (
-      <main className={styles.page}>
+      <main ref={gameViewportRef} className={styles.page}>
         <section className={styles.harvestHero}>
           <Image src="/dev/placard/charles.webp" width={180} height={210} alt="Charles présente la récolte" />
           <div><span>{persistedFlowerId ? "Carte Fleur officielle obtenue" : "Carte Récolte obtenue"}</span><h1>{tier}</h1><p>{state.varietyName} · créée le {formatKqDate(flower.createdAt)}</p><small className={styles.integrityCode}>Culture #{String(state.seed).padStart(5, "0")} · Empreinte {flower.integrityCode}{persistedFlowerId ? ` · Fleur ${persistedFlowerId.slice(0, 8)}` : ""}</small></div>
@@ -2170,7 +2150,7 @@ export function KanabQuestDicePrototype({
   const lastStageReward = state.phase === "resolved" ? state.history.at(-1) ?? null : null;
 
   return (
-    <main className={styles.page} data-view-mode={viewMode}>
+    <main ref={gameViewportRef} className={styles.page} data-view-mode={viewMode}>
       <header className={styles.topbar}>
         <div className={styles.gameBrand}><span className={styles.gameBrandMark} aria-hidden="true"><Image src="/mascots/home-welcome.png" alt="" width={1122} height={1402} sizes="64px" /></span><div><span>{isPlayerMode ? "Kanab Quest · Culture officielle" : "Kanab Quest · Prototype local"}</span><h1>La Botte du Chanvrier</h1></div></div>
         <div className={styles.resources}><span><Zap />{state.xp} XP</span><span><Star /> Qualité {runProjection.projectedQuality}</span><span>Pression {state.pressure}/4</span>{!isPlayerMode ? <button type="button" onClick={reset}><RotateCcw /> Recommencer</button> : null}</div>

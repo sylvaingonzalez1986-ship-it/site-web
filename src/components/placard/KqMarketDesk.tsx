@@ -1,5 +1,7 @@
 "use client";
 
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+
 import { previewKqEnergyPayment } from "@/lib/kanab-quest-energy";
 import Image from "next/image";
 
@@ -226,11 +228,11 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
   const pageRef = useRef<HTMLElement>(null);
   const modalOpen = Boolean(pendingQuote || saleReceipt || transformation !== "idle");
 
+  useBodyScrollLock(modalOpen);
+
   useEffect(() => {
     if (!modalOpen) return;
     const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     const modal = pageRef.current?.querySelector<HTMLElement>(transformation !== "idle" ? '[data-transformation]' : '[role="dialog"]');
     const controls = () => Array.from(modal?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled)') ?? []).filter((el) => el.getClientRects().length > 0);
     (controls()[0] ?? modal)?.focus({ preventScroll: true });
@@ -250,7 +252,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
       else if (!event.shiftKey && (document.activeElement === last || !modal?.contains(document.activeElement))) { event.preventDefault(); first.focus(); }
     };
     document.addEventListener("keydown", handleKey);
-    return () => { document.body.style.overflow = previousOverflow; document.removeEventListener("keydown", handleKey); if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true }); };
+    return () => { document.removeEventListener("keydown", handleKey); if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true }); };
   }, [modalOpen, selling, transformation]);
 
   const loadMarket = useCallback(async () => {

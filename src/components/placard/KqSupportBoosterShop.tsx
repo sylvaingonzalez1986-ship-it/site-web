@@ -1,5 +1,7 @@
 "use client";
 
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+
 import Image from "next/image";
 import { Flame, PackageOpen, Wrench, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -55,10 +57,10 @@ export function KqSupportBoosterShop({
     onExit?.();
   }, [onExit]);
 
+  useBodyScrollLock(shopOpen);
+
   useEffect(() => {
     if (!shopOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       if (equipmentCatalogOpen) setEquipmentCatalogOpen(false);
@@ -67,7 +69,6 @@ export function KqSupportBoosterShop({
     };
     window.addEventListener("keydown", handleEscape);
     return () => {
-      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleEscape);
     };
   }, [closeShop, equipmentCatalogOpen, openedCards.length, shopOpen]);

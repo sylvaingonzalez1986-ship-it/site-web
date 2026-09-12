@@ -1,5 +1,7 @@
 "use client";
 
+import { useGameViewport } from "@/hooks/useGameViewport";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import Image from "next/image";
 import { ArenaSceneHeader } from "./ArenaSceneHeader";
 import Link from "next/link";
@@ -3051,6 +3053,7 @@ export function ContestHubClient({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [activeArenaView, setActiveArenaView] = useState<ContestArenaView>(initialView);
+  const surfaceRef = useGameViewport(`${surface}:${activeArenaView}`);
   const isNotebookDetailSurface = surface === "notebook";
   const isFlowerRankingSurface = surface === "notebook-ranking";
   const isNotebookSurface = isNotebookDetailSurface || isFlowerRankingSurface;
@@ -3182,36 +3185,7 @@ export function ContestHubClient({
     };
   }, [isAuthenticated]);
 
-  useEffect(() => {
-    if (!isHubModalOpen) {
-      return;
-    }
-
-    const scrollY = window.scrollY;
-    const originalBodyPosition = document.body.style.position;
-    const originalBodyTop = document.body.style.top;
-    const originalBodyWidth = document.body.style.width;
-    const originalBodyOverflow = document.body.style.overflow;
-    const originalHtmlOverflow = document.documentElement.style.overflow;
-    const originalHtmlOverscrollBehavior = document.documentElement.style.overscrollBehavior;
-
-    document.documentElement.style.overflow = "hidden";
-    document.documentElement.style.overscrollBehavior = "none";
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = "100%";
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.position = originalBodyPosition;
-      document.body.style.top = originalBodyTop;
-      document.body.style.width = originalBodyWidth;
-      document.body.style.overflow = originalBodyOverflow;
-      document.documentElement.style.overflow = originalHtmlOverflow;
-      document.documentElement.style.overscrollBehavior = originalHtmlOverscrollBehavior;
-      window.scrollTo(0, scrollY);
-    };
-  }, [isHubModalOpen]);
+  useBodyScrollLock(isHubModalOpen);
 
   useEffect(() => {
     setSelectedIndex(0);
@@ -3463,7 +3437,7 @@ export function ContestHubClient({
   };
 
   return (
-    <section data-world="arena" data-surface={surface} className={arenaStyles.page}>
+    <section ref={surfaceRef} data-world="arena" data-surface={surface} className={arenaStyles.page}>
       <ArenaSceneHeader
         isPlacardPlayerEnabled={isPlacardPlayerEnabled}
         mode={isNotebookSurface && !isFlowerRankingSurface ? "carnet" : "classement"}

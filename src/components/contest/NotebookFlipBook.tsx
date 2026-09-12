@@ -1,5 +1,7 @@
 "use client";
 
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import {
   useCallback,
@@ -144,13 +146,13 @@ export function NotebookFlipBook({
     }
   }, []);
 
+  useBodyScrollLock(Boolean(cover && isCoverOpen));
+
   useEffect(() => {
     if (!cover || !isCoverOpen) {
       return;
     }
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     document.body.classList.add("contest-notebook-open");
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -161,7 +163,6 @@ export function NotebookFlipBook({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.body.style.overflow = previousOverflow;
       document.body.classList.remove("contest-notebook-open");
       document.removeEventListener("keydown", handleKeyDown);
     };
