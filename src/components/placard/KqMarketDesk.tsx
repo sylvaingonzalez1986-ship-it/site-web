@@ -369,6 +369,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
     const requestKey = saleRequestKeyRef.current ?? createClientRequestKey();
     saleRequestKeyRef.current = requestKey;
     setSelling(true);
+    const cookingStartedAt = performance.now();
     setTransformation("working");
     setError("");
     setRouteGoalError("");
@@ -385,8 +386,12 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
       const payload = await response.json() as SaleReceipt & { error?: string };
       if (!response.ok) throw new Error(payload.error || "La vente n’a pas été enregistrée.");
       setSaleReceipt(payload);
-      setTransformation("complete");
-      transformationTimer.current = setTimeout(() => setTransformation("idle"), 1400);
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      // Let a short stirring loop finish even when the API answers immediately.
+      transformationTimer.current = setTimeout(() => {
+        setTransformation("complete");
+        transformationTimer.current = setTimeout(() => setTransformation("idle"), reducedMotion ? 500 : 1400);
+      }, reducedMotion ? 0 : Math.max(0, 2000 - (performance.now() - cookingStartedAt)));
       setSnapshot((current) => current ? {
         ...current,
         cashCents: payload.cashAfterCents,
@@ -725,10 +730,16 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
           <button type="button" onClick={() => setSaleReceipt(null)}>Continuer</button>
         </section>
       </div> : null}
+      <link rel="preload" as="image" href="/placard/sylvain-cooking-sprites-v1.webp" />
       {transformation !== "idle" ? <div className={styles.transformation} role="status" tabIndex={-1} aria-live="polite" aria-atomic="true" data-transformation data-phase={transformation}>
-        <div className={styles.transformationArt} aria-hidden="true"><span className={styles.inputLot}><Box /></span><div className={styles.animatedMachine} data-family={activeQuote?.family}><i /><RouteIcon family={activeQuote?.family ?? "rosin"} /><b /></div><span className={styles.outputLot}>{transformation === "complete" ? <Check /> : <Sparkles />}</span></div>
-        <strong>{transformation === "complete" ? "Lot valorisé !" : pendingQuote?.family === "flower" || pendingQuote?.family === "salvage" ? "Préparation du lot…" : "Transformation en cours…"}</strong>
-        <p>{transformation === "complete" ? `+${formatKqCash(saleReceipt?.payoutCents ?? 0)} · Vente confirmée` : "Validation de ton opération…"}</p>
+        <div className={styles.cookingScene} aria-hidden="true">
+          <div className={styles.cookingSprite} />
+          <div className={styles.cookingSteam}><i /><i /><i /></div>
+          <span className={styles.cookingSeal}>{transformation === "complete" ? <Check /> : <Flame />}</span>
+        </div>
+        <span className={styles.cookingRoute}>{activeQuote?.name}</span>
+        <strong>{transformation === "complete" ? "Lot valorisé !" : pendingQuote?.family === "flower" || pendingQuote?.family === "salvage" ? "Préparation du lot…" : "Sylvain aux fourneaux…"}</strong>
+        <p>{transformation === "complete" ? `+${formatKqCash(saleReceipt?.netPayoutCents ?? saleReceipt?.payoutCents ?? 0)} · Vente confirmée` : "Il remue, il peaufine… ton lot se prépare."}</p>
       </div> : null}
     </main>
   );

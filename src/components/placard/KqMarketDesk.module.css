@@ -436,30 +436,24 @@
 .soldSummary { border: 0; background: #fff5da; color: #102f29; border-radius: 8px; box-shadow: none; }
 .emptyState { border: 0; border-radius: 10px; overflow: hidden; padding: 24px; }
 .emptyArt { width: calc(100% + 48px); max-width: none; height: 260px; object-fit: cover; margin: -24px -24px 20px; }
-.transformation { position: fixed; z-index: 220; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 24px; background: #002d24f5; color: #fff5da; text-align: center; }
+.transformation { position: fixed; z-index: 220; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 20px; overflow-y: auto; background: #002d24f5; color: #fff5da; text-align: center; }
 .transformation > strong { font: 900 clamp(26px, 6vw, 42px)/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .transformation > p { font-size: 13px; color: #a8dcc4; }
-.transformationArt { display: flex; align-items: center; gap: 14px; }
-.inputLot, .outputLot { display: grid; place-items: center; width: 48px; height: 48px; border: 2px solid #102f29; border-radius: 8px; background: #f4c43d; color: #102f29; }
-.animatedMachine { position: relative; display: grid; place-items: center; width: 120px; height: 132px; border: 7px solid #54d5bb; border-radius: 14px 14px 5px 5px; background: #005441; box-shadow: 0 8px #102f29; }
-.animatedMachine > svg { position: absolute; top: 6px; width: 35px; height: 35px; color: #fff5da; }
-.animatedMachine i, .animatedMachine b { position: absolute; left: 9px; right: 9px; height: 13px; border: 2px solid #102f29; background: #f4c43d; }
-.animatedMachine i { top: 52px; animation: pressCycle 900ms ease-in-out infinite alternate; }
-.animatedMachine b { bottom: 9px; }
-.animatedMachine[data-family="hash"] { border-radius: 18px; }
-.animatedMachine[data-family="hash"] > svg { top: 28px; width: 65px; height: 65px; padding: 13px; border: 4px solid #f4c43d; border-radius: 50%; animation: spin 2s linear infinite; }
-.animatedMachine[data-family="hash"] i, .animatedMachine[data-family="hash"] b,
-.animatedMachine[data-family="flower"] i, .animatedMachine[data-family="flower"] b,
-.animatedMachine[data-family="salvage"] i, .animatedMachine[data-family="salvage"] b { display: none; }
-.animatedMachine[data-family="flower"] > svg, .animatedMachine[data-family="salvage"] > svg { top: 33px; width: 55px; height: 55px; }
-.inputLot { animation: feedLot 1000ms ease-in-out infinite; }
-.outputLot { opacity: .25; }
-.transformation[data-phase="complete"] .inputLot { visibility: hidden; }
-.transformation[data-phase="complete"] .outputLot { opacity: 1; background: #54d5bb; animation: revealLot 350ms ease-out both; }
-.transformation[data-phase="complete"] .animatedMachine i { animation: none; }
-@keyframes pressCycle { to { transform: translateY(27px); } }
-@keyframes feedLot { to { transform: translateX(12px) scale(.8); opacity: .25; } }
-@keyframes revealLot { from { transform: scale(.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.cookingScene { position: relative; flex: 0 0 auto; width: min(78vw, 47dvh, 390px); aspect-ratio: 1; isolation: isolate; }
+.cookingSprite { position: absolute; inset: 0; border-radius: 16px; background: #003f30 url('/placard/sylvain-cooking-sprites-v1.webp') 0 0 / 200% 200% no-repeat; box-shadow: 0 14px 40px #001b2380; animation: sylvainStir 1.1s steps(1, end) infinite; }
+.cookingSteam { position: absolute; inset: 0; pointer-events: none; }
+.cookingSteam i { position: absolute; left: 65%; top: 49%; width: 8%; height: 16%; border: 3px solid #fff5da; border-inline-color: transparent; border-bottom-color: transparent; border-radius: 50%; opacity: 0; animation: cookingSteam 1.8s ease-out infinite; }
+.cookingSteam i:nth-child(2) { left: 72%; animation-delay: .6s; }
+.cookingSteam i:nth-child(3) { left: 58%; animation-delay: 1.2s; }
+.cookingSeal { position: absolute; right: -8px; bottom: -10px; display: grid; place-items: center; width: 58px; height: 58px; border: 3px solid #102f29; border-radius: 50%; background: #f4c43d; color: #102f29; box-shadow: 3px 4px 0 #102f29; transform: rotate(-8deg); }
+.cookingSeal svg { width: 30px; height: 30px; }
+.cookingRoute { max-width: 100%; margin-top: 4px; color: #f4c43d; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.transformation[data-phase="complete"] .cookingSprite { animation: none; background-position: 100% 100%; }
+.transformation[data-phase="complete"] .cookingSteam { display: none; }
+.transformation[data-phase="complete"] .cookingSeal { background: #54d5bb; animation: cookingDone 400ms ease-out both; }
+@keyframes sylvainStir { 0%, 100% { background-position: 0 0; } 25% { background-position: 100% 0; } 50% { background-position: 0 100%; } 75% { background-position: 100% 100%; } }
+@keyframes cookingSteam { 0% { opacity: 0; transform: translateY(0) rotate(-12deg) scale(.7); } 35% { opacity: .6; } 100% { opacity: 0; transform: translateY(-65px) rotate(15deg) scale(1.2); } }
+@keyframes cookingDone { from { transform: rotate(-25deg) scale(.6); } to { transform: rotate(-8deg) scale(1); } }
 @media (max-width: 900px) {
   .marketLayout { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   .lotRail > div { display: flex; overflow-x: auto; }
@@ -475,7 +469,7 @@
   .sceneCaption { inset-inline: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .transformation *, .transformation *::before { animation: none !important; }
+  .transformation *, .transformation *::before, .transformation *::after { animation: none !important; }
 }
 
 .energySettlement.energySettlement { padding: 12px; border: 2px solid #14232b; background: #fff3b5; color: #14232b; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }

@@ -6,7 +6,7 @@ import {createServer} from 'vite';
 import tailwindcss from '@tailwindcss/postcss';
 import {Launcher} from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
-const root=process.cwd(), output=resolve(root,'output/electricity-market');
+const root=process.cwd(), output=resolve(root,'output/cooking-animation');
 const modules={
   'workshop-entry': `import React from 'react'; import {createRoot} from 'react-dom/client'; import '/src/app/globals.css';
     import {KqMarketDesk} from '/src/components/placard/KqMarketDesk'; import {KqPlacardLobby} from '/src/components/placard/KqPlacardLobby';
@@ -64,13 +64,19 @@ try{
   await shot('confirm-'+width);
   if(width===390)await page.evaluate(()=>{window.__failSale=true;});
   await page.click('[role="dialog"] footer button:last-child');await page.waitForSelector('[data-transformation][data-phase="working"]');
+  const sprite='[data-transformation] [class*="cookingSprite"]';
+  const first=await page.$eval(sprite,el=>getComputedStyle(el).backgroundPosition);
+  await new Promise(r=>setTimeout(r,300));
+  const second=await page.$eval(sprite,el=>getComputedStyle(el).backgroundPosition);
+  assert.notEqual(first,second,'Sylvain must actually stir between animation frames');
+  assert.equal((await layout()).overflow,false);
   await shot('transform-'+width);await page.keyboard.press('Escape');
   if(width===390){
     await page.waitForFunction(()=>document.querySelector('[role="dialog"]')?.textContent.includes('Vente refusée'));
     assert.equal(await page.$$eval('[data-transformation]',els=>els.length),0);
     await page.click('[role="dialog"] footer button:last-child');
   }
-  await page.waitForSelector('[data-transformation][data-phase="complete"]');await shot('success-'+width);
+  await page.waitForSelector('[data-transformation][data-phase="complete"]');assert.equal(await page.$eval('[data-transformation] [class*="cookingSprite"]',el=>getComputedStyle(el).animationName),'none');await shot('success-'+width);
   await page.waitForSelector('#market-receipt-title');assert.equal(await page.evaluate(()=>document.querySelector('[role="dialog"]').textContent.includes('Électricité réglée')),true);
   const sales=await page.evaluate(()=>window.__sales);assert.equal(sales.length,width===390?2:1);assert.equal(sales[0].route,'dry-sift');assert.equal(sales[0].flowerId,'flower-test-001');
   if(width===390)assert.equal(sales[0].requestKey,sales[1].requestKey);
