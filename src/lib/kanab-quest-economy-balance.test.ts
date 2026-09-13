@@ -113,10 +113,10 @@ describe("Kanab Quest economy balance report", () => {
 
   it("tracks the real-world price anchors for every purchasable item", () => {
     const report = buildKqEconomyBalanceReport({ juryScore: 8, harvestGrams: 120 });
-    expect(report.priceAnchors.totalCount).toBe(12);
-    expect(report.priceAnchors.alignedCount).toBe(report.priceAnchors.totalCount - 3);
-    expect(report.priceAnchors.items.filter((item) => item.deviationPercent !== 0)).toHaveLength(3);
-    expect(report.priceAnchors.checkedAt).toBe("2026-09-01");
+    expect(report.priceAnchors.totalCount).toBe(14);
+    expect(report.priceAnchors.alignedCount).toBe(report.priceAnchors.totalCount - 4);
+    expect(report.priceAnchors.items.filter((item) => item.deviationPercent !== 0)).toHaveLength(4);
+    expect(report.priceAnchors.checkedAt).toBe("2026-09-13");
     expect(report.priceAnchors.items.every((item) => item.sourceUrl.startsWith("https://"))).toBe(true);
     expect(report.priceAnchors.items.some((item) => item.priceKind === "promotion")).toBe(true);
   });

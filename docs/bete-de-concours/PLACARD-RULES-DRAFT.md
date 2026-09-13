@@ -118,7 +118,23 @@ adaptés à la progression : tamis 550 €, presse 850 €, laveuse 1 250 €.
 | Presse à rosin | 850 € |
 | Sécheur de hash HiLyph XL | 7 495 € |
 | Panneau solaire et batterie | 1 149 € |
-| Caméra cabossée | 69,99 € |
+| Caméra de surveillance | 69,99 € |
+| Chien de garde | 1 000 € |
+| Clôture électrique | 180 € |
+
+Un seul choix de sécurité est actif à la fois. Tous empêchent les pertes de poids
+lors d’un vol. Le chien apporte aussi +8 % de régularité au niveau 1 ; la clôture,
++4 %. Les améliorations ajoutent ensuite un point de régularité par niveau.
+La caméra consomme 12 W et la clôture 35 W dans le jeu. La clôture ajoute 1,89 €
+par cycle au niveau 1 en mode Équilibré, avant réduction solaire.
+
+Posséder le chien entraîne 8 € de nourriture à chaque culture terminée et 40 €
+de vétérinaire aux 10e, 20e, 30e cycles depuis l’adoption. Cela reste dû quand
+une autre protection est installée. Une culture abandonnée et le temps hors ligne
+ne déclenchent aucun frais. Les soins sont déduits du portefeuille à la récolte ;
+si le solde ne suffit pas, la différence rejoint les charges à régler. Aucun
+double prélèvement lors d’une nouvelle tentative. Le détail et la prochaine visite
+sont visibles dans l’onglet Charges. Les montants sont des règles économiques de jeu.
 
 La tente, l'éclairage et le climat modifient la quantité, la qualité maximale,
 la régularité, la pression ou la consommation. Les machines de transformation
@@ -167,7 +183,7 @@ palier déjà acheté, sans modifier le solde du joueur.
   Papiers en règle fixe les trois dés sur une réussite et garantit donc trois
   réussites pour ce contrôle.
 - **Renard à deux pattes** : sans protection, un résultat Fragile retire 15 %
-  du poids final et un Échec en retire 35 %. Gros molosse ou la Caméra cabossée
+  du poids final et un Échec en retire 35 %. Gros molosse ou une protection de sécurité installée
   protège intégralement le lot contre cet incident.
 
 Le Branchement illégal est une caricature de risque dans le jeu. Aucune image

@@ -58,7 +58,7 @@ function Confirm({ confirmation, busy, error, onClose, onConfirm }: { confirmati
   return <dialog ref={dialog} className={styles.confirm} onCancel={event => { if (busy) event.preventDefault(); else onClose(); }} aria-labelledby="commerce-confirm-title">
     <button className={styles.close} onClick={onClose} disabled={busy} aria-label="Fermer la confirmation"><X /></button>
     <small>Le Placard · Bon de commande</small><h2 id="commerce-confirm-title">{confirmation.title}</h2><p>{confirmation.description}</p>
-    {confirmation.offer ? <dl><div><dt>Quantité vendue</dt><dd>{grams(confirmation.offer.offer.units)}</dd></div><div><dt>Recette</dt><dd>{formatKqCash(confirmation.offer.offer.payoutCents)}</dd></div><div><dt>Électricité réglée</dt><dd>{formatKqCash(confirmation.offer.electricityPaidCents)}</dd></div><div><dt>Versé au portefeuille</dt><dd>{formatKqCash(confirmation.offer.netPayoutCents)}</dd></div></dl> : <strong className={styles.total}>{formatKqCash(confirmation.cost ?? 0)}</strong>}
+    {confirmation.offer ? <dl><div><dt>Quantité vendue</dt><dd>{grams(confirmation.offer.offer.units)}</dd></div><div><dt>Recette</dt><dd>{formatKqCash(confirmation.offer.offer.payoutCents)}</dd></div><div><dt>Charges réglées</dt><dd>{formatKqCash(confirmation.offer.electricityPaidCents)}</dd></div><div><dt>Versé au portefeuille</dt><dd>{formatKqCash(confirmation.offer.netPayoutCents)}</dd></div></dl> : <strong className={styles.total}>{formatKqCash(confirmation.cost ?? 0)}</strong>}
     {confirmation.offer ? <p>{confirmation.offer.offer.message}</p> : null}
     {error ? <p role="alert" className={styles.error}>{error}</p> : null}
     <footer><button onClick={onClose} disabled={busy}>Revenir</button><button className={styles.primary} disabled={busy} onClick={onConfirm}>{busy ? <LoaderCircle className={styles.spin} /> : <Check />} {busy ? "Validation…" : "Confirmer"}</button></footer>
@@ -195,7 +195,7 @@ export function KqCommerceDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: st
               <span className={styles.offerLink}>{proposal.reason ? "Voir les conditions" : "Choisir cette offre"} <ArrowRight size={16} /></span>
             </div>
           </button>;
-        })}</div><small className={styles.estimateNote}>Montants avant règlement éventuel de l’électricité. Le montant net sera confirmé avant la vente.</small>
+        })}</div><small className={styles.estimateNote}>Montants avant règlement éventuel des charges (électricité et soins). Le montant net sera confirmé avant la vente.</small>
       </> : stock && offer && channel ? <div className={styles.selectedOffer}>
         <div className={styles.selectedArt}><Image src={KQ_CHANNELS[channel].image} alt="" width={1200} height={800} sizes="(max-width: 700px) 100vw, 400px" /><span className={styles.artLabel}><ShoppingBag size={16} aria-hidden="true" /> {KQ_CHANNELS[channel].name}</span></div>
         <div><p className={styles.lotSummary}>{stock.name} · {productName(stock.route)} · {grams(stock.remainingUnits)} en stock</p>
@@ -219,7 +219,7 @@ export function KqCommerceDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: st
               <p>{inputInvalid ? `Choisis une quantité entre 0,1 et ${grams(offer.maxUnits)}.` : `Prix : ${formatKqCash(Math.round(offer.unitCents))}/g · Commandes : ${grams(offer.maxUnits)} maximum.`}</p>
             </details>
             <button disabled={busy || inputInvalid || offer.units <= 0} className={styles.primary} onClick={() => void examineSale()}>{busy ? "Calcul…" : "Vendre ce lot"} <ArrowRight size={18} /></button>
-            <small className={styles.estimateNote}>Le montant net après électricité sera confirmé à l’étape suivante.</small>
+            <small className={styles.estimateNote}>Le montant net après règlement des charges sera confirmé à l’étape suivante.</small>
           </>}
         </div>
       </div> : data.rawLots.length || data.stocks.length ? <>

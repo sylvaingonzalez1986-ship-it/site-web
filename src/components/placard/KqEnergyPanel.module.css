@@ -27,3 +27,8 @@
 .panel.panel .stamp { padding: 7px 10px; display: inline-block; border: 2px solid #ae662b; font-weight: 900; text-transform: uppercase; }
 .panel.panel .stamp[data-paid="true"] { color: #006a59; border-color: #006a59; }
 .panel.panel .error { color: #962e1c; }
+.panel.panel .dogCare { display: flex; align-items: center; gap: 12px; margin: 12px 0; padding: 10px; border: 2px solid #123238; background: #f8e6af; }
+.panel.panel .dogCare img { width: clamp(56px,15vw,88px); height: auto; border: 2px solid #123238; flex-shrink: 0; }
+.panel.panel .dogCare>div { min-width: 0; }
+.panel.panel .dogCare strong { font-size: 13px; overflow-wrap: anywhere; }
+.panel.panel .dogCare p { margin: 6px 0; }

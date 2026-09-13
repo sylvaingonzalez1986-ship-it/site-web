@@ -261,10 +261,10 @@ describe("Kanab Quest durable equipment", () => {
     })).toBeNull();
   });
 
-  it("anchors every catalog item to a dated, verifiable real product", () => {
+  it("documents dated real references and explicitly identified game adaptations", () => {
     expect(KQ_EQUIPMENT_CATALOG.every((equipment) => (
       equipment.realWorldAnchor.referencePriceCents > 0
-      && equipment.realWorldAnchor.checkedAt === "2026-09-01"
+      && equipment.realWorldAnchor.checkedAt === (equipment.realWorldAnchor.priceKind === "game-balance" ? "2026-09-13" : "2026-09-01")
       && equipment.realWorldAnchor.sourceUrl.startsWith("https://")
       && equipment.realWorldAnchor.seller.length > 0
     ))).toBe(true);
@@ -276,8 +276,8 @@ describe("Kanab Quest durable equipment", () => {
     expect(auditKqEquipmentCatalog(ALIGNED_DATABASE_CATALOG)).toMatchObject({
       sourcesReady: true,
       databaseReady: true,
-      sourceCount: 15,
-      purchasableCount: 12,
+      sourceCount: 17,
+      purchasableCount: 14,
       mismatchedCodes: [],
     });
     expect(auditKqEquipmentCatalog(ALIGNED_DATABASE_CATALOG.map((row) => (

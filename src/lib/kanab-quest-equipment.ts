@@ -74,7 +74,7 @@ export type KqEquipmentDefinition = {
     seller: string;
     sourceUrl: string;
     referencePriceCents: number;
-    priceKind: "standard" | "promotion" | "starting-at";
+    priceKind: "standard" | "promotion" | "starting-at" | "game-balance";
     observedPriceCents?: number;
     checkedAt: string;
   };
@@ -582,14 +582,14 @@ const LEGACY_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = [
   },
   {
     code: "SECURITY-CAMERA",
-    name: "Caméra cabossée",
+    name: "Caméra de surveillance",
     category: "security",
     slot: "security",
     priceCents: 6_999,
     purchasable: true,
-    shortDescription: "Elle a déjà vécu, mais elle voit encore très bien les renards à deux pattes.",
-    benefit: "Protège une partie de la récolte contre le premier vol.",
-    tradeoff: "N'améliore ni la quantité ni la qualité.",
+    shortDescription: "Un œil vigilant sur ton installation, de jour comme de nuit.",
+    benefit: "Empêche les pertes de récolte lors d’un vol.",
+    tradeoff: "12 W ajoutés au compteur. Un seul choix actif dans l’emplacement Sécurité.",
     specification: "Caméra 2K QHD · vision nocturne · microSD jusqu'à 512 Go",
     powerWatts: 12,
     effects: {},
@@ -602,6 +602,30 @@ const LEGACY_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = [
       priceKind: "standard",
       checkedAt,
     },
+  },
+  {
+    code: "SECURITY-DOG", name: "Chien de garde", category: "security", slot: "security",
+    priceCents: 100_000, purchasable: true,
+    shortDescription: "Un compagnon vigilant qui veille sur tes récoltes, même sans courant.",
+    benefit: "Empêche les pertes lors d’un vol et apporte +8 % de régularité.",
+    tradeoff: "8 € de nourriture par culture terminée + 40 € de vétérinaire tous les 10 cycles depuis l’adoption, même sans l’équiper. Un seul choix de sécurité actif.",
+    specification: "Compagnon permanent · nourriture et soins automatiques · aucune consommation électrique",
+    powerWatts: 0, effects: { regularityPercent: 8 }, unlocks: ["theft-protection"],
+    realWorldAnchor: { label: "Adoption d’un chien adulte · frais de soin adaptés au jeu", seller: "SPA de Mulhouse",
+      sourceUrl: "https://www.spa-mulhouse.fr/app/data/userfiles/participation%20aux%20frais%20dadoption%20chiens.pdf",
+      referencePriceCents: 30_000, priceKind: "game-balance", checkedAt: "2026-09-13" },
+  },
+  {
+    code: "SECURITY-FENCE", name: "Clôture électrique", category: "security", slot: "security",
+    priceCents: 18_000, purchasable: true,
+    shortDescription: "Une barrière surveillée pour sécuriser les abords du Placard.",
+    benefit: "Empêche les pertes lors d’un vol et apporte +4 % de régularité.",
+    tradeoff: "35 W ajoutés au compteur : 1,89 € par cycle au niveau 1 en mode Équilibré, hors solaire. Un seul choix de sécurité actif.",
+    specification: "Kit de sécurité fictif · clôture et centrale · consommation de jeu : 35 W",
+    powerWatts: 35, effects: { regularityPercent: 4 }, unlocks: ["theft-protection"],
+    realWorldAnchor: { label: "Clôture avec électrificateur · caractéristiques adaptées au jeu", seller: "Gallagher",
+      sourceUrl: "https://www.gallagher.eu/fr_fr/m50-electrificateur-sur-secteur-0-5-j-230-v/038332",
+      referencePriceCents: 18_000, priceKind: "game-balance", checkedAt: "2026-09-13" },
   },
 ] as const;
 
@@ -701,7 +725,7 @@ export function auditKqEquipmentCatalog(rows: KqEquipmentCatalogRow[]) {
   const sourcesReady = new Set(localCodes).size === localCodes.length
     && KQ_EQUIPMENT_CATALOG.every((equipment) => (
       equipment.realWorldAnchor.referencePriceCents > 0
-      && equipment.realWorldAnchor.checkedAt === KQ_EQUIPMENT_PRICE_CHECKED_AT
+      && /^\d{4}-\d{2}-\d{2}$/.test(equipment.realWorldAnchor.checkedAt)
       && equipment.realWorldAnchor.sourceUrl.startsWith("https://")
       && equipment.realWorldAnchor.seller.trim().length > 0
       && equipment.priceCents >= 0
@@ -759,7 +783,7 @@ export function getKqEquipmentAtLevel(code: string, requestedLevel = 1): KqEquip
   }
   // These devices already prevent their incident completely at level 1.
   // Their upgrades improve the harvest's regularity without weakening that protection.
-  if (base.category === "security" || base.category === "energy") effects.regularityPercent = step;
+  if (base.category === "security" || base.category === "energy") effects.regularityPercent = (base.effects.regularityPercent ?? 0) + step;
   return { ...base, effects, benefit: getKqEquipmentImpactLabels({ ...base, effects }).filter((label) => !label.startsWith("Débloque :")).slice(0, 3).join(" · ") };
 }
 

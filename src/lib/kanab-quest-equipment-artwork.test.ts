@@ -10,8 +10,8 @@ import { KQ_EQUIPMENT_CATALOG } from "@/lib/kanab-quest-equipment";
 describe("Kanab Quest equipment artwork", () => {
   it("ships one distinct local WebP hero object for every catalog item", () => {
     const artwork = Object.values(KQ_EQUIPMENT_ARTWORK);
-    expect(artwork).toHaveLength(22);
-    expect(new Set(artwork.map((item) => item.src)).size).toBe(22);
+    expect(artwork).toHaveLength(24);
+    expect(new Set(artwork.map((item) => item.src)).size).toBe(24);
 
     artwork.forEach((item) => {
       expect(item.src.endsWith(".webp")).toBe(true);
@@ -25,7 +25,7 @@ describe("Kanab Quest equipment artwork", () => {
       .map((equipment) => equipment.code)
       .sort();
 
-    expect(expectedCodes).toHaveLength(15);
+    expect(expectedCodes).toHaveLength(17);
     expect(Object.keys(KQ_EQUIPMENT_ARTWORK)).toEqual(expect.arrayContaining(expectedCodes));
     ["AUTO-SIEVE", "WASHER-75G", "TSS-225", "STATIC-PLASMA"].forEach((code) => {
       expect(getKqEquipmentArtwork(code)?.src).toContain(`equipment-${code}-hero-v2.webp`);

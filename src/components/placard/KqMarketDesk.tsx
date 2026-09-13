@@ -676,7 +676,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
           <p>Le lot {selectedLot.varietyName} sera entièrement valorisé par cette filière. Ce choix ne pourra pas être annulé.</p>
           {error ? <p className={styles.modalError} role="alert">{error}</p> : null}
           <div><span><small>Vente brute</small><strong>{formatKqCash(pendingQuote.payoutCents)}</strong></span><span><small>Réputation{pendingSalePreview?.expertiseBonusReputation ? " · prime de rang" : ""}</small><strong>{formatKqReputationDelta(pendingSalePreview?.reputationGain ?? pendingQuote.reputationGain)}</strong></span></div>
-          {pendingSalePreview && pendingSalePreview.electricityPaidCents > 0 ? <p className={styles.energySettlement}>Électricité réglée : −{formatKqCash(pendingSalePreview.electricityPaidCents)} · Dans ta caisse : <b>{formatKqCash(pendingSalePreview.netPayoutCents)}</b><br />Reste à payer : {formatKqCash(pendingSalePreview.electricityRemainingCents)}. Au maximum la moitié de cette vente rembourse tes factures.</p> : null}
+          {pendingSalePreview && pendingSalePreview.electricityPaidCents > 0 ? <p className={styles.energySettlement}>Charges réglées : −{formatKqCash(pendingSalePreview.electricityPaidCents)} · Dans ta caisse : <b>{formatKqCash(pendingSalePreview.netPayoutCents)}</b><br />Reste à payer : {formatKqCash(pendingSalePreview.electricityRemainingCents)}. Au maximum la moitié de cette vente rembourse tes factures.</p> : null}
           {pendingQuote.reputationGain < 0 ? <p className={styles.reputationWarning} role="alert">Qualité insuffisante pour cette filière : pénalité de {Math.abs(pendingQuote.reputationGain)} points, limitée à ta réputation disponible. La biomasse préserve ta réputation.</p> : null}
           {pendingSalePreview ? (
             <section className={styles.salePreview} aria-label="Progression après cette vente">
@@ -722,7 +722,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
           <small>Reçu #{saleReceipt.receiptId.slice(0, 8)}</small>
           <h2 id="market-receipt-title">Lot vendu</h2>
           <strong>+{formatKqCash(saleReceipt.netPayoutCents ?? saleReceipt.payoutCents)}</strong>
-          {(saleReceipt.electricityPaidCents ?? 0) > 0 ? <p className={styles.energySettlement}>Vente brute : {formatKqCash(saleReceipt.payoutCents)} · Électricité réglée : −{formatKqCash(saleReceipt.electricityPaidCents ?? 0)}</p> : null}
+          {(saleReceipt.electricityPaidCents ?? 0) > 0 ? <p className={styles.energySettlement}>Vente brute : {formatKqCash(saleReceipt.payoutCents)} · Charges réglées : −{formatKqCash(saleReceipt.electricityPaidCents ?? 0)}</p> : null}
           <span>{formatKqReputationDelta(saleReceipt.reputationGain)} réputation · solde {formatKqCash(saleReceipt.cashAfterCents)}</span>
           {receiptReputationProgress ? (
             <section className={`${styles.receiptGoal} ${styles.reputationGoal}`} data-promoted={receiptPromoted || undefined}>

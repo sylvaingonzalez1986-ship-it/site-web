@@ -631,9 +631,9 @@ export function KqEquipmentCatalogModal({
           <small>Emplacement : {KQ_EQUIPMENT_SLOT_LABELS[selectedEquipment.slot]} · une seule pièce active dans cet emplacement</small>
         </section>
         <section>
-          <h4>Équivalent réel vérifié</h4>
+          <h4>{selectedEquipment.realWorldAnchor.priceKind === "game-balance" ? "Inspiration et règles de jeu" : "Équivalent réel vérifié"}</h4>
           <p>{selectedEquipment.realWorldAnchor.label}</p>
-          <small>Modèle de référence relevé le {selectedEquipment.realWorldAnchor.checkedAt}. Le prix en euros affiché dans la boutique est un prix de jeu.
+          <small>{selectedEquipment.realWorldAnchor.priceKind === "game-balance" ? "Le prix, les frais par cycle et les caractéristiques sont adaptés au jeu. La source présente l’inspiration réelle." : `Modèle de référence relevé le ${selectedEquipment.realWorldAnchor.checkedAt}. Le prix en euros affiché dans la boutique est un prix de jeu.`}
           </small>
           <a className="mt-2 inline-flex items-center gap-1 text-[.62rem] font-black uppercase text-[#0c6f5b] underline" href={selectedEquipment.realWorldAnchor.sourceUrl} target="_blank" rel="noreferrer">
             Vérifier chez {selectedEquipment.realWorldAnchor.seller}<ExternalLink aria-hidden="true" />
@@ -646,6 +646,7 @@ export function KqEquipmentCatalogModal({
       {checkoutOpen && cartValidation ? <div className={styles.checkoutOverlay} role="presentation" onClick={() => setCheckoutOpen(false)}><section role="alertdialog" aria-modal="true" aria-labelledby="checkout-title" onClick={(event) => event.stopPropagation()}>
         <small>Dernière vérification</small><h3 id="checkout-title">Confirmer l’investissement</h3>
         <div>{cartEquipment.map((equipment) => <p key={equipment.code}><span>{equipment.name}</span><strong>{formatKqCash(equipment.priceCents)}</strong></p>)}</div>
+        {cartEquipment.filter((equipment) => equipment.category === "security").map((equipment) => <p className={styles.checkoutWarning} key={`charges-${equipment.code}`}><AlertTriangle aria-hidden="true" />{equipment.name} : {equipment.tradeoff}</p>)}
         {cartValidation.warnings.map((warning) => <p className={styles.checkoutWarning} key={warning}><AlertTriangle aria-hidden="true" />{warning}</p>)}
         <section className={styles.checkoutImpact} aria-label="Bénéfices projetés après installation">
           <h4>Ce que cet investissement change</h4>

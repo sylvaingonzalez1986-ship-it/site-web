@@ -981,7 +981,7 @@ export function resolveKqStage(state: KqGameState): KqGameState {
         ? `${heritage.name} : la mémoire du gardien protège toute la récolte.`
         : state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "theft-guard")
           ? "Gros molosse : récolte intégralement protégée."
-          : "Caméra cabossée : le vol est stoppé avant la sortie.",
+          : `${state.equipment?.codes.map(getKqEquipmentDefinition).find((item) => item?.category === "security")?.name ?? "Sécurité"} : récolte intégralement protégée.`,
     ] : []),
     ...(theftLoss > 0 ? [`Renard à deux pattes : -${theftLoss} % sur le poids final.`] : []),
   ];

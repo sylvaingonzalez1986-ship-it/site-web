@@ -7,9 +7,11 @@ import { quoteKqMarketRoutes } from "./kanab-quest-market";
 
 describe("unique equipment and ten-level progression", () => {
   const purchasable = KQ_EQUIPMENT_CATALOG.filter((item) => item.purchasable);
-  it("sells exactly one machine for each function, without the retired models", () => {
-    expect(purchasable).toHaveLength(12);
-    expect(new Set(purchasable.map((item) => item.slot)).size).toBe(purchasable.length);
+  it("sells one machine per function and three alternative security choices, without retired models", () => {
+    expect(purchasable).toHaveLength(14);
+    const machines = purchasable.filter((item) => item.slot !== "security");
+    expect(new Set(machines.map((item) => item.slot)).size).toBe(machines.length);
+    expect(purchasable.filter((item) => item.slot === "security").map((item) => item.code)).toEqual(["SECURITY-CAMERA", "SECURITY-DOG", "SECURITY-FENCE"]);
     expect(purchasable.every((item) => !KQ_EQUIPMENT_REPLACEMENTS[item.code])).toBe(true);
   });
 

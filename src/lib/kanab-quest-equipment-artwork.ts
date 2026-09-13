@@ -89,8 +89,16 @@ export const KQ_EQUIPMENT_ARTWORK: Readonly<Record<string, KqEquipmentArtwork>> 
     alt: "Panneau solaire pliant relié à une batterie de secours portable renforcée",
   },
   "SECURITY-CAMERA": {
-    src: "/app/kanab-quest/equipment/equipment-SECURITY-CAMERA-hero-v2.webp",
-    alt: "Caméra de sécurité cabossée et réparée dont l'objectif et les diodes restent intacts",
+    src: "/app/kanab-quest/equipment/equipment-SECURITY-CAMERA-hero-v3.webp",
+    alt: "Caméra de surveillance au boîtier crème intact, objectif bleu et support turquoise",
+  },
+  "SECURITY-DOG": {
+    src: "/app/kanab-quest/equipment/equipment-SECURITY-DOG-hero-v1.webp",
+    alt: "Chien de garde attentif près de sa niche turquoise et de sa gamelle de nourriture",
+  },
+  "SECURITY-FENCE": {
+    src: "/app/kanab-quest/equipment/equipment-SECURITY-FENCE-hero-v1.webp",
+    alt: "Clôture électrique aux poteaux turquoise avec centrale et panneau éclair jaune",
   },
 };
 

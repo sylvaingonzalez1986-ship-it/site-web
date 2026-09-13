@@ -34,7 +34,11 @@ export function isKqEnergyQuoteValid(value: unknown, codes: string[], levels?: R
   const expected = quoteKqEnergy(codes, levels, row.mode);
   return Object.entries(expected).every(([key, item]) => key === "lines"
     ? Array.isArray(row.lines) && row.lines.length === expected.lines.length && expected.lines.every((line, index) =>
-      Object.entries(line).every(([field, entry]) => row.lines && (row.lines as Record<string, unknown>[])[index]?.[field] === entry))
+      Object.entries(line).every(([field, entry]) => {
+        const actual = (row.lines as Record<string, unknown>[])[index]?.[field];
+        // The cosmetic camera rename must not invalidate an already running culture.
+        return actual === entry || (field === "name" && line.code === "SECURITY-CAMERA" && actual === "Caméra cabossée");
+      }))
     : row[key] === item);
 }
 
@@ -48,6 +52,13 @@ export function previewKqEnergyPayment(grossCents: number, outstandingCents: num
   return { electricityPaidCents, netPayoutCents: grossCents - electricityPaidCents, electricityRemainingCents: Math.max(0, outstandingCents - electricityPaidCents) };
 }
 
-export type KqEnergyInvoice = { runId: string; createdAt: string; totalCents: number; remainingCents: number; harvestGrams: number; quote: KqEnergyQuote };
-export type KqEnergySummary = { outstandingCents: number; invoiceCount: number; bestGramsPerKwh: number | null; invoices: KqEnergyInvoice[] };
+export type KqDogCare = { cycle: number; foodCents: number; vetCents: number; totalCents: number; paidCents: number };
+export type KqDogCareSchedule = { completedCycles: number; nextCycle: number; cyclesUntilVet: number; foodCents: number; vetCents: number; nextTotalCents: number };
+export function quoteKqDogCare(completedCycles: number): KqDogCareSchedule {
+  const cycles = Number.isSafeInteger(completedCycles) && completedCycles >= 0 ? completedCycles : 0;
+  const cyclesUntilVet = 10 - cycles % 10;
+  return { completedCycles: cycles, nextCycle: cycles + 1, cyclesUntilVet, foodCents: 800, vetCents: 4000, nextTotalCents: 800 + (cyclesUntilVet === 1 ? 4000 : 0) };
+}
+export type KqEnergyInvoice = { runId: string; createdAt: string; totalCents: number; remainingCents: number; harvestGrams: number; quote: KqEnergyQuote; dogCare?: KqDogCare | null };
+export type KqEnergySummary = { outstandingCents: number; invoiceCount: number; bestGramsPerKwh: number | null; invoices: KqEnergyInvoice[]; dogCare?: KqDogCareSchedule | null };
 export type KqEnergySnapshot = KqEnergySummary & { cashCents: number; quotes: Record<KqEnergyMode, KqEnergyQuote> };
