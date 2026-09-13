@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 
 type AccountLoginFormProps = {
   nextUrl: string;

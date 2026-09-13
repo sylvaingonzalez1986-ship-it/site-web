@@ -1,4 +1,4 @@
-import { KQ_RETIRED_CARDS, KQ_CARDS, KQ_HAND_SIZE, type KqBuddieEffect, type KqGameState, type KqSupportCard } from "@/lib/kanab-quest-game";
+import { KQ_RETIRED_CARDS, KQ_CARDS, KQ_HAND_SIZE, KQ_BUDDIES, type KqBuddieEffect, type KqGameState, type KqSupportCard } from "@/lib/kanab-quest-game";
 
 export function getKqOpeningHandChance(deckSize: number, copies: number, handSize = KQ_HAND_SIZE) {
   const safeDeckSize = Math.max(0, Math.floor(deckSize));
@@ -93,10 +93,30 @@ const RECOMMENDED_DECKS: Record<KqBuddieEffect, { support: string[] }> = {
   "starting-xp-4": { support: ["BOTTE-004", "BOTTE-006", "BOTTE-018", "BOTTE-017"] },
 };
 
-export function buildKqRecommendedDeck(effect: KqBuddieEffect, inventory: Record<string, number>, challengeCodes: string[] = []) {
+export function buildKqRecommendedDeck(effect: KqBuddieEffect, inventory: Record<string, number>, challengeCodes: string[] = [], buddieCode?: string) {
   const preferred = RECOMMENDED_DECKS[effect];
   const available = (code: string) => (inventory[code] ?? 0) > 0;
   const playable = KQ_CARDS.filter((card) => card.category !== "substrate" && card.category !== "pbi" && available(card.code));
+  const buddie = KQ_BUDDIES.find((card) => card.code === buddieCode);
+  if (buddie) {
+    const startingXp = 1 + buddie.advantageLevel;
+    const selected: KqSupportCard[] = [];
+    const covered = new Set<string>();
+    const candidates = [...playable];
+    while (selected.length < 6 && candidates.length) {
+      const score = (card: KqSupportCard) =>
+        card.tags.filter((tag) => !covered.has(tag)).length * 3
+        + (card.xpCost <= startingXp && selected.length === 0 ? 3 : 0)
+        + (getKqCardChallengeFit(card, challengeCodes) ? 3 : 0)
+        + (selected.some((item) => item.timing === card.timing) ? 0 : 2)
+        + (card.tags.length === 0 ? 1 : 0) - card.xpCost * 0.35;
+      candidates.sort((left, right) => score(right) - score(left) || left.code.localeCompare(right.code));
+      const card = candidates.shift()!;
+      selected.push(card);
+      card.tags.forEach((tag) => covered.add(tag));
+    }
+    return { support: selected.map((card) => card.code) };
+  }
   const challengeSupport = playable.filter((card) => getKqCardChallengeFit(card, challengeCodes)).slice(0, 2).map((card) => card.code);
   const support = [...challengeSupport, ...preferred.support.filter(available), ...playable.map((card) => card.code)]
     .filter((code, index, codes) => codes.indexOf(code) === index)

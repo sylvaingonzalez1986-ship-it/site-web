@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from "vitest";
 import { ContestArenaHub } from "./ContestArenaHub";
 import { ARENA_LOBBY_MODES } from "@/lib/arena-lobby";
 
-vi.mock("next/link", () => ({ default: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => createElement("a", props) }));
+vi.mock("@/components/navigation/NavigationLink", () => ({ default: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => createElement("a", props) }));
 vi.mock("next/image", () => ({
   default: ({ src, alt, width, height }: ImgHTMLAttributes<HTMLImageElement>) => createElement("img", { src, alt, width, height }),
 }));
@@ -24,7 +24,8 @@ describe("interactive Arena lobby", () => {
 
   it("offers one selector and one entry link without duplicate navigation", () => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub));
-    expect(html.match(/<a /g)).toHaveLength(1);
+    expect(html.match(/data-lobby-enter=/g)).toHaveLength(1);
+    expect(html).toContain("Découvrir les fleurs à gagner");
     expect(html).toContain('href="/arene/placard"');
     expect(html.match(/data-mode=/g)).toHaveLength(3);
     expect(html).toContain('aria-live="polite"');

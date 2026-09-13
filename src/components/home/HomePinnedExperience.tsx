@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   Apple,

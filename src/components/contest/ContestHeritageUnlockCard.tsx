@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { useEffect, useState } from "react";
 import { Gift, LockKeyhole, Sparkles } from "lucide-react";
 import {

@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "@/components/navigation/NavigationLink";
+import { usePathname } from "next/navigation";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { useCart } from "@/context/CartContext";
 import {
   clearPendingVivaPayment,

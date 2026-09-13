@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useCustomerSession } from "@/hooks/useCustomerSession";
 import type { BlogComment } from "@/types/blog";

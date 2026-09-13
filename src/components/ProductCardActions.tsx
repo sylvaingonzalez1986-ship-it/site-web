@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Link from "@/components/navigation/NavigationLink";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { Plus } from "lucide-react";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
@@ -49,14 +49,15 @@ export function ProductCardActions({
   hasPromo,
 }: ProductCardActionsProps) {
   const router = useRouter();
-  const { addToCart, authLoading } = useCart();
+  const { addToCart, cartLoading } = useCart();
   const [analysisOpen, setAnalysisOpen] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
   const [qty, setQty] = useState(1);
+  const [added, setAdded] = useState(false);
   const [stockError, setStockError] = useState<string | null>(null);
 
   const handleAddToCart = () => {
-    if (authLoading) {
+    if (cartLoading) {
       return;
     }
 
@@ -65,9 +66,11 @@ export function ProductCardActions({
       return;
     }
 
+    setAdded(false);
     const result = addToCart(product, undefined, qty);
     if (result.ok) {
       setStockError(null);
+      setAdded(true);
       setQty(1);
       return;
     }
@@ -77,15 +80,12 @@ export function ProductCardActions({
       return;
     }
 
-    const nextPath =
-      typeof window === "undefined"
-        ? "/boutique"
-        : `${window.location.pathname}${window.location.search}`;
-    router.push(`/compte/connexion?next=${encodeURIComponent(nextPath)}`);
+    setStockError("Ce format n’est plus disponible. Choisis un autre produit ou format.");
   };
 
   return (
     <>
+      {added && <p role="status" className="mt-2 text-xs font-semibold text-teal">Ajouté au panier. <button type="button" className="underline min-h-11" onClick={() => window.dispatchEvent(new Event("shop:open-cart"))}>Voir mon panier</button></p>}
       {stockError && (
         <p className="mt-3 text-sm font-semibold text-[#7f1d1d]">{stockError}</p>
       )}
@@ -148,7 +148,7 @@ export function ProductCardActions({
           <button
             type="button"
             onClick={handleAddToCart}
-            disabled={authLoading || !inStock}
+            disabled={cartLoading || !inStock}
             className="btn-cartoon btn-primary inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 px-4 py-3 text-xs disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Plus size={15} />{" "}

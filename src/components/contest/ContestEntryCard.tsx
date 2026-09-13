@@ -2,7 +2,7 @@
 
 import type { CSSProperties, KeyboardEvent } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import {
   CONTEST_ENTRY_CATEGORY_LABELS,
   type ContestEntrySummary,

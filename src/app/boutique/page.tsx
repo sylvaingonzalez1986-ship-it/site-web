@@ -1,6 +1,6 @@
 ﻿import { BoutiquePageClient } from "@/components/boutique/BoutiquePageClient";
 import { dedupeProducts } from "@/lib/product-dedup";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { getActiveCatalogCategories } from "@/lib/catalog-categories";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { getSiteUrl } from "@/lib/site-url";

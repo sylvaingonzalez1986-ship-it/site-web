@@ -5,7 +5,7 @@ import { KqEnergyPanel } from "./KqEnergyPanel";
 import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { Banknote, ChevronLeft, ChevronRight, Dices, Flame, RotateCcw, Scale, ShoppingBag, Sparkles, Star, Swords, Target, Trophy, X, Zap } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { playKqDiceAnimation } from "@/lib/kanab-quest-dice-animation";
@@ -1640,7 +1640,7 @@ export function KanabQuestDicePrototype({
   const applyRecommendedDeck = () => {
     const buddie = KQ_BUDDIES.find((item) => item.code === selectedBuddie);
     if (!buddie) return;
-    const recommendation = buildKqRecommendedDeck(buddie.effect, activeInventory, rewardableDailyChallenges.map((challenge) => challenge.code));
+    const recommendation = buildKqRecommendedDeck(buddie.effect, activeInventory, rewardableDailyChallenges.map((challenge) => challenge.code), buddie.code);
 
     setSelectedCards(recommendation.support);
     setDeckNotice("Deck conseillé appliqué : défis du jour + synergie du Buddie. Tu peux encore tout modifier.");

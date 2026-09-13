@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { PRODUCT_CULTURE_LABELS, type Product } from "@/data/products";
 import { formatEuro, getFlowerPriceComparison } from "@/lib/product-discovery";
 import { resolveProductProducer } from "@/lib/own-producer";

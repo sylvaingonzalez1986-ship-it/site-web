@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { BreadcrumbJsonLd, FaqJsonLd, ProductListJsonLd, WebPageJsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { FlowerPriceComparison } from "@/components/seo/FlowerPriceComparison";

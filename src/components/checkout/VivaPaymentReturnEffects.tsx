@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { useCart } from "@/context/CartContext";
 import { clearPendingVivaPayment } from "@/lib/pending-viva-payment";
 

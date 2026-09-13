@@ -2980,3 +2980,64 @@
 .scorePanel :global(.contest-station-board-window) { background: var(--arena-green-dark); }
 
 .page[data-surface="notebook"], .page[data-surface="notebook-ranking"] { padding-top: 0; }
+
+.playerStationRow[data-viewer] { background: #f4c43d30; box-shadow: inset 4px 0 #f4c43d; }
+.playerStationRow[data-viewer]:focus-visible { outline: 3px solid #ad6900; outline-offset: -3px; }
+.playerStationScore em { font-weight: 900; font-size: .8rem; color: var(--arena-green-dark); }
+
+/* Player standings use the same console panels as the Arena scene navigation. */
+.playerRankingSection > .sectionHeading { margin-bottom: .8rem; border-bottom: 1px solid #003f3033; padding-bottom: .8rem; }
+.playerRankingSection .sectionTitle { font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: .025em; text-transform: uppercase; }
+.playerRankingSection .customerRewardPlacement { margin-top: 0; }
+.playerRankingSection .playerLeaderboardHeading { padding-bottom: .85rem; border-bottom: 3px solid var(--arena-yellow); }
+.playerRankingSection .personalRankingTypeSwitch { gap: .4rem; }
+.playerRankingSection .personalRankingTypeSwitch button { border: 1px solid #003f3055; border-radius: 0; min-height: 54px; }
+.playerRankingSection .personalRankingTypeSwitch button[data-active] { box-shadow: inset 0 -3px var(--arena-yellow); }
+.playerRankingSection .playerStationScore em { border-radius: 0; font-size: .65rem; white-space: normal; line-height: 1.3; }
+.playerRankingSection .playerStationIdentity strong { font-size: .9rem; }
+.playerRankingSection .playerStationBoard :global(.contest-station-row) { min-height: 70px; }
+.rankingProfileDetails { margin-top: 1.5rem; border: 1px solid var(--arena-green-dark); background: var(--arena-paper); }
+.rankingProfileDetails > summary { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: 1rem; min-height: 54px; background: var(--arena-green-dark); color: var(--arena-paper); font-weight: 800; cursor: pointer; list-style: none; }
+.rankingProfileDetails > summary::-webkit-details-marker { display: none; }
+.rankingProfileDetails > summary svg { color: var(--arena-yellow); transition: transform 180ms ease; }
+.rankingProfileDetails[open] > summary svg { transform: rotate(180deg); }
+.rankingProfileDetails .personalGrid { padding: 1rem; margin: 0; }
+.rankingProfileDetails > summary:focus-visible { outline: 3px solid var(--arena-yellow); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .rankingProfileDetails > summary svg { transition: none; } }
+
+/* High-contrast player leaderboard; do not inherit the flower split-flap board. */
+.scorePanel.playerLeaderboardPanel .playerStationBoard { border: 1px solid #003f30; background: #fffaf1; }
+.scorePanel.playerLeaderboardPanel :global(.contest-station-board-toolbar) { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; padding: .8rem; background: #003f30; color: #fffaf1; }
+.scorePanel.playerLeaderboardPanel :global(.contest-station-board-toolbar > strong) { color: #fffaf1; font-size: .9rem; }
+.scorePanel.playerLeaderboardPanel .rankingToolbarActions { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
+.scorePanel.playerLeaderboardPanel :global(.contest-station-board-toolbar button) { width: 44px; height: 44px; flex: 0 0 auto; border: 1px solid #f4c43d; background: #003f30; color: #fffaf1; box-shadow: none; }
+.scorePanel.playerLeaderboardPanel :global(.contest-station-board-toolbar) .findMyPosition { width: auto; min-width: 145px; padding: .65rem .9rem; white-space: nowrap; background: #f4c43d; color: #003f30; font-size: .85rem; font-weight: 900; }
+.scorePanel.playerLeaderboardPanel .playerStationHeader { background: #e6eddf; color: #003f30; border-bottom: 2px solid #003f30; padding-block: .7rem; }
+.scorePanel.playerLeaderboardPanel :global(.contest-station-board-window) { background: #fffaf1; overflow-y: auto; height: 340px; scrollbar-color: #00563f #e6eddf; }
+.scorePanel.playerLeaderboardPanel :global(.contest-station-board-window)::before,
+.scorePanel.playerLeaderboardPanel :global(.contest-station-board-window)::after { display: none; }
+.scorePanel.playerLeaderboardPanel :global(.contest-station-board-track) { animation: none; transform: none; will-change: auto; }
+.scorePanel.playerLeaderboardPanel .playerStationBoard .playerStationRow { min-height: 80px; padding: .7rem .8rem; gap: .75rem; background: #fffaf1; color: #003f30; border-bottom: 1px solid #8b9f94; }
+.scorePanel.playerLeaderboardPanel .playerStationRow:nth-child(even) { background: #e8efe4; }
+.scorePanel.playerLeaderboardPanel .playerStationRow[data-viewer] { background: #f8e7a1; box-shadow: inset 5px 0 #003f30; }
+.scorePanel.playerLeaderboardPanel .playerStationRow:focus-visible { outline: 3px solid #003f30; outline-offset: -3px; }
+.scorePanel.playerLeaderboardPanel :global(.contest-station-rank),
+.scorePanel.playerLeaderboardPanel .playerStationIdentity,
+.scorePanel.playerLeaderboardPanel .playerStationScore,
+.scorePanel.playerLeaderboardPanel .playerRankingState { background: none; box-shadow: none; border: 0; color: #003f30; letter-spacing: normal; }
+.scorePanel.playerLeaderboardPanel :global(.contest-station-rank) { display: grid; place-items: center; background: #003f30; color: #fffaf1; min-height: 34px; font-size: .85rem; }
+.scorePanel.playerLeaderboardPanel .playerStationIdentity { padding: .25rem 0; }
+.scorePanel.playerLeaderboardPanel .playerStationIdentity strong { font-size: .95rem; line-height: 1.3; }
+.scorePanel.playerLeaderboardPanel .playerStationIdentity small,
+.scorePanel.playerLeaderboardPanel .playerStationScore small { color: #365345; font-size: .72rem; line-height: 1.4; }
+.scorePanel.playerLeaderboardPanel .playerStationScore { justify-items: end; padding: .25rem 0; text-align: right; }
+.scorePanel.playerLeaderboardPanel .playerStationScore strong { font-size: 1.15rem; line-height: 1.2; }
+.scorePanel.playerLeaderboardPanel .playerStationScore em { background: #003f30; color: #fffaf1; border: 0; border-radius: 0; padding: .3rem .4rem; font-size: .65rem; line-height: 1.3; }
+@media (max-width: 600px) {
+ .scorePanel.playerLeaderboardPanel :global(.contest-station-board-toolbar) { align-items: stretch; }
+ .scorePanel.playerLeaderboardPanel .rankingToolbarActions { width: 100%; justify-content: flex-end; }
+ .scorePanel.playerLeaderboardPanel :global(.contest-station-board-toolbar) .findMyPosition { flex: 1 0 100%; min-width: 0; }
+ .scorePanel.playerLeaderboardPanel .playerStationBoard .playerStationRow { grid-template-columns: 30px minmax(0,1fr) 76px; gap: .5rem; padding-inline: .5rem; }
+ .scorePanel.playerLeaderboardPanel .playerStationIdentity strong { font-size: .82rem; }
+ .scorePanel.playerLeaderboardPanel .playerStationIdentity small { white-space: normal; font-size: .67rem; }
+}

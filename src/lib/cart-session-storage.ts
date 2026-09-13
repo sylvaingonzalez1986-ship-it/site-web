@@ -85,9 +85,35 @@ export function readCartFromSession(
     }
     return Array.from(uniqueItems.values());
   } catch {
-    storage.removeItem(CART_SESSION_STORAGE_KEY);
+    try { storage.removeItem(CART_SESSION_STORAGE_KEY); } catch { /* Storage may be disabled. */ }
     return [];
   }
+}
+
+/** Keep the cart for 48 hours on this browser, including across closed tabs. */
+export function readBrowserCart(): StoredCartLine[] {
+  try {
+    if (window.localStorage.getItem(CART_SESSION_STORAGE_KEY) !== null) {
+      return readCartFromSession(window.localStorage);
+    }
+  } catch { /* Try the existing tab snapshot if persistent storage is unavailable. */ }
+  try {
+    const items = readCartFromSession(window.sessionStorage);
+    if (items.length) saveBrowserCart(items);
+    return items;
+  } catch { return []; }
+}
+
+export function saveBrowserCart(items: StoredCartLine[]): void {
+  try {
+    if (items.length === 0) {
+      // An empty persistent snapshot prevents an older tab from restoring a paid/cleared cart.
+      window.localStorage.setItem(CART_SESSION_STORAGE_KEY, JSON.stringify({ version: 1, updatedAt: Date.now(), items: [] }));
+    } else {
+      saveCartToSession(window.localStorage, items);
+    }
+  } catch { /* Storage access may throw. */ }
+  try { saveCartToSession(window.sessionStorage, items); } catch { /* In-memory cart still works. */ }
 }
 
 export function saveCartToSession(

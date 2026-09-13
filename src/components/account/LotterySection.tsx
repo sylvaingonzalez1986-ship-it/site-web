@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { useMemo, useState } from "react";
 import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal";
 import { LotteryResultModal } from "@/components/account/LotteryResultModal";

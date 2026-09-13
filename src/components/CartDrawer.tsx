@@ -2,7 +2,7 @@
 
 import { Minus, Plus, Trash2 } from "lucide-react";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CartBenefitSummaryModal } from "@/components/cart/CartBenefitSummaryModal";
 import { useCart } from "@/context/CartContext";
@@ -311,6 +311,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     [badgeRelayFreeShippingThreshold, relayRemainingAmount, relayShippingFee],
   );
   const homeDeliveryExplanation = useMemo(() => {
+    if (!isAuthenticated || typeof badgeHomeDeliveryFeeEur !== "number") {
+      return "Les frais sont calculés selon le mode de livraison choisi.";
+    }
     if (homeShippingFee <= 0) {
       return "Ton niveau t'offre la livraison a domicile.";
     }
@@ -320,7 +323,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     }
 
     return "Le tarif reduit de ton niveau est applique a la livraison a domicile.";
-  }, [badgeHomeDeliveryFeeEur, checkoutAmount, homeShippingFee, relayFreeShippingThreshold]);
+  }, [isAuthenticated, badgeHomeDeliveryFeeEur, checkoutAmount, homeShippingFee, relayFreeShippingThreshold]);
   const earnedProductBonusPoints = useMemo(
     () =>
       items.reduce((total, item) => {
@@ -443,7 +446,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     setLotteryError(null);
 
     if (selectedLotteryRewardClaimId) {
-      setPromoError("Le bon loterie n'est pas cumulable avec un code promo.");
+      setPromoError("La récompense n'est pas cumulable avec un code promo.");
       return;
     }
 
@@ -513,12 +516,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     setPromoError(null);
 
     if (!selectedLotteryRewardClaimId) {
-      setLotteryError("Selectionne un bon loterie.");
+      setLotteryError("Sélectionne une récompense.");
       return;
     }
 
     if (promoCode.trim()) {
-      setLotteryError("Le bon loterie n'est pas cumulable avec un code promo.");
+      setLotteryError("La récompense n'est pas cumulable avec un code promo.");
       return;
     }
 
@@ -558,7 +561,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
       if (!response.ok || !data.valid || !data.claimId || !data.rewardType || !data.rewardTitle) {
         setLotteryPreview(null);
-        setLotteryError(data.error ?? "Bon loterie invalide.");
+        setLotteryError(data.error ?? "Récompense invalide.");
         return;
       }
 
@@ -585,17 +588,16 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       );
     } catch {
       setLotteryPreview(null);
-      setLotteryError("Impossible de verifier le bon loterie.");
+      setLotteryError("Impossible de vérifier la récompense.");
     } finally {
       setLotteryLoading(false);
     }
   };
 
   const goToLogin = () => {
-    const nextPath =
-      typeof window === "undefined"
-        ? "/boutique"
-        : `${window.location.pathname}${window.location.search}`;
+    const returnUrl = new URL(window.location.href);
+    returnUrl.searchParams.set("panier", "1");
+    const nextPath = returnUrl.pathname + returnUrl.search;
     onClose();
     router.push(`/compte/connexion?next=${encodeURIComponent(nextPath)}`);
   };
@@ -617,6 +619,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       )}
 
       <aside
+        role="dialog"
+        aria-modal={open ? true : undefined}
+        aria-label="Ton panier"
+        inert={!open}
         className={`safe-area-top safe-area-bottom safe-area-x fixed right-0 top-0 z-50 flex h-[100vh] h-[100dvh] max-h-[100dvh] w-full max-w-[96vw] flex-col overflow-hidden border-l-4 border-[#1a1a2e] bg-[#fff8f0] p-4 transition-transform duration-300 md:max-w-2xl lg:max-w-3xl ${
           open ? "pointer-events-auto translate-x-0" : "pointer-events-none translate-x-full"
         }`}
@@ -637,18 +643,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           <div className="grid gap-3 pb-4">
             {items.length === 0 && (
               <div className="cartoon-panel bg-white p-5 text-sm">
-                {authLoading
-                  ? "Vérification de la session..."
-                  : isAuthenticated
-                    ? "Ton panier est vide. Ajoute quelques produits fun."
-                    : "Connecte-toi pour ajouter des produits au panier."}
-                {!authLoading && !isAuthenticated && (
-                  <div className="mt-3">
-                    <button type="button" onClick={goToLogin} className="btn-cartoon btn-primary h-10 px-3 text-xs">
-                      Se connecter
-                    </button>
-                  </div>
-                )}
+                Ton panier est vide. Découvre les produits disponibles et ajoute tes favoris.
+                <div className="mt-3">
+                  <button type="button" onClick={() => { onClose(); router.push("/boutique"); }} className="btn-cartoon btn-primary min-h-11 px-3 text-xs">
+                    Découvrir les produits
+                  </button>
+                </div>
               </div>
             )}
 
@@ -760,12 +760,15 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               );
             })}
 
-            <div className="cartoon-panel bg-white p-4">
+            {isAuthenticated && items.length > 0 && <div className="cartoon-panel bg-white p-4">
+              <h3 className="font-bold">Tes informations de livraison</h3>
               <div className="mt-4 grid gap-2">
                 <input
                   className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
                   value={shippingName}
                   onChange={(event) => setShippingName(event.target.value)}
+                  aria-label="Nom complet"
+                  autoComplete="name"
                   placeholder="Nom complet"
                 />
                 <input
@@ -773,12 +776,16 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   type="email"
                   value={shippingEmail}
                   onChange={(event) => setShippingEmail(event.target.value)}
+                  aria-label="Email"
+                  autoComplete="email"
                   placeholder="Email"
                 />
                 <input
                   className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
                   value={shippingPhone}
                   onChange={(event) => setShippingPhone(event.target.value)}
+                  aria-label="Téléphone"
+                  autoComplete="tel"
                   placeholder="Téléphone"
                 />
                 <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-2">
@@ -830,19 +837,25 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
                     value={shippingCity}
                     onChange={(event) => setShippingCity(event.target.value)}
-                    placeholder="Ville"
+                    aria-label="Ville"
+                  autoComplete="address-level2"
+                  placeholder="Ville"
                   />
                   <input
                     className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
                     value={shippingPostalCode}
                     onChange={(event) => setShippingPostalCode(event.target.value)}
-                    placeholder="Code postal"
+                    aria-label="Code postal"
+                  autoComplete="postal-code"
+                  placeholder="Code postal"
                   />
                 </div>
                 <input
                   className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
                   value={shippingCountry}
                   onChange={(event) => setShippingCountry(event.target.value)}
+                  aria-label="Pays"
+                  autoComplete="country-name"
                   placeholder="Pays"
                 />
                 {deliveryMethod === "relay" && (
@@ -916,11 +929,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 {lotteryError && <p className="text-sm font-semibold text-red-700">{lotteryError}</p>}
                 {lotterySuccess && <p className="text-sm font-semibold text-green-700">{lotterySuccess}</p>}
               </div>
-            </div>
+            </div>}
           </div>
         </div>
 
-        <div className="cartoon-panel mt-2 shrink-0 bg-white p-3">
+        {items.length > 0 && <div className="cartoon-panel mt-2 shrink-0 bg-white p-3">
           <div className="flex items-center justify-between text-base font-extrabold">
             <span>Total panier</span>
             <span>{formatPrice(totalPrice)} TTC</span>
@@ -964,10 +977,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             <span>{shippingFee <= 0 ? "Offerte" : formatPrice(shippingFee)}</span>
           </div>
           <div className="mt-1 flex items-center justify-between text-sm font-bold text-ink">
-            <span>À payer</span>
+            <span>{isAuthenticated ? "À payer" : "Total estimé"}</span>
             <span>{formatPrice(finalAmountToPay)} TTC</span>
           </div>
-          <div className="mt-2 grid grid-cols-2 gap-2">
+          {isAuthenticated && <div className="mt-2 grid grid-cols-2 gap-2">
             <button
               type="button"
               onClick={() => setSummaryModal("loyalty")}
@@ -988,8 +1001,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 <p className="text-xs font-semibold text-ink">+{estimatedEarnedTickets} pack{estimatedEarnedTickets > 1 ? "s" : ""}</p>
               )}
             </button>
-          </div>
+          </div>}
           <div className="mt-3">
+            {isAuthenticated && <>
             <ol className="mb-3 grid grid-cols-3 gap-1 text-center text-[10px] font-bold uppercase tracking-[0.04em] text-charcoal">
               <li className="rounded border border-[#1a1a1a] bg-[#d4f5dc] px-1 py-2">1. Coordonnees</li>
               <li className="rounded border border-[#1a1a1a] bg-[#d4f5dc] px-1 py-2">2. Recapitulatif</li>
@@ -1041,12 +1055,19 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 setLotterySuccess(null);
               }}
             />
-            {!authLoading && !isAuthenticated && (
-              <p className="mt-2 text-xs font-semibold text-charcoal">
-                Connecte-toi pour passer commande.
-              </p>
+            </>}
+            {!authLoading && !isAuthenticated && items.length > 0 && (
+              <div className="space-y-2">
+                <div className="flex gap-2" aria-label="Estimer la livraison">
+                  <button type="button" aria-pressed={deliveryMethod === "home"} style={deliveryMethod === "home" ? { background: "#00563f", color: "#fff" } : undefined} className="min-h-11 flex-1 border-2 border-ink px-2 text-xs" onClick={() => setDeliveryMethod("home")}>Domicile</button>
+                  <button type="button" aria-pressed={deliveryMethod === "relay"} style={deliveryMethod === "relay" ? { background: "#00563f", color: "#fff" } : undefined} className="min-h-11 flex-1 border-2 border-ink px-2 text-xs" onClick={() => setDeliveryMethod("relay")}>Point relais</button>
+                </div>
+                <p className="text-xs text-charcoal">Ton panier est conservé sur ce navigateur pendant 48 h. Connecte-toi ou crée ton compte pour poursuivre la commande.</p>
+                <button type="button" onClick={goToLogin} className="btn-cartoon btn-primary min-h-11 w-full px-3 py-3 text-sm">Continuer ma commande</button>
+                <button type="button" onClick={onClose} className="min-h-11 w-full text-sm font-bold underline">Continuer mes achats</button>
+              </div>
             )}
-            {!canCheckout && items.length > 0 && (
+            {isAuthenticated && !canCheckout && items.length > 0 && (
               <p className="mt-2 text-xs font-semibold text-charcoal">
                 {deliveryMethod === "relay" && !selectedRelayPoint
                   ? "Sélectionne un Point Relais pour payer."
@@ -1068,7 +1089,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               </div>
             )}
           </div>
-        </div>
+        </div>}
       </aside>
       <CartBenefitSummaryModal
         open={summaryModal === "loyalty"}

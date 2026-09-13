@@ -20,16 +20,18 @@ export const INVOICE_SETTINGS = {
 
 export const INVOICE_CUSTOMER_THANK_YOU = {
   title: "MERCI DE SOUTENIR NOS PRODUCTEURS",
-  body: "En commandant chez Les Chanvriers Bretons, vous faites vivre de petits producteurs passionnés qui cultivent cette magnifique plante avec patience, savoir-faire et beaucoup d'amour. Merci de faire partie de cette belle aventure humaine et locale.",
+  body: "En commandant chez Les Chanvriers Bretons, vous faites vivre de petits producteurs passionnés qui cultivent cette magnifique plante avec patience, savoir-faire et beaucoup d'amour. Merci de faire partie de cette belle aventure humaine.",
 } as const;
 
 export const INVOICE_CBD_DRIVING_NOTICE = {
   title: "CBD, THC ET CONDUITE - INFORMATION IMPORTANTE",
   paragraphs: [
-    "Les tests routiers recherchent le THC, pas le CBD. Même de faibles traces de THC dans un produit au CBD peuvent rendre le test positif. Conduire après usage de THC est interdit, quelle que soit la quantité détectée.",
+    "Les tests routiers recherchent le THC. Même de faibles traces de THC dans un produit CBD peuvent positiver le test. Il est fortement recommandé de ne pas conduire après consommation. Au volant, le THC est sanctionné sans seuil minimal d'incrimination et sans distinguer l'origine du THC. Ne pas ressentir d'effet ne protège ni d'un test positif ni du retrait de permis : c'est aberrant, et nous espérons que cela changera vite pour vous.",
     "Aucun délai ne garantit un test négatif, y compris après une consommation la veille. En cas de doute, ne conduisez pas. Un autotest informe sans garantir le résultat d'un contrôle officiel.",
-    "Après le prélèvement salivaire, indiquez immédiatement à l'agent que vous souhaitez vous réserver la possibilité d'une expertise : un prélèvement sanguin doit alors être réalisé. La demande peut être faite dans les cinq jours suivant la notification du résultat. Lisez avant de signer et faites consigner vos observations.",
   ],
+  procedureTitle: "Que faire en cas de contrôle positif ?",
+  procedure:
+    "Après le prélèvement salivaire, indiquez immédiatement à l'agent que vous souhaitez vous réserver la possibilité d'une expertise : un prélèvement sanguin doit alors être réalisé. La demande peut être faite dans les cinq jours suivant la notification du résultat. Lisez avant de signer et faites consigner vos observations.",
   source:
     "Sources : Code de la route, art. R. 235-6 et R. 235-11 ; Cour de cassation, 21 juin 2023, n° 22-85.530.",
 } as const;

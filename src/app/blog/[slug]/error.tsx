@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { useEffect } from "react";
 
 type BlogErrorProps = {

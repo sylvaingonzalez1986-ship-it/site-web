@@ -58,11 +58,31 @@ const INVOICE_LOGO_PATH = path.join(process.cwd(), "public", "invoice-logo.png")
 const INVOICE_THANK_YOU_IMAGE_PATH = path.join(
   process.cwd(),
   "public",
-  "invoice-sylvain-thank-you-v1.png",
+  "invoice-sylvain-thank-you-v2-blue.png",
 );
+const INVOICE_FONT_DIRECTORY = path.join(process.cwd(), "public", "fonts", "invoice");
+const INVOICE_BODY_FONT_PATH = path.join(
+  INVOICE_FONT_DIRECTORY,
+  "SpaceGrotesk-Regular.ttf",
+);
+const INVOICE_BODY_BOLD_FONT_PATH = path.join(
+  INVOICE_FONT_DIRECTORY,
+  "SpaceGrotesk-Bold.ttf",
+);
+const INVOICE_DISPLAY_FONT_PATH = path.join(
+  INVOICE_FONT_DIRECTORY,
+  "BarlowCondensed-Bold.ttf",
+);
+
+type InvoiceFontBuffers = {
+  body: Buffer;
+  bodyBold: Buffer;
+  display: Buffer;
+};
 
 let invoiceLogoDataUriPromise: Promise<string | null> | null = null;
 let invoiceThankYouImageDataUriPromise: Promise<string | null> | null = null;
+let invoiceFontBuffersPromise: Promise<InvoiceFontBuffers | null> | null = null;
 
 async function tintLogoDataUri(logoBuffer: Buffer, color: string): Promise<string> {
   const { createCanvas, loadImage } = await import("@napi-rs/canvas");
@@ -97,6 +117,17 @@ async function getInvoiceThankYouImageDataUri(): Promise<string | null> {
     .then((imageBuffer) => `data:image/png;base64,${imageBuffer.toString("base64")}`)
     .catch(() => null);
   return invoiceThankYouImageDataUriPromise;
+}
+
+async function getInvoiceFontBuffers(): Promise<InvoiceFontBuffers | null> {
+  invoiceFontBuffersPromise ??= Promise.all([
+    readFile(INVOICE_BODY_FONT_PATH),
+    readFile(INVOICE_BODY_BOLD_FONT_PATH),
+    readFile(INVOICE_DISPLAY_FONT_PATH),
+  ])
+    .then(([body, bodyBold, display]) => ({ body, bodyBold, display }))
+    .catch(() => null);
+  return invoiceFontBuffersPromise;
 }
 
 /* ------------------------------------------------------------------ */
@@ -149,14 +180,23 @@ export async function generateInvoicePdf(
   /* ---------- build PDF ---------- */
 
   const doc = new PDFDocument({ size: "A4", margin: 48 });
-  doc.fillColor(INK_COLOR);
   const pdfPromise = buildPdfBuffer(doc);
 
   // --- Company header ---
-  const [logoDataUri, thankYouImageDataUri] = await Promise.all([
+  const [logoDataUri, thankYouImageDataUri, fontBuffers] = await Promise.all([
     getInvoiceLogoDataUri(),
     getInvoiceThankYouImageDataUri(),
+    getInvoiceFontBuffers(),
   ]);
+  const bodyFont = fontBuffers ? "InvoiceBody" : "Helvetica";
+  const bodyBoldFont = fontBuffers ? "InvoiceBodyBold" : "Helvetica-Bold";
+  const displayFont = fontBuffers ? "InvoiceDisplay" : "Helvetica-Bold";
+  if (fontBuffers) {
+    doc.registerFont(bodyFont, fontBuffers.body);
+    doc.registerFont(bodyBoldFont, fontBuffers.bodyBold);
+    doc.registerFont(displayFont, fontBuffers.display);
+  }
+  doc.fillColor(INK_COLOR).font(bodyFont);
   const headerTop = 42;
   const logoSize = 76;
   const logoX = 48;
@@ -169,47 +209,66 @@ export async function generateInvoicePdf(
     });
   }
 
-  doc.font("Helvetica-Bold").fontSize(17).text(INVOICE_COMPANY.legalName, companyX, companyY, {
+  doc.font(displayFont).fontSize(19).text(INVOICE_COMPANY.legalName, companyX, companyY, {
     align: "left",
   });
   doc
-    .font("Helvetica")
+    .font(bodyFont)
     .fontSize(10)
     .text(`SIRET: ${INVOICE_COMPANY.siret}`, companyX, doc.y + 4, { align: "left" });
-  doc.y = Math.max(doc.y, headerTop + logoSize + 14);
+  doc.y = Math.max(doc.y, headerTop + logoSize + 8);
 
-  // --- Invoice meta ---
-  doc.moveDown(1.1);
-  doc.fontSize(14).text(`FACTURE N° ${issuedInvoice.invoiceNumber}`, { align: "left" });
+  // --- Invoice meta and customer, side by side ---
+  const detailsY = doc.y + 8;
+  const detailsColumnWidth = 235;
+  const customerX = 312;
+
   doc
+    .font(displayFont)
+    .fontSize(14)
+    .text(`FACTURE N° ${issuedInvoice.invoiceNumber}`, 48, detailsY, {
+      align: "left",
+      width: detailsColumnWidth,
+    });
+  doc
+    .font(bodyFont)
     .fontSize(10)
-    .text(`Date d'emission: ${formatDateFr(issuedInvoice.issuedAt)}`)
-    .text(`Commande: ${order.id}`)
-    .text(`Date commande: ${formatDateFr(order.createdAt)}`);
+    .text(`Date d'emission: ${formatDateFr(issuedInvoice.issuedAt)}`, 48, doc.y + 3, {
+      width: detailsColumnWidth,
+    })
+    .text(`Commande: ${order.id}`, 48, doc.y, { width: detailsColumnWidth })
+    .text(`Date commande: ${formatDateFr(order.createdAt)}`, 48, doc.y, {
+      width: detailsColumnWidth,
+    });
+  const invoiceDetailsBottom = doc.y;
 
-  // --- Customer block ---
-  doc.moveDown(1.1);
-  doc.fontSize(12).text("Client");
-  doc.fontSize(10).text(customer.name);
+  doc.font(displayFont).fontSize(13).text("Client", customerX, detailsY, {
+    width: detailsColumnWidth,
+  });
+  doc.font(bodyFont).fontSize(10).text(customer.name, customerX, doc.y + 3, {
+    width: detailsColumnWidth,
+  });
   if (customer.address) {
-    doc.text(customer.address);
+    doc.text(customer.address, customerX, doc.y, { width: detailsColumnWidth });
   }
   const cityLine = [customer.postalCode, customer.city, customer.country]
     .filter(Boolean)
     .join(" ");
   if (cityLine) {
-    doc.text(cityLine);
+    doc.text(cityLine, customerX, doc.y, { width: detailsColumnWidth });
   }
   if (customer.email) {
-    doc.text(customer.email);
+    doc.text(customer.email, customerX, doc.y, { width: detailsColumnWidth });
   }
   if (customer.phone) {
-    doc.text(customer.phone);
+    doc.text(customer.phone, customerX, doc.y, { width: detailsColumnWidth });
   }
+  const customerDetailsBottom = doc.y;
+  doc.y = Math.max(invoiceDetailsBottom, customerDetailsBottom);
 
   // --- Line items ---
-  doc.moveDown(1.2);
-  doc.fontSize(12).text("Detail des articles");
+  doc.moveDown(0.9);
+  doc.font(displayFont).fontSize(13).text("Detail des articles");
   doc.moveDown(0.4);
 
   const startY = doc.y;
@@ -218,14 +277,14 @@ export async function generateInvoicePdf(
   const xUnitHt = 345;
   const xRate = 430;
   const xTotalHt = 485;
-  doc.fontSize(9).text("Designation", xDesignation, startY);
+  doc.font(bodyBoldFont).fontSize(9).text("Designation", xDesignation, startY);
   doc.text("Qte", xQty, startY);
   doc.text("P.U. HT", xUnitHt, startY);
   doc.text("TVA", xRate, startY);
   doc.text("Total HT", xTotalHt, startY);
 
   let y = startY + 16;
-  doc.fontSize(8.8);
+  doc.font(bodyFont).fontSize(8.8);
   for (const item of order.items) {
     const itemVatRate = sanitizeOrderVatRate(item.vatRate);
     const displayName = item.parentPackName
@@ -251,14 +310,14 @@ export async function generateInvoicePdf(
     doc.text(formatMoney(itemLineHt), xTotalHt, y);
     y += rowHeight;
   }
-  doc.fontSize(9);
+  doc.font(bodyFont).fontSize(9);
 
   // --- Totals ---
   doc.moveTo(48, y).lineTo(547, y).strokeColor(INK_COLOR).stroke();
   y += 10;
   doc.text("Sous-total TTC", xUnitHt - 10, y, { width: 120 });
   doc.text(formatMoney(itemsSubTotalTtc), xTotalHt, y);
-  y += 16;
+  y += 14;
 
   if (discountAmount > 0) {
     const discountLabel = order.promoCode
@@ -266,51 +325,51 @@ export async function generateInvoicePdf(
       : "Remise promo incluse";
     doc.text(discountLabel, xUnitHt - 90, y, { width: 210 });
     doc.text(`-${formatMoney(discountAmount)}`, xTotalHt, y);
-    y += 16;
+    y += 14;
   }
 
   doc.text("Livraison", xUnitHt - 10, y, { width: 120 });
   doc.text(deliveryFee > 0 ? formatMoney(deliveryFee) : "Offerte", xTotalHt, y);
-  y += 16;
+  y += 14;
 
   if (INVOICE_SETTINGS.vatMode === "taxable") {
     doc.text("Total HT", xUnitHt - 10, y, { width: 120 });
     doc.text(formatMoney(totalHt), xTotalHt, y);
-    y += 16;
+    y += 14;
     for (const vatLine of vatBreakdown) {
       doc.text(`TVA ${vatLine.rate}%`, xUnitHt - 10, y, { width: 120 });
       doc.text(formatMoney(vatLine.vatAmount), xTotalHt, y);
-      y += 16;
+      y += 14;
     }
     doc.text("Total TVA", xUnitHt - 10, y, { width: 120 });
     doc.text(formatMoney(totalVat), xTotalHt, y);
-    y += 16;
-    doc.font("Helvetica-Bold").text("Total TTC", xUnitHt - 10, y, { width: 120 });
+    y += 14;
+    doc.font(bodyBoldFont).text("Total TTC", xUnitHt - 10, y, { width: 120 });
     doc.text(formatMoney(totalTtc), xTotalHt, y);
-    doc.font("Helvetica");
+    doc.font(bodyFont);
   } else {
-    doc.font("Helvetica-Bold").text("Total", xUnitHt - 10, y, { width: 120 });
+    doc.font(bodyBoldFont).text("Total", xUnitHt - 10, y, { width: 120 });
     doc.text(formatMoney(totalTtc), xTotalHt, y);
-    doc.font("Helvetica");
+    doc.font(bodyFont);
   }
 
   // --- Legal VAT footer, directly below invoice totals ---
   const legalFooterY = Math.max(doc.y + 8, y + 24);
   doc
     .fillColor(INK_COLOR)
-    .font("Helvetica")
+    .font(bodyFont)
     .fontSize(8.5)
     .text(getInvoiceLegalFooter(), 48, legalFooterY, { width: 499, align: "left" });
 
   // --- Customer thank-you and CBD driving notice ---
   const messageX = 48;
   const messageWidth = 499;
-  const messagePadding = 9;
+  const messagePadding = 8;
   const messageTextWidth = messageWidth - messagePadding * 2;
-  const thankYouImageSize = thankYouImageDataUri ? 56 : 0;
+  const thankYouImageSize = thankYouImageDataUri ? 54 : 0;
   const thankYouImageGap = thankYouImageDataUri ? 10 : 0;
   const thankYouTextWidth = messageTextWidth - thankYouImageSize - thankYouImageGap;
-  doc.font("Helvetica").fontSize(8.2);
+  doc.font(bodyFont).fontSize(8.2);
   const thankYouBodyHeight = doc.heightOfString(INVOICE_CUSTOMER_THANK_YOU.body, {
     width: thankYouTextWidth,
     lineGap: 1,
@@ -322,22 +381,42 @@ export async function generateInvoicePdf(
     .map((paragraph) => `- ${paragraph}`)
     .join("\n");
 
-  doc.font("Helvetica").fontSize(7.5);
+  doc.font(bodyFont).fontSize(7.5);
   const noticeBodyHeight = doc.heightOfString(noticeBody, {
     width: messageTextWidth,
     lineGap: 1,
   });
-  doc.font("Helvetica").fontSize(6.5);
+  doc.font(displayFont).fontSize(8.2);
+  const noticeProcedureTitleHeight = doc.heightOfString(
+    INVOICE_CBD_DRIVING_NOTICE.procedureTitle,
+    { width: messageTextWidth },
+  );
+  doc.font(bodyFont).fontSize(7.5);
+  const noticeProcedureHeight = doc.heightOfString(INVOICE_CBD_DRIVING_NOTICE.procedure, {
+    width: messageTextWidth,
+    lineGap: 1,
+  });
+  doc.font(bodyFont).fontSize(6.5);
   const noticeSourceHeight = doc.heightOfString(INVOICE_CBD_DRIVING_NOTICE.source, {
     width: messageTextWidth,
   });
   const noticeHeight =
-    messagePadding + 12 + 5 + noticeBodyHeight + 5 + noticeSourceHeight + messagePadding;
+    messagePadding +
+    12 +
+    5 +
+    noticeBodyHeight +
+    4 +
+    noticeProcedureTitleHeight +
+    2 +
+    noticeProcedureHeight +
+    5 +
+    noticeSourceHeight +
+    messagePadding;
   const pageBottom = doc.page.height - 48;
-  const messageGap = 8;
-  let thankYouY = doc.y + 10;
+  const messageGap = 6;
+  let thankYouY = doc.y + 8;
 
-  if (thankYouY + thankYouHeight + messageGap + noticeHeight + 4 > pageBottom) {
+  if (thankYouY + thankYouHeight + messageGap + noticeHeight > pageBottom) {
     doc.addPage();
     doc.fillColor(INK_COLOR);
     thankYouY = 48;
@@ -356,15 +435,15 @@ export async function generateInvoicePdf(
     messageX + messagePadding + thankYouImageSize + thankYouImageGap;
   doc
     .fillColor("#006F70")
-    .font("Helvetica-Bold")
-    .fontSize(9.5)
+    .font(displayFont)
+    .fontSize(10.5)
     .text(INVOICE_CUSTOMER_THANK_YOU.title, thankYouTextX, thankYouY + messagePadding + 1, {
       width: thankYouTextWidth,
       align: "left",
     });
   doc
     .fillColor(INK_COLOR)
-    .font("Helvetica-Oblique")
+    .font(bodyFont)
     .fontSize(8.2)
     .text(
       INVOICE_CUSTOMER_THANK_YOU.body,
@@ -385,22 +464,37 @@ export async function generateInvoicePdf(
     .fillAndStroke("#FFF4D6", INK_COLOR);
   doc
     .fillColor(INK_COLOR)
-    .font("Helvetica-Bold")
-    .fontSize(9)
+    .font(displayFont)
+    .fontSize(10)
     .text(INVOICE_CBD_DRIVING_NOTICE.title, messageX + messagePadding, noticeY + messagePadding, {
       width: messageTextWidth,
     });
   let noticeTextY = noticeY + messagePadding + 17;
   doc
-    .font("Helvetica")
+    .font(bodyFont)
     .fontSize(7.5)
     .text(noticeBody, messageX + messagePadding, noticeTextY, {
       width: messageTextWidth,
       lineGap: 1,
     });
-  noticeTextY += noticeBodyHeight + 5;
+  noticeTextY += noticeBodyHeight + 4;
   doc
-    .font("Helvetica-Oblique")
+    .font(displayFont)
+    .fontSize(8.2)
+    .text(INVOICE_CBD_DRIVING_NOTICE.procedureTitle, messageX + messagePadding, noticeTextY, {
+      width: messageTextWidth,
+    });
+  noticeTextY += noticeProcedureTitleHeight + 2;
+  doc
+    .font(bodyFont)
+    .fontSize(7.5)
+    .text(INVOICE_CBD_DRIVING_NOTICE.procedure, messageX + messagePadding, noticeTextY, {
+      width: messageTextWidth,
+      lineGap: 1,
+    });
+  noticeTextY += noticeProcedureHeight + 5;
+  doc
+    .font(bodyFont)
     .fontSize(6.5)
     .text(INVOICE_CBD_DRIVING_NOTICE.source, messageX + messagePadding, noticeTextY, {
       width: messageTextWidth,

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { LoyaltyBadgeSummary } from "@/components/account/LoyaltyBadgeSummary";
 import { EditorialWorldHero } from "@/components/EditorialWorldHero";
 

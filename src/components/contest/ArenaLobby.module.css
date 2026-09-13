@@ -61,3 +61,13 @@
   .scene { transform: none; }
   .lobby *, .lobby *::before { transition: none !important; animation: none !important; }
 }
+
+.rewardInvitation { display: flex; align-items: flex-start; gap: .8rem; margin: .5rem clamp(1rem, 4vw, 4rem); padding: 1rem 1.2rem; max-width: 620px; border: 1px solid #f4c43d80; border-radius: 12px; background: #003f30e8; color: #fffaf1; text-decoration: none; backdrop-filter: blur(8px); }
+.rewardInvitation > svg { color: #f4c43d; flex-shrink: 0; }
+.rewardInvitation span { display: grid; gap: .5rem; }
+.rewardInvitation strong { font-size: .98rem; line-height: 1.4; }
+.rewardInvitation small { font-size: .78rem; line-height: 1.5; }
+.rewardInvitation b { display: flex; align-items: center; gap: .5rem; color: #f4c43d; font-size: .78rem; }
+.lobby { grid-template-rows: auto auto 1fr auto; }
+.breathingRoom { min-height: 120px; }
+@media (max-width: 700px) { .rewardInvitation { padding: .8rem; } .rewardInvitation strong { font-size: .88rem; } .breathingRoom { min-height: 70px; } }

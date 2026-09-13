@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 
 function sanitizeNextUrl(value: string): string {
   if (!value || !value.startsWith("/") || value.startsWith("//")) {
@@ -39,7 +39,15 @@ export function AdminLoginForm({ nextUrl }: AdminLoginFormProps) {
         body: JSON.stringify(body),
       });
 
-      const data = (await response.json()) as { error?: string; requireTotp?: boolean };
+      const responseText = await response.text();
+      let data: { error?: string; requireTotp?: boolean } = {};
+      try {
+        data = responseText ? JSON.parse(responseText) as typeof data : {};
+      } catch {
+        throw new Error(response.ok
+          ? "Réponse inattendue du serveur. Recharge la page puis réessaie."
+          : `Connexion admin indisponible (${response.status}). Redémarre le serveur local puis réessaie.`);
+      }
 
       if (data.requireTotp && !requireTotp) {
         setRequireTotp(true);
@@ -52,6 +60,11 @@ export function AdminLoginForm({ nextUrl }: AdminLoginFormProps) {
       }
 
       router.replace(sanitizeNextUrl(nextUrl));
+      router.refresh();
+    } catch (submitError) {
+      setError(submitError instanceof Error
+        ? submitError.message
+        : "Connexion admin momentanément indisponible.");
     } finally {
       setLoading(false);
     }

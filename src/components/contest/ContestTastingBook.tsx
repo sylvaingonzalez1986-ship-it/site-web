@@ -3,7 +3,7 @@
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import dynamic from "next/dynamic";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type TouchEvent } from "react";
 import { ArrowLeft, ArrowRight, BookOpen, Check, ChevronLeft, ChevronRight, Flower2, Gift, Leaf, List, LockKeyhole, Sprout, Sun, Trophy, Warehouse, X } from "lucide-react";

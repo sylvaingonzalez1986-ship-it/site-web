@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import {
   ArrowDownRight,
   ArrowRight,
@@ -19,7 +19,8 @@ import { ProductCard } from "@/components/ProductCard";
 import { HomeBadgePromoBand } from "@/components/home/HomeBadgePromoBand";
 import { HomeSeasonGallery } from "@/components/home/HomeSeasonGallery";
 import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
-import { sortOwnProductsFirst } from "@/lib/own-producer";
+import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
+import { getHomeFeaturedProducts } from "@/lib/home-featured-products";
 import type { HomeSection, PublicStoreResponse } from "@/types/store";
 import styles from "./HomeEditorialExperience.module.css";
 
@@ -61,7 +62,9 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
   const { content, products, sections } = initialStore;
   const home = content.home;
   const homeSections = sections.home;
-  const featuredProducts = sortOwnProductsFirst(products).slice(0, 3);
+  const featuredProducts = getHomeFeaturedProducts(products);
+  const producerById = new Map(initialStore.producers.map(producer => [producer.id, producer]));
+  const ownProducer = getOwnProducer(content.boutique);
   const customSections = homeSections.filter(
     (section): section is Extract<HomeSection, { type: "custom" }> =>
       section.type === "custom" && section.visible,
@@ -80,6 +83,7 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
               <span>Au prix juste.</span>
             </h1>
 
+            <p className={styles.heroLead}>Notre production bretonne et les récoltes de producteurs français identifiés. Un prix juste, dès le premier gramme.</p>
             <div className={styles.heroRule} aria-hidden="true" />
 
             <div className={styles.mobileHeroStage} aria-hidden="true">
@@ -135,6 +139,44 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
           </div>
         </div>
       </section>
+
+      {isSectionVisible(homeSections, "products") && (
+        <section id="products" className={styles.products} aria-labelledby="produits-title">
+          <div className="retro-container">
+            <div className={styles.productsHeader}>
+              <div>
+                <p className={styles.kicker}>À découvrir maintenant</p>
+                <h2 id="produits-title" className={styles.sectionTitle}>
+                  Disponibles <span>maintenant.</span>
+                </h2>
+              </div>
+              <Link href="/boutique" className={styles.textLink}>
+                Tout voir <ArrowRight aria-hidden="true" />
+              </Link>
+            </div>
+
+            <p className={styles.selectionLead}>Notre sélection en stock, avec le producteur et le prix affichés sur chaque produit.</p>
+            {featuredProducts.length > 0 ? (
+              <div className={styles.productGrid}>
+                {featuredProducts.map((product, index) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    producer={resolveProductProducer(product, producerById, ownProducer)}
+                    addButtonLabel={home.productsAddButtonLabel.trim() || "Ajouter au panier"}
+                    lowStockThresholdGrams={content.boutique.lowStockThresholdGrams}
+                    imagePriority={index === 0}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className={styles.emptyProducts}>
+                Les récoltes arrivent bientôt. En attendant, découvre toute notre démarche.
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {isSectionVisible(homeSections, "legal") && (
         <section className={styles.promise} aria-labelledby="prix-juste-title">
@@ -240,41 +282,7 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
         </div>
       </section>
 
-      {isSectionVisible(homeSections, "products") && (
-        <section id="products" className={styles.products} aria-labelledby="produits-title">
-          <div className="retro-container">
-            <div className={styles.productsHeader}>
-              <div>
-                <p className={styles.kicker}>À découvrir maintenant</p>
-                <h2 id="produits-title" className={styles.sectionTitle}>
-                  Les produits du <span>moment.</span>
-                </h2>
-              </div>
-              <Link href="/boutique" className={styles.textLink}>
-                Tout voir <ArrowRight aria-hidden="true" />
-              </Link>
-            </div>
 
-            {featuredProducts.length > 0 ? (
-              <div className={styles.productGrid}>
-                {featuredProducts.map((product, index) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    addButtonLabel={home.productsAddButtonLabel.trim() || "Ajouter au panier"}
-                    lowStockThresholdGrams={content.boutique.lowStockThresholdGrams}
-                    imagePriority={index === 0}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className={styles.emptyProducts}>
-                Les récoltes arrivent bientôt. En attendant, découvre toute notre démarche.
-              </div>
-            )}
-          </div>
-        </section>
-      )}
 
       <section
         id="ticket-grattage-home"

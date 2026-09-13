@@ -51,9 +51,12 @@ describe("invoice PDF CBD notice", () => {
       country: "France",
     });
     const pdf = await PdfLibDocument.load(pdfBuffer);
+    const rawPdf = pdfBuffer.toString("latin1");
 
     expect(pdfBuffer.subarray(0, 4).toString()).toBe("%PDF");
     expect(pdf.getPageCount()).toBe(1);
+    expect(rawPdf).toContain("SpaceGrotesk");
+    expect(rawPdf).toContain("BarlowCondensed");
   });
 
   it("keeps a typical multi-item invoice and both messages on one A4 page", async () => {

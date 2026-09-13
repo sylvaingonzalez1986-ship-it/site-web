@@ -1,0 +1,5 @@
+.indicator { position: fixed; left: 50%; bottom: max(1.5rem, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 10000; display: flex; align-items: center; gap: .7rem; max-width: calc(100vw - 2rem); padding: .85rem 1.2rem; border: 2px solid #f4c43d; border-radius: 50px; background: #003f30; color: #fffaf1; box-shadow: 0 8px 28px #002d2433; font-size: .9rem; font-weight: 800; pointer-events: none; }
+.indicator:not([data-navigation-pending]) { visibility: hidden; }
+.indicator svg { width: 23px; height: 23px; flex-shrink: 0; color: #f4c43d; animation: hourglass-turn 1.4s ease-in-out infinite; }
+@keyframes hourglass-turn { 0%, 20% { transform: rotate(0); } 70%, 100% { transform: rotate(180deg); } }
+@media (prefers-reduced-motion: reduce) { .indicator svg { animation: none; } }

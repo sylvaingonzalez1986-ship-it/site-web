@@ -477,3 +477,22 @@
 
 .cookingFallback { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 16px; background: #003f30; color: #f4c43d; }
 .cookingFallback svg { width: 45%; height: 45%; }
+
+.demandPanel { display: grid; gap: 12px; padding: 18px; border: 2px solid #192c23; background: #f4f5e9; color: #192c23; margin-block: 16px; }
+.demandPanel > div:first-child { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+.demandPanel p { margin: 0; line-height: 1.5; }
+.demandPanel > button { justify-self: start; text-decoration: underline; font-weight: 700; min-height: 44px; }
+.priceChoices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.priceChoices button { display: grid; gap: 7px; padding: 14px 10px; border: 2px solid #b9c4b5; background: white; text-align: left; }
+.priceChoices button[aria-pressed="true"] { border-color: #192c23; background: #dfedb9; box-shadow: 3px 3px 0 #192c23; }
+.priceChoices button:focus-visible { outline: 3px solid #c45420; outline-offset: 3px; }
+.priceChoices span { font-weight: 900; font-size: 1.2rem; }
+@media (max-width: 540px) { .priceChoices { grid-template-columns: 1fr; } .priceChoices button { grid-template-columns: 1fr auto; } .priceChoices small { grid-column: 1 / -1; } }
+
+.marketTier { display: grid; gap: 8px; padding: 12px; border-left: 4px solid #50672d; background: #e8efd9; min-width: 0; }
+.marketTier summary { cursor: pointer; min-height: 44px; align-content: center; font-weight: 700; }
+.marketTier summary:focus-visible { outline: 3px solid #c45420; outline-offset: 3px; }
+.marketTier ul { display: grid; gap: 8px; padding: 0; list-style: none; margin-block: 8px 12px; }
+.marketTier li { display: grid; gap: 4px; padding: 8px; border: 1px solid #b9c4b5; }
+.marketTier li[aria-current] { background: #fff3b8; border-color: #50672d; }
+.marketTier li span { font-size: .85rem; }

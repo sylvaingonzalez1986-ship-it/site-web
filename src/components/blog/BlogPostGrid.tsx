@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { Suspense, useEffect, useMemo, useRef } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { BLOG_CATEGORY_LABELS } from "@/lib/blog-categories";
 import { BLOG_CATEGORY_OPTIONS, type BlogCategory, type BlogPost } from "@/types/store";
 

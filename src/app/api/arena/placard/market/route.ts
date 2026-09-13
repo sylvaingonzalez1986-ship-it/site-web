@@ -1,8 +1,8 @@
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
-import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
-import { getKqMarketSnapshot, sellKqMarketLot } from "@/lib/supabase/kanab-quest-market-backend";
+import { getKqMarketSnapshot } from "@/lib/supabase/kanab-quest-market-backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -33,33 +33,11 @@ export async function POST(request: Request) {
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   const ip = getRequestIp(request);
-  const key = `kq_market_sale:${session.customerId}:${ip}`;
-  const rate = await hitRateLimit({ key, windowSeconds: 600, maxHits: 15 });
+  const key = `kq_market_retired:${session.customerId}:${ip}`;
+  const rate = await hitRateLimit({ key, windowSeconds: 60, maxHits: 30 });
   if (!rate.allowed) {
-    logRateLimitRejection({
-      endpoint: "POST /api/arena/placard/market",
-      key,
-      ip,
-      actorEmail: session.customer.email,
-      retryAfterSeconds: rate.retryAfterSeconds,
-      maxHits: 15,
-      windowSeconds: 600,
-    });
-    return NextResponse.json({ error: "Trop de tentatives.", retryAfterSeconds: rate.retryAfterSeconds }, {
-      status: 429,
-      headers: { "Retry-After": String(rate.retryAfterSeconds) },
-    });
+    logRateLimitRejection({ endpoint: "POST /api/arena/placard/market", key, ip, actorEmail: session.customer.email, retryAfterSeconds: rate.retryAfterSeconds, maxHits: 30, windowSeconds: 60 });
+    return NextResponse.json({ error: "Patiente avant de réessayer." }, { status: 429, headers: { "Retry-After": String(rate.retryAfterSeconds) } });
   }
-  try {
-    const payload = await request.json() as { flowerId?: string; requestKey?: string; route?: string };
-    return NextResponse.json(await sellKqMarketLot({
-      userId: session.customerId,
-      flowerId: String(payload.flowerId ?? ""),
-      requestKey: String(payload.requestKey ?? ""),
-      route: String(payload.route ?? ""),
-    }));
-  } catch (error) {
-    const failure = publicMarketError(error, "Vente impossible.");
-    return NextResponse.json({ error: failure.message }, { status: failure.status });
-  }
+  return NextResponse.json({ error: "Le marché utilise désormais les circuits de vente. Actualise la page pour retrouver tes lots." }, { status: 409 });
 }

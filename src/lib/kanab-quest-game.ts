@@ -21,7 +21,7 @@ export const KQ_STAGES = ["Germination", "Enracinement", "Croissance", "Floraiso
 export type KqStage = (typeof KQ_STAGES)[number];
 export type KqTiming = "passive" | "before-roll" | "after-roll";
 export type KqCardCategory = "substrate" | "pbi" | "equipment" | "know-how" | "luck";
-export type KqSupportEffect = "reroll-neutral" | "pbi-success" | "pbi-strong-success" | "pbi-success-xp" | "cancel-danger" | "reveal-pest" | "reroll-two-low" | "neutral-to-success" | "four-keep-three" | "three-to-success"
+export type KqSupportEffect = "hygrometer-balance" | "water-rescue" | "patient-curing" | "leaf-thinning" | "pbi-neutral-strong" | "pbi-mite-shield" | "reroll-neutral" | "pbi-success" | "pbi-strong-success" | "pbi-success-xp" | "cancel-danger" | "reveal-pest" | "reroll-two-low" | "neutral-to-success" | "four-keep-three" | "three-to-success"
   | "water-test" | "pest-monitor" | "double-danger-shield" | "moisture-calibration"
   | "harvest-four-quality" | "harvest-cool" | "danger-to-neutral" | "clean-cut"
   | "compliance-clearance" | "illegal-power" | "bill-relief" | "theft-guard"
@@ -93,6 +93,7 @@ export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadou
 };
 
 export type KqGameState = {
+  rulesVersion?: 2;
   energy?: KqEnergyQuote;
   seed: number;
   challengeDayKey?: string;
@@ -214,32 +215,32 @@ const KQ_CARD_CATALOG: KqSupportCard[] = [
   { code: "BOTTE-001", name: "Terreau horticole", category: "substrate", rarity: "common", xpCost: 0, timing: "passive", description: "Sur Racines ou Eau, si aucun dé ne réussit, transforme le meilleur dé neutre en 4.", tags: ["roots", "water"], effect: "starter-stability" },
   { code: "BOTTE-002", name: "Chrysope affamée", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Transforme un dé faible en réussite contre pucerons ou thrips.", tags: ["pest"], targets: ["aphids", "thrips"], effect: "pbi-success" },
   { code: "BOTTE-003", name: "Petit ventilateur", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Annule un Danger sur une Situation Climat ou Séchage.", tags: ["climate", "drying"], effect: "cancel-danger" },
-  { code: "BOTTE-004", name: "Loupe d’inspection", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Identifie un ravageur et ouvre ta réserve de cartes PBI.", tags: ["pest"], effect: "reveal-pest" },
+  { code: "BOTTE-004", name: "Loupe d’inspection", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Identifie un ravageur, ouvre ta réserve PBI et protège contre un Danger.", tags: ["pest"], effect: "reveal-pest" },
   { code: "BOTTE-005", name: "Arrosage mesuré", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Relance un dé neutre sur une Situation Eau ou Racines.", tags: ["water", "roots"], effect: "reroll-neutral" },
   { code: "BOTTE-006", name: "Deuxième chance", category: "luck", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Relance les deux dés les plus faibles.", tags: [], effect: "reroll-two-low" },
   { code: "BOTTE-007", name: "Hydroponie recirculante", category: "substrate", rarity: "uncommon", xpCost: 0, timing: "passive", description: "Sur Eau ou Floraison, relance un dé neutre et garde la meilleure face ; une coupure arrête les pompes.", tags: ["water", "flower"], effect: "hydroponic-control" },
   { code: "BOTTE-008", name: "Aéroponie haute pression", category: "substrate", rarity: "rare", xpCost: 0, timing: "passive", description: "Sur Racines, Eau ou Climat, transforme un dé neutre en 5 ; une coupure transforme les deux meilleurs dés en Dangers.", tags: ["roots", "water", "climate"], effect: "aeroponic-precision" },
   { code: "BOTTE-009", name: "Sol vivant", category: "substrate", rarity: "rare", xpCost: 0, timing: "passive", description: "Sur Racines ou Ravageur, la vie du sol amortit le premier Danger en résultat neutre.", tags: ["roots", "pest"], effect: "living-soil-buffer" },
-  { code: "BOTTE-010", name: "Coccinelle à sept points", category: "pbi", rarity: "rare", xpCost: 3, timing: "after-roll", description: "Transforme un dé faible en réussite forte contre les pucerons.", tags: ["pest"], targets: ["aphids"], effect: "pbi-strong-success" },
-  { code: "BOTTE-011", name: "Amblyseius swirskii", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Transforme un dé faible en réussite contre des acariens ou thrips révélés.", tags: ["pest"], targets: ["mites", "thrips"], effect: "pbi-success" },
+  { code: "BOTTE-010", name: "Coccinelle à sept points", category: "pbi", rarity: "rare", xpCost: 3, timing: "after-roll", description: "Transforme un dé faible en Étincelle contre les pucerons : une réussite et 1 XP au verdict.", tags: ["pest"], targets: ["aphids"], effect: "pbi-strong-success" },
+  { code: "BOTTE-011", name: "Amblyseius swirskii", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Contre les acariens ou thrips révélés, transforme un dé neutre en 5. Ne corrige pas les Dangers.", tags: ["pest"], targets: ["mites", "thrips"], effect: "pbi-neutral-strong" },
   { code: "BOTTE-012", name: "Aphidius colemani", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Transforme un dé faible en réussite contre les pucerons et rapporte +1 XP en cas de succès.", tags: ["pest"], targets: ["aphids"], effect: "pbi-success-xp" },
   { code: "BOTTE-013", name: "Pot en tissu", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Transforme un Danger en résultat neutre sur Racines ou Eau, mais gagne 1 Pression car le pot sèche vite.", tags: ["roots", "water"], effect: "root-aeration" },
-  { code: "BOTTE-014", name: "Hygromètre vintage", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Annule un Danger sur une Situation Eau, Climat ou Séchage.", tags: ["water", "climate", "drying"], effect: "cancel-danger" },
+  { code: "BOTTE-014", name: "Hygromètre vintage", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Sur Eau, Climat ou Séchage, réduit la Pression de 1 et transforme un 3 en 4.", tags: ["water", "climate", "drying"], effect: "hygrometer-balance" },
   { code: "BOTTE-015", name: "Palissage doux", category: "know-how", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Transforme un dé neutre en réussite pendant la Floraison.", tags: ["flower"], effect: "neutral-to-success" },
-  { code: "BOTTE-016", name: "Séchage patient", category: "know-how", rarity: "rare", xpCost: 2, timing: "before-roll", description: "Transforme un dé neutre en réussite pendant le Séchage.", tags: ["drying"], effect: "neutral-to-success" },
-  { code: "BOTTE-017", name: "Main verte", category: "luck", rarity: "common", xpCost: 1, timing: "before-roll", description: "Lance quatre dés et conserve les trois meilleurs.", tags: [], effect: "four-keep-three" },
+  { code: "BOTTE-016", name: "Séchage patient", category: "know-how", rarity: "rare", xpCost: 2, timing: "before-roll", description: "Au Séchage, réduit la Pression de 1 ; gagne 1 Qualité si l’étape réussit. Ne modifie pas les dés.", tags: ["drying"], effect: "patient-curing" },
+  { code: "BOTTE-017", name: "Main verte", category: "luck", rarity: "common", xpCost: 2, timing: "before-roll", description: "Lance quatre dés et conserve les trois meilleurs.", tags: [], effect: "four-keep-three" },
   { code: "BOTTE-018", name: "Testeur pH–EC", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Relance le dé le plus faible sur une Situation Eau ou Racines et gagne 1 XP si le résultat s’améliore.", tags: ["water", "roots"], effect: "water-test" },
   { code: "BOTTE-019", name: "Perlite calibrée", category: "equipment", rarity: "common", xpCost: 1, timing: "after-roll", description: "Sur Racines ou Eau, corrige le plus mauvais dé : un 1 devient 2, ou un 2 devient 4.", tags: ["roots", "water"], effect: "perlite-drainage" },
   { code: "BOTTE-020", name: "Biochar inoculé", category: "know-how", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Sur Racines ou Ravageur, transforme le premier Danger en neutre et réduit la Pression de 1.", tags: ["roots", "pest"], effect: "biochar-buffer" },
   { code: "BOTTE-021", name: "Engrais bio complet", category: "know-how", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Sur Racines ou Floraison, avec exactement deux réussites, transforme un dé neutre en Étincelle.", tags: ["roots", "flower"], effect: "organic-feed" },
-  { code: "BOTTE-022", name: "Phytoseiulus persimilis", category: "pbi", rarity: "rare", xpCost: 3, timing: "after-roll", description: "Transforme un dé faible en réussite forte contre les acariens.", tags: ["pest"], targets: ["mites"], effect: "pbi-strong-success" },
+  { code: "BOTTE-022", name: "Phytoseiulus persimilis", category: "pbi", rarity: "rare", xpCost: 3, timing: "after-roll", description: "Contre les acariens révélés, transforme un Danger en 4 et protège contre un autre Danger.", tags: ["pest"], targets: ["mites"], effect: "pbi-mite-shield" },
   { code: "BOTTE-023", name: "Orius laevigatus", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Contre les thrips, transforme un dé faible en réussite et réduit la Pression de 1.", tags: ["pest"], targets: ["thrips"], effect: "pbi-thrips-relief" },
-  { code: "BOTTE-024", name: "Tensiomètre", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Annule un Danger sur une Situation Eau.", tags: ["water"], effect: "cancel-danger" },
+  { code: "BOTTE-024", name: "Tensiomètre", category: "equipment", rarity: "common", xpCost: 1, timing: "after-roll", description: "Après les dés, sur Eau, transforme un Danger en 4 mais ajoute 1 Pression.", tags: ["water"], effect: "water-rescue" },
   { code: "BOTTE-025", name: "Plaque engluée de suivi", category: "equipment", rarity: "uncommon", xpCost: 1, timing: "before-roll", description: "Identifie le ravageur et récupère 1 XP pour préparer une réponse PBI.", tags: ["pest"], effect: "pest-monitor" },
   { code: "BOTTE-026", name: "Extracteur bien réglé", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Annule jusqu’à deux Dangers sur une Situation Climat ou Séchage.", tags: ["climate", "drying"], effect: "double-danger-shield" },
   { code: "BOTTE-027", name: "Papiers en règle", category: "equipment", rarity: "rare", xpCost: 3, timing: "before-roll", description: "Face à un contrôle DDTM, présente le dossier complet : les trois dés deviennent des réussites.", tags: ["compliance"], effect: "compliance-clearance" },
   { code: "BOTTE-028", name: "Branchement illégal", category: "luck", rarity: "uncommon", xpCost: 1, timing: "after-roll", description: "Après un mauvais jet sur la surcharge électrique, transforme les deux dés les plus faibles en réussites mais gagne 2 Pression.", tags: ["energy"], effect: "illegal-power" },
-  { code: "BOTTE-029", name: "Effeuillage mesuré", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Relance un dé neutre sur une Situation Floraison ou Climat.", tags: ["flower", "climate"], effect: "reroll-neutral" },
+  { code: "BOTTE-029", name: "Effeuillage mesuré", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Sur Floraison ou Climat, relance un dé neutre en gardant le meilleur résultat ; ajoute 1 Pression.", tags: ["flower", "climate"], effect: "leaf-thinning" },
   { code: "BOTTE-030", name: "Sonde d’humidité", category: "equipment", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Pendant le Séchage, transforme un 2 en 4 ou un 3 en 5.", tags: ["drying"], effect: "moisture-calibration" },
   { code: "BOTTE-031", name: "Échéancier négocié", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Sur une Situation Énergie, réduit de 1 le nombre de réussites exigées pour stabiliser l’installation.", tags: ["energy"], effect: "bill-relief" },
   { code: "BOTTE-032", name: "Loupe à trichomes", category: "equipment", rarity: "rare", xpCost: 2, timing: "before-roll", description: "En Récolte, lance quatre dés, garde les trois meilleurs et gagne 1 Qualité en cas de réussite.", tags: ["harvest"], effect: "harvest-four-quality" },
@@ -261,7 +262,8 @@ export const KQ_LIVING_SOIL = {
 };
 
 export function getKqCardTradeoff(card: KqSupportCard) {
-  if (card.effect === "reveal-pest") return { benefit: "Révèle le ravageur et ouvre les PBI compatibles.", risk: "Consomme l’unique préparation du tour sans modifier directement les dés." };
+  if (["hygrometer-balance", "water-rescue", "patient-curing", "leaf-thinning", "pbi-neutral-strong", "pbi-mite-shield"].includes(card.effect)) return { benefit: card.description, risk: card.timing === "before-roll" ? "Occupe ta préparation ; un effet conditionnel peut ne pas se déclencher." : "Occupe ta réaction ; conserve-la si une autre correction serait plus utile." };
+  if (card.effect === "reveal-pest") return { benefit: "Révèle le ravageur, ouvre les PBI compatibles et protège contre un Danger.", risk: "Consomme l’unique préparation du tour sans modifier directement les dés." };
   if (card.effect === "reroll-neutral") return { benefit: "Donne une nouvelle chance à un dé neutre.", risk: "La relance peut produire un Danger." };
   if (card.effect === "reroll-two-low") return { benefit: "Relance les deux dés les plus faibles.", risk: "Une nouvelle face peut être moins bonne que la précédente." };
   if (card.effect === "cancel-danger") return { benefit: "Protège le lancer contre un Danger.", risk: "La protection est perdue si aucun 1 ne sort." };
@@ -455,6 +457,8 @@ export function canPlayKqCard(state: KqGameState, card: KqSupportCard) {
   if (card.timing === "after-roll" && state.phase !== "rolled") return { allowed: false, reason: "À jouer après les dés." };
   if (card.timing === "before-roll" && state.preparationPlayed) return { allowed: false, reason: "Une préparation a déjà été jouée." };
   if (card.timing === "after-roll" && state.reactionPlayed) return { allowed: false, reason: "Une réaction a déjà été jouée." };
+  if (["water-rescue", "pbi-mite-shield"].includes(card.effect) && state.dice && !state.dice.includes(1)) return { allowed: false, reason: "Il faut un Danger à corriger." };
+  if (card.effect === "pbi-neutral-strong" && state.dice && !state.dice.some((die) => die === 2 || die === 3)) return { allowed: false, reason: "Il faut un dé neutre à améliorer." };
   if (card.effect === "three-to-success" && state.dice && !state.dice.includes(3)) return { allowed: false, reason: "Il faut un dé affichant 3 à transformer." };
   if (card.effect === "moisture-calibration" && state.dice && !state.dice.some((die) => die === 2 || die === 3)) return { allowed: false, reason: "Il faut un dé affichant 2 ou 3 à calibrer." };
   if (card.effect === "danger-to-neutral" && state.dice && !state.dice.includes(1)) return { allowed: false, reason: "Il faut un Danger à isoler." };
@@ -538,7 +542,7 @@ export function canActivateKqHeritage(state: KqGameState) {
   const heritage = getKqStateHeritage(state);
   if (!heritage) return { allowed: false, reason: "Aucun Héritage équipé." };
   if (heritage.timing === "passive") return { allowed: false, reason: "Cet Héritage est passif." };
-  if (state.heritageUsed) return { allowed: false, reason: "Cet Héritage a déjà été utilisé." };
+  if (state.heritageUsed) return { allowed: false, reason: "Cet Héritage a déjà été utilis?." };
   if (heritage.effect === "five-keep-three") {
     if (state.heritageArmed) return { allowed: false, reason: "Le quatrième dé est déjà armé." };
     return state.phase === "prepare"
@@ -660,7 +664,16 @@ export function playKqCard(state: KqGameState, cardCode: string): KqGameState {
     dice = nextDice;
     rollNonce += 2;
   }
+  let extraDangerShield = 0;
   let pressureRelief = 0;
+  if (["patient-curing", "hygrometer-balance"].includes(card.effect)) pressureRelief = 1;
+  if (dice && ["water-rescue", "pbi-mite-shield", "pbi-neutral-strong"].includes(card.effect)) {
+    const index = dice.findIndex((die) => card.effect === "pbi-neutral-strong" ? die === 2 || die === 3 : die === 1);
+    if (index >= 0) {
+      dice = dice.map((die, i) => i === index ? card.effect === "pbi-neutral-strong" ? 5 : 4 : die) as [number, number, number];
+      if (card.effect === "pbi-mite-shield") extraDangerShield = 1;
+    }
+  }
   if (dice && ["pbi-success", "pbi-success-xp", "pbi-thrips-relief"].includes(card.effect)) {
     const index = dice.findIndex((die) => die < 4);
     if (index >= 0) {
@@ -670,7 +683,7 @@ export function playKqCard(state: KqGameState, cardCode: string): KqGameState {
   }
   if (dice && card.effect === "pbi-strong-success") {
     const index = dice.findIndex((die) => die < 4);
-    if (index >= 0) dice = dice.map((die, dieIndex) => dieIndex === index ? 5 : die) as [number, number, number];
+    if (index >= 0) dice = dice.map((die, dieIndex) => dieIndex === index ? 6 : die) as [number, number, number];
   }
   if (dice && card.effect === "three-to-success") {
     const index = dice.findIndex((die) => die === 3);
@@ -715,7 +728,8 @@ export function playKqCard(state: KqGameState, cardCode: string): KqGameState {
       : `${card.name} activée : ${card.description}`;
   return {
     ...state, xp: state.xp - card.xpCost + effectXpRefund, dice, rollNonce, revealedPest,
-    pressure: Math.max(0, Math.min(4, state.pressure + (card.effect === "illegal-power" ? 2 : card.effect === "root-aeration" ? 1 : 0) - pressureRelief)),
+    cancelledDangers: state.cancelledDangers + extraDangerShield,
+    pressure: Math.max(0, Math.min(4, state.pressure + (card.effect === "illegal-power" ? 2 : ["root-aeration", "water-rescue", "leaf-thinning"].includes(card.effect) ? 1 : 0) - pressureRelief)),
     preparationPlayed: state.preparationPlayed || card.timing === "before-roll",
     reactionPlayed: state.reactionPlayed || card.timing === "after-roll",
     playedThisStage: [...state.playedThisStage, card.code], usedCards: [...state.usedCards, card.code],
@@ -755,6 +769,19 @@ export function rollKqDice(state: KqGameState): KqGameState {
     }
     else effectNotices.push(`Carte de relance : aucun dé neutre, relance non déclenchée.`);
   }
+  if (playedEffects.includes("leaf-thinning")) {
+    const index = dice.findIndex((die) => die === 2 || die === 3);
+    if (index >= 0) {
+      nonce += 1;
+      dice[index] = Math.max(dice[index], deterministicDie(state.seed, state.stageIndex, nonce, index));
+      effectNotices.push("Effeuillage mesuré : relance sans perte, Pression +1.");
+    }
+  }
+  if (playedEffects.includes("hygrometer-balance")) {
+    const index = dice.indexOf(3);
+    if (index >= 0) dice[index] = 4;
+    effectNotices.push("Hygromètre : Pression −1, un 3 devient 4 s’il est présent.");
+  }
   if (playedEffects.includes("root-aeration")) {
     const index = dice.findIndex((die) => die === 1);
     if (index >= 0) {
@@ -792,7 +819,7 @@ export function rollKqDice(state: KqGameState): KqGameState {
     effectNotices.push(`Coupure de courant : le meilleur dé ${previous} devient un Danger.`);
   }
   let cancelledDangers = playedEffects.includes("double-danger-shield") ? 2
-    : playedEffects.some((effect) => ["cancel-danger", "harvest-cool", "clean-cut"].includes(effect ?? "")) ? 1 : 0;
+    : playedEffects.some((effect) => ["cancel-danger", "harvest-cool", "clean-cut", "reveal-pest"].includes(effect ?? "")) ? 1 : 0;
   const heritage = getKqStateHeritage(state);
   const heritageDangerShield = !state.heritageUsed
     && heritage?.effect === "first-danger-shield"
@@ -825,7 +852,7 @@ export function rollKqDice(state: KqGameState): KqGameState {
   }
   return {
     ...state,
-    pressure: Math.max(0, state.pressure - rollPressureRelief),
+    pressure: Math.min(4, Math.max(0, state.pressure - rollPressureRelief)),
     phase: "rolled",
     rollNonce: nonce,
     cancelledDangers,
@@ -875,7 +902,9 @@ export function resolveKqStage(state: KqGameState): KqGameState {
   const heritageQualityBonus = effectiveOutcome === "critical" && heritage?.effect === "critical-quality-boost" ? 1
     : effectiveOutcome === "fragile" && heritage?.effect === "fragile-quality-boost" ? 1
     : 0;
-  const qualityDelta = (effectiveOutcome === "critical" ? 3 : effectiveOutcome === "success" ? 2 : effectiveOutcome === "fragile" ? 1 : -1) + harvestQualityBonus + heritageQualityBonus;
+  const won = effectiveOutcome === "success" || effectiveOutcome === "critical";
+  const patientQuality = won && state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "patient-curing") ? 1 : 0;
+  const qualityDelta = patientQuality + (effectiveOutcome === "critical" ? 3 : effectiveOutcome === "success" ? 2 : effectiveOutcome === "fragile" ? 1 : -1) + harvestQualityBonus + heritageQualityBonus;
   const aphidiusBonus = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "pbi-success-xp") && (result.outcome === "critical" || result.outcome === "success") ? 1 : 0;
   const playedPbi = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.category === "pbi");
   const stageCombos = [
@@ -902,6 +931,7 @@ export function resolveKqStage(state: KqGameState): KqGameState {
     && pressureBeforeHeritage > 0;
   const pressureAfter = Math.max(0, pressureBeforeHeritage - (sparkPressureRelief ? 2 : 0));
   const heritageNotices = [
+    ...(patientQuality > 0 ? ["Séchage patient : +1 Qualité grâce à une étape réussie."] : []),
     ...(failureRecovery ? [`${heritage?.name} : le premier échec devient Fragile.`] : []),
     ...(dryingRecovery ? [`${heritage?.name} : le résultat Fragile de l’affinage devient une réussite.`] : []),
     ...(heritageXpBonus > 0 ? [`${heritage?.name} : première réussite, +2 XP.`] : []),

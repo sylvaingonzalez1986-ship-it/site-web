@@ -3,7 +3,7 @@
 import { BookOpen, ChevronRight, Sprout, Trophy } from "lucide-react";
 import { type ArenaLobbyMode } from "@/lib/arena-lobby";
 import { type KeyboardEvent } from "react";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import styles from "@/components/contest/ContestArena.module.css";
 import retro from "./ArenaRetro.module.css";
 

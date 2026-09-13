@@ -423,7 +423,7 @@ export async function POST(request: Request) {
   if (action === "validate_reward_claim") {
     if (!customerId) {
       return NextResponse.json(
-        { error: "Connecte-toi pour utiliser un ticket gagnant." },
+        { error: "Connecte-toi pour utiliser cette récompense." },
         { status: 401 },
       );
     }
@@ -470,7 +470,7 @@ export async function POST(request: Request) {
       claimId: lotteryRewardClaimId,
     });
     if (!rewardClaimBenefit) {
-      return NextResponse.json({ error: "Ticket gagnant invalide ou déjà utilise." }, { status: 400 });
+      return NextResponse.json({ error: "Récompense invalide ou déjà utilisée." }, { status: 400 });
     }
 
     const safeSubtotal = Number(subtotal.toFixed(2));
@@ -678,7 +678,7 @@ export async function POST(request: Request) {
 
   if (promoCode && lotteryRewardClaimId) {
     return NextResponse.json(
-      { error: "Le code promo et le ticket gagnant ne sont pas cumulables." },
+      { error: "Le code promo et la récompense ne sont pas cumulables." },
       { status: 400 },
     );
   }
@@ -739,7 +739,7 @@ export async function POST(request: Request) {
   if (lotteryRewardClaimId) {
     if (!customerId) {
       return NextResponse.json(
-        { error: "Connecte-toi pour utiliser un ticket gagnant." },
+        { error: "Connecte-toi pour utiliser cette récompense." },
         { status: 401 },
       );
     }
@@ -750,7 +750,7 @@ export async function POST(request: Request) {
     });
     if (!rewardClaimBenefit) {
       return NextResponse.json(
-        { error: "Ticket gagnant invalide ou déjà utilisé." },
+        { error: "Récompense invalide ou déjà utilisée." },
         { status: 400 },
       );
     }
@@ -858,7 +858,7 @@ export async function POST(request: Request) {
   if (appliedRewardClaim && appliedRewardClaim.rewardType === "gift") {
     finalizedItemsWithTax.push({
       id: `gift-reward-${appliedRewardClaim.claimId}`,
-      name: `Lot ticket: ${appliedRewardClaim.giftLabel ?? appliedRewardClaim.title}`,
+      name: `Récompense client: ${appliedRewardClaim.giftLabel ?? appliedRewardClaim.title}`,
       unitPrice: 0,
       quantity: 1,
       lineTotal: 0,

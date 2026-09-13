@@ -43,7 +43,7 @@ describe("Kanab Quest Placard rules draft", () => {
   });
 
   it("documents the durable equipment economy with the implemented prices", () => {
-    expect(normalizedRules).toContain("Chaque joueur commence avec `350 $US` virtuels");
+    expect(normalizedRules).toContain("Chaque joueur commence avec `350 €` virtuels");
     expect(normalizedRules).toContain("ne peut pas être acheté, retiré, remboursé ou converti en argent réel");
     KQ_EQUIPMENT_CATALOG.filter((equipment) => equipment.purchasable).forEach((equipment) => {
       const price = formatKqCash(equipment.priceCents).replace(/\s+/g, " ");
@@ -60,12 +60,12 @@ describe("Kanab Quest Placard rules draft", () => {
   });
 
   it("documents every market threshold and the quality reputation incentive", () => {
-    expect(normalizedRules).toContain("Lot brut | 5,8 | 100 % | 1,80 $US/g");
-    expect(normalizedRules).toContain("Hash tamisé | 6,2 | 18 % | 16 $US/g");
-    expect(normalizedRules).toContain("Static Sift | 8,3 | 10 % | 120 $US/g");
-    expect(normalizedRules).toContain("Rosin Premium | 8,0 | 20 % | 42 $US/g");
-    expect(normalizedRules).toContain("Rosin Signature | 8,8 | 22 % | 80 $US/g");
-    expect(normalizedRules).toContain("Hash Signature | 8,8 | 18 % | 70 $US/g");
+    expect(normalizedRules).toContain("Lot brut | 5,8 | 100 % | 1,80 €/g");
+    expect(normalizedRules).toContain("Hash tamisé | 6,2 | 18 % | 16 €/g");
+    expect(normalizedRules).toContain("Static Sift | 8,3 | 10 % | 60 €/g");
+    expect(normalizedRules).toContain("Rosin Premium | 8,0 | 20 % | 42 €/g");
+    expect(normalizedRules).toContain("Rosin Signature | 8,8 | 22 % | 80 €/g");
+    expect(normalizedRules).toContain("Hash Signature | 8,8 | 18 % | 70 €/g");
     expect(normalizedRules).toContain("partie non traitée est valorisée en lot brut");
     expect(normalizedRules).toContain("elle retombe en biomasse dans le cas contraire");
     expect(normalizedRules).toContain("La Biomasse ne donne jamais de réputation");

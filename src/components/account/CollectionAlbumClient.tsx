@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { ArrowLeft, ArrowUpRight, ChevronRight, Gift, Recycle, Sparkles, Ticket, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@/context/CartContext";

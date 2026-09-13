@@ -205,7 +205,7 @@ export function KqPlacardHud({
   const actionArtwork = {
     game: "/contest/mascot/arena-scene-placard-v1.png",
     market: "/placard/market-workshop-v1.webp",
-    arena: "/contest/mascot/arena-scene-classement-v1.png",
+    arena: "/contest/mascot/arena-scene-classement-v2.png",
     shop: "/placard/booster-shop-interior-v4.webp",
   };
   const tabs = [{ id: "overview", label: "En bref" }, { id: "equipment", label: "Matériel" }, { id: "goals", label: "Objectifs" }, { id: "energy", label: "Électricité" }] as const;

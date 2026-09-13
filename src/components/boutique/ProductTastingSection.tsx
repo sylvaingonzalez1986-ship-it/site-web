@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { ChevronDown, MessageCircle, Star } from "lucide-react";
 import type {
   ContestScoreCriterion,

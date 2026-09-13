@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { Sparkles, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";

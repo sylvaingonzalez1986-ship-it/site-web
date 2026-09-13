@@ -1,13 +1,13 @@
 # Règlement du Placard — brouillon de lancement
 
-Version de travail `2026-09-01-draft-4`. Ce document n'est pas publié aux
+Version de travail `2026-09-12-draft-5`. Ce document n'est pas publié aux
 clients et ne vaut pas règlement commercial tant que les lots, les dates de
 saison et les probabilités des collections ne sont pas validés.
 
 ## 1. Principe
 
 Le Placard est le jeu de cartes de culture de Kanab Quest. Une partie utilise
-une variété Buddie possédée dans l'album, un Substrat et les cartes La Botte
+une variété Buddie possédée dans l'album, le Sol vivant commun et les cartes La Botte
 choisies dans la collection du joueur. La culture terminée produit une carte
 Fleur numérique unique qui peut participer à un duel classé.
 
@@ -16,7 +16,7 @@ Héritage équipée est permanente et ne brûle jamais.
 
 ## 2. Cartes La Botte et burns
 
-- Le Substrat sélectionné brûle au démarrage de la culture.
+- Le Sol vivant est la base commune gratuite ; les anciennes cartes Substrat sont archivées.
 - Chaque autre carte La Botte brûle uniquement lorsqu'elle est effectivement
   jouée.
 - Une carte PBI reste hors du deck. Elle devient jouable après l'inspection à
@@ -34,9 +34,14 @@ et les reçus. Une culture terminée crée une seule Fleur avec ses statistiques
 traits et combos. La Fleur est distincte de la carte Buddie qui a servi de
 variété.
 
-Les avantages Buddies dépendent uniquement de leur rareté : Commun, aucun
-avantage ; Argent, +1 XP au départ ; Or, +2 XP ; Épique, +3 XP ; Légendaire,
-+4 XP. Les statistiques de la Fleur et les notes du jury sont conservées au
+Les Buddies donnent un bonus d’XP de départ selon leur rareté : Commun +0,
+Argent +1, Or +2, Épique +3, Légendaire +4. Avec l’XP de base, cela donne
+respectivement 1, 2, 3, 4 et 5 XP au début d’une culture, avant les bonus de
+mission et d’Héritage. Les Buddies n’ont pas de talent lié à une étape.
+Les 32 cartes La Botte actives ont chacune un effet distinct ; leur coût et
+leur fenêtre d’utilisation imposent un choix.
+
+Les statistiques de la Fleur et les notes du jury sont conservées au
 dixième afin de limiter les égalités sans inventer un bonus aléatoire caché.
 
 ## 3 bis. Boosters Kanab Quest
@@ -80,26 +85,11 @@ faire approuver avant publication et activation commerciale.
 
 ## 4. Équipement durable et monnaie du Placard
 
-Le choix permanent n'est plus une liste de sept pseudo-substrats. Le joueur
-choisit exactement un **mode de culture** parmi quatre techniques réelles :
-
-| Mode | Identité ludique | Contrepartie |
-| --- | --- | --- |
-| Terreau horticole | Tolérant : garantit une réussite à partir d'un neutre quand le lancer Racines ou Eau n'en contient aucune | Plafond faible et effet conditionnel |
-| Hydroponie recirculante | Contrôle de la solution : relance sûre d'un neutre sur Eau ou Floraison | Les pompes dépendent du courant |
-| Aéroponie haute pression | Haute précision : transforme un neutre en réussite forte sur Racines, Eau ou Climat | Une coupure transforme les deux meilleurs dés en Dangers |
-| Sol vivant | Tampon biologique : amortit le premier Danger sur Racines ou Ravageur | N'accélère pas les autres étapes |
-
-Cette distinction suit les définitions agronomiques : l'hydroponie nourrit les
-racines avec une solution aqueuse, l'aéroponie maintient les racines dans l'air
-et les brumise, tandis que le Sol vivant repose sur la matière organique et
-l'activité biologique. La Perlite calibrée, le Biochar inoculé et l'Engrais bio
-complet sont donc des cartes d'appui consommables, et non trois modes de culture
-supplémentaires.
+Toutes les nouvelles cultures utilisent le Sol vivant. Les quatre anciennes cartes de mode restent archivées pour les historiques.
 
 L'argent du Placard est une monnaie virtuelle propre au jeu. Il ne correspond
 pas aux points fidélité, ne peut pas être acheté, retiré, remboursé ou converti
-en argent réel. Chaque joueur commence avec `350 $US` virtuels ainsi qu'une tente
+en argent réel. Chaque joueur commence avec `350 €` virtuels ainsi qu'une tente
 90 × 90, une LED 115 W et une extraction de départ.
 
 Un équipement acheté est permanent. Il n'est ni brûlé ni racheté à chaque
@@ -110,25 +100,25 @@ référence ne peut pas être achetée deux fois.
 
 Catalogue de lancement :
 
-Les prix virtuels suivent le prix public affiché sur le marché américain pour
-un équivalent réel vérifié le 1er septembre 2026. Le vendeur et le lien produit
-restent visibles dans la fiche de la boutique. Livraison et taxes locales ne
-sont pas incluses.
+Les prix en euros sont des valeurs de jeu. Les références matérielles documentent
+l’inspiration visuelle et technique ; leurs prix historiques étrangers ne sont
+pas des taux de conversion. Les premières machines de transformation ont des prix
+adaptés à la progression : tamis 550 €, presse 850 €, laveuse 1 250 €.
 
-| Équipement | Prix virtuel aligné US |
+| Équipement | Prix virtuel en euros |
 | --- | ---: |
-| Tente renforcée 120 × 120 | 199 $US |
-| LED spéciale 300 W | 359 $US |
-| Extracteur EC 6 pouces | 149 $US |
-| Contrôleur climatique AI+ | 139 $US |
-| Pollinator à sec Resinator OG | 4 195 $US |
-| Ice washer Mini Osprey 2.0 | 5 995 $US |
-| Collecteur AutoSieve | 4 995 $US |
-| Séparateur statique Plasmastatic | 22 800 $US |
-| Presse à rosin | 3 695 $US |
-| Sécheur de hash HiLyph XL | 7 495 $US |
-| Panneau solaire et batterie | 1 149 $US |
-| Caméra cabossée | 69,99 $US |
+| Tente renforcée 120 × 120 | 199 € |
+| LED spéciale 300 W | 359 € |
+| Extracteur EC 6 pouces | 149 € |
+| Contrôleur climatique AI+ | 139 € |
+| Pollinator à sec Resinator OG | 550 € |
+| Ice washer Mini Osprey 2.0 | 1 250 € |
+| Collecteur AutoSieve | 4 995 € |
+| Séparateur statique Plasmastatic | 22 800 € |
+| Presse à rosin | 850 € |
+| Sécheur de hash HiLyph XL | 7 495 € |
+| Panneau solaire et batterie | 1 149 € |
+| Caméra cabossée | 69,99 € |
 
 La tente, l'éclairage et le climat modifient la quantité, la qualité maximale,
 la régularité, la pression ou la consommation. Les machines de transformation
@@ -142,8 +132,8 @@ Plasmastatic demande le pollinator à sec.
 La boutique propose une seule référence par fonction, soit douze matériels achetables.
 Chaque achat commence au **niveau 1** et peut être amélioré jusqu’au **niveau 10**.
 Le coût du niveau suivant vaut 10 % du prix de base multiplié par le niveau actuel,
-arrondi au cent supérieur. Exemple : la caméra coûte 69,99 $US ; passer du niveau 1
-au niveau 2 coûte 7 $US. Les améliorations utilisent uniquement l’argent virtuel.
+arrondi au cent supérieur. Exemple : la caméra coûte 69,99 € ; passer du niveau 1
+au niveau 2 coûte 7 €. Les améliorations utilisent uniquement l’argent virtuel.
 
 Chaque niveau augmente un avantage : quantité, régularité ou transformation.
 Les bonus de quantité et régularité déjà présents augmentent de 10 % de leur valeur
@@ -234,16 +224,16 @@ serveur idempotent.
 
 | Voie | Note minimale | Rendement de base | Prix de base du produit |
 | --- | ---: | ---: | ---: |
-| Biomasse | 0,0 | 100 % | 0,30 $US/g |
-| Lot brut | 5,8 | 100 % | 1,80 $US/g |
-| Hash tamisé | 6,2 | 18 % | 16 $US/g |
-| Static Sift | 8,3 | 10 % | 120 $US/g |
-| Rosin d'essai | 6,5 | 15 % | 26 $US/g |
-| Hash eau-glace | 6,8 | 16 % | 22 $US/g |
-| Rosin Sélection | 7,2 | 18 % | 32 $US/g |
-| Rosin Premium | 8,0 | 20 % | 42 $US/g |
-| Rosin Signature | 8,8 | 22 % | 80 $US/g |
-| Hash Signature | 8,8 | 18 % | 70 $US/g |
+| Biomasse | 0,0 | 100 % | 0,30 €/g |
+| Lot brut | 5,8 | 100 % | 1,80 €/g |
+| Hash tamisé | 6,2 | 18 % | 16 €/g |
+| Static Sift | 8,3 | 10 % | 60 €/g |
+| Rosin d'essai | 6,5 | 15 % | 26 €/g |
+| Hash eau-glace | 6,8 | 16 % | 22 €/g |
+| Rosin Sélection | 7,2 | 18 % | 32 €/g |
+| Rosin Premium | 8,0 | 20 % | 42 €/g |
+| Rosin Signature | 8,8 | 22 % | 80 €/g |
+| Hash Signature | 8,8 | 18 % | 70 €/g |
 
 Le montant final dépend aussi de la note, de la capacité et de la précision du
 matériel installé. La partie non traitée est valorisée en lot brut lorsque la
@@ -295,6 +285,84 @@ transformations exigeantes appliquent un multiplicateur de réputation plus
 fort. Le système récompense donc les lots de qualité sans obliger le joueur à
 valoriser une Fleur médiocre autrement qu'en biomasse.
 
+### Marché vivant et progression commerciale
+
+Conditions cumulatives, en plus de la note et des machines :
+
+| Filière | Réputation | Ventes dans la famille | Niveau des machines |
+| --- | ---: | ---: | ---: |
+| Hash eau-glace | 8 | 2 hash | 2 |
+| Rosin Sélection | 12 | 3 rosin | 3 |
+| Rosin Premium | 35 | 6 rosin | 6 |
+| Static Sift | 45 | 7 hash | 6 |
+| Rosin Signature | 85 | 12 rosin | 9 |
+| Hash Signature | 85 | 12 hash | 9 |
+
+Hash tamisé et Rosin d’essai restent accessibles sans réputation ni historique.
+La fabrication et la vente sont séparées : préparer un lot fixe son produit et
+paie une seule fois les frais d’atelier. Les invendus et la partie non traitée
+restent en stock. Plusieurs ventes peuvent écouler le même lot.
+
+| Circuit | Tarif | Quantité et qualité |
+| --- | --- | --- |
+| Vente en ligne | Tarif conseillé lié à la qualité et à la réputation ; choix à 90 %, 100 % ou 122 % | Commandes limitées ; les mauvais lots font partir des clients |
+| CBD shops | 40–55 % selon la qualité, bonus réseau de 0–4 points | Réseau de partenaires ; fleur dès 6,5/10, transformation dès 7,5/10 |
+| Grossistes | 25 à 33 % du tarif de référence, normalement 30 % | Reprise de tout le volume, sans exigence de note ni réputation |
+
+La fleur sous 5,8/10 peut désormais être préparée brute pour la reprise grossiste.
+Les exigences de qualité et de matériel pour fabriquer les transformations
+restent inchangées. La biomasse est reprise au tarif industriel dans ce circuit.
+Le prix affiché par le joueur en ligne ne modifie jamais les tarifs professionnels.
+
+Les shops ont un réseau distinct des clients en ligne : 20 partenaires au maximum,
+avec au plus un nouveau par cycle. Fleur 6,5–6,9 : 40 % et départ progressif ;
+7–7,9 : 45 % et réseau stable ; 8–8,9 : 50 % et recrutement ; 9–10 : 55 %
+et recrutement plus rapide. Pour le hash/rosin, les seuils sont 7,5 / 8 / 9 / 9,5.
+Les petits volumes s’additionnent ; la masse est ramenée à la fleur équivalente.
+Le bonus est de +1 point dès 1 boutique, +2 dès 4, +3 dès 8 et +4 dès 12.
+Les partenaires de début de cycle fixent le tarif réseau et le volume disponible
+pour tout le cycle. La prospection reste possible sans partenaire.
+
+La vente en ligne exige un ordinateur acheté `450 €` dans la boutique et un
+abonnement Internet à `15 €` par culture terminée. Les quotas et l’événement du
+cycle sont renouvelés une fois à la fin de la culture, jamais à l’actualisation.
+L’abonnement est désactivable et l’accès déjà payé reste actif pour le cycle.
+Sans trésorerie suffisante, la vente en ligne est suspendue ; boutiques et
+grossistes restent ouverts. Une absence sans nouvelle culture n’est pas facturée.
+
+| Réputation | Titre | Bonus de prix en ligne |
+| ---: | --- | ---: |
+| 0 | Cultivateur novice | +0 % |
+| 60 | Main sûre | +5 % |
+| 200 | Artisan du lot | +12 % |
+| 600 | Signature locale | +20 % |
+| 1500 | Maître du Placard | +30 % |
+| 3000 | Référence du jury | +45 % |
+
+Dès 1 500 points, les tendances défavorables et la saturation ne diminuent plus
+le prix unitaire en ligne ; les quantités commandées restent limitées. Il n’y a
+plus de garantie d’écoulement intégral. Les événements du cycle et les volumes
+vendus sur 24 heures influencent la demande, avec une pénalité de saturation
+plafonnée à 35 %. Les clients fidèles améliorent les commandes des cycles suivants.
+Leur gain est plafonné à cinq par cycle ; les pertes liées à la qualité sont
+pondérées par le volume réellement livré et plafonnées à 25 % de la clientèle
+initiale. Aucune perte de clients n’est causée par une absence.
+
+La réputation du lot est répartie selon les quantités : barème complet en direct,
+moitié en boutique, zéro au grossiste. Les arrondis sont cumulés pour empêcher
+qu’une série de petites ventes rapporte plus de points. Un lot compte une seule
+fois pour la maîtrise, après la vente d’au moins la moitié du produit préparé
+hors grossiste et avec une qualité apportant de la réputation ; ses primes de
+filière restent uniques. Vendre les fleurs restantes ne donne pas de maîtrise
+dans la transformation.
+
+La transformation coûte 0,18 € par gramme traité, ou 0,32 € pour Premium, Static
+et Signature, débités lors de la préparation. L’électricité est ensuite remboursée
+à hauteur de 50 % au plus de chaque recette. Le reçu indique le montant net versé.
+Le serveur refuse un devis périmé, un stock modifié, une campagne remplacée ou
+un changement de réputation ou de dette électrique entre devis et confirmation.
+Conserver le lot ne le détériore pas et ne demande aucun clic régulier.
+
 ## 8. Classement
 
 Le duel utilise une cote de type Elo avec un coefficient de 32 et une variation
@@ -322,17 +390,22 @@ Le bonus réputation vaut `4 × racine carrée de la réputation`, arrondi et li
 à 100 points. Cette progression dégressive récompense durablement la qualité sans
 permettre à l'ancienneté ou à la répétition des ventes d'écraser la cote de duel.
 
-Les titres de réputation donnent un objectif de progression lisible sans
-modifier les gains ni accorder d'avantage supplémentaire :
+Les titres de réputation donnent accès aux avantages économiques du marché.
+Leurs seuils sont espacés pour que les transformations avancées et leurs primes
+ne permettent pas de franchir les derniers paliers en quelques ventes :
 
 | Réputation minimale | Titre |
 | ---: | --- |
 | 0 | Cultivateur novice |
-| 20 | Main sûre |
-| 60 | Artisan du lot |
-| 150 | Signature locale |
-| 300 | Maître du Placard |
-| 600 | Référence du jury |
+| 60 | Main sûre |
+| 200 | Artisan du lot |
+| 600 | Signature locale |
+| 1500 | Maître du Placard |
+| 3000 | Référence du jury |
+
+Les points déjà gagnés sont conservés ; les titres et avantages sont calculés
+avec ces nouveaux seuils. Les garanties deviennent des objectifs de long terme,
+sans délai quotidien imposé.
 
 Le HUD indique la progression jusqu'au titre suivant. Le reçu de vente signale
 immédiatement tout changement de palier.

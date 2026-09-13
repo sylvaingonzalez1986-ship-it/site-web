@@ -18,7 +18,7 @@ describe("Kanab Quest reputation progression", () => {
       .toMatchObject({ score: 1250, seasonBonus: 150, reputationBonus: 100 });
   });
 
-  it("matches the visible reputation milestones and sanitizes invalid inputs", () => {
+  it("keeps ranking bonuses independent from market tier thresholds and sanitizes invalid inputs", () => {
     expect([20, 60, 150, 300, 600].map((reputation) => (
       calculateKqPlacardScore({ rating: 1000, seasonPoints: 0, reputation }).reputationBonus
     ))).toEqual([18, 31, 49, 69, 98]);
@@ -28,24 +28,24 @@ describe("Kanab Quest reputation progression", () => {
 
   it("uses increasing permanent thresholds", () => {
     expect(KQ_REPUTATION_TIERS[0].minimum).toBe(0);
-    expect(KQ_REPUTATION_TIERS.map((tier) => tier.minimum)).toEqual([0, 20, 60, 150, 300, 600]);
+    expect(KQ_REPUTATION_TIERS.map((tier) => tier.minimum)).toEqual([0, 60, 200, 600, 1500, 3000]);
     expect(new Set(KQ_REPUTATION_TIERS.map((tier) => tier.name)).size).toBe(KQ_REPUTATION_TIERS.length);
   });
 
   it("reports the current tier and progress toward the next one", () => {
-    expect(getKqReputationProgress(19)).toMatchObject({
+    expect(getKqReputationProgress(59)).toMatchObject({
       tier: { code: "novice" },
       nextTier: { code: "steady-hand" },
       pointsToNext: 1,
-      progressPercent: 95,
+      progressPercent: 98,
     });
-    expect(getKqReputationProgress(60)).toMatchObject({
+    expect(getKqReputationProgress(200)).toMatchObject({
       tier: { code: "lot-artisan" },
       nextTier: { code: "local-signature" },
-      pointsToNext: 90,
+      pointsToNext: 400,
       progressPercent: 0,
     });
-    expect(getKqReputationProgress(900)).toMatchObject({
+    expect(getKqReputationProgress(3000)).toMatchObject({
       tier: { code: "jury-reference" },
       nextTier: null,
       pointsToNext: 0,
@@ -54,8 +54,8 @@ describe("Kanab Quest reputation progression", () => {
   });
 
   it("detects a promotion without treating ordinary gains as a tier change", () => {
-    expect(didKqReputationTierChange(19, 20)).toBe(true);
-    expect(didKqReputationTierChange(20, 59)).toBe(false);
+    expect(didKqReputationTierChange(59, 60)).toBe(true);
+    expect(didKqReputationTierChange(60, 199)).toBe(false);
     expect(getKqReputationProgress(Number.NaN).reputation).toBe(0);
   });
 

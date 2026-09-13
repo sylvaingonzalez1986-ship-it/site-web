@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
 import {

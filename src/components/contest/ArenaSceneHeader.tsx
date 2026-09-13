@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { ArrowLeft, BookOpen, Gamepad2, Trophy } from "lucide-react";
 import { ARENA_LOBBY_MODES, ARENA_LOBBY_MODE_ORDER, type ArenaLobbyMode } from "@/lib/arena-lobby";
 import styles from "./ArenaSceneHeader.module.css";

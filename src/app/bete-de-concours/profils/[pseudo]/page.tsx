@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { ArrowLeft } from "lucide-react";
 import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { ContestSchemaUnavailable } from "@/components/contest/ContestSchemaUnavailable";

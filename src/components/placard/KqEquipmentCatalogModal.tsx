@@ -50,6 +50,7 @@ import {
   type KqEquipmentDefinition,
 } from "@/lib/kanab-quest-equipment";
 import styles from "./KqEquipmentCatalogModal.module.css";
+import { KqCommerceComputer } from "./KqCommerceDesk";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
 import { KqEquipmentTierBadge } from "./KqEquipmentTierBadge";
 
@@ -180,6 +181,12 @@ export function KqEquipmentCatalogModal({
     refresh()
       .catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "Catalogue indisponible."))
       .finally(() => setPending(null));
+  }, [refresh]);
+
+  useEffect(() => {
+    const updated = () => { void refresh().catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "Catalogue indisponible.")); };
+    window.addEventListener("kq:equipment-updated", updated);
+    return () => window.removeEventListener("kq:equipment-updated", updated);
   }, [refresh]);
 
   const filteredCatalog = useMemo(() => {
@@ -432,6 +439,7 @@ export function KqEquipmentCatalogModal({
         </nav>
 
         <main className={styles.productArea}>
+          {(category === "all" || category === "owned") && (!query || "ordinateur internet commerce vente en ligne".includes(query.trim().toLocaleLowerCase("fr-FR"))) ? <KqCommerceComputer /> : null}
           <div className={styles.productAreaHeader}>
             <div><small>{filteredCatalog.length} référence{filteredCatalog.length > 1 ? "s" : ""}</small><strong>{category === "all" ? "Tout le catalogue" : category === "owned" ? "Ton matériel" : KQ_EQUIPMENT_CATEGORY_LABELS[category]}</strong></div>
             <span>Prix publics US vérifiés · hors livraison et taxes locales</span>
@@ -579,7 +587,7 @@ export function KqEquipmentCatalogModal({
               {scenario.missingAfterCartCodes.length > 0 ? <button type="button" className={styles.chainCartButton} disabled={pending !== null} onClick={() => addEquipmentChainToCart({ codes: scenario.missingAfterCartCodes, route: scenario.route, routeName: scenario.name, equipmentCode: selectedEquipment.code })}><ShoppingCart aria-hidden="true" />Préparer la chaîne · {formatKqCash(scenario.missingAfterCartCents)}</button> : null}
             </article>;
           })}</div>
-          <small>Estimation face au lot brut, recalculée avec tes machines et ton panier. Le capital restant inclut les articles non encore achetés. La note, le poids, l’installation réelle et les incidents changent le résultat.</small>
+          <small>Estimation face au lot brut, recalculée avec tes machines et ton panier. Le capital restant inclut les articles non encore achetés. La note, le poids, le niveau des machines, la réputation, la demande et les incidents changent le résultat. Les gammes avancées exigent aussi des ventes précédentes.</small>
         </section> : null}
         <section><h4>Contrepartie</h4><p>{selectedEquipment.tradeoff}</p></section>
         <section>
@@ -590,13 +598,7 @@ export function KqEquipmentCatalogModal({
         <section>
           <h4>Équivalent réel vérifié</h4>
           <p>{selectedEquipment.realWorldAnchor.label}</p>
-          <small>
-            Prix public US : {formatKqCash(selectedEquipment.realWorldAnchor.referencePriceCents)}
-            {selectedEquipment.realWorldAnchor.priceKind === "starting-at" ? " · à partir de" : ""}
-            {selectedEquipment.realWorldAnchor.observedPriceCents
-              ? ` · promotion constatée : ${formatKqCash(selectedEquipment.realWorldAnchor.observedPriceCents)}`
-              : ""}
-            {` · relevé le ${selectedEquipment.realWorldAnchor.checkedAt}`}
+          <small>Modèle de référence relevé le {selectedEquipment.realWorldAnchor.checkedAt}. Le prix en euros affiché dans la boutique est un prix de jeu.
           </small>
           <a className="mt-2 inline-flex items-center gap-1 text-[.62rem] font-black uppercase text-[#0c6f5b] underline" href={selectedEquipment.realWorldAnchor.sourceUrl} target="_blank" rel="noreferrer">
             Vérifier chez {selectedEquipment.realWorldAnchor.seller}<ExternalLink aria-hidden="true" />

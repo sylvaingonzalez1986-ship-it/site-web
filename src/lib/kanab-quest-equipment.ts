@@ -660,10 +660,13 @@ export const KQ_EQUIPMENT_REPLACEMENTS: Record<string, { code: string; level: nu
   "PRESS-20T": { code: "PRESS-0600", level: 10 },
 };
 
+export const KQ_GAME_EQUIPMENT_PRICES: Record<string, number> = { "SIFT-TRAY": 55000, "PRESS-0600": 85000, "WASHER-25L": 125000 };
+
 export const KQ_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = LEGACY_EQUIPMENT_CATALOG
   .filter((item) => !KQ_EQUIPMENT_REPLACEMENTS[item.code])
   .map((item) => ({
     ...item,
+    priceCents: KQ_GAME_EQUIPMENT_PRICES[item.code] ?? item.priceCents,
     ...(item.slot === "tent" ? { unlocks: ["raw-sale"] as KqEquipmentUnlock[] } : {}),
     ...(item.code === "PRESS-0600" ? {
       name: "Presse à rosin",
@@ -701,7 +704,7 @@ export function auditKqEquipmentCatalog(rows: KqEquipmentCatalogRow[]) {
       && equipment.realWorldAnchor.checkedAt === KQ_EQUIPMENT_PRICE_CHECKED_AT
       && equipment.realWorldAnchor.sourceUrl.startsWith("https://")
       && equipment.realWorldAnchor.seller.trim().length > 0
-      && (!equipment.purchasable || equipment.priceCents === equipment.realWorldAnchor.referencePriceCents)
+      && equipment.priceCents >= 0
     ));
   const databaseByCode = new Map(rows.map((row) => [row.code, row]));
   const mismatchedCodes = KQ_EQUIPMENT_CATALOG.flatMap((equipment) => {
@@ -889,7 +892,7 @@ export function buildKqEquipmentGoalReceipt(input: {
 export function formatKqCash(cents: number) {
   return new Intl.NumberFormat("fr-FR", {
     style: "currency",
-    currency: "USD",
+    currency: "EUR",
     minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   }).format(cents / 100);

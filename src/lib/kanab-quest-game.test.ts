@@ -141,14 +141,14 @@ describe("Kanab Quest dice prototype", () => {
     expect(canPlayKqCard(state, KQ_CARDS.find((card) => card.code === "BOTTE-005")!).reason).toContain("pas dans le deck");
   });
 
-  it("ties every Buddie advantage strictly to its rarity", () => {
+  it("ties every Buddie advantage to its rarity", () => {
     expect(KQ_BUDDIES).toHaveLength(52);
     const expectedAdvantages = { common: 0, silver: 1, gold: 2, epic: 3, legendary: 4 } as const;
     expect(KQ_BUDDIES.every((buddie) => buddie.advantageLevel === expectedAdvantages[buddie.rarity])).toBe(true);
     expect(KQ_BUDDIES.filter((buddie) => buddie.rarity === "common").every((buddie) => buddie.effect === "none")).toBe(true);
   });
 
-  it("adds the visible Buddie advantage to the starting XP", () => {
+  it("adds the rarity bonus to the starting XP", () => {
     expect(startKqGame(1, { varietyCode: "HH2026-020" }).xp).toBe(1);
     expect(startKqGame(1, { varietyCode: "HH2026-010" }).xp).toBe(2);
     expect(startKqGame(1, { varietyCode: "HH2026-005" }).xp).toBe(3);
@@ -585,7 +585,7 @@ describe("Kanab Quest dice prototype", () => {
     const loupe = KQ_CARDS.find((card) => card.code === "BOTTE-004")!;
     const luck = KQ_CARDS.find((card) => card.code === "BOTTE-006")!;
     expect(canPlayKqCard(state, loupe).allowed).toBe(false);
-    expect(canPlayKqCard(state, luck).reason).toContain("2 XP");
+    expect(canPlayKqCard({ ...state, xp: 1 }, luck).reason).toContain("2 XP");
   });
 
   it("spends XP and consumes a compatible card", () => {
@@ -795,12 +795,12 @@ describe("Kanab Quest dice prototype", () => {
   it("does not consume Racines solides when another protection covers every Danger", () => {
     let protectedByEquipment: KqGameState | null = null;
     for (let seed = 1; seed <= 200 && !protectedByEquipment; seed += 1) {
-      const base = startKqGame(seed, { heritageCode: "HERITAGE-001", deckCodes: ["BOTTE-001", "BOTTE-024"] });
+      const base = startKqGame(seed, { heritageCode: "HERITAGE-001", deckCodes: ["BOTTE-001", "BOTTE-003"] });
       const rolled = rollKqDice({
         ...base,
         stageIndex: 1,
         situationCodes: [base.situationCodes[0], "SIT-008", ...base.situationCodes.slice(2)],
-        playedThisStage: [...base.playedThisStage, "BOTTE-024"],
+        playedThisStage: [...base.playedThisStage, "BOTTE-003"],
       });
       if (rolled.dice?.filter((die) => die === 1).length === 1) protectedByEquipment = rolled;
     }

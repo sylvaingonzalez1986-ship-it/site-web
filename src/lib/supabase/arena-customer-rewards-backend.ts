@@ -1,4 +1,5 @@
 import "server-only";
+import { getArenaRewardMilestone } from "@/lib/arena-reward-presentation";
 
 import { createHash } from "node:crypto";
 import {
@@ -32,19 +33,6 @@ const toNumber = (value: unknown, fallback = 0) => {
   return Number.isFinite(number) ? number : fallback;
 };
 
-function getPoolMilestone(poolGrams: number) {
-  const milestones = [25, 50, 100, 200, 500, 1_000];
-  const next = milestones.find((milestone) => poolGrams < milestone)
-    ?? Math.ceil(Math.max(1, poolGrams) / 1_000) * 1_000 + 1_000;
-  const previous = [...milestones].reverse().find((milestone) => milestone <= poolGrams) ?? 0;
-  const span = Math.max(1, next - previous);
-  return {
-    previousGrams: previous,
-    nextGrams: next,
-    progressPercent: Math.max(0, Math.min(100, Math.round(((poolGrams - previous) / span) * 100))),
-  };
-}
-
 function toRewardStandings(entries: Awaited<ReturnType<typeof getKqArenaLeaderboardInternal>>["entries"]): ArenaCustomerRewardStanding[] {
   return entries.map((entry) => ({
     playerId: entry.userId,
@@ -70,15 +58,15 @@ async function getActiveRewardSeasonCode() {
   return String(result.data.season_code);
 }
 
-export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?: boolean } = {}) {
+export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?: boolean; viewerId?: string } = {}) {
   const supabase = createSupabaseServiceClient();
   const seasonCode = await getActiveRewardSeasonCode();
-  const [poolResult, leaderboard] = await Promise.all([
+  const [poolResult, seasonResult] = await Promise.all([
     supabase.rpc("rpc_arena_refresh_customer_reward_pool", {
       p_season_code: seasonCode,
       p_finalize_previous_weeks: input.finalizePreviousWeeks === true,
     }),
-    getKqArenaLeaderboardInternal(),
+    supabase.from("arena_customer_reward_seasons").select("*").eq("season_code", seasonCode).single(),
   ]);
   if (poolResult.error) throw new Error(`[supabase:rpc_arena_refresh_customer_reward_pool] ${poolResult.error.message}`);
   const raw = poolResult.data && typeof poolResult.data === "object" && !Array.isArray(poolResult.data)
@@ -86,7 +74,22 @@ export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?
     : {};
   const poolGrams = Math.max(0, toNumber(raw.poolGrams));
   const minHumanBattles = Math.max(0, Math.floor(toNumber(raw.minHumanBattles, 3)));
-  const preview = buildArenaCustomerRewardPreview(poolGrams, toRewardStandings(leaderboard.entries), minHumanBattles);
+  if (seasonResult.error) throw new Error("Classement de clôture indisponible.");
+  const leaderboard = raw.status === "active" ? await getKqArenaLeaderboardInternal() : null;
+  const snapshot = seasonResult.data?.standings_snapshot as ArenaCustomerRewardStanding[] | null;
+  const standings = leaderboard && leaderboard.seasonCode === seasonCode
+    ? toRewardStandings(leaderboard.entries)
+    : Array.isArray(snapshot) ? snapshot : [];
+  const preview = buildArenaCustomerRewardPreview(poolGrams, standings, minHumanBattles);
+  const viewerStanding = input.viewerId ? standings.find(entry => entry.playerId === input.viewerId) : null;
+  const viewerProjection = input.viewerId ? preview.rankingWinners.find(entry => entry.playerId === input.viewerId) : null;
+  let viewerGrant: { grams: number; kind: string } | null = null;
+  if (input.viewerId && raw.status === "settled") {
+    const result = await supabase.from("arena_customer_reward_grants").select("gift_weight_grams,kind")
+      .eq("season_code", seasonCode).eq("user_id", input.viewerId).maybeSingle();
+    if (result.error) throw new Error("Récompense attribuée indisponible.");
+    if (result.data) viewerGrant = { grams: Number(result.data.gift_weight_grams), kind: String(result.data.kind) };
+  }
   const lastFinalWeek = raw.lastFinalWeek && typeof raw.lastFinalWeek === "object" && !Array.isArray(raw.lastFinalWeek)
     ? raw.lastFinalWeek as Record<string, unknown>
     : null;
@@ -97,6 +100,12 @@ export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?
   return {
     seasonCode: String(raw.seasonCode ?? seasonCode),
     status: String(raw.status ?? "active"),
+    viewer: input.viewerId ? {
+      rank: viewerStanding?.leaderboardRank ?? null,
+      battles: viewerStanding ? viewerStanding.wins + viewerStanding.losses : 0,
+      estimatedGrams: viewerProjection?.grams ?? null,
+      grant: viewerGrant,
+    } : null,
     formulaVersion: String(raw.formulaVersion ?? "arena-customer-v1"),
     contributionRateBps: Math.floor(toNumber(raw.contributionRateBps, 100)),
     poolGrams,
@@ -122,7 +131,7 @@ export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?
       eligibleFlowerGrams: Math.max(0, toNumber(weeklyDice.eligibleFlowerGrams)),
       contributionGrams: Math.max(0, toNumber(weeklyDice.contributionGrams, raw.currentWeekGrams === undefined ? 0 : toNumber(raw.currentWeekGrams))),
     },
-    milestone: getPoolMilestone(poolGrams),
+    milestone: getArenaRewardMilestone(poolGrams),
     minimumHumanBattles: minHumanBattles,
     eligiblePlayers: preview.eligiblePlayers,
     topRewards: preview.rankingWinners.map((winner) => ({
@@ -211,7 +220,7 @@ export async function rollArenaCustomerRewardDice(userId: string) {
   const raw = result.data && typeof result.data === "object" && !Array.isArray(result.data)
     ? result.data as RewardPoolRpcPayload
     : {};
-  const pool = await getArenaCustomerRewardPool();
+  const pool = await getArenaCustomerRewardPool({ viewerId: userId });
   return {
     viewerRoll: Math.max(1, Math.min(6, Math.floor(toNumber(raw.viewerRoll, 1)))),
     alreadyRolled: raw.alreadyRolled === true,
@@ -222,7 +231,10 @@ export async function rollArenaCustomerRewardDice(userId: string) {
 export async function freezeArenaCustomerRewardSeason(execute: boolean) {
   const supabase = createSupabaseServiceClient();
   const seasonCode = await getActiveRewardSeasonCode();
-  const result = await supabase.rpc("rpc_arena_freeze_customer_reward_season", {
+  const leaderboard = await getKqArenaLeaderboardInternal();
+  if (leaderboard.seasonCode !== seasonCode) throw new Error("La saison du classement ne correspond pas à celle des récompenses.");
+  const result = await supabase.rpc("rpc_arena_freeze_customer_reward_snapshot", {
+    p_standings: toRewardStandings(leaderboard.entries),
     p_season_code: seasonCode,
     p_execute: execute,
   });
@@ -236,15 +248,17 @@ export async function freezeArenaCustomerRewardSeason(execute: boolean) {
 export async function settleArenaCustomerRewards(execute: boolean) {
   const supabase = createSupabaseServiceClient();
   const seasonCode = await getActiveRewardSeasonCode();
-  const [pool, leaderboard] = await Promise.all([
-    getArenaCustomerRewardPool({ finalizePreviousWeeks: true }),
-    getKqArenaLeaderboardInternal(),
-  ]);
-  const preview = buildArenaCustomerRewardPreview(
-    pool.poolGrams,
-    toRewardStandings(leaderboard.entries),
-    pool.minimumHumanBattles,
-  );
+  const pool = await getArenaCustomerRewardPool({ finalizePreviousWeeks: true });
+  const seasonResult = await supabase.from("arena_customer_reward_seasons").select("*").eq("season_code", seasonCode).single();
+  if (seasonResult.error) throw new Error("Classement de clôture indisponible.");
+  let standings = seasonResult.data?.standings_snapshot as ArenaCustomerRewardStanding[] | null;
+  if (!standings && pool.status === "active" && !execute) {
+    const leaderboard = await getKqArenaLeaderboardInternal();
+    if (leaderboard.seasonCode !== seasonCode) throw new Error("Saisons incompatibles.");
+    standings = toRewardStandings(leaderboard.entries);
+  }
+  if (!Array.isArray(standings)) throw new Error("Aucun classement figé disponible. Vérifier la clôture avant attribution.");
+  const preview = buildArenaCustomerRewardPreview(pool.poolGrams, standings, pool.minimumHumanBattles);
   const topRewards = preview.rankingWinners.filter((winner) => winner.grams > 0).map((winner) => ({
     userId: winner.playerId,
     leaderboardRank: winner.leaderboardRank,

@@ -1,7 +1,7 @@
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { useEffect } from "react";
 
 type GlobalErrorProps = {

@@ -21,6 +21,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     const envelope: unknown = JSON.parse(raw);
     if (!isRecord(envelope) || envelope.version !== 1 || !isRecord(envelope.payload)) return null;
     const state = envelope.payload;
+    if (state.rulesVersion !== undefined && state.rulesVersion !== 2) return null;
     const phases = ["prepare", "rolled", "resolved", "complete"];
     const knownCards = new Set<string>([...KQ_CARDS.map((card) => card.code), ...KQ_RETIRED_SUBSTRATE_CODES]);
     const knownSituations = new Set(KQ_SITUATIONS.map((situation) => situation.code));
@@ -74,7 +75,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (!Array.isArray(state.history) || state.history.length > KQ_STAGES.length || !Array.isArray(state.traits) || !Array.isArray(state.combos)) return null;
     if (state.history.some((entry) => {
       if (!isRecord(entry)) return true;
-      if (entry.qualityDelta !== undefined && (!Number.isInteger(entry.qualityDelta) || Number(entry.qualityDelta) < -1 || Number(entry.qualityDelta) > 4)) return true;
+      if (entry.qualityDelta !== undefined && (!Number.isInteger(entry.qualityDelta) || Number(entry.qualityDelta) < -1 || Number(entry.qualityDelta) > 6)) return true;
       if (entry.xpGain !== undefined && (!Number.isInteger(entry.xpGain) || Number(entry.xpGain) < 0 || Number(entry.xpGain) > 20)) return true;
       if (entry.harvestLossPercent !== undefined && (!Number.isInteger(entry.harvestLossPercent) || Number(entry.harvestLossPercent) < 0 || Number(entry.harvestLossPercent) > 35)) return true;
       return false;

@@ -17,8 +17,8 @@ export const ARENA_LOBBY_MODES = {
     number: "03", name: "Le Classement", label: "Fais-toi un nom.",
     description: "La prochaine place à prendre est la tienne.",
     href: "/arene?vue=classement", action: "Voir les classements", frequency: 550,
-    image: "/contest/mascot/arena-scene-classement-v1.png",
-    imageAlt: "Sylvain présente un trophée doré sur le podium de l’Arène.",
+    image: "/contest/mascot/arena-scene-classement-v2.png",
+    imageAlt: "Sylvain présente un trophée doré orné d’une feuille de cannabis sur le podium de l’Arène.",
   },
 } as const;
 

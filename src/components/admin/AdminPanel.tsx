@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type ClipboardEvent } from "react";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { defaultStore } from "@/data/default-store";
 import { AdminTextCarousel } from "@/components/admin/AdminTextCarousel";
 import { AdminSeasonGalleryManager } from "@/components/admin/AdminSeasonGalleryManager";

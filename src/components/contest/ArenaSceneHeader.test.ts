@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { ArenaSceneHeader } from "./ArenaSceneHeader";
 import { ARENA_LOBBY_MODES } from "@/lib/arena-lobby";
 
-vi.mock("next/link", () => ({ default: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => createElement("a", props) }));
+vi.mock("@/components/navigation/NavigationLink", () => ({ default: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => createElement("a", props) }));
 vi.mock("next/image", () => ({ default: ({ src, alt }: ImgHTMLAttributes<HTMLImageElement>) => createElement("img", { src, alt }) }));
 
 describe("Shared arena scene navigation", () => {

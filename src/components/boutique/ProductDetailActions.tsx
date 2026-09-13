@@ -1,8 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Link from "@/components/navigation/NavigationLink";
 import { Plus } from "lucide-react";
 import { ProductAnalysisModal } from "@/components/boutique/ProductAnalysisModal";
 import { QuantitySelector } from "@/components/QuantitySelector";
@@ -32,10 +31,10 @@ export function ProductDetailActions({
   product,
   lowStockThresholdGrams = 0,
 }: ProductDetailActionsProps) {
-  const router = useRouter();
-  const { addToCart, authLoading } = useCart();
+  const { addToCart, cartLoading } = useCart();
   const [qty, setQty] = useState(1);
   const [selectedVariantId, setSelectedVariantId] = useState<string>("");
+  const [added, setAdded] = useState(false);
   const [stockError, setStockError] = useState<string | null>(null);
   const [analysisOpen, setAnalysisOpen] = useState(false);
   const closeAnalysis = useCallback(() => setAnalysisOpen(false), []);
@@ -49,11 +48,13 @@ export function ProductDetailActions({
   const inStock = !stockInfo.isOutOfStock;
 
   const handleAddToCart = () => {
-    if (authLoading || !inStock) return;
+    if (cartLoading || !inStock) return;
 
+    setAdded(false);
     const result = addToCart(product, selectedVariant?.id, qty);
     if (result.ok) {
       setStockError(null);
+      setAdded(true);
       setQty(1);
       return;
     }
@@ -63,11 +64,7 @@ export function ProductDetailActions({
       return;
     }
 
-    const nextPath =
-      typeof window === "undefined"
-        ? "/boutique"
-        : `${window.location.pathname}${window.location.search}`;
-    router.push(`/compte/connexion?next=${encodeURIComponent(nextPath)}`);
+    setStockError("Ce format n’est plus disponible. Choisis un autre produit ou format.");
   };
 
   return (
@@ -102,6 +99,7 @@ export function ProductDetailActions({
           Plus que {formatRemainingGrams(stockInfo.remainingGrams)} disponible
         </div>
       )}
+      {added && <p role="status" className="mt-2 text-xs font-semibold text-teal">Ajouté au panier. <button type="button" className="underline min-h-11" onClick={() => window.dispatchEvent(new Event("shop:open-cart"))}>Voir mon panier</button></p>}
       {stockError && <p className="text-sm font-semibold text-[#7f1d1d]">{stockError}</p>}
 
       <div className={styles.controls}>
@@ -118,7 +116,7 @@ export function ProductDetailActions({
         <button
           type="button"
           onClick={handleAddToCart}
-          disabled={authLoading || !inStock}
+          disabled={cartLoading || !inStock}
           className={`btn-cartoon btn-primary inline-flex items-center gap-2 px-6 py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60 ${styles.add}`}
         >
           <Plus size={16} /> {inStock ? "Ajouter au panier" : "Rupture de stock"}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { notFound, permanentRedirect } from "next/navigation";
 import { BreadcrumbJsonLd, ProductJsonLd } from "@/components/JsonLd";
 import { ProductDetailActions } from "@/components/boutique/ProductDetailActions";

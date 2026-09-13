@@ -1,3 +1,4 @@
+import { applyKqMarketDemand, type KqMarketContext, type KqMarketDemand, type KqPricePolicy } from "./kanab-quest-market-demand";
 import {
   getKqEquipmentRequirementState,
   getKqEquipmentAtLevel,
@@ -34,6 +35,9 @@ export type KqMarketRouteDefinition = {
 };
 
 export type KqMarketQuote = {
+  productBaseUnitCents?: number;
+  market?: KqMarketDemand;
+  pricePolicy?: KqPricePolicy;
   route: KqMarketRouteCode;
   name: string;
   family: KqMarketRouteDefinition["family"];
@@ -49,6 +53,7 @@ export type KqMarketQuote = {
   biomassRemainderGrams: number;
   processingCapacityPercent: number;
   processingPrecision: number;
+  processingLevel?: number;
   payoutCents: number;
   reputationGain: number;
   reputationPolicyVersion?: 2;
@@ -96,7 +101,7 @@ export const KQ_MARKET_ROUTES: readonly KqMarketRouteDefinition[] = [
     minimumJuryScore: 8.3,
     requiredUnlocks: ["dry-sift", "static-sift"],
     extractionYieldPercent: 10,
-    basePriceCentsPerProductGram: 12_000,
+    basePriceCentsPerProductGram: 6_000,
     reputationMultiplier: 3.8,
   },
   {
@@ -360,7 +365,7 @@ export function calculateKqHarvestGrams(input: {
 
 function getRouteEquipmentState(equipmentCodes: string[], route: KqMarketRouteDefinition, levels: Record<string, number> = {}) {
   if (route.requiredUnlocks.length === 0) {
-    return { missingUnlocks: [] as KqEquipmentUnlock[], capacityPercent: 100, precision: 100, valueBonusPercent: 0 };
+    return { missingUnlocks: [] as KqEquipmentUnlock[], capacityPercent: 100, precision: 100, valueBonusPercent: 0, level: 1 };
   }
   const equipped = equipmentCodes.map((code) => getKqEquipmentAtLevel(code, levels[code]))
     .filter((equipment): equipment is NonNullable<typeof equipment> => equipment !== null);
@@ -371,6 +376,7 @@ function getRouteEquipmentState(equipmentCodes: string[], route: KqMarketRouteDe
   const processingEquipment = selected.filter((equipment): equipment is NonNullable<typeof equipment> => equipment !== null);
   return {
     missingUnlocks,
+    level: processingEquipment.length ? Math.min(...processingEquipment.map((equipment) => Math.max(1, Math.min(10, levels[equipment.code] ?? 1)))) : 1,
     valueBonusPercent: processingEquipment.length > 0
       ? processingEquipment.reduce((sum, equipment) => sum + (equipment.effects.processingValueBonusPercent ?? 0), 0) / processingEquipment.length : 0,
     capacityPercent: processingEquipment.length > 0
@@ -387,6 +393,7 @@ export function quoteKqMarketRoutes(input: {
   harvestGrams: number;
   equipmentCodes: string[];
   equipmentLevels?: Record<string, number>;
+  marketContext?: KqMarketContext;
 }): KqMarketQuote[] {
   const juryScore = roundTenth(clamp(input.juryScore, 0, 10));
   const harvestGrams = roundTenth(clamp(input.harvestGrams, 0, 500));
@@ -428,7 +435,7 @@ export function quoteKqMarketRoutes(input: {
           ? "Le lot ne contient aucune matière valorisable."
           : null;
     const reputationGain = blockedReason ? 0 : calculateKqMarketReputation(route.code, juryScore);
-    return {
+    const quote: KqMarketQuote = {
       route: route.code,
       name: route.name,
       family: route.family,
@@ -444,15 +451,18 @@ export function quoteKqMarketRoutes(input: {
       biomassRemainderGrams,
       processingCapacityPercent,
       processingPrecision: equipment.precision,
+      processingLevel: equipment.level,
       payoutCents,
       reputationGain,
       reputationPolicyVersion: 2,
+      productBaseUnitCents: route.basePriceCentsPerProductGram * precisionFactor * (1 + equipment.valueBonusPercent / 100),
     };
+    return input.marketContext ? applyKqMarketDemand(quote, juryScore, input.marketContext) : quote;
   });
 }
 
 export function getKqMarketRecommendations(quotes: KqMarketQuote[]) {
-  const available = quotes.filter((quote) => quote.available);
+  const available = quotes.filter((quote) => quote.available && (!quote.market || quote.market.offers.some((offer) => offer.policy === (quote.pricePolicy ?? "fair") && offer.accepted)));
   const routeOrder = (route: KqMarketRouteCode) => KQ_MARKET_ROUTE_CODES.indexOf(route);
   const bestPayout = [...available].sort((left, right) => (
     right.payoutCents - left.payoutCents
@@ -484,7 +494,7 @@ export type KqPinnedRouteLotStatus = {
   route: KqMarketRouteCode;
   name: string;
   available: boolean;
-  state: "ready" | "quality" | "equipment" | "quality-and-equipment";
+  state: "ready" | "quality" | "equipment" | "quality-and-equipment" | "experience";
   qualityGap: number;
   minimumJuryScore: number;
   missingUnlocks: KqEquipmentUnlock[];
@@ -604,7 +614,7 @@ export function getKqPinnedRouteLotStatus(input: {
   const qualityGap = roundTenth(Math.max(0, quote.minimumJuryScore - clamp(input.juryScore, 0, 10)));
   const missesQuality = qualityGap > 0;
   const missesEquipment = quote.missingUnlocks.length > 0;
-  const state = missesQuality && missesEquipment
+  const state = quote.market?.progressionReason ? "experience" as const : missesQuality && missesEquipment
     ? "quality-and-equipment" as const
     : missesQuality
       ? "quality" as const

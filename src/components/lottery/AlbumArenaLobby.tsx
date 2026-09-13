@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { ArrowLeft, ArrowUpRight, BookOpen, Gift, Ticket } from "lucide-react";
 import { useState, type KeyboardEvent } from "react";
 import lobby from "@/components/contest/ArenaLobby.module.css";

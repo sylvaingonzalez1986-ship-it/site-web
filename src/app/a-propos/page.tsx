@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { BreadcrumbJsonLd, WebPageJsonLd } from "@/components/JsonLd";
 import { BUSINESS_IDENTITY } from "@/lib/business-identity";
 import { getSiteUrl } from "@/lib/site-url";

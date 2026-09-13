@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { Download, RefreshCcw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { AdminProducerRewardCampaigns } from "@/components/admin/AdminProducerRewardCampaigns";

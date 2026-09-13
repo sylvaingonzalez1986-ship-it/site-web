@@ -1,5 +1,5 @@
 ﻿import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { notFound, permanentRedirect } from "next/navigation";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";

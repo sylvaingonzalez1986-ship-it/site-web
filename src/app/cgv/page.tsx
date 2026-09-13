@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { CmsPageRenderer } from "@/components/cms/CmsPageRenderer";
 import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-static-pages";
 
@@ -97,7 +97,7 @@ export default async function CgvPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-2xl">Article 5 - Livraison</h2>
+              <h2 id="livraison" className="font-display text-2xl scroll-mt-28">Article 5 - Livraison</h2>
               <p className="mt-2">
                 Les produits sont expedies dans un delai indicatif de 3 jours ouvres apres
                 confirmation du paiement.

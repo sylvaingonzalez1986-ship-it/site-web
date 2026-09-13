@@ -10,6 +10,23 @@
   color: var(--poster-ink);
 }
 
+.heroLead { max-width: 580px; margin: 1.25rem 0 0; font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.55; }
+.selectionLead { margin: 1rem 0 0; max-width: 650px; line-height: 1.5; }
+@media (max-width: 1024px) {
+  .page .productGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .page .productGrid { gap: .75rem; }
+  .page .heroCopy { display: flex; flex-direction: column; }
+  .page .heroTitle { font-size: clamp(3rem, 14vw, 4rem); }
+  .page .heroLead { font-size: .95rem; margin-top: 1rem; }
+  .page .heroRule { display: none; }
+  .page .heroActions { order: 1; margin-top: 1.25rem; }
+  .page .mobileHeroStage { order: 2; min-height: 160px; margin-top: 1rem; }
+  .page .mobileSun { width: 150px; right: 8%; }
+  .page .heroProofs { order: 3; display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: 1rem; }
+}
+
 .hero,
 .promise,
 .philosophy,
@@ -21,8 +38,8 @@
 }
 
 .hero {
-  min-height: 100svh;
-  padding: clamp(7.5rem, 12vw, 10rem) 0 clamp(3rem, 7vw, 6rem);
+  min-height: auto;
+  padding: clamp(7.5rem, 10vw, 9rem) 0 clamp(2rem, 4vw, 3rem);
   background:
     radial-gradient(circle at 84% 22%, rgba(0, 86, 63, 0.08) 0 12rem, transparent 12.15rem),
     var(--poster-cream);
@@ -196,7 +213,7 @@
 .heroStage {
   position: relative;
   isolation: isolate;
-  min-height: min(70vw, 720px);
+  min-height: min(42vw, 500px);
 }
 
 .mobileHeroStage {
@@ -573,9 +590,9 @@
 
 .productGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(1rem, 2.5vw, 2rem);
-  margin-top: 3rem;
+  margin-top: 1.5rem;
 }
 
 .emptyProducts {
@@ -1063,7 +1080,6 @@
     flex-direction: column;
   }
 
-  .productGrid,
   .seoColumns {
     grid-template-columns: 1fr;
   }

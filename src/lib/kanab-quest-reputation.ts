@@ -4,13 +4,14 @@ export type KqReputationTier = {
   minimum: number;
 };
 
+// Late tiers account for high-grade sale gains and one-time expertise bonuses.
 export const KQ_REPUTATION_TIERS: readonly KqReputationTier[] = [
   { code: "novice", name: "Cultivateur novice", minimum: 0 },
-  { code: "steady-hand", name: "Main sûre", minimum: 20 },
-  { code: "lot-artisan", name: "Artisan du lot", minimum: 60 },
-  { code: "local-signature", name: "Signature locale", minimum: 150 },
-  { code: "closet-master", name: "Maître du Placard", minimum: 300 },
-  { code: "jury-reference", name: "Référence du jury", minimum: 600 },
+  { code: "steady-hand", name: "Main sûre", minimum: 60 },
+  { code: "lot-artisan", name: "Artisan du lot", minimum: 200 },
+  { code: "local-signature", name: "Signature locale", minimum: 600 },
+  { code: "closet-master", name: "Maître du Placard", minimum: 1500 },
+  { code: "jury-reference", name: "Référence du jury", minimum: 3000 },
 ] as const;
 
 export const KQ_PLACARD_SEASON_BONUS_CAP = 150;

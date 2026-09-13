@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { Award, Copy, Download, Gift, ShoppingBag, Star, Tag, User as UserIcon, Users, type LucideIcon } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { LoyaltyBadgeSummary } from "@/components/account/LoyaltyBadgeSummary";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
 import { MissionsSection } from "@/components/account/MissionsSection";

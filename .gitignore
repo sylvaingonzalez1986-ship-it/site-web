@@ -56,6 +56,7 @@ data/*.json
 supabase/.temp/
 
 # local scratch files
+/output/
 tmp*
 tmp/
 tmp_supabase_push/

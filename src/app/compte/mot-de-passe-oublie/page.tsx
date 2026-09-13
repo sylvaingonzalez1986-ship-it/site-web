@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+﻿import Link from "@/components/navigation/NavigationLink";
 import { PasswordResetRequestForm } from "@/components/account/PasswordResetRequestForm";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
 

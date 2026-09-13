@@ -1,5 +1,5 @@
 ﻿import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { ChevronDown, Star } from "lucide-react";
 import styles from "@/components/ProductCard.module.css";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";

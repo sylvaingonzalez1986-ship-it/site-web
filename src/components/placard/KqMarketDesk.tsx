@@ -1,5 +1,7 @@
 "use client";
 
+import { getKqMarketReputationProgress, KQ_MARKET_REPUTATION_TIERS, selectKqMarketOffer, type KqPricePolicy } from "@/lib/kanab-quest-market-demand";
+
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 import { previewKqEnergyPayment } from "@/lib/kanab-quest-energy";
@@ -10,7 +12,7 @@ import {
   Banknote,
   Beaker,
   Box,
-  CircleDollarSign,
+  Euro,
   Flame,
   Gauge,
   LoaderCircle,
@@ -203,19 +205,21 @@ function RouteIcon({ family }: { family: KqMarketQuote["family"] }) {
 }
 
 function getPinnedRouteStatusLabel(status: KqPinnedRouteLotStatus) {
+  if (status.state === "experience") return "Développe ta réputation et ton expérience";
   if (status.state === "ready") return "Ce lot est prêt";
   if (status.state === "quality") return `Encore +${status.qualityGap.toFixed(1)} au jury`;
   if (status.state === "equipment") return "Chaîne à compléter";
   return `+${status.qualityGap.toFixed(1)} au jury et chaîne à compléter`;
 }
 
-export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: string) => void }) {
+export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: string) => void }) {
   const [snapshot, setSnapshot] = useState<MarketSnapshot | null>(null);
   const [selectedFlowerId, setSelectedFlowerId] = useState<string | null>(null);
   const [pendingQuote, setPendingQuote] = useState<KqMarketQuote | null>(null);
   const [saleReceipt, setSaleReceipt] = useState<SaleReceipt | null>(null);
   const [loading, setLoading] = useState(true);
   const [selling, setSelling] = useState(false);
+  const [pricePolicy, setPricePolicy] = useState<KqPricePolicy>("fair");
   const [selectedRoute, setSelectedRoute] = useState<KqMarketRouteCode | null>(null);
   const [transformation, setTransformation] = useState<"idle" | "working" | "complete">("idle");
   const [cookingArtFailed, setCookingArtFailed] = useState(false);
@@ -287,8 +291,8 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
   );
   const readyCount = snapshot?.lots.filter((lot) => lot.status === "ready").length ?? 0;
   const recommendation = useMemo(
-    () => selectedLot ? getKqMarketRecommendations(selectedLot.options) : null,
-    [selectedLot],
+    () => selectedLot ? getKqMarketRecommendations(selectedLot.options.map((quote) => selectKqMarketOffer(quote, pricePolicy))) : null,
+    [selectedLot, pricePolicy],
   );
   const pinnedRouteStatus = useMemo(() => (
     snapshot?.routePlan && selectedLot
@@ -305,12 +309,14 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
   }), [snapshot?.routeMasteries, snapshot?.routePlan?.route]);
   const displayedOptions = useMemo(() => (
     selectedLot
-      ? prioritizeKqPinnedMarketRoute(selectedLot.options, snapshot?.routePlan?.route ?? expertiseMission?.route ?? null)
+      ? prioritizeKqPinnedMarketRoute(selectedLot.options.map((quote) => selectKqMarketOffer(quote, pricePolicy)), snapshot?.routePlan?.route ?? expertiseMission?.route ?? null)
       : []
-  ), [expertiseMission?.route, selectedLot, snapshot?.routePlan?.route]);
+  ), [expertiseMission?.route, selectedLot, snapshot?.routePlan?.route, pricePolicy]);
   const activeQuote = displayedOptions.find((quote) => quote.route === selectedRoute)
     ?? displayedOptions.find((quote) => quote.route === snapshot?.routePlan?.route)
+    ?? displayedOptions.find((quote) => quote.available && quote.family !== "salvage")
     ?? recommendation?.bestPayout ?? displayedOptions[0];
+  const marketReputation = getKqMarketReputationProgress(snapshot?.reputation ?? 0);
   const reputationProgress = useMemo(
     () => getKqReputationProgress(snapshot?.reputation ?? 0),
     [snapshot?.reputation],
@@ -407,6 +413,9 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
         body: JSON.stringify({
           flowerId: selectedLot.flowerId,
           route: pendingQuote.route,
+          pricePolicy: pendingQuote.pricePolicy ?? "fair",
+          expectedPayoutCents: pendingQuote.payoutCents,
+          marketWindow: pendingQuote.market?.window,
           requestKey,
         }),
       });
@@ -441,6 +450,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
       } : current);
       setPendingQuote(null);
       saleRequestKeyRef.current = null;
+      void loadMarket();
       window.dispatchEvent(new Event("kq:market-updated"));
       window.dispatchEvent(new Event("kq:equipment-updated"));
     } catch (saleError) {
@@ -492,7 +502,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
           <p>Ta récolte. Tes machines. Ton prochain palier.</p>
         </div>
         <div className={styles.walletGrid}>
-          <article><CircleDollarSign /><span><small>Trésorerie</small><strong>{formatKqCash(snapshot?.cashCents ?? 0)}</strong></span></article>
+          <article><Euro /><span><small>Trésorerie</small><strong>{formatKqCash(snapshot?.cashCents ?? 0)}</strong></span></article>
           <article><Trophy /><span><small>Réputation · {reputationProgress.tier.name}</small><strong>{reputationProgress.reputation}</strong><em>{reputationProgress.nextTier ? `${reputationProgress.pointsToNext} avant ${reputationProgress.nextTier.name}` : "Palier maximal"}</em></span></article>
           <article><BadgeCheck /><span><small>Rang qualité</small><strong>#{snapshot?.reputationRank ?? "—"}</strong></span></article>
         </div>
@@ -502,8 +512,8 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
         <summary>Comment vendre un lot ?</summary>
         <div className={styles.explainer}>
         <span><Flame /><b>1</b> La Fleur passe au jury puis brûle dans son duel.</span>
-        <span><Scale /><b>2</b> La note fixe les transformations et le prix.</span>
-        <span><Banknote /><b>3</b> La vente rapporte de l’argent. La qualité fait monter, stagner ou baisser ta réputation.</span>
+        <span><Scale /><b>2</b> Qualité, expérience et matériel ouvrent les gammes. Réputation et demande fixent les offres.</span>
+        <span><Banknote /><b>3</b> Choisis ton prix en euros. Si les acheteurs refusent, baisse le tarif ou garde le lot. La qualité construit ta réputation.</span>
         </div>
       </details>
 
@@ -579,6 +589,32 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
                     ) : null}
                   </section></details>
                 ) : null}
+                {activeQuote?.market ? <section className={styles.demandPanel} aria-label="Demande et prix">
+                  <div><strong>{activeQuote.market.trend}</strong><span>Saturation {activeQuote.market.saturation >= 30 ? "forte" : activeQuote.market.saturation >= 15 ? "modérée" : "faible"}</span></div>
+                  <p>La qualité fixe la valeur du lot. Les ventes des dernières 24 heures peuvent saturer une filière ; les tendances changent toutes les 6 heures. Conserver un lot ne le détériore pas.</p>
+                  <div className={styles.marketTier}>
+                    <strong>{marketReputation.tier.name} · {marketReputation.reputation} réputation</strong>
+                    <p>{activeQuote.family === "salvage" ? "La biomasse garde son tarif de secours, sans bonus de réputation." : `Bonus de prix +${marketReputation.tier.priceBonusPercent} % avant frais · impact de la saturation réduit de ${marketReputation.tier.saturationProtectionPercent} %.`}</p>
+                    <p>{marketReputation.tier.guaranteedPolicy === "premium" ? "Clientèle fidèle : prix ambitieux garanti, sans baisse liée à la saturation ou aux tendances défavorables." : marketReputation.tier.guaranteedPolicy === "fair" ? "Clientèle fidèle : vente garantie au prix du marché. Le prix ambitieux dépend encore de la demande." : "Le prix du marché et le prix ambitieux dépendent encore de la demande."}</p>
+                    {marketReputation.nextTier ? <small>Dans {marketReputation.pointsToNext} points : {marketReputation.nextTier.name}, bonus +{marketReputation.nextTier.priceBonusPercent} %{marketReputation.nextTier.guaranteedPolicy === "premium" ? " et prix ambitieux garanti" : marketReputation.nextTier.guaranteedPolicy === "fair" ? " et vente garantie au prix du marché" : ""}.</small> : <small>Dernier palier atteint.</small>}
+                    <details>
+                      <summary>Voir les 6 paliers de réputation</summary>
+                      <ul>{KQ_MARKET_REPUTATION_TIERS.map((tier) => <li key={tier.code} aria-current={tier.code === marketReputation.tier.code ? "step" : undefined}>
+                        <strong>{tier.minimum}+ · {tier.name} · +{tier.priceBonusPercent} %</strong>
+                        <span>{tier.guaranteedPolicy === "premium" ? "Prix ambitieux garanti, prix protégé" : tier.guaranteedPolicy === "fair" ? "Acheteur garanti au prix du marché" : `Saturation atténuée de ${tier.saturationProtectionPercent} %`}</span>
+                      </li>)}</ul>
+                      <p>Les garanties concernent les filières accessibles : qualité minimale, machines et expérience requises. Les bonus s’appliquent au tarif du lot avant frais ; la biomasse est exclue.</p>
+                    </details>
+                  </div>
+                  <div className={styles.priceChoices}>
+                    {activeQuote.market.offers.map((offer) => <button key={offer.policy} type="button" aria-pressed={pricePolicy === offer.policy} onClick={() => setPricePolicy(offer.policy)}>
+                      <strong>{offer.label}</strong><span>{formatKqCash(offer.payoutCents)}</span><small>{offer.accepted ? "Acheteur disponible" : "Aucune offre à ce prix"}</small>
+                    </button>)}
+                  </div>
+                  <p role="status">{activeQuote.market.offers.find((offer) => offer.policy === pricePolicy)?.message}</p>
+                  <small>Prochain marché : {new Intl.DateTimeFormat("fr-FR", { hour: "2-digit", minute: "2-digit" }).format(new Date(activeQuote.market.expiresAt))} · Frais de transformation inclus : {formatKqCash(activeQuote.market.processingCostCents)}</small>
+                  <button type="button" onClick={() => void loadMarket()}>Actualiser les offres</button>
+                </section> : null}
                 <div className={styles.routeGrid} id="market-machine-detail" aria-live="polite">
                   {displayedOptions.filter((quote) => quote.route === activeQuote?.route).map((quote) => {
                     const bestPayout = quote.available && recommendation?.bestPayout?.route === quote.route;
@@ -621,7 +657,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
                       {quote.blockedReason ? <small className={styles.blocked}>{quote.blockedReason}</small> : null}
                       {juryScoreGap > 0 ? <small className={styles.qualityGoal}>Objectif prochaine récolte · +{juryScoreGap.toFixed(1)} au jury</small> : null}
                       {pinnedRoute && quote.available ? <small className={styles.pinnedStatus}>Objectif atteint · ce lot est compatible avec ta filière</small> : null}
-                      {quote.available ? <button type="button" onClick={() => { saleRequestKeyRef.current = createClientRequestKey(); setError(""); setPendingQuote(quote); }}>Choisir · {formatKqCash(quote.payoutCents)}</button> : pinnedRouteNeedsEquipment && pinnedEquipmentCode ? <button type="button" className={styles.unlockButton} data-pinned data-affordable={equipmentGoal?.affordable || undefined} onClick={() => onOpenShop(pinnedEquipmentCode)}><Target /> Poursuivre la filière<small>{juryScoreGap > 0 ? `Chaîne à compléter · encore +${juryScoreGap.toFixed(1)} au jury` : equipmentGoal ? `${equipmentGoal.kind === "install" ? "À installer" : "Prochaine pièce"} · ${equipmentGoal.name}` : "Ouvrir la chaîne d’équipement"}</small></button> : equipmentGoal ? <button type="button" className={styles.unlockButton} data-affordable={equipmentGoal.affordable || undefined} onClick={() => onOpenShop(equipmentGoal.code)}><ShoppingBag /> {equipmentGoal.kind === "install" ? "Installer" : equipmentGoal.kind === "prerequisite" ? "Commencer par" : "Voir"} · {equipmentGoal.name}<small>{equipmentGoal.kind === "prerequisite" ? `Prérequis de ${equipmentGoal.targetEquipmentName}` : equipmentGoal.affordable ? formatKqCash(equipmentGoal.priceCents) : `Manque ${formatKqCash(equipmentGoal.remainingCents)}`}</small></button> : <button type="button" disabled>Indisponible</button>}
+                      {quote.available ? <button type="button" disabled={!quote.market?.offers.find((offer) => offer.policy === pricePolicy)?.accepted} onClick={() => { saleRequestKeyRef.current = createClientRequestKey(); setError(""); setPendingQuote(quote); }}>{quote.market?.offers.find((offer) => offer.policy === pricePolicy)?.accepted ? `Vendre · ${formatKqCash(quote.payoutCents)}` : "Baisse le prix ou garde le lot"}</button> : pinnedRouteNeedsEquipment && pinnedEquipmentCode ? <button type="button" className={styles.unlockButton} data-pinned data-affordable={equipmentGoal?.affordable || undefined} onClick={() => onOpenShop(pinnedEquipmentCode)}><Target /> Poursuivre la filière<small>{juryScoreGap > 0 ? `Chaîne à compléter · encore +${juryScoreGap.toFixed(1)} au jury` : equipmentGoal ? `${equipmentGoal.kind === "install" ? "À installer" : "Prochaine pièce"} · ${equipmentGoal.name}` : "Ouvrir la chaîne d’équipement"}</small></button> : equipmentGoal ? <button type="button" className={styles.unlockButton} data-affordable={equipmentGoal.affordable || undefined} onClick={() => onOpenShop(equipmentGoal.code)}><ShoppingBag /> {equipmentGoal.kind === "install" ? "Installer" : equipmentGoal.kind === "prerequisite" ? "Commencer par" : "Voir"} · {equipmentGoal.name}<small>{equipmentGoal.kind === "prerequisite" ? `Prérequis de ${equipmentGoal.targetEquipmentName}` : equipmentGoal.affordable ? formatKqCash(equipmentGoal.priceCents) : `Manque ${formatKqCash(equipmentGoal.remainingCents)}`}</small></button> : <button type="button" disabled>Indisponible</button>}
                     </article>
                   );})}
                 </div>
@@ -635,7 +671,7 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
         <section className={styles.confirmModal} role="dialog" aria-modal="true" aria-labelledby="market-confirm-title" onClick={(event) => event.stopPropagation()}>
           <button type="button" disabled={selling} onClick={() => { saleRequestKeyRef.current = null; setPendingQuote(null); }} aria-label="Fermer"><X /></button>
           <span><RouteIcon family={pendingQuote.family} /></span>
-          <small>Bon de transformation définitif</small>
+          <small>Offre de vente · {pendingQuote.market?.offers.find((offer) => offer.policy === pendingQuote.pricePolicy)?.label ?? "Prix du marché"}</small>
           <h2 id="market-confirm-title">{pendingQuote.name}</h2>
           <p>Le lot {selectedLot.varietyName} sera entièrement valorisé par cette filière. Ce choix ne pourra pas être annulé.</p>
           {error ? <p className={styles.modalError} role="alert">{error}</p> : null}
@@ -773,3 +809,5 @@ export function KqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: stri
     </main>
   );
 }
+
+export { KqCommerceDesk as KqMarketDesk } from "./KqCommerceDesk";

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BUSINESS_IDENTITY } from "@/lib/business-identity";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { CmsPageRenderer } from "@/components/cms/CmsPageRenderer";
 import { buildCmsStaticPageMetadata, getStaticCmsPageBySlug } from "@/lib/cms-static-pages";
 

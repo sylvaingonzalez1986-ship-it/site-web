@@ -1,4 +1,5 @@
 import "server-only";
+import { getKqMarketWindow, KQ_PRICE_POLICIES, type KqMarketContext, type KqPricePolicy } from "@/lib/kanab-quest-market-demand";
 import { getKqEnergySummary } from "./kanab-quest-energy-backend";
 
 import {
@@ -136,16 +137,25 @@ export function getKqMarketRunSummary(runState: unknown, quality: number) {
   };
 }
 
-export async function getKqMarketSnapshot(userId: string) {
+export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string[]) {
   assertUuid(userId, "Compte marché invalide.");
   const supabase = createSupabaseServiceClient();
   const equipmentShop = await getKqEquipmentShopSnapshot(userId);
-  const flowersResult = await supabase.from("kq_flowers")
+  const pulse = await supabase.rpc("rpc_kq_market_pulse", { p_user_id: userId });
+  if (pulse.error) throw new Error(`[supabase:rpc_kq_market_pulse] ${pulse.error.message}`);
+  const marketContext: KqMarketContext = {
+    reputation: equipmentShop.reputation,
+    routeSales: Object.fromEntries(equipmentShop.routeMasteries.map((entry) => [entry.route, entry.saleCount])),
+    recentSales: pulse.data?.recentSales ?? {},
+    marketVolumes: pulse.data?.marketVolumes ?? {},
+    window: getKqMarketWindow(),
+  };
+  const flowersQuery = supabase.from("kq_flowers")
     .select("id,run_id,variety_code,variety_name,quality,battle_stats,burned_at")
     .eq("owner_id", userId)
     .eq("status", "burned")
-    .order("burned_at", { ascending: false })
-    .limit(40);
+    .order("burned_at", { ascending: false });
+  const flowersResult = await (onlyFlowerIds ? flowersQuery.in("id", onlyFlowerIds) : flowersQuery.limit(40));
   if (flowersResult.error) throw new Error(`[supabase:kq_flowers:market] ${flowersResult.error.message}`);
   const flowers = flowersResult.data ?? [];
   const flowerIds = flowers.map((flower) => String(flower.id));
@@ -182,7 +192,7 @@ export async function getKqMarketSnapshot(userId: string) {
           ? getKqJuryScoreFromRounds(botRounds, "player")
           : getKqJuryScoreFromStats(flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats as Record<string, number> : {});
     const { harvestGrams } = getKqMarketRunSummary(runStates.get(String(flower.run_id)), Number(flower.quality));
-    const options = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: equipmentShop.levels });
+    const options = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: equipmentShop.levels, marketContext });
     const prepared = await supabase.rpc("rpc_kq_prepare_market_lot", {
       p_user_id: userId,
       p_flower_id: flowerId,
@@ -209,7 +219,8 @@ export async function getKqMarketSnapshot(userId: string) {
   if (lotsResult.error) throw new Error(`[supabase:kq_market_lots] ${lotsResult.error.message}`);
   if (betterRankedResult.error) throw new Error(`[supabase:kq_equipment_wallets:rank] ${betterRankedResult.error.message}`);
   if (receiptsResult.error) throw new Error(`[supabase:kq_market_sale_receipts] ${receiptsResult.error.message}`);
-  const paidEnergy = new Map((receiptsResult.data ?? []).map((receipt) => [String(receipt.flower_id), Number(receipt.electricity_paid_cents)]));
+  const paidEnergy = new Map<string, number>();
+  for (const receipt of receiptsResult.data ?? []) paidEnergy.set(String(receipt.flower_id), (paidEnergy.get(String(receipt.flower_id)) ?? 0) + Number(receipt.electricity_paid_cents));
   const marketLots = new Map((lotsResult.data ?? []).map((lot) => [String(lot.flower_id), lot]));
 
   const lots: KqMarketLot[] = flowers.flatMap((flower) => {
@@ -260,22 +271,33 @@ export async function sellKqMarketLot(input: {
   flowerId: string;
   requestKey: string;
   route: string;
+  pricePolicy: string;
+  expectedPayoutCents: number;
+  marketWindow: number;
 }) {
   assertUuid(input.userId, "Compte marché invalide.");
   assertUuid(input.flowerId, "Lot invalide.");
   assertUuid(input.requestKey, "Demande de vente invalide.");
   if (!isKqMarketRouteCode(input.route)) throw new Error("Option de vente invalide.");
+  if (!KQ_PRICE_POLICIES.includes(input.pricePolicy as KqPricePolicy)
+    || !Number.isSafeInteger(input.expectedPayoutCents) || input.expectedPayoutCents < 0
+    || !Number.isSafeInteger(input.marketWindow)) throw new Error("Offre de marché invalide. Actualise le comptoir.");
   // Refresh the server-authored quote immediately before settlement so a stale
   // browser cannot reuse equipment that is no longer installed.
   const marketSnapshot = await getKqMarketSnapshot(input.userId);
-  const result = await createSupabaseServiceClient().rpc("rpc_kq_sell_market_lot", {
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_sell_market_offer", {
     p_user_id: input.userId,
     p_flower_id: input.flowerId,
     p_request_key: input.requestKey,
     p_route: input.route,
+    p_price_policy: input.pricePolicy,
+    p_expected_payout: input.expectedPayoutCents,
+    p_market_window: input.marketWindow,
   });
   if (result.error) {
     const message = result.error.message || "Vente impossible.";
+    if (message.includes("market_offer_changed")) throw new Error("Les conditions ont changé. Actualise le comptoir pour examiner le nouveau prix.");
+    if (message.includes("market_no_buyer")) throw new Error("Aucun acheteur à ce tarif. Choisis un prix inférieur ou conserve le lot.");
     if (message.includes("market_lot_unavailable")) throw new Error("Ce lot a déjà été vendu.");
     if (message.includes("market_reputation_quote_outdated")) throw new Error("Le barème de réputation a changé. Actualise le marché avant de vendre.");
     if (message.includes("market_route_unavailable")) throw new Error("Cette transformation n’est plus disponible.");

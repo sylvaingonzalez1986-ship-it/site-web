@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
@@ -80,6 +80,24 @@ export function Navbar() {
   const [hideWelcomePackBadge, setHideWelcomePackBadge] = useState(false);
   const [contestAccessCheck, setContestAccessCheck] = useState<ContestAccessCheck | null>(null);
   const contestAccessKey = user?.id || user?.email || "";
+
+  useEffect(() => {
+    const openCart = () => setCartOpen(true);
+    window.addEventListener("shop:open-cart", openCart);
+    return () => window.removeEventListener("shop:open-cart", openCart);
+  }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("panier") !== "1") return;
+    const frame = window.requestAnimationFrame(() => {
+      setCartOpen(true);
+      url.searchParams.delete("panier");
+      window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [isAuthenticated, pathname]);
 
   // Hide badge instantly when pack is claimed elsewhere on the page
   useEffect(() => {

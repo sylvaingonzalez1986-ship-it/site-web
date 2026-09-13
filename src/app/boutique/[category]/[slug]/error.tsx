@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 

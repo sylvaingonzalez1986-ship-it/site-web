@@ -1,3 +1,4 @@
+import { NavigationFeedbackProvider } from "@/components/navigation/NavigationFeedback";
 import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed, Caveat, Space_Grotesk } from "next/font/google";
 import { cookies, headers } from "next/headers";
@@ -222,6 +223,7 @@ export default async function RootLayout({
           />
         )}
         <WebVitals />
+        <NavigationFeedbackProvider>
         <CartProvider>
           <CookieConsentProvider initialConsent={initialCookieConsent}>
             <SupabaseRecoveryRedirect />
@@ -235,6 +237,7 @@ export default async function RootLayout({
             <NewProductsPopup />
           </CookieConsentProvider>
         </CartProvider>
+        </NavigationFeedbackProvider>
       </body>
     </html>
   );

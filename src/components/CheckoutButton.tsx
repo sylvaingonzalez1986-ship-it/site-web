@@ -9,6 +9,7 @@ import {
   VIVA_CHECKOUT_ATTEMPT_STORAGE_KEY,
 } from "@/lib/pending-viva-payment";
 import { formatPrice } from "@/lib/utils";
+import { createClientRequestKey } from "@/lib/client-request-key";
 
 type CheckoutItemPayload = {
   id: string;
@@ -98,7 +99,7 @@ export function CheckoutButton({
         window.sessionStorage.removeItem(VIVA_CHECKOUT_ATTEMPT_STORAGE_KEY);
       }
       if (!checkoutAttemptId) {
-        checkoutAttemptId = window.crypto.randomUUID();
+        checkoutAttemptId = createClientRequestKey();
         window.sessionStorage.setItem(
           VIVA_CHECKOUT_ATTEMPT_STORAGE_KEY,
           JSON.stringify({ signature: attemptSignature, attemptId: checkoutAttemptId }),

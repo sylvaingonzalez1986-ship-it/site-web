@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { ArrowLeft, ArrowRight, Banknote, Gamepad2, ShoppingBag, Swords } from "lucide-react";
 import { useState } from "react";
 import { KqPlacardHud } from "./KqPlacardHud";

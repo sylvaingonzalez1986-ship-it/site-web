@@ -3,7 +3,7 @@ import { createElement, type AnchorHTMLAttributes } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { ArenaNavigation } from "./ArenaNavigation";
 
-vi.mock("next/link", () => ({
+vi.mock("@/components/navigation/NavigationLink", () => ({
   default: ({ children, ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) => createElement("a", props, children),
 }));
 

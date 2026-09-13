@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { useEffect, useRef, useState, type PointerEvent, type KeyboardEvent } from "react";
-import { ArrowUpRight, BookOpen, Gamepad2, Trophy, Volume2, VolumeX } from "lucide-react";
+import { ArrowUpRight, Gift, BookOpen, Gamepad2, Trophy, Volume2, VolumeX } from "lucide-react";
 import { ArenaFirstVisitTutorial } from "@/components/contest/ArenaFirstVisitTutorial";
 import { ARENA_LOBBY_MODES, ARENA_LOBBY_MODE_ORDER, type ArenaLobbyMode } from "@/lib/arena-lobby";
 import { useArenaMenuSound } from "@/hooks/useArenaMenuSound";
@@ -86,6 +86,10 @@ export function ContestArenaHub() {
         </button>
       </header>
 
+      <Link href="/arene?vue=classement" className={styles.rewardInvitation}>
+        <Gift aria-hidden="true" />
+        <span><strong>Les ventes remplissent le bocal. À toi de gagner ta part.</strong><small>1 à 10 % des grammes de fleurs vendus alimentent les récompenses. 90 % du bocal pour le Top 10 éligible, 10 % pour la Fleur Surprise.</small><b>Découvrir les fleurs à gagner <ArrowUpRight size={16} aria-hidden="true" /></b></span>
+      </Link>
       <div className={styles.breathingRoom} aria-hidden="true" />
       <div className={styles.dock}>
         <div className={styles.modeBrief} aria-live="polite" aria-atomic="true">

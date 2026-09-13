@@ -74,7 +74,7 @@ export function AdminPlacardEconomyReview() {
         <b className="border-2 border-ink bg-[#dff1df] p-3">{report.signals.balanced}<small className="block font-normal">voie(s) équilibrée(s)</small></b>
         <b className="border-2 border-ink bg-[#ffd8cc] p-3">{report.signals.dominated}<small className="block font-normal">voie(s) dominée(s)</small></b>
         <b className="border-2 border-ink bg-[#fff0ae] p-3">{report.signals.tooFast}<small className="block font-normal">amortissement(s) rapide(s)</small></b>
-        <b className="border-2 border-ink bg-[#fff0ae] p-3">{report.priceAnchors.alignedCount}/{report.priceAnchors.totalCount}<small className="block font-normal">tarifs publics alignés à ±10 %</small></b>
+        <b className="border-2 border-ink bg-[#fff0ae] p-3">{report.priceAnchors.alignedCount}/{report.priceAnchors.totalCount}<small className="block font-normal">valeurs proches des références historiques</small></b>
         <b className="border-2 border-ink bg-[#dff1df] p-3">+{report.expertise.activeBonusReputation}<small className="block font-normal">réputation de palier à la vente n° {report.expertise.saleCount}</small></b>
       </div>
 
@@ -97,7 +97,7 @@ export function AdminPlacardEconomyReview() {
       {report.signals.tooFast > 0 ? (
         <p className="mt-3 flex items-start gap-2 border-2 border-ink bg-[#fff7cf] p-3 text-sm" role="status">
           <Gauge className="mt-0.5 shrink-0 text-[#9a5b17]" aria-hidden="true" size={19} />
-          <span><strong>{report.signals.tooFast} investissement(s) s’amortisse(nt) en moins de trois récoltes.</strong> Le prix réel du matériel reste conservé ; capacité et rendement sont les leviers à surveiller pendant la recette.</span>
+          <span><strong>{report.signals.tooFast} investissement(s) s’amortisse(nt) en moins de trois récoltes.</strong> Projection théorique hors demande : le marché ajoute frais, réputation, saturation et conditions de gamme. Trois machines de départ ont un prix de jeu adapté.</span>
         </p>
       ) : null}
 
@@ -152,8 +152,8 @@ export function AdminPlacardEconomyReview() {
               <tr className="border-t-2 border-ink align-top" key={anchor.code}>
                 <td className="p-3"><strong>{anchor.name}</strong><small className="block text-charcoal">jeu · {formatKqCash(Math.round(anchor.gamePriceUsd * 100))}</small></td>
                 <td className="p-3">{anchor.productLabel}</td>
-                <td className="p-3 text-right font-bold">{formatKqCash(Math.round(anchor.referencePriceUsd * 100))}{anchor.priceKind === "starting-at" ? <small className="block font-normal">à partir de</small> : null}</td>
-                <td className="p-3 text-right font-bold">{anchor.observedPriceCents ? formatKqCash(anchor.observedPriceCents) : "—"}</td>
+                <td className="p-3 text-right font-bold">{new Intl.NumberFormat("fr-FR", { style: "currency", currency: "USD" }).format(anchor.referencePriceUsd)}{anchor.priceKind === "starting-at" ? <small className="block font-normal">à partir de</small> : null}</td>
+                <td className="p-3 text-right font-bold">{anchor.observedPriceCents ? new Intl.NumberFormat("fr-FR", { style: "currency", currency: "USD" }).format(anchor.observedPriceCents / 100) : "—"}</td>
                 <td className="p-3"><a className="inline-flex items-center gap-1 font-bold text-green underline" href={anchor.sourceUrl} target="_blank" rel="noreferrer">{anchor.seller}<ExternalLink aria-hidden="true" size={13} /></a><small className="block text-charcoal">relevé le {anchor.checkedAt}</small></td>
               </tr>
             ))}</tbody>

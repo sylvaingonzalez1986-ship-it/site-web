@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/navigation/NavigationLink";
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { ContestReviewSkillRadar } from "@/components/contest/ContestReviewSkillRadar";
 import styles from "./ContestNotebookPanel.module.css";
 import {
