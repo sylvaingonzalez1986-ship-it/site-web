@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
-import { ArrowLeft, ArrowRight, Banknote, Gamepad2, ShoppingBag, Swords, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, Banknote, BookOpen, Gamepad2, ShoppingBag, Swords, Target } from "lucide-react";
 import { useState } from "react";
 import { KqPlacardHud } from "./KqPlacardHud";
 import styles from "./KqPlacardLobby.module.css";
@@ -15,9 +15,10 @@ const DESTINATIONS = [
   { id: "missions", title: "Le centre de missions", action: "Voir mes missions", detail: "Cultive, fidélise tes clients et relève des défis pour gagner des packs La Botte.", image: "/placard/commerce-office-v2.webp", icon: Target },
 ] as const;
 
-export function KqPlacardLobby({ onOpen, onOpenEquipment }: {
+export function KqPlacardLobby({ onOpen, onOpenEquipment, onOpenCollection }: {
   onOpen: (view: "game" | "market" | "shop" | "arena" | "missions") => void;
   onOpenEquipment: (equipmentCode?: string) => void;
+  onOpenCollection: () => void;
 }) {
   const [selected, setSelected] = useState<(typeof DESTINATIONS)[number]["id"]>("game");
   const destination = DESTINATIONS.find((item) => item.id === selected)!;
@@ -25,7 +26,7 @@ export function KqPlacardLobby({ onOpen, onOpenEquipment }: {
     <div className={styles.backdrop} data-mode={selected} aria-hidden="true">
       <Image key={destination.image} src={destination.image} alt="" fill sizes="100vw" priority />
     </div>
-    <header className={styles.header}><Link href="/arene"><ArrowLeft size={18} /> L’Arène</Link><span>Culture · Atelier · Duels</span><h1>Le Placard</h1></header>
+    <header className={styles.header}><Link href="/arene"><ArrowLeft size={18} /> L’Arène</Link><button type="button" className={styles.collectionButton} onClick={onOpenCollection} aria-haspopup="dialog"><BookOpen size={19} aria-hidden="true" /> Ma collection La Botte</button><h1>Le Placard</h1></header>
     <section className={styles.dock} aria-label="Choisir une activité du Placard">
       <div className={styles.description} aria-live="polite"><span>À toi de jouer</span><h2>{destination.title}</h2><p>{destination.detail}</p></div>
       <nav className={styles.menu} aria-label="Activités du Placard">{DESTINATIONS.map((item) => <button key={item.id} type="button" aria-pressed={selected === item.id} onClick={() => setSelected(item.id)}><item.icon size={22} aria-hidden="true" /><span>{item.id === "market" ? "Marché" : item.id === "game" ? "Culture" : item.id === "shop" ? "Boutique" : item.id === "missions" ? "Missions" : "Duels"}</span></button>)}</nav>

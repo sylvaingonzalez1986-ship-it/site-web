@@ -1,13 +1,17 @@
 "use client";
 
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import Link from "@/components/navigation/NavigationLink";
 import { Sparkles, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
-import { KQ_CARDS } from "@/lib/kanab-quest-game";
+import { KQ_CARDS, type KqSupportCard } from "@/lib/kanab-quest-game";
+import { getKqCardRole } from "@/lib/kanab-quest-card-guide";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import albumStyles from "@/components/lottery/AlbumExperience.module.css";
+
+const KqBotteCardDetail = dynamic(() => import("@/components/placard/KqBotteCollection").then((module) => module.KqBotteCardDetail), { ssr: false });
 
 type BotteSnapshot = {
   collection?: { cards?: Array<{ code: string; ownedCopies: number }> };
@@ -43,16 +47,21 @@ function CollectionCard({
   card,
   copies,
   permanent,
+  onInspect,
 }: {
   card: DisplayCard;
   copies: number;
   permanent: boolean;
+  onInspect?: () => void;
 }) {
   const artwork = card.imageUrl || getKqCardArtwork(card.code);
   const discovered = copies > 0;
+  const support = !permanent ? KQ_CARDS.find((item) => item.code === card.code) : undefined;
+  const role = support ? getKqCardRole(support) : null;
 
   return (
     <article
+      style={role ? { borderColor: role.color } : undefined}
       className={`min-w-0 overflow-hidden border-2 border-ink shadow-[4px_4px_0_#1a1a1a] ${
         discovered ? "bg-white" : "bg-[#ddd8ce]"
       }`}
@@ -67,15 +76,14 @@ function CollectionCard({
             className={`object-cover ${discovered ? "" : "grayscale-[45%] opacity-80"}`}
           />
         ) : null}
-        {!permanent && card.rarity ? <span className="absolute right-2 top-2 rounded-full border border-ink bg-cream px-2 py-1 text-[10px] font-black uppercase">
-          {RARITY_LABELS[card.rarity] ?? card.rarity}
-        </span> : null}
+        {onInspect ? <button type="button" onClick={onInspect} aria-label={`Agrandir ${card.name}`} aria-haspopup="dialog" className="absolute inset-0 cursor-zoom-in bg-transparent focus-visible:outline-4 focus-visible:-outline-offset-4 focus-visible:outline-yellow" /> : null}
       </div>
       <div className="p-3">
-        <span className="block text-[10px] font-black uppercase tracking-[0.12em] text-green">
-          {permanent ? card.producerName || "Héritage permanent" : "La Botte · consommable"}
+        <span className="block text-[10px] font-black uppercase tracking-[0.12em] text-green" style={role ? { background: role.color, color: "#103b2e", padding: "5px 7px" } : undefined}>
+          {permanent ? card.producerName || "Héritage permanent" : role?.label ?? "La Botte · consommable"}
         </span>
         <h3 className="mt-1 font-display text-lg uppercase leading-none text-ink">{card.name}</h3>
+        {!permanent && card.rarity ? <small className="mt-2 block text-xs font-bold text-green">{RARITY_LABELS[card.rarity] ?? card.rarity}{support ? ` · ${support.xpCost} XP` : ""}</small> : null}
         <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-charcoal">{card.description}</p>
         <strong className="mt-3 block text-xs text-ink">
           {discovered ? `Dans ton album · ×${copies}` : "À découvrir"}
@@ -146,6 +154,7 @@ function HeritageCraftModal({
 }
 
 export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boolean }) {
+  const [selectedCard, setSelectedCard] = useState<KqSupportCard | null>(null);
   const [snapshot, setSnapshot] = useState<BotteSnapshot | null>(null);
   const [loading, setLoading] = useState(isAuthenticated);
   const [error, setError] = useState<string | null>(null);
@@ -271,10 +280,11 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
           <p className="text-xs font-black uppercase tracking-[0.14em] text-green">{KQ_CARDS.length} cartes à collectionner</p>
           <h2 className="font-display text-2xl uppercase text-ink">Cartes La Botte</h2>
           <p className="text-sm text-charcoal">Auxiliaires, équipements et savoir-faire pour tes cultures sur sol vivant.</p>
+          <p className="mt-1 text-xs text-charcoal">Clique sur une carte pour l’agrandir et lire ses détails.</p>
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {KQ_CARDS.map((card) => (
-            <CollectionCard key={card.code} card={card} copies={supportCopies.get(card.code) ?? 0} permanent={false} />
+            <CollectionCard key={card.code} card={card} copies={supportCopies.get(card.code) ?? 0} permanent={false} onInspect={() => setSelectedCard(card)} />
           ))}
         </div>
       </section>
@@ -299,6 +309,7 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
         Jouer au Placard
       </Link>
       {craftOpen ? <HeritageCraftModal cards={craftableHeritages} fragmentBalance={fragmentBalance} craftingCode={craftingCode} notice={craftNotice} onCraft={(card) => void craftHeritage(card)} onClose={() => { if (!craftingCode) setCraftOpen(false); }} /> : null}
+      {selectedCard ? <KqBotteCardDetail card={selectedCard} copies={snapshot?.collection ? supportCopies.get(selectedCard.code) ?? 0 : null} onClose={() => setSelectedCard(null)} /> : null}
     </div>
   );
 }

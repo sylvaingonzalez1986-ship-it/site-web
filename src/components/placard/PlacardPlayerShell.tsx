@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "@/components/navigation/NavigationLink";
-import { ArrowLeft, Hourglass } from "lucide-react";
+import { ArrowLeft, BookOpen, Hourglass } from "lucide-react";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { KqPlacardLobby } from "./KqPlacardLobby";
 import { useGameViewport } from "@/hooks/useGameViewport";
@@ -37,6 +37,7 @@ const KqMissionCenter = dynamic(
   () => import("./KqMissionCenter").then((module) => module.KqMissionCenter),
   { loading: PlacardViewLoading },
 );
+const KqBotteCollection = dynamic(() => import("./KqBotteCollection").then((module) => module.KqBotteCollection), { ssr: false });
 
 type PlacardView = "hub" | "shop" | "game" | "arena" | "market" | "missions";
 type PlacardDeepLink = PlacardView | "shop-equipment";
@@ -75,6 +76,7 @@ export function PlacardPlayerShell() {
     () => "hub",
   );
   const [selectedView, setSelectedView] = useState<PlacardView | null>(null);
+  const [collectionOpen, setCollectionOpen] = useState(false);
   const [pendingView, setPendingView] = useState<PlacardView | null>(null);
   const [equipmentCatalogRequested, setEquipmentCatalogRequested] = useState(false);
   const [requestedEquipmentCode, setRequestedEquipmentCode] = useState<string | null>(null);
@@ -135,6 +137,7 @@ export function PlacardPlayerShell() {
 
     return (
       <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
+        {collectionOpen ? <KqBotteCollection onClose={() => setCollectionOpen(false)} /> : null}
         {navigationFeedback}
         <nav className={`${retro.shellNav} sticky top-0 z-[80] border-b-2 border-ink bg-cream/95 px-3 py-3 backdrop-blur sm:px-5`} aria-label="Navigation du Placard">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
@@ -148,6 +151,7 @@ export function PlacardPlayerShell() {
               <span className="sm:hidden">Placard</span>
             </button>
             <p className="truncate font-display text-xl uppercase sm:text-2xl">{currentTitle}</p>
+            <button type="button" onClick={() => setCollectionOpen(true)} aria-haspopup="dialog" aria-label="Ouvrir ma collection La Botte" className="inline-flex min-h-11 shrink-0 items-center gap-2 border-2 border-ink bg-yellow px-3 text-xs font-black text-ink shadow-[3px_3px_0_#111]"><BookOpen size={18} aria-hidden="true" /><span>Collection</span></button>
             <Link
               href="/arene"
               className="hidden min-h-11 items-center border-2 border-ink bg-white px-3 font-black uppercase shadow-[3px_3px_0_#111] transition hover:-translate-y-0.5 sm:inline-flex"
@@ -160,6 +164,7 @@ export function PlacardPlayerShell() {
         {view === "shop" ? (
           <KqSupportBoosterShop
             autoOpen
+            onOpenCollection={() => setCollectionOpen(true)}
             autoOpenEquipment={autoOpenEquipmentCatalog}
             initialEquipmentCode={requestedEquipmentCode}
             onExit={() => {
@@ -186,8 +191,9 @@ export function PlacardPlayerShell() {
 
   return (
     <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
+      {collectionOpen ? <KqBotteCollection onClose={() => setCollectionOpen(false)} /> : null}
       {navigationFeedback}
-      <KqPlacardLobby onOpen={openView} onOpenEquipment={openEquipmentCatalog} />
+      <KqPlacardLobby onOpen={openView} onOpenEquipment={openEquipmentCatalog} onOpenCollection={() => setCollectionOpen(true)} />
     </div>
   );
 }

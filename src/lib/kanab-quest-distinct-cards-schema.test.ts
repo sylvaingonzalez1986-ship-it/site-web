@@ -9,8 +9,8 @@ const migration = readFileSync(
 );
 
 describe("Kanab Quest cultivation systems migration", () => {
-  it("keeps the four systems and three organic amendments aligned with the historical catalogue", () => {
-    ["BOTTE-001", "BOTTE-007", "BOTTE-008", "BOTTE-009", "BOTTE-019", "BOTTE-020", "BOTTE-021"].forEach((code) => {
+  it("keeps the four retired systems aligned with the historical catalogue", () => {
+    ["BOTTE-001", "BOTTE-007", "BOTTE-008", "BOTTE-009"].forEach((code) => {
       const card = [...KQ_CARDS, ...KQ_RETIRED_CARDS].find((candidate) => candidate.code === code);
       expect(card).toBeDefined();
       expect(migration).toContain(`'${card?.code}'`);

@@ -11,18 +11,18 @@ export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
   "BOTTE-010": "/app/kanab-quest/cards/botte-010-coccinelle-sept-points-v1.webp",
   "BOTTE-011": "/app/kanab-quest/cards/botte-011-amblyseius-swirskii-v1.webp",
   "BOTTE-012": "/app/kanab-quest/cards/botte-012-aphidius-colemani-v1.webp",
-  "BOTTE-013": "/app/kanab-quest/cards/botte-013-pot-tissu-v1.webp",
+  "BOTTE-013": "/app/kanab-quest/cards/botte-013-voile-ombrage-v1.webp",
   "BOTTE-014": "/app/kanab-quest/cards/botte-014-hygrometre-vintage-v1.webp",
   "BOTTE-015": "/app/kanab-quest/cards/botte-015-palissage-doux-v1.webp",
   "BOTTE-016": "/app/kanab-quest/cards/botte-016-sechage-patient-v1.webp",
   "BOTTE-017": "/app/kanab-quest/cards/botte-017-main-verte-v1.webp",
-  "BOTTE-018": "/app/kanab-quest/cards/botte-018-testeur-ph-ec-v2.webp",
-  "BOTTE-019": "/app/kanab-quest/cards/botte-019-perlite-horticole-v1.webp",
-  "BOTTE-020": "/app/kanab-quest/cards/botte-020-biochar-v1.webp",
-  "BOTTE-021": "/app/kanab-quest/cards/botte-021-engrais-bio-complet-v2.webp",
+  "BOTTE-018": "/app/kanab-quest/cards/botte-018-thermometre-infrarouge-v1.webp",
+  "BOTTE-019": "/app/kanab-quest/cards/botte-019-minuteur-recale-v1.webp",
+  "BOTTE-020": "/app/kanab-quest/cards/botte-020-nettoyage-placard-v1.webp",
+  "BOTTE-021": "/app/kanab-quest/cards/botte-021-diagnostic-croise-v1.webp",
   "BOTTE-022": "/app/kanab-quest/cards/botte-022-phytoseiulus-persimilis-v1.webp",
   "BOTTE-023": "/app/kanab-quest/cards/botte-023-orius-laevigatus-v1.webp",
-  "BOTTE-024": "/app/kanab-quest/cards/botte-024-tensiometre-v1.webp",
+  "BOTTE-024": "/app/kanab-quest/cards/botte-024-reserve-eau-secours-v1.webp",
   "BOTTE-025": "/app/kanab-quest/cards/botte-025-plaque-engluee-suivi-v2.webp",
   "BOTTE-026": "/app/kanab-quest/cards/botte-026-extracteur-bien-regle-v2.webp",
   "BOTTE-027": "/app/kanab-quest/cards/botte-027-papiers-en-regle-v3.webp",
@@ -56,7 +56,7 @@ const KQ_CARD_FRONT_VERSION_OVERRIDES: Readonly<Record<string, number>> = {
 
 export const KQ_CARD_ARTWORK: Readonly<Record<string, string>> = Object.fromEntries(
   Object.entries(KQ_CARD_ILLUSTRATIONS).map(([code, source]) => {
-    const override = KQ_CARD_FRONT_VERSION_OVERRIDES[code];
+    const override = code.startsWith("BOTTE-") && !["BOTTE-001", "BOTTE-007", "BOTTE-008", "BOTTE-009"].includes(code) ? 5 : KQ_CARD_FRONT_VERSION_OVERRIDES[code];
     const frontSuffix = override
       ? `-front-v${override}.webp`
       : code.startsWith("HERITAGE-")

@@ -7,6 +7,7 @@ import {
   Check,
   ExternalLink,
   Lightbulb,
+  Laptop,
   Package,
   Search,
   Settings,
@@ -18,7 +19,7 @@ import {
   Zap,
 } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getKqEquipmentArtwork } from "@/lib/kanab-quest-equipment-artwork";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import {
@@ -157,16 +158,29 @@ export function KqEquipmentCatalogModal({
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<KqEquipmentCategory | "all" | "owned">("all");
+  const [category, setCategory] = useState<KqEquipmentCategory | "all" | "owned" | "commerce">("all");
   const [compatibleOnly, setCompatibleOnly] = useState(false);
   const [affordableOnly, setAffordableOnly] = useState(false);
   const [sortMode, setSortMode] = useState<KqEquipmentCatalogSort>("progression");
   const [cartCodes, setCartCodes] = useState<string[]>([]);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedCode, setSelectedCode] = useState<string | null>(recommendedEquipmentCode);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [purchaseResult, setPurchaseResult] = useState<PurchaseResult | null>(null);
   const [routePlan, setRoutePlan] = useState<EquipmentRoutePlan | null>(null);
+  const catalogRef = useRef<HTMLElement>(null);
+  const activeLayer = purchaseResult ? styles.purchaseOverlay : checkoutOpen ? styles.checkoutOverlay : selectedCode ? styles.detailPanel : cartOpen ? styles.cartPanel : null;
+
+  useEffect(() => {
+    const previous = document.activeElement as HTMLElement | null;
+    return () => { requestAnimationFrame(() => { if (previous?.isConnected && !previous.closest('[inert]')) previous.focus({ preventScroll: true }); }); };
+  }, []);
+
+  useEffect(() => {
+    const scope = activeLayer ? catalogRef.current?.querySelector(`.${activeLayer}`) : catalogRef.current;
+    scope?.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus({ preventScroll: true });
+  }, [activeLayer]);
 
   const refresh = useCallback(async () => {
     const response = await fetch("/api/arena/placard/equipment", { cache: "no-store" });
@@ -396,12 +410,30 @@ export function KqEquipmentCatalogModal({
   };
 
   return (
-    <section className={styles.catalog} role="dialog" aria-modal="true" aria-labelledby="equipment-catalog-title">
+    <section ref={catalogRef} className={styles.catalog} role="dialog" aria-modal="true" aria-labelledby="equipment-catalog-title" onKeyDown={(event) => {
+      if (event.key === "Tab") {
+        event.stopPropagation();
+        const scope = activeLayer ? event.currentTarget.querySelector(`.${activeLayer}`) : event.currentTarget;
+        const controls = Array.from(scope?.querySelectorAll<HTMLElement>('button:not(:disabled), input, select, a[href], [tabindex="0"]') ?? []).filter((node) => !node.closest('[inert]') && node.getClientRects().length > 0);
+        const first = controls[0], last = controls.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+        return;
+      }
+      if (event.key !== "Escape") return;
+      event.stopPropagation();
+      if (purchaseResult) setPurchaseResult(null);
+      else if (checkoutOpen) setCheckoutOpen(false);
+      else if (selectedCode) setSelectedCode(null);
+      else if (cartOpen) setCartOpen(false);
+      else onClose();
+    }}>
+      <Image src="/placard/equipment-showroom-v1.webp" alt="" fill sizes="100vw" className={styles.showroomBackdrop} />
       <header className={styles.catalogHeader}>
-        <button type="button" onClick={onClose} className={styles.backButton}><ArrowLeft aria-hidden="true" />Boutique</button>
+        <button type="button" onClick={onClose} className={styles.backButton} aria-label="Retour à la boutique"><ArrowLeft aria-hidden="true" />Boutique</button>
         <div className={styles.catalogBrand}>
-          <small>La Botte · investissements durables</small>
-          <h2 id="equipment-catalog-title">Catalogue matériel</h2>
+          <small>La Botte · Le fond de la boutique</small>
+          <h2 id="equipment-catalog-title">Le rayon matériel</h2>
         </div>
         <div className={styles.accountSummary}>
           <span><small>Trésorerie</small><strong>{formatKqCash(snapshot?.cashCents ?? 0)}</strong></span>
@@ -412,7 +444,8 @@ export function KqEquipmentCatalogModal({
         </div>
       </header>
 
-      <div className={styles.toolbar}>
+      <button type="button" className={styles.filterToggle} aria-expanded={filtersOpen} aria-controls="equipment-filters" onClick={() => setFiltersOpen(!filtersOpen)}><Search size={16} />{filtersOpen ? "Ranger les filtres" : "Chercher et filtrer"}</button>
+      <div id="equipment-filters" className={styles.toolbar} hidden={!filtersOpen}>
         <label><Search aria-hidden="true" /><span className="sr-only">Rechercher</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher une tente, une LED, une presse…" /></label>
         <label className={styles.compatibilityToggle}><input type="checkbox" checked={compatibleOnly} onChange={(event) => setCompatibleOnly(event.target.checked)} /><span>Compatible seulement</span></label>
         <label className={`${styles.compatibilityToggle} ${styles.budgetToggle}`}><input type="checkbox" checked={affordableOnly} onChange={(event) => setAffordableOnly(event.target.checked)} /><span>Achetable maintenant</span></label>
@@ -430,6 +463,7 @@ export function KqEquipmentCatalogModal({
             return <button key={item} type="button" data-active={category === item || undefined} onClick={() => setCategory(item)}><Icon aria-hidden="true" /><span>{KQ_EQUIPMENT_CATEGORY_LABELS[item]}</span></button>;
           })}
           <button type="button" data-active={category === "owned" || undefined} onClick={() => setCategory("owned")}><Check aria-hidden="true" /><span>Déjà possédés</span></button>
+          <button type="button" data-active={category === "commerce" || undefined} onClick={() => setCategory("commerce")}><Laptop aria-hidden="true" /><span>Vente en ligne</span></button>
           <div className={styles.loadoutSummary}>
             <small>Installation active</small>
             <strong>{currentLoadout.powerWatts} W</strong>
@@ -439,14 +473,15 @@ export function KqEquipmentCatalogModal({
         </nav>
 
         <main className={styles.productArea}>
-          {(category === "all" || category === "owned") && (!query || "ordinateur internet commerce vente en ligne".includes(query.trim().toLocaleLowerCase("fr-FR"))) ? <KqCommerceComputer /> : null}
           <div className={styles.productAreaHeader}>
-            <div><small>{filteredCatalog.length} référence{filteredCatalog.length > 1 ? "s" : ""}</small><strong>{category === "all" ? "Tout le catalogue" : category === "owned" ? "Ton matériel" : KQ_EQUIPMENT_CATEGORY_LABELS[category]}</strong></div>
-            <span>Prix publics US vérifiés · hors livraison et taxes locales</span>
+            <div><small>{category === "commerce" ? "Ordinateur et abonnement" : `${filteredCatalog.length} référence${filteredCatalog.length > 1 ? "s" : ""}`}</small><strong>{category === "all" ? "Tout le matériel" : category === "owned" ? "Ton matériel" : category === "commerce" ? "Le coin du commerce" : KQ_EQUIPMENT_CATEGORY_LABELS[category]}</strong></div>
+            <span>Choisis une machine · découvre ses avantages · passe à la caisse</span>
           </div>
 
+          {category === "commerce" ? <KqCommerceComputer /> : null}
+
           {pending === "load" ? <div className={styles.loadingState}>Sylvain ouvre les cartons…</div> : null}
-          {pending !== "load" && filteredCatalog.length === 0 ? <div className={styles.emptyState}>Aucun équipement ne correspond à ces filtres.</div> : null}
+          {pending !== "load" && category !== "commerce" && filteredCatalog.length === 0 ? <div className={styles.emptyState}>Aucun équipement ne correspond à ces filtres.</div> : null}
           <div className={styles.productGrid}>
             {filteredCatalog.map((equipment) => {
               const owned = snapshot?.ownedCodes.includes(equipment.code) ?? false;
@@ -491,8 +526,8 @@ export function KqEquipmentCatalogModal({
           </div>
         </main>
 
-        <aside className={styles.cartPanel} data-open={cartOpen || undefined} aria-label="Panier matériel">
-          <header><div><small>Commande en préparation</small><h3>Ton panier</h3></div><button type="button" onClick={() => setCartOpen(false)} aria-label="Fermer le panier"><X /></button></header>
+        <aside className={styles.cartPanel} inert={!cartOpen} data-open={cartOpen || undefined} aria-label="Panier matériel">
+          <header><div><small>Commande en préparation</small><h3>À la caisse</h3></div><button type="button" onClick={() => setCartOpen(false)} aria-label="Fermer le panier"><X /></button></header>
           {plannedRouteScenario && plannedRouteProgress ? <section className={styles.cartRoutePlan} aria-label="Objectif de filière du panier">
             <header><span><small>Projet d’atelier sauvegardé</small><strong>{plannedRouteScenario.name}</strong></span><button type="button" onClick={() => void updateRoutePlan(null)} aria-label="Retirer l’objectif de filière"><X aria-hidden="true" /></button></header>
             <p>{plannedRouteScenario.projectedEquipmentNames.join(" · ")}</p>

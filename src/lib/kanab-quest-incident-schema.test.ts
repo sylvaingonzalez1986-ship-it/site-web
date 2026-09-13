@@ -8,7 +8,7 @@ const migration = readFileSync(
   "utf8",
 );
 
-const electricityMigration = readFileSync(join(process.cwd(), "supabase/migrations/20260911000300_kq_cycle_electricity.sql"), "utf8");
+const indoorMigration = readFileSync(join(process.cwd(), "supabase/migrations/20260913000600_kq_indoor_deck_redesign.sql"), "utf8");
 
 const incidentCardCodes = ["BOTTE-027", "BOTTE-028", "BOTTE-031", "BOTTE-034"];
 
@@ -26,7 +26,7 @@ describe("Kanab Quest incident support card migration", () => {
       expect(migration).toContain(`'${card?.code}'`);
       expect(migration).toContain(`'${card?.name.replaceAll("'", "''")}'`);
       expect(migration).toContain(`'${card?.effect}'`);
-      expect(migration + electricityMigration).toContain(card?.description.replaceAll("'", "''"));
+      expect(indoorMigration).toContain(card?.description);
     });
   });
 

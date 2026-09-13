@@ -31,10 +31,10 @@ describe("Kanab Quest card artwork", () => {
     expect(KQ_CARD_ILLUSTRATIONS["BOTTE-006"]).toContain("deuxieme-chance-v2.webp");
     expect(KQ_CARD_ILLUSTRATIONS["BOTTE-007"]).toContain("hydroponie-recirculante-v2.webp");
     expect(KQ_CARD_ILLUSTRATIONS["BOTTE-008"]).toContain("aeroponie-haute-pression-v2.webp");
-    expect(KQ_CARD_ILLUSTRATIONS["BOTTE-021"]).toContain("engrais-bio-complet-v2.webp");
+    expect(KQ_CARD_ILLUSTRATIONS["BOTTE-021"]).toContain("diagnostic-croise-v1.webp");
     expect(KQ_CARD_ARTWORK["BOTTE-007"]).toContain("hydroponie-recirculante-front-v2.webp");
     expect(KQ_CARD_ARTWORK["BOTTE-008"]).toContain("aeroponie-haute-pression-front-v2.webp");
-    expect(KQ_CARD_ARTWORK["BOTTE-021"]).toContain("engrais-bio-complet-front-v2.webp");
+    expect(KQ_CARD_ARTWORK["BOTTE-021"]).toContain("diagnostic-croise-front-v5.webp");
     expect(KQ_CARD_ILLUSTRATIONS["HERITAGE-011"]).toContain("canopy-legacy-v2.webp");
     expect(KQ_CARD_ILLUSTRATIONS["HERITAGE-012"]).toContain("signature-maitre-v2.webp");
     expect(KQ_CARD_ARTWORK["HERITAGE-011"]).toContain("front-v4.webp");

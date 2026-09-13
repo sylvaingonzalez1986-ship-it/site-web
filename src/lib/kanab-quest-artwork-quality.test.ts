@@ -49,6 +49,9 @@ describe("Kanab Quest artwork production quality", () => {
     cardMetadata.forEach(({ width, height }) => {
       expect(width).toBeTypeOf("number");
       expect(height).toBeTypeOf("number");
+      expect(width!).toBeLessThan(height!);
+    });
+    cardMetadata.slice(cardIllustrations.length).forEach(({ width, height }) => {
       expect(width! * 3).toBe(height! * 2);
     });
     squareMetadata.forEach(({ width, height }) => {

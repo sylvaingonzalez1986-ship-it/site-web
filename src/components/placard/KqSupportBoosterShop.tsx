@@ -3,8 +3,8 @@
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 import Image from "next/image";
-import { Flame, PackageOpen, Wrench, X } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { BookOpen, Flame, PackageOpen, X } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import { openKqSupportBooster } from "@/lib/kanab-quest-booster";
 import { createClientRequestKey } from "@/lib/client-request-key";
@@ -34,12 +34,16 @@ export function KqSupportBoosterShop({
   autoOpenEquipment = false,
   initialEquipmentCode = null,
   onExit,
+  onOpenCollection,
 }: {
   autoOpen?: boolean;
   autoOpenEquipment?: boolean;
   initialEquipmentCode?: string | null;
   onExit?: () => void;
+  onOpenCollection?: () => void;
 } = {}) {
+  const dialogRef = useRef<HTMLElement>(null);
+  const actionLock = useRef(false);
   const [shop, setShop] = useState<ShopPayload | null>(null);
   const [openedCards, setOpenedCards] = useState<OpenedCard[]>([]);
   const [pending, setPending] = useState<"load" | "claim" | "buy" | "open" | null>("load");
@@ -73,6 +77,20 @@ export function KqSupportBoosterShop({
     };
   }, [closeShop, equipmentCatalogOpen, openedCards.length, shopOpen]);
 
+  useEffect(() => {
+    if (!shopOpen) return;
+    const previous = document.activeElement as HTMLElement | null;
+    dialogRef.current?.focus();
+    return () => previous?.focus();
+  }, [shopOpen]);
+
+  useEffect(() => {
+    if (!openedCards.length) return;
+    const previous = document.activeElement as HTMLElement | null;
+    dialogRef.current?.querySelector<HTMLButtonElement>('[aria-label="Fermer le pack ouvert"]')?.focus();
+    return () => { requestAnimationFrame(() => previous?.focus()); };
+  }, [openedCards.length]);
+
   const refresh = useCallback(async () => {
     const response = await fetch("/api/arena/placard/boosters", { cache: "no-store" });
     const payload = await response.json() as ShopPayload & { error?: string };
@@ -82,7 +100,7 @@ export function KqSupportBoosterShop({
 
   useEffect(() => {
     setLocalPreview(["localhost", "127.0.0.1"].includes(window.location.hostname));
-    const handleBoosterUpdate = () => void refresh();
+    const handleBoosterUpdate = () => void refresh().catch(() => setNotice("Impossible d’actualiser les packs. Réessaie dans un instant."));
     window.addEventListener("kq:boosters-updated", handleBoosterUpdate);
     refresh()
       .catch((error: unknown) => setNotice(error instanceof Error ? error.message : "Boutique indisponible."))
@@ -91,6 +109,8 @@ export function KqSupportBoosterShop({
   }, [refresh]);
 
   const purchase = async () => {
+    if (actionLock.current) return;
+    actionLock.current = true;
     setPending("buy");
     setNotice("");
     try {
@@ -106,11 +126,14 @@ export function KqSupportBoosterShop({
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Achat impossible.");
     } finally {
+      actionLock.current = false;
       setPending(null);
     }
   };
 
   const claimWelcome = async () => {
+    if (actionLock.current) return;
+    actionLock.current = true;
     setPending("claim");
     setNotice("");
     try {
@@ -122,6 +145,7 @@ export function KqSupportBoosterShop({
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Réclamation impossible.");
     } finally {
+      actionLock.current = false;
       setPending(null);
     }
   };
@@ -135,7 +159,8 @@ export function KqSupportBoosterShop({
   }, [shop, welcomeChecked]);
 
   const openEntitlement = async (entitlement?: ShopEntitlement) => {
-    if (!entitlement) return;
+    if (!entitlement || actionLock.current) return;
+    actionLock.current = true;
     setPending("open");
     setNotice("");
     try {
@@ -153,6 +178,7 @@ export function KqSupportBoosterShop({
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Ouverture impossible.");
     } finally {
+      actionLock.current = false;
       setPending(null);
     }
   };
@@ -182,23 +208,40 @@ export function KqSupportBoosterShop({
         </span>
       </button>
 
-      {shopOpen ? <div className="fixed inset-0 z-[150] flex items-center justify-center overflow-hidden bg-[#10201b] p-0 backdrop-blur-sm sm:p-4" role="presentation" onClick={closeShop}><section role="dialog" aria-modal="true" aria-labelledby="kq-shop-title" onClick={(event) => event.stopPropagation()} className="relative h-[100dvh] w-full max-w-6xl overflow-hidden border-0 border-ink bg-[#f6f0e6] shadow-[9px_9px_0_#f4c43d] sm:aspect-[3/2] sm:h-auto sm:max-h-[calc(100vh-2rem)] sm:border-2">
-        <Image src="/placard/booster-shop-interior-v4.webp" alt="Sylvain derrière le comptoir de la boutique La Botte, entouré de cartes Kanab Quest" fill priority sizes="(max-width: 768px) 100vw, 1152px" className={`${styles.interior} object-cover object-center sm:object-cover`} />
-        <h2 id="kq-shop-title" className="sr-only">Boutique Booster La Botte</h2>
-        <button type="button" aria-label="Quitter la boutique" onClick={closeShop} className="absolute right-2 top-2 z-40 grid h-10 w-10 place-items-center border-2 border-ink bg-white shadow-[3px_3px_0_#1a1a1a] sm:right-3 sm:top-3 sm:h-12 sm:w-12"><X /></button>
-        <div className="absolute left-2 top-2 z-20 border-2 border-ink bg-yellow px-2 py-1 text-center shadow-[3px_3px_0_#1a1a1a] sm:left-3 sm:top-3 sm:px-4 sm:py-2"><b className="block text-lg sm:text-2xl">{shop?.spendablePoints ?? 0}</b><small className="text-[9px] font-black uppercase sm:text-xs">Tes points</small></div>
-        <div className="absolute inset-0 z-20 sm:contents">
-          <button type="button" title={nextDuelReward ? `Récupérer un pack de duel parmi ${duelRewards.length}` : "Aucun gain de duel à récupérer"} aria-label={nextDuelReward ? `Récupérer un pack de trois cartes gagné en duel, ${duelRewards.length} en attente` : "Aucun gain de duel à récupérer"} disabled={!shop?.collectionActive || pending !== null || !nextDuelReward} onClick={() => void openEntitlement(nextDuelReward)} className={`${styles.item} ${styles.itemDuelRewards} group absolute aspect-square border-0 bg-transparent p-0 drop-shadow-[0_8px_5px_rgba(0,0,0,.55)] transition-all duration-200 active:-translate-y-2 focus-visible:rounded-full focus-visible:outline-4 focus-visible:outline-yellow disabled:grayscale disabled:opacity-55 sm:bottom-[23%] sm:left-[15%] sm:w-[19%] sm:hover:-translate-y-2`}><Image src="/placard/shop-item-duel-rewards-v1.webp" alt="" fill sizes="(max-width: 640px) 138px, 215px" className="object-contain" />{duelRewards.length > 0 ? <span className={styles.itemBadge}>{duelRewards.length}</span> : null}</button>
-          <button type="button" title={nextShopPack ? `Ouvrir un pack parmi ${shopPacks.length}` : "Aucun pack disponible"} aria-label={nextShopPack ? `Ouvrir un pack, ${shopPacks.length} disponible(s)` : "Aucun pack disponible"} disabled={!shop?.collectionActive || pending !== null || !nextShopPack} onClick={() => void openEntitlement(nextShopPack)} className={`${styles.item} ${styles.itemPacks} group absolute aspect-square border-0 bg-transparent p-0 drop-shadow-[0_8px_5px_rgba(0,0,0,.55)] transition-all duration-200 active:-translate-y-2 focus-visible:rounded-full focus-visible:outline-4 focus-visible:outline-yellow disabled:grayscale disabled:opacity-55 sm:bottom-[22%] sm:left-1/2 sm:w-[20%] sm:-translate-x-1/2 sm:hover:-translate-x-1/2 sm:hover:-translate-y-2`}><Image src="/placard/shop-item-packs-v2.webp" alt="" fill sizes="(max-width: 640px) 142px, 220px" className="object-contain" /></button>
-          <button type="button" title={`Acheter un booster pour ${shop?.costPerPack ?? 5} points`} aria-label={`Acheter un booster pour ${shop?.costPerPack ?? 5} points`} disabled={!shop?.collectionActive || pending !== null || (shop?.spendablePoints ?? 0) < (shop?.costPerPack ?? 5)} onClick={() => void purchase()} className={`${styles.item} ${styles.itemRegister} group absolute aspect-square border-0 bg-transparent p-0 drop-shadow-[0_8px_5px_rgba(0,0,0,.55)] transition-all duration-200 active:-translate-y-2 focus-visible:rounded-full focus-visible:outline-4 focus-visible:outline-yellow disabled:grayscale disabled:opacity-55 sm:bottom-[23%] sm:right-[15%] sm:w-[18%] sm:hover:-translate-y-2`}><Image src="/placard/shop-item-register-v2.webp" alt="" fill sizes="(max-width: 640px) 128px, 200px" className="object-contain" /></button>
+      {shopOpen ? <div className={styles.backdrop} role="presentation" onClick={closeShop}>
+        <section ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="kq-shop-title" className={styles.shopDialog} data-equipment-open={equipmentCatalogOpen || undefined} onClick={(event) => event.stopPropagation()} onKeyDown={(event) => {
+          if (event.key !== "Tab") return;
+          const buttons = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), input, select, [tabindex="0"]')).filter((node) => !node.closest('[inert]') && node.getClientRects().length > 0);
+          const first = buttons[0], last = buttons.at(-1);
+          if (event.shiftKey && (document.activeElement === first || document.activeElement === event.currentTarget)) { event.preventDefault(); last?.focus(); }
+          else if (!event.shiftKey && (document.activeElement === last || document.activeElement === event.currentTarget)) { event.preventDefault(); first?.focus(); }
+        }}>
+        <div className={styles.scene} inert={openedCards.length > 0 || equipmentCatalogOpen}>
+          <picture>
+            <source media="(max-width: 639px) and (orientation: portrait)" srcSet="/placard/booster-shop-counter-mobile-v1.webp" />
+            <Image src="/placard/booster-shop-counter-v5.webp" alt="Sylvain au comptoir, avec les récompenses de duel, les boîtes de packs, la caisse et le livre du matériel." fill unoptimized priority sizes="(max-width: 768px) 100vw, 1152px" className={styles.interior} />
+          </picture>
+          <h2 id="kq-shop-title" className="sr-only">La Botte · Boutique de l’Arène</h2>
+          <button type="button" aria-label="Quitter la boutique" onClick={closeShop} className={styles.exit}><X aria-hidden="true" /></button>
+          {onOpenCollection ? <button type="button" className={styles.collectionButton} onClick={onOpenCollection} aria-haspopup="dialog"><BookOpen size={17} aria-hidden="true" /><span>Ma collection</span></button> : null}
+          <div className={styles.wallet}><small>Ta cagnotte</small><b>{shop ? shop.spendablePoints.toLocaleString("fr-FR") : "…"}<span> points</span></b></div>
+          <p className={styles.shopHint}>Touche un objet pour découvrir le rayon.</p>
+          <button type="button" className={`${styles.hotspot} ${styles.duels}`} aria-label={nextDuelReward ? `Ouvrir un pack de duel, ${duelRewards.length} en attente` : "Aucun gain de duel à récupérer"} disabled={!shop?.collectionActive || pending !== null || !nextDuelReward} onClick={() => void openEntitlement(nextDuelReward)}>
+            <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>Gains de duel</strong><small>{duelRewards.length ? `${duelRewards.length} pack${duelRewards.length > 1 ? "s" : ""} à ouvrir` : "Gagne un duel"}</small></span>
+          </button>
+          <button type="button" className={`${styles.hotspot} ${styles.packs}`} aria-label={nextShopPack ? `Ouvrir un pack, ${shopPacks.length} disponible(s)` : "Aucun pack disponible"} disabled={!shop?.collectionActive || pending !== null || !nextShopPack} onClick={() => void openEntitlement(nextShopPack)}>
+            <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>Mes packs</strong><small>{pending === "open" ? "Ouverture…" : shopPacks.length ? `${shopPacks.length} à ouvrir · ${nextShopPack?.cardCount} cartes` : "Passe à la caisse"}</small></span>
+          </button>
+          <button type="button" className={`${styles.hotspot} ${styles.register}`} aria-label={`Acheter un booster pour ${shop?.costPerPack ?? 5} points`} disabled={!shop?.collectionActive || pending !== null || (shop?.spendablePoints ?? 0) < (shop?.costPerPack ?? 5)} onClick={() => void purchase()}>
+            <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>{pending === "buy" ? "Achat…" : "Acheter un pack"}</strong><small>{shop?.costPerPack ?? 5} points{shop && shop.spendablePoints < shop.costPerPack ? " · solde insuffisant" : " · 10 cartes"}</small></span>
+          </button>
+          <button type="button" className={`${styles.hotspot} ${styles.catalogBook}`} onClick={() => setEquipmentCatalogOpen(true)} aria-label="Ouvrir le rayon matériel" aria-haspopup="dialog">
+            <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>Le matériel</strong><small>Machines & installation →</small></span>
+          </button>
+          {!shop?.collectionActive && localPreview ? <button type="button" onClick={openPreview} className={styles.preview}><PackageOpen size={16} />Test local</button> : null}
+          {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
+          {!shop?.collectionActive && pending !== "load" && !notice ? <p className={styles.notice}><Flame size={16} />La vente de packs est momentanément fermée. Le matériel reste consultable.</p> : null}
         </div>
-        <button type="button" className={styles.catalogDeskButton} onClick={() => setEquipmentCatalogOpen(true)} aria-haspopup="dialog">
-          <span><Wrench aria-hidden="true" /><small>Nouveau rayon</small><strong>Catalogue matériel</strong></span>
-          <b>Tentes · LED · Climat · Transformation <i aria-hidden="true">→</i></b>
-        </button>
-        {!shop?.collectionActive && localPreview ? <button type="button" onClick={openPreview} className="absolute left-3 top-24 z-20 border-2 border-ink bg-white px-3 py-2 text-xs font-black uppercase"><PackageOpen className="mr-1 inline w-4" />Test local</button> : null}
-        {notice ? <p className="absolute left-1/2 top-20 z-20 w-[min(90%,520px)] -translate-x-1/2 border-2 border-ink bg-white/95 px-4 py-3 text-center text-sm font-bold shadow-[3px_3px_0_#1a1a1a]" role="status">{notice}</p> : null}
-        {!shop?.collectionActive ? <p className="absolute bottom-24 left-1/2 z-10 -translate-x-1/2 text-sm font-bold text-white"><Flame className="mr-1 inline w-4" />Boutique fermée pendant les tests.</p> : null}
         {openedCards.length > 0 ? <div className="absolute inset-0 z-50 flex flex-col bg-[#081a14]/95 p-3 backdrop-blur-sm sm:p-6"><button type="button" aria-label="Fermer le pack ouvert" onClick={() => setOpenedCards([])} className="absolute right-3 top-3 z-10 grid h-11 w-11 place-items-center border-2 border-ink bg-white shadow-[3px_3px_0_#f4c43d]"><X /></button><header className="shrink-0 pr-14 text-center text-white"><small className="font-black uppercase tracking-[.14em] text-yellow">Pack débloqué</small><h3 className="font-display text-3xl uppercase sm:text-5xl">Tes nouvelles cartes</h3></header><div className="my-3 flex min-h-0 flex-1 items-center gap-2 overflow-x-auto px-1 pb-2 sm:gap-3">{openedCards.map((card, index) => { const src = getKqCardArtwork(card.code) ?? card.imageUrl; return <article key={`${card.code}-${index}`} className="w-28 shrink-0 border-2 border-[#d5a72d] bg-white p-1 shadow-[3px_3px_0_#d5a72d] sm:w-40">{src ? <div className="relative aspect-[2/3] overflow-hidden"><Image src={src} alt={card.name} fill sizes="160px" className="object-cover" /></div> : null}<small className="mt-1 block text-[9px] font-black uppercase text-green sm:text-xs">{card.rarity}</small><strong className="block text-[10px] sm:text-sm">{card.name}</strong></article>; })}</div><button type="button" onClick={() => { setOpenedCards([]); setNotice(""); }} className="mx-auto min-h-12 shrink-0 border-2 border-ink bg-yellow px-6 font-black uppercase shadow-[4px_4px_0_#fff]">Retour à la boutique</button></div> : null}
         {equipmentCatalogOpen ? <KqEquipmentCatalogModal initialEquipmentCode={initialEquipmentCode} onClose={() => setEquipmentCatalogOpen(false)} /> : null}
       </section></div> : null}

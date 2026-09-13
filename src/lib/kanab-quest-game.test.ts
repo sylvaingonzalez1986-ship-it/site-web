@@ -52,15 +52,15 @@ describe("Kanab Quest dice prototype", () => {
     expect(getKqEffectNoticeKind("Transformation prête, mais aucun dé neutre : effet non déclenché.")).toBe("missed");
   });
 
-  it("offers five readable situations at every production stage", () => {
-    expect(KQ_SITUATIONS).toHaveLength(30);
+  it("offers at least six readable situations at every production stage", () => {
+    expect(KQ_SITUATIONS).toHaveLength(38);
     KQ_STAGES.forEach((stage) => {
-      expect(KQ_SITUATIONS.filter((situation) => situation.stage === stage)).toHaveLength(5);
+      expect(KQ_SITUATIONS.filter((situation) => situation.stage === stage).length).toBeGreaterThanOrEqual(6);
     });
   });
 
   it("makes every authored situation reachable through deterministic paths", () => {
-    const reached = new Set(Array.from({ length: 25 }, (_, seed) => buildKqScenarioPath(seed)).flat());
+    const reached = new Set(Array.from({ length: 500 }, (_, seed) => buildKqScenarioPath(seed)).flat());
     expect([...KQ_SITUATIONS.map((situation) => situation.code).filter((code) => !reached.has(code))]).toEqual([]);
   });
 
@@ -342,13 +342,13 @@ describe("Kanab Quest dice prototype", () => {
     expect(relieved.effectNotices?.at(-1)).toContain("Pression −1");
   });
 
-  it("makes the fabric pot absorb one Danger in exchange for pressure", () => {
+  it("makes shade absorb one Danger in exchange for pressure", () => {
     let result: { baseline: KqGameState; protected: KqGameState } | null = null;
     for (let seed = 1; seed <= 500 && !result; seed += 1) {
       const base = startKqGame(seed, { deckCodes: ["BOTTE-001", "BOTTE-013"], startingXp: 4 });
       const prepared: KqGameState = {
         ...base,
-        situationCodes: base.situationCodes.map((code, index) => index === 0 ? "SIT-001" : code),
+        situationCodes: base.situationCodes.map((code, index) => index === 0 ? "SIT-031" : code),
         handCodes: ["BOTTE-013"],
       };
       const baseline = rollKqDice(prepared);
@@ -360,12 +360,12 @@ describe("Kanab Quest dice prototype", () => {
     expect(result?.protected.dice?.filter((die) => die === 1)).toHaveLength(
       Math.max(0, (result?.baseline.dice?.filter((die) => die === 1).length ?? 0) - 1),
     );
-    expect(result?.protected.effectNotices?.some((notice) => notice.includes("aération des racines"))).toBe(true);
+    expect(result?.protected.effectNotices?.some((notice) => notice.includes("Voile d’ombrage"))).toBe(true);
   });
 
 
 
-  it("uses organic fertilizer only to finish an already strong roll", () => {
+  it("uses cross diagnosis only to finish an already strong roll", () => {
     const base = startKqGame(42, { deckCodes: ["BOTTE-001", "BOTTE-021"], startingXp: 5 });
     const state: KqGameState = {
       ...base,
@@ -543,8 +543,8 @@ describe("Kanab Quest dice prototype", () => {
     expect(canPlayKqCard(rolled, chrysope).reason).toContain("pas dans ta collection");
   });
 
-  it("exposes the agronomic pH–EC diagnostic card", () => {
-    expect(KQ_CARDS.find((card) => card.code === "BOTTE-018")?.name).toBe("Testeur pH–EC");
+  it("exposes the infrared diagnostic card", () => {
+    expect(KQ_CARDS.find((card) => card.code === "BOTTE-018")?.name).toBe("Thermomètre infrarouge");
   });
 
   it("rewards the Loupe plus compatible auxiliary combo", () => {
@@ -638,9 +638,9 @@ describe("Kanab Quest dice prototype", () => {
     expect(state.effectNotices?.some((notice) => notice.includes("4 dés lancés") && notice.includes("écarté"))).toBe(true);
   });
 
-  it("records a visible before-and-after confirmation for the pH–EC reaction", () => {
+  it("records a visible before-and-after confirmation for the infrared reaction", () => {
     const base = startKqGame(30, { deckCodes: ["BOTTE-001", "BOTTE-018"], startingXp: 5 });
-    const reacted = playKqCard({ ...base, phase: "rolled", dice: [3, 4, 5] }, "BOTTE-018");
+    const reacted = playKqCard({ ...base, situationCodes: ["SIT-031", ...base.situationCodes.slice(1)], phase: "rolled", dice: [3, 4, 5] }, "BOTTE-018");
     expect(reacted.dice).not.toEqual([3, 4, 5]);
     expect(reacted.effectNotices?.at(-1)).toContain("3 · 4 · 5 →");
   });

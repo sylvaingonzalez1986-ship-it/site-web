@@ -1,6 +1,7 @@
 export type KqSituationArtwork = {
   src: string;
   alt: string;
+
 };
 
 export const KQ_SITUATION_ARTWORK: Readonly<Record<string, KqSituationArtwork>> = {
@@ -124,6 +125,14 @@ export const KQ_SITUATION_ARTWORK: Readonly<Record<string, KqSituationArtwork>> 
     src: "/app/kanab-quest/situations/situation-SIT-030-parfum-encore-vert-v3.webp",
     alt: "Contrôle olfactif d’un petit échantillon de fleurs, près d’un bocal ouvert et d’un carnet de suivi.",
   },
+  "SIT-031": { src: "/app/kanab-quest/situations/situation-SIT-031-lampe-agressive-v1.webp", alt: "Jeune pousse aux feuilles recourbées sous un éclairage trop intense dans le placard." },
+  "SIT-032": { src: "/app/kanab-quest/situations/situation-SIT-032-soufflerie-face-v1.webp", alt: "Ventilateur soufflant directement sur de jeunes feuilles courbées par le courant d’air." },
+  "SIT-033": { src: "/app/kanab-quest/situations/situation-SIT-033-horloge-decalee-v1.webp", alt: "Minuteur électrique posé sur un établi devant un placard de culture éclairé." },
+  "SIT-034": { src: "/app/kanab-quest/situations/situation-SIT-034-extraction-encrassee-v1.webp", alt: "Grille d’extraction encrassée de poussière au-dessus de plantes dans le placard." },
+  "SIT-035": { src: "/app/kanab-quest/situations/situation-SIT-035-fuite-lumiere-v1.webp", alt: "Faisceau de lumière entrant par la porte du placard pendant sa période de repos." },
+  "SIT-036": { src: "/app/kanab-quest/situations/situation-SIT-036-depot-suspect-v1.webp", alt: "Dépôt blanchâtre suspect sur une feuille, observé à l’aide d’une loupe d’inspection." },
+  "SIT-037": { src: "/app/kanab-quest/situations/situation-SIT-037-fleur-suspecte-v1.webp", alt: "Tri de fleurs récoltées avec une fleur suspecte écartée des autres sur un plateau." },
+  "SIT-038": { src: "/app/kanab-quest/situations/situation-SIT-038-condensation-bocal-v1.webp", alt: "Gouttelettes de condensation à l’intérieur d’un bocal de fleurs en cours d’affinage." },
 };
 
 export const KQ_POWER_OUTAGE_ARTWORK: KqSituationArtwork = {

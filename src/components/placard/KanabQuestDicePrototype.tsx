@@ -1,5 +1,7 @@
 "use client";
 
+import { KqCardEffectGuide as CardEffectGuide, KqCardRoleLegend } from "./KqCardEffectGuide";
+import { KQ_SITUATION_TAG_LABELS } from "@/lib/kanab-quest-card-guide";
 import { useGameViewport } from "@/hooks/useGameViewport";
 import { KqEnergyPanel } from "./KqEnergyPanel";
 import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
@@ -185,11 +187,7 @@ const OUTCOME_COPY: Record<KqOutcome, { title: string; artAlt: string; artSrc: s
 };
 
 const PEST_LABELS = { aphids: "Pucerons", mites: "Acariens", thrips: "Thrips" } as const;
-const SITUATION_TAG_LABELS: Record<string, string> = {
-  roots: "Racines", water: "Eau", climate: "Climat", flower: "Floraison",
-  harvest: "Récolte", drying: "Séchage", energy: "Énergie",
-  compliance: "Administratif", security: "Sécurité",
-};
+const SITUATION_TAG_LABELS = KQ_SITUATION_TAG_LABELS;
 const INCIDENT_LABELS = {
   "electricity-bill": "Incident · Trésorerie",
   "ddtm-inspection": "Incident · Contrôle",
@@ -450,7 +448,7 @@ function SupportCard({ card, state, copies, handCopies, deckCopies, serverValida
       <span className={styles.cardCollection}>{card.category === "pbi" ? `Réserve PBI · album ×${copies}` : `Main ×${handCopies} · deck ×${deckCopies} · album ×${copies}`}</span>
       <strong>{card.name}</strong>
       <em>{CATEGORY_LABELS[card.category]}</em>
-      <p>{card.description}</p>
+      <CardEffectGuide card={card} />
       <small className={styles.cardReason}>{active ? "Active puis brûlée" : exhausted ? "🔥 Copies du deck brûlées" : unavailable ? "Aucune copie restante" : permission.reason}</small>
     </button>
   );
@@ -1763,6 +1761,7 @@ export function KanabQuestDicePrototype({
                       <p>En gris : cartes non possédées.</p>
                     </div>
                   </header>
+                  <KqCardRoleLegend />
                   <div className={styles.collectionInventory}>
                     {KQ_CARDS.filter((card) => card.timing !== "passive" && card.category !== "pbi").map((card) => {
                       const ownedCopies = activeInventory[card.code] ?? 0;
@@ -1888,7 +1887,9 @@ export function KanabQuestDicePrototype({
           <div className={styles.deckQuickActions}><span>Composition rapide</span><div><button type="button" onClick={() => applyCollectionDeck("one-each")}>1 de chaque</button><button type="button" onClick={() => applyCollectionDeck("all-copies")}>Toutes mes copies</button><button type="button" disabled={selectedCards.length === 0} onClick={() => { setSelectedCards([]); setDeckNotice("Deck vidé. Tu peux commencer sans carte La Botte."); }}>Vider</button></div></div>
           <div className={styles.favoriteDeckActions}><span>Deck favori · local</span><div><button type="button" disabled={selectedCards.length === 0} onClick={saveFavoriteDeck}>{favoriteDeck ? "Remplacer le favori" : "Enregistrer"}</button><button type="button" disabled={!favoriteDeck} onClick={restoreFavoriteDeck}>Restaurer</button><button type="button" disabled={!favoriteDeck} onClick={deleteFavoriteDeck}>Supprimer</button></div></div>
           <div className={styles.deckFilters} aria-label="Filtrer les cartes La Botte">{([['all', 'Toutes'], ['equipment', 'Équipement'], ['know-how', 'Savoir-faire'], ['luck', 'Chance']] as const).map(([value, label]) => <button key={value} type="button" data-selected={deckFilter === value || undefined} aria-pressed={deckFilter === value} onClick={() => setDeckFilter(value)}>{label}</button>)}</div>
-          <div className={styles.deckChoices}>{supportCards.map((card) => { const challengeFit = getKqCardChallengeFit(card, rewardableDailyChallenges.map((challenge) => challenge.code)); const selectedCopies = selectedCards.filter((code) => code === card.code).length; const ownedCopies = activeInventory[card.code] ?? 0; const drawChance = getKqOpeningHandChance(selectedCards.length, selectedCopies); return <article key={card.code} className={styles.deckChoiceCard} data-selected={selectedCopies > 0 || undefined} data-empty={ownedCopies <= 0 || undefined} data-challenge-fit={challengeFit || undefined}><CardArtwork code={card.code} name={card.name} /><span>{CATEGORY_LABELS[card.category]}</span>{challengeFit ? <i className={styles.challengeFit}><Star /> Aide défi</i> : null}<strong>{card.name}</strong><p>{card.description}</p><em>{ownedCopies} copie(s) · {card.xpCost} XP</em>{selectedCopies > 0 ? <small className={styles.drawChance}>{drawChance}% dans la première main</small> : null}<div><button type="button" aria-label={`Retirer une copie de ${card.name}`} disabled={selectedCopies <= 0} onClick={() => removeCardCopy(card.code)}>−</button><b>{selectedCopies} / {ownedCopies}</b><button type="button" aria-label={`Ajouter une copie de ${card.name}`} disabled={selectedCopies >= ownedCopies} onClick={() => addCardCopy(card.code)}>+</button></div></article>; })}</div>
+          <p className={styles.deckRulesGuide}><b>Choisis tes réponses aux incidents.</b> Une préparation avant les dés, une réaction après. 1 = Danger · 2–3 = neutre · 4–6 = réussite. Chaque 6 rapporte 1 XP au verdict. Une carte jouée consomme un exemplaire.</p>
+          <KqCardRoleLegend />
+          <div className={styles.deckChoices}>{supportCards.map((card) => { const challengeFit = getKqCardChallengeFit(card, rewardableDailyChallenges.map((challenge) => challenge.code)); const selectedCopies = selectedCards.filter((code) => code === card.code).length; const ownedCopies = activeInventory[card.code] ?? 0; const drawChance = getKqOpeningHandChance(selectedCards.length, selectedCopies); return <article key={card.code} className={styles.deckChoiceCard} data-selected={selectedCopies > 0 || undefined} data-empty={ownedCopies <= 0 || undefined} data-challenge-fit={challengeFit || undefined}><CardArtwork code={card.code} name={card.name} /><span>{CATEGORY_LABELS[card.category]}</span>{challengeFit ? <i className={styles.challengeFit}><Star /> Aide défi</i> : null}<strong>{card.name}</strong><CardEffectGuide card={card} /><em>{ownedCopies} copie(s) · {card.xpCost} XP</em>{selectedCopies > 0 ? <small className={styles.drawChance}>{drawChance}% dans la première main</small> : null}<div><button type="button" aria-label={`Retirer une copie de ${card.name}`} disabled={selectedCopies <= 0} onClick={() => removeCardCopy(card.code)}>−</button><b>{selectedCopies} / {ownedCopies}</b><button type="button" aria-label={`Ajouter une copie de ${card.name}`} disabled={selectedCopies >= ownedCopies} onClick={() => addCardCopy(card.code)}>+</button></div></article>; })}</div>
           <div className={styles.pbiReserve}><span>Réserve PBI de l’album · automatique</span><div>{pbiReserve.map((card) => <strong key={card.code} data-empty={(activeInventory[card.code] ?? 0) <= 0 || undefined}>{card.name} <small>×{activeInventory[card.code] ?? 0}</small></strong>)}</div><p>Ces cartes ne prennent aucune place dans le deck. Elles apparaissent seulement après identification d’un ravageur. Une référence à zéro ne peut plus intervenir.</p></div>
           <div className={styles.setupFooter}><span>Sol vivant inclus. Seules les cartes jouées sont consommées.</span><button type="button" className={styles.primaryButton} disabled={(isPlayerMode && !ownedBuddieCodes.includes(selectedBuddie)) || remoteAction !== null} onClick={() => setPendingStart(true)}>Commencer avec {selectedCards.length === 0 ? "aucune carte" : `${selectedCards.length} carte${selectedCards.length > 1 ? "s" : ""}`}</button></div>
           {remoteBurnsEnabled ? (
@@ -2291,7 +2292,7 @@ export function KanabQuestDicePrototype({
 
       <section className={`${styles.deckPanel} ${styles.mobileTabPanel}`} data-mobile-active={mobilePlayTab === "hand" || undefined}>
         <header><div><span>Album Kanab Quest</span><h2>Ta main · La Botte</h2></div><p>{handCodes.length} copie{handCodes.length > 1 ? "s" : ""} distribuée{handCodes.length > 1 ? "s" : ""} · {Math.max(0, supportDeckSize - burnedSupportCount)} copie{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""} non brûlée{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""}. Les doublons occupent plusieurs places dans la main.</p></header>
-        <div className={styles.cardColorLegend} aria-label="Code couleur des cartes"><span data-category="equipment">Équipement</span><span data-category="know-how">Savoir-faire</span><span data-category="luck">Chance</span><span data-category="pbi">Auxiliaire PBI</span></div>
+        <KqCardRoleLegend />
         <div className={styles.handActions}><span>{(state.handRedrawsUsed ?? 0) < redrawLimit ? `${redrawLimit - (state.handRedrawsUsed ?? 0)} changement${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""} de main disponible${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""}.` : "Changement de main déjà utilisé pour cette culture."}</span><button type="button" disabled={!canRedrawHand || remoteAction !== null} onClick={() => void applyGameAction("redraw")}><RotateCcw /> Changer ma main</button></div>
         {(state.heritageReserveCodes?.length ?? 0) > 0 ? (
           <section className={styles.heritageHandExchange}>
