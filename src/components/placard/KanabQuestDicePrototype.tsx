@@ -62,6 +62,7 @@ import {
   type KqMarketRouteCode,
 } from "@/lib/kanab-quest-market";
 import { applyKqRemoteAction, createKqScopedRequest, enqueueKqRemoteRandomBattle, finalizeKqRemoteBattle, finalizeKqRemoteBotBattle, getKqRemoteActiveRun, getKqRemoteBattles, getKqRemoteFlowers, leaveKqRemoteRandomBattleQueue, playKqRemoteCard, pollKqRemoteRandomBattleQueue, startKqRemoteRun, swapKqRemoteHeritageCard, type KqApiBurnReceipt, type KqApiScope, type KqOfficialBattle, type KqOfficialFlower } from "@/lib/kanab-quest-api";
+import { startArenaVisiblePolling } from "@/lib/arena-visible-polling";
 import { formatKqQueueWait } from "@/lib/kanab-quest-random-queue";
 import { getKqRemainingDailyChallengePoints, KQ_REWARD_BALANCE } from "@/lib/kanab-quest-reward-balance";
 import { KqPhysicsDice, type KqDiceMotionPhase, type KqPhysicsDiceHandle } from "./KqPhysicsDice";
@@ -952,7 +953,9 @@ export function KanabQuestDicePrototype({
     const refreshQueue = async () => {
       try {
         const queuedFlowerId = queuedFlowerIdsKey.split(",")[0];
-        const matchAttempt = await pollKqRemoteRandomBattleQueue(queuedFlowerId, remoteRequest).catch(() => null);
+        const matchAttempt = await pollKqRemoteRandomBattleQueue(queuedFlowerId, remoteRequest);
+        // Waiting has not changed the collection: only reload after leaving the queue.
+        if (!active || matchAttempt.matchStatus === "queued") return;
         const [flowersSnapshot, battlesSnapshot] = await Promise.all([
           getKqRemoteFlowers(remoteRequest),
           getKqRemoteBattles(remoteRequest),
@@ -973,11 +976,10 @@ export function KanabQuestDicePrototype({
         // La file reste durable côté serveur ; une prochaine vérification reprendra.
       }
     };
-    void refreshQueue();
-    const timer = window.setInterval(() => void refreshQueue(), 12_000);
+    const stopPolling = startArenaVisiblePolling(refreshQueue);
     return () => {
       active = false;
-      window.clearInterval(timer);
+      stopPolling();
     };
   }, [queuedFlowerIdsKey, refreshOfficialRanking, remoteBurnsEnabled, remoteRequest]);
 

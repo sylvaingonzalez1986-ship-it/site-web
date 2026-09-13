@@ -137,7 +137,13 @@ export function getKqMarketRunSummary(runState: unknown, quality: number) {
   };
 }
 
-export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string[]) {
+type StoredMarketLot = {
+  flower_id: string; harvest_grams: number; jury_score: number; quality_band: string;
+  equipment_codes: string[]; options?: KqMarketQuote[]; status: string;
+  selected_route: string | null; payout_cents: number | null; reputation_gain: number | null; settled_at: string | null;
+};
+
+export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string[], options: { previewOnly?: boolean } = {}) {
   assertUuid(userId, "Compte marché invalide.");
   const supabase = createSupabaseServiceClient();
   const equipmentShop = await getKqEquipmentShopSnapshot(userId);
@@ -178,6 +184,7 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
   const bots = new Map((botResult.data ?? []).map((battle) => [String(battle.flower_id), toRounds(battle.rounds)]));
   const equippedCodes = equipmentShop.equippedCodes;
   const energySummary = await getKqEnergySummary(userId);
+  const previews = new Map<string, { harvest_grams: number; jury_score: number; quality_band: string; options: KqMarketQuote[] }>();
 
   await Promise.all(flowers.map(async (flower) => {
     const flowerId = String(flower.id);
@@ -192,7 +199,11 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
           ? getKqJuryScoreFromRounds(botRounds, "player")
           : getKqJuryScoreFromStats(flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats as Record<string, number> : {});
     const { harvestGrams } = getKqMarketRunSummary(runStates.get(String(flower.run_id)), Number(flower.quality));
-    const options = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: equipmentShop.levels, marketContext });
+    const quotes = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: equipmentShop.levels, marketContext });
+    previews.set(flowerId, { harvest_grams: harvestGrams, jury_score: juryScore, quality_band: getKqMarketQualityBand(juryScore), options: quotes });
+    // Browsing computes offers without rewriting and downloading each full SQL lot.
+    // The prepare/sell commands still persist a fresh server quote before settlement.
+    if (options.previewOnly) return;
     const prepared = await supabase.rpc("rpc_kq_prepare_market_lot", {
       p_user_id: userId,
       p_flower_id: flowerId,
@@ -200,7 +211,7 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
       p_jury_score: juryScore,
       p_quality_band: getKqMarketQualityBand(juryScore),
       p_equipment_codes: equippedCodes,
-      p_options: options,
+      p_options: quotes,
     });
     if (prepared.error) throw new Error(`[supabase:rpc_kq_prepare_market_lot] ${prepared.error.message}`);
   }));
@@ -208,8 +219,10 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
   const [lotsResult, betterRankedResult, receiptsResult] = await Promise.all([
     flowerIds.length > 0
       ? supabase.from("kq_market_lots")
-        .select("flower_id,harvest_grams,jury_score,quality_band,equipment_codes,options,status,selected_route,payout_cents,reputation_gain,settled_at")
-        .eq("owner_id", userId).in("flower_id", flowerIds)
+        .select(options.previewOnly
+          ? "flower_id,harvest_grams,jury_score,quality_band,equipment_codes,status,selected_route,payout_cents,reputation_gain,settled_at"
+          : "flower_id,harvest_grams,jury_score,quality_band,equipment_codes,options,status,selected_route,payout_cents,reputation_gain,settled_at")
+        .eq("owner_id", userId).in("flower_id", flowerIds).returns<StoredMarketLot[]>()
       : emptyRows,
     supabase.from("kq_equipment_wallets")
       .select("user_id", { count: "exact", head: true })
@@ -224,7 +237,10 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
   const marketLots = new Map((lotsResult.data ?? []).map((lot) => [String(lot.flower_id), lot]));
 
   const lots: KqMarketLot[] = flowers.flatMap((flower) => {
-    const lot = marketLots.get(String(flower.id));
+    const lot = marketLots.get(String(flower.id)) ?? (options.previewOnly ? {
+      ...previews.get(String(flower.id)), equipment_codes: equippedCodes,
+      status: "ready", selected_route: null, payout_cents: null, reputation_gain: null, settled_at: null,
+    } : null);
     if (!lot) return [];
     const route = lot.selected_route ? String(lot.selected_route) : null;
     const runSummary = getKqMarketRunSummary(runStates.get(String(flower.run_id)), Number(flower.quality));
@@ -239,8 +255,10 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
       harvestGrams: Number(lot.harvest_grams),
       juryScore: Number(lot.jury_score),
       qualityBand: String(lot.quality_band) as KqMarketLot["qualityBand"],
-      equipmentCodes: Array.isArray(lot.equipment_codes) ? lot.equipment_codes.map(String) : [],
-      options: Array.isArray(lot.options) ? lot.options as KqMarketQuote[] : [],
+      equipmentCodes: options.previewOnly && lot.status === "ready"
+        ? equippedCodes
+        : Array.isArray(lot.equipment_codes) ? lot.equipment_codes.map(String) : [],
+      options: options.previewOnly ? previews.get(String(flower.id))?.options ?? [] : Array.isArray(lot.options) ? lot.options as KqMarketQuote[] : [],
       status: String(lot.status) as KqMarketLot["status"],
       selectedRoute: route && isKqMarketRouteCode(route) ? route : null,
       payoutCents: lot.payout_cents === null ? null : Number(lot.payout_cents),
@@ -284,7 +302,7 @@ export async function sellKqMarketLot(input: {
     || !Number.isSafeInteger(input.marketWindow)) throw new Error("Offre de marché invalide. Actualise le comptoir.");
   // Refresh the server-authored quote immediately before settlement so a stale
   // browser cannot reuse equipment that is no longer installed.
-  const marketSnapshot = await getKqMarketSnapshot(input.userId);
+  const marketSnapshot = await getKqMarketSnapshot(input.userId, [input.flowerId]);
   const result = await createSupabaseServiceClient().rpc("rpc_kq_sell_market_offer", {
     p_user_id: input.userId,
     p_flower_id: input.flowerId,

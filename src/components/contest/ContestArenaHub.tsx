@@ -3,10 +3,9 @@
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import { useEffect, useRef, useState, type PointerEvent, type KeyboardEvent } from "react";
-import { ArrowUpRight, Gift, BookOpen, Gamepad2, Trophy, Volume2, VolumeX, Target } from "lucide-react";
+import { ArrowUpRight, Gift, BookOpen, Gamepad2, Trophy, Target } from "lucide-react";
 import { ArenaFirstVisitTutorial } from "@/components/contest/ArenaFirstVisitTutorial";
 import { ARENA_LOBBY_MODES, ARENA_LOBBY_MODE_ORDER, type ArenaLobbyMode } from "@/lib/arena-lobby";
-import { useArenaMenuSound } from "@/hooks/useArenaMenuSound";
 import retro from "@/components/contest/ArenaRetro.module.css";
 import styles from "./ArenaLobby.module.css";
 
@@ -15,7 +14,6 @@ const MODE_ICONS = { carnet: BookOpen, jouer: Gamepad2, classement: Trophy };
 export function ContestArenaHub() {
   const [selected, setSelected] = useState<ArenaLobbyMode>("jouer");
   const mode = ARENA_LOBBY_MODES[selected];
-  const sound = useArenaMenuSound();
   const sceneRef = useRef<HTMLDivElement | null>(null);
   const frameRef = useRef<number | null>(null);
 
@@ -24,7 +22,6 @@ export function ContestArenaHub() {
   }, []);
 
   const preview = (next: ArenaLobbyMode) => {
-    if (next !== selected) sound.play(ARENA_LOBBY_MODES[next].frequency);
     setSelected(next);
   };
 
@@ -80,10 +77,6 @@ export function ContestArenaHub() {
 
       <header className={styles.topBar}>
         <div className={styles.brand}><span>Kanab Quest</span><h1>L’Arène.</h1></div>
-        <button type="button" className={styles.sound} onClick={sound.toggle} aria-pressed={sound.enabled} aria-label="Sons du menu">
-          {sound.enabled ? <Volume2 aria-hidden="true" /> : <VolumeX aria-hidden="true" />}
-          <span>Son {sound.enabled ? "ON" : "OFF"}</span>
-        </button>
       </header>
 
       <div className={styles.breathingRoom} aria-hidden="true" />

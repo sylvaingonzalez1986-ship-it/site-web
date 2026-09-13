@@ -1,4 +1,5 @@
 import "server-only";
+import { cacheArenaSharedRead } from "@/lib/arena-shared-cache";
 import { isKqEnergyMode, type KqEnergyMode } from "@/lib/kanab-quest-energy";
 
 import { normalizeEmail } from "@/lib/admin-allowlist";
@@ -1914,7 +1915,13 @@ export async function finalizeKqAdminBattle(
   return finalizeKqPlayerBattle(ownerId, battleId);
 }
 
+const readCachedPublicLeaderboard = cacheArenaSharedRead("placard-leaderboard", () => readKqPublicLeaderboard());
+
 export async function getKqPublicLeaderboard() {
+  return readCachedPublicLeaderboard();
+}
+
+async function readKqPublicLeaderboard() {
   const supabase = createSupabaseServiceClient();
   const seasonCode = await getKqActiveSeasonCode();
   const snapshotResult = await supabase.rpc("rpc_kq_refresh_daily_leaderboard", {
@@ -2033,7 +2040,13 @@ export async function getKqArenaLeaderboardInternal() {
   };
 }
 
+const readCachedPublicArenaLeaderboard = cacheArenaSharedRead("arena-leaderboard", () => readKqPublicArenaLeaderboard());
+
 export async function getKqPublicArenaLeaderboard() {
+  return readCachedPublicArenaLeaderboard();
+}
+
+async function readKqPublicArenaLeaderboard() {
   const leaderboard = await getKqArenaLeaderboardInternal();
   return {
     ...leaderboard,

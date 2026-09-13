@@ -34,11 +34,12 @@ export async function getKqCommerceSnapshot(userId: string, shopOnly = false) {
   const ids = initial.rawFlowerIds ?? [];
   const rawLots = [];
   if (!shopOnly) for (let offset = 0; offset < ids.length; offset += 100) {
-    const market = await getKqMarketSnapshot(userId, ids.slice(offset, offset + 100));
+    const market = await getKqMarketSnapshot(userId, ids.slice(offset, offset + 100), { previewOnly: true });
     rawLots.push(...market.lots.filter(lot => lot.status === "ready"));
   }
-  const [current, energy] = await Promise.all([state(userId), getKqEnergySummary(userId)]);
-  return { ...current, rawLots, electricityOutstandingCents: energy.outstandingCents };
+  // Previewing raw lots does not change the account, so reuse its fresh snapshot.
+  const energy = await getKqEnergySummary(userId);
+  return { ...initial, rawLots, electricityOutstandingCents: energy.outstandingCents };
 }
 export async function handleKqCommerceAction(userId: string, body: Record<string, unknown>) {
   uuid(userId);

@@ -1,4 +1,5 @@
 import "server-only";
+import { cacheArenaSharedRead, invalidateArenaSharedReads } from "@/lib/arena-shared-cache";
 import { getArenaRewardMilestone } from "@/lib/arena-reward-presentation";
 
 import { createHash } from "node:crypto";
@@ -58,13 +59,13 @@ async function getActiveRewardSeasonCode() {
   return String(result.data.season_code);
 }
 
-export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?: boolean; viewerId?: string } = {}) {
+async function loadSharedRewardPool(finalizePreviousWeeks = false) {
   const supabase = createSupabaseServiceClient();
   const seasonCode = await getActiveRewardSeasonCode();
   const [poolResult, seasonResult] = await Promise.all([
     supabase.rpc("rpc_arena_refresh_customer_reward_pool", {
       p_season_code: seasonCode,
-      p_finalize_previous_weeks: input.finalizePreviousWeeks === true,
+      p_finalize_previous_weeks: finalizePreviousWeeks,
     }),
     supabase.from("arena_customer_reward_seasons").select("*").eq("season_code", seasonCode).single(),
   ]);
@@ -72,14 +73,24 @@ export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?
   const raw = poolResult.data && typeof poolResult.data === "object" && !Array.isArray(poolResult.data)
     ? poolResult.data as RewardPoolRpcPayload
     : {};
-  const poolGrams = Math.max(0, toNumber(raw.poolGrams));
-  const minHumanBattles = Math.max(0, Math.floor(toNumber(raw.minHumanBattles, 3)));
   if (seasonResult.error) throw new Error("Classement de clôture indisponible.");
   const leaderboard = raw.status === "active" ? await getKqArenaLeaderboardInternal() : null;
   const snapshot = seasonResult.data?.standings_snapshot as ArenaCustomerRewardStanding[] | null;
   const standings = leaderboard && leaderboard.seasonCode === seasonCode
     ? toRewardStandings(leaderboard.entries)
     : Array.isArray(snapshot) ? snapshot : [];
+  return { seasonCode, raw, standings };
+}
+
+const readCachedRewardPool = cacheArenaSharedRead("reward-pool", () => loadSharedRewardPool());
+
+export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?: boolean; viewerId?: string; fresh?: boolean } = {}) {
+  const supabase = createSupabaseServiceClient();
+  const { seasonCode, raw, standings } = input.fresh || input.finalizePreviousWeeks
+    ? await loadSharedRewardPool(input.finalizePreviousWeeks === true)
+    : await readCachedRewardPool();
+  const poolGrams = Math.max(0, toNumber(raw.poolGrams));
+  const minHumanBattles = Math.max(0, Math.floor(toNumber(raw.minHumanBattles, 3)));
   const preview = buildArenaCustomerRewardPreview(poolGrams, standings, minHumanBattles);
   const viewerStanding = input.viewerId ? standings.find(entry => entry.playerId === input.viewerId) : null;
   const viewerProjection = input.viewerId ? preview.rankingWinners.find(entry => entry.playerId === input.viewerId) : null;
@@ -160,15 +171,7 @@ export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?
 
 export async function getArenaCustomerRewardDiceState(userId: string) {
   const supabase = createSupabaseServiceClient();
-  const seasonCode = await getActiveRewardSeasonCode();
-  const poolResult = await supabase.rpc("rpc_arena_refresh_customer_reward_pool", {
-    p_season_code: seasonCode,
-    p_finalize_previous_weeks: false,
-  });
-  if (poolResult.error) throw new Error(`[supabase:rpc_arena_refresh_customer_reward_pool] ${poolResult.error.message}`);
-  const raw = poolResult.data && typeof poolResult.data === "object" && !Array.isArray(poolResult.data)
-    ? poolResult.data as RewardPoolRpcPayload
-    : {};
+  const { seasonCode, raw } = await readCachedRewardPool();
   const weeklyDice = raw.weeklyDice && typeof raw.weeklyDice === "object" && !Array.isArray(raw.weeklyDice)
     ? raw.weeklyDice as Record<string, unknown>
     : {};
@@ -220,7 +223,8 @@ export async function rollArenaCustomerRewardDice(userId: string) {
   const raw = result.data && typeof result.data === "object" && !Array.isArray(result.data)
     ? result.data as RewardPoolRpcPayload
     : {};
-  const pool = await getArenaCustomerRewardPool({ viewerId: userId });
+  invalidateArenaSharedReads();
+  const pool = await getArenaCustomerRewardPool({ viewerId: userId, fresh: true });
   return {
     viewerRoll: Math.max(1, Math.min(6, Math.floor(toNumber(raw.viewerRoll, 1)))),
     alreadyRolled: raw.alreadyRolled === true,
@@ -239,6 +243,7 @@ export async function freezeArenaCustomerRewardSeason(execute: boolean) {
     p_execute: execute,
   });
   if (result.error) throw new Error(`[supabase:rpc_arena_freeze_customer_reward_season] ${result.error.message}`);
+  if (execute) invalidateArenaSharedReads();
   return {
     ...(result.data && typeof result.data === "object" ? result.data as Record<string, unknown> : {}),
     seasonCode,
@@ -290,6 +295,7 @@ export async function settleArenaCustomerRewards(execute: boolean) {
     p_execute: execute,
   });
   if (result.error) throw new Error(`[supabase:rpc_arena_settle_customer_rewards] ${result.error.message}`);
+  if (execute) invalidateArenaSharedReads();
   return {
     ...(result.data && typeof result.data === "object" ? result.data as Record<string, unknown> : {}),
     seasonCode,

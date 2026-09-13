@@ -8,9 +8,6 @@
 .topBar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem clamp(1rem, 4vw, 4rem); }
 .brand > span, .modeBrief > span { font: 800 .65rem/1.5 ui-monospace, monospace; text-transform: uppercase; letter-spacing: .16em; color: #f4c43d; }
 .brand h1 { margin: .15rem 0 0; font: 900 2rem/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
-.sound { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: .5rem .75rem; border: 1px solid #fffaf180; background: #003f30d9; color: #fffaf1; font: 800 .65rem ui-monospace, monospace; }
-.sound svg { width: 17px; height: 17px; }
-.sound[aria-pressed="true"] { background: #f4c43d; color: #003f30; }
 .breathingRoom { min-height: 280px; }
 .dock { width: min(960px, calc(100% - 3rem)); margin-inline: auto; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 1.25rem 2rem; }
 .modeBrief { grid-area: 1 / 1; text-shadow: 0 2px 12px #002d24; }

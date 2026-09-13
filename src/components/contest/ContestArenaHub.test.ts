@@ -13,10 +13,10 @@ vi.mock("next/image", () => ({
 vi.mock("./ArenaFirstVisitTutorial", () => ({ ArenaFirstVisitTutorial: () => createElement("button", {}, "Comment fonctionne l’Arène ?") }));
 
 describe("interactive Arena lobby", () => {
-  it("starts with the Placard preview and sound disabled", () => {
+  it("starts with the Placard preview without a sound toggle", () => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub));
     expect(html).toContain('data-lobby-mode="jouer"');
-    expect(html).toContain('aria-pressed="false" aria-label="Sons du menu"');
+    expect(html).not.toContain('aria-label="Sons du menu"');
     expect(html).toContain("Entrer dans le Placard");
     expect(html).toContain("Comment fonctionne l’Arène ?");
     expect(html).not.toContain("autoplay");

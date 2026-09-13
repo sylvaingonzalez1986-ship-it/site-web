@@ -1,5 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ rpc: vi.fn(), from: vi.fn(), leaderboard: vi.fn() }));
+const mocks = vi.hoisted(() => ({ rpc: vi.fn(), from: vi.fn(), leaderboard: vi.fn(), cache: new Map<string, Promise<unknown>>() }));
+vi.mock("next/cache", () => ({
+ unstable_cache: (loader: () => Promise<unknown>, keys: string[]) => () => {
+  const key = keys.join(":"); if (!mocks.cache.has(key)) mocks.cache.set(key, loader()); return mocks.cache.get(key);
+ }, revalidateTag: () => mocks.cache.clear(),
+}));
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc, from: mocks.from }) }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({ getKqArenaLeaderboardInternal: mocks.leaderboard }));
@@ -9,7 +14,7 @@ let status: string;
 let snapshot: typeof standing[] | null;
 let grant: { gift_weight_grams: number; kind: string } | null;
 beforeEach(() => {
- vi.clearAllMocks(); status = "active"; snapshot = null; grant = null;
+ vi.clearAllMocks(); mocks.cache.clear(); status = "active"; snapshot = null; grant = null;
  mocks.rpc.mockImplementation(async (name: string) => ({ error: null, data: name === "rpc_arena_refresh_customer_reward_pool" ? {seasonCode:"S1", status, poolGrams:100, minHumanBattles:3} : {executed:true} }));
  mocks.leaderboard.mockResolvedValue({ seasonCode:"S1", entries:[{...standing,userId:standing.playerId,rank:1}] });
  mocks.from.mockImplementation((table: string) => {
@@ -46,6 +51,15 @@ describe("reward season data", () => {
  it("passes the standings to the transactional freeze", async () => {
   await freezeArenaCustomerRewardSeason(true);
   expect(mocks.rpc).toHaveBeenCalledWith("rpc_arena_freeze_customer_reward_snapshot",{p_season_code:"S1",p_execute:true,p_standings:[standing]});
+ });
+ it("shares common reward calculations but keeps viewer projections separate", async () => {
+  const first = await getArenaCustomerRewardPool({viewerId:"customer-1"});
+  const second = await getArenaCustomerRewardPool({viewerId:"customer-2"});
+  expect(first.viewer?.rank).toBe(1);
+  expect(second.viewer?.rank).toBeNull();
+  expect(mocks.rpc.mock.calls.filter(([name])=>name === "rpc_arena_refresh_customer_reward_pool")).toHaveLength(1);
+  await getArenaCustomerRewardPool({fresh:true,viewerId:"customer-1"});
+  expect(mocks.rpc.mock.calls.filter(([name])=>name === "rpc_arena_refresh_customer_reward_pool")).toHaveLength(2);
  });
  it("refuses to reconstruct a legacy frozen season when issuing rewards", async () => {
   status="frozen";

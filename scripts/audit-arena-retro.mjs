@@ -220,7 +220,7 @@ try {
       if (screen === "landing") {
         const destinations = {carnet: '/arene/carnet/regular', jouer: '/arene/placard', classement: '/arene?vue=classement'};
         if (auditLobby) {
-          if (await page.$eval('[aria-label="Sons du menu"]', el => el.getAttribute('aria-pressed')) !== 'false') throw new Error('Sound must start off');
+          if (await page.$('[aria-label="Sons du menu"]')) throw new Error('The lobby sound toggle must be absent');
           const animations = new Set();
           for (const id of Object.keys(destinations)) {
             await page.click('button[data-mode="' + id + '"]');
@@ -233,16 +233,12 @@ try {
             await page.screenshot({path: resolve(reportDir, 'lobby-' + id + '-' + width + '.png'), fullPage: true});
           }
           if (animations.size !== 3 || animations.has('none')) throw new Error('Each mode needs a distinct animation');
-          await page.click('[aria-label="Sons du menu"]');
-          await page.waitForFunction(() => document.querySelector('[aria-label="Sons du menu"]').getAttribute('aria-pressed') === 'true');
-          await page.click('[aria-label="Sons du menu"]');
-          await page.waitForFunction(() => document.querySelector('[aria-label="Sons du menu"]').getAttribute('aria-pressed') === 'false');
           await page.emulateMediaFeatures([{name: 'prefers-reduced-motion', value: 'reduce'}]);
           await page.focus('button[data-mode="carnet"]');
           const reduced = await page.$eval('[data-scene][data-active] img', el => getComputedStyle(el.parentElement).animationName);
           if (reduced !== 'none') throw new Error('Reduced motion not respected');
           await page.emulateMediaFeatures([]);
-          console.log('OK three scenes, single entry, sound opt-in/out, reduced motion ' + width + 'px');
+          console.log('OK three scenes, single entry, no sound toggle, reduced motion ' + width + 'px');
         }
         await page.focus('button[data-mode="carnet"]');
         await page.keyboard.press("ArrowRight");
