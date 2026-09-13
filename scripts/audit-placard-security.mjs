@@ -11,7 +11,7 @@ const modules = {
  'next/image': "import React from 'react';export default function Image({src,fill,priority,unoptimized,...props}){return React.createElement('img',{...props,src});}",
  'energy-entry': `import React,{useState} from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
  import {KqEnergyPanel} from '/src/components/placard/KqEnergyPanel';import {quoteKqEnergy,quoteKqDogCare} from '/src/lib/kanab-quest-energy';
- const query=new URLSearchParams(location.search), codes=['LED-300','AIR-EC6','CLIMATE-SMART','SECURITY-FENCE'];
+ const query=new URLSearchParams(location.search), codes=['LED-300','AIR-EC6','CLIMATE-SMART','SECURITY-CAMERA'];
  const quotes=Object.fromEntries(['eco','balanced','intensive'].map(m=>[m,quoteKqEnergy(codes,{},m)]));
  let snapshot={cashCents:query.has('poor')?0:35000,outstandingCents:1377,invoiceCount:1,bestGramsPerKwh:3.51,quotes,invoices:[{runId:'11111111-1111-4111-8111-111111111111',createdAt:'2026-09-11T12:00:00Z',totalCents:1377,remainingCents:1377,harvestGrams:161.1,quote:quotes.balanced}]};
  snapshot.dogCare=quoteKqDogCare(query.get('view')==='choose'?9:10);snapshot.outstandingCents=quotes.balanced.totalCents;snapshot.invoices[0].totalCents=quotes.balanced.totalCents;snapshot.invoices[0].remainingCents=quotes.balanced.totalCents; snapshot.invoices[0].dogCare={cycle:10,foodCents:800,vetCents:4000,totalCents:4800,paidCents:4800};snapshot.invoices[0].totalCents+=4800; window.__payments=[];window.__fail=false;window.fetch=async(url,init={})=>{

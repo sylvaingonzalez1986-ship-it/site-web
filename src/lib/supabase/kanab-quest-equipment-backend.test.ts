@@ -6,7 +6,7 @@ const { createSupabaseServiceClient } = vi.hoisted(() => ({
 
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient }));
 
-import { equipKqDurableEquipment, upgradeKqDurableEquipment, purchaseKqDurableEquipment } from "@/lib/supabase/kanab-quest-equipment-backend";
+import { equipKqDurableEquipment, upgradeKqDurableEquipment, purchaseKqDurableEquipment, getKqEquipmentShopSnapshot } from "@/lib/supabase/kanab-quest-equipment-backend";
 
 const USER_ID = "11000000-0000-4000-8000-000000000001";
 
@@ -65,6 +65,36 @@ describe("Kanab Quest durable equipment installation", () => {
     expect(database.from).toHaveBeenCalledWith("kq_player_equipment");
     expect(database.eq).toHaveBeenCalledWith("user_id", USER_ID);
     expect(database.rpc).not.toHaveBeenCalled();
+  });
+
+  it("rejects the removed fence for purchase, installation and upgrade before accessing the database", async () => {
+    const requestKey = "11000000-0000-4000-8000-000000000002";
+    await expect(purchaseKqDurableEquipment({userId:USER_ID,requestKey,equipmentCodes:["SECURITY-FENCE"]})).rejects.toThrow("pas disponible");
+    await expect(equipKqDurableEquipment({userId:USER_ID,equipmentCode:"SECURITY-FENCE"})).rejects.toThrow("plus disponible");
+    await expect(upgradeKqDurableEquipment({userId:USER_ID,requestKey,equipmentCode:"SECURITY-FENCE",expectedLevel:1})).rejects.toThrow("non améliorable");
+    expect(createSupabaseServiceClient).not.toHaveBeenCalled();
+  });
+
+  it("hides an old owned and installed fence from inventory and future run equipment", async () => {
+    const rows: Record<string, unknown> = {
+      kq_equipment_wallets: {cash_cents:100000,reputation:0},
+      kq_player_equipment: [
+        {equipment_code:"SECURITY-FENCE",purchase_price_cents:18000,level:3},
+        {equipment_code:"SECURITY-DOG",purchase_price_cents:100000,level:1},
+      ],
+      kq_equipment_loadouts: [{equipment_code:"SECURITY-FENCE"}],
+    };
+    createSupabaseServiceClient.mockReturnValue({rpc:vi.fn().mockResolvedValue({error:null}),from:(table:string)=>{
+      const query = {select:()=>query,eq:()=>query,order:()=>query,single:()=>query,
+        then:(resolve:(value:unknown)=>unknown)=>Promise.resolve({data:rows[table]??[],error:null,count:0}).then(resolve)};
+      return query;
+    }});
+    const snapshot = await getKqEquipmentShopSnapshot(USER_ID);
+    expect(snapshot.ownedCodes).toEqual(["SECURITY-DOG"]);
+    expect(snapshot.purchasedCodes).toEqual(["SECURITY-DOG"]);
+    expect(snapshot.equippedCodes).toEqual([]);
+    expect(snapshot.levels).toEqual({"SECURITY-DOG":1});
+    expect(snapshot.catalog.some((item)=>item.code==="SECURITY-FENCE")).toBe(false);
   });
 
   it("allows the RPC only after ownership has been verified", async () => {

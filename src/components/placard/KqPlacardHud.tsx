@@ -85,7 +85,7 @@ export function KqPlacardHud({
     setRefreshKey((current) => current + 1);
   }, []);
   const closeInventory = useCallback(() => setInventoryOpen(false), []);
-  const openInventoryShop = useCallback(() => onOpenShop(), [onOpenShop]);
+  const openInventoryShop = useCallback((code?:string) => onOpenShop(code), [onOpenShop]);
 
   useEffect(() => {
     const handleEquipmentUpdate = () => requestRefresh();

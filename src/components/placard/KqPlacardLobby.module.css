@@ -12,7 +12,7 @@
 .description > span { color: #f4c43d; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; }
 .description h2 { margin: 6px 0; font: 900 clamp(30px, 5vw, 52px)/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .description p { max-width: 55ch; margin: 8px 0 0; font-size: 13px; line-height: 1.6; }
-.menu { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.menu { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
 .menu button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 57px; padding: 10px; border: 1px solid #fff5da60; border-radius: 6px; background: #003f30d9; color: #fff5da; font-size: 12px; font-weight: 900; cursor: pointer; }
 .menu button[aria-pressed="true"] { background: #54d5bb; color: #102f29; border-color: #102f29; box-shadow: 0 4px #102f29; }
 .enter { grid-column: 2; grid-row: 1; display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 54px; padding: 12px 18px; border: 2px solid #102f29; border-radius: 6px; background: #f4c43d; color: #102f29; box-shadow: 4px 4px #102f29; font-size: 13px; font-weight: 900; cursor: pointer; }

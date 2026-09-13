@@ -79,5 +79,19 @@ try {
   const legacy=await start(player,{harvestGrams:100}); await complete(legacy);
   const legacyBill=(await db.query("SELECT total_cents,quote FROM kq_energy_invoices WHERE run_id=$1",[legacy])).rows[0];
   assert.equal(legacyBill.total_cents,800); assert.equal(legacyBill.quote.totalCents,0);
+  // Retirement disables future fence use without changing historical runs or bills.
+  await db.exec("CREATE TABLE kq_equipment_loadouts(user_id UUID,slot TEXT,equipment_code TEXT)");
+  await db.query("INSERT INTO kq_player_equipment VALUES($1,'SECURITY-FENCE')",[player]);
+  await db.query("INSERT INTO kq_equipment_loadouts VALUES($1,'security','SECURITY-FENCE'),($2,'security','SECURITY-DOG')",[player,second]);
+  const historyBefore = (await db.query("SELECT id,state FROM kq_runs ORDER BY id")).rows;
+  const invoicesBefore = (await db.query("SELECT * FROM kq_energy_invoices ORDER BY run_id")).rows;
+  const retirement = await readFile("supabase/migrations/20260913000800_kq_retire_electric_fence.sql","utf8");
+  await db.exec(retirement); await db.exec(retirement);
+  assert.deepEqual((await db.query("SELECT is_active,is_purchasable FROM kq_equipment_catalog WHERE code='SECURITY-FENCE'")).rows,[{is_active:false,is_purchasable:false}]);
+  assert.equal((await db.query("SELECT * FROM kq_equipment_loadouts WHERE equipment_code='SECURITY-FENCE'")).rows.length,0);
+  assert.equal((await db.query("SELECT * FROM kq_equipment_loadouts WHERE equipment_code='SECURITY-DOG'")).rows.length,1);
+  assert.deepEqual((await db.query("SELECT id,state FROM kq_runs ORDER BY id")).rows,historyBefore);
+  assert.deepEqual((await db.query("SELECT * FROM kq_energy_invoices ORDER BY run_id")).rows,invoicesBefore);
+  console.log("Fence retirement: unavailable, unequipped, history preserved, repeatable.");
   console.log("Security care PostgreSQL: cycles 10/20, ownership, no double debit, insufficient funds, settlement replay, isolation, rollback and legacy runs passed.");
 } finally { await db.close(); }

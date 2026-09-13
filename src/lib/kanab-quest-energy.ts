@@ -9,7 +9,7 @@ export type KqEnergyMode = keyof typeof KQ_ENERGY_MODES;
 export function isKqEnergyMode(value: unknown): value is KqEnergyMode {
   return typeof value === "string" && Object.hasOwn(KQ_ENERGY_MODES, value);
 }
-const HOURS: Record<string, number> = { lighting: 120, air: 180, "climate-controller": 180, security: 180 };
+const HOURS: Record<string, number> = { lighting: 120, air: 180, "climate-controller": 180, security: 180, "flower-drying": 72 };
 
 /** Fixed equivalent operating hours, never time spent logged in or offline. */
 export function quoteKqEnergy(codes: string[], levels: Record<string, number> = {}, mode: KqEnergyMode = "balanced") {

@@ -51,6 +51,7 @@
 .categoryNav>button{flex-shrink:0;min-height:46px;padding:10px;border:2px solid #183f2f;background:linear-gradient(5deg,#cf9e5b,#efd19b);box-shadow:3px 4px 0 #102d23a6;font-size:11px;color:#173d2c;transform:rotate(-1deg);cursor:pointer}
 .categoryNav>button:nth-child(even){transform:rotate(1deg)}.categoryNav>button:hover,.categoryNav>button[data-active]{border-color:#fff1b6;background:#f4c43d;box-shadow:3px 4px 0 #173528}
 .loadoutSummary{background:#003e32e8;border:1px solid #e6c68a;box-shadow:3px 3px 0 #102d23a6}
+@media(max-width:1100px){.catalog:has([data-arena-journey-step="installation"]) .loadoutSummary{display:grid;position:fixed;top:90px;left:16px;z-index:5;min-width:190px}}
 .productArea{padding:0 12px 24px;scrollbar-width:thin;scrollbar-color:#f4c43d #003e32;overscroll-behavior:contain}
 .productAreaHeader{align-items:center;min-height:64px;margin:0 0 20px;padding:8px 14px;border-left:4px solid #f4c43d;background:#003e32de;color:#fff3d9}
 .productAreaHeader small{color:#f4c43d;font-size:10px}.productAreaHeader strong{font-size:26px;line-height:1.1}.productAreaHeader>span{color:#e6dbc0;font-size:12px;line-height:1.4}
@@ -92,3 +93,4 @@
 .cartItems article>div{align-content:start;gap:5px}
 .productArea>section[aria-label="Matériel de vente en ligne"]{background:#003f30e8;box-shadow:0 8px 0 #ba8749;border:1px solid #dfbd80}
 @media(max-width:700px){.productCard>footer{padding:7px 8px}.catalogBody,.categoryNav{min-width:0;max-width:100%}.catalogHeader{min-width:0}.catalogBrand{min-width:0}.cartPanel .cartItems{padding:10px}.productCard .productArtwork::after{left:-3px;right:-3px}}
+.checkoutError{display:flex;align-items:flex-start;gap:.5rem;padding:.75rem;border:2px solid #8d2f1b;background:#ffd9cc;color:#8d2f1b;font-size:.85rem;font-weight:800}.checkoutError svg{flex-shrink:0;width:20px}

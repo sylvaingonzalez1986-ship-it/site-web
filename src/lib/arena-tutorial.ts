@@ -50,7 +50,7 @@ export const ARENA_TUTORIAL_STEPS: readonly ArenaTutorialStep[] = [
     features: [
       { title: "Choisis ton Buddie", description: "Sélectionne une carte Buddie parmi celles que tu possèdes.", Icon: UserRound },
       { title: "Compose ton deck", description: "Choisis tes cartes de soutien et ton Héritage parmi ceux débloqués. Lis leurs effets avant de partir.", Icon: Layers3 },
-      { title: "Choisis ta voie de culture", description: "Terreau, hydroponie, aéroponie ou sol vivant : les cartes correspondantes offrent des effets différents dans le jeu.", Icon: Sprout },
+      { title: "Un sol déjà prêt", description: "Le sol vivant est inclus. Concentre-toi sur les effets de tes cartes et les incidents qu’elles permettent de résoudre.", Icon: Sprout },
     ],
     tip: "Cartes et équipements sont deux choses différentes : les cartes servent en partie, le matériel reste dans ton inventaire.",
   },
@@ -60,7 +60,7 @@ export const ARENA_TUTORIAL_STEPS: readonly ArenaTutorialStep[] = [
     lead: "Dans la Boutique du Placard, ouvre le catalogue de matériel. Pas besoin de tout acheter pour commencer.",
     href: "/arene/placard?view=shop&catalog=equipment", action: "Ouvrir le catalogue", Icon: ShoppingBag,
     features: [
-      { title: "Deux budgets distincts", description: "Les points servent aux packs de cartes. La trésorerie du Placard, affichée en $US, sert aux équipements : c’est de la monnaie de jeu.", Icon: Banknote },
+      { title: "Deux budgets distincts", description: "Les points servent aux packs de cartes. La trésorerie du Placard, affichée en euros, sert aux équipements : c’est de la monnaie de jeu.", Icon: Banknote },
       { title: "Compare les machines", description: "Tentes, LED et matériel de transformation : regarde les effets, les prérequis, la capacité et les filières débloquées.", Icon: SlidersHorizontal },
       { title: "Panier, puis validation", description: "Ajoute le matériel au panier, vérifie le total et valide l’achat si ton solde le permet.", Icon: ShoppingBag },
     ],

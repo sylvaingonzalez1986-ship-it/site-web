@@ -172,7 +172,7 @@ describe("Kanab Quest player page access", () => {
     expect(equipmentCatalog).toContain("À installer pour activer ces avantages");
     expect(equipmentCatalog).toContain("Bonus actifs dans l’atelier");
     expect(equipmentCatalog).toContain("snapshot?.equippedCodes.includes(code)");
-    expect(equipmentCatalog).toContain("onClick={() => void equip(code)}");
+    expect(equipmentCatalog).toContain("onOpenWorkshop ? onOpenWorkshop(code) : void equip(code)");
     expect(equipmentCatalog).toContain("Prérequis manquant");
     expect(equipmentCatalog).toContain("Modèle alternatif");
     expect(equipmentCatalog).toContain('role="dialog" aria-modal="true" aria-labelledby="equipment-purchase-title"');

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getKqEquipmentAtLevel, projectKqEquipmentLoadout } from "./kanab-quest-equipment";
+import { getKqEquipmentAtLevel, projectKqEquipmentLoadout, KQ_EQUIPMENT_CATALOG, getKqEquipmentUpgradeCost } from "./kanab-quest-equipment";
 import { isKqEnergyQuoteValid, quoteKqDogCare, quoteKqEnergy } from "./kanab-quest-energy";
 import { startKqGame, resolveKqStage, KQ_SITUATIONS } from "./kanab-quest-game";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
@@ -11,7 +11,11 @@ describe("security equipment and care", () => {
     expect(quoteKqDogCare(9).cyclesUntilVet).toBe(1);
     expect(quoteKqDogCare(10).cyclesUntilVet).toBe(10);
   });
-  it("charges installed fence electricity, with level, mode and solar adjustments", () => {
+  it("retires the fence while keeping its historical energy quotes readable", () => {
+    expect(KQ_EQUIPMENT_CATALOG.some((item) => item.code === "SECURITY-FENCE")).toBe(false);
+    expect(getKqEquipmentUpgradeCost("SECURITY-FENCE", 1)).toBeNull();
+    const oldRun = startKqGame(42, {equipmentCodes:["SECURITY-FENCE"],energyMode:"balanced"});
+    expect(parseKqGameSave(encodeKqSave(oldRun))).not.toBeNull();
     expect(quoteKqEnergy(["SECURITY-FENCE"]).totalCents).toBe(189);
     expect(quoteKqEnergy(["SECURITY-DOG"]).totalCents).toBe(0);
     expect(quoteKqEnergy(["SECURITY-FENCE", "SECURITY-FENCE"]).totalCents).toBe(189);
@@ -20,9 +24,9 @@ describe("security equipment and care", () => {
     expect(quoteKqEnergy(["SECURITY-FENCE", "SOLAR-BACKUP"]).totalCents).toBeLessThan(189);
   });
   it("replaces the active security choice instead of stacking bonuses", () => {
-    const projected = projectKqEquipmentLoadout({equippedCodes:["SECURITY-DOG"],candidateCodes:["SECURITY-FENCE"],ownedCodes:["SECURITY-DOG"]});
-    expect(projected.equipmentCodes).toEqual(["SECURITY-FENCE"]);
-    expect(projected.regularityPercent).toBe(4);
+    const projected = projectKqEquipmentLoadout({equippedCodes:["SECURITY-CAMERA"],candidateCodes:["SECURITY-DOG"],ownedCodes:["SECURITY-CAMERA"]});
+    expect(projected.equipmentCodes).toEqual(["SECURITY-DOG"]);
+    expect(projected.regularityPercent).toBe(8);
     expect(getKqEquipmentAtLevel("SECURITY-DOG", 10)?.effects.regularityPercent).toBe(17);
   });
   it("keeps saved camera runs valid after the cosmetic rename, without accepting changed costs", () => {
@@ -33,7 +37,7 @@ describe("security equipment and care", () => {
     state.energy!.lines[0].name = "invented";
     expect(parseKqGameSave(encodeKqSave(state))).toBeNull();
   });
-  it.each(["SECURITY-CAMERA", "SECURITY-DOG", "SECURITY-FENCE"])("%s protects against theft and names the actual protection", (code) => {
+  it.each(["SECURITY-CAMERA", "SECURITY-DOG"])("%s protects against theft and names the actual protection", (code) => {
     const state = startKqGame(42, {equipmentCodes:[code],energyMode:"balanced"});
     const theft = KQ_SITUATIONS.find((item) => item.incident === "crop-theft")!;
     state.stageIndex = 4;

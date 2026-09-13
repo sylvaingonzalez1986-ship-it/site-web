@@ -1,284 +1,94 @@
 "use client";
 
-import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
-
-import {
-  Box,
-  Check,
-  CircleAlert,
-  Lightbulb,
-  PackageOpen,
-  RefreshCw,
-  Settings,
-  Shield,
-  ShoppingBag,
-  Wind,
-  X,
-  Zap,
-  type LucideIcon,
-} from "lucide-react";
-import Image from "next/image";
+import { Check, CircleAlert, PackageOpen, RefreshCw, ShoppingBag, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { getKqEquipmentArtwork } from "@/lib/kanab-quest-equipment-artwork";
-import {
-  getKqEquipmentDefinition,
-  getKqEquipmentAtLevel,
-  getKqEquipmentImpactLabels,
-  getKqEquipmentRequirementState,
-  KQ_EQUIPMENT_CATEGORY_LABELS,
-  KQ_EQUIPMENT_CATEGORIES,
-  KQ_EQUIPMENT_SLOT_LABELS,
-  type KqEquipmentCategory,
-  type KqEquipmentDefinition,
-  type KqEquipmentSlot,
-} from "@/lib/kanab-quest-equipment";
-import styles from "./KqEquipmentInventoryModal.module.css";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentImpactLabels, getKqEquipmentRequirementState, KQ_EQUIPMENT_CATALOG, KQ_EQUIPMENT_SLOT_LABELS, summarizeKqEquipmentLoadout, type KqEquipmentDefinition, type KqEquipmentSlot } from "@/lib/kanab-quest-equipment";
+import { quoteKqEnergy } from "@/lib/kanab-quest-energy";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
-import { KqEquipmentTierBadge } from "./KqEquipmentTierBadge";
+import { KqWarehouseScene, WAREHOUSE_ZONES } from "./KqWarehouseScene";
+import styles from "./KqWarehouseInventory.module.css";
 
-const SLOT_ORDER: readonly KqEquipmentSlot[] = [
-  "tent",
-  "lighting",
-  "air",
-  "climate-controller",
-  "energy",
-  "security",
-  "sifting",
-  "washing",
-  "filtration",
-  "static-separation",
-  "press",
-  "drying",
-];
-
-const CATEGORY_ICONS: Record<KqEquipmentCategory, LucideIcon> = {
-  infrastructure: Box,
-  lighting: Lightbulb,
-  climate: Wind,
-  processing: Settings,
-  energy: Zap,
-  security: Shield,
-};
-
-type InventoryGroup = {
-  slot: KqEquipmentSlot;
-  equipment: KqEquipmentDefinition[];
-};
-
-function EquipmentVisual({ equipment, level = 1 }: { equipment: KqEquipmentDefinition; level?: number }) {
-  const artwork = getKqEquipmentArtwork(equipment.code, level);
-  const Icon = CATEGORY_ICONS[equipment.category];
-  return (
-    <span className={styles.visual} data-category={equipment.category} data-has-artwork={artwork ? true : undefined}>
-      {artwork ? (
-        <Image
-          src={artwork.src}
-          alt={artwork.alt}
-          fill
-          sizes="(max-width: 680px) 92px, 140px"
-          className={styles.visualImage}
-        />
-      ) : <Icon aria-hidden="true" />}
-      <KqEquipmentTierBadge level={level} />
-    </span>
-  );
-}
-
-export function KqEquipmentInventoryModal({
-  ownedCodes,
-  purchasedCodes,
-  equippedCodes,
-  levels,
-  cashCents,
-  loading,
-  loadError,
-  onClose,
-  onOpenShop,
-  onRetry,
-}: {
-  ownedCodes: string[];
-  purchasedCodes: string[];
-  equippedCodes: string[];
-  levels: Record<string, number>;
-  cashCents: number;
-  loading: boolean;
-  loadError: string;
-  onClose: () => void;
-  onOpenShop: () => void;
-  onRetry: () => void;
+export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,loading,loadError,onClose,onOpenShop,onRetry,initialSlot="tent"}:{
+  ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;loading:boolean;loadError:string;
+  onClose:()=>void;onOpenShop:(equipmentCode?:string)=>void;onRetry:()=>void;
+  initialSlot?:KqEquipmentSlot;
 }) {
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const [category, setCategory] = useState<KqEquipmentCategory | "all">("all");
-  const [pendingCode, setPendingCode] = useState<string | null>(null);
-  const [equippedOverride, setEquippedOverride] = useState<string[] | null>(null);
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
-  const activeCodes = equippedOverride ?? equippedCodes;
-
+  const closeButton=useRef<HTMLButtonElement>(null);
+  const panel=useRef<HTMLElement>(null);
+  const lock=useRef(false);
+  const [slot,setSlot]=useState<KqEquipmentSlot>(initialSlot);
+  const [pending,setPending]=useState<string|null>(null);
+  const [override,setOverride]=useState<string[]|null>(null);
+  const [error,setError]=useState("");
+  const [notice,setNotice]=useState("");
+  const activeCodes=override??equippedCodes;
+  const summary=useMemo(()=>summarizeKqEquipmentLoadout(activeCodes,levels),[activeCodes,levels]);
+  const energy=useMemo(()=>quoteKqEnergy(activeCodes,levels),[activeCodes,levels]);
+  const equipment=useMemo(()=>[...new Set([...ownedCodes,...activeCodes])].map(code=>getKqEquipmentAtLevel(code,levels[code])).filter((item):item is KqEquipmentDefinition=>!!item),[ownedCodes,activeCodes,levels]);
+  const choices=equipment.filter(item=>item.slot===slot);
+  const installed=choices.find(item=>activeCodes.includes(item.code));
+  const suggestion=KQ_EQUIPMENT_CATALOG.find(item=>item.slot===slot&&item.purchasable&&!ownedCodes.includes(item.code));
   useBodyScrollLock(true);
-
-  useEffect(() => {
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", closeOnEscape);
-    closeButtonRef.current?.focus({ preventScroll: true });
-    return () => {
-      document.removeEventListener("keydown", closeOnEscape);
-    };
-  }, [onClose]);
-
-  const ownedEquipment = useMemo(() => [...new Set(purchasedCodes)]
-    .map((code) => getKqEquipmentAtLevel(code, levels[code]))
-    .filter((equipment): equipment is KqEquipmentDefinition => Boolean(equipment?.purchasable)), [purchasedCodes, levels]);
-  const activeEquipment = useMemo(() => [...new Set(activeCodes)]
-    .map((code) => getKqEquipmentDefinition(code))
-    .filter((equipment): equipment is KqEquipmentDefinition => Boolean(equipment)), [activeCodes]);
-  const availableCategories = useMemo(() => KQ_EQUIPMENT_CATEGORIES.filter((candidate) => (
-    ownedEquipment.some((equipment) => equipment.category === candidate)
-  )), [ownedEquipment]);
-  const groups = useMemo(() => SLOT_ORDER.flatMap((slot): InventoryGroup[] => {
-    const equipment = ownedEquipment
-      .filter((item) => item.slot === slot && (category === "all" || item.category === category))
-      .sort((left, right) => Number(activeCodes.includes(right.code)) - Number(activeCodes.includes(left.code))
-        || right.priceCents - left.priceCents
-        || left.name.localeCompare(right.name));
-    return equipment.length > 0 ? [{ slot, equipment }] : [];
-  }), [activeCodes, category, ownedEquipment]);
-  const equippedCount = ownedEquipment.filter((equipment) => activeCodes.includes(equipment.code)).length;
-
-  const equip = async (equipment: KqEquipmentDefinition) => {
-    if (pendingCode || activeCodes.includes(equipment.code)) return;
-    if (!purchasedCodes.includes(equipment.code)) {
-      setError("Cet équipement doit être acheté avant de pouvoir être installé.");
-      return;
-    }
-    setPendingCode(equipment.code);
-    setError("");
-    setNotice("");
+  useEffect(()=>{const previous=document.activeElement instanceof HTMLElement?document.activeElement:null;closeButton.current?.focus({preventScroll:true});return()=>{if(previous?.isConnected)previous.focus({preventScroll:true});};},[]);
+  useEffect(()=>{
+    const escape=(event:KeyboardEvent)=>{if(event.key==="Escape"&&!event.defaultPrevented)onClose();};
+    document.addEventListener("keydown",escape);return()=>document.removeEventListener("keydown",escape);
+  },[onClose]);
+  const select=(next:KqEquipmentSlot)=>{setSlot(next);setError("");if(innerWidth<900)requestAnimationFrame(()=>panel.current?.scrollIntoView({block:"nearest",behavior:"instant"}));};
+  const openShop=(code?:string)=>{onClose();onOpenShop(code);};
+  const equip=async(item:KqEquipmentDefinition)=>{
+    if(lock.current||loading||activeCodes.includes(item.code)||!purchasedCodes.includes(item.code))return;
+    lock.current=true;setPending(item.code);setError("");setNotice("");
     try {
-      const response = await fetch("/api/arena/placard/equipment", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ equipmentCode: equipment.code }),
-      });
-      const payload = await response.json() as { error?: string };
-      if (!response.ok) throw new Error(payload.error || "Installation impossible.");
-      const nextCodes = activeCodes.filter((code) => getKqEquipmentDefinition(code)?.slot !== equipment.slot);
-      setEquippedOverride([...nextCodes, equipment.code]);
-      setNotice(`${equipment.name} est maintenant installé.`);
+      const response=await fetch("/api/arena/placard/equipment",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({equipmentCode:item.code})});
+      const body=await response.json();if(!response.ok)throw new Error(body.error||"Installation impossible.");
+      setOverride([...activeCodes.filter(code=>getKqEquipmentAtLevel(code)?.slot!==item.slot),item.code]);
+      setNotice(`${item.name} installé. Ses bonus seront pris en compte à la prochaine culture.`);
       window.dispatchEvent(new Event("kq:equipment-updated"));
-    } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Installation impossible.");
-    } finally {
-      setPendingCode(null);
-    }
+    } catch(reason){setError(reason instanceof Error?reason.message:"Installation impossible.");}
+    finally{lock.current=false;setPending(null);}
   };
-
-  const openShop = () => {
-    onClose();
-    onOpenShop();
-  };
-
-  return (
-    <div className={styles.overlay}>
-      <button type="button" tabIndex={-1} className={styles.backdrop} onClick={onClose} aria-label="Fermer l’inventaire" />
-      <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="equipment-inventory-title">
-        <header className={styles.header}>
-          <span className={styles.headerIcon}><PackageOpen aria-hidden="true" /></span>
-          <div>
-            <small>Atelier du placard</small>
-            <h2 id="equipment-inventory-title">Inventaire d’équipement</h2>
-            <p>{loading ? "Chargement de l’atelier…" : `${ownedEquipment.length} pièce${ownedEquipment.length > 1 ? "s" : ""} possédée${ownedEquipment.length > 1 ? "s" : ""} · ${equippedCount} installée${equippedCount > 1 ? "s" : ""}`}</p>
-          </div>
-          <button ref={closeButtonRef} type="button" className={styles.closeButton} onClick={onClose} aria-label="Fermer l’inventaire"><X aria-hidden="true" /></button>
-        </header>
-
-        <div className={styles.categoryBar} aria-label="Filtrer l’inventaire">
-          <button type="button" aria-pressed={category === "all"} data-active={category === "all" || undefined} onClick={() => setCategory("all")}>Tout</button>
-          {availableCategories.map((candidate) => {
-            const Icon = CATEGORY_ICONS[candidate];
-            return <button key={candidate} type="button" aria-pressed={category === candidate} data-active={category === candidate || undefined} onClick={() => setCategory(candidate)}><Icon aria-hidden="true" />{KQ_EQUIPMENT_CATEGORY_LABELS[candidate]}</button>;
-          })}
+  return <div className={styles.overlay}>
+    <button type="button" tabIndex={-1} className={styles.backdrop} onClick={onClose} aria-label="Fermer l’entrepôt"/>
+    <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="equipment-inventory-title" data-arena-tour-surface="warehouse" onKeyDown={event=>{
+      if(event.key==="Escape"){event.preventDefault();event.stopPropagation();onClose();return;}
+      if(event.key!=="Tab")return;
+      const controls=Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled),a[href],input,select,[tabindex="0"]')).filter(el=>el.getClientRects().length>0);
+      if(event.shiftKey&&document.activeElement===controls[0]){event.preventDefault();controls.at(-1)?.focus();}
+      else if(!event.shiftKey&&document.activeElement===controls.at(-1)){event.preventDefault();controls[0]?.focus();}
+    }}>
+      <header className={styles.header}>
+        <div><small>Le Placard · ton atelier</small><h2 id="equipment-inventory-title" data-arena-tour="warehouse">Mon entrepôt</h2><p>Clique sur la box ou un emplacement pour installer ton matériel.</p></div>
+        <strong>{formatKqCash(cashCents)}</strong><button ref={closeButton} type="button" onClick={onClose} aria-label="Fermer l’inventaire"><X/></button>
+      </header>
+      <div className={styles.layout}>
+        <div className={styles.workshop}>
+          <KqWarehouseScene equippedCodes={activeCodes} levels={levels} selectedSlot={slot} onSelect={select} disabled={loading||!!loadError||!!pending}/>
+          <p className={styles.panHint}>Sur petit écran, fais glisser le décor pour explorer l’entrepôt.</p>
+          <nav className={styles.slots} aria-label="Emplacements de l’entrepôt">{WAREHOUSE_ZONES.map(zone=><button key={zone.slot} type="button" aria-pressed={slot===zone.slot} onClick={()=>select(zone.slot)}>{KQ_EQUIPMENT_SLOT_LABELS[zone.slot]}</button>)}</nav>
+          <dl className={styles.stats}><div><dt>Quantité</dt><dd>+{summary.quantityPercent} %</dd></div><div><dt>Qualité max.</dt><dd>+{summary.qualityMaxBonus}</dd></div><div><dt>Régularité</dt><dd>+{summary.regularityPercent} %</dd></div><div><dt>Électricité / cycle</dt><dd>{formatKqCash(energy.totalCents)}</dd></div></dl>
+          <small className={styles.estimate}>Estimation en mode équilibré, hors nourriture et vétérinaire. L’installation est fixée au lancement de chaque culture.</small>
         </div>
-
-        <div className={styles.feedback} aria-live="polite">
-          {error || loadError ? <p data-error><CircleAlert aria-hidden="true" />{error || loadError}</p> : null}
-          {notice ? <p data-notice><Check aria-hidden="true" />{notice}</p> : null}
-        </div>
-
-        <div className={styles.content}>
-          {loading ? (
-            <div className={styles.skeleton} aria-label="Chargement de l’inventaire"><i /><i /><i /></div>
-          ) : loadError ? (
-            <div className={styles.emptyState}>
-              <CircleAlert aria-hidden="true" />
-              <strong>Impossible d’ouvrir l’atelier.</strong>
-              <button type="button" onClick={onRetry}><RefreshCw aria-hidden="true" />Réessayer</button>
-            </div>
-          ) : groups.length === 0 ? (
-            <div className={styles.emptyState}>
-              <PackageOpen aria-hidden="true" />
-              <strong>{category === "all" ? "Aucun équipement acheté pour le moment." : "Aucun achat dans cette catégorie."}</strong>
-              <button type="button" onClick={openShop}><ShoppingBag aria-hidden="true" />Voir la boutique</button>
-            </div>
-          ) : groups.map((group) => {
-            const installed = activeEquipment.find((equipment) => equipment.slot === group.slot) ?? null;
-            return (
-              <section key={group.slot} className={styles.slotGroup} aria-labelledby={`inventory-slot-${group.slot}`}>
-                <header>
-                  <div>
-                    <small>Emplacement</small>
-                    <h3 id={`inventory-slot-${group.slot}`}>{KQ_EQUIPMENT_SLOT_LABELS[group.slot]}</h3>
-                  </div>
-                  <span data-empty={!installed || undefined}>{installed ? `${installed.name} actif` : "Emplacement libre"}</span>
-                </header>
-                <div className={styles.equipmentGrid}>
-                  {group.equipment.map((equipment) => {
-                    const isEquipped = activeCodes.includes(equipment.code);
-                    const requirementState = getKqEquipmentRequirementState({ equipment, ownedCodes });
-                    const replacedEquipment = activeEquipment.find((candidate) => (
-                      candidate.slot === equipment.slot && activeCodes.includes(candidate.code) && candidate.code !== equipment.code
-                    ));
-                    const impacts = getKqEquipmentImpactLabels(equipment).slice(0, 3);
-                    return (
-                      <article key={equipment.code} className={styles.equipmentCard} data-equipped={isEquipped || undefined}>
-                        <EquipmentVisual equipment={equipment} level={levels[equipment.code] ?? 1} />
-                        <div className={styles.cardCopy}>
-                          <span className={styles.status} data-equipped={isEquipped || undefined}>{isEquipped ? <><Check aria-hidden="true" />Installé</> : "En réserve"}</span>
-                          <small>{KQ_EQUIPMENT_CATEGORY_LABELS[equipment.category]} · {equipment.specification}</small>
-                          <h4>{equipment.name}</h4>
-                          <p>{equipment.benefit}</p>
-                          <ul>{impacts.map((impact) => <li key={impact}><Check aria-hidden="true" />{impact}</li>)}</ul>
-                          <em data-tradeoff>Contrepartie : {equipment.tradeoff}</em>
-
-                          {!isEquipped && replacedEquipment ? <em>Remplace : {replacedEquipment.name}</em> : null}
-                          {!requirementState.compatible ? <em data-warning>Prérequis : {requirementState.missing.map((requirement) => requirement.label).join(" · ")}</em> : null}
-                        </div>
-                        <div className={styles.upgradeSlot}><KqEquipmentUpgrade code={equipment.code} level={levels[equipment.code] ?? 1} cashCents={cashCents} disabled={pendingCode !== null} onUpdated={onRetry} /></div>
-                        <footer>
-                          <button
-                            type="button"
-                            disabled={isEquipped || !requirementState.compatible || Boolean(pendingCode)}
-                            onClick={() => void equip(equipment)}
-                          >
-                            {pendingCode === equipment.code ? "Installation…" : isEquipped ? "Déjà installé" : requirementState.compatible ? "Installer" : "Installation bloquée"}
-                          </button>
-                        </footer>
-                      </article>
-                    );
-                  })}
-                </div>
-              </section>
-            );
-          })}
-        </div>
-
-        <footer className={styles.footer}>
-          <p><strong>Un seul équipement actif par emplacement.</strong> Améliore chaque matériel jusqu’au niveau 10. Son apparence évolue aux niveaux 5 et 10.</p>
-          <button type="button" onClick={openShop}><ShoppingBag aria-hidden="true" />Acheter du matériel</button>
-        </footer>
-      </section>
-    </div>
-  );
+        <aside ref={panel} className={styles.panel} aria-labelledby="warehouse-slot-title">
+          <small>Emplacement sélectionné</small><h3 id="warehouse-slot-title">{KQ_EQUIPMENT_SLOT_LABELS[slot]}</h3>
+          {slot==="flower-drying"?<p>Ta pièce dédiée aux fleurs récoltées. Chaque niveau renforce la régularité ; la qualité maximale augmente aux niveaux 4, 7 et 10. Le résultat dépend aussi de tes réussites en culture.</p>:<p>{installed?`${installed.name} est en place.`:"Choisis un équipement acheté pour aménager cet emplacement."}</p>}
+          <div aria-live="polite">{error||loadError?<p role="alert" className={styles.error}><CircleAlert size={16}/>{error||loadError}</p>:null}{notice?<p role="status" className={styles.notice}><Check size={16}/>{notice}</p>:null}</div>
+          {loading?<p role="status">Actualisation de l’atelier…</p>:loadError?<button type="button" onClick={onRetry}><RefreshCw size={16}/>Réessayer</button>:<>
+            {choices.map(item=>{const isInstalled=activeCodes.includes(item.code),requirement=getKqEquipmentRequirementState({equipment:item,ownedCodes});return <article key={item.code} className={styles.item} data-installed={isInstalled}>
+              <span>{isInstalled?"Installé":item.purchasable?"En réserve":"Fourni"}{item.purchasable?` · niveau ${levels[item.code]??1}`:""}</span><h4>{item.name}</h4>
+              <ul>{getKqEquipmentImpactLabels(item).map(label=><li key={label}>{label}</li>)}</ul><small>{item.tradeoff}</small>
+              {!isInstalled&&installed?<p>Remplace {installed.name}, qui reste en réserve.</p>:null}
+              {!requirement.compatible?<p className={styles.error}>Prérequis : {requirement.missing.map(r=>r.label).join(", ")}</p>:null}
+              <button type="button" disabled={isInstalled||!purchasedCodes.includes(item.code)||!requirement.compatible||!!pending||loading} onClick={()=>void equip(item)}>{pending===item.code?"Installation…":isInstalled?"Déjà installé":"Installer ici"}</button>
+              {item.purchasable&&purchasedCodes.includes(item.code)?<KqEquipmentUpgrade code={item.code} level={levels[item.code]??1} cashCents={cashCents} disabled={!!pending||loading} onUpdated={onRetry}/>:null}
+            </article>;})}
+            {!choices.length?<p className={styles.empty}><PackageOpen/>Cet emplacement est prêt à accueillir ton matériel.</p>:null}
+            {suggestion?<button type="button" className={styles.shopButton} onClick={()=>openShop(suggestion.code)}><ShoppingBag size={17}/>{slot==="flower-drying"?`Aménager le séchoir · ${formatKqCash(suggestion.priceCents)}`:"Voir le matériel en boutique"}</button>:null}
+          </>}
+          <small className={styles.rule}>Acheter, installer, puis améliorer. Un seul équipement actif par emplacement ; aucun changement sur les cultures déjà lancées.</small>
+        </aside>
+      </div>
+    </section>
+  </div>;
 }

@@ -10,8 +10,8 @@ import { KQ_EQUIPMENT_CATALOG } from "@/lib/kanab-quest-equipment";
 describe("Kanab Quest equipment artwork", () => {
   it("ships one distinct local WebP hero object for every catalog item", () => {
     const artwork = Object.values(KQ_EQUIPMENT_ARTWORK);
-    expect(artwork).toHaveLength(24);
-    expect(new Set(artwork.map((item) => item.src)).size).toBe(24);
+    expect(artwork).toHaveLength(25);
+    expect(new Set(artwork.map((item) => item.src)).size).toBe(25);
 
     artwork.forEach((item) => {
       expect(item.src.endsWith(".webp")).toBe(true);

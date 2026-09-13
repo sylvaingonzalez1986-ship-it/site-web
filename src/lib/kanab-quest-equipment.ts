@@ -22,6 +22,7 @@ export type KqEquipmentSlot =
   | "static-separation"
   | "press"
   | "drying"
+  | "flower-drying"
   | "energy"
   | "security";
 
@@ -84,6 +85,29 @@ export const KQ_EQUIPMENT_PRICE_CHECKED_AT = "2026-09-01";
 const checkedAt = KQ_EQUIPMENT_PRICE_CHECKED_AT;
 
 const LEGACY_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = [
+  {
+    code: "DRYING-ROOM",
+    name: "Pièce séchoir",
+    category: "infrastructure",
+    slot: "flower-drying",
+    priceCents: 60000,
+    purchasable: true,
+    shortDescription: "Une pièce dédiée aux fleurs récoltées, à aménager dans ton entrepôt.",
+    benefit: "Qualité maximale +1 et régularité +2 %. Améliorable jusqu’au niveau 10.",
+    tradeoff: "Consomme de l’électricité à chaque culture. Le bonus dépend des étapes réussies et ne garantit pas une note au jury.",
+    specification: "Pièce de séchage des fleurs · 10 niveaux",
+    powerWatts: 75,
+    effects: { qualityMaxBonus: 1, regularityPercent: 2 },
+    unlocks: [],
+    realWorldAnchor: {
+      label: "Aménagement fictif de l’entrepôt du Placard",
+      seller: "Règles du Placard",
+      sourceUrl: "https://github.com/sylvaingonzalez1986-ship-it/site-web/blob/master/docs/bete-de-concours/PLACARD-ENTREPOT-SECHOIR.md",
+      referencePriceCents: 60000,
+      priceKind: "game-balance",
+      checkedAt: "2026-09-13",
+    },
+  },
   {
     code: "TENT-080-STARTER",
     name: "Tente de départ 90 × 90",
@@ -645,6 +669,7 @@ export const KQ_EQUIPMENT_CATEGORY_LABELS: Record<KqEquipmentCategory, string> =
 };
 
 export const KQ_EQUIPMENT_SLOT_LABELS: Record<KqEquipmentSlot, string> = {
+  "flower-drying": "Pièce séchoir",
   tent: "Tente",
   lighting: "Éclairage",
   air: "Extraction",
@@ -686,8 +711,11 @@ export const KQ_EQUIPMENT_REPLACEMENTS: Record<string, { code: string; level: nu
 
 export const KQ_GAME_EQUIPMENT_PRICES: Record<string, number> = { "SIFT-TRAY": 55000, "PRESS-0600": 85000, "WASHER-25L": 125000 };
 
+// Keep definitions readable for immutable old runs, but remove them from live equipment.
+export const KQ_RETIRED_EQUIPMENT_CODES: readonly string[] = ["SECURITY-FENCE"];
+
 export const KQ_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = LEGACY_EQUIPMENT_CATALOG
-  .filter((item) => !KQ_EQUIPMENT_REPLACEMENTS[item.code])
+  .filter((item) => !KQ_EQUIPMENT_REPLACEMENTS[item.code] && !KQ_RETIRED_EQUIPMENT_CODES.includes(item.code))
   .map((item) => ({
     ...item,
     priceCents: KQ_GAME_EQUIPMENT_PRICES[item.code] ?? item.priceCents,
@@ -790,7 +818,7 @@ export function getKqEquipmentAtLevel(code: string, requestedLevel = 1): KqEquip
 export function getKqEquipmentUpgradeCost(code: string, requestedLevel: number): number | null {
   const equipment = getKqEquipmentDefinition(code);
   const level = getKqEquipmentLevel(requestedLevel);
-  if (!equipment?.purchasable || KQ_EQUIPMENT_REPLACEMENTS[code] || level !== requestedLevel || level >= KQ_EQUIPMENT_MAX_LEVEL) return null;
+  if (!equipment?.purchasable || KQ_EQUIPMENT_REPLACEMENTS[code] || KQ_RETIRED_EQUIPMENT_CODES.includes(code) || level !== requestedLevel || level >= KQ_EQUIPMENT_MAX_LEVEL) return null;
   return Math.ceil(equipment.priceCents * level / 10);
 }
 

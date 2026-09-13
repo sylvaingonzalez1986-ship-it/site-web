@@ -150,7 +150,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
 
     <h1 className={styles.srOnly}>Mon carnet de dégustation</h1>
     {!open || opening ? <div className={styles.closedStage} data-opening={opening || undefined} aria-hidden={open || undefined}>
-      <button ref={coverRef} type="button" className={styles.cover} tabIndex={open ? -1 : 0} onClick={() => { setOpening(true); setOpen(true); go("contents"); }} aria-label="Ouvrir mon carnet de dégustation">
+      <button ref={coverRef} data-arena-tour="notebook" type="button" className={styles.cover} tabIndex={open ? -1 : 0} onClick={() => { setOpening(true); setOpen(true); go("contents"); }} aria-label="Ouvrir mon carnet de dégustation">
         <span className={styles.coverBorder}>
           <span className={styles.coverKicker}>L’Arène · Carnet de dégustation</span>
           <span className={styles.coverEmblem}><Image src="/contest/mascot/tasting/tasting-start.png" alt="La mascotte avec son carnet" width={408} height={771} sizes="120px" priority /><span aria-hidden="true">À toi de jouer !</span></span>

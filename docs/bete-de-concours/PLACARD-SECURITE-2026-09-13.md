@@ -1,9 +1,15 @@
 # Sécurité et frais du compagnon
 
-Trois alternatives dans l’emplacement Sécurité : caméra de surveillance (69,99 €,
-12 W), chien de garde (1 000 €, régularité +8 %, aucune électricité), clôture électrique
-(180 €, régularité +4 %, 35 W de jeu). Toutes protègent intégralement le poids contre
-l’incident de vol existant. Les bonus ne se cumulent pas entre ces trois choix.
+Deux alternatives dans l’emplacement Sécurité : caméra de surveillance (69,99 €,
+12 W) et chien de garde (1 000 €, régularité +8 %, aucune électricité). Toutes deux
+protègent intégralement le poids contre l’incident de vol existant. Les bonus ne se
+cumulent pas entre ces deux choix.
+
+La clôture électrique est retirée par `20260913000800_kq_retire_electric_fence.sql` :
+catalogue désactivé et emplacement libéré. L’application la masque dans l’inventaire
+et refuse achat, installation et amélioration. Son ancienne définition et son image
+restent des archives pour lire les parties et factures déjà enregistrées. Les informations
+de création ci-dessous décrivent la version initiale, avant ce retrait.
 
 Le chien possédé coûte 8 € par culture terminée et 40 € supplémentaires tous les
 10 cycles terminés depuis son adoption. Le propriétaire reste responsable des soins

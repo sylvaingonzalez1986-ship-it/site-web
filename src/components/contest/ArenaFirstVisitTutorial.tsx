@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { createPortal } from "react-dom";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { useCookieConsent } from "@/components/cookies/CookieConsentProvider";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { ARENA_TUTORIAL_STEPS, ARENA_TUTORIAL_REPUTATION_ROWS } from "@/lib/arena-tutorial";
 import styles from "./ArenaFirstVisitTutorial.module.css";
@@ -49,14 +48,12 @@ function getFocusableElements(container: HTMLElement | null): HTMLElement[] {
 }
 
 export function ArenaFirstVisitTutorial() {
-  const { showBanner } = useCookieConsent();
   const titleId = useId();
   const descriptionId = useId();
   const dialogRef = useRef<HTMLElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const stepTitleRef = useRef<HTMLHeadingElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
-  const checkedFirstVisitRef = useRef(false);
   const [open, setOpen] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const step = ARENA_TUTORIAL_STEPS[stepIndex] ?? ARENA_TUTORIAL_STEPS[0];
@@ -78,17 +75,6 @@ export function ArenaFirstVisitTutorial() {
     setOpen(true);
   }, []);
 
-  useEffect(() => {
-    if (showBanner || checkedFirstVisitRef.current) return;
-    const openTimer = window.setTimeout(() => {
-      checkedFirstVisitRef.current = true;
-      if (shouldShowArenaTutorial(window.localStorage)) {
-        setStepIndex(0);
-        setOpen(true);
-      }
-    }, 0);
-    return () => window.clearTimeout(openTimer);
-  }, [showBanner]);
 
   useBodyScrollLock(open);
 

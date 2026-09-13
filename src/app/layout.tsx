@@ -1,4 +1,5 @@
 import { NavigationFeedbackProvider } from "@/components/navigation/NavigationFeedback";
+import { ArenaJourneyEntry } from "@/components/contest/ArenaJourneyEntry";
 import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed, Caveat, Space_Grotesk } from "next/font/google";
 import { cookies, headers } from "next/headers";
@@ -235,6 +236,7 @@ export default async function RootLayout({
               <Footer />
             </div>
             <NewProductsPopup />
+            <ArenaJourneyEntry />
           </CookieConsentProvider>
         </CartProvider>
         </NavigationFeedbackProvider>

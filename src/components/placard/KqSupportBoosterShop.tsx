@@ -35,12 +35,16 @@ export function KqSupportBoosterShop({
   initialEquipmentCode = null,
   onExit,
   onOpenCollection,
+  autoClaimWelcome = true,
+  onOpenWorkshop,
 }: {
   autoOpen?: boolean;
   autoOpenEquipment?: boolean;
   initialEquipmentCode?: string | null;
   onExit?: () => void;
   onOpenCollection?: () => void;
+  autoClaimWelcome?: boolean;
+  onOpenWorkshop?: (equipmentCode?:string)=>void;
 } = {}) {
   const dialogRef = useRef<HTMLElement>(null);
   const actionLock = useRef(false);
@@ -151,12 +155,12 @@ export function KqSupportBoosterShop({
   };
 
   useEffect(() => {
-    if (!shop || welcomeChecked || !shop.collectionActive || shop.welcomeClaimed) return;
+    if (!autoClaimWelcome || !shop || welcomeChecked || !shop.collectionActive || shop.welcomeClaimed) return;
     setWelcomeChecked(true);
     void claimWelcome();
     // The welcome grant is idempotent server-side and intentionally runs only once.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shop, welcomeChecked]);
+  }, [shop, welcomeChecked, autoClaimWelcome]);
 
   const openEntitlement = async (entitlement?: ShopEntitlement) => {
     if (!entitlement || actionLock.current) return;
@@ -209,7 +213,7 @@ export function KqSupportBoosterShop({
       </button>
 
       {shopOpen ? <div className={styles.backdrop} role="presentation" onClick={closeShop}>
-        <section ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="kq-shop-title" className={styles.shopDialog} data-equipment-open={equipmentCatalogOpen || undefined} onClick={(event) => event.stopPropagation()} onKeyDown={(event) => {
+        <section ref={dialogRef} data-arena-tour-surface="shop" data-arena-tour-blocked={openedCards.length>0||undefined} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="kq-shop-title" className={styles.shopDialog} data-equipment-open={equipmentCatalogOpen || undefined} onClick={(event) => event.stopPropagation()} onKeyDown={(event) => {
           if (event.key !== "Tab") return;
           const buttons = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), input, select, [tabindex="0"]')).filter((node) => !node.closest('[inert]') && node.getClientRects().length > 0);
           const first = buttons[0], last = buttons.at(-1);
@@ -235,7 +239,7 @@ export function KqSupportBoosterShop({
           <button type="button" className={`${styles.hotspot} ${styles.register}`} aria-label={`Acheter un booster pour ${shop?.costPerPack ?? 5} points`} disabled={!shop?.collectionActive || pending !== null || (shop?.spendablePoints ?? 0) < (shop?.costPerPack ?? 5)} onClick={() => void purchase()}>
             <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>{pending === "buy" ? "Achat…" : "Acheter un pack"}</strong><small>{shop?.costPerPack ?? 5} points{shop && shop.spendablePoints < shop.costPerPack ? " · solde insuffisant" : " · 10 cartes"}</small></span>
           </button>
-          <button type="button" className={`${styles.hotspot} ${styles.catalogBook}`} onClick={() => setEquipmentCatalogOpen(true)} aria-label="Ouvrir le rayon matériel" aria-haspopup="dialog">
+          <button type="button" data-arena-tour="equipment-book" className={`${styles.hotspot} ${styles.catalogBook}`} onClick={() => setEquipmentCatalogOpen(true)} aria-label="Ouvrir le rayon matériel" aria-haspopup="dialog">
             <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>Le matériel</strong><small>Machines & installation →</small></span>
           </button>
           {!shop?.collectionActive && localPreview ? <button type="button" onClick={openPreview} className={styles.preview}><PackageOpen size={16} />Test local</button> : null}
@@ -243,7 +247,7 @@ export function KqSupportBoosterShop({
           {!shop?.collectionActive && pending !== "load" && !notice ? <p className={styles.notice}><Flame size={16} />La vente de packs est momentanément fermée. Le matériel reste consultable.</p> : null}
         </div>
         {openedCards.length > 0 ? <div className="absolute inset-0 z-50 flex flex-col bg-[#081a14]/95 p-3 backdrop-blur-sm sm:p-6"><button type="button" aria-label="Fermer le pack ouvert" onClick={() => setOpenedCards([])} className="absolute right-3 top-3 z-10 grid h-11 w-11 place-items-center border-2 border-ink bg-white shadow-[3px_3px_0_#f4c43d]"><X /></button><header className="shrink-0 pr-14 text-center text-white"><small className="font-black uppercase tracking-[.14em] text-yellow">Pack débloqué</small><h3 className="font-display text-3xl uppercase sm:text-5xl">Tes nouvelles cartes</h3></header><div className="my-3 flex min-h-0 flex-1 items-center gap-2 overflow-x-auto px-1 pb-2 sm:gap-3">{openedCards.map((card, index) => { const src = getKqCardArtwork(card.code) ?? card.imageUrl; return <article key={`${card.code}-${index}`} className="w-28 shrink-0 border-2 border-[#d5a72d] bg-white p-1 shadow-[3px_3px_0_#d5a72d] sm:w-40">{src ? <div className="relative aspect-[2/3] overflow-hidden"><Image src={src} alt={card.name} fill sizes="160px" className="object-cover" /></div> : null}<small className="mt-1 block text-[9px] font-black uppercase text-green sm:text-xs">{card.rarity}</small><strong className="block text-[10px] sm:text-sm">{card.name}</strong></article>; })}</div><button type="button" onClick={() => { setOpenedCards([]); setNotice(""); }} className="mx-auto min-h-12 shrink-0 border-2 border-ink bg-yellow px-6 font-black uppercase shadow-[4px_4px_0_#fff]">Retour à la boutique</button></div> : null}
-        {equipmentCatalogOpen ? <KqEquipmentCatalogModal initialEquipmentCode={initialEquipmentCode} onClose={() => setEquipmentCatalogOpen(false)} /> : null}
+        {equipmentCatalogOpen ? <KqEquipmentCatalogModal initialEquipmentCode={initialEquipmentCode} onClose={() => setEquipmentCatalogOpen(false)} onOpenWorkshop={onOpenWorkshop}/> : null}
       </section></div> : null}
     </section>
   );

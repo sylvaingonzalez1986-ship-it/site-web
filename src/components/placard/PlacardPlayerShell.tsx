@@ -38,12 +38,13 @@ const KqMissionCenter = dynamic(
   { loading: PlacardViewLoading },
 );
 const KqBotteCollection = dynamic(() => import("./KqBotteCollection").then((module) => module.KqBotteCollection), { ssr: false });
+const KqWarehouseEntry = dynamic(() => import("./KqWarehouseEntry").then((module) => module.KqWarehouseEntry), { loading: PlacardViewLoading });
 
-type PlacardView = "hub" | "shop" | "game" | "arena" | "market" | "missions";
+type PlacardView = "hub" | "shop" | "game" | "arena" | "market" | "missions" | "workshop";
 type PlacardDeepLink = PlacardView | "shop-equipment";
 
 function isPlacardView(value: string | null): value is PlacardView {
-  return value === "hub" || value === "shop" || value === "game" || value === "arena" || value === "market" || value === "missions";
+  return value === "hub" || value === "shop" || value === "game" || value === "arena" || value === "market" || value === "missions" || value === "workshop";
 }
 
 function getPlacardDeepLink(): PlacardDeepLink {
@@ -61,6 +62,7 @@ function subscribePlacardLocation(onStoreChange: () => void) {
 }
 
 const PLACARD_VIEW_LABELS: Record<PlacardView, string> = {
+  workshop: "de l’Entrepôt",
   hub: "du Placard",
   shop: "de la Boutique",
   game: "du Jeu",
@@ -70,6 +72,7 @@ const PLACARD_VIEW_LABELS: Record<PlacardView, string> = {
 };
 
 export function PlacardPlayerShell() {
+  const guidedVisit=useSyncExternalStore(subscribePlacardLocation,()=>new URLSearchParams(window.location.search).get("guide")==="1",()=>false);
   const deepLink = useSyncExternalStore<PlacardDeepLink>(
     subscribePlacardLocation,
     getPlacardDeepLink,
@@ -105,6 +108,7 @@ export function PlacardPlayerShell() {
     setEquipmentCatalogRequested(true);
     openView("shop");
   }, [openView, view]);
+  const openWorkshop = useCallback((code?:string)=>{setRequestedEquipmentCode(code??null);openView("workshop");},[openView]);
 
   useEffect(() => () => {
     if (navigationTimerRef.current !== null) window.clearTimeout(navigationTimerRef.current);
@@ -133,7 +137,7 @@ export function PlacardPlayerShell() {
 
   if (view !== "hub") {
     const currentTitle =
-      view === "shop" ? "La Boutique" : view === "game" ? "Le Jeu" : view === "market" ? "Le Marché" : view === "missions" ? "Les Missions" : "Fleur vs Fleur";
+      view === "workshop" ? "Mon entrepôt" : view === "shop" ? "La Boutique" : view === "game" ? "Le Jeu" : view === "market" ? "Le Marché" : view === "missions" ? "Les Missions" : "Fleur vs Fleur";
 
     return (
       <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
@@ -164,6 +168,8 @@ export function PlacardPlayerShell() {
         {view === "shop" ? (
           <KqSupportBoosterShop
             autoOpen
+            autoClaimWelcome={!guidedVisit}
+            onOpenWorkshop={openWorkshop}
             onOpenCollection={() => setCollectionOpen(true)}
             autoOpenEquipment={autoOpenEquipmentCatalog}
             initialEquipmentCode={requestedEquipmentCode}
@@ -173,6 +179,8 @@ export function PlacardPlayerShell() {
               openView(shopReturnView);
             }}
           />
+        ) : view === "workshop" ? (
+          <KqWarehouseEntry initialEquipmentCode={requestedEquipmentCode} onClose={()=>openView("hub")} onOpenShop={openEquipmentCatalog}/>
         ) : view === "missions" ? (
           <KqMissionCenter onOpen={(next) => { if (next === "shop") setShopReturnView("missions"); openView(next); }} />
         ) : view === "market" ? (

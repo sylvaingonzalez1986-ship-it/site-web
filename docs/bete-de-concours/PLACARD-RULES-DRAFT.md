@@ -108,6 +108,7 @@ adaptés à la progression : tamis 550 €, presse 850 €, laveuse 1 250 €.
 | Équipement | Prix virtuel en euros |
 | --- | ---: |
 | Tente renforcée 120 × 120 | 199 € |
+| Pièce séchoir | 600 € |
 | LED spéciale 300 W | 359 € |
 | Extracteur EC 6 pouces | 149 € |
 | Contrôleur climatique AI+ | 139 € |
@@ -120,13 +121,12 @@ adaptés à la progression : tamis 550 €, presse 850 €, laveuse 1 250 €.
 | Panneau solaire et batterie | 1 149 € |
 | Caméra de surveillance | 69,99 € |
 | Chien de garde | 1 000 € |
-| Clôture électrique | 180 € |
 
 Un seul choix de sécurité est actif à la fois. Tous empêchent les pertes de poids
-lors d’un vol. Le chien apporte aussi +8 % de régularité au niveau 1 ; la clôture,
-+4 %. Les améliorations ajoutent ensuite un point de régularité par niveau.
-La caméra consomme 12 W et la clôture 35 W dans le jeu. La clôture ajoute 1,89 €
-par cycle au niveau 1 en mode Équilibré, avant réduction solaire.
+lors d’un vol. Le chien apporte aussi +8 % de régularité au niveau 1.
+Les améliorations ajoutent ensuite un point de régularité par niveau.
+La caméra consomme 12 W dans le jeu. Les deux choix disponibles sont la caméra
+et le chien de garde.
 
 Posséder le chien entraîne 8 € de nourriture à chaque culture terminée et 40 €
 de vétérinaire aux 10e, 20e, 30e cycles depuis l’adoption. Cela reste dû quand

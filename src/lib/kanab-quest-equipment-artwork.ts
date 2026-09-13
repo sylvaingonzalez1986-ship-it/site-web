@@ -4,6 +4,10 @@ export type KqEquipmentArtwork = {
 };
 
 export const KQ_EQUIPMENT_ARTWORK: Readonly<Record<string, KqEquipmentArtwork>> = {
+  "DRYING-ROOM": {
+    src: "/app/kanab-quest/equipment/equipment-DRYING-ROOM-hero-v1.webp",
+    alt: "Pièce séchoir ouverte, aux montants turquoise et aux fleurs suspendues sur des rails en bois",
+  },
   "TENT-080-STARTER": {
     src: "/app/kanab-quest/equipment/equipment-TENT-080-STARTER-hero-v2.webp",
     alt: "Petite tente de culture noire aux renforts turquoise avec une réparation en toile claire",

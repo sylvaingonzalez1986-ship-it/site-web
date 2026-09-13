@@ -6,6 +6,7 @@ import {
   getKqEquipmentUpgradeCost,
   getKqEquipmentRequirementState,
   KQ_EQUIPMENT_CATALOG,
+  KQ_RETIRED_EQUIPMENT_CODES,
 } from "@/lib/kanab-quest-equipment";
 import {
   isKqMarketRouteCode,
@@ -101,17 +102,18 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
   if (availableFlowers.error) throw new Error(`[supabase:kq_flowers] ${availableFlowers.error.message}`);
   if (routeMasteries.error) throw new Error(`[supabase:kq_player_route_masteries] ${routeMasteries.error.message}`);
   const routePlan = parseKqEquipmentRoutePlan(wallet.data);
-  const levels = Object.fromEntries((owned.data ?? []).map((row) => [String(row.equipment_code), Number(row.level ?? 1)]));
+  const availableOwned = (owned.data ?? []).filter((row) => !KQ_RETIRED_EQUIPMENT_CODES.includes(String(row.equipment_code)));
+  const levels = Object.fromEntries(availableOwned.map((row) => [String(row.equipment_code), Number(row.level ?? 1)]));
 
   return {
     cashCents: Number(wallet.data.cash_cents ?? 0),
     levels,
     reputation: Number(wallet.data.reputation ?? 0),
-    ownedCodes: (owned.data ?? []).map((row) => String(row.equipment_code)),
-    purchasedCodes: (owned.data ?? [])
+    ownedCodes: availableOwned.map((row) => String(row.equipment_code)),
+    purchasedCodes: availableOwned
       .filter((row) => Number(row.purchase_price_cents ?? 0) > 0)
       .map((row) => String(row.equipment_code)),
-    equippedCodes: (loadout.data ?? []).map((row) => String(row.equipment_code)),
+    equippedCodes: (loadout.data ?? []).map((row) => String(row.equipment_code)).filter((code) => !KQ_RETIRED_EQUIPMENT_CODES.includes(code)),
     activeRun: Number(activeRuns.count ?? 0) > 0,
     readyLotCount: Number(readyLots.count ?? 0),
     availableFlowerCount: Number(availableFlowers.count ?? 0),
@@ -216,6 +218,7 @@ export async function upgradeKqDurableEquipment(input: {
 
 export async function equipKqDurableEquipment(input: { userId: string; equipmentCode: string }) {
   assertUuid(input.userId, "Compte équipement invalide.");
+  if (KQ_RETIRED_EQUIPMENT_CODES.includes(input.equipmentCode)) throw new Error("Cet équipement n’est plus disponible.");
   const equipment = getKqEquipmentDefinition(input.equipmentCode);
   if (!equipment) throw new Error("Équipement inconnu.");
   const supabase = createSupabaseServiceClient();

@@ -76,7 +76,7 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" |
 
   return <main className={styles.center}>
     <header className={styles.header}>
-      <div><span className={styles.eyebrow}>Centre de missions</span><h1>Tes défis, tes cartes.</h1><p>Cultive, fidélise et développe ton réseau. Chaque objectif atteint te rapporte un pack La Botte.</p></div>
+      <div><span className={styles.eyebrow}>Centre de missions</span><h1 data-arena-tour="missions">Tes défis, tes cartes.</h1><p>Cultive, fidélise et développe ton réseau. Chaque objectif atteint te rapporte un pack La Botte.</p></div>
       <Image src={PACK_IMAGE} alt="Packs de cartes La Botte à gagner" width={140} height={140} sizes="140px" />
     </header>
     <div className={styles.toolbar}>
