@@ -33,12 +33,16 @@ const KqMarketDesk = dynamic(
   () => import("./KqMarketDesk").then((module) => module.KqMarketDesk),
   { loading: PlacardViewLoading },
 );
+const KqMissionCenter = dynamic(
+  () => import("./KqMissionCenter").then((module) => module.KqMissionCenter),
+  { loading: PlacardViewLoading },
+);
 
-type PlacardView = "hub" | "shop" | "game" | "arena" | "market";
+type PlacardView = "hub" | "shop" | "game" | "arena" | "market" | "missions";
 type PlacardDeepLink = PlacardView | "shop-equipment";
 
 function isPlacardView(value: string | null): value is PlacardView {
-  return value === "hub" || value === "shop" || value === "game" || value === "arena" || value === "market";
+  return value === "hub" || value === "shop" || value === "game" || value === "arena" || value === "market" || value === "missions";
 }
 
 function getPlacardDeepLink(): PlacardDeepLink {
@@ -61,6 +65,7 @@ const PLACARD_VIEW_LABELS: Record<PlacardView, string> = {
   game: "du Jeu",
   arena: "de Fleur vs Fleur",
   market: "du Comptoir des lots",
+  missions: "des Missions",
 };
 
 export function PlacardPlayerShell() {
@@ -126,7 +131,7 @@ export function PlacardPlayerShell() {
 
   if (view !== "hub") {
     const currentTitle =
-      view === "shop" ? "La Boutique" : view === "game" ? "Le Jeu" : view === "market" ? "Le Marché" : "Fleur vs Fleur";
+      view === "shop" ? "La Boutique" : view === "game" ? "Le Jeu" : view === "market" ? "Le Marché" : view === "missions" ? "Les Missions" : "Fleur vs Fleur";
 
     return (
       <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
@@ -163,6 +168,8 @@ export function PlacardPlayerShell() {
               openView(shopReturnView);
             }}
           />
+        ) : view === "missions" ? (
+          <KqMissionCenter onOpen={(next) => { if (next === "shop") setShopReturnView("missions"); openView(next); }} />
         ) : view === "market" ? (
           <KqMarketDesk onOpenShop={openEquipmentCatalog} />
         ) : (

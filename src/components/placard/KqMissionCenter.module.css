@@ -1,0 +1,74 @@
+.center { width: min(1180px, 100%); margin: auto; padding: 28px clamp(16px, 3vw, 32px) 48px; color: #fff5df; }
+.header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.header h1 { margin: 8px 0; font: 900 clamp(34px, 5vw, 62px)/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.header p { max-width: 65ch; margin: 12px 0; color: #c3dfd3; font-size: 14px; line-height: 1.7; }
+.header > img { object-fit: contain; width: clamp(85px, 16vw, 140px); height: auto; filter: drop-shadow(0 8px 12px #001e1970); }
+.eyebrow { color: #f4c43d; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 22px 0; padding-block: 14px; border-block: 1px solid #aedecb30; }
+.toolbar > span, .toolbar button { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; }
+.toolbar > span > svg { color: #f4c43d; }
+.center button, .center a { cursor: pointer; }
+.toolbar button { padding: 10px; min-height: 44px; border: 0; color: #c3dfd3; background: transparent; }
+.tracks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.track { min-width: 0; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #aad7c640; background: #002d24; border-radius: 10px; }
+.track[data-ready] { border-color: #f4c43d; box-shadow: 0 0 24px #f4c43d12; }
+.art { position: relative; height: 158px; background: #004536; }
+.art img { object-fit: cover; object-position: center 40%; }
+.art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 30%, #002d24); }
+.art > span { position: absolute; bottom: 12px; left: 18px; right: 12px; z-index: 1; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 900; }
+.art svg { color: #54d5bb; }
+.body { display: flex; flex-direction: column; flex: 1; padding: 18px; }
+.body h2 { margin: 10px 0; font: 900 clamp(24px, 2.5vw, 32px)/1.08 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.description { margin: 0 0 20px; min-height: 66px; color: #c3dfd3; font-size: 13px; line-height: 1.65; }
+.progressLabel { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; font-size: 12px; }
+.progressLabel b { color: #54d5bb; white-space: nowrap; }
+.body progress { appearance: none; display: block; width: 100%; height: 9px; margin: 10px 0 16px; border: 0; border-radius: 10px; overflow: hidden; background: #aee6d41a; }
+.body progress::-webkit-progress-bar { background: #aee6d41a; }
+.body progress::-webkit-progress-value { background: #54d5bb; border-radius: 10px; }
+.body progress::-moz-progress-bar { background: #54d5bb; border-radius: 10px; }
+.track[data-ready] progress::-webkit-progress-value { background: #f4c43d; }
+.track[data-ready] progress::-moz-progress-bar { background: #f4c43d; }
+.reward { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.reward img { object-fit: contain; }
+.reward small { display: block; margin-bottom: 5px; color: #c3dfd3; font-size: 11px; }
+.reward strong { color: #f4c43d; font-size: 13px; }
+.claim, .action { min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; padding: 10px; border: 1px solid #54d5bb80; border-radius: 5px; background: #004536; color: #fff5df; font-size: 12px; font-weight: 900; }
+.claim { background: #f4c43d; color: #002d24; border-color: #f4c43d; box-shadow: 0 3px #a77817; }
+.center button:disabled { opacity: .55; cursor: wait; }
+.center :where(button, a, summary):focus-visible { outline: 3px solid #f4c43d; outline-offset: 4px; }
+.journey { margin-top: 20px; border-top: 1px solid #aad7c625; padding-top: 10px; }
+.journey summary, .footer summary { min-height: 44px; align-content: center; color: #c3dfd3; font-size: 12px; cursor: pointer; }
+.journey ol { list-style: none; margin: 6px 0 0; padding: 0; }
+.journey li { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #aad7c61a; color: #99b9ac; }
+.journey li > svg, .journey li > span { flex-shrink: 0; width: 16px; }
+.journey li[aria-current] { color: #f4c43d; }
+.journey strong, .journey small { display: block; font-size: 11px; line-height: 1.6; }
+.journey small { font-weight: 400; color: #c3dfd3; }
+.complete { flex: 1; padding: 20px 0; text-align: center; }
+.complete > svg { margin: auto; color: #f4c43d; }
+.complete p { color: #c3dfd3; font-size: 13px; line-height: 1.6; }
+.receipt { display: flex; align-items: center; gap: 14px; padding: 20px; margin-bottom: 22px; background: #54d5bb18; border: 1px solid #54d5bb; border-radius: 8px; }
+.receipt > svg { color: #f4c43d; flex-shrink: 0; }
+.receipt p { margin: 6px 0 0; font-size: 12px; line-height: 1.6; color: #c3dfd3; }
+.receipt strong { font-size: 14px; }
+.receipt button, .footer > button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 14px; background: #f4c43d; color: #002d24; border: 0; border-radius: 5px; font-size: 12px; font-weight: 900; }
+.receipt button { margin-left: auto; flex-shrink: 0; }
+.error { margin: 16px 0; padding: 14px; border-left: 3px solid #e7ad66; background: #e7ad6612; color: #ffdab0; font-size: 13px; line-height: 1.6; }
+.error button, .error a { color: inherit; text-decoration: underline; background: transparent; border: 0; min-height: 44px; }
+.loading { padding: 50px 0; text-align: center; color: #c3dfd3; }
+.footer { margin-top: 24px; }
+.footer > button { margin: 0 0 20px auto; }
+.footer details { border-top: 1px solid #aad7c630; }
+.footer p { max-width: 90ch; color: #a8cabb; font-size: 12px; line-height: 1.7; margin: 8px 0; }
+@media (max-width: 760px) {
+  .tracks { grid-template-columns: 1fr; }
+  .art { height: 150px; }
+  .description { min-height: 0; }
+  .receipt { flex-wrap: wrap; }
+  .receipt button { width: 100%; margin: 0; }
+  .toolbar { align-items: flex-start; }
+  .toolbar > span { max-width: 180px; line-height: 1.5; }
+  .header { align-items: flex-start; gap: 8px; }
+  .header > img { width: 80px; }
+  .header p { font-size: 13px; }
+}

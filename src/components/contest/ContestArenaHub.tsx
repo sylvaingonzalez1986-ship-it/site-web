@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import { useEffect, useRef, useState, type PointerEvent, type KeyboardEvent } from "react";
-import { ArrowUpRight, Gift, BookOpen, Gamepad2, Trophy, Volume2, VolumeX } from "lucide-react";
+import { ArrowUpRight, Gift, BookOpen, Gamepad2, Trophy, Volume2, VolumeX, Target } from "lucide-react";
 import { ArenaFirstVisitTutorial } from "@/components/contest/ArenaFirstVisitTutorial";
 import { ARENA_LOBBY_MODES, ARENA_LOBBY_MODE_ORDER, type ArenaLobbyMode } from "@/lib/arena-lobby";
 import { useArenaMenuSound } from "@/hooks/useArenaMenuSound";
@@ -86,11 +86,11 @@ export function ContestArenaHub() {
         </button>
       </header>
 
+      <div className={styles.breathingRoom} aria-hidden="true" />
       <Link href="/arene?vue=classement" className={styles.rewardInvitation}>
         <Gift aria-hidden="true" />
-        <span><strong>Les ventes remplissent le bocal. À toi de gagner ta part.</strong><small>1 à 10 % des grammes de fleurs vendus alimentent les récompenses. 90 % du bocal pour le Top 10 éligible, 10 % pour la Fleur Surprise.</small><b>Découvrir les fleurs à gagner <ArrowUpRight size={16} aria-hidden="true" /></b></span>
+        <span><strong>Deviens le meilleur chanvrier.</strong><small>Note les fleurs que tu as goûtées, cultive les tiennes et monte au classement pour gagner une part des fleurs redistribuées en fin de saison.</small><b>Découvrir les fleurs à gagner <ArrowUpRight size={16} aria-hidden="true" /></b></span>
       </Link>
-      <div className={styles.breathingRoom} aria-hidden="true" />
       <div className={styles.dock}>
         <div className={styles.modeBrief} aria-live="polite" aria-atomic="true">
           <span>Mode {mode.number} / 03</span>
@@ -109,7 +109,7 @@ export function ContestArenaHub() {
         <Link href={mode.href} className={styles.enter} data-lobby-enter>
           <span>{mode.action}</span><ArrowUpRight aria-hidden="true" />
         </Link>
-        <div className={styles.help}><ArenaFirstVisitTutorial /></div>
+        <div className={styles.help}><ArenaFirstVisitTutorial /><Link href="/arene/placard?view=missions"><Target size={17} aria-hidden="true" />Mes missions · Packs La Botte</Link></div>
       </div>
     </main>
   );
