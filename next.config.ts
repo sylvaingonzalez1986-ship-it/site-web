@@ -88,6 +88,16 @@ const nextConfig: NextConfig = {
     ],
   },
   outputFileTracingExcludes: {
+    // These illustrations are served as public URLs, never read by the server.
+    // Legacy media helpers can otherwise trace the entire public directory into
+    // pages such as /[slug], duplicating hundreds of MB in Vercel functions.
+    // Keep invoice images and fonts available for server-side PDF generation.
+    "/*": [
+      "./public/app/**/*",
+      "./public/placard/**/*",
+      "./public/contest/**/*",
+      "./public/mascots/**/*",
+    ],
     // Uploads use Supabase and temporary files. The legacy local upload path
     // otherwise pulls public illustrations into this function alongside FFmpeg.
     // Public assets remain deployed separately and served by the CDN.
