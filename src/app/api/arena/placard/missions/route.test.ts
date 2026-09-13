@@ -1,15 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ enabled: vi.fn(), session: vi.fn(), rpc: vi.fn(), rate: vi.fn() }));
+const mocks = vi.hoisted(() => ({ enabled: vi.fn(), session: vi.fn(), rpc: vi.fn(), rate: vi.fn(), logRejection: vi.fn() }));
 vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc }) }));
-vi.mock("@/lib/security-rate-limit", () => ({ hitRateLimit: mocks.rate }));
+vi.mock("@/lib/security-rate-limit", () => ({
+  getRequestIp: () => "127.0.0.1",
+  hitRateLimit: mocks.rate,
+  logRateLimitRejection: mocks.logRejection,
+}));
 import { GET, POST } from "./route";
 const request = (body: unknown) => new Request("http://localhost/api/arena/placard/missions", { method: "POST", body: JSON.stringify(body) });
 describe("Placard mission API", () => {
   beforeEach(() => {
     vi.resetAllMocks(); mocks.enabled.mockResolvedValue(true);
-    mocks.session.mockResolvedValue({ customerId: "signed-in-user" });
+    mocks.session.mockResolvedValue({ customerId: "signed-in-user", customer: { email: "player@example.test" } });
     mocks.rate.mockResolvedValue({ allowed: true });
     mocks.rpc.mockResolvedValue({ data: { collectionActive: true, missions: [] }, error: null });
   });
@@ -49,6 +53,17 @@ describe("Placard mission API", () => {
     mocks.rate.mockResolvedValue({ allowed: false, retryAfterSeconds: 42 });
     const response = await POST(request({ code: "online-two" }));
     expect(response.status).toBe(429); expect(response.headers.get("Retry-After")).toBe("42");
+    expect(response.headers.get("Cache-Control")).toBe("private, no-store");
+    expect(mocks.rate).toHaveBeenCalledWith({ key: "kq_missions:signed-in-user", windowSeconds: 60, maxHits: 20 });
+    expect(mocks.logRejection).toHaveBeenCalledExactlyOnceWith({
+      endpoint: "POST /api/arena/placard/missions",
+      key: "kq_missions:signed-in-user",
+      ip: "127.0.0.1",
+      actorEmail: "player@example.test",
+      retryAfterSeconds: 42,
+      maxHits: 20,
+      windowSeconds: 60,
+    });
     expect(mocks.rpc).not.toHaveBeenCalled();
   });
 });
