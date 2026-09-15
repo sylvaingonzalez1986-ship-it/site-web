@@ -25,7 +25,7 @@ function isAtStep(href:string) {
   return location.pathname===destination.pathname && ["view","catalog"].every(key=>current.get(key)===destination.searchParams.get(key));
 }
 
-export function ArenaJourneyTour() {
+export function ArenaJourneyTour({ showProfile }: { showProfile: boolean }) {
   const [chanvrier,setChanvrier]=useState<ChanvrierProfile|null>(null);
   const [profileOpen,setProfileOpen]=useState(false);
   const {showBanner}=useCookieConsent();
@@ -73,13 +73,13 @@ export function ArenaJourneyTour() {
         if(!cancelled){
           setUserId(body.userId);setProgress(next);setError("");
           const profile=parseChanvrierProfile(body.chanvrier);setChanvrier(profile);
-          if(body.chanvrier===null&&location.pathname.startsWith("/arene"))setProfileOpen(true);
+          if(body.chanvrier===null&&showProfile)setProfileOpen(true);
         }
       } catch { if(!cancelled)setError("Le guide est momentanément indisponible."); }
       finally {clearTimeout(timer);if(!cancelled)setLoading(false);}
     })();
     return ()=>{cancelled=true;controller.abort();clearTimeout(timer);};
-  },[retry]);
+  },[retry,showProfile]);
 
   const act=useCallback(async(action:ArenaJourneyAction)=>{
     if(!progress||!userId||inFlight.current)return;
@@ -186,8 +186,8 @@ export function ArenaJourneyTour() {
       </section>
     </div>):null;
   return <>
-    {!active&&userId&&!profileOpen?(chanvrier?<ChanvrierPlayerCard profile={chanvrier} onEdit={()=>setProfileOpen(true)}/>:<button type="button" className={styles.profileButton} onClick={()=>setProfileOpen(true)}><UserRound size={17}/>Créer mon chanvrier</button>):null}
-    {profileOpen&&userId?<ChanvrierProfileEditor profile={chanvrier} onClose={()=>setProfileOpen(false)} onSaved={profile=>{setChanvrier(profile);setProfileOpen(false);}}/>:null}
+    {showProfile&&!active&&userId&&!profileOpen?(chanvrier?<ChanvrierPlayerCard profile={chanvrier} onEdit={()=>setProfileOpen(true)}/>:<button type="button" className={styles.profileButton} onClick={()=>setProfileOpen(true)}><UserRound size={17}/>Créer mon chanvrier</button>):null}
+    {showProfile&&profileOpen&&userId?<ChanvrierProfileEditor profile={chanvrier} onClose={()=>setProfileOpen(false)} onSaved={profile=>{setChanvrier(profile);setProfileOpen(false);}}/>:null}
     {!active&&userId?<button ref={replay} type="button" className={styles.replay} data-arena-guide-trigger disabled={busy} onClick={()=>void act("restart")}><Compass size={17}/>Guide{progress?.status==="completed"?<Check size={15}/>:null}</button>:null}
     {!progress&&error?<div className={styles.loadError} role="status"><p>{loading?"Chargement du profil et du guide…":error}</p><button type="button" disabled={loading} aria-busy={loading} onClick={()=>{setLoading(true);setRetry(value=>value+1);}}>{loading?"Chargement…":"Réessayer"}</button></div>:null}
     {overlay?createPortal(overlay,progress?.step?portalHost??document.body:document.body):null}

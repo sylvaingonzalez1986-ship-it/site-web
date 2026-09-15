@@ -8,5 +8,5 @@ const Tour=dynamic(()=>import("./ArenaJourneyTour").then(module=>module.ArenaJou
 export function ArenaJourneyEntry() {
   const pathname=usePathname();
   // The usual first-login destination is /profil. Keep checkout and browsing uninterrupted.
-  return pathname==="/profil"||pathname==="/arene"||pathname?.startsWith("/arene/")?<Tour key={pathname}/>:null;
+  return pathname==="/profil"||pathname==="/arene"||pathname?.startsWith("/arene/")?<Tour key={pathname} showProfile={pathname==="/arene"}/>:null;
 }
