@@ -1034,7 +1034,6 @@ export function KanabQuestDicePrototype({
     : rankProfile.claimedChallengeCodes;
   const rewardableDailyChallenges = dailyChallenges.filter((challenge) => !claimedChallengeCodes.includes(challenge.claimKey));
   const remainingDailyChallengePoints = getKqRemainingDailyChallengePoints(dailyChallenges, claimedChallengeCodes);
-  const claimedDailyChallengeCount = dailyChallenges.length - rewardableDailyChallenges.length;
   const availableCards = useMemo(() => getKqVisibleActionCards(state), [state]);
   const handCodes = useMemo(() => getKqHandCodes(state), [state]);
   const supportDeckSize = state.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")).length;
@@ -1823,10 +1822,6 @@ export function KanabQuestDicePrototype({
               } else onOpenArena?.();
             }}
           />
-          <section className={styles.dailyChallengeBoard}>
-            <header><span>Rotation quotidienne · {dailyChallenges[0]?.dayKey}</span><h2>Les 3 défis du jour</h2><p>Les mêmes objectifs sont validables en duel classé ou en entraînement. Adapte ton Buddie et ton deck avant de lancer la culture.</p><strong className={styles.dailyChallengeProgress}>{claimedDailyChallengeCount}/{dailyChallenges.length} terminé{claimedDailyChallengeCount > 1 ? "s" : ""} · +{remainingDailyChallengePoints} points encore disponibles</strong></header>
-            <div>{dailyChallenges.map((challenge) => { const claimed = claimedChallengeCodes.includes(challenge.claimKey); const missingPbi = !claimed && challenge.code === "biocontrol" && !pbiReserve.some((card) => (activeInventory[card.code] ?? 0) > 0); return <article key={challenge.claimKey} data-claimed={claimed || undefined} data-blocked={missingPbi || undefined}><Star /><span><strong>{challenge.title}</strong><small>{claimed ? "Objectif validé aujourd’hui." : missingPbi ? "Aucune PBI disponible dans ton album." : challenge.code === "biocontrol" ? `${challenge.description} Bonus mission : +1 XP au départ.` : challenge.description}</small></span><b>{claimed ? "Déjà gagné" : missingPbi ? "PBI requise" : `+${challenge.points}`}</b></article>; })}</div>
-          </section>
           <details className={styles.packFormat}>
             <summary><span>Deux collections · deux parcours</span><strong>Les boosters Buddies restent inchangés</strong><small>La Botte possède sa boutique dans L’Arène.</small></summary>
             <div><b>Buddies · album habituel</b><b>La Botte · 10 cartes</b><b>Prix La Botte · 5 points</b></div>
