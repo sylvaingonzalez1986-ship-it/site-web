@@ -1,4 +1,5 @@
 import { getKqEquipmentAtLevel, getKqEquipmentLevel } from "@/lib/kanab-quest-equipment";
+import type { ChanvrierStrength } from "./arena-chanvrier";
 
 export const KQ_ENERGY_MODES = {
   eco: { name: "Éco", consumption: 0.75, harvest: 0.9, pressure: 0, label: "−25 % énergie · −10 % récolte" },
@@ -61,4 +62,4 @@ export function quoteKqDogCare(completedCycles: number): KqDogCareSchedule {
 }
 export type KqEnergyInvoice = { runId: string; createdAt: string; totalCents: number; remainingCents: number; harvestGrams: number; quote: KqEnergyQuote; dogCare?: KqDogCare | null };
 export type KqEnergySummary = { outstandingCents: number; invoiceCount: number; bestGramsPerKwh: number | null; invoices: KqEnergyInvoice[]; dogCare?: KqDogCareSchedule | null };
-export type KqEnergySnapshot = KqEnergySummary & { cashCents: number; quotes: Record<KqEnergyMode, KqEnergyQuote> };
+export type KqEnergySnapshot = KqEnergySummary & { cashCents: number; quotes: Record<KqEnergyMode, KqEnergyQuote>; chanvrierStrength?: ChanvrierStrength | null; maintenanceDueNext?: string[] };

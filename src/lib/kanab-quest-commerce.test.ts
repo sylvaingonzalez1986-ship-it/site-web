@@ -9,6 +9,20 @@ function consume(s: KqCommerceState, item: KqCommerceStock, q: KqCommerceOffer) 
   if (s.campaign) { s.campaign.directUsed += q.directCost; s.campaign.shopUsed += q.shopCost; s.campaign.shopGoodUnits=q.shopGoodUnitsAfter; s.campaign.shopBadUnits=q.shopBadUnitsAfter; s.campaign.goodUnits = q.goodUnitsAfter; s.campaign.disappointmentUnits = q.disappointmentAfter; }
 }
 describe("Three sales channels", () => {
+  it("keeps fractional shop progress at database precision after crossing a partner threshold", () => {
+    const large = { ...stock, initialUnits: 10000, remainingUnits: 10000, equivalentUnits: 10000, originalUnits: 10000 };
+    for (const strength of [undefined, "merchant"] as const) {
+      const fractional = { ...state, strength, shopPartners: 8, campaign: { ...state.campaign!, shopPartnersStart: 8, shopRecruitmentStart: 1000.1, shopChurnStart: 2000.1 } };
+      const good = quoteKqCommerce(fractional, large, "cbd-shop");
+      expect(good.shopRecruitmentAfter).toBe(1000.1);
+      expect(good.shopPartnersAfter).toBe(strength === "merchant" ? 10 : 9);
+      const bad = quoteKqCommerce(fractional, { ...large, juryScore: 6.5 }, "cbd-shop");
+      expect(bad.shopChurnAfter).toBe(2000.1);
+      expect(bad.shopPartnersAfter).toBe(6);
+      expect(JSON.parse(JSON.stringify(good)).shopRecruitmentAfter).toBe(1000.1);
+    }
+  });
+
   it("distinguishes satisfaction from actual customer gains and losses", () => {
     expect(quoteKqCommerce(state, stock, "online", "advised", 200)).toMatchObject({ satisfaction: "satisfied", clientsBefore: 100, clientsAfter: 100 });
     expect(quoteKqCommerce(state, stock, "online")).toMatchObject({ satisfaction: "satisfied", clientsBefore: 100, clientsAfter: 103 });

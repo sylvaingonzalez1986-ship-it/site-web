@@ -1,4 +1,5 @@
 import "server-only";
+import { getChanvrierStartingXp } from "@/lib/arena-chanvrier";
 import { cacheArenaSharedRead } from "@/lib/arena-shared-cache";
 import { isKqEnergyMode, type KqEnergyMode } from "@/lib/kanab-quest-energy";
 
@@ -944,13 +945,14 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     varietyCode: input.buddieCode,
     deckCodes: input.deckCodes,
     collectionCodes,
-    startingXp: 1 + cultureTokens * KQ_CULTURE_TOKEN_START_XP,
+    startingXp: 1 + cultureTokens * KQ_CULTURE_TOKEN_START_XP + getChanvrierStartingXp(equipmentShop.strength),
     heritageCode,
     heritageCard,
     equipmentCodes: equipmentShop.equippedCodes,
     equipmentLevels: equipmentShop.levels,
     energyMode: input.energyMode ?? "balanced",
   });
+  if (equipmentShop.strength === "green-thumb") state.effectNotices = [...(state.effectNotices ?? []), "Main Verte : +4 XP pour cette culture."];
   if (input.expectedEnergyCents !== undefined && input.expectedEnergyCents !== state.energy?.totalCents) throw new Error("L’installation a changé. Actualise le devis électrique avant de lancer.");
   const supabase = createSupabaseServiceClient();
   const result = await supabase.rpc("rpc_kq_start_run_with_heritage", {

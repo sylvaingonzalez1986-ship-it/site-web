@@ -8,6 +8,7 @@ import {
   purchaseKqDurableEquipment,
   setKqEquipmentRoutePlan,
   upgradeKqDurableEquipment,
+  repairKqMachine,
 } from "@/lib/supabase/kanab-quest-equipment-backend";
 import { isKqMarketRouteCode, type KqMarketRouteCode } from "@/lib/kanab-quest-market";
 
@@ -74,12 +75,18 @@ export async function PATCH(request: Request) {
   }
   try {
     const payload = await request.json() as {
-      action?: "route-plan" | "upgrade";
+      action?: "route-plan" | "upgrade" | "repair";
+      expectedVersion?: number;
+      expectedCostCents?: number;
       requestKey?: string;
       expectedLevel?: number;
       route?: string | null;
       equipmentCode?: string | null;
     };
+    if (payload.action === "repair") return NextResponse.json(await repairKqMachine({
+      userId: session.customerId, equipmentCode: String(payload.equipmentCode ?? ""), requestKey: String(payload.requestKey ?? ""),
+      expectedVersion: payload.expectedVersion ?? -1, expectedCostCents: payload.expectedCostCents ?? -1,
+    }));
     if (payload.action === "upgrade") {
       return NextResponse.json(await upgradeKqDurableEquipment({
         userId: session.customerId,

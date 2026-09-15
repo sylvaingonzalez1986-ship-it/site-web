@@ -1,13 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, Check, Compass, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Compass, UserRound, X } from "lucide-react";
 import { createPortal } from "react-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useCookieConsent } from "@/components/cookies/CookieConsentProvider";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { ARENA_JOURNEY_STEPS, ARENA_JOURNEY_STEP_COUNT, advanceArenaJourney, arenaJourneyStorageKey, parseArenaJourneyProgress, type ArenaJourneyAction, type ArenaJourneyProgress } from "@/lib/arena-journey";
 import styles from "./ArenaJourneyTour.module.css";
+import { parseChanvrierProfile, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { ChanvrierProfileEditor } from "./ChanvrierProfileEditor";
+import { ChanvrierPlayerCard } from "./ChanvrierPlayerCard";
 
 type SavedJourney = {progress:ArenaJourneyProgress;pending:boolean};
 function readSaved(userId:string):SavedJourney|null {
@@ -23,6 +26,8 @@ function isAtStep(href:string) {
 }
 
 export function ArenaJourneyTour() {
+  const [chanvrier,setChanvrier]=useState<ChanvrierProfile|null>(null);
+  const [profileOpen,setProfileOpen]=useState(false);
   const {showBanner}=useCookieConsent();
   const [progress,setProgress]=useState<ArenaJourneyProgress|null>(null);
   const [userId,setUserId]=useState<string|null>(null);
@@ -33,6 +38,7 @@ export function ArenaJourneyTour() {
   const [rect,setRect]=useState<{top:number;left:number;width:number;height:number}|null>(null);
   const [atStep,setAtStep]=useState(false);
   const [retry,setRetry]=useState(0);
+  const [loading,setLoading]=useState(true);
   const target=useRef<HTMLElement|null>(null);
   const dialog=useRef<HTMLDialogElement|null>(null);
   const replay=useRef<HTMLButtonElement|null>(null);
@@ -40,7 +46,7 @@ export function ArenaJourneyTour() {
   const alive=useRef(true);
   const announcedStep=useRef<number|null>(null);
   const step=ARENA_JOURNEY_STEPS[progress?.step??0];
-  const active=!!progress && (progress.status==="new"||progress.status==="active") && !showBanner;
+  const active=!!progress && (progress.status==="new"||progress.status==="active") && !showBanner && !profileOpen;
   useBodyScrollLock(active && !blocked && progress?.step===0);
 
   useEffect(()=>{alive.current=true;return ()=>{alive.current=false;};},[]);
@@ -64,9 +70,13 @@ export function ArenaJourneyTour() {
             if(sync.ok&&(await sync.json()).persisted)remember(body.userId,next,false);
           } catch { /* Keep the pending browser copy for the next visit. */ }
         }
-        if(!cancelled){setUserId(body.userId);setProgress(next);setError("");}
+        if(!cancelled){
+          setUserId(body.userId);setProgress(next);setError("");
+          const profile=parseChanvrierProfile(body.chanvrier);setChanvrier(profile);
+          if(body.chanvrier===null&&location.pathname.startsWith("/arene"))setProfileOpen(true);
+        }
       } catch { if(!cancelled)setError("Le guide est momentanément indisponible."); }
-      finally {clearTimeout(timer);}
+      finally {clearTimeout(timer);if(!cancelled)setLoading(false);}
     })();
     return ()=>{cancelled=true;controller.abort();clearTimeout(timer);};
   },[retry]);
@@ -176,8 +186,10 @@ export function ArenaJourneyTour() {
       </section>
     </div>):null;
   return <>
+    {!active&&userId&&!profileOpen?(chanvrier?<ChanvrierPlayerCard profile={chanvrier} onEdit={()=>setProfileOpen(true)}/>:<button type="button" className={styles.profileButton} onClick={()=>setProfileOpen(true)}><UserRound size={17}/>Créer mon chanvrier</button>):null}
+    {profileOpen&&userId?<ChanvrierProfileEditor profile={chanvrier} onClose={()=>setProfileOpen(false)} onSaved={profile=>{setChanvrier(profile);setProfileOpen(false);}}/>:null}
     {!active&&userId?<button ref={replay} type="button" className={styles.replay} disabled={busy} onClick={()=>void act("restart")}><Compass size={17}/>Guide{progress?.status==="completed"?<Check size={15}/>:null}</button>:null}
-    {!progress&&error?<button type="button" className={styles.replay} onClick={()=>setRetry(value=>value+1)}>Réessayer le guide</button>:null}
+    {!progress&&error?<div className={styles.loadError} role="status"><p>{loading?"Chargement du profil et du guide…":error}</p><button type="button" disabled={loading} aria-busy={loading} onClick={()=>{setLoading(true);setRetry(value=>value+1);}}>{loading?"Chargement…":"Réessayer"}</button></div>:null}
     {overlay?createPortal(overlay,progress?.step?portalHost??document.body:document.body):null}
   </>;
 }

@@ -1,0 +1,10 @@
+[
+  { "code": "triple-spark", "category": "dice", "name": "Triple étincelle", "description": "Obtiens trois 6 sur les dés finaux d’une étape. La culture doit être terminée.", "thresholds": [1, 5, 20], "unit": "triples", "title": "Porte-étincelles" },
+  { "code": "spark-collector", "category": "dice", "name": "Collectionneur d’étincelles", "description": "Cumule les faces 6 conservées dans tes cultures terminées.", "thresholds": [25, 100, 300], "unit": "étincelles", "title": null },
+  { "code": "perfect-culture", "category": "culture", "name": "Culture exemplaire", "description": "Réussis les six étapes d’une culture, sans résultat fragile ni échec.", "thresholds": [1, 5, 20], "unit": "cultures", "title": null },
+  { "code": "cool-head", "category": "culture", "name": "Sang-froid", "description": "Termine une culture avec une pression finale à zéro.", "thresholds": [1, 10, 30], "unit": "cultures", "title": null },
+  { "code": "natural-defense", "category": "culture", "name": "Défense naturelle", "description": "Déclenche le combo PBI ciblée dans une culture terminée.", "thresholds": [1, 5, 15], "unit": "cultures", "title": null },
+  { "code": "jury-favorite", "category": "arena", "name": "Jury conquis", "description": "Présente des fleurs distinctes qui obtiennent au moins 9/10 au jury d’un duel.", "thresholds": [1, 5, 15], "unit": "fleurs", "title": null },
+  { "code": "versatile-artisan", "category": "commerce", "name": "Artisan polyvalent", "description": "Vends un produit transformé dans trois filières différentes. Fleurs brutes et biomasse exclues.", "thresholds": [3], "unit": "filières", "title": null },
+  { "code": "perfect-victory", "category": "arena", "name": "Victoire parfaite", "description": "Gagne les trois manches d’un duel officiel contre un autre joueur.", "thresholds": [1, 5, 15], "unit": "duels", "title": "Invincible du jury" }
+]

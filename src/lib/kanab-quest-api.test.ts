@@ -2,6 +2,28 @@ import { describe, expect, it, vi } from "vitest";
 import { createKqScopedRequest, enqueueKqRemoteRandomBattle, finalizeKqRemoteBattle, finalizeKqRemoteBotBattle, getKqRemoteActiveRun, getKqRemoteBattles, getKqRemoteFlowerRivals, getKqRemoteFlowers, leaveKqRemoteRandomBattleQueue, playKqRemoteCard, pollKqRemoteRandomBattleQueue, startKqRemoteRun, swapKqRemoteHeritageCard } from "@/lib/kanab-quest-api";
 
 describe("Kanab Quest browser API", () => {
+  it("invalidates progression only after a completed culture or verdict, leaving response bodies readable", async () => {
+    const events = new EventTarget();
+    const dispatch = vi.spyOn(events, "dispatchEvent");
+    vi.stubGlobal("window", events);
+    try {
+      const pending = [
+        { state: { phase: "resolved" }, persistedFlower: null },
+        { matchStatus: "queued" },
+        { state: { phase: "complete" }, persistedFlower: { id: "flower" } },
+        { status: "verdict", winner: "player" },
+      ];
+      const fetcher = vi.fn().mockImplementation(async () => new Response(JSON.stringify(pending.shift()), { status: 200 }));
+      const request = createKqScopedRequest("player", fetcher);
+      for (const endpoint of ["runs/run/actions", "battles", "runs/run/actions", "bot-battles"]) {
+        const response = await request(`/api/admin/placard/${endpoint}`, { method: "POST" });
+        expect(await response.json()).toBeTruthy();
+      }
+      await vi.waitFor(() => expect(dispatch).toHaveBeenCalledTimes(2));
+      expect(dispatch.mock.calls.every(([event]) => event.type === "arena:progress-updated")).toBe(true);
+    } finally { vi.unstubAllGlobals(); }
+  });
+
   it("explains an HTML routing failure without leaking markup or retrying a mutation", async () => {
     const request = vi.fn().mockResolvedValue(new Response('<!DOCTYPE html><title>Not found</title>', {
       status: 404, headers: { 'content-type': 'text/html' },

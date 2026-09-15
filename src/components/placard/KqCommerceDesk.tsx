@@ -159,6 +159,7 @@ export function KqCommerceDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: st
     {loading ? <p className={styles.loading}><LoaderCircle className={styles.spin} /> Ouverture du comptoir…</p> : data ? <section key={screen} className={styles.flow} aria-labelledby="commerce-step-title">
       {!saleComplete && (raw || stock) ? <button className={styles.back} onClick={() => stock && channel ? chooseChannel(null) : choose("")}>← {stock && channel ? "Comparer les offres" : "Changer de lot"}</button> : null}
       <h2 id="commerce-step-title" ref={heading} tabIndex={-1}>{title}</h2>
+      {data.strength === "merchant" ? <p><Sparkles size={16} aria-hidden="true" /> Commercial · capacité de vente ×2 en ligne et en boutique. Les bons lots recrutent deux fois plus vite.</p> : null}
       {saleComplete ? <div className={styles.saleDone} role="status"><span className={styles.successEmblem}><Coins size={42} aria-hidden="true" /><Sparkles size={22} aria-hidden="true" /></span><small>Dans ta trésorerie</small><strong>{formatKqCash(receipt.netPayoutCents ?? 0)} versés</strong><p>{grams(receipt.units ?? 0)} vendus · {grams(receipt.remainingUnits ?? 0)} restants.</p>
         <CustomerFeedback receipt={receipt} />
         <p>{(receipt.remainingUnits ?? 0) > 0 ? "Le reste est conservé. Tu peux le proposer à un autre circuit." : "Tout ce produit a été vendu."}</p>

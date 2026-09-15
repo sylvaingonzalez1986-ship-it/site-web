@@ -4,6 +4,7 @@ vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: m
 vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ from: mocks.from }) }));
 import { GET, POST } from "./route";
+vi.mock("@/lib/supabase/arena-chanvrier-backend", () => ({ getChanvrierProfile: vi.fn(async () => null) }));
 const request = (body: unknown) => new Request("http://localhost/api/arena/tutorial", { method: "POST", body: JSON.stringify(body) });
 
 describe("arena tutorial preferences API", () => {
@@ -20,7 +21,7 @@ describe("arena tutorial preferences API", () => {
     const response = await GET();
     expect(response.status).toBe(200);
     expect(response.headers.get("Cache-Control")).toBe("private, no-store");
-    expect(await response.json()).toEqual({ userId: "signed-in-user", progress: { step: 0, status: "new" }, persisted: true });
+    expect(await response.json()).toEqual({ userId: "signed-in-user", chanvrier: null, progress: { step: 0, status: "new" }, persisted: true });
     expect(mocks.eq).toHaveBeenCalledWith("user_id", "signed-in-user");
     expect(mocks.eq).toHaveBeenCalledWith("version", 2);
   });

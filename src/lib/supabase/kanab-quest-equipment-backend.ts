@@ -1,4 +1,6 @@
 import "server-only";
+import type { ChanvrierStrength } from "@/lib/arena-chanvrier";
+import { getKqMachineCondition, type KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 
 import {
   getKqEquipmentDefinition,
@@ -22,6 +24,9 @@ function assertUuid(value: string, message: string) {
 }
 
 export type KqEquipmentShopSnapshot = {
+  strength?: ChanvrierStrength | null;
+  maintenance?: Record<string, KqMachineCondition>;
+  operationalCodes?: string[];
   cashCents: number;
   reputation: number;
   ownedCodes: string[];
@@ -83,8 +88,8 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
   if (ensured.error) throw new Error(`[supabase:rpc_kq_ensure_equipment_profile] ${ensured.error.message}`);
 
   const [wallet, owned, loadout, activeRuns, readyLots, availableFlowers, routeMasteries] = await Promise.all([
-    supabase.from("kq_equipment_wallets").select("cash_cents,reputation,planned_route_code,planned_equipment_code").eq("user_id", userId).single(),
-    supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,level").eq("user_id", userId).order("acquired_at"),
+    supabase.from("kq_equipment_wallets").select("cash_cents,reputation,planned_route_code,planned_equipment_code,chanvrier:arena_chanvrier_profiles(strength)").eq("user_id", userId).single(),
+    supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,level,wear_cycles,maintenance_version").eq("user_id", userId).order("acquired_at"),
     supabase.from("kq_equipment_loadouts").select("equipment_code").eq("user_id", userId).order("slot"),
     supabase.from("kq_runs").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "active"),
     supabase.from("kq_market_lots").select("flower_id", { count: "exact", head: true }).eq("owner_id", userId).eq("status", "ready"),
@@ -104,8 +109,16 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
   const routePlan = parseKqEquipmentRoutePlan(wallet.data);
   const availableOwned = (owned.data ?? []).filter((row) => !KQ_RETIRED_EQUIPMENT_CODES.includes(String(row.equipment_code)));
   const levels = Object.fromEntries(availableOwned.map((row) => [String(row.equipment_code), Number(row.level ?? 1)]));
+  const profile = wallet.data.chanvrier as unknown as { strength: ChanvrierStrength } | null;
+  const strength = profile?.strength ?? null;
+  const maintenance = Object.fromEntries(availableOwned.flatMap(row => {
+    const condition = getKqMachineCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.wear_cycles ?? 0), Number(row.maintenance_version ?? 0), strength);
+    return condition ? [[String(row.equipment_code), condition]] : [];
+  })) as Record<string, KqMachineCondition>;
+  const equippedCodes = (loadout.data ?? []).map(row => String(row.equipment_code)).filter(code => !KQ_RETIRED_EQUIPMENT_CODES.includes(code));
 
   return {
+    strength, maintenance, operationalCodes: equippedCodes.filter(code => !maintenance[code]?.due),
     cashCents: Number(wallet.data.cash_cents ?? 0),
     levels,
     reputation: Number(wallet.data.reputation ?? 0),
@@ -113,7 +126,7 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
     purchasedCodes: availableOwned
       .filter((row) => Number(row.purchase_price_cents ?? 0) > 0)
       .map((row) => String(row.equipment_code)),
-    equippedCodes: (loadout.data ?? []).map((row) => String(row.equipment_code)).filter((code) => !KQ_RETIRED_EQUIPMENT_CODES.includes(code)),
+    equippedCodes,
     activeRun: Number(activeRuns.count ?? 0) > 0,
     readyLotCount: Number(readyLots.count ?? 0),
     availableFlowerCount: Number(availableFlowers.count ?? 0),
@@ -214,6 +227,28 @@ export async function upgradeKqDurableEquipment(input: {
     throw new Error(`[supabase:rpc_kq_upgrade_equipment] ${message}`);
   }
   return result.data as { equipmentCode: string; level: number; priceCents: number; cashAfterCents: number; replayed: boolean };
+}
+
+export async function repairKqMachine(input: { userId: string; equipmentCode: string; requestKey: string; expectedVersion: number; expectedCostCents: number }) {
+  assertUuid(input.userId, "Compte équipement invalide.");
+  assertUuid(input.requestKey, "Demande de réparation invalide.");
+  if (!getKqMachineCondition(input.equipmentCode, 1, 0) || !Number.isSafeInteger(input.expectedVersion) || input.expectedVersion < 0
+    || !Number.isSafeInteger(input.expectedCostCents) || input.expectedCostCents < 0) throw new Error("Réparation invalide.");
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_repair_machine", {
+    p_user_id: input.userId, p_equipment_code: input.equipmentCode, p_request_key: input.requestKey,
+    p_expected_version: input.expectedVersion, p_expected_cost_cents: input.expectedCostCents,
+  });
+  if (result.error) {
+    const messages: Record<string, string> = {
+      machine_not_owned: "Cette machine ne t’appartient pas.", machine_unavailable: "Cette machine ne peut pas être réparée.",
+      machine_not_due: "Cette machine fonctionne encore : aucune réparation nécessaire.", machine_condition_changed: "L’état ou le coût a changé. Actualise ton entrepôt.",
+      machine_insufficient_cash: "Trésorerie insuffisante pour réparer. Tu peux continuer à vendre tes fleurs brutes.",
+      machine_request_mismatch: "Cette demande a déjà servi à une autre réparation.",
+    };
+    for (const [code, message] of Object.entries(messages)) if (result.error.message.includes(code)) throw new Error(message);
+    throw new Error(`[supabase:machine-repair] ${result.error.message}`);
+  }
+  return result.data;
 }
 
 export async function equipKqDurableEquipment(input: { userId: string; equipmentCode: string }) {

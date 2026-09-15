@@ -77,11 +77,21 @@ export function createKqScopedRequest(
   request: typeof fetch = fetch,
 ): typeof fetch {
   const basePath = scope === "player" ? "/api/arena/placard" : "/api/admin/placard";
-  return (input, init) => {
+  return async (input, init) => {
     if (typeof input !== "string" || !input.startsWith("/api/admin/placard")) {
       return request(input, init);
     }
-    return request(`${basePath}${input.slice("/api/admin/placard".length)}`, init);
+    const response = await request(`${basePath}${input.slice("/api/admin/placard".length)}`, init);
+    if (scope === "player" && response.ok && init?.method === "POST" && typeof window !== "undefined"
+      && /\/(?:actions|verdict|battles|bot-battles)$/.test(input)) {
+      // A resolved roll or an empty queue poll is not a completed achievement event.
+      void response.clone().json().then(payload => {
+        if (payload.persistedFlower || payload.status === "verdict" || payload.verdict) {
+          window.dispatchEvent(new Event("arena:progress-updated"));
+        }
+      }).catch(() => {});
+    }
+    return response;
   };
 }
 

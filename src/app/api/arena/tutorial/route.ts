@@ -3,6 +3,7 @@ import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { ARENA_JOURNEY_VERSION, NEW_ARENA_JOURNEY, parseArenaJourneyProgress } from "@/lib/arena-journey";
+import { getChanvrierProfile } from "@/lib/supabase/arena-chanvrier-backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,10 +18,13 @@ async function identity() {
 export async function GET() {
   try {
     const session = await identity(); if (session instanceof Response) return session;
-    const result = await createSupabaseServiceClient().from("arena_journey_progress").select("step,status")
-      .eq("user_id",session.customerId).eq("version",ARENA_JOURNEY_VERSION).maybeSingle();
+    const [result,chanvrier] = await Promise.all([
+      createSupabaseServiceClient().from("arena_journey_progress").select("step,status")
+        .eq("user_id",session.customerId).eq("version",ARENA_JOURNEY_VERSION).maybeSingle(),
+      getChanvrierProfile(session.customerId),
+    ]);
     if (result.error && !missing(result.error)) throw result.error;
-    return NextResponse.json({userId:session.customerId,progress:parseArenaJourneyProgress(result.data)??NEW_ARENA_JOURNEY,persisted:!result.error},{headers});
+    return NextResponse.json({userId:session.customerId,chanvrier,progress:parseArenaJourneyProgress(result.data)??NEW_ARENA_JOURNEY,persisted:!result.error},{headers});
   } catch { return NextResponse.json({error:"Le guide est momentanément indisponible."},{status:503,headers}); }
 }
 export async function POST(request: Request) {

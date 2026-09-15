@@ -10,6 +10,7 @@ function uuid(value: unknown) { if (typeof value !== "string" || !UUID.test(valu
 function integer(value: unknown) { if (typeof value !== "number" || !Number.isSafeInteger(value) || value < 0) throw new Error("Montant ou quantité invalide."); return value; }
 function databaseError(message: string): never {
   const errors: Record<string, string> = {
+    commerce_machine_maintenance: "Une machine de cette filière doit être réparée dans ton entrepôt.",
     commerce_offer_changed: "Les conditions ont changé. Recalcule l’offre avant de confirmer.",
     commerce_cash: "Trésorerie insuffisante. Les grossistes restent disponibles pour vendre ton stock.",
     commerce_lot_unavailable: "Ce lot a déjà été préparé ou vendu. Actualise le stock.",

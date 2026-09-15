@@ -1,5 +1,6 @@
 import { calculateKqMarketReputation, getKqMarketReputationRule, type KqMarketQuote, type KqMarketRouteCode } from "./kanab-quest-market";
 import { getKqMarketReputationProgress } from "./kanab-quest-market-demand";
+import { getChanvrierSalesMultiplier, type ChanvrierStrength } from "./arena-chanvrier";
 
 export const KQ_COMPUTER_PRICE_CENTS = 45000;
 export const KQ_INTERNET_PRICE_CENTS = 1500;
@@ -31,6 +32,7 @@ export type KqCommerceStock = {
   baseUnitCents: number; payoutExact?: number; payoutRounded?: number; repExact: number; repRounded: number; professionalUnits: number; counted: boolean;
 };
 export type KqCommerceState = {
+  strength?: ChanvrierStrength | null;
   shopPartners?: number; shopRecruitment?: number; shopChurn?: number;
   rawFlowerIds?: string[]; revision: number; cashCents: number; reputation: number; clients: number; computerOwned: boolean; internetRenew: boolean;
   campaign: KqCommerceCampaign | null; stocks: KqCommerceStock[]; receipts: KqCommerceReceipt[];
@@ -78,6 +80,7 @@ export function getKqShopBudget(partners: number, event: string = "normal") {
   return (4000 + clamp(partners, 0, KQ_SHOP_MAX_PARTNERS) * 250) * (event === "restock" ? 1.25 : event === "promotion" ? .75 : 1);
 }
 export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, channel: KqSalesChannel, policy: KqOnlinePrice = "advised", requestedUnits?: number): KqCommerceOffer {
+  const salesMultiplier = getChanvrierSalesMultiplier(state.strength);
   const campaign = state.campaign;
   const capacity = getKqCommerceCapacity(campaign?.reputation ?? state.reputation);
   const tier = getKqMarketReputationProgress(state.reputation).tier;
@@ -91,11 +94,11 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const volumes = Object.values(state.marketVolumes).reduce((a, b) => a + (b ?? 0), 0);
   const saturation = Math.min(.35, (state.ownVolumes[stock.route] ?? 0) / 1000 * .2 + (volumes >= 100 ? Math.max(0, (state.marketVolumes[stock.route] ?? 0) / volumes - .3) * .3 : 0));
   const demandFactor = factorQuality * factorPrice * eventFactor * (1 - saturation);
-  const directBudget = capacity.baseUnits * (1 + .25 * Math.min(1, (campaign?.clientsStart ?? 0) / capacity.maxClients));
+  const directBudget = salesMultiplier * capacity.baseUnits * (1 + .25 * Math.min(1, (campaign?.clientsStart ?? 0) / capacity.maxClients));
   const shopPartnersStart = campaign?.shopPartnersStart ?? 0;
   const shopBand = getKqShopQualityBand(stock.route, stock.juryScore);
   const shopPricePercent = shopBand.pricePercent + getKqShopNetworkBonus(shopPartnersStart);
-  const shopBudget = getKqShopBudget(shopPartnersStart, campaign?.event);
+  const shopBudget = salesMultiplier * getKqShopBudget(shopPartnersStart, campaign?.event);
   let reason: string | null = null;
   if (channel !== "wholesale" && !campaign) reason = "Termine une culture pour ouvrir les commandes du cycle.";
   if (channel === "online" && !state.computerOwned) reason = "Achète un ordinateur dans la boutique pour vendre en ligne.";
@@ -122,21 +125,21 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const repExactAfter = round6(stock.repExact + calculateKqMarketReputation(stock.route, stock.juryScore) * equivalentSold / stock.originalUnits * (channel === "online" ? 1 : channel === "cbd-shop" ? .5 : 0));
   const repRoundedAfter = Math.sign(repExactAfter) * Math.floor(Math.abs(repExactAfter) + .5);
   const reputationDelta = repRoundedAfter - stock.repRounded;
-  const goodUnitsAfter = round6((campaign?.goodUnits ?? 0) + (channel === "online" && stock.juryScore >= rule.gainFrom ? equivalentSold : 0));
+  const goodUnitsAfter = round6((campaign?.goodUnits ?? 0) + (channel === "online" && stock.juryScore >= rule.gainFrom ? equivalentSold * salesMultiplier : 0));
   const disappointmentAfter = round6((campaign?.disappointmentUnits ?? 0) + (channel === "online" && stock.juryScore < rule.neutralFrom
     ? equivalentSold * (stock.juryScore < rule.neutralFrom - .5 ? .25 : .1) : 0));
-  const clientsAfter = channel === "online" ? clamp((campaign?.clientsStart ?? 0) + Math.floor(Math.min(5, goodUnitsAfter / capacity.baseUnits * 5))
+  const clientsAfter = channel === "online" ? clamp((campaign?.clientsStart ?? 0) + Math.floor(Math.min(5 * salesMultiplier, goodUnitsAfter / capacity.baseUnits * 5))
     - Math.floor((campaign?.clientsStart ?? 0) * Math.min(.25, disappointmentAfter / capacity.baseUnits)), 0, capacity.maxClients) : state.clients;
   // Weighted equivalent mass has a common integer denominator: no per-sale rounding of partners.
-  const shopGoodUnitsAfter = round6((campaign?.shopGoodUnits ?? 0) + (channel === "cbd-shop" ? equivalentSold * shopBand.recruitmentWeight : 0));
+  const shopGoodUnitsAfter = round6((campaign?.shopGoodUnits ?? 0) + (channel === "cbd-shop" ? equivalentSold * shopBand.recruitmentWeight * salesMultiplier : 0));
   const shopBadUnitsAfter = round6((campaign?.shopBadUnits ?? 0) + (channel === "cbd-shop" ? equivalentSold * shopBand.churnWeight : 0));
-  const recruitment = round6((campaign?.shopRecruitmentStart ?? 0) + Math.min(KQ_SHOP_PROGRESS_UNITS, shopGoodUnitsAfter));
+  const recruitment = round6((campaign?.shopRecruitmentStart ?? 0) + Math.min(KQ_SHOP_PROGRESS_UNITS * salesMultiplier, shopGoodUnitsAfter));
   const churn = round6((campaign?.shopChurnStart ?? 0) + Math.min(Math.max(1, Math.ceil(shopPartnersStart / 4)) * KQ_SHOP_PROGRESS_UNITS, shopBadUnitsAfter));
   const partnersGained = Math.floor(recruitment / KQ_SHOP_PROGRESS_UNITS);
   const partnersLost = Math.floor(churn / KQ_SHOP_PROGRESS_UNITS);
   const shopPartnersAfter = channel === "cbd-shop" ? clamp(shopPartnersStart + partnersGained - partnersLost, 0, KQ_SHOP_MAX_PARTNERS) : state.shopPartners ?? 0;
-  const shopRecruitmentAfter = channel === "cbd-shop" ? recruitment % KQ_SHOP_PROGRESS_UNITS : state.shopRecruitment ?? 0;
-  const shopChurnAfter = channel === "cbd-shop" ? churn % KQ_SHOP_PROGRESS_UNITS : state.shopChurn ?? 0;
+  const shopRecruitmentAfter = channel === "cbd-shop" ? round6(recruitment % KQ_SHOP_PROGRESS_UNITS) : state.shopRecruitment ?? 0;
+  const shopChurnAfter = channel === "cbd-shop" ? round6(churn % KQ_SHOP_PROGRESS_UNITS) : state.shopChurn ?? 0;
   const satisfaction: KqCustomerSatisfaction = channel === "wholesale" ? "not-applicable"
     : channel === "cbd-shop" ? shopBand.satisfaction
     : stock.juryScore >= rule.gainFrom ? "satisfied" : stock.juryScore >= rule.neutralFrom ? "neutral" : "disappointed";

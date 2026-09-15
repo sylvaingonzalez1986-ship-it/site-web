@@ -31,3 +31,10 @@
 .spotlight { position: fixed; z-index: 164; border: 3px solid #ffda48; border-radius: 6px; box-shadow: 0 0 0 3px #002d25,0 0 22px #ffcf4b80; pointer-events: none; box-sizing: border-box; }
 .replay { position: fixed; z-index: 85; bottom: max(12px,env(safe-area-inset-bottom)); right: 12px; display: flex; align-items: center; gap: 6px; border: 2px solid #102c26; padding: 9px 12px; background: #fff8e8; color: #102c26; box-shadow: 3px 3px 0 #f5cd42; }
 @media(max-height:500px) { .card { max-height: 58dvh; } .card small { font-size: 10px; } .scene { height: 95px; } }
+.profileButton { position: fixed; right: 20px; bottom: 80px; z-index: 45; display: flex; align-items: center; gap: 8px; min-height: 44px; max-width: calc(100vw - 40px); padding: 10px 16px; border: 2px solid #f4c43d; background: #063f32; color: #fff3d4; box-shadow: 3px 3px 0 #001e17; font-weight: 800; cursor: pointer; }
+.profileButton:focus-visible { outline: 3px solid #55e6d0; outline-offset: 3px; }
+.loadError { position: fixed; z-index: 85; bottom: max(12px,env(safe-area-inset-bottom)); right: 12px; max-width: min(310px,calc(100vw - 24px)); padding: 12px; border: 2px solid #102c26; background: #fff8e8; color: #102c26; box-shadow: 3px 3px 0 #f5cd42; }
+.loadError p { margin: 0 0 8px; font-size: 12px; line-height: 1.5; }
+.loadError button { cursor: pointer; min-height: 44px; width: 100%; padding: 8px 12px; border: 2px solid #102c26; background: #f5cd42; color: #102c26; font: 800 12px/1.4 inherit; }
+.loadError button:disabled { cursor: wait; opacity: .65; }
+.loadError button:focus-visible { outline: 3px solid #008674; outline-offset: 3px; }

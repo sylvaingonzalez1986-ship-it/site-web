@@ -199,7 +199,13 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
           ? getKqJuryScoreFromRounds(botRounds, "player")
           : getKqJuryScoreFromStats(flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats as Record<string, number> : {});
     const { harvestGrams } = getKqMarketRunSummary(runStates.get(String(flower.run_id)), Number(flower.quality));
-    const quotes = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: equipmentShop.levels, marketContext });
+    const quotes = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equipmentShop.operationalCodes ?? equippedCodes, equipmentLevels: equipmentShop.levels, marketContext });
+    if (equippedCodes.some(code => equipmentShop.maintenance?.[code]?.due)) {
+      const installedQuotes = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: equipmentShop.levels, marketContext });
+      for (const quote of quotes) if (!quote.available && installedQuotes.find(item => item.route === quote.route)?.available) {
+        quote.blockedReason = "Une machine de cette filière doit être réparée. Ouvre ton entrepôt.";
+      }
+    }
     previews.set(flowerId, { harvest_grams: harvestGrams, jury_score: juryScore, quality_band: getKqMarketQualityBand(juryScore), options: quotes });
     // Browsing computes offers without rewriting and downloading each full SQL lot.
     // The prepare/sell commands still persist a fresh server quote before settlement.

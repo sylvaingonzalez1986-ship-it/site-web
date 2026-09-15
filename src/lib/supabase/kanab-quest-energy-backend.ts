@@ -2,6 +2,7 @@ import "server-only";
 import { KQ_ENERGY_MODES, quoteKqEnergy, type KqEnergyMode, type KqEnergySummary, type KqEnergySnapshot } from "@/lib/kanab-quest-energy";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { getKqEquipmentShopSnapshot } from "./kanab-quest-equipment-backend";
+import { getKqEquipmentDefinition } from "../kanab-quest-equipment";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export async function getKqEnergySummary(userId: string): Promise<KqEnergySummary> {
@@ -12,7 +13,9 @@ export async function getKqEnergySummary(userId: string): Promise<KqEnergySummar
 }
 export async function getKqEnergySnapshot(userId: string): Promise<KqEnergySnapshot> {
   const [summary, shop] = await Promise.all([getKqEnergySummary(userId), getKqEquipmentShopSnapshot(userId)]);
-  return { ...summary, cashCents: shop.cashCents, quotes: Object.fromEntries(
+  return { ...summary, cashCents: shop.cashCents, chanvrierStrength: shop.strength,
+    maintenanceDueNext: shop.equippedCodes.filter(code => shop.maintenance?.[code] && shop.maintenance[code].remaining <= 1).map(code => getKqEquipmentDefinition(code)?.name ?? code),
+    quotes: Object.fromEntries(
     (Object.keys(KQ_ENERGY_MODES) as KqEnergyMode[]).map((mode) => [mode, quoteKqEnergy(shop.equippedCodes, shop.levels, mode)]),
   ) as KqEnergySnapshot["quotes"] };
 }

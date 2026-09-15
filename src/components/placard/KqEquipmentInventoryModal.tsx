@@ -6,10 +6,13 @@ import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentImpactLabels, getKqEquipmentRequirementState, KQ_EQUIPMENT_CATALOG, KQ_EQUIPMENT_SLOT_LABELS, summarizeKqEquipmentLoadout, type KqEquipmentDefinition, type KqEquipmentSlot } from "@/lib/kanab-quest-equipment";
 import { quoteKqEnergy } from "@/lib/kanab-quest-energy";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
+import { KqMachineMaintenance } from "./KqMachineMaintenance";
+import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { KqWarehouseScene, WAREHOUSE_ZONES } from "./KqWarehouseScene";
 import styles from "./KqWarehouseInventory.module.css";
 
-export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,loading,loadError,onClose,onOpenShop,onRetry,initialSlot="tent"}:{
+export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,maintenance={},loading,loadError,onClose,onOpenShop,onRetry,initialSlot="tent"}:{
+  maintenance?:Record<string,KqMachineCondition>;
   ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;loading:boolean;loadError:string;
   onClose:()=>void;onOpenShop:(equipmentCode?:string)=>void;onRetry:()=>void;
   initialSlot?:KqEquipmentSlot;
@@ -82,6 +85,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
               {!requirement.compatible?<p className={styles.error}>Prérequis : {requirement.missing.map(r=>r.label).join(", ")}</p>:null}
               <button type="button" disabled={isInstalled||!purchasedCodes.includes(item.code)||!requirement.compatible||!!pending||loading} onClick={()=>void equip(item)}>{pending===item.code?"Installation…":isInstalled?"Déjà installé":"Installer ici"}</button>
               {item.purchasable&&purchasedCodes.includes(item.code)?<KqEquipmentUpgrade code={item.code} level={levels[item.code]??1} cashCents={cashCents} disabled={!!pending||loading} onUpdated={onRetry}/>:null}
+              {maintenance[item.code]?<KqMachineMaintenance code={item.code} condition={maintenance[item.code]} cashCents={cashCents} disabled={!!pending||loading} onUpdated={onRetry}/>:null}
             </article>;})}
             {!choices.length?<p className={styles.empty}><PackageOpen/>Cet emplacement est prêt à accueillir ton matériel.</p>:null}
             {suggestion?<button type="button" className={styles.shopButton} onClick={()=>openShop(suggestion.code)}><ShoppingBag size={17}/>{slot==="flower-drying"?`Aménager le séchoir · ${formatKqCash(suggestion.priceCents)}`:"Voir le matériel en boutique"}</button>:null}
