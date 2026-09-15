@@ -48,7 +48,7 @@ import {
 import { createKqFlower, createKqOpponent, getKqJuryProgram, lockKqBattle, resolveKqBattle, type KqBattle } from "@/lib/kanab-quest-battle";
 import { addKqBoosterToInventory, applyKqArenaStreakReward, openKqSupportBooster } from "@/lib/kanab-quest-booster";
 import { claimKqChallenges, evaluateKqChallenges, getKqChallengeProgress, getKqDailyChallenges, getKqGameChallengeDate } from "@/lib/kanab-quest-challenges";
-import { buildKqCollectionDeck, buildKqRecommendedDeck, getKqCardChallengeFit, getKqDeckCoverage, getKqOpeningHandChance, sanitizeKqDeckSelection, summarizeKqCardEconomy } from "@/lib/kanab-quest-economy";
+import { buildKqCollectionDeck, getKqCardChallengeFit, getKqDeckCoverage, getKqOpeningHandChance, sanitizeKqDeckSelection, summarizeKqCardEconomy } from "@/lib/kanab-quest-economy";
 import { applyKqBattleToRanking, createKqRankProfile, getKqLocalLeaderboard, getKqMatchmaking, type KqRankProfile } from "@/lib/kanab-quest-ranking";
 import { createLocalKqRepository, type KqBurnReceipt, type KqFavoriteDeck, type KqRepository } from "@/lib/kanab-quest-repository";
 import { KQ_HERITAGE_CARDS, type KqHeritageCard } from "@/lib/kanab-quest-heritage";
@@ -1636,15 +1636,6 @@ export function KanabQuestDicePrototype({
     }, 520);
   };
 
-  const applyRecommendedDeck = () => {
-    const buddie = KQ_BUDDIES.find((item) => item.code === selectedBuddie);
-    if (!buddie) return;
-    const recommendation = buildKqRecommendedDeck(buddie.effect, activeInventory, rewardableDailyChallenges.map((challenge) => challenge.code), buddie.code);
-
-    setSelectedCards(recommendation.support);
-    setDeckNotice("Deck conseillé appliqué : défis du jour + synergie du Buddie. Tu peux encore tout modifier.");
-  };
-
   const openTestBooster = () => {
     const cards = openKqSupportBooster(Date.now() + boosterNonce);
     setInventory((current) => addKqBoosterToInventory(current, cards));
@@ -1832,8 +1823,6 @@ export function KanabQuestDicePrototype({
           {burnHistory.length > 0 ? <div className={styles.burnArchive}><Flame /><span><small>Registre permanent · {burnHistory.length} burns</small><strong>Cartes les plus utilisées</strong><div>{mostBurned.map(([code, count]) => <b key={code}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code} ×{count}</b>)}</div></span></div> : null}
           <h2 id="placard-preparation" data-arena-tour="culture">1. Ton Buddie</h2>
           <div className={styles.buddieChoices}>{KQ_BUDDIES.filter((buddie) => !isPlayerMode || ownedBuddieCodes.includes(buddie.code)).map((buddie) => { const artwork = ownedBuddieArtwork[buddie.code]; return <button key={buddie.code} type="button" data-selected={selectedBuddie === buddie.code || undefined} aria-pressed={selectedBuddie === buddie.code} onClick={() => setSelectedBuddie(buddie.code)}>{artwork?.imageUrl ? <span className={styles.buddieArtwork}><Image src={artwork.imageUrl} alt={`Carte ${buddie.name}`} fill sizes="(max-width: 760px) 220px, 260px" className="object-cover" /></span> : null}<span>Kanab Quest #{buddie.cardNumber}</span><strong>{buddie.name}</strong><em>{BUDDIE_RARITY_LABELS[buddie.rarity]}{artwork?.ownedCopies ? ` · ×${artwork.ownedCopies}` : ""}</em><p>{buddie.ability}</p></button>; })}</div>
-          <div className={styles.deckAssistant}><span><Sparkles /><b>Première partie ?</b> Le deck conseillé utilise uniquement les copies encore disponibles et reste entièrement modifiable.</span><button type="button" onClick={applyRecommendedDeck}>Créer le deck conseillé</button></div>
-          <p className={styles.deckNotice}><b>Sol vivant :</b> la base de toutes les cultures indoor. Aucune carte nécessaire au démarrage.</p>
           {isPlayerMode ? <>
             <h2 className={styles.collectionChestTitle}>2. Ton inventaire de jeu</h2>
             <button type="button" className={styles.collectionChest} data-opening={chestOpening || undefined} aria-haspopup="dialog" aria-label="Ouvrir le coffre La Botte" onClick={openCollectionChest}>
