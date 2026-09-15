@@ -1,7 +1,7 @@
-﻿.section { min-width: 0; max-width: 100%; margin: 2rem 0; padding: 0; border: 0; background: transparent; box-shadow: none; color: #fff8e6; }
+.section { min-width: 0; max-width: 100%; margin: 2rem 0; padding: 0; border: 0; background: transparent; box-shadow: none; color: #fff8e6; }
 .header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-.header h2 { margin: 0; font-family: var(--font-display), sans-serif; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; text-transform: uppercase; }
-.header nav { display: flex; gap: 8px; }
+.header h2 { min-width: 0; overflow-wrap: anywhere; scroll-margin-top: 100px; margin: 0; font-family: var(--font-display), sans-serif; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; text-transform: uppercase; }
+.header nav { flex: 0 0 auto; display: flex; gap: 8px; }
 .header button { display: grid; width: 44px; height: 44px; place-items: center; padding: 0; border: 1px solid #71e3c955; border-radius: 50%; background: #002d2470; color: #71e3c9; cursor: pointer; }
 .header button:hover:not(:disabled) { background: #f4c43d; color: #003c30; border-color: #f4c43d; }
 .header button:disabled { opacity: .3; cursor: default; }

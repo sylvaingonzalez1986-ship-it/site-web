@@ -4,6 +4,7 @@ import { KqCardEffectGuide as CardEffectGuide, KqCardRoleLegend } from "./KqCard
 import { KQ_SITUATION_TAG_LABELS } from "@/lib/kanab-quest-card-guide";
 import { useGameViewport } from "@/hooks/useGameViewport";
 import { KqEnergyPanel } from "./KqEnergyPanel";
+import { KqInventoryCarousel } from "./KqInventoryCarousel";
 import { KqHeritageCarousel } from "./KqHeritageCarousel";
 import { KqSeasonBoard } from "./KqSeasonBoard";
 import { KqCulturePreparation } from "./KqCulturePreparation";
@@ -535,8 +536,6 @@ export function KanabQuestDicePrototype({
   const [deckFilter, setDeckFilter] = useState<"all" | "equipment" | "know-how" | "luck">("all");
   const [favoriteDeck, setFavoriteDeck] = useState<KqFavoriteDeck | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const [showCollectionChest, setShowCollectionChest] = useState(false);
-  const [chestOpening, setChestOpening] = useState(false);
   const [dailyChallenges, setDailyChallenges] = useState(() => getKqDailyChallenges());
   const [mobilePlayTab, setMobilePlayTab] = useState<"culture" | "hand" | "dice" | "challenges">("culture");
   const [remoteCollection, setRemoteCollection] = useState<RemoteCollectionStatus>({
@@ -1623,15 +1622,6 @@ export function KanabQuestDicePrototype({
     void repositoryRef.current?.saveOnboardingSeen(true);
   };
 
-  const openCollectionChest = () => {
-    if (chestOpening) return;
-    setChestOpening(true);
-    window.setTimeout(() => {
-      setShowCollectionChest(true);
-      setChestOpening(false);
-    }, 520);
-  };
-
   const openTestBooster = () => {
     const cards = openKqSupportBooster(Date.now() + boosterNonce);
     setInventory((current) => addKqBoosterToInventory(current, cards));
@@ -1719,48 +1709,6 @@ export function KanabQuestDicePrototype({
     const mostBurned = Object.entries(burnHistory.reduce<Record<string, number>>((counts, receipt) => ({ ...counts, [receipt.cardCode]: (counts[receipt.cardCode] ?? 0) + 1 }), {})).sort((a, b) => b[1] - a[1]).slice(0, 3);
     return (
       <main ref={gameViewportRef} className={styles.page} data-player-mode={isPlayerMode || undefined} data-admin-operations={showAdminOperations || undefined} data-view-mode={viewMode}>
-        {showCollectionChest ? (
-          <div className={styles.collectionModalBackdrop} role="presentation" onClick={() => setShowCollectionChest(false)}>
-            <section className={styles.collectionModal} role="dialog" aria-modal="true" aria-labelledby="collection-title" onClick={(event) => event.stopPropagation()}>
-              <header>
-                <div>
-                  <span>Étape 3 · Inventaire de jeu</span>
-                  <h2 id="collection-title">Choisis tes cartes</h2>
-                  <p>Compose ta main, puis choisis ton Héritage.</p>
-                </div>
-                <button type="button" aria-label="Fermer l’inventaire" onClick={() => setShowCollectionChest(false)}><X /></button>
-              </header>
-              <div className={styles.collectionModalSummary}>
-                <span><b>{selectedCards.length}</b> carte{selectedCards.length > 1 ? "s" : ""} dans ta main</span>
-                <span><b>{ownedBotteCount}</b> référence{ownedBotteCount > 1 ? "s" : ""} possédée{ownedBotteCount > 1 ? "s" : ""}</span>
-              </div>
-              <div className={styles.collectionInventoryBody}>
-                <section className={styles.collectionInventorySection} aria-labelledby="botte-inventory-title">
-                  <header>
-                    <div>
-                      <span>Ta main</span>
-                      <h3 id="botte-inventory-title">Cartes La Botte</h3>
-                      <p>En gris : cartes non possédées.</p>
-                    </div>
-                  </header>
-                  <KqCardRoleLegend />
-                  <div className={styles.collectionInventory}>
-                    {KQ_CARDS.filter((card) => card.timing !== "passive" && card.category !== "pbi").map((card) => {
-                      const ownedCopies = activeInventory[card.code] ?? 0;
-                      const selectedCopies = selectedCards.filter((code) => code === card.code).length;
-                      const locked = ownedCopies <= 0;
-                      return <article key={card.code} data-locked={locked || undefined} data-selected={selectedCopies > 0 || undefined}><CardArtwork code={card.code} name={card.name} /><span>{CATEGORY_LABELS[card.category]}</span><strong>{card.name}</strong><p>{card.description}</p><small>{locked ? "Non détenue" : `${ownedCopies} copie${ownedCopies > 1 ? "s" : ""} disponible${ownedCopies > 1 ? "s" : ""}`}</small><div><button type="button" aria-label={`Retirer une copie de ${card.name}`} disabled={locked || selectedCopies <= 0} onClick={() => removeCardCopy(card.code)}>−</button><b>{locked ? "🔒" : `${selectedCopies} / ${ownedCopies}`}</b><button type="button" aria-label={`Ajouter une copie de ${card.name}`} disabled={locked || selectedCopies >= ownedCopies} onClick={() => addCardCopy(card.code)}>+</button></div></article>;
-                    })}
-                  </div>
-                </section>
-              </div>
-              <footer>
-                <p>Seules les cartes La Botte réellement jouées pendant la partie seront brûlées.</p>
-                <button type="button" className={styles.primaryButton} onClick={() => setShowCollectionChest(false)}>Valider ma sélection · {selectedCards.length} carte{selectedCards.length > 1 ? "s" : ""}</button>
-              </footer>
-            </section>
-          </div>
-        ) : null}
         <section className={styles.setupPanel}>
           <header className={styles.setupHero}><div className={styles.setupHeroCopy}><span>Le Placard Kanab Quest{isPlayerMode ? "" : " · local"}</span><h1>Prépare <em>ta culture.</em></h1><i aria-hidden="true" /><p>Choisis ta variété et tes cartes. Tout pousse sur sol vivant.</p></div><div className={styles.setupHeroArt} aria-hidden="true"><span /><Image src="/contest/mascot/arena-scene-placard-v1.png" alt="" width={1536} height={1024} priority sizes="(max-width: 760px) 100vw, 520px" /></div></header>
           {showAdminOperations && !isPlayerMode ? <div className={styles.remoteCollectionStatus} data-error={remoteCollection.error || undefined}>
@@ -1820,17 +1768,14 @@ export function KanabQuestDicePrototype({
           <h2 id="placard-preparation" data-arena-tour="culture">1. Ton Buddie</h2>
           <div className={styles.buddieChoices}>{KQ_BUDDIES.filter((buddie) => !isPlayerMode || ownedBuddieCodes.includes(buddie.code)).map((buddie) => { const artwork = ownedBuddieArtwork[buddie.code]; return <button key={buddie.code} type="button" data-selected={selectedBuddie === buddie.code || undefined} aria-pressed={selectedBuddie === buddie.code} onClick={() => setSelectedBuddie(buddie.code)}>{artwork?.imageUrl ? <span className={styles.buddieArtwork}><Image src={artwork.imageUrl} alt={`Carte ${buddie.name}`} fill sizes="(max-width: 760px) 220px, 260px" className="object-cover" /></span> : null}<span>Kanab Quest #{buddie.cardNumber}</span><strong>{buddie.name}</strong><em>{BUDDIE_RARITY_LABELS[buddie.rarity]}{artwork?.ownedCopies ? ` · ×${artwork.ownedCopies}` : ""}</em><p>{buddie.ability}</p></button>; })}</div>
           {isPlayerMode ? <>
-            <h2 className={styles.collectionChestTitle}>2. Ton inventaire de jeu</h2>
-            <button type="button" className={styles.collectionChest} data-opening={chestOpening || undefined} aria-haspopup="dialog" aria-label="Ouvrir le coffre La Botte" onClick={openCollectionChest}>
-              <span className={styles.collectionChestArt}><Image src="/placard/collection-chest.png" alt="" fill sizes="220px" /></span>
-              <b>{chestOpening ? "Ouverture…" : "Ouvrir le coffre"}</b>
-            </button>
+            <KqInventoryCarousel inventory={activeInventory} selectedCodes={selectedCards} onAdd={addCardCopy} onRemove={removeCardCopy}
+              loading={remoteBurnsEnabled && remoteCollection.loading} error={remoteBurnsEnabled ? remoteCollection.error : ""} />
             <KqHeritageCarousel cards={selectableHeritageCards} ownedCodes={remoteHeritageOwnedCodes}
               ownershipRequired={remoteBurnsEnabled} producerNames={remoteHeritageProducerNames}
               selectedCode={selectedHeritage} onSelect={setSelectedHeritage}
               renderArtwork={(card, producerLabel) => <CardArtwork code={card.code} name={card.name} producerName={producerLabel} imageUrl={card.imageUrl} />} />
           </> : null}
-          <h2 className={styles.deckSectionTitle}>{isPlayerMode ? "3" : "2"}. La Botte <small>{selectedCards.length} carte{selectedCards.length > 1 ? "s" : ""}</small></h2>
+          <h2 id="placard-deck" tabIndex={-1} className={styles.deckSectionTitle}>{isPlayerMode ? "3" : "2"}. La Botte <small>{selectedCards.length} carte{selectedCards.length > 1 ? "s" : ""}</small></h2>
           <p className={`${styles.deckNotice} ${styles.deckSelectionNotice}`} role="status" aria-live="polite">{deckNotice || "Ajoute autant de copies que tu en possèdes. Chaque copie jouée sera brûlée."}</p>
           <div className={styles.deckOdds}><div><span>Taille du deck</span><strong>{selectedCards.length}</strong></div><div><span>Références différentes</span><strong>{selectedReferenceCount}</strong></div><p><b>À retenir :</b> plus le deck est grand, plus il offre de solutions, mais plus une carte précise devient difficile à piocher dans une main de cinq.</p></div>
           <div className={styles.deckCoverage}><span>Couverture des situations</span><div>{Object.entries(COVERAGE_LABELS).map(([tag, label]) => { const count = deckCoverage[tag as keyof typeof COVERAGE_LABELS]; return <b key={tag} data-empty={count === 0 || undefined}>{label}<small>{count}</small></b>; })}<b data-versatile><Sparkles /> Polyvalentes<small>{deckCoverage.versatile}</small></b></div><p>Un zéro signale un angle mort, pas une interdiction : les dés et les cartes polyvalentes permettent toujours de jouer.</p></div>
@@ -1839,7 +1784,11 @@ export function KanabQuestDicePrototype({
           <div className={styles.deckFilters} aria-label="Filtrer les cartes La Botte">{([['all', 'Toutes'], ['equipment', 'Équipement'], ['know-how', 'Savoir-faire'], ['luck', 'Chance']] as const).map(([value, label]) => <button key={value} type="button" data-selected={deckFilter === value || undefined} aria-pressed={deckFilter === value} onClick={() => setDeckFilter(value)}>{label}</button>)}</div>
           <div className={styles.deckChoices}>{supportCards.map((card) => { const challengeFit = getKqCardChallengeFit(card, rewardableDailyChallenges.map((challenge) => challenge.code)); const selectedCopies = selectedCards.filter((code) => code === card.code).length; const ownedCopies = activeInventory[card.code] ?? 0; const drawChance = getKqOpeningHandChance(selectedCards.length, selectedCopies); return <article key={card.code} className={styles.deckChoiceCard} data-selected={selectedCopies > 0 || undefined} data-empty={ownedCopies <= 0 || undefined} data-challenge-fit={challengeFit || undefined}><CardArtwork code={card.code} name={card.name} /><span>{CATEGORY_LABELS[card.category]}</span>{challengeFit ? <i className={styles.challengeFit}><Star /> Aide défi</i> : null}<strong>{card.name}</strong><CardEffectGuide card={card} /><em>{ownedCopies} copie(s) · {card.xpCost} XP</em>{selectedCopies > 0 ? <small className={styles.drawChance}>{drawChance}% dans la première main</small> : null}<div><button type="button" aria-label={`Retirer une copie de ${card.name}`} disabled={selectedCopies <= 0} onClick={() => removeCardCopy(card.code)}>−</button><b>{selectedCopies} / {ownedCopies}</b><button type="button" aria-label={`Ajouter une copie de ${card.name}`} disabled={selectedCopies >= ownedCopies} onClick={() => addCardCopy(card.code)}>+</button></div></article>; })}</div>
           <div className={styles.pbiReserve}><span>Réserve PBI de l’album · automatique</span><div>{pbiReserve.map((card) => <strong key={card.code} data-empty={(activeInventory[card.code] ?? 0) <= 0 || undefined}>{card.name} <small>×{activeInventory[card.code] ?? 0}</small></strong>)}</div><p>Ces cartes ne prennent aucune place dans le deck. Elles apparaissent seulement après identification d’un ravageur. Une référence à zéro ne peut plus intervenir.</p></div>
-          <KqCulturePreparation cardCount={selectedCards.length} note="Sol vivant inclus. Seules les cartes jouées sont consommées." disabled={isPlayerMode && !ownedBuddieCodes.includes(selectedBuddie)} busy={remoteAction !== null} onEditDeck={()=>setShowCollectionChest(true)} onStart={()=>setPendingStart(true)} />
+          <KqCulturePreparation cardCount={selectedCards.length} note="Sol vivant inclus. Seules les cartes jouées sont consommées." disabled={isPlayerMode && !ownedBuddieCodes.includes(selectedBuddie)} busy={remoteAction !== null} onEditDeck={() => {
+            const target = document.getElementById("inventory-carousel-title") ?? document.getElementById("placard-deck");
+            target?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+            target?.focus({ preventScroll: true });
+          }} onStart={()=>setPendingStart(true)} />
           {remoteBurnsEnabled ? (
             <section id="placard-reserve" tabIndex={-1} className={styles.officialFlowerReserve}>
               <header>

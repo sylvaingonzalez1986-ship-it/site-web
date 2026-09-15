@@ -309,11 +309,11 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).not.toContain("selectedRemoteRivalId");
   });
 
-  it("presents Heritage producer cards after the collection chest", () => {
-    const chest = gameClient.indexOf('className={styles.collectionChest}');
+  it("presents Heritage producer cards after the inline inventory", () => {
+    const inventory = gameClient.indexOf('<KqInventoryCarousel inventory=');
     const heritageCarousel = gameClient.indexOf('<KqHeritageCarousel cards=');
-    expect(chest).toBeGreaterThan(-1);
-    expect(heritageCarousel).toBeGreaterThan(chest);
+    expect(inventory).toBeGreaterThan(-1);
+    expect(heritageCarousel).toBeGreaterThan(inventory);
   });
 
   it("cannot locally reset an active official culture", () => {
