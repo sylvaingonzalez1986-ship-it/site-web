@@ -311,12 +311,9 @@ describe("Kanab Quest player page access", () => {
 
   it("presents Heritage producer cards after the collection chest", () => {
     const chest = gameClient.indexOf('className={styles.collectionChest}');
-    const heritageCarousel = gameClient.indexOf('className={styles.heritageCarouselSection}');
+    const heritageCarousel = gameClient.indexOf('<KqHeritageCarousel cards=');
     expect(chest).toBeGreaterThan(-1);
     expect(heritageCarousel).toBeGreaterThan(chest);
-    expect(gameClient).toContain("Producteurs mis à l’honneur");
-    expect(gameClient).toContain("4 cartes à la fois");
-    expect(gameClient).toContain("heritageCarouselRef.current?.scrollBy");
   });
 
   it("cannot locally reset an active official culture", () => {

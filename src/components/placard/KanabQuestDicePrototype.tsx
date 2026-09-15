@@ -4,13 +4,14 @@ import { KqCardEffectGuide as CardEffectGuide, KqCardRoleLegend } from "./KqCard
 import { KQ_SITUATION_TAG_LABELS } from "@/lib/kanab-quest-card-guide";
 import { useGameViewport } from "@/hooks/useGameViewport";
 import { KqEnergyPanel } from "./KqEnergyPanel";
+import { KqHeritageCarousel } from "./KqHeritageCarousel";
 import { KqSeasonBoard } from "./KqSeasonBoard";
 import { KqCulturePreparation } from "./KqCulturePreparation";
 import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
 
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
-import { Banknote, ChevronLeft, ChevronRight, Dices, Flame, RotateCcw, Scale, ShoppingBag, Sparkles, Star, Swords, Target, Trophy, X, Zap } from "lucide-react";
+import { Banknote, Dices, Flame, RotateCcw, Scale, ShoppingBag, Sparkles, Star, Swords, Target, Trophy, X, Zap } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { playKqDiceAnimation } from "@/lib/kanab-quest-dice-animation";
 import {
@@ -524,7 +525,6 @@ export function KanabQuestDicePrototype({
   const [pendingBattleVerdict, setPendingBattleVerdict] = useState(false);
   const rollTimerRef = useRef<number | null>(null);
   const physicsDiceRef = useRef<KqPhysicsDiceHandle | null>(null);
-  const heritageCarouselRef = useRef<HTMLDivElement | null>(null);
   const verdictTimerRef = useRef<number | null>(null);
   const repositoryRef = useRef<KqRepository | null>(null);
   const remoteInventoryRef = useRef<Record<string, number>>({});
@@ -547,8 +547,6 @@ export function KanabQuestDicePrototype({
   const [remoteHeritageOwnedCodes, setRemoteHeritageOwnedCodes] = useState<string[]>([]);
   const [remoteHeritageCards, setRemoteHeritageCards] = useState<RemoteHeritageCard[]>([]);
   const [remoteHeritageProducerNames, setRemoteHeritageProducerNames] = useState<Record<string, string[]>>({});
-  const [remoteHeritageActive, setRemoteHeritageActive] = useState(false);
-  const [remoteHeritageFragments, setRemoteHeritageFragments] = useState(0);
   const [launchReadiness, setLaunchReadiness] = useState<null | {
     contentReady: boolean;
     readyForActivation: boolean;
@@ -832,8 +830,6 @@ export function KanabQuestDicePrototype({
         setRemoteHeritageProducerNames(Object.fromEntries(heritageCards.flatMap((card) => {
           return card.code ? [[card.code, card.producerNames]] : [];
         })));
-        setRemoteHeritageActive(heritage.collectionActive === true);
-        setRemoteHeritageFragments(Number(heritage.fragmentBalance ?? 0));
         const collection = payload.collection ?? {};
         if (isPlayerMode) {
           setRoutePlan(payload.routePlan ?? null);
@@ -1829,44 +1825,10 @@ export function KanabQuestDicePrototype({
               <span className={styles.collectionChestArt}><Image src="/placard/collection-chest.png" alt="" fill sizes="220px" /></span>
               <b>{chestOpening ? "Ouverture…" : "Ouvrir le coffre"}</b>
             </button>
-            <section className={styles.heritageCarouselSection} aria-labelledby="heritage-carousel-title">
-              <header>
-                <div>
-                  <span>Producteurs mis à l’honneur</span>
-                  <h2 id="heritage-carousel-title">Choisis ton Héritage</h2>
-                  <p>Équipe une carte producteur permanente. Elle ne prend aucune place dans ta main et ne brûle jamais.</p>
-                  <small>{remoteBurnsEnabled ? remoteHeritageActive ? `${remoteHeritageOwnedCodes.length}/${selectableHeritageCards.length} possédée(s) · ${remoteHeritageFragments} fragments` : "Collection en attente d’activation" : `${selectableHeritageCards.length} Héritage(s) producteur`}</small>
-                </div>
-                <nav className={styles.heritageCarouselControls} aria-label="Faire défiler les cartes Héritage">
-                  <button type="button" aria-label="Voir les cartes Héritage précédentes" onClick={() => heritageCarouselRef.current?.scrollBy({ left: -heritageCarouselRef.current.clientWidth, behavior: "smooth" })}><ChevronLeft /></button>
-                  <span>4 cartes à la fois</span>
-                  <button type="button" aria-label="Voir les cartes Héritage suivantes" onClick={() => heritageCarouselRef.current?.scrollBy({ left: heritageCarouselRef.current.clientWidth, behavior: "smooth" })}><ChevronRight /></button>
-                </nav>
-              </header>
-              <button type="button" className={styles.heritageClassicChoice} data-selected={!selectedHeritage || undefined} aria-pressed={!selectedHeritage} onClick={() => setSelectedHeritage("")}>
-                <span><strong>Culture classique</strong><small>Continuer sans pouvoir Héritage</small></span>
-                <b>{!selectedHeritage ? "Sélectionnée" : "Choisir"}</b>
-              </button>
-              <div ref={heritageCarouselRef} className={styles.heritageCarousel} role="list" tabIndex={0} aria-label="Cartes Héritage producteur">
-                {selectableHeritageCards.map((card) => {
-                  const remotelyOwned = remoteHeritageOwnedCodes.includes(card.code);
-                  const disabled = remoteBurnsEnabled && !remotelyOwned;
-                  const selected = selectedHeritage === card.code;
-                  const producerNames = remoteHeritageProducerNames[card.code] ?? [];
-                  const producerLabel = producerNames.length > 0 ? producerNames.join(" · ") : card.producerName || (remotelyOwned ? "Héritage assemblé" : undefined);
-                  return (
-                    <article className={styles.heritageCarouselCard} key={card.code} role="listitem" data-selected={selected || undefined} data-locked={disabled || undefined}>
-                      <CardArtwork code={card.code} name={card.name} producerName={producerLabel} imageUrl={card.imageUrl} />
-                      <span>Carte producteur · {card.timing === "passive" ? "passif" : "1 fois/culture"}</span>
-                      <strong>{card.name}</strong>
-                      <p>{card.description}</p>
-                      <small>{disabled ? "Non possédée" : selected ? "Pouvoir équipé" : "Disponible"}</small>
-                      <button type="button" disabled={disabled} aria-pressed={selected} onClick={() => setSelectedHeritage(card.code)}>{disabled ? "Non possédée" : selected ? "Équipée" : "Équiper"}</button>
-                    </article>
-                  );
-                })}
-              </div>
-            </section>
+            <KqHeritageCarousel cards={selectableHeritageCards} ownedCodes={remoteHeritageOwnedCodes}
+              ownershipRequired={remoteBurnsEnabled} producerNames={remoteHeritageProducerNames}
+              selectedCode={selectedHeritage} onSelect={setSelectedHeritage}
+              renderArtwork={(card, producerLabel) => <CardArtwork code={card.code} name={card.name} producerName={producerLabel} imageUrl={card.imageUrl} />} />
           </> : null}
           <h2 className={styles.deckSectionTitle}>{isPlayerMode ? "3" : "2"}. La Botte <small>{selectedCards.length} carte{selectedCards.length > 1 ? "s" : ""}</small></h2>
           <p className={`${styles.deckNotice} ${styles.deckSelectionNotice}`} role="status" aria-live="polite">{deckNotice || "Ajoute autant de copies que tu en possèdes. Chaque copie jouée sera brûlée."}</p>
