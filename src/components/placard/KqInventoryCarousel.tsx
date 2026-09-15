@@ -1,14 +1,19 @@
-﻿"use client";
+"use client";
 import Image from "next/image";
 import { useState, type CSSProperties } from "react";
 import { ZoomIn } from "lucide-react";
-import { KQ_CARDS, type KqSupportCard } from "@/lib/kanab-quest-game";
+import { KQ_CARDS, type KqCardCategory, type KqSupportCard } from "@/lib/kanab-quest-game";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import { getKqCardGuide, getKqCardRole } from "@/lib/kanab-quest-card-guide";
 import { KqCardCarousel } from "./KqCardCarousel";
 import { KqBotteCardDetail } from "./KqBotteCollection";
 import shared from "./KqCardCarousel.module.css";
 import styles from "./KqInventoryCarousel.module.css";
+
+const CATEGORIES: Record<KqCardCategory, string> = {
+  equipment: "Équipement", "know-how": "Savoir-faire", luck: "Chance", pbi: "Anti-ravageurs", substrate: "Culture",
+};
+const categories = (Object.keys(CATEGORIES) as KqCardCategory[]).filter(category => KQ_CARDS.some(card => card.category === category));
 
 type Props = {
   inventory: Record<string, number>;
@@ -20,17 +25,23 @@ type Props = {
 };
 export function KqInventoryCarousel({ inventory, selectedCodes, onAdd, onRemove, loading = false, error = "" }: Props) {
   const [filter, setFilter] = useState<"owned" | "all" | "missing">("owned");
+  const [category, setCategory] = useState<KqCardCategory | "all">("all");
   const [detail, setDetail] = useState<KqSupportCard | null>(null);
   const owned = KQ_CARDS.filter(card => (inventory[card.code] ?? 0) > 0).length;
   const unavailable = loading || Boolean(error);
-  const cards = unavailable ? [] : KQ_CARDS.filter(card => filter === "all" || (filter === "owned" ? (inventory[card.code] ?? 0) > 0 : (inventory[card.code] ?? 0) === 0));
+  const matchingOwnership = unavailable ? [] : KQ_CARDS.filter(card => filter === "all" || (filter === "owned" ? (inventory[card.code] ?? 0) > 0 : (inventory[card.code] ?? 0) === 0));
+  const cards = matchingOwnership.filter(card => category === "all" || card.category === category);
   return <>
-    <KqCardCarousel id="inventory-carousel-title" title="2. Ton inventaire de jeu" label="Cartes La Botte de ton inventaire" count={cards.length} resetKey={filter}
+    <KqCardCarousel id="inventory-carousel-title" title="2. Ton inventaire de jeu" label="Cartes La Botte de ton inventaire" count={cards.length} resetKey={`${filter}:${category}`}
       intro={<div className={styles.toolbar}>
         <nav aria-label="Filtrer ton inventaire">{([['owned', 'Possédées'], ['all', 'Toutes'], ['missing', 'Manquantes']] as const).map(([value, label]) => <button type="button" key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{label}</button>)}</nav>
-        <span role="status">{loading ? "Chargement de tes cartes…" : error ? "Stock indisponible" : `${owned}/${KQ_CARDS.length} cartes possédées · ${selectedCodes.length} dans ton deck`}</span>
+        <span role="status">{loading ? "Chargement de tes cartes…" : error ? "Stock indisponible" : `${owned}/${KQ_CARDS.length} cartes possédées · ${cards.length} affichée${cards.length > 1 ? "s" : ""} · ${selectedCodes.length} dans ton deck`}</span>
+        <nav className={styles.categories} aria-label="Filtrer par catégorie">
+          <button type="button" aria-pressed={category === "all"} onClick={() => setCategory("all")}>Toutes les catégories <b>{unavailable ? "…" : matchingOwnership.length}</b></button>
+          {categories.map(value => <button type="button" key={value} aria-pressed={category === value} onClick={() => setCategory(value)}>{CATEGORIES[value]} <b>{unavailable ? "…" : matchingOwnership.filter(card => card.category === value).length}</b></button>)}
+        </nav>
       </div>}
-      footer={error ? <p role="alert" className={styles.notice}>{error}</p> : !loading && cards.length === 0 ? <p className={styles.notice}>{filter === "missing" ? "Tu possèdes toutes les cartes !" : "Aucune carte possédée pour le moment. Tu peux découvrir les cartes à trouver."}{filter !== "all" ? <button type="button" onClick={() => setFilter("all")}>Voir toutes les cartes</button> : null}</p> : null}>
+      footer={error ? <p role="alert" className={styles.notice}>{error}</p> : !loading && cards.length === 0 ? <p className={styles.notice}>{category !== "all" ? "Aucune carte ne correspond à ces filtres." : filter === "missing" ? "Tu possèdes toutes les cartes !" : "Aucune carte possédée pour le moment. Tu peux découvrir les cartes à trouver."}{filter !== "all" || category !== "all" ? <button type="button" onClick={() => { setFilter("all"); setCategory("all"); }}>Voir toutes les cartes</button> : null}</p> : null}>
       {cards.map(card => {
         const copies = inventory[card.code] ?? 0, selected = selectedCodes.filter(code => code === card.code).length;
         const automatic = card.category === "pbi" || card.timing === "passive";

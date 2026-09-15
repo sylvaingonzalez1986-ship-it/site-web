@@ -1,4 +1,4 @@
-﻿.toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; color: #c2d9cc; font-size: .78rem; }
+.toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; color: #c2d9cc; font-size: .78rem; }
 .toolbar nav { display: flex; flex-wrap: wrap; gap: 6px; }
 .toolbar button { min-height: 44px; padding: 8px 12px; border: 1px solid #71e3c940; border-radius: 3px; background: transparent; color: #c2d9cc; cursor: pointer; }
 .toolbar button[aria-pressed="true"] { background: #00563f; color: #fff8e6; border-color: #71e3c9; }
@@ -18,3 +18,7 @@
 .automatic { display: flex; align-items: center; min-height: 44px; font-size: .76rem; color: #71e3c9; }
 .notice { color: #c2d9cc; font-size: .85rem; }
 .notice button { display: block; min-height: 44px; margin-top: 8px; border: 0; background: transparent; color: #f4c43d; text-decoration: underline; cursor: pointer; }
+
+.categories { flex-basis: 100%; }
+.categories button { display: flex; align-items: center; gap: 8px; font-size: .75rem; }
+.categories b { min-width: 20px; padding: 2px 4px; border-radius: 3px; background: #71e3c920; font-variant-numeric: tabular-nums; }
