@@ -188,7 +188,7 @@ export function ArenaJourneyTour() {
   return <>
     {!active&&userId&&!profileOpen?(chanvrier?<ChanvrierPlayerCard profile={chanvrier} onEdit={()=>setProfileOpen(true)}/>:<button type="button" className={styles.profileButton} onClick={()=>setProfileOpen(true)}><UserRound size={17}/>Créer mon chanvrier</button>):null}
     {profileOpen&&userId?<ChanvrierProfileEditor profile={chanvrier} onClose={()=>setProfileOpen(false)} onSaved={profile=>{setChanvrier(profile);setProfileOpen(false);}}/>:null}
-    {!active&&userId?<button ref={replay} type="button" className={styles.replay} disabled={busy} onClick={()=>void act("restart")}><Compass size={17}/>Guide{progress?.status==="completed"?<Check size={15}/>:null}</button>:null}
+    {!active&&userId?<button ref={replay} type="button" className={styles.replay} data-arena-guide-trigger disabled={busy} onClick={()=>void act("restart")}><Compass size={17}/>Guide{progress?.status==="completed"?<Check size={15}/>:null}</button>:null}
     {!progress&&error?<div className={styles.loadError} role="status"><p>{loading?"Chargement du profil et du guide…":error}</p><button type="button" disabled={loading} aria-busy={loading} onClick={()=>{setLoading(true);setRetry(value=>value+1);}}>{loading?"Chargement…":"Réessayer"}</button></div>:null}
     {overlay?createPortal(overlay,progress?.step?portalHost??document.body:document.body):null}
   </>;
