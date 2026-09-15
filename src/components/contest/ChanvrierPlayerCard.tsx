@@ -7,7 +7,6 @@ import { Award, BookOpen, Check, ChevronUp, Dices, Gift, Leaf, LockKeyhole, Meda
 import { CHANVRIER_STRENGTHS, type ChanvrierProfile } from "@/lib/arena-chanvrier";
 import { ACHIEVEMENTS, ACHIEVEMENT_CATEGORIES, BADGE_TIERS, achievementProgress, type AchievementCategory, type ChanvrierBadge, type ChanvrierProgress, type ChanvrierShowcase } from "@/lib/chanvrier-progress";
 import { getKqReputationProgress } from "@/lib/kanab-quest-reputation";
-import { getKqLeague } from "@/lib/kanab-quest-ranking";
 import { KQ_MISSION_COPY } from "@/lib/kanab-quest-missions";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { ChanvrierAvatar } from "./ChanvrierAvatar";
@@ -98,7 +97,6 @@ export function ChanvrierPlayerCard({ profile, onEdit }: { profile: ChanvrierPro
     finally { setSaving(false); }
   }
   const reputation = getKqReputationProgress(data?.reputation ?? 0);
-  const league = getKqLeague(data?.rating ?? 1000);
   const chosenTitle = ACHIEVEMENTS.find(a => a.code === data?.showcase.title)?.title;
   const pinned = data?.badges.filter(b => data.showcase.badges.includes(b.id)) ?? [];
   const goldFrame = data?.badges.some(b => b.code === "kq-ach-jury-favorite-3" && b.awardedAt);
@@ -141,7 +139,7 @@ export function ChanvrierPlayerCard({ profile, onEdit }: { profile: ChanvrierPro
                 <div><Trophy /><strong>{data.metrics.bestJury ? `${data.metrics.bestJury.toLocaleString("fr-FR")}/10` : "—"}</strong><span>Meilleure note du jury</span></div>
                 <div><Swords /><strong>{data.metrics.wins ?? 0} <small>V ·</small> {data.metrics.losses ?? 0} <small>D</small></strong><span>Duels entre joueurs</span></div>
               </div>
-              <div className={styles.ranking}><Award size={29} /><div><strong>{league.name}</strong><p>{data.rating} points de ligue · {data.rank ? `N° ${data.rank} au classement` : "Pas encore classé"}</p>{data.rank && data.rankAsOf ? <small>Classement du {new Date(data.rankAsOf).toLocaleDateString("fr-FR")}</small> : null}</div><Link prefetch={false} onClick={close} href="/arene">L’arène ↗</Link></div>
+              <div className={styles.ranking}><Award size={29} /><div><strong>Classement commun</strong><p>{data.rank ? `N° ${data.rank} au Placard` : "Pas encore classé"} · Tous les chanvriers réunis</p>{data.rank && data.rankAsOf ? <small>Classement du {new Date(data.rankAsOf).toLocaleDateString("fr-FR")}</small> : null}</div><Link prefetch={false} onClick={close} href="/arene">L’arène ↗</Link></div>
               <div className={styles.sectionTitle}><h3>Mon prochain cap</h3><Link prefetch={false} onClick={close} href="/arene/placard?view=missions">Toutes les missions ↗</Link></div>
               <div className={styles.objectives}>{objectives.map(o => <Link prefetch={false} onClick={close} key={o.key} href={o.href}><small>{o.hint}</small><strong>{o.title}</strong><Meter value={o.value} target={o.target} label={o.title} /><span>{Math.min(o.value, o.target)} / {o.target}<b>Continuer →</b></span></Link>)}</div>
               {!objectives.length ? <p>Tous tes objectifs sont atteints. Quelle sera ta prochaine fleur d’exception ?</p> : null}

@@ -157,15 +157,13 @@ type ArenaRankingEntry = {
 
 type PlacardPlayerProgress = {
   rank: number | null;
+  placardScore: number;
   rating: number;
   seasonPoints: number;
   wins: number;
   losses: number;
   streak: number;
   burnedFlowers: number;
-  league: string;
-  leagueProgress: number;
-  pointsToNextLeague: number;
 };
 
 export const CONTEST_BADGE_CATALOG = [
@@ -2244,9 +2242,9 @@ function ContestTesterProfileCard({
           <p>Classement personnel</p>
           <h3>Placard</h3>
           <dl>
-            <div><dt>Cote</dt><dd>{placardProgress?.rating ?? "—"}</dd></div>
+            <div><dt>Score Placard</dt><dd>{placardProgress?.placardScore ?? "—"}</dd></div>
             <div><dt>Rang saison</dt><dd>{placardProgress?.rank ? `#${placardProgress.rank}` : placardProgressLoaded ? "Non classé" : "…"}</dd></div>
-            <div><dt>Ligue</dt><dd>{placardProgress?.league ?? "—"}</dd></div>
+            <div><dt>Duels</dt><dd>{placardProgress ? `${placardProgress.wins} V / ${placardProgress.losses} D` : "—"}</dd></div>
           </dl>
         </section>
 
@@ -2284,8 +2282,8 @@ function ContestTesterProfileCard({
         <section className={arenaStyles.placardProfileSummary}>
           <div>
             <p>Progression Placard</p>
-            <strong>{placardProgress ? `${placardProgress.league} · ${placardProgress.wins} V / ${placardProgress.losses} D` : "Saison de culture"}</strong>
-            <small>{placardProgress ? `${placardProgress.pointsToNextLeague} point(s) de cote avant le palier suivant · ${placardProgress.burnedFlowers} Fleur(s) passée(s) au jury.` : "Crée des Fleurs, relève les défis et affronte les autres joueurs pour entrer au classement."}</small>
+            <strong>{placardProgress ? `${placardProgress.wins} V / ${placardProgress.losses} D · Classement ouvert à tous` : "Saison de culture"}</strong>
+            <small>{placardProgress ? `${placardProgress.burnedFlowers} fleur(s) passée(s) au jury. Tous les joueurs peuvent se rencontrer dans la file commune.` : "Crée des Fleurs, relève les défis et affronte les autres joueurs pour entrer au classement."}</small>
           </div>
         </section>
       </div>

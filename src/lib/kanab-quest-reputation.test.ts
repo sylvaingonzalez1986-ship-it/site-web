@@ -59,19 +59,11 @@ describe("Kanab Quest reputation progression", () => {
     expect(getKqReputationProgress(Number.NaN).reputation).toBe(0);
   });
 
-  it("publishes the reputation title in both Placard leaderboards", () => {
-    const placardClient = readFileSync(
-      join(process.cwd(), "src/components/placard/KanabQuestDicePrototype.tsx"),
-      "utf8",
-    );
+  it("keeps reputation titles and Placard scores in the full Arena leaderboard", () => {
     const arenaClient = readFileSync(
       join(process.cwd(), "src/components/contest/ContestHubClient.tsx"),
       "utf8",
     );
-    expect(placardClient).toContain("reputationTier: getKqReputationProgress(entry.reputation).tier.name");
-    expect(placardClient).toContain("{entry.reputationTier} · {entry.reputation} rép.");
-    expect(placardClient).toContain("<small>Score Placard</small>");
-    expect(placardClient).toContain("<strong>{entry.placardScore}</strong>");
     expect(arenaClient).toContain("getKqReputationProgress(item.reputation).tier.name");
     expect(arenaClient).toContain("score: String(item.placardScore)");
   });

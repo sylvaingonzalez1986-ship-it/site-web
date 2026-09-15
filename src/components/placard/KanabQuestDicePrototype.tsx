@@ -4,6 +4,7 @@ import { KqCardEffectGuide as CardEffectGuide, KqCardRoleLegend } from "./KqCard
 import { KQ_SITUATION_TAG_LABELS } from "@/lib/kanab-quest-card-guide";
 import { useGameViewport } from "@/hooks/useGameViewport";
 import { KqEnergyPanel } from "./KqEnergyPanel";
+import { KqSeasonBoard } from "./KqSeasonBoard";
 import { KqCulturePreparation } from "./KqCulturePreparation";
 import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
 
@@ -48,13 +49,13 @@ import { createKqFlower, createKqOpponent, getKqJuryProgram, lockKqBattle, resol
 import { addKqBoosterToInventory, applyKqArenaStreakReward, openKqSupportBooster } from "@/lib/kanab-quest-booster";
 import { claimKqChallenges, evaluateKqChallenges, getKqChallengeProgress, getKqDailyChallenges, getKqGameChallengeDate } from "@/lib/kanab-quest-challenges";
 import { buildKqCollectionDeck, buildKqRecommendedDeck, getKqCardChallengeFit, getKqDeckCoverage, getKqOpeningHandChance, sanitizeKqDeckSelection, summarizeKqCardEconomy } from "@/lib/kanab-quest-economy";
-import { applyKqBattleToRanking, createKqRankProfile, getKqLeague, getKqLocalLeaderboard, getKqMatchmaking, type KqRankProfile } from "@/lib/kanab-quest-ranking";
+import { applyKqBattleToRanking, createKqRankProfile, getKqLocalLeaderboard, getKqMatchmaking, type KqRankProfile } from "@/lib/kanab-quest-ranking";
 import { createLocalKqRepository, type KqBurnReceipt, type KqFavoriteDeck, type KqRepository } from "@/lib/kanab-quest-repository";
 import { KQ_HERITAGE_CARDS, type KqHeritageCard } from "@/lib/kanab-quest-heritage";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import { getKqSituationArtwork } from "@/lib/kanab-quest-situation-artwork";
 import { getKqFeedbackTone } from "@/lib/kanab-quest-feedback";
-import { calculateKqPlacardScore, getKqReputationProgress } from "@/lib/kanab-quest-reputation";
+import { calculateKqPlacardScore } from "@/lib/kanab-quest-reputation";
 import {
   getKqJuryScoreFromRounds,
   getKqPinnedRouteFlowerPreview,
@@ -90,9 +91,7 @@ type OfficialRankProgress = {
   wins: number;
   losses: number;
   streak: number;
-  league: string;
-  leagueProgress: number;
-  pointsToNextLeague: number;
+  leaderboardGeneratedAt?: string | null;
   arenaExperience: number;
   claimedChallengeCodes: string[];
 };
@@ -1657,18 +1656,14 @@ export function KanabQuestDicePrototype({
   const matchmaking = getKqMatchmaking(rankProfile);
   const randomLocalRival = matchmaking[Math.abs(state.seed + battleHistory.length * 97) % matchmaking.length];
   const leaderboard = getKqLocalLeaderboard(rankProfile);
-  const league = getKqLeague(rankProfile.rating);
   const playerLeaderboardEntry = leaderboard.find((entry) => entry.isPlayer);
   const displayedRank = isPlayerMode ? officialRankProgress?.rank ?? null : playerLeaderboardEntry?.rank ?? null;
-  const displayedLeague = isPlayerMode ? officialRankProgress?.league ?? "Non classé" : league.name;
   const displayedRating = isPlayerMode ? officialRankProgress?.rating ?? 1000 : rankProfile.rating;
   const displayedSeasonPoints = isPlayerMode ? officialRankProgress?.seasonPoints ?? 0 : rankProfile.seasonPoints;
   const displayedWins = isPlayerMode ? officialRankProgress?.wins ?? 0 : rankProfile.wins;
   const displayedLosses = isPlayerMode ? officialRankProgress?.losses ?? 0 : rankProfile.losses;
   const displayedStreak = isPlayerMode ? officialRankProgress?.streak ?? 0 : rankProfile.streak;
   const displayedArenaExperience = isPlayerMode ? officialRankProgress?.arenaExperience ?? 0 : 0;
-  const displayedLeagueProgress = isPlayerMode ? officialRankProgress?.leagueProgress ?? 0 : league.progress;
-  const displayedPointsToNext = isPlayerMode ? officialRankProgress?.pointsToNextLeague ?? 0 : league.pointsToNext;
   const displayedPlacardScore = isPlayerMode
     ? officialRankProgress?.placardScore ?? calculateKqPlacardScore({
       rating: displayedRating,
@@ -1688,7 +1683,6 @@ export function KanabQuestDicePrototype({
       placardScore: entry.placardScore,
       rating: entry.rating,
       reputation: entry.reputation,
-      reputationTier: getKqReputationProgress(entry.reputation).tier.name,
       isPlayer: entry.rank === officialRankProgress?.rank,
     }))
     : leaderboard.slice(0, 3).map((entry) => ({
@@ -1699,7 +1693,6 @@ export function KanabQuestDicePrototype({
         reputation: 0,
       }).score,
       reputation: 0,
-      reputationTier: getKqReputationProgress(0).tier.name,
     }));
   const activeSubstrate = KQ_LIVING_SOIL;
   const cultureSystemStatus = situation ? getKqCultureSystemSituationStatus(state) : null;
@@ -1817,11 +1810,19 @@ export function KanabQuestDicePrototype({
               <p>Dépose ta Fleur. Adversaire aléatoire, verdict automatique.</p>
             </header>
           ) : null}
-          <section id="placard-saison" className={styles.arenaDashboard}>
-            <div><span>Arène Kanab Quest</span><h2>{isPlayerMode ? `Ta saison${officialRankProgress?.seasonCode ? ` · ${officialRankProgress.seasonCode}` : ""}` : "Ta saison locale"}</h2><p>{displayedPointsToNext > 0 ? `${displayedPointsToNext} points de cote avant la ligue suivante.` : isPlayerMode ? "Joue un duel officiel pour entrer dans le classement." : "Palier maximal atteint dans le prototype."}</p><div className={styles.leagueProgress}><i style={{ width: `${displayedLeagueProgress}%` }} /></div><small className={styles.nextBooster}>{3 - (displayedStreak % 3)} victoire{3 - (displayedStreak % 3) > 1 ? "s" : ""} de suite avant le prochain booster · points ajustés à la cote adverse</small><small className={styles.reputationRule}>Score Placard = cote + bonus saison (150 max.) + bonus réputation dégressif (100 max.).</small></div>
-            <div className={styles.arenaStats}><span><strong>#{displayedRank ?? "–"}</strong><small>Classement</small></span><span><strong>{displayedPlacardScore}</strong><small>Score Placard</small></span><span><strong>{displayedLeague}</strong><small>Ligue</small></span><span><strong>{displayedRating}</strong><small>Cote</small></span><span><strong>{displayedSeasonPoints}</strong><small>Points</small></span><span><strong>{displayedArenaExperience.toLocaleString("fr-FR")}</strong><small>EXP Arène</small></span><span><strong>{displayedWins}–{displayedLosses}</strong><small>Bilan</small></span><span><strong>{displayedStreak}</strong><small>Série</small></span></div>
-            <ol>{displayedLeaderboard.map((entry) => <li key={entry.id} data-player={entry.isPlayer || undefined}><b>#{entry.rank}</b><span>{entry.name}</span><span className={styles.leaderboardScore}><strong>{entry.placardScore}</strong><small>Score · cote {entry.rating} · {entry.reputationTier} · {entry.reputation} rép.</small></span></li>)}</ol>
-          </section>
+          <KqSeasonBoard
+            seasonCode={officialRankProgress?.seasonCode} rank={displayedRank} score={displayedPlacardScore}
+            rating={displayedRating} seasonPoints={displayedSeasonPoints} reputation={isPlayerMode ? officialRankProgress?.reputation ?? 0 : 0}
+            wins={displayedWins} losses={displayedLosses} streak={displayedStreak} arenaExperience={displayedArenaExperience}
+            leaderboard={displayedLeaderboard} updatedAt={officialRankProgress?.leaderboardGeneratedAt}
+            local={!isPlayerMode} onOpenArena={() => {
+              const reserve = document.getElementById("placard-reserve");
+              if (reserve && reserve.getClientRects().length > 0) {
+                reserve.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+                reserve.focus({ preventScroll: true });
+              } else onOpenArena?.();
+            }}
+          />
           <section className={styles.dailyChallengeBoard}>
             <header><span>Rotation quotidienne · {dailyChallenges[0]?.dayKey}</span><h2>Les 3 défis du jour</h2><p>Les mêmes objectifs sont validables en duel classé ou en entraînement. Adapte ton Buddie et ton deck avant de lancer la culture.</p><strong className={styles.dailyChallengeProgress}>{claimedDailyChallengeCount}/{dailyChallenges.length} terminé{claimedDailyChallengeCount > 1 ? "s" : ""} · +{remainingDailyChallengePoints} points encore disponibles</strong></header>
             <div>{dailyChallenges.map((challenge) => { const claimed = claimedChallengeCodes.includes(challenge.claimKey); const missingPbi = !claimed && challenge.code === "biocontrol" && !pbiReserve.some((card) => (activeInventory[card.code] ?? 0) > 0); return <article key={challenge.claimKey} data-claimed={claimed || undefined} data-blocked={missingPbi || undefined}><Star /><span><strong>{challenge.title}</strong><small>{claimed ? "Objectif validé aujourd’hui." : missingPbi ? "Aucune PBI disponible dans ton album." : challenge.code === "biocontrol" ? `${challenge.description} Bonus mission : +1 XP au départ.` : challenge.description}</small></span><b>{claimed ? "Déjà gagné" : missingPbi ? "PBI requise" : `+${challenge.points}`}</b></article>; })}</div>
@@ -1894,7 +1895,7 @@ export function KanabQuestDicePrototype({
           <div className={styles.pbiReserve}><span>Réserve PBI de l’album · automatique</span><div>{pbiReserve.map((card) => <strong key={card.code} data-empty={(activeInventory[card.code] ?? 0) <= 0 || undefined}>{card.name} <small>×{activeInventory[card.code] ?? 0}</small></strong>)}</div><p>Ces cartes ne prennent aucune place dans le deck. Elles apparaissent seulement après identification d’un ravageur. Une référence à zéro ne peut plus intervenir.</p></div>
           <KqCulturePreparation cardCount={selectedCards.length} note="Sol vivant inclus. Seules les cartes jouées sont consommées." disabled={isPlayerMode && !ownedBuddieCodes.includes(selectedBuddie)} busy={remoteAction !== null} onEditDeck={()=>setShowCollectionChest(true)} onStart={()=>setPendingStart(true)} />
           {remoteBurnsEnabled ? (
-            <section id="placard-reserve" className={styles.officialFlowerReserve}>
+            <section id="placard-reserve" tabIndex={-1} className={styles.officialFlowerReserve}>
               <header>
                 <span>Réserve officielle</span>
                 <h2>Mes Fleurs d’Arène</h2>
@@ -2020,8 +2021,6 @@ export function KanabQuestDicePrototype({
     const economy = summarizeKqCardEconomy(state);
     const recentJuryCodes = battleHistory.slice(0, 3).flatMap((entry) => entry.rounds.map((round) => round.code));
     const juryProgram = getKqJuryProgram(state.seed, recentJuryCodes);
-    const previousLeague = getKqLeague(rankProfile.rating - rankProfile.lastRatingDelta);
-    const leagueShifted = previousLeague.name !== league.name;
     const burnedCards = economy.burnedCodes.map((code) => KQ_CARDS.find((card) => card.code === code)).filter((card): card is KqSupportCard => Boolean(card));
     const preservedCards = economy.preservedCodes.map((code) => KQ_CARDS.find((card) => card.code === code)).filter((card): card is KqSupportCard => Boolean(card));
     if (isPlayerMode) {
@@ -2134,7 +2133,6 @@ export function KanabQuestDicePrototype({
               <span className={styles.verdictKicker}>Verdict officiel</span>
               <h2>{revealedRounds >= battle.rounds.length ? battle.winner === "player" ? "Victoire !" : "Défaite honorable" : "Délibération du jury…"}</h2>
               {revealedRounds >= battle.rounds.length ? <small className={styles.verdictDate}>Fleurs brûlées le {formatKqDate(battle.burnedAt)}</small> : null}
-              {revealedRounds >= battle.rounds.length && leagueShifted ? <div className={styles.leagueShift} data-promotion={rankProfile.lastRatingDelta > 0 || undefined}><Trophy /><span><small>{rankProfile.lastRatingDelta > 0 ? "Promotion de ligue" : "Changement de ligue"}</small><strong>{previousLeague.name} → {league.name}</strong></span></div> : null}
               {revealedRounds >= battle.rounds.length && rankProfile.lastArenaRewardCards.length > 0 ? <div className={styles.arenaBoosterReward}><Sparkles /><span><small>Série de {rankProfile.streak} victoires · booster gagné</small><strong>{rankProfile.lastArenaRewardCards.map((code) => KQ_CARDS.find((card) => card.code === code)?.name ?? code).join(" · ")}</strong></span></div> : null}
               <div className={styles.battleRounds}>{battle.rounds.slice(0, revealedRounds).map((round) => <div key={round.code} data-winner={round.winner}><strong>{round.label}<small>{round.explanation}</small></strong><span>{round.playerScore}<small>{round.winner === "player" ? "Gagné" : ""}</small></span><b>–</b><span>{round.opponentScore}<small>{round.winner === "opponent" ? "Gagné" : ""}</small></span></div>)}</div>
               {revealedRounds < battle.rounds.length ? <div className={styles.juryWaiting}><i /><i /><i /><span>Manche {Math.min(revealedRounds + 1, 3)} sur 3</span></div> : <><p className={styles.burnReceipt}><Flame /> {battle.playerFlower.variety} et {battle.opponentFlower.variety} ont été brûlées. Leurs reçus restent dans l’historique.</p><div className={styles.rewardDeltas}><div className={styles.ratingDelta} data-positive={rankProfile.lastRatingDelta > 0 || undefined}><Trophy /><span><small>Évolution de ta cote</small><strong>{rankProfile.lastRatingDelta > 0 ? "+" : ""}{rankProfile.lastRatingDelta}</strong></span></div><div className={styles.seasonDelta}><Star /><span><small>Gain de saison</small><strong>+{rankProfile.lastSeasonPointsDelta}</strong></span></div></div><div className={styles.challengeResults}><h3>Défis du jour · {challengeResults[0]?.dayKey}</h3>{challengeResults.map((challenge) => { const awarded = rankProfile.lastClaimedChallengeCodes.includes(challenge.claimKey); return <div key={challenge.claimKey} data-completed={challenge.completed || undefined}><span><strong>{challenge.completed ? "✓ " : "○ "}{challenge.title}</strong><small>{challenge.description}</small></span><b>{awarded ? `+${challenge.points}` : challenge.completed ? "Déjà gagné" : "—"}</b></div>; })}</div><div className={styles.rankSummary}><span><strong>{rankProfile.rating}</strong><small>Cote</small></span><span><strong>{rankProfile.seasonPoints}</strong><small>Points saison</small></span><span><strong>{rankProfile.wins}-{rankProfile.losses}</strong><small>Victoires-défaites</small></span></div><ol className={styles.leaderboard}>{leaderboard.map((entry) => <li key={entry.id} data-player={entry.isPlayer || undefined}><b>#{entry.rank}</b><span>{entry.name}</span><strong>{entry.rating}</strong></li>)}</ol><button type="button" className={styles.primaryButton} onClick={reset}><RotateCcw /> Nouvelle culture</button></>}
