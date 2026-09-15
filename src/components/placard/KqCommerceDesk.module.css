@@ -169,3 +169,13 @@
 .shopScale { display: grid; gap: 12px; list-style: none; padding: 0; margin-block: 16px; }
 .shopScale li { display: grid; gap: 5px; border-left: 2px solid #54d5bb; padding-left: 10px; font-size: .76rem; line-height: 1.5; }
 .shopScale li > span { color: #c2d9cc; }
+
+.demandStatus { display: grid; gap: 7px; padding-block: 12px; color: #71e3c9; font-size: .8rem; }
+.demandStatus > span { display: flex; align-items: center; gap: 8px; }
+.demandStatus svg { flex: 0 0 auto; }
+.demandStatus strong { font-size: .85rem; color: #fffaf1; }
+.demandStatus small { color: #c2d9cc; line-height: 1.5; }
+.demandStatus progress { display: block; width: 100%; height: 7px; appearance: none; border: 0; border-radius: 2px; background: #fffaf125; accent-color: #71e3c9; overflow: hidden; }
+.demandStatus progress::-webkit-progress-bar { background: #fffaf125; }
+.demandStatus progress::-webkit-progress-value { background: #71e3c9; }
+.demandStatus progress::-moz-progress-bar { background: #71e3c9; }

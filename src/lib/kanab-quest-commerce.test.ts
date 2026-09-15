@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { quoteKqCommerce, getKqCommerceCapacity, type KqCommerceState, type KqCommerceStock, type KqCommerceOffer } from "./kanab-quest-commerce";
+import { quoteKqCommerce, getKqCommerceReplenishment, getKqCommerceCapacity, type KqCommerceState, type KqCommerceStock, type KqCommerceOffer } from "./kanab-quest-commerce";
 const stock: KqCommerceStock = { id: "stock", flowerId: "flower", name: "Test", route: "raw", batchRoute: "raw", juryScore: 9, initialUnits: 1200, remainingUnits: 1200, equivalentUnits: 1200, originalUnits: 1200, baseUnitCents: 180, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false };
 const state: KqCommerceState = { revision: 0, cashCents: 100000, reputation: 1500, clients: 100, computerOwned: true, internetRenew: true,
   campaign: { id: "cycle", revision: 0, reputation: 1500, clientsStart: 100, event: "normal", internetPaid: true, directUsed: 0, shopUsed: 0, goodUnits: 0, disappointmentUnits: 0 }, stocks: [stock], receipts: [], marketVolumes: {}, ownVolumes: {}, routeSales: {} };
@@ -152,5 +152,72 @@ describe("Three sales channels", () => {
     const q = quoteKqCommerce(state, hash, "cbd-shop", "advised", 108);
     expect(q.equivalentSold).toBe(600); expect(q.shopCost).toBe(600);
     expect(q.units).toBe(108); expect(Number.isSafeInteger(q.payoutCents)).toBe(true);
+  });
+});
+
+
+describe("real-time shared demand", () => {
+  const noon = Date.parse("2026-09-15T12:00:00Z");
+  const hour = 3600000;
+  const initial = () => ({ ...structuredClone(state), reputation: 312, clients: 0,
+    campaign: { ...structuredClone(state.campaign!), reputation: 312, clientsStart: 0 },
+    demand: { serverNow: new Date(noon).toISOString(), updatedAt: new Date(noon).toISOString(), onlineDebt: 1, shopDebt: 1, growthResetsAt: new Date(noon + 24 * hour).toISOString() } });
+  const large = { ...stock, initialUnits: 10000, remainingUnits: 10000, equivalentUnits: 10000, originalUnits: 10000 };
+  it("refills online in four hours, shops in twelve, without completing a culture", () => {
+    const account = initial();
+    expect(quoteKqCommerce(account, large, "online").maxUnits).toBe(0);
+    expect(quoteKqCommerce(account, large, "online", "advised", undefined, noon + hour).maxUnits).toBe(225);
+    expect(quoteKqCommerce(account, large, "online", "advised", undefined, noon + 4 * hour).maxUnits).toBe(900);
+    expect(quoteKqCommerce(account, large, "cbd-shop", "advised", undefined, noon + 6 * hour).maxUnits).toBe(2000);
+    expect(quoteKqCommerce(account, large, "cbd-shop", "advised", undefined, noon + 12 * hour).maxUnits).toBe(4000);
+  });
+  it("caps offline accumulation, clamps backward time, and trusts the server timestamp by default", () => {
+    const account = initial();
+    expect(getKqCommerceReplenishment(account, "online", noon - hour)?.availableFraction).toBe(0);
+    expect(getKqCommerceReplenishment(account, "online", noon + 240 * hour)?.availableFraction).toBe(1);
+    account.demand.serverNow = new Date(noon + hour).toISOString();
+    expect(getKqCommerceReplenishment(account, "online")?.remainingMs).toBe(3 * hour);
+  });
+  it("does not reset either balance when changing harvest or lot", () => {
+    const account = initial();
+    account.campaign.id = "another-harvest";
+    account.campaign.directUsed = 0;
+    for (const item of [large, { ...large, id: "another-lot", route: "dry-sift" as const }]) {
+      expect(quoteKqCommerce(account, item, "online").units).toBe(0);
+      expect(quoteKqCommerce(account, item, "cbd-shop").units).toBe(0);
+    }
+  });
+  it("converts shared equivalent mass to transformed product units", () => {
+    const account = initial();
+    const hash = { ...large, route: "dry-sift" as const, initialUnits: 2000, remainingUnits: 2000 };
+    expect(quoteKqCommerce(account, hash, "cbd-shop", "advised", undefined, noon + 6 * hour).units).toBe(400);
+    expect(quoteKqCommerce(account, hash, "cbd-shop", "advised", undefined, noon + 6 * hour).shopCost).toBe(2000);
+  });
+  it("doubles merchant throughput without doubling refill speed a second time", () => {
+    const account = { ...initial(), strength: "merchant" as const };
+    expect(quoteKqCommerce(account, large, "online", "advised", undefined, noon + hour).units).toBe(450);
+    expect(getKqCommerceReplenishment(account, "online", noon + hour)?.remainingMs).toBe(3 * hour);
+  });
+  it("preserves quality refusals and immediate wholesale with empty demand", () => {
+    const account = initial();
+    const poor = { ...large, juryScore: 4 };
+    expect(quoteKqCommerce(account, poor, "online", "advised", undefined, noon + 24 * hour).units).toBe(0);
+    expect(quoteKqCommerce(account, poor, "cbd-shop", "advised", undefined, noon + 24 * hour).units).toBe(0);
+    expect(quoteKqCommerce(account, poor, "wholesale").units).toBe(large.remainingUnits);
+  });
+  it("keeps price and sale rounding stable as time passes for a fixed quantity", () => {
+    const account = initial();
+    const early = quoteKqCommerce(account, large, "online", "premium", 50, noon + hour);
+    const later = quoteKqCommerce(account, large, "online", "premium", 50, noon + 2 * hour);
+    expect(later.payoutCents).toBe(early.payoutCents);
+    expect(later.directCost).toBe(early.directCost);
+    expect(later.maxUnits).toBeGreaterThan(early.maxUnits);
+  });
+  it("retains the recruitment ceiling when orders refill within the same growth period", () => {
+    const account = initial(); account.campaign.goodUnits = 900; account.clients = 5;
+    account.campaign.shopGoodUnits = 6000; account.shopPartners = 1;
+    const online = quoteKqCommerce(account, large, "online", "advised", undefined, noon + 4 * hour);
+    const shops = quoteKqCommerce(account, large, "cbd-shop", "advised", undefined, noon + 12 * hour);
+    expect(online.clientsAfter).toBe(5); expect(shops.shopPartnersAfter).toBe(1);
   });
 });

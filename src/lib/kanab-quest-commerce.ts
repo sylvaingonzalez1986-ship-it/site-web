@@ -31,7 +31,12 @@ export type KqCommerceStock = {
   juryScore: number; initialUnits: number; remainingUnits: number; equivalentUnits: number; originalUnits: number;
   baseUnitCents: number; payoutExact?: number; payoutRounded?: number; repExact: number; repRounded: number; professionalUnits: number; counted: boolean;
 };
+export const KQ_DEMAND_REFILL_MS = { online: 4 * 60 * 60 * 1000, "cbd-shop": 12 * 60 * 60 * 1000 } as const;
+export type KqCommerceDemand = {
+  serverNow: string; updatedAt: string; onlineDebt: number; shopDebt: number; growthResetsAt: string | null;
+};
 export type KqCommerceState = {
+  demand?: KqCommerceDemand;
   strength?: ChanvrierStrength | null;
   shopPartners?: number; shopRecruitment?: number; shopChurn?: number;
   rawFlowerIds?: string[]; revision: number; cashCents: number; reputation: number; clients: number; computerOwned: boolean; internetRenew: boolean;
@@ -79,7 +84,7 @@ export function getKqShopNetworkBonus(partners: number) {
 export function getKqShopBudget(partners: number, event: string = "normal") {
   return (4000 + clamp(partners, 0, KQ_SHOP_MAX_PARTNERS) * 250) * (event === "restock" ? 1.25 : event === "promotion" ? .75 : 1);
 }
-export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, channel: KqSalesChannel, policy: KqOnlinePrice = "advised", requestedUnits?: number): KqCommerceOffer {
+export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, channel: KqSalesChannel, policy: KqOnlinePrice = "advised", requestedUnits?: number, nowMs?: number): KqCommerceOffer {
   const salesMultiplier = getChanvrierSalesMultiplier(state.strength);
   const campaign = state.campaign;
   const capacity = getKqCommerceCapacity(campaign?.reputation ?? state.reputation);
@@ -106,10 +111,11 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   if (channel === "online" && (salvage || stock.juryScore < getKqCommerceMinimumQuality(stock.route, "online")!)) reason = "Qualité insuffisante pour la vente directe. Le grossiste reprend ce lot.";
   if (channel === "cbd-shop" && (salvage || stock.juryScore < getKqCommerceMinimumQuality(stock.route, "cbd-shop")!)) reason = "La boutique refuse cette qualité. Le grossiste reste disponible.";
   const eqPerUnit = stock.equivalentUnits / stock.initialUnits;
-  const availableEq = channel === "online" ? Math.max(0, directBudget - (campaign?.directUsed ?? 0)) * demandFactor
+  const replenishment = getKqCommerceReplenishment(state, channel, nowMs);
+  const availableEq = replenishment ? (channel === "online" ? directBudget * demandFactor : shopBudget) * replenishment.availableFraction : channel === "online" ? Math.max(0, directBudget - (campaign?.directUsed ?? 0)) * demandFactor
     : channel === "cbd-shop" ? Math.max(0, shopBudget - (campaign?.shopUsed ?? 0)) : stock.remainingUnits * eqPerUnit;
   const maxUnits = reason ? 0 : Math.min(stock.remainingUnits, Math.max(0, Math.floor(availableEq / eqPerUnit + 1e-8)));
-  if (!reason && maxUnits === 0) reason = "Les commandes de ce cycle sont épuisées. Conserve le stock ou change de circuit.";
+  if (!reason && maxUnits === 0) reason = "Les commandes reviennent progressivement. Attends un peu ou choisis un autre circuit.";
   const units = clamp(Math.floor(Number.isFinite(requestedUnits) ? requestedUnits! : maxUnits), 0, maxUnits);
   const equivalentSold = round6(units * eqPerUnit);
   const protectedPrice = tier.guaranteedPolicy === "premium";
@@ -146,8 +152,20 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const message = channel === "wholesale" ? "Reprise de tout le volume, sans exigence de note ni gain de réputation."
     : channel === "cbd-shop" ? `${shopBand.label} : reprise à ${shopPricePercent} % du tarif de référence. ${shopBand.churnWeight ? "Ces livraisons fragilisent tes partenariats." : shopBand.recruitmentWeight ? "Ces livraisons construisent ton réseau de boutiques." : "Ces livraisons maintiennent tes partenariats."}`
     : stock.juryScore < rule.neutralFrom ? "Une livraison décevante peut faire partir des clients. La perte dépend du volume livré."
-    : protectedPrice ? "Ta réputation protège le prix, mais les commandes restent limitées." : "Les bons lots construisent ta clientèle pour les prochains cycles.";
+    : protectedPrice ? "Ta réputation protège le prix, mais les commandes restent limitées." : "Les bons lots fidélisent ta clientèle. Sa progression est limitée sur 24 heures.";
   return { shopPartnersBefore: state.shopPartners ?? 0, shopPartnersAfter, shopRecruitmentAfter, shopChurnAfter, shopGoodUnitsAfter, shopBadUnitsAfter, shopPricePercent, satisfaction, clientsBefore: state.clients, channel, policy, units, maxUnits, unitCents, payoutCents, payoutExactAfter, payoutRoundedAfter, directCost: channel === "online" ? round6(equivalentSold / demandFactor) : 0,
     shopCost: channel === "cbd-shop" ? equivalentSold : 0, equivalentSold, repExactAfter, repRoundedAfter, reputationDelta,
     goodUnitsAfter, disappointmentAfter, clientsAfter, reason, message };
+}
+
+// A normalized debt preserves refill duration when capacity changes. No browser wall clock
+// is used implicitly: callers advance the server snapshot with a monotonic elapsed time.
+export function getKqCommerceReplenishment(state: KqCommerceState, channel: KqSalesChannel, nowMs?: number) {
+  if (!state.demand || channel === "wholesale") return null;
+  const at = Date.parse(state.demand.updatedAt);
+  const now = Math.max(at, nowMs ?? Date.parse(state.demand.serverNow));
+  const durationMs = KQ_DEMAND_REFILL_MS[channel];
+  const initialDebt = clamp(channel === "online" ? state.demand.onlineDebt : state.demand.shopDebt, 0, 1);
+  const remainingMs = Math.max(0, initialDebt * durationMs - (now - at));
+  return { availableFraction: clamp(1 - remainingMs / durationMs, 0, 1), remainingMs, durationMs };
 }

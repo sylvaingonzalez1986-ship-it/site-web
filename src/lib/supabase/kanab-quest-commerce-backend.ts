@@ -11,6 +11,7 @@ function integer(value: unknown) { if (typeof value !== "number" || !Number.isSa
 function databaseError(message: string): never {
   const errors: Record<string, string> = {
     commerce_machine_maintenance: "Une machine de cette filière doit être réparée dans ton entrepôt.",
+    commerce_demand_exhausted: "Ces commandes viennent d’être prises. Actualise l’offre ou attends leur renouvellement.",
     commerce_offer_changed: "Les conditions ont changé. Recalcule l’offre avant de confirmer.",
     commerce_cash: "Trésorerie insuffisante. Les grossistes restent disponibles pour vendre ton stock.",
     commerce_lot_unavailable: "Ce lot a déjà été préparé ou vendu. Actualise le stock.",
@@ -55,7 +56,9 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
     if (!stock) throw new Error("Ce stock n’est plus disponible.");
     const offer = quoteKqCommerce(current, stock, body.channel as KqSalesChannel, body.policy as KqOnlinePrice, units);
     const quoteId = randomUUID();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+    const serverNow = current.demand ? Date.parse(current.demand.serverNow) : Date.now();
+    const growthReset = current.demand?.growthResetsAt ? Date.parse(current.demand.growthResetsAt) : Infinity;
+    const expiresAt = new Date(Math.min(serverNow + 10 * 60 * 1000, growthReset)).toISOString();
     const energy = await getKqEnergySummary(userId);
     if (!offer.reason && offer.units > 0) {
       const stored = await db.from("kq_commerce_quotes").insert({ id: quoteId, user_id: userId, stock_id: stock.id,

@@ -63,7 +63,7 @@ export function KqCommerceOverview({ data, busy, onOpenShop, onInternetChange }:
       </details>
       <div className={styles.audiences}>
         <section aria-label="Clientèle en ligne"><Users size={28} aria-hidden="true" /><div><h3>Clients en ligne</h3><strong className={styles.stat}>{number(data.clients)} <span>fidèles</span></strong><p>{data.clients ? "Les bonnes livraisons fidélisent. Une qualité décevante peut faire partir tes clients." : "Tes premières bonnes livraisons en ligne construiront ta clientèle."}</p></div></section>
-        <section aria-label="Boutiques partenaires"><Store size={28} aria-hidden="true" /><div><h3>Boutiques partenaires</h3><strong className={styles.stat}>{number(partners)} <span>sur 20</span></strong><p>+{networkBonus} points de reprise ce cycle. {nextNetwork ? `Encore ${nextNetwork - partners} boutique${nextNetwork - partners > 1 ? "s" : ""} pour le prochain bonus réseau.` : "Bonus réseau maximal atteint."}</p></div></section>
+        <section aria-label="Boutiques partenaires"><Store size={28} aria-hidden="true" /><div><h3>Boutiques partenaires</h3><strong className={styles.stat}>{number(partners)} <span>sur 20</span></strong><p>+{networkBonus} points de reprise sur cette période de 24 heures. {nextNetwork ? `Encore ${nextNetwork - partners} boutique${nextNetwork - partners > 1 ? "s" : ""} pour le prochain bonus réseau.` : "Bonus réseau maximal atteint."}</p></div></section>
       </div>
       <section className={styles.internet} aria-label="Connexion Internet" data-active={internetActive ? "true" : undefined}>
         <InternetIcon size={26} aria-hidden="true" />
