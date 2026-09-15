@@ -3,8 +3,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./KqCardCarousel.module.css";
 
-type Props = { id: string; title: string; label: string; count: number; children: ReactNode; intro?: ReactNode; footer?: ReactNode; resetKey?: string };
-export function KqCardCarousel({ id, title, label, count, children, intro, footer, resetKey }: Props) {
+type Props = { id: string; title: string; label: string; count: number; children: ReactNode; intro?: ReactNode; footer?: ReactNode; resetKey?: string; tourStep?: string };
+export function KqCardCarousel({ id, title, label, count, children, intro, footer, resetKey, tourStep }: Props) {
   const track = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; scroll: number; moved: boolean } | null>(null);
   const suppressClick = useRef(false);
@@ -36,7 +36,7 @@ export function KqCardCarousel({ id, title, label, count, children, intro, foote
 
   return <section className={styles.section} aria-labelledby={id}>
     <header className={styles.header}>
-      <h2 id={id} tabIndex={-1}>{title}</h2>
+      <h2 id={id} tabIndex={-1} data-arena-tour={tourStep}>{title}</h2>
       <nav aria-label={`Faire défiler ${label}`}>
         <button type="button" aria-label={`Voir les cartes précédentes : ${label}`} disabled={edges.start} onClick={() => move(-1)}><ChevronLeft aria-hidden="true" /></button>
         <button type="button" aria-label={`Voir les cartes suivantes : ${label}`} disabled={edges.end} onClick={() => move(1)}><ChevronRight aria-hidden="true" /></button>
