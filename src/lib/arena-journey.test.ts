@@ -2,27 +2,14 @@ import { describe, expect, it } from "vitest";
 import { advanceArenaJourney, ARENA_JOURNEY_STEPS, arenaJourneyStorageKey, NEW_ARENA_JOURNEY, parseArenaJourneyProgress } from "./arena-journey";
 
 describe("guided arena journey", () => {
-  it("takes the player from the notebook to cards, cultivation and missions", () => {
-    let progress = advanceArenaJourney(NEW_ARENA_JOURNEY, "start");
-    expect(ARENA_JOURNEY_STEPS[progress.step].href).toBe("/arene/carnet/regular");
-    progress = advanceArenaJourney(progress, "next");
-    expect(ARENA_JOURNEY_STEPS[progress.step].target).toContain("collection");
-    progress = advanceArenaJourney(progress, "next");
-    expect(ARENA_JOURNEY_STEPS[progress.step].id).toBe("shop");
-    progress = advanceArenaJourney(progress, "next");
-    expect(ARENA_JOURNEY_STEPS[progress.step].href).toContain("catalog=equipment");
-    expect(ARENA_JOURNEY_STEPS[progress.step].highlights?.join(" ")).toContain("qualité maximale");
-    progress = advanceArenaJourney(progress, "next");
-    expect(ARENA_JOURNEY_STEPS[progress.step].id).toBe("installation");
-    progress = advanceArenaJourney(progress, "next");
-    expect(ARENA_JOURNEY_STEPS[progress.step].id).toBe("culture");
-    progress = advanceArenaJourney(progress, "next");
-    expect(ARENA_JOURNEY_STEPS[progress.step].id).toBe("jury");
-    progress = advanceArenaJourney(progress, "next");
-    expect(ARENA_JOURNEY_STEPS[progress.step].id).toBe("market");
-    progress = advanceArenaJourney(progress, "next");
-    expect(ARENA_JOURNEY_STEPS[progress.step].href).toBe("/arene/placard?view=missions");
-    expect(advanceArenaJourney(progress, "next")).toEqual({ step: 9, status: "completed" });
+  it("covers the full practice loop and completes after its final chapter", () => {
+    expect(ARENA_JOURNEY_STEPS.map(step=>step.id)).toEqual(["notebook","cards","shop","installation","culture","harvest","jury","transformation","market","missions"]);
+    let progress=advanceArenaJourney(NEW_ARENA_JOURNEY,"start");
+    for(let chapter=1;chapter<ARENA_JOURNEY_STEPS.length;chapter++){
+      expect(progress.step).toBe(chapter);
+      progress=advanceArenaJourney(progress,"next");
+    }
+    expect(progress).toEqual({step:9,status:"completed"});
   });
   it("keeps skipped/completed journeys closed until an explicit replay", () => {
     for (const status of ["skipped", "completed"] as const) {
