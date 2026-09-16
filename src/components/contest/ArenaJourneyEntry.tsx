@@ -7,6 +7,6 @@ const Tour=dynamic(()=>import("./ArenaJourneyTour").then(module=>module.ArenaJou
 
 export function ArenaJourneyEntry() {
   const pathname=usePathname();
-  // The usual first-login destination is /profil. Keep checkout and browsing uninterrupted.
-  return pathname==="/profil"||pathname==="/arene"?<Tour key={pathname} isArenaHome={pathname==="/arene"}/>:null;
+  // Mount onboarding only on the arena home, including for first-time players.
+  return pathname==="/arene"?<Tour key={pathname} isArenaHome/>:null;
 }
