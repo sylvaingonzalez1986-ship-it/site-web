@@ -6,3 +6,5 @@
 @media(prefers-reduced-motion:reduce){.dice>span{animation:none}}
 
 .dialog label:has(select){flex-wrap:wrap}.dialog select{min-width:0;max-width:100%;padding:10px;background:#fff5d5;color:#003c30;border:2px solid #eabf43}.coach progress::-webkit-progress-bar{background:#164f42}.coach progress::-webkit-progress-value{background:#f4cb4f}.coach progress::-moz-progress-bar{background:#f4cb4f}
+
+.cultureScene{display:grid;grid-template-columns:minmax(180px,.8fr) minmax(0,1.2fr);align-items:center;gap:24px;margin:18px 0}.cultureScene>img{display:block;width:100%;max-width:320px;height:auto;aspect-ratio:1;object-fit:contain;border-radius:6px}.cultureScene h3{font-size:1.35rem}@media(max-width:1100px){.cultureScene{grid-template-columns:1fr;gap:16px}.cultureScene>img{margin-inline:auto}}

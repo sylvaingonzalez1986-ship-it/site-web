@@ -6,6 +6,7 @@ import { useEffect, useReducer, useRef, useState } from 'react';
 import { ArrowRight, Check, Compass, Leaf, RotateCcw, X } from 'lucide-react';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { canActivateKqHeritage, getKqHandCodes, getKqSituation, getKqStageTarget, KQ_CARDS, KQ_STAGES, previewKqResolution, type KqSupportCard } from '@/lib/kanab-quest-game';
+import { getKqSituationArtwork } from '@/lib/kanab-quest-situation-artwork';
 import { getKqCardArtwork } from '@/lib/kanab-quest-artwork';
 import { KQ_HERITAGE_CARDS } from '@/lib/kanab-quest-heritage';
 import { getKqEquipmentDefinition } from '@/lib/kanab-quest-equipment';
@@ -63,6 +64,7 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:str
  const comparison=stock?quoteKqCommerce({...c,computerOwned:true,reputation:scenario==='reputation'?1500:c.reputation,campaign:c.campaign?{...c.campaign,internetPaid:true,reputation:scenario==='reputation'?1500:c.campaign.reputation,event:scenario==='promotion'?'promotion':c.campaign.event}:null}, {...stock,juryScore:scenario==='quality'?4:stock.juryScore},'online',policy,undefined,s.clock):null;
  const last=s.receipts.at(-1);
  const situation=g?getKqSituation(g):null;
+ const situationArtwork=situation?getKqSituationArtwork(situation.code,Boolean(g?.powerOutage)):null;
  const prediction=g?previewKqResolution(g):null;
  const cardButton=(card:KqSupportCard,playing=false)=>{
   const art=getKqCardArtwork(card.code), permission=trialCardPermission(s,card.code);
@@ -121,7 +123,7 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:str
     </>:null}
     {s.chapter===4&&g&&situation?<>
      <div className={styles.stages}>{KQ_STAGES.map((name,i)=><span key={name} data-active={i===g.stageIndex}>{i<g.stageIndex?'✓ ':''}{name}</span>)}</div>
-     <section className={styles.panel}><span className={styles.kicker}>ÉTAPE {g.stageIndex+1} / 6 · {g.phase==='prepare'?'AVANT LES DÉS':g.phase==='rolled'?'APRÈS LES DÉS':'VERDICT'}</span><h3>{situation.name}</h3><p>{situation.story}</p><p><strong>{getKqStageTarget(g)} réussites demandées</strong> · XP disponibles : {g.xp} · Qualité : {g.quality} · Pression : {g.pressure}/4</p><p>1 = Danger · 2–3 = neutre · 4–5 = réussite · 6 = Étincelle, une réussite et +1 XP au verdict. À partir de 3 Pression, la difficulté augmente.</p>
+     <section className={styles.panel}><span className={styles.kicker}>ÉTAPE {g.stageIndex+1} / 6 · {g.phase==='prepare'?'AVANT LES DÉS':g.phase==='rolled'?'APRÈS LES DÉS':'VERDICT'}</span><div className={styles.cultureScene}>{situationArtwork?<Image key={situationArtwork.src} data-trial-situation={situation.code} src={situationArtwork.src} alt={situationArtwork.alt} width={768} height={768} sizes="(max-width: 760px) calc(100vw - 56px), 320px" loading="eager"/>:null}<div><h3>{situation.name}</h3><p>{situation.story}</p></div></div><p><strong>{getKqStageTarget(g)} réussites demandées</strong> · XP disponibles : {g.xp} · Qualité : {g.quality} · Pression : {g.pressure}/4</p><p>1 = Danger · 2–3 = neutre · 4–5 = réussite · 6 = Étincelle, une réussite et +1 XP au verdict. À partir de 3 Pression, la difficulté augmente.</p>
       {g.dice?<div className={styles.dice} aria-label={`Dés : ${g.dice.join(', ')}`}>{g.dice.map((die,i)=><span key={i} data-value={die}>{die}<small>{die===1?'Danger':die===6?'Étincelle':die>=4?'Réussite':'Neutre'}</small></span>)}</div>:null}
       {prediction?<p role="status">Prévision : <strong>{OUTCOMES[prediction.outcome]}</strong> · {prediction.total}/{prediction.target} réussites · {prediction.dangers} Danger non protégé</p>:null}
       {g.phase==='prepare'?<button type="button" data-trial-action="roll" disabled={!canTrialRoll(s)} onClick={()=>dispatch({type:'roll'})}>Lancer les dés</button>:null}
