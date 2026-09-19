@@ -39,3 +39,10 @@ describe("Placard page entry", () => {
     await expect(PlacardPlayerPage()).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
   });
 });
+
+it.each([true, false])("allows only beta players into the Placard before opening: %s", async beta => {
+  vi.spyOn(Date, "now").mockReturnValue(Date.parse("2026-09-19T12:00:00Z"));
+  mocks.session.mockResolvedValue({ customerId: "verified-id", customer: { email: "player@example.test", contestBetaEnabled: beta } });
+  if (beta) expect(await PlacardPlayerPage()).toBeTruthy();
+  else await expect(PlacardPlayerPage()).rejects.toMatchObject({ digest: "NEXT_REDIRECT;replace;/arene?mode=jouer&ouverture=1;307;" });
+});

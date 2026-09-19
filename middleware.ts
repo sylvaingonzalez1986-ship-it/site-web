@@ -1,3 +1,4 @@
+import { verifyArenaBetaRequest, type ArenaSessionCookie } from "@/lib/arena-beta-request";
 import { NextResponse, type NextRequest } from "next/server";
 import { isArenaPrelaunch, isArenaActivityApi, getArenaClosedPageMode, ARENA_OPENING_AT, ARENA_OPENING_MESSAGE } from "@/lib/arena-opening";
 import { ADMIN_COOKIE_NAME, verifyAdminSessionToken } from "@/lib/admin-auth";
@@ -193,7 +194,9 @@ export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const nonce = crypto.randomUUID().replace(/-/g, "");
   const cspHeader = buildCspHeader(nonce);
+  const refreshedArenaCookies: ArenaSessionCookie[] = [];
   const secure = <T extends NextResponse>(response: T): T => {
+    for (const cookie of refreshedArenaCookies) response.cookies.set(cookie.name, cookie.value, cookie.options);
     response.headers.set("Content-Security-Policy", cspHeader);
     if (pathname.startsWith("/paiement")) {
       response.headers.set("Cache-Control", "private, no-store, max-age=0");
@@ -249,12 +252,16 @@ export async function middleware(request: NextRequest) {
     return secure(NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 }));
   }
 
-  if (isArenaPrelaunch()) {
-    if (isArenaActivityApi(pathname, request.method)) {
+  const closedArenaMode = getArenaClosedPageMode(pathname);
+  const closedArenaApi = isArenaActivityApi(pathname, request.method);
+  if (isArenaPrelaunch() && (closedArenaMode || closedArenaApi)) {
+    const isPioneerClaim = pathname.replace(/\/+$/, "") === "/api/account/pioneer-pack";
+    const betaAuthorized = !isPioneerClaim && (await isAdminAuthorized(request) || (customerAuthenticated && await verifyArenaBetaRequest(request, refreshedArenaCookies)));
+    if (closedArenaApi && !betaAuthorized) {
       return secure(NextResponse.json({ error: ARENA_OPENING_MESSAGE, opensAt: ARENA_OPENING_AT }, { status: 423, headers: { "Cache-Control": "private, no-store" } }));
     }
-    const closedMode = getArenaClosedPageMode(pathname);
-    if (closedMode) {
+    const closedMode = closedArenaMode;
+    if (closedMode && !betaAuthorized) {
       const destination = new URL("/arene", request.url);
       destination.searchParams.set("mode", closedMode);
       destination.searchParams.set("ouverture", "1");

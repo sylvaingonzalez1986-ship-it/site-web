@@ -1,3 +1,5 @@
+import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
+
 ﻿/** Public lobby and character creation precede the game opening (Paris time). */
 export const ARENA_OPENING_AT = "2026-10-15T00:00:00+02:00";
 export const ARENA_OPENING_MESSAGE = "Rendez-vous le 15 octobre";
@@ -20,4 +22,9 @@ export function getArenaClosedPageMode(pathname: string): "carnet" | "jouer" | "
   if (path.includes("classement") && path.startsWith("/arene/")) return "classement";
   if (path.startsWith("/arene/") || path === "/bete-de-concours" || path.startsWith("/bete-de-concours/")) return "carnet";
   return null;
+}
+
+/** Use only with a server-verified identity when authorizing a request. */
+export function hasArenaBetaAccess(customer: { email?: string; contestBetaEnabled?: boolean } | null | undefined, adminAuthorized = false): boolean {
+  return adminAuthorized || isAllowedAdminEmail(customer?.email) || customer?.contestBetaEnabled === true;
 }

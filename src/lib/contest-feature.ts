@@ -1,5 +1,5 @@
 import "server-only";
-import { isArenaPrelaunch, ARENA_OPENING_MESSAGE, ARENA_OPENING_AT } from "@/lib/arena-opening";
+import { isArenaPrelaunch, hasArenaBetaAccess, ARENA_OPENING_MESSAGE, ARENA_OPENING_AT } from "@/lib/arena-opening";
 
 import { NextResponse } from "next/server";
 import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
@@ -41,7 +41,7 @@ export function canCustomerAccessContestFeatureServer(
     return false;
   }
 
-  if (!isContestBetaAccessRestrictedServer()) {
+  if (!isArenaPrelaunch() && !isContestBetaAccessRestrictedServer()) {
     return true;
   }
 
@@ -76,12 +76,11 @@ export function getContestFeatureDisabledResponse() {
 }
 
 export async function getContestFeatureAccessDeniedResponse(): Promise<NextResponse | null> {
-  if (isArenaPrelaunch()) return NextResponse.json({ error: ARENA_OPENING_MESSAGE, opensAt: ARENA_OPENING_AT }, { status: 423, headers: { "Cache-Control": "private, no-store" } });
   if (!isContestFeatureEnabledServer()) {
     return getContestFeatureDisabledResponse();
   }
 
-  if (!isContestBetaAccessRestrictedServer()) {
+  if (!isArenaPrelaunch() && !isContestBetaAccessRestrictedServer()) {
     return null;
   }
 
@@ -91,6 +90,7 @@ export async function getContestFeatureAccessDeniedResponse(): Promise<NextRespo
   }
 
   const session = await getOptionalContestSession();
+  if (isArenaPrelaunch() && !hasArenaBetaAccess(session?.customer)) return NextResponse.json({ error: ARENA_OPENING_MESSAGE, opensAt: ARENA_OPENING_AT }, { status: 423, headers: { "Cache-Control": "private, no-store" } });
   if (!session) {
     return NextResponse.json({ error: "Connexion requise." }, { status: 401 });
   }
