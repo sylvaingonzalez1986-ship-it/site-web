@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Image from "next/image";
+import styles from "./HomeSeasonGallery.module.css";
 import { useMemo } from "react";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
 
@@ -39,34 +40,33 @@ export function HomeSeasonGallery({
   return (
     <section
       id="cultures-saison"
-      className="section-band bg-cream halftone-overlay paper-grain"
+      className={styles.section}
       style={{ zIndex }}
     >
       <div className="retro-container">
-        <div className="cartoon-border bg-[#f1eee7] p-6 md:p-8">
-          <h2 className="section-title text-ink">{title}</h2>
+        <div className={styles.panel}>
+          <p className={styles.eyebrow}>Au rythme des saisons</p>
+          <h2 className={styles.title}>{title}</h2>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(230px,300px)_1fr] lg:items-center">
-            <div className="relative mx-auto h-[230px] w-[230px] sm:h-[270px] sm:w-[270px]">
-              <div className="absolute -left-2 -top-2 h-full w-full rounded-[2rem] border-2 border-[#1a1a1a]/80 bg-[#ead6b6]" />
-              <div className="absolute inset-0 overflow-hidden rounded-[2rem] border-[3px] border-[#1a1a1a] bg-[#f7f4ee] shadow-[6px_6px_0_rgba(26,26,26,0.2)]">
+          <div className={styles.grid}>
+            <div className={styles.portrait}>
+              <div className={styles.portraitFrame}>
                 <Image
                   src={decorativeBackgroundSrc}
                   alt=""
                   fill
                   sizes="(max-width: 768px) 230px, 270px"
-                  className="absolute inset-0 object-cover"
+                  className={styles.backdrop}
                   aria-hidden="true"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]/20 via-transparent to-transparent" />
-                <div className="absolute inset-0 z-10 grid place-items-center p-3">
-                  <div className="season-sylvain-animate relative h-[84%] w-[84%]">
+                <div className={styles.mascotStage}>
+                  <div className={styles.mascot}>
                     <Image
                       src={mascotSrc}
                       alt="Sylvain"
                       fill
                       sizes="(max-width: 768px) 230px, 270px"
-                      className="object-contain object-center drop-shadow-[0_10px_12px_rgba(26,26,26,0.28)]"
+                      className="object-contain object-center"
                     />
                   </div>
                 </div>
@@ -74,14 +74,14 @@ export function HomeSeasonGallery({
             </div>
 
             {galleryImages.length === 0 ? (
-              <div className="border-2 border-dashed border-[#1a1a1a] bg-white p-6 text-sm font-semibold text-charcoal">
+              <div className={styles.empty}>
                 Aucune photo de culture pour le moment.
               </div>
             ) : (
               <ProductImageCarousel
                 images={galleryImages}
                 alt="Cultures de la saison"
-                className="aspect-[16/9] border-2 border-[#1a1a1a] bg-white"
+                className={styles.carousel}
                 sizes="(max-width: 1024px) 94vw, 56vw"
               />
             )}

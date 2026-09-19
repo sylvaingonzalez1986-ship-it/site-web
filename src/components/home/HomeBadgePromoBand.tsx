@@ -2,7 +2,13 @@
 
 import Link from "@/components/navigation/NavigationLink";
 import { Award, Truck } from "lucide-react";
+import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
+import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
+import styles from "./HomeEditorialExperience.module.css";
+
 import { useCart } from "@/context/CartContext";
+
+const loyaltyBadges = buildEmptyLoyaltySummary().badges;
 
 type HomeBadgePromoBandProps = {
   zIndex?: number;
@@ -25,22 +31,31 @@ export function HomeBadgePromoBand({ zIndex }: HomeBadgePromoBandProps) {
             Badge fidélité
           </p>
           <h2 className="home-editorial-promo__title mt-2 font-display text-3xl text-ink md:text-5xl">
-            Plus tu commandes, plus tu b&eacute;n&eacute;ficies d&apos;avantages.
+            Ta fidélité a de la valeur.
           </h2>
           <p className="home-editorial-promo__description mt-3 max-w-4xl text-sm leading-relaxed text-charcoal md:text-base">
             Le principe est simple : 1 &euro; d&eacute;pens&eacute; = 1 point. Tu progresses par paliers et tu
             d&eacute;bloques de nouveaux avantages &agrave; chaque niveau.
           </p>
 
+          <ol className={styles.loyaltyTiers} aria-label="Les cinq paliers de fidélité">
+            {loyaltyBadges.map((badge) => (
+              <li key={badge.id}>
+                <LoyaltyBadgeIllustration badgeId={badge.id} unlocked size="md" />
+                <span>{badge.label}</span>
+              </li>
+            ))}
+          </ol>
+
           <div className="home-editorial-promo__benefits mt-4 flex flex-wrap items-center gap-2">
             <span className="pill-cartoon inline-flex items-center gap-1 bg-white px-3 py-1 text-xs uppercase tracking-[0.06em] text-ink">
-              <Award size={14} className="shrink-0" /> Bronze 2%
+              <Award size={14} className="shrink-0" /> Des remises par palier
             </span>
             <span className="pill-cartoon inline-flex items-center gap-1 bg-white px-3 py-1 text-xs uppercase tracking-[0.06em] text-ink">
-              <Truck size={14} className="shrink-0" /> Argent: relais offert des 45 EUR
+              <Truck size={14} className="shrink-0" /> Des avantages livraison
             </span>
             <span className="pill-cartoon bg-white px-3 py-1 text-xs uppercase tracking-[0.06em] text-ink">
-              Jusqu&apos;a Diamant: 10%
+              Jusqu&apos;à Diamant
             </span>
             <Link
               href={badgeCtaHref}

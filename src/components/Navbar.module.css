@@ -26,3 +26,7 @@
   .wordmark strong { font-size: 1.55rem; }
 }
 @media (prefers-reduced-motion: reduce) { .header:global(.game-navbar) { transition: none; } }
+
+@media (min-width: 768px) {
+  .header[data-announcement]:not(:global(.is-scrolled)) :global(.game-brand) { color: #fffaf1; }
+}

@@ -78,6 +78,7 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
         <div className={styles.heroNoise} aria-hidden="true" />
         <div className={`retro-container ${styles.heroGrid}`}>
           <div className={styles.heroCopy}>
+            <p className={styles.eyebrow}><Sprout size={16} aria-hidden="true" /> De la graine au marché</p>
             <h1 className={styles.heroTitle}>
               Du CBD vrai.
               <span>Au prix juste.</span>
@@ -126,7 +127,7 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
               <small>origine identifiée</small>
             </span>
             <span className={styles.sun} aria-hidden="true" />
-            <span className={styles.heroScribble} aria-hidden="true">cultivé ici</span>
+            <span className={styles.heroScribble} aria-hidden="true">Les Chanvriers Bretons</span>
             <Image
               src="/mascots/home-welcome.png"
               alt="Sylvain, producteur de CBD naturel en Bretagne"
