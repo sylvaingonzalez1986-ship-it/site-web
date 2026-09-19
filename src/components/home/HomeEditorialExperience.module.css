@@ -277,18 +277,6 @@
   letter-spacing: 0.08em;
 }
 
-.heroScribble {
-  position: absolute;
-  inset: auto 0 0;
-  z-index: 5;
-  padding: .65rem 1rem;
-  background: var(--poster-green-dark);
-  color: var(--poster-cream);
-  font: 800 .7rem/1.2 var(--font-body), sans-serif;
-  letter-spacing: .12em;
-  text-align: center;
-  text-transform: uppercase;
-}
 
 .promise {
   padding: clamp(3rem, 6vw, 5rem) 0;

@@ -127,7 +127,6 @@ export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienc
               <small>origine identifiée</small>
             </span>
             <span className={styles.sun} aria-hidden="true" />
-            <span className={styles.heroScribble} aria-hidden="true">Les Chanvriers Bretons</span>
             <Image
               src="/mascots/home-welcome.png"
               alt="Sylvain, producteur de CBD naturel en Bretagne"
