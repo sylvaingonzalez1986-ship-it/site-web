@@ -1,5 +1,8 @@
 "use client";
 
+import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
+import { LeaderboardAvatar } from "./LeaderboardAvatar";
+
 import { useGameViewport } from "@/hooks/useGameViewport";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import Image from "next/image";
@@ -132,6 +135,7 @@ type TestedFlowerCardItem = {
 };
 
 type PlacardRankingEntry = {
+  avatar?: ChanvrierAvatarProfile | null;
   rank: number;
   pseudo: string;
   placardScore: number;
@@ -144,6 +148,7 @@ type PlacardRankingEntry = {
 };
 
 type ArenaRankingEntry = {
+  avatar?: ChanvrierAvatarProfile | null;
   rank: number;
   pseudo: string;
   score: number;
@@ -2442,6 +2447,7 @@ export function ContestTesterLeaderboard({
         key: `arena-${item.rank}-${item.pseudo}`,
         rank: item.rank,
         pseudo: item.pseudo,
+        avatar: item.avatar ?? null,
         detail: `Carnet ${item.notebookScore} · Placard ${item.placardScore}`,
         score: String(item.score),
         scoreLabel: "pts Arène",
@@ -2453,6 +2459,7 @@ export function ContestTesterLeaderboard({
           key: `placard-${item.rank}-${item.pseudo}`,
           rank: item.rank,
           pseudo: item.pseudo,
+          avatar: item.avatar ?? null,
           detail: `Cote ${item.rating} · ${item.seasonPoints} pts saison · ${getKqReputationProgress(item.reputation).tier.name} · ${item.reputation} réputation · ${item.wins} V · ${item.losses} D`,
           score: String(item.placardScore),
           scoreLabel: "Score Placard",
@@ -2468,6 +2475,7 @@ export function ContestTesterLeaderboard({
             key: `${scope}-${item.pseudo}-${item.rank}`,
             rank: item.rank,
             pseudo: item.pseudo,
+            avatar: item.avatar ?? null,
             detail: `${item.level.label} · ${item.approvedReviewCount} critique${item.approvedReviewCount > 1 ? "s" : ""}`,
             score: String(item.totalPoints),
             scoreLabel: "points",
@@ -2582,6 +2590,7 @@ export function ContestTesterLeaderboard({
               {rankingRows.map((row) => {
                 const content = <>
                   <span className="contest-station-rank">{String(row.rank).padStart(2, "0")}</span>
+                  <LeaderboardAvatar profile={row.avatar} pseudo={row.pseudo} />
                   <span className={`contest-station-title ${arenaStyles.playerStationIdentity}`}><strong>{row.pseudo}</strong><small>{row.detail}</small></span>
                   <span className={`contest-station-score ${arenaStyles.playerStationScore}`}>
                     <strong>{row.score}</strong>

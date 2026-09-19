@@ -1,4 +1,5 @@
 import "server-only";
+import { getArenaRankingAvatars } from "./arena-ranking-avatars";
 import { getChanvrierStartingXp } from "@/lib/arena-chanvrier";
 import { cacheArenaSharedRead } from "@/lib/arena-shared-cache";
 import { isKqEnergyMode, type KqEnergyMode } from "@/lib/kanab-quest-energy";
@@ -1940,6 +1941,7 @@ async function readKqPublicLeaderboard() {
     : { data: [], error: null };
   if (profilesResult.error) throw new Error(`[supabase:contest_profiles] ${profilesResult.error.message}`);
   const pseudoByUser = new Map((profilesResult.data ?? []).map((profile) => [profile.customer_id, profile.pseudo]));
+  const avatars = await getArenaRankingAvatars(userIds);
   return {
     seasonCode,
     generatedAt: snapshot?.generated_at ? String(snapshot.generated_at) : new Date().toISOString(),
@@ -1949,6 +1951,7 @@ async function readKqPublicLeaderboard() {
       const reputation = Number(entry.reputation ?? 0);
       return {
         rank: Number(entry.rank ?? index + 1),
+        avatar: avatars.get(String(entry.userId)) ?? null,
         pseudo: pseudoByUser.get(String(entry.userId)) ?? `Cultivateur ${String(index + 1).padStart(2, "0")}`,
         placardScore: Number(entry.placardScore ?? calculateKqPlacardScore({ rating, seasonPoints, reputation }).score),
         rating,
@@ -2050,10 +2053,12 @@ export async function getKqPublicArenaLeaderboard() {
 
 async function readKqPublicArenaLeaderboard() {
   const leaderboard = await getKqArenaLeaderboardInternal();
+  const avatars = await getArenaRankingAvatars(leaderboard.entries.map((entry) => entry.userId));
   return {
     ...leaderboard,
     entries: leaderboard.entries.map((entry) => ({
       rank: entry.rank,
+      avatar: avatars.get(entry.userId) ?? null,
       pseudo: entry.pseudo,
       score: entry.score,
       notebookScore: entry.notebookScore,

@@ -1,0 +1,28 @@
+.frame {
+  display: block;
+  width: 48px;
+  height: 48px;
+  padding: 2px;
+  border: 2px solid #003f30;
+  background: #f4c43d;
+  box-shadow: 2px 2px 0 #003f30;
+}
+
+.content {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #e8efe4;
+  color: #365345;
+}
+
+.fallback { width: 70%; height: 70%; }
+.portrait { position: absolute; inset: 0; width: 100%; height: 100%; background: #e8efe4; }
+.portrait:not([data-avatar-state="ready"]) { opacity: 0; }
+
+@media (max-width: 600px) {
+  .frame { width: 38px; height: 38px; padding: 1px; }
+}

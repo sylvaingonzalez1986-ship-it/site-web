@@ -1,4 +1,5 @@
 import "server-only";
+import { getArenaRankingAvatars } from "./arena-ranking-avatars";
 
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { syncKqNotebookRewardsForCustomer } from "@/lib/supabase/kanab-quest-notebook-rewards-backend";
@@ -3254,8 +3255,10 @@ export async function getContestTesterRankings(input: {
       .order("global_rank", { ascending: true })
       .limit(limit);
     failIfError(result.error, "read global contest tester rankings");
+    const items = toRowArray(result.data).map((row) => mapTesterRankingRow(row, "global"));
+    const avatars = await getArenaRankingAvatars(items.map((item) => item.customerId));
     return {
-      items: toRowArray(result.data).map((row) => mapTesterRankingRow(row, "global")),
+      items: items.map((item) => ({ ...item, avatar: avatars.get(item.customerId) ?? null })),
       scope,
       selectedSeason,
     };
@@ -3273,8 +3276,10 @@ export async function getContestTesterRankings(input: {
 
   const result = await query;
   failIfError(result.error, "read season contest tester rankings");
+  const items = toRowArray(result.data).map((row) => mapTesterRankingRow(row, "season"));
+  const avatars = await getArenaRankingAvatars(items.map((item) => item.customerId));
   return {
-    items: toRowArray(result.data).map((row) => mapTesterRankingRow(row, "season")),
+    items: items.map((item) => ({ ...item, avatar: avatars.get(item.customerId) ?? null })),
     scope,
     selectedSeason,
   };

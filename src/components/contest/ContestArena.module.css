@@ -1622,7 +1622,7 @@
 
 .playerStationBoard :global(.contest-station-row).playerStationRow {
   min-height: 58px;
-  grid-template-columns: 34px minmax(0, 1fr) 92px;
+  grid-template-columns: 34px 48px minmax(0, 1fr) 92px;
   cursor: default;
   text-decoration: none;
 }
@@ -2637,7 +2637,7 @@
   }
 
   .playerStationBoard :global(.contest-station-row).playerStationRow {
-    grid-template-columns: 30px minmax(0, 1fr) 72px;
+    grid-template-columns: 30px 48px minmax(0, 1fr) 72px;
   }
 
   .rankingModalBackdrop {
@@ -3037,7 +3037,10 @@
  .scorePanel.playerLeaderboardPanel :global(.contest-station-board-toolbar) { align-items: stretch; }
  .scorePanel.playerLeaderboardPanel .rankingToolbarActions { width: 100%; justify-content: flex-end; }
  .scorePanel.playerLeaderboardPanel :global(.contest-station-board-toolbar) .findMyPosition { flex: 1 0 100%; min-width: 0; }
- .scorePanel.playerLeaderboardPanel .playerStationBoard .playerStationRow { grid-template-columns: 30px minmax(0,1fr) 76px; gap: .5rem; padding-inline: .5rem; }
+ .scorePanel.playerLeaderboardPanel .playerStationBoard .playerStationRow { grid-template-columns: 24px 38px minmax(0,1fr) 60px; gap: .375rem; padding-inline: .5rem; }
+ .scorePanel.playerLeaderboardPanel .playerStationHeader { grid-template-columns: minmax(0, 1fr) 60px; }
+ .scorePanel.playerLeaderboardPanel .playerStationScore small,
+ .scorePanel.playerLeaderboardPanel .playerStationScore em { max-width: 100%; white-space: normal; }
  .scorePanel.playerLeaderboardPanel .playerStationIdentity strong { font-size: .82rem; }
  .scorePanel.playerLeaderboardPanel .playerStationIdentity small { white-space: normal; font-size: .67rem; }
 }

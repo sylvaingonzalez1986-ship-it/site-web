@@ -1,3 +1,4 @@
+import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 export const CONTEST_ENTRY_CATEGORIES = ["outdoor", "greenhouse", "indoor"] as const;
 export type ContestEntryCategory = (typeof CONTEST_ENTRY_CATEGORIES)[number];
 
@@ -359,6 +360,7 @@ export type ContestReview = {
 export type ContestTesterRankingScope = "global" | "season";
 
 export type ContestTesterRankingItem = {
+  avatar?: ChanvrierAvatarProfile | null;
   customerId: string;
   pseudo: string;
   totalPoints: number;

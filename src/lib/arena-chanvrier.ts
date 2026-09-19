@@ -46,6 +46,8 @@ export type ChanvrierProfile = {
   strength: ChanvrierStrength;
   appearance?: ChanvrierAppearance;
 };
+export type ChanvrierAvatarProfile = Pick<ChanvrierProfile, "gender" | "clothing" | "skin" | "appearance">;
+
 export function parseChanvrierProfile(value: unknown): ChanvrierProfile | null {
   if (!value || typeof value !== "object") return null;
   const row = value as Record<string, unknown>;
