@@ -1,7 +1,7 @@
 ﻿"use client";
 
+import styles from "./Navbar.module.css";
 import { isArenaPrelaunch } from "@/lib/arena-opening";
-import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
@@ -227,7 +227,8 @@ export function Navbar() {
       {showAnnouncement && <AnnouncementBanner />}
       <header
         data-tutorial="navbar"
-        className={`game-navbar safe-area-x fixed inset-x-0 z-40 transition-all duration-300 ${
+        data-announcement={showAnnouncement || undefined}
+        className={`${styles.header} game-navbar safe-area-x fixed inset-x-0 z-40 transition-all duration-300 ${
           showAnnouncement
             ? "top-[var(--announcement-banner-height)]"
             : "safe-area-top top-0"
@@ -237,16 +238,16 @@ export function Navbar() {
             : "bg-transparent py-6"
         }`}
       >
-        <div className="retro-container relative flex items-center justify-between gap-4">
+        <div className={`${styles.bar} retro-container relative flex items-center justify-between gap-4`}>
           <button
             type="button"
             onClick={() => setMenuOpen((prev) => !prev)}
-            className="inline-flex h-11 w-11 items-center justify-center border-2 border-[#003f30] bg-[#fffaf1] text-[#003f30] md:hidden"
+            className={`${styles.control} ${styles.menuButton} inline-flex h-11 w-11 items-center justify-center border-2 border-[#003f30] bg-[#fffaf1] text-[#003f30] md:hidden`}
             aria-label="Menu"
             aria-expanded={menuOpen}
             aria-controls="mobile-nav"
           >
-            <Menu size={22} aria-hidden="true" />
+            <Menu size={22} aria-hidden="true" /><span className={styles.controlLabel}>Menu</span>
           </button>
 
           <Link href="/" className="game-brand hidden font-display text-xl text-ink md:block md:text-2xl">
@@ -255,17 +256,10 @@ export function Navbar() {
 
           <Link
             href="/"
-            className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 md:hidden"
-            aria-label="Accueil"
+            className={styles.mobileBrand}
+            aria-label="Les Chanvriers Bretons, accueil"
           >
-            <Image
-              src="/hero-circle-idle.png"
-              alt="Logo Les Chanvriers Bretons"
-              width={44}
-              height={44}
-              sizes="44px"
-              className="h-11 w-11 object-contain"
-            />
+            <span className={styles.wordmark}><small>Les Chanvriers</small><strong>Bretons.</strong></span>
           </Link>
 
           <nav className="game-nav-links hidden items-center gap-2 md:flex">
@@ -317,12 +311,14 @@ export function Navbar() {
             type="button"
             onClick={() => setCartOpen(true)}
             aria-label="Panier"
-            className="relative inline-flex h-11 w-11 items-center justify-center border-2 border-[#003f30] bg-[#fffaf1] text-[#003f30]"
+            aria-describedby={totalItems > 0 ? "navbar-cart-quantity" : undefined}
+            className={`${styles.control} ${styles.cartButton} relative inline-flex h-11 w-11 items-center justify-center border-2 border-[#003f30] bg-[#fffaf1] text-[#003f30]`}
           >
-            <ShoppingCart size={19} />
+            <ShoppingCart size={19} aria-hidden="true" /><span className={styles.controlLabel}>Panier</span>
+            {totalItems > 0 && <span id="navbar-cart-quantity" className="sr-only">{totalItems} article{totalItems > 1 ? "s" : ""} dans le panier</span>}
             {totalItems > 0 && (
-              <span className="absolute -right-2 -top-2 min-w-5 border border-[#003f30] bg-[#f4c43d] px-1 text-center text-xs font-bold text-[#003f30]">
-                {totalItems}
+              <span aria-hidden="true" className={`${styles.cartCount} absolute -right-2 -top-2 min-w-5 border border-[#003f30] bg-[#f4c43d] px-1 text-center text-xs font-bold text-[#003f30]`}>
+                {totalItems > 99 ? "99+" : totalItems}
               </span>
             )}
           </button>

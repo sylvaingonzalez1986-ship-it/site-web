@@ -1,0 +1,28 @@
+.mobileBrand, .controlLabel { display: none; }
+
+@media (max-width: 767px) {
+  .header:global(.game-navbar) { padding: env(safe-area-inset-top, 0px) 0 0; border: 0; border-bottom: 1px solid #fffaf12e; background: #003f30; color: #fffaf1; box-shadow: 0 3px 0 #002d24; backdrop-filter: none; transition: box-shadow 180ms ease; }
+  .header:global(.game-navbar)[data-announcement] { padding-top: 0; }
+  .header:global(.game-navbar):global(.is-scrolled) { background: #003f30; box-shadow: 0 4px 0 #002d24, 0 8px 18px #002d2420; }
+  .header:global(.game-navbar)::after { display: none; }
+  .header:global(.game-navbar) .bar:global(.retro-container) { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 12px; width: 100%; max-width: none; min-height: 72px; margin: 0; padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); border: 0; border-radius: 0; background: transparent; box-shadow: none; backdrop-filter: none; }
+  .mobileBrand { display: flex; justify-content: center; align-items: center; gap: 8px; min-width: 0; min-height: 48px; color: #fffaf1; text-decoration: none; }
+  .wordmark { text-align: center; display: grid; gap: 2px; text-transform: uppercase; }
+  .wordmark small { font: 800 .91rem/1 var(--font-display), Impact, sans-serif; letter-spacing: .025em; white-space: nowrap; }
+  .wordmark strong { color: #f4c43d; font: 900 1.75rem/.9 var(--font-display), Impact, sans-serif; letter-spacing: -.015em; }
+  .header .control { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 48px; height: 48px; padding: 5px 2px; border: 1px solid #fffaf16b; border-radius: 2px; cursor: pointer; }
+  .header .control > svg { width: 20px; height: 20px; }
+  .controlLabel { display: block; font: 800 .48rem/1 var(--font-body), sans-serif; text-transform: uppercase; letter-spacing: .07em; }
+  .header .menuButton { background: #fffaf10a; color: #fffaf1; }
+  .header .cartButton { background: #f4c43d; border-color: #f4c43d; color: #003f30; box-shadow: 2px 2px 0 #002d24; }
+  .header .cartCount { top: -6px; right: -6px; min-width: 20px; min-height: 19px; padding: 2px 4px; border: 1px solid #003f30; border-radius: 2px; background: #fffaf1; color: #003f30; font: 800 .59rem/1.3 ui-monospace, monospace; }
+  .header :is(a, button):focus-visible { outline: 2px solid #fffaf1; outline-offset: 4px; }
+  .header .control:active { transform: translateY(1px); box-shadow: none; }
+}
+@media (max-width: 350px) {
+  .header:global(.game-navbar) .bar:global(.retro-container) { gap: 8px; padding-right: max(12px, env(safe-area-inset-right, 0px)); padding-left: max(12px, env(safe-area-inset-left, 0px)); }
+  .mobileBrand { gap: 5px; }
+  .wordmark small { font-size: .81rem; }
+  .wordmark strong { font-size: 1.55rem; }
+}
+@media (prefers-reduced-motion: reduce) { .header:global(.game-navbar) { transition: none; } }

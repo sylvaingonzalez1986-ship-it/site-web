@@ -18,14 +18,14 @@ const modules = {
     const ids=['decouverte','explorateur','connaisseur','ambassadeur','legende'];
     createRoot(document.getElementById('root')).render(<><Navbar/><main style={{padding:'140px 20px 40px',maxWidth:1200,margin:'auto'}}><section id='emblems' style={{padding:20,background:'#fffaf1',border:'2px solid #00563f',marginBottom:20}}><h1 style={{fontFamily:'Display',fontSize:36,color:'#003f30'}}>Les insignes du club.</h1>{[true,false].map(unlocked=><div key={String(unlocked)} style={{display:'flex',gap:12,flexWrap:'wrap',padding:'12px 0'}}>{ids.map(badgeId=><div key={badgeId} style={{display:'grid',justifyItems:'center',gap:6}}><LoyaltyBadgeIllustration badgeId={badgeId} unlocked={unlocked} size='md'/><LoyaltyBadgeIllustration badgeId={badgeId} unlocked={unlocked} size='xs'/></div>)}</div>)}</section><LoyaltyBadgeSummary/></main></>);
   `,
-  'preview-cart': `import {buildEmptyLoyaltySummary} from '/src/lib/loyalty';const loyalty=buildEmptyLoyaltySummary();loyalty.currentBadge={...loyalty.badges[2],unlocked:true};export const useCart=()=>({user:location.search.includes('guest')?null:{id:'preview-user',firstName:'Camille',email:'player@example.test',contestBetaEnabled:true},loyalty,totalItems:3,hasWelcomePack:true,sessionLoading:false,authLoading:false});`,
+  'preview-cart': `import {buildEmptyLoyaltySummary} from '/src/lib/loyalty';const loyalty=buildEmptyLoyaltySummary();loyalty.currentBadge={...loyalty.badges[2],unlocked:true};export const useCart=()=>({user:location.search.includes('guest')?null:{id:'preview-user',firstName:'Camille',email:'player@example.test',contestBetaEnabled:true},loyalty,totalItems:Number(new URLSearchParams(location.search).get('count')??3),hasWelcomePack:true,sessionLoading:false,authLoading:false});`,
   'preview-pages': `export const useCmsPages=()=>({pages:location.search.includes('long')?Array.from({length:5},(_,i)=>({slug:'page-'+i,title:'Une histoire de chanvre et de producteurs '+i,navLabel:'',showInNav:true,position:i})):[]});`,
   'preview-store': `export const useCmsStore=()=>({store:{content:{profile:{}}}});`,
   'preview-drawer': `import React from 'react';export function CartDrawer({open,onClose}){return open?React.createElement('div',{role:'dialog','data-cart-preview':true},React.createElement('button',{onClick:onClose},'Fermer le panier')):null}`,
   'next/image': `import React from 'react'; export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}) {return React.createElement('img',{...props,src:typeof src==='string'?src:src.src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}})}`,
   'next/link': `import React from 'react'; export const useLinkStatus=()=>({pending:false}); export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props)}`,
   'next/dynamic': `import React from 'react'; export default function dynamic(loader){const Component=React.lazy(()=>loader().then(m=>({default:m.default||m})));return props=>React.createElement(React.Suspense,{fallback:null},React.createElement(Component,props))}`,
-  'next/navigation': `export const usePathname=()=>location.pathname;export const useSearchParams=()=>new URLSearchParams(location.search);export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});`,
+  'next/navigation': `export const usePathname=()=>location.search.includes('inner')?'/boutique':location.pathname;export const useSearchParams=()=>new URLSearchParams(location.search);export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});`,
 };
 const server = await createServer({configFile:false,envDir:false,root,cacheDir:resolve(output,'vite-cache'),define:{'process.env.NEXT_PUBLIC_CONTEST_BETA_ACCESS_ENABLED':'"false"'},optimizeDeps:{include:['react','react-dom','react-dom/client','react/jsx-runtime','react/jsx-dev-runtime','lucide-react']},publicDir:resolve(root,'public'),esbuild:{jsx:'automatic'},resolve:{dedupe:['react','react-dom'],alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{
   name:'isolated-menu',enforce:'pre',
@@ -41,6 +41,12 @@ try {
   for(const [width,height] of [[320,740],[390,844],[667,390]]) {
     await page.setViewport({width,height});await page.goto('http://127.0.0.1:3223/',{waitUntil:'networkidle0'});await page.waitForSelector('[data-badge-tone]');
     assert.equal(await page.$$eval('#emblems [data-badge-tone]',items=>items.length),20);
+    const header=await page.$('header[data-tutorial="navbar"]');
+    const inspect=()=>page.evaluate(()=>{const header=document.querySelector('header[data-tutorial="navbar"]'),menu=header.querySelector('button[aria-label="Menu"]'),cart=header.querySelector('button[aria-label="Panier"]'),brand=header.querySelector('a[aria-label$="accueil"]');const a=menu.getBoundingClientRect(),b=brand.getBoundingClientRect(),c=cart.getBoundingClientRect();return {color:getComputedStyle(header).backgroundColor,height:header.getBoundingClientRect().height,fit:a.right<=b.left&&b.right<=c.left,targets:a.width>=44&&a.height>=44&&c.width>=44&&c.height>=44};});
+    const before=await inspect();assert.equal(before.color,'rgb(0, 63, 48)');assert(before.fit&&before.targets);await header.screenshot({path:resolve(output,`bar-top-${width}.png`)});
+    await page.evaluate(()=>window.scrollTo({top:220,behavior:'instant'}));await page.waitForSelector('header.is-scrolled');const after=await inspect();assert.equal(after.height,before.height);assert(after.fit&&after.targets);assert.equal(after.color,before.color);await header.screenshot({path:resolve(output,`bar-scrolled-${width}.png`)});
+    await page.click('button[aria-label="Panier"]');await page.waitForSelector('[data-cart-preview]');await page.click('[data-cart-preview] button');
+    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
     await page.click('button[aria-label="Menu"]');await page.waitForSelector('#mobile-nav[open]');
     assert.equal(await page.$eval('#mobile-nav',el=>getComputedStyle(el).backgroundColor),'rgb(0, 63, 48)');
     assert(await page.$eval('#mobile-nav',el=>el.scrollWidth<=el.clientWidth+1));
@@ -54,6 +60,13 @@ try {
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'gallery overflow');
     await page.screenshot({path:resolve(output,`badges-${width}.png`),fullPage:true});
   }
+  for(const count of [0,120]) {
+    await page.setViewport({width:320,height:740});await page.goto('http://127.0.0.1:3223/?inner&count='+count,{waitUntil:'networkidle0'});
+    const result=await page.$eval('header[data-tutorial="navbar"]',header=>({top:header.getBoundingClientRect().top,counter:header.querySelector('button[aria-label="Panier"] span[aria-hidden]')?.textContent,description:header.querySelector('#navbar-cart-quantity')?.textContent}));
+    assert.equal(result.top,0);assert.equal(result.counter,count?'99+':undefined);if(count)assert.match(result.description,/120 articles/);
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+    await (await page.$('header[data-tutorial="navbar"]')).screenshot({path:resolve(output,'bar-inner-count-'+count+'.png')});
+  }
   await page.setViewport({width:390,height:844});await page.goto('http://127.0.0.1:3223/?guest&long',{waitUntil:'networkidle0'});await page.click('button[aria-label="Menu"]');
   await page.waitForSelector('#mobile-nav[open]');assert(await page.$('#mobile-nav a[href="/compte/connexion"]'));
   await page.$eval('#mobile-nav',el=>el.scrollTop=el.scrollHeight);await page.screenshot({path:resolve(output,'menu-long-bottom.png')});
@@ -63,5 +76,5 @@ try {
   await page.$eval('#mobile-nav a[href="/boutique"]',el=>el.addEventListener('click',event=>event.preventDefault(),{once:true}));await page.click('#mobile-nav a[href="/boutique"]');await page.waitForFunction(()=>!document.querySelector('#mobile-nav').open);
   await page.click('button[aria-label="Menu"]');await page.setViewport({width:1440,height:1000});await page.waitForFunction(()=>!document.querySelector('#mobile-nav').open);
   await page.screenshot({path:resolve(output,'badges-desktop.png'),fullPage:true});
-  assert.deepEqual(errors,[]);console.log('Mobile menu and badges passed: phone/landscape, focus trap, Escape/focus restoration, guest/member, long CMS navigation, cart, desktop resize, all five loyalty tiers with locked/unlocked and small/large variants.');
+  assert.deepEqual(errors,[]);console.log('Mobile menu and badges passed: phone/landscape, focus trap, Escape/focus restoration, guest/member, long CMS navigation, cart, desktop resize, all five loyalty tiers, mobile bar before/after scroll, control spacing and cart counts 0/3/120.');
 }finally{await browser?.close();await server.close();}
