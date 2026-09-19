@@ -1,0 +1,18 @@
+﻿.emblem { --badge-face: #f4c43d; --badge-ink: #003f30; --badge-line: #fffaf1; display: inline-flex; flex: 0 0 auto; width: 52px; height: auto; aspect-ratio: 96 / 104; vertical-align: middle; }
+.emblem[data-size="xs"] { width: 36px; }
+.emblem[data-size="md"] { width: 80px; }
+.emblem > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.emblem[data-badge-tone="bronze"] { --badge-face: #ce9a69; --badge-line: #f5dcc0; }
+.emblem[data-badge-tone="silver"] { --badge-face: #e4e9db; --badge-line: #fffaf1; }
+.emblem[data-badge-tone="platinum"] { --badge-face: #00563f; --badge-ink: #fffaf1; --badge-line: #a8c6ac; }
+.emblem[data-badge-tone="diamond"] { --badge-face: #003f30; --badge-ink: #f4c43d; --badge-line: #f4c43d; }
+.emblem[data-locked="true"] { --badge-face: #e9e6db; --badge-ink: #7b8477; --badge-line: #fffaf1; }
+.shadow { fill: #002d24; opacity: .2; }
+.shield { fill: var(--badge-face); stroke: #003f30; stroke-width: 2.5; stroke-linejoin: round; }
+.inset { stroke: var(--badge-line); stroke-width: 1.5; }
+.symbol, .laurel, .rule { color: var(--badge-ink); stroke: var(--badge-ink); }
+.laurel { stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.rule { stroke-width: 1; }
+.spark, .mark { fill: var(--badge-ink); }
+.lockPlate { fill: #fffaf1; stroke: #7b8477; stroke-width: 1.5; }
+.lock { stroke: #4c655a; }

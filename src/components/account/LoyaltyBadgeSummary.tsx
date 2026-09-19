@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./LoyaltyBadgeSummary.module.css";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
 import { useCmsStore } from "@/hooks/useCmsStore";
 import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
@@ -20,8 +21,8 @@ type LoyaltyBadgeSummaryProps = {
 const publicLoyaltySummary = buildEmptyLoyaltySummary();
 
 export function LoyaltyBadgeSummary({
-  title = "Resume des badges",
-  description = "1 EUR depense = 1 point. Monte de palier pour debloquer plus d'avantages.",
+  title = "Les paliers du club",
+  description = "1 € dépensé = 1 point. Monte de palier pour débloquer plus d’avantages.",
   headingLevel = "h1",
 }: LoyaltyBadgeSummaryProps) {
   const { store } = useCmsStore();
@@ -29,16 +30,16 @@ export function LoyaltyBadgeSummary({
   const Heading = headingLevel;
 
   return (
-    <article className="cartoon-border bg-cream p-6 md:p-8">
+    <article className={styles.panel}>
       <Heading className="section-title">{title}</Heading>
       <p className="mt-3 text-sm leading-relaxed text-charcoal md:text-base">{description}</p>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <div className={styles.grid}>
         {publicLoyaltySummary.badges.map((badge) => {
           const benefits = parseBadgeBenefitsLines(getBadgeBenefitsText(profileContent, badge.id));
           return (
-            <section key={badge.id} className="card-cartoon bg-white p-4">
-              <div className="flex items-center gap-3">
+            <section key={badge.id} className={styles.card}>
+              <div className={styles.identity}>
                 <LoyaltyBadgeIllustration badgeId={badge.id} unlocked size="md" />
                 <div>
                   <p className="text-sm font-bold uppercase tracking-[0.08em] text-charcoal">
@@ -50,13 +51,13 @@ export function LoyaltyBadgeSummary({
 
               <div className="mt-3 grid gap-1 text-xs text-ink">
                 <p>
-                  Reduction:{" "}
+                  Réduction :{" "}
                   <span className="font-semibold">
                     {getBadgeDiscountPercent(profileContent, badge.id)}%
                   </span>
                 </p>
                 <p>
-                  Livraison:{" "}
+                  Livraison :{" "}
                   <span className="font-semibold">
                     {`${getBadgeTierRelayBenefitLabel(badge.id)} / ${getBadgeTierHomeDeliveryBenefitLabel(badge.id)}`}
                   </span>

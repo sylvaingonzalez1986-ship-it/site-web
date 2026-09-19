@@ -5,11 +5,11 @@ import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import { ShoppingCart } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { ShoppingCart, Menu } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
 import { useCart } from "@/context/CartContext";
-import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { MobileNavigation } from "@/components/navigation/MobileNavigation";
 import { useCmsPages } from "@/hooks/useCmsPages";
 import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
 
@@ -77,6 +77,8 @@ export function Navbar() {
   const { pages: cmsPages } = useCmsPages();
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const openCart = useCallback(() => setCartOpen(true), []);
   const [isScrolled, setIsScrolled] = useState(false);
   const [hideWelcomePackBadge, setHideWelcomePackBadge] = useState(false);
   const [contestAccessCheck, setContestAccessCheck] = useState<ContestAccessCheck | null>(null);
@@ -214,23 +216,6 @@ export function Navbar() {
     return () => window.removeEventListener("cart:open", openCart);
   }, []);
 
-  useEffect(() => {
-    if (!menuOpen) {
-      return;
-    }
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setMenuOpen(false);
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [menuOpen]);
-
-  useBodyScrollLock(menuOpen);
-
   // Les espaces de jeu possèdent leur propre navigation plein écran. Conserver
   // ici la barre globale fixe la placerait au-dessus de leurs boutons et modales.
   if (pathname === "/arene/placard" || pathname.startsWith("/arene/carnet")) {
@@ -256,12 +241,12 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMenuOpen((prev) => !prev)}
-            className="inline-flex h-11 w-11 items-center justify-center border-2 border-[#1a1a1a] bg-[#f7f4ee] text-2xl font-bold leading-none md:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center border-2 border-[#003f30] bg-[#fffaf1] text-[#003f30] md:hidden"
             aria-label="Menu"
             aria-expanded={menuOpen}
             aria-controls="mobile-nav"
           >
-            {menuOpen ? "✕" : "☰"}
+            <Menu size={22} aria-hidden="true" />
           </button>
 
           <Link href="/" className="game-brand hidden font-display text-xl text-ink md:block md:text-2xl">
@@ -332,11 +317,11 @@ export function Navbar() {
             type="button"
             onClick={() => setCartOpen(true)}
             aria-label="Panier"
-            className="relative inline-flex h-11 w-11 items-center justify-center border-2 border-[#1a1a1a] bg-[#f7f4ee]"
+            className="relative inline-flex h-11 w-11 items-center justify-center border-2 border-[#003f30] bg-[#fffaf1] text-[#003f30]"
           >
             <ShoppingCart size={19} />
             {totalItems > 0 && (
-              <span className="absolute -right-2 -top-2 min-w-5 rounded-full bg-[#d35400] px-1 text-center text-xs font-bold text-white">
+              <span className="absolute -right-2 -top-2 min-w-5 border border-[#003f30] bg-[#f4c43d] px-1 text-center text-xs font-bold text-[#003f30]">
                 {totalItems}
               </span>
             )}
@@ -344,58 +329,9 @@ export function Navbar() {
         </div>
       </header>
 
-      <div
-        id="mobile-nav"
-        className={`game-mobile-nav fixed inset-0 z-30 transition-transform duration-300 md:hidden ${
-          menuOpen ? "pointer-events-auto translate-x-0" : "pointer-events-none translate-x-full"
-        }`}
-      >
-        <div className="safe-area-top safe-area-bottom safe-area-x flex h-full flex-col items-center justify-center gap-8 overflow-y-auto py-10">
-          {links.map((link) => {
-            const isAccountLink = link.href === "/profil" || link.href === "/compte/connexion";
-              const isAlbumLink = link.href === "/profil/collection";
-              const showWelcomePackBadge =
-                isAlbumLink && !hideWelcomePackBadge && (!sessionLoading ? (isAuthenticated ? hasWelcomePack : true) : false);
-
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={`relative font-display text-3xl text-ink ${isAccountLink && user ? "inline-flex items-center gap-3" : ""}`}
-                data-tutorial={
-                  link.href === "/boutique"
-                    ? "navbar-boutique"
-                    : isAccountLink
-                      ? "navbar-account"
-                      : undefined
-                }
-              >
-                <span>{link.label}</span>
-                {showWelcomePackBadge && (
-                  <span className="absolute -right-4 -top-1 flex h-3 w-3">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#27ae60] opacity-75" />
-                    <span className="relative inline-flex h-3 w-3 rounded-full bg-[#27ae60]" />
-                  </span>
-                )}
-                {link.href === "/profil" && user && (
-                  <span
-                    className="inline-flex items-center"
-                    aria-label={`Badge actuel: ${loyalty.currentBadge.label}`}
-                    title={`Badge actuel: ${loyalty.currentBadge.label}`}
-                  >
-                    <LoyaltyBadgeIllustration
-                      badgeId={loyalty.currentBadge.id}
-                      unlocked={loyalty.currentBadge.unlocked}
-                      size="xs"
-                    />
-                  </span>
-                )}
-              </Link>
-            );
-          })}
-        </div>
-      </div>
+      <MobileNavigation open={menuOpen} pathname={pathname} links={links} onClose={closeMenu} onCart={openCart} totalItems={totalItems}
+        welcomePack={!hideWelcomePackBadge && !sessionLoading && (isAuthenticated ? hasWelcomePack : true)}
+        member={user ? { name: user.firstName, badge: loyalty.currentBadge } : null} />
 
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
     </>

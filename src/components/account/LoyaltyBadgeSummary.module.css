@@ -1,0 +1,8 @@
+﻿.panel { composes: surface from "../EditorialTheme.module.css"; padding: clamp(18px, 4vw, 32px); border: 2px solid #00563f; background: #fffaf1; box-shadow: 4px 4px 0 #003f30; }
+.panel > h1, .panel > h2 { color: #003f30; font: 900 clamp(2rem, 5vw, 3rem)/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 175px), 1fr)); gap: 12px; margin-top: 24px; }
+.card { min-width: 0; padding: 18px 16px; border: 1px solid #00563f50; border-top: 4px solid #00563f; background: #fffdf8; color: #003f30; }
+.identity { display: grid; justify-items: center; gap: 8px; text-align: center; padding-bottom: 14px; border-bottom: 1px solid #00563f30; margin-bottom: 14px; }
+.identity > div > p:first-child { font: 800 1.6rem/1.1 var(--font-display), Impact, sans-serif; color: #003f30; }
+.identity > div > p:last-child { margin-top: 5px; color: #4c655a; font: 700 .64rem/1.5 ui-monospace, monospace; }
+.card ul { list-style: none; }
