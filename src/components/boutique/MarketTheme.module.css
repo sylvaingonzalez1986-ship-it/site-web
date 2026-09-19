@@ -1,0 +1,13 @@
+/* Market aliases keep card and portal styles on the shared editorial theme. */
+.surface {
+  composes: surface from "../EditorialTheme.module.css";
+  --market-green: var(--arcade-green);
+  --market-dark: var(--arcade-dark);
+  --market-paper: var(--arcade-paper);
+  --market-yellow: var(--arcade-yellow);
+}
+.modal:global(.producer-modal-overlay) { background: var(--market-dark); }
+.modal :global(.producer-modal-shell) { --producer-modal-controls-height: calc(62px + env(safe-area-inset-top)); }
+.modal :global(.producer-modal-controls) { background: var(--market-dark); border-bottom: 1px solid #fffaf140; box-shadow: 0 4px 0 #002d24; }
+.modal :global(.producer-modal-controls) > p { color: var(--market-paper); font-family: ui-monospace, monospace; }
+.modal :global(.producer-modal-controls) > button { min-width: 44px; width: 44px; min-height: 44px; height: 44px; }

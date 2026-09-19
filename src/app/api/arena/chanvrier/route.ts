@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isArenaCharacterRequestEnabled } from "@/lib/arena-character-access";
 import { hitRateLimit } from "@/lib/security-rate-limit";
 import { rejectOversizedBody } from "@/lib/body-size-guard";
 import { getChanvrierProfile, saveChanvrierProfile } from "@/lib/supabase/arena-chanvrier-backend";
@@ -10,7 +10,7 @@ const headers = { "Cache-Control": "private, no-store" };
 async function identity() {
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Connecte-toi pour créer ton chanvrier." }, { status: 401, headers });
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Arène indisponible." }, { status: 404, headers });
+  if (!await isArenaCharacterRequestEnabled()) return NextResponse.json({ error: "Arène indisponible." }, { status: 404, headers });
   return session;
 }
 export async function GET() {

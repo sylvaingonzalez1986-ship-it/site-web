@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import styles from "./RegionMarket.module.css";
 import { ProductCard } from "@/components/ProductCard";
 import { FranceRegionMap } from "@/components/boutique/FranceRegionMap";
 import { ProducerTcgShowcase } from "@/components/boutique/ProducerTcgShowcase";
@@ -186,13 +187,13 @@ export function RegionProducerShowcase({
     const top = scrollTarget.getBoundingClientRect().top + window.scrollY - navbarOffset;
     window.scrollTo({
       top: Math.max(0, top),
-      behavior: "smooth",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
     });
   }, [isMobileViewport, selectedCount, selectedRegion]);
 
   const triggerRegionFlight = useCallback(
     (source?: { x: number; y: number }) => {
-      if (isMobileViewport || !source || !showcaseRef.current || !mapContainerRef.current) {
+      if (isMobileViewport || window.matchMedia("(prefers-reduced-motion: reduce)").matches || !source || !showcaseRef.current || !mapContainerRef.current) {
         return;
       }
 
@@ -259,13 +260,18 @@ export function RegionProducerShowcase({
   }, [regionFlight]);
 
   return (
-    <div ref={showcaseRef} className="region-showcase">
-      <div ref={mapContainerRef} className="region-map-container cartoon-panel halftone-overlay paper-grain">
+    <div ref={showcaseRef} className={`region-showcase ${styles.showcase}`}>
+      <div ref={mapContainerRef} className={`region-map-container ${styles.board}`}>
         <div className="region-map-intro">
-          <p className="section-title region-map-title text-ink">Nos producteurs de France</p>
-          <p className="region-map-subtitle font-handwritten text-charcoal">
-            Cliquez sur une region pour decouvrir ses artisans
-          </p>
+          <div>
+            <p className={styles.kicker}>Le marché · Par région</p>
+            <h2 className="section-title region-map-title">La carte des copains.</h2>
+            <p className="region-map-subtitle">Choisis une région. Rencontre les artisans qui la font pousser.</p>
+          </div>
+          <div className={styles.network}>
+            <strong>{Object.values(producerCountByRegion).reduce((total, count) => total + count, 0)}</strong>
+            <span>producteurs<br />à découvrir</span>
+          </div>
         </div>
 
         <FranceRegionMap
@@ -312,7 +318,7 @@ export function RegionProducerShowcase({
 
       {shouldShowDesktopPanel ? (
         <div className="region-showcase-panel">
-          <div className="region-showcase-meta cartoon-border bg-cream">
+          <div className="region-showcase-meta">
             <div>
               <p className="font-display text-3xl text-ink">{selectedLabel}</p>
               <p className="mt-2 font-handwritten text-2xl text-charcoal">
@@ -325,22 +331,22 @@ export function RegionProducerShowcase({
                 className="btn-cartoon btn-secondary region-reset-button"
                 onClick={() => setSelectedRegion(null)}
               >
-                Voir tous les producteurs
+                Retour à la carte
               </button>
             </div>
           </div>
 
           {selectedCount === 0 ? (
-            <div ref={emptySectionRef} className="region-showcase-empty cartoon-panel">
+            <div ref={emptySectionRef} className="region-showcase-empty">
               <p className="font-handwritten text-3xl text-charcoal">
-                Aucun producteur dans cette region pour le moment... mais ca pousse !
+                Aucun producteur dans cette région pour le moment… mais ça pousse !
               </p>
               <button
                 type="button"
                 className="btn-cartoon btn-secondary mt-6"
                 onClick={() => setSelectedRegion(null)}
               >
-                Voir tous les producteurs
+                Retour à la carte
               </button>
             </div>
           ) : (

@@ -1,0 +1,19 @@
+﻿.character { display: grid; justify-items: end; gap: 8px; color: #fffaf1; max-width: min(65%, 360px); text-align: right; font-size: .75rem; }
+.characterButton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 14px; min-height: 44px; border: 1px solid #fffaf170; background: #003f30d9; color: #fffaf1; text-decoration: none; font-weight: 800; font-size: .75rem; cursor: pointer; }
+.saved { display: flex; align-items: center; gap: 6px; font-size: .65rem; line-height: 1.5; color: #f4c43d; }
+.entry { position: relative; grid-area: 1 / 2; }
+.entry > button { width: 100%; cursor: pointer; text-align: left; }
+.bubble { position: absolute; z-index: 5; bottom: calc(100% + 16px); right: 0; width: min(330px, calc(100vw - 2rem)); padding: 22px 42px 22px 20px; border: 2px solid #003f30; border-radius: 12px; background: #fffaf1; color: #003f30; box-shadow: 5px 5px 0 #002d24; text-shadow: none; }
+.bubble::after { content: ""; position: absolute; right: 30px; bottom: -9px; width: 16px; height: 16px; background: #fffaf1; border-right: 2px solid #003f30; border-bottom: 2px solid #003f30; transform: rotate(45deg); }
+.bubble small { display: block; margin-bottom: 8px; color: #00563f; font: 800 .6rem/1.4 ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; }
+.bubble strong { display: block; font: 900 1.8rem/1 var(--font-display), Impact, sans-serif; }
+.bubble p { margin-top: 10px; font-size: .8rem; line-height: 1.55; }
+.dismiss { position: absolute; top: 0; right: 0; display: grid; place-items: center; width: 44px; height: 44px; cursor: pointer; }
+.helpButton { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #f4c43d; font-size: 12px; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.invitation { text-align: left; cursor: pointer; }
+@media(max-width:700px) {
+  .entry { grid-area: 3 / 1; }
+  .characterButton { padding: 10px; font-size: .65rem; }
+  .saved { font-size: .6rem; }
+  .bubble { right: 0; width: 100%; }
+}

@@ -3,16 +3,16 @@ DO $$
 DECLARE treasury UUID:=gen_random_uuid(); grower UUID:=gen_random_uuid(); handy UUID:=gen_random_uuid(); merchant UUID:=gen_random_uuid();
  buddy UUID; run UUID; flower UUID; entitlement UUID; key UUID:=gen_random_uuid(); value JSONB; cash INTEGER; price INTEGER; cost INTEGER;
  scenario TEXT[]:=ARRAY['SIT-001','SIT-002','SIT-003','SIT-004','SIT-005','SIT-006'];
- initial JSONB:='{"xp":9,"deckCodes":[],"usedCards":[],"playedThisStage":[],"equipment":{"codes":["PRESS-0600"]}}';
+ initial JSONB:='{"xp":7,"deckCodes":[],"usedCards":[],"playedThisStage":[],"equipment":{"codes":["PRESS-0600"]}}';
 BEGIN
  INSERT INTO auth.users(id,email) SELECT id,'chanvrier-test-'||id||'@example.invalid' FROM unnest(ARRAY[treasury,grower,handy,merchant]) id;
  value:=public.rpc_arena_save_chanvrier(treasury,jsonb_build_object('nickname','T-'||left(treasury::TEXT,12),'gender','male','clothing','teal','skin','peach','strength','treasurer'));
- ASSERT (value->>'startingBonusCents')::INTEGER=165000, 'first treasury bonus';
+ ASSERT (value->>'startingBonusCents')::INTEGER=65000, 'first treasury bonus';
  SELECT cash_cents INTO cash FROM public.kq_equipment_wallets WHERE user_id=treasury;
- ASSERT cash=200000, '2000 euro starting capital';
+ ASSERT cash=100000, '1000 euro starting capital';
  value:=public.rpc_arena_save_chanvrier(treasury,value->'profile'||'{"clothing":"blue"}'::JSONB);
  ASSERT (value->>'startingBonusCents')::INTEGER=0, 'bonus must not replay';
- ASSERT (SELECT cash_cents=200000 FROM public.kq_equipment_wallets WHERE user_id=treasury), 'no repeated credit';
+ ASSERT (SELECT cash_cents=100000 FROM public.kq_equipment_wallets WHERE user_id=treasury), 'no repeated credit';
  BEGIN
   PERFORM public.rpc_arena_save_chanvrier(treasury,value->'profile'||'{"strength":"green-thumb"}'::JSONB);
   RAISE EXCEPTION 'expected locked specialty';
@@ -37,7 +37,7 @@ BEGIN
  EXCEPTION WHEN raise_exception THEN IF SQLERRM<>'kq_heritage_state_mismatch' THEN RAISE; END IF; END;
  value:=public.rpc_kq_start_run_with_heritage(grower,'HH2026-001',123,ARRAY[]::TEXT[],scenario,initial,0,NULL);
  run:=(value->'run'->>'id')::UUID;
- ASSERT (value->'run'->'state'->>'xp')::INTEGER=9, 'base 1 + legendary 4 + Main Verte 4';
+ ASSERT (value->'run'->'state'->>'xp')::INTEGER=7, 'base 1 + legendary 4 + Main Verte 2';
  UPDATE public.kq_runs SET status='completed',completed_at=now() WHERE id=run;
  ASSERT (SELECT wear_cycles=10 AND maintenance_version=1 FROM public.kq_player_equipment WHERE user_id=grower AND equipment_code='PRESS-0600'), 'completion wears snapshotted machine once';
  UPDATE public.kq_runs SET status='completed' WHERE id=run;

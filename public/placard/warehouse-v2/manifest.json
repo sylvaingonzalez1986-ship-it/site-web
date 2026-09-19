@@ -1,0 +1,557 @@
+{
+  "version": 1,
+  "sourceDirectory": "output/imagegen/warehouse-v2/source",
+  "quality": 90,
+  "margin": 2,
+  "boundsAlphaThreshold": 8,
+  "assets": {
+    "room": {
+      "file": "room.webp",
+      "width": 1774,
+      "height": 887,
+      "bytes": 276894,
+      "source": "room.png",
+      "originalWidth": 1774,
+      "originalHeight": 887
+    },
+    "sifting": {
+      "file": "sifting.webp",
+      "width": 515,
+      "height": 380,
+      "bytes": 61300,
+      "source": "machines.png",
+      "index": 0,
+      "cell": {
+        "left": 0,
+        "top": 0,
+        "width": 552,
+        "height": 499
+      },
+      "contentBounds": {
+        "left": 35,
+        "top": 107,
+        "width": 507,
+        "height": 372
+      },
+      "retainedBounds": {
+        "left": 33,
+        "top": 105,
+        "width": 511,
+        "height": 376
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "press": {
+      "file": "press.webp",
+      "width": 509,
+      "height": 473,
+      "bytes": 51696,
+      "source": "machines.png",
+      "index": 1,
+      "cell": {
+        "left": 552,
+        "top": 0,
+        "width": 540,
+        "height": 499
+      },
+      "contentBounds": {
+        "left": 16,
+        "top": 26,
+        "width": 501,
+        "height": 465
+      },
+      "retainedBounds": {
+        "left": 14,
+        "top": 24,
+        "width": 505,
+        "height": 469
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "static-separation": {
+      "file": "static-separation.webp",
+      "width": 248,
+      "height": 500,
+      "bytes": 42324,
+      "source": "machines.png",
+      "index": 2,
+      "cell": {
+        "left": 1092,
+        "top": 0,
+        "width": 444,
+        "height": 519
+      },
+      "contentBounds": {
+        "left": 72,
+        "top": 19,
+        "width": 240,
+        "height": 492
+      },
+      "retainedBounds": {
+        "left": 70,
+        "top": 17,
+        "width": 244,
+        "height": 496
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "washing": {
+      "file": "washing.webp",
+      "width": 386,
+      "height": 473,
+      "bytes": 44732,
+      "source": "machines.png",
+      "index": 3,
+      "cell": {
+        "left": 0,
+        "top": 499,
+        "width": 552,
+        "height": 525
+      },
+      "contentBounds": {
+        "left": 89,
+        "top": 7,
+        "width": 378,
+        "height": 465
+      },
+      "retainedBounds": {
+        "left": 87,
+        "top": 5,
+        "width": 382,
+        "height": 469
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "filtration": {
+      "file": "filtration.webp",
+      "width": 380,
+      "height": 453,
+      "bytes": 48268,
+      "source": "machines.png",
+      "index": 4,
+      "cell": {
+        "left": 552,
+        "top": 499,
+        "width": 480,
+        "height": 525
+      },
+      "contentBounds": {
+        "left": 36,
+        "top": 7,
+        "width": 372,
+        "height": 445
+      },
+      "retainedBounds": {
+        "left": 34,
+        "top": 5,
+        "width": 376,
+        "height": 449
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "drying": {
+      "file": "drying.webp",
+      "width": 450,
+      "height": 462,
+      "bytes": 44824,
+      "source": "machines.png",
+      "index": 5,
+      "cell": {
+        "left": 1032,
+        "top": 519,
+        "width": 504,
+        "height": 505
+      },
+      "contentBounds": {
+        "left": 33,
+        "top": 6,
+        "width": 442,
+        "height": 454
+      },
+      "retainedBounds": {
+        "left": 31,
+        "top": 4,
+        "width": 446,
+        "height": 458
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "tent-starter": {
+      "file": "tent-starter.webp",
+      "width": 285,
+      "height": 480,
+      "bytes": 44920,
+      "source": "grow-original.png",
+      "index": 0,
+      "cell": {
+        "left": 0,
+        "top": 0,
+        "width": 500,
+        "height": 562
+      },
+      "contentBounds": {
+        "left": 145,
+        "top": 55,
+        "width": 277,
+        "height": 472
+      },
+      "retainedBounds": {
+        "left": 143,
+        "top": 53,
+        "width": 281,
+        "height": 476
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "tent-pro": {
+      "file": "tent-pro.webp",
+      "width": 366,
+      "height": 489,
+      "bytes": 54588,
+      "source": "grow-original.png",
+      "index": 1,
+      "cell": {
+        "left": 500,
+        "top": 0,
+        "width": 500,
+        "height": 562
+      },
+      "contentBounds": {
+        "left": 96,
+        "top": 51,
+        "width": 358,
+        "height": 481
+      },
+      "retainedBounds": {
+        "left": 94,
+        "top": 49,
+        "width": 362,
+        "height": 485
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "lighting-starter": {
+      "file": "lighting-starter.webp",
+      "width": 450,
+      "height": 431,
+      "bytes": 33566,
+      "source": "grow-original.png",
+      "index": 2,
+      "cell": {
+        "left": 1000,
+        "top": 0,
+        "width": 536,
+        "height": 562
+      },
+      "contentBounds": {
+        "left": 58,
+        "top": 86,
+        "width": 442,
+        "height": 423
+      },
+      "retainedBounds": {
+        "left": 56,
+        "top": 84,
+        "width": 446,
+        "height": 427
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "lighting-pro": {
+      "file": "lighting-pro.webp",
+      "width": 519,
+      "height": 335,
+      "bytes": 48072,
+      "source": "grow-original.png",
+      "index": 3,
+      "cell": {
+        "left": 0,
+        "top": 562,
+        "width": 539,
+        "height": 462
+      },
+      "contentBounds": {
+        "left": 18,
+        "top": 32,
+        "width": 511,
+        "height": 327
+      },
+      "retainedBounds": {
+        "left": 16,
+        "top": 30,
+        "width": 515,
+        "height": 331
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "air-starter": {
+      "file": "air-starter.webp",
+      "width": 435,
+      "height": 196,
+      "bytes": 34562,
+      "source": "grow-original.png",
+      "index": 4,
+      "cell": {
+        "left": 539,
+        "top": 562,
+        "width": 480,
+        "height": 462
+      },
+      "contentBounds": {
+        "left": 18,
+        "top": 126,
+        "width": 427,
+        "height": 188
+      },
+      "retainedBounds": {
+        "left": 16,
+        "top": 124,
+        "width": 431,
+        "height": 192
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "air-pro": {
+      "file": "air-pro.webp",
+      "width": 470,
+      "height": 268,
+      "bytes": 42690,
+      "source": "grow-original.png",
+      "index": 5,
+      "cell": {
+        "left": 1019,
+        "top": 562,
+        "width": 517,
+        "height": 462
+      },
+      "contentBounds": {
+        "left": 34,
+        "top": 81,
+        "width": 462,
+        "height": 260
+      },
+      "retainedBounds": {
+        "left": 32,
+        "top": 79,
+        "width": 466,
+        "height": 264
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "climate-controller": {
+      "file": "climate-controller.webp",
+      "width": 226,
+      "height": 433,
+      "bytes": 20456,
+      "source": "accessories.png",
+      "index": 0,
+      "cell": {
+        "left": 0,
+        "top": 0,
+        "width": 500,
+        "height": 485
+      },
+      "contentBounds": {
+        "left": 130,
+        "top": 52,
+        "width": 218,
+        "height": 425
+      },
+      "retainedBounds": {
+        "left": 128,
+        "top": 50,
+        "width": 222,
+        "height": 429
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "energy": {
+      "file": "energy.webp",
+      "width": 497,
+      "height": 455,
+      "bytes": 55418,
+      "source": "accessories.png",
+      "index": 1,
+      "cell": {
+        "left": 500,
+        "top": 0,
+        "width": 540,
+        "height": 492
+      },
+      "contentBounds": {
+        "left": 14,
+        "top": 37,
+        "width": 489,
+        "height": 447
+      },
+      "retainedBounds": {
+        "left": 12,
+        "top": 35,
+        "width": 493,
+        "height": 451
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "security-camera": {
+      "file": "security-camera.webp",
+      "width": 444,
+      "height": 260,
+      "bytes": 28468,
+      "source": "accessories.png",
+      "index": 2,
+      "cell": {
+        "left": 1040,
+        "top": 0,
+        "width": 496,
+        "height": 492
+      },
+      "contentBounds": {
+        "left": 35,
+        "top": 121,
+        "width": 436,
+        "height": 252
+      },
+      "retainedBounds": {
+        "left": 33,
+        "top": 119,
+        "width": 440,
+        "height": 256
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "security-dog": {
+      "file": "security-dog.webp",
+      "width": 374,
+      "height": 492,
+      "bytes": 52820,
+      "source": "accessories.png",
+      "index": 3,
+      "cell": {
+        "left": 0,
+        "top": 485,
+        "width": 520,
+        "height": 539
+      },
+      "contentBounds": {
+        "left": 112,
+        "top": 8,
+        "width": 366,
+        "height": 484
+      },
+      "retainedBounds": {
+        "left": 110,
+        "top": 6,
+        "width": 370,
+        "height": 488
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "flower-drying": {
+      "file": "flower-drying.webp",
+      "width": 433,
+      "height": 369,
+      "bytes": 71368,
+      "source": "accessories.png",
+      "index": 4,
+      "cell": {
+        "left": 520,
+        "top": 492,
+        "width": 530,
+        "height": 532
+      },
+      "contentBounds": {
+        "left": 32,
+        "top": 48,
+        "width": 425,
+        "height": 361
+      },
+      "retainedBounds": {
+        "left": 30,
+        "top": 46,
+        "width": 429,
+        "height": 365
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    },
+    "flower-drying-full": {
+      "file": "flower-drying-full.webp",
+      "width": 369,
+      "height": 491,
+      "bytes": 96606,
+      "source": "accessories.png",
+      "index": 5,
+      "cell": {
+        "left": 1050,
+        "top": 492,
+        "width": 486,
+        "height": 532
+      },
+      "contentBounds": {
+        "left": 53,
+        "top": 6,
+        "width": 361,
+        "height": 483
+      },
+      "retainedBounds": {
+        "left": 51,
+        "top": 4,
+        "width": 365,
+        "height": 487
+      },
+      "originalWidth": 1536,
+      "originalHeight": 1024
+    }
+  },
+  "sources": {
+    "room": {
+      "status": "built",
+      "width": 1774,
+      "height": 887
+    },
+    "machines": {
+      "status": "built",
+      "source": "machines.png",
+      "width": 1536,
+      "height": 1024,
+      "layout": "reviewed-regions",
+      "referenceWidth": 1536,
+      "referenceHeight": 1024
+    },
+    "grow": {
+      "status": "built",
+      "source": "grow-original.png",
+      "width": 1536,
+      "height": 1024,
+      "layout": "reviewed-regions",
+      "referenceWidth": 1536,
+      "referenceHeight": 1024
+    },
+    "accessories": {
+      "status": "built",
+      "source": "accessories.png",
+      "width": 1536,
+      "height": 1024,
+      "layout": "reviewed-regions",
+      "referenceWidth": 1536,
+      "referenceHeight": 1024
+    }
+  },
+  "warnings": []
+}

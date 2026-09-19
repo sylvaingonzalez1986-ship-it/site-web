@@ -123,7 +123,7 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
     * (.7 + stock.juryScore / 20) * (protectedPrice ? Math.max(1, eventFactor) : eventFactor * (1 - saturation)));
   const professionalPrice = channel === "cbd-shop" ? shopPricePercent / 100
     : campaign?.event === "promotion" ? .25 : campaign?.event === "restock" ? .33 : .3;
-  const unitCents = round6(salvage ? stock.baseUnitCents : stock.baseUnitCents * (channel === "online" ? onlinePrice : professionalPrice));
+  const unitCents = round6(salesMultiplier * (salvage ? stock.baseUnitCents : stock.baseUnitCents * (channel === "online" ? onlinePrice : professionalPrice)));
   // One cumulative ledger across all prices and channels prevents rounding arbitrage.
   const payoutExactAfter = round6((stock.payoutExact ?? 0) + units * unitCents / 10);
   const payoutRoundedAfter = Math.round(payoutExactAfter);

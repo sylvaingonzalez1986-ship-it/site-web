@@ -1,4 +1,5 @@
 import "server-only";
+import { isArenaPrelaunch, ARENA_OPENING_MESSAGE, ARENA_OPENING_AT } from "@/lib/arena-opening";
 
 import { NextResponse } from "next/server";
 import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
@@ -75,6 +76,7 @@ export function getContestFeatureDisabledResponse() {
 }
 
 export async function getContestFeatureAccessDeniedResponse(): Promise<NextResponse | null> {
+  if (isArenaPrelaunch()) return NextResponse.json({ error: ARENA_OPENING_MESSAGE, opensAt: ARENA_OPENING_AT }, { status: 423, headers: { "Cache-Control": "private, no-store" } });
   if (!isContestFeatureEnabledServer()) {
     return getContestFeatureDisabledResponse();
   }

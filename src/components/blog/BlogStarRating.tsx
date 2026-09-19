@@ -4,6 +4,7 @@ import { Star } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCustomerSession } from "@/hooks/useCustomerSession";
 import type { BlogRatingStats } from "@/types/blog";
+import styles from "./Blog.module.css";
 
 type BlogStarRatingProps = {
   postId: string;
@@ -96,37 +97,40 @@ export function BlogStarRating({ postId }: BlogStarRatingProps) {
   const displayedRating = hovered ?? stats.userRating ?? Math.round(stats.averageRating);
 
   return (
-    <div className="cartoon-border bg-white p-5">
-      <h2 className="font-display text-2xl text-ink">Note de l&apos;article</h2>
-      <div className="mt-3 flex items-center gap-1">
-        {[1, 2, 3, 4, 5].map((value) => {
-          const active = value <= displayedRating;
-          return (
-            <button
-              key={value}
-              type="button"
-              onMouseEnter={() => setHovered(value)}
-              onMouseLeave={() => setHovered(null)}
-              onClick={() => void submitRating(value)}
-              disabled={!user || saving}
-              className="disabled:cursor-not-allowed"
-              aria-label={`Noter ${value} sur 5`}
-            >
-              <Star
-                size={20}
-                className={active ? "fill-[#f4c26f] text-[#f4c26f]" : "text-[#9a968d]"}
-              />
-            </button>
-          );
-        })}
-        <p className="ml-3 text-sm text-charcoal">
+    <div className={styles.panel}>
+      <h2 className={styles.panelTitle}>Note de l&apos;article</h2>
+      <div className={styles.ratingRow}>
+        <div className={styles.stars} role="group" aria-label="Noter cet article">
+          {[1, 2, 3, 4, 5].map((value) => {
+            const active = value <= displayedRating;
+            return (
+              <button
+                key={value}
+                type="button"
+                onMouseEnter={() => setHovered(value)}
+                onMouseLeave={() => setHovered(null)}
+                onClick={() => void submitRating(value)}
+                disabled={!user || saving}
+                className="disabled:cursor-not-allowed"
+                aria-pressed={stats.userRating === value}
+                aria-label={`Noter ${value} sur 5`}
+              >
+                <Star
+                  size={20}
+                  className={active ? styles.starActive : styles.starEmpty}
+                />
+              </button>
+            );
+          })}
+        </div>
+        <p className="text-sm text-charcoal">
           {stats.averageRating.toFixed(1)}/5 - {stats.totalRatings} avis
         </p>
       </div>
       {!user && (
         <p className="mt-2 text-xs text-charcoal">Connectez-vous pour noter cet article.</p>
       )}
-      {status && <p className="mt-2 text-xs font-semibold text-ink">{status}</p>}
+      {status && <p role="status" className="mt-2 text-xs font-semibold text-ink">{status}</p>}
     </div>
   );
 }

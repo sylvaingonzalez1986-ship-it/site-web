@@ -1,72 +1,115 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Maximize2, Minimize2 } from "lucide-react";
 import { getKqEquipmentAtLevel, KQ_EQUIPMENT_SLOT_LABELS, type KqEquipmentSlot } from "@/lib/kanab-quest-equipment";
+import assetManifest from "../../../public/placard/warehouse-v2/manifest.json";
 import styles from "./KqWarehouseScene.module.css";
 
-export const WAREHOUSE_ZONES: readonly {slot:KqEquipmentSlot;left:number;top:number;width:number;tile:number}[] = [
-  {slot:"tent",left:30,top:25,width:37,tile:0},
-  {slot:"lighting",left:39,top:32,width:15.5,tile:2},
-  {slot:"air",left:53,top:18,width:10,tile:4},
-  {slot:"climate-controller",left:63,top:43,width:5.5,tile:6},
-  {slot:"security",left:18,top:21,width:7.5,tile:8},
-  {slot:"energy",left:18,top:82,width:11,tile:7},
-  {slot:"press",left:2,top:40,width:10,tile:10},
-  {slot:"sifting",left:12,top:43,width:8,tile:12},
-  {slot:"washing",left:3,top:65,width:12,tile:11},
-  {slot:"filtration",left:18,top:66,width:7,tile:13},
-  {slot:"static-separation",left:3,top:24,width:6,tile:13},
-  {slot:"drying",left:65,top:75,width:11,tile:14},
-  {slot:"flower-drying",left:79,top:35,width:10.5,tile:15},
+type WarehouseZone = { slot: KqEquipmentSlot; center: number; bottom: number; height: number };
+
+// Coordinates use the room's 2:1 canvas. Heights follow a common physical scale:
+// about 20% of scene height per metre at the back, 24% at the front.
+// Benchtop machines share the countertop baseline; floor machines share an aisle.
+export const WAREHOUSE_ZONES: readonly WarehouseZone[] = [
+  { slot: "tent", center: 22, bottom: 66, height: 42 },
+  { slot: "lighting", center: 20.6, bottom: 42, height: 15 },
+  { slot: "air", center: 26.7, bottom: 27.5, height: 7.5 },
+  { slot: "climate-controller", center: 31.2, bottom: 44, height: 5.5 },
+  { slot: "security", center: 9.5, bottom: 28, height: 5 },
+  { slot: "energy", center: 10.5, bottom: 84, height: 23 },
+  { slot: "sifting", center: 40, bottom: 48.8, height: 13 },
+  { slot: "press", center: 54, bottom: 48.8, height: 10 },
+  { slot: "static-separation", center: 71.5, bottom: 66, height: 37 },
+  { slot: "washing", center: 34, bottom: 86, height: 23 },
+  { slot: "filtration", center: 47, bottom: 86, height: 21 },
+  { slot: "drying", center: 61, bottom: 87, height: 27 },
+  { slot: "flower-drying", center: 88.9, bottom: 64, height: 36 },
 ];
 
-// Explicit source rectangles exclude neighbouring atlas objects and their padding.
-// The last rectangle contains hanging branches only: the room already has rails.
-const SPRITE_RECTS = [
-  [18,30,278,281], [327,27,288,286], [632,54,291,216], [943,54,294,229],
-  [20,377,274,190], [321,343,297,250], [652,326,251,276], [933,342,309,269],
-  [21,639,273,245], [341,601,240,310], [650,623,266,282], [954,622,288,292],
-  [20,951,284,249], [337,944,252,264], [633,930,286,282], [982,973,214,178],
-] as const;
+const assets: Record<string, { width: number; height: number }> = assetManifest.assets;
 
-function spriteStyle(tile:number):CSSProperties {
-  const [x,y,width,height] = SPRITE_RECTS[tile];
-  return {
-    backgroundSize:`${1254/width*100}% ${1254/height*100}%`,
-    backgroundPosition:`${x/(1254-width)*100}% ${y/(1254-height)*100}%`,
-  };
+function artworkFor(slot: KqEquipmentSlot, code: string | undefined, level: number) {
+  if (slot === "security") return code === "SECURITY-DOG" ? "security-dog" : "security-camera";
+  if (slot === "flower-drying") return level >= 5 ? "flower-drying-full" : "flower-drying";
+  if (slot === "tent" || slot === "lighting" || slot === "air") {
+    return `${slot}-${!code || code.includes("STARTER") ? "starter" : "pro"}`;
+  }
+  return slot;
 }
 
-export function KqWarehouseScene({equippedCodes,levels,selectedSlot,onSelect,disabled=false}:{
-  equippedCodes:string[];levels:Record<string,number>;selectedSlot:KqEquipmentSlot;onSelect:(slot:KqEquipmentSlot)=>void;disabled?:boolean;
+export function KqWarehouseScene({
+  equippedCodes, levels, selectedSlot, onSelect, disabled = false,
+}: {
+  equippedCodes: string[];
+  levels: Record<string, number>;
+  selectedSlot: KqEquipmentSlot;
+  onSelect: (slot: KqEquipmentSlot) => void;
+  disabled?: boolean;
 }) {
-  const viewport=useRef<HTMLDivElement>(null);
-  useEffect(()=>{
-    const element=viewport.current,zone=WAREHOUSE_ZONES.find(item=>item.slot===selectedSlot);
-    const center=selectedSlot==="security"&&equippedCodes.includes("SECURITY-DOG")?88:zone?zone.left+zone.width/2:50;
-    if(element&&zone)element.scrollLeft=element.scrollWidth*center/100-element.clientWidth/2;
-  },[selectedSlot,equippedCodes]);
-  return <div ref={viewport} className={styles.viewport}>
-    <div className={styles.scene} aria-label="Les emplacements de ton entrepôt">
-      <Image src="/placard/warehouse-room-v1.webp" alt="Entrepôt avec une box de culture au centre, un établi à gauche et une pièce séchoir à droite" fill sizes="(max-width: 700px) 760px, 1100px" priority className={styles.background}/>
-      {equippedCodes.some(code=>getKqEquipmentAtLevel(code)?.slot==="air")?<span className={styles.airDuct} aria-hidden="true"/>:null}
-      {WAREHOUSE_ZONES.map(zone=>{
-        const installed=equippedCodes.map(code=>getKqEquipmentAtLevel(code,levels[code])).find(item=>item?.slot===zone.slot);
-        const level=installed?.purchasable?levels[installed.code]??1:1;
-        const dog=installed?.code==="SECURITY-DOG";
-        const tile=dog?9:zone.tile+(installed&&["tent","lighting","air"].includes(zone.slot)&&!installed.code.includes("STARTER")?1:0);
-        const room=zone.slot==="flower-drying";
-        return <button type="button" key={zone.slot} data-warehouse-slot={zone.slot} disabled={disabled}
-          className={styles.zone} data-installed={!!installed} data-selected={selectedSlot===zone.slot} data-tier={level>=10?3:level>=5?2:1} data-room={room||undefined}
-          style={{left:`${dog?83:zone.left}%`,top:`${dog?76:zone.top}%`,width:`${dog?10:zone.width}%`,aspectRatio:room?".44":`${SPRITE_RECTS[tile][2]}/${SPRITE_RECTS[tile][3]}`}}
-          aria-pressed={selectedSlot===zone.slot} aria-label={`${KQ_EQUIPMENT_SLOT_LABELS[zone.slot]} · ${installed?`${installed.name}, ${installed.purchasable?`niveau ${level}`:"fourni"}`:"emplacement libre"}`} onClick={()=>onSelect(zone.slot)}>
-          <span className={styles.sprite} style={spriteStyle(tile)} aria-hidden="true"/>
-          {!installed?<span className={styles.emptyMarker} aria-hidden="true">+</span>:null}
-          {room&&installed&&level>=5?<span className={`${styles.sprite} ${styles.extraRack}`} style={spriteStyle(15)} aria-hidden="true"/>:null}
-          <span className={styles.label}>{KQ_EQUIPMENT_SLOT_LABELS[zone.slot]}<small>{installed?(installed.purchasable?`Niv. ${level}`:"Fourni"):"+ Installer"}</small></span>
-        </button>;
-      })}
+  const viewport = useRef<HTMLDivElement>(null);
+  const [overview, setOverview] = useState(false);
+  const hasDog = equippedCodes.includes("SECURITY-DOG");
+  const starterTent = !equippedCodes.some(code => getKqEquipmentAtLevel(code)?.slot === "tent" && !code.includes("STARTER"));
+  const installedEquipment = equippedCodes.map(code => getKqEquipmentAtLevel(code, levels[code]));
+
+  useEffect(() => {
+    const element = viewport.current;
+    const target = element?.querySelector<HTMLElement>(`[data-warehouse-slot="${selectedSlot}"]`);
+    if (element && target && !overview) {
+      element.scrollLeft = target.offsetLeft + target.offsetWidth / 2 - element.clientWidth / 2;
+    }
+  }, [selectedSlot, hasDog, overview]);
+
+  return <div className={styles.viewer}>
+    <div className={styles.viewControls}>
+      <span>Ton atelier</span>
+      <button type="button" onClick={() => setOverview(value => !value)} aria-pressed={overview}>
+        {overview ? <Maximize2 size={15} aria-hidden="true"/> : <Minimize2 size={15} aria-hidden="true"/>}
+        {overview ? "Agrandir le décor" : "Vue d’ensemble"}
+      </button>
+    </div>
+    <div ref={viewport} className={styles.viewport} data-overview={overview}>
+      <div className={styles.scene} aria-label="Les emplacements de ton entrepôt">
+        <Image src="/placard/warehouse-v2/room.webp"
+          alt="Atelier organisé avec une zone de culture à gauche, un établi central, des machines au sol et un accès dégagé au séchoir à droite"
+          fill sizes="(max-width: 960px) 960px, 1150px" loading="eager" fetchPriority="high" className={styles.background}/>
+        {WAREHOUSE_ZONES.map(zone => {
+          const installed = installedEquipment.find(item => item?.slot === zone.slot);
+          const level = installed?.purchasable ? levels[installed.code] ?? 1 : 1;
+          const dog = installed?.code === "SECURITY-DOG";
+          const room = zone.slot === "flower-drying";
+          const asset = artworkFor(zone.slot, installed?.code, level);
+          const dimensions = assets[asset];
+          let { center, bottom, height } = zone;
+          if (dog) { center = 76.5; bottom = 91; height = 20; }
+          if (zone.slot === "tent" && starterTent) height = 38;
+          if (zone.slot === "lighting" && starterTent) { center = 20.5; bottom = 44; height = 12; }
+          if (zone.slot === "air" && starterTent) { center = 24.7; bottom = 31; height = 6; }
+          const width = room ? 8.1 : height * dimensions.width / dimensions.height / 2;
+          const style = {
+            left: `${center - width / 2}%`, top: `${bottom - height}%`,
+            width: `${width}%`, height: `${height}%`,
+            "--depth": dog ? 9 : zone.slot === "tent" ? 2 : bottom >= 80 ? 7 : room ? 1 : 4,
+          } as CSSProperties;
+          return <button type="button" key={zone.slot} data-warehouse-slot={zone.slot}
+            disabled={disabled} className={styles.zone} data-installed={!!installed}
+            data-selected={selectedSlot === zone.slot} data-tier={level >= 10 ? 3 : level >= 5 ? 2 : 1}
+            data-room={room || undefined} data-dog={dog || undefined} style={style}
+            aria-pressed={selectedSlot === zone.slot}
+            aria-label={`${KQ_EQUIPMENT_SLOT_LABELS[zone.slot]} · ${installed ? `${installed.name}, ${installed.purchasable ? `niveau ${level}` : "fourni"}` : "emplacement libre"}`}
+            onClick={() => onSelect(zone.slot)}>
+            {installed ? <Image src={`/placard/warehouse-v2/${asset}.webp`} alt=""
+              width={dimensions.width} height={dimensions.height}
+              sizes={zone.slot === "tent" || zone.slot === "static-separation" ? "300px" : "220px"}
+              className={styles.sprite} draggable={false}/> : <span className={styles.emptyMarker} aria-hidden="true">+</span>}
+            <span className={styles.label}>{KQ_EQUIPMENT_SLOT_LABELS[zone.slot]}
+              <small>{installed ? (installed.purchasable ? `Niv. ${level}` : "Fourni") : "+ Installer"}</small>
+            </span>
+          </button>;
+        })}
+      </div>
     </div>
   </div>;
 }

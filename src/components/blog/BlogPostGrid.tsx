@@ -1,6 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
+import { computeReadingTimeMinutes } from "@/lib/reading-time";
+import styles from "./Blog.module.css";
 import Link from "@/components/navigation/NavigationLink";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -22,9 +25,9 @@ type BlogPostCardProps = {
 
 function BlogPostCard({ post, readMoreLabel, className = "" }: BlogPostCardProps) {
   return (
-    <article key={post.id} className={`card-cartoon overflow-hidden bg-cream ${className}`.trim()}>
+    <article key={post.id} className={`${styles.card} ${className}`.trim()}>
       <Link href={`/blog/${post.slug}`} className="block">
-        <div className="relative aspect-[4/3] border-b-2 border-[#1a1a1a] bg-[#f7f4ee]">
+        <div className={styles.media}>
           <Image
             src={post.coverImage}
             alt={post.title}
@@ -34,24 +37,25 @@ function BlogPostCard({ post, readMoreLabel, className = "" }: BlogPostCardProps
           />
         </div>
       </Link>
-      <div className="p-5">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-charcoal">
+      <div className={styles.cardBody}>
+        <p className={styles.category}>
           {BLOG_CATEGORY_LABELS[post.category]}
         </p>
-        <h2 className="mt-2 font-display text-2xl text-ink">
+        <h3 className={styles.cardTitle}>
           <Link href={`/blog/${post.slug}`} className="hover:underline">
             {post.title}
           </Link>
-        </h2>
-        <p className="mt-2 text-sm text-charcoal">
-          {new Date(post.createdAt).toLocaleDateString("fr-FR")}
+        </h3>
+        <p className={styles.cardMeta}>
+          <time dateTime={post.createdAt}>{new Date(post.createdAt).toLocaleDateString("fr-FR")}</time>
+          <span>{computeReadingTimeMinutes(post.content)} min de lecture</span>
         </p>
-        <p className="mt-3 text-sm leading-relaxed text-charcoal">{post.excerpt}</p>
+        <p className={styles.excerpt}>{post.excerpt}</p>
         <Link
           href={`/blog/${post.slug}`}
-          className="btn-cartoon btn-secondary mt-4 inline-flex h-10 items-center px-4 text-xs"
+          className="btn-cartoon btn-primary"
         >
-          {readMoreLabel}
+          {readMoreLabel} <ArrowUpRight size={16} aria-hidden="true" />
         </Link>
       </div>
     </article>
@@ -101,15 +105,14 @@ function BlogPostGridInner({ posts, readMoreLabel, emptyLabel }: BlogPostGridPro
   };
 
   return (
-    <div className="grid gap-5">
-      <div className="cartoon-border bg-cream p-4">
-        <div className="flex flex-wrap gap-2">
+    <div className={styles.grid}>
+      <div className={styles.filters}>
+        <p className={styles.filterLabel}>Les rubriques du journal</p>
+        <div className={styles.filterButtons} role="group" aria-label="Filtrer les articles par rubrique">
           <button
             type="button"
             onClick={() => setCategory("all")}
-            className={`pill-cartoon px-4 py-2 text-xs uppercase tracking-[0.09em] ${
-              activeCategory === "all" ? "bg-[#1a1a1a] text-white" : "bg-white text-ink"
-            }`}
+            aria-pressed={activeCategory === "all"}
           >
             Tous
           </button>
@@ -118,9 +121,7 @@ function BlogPostGridInner({ posts, readMoreLabel, emptyLabel }: BlogPostGridPro
               key={category}
               type="button"
               onClick={() => setCategory(category)}
-              className={`pill-cartoon px-4 py-2 text-xs uppercase tracking-[0.09em] ${
-                activeCategory === category ? "bg-[#1a1a1a] text-white" : "bg-white text-ink"
-              }`}
+              aria-pressed={activeCategory === category}
             >
               {BLOG_CATEGORY_LABELS[category]}
             </button>
@@ -128,21 +129,29 @@ function BlogPostGridInner({ posts, readMoreLabel, emptyLabel }: BlogPostGridPro
         </div>
       </div>
 
+      <div className={styles.sectionHeading}>
+        <h2>{activeCategory === "all" ? "Tous les articles" : BLOG_CATEGORY_LABELS[activeCategory]}</h2>
+        <p className={styles.count} role="status">{filteredPosts.length} article{filteredPosts.length > 1 ? "s" : ""}</p>
+      </div>
       {filteredPosts.length === 0 ? (
-        <div className="cartoon-border bg-cream p-8 text-center text-charcoal">{emptyLabel}</div>
+        <div className={styles.empty}>{emptyLabel}</div>
       ) : (
         <>
           <div
             ref={mobileViewportRef}
-            className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 lg:hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            className={`flex snap-x snap-mandatory gap-4 overflow-x-auto lg:hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden ${styles.track}`}
+            tabIndex={0}
+            role="region"
+            aria-label="Articles du journal, carrousel"
           >
             {filteredPosts.map((post) => (
-              <div key={post.id} className="min-w-[82vw] snap-center sm:min-w-[62vw] md:min-w-[46vw]">
+              <div key={post.id} className={styles.mobileCard}>
                 <BlogPostCard post={post} readMoreLabel={readMoreLabel} className="h-full" />
               </div>
             ))}
           </div>
 
+          <p className={`lg:hidden ${styles.trackHint}`}>Fais défiler pour découvrir les articles →</p>
           <div className="hidden gap-5 lg:grid lg:grid-cols-3">
             {filteredPosts.map((post) => (
               <BlogPostCard key={post.id} post={post} readMoreLabel={readMoreLabel} />

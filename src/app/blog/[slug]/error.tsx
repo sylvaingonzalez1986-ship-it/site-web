@@ -2,6 +2,7 @@
 
 import Link from "@/components/navigation/NavigationLink";
 import { useEffect } from "react";
+import styles from "@/components/blog/Blog.module.css";
 
 type BlogErrorProps = {
   error: Error & { digest?: string };
@@ -14,9 +15,9 @@ export default function BlogPostError({ error, reset }: BlogErrorProps) {
   }, [error]);
 
   return (
-    <div className="section-band bg-cream halftone-overlay py-8 md:py-12">
+    <div className={`section-band pt-32 ${styles.page}`}>
       <div className="retro-container">
-        <div className="cartoon-panel mx-auto max-w-3xl bg-mint p-6 text-center md:p-8">
+        <div className={`mx-auto max-w-3xl text-center ${styles.panel}`}>
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-charcoal">
             Blog
           </p>
@@ -28,7 +29,7 @@ export default function BlogPostError({ error, reset }: BlogErrorProps) {
             la liste des articles.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <button type="button" onClick={reset} className="btn-cartoon">
+            <button type="button" onClick={reset} className="btn-cartoon btn-primary">
               Reessayer
             </button>
             <Link href="/blog" className="btn-cartoon btn-secondary">

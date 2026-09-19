@@ -1,9 +1,11 @@
 .page {
+  composes: surface from "../../../../components/boutique/MarketTheme.module.css";
   min-height: 100vh;
   padding-top: 8.5rem;
   background:
-    radial-gradient(circle at 94% 8%, rgba(0, 86, 63, 0.08) 0 10rem, transparent 10.2rem),
-    var(--cream);
+    linear-gradient(#00563f09 1px, transparent 1px),
+    linear-gradient(90deg, #00563f09 1px, transparent 1px), #f6f0e6;
+  background-size: 64px 64px;
 }
 
 .breadcrumb {
@@ -27,9 +29,10 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--market-green);
   background: var(--cream);
-  box-shadow: 9px 9px 0 rgba(17, 21, 18, 0.2);
+  box-shadow: 0 6px 0 var(--market-green);
+  border-radius: 4px;
 }
 
 .grid {
@@ -39,8 +42,8 @@
 
 .gallery {
   padding: clamp(1rem, 3vw, 2rem);
-  border-right: 3px solid var(--ink);
-  background: #e9e2d5;
+  border-right: 2px solid var(--market-green);
+  background: var(--market-dark);
 }
 
 .info {
@@ -51,6 +54,7 @@
 }
 
 .eyebrow {
+  font-family: ui-monospace, Consolas, monospace;
   color: var(--teal);
   font-size: 0.7rem;
   font-weight: 900;
@@ -59,6 +63,7 @@
 }
 
 .title {
+  color: var(--market-green);
   margin-top: 0.6rem;
   font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
   font-size: clamp(3.5rem, 7vw, 7.2rem);
@@ -121,9 +126,9 @@
   gap: 1rem;
   margin-top: 1.5rem;
   padding: 1rem;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--market-green);
   background: var(--yellow);
-  box-shadow: 6px 6px 0 rgba(17, 21, 18, 0.18);
+  box-shadow: 0 4px 0 var(--market-green);
 }
 
 .pager > :last-child {
@@ -149,7 +154,7 @@
 
   .gallery {
     border-right: 0;
-    border-bottom: 3px solid var(--ink);
+    border-bottom: 2px solid var(--market-green);
   }
 
   .title {
@@ -160,7 +165,7 @@
 @media (max-width: 560px) {
   .shell,
   .pager {
-    box-shadow: 5px 5px 0 rgba(17, 21, 18, 0.18);
+    box-shadow: 0 4px 0 var(--market-green);
   }
 
   .pager {

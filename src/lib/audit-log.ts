@@ -35,6 +35,7 @@ export type AuditEventType =
   | "update_referral_reward_settings"
   | "review_mission_submission"
   | "welcome_pack_claimed"
+  | "pioneer_pack_claimed"
   | "viva_webhook_verification"
   | "viva_webhook_verification_failed"
   | "rate_limit_fallback_activated"

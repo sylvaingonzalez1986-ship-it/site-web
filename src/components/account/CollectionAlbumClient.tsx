@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowUpRight, ChevronRight, Gift, Recycle, Sparkles, Ticket,
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal";
+import { PioneerPackReward } from "@/components/account/PioneerPackReward";
 import { BotteAlbumCollection } from "@/components/account/BotteAlbumCollection";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { AlbumPage } from "@/components/lottery/AlbumPage";
@@ -449,6 +450,8 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
       </section>}
         </div>
       </div>}
+
+      {(screen === "lobby" || screen === "cards" || screen === "rewards") && <PioneerPackReward onClaimed={refreshAll} />}
 
       {selectedSlot && <CardDetailModal slot={selectedSlot} onClose={() => setSelectedSlot(null)} />}
 

@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { isArenaPrelaunch, isArenaActivityApi, getArenaClosedPageMode, ARENA_OPENING_AT, ARENA_OPENING_MESSAGE } from "@/lib/arena-opening";
 import { ADMIN_COOKIE_NAME, verifyAdminSessionToken } from "@/lib/admin-auth";
 
 const MUTATIVE_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
@@ -148,6 +149,7 @@ export function shouldValidateMutativeOrigin(pathname: string, method: string): 
     pathname.startsWith("/api/admin") ||
     pathname.startsWith("/api/account") ||
     pathname.startsWith("/api/contest") ||
+    pathname.startsWith("/api/arena") ||
     (pathname.startsWith("/api/checkout") && pathname !== "/api/checkout/viva/webhook")
   );
 }
@@ -245,6 +247,21 @@ export async function middleware(request: NextRequest) {
 
   if (shouldValidateMutativeOrigin(pathname, request.method) && !isValidOrigin(request)) {
     return secure(NextResponse.json({ error: "Requete refusee (origine invalide)." }, { status: 403 }));
+  }
+
+  if (isArenaPrelaunch()) {
+    if (isArenaActivityApi(pathname, request.method)) {
+      return secure(NextResponse.json({ error: ARENA_OPENING_MESSAGE, opensAt: ARENA_OPENING_AT }, { status: 423, headers: { "Cache-Control": "private, no-store" } }));
+    }
+    const closedMode = getArenaClosedPageMode(pathname);
+    if (closedMode) {
+      const destination = new URL("/arene", request.url);
+      destination.searchParams.set("mode", closedMode);
+      destination.searchParams.set("ouverture", "1");
+      const response = NextResponse.redirect(destination);
+      response.headers.set("Cache-Control", "private, no-store");
+      return secure(response);
+    }
   }
 
   if (isAdminLoginApi || isAdminLogoutApi || isCustomerAuthApi || isAuthCallbackApi) {

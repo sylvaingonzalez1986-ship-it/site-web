@@ -1,16 +1,17 @@
 .panel {
+  composes: surface from "./MarketTheme.module.css";
   width: min(1180px, 100%);
   margin: 1.5rem auto 0;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--market-green);
   background: var(--cream);
-  box-shadow: 8px 8px 0 rgba(17, 21, 18, 0.2);
+  box-shadow: 0 6px 0 var(--market-green);
 }
 
 .hero {
   position: relative;
   display: grid;
   grid-template-columns: minmax(250px, 0.72fr) minmax(0, 1.28fr);
-  border-bottom: 3px solid var(--ink);
+  border-bottom: 2px solid var(--market-green);
 }
 
 .image {
@@ -19,7 +20,7 @@
   min-height: 360px;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border-right: 3px solid var(--ink);
+  border-right: 2px solid var(--market-green);
   background: color-mix(in srgb, var(--ink) 4%, var(--cream));
 }
 
@@ -31,16 +32,21 @@
 }
 
 .copy {
+  background: var(--market-dark);
+  color: var(--market-paper);
   padding: clamp(1.25rem, 4vw, 2.5rem);
 }
 
 .eyebrow {
+  font-family: ui-monospace, Consolas, monospace;
   color: var(--teal);
   font-size: 0.68rem;
   font-weight: 900;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+
+.copy .eyebrow { color: var(--market-yellow); }
 
 .title {
   margin-top: 0.5rem;
@@ -67,9 +73,9 @@
 .description {
   margin-top: 1.25rem;
   padding-block: 1rem;
-  border-top: 2px solid var(--ink);
-  border-bottom: 2px solid var(--ink);
-  color: var(--charcoal);
+  border-top: 1px solid #fffaf140;
+  border-bottom: 1px solid #fffaf140;
+  color: #fffaf1df;
   font-size: 0.95rem;
   line-height: 1.65;
 }
@@ -84,8 +90,9 @@
 }
 
 .tag {
+  color: var(--market-green);
   border: 1px solid var(--ink);
-  background: #fff;
+  background: var(--market-paper);
   padding: 0.35rem 0.55rem;
   font-size: 0.62rem;
   font-weight: 900;
@@ -105,13 +112,13 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   padding: clamp(1rem, 3vw, 1.5rem);
-  border-bottom: 3px solid var(--ink);
+  border-bottom: 2px solid var(--market-green);
   background: color-mix(in srgb, var(--teal) 7%, var(--cream));
 }
 
 .fact {
   border: 2px solid var(--ink);
-  background: #fff;
+  background: var(--market-paper);
 }
 
 .factSummary {
@@ -205,7 +212,7 @@
     min-height: 300px;
     aspect-ratio: 16 / 10;
     border-right: 0;
-    border-bottom: 3px solid var(--ink);
+    border-bottom: 2px solid var(--market-green);
   }
 
   .productGrid {
@@ -215,7 +222,7 @@
 
 @media (max-width: 640px) {
   .panel {
-    box-shadow: 5px 5px 0 rgba(17, 21, 18, 0.18);
+    box-shadow: 0 4px 0 var(--market-green);
   }
 
   .facts {

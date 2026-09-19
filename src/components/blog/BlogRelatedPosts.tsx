@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import type { BlogPost } from "@/types/store";
+import styles from "./Blog.module.css";
 
 type BlogRelatedPostsProps = {
   currentPostId: string;
@@ -19,13 +20,13 @@ export function BlogRelatedPosts({ currentPostId, currentCategory, posts }: Blog
   }
 
   return (
-    <div className="cartoon-border bg-white p-5">
-      <h2 className="font-display text-2xl text-ink">A lire aussi</h2>
+    <div className={styles.panel}>
+      <h2 className={styles.panelTitle}>À lire aussi</h2>
       <div className="mt-4 grid gap-3 md:grid-cols-3">
         {related.map((post) => (
-          <article key={post.id} className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee]">
+          <article key={post.id} className={styles.relatedCard}>
             <Link href={`/blog/${post.slug}`} className="block">
-              <div className="relative aspect-[4/3] border-b-2 border-[#1a1a1a] bg-[#f7f4ee]">
+              <div className={styles.media}>
                 <Image
                   src={post.coverImage}
                   alt={post.title}
@@ -34,8 +35,8 @@ export function BlogRelatedPosts({ currentPostId, currentCategory, posts }: Blog
                   className="object-contain"
                 />
               </div>
-              <div className="p-3">
-                <p className="text-sm font-semibold text-ink">{post.title}</p>
+              <div className={styles.relatedTitle}>
+                <h3>{post.title}</h3>
                 <p className="mt-1 text-xs text-charcoal">
                   {new Date(post.createdAt).toLocaleDateString("fr-FR")}
                 </p>

@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { isArenaPrelaunch } from "@/lib/arena-opening";
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import dynamic from "next/dynamic";
@@ -172,6 +173,7 @@ export function Navbar() {
     const contestAccessAllowed =
       contestAccessCheck?.key === contestAccessKey && contestAccessCheck.canAccess;
     const canSeeContestLink =
+      isArenaPrelaunch() ||
       !contestBetaAccessRestricted ||
       contestAccessAllowed === true ||
       user?.contestBetaEnabled === true ||

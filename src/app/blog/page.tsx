@@ -6,6 +6,7 @@ import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
 import type { BlogPageSection } from "@/types/store";
+import styles from "@/components/blog/Blog.module.css";
 
 export const revalidate = 120;
 
@@ -44,7 +45,7 @@ export default async function BlogPage() {
             description={store.content.blog.description}
             imageSrc="/mascots/blog-journal.png"
             imageAlt="Sylvain prépare un article dans son carnet de terrain"
-            className={spacingClass}
+            className={`${spacingClass} ${styles.hero}`}
           />
         );
       case "posts":
@@ -73,7 +74,7 @@ export default async function BlogPage() {
   };
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
+    <section className={`section-band paper-grain pt-32 ${styles.page}`}>
       <BreadcrumbJsonLd
         items={[
           { name: store.content.blog.breadcrumbHomeLabel, url: baseUrl },

@@ -8,6 +8,7 @@ import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { Product } from "@/data/products";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import type { Producer } from "@/types/store";
+import theme from "./MarketTheme.module.css";
 
 type ProducerTcgModalProps = {
   open: boolean;
@@ -102,7 +103,7 @@ export function ProducerTcgModal({
 
   return createPortal(
     <div
-      className="producer-modal-overlay"
+      className={`producer-modal-overlay ${theme.surface} ${theme.modal}`}
       role="dialog"
       aria-modal="true"
       aria-label={`Fiche producteur ${selectedProducer.name}`}

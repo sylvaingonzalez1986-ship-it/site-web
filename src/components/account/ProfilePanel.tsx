@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
-import { Award, Copy, Download, Gift, ShoppingBag, Star, Tag, User as UserIcon, Users, type LucideIcon } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Award, BookOpen, ChevronDown, Copy, Download, Gift, LogOut, ShoppingBag, Star, Swords, Tag, User as UserIcon, Users, type LucideIcon } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
@@ -75,16 +75,16 @@ type ProfileTab = "fidelite" | "missions" | "commandes" | "infos" | "promos";
 type ProfileTabDefinition = {
   key: ProfileTab;
   label: string;
-  bookmarkLabel: string;
+  description: string;
   icon: LucideIcon;
 };
 
 const profileTabs: ProfileTabDefinition[] = [
-  { key: "fidelite", label: "Progression", bookmarkLabel: "Progression", icon: Award },
-  { key: "missions", label: "Quêtes", bookmarkLabel: "Quêtes", icon: Star },
-  { key: "commandes", label: "Commandes", bookmarkLabel: "Cmdes", icon: ShoppingBag },
-  { key: "infos", label: "Mes infos", bookmarkLabel: "Infos", icon: UserIcon },
-  { key: "promos", label: "Promos", bookmarkLabel: "Promos", icon: Tag },
+  { key: "fidelite", label: "Progression", description: "Chaque point te rapproche du prochain palier.", icon: Award },
+  { key: "missions", label: "Quêtes", description: "De petites missions, de nouvelles récompenses.", icon: Star },
+  { key: "commandes", label: "Commandes", description: "Retrouve tes achats et suis leur préparation.", icon: ShoppingBag },
+  { key: "infos", label: "Mes infos", description: "Tes coordonnées, toujours à jour pour la prochaine commande.", icon: UserIcon },
+  { key: "promos", label: "Mes offres", description: "Tes codes et tes petits coups de pouce pour la boutique.", icon: Tag },
 ];
 
 function parseProfileTab(value: string | null): ProfileTab | null {
@@ -265,7 +265,7 @@ export function ProfilePanel() {
 
       window.scrollTo({
         top: Math.max(0, top),
-        behavior: "smooth",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
       });
     });
 
@@ -278,7 +278,7 @@ export function ProfilePanel() {
     return (
       <section className={styles.page}>
         <div className={styles.stateShell}>
-          <div className={styles.stateCard}>Chargement du profil...</div>
+          <div className={styles.stateCard} role="status"><p className={styles.eyebrow}>Ton espace personnel</p>Chargement de ton profil…</div>
         </div>
       </section>
     );
@@ -346,7 +346,7 @@ export function ProfilePanel() {
         return;
       }
 
-      setStatus("Profil mis a jour.");
+      setStatus("Profil mis à jour.");
       await refresh();
     } finally {
       setSaving(false);
@@ -486,7 +486,7 @@ export function ProfilePanel() {
         const top = panel.getBoundingClientRect().top + window.scrollY - navbarOffset;
         window.scrollTo({
           top: Math.max(0, top),
-          behavior: "smooth",
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
         });
       }
       return;
@@ -528,30 +528,29 @@ export function ProfilePanel() {
 
   return (
     <section className={styles.page}>
-      <div className={styles.hero}>
+      <header className={styles.hero}>
         <div className={styles.heroCopy}>
-          <p className={styles.eyebrow}>Ton espace personnel</p>
-          <h1 className={styles.heroTitle}>
-            Mon <span>profil.</span>
-          </h1>
-          <p className={styles.heroLead}>
-            Ta progression, tes quêtes et tout ce qui concerne ton compte sont réunis ici.
-          </p>
+          <p className={styles.eyebrow}>Le club des bons vivants</p>
+          <h1 className={styles.heroTitle}>Ton coin.<br /><span>Ta progression.</span></h1>
+          <p className={styles.heroLead}>Salut {user.firstName || "à toi"} ! Tes points, tes trouvailles et la suite de l’aventure, c’est ici.</p>
+          <div className={styles.heroActions}>
+            <Link href="/arene" className={styles.secondaryAction}><Swords size={18} /> Rejoindre l’arène <ArrowUpRight size={17} /></Link>
+            <Link href="/profil/collection" className={styles.heroLink}><BookOpen size={18} /> Mon album <ArrowUpRight size={16} /></Link>
+          </div>
         </div>
         <div className={styles.heroArt} aria-hidden="true">
-          <span className={styles.heroCircle} />
-          <Image
-            src="/charles.png"
-            alt=""
-            width={1536}
-            height={2048}
-            sizes="(max-width: 720px) 112px, 180px"
-            priority
-          />
+          <Image src="/contest/mascot/profile-sylvain-member-v2.png" alt="" width={1254} height={1254} sizes="(max-width: 680px) 110px, (max-width: 960px) 220px, 290px" preload />
         </div>
-      </div>
+      </header>
 
       <div className={styles.shell}>
+        <div className={styles.overview} aria-label="Tes points fidélité">
+          <div><span>Points cumulés</span><strong>{loyalty.points}<small> pts</small></strong></div>
+          <div><span>Points disponibles</span><strong>{loyalty.spendablePoints}<small> pts</small></strong></div>
+          <div><span>Commandes éligibles</span><strong>{loyalty.eligibleOrdersCount}</strong></div>
+          <div><span>Achats comptabilisés</span><strong>{formatPrice(loyalty.totalEligibleSpend)}</strong></div>
+        </div>
+        <div className={styles.sectionLabel}><span>Ton espace personnel</span><span>À toi de jouer <ArrowDown size={13} /></span></div>
         <div className={styles.tabs} role="tablist" aria-label="Sections du profil">
           {profileTabs.map((tab) => {
             const isActive = activeTab === tab.key;
@@ -565,13 +564,25 @@ export function ProfilePanel() {
                 type="button"
                 role="tab"
                 aria-selected={isActive}
-                aria-controls={`profile-tabpanel-${tab.key}`}
+                aria-controls={isActive ? `profile-tabpanel-${tab.key}` : undefined}
+                tabIndex={isActive ? 0 : -1}
+                onKeyDown={(event) => {
+                  const index = profileTabs.findIndex((item) => item.key === tab.key);
+                  const nextIndex = event.key === "ArrowRight" ? (index + 1) % profileTabs.length
+                    : event.key === "ArrowLeft" ? (index + profileTabs.length - 1) % profileTabs.length
+                    : event.key === "Home" ? 0 : event.key === "End" ? profileTabs.length - 1 : null;
+                  if (nextIndex === null) return;
+                  event.preventDefault();
+                  const nextTab = profileTabs[nextIndex].key;
+                  setActiveTabAndSync(nextTab);
+                  document.getElementById(`profile-tab-${nextTab}`)?.focus({ preventScroll: true });
+                }}
                 onClick={() => setActiveTabAndSync(tab.key)}
-                className={isActive ? styles.tabActive : undefined}
                 data-tutorial={tab.key === "missions" ? "profile-missions-shortcut" : undefined}
               >
                 <Icon aria-hidden="true" />
-                <span>{tab.label}</span>
+                <span className={tab.key === "fidelite" ? styles.tabLabelLong : undefined}>{tab.label}</span>
+                {tab.key === "fidelite" && <span className={styles.tabLabelShort} aria-hidden="true">Progrès</span>}
                 {notification ? <strong>{notification}</strong> : null}
               </button>
             );
@@ -580,102 +591,45 @@ export function ProfilePanel() {
 
         <div className={styles.profileGrid}>
           <aside className={styles.summaryPanel} aria-label="Résumé du profil">
-                  <div className="rounded border-2 border-[#17130e] bg-white p-4">
-                    <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                      Fiche client
-                    </p>
-                    <div className="mt-4 flex flex-wrap items-center gap-4">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#17130e] bg-[#fffaf0] font-display text-2xl text-ink">
-                        {getInitials(user.firstName, user.lastName)}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-lg font-black text-ink">
-                          {user.firstName} {user.lastName}
-                        </p>
-                        <p className="break-all text-sm text-charcoal">{user.email}</p>
-                        <p className="text-xs font-semibold text-charcoal">Membre depuis le {memberSince}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <div className="rounded border-2 border-[#17130e] bg-[#fff7df] p-3">
-                      <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">
-                        Points cumules
-                      </p>
-                      <p className="mt-1 text-2xl font-black text-ink">{loyalty.points}</p>
-                    </div>
-                    <div className="rounded border-2 border-[#17130e] bg-[#fff7df] p-3">
-                      <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">
-                        Disponibles
-                      </p>
-                      <p className="mt-1 text-2xl font-black text-ink">{loyalty.spendablePoints}</p>
-                    </div>
-                    <div className="rounded border-2 border-[#17130e] bg-[#fff7df] p-3">
-                      <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">
-                        Euros comptabilises
-                      </p>
-                      <p className="mt-1 text-xl font-black text-ink">{formatPrice(loyalty.totalEligibleSpend)}</p>
-                    </div>
-                    <div className="rounded border-2 border-[#17130e] bg-[#fff7df] p-3">
-                      <p className="text-[10px] font-black uppercase tracking-[0.1em] text-charcoal">
-                        Commandes eligibles
-                      </p>
-                      <p className="mt-1 text-2xl font-black text-ink">{loyalty.eligibleOrdersCount}</p>
-                    </div>
-                  </div>
-
-                  <div className="rounded border-2 border-[#17130e] bg-white p-4">
-                    <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                      Badge actuel
-                    </p>
-                    <div className="mt-3 flex items-center gap-3">
-                      <LoyaltyBadgeIllustration
-                        badgeId={loyalty.currentBadge.id}
-                        unlocked={loyalty.currentBadge.unlocked}
-                        size="md"
-                      />
-                      <div>
-                        <p className="font-display text-3xl leading-none text-ink">
-                          {loyalty.currentBadge.label}
-                        </p>
-                        <p className="mt-1 text-sm leading-relaxed text-charcoal">
-                          {loyalty.currentBadge.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={logout}
-                      className="btn-cartoon btn-secondary inline-flex min-h-11 items-center justify-center px-4 text-xs leading-none"
-                    >
-                      Se deconnecter
-                    </button>
-                  </div>
+            <div className={styles.memberCard}>
+              <div className={styles.memberTop}><span>Carte de membre</span><Star size={16} aria-hidden="true" /></div>
+              <div className={styles.memberIdentity}>
+                <span className={styles.avatar}>{getInitials(user.firstName, user.lastName)}</span>
+                <div><h2>{user.firstName} {user.lastName}</h2><p>Depuis le {memberSince}</p></div>
+              </div>
+              <p className={styles.memberEmail}>{user.email}</p>
+              <div className={styles.memberBadge}>
+                <LoyaltyBadgeIllustration badgeId={loyalty.currentBadge.id} unlocked={loyalty.currentBadge.unlocked} size="sm" />
+                <div><small>{loyalty.currentBadge.unlocked ? "Ton palier" : "Premier objectif"}</small><strong>{loyalty.currentBadge.label}</strong></div>
+              </div>
+              <button type="button" className={styles.memberEdit} onClick={() => setActiveTabAndSync("infos")}>Modifier mes infos <ArrowUpRight size={16} /></button>
+            </div>
+            <Link href="/arene" className={styles.arenaCard}>
+              <Swords size={22} aria-hidden="true" /><div><strong>L’aventure continue</strong><p>Un tour dans l’arène ?</p></div><ArrowUpRight size={18} aria-hidden="true" />
+            </Link>
+            <button type="button" onClick={logout} className={styles.logout}><LogOut size={16} /> Se déconnecter</button>
           </aside>
 
           <div
             ref={activePanelRef}
             id={`profile-tabpanel-${activeTab}`}
             role="tabpanel"
+            tabIndex={0}
             aria-labelledby={`profile-tab-${activeTab}`}
             className={styles.activePanel}
           >
             <div className={styles.panelHeading}>
               <span><ActiveTabIcon aria-hidden="true" /></span>
               <div>
-                <p>Mon espace</p>
                 <h2>{activeTabDefinition.label}</h2>
+                <p>{activeTabDefinition.description}</p>
               </div>
             </div>
 
           {activeTab === "fidelite" && (
             <>
-              <div className="card-cartoon bg-white p-6">
-                <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Badge actuel</p>
+              <div className={styles.progressCard}>
+                <p className={styles.eyebrow}>{loyalty.currentBadge.unlocked ? "Ton palier actuel" : "L’aventure commence"}</p>
                 <div className="mt-3 flex items-center gap-3">
                   <LoyaltyBadgeIllustration
                     badgeId={loyalty.currentBadge.id}
@@ -691,11 +645,11 @@ export function ProfilePanel() {
                           return `${getBadgeTierRelayBenefitLabel(loyalty.currentBadge.id)} / ${getBadgeTierHomeDeliveryBenefitLabel(loyalty.currentBadge.id)}`;
                         }
 
-                        return "Debloque ce badge pour activer l'avantage livraison";
+                        return "Débloque ce badge pour activer l'avantage livraison";
                       })()}
                     </p>
                     {!loyalty.currentBadge.unlocked && (
-                      <p className="mt-1 text-xs font-semibold text-charcoal">A debloquer</p>
+                      <p className="mt-1 text-xs font-semibold text-charcoal">À débloquer</p>
                     )}
                   </div>
                 </div>
@@ -706,9 +660,9 @@ export function ProfilePanel() {
                       Encore <span className="font-semibold text-ink">{loyalty.pointsToNextBadge} points</span> pour atteindre{" "}
                       <span className="font-semibold text-ink">{loyalty.nextBadge.label}</span>.
                     </p>
-                    <div className="mt-3 h-3 w-full overflow-hidden rounded-full border border-[#1a1a1a] bg-white">
+                    <div className={styles.progressTrack} role="progressbar" aria-label="Progression vers le prochain palier" aria-valuetext={`${loyalty.pointsToNextBadge} points restants pour atteindre ${loyalty.nextBadge.label}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={loyalty.progressToNextBadge}>
                       <div
-                        className="h-full bg-[#0a7b61]"
+                        className={styles.progressFill}
                         style={{ width: `${loyalty.progressToNextBadge}%` }}
                       />
                     </div>
@@ -718,7 +672,36 @@ export function ProfilePanel() {
                 )}
               </div>
 
-              <div className="mt-4 card-cartoon bg-white p-4" data-tutorial="profile-referral">
+              <section className={styles.badgeSection} aria-labelledby="loyalty-badges-title">
+                <div className={styles.badgeSectionHeading}>
+                  <h3 id="loyalty-badges-title">Les paliers du club</h3><span>1 € dépensé = 1 point</span>
+                </div>
+                <p className={styles.sectionHint}>Ouvre un palier pour découvrir tous ses avantages.</p>
+                <div className={styles.badgeList}>
+                  {loyalty.badges.map((badge) => (
+                    <details key={badge.id} className={styles.badgeDetails} data-unlocked={badge.unlocked}>
+                      <summary>
+                        <LoyaltyBadgeIllustration badgeId={badge.id} unlocked={badge.unlocked} size="sm" />
+                        <span className={styles.badgeName}><strong>{badge.label}</strong><small>{badge.minPoints.toLocaleString("fr-FR")} points</small></span>
+                        <span className={styles.badgeState}>{badge.unlocked ? "Débloqué" : "À débloquer"}</span>
+                        <ChevronDown size={18} className={styles.badgeChevron} aria-hidden="true" />
+                      </summary>
+                      <div className={styles.badgeBenefits}>
+                        <h4>{popupTitle}</h4>
+                        <p>{badge.description}</p>
+                        <p><strong>Réduction permanente : {getBadgeDiscountPercent(profileContent, badge.id)} %</strong></p>
+                        <p>Livraison : {getBadgeTierRelayBenefitLabel(badge.id)} / {getBadgeTierHomeDeliveryBenefitLabel(badge.id)}</p>
+                        {parseBadgeBenefitsLines(getBadgeBenefitsText(profileContent, badge.id)).length > 0 && <>
+                          <p className={styles.sectionHint}>{popupHint}</p>
+                          <ul>{parseBadgeBenefitsLines(getBadgeBenefitsText(profileContent, badge.id)).map((benefit, index) => <li key={index}>{benefit}</li>)}</ul>
+                        </>}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </section>
+
+              <div className={styles.referralCard} data-tutorial="profile-referral">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Parrainage</p>
@@ -736,6 +719,9 @@ export function ProfilePanel() {
                   </button>
                 </div>
 
+                {copyStatus && <p role="status" className="mt-2 text-xs font-semibold text-ink">{copyStatus}</p>}
+                <details className={styles.referralDetails}>
+                  <summary>Mon code, mes bonus et mon parrain <ChevronDown size={16} aria-hidden="true" /></summary>
                 <div className="mt-3 grid gap-3 md:grid-cols-2">
                   <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
                     <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Mon code</p>
@@ -747,14 +733,14 @@ export function ProfilePanel() {
                     <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Mon statut filleul</p>
                     <p className="mt-1 text-sm font-semibold text-ink">
                       {referralSummary?.referredByCode
-                        ? `Code utilise: ${referralSummary.referredByCode}`
-                        : "Aucun code parrain utilise"}
+                        ? `Code utilisé : ${referralSummary.referredByCode}`
+                        : "Aucun code parrain utilisé"}
                     </p>
                   </div>
                 </div>
 
                 {referralSummary && (
-                  <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  <div className={styles.referralStats}>
                     <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
                       <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Filleuls</p>
                       <p className="mt-1 inline-flex items-center gap-2 text-lg font-bold text-ink">
@@ -762,7 +748,7 @@ export function ProfilePanel() {
                       </p>
                     </div>
                     <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
-                      <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Recompenses</p>
+                      <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Récompenses</p>
                       <p className="mt-1 inline-flex items-center gap-2 text-lg font-bold text-ink">
                         <Gift size={16} /> {referralSummary.rewardedReferrals}
                       </p>
@@ -779,20 +765,21 @@ export function ProfilePanel() {
                 )}
 
                 <p className="mt-3 text-xs text-charcoal">
-                  Bonus par parrainage valide: {referralSummary?.config.referrerPoints ?? 0} pts
+                  Bonus par parrainage validé : {referralSummary?.config.referrerPoints ?? 0} pts
                   pour le parrain et {referralSummary?.config.refereePoints ?? 0} pts pour le filleul
-                  apres la premiere commande payee du filleul.
+                  après la première commande payée du filleul.
                 </p>
                 <p className="mt-1 text-xs text-charcoal">
-                  Le filleul obtient aussi 10% de remise automatique sur sa premiere commande.
+                  Le filleul obtient aussi 10% de remise automatique sur sa première commande.
                 </p>
 
                 {!referralSummary?.referredByCode && (
-                  <div className="mt-3 grid gap-2 sm:grid-cols-[1fr,auto] sm:items-center">
+                  <div className={styles.referralForm}>
                     <input
                       type="text"
                       className="h-11 border-2 border-[#1a1a1a] bg-white px-3 text-sm uppercase"
-                      placeholder="J'ai un code parrain"
+                      placeholder="J’ai un code parrain"
+                      aria-label="Code de parrainage"
                       value={referralCodeInput}
                       onChange={(event) => setReferralCodeInput(event.target.value.toUpperCase())}
                       disabled={referralLoading}
@@ -809,82 +796,11 @@ export function ProfilePanel() {
                 )}
 
                 {referralLoading && (
-                  <p className="mt-2 text-xs font-semibold text-charcoal">Mise a jour parrainage...</p>
+                  <p className="mt-2 text-xs font-semibold text-charcoal">Mise à jour du parrainage…</p>
                 )}
-                {referralStatus && <p className="mt-2 text-xs font-semibold text-green-700">{referralStatus}</p>}
-                {referralError && <p className="mt-2 text-xs font-semibold text-red-700">{referralError}</p>}
-                {copyStatus && <p className="mt-2 text-xs font-semibold text-ink">{copyStatus}</p>}
-              </div>
-
-              <div className="mt-6">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h2 className="font-display text-3xl">Mes badges</h2>
-                  <p className="text-sm text-charcoal">1 EUR depense = 1 point</p>
-                </div>
-                <div className="mt-4 grid gap-3 md:grid-cols-5">
-                  {loyalty.badges.map((badge) => (
-                    <div key={badge.id} className="group relative">
-                      <article
-                        className={`card-cartoon h-full p-4 text-left transition-colors hover:bg-[#f7f4ee] ${
-                          badge.unlocked ? "bg-[#e8f7f2]" : "bg-white"
-                        }`}
-                        tabIndex={0}
-                      >
-                        <div className="mb-3">
-                          <LoyaltyBadgeIllustration badgeId={badge.id} unlocked={badge.unlocked} />
-                        </div>
-                        <p className="text-xs uppercase tracking-[0.08em] text-charcoal">{badge.minPoints}+ pts</p>
-                        <p className="mt-1 font-semibold text-ink">{badge.label}</p>
-                        <p className="mt-1 text-xs text-charcoal">{badge.description}</p>
-                        <p className="mt-2 text-xs font-semibold text-ink">
-                          {badge.unlocked ? "Debloque" : "Verrouille"}
-                        </p>
-                        <p className="mt-2 text-xs font-semibold text-charcoal">Survole pour voir les avantages</p>
-                      </article>
-                      <div className="pointer-events-none invisible absolute bottom-full left-1/2 z-20 mb-3 w-[min(20rem,90vw)] -translate-x-1/2 opacity-0 transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-                        <div className="card-cartoon bg-white p-4 text-left shadow-lg">
-                          <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">
-                            {popupTitle}
-                          </p>
-                          <p className="mt-1 text-sm font-semibold text-ink">
-                            {badge.label} - {badge.minPoints}+ points
-                          </p>
-                          <p className="mt-1 text-xs font-semibold text-ink">
-                            Reduction permanente: {getBadgeDiscountPercent(profileContent, badge.id)}%
-                          </p>
-                          <p className="mt-1 text-xs font-semibold text-ink">
-                            Livraison: {`${getBadgeTierRelayBenefitLabel(badge.id)} / ${getBadgeTierHomeDeliveryBenefitLabel(badge.id)}`}
-                          </p>
-                          <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
-                            {popupHint}
-                          </p>
-                          {(() => {
-                            const benefits = parseBadgeBenefitsLines(
-                              getBadgeBenefitsText(profileContent, badge.id),
-                            );
-                            if (benefits.length === 0) {
-                              return (
-                                <p className="mt-2 text-xs text-charcoal">
-                                  Aucun avantage specifique configure pour ce palier.
-                                </p>
-                              );
-                            }
-
-                            return (
-                              <ul className="mt-2 grid gap-1 text-xs text-ink">
-                                {benefits.map((benefit, index) => (
-                                  <li key={`${badge.id}-benefit-${index}`} className="leading-relaxed">
-                                    - {benefit}
-                                  </li>
-                                ))}
-                              </ul>
-                            );
-                          })()}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                {referralStatus && <p role="status" className="mt-2 text-xs font-semibold text-green-700">{referralStatus}</p>}
+                {referralError && <p role="alert" className="mt-2 text-xs font-semibold text-red-700">{referralError}</p>}
+                </details>
               </div>
             </>
           )}
@@ -895,7 +811,7 @@ export function ProfilePanel() {
             <>
               <h2 className="font-display text-3xl">Mes commandes ({sortedOrders.length})</h2>
               {sortedOrders.length === 0 && (
-                <p className="mt-4 text-charcoal">Aucune commande pour le moment.</p>
+                <div className={styles.emptyState}><ShoppingBag size={32} aria-hidden="true" /><h3>Ta première trouvaille t’attend.</h3><p>Tes commandes et leur suivi apparaîtront ici.</p><Link href="/boutique" className={styles.primaryAction}>Explorer la boutique <ArrowUpRight size={16} /></Link></div>
               )}
 
               <div className="mt-4 grid gap-4">
@@ -938,7 +854,7 @@ export function ProfilePanel() {
 
           {activeTab === "infos" && (
             <>
-              <h2 className="font-display text-3xl">Mes informations</h2>
+              <p className={styles.sectionHint}>Renseigne tes informations personnelles et ton adresse de livraison.</p>
               {!user.dateOfBirth && (
                 <div
                   className="mt-4 border-2 border-red-700 bg-red-50 p-4 text-sm text-red-900"
@@ -951,26 +867,35 @@ export function ProfilePanel() {
                   </p>
                 </div>
               )}
-              <form onSubmit={onSubmit} className="mt-6 grid gap-3 md:grid-cols-2">
-                <input
-                  className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
-                  placeholder="Prenom"
-                  value={firstName}
-                  onChange={(event) => setFirstName(event.target.value)}
-                />
-                <input
-                  className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
-                  placeholder="Nom"
-                  value={lastName}
-                  onChange={(event) => setLastName(event.target.value)}
-                />
-                <input
-                  className="h-12 border-2 border-[#1a1a1a] bg-[#f4f4f4] px-3 text-base md:col-span-2"
-                  value={user.email}
-                  readOnly
-                  placeholder="Email"
-                />
-                <label className="grid gap-1.5 md:col-span-2">
+              <form onSubmit={onSubmit} className={styles.infoForm}>
+                <label className={styles.field}>
+                  <span>Prénom</span>
+                  <input
+                    className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    autoComplete="given-name"
+                    value={firstName}
+                    onChange={(event) => setFirstName(event.target.value)}
+                  />
+                </label>
+                <label className={styles.field}>
+                  <span>Nom</span>
+                  <input
+                    className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    autoComplete="family-name"
+                    value={lastName}
+                    onChange={(event) => setLastName(event.target.value)}
+                  />
+                </label>
+                <label className={`${styles.field} ${styles.fullField}`}>
+                  <span>E-mail</span>
+                  <input
+                    className="h-12 border-2 border-[#1a1a1a] bg-[#f4f4f4] px-3 text-base"
+                    value={user.email}
+                    readOnly
+                    autoComplete="email"
+                  />
+                </label>
+                <label className={`${styles.field} ${styles.fullField}`}>
                   <span className="text-sm font-bold text-ink">
                     Date de naissance <span className="text-red-700">(obligatoire pour commander)</span>
                   </span>
@@ -989,42 +914,58 @@ export function ProfilePanel() {
                     Réservé aux personnes majeures (18 ans et plus).
                   </span>
                 </label>
-                <input
-                  className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
-                  placeholder="Téléphone"
-                  value={phone}
-                  onChange={(event) => setPhone(event.target.value)}
-                />
-                <input
-                  className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base md:col-span-2"
-                  placeholder="Adresse"
-                  value={address}
-                  onChange={(event) => setAddress(event.target.value)}
-                />
-                <input
-                  className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
-                  placeholder="Ville"
-                  value={city}
-                  onChange={(event) => setCity(event.target.value)}
-                />
-                <input
-                  className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
-                  placeholder="Code postal"
-                  value={postalCode}
-                  onChange={(event) => setPostalCode(event.target.value)}
-                />
-                <input
-                  className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base md:col-span-2"
-                  placeholder="Pays"
-                  value={country}
-                  onChange={(event) => setCountry(event.target.value)}
-                />
+                <label className={styles.field}>
+                  <span>Téléphone</span>
+                  <input
+                    className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    autoComplete="tel"
+                    type="tel"
+                    value={phone}
+                    onChange={(event) => setPhone(event.target.value)}
+                  />
+                </label>
+                <label className={`${styles.field} ${styles.fullField}`}>
+                  <span>Adresse</span>
+                  <input
+                    className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    autoComplete="street-address"
+                    value={address}
+                    onChange={(event) => setAddress(event.target.value)}
+                  />
+                </label>
+                <label className={styles.field}>
+                  <span>Ville</span>
+                  <input
+                    className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    autoComplete="address-level2"
+                    value={city}
+                    onChange={(event) => setCity(event.target.value)}
+                  />
+                </label>
+                <label className={styles.field}>
+                  <span>Code postal</span>
+                  <input
+                    className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    autoComplete="postal-code"
+                    value={postalCode}
+                    onChange={(event) => setPostalCode(event.target.value)}
+                  />
+                </label>
+                <label className={`${styles.field} ${styles.fullField}`}>
+                  <span>Pays</span>
+                  <input
+                    className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    autoComplete="country-name"
+                    value={country}
+                    onChange={(event) => setCountry(event.target.value)}
+                  />
+                </label>
                 <button
                   type="submit"
                   disabled={saving}
                   className="btn-cartoon btn-primary inline-flex h-12 items-center justify-center leading-none md:col-span-2"
                 >
-                  {saving ? "Sauvegarde..." : "Mettre a jour le profil"}
+                  {saving ? "Sauvegarde..." : "Enregistrer mes informations"}
                 </button>
               </form>
 
@@ -1036,9 +977,9 @@ export function ProfilePanel() {
                       <Download className="h-5 w-5" aria-hidden="true" />
                     </span>
                     <div>
-                      <h3 className="text-lg font-bold text-ink">Exporter mes donnees</h3>
+                      <h3 className="text-lg font-bold text-ink">Exporter mes données</h3>
                       <p className="mt-1 text-sm leading-relaxed text-charcoal">
-                        Telecharge une copie JSON des donnees associees a ton compte.
+                        Télécharge une copie de tes données personnelles.
                       </p>
                     </div>
                   </div>
@@ -1048,7 +989,7 @@ export function ProfilePanel() {
                     disabled={exportingData}
                     className="btn-cartoon btn-secondary mt-4 inline-flex h-11 items-center justify-center px-4 text-xs leading-none"
                   >
-                    {exportingData ? "Preparation..." : "Telecharger mes donnees"}
+                    {exportingData ? "Préparation…" : "Télécharger mes données"}
                   </button>
                   {exportStatus && (
                     <p className="mt-3 text-sm font-semibold text-ink">{exportStatus}</p>
@@ -1056,14 +997,14 @@ export function ProfilePanel() {
                 </article>
 
                 <article className="card-cartoon bg-[#fff7e4] p-5">
-                  <h3 className="text-lg font-bold text-ink">Vie privee</h3>
+                  <h3 className="text-lg font-bold text-ink">Vie privée</h3>
                   <p className="mt-2 text-sm leading-relaxed text-charcoal">
-                    Consulte la politique de confidentialite et la politique cookies pour comprendre
-                    les traitements appliques a tes donnees.
+                    Consulte la politique de confidentialité et la politique cookies pour comprendre
+                    les traitements appliqués à tes données.
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     <Link href="/politique-confidentialite" className="btn-cartoon btn-secondary inline-flex h-11 items-center justify-center px-4 text-xs leading-none">
-                      Politique de confidentialite
+                      Politique de confidentialité
                     </Link>
                     <Link href="/politique-cookies" className="btn-cartoon btn-secondary inline-flex h-11 items-center justify-center px-4 text-xs leading-none">
                       Politique cookies
@@ -1075,8 +1016,8 @@ export function ProfilePanel() {
               <article className="card-cartoon mt-6 border-[3px] border-[#7a1010] bg-[#fff1f1] p-5">
                 <h3 className="text-lg font-bold text-[#7a1010]">Zone sensible</h3>
                 <p className="mt-2 text-sm leading-relaxed text-charcoal">
-                  La suppression du compte est irreversible. Les commandes sont conservees pour les
-                  obligations comptables, mais les donnees personnelles associees sont anonymisees.
+                  La suppression du compte est irréversible. Les commandes sont conservées pour les
+                  obligations comptables, mais les données personnelles associées sont anonymisées.
                 </p>
                 {!showDeleteConfirmation ? (
                   <button
@@ -1097,6 +1038,7 @@ export function ProfilePanel() {
                     <input
                       className="h-12 border-2 border-[#7a1010] bg-white px-3 text-base"
                       placeholder="Confirme ton e-mail"
+                      aria-label="E-mail de confirmation de suppression"
                       value={deleteConfirmationEmail}
                       onChange={(event) => setDeleteConfirmationEmail(event.target.value)}
                     />
@@ -1132,17 +1074,17 @@ export function ProfilePanel() {
 
           {activeTab === "promos" && (
             <>
-              <h2 className="font-display text-3xl">Mes codes promo</h2>
+
               {user.promoCodes.length === 0 ? (
-                <p className="mt-4 text-charcoal">Aucun code promo attribue pour le moment.</p>
+                <div className={styles.emptyState}><Tag size={32} aria-hidden="true" /><h3>Les bonnes surprises arrivent.</h3><p>Tu retrouveras ici les codes promo attribués à ton compte.</p><button type="button" className={styles.primaryAction} onClick={() => setActiveTabAndSync("missions")}>Découvrir les quêtes <ArrowUpRight size={16} /></button></div>
               ) : (
                 <div className="mt-4 grid gap-3 md:grid-cols-2">
                   {user.promoCodes.map((promo) => (
                     <article key={`${promo.code}-${promo.createdAt}`} className="card-cartoon bg-white p-4">
                       <p className="text-lg font-bold text-ink">{promo.code}</p>
-                      <p className="text-sm text-charcoal">{promo.discountPercent}% de reduction</p>
+                      <p className="text-sm text-charcoal">{promo.discountPercent}% de réduction</p>
                       <p className="mt-1 text-xs font-semibold text-ink">
-                        {promo.used ? "Utilise" : "Actif"}
+                        {promo.used ? "Utilisé" : "Actif"}
                       </p>
                     </article>
                   ))}

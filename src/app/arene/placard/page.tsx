@@ -1,3 +1,4 @@
+import { isArenaPrelaunch } from "@/lib/arena-opening";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { PlacardPlayerShell } from "@/components/placard/PlacardPlayerShell";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PlacardPlayerPage() {
+  if (isArenaPrelaunch()) redirect("/arene?mode=jouer&ouverture=1");
   if (!isKqPlayerApiEnabled() && !isContestFeatureEnabledServer()) notFound();
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) redirect("/compte/connexion?next=%2Farene%2Fplacard");

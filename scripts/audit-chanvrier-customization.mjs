@@ -1,0 +1,52 @@
+// Actual character editor and savings panel, isolated API fixtures, no external traffic.
+import assert from 'node:assert/strict';
+import { mkdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { createServer, transformWithOxc } from 'vite';
+import { Launcher } from 'chrome-launcher';
+import puppeteer from 'puppeteer-core';
+const root=process.cwd(),output=resolve(root,'output/chanvrier-customization'),origin='http://127.0.0.1:3217';
+let profile=null,failSave=false;
+const errors=[];
+let balance=0,cash=100000;
+const entry=`import React,{useState} from 'react';import {createRoot} from 'react-dom/client';
+import {ChanvrierProfileEditor} from '/src/components/contest/ChanvrierProfileEditor';
+import {ChanvrierAvatar} from '/src/components/contest/ChanvrierAvatar';
+import {ChanvrierSavingsPanel} from '/src/components/contest/ChanvrierSavingsPanel';
+import {DEFAULT_CHANVRIER_APPEARANCE as defaults,CHANVRIER_APPEARANCE_OPTIONS as options,CHANVRIER_SKINS as skins,CHANVRIER_CLOTHES as clothes} from '/src/lib/arena-chanvrier';
+function Gallery(){const showcase=location.search==='?showcase';return <div style={{display:'grid',gridTemplateColumns:'repeat(6,1fr)',background:'#f6e9c9',color:'#003f30'}}>{Array.from({length:showcase?6:24},(_,i)=>{const appearance={...defaults};for(const key of Object.keys(options))appearance[key]=options[key][i%options[key].length].code;const profile={gender:i%2?'female':'male',clothing:clothes[i%6].code,skin:skins[Math.floor(i/4)%6].code,appearance};if(showcase){Object.assign(appearance,{...defaults,hair:['crop','bob','curls','braids','quiff','ponytail'][i],hairColor:['black','chestnut','ginger','black','chestnut','black'][i],top:['tee','overalls','jacket','hoodie','shirt','apron'][i],bottom:['jeans','jeans','cargo','shorts','jeans','skirt'][i],bottomColor:['teal','blue','teal','berry','teal','teal'][i],shoes:['work','boots','sneakers','high-tops','work','boots'][i],shoeColor:'ochre',face:'oval',eyes:'almond',eyeColor:'brown',mouth:'grin',facialHair:'none',accessory:'none'});profile.skin=['ivory','peach','ivory','brown','honey','copper'][i].toString();profile.clothing=['ochre','teal','sage','ochre','teal','berry'][i].toString();}return <div key={i}><ChanvrierAvatar profile={profile} className='gallery-avatar'/><p style={{textAlign:'center'}}>{appearance.hair} · {appearance.top} · {profile.skin}</p></div>})}</div>};
+function App(){const [profile,setProfile]=useState(null),[open,setOpen]=useState(true);return <main style={{maxWidth:700,margin:'20px auto'}}>{profile?<><ChanvrierAvatar profile={profile}/><button id='edit' onClick={()=>setOpen(true)}>Personnaliser</button><ChanvrierSavingsPanel/></>:null}{open?<ChanvrierProfileEditor profile={profile} onClose={()=>setOpen(false)} onSaved={p=>{setProfile(p);setOpen(false)}}/>:null}</main>};createRoot(document.getElementById('root')).render(location.search==='?gallery'||location.search==='?showcase'?<Gallery/>:<App/>);`;
+const server=await createServer({root,configFile:false,envDir:false,cacheDir:resolve(output,'vite-cache'),resolve:{alias:{'@':resolve(root,'src')}},optimizeDeps:{include:['react','react-dom/client','lucide-react']},plugins:[{name:'avatar-audit',resolveId(id){if(id==='avatar-entry')return '\0avatar-entry'},async load(id){if(id==='\0avatar-entry')return(await transformWithOxc(entry,'entry.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code},configureServer(vite){vite.middlewares.use(async(req,res,next)=>{
+if(req.url?.startsWith('/api/')){res.setHeader('Content-Type','application/json');let raw='';for await(const chunk of req)raw+=chunk;const body=raw?JSON.parse(raw):{};
+if(req.url==='/api/arena/chanvrier'){if(failSave){res.statusCode=503;return res.end(JSON.stringify({error:'Enregistrement indisponible.'}));}profile=body;return res.end(JSON.stringify({profile}));}
+if(req.url==='/api/arena/chanvrier/savings'){if(body.action==='deposit'){cash-=body.amountCents;balance+=body.amountCents;}if(body.action==='withdraw'){cash+=body.amountCents;balance-=body.amountCents;}return res.end(JSON.stringify({cashCents:cash,balanceCents:balance,interestCreditedCents:0,nextInterestAt:balance?new Date(Date.now()+86400000).toISOString():null,ratePercent:5,periodHours:24,maxBalanceCents:2000000000,replayed:false}));}
+res.statusCode=404;return res.end('{}');}
+if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{--font-display:Impact;--font-body:Arial}*{box-sizing:border-box}body{margin:0;background:#003f30;color:#fff8e8;font-family:Arial}button,input{font:inherit}</style><div id="root"></div><script type="module" src="/@id/__x00__avatar-entry"></script></html>');});}}],server:{host:'127.0.0.1',port:3217,strictPort:true,hmr:false,watch:null}});
+let browser;
+try{
+await mkdir(output,{recursive:true});await server.listen();browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});
+const page=await browser.newPage();page.on('pageerror',e=>errors.push(e.message));await page.setRequestInterception(true);page.on('request',r=>void(r.url().startsWith(origin)||r.url().startsWith('data:')?r.continue():r.abort()));
+const clickText=async(text)=>{const button=await page.evaluateHandle(text=>[...document.querySelectorAll('button')].find(b=>b.textContent.trim()===text),text);assert.ok(button.asElement(),`button: ${text}`);await button.asElement().click();await button.dispose();};
+const clickChoice=async(selector)=>{await page.$eval(selector,el=>el.scrollIntoView({block:"center"}));await page.click(selector);assert.equal(await page.$eval(selector,el=>el.getAttribute("aria-pressed")),"true");};
+await page.setViewport({width:1440,height:1000});await page.goto(origin,{waitUntil:'networkidle0'});await page.waitForSelector('dialog[open]');await page.type('input[autocomplete="nickname"]','Camille29');
+await page.waitForSelector('dialog canvas[data-avatar-state=ready]');await page.screenshot({path:resolve(output,'editor-sylvain.png')});
+await clickText('Cheveux');
+const variants=new Set();
+for(const name of ['Court','Banane','Carré','Long','Boucles','Afro','Tresses','Chignon','Queue de cheval','Crête','Rasé court','Sans cheveux']){
+await clickChoice(`[aria-label="Coupe de cheveux : ${name}"]`);await page.waitForSelector('dialog canvas[data-avatar-state="ready"]');variants.add(await page.$eval('dialog canvas[role="img"]',el=>el.toDataURL()));}
+assert.equal(variants.size,12,'each haircut has a distinct rendered appearance');
+await clickChoice('[aria-label="Coupe de cheveux : Boucles"]');await clickChoice('[aria-label="Couleur des cheveux et de la barbe : Roux"]');await clickText('Visage');await clickChoice('[aria-label="Forme du visage : Cœur"]');await clickChoice('[aria-label="Couleur des yeux : Vert"]');
+await page.waitForSelector('dialog canvas[data-avatar-state="ready"]');await page.screenshot({path:resolve(output,'editor-desktop.png')});await clickText('Zoom visage');await page.waitForSelector('dialog canvas[data-avatar-state="ready"]');await page.screenshot({path:resolve(output,'editor-portrait.png')});await clickText('En pied');
+await clickText('Tenue');await clickChoice('[aria-label="Haut : Veste"]');await clickChoice('[aria-label="Bas : Cargo"]');await clickChoice('[aria-label="Chaussures : Baskets"]');
+for(const width of [390,320]){await page.setViewport({width,height:844});await page.$eval('dialog',el=>el.scrollTop=0);await page.waitForSelector('dialog canvas[data-avatar-state="ready"]');await page.screenshot({path:resolve(output,`editor-${width}.png`)});assert.ok(await page.$eval('dialog',el=>el.scrollWidth<=el.clientWidth+1),`no horizontal overflow at ${width}`);}
+await clickText('Choisir ma force');await page.evaluate(()=>[...document.querySelectorAll('button')].find(b=>b.textContent.includes('Trésorier'))?.click());await page.screenshot({path:resolve(output,'strengths-320.png')});
+failSave=true;await clickText('Créer mon chanvrier');await page.waitForSelector('[role="alert"]');assert.ok(await page.$('dialog[open]'));
+failSave=false;await clickText('Créer mon chanvrier');await page.waitForSelector('#edit');assert.deepEqual([profile.appearance.hair,profile.appearance.face,profile.appearance.top,profile.appearance.bottom,profile.appearance.shoes],['curls','heart','jacket','cargo','sneakers']);
+await page.click('#edit');await page.waitForSelector('dialog[open]');await clickText('Cheveux');assert.equal(await page.$eval('[aria-label="Coupe de cheveux : Boucles"]',el=>el.getAttribute('aria-pressed')),'true');await page.keyboard.press('Escape');
+await page.click('[aria-expanded="false"]');await page.waitForSelector('input[inputmode="decimal"]');await page.type('input[inputmode="decimal"]','100,25');await clickText('Déposer');await page.waitForFunction(()=>document.body.textContent.includes('déposés sur ton livret'));assert.equal(balance,10025);assert.equal(cash,89975);
+await page.type('input[inputmode="decimal"]','25');await clickText('Retirer');await page.waitForFunction(()=>document.body.textContent.includes('retirés vers ta trésorerie'));assert.equal(balance,7525);assert.equal(cash,92475);
+await page.screenshot({path:resolve(output,'savings-320.png')});assert.deepEqual(errors,[]);
+await page.setViewport({width:1800,height:1800});await page.goto(origin+'/?gallery',{waitUntil:'networkidle0'});await page.addStyleTag({content:'.gallery-avatar{width:100%;height:380px;object-fit:contain}'});await page.waitForFunction(()=>document.querySelectorAll('canvas[data-avatar-state="ready"]').length===24);await page.screenshot({path:resolve(output,'avatar-gallery.png'),fullPage:true});assert.deepEqual(errors,[]);
+await page.setViewport({width:1800,height:550});await page.goto(origin+'/?showcase',{waitUntil:'networkidle0'});await page.addStyleTag({content:'.gallery-avatar{width:100%;height:460px;object-fit:contain}'});await page.waitForFunction(()=>document.querySelectorAll('canvas[data-avatar-state=ready]').length===6);await page.screenshot({path:resolve(output,'sylvain-v5-preview.png'),fullPage:true});
+console.log('PASS: 12 distinct hairstyles, independent choices, mobile 320/390, desktop, save failure/retry, reopening, savings deposits and withdrawals. Screenshots: output/chanvrier-customization');
+}finally{await browser?.close();await server.close();}

@@ -1,3 +1,4 @@
+import { isArenaPrelaunch, ARENA_OPENING_AT } from "@/lib/arena-opening";
 import { NextResponse } from "next/server";
 import { isCurrentRequestAdminAuthorized } from "@/lib/admin-guard";
 import {
@@ -27,6 +28,7 @@ async function getOptionalCustomerSession(): Promise<{
 }
 
 export async function GET() {
+  if (isArenaPrelaunch()) return NextResponse.json({ enabled: true, betaRestricted: false, canAccess: true, activitiesOpen: false, opensAt: ARENA_OPENING_AT }, { headers: { "Cache-Control": "private, no-store" } });
   const [adminAuthorized, session] = await Promise.all([
     isCurrentRequestAdminAuthorized(),
     getOptionalCustomerSession(),

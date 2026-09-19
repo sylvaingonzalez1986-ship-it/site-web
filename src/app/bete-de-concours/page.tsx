@@ -1,3 +1,4 @@
+import { isArenaPrelaunch } from "@/lib/arena-opening";
 import type { Metadata } from "next";
 import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { cookies } from "next/headers";
@@ -43,7 +44,7 @@ import type { PublicCustomer } from "@/types/customer";
 export const revalidate = 60;
 
 type ContestHubPageProps = {
-  searchParams: Promise<{ season?: string; category?: string; track?: string; vue?: string }>;
+  searchParams: Promise<{ season?: string; category?: string; track?: string; vue?: string; mode?: string; ouverture?: string }>;
   surface?: "arena" | "notebook" | "notebook-ranking";
 };
 
@@ -134,6 +135,11 @@ export const metadata: Metadata = {
 export async function ContestArenaPage({ searchParams, surface = "arena" }: ContestHubPageProps) {
   try {
     const params = await searchParams;
+    if (isArenaPrelaunch()) {
+      const requested = params.mode ?? params.vue;
+      const initialMode = requested === "carnet" || requested === "classement" ? requested : "jouer";
+      return <ContestArenaHub activitiesLocked initialMode={initialMode} initialNotice={params.ouverture === "1" || !!params.vue || surface !== "arena"} />;
+    }
     const arenaView = surface === "arena" ? parseArenaView(params.vue) : "carnet";
     const requestedCategory = parseCategory(params.category);
     const selectedTrack = parseTrack(params.track);

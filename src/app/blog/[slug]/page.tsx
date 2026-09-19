@@ -13,6 +13,7 @@ import { getBlogRatingStats } from "@/lib/blog-interactions-backend";
 import { getBlogPostBySlugByBackend, readPublicStoreByBackend } from "@/lib/data-backend";
 import { computeReadingTimeMinutes } from "@/lib/reading-time";
 import { getSiteUrl } from "@/lib/site-url";
+import styles from "@/components/blog/Blog.module.css";
 
 export const revalidate = 300;
 
@@ -94,7 +95,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const wordCount = post.content.trim() ? post.content.trim().split(/\s+/).filter(Boolean).length : 0;
 
   return (
-    <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
+    <section className={`section-band paper-grain pt-32 ${styles.page}`}>
       <BreadcrumbJsonLd
         items={[
           { name: blogContent.breadcrumbHomeLabel, url: baseUrl },
@@ -116,35 +117,35 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       />
 
       <div className="retro-container">
-        <div className="cartoon-border bg-cream p-8">
-          <nav className="mb-4 text-sm text-charcoal" aria-label="Fil d'Ariane">
-            <Link href="/" className="hover:text-ink underline">
+        <header className={styles.articleHeader}>
+          <nav className={styles.breadcrumb} aria-label="Fil d'Ariane">
+            <Link href="/" className="underline">
               {blogContent.breadcrumbHomeLabel}
             </Link>
             {" > "}
-            <Link href="/blog" className="hover:text-ink underline">
+            <Link href="/blog" className="underline">
               {blogContent.breadcrumbBlogLabel}
             </Link>
             {" > "}
-            <span className="font-bold text-ink">{post.title}</span>
+            <span aria-current="page">{post.title}</span>
           </nav>
 
-          <p className="pill-cartoon inline-flex px-4 py-2 text-xs uppercase tracking-[0.12em]">
+          <p className={styles.articleCategory}>
             {BLOG_CATEGORY_LABELS[post.category]}
           </p>
-          <h1 className="section-title mt-5 text-ink">{post.title}</h1>
-          <p className="mt-2 text-sm text-charcoal">
-            {blogContent.postPublishedPrefix} {new Date(post.createdAt).toLocaleDateString("fr-FR")} -{" "}
+          <h1 className={styles.articleTitle}>{post.title}</h1>
+          <p className={styles.articleMeta}>
+            {blogContent.postPublishedPrefix} <time dateTime={post.createdAt}>{new Date(post.createdAt).toLocaleDateString("fr-FR")}</time> ·{" "}
             {readingMinutes} min de lecture
           </p>
-          <p className="mt-4 text-lg leading-relaxed text-charcoal">{post.excerpt}</p>
+          <p className={styles.articleExcerpt}>{post.excerpt}</p>
           <div className="mt-6">
             <BlogStarRating postId={post.id} />
           </div>
-        </div>
+        </header>
 
-        <article className="cartoon-border mt-8 overflow-hidden bg-cream">
-          <div className="relative aspect-[16/8] border-b-2 border-[#1a1a1a] bg-[#f7f4ee]">
+        <article className={styles.article}>
+          <div className={styles.cover}>
             <Image
               src={post.coverImage}
               alt={post.title}
@@ -155,10 +156,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             />
           </div>
 
-          <div className="p-8">
+          <div className={styles.articleBody}>
             <BlogShareButtons url={canonicalUrl} title={post.title} excerpt={post.excerpt} />
 
-            <div className="mt-6 grid gap-5 text-base leading-relaxed text-charcoal">
+            <div className={styles.prose}>
               {paragraphs.length > 0 ? (
                 paragraphs.map((paragraph, index) => <p key={`${post.id}-paragraph-${index}`}>{paragraph}</p>)
               ) : (
@@ -166,8 +167,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               )}
             </div>
 
-            <div className="cartoon-border mt-8 bg-white p-5">
-              <h2 className="font-display text-2xl text-ink">Produits associes</h2>
+            <div className={styles.shopPanel}>
+              <h2 className={styles.panelTitle}>Du journal au marché</h2>
               <div className="mt-4 flex flex-wrap gap-2">
                 {relatedShopLinks.map((link) => (
                   <Link

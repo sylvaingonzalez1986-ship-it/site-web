@@ -1,0 +1,180 @@
+{
+  "mode": "built-in image_gen",
+  "useCase": "precise-object-edit",
+  "styleReference": "public/sylvain.png",
+  "sourceCanvas": "Master: 971x1619 RGBA. Generated edits: 971x1619 or 971x1620 RGBA, normalized to the shared runtime frame.",
+  "runtimeCanvas": {
+    "width": 768,
+    "height": 1280,
+    "transparent": true
+  },
+  "assets": "public/contest/avatars/sylvain-outfits-v5/",
+  "preparation": "node scripts/prepare-chanvrier-outfits.mjs",
+  "compositionOrder": [
+    "legs",
+    "shoes",
+    "bottom",
+    "top"
+  ],
+  "inventory": {
+    "tops": 6,
+    "bottoms": 4,
+    "shoes": 4,
+    "legs": 2
+  },
+  "promptText": "Each prompt is preserved verbatim from its UTF-8 TXT file, including any final line ending.",
+  "masterLayers": [
+    "top-tee",
+    "bottom-jeans",
+    "shoes-work"
+  ],
+  "derivedLegLayers": {
+    "legs-shorts": "bottom-shorts",
+    "legs-skirt": "bottom-skirt"
+  },
+  "generations": [
+    {
+      "id": "master",
+      "stage": "master",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/master.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/current-reference.png",
+        "public/sylvain.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/master.png",
+      "prompt": "Use case: precise-object-edit. Image 1 is the exact editable game character; image 2 is the original Sylvain mascot, used ONLY for the illustration language. Improve ONLY the clothing and footwear of image 1 below the chin, retaining its exact head, pose, overall body proportions, scale, canvas framing and location. This is a production master for a customizable game character, so the anatomy must be completely coherent: both trouser legs connect naturally to a single pair of ankles and both shoes are centered underneath those ankles. Same neutral standing pose, slight three-quarter attitude, arms relaxed and cream cartoon gloves. The two feet remain planted on the same baseline, same stance, no twisted feet or extra collars. Outfit: a warm OCHRE #c89536 short-sleeved T-shirt with a neat ribbed collar, one small chest pocket, subtle double hems and natural sparse ink folds; TEAL #087f7c well-cut relaxed jeans with two believable front pockets, fly seam and neat turned-up cuffs; matching OCHRE #c89536 sturdy rounded low work shoes with distinct leather panels, three simple lace rows, cream soles and subtle outsole edge. Shoe openings must align precisely with trouser leg centers, and trousers sit just over the shoe collar without exposed floating socks. Use warm rosy PEACH #e8a08d only for the bare forearms, keep gloves and soles ivory cream. Keep the Sylvain 1930s cartoon language: confident thick black outlines, clean flat colors, sparse regular halftone shadows, round flowing silhouette, balanced detail visible in a game avatar, no realistic rendering, no gradients, no tiny fussy textures. Full exact same character in exact same frame, generous margins preserved, true transparent background, no floor shadow, no text, no props. This should be polished coherent clothing on one body, not an assembly of loose cutouts.\n"
+    },
+    {
+      "id": "top-overalls",
+      "stage": "initial-variant",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/top-overalls.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/master.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/top-overalls.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace only the T-shirt upper outfit with a well-made OCHRE #c89536 work-overall bib over an ivory long-sleeve undershirt: sturdy shoulder straps with round brass-style buttons, a broad double-stitched chest pocket, side button closures and shaped waist; the bib ends at the EXACT current waist seam. Keep the teal jeans below the waist untouched. The bib color is ochre, not teal. Both sleeves end at the exact original glove cuffs; hands and shoes unchanged.\n"
+    },
+    {
+      "id": "top-hoodie",
+      "stage": "initial-variant",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/top-hoodie.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/master.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/top-hoodie.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace only the T-shirt and exposed forearms with an OCHRE #c89536 comfortable hoodie, folded hood behind the neck, cream drawstrings, a real kangaroo pocket, ribbed hem and ribbed cuffs. Preserve the exact waistline and hand positions. Teal jeans and shoes unchanged.\n"
+    },
+    {
+      "id": "top-jacket",
+      "stage": "initial-variant",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/top-jacket.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/master.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/top-jacket.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace only the T-shirt and exposed forearms with a stylish OCHRE #c89536 worker's chore jacket, visible structured lapel collar, two well-shaped front patch pockets, subtle brass-style buttons, open center showing an ivory undershirt. Keep original shoulder width, waist hem level and exact gloved hand positions. Teal jeans and shoes unchanged.\n"
+    },
+    {
+      "id": "top-shirt",
+      "stage": "initial-variant",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/top-shirt.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/master.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/top-shirt.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace only the T-shirt and exposed forearms with an OCHRE #c89536 button-up work shirt, proper pointed collar, placket with four cream buttons, a chest pocket and long sleeves rolled neatly to the elbow, peach #e8a08d forearms. Gentle folds at elbows and waist, original shoulder width, exact waistline and glove positions. Teal jeans and shoes unchanged.\n"
+    },
+    {
+      "id": "top-apron",
+      "stage": "initial-variant",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/top-apron.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/master.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/top-apron.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace only the T-shirt upper outfit with an OCHRE #c89536 craftsman's waist-length apron over an ivory short-sleeved T-shirt: neck strap, metal eyelets, large double-stitched divided front pocket and waist tie knots visible at sides. Hem stays at exact original T-shirt waistline so the teal jeans remain untouched and visible. Exposed forearms use peach #e8a08d. Keep gloves/feet/stance unchanged.\n"
+    },
+    {
+      "id": "bottom-cargo",
+      "stage": "initial-variant",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/bottom-cargo.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/master.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/bottom-cargo.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace only the teal jeans between the exact waistline and exact ankle cuffs with TEAL #087f7c relaxed cargo trousers: well-shaped side cargo pockets with flaps, pocket seams, subtle knee shaping, same stance and length. Keep the exact rolled ankle cuff openings and leg centers of the jeans, same feet and same work shoes. Shirt, arms, gloves unchanged.\n"
+    },
+    {
+      "id": "bottom-shorts",
+      "stage": "initial-variant",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/bottom-shorts.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/master.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/bottom-shorts.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace only the teal jeans with TEAL #087f7c relaxed tailored shorts ending just above the knees, visible fly seam, side pockets and double-stitched hems. Below are simple slender BLACK rubber-hose cartoon legs, extending to the exact existing ankle/shoe openings. No extra socks or second shoes. Keep the exact ankle centers and all original work-shoe pixels untouched, same waistline, stance and arm pose.\n"
+    },
+    {
+      "id": "bottom-skirt",
+      "stage": "initial-variant",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/bottom-skirt.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/master.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/bottom-skirt.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace only the teal jeans with a TEAL #087f7c neat knee-length A-line work skirt with two subtle panel seams, side pockets and a double stitched hem, natural fullness. Below are simple slender BLACK rubber-hose cartoon legs extending to the exact existing ankle/shoe openings. No extra socks or second shoes. Keep both original work shoes and exact ankle centers unchanged, same waistline and posture.\n"
+    },
+    {
+      "id": "shoes-boots",
+      "stage": "initial-variant",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/shoes-boots.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/master.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/shoes-boots.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace only the pair of low work shoes with sturdy OCHRE #c89536 lace-up work boots with ankle-high shafts, one cream sole, rounded toe caps and three clear lace rows. Boots must fit around the EXACT existing ankle locations under the unchanged rolled trouser cuffs. Tops partially disappear under trousers, no added feet or duplicate collars. Keep same feet stance, same sole baseline and approximately same footprints. Entire body and trousers unchanged.\n",
+      "supersededBy": "final-shoes-boots"
+    },
+    {
+      "id": "shoes-sneakers",
+      "stage": "initial-variant",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/shoes-sneakers.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/master.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/shoes-sneakers.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace only the pair of work shoes with OCHRE #c89536 low canvas sneakers with ivory rubber toe caps, cream laces, a narrow cream side stripe and clean cream soles. Shoe openings remain EXACTLY around the original ankle centers. Same sole baseline, foot angles and footprints. No added ankles or duplicate collars. Entire body and trousers unchanged.\n"
+    },
+    {
+      "id": "shoes-high-tops",
+      "stage": "initial-variant",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/shoes-high-tops.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/master.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/shoes-high-tops.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace only the pair of work shoes with OCHRE #c89536 high-top canvas trainers: ivory rubber toe caps, cream ankle piping, cream laces and cream soles. Ankle shafts fit behind the existing rolled trouser cuffs at the EXACT original ankle positions. Same sole baseline, foot angles and footprints; no extra ankles. Entire body and trousers unchanged.\n",
+      "supersededBy": "final-shoes-high-tops"
+    },
+    {
+      "id": "final-shoes-boots",
+      "stage": "final-footwear-edit",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/final-shoes-boots.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/bottom-shorts.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/shoes-boots.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace ONLY the low shoes of this SHORTS character with sturdy ochre #c89536 ankle-high leather work boots with rounded toe caps, three clear cream lace rows, thick cream lug soles and a properly finished black-outlined upper collar fitted around each shin. The entire footwear must be visible, including its complete curved top opening; there are no long trousers to hide it. Keep the bare legs, ankle centers, exact stance, same sole baseline and same overall foot width. Extend the upper ankle shaft naturally only a little above the existing shoes, around the same legs. Preserve every head, torso, hand, shorts and leg pixel except the lower shin area covered by the new shoes. No exposed cut edge or flat cropped opening: this is a fully drawn pair of shoes fitted onto the body.\n"
+    },
+    {
+      "id": "final-shoes-high-tops",
+      "stage": "final-footwear-edit",
+      "promptFile": "output/imagegen/sylvain-outfits-v5/prompts/final-shoes-high-tops.txt",
+      "references": [
+        "output/imagegen/sylvain-outfits-v5/source/bottom-shorts.png"
+      ],
+      "output": "output/imagegen/sylvain-outfits-v5/source/shoes-high-tops.png",
+      "prompt": "Edit the supplied COMPLETE character master as an exactly registered game-avatar variant. Preserve the EXACT original canvas size, transparent margins, character position, head and face pixels, body pose, shoulder width, waistline, arms and gloved hands pose, legs, ankle centers and foot ground line. Change ONLY the requested garment. All untouched parts should remain pixel-identical. Keep the same Sylvain cartoon drawing: smooth bold black ink, polished flat color garment panels, restrained halftone shadow, legible pockets and seams, no gradients or photorealism. Full character remains visible in the same frame; do not crop, enlarge, shift or recenter it. This is NOT a sprite sheet. True transparent background. No text or props. Replace ONLY the low shoes of this SHORTS character with ochre #c89536 high-top canvas trainers with cream rubber toe caps, cream laces, cream sole strips and neatly finished cream upper piping encircling each ankle. The entire footwear must be visible, including its complete curved top opening; there are no long trousers to hide it. Keep the bare legs, ankle centers, exact stance, same sole baseline and same overall foot width. Extend the upper ankle shaft naturally only a little above the existing shoes, around the same legs. Preserve every head, torso, hand, shorts and leg pixel except the lower shin area covered by the new shoes. No exposed cut edge or flat cropped opening: this is a fully drawn pair of shoes fitted onto the body.\n"
+    }
+  ]
+}

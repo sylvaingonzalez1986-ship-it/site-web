@@ -1,7 +1,7 @@
 import { NavigationFeedbackProvider } from "@/components/navigation/NavigationFeedback";
 import { ArenaJourneyEntry } from "@/components/contest/ArenaJourneyEntry";
 import type { Metadata, Viewport } from "next";
-import { Barlow_Condensed, Caveat, Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import { cookies, headers } from "next/headers";
 import { Footer } from "@/components/Footer";
 import {
@@ -20,26 +20,31 @@ import { WebVitals } from "@/components/WebVitals";
 import { CartProvider } from "@/context/CartContext";
 import "./globals.css";
 
-const bodyFont = Space_Grotesk({
+const bodyFont = localFont({
+  src: "./fonts/SpaceGrotesk-Latin-Variable.woff2",
   variable: "--font-body",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: "400 700",
+  style: "normal",
   display: "optional",
   fallback: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
 });
 
-const displayFont = Barlow_Condensed({
+const displayFont = localFont({
+  src: [
+    { path: "./fonts/BarlowCondensed-Latin-Bold.woff2", weight: "700", style: "normal" },
+    { path: "./fonts/BarlowCondensed-Latin-ExtraBold.woff2", weight: "800", style: "normal" },
+    { path: "./fonts/BarlowCondensed-Latin-Black.woff2", weight: "900", style: "normal" },
+  ],
   variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["700", "800", "900"],
   display: "swap",
   fallback: ["Arial Narrow", "Impact", "sans-serif"],
 });
 
-const handwrittenFont = Caveat({
+const handwrittenFont = localFont({
+  src: "./fonts/Caveat-Latin-Bold.woff2",
   variable: "--font-handwritten",
-  subsets: ["latin"],
-  weight: ["700"],
+  weight: "700",
+  style: "normal",
   display: "swap",
   fallback: ["cursive", "Comic Sans MS"],
 });

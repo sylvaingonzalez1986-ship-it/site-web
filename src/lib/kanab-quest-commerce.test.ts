@@ -14,12 +14,12 @@ describe("Three sales channels", () => {
     for (const strength of [undefined, "merchant"] as const) {
       const fractional = { ...state, strength, shopPartners: 8, campaign: { ...state.campaign!, shopPartnersStart: 8, shopRecruitmentStart: 1000.1, shopChurnStart: 2000.1 } };
       const good = quoteKqCommerce(fractional, large, "cbd-shop");
-      expect(good.shopRecruitmentAfter).toBe(1000.1);
-      expect(good.shopPartnersAfter).toBe(strength === "merchant" ? 10 : 9);
+      expect(good.shopRecruitmentAfter).toBe(strength === "merchant" ? 4000.1 : 1000.1);
+      expect(good.shopPartnersAfter).toBe(9);
       const bad = quoteKqCommerce(fractional, { ...large, juryScore: 6.5 }, "cbd-shop");
       expect(bad.shopChurnAfter).toBe(2000.1);
       expect(bad.shopPartnersAfter).toBe(6);
-      expect(JSON.parse(JSON.stringify(good)).shopRecruitmentAfter).toBe(1000.1);
+      expect(JSON.parse(JSON.stringify(good)).shopRecruitmentAfter).toBe(strength === "merchant" ? 4000.1 : 1000.1);
     }
   });
 
@@ -112,9 +112,9 @@ describe("Three sales channels", () => {
     expect(getKqCommerceCapacity(1500).baseUnits).toBe(2000);
   });
   it("does not create extra reputation, income or clients when splitting a sale", () => {
-    for (const channel of ["online", "cbd-shop", "wholesale"] as const) {
-      const whole = quoteKqCommerce(state, stock, channel, "advised", 300);
-      const s = structuredClone(state), item = structuredClone(stock);
+    for (const strength of [undefined, "merchant"] as const) for (const channel of ["online", "cbd-shop", "wholesale"] as const) {
+      const whole = quoteKqCommerce({ ...state, strength }, stock, channel, "advised", 300);
+      const s = structuredClone({ ...state, strength }), item = structuredClone(stock);
       let money = 0, reputation = 0;
       for (let i = 0; i < 300; i++) { const q = quoteKqCommerce(s, item, channel, "advised", 1); money += q.payoutCents; reputation += q.reputationDelta; consume(s, item, q); }
       expect(money).toBe(whole.payoutCents); expect(reputation).toBe(whole.reputationDelta);
@@ -193,9 +193,9 @@ describe("real-time shared demand", () => {
     expect(quoteKqCommerce(account, hash, "cbd-shop", "advised", undefined, noon + 6 * hour).units).toBe(400);
     expect(quoteKqCommerce(account, hash, "cbd-shop", "advised", undefined, noon + 6 * hour).shopCost).toBe(2000);
   });
-  it("doubles merchant throughput without doubling refill speed a second time", () => {
+  it("increases merchant throughput by 50% without changing refill duration", () => {
     const account = { ...initial(), strength: "merchant" as const };
-    expect(quoteKqCommerce(account, large, "online", "advised", undefined, noon + hour).units).toBe(450);
+    expect(quoteKqCommerce(account, large, "online", "advised", undefined, noon + hour).units).toBe(337);
     expect(getKqCommerceReplenishment(account, "online", noon + hour)?.remainingMs).toBe(3 * hour);
   });
   it("preserves quality refusals and immediate wholesale with empty demand", () => {

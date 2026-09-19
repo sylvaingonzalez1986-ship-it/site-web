@@ -8,7 +8,7 @@ import { KqPlacardHud } from "./KqPlacardHud";
 import styles from "./KqPlacardLobby.module.css";
 
 const DESTINATIONS = [
-  { id: "workshop", title: "Mon entrepôt", action: "Aménager mon atelier", detail: "Installe ton matériel autour de la box et améliore ta pièce séchoir.", image: "/placard/warehouse-room-v1.webp", icon: Warehouse },
+  { id: "workshop", title: "Mon entrepôt", action: "Aménager mon atelier", detail: "Installe ton matériel autour de la box et améliore ta pièce séchoir.", image: "/placard/warehouse-v2/room.webp", icon: Warehouse },
   { id: "game", title: "La culture", action: "Entrer dans le jeu", detail: "Prépare ton atelier, lance les dés et fais grandir ta prochaine récolte.", image: "/contest/mascot/arena-scene-placard-v1.png", icon: Gamepad2 },
   { id: "market", title: "L’atelier du marché", action: "Ouvrir le marché", detail: "Choisis une machine, transforme ton lot et réinvestis tes gains.", image: "/placard/market-workshop-v1.webp", icon: Banknote },
   { id: "shop", title: "La boutique", action: "Entrer dans la boutique", detail: "Équipe ton placard et découvre les boosters de ta collection.", image: "/placard/booster-shop-interior-v4.webp", icon: ShoppingBag },

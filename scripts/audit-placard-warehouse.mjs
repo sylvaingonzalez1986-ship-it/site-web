@@ -1,13 +1,14 @@
 // Actual warehouse entry, installation controls and upgrade component; local API fixture only.
 import assert from 'node:assert/strict';
-import { mkdir,writeFile } from 'node:fs/promises';
+import { mkdir,readFile,writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { createServer,transformWithOxc } from 'vite';
 import tailwindcss from '@tailwindcss/postcss';
 import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
-const root=process.cwd(),output=resolve(root,'output/warehouse'),origin='http://127.0.0.1:3214';
+const root=process.cwd(),output=resolve(root,process.env.WAREHOUSE_AUDIT_OUTPUT||'output/warehouse'),origin='http://127.0.0.1:3214';
 const modules={
+ 'warehouse-assets':`export default ${await readFile(resolve(root,'public/placard/warehouse-v2/manifest.json'),'utf8')};`,
  'next/dynamic':`import React,{lazy,Suspense} from 'react';export default function dynamic(load){const C=lazy(()=>load().then(defaultExport=>({default:defaultExport})));return props=><Suspense fallback={null}><C {...props}/></Suspense>;}`,
  'link-stub':`import React from 'react';export default function Link({children,...props}){return <a {...props}>{children}</a>;}`,
  'next/image':`import React from 'react';export default function Image({src,fill,priority,unoptimized,...props}){return <img {...props} src={src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,
@@ -24,7 +25,7 @@ const modules={
  return new Response(JSON.stringify(window.__state));};
  function App(){const[open,setOpen]=useState(true);return query.has('shell')?<PlacardPlayerShell/>:open?<KqWarehouseEntry onClose={()=>setOpen(false)} onOpenShop={code=>{window.__shop=code;setOpen(false);}}/>:<button onClick={()=>setOpen(true)}>Ouvrir mon atelier</button>;}createRoot(document.getElementById('root')).render(<App/>);`,
 };
-const server=await createServer({root,configFile:false,envDir:false,cacheDir:resolve(output,'vite-cache'),publicDir:resolve(root,'public'),optimizeDeps:{include:['react','react-dom/client','lucide-react']},resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'warehouse-audit',enforce:'pre',resolveId(id){if(id in modules)return '\0'+id;if(id.endsWith('/components/navigation/NavigationLink'))return '\0link-stub';},async load(id){if(id.startsWith('\0')&&modules[id.slice(1)])return(await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code;},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{--font-display:Impact;--font-sans:Arial}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__warehouse-entry"></script></html>');});}}],server:{host:'127.0.0.1',port:3214,strictPort:true,hmr:false,watch:null}});
+const server=await createServer({root,configFile:false,envDir:false,cacheDir:resolve(output,'vite-cache'),publicDir:resolve(root,'public'),optimizeDeps:{include:['react','react-dom/client','lucide-react']},resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'warehouse-audit',enforce:'pre',resolveId(id){if(id in modules)return '\0'+id;if(id.endsWith('/public/placard/warehouse-v2/manifest.json'))return '\0warehouse-assets';if(id.endsWith('/components/navigation/NavigationLink'))return '\0link-stub';},async load(id){if(id.startsWith('\0')&&modules[id.slice(1)])return(await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code;},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{--font-display:Impact;--font-sans:Arial}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__warehouse-entry"></script></html>');});}}],server:{host:'127.0.0.1',port:3214,strictPort:true,hmr:false,watch:null}});
 let browser;const errors=[];
 try{
  await mkdir(output,{recursive:true});await server.listen();browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});const page=await browser.newPage();page.on('pageerror',e=>errors.push(e.message));await page.setRequestInterception(true);page.on('request',r=>void(r.url().startsWith(origin)||r.url().startsWith('data:')?r.continue():r.abort()));
@@ -57,6 +58,26 @@ try{
   await clickText('Confirmer l’achat');await page.waitForSelector('[aria-labelledby=equipment-purchase-title]');assert.equal(await page.evaluate(()=>window.__state.cashCents),40000);assert.equal(await page.evaluate(()=>window.__state.ownedCodes.includes('DRYING-ROOM')),true);
   await clickText('Installer');await page.waitForSelector('[data-warehouse-slot=flower-drying][aria-pressed=true]:not(:disabled)');await clickText('Installer ici');await page.waitForSelector('[data-warehouse-slot=flower-drying][data-installed=true]');await snap('drying-purchase-'+width);
  }
- await page.setViewport({width:1440,height:1000});await visit('full');await snap('warehouse-full');await visit('full&dog&level=10');await choose('flower-drying');await snap('warehouse-full-dog');
- assert.deepEqual(errors,[]);await writeFile(resolve(output,'report.json'),JSON.stringify({viewports:5,installation:true,upgrades:true,independentDryingSlots:true,starterPreserved:true,emptyInventory:true,insufficientCash:true,failedInstallRetry:true,dryingPurchaseAndVisibleError:true,errors},null,2));console.log('PASS: warehouse on five viewports; drying-room checkout, visible rejection, retry and installation on mobile and desktop.');
+ await page.setViewport({width:1440,height:1000});await visit('full');await snap('warehouse-full');
+ const scene=await page.$('[aria-label="Les emplacements de ton entrepôt"]');assert.ok(scene);await scene.screenshot({path:resolve(output,'warehouse-full-scene.png')});
+ const geometry=await page.$$eval('[data-warehouse-slot]',elements=>elements.map(el=>{const r=el.getBoundingClientRect(),scene=el.parentElement.getBoundingClientRect();return{slot:el.dataset.warehouseSlot,installed:el.dataset.installed==='true',x:r.x-scene.x,y:r.y-scene.y,width:r.width,height:r.height,sceneWidth:scene.width,sceneHeight:scene.height};}));
+ await writeFile(resolve(output,'scene-geometry.json'),JSON.stringify(geometry,null,2));
+ const hitChecks=[];
+ for(const [width,height]of[[1440,1000],[390,844]]){
+  await page.setViewport({width,height,isMobile:width<700,hasTouch:width<700});await visit('full');
+  for(const slot of geometry.map(item=>item.slot)){
+   const target=await page.$('[data-warehouse-slot="'+slot+'"]');await target.evaluate(el=>el.scrollIntoView({block:'center',inline:'center',behavior:'instant'}));
+   const hit=await target.evaluate(el=>{const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;return{x,y,slot:document.elementFromPoint(x,y)?.closest('[data-warehouse-slot]')?.getAttribute('data-warehouse-slot')??null};});
+   assert.equal(hit.slot,slot,`${width}px: ${slot} must remain independently clickable`);await page.mouse.click(hit.x,hit.y);await page.waitForFunction(slot=>document.querySelector('[data-warehouse-slot="'+slot+'"]')?.getAttribute('aria-pressed')==='true',{},slot);hitChecks.push({width,slot});
+   if(width===390&&['press','washing','drying','flower-drying'].includes(slot))await snap('warehouse-full-'+slot+'-'+width);
+  }
+ }
+ for(const [width,height]of[[320,740],[390,844]]){
+  await page.setViewport({width,height,isMobile:true,hasTouch:true});await visit('full');await clickText('Vue d’ensemble');await page.waitForSelector('[data-overview=true]');await snap('warehouse-overview-'+width);
+  assert.equal(await page.$eval('[data-overview=true]',el=>el.scrollWidth<=el.clientWidth+1),true,'Overview must fit the mobile width');
+  assert.equal(await page.$eval('[aria-label="Les emplacements de ton entrepôt"]',el=>{const r=el.getBoundingClientRect();return Math.abs(r.width/r.height-2)<0.01;}),true,'Overview preserves the room proportions');
+  await clickText('Agrandir le décor');await page.waitForSelector('[data-overview=false]');assert.equal(await page.$eval('[data-overview=false]',el=>el.scrollWidth>el.clientWidth),true,'Detailed view can pan again');
+ }
+ await page.setViewport({width:1440,height:1000});await visit('full&dog&level=10');await choose('flower-drying');await snap('warehouse-full-dog');
+ assert.deepEqual(errors,[]);await writeFile(resolve(output,'report.json'),JSON.stringify({viewports:5,installation:true,upgrades:true,independentDryingSlots:true,starterPreserved:true,emptyInventory:true,insufficientCash:true,failedInstallRetry:true,dryingPurchaseAndVisibleError:true,independentHitTargets:hitChecks,mobileOverview:true,errors},null,2));console.log('PASS: warehouse on five viewports; drying-room checkout, visible rejection, retry and installation on mobile and desktop; all equipment remains independently clickable; mobile overview and detail views.');
 }finally{await browser?.close();await server.close();}

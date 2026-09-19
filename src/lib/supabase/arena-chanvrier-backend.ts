@@ -4,7 +4,7 @@ import { createSupabaseServiceClient } from "./admin";
 
 export async function getChanvrierProfile(userId: string): Promise<ChanvrierProfile | null> {
   const result = await createSupabaseServiceClient().from("arena_chanvrier_profiles")
-    .select("nickname,gender,clothing,skin,strength").eq("user_id", userId).maybeSingle();
+    .select("nickname,gender,clothing,skin,strength,appearance").eq("user_id", userId).maybeSingle();
   if (result.error) throw new Error(`[supabase:chanvrier] ${result.error.message}`);
   return parseChanvrierProfile(result.data);
 }

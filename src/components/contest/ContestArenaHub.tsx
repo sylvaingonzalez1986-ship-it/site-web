@@ -3,16 +3,21 @@
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import { useEffect, useRef, useState, type PointerEvent, type KeyboardEvent } from "react";
-import { ArrowUpRight, Gift, BookOpen, Gamepad2, Trophy, Target } from "lucide-react";
+import { ArrowUpRight, Gift, BookOpen, Gamepad2, Trophy, Target, X } from "lucide-react";
 import { ArenaFirstVisitTutorial } from "@/components/contest/ArenaFirstVisitTutorial";
 import { ARENA_LOBBY_MODES, ARENA_LOBBY_MODE_ORDER, type ArenaLobbyMode } from "@/lib/arena-lobby";
 import retro from "@/components/contest/ArenaRetro.module.css";
 import styles from "./ArenaLobby.module.css";
 
+import { ArenaPrelaunchCharacter } from "./ArenaPrelaunchCharacter";
+import { ARENA_OPENING_MESSAGE } from "@/lib/arena-opening";
+import opening from "./ArenaPrelaunch.module.css";
+
 const MODE_ICONS = { carnet: BookOpen, jouer: Gamepad2, classement: Trophy };
 
-export function ContestArenaHub() {
-  const [selected, setSelected] = useState<ArenaLobbyMode>("jouer");
+export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer", initialNotice = false }: { activitiesLocked?: boolean; initialMode?: ArenaLobbyMode; initialNotice?: boolean }) {
+  const [selected, setSelected] = useState<ArenaLobbyMode>(initialMode);
+  const [notice, setNotice] = useState(initialNotice);
   const mode = ARENA_LOBBY_MODES[selected];
   const sceneRef = useRef<HTMLDivElement | null>(null);
   const frameRef = useRef<number | null>(null);
@@ -23,6 +28,7 @@ export function ContestArenaHub() {
 
   const preview = (next: ArenaLobbyMode) => {
     setSelected(next);
+    setNotice(false);
   };
 
   const navigateModes = (event: KeyboardEvent<HTMLElement>) => {
@@ -58,7 +64,7 @@ export function ContestArenaHub() {
 
   return (
     <main data-world="arena" data-lobby-mode={selected} className={`${retro.surface} ${styles.lobby}`}
-      onPointerMove={moveScene} onPointerLeave={resetScene}>
+      onPointerMove={moveScene} onPointerLeave={resetScene} onKeyDown={event => { if (event.key === "Escape") setNotice(false); }}>
       <div className={styles.scene} ref={sceneRef}>
         {ARENA_LOBBY_MODE_ORDER.map((id) => {
           const scene = ARENA_LOBBY_MODES[id];
@@ -77,10 +83,11 @@ export function ContestArenaHub() {
 
       <header className={styles.topBar}>
         <div className={styles.brand}><span>Kanab Quest</span><h1>L’Arène.</h1></div>
+      {activitiesLocked && <ArenaPrelaunchCharacter />}
       </header>
 
       <div className={styles.breathingRoom} aria-hidden="true" />
-      <Link href="/arene?vue=classement" className={styles.rewardInvitation}>
+      <Link href="/arene?vue=classement" className={styles.rewardInvitation} onClick={activitiesLocked ? event => { event.preventDefault(); setSelected("classement"); setNotice(true); } : undefined}>
         <Gift aria-hidden="true" />
         <span><strong>Deviens le meilleur chanvrier.</strong><small>Note les fleurs que tu as goûtées, cultive les tiennes et monte au classement pour gagner une part des fleurs redistribuées en fin de saison.</small><b>Découvrir les fleurs à gagner <ArrowUpRight size={16} aria-hidden="true" /></b></span>
       </Link>
@@ -99,10 +106,21 @@ export function ContestArenaHub() {
             </button>;
           })}
         </nav>
-        <Link href={mode.href} className={styles.enter} data-lobby-enter>
-          <span>{mode.action}</span><ArrowUpRight aria-hidden="true" />
-        </Link>
-        <div className={styles.help}><ArenaFirstVisitTutorial /><Link href="/arene/placard?view=missions"><Target size={17} aria-hidden="true" />Mes missions · Packs La Botte</Link></div>
+        {activitiesLocked ? <div className={opening.entry}>
+          {notice && <div className={opening.bubble} role="status" id="arena-opening-notice">
+            <button type="button" className={opening.dismiss} aria-label="Fermer le message" onClick={() => setNotice(false)}><X size={18} aria-hidden="true" /></button>
+            <small>Ouverture de l’arène</small><strong>{ARENA_OPENING_MESSAGE}</strong>
+            <p>Prépare ton personnage. Le Carnet, le Placard et le Classement arrivent bientôt !</p>
+          </div>}
+          <button type="button" className={styles.enter} data-lobby-enter aria-describedby={notice ? "arena-opening-notice" : undefined} onClick={() => setNotice(true)}><span>{mode.action}</span><ArrowUpRight aria-hidden="true" /></button>
+        </div> : <Link href={mode.href} className={styles.enter} data-lobby-enter><span>{mode.action}</span><ArrowUpRight aria-hidden="true" /></Link>}
+        <div className={styles.help}>
+          {!activitiesLocked && <ArenaFirstVisitTutorial />}
+          {activitiesLocked ? <>
+            <button type="button" className={opening.helpButton} onClick={() => setNotice(true)}><Gift size={17} aria-hidden="true" />Pack des Pionniers</button>
+            <button type="button" className={opening.helpButton} onClick={() => setNotice(true)}><Target size={17} aria-hidden="true" />Mes missions · Packs La Botte</button>
+          </> : <><Link href="/profil/collection#pack-pionniers"><Gift size={17} aria-hidden="true" />Pack des Pionniers</Link><Link href="/arene/placard?view=missions"><Target size={17} aria-hidden="true" />Mes missions · Packs La Botte</Link></>}
+        </div>
       </div>
     </main>
   );

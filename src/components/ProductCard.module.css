@@ -1,26 +1,28 @@
 .card {
+  composes: surface from "./boutique/MarketTheme.module.css";
   min-width: 0;
   container-type: inline-size;
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--market-green);
+  border-radius: 4px;
   background: var(--cream);
-  box-shadow: 7px 7px 0 rgba(17, 21, 18, 0.2);
+  box-shadow: 0 5px 0 var(--market-green);
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .card:hover {
-  box-shadow: 10px 10px 0 rgba(17, 21, 18, 0.24);
-  transform: translate(-2px, -3px);
+  box-shadow: 0 8px 0 var(--market-green);
+  transform: translateY(-3px);
 }
 
 .media {
   position: relative;
   aspect-ratio: 4 / 3 !important;
   overflow: hidden;
-  border-bottom: 3px solid var(--ink);
-  background: #e9e2d5;
+  border-bottom: 2px solid var(--market-green);
+  background: #e6ebe0;
 }
 
 .body {
@@ -38,6 +40,7 @@
 }
 
 .category {
+  font-family: ui-monospace, Consolas, monospace;
   color: var(--teal);
   font-size: 0.68rem;
   font-weight: 900;
@@ -62,7 +65,7 @@
   height: 38px;
   overflow: hidden;
   border: 2px solid var(--ink);
-  background: #fff;
+  background: var(--market-paper);
 }
 
 .titleRow {
@@ -74,6 +77,7 @@
 }
 
 .title {
+  color: var(--market-green);
   font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
   font-size: clamp(1.75rem, 3vw, 2.25rem);
   font-weight: 900;
@@ -111,7 +115,7 @@
 .tasting {
   margin-top: 1rem;
   border: 2px solid var(--ink);
-  background: #fff;
+  background: var(--market-paper);
 }
 
 .tastingSummary {
@@ -149,7 +153,7 @@
 .criterion,
 .review {
   border: 1px solid var(--ink);
-  background: #fff;
+  background: var(--market-paper);
 }
 
 .actions {
@@ -161,7 +165,7 @@
 @media (max-width: 640px) {
   .card,
   .card:hover {
-    box-shadow: 5px 5px 0 rgba(17, 21, 18, 0.2);
+    box-shadow: 0 4px 0 var(--market-green);
     transform: none;
   }
 
@@ -186,7 +190,7 @@
   .tastingIcon { display: none; }
   .tastingBody { padding: 6px; }
   .media > span { max-width: calc(100% - 12px); left: 6px; right: auto; padding: 2px 4px; font-size: 9px; }
-  .media > span:nth-of-type(2) { top: 38px; }
+  .media > span:nth-of-type(2):not(:global(.bottom-3)) { top: 38px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

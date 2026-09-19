@@ -1,12 +1,14 @@
 .panel {
   margin-top: 1.5rem;
   padding: 1rem;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--market-green, var(--teal));
+  border-radius: 2px;
   background: color-mix(in srgb, var(--teal) 8%, var(--cream));
-  box-shadow: 5px 5px 0 rgba(17, 21, 18, 0.16);
+  box-shadow: 0 4px 0 var(--market-green, var(--teal));
 }
 
 .heading {
+  font-family: ui-monospace, Consolas, monospace;
   margin-bottom: 0.9rem;
   color: var(--teal);
   font-size: 0.7rem;

@@ -8,6 +8,7 @@ import PlacardPlayerPage from "./page";
 
 beforeEach(() => {
   vi.resetAllMocks();
+  vi.spyOn(Date, "now").mockReturnValue(Date.parse("2026-10-16T00:00:00Z"));
   vi.stubEnv("NODE_ENV", "production");
   vi.stubEnv("CONTEST_FEATURE_ENABLED", "true");
   vi.stubEnv("CONTEST_FEATURE_ALLOW_PRODUCTION", "true");
@@ -15,7 +16,7 @@ beforeEach(() => {
   mocks.session.mockResolvedValue(null);
 });
 
-afterEach(() => vi.unstubAllEnvs());
+afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
 
 describe("Placard page entry", () => {
   it("sends a visitor without a customer session to login with a return to the Placard", async () => {

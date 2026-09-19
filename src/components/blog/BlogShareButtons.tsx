@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import styles from "./Blog.module.css";
 
 type BlogShareButtonsProps = {
   url: string;
@@ -37,8 +38,8 @@ export function BlogShareButtons({ url, title, excerpt }: BlogShareButtonsProps)
   };
 
   return (
-    <div className="cartoon-border bg-white p-4">
-      <p className="text-xs font-bold uppercase tracking-[0.12em] text-charcoal">Partager cet article</p>
+    <div className={styles.panel}>
+      <p className={styles.shareLabel}>Partager cet article</p>
       <div className="mt-3 flex flex-wrap gap-2">
         {links.map((item) => (
           <a
@@ -56,7 +57,7 @@ export function BlogShareButtons({ url, title, excerpt }: BlogShareButtonsProps)
           onClick={copyLink}
           className="btn-cartoon btn-primary inline-flex h-10 items-center px-4 text-xs"
         >
-          {copied ? "Lien copie" : "Copier le lien"}
+          {copied ? "Lien copié" : "Copier le lien"}
         </button>
       </div>
     </div>

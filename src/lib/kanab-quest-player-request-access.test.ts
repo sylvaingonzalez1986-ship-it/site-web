@@ -14,6 +14,7 @@ const player = (email: string, contestBetaEnabled = false) => ({ customerId: "ve
 
 beforeEach(() => {
   vi.resetAllMocks();
+  vi.spyOn(Date, "now").mockReturnValue(Date.parse("2026-10-16T00:00:00Z"));
   vi.stubEnv("NODE_ENV", "production");
   vi.stubEnv("CONTEST_FEATURE_ENABLED", "true");
   vi.stubEnv("CONTEST_FEATURE_ALLOW_PRODUCTION", "true");
@@ -26,7 +27,7 @@ beforeEach(() => {
   mocks.startRun.mockResolvedValue({ runId: "new-run" });
   mocks.limit.mockResolvedValue({ allowed: true });
 });
-afterEach(() => vi.unstubAllEnvs());
+afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
 
 describe("private production Placard access", () => {
   it.each([

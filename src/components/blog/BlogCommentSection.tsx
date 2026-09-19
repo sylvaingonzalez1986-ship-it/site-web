@@ -4,6 +4,7 @@ import Link from "@/components/navigation/NavigationLink";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useCustomerSession } from "@/hooks/useCustomerSession";
 import type { BlogComment } from "@/types/blog";
+import styles from "./Blog.module.css";
 
 type BlogCommentSectionProps = {
   postId: string;
@@ -80,17 +81,17 @@ export function BlogCommentSection({ postId }: BlogCommentSectionProps) {
   };
 
   return (
-    <div className="cartoon-border bg-white p-5">
-      <h2 className="font-display text-2xl text-ink">Commentaires</h2>
+    <div className={styles.panel}>
+      <h2 className={styles.panelTitle}>Commentaires</h2>
 
       <div className="mt-4 grid gap-3">
         {visibleComments.length === 0 && (
-          <p className="text-sm text-charcoal">Aucun commentaire approuve pour le moment.</p>
+          <p className="text-sm text-charcoal">Aucun commentaire approuvé pour le moment.</p>
         )}
         {visibleComments.map((comment) => (
-          <article key={comment.id} className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
+          <article key={comment.id} className={styles.comment}>
             <div className="flex items-center gap-3">
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-white text-xs font-bold text-ink">
+              <span className={styles.initials}>
                 {formatInitials(comment.customerFirstName, comment.customerLastName)}
               </span>
               <div>
@@ -130,12 +131,13 @@ export function BlogCommentSection({ postId }: BlogCommentSectionProps) {
             <textarea
               value={content}
               onChange={(event) => setContent(event.target.value)}
-              className="min-h-24 border-2 border-[#1a1a1a] bg-white p-3 text-sm"
+              className={styles.commentField}
+              aria-label="Votre commentaire"
               placeholder="Votre commentaire..."
               maxLength={2000}
             />
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-xs text-charcoal">Votre commentaire sera visible apres moderation.</p>
+              <p className="text-xs text-charcoal">Votre commentaire sera visible après modération.</p>
               <button
                 type="submit"
                 disabled={saving}
@@ -148,7 +150,7 @@ export function BlogCommentSection({ postId }: BlogCommentSectionProps) {
         )}
       </div>
 
-      {status && <p className="mt-3 text-xs font-semibold text-ink">{status}</p>}
+      {status && <p role="status" className="mt-3 text-xs font-semibold text-ink">{status}</p>}
     </div>
   );
 }

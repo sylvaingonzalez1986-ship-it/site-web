@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, CircleAlert, PackageOpen, RefreshCw, ShoppingBag, X } from "lucide-react";
+import { ArrowDown, ArrowUp, Check, CircleAlert, PackageOpen, RefreshCw, Settings2, ShieldCheck, ShoppingBag, Sprout, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentImpactLabels, getKqEquipmentRequirementState, KQ_EQUIPMENT_CATALOG, KQ_EQUIPMENT_SLOT_LABELS, summarizeKqEquipmentLoadout, type KqEquipmentDefinition, type KqEquipmentSlot } from "@/lib/kanab-quest-equipment";
@@ -11,6 +11,12 @@ import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { KqWarehouseScene, WAREHOUSE_ZONES } from "./KqWarehouseScene";
 import styles from "./KqWarehouseInventory.module.css";
 
+const WAREHOUSE_GROUPS: readonly { code: string; label: string; description: string; slots: readonly KqEquipmentSlot[]; icon: typeof Sprout }[] = [
+  { code: "grow", label: "Cultiver", description: "La box et son environnement", slots: ["tent", "lighting", "air", "climate-controller"], icon: Sprout },
+  { code: "process", label: "Transformer", description: "Tes postes de transformation", slots: ["sifting", "washing", "filtration", "static-separation", "press", "drying"], icon: Settings2 },
+  { code: "services", label: "Services", description: "Les essentiels de l’atelier", slots: ["flower-drying", "energy", "security"], icon: ShieldCheck },
+];
+
 export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,maintenance={},loading,loadError,onClose,onOpenShop,onRetry,initialSlot="tent"}:{
   maintenance?:Record<string,KqMachineCondition>;
   ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;loading:boolean;loadError:string;
@@ -19,6 +25,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
 }) {
   const closeButton=useRef<HTMLButtonElement>(null);
   const panel=useRef<HTMLElement>(null);
+  const workshop=useRef<HTMLDivElement>(null);
   const lock=useRef(false);
   const [slot,setSlot]=useState<KqEquipmentSlot>(initialSlot);
   const [pending,setPending]=useState<string|null>(null);
@@ -32,13 +39,19 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   const choices=equipment.filter(item=>item.slot===slot);
   const installed=choices.find(item=>activeCodes.includes(item.code));
   const suggestion=KQ_EQUIPMENT_CATALOG.find(item=>item.slot===slot&&item.purchasable&&!ownedCodes.includes(item.code));
+  const installedSlots=new Set(equipment.filter(item=>activeCodes.includes(item.code)).map(item=>item.slot));
+  const selectedGroup=WAREHOUSE_GROUPS.find(group=>group.slots.includes(slot))??WAREHOUSE_GROUPS[0];
+  const groupZones=selectedGroup.slots.map(groupSlot=>WAREHOUSE_ZONES.find(zone=>zone.slot===groupSlot)).filter(zone=>!!zone);
   useBodyScrollLock(true);
   useEffect(()=>{const previous=document.activeElement instanceof HTMLElement?document.activeElement:null;closeButton.current?.focus({preventScroll:true});return()=>{if(previous?.isConnected)previous.focus({preventScroll:true});};},[]);
   useEffect(()=>{
     const escape=(event:KeyboardEvent)=>{if(event.key==="Escape"&&!event.defaultPrevented)onClose();};
     document.addEventListener("keydown",escape);return()=>document.removeEventListener("keydown",escape);
   },[onClose]);
-  const select=(next:KqEquipmentSlot)=>{setSlot(next);setError("");if(innerWidth<900)requestAnimationFrame(()=>panel.current?.scrollIntoView({block:"nearest",behavior:"instant"}));};
+  const select=(next:KqEquipmentSlot)=>{setSlot(next);setError("");};
+  const scrollToSection=(target:HTMLElement|null)=>{target?.scrollIntoView({block:"start",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"});target?.focus({preventScroll:true});};
+  const showDetails=()=>scrollToSection(panel.current);
+  const showWorkshop=()=>scrollToSection(workshop.current);
   const openShop=(code?:string)=>{onClose();onOpenShop(code);};
   const equip=async(item:KqEquipmentDefinition)=>{
     if(lock.current||loading||activeCodes.includes(item.code)||!purchasedCodes.includes(item.code))return;
@@ -62,19 +75,29 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
       else if(!event.shiftKey&&document.activeElement===controls.at(-1)){event.preventDefault();controls[0]?.focus();}
     }}>
       <header className={styles.header}>
-        <div><small>Le Placard · ton atelier</small><h2 id="equipment-inventory-title" data-arena-tour="warehouse">Mon entrepôt</h2><p>Clique sur la box ou un emplacement pour installer ton matériel.</p></div>
-        <strong>{formatKqCash(cashCents)}</strong><button ref={closeButton} type="button" onClick={onClose} aria-label="Fermer l’inventaire"><X/></button>
+        <div><small>Le Placard · ton atelier</small><h2 id="equipment-inventory-title" data-arena-tour="warehouse">Mon entrepôt</h2><p>Explore ton atelier et choisis un emplacement pour l’aménager.</p></div>
+        <div className={styles.balance}><small>Trésorerie</small><strong>{formatKqCash(cashCents)}</strong></div><button ref={closeButton} type="button" onClick={onClose} aria-label="Fermer l’inventaire"><X/></button>
       </header>
       <div className={styles.layout}>
-        <div className={styles.workshop}>
+        <div ref={workshop} className={styles.workshop} tabIndex={-1} aria-label="Explorer l’entrepôt">
+          <nav className={styles.groups} aria-label="Activités de l’entrepôt">
+            {WAREHOUSE_GROUPS.map(group=>{const Icon=group.icon;return <button key={group.code} type="button" aria-pressed={selectedGroup.code===group.code} onClick={()=>select(group.slots.includes(slot)?slot:group.slots[0])}>
+              <Icon size={19} aria-hidden="true"/><span><strong>{group.label}</strong><small>{group.slots.filter(groupSlot=>installedSlots.has(groupSlot)).length}/{group.slots.length} installés</small></span>
+            </button>;})}
+          </nav>
           <KqWarehouseScene equippedCodes={activeCodes} levels={levels} selectedSlot={slot} onSelect={select} disabled={loading||!!loadError||!!pending}/>
-          <p className={styles.panHint}>Sur petit écran, fais glisser le décor pour explorer l’entrepôt.</p>
-          <nav className={styles.slots} aria-label="Emplacements de l’entrepôt">{WAREHOUSE_ZONES.map(zone=><button key={zone.slot} type="button" aria-pressed={slot===zone.slot} onClick={()=>select(zone.slot)}>{KQ_EQUIPMENT_SLOT_LABELS[zone.slot]}</button>)}</nav>
-          <dl className={styles.stats}><div><dt>Quantité</dt><dd>+{summary.quantityPercent} %</dd></div><div><dt>Qualité max.</dt><dd>+{summary.qualityMaxBonus}</dd></div><div><dt>Régularité</dt><dd>+{summary.regularityPercent} %</dd></div><div><dt>Électricité / cycle</dt><dd>{formatKqCash(energy.totalCents)}</dd></div></dl>
-          <small className={styles.estimate}>Estimation en mode équilibré, hors nourriture et vétérinaire. L’installation est fixée au lancement de chaque culture.</small>
+          <p className={styles.panHint}>En vue agrandie, fais glisser le décor pour explorer chaque poste.</p>
+          <div className={styles.navigation}>
+            <div className={styles.groupHeading}><strong>{selectedGroup.label}</strong><span>{selectedGroup.description}</span></div>
+            <nav className={styles.slots} aria-label="Emplacements de l’entrepôt">{groupZones.map(zone=><button key={zone.slot} type="button" aria-pressed={slot===zone.slot} data-installed={installedSlots.has(zone.slot)} onClick={()=>select(zone.slot)}><span>{KQ_EQUIPMENT_SLOT_LABELS[zone.slot]}</span><small>{installedSlots.has(zone.slot)?<><Check size={12} aria-hidden="true"/>Installé</>:"Libre"}</small></button>)}</nav>
+            <div className={styles.selectionSummary}><div><small>Ta sélection</small><strong>{KQ_EQUIPMENT_SLOT_LABELS[slot]}</strong><span>{installed?.name??"Emplacement libre"}</span></div><button type="button" onClick={showDetails}>Voir le détail<ArrowDown size={16} aria-hidden="true"/></button></div>
+          </div>
+          <div className={styles.performance}><h3>Ton installation en un coup d’œil</h3><dl className={styles.stats}><div><dt>Quantité</dt><dd>+{summary.quantityPercent} %</dd></div><div><dt>Qualité max.</dt><dd>+{summary.qualityMaxBonus}</dd></div><div><dt>Régularité</dt><dd>+{summary.regularityPercent} %</dd></div><div><dt>Électricité / cycle</dt><dd>{formatKqCash(energy.totalCents)}</dd></div></dl>
+          <small className={styles.estimate}>Estimation en mode équilibré, hors nourriture et vétérinaire. L’installation est fixée au lancement de chaque culture.</small></div>
         </div>
-        <aside ref={panel} className={styles.panel} aria-labelledby="warehouse-slot-title">
-          <small>Emplacement sélectionné</small><h3 id="warehouse-slot-title">{KQ_EQUIPMENT_SLOT_LABELS[slot]}</h3>
+        <aside ref={panel} className={styles.panel} tabIndex={-1} aria-labelledby="warehouse-slot-title">
+          <button type="button" className={styles.backToScene} onClick={showWorkshop}><ArrowUp size={16} aria-hidden="true"/>Retour à l’entrepôt</button>
+          <div className={styles.panelHeading}><small>{selectedGroup.label} · emplacement sélectionné</small><span data-installed={!!installed}>{installed?<><Check size={12} aria-hidden="true"/>Installé</>:"Libre"}</span></div><h3 id="warehouse-slot-title">{KQ_EQUIPMENT_SLOT_LABELS[slot]}</h3>
           {slot==="flower-drying"?<p>Ta pièce dédiée aux fleurs récoltées. Chaque niveau renforce la régularité ; la qualité maximale augmente aux niveaux 4, 7 et 10. Le résultat dépend aussi de tes réussites en culture.</p>:<p>{installed?`${installed.name} est en place.`:"Choisis un équipement acheté pour aménager cet emplacement."}</p>}
           <div aria-live="polite">{error||loadError?<p role="alert" className={styles.error}><CircleAlert size={16}/>{error||loadError}</p>:null}{notice?<p role="status" className={styles.notice}><Check size={16}/>{notice}</p>:null}</div>
           {loading?<p role="status">Actualisation de l’atelier…</p>:loadError?<button type="button" onClick={onRetry}><RefreshCw size={16}/>Réessayer</button>:<>

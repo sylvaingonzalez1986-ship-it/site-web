@@ -163,7 +163,7 @@ export function BoutiquePageClient({
             description={boutique.description}
             imageSrc="/mascots/boutique-market.png"
             imageAlt="Charles présente la sélection de produits de la boutique"
-            className={spacingClass}
+            className={`${spacingClass} ${styles.hero}`}
           >
             <div className="mt-6">
               <div className="mx-auto mb-5 w-full max-w-3xl">

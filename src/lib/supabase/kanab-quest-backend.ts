@@ -952,7 +952,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     equipmentLevels: equipmentShop.levels,
     energyMode: input.energyMode ?? "balanced",
   });
-  if (equipmentShop.strength === "green-thumb") state.effectNotices = [...(state.effectNotices ?? []), "Main Verte : +4 XP pour cette culture."];
+  if (equipmentShop.strength === "green-thumb") state.effectNotices = [...(state.effectNotices ?? []), "Main Verte : +2 XP pour cette culture."];
   if (input.expectedEnergyCents !== undefined && input.expectedEnergyCents !== state.energy?.totalCents) throw new Error("L’installation a changé. Actualise le devis électrique avant de lancer.");
   const supabase = createSupabaseServiceClient();
   const result = await supabase.rpc("rpc_kq_start_run_with_heritage", {

@@ -1,0 +1,51 @@
+/* Shared arena styling for the market and journal, including their dialogs. */
+.surface {
+  composes: surface from "./contest/ArenaRetro.module.css";
+  --teal: var(--arcade-green);
+  --cream: var(--arcade-paper);
+  --yellow: var(--arcade-yellow);
+  --ink: var(--arcade-ink);
+  color: var(--ink);
+}
+.surface :global(.btn-cartoon) {
+  min-height: 44px;
+  border: 2px solid var(--arcade-green);
+  border-radius: 2px;
+  box-shadow: 0 3px 0 var(--arcade-dark);
+  font-size: .75rem;
+  letter-spacing: .035em;
+}
+.surface :global(.btn-cartoon)::after { display: none; }
+.surface :global(.btn-primary) { background: var(--arcade-yellow); color: var(--arcade-dark); }
+.surface :global(.btn-secondary) { background: var(--arcade-paper); color: var(--arcade-green); }
+.surface :global(.btn-cartoon):disabled { opacity: .5; box-shadow: none; transform: none; }
+@media (hover: hover) {
+  .surface :global(.btn-cartoon):hover:not(:disabled) {
+    background: var(--arcade-green);
+    color: var(--arcade-paper);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0 var(--arcade-dark);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .surface :global(.btn-cartoon) { transition: none; }
+}
+
+.hero:global(.world-hero) {
+  border: 2px solid var(--arcade-green);
+  border-radius: 4px;
+  background: radial-gradient(ellipse at 85% 20%, #00563f, transparent 65%), var(--arcade-dark);
+  box-shadow: 0 6px 0 #002d24;
+  color: var(--arcade-paper);
+}
+.hero :global(.section-title) { color: var(--arcade-paper); line-height: .95; }
+.hero :global(.editorial-world-hero__description) { color: #fffaf1df; }
+.hero :global(.editorial-world-hero__copy) > p {
+  border: 0; padding: 0; background: transparent; color: var(--arcade-yellow); box-shadow: none;
+  font: 800 .7rem/1.5 ui-monospace, monospace; letter-spacing: .16em;
+}
+.hero :global(.editorial-world-hero__character)::before {
+  border: 1px solid #fffaf140; border-radius: 4px; background: #00563f;
+  box-shadow: 8px 8px 0 #002d24; transform: translate(-50%, -50%) rotate(-5deg);
+}
+.hero :global(.editorial-world-hero__content) { border-top: 1px solid #fffaf140; }

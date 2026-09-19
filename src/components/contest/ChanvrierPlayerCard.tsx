@@ -1,4 +1,5 @@
 "use client";
+import { ChanvrierSavingsPanel } from "./ChanvrierSavingsPanel";
 
 import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
@@ -123,6 +124,7 @@ export function ChanvrierPlayerCard({ profile, onEdit }: { profile: ChanvrierPro
             <button type="button" className={styles.edit} onClick={() => { close(); onEdit(); }}><Pencil size={13} />Personnaliser mon personnage</button>
           </div>
         </div>
+        {profile.strength === "treasurer" ? <ChanvrierSavingsPanel /> : null}
         <nav className={styles.tabs} aria-label="Rubriques de ma carte">{([
           ["journey", "Mon parcours", Target], ["achievements", "Succès", Trophy], ["badges", "Badges", Medal],
         ] as const).map(([key, label, Icon]) => <button type="button" key={key} aria-pressed={tab === key} onClick={() => setTab(key)}><Icon size={17} />{label}</button>)}</nav>
