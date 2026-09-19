@@ -259,7 +259,7 @@ export function Navbar() {
             className={styles.mobileBrand}
             aria-label="Les Chanvriers Bretons, accueil"
           >
-            <span className={styles.wordmark}><small>Les Chanvriers</small><strong>Bretons.</strong></span>
+            <span className={styles.wordmark}><small>Les Chanvriers</small><strong>Bretons</strong></span>
           </Link>
 
           <nav className="game-nav-links hidden items-center gap-2 md:flex">
