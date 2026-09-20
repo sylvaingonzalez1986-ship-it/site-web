@@ -32,6 +32,8 @@ import {
   type KqMarketRouteCode,
 } from "@/lib/kanab-quest-market";
 import { getKqReputationProgress } from "@/lib/kanab-quest-reputation";
+import type { KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
+import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { KqEnergyPanel } from "./KqEnergyPanel";
 import { KqEquipmentInventoryModal } from "./KqEquipmentInventoryModal";
 import styles from "./KqPlacardHud.module.css";
@@ -44,6 +46,8 @@ type EquipmentHudSnapshot = {
   purchasedCodes: string[];
   equippedCodes: string[];
   activeRun: boolean;
+  cultureWear?: Record<string, KqCultureEquipmentCondition>;
+  maintenance?: Record<string, KqMachineCondition>;
   readyLotCount: number;
   availableFlowerCount: number;
   routePlan: { route: KqMarketRouteCode; equipmentCode: string } | null;
@@ -239,7 +243,7 @@ export function KqPlacardHud({
           {activeTab === "energy" ? <KqEnergyPanel /> : null}
           {activeTab === "equipment" ? <>
             <div className={styles.sectionIntro}><Image src="/placard/collection-chest.png" alt="" width={100} height={100} sizes="80px" /><div><p>Ton matériel durable</p><h3>{summary.installed.length} équipement{summary.installed.length > 1 ? "s" : ""} installé{summary.installed.length > 1 ? "s" : ""}</h3><span>{summary.purchased.length ? `${summary.purchased.length} investissement${summary.purchased.length > 1 ? "s" : ""} acquis` : "Ton kit de départ est opérationnel."}</span></div></div>
-            {preview.length ? <ul className={styles.equipmentList}>{preview.map((equipment) => <li key={equipment.code}><span>{equipment.name} · Niv. {snapshot?.levels?.[equipment.code] ?? 1}</span><small data-installed={equipment.equipped}>{equipment.equipped ? "Installé" : "En réserve"}</small></li>)}</ul> : <p className={styles.hint}>Retrouve tes équipements de base dans l’inventaire et choisis ceux à installer.</p>}
+            {preview.length ? <ul className={styles.equipmentList}>{preview.map((equipment) => <li key={equipment.code}><span>{equipment.name} · Niv. {snapshot?.levels?.[equipment.code] ?? 1}</span><small data-installed={equipment.equipped && !snapshot?.cultureWear?.[equipment.code]?.due}>{snapshot?.cultureWear?.[equipment.code]?.due ? "Hors service" : equipment.equipped ? "Installé" : "En réserve"}</small></li>)}</ul> : <p className={styles.hint}>Retrouve tes équipements de base dans l’inventaire et choisis ceux à installer.</p>}
             {hiddenCount > 0 ? <p className={styles.hint}>Et {hiddenCount} autre{hiddenCount > 1 ? "s" : ""} dans ton inventaire.</p> : null}
             <div className={styles.actions}><button type="button" className={styles.primary} onClick={() => setInventoryOpen(true)}><PackageCheck size={18} aria-hidden="true" /> Ouvrir l’Inventaire</button><button type="button" className={styles.secondary} onClick={() => onOpenShop()}><ShoppingBag size={17} aria-hidden="true" /> Boutique</button></div>
           </> : null}
@@ -284,7 +288,10 @@ export function KqPlacardHud({
         equippedCodes={snapshot?.equippedCodes ?? []}
         levels={snapshot?.levels ?? {}}
         cashCents={snapshot?.cashCents ?? 0}
-        loading={loading && !snapshot}
+        cultureWear={snapshot?.cultureWear}
+        maintenance={snapshot?.maintenance}
+        activeRun={snapshot?.activeRun ?? false}
+        loading={loading}
         loadError={error}
         onClose={closeInventory}
         onOpenShop={openInventoryShop}

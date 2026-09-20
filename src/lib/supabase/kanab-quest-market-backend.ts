@@ -284,7 +284,7 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
     equippedCodes,
     routePlan: equipmentShop.routePlan,
     routeMasteries: equipmentShop.routeMasteries,
-    equipmentSummary: summarizeKqEquipmentLoadout(equippedCodes, equipmentShop.levels),
+    equipmentSummary: summarizeKqEquipmentLoadout(equipmentShop.operationalCodes ?? equippedCodes, equipmentShop.levels),
     electricityOutstandingCents: energySummary.outstandingCents,
     lots,
   };

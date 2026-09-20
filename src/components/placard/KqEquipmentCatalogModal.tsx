@@ -54,6 +54,7 @@ import styles from "./KqEquipmentCatalogModal.module.css";
 import { KqCommerceComputer } from "./KqCommerceDesk";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
 import { KqEquipmentTierBadge } from "./KqEquipmentTierBadge";
+import { getKqCultureOperationalCodes, KQ_CULTURE_WEAR_RATES, type KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
 
 type EquipmentSnapshot = {
   cashCents: number;
@@ -62,6 +63,7 @@ type EquipmentSnapshot = {
   reputation: number;
   ownedCodes: string[];
   equippedCodes: string[];
+  cultureWear?: Record<string, KqCultureEquipmentCondition>;
   routePlan: EquipmentRoutePlan | null;
   catalog: KqEquipmentDefinition[];
 };
@@ -238,6 +240,8 @@ export function KqEquipmentCatalogModal({
   const selectedEquipment = selectedCode && snapshot
     ? snapshot.catalog.find((equipment) => equipment.code === selectedCode) ?? null
     : null;
+  const selectedCondition = selectedEquipment ? snapshot?.cultureWear?.[selectedEquipment.code] : undefined;
+  const selectedWearRates = selectedEquipment ? KQ_CULTURE_WEAR_RATES[selectedEquipment.code] : undefined;
   const selectedRequirementState = selectedEquipment ? getKqEquipmentRequirementState({
     equipment: selectedEquipment,
     ownedCodes: snapshot?.ownedCodes ?? [],
@@ -252,10 +256,11 @@ export function KqEquipmentCatalogModal({
     equippedCodes: snapshot.equippedCodes,
     cashCents: snapshot.cashCents,
   }) : null;
-  const currentLoadout = summarizeKqEquipmentLoadout(snapshot?.equippedCodes ?? [], snapshot?.levels);
+  const operationalCodes = getKqCultureOperationalCodes(snapshot?.equippedCodes ?? [], snapshot?.cultureWear);
+  const currentLoadout = summarizeKqEquipmentLoadout(operationalCodes, snapshot?.levels);
   const projectedLoadout = projectKqEquipmentLoadout({
     levels: snapshot?.levels,
-    equippedCodes: snapshot?.equippedCodes ?? [],
+    equippedCodes: operationalCodes,
     candidateCodes: cartCodes,
     ownedCodes: snapshot?.ownedCodes ?? [],
   });
@@ -269,8 +274,8 @@ export function KqEquipmentCatalogModal({
   });
   const selectedProjection = selectedEquipment ? projectKqEquipmentLoadout({
     levels: snapshot?.levels,
-    equippedCodes: snapshot?.equippedCodes ?? [],
-    candidateCodes: [...new Set([...cartCodes, selectedEquipment.code])],
+    equippedCodes: operationalCodes,
+    candidateCodes: [...new Set([...cartCodes, ...(selectedCondition?.due ? [] : [selectedEquipment.code])])],
     ownedCodes: snapshot?.ownedCodes ?? [],
   }) : null;
   const selectedProjectionMetrics = selectedProjection
@@ -391,6 +396,7 @@ export function KqEquipmentCatalogModal({
   };
 
   const equip = async (equipmentCode: string) => {
+    if (snapshot?.cultureWear?.[equipmentCode]?.due) return;
     setPending("equip");
     setError("");
     try {
@@ -489,6 +495,7 @@ export function KqEquipmentCatalogModal({
             {filteredCatalog.map((equipment) => {
               const owned = snapshot?.ownedCodes.includes(equipment.code) ?? false;
               const equipped = snapshot?.equippedCodes.includes(equipment.code) ?? false;
+              const broken = snapshot?.cultureWear?.[equipment.code]?.due ?? false;
               const inCart = cartCodes.includes(equipment.code);
               const alternative = isKqEquipmentSuperseded(equipment.code, snapshot?.ownedCodes ?? []);
               const requirementState = getKqEquipmentRequirementState({
@@ -518,7 +525,7 @@ export function KqEquipmentCatalogModal({
                   <footer>
                     <span><strong>{equipment.purchasable ? formatKqCash(equipment.priceCents) : "Fourni"}</strong><small>{equipment.powerWatts > 0 ? `${equipment.powerWatts} W` : "Sans consommation"}</small></span>
                     {owned ? (
-                      <button type="button" disabled={equipped || !equipment.purchasable || !requirementState.compatible || pending !== null} onClick={() => onOpenWorkshop ? onOpenWorkshop(equipment.code) : void equip(equipment.code)}>{equipped ? "Équipé" : !equipment.purchasable ? "Kit de départ" : !requirementState.compatible ? "Prérequis" : "Équiper"}</button>
+                      <button type="button" disabled={pending !== null || (broken ? !onOpenWorkshop : equipped || !equipment.purchasable || !requirementState.compatible)} onClick={() => onOpenWorkshop ? onOpenWorkshop(equipment.code) : void equip(equipment.code)}>{broken ? "À remplacer" : equipped ? "Équipé" : !equipment.purchasable ? "Kit de départ" : !requirementState.compatible ? "Prérequis" : "Équiper"}</button>
                     ) : (
                       <button type="button" disabled={!equipment.purchasable || inCart || pending !== null} onClick={() => addToCart(equipment.code)}>{inCart ? "Au panier" : "Ajouter"}</button>
                     )}
@@ -588,10 +595,11 @@ export function KqEquipmentCatalogModal({
         <strong className={styles.detailPrice}>{selectedEquipment.purchasable ? formatKqCash(selectedEquipment.priceCents) : "Équipement fourni"}</strong>
         <p>{selectedEquipment.shortDescription}</p>
         <EquipmentBenefits equipment={selectedEquipment} />
-        {snapshot?.purchasedCodes?.includes(selectedEquipment.code) ? <KqEquipmentUpgrade key={selectedEquipment.code} code={selectedEquipment.code} level={snapshot.levels?.[selectedEquipment.code] ?? 1} cashCents={snapshot.cashCents} disabled={pending !== null} onUpdated={refresh} /> : <p>Achat au niveau 1 · améliorable jusqu’au niveau 10 · nouvelle apparence aux niveaux 5 et 10.</p>}
+        {selectedWearRates ? <p>Usure par culture : éco {selectedWearRates.eco} %, équilibré {selectedWearRates.balanced} %, intensif {selectedWearRates.intensive} %. L’intensif use davantage sous 30 % d’état. À 0 %, rachète ce matériel dans ton entrepôt ; ses niveaux sont conservés.{selectedCondition ? ` État actuel : ${selectedCondition.conditionPercent} % · remplacement ${formatKqCash(selectedCondition.replacementCents)}.` : ""}</p> : null}
+        {snapshot?.purchasedCodes?.includes(selectedEquipment.code) ? <KqEquipmentUpgrade key={selectedEquipment.code} code={selectedEquipment.code} level={snapshot.levels?.[selectedEquipment.code] ?? 1} cashCents={snapshot.cashCents} disabled={pending !== null || selectedCondition?.due} onUpdated={refresh} /> : <p>Achat au niveau 1 · améliorable jusqu’au niveau 10 · nouvelle apparence aux niveaux 5 et 10.</p>}
         <section className={styles.detailProjection} aria-label="Projection personnalisée dans ton atelier" data-blocked={selectedProjectionBlocked || undefined}>
           <h4>Dans ton atelier</h4>
-          {snapshot?.equippedCodes.includes(selectedEquipment.code) ? <p><Check aria-hidden="true" />Cette pièce est installée : ses bonus sont déjà actifs.</p> : selectedProjectionBlocked ? <p><AlertTriangle aria-hidden="true" />Projection suspendue : règle d’abord le prérequis ou le conflit d’emplacement signalé.</p> : (
+          {selectedCondition?.due ? <p><AlertTriangle aria-hidden="true" />Cette pièce est hors service : ses bonus sont désactivés. Remplace-la dans ton entrepôt pour retrouver ses effets.</p> : snapshot?.equippedCodes.includes(selectedEquipment.code) ? <p><Check aria-hidden="true" />Cette pièce est installée : ses bonus seront actifs au lancement de la prochaine culture.</p> : selectedProjectionBlocked ? <p><AlertTriangle aria-hidden="true" />Projection suspendue : règle d’abord le prérequis ou le conflit d’emplacement signalé.</p> : (
             <>
               {selectedInstalledEquipment ? <p><Settings aria-hidden="true" />Remplacera {selectedInstalledEquipment.name} dans l’emplacement {KQ_EQUIPMENT_SLOT_LABELS[selectedEquipment.slot]}.</p> : null}
               {selectedProjectionMetrics.length > 0 ? <dl>{selectedProjectionMetrics.map((metric) => <div key={metric.code}><dt>{metric.label}</dt><dd>{metric.value}</dd></div>)}</dl> : <p>Cette pièce complète surtout une chaîne technique sans modifier les statistiques actives.</p>}
@@ -643,7 +651,7 @@ export function KqEquipmentCatalogModal({
           </a>
         </section>
         {(selectedEquipment.requirements ?? []).map((requirement) => <p className={styles.requirement} key={requirement.label}><AlertTriangle aria-hidden="true" />Nécessite : {requirement.label}</p>)}
-        {snapshot?.ownedCodes.includes(selectedEquipment.code) ? <button type="button" className={styles.detailCta} disabled={snapshot.equippedCodes.includes(selectedEquipment.code) || !selectedEquipment.purchasable || !selectedRequirementState?.compatible || pending !== null} onClick={() => onOpenWorkshop ? onOpenWorkshop(selectedEquipment.code) : void equip(selectedEquipment.code)}>{snapshot.equippedCodes.includes(selectedEquipment.code) ? "Déjà équipé" : !selectedEquipment.purchasable ? "Équipement de départ fourni" : !selectedRequirementState?.compatible ? "Prérequis manquant" : "Équiper maintenant"}</button> : <button type="button" className={styles.detailCta} disabled={!selectedEquipment.purchasable || cartCodes.includes(selectedEquipment.code) || pending !== null} onClick={() => addToCart(selectedEquipment.code)}>{cartCodes.includes(selectedEquipment.code) ? "Déjà au panier" : "Ajouter au panier"}</button>}
+        {snapshot?.ownedCodes.includes(selectedEquipment.code) ? <button type="button" className={styles.detailCta} disabled={pending !== null || (selectedCondition?.due ? !onOpenWorkshop : snapshot.equippedCodes.includes(selectedEquipment.code) || !selectedEquipment.purchasable || !selectedRequirementState?.compatible)} onClick={() => onOpenWorkshop ? onOpenWorkshop(selectedEquipment.code) : void equip(selectedEquipment.code)}>{selectedCondition?.due ? "Remplacer dans l’entrepôt" : snapshot.equippedCodes.includes(selectedEquipment.code) ? "Déjà équipé" : !selectedEquipment.purchasable ? "Équipement de départ fourni" : !selectedRequirementState?.compatible ? "Prérequis manquant" : "Équiper maintenant"}</button> : <button type="button" className={styles.detailCta} disabled={!selectedEquipment.purchasable || cartCodes.includes(selectedEquipment.code) || pending !== null} onClick={() => addToCart(selectedEquipment.code)}>{cartCodes.includes(selectedEquipment.code) ? "Déjà au panier" : "Ajouter au panier"}</button>}
       </aside> : null}
 
       {checkoutOpen && cartValidation ? <div className={styles.checkoutOverlay} role="presentation" onClick={() => setCheckoutOpen(false)}><section role="alertdialog" aria-modal="true" aria-labelledby="checkout-title" onClick={(event) => event.stopPropagation()}>

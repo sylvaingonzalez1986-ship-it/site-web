@@ -73,10 +73,14 @@ export const ARENA_TUTORIAL_STEPS: readonly ArenaTutorialStep[] = [
     href: "/arene/placard", action: "Revenir à mon atelier", Icon: Boxes,
     features: [
       { title: "Choisis tes équipements actifs", description: "Seul le matériel possédé et compatible peut être installé. Un seul équipement est actif par emplacement.", Icon: PackageCheck },
-      { title: "Garde tes anciens modèles", description: "Remplacer un équipement ne le détruit pas : il reste dans ton inventaire pour plus tard.", Icon: Boxes },
-      { title: "Vérifie ton HUD", description: "Déplie le résumé du hub pour retrouver ta trésorerie, ta réputation et ton atelier.", Icon: SlidersHorizontal },
+      { title: "Surveille l’état du matériel", description: "Le matériel de culture acheté s’use. À 0 %, ses bonus cessent : rachète son remplacement dans l’inventaire en conservant son niveau.", Icon: Boxes },
+      { title: "Un atelier de secours", description: "La tente, la LED et l’extraction de départ restent disponibles sans usure pour continuer à cultiver si ton matériel acheté est hors service.", Icon: SlidersHorizontal },
     ],
     tip: "Prépare ton atelier avant de lancer une culture. Pour une transformation, le marché vérifie aussi les machines installées au moment de vendre.",
+    details: { title: "Changement de matériel et remplacement", paragraphs: [
+      "Installer un autre modèle laisse l’ancien dans ton inventaire avec son état actuel. Le ranger ou passer en mode Éco ne le remet pas à neuf.",
+      "Le remplacement du matériel de culture est payant et conserve les améliorations acquises. Les réparations gratuites du Bricoleur concernent les machines de transformation, pas ces rachats.",
+    ] },
   },
   {
     id: "culture", number: "05", label: "Culture", eyebrow: "À toi de jouer",
@@ -89,6 +93,10 @@ export const ARENA_TUTORIAL_STEPS: readonly ArenaTutorialStep[] = [
       { title: "Vise qualité et quantité", description: "Tes résultats de culture et ton équipement influencent la récolte. Une grosse quantité ne remplace pas une bonne note.", Icon: Sprout },
     ],
     tip: "La Fleur obtenue n’est pas encore un lot vendable : elle doit d’abord passer par un duel et le verdict du jury.",
+    details: { title: "Énergie et durée de vie", paragraphs: [
+      "Le mode Éco réduit la facture et ralentit l’usure ; l’Équilibré garde un rythme intermédiaire ; l’Intensif augmente la récolte mais use plus vite le matériel. Compare l’état prévu après culture et le coût de remplacement avant de lancer.",
+      "Sous 30 % d’état restant, l’usure en Intensif augmente encore. L’usure est appliquée une seule fois à la fin d’une culture : une pièce qui tombe à 0 % cesse de contribuer aux cultures suivantes.",
+    ] },
   },
   {
     id: "duel", number: "06", label: "Duel", eyebrow: "Fleur vs Fleur",

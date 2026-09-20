@@ -4,8 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import { getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { KqEquipmentInventoryModal } from "./KqEquipmentInventoryModal";
 import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
+import type { KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
 
-type Snapshot={ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;maintenance?:Record<string,KqMachineCondition>};
+type Snapshot={ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;maintenance?:Record<string,KqMachineCondition>;cultureWear?:Record<string,KqCultureEquipmentCondition>;activeRun?:boolean};
 const EMPTY:Snapshot={ownedCodes:[],purchasedCodes:[],equippedCodes:[],levels:{},cashCents:0};
 export function KqWarehouseEntry({initialEquipmentCode,onClose,onOpenShop}:{initialEquipmentCode?:string|null;onClose:()=>void;onOpenShop:(code?:string)=>void}){
   const [snapshot,setSnapshot]=useState<Snapshot>(EMPTY);

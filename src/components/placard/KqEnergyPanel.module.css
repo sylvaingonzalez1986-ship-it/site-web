@@ -32,3 +32,10 @@
 .panel.panel .dogCare>div { min-width: 0; }
 .panel.panel .dogCare strong { font-size: 13px; overflow-wrap: anywhere; }
 .panel.panel .dogCare p { margin: 6px 0; }
+.panel.panel .modes b { overflow-wrap: anywhere; font-size: 11px; }
+.panel.panel .wearPreview { padding: 12px; margin-top: 12px; background: #edf3e4; border: 1px solid #99b2a0; }
+.panel.panel .wearPreview>strong { font-size: 13px; }
+.panel.panel .wearPreview li { display: block; }
+.panel.panel .wearPreview li>div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 5px 10px; }
+.panel.panel .wearPreview li>div>span { min-width: 0; overflow-wrap: anywhere; }
+.panel.panel .wearPreview progress { display: block; width: 100%; height: 8px; margin: 7px 0; accent-color: #00746e; }

@@ -949,7 +949,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     startingXp: 1 + cultureTokens * KQ_CULTURE_TOKEN_START_XP + getChanvrierStartingXp(equipmentShop.strength),
     heritageCode,
     heritageCard,
-    equipmentCodes: equipmentShop.equippedCodes,
+    equipmentCodes: equipmentShop.cultureOperationalCodes ?? equipmentShop.equippedCodes,
     equipmentLevels: equipmentShop.levels,
     energyMode: input.energyMode ?? "balanced",
   });
@@ -969,6 +969,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   if (result.error) {
     const message = result.error.message || "Création de partie impossible.";
     if (message.includes("kq_active_run_exists")) throw new Error("Une culture Supabase est déjà active.");
+    if (message.includes("kq_culture_equipment_changed") || message.includes("kq_culture_equipment_broken")) throw new Error("L’état du matériel a changé. Actualise le devis avant de lancer la culture.");
     if (message.includes("kq_buddie_not_owned")) throw new Error("Ce Buddie n’est pas présent dans la collection.");
     if (message.includes("kq_deck_copy_missing")) throw new Error("Une ou plusieurs copies du deck ne sont pas disponibles.");
     if (message.includes("kq_culture_tokens_insufficient")) throw new Error("Solde de jetons Coup de pouce insuffisant.");

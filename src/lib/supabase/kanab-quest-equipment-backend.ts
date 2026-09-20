@@ -1,6 +1,7 @@
 import "server-only";
 import type { ChanvrierStrength } from "@/lib/arena-chanvrier";
 import { getKqMachineCondition, type KqMachineCondition } from "@/lib/kanab-quest-maintenance";
+import { getKqCultureEquipmentCondition, getKqCultureOperationalCodes, type KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
 
 import {
   getKqEquipmentDefinition,
@@ -26,6 +27,8 @@ function assertUuid(value: string, message: string) {
 export type KqEquipmentShopSnapshot = {
   strength?: ChanvrierStrength | null;
   maintenance?: Record<string, KqMachineCondition>;
+  cultureWear?: Record<string, KqCultureEquipmentCondition>;
+  cultureOperationalCodes?: string[];
   operationalCodes?: string[];
   cashCents: number;
   reputation: number;
@@ -89,7 +92,7 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
 
   const [wallet, owned, loadout, activeRuns, readyLots, availableFlowers, routeMasteries] = await Promise.all([
     supabase.from("kq_equipment_wallets").select("cash_cents,reputation,planned_route_code,planned_equipment_code,chanvrier:arena_chanvrier_profiles(strength)").eq("user_id", userId).single(),
-    supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,level,wear_cycles,maintenance_version").eq("user_id", userId).order("acquired_at"),
+    supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,level,wear_cycles,maintenance_version,culture_wear_percent,culture_wear_version").eq("user_id", userId).order("acquired_at"),
     supabase.from("kq_equipment_loadouts").select("equipment_code").eq("user_id", userId).order("slot"),
     supabase.from("kq_runs").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "active"),
     supabase.from("kq_market_lots").select("flower_id", { count: "exact", head: true }).eq("owner_id", userId).eq("status", "ready"),
@@ -116,9 +119,15 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
     return condition ? [[String(row.equipment_code), condition]] : [];
   })) as Record<string, KqMachineCondition>;
   const equippedCodes = (loadout.data ?? []).map(row => String(row.equipment_code)).filter(code => !KQ_RETIRED_EQUIPMENT_CODES.includes(code));
+  const cultureWear = Object.fromEntries(availableOwned.flatMap(row => {
+    const condition = getKqCultureEquipmentCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.culture_wear_percent ?? 0), Number(row.culture_wear_version ?? 0));
+    return condition ? [[String(row.equipment_code), condition]] : [];
+  })) as Record<string, KqCultureEquipmentCondition>;
+  const cultureOperationalCodes = getKqCultureOperationalCodes(equippedCodes, cultureWear);
 
   return {
-    strength, maintenance, operationalCodes: equippedCodes.filter(code => !maintenance[code]?.due),
+    strength, maintenance, cultureWear, cultureOperationalCodes,
+    operationalCodes: cultureOperationalCodes.filter(code => !maintenance[code]?.due),
     cashCents: Number(wallet.data.cash_cents ?? 0),
     levels,
     reputation: Number(wallet.data.reputation ?? 0),
@@ -257,11 +266,14 @@ export async function equipKqDurableEquipment(input: { userId: string; equipment
   const equipment = getKqEquipmentDefinition(input.equipmentCode);
   if (!equipment) throw new Error("Équipement inconnu.");
   const supabase = createSupabaseServiceClient();
-  const owned = await supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents").eq("user_id", input.userId);
+  const owned = await supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,culture_wear_percent").eq("user_id", input.userId);
   if (owned.error) throw new Error(`[supabase:kq_player_equipment] ${owned.error.message}`);
   const ownedCodes = (owned.data ?? []).map((row) => String(row.equipment_code));
   const ownership = (owned.data ?? []).find((row) => String(row.equipment_code) === equipment.code);
   if (!ownership) throw new Error("Cet équipement ne t’appartient pas.");
+  if (Number(ownership.culture_wear_percent ?? 0) >= 100 && getKqCultureEquipmentCondition(equipment.code)) {
+    throw new Error("Cet équipement est en fin de vie. Remplace-le dans ton entrepôt.");
+  }
   if (equipment.purchasable && Number(ownership.purchase_price_cents ?? 0) <= 0) {
     throw new Error("Cet équipement doit être acheté avant de pouvoir être installé.");
   }
@@ -282,7 +294,35 @@ export async function equipKqDurableEquipment(input: { userId: string; equipment
     const message = result.error.message || "Installation impossible.";
     if (message.includes("equipment_not_owned")) throw new Error("Cet équipement ne t’appartient pas.");
     if (message.includes("equipment_not_purchased")) throw new Error("Cet équipement doit être acheté avant de pouvoir être installé.");
+    if (message.includes("culture_equipment_broken")) throw new Error("Cet équipement est en fin de vie. Remplace-le dans ton entrepôt.");
     throw new Error(`[supabase:rpc_kq_equip_durable] ${message}`);
   }
   return result.data as { equipmentCode: string; slot: string; equipped: boolean };
+}
+
+export async function replaceKqCultureEquipment(input: { userId: string; equipmentCode: string; requestKey: string; expectedVersion: number; expectedCostCents: number }) {
+  assertUuid(input.userId, "Compte équipement invalide.");
+  assertUuid(input.requestKey, "Demande de remplacement invalide.");
+  if (!getKqCultureEquipmentCondition(input.equipmentCode) || !Number.isSafeInteger(input.expectedVersion) || input.expectedVersion < 0
+    || !Number.isSafeInteger(input.expectedCostCents) || input.expectedCostCents <= 0 || input.expectedCostCents > 2147483647) {
+    throw new Error("Remplacement invalide.");
+  }
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_replace_culture_equipment", {
+    p_user_id: input.userId, p_equipment_code: input.equipmentCode, p_request_key: input.requestKey,
+    p_expected_version: input.expectedVersion, p_expected_cost_cents: input.expectedCostCents,
+  });
+  if (result.error) {
+    const messages: Record<string, string> = {
+      culture_equipment_not_owned: "Cet équipement ne t’appartient pas.",
+      culture_equipment_unavailable: "Cet équipement ne peut pas être remplacé.",
+      culture_equipment_not_due: "Cet équipement fonctionne encore : aucun remplacement nécessaire.",
+      culture_equipment_condition_changed: "L’état ou le prix a changé. Actualise ton entrepôt.",
+      culture_equipment_active_run: "Termine la culture en cours avant de remplacer le matériel.",
+      culture_equipment_insufficient_cash: "Trésorerie insuffisante pour remplacer cet équipement. Le matériel de départ permet de continuer à cultiver.",
+      culture_equipment_request_mismatch: "Cette demande a déjà servi à un autre remplacement. Actualise ton entrepôt.",
+    };
+    for (const [code, message] of Object.entries(messages)) if (result.error.message.includes(code)) throw new Error(message);
+    throw new Error(`[supabase:culture-equipment-replacement] ${result.error.message}`);
+  }
+  return result.data as { equipmentCode: string; paidCents: number; cashAfterCents: number; level: number; version: number; replayed: boolean };
 }

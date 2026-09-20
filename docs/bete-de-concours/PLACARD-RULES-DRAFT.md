@@ -92,11 +92,12 @@ pas aux points fidélité, ne peut pas être acheté, retiré, remboursé ou con
 en argent réel. Chaque joueur commence avec `350 €` virtuels ainsi qu'une tente
 90 × 90, une LED 115 W et une extraction de départ.
 
-Un équipement acheté est permanent. Il n'est ni brûlé ni racheté à chaque
-culture. Une seule pièce peut être installée dans chaque emplacement ; remplacer
-une pièce installée ne détruit pas l'ancienne. Les achats, le débit du
-portefeuille et leurs reçus sont validés atomiquement par le serveur. Une même
-référence ne peut pas être achetée deux fois.
+Le matériel reste dans l'inventaire, mais le matériel de culture acheté s'use
+et doit être remplacé lorsqu'il arrive à 0 % d'état. Une seule pièce peut être
+installée dans chaque emplacement ; installer un autre modèle laisse l'ancien
+dans l'inventaire avec son état actuel. Les achats, le débit du portefeuille et
+leurs reçus sont validés atomiquement par le serveur. Une même référence ne peut
+pas être achetée en double : le remplacement remet à neuf la pièce déjà possédée.
 
 Catalogue de lancement :
 
@@ -171,6 +172,50 @@ au lancement d’une partie ; les transformations utilisent les niveaux install�
 au moment de la vente. Une requête rejouée ne peut pas débiter une seconde fois.
 Les anciens modèles sont regroupés dans la référence unique en conservant le meilleur
 palier déjà acheté, sans modifier le solde du joueur.
+
+### Usure et remplacement du matériel de culture
+
+Chaque culture terminée use le matériel de son installation enregistrée au départ,
+selon le mode choisi. L'état va de **100 %** à **0 %**. L'usure est permanente :
+le mode Éco, le temps hors ligne et le rangement ne restaurent pas une pièce.
+Une culture abandonnée ne compte pas et une requête rejouée n'ajoute pas d'usure.
+Les anciennes cultures ne sont pas comptabilisées rétroactivement.
+
+| Matériel | Éco | Équilibré | Intensif |
+| --- | ---: | ---: | ---: |
+| LED spéciale 300 W | 2 points | 5 points | 10 points |
+| Extracteur EC 6 pouces | 1 point | 3 points | 6 points |
+| Contrôleur climatique AI+ | 1 point | 2 points | 4 points |
+| Tente renforcée 120 × 120 | 1 point | 2 points | 3 points |
+| Pièce séchoir | 1 point | 2 points | 4 points |
+| Panneau solaire et batterie | 1 point | 2 points | 4 points |
+| Caméra de surveillance | 1 point | 1 point | 1 point |
+
+En Intensif, si l'état avant la culture est **strictement inférieur à 30 %**,
+l'usure prévue est multipliée par **1,5**, arrondie au point supérieur et limitée
+à l'état restant. À exactement 30 %, le rythme normal s'applique encore.
+Une LED neuve dure ainsi **50 cultures en Éco**, **20 en Équilibré** ou
+**10 en Intensif**, en tenant compte de cette accélération.
+
+À 0 %, une pièce ne donne plus ses bonus, protections ni économies d'énergie
+aux prochaines cultures. Les bonus et la facture d'une culture déjà commencée
+restent ceux annoncés au lancement. La tente, la LED et l'extraction de départ
+ne s'usent pas et prennent automatiquement le relais de leur emplacement si
+nécessaire : le joueur peut continuer à cultiver et vendre ses fleurs brutes.
+Le chien ne relève pas de cette usure ; ses frais de soins restent applicables.
+
+Le remplacement à neuf s'effectue dans l'inventaire avec l'argent virtuel,
+après la fin de la culture active. Il conserve le niveau et les améliorations.
+Son prix vaut **le prix de base × [1 + 0,1 × (niveau − 1)]**, arrondi au cent
+supérieur : une LED coûte **359 € au niveau 1** et **682,10 € au niveau 10**.
+L'état, l'usure du prochain cycle et le prix sont annoncés avant confirmation.
+Le coût estimé d'usure représente la part du remplacement consommée pendant
+le cycle ; il n'est pas débité en plus du remplacement.
+
+Les machines de transformation gardent leur entretien séparé tous les 10 à
+20 cycles, sans dépendre du mode d'énergie. Le Bricoleur bénéficie de réparations
+gratuites pour ces machines ; **les remplacements du matériel de culture restent
+payants**. Le plateau de tamisage manuel est exempté de cet entretien.
 
 ## 5. Incidents de culture
 
