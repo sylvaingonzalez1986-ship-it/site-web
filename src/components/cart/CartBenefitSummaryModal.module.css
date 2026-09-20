@@ -1,0 +1,31 @@
+.dialog {
+  composes: surface from "../EditorialTheme.module.css";
+  position: fixed;
+  inset: 0;
+  width: min(460px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--arcade-green);
+  border-radius: 4px;
+  background: var(--arcade-paper);
+  color: var(--arcade-ink);
+  box-shadow: 8px 8px 0 #002d2480;
+}
+
+.dialog[open] { display: flex; flex-direction: column; }
+.dialog::backdrop { background: #002d24b8; backdrop-filter: blur(3px); }
+.header { display: flex; align-items: flex-start; gap: 16px; flex-shrink: 0; padding: 20px; border-bottom: 3px solid var(--arcade-yellow); background: var(--arcade-dark); color: var(--arcade-paper); }
+.header > div { flex: 1; min-width: 0; }
+.eyebrow { margin: 0; color: var(--arcade-yellow); font: 800 .65rem/1.5 ui-monospace, Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; }
+.title { margin: 7px 0 0; color: var(--arcade-paper); font: 900 clamp(28px, 6vw, 36px)/1 var(--font-display), "Arial Narrow", Impact, sans-serif; letter-spacing: -.025em; text-transform: uppercase; overflow-wrap: anywhere; }
+.close { display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; padding: 0; border: 1px solid #fffaf16b; border-radius: 2px; background: #fffaf10a; color: var(--arcade-paper); }
+.close:focus-visible { outline: 3px solid var(--arcade-yellow); outline-offset: 3px; box-shadow: none; }
+.body { min-height: 0; padding: 20px; overflow-y: auto; overscroll-behavior: contain; }
+.hint { margin: 0 0 16px; color: #365345; font-size: 13px; line-height: 1.6; }
+.lines { margin: 0; padding: 0; border-top: 1px solid #00563f40; list-style: none; }
+.lines li { display: grid; grid-template-columns: 8px minmax(0, 1fr); gap: 12px; padding: 13px 0; border-bottom: 1px solid #00563f40; font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; }
+.lines li::before { width: 8px; height: 8px; margin-top: 6px; border: 1px solid var(--arcade-green); background: var(--arcade-yellow); content: ""; }
+@media (hover: hover) { .close:hover { border-color: var(--arcade-yellow); background: var(--arcade-yellow); color: var(--arcade-dark); } }
+@media (max-width: 400px) { .header, .body { padding: 16px; } .header { gap: 12px; } .lines li { font-size: 13px; } }

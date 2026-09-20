@@ -1,6 +1,9 @@
 "use client";
 
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import Image from "next/image";
+import { categoryLabels } from "@/data/products";
+import styles from "./CartDrawer.module.css";
 import dynamic from "next/dynamic";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -117,8 +120,16 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const [lotteryPreview, setLotteryPreview] = useState<LotteryPreview | null>(null);
   const [cartError, setCartError] = useState<string | null>(null);
   const [summaryModal, setSummaryModal] = useState<"loyalty" | "packs" | null>(null);
+  const drawerRef = useRef<HTMLDialogElement>(null);
   const wasOpenRef = useRef(false);
   useBodyScrollLock(open);
+  useEffect(() => {
+    const drawer = drawerRef.current;
+    if (!drawer) return;
+    if (open && !drawer.open) drawer.showModal();
+    else if (!open && drawer.open) drawer.close();
+    return () => { if (drawer.open) drawer.close(); };
+  }, [open]);
 
   useEffect(() => {
     const justOpened = open && !wasOpenRef.current;
@@ -609,41 +620,36 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
   return (
     <>
-      {open && (
-        <button
-          type="button"
-          className="fixed inset-0 z-40 bg-black/40"
-          onClick={onClose}
-          aria-label="Fermer le panier"
-        />
-      )}
-
-      <aside
-        role="dialog"
-        aria-modal={open ? true : undefined}
+      <dialog
+        ref={drawerRef}
         aria-label="Ton panier"
-        inert={!open}
-        className={`safe-area-top safe-area-bottom safe-area-x fixed right-0 top-0 z-50 flex h-[100vh] h-[100dvh] max-h-[100dvh] w-full max-w-[96vw] flex-col overflow-hidden border-l-4 border-[#1a1a2e] bg-[#fff8f0] p-4 transition-transform duration-300 md:max-w-2xl lg:max-w-3xl ${
-          open ? "pointer-events-auto translate-x-0" : "pointer-events-none translate-x-full"
-        }`}
+        className={styles.drawer}
+        onCancel={(event) => { event.preventDefault(); onClose(); }}
+        onClick={(event) => {
+          if (event.target !== event.currentTarget) return;
+          const bounds = event.currentTarget.getBoundingClientRect();
+          if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose();
+        }}
       >
-        <div className="shrink-0 flex items-center justify-between">
-          <h2 className="text-2xl font-extrabold">Ton Panier ({totalItems})</h2>
-          <button
-            type="button"
-            className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3 text-2xl font-bold leading-none"
-            onClick={onClose}
-            aria-label="Fermer"
-          >
-            ✕
+        <header className={styles.header}>
+          <div>
+            <p className={styles.eyebrow}>Les Chanvriers Bretons · Le Marché</p>
+            <h2>Ton panier<span className={styles.itemCount}>{totalItems}</span></h2>
+          </div>
+          <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Fermer le panier" autoFocus>
+            <X size={22} aria-hidden="true" />
           </button>
-        </div>
+        </header>
 
-        <div className="mt-4 flex-1 overflow-y-auto pr-1">
-          <div className="grid gap-3 pb-4">
+        <div className={styles.scrollArea}>
+          <div className={styles.content} data-empty={items.length === 0}>
+          <div className={styles.items}>
             {items.length === 0 && (
-              <div className="cartoon-panel bg-white p-5 text-sm">
-                Ton panier est vide. Découvre les produits disponibles et ajoute tes favoris.
+              <div className={styles.emptyCart}>
+                <span className={styles.emptyIcon}><ShoppingBag size={36} strokeWidth={1.5} aria-hidden="true" /></span>
+                <p className={styles.kicker}>Le Marché t’attend</p>
+                <h3>Une belle récolte<br />à composer.</h3>
+                <p>Ton panier est vide. Découvre les produits disponibles et ajoute tes favoris.</p>
                 <div className="mt-3">
                   <button type="button" onClick={() => { onClose(); router.push("/boutique"); }} className="btn-cartoon btn-primary min-h-11 px-3 text-xs">
                     Découvrir les produits
@@ -653,7 +659,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             )}
 
             {cartError && (
-              <div className="cartoon-panel border-[#7f1d1d] bg-[#f8d7da] p-4 text-sm font-semibold text-[#7f1d1d]">
+              <div className={styles.error} role="alert">
                 {cartError}
               </div>
             )}
@@ -663,10 +669,14 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               const itemAvailableQuantity = getAvailableQuantity(item, itemVariantId);
 
               return (
-                <article key={item.id} className="cartoon-panel bg-white p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="font-bold">{item.name}</p>
+                <article key={item.id} className={styles.product}>
+                  <div className={styles.productHead}>
+                    <div className={styles.productImage}>
+                      {item.image ? <Image src={item.image} alt="" width={88} height={88} sizes="88px" /> : <ShoppingBag aria-hidden="true" />}
+                    </div>
+                    <div className={styles.productCopy}>
+                      <p className={styles.kicker}>{categoryLabels[item.category]}</p>
+                      <h3>{item.name}</h3>
                       {hasActiveProductPromo(item) ? (
                         <div className="text-sm">
                           <span className="price-original">{formatPrice(item.originalPrice)}</span>{" "}
@@ -686,20 +696,20 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                         setCartError(null);
                         removeFromCart(item.id);
                       }}
-                      className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3"
+                      className={styles.iconButton}
                       aria-label={`Retirer ${item.name}`}
                     >
                       <Trash2 size={16} />
                     </button>
                   </div>
-                  <div className="mt-3 flex items-center gap-2">
+                  <div className={styles.quantityRow}>
                     <button
                       type="button"
                       onClick={() => {
                         setCartError(null);
                         decreaseQuantity(item.id);
                       }}
-                      className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3"
+                      className={styles.iconButton}
                       aria-label={`Diminuer ${item.name}`}
                     >
                       <Minus size={16} />
@@ -724,7 +734,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
                         setCartError(null);
                       }}
-                      className="h-[44px] w-16 border-2 border-[#1a1a1a] bg-white text-center text-sm font-bold"
+                      className={styles.quantityInput}
                       aria-label={`Quantite ${item.name}`}
                     />
                     <button
@@ -746,12 +756,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                         }
                       }}
                       disabled={itemAvailableQuantity !== null && item.quantity >= itemAvailableQuantity}
-                      className="cartoon-chip inline-flex min-h-[44px] min-w-[44px] items-center justify-center p-3 disabled:cursor-not-allowed disabled:opacity-60"
+                      className={styles.iconButton}
                       aria-label={`Augmenter ${item.name}`}
                     >
                       <Plus size={16} />
                     </button>
-                    <p className="ml-auto font-bold">
+                    <p className={styles.lineTotal}>
                       {formatPrice(item.quantity * item.price)}{" "}
                       <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
                     </p>
@@ -760,11 +770,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               );
             })}
 
-            {isAuthenticated && items.length > 0 && <div className="cartoon-panel bg-white p-4">
-              <h3 className="font-bold">Tes informations de livraison</h3>
+            {isAuthenticated && items.length > 0 && <section className={styles.delivery}>
+              <p className={styles.kicker}>À la bonne adresse</p>
+              <h3>Ta livraison</h3>
               <div className="mt-4 grid gap-2">
                 <input
-                  className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                  className={styles.input}
                   value={shippingName}
                   onChange={(event) => setShippingName(event.target.value)}
                   aria-label="Nom complet"
@@ -772,7 +783,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   placeholder="Nom complet"
                 />
                 <input
-                  className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                  className={styles.input}
                   type="email"
                   value={shippingEmail}
                   onChange={(event) => setShippingEmail(event.target.value)}
@@ -781,36 +792,30 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   placeholder="Email"
                 />
                 <input
-                  className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                  className={styles.input}
                   value={shippingPhone}
                   onChange={(event) => setShippingPhone(event.target.value)}
                   aria-label="Téléphone"
                   autoComplete="tel"
                   placeholder="Téléphone"
                 />
-                <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-2">
+                <div className={styles.deliveryOptions}>
                   <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">
                     Mode de livraison
                   </p>
-                  <div className="mt-2 inline-flex w-full overflow-hidden rounded border-2 border-[#1a1a1a] bg-white">
+                  <div className={styles.deliverySwitch} role="group" aria-label="Mode de livraison">
                     <button
                       type="button"
-                      className={`flex-1 px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] ${
-                        deliveryMethod === "home"
-                          ? "bg-[#0a7b61] text-white"
-                          : "text-ink hover:bg-[#f2ede2]"
-                      }`}
+                      className={styles.deliveryChoice}
+                      aria-pressed={deliveryMethod === "home"}
                       onClick={() => setDeliveryMethod("home")}
                     >
                       Domicile {homeShippingFee <= 0 ? "(offert)" : `(${formatPrice(homeShippingFee)})`}
                     </button>
                     <button
                       type="button"
-                      className={`flex-1 border-l-2 border-[#1a1a1a] px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] ${
-                        deliveryMethod === "relay"
-                          ? "bg-[#0a7b61] text-white"
-                          : "text-ink hover:bg-[#f2ede2]"
-                      }`}
+                      className={styles.deliveryChoice}
+                      aria-pressed={deliveryMethod === "relay"}
                       onClick={() => setDeliveryMethod("relay")}
                     >
                       Point relais {relayShippingFee <= 0 ? "(offert)" : `(${formatPrice(relayShippingFee)})`}
@@ -826,7 +831,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 {deliveryMethod === "home" && (
                   <input
                     aria-label="Adresse de livraison"
-                    className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    className={styles.input}
                     value={shippingAddress}
                     onChange={(event) => setShippingAddress(event.target.value)}
                     placeholder="Adresse"
@@ -834,7 +839,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 )}
                 <div className="grid grid-cols-2 gap-2">
                   <input
-                    className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    className={styles.input}
                     value={shippingCity}
                     onChange={(event) => setShippingCity(event.target.value)}
                     aria-label="Ville"
@@ -842,7 +847,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   placeholder="Ville"
                   />
                   <input
-                    className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    className={styles.input}
                     value={shippingPostalCode}
                     onChange={(event) => setShippingPostalCode(event.target.value)}
                     aria-label="Code postal"
@@ -851,7 +856,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   />
                 </div>
                 <input
-                  className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                  className={styles.input}
                   value={shippingCountry}
                   onChange={(event) => setShippingCountry(event.target.value)}
                   aria-label="Pays"
@@ -868,9 +873,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     minHeightClassName="min-h-[300px] md:min-h-[360px]"
                   />
                 )}
-                <div className="grid grid-cols-[1fr,auto] gap-2">
+                <div className={styles.codeRow}>
                   <input
-                    className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    className={styles.input}
                     value={promoCode}
                     onChange={(event) => {
                       const value = event.target.value.toUpperCase();
@@ -879,6 +884,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                         setSelectedLotteryRewardClaimId("");
                       }
                     }}
+                    aria-label="Code promo (optionnel)"
                     placeholder="Code promo (optionnel)"
                     disabled={Boolean(selectedLotteryRewardClaimId)}
                   />
@@ -891,10 +897,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     {promoLoading ? "..." : "Appliquer"}
                   </button>
                 </div>
-                <div className="grid grid-cols-[1fr,auto] gap-2">
+                <div className={styles.codeRow}>
                   <select
                     aria-label="Bon ou cadeau à utiliser"
-                    className="h-10 border-2 border-[#1a1a1a] bg-white px-3 text-base"
+                    className={styles.input}
                     value={selectedLotteryRewardClaimId}
                     onChange={(event) => {
                       const nextId = event.target.value;
@@ -929,11 +935,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 {lotteryError && <p className="text-sm font-semibold text-red-700">{lotteryError}</p>}
                 {lotterySuccess && <p className="text-sm font-semibold text-green-700">{lotterySuccess}</p>}
               </div>
-            </div>}
+            </section>}
           </div>
-        </div>
 
-        {items.length > 0 && <div className="cartoon-panel mt-2 shrink-0 bg-white p-3">
+        {items.length > 0 && <section className={styles.summary} aria-label="Récapitulatif de la commande">
+          <p className={styles.kicker}>Le récapitulatif</p>
+          <h3>Ta commande</h3>
           <div className="flex items-center justify-between text-base font-extrabold">
             <span>Total panier</span>
             <span>{formatPrice(totalPrice)} TTC</span>
@@ -976,7 +983,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             <span>Livraison</span>
             <span>{shippingFee <= 0 ? "Offerte" : formatPrice(shippingFee)}</span>
           </div>
-          <div className="mt-1 flex items-center justify-between text-sm font-bold text-ink">
+          <div className={styles.grandTotal}>
             <span>{isAuthenticated ? "À payer" : "Total estimé"}</span>
             <span>{formatPrice(finalAmountToPay)} TTC</span>
           </div>
@@ -984,7 +991,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             <button
               type="button"
               onClick={() => setSummaryModal("loyalty")}
-              className="rounded border border-[#1a1a1a] bg-[#fff7d6] px-2 py-1.5 text-left transition-transform duration-150 hover:-translate-y-[1px]"
+              className={styles.benefit}
             >
               <p className="text-[10px] font-bold uppercase tracking-[0.06em] text-charcoal">Fidélité</p>
               <p className="text-xs font-semibold text-ink">+{earnedTotalLoyaltyPoints} pt{earnedTotalLoyaltyPoints > 1 ? "s" : ""}</p>
@@ -992,7 +999,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             <button
               type="button"
               onClick={() => setSummaryModal("packs")}
-              className="rounded border border-[#1a1a1a] bg-[#f7f4ee] px-2 py-1.5 text-left transition-transform duration-150 hover:-translate-y-[1px]"
+              className={styles.benefit}
             >
               <p className="text-[10px] font-bold uppercase tracking-[0.06em] text-charcoal">Packs</p>
               {!isAuthenticated || !lotteryConfig?.isActive ? (
@@ -1002,12 +1009,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               )}
             </button>
           </div>}
-          <div className="mt-3">
+          <div className={styles.checkoutArea}>
             {isAuthenticated && <>
-            <ol className="mb-3 grid grid-cols-3 gap-1 text-center text-[10px] font-bold uppercase tracking-[0.04em] text-charcoal">
-              <li className="rounded border border-[#1a1a1a] bg-[#d4f5dc] px-1 py-2">1. Coordonnees</li>
-              <li className="rounded border border-[#1a1a1a] bg-[#d4f5dc] px-1 py-2">2. Recapitulatif</li>
-              <li className="rounded border border-[#1a1a1a] bg-[#fff5da] px-1 py-2">3. Paiement</li>
+            <ol className={styles.steps} aria-label="Étapes de la commande">
+              <li>1. Coordonnées</li>
+              <li>2. Récapitulatif</li>
+              <li>3. Paiement</li>
             </ol>
             <CheckoutButton
               amount={totalPrice}
@@ -1058,9 +1065,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             </>}
             {!authLoading && !isAuthenticated && items.length > 0 && (
               <div className="space-y-2">
-                <div className="flex gap-2" aria-label="Estimer la livraison">
-                  <button type="button" aria-pressed={deliveryMethod === "home"} style={deliveryMethod === "home" ? { background: "#00563f", color: "#fff" } : undefined} className="min-h-11 flex-1 border-2 border-ink px-2 text-xs" onClick={() => setDeliveryMethod("home")}>Domicile</button>
-                  <button type="button" aria-pressed={deliveryMethod === "relay"} style={deliveryMethod === "relay" ? { background: "#00563f", color: "#fff" } : undefined} className="min-h-11 flex-1 border-2 border-ink px-2 text-xs" onClick={() => setDeliveryMethod("relay")}>Point relais</button>
+                <div className={styles.deliverySwitch} role="group" aria-label="Estimer la livraison">
+                  <button type="button" aria-pressed={deliveryMethod === "home"} className={styles.deliveryChoice} onClick={() => setDeliveryMethod("home")}>Domicile</button>
+                  <button type="button" aria-pressed={deliveryMethod === "relay"} className={styles.deliveryChoice} onClick={() => setDeliveryMethod("relay")}>Point relais</button>
                 </div>
                 <p className="text-xs text-charcoal">Ton panier est conservé sur ce navigateur pendant 48 h. Connecte-toi ou crée ton compte pour poursuivre la commande.</p>
                 <button type="button" onClick={goToLogin} className="btn-cartoon btn-primary min-h-11 w-full px-3 py-3 text-sm">Continuer ma commande</button>
@@ -1089,10 +1096,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               </div>
             )}
           </div>
-        </div>}
-      </aside>
+        </section>}
+          </div>
+        </div>
+      </dialog>
       <CartBenefitSummaryModal
-        open={summaryModal === "loyalty"}
+        open={open && summaryModal === "loyalty"}
         onClose={() => setSummaryModal(null)}
         eyebrow="Fidelite"
         title={loyalty.currentBadge.label}
@@ -1100,7 +1109,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         lines={loyaltyBenefitLines}
       />
       <CartBenefitSummaryModal
-        open={summaryModal === "packs"}
+        open={open && summaryModal === "packs"}
         onClose={() => setSummaryModal(null)}
         eyebrow="Packs booster"
         title="Recap packs"

@@ -115,7 +115,7 @@ export function MondialRelayPicker({
   return (
     <div className="mondial-relay-widget grid gap-2">
       <div
-        className={`${pickerHeightClassName} overflow-y-auto rounded-[12px] border-2 border-[#1a1a1a] bg-white p-2`}
+        className={`${pickerHeightClassName} overflow-y-auto rounded-[2px] border-2 border-[#00563f] bg-[#fffaf1] p-2`}
       >
         {points.length > 0 ? (
           <div className="grid gap-2">
@@ -125,10 +125,11 @@ export function MondialRelayPicker({
                 <button
                   key={point.id}
                   type="button"
-                  className={`w-full rounded border-2 px-3 py-3 text-left transition-colors ${
+                  aria-pressed={isSelected}
+                  className={`w-full rounded-[2px] border-2 px-3 py-3 text-left transition-colors ${
                     isSelected
-                      ? "border-[#0a7b61] bg-[#e6f5ef]"
-                      : "border-[#1a1a1a] bg-[#fff8f0] hover:bg-[#f2ede2]"
+                      ? "border-[#00563f] bg-[#e8efe4]"
+                      : "border-[#00563f40] bg-[#fffaf1] hover:bg-[#e8efe4]"
                   }`}
                   onClick={() => onSelectRef.current(point)}
                 >
@@ -142,7 +143,7 @@ export function MondialRelayPicker({
             })}
           </div>
         ) : (
-          <div className="flex h-full min-h-[120px] items-center justify-center rounded border-2 border-dashed border-[#1a1a1a] bg-[#f7f4ee] p-4 text-center text-sm text-charcoal">
+          <div className="flex h-full min-h-[120px] items-center justify-center rounded-[2px] border-2 border-dashed border-[#00563f] bg-[#fffaf1] p-4 text-center text-sm text-charcoal">
             {isLoading ? "Recherche en cours..." : "Aucun Point Relais chargé."}
           </div>
         )}
