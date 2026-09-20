@@ -81,13 +81,6 @@ function toInteger(value: unknown, fallback = 0): number {
   return Math.floor(parsed);
 }
 
-function toBoolean(value: unknown, fallback = false): boolean {
-  if (typeof value === "boolean") {
-    return value;
-  }
-  return fallback;
-}
-
 function toLooseBoolean(value: unknown, fallback = false): boolean {
   if (typeof value === "boolean") {
     return value;

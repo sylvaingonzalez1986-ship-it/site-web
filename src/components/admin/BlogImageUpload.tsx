@@ -154,10 +154,13 @@ export function BlogImageUpload({ value, onChange }: BlogImageUploadProps) {
         <div className="relative h-[90px] overflow-hidden rounded border-2 border-[#1a1a1a] bg-[#f7f4ee]">
           {value ? (
             isRemoteImageUrl(value) ? (
-              <img
+              <Image
                 src={value}
                 alt="Apercu image de couverture"
-                className="absolute inset-0 h-full w-full object-contain"
+                fill
+                sizes="(max-width: 767px) 100vw, 120px"
+                unoptimized
+                className="object-contain"
                 loading="lazy"
                 decoding="async"
                 referrerPolicy="no-referrer"

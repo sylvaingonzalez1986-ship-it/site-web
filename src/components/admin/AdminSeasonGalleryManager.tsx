@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type ChangeEvent, type Dispatch, type SetStateAction } from "react";
+import Image from "next/image";
 import {
   BLOG_IMAGE_ACCEPT_ATTRIBUTE,
   BLOG_IMAGE_UPLOAD_MAX_BYTES,
@@ -220,10 +221,13 @@ export function AdminSeasonGalleryManager({
             <article key={`${image}-${index}`} className="rounded border-2 border-[#1a1a1a] bg-white p-3">
               <div className="grid gap-3 md:grid-cols-[120px_1fr_auto] md:items-center">
                 <div className="relative h-[90px] overflow-hidden rounded border-2 border-[#1a1a1a] bg-[#f7f4ee]">
-                  <img
+                  <Image
                     src={image}
                     alt={`Culture saison ${index + 1}`}
-                    className="h-full w-full object-cover"
+                    fill
+                    sizes="(max-width: 767px) 100vw, 120px"
+                    unoptimized
+                    className="object-cover"
                     loading="lazy"
                   />
                 </div>

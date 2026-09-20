@@ -8,8 +8,6 @@ const {
   mockGetCustomerOrdersForLoyaltyByBackend,
   mockMaybeSingle,
   mockEq,
-  mockSelect,
-  mockFrom,
   mockCreateSupabaseServiceClient,
 } = vi.hoisted(() => {
   const hoistedMaybeSingle = vi.fn();

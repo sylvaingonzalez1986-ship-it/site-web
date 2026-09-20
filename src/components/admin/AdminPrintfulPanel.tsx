@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import type {
   PrintfulAdminSnapshot,
   PrintfulSyncedProduct,
@@ -273,9 +274,13 @@ export function AdminPrintfulPanel() {
                 <article key={product.syncProductId} className="card-cartoon bg-white p-3">
                   <div className="grid gap-3 md:grid-cols-[72px_1fr_auto] md:items-center">
                     <div className="h-[72px] w-[72px] overflow-hidden rounded border-2 border-[#1a1a1a] bg-[#f6f6f6]">
-                      <img
+                      <Image
                         src={product.thumbnailUrl || "/product_flower.jpg"}
                         alt={product.productName}
+                        width={72}
+                        height={72}
+                        unoptimized
+                        loading="eager"
                         className="h-full w-full object-cover"
                       />
                     </div>

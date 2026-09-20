@@ -56,7 +56,10 @@ describe("ArenaFirstVisitTutorial", () => {
     expect(shop.href).toBe("/arene/placard?view=shop&catalog=equipment");
     const inventory = ARENA_TUTORIAL_STEPS.find((step) => step.id === "inventaire")!;
     expect(inventory.features[0].description).toContain("possédé et compatible");
-    expect(inventory.features[1].description).toContain("ne le détruit pas");
+    expect(inventory.details?.paragraphs[0]).toContain("laisse l’ancien dans ton inventaire avec son état actuel");
+    expect(inventory.features[1].description).toContain("À 0 %, ses bonus cessent");
+    expect(inventory.features[1].description).toContain("rachète son remplacement");
+    expect(inventory.features[1].description).toContain("en conservant son niveau");
   });
 
   it("explains random opponents, burning and irreversible settlement", () => {

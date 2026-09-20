@@ -4,7 +4,7 @@ import ts from 'typescript';
 import tailwindcss from '@tailwindcss/postcss';
 import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
 

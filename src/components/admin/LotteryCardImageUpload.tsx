@@ -154,10 +154,13 @@ export function LotteryCardImageUpload({ value, onChange }: LotteryCardImageUplo
         <div className="relative h-[220px] overflow-hidden rounded border-2 border-[#1a1a1a] bg-white">
           {isRenderableImageSource(value) ? (
             isRemoteImageUrl(value) ? (
-              <img
+              <Image
                 src={value}
                 alt="Apercu illustration carte"
-                className="absolute inset-0 h-full w-full object-cover"
+                fill
+                sizes="(max-width: 767px) 100vw, 160px"
+                unoptimized
+                className="object-cover"
                 loading="lazy"
                 decoding="async"
                 referrerPolicy="no-referrer"

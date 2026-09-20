@@ -239,10 +239,13 @@ export function ProductImageUpload({ images, onChange }: ProductImageUploadProps
             <div key={imagePath} className="rounded border-2 border-[#1a1a1a] bg-white p-2">
               <div className="relative h-20 overflow-hidden rounded border border-[#1a1a1a]">
                 {isRemoteImageUrl(imagePath) ? (
-                  <img
+                  <Image
                     src={imagePath}
                     alt={`Image produit ${index + 1}`}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    fill
+                    sizes="160px"
+                    unoptimized
+                    className="object-cover"
                     loading="lazy"
                     decoding="async"
                     referrerPolicy="no-referrer"
