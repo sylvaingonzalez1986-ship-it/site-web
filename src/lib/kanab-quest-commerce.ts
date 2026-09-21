@@ -1,8 +1,10 @@
 import { calculateKqMarketReputation, getKqMarketReputationRule, type KqMarketQuote, type KqMarketRouteCode } from "./kanab-quest-market";
 import { getKqMarketReputationProgress } from "./kanab-quest-market-demand";
 import { getChanvrierSalesMultiplier, type ChanvrierStrength } from "./arena-chanvrier";
+import { getKqAdvertisingMultiplier, isKqShopActive, type KqBusinessState } from "./kanab-quest-business";
 
 export const KQ_COMPUTER_PRICE_CENTS = 45000;
+/** Historical snapshots only; the live API requires the business calendar. */
 export const KQ_INTERNET_PRICE_CENTS = 1500;
 export const KQ_SALES_CHANNELS = ["online", "cbd-shop", "wholesale"] as const;
 export type KqSalesChannel = typeof KQ_SALES_CHANNELS[number];
@@ -34,8 +36,10 @@ export type KqCommerceStock = {
 export const KQ_DEMAND_REFILL_MS = { online: 4 * 60 * 60 * 1000, "cbd-shop": 12 * 60 * 60 * 1000 } as const;
 export type KqCommerceDemand = {
   serverNow: string; updatedAt: string; onlineDebt: number; shopDebt: number; growthResetsAt: string | null;
+  onlineCapacityMultiplier?: number;
 };
 export type KqCommerceState = {
+  business?: KqBusinessState;
   demand?: KqCommerceDemand;
   strength?: ChanvrierStrength | null;
   shopPartners?: number; shopRecruitment?: number; shopChurn?: number;
@@ -47,6 +51,7 @@ export type KqCommerceState = {
 export type KqCommerceReceipt = {
   action: string; stockId?: string; flowerId?: string; channel?: KqSalesChannel; units?: number; payoutCents?: number;
   electricityPaidCents?: number; netPayoutCents?: number; cashAfterCents: number; reputationGain?: number;
+  vatCents?: number; labPaidCents?: number;
   satisfaction?: KqCustomerSatisfaction; clientsBefore?: number; shopPartnersBefore?: number; shopPartnersAfter?: number; shopPartnersDelta?: number; shopPricePercent?: number;
   expertiseBonus?: number; clientsAfter?: number; remainingUnits?: number; replayed?: boolean;
 };
@@ -54,6 +59,7 @@ export type KqCommerceRawLot = { flowerId: string; varietyName: string; juryScor
 export type KqCommerceSnapshot = KqCommerceState & { rawLots: KqCommerceRawLot[]; electricityOutstandingCents: number };
 export type KqCustomerSatisfaction = "satisfied" | "neutral" | "disappointed" | "not-applicable";
 export type KqCommerceOffer = {
+  vatCents?: number; labPaidCents?: number; electricityPaidCents?: number; netPayoutCents?: number;
   satisfaction: KqCustomerSatisfaction; clientsBefore: number;
   shopPartnersBefore: number; shopPartnersAfter: number; shopRecruitmentAfter: number; shopChurnAfter: number; shopGoodUnitsAfter: number; shopBadUnitsAfter: number; shopPricePercent: number;
   channel: KqSalesChannel; policy: KqOnlinePrice; units: number; maxUnits: number; unitCents: number; payoutCents: number;
@@ -99,7 +105,8 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const volumes = Object.values(state.marketVolumes).reduce((a, b) => a + (b ?? 0), 0);
   const saturation = Math.min(.35, (state.ownVolumes[stock.route] ?? 0) / 1000 * .2 + (volumes >= 100 ? Math.max(0, (state.marketVolumes[stock.route] ?? 0) / volumes - .3) * .3 : 0));
   const demandFactor = factorQuality * factorPrice * eventFactor * (1 - saturation);
-  const directBudget = salesMultiplier * capacity.baseUnits * (1 + .25 * Math.min(1, (campaign?.clientsStart ?? 0) / capacity.maxClients));
+  const directBudget = salesMultiplier * capacity.baseUnits * (1 + .25 * Math.min(1, (campaign?.clientsStart ?? 0) / capacity.maxClients))
+    * getKqAdvertisingMultiplier(state.business, nowMs);
   const shopPartnersStart = campaign?.shopPartnersStart ?? 0;
   const shopBand = getKqShopQualityBand(stock.route, stock.juryScore);
   const shopPricePercent = shopBand.pricePercent + getKqShopNetworkBonus(shopPartnersStart);
@@ -107,7 +114,10 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   let reason: string | null = null;
   if (channel !== "wholesale" && !campaign) reason = "Termine une culture pour ouvrir les commandes du cycle.";
   if (channel === "online" && !state.computerOwned) reason = "Achète un ordinateur dans la boutique pour vendre en ligne.";
-  else if (channel === "online" && !campaign?.internetPaid) reason = "Active Internet pour ce cycle : 15 €.";
+  else if (channel === "online" && state.business) {
+    if (!state.business.shop.createdAt) reason = "Économise 1 000 € et crée ton shop pour vendre en ligne.";
+    else if (!isKqShopActive(state.business, nowMs)) reason = "Réactive ton site : 100 € pour 30 jours de jeu (5 jours réels).";
+  } else if (channel === "online" && !campaign?.internetPaid) reason = "Crée ton shop pour vendre en ligne.";
   if (channel === "online" && (salvage || stock.juryScore < getKqCommerceMinimumQuality(stock.route, "online")!)) reason = "Qualité insuffisante pour la vente directe. Le grossiste reprend ce lot.";
   if (channel === "cbd-shop" && (salvage || stock.juryScore < getKqCommerceMinimumQuality(stock.route, "cbd-shop")!)) reason = "La boutique refuse cette qualité. Le grossiste reste disponible.";
   const eqPerUnit = stock.equivalentUnits / stock.initialUnits;
@@ -158,13 +168,29 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
     goodUnitsAfter, disappointmentAfter, clientsAfter, reason, message };
 }
 
-// A normalized debt preserves refill duration when capacity changes. No browser wall clock
-// is used implicitly: callers advance the server snapshot with a monotonic elapsed time.
+// Business demand is expressed in unboosted capacity units. Advertising increases
+// capacity and refill speed but never deletes consumption already recorded.
+// Callers advance the server snapshot with a monotonic clock, not the device date.
 export function getKqCommerceReplenishment(state: KqCommerceState, channel: KqSalesChannel, nowMs?: number) {
   if (!state.demand || channel === "wholesale") return null;
   const at = Date.parse(state.demand.updatedAt);
   const now = Math.max(at, nowMs ?? Date.parse(state.demand.serverNow));
   const durationMs = KQ_DEMAND_REFILL_MS[channel];
+  if (channel === "online" && state.business) {
+    const multiplier = getKqAdvertisingMultiplier(state.business, now);
+    const ad = state.business.advertising;
+    const boostEnd = ad && state.business.shop.active
+      ? Math.min(Date.parse(ad.endsAt), Date.parse(state.business.shop.paidUntil ?? "")) : at;
+    const boostStart = ad ? Math.max(at, Date.parse(ad.startedAt)) : at;
+    const extraRate = ad && state.business.shop.active ? ad.boostPercent / 100 : 0;
+    const boostedElapsed = Math.max(0, Math.min(now, boostEnd) - boostStart);
+    const remainingDebt = Math.max(0, state.demand.onlineDebt - (now - at + boostedElapsed * extraRate) / durationMs);
+    const boostedTimeLeft = multiplier > 1 ? Math.max(0, boostEnd - now) : 0;
+    const boostedRecovery = boostedTimeLeft * multiplier / durationMs;
+    const remainingMs = remainingDebt <= boostedRecovery ? remainingDebt * durationMs / multiplier
+      : boostedTimeLeft + (remainingDebt - boostedRecovery) * durationMs;
+    return { availableFraction: clamp(1 - remainingDebt / multiplier, 0, 1), remainingMs, durationMs };
+  }
   const initialDebt = clamp(channel === "online" ? state.demand.onlineDebt : state.demand.shopDebt, 0, 1);
   const remainingMs = Math.max(0, initialDebt * durationMs - (now - at));
   return { availableFraction: clamp(1 - remainingMs / durationMs, 0, 1), remainingMs, durationMs };

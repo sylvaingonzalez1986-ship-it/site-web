@@ -22,6 +22,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (!isRecord(envelope) || envelope.version !== 1 || !isRecord(envelope.payload)) return null;
     const state = envelope.payload;
     if (state.rulesVersion !== undefined && state.rulesVersion !== 2) return null;
+    if (state.domiciliation !== undefined && state.domiciliation !== "home" && state.domiciliation !== "external") return null;
     const phases = ["prepare", "rolled", "resolved", "complete"];
     const knownCards = new Set<string>([...KQ_CARDS.map((card) => card.code), ...KQ_RETIRED_SUBSTRATE_CODES]);
     const knownSituations = new Set(KQ_SITUATIONS.map((situation) => situation.code));
@@ -171,6 +172,7 @@ export function parseKqRankSave(raw: string | null): KqRankProfile | null {
 
 export function createKqIntegrityCode(state: KqGameState) {
   const canonical = JSON.stringify({
+    ...(state.domiciliation ? { domiciliation: state.domiciliation } : {}),
     seed: state.seed, varietyCode: state.varietyCode, deckCodes: state.deckCodes, handCodes: getKqHandCodes(state), heritageReserveCodes: state.heritageReserveCodes ?? [], handRedrawsUsed: state.handRedrawsUsed ?? 0, heritageCode: state.heritageCode ?? null, heritageName: state.heritageName ?? null, heritageTiming: state.heritageTiming ?? null, heritageEffect: state.heritageEffect ?? null, heritageProducerName: state.heritageProducerName ?? null, heritageImageUrl: state.heritageImageUrl ?? null, heritageUsed: state.heritageUsed ?? false, situationCodes: state.situationCodes,
     usedCards: state.usedCards, quality: state.quality, xp: state.xp, pressure: state.pressure, traits: state.traits, combos: state.combos, bonusDie: state.bonusDie ?? null, effectNotices: state.effectNotices ?? [],
     equipmentCodes: state.equipment?.codes ?? [], equipmentQualityBonus: state.equipmentQualityBonus ?? 0, harvestGrams: state.harvestGrams ?? null,

@@ -46,18 +46,10 @@
 .audiences > section { display: flex; gap: 16px; align-items: flex-start; min-width: 0; }
 .audiences > section > svg { flex: 0 0 46px; width: 46px; height: 46px; padding: 10px; background: #54d5bb18; color: #71e3c9; border-radius: 4px; }
 .audiences > section:last-child > svg { background: #f4c43d14; color: #f4c43d; }
-.audiences h3, .internet h3 { font-size: .9rem; line-height: 1.4; margin: 0 0 8px; font-weight: 800; }
+.audiences h3 { font-size: .9rem; line-height: 1.4; margin: 0 0 8px; font-weight: 800; }
 .stat { display: block; font-size: 1.8rem; line-height: 1.2; color: #fffaf1; }
 .stat > span { font-size: .8rem; color: #bfd9cc; font-weight: 600; }
 .audiences p { margin: 10px 0 0; max-width: 45ch; font-size: .77rem; line-height: 1.6; color: #bfd9cc; }
-.internet { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 16px; padding: 20px; background: #00251e; border-left: 3px solid #8da397; }
-.internet > svg { color: #b5cabc; }
-.internet[data-active] { border-left-color: #54d5bb; }
-.internet[data-active] > svg { color: #71e3c9; }
-.internet h3 { margin-bottom: 5px; }
-.internet p { margin: 0; color: #c5ddce; font-size: .77rem; line-height: 1.6; }
-.internet small { display: block; color: #9fbeb0; font-size: .72rem; line-height: 1.5; margin-top: 5px; }
-.internetActions { display: grid; gap: 8px; }
 .overview .action { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px 14px; background: #f4c43d; color: #102f29; border-radius: 3px; font-size: .76rem; font-weight: 850; box-shadow: 0 3px #001e19; }
 .overview .secondaryAction { min-height: 44px; padding: 8px 12px; border: 1px solid #739586; border-radius: 3px; color: #d3e5d9; font-size: .74rem; font-weight: 700; }
 .history { padding-top: 28px; }
@@ -77,14 +69,14 @@
 .emptyHistory { margin: 0; padding: 18px; border: 1px dashed #8fac9c60; color: #bfd9cc; font-size: .8rem; line-height: 1.6; }
 .overview :where(button,summary):focus-visible { outline: 3px solid #f4c43d; outline-offset: 4px; box-shadow: none; }
 @media(hover:hover) { .summary:hover { background: #004331; } .overview .action:hover { background: #ffda62; } .overview .secondaryAction:hover, .overview .shopLink:hover { border-color: #f4c43d; } }
-@media(max-width: 800px) { .rankProgress { padding: 22px; } .internet { grid-template-columns: auto minmax(0,1fr); } .internetActions { grid-column: 2; justify-items: start; } }
+@media(max-width: 800px) { .rankProgress { padding: 22px; } }
 @media(max-width: 700px) {
   .summary { gap: 12px; padding: 14px 12px; } .summary > img { width: 66px; height: 62px; } .summary > span:first-of-type > strong { font-size: 1.5rem; } .summary small { font-size: .7rem; } .summaryRank { display: none; } .chevron { margin-left: auto; }
   .content { padding: 0 14px 18px; } .reputation { grid-template-columns: 1fr; } .officeArt { min-height: 200px; } .officeArt::after { background: linear-gradient(transparent 75%,#004331); } .officeArt img { object-position: center 45%; }
   .rankProgress { padding: 20px 16px; } .rankProgress h2 { font-size: 2rem; } .rankNumbers { gap: 18px; margin-bottom: 20px; } .rankNumbers > strong { font-size: 1.45rem; } .rankNumbers > span { padding-left: 14px; font-size: 1.05rem; }
   .nextRank { gap: 10px; font-size: .69rem; } .rankDetails { padding-inline: 14px; } .rankTrack { grid-template-columns: 1fr; } .rankTrack > li { grid-template-columns: 22px minmax(0,1fr); column-gap: 10px; padding: 12px; } .rankTrack > li > svg { grid-row: 1 / 4; } .rankTrack > li > :not(svg) { grid-column: 2; }
   .audiences { grid-template-columns: 1fr; gap: 22px; padding-block: 24px; } .audiences > section { gap: 12px; } .audiences > section > svg { flex-basis: 40px; width: 40px; height: 40px; padding: 8px; }
-  .internet { padding: 16px 12px; gap: 12px; } .internetActions { grid-column: 1 / -1; justify-items: stretch; } .history { padding-top: 24px; }
+  .history { padding-top: 24px; }
   .saleRow { grid-template-columns: 42px minmax(0,1fr) auto; gap: 10px; } .saleRow > img { width: 42px; height: 50px; } .saleRow > div > strong { font-size: .77rem; } .saleAmount strong { font-size: .84rem; } .saleRow > div > small { font-size: .63rem; }
 }
 @media(prefers-reduced-motion:reduce) { .chevron { transition: none; } }

@@ -21,6 +21,7 @@ import { KQ_SUPPORT_BOOSTER_POINTS_COST } from "@/lib/kanab-quest-booster";
 import { calculateArenaScore } from "@/lib/arena-ranking";
 import { auditKqEquipmentCatalog, type KqEquipmentCatalogRow } from "@/lib/kanab-quest-equipment";
 import { getKqEquipmentShopSnapshot } from "@/lib/supabase/kanab-quest-equipment-backend";
+import type { KqBusinessState } from "@/lib/kanab-quest-business";
 import { getKqLaunchApprovalChecks, getKqLaunchApprovals, getKqLaunchDossier, type KqLaunchApprovals, type KqLaunchDossier } from "@/lib/kanab-quest-launch-approvals";
 import { buildKqRandomQueueHealth, type KqRandomQueueHealth } from "@/lib/kanab-quest-random-queue";
 import { KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE } from "@/lib/kanab-quest-producer-rewards";
@@ -934,15 +935,22 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   if (cards.some((card) => !card || card.category === "pbi")) {
     throw new Error("Le deck contient une carte interdite.");
   }
-  const [collection, equipmentShop] = await Promise.all([
+  const supabase = createSupabaseServiceClient();
+  const [collection, equipmentShop, businessResult] = await Promise.all([
     getKqPlayerCollectionSnapshot(ownerId),
     getKqEquipmentShopSnapshot(ownerId),
+    supabase.rpc("rpc_kq_commerce_state", { p_user_id: ownerId }),
   ]);
+  if (businessResult.error) throw new Error(`[supabase:commerce] ${businessResult.error.message}`);
+  const business = businessResult.data?.business as KqBusinessState | undefined;
+  if (business?.version !== 1) throw new Error("[supabase:commerce] business_calendar_migration_required");
+  const domiciliation = business.domiciliation?.mode === "external" && business.domiciliation.active ? "external" : "home";
   const collectionCodes = Object.entries(collection.inventory)
     .filter(([, copies]) => copies > 0)
     .map(([code]) => code);
   const seed = crypto.getRandomValues(new Uint32Array(1))[0] % 100000;
   const state = startKqGame(seed, {
+    domiciliation,
     varietyCode: input.buddieCode,
     deckCodes: input.deckCodes,
     collectionCodes,
@@ -955,7 +963,6 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   });
   if (equipmentShop.strength === "green-thumb") state.effectNotices = [...(state.effectNotices ?? []), "Main Verte : +2 XP pour cette culture."];
   if (input.expectedEnergyCents !== undefined && input.expectedEnergyCents !== state.energy?.totalCents) throw new Error("L’installation a changé. Actualise le devis électrique avant de lancer.");
-  const supabase = createSupabaseServiceClient();
   const result = await supabase.rpc("rpc_kq_start_run_with_heritage", {
     p_user_id: ownerId,
     p_buddie_code: input.buddieCode,
@@ -969,6 +976,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   if (result.error) {
     const message = result.error.message || "Création de partie impossible.";
     if (message.includes("kq_active_run_exists")) throw new Error("Une culture Supabase est déjà active.");
+    if (message.includes("kq_domiciliation_changed")) throw new Error("Ta domiciliation a changé. Actualise avant de lancer la culture.");
     if (message.includes("kq_culture_equipment_changed") || message.includes("kq_culture_equipment_broken")) throw new Error("L’état du matériel a changé. Actualise le devis avant de lancer la culture.");
     if (message.includes("kq_buddie_not_owned")) throw new Error("Ce Buddie n’est pas présent dans la collection.");
     if (message.includes("kq_deck_copy_missing")) throw new Error("Une ou plusieurs copies du deck ne sont pas disponibles.");

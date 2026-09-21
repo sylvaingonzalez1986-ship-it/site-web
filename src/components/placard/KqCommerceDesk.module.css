@@ -18,6 +18,10 @@
 .wallet > span { display: grid; gap: 4px; }
 .wallet small { font: 700 .58rem/1.3 ui-monospace,Consolas,monospace; letter-spacing: .08em; text-transform: uppercase; color: #e0eade; }
 .wallet strong { font-size: 1.1rem; white-space: nowrap; }
+.receiptAmounts { display: grid; gap: 12px; width: min(100%, 480px); margin: 20px auto; padding: 18px; background: #00251e; border: 1px solid #fffaf130; }
+.receiptAmounts > div { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; font-size: .8rem; line-height: 1.5; text-align: left; }
+.receiptAmounts dt { color: #c5ddce; }
+.receiptAmounts dd { margin: 0; font-weight: 800; white-space: nowrap; }
 .steps { display: grid; grid-template-columns: 1fr 1fr; max-width: 660px; margin-left: max(0px,calc((100% - 1120px)/2)); margin-bottom: 0; padding: 0; gap: 8px; list-style: none; }
 .steps li { display: flex; align-items: center; gap: 10px; padding: 13px 16px; min-width: 0; background: #002d24d9; border: 1px solid #fffaf14d; color: #c1d8ce; font-size: .82rem; font-weight: 700; }
 .steps li > span { display: grid; place-items: center; flex: 0 0 26px; width: 26px; height: 26px; border: 1px solid #fffaf150; font: 800 .8rem ui-monospace,monospace; }

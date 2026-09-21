@@ -2,11 +2,12 @@ import { ARENA_JOURNEY_STEPS } from "./arena-journey";
 import { activateKqHeritage, advanceKqStage, canActivateKqHeritage, canPlayKqCard, KQ_BUDDIES, KQ_CARDS, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, type KqGameState } from './kanab-quest-game';
 import { createKqFlower, createKqOpponent, lockKqBattle, resolveKqBattle, type KqBattle } from './kanab-quest-battle';
 import { getKqEquipmentDefinition } from './kanab-quest-equipment';
-import { previewKqEnergyPayment, type KqEnergyMode } from './kanab-quest-energy';
+import { type KqEnergyMode } from './kanab-quest-energy';
 import { getKqJuryScoreFromRounds, quoteKqMarketRoutes, type KqMarketRouteCode } from './kanab-quest-market';
-import { KQ_COMPUTER_PRICE_CENTS, KQ_INTERNET_PRICE_CENTS, getKqCommerceCapacity, getKqShopBudget, quoteKqCommerce, type KqCommerceOffer, type KqCommerceState, type KqCommerceStock, type KqOnlinePrice, type KqSalesChannel } from './kanab-quest-commerce';
+import { KQ_COMPUTER_PRICE_CENTS, getKqCommerceCapacity, getKqShopBudget, quoteKqCommerce, type KqCommerceOffer, type KqCommerceState, type KqCommerceStock, type KqOnlinePrice, type KqSalesChannel } from './kanab-quest-commerce';
+import { createKqBusinessPreview, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_LAB_ANALYSIS_CENTS, KQ_SHOP_CREATION_CENTS, KQ_SHOP_MONTHLY_CENTS, previewKqBusinessPayment } from './kanab-quest-business';
 
-export const KQ_TRIAL_VERSION = 1;
+export const KQ_TRIAL_VERSION = 2;
 export const KQ_TRIAL_CHAPTERS = ARENA_JOURNEY_STEPS.map(step=>step.title);
 export const KQ_TRIAL_BUDDIE = { ...KQ_BUDDIES.find(b => b.rarity === 'gold')!, name: 'Buddie d’essai' };
 export const KQ_TRIAL_DECK = ['BOTTE-005', 'BOTTE-024', 'BOTTE-004', 'BOTTE-003', 'BOTTE-006', 'BOTTE-015', 'BOTTE-032', 'BOTTE-016', 'BOTTE-030'];
@@ -33,7 +34,7 @@ export type KqTrialAction =
  | { type: 'sell'; stockId: string; channel: KqSalesChannel; policy: KqOnlinePrice };
 export function createKqTrial(): KqTrialState {
  return { chapter: 0, checked: [], bought: false, installed: [], mode: 'balanced', game: null, battle: null, rounds: 0, clock: TIME, electricity: 0, receipts: [],
- commerce: { revision: 0, cashCents: 200000, reputation: 200, clients: 8, shopPartners: 2, computerOwned: false, internetRenew: false, campaign: null, stocks: [], receipts: [], marketVolumes: {}, ownVolumes: {}, routeSales: {} } };
+ commerce: { business: createKqBusinessPreview(TIME), revision: 0, cashCents: 200000, reputation: 200, clients: 8, shopPartners: 2, computerOwned: false, internetRenew: false, campaign: null, stocks: [], receipts: [], marketVolumes: {}, ownVolumes: {}, routeSales: {} } };
 }
 function teachingHand(game: KqGameState): KqGameState {
  return { ...game, handCodes: HANDS[game.stageIndex].filter(code => !game.usedCards.includes(code)).slice(0, 5) };
@@ -109,7 +110,10 @@ export function reduceKqTrial(s: KqTrialState, a: KqTrialAction): KqTrialState {
  case 'advance': {
  if(s.chapter!==4||g?.phase!=='resolved')return s;
  const game=advanceKqStage(g);
- return game.phase==='complete'?{...s,chapter:5,game,electricity:game.energy?.totalCents??0}: {...s,game:teachingHand(game)};
+ if (game.phase !== 'complete') return {...s,game:teachingHand(game)};
+ const business = structuredClone(c.business ?? createKqBusinessPreview(s.clock));
+ business.lab = {outstandingCents:KQ_LAB_ANALYSIS_CENTS,overdueCents:0,invoices:[{id:'TRIAL-LAB',runId:'TRIAL',issuedAt:new Date(s.clock).toISOString(),dueAt:new Date(s.clock+KQ_GAME_MONTH_MS).toISOString(),amountCents:KQ_LAB_ANALYSIS_CENTS,remainingCents:KQ_LAB_ANALYSIS_CENTS}]};
+ return {...s,chapter:5,game,electricity:game.energy?.totalCents??0,commerce:{...c,business}};
  }
  case 'duel': return s.chapter===6&&g?.phase==='complete'&&!s.battle?{...s,battle:resolveKqBattle(lockKqBattle(createKqFlower(g,'Toi · essai'),createKqOpponent(2026,{ownerName:'Sylvain · entraînement'}),2026),2026,new Date(TIME))}:s;
  case 'round': return s.chapter===6&&s.battle&&s.rounds<3?{...s,rounds:s.rounds+1}:s;
@@ -122,15 +126,39 @@ export function reduceKqTrial(s: KqTrialState, a: KqTrialAction): KqTrialState {
  return {...s,chapter:8,commerce:{...c,stocks,demand:{serverNow:now,updatedAt:now,onlineDebt:0,shopDebt:0,growthResetsAt:new Date(s.clock+86400000).toISOString()},campaign:{id:'TRIAL',revision:0,reputation:c.reputation,clientsStart:c.clients,shopPartnersStart:c.shopPartners,event:'normal',internetPaid:false,directUsed:0,shopUsed:0,goodUnits:0,disappointmentUnits:0}}};
  }
  case 'computer': return s.chapter===8&&!c.computerOwned&&c.cashCents>=KQ_COMPUTER_PRICE_CENTS?{...s,commerce:{...c,computerOwned:true,cashCents:c.cashCents-KQ_COMPUTER_PRICE_CENTS}}:s;
- case 'internet': return s.chapter===8&&c.computerOwned&&c.campaign&&!c.campaign.internetPaid&&c.cashCents>=KQ_INTERNET_PRICE_CENTS?{...s,commerce:{...c,cashCents:c.cashCents-KQ_INTERNET_PRICE_CENTS,campaign:{...c.campaign,internetPaid:true}}}:s;
- case 'wait': return s.chapter===8?{...s,clock:s.clock+4*3600000}:s;
+ case 'internet': {
+ if(s.chapter!==8||!c.computerOwned||!c.campaign||c.business?.shop.createdAt||c.cashCents<KQ_SHOP_CREATION_CENTS)return s;
+ const business=structuredClone(c.business??createKqBusinessPreview(s.clock));
+ business.shop={name:'Le shop d’essai',createdAt:new Date(s.clock).toISOString(),paidUntil:new Date(s.clock+KQ_GAME_MONTH_MS).toISOString(),renew:true,active:true};
+ return {...s,commerce:{...c,business,cashCents:c.cashCents-KQ_SHOP_CREATION_CENTS,campaign:{...c.campaign,internetPaid:true}}};
+ }
+ case 'wait': {
+ if(s.chapter!==8)return s;
+ const clock=s.clock+KQ_GAME_DAY_MS,business=structuredClone(c.business??createKqBusinessPreview(s.clock));
+ let cash=c.cashCents;
+ for(const invoice of business.lab.invoices)if(Date.parse(invoice.dueAt)>s.clock&&Date.parse(invoice.dueAt)<=clock&&cash>=invoice.remainingCents){cash-=invoice.remainingCents;invoice.remainingCents=0;}
+ business.lab.outstandingCents=business.lab.invoices.reduce((sum,i)=>sum+i.remainingCents,0);
+ business.lab.overdueCents=business.lab.invoices.filter(i=>Date.parse(i.dueAt)<=clock).reduce((sum,i)=>sum+i.remainingCents,0);
+ if(business.shop.active&&business.shop.paidUntil&&Date.parse(business.shop.paidUntil)<=clock){
+  if(business.shop.renew&&cash>=KQ_SHOP_MONTHLY_CENTS){cash-=KQ_SHOP_MONTHLY_CENTS;business.shop.paidUntil=new Date(Date.parse(business.shop.paidUntil)+KQ_GAME_MONTH_MS).toISOString();}
+  else business.shop.active=false;
+ }
+ if(Date.parse(business.vat.nextSettlementAt)<=clock){business.vat.paidCents+=business.vat.reservedCents;business.vat.reservedCents=0;business.vat.nextSettlementAt=new Date(Date.parse(business.vat.nextSettlementAt)+KQ_GAME_MONTH_MS).toISOString();}
+ business.serverNow=new Date(clock).toISOString();
+ return {...s,clock,commerce:{...c,business,cashCents:cash}};
+ }
  case 'sell': {
  if(s.chapter!==8||!c.campaign||!['online','cbd-shop','wholesale'].includes(a.channel)||!['advised','premium','discovery'].includes(a.policy))return s;
  const stock=c.stocks.find(stock=>stock.id===a.stockId);if(!stock||stock.remainingUnits<=0)return s;
  const offer=quoteKqCommerce(c,stock,a.channel,a.policy,undefined,s.clock);if(offer.reason||offer.units<=0)return s;
- const energy=previewKqEnergyPayment(offer.payoutCents,s.electricity);
+ const business=structuredClone(c.business??createKqBusinessPreview(s.clock));
+ const energy=previewKqBusinessPayment(offer.payoutCents,business,s.electricity);
+ business.vat.salesTtcCents+=offer.payoutCents;business.vat.reservedCents+=energy.vatCents;
+ let lab=energy.labPaidCents;
+ for(const invoice of business.lab.invoices)if(Date.parse(invoice.dueAt)<=s.clock){const paid=Math.min(lab,invoice.remainingCents);invoice.remainingCents-=paid;lab-=paid;}
+ business.lab.outstandingCents-=energy.labPaidCents;business.lab.overdueCents-=energy.labPaidCents;
  const elapsed=Math.max(0,s.clock-Date.parse(c.demand!.updatedAt));
- return {...s,electricity:energy.electricityRemainingCents,receipts:[...s.receipts,{...offer,net:energy.netPayoutCents,electricity:energy.electricityPaidCents}],commerce:{...c,cashCents:c.cashCents+energy.netPayoutCents,reputation:Math.max(0,c.reputation+offer.reputationDelta),clients:offer.clientsAfter,shopPartners:offer.shopPartnersAfter,shopRecruitment:offer.shopRecruitmentAfter,shopChurn:offer.shopChurnAfter,
+ return {...s,electricity:energy.electricityRemainingCents,receipts:[...s.receipts,{...offer,...energy,net:energy.netPayoutCents,electricity:energy.electricityPaidCents}],commerce:{...c,business,cashCents:c.cashCents+energy.netPayoutCents,reputation:Math.max(0,c.reputation+offer.reputationDelta),clients:offer.clientsAfter,shopPartners:offer.shopPartnersAfter,shopRecruitment:offer.shopRecruitmentAfter,shopChurn:offer.shopChurnAfter,
  demand:{...c.demand!,updatedAt:new Date(s.clock).toISOString(),serverNow:new Date(s.clock).toISOString(),onlineDebt:Math.min(1,Math.max(0,c.demand!.onlineDebt-elapsed/(4*3600000))+offer.directCost/(getKqCommerceCapacity(c.campaign.reputation).baseUnits*(1+.25*Math.min(1,c.campaign.clientsStart/getKqCommerceCapacity(c.campaign.reputation).maxClients)))),shopDebt:Math.min(1,Math.max(0,c.demand!.shopDebt-elapsed/(12*3600000))+offer.shopCost/getKqShopBudget(c.campaign.shopPartnersStart??0,c.campaign.event))},
  campaign:{...c.campaign,goodUnits:offer.goodUnitsAfter,disappointmentUnits:offer.disappointmentAfter,shopGoodUnits:offer.shopGoodUnitsAfter,shopBadUnits:offer.shopBadUnitsAfter},
  stocks:c.stocks.map(item=>item.id!==stock.id?item:{...item,remainingUnits:item.remainingUnits-offer.units,payoutExact:offer.payoutExactAfter,payoutRounded:offer.payoutRoundedAfter,repExact:offer.repExactAfter,repRounded:offer.repRoundedAfter}),

@@ -1,4 +1,5 @@
 import { quoteKqEnergy, applyKqEnergyHarvest, KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
+import type { KqDomiciliation } from "./kanab-quest-business";
 import {
   KQ_HERITAGE_CARDS,
   resolveKqHeritageCard,
@@ -94,6 +95,8 @@ export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadou
 
 export type KqGameState = {
   rulesVersion?: 2;
+  /** Recorded once at culture start; later changes apply to the next culture. */
+  domiciliation?: KqDomiciliation;
   energy?: KqEnergyQuote;
   seed: number;
   challengeDayKey?: string;
@@ -386,9 +389,20 @@ function scenarioIndex(seed: number, salt: number, length: number) {
   return ((value ^ (value >>> 15)) >>> 0) % length;
 }
 
-export function buildKqScenarioPath(seed: number, recentSituationCodes: string[] = [], requiredTags: KqSituationTag[] = [], allowedPests: KqPest[] = []) {
+export function buildKqScenarioPath(seed: number, recentSituationCodes: string[] = [], requiredTags: KqSituationTag[] = [], allowedPests: KqPest[] = [], domiciliation?: KqDomiciliation) {
   const path = KQ_STAGES.map((stage, stageIndex) => {
     const pool = KQ_SITUATIONS.filter((situation) => situation.stage === stage);
+    if (domiciliation && stage === "Récolte") {
+      const theft = pool.find(situation => situation.incident === "crop-theft")!;
+      // A separate draw makes the actual incident probability 2/N at home and
+      // 1/N externally. Duplicating a card in a pool would only give 2/(N+1).
+      const risk = domiciliation === "home" ? 2 : 1;
+      if (scenarioIndex(seed, 71, pool.length) < risk) return theft.code;
+      const safe = pool.filter(situation => situation.incident !== "crop-theft");
+      const freshSafe = safe.filter(situation => !recentSituationCodes.includes(situation.code));
+      const choices = freshSafe.length ? freshSafe : safe;
+      return choices[scenarioIndex(seed, stageIndex, choices.length)].code;
+    }
     const fresh = pool.filter((situation) => !recentSituationCodes.includes(situation.code));
     const candidates = fresh.length > 0 ? fresh : pool;
     return candidates[scenarioIndex(seed, stageIndex, candidates.length)].code;
@@ -413,7 +427,7 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
 
 export function startKqGame(
   seed = Date.now(),
-  config: { varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode } = {},
+  config: { domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode } = {},
 ): KqGameState {
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
   const requestedDeck = config.deckCodes ?? KQ_CARDS.slice(0, 6).map((card) => card.code);
@@ -421,7 +435,7 @@ export function startKqGame(
     .map((code) => KQ_CARDS.find((card) => card.code === code))
     .filter((card): card is KqSupportCard => Boolean(card) && card?.category !== "pbi");
   const deckCodes = requestedCards.map((card) => card.code);
-  const situationCodes = buildKqScenarioPath(clampSeed(seed), config.recentSituationCodes, config.requiredSituationTags, config.allowedPests);
+  const situationCodes = buildKqScenarioPath(clampSeed(seed), config.recentSituationCodes, config.requiredSituationTags, config.allowedPests, config.domiciliation);
   const heritage = config.heritageCard
     ?? KQ_HERITAGE_CARDS.find((card) => card.code === config.heritageCode);
   const equipmentCodes = [...new Set(config.equipmentCodes ?? [])]
@@ -430,6 +444,7 @@ export function startKqGame(
   const equipment = { codes: equipmentCodes, levels, ...summarizeKqEquipmentLoadout(equipmentCodes, levels) };
   const energy = config.energyMode ? quoteKqEnergy(equipmentCodes, levels, config.energyMode) : undefined;
   const initialState: KqGameState = {
+    ...(config.domiciliation ? { domiciliation: config.domiciliation } : {}),
     ...(energy ? { energy } : {}),
     seed: clampSeed(seed), ...(config.challengeDayKey ? { challengeDayKey: config.challengeDayKey } : {}), ...(config.startedAt ? { startedAt: config.startedAt } : {}), varietyCode: buddie.code, varietyName: buddie.name, deckCodes,
     collectionCodes: (config.collectionCodes ?? KQ_CARDS.map((card) => card.code)).filter((code) => !isKqRetiredSubstrate(code)),
