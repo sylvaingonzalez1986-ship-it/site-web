@@ -3,10 +3,12 @@ import Image from "next/image";
 import { ArrowLeft, ArrowRight, Sparkles, Volume2, VolumeX } from "lucide-react";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { isRenderableImageSource } from "@/lib/image-source";
+import { hasModernBuddieArtwork } from "@/lib/buddie-artwork";
 import { rarityLabels } from "@/lib/lottery-card-ui";
 import { useBoosterSound } from "@/hooks/useBoosterSound";
 import type { ScratchResult } from "@/types/lottery";
 import { PackSwipeCut } from "./PackSwipeCut";
+import { BuddieCard } from "./BuddieCard";
 import styles from "./PackOpening.module.css";
 
 type Phase = "idle" | "opening" | "cards" | "recap" | "error";
@@ -15,8 +17,14 @@ const COLORS = { common: "#bde5c7", silver: "#c0e5ff", gold: "#ffd252", epic: "#
 const FREQUENCIES = { common: 330, silver: 392, gold: 440, epic: 554, legendary: 660 };
 const BACK = "/app/lottery/tcg-card-back.png";
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isBuddieCard = (card: Card) => !card.isBonus && hasModernBuddieArtwork(card.code);
+const pullStatus = (card: Card) => card.ownedCount > 1 ? `Doublon ×${card.ownedCount}` : "Nouvelle carte";
 
 function CardFace({ card }: { card: Card }) {
+  if (isBuddieCard(card)) {
+    return <BuddieCard code={card.code} name={card.name} rarity={card.rarity} cardNumber={card.cardNumber} imageUrl={card.imageUrl} sizes="(max-width: 700px) 65vw, 320px" />;
+  }
+
   return <div className={styles.cardFace}>
     <div className={styles.cardArt}>{isRenderableImageSource(card.imageUrl)
       ? <Image src={card.imageUrl} alt="" fill sizes="(max-width: 700px) 65vw, 320px" className={styles.art} />
@@ -112,13 +120,13 @@ export function PackOpeningAnimation({ packNumber, onOpen, onContinue, disabled 
             onPointerMove={event => { if (event.pointerType !== "mouse" || reducedMotion()) return; const rect = event.currentTarget.getBoundingClientRect(); event.currentTarget.style.setProperty("--tilt", `${((event.clientX - rect.left) / rect.width - .5) * 12}deg`); }}
             onPointerLeave={event => event.currentTarget.style.setProperty("--tilt", "0deg")}
             onClick={event => { const suppress = swiped.current && event.detail > 0; swiped.current = false; if (!suppress) reveal(); }}>
-            <div className={styles.flipper}><div className={styles.cardBack} aria-hidden="true"><Image src={BACK} alt="" fill priority sizes="(max-width: 700px) 65vw, 320px" /><span>Touche pour révéler</span></div><div className={styles.cardFront} aria-hidden={!visible}><CardFace card={current} /><div className={styles.holo} aria-hidden="true" /></div></div>
+            <div className={styles.flipper}><div className={styles.cardBack} aria-hidden="true"><Image src={BACK} alt="" fill priority sizes="(max-width: 700px) 65vw, 320px" /><span>Touche pour révéler</span></div><div className={styles.cardFront} data-buddie={isBuddieCard(current) || undefined} aria-hidden={!visible}><CardFace card={current} /><div className={styles.holo} aria-hidden="true" /></div></div>
           </button>
         </div>
         <button type="button" className={`${styles.arrow} ${styles.next}`} disabled={!visible || index === total - 1} aria-label="Carte suivante" onClick={() => go(1)}><ArrowRight /></button>
       </div>
       <footer className={styles.controls}>
-        <div className={styles.verdict} aria-live="polite" aria-atomic="true"><span className={styles.eyebrow}>Carte {index + 1} / {total}</span><h2>{visible ? current.isBonus ? "Carte bonus !" : `${rarityLabels[current.rarity]}${["epic", "legendary"].includes(current.rarity) ? " !" : "."}` : "Qui se cache ici ?"}</h2><p>{visible ? current.name : "Touche la carte ou balaie pour la retourner."}</p></div>
+        <div className={styles.verdict} aria-live="polite" aria-atomic="true"><span className={styles.eyebrow}>Carte {index + 1} / {total}</span><h2>{visible ? current.isBonus ? "Carte bonus !" : `${rarityLabels[current.rarity]}${["epic", "legendary"].includes(current.rarity) ? " !" : "."}` : "Qui se cache ici ?"}</h2><p>{visible ? current.name : "Touche la carte ou balaie pour la retourner."}</p>{visible && isBuddieCard(current) && <span className={styles.pullStatus}>{pullStatus(current)}</span>}</div>
         <nav className={styles.cardTrack} aria-label="Cartes du booster">{result.cards.map((card, i) => <button key={`${card.id}-${i}`} type="button" disabled={i > revealed.length} aria-current={i === index ? "step" : undefined} aria-label={`Carte ${i + 1}${revealed.includes(i) ? ", révélée" : ""}`} onClick={() => setIndex(i)} data-known={revealed.includes(i) || undefined}>{revealed.includes(i) ? "✦" : i + 1}</button>)}</nav>
         <div className={styles.actions}><button type="button" className={styles.primary} onClick={() => !visible ? reveal() : allRevealed ? setPhase("recap") : setIndex(index + 1)}>{!visible ? "Révéler la carte" : allRevealed ? "Voir mon butin" : "Carte suivante"}<ArrowRight aria-hidden="true" /></button>{!allRevealed && <button type="button" className={styles.secondary} onClick={recap}>Tout révéler</button>}</div>
       </footer>
@@ -126,7 +134,7 @@ export function PackOpeningAnimation({ packNumber, onOpen, onContinue, disabled 
 
     {phase === "recap" && result && <div className={styles.recap}>
       <header><span className={styles.eyebrow}>Booster ouvert</span><h2>Ton butin.</h2><p>{newCards} nouvelle{newCards > 1 ? "s" : ""} · {duplicates} doublon{duplicates > 1 ? "s" : ""}</p></header>
-      <div className={styles.loot}>{result.cards.map((card, i) => <button key={`${card.id}-${i}`} type="button" style={{ "--rarity": COLORS[card.rarity], "--order": i } as CSSProperties} onClick={() => { setIndex(i); setPhase("cards"); }} aria-label={`Revoir ${card.name}`}><CardFace card={card} /></button>)}</div>
+      <div className={styles.loot}>{result.cards.map((card, i) => <button key={`${card.id}-${i}`} type="button" data-buddie={isBuddieCard(card) || undefined} style={{ "--rarity": COLORS[card.rarity], "--order": i } as CSSProperties} onClick={() => { setIndex(i); setPhase("cards"); }} aria-label={`Revoir ${card.name}${isBuddieCard(card) ? `, ${pullStatus(card)}` : ""}`}><CardFace card={card} />{isBuddieCard(card) && <span className={styles.lootStatus}>{pullStatus(card)}</span>}</button>)}</div>
       {result.bonusPrize && <p className={styles.bonus}><Sparkles aria-hidden="true" /> Bonus gagné : {result.bonusPrize.title}</p>}
       <p className={styles.collectionProgress}>Collection : {result.inventory.uniqueOwned}/{result.inventory.totalCards} cartes</p>
       {onContinue && <button type="button" className={styles.primary} onClick={() => onContinue(result)}>Ranger dans mon album <ArrowRight aria-hidden="true" /></button>}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Recycle } from "lucide-react";
 import { useState } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { hasModernBuddieArtwork } from "@/lib/buddie-artwork";
 import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
 import { rarityAccentColor, rarityLabels } from "@/lib/lottery-card-ui";
 import type {
@@ -12,6 +13,7 @@ import type {
   LotteryDuplicateGroup,
 } from "@/types/lottery";
 import styles from "./AlbumExperience.module.css";
+import { BuddieCard } from "./BuddieCard";
 
 type DuplicateBurnDrawerProps = {
   page: LotteryCollectionPageState;
@@ -71,7 +73,11 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
           </div>
 
           <div className="flex items-center gap-4 rounded-xl border-2 border-ink/10 bg-cream-dark/15 p-4">
-            {isRenderableImageSource(normalizedImageUrl) ? (
+            {hasModernBuddieArtwork(group.code) ? (
+              <div className="w-24 shrink-0">
+                <BuddieCard code={group.code} name={group.name} rarity={group.rarity} cardNumber={group.cardNumber} imageUrl={group.imageUrl} sizes="96px" />
+              </div>
+            ) : isRenderableImageSource(normalizedImageUrl) ? (
               <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg">
                 <Image
                   src={normalizedImageUrl}

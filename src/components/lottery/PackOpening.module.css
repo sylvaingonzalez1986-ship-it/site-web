@@ -52,6 +52,8 @@
 .cardBack img { object-fit: cover; }
 .cardBack > span { position: absolute; bottom: 10%; left: 5%; right: 5%; padding: .6rem .25rem; background: #003f30e8; border: 1px solid #fffaf180; color: #fffaf1; font-size: .7rem; font-weight: 800; }
 .cardFront { transform: rotateY(180deg); box-shadow: 0 0 25px color-mix(in srgb, var(--rarity) 35%, transparent), 0 15px 25px #00141180; }
+.cardFront[data-buddie] { border: 0; border-radius: 4.7% / 3.125%; background: transparent; }
+.pullStatus { display: block; margin-top: .3rem; color: #f4c43d; font-size: .65rem; font-weight: 800; }
 .cardFace { height: 100%; display: flex; flex-direction: column; background: #fffaf1; color: #102b28; text-align: center; }
 .cardArt { position: relative; flex: 1; min-height: 0; overflow: hidden; background: #d9e3cc; }
 .cardArt > svg { width: 45%; height: 100%; margin: auto; }
@@ -84,6 +86,8 @@
 .recap p { color: #c5d9ce; font-size: .85rem; }
 .loot { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
 .loot > button { padding: 0; border: 2px solid var(--rarity); height: 270px; border-radius: 8px; overflow: hidden; cursor: pointer; box-shadow: 3px 4px 0 #001c1c; animation: loot-arrive 500ms calc(var(--order) * 90ms) ease-out both; }
+.loot > button[data-buddie] { align-self: start; height: auto; border: 0; border-radius: 0; overflow: visible; background: transparent; box-shadow: none; }
+.lootStatus { display: block; padding: .55rem .25rem; color: #d5e7dc; font-size: .65rem; font-weight: 800; }
 .bonus { display: flex; align-items: center; justify-content: center; gap: .5rem; color: #f4c43d !important; }
 .collectionProgress { margin: 1rem 0; }
 .experience :where(button, [role="button"]):focus-visible, .close:focus-visible { outline: 3px solid #fffaf1; outline-offset: 4px; }

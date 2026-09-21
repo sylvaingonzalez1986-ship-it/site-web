@@ -1,5 +1,7 @@
 ﻿.picture { display: block; width: 100%; padding: 0; overflow: hidden; border: 0; border-radius: 4px; background: transparent; color: #fff8e6; cursor: pointer; }
-.picture img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; }
+.picture > img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: contain; }
+.metadata { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; }
+.selected { display: inline-flex; align-items: center; gap: 4px; padding: 3px 6px; background: #f4c43d; color: #003c30; font-size: .65rem; font-weight: 900; text-transform: uppercase; }
 .placeholder { display: flex; aspect-ratio: 2 / 3; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 20px; background: #002d24; color: #71e3c9; text-align: center; }
 .placeholder strong { font-size: 1.2rem; color: #fff8e6; }
 .placeholder > span { font-size: .75rem; }

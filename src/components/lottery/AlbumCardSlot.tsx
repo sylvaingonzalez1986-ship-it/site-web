@@ -1,10 +1,12 @@
 ﻿"use client";
 
 import Image from "next/image";
+import { hasModernBuddieArtwork } from "@/lib/buddie-artwork";
 import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
 import { rarityAccentColor, rarityCardClasses } from "@/lib/lottery-card-ui";
 import type { ReactNode } from "react";
 import type { LotteryCollectionCardSlot } from "@/types/lottery";
+import { BuddieCard } from "./BuddieCard";
 import styles from "./AlbumExperience.module.css";
 
 type AlbumCardSlotProps = {
@@ -12,6 +14,35 @@ type AlbumCardSlotProps = {
   onClick: () => void;
   interactive?: boolean;
 };
+
+function BuddieAlbumSlot({ slot, onClick, interactive }: AlbumCardSlotProps) {
+  const label = slot.isOwned
+    ? `#${slot.cardNumber} ${slot.name}, ${slot.ownedCount} exemplaire${slot.ownedCount > 1 ? "s" : ""}${slot.burnableCount > 0 ? `, ${slot.burnableCount} recyclable${slot.burnableCount > 1 ? "s" : ""}` : ""}`
+    : `#${slot.cardNumber}, carte manquante`;
+  const content = <>
+    <BuddieCard
+      code={slot.code}
+      name={slot.name}
+      rarity={slot.rarity}
+      cardNumber={slot.cardNumber}
+      imageUrl={slot.imageUrl}
+      hidden={!slot.isOwned}
+      sizes="(max-width: 640px) 42vw, (max-width: 768px) 28vw, (max-width: 1280px) 18vw, 14vw"
+    />
+    <span className={styles.buddieStatus}>
+      {!slot.isOwned ? <span>Carte manquante</span> : <>
+        <span>{slot.ownedCount > 1 ? `×${slot.ownedCount} exemplaires` : "Possédée"}</span>
+        {slot.burnableCount > 0 && <span className={styles.buddieRecyclable}>Recyclable ×{slot.burnableCount}</span>}
+      </>}
+    </span>
+  </>;
+
+  return interactive ? (
+    <button type="button" onClick={onClick} className={styles.buddieSlot} aria-label={label} title={label}>{content}</button>
+  ) : (
+    <div className={styles.buddieSlot} title={label}>{content}</div>
+  );
+}
 
 const MissingCardSlot = ({
   normalizedImageUrl,
@@ -90,6 +121,10 @@ const MissingCardSlot = ({
 };
 
 export function AlbumCardSlot({ slot, onClick, interactive = true }: AlbumCardSlotProps) {
+  if (hasModernBuddieArtwork(slot.code)) {
+    return <BuddieAlbumSlot slot={slot} onClick={onClick} interactive={interactive} />;
+  }
+
   const accent = rarityAccentColor[slot.rarity];
   const cardBg = rarityCardClasses[slot.rarity];
   const rawImageUrl = slot.imageUrl.trim();

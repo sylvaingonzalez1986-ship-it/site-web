@@ -3,6 +3,7 @@
 import { KqCardEffectGuide as CardEffectGuide, KqCardRoleLegend } from "./KqCardEffectGuide";
 import { KQ_SITUATION_TAG_LABELS } from "@/lib/kanab-quest-card-guide";
 import { useGameViewport } from "@/hooks/useGameViewport";
+import { getBuddieArtwork, hasModernBuddieArtwork } from "@/lib/buddie-artwork";
 import { KqEnergyPanel } from "./KqEnergyPanel";
 import { KqBuddieCarousel } from "./KqBuddieCarousel";
 import { KqInventoryCarousel } from "./KqInventoryCarousel";
@@ -288,6 +289,7 @@ function FlowerTcgCard({
   selected?: boolean;
 }) {
   const buddie = KQ_BUDDIES.find((item) => item.code === varietyCode || item.name === varietyName);
+  const buddieArtwork = getBuddieArtwork(buddie?.code ?? varietyCode ?? "", imageUrl);
   const statusCopy = FLOWER_TCG_STATUS_COPY[status];
   const statKeys = Object.keys(FLOWER_STAT_LABELS) as FlowerStatKey[];
 
@@ -302,10 +304,10 @@ function FlowerTcgCard({
         <span>Kanab Quest · Carte Fleur</span>
         <em>#{String(buddie?.cardNumber ?? 0).padStart(3, "0")}</em>
       </header>
-      <div className={styles.flowerTcgArtwork}>
-        {imageUrl ? (
+      <div className={styles.flowerTcgArtwork} data-buddie-scene={hasModernBuddieArtwork(buddie?.code ?? varietyCode ?? "") || undefined}>
+        {buddieArtwork ? (
           <Image
-            src={imageUrl}
+            src={buddieArtwork}
             alt={`Illustration du Buddie ${varietyName}`}
             fill
             sizes="(max-width: 700px) 82vw, 310px"

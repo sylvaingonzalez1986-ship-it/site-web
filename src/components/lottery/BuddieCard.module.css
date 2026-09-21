@@ -1,0 +1,212 @@
+.card {
+  --card-ink: #173d32;
+  --card-line: #173d32;
+  --card-paper: #f3e8d1;
+  position: relative;
+  isolation: isolate;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 2 / 3;
+  container-type: inline-size;
+  overflow: hidden;
+  border-radius: 4.7% / 3.125%;
+  color: var(--card-ink);
+  background: var(--card-paper);
+  box-shadow: 0 3px 8px rgb(20 29 23 / 16%);
+  text-align: center;
+  line-height: 1;
+}
+
+.common {
+  background: linear-gradient(135deg, #fcf5e4, #f3e8d1 65%, #e6d6b6);
+}
+
+.silver {
+  --card-ink: #2b4050;
+  --card-line: #405566;
+  --card-paper: #c5d1da;
+  background: linear-gradient(125deg, #eaf0f5 0%, #c5d1da 30%, #f2f5f7 48%, #c5d1da 69%, #adbdca 100%);
+}
+
+.gold {
+  --card-ink: #533b12;
+  --card-line: #795719;
+  --card-paper: #e3be61;
+  background: linear-gradient(125deg, #fae5a6 0%, #d7ad42 30%, #ffe7a5 48%, #d7ad42 73%, #c3902e 100%);
+}
+
+.epic {
+  --card-ink: #fff1ff;
+  --card-line: #e9d1ff;
+  --card-paper: #624085;
+  background: radial-gradient(ellipse at 50% 0%, #a775cf, transparent 58%), linear-gradient(135deg, #7950ae, #493061 60%, #7950ae);
+  box-shadow: 0 3px 12px rgb(74 43 109 / 28%);
+}
+
+.legendary {
+  --card-ink: #ffe7a4;
+  --card-line: #e7bd59;
+  --card-paper: #102a25;
+  background: radial-gradient(ellipse at 50% 0%, #37604a, transparent 54%), linear-gradient(140deg, #173f32, #102a25 54%, #071b17);
+  box-shadow: 0 3px 14px rgb(16 42 37 / 38%), 0 0 12px rgb(231 189 89 / 15%);
+}
+
+.frame {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--card-line);
+  pointer-events: none;
+}
+
+.title {
+  position: absolute;
+  top: 3.125%;
+  left: 6.25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 87.5%;
+  height: 8.594%;
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: 6cqw;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.title > span {
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.title .longName {
+  font-size: 5.7cqw;
+}
+
+.scene {
+  position: absolute;
+  top: 13.28125%;
+  left: 6.25%;
+  display: block;
+  width: 87.5%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 1.7% / 1.36%;
+  background: #f8f1dc;
+  box-shadow: 0 0 0 1px var(--card-line), 0 0 0 0.65cqw var(--card-paper), 0 0 0 0.9cqw var(--card-line);
+}
+
+.sceneImage,
+.legacyImage {
+  object-fit: contain;
+}
+
+.footer {
+  position: absolute;
+  top: 87.76%;
+  right: 6.25%;
+  bottom: 3.125%;
+  left: 6.25%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2cqw;
+  font-family: var(--font-body), Arial, sans-serif;
+  font-size: 4.5cqw;
+  font-weight: 700;
+}
+
+.number {
+  flex-shrink: 0;
+  padding: 2cqw 0;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.025em;
+}
+
+.rarity {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.5cqw;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.raritySymbol {
+  display: block;
+  flex: 0 0 auto;
+  width: 7cqw;
+  height: 7cqw;
+}
+
+.raritySymbol svg,
+.placeholderSymbol svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.symbolInset {
+  fill: var(--card-paper);
+}
+
+.placeholder {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4cqw;
+  color: var(--card-ink);
+  background: radial-gradient(circle at 50% 40%, rgb(255 255 255 / 15%), transparent 60%), var(--card-paper);
+}
+
+.placeholderSymbol {
+  display: block;
+  width: 32cqw;
+  height: 32cqw;
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: 34cqw;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.placeholderLabel {
+  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  font-size: 6cqw;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hidden .scene {
+  background: var(--card-paper);
+}
+
+.hidden .sceneImage {
+  filter: grayscale(1);
+  opacity: 0.45;
+}
+
+.hidden .placeholder {
+  position: absolute;
+  inset: 0;
+  color: #fffaf1;
+  background: rgb(17 25 21 / 28%);
+  text-shadow: 0 2px 5px rgb(0 0 0 / 65%);
+}
+
+.legacy {
+  background: transparent;
+  box-shadow: none;
+}

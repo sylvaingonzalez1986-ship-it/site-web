@@ -786,3 +786,7 @@
 .tripleSpark{display:flex;align-items:center;gap:12px;padding:15px 18px;margin-bottom:16px;background:#fae59b;color:#244c36;border:2px solid #a98b31;box-shadow:3px 3px 0 #17372d}.tripleSpark strong{display:block;font-size:18px}.tripleSpark span{display:block;font-size:12px}.tripleSpark svg{flex-shrink:0}@media(prefers-reduced-motion:no-preference){.tripleSpark{animation:tripleSparkReveal .35s ease-out}@keyframes tripleSparkReveal{from{transform:scale(.98);opacity:.5}to{transform:scale(1);opacity:1}}}
 
 .officialFlowerReserve{scroll-margin-top:100px}
+
+/* Preserve the complete 4:5 Buddie scene inside the wider harvest artwork window. */
+.flowerTcgArtwork[data-buddie-scene] { background: #f8f1dc; }
+.flowerTcgArtwork[data-buddie-scene] img { object-fit: contain; object-position: center; }

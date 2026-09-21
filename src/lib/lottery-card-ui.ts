@@ -8,8 +8,8 @@ import type { LotteryCardRarity } from "@/types/lottery";
 /** Human-readable French labels for each card rarity. */
 export const rarityLabels: Record<LotteryCardRarity, string> = {
   common: "Commune",
-  silver: "Silver",
-  gold: "Gold",
+  silver: "Argent",
+  gold: "Or",
   epic: "Épique",
   legendary: "Légendaire",
 };

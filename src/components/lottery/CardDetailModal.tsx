@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { hasModernBuddieArtwork } from "@/lib/buddie-artwork";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
 import { rarityAccentColor, rarityCardClasses, rarityLabels } from "@/lib/lottery-card-ui";
 import type { LotteryCollectionCardSlot } from "@/types/lottery";
+import { BuddieCard } from "./BuddieCard";
 import styles from "./AlbumExperience.module.css";
 
 type CardDetailModalProps = {
@@ -14,6 +16,7 @@ type CardDetailModalProps = {
 
 export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
   useBodyScrollLock(true);
+  const isBuddie = hasModernBuddieArtwork(slot.code);
   const rawImageUrl = slot.imageUrl.trim();
   const normalizedImageUrl = rawImageUrl
     ? rawImageUrl.startsWith("/") || isRemoteImageUrl(rawImageUrl)
@@ -32,7 +35,7 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
       onClick={onClose}
     >
       <div
-        className={`${styles.modalShell} max-w-sm ${rarityCardClasses[slot.rarity]}`}
+        className={`${styles.modalShell} max-w-sm ${rarityCardClasses[slot.rarity]} ${isBuddie ? styles.buddieDetailShell : ""}`}
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -44,7 +47,20 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
           ✕
         </button>
 
-        {hasRenderableImage ? (
+        {isBuddie ? (
+          <div className={styles.buddieDetailArtwork}>
+            <BuddieCard
+              code={slot.code}
+              name={slot.name}
+              rarity={slot.rarity}
+              cardNumber={slot.cardNumber}
+              imageUrl={slot.imageUrl}
+              hidden={!slot.isOwned}
+              sizes="(max-width: 640px) 85vw, 350px"
+              priority
+            />
+          </div>
+        ) : hasRenderableImage ? (
           <div className="relative aspect-[3/4] w-full overflow-hidden">
             <Image
               src={normalizedImageUrl}

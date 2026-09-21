@@ -1,0 +1,14 @@
+{
+  "corrections": [
+    {
+      "code": "HH2026-031",
+      "reason": "Balance et empilement expriment la masse critique. Première variante rejetée car plateau chargé trop haut; correction inspectée: plateau chargé bien plus bas, bras de balance cohérent.",
+      "prompt": "Use case: precise-object-edit. Input image is the EDIT TARGET: Critical Mass Buddie illustration. Correct ONE serious mechanical error: the balance scale currently has its heavily loaded LEFT pan higher than its empty RIGHT pan. Reverse that tilt so that gravity is believable: the LEFT pan with the huge stack of weights must be visibly LOWER, close to the base; the EMPTY RIGHT pan must be visibly HIGHER. The rigid beam must slope UP from left to right across its central pivot. Keep both bowls upright and level, all stacked weights standing securely upright on the loaded bowl. Keep the green hemp-flower character holding the final weight, his two arms, gloves, face and vintage shoes coherent; adjust the raised hand slightly only if needed to keep the gesture legible. Preserve the same character identity, warm 1930s hand-inked style, colours, simple cream workshop, composition, no border, no frame, no text, no extra limbs. Output one complete portrait 4:5 illustration, ideally 1024x1280. Do not reverse the left and right content: loaded bowl LEFT and empty bowl RIGHT, only correct which side is lower."
+    },
+    {
+      "code": "HH2026-034",
+      "reason": "Voyageur botanique et montagnes: ancrage nominal explicite. Première variante trop détaillée pour Commune; décor simplifié, sans bâtiments, rivière ou vallée foisonnante. Personnage conservé.",
+      "prompt": "Use case: precise-object-edit. Input is the EDIT TARGET, the Afghan CBD Buddie. Keep the ENTIRE central character exactly as drawn: hemp-flower body, face and pie-cut eyes, brown scarf, backpack, pressed-leaf specimen folder, two white gloves, walking black legs and ochre shoes. Change ONLY the environment to the SIMPLE COMMON illustration tier of the collection. The current background has too much tiny detail and too many depth layers. Simplify it substantially into one large pale blue-grey Hindu Kush mountain silhouette with only a FEW broad snow planes, a quiet pale blue sky, a flat muted valley strip and a simple warm rocky walking path. Retain only two or three broad rocks and a few low shrubs as location cues. REMOVE distant buildings, elaborate river/field patterns, dense scree and intricate mountain linework. Keep the character a strong dominant focal point and preserve generous empty breathing room. Same warm 1930s hand-inked cartoon style, clean outlines, controlled colours and light halftone; a finished but airy common-tier picture, not a spectacular landscape painting. No text, no frame, no border, no extra characters, no changes to character anatomy or props. Portrait 4:5, ideally 1024x1280."
+    }
+  ]
+}

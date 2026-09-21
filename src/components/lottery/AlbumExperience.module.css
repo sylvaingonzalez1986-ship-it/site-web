@@ -727,6 +727,48 @@ button.actionCard:disabled {
   transition: transform 150ms ease, box-shadow 150ms ease;
 }
 
+.buddieSlot {
+  display: flex;
+  min-width: 0;
+  width: 100%;
+  flex-direction: column;
+  align-self: start;
+  gap: 0.4rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--album-ink);
+  text-align: left;
+  transition: transform 150ms ease;
+}
+
+button.buddieSlot { cursor: pointer; font: inherit; }
+button.buddieSlot:hover { transform: translateY(-3px); }
+button.buddieSlot:focus-visible { outline: 3px solid var(--album-green); outline-offset: 4px; }
+
+.buddieStatus {
+  display: flex;
+  min-height: 1.7rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  padding-inline: 0.1rem;
+  color: #526059;
+  font-size: 0.6rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.buddieRecyclable { color: var(--album-green); }
+.buddieDetailArtwork { padding: 3.75rem 1rem 0; }
+.buddieDetailShell { background: var(--album-paper); }
+
+@media (prefers-reduced-motion: reduce) {
+  .buddieSlot { transition: none; }
+  button.buddieSlot:hover { transform: none; }
+}
+
 button.cardSlot {
   cursor: pointer;
   font: inherit;
