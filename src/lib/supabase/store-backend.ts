@@ -676,9 +676,7 @@ function mapProductRow(
     originalPrice: Number.isFinite(Number(row.original_price))
       ? Number(Number(row.original_price).toFixed(2))
       : undefined,
-    promoPercent: Number.isFinite(Number(row.promo_percent))
-      ? Math.max(1, Math.min(99, Math.round(Number(row.promo_percent))))
-      : undefined,
+    promoPercent: toPromoPercentOrNull(row.promo_percent) ?? undefined,
     isPack: isPack ? true : undefined,
     packProductIds: packProductIds && packProductIds.length > 0 ? packProductIds : undefined,
     weightGrams,

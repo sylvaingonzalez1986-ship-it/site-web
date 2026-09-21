@@ -11,6 +11,7 @@ import { getOwnProducer } from "@/lib/own-producer";
 import { isProductTastingStorefrontEnabled } from "@/lib/product-tasting-feature";
 import { getSiteUrl } from "@/lib/site-url";
 import { buildProductMetaDescription } from "@/lib/product-discovery";
+import { hasActiveProductPromo } from "@/lib/product-promo";
 import { isRemoteImageUrl } from "@/lib/image-source";
 import { isProductCultureModeEligible, type Product } from "@/data/products";
 import { getContestProductTastingSummary, isContestSchemaMissingError } from "@/lib/contest-backend";
@@ -286,7 +287,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       {product.originalPrice.toFixed(2)} €{product.category === "fleurs" && " / g"}
                     </span>
                   )}
-                {product.promoPercent && product.promoPercent > 0 && (
+                {hasActiveProductPromo(product) && (
                   <span className="border-2 border-ink bg-yellow px-2 py-1 text-xs font-black uppercase text-ink">
                     -{product.promoPercent}%
                   </span>
