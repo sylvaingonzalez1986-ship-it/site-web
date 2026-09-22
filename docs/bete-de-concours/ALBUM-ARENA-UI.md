@@ -47,7 +47,11 @@ Contrôles : largeurs 320, 390, 768 et 1440 px, personnage original, une seule a
 
 Captures et rapport local : `output/placard-workshop/album/`.
 
-## Ouverture interactive des boosters — 11 septembre
+## Ouverture des boosters — version actuelle
+
+Depuis le 22 septembre, l’ouverture utilise une scène persistante et une timeline continue : déchirure, extraction, retournement puis sortie de chaque carte. Les cinq raretés ont des effets et des sons distincts. La [documentation de cette version](../lottery/PACK-OPENING-STUDIO.md) décrit les interactions et l’audit ciblé `scripts/audit-pack-opening.mjs`.
+
+## Historique : ouverture interactive des boosters — 11 septembre
 
 L’ouverture utilise une scène Arène dédiée : éclairages, sol en perspective,
 sachet qui réagit au glissement, fermeture déchirée et cartes extraites en éventail.

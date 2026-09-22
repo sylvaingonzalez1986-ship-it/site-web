@@ -21,6 +21,8 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   allowedDevOrigins: ["127.0.0.1", "192.168.*.*", "10.*.*.*", "172.*.*.*"],
   experimental: {
+    // Avoid the Turbopack task-restoration panic when restarting local dev.
+    turbopackFileSystemCacheForDev: false,
     optimizePackageImports: ["lucide-react", "simple-icons"],
   },
   serverExternalPackages: ["@napi-rs/canvas"],
