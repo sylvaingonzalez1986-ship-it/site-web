@@ -44,8 +44,8 @@ const ledgerLabels: Record<string, string> = {
   "advertising-ended": "Campagne publicitaire terminée", "vat-paid": "TVA reversée", "lab-issued": "Analyse facturée", "lab-paid": "Analyse réglée", "domicile-paid": "Domiciliation extérieure réglée", "domicile-expired": "Domiciliation extérieure suspendue", "domicile-home": "Domiciliation à domicile",
 };
 
-export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop }: {
-  data: KqCommerceSnapshot; now?: number; busy: boolean; onAsk: Ask; onOpenShop: () => void;
+export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, expanded = false }: {
+  data: KqCommerceSnapshot; now?: number; busy: boolean; onAsk: Ask; onOpenShop: () => void; expanded?: boolean;
 }) {
   const business = data.business;
   if (!business) return null;
@@ -61,7 +61,7 @@ export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop }:
   const invoices = lab.invoices.filter(invoice => invoice.remainingCents > 0).toSorted((a, b) => Date.parse(a.dueAt) - Date.parse(b.dueAt));
   return <section className={styles.panel} aria-label="Calendrier et gestion du commerce">
     <div className={styles.calendar}><CalendarClock size={26} aria-hidden="true" /><div><strong>Mois {calendar.month} · Jour {calendar.dayOfMonth}</strong><span>1 jour = 4 h réelles · 1 mois = 5 jours réels</span></div><div className={styles.nextDay}><span>Prochain jour</span><Deadline at={calendar.nextDayAt} now={now} /></div></div>
-    <details id="kq-business-management" className={styles.management}>
+    <details id="kq-business-management" className={styles.management} open={expanded}>
       <summary><Store size={24} aria-hidden="true" /><span><strong>{shop.name ?? "Construis ton commerce"}</strong><small>{shop.createdAt ? active ? "Site ouvert · publicité et échéances" : "Site suspendu · réactive tes ventes en ligne" : "Économise pour ouvrir ton site · objectif 1 000 €"}</small></span><ChevronDown className={styles.chevron} size={22} aria-hidden="true" /></summary>
       <div className={styles.content}>
         <p className={styles.timeNote}>Le calendrier continue hors connexion. Les ventes se font lorsque tu joues ; les abonnements, publicités et factures suivent le temps réel.</p>

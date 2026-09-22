@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
-import { ArrowLeft, ArrowRight, Banknote, BookOpen, Gamepad2, ShoppingBag, Swords, Target, Warehouse } from "lucide-react";
+import { ArrowLeft, ArrowRight, Banknote, BookOpen, Gamepad2, ShoppingBag, Swords, Target, Wallet, Warehouse } from "lucide-react";
 import { useState } from "react";
 import { KqPlacardHud } from "./KqPlacardHud";
 import styles from "./KqPlacardLobby.module.css";
@@ -11,13 +11,14 @@ const DESTINATIONS = [
   { id: "workshop", title: "Mon entrepôt", action: "Aménager mon atelier", detail: "Installe ton matériel autour de la box et améliore ta pièce séchoir.", image: "/placard/warehouse-v2/room.webp", icon: Warehouse },
   { id: "game", title: "La culture", action: "Entrer dans le jeu", detail: "Prépare ton atelier, lance les dés et fais grandir ta prochaine récolte.", image: "/contest/mascot/arena-scene-placard-v1.png", icon: Gamepad2 },
   { id: "market", title: "L’atelier du marché", action: "Ouvrir le marché", detail: "Choisis une machine, transforme ton lot et réinvestis tes gains.", image: "/placard/market-workshop-v1.webp", icon: Banknote },
+  { id: "treasury", title: "La trésorerie", action: "Ouvrir ma trésorerie", detail: "Suis tes comptes, lis ton bilan et gère ton site, tes publicités et tes factures.", image: "/placard/commerce-office-v2.webp", icon: Wallet },
   { id: "shop", title: "La boutique", action: "Entrer dans la boutique", detail: "Équipe ton placard et découvre les boosters de ta collection.", image: "/placard/booster-shop-interior-v4.webp", icon: ShoppingBag },
   { id: "arena", title: "Fleur vs Fleur", action: "Préparer un duel", detail: "Présente ta fleur au jury et affronte les récoltes des autres joueurs.", image: "/contest/mascot/arena-duo.webp", icon: Swords },
   { id: "missions", title: "Le centre de missions", action: "Voir mes missions", detail: "Cultive, fidélise tes clients et relève des défis pour gagner des packs La Botte.", image: "/placard/commerce-office-v2.webp", icon: Target },
 ] as const;
 
 export function KqPlacardLobby({ onOpen, onOpenEquipment, onOpenCollection }: {
-  onOpen: (view: "game" | "market" | "shop" | "arena" | "missions" | "workshop") => void;
+  onOpen: (view: "game" | "market" | "treasury" | "shop" | "arena" | "missions" | "workshop") => void;
   onOpenEquipment: (equipmentCode?: string) => void;
   onOpenCollection: () => void;
 }) {
@@ -30,7 +31,7 @@ export function KqPlacardLobby({ onOpen, onOpenEquipment, onOpenCollection }: {
     <header className={styles.header}><Link href="/arene"><ArrowLeft size={18} /> L’Arène</Link><button type="button" data-arena-tour="collection" className={styles.collectionButton} onClick={onOpenCollection} aria-haspopup="dialog"><BookOpen size={19} aria-hidden="true" /> Ma collection La Botte</button><h1>Le Placard</h1></header>
     <section className={styles.dock} aria-label="Choisir une activité du Placard">
       <div className={styles.description} aria-live="polite"><span>À toi de jouer</span><h2>{destination.title}</h2><p>{destination.detail}</p></div>
-      <nav className={styles.menu} aria-label="Activités du Placard">{DESTINATIONS.map((item) => <button key={item.id} type="button" aria-pressed={selected === item.id} onClick={() => setSelected(item.id)}><item.icon size={22} aria-hidden="true" /><span>{item.id === "workshop" ? "Entrepôt" : item.id === "market" ? "Marché" : item.id === "game" ? "Culture" : item.id === "shop" ? "Boutique" : item.id === "missions" ? "Missions" : "Duels"}</span></button>)}</nav>
+      <nav className={styles.menu} aria-label="Activités du Placard">{DESTINATIONS.map((item) => <button key={item.id} type="button" aria-pressed={selected === item.id} onClick={() => setSelected(item.id)}><item.icon size={22} aria-hidden="true" /><span>{item.id === "workshop" ? "Entrepôt" : item.id === "market" ? "Marché" : item.id === "treasury" ? "Trésorerie" : item.id === "game" ? "Culture" : item.id === "shop" ? "Boutique" : item.id === "missions" ? "Missions" : "Duels"}</span></button>)}</nav>
       <button className={styles.enter} type="button" onClick={() => onOpen(selected)}>{destination.action}<ArrowRight size={21} aria-hidden="true" /></button>
       <details className={styles.progress}><summary>Mon atelier & ma progression</summary><KqPlacardHud onOpenShop={onOpenEquipment} onOpenGame={() => onOpen("game")} onOpenArena={() => onOpen("arena")} onOpenMarket={() => onOpen("market")} /></details>
     </section>

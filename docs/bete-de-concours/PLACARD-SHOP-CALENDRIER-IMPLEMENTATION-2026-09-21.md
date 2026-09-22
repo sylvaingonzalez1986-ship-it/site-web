@@ -11,6 +11,13 @@ Ce document décrit les règles effectivement codées. Le
 comme historique des propositions et décisions. Tous les euros ci-dessous sont
 la monnaie virtuelle du jeu.
 
+La gestion du site, des publicités, de la domiciliation et des factures a ensuite
+été déplacée dans l’onglet **Trésorerie**, avec graphiques, journal, compte de
+résultat et bilan de gestion. Voir la
+[livraison Trésorerie](PLACARD-TRESORERIE-2026-09-21.md) pour cette seconde phase
+et sa migration distincte. Le statut ci-dessus concerne la migration du
+calendrier déjà appliquée.
+
 ## Calendrier commercial
 
 - Un jour de jeu dure exactement **4 heures réelles**.

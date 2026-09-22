@@ -9,12 +9,12 @@
 .page::before { content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none; background: linear-gradient(180deg,#002d24b8,#002d24b0 200px,#003f30e8 550px,#003f30 900px); }
 .page button, .computer button, .confirm button { cursor: pointer; font: inherit; touch-action: manipulation; }
 .page button:disabled, .computer button:disabled, .confirm button:disabled { cursor: not-allowed; opacity: .55; }
-.page :where(button, summary, input, select):focus-visible, .confirm :where(button):focus-visible { outline: 3px solid #f4c43d; outline-offset: 5px; box-shadow: none; }
+.page :where(button, a, summary, input, select):focus-visible, .confirm :where(button):focus-visible { outline: 3px solid #f4c43d; outline-offset: 5px; box-shadow: none; }
 .header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding-block: 8px 30px; }
 .header > div > small { display: flex; align-items: center; gap: 8px; color: var(--arcade-yellow); font: 800 .65rem/1.4 ui-monospace,Consolas,monospace; letter-spacing: .12em; text-transform: uppercase; }
 .header h1 { margin: 10px 0 12px; font: 900 clamp(3rem,6vw,5rem)/.95 var(--font-display),Impact,sans-serif; text-transform: uppercase; text-shadow: 3px 4px 0 #00251e; }
 .header p { margin: 0; max-width: 42ch; font-size: .9rem; line-height: 1.5; color: #e0eade; }
-.wallet { display: inline-flex; align-items: center; gap: 12px; flex-shrink: 0; padding: 12px 16px; border: 1px solid #f4c43d75; border-radius: 4px; background: #002d24e8; box-shadow: 0 4px 0 #001e19; color: var(--arcade-yellow); }
+.wallet { text-decoration: none; display: inline-flex; align-items: center; gap: 12px; flex-shrink: 0; padding: 12px 16px; border: 1px solid #f4c43d75; border-radius: 4px; background: #002d24e8; box-shadow: 0 4px 0 #001e19; color: var(--arcade-yellow); }
 .wallet > span { display: grid; gap: 4px; }
 .wallet small { font: 700 .58rem/1.3 ui-monospace,Consolas,monospace; letter-spacing: .08em; text-transform: uppercase; color: #e0eade; }
 .wallet strong { font-size: 1.1rem; white-space: nowrap; }

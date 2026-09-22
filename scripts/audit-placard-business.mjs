@@ -9,7 +9,7 @@ import puppeteer from 'puppeteer-core';
 const root = process.cwd(), output = resolve(root, 'output/placard-business');
 const modules = {
   'business-entry': `import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
-    import {KqCommerceDesk} from '/src/components/placard/KqCommerceDesk';
+    import {KqCommerceDesk} from '/src/components/placard/KqCommerceDesk';import {KqTreasuryManagement} from '/src/components/placard/KqTreasuryManagement';
     import {createKqBusinessPreview,KQ_GAME_MONTH_MS,KQ_ADVERTISING,previewKqBusinessPayment} from '/src/lib/kanab-quest-business';
     import {quoteKqCommerce} from '/src/lib/kanab-quest-commerce';
     const now=Date.now(),iso=n=>new Date(n).toISOString(),scenario=new URLSearchParams(location.search).get('scenario');
@@ -35,7 +35,8 @@ const modules = {
       if(body.action==='sell'){const {offer,payment}=quotes.get(body.quoteId);snapshot.cashCents+=payment.netPayoutCents;business.vat.reservedCents+=payment.vatCents;business.vat.salesTtcCents+=offer.payoutCents;snapshot.stocks[0].remainingUnits-=offer.units;result={...result,...payment,stockId:'stock',channel:offer.channel,units:offer.units,payoutCents:offer.payoutCents,remainingUnits:snapshot.stocks[0].remainingUnits,satisfaction:offer.satisfaction,clientsBefore:offer.clientsBefore,clientsAfter:offer.clientsAfter};}
       result.cashAfterCents=snapshot.cashCents;snapshot.receipts.unshift(result);return new Response(JSON.stringify(result));
     };
-    createRoot(document.getElementById('root')).render(React.createElement(KqCommerceDesk,{onOpenShop:()=>{window.__openedComputer=true;}}));`,
+    function App(){const [view,setView]=React.useState('management');const onOpenShop=()=>{window.__openedComputer=true;};return React.createElement(React.Fragment,null,React.createElement('button',{'data-audit-market':true,onClick:()=>setView('market')},'Marché'),view==='management'?React.createElement(KqTreasuryManagement,{onOpenShop}):React.createElement(KqCommerceDesk,{onOpenShop,onOpenTreasury:()=>setView('management')}));}createRoot(document.getElementById('root')).render(React.createElement(App));`,
+  'next/link': `import React from 'react';export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}});}`,
 };
 const server = await createServer({ root, cacheDir: resolve(output, 'vite-cache'), optimizeDeps: { include: ['react','react-dom/client','lucide-react'] }, configFile:false, envDir:false, publicDir:resolve(root,'public'), esbuild:{jsx:'automatic'}, resolve:{alias:{'@':resolve(root,'src')}}, css:{postcss:{plugins:[tailwindcss({base:root})]}}, plugins:[{name:'business-audit',enforce:'pre',resolveId(id){if(id in modules)return '\0'+id;},load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Placard business audit</title><style>:root{--font-display:Impact;--font-body:Arial;--font-sans:Arial}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__business-entry"></script></html>');});}}],server:{host:'127.0.0.1',port:3217,strictPort:true,hmr:false,watch:null} });
@@ -50,7 +51,7 @@ try {
   const bodyText=()=>page.evaluate(()=>document.body.innerText.replace(/\s+/g,' '));
   const noOverflow=async()=>assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'No horizontal overflow');
   const shot=async name=>{await page.evaluate(async()=>{await Promise.allSettled(document.getAnimations().filter(a=>a.effect?.getComputedTiming().iterations!==Infinity).map(a=>a.finished));});await page.screenshot({path:resolve(output,name+'.png'),fullPage:true});};
-  const visit=async scenario=>{await page.goto('http://127.0.0.1:3217/?scenario='+scenario,{waitUntil:'networkidle0'});await page.waitForSelector('#kq-business-management');await page.click('#kq-business-management > summary');};
+  const visit=async scenario=>{await page.goto('http://127.0.0.1:3217/?scenario='+scenario,{waitUntil:'networkidle0'});await page.waitForSelector('#kq-business-management');await page.$eval('#kq-business-management',el=>{if(!el.open)el.querySelector('summary').click();});};
   for(const width of [320,390,1280]){
     await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});
     await visit('poor');assert((await bodyText()).toLowerCase().includes('mois 1'));assert.equal(await page.$eval('[aria-label="Épargne pour créer le site"]',el=>el.value),35000);
@@ -66,6 +67,7 @@ try {
     await page.$eval('[aria-label="Charges et échéances"] li:nth-child(2) button',button=>button.click());await confirm();assert.equal(await page.evaluate(()=>window.__snapshot.business.lab.invoices[1].remainingCents),0);
     const beforeAddress=await page.evaluate(()=>window.__snapshot.cashCents);await click('Choisir · 50');await confirm();assert.equal(await page.evaluate(()=>window.__snapshot.cashCents),beforeAddress-5000);await click('Choisir mon domicile');await confirm();await click('Réactiver la période payée');await confirm();assert.equal(await page.evaluate(()=>window.__snapshot.cashCents),beforeAddress-5000);
     await noOverflow();await shot('management-'+width);
+    await page.click('[data-audit-market]');await page.waitForSelector('[aria-label="Tes lots"]');assert.equal(await page.$('#kq-business-management'),null,'Management lives outside the market');
     await page.$eval('[aria-label="Tes lots"] button',el=>el.click());await page.waitForSelector('[aria-label="Circuits de vente"]');await page.click('[aria-label="Voir l’offre Vente en ligne"]');await click('Vendre ce lot');await page.waitForSelector('dialog[open]');
     const modal=await page.$eval('dialog',el=>el.innerText);for(const label of ['Recette TTC','TVA mise de côté','Analyses échues réglées','Électricité et soins réglés','Versé au portefeuille'])assert(modal.includes(label),label);
     await shot('sale-confirmation-'+width);await confirm();await page.waitForSelector('[aria-label="Bilan clientèle"]');assert((await bodyText()).includes('TVA mise de côté'));await noOverflow();await shot('sale-receipt-'+width);

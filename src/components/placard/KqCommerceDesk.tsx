@@ -1,13 +1,13 @@
 "use client";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
 import { ArrowRight, Check, Clock3, Coins, FlaskConical, Frown, Leaf, LoaderCircle, Meh, Minus, PackageOpen, ShoppingBag, Smile, Sparkles, Star, Users, X } from "lucide-react";
 import { KQ_CHANNELS, KQ_COMMERCE_EVENTS, KQ_COMPUTER_PRICE_CENTS, KQ_SALES_CHANNELS, KQ_SHOP_QUALITY_BANDS, getKqShopNetworkBonus, getKqShopQualityBand, getKqCommerceMinimumQuality, getKqCommerceReplenishment, quoteKqCommerce,
   type KqCommerceOffer, type KqCommerceReceipt, type KqCommerceSnapshot, type KqCommerceStock, type KqOnlinePrice, type KqSalesChannel } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { KQ_MARKET_ROUTES, getKqMarketReputationRule, type KqMarketRouteCode } from "@/lib/kanab-quest-market";
 import { KqCommerceOverview } from "./KqCommerceOverview";
-import { KqBusinessPanel } from "./KqBusinessPanel";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import styles from "./KqCommerceDesk.module.css";
 const grams = (units: number) => `${(units / 10).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g`;
@@ -92,7 +92,7 @@ export function KqCommerceComputer() {
   }
   return <section className={styles.computer} aria-label="Matériel de vente en ligne">
     <Image src={KQ_CHANNELS.online.image} width={1200} height={800} sizes="(max-width: 700px) 100vw, 320px" alt="Ordinateur et routeur installés sur le bureau de préparation des commandes" />
-    <div><small>La boutique · Développer ton commerce</small><h3>L’ordinateur du Placard</h3><p>Le matériel pour gérer ton futur shop. Achat permanent : <strong>{formatKqCash(KQ_COMPUTER_PRICE_CENTS)}</strong>. Il faudra ensuite créer ton site au marché pour 1 000 €, premier mois inclus, puis payer 100 € tous les 5 jours réels.</p>
+    <div><small>La boutique · Développer ton commerce</small><h3>L’ordinateur du Placard</h3><p>Le matériel pour gérer ton futur shop. Achat permanent : <strong>{formatKqCash(KQ_COMPUTER_PRICE_CENTS)}</strong>. Il faudra ensuite créer ton site dans la Trésorerie pour 1 000 €, premier mois inclus, puis payer 100 € tous les 5 jours réels.</p>
       {error ? <p role="alert" className={styles.error}>{error}</p> : null}
       {data?.computerOwned ? <strong><Check size={18} /> Ordinateur déjà acheté</strong> : confirm ? <div className={styles.actions}><span>Confirmer l’achat à 450 € ?</span><button disabled={busy} onClick={() => void buy()} className={styles.primary}>{busy ? "Achat…" : "Confirmer l’achat"}</button><button disabled={busy} onClick={() => setConfirm(false)}>Annuler</button></div>
         : <button className={styles.primary} disabled={!data || data.cashCents < KQ_COMPUTER_PRICE_CENTS} onClick={() => { key.current = createClientRequestKey(); setConfirm(true); }}>{!data ? "Chargement…" : data.cashCents < KQ_COMPUTER_PRICE_CENTS ? "Trésorerie insuffisante · 450 €" : "Acheter l’ordinateur · 450 €"}</button>}
@@ -106,7 +106,7 @@ const channelTradeoffs: Record<KqSalesChannel, { advantage: string; drawback: st
   wholesale: { advantage: "Tout le lot repris, quelle que soit sa qualité.", drawback: "Prix très bas ; aucun gain de réputation." },
 };
 
-export function KqCommerceDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: string) => void }) {
+export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (equipmentCode?: string) => void; onOpenTreasury?: () => void }) {
   const heading = useRef<HTMLHeadingElement>(null);
   const clock = useRef<{ server: number; received: number } | null>(null);
   const inFlight = useRef<Promise<void> | null>(null);
@@ -167,13 +167,8 @@ export function KqCommerceDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: st
   function ask(title: string, description: string, body: Record<string, unknown>, cost?: number) {
     setError(""); setConfirmation({ title, description, body: { ...body, requestKey: createClientRequestKey() }, cost });
   }
-  function openBusiness() {
-    const panel = document.getElementById("kq-business-management");
-    if (panel instanceof HTMLDetailsElement) {
-      panel.open = true;
-      panel.querySelector("summary")?.focus();
-      panel.scrollIntoView({ block: "start", behavior: "auto" });
-    }
+  function openTreasury(event: MouseEvent<HTMLAnchorElement>) {
+    if (onOpenTreasury) { event.preventDefault(); onOpenTreasury(); }
   }
   async function examineSale() {
     if (!stock || !offer || !channel || offer.reason || inputInvalid) return;
@@ -205,8 +200,7 @@ export function KqCommerceDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: st
   const title = saleComplete ? "Vente terminée" : stock ? channel ? KQ_CHANNELS[channel].name : "Choisis ton circuit" : raw ? "Transforme ton lot" : "Choisis ton lot";
   return <main className={styles.page} data-screen={screen}>
     <div className={styles.scenery} aria-hidden="true"><Image key={channel ?? "workshop"} src={channel ? KQ_CHANNELS[channel].image : "/placard/market-workshop-v1.webp"} alt="" fill sizes="100vw" priority /></div>
-    <header className={styles.header}><div><small><FlaskConical size={15} aria-hidden="true" /> L’atelier du Placard</small><h1>Le Marché</h1><p>Transforme ton lot, puis choisis où le vendre.</p></div><span className={styles.wallet}><Coins size={22} aria-hidden="true" /><span><small>Trésorerie disponible</small><strong>{data ? formatKqCash(data.cashCents) : "…"}</strong></span></span></header>
-    {data ? <KqBusinessPanel data={data} now={liveNow} busy={busy} onAsk={ask} onOpenShop={() => onOpenShop()} /> : null}
+    <header className={styles.header}><div><small><FlaskConical size={15} aria-hidden="true" /> L’atelier du Placard</small><h1>Le Marché</h1><p>Transforme ton lot, puis choisis où le vendre.</p></div><Link prefetch={false} href="/arene/placard?view=treasury" className={styles.wallet} onClick={openTreasury} aria-label="Ouvrir ma Trésorerie"><Coins size={22} aria-hidden="true" /><span><small>Trésorerie disponible</small><strong>{data ? formatKqCash(data.cashCents) : "…"}</strong><small>Ouvrir la Trésorerie →</small></span></Link></header>
     <ol className={styles.steps} aria-label="Étapes de vente"><li aria-current={!stock && !saleComplete ? "step" : undefined}><span>{stock || saleComplete ? <Check size={16} /> : "1"}</span> Transformer le lot</li><li aria-current={stock || saleComplete ? "step" : undefined}><span>2</span> Choisir un circuit</li></ol>
     {error && !confirmation ? <p className={styles.error} role="alert">{error} <button onClick={() => void load()}>Actualiser</button></p> : null}
     {loading ? <p className={styles.loading}><LoaderCircle className={styles.spin} /> Ouverture du comptoir…</p> : data ? <section key={screen} className={styles.flow} aria-labelledby="commerce-step-title">
@@ -266,7 +260,7 @@ export function KqCommerceDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: st
           </details> : null}
           {offer.reason ? <><p className={styles.error}>{offer.reason}</p>
             {channel === "online" && !data.computerOwned ? <button className={styles.primary} onClick={() => onOpenShop()}>Trouver l’ordinateur en boutique · 450 €</button>
-              : channel === "online" && data.business && !data.business.shop.active ? <button className={styles.primary} disabled={busy} onClick={openBusiness}>{data.business.shop.createdAt ? "Réactiver mon site · 100 €" : "Préparer mon site · 1 000 €"}</button> : null}
+              : channel === "online" && data.business && !data.business.shop.active ? <Link prefetch={false} href="/arene/placard?view=treasury" className={styles.primary} onClick={openTreasury}>{data.business.shop.createdAt ? "Réactiver mon site dans Trésorerie" : "Créer mon site dans Trésorerie"}</Link> : null}
             {channel === "online" ? <p>Ordinateur : 450 €. Création du site : 1 000 €, premier mois inclus. Puis 100 € tous les 30 jours de jeu (5 jours réels).</p> : null}
           </> : <>
             <div className={styles.figures}><span>Quantité reprise<strong>{grams(offer.units)}</strong></span><span>Offre TTC proposée<strong>{formatKqCash(offer.payoutCents)}</strong></span></div>

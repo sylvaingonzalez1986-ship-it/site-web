@@ -218,7 +218,7 @@ describe("Kanab Quest player page access", () => {
     expect(marketDesk).not.toContain("crypto.randomUUID()");
     expect(equipmentCatalog).toContain("createClientRequestKey()");
     expect(boosterShop).toContain("createClientRequestKey()");
-    expect(playerShell).toContain("<KqMarketDesk onOpenShop={openEquipmentCatalog} />");
+    expect(playerShell).toMatch(/<KqMarketDesk\b[^>]*onOpenShop=\{openEquipmentCatalog\}/);
     expect(playerShell).toContain("openView(shopReturnView)");
     expect(placardHud).toContain("Progression principale terminée");
     expect(placardHud).toContain("Filière épinglée · objectif sauvegardé");
