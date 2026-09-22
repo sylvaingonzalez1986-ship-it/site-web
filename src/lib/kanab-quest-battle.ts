@@ -1,4 +1,4 @@
-import { getKqCultureSystemSummary, getKqHarvestTier, KQ_CARDS, type KqGameState, type KqOutcome } from "@/lib/kanab-quest-game";
+import { getKqCultureSystemSummary, getKqHarvestTier, isKqCultureDead, KQ_CARDS, type KqGameState, type KqOutcome } from "@/lib/kanab-quest-game";
 import { createKqIntegrityCode } from "@/lib/kanab-quest-persistence";
 
 export type KqFlowerStatus = "available" | "locked" | "burned";
@@ -90,6 +90,7 @@ export function resolveKqJuryWinner(playerScore: number, opponentScore: number, 
 }
 
 export function createKqFlower(state: KqGameState, ownerName = "Toi"): KqFlowerCard {
+  if (isKqCultureDead(state)) throw new Error("Une culture morte ne produit pas de carte Fleur.");
   if (state.phase !== "complete" || state.history.length === 0) throw new Error("La culture doit être terminée.");
   const values = state.history.map((entry) => outcomeValue[entry.outcome]);
   const early = values.slice(0, 3).reduce((sum, value) => sum + value, 0);

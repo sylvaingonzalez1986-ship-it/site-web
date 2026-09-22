@@ -5,7 +5,7 @@ import { cacheArenaSharedRead } from "@/lib/arena-shared-cache";
 import { isKqEnergyMode, type KqEnergyMode } from "@/lib/kanab-quest-energy";
 
 import { normalizeEmail } from "@/lib/admin-allowlist";
-import { activateKqHeritage, advanceKqStage, canPlayKqCard, getKqHarvestTier, KQ_BUDDIES, KQ_CARDS, KQ_SITUATIONS, KQ_STAGES, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "@/lib/kanab-quest-game";
+import { activateKqHeritage, advanceKqStage, canPlayKqCard, getKqHarvestTier, isKqCultureDead, KQ_BUDDIES, KQ_CARDS, KQ_SITUATIONS, KQ_STAGES, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "@/lib/kanab-quest-game";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 import { createKqFlower, createKqOpponent, invertKqBattlePerspective, lockKqBattle, resolveKqBattle, type KqBattle, type KqFlowerCard } from "@/lib/kanab-quest-battle";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
@@ -2300,7 +2300,7 @@ export async function applyKqPlayerRunAction(
   const state = parseKqGameSave(encodeKqSave(runResult.data.state));
   if (!state) throw new Error("État de culture invalide.");
   const nextState = applyKqRunAction(state, action, options);
-  const flower = nextState.phase === "complete" ? createKqFlower(nextState) : null;
+  const flower = nextState.phase === "complete" && !isKqCultureDead(nextState) ? createKqFlower(nextState) : null;
   const result = action === "heritage-swap"
     ? await supabase.rpc("rpc_kq_swap_heritage_hand", {
         p_user_id: ownerId,

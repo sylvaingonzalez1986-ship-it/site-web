@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { advanceKqStage, resolveKqStage, rollKqDice, startKqGame, type KqGameState } from "@/lib/kanab-quest-game";
+import { advanceKqStage, isKqCultureDead, resolveKqStage, rollKqDice, startKqGame, type KqGameState } from "@/lib/kanab-quest-game";
 import { createKqFlower, createKqOpponent, getKqJuryProgram, invertKqBattlePerspective, KQ_JURY_SCENARIO_COUNT, lockKqBattle, resolveKqBattle, resolveKqJuryWinner } from "@/lib/kanab-quest-battle";
 
 function completedGame(seed = 42) {
@@ -99,7 +99,9 @@ describe("Kanab Quest flower battles", () => {
   it("makes higher-rated rivals measurably harder over many cultures", () => {
     const winsAgainst = (rating: number) => Array.from({ length: 80 }, (_, index) => {
       const seed = 1000 + index;
-      const player = createKqFlower(completedGame(seed));
+      const game = completedGame(seed);
+      if (isKqCultureDead(game)) return 0;
+      const player = createKqFlower(game);
       const rival = createKqOpponent(seed + 31, { rating });
       return resolveKqBattle(lockKqBattle(player, rival, seed, rating), seed).winner === "player" ? 1 : 0;
     }).reduce<number>((sum, won) => sum + won, 0);

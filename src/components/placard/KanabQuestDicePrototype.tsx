@@ -29,11 +29,13 @@ import {
   getKqStateHeritage,
   getKqRunProjection,
   getKqStageTarget,
+  getKqZeroSuccessStageCount,
   getKqVisibleActionCards,
   getKqCardTradeoff,
   KQ_LIVING_SOIL,
   getKqCultureSystemSituationStatus,
   getKqSituation,
+  isKqCultureDead,
   KQ_BUDDIES,
   KQ_CARDS,
   KQ_COLLECTIONS,
@@ -46,7 +48,6 @@ import {
   startKqGame,
   swapKqHeritageHandCard,
   type KqGameState,
-  type KqOutcome,
   type KqSupportCard,
 } from "@/lib/kanab-quest-game";
 import { createKqFlower, createKqOpponent, getKqJuryProgram, lockKqBattle, resolveKqBattle, type KqBattle } from "@/lib/kanab-quest-battle";
@@ -58,6 +59,7 @@ import { createLocalKqRepository, type KqBurnReceipt, type KqFavoriteDeck, type 
 import { KQ_HERITAGE_CARDS, type KqHeritageCard } from "@/lib/kanab-quest-heritage";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import { getKqSituationArtwork } from "@/lib/kanab-quest-situation-artwork";
+import { getKqOutcomeArtwork, KQ_OUTCOME_LABELS } from "@/lib/kanab-quest-outcome-artwork";
 import { getKqFeedbackTone } from "@/lib/kanab-quest-feedback";
 import { calculateKqPlacardScore } from "@/lib/kanab-quest-reputation";
 import {
@@ -166,29 +168,6 @@ type RemoteHeritageCard = KqHeritageCard & {
 
 const CATEGORY_LABELS: Record<KqSupportCard["category"], string> = {
   substrate: "Mode de culture", pbi: "Auxiliaire PBI", equipment: "Équipement", "know-how": "Savoir-faire", luck: "Coup de chance",
-};
-
-const OUTCOME_COPY: Record<KqOutcome, { title: string; artAlt: string; artSrc: string }> = {
-  critical: {
-    title: "Réussite exceptionnelle !",
-    artAlt: "Sylvain célèbre une réussite exceptionnelle devant une plante luxuriante",
-    artSrc: "/app/kanab-quest/reactions/sylvain-outcome-critical-v2.webp",
-  },
-  success: {
-    title: "Étape remportée !",
-    artAlt: "Sylvain lève le pouce après une étape de culture réussie",
-    artSrc: "/app/kanab-quest/reactions/sylvain-outcome-success-v1.webp",
-  },
-  fragile: {
-    title: "Ça passe de justesse !",
-    artAlt: "Sylvain souffle de soulagement après une réussite de justesse",
-    artSrc: "/app/kanab-quest/reactions/sylvain-outcome-fragile-v1.webp",
-  },
-  failure: {
-    title: "Complication… mais on continue !",
-    artAlt: "Sylvain intervient avec détermination sur une plante affaiblie",
-    artSrc: "/app/kanab-quest/reactions/sylvain-outcome-failure-v1.webp",
-  },
 };
 
 const PEST_LABELS = { aphids: "Pucerons", mites: "Acariens", thrips: "Thrips" } as const;
@@ -478,7 +457,7 @@ function HarvestScoreSheet({ state }: { state: KqGameState }) {
         <span data-final><small>Lot final</small><strong>{breakdown.finalHarvestGrams.toLocaleString("fr-FR")} g</strong></span>
       </div>
       <ol className={styles.harvestStageLedger}>
-        {state.history.map((entry, index) => <li key={entry.stage} data-outcome={entry.outcome}><b>{index + 1}</b><span><strong>{entry.stage}</strong><small>{entry.situation} · dés {entry.dice.join("-")}</small></span><em>{OUTCOME_COPY[entry.outcome].title}</em><mark data-negative={(entry.qualityDelta ?? 0) < 0 || undefined}>{entry.qualityDelta === undefined ? "Ancien reçu" : `${signed(entry.qualityDelta)} qualité · +${entry.xpGain ?? 0} XP`}</mark></li>)}
+        {state.history.map((entry, index) => <li key={entry.stage} data-outcome={entry.outcome}><b>{index + 1}</b><span><strong>{entry.stage}</strong><small>{entry.situation} · dés {entry.dice.join("-")}</small></span><em>{KQ_OUTCOME_LABELS[entry.outcome]}</em><mark data-negative={(entry.qualityDelta ?? 0) < 0 || undefined}>{entry.qualityDelta === undefined ? "Ancien reçu" : `${signed(entry.qualityDelta)} qualité · +${entry.xpGain ?? 0} XP`}</mark></li>)}
       </ol>
     </section>
   );
@@ -503,6 +482,9 @@ export function KanabQuestDicePrototype({
   const remoteRequest = useMemo(() => createKqScopedRequest(apiScope), [apiScope]);
   const sessionStoragePrefix = isPlayerMode ? "kq-player" : "kq-admin";
   const [state, setState] = useState<KqGameState>(() => startKqGame(2026));
+  const cultureDead = isKqCultureDead(state);
+  const outcomeArtwork = getKqOutcomeArtwork(state);
+  const zeroSuccessStages = getKqZeroSuccessStageCount(state);
   const [hydrated, setHydrated] = useState(false);
   const [rolling, setRolling] = useState(false);
   const rollInFlightRef = useRef(false);
@@ -533,7 +515,7 @@ export function KanabQuestDicePrototype({
   const repositoryRef = useRef<KqRepository | null>(null);
   const remoteInventoryRef = useRef<Record<string, number>>({});
   const skipNextSessionFetchRef = useRef(false);
-  const gameViewportRef = useGameViewport(`${viewMode}:${setupOpen ? "setup" : state.phase === "complete" ? "harvest" : "play"}`);
+  const gameViewportRef = useGameViewport(`${viewMode}:${setupOpen ? "setup" : cultureDead ? "dead" : state.phase === "complete" ? "harvest" : "play"}`);
   const [revealedRounds, setRevealedRounds] = useState(0);
   const [deckNotice, setDeckNotice] = useState("");
   const [deckFilter, setDeckFilter] = useState<"all" | "equipment" | "know-how" | "luck">("all");
@@ -1081,11 +1063,17 @@ export function KanabQuestDicePrototype({
     try {
       const result = await applyKqRemoteAction(remoteRunId, action, remoteRequest);
       if (!deferState) setState(result.state);
+      if (result.state.phase === "complete") {
+        setRemoteRunId(null);
+        window.sessionStorage.removeItem(`${sessionStoragePrefix}-remote-run-id`);
+      }
+      if (isKqCultureDead(result.state)) {
+        setPersistedFlowerId(null);
+        window.sessionStorage.removeItem(`${sessionStoragePrefix}-remote-flower-id`);
+      }
       if (result.persistedFlower?.id) {
         setPersistedFlowerId(result.persistedFlower.id);
         window.sessionStorage.setItem(`${sessionStoragePrefix}-remote-flower-id`, result.persistedFlower.id);
-        setRemoteRunId(null);
-        window.sessionStorage.removeItem(`${sessionStoragePrefix}-remote-run-id`);
         const refreshed = await getKqRemoteFlowers(remoteRequest);
         setOfficialFlowers(refreshed.flowers);
       }
@@ -1194,7 +1182,7 @@ export function KanabQuestDicePrototype({
 
   const reset = () => {
     if (isPlayerMode && remoteRunId && state.phase !== "complete") {
-      setRemoteNotice("Ta culture officielle est toujours active. Termine ses six étapes avant d’en préparer une nouvelle.");
+      setRemoteNotice("Ta culture officielle est toujours active. Termine-la avant d’en préparer une nouvelle.");
       return;
     }
     setBattle(null);
@@ -1714,6 +1702,7 @@ export function KanabQuestDicePrototype({
       <main ref={gameViewportRef} className={styles.page} data-player-mode={isPlayerMode || undefined} data-admin-operations={showAdminOperations || undefined} data-view-mode={viewMode}>
         <section className={styles.setupPanel}>
           <header className={styles.setupHero}><div className={styles.setupHeroCopy}><span>Le Placard Kanab Quest{isPlayerMode ? "" : " · local"}</span><h1>Prépare <em>ta culture.</em></h1><i aria-hidden="true" /><p>Choisis ta variété et tes cartes. Tout pousse sur sol vivant.</p></div><div className={styles.setupHeroArt} aria-hidden="true"><span /><Image src="/contest/mascot/arena-scene-placard-v1.png" alt="" width={1536} height={1024} priority sizes="(max-width: 760px) 100vw, 520px" /></div></header>
+          <p className={styles.cultureFailureRule}>Deux étapes validées à 0 réussite, même non consécutives, entraînent la mort de la culture : aucune récolte ni carte Fleur.</p>
           {showAdminOperations && !isPlayerMode ? <div className={styles.remoteCollectionStatus} data-error={remoteCollection.error || undefined}>
             <span>{isPlayerMode ? "Mes cartes La Botte" : "Données sécurisées · test admin"}</span>
             {remoteCollection.loading ? <strong>Chargement de tes cartes…</strong> : remoteCollection.error ? <strong>{remoteCollection.error}</strong> : <strong>{remoteCollection.totalCopies} carte{remoteCollection.totalCopies > 1 ? "s" : ""} disponible{remoteCollection.totalCopies > 1 ? "s" : ""}</strong>}
@@ -1914,13 +1903,48 @@ export function KanabQuestDicePrototype({
   }
 
   if (state.phase === "complete") {
-    const tier = getKqHarvestTier(state.quality);
-    const flower = createKqFlower(state);
     const economy = summarizeKqCardEconomy(state);
-    const recentJuryCodes = battleHistory.slice(0, 3).flatMap((entry) => entry.rounds.map((round) => round.code));
-    const juryProgram = getKqJuryProgram(state.seed, recentJuryCodes);
     const burnedCards = economy.burnedCodes.map((code) => KQ_CARDS.find((card) => card.code === code)).filter((card): card is KqSupportCard => Boolean(card));
     const preservedCards = economy.preservedCodes.map((code) => KQ_CARDS.find((card) => card.code === code)).filter((card): card is KqSupportCard => Boolean(card));
+    if (cultureDead) {
+      return (
+        <main ref={gameViewportRef} className={styles.page} data-player-mode={isPlayerMode || undefined} data-view-mode={viewMode}>
+          <section className={styles.cultureDeath} aria-labelledby="culture-death-title" data-outcome="dead" data-outcome-stage={outcomeArtwork?.stage}>
+            {outcomeArtwork?.outcome === "dead" ? (
+              <span className={styles.cultureDeathArtwork}>
+                <Image src={outcomeArtwork.src} alt={outcomeArtwork.alt} fill sizes="(max-width: 760px) 240px, 300px" />
+              </span>
+            ) : null}
+            <div className={styles.cultureDeathCopy}>
+              <span>Culture terminée · {state.varietyName}</span>
+              <h1 id="culture-death-title">Culture morte</h1>
+              <p>Deux étapes ont été validées à 0 réussite. Même non consécutives, elles mettent fin à la culture.</p>
+              <strong>Aucune récolte · Aucune carte Fleur</strong>
+            </div>
+          </section>
+          <section className={styles.traitsPanel}>
+            <h2>L’histoire de cette culture</h2>
+            <ol className={styles.cultureDeathHistory} aria-label="Résultats des étapes validées">
+              {state.history.map((entry, index) => (
+                <li key={entry.stage} data-zero={entry.total === 0 || undefined}>
+                  <span><strong>{index + 1}. {entry.stage}</strong><small>{entry.situation}</small></span>
+                  <b>{entry.total} réussite{entry.total === 1 ? "" : "s"}</b>
+                </li>
+              ))}
+            </ol>
+            <div className={styles.cultureReceipt}>
+              <article><Flame /><span><small>Copies brûlées · {burnedCards.length}</small><div>{burnedCards.length > 0 ? burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte brûlée</em>}</div></span></article>
+              <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte du deck conservée</em>}</div></span></article>
+            </div>
+            <button type="button" className={styles.primaryButton} onClick={reset}><RotateCcw /> Préparer une nouvelle culture</button>
+          </section>
+        </main>
+      );
+    }
+    const tier = getKqHarvestTier(state.quality);
+    const flower = createKqFlower(state);
+    const recentJuryCodes = battleHistory.slice(0, 3).flatMap((entry) => entry.rounds.map((round) => round.code));
+    const juryProgram = getKqJuryProgram(state.seed, recentJuryCodes);
     if (isPlayerMode) {
       return (
         <main ref={gameViewportRef} className={styles.page} data-player-mode="true">
@@ -2042,7 +2066,6 @@ export function KanabQuestDicePrototype({
   }
 
   if (!situation) return null;
-  const outcomeCopy = state.lastOutcome ? OUTCOME_COPY[state.lastOutcome] : null;
   const runChallenges = getKqDailyChallenges(getKqGameChallengeDate(state));
   const runProjection = getKqRunProjection(state);
   const lastStageReward = state.phase === "resolved" ? state.history.at(-1) ?? null : null;
@@ -2057,6 +2080,12 @@ export function KanabQuestDicePrototype({
       <nav className={styles.stageTrack} aria-label="Étapes de production">
         {KQ_STAGES.map((stage, index) => <span key={stage} data-current={index === state.stageIndex || undefined} data-done={index < state.stageIndex || undefined} aria-current={index === state.stageIndex ? "step" : undefined}><b>{index + 1}</b><small>{stage}</small></span>)}
       </nav>
+
+      <aside className={styles.cultureFailureRule} data-warning={zeroSuccessStages > 0 || undefined} role={zeroSuccessStages > 0 ? "status" : undefined}>
+        {zeroSuccessStages > 0
+          ? <><strong>1 étape à 0 réussite.</strong> Une deuxième étape validée à 0, même plus tard, entraînera la mort de la culture sans récolte.</>
+          : <>Deux étapes validées à 0 réussite, même non consécutives, entraînent la mort de la culture.</>}
+      </aside>
 
       <section className={styles.runProjection} aria-label="Projection de la récolte">
         <header><span>Trajectoire actuelle</span><small>Recalculée après chaque étape</small></header>
@@ -2163,23 +2192,24 @@ export function KanabQuestDicePrototype({
           {state.phase === "rolled" && preview ? (
             <div className={styles.rollResult} aria-live="polite">
               <span>Réussites</span><strong>{preview.total}/{preview.target}</strong><small>{preview.dangers} Danger · {preview.sparks} Étincelle</small>
-              <em className={styles.provisionalOutcome} data-outcome={preview.outcome}>Résultat provisoire · {OUTCOME_COPY[preview.outcome].title}</em>
+              <em className={styles.provisionalOutcome} data-outcome={preview.outcome}>Résultat provisoire · {zeroSuccessStages > 0 && preview.total === 0 ? "Culture en danger" : KQ_OUTCOME_LABELS[preview.outcome]}</em>
+              {zeroSuccessStages > 0 && preview.total === 0 ? <p className={styles.cultureDeathWarning}>Valider ce deuxième résultat à 0 réussite entraînera la mort de ta culture. Tu peux encore la sauver avec une carte de réaction.</p> : null}
               <p>Tu peux encore jouer une carte de réaction avant de valider.</p>
               <button type="button" className={styles.primaryButton} disabled={remoteAction !== null || diceVisualSyncing} onClick={() => void applyGameAction("resolve")}>{diceVisualSyncing ? "Mise à jour des dés…" : "Valider le résultat"}</button>
             </div>
           ) : null}
-          {state.phase === "resolved" && outcomeCopy ? (
-            <div className={styles.outcome} data-outcome={state.lastOutcome} role="status" aria-live="polite">
-              <span className={styles.outcomeReaction}>
+          {state.phase === "resolved" && outcomeArtwork && outcomeArtwork.outcome !== "dead" ? (
+            <div className={styles.outcome} data-outcome={outcomeArtwork.outcome} data-outcome-stage={outcomeArtwork.stage} role="status" aria-live="polite">
+              <span key={outcomeArtwork.src} className={styles.outcomeReaction}>
                 <Image
-                  src={outcomeCopy.artSrc}
-                  alt={outcomeCopy.artAlt}
+                  src={outcomeArtwork.src}
+                  alt={outcomeArtwork.alt}
                   fill
                   sizes="(max-width: 760px) 170px, 220px"
                 />
               </span>
               {state.history.at(-1)?.dice.every(face => face === 6) ? <div className={styles.tripleSpark} role="status"><Sparkles size={22} /><div><strong>Triple étincelle !</strong><span>Trois 6 conservés. Termine la culture pour avancer dans ce succès.</span></div></div> : null}
-                <h3>{outcomeCopy.title}</h3><strong>{state.traits.at(-1)}</strong>{(state.history.at(-1)?.combos?.length ?? 0) > 0 ? <small className={styles.comboNotice}><Sparkles aria-hidden="true" /> {state.history.at(-1)?.combos?.join(" · ")}</small> : null}{state.lastOutcome === "critical" ? <small className={styles.pressureRelief}>Pression −1 · la culture reprend son souffle</small> : null}
+                <h3>{KQ_OUTCOME_LABELS[outcomeArtwork.outcome]}</h3><strong>{lastStageReward?.trait ?? state.traits.at(-1)}</strong>{(lastStageReward?.combos?.length ?? 0) > 0 ? <small className={styles.comboNotice}><Sparkles aria-hidden="true" /> {lastStageReward?.combos?.join(" · ")}</small> : null}{outcomeArtwork.outcome === "critical" ? <small className={styles.pressureRelief}>Pression −1 · la culture reprend son souffle</small> : null}
               {lastStageReward ? <div className={styles.stageRewardReceipt} aria-label="Gains de l’étape"><span data-negative={(lastStageReward.qualityDelta ?? 0) < 0 || undefined}><Star aria-hidden="true" /><strong>{(lastStageReward.qualityDelta ?? 0) > 0 ? "+" : ""}{lastStageReward.qualityDelta ?? 0}</strong><small>Qualité</small></span><span><Zap aria-hidden="true" /><strong>+{lastStageReward.xpGain ?? 0}</strong><small>XP gagnés</small></span><span><Scale aria-hidden="true" /><strong>{runProjection.harvestGrams.toLocaleString("fr-FR")} g</strong><small>Lot projeté</small></span>{(lastStageReward.harvestLossPercent ?? 0) > 0 ? <span data-negative><Flame aria-hidden="true" /><strong>−{lastStageReward.harvestLossPercent} %</strong><small>Récolte volée</small></span> : null}</div> : null}
               <p>Réserve disponible : {state.xp} XP.</p>
               <button type="button" className={styles.primaryButton} disabled={remoteAction !== null} onClick={() => void applyGameAction("advance")}>{state.stageIndex === KQ_STAGES.length - 1 ? "Révéler la Récolte" : "Étape suivante"}</button>

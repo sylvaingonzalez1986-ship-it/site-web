@@ -3,12 +3,13 @@ import { getKqEquipmentArtwork, KQ_EQUIPMENT_ARTWORK } from "@/lib/kanab-quest-e
 import { getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { KQ_CARDS, KQ_SITUATIONS } from "@/lib/kanab-quest-game";
 import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
+import { KQ_OUTCOME_ARTWORK_ASSETS } from "@/lib/kanab-quest-outcome-artwork";
 import {
   KQ_POWER_OUTAGE_ARTWORK,
   KQ_SITUATION_ARTWORK,
 } from "@/lib/kanab-quest-situation-artwork";
 
-export type KqArtworkReviewGroup = "support" | "heritage" | "situation" | "equipment";
+export type KqArtworkReviewGroup = "support" | "heritage" | "situation" | "reaction" | "equipment";
 
 export type KqArtworkReviewAsset = {
   code: string;
@@ -67,6 +68,15 @@ export const KQ_ARTWORK_REVIEW_ASSETS: readonly KqArtworkReviewAsset[] = [
     alt: KQ_POWER_OUTAGE_ARTWORK.alt,
     format: "square",
   },
+  ...KQ_OUTCOME_ARTWORK_ASSETS.map((artwork) => ({
+    code: artwork.code,
+    name: artwork.name,
+    group: "reaction" as const,
+    groupLabel: "Réaction",
+    src: artwork.src,
+    alt: artwork.alt,
+    format: "square" as const,
+  })),
   ...Object.keys(KQ_EQUIPMENT_ARTWORK).flatMap((code) => {
     const equipment = getKqEquipmentDefinition(code);
     if (!equipment) return [];
@@ -107,6 +117,7 @@ export function buildKqArtworkReviewAssets(
     ...KQ_ARTWORK_REVIEW_ASSETS.filter((asset) => asset.group === "support"),
     ...dynamicHeritages,
     ...KQ_ARTWORK_REVIEW_ASSETS.filter((asset) => asset.group === "situation"),
+    ...KQ_ARTWORK_REVIEW_ASSETS.filter((asset) => asset.group === "reaction"),
     ...KQ_ARTWORK_REVIEW_ASSETS.filter((asset) => asset.group === "equipment"),
   ];
 }

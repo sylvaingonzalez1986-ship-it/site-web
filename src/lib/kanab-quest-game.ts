@@ -102,6 +102,8 @@ export type KqGameState = {
   challengeDayKey?: string;
   startedAt?: string;
   completedAt?: string;
+  /** A terminal loss; completed cultures saved before this rule stay unchanged. */
+  cultureDead?: boolean;
   varietyCode: string;
   varietyName: string;
   deckCodes: string[];
@@ -972,6 +974,27 @@ export function getKqStageTarget(state: KqGameState) {
   return Math.max(1, Math.min(3, situation.difficulty - (billRelief ? 1 : 0) - (calmRelief ? 1 : 0) + (state.pressure >= 3 ? 1 : 0)));
 }
 
+export function getKqZeroSuccessStageCount(state: Pick<KqGameState, "history">) {
+  return state.history.filter((entry) => entry.total === 0).length;
+}
+
+export function isKqCultureDead(state: Pick<KqGameState, "cultureDead">) {
+  return state.cultureDead === true;
+}
+
+function endKqDeadCulture(state: KqGameState): KqGameState {
+  return {
+    ...state,
+    phase: "complete",
+    cultureDead: true,
+    completedAt: state.completedAt ?? new Date().toISOString(),
+    equipmentQualityBonus: 0,
+    harvestGrams: 0,
+    powerOutage: false,
+    effectNotices: appendKqEffectNotice(state.effectNotices, "Culture morte : deux étapes à 0 réussite. Aucune récolte ni carte Fleur."),
+  };
+}
+
 export function resolveKqStage(state: KqGameState): KqGameState {
   if (state.phase !== "rolled" || !state.dice) return state;
   const situation = getKqSituation(state);
@@ -1049,7 +1072,7 @@ export function resolveKqStage(state: KqGameState): KqGameState {
   ];
   const heritageEffectNotices = heritageNotices.reduce((notices, notice) => appendKqEffectNotice(notices, notice), state.effectNotices);
   const nextNotices = incidentNotices.reduce((notices, notice) => appendKqEffectNotice(notices, notice), heritageEffectNotices);
-  return {
+  const resolved: KqGameState = {
     ...state, phase: "resolved", xp: state.xp + xpGain, quality: state.quality + qualityDelta,
     pressure: pressureAfter,
     powerOutage,
@@ -1074,10 +1097,12 @@ export function resolveKqStage(state: KqGameState): KqGameState {
       harvestLossPercent: theftLoss,
     }],
   };
+  return getKqZeroSuccessStageCount(resolved) >= 2 ? endKqDeadCulture(resolved) : resolved;
 }
 
 export function advanceKqStage(state: KqGameState): KqGameState {
   if (state.phase !== "resolved") return state;
+  if (getKqZeroSuccessStageCount(state) >= 2) return endKqDeadCulture(state);
   if (state.stageIndex >= KQ_STAGES.length - 1) {
     const projection = getKqRunProjection(state);
     const { equipmentQualityBonus, projectedQuality: quality, harvestGrams } = projection;
@@ -1147,8 +1172,9 @@ export type KqHarvestBreakdown = {
  * unknown and can still raise or lower this projection.
  */
 export function getKqRunProjection(state: KqGameState): KqRunProjection {
+  const cultureDead = isKqCultureDead(state);
   const successfulStages = state.history.filter((entry) => entry.outcome === "success" || entry.outcome === "critical").length;
-  const equipmentQualityBonus = state.phase === "complete"
+  const equipmentQualityBonus = cultureDead ? 0 : state.phase === "complete"
     ? state.equipmentQualityBonus ?? 0
     : calculateKqEquipmentQualityBonus(state.equipment?.qualityMaxBonus ?? 0, successfulStages);
   const projectedQuality = state.phase === "complete" ? state.quality : state.quality + equipmentQualityBonus;
@@ -1160,7 +1186,7 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
     successfulStages,
     quantityPercent: state.equipment?.quantityPercent ?? 0,
   });
-  const harvestGrams = state.phase === "complete" && state.harvestGrams !== undefined
+  const harvestGrams = cultureDead ? 0 : state.phase === "complete" && state.harvestGrams !== undefined
     ? state.harvestGrams
     : applyKqEnergyHarvest(Math.round(grossHarvestGrams * (1 - harvestLossPercent / 100) * 10) / 10, state.energy);
 
@@ -1168,11 +1194,11 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
     currentQuality: state.quality,
     equipmentQualityBonus,
     projectedQuality,
-    tier: KQ_HARVEST_TIERS[tierIndex].name,
-    nextTier: nextTier?.name ?? null,
-    qualityToNextTier: nextTier ? Math.max(0, nextTier.minimumQuality - projectedQuality) : 0,
+    tier: cultureDead ? "Culture morte" : KQ_HARVEST_TIERS[tierIndex].name,
+    nextTier: cultureDead ? null : nextTier?.name ?? null,
+    qualityToNextTier: !cultureDead && nextTier ? Math.max(0, nextTier.minimumQuality - projectedQuality) : 0,
     successfulStages,
-    remainingStages: Math.max(0, KQ_STAGES.length - state.history.length),
+    remainingStages: state.phase === "complete" ? 0 : Math.max(0, KQ_STAGES.length - state.history.length),
     harvestGrams,
     harvestLossPercent,
   };
@@ -1180,16 +1206,17 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
 
 /** Exact audit trail for the two formulas applied when a culture completes. */
 export function getKqHarvestBreakdown(state: KqGameState): KqHarvestBreakdown {
+  const cultureDead = isKqCultureDead(state);
   const successfulStages = state.history.filter((entry) => entry.outcome === "success" || entry.outcome === "critical").length;
-  const equipmentQualityBonus = state.equipmentQualityBonus
-    ?? calculateKqEquipmentQualityBonus(state.equipment?.qualityMaxBonus ?? 0, successfulStages);
+  const equipmentQualityBonus = cultureDead ? 0 : (state.equipmentQualityBonus
+    ?? calculateKqEquipmentQualityBonus(state.equipment?.qualityMaxBonus ?? 0, successfulStages));
   const finalQuality = state.phase === "complete" ? state.quality : state.quality + equipmentQualityBonus;
   const quantityPercent = state.equipment?.quantityPercent ?? 0;
-  const grossHarvestGrams = calculateKqHarvestGrams({ quality: finalQuality, successfulStages, quantityPercent });
+  const grossHarvestGrams = cultureDead ? 0 : calculateKqHarvestGrams({ quality: finalQuality, successfulStages, quantityPercent });
   const harvestLossPercent = Math.max(0, Math.min(80, state.harvestLossPercent ?? 0));
   const afterIncidentGrams = Math.round(grossHarvestGrams * (1 - harvestLossPercent / 100) * 10) / 10;
   const calculatedFinalGrams = applyKqEnergyHarvest(afterIncidentGrams, state.energy);
-  const finalHarvestGrams = state.phase === "complete" && state.harvestGrams !== undefined
+  const finalHarvestGrams = cultureDead ? 0 : state.phase === "complete" && state.harvestGrams !== undefined
     ? state.harvestGrams
     : calculatedFinalGrams;
 

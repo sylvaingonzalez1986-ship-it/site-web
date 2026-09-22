@@ -8,6 +8,7 @@ import {
   KQ_CARD_ILLUSTRATIONS,
 } from "@/lib/kanab-quest-artwork";
 import { KQ_EQUIPMENT_ARTWORK } from "@/lib/kanab-quest-equipment-artwork";
+import { KQ_OUTCOME_ARTWORK_ASSETS } from "@/lib/kanab-quest-outcome-artwork";
 import {
   KQ_POWER_OUTAGE_ARTWORK,
   KQ_SITUATION_ARTWORK,
@@ -25,11 +26,13 @@ const situations = [
   KQ_POWER_OUTAGE_ARTWORK.src,
 ];
 const equipment = Object.values(KQ_EQUIPMENT_ARTWORK).map((artwork) => artwork.src);
+const reactions = KQ_OUTCOME_ARTWORK_ASSETS.map((artwork) => artwork.src);
 const everyProductionAsset = [
   ...cardIllustrations,
   ...cardFronts,
   ...situations,
   ...equipment,
+  ...reactions,
 ];
 
 describe("Kanab Quest artwork production quality", () => {
@@ -69,5 +72,18 @@ describe("Kanab Quest artwork production quality", () => {
     situations.forEach((src) => assertMaximumBytes(src, 700 * 1024));
     equipment.forEach((src) => assertMaximumBytes(src, 600 * 1024));
     cardIllustrations.forEach((src) => assertMaximumBytes(src, 1100 * 1024));
+    reactions.forEach((src) => assertMaximumBytes(src, 180 * 1024));
+  });
+
+  it("ships all 29 stage reactions as opaque square 768px WebP scenes", async () => {
+    expect(reactions).toHaveLength(29);
+    await Promise.all(reactions.map(async (src) => {
+      const [metadata, stats] = await Promise.all([
+        sharp(publicPath(src)).metadata(),
+        sharp(publicPath(src)).stats(),
+      ]);
+      expect(metadata, src).toMatchObject({ width: 768, height: 768, format: "webp" });
+      expect(stats.isOpaque, `${src}: the scene must have no transparent pixels`).toBe(true);
+    }));
   });
 });

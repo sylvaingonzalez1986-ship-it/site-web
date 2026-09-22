@@ -9,12 +9,13 @@ import {
   summarizeKqArtworkReview,
   type KqArtworkReviewState,
 } from "@/lib/kanab-quest-artwork-review";
+import { KQ_OUTCOME_ARTWORK_ASSETS } from "@/lib/kanab-quest-outcome-artwork";
 
 describe("Kanab Quest artwork review manifest", () => {
-  it("includes the twelve added situations in the 120-file fallback manifest", () => {
-    expect(KQ_ARTWORK_REVIEW_ASSETS).toHaveLength(120);
-    expect(new Set(KQ_ARTWORK_REVIEW_ASSETS.map((asset) => asset.code)).size).toBe(120);
-    expect(new Set(KQ_ARTWORK_REVIEW_ASSETS.map((asset) => asset.src)).size).toBe(120);
+  it("includes all 29 stage reactions in the 149-file fallback manifest", () => {
+    expect(KQ_ARTWORK_REVIEW_ASSETS).toHaveLength(149);
+    expect(new Set(KQ_ARTWORK_REVIEW_ASSETS.map((asset) => asset.code)).size).toBe(149);
+    expect(new Set(KQ_ARTWORK_REVIEW_ASSETS.map((asset) => asset.src)).size).toBe(149);
   });
 
   it("keeps the expected review groups and formats", () => {
@@ -22,11 +23,20 @@ describe("Kanab Quest artwork review manifest", () => {
     expect(groupCounts.support).toHaveLength(32);
     expect(groupCounts.heritage).toHaveLength(12);
     expect(groupCounts.situation).toHaveLength(51);
+    expect(groupCounts.reaction).toHaveLength(29);
     expect(groupCounts.equipment).toHaveLength(25);
     expect(groupCounts.support?.every((asset) => asset.format === "portrait")).toBe(true);
     expect(groupCounts.heritage?.every((asset) => asset.format === "portrait")).toBe(true);
     expect(groupCounts.situation?.every((asset) => asset.format === "square")).toBe(true);
+    expect(groupCounts.reaction?.every((asset) => asset.format === "square")).toBe(true);
     expect(groupCounts.equipment?.every((asset) => asset.format === "square")).toBe(true);
+  });
+
+  it("keeps reactions ordered by stage and verdict in both review catalogues", () => {
+    const expected = KQ_OUTCOME_ARTWORK_ASSETS.map((asset) => asset.code);
+    for (const assets of [KQ_ARTWORK_REVIEW_ASSETS, buildKqArtworkReviewAssets([])]) {
+      expect(assets.filter((asset) => asset.group === "reaction").map((asset) => asset.code)).toEqual(expected);
+    }
   });
 
   it("invalidates a stored approval as soon as its image source changes", () => {
@@ -47,9 +57,9 @@ describe("Kanab Quest artwork review manifest", () => {
       reviewedAt,
     }])) satisfies KqArtworkReviewState;
     const report = buildKqArtworkReviewReport(state, reviewedAt);
-    expect(report.summary).toMatchObject({ approved: 120, pending: 0, rework: 0, readyForLaunch: true });
+    expect(report.summary).toMatchObject({ approved: 149, pending: 0, rework: 0, readyForLaunch: true });
     const imported = importKqArtworkReviewReport(report);
-    expect(imported).toMatchObject({ accepted: 120, staleCodes: [], missingCodes: [], manifestMatches: true });
+    expect(imported).toMatchObject({ accepted: 149, staleCodes: [], missingCodes: [], manifestMatches: true });
     expect(summarizeKqArtworkReview(imported.state).readyForLaunch).toBe(true);
   });
 
@@ -60,7 +70,7 @@ describe("Kanab Quest artwork review manifest", () => {
       { code: "HERITAGE-015", name: "Ancienne ferme", imageUrl: "/heritage-c.webp", producerName: "Ferme C", isActive: false },
     ]);
     const heritageAssets = assets.filter((asset) => asset.group === "heritage");
-    expect(assets).toHaveLength(110);
+    expect(assets).toHaveLength(139);
     expect(heritageAssets.map((asset) => asset.code)).toEqual(["HERITAGE-013", "HERITAGE-014"]);
 
     const state = Object.fromEntries(assets.map((asset) => [asset.code, {
@@ -71,8 +81,8 @@ describe("Kanab Quest artwork review manifest", () => {
     const report = buildKqArtworkReviewReport(state, "2026-09-06T12:00:00Z", assets);
     expect(report).toMatchObject({
       schema: "kanab-quest-artwork-review-v3",
-      inventory: { total: 110, heritage: 2 },
-      summary: { approved: 110, readyForLaunch: true },
+      inventory: { total: 139, heritage: 2 },
+      summary: { approved: 139, readyForLaunch: true },
     });
   });
 

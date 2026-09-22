@@ -11,6 +11,8 @@ import {
   getKqHarvestBreakdown,
   getKqHarvestTier,
   getKqStageTarget,
+  getKqZeroSuccessStageCount,
+  isKqCultureDead,
   getKqRunProjection,
   getKqVisibleActionCards,
   getKqCardTradeoff,
@@ -156,7 +158,7 @@ describe("Kanab Quest dice prototype", () => {
     expect(startKqGame(1, { varietyCode: "HH2026-001" }).xp).toBe(5);
   });
 
-  it("can complete a deterministic culture with every playable Buddie", () => {
+  it("reaches a deterministic harvest or death with every playable Buddie", () => {
     KQ_BUDDIES.forEach((buddie, index) => {
       let state = startKqGame(100 + index, { varietyCode: buddie.code });
       while (state.phase !== "complete") {
@@ -165,7 +167,15 @@ describe("Kanab Quest dice prototype", () => {
         if (state.phase === "resolved") state = advanceKqStage(state);
       }
       expect(state.varietyCode).toBe(buddie.code);
-      expect(state.history).toHaveLength(6);
+      if (isKqCultureDead(state)) {
+        expect(getKqZeroSuccessStageCount(state)).toBe(2);
+        expect(state.harvestGrams).toBe(0);
+        expect(state.history.length).toBeLessThanOrEqual(KQ_STAGES.length);
+      } else {
+        expect(state.history).toHaveLength(KQ_STAGES.length);
+        expect(getKqZeroSuccessStageCount(state)).toBeLessThan(2);
+        expect(state.harvestGrams).toBeGreaterThan(0);
+      }
     });
   });
 

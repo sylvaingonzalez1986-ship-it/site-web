@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { canActivateKqHeritage, KQ_CARDS } from './kanab-quest-game';
+import { canActivateKqHeritage, isKqCultureDead, KQ_CARDS } from './kanab-quest-game';
 import { getKqCommerceReplenishment, quoteKqCommerce } from './kanab-quest-commerce';
-import { canTrialContinue, createKqTrial, KQ_TRIAL_VERSION, reduceKqTrial, restoreKqTrial, trialCardPermission, trialQuality, trialRoutes, type KqTrialAction } from './kanab-quest-trial';
+import { canTrialContinue, canTrialRoll, createKqTrial, KQ_TRIAL_VERSION, reduceKqTrial, restoreKqTrial, trialCardPermission, trialInstruction, trialQuality, trialRoutes, type KqTrialAction } from './kanab-quest-trial';
 
 function prepared(mode: 'eco'|'balanced'|'intensive'='balanced') {
  let s=createKqTrial();
@@ -42,6 +42,39 @@ describe('isolated Placard learning run',()=>{
  for(const mode of ['eco','balanced','intensive'] as const)for(const support of [true,false])it(`finishes all six stages with ${mode}, support=${support}`,()=>{
   const {s}=culture(mode,support);expect(s.chapter).toBe(5);expect(s.game?.history).toHaveLength(6);expect(s.game?.heritageUsed).toBe(true);
   expect(s.game?.usedCards).toContain('BOTTE-002');expect(s.game?.harvestGrams).toBeGreaterThan(0);expect(s.electricity).toBeGreaterThan(0);
+ });
+ it('ends the culture at the second zero-success stage and lets the player retry without repeating preparation',()=>{
+  const preparedTrial=prepared('eco');let s=preparedTrial.s;
+  expect(reduceKqTrial(s,{type:'restart-culture'})).toBe(s);
+  s=reduceKqTrial(s,{type:'play',code:'BOTTE-005'});
+  s=reduceKqTrial(s,{type:'roll'});
+  s={...s,game:{...s.game!,dice:[2,2,2],heritageUsed:true}};
+  s=reduceKqTrial(s,{type:'resolve'});
+  expect(s.game?.phase).toBe('resolved');
+  expect(trialInstruction(s)).toContain('Une deuxième, même plus tard');
+  s=reduceKqTrial(s,{type:'advance'});
+  s=reduceKqTrial(s,{type:'roll'});
+  s={...s,game:{...s.game!,dice:[1,2,3]}};
+  s=reduceKqTrial(s,{type:'resolve'});
+  expect(s.chapter).toBe(4);
+  expect(s.game?.phase).toBe('complete');
+  expect(isKqCultureDead(s.game!)).toBe(true);
+  expect(s.game?.harvestGrams).toBe(0);
+  expect(trialInstruction(s)).toContain('Ta culture est morte');
+  expect(canTrialContinue(s)).toBe(false);
+  expect(trialRoutes(s)).toEqual([]);
+  for(const type of ['advance','next','roll','resolve','duel'] as const)expect(reduceKqTrial(s,{type})).toBe(s);
+  for(const [chapter,action] of [[5,{type:'next'}],[6,{type:'duel'}],[7,{type:'transform',route:'raw'}]] as const){
+   const later={...s,chapter};expect(canTrialContinue(later)).toBe(false);expect(reduceKqTrial(later,action)).toBe(later);
+  }
+  const restarted=reduceKqTrial(s,{type:'restart-culture'});
+  expect(restarted.game).toEqual(preparedTrial.s.game);
+  expect(restarted.chapter).toBe(4);
+  expect(restarted.installed).toEqual(s.installed);
+  expect(restarted.commerce).toBe(s.commerce);
+  expect(restarted.battle).toBeNull();
+  expect(restarted.rounds).toBe(0);
+  expect(canTrialRoll(reduceKqTrial(restarted,{type:'play',code:'BOTTE-005'}))).toBe(true);
  });
  it('restores only versioned training actions, never account data',()=>{
   const {s,actions}=culture();const loaded=restoreKqTrial({version:KQ_TRIAL_VERSION,actions,cashCents:99999999});

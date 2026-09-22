@@ -8,7 +8,7 @@ saison et les probabilités des collections ne sont pas validés.
 
 Le Placard est le jeu de cartes de culture de Kanab Quest. Une partie utilise
 une variété Buddie possédée dans l'album, le Sol vivant commun et les cartes La Botte
-choisies dans la collection du joueur. La culture terminée produit une carte
+choisies dans la collection du joueur. Une culture menée à la récolte produit une carte
 Fleur numérique unique qui peut participer à un duel classé.
 
 La carte Buddie d'origine n'est jamais détruite par le Placard. Une carte
@@ -30,9 +30,18 @@ Héritage équipée est permanente et ne brûle jamais.
 
 La culture se déroule en étapes résolues par trois dés, les cartes et les
 effets permanents autorisés. Le serveur conserve la seed, l'état de la partie
-et les reçus. Une culture terminée crée une seule Fleur avec ses statistiques,
+et les reçus. Une culture menée à la récolte crée une seule Fleur avec ses statistiques,
 traits et combos. La Fleur est distincte de la carte Buddie qui a servi de
 variété.
+
+La culture meurt dès que deux étapes sont validées avec **0 réussite**, même
+si elles ne se suivent pas. Le total retenu est celui des dés après les
+cartes et les effets, au moment de la validation ; transformer le verdict
+« Échec » en « Fragile » ne change pas ce total. Après le premier zéro,
+un avertissement rappelle le risque. Au deuxième, la partie s'arrête sans
+récolte ni carte Fleur. Les cartes déjà jouées restent consommées ; le Buddie,
+l'Héritage et les cartes non jouées sont conservés. Les récoltes déjà
+terminées avant cette règle restent inchangées.
 
 Les Buddies donnent un bonus d’XP de départ selon leur rareté : Commun +0,
 Argent +1, Or +2, Épique +3, Légendaire +4. Avec l’XP de base, cela donne

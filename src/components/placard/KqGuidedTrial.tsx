@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { ArrowRight, Check, Compass, Leaf, RotateCcw, X } from 'lucide-react';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
-import { canActivateKqHeritage, getKqHandCodes, getKqSituation, getKqStageTarget, KQ_CARDS, KQ_STAGES, previewKqResolution, type KqSupportCard } from '@/lib/kanab-quest-game';
+import { canActivateKqHeritage, getKqHandCodes, getKqSituation, getKqStageTarget, getKqZeroSuccessStageCount, isKqCultureDead, KQ_CARDS, KQ_STAGES, previewKqResolution, type KqSupportCard } from '@/lib/kanab-quest-game';
 import { getKqSituationArtwork } from '@/lib/kanab-quest-situation-artwork';
+import { getKqOutcomeArtwork, KQ_OUTCOME_LABELS } from '@/lib/kanab-quest-outcome-artwork';
 import { getKqCardArtwork } from '@/lib/kanab-quest-artwork';
 import { KQ_HERITAGE_CARDS } from '@/lib/kanab-quest-heritage';
 import { getKqEquipmentDefinition } from '@/lib/kanab-quest-equipment';
@@ -21,7 +22,6 @@ import styles from './KqGuidedTrial.module.css';
 
 const euro=(cents:number)=>new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(cents/100);
 const number=(value:number)=>new Intl.NumberFormat('fr-FR',{maximumFractionDigits:1}).format(value);
-const OUTCOMES={critical:'Réussite exceptionnelle',success:'Réussite',fragile:'Fragile',failure:'Échec'};
 const SATISFACTION={satisfied:'Acheteurs satisfaits',neutral:'Acheteurs neutres',disappointed:'Acheteurs déçus','not-applicable':'Reprise sans fidélisation'};
 const INTRO=[
  'Avant de cultiver, repère les deux activités : le Carnet garde tes dégustations réelles ; le Placard est le jeu. Cette partie d’essai reste entièrement fictive.',
@@ -45,6 +45,8 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:str
   return state===current.state?current:{state,actions:[...current.actions,action]};
  },userId,load);
  const s=saved.state,g=s.game,c=s.commerce;
+ const cultureDead=!!g&&isKqCultureDead(g);
+ const outcomeArtwork=g?getKqOutcomeArtwork(g):null;
  const [detail,setDetail]=useState<KqSupportCard|null>(null);
  const [policy,setPolicy]=useState<KqOnlinePrice>('advised');
  const [channel,setChannel]=useState<KqSalesChannel>('online');
@@ -69,8 +71,8 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:str
  const comparison=stock?quoteKqCommerce({...c,business:comparisonBusiness,computerOwned:true,reputation:scenario==='reputation'?1500:c.reputation,campaign:c.campaign?{...c.campaign,internetPaid:true,reputation:scenario==='reputation'?1500:c.campaign.reputation,event:scenario==='promotion'?'promotion':c.campaign.event}:null}, {...stock,juryScore:scenario==='quality'?4:stock.juryScore},'online',policy,undefined,s.clock):null;
  const last=s.receipts.at(-1);
  const situation=g?getKqSituation(g):null;
- const situationArtwork=situation?getKqSituationArtwork(situation.code,Boolean(g?.powerOutage)):null;
- const prediction=g?previewKqResolution(g):null;
+ const situationArtwork=situation&&(g?.phase==='prepare'||g?.phase==='rolled')?getKqSituationArtwork(situation.code,Boolean(g?.powerOutage)):null;
+ const prediction=g?.phase==='rolled'?previewKqResolution(g):null;
  const cardButton=(card:KqSupportCard,playing=false)=>{
   const art=getKqCardArtwork(card.code), permission=trialCardPermission(s,card.code);
   return <article key={card.code} className={styles.card}>
@@ -128,21 +130,35 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:str
     </>:null}
     {s.chapter===4&&g&&situation?<>
      <div className={styles.stages}>{KQ_STAGES.map((name,i)=><span key={name} data-active={i===g.stageIndex}>{i<g.stageIndex?'✓ ':''}{name}</span>)}</div>
-     <section className={styles.panel}><span className={styles.kicker}>ÉTAPE {g.stageIndex+1} / 6 · {g.phase==='prepare'?'AVANT LES DÉS':g.phase==='rolled'?'APRÈS LES DÉS':'VERDICT'}</span><div className={styles.cultureScene}>{situationArtwork?<Image key={situationArtwork.src} data-trial-situation={situation.code} src={situationArtwork.src} alt={situationArtwork.alt} width={768} height={768} sizes="(max-width: 760px) calc(100vw - 56px), 320px" loading="eager"/>:null}<div><h3>{situation.name}</h3><p>{situation.story}</p></div></div><p><strong>{getKqStageTarget(g)} réussites demandées</strong> · XP disponibles : {g.xp} · Qualité : {g.quality} · Pression : {g.pressure}/4</p><p>1 = Danger · 2–3 = neutre · 4–5 = réussite · 6 = Étincelle, une réussite et +1 XP au verdict. À partir de 3 Pression, la difficulté augmente.</p>
+     <section className={styles.panel}><span className={styles.kicker}>ÉTAPE {g.stageIndex+1} / 6 · {g.phase==='prepare'?'AVANT LES DÉS':g.phase==='rolled'?'APRÈS LES DÉS':'VERDICT'}</span><div className={styles.cultureScene} data-has-art={!!situationArtwork}>{situationArtwork?<Image key={situationArtwork.src} data-trial-situation={situation.code} src={situationArtwork.src} alt={situationArtwork.alt} width={768} height={768} sizes="(max-width: 760px) calc(100vw - 56px), 320px" loading="eager"/>:null}<div><h3>{situation.name}</h3><p>{situation.story}</p></div></div><p><strong>{getKqStageTarget(g)} réussites demandées</strong> · XP disponibles : {g.xp} · Qualité : {g.quality} · Pression : {g.pressure}/4</p><p>1 = Danger · 2–3 = neutre · 4–5 = réussite · 6 = Étincelle, une réussite et +1 XP au verdict. À partir de 3 Pression, la difficulté augmente.</p>
+      <p>Étapes à 0 réussite : <strong>{getKqZeroSuccessStageCount(g)}/2</strong>. La culture meurt dès la deuxième, même si elles ne se suivent pas.</p>
       {g.dice?<div className={styles.dice} aria-label={`Dés : ${g.dice.join(', ')}`}>{g.dice.map((die,i)=><span key={i} data-value={die}>{die}<small>{die===1?'Danger':die===6?'Étincelle':die>=4?'Réussite':'Neutre'}</small></span>)}</div>:null}
-      {prediction?<p role="status">Prévision : <strong>{OUTCOMES[prediction.outcome]}</strong> · {prediction.total}/{prediction.target} réussites · {prediction.dangers} Danger non protégé</p>:null}
+      {prediction?<p role="status">Prévision : <strong>{KQ_OUTCOME_LABELS[prediction.outcome]}</strong> · {prediction.total}/{prediction.target} réussites · {prediction.dangers} Danger non protégé</p>:null}
       {g.phase==='prepare'?<button type="button" data-trial-action="roll" disabled={!canTrialRoll(s)} onClick={()=>dispatch({type:'roll'})}>Lancer les dés</button>:null}
       {g.phase==='rolled'?<><button type="button" data-trial-action="heritage" disabled={!canActivateKqHeritage(g).allowed} onClick={()=>dispatch({type:'heritage'})}>{g.heritageUsed?'Héritage déjà utilisé':'Activer mon Héritage'}</button><button type="button" data-trial-action="resolve" disabled={!canTrialResolve(s)} onClick={()=>dispatch({type:'resolve'})}>Valider le résultat</button></>:null}
-      {g.phase==='resolved'?<><h3>{OUTCOMES[g.lastOutcome!]}</h3><p>{g.history.at(-1)?.trait} · +{g.history.at(-1)?.xpGain??0} XP · {g.history.at(-1)?.qualityDelta??0} Qualité</p><button type="button" data-trial-action="advance" onClick={()=>dispatch({type:'advance'})}>{g.stageIndex===5?'Découvrir ma récolte':'Passer à l’étape suivante'}</button></>:null}
+      {g.phase==='resolved'&&outcomeArtwork&&outcomeArtwork.outcome!=='dead'?<>
+       <div className={styles.outcome} data-outcome={outcomeArtwork.outcome} data-outcome-stage={outcomeArtwork.stage} role="status">
+        <span key={outcomeArtwork.src} className={styles.outcomeArtwork}><Image src={outcomeArtwork.src} alt={outcomeArtwork.alt} fill sizes="(max-width: 760px) 170px, 220px"/></span>
+        <div><h3>{KQ_OUTCOME_LABELS[outcomeArtwork.outcome]}</h3><p>{g.history.at(-1)?.trait} · +{g.history.at(-1)?.xpGain??0} XP · {g.history.at(-1)?.qualityDelta??0} Qualité</p></div>
+       </div>
+       <button type="button" data-trial-action="advance" onClick={()=>dispatch({type:'advance'})}>{g.stageIndex===5?'Découvrir ma récolte':'Passer à l’étape suivante'}</button>
+      </>:null}
+      {cultureDead?<>
+       <div className={styles.outcome} data-outcome="dead" data-outcome-stage={outcomeArtwork?.stage} role="status">
+        {outcomeArtwork?.outcome==='dead'?<span className={styles.outcomeArtwork}><Image src={outcomeArtwork.src} alt={outcomeArtwork.alt} fill sizes="(max-width: 760px) 240px, 280px"/></span>:null}
+        <div><h3>Culture morte</h3><p>Deux étapes à 0 réussite : ta culture est terminée, sans récolte. Recommence avec ton installation d’essai pour poursuivre le tutoriel.</p></div>
+       </div>
+       <button type="button" data-trial-action="restart-culture" onClick={()=>dispatch({type:'restart-culture'})}>Recommencer la culture d’essai</button>
+      </>:null}
      </section>
      {g.effectNotices?.length?<ul className={styles.notices} aria-live="polite">{g.effectNotices.slice(-3).map((notice,i)=><li key={`${i}-${notice}`}>{notice}</li>)}</ul>:null}
-     {g.phase!=='resolved'?<><h3>Ta main · une préparation, puis une réaction au maximum</h3><p>{g.stageIndex<3?'Les premières actions sont guidées ; les choix seront libres dès la Floraison.':'Tu peux conserver tes cartes. Lis les limites avant de dépenser ton XP.'}</p>
+     {g.phase==='prepare'||g.phase==='rolled'?<><h3>Ta main · une préparation, puis une réaction au maximum</h3><p>{g.stageIndex<3?'Les premières actions sont guidées ; les choix seront libres dès la Floraison.':'Tu peux conserver tes cartes. Lis les limites avant de dépenser ton XP.'}</p>
       <div className={styles.cards}>{[...new Set(getKqHandCodes(g))].map(code=>cardButton(KQ_CARDS.find(card=>card.code===code)!,true))}</div>
       {g.stageIndex>=3&&g.phase==='prepare'?<button type="button" disabled={!!g.preparationPlayed||(g.handRedrawsUsed??0)>=1} onClick={()=>dispatch({type:'redraw'})}>Changer de main · 1 fois par culture</button>:null}
       {g.revealedPest?<><h3>Diagnostic : pucerons · réserve anti-ravageurs</h3><div className={styles.cards}>{cardButton(KQ_CARDS.find(card=>card.code==='BOTTE-002')!,true)}</div></>:null}
      </>:null}
     </>:null}
-    {s.chapter===5&&g?<section className={styles.panel}><Leaf size={50} aria-hidden="true"/><h3>{g.varietyName} · récolte fictive</h3><div className={styles.wallet}><span>Quantité <strong>{number(g.harvestGrams??0)} g</strong></span><span>Qualité de culture <strong>{g.quality}</strong></span><span>Facture d’énergie <strong>{euro(s.electricity)}</strong></span></div><p>Ce score de culture n’est pas encore la note commerciale sur 10. Le jury compare les caractéristiques de ta fleur.</p><ul>{g.history.map(h=><li key={h.stage}>{h.stage} : {OUTCOMES[h.outcome]} · {h.trait}</li>)}</ul><p>{g.usedCards.length} copies fictives jouées. Les copies conservées restent disponibles en vraie partie ; le Buddie et l’Héritage ne sont pas consommés.</p></section>:null}
+    {s.chapter===5&&g?<section className={styles.panel}><Leaf size={50} aria-hidden="true"/><h3>{g.varietyName} · récolte fictive</h3><div className={styles.wallet}><span>Quantité <strong>{number(g.harvestGrams??0)} g</strong></span><span>Qualité de culture <strong>{g.quality}</strong></span><span>Facture d’énergie <strong>{euro(s.electricity)}</strong></span></div><p>Ce score de culture n’est pas encore la note commerciale sur 10. Le jury compare les caractéristiques de ta fleur.</p><ul>{g.history.map(h=><li key={h.stage}>{h.stage} : {KQ_OUTCOME_LABELS[h.outcome]} · {h.trait}</li>)}</ul><p>{g.usedCards.length} copies fictives jouées. Les copies conservées restent disponibles en vraie partie ; le Buddie et l’Héritage ne sont pas consommés.</p></section>:null}
     {s.chapter===6?<section className={styles.panel}><h3>Ta fleur face à Sylvain</h3><p>En entraînement, pas d’adversaire à attendre et aucun effet sur le classement. Ici, les deux fleurs sont fictives.</p>{!s.battle?<button type="button" data-trial-action="duel" onClick={()=>dispatch({type:'duel'})}>Engager le duel d’entraînement</button>:<>
      {s.battle.rounds.slice(0,s.rounds).map(round=><article className={styles.round} key={round.code}><h3>{round.label}</h3><p>{round.explanation}</p><strong>Toi {number(round.playerScore)} · Sylvain {number(round.opponentScore)}</strong><p>{round.winner==='player'?'Tu remportes cette manche.':'Sylvain remporte cette manche.'}</p></article>)}
      {s.rounds<3?<button type="button" data-trial-action="round" onClick={()=>dispatch({type:'round'})}>Découvrir la manche {s.rounds+1}</button>:<><h3>{s.battle.winner==='player'?'Duel gagné !':'Sylvain gagne ce duel.'}</h3><p>Note de ton lot : <strong>{number(trialQuality(s))}/10</strong>. Elle détermine les filières accessibles et l’accueil de tes acheteurs.</p><p>La carte Fleur ne peut servir qu’à un duel. Son lot reste disponible pour la valorisation et la vente.</p></>}

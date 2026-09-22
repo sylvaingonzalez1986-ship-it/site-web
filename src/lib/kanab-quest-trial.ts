@@ -1,5 +1,5 @@
 import { ARENA_JOURNEY_STEPS } from "./arena-journey";
-import { activateKqHeritage, advanceKqStage, canActivateKqHeritage, canPlayKqCard, KQ_BUDDIES, KQ_CARDS, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, type KqGameState } from './kanab-quest-game';
+import { activateKqHeritage, advanceKqStage, canActivateKqHeritage, canPlayKqCard, getKqZeroSuccessStageCount, isKqCultureDead, KQ_BUDDIES, KQ_CARDS, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, type KqGameState } from './kanab-quest-game';
 import { createKqFlower, createKqOpponent, lockKqBattle, resolveKqBattle, type KqBattle } from './kanab-quest-battle';
 import { getKqEquipmentDefinition } from './kanab-quest-equipment';
 import { type KqEnergyMode } from './kanab-quest-energy';
@@ -29,7 +29,7 @@ export type KqTrialState = {
 export type KqTrialAction =
  | { type: 'next' } | { type: 'check'; value: string } | { type: 'buy' } | { type: 'install'; code: string }
  | { type: 'mode'; mode: KqEnergyMode } | { type: 'play'; code: string } | { type: 'roll' } | { type: 'heritage' }
- | { type: 'redraw' } | { type: 'resolve' } | { type: 'advance' } | { type: 'duel' } | { type: 'round' }
+ | { type: 'redraw' } | { type: 'resolve' } | { type: 'advance' } | { type: 'restart-culture' } | { type: 'duel' } | { type: 'round' }
  | { type: 'transform'; route: KqMarketRouteCode } | { type: 'computer' } | { type: 'internet' } | { type: 'wait' }
  | { type: 'sell'; stockId: string; channel: KqSalesChannel; policy: KqOnlinePrice };
 export function createKqTrial(): KqTrialState {
@@ -46,13 +46,16 @@ export function startKqTrialCulture(mode: KqEnergyMode = 'balanced', seed = 2) {
 export function trialInstruction(state: KqTrialState) {
  const g = state.game;
  if (!g || state.chapter !== 4) return '';
+ if (isKqCultureDead(g)) return 'Ta culture est morte : deux étapes ont fini à 0 réussite, même sans se suivre. Recommence la culture d’essai pour poursuivre le tutoriel.';
  if (g.phase === 'prepare' && g.stageIndex === 0 && !g.preparationPlayed) return 'Joue Arrosage mesuré : une préparation se joue avant les dés et coûte de l’XP.';
  if (g.phase === 'prepare' && g.stageIndex === 2 && !g.revealedPest) return 'Joue la Loupe d’inspection pour identifier le ravageur. La réserve anti-ravageurs devient alors utilisable.';
  if (g.phase === 'prepare') return 'Lis la situation et ses catégories. Prépare ton lancer avec une carte adaptée, ou conserve tes cartes et lance les dés.';
  if (g.phase === 'rolled' && !g.heritageUsed && canActivateKqHeritage(g).allowed) return 'Active ton Héritage : il transforme un dé neutre en Étincelle, sans consommer de carte La Botte.';
  if (g.phase === 'rolled' && g.stageIndex === 2 && !g.reactionPlayed && canPlayKqCard(g, KQ_CARDS.find(c=>c.code==='BOTTE-002')!).allowed) return 'Le ravageur est identifié : joue la Chrysope depuis ta réserve pour corriger un dé faible.';
  if (g.phase === 'rolled') return 'Observe les dés et le résultat prévu. Tu peux jouer une réaction avant de valider. Chaque 6 rapporte 1 XP au verdict.';
- return 'Lis le résultat : qualité, XP et pression ont évolué. Un échec ne termine pas la culture ; adapte la suite.';
+ return getKqZeroSuccessStageCount(g) === 1
+  ? 'Une étape a fini à 0 réussite. Une deuxième, même plus tard, fera mourir la culture. Utilise tes cartes pour améliorer tes dés avant de valider.'
+  : 'Lis le résultat : qualité, XP et pression ont évolué. Deux étapes à 0 réussite font mourir la culture, même si elles ne se suivent pas.';
 }
 export function trialCardPermission(s: KqTrialState, code: string) {
  const g=s.game, card=KQ_CARDS.find(c=>c.code===code);
@@ -71,8 +74,9 @@ export function canTrialResolve(state: KqTrialState) {
   && !(g.stageIndex===2 && !g.reactionPlayed && canPlayKqCard(g,KQ_CARDS.find(c=>c.code==='BOTTE-002')!).allowed);
 }
 export function trialQuality(state: KqTrialState) { return state.battle ? getKqJuryScoreFromRounds(state.battle.rounds, 'player') : 0; }
-export function trialRoutes(state: KqTrialState) { return quoteKqMarketRoutes({ juryScore: trialQuality(state), harvestGrams: state.game?.harvestGrams ?? 0, equipmentCodes: KQ_TRIAL_EQUIPMENT }); }
+export function trialRoutes(state: KqTrialState) { return state.game && isKqCultureDead(state.game) ? [] : quoteKqMarketRoutes({ juryScore: trialQuality(state), harvestGrams: state.game?.harvestGrams ?? 0, equipmentCodes: KQ_TRIAL_EQUIPMENT }); }
 export function canTrialContinue(s: KqTrialState) {
+ if (s.game && isKqCultureDead(s.game)) return false;
  switch(s.chapter) {
  case 0: return s.checked.includes('notebook');
  case 1: return ['buddie','deck','heritage'].every(key=>s.checked.includes(key));
@@ -90,7 +94,9 @@ function makeStock(s: KqTrialState, route: KqMarketRouteCode, grams: number, equ
 }
 export function reduceKqTrial(s: KqTrialState, a: KqTrialAction): KqTrialState {
  const g=s.game, c=s.commerce;
+ if(g && isKqCultureDead(g) && a.type!=='restart-culture')return s;
  switch(a.type) {
+ case 'restart-culture': return s.chapter===4 && g && isKqCultureDead(g) ? {...s,game:startKqTrialCulture(s.mode),battle:null,rounds:0}:s;
  case 'check': return s.chapter<=1 && ['notebook','buddie','deck','heritage'].includes(a.value) ? {...s, checked:[...new Set([...s.checked,a.value])]} : s;
  case 'buy': {const price=getKqEquipmentDefinition('LED-300')!.priceCents;return s.chapter===2&&!s.bought&&c.cashCents>=price?{...s,bought:true,commerce:{...c,cashCents:c.cashCents-price}}:s;}
  case 'install': return s.chapter===3 && ['LED-300','DRYING-ROOM','SIFT-TRAY'].includes(a.code) && !s.installed.includes(a.code) ? {...s,installed:[...s.installed,a.code]}:s;

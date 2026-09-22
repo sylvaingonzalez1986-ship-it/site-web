@@ -28,7 +28,10 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     const knownSituations = new Set(KQ_SITUATIONS.map((situation) => situation.code));
     if (!isFiniteNumber(state.seed) || !isFiniteNumber(state.stageIndex) || state.stageIndex < 0 || state.stageIndex >= KQ_STAGES.length) return null;
     if (!phases.includes(String(state.phase)) || !isFiniteNumber(state.xp) || state.xp < 0 || !isFiniteNumber(state.quality)) return null;
-    if (state.harvestGrams !== undefined && (!isFiniteNumber(state.harvestGrams) || state.harvestGrams < 20 || state.harvestGrams > 500)) return null;
+    if (state.cultureDead !== undefined && typeof state.cultureDead !== "boolean") return null;
+    const cultureDead = state.cultureDead === true;
+    if (cultureDead && (state.phase !== "complete" || state.harvestGrams !== 0 || state.equipmentQualityBonus !== 0)) return null;
+    if (state.harvestGrams !== undefined && (!isFiniteNumber(state.harvestGrams) || state.harvestGrams < (cultureDead ? 0 : 20) || state.harvestGrams > 500)) return null;
     if (state.equipmentQualityBonus !== undefined && (!Number.isInteger(state.equipmentQualityBonus) || Number(state.equipmentQualityBonus) < 0 || Number(state.equipmentQualityBonus) > 20)) return null;
     if (state.powerOutage !== undefined && typeof state.powerOutage !== "boolean") return null;
     if (state.harvestLossPercent !== undefined && (!isFiniteNumber(state.harvestLossPercent) || state.harvestLossPercent < 0 || state.harvestLossPercent > 80)) return null;
@@ -82,7 +85,9 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       return false;
     })) return null;
     if (!Array.isArray(state.usedCards) || !Array.isArray(state.playedThisStage) || state.usedCards.some((code) => typeof code !== "string" || !knownCards.has(code)) || state.playedThisStage.some((code) => typeof code !== "string" || !knownCards.has(code))) return null;
-    const expectedHistoryLength = state.phase === "complete" ? KQ_STAGES.length : Number(state.stageIndex) + (state.phase === "resolved" ? 1 : 0);
+    if (cultureDead && state.history.filter((entry) => isRecord(entry) && entry.total === 0).length < 2) return null;
+    const expectedHistoryLength = cultureDead ? Number(state.stageIndex) + 1
+      : state.phase === "complete" ? KQ_STAGES.length : Number(state.stageIndex) + (state.phase === "resolved" ? 1 : 0);
     if (state.history.length !== expectedHistoryLength) return null;
     const deckCounts = (state.deckCodes as string[]).reduce<Record<string, number>>((counts, code) => ({ ...counts, [code]: (counts[code] ?? 0) + 1 }), {});
     const usedCounts = (state.usedCards as string[]).reduce<Record<string, number>>((counts, code) => ({ ...counts, [code]: (counts[code] ?? 0) + 1 }), {});

@@ -1,0 +1,420 @@
+{
+  "version": 3,
+  "tool": "image_gen (outil intégré)",
+  "status": "validated-and-integrated",
+  "identityReference": "public/sylvain.png",
+  "direction": "Sylvain fidèle à la mascotte d’origine ; gestes et plantes crédibles ; même stade botanique dans tous les verdicts.",
+  "format": {
+    "width": 768,
+    "height": 768,
+    "type": "webp",
+    "maximumBytes": 184320
+  },
+  "basePrompt": "Use case: identity-preserve, illustration-story. Transform the referenced Sylvain mascot into ONE new square finished game illustration, not a sheet, collage, card or mockup. The reference is the immutable CHARACTER IDENTITY: keep exactly his rounded youthful clean-shaven cream face, short black side hair, two simple narrow vertical black eyes with a small cream notch (NO white pupils, NO sparkling anime eyes), small rounded curved nose, single visible ear in three-quarter view, distinctive friendly mouth. Consistent outfit: ochre/tan long-sleeved pullover, teal trousers, cream gloves, teal-and-tan baseball cap with broad black brim. No overalls, beard, wrinkles, photorealistic human, plastic 3D or change of face. More believable anatomy, natural hands and posture; very faithful to the original mascot. Hand-inked French editorial cartoon with confident black outlines, warm cream paper, subtle stipple texture, rich teal and ochre, restrained natural shadows. Composition: Sylvain's face and the plant/lot are both prominent and fully readable at 170px; plant occupies at least a third of the composition. Square 1:1 with generous safe space at edges, no drawn border, no text, no labels, no symbols. One Sylvain, one clear action, coherent indoor garden setting with minimal background. Preserve the botanical stage exactly; emotion never accelerates the plant's maturity.",
+  "stages": [
+    {
+      "slug": "germination",
+      "name": "Germination",
+      "botany": "Graine entrouverte, radicule courte ou minuscule pousse à cotylédons ; aucune branche, aucune fleur.",
+      "terminal": false
+    },
+    {
+      "slug": "enracinement",
+      "name": "Enracinement",
+      "botany": "Petite plantule avec premières feuilles, jeune motte et racines ; aucune fleur.",
+      "terminal": true
+    },
+    {
+      "slug": "croissance",
+      "name": "Croissance",
+      "botany": "Plante végétative ramifiée avec feuilles ; aucune fleur ni aucun pistil.",
+      "terminal": true
+    },
+    {
+      "slug": "floraison",
+      "name": "Floraison",
+      "botany": "Plante vivante avec fleurs en développement sur les branches ; aucune récolte.",
+      "terminal": true
+    },
+    {
+      "slug": "recolte",
+      "name": "Récolte",
+      "botany": "Fleurs mûres et lot récolté sur table ou plateau ; aucune graine ni plantule.",
+      "terminal": true
+    },
+    {
+      "slug": "sechage-affinage",
+      "name": "Séchage & affinage",
+      "botany": "Branches déjà coupées suspendues ou fleurs en bocal ; aucune plante vivante en pot.",
+      "terminal": true
+    }
+  ],
+  "assets": [
+    {
+      "slug": "germination",
+      "outcome": "critical",
+      "kind": "master",
+      "references": [
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve, illustration-story. Transform the referenced Sylvain mascot into ONE new square finished game illustration, not a sheet, collage, card or mockup. The reference is the immutable CHARACTER IDENTITY: keep exactly his rounded youthful clean-shaven cream face, short black side hair, two simple narrow vertical black eyes with a small cream notch (NO white pupils, NO sparkling anime eyes), small rounded curved nose, single visible ear in three-quarter view, distinctive friendly mouth. Consistent outfit: ochre/tan long-sleeved pullover, teal trousers, cream gloves, teal-and-tan baseball cap with broad black brim. No overalls, beard, wrinkles, photorealistic human, plastic 3D or change of face. More believable anatomy, natural hands and posture; very faithful to the original mascot. Hand-inked French editorial cartoon with confident black outlines, warm cream paper, subtle stipple texture, rich teal and ochre, restrained natural shadows. Composition: Sylvain's face and the plant/lot are both prominent and fully readable at 170px; plant occupies at least a third of the composition. Square 1:1 with generous safe space at edges, no drawn border, no text, no labels, no symbols. One Sylvain, one clear action, coherent indoor garden setting with minimal background. Preserve the botanical stage exactly; emotion never accelerates the plant's maturity.\nSTAGE 1 GERMINATION, EXCEPTIONAL SUCCESS. Close view of Sylvain leaning gently over a small seed-starting tray, his delighted but characteristic smile and one modest celebratory fist near his chest. Foreground: a tiny newly germinating seed with split brown shell and short white radicle, plus at most one minute cotyledon sprout in the tray. The seed subject must be visible through the close composition, without making it fruit-sized relative to his fingers. Healthy, clean, precise result. Soft seedling light overhead. ABSOLUTE BOTANICAL CONSTRAINT: no developed plant, no branches, no mature serrated foliage, NO FLOWERS, no buds, no harvest. No glowing magical seed. The character's natural face must match the supplied original.",
+      "source": "output/imagegen/placard-outcomes-v3/source/germination-critical.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/germination-critical.webp",
+      "refinements": [
+        "Edit this germination illustration precisely. Preserve Sylvain's exact beautiful original-mascot identity, face, eyes, cap, ochre sweater, teal trousers, cream gloves, delighted smile, fist, pose, light, square framing and seed tray. Remove ALL the mature decorative houseplants from the background, including the tall plant on the right and the trailing plant upper left; replace with an uncluttered warm cream indoor nursery wall and a simple empty shelf. Remove the watering can as well. The only botanical subject is the tiny emerging sprout in the foreground tray. Refine that sprout into a believable early germination: short pale curved hypocotyl rising just above the soil, two tiny fresh cotyledons just opening, small split brown seed shell still beside or on their tip; the root goes DOWN into the soil and is not a second root pointing upward. This is a minute sprout, no serrated mature leaves, no branches, no flowers. Keep its foreground scale and readability. Same warm hand-inked cartoon, subtle stipple and detailed materials. No added text, no symbols, no border, no additional person."
+      ]
+    },
+    {
+      "slug": "germination",
+      "outcome": "success",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/germination-critical.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Germination, result success. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 1 GERMINATION ONLY: a tiny split seed or newly emerged cotyledon sprout in the seed tray, no serrated true leaves, no developed stem, no branches, no flowers. Preserve the very close nursery framing. No mature decorative houseplants or other plants in the background.\nSUCCESS. Change Sylvain to a calm satisfied smile with an open gloved palm presenting the SAME plant or lot. Healthy, balanced botanical material, natural hands, no overexcited celebration. Keep botanical age, plant dimensions and developmental stage unchanged.\nKeep one healthy small sprout just opening two cotyledons near its split shell. Roots go down into soil.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/germination-success.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/germination-success.webp"
+    },
+    {
+      "slug": "germination",
+      "outcome": "fragile",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/germination-critical.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Germination, result fragile. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 1 GERMINATION ONLY: a tiny split seed or newly emerged cotyledon sprout in the seed tray, no serrated true leaves, no developed stem, no branches, no flowers. Preserve the very close nursery framing. No mature decorative houseplants or other plants in the background.\nFRAGILE RESULT, CULTURE STILL VIABLE. Change Sylvain to cautious relief: slight restrained smile, one brow gently raised, hand near chest or forehead with a natural believable posture. Show a few small signs of stress or imperfect handling, while most material remains viable. No complete collapse, no dead plant, no rotten batch.\nThe minute sprout is slightly bent, cotyledons only partly opened, shell still present, yet alive. No adult leaves.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/germination-fragile.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/germination-fragile.webp"
+    },
+    {
+      "slug": "germination",
+      "outcome": "failure",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/germination-critical.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Germination, result failure. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 1 GERMINATION ONLY: a tiny split seed or newly emerged cotyledon sprout in the seed tray, no serrated true leaves, no developed stem, no branches, no flowers. Preserve the very close nursery framing. No mature decorative houseplants or other plants in the background.\nNONTERMINAL FAILURE, CULTURE STILL ALIVE. Change Sylvain to a worried, thoughtful expression with gently downturned mouth, gloved hand near chin, other hand near the work surface. Show visible but recoverable difficulty, never total crop loss. No watering can or arbitrary remedy, no tears, no magical effects.\nA seed with a barely visible pale germination tip sits at the soil surface, showing delayed germination; no developed seedling. Sylvain studies it with concern, without declaring it dead.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/germination-failure.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/germination-failure.webp"
+    },
+    {
+      "slug": "enracinement",
+      "outcome": "critical",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/enracinement-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Enracinement, result critical. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 2 ROOT ESTABLISHMENT ONLY: a small seedling with cotyledons and at most two pairs of tiny early leaves, thin stem and small root plug beside a small nursery pot. Never an adult plant, never flowers, never a huge root beard. No mature background plants.\nEXCEPTIONAL SUCCESS. Change Sylvain to a delighted natural broad smile and a modest celebratory fist near his chest. Keep his eyes exactly the original narrow black shapes with cream notch, NEVER shining white pupils. Show the healthiest and most orderly version of the SAME botanical material, without aging or enlarging it into a later stage.\nA compact coherent root plug with fine clean white roots and upright small seedling, same young size as reference.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/enracinement-critical.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/enracinement-critical.webp"
+    },
+    {
+      "slug": "enracinement",
+      "outcome": "success",
+      "kind": "master",
+      "references": [
+        "public/sylvain.png",
+        "output/imagegen/placard-outcomes-v3/source/croissance-success.png"
+      ],
+      "prompt": "Use case: identity-preserve, illustration-story. Transform the referenced Sylvain mascot into ONE new square finished game illustration, not a sheet, collage, card or mockup. The reference is the immutable CHARACTER IDENTITY: keep exactly his rounded youthful clean-shaven cream face, short black side hair, two simple narrow vertical black eyes with a small cream notch (NO white pupils, NO sparkling anime eyes), small rounded curved nose, single visible ear in three-quarter view, distinctive friendly mouth. Consistent outfit: ochre/tan long-sleeved pullover, teal trousers, cream gloves, teal-and-tan baseball cap with broad black brim. No overalls, beard, wrinkles, photorealistic human, plastic 3D or change of face. More believable anatomy, natural hands and posture; very faithful to the original mascot. Hand-inked French editorial cartoon with confident black outlines, warm cream paper, subtle stipple texture, rich teal and ochre, restrained natural shadows. Composition: Sylvain's face and the plant/lot are both prominent and fully readable at 170px; plant occupies at least a third of the composition. Square 1:1 with generous safe space at edges, no drawn border, no text, no labels, no symbols. One Sylvain, one clear action, coherent indoor garden setting with minimal background. Preserve the botanical stage exactly; emotion never accelerates the plant's maturity.\nImage 2 is a rendering/style reference only; keep its same Sylvain character and outfit but REPLACE its mature plant and scene. STAGE 2 ROOT ESTABLISHMENT, SUCCESS. Sylvain sits at a nursery bench, calm satisfied smile, carefully presenting a small juvenile hemp seedling with only its first TWO pairs of small serrated leaves and its two rounded cotyledons. A compact small root plug with fine healthy white rootlets is visible beside a matching SMALL nursery pot and low tray. Young flexible thin stem, a seedling just several centimeters tall, not an adult bush. No dangling enormous root beard, no large mature leaves, NO FLOWERS, no buds, no colas. The seedling and root plug fill a useful portion of the foreground through a close framing, naturally small beside his gloved hand. Light cream uncluttered nursery wall, subtle soft illumination, no other plants in the background. Same recognizable original Sylvain eyes, nose, proportions and warm hand-inked style. One image, square, no writing or border.",
+      "source": "output/imagegen/placard-outcomes-v3/source/enracinement-success.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/enracinement-success.webp"
+    },
+    {
+      "slug": "enracinement",
+      "outcome": "fragile",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/enracinement-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Enracinement, result fragile. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 2 ROOT ESTABLISHMENT ONLY: a small seedling with cotyledons and at most two pairs of tiny early leaves, thin stem and small root plug beside a small nursery pot. Never an adult plant, never flowers, never a huge root beard. No mature background plants.\nFRAGILE RESULT, CULTURE STILL VIABLE. Change Sylvain to cautious relief: slight restrained smile, one brow gently raised, hand near chest or forehead with a natural believable posture. Show a few small signs of stress or imperfect handling, while most material remains viable. No complete collapse, no dead plant, no rotten batch.\nSeveral fine healthy roots remain with a slightly uneven plug and one subtly drooping early leaf, still viable.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/enracinement-fragile.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/enracinement-fragile.webp",
+      "refinements": [
+        "Use case: precise-object-edit. Fix this Enracinement / fragile verdict illustration. Image 1 is the edit target. Image 2 is the approved reference for the exact two-arm anatomy, body, opaque cream backdrop, materials and composition. Keep the target's cautious relieved smile and small slightly drooping viable seedling with visible tiny root plug, and its correct same early growth stage. Correct Sylvain to EXACTLY TWO ARMS AND TWO HANDS: one arm at viewer right holds the root plug. The other arm, at viewer left, is bent UP to his temple, with elbow outward LEFT and hand touching cap. Remove the third lower curved orange sleeve/elbow across his belly entirely: his belly is a single uninterrupted ochre pullover surface, with no extra arm, no extra elbow, no third hand. Make the arm trajectories unmistakable and natural. Restore a fully OPAQUE warm cream workshop wall behind the entire subject as in Image 2. No black void, no transparent background. Retain original Sylvain face, black eyes, teal/tan cap, ochre top, teal trousers, bench, nursery pot, lighting, hand-inked contours and stipple. Do not add leaves, adult plants, buds, flowers, text, badges or borders. Square illustration.",
+        "Use case: precise-object-edit. Make ONE tiny cleanup in this exact image. An obsolete cream hand-shaped protrusion remains behind the RIGHT edge of Sylvain's cap/head, near the upper center of the image (roughly x 625, y 310 in the 1254px square). ERASE this obsolete third hand and its black outline completely. Fill that small area with the same opaque cream wall background. The silhouette should run cleanly from black cap brim into black hair and right cheek, with nothing protruding behind it. Keep the real hand at the LEFT side of the cap and the real hand holding the seedling root plug unchanged: these are the ONLY TWO HANDS. Preserve absolutely everything else, especially both arms, faithful face, expression, small viable seedling, roots, pot, bench, clothes, room, colors and square composition. No other changes."
+      ]
+    },
+    {
+      "slug": "enracinement",
+      "outcome": "failure",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/enracinement-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Enracinement, result failure. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 2 ROOT ESTABLISHMENT ONLY: a small seedling with cotyledons and at most two pairs of tiny early leaves, thin stem and small root plug beside a small nursery pot. Never an adult plant, never flowers, never a huge root beard. No mature background plants.\nNONTERMINAL FAILURE, CULTURE STILL ALIVE. Change Sylvain to a worried, thoughtful expression with gently downturned mouth, gloved hand near chin, other hand near the work surface. Show visible but recoverable difficulty, never total crop loss. No watering can or arbitrary remedy, no tears, no magical effects.\nThe little seedling droops and a few root tips are tan while most remain pale, visibly stressed but still alive.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/enracinement-failure.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/enracinement-failure.webp"
+    },
+    {
+      "slug": "enracinement",
+      "outcome": "dead",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/enracinement-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Enracinement, result dead. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 2 ROOT ESTABLISHMENT ONLY: a small seedling with cotyledons and at most two pairs of tiny early leaves, thin stem and small root plug beside a small nursery pot. Never an adult plant, never flowers, never a huge root beard. No mature background plants.\nTERMINAL CULTURE DEATH. Sylvain is quietly disappointed, shoulders lowered, downturned mouth, hands resting naturally, not crying theatrically. The focal plant or harvested lot is irreversibly lost, visibly brown/collapsed/spoiled as appropriate to THIS botanical stage. No green flourishing main plant, no fire, no skull icons, no tombstones, no text. This must look clearly different from the recoverable failure.\nOnly the SMALL seedling and root plug are lost: very thin collapsed brown stem, tiny curled brown leaves, dark root plug. Keep the plant juvenile and tiny; do not replace it with a dead adult plant.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/enracinement-dead.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/enracinement-dead.webp"
+    },
+    {
+      "slug": "croissance",
+      "outcome": "critical",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/croissance-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Croissance, result critical. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 3 VEGETATIVE GROWTH ONLY: a medium-small branching hemp plant with fresh palmate leaves in its fabric pot, loose training ties. ABSOLUTELY NO flower buds, NO colas, NO pistils. Keep the same plant scale and branching structure as reference. No extra large plants in background.\nEXCEPTIONAL SUCCESS. Change Sylvain to a delighted natural broad smile and a modest celebratory fist near his chest. Keep his eyes exactly the original narrow black shapes with cream notch, NEVER shining white pupils. Show the healthiest and most orderly version of the SAME botanical material, without aging or enlarging it into a later stage.\nBalanced vigorous green foliage and clearly healthy branches with gentle training support, still strictly vegetative.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/croissance-critical.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/croissance-critical.webp"
+    },
+    {
+      "slug": "croissance",
+      "outcome": "success",
+      "kind": "master",
+      "references": [
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve, illustration-story. Transform the referenced Sylvain mascot into ONE new square finished game illustration, not a sheet, collage, card or mockup. The reference is the immutable CHARACTER IDENTITY: keep exactly his rounded youthful clean-shaven cream face, short black side hair, two simple narrow vertical black eyes with a small cream notch (NO white pupils, NO sparkling anime eyes), small rounded curved nose, single visible ear in three-quarter view, distinctive friendly mouth. Consistent outfit: ochre/tan long-sleeved pullover, teal trousers, cream gloves, teal-and-tan baseball cap with broad black brim. No overalls, beard, wrinkles, photorealistic human, plastic 3D or change of face. More believable anatomy, natural hands and posture; very faithful to the original mascot. Hand-inked French editorial cartoon with confident black outlines, warm cream paper, subtle stipple texture, rich teal and ochre, restrained natural shadows. Composition: Sylvain's face and the plant/lot are both prominent and fully readable at 170px; plant occupies at least a third of the composition. Square 1:1 with generous safe space at edges, no drawn border, no text, no labels, no symbols. One Sylvain, one clear action, coherent indoor garden setting with minimal background. Preserve the botanical stage exactly; emotion never accelerates the plant's maturity.\nSTAGE 3 VEGETATIVE GROWTH, SUCCESS. Sylvain crouches beside one healthy medium-small vegetative hemp plant in a teal fabric pot. Several fresh green palmate leaves and clearly branching stems with a balanced spread; a loose soft tie gently supports a lateral branch as a visual reminder of training. His calm satisfied smile and open gloved palm present the plant without obscuring it. Clean modern indoor garden, soft horticultural light. ABSOLUTE BOTANICAL CONSTRAINT: plant is strictly vegetative, NO flower buds, NO colas, NO orange pistils, NO cut branches or jars. Normal healthy growth, not a giant bush. The character's face must closely match the original.",
+      "source": "output/imagegen/placard-outcomes-v3/source/croissance-success.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/croissance-success.webp"
+    },
+    {
+      "slug": "croissance",
+      "outcome": "fragile",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/croissance-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Croissance, result fragile. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 3 VEGETATIVE GROWTH ONLY: a medium-small branching hemp plant with fresh palmate leaves in its fabric pot, loose training ties. ABSOLUTELY NO flower buds, NO colas, NO pistils. Keep the same plant scale and branching structure as reference. No extra large plants in background.\nFRAGILE RESULT, CULTURE STILL VIABLE. Change Sylvain to cautious relief: slight restrained smile, one brow gently raised, hand near chest or forehead with a natural believable posture. Show a few small signs of stress or imperfect handling, while most material remains viable. No complete collapse, no dead plant, no rotten batch.\nMostly green vegetative foliage with one slightly curled or yellow-edged lower leaf and mildly uneven branch posture, still viable.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/croissance-fragile.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/croissance-fragile.webp"
+    },
+    {
+      "slug": "croissance",
+      "outcome": "failure",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/croissance-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Croissance, result failure. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 3 VEGETATIVE GROWTH ONLY: a medium-small branching hemp plant with fresh palmate leaves in its fabric pot, loose training ties. ABSOLUTELY NO flower buds, NO colas, NO pistils. Keep the same plant scale and branching structure as reference. No extra large plants in background.\nNONTERMINAL FAILURE, CULTURE STILL ALIVE. Change Sylvain to a worried, thoughtful expression with gently downturned mouth, gloved hand near chin, other hand near the work surface. Show visible but recoverable difficulty, never total crop loss. No watering can or arbitrary remedy, no tears, no magical effects.\nSeveral vegetative leaves visibly droop with pale edges and one thin branch sags, but the majority remains green and alive. No broken-off harvest or flowers.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/croissance-failure.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/croissance-failure.webp"
+    },
+    {
+      "slug": "croissance",
+      "outcome": "dead",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/croissance-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Croissance, result dead. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 3 VEGETATIVE GROWTH ONLY: a medium-small branching hemp plant with fresh palmate leaves in its fabric pot, loose training ties. ABSOLUTELY NO flower buds, NO colas, NO pistils. Keep the same plant scale and branching structure as reference. No extra large plants in background.\nTERMINAL CULTURE DEATH. Sylvain is quietly disappointed, shoulders lowered, downturned mouth, hands resting naturally, not crying theatrically. The focal plant or harvested lot is irreversibly lost, visibly brown/collapsed/spoiled as appropriate to THIS botanical stage. No green flourishing main plant, no fire, no skull icons, no tombstones, no text. This must look clearly different from the recoverable failure.\nThe vegetative plant has collapsed dry brown foliage and sagging stems in the same fabric pot. Branch structure must still read as a VEGETATIVE plant; no flower buds appear even in death.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/croissance-dead.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/croissance-dead.webp"
+    },
+    {
+      "slug": "floraison",
+      "outcome": "critical",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/floraison-failure.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Floraison, result critical. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 4 FLOWERING ONLY: a living hemp plant carrying DEVELOPING flower clusters with subtle pale pistils. Keep same flowering developmental stage, branch structure and pot as reference. No harvest tray, no seedling, no curing jar.\nEXCEPTIONAL SUCCESS. Change Sylvain to a delighted natural broad smile and a modest celebratory fist near his chest. Keep his eyes exactly the original narrow black shapes with cream notch, NEVER shining white pupils. Show the healthiest and most orderly version of the SAME botanical material, without aging or enlarging it into a later stage.\nHealthy upright branches, rich green leaves and well-formed flower clusters at the SAME maturity, not enormous mature colas replacing a younger plant.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/floraison-critical.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/floraison-critical.webp"
+    },
+    {
+      "slug": "floraison",
+      "outcome": "success",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/floraison-failure.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Floraison, result success. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 4 FLOWERING ONLY: a living hemp plant carrying DEVELOPING flower clusters with subtle pale pistils. Keep same flowering developmental stage, branch structure and pot as reference. No harvest tray, no seedling, no curing jar.\nSUCCESS. Change Sylvain to a calm satisfied smile with an open gloved palm presenting the SAME plant or lot. Healthy, balanced botanical material, natural hands, no overexcited celebration. Keep botanical age, plant dimensions and developmental stage unchanged.\nRestore the drooping/yellowing parts to a healthy ordinary flowering plant; natural buds, green foliage and supported branches.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/floraison-success.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/floraison-success.webp"
+    },
+    {
+      "slug": "floraison",
+      "outcome": "fragile",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/floraison-failure.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Floraison, result fragile. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 4 FLOWERING ONLY: a living hemp plant carrying DEVELOPING flower clusters with subtle pale pistils. Keep same flowering developmental stage, branch structure and pot as reference. No harvest tray, no seedling, no curing jar.\nFRAGILE RESULT, CULTURE STILL VIABLE. Change Sylvain to cautious relief: slight restrained smile, one brow gently raised, hand near chest or forehead with a natural believable posture. Show a few small signs of stress or imperfect handling, while most material remains viable. No complete collapse, no dead plant, no rotten batch.\nMost flowering branches and buds remain healthy; slight lower-leaf stress and gently bending lateral branch show a close call.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/floraison-fragile.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/floraison-fragile.webp",
+      "refinements": [
+        "Use case: precise-object-edit. Image 1 is the edit target: Floraison / fragile. Image 2 is the scene reference showing the complete OPAQUE workshop backdrop, room framing, pot position, and botanical stage. Keep Sylvain's cautious relieved expression and his two-arm pose from Image 1 unchanged. Keep the SAME flower-bearing plant at the SAME flowering stage and SAME height, pot and broad silhouette. Restore the FULL opaque cream workshop room backdrop to every corner as in Image 2, with the wooden frame at left, light above, floor below, tent at right: no transparent cutout, no black void, no dark vignette, no checkerboard. The plant should look mildly stressed but viable for a narrow success: mostly healthy green stems, green flowers and green leaves, with yellow TIPS only on two lower leaves and a subtly drooping one side branch. Do not make it dying or worse than the failure reference. Maintain faithful Sylvain identity and clothing, exact square framing, ink outlines and stipple. No added symbols, text, border, extra limbs or plants. Only repair background and reduce leaf stress."
+      ]
+    },
+    {
+      "slug": "floraison",
+      "outcome": "failure",
+      "kind": "master",
+      "references": [
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve, illustration-story. Transform the referenced Sylvain mascot into ONE new square finished game illustration, not a sheet, collage, card or mockup. The reference is the immutable CHARACTER IDENTITY: keep exactly his rounded youthful clean-shaven cream face, short black side hair, two simple narrow vertical black eyes with a small cream notch (NO white pupils, NO sparkling anime eyes), small rounded curved nose, single visible ear in three-quarter view, distinctive friendly mouth. Consistent outfit: ochre/tan long-sleeved pullover, teal trousers, cream gloves, teal-and-tan baseball cap with broad black brim. No overalls, beard, wrinkles, photorealistic human, plastic 3D or change of face. More believable anatomy, natural hands and posture; very faithful to the original mascot. Hand-inked French editorial cartoon with confident black outlines, warm cream paper, subtle stipple texture, rich teal and ochre, restrained natural shadows. Composition: Sylvain's face and the plant/lot are both prominent and fully readable at 170px; plant occupies at least a third of the composition. Square 1:1 with generous safe space at edges, no drawn border, no text, no labels, no symbols. One Sylvain, one clear action, coherent indoor garden setting with minimal background. Preserve the botanical stage exactly; emotion never accelerates the plant's maturity.\nSTAGE 4 FLOWERING, NONTERMINAL FAILURE. Sylvain stands thoughtfully beside a living hemp plant with clearly visible modest developing flower buds on the branches. Some lower leaves droop or have subtle yellow edges, and one branch bends slightly; most foliage remains green and alive. Sylvain looks concerned but determined, lips gently downturned, one hand resting near his chin and the other open near the pot; no watering can, no dramatic treatment. Botanical damage visible yet recoverable. Soft indoor garden light. ABSOLUTE CONSTRAINT: plant really is flowering, never just a seedling; it is NOT dead, not completely brown, not cut down, not a harvested tray. No comedy tears, no skulls. Preserve Sylvain's reference facial design, eyes and outfit.",
+      "source": "output/imagegen/placard-outcomes-v3/source/floraison-failure.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/floraison-failure.webp"
+    },
+    {
+      "slug": "floraison",
+      "outcome": "dead",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/floraison-failure.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Floraison, result dead. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 4 FLOWERING ONLY: a living hemp plant carrying DEVELOPING flower clusters with subtle pale pistils. Keep same flowering developmental stage, branch structure and pot as reference. No harvest tray, no seedling, no curing jar.\nTERMINAL CULTURE DEATH. Sylvain is quietly disappointed, shoulders lowered, downturned mouth, hands resting naturally, not crying theatrically. The focal plant or harvested lot is irreversibly lost, visibly brown/collapsed/spoiled as appropriate to THIS botanical stage. No green flourishing main plant, no fire, no skull icons, no tombstones, no text. This must look clearly different from the recoverable failure.\nThe same flowering plant is now irreversibly lost: desiccated brown curled foliage, hanging lifeless branches, dark ruined flower clusters. No living flowering bush in the background.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/floraison-dead.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/floraison-dead.webp"
+    },
+    {
+      "slug": "recolte",
+      "outcome": "critical",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/recolte-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Récolte, result critical. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 5 HARVEST ONLY: cut mature hemp flower branches resting in the foreground harvest tray on a clean workbench, visible cut stem ends. ALL focal material is being harvested or already cut. No seedling, no vegetative potted bush, no drying rack.\nEXCEPTIONAL SUCCESS. Change Sylvain to a delighted natural broad smile and a modest celebratory fist near his chest. Keep his eyes exactly the original narrow black shapes with cream notch, NEVER shining white pupils. Show the healthiest and most orderly version of the SAME botanical material, without aging or enlarging it into a later stage.\nThe same modest harvest has very clean rich green mature flowers and a neat tray; show care and satisfaction, not a magically larger yield.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/recolte-critical.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/recolte-critical.webp"
+    },
+    {
+      "slug": "recolte",
+      "outcome": "success",
+      "kind": "master",
+      "references": [
+        "public/sylvain.png",
+        "output/imagegen/placard-outcomes-v3/source/croissance-success.png"
+      ],
+      "prompt": "Use case: identity-preserve, illustration-story. Transform the referenced Sylvain mascot into ONE new square finished game illustration, not a sheet, collage, card or mockup. The reference is the immutable CHARACTER IDENTITY: keep exactly his rounded youthful clean-shaven cream face, short black side hair, two simple narrow vertical black eyes with a small cream notch (NO white pupils, NO sparkling anime eyes), small rounded curved nose, single visible ear in three-quarter view, distinctive friendly mouth. Consistent outfit: ochre/tan long-sleeved pullover, teal trousers, cream gloves, teal-and-tan baseball cap with broad black brim. No overalls, beard, wrinkles, photorealistic human, plastic 3D or change of face. More believable anatomy, natural hands and posture; very faithful to the original mascot. Hand-inked French editorial cartoon with confident black outlines, warm cream paper, subtle stipple texture, rich teal and ochre, restrained natural shadows. Composition: Sylvain's face and the plant/lot are both prominent and fully readable at 170px; plant occupies at least a third of the composition. Square 1:1 with generous safe space at edges, no drawn border, no text, no labels, no symbols. One Sylvain, one clear action, coherent indoor garden setting with minimal background. Preserve the botanical stage exactly; emotion never accelerates the plant's maturity.\nImage 2 is a rendering/style reference only; keep the same Sylvain identity and outfit but replace the scene. STAGE 5 HARVEST, SUCCESS. Sylvain stands behind a clean cream-and-wood workbench with a shallow teal harvest tray holding freshly cut mature hemp flower branches, visibly separated from their stems of origin. The dense green flower clusters have tiny amber hairs and a few small leaves; cut stem ends clearly visible, no loose leafy tree. His calm satisfied smile and one gloved palm gently present the harvested material, other hand rests on the bench. A closed pair of pruning scissors rests to one side, no text. Show a modest successful harvest, not a gigantic pile. Uncluttered harvest workspace with neutral cream wall and subtle teal shelving; no living potted plants in the background, no seedlings, no germination tray, no hanging drying rack or curing jar. Character and harvested flowers equally readable. Square composition, no border, no labels.",
+      "source": "output/imagegen/placard-outcomes-v3/source/recolte-success.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/recolte-success.webp"
+    },
+    {
+      "slug": "recolte",
+      "outcome": "fragile",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/recolte-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Récolte, result fragile. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 5 HARVEST ONLY: cut mature hemp flower branches resting in the foreground harvest tray on a clean workbench, visible cut stem ends. ALL focal material is being harvested or already cut. No seedling, no vegetative potted bush, no drying rack.\nFRAGILE RESULT, CULTURE STILL VIABLE. Change Sylvain to cautious relief: slight restrained smile, one brow gently raised, hand near chest or forehead with a natural believable posture. Show a few small signs of stress or imperfect handling, while most material remains viable. No complete collapse, no dead plant, no rotten batch.\nThe cut flowers are still usable but somewhat unevenly arranged with a few imperfect small leaves and rougher cut ends, not rotten.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/recolte-fragile.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/recolte-fragile.webp"
+    },
+    {
+      "slug": "recolte",
+      "outcome": "failure",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/recolte-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Récolte, result failure. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 5 HARVEST ONLY: cut mature hemp flower branches resting in the foreground harvest tray on a clean workbench, visible cut stem ends. ALL focal material is being harvested or already cut. No seedling, no vegetative potted bush, no drying rack.\nNONTERMINAL FAILURE, CULTURE STILL ALIVE. Change Sylvain to a worried, thoughtful expression with gently downturned mouth, gloved hand near chin, other hand near the work surface. Show visible but recoverable difficulty, never total crop loss. No watering can or arbitrary remedy, no tears, no magical effects.\nThe harvested flowers show some bruised or brown-edged portions and uneven trimming, but most material remains viable. Concern, not terminal crop loss.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/recolte-failure.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/recolte-failure.webp"
+    },
+    {
+      "slug": "recolte",
+      "outcome": "dead",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/recolte-success.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Récolte, result dead. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 5 HARVEST ONLY: cut mature hemp flower branches resting in the foreground harvest tray on a clean workbench, visible cut stem ends. ALL focal material is being harvested or already cut. No seedling, no vegetative potted bush, no drying rack.\nTERMINAL CULTURE DEATH. Sylvain is quietly disappointed, shoulders lowered, downturned mouth, hands resting naturally, not crying theatrically. The focal plant or harvested lot is irreversibly lost, visibly brown/collapsed/spoiled as appropriate to THIS botanical stage. No green flourishing main plant, no fire, no skull icons, no tombstones, no text. This must look clearly different from the recoverable failure.\nThe entire modest cut lot in the tray is unusable: dark brown ruined flower pieces, collapsed wilted cut branches, damaged material set aside. No intact green saleable flowers in the foreground.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/recolte-dead.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/recolte-dead.webp"
+    },
+    {
+      "slug": "sechage-affinage",
+      "outcome": "critical",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/sechage-affinage-fragile.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Séchage & affinage, result critical. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 6 DRYING AND CURING ONLY: cut branches hanging upside down on the rail and harvested flowers inside the foreground curing jar. No living potted plant anywhere, no grow light, no seedling. Same soft shaded room.\nEXCEPTIONAL SUCCESS. Change Sylvain to a delighted natural broad smile and a modest celebratory fist near his chest. Keep his eyes exactly the original narrow black shapes with cream notch, NEVER shining white pupils. Show the healthiest and most orderly version of the SAME botanical material, without aging or enlarging it into a later stage.\nThe hanging harvested branches and flowers in the jar look clean and carefully cured, evenly olive-green, same size and quantity. Sylvain delighted; no magical sparkle eyes.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/sechage-affinage-critical.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/sechage-affinage-critical.webp"
+    },
+    {
+      "slug": "sechage-affinage",
+      "outcome": "success",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/sechage-affinage-fragile.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Séchage & affinage, result success. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 6 DRYING AND CURING ONLY: cut branches hanging upside down on the rail and harvested flowers inside the foreground curing jar. No living potted plant anywhere, no grow light, no seedling. Same soft shaded room.\nSUCCESS. Change Sylvain to a calm satisfied smile with an open gloved palm presenting the SAME plant or lot. Healthy, balanced botanical material, natural hands, no overexcited celebration. Keep botanical age, plant dimensions and developmental stage unchanged.\nThe hanging branches and jar flowers look healthy for harvested drying material, neat and well handled, with ordinary calm satisfaction.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/sechage-affinage-success.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/sechage-affinage-success.webp"
+    },
+    {
+      "slug": "sechage-affinage",
+      "outcome": "fragile",
+      "kind": "master",
+      "references": [
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve, illustration-story. Transform the referenced Sylvain mascot into ONE new square finished game illustration, not a sheet, collage, card or mockup. The reference is the immutable CHARACTER IDENTITY: keep exactly his rounded youthful clean-shaven cream face, short black side hair, two simple narrow vertical black eyes with a small cream notch (NO white pupils, NO sparkling anime eyes), small rounded curved nose, single visible ear in three-quarter view, distinctive friendly mouth. Consistent outfit: ochre/tan long-sleeved pullover, teal trousers, cream gloves, teal-and-tan baseball cap with broad black brim. No overalls, beard, wrinkles, photorealistic human, plastic 3D or change of face. More believable anatomy, natural hands and posture; very faithful to the original mascot. Hand-inked French editorial cartoon with confident black outlines, warm cream paper, subtle stipple texture, rich teal and ochre, restrained natural shadows. Composition: Sylvain's face and the plant/lot are both prominent and fully readable at 170px; plant occupies at least a third of the composition. Square 1:1 with generous safe space at edges, no drawn border, no text, no labels, no symbols. One Sylvain, one clear action, coherent indoor garden setting with minimal background. Preserve the botanical stage exactly; emotion never accelerates the plant's maturity.\nSTAGE 6 DRYING AND CURING, FRAGILE OUTCOME. Sylvain in a clean shaded drying room beside a wooden rail with a few cut hemp branches hanging upside down and one clear curing jar holding harvested green flower pieces on the foreground table. ALL plant material has already been harvested. A few hanging leaves are slightly curled and the jar is partly open; the batch is imperfect yet viable, no rot or mold. Sylvain's recognizable face expresses cautious relief: small closed smile, gently raised brow, gloved hand resting naturally beside the jar, the other near his chest. Quiet cream-and-teal setting, soft indirect daylight, NO powered grow lamp, NO living potted plant, NO seeds, NO vigorous green bush. No thermometers with text. Same character identity and mature harvested material.",
+      "source": "output/imagegen/placard-outcomes-v3/source/sechage-affinage-fragile.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/sechage-affinage-fragile.webp",
+      "refinements": [
+        "Use case: precise-object-edit. Edit this exact drying/curing illustration to clearly communicate a NARROW, FRAGILE SUCCESS instead of exceptional joy. Preserve the identical Sylvain identity, cap, outfit, room, rack of CUT hanging branches, foreground open glass jar, table and square framing. Only change his reaction: eyebrows gently worried, a SMALL CLOSED relieved crooked smile, head slightly inclined toward the harvested batch. Replace the celebratory fist on the LEFT side of the image with the SAME left arm raised to touch the LEFT side of his cap/temple in cautious relief. The LEFT elbow bends outward left; the old fist in front of the chest is completely gone and the chest is uninterrupted ochre pullover. His right hand stays resting by the jar. Exactly TWO arms and TWO hands, no ghost limbs or hand left on chest. Keep the harvest viable with mild uneven dry leaf edges; not brown/ruined. The crop is ALREADY CUT and drying; no live potted plants or seedlings. Fully opaque warm cream room to every edge, no transparency or black void. No text, borders, badges, extra objects or dramatic sweat symbols. Faithful simple black eyes with cream notch, hand ink outlines and subtle stipple. Make the cautious expression unmistakably distinct from a triumphant fist pump."
+      ]
+    },
+    {
+      "slug": "sechage-affinage",
+      "outcome": "failure",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/sechage-affinage-fragile.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Séchage & affinage, result failure. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 6 DRYING AND CURING ONLY: cut branches hanging upside down on the rail and harvested flowers inside the foreground curing jar. No living potted plant anywhere, no grow light, no seedling. Same soft shaded room.\nNONTERMINAL FAILURE, CULTURE STILL ALIVE. Change Sylvain to a worried, thoughtful expression with gently downturned mouth, gloved hand near chin, other hand near the work surface. Show visible but recoverable difficulty, never total crop loss. No watering can or arbitrary remedy, no tears, no magical effects.\nSome hanging leaves are overly curled and several flower pieces look slightly damaged or unevenly dried; most of the batch remains usable. Worried expression; no whole-lot rot.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/sechage-affinage-failure.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/sechage-affinage-failure.webp"
+    },
+    {
+      "slug": "sechage-affinage",
+      "outcome": "dead",
+      "kind": "variant",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/sechage-affinage-fragile.png",
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image 1 is the edit target and stage composition reference; image 2 is the immutable Sylvain identity reference. Create ONE square variant of image 1 for Séchage & affinage, result dead. Preserve the same recognizable Sylvain face, black eyes with small cream notch, rounded nose, cream skin, teal/tan baseball cap with black brim, ochre pullover, teal trousers, cream gloves, consistent natural proportions. Keep the illustration's warm hand-inked look, subtle stipple, detailed believable plant materials, lighting and clear composition. Keep the botanical stage and basic scene fixed. STAGE 6 DRYING AND CURING ONLY: cut branches hanging upside down on the rail and harvested flowers inside the foreground curing jar. No living potted plant anywhere, no grow light, no seedling. Same soft shaded room.\nTERMINAL CULTURE DEATH. Sylvain is quietly disappointed, shoulders lowered, downturned mouth, hands resting naturally, not crying theatrically. The focal plant or harvested lot is irreversibly lost, visibly brown/collapsed/spoiled as appropriate to THIS botanical stage. No green flourishing main plant, no fire, no skull icons, no tombstones, no text. This must look clearly different from the recoverable failure.\nThe entire harvested drying batch is lost: ruined dark brown shriveled branches still hanging and spoiled dark material in the open jar or a discard tray. Sylvain quietly disappointed. Never substitute a living or dead potted bush for this harvested lot.\nCharacter and focal plant/lot remain fully readable at 170px, with safe margins. Remove distracting extra decorative plants if present. No writing, logos, numbers, border, inset panel, second character or change of art style.",
+      "source": "output/imagegen/placard-outcomes-v3/source/sechage-affinage-dead.png",
+      "public": "public/app/kanab-quest/reactions/stages-v3/sechage-affinage-dead.webp"
+    }
+  ],
+  "refinements": [
+    {
+      "asset": "germination-critical",
+      "prompt": "Edit this germination illustration precisely. Preserve Sylvain's exact beautiful original-mascot identity, face, eyes, cap, ochre sweater, teal trousers, cream gloves, delighted smile, fist, pose, light, square framing and seed tray. Remove ALL the mature decorative houseplants from the background, including the tall plant on the right and the trailing plant upper left; replace with an uncluttered warm cream indoor nursery wall and a simple empty shelf. Remove the watering can as well. The only botanical subject is the tiny emerging sprout in the foreground tray. Refine that sprout into a believable early germination: short pale curved hypocotyl rising just above the soil, two tiny fresh cotyledons just opening, small split brown seed shell still beside or on their tip; the root goes DOWN into the soil and is not a second root pointing upward. This is a minute sprout, no serrated mature leaves, no branches, no flowers. Keep its foreground scale and readability. Same warm hand-inked cartoon, subtle stipple and detailed materials. No added text, no symbols, no border, no additional person.",
+      "references": [
+        "output/imagegen/placard-outcomes-v3/source/germination-critical-pilot.png"
+      ]
+    }
+  ]
+}

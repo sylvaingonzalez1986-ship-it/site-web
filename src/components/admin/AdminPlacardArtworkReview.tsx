@@ -26,6 +26,7 @@ const groupOptions: Array<{ value: GroupFilter; label: string }> = [
   { value: "support", label: "La Botte" },
   { value: "heritage", label: "Héritages" },
   { value: "situation", label: "Situations" },
+  { value: "reaction", label: "Réactions" },
   { value: "equipment", label: "Équipements" },
 ];
 
@@ -157,7 +158,7 @@ export function AdminPlacardArtworkReview() {
           <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Direction artistique · recette humaine</p>
           <h4 className="mt-1 font-display text-2xl">Planche de validation des {reviewAssets.length || "…"} visuels actifs</h4>
           <p className="mt-2 max-w-3xl text-sm text-charcoal">
-            Le socle graphique reste fixe ; les {heritageCount} cartes Héritage affichées ici suivent automatiquement les producteurs présents. Contrôle la fidélité de Sylvain, la lisibilité du gag, le cadrage et l’absence de texte parasite.
+            Les {heritageCount} cartes Héritage affichées ici suivent automatiquement les producteurs présents. Contrôle la fidélité de Sylvain, le stade de culture, la lisibilité de la réaction, le cadrage et l’absence de texte parasite. Les réactions sont classées par étape puis par verdict, avec la mort en dernier.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
