@@ -5,7 +5,7 @@ import { cacheArenaSharedRead } from "@/lib/arena-shared-cache";
 import { isKqEnergyMode, type KqEnergyMode } from "@/lib/kanab-quest-energy";
 
 import { normalizeEmail } from "@/lib/admin-allowlist";
-import { activateKqHeritage, advanceKqStage, canPlayKqCard, getKqHarvestTier, KQ_BUDDIES, KQ_CARDS, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "@/lib/kanab-quest-game";
+import { activateKqHeritage, advanceKqStage, canPlayKqCard, getKqHarvestTier, KQ_BUDDIES, KQ_CARDS, KQ_SITUATIONS, KQ_STAGES, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "@/lib/kanab-quest-game";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 import { createKqFlower, createKqOpponent, invertKqBattlePerspective, lockKqBattle, resolveKqBattle, type KqBattle, type KqFlowerCard } from "@/lib/kanab-quest-battle";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
@@ -898,6 +898,25 @@ export function mapKqStartRunResult(data: unknown) {
   };
 }
 
+// A bounded window covers a complete rotation of the current stage pools.
+// Abandoned cultures contribute only stages that the player actually reached.
+export async function getKqRecentSituationCodes(ownerId: string): Promise<string[]> {
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  const result = await createSupabaseServiceClient().from("kq_runs")
+    .select("scenario_codes,status,state")
+    .eq("user_id", ownerId).in("status", ["completed", "abandoned"])
+    .order("started_at", { ascending: false }).order("id", { ascending: false }).limit(12);
+  if (result.error) throw new Error(`[supabase:kq_runs:scenario-history] ${result.error.message}`);
+  const known = new Set(KQ_SITUATIONS.map(situation => situation.code));
+  return (result.data ?? []).flatMap(row => {
+    if (!Array.isArray(row.scenario_codes)) return [];
+    const stageIndex = row.state && typeof row.state === "object" ? row.state.stageIndex : undefined;
+    const seen = row.status === "completed" ? KQ_STAGES.length
+      : typeof stageIndex === "number" && Number.isInteger(stageIndex) ? Math.max(0, Math.min(KQ_STAGES.length, stageIndex + 1)) : 0;
+    return row.scenario_codes.slice(0, seen).filter((code): code is string => typeof code === "string" && known.has(code));
+  });
+}
+
 export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) {
   if (input.energyMode !== undefined && !isKqEnergyMode(input.energyMode)) throw new Error("Mode énergétique invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
@@ -936,10 +955,11 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     throw new Error("Le deck contient une carte interdite.");
   }
   const supabase = createSupabaseServiceClient();
-  const [collection, equipmentShop, businessResult] = await Promise.all([
+  const [collection, equipmentShop, businessResult, recentSituationCodes] = await Promise.all([
     getKqPlayerCollectionSnapshot(ownerId),
     getKqEquipmentShopSnapshot(ownerId),
     supabase.rpc("rpc_kq_commerce_state", { p_user_id: ownerId }),
+    getKqRecentSituationCodes(ownerId),
   ]);
   if (businessResult.error) throw new Error(`[supabase:commerce] ${businessResult.error.message}`);
   const business = businessResult.data?.business as KqBusinessState | undefined;
@@ -950,6 +970,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     .map(([code]) => code);
   const seed = crypto.getRandomValues(new Uint32Array(1))[0] % 100000;
   const state = startKqGame(seed, {
+    recentSituationCodes,
     domiciliation,
     varietyCode: input.buddieCode,
     deckCodes: input.deckCodes,

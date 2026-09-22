@@ -11,8 +11,8 @@ import { KQ_SITUATIONS } from "@/lib/kanab-quest-game";
 describe("Kanab Quest situation artwork", () => {
   it("ships a local WebP for every situation and the outage", () => {
     const artwork = [...Object.values(KQ_SITUATION_ARTWORK), KQ_POWER_OUTAGE_ARTWORK];
-    expect(artwork).toHaveLength(39);
-    expect(new Set(artwork.map((item) => item.src)).size).toBe(39);
+    expect(artwork).toHaveLength(51);
+    expect(new Set(artwork.map((item) => item.src)).size).toBe(51);
     artwork.forEach((item) => {
       expect(item.src.endsWith(".webp")).toBe(true);
       expect(existsSync(join(process.cwd(), "public", item.src.slice(1))), item.src).toBe(true);
@@ -25,13 +25,13 @@ describe("Kanab Quest situation artwork", () => {
       .filter((situation) => situation.stage === stage)
       .map((situation) => situation.code);
 
-    expect(stageCodes.length).toBeGreaterThanOrEqual(6);
+    expect(stageCodes.length).toBeGreaterThanOrEqual(8);
     stageCodes.forEach((code) => expect(KQ_SITUATION_ARTWORK[code], code).toBeDefined());
   });
 
   it("covers the complete situation catalog without an extra or missing code", () => {
     const situationCodes = KQ_SITUATIONS.map((situation) => situation.code).sort();
-    expect(situationCodes).toHaveLength(38);
+    expect(situationCodes).toHaveLength(50);
     expect(Object.keys(KQ_SITUATION_ARTWORK).sort()).toEqual(situationCodes);
   });
 

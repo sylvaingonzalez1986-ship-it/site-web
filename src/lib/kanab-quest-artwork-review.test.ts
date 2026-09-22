@@ -11,17 +11,17 @@ import {
 } from "@/lib/kanab-quest-artwork-review";
 
 describe("Kanab Quest artwork review manifest", () => {
-  it("keeps the 108-file legacy fallback manifest stable", () => {
-    expect(KQ_ARTWORK_REVIEW_ASSETS).toHaveLength(108);
-    expect(new Set(KQ_ARTWORK_REVIEW_ASSETS.map((asset) => asset.code)).size).toBe(108);
-    expect(new Set(KQ_ARTWORK_REVIEW_ASSETS.map((asset) => asset.src)).size).toBe(108);
+  it("includes the twelve added situations in the 120-file fallback manifest", () => {
+    expect(KQ_ARTWORK_REVIEW_ASSETS).toHaveLength(120);
+    expect(new Set(KQ_ARTWORK_REVIEW_ASSETS.map((asset) => asset.code)).size).toBe(120);
+    expect(new Set(KQ_ARTWORK_REVIEW_ASSETS.map((asset) => asset.src)).size).toBe(120);
   });
 
   it("keeps the expected review groups and formats", () => {
     const groupCounts = Object.groupBy(KQ_ARTWORK_REVIEW_ASSETS, (asset) => asset.group);
     expect(groupCounts.support).toHaveLength(32);
     expect(groupCounts.heritage).toHaveLength(12);
-    expect(groupCounts.situation).toHaveLength(39);
+    expect(groupCounts.situation).toHaveLength(51);
     expect(groupCounts.equipment).toHaveLength(25);
     expect(groupCounts.support?.every((asset) => asset.format === "portrait")).toBe(true);
     expect(groupCounts.heritage?.every((asset) => asset.format === "portrait")).toBe(true);
@@ -47,9 +47,9 @@ describe("Kanab Quest artwork review manifest", () => {
       reviewedAt,
     }])) satisfies KqArtworkReviewState;
     const report = buildKqArtworkReviewReport(state, reviewedAt);
-    expect(report.summary).toMatchObject({ approved: 108, pending: 0, rework: 0, readyForLaunch: true });
+    expect(report.summary).toMatchObject({ approved: 120, pending: 0, rework: 0, readyForLaunch: true });
     const imported = importKqArtworkReviewReport(report);
-    expect(imported).toMatchObject({ accepted: 108, staleCodes: [], missingCodes: [], manifestMatches: true });
+    expect(imported).toMatchObject({ accepted: 120, staleCodes: [], missingCodes: [], manifestMatches: true });
     expect(summarizeKqArtworkReview(imported.state).readyForLaunch).toBe(true);
   });
 
@@ -60,7 +60,7 @@ describe("Kanab Quest artwork review manifest", () => {
       { code: "HERITAGE-015", name: "Ancienne ferme", imageUrl: "/heritage-c.webp", producerName: "Ferme C", isActive: false },
     ]);
     const heritageAssets = assets.filter((asset) => asset.group === "heritage");
-    expect(assets).toHaveLength(98);
+    expect(assets).toHaveLength(110);
     expect(heritageAssets.map((asset) => asset.code)).toEqual(["HERITAGE-013", "HERITAGE-014"]);
 
     const state = Object.fromEntries(assets.map((asset) => [asset.code, {
@@ -71,8 +71,8 @@ describe("Kanab Quest artwork review manifest", () => {
     const report = buildKqArtworkReviewReport(state, "2026-09-06T12:00:00Z", assets);
     expect(report).toMatchObject({
       schema: "kanab-quest-artwork-review-v3",
-      inventory: { total: 98, heritage: 2 },
-      summary: { approved: 98, readyForLaunch: true },
+      inventory: { total: 110, heritage: 2 },
+      summary: { approved: 110, readyForLaunch: true },
     });
   });
 

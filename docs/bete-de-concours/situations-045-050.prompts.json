@@ -1,0 +1,96 @@
+{
+  "tool": "built-in image_gen",
+  "useCase": "illustration-story",
+  "references": [
+    "C:/lesiteinternetquitue/public/app/kanab-quest/situations/situation-SIT-001-depart-hesitant-v3.webp",
+    "C:/lesiteinternetquitue/public/contest/mascot/tasting/tasting-verdict.png"
+  ],
+  "commonPrompt": "Use case: illustration-story. Create ONE new square full-bleed 1536x1536 cartoon game illustration, using the two supplied images solely as style and character references. Match their bold dark ink outlines, flat cream/teal/forest green/golden yellow palette, subtle printed halftone and limited cel shading. Same friendly stocky grower with teal cap and overalls, rounded simple face, realistic-sized equipment, calm practical gestures. A small enclosed indoor growing cupboard with opaque reflective liner, upright dark frame and door edges, a normal clip-on fan and tidy extraction duct. NO greenhouse, windows, outdoor scenery, photorealism, 3D, fantasy items, decorative symbols, panels, inset diagram, lettering, numbers or logos. Main incident clearly visible at 300px, closer framing and fewer objects. The crop is agricultural hemp, illustrated botanically in the current growth stage. For drying scenes the cultivation LED is OFF, use soft ambient room light. Return the generated image local path.",
+  "scenes": [
+    {
+      "code": "SIT-045",
+      "slug": "sonde-trompeuse",
+      "prompt": "Flowering stage, misplaced temperature probe. A small wired sensor is incorrectly clipped right against the cool fresh-air inlet low at the cupboard edge, separated from the thick flowering canopy. The grower calmly compares with a second handheld thermometer probe positioned among the upper flowering branches. Show both locations clearly in one believable scene. No readable digits on displays, no flames or heat rays. Warm upper canopy, cooler teal lower inlet, understated color contrast.",
+      "alt": "Comparaison de deux sondes, l’une près de l’arrivée d’air et l’autre au niveau des fleurs dans le placard.",
+      "output": "/app/kanab-quest/situations/situation-SIT-045-sonde-trompeuse-v1.webp",
+      "status": "installed-and-inspected",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a0c580-cb9c-71d3-8764-471584c8005a\\exec-0b85215b-68c8-4a6a-a4e2-a0cf4ec138c0.png",
+      "width": 1200,
+      "height": 1200,
+      "bytes": 345046,
+      "sha256": "2b026075906844e2f49f0d95dd22b8f15a0440754a694831887fa00f9de2effd",
+      "inspection": "Contr?le visuel du fichier g?n?r? puis de la planche des exports : sc?ne, d?cor, format et style conformes."
+    },
+    {
+      "code": "SIT-046",
+      "slug": "pollen-indesirable",
+      "prompt": "Flowering stage, unwanted pollen risk. Close botanical inspection with a real small pocket loupe: a slender hemp branch bearing a few tiny dangling male flowers, green oval pollen sacs with one naturally opened small five-part flower. Female flowering tops with pale pistils appear on separate branches behind. The grower's cropped hand holds the loupe, small partial face looking thoughtful at edge. Male flower cluster must be main subject, botanical credible modest scale. No pollen cloud, no magical glow, no harvesting instruction diagram.",
+      "alt": "Inspection à la loupe de petites fleurs mâles à proximité de fleurs femelles dans le placard.",
+      "output": "/app/kanab-quest/situations/situation-SIT-046-pollen-indesirable-v1.webp",
+      "status": "installed-and-inspected",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a0c580-cb9c-71d3-8764-471584c8005a\\exec-7f62065a-6f48-4149-9905-1ed43853090c.png",
+      "width": 1200,
+      "height": 1200,
+      "bytes": 336084,
+      "sha256": "7a3305163d0b82e6eb2a84f4579f43be1eecb4ed4217b40e923bd387ceaa4a55",
+      "inspection": "Contr?le visuel du fichier g?n?r? puis de la planche des exports : sc?ne, d?cor, format et style conformes."
+    },
+    {
+      "code": "SIT-047",
+      "slug": "ciseaux-encrasses",
+      "prompt": "Harvest stage, resin-clogged trimming scissors. Strong closeup of ordinary small spring-loaded horticultural scissors held safely by the grower over the workbench immediately before the open cupboard. Sticky amber resin mixed with tiny plant fragments visibly coats the steel blades and hinge, blades slightly open. Several freshly cut hemp flower branches rest separately on a clean harvest tray behind. One clean spare pair rests to the side. The sticky scissors are clearly the central subject. No gore, no chemical spray, no labels.",
+      "alt": "Lames de ciseaux de récolte encrassées de résine, devant un plateau de fleurs fraîchement coupées.",
+      "output": "/app/kanab-quest/situations/situation-SIT-047-ciseaux-encrasses-v1.webp",
+      "status": "installed-and-inspected",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a0c580-cb9c-71d3-8764-471584c8005a\\exec-5b4bbc3c-f40f-4c66-851d-ff0ee5ba50ce.png",
+      "width": 1200,
+      "height": 1200,
+      "bytes": 342944,
+      "sha256": "0a8dd1d778d5b4ba30ce7392f0dbc4ed0381c80c23a67a93e32baf483d982663",
+      "inspection": "Contr?le visuel du fichier g?n?r? puis de la planche des exports : sc?ne, d?cor, format et style conformes."
+    },
+    {
+      "code": "SIT-048",
+      "slug": "etiquettes-melangees",
+      "prompt": "Harvest stage, detached mixed-up batch labels. Two clearly separate small harvest trays each containing cut hemp flower branches on a clean shelf at the cupboard door. Two detached cream paper tags with simple teal and yellow color patches, no words, lie between the trays, visibly not attached. The grower compares a plain notebook with colored tabs and looks puzzled but calm. Obvious issue is uncertain batch identity, no loose mixing of the flowers, no enormous office, no readable writing.",
+      "alt": "Deux bacs de récolte séparés et leurs étiquettes détachées, comparés au carnet de suivi du cultivateur.",
+      "output": "/app/kanab-quest/situations/situation-SIT-048-etiquettes-melangees-v1.webp",
+      "status": "installed-and-inspected",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a0c580-cb9c-71d3-8764-471584c8005a\\exec-5b6e0168-6360-4181-beaa-fe6247f59e82.png",
+      "width": 1200,
+      "height": 1200,
+      "bytes": 272786,
+      "sha256": "09a259d2cdac5fa68ae26b6b2c96ec1d91981fe20831d5a59feb91d30484f009",
+      "inspection": "Contr?le visuel du fichier g?n?r? puis de la planche des exports : sc?ne, d?cor, format et style conformes.",
+      "generationNote": "Premier appel sans r?sultat disponible ; m?me prompt relanc? avec succ?s."
+    },
+    {
+      "code": "SIT-049",
+      "slug": "joint-bocal",
+      "prompt": "Drying and curing stage, worn jar seal. Close view of a normal glass clip-top preserving jar half-filled with dry hemp flowers. Its hinged lid is open and the cream rubber sealing gasket is visibly cracked in one small place and flattened with age; show a cropped grower's finger gently pointing to that crack. A compact hygrometer rests nearby with an unreadable face. The small drying cupboard behind has LED OFF, opaque walls and several hanging branches out of focus in drawing. Soft ambient room light, no luminous grow fixture. Main subject is worn rubber seal, not moisture, no water droplets.",
+      "alt": "Joint fissuré sur le couvercle d’un bocal d’affinage, contrôlé à côté d’un petit hygromètre.",
+      "output": "/app/kanab-quest/situations/situation-SIT-049-joint-bocal-v1.webp",
+      "status": "installed-and-inspected",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a0c580-cb9c-71d3-8764-471584c8005a\\exec-1e4cd653-b35b-48c5-93c8-252992d6659d.png",
+      "width": 1200,
+      "height": 1200,
+      "bytes": 279010,
+      "sha256": "5a11886c135269290dfd29bb139468044562972c06cfbd259c85922f054201e6",
+      "inspection": "Contr?le visuel du fichier g?n?r? puis de la planche des exports : sc?ne, d?cor, format et style conformes."
+    },
+    {
+      "code": "SIT-050",
+      "slug": "poussiere-sechoir",
+      "prompt": "Drying and curing stage, dust contamination. A small enclosed drying cupboard, open door, cultivation LED switched OFF, ambient room light only. A fine mesh drying shelf holds separated dried hemp flower branches, with a clearly visible thin dusty gray deposit along the front rim and mesh nearby. A grower's gloved finger has traced a short clean streak through dust on the frame to inspect it, without touching flowers. He looks concerned and attentive at edge. Dust is modest and believable, no huge airborne cloud, no brushing dust onto flowers, no mold, no chemical sprays.",
+      "alt": "Dépôt de poussière sur le bord d’un filet de séchage, inspecté près des fleurs dans un placard éteint.",
+      "output": "/app/kanab-quest/situations/situation-SIT-050-poussiere-sechoir-v1.webp",
+      "status": "installed-and-inspected",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a0c580-cb9c-71d3-8764-471584c8005a\\exec-e7a83edf-1caa-4314-bf51-8b6188d60270.png",
+      "width": 1200,
+      "height": 1200,
+      "bytes": 359088,
+      "sha256": "e7ff778d6e622f553e41f0baa93470fab3226f97120974155d301335fc1999a8",
+      "inspection": "Contr?le visuel du fichier g?n?r? puis de la planche des exports : sc?ne, d?cor, format et style conformes."
+    }
+  ]
+}

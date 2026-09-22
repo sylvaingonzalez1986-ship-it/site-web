@@ -353,6 +353,18 @@ export const KQ_SITUATIONS: KqSituation[] = [
   { code: "SIT-036", stage: "Floraison", name: "Dépôt suspect sur les feuilles", story: "Un dépôt inhabituel fait craindre une maladie. Inspection et hygiène deviennent prioritaires.", difficulty: 3, tags: ["hygiene"], successTrait: "Foyer contenu", fragileTrait: "Feuillage sous surveillance", failureTrait: "Feuillage dégradé" },
   { code: "SIT-037", stage: "Récolte", name: "Fleur suspecte dans le lot", story: "Une fleur semble altérée. Le tri et la propreté passent avant la précipitation.", difficulty: 2, tags: ["harvest", "hygiene"], successTrait: "Tri rigoureux", fragileTrait: "Lot isolé", failureTrait: "Tri insuffisant" },
   { code: "SIT-038", stage: "Séchage & affinage", name: "Condensation au bocal", story: "Des gouttelettes apparaissent sur les parois. Le lot demande un nouveau contrôle.", difficulty: 2, tags: ["drying", "climate", "hygiene"], successTrait: "Lot contrôlé", fragileTrait: "Affinage surveillé", failureTrait: "Conservation fragile" },
+  { code: "SIT-039", stage: "Germination", name: "Semis filant", story: "La tige s’allonge et se penche vers la lampe : la lumière manque au niveau des semis. Ce départ fragile demande une observation attentive.", difficulty: 2, tags: ["light", "roots"], successTrait: "Pousse mieux éclairée", fragileTrait: "Tige surveillée", failureTrait: "Semis étiolé" },
+  { code: "SIT-040", stage: "Germination", name: "Fonte des semis", story: "Un semis s’effondre, le collet aminci et brun. Il ne repartira pas : l’enjeu est de protéger les pousses encore saines dans le plateau.", difficulty: 3, tags: ["hygiene", "roots"], successTrait: "Semis voisins protégés", fragileTrait: "Plateau sous surveillance", failureTrait: "Levée décimée" },
+  { code: "SIT-041", stage: "Enracinement", name: "Motte bousculée", story: "Au rempotage, la motte s’est effritée et des radicelles ont été abîmées. La plante accuse le choc et sa reprise ralentit.", difficulty: 2, tags: ["roots"], successTrait: "Reprise assurée", fragileTrait: "Reprise prudente", failureTrait: "Choc de rempotage" },
+  { code: "SIT-042", stage: "Enracinement", name: "Substrat qui repousse l’eau", story: "La motte trop sèche laisse l’eau filer le long du pot sans vraiment s’imbiber. La soucoupe se remplit, mais les racines restent au sec.", difficulty: 2, tags: ["water", "roots"], successTrait: "Motte réhumidifiée", fragileTrait: "Imbibition partielle", failureTrait: "Motte desséchée" },
+  { code: "SIT-043", stage: "Croissance", name: "Attache trop serrée", story: "La tige a épaissi, mais son lien au tuteur n’a pas suivi. Une marque se creuse sous l’attache et fragilise la branche.", difficulty: 2, tags: ["flower"], successTrait: "Lien ajusté", fragileTrait: "Tige marquée", failureTrait: "Tige étranglée" },
+  { code: "SIT-044", stage: "Croissance", name: "Dépôts de sels", story: "Une croûte blanchâtre apparaît sur le pot et certaines pointes brunissent. Une accumulation de sels est possible : les apports et l’eau demandent un contrôle.", difficulty: 3, tags: ["water", "roots"], successTrait: "Apports rééquilibrés", fragileTrait: "Accumulation surveillée", failureTrait: "Stress salin" },
+  { code: "SIT-045", stage: "Floraison", name: "Sonde trompeuse", story: "La sonde près de l’arrivée d’air affiche une température rassurante. Au niveau des fleurs, une seconde mesure révèle une chaleur bien plus élevée.", difficulty: 2, tags: ["climate", "flower"], successTrait: "Mesure représentative", fragileTrait: "Climat réévalué", failureTrait: "Chaleur sous-estimée" },
+  { code: "SIT-046", stage: "Floraison", name: "Pollen indésirable", story: "De petites fleurs mâles sont repérées dans le placard. Le pollen peut féconder les fleurs voisines et donner des graines dans un lot destiné aux fleurs.", difficulty: 3, tags: ["flower"], successTrait: "Risque de pollen contenu", fragileTrait: "Floraison à surveiller", failureTrait: "Graines dans le lot" },
+  { code: "SIT-047", stage: "Récolte", name: "Ciseaux encrassés", story: "La résine et les débris collent aux lames. Les coupes deviennent moins nettes et l’outil sale menace la propreté du lot.", difficulty: 2, tags: ["harvest", "hygiene"], successTrait: "Coupes propres", fragileTrait: "Manucure ralentie", failureTrait: "Fleurs malmenées" },
+  { code: "SIT-048", stage: "Récolte", name: "Étiquettes mélangées", story: "Deux étiquettes se sont détachées des bacs. Avant de constituer l’échantillon du labo, il faut retrouver quel lot correspond au carnet de culture.", difficulty: 2, tags: ["harvest", "compliance"], successTrait: "Lots identifiés", fragileTrait: "Traçabilité reconstituée", failureTrait: "Traçabilité incertaine" },
+  { code: "SIT-049", stage: "Séchage & affinage", name: "Joint de bocal fatigué", story: "Le joint fissuré ne ferme plus correctement le bocal. L’air de la pièce perturbe la conservation et l’humidité du lot devient instable.", difficulty: 2, tags: ["drying", "climate"], successTrait: "Étanchéité retrouvée", fragileTrait: "Conservation surveillée", failureTrait: "Bocal peu étanche" },
+  { code: "SIT-050", stage: "Séchage & affinage", name: "Poussière au séchoir", story: "Un dépôt s’est accumulé sur le filet et près des fleurs. Le lot exposé demande un contrôle ; nettoyer le local ne rend pas automatiquement les fleurs propres.", difficulty: 3, tags: ["drying", "hygiene"], successTrait: "Lot contrôlé et trié", fragileTrait: "Lot tenu à l’écart", failureTrait: "Lot souillé" },
 ];
 
 const clampSeed = (seed: number) => Math.abs(Math.floor(seed)) % 100000;
@@ -389,40 +401,72 @@ function scenarioIndex(seed: number, salt: number, length: number) {
   return ((value ^ (value >>> 15)) >>> 0) % length;
 }
 
+// History is flattened from newest culture to oldest. Only the most recent
+// appearance matters: an old duplicate must not make a just-seen event eligible.
+function leastRecentSituations(pool: KqSituation[], history: string[]) {
+  const recency = (situation: KqSituation) => {
+    const index = history.indexOf(situation.code);
+    return index < 0 ? Infinity : index;
+  };
+  const oldest = Math.max(...pool.map(recency));
+  return pool.filter(situation => recency(situation) === oldest);
+}
+
 export function buildKqScenarioPath(seed: number, recentSituationCodes: string[] = [], requiredTags: KqSituationTag[] = [], allowedPests: KqPest[] = [], domiciliation?: KqDomiciliation) {
-  const path = KQ_STAGES.map((stage, stageIndex) => {
-    const pool = KQ_SITUATIONS.filter((situation) => situation.stage === stage);
-    if (domiciliation && stage === "Récolte") {
+  const pools = KQ_STAGES.map(stage => KQ_SITUATIONS.filter(situation => situation.stage === stage));
+  const path = pools.map((pool, stageIndex) => {
+    if (domiciliation && KQ_STAGES[stageIndex] === "Récolte") {
       const theft = pool.find(situation => situation.incident === "crop-theft")!;
-      // A separate draw makes the actual incident probability 2/N at home and
-      // 1/N externally. Duplicating a card in a pool would only give 2/(N+1).
+      // Theft remains an independent risk, including after a recent theft:
+      // 2/N at home and 1/N externally. Rotation applies to the safe outcomes.
       const risk = domiciliation === "home" ? 2 : 1;
       if (scenarioIndex(seed, 71, pool.length) < risk) return theft.code;
-      const safe = pool.filter(situation => situation.incident !== "crop-theft");
-      const freshSafe = safe.filter(situation => !recentSituationCodes.includes(situation.code));
-      const choices = freshSafe.length ? freshSafe : safe;
-      return choices[scenarioIndex(seed, stageIndex, choices.length)].code;
+      const safe = leastRecentSituations(pool.filter(situation => situation.incident !== "crop-theft"), recentSituationCodes);
+      return safe[scenarioIndex(seed, stageIndex, safe.length)].code;
     }
-    const fresh = pool.filter((situation) => !recentSituationCodes.includes(situation.code));
-    const candidates = fresh.length > 0 ? fresh : pool;
+    const candidates = leastRecentSituations(pool, recentSituationCodes);
     return candidates[scenarioIndex(seed, stageIndex, candidates.length)].code;
   });
-  requiredTags.forEach((tag, tagIndex) => {
-    if (path.some((code) => {
-      const situation = KQ_SITUATIONS.find((item) => item.code === code);
-      return situation?.tags.includes(tag) && (tag !== "pest" || allowedPests.length === 0 || Boolean(situation.pest && allowedPests.includes(situation.pest)));
-    })) return;
-    const tagged = KQ_SITUATIONS.filter((situation) => situation.tags.includes(tag));
-    const candidates = tag === "pest" && allowedPests.length > 0
-      ? tagged.filter((situation) => situation.pest && allowedPests.includes(situation.pest))
-      : tagged;
-    if (candidates.length === 0) return;
-    const fresh = candidates.filter((situation) => !recentSituationCodes.includes(situation.code));
-    const pool = fresh.length > 0 ? fresh : candidates;
-    const replacement = pool[scenarioIndex(seed, tagIndex + KQ_STAGES.length, pool.length)];
-    path[KQ_STAGES.indexOf(replacement.stage)] = replacement.code;
+  const tags = [...new Set(requiredTags)];
+  if (tags.length === 0) return path;
+  const maskOf = (situation: KqSituation) => tags.reduce((mask, tag, index) => (
+    situation.tags.includes(tag) && (tag !== "pest" || allowedPests.length === 0 || Boolean(situation.pest && allowedPests.includes(situation.pest)))
+      ? mask | (1 << index) : mask
+  ), 0);
+  const target = (1 << tags.length) - 1;
+  if (path.reduce((mask, code) => mask | maskOf(KQ_SITUATIONS.find(situation => situation.code === code)!), 0) === target) return path;
+
+  // Solve required tags together: replacing one stage must not silently erase
+  // another mission's only compatible event. Prefer the fewest changes, then
+  // the least recently encountered replacements; seeded ordering breaks ties.
+  type Choice = { codes: string[]; changes: number; recency: number };
+  let choices = new Map<number, Choice>([[0, { codes: [], changes: 0, recency: 0 }]]);
+  pools.forEach((pool, stageIndex) => {
+    const next = new Map<number, Choice>();
+    // Ordinary missions cannot reroll the independent theft draw. A mission
+    // explicitly requesting security is the intentional exception.
+    const candidates = domiciliation && KQ_STAGES[stageIndex] === "Récolte" && !tags.includes("security")
+      ? pool.filter(situation => (situation.incident === "crop-theft") === (KQ_SITUATIONS.find(item => item.code === path[stageIndex])?.incident === "crop-theft"))
+      : pool;
+    const offset = scenarioIndex(seed, stageIndex + KQ_STAGES.length, candidates.length);
+    const ordered = [...candidates.slice(offset), ...candidates.slice(0, offset)];
+    for (const [mask, choice] of choices) for (const situation of ordered) {
+      const changed = situation.code !== path[stageIndex];
+      const lastSeen = recentSituationCodes.indexOf(situation.code);
+      const candidate = {
+        codes: [...choice.codes, situation.code],
+        changes: choice.changes + Number(changed),
+        recency: choice.recency + (changed && lastSeen >= 0 ? recentSituationCodes.length - lastSeen : 0),
+      };
+      const combined = mask | maskOf(situation);
+      const previous = next.get(combined);
+      if (!previous || candidate.changes < previous.changes || (candidate.changes === previous.changes && candidate.recency < previous.recency)) next.set(combined, candidate);
+    }
+    choices = next;
   });
-  return path;
+  // Incompatible requirements keep the ordinary path rather than pretending
+  // that a partly satisfied set guarantees every requested mission.
+  return choices.get(target)?.codes ?? path;
 }
 
 export function startKqGame(
@@ -506,6 +550,9 @@ export function canPlayKqCard(state: KqGameState, card: KqSupportCard) {
   if (card.effect === "timer-reset" && state.dice && !state.dice.some((die) => die === 1 || die === 2)) return { allowed: false, reason: "Il faut un dé affichant 1 ou 2 à corriger." };
   if (card.effect === "cross-diagnosis" && state.dice && (state.dice.filter((die) => die >= 4).length !== 2 || !state.dice.some((die) => die === 2 || die === 3))) return { allowed: false, reason: "Il faut exactement deux réussites et un dé neutre." };
   if (card.effect === "reroll-two-low" && state.dice && state.dice.every((die) => die >= 4)) return { allowed: false, reason: "Aucun dé faible ne justifie cette relance." };
+  if (card.effect === "compliance-clearance" && situation.incident !== "ddtm-inspection") return { allowed: false, reason: "Ces papiers répondent au contrôle DDTM, pas à une confusion entre les lots." };
+  if (card.effect === "shade-screen" && situation.code === "SIT-039") return { allowed: false, reason: "Le semis manque déjà de lumière : l’ombrage aggraverait la situation." };
+  if (["neutral-to-success", "leaf-thinning"].includes(card.effect) && situation.code === "SIT-046") return { allowed: false, reason: "Modifier les branches ou le feuillage ne maîtrise pas le pollen indésirable." };
   if (card.effect === "illegal-power" && situation.incident !== "electricity-bill") return { allowed: false, reason: "Cette prise de risque ne répond qu’à la surcharge électrique." };
   if (card.effect === "illegal-power" && state.dice && ["success", "critical"].includes(previewKqResolution(state)?.outcome ?? "")) return { allowed: false, reason: "La surcharge est déjà maîtrisée : inutile de prendre ce risque." };
   if (card.category === "pbi" && state.dice && state.dice.every((die) => die >= 4)) return { allowed: false, reason: "Tous les dés sont déjà des réussites." };

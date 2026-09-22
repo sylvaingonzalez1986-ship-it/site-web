@@ -52,10 +52,10 @@ describe("Kanab Quest dice prototype", () => {
     expect(getKqEffectNoticeKind("Transformation prête, mais aucun dé neutre : effet non déclenché.")).toBe("missed");
   });
 
-  it("offers at least six readable situations at every production stage", () => {
-    expect(KQ_SITUATIONS).toHaveLength(38);
+  it("offers at least eight readable situations at every production stage", () => {
+    expect(KQ_SITUATIONS).toHaveLength(50);
     KQ_STAGES.forEach((stage) => {
-      expect(KQ_SITUATIONS.filter((situation) => situation.stage === stage).length).toBeGreaterThanOrEqual(6);
+      expect(KQ_SITUATIONS.filter((situation) => situation.stage === stage).length).toBeGreaterThanOrEqual(8);
     });
   });
 

@@ -133,6 +133,18 @@ export const KQ_SITUATION_ARTWORK: Readonly<Record<string, KqSituationArtwork>> 
   "SIT-036": { src: "/app/kanab-quest/situations/situation-SIT-036-depot-suspect-v1.webp", alt: "Dépôt blanchâtre suspect sur une feuille, observé à l’aide d’une loupe d’inspection." },
   "SIT-037": { src: "/app/kanab-quest/situations/situation-SIT-037-fleur-suspecte-v1.webp", alt: "Tri de fleurs récoltées avec une fleur suspecte écartée des autres sur un plateau." },
   "SIT-038": { src: "/app/kanab-quest/situations/situation-SIT-038-condensation-bocal-v1.webp", alt: "Gouttelettes de condensation à l’intérieur d’un bocal de fleurs en cours d’affinage." },
+  "SIT-039": { src: "/app/kanab-quest/situations/situation-SIT-039-semis-filant-v1.webp", alt: "Semis à la tige longue et fine, penché vers une petite lampe éloignée dans le placard." },
+  "SIT-040": { src: "/app/kanab-quest/situations/situation-SIT-040-fonte-semis-v1.webp", alt: "Semis affaissé au collet aminci et brun, à côté de pousses encore saines dans le plateau." },
+  "SIT-041": { src: "/app/kanab-quest/situations/situation-SIT-041-motte-bousculee-v1.webp", alt: "Motte partiellement effritée et racines fragilisées d’une jeune plante lors du rempotage." },
+  "SIT-042": { src: "/app/kanab-quest/situations/situation-SIT-042-substrat-hydrophobe-v1.webp", alt: "Eau qui perle à la surface d’une motte sèche lors de l’arrosage d’une jeune plante." },
+  "SIT-043": { src: "/app/kanab-quest/situations/situation-SIT-043-attache-serree-v2.webp", alt: "Lien au tuteur devenu trop serré sur une tige épaissie, observé par le cultivateur." },
+  "SIT-044": { src: "/app/kanab-quest/situations/situation-SIT-044-depots-sels-v1.webp", alt: "Dépôt minéral blanchâtre au bord d’un pot et pointes de feuilles brunies sur une plante en croissance." },
+  "SIT-045": { src: "/app/kanab-quest/situations/situation-SIT-045-sonde-trompeuse-v1.webp", alt: "Comparaison de deux sondes, l’une près de l’arrivée d’air et l’autre au niveau des fleurs dans le placard." },
+  "SIT-046": { src: "/app/kanab-quest/situations/situation-SIT-046-pollen-indesirable-v1.webp", alt: "Inspection à la loupe de petites fleurs mâles à proximité de fleurs femelles dans le placard." },
+  "SIT-047": { src: "/app/kanab-quest/situations/situation-SIT-047-ciseaux-encrasses-v1.webp", alt: "Lames de ciseaux de récolte encrassées de résine, devant un plateau de fleurs fraîchement coupées." },
+  "SIT-048": { src: "/app/kanab-quest/situations/situation-SIT-048-etiquettes-melangees-v1.webp", alt: "Deux bacs de récolte séparés et leurs étiquettes détachées, comparés au carnet de suivi du cultivateur." },
+  "SIT-049": { src: "/app/kanab-quest/situations/situation-SIT-049-joint-bocal-v1.webp", alt: "Joint fissuré sur le couvercle d’un bocal d’affinage, contrôlé à côté d’un petit hygromètre." },
+  "SIT-050": { src: "/app/kanab-quest/situations/situation-SIT-050-poussiere-sechoir-v1.webp", alt: "Dépôt de poussière sur le bord d’un filet de séchage, inspecté près des fleurs dans un placard éteint." },
 };
 
 export const KQ_POWER_OUTAGE_ARTWORK: KqSituationArtwork = {
