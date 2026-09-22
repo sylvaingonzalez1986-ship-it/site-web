@@ -15,7 +15,7 @@ type Phase = "idle" | "opening" | "cards" | "recap" | "error";
 type Card = ScratchResult["cards"][number];
 const COLORS = { common: "#bde5c7", silver: "#c0e5ff", gold: "#ffd252", epic: "#d598ff", legendary: "#ffaf48" };
 const FREQUENCIES = { common: 330, silver: 392, gold: 440, epic: 554, legendary: 660 };
-const BACK = "/app/lottery/tcg-card-back.png";
+const BACK = "/app/lottery/tcg-card-back-sylvain-v2.webp";
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isBuddieCard = (card: Card) => !card.isBonus && hasModernBuddieArtwork(card.code);
 const pullStatus = (card: Card) => card.ownedCount > 1 ? `Doublon ×${card.ownedCount}` : "Nouvelle carte";

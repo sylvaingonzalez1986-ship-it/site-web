@@ -46,7 +46,7 @@ export function AlbumArenaLobby({ packs, owned, total, rewards, points, onNaviga
     </header>
     <div className={styles.stage} aria-hidden="true">
       <div className={styles.halo} />
-      <Image src="/app/lottery/charles-booster-presentation-v2.png" alt="" width={1024} height={1536} priority sizes="(max-width: 700px) 90vw, 650px" className={styles.mascot} />
+      <Image src="/app/lottery/sylvain-booster-presentation-v3.webp" alt="" width={1024} height={1536} priority sizes="(max-width: 700px) 90vw, 650px" className={styles.mascot} />
     </div>
     <div className={lobby.dock}>
       <div className={lobby.modeBrief} aria-live="polite" aria-atomic="true">

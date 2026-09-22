@@ -249,7 +249,7 @@ export function LotterySection() {
           >
             <div className="relative h-20 w-14 shrink-0">
               <Image
-                src="/app/lottery/sealed-booster-pack.png"
+                src="/app/lottery/sealed-booster-pack-sylvain-v3.webp"
                 alt="Booster scelle"
                 fill
                 sizes="56px"

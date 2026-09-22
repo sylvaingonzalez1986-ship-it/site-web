@@ -751,7 +751,7 @@ export function ContestNotebookCollectionDashboard({
           >
             <span className="relative block h-14 w-10 shrink-0">
               <Image
-                src="/app/lottery/sealed-booster-pack.png"
+                src="/app/lottery/sealed-booster-pack-sylvain-v3.webp"
                 alt=""
                 fill
                 sizes="40px"

@@ -14,7 +14,7 @@ const modules = {
     import {LOTTERY_POINTS_PACK_COST} from '/src/lib/lottery-collection';
     import {RARITY_ORDER,rarityLabels} from '/src/lib/lottery-card-ui';
     const params=new URLSearchParams(location.search),empty=params.has('empty');
-    const imageUrl='/app/lottery/tcg-card-back.png';
+    const imageUrl='/app/lottery/tcg-card-back-sylvain-v2.webp';
     const reward={rewardDefinitionId:'reward-1',code:'reward',title:'Réduction de collection',description:'Une récompense de démonstration.',kind:'discount',imageUrl:'',discountPercent:10,customPayload:{},priority:1,isActive:true};
     const pages=RARITY_ORDER.map((rarity,p)=>{
       const owned=empty?0:p===0?8:3;
@@ -68,7 +68,7 @@ try {
     console.log('Album and booster audit:',width);
     await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});await visit();
     await shot('album-'+width);const check=await layout();assert.equal(check.overflow,false);assert.deepEqual(check.brokenImages,[]);
-    assert(await page.$('img[src="/app/lottery/charles-booster-presentation-v2.png"]'));
+    assert(await page.$('img[src="/app/lottery/sylvain-booster-presentation-v3.webp"]'));
     assert.equal(await page.$('img[src="/app/lottery/album-booster-mascot-v3.webp"]'),null);
     assert.equal(await page.$$eval('[data-album-enter]',els=>els.length),1);
     await enter('cards');await page.waitForSelector('[aria-label="Mes cartes"]');
@@ -80,7 +80,7 @@ try {
     await page.click('button[title="#1 Carte 1"]');await page.waitForSelector('[role="dialog"]');await shot('detail-'+width);await page.click('[role="dialog"] button[aria-label="Fermer"]');
     await page.locator('::-p-text(La Botte & Héritages)').click();await page.waitForSelector('[aria-label="Progression La Botte"]');assert.equal((await layout()).overflow,false);await shot('placard-'+width);
     await back();await page.click('[data-album-enter]');await page.waitForSelector('[aria-label="Glissez pour ouvrir le booster"]');
-    assert(await page.$('img[src="/app/lottery/sealed-booster-pack.png"]'));
+    assert(await page.$('img[src="/app/lottery/sealed-booster-pack-sylvain-v3.webp"]'));
     await new Promise(r=>setTimeout(r,750));await shot('pack-sealed-'+width);
     const pack=await page.$('[aria-label="Glissez pour ouvrir le booster"]'),bounds=await pack.boundingBox();
     if(width===390){

@@ -27,8 +27,8 @@ export function PackSwipeCut({ onThresholdReached, disabled = false, splitting =
     onPointerDown={start} onPointerMove={move} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end}
     role="button" aria-label="Glissez pour ouvrir le booster" aria-disabled={disabled} tabIndex={disabled ? -1 : 0}
     onKeyDown={event => { if (!disabled && !fired.current && ["Enter", " "].includes(event.key)) { event.preventDefault(); fired.current = true; onThresholdReached(); } }}>
-    <div className={styles.foilTop}><Image src="/app/lottery/sealed-booster-pack.png" alt="" fill priority sizes="320px" draggable={false} /></div>
-    <div className={styles.foilBody}><Image src="/app/lottery/sealed-booster-pack.png" alt="" fill priority sizes="320px" draggable={false} /></div>
+    <div className={styles.foilTop}><Image src="/app/lottery/sealed-booster-pack-sylvain-v3.webp" alt="" fill priority sizes="320px" draggable={false} /></div>
+    <div className={styles.foilBody}><Image src="/app/lottery/sealed-booster-pack-sylvain-v3.webp" alt="" fill priority sizes="320px" draggable={false} /></div>
     <div className={styles.foilShine} aria-hidden="true" />
     <div className={styles.tearLine} aria-hidden="true"><span /></div>
     {!splitting && <span className={styles.tearHint} aria-hidden="true">← Tire pour déchirer →</span>}

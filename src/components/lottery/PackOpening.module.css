@@ -27,7 +27,7 @@
 .tearLine span { display: block; width: calc(var(--tear) * 100%); height: 100%; background: #fffaf1; box-shadow: 0 0 14px #f4c43d; }
 .tearHint { position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%) rotate(4deg); padding: .55rem .65rem; background: #fffaf1; border: 2px solid #003f30; color: #003f30; white-space: nowrap; font-size: .7rem; font-weight: 900; box-shadow: 3px 3px 0 #001e19; pointer-events: none; }
 .packStack { position: absolute; width: min(55vw, 235px, 29dvh); aspect-ratio: 2 / 3; }
-.packStack i { position: absolute; inset: 0; border: 3px solid #f4c43d; border-radius: 8px; background: #00563f url('/app/lottery/tcg-card-back.png') center / cover; opacity: 0; }
+.packStack i { position: absolute; inset: 0; border: 3px solid #f4c43d; border-radius: 8px; background: #00563f url('/app/lottery/tcg-card-back-sylvain-v2.webp') center / cover; opacity: 0; }
 [data-pack-phase="opening"] .packStack i { animation: extract 1.1s ease-out both; }
 [data-pack-phase="opening"] .packStack i:nth-child(2) { --fan: -12deg; animation-delay: .1s; }
 [data-pack-phase="opening"] .packStack i:nth-child(3) { --fan: 12deg; animation-delay: .2s; }
@@ -43,7 +43,7 @@
 .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
 .error { max-width: 500px; padding: .75rem; border: 1px solid #ef9b88; background: #502f2a; color: #fffaf1 !important; }
 .cardStack { position: relative; width: min(62vw, 300px, 33dvh); aspect-ratio: 2 / 3; animation: deal 450ms ease-out both; }
-.stackBack { position: absolute; inset: 0; transform: translate(9px, 7px) rotate(5deg); background: #004b39 url('/app/lottery/tcg-card-back.png') center / cover; border: 2px solid #b0d4bc; border-radius: 9px; }
+.stackBack { position: absolute; inset: 0; transform: translate(9px, 7px) rotate(5deg); background: #004b39 url('/app/lottery/tcg-card-back-sylvain-v2.webp') center / cover; border: 2px solid #b0d4bc; border-radius: 9px; }
 .stackBack:nth-child(2) { transform: translate(15px, 12px) rotate(9deg); opacity: .5; }
 .cardButton { position: absolute; inset: 0; border: 0; background: transparent; padding: 0; width: 100%; height: 100%; perspective: 1100px; touch-action: pan-y; cursor: pointer; transform: rotateY(var(--tilt, 0deg)); }
 .flipper { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 850ms cubic-bezier(.2,.7,.15,1); }

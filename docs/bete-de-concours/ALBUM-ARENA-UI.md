@@ -13,9 +13,11 @@ Mise à jour du 11 septembre 2026, sur `/profil/collection`.
 
 ## Illustration actuelle
 
-L’asset `public/app/lottery/charles-booster-presentation-v2.png` est réutilisé tel quel pour conserver le personnage fidèle et son pack. Aucun nouveau dessin ni traitement de l’image pour cette révision.
+Depuis le 21 septembre 2026, l’accueil utilise `public/app/lottery/sylvain-booster-presentation-v3.webp`. Sylvain conserve sa pose et sa tenue, et présente le nouveau sachet entièrement imprimé : champ de CBD détaillé, sans cadre, avec plis et soudures métalliques. L’ancienne illustration est conservée sur disque.
 
-Le booster scellé `public/app/lottery/sealed-booster-pack.png` et son parcours d’ouverture sont conservés.
+Édition avec l’outil intégré **image_gen**, puis conversion WebP avec Sharp (1024 × 1536, 403 252 octets), en conservant la transparence. Références : l’illustration précédente, `public/sylvain.png` et `public/app/lottery/sealed-booster-pack-sylvain-v3.webp`, également utilisé pendant l’ouverture. [Prompt exact](../lottery/album-sylvain-v3-prompt.json).
+
+Le composant d’accueil a été vérifié isolément à 320, 390 et 1440 px : image chargée, absence de débordement, destinations, ouverture, navigation clavier et état sans pack. Captures et rapport dans `output/imagegen/album-sylvain-v3/`. Cette vérification ciblée ne remplace pas l’audit global historique décrit plus bas.
 
 ## Historique : illustration écartée du 10 septembre
 
