@@ -10,6 +10,12 @@ import puppeteer from "puppeteer-core";
 const root = process.cwd();
 const reportDir = resolve(root, "output/tasting-book");
 const notesOnly = process.argv.includes('--notes-only');
+const previewFonts = `
+  @font-face {font-family:BookDisplay;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}
+  @font-face {font-family:BookBody;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:400 700}
+  @font-face {font-family:BookHand;src:url('/src/app/fonts/Caveat-Latin-Bold.woff2');font-weight:700}
+  :root{--font-display:BookDisplay;--font-body:BookBody;--font-sans:BookBody;--font-handwritten:BookHand}body{margin:0}
+`;
 const modules = {
   "book-preview-entry": `
     import React from 'react'; import {createRoot} from 'react-dom/client';
@@ -33,7 +39,7 @@ const modules = {
     createRoot(document.getElementById('root')).render(React.createElement(ContestTastingBook,{entries:visible,unlocks:params.has('locked')?[]:unlocks,viewerProfile:{pseudo:'Sylvain',createdAt:'2026-09-10',updatedAt:'2026-09-10'},badges:[],isAuthenticated:true,seasonLabel:'Les dégustations de l’Arène · Saison 2026',initialTrack:'regular',initialCategory:'outdoor'}));
   `,
   "next/image": `import React from 'react'; export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}) { return React.createElement('img', {...props, src: typeof src === 'string' ? src : src.src, style: {...(fill ? {position:'absolute',inset:0,width:'100%',height:'100%'} : {}), ...props.style}}); }`,
-  "next/link": `import React from 'react'; export default function Link({prefetch,scroll,replace,...props}) {return React.createElement('a',props);}`,
+  "next/link": `import React from 'react'; export const useLinkStatus=()=>({pending:false}); export default function Link({prefetch,scroll,replace,...props}) {return React.createElement('a',props);}`,
   "next/dynamic": `import React from 'react'; export default function dynamic(loader, options={}) {const Component=React.lazy(() => loader().then(m => ({default:m.default || m}))); return function Dynamic(props){return React.createElement(React.Suspense,{fallback:options.loading ? React.createElement(options.loading) : null},React.createElement(Component,props));};}`,
   "next/navigation": `export const usePathname=()=>'/arene/carnet/regular'; export const useSearchParams=()=>new URLSearchParams(); export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{window.__bookRefreshes=(window.__bookRefreshes||0)+1;}});`,
 };
@@ -56,7 +62,7 @@ const server = await createServer({
         }
         if (request.url?.split('?')[0] !== '/') return next();
         response.setHeader('Content-Type','text/html');
-        response.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Carnet · vérification locale</title><style>:root{--font-display:Impact;--font-body:Arial;--font-sans:Arial}body{margin:0}</style><div class="site-background"><header><button id="site-navigation">Navigation du site</button></header><main class="relative z-0"><div id="root"></div></main><footer><a id="site-footer" href="#">Pied de page du site</a></footer></div><script type="module" src="/@id/__x00__book-preview-entry"></script></html>');
+        response.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Carnet · vérification locale</title><style>'+previewFonts+'</style><div class="site-background"><header><button id="site-navigation">Navigation du site</button></header><main class="relative z-0"><div id="root"></div></main><footer><a id="site-footer" href="#">Pied de page du site</a></footer></div><script type="module" src="/@id/__x00__book-preview-entry"></script></html>');
       });
     },
   }],

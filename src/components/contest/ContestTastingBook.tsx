@@ -168,9 +168,13 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
         <aside className={styles.frontispiece} aria-label="Repères du carnet">
           <span className={styles.imprint}>Le carnet de l’Arène</span>
           <span className={styles.guideBadge}><BookOpen size={16} aria-hidden="true" /> À toi de jouer</span>
-          <p className={styles.asideTitle}>{view === "contents" ? <>À chaque fleur,<br />sa découverte !</> : <>{CONTEST_ENTRY_TRACK_LABELS[chapter.track]}<br /><em>{CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}</em></>}</p>
+          <p className={styles.asideTitle}>{view === "contents" ? <>À chaque fleur,<br /><em>sa découverte !</em></> : <>{CONTEST_ENTRY_TRACK_LABELS[chapter.track]}<br /><em>{CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}</em></>}</p>
           <p>{view === "contents" ? "Une fleur, cinq étapes, tes propres impressions. Chaque dégustation écrit une nouvelle page." : CULTURES[chapter.category].subtitle}</p>
-          <Image src="/contest/mascot/tasting/tasting-start.png" alt="" width={408} height={771} sizes="180px" className={styles.mascot} />
+          <div className={styles.scrapbook}>
+            <div className={styles.memo}><span>Note à moi-même</span><strong>Prendre le temps.<br />Suivre mes sens.</strong><p>Le meilleur avis,<br />c’est le tien.</p></div>
+            <Image src="/contest/mascot/tasting/tasting-start.png" alt="" width={408} height={771} sizes="130px" className={styles.mascotSticker} />
+            <span className={styles.pencilNote}>Une fleur, une nouvelle page.</span>
+          </div>
           <span className={styles.asideSignature}>{viewerProfile?.pseudo ? `Le carnet de ${viewerProfile.pseudo}` : "Observer · Sentir · Déguster"}</span>
           <span className={styles.ribbon} aria-hidden="true" />
         </aside>
@@ -196,7 +200,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
                   const count = entries.filter((item) => item.track === track && item.category === category).length;
                   const Icon = CULTURES[category].icon;
                   return <button type="button" key={category} className={styles.contentsRow} data-culture={category} onClick={() => openChapter({ track, category })} aria-label={`${CONTEST_ENTRY_TRACK_LABELS[track]} ${CONTEST_ENTRY_CATEGORY_LABELS[category]}, ${count} fleurs`}>
-                    <Icon size={20} aria-hidden="true" /><span>{CONTEST_ENTRY_CATEGORY_LABELS[category]}</span><span className={styles.dots} aria-hidden="true" /><small>{count} {count === 1 ? "fleur" : "fleurs"}</small><span className={styles.pageNumber}>{String(2 + trackIndex * 3 + index).padStart(2, "0")}</span>
+                    <Icon size={20} aria-hidden="true" /><span className={styles.contentsCopy}><strong>{CONTEST_ENTRY_CATEGORY_LABELS[category]}</strong><small>{CULTURES[category].description}</small></span><small>{count} {count === 1 ? "fleur" : "fleurs"}</small><span className={styles.pageNumber}>{String(2 + trackIndex * 3 + index).padStart(2, "0")}</span>
                   </button>;
                 })}
               </section>)}
@@ -209,7 +213,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
                 const unlock = unlockById.get(item.id);
                 return <button type="button" key={item.id} className={styles.flowerRow} onClick={() => openFlower(item.id)}>
                   <span className={styles.flowerImage}>{item.imageUrl || item.product?.image ? <Image src={item.imageUrl || item.product!.image} alt="" fill sizes="80px" /> : <Flower2 size={32} aria-hidden="true" />}</span>
-                  <span className={styles.flowerCopy}><small>Fleur {String(index + 1).padStart(2, "0")} · {item.producer?.name || CONTEST_ENTRY_CATEGORY_LABELS[item.category]}</small><strong>{item.title}</strong><span className={styles.flowerStatus}>{unlock?.review ? <><Check size={13} /> Mes notes</> : unlock ? <><BookOpen size={13} /> À déguster</> : <><LockKeyhole size={12} /> À découvrir</>}</span></span><ChevronRight size={18} aria-hidden="true" />
+                  <span className={styles.flowerCopy}><small>Fleur {String(index + 1).padStart(2, "0")} · {item.producer?.name || CONTEST_ENTRY_CATEGORY_LABELS[item.category]}</small><strong>{item.title}</strong><span className={styles.flowerStatus} data-status={unlock?.review ? "reviewed" : unlock ? "unlocked" : "locked"}>{unlock?.review ? <><Check size={13} /> Mes notes</> : unlock ? <><BookOpen size={13} /> À déguster</> : <><LockKeyhole size={12} /> À découvrir</>}</span></span><ChevronRight size={18} aria-hidden="true" />
                 </button>;
               })}</div>}
             </div> : null}
