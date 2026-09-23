@@ -18,7 +18,7 @@ const state = async (owner) => (await result("SELECT rpc_kq_commerce_state($1) A
 const command = async (owner, action, payload = {}, key = randomUUID()) => (await result(
   "SELECT rpc_kq_commerce_command($1,$2,$3::jsonb,$4) AS data", [owner, action, JSON.stringify(payload), key])).data;
 const cash = async (owner) => (await result("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [owner])).cash_cents;
-let quoteKqCommerce, previewKqBusinessPayment, getKqTreasuryReport, isKqTreasurySnapshot;
+let quoteKqCommerce, previewKqBusinessPayment, getKqTreasuryReport, isKqTreasurySnapshot, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_REPAYMENT_CENTS;
 
 async function bootstrap() {
   await db.exec(`
@@ -422,12 +422,17 @@ async function checkBankAccounting(owner) {
   const bank = async (action = null) => (await result('SELECT rpc_kq_bank($1,$2::jsonb) AS data',[owner,action ? JSON.stringify(action) : null])).data;
   await db.query("UPDATE kq_runs SET completed_at=now()-interval '25 hours' WHERE user_id=$1",[owner]);
   const original=Number(await cash(owner));
+  await db.query('UPDATE kq_equipment_wallets SET reputation=3000 WHERE user_id=$1',[owner]);
+  const market=(await bank()).market;
+  await db.query('UPDATE kq_bank_markets SET rate_bps=1400 WHERE id=$1',[market.id]);
   const offer=(await bank()).offer;
   assert(offer,'established reputation earns an offer');
-  const borrow={action:'borrow',requestKey:randomUUID(),quoteId:offer.quoteId,amountCents:50000,expectedRateBps:offer.rateBps};
+  assert.equal(offer.maxCents,KQ_BANK_MAX_CENTS);
+  const principal=offer.maxCents;
+  const borrow={action:'borrow',requestKey:randomUUID(),quoteId:offer.quoteId,amountCents:principal,expectedRateBps:offer.rateBps};
   const accepted=await bank(borrow), loan=accepted.loan;
   let view=await inspected(owner);
-  assert.equal(view.report.cash.availableCents,original+50000);
+  assert.equal(view.report.cash.availableCents,original+principal);
   assert.equal(view.data.closingBalances.loan_payable,-loan.totalCents);
   assert.equal(view.data.checks.loanDebtCents,loan.totalCents);
   assert.equal(view.report.income.revenueCents,0,'borrowed capital is never sales revenue');
@@ -441,7 +446,7 @@ async function checkBankAccounting(owner) {
   view=await inspected(owner);
   const paid=Math.floor(loan.totalCents*2/7);
   assert.equal(view.data.checks.loanDebtCents,loan.totalCents-paid);
-  assert.equal(view.report.cash.availableCents,original+50000-paid);
+  assert.equal(view.report.cash.availableCents,original+principal-paid);
   await bank({action:'repay',requestKey:randomUUID(),loanId:loan.id,amountCents:loan.totalCents-paid});
   view=await inspected(owner);
   assert.equal(view.data.closingBalances.loan_payable,0);
@@ -505,12 +510,13 @@ async function checkPermissions(owner) {
 try {
   await bootstrap();await extendSchema();
   await db.exec(await migration('20260921000100_kq_business_calendar.sql'));
+  ({KQ_BANK_MAX_CENTS,KQ_BANK_MAX_REPAYMENT_CENTS}=await vite.ssrLoadModule('/src/lib/kanab-quest-bank.ts'));
   const owners={};
-  for(const name of ['opening','sales','invoices','savings','assets','unknown','periods','equipment','offsetting','banking','crypto']) owners[name]=await player({strength:name==='savings'?'treasurer':null});
+  for(const name of ['opening','sales','invoices','savings','assets','unknown','periods','equipment','offsetting','banking','crypto']) owners[name]=await player({strength:name==='savings'?'treasurer':null,balance:name==='banking'?KQ_BANK_MAX_REPAYMENT_CENTS-KQ_BANK_MAX_CENTS+1_000_000:1_000_000});
   await openShop(owners.opening);await production(owners.opening);
   const historicalCash=await cash(owners.opening);
   await db.exec(await migration('20260921000200_kq_treasury_accounting.sql'));
-  for (const name of ['20260923000300_kq_bank_loans.sql','20260923000400_kq_crypto_portfolio.sql','20260923000500_kq_banking_accounting.sql']) await db.exec(await migration(name));
+  for (const name of ['20260923000300_kq_bank_loans.sql','20260923000400_kq_crypto_portfolio.sql','20260923000500_kq_banking_accounting.sql','20260923000600_kq_crypto_refresh_recovery.sql','20260923000700_kq_bank_investment_limits.sql']) await db.exec(await migration(name));
   ({quoteKqCommerce}=await vite.ssrLoadModule('/src/lib/kanab-quest-commerce.ts'));
   ({previewKqBusinessPayment}=await vite.ssrLoadModule('/src/lib/kanab-quest-business.ts'));
   ({getKqTreasuryReport,isKqTreasurySnapshot}=await vite.ssrLoadModule('/src/lib/kanab-quest-treasury.ts'));

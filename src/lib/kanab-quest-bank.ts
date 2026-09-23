@@ -2,11 +2,14 @@
 export const KQ_BANK_TERM_DAYS = 7;
 export const KQ_BANK_MIN_CENTS = 10_000;
 export const KQ_BANK_TIERS = [
-  { reputation: 200, maxCents: 50_000, discountBps: 0 },
-  { reputation: 600, maxCents: 200_000, discountBps: 50 },
-  { reputation: 1500, maxCents: 500_000, discountBps: 100 },
-  { reputation: 3000, maxCents: 1_000_000, discountBps: 150 },
+  { reputation: 200, maxCents: 500_000, discountBps: 0 },
+  { reputation: 600, maxCents: 2_500_000, discountBps: 50 },
+  { reputation: 1500, maxCents: 10_000_000, discountBps: 100 },
+  { reputation: 3000, maxCents: 25_000_000, discountBps: 150 },
 ] as const;
+export const KQ_BANK_MAX_CENTS = KQ_BANK_TIERS[KQ_BANK_TIERS.length - 1].maxCents;
+export const KQ_BANK_MAX_RATE_BPS = 1400;
+export const KQ_BANK_MAX_REPAYMENT_CENTS = KQ_BANK_MAX_CENTS + Math.ceil(KQ_BANK_MAX_CENTS * KQ_BANK_MAX_RATE_BPS / 10_000);
 export const KQ_BANK_SCENARIOS: Record<string, { title: string; description: string }> = {
   confidence: { title: "Vent de confiance", description: "Les banques ouvrent les vannes. Le coût des nouveaux crédits baisse." },
   competition: { title: "Guerre des guichets", description: "Les établissements se disputent les bons dossiers : les taux reculent." },
@@ -36,24 +39,31 @@ const integer = (value: unknown, min = 0, max = 2_147_483_647): value is number 
 const date = (value: unknown): value is string => typeof value === "string" && Number.isFinite(Date.parse(value));
 export function parseKqBankCommand(value: unknown): KqBankCommand | null {
   if (!object(value) || !isKqBankUuid(value.requestKey)) return null;
-  if (value.action === "borrow" && isKqBankUuid(value.quoteId) && integer(value.amountCents, KQ_BANK_MIN_CENTS, 1_000_000) && integer(value.expectedRateBps, 100, 1400)) {
+  if (value.action === "borrow" && isKqBankUuid(value.quoteId) && integer(value.amountCents, KQ_BANK_MIN_CENTS, KQ_BANK_MAX_CENTS) && integer(value.expectedRateBps, 100, KQ_BANK_MAX_RATE_BPS)) {
     return { action: value.action, requestKey: value.requestKey, quoteId: value.quoteId, amountCents: value.amountCents, expectedRateBps: value.expectedRateBps };
   }
-  if (value.action === "repay" && isKqBankUuid(value.loanId) && integer(value.amountCents, 1, 1_140_000)) {
+  if (value.action === "repay" && isKqBankUuid(value.loanId) && integer(value.amountCents, 1, KQ_BANK_MAX_REPAYMENT_CENTS)) {
     return { action: value.action, requestKey: value.requestKey, loanId: value.loanId, amountCents: value.amountCents };
   }
   return null;
 }
+/** Exact euro input for larger equipment loans; monetary arithmetic stays in integer cents. */
+export function parseKqBankEuros(input: string): number | null {
+  const match = /^(0|[1-9]\d{0,6}|[1-9]\d{0,2}(?:[ \u00a0\u202f]\d{3}){1,2})(?:[.,](\d{1,2}))?$/.exec(input.trim());
+  if (!match) return null;
+  const cents = Number(match[1].replace(/[ \u00a0\u202f]/g, "")) * 100 + Number((match[2] ?? "").padEnd(2, "0"));
+  return integer(cents, KQ_BANK_MIN_CENTS, KQ_BANK_MAX_CENTS) ? cents : null;
+}
 export function getKqBankTerms(principalCents: number, rateBps: number) {
-  if (!integer(principalCents, KQ_BANK_MIN_CENTS, 1_000_000) || !integer(rateBps, 100, 1400)) throw new Error("Offre de prêt invalide.");
+  if (!integer(principalCents, KQ_BANK_MIN_CENTS, KQ_BANK_MAX_CENTS) || !integer(rateBps, 100, KQ_BANK_MAX_RATE_BPS)) throw new Error("Offre de prêt invalide.");
   const interestCents = Math.ceil(principalCents * rateBps / 10_000);
   const totalCents = principalCents + interestCents;
   const installments = Array.from({ length: KQ_BANK_TERM_DAYS }, (_, index) => Math.floor(totalCents * (index + 1) / KQ_BANK_TERM_DAYS) - Math.floor(totalCents * index / KQ_BANK_TERM_DAYS));
   return { interestCents, totalCents, installments };
 }
 function isLoan(value: unknown): value is KqBankLoan {
-  if (!object(value) || !isKqBankUuid(value.id) || !integer(value.principalCents, 10_000, 1_000_000)
-    || !integer(value.rateBps, 100, 1400) || !date(value.acceptedAt) || !date(value.dueAt)
+  if (!object(value) || !isKqBankUuid(value.id) || !integer(value.principalCents, KQ_BANK_MIN_CENTS, KQ_BANK_MAX_CENTS)
+    || !integer(value.rateBps, 100, KQ_BANK_MAX_RATE_BPS) || !date(value.acceptedAt) || !date(value.dueAt)
     || !(value.paidAt === null || date(value.paidAt)) || !integer(value.interestCents) || !integer(value.totalCents)
     || !integer(value.paidCents) || !integer(value.remainingCents) || !integer(value.overdueCents)
     || value.totalCents !== value.principalCents + value.interestCents || value.remainingCents !== value.totalCents - value.paidCents
@@ -67,15 +77,15 @@ export function isKqBankSnapshot(value: unknown): value is KqBankSnapshot {
   if (!object(value) || value.version !== 1 || !date(value.serverNow) || !integer(value.cashCents) || !integer(value.reputation)
     || !(value.eligibleAt === null || date(value.eligibleAt)) || !object(value.market) || !isKqBankUuid(value.market.id)
     || typeof value.market.scenario !== "string" || !Object.hasOwn(KQ_BANK_SCENARIOS, value.market.scenario)
-    || !integer(value.market.rateBps, 150, 1400) || !integer(value.market.changeBps, -1250, 1250)
+    || !integer(value.market.rateBps, 150, KQ_BANK_MAX_RATE_BPS) || !integer(value.market.changeBps, -1250, 1250)
     || !date(value.market.startsAt) || !date(value.market.expiresAt) || !integer(value.autoPaidCents)
     || typeof value.replayed !== "boolean" || !(value.loan === null || isLoan(value.loan))
     || !Array.isArray(value.history) || value.history.length > 3 || !value.history.every(isLoan)
     || ![null, "reputation", "experience", "active", "arrears"].includes(value.blockedReason as null)) return false;
   if (value.offer === null) return value.blockedReason !== null;
   return value.blockedReason === null && value.loan === null && object(value.offer) && value.offer.quoteId === value.market.id
-    && value.offer.minCents === KQ_BANK_MIN_CENTS && integer(value.offer.maxCents, KQ_BANK_MIN_CENTS, 1_000_000)
-    && integer(value.offer.rateBps, 100, 1400) && value.offer.termDays === 7 && date(value.offer.expiresAt);
+    && value.offer.minCents === KQ_BANK_MIN_CENTS && integer(value.offer.maxCents, KQ_BANK_MIN_CENTS, KQ_BANK_MAX_CENTS)
+    && integer(value.offer.rateBps, 100, KQ_BANK_MAX_RATE_BPS) && value.offer.termDays === 7 && date(value.offer.expiresAt);
 }
 export function getKqBankerDialogue(data: KqBankSnapshot) {
   if (data.blockedReason === "arrears") return `« ${data.reputation} points de réputation, mais une échéance en retard. Régularisons ton dossier avant de parler d’un autre prêt. »`;

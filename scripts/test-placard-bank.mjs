@@ -139,13 +139,23 @@ async function checked(owner) {
   assert.equal(Math.abs(balances.loan_payable ?? 0), view.loan?.remainingCents ?? 0);
   return view;
 }
-let isKqBankSnapshot;
+let isKqBankSnapshot, KQ_BANK_TIERS, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_RATE_BPS, KQ_BANK_MAX_REPAYMENT_CENTS, getKqBankTerms;
 try {
   await bootstrap(); await extendSchema();
   await db.exec(await migration('20260921000100_kq_business_calendar.sql'));
   await db.exec(await migration('20260921000200_kq_treasury_accounting.sql'));
   await db.exec(await migration('20260923000300_kq_bank_loans.sql'));
-  ({ isKqBankSnapshot } = await vite.ssrLoadModule('/src/lib/kanab-quest-bank.ts'));
+  ({ isKqBankSnapshot, KQ_BANK_TIERS, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_RATE_BPS, KQ_BANK_MAX_REPAYMENT_CENTS, getKqBankTerms } = await vite.ssrLoadModule('/src/lib/kanab-quest-bank.ts'));
+  const legacyOwner=await experienced(600), legacyOffer=await bank(legacyOwner);
+  const legacyCommand=borrow(legacyOffer,12345), legacyBefore=await bank(legacyOwner,legacyCommand);
+  await db.exec(await migration('20260923000700_kq_bank_investment_limits.sql'));
+  const legacyAfter=await checked(legacyOwner);
+  assert.deepEqual(legacyAfter.loan,legacyBefore.loan,'raising new lending limits never rewrites a signed small loan');
+  assert.equal(legacyAfter.cashCents,legacyBefore.cashCents);
+  const legacyReplay=await bank(legacyOwner,legacyCommand);
+  assert.equal(legacyReplay.replayed,true);
+  assert.deepEqual(legacyReplay.loan,legacyBefore.loan);
+  console.log('PASS: existing small loan, fixed interest, seven instalments and request receipt survive the limit migration unchanged.');
 
   const fresh = await player();
   const noRep = await experienced(199);
@@ -159,17 +169,48 @@ try {
   assert.equal((await bank(novice)).blockedReason, 'experience');
   console.log('PASS: server reputation and first completed-culture age gate.');
 
-  for (const [rep, cap, discount] of [[200, 50000, 0], [600, 200000, 50], [1500, 500000, 100], [3000, 1000000, 150]]) {
+  for (const [index,tier] of KQ_BANK_TIERS.entries()) {
+    const {reputation:rep,maxCents:cap,discountBps:discount}=tier;
     const owner = await experienced(rep); const view = await checked(owner);
     assert.equal(view.offer.maxCents, cap);
     assert.equal(view.offer.rateBps, Math.max(100, view.market.rateBps - discount));
     for (const amount of [9999, cap + 1, 1.2, 2147483647, -1]) await assert.rejects(() => bank(owner, borrow(view, amount)), /bank_invalid/);
     assert.equal((await bank(owner)).loan, null);
+    const beforeTier=await bank(await experienced(rep-1));
+    if(index===0) assert.equal(beforeTier.offer,null);
+    else assert.equal(beforeTier.offer.maxCents,KQ_BANK_TIERS[index-1].maxCents,'server keeps the preceding ceiling one reputation point below the next gate');
   }
   const rich = await experienced(3000, 2147483000), richView = await bank(rich);
   await assert.rejects(() => bank(rich, borrow(richView)), /bank_wallet_limit/);
   assert.equal(await cash(rich), 2147483000);
-  console.log('PASS: lending ceilings, rate discounts, rounding and integer overflow boundaries.');
+  console.log('PASS: SQL offers match TypeScript tiers, reputation boundaries, rate discounts and integer overflow guards.');
+
+  const highOwner=await experienced(KQ_BANK_TIERS.at(-1).reputation,KQ_BANK_MAX_REPAYMENT_CENTS-KQ_BANK_MAX_CENTS+1_000_000);
+  let highView=await bank(highOwner);
+  await db.query('UPDATE kq_bank_markets SET rate_bps=$2 WHERE id=$1',[highView.market.id,KQ_BANK_MAX_RATE_BPS]);
+  highView=await checked(highOwner);
+  assert.equal(highView.offer.maxCents,KQ_BANK_MAX_CENTS);
+  assert.equal(highView.offer.rateBps,KQ_BANK_MAX_RATE_BPS-KQ_BANK_TIERS.at(-1).discountBps);
+  const highInitial=highView.cashCents, highCommand=borrow(highView,KQ_BANK_MAX_CENTS);
+  await assert.rejects(()=>bank(highOwner,borrow(highView,KQ_BANK_MAX_CENTS+1)),/bank_invalid/);
+  await assert.rejects(()=>bank(highOwner,borrow(highView,KQ_BANK_MAX_REPAYMENT_CENTS+1)),/bank_invalid/);
+  highView=await bank(highOwner,highCommand);
+  const highTerms=getKqBankTerms(KQ_BANK_MAX_CENTS,highCommand.expectedRateBps);
+  assert.equal(highView.loan.interestCents,highTerms.interestCents);
+  assert.equal(highView.loan.totalCents,highTerms.totalCents);
+  assert(highView.loan.totalCents<=KQ_BANK_MAX_REPAYMENT_CENTS);
+  assert.deepEqual(highView.loan.schedule.map(item=>item.amountCents),highTerms.installments);
+  assert.equal(highView.cashCents,highInitial+KQ_BANK_MAX_CENTS);
+  await checked(highOwner);
+  assert.equal((await bank(highOwner,highCommand)).replayed,true);
+  const highRepayment={action:'repay',requestKey:randomUUID(),loanId:highView.loan.id,amountCents:highView.loan.totalCents};
+  const highPaid=await bank(highOwner,highRepayment);
+  assert.equal(highPaid.loan,null);
+  assert.equal(highPaid.cashCents,highInitial-highTerms.interestCents);
+  assert.equal(highPaid.history[0].paidCents,highTerms.totalCents);
+  assert.equal((await bank(highOwner,highRepayment)).replayed,true);
+  await checked(highOwner);
+  console.log('PASS: maximum investment loan at the highest market rate, exact instalments, large early repayment and replay preserve wallet/accounting.');
 
   const owner = await experienced(600);
   let view = await checked(owner);

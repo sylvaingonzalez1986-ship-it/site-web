@@ -4,7 +4,7 @@ Le bureau regroupe **Comptabilité**, **Banque** et **Gestion**, en conservant l
 
 ## Prêts de jeu
 
-Le premier prêt nécessite 200 points de réputation et une première culture terminée depuis au moins 24 heures réelles. Le banquier explique le refus, l’attente, l’offre ou le prêt en cours. Les plafonds sont de 500 / 2 000 / 5 000 / 10 000 € pour 200 / 600 / 1 500 / 3 000 points ; les trois derniers paliers réduisent le taux de 0,5 / 1 / 1,5 point.
+Le premier prêt nécessite 200 points de réputation et une première culture terminée depuis au moins 24 heures réelles. Le banquier explique le refus, l’attente, l’offre ou le prêt en cours. Les plafonds sont de 5 000 / 25 000 / 100 000 / 250 000 € pour 200 / 600 / 1 500 / 3 000 points ; les trois derniers paliers réduisent le taux de 0,5 / 1 / 1,5 point.
 
 Chaque journée UTC reçoit un scénario aléatoire persistant et commun à tous les joueurs : confiance, concurrence, stabilité, inflation ou tension. Le taux de base évolue dans une plage de 1,5 à 14 %, avec un taux proposé plancher de 1 % après réduction. Actualiser ne retire pas un nouveau scénario. La création a lieu à la première consultation de la journée, sans tâche cron.
 
@@ -80,3 +80,21 @@ La migration `20260923000600_kq_crypto_refresh_recovery.sql` distingue maintenan
 Les logos sont chargés depuis le CDN CoinMarketCap à partir de l’identifiant numérique de chaque actif. Ils sont visibles sur mobile et ordinateur, dans le marché, les positions et la fenêtre d’ordre. Un symbole de secours apparaît si l’image ne charge pas.
 
 Validation : 40 tests Vitest ciblés ; 13 groupes SQL isolés et 14 avec `node scripts/test-placard-crypto.mjs --live-quotes`, qui publie les 100 vrais cours, valide 100 aperçus puis exécute un achat/vente uniquement en mémoire ; vérification des permissions sur 241 migrations ; TypeScript et ESLint ciblés. L’audit navigateur couvre les logos, leur repli, les transactions et la reprise après cours périmés aux largeurs 320, 390, 768 et 1280 px.
+
+
+## Financement des équipements — base de la saison 1
+
+Les prêts passent de 500 / 2 000 / 5 000 / 10 000 € à **5 000 / 25 000 / 100 000 / 250 000 €**, aux mêmes seuils de réputation (200 / 600 / 1 500 / 3 000). Le catalogue actif comporte notamment le Plasmastatic à 22 800 € : avec les neuf améliorations jusqu’au niveau 10, son coût cumulé atteint 125 400 €. Le financement doit couvrir une installation et sa progression, pas seulement une petite dépense de trésorerie.
+
+Le plafond global des validateurs TypeScript découle du dernier palier. La migration `20260923000700_kq_bank_investment_limits.sql` aligne les contraintes de capital et d’intérêts, les commandes et les plafonds autorisés côté SQL. La migration a été appliquée à la base liée le 23 septembre ; le dry-run suivant confirme qu’elle est à jour. Les contrôles de réputation, d’expérience, de solde, de prêt unique et d’idempotence restent actifs. Les contrats déjà signés gardent leurs montants, taux et échéances.
+
+Le bureau met le plafond personnel en évidence, propose les raccourcis 25 %, 50 % et Maximum, accepte les montants à six chiffres en euros, y compris les espaces de milliers français lors d’un collage et affiche le montant des sept échéances avant signature. Le taux reste un coût total sur sept jours réels. Par exemple, 250 000 € au taux maximal applicable au meilleur palier (12,5 %) représentent 281 250 € à rendre : le joueur voit ce total et les prélèvements avant de signer. Aucune dette n’est créée automatiquement.
+
+### Orientation confirmée pour la saison 2
+
+La saison 1 constitue la base du système économique. La saison 2 doit permettre l’achat de terres à cultiver, l’installation de serres et le light dep (occultation des serres). Ces projets demanderont des financements plus lourds et des durées de remboursement adaptées à leur cycle de revenus. Les prix fonciers, les coûts d’aménagement, les critères de crédit et les échéanciers seront calibrés avec ces nouvelles mécaniques. Ce changement relève les prêts actuels ; il n’active pas encore les terrains ou les serres et ne prétend pas que les prêts sur sept jours seront adaptés au foncier.
+
+
+Validation de ces plafonds : 35 tests Vitest ciblés, 10 groupes PostgreSQL Banque, 13 groupes PostgreSQL Trésorerie et contrôle des permissions sur 242 migrations. Le test de migration signe un ancien petit prêt avant d’appliquer les nouveaux plafonds, puis vérifie que le contrat et son reçu sont identiques après migration. Les tests couvrent également chaque seuil de réputation, le centime au-dessus du plafond, le prêt maximal au taux de marché maximal, les remboursements élevés, les répétitions de requêtes et le rapprochement comptable. TypeScript et ESLint ciblés passent.
+
+L’audit navigateur complet passe sur 320, 390, 768 et 1280 px. Le parcours spécifique à 250 000 € passe sur 320 et 1280 px : raccourcis, plafond plus un centime refusé, collage français accepté, calcul des sept échéances, contrat centré, signature simulée et affichage du prêt actif sans débordement. Captures `bank-high-*` et rapport `output/placard-treasury/report.json`.

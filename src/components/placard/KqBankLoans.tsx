@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { BadgeCheck, ChevronDown, Landmark, RefreshCw, TrendingDown, TrendingUp } from "lucide-react";
-import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, KQ_BANK_SCENARIOS, KQ_BANK_TIERS, type KqBankCommand, type KqBankSnapshot } from "@/lib/kanab-quest-bank";
+import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, parseKqBankEuros, KQ_BANK_SCENARIOS, KQ_BANK_TIERS, type KqBankCommand, type KqBankSnapshot } from "@/lib/kanab-quest-bank";
 import styles from "./KqBankLoans.module.css";
 
 const euros = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
@@ -15,7 +15,7 @@ export function KqBankLoans() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [refresh, setRefresh] = useState(0);
-  const [amount, setAmount] = useState("100");
+  const [amount, setAmount] = useState("1000");
   const [draft, setDraft] = useState<Draft | null>(null);
   const [busy, setBusy] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -51,10 +51,12 @@ export function KqBankLoans() {
     document.addEventListener("visibilitychange", update);
     return () => { window.clearInterval(timer); window.removeEventListener("kq:equipment-updated", update); document.removeEventListener("visibilitychange", update); };
   }, []);
-  const amountCents = /^\d{1,5}(?:[.,]\d{1,2})?$/.test(amount) ? Math.round(Number(amount.replace(",", ".")) * 100) : 0;
+  const amountCents = parseKqBankEuros(amount) ?? 0;
   const offer = data?.offer;
   const validAmount = !!offer && amountCents >= offer.minCents && amountCents <= offer.maxCents;
   const terms = validAmount && offer ? getKqBankTerms(amountCents, offer.rateBps) : null;
+  const dailyMinCents = terms ? Math.min(...terms.installments) : 0;
+  const dailyMaxCents = terms ? Math.max(...terms.installments) : 0;
   function review(value: Draft) { setDraft(value); setError(""); dialog.current?.showModal(); }
   async function confirm() {
     if (!draft || inFlight.current) return;
@@ -90,11 +92,15 @@ export function KqBankLoans() {
         <p>{data.market.changeBps === 0 && data.market.scenario !== "steady" ? `Le taux reste à son ${data.market.rateBps === 150 ? "plancher" : "plafond"} malgré ce scénario.` : scenario.description}</p><small>Conditions communes du jour · prochain scénario le {date(data.market.expiresAt)}. Tirage quotidien à minuit UTC.</small>
       </div>
       {offer ? <div className={styles.offer}>
-        <div className={styles.offerHeading}><span>Offre réservée à ton dossier</span><strong>{percent(offer.rateBps)}<small>coût total sur 7 jours réels</small></strong></div>
+        <div className={styles.offerHeading}><div className={styles.offerLimit}><span>Ton plafond personnel</span><strong id="bank-personal-limit">{euros(offer.maxCents)}</strong><small>{data.reputation.toLocaleString("fr-FR")} points de réputation · euros de jeu</small></div><strong>{percent(offer.rateBps)}<small>coût total sur 7 jours réels</small></strong></div>
         <label htmlFor="bank-loan-amount">Capital à emprunter · euros de jeu</label>
         <div className={styles.amount}><input id="bank-loan-amount" inputMode="decimal" value={amount} onChange={event => setAmount(event.target.value)} aria-describedby="bank-amount-bounds" /><span>€</span></div>
+        <div className={styles.amountPresets} role="group" aria-label="Choisir un montant de prêt">{([{ label: "25 %", share: .25 }, { label: "50 %", share: .5 }, { label: "Maximum", share: 1 }] as const).map(preset => {
+          const cents = Math.min(offer.maxCents, Math.max(offer.minCents, Math.round(offer.maxCents * preset.share)));
+          return <button type="button" key={preset.label} disabled={busy} aria-pressed={amountCents === cents} aria-label={`${preset.label} du plafond : ${euros(cents)}`} onClick={() => setAmount((cents / 100).toFixed(2))}>{preset.label}</button>;
+        })}</div>
         <small id="bank-amount-bounds">De {euros(offer.minCents)} à {euros(offer.maxCents)} · offre valable jusqu’au {date(offer.expiresAt)}.</small>
-        {terms ? <dl className={styles.totals}><div><dt>Capital reçu</dt><dd>{euros(amountCents)}</dd></div><div><dt>Intérêts fixes</dt><dd>{euros(terms.interestCents)}</dd></div><div><dt>Total à rendre</dt><dd>{euros(terms.totalCents)}</dd></div></dl> : <p className={styles.hint}>Choisis un montant dans les limites de ton dossier, avec deux décimales maximum.</p>}
+        {terms ? <><div className={styles.dailyRepayment} id="bank-daily-repayment"><small>7 échéances · toutes les 24 heures réelles</small><strong>{dailyMinCents === dailyMaxCents ? euros(dailyMinCents) : `${euros(dailyMinCents)} à ${euros(dailyMaxCents)}`}</strong><span>par jour, à partir de demain. Le contrat détaille les sept prélèvements.</span></div><dl className={styles.totals}><div><dt>Capital reçu</dt><dd>{euros(amountCents)}</dd></div><div><dt>Intérêts fixes</dt><dd>{euros(terms.interestCents)}</dd></div><div><dt>Total à rendre</dt><dd>{euros(terms.totalCents)}</dd></div></dl></> : <p className={styles.hint}>Choisis un montant dans les limites de ton dossier, avec deux décimales maximum.</p>}
         <button type="button" className={styles.primary} disabled={!terms || busy} onClick={() => { if (offer && terms) review({ action: "borrow", quoteId: offer.quoteId, amountCents, expectedRateBps: offer.rateBps }); }}>Examiner le contrat</button>
       </div> : null}
       {data.blockedReason === "experience" && data.eligibleAt ? <p className={styles.hint}>Ton ancienneté sera suffisante le {date(data.eligibleAt)}.</p> : null}

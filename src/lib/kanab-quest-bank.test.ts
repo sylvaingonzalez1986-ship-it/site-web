@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, parseKqBankCommand, type KqBankSnapshot } from "./kanab-quest-bank";
+import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, parseKqBankCommand, parseKqBankEuros, KQ_BANK_TIERS, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_REPAYMENT_CENTS, type KqBankSnapshot } from "./kanab-quest-bank";
 const id = "12345678-1234-4123-8123-123456789abc";
 export const bankFixture = (): KqBankSnapshot => ({
   version: 1, serverNow: "2026-09-23T12:00:00Z", cashCents: 35000, reputation: 200,
   eligibleAt: "2026-09-21T12:00:00Z", market: { id, scenario: "confidence", rateBps: 500, changeBps: -150, startsAt: "2026-09-23T00:00:00Z", expiresAt: "2026-09-24T00:00:00Z" },
-  offer: { quoteId: id, minCents: 10000, maxCents: 50000, rateBps: 500, termDays: 7, expiresAt: "2026-09-24T00:00:00Z" },
+  offer: { quoteId: id, minCents: 10000, maxCents: KQ_BANK_TIERS[0].maxCents, rateBps: 500, termDays: 7, expiresAt: "2026-09-24T00:00:00Z" },
   blockedReason: null, loan: null, history: [], autoPaidCents: 0, replayed: false,
 });
 describe("bank contracts", () => {
@@ -12,8 +12,33 @@ describe("bank contracts", () => {
     const value = { action: "borrow", requestKey: id, quoteId: id, amountCents: 10000, expectedRateBps: 500 };
     expect(parseKqBankCommand({ ...value, userId: "victim", interestCents: 0 })).toEqual(value);
   });
-  it.each([0, 9999, 1000001, 10000.5, Number.MAX_SAFE_INTEGER, "10000", null])("rejects invalid amount %s", amountCents => {
+  it.each([0, 9999, KQ_BANK_MAX_CENTS + 1, 10000.5, Number.MAX_SAFE_INTEGER, "10000", null])("rejects invalid amount %s", amountCents => {
     expect(parseKqBankCommand({ action: "borrow", requestKey: id, quoteId: id, amountCents, expectedRateBps: 500 })).toBeNull();
+  });
+  it.each(KQ_BANK_TIERS)("accepts an investment at the $reputation-point tier", tier => {
+    const amountCents = tier.maxCents;
+    expect(parseKqBankCommand({ action: "borrow", requestKey: id, quoteId: id, amountCents, expectedRateBps: 1400 })?.amountCents).toBe(amountCents);
+    const terms = getKqBankTerms(amountCents, 1400);
+    const exactInterest = Number((BigInt(amountCents) * BigInt(1400) + BigInt(9999)) / BigInt(10000));
+    expect(terms.interestCents).toBe(exactInterest);
+    expect(terms.installments.reduce((a, b) => a + b, 0)).toBe(amountCents + exactInterest);
+    expect(Math.max(...terms.installments) - Math.min(...terms.installments)).toBeLessThanOrEqual(1);
+    expect(isKqBankSnapshot({ ...bankFixture(), reputation: tier.reputation, offer: { ...bankFixture().offer!, maxCents: amountCents } })).toBe(true);
+  });
+  it("accepts repayment of the largest contractual debt and rejects one extra cent", () => {
+    const repayment = { action: "repay", requestKey: id, loanId: id, amountCents: KQ_BANK_MAX_REPAYMENT_CENTS };
+    expect(parseKqBankCommand(repayment)).toEqual(repayment);
+    expect(parseKqBankCommand({ ...repayment, amountCents: KQ_BANK_MAX_REPAYMENT_CENTS + 1 })).toBeNull();
+    expect(getKqBankTerms(KQ_BANK_MAX_CENTS, 1400).totalCents).toBe(KQ_BANK_MAX_REPAYMENT_CENTS);
+    expect(() => getKqBankTerms(KQ_BANK_MAX_CENTS + 1, 1400)).toThrow();
+  });
+  it("parses six-digit euro inputs exactly without accepting scientific notation or excess decimals", () => {
+    expect(parseKqBankEuros("100000,01")).toBe(10_000_001);
+    expect(parseKqBankEuros(" 100000.01 ")).toBe(10_000_001);
+    for (const amount of ["100 000,01", "100\u00a0000,01", "100\u202f000,01"]) expect(parseKqBankEuros(amount)).toBe(10_000_001);
+    expect(parseKqBankEuros(String(KQ_BANK_MAX_CENTS / 100))).toBe(KQ_BANK_MAX_CENTS);
+    expect(parseKqBankEuros((KQ_BANK_MAX_CENTS / 100 + 0.01).toFixed(2))).toBeNull();
+    for (const amount of ["99.99", "-100", "1e5", "100.001", "", "10000000", "100 000foo", "1 00 000", "10 00", "0 100", "100.000,00"]) expect(parseKqBankEuros(amount)).toBeNull();
   });
   it("rejects missing request identity, forged rates and loan identifiers", () => {
     expect(parseKqBankCommand({ action: "borrow", quoteId: id, amountCents: 10000, expectedRateBps: 500 })).toBeNull();
@@ -52,6 +77,6 @@ describe("bank contracts", () => {
     expect(getKqBankerDialogue({ ...bankFixture(), reputation: 80, blockedReason: "reputation" })).toContain("80 points");
     expect(getKqBankerDialogue({ ...bankFixture(), blockedReason: "experience" })).toContain("24 heures");
     expect(getKqBankerDialogue({ ...bankFixture(), blockedReason: "arrears" })).toContain("retard");
-    expect(getKqBankerDialogue(bankFixture())).toContain("500 €");
+    expect(getKqBankerDialogue(bankFixture())).toContain("5\u202f000 €");
   });
 });
