@@ -44,8 +44,8 @@ const ledgerLabels: Record<string, string> = {
   "advertising-ended": "Campagne publicitaire terminée", "vat-paid": "TVA reversée", "lab-issued": "Analyse facturée", "lab-paid": "Analyse réglée", "domicile-paid": "Domiciliation extérieure réglée", "domicile-expired": "Domiciliation extérieure suspendue", "domicile-home": "Domiciliation à domicile",
 };
 
-export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, expanded = false }: {
-  data: KqCommerceSnapshot; now?: number; busy: boolean; onAsk: Ask; onOpenShop: () => void; expanded?: boolean;
+export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, expanded = false, showAccounting = true }: {
+  data: KqCommerceSnapshot; now?: number; busy: boolean; onAsk: Ask; onOpenShop: () => void; expanded?: boolean; showAccounting?: boolean;
 }) {
   const business = data.business;
   if (!business) return null;
@@ -65,7 +65,7 @@ export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, e
       <summary><Store size={24} aria-hidden="true" /><span><strong>{shop.name ?? "Construis ton commerce"}</strong><small>{shop.createdAt ? active ? "Site ouvert · publicité et échéances" : "Site suspendu · réactive tes ventes en ligne" : "Économise pour ouvrir ton site · objectif 1 000 €"}</small></span><ChevronDown className={styles.chevron} size={22} aria-hidden="true" /></summary>
       <div className={styles.content}>
         <p className={styles.timeNote}>Le calendrier continue hors connexion. Les ventes se font lorsque tu joues ; les abonnements, publicités et factures suivent le temps réel.</p>
-        <div className={styles.columns}>
+        <div className={styles.columns} data-management-only={!showAccounting}>
           <section className={styles.shop} aria-label="Ton site internet">
             <header><Store size={22} aria-hidden="true" /><h2>{shop.createdAt ? "Ton site internet" : "Ton prochain investissement"}</h2><span className={styles.badge} data-active={active}>{shop.createdAt ? active ? "Ouvert" : "Suspendu" : "À financer"}</span></header>
             {!shop.createdAt ? <>
@@ -84,7 +84,7 @@ export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, e
               <details className={styles.rename}><summary>Modifier le nom du shop</summary><ShopNameForm key={shop.name} name={shop.name} busy={busy} canCreate={false} onAsk={onAsk} now={now} /></details>
             </>}
           </section>
-          <section className={styles.accounts} aria-label="Charges et échéances">
+          {showAccounting ? <section className={styles.accounts} aria-label="Charges et échéances">
             <header><Wallet size={22} aria-hidden="true" /><h2>Ta trésorerie</h2></header>
             <dl className={styles.balances}><div><dt>Disponible pour tes achats</dt><dd>{formatKqCash(data.cashCents)}</dd></div><div><dt>TVA mise de côté</dt><dd>{formatKqCash(vat.reservedCents)}</dd></div><div><dt>Analyses restant à payer</dt><dd>{formatKqCash(lab.outstandingCents)}</dd></div>{lab.overdueCents > 0 ? <div className={styles.overdue}><dt>Dont analyses échues</dt><dd>{formatKqCash(lab.overdueCents)}</dd></div> : null}<div><dt>Électricité et soins restant dus</dt><dd>{formatKqCash(data.electricityOutstandingCents)}</dd></div></dl>
             <div className={styles.tax}><h3><ReceiptText size={18} aria-hidden="true" /> TVA de jeu · {vat.ratePercent} %</h3><p>Incluse dans les prix TTC et réservée à chaque vente : sur 120 € encaissés, 20 € sont mis de côté. Cette réserve est séparée de ta trésorerie.</p><div className={styles.dueRow}><span>Prochain reversement automatique</span><Deadline at={vat.nextSettlementAt} now={now} /></div><small>{formatKqCash(vat.paidCents)} déjà reversés. Aucun second débit de ta trésorerie au reversement.</small></div>
@@ -92,7 +92,7 @@ export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, e
               {invoices.length ? <ul className={styles.invoices}>{invoices.map((invoice, index) => <li key={invoice.id}><div><strong>Analyse · {formatKqCash(invoice.remainingCents)}</strong><small>Facturée le {dateLabel(invoice.issuedAt)}{invoice.remainingCents < invoice.amountCents ? " · reste à régler" : ""}</small></div><Deadline at={invoice.dueAt} now={now} /><button className={styles.secondary} disabled={busy || data.cashCents < invoice.remainingCents} aria-label={`Régler l’analyse ${index + 1} de ${formatKqCash(invoice.remainingCents)}`} onClick={() => onAsk("Régler l’analyse", `Règlement du solde de l’analyse facturée le ${dateLabel(invoice.issuedAt)}. Cette facture ne sera pas prélevée une seconde fois.`, { action: "pay-lab", invoiceId: invoice.id }, invoice.remainingCents)}>Régler</button></li>)}</ul> : <small>Aucune analyse à régler.</small>}
               {lab.overdueCents > 0 ? <p className={styles.overdue}>Les analyses échues sont remboursées en priorité sur tes prochaines ventes. Avec l’électricité, la retenue est limitée à 50 % de la recette après TVA.</p> : null}
             </div>
-          </section>
+          </section> : null}
         </div>
         <section className={styles.domiciliation} aria-label="Domiciliation du commerce"><header><Store size={22} aria-hidden="true" /><h2>L’adresse de ton commerce</h2></header><p>La domiciliation détermine l’exposition de tes cultures au vol. Le choix s’applique aux prochaines cultures ; celles déjà lancées gardent leurs conditions.</p>
           <div className={styles.addressChoices}>

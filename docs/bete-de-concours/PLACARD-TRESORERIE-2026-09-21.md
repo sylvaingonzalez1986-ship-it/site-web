@@ -9,6 +9,45 @@ le compte de résultat, le bilan de gestion, le journal comptable et la gestion
 du shop, des publicités, de la domiciliation, de la TVA et des analyses.
 Le Marché conserve la préparation des lots, les circuits de vente et leurs devis.
 
+## Réorganisation du bureau — 23 septembre 2026
+
+L’entrée Trésorerie ouvre désormais **Le Bureau**, avec trois nouvelles scènes dans la direction artistique existante,
+avec trois pôles :
+
+- **Comptabilité** : factures et échéances (vue initiale), synthèse, bilan et
+  résultat, journal paginé, plan comptable consultable et recherchable.
+- **Banque** : banquier et prêts conditionnés par la réputation, livret existant
+  pour les Trésoriers, dépôts/retraits et portefeuille crypto aux cours réels.
+- **Gestion** : site internet, publicité et domiciliation, avec les confirmations
+  et les règles économiques déjà présentes.
+
+Le plan conserve les 28 comptes existants et ajoute cinq comptes pour les
+prêts et cryptoactifs, regroupés en actif, dettes, capitaux propres, produits,
+charges et mouvements à classer. Les traitements existants sont conservés. Les soldes du plan sont cumulés
+à la fin de la période sélectionnée ; le compte de résultat reste propre à la
+période.
+
+Les factures de laboratoire indiquent émission, échéance, montant initial et
+solde, avec les états « À régler », « Partiellement réglée » et « Échue ».
+L’électricité et les soins conservent leur règlement global sécurisé par le
+montant attendu ; seules les dernières factures détaillées sont fournies par
+l’API énergie. La TVA déjà réservée et les futurs abonnements sont séparés des
+impayés. Les analyses soldées restent consultables dans le journal : l’API
+commerciale ne renvoie que les analyses encore dues.
+
+Les prêts nécessitent 200 points de réputation et une première culture terminée
+depuis 24 heures. Un scénario quotidien fait évoluer les nouvelles offres ; les
+contrats signés gardent leur coût fixe sur sept jours. Le marché crypto emploie
+les cours EUR du top 100 CoinMarketCap avec la monnaie de jeu. Les trois migrations
+complémentaires et les règles sont détaillées dans [Banque et crypto](PLACARD-BANQUE-CRYPTO-2026-09-23.md).
+Les droits au livret Trésorier sont conservés.
+
+Les audits locaux utilisent des données synthétiques et n’écrivent sur aucun
+compte réel. `audit-placard-treasury.mjs` couvre les trois pôles, les 33 comptes,
+les factures, les paiements, le livret, les erreurs, le clavier et quatre largeurs
+(320, 390, 768, 1 280 px). `audit-placard-business.mjs` conserve la vérification
+des opérations de gestion et de leurs confirmations après séparation des pôles.
+
 ## Principes retenus
 
 Tous les montants sont des euros virtuels. Les comptes suivent les mouvements
@@ -158,3 +197,8 @@ n’exécutent aucune opération sur le compte d’un joueur.
 
 La migration ne déploie pas le code de l’interface. Les tests navigateur locaux
 ne constituent pas une validation du parcours connecté en production.
+
+
+## Évolution du bureau — 23 septembre 2026
+
+La trésorerie devient un bureau en trois pôles : Comptabilité (factures, synthèse, comptes, journal et plan), Banque (prêts selon réputation, livret, crypto) et Gestion (site, publicité, domiciliation). Le plan comprend désormais 33 comptes. Les règles des prêts, cours CoinMarketCap, migrations complémentaires et illustrations sont décrits dans [Bureau — banque et crypto](PLACARD-BANQUE-CRYPTO-2026-09-23.md). Les vérifications et le déploiement cités ci-dessus concernent la version du 21 septembre ; les trois nouvelles migrations Banque/Crypto ont ensuite été appliquées le 23 septembre sur demande de l’utilisateur, avec vérification des fonctions et permissions réussie.

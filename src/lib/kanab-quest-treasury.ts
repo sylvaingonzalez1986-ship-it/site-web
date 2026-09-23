@@ -3,6 +3,7 @@ export const KQ_TREASURY_ACCOUNTS = {
   cash: "Trésorerie disponible",
   vat_reserve: "Trésorerie réservée à la TVA",
   savings: "Épargne",
+  crypto_assets: "Cryptoactifs au coût d’acquisition",
   equipment: "Matériel — valeur nette",
   website: "Site internet — valeur nette",
   stock: "Stocks au coût de production",
@@ -10,6 +11,7 @@ export const KQ_TREASURY_ACCOUNTS = {
   lab_payable: "Analyses à payer",
   energy_payable: "Électricité et soins à payer",
   vat_payable: "TVA à reverser",
+  loan_payable: "Emprunts bancaires restant dus",
   opening_equity: "Situation nette à l’ouverture",
   capital: "Apports et dotations de jeu",
   suspense: "Mouvements à classer",
@@ -18,6 +20,7 @@ export const KQ_TREASURY_ACCOUNTS = {
   revenue_wholesale: "Ventes aux grossistes HT",
   revenue_rewards: "Primes d’activité",
   revenue_interest: "Intérêts d’épargne",
+  revenue_crypto_gains: "Gains réalisés sur les cryptoactifs",
   expense_lab: "Analyses laboratoire",
   expense_energy: "Électricité et soins",
   expense_processing: "Transformation",
@@ -28,6 +31,8 @@ export const KQ_TREASURY_ACCOUNTS = {
   expense_depreciation: "Amortissements",
   stock_variation: "Variation des stocks",
   expense_other: "Autres charges",
+  expense_loan_interest: "Intérêts des emprunts",
+  expense_crypto_losses: "Pertes réalisées sur les cryptoactifs",
 } as const;
 
 export type KqTreasuryAccount = keyof typeof KQ_TREASURY_ACCOUNTS;
@@ -52,6 +57,7 @@ export type KqTreasurySnapshot = {
   checks: {
     walletCashCents: number; vatReserveCents: number; savingsCents: number;
     labDebtCents: number; energyDebtCents: number; vatDebtCents: number;
+    loanDebtCents?: number; cryptoCostCents?: number;
   };
 };
 
@@ -59,13 +65,15 @@ export const KQ_TREASURY_PERIODS: Record<KqTreasuryPeriod, string> = {
   current: "Mois de jeu en cours", previous: "Mois de jeu précédent", all: "Depuis l’ouverture",
 };
 export const KQ_TREASURY_REVENUE_ACCOUNTS: KqTreasuryAccount[] = [
-  "revenue_online", "revenue_shop", "revenue_wholesale", "revenue_rewards", "revenue_interest",
+  "revenue_online", "revenue_shop", "revenue_wholesale", "revenue_rewards", "revenue_interest", "revenue_crypto_gains",
 ];
 export const KQ_TREASURY_EXPENSE_ACCOUNTS: KqTreasuryAccount[] = [
   "expense_lab", "expense_energy", "expense_processing", "expense_hosting", "expense_advertising",
-  "expense_domiciliation", "expense_maintenance", "expense_depreciation", "stock_variation", "expense_other",
+  "expense_domiciliation", "expense_maintenance", "expense_depreciation", "stock_variation", "expense_other", "expense_loan_interest", "expense_crypto_losses",
 ];
 export const KQ_TREASURY_ENTRY_LABELS: Record<string, string> = {
+  "loan-issued": "Versement du prêt", "loan-interest": "Intérêts du prêt", "loan-repayment": "Remboursement du prêt",
+  "crypto-buy": "Achat de cryptoactifs", "crypto-sell": "Vente de cryptoactifs",
   opening: "Ouverture des comptes", cash: "Mouvement de trésorerie", sale: "Vente",
   "vat-reserve": "Mise en réserve de TVA", "vat-paid": "Reversement de TVA",
   "lab-issued": "Facture laboratoire", "lab-paid": "Règlement laboratoire",
@@ -85,8 +93,8 @@ export const KQ_TREASURY_ENTRY_LABELS: Record<string, string> = {
 };
 
 export type KqTreasuryLine = { account: string; label: string; cents: number };
-const ASSETS: KqTreasuryAccount[] = ["cash", "vat_reserve", "savings", "equipment", "website", "stock", "prepaid"];
-const DEBTS: KqTreasuryAccount[] = ["lab_payable", "energy_payable", "vat_payable"];
+const ASSETS: KqTreasuryAccount[] = ["cash", "vat_reserve", "savings", "crypto_assets", "equipment", "website", "stock", "prepaid"];
+const DEBTS: KqTreasuryAccount[] = ["lab_payable", "energy_payable", "vat_payable", "loan_payable"];
 const total = (values: number[]) => values.reduce((sum, amount) => {
   const next = sum + amount;
   if (!Number.isSafeInteger(next)) throw new Error("Montants comptables hors limites.");
@@ -133,17 +141,21 @@ export function getKqTreasuryReport(data: KqTreasurySnapshot) {
     lab: -balance(closing, "lab_payable") - data.checks.labDebtCents,
     energy: -balance(closing, "energy_payable") - data.checks.energyDebtCents,
     vat: -balance(closing, "vat_payable") - data.checks.vatDebtCents,
+    loan: -balance(closing, "loan_payable") - (data.checks.loanDebtCents ?? 0),
+    crypto: balance(closing, "crypto_assets") - (data.checks.cryptoCostCents ?? 0),
   };
   // Source checks refer to live balances; a previous-month balance is historical.
   const reconciled = data.period.key === "previous" ? null : Object.values(sourceDifferences).every(value => value === 0);
   return {
     income: { revenues, expenses, revenueCents, expenseCents, resultCents,
       salesHtCents: credit(sumAccounts(movement, ["revenue_online", "revenue_shop", "revenue_wholesale"])),
-      operatingResultCents: resultCents + balance(movement, "revenue_interest") },
+      operatingResultCents: resultCents + balance(movement, "revenue_interest") + balance(movement, "revenue_crypto_gains")
+        + balance(movement, "expense_loan_interest") + balance(movement, "expense_crypto_losses") },
     balanceSheet: { assets, debts, equity, assetsCents, debtCents, equityCents,
       liabilitiesCents: debtCents + equityCents, differenceCents: assetsCents - debtCents - equityCents },
     cash: { availableCents: cashCents, reservedVatCents: balance(closing, "vat_reserve"),
-      savingsCents: balance(closing, "savings"), unpaidCents, afterDebtCents: cashCents - unpaidCents,
+      savingsCents: balance(closing, "savings"), loanDebtCents: credit(balance(closing, "loan_payable")),
+      cryptoCostCents: balance(closing, "crypto_assets"), unpaidCents, afterDebtCents: cashCents - unpaidCents,
       openingCents: balance(data.openingBalances, "cash"), changeCents: balance(movement, "cash"),
       inflowsCents: total(data.series.map(point => point.inflowsCents)),
       outflowsCents: total(data.series.map(point => point.outflowsCents)) },
@@ -176,6 +188,7 @@ export function isKqTreasurySnapshot(value: unknown): value is KqTreasurySnapsho
     || !Array.isArray(value.journal.items) || !natural(value.journal.total) || !natural(value.journal.offset)
     || !natural(value.journal.limit) || (value.journal.limit as number) < 1 || (value.journal.limit as number) > 100
     || value.journal.items.length > (value.journal.limit as number)) return false;
+  if (["loanDebtCents", "cryptoCostCents"].some(key => (value.checks as Record<string, unknown>)[key] !== undefined && !natural((value.checks as Record<string, unknown>)[key]))) return false;
   if (value.unclassified !== undefined && (!object(value.unclassified) || !natural(value.unclassified.transactions)
     || !money(value.unclassified.netCents) || !natural(value.unclassified.absoluteCents))) return false;
   if (!value.series.every(point => object(point) && date(point.from) && date(point.to)

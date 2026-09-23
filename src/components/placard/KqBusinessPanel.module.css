@@ -19,6 +19,8 @@
 .content { padding: 0 20px 22px; }
 .timeNote { margin: 0 0 20px; color: #b7d4c4; font-size: .75rem; line-height: 1.6; }
 .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.columns[data-management-only="true"] { grid-template-columns: 1fr; }
+.columns[data-management-only="true"] .shop { background: #003d2d; }
 .shop, .accounts { min-width: 0; padding: 20px; background: #003d2d; border-top: 2px solid #71e3c9; }
 .accounts { background: #00281f; border-top-color: #f4c43d; }
 .content header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }

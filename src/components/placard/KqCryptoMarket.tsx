@@ -1,0 +1,125 @@
+"use client";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ArrowDownLeft, ArrowUpRight, ChartNoAxesCombined, RefreshCw, Search, Wallet } from "lucide-react";
+import { formatKqCryptoQuantity, isKqCryptoOrder, isKqCryptoQuoteFresh, isKqCryptoSnapshot, isKqCryptoTrade, isRecord, parseKqCryptoEuros, type KqCryptoAsset, type KqCryptoOrder, type KqCryptoSnapshot } from "@/lib/kanab-quest-crypto";
+import styles from "./KqCryptoMarket.module.css";
+const euros = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
+const price = (value: string) => Number(value).toLocaleString("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: Number(value) < 1 ? 18 : 2 });
+const quantityLabel = formatKqCryptoQuantity;
+const dateLabel = (value: string) => new Date(value).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => void } = {}) {
+ const [data, setData] = useState<KqCryptoSnapshot | null>(null);
+ const [error, setError] = useState("");
+ const [message, setMessage] = useState("");
+ const [loading, setLoading] = useState(false);
+ const [busy, setBusy] = useState(false);
+ const [tab, setTab] = useState<"market" | "portfolio">("market");
+ const [search, setSearch] = useState("");
+ const [page, setPage] = useState(0);
+ const [selected, setSelected] = useState<{ asset: KqCryptoAsset; side: "buy" | "sell" } | null>(null);
+ const [amount, setAmount] = useState("100");
+ const [quantity, setQuantity] = useState("");
+ const [order, setOrder] = useState<KqCryptoOrder | null>(null);
+ const [confirmAttempted, setConfirmAttempted] = useState(false);
+ const [clock, setClock] = useState(() => Date.now());
+ const [serverOffset, setServerOffset] = useState(0);
+ const mutationInFlight = useRef(false);
+ const loadVersion = useRef(0);
+ const cashCentsRef = useRef<number | null>(null);
+ const notifyingWallet = useRef(false);
+ const reload = useCallback(async (signal?: AbortSignal) => {
+  if (mutationInFlight.current) return;
+  const version = ++loadVersion.current;
+  setLoading(true);
+  try {
+   const response = await fetch("/api/arena/placard/crypto", { cache: "no-store", signal });
+   const body: unknown = await response.json();
+   if (!response.ok || !isKqCryptoSnapshot(body)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "Le marché crypto est indisponible.");
+   if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) {
+    const cashChanged = cashCentsRef.current !== null && cashCentsRef.current !== body.cashCents;
+    cashCentsRef.current = body.cashCents;
+    setData(body); setServerOffset(Date.parse(body.serverNow) - Date.now()); setError("");
+    if (cashChanged) {
+     // A polling read can settle due loan instalments. Notify the other panels
+     // after updating our reference, without fetching our own snapshot again.
+     notifyingWallet.current = true;
+     try { window.dispatchEvent(new Event("kq:equipment-updated")); window.dispatchEvent(new Event("kq:treasury-updated")); }
+     finally { notifyingWallet.current = false; }
+    }
+   }
+  } catch (cause) { if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) setError(cause instanceof Error ? cause.message : "Le marché crypto est indisponible."); }
+  finally { if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) setLoading(false); }
+ }, []);
+ useEffect(() => { const controller = new AbortController(); void reload(controller.signal);
+  const interval = window.setInterval(() => { if (!document.hidden) void reload(controller.signal); }, 60_000);
+  const update = () => { if (!notifyingWallet.current) void reload(controller.signal); };
+  window.addEventListener("kq:equipment-updated", update);
+  return () => { controller.abort(); window.clearInterval(interval); window.removeEventListener("kq:equipment-updated", update); };
+ }, [reload]);
+ useEffect(() => { const interval = window.setInterval(() => setClock(Date.now()), 1000); return () => window.clearInterval(interval); }, []);
+ const now = clock + serverOffset;
+ const positionFor = (assetId: number) => data?.positions.find(p => p.assetId === assetId);
+ const canTrade = (asset: KqCryptoAsset) => Boolean(data && ["live", "stale"].includes(data.marketStatus) && isKqCryptoQuoteFresh(asset.quotedAt, now));
+ const select = (asset: KqCryptoAsset, side: "buy" | "sell") => {
+  setSelected({ asset, side }); setOrder(null); setConfirmAttempted(false); setError(""); setMessage(""); setQuantity(positionFor(asset.id)?.quantity ?? "");
+ };
+ async function preview() {
+  if (!selected || mutationInFlight.current) return;
+  const amountCents = parseKqCryptoEuros(amount);
+  if (selected.side === "buy" && amountCents === null) { setError("Entre un montant entre 1 € et 1 000 000 €, avec deux décimales au maximum."); return; }
+  mutationInFlight.current = true; ++loadVersion.current; setLoading(false);
+  setBusy(true); setError(""); setMessage("");
+  try {
+   const response = await fetch("/api/arena/placard/crypto", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "preview", side: selected.side, assetId: selected.asset.id, ...(selected.side === "buy" ? { amountCents } : { quantity: quantity.replace(",", ".") }) }) });
+   const body: unknown = await response.json();
+   if (!response.ok || !isKqCryptoOrder(body)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "L’ordre n’a pas pu être préparé.");
+   setOrder(body); setConfirmAttempted(false);
+  } catch (cause) { setError(cause instanceof Error ? cause.message : "L’ordre n’a pas pu être préparé."); }
+  finally { mutationInFlight.current = false; setBusy(false); }
+ }
+ async function confirm() {
+  if (!order || mutationInFlight.current) return;
+  mutationInFlight.current = true; ++loadVersion.current; setLoading(false);
+  setBusy(true); setConfirmAttempted(true); setError("");
+  try {
+   const response = await fetch("/api/arena/placard/crypto", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "confirm", orderId: order.orderId }) });
+   const body: unknown = await response.json();
+   if (!response.ok || !isRecord(body) || !isKqCryptoTrade(body.trade)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "Confirmation non reçue. Réessaie cet ordre pour vérifier son exécution.");
+   setMessage(`${body.trade.side === "buy" ? "Achat" : "Vente"} enregistré : ${euros(body.trade.amountCents)} de jeu.`);
+   setOrder(null); setSelected(null); setConfirmAttempted(false);
+   cashCentsRef.current = body.trade.cashAfterCents;
+   window.dispatchEvent(new Event("kq:equipment-updated")); window.dispatchEvent(new Event("kq:treasury-updated")); onWalletRefresh?.(); mutationInFlight.current = false; await reload();
+  } catch (cause) { setError(cause instanceof Error ? cause.message : "Confirmation non reçue. Réessaie cet ordre."); }
+  finally { mutationInFlight.current = false; setBusy(false); }
+ }
+ const rows = data?.assets.filter(asset => asset.inTop100 && `${asset.name} ${asset.symbol}`.toLocaleLowerCase("fr").includes(search.toLocaleLowerCase("fr"))) ?? [];
+ const pages = Math.max(1, Math.ceil(rows.length / 10));
+ const secondsLeft = order ? Math.max(0, Math.ceil((Date.parse(order.expiresAt) - now) / 1000)) : 0;
+ const totalValue = data?.positions.every(p => p.valueCents !== null) ? data.positions.reduce((sum, p) => sum + (p.valueCents ?? 0), 0) : null;
+ return <section className={styles.market} aria-label="Comptoir crypto" data-testid="crypto-market">
+  <header className={styles.header}><div className={styles.icon}><ChartNoAxesCombined size={36} aria-hidden="true" /></div><div><small>Les placements du placard</small><h3>Le comptoir crypto</h3><p>Les vrais cours. Ton argent de jeu.</p></div><span className={styles.stamp}>TOP 100<br />COINMARKETCAP</span></header>
+  <p className={styles.disclaimer}>Portefeuille virtuel : tu places uniquement tes euros de jeu. Les cours réels en euros peuvent monter ou baisser ; aucun achat de cryptomonnaie réelle.</p>
+  <div className={styles.status}><span><i data-live={data?.marketStatus === "live"} />{data?.marketStatus === "live" ? "Cours disponibles" : data?.marketStatus === "stale" ? "Derniers cours connus · certaines opérations suspendues" : "Connexion au marché en attente"}{data?.updatedAt ? <small>Actualisé le {dateLabel(data.updatedAt)} · relevé toutes les 5 min</small> : null}</span><button type="button" aria-label="Actualiser les cours crypto" disabled={loading || busy} onClick={() => void reload()}><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></div>
+  {error ? <p role="alert" className={styles.error}>{error}</p> : null}
+  {message ? <p role="status" className={styles.success}>{message}</p> : null}
+  {!data && loading ? <p role="status">Connexion au comptoir…</p> : null}
+  {data ? <><div className={styles.summary}><div><small>Disponible</small><strong>{euros(data.cashCents)}</strong></div><div><small>Valeur du portefeuille</small><strong>{totalValue === null ? "Cours à actualiser" : euros(totalValue)}</strong></div><div><small>Montant investi</small><strong>{euros(data.positions.reduce((sum, p) => sum + p.costBasisCents, 0))}</strong></div></div>
+   {data.marketStatus === "unavailable" || data.marketStatus === "unconfigured" ? <p className={styles.empty}>Le fournisseur de cours ne répond pas pour le moment. Tes positions restent consultables ; les échanges reprendront avec des cours récents.</p> : null}
+   <div className={styles.tabs} role="tablist" onKeyDown={event => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault(); const next = event.key === "Home" ? "market" : event.key === "End" ? "portfolio" : tab === "market" ? "portfolio" : "market";
+    setTab(next); document.getElementById(`crypto-${next}-tab`)?.focus();
+   }} aria-label="Consultation du marché crypto"><button role="tab" aria-selected={tab === "market"} tabIndex={tab === "market" ? 0 : -1} aria-controls="crypto-market-list" id="crypto-market-tab" type="button" onClick={() => setTab("market")}>Marché · Top 100</button><button role="tab" aria-selected={tab === "portfolio"} tabIndex={tab === "portfolio" ? 0 : -1} aria-controls="crypto-portfolio-list" id="crypto-portfolio-tab" type="button" onClick={() => setTab("portfolio")}><Wallet size={16} aria-hidden="true" /> Mes positions ({data.positions.length})</button></div>
+   {tab === "market" ? <div role="tabpanel" id="crypto-market-list" aria-labelledby="crypto-market-tab"><label className={styles.search}><Search size={17} aria-hidden="true" /><input type="search" placeholder="Bitcoin, ETH…" aria-label="Rechercher une crypto" value={search} onChange={event => { setSearch(event.target.value); setPage(0); }} /></label>
+    <div className={styles.list}>{rows.slice(Math.min(page, pages - 1) * 10, (Math.min(page, pages - 1) + 1) * 10).map(asset => <div key={asset.id} className={styles.row}><span className={styles.rank}>#{asset.rank}</span><div className={styles.asset}><strong>{asset.name}</strong><small>{asset.symbol}</small></div><div className={styles.quote}><strong>{price(asset.priceEur)}</strong><small data-positive={(asset.change24h ?? 0) >= 0}>{asset.change24h === null ? "—" : `${asset.change24h >= 0 ? "+" : ""}${asset.change24h.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} %`} / 24 h</small></div><button type="button" disabled={busy || Boolean(order) || !canTrade(asset)} onClick={() => select(asset, "buy")} aria-label={`Acheter ${asset.name}`}><ArrowDownLeft size={15} aria-hidden="true" /> Placer</button></div>)}</div>
+    {!rows.length ? <p className={styles.empty}>{data.assets.length ? "Aucune crypto ne correspond à ta recherche." : "Les 100 premières cryptos apparaîtront dès réception des cours."}</p> : null}
+    {pages > 1 ? <nav className={styles.pagination} aria-label="Pages des cryptomonnaies"><button type="button" disabled={page <= 0} onClick={() => setPage(p => p - 1)}>Précédent</button><span>{Math.min(page + 1, pages)} / {pages}</span><button type="button" disabled={page >= pages - 1} onClick={() => setPage(p => p + 1)}>Suivant</button></nav> : null}
+   </div> : <div role="tabpanel" id="crypto-portfolio-list" aria-labelledby="crypto-portfolio-tab" className={styles.positions}>{data.positions.length ? data.positions.map(position => { const asset = data.assets.find(a => a.id === position.assetId); if (!asset) return null; const pnl = position.valueCents === null ? null : position.valueCents - position.costBasisCents; return <article key={position.assetId} className={styles.position}><header><div><strong>{asset.name}</strong><small>{quantityLabel(position.quantity)} {asset.symbol}{!asset.inTop100 ? " · hors top 100" : ""}</small></div><button type="button" disabled={busy || Boolean(order) || !canTrade(asset)} onClick={() => select(asset, "sell")} aria-label={`Vendre ${asset.name}`}><ArrowUpRight size={15} aria-hidden="true" /> Vendre</button></header><dl><div><dt>Coût d’achat</dt><dd>{euros(position.costBasisCents)}</dd></div><div><dt>Valeur actuelle</dt><dd>{position.valueCents === null ? "Cours à actualiser" : euros(position.valueCents)}</dd></div><div><dt>Gain / perte latent</dt><dd data-positive={(pnl ?? 0) >= 0}>{pnl === null ? "—" : `${pnl > 0 ? "+" : ""}${euros(pnl)}`}</dd></div></dl></article>; }) : <p className={styles.empty}>Ton portefeuille est vide. Choisis une crypto dans le marché pour préparer ton premier placement.</p>}</div>}
+   {selected ? <section className={styles.order} aria-label="Préparation de l’ordre crypto" data-testid="crypto-order"><small>{selected.side === "buy" ? "Placer des euros de jeu" : "Récupérer des euros de jeu"}</small><h4>{selected.side === "buy" ? "Acheter" : "Vendre"} {selected.asset.name}</h4>
+    {!order ? <form onSubmit={event => { event.preventDefault(); void preview(); }}><label>{selected.side === "buy" ? "Montant en euros de jeu" : `Quantité de ${selected.asset.symbol}`}<input inputMode="decimal" value={selected.side === "buy" ? amount : quantity} onChange={event => selected.side === "buy" ? setAmount(event.target.value) : setQuantity(event.target.value)} disabled={busy} /></label><div className={styles.actions}><button type="submit" disabled={busy}>{busy ? "Préparation…" : "Préparer l’offre"}</button><button type="button" disabled={busy} onClick={() => setSelected(null)}>Annuler</button></div></form> : <div><dl><div><dt>Quantité</dt><dd>{quantityLabel(order.quantity)} {selected.asset.symbol}</dd></div><div><dt>Cours bloqué</dt><dd>{price(order.priceEur)}</dd></div><div><dt>{order.side === "buy" ? "À débiter" : "À recevoir"}</dt><dd>{euros(order.amountCents)} de jeu</dd></div></dl><p>Cours du {dateLabel(order.quotedAt)}. {secondsLeft > 0 ? `Offre valable encore ${secondsLeft} s. Le montant confirmé sera exactement celui affiché.` : "Offre expirée : prépare une nouvelle offre."}</p><div className={styles.actions}><button type="button" disabled={busy || (secondsLeft === 0 && !confirmAttempted)} onClick={() => void confirm()}>{busy ? "Confirmation…" : confirmAttempted ? "Vérifier / réessayer cet ordre" : `Confirmer ${order.side === "buy" ? "l’achat" : "la vente"}`}</button><button type="button" disabled={busy} onClick={() => { setOrder(null); setConfirmAttempted(false); }}>Modifier l’ordre</button></div>{confirmAttempted ? <small>En cas de réponse perdue, réessaie le même ordre : il ne sera exécuté qu’une seule fois.</small> : null}</div>}
+   </section> : null}
+   {data.recentTrades.length ? <details className={styles.history}><summary>Les derniers mouvements ({data.recentTrades.length})</summary>{data.recentTrades.map(trade => <div key={trade.orderId}><span>{trade.side === "buy" ? "Achat" : "Vente"} {data.assets.find(a => a.id === trade.assetId)?.symbol ?? `#${trade.assetId}`}<small>{dateLabel(trade.createdAt)}</small></span><strong>{euros(trade.amountCents)}</strong></div>)}</details> : null}
+  </> : null}
+  <footer className={styles.source}>Cours EUR fournis par <a href="https://coinmarketcap.com/" target="_blank" rel="noreferrer">CoinMarketCap</a>. Valeurs arrondies à l’affichage. Les gains et pertes réalisés rejoignent ta comptabilité.</footer>
+ </section>;
+}

@@ -10,7 +10,7 @@
 .header h1 { margin: 12px 0; font: 900 clamp(2.8rem,6vw,4.8rem)/1 var(--font-display),Impact,sans-serif; text-transform: uppercase; text-shadow: 3px 4px #00251e; }
 .header p { margin: 0; max-width: 54ch; color: #d2e5d9; font-size: .85rem; line-height: 1.6; }
 .marketLink { display: inline-flex; flex-shrink: 0; align-items: center; gap: 10px; min-height: 46px; padding: 10px 14px; background: #002d24; border: 1px solid #f4c43d70; border-radius: 3px; color: #f4c43d; font-size: .8rem !important; font-weight: 800 !important; }
-.tabs { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin-bottom: 22px; }
+.tabs { display: grid; grid-template-columns: 1.3fr 1fr 1.2fr .8fr 1.1fr; gap: 6px; margin-bottom: 22px; }
 .tabs button { display: flex; justify-content: center; align-items: center; gap: 10px; min-height: 54px; padding: 12px; border: 1px solid #9dbfaa70; border-radius: 3px; background: #002d24e8; color: #c7dfcf; font-size: .82rem; font-weight: 800; }
 .tabs button[aria-selected="true"] { background: #71e3c9; color: #102f29; border-color: #71e3c9; box-shadow: 0 4px #00251e; }
 .tabPanel { min-height: 400px; }
@@ -147,3 +147,47 @@
 @media(max-width: 980px) { .chartColumns { grid-template-columns: 1fr; } .metrics { grid-template-columns: repeat(2,minmax(0,1fr)); } .metrics article > small { min-height: 0; } .card { padding: 22px; } .accountColumns { gap: 24px; } .managementCallout { flex-wrap: wrap; } .managementCallout > button { margin-left: 44px; } }
 @media(max-width: 650px) { .page { padding: 22px 14px 32px; } .header { align-items: flex-start; flex-direction: column; gap: 18px; } .header h1 { font-size: clamp(2.7rem,10vw,3.8rem); } .header p { font-size: .79rem; } .marketLink { font-size: .73rem !important; } .tabs { grid-template-columns: 1fr 1fr; gap: 7px; } .tabs button { min-height: 48px; gap: 8px; padding: 10px 8px; font-size: .76rem; } .toolbar { padding: 14px 12px; gap: 12px; } .toolbar > label { flex: 1 1 170px; } .toolbar select { width: 100%; } .clock { flex-basis: 100%; margin: 0; padding-top: 10px; border-top: 1px solid #bdd8c535; } .metrics { gap: 9px; } .metrics article { padding: 16px 12px; gap: 10px; } .metrics article > small { min-height: 3em; font-size: .57rem; } .metrics article > strong { font-size: 1.65rem; } .metrics article > span { font-size: .63rem; } .cashStrip { gap: 14px 24px; } .cashStrip > span:last-child { flex-basis: 100%; } .card { padding: 18px 13px; } .card h2 { font-size: 1.45rem; } .plot { grid-template-columns: 45px minmax(0,1fr); gap: 5px; height: 190px; } .axis { font-size: .57rem; } .plotLabels { padding-left: 50px; } .chartSummary strong { font-size: 1rem; } .accountColumns { grid-template-columns: 1fr; gap: 28px; } .accountLines > div { font-size: .7rem; gap: 10px; } .accountLines dd { font-size: .74rem; } .bottomResult { font-size: .77rem; } .managementCallout { padding: 19px 14px; gap: 12px; } .managementCallout > div { flex: 1 1 180px; } .managementCallout > button { margin-left: 0; width: 100%; } .journalEntry > summary { display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 10px; } .journalIcon { width: 30px; height: 34px; } .journalCash { grid-column: 2; justify-self: start; margin-left: 0; text-align: left; } .journalEntry .journalCash { display: flex !important; align-items: baseline; gap: 8px !important; flex-wrap: wrap; } .journalEntry strong { font-size: .76rem; } .postings { padding-left: 0; } .pagination { gap: 7px; flex-wrap: wrap; } .pagination > button { padding: 9px 7px; font-size: .66rem; } .pagination > span { font-size: .64rem; } .methods { padding-inline: 14px; } }
 @media(prefers-reduced-motion: reduce) { .spin { animation: none; } }
+
+.page::before { background: radial-gradient(ellipse at 0 0,#12604a60,transparent 65%); }
+.header { display: grid; grid-template-columns: 1fr 1.1fr; gap: 36px; padding-bottom: 30px; }
+.welcome { padding-block: 14px; }
+.header h1 { font-size: clamp(3.6rem,7.5vw,6.2rem); margin-block: 16px; }
+.header p { font-size: .92rem; line-height: 1.7; }
+.welcome .marketLink { margin-top: 22px; }
+.officeArt { position: relative; min-height: 260px; align-self: stretch; overflow: hidden; border: 1px solid #f4c43d65; border-radius: 3px; box-shadow: 7px 7px #00291f; }
+.officeArt img { object-fit: cover; object-position: 50% 52%; }
+.officeArt > span { position: absolute; bottom: 0; left: 0; right: 0; padding: 26px 16px 12px; background: linear-gradient(transparent,#00251eeb); color: #fff4d9; font: 700 .62rem/1.5 ui-monospace,monospace; text-transform: uppercase; letter-spacing: .07em; }
+.poles { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-bottom: 32px; }
+.poles > button { position: relative; display: flex; align-items: center; gap: 14px; min-height: 106px; padding: 22px 18px; text-align: left; border: 1px solid #b7d4c465; background: #002d24; color: #fff4d9; box-shadow: 0 4px #00251e; }
+.poles > button > svg { flex-shrink: 0; color: #71e3c9; }
+.poleNumber { position: absolute; right: 10px; top: 7px; color: #b7d4c4; font: 700 .6rem/1 ui-monospace,monospace; }
+.poleLabel { display: grid; gap: 6px; min-width: 0; }
+.poleLabel strong { font: 900 clamp(1.3rem,2.2vw,1.8rem)/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
+.poleLabel small { color: #bfd9cc; font-size: .65rem; line-height: 1.5; }
+.poleArrow { margin-left: auto; }
+.poles > button[aria-selected="true"] { background: #fff4d9; color: #103b2e; border-color: #fff4d9; box-shadow: 0 4px #f4c43d; }
+.poles > button[aria-selected="true"] :is(svg,small,.poleNumber) { color: #235b47; }
+.officePanel { min-width: 0; }
+.officePanel:focus { outline: none; }
+.tabs button { font-size: .75rem; }
+.tabs button > svg { flex-shrink: 0; }
+.accountPlan h2 { margin: 6px 0 0; font: 900 1.8rem/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
+.accountSearch { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 0 12px; border: 1px solid #84ad99; background: #002d24; }
+.accountSearch input { width: 100%; min-width: 0; max-width: 250px; min-height: 44px; padding: 8px 0; font: inherit; font-size: .78rem; background: transparent; color: #fff4d9; }
+.accountSearch input::placeholder { color: #b7d4c4; }
+.accountGroups { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; align-items: start; }
+.accountGroup { min-width: 0; padding: 20px; background: #002d24; border-top: 2px solid #71e3c9; }
+.accountGroup header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.accountGroup h3 { font: 900 1.5rem/1.1 var(--font-display),Impact,sans-serif; margin: 0; text-transform: uppercase; }
+.accountGroup header > span { color: #71e3c9; font-size: .65rem; }
+.accountGroup p { color: #b7d4c4; font-size: .72rem; line-height: 1.6; margin-block: 8px 16px; }
+.accountGroup dl { margin: 0; }
+.accountGroup dl > div { display: flex; justify-content: space-between; gap: 18px; padding-block: 12px; border-top: 1px solid #bdd8c525; font-size: .76rem; line-height: 1.5; }
+.accountGroup dt { color: #d5e8dc; }
+.accountGroup dd { display: grid; gap: 3px; margin: 0; flex-shrink: 0; text-align: right; }
+.accountGroup dd small { color: #b7d4c4; font-size: .58rem; }
+@media(hover:hover) { .poles > button:hover { border-color: #f4c43d; } }
+@media(max-width: 900px) { .poles > button { gap: 10px; padding: 22px 12px; } .poleArrow { display: none; } .poleLabel small { font-size: .61rem; } .tabs button { flex-direction: column; gap: 7px; font-size: .68rem; } }
+@media(max-width: 650px) { .header { grid-template-columns: 1fr; gap: 20px; } .welcome { padding: 0; } .header h1 { font-size: 4rem; margin-block: 12px; } .header p { font-size: .82rem; } .officeArt { min-height: 170px; max-height: 205px; } .officeArt img { object-position: 50% 52%; } .poles { gap: 6px; margin-bottom: 28px; } .poles > button { flex-direction: column; justify-content: center; text-align: center; gap: 10px; padding: 22px 4px 12px; min-height: 100px; } .poles > button > svg { width: 22px; height: 22px; } .poleLabel strong { font-size: clamp(1rem,4.4vw,1.35rem); } .poleLabel small { display: none; } .poleNumber { top: 6px; right: 6px; font-size: .52rem; } .tabs { grid-template-columns: 1fr 1fr; } .tabs button { flex-direction: row; font-size: .7rem; } .tabs button:first-child { grid-column: 1 / -1; } .accountGroups { grid-template-columns: 1fr; gap: 12px; } .accountGroup { padding: 18px 14px; } .accountGroup dl > div { font-size: .7rem; gap: 10px; } .accountSearch { width: 100%; } .accountSearch input { max-width: none; } }
+
+.page :where(button,select,input,summary,a) { scroll-margin-block: 90px; }

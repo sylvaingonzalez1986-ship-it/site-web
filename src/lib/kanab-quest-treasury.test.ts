@@ -26,7 +26,8 @@ function snapshot(entries: KqTreasuryEntry[] = [], initial = opening): KqTreasur
       inflowsCents: inflows, outflowsCents: outflows, revenueCents: 0, expenseCents: 0 }],
     journal: { items: entries, total: entries.length, offset: 0, limit: 25 },
     checks: { walletCashCents: closing.cash ?? 0, vatReserveCents: closing.vat_reserve ?? 0, savingsCents: closing.savings ?? 0,
-      labDebtCents: -(closing.lab_payable ?? 0), energyDebtCents: -(closing.energy_payable ?? 0), vatDebtCents: -(closing.vat_payable ?? 0) },
+      labDebtCents: -(closing.lab_payable ?? 0), energyDebtCents: -(closing.energy_payable ?? 0), vatDebtCents: -(closing.vat_payable ?? 0),
+      loanDebtCents: -(closing.loan_payable ?? 0), cryptoCostCents: closing.crypto_assets ?? 0 },
   };
 }
 function report(entries: KqTreasuryEntry[], initial = opening) {
@@ -120,6 +121,44 @@ describe("treasury accrual accounting", () => {
     expect(earned.income).toMatchObject({ revenueCents: 500, resultCents: 500, operatingResultCents: 0 });
     expect(earned.cash).toMatchObject({ availableCents: 28000, savingsCents: 7500, inflowsCents: 3000, outflowsCents: 10000 });
     expect(earned.balanceSheet.assetsCents).toBe(35500);
+  });
+
+  it("keeps loan proceeds out of revenue and does not expense principal repayments", () => {
+    const issued = [entry("loan-issued", { cash: 50000, loan_payable: -50000 }),
+      entry("loan-interest", { expense_loan_interest: 3500, loan_payable: -3500 })];
+    const borrowed = report(issued);
+    expect(borrowed.income).toMatchObject({ revenueCents: 0, expenseCents: 3500, resultCents: -3500, operatingResultCents: 0 });
+    expect(borrowed.cash).toMatchObject({ availableCents: 85000, loanDebtCents: 53500, unpaidCents: 0 });
+    expect(borrowed.balanceSheet.debtCents).toBe(53500);
+    const repaid = report([...issued, entry("loan-repayment", { cash: -10000, loan_payable: 10000 })]);
+    expect(repaid.cash).toMatchObject({ availableCents: 75000, loanDebtCents: 43500 });
+    expect(repaid.income.resultCents).toBe(-3500);
+    expect(repaid.sourceDifferences.loan).toBe(0);
+  });
+
+  it("carries crypto at acquisition cost and recognizes only realized partial-sale gains and losses", () => {
+    const purchase = entry("crypto-buy", { cash: -10000, crypto_assets: 10000 });
+    const bought = report([purchase]);
+    expect(bought.income.resultCents).toBe(0);
+    expect(bought.balanceSheet.assetsCents).toBe(35000);
+    expect(bought.cash).toMatchObject({ availableCents: 25000, cryptoCostCents: 10000 });
+    const profitableSale = entry("crypto-sell", { cash: 6000, crypto_assets: -4000, revenue_crypto_gains: -2000 });
+    const partial = report([purchase, profitableSale]);
+    expect(partial.cash).toMatchObject({ availableCents: 31000, cryptoCostCents: 6000 });
+    expect(partial.income).toMatchObject({ revenueCents: 2000, resultCents: 2000, salesHtCents: 0, operatingResultCents: 0 });
+    const closed = report([purchase, profitableSale, entry("crypto-loss", { cash: 3000, crypto_assets: -6000, expense_crypto_losses: 3000 })]);
+    expect(closed.cash).toMatchObject({ availableCents: 34000, cryptoCostCents: 0 });
+    expect(closed.income).toMatchObject({ resultCents: -1000, operatingResultCents: 0 });
+    expect(closed.sourceDifferences.crypto).toBe(0);
+  });
+
+  it("flags loan or crypto ledger differences instead of showing balanced sources", () => {
+    const data = snapshot([entry("crypto-buy", { cash: -10000, crypto_assets: 10000 }), entry("loan-issued", { cash: 50000, loan_payable: -50000 })]);
+    data.checks.cryptoCostCents = 9900;
+    data.checks.loanDebtCents = 49900;
+    expect(getKqTreasuryReport(data)).toMatchObject({ reconciled: false, sourceDifferences: { crypto: 100, loan: 100 } });
+    data.checks.cryptoCostCents = -1;
+    expect(isKqTreasurySnapshot(data)).toBe(false);
   });
 
   it("separates a starting-capital grant from an earned reward", () => {

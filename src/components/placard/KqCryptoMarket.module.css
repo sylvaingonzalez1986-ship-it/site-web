@@ -1,0 +1,65 @@
+.market { min-width:0; margin-top:26px; padding:26px; background:#002b22; border-top:3px solid #77e6c5; color:#fff4d9; }
+.header { display:flex; gap:16px; align-items:center; }
+.header h3 { margin:5px 0; font:900 1.8rem/1.1 var(--font-display),Impact,sans-serif; text-transform:uppercase; }
+.header p { margin:0; color:#bdd7c9; font-size:.82rem; }
+.header small,.order>small { font:700 .61rem/1.5 ui-monospace,monospace; text-transform:uppercase; letter-spacing:.09em; color:#77e6c5; }
+.icon { display:grid; place-items:center; width:66px; height:70px; flex-shrink:0; border:2px solid #77e6c5; background:#104837; box-shadow:4px 4px 0 #071f18; color:#77e6c5; transform:rotate(-4deg); }
+.stamp { margin-left:auto; padding:10px; border:1px dashed #f3c746; color:#f3c746; font:700 .57rem/1.7 ui-monospace,monospace; text-align:center; transform:rotate(5deg); }
+.disclaimer,.source { color:#c1d4c7; font-size:.72rem; line-height:1.7; }
+.disclaimer { margin-top:20px; max-width:78ch; }
+.status { display:flex; justify-content:space-between; gap:16px; align-items:center; margin:22px 0; font-size:.74rem; }
+.status small,.asset small,.position header small,.history small { display:block; margin-top:5px; color:#bbd3c5; font-size:.65rem; line-height:1.5; }
+.status i { display:inline-block; width:7px; height:7px; margin-right:7px; border-radius:50%; background:#edbd48; }
+.status i[data-live=true] { background:#77e6c5; box-shadow:0 0 8px #77e6c570; }
+.market button { min-height:42px; display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:8px 12px; border:1px solid #a1ccaf65; background:transparent; color:inherit; font:700 .72rem/1.4 var(--font-body),sans-serif; cursor:pointer; }
+.market button:hover:not(:disabled) { background:#174f3d; }
+.market button:disabled { cursor:not-allowed; opacity:.45; }
+.market button:focus-visible,.market input:focus-visible,.history summary:focus-visible { outline:2px solid #f3c746; outline-offset:3px; }
+.summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; padding:20px 0; border-top:1px solid #89b29b40; border-bottom:1px solid #89b29b40; }
+.summary small { display:block; color:#bdd7c9; font-size:.64rem; margin-bottom:7px; }
+.summary strong { font:900 1.35rem/1.2 var(--font-display),Impact,sans-serif; overflow-wrap:anywhere; }
+.tabs { display:flex; gap:20px; margin:24px 0 18px; border-bottom:1px solid #89b29b40; }
+.tabs button { border:0; border-bottom:3px solid transparent; border-radius:0; padding:12px 0; color:#bdd7c9; }
+.tabs button[aria-selected=true] { border-bottom-color:#f3c746; color:#f3c746; }
+.search { display:flex; gap:10px; align-items:center; padding:10px 12px; border:1px solid #89b29b60; color:#bdd7c9; }
+.search input { min-width:0; width:100%; background:transparent; border:0; color:#fff4d9; font-size:.8rem; min-height:26px; }
+.search input::placeholder { color:#91b4a0; }
+.row { display:grid; grid-template-columns:32px minmax(90px,1fr) minmax(105px,1fr) auto; gap:12px; align-items:center; padding:14px 0; border-bottom:1px solid #89b29b25; }
+.rank { font:.64rem/1.5 ui-monospace,monospace; color:#9ac2a9; }
+.asset { min-width:0; overflow-wrap:anywhere; }
+.asset strong { font-size:.8rem; }
+.quote { text-align:right; font-variant-numeric:tabular-nums; }
+.quote strong { font-size:.8rem; overflow-wrap:anywhere; }
+.quote small { display:block; margin-top:6px; font-size:.63rem; }
+.market [data-positive=true] { color:#77e6c5; }
+.market [data-positive=false] { color:#ffb6a0; }
+.row button { color:#f3c746; border-color:#f3c74660; }
+.pagination { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:20px; font-size:.74rem; }
+.empty { padding:18px 0; color:#bfd9cb; font-size:.78rem; line-height:1.8; }
+.error,.success { padding:14px; font-size:.78rem; line-height:1.6; border-left:3px solid #f3c746; background:#493824; color:#ffe8bf; }
+.success { border-color:#77e6c5; background:#154c39; color:#c0f6d7; }
+.positions { display:grid; gap:12px; }
+.position { padding:18px; border:1px solid #89b29b45; }
+.position header { display:flex; align-items:center; justify-content:space-between; gap:15px; }
+.position header>div { min-width:0; overflow-wrap:anywhere; }
+.position dl,.order dl { display:grid; gap:12px; margin-top:18px; font-size:.76rem; }
+.position dl>div,.order dl>div { display:flex; justify-content:space-between; gap:12px; }
+.position dt { color:#bdd7c9; }
+.position dd,.order dd { text-align:right; margin:0; font-weight:700; overflow-wrap:anywhere; min-width:0; }
+.order { margin-top:24px; padding:24px; background:#fff4d9; color:#173e2e; border:2px solid #f3c746; box-shadow:5px 5px 0 #071f18; }
+.order>small { color:#376148; }
+.order h4 { font:900 1.6rem/1.2 var(--font-display),Impact,sans-serif; text-transform:uppercase; margin:8px 0 20px; }
+.order label { display:grid; gap:8px; font-size:.76rem; }
+.order input { padding:12px; border:1px solid #5f7c63; color:#173e2e; background:#fffdf4; min-width:0; width:100%; font-size:1rem; }
+.order p,.order small { font-size:.72rem; line-height:1.7; }
+.actions { display:flex; gap:10px; margin-top:20px; flex-wrap:wrap; }
+.actions button { border-color:#1a4b36; }
+.actions button:first-child { background:#173e2e; color:#fff4d9; }
+.actions button:hover:not(:disabled) { background:#316c4b; color:#fff4d9; }
+.history { margin-top:22px; font-size:.76rem; }
+.history summary { cursor:pointer; padding:10px 0; color:#bdd7c9; }
+.history>div { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid #89b29b25; }
+.source { margin-top:24px; font-size:.65rem; }
+.source a { text-decoration:underline; text-underline-offset:3px; }
+@media(max-width:650px) { .market { padding:20px 14px; } .header { gap:12px; } .header h3 { font-size:1.5rem; } .stamp { display:none; } .summary { gap:12px; } .summary strong { font-size:1.05rem; } .row { grid-template-columns:24px minmax(70px,1fr) minmax(75px,1fr); gap:8px; } .row button { grid-column:2/4; min-height:36px; justify-self:end; padding:6px 16px; } .order { padding:18px 14px; } }
+@media(max-width:390px) { .status { align-items:flex-start; } .status button { font-size:0; padding:10px; } .status button svg { width:18px; height:18px; } .summary { grid-template-columns:1fr 1fr; } .summary>div:last-child { grid-column:1/3; } .position { padding:14px; } .position dl>div,.order dl>div { flex-wrap:wrap; } .tabs { gap:14px; } .tabs button { font-size:.66rem; } }

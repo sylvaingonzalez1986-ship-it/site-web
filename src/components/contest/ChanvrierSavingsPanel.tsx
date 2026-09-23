@@ -1,10 +1,13 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { PiggyBank, RefreshCw } from "lucide-react";
+import { createClientRequestKey } from "@/lib/client-request-key";
 import { parseSavingsAmount, type ChanvrierSavings, type ChanvrierSavingsCommand } from "@/lib/chanvrier-savings";
 import styles from "./ChanvrierSavingsPanel.module.css";
 const euro = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
-export function ChanvrierSavingsPanel() {
+export function ChanvrierSavingsPanel({ embedded = false, onSnapshot, refreshKey = 0 }: {
+  embedded?: boolean; onSnapshot?: (snapshot: ChanvrierSavings) => void; refreshKey?: number;
+} = {}) {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<ChanvrierSavings | null>(null);
   const [amount, setAmount] = useState("");
@@ -16,7 +19,7 @@ export function ChanvrierSavingsPanel() {
   const pending = useRef<ChanvrierSavingsCommand | null>(null);
   const cents = parseSavingsAmount(amount);
   useEffect(() => {
-    if (!open) return;
+    if (!open && !embedded) return;
     let disposed = false;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 15000);
@@ -24,28 +27,32 @@ export function ChanvrierSavingsPanel() {
     void fetch("/api/arena/chanvrier/savings", { cache: "no-store", signal: controller.signal }).then(async response => {
       const body = await response.json();
       if (!response.ok) throw new Error(body.error);
-      if (!disposed) setData(body);
+      if (!disposed) {
+        setData(body); onSnapshot?.(body);
+        if (body.interestCreditedCents > 0) window.dispatchEvent(new Event("kq:treasury-updated"));
+      }
     }).catch(() => { if (!disposed) setError("Impossible d’ouvrir le livret. Réessaie."); }).finally(() => { clearTimeout(timer); if (!disposed) setBusy(false); });
     return () => { disposed = true; clearTimeout(timer); controller.abort(); };
-  }, [open, refresh]);
+  }, [open, embedded, refresh, refreshKey, onSnapshot]);
   async function transfer(action: "deposit" | "withdraw") {
     if (!cents || busy || inFlight.current) return;
     inFlight.current = true; setBusy(true); setError(""); setNotice("");
-    const command = pending.current?.action === action && pending.current.amountCents === cents ? pending.current : { action, amountCents: cents, requestKey: crypto.randomUUID() };
+    const command = pending.current?.action === action && pending.current.amountCents === cents ? pending.current : { action, amountCents: cents, requestKey: createClientRequestKey() };
     pending.current = command;
     try {
       const response = await fetch("/api/arena/chanvrier/savings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(command), signal: AbortSignal.timeout(15000) });
       const body = await response.json();
       if (!response.ok) { if (response.status < 500) pending.current = null; throw new Error(body.error); }
-      setData(body); setAmount(""); pending.current = null;
+      setData(body); onSnapshot?.(body); setAmount(""); pending.current = null;
       setNotice(`${euro(cents)} ${action === "deposit" ? "déposés sur ton livret" : "retirés vers ta trésorerie"}.`);
       window.dispatchEvent(new Event("kq:equipment-updated"));
+      window.dispatchEvent(new Event("kq:treasury-updated"));
     } catch (cause) { setError(cause instanceof Error && cause.name !== "TimeoutError" && !(cause instanceof TypeError) ? cause.message : "Réponse interrompue. Réessaie le même montant : l’opération ne sera comptée qu’une fois."); }
     finally { setBusy(false); inFlight.current = false; }
   }
-  return <section className={styles.panel}>
-    <button type="button" className={styles.toggle} aria-expanded={open} onClick={() => setOpen(value => !value)}><PiggyBank size={22} /><span><strong>Mon livret d’épargne</strong><small>Trésorier · +5 % toutes les 24 h</small></span><b>{open ? "−" : "+"}</b></button>
-    {open ? <div className={styles.body} aria-busy={busy}>
+  return <section className={`${styles.panel}${embedded ? ` ${styles.embedded}` : ""}`} aria-label="Mon livret d’épargne">
+    {embedded ? <header className={styles.embeddedHeader}><PiggyBank size={23} aria-hidden="true" /><div><h3>Mon livret d’épargne</h3><small>Avantage Trésorier · +5 % toutes les 24 h</small></div></header> : <button type="button" className={styles.toggle} aria-expanded={open} onClick={() => setOpen(value => !value)}><PiggyBank size={22} aria-hidden="true" /><span><strong>Mon livret d’épargne</strong><small>Trésorier · +5 % toutes les 24 h</small></span><b>{open ? "−" : "+"}</b></button>}
+    {open || embedded ? <div className={styles.body} aria-busy={busy}>
       <p>Place la monnaie de ton jeu. Chaque dépôt rapporte 5 % après 24 h complètes, puis les intérêts sont réinvestis chaque jour, même pendant ton absence. Les centimes sont arrondis à l’inférieur.</p>
       {data ? <><div className={styles.balances}><div><small>Sur ton livret</small><strong>{euro(data.balanceCents)}</strong></div><div><small>Disponible en jeu</small><strong>{euro(data.cashCents)}</strong></div></div>
         {data.nextInterestAt ? <p>Prochains intérêts : {new Date(data.nextInterestAt).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })}.</p> : <p>{data.balanceCents >= data.maxBalanceCents ? "Le plafond du livret est atteint." : "Dépose au moins 0,20 € pour commencer à gagner des intérêts."}</p>}

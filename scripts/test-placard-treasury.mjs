@@ -417,6 +417,78 @@ async function checkOffsettingUnknowns(owner) {
   console.log('PASS: offsetting unknown transactions remain visible despite zero net suspense.');
 }
 
+
+async function checkBankAccounting(owner) {
+  const bank = async (action = null) => (await result('SELECT rpc_kq_bank($1,$2::jsonb) AS data',[owner,action ? JSON.stringify(action) : null])).data;
+  await db.query("UPDATE kq_runs SET completed_at=now()-interval '25 hours' WHERE user_id=$1",[owner]);
+  const original=Number(await cash(owner));
+  const offer=(await bank()).offer;
+  assert(offer,'established reputation earns an offer');
+  const borrow={action:'borrow',requestKey:randomUUID(),quoteId:offer.quoteId,amountCents:50000,expectedRateBps:offer.rateBps};
+  const accepted=await bank(borrow), loan=accepted.loan;
+  let view=await inspected(owner);
+  assert.equal(view.report.cash.availableCents,original+50000);
+  assert.equal(view.data.closingBalances.loan_payable,-loan.totalCents);
+  assert.equal(view.data.checks.loanDebtCents,loan.totalCents);
+  assert.equal(view.report.income.revenueCents,0,'borrowed capital is never sales revenue');
+  assert.equal(view.report.income.expenseCents,loan.interestCents);
+  assert.equal(view.report.income.operatingResultCents,0,'interest remains a financial expense');
+  const entries=await count(owner);
+  await bank(borrow);assert.equal(await count(owner),entries,'loan retry does not duplicate postings');
+  // Normal gameplay settles overdue instalments without visiting the banker.
+  await db.query("UPDATE kq_bank_loans SET accepted_at=now()-interval '49 hours' WHERE id=$1",[loan.id]);
+  await state(owner);
+  view=await inspected(owner);
+  const paid=Math.floor(loan.totalCents*2/7);
+  assert.equal(view.data.checks.loanDebtCents,loan.totalCents-paid);
+  assert.equal(view.report.cash.availableCents,original+50000-paid);
+  await bank({action:'repay',requestKey:randomUUID(),loanId:loan.id,amountCents:loan.totalCents-paid});
+  view=await inspected(owner);
+  assert.equal(view.data.closingBalances.loan_payable,0);
+  assert.equal(view.data.checks.loanDebtCents,0);
+  assert.equal(view.report.cash.availableCents,original-loan.interestCents);
+  assert.equal(view.report.income.expenseCents,loan.interestCents,'repaying principal never duplicates expenses');
+  console.log('PASS: bank issue, retry, autonomous gameplay settlement and early payoff reconcile to actual wallet/debt.');
+}
+async function checkCryptoAccounting(owner) {
+  const crypto = async (action='state',payload={}) => (await result('SELECT rpc_kq_crypto_command($1,$2,$3::jsonb,true) AS data',[owner,action,JSON.stringify(payload)])).data;
+  const claim=(await result('SELECT rpc_kq_crypto_refresh_claim() AS data')).data;
+  const assets=Array.from({length:100},(_,i)=>({id:i+1,rank:i+1,name:`Fixture ${i+1}`,symbol:`T${i+1}`,priceEur:'10',change24h:0,quotedAt:new Date().toISOString(),inTop100:true}));
+  assert.equal((await result('SELECT rpc_kq_crypto_refresh_publish($1,$2::jsonb) AS ok',[claim.leaseId,JSON.stringify(assets)])).ok,true);
+  const original=Number(await cash(owner));
+  const buy=await crypto('preview',{side:'buy',assetId:1,amountCents:10000});
+  const receipt=await crypto('confirm',{orderId:buy.orderId});
+  assert.equal(receipt.trade.amountCents,10000);
+  let view=await inspected(owner);
+  assert.equal(view.data.closingBalances.crypto_assets,10000);
+  assert.equal(view.data.checks.cryptoCostCents,10000);
+  assert.equal(view.report.cash.availableCents,original-10000);
+  assert.equal(view.report.income.resultCents,0,'buying an asset is not an expense');
+  const entries=await count(owner);
+  await crypto('confirm',{orderId:buy.orderId});assert.equal(await count(owner),entries);
+  // Price changes do not change cost-basis accounts or create unrealized income.
+  await db.exec('UPDATE kq_crypto_quotes SET price_eur=12 WHERE asset_id=1');
+  view=await inspected(owner);assert.equal(view.report.income.resultCents,0);
+  let sell=await crypto('preview',{side:'sell',assetId:1,quantity:'4'});
+  await crypto('confirm',{orderId:sell.orderId});
+  view=await inspected(owner);
+  assert.equal(view.data.checks.cryptoCostCents,6000);
+  assert.equal(view.data.closingBalances.revenue_crypto_gains,-800);
+  assert.equal(view.report.income.resultCents,800);
+  assert.equal(view.report.income.operatingResultCents,0);
+  await db.exec('UPDATE kq_crypto_quotes SET price_eur=6 WHERE asset_id=1');
+  sell=await crypto('preview',{side:'sell',assetId:1,quantity:'6'});
+  await crypto('confirm',{orderId:sell.orderId});
+  view=await inspected(owner);
+  assert.equal(view.data.checks.cryptoCostCents,0);
+  assert.equal(view.data.closingBalances.crypto_assets,0);
+  assert.equal(view.data.closingBalances.expense_crypto_losses,2400);
+  assert.equal(view.report.income.resultCents,-1600);
+  assert.equal(view.report.income.operatingResultCents,0);
+  assert.equal(view.report.cash.availableCents,original-1600);
+  console.log('PASS: crypto acquisition, replay, price movement, partial gain and final loss reconcile at historical cost.');
+}
+
 async function checkPermissions(owner) {
   for(const role of ['anon','authenticated']) {
     const routines=await db.query(`SELECT proname FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname='public' AND (proname LIKE 'kq_treasury_%' OR proname='rpc_kq_treasury_snapshot') AND has_function_privilege($1,p.oid,'EXECUTE')`,[role]);
@@ -434,10 +506,11 @@ try {
   await bootstrap();await extendSchema();
   await db.exec(await migration('20260921000100_kq_business_calendar.sql'));
   const owners={};
-  for(const name of ['opening','sales','invoices','savings','assets','unknown','periods','equipment','offsetting']) owners[name]=await player({strength:name==='savings'?'treasurer':null});
+  for(const name of ['opening','sales','invoices','savings','assets','unknown','periods','equipment','offsetting','banking','crypto']) owners[name]=await player({strength:name==='savings'?'treasurer':null});
   await openShop(owners.opening);await production(owners.opening);
   const historicalCash=await cash(owners.opening);
   await db.exec(await migration('20260921000200_kq_treasury_accounting.sql'));
+  for (const name of ['20260923000300_kq_bank_loans.sql','20260923000400_kq_crypto_portfolio.sql','20260923000500_kq_banking_accounting.sql']) await db.exec(await migration(name));
   ({quoteKqCommerce}=await vite.ssrLoadModule('/src/lib/kanab-quest-commerce.ts'));
   ({previewKqBusinessPayment}=await vite.ssrLoadModule('/src/lib/kanab-quest-business.ts'));
   ({getKqTreasuryReport,isKqTreasurySnapshot}=await vite.ssrLoadModule('/src/lib/kanab-quest-treasury.ts'));
@@ -451,6 +524,8 @@ try {
   await checkUnknownAndRollback(owners.unknown);
   await checkOffsettingUnknowns(owners.offsetting);
   await checkPeriods(owners.periods);
+  await checkBankAccounting(owners.banking);
+  await checkCryptoAccounting(owners.crypto);
   await checkPermissions(owners.opening);
   console.log('PASS: isolated treasury accounting integration with real economy migrations.');
 } catch(error) {console.error(error.stack??error.message,error.where??'');process.exitCode=1;}
