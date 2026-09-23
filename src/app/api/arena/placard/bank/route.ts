@@ -1,24 +1,36 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
-import { hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { parseKqBankCommand } from "@/lib/kanab-quest-bank";
 import { getKqBank, KqBankError } from "@/lib/supabase/kanab-quest-bank-backend";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "private, no-store, max-age=0" };
-async function handle(request?: Request) {
+async function handle(request: Request, mutation = false) {
   try {
     if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
     const session = await getCurrentCustomerSessionByBackend("identity");
     if (!session) return NextResponse.json({ error: "Connecte-toi pour ouvrir ton dossier bancaire." }, { status: 401, headers });
-    if (request) {
+    if (mutation) {
       const origin = request.headers.get("origin");
       if ((origin && origin !== new URL(request.url).origin) || request.headers.get("sec-fetch-site") === "cross-site") return NextResponse.json({ error: "Origine non autorisée." }, { status: 403, headers });
     }
-    const rate = await hitRateLimit({ key: `kq_bank:${session.customerId}`, windowSeconds: 60, maxHits: 30 });
-    if (!rate.allowed) return NextResponse.json({ error: "Patiente un instant avant de réessayer." }, { status: 429, headers: { ...headers, "Retry-After": String(rate.retryAfterSeconds) } });
-    if (!request) return NextResponse.json(await getKqBank(session.customerId), { headers });
+    const key = `kq_bank:${session.customerId}`;
+    const rate = await hitRateLimit({ key, windowSeconds: 60, maxHits: 30 });
+    if (!rate.allowed) {
+      logRateLimitRejection({
+        endpoint: `${request.method} /api/arena/placard/bank`,
+        key,
+        ip: getRequestIp(request),
+        actorEmail: session.customer.email,
+        retryAfterSeconds: rate.retryAfterSeconds,
+        maxHits: 30,
+        windowSeconds: 60,
+      });
+      return NextResponse.json({ error: "Patiente un instant avant de réessayer." }, { status: 429, headers: { ...headers, "Retry-After": String(rate.retryAfterSeconds) } });
+    }
+    if (!mutation) return NextResponse.json(await getKqBank(session.customerId), { headers });
     if (Number(request.headers.get("content-length")) > 2048) return NextResponse.json({ error: "Opération trop volumineuse." }, { status: 413, headers });
     // Bound the actual stream too: content-length may be absent or inaccurate.
     const reader = request.body?.getReader();
@@ -40,5 +52,5 @@ async function handle(request?: Request) {
     return NextResponse.json({ error: "Le guichet bancaire est momentanément indisponible. Réessaie dans un instant." }, { status: 503, headers });
   }
 }
-export async function GET() { return handle(); }
-export async function POST(request: Request) { return handle(request); }
+export async function GET(request: Request) { return handle(request); }
+export async function POST(request: Request) { return handle(request, true); }

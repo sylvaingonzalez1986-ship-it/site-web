@@ -1,3 +1,4 @@
+import { getKqProductionUnits } from "./kanab-quest-production-scale";
 import { applyKqMarketDemand, type KqMarketContext, type KqMarketDemand, type KqPricePolicy } from "./kanab-quest-market-demand";
 import {
   getKqEquipmentRequirementState,
@@ -396,7 +397,7 @@ export function quoteKqMarketRoutes(input: {
   marketContext?: KqMarketContext;
 }): KqMarketQuote[] {
   const juryScore = roundTenth(clamp(input.juryScore, 0, 10));
-  const harvestGrams = roundTenth(clamp(input.harvestGrams, 0, 500));
+  const harvestGrams = roundTenth(clamp(input.harvestGrams, 0, 4_000));
   const rawRoute = KQ_MARKET_ROUTES.find((route) => route.code === "raw");
   if (!rawRoute) throw new Error("La voie de vente brute est absente du marché.");
   const rawEquipment = getRouteEquipmentState(input.equipmentCodes, rawRoute, input.equipmentLevels);
@@ -559,6 +560,7 @@ export type KqRoutePlanEquipmentGoal = {
 export function getKqRoutePlanEquipmentGoal(input: {
   route: KqMarketRouteCode;
   ownedCodes: readonly string[];
+  productionUnits?: number;
 }): KqRoutePlanEquipmentGoal | null {
   const route = KQ_MARKET_ROUTES.find((candidate) => candidate.code === input.route);
   if (!route || (route.family !== "hash" && route.family !== "rosin")) return null;
@@ -596,7 +598,7 @@ export function getKqRoutePlanEquipmentGoal(input: {
     minimumJuryScore: route.minimumJuryScore,
     equipmentCode: equipment.code,
     equipmentName: equipment.name,
-    equipmentPriceCents: equipment.priceCents,
+    equipmentPriceCents: equipment.priceCents * getKqProductionUnits(input.productionUnits),
     investmentRequired: !owned.has(equipment.code),
   };
 }
@@ -742,7 +744,9 @@ export function getKqMarketEquipmentGoal(input: {
   ownedCodes: string[];
   equippedCodes: string[];
   cashCents: number;
+  productionUnits?: number;
 }): KqMarketEquipmentGoal | null {
+  const productionUnits = getKqProductionUnits(input.productionUnits);
   const missingUnlock = input.quote.missingUnlocks?.[0];
   if (!missingUnlock) return null;
   const owned = new Set(input.ownedCodes);
@@ -762,7 +766,7 @@ export function getKqMarketEquipmentGoal(input: {
     return {
       code: direct.code,
       name: direct.name,
-      priceCents: direct.priceCents,
+      priceCents: direct.priceCents * productionUnits,
       remainingCents: 0,
       affordable: true,
       kind: "install",
@@ -784,9 +788,9 @@ export function getKqMarketEquipmentGoal(input: {
   return {
     code: goal.code,
     name: goal.name,
-    priceCents: goal.priceCents,
-    remainingCents: Math.max(0, goal.priceCents - input.cashCents),
-    affordable: input.cashCents >= goal.priceCents,
+    priceCents: goal.priceCents * productionUnits,
+    remainingCents: Math.max(0, goal.priceCents * productionUnits - input.cashCents),
+    affordable: input.cashCents >= goal.priceCents * productionUnits,
     kind: prerequisite ? "prerequisite" : "buy",
     targetEquipmentName: prerequisite ? direct.name : null,
   };

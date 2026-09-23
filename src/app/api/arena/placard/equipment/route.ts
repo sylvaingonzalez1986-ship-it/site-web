@@ -10,6 +10,7 @@ import {
   upgradeKqDurableEquipment,
   repairKqMachine,
   replaceKqCultureEquipment,
+  expandKqProduction,
 } from "@/lib/supabase/kanab-quest-equipment-backend";
 import { isKqMarketRouteCode, type KqMarketRouteCode } from "@/lib/kanab-quest-market";
 
@@ -49,11 +50,12 @@ export async function POST(request: Request) {
     });
   }
   try {
-    const payload = await request.json() as { requestKey?: string; equipmentCodes?: string[] };
+    const payload = await request.json() as { requestKey?: string; equipmentCodes?: string[]; expectedUnits?: number };
     return NextResponse.json(await purchaseKqDurableEquipment({
       userId: session.customerId,
       requestKey: String(payload.requestKey ?? ""),
       equipmentCodes: Array.isArray(payload.equipmentCodes) ? payload.equipmentCodes : [],
+      expectedUnits: payload.expectedUnits ?? 1,
     }));
   } catch (error) {
     const failure = publicEquipmentError(error, "Achat d’équipement impossible.");
@@ -76,7 +78,8 @@ export async function PATCH(request: Request) {
   }
   try {
     const payload = await request.json() as {
-      action?: "route-plan" | "upgrade" | "repair" | "replace";
+      action?: "route-plan" | "upgrade" | "repair" | "replace" | "expand-production";
+      expectedUnits?: number;
       expectedVersion?: number;
       expectedCostCents?: number;
       requestKey?: string;
@@ -84,6 +87,10 @@ export async function PATCH(request: Request) {
       route?: string | null;
       equipmentCode?: string | null;
     };
+    if (payload.action === "expand-production") return NextResponse.json(await expandKqProduction({
+      userId: session.customerId, requestKey: String(payload.requestKey ?? ""),
+      expectedUnits: payload.expectedUnits ?? -1, expectedCostCents: payload.expectedCostCents ?? -1,
+    }));
     if (payload.action === "replace") return NextResponse.json(await replaceKqCultureEquipment({
       userId: session.customerId, equipmentCode: String(payload.equipmentCode ?? ""), requestKey: String(payload.requestKey ?? ""),
       expectedVersion: payload.expectedVersion ?? -1, expectedCostCents: payload.expectedCostCents ?? -1,
@@ -98,6 +105,7 @@ export async function PATCH(request: Request) {
         requestKey: String(payload.requestKey ?? ""),
         equipmentCode: String(payload.equipmentCode ?? ""),
         expectedLevel: payload.expectedLevel ?? 0,
+        expectedUnits: payload.expectedUnits ?? 1,
       }));
     }
     if (payload.action === "route-plan") {

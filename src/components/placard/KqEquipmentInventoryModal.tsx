@@ -4,6 +4,8 @@ import { ArrowDown, ArrowUp, Check, CircleAlert, PackageOpen, RefreshCw, Setting
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentImpactLabels, getKqEquipmentRequirementState, KQ_EQUIPMENT_CATALOG, KQ_EQUIPMENT_SLOT_LABELS, summarizeKqEquipmentLoadout, type KqEquipmentDefinition, type KqEquipmentSlot } from "@/lib/kanab-quest-equipment";
+import { getKqProductionExpansion, getKqProductionUnits } from "@/lib/kanab-quest-production";
+import { KqProductionCapacity, type KqProductionSnapshot } from "./KqProductionCapacity";
 import { quoteKqEnergy } from "@/lib/kanab-quest-energy";
 import { getKqCultureOperationalCodes, type KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
@@ -19,7 +21,9 @@ const WAREHOUSE_GROUPS: readonly { code: string; label: string; description: str
   { code: "services", label: "Services", description: "Les essentiels de l’atelier", slots: ["flower-drying", "energy", "security"], icon: ShieldCheck },
 ];
 
-export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,maintenance={},cultureWear={},activeRun=false,loading,loadError,onClose,onOpenShop,onRetry,initialSlot="tent"}:{
+export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,productionUnits=1,production,maintenance={},cultureWear={},activeRun=false,loading,loadError,onClose,onOpenShop,onRetry,initialSlot="tent"}:{
+  productionUnits?:number;
+  production?:KqProductionSnapshot;
   maintenance?:Record<string,KqMachineCondition>;
   cultureWear?:Record<string,KqCultureEquipmentCondition>;
   activeRun?:boolean;
@@ -36,10 +40,12 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   const [override,setOverride]=useState<string[]|null>(null);
   const [error,setError]=useState("");
   const [notice,setNotice]=useState("");
+  const units=getKqProductionUnits(productionUnits);
+  const expansion=production??getKqProductionExpansion(units,purchasedCodes,levels);
   const activeCodes=override??equippedCodes;
   const operationalCodes=useMemo(()=>getKqCultureOperationalCodes(activeCodes,cultureWear),[activeCodes,cultureWear]);
   const summary=useMemo(()=>summarizeKqEquipmentLoadout(operationalCodes,levels),[operationalCodes,levels]);
-  const energy=useMemo(()=>quoteKqEnergy(operationalCodes,levels),[operationalCodes,levels]);
+  const energy=useMemo(()=>quoteKqEnergy(operationalCodes,levels,"balanced",units),[operationalCodes,levels,units]);
   const equipment=useMemo(()=>[...new Set([...ownedCodes,...activeCodes])].map(code=>getKqEquipmentAtLevel(code,levels[code])).filter((item):item is KqEquipmentDefinition=>!!item),[ownedCodes,activeCodes,levels]);
   const choices=equipment.filter(item=>item.slot===slot);
   const installed=choices.find(item=>activeCodes.includes(item.code));
@@ -75,7 +81,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
     <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="equipment-inventory-title" data-arena-tour-surface="warehouse" onKeyDown={event=>{
       if(event.key==="Escape"){event.preventDefault();event.stopPropagation();onClose();return;}
       if(event.key!=="Tab")return;
-      const controls=Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled),a[href],input,select,[tabindex="0"]')).filter(el=>el.getClientRects().length>0);
+      const controls=Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled),a[href],input,select,summary,[tabindex="0"]')).filter(el=>el.getClientRects().length>0);
       if(event.shiftKey&&document.activeElement===controls[0]){event.preventDefault();controls.at(-1)?.focus();}
       else if(!event.shiftKey&&document.activeElement===controls.at(-1)){event.preventDefault();controls[0]?.focus();}
     }}>
@@ -97,8 +103,9 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
             <nav className={styles.slots} aria-label="Emplacements de l’entrepôt">{groupZones.map(zone=><button key={zone.slot} type="button" aria-pressed={slot===zone.slot} data-installed={installedSlots.has(zone.slot)} onClick={()=>select(zone.slot)}><span>{KQ_EQUIPMENT_SLOT_LABELS[zone.slot]}</span><small>{installedSlots.has(zone.slot)?<><Check size={12} aria-hidden="true"/>Installé</>:"Libre"}</small></button>)}</nav>
             <div className={styles.selectionSummary}><div><small>Ta sélection</small><strong>{KQ_EQUIPMENT_SLOT_LABELS[slot]}</strong><span>{installed?.name??"Emplacement libre"}</span></div><button type="button" onClick={showDetails}>Voir le détail<ArrowDown size={16} aria-hidden="true"/></button></div>
           </div>
-          <div className={styles.performance}><h3>Ton installation en un coup d’œil</h3><dl className={styles.stats}><div><dt>Quantité</dt><dd>+{summary.quantityPercent} %</dd></div><div><dt>Qualité max.</dt><dd>+{summary.qualityMaxBonus}</dd></div><div><dt>Régularité</dt><dd>+{summary.regularityPercent} %</dd></div><div><dt>Électricité / cycle</dt><dd>{formatKqCash(energy.totalCents)}</dd></div></dl>
+          <div className={styles.performance}><h3>Ton installation en un coup d’œil</h3><dl className={styles.stats}><div><dt>Récolte ×{units}</dt><dd>+{summary.quantityPercent} %</dd></div><div><dt>Qualité max.</dt><dd>+{summary.qualityMaxBonus}</dd></div><div><dt>Régularité</dt><dd>+{summary.regularityPercent} %</dd></div><div><dt>Électricité / cycle</dt><dd>{formatKqCash(energy.totalCents)}</dd></div></dl>
           <small className={styles.estimate}>Estimation en mode équilibré, hors usure, nourriture et vétérinaire. Les bonus du matériel hors service sont désactivés ; le kit de départ prend le relais aux emplacements concernés. L’installation est fixée au lancement de chaque culture.</small></div>
+          <KqProductionCapacity tentArtwork={activeCodes.includes("TENT-080-STARTER")?"tent-starter":"tent-pro"} production={expansion} cashCents={cashCents} activeRun={activeRun} disabled={loading||!!loadError||!!pending} onUpdated={onRetry} onPendingChange={busy=>setPending(busy?"production":null)}/>
         </div>
         <aside ref={panel} className={styles.panel} tabIndex={-1} aria-labelledby="warehouse-slot-title">
           <button type="button" className={styles.backToScene} onClick={showWorkshop}><ArrowUp size={16} aria-hidden="true"/>Retour à l’entrepôt</button>
@@ -108,18 +115,18 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
           {loading?<p role="status">Actualisation de l’atelier…</p>:loadError?<button type="button" onClick={onRetry}><RefreshCw size={16}/>Réessayer</button>:<>
             {choices.map(item=>{const isInstalled=activeCodes.includes(item.code),requirement=getKqEquipmentRequirementState({equipment:item,ownedCodes});return <article key={item.code} className={styles.item} data-installed={isInstalled}>
               <span>{cultureWear[item.code]?.due?"Hors service":isInstalled?"Installé":item.purchasable?"En réserve":"Fourni"}{item.purchasable?` · niveau ${levels[item.code]??1}`:""}</span><h4>{item.name}</h4>
-              <ul>{getKqEquipmentImpactLabels(item).map(label=><li key={label}>{label}</li>)}</ul><small>{item.tradeoff}</small>
+              <ul>{getKqEquipmentImpactLabels(item).map(label=><li key={label}>{label}</li>)}</ul><small>{item.category === "security" ? "Par tente : " : ""}{item.tradeoff}{item.category === "security" && units > 1 ? ` Consommation et frais ×${units} pour toute ton installation.` : ""}</small>
               {!isInstalled&&installed?<p>Remplace {installed.name}, qui reste en réserve.</p>:null}
               {!requirement.compatible?<p className={styles.error}>Prérequis : {requirement.missing.map(r=>r.label).join(", ")}</p>:null}
               <button type="button" disabled={isInstalled||!purchasedCodes.includes(item.code)||!requirement.compatible||!!pending||loading||cultureWear[item.code]?.due} onClick={()=>void equip(item)}>{pending===item.code?"Installation…":cultureWear[item.code]?.due?"À remplacer avant installation":isInstalled?"Déjà installé":"Installer ici"}</button>
               {cultureWear[item.code]?<KqCultureEquipmentWear code={item.code} name={item.name} condition={cultureWear[item.code]} cashCents={cashCents} activeRun={activeRun} disabled={!!pending||loading} onUpdated={onRetry}/>:null}
-              {item.purchasable&&purchasedCodes.includes(item.code)?<KqEquipmentUpgrade code={item.code} level={levels[item.code]??1} cashCents={cashCents} disabled={!!pending||loading||cultureWear[item.code]?.due} onUpdated={onRetry}/>:null}
+              {item.purchasable&&purchasedCodes.includes(item.code)?<KqEquipmentUpgrade code={item.code} level={levels[item.code]??1} cashCents={cashCents} productionUnits={units} disabled={!!pending||loading||cultureWear[item.code]?.due} onUpdated={onRetry}/>:null}
               {maintenance[item.code]?<KqMachineMaintenance code={item.code} condition={maintenance[item.code]} cashCents={cashCents} disabled={!!pending||loading} onUpdated={onRetry}/>:null}
             </article>;})}
             {!choices.length?<p className={styles.empty}><PackageOpen/>Cet emplacement est prêt à accueillir ton matériel.</p>:null}
-            {suggestion?<button type="button" className={styles.shopButton} onClick={()=>openShop(suggestion.code)}><ShoppingBag size={17}/>{slot==="flower-drying"?`Aménager le séchoir · ${formatKqCash(suggestion.priceCents)}`:"Voir le matériel en boutique"}</button>:null}
+            {suggestion?<button type="button" className={styles.shopButton} onClick={()=>openShop(suggestion.code)}><ShoppingBag size={17}/>{slot==="flower-drying"?`Aménager le séchoir · ${formatKqCash(suggestion.priceCents*units)}`:"Voir le matériel en boutique"}</button>:null}
           </>}
-          <small className={styles.rule}>Acheter, installer, puis améliorer. Un seul équipement actif par emplacement ; aucun changement sur les cultures déjà lancées.</small>
+          <small className={styles.rule}>Acheter, installer, puis améliorer. Un modèle actif par emplacement, partagé entre tes {units} tente{units>1?"s":""} ; aucun changement sur les cultures déjà lancées.</small>
         </aside>
       </div>
     </section>

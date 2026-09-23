@@ -9,9 +9,10 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProducerBar } from "@/components/boutique/ProducerBar";
 import { ProducerTcgCard } from "@/components/boutique/ProducerTcgCard";
 import { categoryLabels, type Product, type ProductCategory } from "@/data/products";
-import { resolveProductProducer, sortOwnProductsFirst } from "@/lib/own-producer";
+import { resolveProductProducer } from "@/lib/own-producer";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { mergeUniqueProductsById } from "@/lib/boutique-helpers";
+import { rotateProductsForDay } from "@/lib/product-rotation";
 import type { BoutiqueSection, Producer, PublicStoreResponse } from "@/types/store";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import styles from "./BoutiquePageClient.module.css";
@@ -30,6 +31,7 @@ type Filter = "all" | "promos" | ProductCategory;
 type ShowcaseMode = "products" | "neighbors" | "copains" | "regions";
 
 type BoutiquePageClientProps = {
+  rotationDay: number;
   boutique: PublicStoreResponse["content"]["boutique"];
   producers: Producer[];
   ownProducer: Producer;
@@ -43,6 +45,7 @@ type BoutiquePageClientProps = {
 };
 
 export function BoutiquePageClient({
+  rotationDay,
   boutique,
   producers,
   ownProducer,
@@ -115,24 +118,28 @@ export function BoutiquePageClient({
   const effectiveFilter: Filter = availableFilters.includes(filter) ? filter : "all";
 
   const displayedProducts = useMemo(() => {
+    let selection;
     if (effectiveFilter === "accessoires") {
-      return sortOwnProductsFirst(globalAccessoriesProducts);
-    }
-
-    if (effectiveFilter === "promos") {
-      return sortOwnProductsFirst(
-        mergeUniqueProductsById([...modeProducts, ...globalAccessoriesProducts]).filter((product) =>
-          hasActiveProductPromo(product),
-        ),
+      selection = globalAccessoriesProducts;
+    } else if (effectiveFilter === "promos") {
+      selection = mergeUniqueProductsById([...modeProducts, ...globalAccessoriesProducts]).filter(
+        (product) => hasActiveProductPromo(product),
       );
+    } else if (effectiveFilter === "all") {
+      selection = modeProducts;
+    } else {
+      selection = modeProducts.filter((item) => item.category === effectiveFilter);
     }
 
-    if (effectiveFilter === "all") {
-      return modeProducts;
-    }
-
-    return modeProducts.filter((item) => item.category === effectiveFilter);
-  }, [effectiveFilter, globalAccessoriesProducts, modeProducts]);
+    // Rotate the selected list, so even a small category has its own full cycle.
+    // Reopening a tab/filter reuses the server's day instead of drawing again.
+    return rotateProductsForDay(
+      selection,
+      rotationDay,
+      effectiveFilter === "accessoires" ? "boutique:accessoires" : `boutique:${showcaseMode}:${effectiveFilter}`,
+      { ownProductsFirst: true },
+    );
+  }, [effectiveFilter, globalAccessoriesProducts, modeProducts, rotationDay, showcaseMode]);
 
   const displayedOwnProducts = useMemo(
     () => displayedProducts.filter((product) => !product.producerId),
@@ -242,6 +249,7 @@ export function BoutiquePageClient({
           return (
             <div key={section.id} className={spacingClass}>
               <RegionProducerShowcase
+                rotationDay={rotationDay}
                 producers={producers}
                 products={partnerProducts}
                 ownProducer={ownProducer}
@@ -299,6 +307,7 @@ export function BoutiquePageClient({
             </div>
             {isPartnerMode && hasProducerProducts ? (
               <ProducerBar
+                rotationDay={rotationDay}
                 producers={producers}
                 products={displayedProducts}
                 addButtonLabel={boutique.addButtonLabel}

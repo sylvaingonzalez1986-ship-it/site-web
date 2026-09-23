@@ -1,3 +1,5 @@
+import { getKqProductionUnits } from "./kanab-quest-production-scale";
+
 export const KQ_STARTING_CASH_CENTS = 35_000;
 
 export const KQ_EQUIPMENT_CATEGORIES = [
@@ -815,11 +817,11 @@ export function getKqEquipmentAtLevel(code: string, requestedLevel = 1): KqEquip
   return { ...base, effects, benefit: getKqEquipmentImpactLabels({ ...base, effects }).filter((label) => !label.startsWith("Débloque :")).slice(0, 3).join(" · ") };
 }
 
-export function getKqEquipmentUpgradeCost(code: string, requestedLevel: number): number | null {
+export function getKqEquipmentUpgradeCost(code: string, requestedLevel: number, productionUnits = 1): number | null {
   const equipment = getKqEquipmentDefinition(code);
   const level = getKqEquipmentLevel(requestedLevel);
   if (!equipment?.purchasable || KQ_EQUIPMENT_REPLACEMENTS[code] || KQ_RETIRED_EQUIPMENT_CODES.includes(code) || level !== requestedLevel || level >= KQ_EQUIPMENT_MAX_LEVEL) return null;
-  return Math.ceil(equipment.priceCents * level / 10);
+  return Math.ceil(equipment.priceCents * level / 10) * getKqProductionUnits(productionUnits);
 }
 
 export function getKqEquipmentImpactLabels(equipment: KqEquipmentDefinition) {
@@ -880,6 +882,7 @@ export function buildKqEquipmentHudSummary(input: {
 export function getKqNextEquipmentGoal(input: {
   ownedCodes: string[];
   cashCents: number;
+  productionUnits?: number;
 }) {
   const candidates = KQ_EQUIPMENT_CATALOG
     .filter((equipment) => (
@@ -898,7 +901,8 @@ export function getKqNextEquipmentGoal(input: {
         || leftUnlockPriority - rightUnlockPriority
         || left.code.localeCompare(right.code);
     });
-  const equipment = candidates[0] ?? null;
+  const candidate = candidates[0];
+  const equipment = candidate ? { ...candidate, priceCents: candidate.priceCents * getKqProductionUnits(input.productionUnits) } : null;
   if (!equipment) return null;
   const savedCents = Math.min(Math.max(0, input.cashCents), equipment.priceCents);
   return {
@@ -926,6 +930,7 @@ export type KqEquipmentGoalReceipt = {
 export function buildKqEquipmentGoalReceipt(input: {
   ownedCodes: string[];
   cashCents: number;
+  productionUnits?: number;
 }): KqEquipmentGoalReceipt | null {
   const goal = getKqNextEquipmentGoal(input);
   if (!goal) return null;
@@ -950,11 +955,11 @@ export function formatKqCash(cents: number) {
   }).format(cents / 100);
 }
 
-export function getKqEquipmentCartTotal(codes: string[]) {
+export function getKqEquipmentCartTotal(codes: string[], productionUnits = 1) {
   return [...new Set(codes)].reduce((total, code) => {
     const equipment = getKqEquipmentDefinition(code);
     return total + (equipment?.purchasable ? equipment.priceCents : 0);
-  }, 0);
+  }, 0) * getKqProductionUnits(productionUnits);
 }
 
 export function getKqEquipmentRequirementState(input: {
@@ -1028,12 +1033,13 @@ export function validateKqEquipmentCart(input: {
   ownedCodes: string[];
   equippedCodes?: string[];
   cashCents: number;
+  productionUnits?: number;
 }) {
   const uniqueCodes = [...new Set(input.cartCodes)];
   const duplicateCodes = input.cartCodes.filter((code, index) => input.cartCodes.indexOf(code) !== index);
   const invalidCodes = uniqueCodes.filter((code) => !getKqEquipmentDefinition(code)?.purchasable);
   const alreadyOwnedCodes = uniqueCodes.filter((code) => input.ownedCodes.includes(code));
-  const totalCents = getKqEquipmentCartTotal(uniqueCodes);
+  const totalCents = getKqEquipmentCartTotal(uniqueCodes, input.productionUnits);
   const cartEquipment = uniqueCodes
     .map((code) => getKqEquipmentDefinition(code))
     .filter((equipment): equipment is KqEquipmentDefinition => Boolean(equipment));

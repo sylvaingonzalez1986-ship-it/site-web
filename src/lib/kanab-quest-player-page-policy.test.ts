@@ -152,7 +152,7 @@ describe("Kanab Quest player page access", () => {
     expect(equipmentCatalog).toContain('aria-label="Projection personnalisée dans ton atelier"');
     expect(equipmentCatalog).toContain("selectedInstalledEquipment.name");
     expect(equipmentCatalog).toContain("Filières complétées");
-    expect(equipmentCatalog).toContain("getLoadoutProjectionMetrics(currentLoadout, selectedProjection)");
+    expect(equipmentCatalog).toContain("getLoadoutProjectionMetrics(currentLoadout, selectedProjection, productionUnits)");
     expect(equipmentCatalog).toContain('aria-label="Amortissement indicatif de la machine"');
     expect(equipmentCatalog).toContain("getKqEquipmentPaybackScenarios");
     expect(equipmentCatalog).toContain("Surplus par lot");

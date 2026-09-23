@@ -1,8 +1,6 @@
 import Link from "@/components/navigation/NavigationLink";
-import { ChevronDown, MessageCircle, Star } from "lucide-react";
-import type {
-  ContestScoreCriterion,
-} from "@/types/contest";
+import { ArrowDown, ArrowUpRight, BookOpen, ChevronDown, MessageCircle, Star } from "lucide-react";
+import type { ContestScoreCriterion } from "@/types/contest";
 import {
   CONTEST_AROMA_TAG_LABELS,
   CONTEST_CONSUMPTION_METHOD_LABELS,
@@ -10,11 +8,7 @@ import {
   CONTEST_SCORE_CRITERION_LABELS,
 } from "@/types/contest";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
-import {
-  formatContestAverage,
-  formatContestDate,
-  getContestReviewAverage,
-} from "@/lib/contest-ui";
+import { formatContestAverage, formatContestDate, getContestReviewAverage } from "@/lib/contest-ui";
 import { CONTEST_SCORE_MAX } from "@/lib/contest-score";
 import styles from "./ProductTastingSection.module.css";
 
@@ -24,48 +18,38 @@ type ProductTastingProps = {
 };
 
 function formatReviewCount(count: number): string {
-  return `${count} avis ${count > 1 ? "vérifiés" : "vérifié"}`;
+  return `${count} avis ${count > 1 ? "publiés" : "publié"}`;
 }
 
 export function ProductTastingBadge({ summary }: Pick<ProductTastingProps, "summary">) {
-  if (summary.entry.stats.approvedReviewCount === 0) {
-    return null;
-  }
+  const { approvedReviewCount, averageScore } = summary.entry.stats;
+  if (approvedReviewCount === 0) return null;
 
   return (
-    <a
-      href="#avis-degustation"
-      className="mt-4 inline-flex min-h-11 w-fit items-center gap-2 border-2 border-[#1a1a1a] bg-yellow px-3 py-2 text-sm font-black uppercase text-ink shadow-[3px_3px_0_#1a1a1a] transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-    >
-      <Star size={17} fill="currentColor" aria-hidden="true" />
-      <span>{formatContestAverage(summary.entry.stats.averageScore)} / {CONTEST_SCORE_MAX}</span>
-      <span aria-hidden="true">·</span>
-      <span>{formatReviewCount(summary.entry.stats.approvedReviewCount)}</span>
+    <a href="#avis-degustation" className={styles.badge}>
+      <span className={styles.badgeScore}>
+        <Star size={16} fill="currentColor" aria-hidden="true" />
+        {formatContestAverage(averageScore)} <span>/ {CONTEST_SCORE_MAX}</span>
+      </span>
+      <span className={styles.badgeLabel}>
+        <strong>Les notes du Carnet</strong>
+        <span>{formatReviewCount(approvedReviewCount)}</span>
+      </span>
+      <ArrowDown size={18} aria-hidden="true" />
     </a>
   );
 }
 
-function CriterionRow({
-  criterion,
-  score,
-}: {
-  criterion: ContestScoreCriterion;
-  score: number;
-}) {
-  const percentage = Math.max(0, Math.min(100, score));
-
+function CriterionRow({ criterion, score }: { criterion: ContestScoreCriterion; score: number }) {
+  const percentage = Math.max(0, Math.min(100, (score / CONTEST_SCORE_MAX) * 100));
   return (
     <div className={styles.criterion}>
-      <div className="flex items-center justify-between gap-3">
-        <span className="text-xs font-bold text-charcoal">
-          {CONTEST_SCORE_CRITERION_LABELS[criterion]}
-        </span>
-        <span className="shrink-0 text-xs font-black text-ink">
-          {formatContestAverage(score)}
-        </span>
+      <div className={styles.criterionLabel}>
+        <span>{CONTEST_SCORE_CRITERION_LABELS[criterion]}</span>
+        <strong>{formatContestAverage(score)}</strong>
       </div>
       <div className={styles.bar} aria-hidden="true">
-        <div className="h-full bg-yellow" style={{ width: `${percentage}%` }} />
+        <span style={{ width: `${percentage}%` }} />
       </div>
     </div>
   );
@@ -73,126 +57,120 @@ function CriterionRow({
 
 export function ProductTastingSection({ summary, showArenaLink }: ProductTastingProps) {
   const { entry, reviews } = summary;
+  const reviewCount = entry.stats.approvedReviewCount;
   const criterionAverages = CONTEST_SCORE_CRITERIA.flatMap((criterion) => {
     const score = entry.stats.criterionAverages[criterion];
-    return typeof score === "number" ? [{ criterion, score }] : [];
+    return reviewCount > 0 && typeof score === "number" ? [{ criterion, score }] : [];
   });
 
   return (
-    <details id="avis-degustation" className={`group ${styles.panel}`}>
-      <summary className={`${styles.summary} focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink`}>
+    <section id="avis-degustation" aria-labelledby="avis-degustation-title" className={styles.panel}>
+      <header className={styles.header}>
         <div>
-          <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-            Avis vérifiés · carnet de dégustation
-          </p>
-          <h2 id="avis-degustation-title" className={styles.title}>
-            Notes de dégustation et avis
-          </h2>
-          <p className="mt-2 text-xs font-bold text-charcoal md:text-sm">
-            {entry.stats.approvedReviewCount > 0
-              ? `${formatContestAverage(entry.stats.averageScore)} / ${CONTEST_SCORE_MAX} · ${formatReviewCount(entry.stats.approvedReviewCount)}`
-              : "Aucun avis publié pour le moment"}
-          </p>
+          <p className={styles.eyebrow}><BookOpen size={16} aria-hidden="true" /> Le Carnet · les retours de dégustation</p>
+          <h2 id="avis-degustation-title" className={styles.title}>Notes &amp; critiques.</h2>
+          <p className={styles.intro}>Leurs impressions, leurs arômes, leurs mots. Découvre ce que les dégustateurs en pensent.</p>
         </div>
-        <span className={styles.toggle}>
-          <span className="hidden sm:inline">Voir le détail</span>
-          <ChevronDown size={20} aria-hidden="true" className="transition-transform group-open:rotate-180" />
-        </span>
-      </summary>
+        <div className={styles.edition}>
+          <span>Le lot dégusté</span>
+          <strong>{entry.season?.label ?? entry.title}</strong>
+          <span>Avis publiés après modération</span>
+        </div>
+      </header>
 
       <div className={styles.content}>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <p className="max-w-2xl text-sm leading-relaxed text-charcoal">
-            Notes publiées après modération pour le lot {entry.season?.label ?? entry.title}.
-          </p>
-          {showArenaLink ? (
-            <Link
-              href={`/arene/${entry.slug}`}
-              className="btn-cartoon btn-secondary inline-flex min-h-11 shrink-0 items-center justify-center px-4 text-xs"
-            >
-              Voir le carnet complet
-            </Link>
-          ) : null}
-        </div>
-
-        <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(260px,0.7fr)_minmax(0,1.3fr)]">
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
-            <div className={`${styles.stat} bg-yellow`}>
-              <span className="text-[11px] font-black uppercase tracking-[0.12em] text-charcoal">Note moyenne</span>
-              <strong className="font-display text-3xl leading-none text-ink">
-                {entry.stats.approvedReviewCount > 0 ? formatContestAverage(entry.stats.averageScore) : "—"}
-                <span className="ml-1 text-base">/ {CONTEST_SCORE_MAX}</span>
-              </strong>
+        <aside className={styles.overview} aria-label="Synthèse des notes de dégustation">
+          <div className={styles.scoreCard}>
+            <p className={styles.label}><Star size={16} aria-hidden="true" /> La note du Carnet</p>
+            <div className={styles.average}>
+              <strong>{reviewCount > 0 ? formatContestAverage(entry.stats.averageScore) : "—"}</strong>
+              <span>/ {CONTEST_SCORE_MAX}</span>
             </div>
-            <div className={`${styles.stat} bg-white`}>
-              <span className="text-[11px] font-black uppercase tracking-[0.12em] text-charcoal">Avis publiés</span>
-              <strong className="font-display text-3xl leading-none text-ink">{entry.stats.approvedReviewCount}</strong>
-            </div>
+            <p className={styles.reviewCount}>{reviewCount > 0 ? formatReviewCount(reviewCount) : "La première note se fait attendre"}</p>
           </div>
 
           {criterionAverages.length > 0 ? (
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
-              {criterionAverages.map(({ criterion, score }) => (
-                <CriterionRow key={criterion} criterion={criterion} score={score} />
-              ))}
-            </div>
+            <details className={styles.criteria}>
+              <summary>Le profil du lot <ChevronDown size={18} aria-hidden="true" /></summary>
+              <p className={styles.criteriaHint}>Les moyennes, critère par critère, sur {CONTEST_SCORE_MAX}.</p>
+              <div className={styles.criteriaRows}>
+                {criterionAverages.map(({ criterion, score }) => <CriterionRow key={criterion} criterion={criterion} score={score} />)}
+              </div>
+            </details>
           ) : null}
-        </div>
 
-        <div>
-          <div className="flex items-center gap-2">
-            <MessageCircle size={20} aria-hidden="true" />
-            <h3 className="font-display text-2xl text-ink">Avis publiés</h3>
+          <p className={styles.sourceNote}><BookOpen size={18} aria-hidden="true" /><span>Ces notes et critiques proviennent des carnets de dégustation remplis pour ce lot.</span></p>
+          {showArenaLink ? (
+            <Link href={`/arene/${entry.slug}`} className={styles.carnetLink}>
+              Voir le carnet complet <ArrowUpRight size={17} aria-hidden="true" />
+            </Link>
+          ) : null}
+        </aside>
+
+        <div className={styles.reviews}>
+          <div className={styles.reviewsHeading}>
+            <h3 className={styles.subheading}><MessageCircle size={20} aria-hidden="true" /> À lire dans le Carnet</h3>
+            {reviews.length > 0 ? <span>{reviews.length < reviewCount ? `${reviews.length} derniers avis sur ${reviewCount}` : formatReviewCount(reviewCount)}</span> : null}
           </div>
 
           {reviews.length > 0 ? (
-            <div className="mt-3 grid gap-4 md:grid-cols-2">
+            <div className={styles.reviewList}>
               {reviews.map((review) => (
                 <article key={review.id} className={styles.review}>
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-[0.1em] text-ink">{review.pseudo}</p>
-                      <p className="mt-1 text-xs text-charcoal">{formatContestDate(review.reviewedAt ?? review.createdAt)}</p>
+                  <header className={styles.reviewHeader}>
+                    <div className={styles.author}>
+                      <span className={styles.initial} aria-hidden="true">{Array.from(review.pseudo.trim())[0]?.toLocaleUpperCase("fr-FR") ?? "C"}</span>
+                      <div>
+                        <h4>{review.pseudo}</h4>
+                        <p>{formatContestDate(review.reviewedAt ?? review.createdAt)}</p>
+                      </div>
                     </div>
-                    <span className={`shrink-0 ${styles.score}`}>
-                      {formatContestAverage(getContestReviewAverage(review.scores))} / {CONTEST_SCORE_MAX}
+                    <span className={styles.reviewScore}>
+                      <strong>{formatContestAverage(getContestReviewAverage(review.scores))}</strong>
+                      <span>/ {CONTEST_SCORE_MAX}</span>
                     </span>
-                  </div>
-
-                  <p className={`mt-4 text-sm leading-relaxed text-charcoal ${review.comment.trim() ? "" : "italic"}`}>
-                    {review.comment.trim() || "Pas de commentaire rédigé pour ce carnet."}
+                  </header>
+                  <p className={`${styles.comment} ${review.comment.trim() ? "" : styles.noComment}`}>
+                    {review.comment.trim() || "Ce dégustateur a partagé ses notes sans ajouter de critique."}
                   </p>
-
-                  <details className={`group ${styles.reviewDetails}`}>
-                    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[11px] font-black uppercase tracking-[0.08em] text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
-                      Détails de la dégustation
-                      <span aria-hidden="true" className="text-base transition-transform group-open:rotate-45">+</span>
-                    </summary>
-                    <div className="border-t border-[#1a1a1a] p-3">
-                      <div className="flex flex-wrap gap-2">
-                        <span className={`${styles.tag} bg-white uppercase tracking-[0.06em] text-charcoal`}>
-                          {CONTEST_CONSUMPTION_METHOD_LABELS[review.consumptionMethod]}
-                        </span>
+                  <details className={styles.reviewDetails}>
+                    <summary>Détail de sa dégustation <ChevronDown size={17} aria-hidden="true" /></summary>
+                    <div className={styles.detailsContent}>
+                      <div className={styles.tags}>
+                        <span className={styles.method}>{CONTEST_CONSUMPTION_METHOD_LABELS[review.consumptionMethod]}</span>
                         {review.aromaTags.map((aroma) => (
-                          <span key={`${review.id}-${aroma.tag}-${aroma.customLabel ?? ""}`} className={`${styles.tag} uppercase tracking-[0.06em] text-ink`}>
+                          <span key={`${review.id}-${aroma.tag}-${aroma.customLabel ?? ""}`} className={styles.tag}>
                             {aroma.tag === "other" ? aroma.customLabel : CONTEST_AROMA_TAG_LABELS[aroma.tag]}
                           </span>
                         ))}
                       </div>
+                      {review.scores.length > 0 ? (
+                        <dl className={styles.reviewCriteria}>
+                          {CONTEST_SCORE_CRITERIA.flatMap((criterion) => {
+                            const score = review.scores.find((item) => item.criterion === criterion)?.score;
+                            return typeof score === "number" ? [
+                              <div key={criterion}>
+                                <dt>{CONTEST_SCORE_CRITERION_LABELS[criterion]}</dt>
+                                <dd>{formatContestAverage(score)} <span>/ {CONTEST_SCORE_MAX}</span></dd>
+                              </div>,
+                            ] : [];
+                          })}
+                        </dl>
+                      ) : null}
                     </div>
                   </details>
                 </article>
               ))}
             </div>
           ) : (
-            <div className={`${styles.empty} text-sm leading-relaxed text-charcoal`}>
-              Ce lot n&apos;a pas encore d&apos;avis publié.
+            <div className={styles.empty}>
+              <BookOpen size={36} strokeWidth={1.5} aria-hidden="true" />
+              <h4>Une page encore blanche.</h4>
+              <p>Ce lot n’a pas encore d’avis publié. Les notes et critiques apparaîtront ici après modération.</p>
             </div>
           )}
         </div>
-        </div>
       </div>
-    </details>
+    </section>
   );
 }

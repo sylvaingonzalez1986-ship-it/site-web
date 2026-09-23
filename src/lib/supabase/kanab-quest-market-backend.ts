@@ -56,6 +56,7 @@ export type KqMarketRpcSaleReceipt = {
 export function mapKqMarketSaleReceipt(
   receipt: KqMarketRpcSaleReceipt,
   ownedCodes: string[],
+  productionUnits = 1,
 ) {
   const routeMastery = receipt.routeMastery ? {
     matchedPlan: receipt.routeMastery.matchedPlan === true,
@@ -76,6 +77,7 @@ export function mapKqMarketSaleReceipt(
     nextEquipmentGoal: buildKqEquipmentGoalReceipt({
       ownedCodes,
       cashCents: Number(receipt.cashAfterCents),
+      productionUnits,
     }) satisfies KqEquipmentGoalReceipt | null,
     equipmentProgression: getKqEquipmentProgressionStatus(ownedCodes),
   };
@@ -278,6 +280,7 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
 
   return {
     cashCents: equipmentShop.cashCents,
+    productionUnits: equipmentShop.productionUnits,
     reputation: equipmentShop.reputation,
     reputationRank: Number(betterRankedResult.count ?? 0) + 1,
     ownedCodes: equipmentShop.ownedCodes,
@@ -330,5 +333,6 @@ export async function sellKqMarketLot(input: {
   return mapKqMarketSaleReceipt(
     result.data as KqMarketRpcSaleReceipt,
     marketSnapshot.ownedCodes,
+    marketSnapshot.productionUnits,
   );
 }

@@ -35,8 +35,8 @@ describe("Kanab Quest durable equipment installation", () => {
     createSupabaseServiceClient.mockReturnValue({ rpc });
     const input = { userId: USER_ID, requestKey: "11000000-0000-4000-8000-000000000002", equipmentCode: "LED-300", expectedLevel: 4 };
     await expect(upgradeKqDurableEquipment(input)).resolves.toMatchObject({ level: 5 });
-    expect(rpc).toHaveBeenCalledWith("rpc_kq_upgrade_equipment", {
-      p_user_id: USER_ID, p_request_key: input.requestKey, p_equipment_code: "LED-300", p_expected_level: 4,
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_upgrade_production_equipment", {
+      p_user_id: USER_ID, p_request_key: input.requestKey, p_equipment_code: "LED-300", p_expected_level: 4, p_expected_units: 1,
     });
     rpc.mockResolvedValue({ data: null, error: { message: "equipment_level_changed" } });
     await expect(upgradeKqDurableEquipment(input)).rejects.toThrow("Le niveau a changé");

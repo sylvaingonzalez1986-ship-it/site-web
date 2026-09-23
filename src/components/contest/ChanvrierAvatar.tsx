@@ -48,12 +48,13 @@ export function ChanvrierAvatar({ profile, className, view = "full" }: { profile
       const destination = canvas.current.getContext("2d")!;
       destination.clearRect(0, 0, 768, view === "portrait" ? 768 : 1280);
       destination.imageSmoothingQuality = "high";
-      if (view === "portrait") destination.drawImage(frame, 60, 0, 650, 650, 0, 0, 768, 768);
+      // Keep the longest braids and leftmost ponytail inside the closer face view.
+      if (view === "portrait") destination.drawImage(frame, 80, 40, 560, 560, 0, 0, 768, 768);
       else destination.drawImage(frame, 0, 0);
       setFailed(false); setRendered(signature);
     }).catch(() => { if (!cancelled) setFailed(true); });
     return () => { cancelled = true; };
   }, [profile, signature, view]);
   const a = getChanvrierAppearance(profile);
-  return <canvas ref={canvas} width={768} height={view === "portrait" ? 768 : 1280} className={className} role="img" aria-busy={!failed && rendered !== signature} data-avatar-state={failed ? "error" : rendered === signature ? "ready" : "loading"} aria-label={failed ? "Le portrait est indisponible. Réouvre le profil pour réessayer." : `Ton personnage dans le style cartoon de Sylvain : ${OPTIONS.hair.find(c => c.code === a.hair)?.name}, visage ${OPTIONS.face.find(c => c.code === a.face)?.name}, ${OPTIONS.top.find(c => c.code === a.top)?.name}`} />;
+  return <canvas ref={canvas} width={768} height={view === "portrait" ? 768 : 1280} className={className} role="img" aria-busy={!failed && rendered !== signature} data-avatar-state={failed ? "error" : rendered === signature ? "ready" : "loading"} aria-label={failed ? "Le portrait est indisponible. Réouvre le profil pour réessayer." : `Ton personnage dans le style cartoon de Sylvain : ${OPTIONS.hair.find(c => c.code === a.hair)?.name}, visage ${OPTIONS.face.find(c => c.code === a.face)?.name}, yeux ${OPTIONS.eyes.find(c => c.code === a.eyes)?.name}, nez ${OPTIONS.nose.find(c => c.code === a.nose)?.name}, ${OPTIONS.top.find(c => c.code === a.top)?.name}`} />;
 }

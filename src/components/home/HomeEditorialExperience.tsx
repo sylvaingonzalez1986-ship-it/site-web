@@ -26,6 +26,7 @@ import styles from "./HomeEditorialExperience.module.css";
 
 type HomeEditorialExperienceProps = {
   initialStore: PublicStoreResponse;
+  rotationDay: number;
 };
 
 const sellingPoints = [
@@ -58,11 +59,11 @@ function isSectionVisible(sections: HomeSection[], type: string) {
   return section?.visible !== false;
 }
 
-export function HomeEditorialExperience({ initialStore }: HomeEditorialExperienceProps) {
+export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEditorialExperienceProps) {
   const { content, products, sections } = initialStore;
   const home = content.home;
   const homeSections = sections.home;
-  const featuredProducts = getHomeFeaturedProducts(products);
+  const featuredProducts = getHomeFeaturedProducts(products, rotationDay);
   const producerById = new Map(initialStore.producers.map(producer => [producer.id, producer]));
   const ownProducer = getOwnProducer(content.boutique);
   const customSections = homeSections.filter(

@@ -40,6 +40,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: npm run check:supabase-grants
       - run: npm run test:ci
 
   audit:

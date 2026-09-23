@@ -6,11 +6,13 @@ import { ProducerTcgCard } from "@/components/boutique/ProducerTcgCard";
 import { ProducerTcgModal } from "@/components/boutique/ProducerTcgModal";
 import type { Product } from "@/data/products";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
+import { rotateProductsForDay } from "@/lib/product-rotation";
 import type { Producer } from "@/types/store";
 
 type ProducerTcgShowcaseProps = {
   producers: Producer[];
   products: Product[];
+  rotationDay: number;
   productsByProducerId?: Map<string, Product[]>;
   addButtonLabel: string;
   lowStockThresholdGrams: number;
@@ -23,6 +25,7 @@ type ProducerTcgShowcaseProps = {
 export function ProducerTcgShowcase({
   producers,
   products,
+  rotationDay,
   productsByProducerId: productsByProducerIdOverride,
   addButtonLabel,
   lowStockThresholdGrams,
@@ -46,8 +49,15 @@ export function ProducerTcgShowcase({
       grouped.set(product.producerId, list);
     }
 
+    for (const [producerId, producerProducts] of grouped) {
+      grouped.set(
+        producerId,
+        rotateProductsForDay(producerProducts, rotationDay, `producer:${producerId}`),
+      );
+    }
+
     return grouped;
-  }, [products]);
+  }, [products, rotationDay]);
 
   const productsByProducerId = productsByProducerIdOverride ?? groupedProductsByProducerId;
 

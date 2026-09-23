@@ -1,4 +1,5 @@
 import "server-only";
+import { getKqProductionExpansion, getKqProductionUnits, KQ_PRODUCTION_UNITS, type KqProductionExpansion } from "@/lib/kanab-quest-production";
 import type { ChanvrierStrength } from "@/lib/arena-chanvrier";
 import { getKqMachineCondition, type KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { getKqCultureEquipmentCondition, getKqCultureOperationalCodes, type KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
@@ -24,7 +25,13 @@ function assertUuid(value: string, message: string) {
   if (!UUID_PATTERN.test(value)) throw new Error(message);
 }
 
+function assertProductionUnits(value: number) {
+  if (!KQ_PRODUCTION_UNITS.some(units => units === value)) throw new Error("Capacité de production invalide.");
+}
+
 export type KqEquipmentShopSnapshot = {
+  productionUnits: number;
+  production: KqProductionExpansion;
   strength?: ChanvrierStrength | null;
   maintenance?: Record<string, KqMachineCondition>;
   cultureWear?: Record<string, KqCultureEquipmentCondition>;
@@ -91,7 +98,7 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
   if (ensured.error) throw new Error(`[supabase:rpc_kq_ensure_equipment_profile] ${ensured.error.message}`);
 
   const [wallet, owned, loadout, activeRuns, readyLots, availableFlowers, routeMasteries] = await Promise.all([
-    supabase.from("kq_equipment_wallets").select("cash_cents,reputation,planned_route_code,planned_equipment_code,chanvrier:arena_chanvrier_profiles(strength)").eq("user_id", userId).single(),
+    supabase.from("kq_equipment_wallets").select("cash_cents,production_units,reputation,planned_route_code,planned_equipment_code,chanvrier:arena_chanvrier_profiles(strength)").eq("user_id", userId).single(),
     supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,level,wear_cycles,maintenance_version,culture_wear_percent,culture_wear_version").eq("user_id", userId).order("acquired_at"),
     supabase.from("kq_equipment_loadouts").select("equipment_code").eq("user_id", userId).order("slot"),
     supabase.from("kq_runs").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "active"),
@@ -110,22 +117,25 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
   if (availableFlowers.error) throw new Error(`[supabase:kq_flowers] ${availableFlowers.error.message}`);
   if (routeMasteries.error) throw new Error(`[supabase:kq_player_route_masteries] ${routeMasteries.error.message}`);
   const routePlan = parseKqEquipmentRoutePlan(wallet.data);
+  const productionUnits = getKqProductionUnits(Number(wallet.data.production_units ?? 1));
   const availableOwned = (owned.data ?? []).filter((row) => !KQ_RETIRED_EQUIPMENT_CODES.includes(String(row.equipment_code)));
   const levels = Object.fromEntries(availableOwned.map((row) => [String(row.equipment_code), Number(row.level ?? 1)]));
   const profile = wallet.data.chanvrier as unknown as { strength: ChanvrierStrength } | null;
   const strength = profile?.strength ?? null;
   const maintenance = Object.fromEntries(availableOwned.flatMap(row => {
     const condition = getKqMachineCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.wear_cycles ?? 0), Number(row.maintenance_version ?? 0), strength);
-    return condition ? [[String(row.equipment_code), condition]] : [];
+    return condition ? [[String(row.equipment_code), { ...condition, repairCents: condition.repairCents * productionUnits }]] : [];
   })) as Record<string, KqMachineCondition>;
   const equippedCodes = (loadout.data ?? []).map(row => String(row.equipment_code)).filter(code => !KQ_RETIRED_EQUIPMENT_CODES.includes(code));
   const cultureWear = Object.fromEntries(availableOwned.flatMap(row => {
     const condition = getKqCultureEquipmentCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.culture_wear_percent ?? 0), Number(row.culture_wear_version ?? 0));
-    return condition ? [[String(row.equipment_code), condition]] : [];
+    return condition ? [[String(row.equipment_code), { ...condition, replacementCents: condition.replacementCents * productionUnits }]] : [];
   })) as Record<string, KqCultureEquipmentCondition>;
   const cultureOperationalCodes = getKqCultureOperationalCodes(equippedCodes, cultureWear);
 
+  const purchasedCodes = availableOwned.filter(row => Number(row.purchase_price_cents ?? 0) > 0).map(row => String(row.equipment_code));
   return {
+    productionUnits, production: getKqProductionExpansion(productionUnits, purchasedCodes, levels),
     strength, maintenance, cultureWear, cultureOperationalCodes,
     operationalCodes: cultureOperationalCodes.filter(code => !maintenance[code]?.due),
     cashCents: Number(wallet.data.cash_cents ?? 0),
@@ -152,7 +162,7 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
         masteredAt: String(row.mastered_at ?? ""),
       }];
     }),
-    catalog: KQ_EQUIPMENT_CATALOG.filter((item) => item.purchasable).map((item) => getKqEquipmentAtLevel(item.code, levels[item.code])!),
+    catalog: KQ_EQUIPMENT_CATALOG.filter((item) => item.purchasable).map((item) => ({ ...getKqEquipmentAtLevel(item.code, levels[item.code])!, priceCents: item.priceCents * productionUnits })),
   };
 }
 
@@ -182,9 +192,11 @@ export async function purchaseKqDurableEquipment(input: {
   userId: string;
   requestKey: string;
   equipmentCodes: string[];
+  expectedUnits?: number;
 }) {
   assertUuid(input.userId, "Compte équipement invalide.");
   assertUuid(input.requestKey, "Demande d’achat invalide.");
+  assertProductionUnits(input.expectedUnits ?? 1);
   const equipmentCodes = [...new Set(input.equipmentCodes.map((code) => String(code).trim()))];
   if (equipmentCodes.length !== input.equipmentCodes.length || equipmentCodes.length < 1 || equipmentCodes.length > 8) {
     throw new Error("Panier d’équipement invalide.");
@@ -193,13 +205,15 @@ export async function purchaseKqDurableEquipment(input: {
     throw new Error("Un équipement du panier n’est pas disponible.");
   }
 
-  const result = await createSupabaseServiceClient().rpc("rpc_kq_purchase_equipment", {
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_purchase_production_equipment", {
     p_user_id: input.userId,
     p_request_key: input.requestKey,
     p_equipment_codes: equipmentCodes,
+    p_expected_units: input.expectedUnits ?? 1,
   });
   if (result.error) {
     const message = result.error.message || "Achat d’équipement impossible.";
+    if (message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise le panier.");
     if (message.includes("insufficient_equipment_cash")) throw new Error("Solde insuffisant.");
     if (message.includes("equipment_already_owned")) throw new Error("Tu possèdes déjà un équipement du panier.");
     if (message.includes("equipment_unavailable")) throw new Error("Un équipement du panier n’est plus disponible.");
@@ -215,19 +229,22 @@ export async function purchaseKqDurableEquipment(input: {
 }
 
 export async function upgradeKqDurableEquipment(input: {
-  userId: string; requestKey: string; equipmentCode: string; expectedLevel: number;
+  userId: string; requestKey: string; equipmentCode: string; expectedLevel: number; expectedUnits?: number;
 }) {
   assertUuid(input.userId, "Compte équipement invalide.");
   assertUuid(input.requestKey, "Demande d’amélioration invalide.");
+  assertProductionUnits(input.expectedUnits ?? 1);
   if (getKqEquipmentUpgradeCost(input.equipmentCode, input.expectedLevel) === null) {
     throw new Error("Niveau maximal atteint ou équipement non améliorable.");
   }
-  const result = await createSupabaseServiceClient().rpc("rpc_kq_upgrade_equipment", {
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_upgrade_production_equipment", {
     p_user_id: input.userId, p_request_key: input.requestKey,
     p_equipment_code: input.equipmentCode, p_expected_level: input.expectedLevel,
+    p_expected_units: input.expectedUnits ?? 1,
   });
   if (result.error) {
     const message = result.error.message;
+    if (message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise le prix de l’amélioration.");
     if (message.includes("insufficient_equipment_cash")) throw new Error("Solde insuffisant pour cette amélioration.");
     if (message.includes("equipment_level_changed")) throw new Error("Le niveau a changé. Actualise le matériel avant de réessayer.");
     if (message.includes("equipment_not_purchased")) throw new Error("Achète d’abord cet équipement.");
@@ -325,4 +342,35 @@ export async function replaceKqCultureEquipment(input: { userId: string; equipme
     throw new Error(`[supabase:culture-equipment-replacement] ${result.error.message}`);
   }
   return result.data as { equipmentCode: string; paidCents: number; cashAfterCents: number; level: number; version: number; replayed: boolean };
+}
+
+
+export async function expandKqProduction(input: {
+  userId: string; requestKey: string; expectedUnits: number; expectedCostCents: number;
+}) {
+  assertUuid(input.userId, "Compte équipement invalide.");
+  assertUuid(input.requestKey, "Demande d’agrandissement invalide.");
+  if (!KQ_PRODUCTION_UNITS.some(units => units === input.expectedUnits) || input.expectedUnits === 8
+    || !Number.isSafeInteger(input.expectedCostCents) || input.expectedCostCents <= 0 || input.expectedCostCents > 2147483647) {
+    throw new Error("Devis d’agrandissement invalide.");
+  }
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_expand_production", {
+    p_user_id: input.userId, p_request_key: input.requestKey,
+    p_expected_units: input.expectedUnits, p_expected_cost_cents: input.expectedCostCents,
+  });
+  if (result.error) {
+    const messages: Record<string, string> = {
+      production_invalid_request: "Devis d’agrandissement invalide.",
+      production_request_mismatch: "Cette demande a déjà servi à un autre agrandissement.",
+      production_active_run: "Termine la culture en cours avant d’agrandir ton installation.",
+      production_units_changed: "Ton installation a changé. Actualise ton entrepôt.",
+      production_max_units: "Tes deux entrepôts sont déjà entièrement équipés.",
+      production_equipment_maintenance: "Remplace ou répare le matériel hors service avant d’agrandir ton installation.",
+      production_price_changed: "Le prix du matériel a changé. Actualise le devis d’agrandissement.",
+      production_insufficient_cash: "Trésorerie insuffisante pour cet agrandissement.",
+    };
+    for (const [code, message] of Object.entries(messages)) if (result.error.message.includes(code)) throw new Error(message);
+    throw new Error("[supabase:production-expansion] " + result.error.message);
+  }
+  return result.data as { productionUnits: number; previousUnits: number; addedUnits: number; priceCents: number; cashAfterCents: number; replayed: boolean };
 }

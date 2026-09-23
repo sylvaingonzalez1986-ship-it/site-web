@@ -1,3 +1,4 @@
+import { getKqProductionUnits } from "./kanab-quest-production-scale";
 import {
   isKqEquipmentSuperseded,
   KQ_EQUIPMENT_CATALOG,
@@ -146,9 +147,11 @@ export function buildKqEconomyBalanceReport(input: {
   juryScore: number;
   harvestGrams: number;
   routeSaleCount?: number;
+  productionUnits?: number;
 }) {
+  const productionUnits = getKqProductionUnits(input.productionUnits);
   const juryScore = roundTenth(Math.max(0, Math.min(10, input.juryScore)));
-  const harvestGrams = roundTenth(Math.max(0, Math.min(500, input.harvestGrams)));
+  const harvestGrams = roundTenth(Math.max(0, Math.min(4_000, input.harvestGrams)));
   const parsedRouteSaleCount = Number(input.routeSaleCount ?? 1);
   const routeSaleCount = Number.isFinite(parsedRouteSaleCount)
     ? Math.max(1, Math.min(100, Math.trunc(parsedRouteSaleCount)))
@@ -175,7 +178,7 @@ export function buildKqEconomyBalanceReport(input: {
     const equipment = equipmentCodes
       .map(getEquipment)
       .filter((item): item is NonNullable<typeof item> => item !== null);
-    const acquisitionCostCents = equipment.reduce((total, item) => total + item.priceCents, 0);
+    const acquisitionCostCents = equipment.reduce((total, item) => total + item.priceCents, 0) * productionUnits;
     const comparisonDeltaCents = quote.payoutCents - baseline.payoutCents;
     const paybackHarvests = acquisitionCostCents > 0 && comparisonDeltaCents > 0
       ? roundTenth(acquisitionCostCents / comparisonDeltaCents)
@@ -270,9 +273,13 @@ export function buildKqEconomyBalanceReport(input: {
 
 export function getKqEquipmentPaybackScenarios(
   equipmentCode: string,
-  input: { ownedCodes?: string[]; cartCodes?: string[]; levels?: Record<string, number> } = {},
+  input: { ownedCodes?: string[]; cartCodes?: string[]; levels?: Record<string, number>; productionUnits?: number; harvestGrams?: number } = {},
 ) {
-  const report = buildKqEconomyBalanceReport(KQ_PLAYER_PAYBACK_REFERENCE);
+  const productionUnits = getKqProductionUnits(input.productionUnits);
+  const report = buildKqEconomyBalanceReport({
+    ...KQ_PLAYER_PAYBACK_REFERENCE, productionUnits,
+    harvestGrams: input.harvestGrams ?? KQ_PLAYER_PAYBACK_REFERENCE.harvestGrams * productionUnits,
+  });
   const owned = new Set(input.ownedCodes ?? []);
   const cart = new Set(input.cartCodes ?? []);
   const selectedEquipment = getEquipment(equipmentCode);
@@ -335,7 +342,7 @@ export function getKqEquipmentPaybackScenarios(
       const cartEquipmentCodes = remainingEquipmentCodes.filter((code) => cart.has(code));
       const missingAfterCartCodes = remainingEquipmentCodes.filter((code) => !cart.has(code));
       const cost = (codes: string[]) => codes.reduce(
-        (total, code) => total + (getEquipment(code)?.priceCents ?? 0),
+        (total, code) => total + (getEquipment(code)?.priceCents ?? 0) * productionUnits,
         0,
       );
       const remainingInvestmentCents = cost(remainingEquipmentCodes);

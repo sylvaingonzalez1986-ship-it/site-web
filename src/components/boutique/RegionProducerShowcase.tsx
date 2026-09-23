@@ -14,9 +14,11 @@ import {
 import type { Product } from "@/data/products";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import { resolveProductProducer } from "@/lib/own-producer";
+import { rotateProductsForDay } from "@/lib/product-rotation";
 import type { Producer } from "@/types/store";
 
 type RegionProducerShowcaseProps = {
+  rotationDay: number;
   producers: Producer[];
   products: Product[];
   ownProducer: Producer;
@@ -29,6 +31,7 @@ type RegionProducerShowcaseProps = {
 };
 
 export function RegionProducerShowcase({
+  rotationDay,
   producers,
   products,
   ownProducer,
@@ -153,20 +156,23 @@ export function RegionProducerShowcase({
       grouped.set(ownProducer.id, ownProducts);
     }
 
-    return grouped;
-  }, [ownProducer.id, ownProducts, products, selectedProducerIds]);
+    return new Map([...grouped].map(([producerId, producerProducts]) => [
+      producerId,
+      rotateProductsForDay(producerProducts, rotationDay, `producer:${producerId}`),
+    ]));
+  }, [ownProducer.id, ownProducts, products, rotationDay, selectedProducerIds]);
 
   const selectedProducts = useMemo(() => {
     const partnerProducts = products.filter(
       (product) => product.producerId && selectedProducerIds.has(product.producerId),
     );
 
-    if (!selectedProducerIds.has(ownProducer.id)) {
-      return partnerProducts;
-    }
+    const selection = selectedProducerIds.has(ownProducer.id)
+      ? [...partnerProducts, ...ownProducts]
+      : partnerProducts;
 
-    return [...partnerProducts, ...ownProducts];
-  }, [ownProducer.id, ownProducts, products, selectedProducerIds]);
+    return rotateProductsForDay(selection, rotationDay, `region:${selectedRegion}`, { ownProductsFirst: true });
+  }, [ownProducer.id, ownProducts, products, rotationDay, selectedProducerIds, selectedRegion]);
 
   const selectedCount = selectedRegion ? producerCountByRegion[selectedRegion] ?? 0 : 0;
   const selectedLabel = selectedRegion ? FRENCH_REGION_LABELS[selectedRegion] : null;
@@ -353,6 +359,7 @@ export function RegionProducerShowcase({
             <>
               <div ref={cardsSectionRef}>
                 <ProducerTcgShowcase
+                  rotationDay={rotationDay}
                   className="region-showcase-cards"
                   producers={selectedProducers}
                   products={selectedProducts}

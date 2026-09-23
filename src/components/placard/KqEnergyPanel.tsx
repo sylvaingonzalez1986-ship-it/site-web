@@ -4,10 +4,12 @@ import Image from "next/image";
 import { Check, Leaf, RefreshCw, Sun, Zap } from "lucide-react";
 import { formatKqCash, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote, type KqEnergySnapshot } from "@/lib/kanab-quest-energy";
+import { getKqProductionUnits } from "@/lib/kanab-quest-production";
 import { getKqCultureWearPreview } from "@/lib/kanab-quest-culture-wear";
 import styles from "./KqEnergyPanel.module.css";
 
-export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, lockedQuote, runId, disabled = false }: {
+export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, lockedQuote, runId, productionUnits = 1, disabled = false }: {
+  productionUnits?: number;
   disabled?: boolean;
   selectedMode?: KqEnergyMode;
   onModeChange?: (mode: KqEnergyMode) => void;
@@ -41,6 +43,7 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
     return () => { invalidate(); window.removeEventListener("kq:equipment-updated", update); };
   }, [refresh]);
   const quote = lockedQuote ?? (selectedMode ? snapshot?.quotes[selectedMode] : undefined);
+  const units = getKqProductionUnits(lockedQuote ? lockedQuote.productionUnits : quote?.productionUnits ?? snapshot?.productionUnits ?? productionUnits);
   const cultureCodes = snapshot?.cultureEquipmentCodes ?? [];
   const getWearPreviews = (mode: KqEnergyMode) => cultureCodes.flatMap((code) => {
     const condition = snapshot?.cultureWear?.[code];
@@ -71,6 +74,7 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
 
   return <section className={styles.panel} aria-label="Charges du Placard">
     <header><Zap aria-hidden="true" /><div><small>{lockedQuote ? "Facture de fin de cycle" : selectedMode ? "Avant de lancer la culture" : "Charges du Placard"}</small><h3>{lockedQuote ? KQ_ENERGY_MODES[lockedQuote.mode].name : "Électricité et entretien"}</h3></div><button type="button" aria-label="Actualiser les charges" onClick={() => void refresh()}><RefreshCw size={16} /></button></header>
+    {quote || snapshot ? <p><strong>{units} tente{units>1?"s":""} · capacité ×{units}</strong> · les montants couvrent toute ton installation.</p> : null}
     {selectedMode && snapshot?.chanvrierStrength === "green-thumb" ? <p><Leaf size={16} /> Main Verte · +2 XP au départ, en plus du bonus de ton Buddie.</p> : null}
     {selectedMode && !!snapshot?.maintenanceDueNext?.length ? <p><strong>Entretien à prévoir :</strong> {snapshot.maintenanceDueNext.join(", ")}. Consulte ton entrepôt avant la prochaine transformation.</p> : null}
     {selectedMode && onModeChange ? <div className={styles.modes} role="group" aria-label="Mode énergétique">
@@ -92,7 +96,7 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
     {quote ? <>
       <div className={styles.meter}><div><small>Consommation du cycle</small><strong>{(quote.totalWattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} <em>kWh</em></strong></div><div><small>{lockedQuote ? "Électricité" : "Électricité prévue"}</small><strong>{formatKqCash(quote.totalCents)}</strong></div></div>
       {quote.savingsCents > 0 ? <p className={styles.solar}><Sun size={16} /> Solaire : {quote.solarPercent} % couverts · {formatKqCash(quote.savingsCents)} économisés</p> : null}
-      <details><summary>Détail par appareil</summary><ul>{quote.lines.map((line) => <li key={line.code}><span>{getKqEquipmentDefinition(line.code)?.name ?? line.name} · niv. {line.level}</span><b>{(line.wattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kWh</b></li>)}</ul><p>0,30 € virtuel / kWh. Seuls les appareils de culture et de sécurité installés comptent. Le temps hors ligne ne change pas le montant.</p></details>
+      <details><summary>Détail par appareil</summary><ul>{quote.lines.map((line) => <li key={line.code}><span>{getKqEquipmentDefinition(line.code)?.name ?? line.name} · niv. {line.level}{units > 1 ? ` ×${units}` : ""}</span><b>{(line.wattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kWh</b></li>)}</ul><p>0,30 € virtuel / kWh. Seuls les appareils de culture et de sécurité installés comptent. Le temps hors ligne ne change pas le montant.</p></details>
       {invoice ? <p className={styles.stamp} data-paid={invoice.remainingCents === 0}>{invoice.remainingCents === 0 ? <><Check size={17} /> Réglée</> : `Reste sur ce cycle : ${formatKqCash(invoice.remainingCents)}`}</p> : null}
       {lockedQuote && invoice && quote.totalWattHours > 0 ? <p><Leaf size={16} /> Rendement énergétique : {(invoice.harvestGrams * 1000 / quote.totalWattHours).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} g/kWh</p> : null}
     </> : !snapshot && !error ? <p role="status">Lecture du compteur…</p> : null}

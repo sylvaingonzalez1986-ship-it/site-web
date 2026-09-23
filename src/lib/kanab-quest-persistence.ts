@@ -4,6 +4,7 @@ import { isKqHeritageEffect, isKqHeritageTiming } from "@/lib/kanab-quest-herita
 import { getKqEquipmentDefinition, summarizeKqEquipmentLoadout } from "@/lib/kanab-quest-equipment";
 import type { KqBattle } from "@/lib/kanab-quest-battle";
 import type { KqRankProfile } from "@/lib/kanab-quest-ranking";
+import { getKqProductionUnits } from "./kanab-quest-production-scale";
 
 type SaveEnvelope<T> = { version: 1; payload: T };
 const KQ_LEGACY_HAND_SIZE = 10;
@@ -30,8 +31,11 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (!phases.includes(String(state.phase)) || !isFiniteNumber(state.xp) || state.xp < 0 || !isFiniteNumber(state.quality)) return null;
     if (state.cultureDead !== undefined && typeof state.cultureDead !== "boolean") return null;
     const cultureDead = state.cultureDead === true;
+    const requestedUnits = isRecord(state.equipment) ? state.equipment.productionUnits : undefined;
+    if (requestedUnits !== undefined && (typeof requestedUnits !== "number" || getKqProductionUnits(requestedUnits) !== requestedUnits)) return null;
+    const productionUnits = getKqProductionUnits(requestedUnits as number | undefined);
     if (cultureDead && (state.phase !== "complete" || state.harvestGrams !== 0 || state.equipmentQualityBonus !== 0)) return null;
-    if (state.harvestGrams !== undefined && (!isFiniteNumber(state.harvestGrams) || state.harvestGrams < (cultureDead ? 0 : 20) || state.harvestGrams > 500)) return null;
+    if (state.harvestGrams !== undefined && (!isFiniteNumber(state.harvestGrams) || state.harvestGrams < (cultureDead ? 0 : 20 * productionUnits) || state.harvestGrams > 500 * productionUnits)) return null;
     if (state.equipmentQualityBonus !== undefined && (!Number.isInteger(state.equipmentQualityBonus) || Number(state.equipmentQualityBonus) < 0 || Number(state.equipmentQualityBonus) > 20)) return null;
     if (state.powerOutage !== undefined && typeof state.powerOutage !== "boolean") return null;
     if (state.harvestLossPercent !== undefined && (!isFiniteNumber(state.harvestLossPercent) || state.harvestLossPercent < 0 || state.harvestLossPercent > 80)) return null;
@@ -51,7 +55,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       if (levels !== undefined ? state.equipment.unlocks.join("|") !== expected.unlocks.join("|")
         : state.equipment.unlocks.some((unlock) => !expected.unlocks.includes(unlock as typeof expected.unlocks[number]))) return null;
     }
-    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined))) return null;
+    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined, productionUnits))) return null;
     if (typeof state.varietyCode !== "string" || typeof state.varietyName !== "string") return null;
     if (state.challengeDayKey !== undefined && (typeof state.challengeDayKey !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(state.challengeDayKey))) return null;
     if (state.startedAt !== undefined && (typeof state.startedAt !== "string" || Number.isNaN(Date.parse(state.startedAt)))) return null;
@@ -180,6 +184,7 @@ export function createKqIntegrityCode(state: KqGameState) {
     ...(state.domiciliation ? { domiciliation: state.domiciliation } : {}),
     seed: state.seed, varietyCode: state.varietyCode, deckCodes: state.deckCodes, handCodes: getKqHandCodes(state), heritageReserveCodes: state.heritageReserveCodes ?? [], handRedrawsUsed: state.handRedrawsUsed ?? 0, heritageCode: state.heritageCode ?? null, heritageName: state.heritageName ?? null, heritageTiming: state.heritageTiming ?? null, heritageEffect: state.heritageEffect ?? null, heritageProducerName: state.heritageProducerName ?? null, heritageImageUrl: state.heritageImageUrl ?? null, heritageUsed: state.heritageUsed ?? false, situationCodes: state.situationCodes,
     usedCards: state.usedCards, quality: state.quality, xp: state.xp, pressure: state.pressure, traits: state.traits, combos: state.combos, bonusDie: state.bonusDie ?? null, effectNotices: state.effectNotices ?? [],
+    ...(getKqProductionUnits(state.equipment?.productionUnits) > 1 ? { productionUnits: state.equipment?.productionUnits } : {}),
     equipmentCodes: state.equipment?.codes ?? [], equipmentQualityBonus: state.equipmentQualityBonus ?? 0, harvestGrams: state.harvestGrams ?? null,
     powerOutage: state.powerOutage ?? false, harvestLossPercent: state.harvestLossPercent ?? 0,
     history: state.history.map((entry) => ({ stage: entry.stage, dice: entry.dice, total: entry.total, target: entry.target, outcome: entry.outcome, trait: entry.trait, dangers: entry.dangers, sparks: entry.sparks, pressureAfter: entry.pressureAfter, qualityDelta: entry.qualityDelta, xpGain: entry.xpGain, harvestLossPercent: entry.harvestLossPercent })),

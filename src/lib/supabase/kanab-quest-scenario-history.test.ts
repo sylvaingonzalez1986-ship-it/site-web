@@ -68,6 +68,16 @@ describe("server culture scenario history", () => {
     }));
   });
 
+  it("freezes server-owned production capacity and its electricity quote at launch", async () => {
+    const {rpc}=database([]);
+    mocks.equipment.mockResolvedValue({equippedCodes:["LED-150-STARTER"],levels:{},productionUnits:4});
+    const result=await startKqPlayerRun(userId,{buddieCode:KQ_BUDDIES[0].code,deckCodes:[],energyMode:"balanced"});
+    expect(result.state.equipment?.productionUnits).toBe(4);
+    expect(result.state.energy?.productionUnits).toBe(4);
+    expect(result.state.energy?.totalCents).toBe(414*4);
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_start_run_with_heritage",expect.objectContaining({p_initial_state:expect.objectContaining({equipment:expect.objectContaining({productionUnits:4})})}));
+  });
+
   it("does not silently start without history when the read fails", async () => {
     const { rpc } = database([], { message: "history unavailable" });
     await expect(startKqPlayerRun(userId, { buddieCode: KQ_BUDDIES[0].code, deckCodes: [] })).rejects.toThrow("scenario-history");

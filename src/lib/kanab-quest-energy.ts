@@ -1,6 +1,7 @@
 import { getKqEquipmentAtLevel, getKqEquipmentLevel } from "@/lib/kanab-quest-equipment";
 import type { ChanvrierStrength } from "./arena-chanvrier";
 import type { KqCultureEquipmentCondition } from "./kanab-quest-culture-wear";
+import { getKqProductionUnits } from "./kanab-quest-production-scale";
 
 export const KQ_ENERGY_MODES = {
   eco: { name: "Éco", consumption: 0.75, harvest: 0.9, pressure: 0, label: "−25 % énergie · −10 % récolte" },
@@ -14,26 +15,28 @@ export function isKqEnergyMode(value: unknown): value is KqEnergyMode {
 const HOURS: Record<string, number> = { lighting: 120, air: 180, "climate-controller": 180, security: 180, "flower-drying": 72 };
 
 /** Fixed equivalent operating hours, never time spent logged in or offline. */
-export function quoteKqEnergy(codes: string[], levels: Record<string, number> = {}, mode: KqEnergyMode = "balanced") {
+export function quoteKqEnergy(codes: string[], levels: Record<string, number> = {}, mode: KqEnergyMode = "balanced", productionUnits = 1) {
+  const units = getKqProductionUnits(productionUnits);
   const equipment = [...new Set(codes)].map((code) => getKqEquipmentAtLevel(code, levels[code])).filter((item) => item !== null);
   const solarPercent = Math.min(60, equipment.reduce((sum, item) => sum + (item.effects.energyDiscountPercent ?? 0), 0));
   const lines = equipment.filter((item) => HOURS[item.slot] && item.powerWatts > 0).map((item) => {
     const level = item.purchasable ? getKqEquipmentLevel(levels[item.code]) : 1;
-    return { code: item.code, name: item.name, level, watts: item.powerWatts, hours: HOURS[item.slot],
-      wattHours: Math.round(item.powerWatts * HOURS[item.slot] * (1 + (level - 1) / 10) * KQ_ENERGY_MODES[mode].consumption) };
+    return { code: item.code, name: item.name, level, watts: item.powerWatts * units, hours: HOURS[item.slot],
+      wattHours: Math.round(item.powerWatts * HOURS[item.slot] * (1 + (level - 1) / 10) * KQ_ENERGY_MODES[mode].consumption) * units };
   });
   const totalWattHours = lines.reduce((sum, line) => sum + line.wattHours, 0);
-  const totalCents = Math.round(totalWattHours * 30 / 1000 * (1 - solarPercent / 100));
-  return { version: 1 as const, mode, lines, totalWattHours, solarPercent, tariffCentsPerKwh: 30,
-    totalCents, savingsCents: Math.round(totalWattHours * 30 / 1000) - totalCents };
+  const totalCents = Math.round(totalWattHours / units * 30 / 1000 * (1 - solarPercent / 100)) * units;
+  return { version: 1 as const, mode, ...(units > 1 ? { productionUnits: units } : {}), lines, totalWattHours, solarPercent, tariffCentsPerKwh: 30,
+    totalCents, savingsCents: Math.round(totalWattHours / units * 30 / 1000) * units - totalCents };
 }
 export type KqEnergyQuote = ReturnType<typeof quoteKqEnergy>;
 
-export function isKqEnergyQuoteValid(value: unknown, codes: string[], levels?: Record<string, number>): value is KqEnergyQuote {
+export function isKqEnergyQuoteValid(value: unknown, codes: string[], levels?: Record<string, number>, productionUnits = 1): value is KqEnergyQuote {
   if (!value || typeof value !== "object") return false;
   const row = value as Record<string, unknown>;
   if (!isKqEnergyMode(row.mode)) return false;
-  const expected = quoteKqEnergy(codes, levels, row.mode);
+  const expected = quoteKqEnergy(codes, levels, row.mode, productionUnits);
+  if (row.productionUnits !== expected.productionUnits) return false;
   return Object.entries(expected).every(([key, item]) => key === "lines"
     ? Array.isArray(row.lines) && row.lines.length === expected.lines.length && expected.lines.every((line, index) =>
       Object.entries(line).every(([field, entry]) => {
@@ -63,4 +66,4 @@ export function quoteKqDogCare(completedCycles: number): KqDogCareSchedule {
 }
 export type KqEnergyInvoice = { runId: string; createdAt: string; totalCents: number; remainingCents: number; harvestGrams: number; quote: KqEnergyQuote; dogCare?: KqDogCare | null };
 export type KqEnergySummary = { outstandingCents: number; invoiceCount: number; bestGramsPerKwh: number | null; invoices: KqEnergyInvoice[]; dogCare?: KqDogCareSchedule | null };
-export type KqEnergySnapshot = KqEnergySummary & { cashCents: number; quotes: Record<KqEnergyMode, KqEnergyQuote>; chanvrierStrength?: ChanvrierStrength | null; maintenanceDueNext?: string[]; cultureWear?: Record<string, KqCultureEquipmentCondition>; cultureEquipmentCodes?: string[]; cultureOperationalCodes?: string[] };
+export type KqEnergySnapshot = KqEnergySummary & { productionUnits?: number; cashCents: number; quotes: Record<KqEnergyMode, KqEnergyQuote>; chanvrierStrength?: ChanvrierStrength | null; maintenanceDueNext?: string[]; cultureWear?: Record<string, KqCultureEquipmentCondition>; cultureEquipmentCodes?: string[]; cultureOperationalCodes?: string[] };

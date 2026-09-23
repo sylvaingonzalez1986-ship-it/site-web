@@ -1,10 +1,10 @@
 ﻿import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), replace: vi.fn(), rate: vi.fn() }));
+const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), replace: vi.fn(), expand: vi.fn(), rate: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: vi.fn() }));
 vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({
-  replaceKqCultureEquipment: mocks.replace, getKqEquipmentShopSnapshot: vi.fn(), equipKqDurableEquipment: vi.fn(),
+  expandKqProduction: mocks.expand, replaceKqCultureEquipment: mocks.replace, getKqEquipmentShopSnapshot: vi.fn(), equipKqDurableEquipment: vi.fn(),
   purchaseKqDurableEquipment: vi.fn(), setKqEquipmentRoutePlan: vi.fn(), upgradeKqDurableEquipment: vi.fn(), repairKqMachine: vi.fn(),
 }));
 import { PATCH } from "./route";
@@ -42,5 +42,33 @@ describe("culture equipment replacement endpoint", () => {
     mocks.replace.mockRejectedValueOnce(new Error("[supabase:culture-equipment-replacement] private data"));
     response = await PATCH(request()); expect(response.status).toBe(500);
     expect(await response.json()).toEqual({ error: "Service momentanément indisponible." });
+  });
+});
+
+
+describe("production expansion endpoint", () => {
+  beforeEach(() => {
+    vi.clearAllMocks(); mocks.enabled.mockResolvedValue(true);
+    mocks.session.mockResolvedValue({customerId:"session-owner",customer:{email:"owner@example.test"}});
+    mocks.rate.mockResolvedValue({allowed:true}); mocks.expand.mockResolvedValue({productionUnits:3});
+  });
+  const expandRequest=()=>request({action:"expand-production",userId:"forged-owner",expectedUnits:2,expectedCostCents:30000});
+  it("uses the authenticated player and passes the quote through", async () => {
+    const response=await PATCH(expandRequest()); expect(response.status).toBe(200);
+    expect(mocks.expand).toHaveBeenCalledWith({userId:"session-owner",requestKey:body.requestKey,expectedUnits:2,expectedCostCents:30000});
+    expect(mocks.replace).not.toHaveBeenCalled();
+  });
+  it("keeps access and rate guards ahead of expansion", async () => {
+    mocks.enabled.mockResolvedValue(false); expect((await PATCH(expandRequest())).status).toBe(404);
+    mocks.enabled.mockResolvedValue(true); mocks.session.mockResolvedValue(null); expect((await PATCH(expandRequest())).status).toBe(401);
+    mocks.session.mockResolvedValue({customerId:"session-owner",customer:{}}); mocks.rate.mockResolvedValue({allowed:false,retryAfterSeconds:10});
+    expect((await PATCH(expandRequest())).status).toBe(429); expect(mocks.expand).not.toHaveBeenCalled();
+  });
+  it("requires explicit quote fields and hides database details", async () => {
+    await PATCH(request({action:"expand-production",expectedCostCents:undefined}));
+    expect(mocks.expand).toHaveBeenCalledWith(expect.objectContaining({expectedUnits:-1,expectedCostCents:-1}));
+    mocks.expand.mockRejectedValueOnce(new Error("[supabase:production-expansion] private details"));
+    const response=await PATCH(expandRequest()); expect(response.status).toBe(500);
+    expect(await response.json()).toEqual({error:"Service momentanément indisponible."});
   });
 });

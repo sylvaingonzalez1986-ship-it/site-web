@@ -13,11 +13,11 @@ export async function getKqEnergySummary(userId: string): Promise<KqEnergySummar
 }
 export async function getKqEnergySnapshot(userId: string): Promise<KqEnergySnapshot> {
   const [summary, shop] = await Promise.all([getKqEnergySummary(userId), getKqEquipmentShopSnapshot(userId)]);
-  return { ...summary, cashCents: shop.cashCents, chanvrierStrength: shop.strength,
+  return { ...summary, productionUnits: shop.productionUnits, cashCents: shop.cashCents, chanvrierStrength: shop.strength,
     cultureWear: shop.cultureWear, cultureEquipmentCodes: shop.equippedCodes, cultureOperationalCodes: shop.cultureOperationalCodes,
     maintenanceDueNext: shop.equippedCodes.filter(code => shop.maintenance?.[code] && shop.maintenance[code].remaining <= 1).map(code => getKqEquipmentDefinition(code)?.name ?? code),
     quotes: Object.fromEntries(
-    (Object.keys(KQ_ENERGY_MODES) as KqEnergyMode[]).map((mode) => [mode, quoteKqEnergy(shop.cultureOperationalCodes ?? shop.equippedCodes, shop.levels, mode)]),
+    (Object.keys(KQ_ENERGY_MODES) as KqEnergyMode[]).map((mode) => [mode, quoteKqEnergy(shop.cultureOperationalCodes ?? shop.equippedCodes, shop.levels, mode, shop.productionUnits)]),
   ) as KqEnergySnapshot["quotes"] };
 }
 export async function payKqEnergy(input: { userId: string; requestKey: string; expectedCents: number }) {

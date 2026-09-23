@@ -181,62 +181,59 @@ export function ProductCard({
         <div className={styles.description}>{product.description}</div>
 
         {tastingSummary && tastingEntry ? (
-          <details className={`group/tasting ${styles.tasting}`}>
-            <summary className={`${styles.tastingSummary} focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink`}>
-              <span className="flex min-w-0 items-center gap-2">
+          <details className={styles.tasting}>
+            <summary className={styles.tastingSummary}>
+              <span className={styles.tastingHeading}>
                 <span className={styles.tastingIcon}>
                   <Star size={15} fill="currentColor" aria-hidden="true" />
                 </span>
-                <span className="min-w-0">
-                  <span className="block truncate text-[10px] font-black uppercase tracking-[0.09em] text-charcoal">
-                    Notes et avis vérifiés
-                  </span>
-                  <span className="mt-0.5 block text-xs font-black text-ink">
-                    {tastingEntry.stats.approvedReviewCount > 0
-                      ? `${formatContestAverage(tastingEntry.stats.averageScore)} / ${CONTEST_SCORE_MAX} · ${tastingEntry.stats.approvedReviewCount} avis`
-                      : "Aucun avis publié"}
-                  </span>
-                </span>
+                <span className={styles.tastingTitle}>Notes du Carnet</span>
               </span>
-              <ChevronDown size={18} aria-hidden="true" className="shrink-0 transition-transform group-open/tasting:rotate-180" />
+              <span className={styles.tastingMetrics}>
+                {tastingEntry.stats.approvedReviewCount > 0 ? <>
+                  <span className={styles.tastingAverage}><strong>{formatContestAverage(tastingEntry.stats.averageScore)}</strong> / {CONTEST_SCORE_MAX}</span>
+                  <span className={styles.tastingCount}>{tastingEntry.stats.approvedReviewCount} avis</span>
+                </> : <span className={styles.tastingCount}>Aucun avis publié</span>}
+              </span>
+              <ChevronDown size={18} aria-hidden="true" className={styles.tastingChevron} />
             </summary>
 
             <div className={styles.tastingBody}>
-              <p className="text-[11px] leading-relaxed text-charcoal">
+              <p className={styles.tastingLot}>
                 Lot {tastingEntry.season?.label ?? tastingEntry.title} · avis publiés après modération.
               </p>
 
               {tastingCriteria.length > 0 ? (
-                <div className="mt-3 grid gap-2">
+                <dl className={styles.tastingCriteria}>
                   {tastingCriteria.map(({ criterion, score }) => (
-                    <div key={criterion} className={`flex items-center justify-between gap-3 px-2.5 py-2 ${styles.criterion}`}>
-                      <span className="text-[11px] font-bold text-charcoal">
+                    <div key={criterion} className={styles.criterion}>
+                      <dt>
                         {CONTEST_SCORE_CRITERION_LABELS[criterion]}
-                      </span>
-                      <span className="shrink-0 border border-[#1a1a1a] bg-yellow px-2 py-0.5 text-[10px] font-black text-ink">
+                      </dt>
+                      <dd>
                         {formatContestAverage(score)}
-                      </span>
+                      </dd>
                     </div>
                   ))}
-                </div>
+                </dl>
               ) : null}
 
               {tastingSummary.reviews.length > 0 ? (
-                <div className="mt-3 space-y-2">
+                <div className={styles.tastingReviews}>
                   {tastingSummary.reviews.map((review) => (
-                    <article key={review.id} className={`p-2.5 ${styles.review}`}>
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="truncate text-[10px] font-black uppercase tracking-[0.08em] text-ink">
+                    <article key={review.id} className={styles.review}>
+                      <div className={styles.reviewHeading}>
+                        <strong>
                           {review.pseudo}
-                        </span>
-                        <span className="shrink-0 text-[10px] font-black text-ink">
+                        </strong>
+                        <span>
                           {formatContestAverage(getContestReviewAverage(review.scores))} / {CONTEST_SCORE_MAX}
                         </span>
                       </div>
-                      <p className="mt-1 text-[10px] text-charcoal">
+                      <p className={styles.reviewDate}>
                         {formatContestDate(review.reviewedAt ?? review.createdAt)}
                       </p>
-                      <p className={`mt-2 line-clamp-3 text-xs leading-relaxed text-charcoal ${review.comment.trim() ? "" : "italic"}`}>
+                      <p className={styles.reviewComment} data-empty={!review.comment.trim() || undefined}>
                         {review.comment.trim() || "Pas de commentaire rédigé."}
                       </p>
                     </article>
@@ -246,7 +243,7 @@ export function ProductCard({
 
               <Link
                 href={`${productHref}#avis-degustation`}
-                className="btn-cartoon btn-secondary mt-3 inline-flex min-h-10 w-full items-center justify-center px-3 text-[11px]"
+                className={styles.tastingLink}
               >
                 Lire les avis sur la fiche
               </Link>

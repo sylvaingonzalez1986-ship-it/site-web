@@ -4,6 +4,7 @@ import { KqCardEffectGuide as CardEffectGuide, KqCardRoleLegend } from "./KqCard
 import { KQ_SITUATION_TAG_LABELS } from "@/lib/kanab-quest-card-guide";
 import { useGameViewport } from "@/hooks/useGameViewport";
 import { getBuddieArtwork, hasModernBuddieArtwork } from "@/lib/buddie-artwork";
+import { getKqProductionUnits } from "@/lib/kanab-quest-production";
 import { KqEnergyPanel } from "./KqEnergyPanel";
 import { KqBuddieCarousel } from "./KqBuddieCarousel";
 import { getKqBuddieRotationMessage, getKqBuddieRotationRemaining, KQ_BUDDIE_ROTATION_REQUIRED, recordKqBuddieUse, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
@@ -453,7 +454,7 @@ function HarvestScoreSheet({ state }: { state: KqGameState }) {
         <article data-final><small>Qualité finale</small><strong>{breakdown.finalQuality}</strong></article>
       </div>
       <div className={styles.yieldEquation}>
-        <span><small>Poids avant incident · quantité matériel {signed(breakdown.quantityPercent)} %</small><strong>{breakdown.grossHarvestGrams.toLocaleString("fr-FR")} g</strong></span>
+        <span><small>Poids avant incident · {getKqProductionUnits(state.equipment?.productionUnits)} tente{getKqProductionUnits(state.equipment?.productionUnits)>1?"s":""} · quantité matériel {signed(breakdown.quantityPercent)} %</small><strong>{breakdown.grossHarvestGrams.toLocaleString("fr-FR")} g</strong></span>
         <span data-loss={breakdown.harvestLossPercent > 0 || undefined}><small>Pertes de récolte</small><strong>{breakdown.harvestLossPercent > 0 ? `−${breakdown.harvestLossPercent} % · −${breakdown.lostHarvestGrams.toLocaleString("fr-FR")} g` : "Aucune"}</strong></span>
         {state.energy ? <span><small>Mode {KQ_ENERGY_MODES[state.energy.mode].name}</small><strong>{signed(breakdown.energyAdjustmentGrams)} g</strong></span> : null}
         <span data-final><small>Lot final</small><strong>{breakdown.finalHarvestGrams.toLocaleString("fr-FR")} g</strong></span>
@@ -2013,7 +2014,7 @@ export function KanabQuestDicePrototype({
               <article><Flame /><span><small>Copies brûlées · {burnedCards.length}</small><div>{burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>)}</div></span></article>
               <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte conservée</em>}</div></span></article>
             </div>
-            {state.energy ? <KqEnergyPanel lockedQuote={state.energy} runId={remoteRunId} /> : null}
+            {state.energy ? <KqEnergyPanel lockedQuote={state.energy} productionUnits={state.equipment?.productionUnits} runId={remoteRunId} /> : null}
             <HarvestScoreSheet state={state} />
             <div className={styles.traitsList}>{flower.traits.map((trait, index) => <span key={`${trait}-${index}`}><Star />{trait}</span>)}</div>
             <section className={styles.harvestFlowerCard} aria-label="Carte Fleur obtenue">
@@ -2134,7 +2135,7 @@ export function KanabQuestDicePrototype({
         <div>
           <article><Star aria-hidden="true" /><span><strong>{runProjection.projectedQuality}</strong><small>Qualité projetée{runProjection.equipmentQualityBonus > 0 ? ` · +${runProjection.equipmentQualityBonus} matériel` : ""}</small></span></article>
           <article><Trophy aria-hidden="true" /><span><strong>{runProjection.tier}</strong><small>{runProjection.nextTier ? `${runProjection.qualityToNextTier} point${runProjection.qualityToNextTier > 1 ? "s" : ""} avant ${runProjection.nextTier}` : "Palier maximal atteint"}</small></span></article>
-          <article><Scale aria-hidden="true" /><span><strong>{runProjection.harvestGrams.toLocaleString("fr-FR")} g</strong><small>Lot estimé{runProjection.harvestLossPercent > 0 ? ` · −${runProjection.harvestLossPercent} % vol` : ""}</small></span></article>
+          <article><Scale aria-hidden="true" /><span><strong>{runProjection.harvestGrams.toLocaleString("fr-FR")} g</strong><small>Lot estimé · {getKqProductionUnits(state.equipment?.productionUnits)} tente{getKqProductionUnits(state.equipment?.productionUnits)>1?"s":""}{runProjection.harvestLossPercent > 0 ? ` · −${runProjection.harvestLossPercent} % vol` : ""}</small></span></article>
           <article><Sparkles aria-hidden="true" /><span><strong>{runProjection.remainingStages}</strong><small>Étape{runProjection.remainingStages > 1 ? "s" : ""} encore ouverte{runProjection.remainingStages > 1 ? "s" : ""}</small></span></article>
         </div>
         {plannedMarketRoute ? <aside className={styles.runRouteTarget}><Target aria-hidden="true" /><span><small>Cap commercial épinglé</small><strong>{plannedMarketRoute.name} · jury ≥ {plannedMarketRoute.minimumJuryScore.toFixed(1)}/10</strong><em>La Qualité de culture prépare la Fleur ; seul le verdict officiel donnera la note commerciale.</em></span></aside> : null}

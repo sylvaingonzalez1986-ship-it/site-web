@@ -105,6 +105,7 @@ type MarketLot = {
 };
 
 type MarketSnapshot = {
+  productionUnits?: number;
   electricityOutstandingCents?: number;
   cashCents: number;
   reputation: number;
@@ -323,6 +324,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
   );
   const routeGoalScenario = useMemo(() => snapshot?.routePlan
     ? getKqEquipmentPaybackScenarios(snapshot.routePlan.equipmentCode, {
+      productionUnits: snapshot.productionUnits,
       ownedCodes: snapshot.ownedCodes,
     }).find((scenario) => scenario.route === snapshot.routePlan?.route) ?? null
     : null, [snapshot]);
@@ -334,6 +336,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
     const expertiseBonusReputation = getKqRouteExpertiseBonusReputation(pendingQuote.route, nextRouteSaleCount, pendingQuote.reputationGain);
     const { reputationGain, reputationAfter } = previewKqMarketReputation(snapshot.reputation, pendingQuote.reputationGain, expertiseBonusReputation);
     const nextEquipmentGoal = buildKqEquipmentGoalReceipt({
+      productionUnits: snapshot.productionUnits,
       ownedCodes: snapshot.ownedCodes,
       cashCents: cashAfterCents,
     });
@@ -631,6 +634,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
                     const pinnedRouteNeedsEquipment = pinnedRoute && quote.missingUnlocks.length > 0;
                     const pinnedEquipmentCode = pinnedRoute ? snapshot.routePlan?.equipmentCode ?? null : null;
                     const equipmentGoal = juryScoreGap === 0 || pinnedRouteNeedsEquipment ? getKqMarketEquipmentGoal({
+                      productionUnits: snapshot.productionUnits,
                       quote,
                       ownedCodes: snapshot.ownedCodes,
                       equippedCodes: snapshot.equippedCodes,

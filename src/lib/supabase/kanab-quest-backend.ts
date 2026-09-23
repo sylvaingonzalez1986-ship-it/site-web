@@ -1002,6 +1002,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     heritageCard,
     equipmentCodes: equipmentShop.cultureOperationalCodes ?? equipmentShop.equippedCodes,
     equipmentLevels: equipmentShop.levels,
+    productionUnits: equipmentShop.productionUnits,
     energyMode: input.energyMode ?? "balanced",
   });
   if (equipmentShop.strength === "green-thumb") state.effectNotices = [...(state.effectNotices ?? []), "Main Verte : +2 XP pour cette culture."];
@@ -1020,7 +1021,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     const message = result.error.message || "Création de partie impossible.";
     if (message.includes("kq_active_run_exists")) throw new Error("Une culture Supabase est déjà active.");
     if (message.includes("kq_domiciliation_changed")) throw new Error("Ta domiciliation a changé. Actualise avant de lancer la culture.");
-    if (message.includes("kq_culture_equipment_changed") || message.includes("kq_culture_equipment_broken")) throw new Error("L’état du matériel a changé. Actualise le devis avant de lancer la culture.");
+    if (message.includes("kq_production_units_changed") || message.includes("kq_culture_equipment_changed") || message.includes("kq_culture_equipment_broken")) throw new Error("L’état du matériel a changé. Actualise le devis avant de lancer la culture.");
     if (message.includes("kq_buddie_rotation_locked")) {
       let remaining = KQ_BUDDIE_ROTATION_REQUIRED;
       try {

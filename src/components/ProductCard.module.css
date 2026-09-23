@@ -114,46 +114,73 @@
 
 .tasting {
   margin-top: 1rem;
-  border: 2px solid var(--ink);
+  min-width: 0;
+  border: 2px solid var(--market-green);
+  border-radius: 2px;
   background: var(--market-paper);
+  box-shadow: 0 3px 0 var(--market-green);
 }
 
 .tastingSummary {
-  display: flex;
-  min-height: 52px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 18px;
+  min-height: 72px;
   cursor: pointer;
   list-style: none;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
+  gap: 7px 10px;
   padding: 0.65rem 0.75rem;
+  background: var(--market-green);
+  color: var(--market-paper);
 }
 
-.tastingSummary::-webkit-details-marker {
-  display: none;
-}
+.tastingSummary::-webkit-details-marker { display: none; }
+.tastingSummary:focus-visible { outline: 3px solid var(--market-yellow); outline-offset: -4px; box-shadow: none; }
+.tastingHeading { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.tastingTitle { font: 900 21px/1 var(--font-display), "Arial Narrow", Impact, sans-serif; letter-spacing: -.02em; text-transform: uppercase; overflow-wrap: anywhere; }
+.tastingMetrics { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-width: 0; }
+.tastingAverage { padding: 3px 6px; border: 1px solid var(--market-dark); background: var(--market-yellow); color: var(--market-dark); font-size: 10px; font-weight: 800; white-space: nowrap; }
+.tastingAverage strong { font-size: 15px; }
+.tastingCount { font: 700 10px/1.5 ui-monospace, Consolas, monospace; }
+.tastingChevron { grid-column: 2; grid-row: 1 / 3; color: var(--market-yellow); transition: transform 160ms ease; }
+.tasting[open] .tastingChevron { transform: rotate(180deg); }
 
 .tastingIcon {
   display: inline-flex;
-  width: 32px;
-  height: 32px;
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--ink);
-  background: var(--yellow);
+  color: var(--market-yellow);
 }
 
-.tastingBody {
-  padding: 0.75rem;
-  border-top: 2px solid var(--ink);
-  background: color-mix(in srgb, var(--yellow) 13%, var(--cream));
+.tastingBody { padding: 0.75rem; border-top: 2px solid var(--market-green); }
+.tastingLot { margin: 0; color: var(--market-dark); font-size: 11px; line-height: 1.55; overflow-wrap: anywhere; }
+.tastingCriteria { display: grid; gap: 6px; margin: 12px 0 0; }
+.criterion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 7px 8px;
+  border: 1px solid var(--market-green);
+  color: var(--market-dark);
 }
+.criterion dt { min-width: 0; font-size: 11px; font-weight: 700; overflow-wrap: anywhere; }
+.criterion dd { margin: 0; padding: 2px 6px; border: 1px solid var(--market-green); background: var(--market-yellow); font-size: 11px; font-weight: 900; }
+.tastingReviews { display: grid; gap: 8px; margin-top: 12px; }
+.review { min-width: 0; padding: 10px; border: 2px solid var(--market-green); background: var(--market-paper); box-shadow: 0 2px 0 var(--market-green); }
+.reviewHeading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 5px 8px; color: var(--market-dark); }
+.reviewHeading strong { min-width: 0; font-size: 10px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; overflow-wrap: anywhere; }
+.reviewHeading > span { flex-shrink: 0; font-size: 10px; font-weight: 900; }
+.reviewDate { margin: 4px 0 0; color: var(--charcoal); font-size: 10px; }
+.reviewComment { display: -webkit-box; margin: 8px 0 0; overflow: hidden; color: var(--charcoal); font-size: 12px; line-height: 1.55; overflow-wrap: anywhere; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.reviewComment[data-empty] { font-style: italic; }
+.tastingLink { display: flex; align-items: center; justify-content: center; min-height: 44px; width: 100%; margin-top: 12px; padding: 8px; border: 2px solid var(--market-green); border-radius: 2px; background: var(--market-paper); color: var(--market-green); box-shadow: 0 3px 0 var(--market-green); font-size: 11px; font-weight: 900; line-height: 1.4; text-align: center; }
 
-.criterion,
-.review {
-  border: 1px solid var(--ink);
-  background: var(--market-paper);
+@media (hover: hover) {
+  .tastingSummary:hover { background: var(--market-dark); }
+  .tastingLink:hover { background: var(--market-yellow); color: var(--market-dark); }
 }
 
 .actions {
@@ -186,15 +213,21 @@
   .producer { grid-template-columns: minmax(0, 1fr); gap: 4px; margin-top: 8px; padding: 6px 0; }
   .producerImage { display: none; }
   .description { font-size: 12px; line-height: 1.45; -webkit-line-clamp: 2; margin-top: 8px; min-height: 0; }
-  .tastingSummary { padding: 6px; gap: 4px; }
+  .tastingSummary { padding: 8px 6px; gap: 6px 4px; }
+  .tastingTitle { font-size: 18px; }
+  .tastingMetrics { gap: 4px 6px; }
+  .tastingAverage { padding: 2px 4px; }
+  .tastingAverage strong { font-size: 13px; }
   .tastingIcon { display: none; }
   .tastingBody { padding: 6px; }
+  .criterion, .review { padding: 6px; }
+  .tastingLink { padding: 7px 4px; font-size: 10px; }
   .media > span { max-width: calc(100% - 12px); left: 6px; right: auto; padding: 2px 4px; font-size: 9px; }
   .media > span:nth-of-type(2):not(:global(.bottom-3)) { top: 38px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card {
+  .card, .tastingChevron {
     transition: none;
   }
 }

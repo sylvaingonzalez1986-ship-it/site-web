@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { HomeEditorialExperience } from "@/components/home/HomeEditorialExperience";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
+import { getCurrentProductRotationDay } from "@/lib/product-rotation-server";
 
 export const metadata: Metadata = {
   title: "CBD naturel en Bretagne | Production et partenaires identifiés",
@@ -18,7 +19,10 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const store = await readPublicStoreByBackend();
+  const [store, rotationDay] = await Promise.all([
+    readPublicStoreByBackend(),
+    getCurrentProductRotationDay(),
+  ]);
 
-  return <HomeEditorialExperience initialStore={store} />;
+  return <HomeEditorialExperience initialStore={store} rotationDay={rotationDay} />;
 }

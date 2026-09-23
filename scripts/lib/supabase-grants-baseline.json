@@ -1,0 +1,393 @@
+{
+  "description": "Frozen historical table inventory before 20260923000200_explicit_data_api_grants.sql. Do not extend for new migrations or new tables: grant their API access in the creating migration. Filename and table name must both match; backdating does not bypass the check.",
+  "migrations": {
+    "20260215_0001_init.sql": {
+      "tables": [
+        "asset_refs",
+        "blog_posts",
+        "invoice_counter",
+        "invoices",
+        "order_items",
+        "orders",
+        "pack_components",
+        "page_sections",
+        "producers",
+        "products",
+        "profiles",
+        "promo_codes",
+        "site_content"
+      ]
+    },
+    "20260219_0005_security_hardening.sql": {
+      "tables": [
+        "security_rate_limits"
+      ]
+    },
+    "20260221000500_newsletter_subscribers.sql": {
+      "tables": [
+        "newsletter_subscribers"
+      ]
+    },
+    "20260222000100_lottery.sql": {
+      "tables": [
+        "lottery_audit_log",
+        "lottery_config",
+        "lottery_prizes",
+        "lottery_ticket_counter",
+        "lottery_tickets"
+      ]
+    },
+    "20260223000100_printful_pod.sql": {
+      "tables": [
+        "printful_sync_products",
+        "printful_sync_runs",
+        "printful_sync_state",
+        "printful_sync_variants"
+      ]
+    },
+    "20260225000300_cms_pages.sql": {
+      "tables": [
+        "cms_pages"
+      ]
+    },
+    "20260225000400_referral_program.sql": {
+      "tables": [
+        "referral_rewards"
+      ]
+    },
+    "20260227000100_audit_logs.sql": {
+      "tables": [
+        "audit_logs"
+      ]
+    },
+    "20260227000200_webhook_events.sql": {
+      "tables": [
+        "webhook_events"
+      ]
+    },
+    "20260228000800_lottery_dynamic_rewards.sql": {
+      "tables": [
+        "lottery_audit_log",
+        "lottery_game_config",
+        "lottery_reward_claims",
+        "lottery_reward_definitions",
+        "lottery_reward_lines",
+        "lottery_reward_rules",
+        "lottery_stickers",
+        "lottery_ticket_counter",
+        "lottery_tickets"
+      ]
+    },
+    "20260228001100_lottery_album_pages.sql": {
+      "tables": [
+        "lottery_album_cards",
+        "lottery_album_page_slots",
+        "lottery_album_pages"
+      ]
+    },
+    "20260228001200_lottery_tcg_collection.sql": {
+      "tables": [
+        "lottery_card_collections",
+        "lottery_card_definitions",
+        "lottery_card_instances"
+      ]
+    },
+    "20260302000300_tcg_collection_album_rewards.sql": {
+      "tables": [
+        "lottery_collection_burn_log",
+        "lottery_collection_page_completions",
+        "lottery_collection_page_reward_options"
+      ]
+    },
+    "20260302001000_social_missions.sql": {
+      "tables": [
+        "referral_pending_rewards",
+        "social_mission_submissions",
+        "social_missions"
+      ]
+    },
+    "20260302002000_lottery_quota_cycle_deck.sql": {
+      "tables": [
+        "lottery_draw_cycles"
+      ]
+    },
+    "20260302002100_lottery_bonus_cards_foundation.sql": {
+      "tables": [
+        "lottery_bonus_definitions",
+        "lottery_bonus_instances",
+        "lottery_bonus_options",
+        "lottery_cycle_bonus_pool"
+      ]
+    },
+    "20260302003000_lottery_welcome_pack.sql": {
+      "tables": [
+        "lottery_welcome_pack_claims"
+      ]
+    },
+    "20260303090000_referral_reward_settings.sql": {
+      "tables": [
+        "referral_reward_settings"
+      ]
+    },
+    "20260305003000_local_analytics_events.sql": {
+      "tables": [
+        "analytics_events"
+      ]
+    },
+    "20260305100000_blog_comments_ratings.sql": {
+      "tables": [
+        "blog_comments",
+        "blog_ratings"
+      ]
+    },
+    "20260421000100_bete_de_concours.sql": {
+      "tables": [
+        "contest_badges",
+        "contest_entries",
+        "contest_profile_badges",
+        "contest_profiles",
+        "contest_review_aroma_tags",
+        "contest_review_scores",
+        "contest_review_terpene_guesses",
+        "contest_reviews",
+        "contest_reward_unlocks",
+        "contest_rewards",
+        "contest_seasons",
+        "contest_tester_points"
+      ]
+    },
+    "20260426000100_contest_review_terpene_guesses.sql": {
+      "tables": [
+        "contest_review_terpene_guesses"
+      ]
+    },
+    "20260426000200_contest_points_badges_rewards.sql": {
+      "tables": [
+        "contest_badges",
+        "contest_profile_badges",
+        "contest_reward_unlocks",
+        "contest_rewards",
+        "contest_tester_points"
+      ]
+    },
+    "20260509000100_contest_tester_votes_rankings.sql": {
+      "tables": [
+        "contest_review_votes"
+      ]
+    },
+    "20260623000100_contest_beta_testers.sql": {
+      "tables": [
+        "contest_beta_testers"
+      ]
+    },
+    "20260722000100_kanab_quest_game_foundation.sql": {
+      "tables": [
+        "kq_battles",
+        "kq_card_burn_receipts",
+        "kq_daily_challenge_claims",
+        "kq_flowers",
+        "kq_leaderboard_snapshots",
+        "kq_rank_profiles",
+        "kq_runs",
+        "kq_support_booster_entitlements",
+        "kq_support_card_rules"
+      ]
+    },
+    "20260725000900_kq_culture_token_wallet.sql": {
+      "tables": [
+        "kq_culture_token_ledger",
+        "kq_culture_token_wallets"
+      ]
+    },
+    "20260725001000_kq_dormant_notebook_rewards.sql": {
+      "tables": [
+        "kq_notebook_reward_grants",
+        "kq_notebook_reward_rules"
+      ]
+    },
+    "20260725001100_kq_dormant_heritage_collection.sql": {
+      "tables": [
+        "kq_heritage_card_definitions",
+        "kq_heritage_draws",
+        "kq_heritage_player_state"
+      ]
+    },
+    "20260725001400_kq_heritage_duplicate_fragments.sql": {
+      "tables": [
+        "kq_heritage_fragment_ledger",
+        "kq_heritage_fragment_wallets"
+      ]
+    },
+    "20260725001900_kq_dormant_season_rewards.sql": {
+      "tables": [
+        "kq_season_reward_grants",
+        "kq_season_reward_rules"
+      ]
+    },
+    "20260725002700_kq_daily_battle_expiry_gate.sql": {
+      "tables": [
+        "kq_maintenance_runs"
+      ]
+    },
+    "20260725003000_kq_dormant_season_rollover.sql": {
+      "tables": [
+        "kq_season_rank_archives",
+        "kq_seasons"
+      ]
+    },
+    "20260726000100_kq_support_boosters_points_shop.sql": {
+      "tables": [
+        "kq_support_points_purchases"
+      ]
+    },
+    "20260726000400_kq_bot_training_battles.sql": {
+      "tables": [
+        "kq_arena_experience_receipts",
+        "kq_bot_battles"
+      ]
+    },
+    "20260802000100_kq_producer_notebook_rewards.sql": {
+      "tables": [
+        "kq_notebook_flower_reward_grants",
+        "kq_producer_heritage_reward_grants",
+        "kq_producer_reward_campaigns",
+        "kq_producer_reward_entries"
+      ]
+    },
+    "20260808000100_kq_five_contest_flower_packs.sql": {
+      "tables": [
+        "kq_notebook_flower_reward_packs"
+      ]
+    },
+    "20260811000100_checkout_payment_security_hardening.sql": {
+      "tables": [
+        "checkout_attempts"
+      ]
+    },
+    "20260826000100_arena_customer_reward_pool.sql": {
+      "tables": [
+        "arena_customer_reward_adjustments",
+        "arena_customer_reward_draws",
+        "arena_customer_reward_grants",
+        "arena_customer_reward_seasons",
+        "arena_customer_reward_weeks"
+      ]
+    },
+    "20260826000200_arena_customer_reward_weekly_dice.sql": {
+      "tables": [
+        "arena_customer_reward_week_rolls"
+      ]
+    },
+    "20260830000100_kq_durable_equipment_shop.sql": {
+      "tables": [
+        "kq_equipment_catalog",
+        "kq_equipment_loadouts",
+        "kq_equipment_purchase_receipts",
+        "kq_equipment_wallets",
+        "kq_player_equipment"
+      ]
+    },
+    "20260830000200_kq_post_harvest_market.sql": {
+      "tables": [
+        "kq_market_lots",
+        "kq_market_sale_receipts"
+      ]
+    },
+    "20260904000200_kq_route_masteries.sql": {
+      "tables": [
+        "kq_player_route_masteries"
+      ]
+    },
+    "20260905000200_kq_random_duel_queue.sql": {
+      "tables": [
+        "kq_random_battle_queue"
+      ]
+    },
+    "20260906000600_kq_expand_unique_heritage_effects.sql": {
+      "tables": [
+        "kq_heritage_effect_catalog"
+      ]
+    },
+    "20260911000200_kq_equipment_levels.sql": {
+      "tables": [
+        "kq_equipment_upgrade_receipts"
+      ]
+    },
+    "20260911000300_kq_cycle_electricity.sql": {
+      "tables": [
+        "kq_energy_invoices",
+        "kq_energy_payment_receipts"
+      ]
+    },
+    "20260913000100_kq_sales_channels.sql": {
+      "tables": [
+        "kq_commerce_accounts",
+        "kq_commerce_batches",
+        "kq_commerce_campaigns",
+        "kq_commerce_quotes",
+        "kq_commerce_requests",
+        "kq_commerce_stock"
+      ]
+    },
+    "20260913000900_arena_guided_journey.sql": {
+      "tables": [
+        "arena_journey_progress"
+      ]
+    },
+    "20260914000100_arena_chanvrier_profiles.sql": {
+      "tables": [
+        "arena_chanvrier_profiles"
+      ]
+    },
+    "20260914000200_kq_machine_maintenance.sql": {
+      "tables": [
+        "kq_machine_repairs"
+      ]
+    },
+    "20260915000100_chanvrier_achievements.sql": {
+      "tables": [
+        "chanvrier_achievement_catalog",
+        "chanvrier_progress",
+        "chanvrier_progress_events",
+        "chanvrier_showcases"
+      ]
+    },
+    "20260919000200_chanvrier_savings.sql": {
+      "tables": [
+        "arena_chanvrier_savings_deposits",
+        "arena_chanvrier_savings_requests"
+      ]
+    },
+    "20260919000300_kq_pioneer_pack.sql": {
+      "tables": [
+        "kq_pioneer_pack_grants"
+      ]
+    },
+    "20260919000500_kq_culture_equipment_wear.sql": {
+      "tables": [
+        "kq_culture_equipment_replacements",
+        "kq_culture_equipment_wear_receipts"
+      ]
+    },
+    "20260921000100_kq_business_calendar.sql": {
+      "tables": [
+        "kq_business_ledger",
+        "kq_lab_invoices"
+      ]
+    },
+    "20260921000200_kq_treasury_accounting.sql": {
+      "tables": [
+        "kq_treasury_accounts",
+        "kq_treasury_assets",
+        "kq_treasury_balances",
+        "kq_treasury_journal",
+        "kq_treasury_pending"
+      ]
+    },
+    "20260923000100_kq_buddie_rotation.sql": {
+      "tables": [
+        "kq_buddie_rotation"
+      ]
+    }
+  }
+}

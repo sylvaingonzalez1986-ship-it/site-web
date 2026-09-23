@@ -7,9 +7,11 @@ import { type ProductCategory } from "@/data/products";
 import { getActiveCatalogCategories } from "@/lib/catalog-categories";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getSiteUrl } from "@/lib/site-url";
-import { getOwnProducer, resolveProductProducer, sortOwnProductsFirst } from "@/lib/own-producer";
+import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
 import { dedupeProducts } from "@/lib/product-dedup";
 import { getProductCardTastingSummaries } from "@/lib/product-card-tasting-backend";
+import { rotateProductsForDay } from "@/lib/product-rotation";
+import { getCurrentProductRotationDay } from "@/lib/product-rotation-server";
 import type { Producer } from "@/types/store";
 
 const categoryMap: Record<string, { filter: ProductCategory; label: string }> = {
@@ -53,7 +55,10 @@ export default async function CategoryPage({
     notFound();
   }
 
-  const store = await readPublicStoreByBackend();
+  const [store, rotationDay] = await Promise.all([
+    readPublicStoreByBackend(),
+    getCurrentProductRotationDay(),
+  ]);
   const uniqueProducts = dedupeProducts(store.products);
   const activeCategorySlugs = new Set<string>(
     getActiveCatalogCategories(uniqueProducts).map(({ slug: activeSlug }) => activeSlug),
@@ -63,8 +68,11 @@ export default async function CategoryPage({
     store.producers.map((producer) => [producer.id, producer]),
   );
 
-  const filteredProducts = sortOwnProductsFirst(
+  const filteredProducts = rotateProductsForDay(
     uniqueProducts.filter((product) => product.category === categoryInfo.filter),
+    rotationDay,
+    `category:${categoryInfo.filter}`,
+    { ownProductsFirst: true },
   );
   const tastingSummariesByProductId = await getProductCardTastingSummaries(
     filteredProducts.map((product) => product.id),

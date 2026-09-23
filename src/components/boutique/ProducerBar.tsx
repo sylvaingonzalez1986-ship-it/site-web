@@ -10,6 +10,7 @@ import type { Producer } from "@/types/store";
 type ProducerBarProps = {
   producers: Producer[];
   products: Product[];
+  rotationDay: number;
   addButtonLabel: string;
   lowStockThresholdGrams: number;
   producerPartnerLabel: string;
@@ -20,6 +21,7 @@ type ProducerBarProps = {
 export function ProducerBar({
   producers,
   products,
+  rotationDay,
   addButtonLabel,
   lowStockThresholdGrams,
   producerPartnerLabel,
@@ -50,6 +52,7 @@ export function ProducerBar({
       <ProducerTcgShowcase
         producers={producersWithProducts}
         products={products}
+        rotationDay={rotationDay}
         addButtonLabel={addButtonLabel}
         lowStockThresholdGrams={lowStockThresholdGrams}
         producerPartnerLabel={producerPartnerLabel}
