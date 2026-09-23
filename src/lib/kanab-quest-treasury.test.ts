@@ -27,7 +27,7 @@ function snapshot(entries: KqTreasuryEntry[] = [], initial = opening): KqTreasur
     journal: { items: entries, total: entries.length, offset: 0, limit: 25 },
     checks: { walletCashCents: closing.cash ?? 0, vatReserveCents: closing.vat_reserve ?? 0, savingsCents: closing.savings ?? 0,
       labDebtCents: -(closing.lab_payable ?? 0), energyDebtCents: -(closing.energy_payable ?? 0), vatDebtCents: -(closing.vat_payable ?? 0),
-      loanDebtCents: -(closing.loan_payable ?? 0), cryptoCostCents: closing.crypto_assets ?? 0 },
+      loanDebtCents: -(closing.loan_payable ?? 0), cryptoCostCents: closing.crypto_assets ?? 0, securitiesCostCents: closing.securities_assets ?? 0 },
   };
 }
 function report(entries: KqTreasuryEntry[], initial = opening) {
@@ -150,6 +150,26 @@ describe("treasury accrual accounting", () => {
     expect(closed.cash).toMatchObject({ availableCents: 34000, cryptoCostCents: 0 });
     expect(closed.income).toMatchObject({ resultCents: -1000, operatingResultCents: 0 });
     expect(closed.sourceDifferences.crypto).toBe(0);
+  });
+
+  it("keeps securities separate from crypto and recognizes only realized financial returns", () => {
+    const purchase = entry("stock-buy", { cash: -10000, securities_assets: 10000 });
+    const crypto = entry("crypto-buy", { cash: -2000, crypto_assets: 2000 });
+    const bought = report([purchase, crypto]);
+    expect(bought.cash).toMatchObject({ availableCents: 23000, securitiesCostCents: 10000, cryptoCostCents: 2000 });
+    expect(bought.income.resultCents).toBe(0);
+    const gain = entry("stock-sell", { cash: 6000, securities_assets: -4000, revenue_stock_gains: -2000 });
+    const partial = report([purchase, crypto, gain]);
+    expect(partial.cash.securitiesCostCents).toBe(6000);
+    expect(partial.income).toMatchObject({ resultCents: 2000, salesHtCents: 0, operatingResultCents: 0 });
+    const loss = entry("stock-sell", { cash: 3000, securities_assets: -6000, expense_stock_losses: 3000 });
+    const closed = report([purchase, crypto, gain, loss]);
+    expect(closed.cash).toMatchObject({ securitiesCostCents: 0, cryptoCostCents: 2000 });
+    expect(closed.income).toMatchObject({ resultCents: -1000, operatingResultCents: 0 });
+    expect(closed.sourceDifferences.securities).toBe(0);
+    const divergent = snapshot([purchase]); divergent.checks.securitiesCostCents = 9900;
+    expect(getKqTreasuryReport(divergent)).toMatchObject({ reconciled: false, sourceDifferences: { securities: 100 } });
+    divergent.checks.securitiesCostCents = -1; expect(isKqTreasurySnapshot(divergent)).toBe(false);
   });
 
   it("flags loan or crypto ledger differences instead of showing balanced sources", () => {

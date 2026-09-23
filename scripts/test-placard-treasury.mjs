@@ -494,6 +494,23 @@ async function checkCryptoAccounting(owner) {
   console.log('PASS: crypto acquisition, replay, price movement, partial gain and final loss reconcile at historical cost.');
 }
 
+async function checkStockAccounting(owner) {
+  const stocks=async(action='state',payload={})=>(await result('SELECT rpc_kq_stock_command($1,$2,$3::jsonb) data',[owner,action,JSON.stringify(payload)])).data;
+  const lease=(await result('SELECT rpc_kq_stock_refresh_claim($1) data',[['AI.PA']])).data;
+  const row={id:'AI.PA',priceNative:'10',currency:'EUR',changePercent:0,quotedAt:new Date().toISOString(),marketState:'open',fxRate:'1',fxQuotedAt:null};
+  assert.equal((await result('SELECT rpc_kq_stock_refresh_publish($1,$2::jsonb) ok',[lease.leaseId,JSON.stringify([row])])).ok,true);
+  const original=Number(await cash(owner));const purchase=await stocks('preview',{side:'buy',assetId:'AI.PA',amountCents:10000});await stocks('confirm',{orderId:purchase.orderId});let view=await inspected(owner);
+  assert.equal(view.data.closingBalances.securities_assets,10000);assert.equal(view.data.checks.securitiesCostCents,10000);assert.equal(view.data.checks.cryptoCostCents,0);assert.equal(view.report.cash.availableCents,original-10000);assert.equal(view.report.income.resultCents,0);
+  const entries=await count(owner);await stocks('confirm',{orderId:purchase.orderId});assert.equal(await count(owner),entries,'stock confirmation retry does not duplicate entries');
+  await db.exec("UPDATE kq_stock_quotes SET price_native=12,price_eur=12 WHERE asset_id='AI.PA'");view=await inspected(owner);assert.equal(view.report.income.resultCents,0,'unrealized market gains do not inflate accounting income');
+  const partial=await stocks('preview',{side:'sell',assetId:'AI.PA',quantity:'4'});await stocks('confirm',{orderId:partial.orderId});view=await inspected(owner);assert.equal(view.data.checks.securitiesCostCents,6000);assert.equal(view.data.closingBalances.revenue_stock_gains,-800);assert.equal(view.report.income.resultCents,800);assert.equal(view.report.income.operatingResultCents,0);
+  await db.query("UPDATE kq_commerce_accounts SET business_started_at=now()-interval '121 hours' WHERE user_id=$1",[owner]);await db.query("UPDATE kq_treasury_accounts SET started_at=now()-interval '121 hours' WHERE user_id=$1",[owner]);await db.query("UPDATE kq_treasury_journal SET occurred_at=now()-interval '120 hours' WHERE user_id=$1",[owner]);
+  await db.exec("UPDATE kq_stock_quotes SET price_native=6,price_eur=6 WHERE asset_id='AI.PA'");const final=await stocks('preview',{side:'sell',assetId:'AI.PA',quantity:'6'});await stocks('confirm',{orderId:final.orderId});view=await inspected(owner);
+  assert.equal(view.data.checks.securitiesCostCents,0);assert.equal(view.data.closingBalances.securities_assets,0);assert.equal(view.data.closingBalances.expense_stock_losses,2400);assert.equal(view.report.income.resultCents,-1600);assert.equal(view.report.income.operatingResultCents,0);assert.equal(view.report.cash.availableCents,original-1600);
+  const previous=await inspected(owner,{period:'previous'}),current=await inspected(owner,{period:'current'});assert.equal(previous.data.closingBalances.securities_assets,6000);assert.equal(previous.report.income.resultCents,800);assert.equal(previous.report.reconciled,null);assert.equal(current.report.income.resultCents,-2400);assert.equal(current.report.balanceSheet.equity.find(line=>line.account==='retained_result').cents,800);assert.equal(current.report.income.operatingResultCents,0);
+  console.log('PASS: securities acquisition, cost basis, replay, realized EUR gain/loss and current/previous/all periods reconcile independently of crypto.');
+}
+
 async function checkPermissions(owner) {
   for(const role of ['anon','authenticated']) {
     const routines=await db.query(`SELECT proname FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname='public' AND (proname LIKE 'kq_treasury_%' OR proname='rpc_kq_treasury_snapshot') AND has_function_privilege($1,p.oid,'EXECUTE')`,[role]);
@@ -512,11 +529,11 @@ try {
   await db.exec(await migration('20260921000100_kq_business_calendar.sql'));
   ({KQ_BANK_MAX_CENTS,KQ_BANK_MAX_REPAYMENT_CENTS}=await vite.ssrLoadModule('/src/lib/kanab-quest-bank.ts'));
   const owners={};
-  for(const name of ['opening','sales','invoices','savings','assets','unknown','periods','equipment','offsetting','banking','crypto']) owners[name]=await player({strength:name==='savings'?'treasurer':null,balance:name==='banking'?KQ_BANK_MAX_REPAYMENT_CENTS-KQ_BANK_MAX_CENTS+1_000_000:1_000_000});
+  for(const name of ['opening','sales','invoices','savings','assets','unknown','periods','equipment','offsetting','banking','crypto','stocks']) owners[name]=await player({strength:name==='savings'?'treasurer':null,balance:name==='banking'?KQ_BANK_MAX_REPAYMENT_CENTS-KQ_BANK_MAX_CENTS+1_000_000:1_000_000});
   await openShop(owners.opening);await production(owners.opening);
   const historicalCash=await cash(owners.opening);
   await db.exec(await migration('20260921000200_kq_treasury_accounting.sql'));
-  for (const name of ['20260923000300_kq_bank_loans.sql','20260923000400_kq_crypto_portfolio.sql','20260923000500_kq_banking_accounting.sql','20260923000600_kq_crypto_refresh_recovery.sql','20260923000700_kq_bank_investment_limits.sql']) await db.exec(await migration(name));
+  for (const name of ['20260923000300_kq_bank_loans.sql','20260923000400_kq_crypto_portfolio.sql','20260923000500_kq_banking_accounting.sql','20260923000600_kq_crypto_refresh_recovery.sql','20260923000700_kq_bank_investment_limits.sql','20260923000800_kq_stock_market.sql','20260923000900_kq_stock_catalog.sql']) await db.exec(await migration(name));
   ({quoteKqCommerce}=await vite.ssrLoadModule('/src/lib/kanab-quest-commerce.ts'));
   ({previewKqBusinessPayment}=await vite.ssrLoadModule('/src/lib/kanab-quest-business.ts'));
   ({getKqTreasuryReport,isKqTreasurySnapshot}=await vite.ssrLoadModule('/src/lib/kanab-quest-treasury.ts'));
@@ -532,6 +549,7 @@ try {
   await checkPeriods(owners.periods);
   await checkBankAccounting(owners.banking);
   await checkCryptoAccounting(owners.crypto);
+  await checkStockAccounting(owners.stocks);
   await checkPermissions(owners.opening);
   console.log('PASS: isolated treasury accounting integration with real economy migrations.');
 } catch(error) {console.error(error.stack??error.message,error.where??'');process.exitCode=1;}

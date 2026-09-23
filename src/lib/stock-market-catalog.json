@@ -1,0 +1,5478 @@
+{
+  "asOf": "2026-09-23T18:56:07.652Z",
+  "sources": [
+    {
+      "name": "Euronext CAC 40 official composition",
+      "url": "https://live.euronext.com/en/product/indices/FR0003500008-XPAR",
+      "compositionUrl": "https://live.euronext.com/en/ajax/getIndexComposition/FR0003500008-XPAR",
+      "asOf": "2026-09-23",
+      "type": "index-constituents"
+    },
+    {
+      "name": "iShares Core S&P 500 ETF (IVV) listed equity holdings",
+      "url": "https://www.ishares.com/us/products/239726/ishares-core-s-p-500-etf/latest-holdings.csv",
+      "asOf": "2026-09-22",
+      "type": "tracking-fund-holdings",
+      "note": "S&P 500 universe inferred from listed equity holdings of its tracking ETF. Cash, futures and unlisted residual holdings are excluded.",
+      "excluded": [
+        {
+          "symbol": "HOLX",
+          "name": "HOLOGIC INC",
+          "exchange": "NO MARKET (E.G. UNLISTED)"
+        }
+      ]
+    }
+  ],
+  "instruments": [
+    {
+      "id": "^FCHI",
+      "symbol": "^FCHI",
+      "name": "CAC 40",
+      "kind": "index",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "^GSPC",
+      "symbol": "^GSPC",
+      "name": "S&P 500",
+      "kind": "index",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AC.PA",
+      "symbol": "AC",
+      "name": "ACCOR",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "AI.PA",
+      "symbol": "AI",
+      "name": "AIR LIQUIDE",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "AIR.PA",
+      "symbol": "AIR",
+      "name": "AIRBUS",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "MT.AS",
+      "symbol": "MT",
+      "name": "ARCELORMITTAL SA",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "CS.PA",
+      "symbol": "CS",
+      "name": "AXA",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "BNP.PA",
+      "symbol": "BNP",
+      "name": "BNP PARIBAS ACT.A",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "EN.PA",
+      "symbol": "EN",
+      "name": "BOUYGUES",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "BVI.PA",
+      "symbol": "BVI",
+      "name": "BUREAU VERITAS",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "CAP.PA",
+      "symbol": "CAP",
+      "name": "CAPGEMINI",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "CA.PA",
+      "symbol": "CA",
+      "name": "CARREFOUR",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "ACA.PA",
+      "symbol": "ACA",
+      "name": "CREDIT AGRICOLE",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "BN.PA",
+      "symbol": "BN",
+      "name": "DANONE",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "DSY.PA",
+      "symbol": "DSY",
+      "name": "DASSAULT SYSTEMES",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "FGR.PA",
+      "symbol": "FGR",
+      "name": "EIFFAGE",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "ENGI.PA",
+      "symbol": "ENGI",
+      "name": "ENGIE",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "EL.PA",
+      "symbol": "EL",
+      "name": "ESSILORLUXOTTICA",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "ERF.PA",
+      "symbol": "ERF",
+      "name": "EUROFINS SCIENT.",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "ENX.PA",
+      "symbol": "ENX",
+      "name": "EURONEXT",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "RMS.PA",
+      "symbol": "RMS",
+      "name": "HERMES INTL",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "KER.PA",
+      "symbol": "KER",
+      "name": "KERING",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "OR.PA",
+      "symbol": "OR",
+      "name": "L'OREAL",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "LR.PA",
+      "symbol": "LR",
+      "name": "LEGRAND",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "MC.PA",
+      "symbol": "MC",
+      "name": "LVMH",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "ML.PA",
+      "symbol": "ML",
+      "name": "MICHELIN",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "ORA.PA",
+      "symbol": "ORA",
+      "name": "ORANGE",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "RI.PA",
+      "symbol": "RI",
+      "name": "PERNOD RICARD",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "PUB.PA",
+      "symbol": "PUB",
+      "name": "PUBLICIS GROUPE SA",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "RNO.PA",
+      "symbol": "RNO",
+      "name": "RENAULT",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "SAF.PA",
+      "symbol": "SAF",
+      "name": "SAFRAN",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "SGO.PA",
+      "symbol": "SGO",
+      "name": "SAINT GOBAIN",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "SAN.PA",
+      "symbol": "SAN",
+      "name": "SANOFI",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "SU.PA",
+      "symbol": "SU",
+      "name": "SCHNEIDER ELECTRIC",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "GLE.PA",
+      "symbol": "GLE",
+      "name": "SOCIETE GENERALE",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "STLAP.PA",
+      "symbol": "STLAP",
+      "name": "STELLANTIS NV",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "STMPA.PA",
+      "symbol": "STMPA",
+      "name": "STMICROELECTRONICS",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "HO.PA",
+      "symbol": "HO",
+      "name": "THALES",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "TTE.PA",
+      "symbol": "TTE",
+      "name": "TOTALENERGIES",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "URW.PA",
+      "symbol": "URW",
+      "name": "UNIBAIL-RODAMCO-WE",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "VIE.PA",
+      "symbol": "VIE",
+      "name": "VEOLIA ENVIRON.",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "DG.PA",
+      "symbol": "DG",
+      "name": "VINCI",
+      "kind": "stock",
+      "markets": [
+        "cac40"
+      ],
+      "currency": "EUR"
+    },
+    {
+      "id": "A",
+      "symbol": "A",
+      "name": "AGILENT TECHNOLOGIES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AAPL",
+      "symbol": "AAPL",
+      "name": "APPLE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ABBV",
+      "symbol": "ABBV",
+      "name": "ABBVIE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ABNB",
+      "symbol": "ABNB",
+      "name": "AIRBNB CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ABT",
+      "symbol": "ABT",
+      "name": "ABBOTT LABORATORIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ACGL",
+      "symbol": "ACGL",
+      "name": "ARCH CAPITAL GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ACN",
+      "symbol": "ACN",
+      "name": "ACCENTURE PLC CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ADBE",
+      "symbol": "ADBE",
+      "name": "ADOBE INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ADI",
+      "symbol": "ADI",
+      "name": "ANALOG DEVICES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ADM",
+      "symbol": "ADM",
+      "name": "ARCHER DANIELS MIDLAND",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ADP",
+      "symbol": "ADP",
+      "name": "AUTOMATIC DATA PROCESSING INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ADSK",
+      "symbol": "ADSK",
+      "name": "AUTODESK",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AEE",
+      "symbol": "AEE",
+      "name": "AMEREN",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AEP",
+      "symbol": "AEP",
+      "name": "AMERICAN ELECTRIC POWER INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AES",
+      "symbol": "AES",
+      "name": "AES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AFL",
+      "symbol": "AFL",
+      "name": "AFLAC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AIG",
+      "symbol": "AIG",
+      "name": "AMERICAN INTERNATIONAL GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AIZ",
+      "symbol": "AIZ",
+      "name": "ASSURANT INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AJG",
+      "symbol": "AJG",
+      "name": "ARTHUR J GALLAGHER",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AKAM",
+      "symbol": "AKAM",
+      "name": "AKAMAI TECHNOLOGIES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ALB",
+      "symbol": "ALB",
+      "name": "ALBEMARLE CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ALGN",
+      "symbol": "ALGN",
+      "name": "ALIGN TECHNOLOGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ALL",
+      "symbol": "ALL",
+      "name": "ALLSTATE CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ALLE",
+      "symbol": "ALLE",
+      "name": "ALLEGION PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AMAT",
+      "symbol": "AMAT",
+      "name": "APPLIED MATERIAL INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AMCR",
+      "symbol": "AMCR",
+      "name": "AMCOR PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AMD",
+      "symbol": "AMD",
+      "name": "ADVANCED MICRO DEVICES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AME",
+      "symbol": "AME",
+      "name": "AMETEK INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AMGN",
+      "symbol": "AMGN",
+      "name": "AMGEN INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AMP",
+      "symbol": "AMP",
+      "name": "AMERIPRISE FINANCE INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AMT",
+      "symbol": "AMT",
+      "name": "AMERICAN TOWER REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AMZN",
+      "symbol": "AMZN",
+      "name": "AMAZON.COM INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ANET",
+      "symbol": "ANET",
+      "name": "ARISTA NETWORKS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AON",
+      "symbol": "AON",
+      "name": "AON PLC CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AOS",
+      "symbol": "AOS",
+      "name": "A O SMITH",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "APA",
+      "symbol": "APA",
+      "name": "APA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "APD",
+      "symbol": "APD",
+      "name": "AIR PRODUCTS AND CHEMICALS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "APH",
+      "symbol": "APH",
+      "name": "AMPHENOL CORP CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "APO",
+      "symbol": "APO",
+      "name": "APOLLO GLOBAL MANAGEMENT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "APP",
+      "symbol": "APP",
+      "name": "APPLOVIN CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "APTV",
+      "symbol": "APTV",
+      "name": "APTIV PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ARE",
+      "symbol": "ARE",
+      "name": "ALEXANDRIA REAL ESTATE EQUITIES RE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ARES",
+      "symbol": "ARES",
+      "name": "ARES MANAGEMENT CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ATO",
+      "symbol": "ATO",
+      "name": "ATMOS ENERGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AVGO",
+      "symbol": "AVGO",
+      "name": "BROADCOM INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AVY",
+      "symbol": "AVY",
+      "name": "AVERY DENNISON CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AWK",
+      "symbol": "AWK",
+      "name": "AMERICAN WATER WORKS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AXON",
+      "symbol": "AXON",
+      "name": "AXON ENTERPRISE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AXP",
+      "symbol": "AXP",
+      "name": "AMERICAN EXPRESS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "AZO",
+      "symbol": "AZO",
+      "name": "AUTOZONE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BA",
+      "symbol": "BA",
+      "name": "BOEING",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BAC",
+      "symbol": "BAC",
+      "name": "BANK OF AMERICA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BALL",
+      "symbol": "BALL",
+      "name": "BALL CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BAX",
+      "symbol": "BAX",
+      "name": "BAXTER INTERNATIONAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BBY",
+      "symbol": "BBY",
+      "name": "BEST BUY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BDX",
+      "symbol": "BDX",
+      "name": "BECTON DICKINSON",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BE",
+      "symbol": "BE",
+      "name": "BLOOM ENERGY CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BEN",
+      "symbol": "BEN",
+      "name": "FRANKLIN TEMPLETON",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BF-B",
+      "symbol": "BF-B",
+      "name": "BROWN FORMAN CLASS B",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BG",
+      "symbol": "BG",
+      "name": "BUNGE GLOBAL SA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BIIB",
+      "symbol": "BIIB",
+      "name": "BIOGEN",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BKNG",
+      "symbol": "BKNG",
+      "name": "BOOKING HOLDINGS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BKR",
+      "symbol": "BKR",
+      "name": "BAKER HUGHES CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BLK",
+      "symbol": "BLK",
+      "name": "BLACKROCK",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BMY",
+      "symbol": "BMY",
+      "name": "BRISTOL MYERS SQUIBB",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BNY",
+      "symbol": "BNY",
+      "name": "BANK OF NEW YORK MELLON CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BR",
+      "symbol": "BR",
+      "name": "BROADRIDGE FINANCIAL SOLUTIONS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BRK-B",
+      "symbol": "BRK-B",
+      "name": "BERKSHIRE HATHAWAY INC CLASS B",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BRO",
+      "symbol": "BRO",
+      "name": "BROWN & BROWN INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BSX",
+      "symbol": "BSX",
+      "name": "BOSTON SCIENTIFIC CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BX",
+      "symbol": "BX",
+      "name": "BLACKSTONE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "BXP",
+      "symbol": "BXP",
+      "name": "BXP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "C",
+      "symbol": "C",
+      "name": "CITIGROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CAH",
+      "symbol": "CAH",
+      "name": "CARDINAL HEALTH",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CARR",
+      "symbol": "CARR",
+      "name": "CARRIER GLOBAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CASY",
+      "symbol": "CASY",
+      "name": "CASEYS GENERAL STORES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CAT",
+      "symbol": "CAT",
+      "name": "CATERPILLAR INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CB",
+      "symbol": "CB",
+      "name": "CHUBB",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CBOE",
+      "symbol": "CBOE",
+      "name": "CBOE GLOBAL MARKETS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CBRE",
+      "symbol": "CBRE",
+      "name": "CBRE GROUP CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CCI",
+      "symbol": "CCI",
+      "name": "CROWN CASTLE INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CCL",
+      "symbol": "CCL",
+      "name": "CARNIVAL CORP LTD",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CDNS",
+      "symbol": "CDNS",
+      "name": "CADENCE DESIGN SYSTEMS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CDW",
+      "symbol": "CDW",
+      "name": "CDW",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CEG",
+      "symbol": "CEG",
+      "name": "CONSTELLATION ENERGY CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CF",
+      "symbol": "CF",
+      "name": "CF INDUSTRIES HOLDINGS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CFG",
+      "symbol": "CFG",
+      "name": "CITIZENS FINANCIAL GROUP INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CHD",
+      "symbol": "CHD",
+      "name": "CHURCH AND DWIGHT INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CHRW",
+      "symbol": "CHRW",
+      "name": "CH ROBINSON WORLDWIDE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CHTR",
+      "symbol": "CHTR",
+      "name": "CHARTER COMMUNICATIONS CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CI",
+      "symbol": "CI",
+      "name": "CIGNA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CIEN",
+      "symbol": "CIEN",
+      "name": "CIENA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CINF",
+      "symbol": "CINF",
+      "name": "CINCINNATI FINANCIAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CL",
+      "symbol": "CL",
+      "name": "COLGATE-PALMOLIVE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CLX",
+      "symbol": "CLX",
+      "name": "CLOROX",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CMCSA",
+      "symbol": "CMCSA",
+      "name": "COMCAST CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CME",
+      "symbol": "CME",
+      "name": "CME GROUP CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CMG",
+      "symbol": "CMG",
+      "name": "CHIPOTLE MEXICAN GRILL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CMI",
+      "symbol": "CMI",
+      "name": "CUMMINS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CMS",
+      "symbol": "CMS",
+      "name": "CMS ENERGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CNC",
+      "symbol": "CNC",
+      "name": "CENTENE CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CNP",
+      "symbol": "CNP",
+      "name": "CENTERPOINT ENERGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "COF",
+      "symbol": "COF",
+      "name": "CAPITAL ONE FINANCIAL CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "COHR",
+      "symbol": "COHR",
+      "name": "COHERENT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "COIN",
+      "symbol": "COIN",
+      "name": "COINBASE GLOBAL INC CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "COO",
+      "symbol": "COO",
+      "name": "COOPER",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "COP",
+      "symbol": "COP",
+      "name": "CONOCOPHILLIPS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "COR",
+      "symbol": "COR",
+      "name": "CENCORA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "COST",
+      "symbol": "COST",
+      "name": "COSTCO WHOLESALE CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CPAY",
+      "symbol": "CPAY",
+      "name": "CORPAY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CPRT",
+      "symbol": "CPRT",
+      "name": "COPART INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CPT",
+      "symbol": "CPT",
+      "name": "CAMDEN PROPERTY TRUST REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CRH",
+      "symbol": "CRH",
+      "name": "CRH PUBLIC LIMITED PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CRL",
+      "symbol": "CRL",
+      "name": "CHARLES RIVER LABORATORIES INTERNA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CRM",
+      "symbol": "CRM",
+      "name": "SALESFORCE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CRWD",
+      "symbol": "CRWD",
+      "name": "CROWDSTRIKE HOLDINGS CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CSCO",
+      "symbol": "CSCO",
+      "name": "CISCO SYSTEMS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CSGP",
+      "symbol": "CSGP",
+      "name": "COSTAR GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CSX",
+      "symbol": "CSX",
+      "name": "CSX",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CTAS",
+      "symbol": "CTAS",
+      "name": "CINTAS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CTSH",
+      "symbol": "CTSH",
+      "name": "COGNIZANT TECHNOLOGY SOLUTIONS CLA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CTVA",
+      "symbol": "CTVA",
+      "name": "CORTEVA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CVNA",
+      "symbol": "CVNA",
+      "name": "CARVANA CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CVS",
+      "symbol": "CVS",
+      "name": "CVS HEALTH",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "CVX",
+      "symbol": "CVX",
+      "name": "CHEVRON",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "D",
+      "symbol": "D",
+      "name": "DOMINION ENERGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DAL",
+      "symbol": "DAL",
+      "name": "DELTA AIR LINES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DASH",
+      "symbol": "DASH",
+      "name": "DOORDASH CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DD",
+      "symbol": "DD",
+      "name": "DUPONT DE NEMOURS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DDOG",
+      "symbol": "DDOG",
+      "name": "DATADOG INC CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DE",
+      "symbol": "DE",
+      "name": "DEERE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DECK",
+      "symbol": "DECK",
+      "name": "DECKERS OUTDOOR",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DELL",
+      "symbol": "DELL",
+      "name": "DELL TECHNOLOGIES INC CLASS C",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DG",
+      "symbol": "DG",
+      "name": "DOLLAR GENERAL CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DGX",
+      "symbol": "DGX",
+      "name": "QUEST DIAGNOSTICS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DHI",
+      "symbol": "DHI",
+      "name": "D R HORTON",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DHR",
+      "symbol": "DHR",
+      "name": "DANAHER",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DIS",
+      "symbol": "DIS",
+      "name": "WALT DISNEY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DLR",
+      "symbol": "DLR",
+      "name": "DIGITAL REALTY TRUST REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DLTR",
+      "symbol": "DLTR",
+      "name": "DOLLAR TREE INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DOC",
+      "symbol": "DOC",
+      "name": "HEALTHPEAK PROPERTIES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DOV",
+      "symbol": "DOV",
+      "name": "DOVER CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DOW",
+      "symbol": "DOW",
+      "name": "DOW",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DPZ",
+      "symbol": "DPZ",
+      "name": "DOMINOS PIZZA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DRI",
+      "symbol": "DRI",
+      "name": "DARDEN RESTAURANTS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DTE",
+      "symbol": "DTE",
+      "name": "DTE ENERGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DUK",
+      "symbol": "DUK",
+      "name": "DUKE ENERGY CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DVA",
+      "symbol": "DVA",
+      "name": "DAVITA INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DVN",
+      "symbol": "DVN",
+      "name": "DEVON ENERGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "DXCM",
+      "symbol": "DXCM",
+      "name": "DEXCOM INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EBAY",
+      "symbol": "EBAY",
+      "name": "EBAY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ECHO",
+      "symbol": "ECHO",
+      "name": "ECHOSTAR CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ECL",
+      "symbol": "ECL",
+      "name": "ECOLAB",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ED",
+      "symbol": "ED",
+      "name": "CONSOLIDATED EDISON",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EFX",
+      "symbol": "EFX",
+      "name": "EQUIFAX",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EG",
+      "symbol": "EG",
+      "name": "EVEREST GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EIX",
+      "symbol": "EIX",
+      "name": "EDISON INTERNATIONAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EL",
+      "symbol": "EL",
+      "name": "ESTEE LAUDER INC CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ELV",
+      "symbol": "ELV",
+      "name": "ELEVANCE HEALTH INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EME",
+      "symbol": "EME",
+      "name": "EMCOR GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EMR",
+      "symbol": "EMR",
+      "name": "EMERSON ELECTRIC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EOG",
+      "symbol": "EOG",
+      "name": "EOG RESOURCES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EQIX",
+      "symbol": "EQIX",
+      "name": "EQUINIX REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EQT",
+      "symbol": "EQT",
+      "name": "EQT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ERIE",
+      "symbol": "ERIE",
+      "name": "ERIE INDEMNITY CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ES",
+      "symbol": "ES",
+      "name": "EVERSOURCE ENERGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ESS",
+      "symbol": "ESS",
+      "name": "ESSEX PROPERTY TRUST REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ETN",
+      "symbol": "ETN",
+      "name": "EATON PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ETR",
+      "symbol": "ETR",
+      "name": "ENTERGY CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EVRG",
+      "symbol": "EVRG",
+      "name": "EVERGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EW",
+      "symbol": "EW",
+      "name": "EDWARDS LIFESCIENCES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EXC",
+      "symbol": "EXC",
+      "name": "EXELON CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EXE",
+      "symbol": "EXE",
+      "name": "EXPAND ENERGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EXPD",
+      "symbol": "EXPD",
+      "name": "EXPEDITORS INTERNATIONAL OF WASHIN",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EXPE",
+      "symbol": "EXPE",
+      "name": "EXPEDIA GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "EXR",
+      "symbol": "EXR",
+      "name": "EXTRA SPACE STORAGE REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "F",
+      "symbol": "F",
+      "name": "FORD MOTOR CO",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FANG",
+      "symbol": "FANG",
+      "name": "DIAMONDBACK ENERGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FAST",
+      "symbol": "FAST",
+      "name": "FASTENAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FCX",
+      "symbol": "FCX",
+      "name": "FREEPORT MCMORAN INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FDS",
+      "symbol": "FDS",
+      "name": "FACTSET RESEARCH SYSTEMS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FDX",
+      "symbol": "FDX",
+      "name": "FEDEX CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FDXF",
+      "symbol": "FDXF",
+      "name": "FEDEX FREIGHT HOLDING COMPANY INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FE",
+      "symbol": "FE",
+      "name": "FIRSTENERGY CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FERG",
+      "symbol": "FERG",
+      "name": "FERGUSON ENTERPRISES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FFIV",
+      "symbol": "FFIV",
+      "name": "F5",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FICO",
+      "symbol": "FICO",
+      "name": "FAIR ISAAC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FIS",
+      "symbol": "FIS",
+      "name": "FIDELITY NATIONAL INFORMATION SERV",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FISV",
+      "symbol": "FISV",
+      "name": "FISERV INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FITB",
+      "symbol": "FITB",
+      "name": "FIFTH THIRD BANCORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FIX",
+      "symbol": "FIX",
+      "name": "COMFORT SYSTEMS USA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FLEX",
+      "symbol": "FLEX",
+      "name": "FLEX LTD",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FOX",
+      "symbol": "FOX",
+      "name": "FOX CLASS B",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FOXA",
+      "symbol": "FOXA",
+      "name": "FOX CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FRT",
+      "symbol": "FRT",
+      "name": "FEDERAL REALTY INVESTMENT TRUST RE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FSLR",
+      "symbol": "FSLR",
+      "name": "FIRST SOLAR",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FTNT",
+      "symbol": "FTNT",
+      "name": "FORTINET",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "FTV",
+      "symbol": "FTV",
+      "name": "FORTIVE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GD",
+      "symbol": "GD",
+      "name": "GENERAL DYNAMICS CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GDDY",
+      "symbol": "GDDY",
+      "name": "GODADDY CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GE",
+      "symbol": "GE",
+      "name": "GE AEROSPACE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GEHC",
+      "symbol": "GEHC",
+      "name": "GE HEALTHCARE TECHNOLOGIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GEN",
+      "symbol": "GEN",
+      "name": "GEN DIGITAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GEV",
+      "symbol": "GEV",
+      "name": "GE VERNOVA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GILD",
+      "symbol": "GILD",
+      "name": "GILEAD SCIENCES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GIS",
+      "symbol": "GIS",
+      "name": "GENERAL MILLS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GL",
+      "symbol": "GL",
+      "name": "GLOBE LIFE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GLW",
+      "symbol": "GLW",
+      "name": "CORNING",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GM",
+      "symbol": "GM",
+      "name": "GENERAL MOTORS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GNRC",
+      "symbol": "GNRC",
+      "name": "GENERAC HOLDINGS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GOOG",
+      "symbol": "GOOG",
+      "name": "ALPHABET CLASS C",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GOOGL",
+      "symbol": "GOOGL",
+      "name": "ALPHABET CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GPC",
+      "symbol": "GPC",
+      "name": "GENUINE PARTS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GPN",
+      "symbol": "GPN",
+      "name": "GLOBAL PAYMENTS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GRMN",
+      "symbol": "GRMN",
+      "name": "GARMIN",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GS",
+      "symbol": "GS",
+      "name": "GOLDMAN SACHS GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "GWW",
+      "symbol": "GWW",
+      "name": "WW GRAINGER INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HAL",
+      "symbol": "HAL",
+      "name": "HALLIBURTON",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HAS",
+      "symbol": "HAS",
+      "name": "HASBRO",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HBAN",
+      "symbol": "HBAN",
+      "name": "HUNTINGTON BANCSHARES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HCA",
+      "symbol": "HCA",
+      "name": "HCA HEALTHCARE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HD",
+      "symbol": "HD",
+      "name": "HOME DEPOT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HIG",
+      "symbol": "HIG",
+      "name": "HARTFORD INSURANCE GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HII",
+      "symbol": "HII",
+      "name": "HUNTINGTON INGALLS INDUSTRIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HLT",
+      "symbol": "HLT",
+      "name": "HILTON WORLDWIDE HOLDINGS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HON",
+      "symbol": "HON",
+      "name": "HONEYWELL INTERNATIONAL INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HONA",
+      "symbol": "HONA",
+      "name": "HONEYWELL AEROSPACE INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HOOD",
+      "symbol": "HOOD",
+      "name": "ROBINHOOD MARKETS CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HPE",
+      "symbol": "HPE",
+      "name": "HEWLETT PACKARD ENTERPRISE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HPQ",
+      "symbol": "HPQ",
+      "name": "HP INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HRL",
+      "symbol": "HRL",
+      "name": "HORMEL FOODS CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HSIC",
+      "symbol": "HSIC",
+      "name": "HENRY SCHEIN",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HST",
+      "symbol": "HST",
+      "name": "HOST HOTELS & RESORTS REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HSY",
+      "symbol": "HSY",
+      "name": "HERSHEY FOODS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HUBB",
+      "symbol": "HUBB",
+      "name": "HUBBELL INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HUM",
+      "symbol": "HUM",
+      "name": "HUMANA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "HWM",
+      "symbol": "HWM",
+      "name": "HOWMET AEROSPACE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "IBKR",
+      "symbol": "IBKR",
+      "name": "INTERACTIVE BROKERS GROUP INC CLAS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "IBM",
+      "symbol": "IBM",
+      "name": "INTERNATIONAL BUSINESS MACHINES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ICE",
+      "symbol": "ICE",
+      "name": "INTERCONTINENTAL EXCHANGE INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "IDXX",
+      "symbol": "IDXX",
+      "name": "IDEXX LABORATORIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "IEX",
+      "symbol": "IEX",
+      "name": "IDEX",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "IFF",
+      "symbol": "IFF",
+      "name": "INTERNATIONAL FLAVORS & FRAGRANCES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ILMN",
+      "symbol": "ILMN",
+      "name": "ILLUMINA INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "INCY",
+      "symbol": "INCY",
+      "name": "INCYTE CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "INTC",
+      "symbol": "INTC",
+      "name": "INTEL CORPORATION",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "INTU",
+      "symbol": "INTU",
+      "name": "INTUIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "INVH",
+      "symbol": "INVH",
+      "name": "INVITATION HOMES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "IP",
+      "symbol": "IP",
+      "name": "INTERNATIONAL PAPER",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "IQV",
+      "symbol": "IQV",
+      "name": "IQVIA HOLDINGS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "IR",
+      "symbol": "IR",
+      "name": "INGERSOLL RAND INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "IRM",
+      "symbol": "IRM",
+      "name": "IRON MOUNTAIN INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ISRG",
+      "symbol": "ISRG",
+      "name": "INTUITIVE SURGICAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "IT",
+      "symbol": "IT",
+      "name": "GARTNER",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ITW",
+      "symbol": "ITW",
+      "name": "ILLINOIS TOOL INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "IVZ",
+      "symbol": "IVZ",
+      "name": "INVESCO LTD",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "J",
+      "symbol": "J",
+      "name": "JACOBS SOLUTIONS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "JBHT",
+      "symbol": "JBHT",
+      "name": "JB HUNT TRANSPORT SERVICES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "JBL",
+      "symbol": "JBL",
+      "name": "JABIL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "JCI",
+      "symbol": "JCI",
+      "name": "JOHNSON CONTROLS INTERNATIONAL PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "JKHY",
+      "symbol": "JKHY",
+      "name": "JACK HENRY AND ASSOCIATES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "JNJ",
+      "symbol": "JNJ",
+      "name": "JOHNSON & JOHNSON",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "JPM",
+      "symbol": "JPM",
+      "name": "JPMORGAN CHASE & CO",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KDP",
+      "symbol": "KDP",
+      "name": "KEURIG DR PEPPER INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KEY",
+      "symbol": "KEY",
+      "name": "KEYCORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KEYS",
+      "symbol": "KEYS",
+      "name": "KEYSIGHT TECHNOLOGIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KHC",
+      "symbol": "KHC",
+      "name": "KRAFT HEINZ",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KIM",
+      "symbol": "KIM",
+      "name": "KIMCO REALTY REIT CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KKR",
+      "symbol": "KKR",
+      "name": "KKR AND CO INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KLAC",
+      "symbol": "KLAC",
+      "name": "KLA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KMB",
+      "symbol": "KMB",
+      "name": "KIMBERLY CLARK",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KMI",
+      "symbol": "KMI",
+      "name": "KINDER MORGAN",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KO",
+      "symbol": "KO",
+      "name": "COCA-COLA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KR",
+      "symbol": "KR",
+      "name": "KROGER",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "KVUE",
+      "symbol": "KVUE",
+      "name": "KENVUE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "L",
+      "symbol": "L",
+      "name": "LOEWS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LDOS",
+      "symbol": "LDOS",
+      "name": "LEIDOS HOLDINGS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LEN",
+      "symbol": "LEN",
+      "name": "LENNAR A CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LH",
+      "symbol": "LH",
+      "name": "LABCORP HOLDINGS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LHX",
+      "symbol": "LHX",
+      "name": "L3HARRIS TECHNOLOGIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LII",
+      "symbol": "LII",
+      "name": "LENNOX INTERNATIONAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LIN",
+      "symbol": "LIN",
+      "name": "LINDE PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LITE",
+      "symbol": "LITE",
+      "name": "LUMENTUM HOLDINGS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LLY",
+      "symbol": "LLY",
+      "name": "ELI LILLY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LMT",
+      "symbol": "LMT",
+      "name": "LOCKHEED MARTIN CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LNT",
+      "symbol": "LNT",
+      "name": "ALLIANT ENERGY CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LOW",
+      "symbol": "LOW",
+      "name": "LOWES COMPANIES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LRCX",
+      "symbol": "LRCX",
+      "name": "LAM RESEARCH",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LULU",
+      "symbol": "LULU",
+      "name": "LULULEMON ATHLETICA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LUV",
+      "symbol": "LUV",
+      "name": "SOUTHWEST AIRLINES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LVS",
+      "symbol": "LVS",
+      "name": "LAS VEGAS SANDS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LYB",
+      "symbol": "LYB",
+      "name": "LYONDELLBASELL INDUSTRIES CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "LYV",
+      "symbol": "LYV",
+      "name": "LIVE NATION ENTERTAINMENT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MA",
+      "symbol": "MA",
+      "name": "MASTERCARD CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MAA",
+      "symbol": "MAA",
+      "name": "MID AMERICA APARTMENT COMMUNITIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MAR",
+      "symbol": "MAR",
+      "name": "MARRIOTT INTERNATIONAL CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MAS",
+      "symbol": "MAS",
+      "name": "MASCO",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MCD",
+      "symbol": "MCD",
+      "name": "MCDONALDS CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MCHP",
+      "symbol": "MCHP",
+      "name": "MICROCHIP TECHNOLOGY INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MCK",
+      "symbol": "MCK",
+      "name": "MCKESSON CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MCO",
+      "symbol": "MCO",
+      "name": "MOODYS CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MDLZ",
+      "symbol": "MDLZ",
+      "name": "MONDELEZ INTERNATIONAL CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MDT",
+      "symbol": "MDT",
+      "name": "MEDTRONIC PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MET",
+      "symbol": "MET",
+      "name": "METLIFE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "META",
+      "symbol": "META",
+      "name": "META PLATFORMS CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MGM",
+      "symbol": "MGM",
+      "name": "MGM RESORTS INTERNATIONAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MKC",
+      "symbol": "MKC",
+      "name": "MCCORMICK & CO NON-VOTING",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MLM",
+      "symbol": "MLM",
+      "name": "MARTIN MARIETTA MATERIALS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MMM",
+      "symbol": "MMM",
+      "name": "3M",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MNST",
+      "symbol": "MNST",
+      "name": "MONSTER BEVERAGE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MO",
+      "symbol": "MO",
+      "name": "ALTRIA GROUP INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MOS",
+      "symbol": "MOS",
+      "name": "MOSAIC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MPC",
+      "symbol": "MPC",
+      "name": "MARATHON PETROLEUM",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MPWR",
+      "symbol": "MPWR",
+      "name": "MONOLITHIC POWER SYSTEMS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MRK",
+      "symbol": "MRK",
+      "name": "MERCK & CO INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MRNA",
+      "symbol": "MRNA",
+      "name": "MODERNA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MRSH",
+      "symbol": "MRSH",
+      "name": "MARSH",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MRVL",
+      "symbol": "MRVL",
+      "name": "MARVELL TECHNOLOGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MS",
+      "symbol": "MS",
+      "name": "MORGAN STANLEY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MSCI",
+      "symbol": "MSCI",
+      "name": "MSCI",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MSFT",
+      "symbol": "MSFT",
+      "name": "MICROSOFT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MSI",
+      "symbol": "MSI",
+      "name": "MOTOROLA SOLUTIONS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MTB",
+      "symbol": "MTB",
+      "name": "M&T BANK",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MTD",
+      "symbol": "MTD",
+      "name": "METTLER TOLEDO",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "MU",
+      "symbol": "MU",
+      "name": "MICRON TECHNOLOGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NCLH",
+      "symbol": "NCLH",
+      "name": "NORWEGIAN CRUISE LINE HOLDINGS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NDAQ",
+      "symbol": "NDAQ",
+      "name": "NASDAQ INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NDSN",
+      "symbol": "NDSN",
+      "name": "NORDSON",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NEE",
+      "symbol": "NEE",
+      "name": "NEXTERA ENERGY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NEM",
+      "symbol": "NEM",
+      "name": "NEWMONT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NFLX",
+      "symbol": "NFLX",
+      "name": "NETFLIX",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NI",
+      "symbol": "NI",
+      "name": "NISOURCE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NKE",
+      "symbol": "NKE",
+      "name": "NIKE CLASS B",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NOC",
+      "symbol": "NOC",
+      "name": "NORTHROP GRUMMAN CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NOW",
+      "symbol": "NOW",
+      "name": "SERVICENOW",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NRG",
+      "symbol": "NRG",
+      "name": "NRG ENERGY INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NSC",
+      "symbol": "NSC",
+      "name": "NORFOLK SOUTHERN CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NTAP",
+      "symbol": "NTAP",
+      "name": "NETAPP INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NTRS",
+      "symbol": "NTRS",
+      "name": "NORTHERN TRUST",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NUE",
+      "symbol": "NUE",
+      "name": "NUCOR",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NVDA",
+      "symbol": "NVDA",
+      "name": "NVIDIA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NVR",
+      "symbol": "NVR",
+      "name": "NVR",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NWS",
+      "symbol": "NWS",
+      "name": "NEWS CLASS B",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NWSA",
+      "symbol": "NWSA",
+      "name": "NEWS CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "NXPI",
+      "symbol": "NXPI",
+      "name": "NXP SEMICONDUCTORS NV",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "O",
+      "symbol": "O",
+      "name": "REALTY INCOME REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ODFL",
+      "symbol": "ODFL",
+      "name": "OLD DOMINION FREIGHT LINE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "OKE",
+      "symbol": "OKE",
+      "name": "ONEOK",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "OMC",
+      "symbol": "OMC",
+      "name": "OMNICOM GROUP INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ON",
+      "symbol": "ON",
+      "name": "ON SEMICONDUCTOR CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ORCL",
+      "symbol": "ORCL",
+      "name": "ORACLE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ORLY",
+      "symbol": "ORLY",
+      "name": "OREILLY AUTOMOTIVE INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "OTIS",
+      "symbol": "OTIS",
+      "name": "OTIS WORLDWIDE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "OXY",
+      "symbol": "OXY",
+      "name": "OCCIDENTAL PETROLEUM CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "P",
+      "symbol": "P",
+      "name": "EVERPURE INC CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PANW",
+      "symbol": "PANW",
+      "name": "PALO ALTO NETWORKS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PAYX",
+      "symbol": "PAYX",
+      "name": "PAYCHEX",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PCAR",
+      "symbol": "PCAR",
+      "name": "PACCAR INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PCG",
+      "symbol": "PCG",
+      "name": "PG&E CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PEG",
+      "symbol": "PEG",
+      "name": "PUBLIC SERVICE ENTERPRISE GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PEP",
+      "symbol": "PEP",
+      "name": "PEPSICO",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PFE",
+      "symbol": "PFE",
+      "name": "PFIZER",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PFG",
+      "symbol": "PFG",
+      "name": "PRINCIPAL FINANCIAL GROUP INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PG",
+      "symbol": "PG",
+      "name": "PROCTER & GAMBLE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PGR",
+      "symbol": "PGR",
+      "name": "PROGRESSIVE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PH",
+      "symbol": "PH",
+      "name": "PARKER-HANNIFIN",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PHM",
+      "symbol": "PHM",
+      "name": "PULTEGROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PKG",
+      "symbol": "PKG",
+      "name": "PACKAGING CORP OF AMERICA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PLD",
+      "symbol": "PLD",
+      "name": "PROLOGIS REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PLTR",
+      "symbol": "PLTR",
+      "name": "PALANTIR TECHNOLOGIES CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PM",
+      "symbol": "PM",
+      "name": "PHILIP MORRIS INTERNATIONAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PNC",
+      "symbol": "PNC",
+      "name": "PNC FINANCIAL SERVICES GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PNR",
+      "symbol": "PNR",
+      "name": "PENTAIR",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PNW",
+      "symbol": "PNW",
+      "name": "PINNACLE WEST",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PODD",
+      "symbol": "PODD",
+      "name": "INSULET",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PPG",
+      "symbol": "PPG",
+      "name": "PPG INDUSTRIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PPL",
+      "symbol": "PPL",
+      "name": "PPL CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PRU",
+      "symbol": "PRU",
+      "name": "PRUDENTIAL FINANCIAL INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PSA",
+      "symbol": "PSA",
+      "name": "PUBLIC STORAGE REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PSKY",
+      "symbol": "PSKY",
+      "name": "PARAMOUNT SKYDANCE CORP CLASS B",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PSX",
+      "symbol": "PSX",
+      "name": "PHILLIPS 66",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PTC",
+      "symbol": "PTC",
+      "name": "PTC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PWR",
+      "symbol": "PWR",
+      "name": "QUANTA SERVICES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "PYPL",
+      "symbol": "PYPL",
+      "name": "PAYPAL HOLDINGS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "Q",
+      "symbol": "Q",
+      "name": "QNITY ELECTRONICS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "QCOM",
+      "symbol": "QCOM",
+      "name": "QUALCOMM",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "RCL",
+      "symbol": "RCL",
+      "name": "ROYAL CARIBBEAN GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "RDDT",
+      "symbol": "RDDT",
+      "name": "REDDIT CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "REG",
+      "symbol": "REG",
+      "name": "REGENCY CENTERS REIT CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "REGN",
+      "symbol": "REGN",
+      "name": "REGENERON PHARMACEUTICALS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "RF",
+      "symbol": "RF",
+      "name": "REGIONS FINANCIAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "RJF",
+      "symbol": "RJF",
+      "name": "RAYMOND JAMES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "RL",
+      "symbol": "RL",
+      "name": "RALPH LAUREN CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "RMD",
+      "symbol": "RMD",
+      "name": "RESMED",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ROK",
+      "symbol": "ROK",
+      "name": "ROCKWELL AUTOMATION INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ROL",
+      "symbol": "ROL",
+      "name": "ROLLINS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ROP",
+      "symbol": "ROP",
+      "name": "ROPER TECHNOLOGIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ROST",
+      "symbol": "ROST",
+      "name": "ROSS STORES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "RSG",
+      "symbol": "RSG",
+      "name": "REPUBLIC SERVICES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "RTX",
+      "symbol": "RTX",
+      "name": "RTX",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "RVTY",
+      "symbol": "RVTY",
+      "name": "REVVITY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SBAC",
+      "symbol": "SBAC",
+      "name": "SBA COMMUNICATIONS REIT CORP CLASS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SBUX",
+      "symbol": "SBUX",
+      "name": "STARBUCKS CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SCHW",
+      "symbol": "SCHW",
+      "name": "CHARLES SCHWAB",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SHW",
+      "symbol": "SHW",
+      "name": "SHERWIN WILLIAMS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SJM",
+      "symbol": "SJM",
+      "name": "JM SMUCKER",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SLB",
+      "symbol": "SLB",
+      "name": "SLB",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SMCI",
+      "symbol": "SMCI",
+      "name": "SUPER MICRO COMPUTER INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SNA",
+      "symbol": "SNA",
+      "name": "SNAP ON INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SNDK",
+      "symbol": "SNDK",
+      "name": "SANDISK",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SNPS",
+      "symbol": "SNPS",
+      "name": "SYNOPSYS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SO",
+      "symbol": "SO",
+      "name": "SOUTHERN",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SOLV",
+      "symbol": "SOLV",
+      "name": "SOLVENTUM",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SPG",
+      "symbol": "SPG",
+      "name": "SIMON PROPERTY GROUP REIT INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SPGI",
+      "symbol": "SPGI",
+      "name": "S&P GLOBAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SRE",
+      "symbol": "SRE",
+      "name": "SEMPRA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "STE",
+      "symbol": "STE",
+      "name": "STERIS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "STLD",
+      "symbol": "STLD",
+      "name": "STEEL DYNAMICS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "STT",
+      "symbol": "STT",
+      "name": "STATE STREET",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "STX",
+      "symbol": "STX",
+      "name": "SEAGATE TECHNOLOGY HOLDINGS PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "STZ",
+      "symbol": "STZ",
+      "name": "CONSTELLATION BRANDS CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SW",
+      "symbol": "SW",
+      "name": "SMURFIT WESTROCK PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SWK",
+      "symbol": "SWK",
+      "name": "STANLEY BLACK & DECKER",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SWKS",
+      "symbol": "SWKS",
+      "name": "SKYWORKS SOLUTIONS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SYF",
+      "symbol": "SYF",
+      "name": "SYNCHRONY FINANCIAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SYK",
+      "symbol": "SYK",
+      "name": "STRYKER",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "SYY",
+      "symbol": "SYY",
+      "name": "SYSCO",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "T",
+      "symbol": "T",
+      "name": "AT&T",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TDG",
+      "symbol": "TDG",
+      "name": "TRANSDIGM GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TDY",
+      "symbol": "TDY",
+      "name": "TELEDYNE TECHNOLOGIES INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TECH",
+      "symbol": "TECH",
+      "name": "BIO TECHNE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TEL",
+      "symbol": "TEL",
+      "name": "TE CONNECTIVITY PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TER",
+      "symbol": "TER",
+      "name": "TERADYNE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TFC",
+      "symbol": "TFC",
+      "name": "TRUIST FINANCIAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TGT",
+      "symbol": "TGT",
+      "name": "TARGET CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TJX",
+      "symbol": "TJX",
+      "name": "TJX",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TKO",
+      "symbol": "TKO",
+      "name": "TKO GROUP HOLDINGS INC CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TMO",
+      "symbol": "TMO",
+      "name": "THERMO FISHER SCIENTIFIC INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TMUS",
+      "symbol": "TMUS",
+      "name": "T MOBILE US INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TPL",
+      "symbol": "TPL",
+      "name": "TEXAS PACIFIC LAND",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TPR",
+      "symbol": "TPR",
+      "name": "TAPESTRY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TRGP",
+      "symbol": "TRGP",
+      "name": "TARGA RESOURCES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TRMB",
+      "symbol": "TRMB",
+      "name": "TRIMBLE INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TROW",
+      "symbol": "TROW",
+      "name": "T ROWE PRICE GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TRV",
+      "symbol": "TRV",
+      "name": "TRAVELERS COMPANIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TSCO",
+      "symbol": "TSCO",
+      "name": "TRACTOR SUPPLY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TSLA",
+      "symbol": "TSLA",
+      "name": "TESLA INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TSN",
+      "symbol": "TSN",
+      "name": "TYSON FOODS INC CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TT",
+      "symbol": "TT",
+      "name": "TRANE TECHNOLOGIES PLC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TTWO",
+      "symbol": "TTWO",
+      "name": "TAKE TWO INTERACTIVE SOFTWARE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TXN",
+      "symbol": "TXN",
+      "name": "TEXAS INSTRUMENT INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TXT",
+      "symbol": "TXT",
+      "name": "TEXTRON INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "TYL",
+      "symbol": "TYL",
+      "name": "TYLER TECHNOLOGIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "UAL",
+      "symbol": "UAL",
+      "name": "UNITED AIRLINES HOLDINGS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "UBER",
+      "symbol": "UBER",
+      "name": "UBER TECHNOLOGIES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "UDR",
+      "symbol": "UDR",
+      "name": "UDR REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "UHS",
+      "symbol": "UHS",
+      "name": "UNIVERSAL HEALTH SERVICES INC CLAS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ULTA",
+      "symbol": "ULTA",
+      "name": "ULTA BEAUTY INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "UNH",
+      "symbol": "UNH",
+      "name": "UNITEDHEALTH GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "UNP",
+      "symbol": "UNP",
+      "name": "UNION PACIFIC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "UPS",
+      "symbol": "UPS",
+      "name": "UNITED PARCEL SERVICE INC CLASS B",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "URI",
+      "symbol": "URI",
+      "name": "UNITED RENTALS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "USB",
+      "symbol": "USB",
+      "name": "US BANCORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "V",
+      "symbol": "V",
+      "name": "VISA CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VEEV",
+      "symbol": "VEEV",
+      "name": "VEEVA SYSTEMS CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VICI",
+      "symbol": "VICI",
+      "name": "VICI PPTYS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VLO",
+      "symbol": "VLO",
+      "name": "VALERO ENERGY CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VLTO",
+      "symbol": "VLTO",
+      "name": "VERALTO CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VMC",
+      "symbol": "VMC",
+      "name": "VULCAN MATERIALS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VMRK",
+      "symbol": "VMRK",
+      "name": "VIVMARK RESIDENTIAL",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VRSK",
+      "symbol": "VRSK",
+      "name": "VERISK ANALYTICS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VRSN",
+      "symbol": "VRSN",
+      "name": "VERISIGN",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VRT",
+      "symbol": "VRT",
+      "name": "VERTIV HOLDINGS CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VRTX",
+      "symbol": "VRTX",
+      "name": "VERTEX PHARMACEUTICALS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VST",
+      "symbol": "VST",
+      "name": "VISTRA",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VTR",
+      "symbol": "VTR",
+      "name": "VENTAS REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VTRS",
+      "symbol": "VTRS",
+      "name": "VIATRIS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "VZ",
+      "symbol": "VZ",
+      "name": "VERIZON COMMUNICATIONS INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WAB",
+      "symbol": "WAB",
+      "name": "WESTINGHOUSE AIR BRAKE TECHNOLOGIE",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WAT",
+      "symbol": "WAT",
+      "name": "WATERS CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WBD",
+      "symbol": "WBD",
+      "name": "WARNER BROS. DISCOVERY SERIES A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WDAY",
+      "symbol": "WDAY",
+      "name": "WORKDAY CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WDC",
+      "symbol": "WDC",
+      "name": "WESTERN DIGITAL CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WEC",
+      "symbol": "WEC",
+      "name": "WEC ENERGY GROUP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WELL",
+      "symbol": "WELL",
+      "name": "WELLTOWER",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WFC",
+      "symbol": "WFC",
+      "name": "WELLS FARGO",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WM",
+      "symbol": "WM",
+      "name": "WASTE MANAGEMENT INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WMB",
+      "symbol": "WMB",
+      "name": "WILLIAMS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WMT",
+      "symbol": "WMT",
+      "name": "WALMART",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WRB",
+      "symbol": "WRB",
+      "name": "WR BERKLEY",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WSM",
+      "symbol": "WSM",
+      "name": "WILLIAMS SONOMA INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WST",
+      "symbol": "WST",
+      "name": "WEST PHARMACEUTICAL SERVICES",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WTW",
+      "symbol": "WTW",
+      "name": "WILLIS TOWERS WATSON",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WY",
+      "symbol": "WY",
+      "name": "WEYERHAEUSER REIT",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "WYNN",
+      "symbol": "WYNN",
+      "name": "WYNN RESORTS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "XEL",
+      "symbol": "XEL",
+      "name": "XCEL ENERGY INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "XOM",
+      "symbol": "XOM",
+      "name": "EXXONMOBIL HOLDINGS CORP",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "XYL",
+      "symbol": "XYL",
+      "name": "XYLEM INC",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "XYZ",
+      "symbol": "XYZ",
+      "name": "BLOCK CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "YUM",
+      "symbol": "YUM",
+      "name": "YUM BRANDS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ZBH",
+      "symbol": "ZBH",
+      "name": "ZIMMER BIOMET HOLDINGS",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ZBRA",
+      "symbol": "ZBRA",
+      "name": "ZEBRA TECHNOLOGIES CORP CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    },
+    {
+      "id": "ZTS",
+      "symbol": "ZTS",
+      "name": "ZOETIS INC CLASS A",
+      "kind": "stock",
+      "markets": [
+        "sp500"
+      ],
+      "currency": "USD"
+    }
+  ]
+}
