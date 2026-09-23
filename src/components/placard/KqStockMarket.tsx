@@ -1,9 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { ArrowDownLeft, ArrowUpRight, ChartNoAxesCombined, Clock3, RefreshCw, Search, Wallet, X } from "lucide-react";
 import { KQ_STOCK_INSTRUMENTS, canTradeKqStockAsset, formatKqStockQuantity, isKqStockOrder, isKqStockSnapshot, isKqStockTrade, isRecord, parseKqStockEuros, type KqStockAsset, type KqStockOrder, type KqStockSnapshot } from "@/lib/kanab-quest-stocks";
 import stockCatalog from "@/lib/stock-market-catalog.json";
+import stockLogos from "@/lib/stock-market-logos.json";
 import styles from "./KqStockMarket.module.css";
 
 const euros = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
@@ -16,8 +18,16 @@ const cacSource = stockCatalog.sources.find(source => source.type === "index-con
 const usSource = stockCatalog.sources.find(source => source.type === "tracking-fund-holdings");
 const TABS = [{ id: "cac40", label: "CAC 40" }, { id: "sp500", label: "S&P 500" }, { id: "portfolio", label: "Mes positions" }] as const;
 
+const logos: Partial<Record<string, { src: string; sourceUrl: string }>> = stockLogos;
 function StockBadge({ instrument }: { instrument: Instrument }) {
-  return <span className={styles.badge} data-country={instrument.currency === "USD" ? "US" : "EU"} aria-hidden="true">{instrument.kind === "index" ? <ChartNoAxesCombined size={22} /> : <strong>{instrument.symbol.replace(/\.[A-Z]+$/, "").slice(0, 3)}</strong>}<small>{instrument.currency === "USD" ? "US" : "EU"}</small></span>;
+  const [failedId, setFailedId] = useState<string | null>(null);
+  const logo = logos[instrument.id];
+  const hasLogo = logo && failedId !== instrument.id;
+  return <span className={styles.badge} data-country={instrument.currency === "USD" ? "US" : "EU"} data-stock-logo={instrument.id} data-has-logo={Boolean(hasLogo)} aria-hidden="true">
+    {hasLogo ? <Image src={logo.src} width={96} height={96} alt="" unoptimized loading="lazy" draggable={false} onError={() => setFailedId(instrument.id)} />
+      : instrument.kind === "index" ? <ChartNoAxesCombined size={22} /> : <strong>{instrument.symbol.replace(/\.[A-Z]+$/, "").slice(0, 3)}</strong>}
+    <small>{instrument.currency === "USD" ? "US" : "EU"}</small>
+  </span>;
 }
 
 function StockQuote({ asset, now }: { asset: KqStockAsset | undefined; now: number }) {
