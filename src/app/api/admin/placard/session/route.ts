@@ -3,6 +3,7 @@ import { getValidatedAdminContext } from "@/lib/admin-guard";
 import {
   expireKqAbandonedBattles,
   getKqAdminActiveRun,
+  getKqAdminBuddieRotation,
   getKqAdminBattles,
   getKqAdminFlowers,
 } from "@/lib/supabase/kanab-quest-backend";
@@ -23,17 +24,19 @@ export async function GET() {
     getKqAdminActiveRun(admin.email),
     getKqAdminFlowers(admin.email),
     getKqAdminBattles(admin.email),
+    getKqAdminBuddieRotation(admin.email),
   ] as const);
-  const labels = ["Culture active", "Fleurs", "Duels"] as const;
-  const readFailureCount = results.filter((result) => result.status === "rejected").length;
+  const labels = ["Culture active", "Fleurs", "Duels", "Rotation des Buddies"] as const;
+  const readFailureCount = results.slice(0, 3).filter((result) => result.status === "rejected").length;
   const warnings = results.flatMap((result, index) => result.status === "rejected"
     ? [`${labels[index]} : ${result.reason instanceof Error ? result.reason.message : "indisponible"}`]
     : []);
   if (expiryWarning) warnings.push(expiryWarning);
-  if (readFailureCount === results.length) {
+  if (readFailureCount === 3) {
     return NextResponse.json({ error: "Session Placard indisponible.", warnings }, { status: 503 });
   }
   return NextResponse.json({
+    buddieRotation: results[3].status === "fulfilled" ? results[3].value : null,
     activeRun: results[0].status === "fulfilled" ? results[0].value : null,
     flowers: results[1].status === "fulfilled" ? results[1].value : [],
     battles: results[2].status === "fulfilled" ? results[2].value : [],

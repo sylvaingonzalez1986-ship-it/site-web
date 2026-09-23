@@ -1,4 +1,5 @@
 import "server-only";
+import { KQ_BUDDIE_ROTATION_REQUIRED, getKqBuddieRotationRemaining, getKqBuddieRotationMessage, recordKqBuddieUse, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import { getArenaRankingAvatars } from "./arena-ranking-avatars";
 import { getChanvrierStartingXp } from "@/lib/arena-chanvrier";
 import { cacheArenaSharedRead } from "@/lib/arena-shared-cache";
@@ -795,6 +796,18 @@ export async function getKqPlayerOwnedBuddies(ownerId: string): Promise<KqOwnedB
     .sort((left, right) => left.cardNumber - right.cardNumber);
 }
 
+export async function getKqPlayerBuddieRotation(ownerId: string): Promise<KqBuddieRotation> {
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  const result = await createSupabaseServiceClient().from("kq_buddie_rotation")
+    .select("recent_buddie_codes").eq("user_id", ownerId).maybeSingle();
+  if (result.error) throw new Error("[supabase:kq_buddie_rotation] " + result.error.message);
+  const recent = result.data?.recent_buddie_codes ?? [];
+  if (!Array.isArray(recent) || recent.some((code: unknown) => typeof code !== "string" || !code)) {
+    throw new Error("[supabase:kq_buddie_rotation] Historique invalide.");
+  }
+  return { requiredDistinctBuddies: KQ_BUDDIE_ROTATION_REQUIRED, recentBuddieCodes: [...new Set<string>(recent)].slice(0, KQ_BUDDIE_ROTATION_REQUIRED) };
+}
+
 export async function getKqPlayerOwnedBuddieCodes(ownerId: string): Promise<string[]> {
   return (await getKqPlayerOwnedBuddies(ownerId)).map((buddie) => buddie.code);
 }
@@ -811,6 +824,12 @@ export async function getKqAdminCollectionSnapshot(adminEmail: string): Promise<
     };
   }
   return getKqPlayerCollectionSnapshot(ownerId);
+}
+
+export async function getKqAdminBuddieRotation(adminEmail: string): Promise<KqBuddieRotation> {
+  const ownerId = await findKqUserIdByEmail(adminEmail);
+  return ownerId ? getKqPlayerBuddieRotation(ownerId)
+    : { requiredDistinctBuddies: KQ_BUDDIE_ROTATION_REQUIRED, recentBuddieCodes: [] };
 }
 
 export async function getKqAdminLaunchReadinessFromSnapshots(
@@ -955,12 +974,15 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     throw new Error("Le deck contient une carte interdite.");
   }
   const supabase = createSupabaseServiceClient();
-  const [collection, equipmentShop, businessResult, recentSituationCodes] = await Promise.all([
+  const [collection, equipmentShop, businessResult, recentSituationCodes, buddieRotation] = await Promise.all([
     getKqPlayerCollectionSnapshot(ownerId),
     getKqEquipmentShopSnapshot(ownerId),
     supabase.rpc("rpc_kq_commerce_state", { p_user_id: ownerId }),
     getKqRecentSituationCodes(ownerId),
+    getKqPlayerBuddieRotation(ownerId),
   ]);
+  const remainingBuddies = getKqBuddieRotationRemaining(input.buddieCode, buddieRotation.recentBuddieCodes);
+  if (remainingBuddies > 0) throw new Error(getKqBuddieRotationMessage(remainingBuddies));
   if (businessResult.error) throw new Error(`[supabase:commerce] ${businessResult.error.message}`);
   const business = businessResult.data?.business as KqBusinessState | undefined;
   if (business?.version !== 1) throw new Error("[supabase:commerce] business_calendar_migration_required");
@@ -999,6 +1021,16 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     if (message.includes("kq_active_run_exists")) throw new Error("Une culture Supabase est déjà active.");
     if (message.includes("kq_domiciliation_changed")) throw new Error("Ta domiciliation a changé. Actualise avant de lancer la culture.");
     if (message.includes("kq_culture_equipment_changed") || message.includes("kq_culture_equipment_broken")) throw new Error("L’état du matériel a changé. Actualise le devis avant de lancer la culture.");
+    if (message.includes("kq_buddie_rotation_locked")) {
+      let remaining = KQ_BUDDIE_ROTATION_REQUIRED;
+      try {
+        const detail = JSON.parse(result.error.details ?? "{}");
+        if (Number.isInteger(detail.remainingDistinctBuddies) && detail.remainingDistinctBuddies >= 1 && detail.remainingDistinctBuddies <= KQ_BUDDIE_ROTATION_REQUIRED) {
+          remaining = detail.remainingDistinctBuddies;
+        }
+      } catch { /* Keep the full rotation when the database returns no structured detail. */ }
+      throw new Error(getKqBuddieRotationMessage(remaining));
+    }
     if (message.includes("kq_buddie_not_owned")) throw new Error("Ce Buddie n’est pas présent dans la collection.");
     if (message.includes("kq_deck_copy_missing")) throw new Error("Une ou plusieurs copies du deck ne sont pas disponibles.");
     if (message.includes("kq_culture_tokens_insufficient")) throw new Error("Solde de jetons Coup de pouce insuffisant.");
@@ -1007,7 +1039,10 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     if (message.includes("kq_heritage_state_mismatch")) throw new Error("État Héritage invalide.");
     throw new Error(`[supabase:rpc_kq_start_run] ${message}`);
   }
-  return { ...mapKqStartRunResult(result.data), state };
+  return {
+    ...mapKqStartRunResult(result.data), state,
+    buddieRotation: { ...buddieRotation, recentBuddieCodes: recordKqBuddieUse(input.buddieCode, buddieRotation.recentBuddieCodes) },
+  };
 }
 
 export async function startKqAdminRun(adminEmail: string, input: KqStartRunInput) {

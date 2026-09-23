@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
 import {
+  getKqAdminBuddieRotation,
   getKqAdminCollectionSnapshot,
   getKqAdminHeritageSnapshot,
   getKqAdminLaunchReadinessFromSnapshots,
@@ -23,8 +24,9 @@ export async function GET() {
     getKqAdminNotebookRewardPreview(admin.email),
     getKqAdminSeasonRolloverPreview(),
     getKqRandomBattleQueueHealth(),
+    getKqAdminBuddieRotation(admin.email),
   ] as const);
-  const sourceLabels = ["Saison", "Héritages", "Collection", "Carnet", "Clôture de saison", "File de duels"] as const;
+  const sourceLabels = ["Saison", "Héritages", "Collection", "Carnet", "Clôture de saison", "File de duels", "Rotation des Buddies"] as const;
   const warnings = sourceResults.flatMap((result, index) => result.status === "rejected"
     ? [`${sourceLabels[index]} : ${result.reason instanceof Error ? result.reason.message : "indisponible"}`]
     : []);
@@ -36,13 +38,14 @@ export async function GET() {
   if (readinessResult.status === "rejected") {
     warnings.unshift(`Préflight : ${readinessResult.reason instanceof Error ? readinessResult.reason.message : "indisponible"}`);
   }
-  if (sourceResults.every((result) => result.status === "rejected")) {
+  if (sourceResults.slice(0, 6).every((result) => result.status === "rejected")) {
     return NextResponse.json({
       error: "Initialisation Placard indisponible.",
       warnings,
     }, { status: 503 });
   }
   return NextResponse.json({
+    buddieRotation: sourceResults[6].status === "fulfilled" ? sourceResults[6].value : null,
     readiness: readinessResult.status === "fulfilled" ? readinessResult.value : null,
     seasonRewards: sourceResults[0].status === "fulfilled" ? sourceResults[0].value : null,
     heritage: sourceResults[1].status === "fulfilled" ? sourceResults[1].value : null,

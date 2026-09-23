@@ -103,6 +103,14 @@ describe("POST /api/arena/placard/runs", () => {
     expect(startKqPlayerRun).not.toHaveBeenCalled();
   });
 
+  it("returns a conflict with the remaining rotation and no start receipt", async () => {
+    const message = "Ce Buddie sera disponible apr\u00e8s avoir utilis\u00e9 5 autres Buddies diff\u00e9rents.";
+    startKqPlayerRun.mockRejectedValue(new Error(message));
+    const response = await POST(request({ buddieCode: "HH2026-003", deckCodes: [] }));
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({ error: message });
+  });
+
   it("does not expose unexpected Supabase errors", async () => {
     startKqPlayerRun.mockRejectedValue(new Error("[supabase:secret_table] private detail"));
     const response = await POST(request({

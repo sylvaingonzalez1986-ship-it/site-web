@@ -3,6 +3,7 @@ import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 const {
   getCurrentCustomerSessionByBackend,
   getKqPlayerCollectionSnapshot,
+  getKqPlayerBuddieRotation,
   getKqPlayerOwnedBuddies,
   getKqPlayerHeritageSnapshot,
   getKqPlayerCoreSnapshot,
@@ -10,6 +11,7 @@ const {
 } = vi.hoisted(() => ({
   getCurrentCustomerSessionByBackend: vi.fn(),
   getKqPlayerCollectionSnapshot: vi.fn(),
+  getKqPlayerBuddieRotation: vi.fn(),
   getKqPlayerOwnedBuddies: vi.fn(),
   getKqPlayerHeritageSnapshot: vi.fn(),
   getKqPlayerCoreSnapshot: vi.fn(),
@@ -18,6 +20,7 @@ const {
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
   getKqPlayerCollectionSnapshot,
+  getKqPlayerBuddieRotation,
   getKqPlayerOwnedBuddies,
   getKqPlayerHeritageSnapshot,
   getKqPlayerCoreSnapshot,
@@ -32,6 +35,7 @@ const customerId = "dddddddd-dddd-dddd-dddd-dddddddddddd";
 describe("GET /api/arena/placard/bootstrap", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    getKqPlayerBuddieRotation.mockResolvedValue({ requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] });
     process.env.KQ_PLAYER_API_LIVE = "true";
     getCurrentCustomerSessionByBackend.mockResolvedValue({ customerId });
     getKqPlayerCollectionSnapshot.mockResolvedValue({ inventory: { "BOTTE-001": 1 } });
@@ -73,6 +77,7 @@ describe("GET /api/arena/placard/bootstrap", () => {
     expect(getKqEquipmentRoutePlan).toHaveBeenCalledWith(customerId);
     expect(getCurrentCustomerSessionByBackend).toHaveBeenCalledWith("identity");
     expect(await response.json()).toMatchObject({
+      buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] },
       collection: { inventory: { "BOTTE-001": 1 } },
       ownedBuddieCodes: ["HH2026-003"],
       ownedBuddies: [{ code: "HH2026-003", imageUrl: "/cards/buddie-test.webp", ownedCopies: 1 }],
@@ -100,6 +105,19 @@ describe("GET /api/arena/placard/bootstrap", () => {
       routePlan: null,
       warnings: ["Objectif de filière momentanément indisponible."],
     });
+  });
+
+  it("keeps an active culture available but reports unknown rotation when its read fails", async () => {
+    getKqPlayerBuddieRotation.mockRejectedValue(new Error("private rotation detail"));
+    getKqPlayerCoreSnapshot.mockResolvedValue({ activeRun: { runId: "current" }, flowers: [], battles: [], progress: null });
+    const response = await GET();
+    const payload = await response.json();
+    expect(response.status).toBe(200);
+    expect(getKqPlayerBuddieRotation).toHaveBeenCalledWith(customerId);
+    expect(payload.buddieRotation).toBeNull();
+    expect(payload.playerSession).toMatchObject({ activeRun: { runId: "current" }, buddieRotation: null });
+    expect(payload.warnings).toHaveLength(1);
+    expect(JSON.stringify(payload)).not.toContain("private rotation detail");
   });
 
   it("fails closed when the physical collection cannot be verified", async () => {

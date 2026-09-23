@@ -1,3 +1,4 @@
+import type { KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import type { KqEnergyMode } from "@/lib/kanab-quest-energy";
 import type { KqGameState } from "@/lib/kanab-quest-game";
 
@@ -115,7 +116,7 @@ export async function startKqRemoteRun(
     headers: { "content-type": "application/json" },
     body: JSON.stringify(input),
   });
-  return readKqResponse<{ runId: string; state: KqGameState; burnReceipt: KqApiBurnReceipt | null; freeSubstrate: boolean; cultureTokenBalance: number }>(response);
+  return readKqResponse<{ runId: string; state: KqGameState; burnReceipt: KqApiBurnReceipt | null; freeSubstrate: boolean; cultureTokenBalance: number; buddieRotation: KqBuddieRotation }>(response);
 }
 
 export async function getKqRemoteActiveRun(request: typeof fetch = fetch) {

@@ -1,6 +1,6 @@
 # Règlement du Placard — brouillon de lancement
 
-Version de travail `2026-09-12-draft-5`. Ce document n'est pas publié aux
+Version de travail `2026-09-23-draft-6`. Ce document n'est pas publié aux
 clients et ne vaut pas règlement commercial tant que les lots, les dates de
 saison et les probabilités des collections ne sont pas validés.
 
@@ -13,6 +13,15 @@ Fleur numérique unique qui peut participer à un duel classé.
 
 La carte Buddie d'origine n'est jamais détruite par le Placard. Une carte
 Héritage équipée est permanente et ne brûle jamais.
+
+Après avoir utilisé un Buddie pour démarrer une culture, il faut utiliser
+**cinq autres Buddies différents** avant de pouvoir le réutiliser. Cette
+rotation concerne toutes les raretés, y compris les Épiques et les Légendaires.
+Les copies d'une même carte comptent comme un seul Buddie. Une culture
+démarrée compte même si elle échoue ; une tentative de démarrage refusée ne
+compte pas. La rotation est conservée entre les connexions et les saisons,
+et tient compte des cultures déjà démarrées avant son activation.
+Il faut donc posséder au moins six Buddies différents pour jouer en continu.
 
 ## 2. Cartes La Botte et burns
 

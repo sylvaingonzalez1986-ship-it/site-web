@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const {
   getValidatedAdminContext,
   getKqAdminCollectionSnapshot,
+  getKqAdminBuddieRotation,
   getKqAdminHeritageSnapshot,
   getKqAdminLaunchReadinessFromSnapshots,
   getKqAdminNotebookRewardPreview,
@@ -12,6 +13,7 @@ const {
 } = vi.hoisted(() => ({
   getValidatedAdminContext: vi.fn(),
   getKqAdminCollectionSnapshot: vi.fn(),
+  getKqAdminBuddieRotation: vi.fn(),
   getKqAdminHeritageSnapshot: vi.fn(),
   getKqAdminLaunchReadinessFromSnapshots: vi.fn(),
   getKqAdminNotebookRewardPreview: vi.fn(),
@@ -23,6 +25,7 @@ const {
 vi.mock("@/lib/admin-guard", () => ({ getValidatedAdminContext }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
   getKqAdminCollectionSnapshot,
+  getKqAdminBuddieRotation,
   getKqAdminHeritageSnapshot,
   getKqAdminLaunchReadinessFromSnapshots,
   getKqAdminNotebookRewardPreview,
@@ -34,7 +37,10 @@ vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
 import { GET } from "@/app/api/admin/placard/bootstrap/route";
 
 describe("GET /api/admin/placard/bootstrap", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    getKqAdminBuddieRotation.mockResolvedValue({ requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] });
+  });
 
   it("refuses unauthenticated bootstrap requests", async () => {
     getValidatedAdminContext.mockResolvedValue(null);
@@ -42,7 +48,7 @@ describe("GET /api/admin/placard/bootstrap", () => {
     expect(getKqAdminCollectionSnapshot).not.toHaveBeenCalled();
   });
 
-  it("aggregates six initial reads into one private response", async () => {
+  it("aggregates the initial reads into one private response", async () => {
     getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
     getKqAdminLaunchReadinessFromSnapshots.mockResolvedValue({ safelyDormant: true });
     getKqAdminSeasonRewardPreview.mockResolvedValue({ rewardsLive: false });
@@ -55,6 +61,7 @@ describe("GET /api/admin/placard/bootstrap", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(await response.json()).toEqual({
+      buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] },
       readiness: { safelyDormant: true },
       seasonRewards: { rewardsLive: false },
       heritage: { collectionActive: false },

@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getValidatedAdminContext, expireKqAbandonedBattles, getKqAdminActiveRun, getKqAdminFlowers, getKqAdminBattles } = vi.hoisted(() => ({
+const { getValidatedAdminContext, expireKqAbandonedBattles, getKqAdminActiveRun, getKqAdminFlowers, getKqAdminBattles, getKqAdminBuddieRotation } = vi.hoisted(() => ({
   getValidatedAdminContext: vi.fn(),
   expireKqAbandonedBattles: vi.fn(),
   getKqAdminActiveRun: vi.fn(),
+  getKqAdminBuddieRotation: vi.fn(),
   getKqAdminFlowers: vi.fn(),
   getKqAdminBattles: vi.fn(),
 }));
@@ -12,6 +13,7 @@ vi.mock("@/lib/admin-guard", () => ({ getValidatedAdminContext }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
   expireKqAbandonedBattles,
   getKqAdminActiveRun,
+  getKqAdminBuddieRotation,
   getKqAdminFlowers,
   getKqAdminBattles,
 }));
@@ -21,6 +23,7 @@ import { GET } from "@/app/api/admin/placard/session/route";
 describe("GET /api/admin/placard/session", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    getKqAdminBuddieRotation.mockResolvedValue({ requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] });
     expireKqAbandonedBattles.mockResolvedValue({ expiredCount: 0, battleIds: [], hasMore: false });
   });
 
@@ -39,6 +42,7 @@ describe("GET /api/admin/placard/session", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(await response.json()).toEqual({
+      buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] },
       activeRun: { runId: "run-1" },
       flowers: [{ id: "flower-1" }],
       battles: [{ id: "battle-1" }],

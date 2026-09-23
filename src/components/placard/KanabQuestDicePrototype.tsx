@@ -6,6 +6,7 @@ import { useGameViewport } from "@/hooks/useGameViewport";
 import { getBuddieArtwork, hasModernBuddieArtwork } from "@/lib/buddie-artwork";
 import { KqEnergyPanel } from "./KqEnergyPanel";
 import { KqBuddieCarousel } from "./KqBuddieCarousel";
+import { getKqBuddieRotationMessage, getKqBuddieRotationRemaining, KQ_BUDDIE_ROTATION_REQUIRED, recordKqBuddieUse, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import { KqInventoryCarousel } from "./KqInventoryCarousel";
 import { KqHeritageCarousel } from "./KqHeritageCarousel";
 import { KqSeasonBoard } from "./KqSeasonBoard";
@@ -153,6 +154,7 @@ type OfficialBattleResult = {
   };
 };
 type PlayerSessionPayload = {
+  buddieRotation?: KqBuddieRotation | null;
   warnings?: string[];
   activeRun?: Awaited<ReturnType<typeof getKqRemoteActiveRun>>["activeRun"];
   flowers?: KqOfficialFlower[];
@@ -598,6 +600,7 @@ export function KanabQuestDicePrototype({
   const [remoteAction, setRemoteAction] = useState<"start" | "card" | "game" | null>(null);
   const [remoteNotice, setRemoteNotice] = useState("");
   const [ownedBuddieCodes, setOwnedBuddieCodes] = useState<string[]>([]);
+  const [buddieRotation, setBuddieRotation] = useState<KqBuddieRotation | null>(null);
   const [ownedBuddieArtwork, setOwnedBuddieArtwork] = useState<Record<string, { imageUrl: string; ownedCopies: number }>>({});
   const [officialRankProgress, setOfficialRankProgress] = useState<OfficialRankProgress | null>(null);
   const [officialLeaderboard, setOfficialLeaderboard] = useState<OfficialLeaderboardEntry[]>([]);
@@ -606,6 +609,23 @@ export function KanabQuestDicePrototype({
     () => routePlan ? KQ_MARKET_ROUTES.find((route) => route.code === routePlan.route) ?? null : null,
     [routePlan],
   );
+
+  const selectedBuddieRemaining = remoteBurnsEnabled && buddieRotation
+    ? getKqBuddieRotationRemaining(selectedBuddie, buddieRotation.recentBuddieCodes) : 0;
+  const buddieStartBlockReason = remoteBurnsEnabled && (remoteCollection.loading || !buddieRotation)
+    ? remoteCollection.error || "Vérification des Buddies disponibles. Actualise la page si le chargement échoue."
+    : selectedBuddieRemaining > 0
+      ? getKqBuddieRotationMessage(selectedBuddieRemaining)
+      : isPlayerMode && !ownedBuddieCodes.includes(selectedBuddie)
+        ? "Choisis un Buddie que tu possèdes pour commencer."
+        : "";
+
+  const refreshBuddieRotation = useCallback(async () => {
+    const response = await remoteRequest("/api/admin/placard/session", { cache: "no-store" });
+    if (!response.ok) return;
+    const payload = await response.json() as PlayerSessionPayload;
+    if (payload.buddieRotation !== undefined) setBuddieRotation(payload.buddieRotation);
+  }, [remoteRequest]);
 
   const refreshOfficialRanking = useCallback(async (includeProgress = true) => {
     if (!isPlayerMode) return;
@@ -626,6 +646,7 @@ export function KanabQuestDicePrototype({
   }, [isPlayerMode]);
 
   const applyOfficialSessionPayload = useCallback((payload: PlayerSessionPayload) => {
+    if (payload.buddieRotation !== undefined) setBuddieRotation(payload.buddieRotation);
     const activeRun = payload.activeRun ?? null;
     const flowers = payload.flowers ?? [];
     setOfficialFlowers(flowers);
@@ -776,12 +797,14 @@ export function KanabQuestDicePrototype({
             cards?: unknown[];
             cultureTokenBalance?: number;
           };
+          buddieRotation?: KqBuddieRotation | null;
           ownedBuddieCodes?: string[];
           ownedBuddies?: Array<{ code: string; imageUrl?: string; ownedCopies?: number }>;
           routePlan?: KqRoutePlan | null;
           playerSession?: PlayerSessionPayload | null;
         };
         if (!response.ok) throw new Error(payload.error || "Initialisation Placard indisponible.");
+        setBuddieRotation(payload.buddieRotation ?? payload.playerSession?.buddieRotation ?? null);
         if ((payload.warnings?.length ?? 0) > 0) setRemoteNotice(payload.warnings!.join(" · "));
         setLaunchReadiness(showAdminOperations ? payload.readiness ?? null : null);
         setSeasonRewardPreview(showAdminOperations ? payload.seasonRewards ?? null : null);
@@ -875,12 +898,14 @@ export function KanabQuestDicePrototype({
         const payload = await response.json() as {
           error?: string;
           warnings?: string[];
+          buddieRotation?: KqBuddieRotation | null;
           activeRun?: Awaited<ReturnType<typeof getKqRemoteActiveRun>>["activeRun"];
           flowers?: KqOfficialFlower[];
           battles?: KqOfficialBattle[];
           progress?: OfficialRankProgress | null;
         };
         if (!response.ok) throw new Error(payload.error || "Session Placard indisponible.");
+        if (payload.buddieRotation !== undefined) setBuddieRotation(payload.buddieRotation);
         const activeRun = payload.activeRun ?? null;
         const flowers = payload.flowers ?? [];
         setOfficialFlowers(flowers);
@@ -1453,6 +1478,11 @@ export function KanabQuestDicePrototype({
   };
 
   const startSelectedGame = async () => {
+    if (remoteAction !== null) return;
+    if (buddieStartBlockReason) {
+      setRemoteNotice(buddieStartBlockReason);
+      return;
+    }
     if (isPlayerMode && (!energyEstimate || energyEstimate.mode !== energyMode)) return;
     const currentDailyChallenges = getKqDailyChallenges();
     if (dailyChallenges[0]?.dayKey !== currentDailyChallenges[0]?.dayKey) {
@@ -1473,6 +1503,10 @@ export function KanabQuestDicePrototype({
           expectedEnergyCents: isPlayerMode ? energyEstimate?.totalCents : undefined,
           heritageCode: selectedHeritage || undefined,
         }, remoteRequest);
+        setBuddieRotation((current) => result.buddieRotation ?? {
+          requiredDistinctBuddies: KQ_BUDDIE_ROTATION_REQUIRED,
+          recentBuddieCodes: recordKqBuddieUse(result.state.varietyCode, current?.recentBuddieCodes ?? []),
+        });
         const nextInventory = remoteInventory;
         setState(result.state);
         setBattle(null);
@@ -1491,6 +1525,7 @@ export function KanabQuestDicePrototype({
         setSetupOpen(false);
       } catch (error) {
         setRemoteNotice(error instanceof Error ? error.message : "Démarrage distant impossible.");
+        void refreshBuddieRotation().catch(() => undefined);
       } finally {
         setRemoteAction(null);
       }
@@ -1595,11 +1630,18 @@ export function KanabQuestDicePrototype({
   const restoreFavoriteDeck = () => {
     if (!favoriteDeck) return;
     const restoredCards = sanitizeKqDeckSelection(favoriteDeck.supportCodes, activeInventory);
-    setSelectedBuddie(favoriteDeck.buddieCode);
+    const remaining = remoteBurnsEnabled && buddieRotation
+      ? getKqBuddieRotationRemaining(favoriteDeck.buddieCode, buddieRotation.recentBuddieCodes) : 0;
+    const favoriteUnavailable = remoteBurnsEnabled && (!buddieRotation || remaining > 0)
+      || isPlayerMode && !ownedBuddieCodes.includes(favoriteDeck.buddieCode);
+    if (!favoriteUnavailable) setSelectedBuddie(favoriteDeck.buddieCode);
 
     setSelectedCards(restoredCards);
     const missing = favoriteDeck.supportCodes.length - restoredCards.length;
-    setDeckNotice(missing > 0 ? `Deck favori restauré sans ${missing} copie${missing > 1 ? "s" : ""} épuisée${missing > 1 ? "s" : ""}.` : "Deck favori restauré.");
+    const cardsNotice = missing > 0 ? `Deck favori restauré sans ${missing} copie${missing > 1 ? "s" : ""} épuisée${missing > 1 ? "s" : ""}.` : "Deck favori restauré.";
+    setDeckNotice(favoriteUnavailable
+      ? `Cartes La Botte restaurées. Buddie favori indisponible. ${remaining > 0 ? getKqBuddieRotationMessage(remaining) : "Choisis un Buddie disponible dans ton album."}`
+      : cardsNotice);
   };
 
   const deleteFavoriteDeck = () => {
@@ -1758,7 +1800,7 @@ export function KanabQuestDicePrototype({
           {lastBooster.length > 0 ? <div className={styles.boosterReveal} aria-live="polite">{lastBooster.map((card, index) => <article key={`${card.code}-${index}`} data-rarity={card.rarity}><CardArtwork code={card.code} name={card.name} /><span>{card.rarity}</span><strong>{card.name}</strong><small>{remoteBurnsEnabled ? "Aperçu local · aucune copie enregistrée" : `Tu en possèdes maintenant ${inventory[card.code] ?? 0}`}</small></article>)}</div> : null}
           {burnHistory.length > 0 ? <div className={styles.burnArchive}><Flame /><span><small>Registre permanent · {burnHistory.length} burns</small><strong>Cartes les plus utilisées</strong><div>{mostBurned.map(([code, count]) => <b key={code}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code} ×{count}</b>)}</div></span></div> : null}
           <KqBuddieCarousel buddies={KQ_BUDDIES.filter(buddie => !isPlayerMode || ownedBuddieCodes.includes(buddie.code))}
-            artwork={ownedBuddieArtwork} selectedCode={selectedBuddie} onSelect={setSelectedBuddie} />
+            artwork={ownedBuddieArtwork} selectedCode={selectedBuddie} rotation={remoteBurnsEnabled ? buddieRotation : undefined} onSelect={setSelectedBuddie} />
           {isPlayerMode ? <>
             <KqInventoryCarousel inventory={activeInventory} selectedCodes={selectedCards} onAdd={addCardCopy} onRemove={removeCardCopy}
               loading={remoteBurnsEnabled && remoteCollection.loading} error={remoteBurnsEnabled ? remoteCollection.error : ""} />
@@ -1776,7 +1818,7 @@ export function KanabQuestDicePrototype({
           <div className={styles.deckFilters} aria-label="Filtrer les cartes La Botte">{([['all', 'Toutes'], ['equipment', 'Équipement'], ['know-how', 'Savoir-faire'], ['luck', 'Chance']] as const).map(([value, label]) => <button key={value} type="button" data-selected={deckFilter === value || undefined} aria-pressed={deckFilter === value} onClick={() => setDeckFilter(value)}>{label}</button>)}</div>
           <div className={styles.deckChoices}>{supportCards.map((card) => { const challengeFit = getKqCardChallengeFit(card, rewardableDailyChallenges.map((challenge) => challenge.code)); const selectedCopies = selectedCards.filter((code) => code === card.code).length; const ownedCopies = activeInventory[card.code] ?? 0; const drawChance = getKqOpeningHandChance(selectedCards.length, selectedCopies); return <article key={card.code} className={styles.deckChoiceCard} data-selected={selectedCopies > 0 || undefined} data-empty={ownedCopies <= 0 || undefined} data-challenge-fit={challengeFit || undefined}><CardArtwork code={card.code} name={card.name} /><span>{CATEGORY_LABELS[card.category]}</span>{challengeFit ? <i className={styles.challengeFit}><Star /> Aide défi</i> : null}<strong>{card.name}</strong><CardEffectGuide card={card} /><em>{ownedCopies} copie(s) · {card.xpCost} XP</em>{selectedCopies > 0 ? <small className={styles.drawChance}>{drawChance}% dans la première main</small> : null}<div><button type="button" aria-label={`Retirer une copie de ${card.name}`} disabled={selectedCopies <= 0} onClick={() => removeCardCopy(card.code)}>−</button><b>{selectedCopies} / {ownedCopies}</b><button type="button" aria-label={`Ajouter une copie de ${card.name}`} disabled={selectedCopies >= ownedCopies} onClick={() => addCardCopy(card.code)}>+</button></div></article>; })}</div>
           <div className={styles.pbiReserve}><span>Réserve PBI de l’album · automatique</span><div>{pbiReserve.map((card) => <strong key={card.code} data-empty={(activeInventory[card.code] ?? 0) <= 0 || undefined}>{card.name} <small>×{activeInventory[card.code] ?? 0}</small></strong>)}</div><p>Ces cartes ne prennent aucune place dans le deck. Elles apparaissent seulement après identification d’un ravageur. Une référence à zéro ne peut plus intervenir.</p></div>
-          <KqCulturePreparation cardCount={selectedCards.length} note="Sol vivant inclus. Seules les cartes jouées sont consommées." disabled={isPlayerMode && !ownedBuddieCodes.includes(selectedBuddie)} busy={remoteAction !== null} onEditDeck={() => {
+          <KqCulturePreparation cardCount={selectedCards.length} note="Sol vivant inclus. Seules les cartes jouées sont consommées." disabled={Boolean(buddieStartBlockReason)} disabledReason={buddieStartBlockReason} busy={remoteAction !== null} onEditDeck={() => {
             const target = document.getElementById("inventory-carousel-title") ?? document.getElementById("placard-deck");
             target?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
             target?.focus({ preventScroll: true });
@@ -1845,7 +1887,7 @@ export function KanabQuestDicePrototype({
           {battleHistory.length > 0 ? <section className={styles.battleHistory}><span>Archives locales</span><h2>Derniers concours</h2><div>{battleHistory.slice(0, 5).map((receipt) => <article key={receipt.id}><Flame /><span><strong>{receipt.playerFlower.variety} vs {receipt.opponentFlower.variety}</strong><small>{receipt.winner === "player" ? "Victoire" : "Défaite"} · brûlées le {formatKqDate(receipt.burnedAt)}</small></span><b>{receipt.rounds.filter((round) => round.winner === "player").length}–{receipt.rounds.filter((round) => round.winner === "opponent").length}</b></article>)}</div></section> : null}
         </section>
         {showOnboarding ? <div className={styles.onboardingBackdrop} role="presentation" onClick={closeOnboarding}><section className={styles.onboarding} role="dialog" aria-modal="true" aria-labelledby="kq-guide-title" aria-describedby="kq-guide-intro" onClick={(event) => event.stopPropagation()}><button type="button" className={styles.onboardingClose} aria-label="Fermer les règles" onClick={closeOnboarding}><X /></button><span>Le Placard · la boucle en 1 minute</span><h2 id="kq-guide-title">Cultive. Transforme. Réinvestis.</h2><p id="kq-guide-intro" className={styles.onboardingIntro}>Tes choix de culture fabriquent une récolte unique. Sa qualité ouvre de meilleurs débouchés, finance ton atelier et construit ta réputation.</p><div className={styles.onboardingSteps}><article><ShoppingBag /><b>1. Prépare ton atelier</b><p>Tout pousse sur sol vivant. Choisis ton Buddie et tes cartes <strong>La Botte</strong>. Les équipements durables déjà achetés renforcent chaque nouvelle partie.</p></article><article><Dices /><b>2. Passe les 6 étapes</b><p>Lance les dés, réponds aux situations et dépense tes cartes au bon moment. Protège à la fois la <strong>qualité</strong> et la quantité récoltée.</p></article><article><Scale /><b>3. Affronte le jury</b><p>À la récolte, le jury note la fleur. La note détermine son palier, sa valeur brute et les transformations réellement accessibles.</p></article><article><Flame /><b>4. Choisis ton débouché</b><p>Vends le lot brut, transforme les belles fleurs en hash ou en rosin, ou écoule les lots ratés en biomasse. Chaque voie a son rendement.</p></article><article><Trophy /><b>5. Réinvestis intelligemment</b><p>Utilise ton argent pour améliorer tente, lumière et machines. La qualité vendue augmente aussi ta <strong>réputation</strong> et départage le classement.</p></article></div><button type="button" className={styles.primaryButton} onClick={closeOnboarding}>C’est parti · préparer mon atelier</button></section></div> : null}
-          {pendingStart ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingStart(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="culture-system-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>Démarrage sur sol vivant</span><h2 id="culture-system-burn-title">Commencer la culture ?</h2><p>Le sol vivant est inclus et aucune carte n’est consommée au lancement. Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{isPlayerMode ? <KqEnergyPanel disabled={remoteAction !== null} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingStart(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null || (isPlayerMode && (!energyEstimate || energyEstimate.mode !== energyMode))} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : "Commencer"}</button></div></section></div> : null}
+          {pendingStart ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingStart(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="culture-system-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>Démarrage sur sol vivant</span><h2 id="culture-system-burn-title">Commencer la culture ?</h2><p>Le sol vivant est inclus et aucune carte n’est consommée au lancement. Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{isPlayerMode ? <KqEnergyPanel disabled={remoteAction !== null} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}{buddieStartBlockReason || remoteNotice ? <small className={styles.modalNotice}>{buddieStartBlockReason || remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingStart(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null || Boolean(buddieStartBlockReason) || (isPlayerMode && (!energyEstimate || energyEstimate.mode !== energyMode))} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : "Commencer"}</button></div></section></div> : null}
           {pendingRandomQueueFlowerId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingRandomQueueFlowerId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="random-queue-title" onClick={(event) => event.stopPropagation()}><Swords /><span>Arène aléatoire · classée</span><h2 id="random-queue-title">Mettre cette Fleur à disposition ?</h2><p>Le serveur choisira au hasard une Fleur appartenant à un autre joueur, quelle que soit sa qualité. Tu pourras retirer la tienne tant qu’elle attend ; dès qu’un adversaire arrive, le jury se lance et les deux Fleurs brûlent automatiquement.</p><small>Gain garanti au verdict : {KQ_REWARD_BALANCE.pvp.directSeasonPoints.min} à {KQ_REWARD_BALANCE.pvp.directSeasonPoints.max} points de saison directs et {KQ_REWARD_BALANCE.pvp.arenaExperience.min} à {KQ_REWARD_BALANCE.pvp.arenaExperience.max} EXP. Le gagnant reçoit {KQ_REWARD_BALANCE.pvp.winnerCardCount} cartes La Botte.</small>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingRandomQueueFlowerId(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void joinRandomBattleQueue(pendingRandomQueueFlowerId)}><Swords /> {matchmakingLoading ? "Recherche…" : "Entrer dans la file"}</button></div></section></div> : null}
           {pendingTrainingFlowerId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingTrainingFlowerId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="remote-battle-title" onClick={(event) => event.stopPropagation()}><Swords /><span>Entraînement aléatoire</span><h2 id="remote-battle-title">Confier cette Fleur au jury ?</h2><p>Le serveur tirera le bot au hasard et le révélera avec le verdict. Le duel immédiat brûlera ta Fleur et rapportera {KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP d’Arène et une carte seulement en cas de victoire. Il ne modifie ni ton Elo ni ta série ; les défis du jour validés peuvent toutefois ajouter leurs points de saison.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingTrainingFlowerId(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void confirmRemoteBattle()}><Swords /> {matchmakingLoading ? "Tirage et jury…" : "Lancer l’entraînement"}</button></div></section></div> : null}
           {botBattleResult ? (

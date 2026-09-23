@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
-import { getKqPlayerCoreSnapshot } from "@/lib/supabase/kanab-quest-backend";
+import { getKqPlayerBuddieRotation, getKqPlayerCoreSnapshot } from "@/lib/supabase/kanab-quest-backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,15 +17,17 @@ export async function GET() {
 
   const results = await Promise.allSettled([
     getKqPlayerCoreSnapshot(session.customerId),
+    getKqPlayerBuddieRotation(session.customerId),
   ] as const);
-  const labels = ["Session de jeu"] as const;
+  const labels = ["Session de jeu", "Rotation des Buddies"] as const;
   const warnings = results.flatMap((result, index) => result.status === "rejected"
     ? [`${labels[index]} indisponible.`]
     : []);
-  if (results.every((result) => result.status === "rejected")) {
+  if (results[0].status === "rejected") {
     return NextResponse.json({ error: "Session Placard indisponible.", warnings }, { status: 503 });
   }
   return NextResponse.json({
+    buddieRotation: results[1].status === "fulfilled" ? results[1].value : null,
     activeRun: results[0].status === "fulfilled" ? results[0].value.activeRun : null,
     flowers: results[0].status === "fulfilled" ? results[0].value.flowers : [],
     battles: results[0].status === "fulfilled" ? results[0].value.battles : [],

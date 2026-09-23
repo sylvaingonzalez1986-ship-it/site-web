@@ -33,7 +33,7 @@ BEGIN
  UPDATE public.kq_commerce_campaigns SET good_units=900,shop_good_units=6000 WHERE run_id=first_run;
  INSERT INTO public.kq_runs(user_id,buddie_card_definition_id,seed,deck_codes,scenario_codes,status,completed_at)
  SELECT player,id,124,ARRAY[]::TEXT[],ARRAY['SIT-001','SIT-002','SIT-003','SIT-004','SIT-005','SIT-006'],'completed',now()
- FROM public.lottery_card_definitions WHERE code='HH2026-001' RETURNING id INTO next_run;
+ FROM public.lottery_card_definitions WHERE code='HH2026-002' RETURNING id INTO next_run;
  PERFORM public.kq_commerce_open_cycle(player,next_run);
  ASSERT (SELECT good_units=900 AND shop_good_units=6000 AND clients_start=0 AND shop_partners_start=0 AND event='normal' FROM public.kq_commerce_campaigns WHERE run_id=next_run),'culture cannot reset growth or prices';
  ASSERT (SELECT shop_demand_debt=1 FROM public.kq_commerce_accounts WHERE user_id=player),'culture cannot restore buying demand';

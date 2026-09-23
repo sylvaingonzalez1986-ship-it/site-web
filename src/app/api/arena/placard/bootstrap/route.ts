@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import {
+  getKqPlayerBuddieRotation,
   getKqPlayerCollectionSnapshot,
   getKqPlayerCoreSnapshot,
   getKqPlayerHeritageSnapshot,
@@ -27,12 +28,14 @@ export async function GET() {
     heritageResult,
     coreResult,
     routePlanResult,
+    rotationResult,
   ] = await Promise.allSettled([
     getKqPlayerCollectionSnapshot(session.customerId),
     getKqPlayerOwnedBuddies(session.customerId),
     getKqPlayerHeritageSnapshot(session.customerId),
     getKqPlayerCoreSnapshot(session.customerId),
     getKqEquipmentRoutePlan(session.customerId),
+    getKqPlayerBuddieRotation(session.customerId),
   ] as const);
   if (collectionResult.status === "rejected" || buddiesResult.status === "rejected") {
     return NextResponse.json({ error: "Collection Placard indisponible." }, { status: 503 });
@@ -46,6 +49,7 @@ export async function GET() {
   const playerSession = sessionResults.every((result) => result.status === "rejected")
     ? null
     : {
+        buddieRotation: rotationResult.status === "fulfilled" ? rotationResult.value : null,
         activeRun: coreResult.status === "fulfilled" ? coreResult.value.activeRun : null,
         flowers: coreResult.status === "fulfilled" ? coreResult.value.flowers : [],
         battles: coreResult.status === "fulfilled" ? coreResult.value.battles : [],
@@ -54,6 +58,7 @@ export async function GET() {
       };
   return NextResponse.json({
     collection: collectionResult.value,
+    buddieRotation: rotationResult.status === "fulfilled" ? rotationResult.value : null,
     ownedBuddieCodes: buddiesResult.value.map((buddie) => buddie.code),
     ownedBuddies: buddiesResult.value,
     heritage: heritage ? {
@@ -76,6 +81,7 @@ export async function GET() {
     routePlan: routePlanResult.status === "fulfilled" ? routePlanResult.value : null,
     playerSession,
     warnings: [
+      ...(rotationResult.status === "fulfilled" ? [] : ["Rotation des Buddies momentanément indisponible."]),
       ...(heritage ? [] : ["Héritages momentanément indisponibles."]),
       ...(routePlanResult.status === "fulfilled" ? [] : ["Objectif de filière momentanément indisponible."]),
     ],

@@ -4,8 +4,9 @@ import { ArrowRight, Check, ChevronDown, Dices, Layers3, Leaf, SlidersHorizontal
 import { KqCardRoleLegend } from "./KqCardEffectGuide";
 import styles from "./KqCulturePreparation.module.css";
 
-export function KqCulturePreparation({ cardCount, note, disabled, busy, onEditDeck, onStart }: {
+export function KqCulturePreparation({ cardCount, note, disabled, disabledReason, busy, onEditDeck, onStart }: {
   cardCount: number; note: string; disabled: boolean; busy: boolean;
+  disabledReason?: string;
   onEditDeck: () => void; onStart: () => void;
 }) {
   return <section className={styles.preparation} aria-labelledby="culture-preparation-title" data-culture-preparation>
@@ -27,7 +28,7 @@ export function KqCulturePreparation({ cardCount, note, disabled, busy, onEditDe
       </div>
     </details>
     <footer className={styles.launch}>
-      <div className={styles.reassurance}><Check size={20} aria-hidden="true" /><div><strong>{cardCount === 0 ? "Départ sans carte La Botte" : `${cardCount} carte${cardCount > 1 ? "s" : ""} dans ton deck`}</strong><p>{note}</p>{disabled && !busy ? <p className={styles.warning}>Choisis un Buddie que tu possèdes pour commencer.</p> : null}</div></div>
+      <div className={styles.reassurance}><Check size={20} aria-hidden="true" /><div><strong>{cardCount === 0 ? "Départ sans carte La Botte" : `${cardCount} carte${cardCount > 1 ? "s" : ""} dans ton deck`}</strong><p>{note}</p>{disabled && !busy ? <p className={styles.warning}>{disabledReason || "Choisis un Buddie que tu possèdes pour commencer."}</p> : null}</div></div>
       <button type="button" className={styles.start} disabled={disabled || busy} aria-busy={busy} onClick={onStart}>{busy ? "Action en cours…" : "Lancer ma culture"}<ArrowRight size={21} /></button>
     </footer>
   </section>;
