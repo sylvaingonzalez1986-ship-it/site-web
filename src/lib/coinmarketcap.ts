@@ -41,7 +41,7 @@ async function request(path: string, parameters: Record<string, string>, top100:
   const url = new URL(`https://pro-api.coinmarketcap.com/${key ? "" : "public-api/"}v3/cryptocurrency/${path}`);
   url.search = new URLSearchParams({ ...parameters, convert: "EUR" }).toString();
   const response = await fetch(url, { headers: { ...(key ? { "X-CMC_PRO_API_KEY": key } : {}), Accept: "application/json" }, cache: "no-store", signal: AbortSignal.timeout(8_000), redirect: "error" });
-  if (!response.ok) throw new Error("[cmc] unavailable");
+  if (!response.ok) throw new Error(`[cmc] unavailable (HTTP ${response.status})`);
   return parseCoinMarketCapAssets(await response.json(), top100);
 }
 export const fetchCoinMarketCapTop100 = () => request("listings/latest", { start: "1", limit: "100", sort: "market_cap", sort_dir: "desc" }, true);

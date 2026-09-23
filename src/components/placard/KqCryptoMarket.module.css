@@ -41,10 +41,9 @@
 .asset { display:flex; gap:12px; align-items:center; min-width:0; }
 .asset>span:last-child { min-width:0; overflow-wrap:anywhere; }
 .asset strong { font-size:.88rem; line-height:1.4; }
-.coin { display:grid; place-items:center; flex-shrink:0; width:38px; height:38px; border-radius:50%; border:1px solid #bba674; background:#e6d19b; color:#523a12; font:900 .82rem/1 var(--font-body),sans-serif; }
-.coin[data-tone="1"] { background:#f7d687; color:#684300; border-color:#cd9b35; }
-.coin[data-tone="2"] { background:#e3e5ec; color:#384365; border-color:#b7bfce; }
-.coin[data-tone="3"] { background:#dce8d5; color:#305336; border-color:#a7bda0; }
+.coin { display:grid; place-items:center; flex-shrink:0; width:38px; height:38px; border-radius:50%; border:1px solid #c8b991; padding:3px; background:#fffef9; color:#523a12; overflow:hidden; }
+.coin img { display:block; width:100%; height:100%; object-fit:contain; border-radius:50%; }
+.coinFallback { max-width:100%; padding:1px; overflow-wrap:anywhere; text-align:center; font:900 .62rem/1.1 var(--font-body),sans-serif; }
 .quote { text-align:right; font-variant-numeric:tabular-nums; min-width:0; }
 .quote strong { font-size:1rem; font-weight:800; overflow-wrap:anywhere; }
 .quote small { display:block; margin-top:7px; font-size:.73rem; font-weight:700; }
@@ -70,6 +69,9 @@
 .order::backdrop { background:#001b15b8; backdrop-filter:blur(3px); }
 .orderHeader { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:24px 26px 20px; border-bottom:1px solid #d9ccb0; background:#f1e6c9; }
 .orderHeader>div { min-width:0; }
+.orderIdentity { display:flex; align-items:center; gap:12px; }
+.orderIdentity>div { min-width:0; }
+.orderIdentity .coin { width:44px; height:44px; }
 .orderHeader h4 { font:900 1.8rem/1.15 var(--font-display),Impact,sans-serif; text-transform:uppercase; margin:8px 0 0; overflow-wrap:anywhere; }
 .market .close { width:44px; min-width:44px; height:44px; padding:8px; background:#fff9e8; border-color:#aea78c; color:#183e31; }
 .orderBody { padding:20px 26px 26px; }
@@ -104,5 +106,5 @@
 .source { margin-top:24px; font-size:.73rem; }
 .source a { text-decoration:underline; text-underline-offset:3px; font-weight:700; }
 @media(max-width:850px) { .listHeading,.row { grid-template-columns:25px minmax(100px,1.2fr) minmax(120px,1fr) 100px; gap:10px; } .asset { gap:8px; } .coin { width:32px; height:32px; font-size:.7rem; } .row button { padding:10px 8px; } }
-@media(max-width:650px) { .market { padding:20px 14px; margin-top:18px; } .header { gap:13px; } .header h3 { font-size:1.6rem; } .icon { width:50px; height:58px; } .icon svg { width:29px; } .stamp { display:none; } .disclaimer { font-size:.76rem; } .summary { gap:8px; grid-template-columns:1fr 1fr; } .summary>div { padding:15px 12px; } .summary>div:first-child { grid-column:1/-1; } .summary>div:first-child strong { font-size:1.85rem; } .summary strong { font-size:1.3rem; } .summary small { font-size:.7rem; } .tabs { margin-top:22px; } .tabs button { padding:11px 5px; font-size:.75rem; } .listHeading { grid-template-columns:20px 1fr 1fr; padding-inline:10px; font-size:.56rem; gap:7px; } .listHeading span:last-child { display:none; } .row { grid-template-columns:20px minmax(90px,1fr) minmax(94px,1fr); padding:15px 10px; gap:10px 7px; } .asset strong { font-size:.8rem; } .coin { display:none; } .quote strong { font-size:.91rem; } .quote small { font-size:.68rem; } .row button { grid-column:2/4; justify-self:end; min-width:110px; min-height:44px; } .order { width:calc(100vw - 24px); max-height:calc(100dvh - 24px); } .orderHeader { padding:18px 18px 16px; gap:10px; } .orderHeader h4 { font-size:1.6rem; } .orderHeader small { font-size:.62rem; } .orderBody { padding:18px; } .position { padding:18px 14px; } }
+@media(max-width:650px) { .market { padding:20px 14px; margin-top:18px; } .header { gap:13px; } .header h3 { font-size:1.6rem; } .icon { width:50px; height:58px; } .icon svg { width:29px; } .stamp { display:none; } .disclaimer { font-size:.76rem; } .summary { gap:8px; grid-template-columns:1fr 1fr; } .summary>div { padding:15px 12px; } .summary>div:first-child { grid-column:1/-1; } .summary>div:first-child strong { font-size:1.85rem; } .summary strong { font-size:1.3rem; } .summary small { font-size:.7rem; } .tabs { margin-top:22px; } .tabs button { padding:11px 5px; font-size:.75rem; } .listHeading { grid-template-columns:20px 1fr 1fr; padding-inline:10px; font-size:.56rem; gap:7px; } .listHeading span:last-child { display:none; } .row { grid-template-columns:20px minmax(90px,1fr) minmax(94px,1fr); padding:15px 10px; gap:10px 7px; } .asset strong { font-size:.8rem; } .coin { width:28px; height:28px; padding:2px; } .asset { gap:6px; } .coinFallback { font-size:.5rem; } .orderIdentity { gap:9px; } .orderIdentity .coin { width:34px; height:34px; } .quote strong { font-size:.91rem; } .quote small { font-size:.68rem; } .row button { grid-column:2/4; justify-self:end; min-width:110px; min-height:44px; } .order { width:calc(100vw - 24px); max-height:calc(100dvh - 24px); } .orderHeader { padding:18px 18px 16px; gap:10px; } .orderHeader h4 { font-size:1.6rem; } .orderHeader small { font-size:.62rem; } .orderBody { padding:18px; } .position { padding:18px 14px; } }
 @media(max-width:390px) { .status { align-items:flex-start; gap:10px; } .status button { font-size:0; padding:10px; min-width:44px; } .status button svg { width:18px; height:18px; } .tabs button { font-size:.7rem; gap:5px; } .position dl>div { flex-wrap:wrap; } .orderTotals>div { gap:10px; } .orderContext { padding:12px; gap:10px; } .orderTotal dd { font-size:1.4rem; } }

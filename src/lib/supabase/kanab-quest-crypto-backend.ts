@@ -16,6 +16,8 @@ async function rpc(name: string, params?: Record<string, unknown>): Promise<unkn
  if (error) {
   const code = Object.keys(errors).find(key => error.message === key);
   if (code) throw new KqCryptoRequestError(errors[code]);
+  // Keep credentials, player IDs and raw database messages out of diagnostics.
+  console.warn("[crypto:rpc] request failed", { rpc: name, code: typeof error.code === "string" && /^[A-Z0-9]{5,8}$/.test(error.code) ? error.code : "unknown" });
   throw new Error("[supabase:crypto] unavailable");
  }
  return data;
@@ -30,9 +32,12 @@ export async function refreshKqCryptoQuotes() {
   const top100 = await fetchCoinMarketCapTop100();
   const ids = claim.heldAssetIds.filter(id => !top100.some(asset => asset.id === id)) as number[];
   const held = ids.length ? await fetchCoinMarketCapQuotes(ids).catch(() => []) : [];
-  await rpc("rpc_kq_crypto_refresh_publish", { p_lease_id: claim.leaseId, p_assets: [...top100, ...held] });
- } catch {
-  // Keep the previous quotes and retry only after the shared five-minute cooldown.
+  const published = await rpc("rpc_kq_crypto_refresh_publish", { p_lease_id: claim.leaseId, p_assets: [...top100, ...held] });
+  if (published !== true) console.warn("[crypto:refresh] publication lease expired");
+ } catch (error) {
+  const reason = error instanceof Error && /^\[(cmc|supabase:crypto)\] [a-zA-Z0-9 :()-]+$/.test(error.message) ? error.message : "provider request failed";
+  console.warn("[crypto:refresh] retaining last quotes", { reason });
+  // Keep the previous quotes; the database bounds retries after provider failures.
   // A database failure on publish is also fail-closed: old prices expire in SQL.
  }
 }

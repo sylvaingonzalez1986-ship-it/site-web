@@ -1,4 +1,6 @@
-// Actual crypto migration exercised in an isolated PostgreSQL engine. No network or credentials.
+// Actual crypto migration exercised in an isolated PostgreSQL engine.
+// --live-quotes additionally reads CoinMarketCap through the production adapter;
+// all wallets, orders and SQL writes remain in memory. No env files are loaded.
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
@@ -14,6 +16,62 @@ const confirm = (user, orderId, enabled = true) => command(user, 'confirm', { or
 const cash = async user => (await query('SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1', [user])).cash_cents;
 let checks = 0;
 async function check(name, fn) { await fn(); console.log(`PASS ${name}`); checks++; }
+async function checkLiveQuotes() {
+ const [{createServer}, {resolve}] = await Promise.all([import('vite'), import('node:path')]);
+ const vite = await createServer({configFile:false,envDir:false,resolve:{alias:{'@':resolve('src'),'server-only':resolve('src/test/server-only.ts')}},server:{middlewareMode:true,watch:null}});
+ try {
+  const {fetchCoinMarketCapTop100} = await vite.ssrLoadModule('/src/lib/coinmarketcap.ts');
+  const {isKqCryptoSnapshot,isKqCryptoOrder,isKqCryptoTrade,isKqCryptoQuoteFresh} = await vite.ssrLoadModule('/src/lib/kanab-quest-crypto.ts');
+  const liveAssets = await fetchCoinMarketCapTop100();
+  assert.equal(liveAssets.length,100);
+  // Age only the isolated database lease; never bypass production freshness checks.
+  await db.exec("UPDATE kq_crypto_refresh_state SET attempted_at=now()-interval '6 minutes',succeeded_at=now()-interval '6 minutes',lease_until=NULL");
+  await db.exec('SET ROLE service_role');
+  try {
+   const lease = (await query('SELECT rpc_kq_crypto_refresh_claim() data')).data;
+   assert(lease?.leaseId,'service role must obtain the real refresh RPC lease');
+   assert.equal((await query('SELECT rpc_kq_crypto_refresh_publish($1,$2::jsonb) data',[lease.leaseId,JSON.stringify(liveAssets)])).data,true,'real CMC rows must pass SQL publication');
+   const initial = await command(other);
+   assert(isKqCryptoSnapshot(initial),'SQL snapshot must pass the production browser/backend validator');
+   assert.equal(initial.marketStatus,'live');
+   assert.equal(initial.assets.length,100);
+   assert.deepEqual(initial.assets.map(asset=>asset.id).sort((a,b)=>a-b),liveAssets.map(asset=>asset.id).sort((a,b)=>a-b));
+   assert(initial.assets.every(asset=>isKqCryptoQuoteFresh(asset.quotedAt,Date.parse(initial.serverNow))),'all real rows must enable trading with server time');
+   let firstOffer;
+   for (const asset of liveAssets) {
+    const offer = await buy(other,asset.id,10000);
+    assert(isKqCryptoOrder(offer),`real ${asset.symbol} preview must pass the production validator`);
+    assert.equal(offer.assetId,asset.id);
+    assert.equal(offer.amountCents,10000);
+    if (!firstOffer) firstOffer=offer;
+   }
+   assert(firstOffer);
+   const purchase = await confirm(other,firstOffer.orderId);
+   assert(isKqCryptoTrade(purchase.trade));
+   assert.equal(purchase.replayed,false);
+   assert.equal(purchase.trade.amountCents,10000);
+   const bought = await command(other);
+   assert(isKqCryptoSnapshot(bought));
+   assert.equal(bought.cashCents,initial.cashCents-10000);
+   assert.equal(bought.positions.length,1);
+   assert.equal(bought.positions[0].quantity,firstOffer.quantity);
+   const saleOffer = await sell(other,firstOffer.assetId,firstOffer.quantity);
+   assert(isKqCryptoOrder(saleOffer));
+   const sale = await confirm(other,saleOffer.orderId);
+   assert(isKqCryptoTrade(sale.trade));
+   assert.equal(sale.trade.amountCents,saleOffer.amountCents);
+   assert.equal(sale.trade.costBasisCents,10000);
+   assert.equal(sale.trade.realizedPnlCents,sale.trade.amountCents-10000);
+   const final = await command(other);
+   assert(isKqCryptoSnapshot(final));
+   assert.equal(final.positions.length,0);
+   assert.equal(final.cashCents,initial.cashCents-10000+sale.trade.amountCents);
+   assert.equal(final.recentTrades.length,2);
+   console.log(JSON.stringify({provider:'CoinMarketCap',assets:liveAssets.length,validatedPreviews:liveAssets.length,roundTripSymbol:liveAssets[0].symbol,quotedAt:liveAssets[0].quotedAt,sqlMarketStatus:final.marketStatus,execution:'isolated PostgreSQL only'}));
+  } finally { await db.exec('RESET ROLE'); }
+  assert.equal((await query("SELECT COALESCE(SUM(balance_cents),0)::INTEGER amount FROM kq_treasury_balances WHERE user_id=$1 AND account IN ('suspense','crypto_assets')",[other])).amount,0,'completed live-price round trip must leave neither suspense nor crypto cost');
+ } finally { await vite.close(); }
+}
 try {
  await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role; CREATE SCHEMA auth;
  CREATE TABLE auth.users(id UUID PRIMARY KEY);
@@ -28,6 +86,7 @@ try {
  const treasury = await readFile('supabase/migrations/20260921000200_kq_treasury_accounting.sql','utf8');
  await db.exec(treasury.slice(treasury.indexOf('CREATE FUNCTION public.kq_treasury_post('), treasury.indexOf('-- Actual production cost')).replace("'expense_other'];", "'expense_other','loan_payable','expense_loan_interest'];"));
  await db.exec(await readFile('supabase/migrations/20260923000400_kq_crypto_portfolio.sql', 'utf8'));
+ await db.exec(await readFile('supabase/migrations/20260923000600_kq_crypto_refresh_recovery.sql', 'utf8'));
  await db.exec(`CREATE FUNCTION cash_observer() RETURNS TRIGGER LANGUAGE plpgsql AS $$ BEGIN
  PERFORM kq_treasury_pair(NEW.user_id,'cash-movement',gen_random_uuid()::TEXT,now(),'cash','suspense',(NEW.cash_cents-OLD.cash_cents)::BIGINT); RETURN NEW; END $$;
  CREATE TRIGGER wallet_cash AFTER UPDATE OF cash_cents ON kq_equipment_wallets FOR EACH ROW EXECUTE FUNCTION cash_observer();`);
@@ -45,6 +104,22 @@ try {
   assert.equal((await query('SELECT rpc_kq_crypto_refresh_publish($1,$2::jsonb) data',[lease.leaseId,JSON.stringify(assets)])).data,true);
   assert.equal((await command(owner)).assets.length,100);
   assert.equal((await query('SELECT rpc_kq_crypto_refresh_publish($1,$2::jsonb) data',[lease.leaseId,JSON.stringify(assets)])).data,false,'published leases cannot be reused');
+ });
+ await check('failed refreshes recover after one minute while successful reads keep their five-minute cache and active lease',async()=>{
+  const claim=async()=>(await query('SELECT rpc_kq_crypto_refresh_claim() data')).data;
+  await db.exec("UPDATE kq_crypto_refresh_state SET attempted_at=now()-interval '2 minutes',succeeded_at=now()-interval '4 minutes',lease_until=NULL");
+  assert.equal(await claim(),null,'a recent successful publication still prevents another provider call');
+  await db.exec("UPDATE kq_crypto_refresh_state SET attempted_at=now()-interval '61 seconds',succeeded_at=now()-interval '6 minutes',lease_until=now()+interval '1 second'");
+  assert.equal(await claim(),null,'an active lease remains exclusive even when the retry window has elapsed');
+  await db.exec("UPDATE kq_crypto_refresh_state SET attempted_at=now()-interval '31 seconds',lease_until=now()-interval '1 second'");
+  assert.equal(await claim(),null,'a failed expired lease still waits until the one-minute retry boundary');
+  await db.exec("UPDATE kq_crypto_refresh_state SET attempted_at=now()-interval '61 seconds'");
+  const recovered=await claim();
+  assert(recovered?.leaseId,'a failed provider attempt becomes retryable after one minute');
+  assert.equal(await claim(),null,'another caller cannot claim the recovery lease');
+  assert.equal((await query('SELECT rpc_kq_crypto_refresh_publish($1,$2::jsonb) data',[recovered.leaseId,JSON.stringify(assets)])).data,true);
+  await db.exec("UPDATE kq_crypto_refresh_state SET attempted_at=now()-interval '2 minutes'");
+  assert.equal(await claim(),null,'successful recovery restores the full shared five-minute cache');
  });
  let original;
  await check('preview does not debit; exact locked price executes after provider moves',async()=>{
@@ -83,7 +158,7 @@ try {
   await assert.rejects(sell(owner,2,'1'),/crypto_stale/); const snapshot=await command(owner); assert.equal(snapshot.marketStatus,'stale'); assert.equal(snapshot.positions[0].valueCents,null);
  });
  await check('holdings outside top100 can be sold at refreshed by-ID prices',async()=>{
-  const held=(await query("UPDATE kq_crypto_refresh_state SET attempted_at=now()-interval '6 minutes' RETURNING id")).id; assert(held);
+  const held=(await query("UPDATE kq_crypto_refresh_state SET attempted_at=now()-interval '6 minutes',succeeded_at=now()-interval '6 minutes' RETURNING id")).id; assert(held);
   const lease=(await query('SELECT rpc_kq_crypto_refresh_claim() data')).data; assert(lease.heldAssetIds.includes(2));
   const replacement=assets.filter(a=>a.id!==2).map(a=>({...a,quotedAt:new Date().toISOString()})); replacement.push({...assets[1],id:101,rank:2}); replacement.push({...assets[1],rank:101,inTop100:false,priceEur:'0.000005',quotedAt:new Date().toISOString()});
   await query('SELECT rpc_kq_crypto_refresh_publish($1,$2::jsonb)',[lease.leaseId,JSON.stringify(replacement)]);
@@ -109,5 +184,6 @@ try {
   for(const role of ['anon','authenticated']) assert.equal((await query("SELECT has_function_privilege($1,'rpc_kq_crypto_command(uuid,text,jsonb,boolean)','EXECUTE') allowed",[role])).allowed,false);
   assert.equal((await query("SELECT has_function_privilege('service_role','rpc_kq_crypto_command(uuid,text,jsonb,boolean)','EXECUTE') allowed")).allowed,true);
  });
+ if (process.argv.includes('--live-quotes')) await check('real CoinMarketCap adapter publishes, enables all 100 previews and completes a virtual buy/sell through service-role RPCs',checkLiveQuotes);
  console.log(`Crypto PostgreSQL: ${checks} checks passed.`);
 } finally { await db.close(); }

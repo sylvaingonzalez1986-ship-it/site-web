@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const {rpc,top,quotes}=vi.hoisted(()=>({rpc:vi.fn(),top:vi.fn(),quotes:vi.fn()}));
 vi.mock("./admin",()=>({createSupabaseServiceClient:()=>({rpc})}));
 vi.mock("../coinmarketcap",()=>({fetchCoinMarketCapTop100:top,fetchCoinMarketCapQuotes:quotes}));
@@ -8,7 +8,8 @@ const asset={id:1,rank:1,name:"Bitcoin",symbol:"BTC",priceEur:"40000",change24h:
 const snapshot={version:1,serverNow:date,marketStatus:"live",updatedAt:date,cashCents:10000,assets:[asset],positions:[],recentTrades:[]};
 const order={orderId:id,assetId:1,side:"buy",quantity:"0.0025",priceEur:"40000",amountCents:10000,expiresAt:date,quotedAt:date};
 const trade={...order,costBasisCents:10000,realizedPnlCents:0,cashAfterCents:0,createdAt:date};
-beforeEach(()=>{vi.clearAllMocks();top.mockResolvedValue([asset]);quotes.mockResolvedValue([]);rpc.mockImplementation(async(name:string)=>({error:null,data:name==="rpc_kq_crypto_refresh_claim"?null:snapshot}));});
+afterEach(()=>{vi.restoreAllMocks();});
+beforeEach(()=>{vi.clearAllMocks();vi.spyOn(console,"warn").mockImplementation(()=>{});top.mockResolvedValue([asset]);quotes.mockResolvedValue([]);rpc.mockImplementation(async(name:string)=>({error:null,data:name==="rpc_kq_crypto_refresh_claim"?null:snapshot}));});
 describe("crypto server authority",()=>{
  it("reads session owner only and retains positions during provider outages",async()=>{
   rpc.mockImplementation(async(name:string)=>({error:null,data:name==="rpc_kq_crypto_refresh_claim"?{leaseId:id,heldAssetIds:[]}:snapshot}));top.mockRejectedValue(new Error("network"));
@@ -18,6 +19,19 @@ describe("crypto server authority",()=>{
  it("fetches only held IDs missing from top100 and publishes the shared quotes",async()=>{
   rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,heldAssetIds:[1,101]}}).mockResolvedValueOnce({error:null,data:true});quotes.mockResolvedValue([{...asset,id:101,rank:101,inTop100:false}]);
   await refreshKqCryptoQuotes();expect(quotes).toHaveBeenCalledWith([101]);expect(rpc).toHaveBeenLastCalledWith("rpc_kq_crypto_refresh_publish",{p_lease_id:id,p_assets:[asset,{...asset,id:101,rank:101,inTop100:false}]});
+ });
+ it("reports a rejected publication without pretending the cache was updated",async()=>{
+  rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,heldAssetIds:[]}}).mockResolvedValueOnce({error:null,data:false});
+  await refreshKqCryptoQuotes();expect(console.warn).toHaveBeenCalledWith("[crypto:refresh] publication lease expired");
+ });
+ it("keeps diagnostics useful without recording provider secrets or player data",async()=>{
+  rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,heldAssetIds:[]}});top.mockRejectedValue(new Error("https://provider/?secret=private-token"));
+  await refreshKqCryptoQuotes();expect(console.warn).toHaveBeenCalledWith("[crypto:refresh] retaining last quotes",{reason:"provider request failed"});
+  rpc.mockResolvedValueOnce({error:{code:"42501",message:"private db secret"},data:null});
+  await expect(handleKqCryptoAction(owner,{action:"confirm",orderId:id})).rejects.toThrow("[supabase:crypto]");
+  expect(console.warn).toHaveBeenCalledWith("[crypto:rpc] request failed",{rpc:"rpc_kq_crypto_command",code:"42501"});
+  expect(JSON.stringify(vi.mocked(console.warn).mock.calls)).not.toContain("private");
+  expect(JSON.stringify(vi.mocked(console.warn).mock.calls)).not.toContain(owner);
  });
  it("confirmation retries do not depend on refresh, quote age, or provider availability",async()=>{
   rpc.mockResolvedValue({error:null,data:{trade,replayed:true}});expect(await handleKqCryptoAction(owner,{action:"confirm",orderId:id,userId:"victim",priceEur:"1"})).toEqual({trade,replayed:true});
