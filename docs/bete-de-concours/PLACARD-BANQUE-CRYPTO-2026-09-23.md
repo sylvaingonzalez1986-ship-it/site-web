@@ -63,3 +63,9 @@ Les tests PostgreSQL sont isolés, sans identifiants ni écritures distantes. Le
 Le contrôle en lecture seule `node scripts/check-coinmarketcap-live.mjs` a confirmé les réponses réelles via le parseur de production : 100 actifs EUR et les cours par identifiant, avec l’API publique sans clé. Les audits navigateur ont réussi sur 320, 390, 768 et 1 280 px, sans débordement ni erreur JavaScript ; les captures et le rapport sont dans `output/placard-treasury/`. Les parcours de gestion existants ont également réussi sur 320, 390 et 1 280 px.
 
 Résultats de validation du 23 septembre : 109 tests Vitest sur la finance existante et la comptabilité enrichie, 27 tests banque, 38 tests crypto ; 13 groupes PostgreSQL sur la trésorerie complète, 8 sur les prêts et 12 sur les cryptos. TypeScript sans émission, ESLint ciblé et vérification des permissions des 240 migrations passent. Les scénarios d’accès concurrent sont soumis au verrou du portefeuille et à l’index unique de prêt actif ; PGlite sérialise son transport et ne constitue pas une mesure de charge concurrente d’un serveur PostgreSQL distant.
+
+## Lisibilité et fenêtre de transaction
+
+Le comptoir crypto présente désormais les cours sur fond crème, avec des lignes alternées claires, des prix renforcés, des repères par actif et des boutons d’achat pleins. Les offres bancaires et factures reprennent les surfaces papier de la DA pour distinguer les informations du décor vert.
+
+Acheter ou vendre ouvre une fenêtre native centrée au-dessus du bureau, sans déplacer la page vers le bas. La saisie, l’offre, les erreurs et la nouvelle tentative restent dans cette fenêtre. L’arrière-plan est inerte et son défilement bloqué ; Échap, la croix et Annuler ferment la fenêtre hors requête en cours. Le focus est contenu dans la fenêtre puis revient au déclencheur, ou à l’onglet des positions si la vente a supprimé la dernière position. Les contrats et règles de calcul sont inchangés.

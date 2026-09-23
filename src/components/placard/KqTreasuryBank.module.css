@@ -35,7 +35,7 @@
 
 .desks { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-bottom: 24px; }
 .desks button { display: flex; justify-content: center; align-items: center; gap: 10px; min-height: 54px; padding: 12px; color: #fff4d9; background: #002d24; border: 1px solid #80aa9660; font-size: .8rem; font-weight: 750; }
-.desks button[aria-selected="true"] { color: #103b2e; background: #71e3c9; border-color: #71e3c9; }
+.desks button[aria-selected="true"] { color: #103b2e; background: #fff4d9; border-color: #fff4d9; box-shadow: 0 4px #f4c43d; }
 .deskPanel { min-width: 0; min-height: 300px; }
 .deskPanel:focus { outline: none; }
 @media(max-width: 600px) { .desks { gap: 5px; } .desks button { flex-direction: column; padding: 10px 5px; font-size: .68rem; gap: 8px; } }

@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowDownLeft, ArrowUpRight, ChartNoAxesCombined, RefreshCw, Search, Wallet } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, ChartNoAxesCombined, RefreshCw, Search, Wallet, X } from "lucide-react";
 import { formatKqCryptoQuantity, isKqCryptoOrder, isKqCryptoQuoteFresh, isKqCryptoSnapshot, isKqCryptoTrade, isRecord, parseKqCryptoEuros, type KqCryptoAsset, type KqCryptoOrder, type KqCryptoSnapshot } from "@/lib/kanab-quest-crypto";
 import styles from "./KqCryptoMarket.module.css";
 const euros = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
@@ -10,6 +10,9 @@ const dateLabel = (value: string) => new Date(value).toLocaleString("fr-FR", { d
 export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => void } = {}) {
  const [data, setData] = useState<KqCryptoSnapshot | null>(null);
  const [error, setError] = useState("");
+ const [orderError, setOrderError] = useState("");
+ const dialog = useRef<HTMLDialogElement>(null);
+ const orderTrigger = useRef<HTMLButtonElement | null>(null);
  const [message, setMessage] = useState("");
  const [loading, setLoading] = useState(false);
  const [busy, setBusy] = useState(false);
@@ -51,36 +54,78 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
   finally { if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) setLoading(false); }
  }, []);
  useEffect(() => { const controller = new AbortController(); void reload(controller.signal);
-  const interval = window.setInterval(() => { if (!document.hidden) void reload(controller.signal); }, 60_000);
-  const update = () => { if (!notifyingWallet.current) void reload(controller.signal); };
+  const interval = window.setInterval(() => { if (!document.hidden && !dialog.current?.open) void reload(controller.signal); }, 60_000);
+  const update = () => { if (!notifyingWallet.current && !dialog.current?.open) void reload(controller.signal); };
   window.addEventListener("kq:equipment-updated", update);
   return () => { controller.abort(); window.clearInterval(interval); window.removeEventListener("kq:equipment-updated", update); };
  }, [reload]);
  useEffect(() => { const interval = window.setInterval(() => setClock(Date.now()), 1000); return () => window.clearInterval(interval); }, []);
+ useEffect(() => {
+  if (!selected) return;
+  const element = dialog.current;
+  if (!element) return;
+  const rootOverflow = document.documentElement.style.overflow;
+  const bodyOverflow = document.body.style.overflow;
+  const scrollbarGap = window.innerWidth - document.documentElement.clientWidth;
+  const bodyPadding = document.body.style.paddingRight;
+  document.documentElement.style.overflow = "hidden";
+  document.body.style.overflow = "hidden";
+  if (scrollbarGap > 0) document.body.style.paddingRight = `${parseFloat(getComputedStyle(document.body).paddingRight) + scrollbarGap}px`;
+  element.showModal();
+  return () => {
+   element.close();
+   document.documentElement.style.overflow = rootOverflow;
+   document.body.style.overflow = bodyOverflow;
+   document.body.style.paddingRight = bodyPadding;
+  };
+ }, [selected]);
+ useEffect(() => {
+  if (!selected) return;
+  const element = dialog.current;
+  if (busy) { element?.focus({ preventScroll: true }); return; }
+  if (!order) element?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+  else if (document.activeElement === element || !element?.contains(document.activeElement)) {
+   const confirmButton = element?.querySelector<HTMLButtonElement>("[data-crypto-confirm]");
+   (confirmButton && !confirmButton.disabled ? confirmButton : element)?.focus({ preventScroll: true });
+  }
+ }, [selected, order, busy]);
+ useEffect(() => {
+  if (!selected && !busy && orderTrigger.current) {
+   const trigger = orderTrigger.current;
+   const target = trigger.isConnected && !trigger.disabled ? trigger : document.getElementById(`crypto-${tab}-tab`);
+   target?.focus({ preventScroll: true });
+   orderTrigger.current = null;
+  }
+ }, [selected, busy, tab]);
+ function closeOrder() {
+  if (mutationInFlight.current) return;
+  setSelected(null); setOrder(null); setConfirmAttempted(false); setOrderError("");
+ }
  const now = clock + serverOffset;
  const positionFor = (assetId: number) => data?.positions.find(p => p.assetId === assetId);
  const canTrade = (asset: KqCryptoAsset) => Boolean(data && ["live", "stale"].includes(data.marketStatus) && isKqCryptoQuoteFresh(asset.quotedAt, now));
- const select = (asset: KqCryptoAsset, side: "buy" | "sell") => {
-  setSelected({ asset, side }); setOrder(null); setConfirmAttempted(false); setError(""); setMessage(""); setQuantity(positionFor(asset.id)?.quantity ?? "");
+ const select = (asset: KqCryptoAsset, side: "buy" | "sell", trigger: HTMLButtonElement) => {
+  orderTrigger.current = trigger; setOrderError("");
+  setSelected({ asset, side }); setOrder(null); setConfirmAttempted(false); setQuantity(positionFor(asset.id)?.quantity ?? "");
  };
  async function preview() {
   if (!selected || mutationInFlight.current) return;
   const amountCents = parseKqCryptoEuros(amount);
-  if (selected.side === "buy" && amountCents === null) { setError("Entre un montant entre 1 € et 1 000 000 €, avec deux décimales au maximum."); return; }
+  if (selected.side === "buy" && amountCents === null) { setOrderError("Entre un montant entre 1 € et 1 000 000 €, avec deux décimales au maximum."); return; }
   mutationInFlight.current = true; ++loadVersion.current; setLoading(false);
-  setBusy(true); setError(""); setMessage("");
+  setBusy(true); setOrderError("");
   try {
    const response = await fetch("/api/arena/placard/crypto", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "preview", side: selected.side, assetId: selected.asset.id, ...(selected.side === "buy" ? { amountCents } : { quantity: quantity.replace(",", ".") }) }) });
    const body: unknown = await response.json();
    if (!response.ok || !isKqCryptoOrder(body)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "L’ordre n’a pas pu être préparé.");
    setOrder(body); setConfirmAttempted(false);
-  } catch (cause) { setError(cause instanceof Error ? cause.message : "L’ordre n’a pas pu être préparé."); }
+  } catch (cause) { setOrderError(cause instanceof Error ? cause.message : "L’ordre n’a pas pu être préparé."); }
   finally { mutationInFlight.current = false; setBusy(false); }
  }
  async function confirm() {
   if (!order || mutationInFlight.current) return;
   mutationInFlight.current = true; ++loadVersion.current; setLoading(false);
-  setBusy(true); setConfirmAttempted(true); setError("");
+  setBusy(true); setConfirmAttempted(true); setOrderError("");
   try {
    const response = await fetch("/api/arena/placard/crypto", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "confirm", orderId: order.orderId }) });
    const body: unknown = await response.json();
@@ -89,7 +134,7 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
    setOrder(null); setSelected(null); setConfirmAttempted(false);
    cashCentsRef.current = body.trade.cashAfterCents;
    window.dispatchEvent(new Event("kq:equipment-updated")); window.dispatchEvent(new Event("kq:treasury-updated")); onWalletRefresh?.(); mutationInFlight.current = false; await reload();
-  } catch (cause) { setError(cause instanceof Error ? cause.message : "Confirmation non reçue. Réessaie cet ordre."); }
+  } catch (cause) { setOrderError(cause instanceof Error ? cause.message : "Confirmation non reçue. Réessaie cet ordre."); }
   finally { mutationInFlight.current = false; setBusy(false); }
  }
  const rows = data?.assets.filter(asset => asset.inTop100 && `${asset.name} ${asset.symbol}`.toLocaleLowerCase("fr").includes(search.toLocaleLowerCase("fr"))) ?? [];
@@ -111,13 +156,36 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
     setTab(next); document.getElementById(`crypto-${next}-tab`)?.focus();
    }} aria-label="Consultation du marché crypto"><button role="tab" aria-selected={tab === "market"} tabIndex={tab === "market" ? 0 : -1} aria-controls="crypto-market-list" id="crypto-market-tab" type="button" onClick={() => setTab("market")}>Marché · Top 100</button><button role="tab" aria-selected={tab === "portfolio"} tabIndex={tab === "portfolio" ? 0 : -1} aria-controls="crypto-portfolio-list" id="crypto-portfolio-tab" type="button" onClick={() => setTab("portfolio")}><Wallet size={16} aria-hidden="true" /> Mes positions ({data.positions.length})</button></div>
    {tab === "market" ? <div role="tabpanel" id="crypto-market-list" aria-labelledby="crypto-market-tab"><label className={styles.search}><Search size={17} aria-hidden="true" /><input type="search" placeholder="Bitcoin, ETH…" aria-label="Rechercher une crypto" value={search} onChange={event => { setSearch(event.target.value); setPage(0); }} /></label>
-    <div className={styles.list}>{rows.slice(Math.min(page, pages - 1) * 10, (Math.min(page, pages - 1) + 1) * 10).map(asset => <div key={asset.id} className={styles.row}><span className={styles.rank}>#{asset.rank}</span><div className={styles.asset}><strong>{asset.name}</strong><small>{asset.symbol}</small></div><div className={styles.quote}><strong>{price(asset.priceEur)}</strong><small data-positive={(asset.change24h ?? 0) >= 0}>{asset.change24h === null ? "—" : `${asset.change24h >= 0 ? "+" : ""}${asset.change24h.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} %`} / 24 h</small></div><button type="button" disabled={busy || Boolean(order) || !canTrade(asset)} onClick={() => select(asset, "buy")} aria-label={`Acheter ${asset.name}`}><ArrowDownLeft size={15} aria-hidden="true" /> Placer</button></div>)}</div>
+    <div className={styles.listHeading} aria-hidden="true"><span>#</span><span>Cryptomonnaie</span><span>Cours · variation 24 h</span><span>Placement</span></div>
+    <div className={styles.list}>{rows.slice(Math.min(page, pages - 1) * 10, (Math.min(page, pages - 1) + 1) * 10).map(asset => <div key={asset.id} className={styles.row}><span className={styles.rank}>#{asset.rank}</span><div className={styles.asset}><span className={styles.coin} data-tone={asset.id % 4} aria-hidden="true">{asset.id === 1 ? "₿" : asset.symbol.slice(0, 2)}</span><span><strong>{asset.name}</strong><small>{asset.symbol}</small></span></div><div className={styles.quote}><strong>{price(asset.priceEur)}</strong><small data-positive={(asset.change24h ?? 0) >= 0}>{asset.change24h === null ? "—" : `${asset.change24h >= 0 ? "+" : ""}${asset.change24h.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} %`} / 24 h</small></div><button type="button" disabled={busy || Boolean(order) || !canTrade(asset)} onClick={event => select(asset, "buy", event.currentTarget)} aria-label={`Acheter ${asset.name}`}><ArrowDownLeft size={16} aria-hidden="true" /> Acheter</button></div>)}</div>
     {!rows.length ? <p className={styles.empty}>{data.assets.length ? "Aucune crypto ne correspond à ta recherche." : "Les 100 premières cryptos apparaîtront dès réception des cours."}</p> : null}
     {pages > 1 ? <nav className={styles.pagination} aria-label="Pages des cryptomonnaies"><button type="button" disabled={page <= 0} onClick={() => setPage(p => p - 1)}>Précédent</button><span>{Math.min(page + 1, pages)} / {pages}</span><button type="button" disabled={page >= pages - 1} onClick={() => setPage(p => p + 1)}>Suivant</button></nav> : null}
-   </div> : <div role="tabpanel" id="crypto-portfolio-list" aria-labelledby="crypto-portfolio-tab" className={styles.positions}>{data.positions.length ? data.positions.map(position => { const asset = data.assets.find(a => a.id === position.assetId); if (!asset) return null; const pnl = position.valueCents === null ? null : position.valueCents - position.costBasisCents; return <article key={position.assetId} className={styles.position}><header><div><strong>{asset.name}</strong><small>{quantityLabel(position.quantity)} {asset.symbol}{!asset.inTop100 ? " · hors top 100" : ""}</small></div><button type="button" disabled={busy || Boolean(order) || !canTrade(asset)} onClick={() => select(asset, "sell")} aria-label={`Vendre ${asset.name}`}><ArrowUpRight size={15} aria-hidden="true" /> Vendre</button></header><dl><div><dt>Coût d’achat</dt><dd>{euros(position.costBasisCents)}</dd></div><div><dt>Valeur actuelle</dt><dd>{position.valueCents === null ? "Cours à actualiser" : euros(position.valueCents)}</dd></div><div><dt>Gain / perte latent</dt><dd data-positive={(pnl ?? 0) >= 0}>{pnl === null ? "—" : `${pnl > 0 ? "+" : ""}${euros(pnl)}`}</dd></div></dl></article>; }) : <p className={styles.empty}>Ton portefeuille est vide. Choisis une crypto dans le marché pour préparer ton premier placement.</p>}</div>}
-   {selected ? <section className={styles.order} aria-label="Préparation de l’ordre crypto" data-testid="crypto-order"><small>{selected.side === "buy" ? "Placer des euros de jeu" : "Récupérer des euros de jeu"}</small><h4>{selected.side === "buy" ? "Acheter" : "Vendre"} {selected.asset.name}</h4>
-    {!order ? <form onSubmit={event => { event.preventDefault(); void preview(); }}><label>{selected.side === "buy" ? "Montant en euros de jeu" : `Quantité de ${selected.asset.symbol}`}<input inputMode="decimal" value={selected.side === "buy" ? amount : quantity} onChange={event => selected.side === "buy" ? setAmount(event.target.value) : setQuantity(event.target.value)} disabled={busy} /></label><div className={styles.actions}><button type="submit" disabled={busy}>{busy ? "Préparation…" : "Préparer l’offre"}</button><button type="button" disabled={busy} onClick={() => setSelected(null)}>Annuler</button></div></form> : <div><dl><div><dt>Quantité</dt><dd>{quantityLabel(order.quantity)} {selected.asset.symbol}</dd></div><div><dt>Cours bloqué</dt><dd>{price(order.priceEur)}</dd></div><div><dt>{order.side === "buy" ? "À débiter" : "À recevoir"}</dt><dd>{euros(order.amountCents)} de jeu</dd></div></dl><p>Cours du {dateLabel(order.quotedAt)}. {secondsLeft > 0 ? `Offre valable encore ${secondsLeft} s. Le montant confirmé sera exactement celui affiché.` : "Offre expirée : prépare une nouvelle offre."}</p><div className={styles.actions}><button type="button" disabled={busy || (secondsLeft === 0 && !confirmAttempted)} onClick={() => void confirm()}>{busy ? "Confirmation…" : confirmAttempted ? "Vérifier / réessayer cet ordre" : `Confirmer ${order.side === "buy" ? "l’achat" : "la vente"}`}</button><button type="button" disabled={busy} onClick={() => { setOrder(null); setConfirmAttempted(false); }}>Modifier l’ordre</button></div>{confirmAttempted ? <small>En cas de réponse perdue, réessaie le même ordre : il ne sera exécuté qu’une seule fois.</small> : null}</div>}
-   </section> : null}
+   </div> : <div role="tabpanel" id="crypto-portfolio-list" aria-labelledby="crypto-portfolio-tab" className={styles.positions}>{data.positions.length ? data.positions.map(position => { const asset = data.assets.find(a => a.id === position.assetId); if (!asset) return null; const pnl = position.valueCents === null ? null : position.valueCents - position.costBasisCents; return <article key={position.assetId} className={styles.position}><header><div><strong>{asset.name}</strong><small>{quantityLabel(position.quantity)} {asset.symbol}{!asset.inTop100 ? " · hors top 100" : ""}</small></div><button type="button" disabled={busy || Boolean(order) || !canTrade(asset)} onClick={event => select(asset, "sell", event.currentTarget)} aria-label={`Vendre ${asset.name}`}><ArrowUpRight size={15} aria-hidden="true" /> Vendre</button></header><dl><div><dt>Coût d’achat</dt><dd>{euros(position.costBasisCents)}</dd></div><div><dt>Valeur actuelle</dt><dd>{position.valueCents === null ? "Cours à actualiser" : euros(position.valueCents)}</dd></div><div><dt>Gain / perte latent</dt><dd data-positive={(pnl ?? 0) >= 0}>{pnl === null ? "—" : `${pnl > 0 ? "+" : ""}${euros(pnl)}`}</dd></div></dl></article>; }) : <p className={styles.empty}>Ton portefeuille est vide. Choisis une crypto dans le marché pour préparer ton premier placement.</p>}</div>}
+   {selected ? <dialog ref={dialog} id="crypto-order-dialog" className={styles.order} aria-labelledby="crypto-order-title" aria-describedby="crypto-order-description" data-testid="crypto-order" tabIndex={-1} onCancel={event => { event.preventDefault(); closeOrder(); }} onKeyDown={event => {
+     if (event.key !== "Tab") return;
+     const focusable = [...event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),a[href],[tabindex="0"]')].filter(element => element.getClientRects().length > 0);
+     const first = focusable[0], last = focusable.at(-1);
+     if (!first) { event.preventDefault(); event.currentTarget.focus({ preventScroll: true }); }
+     else if (event.shiftKey && (document.activeElement === first || document.activeElement === event.currentTarget)) { event.preventDefault(); last?.focus({ preventScroll: true }); }
+     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus({ preventScroll: true }); }
+    }}>
+    <header className={styles.orderHeader}><div><small>{order ? "02 / Confirmer le placement" : "01 / Préparer le placement"}</small><h4 id="crypto-order-title">{selected.side === "buy" ? "Acheter" : "Vendre"} {selected.asset.name}</h4></div><button type="button" className={styles.close} aria-label="Fermer la fenêtre crypto" disabled={busy} onClick={closeOrder}><X size={22} aria-hidden="true" /></button></header>
+    <div className={styles.orderBody} aria-busy={busy}>
+     <p id="crypto-order-description">{selected.side === "buy" ? "Place tes euros de jeu. Tu confirmes le montant avant tout achat." : "Revends tes cryptos pour récupérer des euros de jeu."}</p>
+     {orderError ? <p role="alert" className={styles.error}>{orderError}</p> : null}
+     {!order ? <form onSubmit={event => { event.preventDefault(); void preview(); }}>
+      <div className={styles.orderContext}><span>Cours indicatif<strong>{price(selected.asset.priceEur)}</strong></span><span>{selected.side === "buy" ? "Disponible" : "Ta position"}<strong>{selected.side === "buy" ? euros(data.cashCents) : `${quantityLabel(positionFor(selected.asset.id)?.quantity ?? "0")} ${selected.asset.symbol}`}</strong></span></div>
+      <label htmlFor="crypto-order-amount">{selected.side === "buy" ? "Montant en euros de jeu" : `Quantité de ${selected.asset.symbol}`}<div className={styles.amountField}><input id="crypto-order-amount" inputMode="decimal" value={selected.side === "buy" ? amount : quantity} onChange={event => selected.side === "buy" ? setAmount(event.target.value) : setQuantity(event.target.value)} disabled={busy} aria-describedby="crypto-amount-help" /><span aria-hidden="true">{selected.side === "buy" ? "€" : selected.asset.symbol}</span></div></label>
+      <small id="crypto-amount-help">Le cours exact et le montant total apparaîtront avant ta confirmation.</small>
+      <div className={styles.actions}><button type="submit" disabled={busy}>{busy ? "Préparation…" : "Préparer l’offre"}</button><button type="button" disabled={busy} onClick={closeOrder}>Annuler</button></div>
+     </form> : <div>
+      <dl className={styles.orderTotals}><div><dt>Quantité</dt><dd>{quantityLabel(order.quantity)} {selected.asset.symbol}</dd></div><div><dt>Cours bloqué</dt><dd>{price(order.priceEur)}</dd></div><div className={styles.orderTotal}><dt>{order.side === "buy" ? "À débiter" : "À recevoir"}</dt><dd>{euros(order.amountCents)}<small>euros de jeu</small></dd></div></dl>
+      <p className={styles.expiry} data-expired={secondsLeft === 0}>Cours du {dateLabel(order.quotedAt)}.<br />{secondsLeft > 0 ? `Offre valable encore ${secondsLeft} s. Le montant confirmé sera exactement celui affiché.` : "Offre expirée : prépare une nouvelle offre."}</p>
+      <div className={styles.actions}><button type="button" data-crypto-confirm disabled={busy || (secondsLeft === 0 && !confirmAttempted)} onClick={() => void confirm()}>{busy ? "Confirmation…" : confirmAttempted ? "Vérifier / réessayer cet ordre" : `Confirmer ${order.side === "buy" ? "l’achat" : "la vente"}`}</button><button type="button" disabled={busy} onClick={() => { setOrder(null); setConfirmAttempted(false); setOrderError(""); }}>Modifier l’ordre</button></div>
+      {confirmAttempted ? <small>En cas de réponse perdue, réessaie le même ordre : il ne sera exécuté qu’une seule fois.</small> : null}
+     </div>}
+    </div>
+   </dialog> : null}
    {data.recentTrades.length ? <details className={styles.history}><summary>Les derniers mouvements ({data.recentTrades.length})</summary>{data.recentTrades.map(trade => <div key={trade.orderId}><span>{trade.side === "buy" ? "Achat" : "Vente"} {data.assets.find(a => a.id === trade.assetId)?.symbol ?? `#${trade.assetId}`}<small>{dateLabel(trade.createdAt)}</small></span><strong>{euros(trade.amountCents)}</strong></div>)}</details> : null}
   </> : null}
   <footer className={styles.source}>Cours EUR fournis par <a href="https://coinmarketcap.com/" target="_blank" rel="noreferrer">CoinMarketCap</a>. Valeurs arrondies à l’affichage. Les gains et pertes réalisés rejoignent ta comptabilité.</footer>
