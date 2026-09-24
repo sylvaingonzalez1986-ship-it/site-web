@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { NextRequest } from "next/server";
 import {
+  middleware,
   isAdminRestrictedPage,
   isRecognizedCrawlerUserAgent,
   shouldEnforceAgeGate,
@@ -7,6 +9,23 @@ import {
 } from "../middleware";
 
 describe("middleware policy helpers", () => {
+  it("permits crypto logo images without authorizing CoinMarketCap scripts or API calls", async () => {
+    const response = await middleware(new NextRequest("https://example.test/"));
+    const policy = response.headers.get("Content-Security-Policy");
+    expect(policy).toBeTruthy();
+    const directives = new Map(policy!.split(";").map(directive => {
+      const [name, ...sources] = directive.trim().split(/\s+/);
+      return [name, sources];
+    }));
+    expect(directives.get("img-src")).toContain("https://s2.coinmarketcap.com/static/img/coins/64x64/");
+    expect(directives.get("img-src")).toContain("'self'");
+    for (const name of ["script-src", "connect-src", "frame-src"]) {
+      expect(directives.get(name)?.some(source => source.includes("coinmarketcap.com"))).toBe(false);
+    }
+    expect(directives.get("img-src")).not.toContain("https:");
+    expect(directives.get("img-src")).not.toContain("*");
+  });
+
   it("enforces the age gate on contest pages", () => {
     expect(shouldEnforceAgeGate("/arene")).toBe(true);
     expect(shouldEnforceAgeGate("/arene/lot-premium")).toBe(true);

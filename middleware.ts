@@ -19,7 +19,7 @@ function buildCspHeader(nonce: string): string {
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' ${VIVA_ORIGIN}`,
     `style-src 'self' 'unsafe-inline'`,
-    `img-src 'self' data: blob: ${SUPABASE_CSP_SOURCES} https://static.wixstatic.com https://files.cdn.printful.com`,
+    `img-src 'self' data: blob: ${SUPABASE_CSP_SOURCES} https://static.wixstatic.com https://files.cdn.printful.com https://s2.coinmarketcap.com/static/img/coins/64x64/`,
     `media-src 'self' blob: ${SUPABASE_CSP_SOURCES}`,
     `font-src 'self' data:`,
     `connect-src 'self'${devConnectSources} ${SUPABASE_CSP_SOURCES} ${VIVA_ORIGIN}`,
