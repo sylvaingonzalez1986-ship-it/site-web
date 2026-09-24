@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, parseKqBankCommand, parseKqBankEuros, KQ_BANK_TIERS, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_REPAYMENT_CENTS, type KqBankSnapshot } from "./kanab-quest-bank";
+import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, parseKqBankCommand, parseKqBankEuros, KQ_BANK_INSTALLMENT_MS, KQ_BANK_TERM_DAYS, KQ_BANK_TIERS, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_REPAYMENT_CENTS, type KqBankSnapshot } from "./kanab-quest-bank";
 const id = "12345678-1234-4123-8123-123456789abc";
 export const bankFixture = (): KqBankSnapshot => ({
   version: 1, serverNow: "2026-09-23T12:00:00Z", cashCents: 35000, reputation: 200,
   eligibleAt: "2026-09-21T12:00:00Z", market: { id, scenario: "confidence", rateBps: 500, changeBps: -150, startsAt: "2026-09-23T00:00:00Z", expiresAt: "2026-09-24T00:00:00Z" },
-  offer: { quoteId: id, minCents: 10000, maxCents: KQ_BANK_TIERS[0].maxCents, rateBps: 500, termDays: 7, expiresAt: "2026-09-24T00:00:00Z" },
+  offer: { quoteId: id, minCents: 10000, maxCents: KQ_BANK_TIERS[0].maxCents, rateBps: 500, termDays: KQ_BANK_TERM_DAYS, expiresAt: "2026-09-24T00:00:00Z" },
   blockedReason: null, loan: null, history: [], autoPaidCents: 0, replayed: false,
 });
 describe("bank contracts", () => {
@@ -61,17 +61,35 @@ describe("bank contracts", () => {
     expect(isKqBankSnapshot({ ...bankFixture(), cashCents: -1 })).toBe(false);
     expect(isKqBankSnapshot({ ...bankFixture(), market: { ...bankFixture().market, scenario: "constructor" } })).toBe(false);
     expect(isKqBankSnapshot({ ...bankFixture(), version: 0 })).toBe(false);
+    expect(isKqBankSnapshot({ ...bankFixture(), offer: { ...bankFixture().offer, termDays: 7 } })).toBe(false);
   });
   it("validates signed debt including the sum of scheduled paid cents", () => {
     const terms = getKqBankTerms(10000, 500);
     const value = { ...bankFixture(), offer: null, blockedReason: "active", loan: {
       id, principalCents: 10000, rateBps: 500, ...terms, paidCents: 0, remainingCents: terms.totalCents,
-      acceptedAt: "2026-09-23T12:00:00Z", dueAt: "2026-09-30T12:00:00Z", paidAt: null, overdueCents: 0,
-      schedule: terms.installments.map((amountCents, i) => ({ at: `2026-09-${24 + i}T12:00:00Z`, amountCents, paidCents: 0 })),
+      acceptedAt: "2026-09-23T12:00:00Z", dueAt: "2026-10-28T12:00:00Z", paidAt: null, overdueCents: 0,
+      schedule: terms.installments.map((amountCents, i) => ({ at: new Date(Date.parse("2026-09-23T12:00:00Z") + (i + 1) * KQ_BANK_INSTALLMENT_MS).toISOString(), amountCents, paidCents: 0 })),
     } };
     expect(isKqBankSnapshot(value)).toBe(true);
     expect(isKqBankSnapshot({ ...value, loan: { ...value.loan, interestCents: 0 } })).toBe(false);
     expect(isKqBankSnapshot({ ...value, loan: { ...value.loan, paidCents: 1, remainingCents: terms.totalCents - 1 } })).toBe(false);
+    expect(isKqBankSnapshot({ ...value, loan: { ...value.loan, dueAt: "2026-09-30T12:00:00Z" } })).toBe(false);
+    expect(isKqBankSnapshot({ ...value, loan: { ...value.loan, schedule: value.loan.schedule.map((item, i) => i === 0 ? { ...item, at: "2026-09-24T12:00:00Z" } : item) } })).toBe(false);
+  });
+  it("accepts closed daily loan history while requiring five real days between active instalments", () => {
+    const terms = getKqBankTerms(10000, 500);
+    const acceptedAt = "2026-09-23T12:00:00Z";
+    const dailyLoan = {
+      id, principalCents: 10000, rateBps: 500, ...terms, paidCents: terms.totalCents, remainingCents: 0,
+      acceptedAt, dueAt: "2026-09-30T12:00:00Z", paidAt: "2026-09-24T12:00:00Z", overdueCents: 0,
+      schedule: terms.installments.map(amountCents => ({ at: "", amountCents, paidCents: amountCents }))
+        .map((item, i) => ({ ...item, at: new Date(Date.parse(acceptedAt) + (i + 1) * 86_400_000).toISOString() })),
+    };
+    expect(isKqBankSnapshot({ ...bankFixture(), history: [dailyLoan] })).toBe(true);
+    expect(isKqBankSnapshot({ ...bankFixture(), offer: null, blockedReason: "active", loan: {
+      ...dailyLoan, paidAt: null, paidCents: 0, remainingCents: terms.totalCents,
+      schedule: dailyLoan.schedule.map(item => ({ ...item, paidCents: 0 })),
+    } })).toBe(false);
   });
   it("personalizes refusals and successful offers", () => {
     expect(getKqBankerDialogue({ ...bankFixture(), reputation: 80, blockedReason: "reputation" })).toContain("80 points");

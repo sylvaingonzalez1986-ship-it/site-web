@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowDownLeft, ArrowUpRight, ChartNoAxesCombined, RefreshCw, Search, Wallet, X } from "lucide-react";
-import { formatKqCryptoQuantity, isKqCryptoOrder, isKqCryptoQuoteFresh, isKqCryptoSnapshot, isKqCryptoTrade, isRecord, parseKqCryptoEuros, type KqCryptoAsset, type KqCryptoOrder, type KqCryptoSnapshot } from "@/lib/kanab-quest-crypto";
+import { formatKqCryptoQuantity, getKqCryptoRefreshDelayMs, isKqCryptoOrder, isKqCryptoQuoteFresh, isKqCryptoSnapshot, isKqCryptoTrade, isRecord, parseKqCryptoEuros, type KqCryptoAsset, type KqCryptoOrder, type KqCryptoSnapshot } from "@/lib/kanab-quest-crypto";
 import styles from "./KqCryptoMarket.module.css";
 const euros = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
 const price = (value: string) => Number(value).toLocaleString("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: Number(value) < 1 ? 18 : 2 });
@@ -59,17 +59,30 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
     }
    }
   } catch (cause) { if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) setError(cause instanceof Error ? cause.message : "Le marché crypto est indisponible."); }
-  finally { if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) setLoading(false); }
+  finally { if (version === loadVersion.current && !mutationInFlight.current) setLoading(false); }
  }, []);
  useEffect(() => { const controller = new AbortController(); void reload(controller.signal);
-  const interval = window.setInterval(() => { if (!document.hidden && !dialog.current?.open) void reload(controller.signal); }, 60_000);
-  const update = () => { if (!notifyingWallet.current && !dialog.current?.open) void reload(controller.signal); };
+  const update = () => { if (!notifyingWallet.current && !document.hidden && !dialog.current?.open) void reload(controller.signal); };
   const resume = () => { if (!document.hidden && !dialog.current?.open) { setClock(Date.now()); void reload(controller.signal); } };
   window.addEventListener("kq:equipment-updated", update);
   window.addEventListener("focus", resume);
   document.addEventListener("visibilitychange", resume);
-  return () => { controller.abort(); window.clearInterval(interval); window.removeEventListener("kq:equipment-updated", update); window.removeEventListener("focus", resume); document.removeEventListener("visibilitychange", resume); };
+  return () => { controller.abort(); window.removeEventListener("kq:equipment-updated", update); window.removeEventListener("focus", resume); document.removeEventListener("visibilitychange", resume); };
  }, [reload]);
+ useEffect(() => {
+  if (selected || busy) return;
+  const controller = new AbortController();
+  let timeout: number;
+  const schedule = () => {
+   if (controller.signal.aborted) return;
+   timeout = window.setTimeout(async () => {
+    if (!document.hidden && !dialog.current?.open && !mutationInFlight.current) await reload(controller.signal);
+    schedule();
+   }, getKqCryptoRefreshDelayMs(data, Date.now() + serverOffset));
+  };
+  schedule();
+  return () => { controller.abort(); window.clearTimeout(timeout); };
+ }, [data, reload, selected, busy, serverOffset]);
  useEffect(() => { const interval = window.setInterval(() => setClock(Date.now()), 1000); return () => window.clearInterval(interval); }, []);
  useEffect(() => {
   if (!selected) return;
@@ -160,7 +173,7 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
   {message ? <p role="status" className={styles.success}>{message}</p> : null}
   {!data && loading ? <p role="status">Connexion au comptoir…</p> : null}
   {data ? <><div className={styles.summary}><div><small>Disponible</small><strong>{euros(data.cashCents)}</strong></div><div><small>Valeur du portefeuille</small><strong>{totalValue === null ? "Cours à actualiser" : euros(totalValue)}</strong></div><div><small>Montant investi</small><strong>{euros(data.positions.reduce((sum, p) => sum + p.costBasisCents, 0))}</strong></div></div>
-   {data.marketStatus === "unavailable" || data.marketStatus === "unconfigured" ? <p className={styles.empty}>Le fournisseur de cours ne répond pas pour le moment. Tes positions restent consultables ; les échanges reprendront avec des cours récents.</p> : null}
+   {data.marketStatus !== "live" ? <p role="status" className={styles.empty}>{data.refresh?.refreshing ? "Actualisation des cours en cours." : <>{data.refresh?.lastFailureCode === "rate_limited" ? "Le fournisseur demande une pause." : data.marketStatus === "stale" && !data.refresh?.lastFailureCode ? "Certains cours sont en attente d’actualisation." : "Le fournisseur de cours ne répond pas pour le moment."} Nouvelle tentative automatique{data.refresh?.nextAttemptAt ? ` le ${dateLabel(data.refresh.nextAttemptAt)}` : " dans quelques instants"}.</>} Tes positions restent consultables ; les échanges suspendus reprendront automatiquement dès réception de cours récents.</p> : null}
    <div className={styles.tabs} role="tablist" onKeyDown={event => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
     event.preventDefault(); const next = event.key === "Home" ? "market" : event.key === "End" ? "portfolio" : tab === "market" ? "portfolio" : "market";

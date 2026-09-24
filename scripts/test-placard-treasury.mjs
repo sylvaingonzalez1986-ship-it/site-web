@@ -441,7 +441,7 @@ async function checkBankAccounting(owner) {
   const entries=await count(owner);
   await bank(borrow);assert.equal(await count(owner),entries,'loan retry does not duplicate postings');
   // Normal gameplay settles overdue instalments without visiting the banker.
-  await db.query("UPDATE kq_bank_loans SET accepted_at=now()-interval '49 hours' WHERE id=$1",[loan.id]);
+  await db.query("UPDATE kq_bank_loans SET accepted_at=now()-interval '241 hours' WHERE id=$1",[loan.id]);
   await state(owner);
   view=await inspected(owner);
   const paid=Math.floor(loan.totalCents*2/7);
@@ -533,7 +533,7 @@ try {
   await openShop(owners.opening);await production(owners.opening);
   const historicalCash=await cash(owners.opening);
   await db.exec(await migration('20260921000200_kq_treasury_accounting.sql'));
-  for (const name of ['20260923000300_kq_bank_loans.sql','20260923000400_kq_crypto_portfolio.sql','20260923000500_kq_banking_accounting.sql','20260923000600_kq_crypto_refresh_recovery.sql','20260923000700_kq_bank_investment_limits.sql','20260923000800_kq_stock_market.sql','20260923000900_kq_stock_catalog.sql']) await db.exec(await migration(name));
+  for (const name of ['20260923000300_kq_bank_loans.sql','20260923000400_kq_crypto_portfolio.sql','20260923000500_kq_banking_accounting.sql','20260923000600_kq_crypto_refresh_recovery.sql','20260923000700_kq_bank_investment_limits.sql','20260923000800_kq_stock_market.sql','20260923000900_kq_stock_catalog.sql','20260924000100_kq_bank_monthly_installments.sql']) await db.exec(await migration(name));
   ({quoteKqCommerce}=await vite.ssrLoadModule('/src/lib/kanab-quest-commerce.ts'));
   ({previewKqBusinessPayment}=await vite.ssrLoadModule('/src/lib/kanab-quest-business.ts'));
   ({getKqTreasuryReport,isKqTreasurySnapshot}=await vite.ssrLoadModule('/src/lib/kanab-quest-treasury.ts'));

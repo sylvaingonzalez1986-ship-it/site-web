@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatKqCryptoQuantity, isKqCryptoQuoteFresh, parseKqCryptoAction, parseKqCryptoEuros } from "./kanab-quest-crypto";
+import { formatKqCryptoQuantity, getKqCryptoRefreshDelayMs, isKqCryptoQuoteFresh, isKqCryptoRefreshStatus, isKqCryptoSnapshot, parseKqCryptoAction, parseKqCryptoEuros, type KqCryptoSnapshot } from "./kanab-quest-crypto";
 describe("virtual crypto orders", () => {
  it("parses euro input without floating point rounding", () => {
   expect(parseKqCryptoEuros("1,13")).toBe(113); expect(parseKqCryptoEuros("123.45")).toBe(12345);
@@ -20,5 +20,39 @@ describe("virtual crypto orders", () => {
   expect(isKqCryptoQuoteFresh("2026-09-23T14:50:01Z",now)).toBe(true);
   expect(isKqCryptoQuoteFresh("2026-09-23T14:50:00Z",now)).toBe(false);
   expect(isKqCryptoQuoteFresh("2026-09-23T15:02:00Z",now)).toBe(false);
+ });
+});
+
+describe("crypto refresh recovery", () => {
+ const now = Date.parse("2026-09-24T12:00:00Z");
+ const snapshot: KqCryptoSnapshot = { version: 1, serverNow: new Date(now).toISOString(), marketStatus: "stale", updatedAt: null, cashCents: 10000, assets: [], positions: [], recentTrades: [] };
+ const refresh = { refreshing: false, nextAttemptAt: "2026-09-24T12:00:30Z", lastFailureCode: "rate_limited" as const };
+
+ it("accepts snapshots from before and after refresh metadata was introduced", () => {
+  expect(isKqCryptoSnapshot(snapshot)).toBe(true);
+  expect(isKqCryptoSnapshot({ ...snapshot, refresh })).toBe(true);
+  expect(isKqCryptoSnapshot({ ...snapshot, marketStatus: "live", refresh: { refreshing: false, nextAttemptAt: null, lastFailureCode: null } })).toBe(true);
+ });
+ it.each([null, {}, { ...refresh, refreshing: "false" }, { ...refresh, nextAttemptAt: "tomorrow" }, { ...refresh, lastFailureCode: "unexpected" }])("rejects malformed refresh metadata %j", invalid => {
+  expect(isKqCryptoRefreshStatus(invalid)).toBe(false);
+  expect(isKqCryptoSnapshot({ ...snapshot, refresh: invalid })).toBe(false);
+ });
+ it.each(["rate_limited", "provider_unavailable", "invalid_quotes", "publish_failed", null])("accepts the refresh result %s", lastFailureCode => {
+  expect(isKqCryptoRefreshStatus({ ...refresh, lastFailureCode })).toBe(true);
+ });
+ it.each(["stale", "unavailable"] as const)("retries %s quotes at the server deadline", marketStatus => {
+  expect(getKqCryptoRefreshDelayMs({ marketStatus, refresh }, now)).toBe(30_000);
+ });
+ it("rechecks an active refresh after five seconds", () => {
+  expect(getKqCryptoRefreshDelayMs({ ...snapshot, refresh: { ...refresh, refreshing: true } }, now)).toBe(5_000);
+ });
+ it("bounds overdue and distant deadlines to avoid rapid retries or a stuck market", () => {
+  expect(getKqCryptoRefreshDelayMs({ ...snapshot, refresh }, now + 31_000)).toBe(5_000);
+  expect(getKqCryptoRefreshDelayMs({ ...snapshot, refresh }, now - 120_000)).toBe(60_000);
+ });
+ it("keeps the usual one-minute polling after recovery and without refresh metadata", () => {
+  expect(getKqCryptoRefreshDelayMs({ ...snapshot, marketStatus: "live", refresh }, now)).toBe(60_000);
+  expect(getKqCryptoRefreshDelayMs(snapshot, now)).toBe(60_000);
+  expect(getKqCryptoRefreshDelayMs(null, now)).toBe(60_000);
  });
 });

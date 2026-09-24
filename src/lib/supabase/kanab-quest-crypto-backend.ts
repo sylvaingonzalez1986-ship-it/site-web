@@ -1,7 +1,7 @@
 import "server-only";
 import { createSupabaseServiceClient } from "./admin";
-import { fetchCoinMarketCapQuotes, fetchCoinMarketCapTop100 } from "../coinmarketcap";
-import { isKqCryptoOrder, isKqCryptoSnapshot, isKqCryptoTrade, isRecord, KqCryptoRequestError, KQ_CRYPTO_UUID, parseKqCryptoAction, type KqCryptoOrder, type KqCryptoSnapshot, type KqCryptoTrade } from "../kanab-quest-crypto";
+import { CoinMarketCapRequestError, fetchCoinMarketCapQuotes, fetchCoinMarketCapTop100 } from "../coinmarketcap";
+import { isKqCryptoOrder, isKqCryptoRefreshStatus, isKqCryptoSnapshot, isKqCryptoTrade, isRecord, KqCryptoRequestError, KQ_CRYPTO_UUID, parseKqCryptoAction, type KqCryptoOrder, type KqCryptoSnapshot, type KqCryptoTrade } from "../kanab-quest-crypto";
 
 const errors: Record<string, string> = {
  crypto_invalid: "Ordre crypto invalide.", crypto_closed: "Le comptoir crypto est fermé pour le moment.",
@@ -22,30 +22,56 @@ async function rpc(name: string, params?: Record<string, unknown>): Promise<unkn
  }
  return data;
 }
-/** Database lease bounds requests across instances; a provider outage never hides holdings. */
-export async function refreshKqCryptoQuotes() {
+function refreshReason(error: unknown) {
+ return error instanceof Error && /^\[(cmc|supabase:crypto)\] [a-zA-Z0-9 :()-]+$/.test(error.message) ? error.message : "provider request failed";
+}
+async function refreshQuotes() {
  const claim = await rpc("rpc_kq_crypto_refresh_claim");
  if (claim === null) return;
  if (!isRecord(claim) || typeof claim.leaseId !== "string" || !KQ_CRYPTO_UUID.test(claim.leaseId) || !Array.isArray(claim.heldAssetIds)
   || claim.heldAssetIds.length > 250 || claim.heldAssetIds.some(id => !Number.isSafeInteger(id) || Number(id) <= 0)) throw new Error("[supabase:crypto] invalid refresh lease");
+ let phase: "provider" | "publish" = "provider";
  try {
   const top100 = await fetchCoinMarketCapTop100();
   const ids = claim.heldAssetIds.filter(id => !top100.some(asset => asset.id === id)) as number[];
-  const held = ids.length ? await fetchCoinMarketCapQuotes(ids).catch(() => []) : [];
-  const published = await rpc("rpc_kq_crypto_refresh_publish", { p_lease_id: claim.leaseId, p_assets: [...top100, ...held] });
+  let retryAfterSeconds: number | null = null;
+  const held = ids.length ? await fetchCoinMarketCapQuotes(ids).catch(error => {
+   if (error instanceof CoinMarketCapRequestError) retryAfterSeconds = error.retryAfterSeconds;
+   console.warn("[crypto:refresh] retaining held quotes", { reason: refreshReason(error) });
+   return [];
+  }) : [];
+  phase = "publish";
+  const published = await rpc("rpc_kq_crypto_refresh_publish", { p_lease_id: claim.leaseId, p_assets: [...top100, ...held],
+   ...(retryAfterSeconds === null ? {} : { p_retry_after_seconds: retryAfterSeconds }) });
   if (published !== true) console.warn("[crypto:refresh] publication lease expired");
  } catch (error) {
-  const reason = error instanceof Error && /^\[(cmc|supabase:crypto)\] [a-zA-Z0-9 :()-]+$/.test(error.message) ? error.message : "provider request failed";
-  console.warn("[crypto:refresh] retaining last quotes", { reason });
-  // Keep the previous quotes; the database bounds retries after provider failures.
-  // A database failure on publish is also fail-closed: old prices expire in SQL.
+  console.warn("[crypto:refresh] retaining last quotes", { reason: refreshReason(error) });
+  // Every instance observes the same provider pause; a stale lease cannot defer a newer one.
+  const providerError = error instanceof CoinMarketCapRequestError ? error : null;
+  try {
+   await rpc("rpc_kq_crypto_refresh_fail", { p_lease_id: claim.leaseId,
+    p_failure_code: providerError?.kind ?? (phase === "publish" ? "publish_failed" : "provider_unavailable"),
+    p_retry_after_seconds: providerError?.retryAfterSeconds ?? null });
+  } catch { /* The lease expiry still permits recovery if failure reporting is unavailable. */ }
  }
+}
+/** Join local refreshes; the database lease bounds calls across all server instances. */
+let refreshInFlight: Promise<void> | null = null;
+export async function refreshKqCryptoQuotes() {
+ if (!refreshInFlight) refreshInFlight = refreshQuotes().finally(() => { refreshInFlight = null; });
+ await refreshInFlight;
 }
 export async function getKqCryptoSnapshot(userId: string): Promise<KqCryptoSnapshot> {
  checkUser(userId);
  await refreshKqCryptoQuotes();
- const data = await rpc("rpc_kq_crypto_command", { p_user_id: userId, p_action: "state", p_payload: {}, p_market_enabled: true });
+ const [data, refresh] = await Promise.all([
+  rpc("rpc_kq_crypto_command", { p_user_id: userId, p_action: "state", p_payload: {}, p_market_enabled: true }),
+  rpc("rpc_kq_crypto_refresh_status").catch(() => null),
+ ]);
  if (!isKqCryptoSnapshot(data)) throw new Error("[supabase:crypto] invalid snapshot");
+ if (isKqCryptoRefreshStatus(refresh)) return { ...data, refresh: {
+  refreshing: refresh.refreshing, nextAttemptAt: refresh.nextAttemptAt, lastFailureCode: refresh.lastFailureCode,
+ } };
  return data;
 }
 export async function handleKqCryptoAction(userId: string, value: unknown): Promise<KqCryptoOrder | { trade: KqCryptoTrade; replayed: boolean }> {

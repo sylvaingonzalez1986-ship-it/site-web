@@ -149,13 +149,47 @@ try {
   const legacyOwner=await experienced(600), legacyOffer=await bank(legacyOwner);
   const legacyCommand=borrow(legacyOffer,12345), legacyBefore=await bank(legacyOwner,legacyCommand);
   await db.exec(await migration('20260923000700_kq_bank_investment_limits.sql'));
-  const legacyAfter=await checked(legacyOwner);
+  const legacyAfter=await bank(legacyOwner);
   assert.deepEqual(legacyAfter.loan,legacyBefore.loan,'raising new lending limits never rewrites a signed small loan');
   assert.equal(legacyAfter.cashCents,legacyBefore.cashCents);
   const legacyReplay=await bank(legacyOwner,legacyCommand);
   assert.equal(legacyReplay.replayed,true);
   assert.deepEqual(legacyReplay.loan,legacyBefore.loan);
   console.log('PASS: existing small loan, fixed interest, seven instalments and request receipt survive the limit migration unchanged.');
+
+  const partialOwner=await experienced(600), partialCommand=borrow(await bank(partialOwner),12345);
+  let partialBefore=await bank(partialOwner,partialCommand);
+  await db.query("UPDATE kq_bank_loans SET accepted_at=now()-interval '49 hours' WHERE user_id=$1",[partialOwner]);
+  partialBefore=await bank(partialOwner);
+  assert.equal(partialBefore.loan.paidCents,Math.floor(partialBefore.loan.totalCents*2/7));
+  const closedOwner=await experienced(), closedCommand=borrow(await bank(closedOwner));
+  const closedLoan=(await bank(closedOwner,closedCommand)).loan;
+  const closedBefore=await bank(closedOwner,{action:'repay',requestKey:randomUUID(),loanId:closedLoan.id,amountCents:closedLoan.totalCents});
+  const migrationState=async()=> (await db.query(`SELECT
+    (SELECT jsonb_agg(to_jsonb(row) ORDER BY row.user_id,row.request_key) FROM kq_bank_requests row) AS requests,
+    (SELECT jsonb_agg(to_jsonb(row) ORDER BY row.user_id) FROM kq_equipment_wallets row) AS wallets,
+    (SELECT jsonb_agg(to_jsonb(row) ORDER BY row.user_id,row.account) FROM kq_treasury_balances row) AS balances,
+    (SELECT jsonb_agg(to_jsonb(row) ORDER BY row.id) FROM kq_treasury_journal row) AS journal,
+    (SELECT jsonb_agg(to_jsonb(row)-'installment_hours' ORDER BY row.id) FROM kq_bank_loans row) AS loans`)).rows[0];
+  const beforeMigration=await migrationState();
+  await db.exec(await migration('20260924000100_kq_bank_monthly_installments.sql'));
+  assert.deepEqual(await migrationState(),beforeMigration,'rescheduling never changes signed amounts, paid cents, cash, accounting or request receipts');
+  for(const [migratedOwner,before] of [[legacyOwner,legacyBefore],[partialOwner,partialBefore]]) {
+    const after=await checked(migratedOwner);
+    assert.equal(after.cashCents,before.cashCents);
+    const immutable=loan=>({...loan,dueAt:undefined,schedule:loan.schedule.map(item=>({...item,at:undefined}))});
+    assert.deepEqual(immutable(after.loan),immutable(before.loan));
+    assert.equal(Date.parse(after.loan.dueAt)-Date.parse(after.loan.acceptedAt),35*86400000);
+    assert(after.loan.schedule.every((item,i)=>Date.parse(item.at)-Date.parse(after.loan.acceptedAt)===(i+1)*120*3600000));
+    assert.equal((await result('SELECT installment_hours FROM kq_bank_loans WHERE user_id=$1',[migratedOwner])).installment_hours,120);
+  }
+  const closedAfter=await checked(closedOwner);
+  assert.deepEqual(closedAfter.history,closedBefore.history,'paid loan history retains its original seven daily dates');
+  assert.equal(closedAfter.offer.termDays,35);
+  assert.equal((await result('SELECT installment_hours FROM kq_bank_loans WHERE user_id=$1',[closedOwner])).installment_hours,24);
+  assert.equal((await bank(partialOwner,partialCommand)).replayed,true);
+  assert.equal((await bank(partialOwner)).cashCents,partialBefore.cashCents,'replaying a rescheduled loan never credits its capital twice');
+  console.log('PASS: monthly migration reschedules open loans, preserves prior payments, closed history, cash, accounting and request receipts.');
 
   const fresh = await player();
   const noRep = await experienced(199);
@@ -218,6 +252,8 @@ try {
   await assert.rejects(() => bank(owner, { ...command, quoteId: randomUUID() }), /bank_quote_changed/);
   await assert.rejects(() => bank(owner, { ...command, expectedRateBps: command.expectedRateBps + 1 }), /bank_quote_changed/);
   view = await bank(owner, command);
+  assert.equal(Date.parse(view.loan.dueAt)-Date.parse(view.loan.acceptedAt),35*86400000);
+  assert(view.loan.schedule.every((item,i)=>Date.parse(item.at)-Date.parse(view.loan.acceptedAt)===(i+1)*120*3600000));
   assert.equal(view.cashCents, initialCash + 12345);
   assert.equal(view.loan.interestCents, Math.ceil(12345 * command.expectedRateBps / 10000));
   assert.equal(view.loan.schedule.reduce((sum, item) => sum + item.amountCents, 0), view.loan.totalCents);
@@ -257,7 +293,24 @@ try {
   console.log('PASS: shared stable daily scenario, expired quote rejected, signed debt never repriced.');
 
   const loanId = view.loan.id;
-  await db.query("UPDATE kq_bank_loans SET accepted_at=now()-interval '73 hours' WHERE id=$1", [loanId]);
+  // A transaction pins now() so exact boundary checks do not depend on execution speed.
+  for(const [age,installments] of [['119 hours 59 minutes 59 seconds',0],['120 hours',1],['240 hours',2]]) {
+    await db.exec('BEGIN');
+    try {
+      await db.query('UPDATE kq_bank_loans SET accepted_at=now()-$2::interval WHERE id=$1',[loanId,age]);
+      await state(owner);
+      const boundary=await checked(owner);
+      assert.equal(boundary.loan.paidCents,Math.floor(boundary.loan.totalCents*installments/7),`exact ${age} settlement`);
+      assert.equal(boundary.loan.overdueCents,0);
+      assert.equal(boundary.cashCents,initialCash+12345-boundary.loan.paidCents);
+      assert.equal(boundary.autoPaidCents,0);
+      const count=Number((await result('SELECT count(*) AS n FROM kq_treasury_journal WHERE user_id=$1',[owner])).n);
+      await state(owner); await bank(owner);
+      assert.equal(Number((await result('SELECT count(*) AS n FROM kq_treasury_journal WHERE user_id=$1',[owner])).n),count,'repeated gameplay and bank reads never collect a due instalment twice');
+    } finally { await db.exec('COMMIT'); }
+  }
+  console.log('PASS: no debit before 30 game days, exact first and second boundaries, and idempotent gameplay settlement.');
+  await db.query("UPDATE kq_bank_loans SET accepted_at=now()-interval '361 hours' WHERE id=$1", [loanId]);
   await state(owner); // real commerce -> business_settle -> bank hook
   view = await checked(owner);
   assert.equal(view.loan.paidCents, Math.floor(view.loan.totalCents * 3 / 7));
@@ -277,7 +330,7 @@ try {
   // Spend through a classified game transaction, then advance the test clock.
   await db.query("SELECT kq_treasury_pair($1,'test-expense','test-spend',now(),'expense_other','suspense',10000)", [broke]);
   await db.query('UPDATE kq_equipment_wallets SET cash_cents=0 WHERE user_id=$1', [broke]);
-  await db.query("UPDATE kq_bank_loans SET accepted_at=now()-interval '8 days' WHERE user_id=$1", [broke]);
+  await db.query("UPDATE kq_bank_loans SET accepted_at=now()-interval '36 days' WHERE user_id=$1", [broke]);
   brokeView = await checked(broke);
   assert.equal(brokeView.blockedReason, 'arrears'); assert.equal(brokeView.loan.overdueCents, brokeView.loan.totalCents);
   await assert.rejects(() => bank(broke, borrow(today)), /bank_active/);
@@ -291,6 +344,17 @@ try {
   assert.equal(brokeView.cashCents, 0); assert.equal(brokeView.loan.paidCents, 123);
   assert.equal(brokeView.loan.remainingCents, brokeView.loan.totalCents - 123);
   console.log('PASS: arrears, insufficient balance, partial automatic collection, no negative cash or extra interest.');
+
+  await db.exec("SET TIME ZONE 'Europe/Paris'");
+  try {
+    for(const acceptedAt of ['2026-03-27T12:00:00+01:00','2026-10-23T12:00:00+02:00']) {
+      await db.query('UPDATE kq_bank_loans SET accepted_at=$2::timestamptz WHERE id=$1',[loanId,acceptedAt]);
+      const schedule=(await result('SELECT kq_bank_loan_json(loan) AS data FROM kq_bank_loans loan WHERE id=$1',[loanId])).data;
+      assert(schedule.schedule.every((item,i)=>Date.parse(item.at)-Date.parse(acceptedAt)===(i+1)*120*3600000),'daylight saving never changes the 120-hour instalment interval');
+      assert.equal(Date.parse(schedule.dueAt)-Date.parse(acceptedAt),35*86400000);
+    }
+  } finally { await db.exec("SET TIME ZONE 'UTC'"); }
+  console.log('PASS: every instalment remains 120 real hours apart across both daylight-saving transitions.');
 
   for (const role of ['anon', 'authenticated', 'service_role']) for (const table of ['kq_bank_markets', 'kq_bank_loans', 'kq_bank_requests']) {
     assert.equal((await result('SELECT has_table_privilege($1,$2,$3) AS allowed', [role, table, 'SELECT,INSERT,UPDATE,DELETE'])).allowed, false);

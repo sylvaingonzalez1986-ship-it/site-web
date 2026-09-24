@@ -1,5 +1,11 @@
-/** Banking uses only the game's virtual euros. Rates are the fixed cost of 7 days, not annual rates. */
-export const KQ_BANK_TERM_DAYS = 7;
+import { KQ_GAME_DAY_MS } from "./kanab-quest-business";
+
+/** Virtual euros only. Rates cover all seven instalments, never an annual rate. */
+export const KQ_BANK_INSTALLMENT_COUNT = 7;
+export const KQ_BANK_INSTALLMENT_GAME_DAYS = 30;
+export const KQ_BANK_INSTALLMENT_MS = KQ_BANK_INSTALLMENT_GAME_DAYS * KQ_GAME_DAY_MS;
+/** The API expresses the full loan term in real days. */
+export const KQ_BANK_TERM_DAYS = KQ_BANK_INSTALLMENT_COUNT * KQ_BANK_INSTALLMENT_MS / 86_400_000;
 export const KQ_BANK_MIN_CENTS = 10_000;
 export const KQ_BANK_TIERS = [
   { reputation: 200, maxCents: 500_000, discountBps: 0 },
@@ -28,7 +34,7 @@ export type KqBankLoan = {
 export type KqBankSnapshot = {
   version: 1; serverNow: string; cashCents: number; reputation: number; eligibleAt: string | null;
   market: { id: string; scenario: string; rateBps: number; changeBps: number; startsAt: string; expiresAt: string };
-  offer: { quoteId: string; minCents: number; maxCents: number; rateBps: number; termDays: 7; expiresAt: string } | null;
+  offer: { quoteId: string; minCents: number; maxCents: number; rateBps: number; termDays: typeof KQ_BANK_TERM_DAYS; expiresAt: string } | null;
   blockedReason: "reputation" | "experience" | "active" | "arrears" | null;
   loan: KqBankLoan | null; history: KqBankLoan[]; autoPaidCents: number; replayed: boolean;
 };
@@ -58,7 +64,7 @@ export function getKqBankTerms(principalCents: number, rateBps: number) {
   if (!integer(principalCents, KQ_BANK_MIN_CENTS, KQ_BANK_MAX_CENTS) || !integer(rateBps, 100, KQ_BANK_MAX_RATE_BPS)) throw new Error("Offre de prêt invalide.");
   const interestCents = Math.ceil(principalCents * rateBps / 10_000);
   const totalCents = principalCents + interestCents;
-  const installments = Array.from({ length: KQ_BANK_TERM_DAYS }, (_, index) => Math.floor(totalCents * (index + 1) / KQ_BANK_TERM_DAYS) - Math.floor(totalCents * index / KQ_BANK_TERM_DAYS));
+  const installments = Array.from({ length: KQ_BANK_INSTALLMENT_COUNT }, (_, index) => Math.floor(totalCents * (index + 1) / KQ_BANK_INSTALLMENT_COUNT) - Math.floor(totalCents * index / KQ_BANK_INSTALLMENT_COUNT));
   return { interestCents, totalCents, installments };
 }
 function isLoan(value: unknown): value is KqBankLoan {
@@ -67,10 +73,17 @@ function isLoan(value: unknown): value is KqBankLoan {
     || !(value.paidAt === null || date(value.paidAt)) || !integer(value.interestCents) || !integer(value.totalCents)
     || !integer(value.paidCents) || !integer(value.remainingCents) || !integer(value.overdueCents)
     || value.totalCents !== value.principalCents + value.interestCents || value.remainingCents !== value.totalCents - value.paidCents
-    || value.overdueCents > value.remainingCents || !Array.isArray(value.schedule) || value.schedule.length !== 7) return false;
+    || value.overdueCents > value.remainingCents || !Array.isArray(value.schedule) || value.schedule.length !== KQ_BANK_INSTALLMENT_COUNT) return false;
   const expected = getKqBankTerms(value.principalCents, value.rateBps);
+  const acceptedAt = Date.parse(value.acceptedAt);
+  // Loans already closed before the calendar migration keep their daily history.
+  const first = value.schedule[0];
+  const intervalMs = value.paidAt !== null && object(first) && date(first.at) && Date.parse(first.at) - acceptedAt === 86_400_000
+    ? 86_400_000 : KQ_BANK_INSTALLMENT_MS;
   return value.interestCents === expected.interestCents && value.schedule.every((item, i) => object(item)
-    && date(item.at) && item.amountCents === expected.installments[i] && integer(item.paidCents, 0, expected.installments[i]))
+    && date(item.at) && Date.parse(item.at) === acceptedAt + (i + 1) * intervalMs
+    && item.amountCents === expected.installments[i] && integer(item.paidCents, 0, expected.installments[i]))
+    && Date.parse(value.dueAt) === acceptedAt + KQ_BANK_INSTALLMENT_COUNT * intervalMs
     && value.schedule.reduce((sum, item) => sum + (item as { paidCents: number }).paidCents, 0) === value.paidCents;
 }
 export function isKqBankSnapshot(value: unknown): value is KqBankSnapshot {
@@ -85,7 +98,7 @@ export function isKqBankSnapshot(value: unknown): value is KqBankSnapshot {
   if (value.offer === null) return value.blockedReason !== null;
   return value.blockedReason === null && value.loan === null && object(value.offer) && value.offer.quoteId === value.market.id
     && value.offer.minCents === KQ_BANK_MIN_CENTS && integer(value.offer.maxCents, KQ_BANK_MIN_CENTS, KQ_BANK_MAX_CENTS)
-    && integer(value.offer.rateBps, 100, KQ_BANK_MAX_RATE_BPS) && value.offer.termDays === 7 && date(value.offer.expiresAt);
+    && integer(value.offer.rateBps, 100, KQ_BANK_MAX_RATE_BPS) && value.offer.termDays === KQ_BANK_TERM_DAYS && date(value.offer.expiresAt);
 }
 export function getKqBankerDialogue(data: KqBankSnapshot) {
   if (data.blockedReason === "arrears") return `« ${data.reputation} points de réputation, mais une échéance en retard. Régularisons ton dossier avant de parler d’un autre prêt. »`;

@@ -5,7 +5,8 @@ export const KQ_CRYPTO_DECIMAL = /^(?:0|[1-9]\d{0,19})(?:\.\d{1,18})?$/;
 export type KqCryptoAsset = { id: number; rank: number | null; name: string; symbol: string; priceEur: string; change24h: number | null; quotedAt: string; inTop100: boolean };
 export type KqCryptoPosition = { assetId: number; quantity: string; costBasisCents: number; valueCents: number | null };
 export type KqCryptoTrade = { orderId: string; assetId: number; side: "buy" | "sell"; quantity: string; priceEur: string; amountCents: number; costBasisCents: number; realizedPnlCents: number; cashAfterCents: number; createdAt: string };
-export type KqCryptoSnapshot = { version: 1; serverNow: string; marketStatus: "live" | "stale" | "unconfigured" | "unavailable"; updatedAt: string | null; cashCents: number; assets: KqCryptoAsset[]; positions: KqCryptoPosition[]; recentTrades: KqCryptoTrade[] };
+export type KqCryptoRefreshStatus = { refreshing: boolean; nextAttemptAt: string | null; lastFailureCode: null | "rate_limited" | "provider_unavailable" | "invalid_quotes" | "publish_failed" };
+export type KqCryptoSnapshot = { version: 1; serverNow: string; marketStatus: "live" | "stale" | "unconfigured" | "unavailable"; updatedAt: string | null; cashCents: number; assets: KqCryptoAsset[]; positions: KqCryptoPosition[]; recentTrades: KqCryptoTrade[]; refresh?: KqCryptoRefreshStatus };
 export type KqCryptoOrder = { orderId: string; assetId: number; side: "buy" | "sell"; quantity: string; priceEur: string; amountCents: number; expiresAt: string; quotedAt: string };
 export type KqCryptoAction = { action: "preview"; side: "buy"; assetId: number; amountCents: number } | { action: "preview"; side: "sell"; assetId: number; quantity: string } | { action: "confirm"; orderId: string };
 export const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value && typeof value === "object" && !Array.isArray(value));
@@ -44,12 +45,25 @@ export function isKqCryptoTrade(value: unknown): value is KqCryptoTrade {
     && natural(value.amountCents) && natural(value.costBasisCents) && typeof value.realizedPnlCents === "number"
     && Number.isSafeInteger(value.realizedPnlCents) && natural(value.cashAfterCents) && date(value.createdAt);
 }
+export function isKqCryptoRefreshStatus(value: unknown): value is KqCryptoRefreshStatus {
+  return isRecord(value) && typeof value.refreshing === "boolean"
+    && (value.nextAttemptAt === null || date(value.nextAttemptAt))
+    && (value.lastFailureCode === null || (typeof value.lastFailureCode === "string" && ["rate_limited", "provider_unavailable", "invalid_quotes", "publish_failed"].includes(value.lastFailureCode)));
+}
 export function isKqCryptoSnapshot(value: unknown): value is KqCryptoSnapshot {
   return isRecord(value) && value.version === 1 && date(value.serverNow) && ["live", "stale", "unconfigured", "unavailable"].includes(String(value.marketStatus))
     && (value.updatedAt === null || date(value.updatedAt)) && natural(value.cashCents)
     && Array.isArray(value.assets) && value.assets.every(isKqCryptoAsset) && Array.isArray(value.positions)
     && value.positions.every(p => isRecord(p) && natural(p.assetId) && decimal(p.quantity) && natural(p.costBasisCents) && (p.valueCents === null || natural(p.valueCents)))
-    && Array.isArray(value.recentTrades) && value.recentTrades.every(isKqCryptoTrade);
+    && Array.isArray(value.recentTrades) && value.recentTrades.every(isKqCryptoTrade)
+    && (value.refresh === undefined || isKqCryptoRefreshStatus(value.refresh));
+}
+/** Recheck an interrupted refresh promptly without polling more than once every five seconds. */
+export function getKqCryptoRefreshDelayMs(snapshot: Pick<KqCryptoSnapshot, "marketStatus" | "refresh"> | null, now: number): number {
+  if (!snapshot || !["stale", "unavailable"].includes(snapshot.marketStatus)) return 60_000;
+  if (snapshot.refresh?.refreshing) return 5_000;
+  const nextAttempt = snapshot.refresh?.nextAttemptAt ? Date.parse(snapshot.refresh.nextAttemptAt) : NaN;
+  return Number.isFinite(nextAttempt) ? Math.max(5_000, Math.min(60_000, nextAttempt - now)) : 60_000;
 }
 export function isKqCryptoQuoteFresh(quotedAt: string, now: number) {
   const age = now - Date.parse(quotedAt);

@@ -6,6 +6,7 @@ import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/securit
 import { getKqCryptoSnapshot, handleKqCryptoAction } from "@/lib/supabase/kanab-quest-crypto-backend";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 const headers = { "Cache-Control": "private, no-store, max-age=0" };
 function failure(error: unknown) {
  const message = error instanceof Error ? error.message : "[supabase:crypto] unavailable";
