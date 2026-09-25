@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ContestArenaPage } from "@/app/bete-de-concours/page";
+import { ContestArenaPage } from "@/components/contest/ContestArenaPage";
 import type { ContestEntryTrack } from "@/types/contest";
 
 export const revalidate = 60;

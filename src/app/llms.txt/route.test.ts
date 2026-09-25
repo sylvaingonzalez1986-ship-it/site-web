@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildLlmsText, GET } from "@/app/llms.txt/route";
+import { GET } from "@/app/llms.txt/route";
+import { buildLlmsText } from "@/lib/llms-text";
 import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
 
 describe("llms.txt", () => {

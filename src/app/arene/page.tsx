@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ContestArenaPage } from "@/app/bete-de-concours/page";
+import { ContestArenaPage, type ContestArenaPageProps } from "@/components/contest/ContestArenaPage";
 
 export const revalidate = 60;
 
@@ -11,4 +11,6 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default ContestArenaPage;
+export default function ArenaPage({ searchParams }: Pick<ContestArenaPageProps, "searchParams">) {
+  return <ContestArenaPage searchParams={searchParams} />;
+}

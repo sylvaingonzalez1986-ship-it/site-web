@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ContestArenaPage } from "@/app/bete-de-concours/page";
+import { ContestArenaPage } from "@/components/contest/ContestArenaPage";
 
 export const revalidate = 60;
 
