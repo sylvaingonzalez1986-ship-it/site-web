@@ -25,9 +25,13 @@ type RetroPreview = {
   eligibleReviews?: number;
   pendingFlowerBoosters?: number;
   pendingHeritages?: number;
+  pendingCompletions?: number;
+  pendingCashCents?: number;
   alreadyComplete?: number;
   flowerBoostersGranted?: number;
   heritagesGranted?: number;
+  completionsGranted?: number;
+  cashCents?: number;
 };
 
 export function AdminProducerRewardCampaigns() {
@@ -74,7 +78,7 @@ export function AdminProducerRewardCampaigns() {
 
   const save = async (activate: boolean) => {
     if (!producerId || !heritageCode || entryIds.length === 0 || saving) return;
-    if (activate && !window.confirm("Activer ce parcours ? Sa liste de fleurs deviendra la référence pour les récompenses.")) return;
+    if (activate && !window.confirm("Activer ce parcours Héritage ? Un avis validé sur une des fleurs cochées débloquera la carte. Le bonus de dégustation utilise toutes les fleurs publiées de la saison courante.")) return;
     setSaving(true);
     setStatus("");
     try {
@@ -118,14 +122,14 @@ export function AdminProducerRewardCampaigns() {
       if (!execute) {
         setRetroPreview(payload);
         setStatus(
-          `Simulation · ${payload.processed ?? 0} avis lus · ${payload.pendingFlowerBoosters ?? 0} booster(s) et ${payload.pendingHeritages ?? 0} Héritage(s) à créer.`,
+          `Simulation · ${payload.processed ?? 0} avis lus · ${payload.pendingCompletions ?? 0} bonus de dégustation (${(payload.pendingCashCents ?? 0) / 100} € jeu) et ${payload.pendingHeritages ?? 0} Héritage(s) à créer.`,
         );
         return;
       }
       setRetroCursor(payload.nextCursor ?? null);
       setRetroPreview(null);
       setStatus(payload.live
-        ? `${payload.processed ?? 0} avis traités · ${payload.flowerBoostersGranted ?? 0} booster(s) · ${payload.heritagesGranted ?? 0} Héritage(s).`
+        ? `${payload.processed ?? 0} avis traités · ${payload.completionsGranted ?? 0} bonus (${(payload.cashCents ?? 0) / 100} € jeu) · ${payload.heritagesGranted ?? 0} Héritage(s).`
         : "Le nouveau système est encore verrouillé : aucune attribution effectuée.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Rétro-attribution impossible.");
@@ -138,17 +142,17 @@ export function AdminProducerRewardCampaigns() {
     <article className="cartoon-border bg-[#eaf4df] p-6 xl:col-span-2">
       <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Carnet → Héritages</p>
       <h4 className="mt-1 font-display text-2xl">Parcours des producteurs</h4>
-      <p className="mt-2 max-w-3xl text-sm">Chaque fleur concours cochée offre cinq boosters de 10 cartes après validation de l’avis. Un avis validé sur une fleur d’un parcours actif débloque l’Héritage permanent du producteur.</p>
+      <p className="mt-2 max-w-3xl text-sm">Regular et Concours partagent le même parcours. Toutes les fleurs publiées du producteur dans la saison courante comptent pour le bonus de dégustation, une seule fois par produit. Les cases ci-dessous servent uniquement au déblocage de la carte Héritage dès le premier avis éligible validé.</p>
       {retroPreview ? (
         <p className="mt-3 border-2 border-ink bg-white p-3 text-sm">
-          Lot simulé : {retroPreview.processed ?? 0} avis · {retroPreview.eligibleReviews ?? 0} éligible(s) · {retroPreview.pendingFlowerBoosters ?? 0} booster(s) · {retroPreview.pendingHeritages ?? 0} Héritage(s) à créer · {retroPreview.alreadyComplete ?? 0} déjà complet(s).
+          Lot simulé : {retroPreview.processed ?? 0} avis · {retroPreview.eligibleReviews ?? 0} éligible(s) · {retroPreview.pendingCompletions ?? 0} bonus de dégustation ({(retroPreview.pendingCashCents ?? 0) / 100} € jeu) · {retroPreview.pendingHeritages ?? 0} Héritage(s) à créer · {retroPreview.alreadyComplete ?? 0} déjà complet(s).
         </p>
       ) : null}
       <div className="mt-3 flex flex-wrap gap-2">
         <button type="button" className="btn-cartoon btn-secondary" disabled={retroPending || retroCursor === null} onClick={() => void runRetro(false)}>
           {retroPending ? "Analyse…" : retroCursor === null ? "Analyse terminée" : "Simuler le lot"}
         </button>
-        {retroPreview && Number(retroPreview.pendingFlowerBoosters ?? 0) + Number(retroPreview.pendingHeritages ?? 0) === 0 && retroPreview.nextCursor != null ? (
+        {retroPreview && Number(retroPreview.pendingCompletions ?? 0) + Number(retroPreview.pendingHeritages ?? 0) === 0 && retroPreview.nextCursor != null ? (
           <button type="button" className="btn-cartoon btn-secondary" disabled={retroPending} onClick={() => {
             setRetroCursor(retroPreview.nextCursor ?? null);
             setRetroPreview(null);
@@ -165,7 +169,7 @@ export function AdminProducerRewardCampaigns() {
             || !retroPreview?.writeAllowed
             || !retroPreview?.previewFingerprint
             || retroPreview?.cursor !== retroCursor
-            || Number(retroPreview?.pendingFlowerBoosters ?? 0) + Number(retroPreview?.pendingHeritages ?? 0) <= 0
+            || Number(retroPreview?.pendingCompletions ?? 0) + Number(retroPreview?.pendingHeritages ?? 0) <= 0
           }
           onClick={() => void runRetro(true)}
         >
@@ -190,7 +194,7 @@ export function AdminProducerRewardCampaigns() {
           {heritageCode ? <div className="mt-2 border-2 border-ink bg-white p-3"><strong className="block">{snapshot?.heritages.find((item) => item.code === heritageCode)?.name}</strong><small className="block text-charcoal">{heritageCode} · créée pour ce producteur</small><p className="mt-2 text-xs font-semibold text-charcoal">{snapshot?.heritages.find((item) => item.code === heritageCode)?.description}</p></div> : <p className="mt-2 border-2 border-dashed border-ink p-3 text-sm">La carte sera créée automatiquement après synchronisation de la migration.</p>}
         </div>
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.1em]">Fleurs requises</p>
+          <p className="text-xs font-black uppercase tracking-[0.1em]">Fleurs éligibles à l’Héritage</p>
           <div className="mt-2 grid gap-2 sm:grid-cols-2">
             {producerEntries.map((entry) => (
               <label key={entry.id} className="flex cursor-pointer items-center gap-3 border-2 border-ink bg-white p-3 text-sm font-bold">

@@ -219,7 +219,7 @@ Les trois traitements admin fonctionnent désormais par lots avec une simulation
 globale en lecture seule avant toute écriture :
 
 - missions Carnet vers boosters La Botte ;
-- avis validés sur les fleurs concours vers cinq boosters et Héritage producteur ;
+- avis validés sur toutes les fleurs d’un producteur, Regular et Concours réunies, vers 100 € de jeu ; Héritage au premier avis éligible et tirage d’un Buddie Argent ou Or après achat de toutes ses fleurs ;
 - ancien flux Héritage lié aux achats, conservé dormant pour contrôle historique.
 
 Une exécution exige simultanément :

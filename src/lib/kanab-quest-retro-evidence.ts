@@ -9,9 +9,13 @@ const COUNT_FIELDS: Record<KqRetroEvidenceKind, readonly string[]> = {
     "eligibleReviews",
     "pendingFlowerBoosters",
     "pendingHeritages",
+    "pendingCompletions",
+    "pendingCashCents",
     "alreadyComplete",
     "flowerBoostersGranted",
     "heritagesGranted",
+    "completionsGranted",
+    "cashCents",
   ],
 };
 
@@ -29,7 +33,7 @@ function toSafeCount(value: unknown) {
 function pendingCount(kind: KqRetroEvidenceKind, source: Record<string, unknown>) {
   if (kind === "notebook") return toSafeCount(source.pending);
   if (kind === "heritage") return toSafeCount(source.pendingUnits);
-  return toSafeCount(source.pendingFlowerBoosters) + toSafeCount(source.pendingHeritages);
+  return toSafeCount(source.pendingFlowerBoosters) + toSafeCount(source.pendingHeritages) + toSafeCount(source.pendingCompletions);
 }
 
 export function buildKqRetroEvidence(

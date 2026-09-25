@@ -33,8 +33,6 @@ import {
   ChevronUp,
   CircleHelp,
   FileCheck2,
-  Gift,
-  LockKeyhole,
   PackageOpen,
   Sprout,
   ThumbsDown,
@@ -905,9 +903,6 @@ function ContestNotebookMissionCards({
 function ContestBotteCollection({
   isAuthenticated,
   entryId,
-  entryTitle,
-  entryTrack,
-  reviewApproved,
 }: {
   isAuthenticated: boolean;
   entryId: string;
@@ -969,7 +964,7 @@ function ContestBotteCollection({
   const supportCopies = new Map((snapshot?.collection?.cards ?? []).map((card) => [card.code, Number(card.ownedCopies)]));
   const supportOwned = KQ_CARDS.filter((card) => (supportCopies.get(card.code) ?? 0) > 0).length;
   const selectedCampaign = findKqProducerRewardForEntry(campaigns, entryId);
-  const selectedFlower = selectedCampaign?.entries.find((entry) => entry.entryId === entryId) ?? null;
+  const selectedFlower = selectedCampaign?.entries.find((entry) => entry.entryId === entryId || entry.entryIds.includes(entryId)) ?? null;
   const availableTenCardPacks = (shop?.availableEntitlements ?? []).filter((item) => item.cardCount === 10);
   const selectedFlowerEntitlementId = selectedFlower?.packReward.availableEntitlementIds[0];
   const nextEntitlement = availableTenCardPacks.find((item) => item.id === selectedFlowerEntitlementId)
@@ -1018,24 +1013,6 @@ function ContestBotteCollection({
     </article>;
   };
 
-  const flowerPackReward = selectedFlower?.packReward ?? {
-    eligible: entryTrack === "concours",
-    totalPacks: entryTrack === "concours" ? 5 : 0,
-    grantedPacks: 0,
-    availablePacks: 0,
-    openedPacks: 0,
-    availableEntitlementIds: [],
-  };
-  const flowerPackStatus = !flowerPackReward?.eligible
-    ? "regular"
-    : flowerPackReward.availablePacks > 0
-      ? "ready"
-      : flowerPackReward.openedPacks >= flowerPackReward.totalPacks
-        ? "opened"
-        : (selectedFlower?.reviewed ?? reviewApproved)
-          ? "pending"
-          : "locked";
-
   return <div className="grid min-w-0 gap-5">
     <ProducerRewardJourney
       isAuthenticated={isAuthenticated}
@@ -1044,44 +1021,14 @@ function ContestBotteCollection({
       onCampaignsChange={setCampaigns}
     />
 
-    <section
-      className={`min-w-0 overflow-hidden rounded border-2 border-ink p-4 shadow-[4px_4px_0_#17130e] ${
-        flowerPackStatus === "ready" ? "bg-[#dff2df]" : flowerPackStatus === "opened" ? "bg-[#fff3c4]" : "bg-[#e2e0da]"
-      }`}
-      aria-labelledby="contest-botte-chest-title"
-    >
-      <div className="grid min-w-0 gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+    <section className="min-w-0 overflow-hidden rounded border-2 border-ink bg-white p-4 shadow-[4px_4px_0_#17130e]" aria-labelledby="contest-botte-chest-title">
+      <div className="flex items-start gap-3">
+        <PackageOpen size={30} className="shrink-0 text-green" aria-hidden="true" />
         <div className="min-w-0">
-          <p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Récompense fleur concours</p>
-          <h3 id="contest-botte-chest-title" className="mt-1 break-words font-display text-2xl uppercase leading-none text-ink">Coffre La Botte</h3>
-          <p className="mt-2 max-w-xl text-xs font-semibold leading-relaxed text-charcoal">
-            {flowerPackStatus === "ready"
-              ? `${selectedFlower?.title ?? entryTitle} a débloqué ses 5 packs. Ouvre-les un par un, chacun contient 10 cartes.`
-              : flowerPackStatus === "opened"
-                ? `Les 5 packs de ${selectedFlower?.title ?? entryTitle} ont été ouverts.`
-                : flowerPackStatus === "pending"
-                  ? "Ton avis est validé. Les cinq packs sont en cours d’attribution."
-                  : flowerPackStatus === "locked"
-                    ? "Fais valider ton avis sur cette fleur concours pour débloquer 5 packs de 10 cartes."
-                    : "Les cinq packs sont réservés aux fleurs concours. Tes packs de mission restent disponibles dans ce coffre."}
-          </p>
-        </div>
-        <div className={`mx-auto grid h-24 w-28 place-items-center rounded border-2 border-ink shadow-[3px_3px_0_#17130e] sm:mx-0 ${flowerPackStatus === "ready" ? "bg-green text-white" : "bg-white text-charcoal"}`}>
-          {flowerPackStatus === "ready" ? <PackageOpen size={46} aria-hidden="true" /> : flowerPackStatus === "opened" ? <Gift size={46} aria-hidden="true" /> : <LockKeyhole size={42} aria-hidden="true" />}
+          <h3 id="contest-botte-chest-title" className="break-words font-display text-2xl uppercase leading-none text-ink">Mes packs La Botte</h3>
+          <p className="mt-2 text-xs font-semibold leading-relaxed text-charcoal">Retrouve ici tes packs disponibles. Chaque pack ci-dessous contient 10 cartes pour le Placard.</p>
         </div>
       </div>
-
-      {flowerPackReward?.eligible ? (
-        <div className="mt-4 grid grid-cols-5 gap-1.5" aria-label="Progression des cinq packs de cette fleur">
-          {Array.from({ length: flowerPackReward.totalPacks }, (_, index) => {
-            const opened = index < flowerPackReward.openedPacks;
-            const ready = !opened && index < flowerPackReward.openedPacks + flowerPackReward.availablePacks;
-            return <span key={index} className={`grid min-h-11 place-items-center rounded border-2 border-ink text-[10px] font-black uppercase ${opened ? "bg-yellow" : ready ? "bg-green text-white" : "bg-white/50 text-charcoal"}`} title={opened ? "Pack ouvert" : ready ? "Pack prêt" : "Pack verrouillé"}>
-              {opened ? "Ouvert" : ready ? `Pack ${index + 1}` : <LockKeyhole size={15} aria-label="Verrouillé" />}
-            </span>;
-          })}
-        </div>
-      ) : null}
 
       <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs font-black text-ink">{availableTenCardPacks.length} pack{availableTenCardPacks.length > 1 ? "s" : ""} de 10 cartes disponible{availableTenCardPacks.length > 1 ? "s" : ""}</p>
@@ -1150,7 +1097,7 @@ export function ContestNotebookCollectionTab({
           <p className="text-[10px] font-black uppercase tracking-[0.14em] text-charcoal">
             Carnet de dégustation
           </p>
-          <h2 className="mt-1 text-xl font-black leading-tight text-ink">Héritages &amp; coffre La Botte</h2>
+          <h2 className="mt-1 text-xl font-black leading-tight text-ink">Tes récompenses de dégustation</h2>
         </div>
       </div>
       <ContestBotteCollection
@@ -3437,7 +3384,7 @@ export function ContestHubClient({
                 Tes <span>dégustations.</span>
               </h2>
               <p className={arenaStyles.sectionLead}>
-                Une fleur Concours rapporte 5 packs de plus qu’une Regular.
+                Regular et Concours comptent ensemble : termine les dégustations d’un producteur pour recevoir son bonus.
               </p>
             </div>
             <div className={arenaStyles.notebookCharacter} aria-hidden="true">

@@ -1795,7 +1795,7 @@ export function KanabQuestDicePrototype({
           <details className={styles.packFormat}>
             <summary><span>Deux collections · deux parcours</span><strong>Les boosters Buddies restent inchangés</strong><small>La Botte possède sa boutique dans L’Arène.</small></summary>
             <div><b>Buddies · album habituel</b><b>La Botte · 10 cartes</b><b>Prix La Botte · 5 points</b></div>
-            <p>Les points gagnés avec les achats servent dans les deux boutiques, avec un tarif propre à La Botte. Les Héritages restent exclusivement liés aux fleurs concours.</p>
+            <p>Les points gagnés avec les achats servent dans les deux boutiques, avec un tarif propre à La Botte. Les Héritages se débloquent avec les avis de dégustation éligibles, en Regular comme en Concours.</p>
           </details>
           {!isPlayerMode && (showAdminOperations || showPackLab) ? <details className={styles.boosterLab} open={showPackLab || undefined}><summary>Prévisualisation locale · Booster La Botte</summary><div><div><span>Boutique de L’Arène</span><strong>Booster La Botte · 10 cartes</strong><p>Aperçu local uniquement : aucune carte n’est enregistrée.</p></div><aside><button type="button" onClick={openTestBooster}><Sparkles /> Ouvrir un booster test</button></aside></div></details> : null}
           {lastBooster.length > 0 ? <div className={styles.boosterReveal} aria-live="polite">{lastBooster.map((card, index) => <article key={`${card.code}-${index}`} data-rarity={card.rarity}><CardArtwork code={card.code} name={card.name} /><span>{card.rarity}</span><strong>{card.name}</strong><small>{remoteBurnsEnabled ? "Aperçu local · aucune copie enregistrée" : `Tu en possèdes maintenant ${inventory[card.code] ?? 0}`}</small></article>)}</div> : null}

@@ -17,7 +17,10 @@ export function buildKqRetroPreviewFingerprint(
           preview.alreadyComplete,
           preview.nextCursor ?? "end",
         ];
-  return [kind, cursor, ...values].join(":");
+  const completion = kind === "producer" && ("pendingCompletions" in preview || "pendingCashCents" in preview)
+    ? ["completion", preview.pendingCompletions ?? 0, preview.pendingCashCents ?? 0]
+    : [];
+  return [kind, cursor, ...values, ...completion].join(":");
 }
 
 export function isKqRetroExecutionAllowed(

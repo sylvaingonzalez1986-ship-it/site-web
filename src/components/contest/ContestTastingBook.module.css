@@ -62,7 +62,7 @@
 .sylvainWelcome p { display: grid; gap: 5px; margin: 0; padding-block: 8px; }
 .sylvainWelcome strong { font: 900 20px/1.1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .sylvainWelcome p > span { font: 700 18px/1.1 var(--font-handwritten), cursive; }
-.chapterGroup[data-track="concours"] { --chapter-color: var(--gold); --chapter-ink: var(--ink); }
+.sylvainWelcome p > small { font-size: 11px; line-height: 1.5; }
 .contentsRow[data-culture="greenhouse"] > svg { background: var(--green); color: var(--paper); }
 .contentsRow[data-culture="indoor"] > svg { background: var(--ink); color: var(--gold); }
 .contentsRow:active, .primary:active, .rewardButton:active { transform: translate(2px, 2px); box-shadow: none; }
@@ -80,7 +80,6 @@
 .chapterGroup h3 { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 5px 8px; margin: 0 0 10px; padding: 9px 10px; border: 2px solid var(--ink); border-radius: 3px; background: var(--chapter-color); color: var(--chapter-ink); box-shadow: 3px 3px var(--ink); }
 .chapterGroup h3 > span { display: flex; align-items: center; gap: 7px; font: 900 20px/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .chapterGroup h3 > small { font-size: 9px; font-weight: 600; }
-.chapterGroup[data-track="concours"] h3 { transform: rotate(-1deg); }
 .contentsRow { display: flex; width: 100%; align-items: center; gap: 9px; min-height: 62px; margin: 0 0 9px; border: 2px solid var(--ink); border-radius: 4px; padding: 8px; background: var(--paper); box-shadow: 3px 3px var(--ink); text-align: left; transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease; }
 .contentsRow > svg { flex-shrink: 0; width: 34px; height: 36px; padding: 6px; border: 1px solid var(--ink); border-radius: 2px; color: var(--ink); background: var(--gold); }
 .contentsCopy { display: grid; flex: 1; gap: 3px; min-width: 0; }

@@ -94,4 +94,13 @@ describe("Kanab Quest retro-attribution evidence", () => {
     expect(producers).toContain('buildKqRetroEvidence("producer", payload)');
     expect(producers).toContain("downloadKqRetroEvidence(retroEvidence)");
   });
+  it("includes completion cash in evidence and permits a completion-only batch", () => {
+    const evidence = buildKqRetroEvidence("producer", { mode: "preview", live: true, writeAllowed: true,
+      previewFingerprint: "producer-with-cash", pendingHeritages: 0, pendingFlowerBoosters: 0,
+      pendingCompletions: 1, pendingCashCents: 10_000, nextCursor: null });
+    expect(evidence).toMatchObject({ pending: 1, readyToExecute: true,
+      counts: { pendingCompletions: 1, pendingCashCents: 10_000 } });
+    expect(buildKqRetroEvidence("producer", { mode: "execute", completionsGranted: 1, cashCents: 10_000 }))
+      .toMatchObject({ counts: { completionsGranted: 1, cashCents: 10_000 }, readyToExecute: false });
+  });
 });

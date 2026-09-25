@@ -39,4 +39,11 @@ describe("Kanab Quest retro-attribution write gate", () => {
       nextCursor: 100,
     })).toBe("producer:50:50:12:20:3:7:100");
   });
+  it("invalidates confirmation when completion counts or cash amounts change", () => {
+    const preview = { processed: 2, eligibleReviews: 2, pendingFlowerBoosters: 0, pendingHeritages: 0,
+      pendingCompletions: 1, pendingCashCents: 10_000, alreadyComplete: 1, nextCursor: null };
+    const fingerprint = buildKqRetroPreviewFingerprint("producer", 0, preview);
+    expect(buildKqRetroPreviewFingerprint("producer", 0, { ...preview, pendingCompletions: 0 })).not.toBe(fingerprint);
+    expect(buildKqRetroPreviewFingerprint("producer", 0, { ...preview, pendingCashCents: 20_000 })).not.toBe(fingerprint);
+  });
 });

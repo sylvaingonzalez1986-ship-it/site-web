@@ -60,7 +60,7 @@ export function ContestHeritageUnlockCard({
 
   const stateLabel = campaign.heritageGranted
     ? "Carte débloquée"
-    : "Avis à faire valider";
+    : "Premier avis à faire valider";
 
   return (
     <aside className="mt-4 overflow-hidden rounded border-2 border-ink bg-[#f7edcf] shadow-[3px_3px_0_#17130e]" aria-labelledby={`heritage-${campaign.campaignId}`}>
@@ -70,7 +70,7 @@ export function ContestHeritageUnlockCard({
             <p className="text-[10px] font-black uppercase tracking-[0.13em] text-[#7d4b11]">Récompense du producteur</p>
             <h3 id={`heritage-${campaign.campaignId}`} className="mt-1 font-display text-xl uppercase leading-none text-ink">{campaign.heritageName}</h3>
           </div>
-          <span className={`inline-flex min-h-8 items-center gap-1.5 rounded-full border-2 border-ink px-2.5 py-1 text-[10px] font-black uppercase leading-tight ${campaign.heritageGranted ? "bg-green text-white" : campaign.completed ? "bg-yellow text-ink" : "bg-white text-ink"}`}>
+          <span className={`inline-flex min-h-8 items-center gap-1.5 rounded-full border-2 border-ink px-2.5 py-1 text-[10px] font-black uppercase leading-tight ${campaign.heritageGranted ? "bg-green text-white" : campaign.heritageEligible ? "bg-yellow text-ink" : "bg-white text-ink"}`}>
             {campaign.heritageGranted ? <Gift size={14} aria-hidden="true" /> : <LockKeyhole size={14} aria-hidden="true" />}
             {stateLabel}
           </span>
@@ -83,7 +83,8 @@ export function ContestHeritageUnlockCard({
 
           <div className="min-w-0 rounded border-2 border-ink/20 bg-white/60 p-3">
             <p className="mt-2 text-xs font-semibold leading-relaxed text-charcoal">{campaign.heritageDescription}</p>
-            <p className="mt-3 text-xs font-black leading-snug text-ink">{campaign.heritageGranted ? "Cette carte permanente est disponible dans ton album." : `Fais valider ton avis sur cette fleur ou une autre fleur de ${campaign.producerName} pour débloquer automatiquement la carte.`}</p>
+            <p className="mt-3 text-xs font-black leading-snug text-ink">{campaign.heritageGranted ? "Cette carte permanente est disponible dans ton album." : `Fais valider ton avis sur une fleur éligible de ${campaign.producerName} pour débloquer automatiquement la carte.`}</p>
+            <p className="mt-3 text-xs leading-relaxed text-charcoal">{campaign.reviewedCount} / {campaign.requiredCount} fleurs dégustées chez ce producteur. Regular et Concours comptent ensemble pour le bonus du parcours complet.</p>
           </div>
         </div>
       </div>
