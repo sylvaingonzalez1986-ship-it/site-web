@@ -8,6 +8,7 @@ import {
   KQ_HERITAGE_DUPLICATE_FRAGMENTS,
   KQ_HERITAGE_EFFECTS,
   KQ_HERITAGE_EFFECT_TEMPLATES,
+  resolveKqHeritageCard,
 } from "@/lib/kanab-quest-heritage";
 
 describe("Kanab Quest heritage cards", () => {
@@ -16,13 +17,34 @@ describe("Kanab Quest heritage cards", () => {
     expect(KQ_HERITAGE_CARDS.every((card) => !("rarity" in card))).toBe(true);
   });
 
-  it("offers twenty-four distinct producer powers with unique tradeoffs", () => {
-    expect(KQ_HERITAGE_EFFECT_TEMPLATES).toHaveLength(24);
-    expect(KQ_HERITAGE_EFFECTS).toHaveLength(24);
-    expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.effect)).size).toBe(24);
-    expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.description)).size).toBe(24);
-    expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.drawback)).size).toBe(24);
+  it("offers twenty-five distinct producer powers with unique tradeoffs", () => {
+    expect(KQ_HERITAGE_EFFECT_TEMPLATES).toHaveLength(25);
+    expect(KQ_HERITAGE_EFFECTS).toHaveLength(25);
+    expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.effect)).size).toBe(25);
+    expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.description)).size).toBe(25);
+    expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.drawback)).size).toBe(25);
     expect(KQ_HERITAGE_EFFECT_TEMPLATES.every((card) => card.description.length >= 40 && card.drawback.length >= 40)).toBe(true);
+  });
+
+  it("describes the equipped producer mechanic when a legacy code has been reassigned", () => {
+    expect(resolveKqHeritageCard({
+      heritageCode: "HERITAGE-002",
+      heritageEffect: "flower-lowest-plus-three",
+      heritageName: "Floraison généreuse · Iznofarm",
+      heritageProducerName: "Iznofarm",
+    })).toMatchObject({
+      code: "HERITAGE-002",
+      name: "Floraison généreuse · Iznofarm",
+      timing: "once-per-run",
+      effect: "flower-lowest-plus-three",
+      description: "En Floraison, ajoute +3 au dé le plus faible, sans dépasser 6.",
+      producerName: "Iznofarm",
+    });
+    expect(resolveKqHeritageCard({
+      heritageCode: "HERITAGE-002",
+      heritageEffect: "flower-lowest-plus-three",
+    })?.name).toBe("Floraison généreuse");
+    expect(resolveKqHeritageCard({ heritageCode: "HERITAGE-002" })).toEqual(KQ_HERITAGE_CARDS[1]);
   });
 
   it("keeps the database catalogue aligned with every stronger power", () => {

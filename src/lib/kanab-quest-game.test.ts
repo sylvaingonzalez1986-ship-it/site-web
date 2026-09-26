@@ -925,6 +925,91 @@ describe("Kanab Quest dice prototype", () => {
     expect(canActivateKqHeritage({ ...floweringBase, stageIndex: 2, phase: "rolled", dice: [4, 2, 3] }).allowed).toBe(false);
   });
 
+  it.each([
+    [[1, 4, 5], [4, 4, 5]],
+    [[5, 2, 4], [5, 5, 4]],
+    [[6, 5, 3], [6, 5, 6]],
+    [[4, 5, 6], [6, 5, 6]],
+    [[6, 5, 6], [6, 6, 6]],
+  ])("adds three to only the weakest flowering die and caps it at six: %j", (dice, expected) => {
+    const state: KqGameState = {
+      ...startWithHeritageEffect("flower-lowest-plus-three"),
+      stageIndex: 3,
+      phase: "rolled",
+      dice: [...dice] as [number, number, number],
+    };
+    const activated = activateKqHeritage(state);
+    expect(activated.dice).toEqual(expected);
+    expect(state.dice).toEqual(dice);
+    expect(activated.heritageUsed).toBe(true);
+    expect(activated.rollNonce).toBe(state.rollNonce);
+    expect(activated.effectNotices?.at(-1)).toContain("+3");
+    expect(activateKqHeritage(activated)).toBe(activated);
+  });
+
+  it.each([0, 1, 2, 4, 5])("keeps the flowering bonus unavailable during stage %i", (stageIndex) => {
+    const state: KqGameState = {
+      ...startWithHeritageEffect("flower-lowest-plus-three"),
+      stageIndex,
+      phase: "rolled",
+      dice: [1, 4, 5],
+    };
+    expect(canActivateKqHeritage(state).allowed).toBe(false);
+    expect(activateKqHeritage(state)).toBe(state);
+  });
+
+  it("requires an unused flowering power and a rolled die that can improve", () => {
+    const base: KqGameState = {
+      ...startWithHeritageEffect("flower-lowest-plus-three"),
+      stageIndex: 3,
+      phase: "rolled",
+      dice: [1, 4, 5],
+    };
+    const blockedStates: KqGameState[] = [
+      { ...base, phase: "prepare" },
+      { ...base, phase: "resolved" },
+      { ...base, phase: "complete" },
+      { ...base, dice: null },
+      { ...base, dice: [6, 6, 6] },
+      { ...base, heritageUsed: true },
+    ];
+    for (const state of blockedStates) {
+      expect(canActivateKqHeritage(state).allowed).toBe(false);
+      expect(activateKqHeritage(state)).toBe(state);
+    }
+  });
+
+  it("combines the flowering bonus with existing Danger protection", () => {
+    const state: KqGameState = {
+      ...startWithHeritageEffect("flower-lowest-plus-three"),
+      stageIndex: 3,
+      phase: "rolled",
+      dice: [1, 1, 4],
+      cancelledDangers: 1,
+    };
+    const activated = activateKqHeritage(state);
+    expect(activated.dice).toEqual([1, 4, 4]);
+    expect(activated.cancelledDangers).toBe(1);
+    expect(previewKqResolution(activated)).toMatchObject({ total: 2, dangers: 0 });
+  });
+
+  it("scores flowering successes and sparks from the improved dice", () => {
+    const base = startWithHeritageEffect("flower-lowest-plus-three");
+    const rolled: KqGameState = {
+      ...base,
+      situationCodes: base.situationCodes.map((code, index) => index === 3 ? "SIT-004" : code),
+      stageIndex: 3,
+      phase: "rolled",
+      dice: [1, 2, 6],
+    };
+    const success = activateKqHeritage(rolled);
+    expect(previewKqResolution(success)).toMatchObject({ total: 2, sparks: 1, outcome: "success" });
+    const resolved = resolveKqStage(success);
+    expect(resolved.history.at(-1)).toMatchObject({ total: 2, sparks: 1, outcome: "success", xpGain: 3 });
+    const critical = activateKqHeritage({ ...rolled, dice: [1, 4, 5] });
+    expect(previewKqResolution(critical)).toMatchObject({ total: 3, sparks: 0, outcome: "critical" });
+  });
+
   it("protects harvest and upgrades only a Fragile final affinage", () => {
     const guardBase = startWithHeritageEffect("harvest-theft-shield");
     const guarded = resolveKqStage({

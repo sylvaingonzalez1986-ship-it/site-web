@@ -25,6 +25,7 @@ export const KQ_HERITAGE_EFFECTS = [
   "first-danger-shield",
   "spark-pressure-relief",
   "fragile-quality-boost",
+  "flower-lowest-plus-three",
 ] as const;
 
 export type KqHeritageEffect = (typeof KQ_HERITAGE_EFFECTS)[number];
@@ -84,6 +85,7 @@ export const KQ_HERITAGE_EFFECT_TEMPLATES: readonly KqHeritageEffectTemplate[] =
   { name: "Parade ancestrale", timing: "once-per-run", effect: "first-danger-shield", description: "Annule automatiquement le premier Danger non protégé d’un lancer.", drawback: "Le Danger est seulement annulé : il ne devient ni réussite ni Étincelle." },
   { name: "Soupape lumineuse", timing: "once-per-run", effect: "spark-pressure-relief", description: "La première Étincelle obtenue ramène la Pression deux niveaux plus bas.", drawback: "Exige une Étincelle et une Pression positive ; ne modifie pas le résultat des dés." },
   { name: "Art du compromis", timing: "passive", effect: "fragile-quality-boost", description: "Un résultat Fragile rapporte 2 points de Qualité au lieu de 1.", drawback: "N’améliore jamais un échec et ne rapporte aucun XP supplémentaire." },
+  { name: "Floraison généreuse", timing: "once-per-run", effect: "flower-lowest-plus-three", description: "En Floraison, ajoute +3 au dé le plus faible, sans dépasser 6.", drawback: "Réservé à la Floraison et utilisable une seule fois ; aucun effet si les trois dés valent déjà 6." },
 ] as const;
 
 export function isKqHeritageEffect(value: unknown): value is KqHeritageEffect {
@@ -111,12 +113,13 @@ export function resolveKqHeritageCard(input: {
   const effect = input.heritageEffect ?? legacy?.effect;
   if (!effect) return undefined;
   const template = getKqHeritageEffectTemplate(effect);
+  const fallback = legacy?.effect === effect ? legacy : template;
   return {
     code: input.heritageCode,
-    name: input.heritageName?.trim() || legacy?.name || template.name,
-    timing: input.heritageTiming ?? legacy?.timing ?? template.timing,
+    name: input.heritageName?.trim() || fallback.name,
+    timing: input.heritageTiming ?? fallback.timing,
     effect,
-    description: legacy?.description ?? template.description,
+    description: fallback.description,
     ...(input.heritageProducerName ? { producerName: input.heritageProducerName } : {}),
     ...(input.heritageImageUrl ? { imageUrl: input.heritageImageUrl } : {}),
   };

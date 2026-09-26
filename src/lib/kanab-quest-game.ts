@@ -636,11 +636,11 @@ export function canActivateKqHeritage(state: KqGameState) {
   const heritage = getKqStateHeritage(state);
   if (!heritage) return { allowed: false, reason: "Aucun Héritage équipé." };
   if (heritage.timing === "passive") return { allowed: false, reason: "Cet Héritage est passif." };
-  if (state.heritageUsed) return { allowed: false, reason: "Cet Héritage a déjà été utilis?." };
+  if (state.heritageUsed) return { allowed: false, reason: "Cet Héritage a déjà été utilisé." };
   if (heritage.effect === "five-keep-three") {
-    if (state.heritageArmed) return { allowed: false, reason: "Le quatrième dé est déjà armé." };
+    if (state.heritageArmed) return { allowed: false, reason: "Le lancer de 5 dés est déjà préparé." };
     return state.phase === "prepare"
-      ? { allowed: true, reason: "Arme le quatrième dé pour ce lancer." }
+      ? { allowed: true, reason: "Prépare un lancer de 5 dés et conserve les 3 meilleurs." }
       : { allowed: false, reason: "À activer avant le lancer." };
   }
   if (heritage.effect === "free-pest-mastery") {
@@ -657,6 +657,8 @@ export function canActivateKqHeritage(state: KqGameState) {
   if (heritage.effect === "growth-danger-reroll" && state.dice.filter((die) => die === 1).length <= state.cancelledDangers) return { allowed: false, reason: "Aucun Danger non protégé à relancer." };
   if (heritage.effect === "flower-success-to-spark" && state.stageIndex !== 3) return { allowed: false, reason: "Réservé à la Floraison." };
   if (heritage.effect === "flower-success-to-spark" && !state.dice.some((die) => die === 4 || die === 5)) return { allowed: false, reason: "Aucune réussite ordinaire à transformer." };
+  if (heritage.effect === "flower-lowest-plus-three" && KQ_STAGES[state.stageIndex] !== "Floraison") return { allowed: false, reason: "Réservé à la Floraison." };
+  if (heritage.effect === "flower-lowest-plus-three" && state.dice.every((die) => die === 6)) return { allowed: false, reason: "Les trois dés valent déjà 6." };
   if (heritage.effect === "flower-neutrals-to-success" && KQ_STAGES[state.stageIndex] !== "Floraison") return { allowed: false, reason: "Réservé à la Floraison." };
   if (heritage.effect === "drying-lowest-to-spark" && state.stageIndex !== KQ_STAGES.length - 1) return { allowed: false, reason: "Réservé au séchage et à l’affinage." };
   if (heritage.effect === "neutral-to-spark" && !state.dice.some((die) => die === 2 || die === 3)) return { allowed: false, reason: "Aucun dé neutre à transformer." };
@@ -671,6 +673,7 @@ export function canActivateKqHeritage(state: KqGameState) {
     "rooting-pressure-reset",
     "growth-danger-reroll",
     "flower-success-to-spark",
+    "flower-lowest-plus-three",
   ].includes(heritage.effect)
     ? { allowed: true, reason: "Pouvoir disponible." }
     : { allowed: false, reason: "Cet Héritage se déclenche automatiquement." };
@@ -721,6 +724,13 @@ export function activateKqHeritage(state: KqGameState): KqGameState {
   } else if (heritage.effect === "flower-success-to-spark") {
     const index = dice.findIndex((die) => die === 4 || die === 5);
     dice[index] = 6;
+  } else if (heritage.effect === "flower-lowest-plus-three") {
+    const lowest = Math.min(...dice);
+    const lowestIndexes = dice.flatMap((die, index) => die === lowest ? [index] : []);
+    const index = lowest === 1
+      ? lowestIndexes[Math.min(cancelledDangers, lowestIndexes.length - 1)]
+      : lowestIndexes[0];
+    dice[index] = Math.min(6, dice[index] + 3);
   }
   return {
     ...state, dice, rollNonce, cancelledDangers, heritageUsed: true,

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "generator": "built-in image_gen",
+  "styleReference": "public/app/kanab-quest/cards/heritage-001-racines-solides-producer-v2.webp",
+  "format": "Portrait 2:3; full-bleed illustration without text or card frame.",
+  "webpQuality": 86,
+  "assets": [
+    {
+      "code": "HERITAGE-013",
+      "producer": "Cannapache",
+      "reference": "output/heritage-producers/references/HERITAGE-013.jpg",
+      "referenceRole": "Existing producer logo, not a personal portrait.",
+      "outputPng": "public/app/kanab-quest/cards/heritage-013-cannapache-v1.png",
+      "outputWebp": "public/app/kanab-quest/cards/heritage-013-cannapache-v1.webp",
+      "prompt": "Use case: stylized-concept. Asset type: full-bleed portrait illustration for an existing French producer heritage collectible card. Create a single vertical 2:3 finished illustration, visually consistent with the second reference image: exquisite antique copperplate engraving and banknote crosshatching, warm antique gold and ochre parchment, deep forest and olive green botanical details, dramatic radiant golden light and restrained organic scrollwork. Clear central subject, detailed tactile engraved lines, elegant premium collectible art. No typography, no text, no numbers, no labels, no watermark, no card border, no outer frame. Fill the entire canvas with illustration. Keep important subject centered and all head/face details safely within the middle 80 percent for cropping. Input image 1 is Cannapache's existing illustrated logo and supplies the emblem identity, not a photograph of a real person. Input image 2 supplies only artistic style; do NOT copy its man. Reinterpret the recognizable left-facing profile and feather headdress of the first reference as a dignified finely etched ornamental emblem emerging among lush flowering hemp, rich mature flowers and carefully rendered leaves. Preserve its left-facing profile silhouette, long dark hair, distinctive feather fan and subtle warm red accents; simplify the original logo's red/yellow circle into radiant antique gold. The flowers should express flowering mastery and abundant botanical vitality. Scene is a richly engraved botanical allegory, with the prominent emblem in upper-middle canvas and abundant flowering plants filling the lower half. No lettering from either reference; no modern logo outline or flat vector effect. Do not invent a photographic likeness or another person."
+    },
+    {
+      "code": "HERITAGE-014",
+      "producer": "Cap Estuaire",
+      "reference": "output/heritage-producers/references/HERITAGE-014.png",
+      "referenceRole": "Producer photo; preserve personal likeness.",
+      "outputPng": "public/app/kanab-quest/cards/heritage-014-cap-estuaire-v1.png",
+      "outputWebp": "public/app/kanab-quest/cards/heritage-014-cap-estuaire-v1.webp",
+      "prompt": "Use case: stylized-concept. Asset type: full-bleed portrait illustration for an existing French producer heritage collectible card. Create a single vertical 2:3 finished illustration, visually consistent with the second reference image: exquisite antique copperplate engraving and banknote crosshatching, warm antique gold and ochre parchment, deep forest and olive green botanical details, dramatic radiant golden light and restrained organic scrollwork. Clear central subject, detailed tactile engraved lines, elegant premium collectible art. No typography, no text, no numbers, no labels, no watermark, no card border, no outer frame. Fill the entire canvas with illustration. Keep important subject centered and all head/face details safely within the middle 80 percent for cropping. Input image 1 supplies the exact real producer's face; input image 2 supplies only illustration style, never its man's likeness. Faithfully preserve the real man in image 1: medium-length swept-back dark hair, dark brows, lean oval face, light mustache and short stubble, relaxed closed-mouth smile, black hoodie. Portray this same adult man waist-up facing viewer with his reference facial proportions and recognizable expression, converted into realistic antique engraving. Surround him with orderly hanging branches drying slowly in a warm wooden botanical workshop; through a softly engraved opening behind him show an estuary river winding toward the coast with gentle tidal ripples. Patient drying and careful craft are expressed through calm posture and neatly spaced suspended herb branches. Foreground contains a modest group of elegant hemp stems and flowers, with the same olive-green botanical detail as the style sample. No other people. No modern instruments, text or frame."
+    },
+    {
+      "code": "HERITAGE-015",
+      "producer": "Skud Farm",
+      "reference": "output/heritage-producers/references/HERITAGE-015.jpg",
+      "referenceRole": "Producer photo; preserve personal likeness.",
+      "outputPng": "public/app/kanab-quest/cards/heritage-015-skud-farm-v1.png",
+      "outputWebp": "public/app/kanab-quest/cards/heritage-015-skud-farm-v1.webp",
+      "prompt": "Use case: stylized-concept. Asset type: full-bleed portrait illustration for an existing French producer heritage collectible card. Create a single vertical 2:3 finished illustration, visually consistent with the second reference image: exquisite antique copperplate engraving and banknote crosshatching, warm antique gold and ochre parchment, deep forest and olive green botanical details, dramatic radiant golden light and restrained organic scrollwork. Clear central subject, detailed tactile engraved lines, elegant premium collectible art. No typography, no text, no numbers, no labels, no watermark, no card border, no outer frame. Fill the entire canvas with illustration. Keep important subject centered and all head/face details safely within the middle 80 percent for cropping. Input image 1 supplies the exact producer likeness and indoor cultivation identity. Input image 2 supplies only engraving style; do NOT copy its man. Faithfully render the same adult man from image 1 with bald shaved head, short light-brown beard and stubble, distinctive black wraparound reflective sunglasses, strong lean features, gray-brown hooded sweatshirt and subtly turned shoulders. Preserve his reference facial proportions, sunglasses shape and calm assured expression. Center him waist-up among meticulously arranged rows of indoor hemp plants with symmetrical clean overhead grow-light geometry transformed into fine golden engraved lines. His precision and indoor mastery are shown by the immaculate repeated plant canopy and carefully tended mature flowering branches. Face and sunglasses clearly recognizable in the upper center, green botanical foliage across lower canvas, warm gold radiant halo naturally blending into indoor light structures. No other people, no written controls, no labels, no modern photo rendering."
+    },
+    {
+      "code": "HERITAGE-016",
+      "producer": "3 Feuilles",
+      "reference": "output/heritage-producers/references/HERITAGE-016.jpg",
+      "referenceRole": "Existing producer logo, not a personal portrait.",
+      "outputPng": "public/app/kanab-quest/cards/heritage-016-3-feuilles-v1.png",
+      "outputWebp": "public/app/kanab-quest/cards/heritage-016-3-feuilles-v1.webp",
+      "prompt": "Use case: stylized-concept. Asset type: full-bleed portrait illustration for an existing French producer heritage collectible card. Create a single vertical 2:3 finished illustration, visually consistent with the second reference image: exquisite antique copperplate engraving and banknote crosshatching, warm antique gold and ochre parchment, deep forest and olive green botanical details, dramatic radiant golden light and restrained organic scrollwork. Clear central subject, detailed tactile engraved lines, elegant premium collectible art. No typography, no text, no numbers, no labels, no watermark, no card border, no outer frame. Fill the entire canvas with illustration. Keep important subject centered and all head/face details safely within the middle 80 percent for cropping. Input image 1 is the existing 3 Feuilles botanical logo and supplies a simple three-tier leaf motif, not a real person. Input image 2 supplies only artistic style; do NOT copy its man. Create a symbolic botanical heritage scene centered on a thriving green hemp plant in living soil, with three gracefully stacked tiers of leaves subtly echoing the reference logo's vertical branch shape. The plant rises into warm radiant golden daylight, while an elegant engraved soil cross-section below reveals deep branching roots, rich organic matter, fine fungal threads and a few earthworms in healthy undisturbed soil. Two small sheep graze peacefully in the middle-distance meadow beside the cultivated plot, suggesting natural compost and a living agricultural cycle. The plant is the central hero; pastoral hillside and restrained golden organic scrollwork form the background. Match the fine gold/black copperplate linework and realistic olive-green botany of the style sample. No human portrait, no cartoon face, no text from the logo, no machinery, no frame."
+    }
+  ]
+}

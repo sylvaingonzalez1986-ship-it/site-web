@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "date": "2026-09-26",
+  "generator": "built-in image_gen",
+  "intent": "Respecter les logos officiels en reprenant la gravure dorée des cartes historiques.",
+  "format": "Landscape 4:3",
+  "assets": [
+    {
+      "code": "HERITAGE-013",
+      "producer": "Cannapache",
+      "prompt": "Use case: style-transfer. Asset type: illustration panel for an existing French heritage collectible card. Image 1 is the exact Cannapache producer logo to preserve, and is the identity target. Image 2 is ONLY the engraving style reference; do not borrow its woman or any of its objects. Recreate the COMPLETE logo from image 1 as the unmistakable central subject in the refined golden copperplate engraving style of the historical card. Preserve the source emblem composition, circular sun and rays, left-facing illustrated profile, facial contour and closed eye, long black hair, feather headdress silhouette and arrangement, red/yellow cheek marks, blue headband accents, original small hemp plant in front of the profile, strong black contours. Retain recognizable red, yellow, orange and blue brand accents instead of making everything monochrome. Preserve the exact curved wordmark 'CANNAPACHE' along the left arc, its direction and large block letter shapes. Do not replace the emblem with a realistic person or with a field of plants. Restrict changes to fine engraved texture within the existing shapes and a warm antique-gold parchment surround, delicate radiating lines and restrained scrollwork echoing reference 2. No extra plants, objects, people, animals or landscape. Landscape canvas 4:3, finished full-bleed art without card frame or UI. Center the whole emblem and wordmark, entirely visible, occupying about 80% of image height with generous 10% safe margins on every side. Avoid cropping any feather, letter or circular outline. No other text, numbers or watermark.",
+      "refs": [
+        "output/heritage-producers/references/HERITAGE-013.jpg",
+        "public/app/kanab-quest/cards/heritage-008-bouclier-biologique-producer-v2.webp"
+      ],
+      "outputs": [
+        "public/app/kanab-quest/cards/heritage-013-cannapache-v2.png",
+        "public/app/kanab-quest/cards/heritage-013-cannapache-v2.webp"
+      ]
+    },
+    {
+      "code": "HERITAGE-016",
+      "producer": "3 Feuilles",
+      "prompt": "Use case: style-transfer. Asset type: illustration panel for an existing French heritage collectible card. Image 1 is the exact '3 Feuilles' producer logo to preserve, and is the identity target. Image 2 supplies ONLY the antique golden copperplate engraving style, not its hand, cards, leaf or symbol. Make the FULL LOGO from image 1 the clear dominant central subject. Preserve exactly its deep-green solid geometric plant monogram: thick vertical stem with three stacked tiers, three broad leaf shapes on the left and two on the right, squared-off horizontal tips, curved undersides, distinctive asymmetric bottom tier. It must remain a geometric brand symbol, never a natural hemp plant. Keep the exact bold dark-green serif wordmark '3 Feuilles' beneath, with the original letterforms, case, proportions and spacing. Maintain the relative layout and proportions of symbol and lettering. Add subtle meticulous engraved hatching within the dark green shapes without changing their silhouettes, over a luminous warm cream and antique-gold parchment background with restrained golden rays and delicate ornamental curls in the outer margins, matching the historical card's craftsmanship. No invented sheep, soil, roots, fields, figures or additional botanical objects. Landscape canvas 4:3, full-bleed finished illustration, no card border or UI. Entire monogram AND wordmark must fit centrally inside 80% of the canvas height with at least 10% safe margins, remain highly legible and instantly match the source. No extra words, numbers beyond the original 3, or watermark.",
+      "refs": [
+        "output/heritage-producers/references/HERITAGE-016.jpg",
+        "public/app/kanab-quest/cards/heritage-003-main-prevoyante-producer-v2.webp"
+      ],
+      "outputs": [
+        "public/app/kanab-quest/cards/heritage-016-3-feuilles-v2.png",
+        "public/app/kanab-quest/cards/heritage-016-3-feuilles-v2.webp"
+      ]
+    }
+  ]
+}

@@ -13,7 +13,7 @@ describe("Kanab Quest Heritage admin state", () => {
       { code: "HERITAGE-002", effect: "pending-editorial-HERITAGE-002", isActive: false, producerId: "p2", producerName: "Ferme Bêta" },
     ]);
 
-    expect(state.effectOptions).toHaveLength(24);
+    expect(state.effectOptions).toHaveLength(25);
     expect(state.effectOptions.find((option) => option.effect === "starting-xp-two")).toMatchObject({
       isAvailable: false,
       assignedCardCode: "HERITAGE-001",
@@ -23,7 +23,7 @@ describe("Kanab Quest Heritage admin state", () => {
     expect(state.summary).toMatchObject({
       activeCards: 1,
       pendingEditorialCards: 1,
-      availableEffects: 23,
+      availableEffects: 24,
       duplicateActiveEffects: 0,
     });
   });

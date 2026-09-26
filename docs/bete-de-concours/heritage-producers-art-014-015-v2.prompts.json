@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "generator": "built-in image_gen",
+  "intent": "Identity-preserving style transfer of the actual producer photos; no added scene or action.",
+  "targetAspectRatio": "4:3 landscape for an 860×650 illustration window",
+  "styleReference": "public/app/kanab-quest/cards/heritage-001-racines-solides-producer-v2.webp",
+  "webpQuality": 86,
+  "assets": [
+    {
+      "code": "HERITAGE-014",
+      "producer": "Cap Estuaire",
+      "reference": "output/heritage-producers/references/HERITAGE-014.png",
+      "stem": "heritage-014-cap-estuaire-v2",
+      "prompt": "Use case: identity-preserve style-transfer. Asset type: illustration window for a collectible heritage card, finished horizontal landscape 4:3 aspect ratio, 1536 x 1152 pixels. Input image 1 is the ONLY source for the real person's identity, exact expression, hairstyle, clothing, body pose and original camera angle. Input image 2 is ONLY a STYLE reference: its fine antique copperplate engraved linework, etched crosshatching, warm antique gold background and restrained dark olive / forest-green tones. Do not use or blend in the person, hand pose, roots, plant-in-hands composition or scene from image 2. The task is a faithful engraved rendition of the actual photo in image 1, with minimal discreet gold ornamental scrollwork behind it, not a reimagined character or scene. Preserve facial proportions and asymmetry, eye direction, nose and mouth shape, age, expression, exact posture and clothing. Make the entire head, hair and ears visible with at least 8-10 percent safe margin around the head. Adapt to landscape by extending the backdrop at the sides while retaining the photograph's close upper-body framing. Render every visible part consistently as refined fine-line engraving, with realistic recognizable anatomy. Full bleed artwork only. No card border, no frame, no typography, no words, no logos, no numbers, no watermark. Subject-specific invariants for image 1: the same man facing camera with slightly tilted head, medium-length swept-back dark hair, broad dark eyebrows, slightly narrowed eyes, soft closed-mouth smile, short salt-and-pepper stubble, black hoodie with the exact collar/hood shape. Preserve the visible chest-up portrait pose: do not invent hands, a held plant, an activity, a new body posture or a wardrobe change. Keep his head and upper torso centered, maintaining the source photo's angle and relative proportions. Replace only the pale stone background with a softly illuminated antique gold engraved paper field and very discreet loose organic scrollwork, in the restrained gold-green family of image 2. Do not add an estuary, workshop, drying branches or any other setting, object or action. Faithful face identity is more important than decorative detail.",
+      "outputPng": "public/app/kanab-quest/cards/heritage-014-cap-estuaire-v2.png",
+      "outputWebp": "public/app/kanab-quest/cards/heritage-014-cap-estuaire-v2.webp"
+    },
+    {
+      "code": "HERITAGE-015",
+      "producer": "Skud Farm",
+      "reference": "output/heritage-producers/references/HERITAGE-015.jpg",
+      "stem": "heritage-015-skud-farm-v2",
+      "prompt": "Use case: identity-preserve style-transfer. Asset type: illustration window for a collectible heritage card, finished horizontal landscape 4:3 aspect ratio, 1536 x 1152 pixels. Input image 1 is the ONLY source for the real person's identity, exact expression, hairstyle, clothing, body pose and original camera angle. Input image 2 is ONLY a STYLE reference: its fine antique copperplate engraved linework, etched crosshatching, warm antique gold background and restrained dark olive / forest-green tones. Do not use or blend in the person, hand pose, roots, plant-in-hands composition or scene from image 2. The task is a faithful engraved rendition of the actual photo in image 1, with minimal discreet gold ornamental scrollwork behind it, not a reimagined character or scene. Preserve facial proportions and asymmetry, eye direction, nose and mouth shape, age, expression, exact posture and clothing. Make the entire head, hair and ears visible with at least 8-10 percent safe margin around the head. Adapt to landscape by extending the backdrop at the sides while retaining the photograph's close upper-body framing. Render every visible part consistently as refined fine-line engraving, with realistic recognizable anatomy. Full bleed artwork only. No card border, no frame, no typography, no words, no logos, no numbers, no watermark. Subject-specific invariants for image 1: the same bald man in black wraparound reflective sunglasses, short light-brown beard and stubble, neutral serious mouth, gray-brown hoodie; same half-turned shoulder angle and selfie viewpoint, head on the right half looking toward camera. Preserve the original sunglasses shape and reflections, actual facial outline, nose and mouth, hood folds and visible upper body pose. Keep the indoor green plant canopy that is already in the original photograph, filling the left and background with the original sense of density, rendered in detailed olive green engraving. Translate the original pale indoor ceiling into a subdued warm gold engraved surface with only discreet ornamental strokes; do not add new grow lamps, new shelving, new tools or a different room. Preserve the reference composition with the head on the right half, entire head safely clear of canvas edges and plants filling the left; extend the scene sideways for the landscape image. Do not add hands or change his activity. Faithful face identity and pose are more important than decorative detail.",
+      "outputPng": "public/app/kanab-quest/cards/heritage-015-skud-farm-v2.png",
+      "outputWebp": "public/app/kanab-quest/cards/heritage-015-skud-farm-v2.webp"
+    }
+  ],
+  "actualImageSize": {
+    "width": 1448,
+    "height": 1086
+  },
+  "inspection": "Both images are landscape 4:3, with complete heads and faithful photo poses. Cap Estuaire retains the black hoodie portrait without a new scene or activity; Skud Farm retains the sunglasses, hoodie, shoulder angle and plant canopy shown in the photo. No typography or card frame."
+}
