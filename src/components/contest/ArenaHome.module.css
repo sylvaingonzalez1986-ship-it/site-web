@@ -36,9 +36,9 @@
   min-width: 0;
   min-height: 132px;
   padding: 1.15rem;
-  border: 1px solid #fffaf15c;
+  border: 1px solid #f4c43d;
   border-radius: 12px;
-  background: #fffaf1;
+  background: #f4c43d;
   color: #003f30;
   text-decoration: none;
   box-shadow: 0 4px 16px #001e1926;
@@ -46,18 +46,18 @@
 }
 .activityIcon { display: grid; place-items: center; flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; background: #00563f0d; }
 .activityText { display: grid; gap: .3rem; min-width: 0; }
-.activityName { font-size: .65rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .75; }
+.activityName { font-size: .65rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; }
 .activityText strong { font-size: 1.2rem; line-height: 1.15; }
 .description { font-size: .78rem; line-height: 1.45; }
 .arrow { flex-shrink: 0; margin-left: auto; }
-.locked { background: #003f30e6; color: #fffaf1; box-shadow: none; }
-.locked .activityIcon { background: #fffaf10d; }
-.soon { display: flex; align-items: center; gap: .25rem; margin-left: auto; color: #f4c43d; font-size: .65rem; white-space: nowrap; }
+.locked { background: #e8cd7e; border-color: #e8cd7e; color: #003f30; box-shadow: none; }
+.soon { display: flex; align-items: center; gap: .25rem; margin-left: auto; color: #003f30; font-size: .65rem; white-space: nowrap; }
 .rewardLink { display: flex; justify-content: center; align-items: center; gap: .4rem; width: fit-content; min-height: 44px; margin: .65rem auto 0; color: #f4c43d; font-size: .8rem; text-align: center; text-decoration: none; }
 .rewardLink svg { flex-shrink: 0; }
 .home :where(a, button, summary):focus-visible { outline-color: #f4c43d; }
+.home a.activity:focus-visible { outline-color: #003f30; }
 @media (hover: hover) {
-  a.activity:hover { background: #fff1c2; border-color: #f4c43d; }
+  a.activity:hover { background: #ffda66; border-color: #ffda66; }
   .rewardLink:hover { text-decoration: underline; text-underline-offset: 4px; }
 }
 @media (max-width: 900px) {
