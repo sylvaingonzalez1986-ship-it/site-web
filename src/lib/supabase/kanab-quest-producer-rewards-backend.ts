@@ -2,7 +2,6 @@ import "server-only";
 
 import {
   buildKqProducerRewardProgress,
-  KQ_PRODUCER_COMPLETION_CASH_CENTS,
   KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE,
   type KqProducerNotebookRewardReceipt,
   type KqProducerRewardCard,
@@ -18,6 +17,7 @@ type ProducerState = {
   reviewedProductIds: string[];
   purchasedProductIds: string[];
   completionGranted: boolean;
+  completionCashCents: number;
   purchaseGranted: boolean;
   purchaseCard: KqProducerRewardCard | null;
 };
@@ -36,6 +36,13 @@ function rewardCard(value: unknown): KqProducerRewardCard | null {
     : null;
 }
 
+// Older RPC versions pay one fixed completion bonus, regardless of catalogue size.
+const LEGACY_PRODUCER_COMPLETION_CASH_CENTS = 10_000;
+const MAX_DATABASE_CASH_CENTS = 2_147_483_647;
+function isPositiveCashCents(value: unknown): value is number {
+  return typeof value === "number" && Number.isInteger(value) && value > 0 && value <= MAX_DATABASE_CASH_CENTS;
+}
+
 async function loadProducerStates(client: ServiceClient, customerId: string): Promise<ProducerState[]> {
   const result = await client.rpc("rpc_kq_get_producer_notebook_progress", { p_user_id: customerId });
   if (result.error) throw new Error(`[data:producer-progress] ${result.error.message}`);
@@ -47,13 +54,22 @@ async function loadProducerStates(client: ServiceClient, customerId: string): Pr
       || typeof state.completionGranted !== "boolean" || typeof state.purchaseGranted !== "boolean") {
       throw new Error("Progression producteur indisponible.");
     }
+    const qualifyingProductIds = stringIds(state.qualifyingProductIds);
+    const expectsCompletionCash = state.completionGranted || qualifyingProductIds.length > 0;
+    const completionCashCents = Object.prototype.hasOwnProperty.call(state, "completionCashCents")
+      ? state.completionCashCents
+      : expectsCompletionCash ? LEGACY_PRODUCER_COMPLETION_CASH_CENTS : 0;
+    if (expectsCompletionCash ? !isPositiveCashCents(completionCashCents) : completionCashCents !== 0) {
+      throw new Error("Progression producteur indisponible.");
+    }
     return {
       producerId: state.producerId,
       selectedSeasonId: typeof state.selectedSeasonId === "string" ? state.selectedSeasonId : "",
-      qualifyingProductIds: stringIds(state.qualifyingProductIds),
+      qualifyingProductIds,
       reviewedProductIds: stringIds(state.reviewedProductIds),
       purchasedProductIds: stringIds(state.purchasedProductIds),
       completionGranted: state.completionGranted,
+      completionCashCents: completionCashCents as number,
       purchaseGranted: state.purchaseGranted,
       purchaseCard: rewardCard(state.purchaseCard),
     };
@@ -188,7 +204,8 @@ export async function getKqProducerRewardProgressForCustomer(customerId: string)
       heritageEligible: Boolean(campaign && (requirementsResult.data ?? []).some((requirement) =>
         String(requirement.campaign_id) === String(campaign.id) && approvedEntryIds.has(String(requirement.entry_id)),
       )),
-      completionGranted: state.completionGranted, purchaseGranted: state.purchaseGranted, purchaseCard: state.purchaseCard,
+      completionGranted: state.completionGranted, completionCashCents: state.completionCashCents,
+      purchaseGranted: state.purchaseGranted, purchaseCard: state.purchaseCard,
     })];
   });
 }
@@ -208,9 +225,13 @@ export async function claimKqProducerCompletionForCustomer(input: { customerId: 
     throw new Error("Récompense de dégustation momentanément indisponible.");
   }
   const receipt = record(result.data);
-  if (receipt.producerId !== parameters.p_producer_id || receipt.cashCents !== KQ_PRODUCER_COMPLETION_CASH_CENTS
-    || typeof receipt.alreadyGranted !== "boolean") throw new Error("Récompense de dégustation momentanément indisponible.");
-  return { producerId: parameters.p_producer_id, cashCents: KQ_PRODUCER_COMPLETION_CASH_CENTS,
+  if (receipt.producerId !== parameters.p_producer_id || !isPositiveCashCents(receipt.cashCents)
+    || typeof receipt.alreadyGranted !== "boolean" || !Array.isArray(receipt.qualifyingProductIds)
+    || receipt.qualifyingProductIds.length === 0
+    || receipt.qualifyingProductIds.some((id) => typeof id !== "string" || id.trim().length === 0)) {
+    throw new Error("Récompense de dégustation momentanément indisponible.");
+  }
+  return { producerId: parameters.p_producer_id, cashCents: receipt.cashCents,
     alreadyGranted: receipt.alreadyGranted, qualifyingProductIds: stringIds(receipt.qualifyingProductIds) };
 }
 
@@ -389,10 +410,10 @@ export async function previewKqProducerNotebookRewardBatch(offset = 0): Promise<
       preview.pendingHeritages += 1;
       pending = true;
     }
-    if (completionEligible && !state?.completionGranted && !completionKeys.has(key)) {
+    if (completionEligible && state && !state.completionGranted && !completionKeys.has(key)) {
       completionKeys.add(key);
       preview.pendingCompletions += 1;
-      preview.pendingCashCents += KQ_PRODUCER_COMPLETION_CASH_CENTS;
+      preview.pendingCashCents += state.completionCashCents;
       pending = true;
     }
     if (!pending) preview.alreadyComplete += 1;

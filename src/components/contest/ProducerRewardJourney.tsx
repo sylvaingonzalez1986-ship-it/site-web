@@ -5,7 +5,7 @@ import Link from "@/components/navigation/NavigationLink";
 import { useEffect, useId, useState } from "react";
 import { Check, Dices, Gift, LockKeyhole, ShoppingBag } from "lucide-react";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
-import { findKqProducerRewardForEntry, type KqProducerRewardProgress } from "@/lib/kanab-quest-producer-rewards";
+import { findKqProducerRewardForEntry, getKqProducerCompletionCashCents, type KqProducerRewardProgress } from "@/lib/kanab-quest-producer-rewards";
 
 async function fetchProducerRewardCampaigns(signal?: AbortSignal) {
   const response = await fetch("/api/contest/producer-rewards", { cache: "no-store", signal });
@@ -104,9 +104,9 @@ export function ProducerRewardJourney({
     {!loaded ? <p role="status" className="mt-4 text-sm">Chargement de tes dégustations…</p> : null}
     {campaign ? <div className="mt-4 grid min-w-0 gap-4">
       <div className="rounded border-2 border-ink bg-white p-3">
-        <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-black"><span>{campaign.reviewedCount} / {campaign.requiredCount} fleurs dégustées</span><span className="text-green">{campaign.completionReward.granted ? "Bonus reçu" : formatGameEuros(campaign.completionReward.cashCents) + " dans le jeu"}</span></div>
+        <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-black"><span>{campaign.reviewedCount} / {campaign.requiredCount} fleurs dégustées</span><span className="text-green">{formatGameEuros(campaign.completionReward.cashCents) + (campaign.completionReward.granted ? " reçus dans le jeu" : " dans le jeu")}</span></div>
         <progress className="mt-3 block h-3 w-full accent-green" value={campaign.reviewedCount} max={Math.max(1, campaign.requiredCount)} aria-label="Fleurs dégustées avec un avis validé" />
-        <p className="mt-3 text-xs leading-relaxed text-charcoal">{campaign.completionReward.granted ? "Tu as reçu le bonus de ce producteur. Continue tes découvertes à ton rythme." : "Goûte toutes ses fleurs du carnet et fais valider tes avis pour recevoir le bonus, une fois par producteur."}</p>
+        <p className="mt-3 text-xs leading-relaxed text-charcoal">{campaign.completionReward.granted ? "Tu as reçu le bonus de ce producteur. Continue tes découvertes à ton rythme." : campaign.completionReward.cashCents === getKqProducerCompletionCashCents(campaign.requiredCount) ? "Goûte toutes ses fleurs du carnet et fais valider tes avis : 100 € de monnaie de jeu par fleur, versés ensemble à la fin du parcours, une fois par producteur." : "Goûte toutes ses fleurs du carnet et fais valider tes avis pour recevoir le bonus, une fois par producteur."}</p>
         {campaign.completed && !campaign.completionReward.granted ? <button type="button" disabled={!!pending} onClick={() => void claim("completion")} className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded border-2 border-ink bg-yellow px-3 text-xs font-black disabled:opacity-50"><Gift size={17} aria-hidden="true" />{pending === "completion" ? "Attribution…" : "Récupérer mon bonus"}</button> : null}
       </div>
 

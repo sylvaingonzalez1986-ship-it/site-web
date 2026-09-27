@@ -13,7 +13,7 @@ const state = { producerId: "p1", selectedSeasonId: "season-current", qualifying
   purchaseGranted: false, purchaseCard: null };
 
 type Rows = Record<string, Array<Record<string, unknown>>>;
-function clientWithRows(rows: Rows, states = [state]) {
+function clientWithRows(rows: Rows, states: Array<Record<string, unknown>> = [state]) {
   const rpc = vi.fn().mockResolvedValue({ data: states, error: null });
   const from = vi.fn((table: string) => {
     const query = {
@@ -27,6 +27,15 @@ function clientWithRows(rows: Rows, states = [state]) {
   const client = { rpc, from };
   mocks.client.mockReturnValue(client);
   return client;
+}
+
+function catalogueRows(productIds: string[]): Rows {
+  return {
+    producers: [{ id: "p1", name: "Ferme" }],
+    contest_entries: productIds.map((id) => ({
+      id: `${id}-entry`, title: id, product_id: id, producer_id: "p1", season_id: "season-current", track: "regular",
+    })),
+  };
 }
 
 describe("producer notebook reward backend", () => {
@@ -73,6 +82,61 @@ describe("producer notebook reward backend", () => {
     await expect(getKqProducerRewardProgressForCustomer(customerId)).rejects.toThrow("indisponible");
   });
 
+  it.each([
+    { products: ["a", "b"], cashCents: 20_000 },
+    { products: ["a", "b", "c"], cashCents: 30_000 },
+  ])("exposes the authoritative $cashCents-cent completion reward", async ({ products, cashCents }) => {
+    const rows = catalogueRows(products);
+    rows.contest_entries.push({ ...rows.contest_entries[0], id: "a-concours", track: "concours" });
+    clientWithRows(rows, [{ ...state, qualifyingProductIds: products, reviewedProductIds: products, completionCashCents: cashCents }]);
+    const [progress] = await getKqProducerRewardProgressForCustomer(customerId);
+    expect(progress).toMatchObject({ requiredCount: products.length, completed: true,
+      completionReward: { cashCents, granted: false } });
+    expect(progress.entries[0].entryIds).toEqual(["a-entry", "a-concours"]);
+  });
+
+  it.each([10_000, 20_000])("keeps a received %i-cent bonus after the catalogue grows to three flowers", async cashCents => {
+    const products = ["a", "b", "c"];
+    clientWithRows(catalogueRows(products), [{ ...state, qualifyingProductIds: products,
+      completionGranted: true, completionCashCents: cashCents }]);
+    expect((await getKqProducerRewardProgressForCustomer(customerId))[0].completionReward).toEqual({
+      kind: "cash", cashCents, granted: true,
+    });
+  });
+
+  it.each([false, true])("uses the old fixed bonus while the database lacks the new field (granted=%s)", async completionGranted => {
+    const products = ["a", "b", "c"];
+    clientWithRows(catalogueRows(products), [{ ...state, qualifyingProductIds: products, completionGranted }]);
+    expect((await getKqProducerRewardProgressForCustomer(customerId))[0].completionReward).toEqual({
+      kind: "cash", cashCents: 10_000, granted: completionGranted,
+    });
+  });
+
+  it.each([0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY, 2_147_483_648, "20000", null, undefined])(
+    "rejects a malformed authoritative completion amount: %s", async completionCashCents => {
+      clientWithRows({}, [{ ...state, completionCashCents }]);
+      await expect(getKqProducerRewardProgressForCustomer(customerId)).rejects.toThrow("indisponible");
+    },
+  );
+
+  it.each([
+    { completionGranted: false, completionCashCents: 0 },
+    { completionGranted: true, completionCashCents: 10_000 },
+    { completionGranted: false },
+    { completionGranted: true },
+  ])("accepts empty requirements without inventing a new reward: %j", async completion => {
+    clientWithRows(catalogueRows([]), [{ ...state, qualifyingProductIds: [], ...completion }]);
+    await expect(getKqProducerRewardProgressForCustomer(customerId)).resolves.toEqual([]);
+  });
+
+  it.each([
+    { completionGranted: false, completionCashCents: 10_000 },
+    { completionGranted: true, completionCashCents: 0 },
+  ])("rejects inconsistent empty-catalogue amounts: %j", async completion => {
+    clientWithRows({}, [{ ...state, qualifyingProductIds: [], ...completion }]);
+    await expect(getKqProducerRewardProgressForCustomer(customerId)).rejects.toThrow("indisponible");
+  });
+
   it("does not report a completed catalogue from incomplete metadata", async () => {
     clientWithRows({ producers: [{ id: "p1", name: "Farm" }], contest_entries: [
       { id: "a", product_id: "a", producer_id: "p1", season_id: "season-current" },
@@ -103,6 +167,32 @@ describe("producer notebook reward backend", () => {
       cashCents: 10_000, alreadyGranted: true,
     });
     expect(rpc).toHaveBeenCalledWith("rpc_kq_claim_producer_completion", { p_user_id: customerId, p_producer_id: "p1" });
+  });
+
+  it.each([
+    { cashCents: 20_000, qualifyingProductIds: ["a", "b"] },
+    { cashCents: 30_000, qualifyingProductIds: ["a", "b", "c"] },
+  ])("returns the persisted $cashCents-cent claim without rereading the catalogue", async receipt => {
+    const rpc = vi.fn().mockResolvedValue({ data: { producerId: "p1", alreadyGranted: false, ...receipt }, error: null });
+    mocks.client.mockReturnValue({ rpc });
+    await expect(claimKqProducerCompletionForCustomer({ customerId, producerId: "p1" })).resolves.toEqual({
+      producerId: "p1", alreadyGranted: false, ...receipt,
+    });
+    expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_claim_producer_completion", { p_user_id: customerId, p_producer_id: "p1" });
+  });
+
+  it.each([0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY, 2_147_483_648, "20000", null, undefined])(
+    "rejects an invalid claim amount: %s", async cashCents => {
+      const rpc = vi.fn().mockResolvedValue({ data: { producerId: "p1", alreadyGranted: false, cashCents, qualifyingProductIds: ["a", "b"] }, error: null });
+      mocks.client.mockReturnValue({ rpc });
+      await expect(claimKqProducerCompletionForCustomer({ customerId, producerId: "p1" })).rejects.toThrow("indisponible");
+    },
+  );
+
+  it.each([[], null, undefined, "a", [""], ["  "], ["a", 123]])("rejects a claim without a valid historical product snapshot: %j", async qualifyingProductIds => {
+    const rpc = vi.fn().mockResolvedValue({ data: { producerId: "p1", alreadyGranted: true, cashCents: 10_000, qualifyingProductIds }, error: null });
+    mocks.client.mockReturnValue({ rpc });
+    await expect(claimKqProducerCompletionForCustomer({ customerId, producerId: "p1" })).rejects.toThrow("indisponible");
   });
 
   it("only accepts a persisted silver or gold Buddie from the purchase RPC", async () => {
@@ -158,5 +248,27 @@ describe("producer notebook reward backend", () => {
       pendingCompletions: 1, pendingCashCents: 10_000, alreadyComplete: 1, nextCursor: null,
     });
     expect(client.rpc.mock.calls.every(([name]) => name === "rpc_kq_get_producer_notebook_progress")).toBe(true);
+  });
+
+  it("previews 500 euros for producers with two and three flowers, deduplicating repeated reviews", async () => {
+    const client = clientWithRows({
+      contest_reviews: [
+        { id: "r1", customer_id: customerId, entry_id: "a" },
+        { id: "r2", customer_id: customerId, entry_id: "a" },
+        { id: "r3", customer_id: customerId, entry_id: "c" },
+        { id: "r4", customer_id: customerId, entry_id: "c" },
+        { id: "r5", customer_id: customerId, entry_id: "legacy" },
+      ],
+      contest_entries: [{ id: "a", product_id: "a", producer_id: "p1" },
+        { id: "c", product_id: "c", producer_id: "p2" }, { id: "legacy", product_id: "legacy", producer_id: "p3" }],
+    }, [
+      { ...state, reviewedProductIds: ["a", "b"], completionCashCents: 20_000 },
+      { ...state, producerId: "p2", qualifyingProductIds: ["c", "d", "e"], reviewedProductIds: ["c", "d", "e"], completionCashCents: 30_000 },
+      { ...state, producerId: "p3", qualifyingProductIds: ["legacy"], reviewedProductIds: ["legacy"], completionGranted: true, completionCashCents: 10_000 },
+    ]);
+    await expect(previewKqProducerNotebookRewardBatch()).resolves.toMatchObject({
+      processed: 5, eligibleReviews: 5, pendingCompletions: 2, pendingCashCents: 50_000, alreadyComplete: 3,
+    });
+    expect(client.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_get_producer_notebook_progress", { p_user_id: customerId });
   });
 });

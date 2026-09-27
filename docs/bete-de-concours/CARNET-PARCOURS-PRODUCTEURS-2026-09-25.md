@@ -18,12 +18,12 @@ Audits de production : `output/notebook-fix/catalog.json` et `images.json`. Cont
 
 ## Règles retenues
 
-Les valeurs ci-dessous sont les réglages de travail annoncés dans la conversation, en attendant un éventuel choix différent de l’utilisateur : **100 € de jeu** et **un tirage après l’achat de toutes les fleurs du producteur**.
+Le bonus demandé est de **100 € de monnaie de jeu par fleur distincte** du producteur : 2 fleurs donnent 200 €, 3 fleurs donnent 300 €. Le versement intervient une seule fois, lorsque le parcours complet est validé. Le tirage reste disponible après l’achat de toutes les fleurs du producteur.
 
-- **Dégustation :** toutes les fleurs publiées du producteur dans la saison courante du carnet doivent avoir un avis approuvé. Chaque produit compte une seule fois, y compris si des avis existent sur d'anciennes fiches en double. La dernière approbation attribue 100 € au portefeuille du Placard ; un bouton permet aussi de récupérer un bonus antérieur éligible.
+- **Dégustation :** toutes les fleurs publiées du producteur dans la saison courante du carnet doivent avoir un avis approuvé. Chaque produit compte une seule fois, y compris si des avis existent sur d'anciennes fiches en double. La dernière approbation attribue 100 € × le nombre de produits distincts au portefeuille du Placard ; un bouton permet aussi de récupérer un bonus antérieur éligible.
 - **Achat :** les achats payés et non annulés de toutes ces fleurs permettent un tirage de Buddie. Les achats peuvent provenir de plusieurs commandes ; les variantes d’un même produit sont regroupées. Un achat invité exige une adresse confirmée correspondant au compte, sur une commande sans autre propriétaire.
 - **Tirage :** chaque carte active Argent ou Or de la collection `HEMP_HEROES_2026` a la même probabilité. Il ne s’agit pas d’un partage 50/50 entre les deux raretés. Le serveur effectue le tirage au moment de la réclamation.
-- **Fréquence :** un bonus de dégustation et un tirage par client et producteur, sans remise à zéro à chaque saison. L’ajout ultérieur de fleurs ne permet pas de toucher une seconde récompense. Les produits qualifiants sont conservés dans le reçu.
+- **Fréquence :** un bonus de dégustation et un tirage par client et producteur, sans remise à zéro à chaque saison. L’ajout ultérieur de fleurs ne permet pas de toucher une seconde récompense. Les produits qualifiants et le montant effectivement versé sont conservés dans le reçu. Les anciens reçus restent inchangés ; la vérification du 27 septembre a trouvé un seul reçu, pour une fleur et 100 €, déjà conforme au nouveau tarif.
 - **Héritage :** le premier avis approuvé sur une fleur éligible de la campagne conserve le déblocage de la carte Héritage. Le choix des fleurs dans l’administration concerne cet Héritage ; la progression complète considère toutes les fleurs publiées du producteur.
 - **Anciens packs :** les packs déjà attribués restent disponibles et ouvrables. Les nouveaux avis Concours ne donnent plus automatiquement cinq packs.
 
@@ -31,7 +31,7 @@ Les deux attributions sont indépendantes. Les avis validés déclenchent le bon
 
 ## Mise en œuvre
 
-- Migration : `supabase/migrations/20260925000200_kq_producer_tasting_completion.sql`.
+- Migrations : `supabase/migrations/20260925000200_kq_producer_tasting_completion.sql`, puis `20260927000200_kq_producer_completion_per_flower.sql` pour le montant proportionnel. La seconde remplace les fonctions de calcul et de versement sans modifier les crédits existants. Le code accepte le montant historique pendant le déploiement et utilise ensuite le montant fourni par la base.
 - API : `GET /api/contest/producer-rewards` pour la progression ; `POST` avec `action: "completion"` ou `action: "purchase-buddie"` et `producerId` pour récupérer une récompense. L’identité vient exclusivement de la session.
 - Deux reçus uniques par couple client/producteur empêchent les doubles attributions. Les appels répétés rendent le résultat existant. Recycler une carte ne rend pas un nouveau tirage possible.
 - Les écritures passent par des fonctions serveur avec validation et verrouillage. Les nouvelles tables n’exposent que la lecture à `service_role` ; les fonctions auxiliaires ne sont pas exécutables par les rôles API.

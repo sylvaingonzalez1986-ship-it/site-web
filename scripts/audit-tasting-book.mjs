@@ -65,16 +65,18 @@ const modules = {
 const submissions = [];
 let rewardFixture = { completed: false, purchasedAll: false, completionGranted: false, purchaseGranted: false, rarity: 'silver', failAction: null };
 const rewardRequests = [];
+const rewardProducts = () => Array.from({length:rewardFixture.flowerCount ?? 2},(_,index)=>`product-${index}`);
 const producerCampaign = () => buildKqProducerRewardProgress({
   campaignId: 'campaign-preview', producerId: 'producer', producerName: 'Le jardin de Sylvain',
   heritageCode: '', heritageName: '', heritageDescription: '', heritageGranted: false,
-  approvedProductIds: rewardFixture.completed ? ['product-0', 'product-1'] : [],
-  purchasedProductIds: rewardFixture.purchasedAll ? ['product-0', 'product-1'] : ['product-0'],
+  approvedProductIds: rewardFixture.completed ? rewardProducts() : [],
+  purchasedProductIds: rewardFixture.purchasedAll ? rewardProducts() : ['product-0'],
   completionGranted: rewardFixture.completionGranted,
+  completionCashCents: rewardFixture.completionCashCents,
   purchaseGranted: rewardFixture.purchaseGranted,
   purchaseCard: rewardFixture.purchaseGranted && !rewardFixture.cardUnavailable ? { code: 'BUDDIE-PREVIEW', name: 'Le compagnon du jardin', rarity: rewardFixture.rarity, imageUrl: '' } : null,
-  entries: ['regular', 'concours'].flatMap(track => ['outdoor', 'greenhouse', 'indoor'].flatMap(category => [0,1].map(i => ({
-    entryId: `${track}-${category}-${i}`, productId: `product-${i}`, title: ['Douceur de Bretagne', 'Fleur du soleil'][i], track,
+  entries: ['regular', 'concours'].flatMap(track => ['outdoor', 'greenhouse', 'indoor'].flatMap(category => rewardProducts().map((productId,i) => ({
+    entryId: `${track}-${category}-${i}`, productId, title: ['Douceur de Bretagne', 'Fleur du soleil', 'Brume du jardin'][i], track,
   })))),
 });
 const server = await createServer({
@@ -110,7 +112,10 @@ const server = await createServer({
               if (claim.producerId !== 'producer' || (claim.action === 'completion' ? !rewardFixture.completed : claim.action !== 'purchase-buddie' || !rewardFixture.purchasedAll || rewardFixture.purchaseGranted)) {
                 response.statusCode = 409; response.end(JSON.stringify({error:'Récompense indisponible pour cette progression.'})); return;
               }
-              if (claim.action === 'completion') rewardFixture.completionGranted = true;
+              if (claim.action === 'completion') {
+                rewardFixture.completionGranted = true;
+                rewardFixture.completionCashCents ??= rewardProducts().length * 10_000;
+              }
               else rewardFixture.purchaseGranted = true;
               response.end(JSON.stringify({campaign:producerCampaign()}));
             }); return;
@@ -404,15 +409,25 @@ try {
         button.scrollIntoView({block:'center'}); button.click();
       },label);
     };
+    const assertCompletionAmount = async (euros, granted) => {
+      const expected = `${euros} € ${granted ? 'reçus dans le jeu' : 'dans le jeu'}`;
+      await page.waitForFunction(text => [...document.querySelectorAll('.contest-notebook-collection-tab span')]
+        .some(element=>element.textContent.replace(/\s+/g,' ').trim()===text), {}, expected);
+    };
     for (const width of [320,390]) {
-      rewardFixture = { completed: false, purchasedAll: false, completionGranted: false, purchaseGranted: false, rarity: width===320 ? 'silver' : 'gold', failAction: null };
+      const flowerCount = width===320 ? 2 : 3;
+      const completionEuros = flowerCount * 100;
+      rewardFixture = { flowerCount, completed: false, purchasedAll: false, completionGranted: false, purchaseGranted: false, rarity: width===320 ? 'silver' : 'gold', failAction: null };
       rewardRequests.length = 0;
       await page.setViewport({width,height:844,isMobile:true,hasTouch:true});
       const entryId = width===320 ? 'regular-outdoor-0' : 'concours-outdoor-0';
       await openRewards(entryId);
       assert.equal(await page.$$eval('.contest-notebook-collection-tab button',buttons=>buttons.filter(button=>!button.disabled && /Récupérer mon bonus|Tirer mon Buddie/.test(button.textContent)).length),0);
       assert.equal(await page.$eval('progress',progress=>progress.value),0);
-      assert.equal(await page.$eval('progress',progress=>progress.max),2);
+      assert.equal(await page.$eval('progress',progress=>progress.max),flowerCount);
+      assert.equal(await page.$$eval('ul[aria-label="Fleurs du producteur"] > li',flowers=>flowers.length),flowerCount);
+      await assertCompletionAmount(completionEuros,false);
+      assert(await page.$eval('.contest-notebook-collection-tab',element=>element.textContent.includes('100 € de monnaie de jeu par fleur, versés ensemble à la fin du parcours')));
       const partialLayout = await checkLayout(); assert.equal(partialLayout.overflow,false); assert.deepEqual(partialLayout.outside,[]);
       await shot(`producer-rewards-partial-${width}`);
 
@@ -420,14 +435,16 @@ try {
       await openRewards(entryId); await claimButton('Récupérer mon bonus');
       await page.waitForFunction(()=>document.body.textContent.includes('ta progression est conservée'));
       assert.equal(rewardFixture.completionGranted,false);
-      assert.equal(await page.$eval('progress',progress=>progress.value),2);
+      assert.equal(await page.$eval('progress',progress=>progress.value),flowerCount);
       await claimButton('Récupérer mon bonus');
-      await page.waitForFunction(()=>document.body.textContent.includes('Bonus reçu'));
+      await assertCompletionAmount(completionEuros,true);
       assert.equal(rewardFixture.completionGranted,true);
+      assert.equal(rewardFixture.completionCashCents,completionEuros*100);
       assert.deepEqual(rewardRequests,[{action:'completion',producerId:'producer'},{action:'completion',producerId:'producer'}]);
       await openRewards(entryId);
       assert.equal(await page.$$eval('.contest-notebook-collection-tab button',buttons=>buttons.filter(button=>button.textContent.includes('Récupérer mon bonus')).length),0);
-      assert(await page.$eval('.contest-notebook-collection-tab',element=>element.textContent.includes('Bonus reçu')));
+      await assertCompletionAmount(completionEuros,true);
+      await shot(`producer-rewards-completion-${flowerCount}-flowers-${width}`);
 
       rewardFixture.purchasedAll = true; rewardFixture.failAction = 'purchase-buddie';
       await openRewards(entryId); await claimButton('Tirer mon Buddie');
@@ -447,8 +464,20 @@ try {
       await shot(`producer-rewards-claimed-${width}`);
       await page.$eval('[data-book-scroll]',element=>{element.scrollTop=element.scrollHeight;});
       await shot(`producer-rewards-buddie-${width}`);
-      rewardResults.push({width,entryId,partialLayout,claimedLayout,completionClaimed:true,purchaseClaimed:true,rarity:rewardFixture.rarity,errorRetryPreservesProgress:true,claimsPersistOnReload:true,noRedraw:true});
+      rewardResults.push({width,entryId,flowerCount,completionEuros,distinctProductsDeduplicated:true,partialLayout,claimedLayout,completionClaimed:true,completionAmountPersistsOnReload:true,purchaseClaimed:true,rarity:rewardFixture.rarity,errorRetryPreservesProgress:true,claimsPersistOnReload:true,noRedraw:true});
     }
+    // A historical receipt keeps its actual credited amount if the current catalogue changes.
+    rewardFixture = { flowerCount:3, completed:true, purchasedAll:false, completionGranted:true, completionCashCents:20_000, purchaseGranted:false, rarity:'gold', failAction:null };
+    rewardRequests.length = 0;
+    await openRewards('concours-outdoor-0');
+    assert.equal(await page.$eval('progress',progress=>progress.max),3);
+    await assertCompletionAmount(200,true);
+    assert.equal(await page.$$eval('.contest-notebook-collection-tab button',buttons=>buttons.filter(button=>button.textContent.includes('Récupérer mon bonus')).length),0);
+    await openRewards('concours-outdoor-0');
+    await assertCompletionAmount(200,true);
+    assert.deepEqual(rewardRequests,[]);
+    await shot('producer-rewards-historical-receipt-390');
+    rewardResults.push({width:390,flowerCount:3,historicalReceiptEuros:200,historicalAmountPersistsOnReload:true,noCompletionReclaim:true});
     rewardFixture = { completed: true, purchasedAll: true, completionGranted: true, purchaseGranted: false, rarity: 'gold', failAction: null };
     rewardRequests.length = 0;
     await openRewards('concours-outdoor-0');

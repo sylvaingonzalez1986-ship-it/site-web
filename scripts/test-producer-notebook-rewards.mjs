@@ -7,7 +7,7 @@ import { pathToFileURL } from "node:url";
 
 const { PGlite } = await import(process.argv[2] ? pathToFileURL(path.resolve(process.argv[2])).href : "@electric-sql/pglite");
 const db = new PGlite();
-const ids = Object.fromEntries(["alice", "bob", "guest", "unverified", "overflow"].map((name, index) => [name, `00000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`]));
+const ids = Object.fromEntries(["alice", "bob", "guest", "unverified", "overflow", "legacy"].map((name, index) => [name, `00000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`]));
 const checks = [];
 const query = (sql, args = []) => db.query(sql, args);
 const exec = (sql) => db.exec(sql);
@@ -112,8 +112,35 @@ try {
   const historyBefore = await scalar("SELECT jsonb_build_array((SELECT jsonb_agg(t) FROM kq_notebook_flower_reward_grants t),(SELECT jsonb_agg(t) FROM kq_notebook_flower_reward_packs t),(SELECT jsonb_agg(t) FROM kq_support_booster_entitlements t))");
   await exec(await read("supabase/migrations/20260925000200_kq_producer_tasting_completion.sql"));
 
+  // Record a real completion using the previously deployed fixed-price RPC.
+  await query("INSERT INTO contest_reviews(entry_id,customer_id,status) VALUES('a-contest',$1,'approved'),('b-regular',$1,'approved')", [ids.legacy]);
+  check("old RPC credits a historical two-flower receipt at 100 euros", (await call("rpc_kq_claim_producer_completion", "legacy")).cashCents, 10000);
+  const databaseRows = async () => {
+    const tables = (await query("SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename")).rows;
+    const rows = {};
+    for (const { tablename } of tables) {
+      assert.match(tablename, /^[a-z_]+$/);
+      rows[tablename] = (await query(`SELECT to_jsonb(row) AS row FROM public."${tablename}" row ORDER BY to_jsonb(row)::text`)).rows;
+    }
+    return rows;
+  };
+  const beforePerFlowerMigration = await databaseRows();
+  const perFlowerMigration = await read("supabase/migrations/20260927000200_kq_producer_completion_per_flower.sql");
+  await exec(perFlowerMigration);
+  check("per-flower migration changes no stored data", await databaseRows(), beforePerFlowerMigration);
+  await exec(perFlowerMigration);
+  check("reapplying the migration changes no stored data", await databaseRows(), beforePerFlowerMigration);
+  const legacyReplay = await call("rpc_kq_claim_producer_completion", "legacy");
+  check("historical completion replays the original price and snapshot", legacyReplay, {
+    producerId: "producer-one", cashCents: 10000, qualifyingProductIds: ["flower-a", "flower-b"], alreadyGranted: true,
+  });
+  check("historical progress reports its credited amount", (await progress("legacy")).completionCashCents, 10000);
+  check("historical replay changes no stored data", await databaseRows(), beforePerFlowerMigration);
+
   check("current-season, published flower requirements deduplicate tracks", (await progress("alice")).qualifyingProductIds, ["flower-a", "flower-b"]);
-  check("read-only progress creates no wallet", await scalar("SELECT count(*)::INTEGER FROM kq_equipment_wallets"), 0);
+  check("unclaimed progress quotes 100 euros per distinct flower", (await progress("alice")).completionCashCents, 20000);
+  check("read-only progress creates no wallet", await scalar("SELECT count(*)::INTEGER FROM kq_equipment_wallets WHERE user_id=$1", [ids.alice]), 0);
+  check("empty catalogue quotes zero", (await call("kq_producer_notebook_progress", "alice", "producer-empty")).completionCashCents, 0);
   await reject("empty producer cannot earn a reward", () => call("rpc_kq_claim_producer_completion", "alice", "producer-empty"), "kq_producer_completion_incomplete");
   await reject("unknown user rejected", () => call("rpc_kq_claim_producer_completion", "00000000-0000-4000-8000-999999999999"), "kq_producer_completion_invalid");
   await query("INSERT INTO contest_reviews(entry_id,customer_id,status) VALUES('a-contest',$1,'approved'),('b-regular',$1,'pending'),('old-b',$1,'approved')", [ids.alice]);
@@ -123,21 +150,49 @@ try {
   check("contest tasting creates no new packs", firstReward.flowerBoostersGranted, 0);
   check("old crop does not satisfy current second flower", (await progress("alice")).reviewedProductIds, ["flower-a"]);
   await reject("partial approved notebook cannot claim", () => call("rpc_kq_claim_producer_completion", "alice"), "kq_producer_completion_incomplete");
-  check("incomplete claims leave no grant", await scalar("SELECT count(*)::INTEGER FROM kq_producer_completion_grants"), 0);
+  check("incomplete claims leave no grant", await scalar("SELECT count(*)::INTEGER FROM kq_producer_completion_grants WHERE user_id=$1", [ids.alice]), 0);
   await query("UPDATE contest_reviews SET status='approved' WHERE entry_id='b-regular' AND customer_id=$1", [ids.alice]);
   const secondReview = await scalar("SELECT id FROM contest_reviews WHERE entry_id='b-regular' AND customer_id=$1", [ids.alice]);
   const completed = await scalar("SELECT rpc_kq_grant_producer_notebook_rewards($1,$2)", [ids.alice, secondReview]);
-  check("Regular tasting completes the same producer reward", [completed.completionGranted, completed.cashCents], [true, 10000]);
-  check("wallet receives exactly 100 euros", await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [ids.alice]), 45000);
-  check("journal records reward revenue", await scalar("SELECT balance_cents FROM kq_treasury_balances WHERE user_id=$1 AND account='revenue_rewards'", [ids.alice]), -10000);
+  check("Regular tasting completes the same producer reward", [completed.completionGranted, completed.cashCents], [true, 20000]);
+  check("two distinct flowers credit exactly 200 euros", await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [ids.alice]), 55000);
+  check("journal records reward revenue", await scalar("SELECT balance_cents FROM kq_treasury_balances WHERE user_id=$1 AND account='revenue_rewards'", [ids.alice]), -20000);
   check("reward accounting clears suspense", await scalar("SELECT balance_cents FROM kq_treasury_balances WHERE user_id=$1 AND account='suspense'", [ids.alice]), 0);
   const repeated = await Promise.all(Array.from({ length: 6 }, () => call("rpc_kq_claim_producer_completion", "alice")));
   check("parallel completion retries replay one grant", repeated.every((result) => result.alreadyGranted), true);
-  check("parallel retries do not credit again", await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [ids.alice]), 45000);
+  check("parallel retries replay the original variable amount", repeated.every((result) => result.cashCents === 20000), true);
+  check("parallel retries do not credit again", await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [ids.alice]), 55000);
   check("Heritage remains unique after approval retries", (await scalar("SELECT rpc_kq_grant_producer_notebook_rewards($1,$2)", [ids.alice, firstReview])).heritageGranted, 0);
   await exec("UPDATE contest_entries SET is_published=true WHERE id='hidden'");
+  check("new requirements change an unclaimed producer quote", (await progress("bob")).completionCashCents, 30000);
+  check("new requirements do not change the credited amount", (await progress("alice")).completionCashCents, 20000);
+  check("new requirements do not revalue a historical 100-euro receipt", (await progress("legacy")).completionCashCents, 10000);
+  await query("INSERT INTO contest_reviews(entry_id,customer_id,status) VALUES('a-regular',$1,'approved'),('a-contest',$1,'approved'),('b-regular',$1,'approved')", [ids.bob]);
+  await reject("two approved products still cannot claim a three-flower producer", () => call("rpc_kq_claim_producer_completion", "bob"), "kq_producer_completion_incomplete");
+  await query("INSERT INTO contest_reviews(entry_id,customer_id,status) VALUES('hidden',$1,'approved')", [ids.bob]);
+  const triple = await call("rpc_kq_claim_producer_completion", "bob");
+  check("three products and four approved entries credit 300 euros once", [triple.cashCents, triple.qualifyingProductIds.length, triple.alreadyGranted], [30000, 3, false]);
+  check("three-flower cash and reward revenue match", [
+    await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [ids.bob]),
+    await scalar("SELECT balance_cents FROM kq_treasury_balances WHERE user_id=$1 AND account='revenue_rewards'", [ids.bob]),
+    await scalar("SELECT balance_cents FROM kq_treasury_balances WHERE user_id=$1 AND account='suspense'", [ids.bob]),
+  ], [65000, -30000, 0]);
   check("new products do not reset lifetime completion", (await call("rpc_kq_claim_producer_completion", "alice")).qualifyingProductIds, ["flower-a", "flower-b"]);
   await exec("UPDATE contest_entries SET is_published=false WHERE id='hidden'");
+
+  check("removing a product does not reduce a credited receipt", (await progress("bob")).completionCashCents, 30000);
+  await query("INSERT INTO contest_reviews(entry_id,customer_id,status) VALUES('other',$1,'approved')", [ids.bob]);
+  const single = await call("rpc_kq_claim_producer_completion", "bob", "producer-two");
+  check("single-flower producer still grants 100 euros", [single.cashCents, single.qualifyingProductIds], [10000, ["other-flower"]]);
+  check("independent producer rewards accumulate exactly", [
+    await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [ids.bob]),
+    await scalar("SELECT balance_cents FROM kq_treasury_balances WHERE user_id=$1 AND account='revenue_rewards'", [ids.bob]),
+  ], [75000, -40000]);
+  await exec("UPDATE contest_entries SET is_published=false WHERE producer_id='producer-one' AND season_id='current'");
+  check("empty catalogue preserves an existing receipt amount", (await call("kq_producer_notebook_progress", "legacy")).completionCashCents, 10000);
+  check("empty catalogue with no receipt has no reward", (await call("kq_producer_notebook_progress", "guest")).completionCashCents, 0);
+  check("empty catalogue does not block replaying an earned receipt", (await call("rpc_kq_claim_producer_completion", "alice")).cashCents, 20000);
+  await exec("UPDATE contest_entries SET is_published=true WHERE id IN ('a-regular','a-contest','b-regular','oil')");
 
   async function order(id, owner, state, status, items, email, createdAt) {
     await query("INSERT INTO orders(id,customer_id,customer_email,payment_state,status,created_at) VALUES($1,$2,$3,$4,$5,COALESCE($6,now()))", [id, owner ? ids[owner] : null, email ?? (owner ? `${owner}@example.test` : null), state, status, createdAt ?? null]);
@@ -176,6 +231,13 @@ try {
   await reject("integer overflow cannot consume reward", () => call("rpc_kq_claim_producer_completion", "overflow", "producer-two"), "kq_producer_completion_wallet_limit");
   check("overflow rollback preserves wallet", await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [ids.overflow]), 2147480000);
   check("overflow leaves no completion receipt", await scalar("SELECT count(*)::INTEGER FROM kq_producer_completion_grants WHERE user_id=$1", [ids.overflow]), 0);
+
+  // Leave room for 100 euros but not a two-flower 200-euro award.
+  await query("UPDATE kq_equipment_wallets SET cash_cents=2147470000 WHERE user_id=$1", [ids.overflow]);
+  await query("INSERT INTO contest_reviews(entry_id,customer_id,status) VALUES('a-regular',$1,'approved'),('b-regular',$1,'approved')", [ids.overflow]);
+  const beforeOverflow = await databaseRows();
+  await reject("variable 200-euro credit checks its full wallet impact", () => call("rpc_kq_claim_producer_completion", "overflow"), "kq_producer_completion_wallet_limit");
+  check("overflow leaves every persisted row unchanged", await databaseRows(), beforeOverflow);
   const historyAfter = await scalar("SELECT jsonb_build_array((SELECT jsonb_agg(t) FROM kq_notebook_flower_reward_grants t),(SELECT jsonb_agg(t) FROM kq_notebook_flower_reward_packs t),(SELECT jsonb_agg(t) FROM kq_support_booster_entitlements t))");
   check("historical flower packs and entitlements remain unchanged", historyAfter, historyBefore);
   for (const table of ["kq_producer_completion_grants", "kq_producer_purchase_buddie_grants"]) {
@@ -185,6 +247,18 @@ try {
       AND NOT has_table_privilege('authenticated',$1,'SELECT,INSERT,UPDATE,DELETE')`, [table]), true);
   }
   check("helpers are unavailable to API roles", await scalar("SELECT NOT has_function_privilege('service_role','kq_producer_notebook_progress(uuid,text)','EXECUTE') AND has_function_privilege('service_role','rpc_kq_get_producer_notebook_progress(uuid)','EXECUTE')"), true);
+
+  for (const rpc of ["rpc_kq_claim_producer_completion(uuid,text)", "rpc_kq_grant_producer_notebook_rewards(uuid,uuid)"]) {
+    check(`${rpc} remains service-role only`, await scalar(`SELECT has_function_privilege('service_role',$1,'EXECUTE')
+      AND NOT has_function_privilege('anon',$1,'EXECUTE')
+      AND NOT has_function_privilege('authenticated',$1,'EXECUTE')`, [rpc]), true);
+    check(`${rpc} keeps SECURITY DEFINER and its pinned search_path`, await scalar(
+      "SELECT prosecdef AND 'search_path=public'=ANY(proconfig) FROM pg_proc WHERE oid=$1::regprocedure", [rpc]), true);
+  }
+  check("progress helper stays private to the definer", await scalar(`SELECT
+    NOT has_function_privilege('anon','kq_producer_notebook_progress(uuid,text)','EXECUTE')
+    AND NOT has_function_privilege('authenticated','kq_producer_notebook_progress(uuid,text)','EXECUTE')
+    AND NOT has_function_privilege('service_role','kq_producer_notebook_progress(uuid,text)','EXECUTE')`), true);
   const report = { result: "passed", checks: checks.length, details: checks, engine: "PGlite isolated PostgreSQL", concurrency: "Parallel requests submitted; PGlite serializes transactions on its single connection.", fixtures: "Deterministic RNG and reduced opening valuation; actual treasury journal/posting functions.", checkedAt: new Date().toISOString() };
   await mkdir("output/notebook-rewards", { recursive: true });
   await writeFile("output/notebook-rewards/sql-verification.json", JSON.stringify(report, null, 2) + "\n");

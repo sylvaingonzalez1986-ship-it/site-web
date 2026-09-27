@@ -5,8 +5,14 @@ export type KqProducerRewardCard = {
   imageUrl: string;
 };
 
-export const KQ_PRODUCER_COMPLETION_CASH_CENTS = 10_000;
+export const KQ_PRODUCER_FLOWER_CASH_CENTS = 10_000;
 export const KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE = true;
+
+export function getKqProducerCompletionCashCents(flowerCount: number): number {
+  return Number.isSafeInteger(flowerCount) && flowerCount > 0
+    ? flowerCount * KQ_PRODUCER_FLOWER_CASH_CENTS
+    : 0;
+}
 
 export type KqProducerRewardEntryProgress = {
   entryId: string;
@@ -94,6 +100,7 @@ export function buildKqProducerRewardProgress(input: {
   heritageGranted: boolean;
   heritageEligible?: boolean;
   completionGranted?: boolean;
+  completionCashCents?: number;
   purchaseGranted?: boolean;
   purchaseCard?: KqProducerRewardCard | null;
 }): KqProducerRewardProgress {
@@ -148,7 +155,11 @@ export function buildKqProducerRewardProgress(input: {
     reviewedCount,
     purchasedCount,
     requiredCount: entries.length,
-    completionReward: { kind: "cash", cashCents: KQ_PRODUCER_COMPLETION_CASH_CENTS, granted: input.completionGranted === true },
+    completionReward: {
+      kind: "cash",
+      cashCents: input.completionCashCents ?? getKqProducerCompletionCashCents(entries.length),
+      granted: input.completionGranted === true,
+    },
     purchaseReward: {
       eligible: entries.length > 0 && purchasedCount === entries.length,
       granted: input.purchaseGranted === true,
