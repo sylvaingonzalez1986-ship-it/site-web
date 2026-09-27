@@ -1,5 +1,7 @@
 "use client";
 
+import { useKqTentSelection } from "./KqTentSelector";
+
 import { getKqMarketReputationProgress, KQ_MARKET_REPUTATION_TIERS, selectKqMarketOffer, type KqPricePolicy } from "@/lib/kanab-quest-market-demand";
 
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
@@ -106,6 +108,7 @@ type MarketLot = {
 
 type MarketSnapshot = {
   productionUnits?: number;
+  equipmentPricingUnits?: number;
   electricityOutstandingCents?: number;
   cashCents: number;
   reputation: number;
@@ -214,6 +217,7 @@ function getPinnedRouteStatusLabel(status: KqPinnedRouteLotStatus) {
 }
 
 export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?: string) => void }) {
+  const tentNumber = useKqTentSelection();
   const [snapshot, setSnapshot] = useState<MarketSnapshot | null>(null);
   const [selectedFlowerId, setSelectedFlowerId] = useState<string | null>(null);
   const [pendingQuote, setPendingQuote] = useState<KqMarketQuote | null>(null);
@@ -324,7 +328,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
   );
   const routeGoalScenario = useMemo(() => snapshot?.routePlan
     ? getKqEquipmentPaybackScenarios(snapshot.routePlan.equipmentCode, {
-      productionUnits: snapshot.productionUnits,
+      productionUnits: snapshot.equipmentPricingUnits ?? 1,
       ownedCodes: snapshot.ownedCodes,
     }).find((scenario) => scenario.route === snapshot.routePlan?.route) ?? null
     : null, [snapshot]);
@@ -336,7 +340,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
     const expertiseBonusReputation = getKqRouteExpertiseBonusReputation(pendingQuote.route, nextRouteSaleCount, pendingQuote.reputationGain);
     const { reputationGain, reputationAfter } = previewKqMarketReputation(snapshot.reputation, pendingQuote.reputationGain, expertiseBonusReputation);
     const nextEquipmentGoal = buildKqEquipmentGoalReceipt({
-      productionUnits: snapshot.productionUnits,
+      productionUnits: snapshot.equipmentPricingUnits ?? 1,
       ownedCodes: snapshot.ownedCodes,
       cashCents: cashAfterCents,
     });
@@ -476,6 +480,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           action: "route-plan",
+          tentNumber,
           route: goal.route,
           equipmentCode: goal.equipmentCode,
         }),
@@ -634,7 +639,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
                     const pinnedRouteNeedsEquipment = pinnedRoute && quote.missingUnlocks.length > 0;
                     const pinnedEquipmentCode = pinnedRoute ? snapshot.routePlan?.equipmentCode ?? null : null;
                     const equipmentGoal = juryScoreGap === 0 || pinnedRouteNeedsEquipment ? getKqMarketEquipmentGoal({
-                      productionUnits: snapshot.productionUnits,
+                      productionUnits: snapshot.equipmentPricingUnits ?? 1,
                       quote,
                       ownedCodes: snapshot.ownedCodes,
                       equippedCodes: snapshot.equippedCodes,

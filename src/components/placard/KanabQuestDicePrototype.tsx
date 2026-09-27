@@ -547,7 +547,6 @@ export function KanabQuestDicePrototype({
   const [favoriteDeck, setFavoriteDeck] = useState<KqFavoriteDeck | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [dailyChallenges, setDailyChallenges] = useState(() => getKqDailyChallenges());
-  const [mobilePlayTab, setMobilePlayTab] = useState<"culture" | "hand" | "dice" | "challenges">("culture");
   const [remoteCollection, setRemoteCollection] = useState<RemoteCollectionStatus>({
     loading: true, error: "", ownerFound: false, collectionActive: false, totalCopies: 0, cardCount: 0, cultureTokenBalance: 0,
   });
@@ -730,10 +729,6 @@ export function KanabQuestDicePrototype({
     window.addEventListener("kq:equipment-updated", refreshRoutePlan);
     return () => window.removeEventListener("kq:equipment-updated", refreshRoutePlan);
   }, [isPlayerMode]);
-
-  useEffect(() => {
-    setMobilePlayTab("culture");
-  }, [state.stageIndex]);
 
   useEffect(() => {
     const repository = createLocalKqRepository(window.localStorage);
@@ -1165,7 +1160,6 @@ export function KanabQuestDicePrototype({
   const roll = async () => {
     if (rollInFlightRef.current || rolling || remoteAction !== null || state.phase !== "prepare") return;
     rollInFlightRef.current = true;
-    setMobilePlayTab("dice");
     setRolling(true);
     try {
       if (directDiceResult || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -2136,7 +2130,7 @@ export function KanabQuestDicePrototype({
   const lastStageReward = state.phase === "resolved" ? state.history.at(-1) ?? null : null;
 
   return (
-    <main ref={gameViewportRef} className={styles.page} data-view-mode={viewMode}>
+    <main ref={gameViewportRef} className={styles.page} data-view-mode={viewMode} data-player-mode={isPlayerMode || undefined} data-culture-play>
       <header className={styles.topbar}>
         <div className={styles.gameBrand}><span className={styles.gameBrandMark} aria-hidden="true"><Image src="/mascots/home-welcome.png" alt="" width={1122} height={1402} sizes="64px" /></span><div><span>{isPlayerMode ? "Kanab Quest · Culture officielle" : "Kanab Quest · Prototype local"}</span><h1>La Botte du Chanvrier</h1></div></div>
         <div className={styles.resources}><span><Zap />{state.xp} XP</span><span><Star /> Qualité {runProjection.projectedQuality}</span><span>Pression {state.pressure}/4</span>{!isPlayerMode ? <button type="button" onClick={reset}><RotateCcw /> Recommencer</button> : null}</div>
@@ -2146,58 +2140,10 @@ export function KanabQuestDicePrototype({
         {KQ_STAGES.map((stage, index) => <span key={stage} data-current={index === state.stageIndex || undefined} data-done={index < state.stageIndex || undefined} aria-current={index === state.stageIndex ? "step" : undefined}><b>{index + 1}</b><small>{stage}</small></span>)}
       </nav>
 
-      <aside className={styles.cultureFailureRule} data-warning={zeroSuccessStages > 0 || undefined} role={zeroSuccessStages > 0 ? "status" : undefined}>
-        {zeroSuccessStages > 0
-          ? <><strong>1 étape à 0 réussite.</strong> Une deuxième étape validée à 0, même plus tard, entraînera la mort de la culture sans récolte.</>
-          : <>Deux étapes validées à 0 réussite, même non consécutives, entraînent la mort de la culture.</>}
-      </aside>
-
-      <section className={styles.runProjection} aria-label="Projection de la récolte">
-        <header><span>Trajectoire actuelle</span><small>Recalculée après chaque étape</small></header>
-        <div>
-          <article><Star aria-hidden="true" /><span><strong>{runProjection.projectedQuality}</strong><small>Qualité projetée{runProjection.equipmentQualityBonus > 0 ? ` · +${runProjection.equipmentQualityBonus} matériel` : ""}</small></span></article>
-          <article><Trophy aria-hidden="true" /><span><strong>{runProjection.tier}</strong><small>{runProjection.nextTier ? `${runProjection.qualityToNextTier} point${runProjection.qualityToNextTier > 1 ? "s" : ""} avant ${runProjection.nextTier}` : "Palier maximal atteint"}</small></span></article>
-          <article><Scale aria-hidden="true" /><span><strong>{runProjection.harvestGrams.toLocaleString("fr-FR")} g</strong><small>Total estimé · {getKqProductionUnits(state.equipment?.productionUnits)} tente{getKqProductionUnits(state.equipment?.productionUnits)>1?"s":""}{runProjection.harvestLossPercent > 0 ? " · après pertes" : ""}</small></span></article>
-          <article><Sparkles aria-hidden="true" /><span><strong>{runProjection.remainingStages}</strong><small>Étape{runProjection.remainingStages > 1 ? "s" : ""} encore ouverte{runProjection.remainingStages > 1 ? "s" : ""}</small></span></article>
-        </div>
-        {getKqProductionUnits(state.equipment?.productionUnits) > 1 || runProjection.harvestLossPercent > 0 ? <details className={styles.tentHarvestDetails}><summary>Voir le détail par tente et les pertes</summary><HarvestYieldBreakdown state={state} /></details> : null}
-        {plannedMarketRoute ? <aside className={styles.runRouteTarget}><Target aria-hidden="true" /><span><small>Cap commercial épinglé</small><strong>{plannedMarketRoute.name} · jury ≥ {plannedMarketRoute.minimumJuryScore.toFixed(1)}/10</strong><em>La Qualité de culture prépare la Fleur ; seul le verdict officiel donnera la note commerciale.</em></span></aside> : null}
-        <p>Projection non garantie : seuls les résultats déjà validés et le matériel installé sont comptés.</p>
-      </section>
-
-      {activeHeritage ? (
-        <aside className={styles.heritageInPlay} data-used={state.heritageUsed || undefined} data-armed={state.heritageArmed || undefined} aria-label={`Héritage équipé : ${activeHeritage.name}`}>
-          <CardArtwork code={activeHeritage.code} name={activeHeritage.name} producerName={activeHeritage.producerName} imageUrl={activeHeritage.imageUrl} />
-          <div>
-            <span>Héritage équipé · ne brûle pas</span>
-            <strong>{activeHeritage.name}</strong>
-            <p>{activeHeritage.description}</p>
-          </div>
-          <footer>
-            <small>{activeHeritage.timing === "passive" ? "Passif actif" : state.heritageUsed ? "Pouvoir utilisé" : state.heritageArmed ? "Pouvoir armé" : heritagePermission.allowed ? "Pouvoir disponible" : "Déclenchement automatique"}</small>
-            {activeHeritage.timing === "once-per-run" ? (
-              <button type="button" disabled={!heritagePermission.allowed || remoteAction !== null} onClick={() => void applyGameAction("heritage")}>
-                {state.heritageUsed ? "Déjà utilisé" : state.heritageArmed ? "Pouvoir armé" : heritagePermission.allowed ? remoteAction === "game" ? "Activation…" : "Activer le pouvoir" : heritagePermission.reason}
-              </button>
-            ) : <b>Actif pendant toute la culture</b>}
-          </footer>
-        </aside>
-      ) : null}
-
-      <nav className={styles.mobilePlayTabs} aria-label="Sections de la partie">
-        <button type="button" data-active={mobilePlayTab === "culture" || undefined} aria-pressed={mobilePlayTab === "culture"} onClick={() => setMobilePlayTab("culture")}><Sparkles /><span>Culture</span><small>{state.stageIndex + 1}/6</small></button>
-        <button type="button" data-active={mobilePlayTab === "hand" || undefined} aria-pressed={mobilePlayTab === "hand"} onClick={() => setMobilePlayTab("hand")}><Flame /><span>Main</span><small>{handCodes.length} cartes</small></button>
-        <button type="button" data-active={mobilePlayTab === "dice" || undefined} aria-pressed={mobilePlayTab === "dice"} onClick={() => setMobilePlayTab("dice")}><Dices /><span>Dés</span><small>{state.phase === "prepare" ? "À lancer" : state.phase === "rolled" ? "À valider" : "Résolu"}</small></button>
-        <button type="button" data-active={mobilePlayTab === "challenges" || undefined} aria-pressed={mobilePlayTab === "challenges"} onClick={() => setMobilePlayTab("challenges")}><Star /><span>Défis</span><small>{runChallenges.filter((challenge) => getKqChallengeProgress(state, challenge.code).reached).length}/{runChallenges.length}</small></button>
-      </nav>
-
-      <section className={`${styles.liveChallenges} ${styles.mobileTabPanel}`} data-mobile-active={mobilePlayTab === "challenges" || undefined} aria-label="Progression des défis du jour">
-        <span>Défis</span>
-        {runChallenges.map((challenge) => { const progress = getKqChallengeProgress(state, challenge.code); const claimed = claimedChallengeCodes.includes(challenge.claimKey); return <article key={challenge.claimKey} data-reached={progress.reached || undefined} data-claimed={claimed || undefined}><Star /><div><strong>{challenge.title}</strong><small>{claimed ? "Déjà gagné aujourd’hui" : progress.label}</small></div></article>; })}
-      </section>
+      {zeroSuccessStages > 0 ? <aside className={styles.cultureFailureRule} data-warning role="status"><strong>1 étape à 0 réussite.</strong> Une deuxième étape validée à 0, même plus tard, entraînera la mort de la culture sans récolte.</aside> : null}
 
       <section className={styles.gameGrid}>
-        <div className={`${styles.situationCard} ${styles.mobileTabPanel}`} data-mobile-active={mobilePlayTab === "culture" || undefined}>
+        <div className={styles.situationCard} data-culture-situation tabIndex={-1}>
           <span className={styles.stepLabel}>Étape {state.stageIndex + 1}/6 · {situation.stage}</span>
           {situation.incident ? <span className={styles.incidentLabel}>{INCIDENT_LABELS[situation.incident]}</span> : null}
           <div className={styles.situationArt}>
@@ -2216,7 +2162,7 @@ export function KanabQuestDicePrototype({
           <div className={styles.target}><small>Réussites requises</small><strong>{getKqStageTarget(state)}</strong></div>
         </div>
 
-        <div className={`${styles.diceBoard} ${styles.mobileTabPanel}`} data-mobile-active={mobilePlayTab === "dice" || undefined}>
+        <div className={styles.diceBoard} aria-label="Décision du tour">
           <span className={styles.buddyName}>Buddie cultivé</span>
           <h2>{state.varietyName}</h2>
           {state.powerOutage ? <div className={styles.outageAlert}><Zap /><span><strong>Coupure de courant</strong><small>Le meilleur dé deviendra un Danger pendant cette étape.</small></span></div> : null}
@@ -2240,17 +2186,52 @@ export function KanabQuestDicePrototype({
             <span data-kind="success"><b>4–5</b> Réussite</span>
             <span data-kind="spark"><b>6</b> Étincelle</span>
           </div>
-          <button
-            type="button"
-            className={styles.directResultToggle}
-            role="switch"
-            aria-checked={directDiceResult}
-            onClick={toggleDirectDiceResult}
-          >
-            <span aria-hidden="true"><i /></span>
-            <b>Résultat direct</b>
-            <small>Ignorer l’animation du lancer</small>
-          </button>
+          {activeHeritage && activeHeritage.timing === "once-per-run" && (heritagePermission.allowed || state.heritageArmed) ? (
+            <aside className={styles.heritageInPlay} data-used={state.heritageUsed || undefined} data-armed={state.heritageArmed || undefined} aria-label={`Héritage équipé : ${activeHeritage.name}`}>
+              <CardArtwork code={activeHeritage.code} name={activeHeritage.name} producerName={activeHeritage.producerName} imageUrl={activeHeritage.imageUrl} />
+              <div>
+                <span>Héritage équipé · ne brûle pas</span>
+                <strong>{activeHeritage.name}</strong>
+                <p>{activeHeritage.description}</p>
+              </div>
+              <footer>
+                <small>{state.heritageArmed ? "Pouvoir armé" : "Pouvoir disponible"}</small>
+                <button type="button" disabled={!heritagePermission.allowed || remoteAction !== null} onClick={() => void applyGameAction("heritage")}>
+                  {state.heritageArmed ? "Pouvoir armé" : remoteAction === "game" ? "Activation…" : "Activer le pouvoir"}
+                </button>
+              </footer>
+            </aside>
+          ) : activeHeritage ? (
+            <details className={styles.heritageSummary}>
+              <summary><span>{activeHeritage.name}</span><small>Héritage · {state.heritageUsed ? "pouvoir utilisé" : activeHeritage.timing === "passive" ? "passif actif" : "en attente"}</small></summary>
+              <div><CardArtwork code={activeHeritage.code} name={activeHeritage.name} producerName={activeHeritage.producerName} imageUrl={activeHeritage.imageUrl} /><span><strong>Héritage équipé · ne brûle pas</strong><p>{activeHeritage.description}</p>{activeHeritage.timing === "once-per-run" && !state.heritageUsed ? <small>{heritagePermission.reason}</small> : null}</span></div>
+            </details>
+          ) : null}
+          <details className={styles.handDetails}>
+            <summary><span>{state.phase === "resolved" ? "Consulter ma main" : state.phase === "rolled" ? "Jouer une réaction" : "Préparer une carte"}</span><small>{handCodes.length} cartes · facultatif</small></summary>
+            <section className={styles.deckPanel}>
+              <header><div><span>Album Kanab Quest</span><h2>Ta main · La Botte</h2></div><p>{handCodes.length} copie{handCodes.length > 1 ? "s" : ""} distribuée{handCodes.length > 1 ? "s" : ""} · {Math.max(0, supportDeckSize - burnedSupportCount)} copie{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""} non brûlée{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""}. Les doublons occupent plusieurs places dans la main.</p></header>
+              <details className={styles.handGuide}><summary>Rôle des cartes</summary><KqCardRoleLegend /></details>
+              <div className={styles.handActions}><span>{(state.handRedrawsUsed ?? 0) < redrawLimit ? `${redrawLimit - (state.handRedrawsUsed ?? 0)} changement${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""} de main disponible${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""}.` : "Changement de main déjà utilisé pour cette culture."}</span><button type="button" disabled={!canRedrawHand || remoteAction !== null} onClick={() => void applyGameAction("redraw")}><RotateCcw /> Changer ma main</button></div>
+              {(state.heritageReserveCodes?.length ?? 0) > 0 ? (
+                <section className={styles.heritageHandExchange}>
+                  <header><Sparkles /><span><strong>Main prévoyante · 8 cartes vues</strong><small>Choisis une carte de ta main, puis une carte de réserve à faire entrer. Tu peux recommencer avant le lancer.</small></span></header>
+                  <nav className={styles.heritageExchangeTabs} aria-label="Main prévoyante">
+                    <button type="button" data-active={heritageExchangeTab === "hand" || undefined} aria-pressed={heritageExchangeTab === "hand"} onClick={() => setHeritageExchangeTab("hand")}>Ma main <small>{handCodes.length} cartes</small></button>
+                    <button type="button" data-active={heritageExchangeTab === "reserve" || undefined} aria-pressed={heritageExchangeTab === "reserve"} onClick={() => setHeritageExchangeTab("reserve")}>Ma réserve <small>{state.heritageReserveCodes?.length ?? 0} cartes</small></button>
+                  </nav>
+                  <div className={styles.heritageExchangePanels}>
+                    <div data-active={heritageExchangeTab === "hand" || undefined}><b>Choisis la carte à sortir</b>{handCodes.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={remoteAction !== null} data-selected={heritageSwapOutIndex === index || undefined} onClick={() => { setHeritageSwapOutIndex(index); setHeritageExchangeTab("reserve"); }}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</button>)}</div>
+                    <div data-active={heritageExchangeTab === "reserve" || undefined}><b>Choisis la carte à faire entrer</b>{state.heritageReserveCodes?.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={heritageSwapOutIndex === null || remoteAction !== null} onClick={() => void swapHeritageCard(index)}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}<small>{remoteAction === "game" ? "Confirmation…" : heritageSwapOutIndex === null ? "Choisis d’abord une carte à sortir" : "Faire entrer"}</small></button>)}</div>
+                  </div>
+                </section>
+              ) : null}
+              {state.revealedPest ? <div className={styles.pestReveal}><strong>🔎 {PEST_LABELS[state.revealedPest]} révélés</strong><span>{availableCards.filter((card) => card.category === "pbi").length} auxiliaire(s) compatible(s) de ta collection affiché(s).</span></div> : situation.pest ? <div className={styles.pestHidden}><strong>Ravageur inconnu</strong><span>Joue la Loupe d’inspection avant les dés pour ouvrir la réserve PBI.</span></div> : null}
+              <div className={styles.substrate} data-tone={cultureSystemStatus?.tone}><Sparkles /><span><small>Culture indoor</small><strong>{activeSubstrate.name}</strong><em>{cultureSystemStatus?.detail ?? activeSubstrate.description}</em></span>{cultureSystemStatus ? <b className={styles.cultureSystemStatus}>{cultureSystemStatus.label}</b> : null}</div>
+              <div className={styles.cardRow}>{availableCards.map((card) => { const usedCopies = state.usedCards.filter((code) => code === card.code).length; const deckCopies = card.category === "pbi" ? 0 : Math.max(0, state.deckCodes.filter((code) => code === card.code).length - usedCopies); return <SupportCard key={card.code} card={card} state={state} copies={activeInventory[card.code] ?? 0} handCopies={card.category === "pbi" ? 0 : handCodes.filter((code) => code === card.code).length} deckCopies={deckCopies} serverValidatedCopy={remoteBurnsEnabled && card.category !== "pbi" && deckCopies > 0} onPlay={setPendingBurnCode} />; })}</div>
+
+            </section>
+          </details>
           {(state.effectNotices?.length ?? 0) > 0 ? <div className={styles.effectNotices} role="status" aria-live="polite" aria-atomic="true"><strong><Sparkles /> Résultat des effets</strong>{state.effectNotices?.map((notice, index) => { const kind = getKqEffectNoticeKind(notice); return <p key={`${notice}-${index}`} data-kind={kind}>{kind === "applied" ? "✓" : "○"} {notice}</p>; })}</div> : null}
           {state.phase === "prepare" ? (
             <><p>Prépare une carte si tu le souhaites, puis tente ta chance.</p><button type="button" className={styles.rollButton} onClick={roll} disabled={rolling || remoteAction !== null}><Dices />{rolling ? "Les dés roulent…" : "Lancer les dés"}</button></>
@@ -2259,7 +2240,7 @@ export function KanabQuestDicePrototype({
             <div className={styles.rollResult} aria-live="polite">
               <span>Réussites</span><strong>{preview.total}/{preview.target}</strong><small>{preview.dangers} Danger · {preview.sparks} Étincelle</small>
               <em className={styles.provisionalOutcome} data-outcome={preview.outcome}>Résultat provisoire · {zeroSuccessStages > 0 && preview.total === 0 ? "Culture en danger" : KQ_OUTCOME_LABELS[preview.outcome]}</em>
-              {zeroSuccessStages > 0 && preview.total === 0 ? <p className={styles.cultureDeathWarning}>Valider ce deuxième résultat à 0 réussite entraînera la mort de ta culture. Tu peux encore la sauver avec une carte de réaction.</p> : null}
+              {preview.total === 0 ? <p className={styles.cultureDeathWarning}>{zeroSuccessStages > 0 ? "Valider ce deuxième résultat à 0 réussite entraînera la mort de ta culture. Tu peux encore la sauver avec une carte de réaction." : "Valider ce résultat comptera comme une étape à 0 réussite. Une deuxième étape à 0 entraînera la mort de ta culture sans récolte."}</p> : null}
               <p>Tu peux encore jouer une carte de réaction avant de valider.</p>
               <button type="button" className={styles.primaryButton} disabled={remoteAction !== null || diceVisualSyncing} onClick={() => void applyGameAction("resolve")}>{diceVisualSyncing ? "Mise à jour des dés…" : "Valider le résultat"}</button>
             </div>
@@ -2278,33 +2259,63 @@ export function KanabQuestDicePrototype({
                 <h3>{KQ_OUTCOME_LABELS[outcomeArtwork.outcome]}</h3><strong>{lastStageReward?.trait ?? state.traits.at(-1)}</strong>{(lastStageReward?.combos?.length ?? 0) > 0 ? <small className={styles.comboNotice}><Sparkles aria-hidden="true" /> {lastStageReward?.combos?.join(" · ")}</small> : null}{outcomeArtwork.outcome === "critical" ? <small className={styles.pressureRelief}>Pression −1 · la culture reprend son souffle</small> : null}
               {lastStageReward ? <div className={styles.stageRewardReceipt} aria-label="Gains de l’étape"><span data-negative={(lastStageReward.qualityDelta ?? 0) < 0 || undefined}><Star aria-hidden="true" /><strong>{(lastStageReward.qualityDelta ?? 0) > 0 ? "+" : ""}{lastStageReward.qualityDelta ?? 0}</strong><small>Qualité</small></span><span><Zap aria-hidden="true" /><strong>+{lastStageReward.xpGain ?? 0}</strong><small>XP gagnés</small></span><span><Scale aria-hidden="true" /><strong>{runProjection.harvestGrams.toLocaleString("fr-FR")} g</strong><small>Lot projeté</small></span>{(lastStageReward.harvestLossPercent ?? 0) > 0 ? <span data-negative><Flame aria-hidden="true" /><strong>−{lastStageReward.harvestLossPercent} %</strong><small>Récolte volée</small></span> : null}</div> : null}
               <p>Réserve disponible : {state.xp} XP.</p>
-              <button type="button" className={styles.primaryButton} disabled={remoteAction !== null} onClick={() => void applyGameAction("advance")}>{state.stageIndex === KQ_STAGES.length - 1 ? "Révéler la Récolte" : "Étape suivante"}</button>
+              <button type="button" className={styles.primaryButton} disabled={remoteAction !== null} onClick={async () => {
+                const nextState = await applyGameAction("advance");
+                if (nextState?.phase !== "prepare") return;
+                window.requestAnimationFrame(() => {
+                  const nextSituation = gameViewportRef.current?.querySelector<HTMLElement>("[data-culture-situation]");
+                  nextSituation?.focus({ preventScroll: true });
+                  nextSituation?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+                });
+              }}>{state.stageIndex === KQ_STAGES.length - 1 ? "Révéler la Récolte" : "Étape suivante"}</button>
             </div>
           ) : null}
         </div>
       </section>
 
-      <section className={`${styles.deckPanel} ${styles.mobileTabPanel}`} data-mobile-active={mobilePlayTab === "hand" || undefined}>
-        <header><div><span>Album Kanab Quest</span><h2>Ta main · La Botte</h2></div><p>{handCodes.length} copie{handCodes.length > 1 ? "s" : ""} distribuée{handCodes.length > 1 ? "s" : ""} · {Math.max(0, supportDeckSize - burnedSupportCount)} copie{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""} non brûlée{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""}. Les doublons occupent plusieurs places dans la main.</p></header>
-        <KqCardRoleLegend />
-        <div className={styles.handActions}><span>{(state.handRedrawsUsed ?? 0) < redrawLimit ? `${redrawLimit - (state.handRedrawsUsed ?? 0)} changement${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""} de main disponible${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""}.` : "Changement de main déjà utilisé pour cette culture."}</span><button type="button" disabled={!canRedrawHand || remoteAction !== null} onClick={() => void applyGameAction("redraw")}><RotateCcw /> Changer ma main</button></div>
-        {(state.heritageReserveCodes?.length ?? 0) > 0 ? (
-          <section className={styles.heritageHandExchange}>
-            <header><Sparkles /><span><strong>Main prévoyante · 8 cartes vues</strong><small>Choisis une carte de ta main, puis une carte de réserve à faire entrer. Tu peux recommencer avant le lancer.</small></span></header>
-            <nav className={styles.heritageExchangeTabs} aria-label="Main prévoyante">
-              <button type="button" data-active={heritageExchangeTab === "hand" || undefined} aria-pressed={heritageExchangeTab === "hand"} onClick={() => setHeritageExchangeTab("hand")}>Ma main <small>{handCodes.length} cartes</small></button>
-              <button type="button" data-active={heritageExchangeTab === "reserve" || undefined} aria-pressed={heritageExchangeTab === "reserve"} onClick={() => setHeritageExchangeTab("reserve")}>Ma réserve <small>{state.heritageReserveCodes?.length ?? 0} cartes</small></button>
-            </nav>
-            <div className={styles.heritageExchangePanels}>
-              <div data-active={heritageExchangeTab === "hand" || undefined}><b>Choisis la carte à sortir</b>{handCodes.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={remoteAction !== null} data-selected={heritageSwapOutIndex === index || undefined} onClick={() => { setHeritageSwapOutIndex(index); setHeritageExchangeTab("reserve"); }}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</button>)}</div>
-              <div data-active={heritageExchangeTab === "reserve" || undefined}><b>Choisis la carte à faire entrer</b>{state.heritageReserveCodes?.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={heritageSwapOutIndex === null || remoteAction !== null} onClick={() => void swapHeritageCard(index)}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}<small>{remoteAction === "game" ? "Confirmation…" : heritageSwapOutIndex === null ? "Choisis d’abord une carte à sortir" : "Faire entrer"}</small></button>)}</div>
+      <section className={styles.cultureDetails} aria-label="Détails de la culture">
+        <details className={styles.cultureDisclosure}>
+          <summary><span>Projection de la récolte</span><small>{runProjection.harvestGrams.toLocaleString("fr-FR")} g estimés · {runProjection.tier}</small></summary>
+          <section className={styles.runProjection} aria-label="Projection de la récolte">
+            <header><span>Trajectoire actuelle</span><small>Recalculée après chaque étape</small></header>
+            <div>
+              <article><Star aria-hidden="true" /><span><strong>{runProjection.projectedQuality}</strong><small>Qualité projetée{runProjection.equipmentQualityBonus > 0 ? ` · +${runProjection.equipmentQualityBonus} matériel` : ""}</small></span></article>
+              <article><Trophy aria-hidden="true" /><span><strong>{runProjection.tier}</strong><small>{runProjection.nextTier ? `${runProjection.qualityToNextTier} point${runProjection.qualityToNextTier > 1 ? "s" : ""} avant ${runProjection.nextTier}` : "Palier maximal atteint"}</small></span></article>
+              <article><Scale aria-hidden="true" /><span><strong>{runProjection.harvestGrams.toLocaleString("fr-FR")} g</strong><small>Total estimé · {getKqProductionUnits(state.equipment?.productionUnits)} tente{getKqProductionUnits(state.equipment?.productionUnits)>1?"s":""}{runProjection.harvestLossPercent > 0 ? " · après pertes" : ""}</small></span></article>
+              <article><Sparkles aria-hidden="true" /><span><strong>{runProjection.remainingStages}</strong><small>Étape{runProjection.remainingStages > 1 ? "s" : ""} encore ouverte{runProjection.remainingStages > 1 ? "s" : ""}</small></span></article>
             </div>
+            {getKqProductionUnits(state.equipment?.productionUnits) > 1 || runProjection.harvestLossPercent > 0 ? <details className={styles.tentHarvestDetails}><summary>Voir le détail par tente et les pertes</summary><HarvestYieldBreakdown state={state} /></details> : null}
+            {plannedMarketRoute ? <aside className={styles.runRouteTarget}><Target aria-hidden="true" /><span><small>Cap commercial épinglé</small><strong>{plannedMarketRoute.name} · jury ≥ {plannedMarketRoute.minimumJuryScore.toFixed(1)}/10</strong><em>La Qualité de culture prépare la Fleur ; seul le verdict officiel donnera la note commerciale.</em></span></aside> : null}
+            <p>Projection non garantie : seuls les résultats déjà validés et le matériel installé sont comptés.</p>
           </section>
-        ) : null}
-        {state.revealedPest ? <div className={styles.pestReveal}><strong>🔎 {PEST_LABELS[state.revealedPest]} révélés</strong><span>{availableCards.filter((card) => card.category === "pbi").length} auxiliaire(s) compatible(s) de ta collection affiché(s).</span></div> : situation.pest ? <div className={styles.pestHidden}><strong>Ravageur inconnu</strong><span>Joue la Loupe d’inspection avant les dés pour ouvrir la réserve PBI.</span></div> : null}
-        <div className={styles.substrate} data-tone={cultureSystemStatus?.tone}><Sparkles /><span><small>Culture indoor</small><strong>{activeSubstrate.name}</strong><em>{cultureSystemStatus?.detail ?? activeSubstrate.description}</em></span>{cultureSystemStatus ? <b className={styles.cultureSystemStatus}>{cultureSystemStatus.label}</b> : null}</div>
-        <div className={styles.cardRow}>{availableCards.map((card) => { const usedCopies = state.usedCards.filter((code) => code === card.code).length; const deckCopies = card.category === "pbi" ? 0 : Math.max(0, state.deckCodes.filter((code) => code === card.code).length - usedCopies); return <SupportCard key={card.code} card={card} state={state} copies={activeInventory[card.code] ?? 0} handCopies={card.category === "pbi" ? 0 : handCodes.filter((code) => code === card.code).length} deckCopies={deckCopies} serverValidatedCopy={remoteBurnsEnabled && card.category !== "pbi" && deckCopies > 0} onPlay={setPendingBurnCode} />; })}</div>
-        <div className={styles.ashes}><Flame /><span><small>Cendres de cette culture · {state.usedCards.length} copie{state.usedCards.length === 1 ? "" : "s"} brûlée{state.usedCards.length === 1 ? "" : "s"}</small><div>{state.usedCards.map((code, index) => <b key={`${code}-${index}`}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</b>)}</div></span></div>
+        </details>
+        <details className={styles.cultureDisclosure}>
+          <summary><span>Défis du jour</span><small>{runChallenges.filter((challenge) => getKqChallengeProgress(state, challenge.code).reached).length}/{runChallenges.length} atteints</small></summary>
+          <section className={styles.liveChallenges} aria-label="Progression des défis du jour">
+            {runChallenges.map((challenge) => { const progress = getKqChallengeProgress(state, challenge.code); const claimed = claimedChallengeCodes.includes(challenge.claimKey); return <article key={challenge.claimKey} data-reached={progress.reached || undefined} data-claimed={claimed || undefined}><Star /><div><strong>{challenge.title}</strong><small>{claimed ? "Déjà gagné aujourd’hui" : progress.label}</small></div></article>; })}
+          </section>
+        </details>
+        <details className={styles.cultureDisclosure}>
+          <summary><span>Historique et cartes brûlées</span><small>{state.history.length} étape{state.history.length > 1 ? "s" : ""} validée{state.history.length > 1 ? "s" : ""}</small></summary>
+          {state.history.length > 0 ? <ol className={styles.cultureHistory}>{state.history.map((entry, index) => <li key={entry.stage}><span><strong>{index + 1}. {entry.stage} · {KQ_OUTCOME_LABELS[entry.outcome]}</strong><small>{entry.situation} · dés {entry.dice.join("–")}</small></span><b>{entry.qualityDelta === undefined ? "Ancien reçu" : `${entry.qualityDelta > 0 ? "+" : ""}${entry.qualityDelta} qualité · +${entry.xpGain ?? 0} XP`}</b></li>)}</ol> : <p className={styles.cultureHelp}>Aucune étape validée pour le moment.</p>}
+          <div className={styles.ashes}><Flame /><span><small>Cendres de cette culture · {state.usedCards.length} copie{state.usedCards.length === 1 ? "" : "s"} brûlée{state.usedCards.length === 1 ? "" : "s"}</small><div>{state.usedCards.map((code, index) => <b key={`${code}-${index}`}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</b>)}</div></span></div>
+        </details>
+        <details className={styles.cultureDisclosure}>
+          <summary><span>Règles et animation des dés</span></summary>
+          <div className={styles.cultureHelp}><p>Deux étapes validées à 0 réussite, même non consécutives, entraînent la mort de la culture sans récolte.</p><p>Tu peux jouer une carte avant le lancer, ou une carte de réaction avant de valider, selon son effet. Jouer une carte La Botte brûle une copie de ton album ; la confirmation affiche son avantage et son risque.</p>
+          <button
+            type="button"
+            className={styles.directResultToggle}
+            role="switch"
+            aria-checked={directDiceResult}
+            onClick={toggleDirectDiceResult}
+          >
+            <span aria-hidden="true"><i /></span>
+            <b>Résultat direct</b>
+            <small>Ignorer l’animation du lancer</small>
+          </button>
+          </div>
+        </details>
       </section>
 
       {pendingBurnCode ? (() => {
@@ -2314,12 +2325,6 @@ export function KanabQuestDicePrototype({
         return <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingBurnCode(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="burn-confirm-title" onClick={(event) => event.stopPropagation()}><Flame /><span>{remoteBurnsEnabled ? "Burn officiel" : "Simulation locale"}</span><h2 id="burn-confirm-title">Brûler {card.name} ?</h2><p>Cette action détruit une copie de ton album. Il t’en reste {activeInventory[card.code] ?? 0}.</p><div className={styles.tradeoff}><p><b>Avantage</b>{tradeoff.benefit}</p><p><b>Risque</b>{tradeoff.risk}</p></div>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingBurnCode(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null} onClick={() => void playAndBurnCard(card.code)}><Flame /> {remoteAction === "card" ? "Confirmation…" : "Brûler et jouer"}</button></div></section></div>;
       })() : null}
 
-      <div className={styles.mobileTurnBar} aria-label="Action principale du tour">
-        <span><Zap /> {state.xp} XP · Pression {state.pressure}/4</span>
-        {state.phase === "prepare" ? <button type="button" onClick={roll} disabled={rolling || remoteAction !== null}><Dices />{rolling ? "Lancer…" : "Lancer les dés"}</button> : null}
-        {state.phase === "rolled" ? <button type="button" disabled={remoteAction !== null} onClick={() => void applyGameAction("resolve")}>Valider · {preview?.total} réussite{preview?.total === 1 ? "" : "s"}</button> : null}
-        {state.phase === "resolved" ? <button type="button" disabled={remoteAction !== null} onClick={() => void applyGameAction("advance")}>{state.stageIndex === KQ_STAGES.length - 1 ? "Voir la Récolte" : "Étape suivante"}</button> : null}
-      </div>
       {gameActionError ? (
         <div className={styles.gameActionError} role="alert">
           <p>{gameActionError}</p>

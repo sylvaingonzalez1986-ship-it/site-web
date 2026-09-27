@@ -33,11 +33,11 @@ describe("production backend", () => {
     createSupabaseServiceClient.mockReturnValue({rpc:vi.fn().mockResolvedValue({error:{message:code}})});
     await expect(expandKqProduction(input)).rejects.toThrow(message);
   });
-  it("returns fleet prices for the catalog, maintenance and culture replacement", async () => {
+  it("returns unit prices and independently scoped inventory, maintenance and replacements", async () => {
     const rows:Record<string,unknown>={
       kq_equipment_wallets:{cash_cents:1000000,reputation:0,production_units:4},
-      kq_player_equipment:[{equipment_code:"LED-300",purchase_price_cents:35900,level:3,culture_wear_percent:50},{equipment_code:"WASHER-25L",purchase_price_cents:125000,level:2,wear_cycles:10}],
-      kq_equipment_loadouts:[{equipment_code:"LED-300"}],
+      kq_player_equipment:[{equipment_code:"LED-300",purchase_price_cents:35900,level:3,culture_wear_percent:50},{equipment_code:"WASHER-25L",purchase_price_cents:125000,level:2,wear_cycles:10},{tent_number:2,equipment_code:"LED-300",purchase_price_cents:35900,level:1,culture_wear_percent:0}],
+      kq_equipment_loadouts:[{equipment_code:"LED-300"},{tent_number:2,equipment_code:"LED-300"}],
     };
     createSupabaseServiceClient.mockReturnValue({rpc:vi.fn().mockResolvedValue({error:null}),from:(table:string)=>{
       const query={select:()=>query,eq:()=>query,order:()=>query,single:()=>query,then:(resolve:(value:unknown)=>unknown)=>Promise.resolve({data:rows[table]??[],error:null,count:0}).then(resolve)};
@@ -46,9 +46,20 @@ describe("production backend", () => {
     const snapshot=await getKqEquipmentShopSnapshot(input.userId);
     expect(snapshot.productionUnits).toBe(4);
     expect(snapshot.production.nextUnits).toBe(8);
-    expect(snapshot.catalog.find(item=>item.code==="LED-300")?.priceCents).toBe(getKqEquipmentDefinition("LED-300")!.priceCents*4);
-    expect(snapshot.maintenance?.["WASHER-25L"].repairCents).toBe(getKqMachineCondition("WASHER-25L",2,10)!.repairCents*4);
-    expect(snapshot.cultureWear?.["LED-300"].replacementCents).toBe(getKqCultureEquipmentCondition("LED-300",3,50)!.replacementCents*4);
+    expect(snapshot.catalog.find(item=>item.code==="LED-300")?.priceCents).toBe(getKqEquipmentDefinition("LED-300")!.priceCents);
+    expect(snapshot.maintenance?.["WASHER-25L"].repairCents).toBe(getKqMachineCondition("WASHER-25L",2,10)!.repairCents);
+    expect(snapshot.cultureWear?.["LED-300"].replacementCents).toBe(getKqCultureEquipmentCondition("LED-300",3,50)!.replacementCents);
     expect(snapshot.cultureWear?.["LED-300"].wearPercent).toBe(50);
+    expect(snapshot.equipmentPricingUnits).toBe(1);
+    expect(snapshot.tents).toHaveLength(4);
+    const second = await getKqEquipmentShopSnapshot(input.userId, 2);
+    expect(second.tentNumber).toBe(2);
+    expect(second.purchasedCodes).toEqual(["LED-300", "WASHER-25L"]);
+    expect(second.levels["LED-300"]).toBe(1);
+    expect(second.cultureWear?.["LED-300"].wearPercent).toBe(0);
+    expect(second.maintenance?.["WASHER-25L"]).toEqual(snapshot.sharedEquipment.maintenance["WASHER-25L"]);
+    expect(second.tents[1].maintenance["WASHER-25L"]).toBeUndefined();
+    expect(second.production.totalCostCents).toBe(2120000);
+    expect((await getKqEquipmentShopSnapshot(input.userId, 8)).tentNumber).toBe(1);
   });
 });

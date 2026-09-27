@@ -37,11 +37,14 @@ import type { KqProductionSnapshot } from "./KqProductionCapacity";
 import type { KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
 import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { KqEnergyPanel } from "./KqEnergyPanel";
-import { KqEquipmentInventoryModal, type KqInventoryTentSnapshot } from "./KqEquipmentInventoryModal";
+import { selectKqTent, useKqTentSelection, type KqTentOverview } from "./KqTentSelector";
+import { KqWarehouseEntry } from "./KqWarehouseEntry";
 import styles from "./KqPlacardHud.module.css";
 
 type EquipmentHudSnapshot = {
-  tents?: KqInventoryTentSnapshot[];
+  tentNumber: number;
+  tents: KqTentOverview[];
+  equipmentPricingUnits?: number;
   productionUnits?: number;
   production?: KqProductionSnapshot;
   cashCents: number;
@@ -74,19 +77,22 @@ export function KqPlacardHud({
   onOpenGame,
   onOpenArena,
   onOpenMarket,
+  mode = "dashboard",
 }: {
   onOpenShop: (equipmentCode?: string) => void;
   onOpenGame: () => void;
   onOpenArena: () => void;
   onOpenMarket: () => void;
+  mode?: "dashboard" | "progression";
 }) {
+  const tentNumber = useKqTentSelection();
   const [snapshot, setSnapshot] = useState<EquipmentHudSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [missionError, setMissionError] = useState("");
   const [savingMission, setSavingMission] = useState(false);
   const [inventoryOpen, setInventoryOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "equipment" | "goals" | "energy">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "equipment" | "goals" | "energy">(mode === "progression" ? "goals" : "overview");
   const [refreshKey, setRefreshKey] = useState(0);
   const requestRefresh = useCallback(() => {
     setLoading(true);
@@ -94,7 +100,7 @@ export function KqPlacardHud({
     setRefreshKey((current) => current + 1);
   }, []);
   const closeInventory = useCallback(() => setInventoryOpen(false), []);
-  const openInventoryShop = useCallback((code?:string) => onOpenShop(code), [onOpenShop]);
+  const openInventoryShop = useCallback((code?:string) => { setInventoryOpen(false); onOpenShop(code); }, [onOpenShop]);
 
   useEffect(() => {
     const handleEquipmentUpdate = () => requestRefresh();
@@ -104,13 +110,15 @@ export function KqPlacardHud({
 
   useEffect(() => {
     const controller = new AbortController();
-    void fetch("/api/arena/placard/equipment", {
+    void fetch("/api/arena/placard/equipment?tentNumber=" + tentNumber, {
       cache: "no-store",
       signal: controller.signal,
     }).then(async (response) => {
       const payload = await response.json() as EquipmentHudSnapshot & { error?: string };
       if (!response.ok) throw new Error(payload.error || "Ton atelier est momentanément indisponible.");
+      if (controller.signal.aborted) return;
       setSnapshot(payload);
+      if (payload.tentNumber !== tentNumber) selectKqTent(payload.tentNumber);
     }).catch((reason: unknown) => {
       if (reason instanceof DOMException && reason.name === "AbortError") return;
       setError(reason instanceof Error ? reason.message : "Ton atelier est momentanément indisponible.");
@@ -118,7 +126,7 @@ export function KqPlacardHud({
       if (!controller.signal.aborted) setLoading(false);
     });
     return () => controller.abort();
-  }, [refreshKey]);
+  }, [refreshKey, tentNumber]);
 
   const summary = useMemo(() => buildKqEquipmentHudSummary({
     ownedCodes: snapshot?.purchasedCodes ?? [],
@@ -145,14 +153,14 @@ export function KqPlacardHud({
   const nextGoal = useMemo(() => getKqNextEquipmentGoal({
     ownedCodes: snapshot?.ownedCodes ?? [],
     cashCents: snapshot?.cashCents ?? 0,
-    productionUnits,
-  }), [snapshot, productionUnits]);
+    productionUnits: 1,
+  }), [snapshot]);
   const routeGoalScenario = useMemo(() => snapshot?.routePlan
     ? getKqEquipmentPaybackScenarios(snapshot.routePlan.equipmentCode, {
       ownedCodes: snapshot.ownedCodes,
-      productionUnits,
+      productionUnits: 1,
     }).find((scenario) => scenario.route === snapshot.routePlan?.route) ?? null
-    : null, [snapshot, productionUnits]);
+    : null, [snapshot]);
   const routeGoalProgress = useMemo(() => routeGoalScenario ? getKqEquipmentInvestmentProgress({
     investmentCents: routeGoalScenario.remainingInvestmentCents,
     cashCents: snapshot?.cashCents ?? 0,
@@ -195,6 +203,7 @@ export function KqPlacardHud({
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           action: "route-plan",
+          tentNumber,
           route: expertiseMission.route,
           equipmentCode: missionEquipmentGoal.equipmentCode,
         }),
@@ -227,7 +236,7 @@ export function KqPlacardHud({
     <>
     <section className={styles.dashboard} aria-labelledby="placard-hud-title" aria-busy={loading || undefined} data-placard-dashboard>
       <header className={styles.header}>
-        <div><p>Tableau de bord</p><h2 id="placard-hud-title">Ton atelier</h2></div>
+        <div><p>{mode === "progression" ? "Progression" : "Tableau de bord"}</p><h2 id="placard-hud-title">{mode === "progression" ? "Tes objectifs d’atelier" : "Ton atelier"}</h2></div>
         <button type="button" onClick={requestRefresh} disabled={loading} aria-label="Actualiser le tableau de bord"><RefreshCw size={18} aria-hidden="true" /></button>
       </header>
       {error ? <div className={styles.error} role="alert"><CircleAlert size={22} aria-hidden="true" /><p>{error}</p><button type="button" onClick={requestRefresh}>Réessayer</button></div> : loading && !snapshot ? <p className={styles.loading} role="status">Ouverture de ton atelier…</p> : snapshot ? <>
@@ -235,8 +244,8 @@ export function KqPlacardHud({
           <div><Banknote size={21} aria-hidden="true" /><span><small>Disponible</small><strong>{formatKqCash(snapshot.cashCents)}</strong></span></div>
           <div><Trophy size={21} aria-hidden="true" /><span><small>Réputation · {reputationProgress.tier.name}</small><strong>{reputationProgress.reputation}</strong></span></div>
         </div>
-        <nav className={styles.tabs} aria-label="Vues du tableau de bord">{tabs.map((tab) => <button key={tab.id} id={`hud-tab-${tab.id}`} type="button" aria-pressed={activeTab === tab.id} aria-controls="placard-hud-content" onClick={() => setActiveTab(tab.id)}>{tab.label}</button>)}</nav>
-        <div id="placard-hud-content" className={styles.content} role="region" aria-labelledby={`hud-tab-${activeTab}`}>
+        {mode === "dashboard" ? <nav className={styles.tabs} aria-label="Vues du tableau de bord">{tabs.map((tab) => <button key={tab.id} id={`hud-tab-${tab.id}`} type="button" aria-pressed={activeTab === tab.id} aria-controls="placard-hud-content" onClick={() => setActiveTab(tab.id)}>{tab.label}</button>)}</nav> : null}
+        <div id="placard-hud-content" className={styles.content} role="region" aria-labelledby={mode === "progression" ? "placard-hud-title" : `hud-tab-${activeTab}`}>
           {activeTab === "overview" ? <>
             <article className={styles.nextAction}>
               <Image src={actionArtwork[nextAction.destination]} alt="" fill sizes="(max-width: 700px) 100vw, 850px" />
@@ -253,7 +262,7 @@ export function KqPlacardHud({
             <div className={styles.sectionIntro}><Image src="/placard/collection-chest.png" alt="" width={100} height={100} sizes="80px" /><div><p>Ton matériel durable</p><h3>{summary.installed.length} équipement{summary.installed.length > 1 ? "s" : ""} installé{summary.installed.length > 1 ? "s" : ""}</h3><span>{summary.purchased.length ? `${summary.purchased.length} investissement${summary.purchased.length > 1 ? "s" : ""} acquis` : "Ton kit de départ est opérationnel."}</span></div></div>
             {preview.length ? <ul className={styles.equipmentList}>{preview.map((equipment) => <li key={equipment.code}><span>{equipment.name} · Niv. {snapshot?.levels?.[equipment.code] ?? 1}</span><small data-installed={equipment.equipped && !snapshot?.cultureWear?.[equipment.code]?.due}>{snapshot?.cultureWear?.[equipment.code]?.due ? "Hors service" : equipment.equipped ? "Installé" : "En réserve"}</small></li>)}</ul> : <p className={styles.hint}>Retrouve tes équipements de base dans l’inventaire et choisis ceux à installer.</p>}
             {hiddenCount > 0 ? <p className={styles.hint}>Et {hiddenCount} autre{hiddenCount > 1 ? "s" : ""} dans ton inventaire.</p> : null}
-            <p className={styles.hint}>{productionUnits} tente{productionUnits>1?"s":""} en culture. L’inventaire détaille leur matériel, leurs bonus moyens et leur consommation totale.</p>
+            <p className={styles.hint}>Matériel de la tente {tentNumber} · {productionUnits} tente{productionUnits>1?"s":""} en service. Aménage chaque tente depuis l’inventaire.</p>
             <div className={styles.actions}><button type="button" className={styles.primary} onClick={() => setInventoryOpen(true)}><PackageCheck size={18} aria-hidden="true" /> Ouvrir l’Inventaire</button><button type="button" className={styles.secondary} onClick={() => onOpenShop()}><ShoppingBag size={17} aria-hidden="true" /> Boutique</button></div>
           </> : null}
           {activeTab === "goals" ? <>
@@ -291,23 +300,9 @@ export function KqPlacardHud({
       </> : null}
     </section>
     {inventoryOpen ? (
-      <KqEquipmentInventoryModal
-        ownedCodes={snapshot?.ownedCodes ?? []}
-        purchasedCodes={snapshot?.purchasedCodes ?? []}
-        equippedCodes={snapshot?.equippedCodes ?? []}
-        levels={snapshot?.levels ?? {}}
-        cashCents={snapshot?.cashCents ?? 0}
-        cultureWear={snapshot?.cultureWear}
-        maintenance={snapshot?.maintenance}
-        activeRun={snapshot?.activeRun ?? false}
-        productionUnits={productionUnits}
-        production={snapshot?.production}
-        tents={snapshot?.tents}
-        loading={loading}
-        loadError={error}
+      <KqWarehouseEntry
         onClose={closeInventory}
         onOpenShop={openInventoryShop}
-        onRetry={requestRefresh}
       />
     ) : null}
     </>

@@ -19,9 +19,9 @@ const TABS = [
 ] as const;
 type Tab = typeof TABS[number]["id"];
 const POLES = [
-  { id: "accounting", number: "01", label: "Comptabilité", description: "Factures, comptes & journal", icon: BookOpen },
-  { id: "bank", number: "02", label: "Banque", description: "Placements & financement", icon: Landmark },
-  { id: "management", number: "03", label: "Gestion", description: "Site, publicité & domiciliation", icon: Settings2 },
+  { id: "accounting", label: "Comptabilité", description: "Factures, comptes & journal", icon: BookOpen },
+  { id: "bank", label: "Banque", description: "Prêts, épargne & placements", icon: Landmark },
+  { id: "management", label: "Gestion", description: "Site, publicité & domiciliation", icon: Settings2 },
 ] as const;
 type Pole = typeof POLES[number]["id"];
 const OFFICE_ART: Record<Pole, { src: string; alt: string; caption: string }> = {
@@ -167,25 +167,15 @@ export function KqTreasuryDesk({ onOpenShop, onOpenMarket }: {
     if (target === null) return;
     event.preventDefault(); setPole(POLES[target].id); document.getElementById(`treasury-pole-${POLES[target].id}`)?.focus();
   }
-  function navigateTab(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    let target: number;
-    if (event.key === "ArrowRight") target = (index + 1) % TABS.length;
-    else if (event.key === "ArrowLeft") target = (index + TABS.length - 1) % TABS.length;
-    else if (event.key === "Home") target = 0;
-    else if (event.key === "End") target = TABS.length - 1;
-    else return;
-    event.preventDefault(); setTab(TABS[target].id); document.getElementById(`treasury-tab-${TABS[target].id}`)?.focus();
-  }
   return <main className={styles.page}>
-    <header className={styles.header}><div className={styles.welcome}><small><Wallet size={16} aria-hidden="true" /> Trésorerie du Placard</small><h1>Le Bureau</h1><p>Les comptes au clair.<br />De la place pour faire grandir ton entreprise.</p><button type="button" className={styles.marketLink} onClick={onOpenMarket}>Aller au Marché <ArrowRight size={17} aria-hidden="true" /></button></div><div className={styles.officeArt}><Image src={OFFICE_ART[pole].src} alt={OFFICE_ART[pole].alt} fill sizes="(max-width: 650px) 100vw, 50vw" priority /><span>{OFFICE_ART[pole].caption}</span></div></header>
-    <nav className={styles.poles} role="tablist" aria-label="Pôles du bureau">{POLES.map((item, index) => <button type="button" role="tab" id={`treasury-pole-${item.id}`} aria-controls={`treasury-office-${item.id}`} aria-selected={pole === item.id} tabIndex={pole === item.id ? 0 : -1} key={item.id} onClick={() => setPole(item.id)} onKeyDown={event => navigatePole(event, index)}><span className={styles.poleNumber}>{item.number}</span><item.icon size={26} aria-hidden="true" /><span className={styles.poleLabel}><strong>{item.label}</strong><small>{item.description}</small></span><ArrowRight size={19} className={styles.poleArrow} aria-hidden="true" /></button>)}</nav>
+    <header className={styles.header}><div className={styles.welcome}><small><Wallet size={16} aria-hidden="true" /> Trésorerie du Placard</small><h1>Le Bureau</h1><p>Tes factures, tes comptes et ton banquier.</p><button type="button" className={styles.marketLink} onClick={onOpenMarket}>Vendre mes récoltes <ArrowRight size={17} aria-hidden="true" /></button></div><figure className={styles.officeArt}><div className={styles.officePicture}><Image src={OFFICE_ART[pole].src} alt={OFFICE_ART[pole].alt} fill sizes="(max-width: 650px) 100vw, 50vw" priority /></div><figcaption>{OFFICE_ART[pole].caption}</figcaption></figure></header>
+    <nav className={styles.poles} role="tablist" aria-label="Pôles du bureau">{POLES.map((item, index) => <button type="button" role="tab" id={`treasury-pole-${item.id}`} aria-controls={`treasury-office-${item.id}`} aria-selected={pole === item.id} tabIndex={pole === item.id ? 0 : -1} key={item.id} onClick={() => setPole(item.id)} onKeyDown={event => navigatePole(event, index)}><item.icon size={24} aria-hidden="true" /><span className={styles.poleLabel}><strong>{item.label}</strong><small>{item.description}</small></span><ArrowRight size={19} className={styles.poleArrow} aria-hidden="true" /></button>)}</nav>
     <section id={`treasury-office-${pole}`} role="tabpanel" aria-labelledby={`treasury-pole-${pole}`} className={styles.officePanel} tabIndex={0}>
     {pole === "bank" ? <KqTreasuryBank /> : pole === "management" ? <><div className={styles.managementIntro}><small className={styles.eyebrow}>03 / Gestion</small><h2>Pilote ton entreprise</h2><p>Ton site internet, tes campagnes publicitaires et l’adresse de ton commerce.</p></div><KqTreasuryManagement key="management" onOpenShop={onOpenShop} section="management" /><button type="button" className={styles.inlineLink} onClick={() => { setPole("accounting"); selectTab("invoices"); }}>Retrouver mes factures en comptabilité <ArrowRight size={16} aria-hidden="true" /></button></> : <>
-    <div className={styles.managementIntro}><small className={styles.eyebrow}>01 / Comptabilité</small><h2>Chaque chose à sa place</h2><p>Règle tes factures, suis tes résultats et retrouve le détail de tes comptes.</p></div>
-    <nav className={styles.tabs} role="tablist" aria-label="Dossiers de comptabilité">{TABS.map((item, index) => <button type="button" role="tab" id={`treasury-tab-${item.id}`} aria-controls={`treasury-panel-${item.id}`} aria-selected={tab === item.id} tabIndex={tab === item.id ? 0 : -1} key={item.id} onClick={() => selectTab(item.id)} onKeyDown={event => navigateTab(event, index)}><item.icon size={18} aria-hidden="true" /><span>{item.label}</span></button>)}</nav>
-    <section id={`treasury-panel-${tab}`} role="tabpanel" aria-labelledby={`treasury-tab-${tab}`} className={styles.tabPanel} tabIndex={0}>
+    <label className={styles.dossierPicker} htmlFor="treasury-dossier"><span>Dossier comptable</span><select id="treasury-dossier" value={tab} onChange={event => selectTab(event.target.value as Tab)} aria-controls={`treasury-panel-${tab}`}>{TABS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+    <section id={`treasury-panel-${tab}`} aria-label={TABS.find(item => item.id === tab)?.label} className={styles.tabPanel}>
       {tab === "invoices" ? <KqTreasuryManagement key="invoices" onOpenShop={onOpenShop} section="invoices" /> : <>
-        <div className={styles.toolbar}><label>Période comptable<select value={period} onChange={event => { setPeriod(event.target.value as KqTreasuryPeriod); setOffset(0); }}>{(Object.keys(KQ_TREASURY_PERIODS) as KqTreasuryPeriod[]).map(value => <option key={value} value={value}>{KQ_TREASURY_PERIODS[value]}</option>)}</select></label><button type="button" className={styles.refresh} disabled={!matching} onClick={() => setRefresh(value => value + 1)}><RefreshCw size={17} aria-hidden="true" /> Actualiser</button>{data ? <TreasuryClock key={data.serverNow} startedAt={data.businessStartedAt} serverNow={data.serverNow} /> : null}</div>
+        <div className={styles.toolbar}><label>Période comptable<select id="treasury-period" value={period} onChange={event => { setPeriod(event.target.value as KqTreasuryPeriod); setOffset(0); }}>{(Object.keys(KQ_TREASURY_PERIODS) as KqTreasuryPeriod[]).map(value => <option key={value} value={value}>{KQ_TREASURY_PERIODS[value]}</option>)}</select></label><button type="button" className={styles.refresh} disabled={!matching} onClick={() => setRefresh(value => value + 1)}><RefreshCw size={17} aria-hidden="true" /> Actualiser</button>{data ? <TreasuryClock key={data.serverNow} startedAt={data.businessStartedAt} serverNow={data.serverNow} /> : null}</div>
         {!matching ? <p className={styles.loading} role="status"><LoaderCircle size={22} className={styles.spin} aria-hidden="true" /> Lecture de tes comptes…</p> : state.error ? <div className={styles.error} role="alert"><strong>Les comptes n’ont pas pu être chargés.</strong><p>{state.error}</p><button type="button" className={styles.primary} onClick={() => setRefresh(value => value + 1)}>Réessayer</button></div> : data && report ? <>
           <p className={styles.periodNote}>{period === "previous" ? "Situation historique" : "Situation actualisée"} au {fullDate(data.period.to)} · Comptes ouverts le {shortDate(data.startedAt)}.</p>
           {period === "previous" && data.period.from === data.period.to ? <p className={styles.periodNote}>Le suivi comptable a commencé après cette période. Seule la situation d’ouverture est disponible.</p> : null}

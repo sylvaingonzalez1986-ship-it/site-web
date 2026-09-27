@@ -2,20 +2,22 @@
 
 import { useRef, useState } from "react";
 import { ArrowUp, Check, LoaderCircle, Sparkles } from "lucide-react";
-import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentImpactLabels, getKqEquipmentUpgradeCost } from "@/lib/kanab-quest-equipment";
+import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentImpactLabels, getKqEquipmentUpgradeCost, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
 import styles from "./KqEquipmentUpgrade.module.css";
 
-export function KqEquipmentUpgrade({ code, level, cashCents, productionUnits = 1, disabled, onUpdated }: {
-  code: string; level: number; cashCents: number; productionUnits?: number; disabled?: boolean;
+export function KqEquipmentUpgrade({ code, level, cashCents, productionUnits = 1, tentNumber = 1, disabled, onUpdated }: {
+  code: string; level: number; cashCents: number; productionUnits?: number; tentNumber?: number; disabled?: boolean;
   onUpdated: () => void | Promise<void>;
 }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [completedLevel, setCompletedLevel] = useState(0);
-  const request = useRef<{ level: number; units: number; key: string } | null>(null);
+  const request = useRef<{ level: number; units: number; tentNumber: number; key: string } | null>(null);
   const inFlight = useRef(false);
-  const cost = getKqEquipmentUpgradeCost(code, level, productionUnits);
+  const shared = isKqSharedEquipment(code);
+  const targetTent = shared ? 1 : tentNumber;
+  const cost = getKqEquipmentUpgradeCost(code, level, 1);
   const current = getKqEquipmentAtLevel(code, level);
   if (!current?.purchasable || cost === null && level < 10) return null;
   const next = level < 10 ? getKqEquipmentAtLevel(code, level + 1) : null;
@@ -28,11 +30,11 @@ export function KqEquipmentUpgrade({ code, level, cashCents, productionUnits = 1
     if (inFlight.current || !affordable || disabled || level < completedLevel) return;
     inFlight.current = true;
     setPending(true); setError(""); setNotice("");
-    if (request.current?.level !== level || request.current.units !== productionUnits) request.current = { level, units: productionUnits, key: crypto.randomUUID() };
+    if (request.current?.level !== level || request.current.units !== productionUnits || request.current.tentNumber !== targetTent) request.current = { level, units: productionUnits, tentNumber: targetTent, key: crypto.randomUUID() };
     try {
       const response = await fetch("/api/arena/placard/equipment", {
         method: "PATCH", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "upgrade", equipmentCode: code, expectedLevel: level, expectedUnits: productionUnits, requestKey: request.current.key }),
+        body: JSON.stringify({ action: "upgrade", tentNumber: targetTent, equipmentCode: code, expectedLevel: level, expectedUnits: productionUnits, requestKey: request.current.key }),
       });
       const result = await response.json() as { error?: string; level: number };
       if (!response.ok) throw new Error(result.error || "Amélioration impossible.");
@@ -61,7 +63,7 @@ export function KqEquipmentUpgrade({ code, level, cashCents, productionUnits = 1
       </button>
       {!affordable ? <small>Il manque {formatKqCash(Math.max(0, (cost ?? 0) - cashCents))}.</small> : null}
     </> : <p className={styles.evolution}><Check size={16} aria-hidden="true" /> Niveau maximum atteint</p>}
-    {productionUnits > 1 ? <small>Ce prix améliore le matériel de tes {productionUnits} tentes au même niveau.</small> : null}
+    <small>{shared ? "Cette amélioration bénéficie à toutes les tentes." : `Cette amélioration concerne uniquement la tente ${tentNumber}.`}</small>
     <small>Bonus appliqués une fois installé, dès la prochaine partie ou transformation.</small>
     {notice ? <p role="status">{notice}</p> : null}
     {error ? <p role="alert" className={styles.error}>{error} <button type="button" onClick={() => void onUpdated()}>Actualiser</button></p> : null}

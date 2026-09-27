@@ -1,0 +1,5 @@
+.progress { width: min(1100px, calc(100% - 32px)); margin: 0 auto 32px; color: #003f30; border: 1px solid #003f3040; border-radius: 12px; background: #fffaf1; }
+.progress > summary { min-height: 60px; padding: 16px 20px; font-weight: 800; cursor: pointer; }
+.progress > summary span { display: block; padding-top: 5px; font-size: 12px; font-weight: 500; }
+.progress > summary:focus-visible { outline: 3px solid #00563f; outline-offset: 3px; }
+.progress[open] > summary { border-bottom: 1px solid #003f3020; }

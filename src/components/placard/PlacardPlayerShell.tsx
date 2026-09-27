@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 import { KqPlacardLobby } from "./KqPlacardLobby";
 import { useGameViewport } from "@/hooks/useGameViewport";
 import retro from "../contest/ArenaRetro.module.css";
+import styles from "./PlacardPlayerShell.module.css";
 
 const NAVIGATION_FEEDBACK_MS = 420;
 
@@ -43,80 +44,96 @@ const KqMissionCenter = dynamic(
 );
 const KqBotteCollection = dynamic(() => import("./KqBotteCollection").then((module) => module.KqBotteCollection), { ssr: false });
 const KqWarehouseEntry = dynamic(() => import("./KqWarehouseEntry").then((module) => module.KqWarehouseEntry), { loading: PlacardViewLoading });
+const KqPlacardHud = dynamic(() => import("./KqPlacardHud").then((module) => module.KqPlacardHud), { loading: PlacardViewLoading });
 
 type PlacardView = "hub" | "shop" | "game" | "arena" | "market" | "treasury" | "missions" | "workshop";
-type PlacardDeepLink = PlacardView | "shop-equipment";
+type PlacardNavigationOptions = { equipmentCode?: string; catalog?: boolean; from?: PlacardView };
+const LOCATION_EVENT = "kq:placard-location";
 
 function isPlacardView(value: string | null): value is PlacardView {
   return value === "hub" || value === "shop" || value === "game" || value === "arena" || value === "market" || value === "treasury" || value === "missions" || value === "workshop";
 }
 
-function getPlacardDeepLink(): PlacardDeepLink {
-  const params = new URLSearchParams(window.location.search);
-  const requestedView = params.get("view");
-  if (!isPlacardView(requestedView)) return "hub";
-  return requestedView === "shop" && params.get("catalog") === "equipment"
-    ? "shop-equipment"
-    : requestedView;
-}
+const getPlacardLocation = () => window.location.search;
 
 function subscribePlacardLocation(onStoreChange: () => void) {
   window.addEventListener("popstate", onStoreChange);
-  return () => window.removeEventListener("popstate", onStoreChange);
+  window.addEventListener(LOCATION_EVENT, onStoreChange);
+  return () => {
+    window.removeEventListener("popstate", onStoreChange);
+    window.removeEventListener(LOCATION_EVENT, onStoreChange);
+  };
 }
 
 const PLACARD_VIEW_LABELS: Record<PlacardView, string> = {
   workshop: "de l’Entrepôt",
   hub: "du Placard",
   shop: "de la Boutique",
-  game: "du Jeu",
-  arena: "de Fleur vs Fleur",
-  market: "du Comptoir des lots",
-  treasury: "de la Trésorerie",
+  game: "de la Culture",
+  arena: "du Jury et des duels",
+  market: "du Marché",
+  treasury: "du Bureau",
   missions: "des Missions",
 };
 
 export function PlacardPlayerShell() {
-  const guidedVisit=useSyncExternalStore(subscribePlacardLocation,()=>new URLSearchParams(window.location.search).get("guide")==="1",()=>false);
-  const deepLink = useSyncExternalStore<PlacardDeepLink>(
-    subscribePlacardLocation,
-    getPlacardDeepLink,
-    () => "hub",
-  );
-  const [selectedView, setSelectedView] = useState<PlacardView | null>(null);
+  const location = useSyncExternalStore(subscribePlacardLocation, getPlacardLocation, () => "");
+  const params = new URLSearchParams(location);
+  const guidedVisit = params.get("guide") === "1";
+  const requestedView = params.get("view");
+  const view: PlacardView = isPlacardView(requestedView) ? requestedView : "hub";
   const [collectionOpen, setCollectionOpen] = useState(false);
+  const [progressOpen, setProgressOpen] = useState(false);
   const [pendingView, setPendingView] = useState<PlacardView | null>(null);
-  const [equipmentCatalogRequested, setEquipmentCatalogRequested] = useState(false);
-  const [requestedEquipmentCode, setRequestedEquipmentCode] = useState<string | null>(null);
-  const [shopReturnView, setShopReturnView] = useState<PlacardView>("hub");
   const navigationTimerRef = useRef<number | null>(null);
-  const view: PlacardView = selectedView ?? (deepLink === "shop-equipment" ? "shop" : deepLink);
-  const autoOpenEquipmentCatalog = equipmentCatalogRequested
-    || (selectedView === null && deepLink === "shop-equipment");
+  const requestedEquipmentCode = params.get("equipment");
+  const autoOpenEquipmentCatalog = view === "shop" && params.get("catalog") === "equipment";
+  const from = params.get("from");
+  const shopReturnView: PlacardView = isPlacardView(from) && from !== "shop" ? from : "hub";
 
   const surfaceRef = useGameViewport<HTMLDivElement>(view);
 
-  const openView = useCallback((nextView: PlacardView) => {
-    if (nextView === view) return;
+  const openView = useCallback((nextView: PlacardView, options: PlacardNavigationOptions = {}) => {
+    const url = new URL(window.location.href);
+    for (const key of ["view", "catalog", "equipment", "from"]) url.searchParams.delete(key);
+    if (nextView !== "hub") url.searchParams.set("view", nextView);
+    if (options.catalog && nextView === "shop") url.searchParams.set("catalog", "equipment");
+    if (options.equipmentCode) url.searchParams.set("equipment", options.equipmentCode);
+    if (options.from) url.searchParams.set("from", options.from);
+    if (url.search === window.location.search) return;
     if (navigationTimerRef.current !== null) window.clearTimeout(navigationTimerRef.current);
+    setCollectionOpen(false);
+    setProgressOpen(false);
     setPendingView(nextView);
-    setSelectedView(nextView);
+    window.history.pushState(null, "", url.pathname + url.search + url.hash);
+    window.dispatchEvent(new Event(LOCATION_EVENT));
     navigationTimerRef.current = window.setTimeout(() => {
       setPendingView(null);
       navigationTimerRef.current = null;
     }, NAVIGATION_FEEDBACK_MS);
-  }, [view]);
+  }, [setCollectionOpen, setProgressOpen, setPendingView]);
 
   const openEquipmentCatalog = useCallback((equipmentCode?: string) => {
-    setShopReturnView(view === "shop" ? "hub" : view);
-    setRequestedEquipmentCode(equipmentCode ?? null);
-    setEquipmentCatalogRequested(true);
-    openView("shop");
-  }, [openView, view]);
-  const openWorkshop = useCallback((code?:string)=>{setRequestedEquipmentCode(code??null);openView("workshop");},[openView]);
+    openView("shop", { catalog: true, equipmentCode, from: view === "shop" ? shopReturnView : view });
+  }, [openView, view, shopReturnView]);
+  const openWorkshop = useCallback((equipmentCode?: string) => openView("workshop", { equipmentCode }), [openView]);
+  const openPacks = () => {
+    setCollectionOpen(false);
+    openView("shop", { from: view === "shop" ? shopReturnView : view });
+  };
 
   useEffect(() => () => {
     if (navigationTimerRef.current !== null) window.clearTimeout(navigationTimerRef.current);
+  }, []);
+
+  useEffect(() => {
+    const closeTransientUi = () => {
+      setCollectionOpen(false);
+      setProgressOpen(false);
+      setPendingView(null);
+    };
+    window.addEventListener("popstate", closeTransientUi);
+    return () => window.removeEventListener("popstate", closeTransientUi);
   }, []);
 
   useEffect(() => {
@@ -142,11 +159,11 @@ export function PlacardPlayerShell() {
 
   if (view !== "hub") {
     const currentTitle =
-      view === "workshop" ? "Mon entrepôt" : view === "shop" ? "La Boutique" : view === "game" ? "Le Jeu" : view === "market" ? "Le Marché" : view === "treasury" ? "La Trésorerie" : view === "missions" ? "Les Missions" : "Fleur vs Fleur";
+      view === "workshop" ? "L’Entrepôt · Aménager" : view === "shop" ? "La Boutique · La Botte" : view === "game" ? "La Culture" : view === "market" ? "Le Marché · Vendre" : view === "treasury" ? "Le Bureau · Trésorerie" : view === "missions" ? "Les Missions" : "Jury & duels";
 
     return (
       <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
-        {collectionOpen ? <KqBotteCollection onClose={() => setCollectionOpen(false)} /> : null}
+        {collectionOpen ? <KqBotteCollection onClose={() => setCollectionOpen(false)} onOpenShop={openPacks} /> : null}
         {navigationFeedback}
         <nav className={`${retro.shellNav} sticky top-0 z-[80] border-b-2 border-ink bg-cream/95 px-3 py-3 backdrop-blur sm:px-5`} aria-label="Navigation du Placard">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
@@ -172,22 +189,25 @@ export function PlacardPlayerShell() {
 
         {view === "shop" ? (
           <KqSupportBoosterShop
+            key={`${autoOpenEquipmentCatalog ? "equipment" : "packs"}:${requestedEquipmentCode ?? ""}`}
             autoOpen
             autoClaimWelcome={!guidedVisit}
             onOpenWorkshop={openWorkshop}
             onOpenCollection={() => setCollectionOpen(true)}
             autoOpenEquipment={autoOpenEquipmentCatalog}
             initialEquipmentCode={requestedEquipmentCode}
-            onExit={() => {
-              setEquipmentCatalogRequested(false);
-              setRequestedEquipmentCode(null);
-              openView(shopReturnView);
-            }}
+            onExit={() => openView(shopReturnView)}
           />
         ) : view === "workshop" ? (
           <KqWarehouseEntry initialEquipmentCode={requestedEquipmentCode} onClose={()=>openView("hub")} onOpenShop={openEquipmentCatalog}/>
         ) : view === "missions" ? (
-          <KqMissionCenter onOpen={(next) => { if (next === "shop") setShopReturnView("missions"); openView(next); }} />
+          <>
+            <KqMissionCenter onOpen={(next) => openView(next, next === "shop" ? { from: "missions" } : {})} />
+            <details className={styles.progress} open={progressOpen} onToggle={event => setProgressOpen(event.currentTarget.open)}>
+              <summary>Mes objectifs d’atelier <span>Investissements, filières et réputation</span></summary>
+              {progressOpen ? <KqPlacardHud mode="progression" onOpenShop={openEquipmentCatalog} onOpenGame={() => openView("game")} onOpenArena={() => openView("arena")} onOpenMarket={() => openView("market")} /> : null}
+            </details>
+          </>
         ) : view === "treasury" ? (
           <KqTreasuryDesk onOpenShop={openEquipmentCatalog} onOpenMarket={() => openView("market")} />
         ) : view === "market" ? (
@@ -206,9 +226,9 @@ export function PlacardPlayerShell() {
 
   return (
     <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
-      {collectionOpen ? <KqBotteCollection onClose={() => setCollectionOpen(false)} /> : null}
+      {collectionOpen ? <KqBotteCollection onClose={() => setCollectionOpen(false)} onOpenShop={openPacks} /> : null}
       {navigationFeedback}
-      <KqPlacardLobby onOpen={openView} onOpenEquipment={openEquipmentCatalog} onOpenCollection={() => setCollectionOpen(true)} />
+      <KqPlacardLobby onOpen={openView} onOpenCollection={() => setCollectionOpen(true)} />
     </div>
   );
 }

@@ -1,30 +1,20 @@
-import { summarizeKqEquipmentLoadout, getKqEquipmentDefinition, getKqEquipmentLevel, getKqEquipmentUpgradeCost, KQ_RETIRED_EQUIPMENT_CODES } from "./kanab-quest-equipment";
+import { summarizeKqEquipmentLoadout } from "./kanab-quest-equipment";
 import { getKqProductionUnits, KQ_FINAL_WAREHOUSE_PRICE_CENTS, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
 
-export { getKqProductionUnits, KQ_PRODUCTION_UNITS, KQ_FINAL_WAREHOUSE_PRICE_CENTS } from "./kanab-quest-production-scale";
+export { getKqProductionUnits, KQ_PRODUCTION_UNITS, KQ_FINAL_WAREHOUSE_PRICE_CENTS, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
 
+export const KQ_STARTER_TENT_PRICE_CENTS = 30_000;
 export type KqProductionExpansion = ReturnType<typeof getKqProductionExpansion>;
 
-/** All purchased models, including reserves, equip every tent at the same level. */
-export function getKqProductionExpansion(requestedUnits: number, purchasedCodes: string[], levels: Record<string, number> = {}) {
+/** Each additional tent starts with its own basic kit, regardless of existing upgrades. */
+export function getKqProductionExpansion(requestedUnits: number, _purchasedCodes: string[] = [], _levels: Record<string, number> = {}) {
+  // Retain the previous call signature; owned models never affect a new basic kit.
+  void _purchasedCodes;
+  void _levels;
   const units = getKqProductionUnits(requestedUnits);
   const nextUnits = units < 4 ? units + 1 : units === 4 ? 8 : null;
   const addedUnits = nextUnits === null ? 0 : nextUnits - units;
-  const purchased = [...new Set(purchasedCodes)]
-    .filter(code => !KQ_RETIRED_EQUIPMENT_CODES.includes(code))
-    .map(getKqEquipmentDefinition)
-    .filter(item => item?.purchasable);
-  const starterCosts = { tent: 12_000, lighting: 12_000, air: 6_000 } as const;
-  let unitEquipmentCostCents = Object.entries(starterCosts).reduce((total, [slot, cost]) => (
-    total + (purchased.some(item => item!.slot === slot) ? 0 : cost)
-  ), 0);
-  for (const item of purchased) {
-    if (!item) continue;
-    unitEquipmentCostCents += item.priceCents;
-    for (let level = 1; level < getKqEquipmentLevel(levels[item.code]); level++) {
-      unitEquipmentCostCents += getKqEquipmentUpgradeCost(item.code, level) ?? 0;
-    }
-  }
+  const unitEquipmentCostCents = KQ_STARTER_TENT_PRICE_CENTS;
   const propertyCostCents = units === 4 ? KQ_FINAL_WAREHOUSE_PRICE_CENTS : 0;
   const equipmentCostCents = unitEquipmentCostCents * addedUnits;
   return {
@@ -35,14 +25,18 @@ export function getKqProductionExpansion(requestedUnits: number, purchasedCodes:
 }
 
 /** Shared culture effects are averaged; installed electrical power is additive. */
-export function summarizeKqTentEquipment(tents: KqTentEquipmentProfile[]) {
-  const summaries = tents.map(tent => summarizeKqEquipmentLoadout(tent.codes, tent.levels));
+export function summarizeKqTentEquipment(tents: KqTentEquipmentProfile[], shared?: Pick<KqTentEquipmentProfile, "codes" | "levels">) {
+  const summaries = tents.map(tent => summarizeKqEquipmentLoadout(
+    shared ? [...tent.codes, ...shared.codes] : tent.codes,
+    shared ? { ...tent.levels, ...shared.levels } : tent.levels,
+  ));
   const summary = summarizeKqEquipmentLoadout([]);
   if (!summaries.length) return summary;
   for (const field of ["quantityPercent", "qualityMaxBonus", "regularityPercent", "pressureDelta", "energyDiscountPercent", "processingPrecision", "processingCapacityPercent"] as const) {
     summary[field] = summaries.reduce((sum, item) => sum + item[field], 0) / summaries.length;
   }
-  summary.powerWatts = summaries.reduce((sum, item) => sum + item.powerWatts, 0);
+  const commonPower = shared ? summarizeKqEquipmentLoadout(shared.codes, shared.levels).powerWatts : 0;
+  summary.powerWatts = summaries.reduce((sum, item) => sum + item.powerWatts, 0) - commonPower * (summaries.length - 1);
   // A common culture is fully protected only when each tent has that protection.
   summary.unlocks = summaries[0].unlocks.filter(unlock => summaries.every(item => item.unlocks.includes(unlock)));
   return summary;

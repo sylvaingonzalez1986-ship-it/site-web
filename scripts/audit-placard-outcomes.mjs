@@ -208,7 +208,6 @@ try {
           if (!selected(stage, outcome)) continue;
           await page.evaluate(({stage,outcome})=>window.__showOutcome(stage,outcome), { stage, outcome });
           await page.waitForSelector(selector(stage, outcome));
-          if (outcome !== 'dead') await page.click('nav[aria-label="Sections de la partie"] button:nth-child(3)');
           const name = `${stages[stage][1]}-${outcome}-${width}`;
           results.push({ width, ...await inspect(stage, outcome, name) });
           if (outcome === 'dead') {

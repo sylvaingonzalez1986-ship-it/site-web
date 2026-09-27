@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { BookOpen, Check, Search, X, ZoomIn } from "lucide-react";
+import { BookOpen, Check, Search, ShoppingBag, X, ZoomIn } from "lucide-react";
 import { createPortal } from "react-dom";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
@@ -56,7 +56,7 @@ export function KqBotteCardDetail({ card, copies, onClose }: { card: KqSupportCa
   </dialog>, document.body);
 }
 
-export function KqBotteCollection({ onClose }: { onClose: () => void }) {
+export function KqBotteCollection({ onClose, onOpenShop }: { onClose: () => void; onOpenShop?: () => void }) {
   const dialog = useCardDialog();
   const request = useRef<AbortController | null>(null);
   const [inventory, setInventory] = useState<Record<string, number> | null>(null);
@@ -117,7 +117,7 @@ export function KqBotteCollection({ onClose }: { onClose: () => void }) {
             </button>;
           })}</div>{visible.length === 0 ? <p className={styles.empty}>{ownership === "missing" && owned === KQ_CARDS.length ? "Tu possèdes toutes les cartes La Botte !" : "Aucune carte ne correspond à ces filtres."}<button type="button" onClick={() => { setOwnership("all"); setUtility("all"); setQuery(""); }}>Voir toutes les cartes</button></p> : null}</> : null}
         </div>
-        <footer className={styles.footer}>La Botte contient des cartes consommables : ton stock diminue quand tu les joues.</footer>
+        <footer className={styles.footer}><span>Les cartes jouées consomment un exemplaire.</span>{onOpenShop ? <button type="button" className={styles.shopLink} onClick={onOpenShop}><ShoppingBag size={18} aria-hidden="true" /><span>La Boutique <small>Packs et nouvelles cartes</small></span></button> : null}</footer>
       </div>
     </dialog>
     {selected ? <KqBotteCardDetail card={selected} copies={inventory ? inventory[selected.code] ?? 0 : null} onClose={() => setSelected(null)} /> : null}

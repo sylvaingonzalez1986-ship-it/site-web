@@ -38,8 +38,22 @@ try {
     -- routines below are loaded from the actual migration chain.
     CREATE TABLE test_settlements(user_id UUID);
     CREATE TABLE test_assets(user_id UUID,source_key TEXT UNIQUE,cost BIGINT,equipment_code TEXT);
+    CREATE TABLE kq_treasury_accounts(user_id UUID PRIMARY KEY,started_at TIMESTAMPTZ NOT NULL DEFAULT now());
+    CREATE TABLE kq_treasury_assets(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID,source_key TEXT,
+      account TEXT,expense_account TEXT,equipment_code TEXT,cost_cents BIGINT,recognized_cents BIGINT DEFAULT 0,
+      starts_at TIMESTAMPTZ,ends_at TIMESTAMPTZ,recognized_at TIMESTAMPTZ,retired_at TIMESTAMPTZ,
+      UNIQUE(user_id,source_key),CHECK(recognized_cents BETWEEN 0 AND cost_cents));
     CREATE FUNCTION kq_treasury_add_asset(p_user UUID,p_key TEXT,p_account TEXT,p_expense TEXT,p_cost BIGINT,p_start TIMESTAMPTZ,p_hours INTEGER,p_equipment TEXT DEFAULT NULL,p_opening BOOLEAN DEFAULT false)
-      RETURNS BIGINT LANGUAGE plpgsql AS $$ BEGIN INSERT INTO test_assets VALUES(p_user,p_key,p_cost,p_equipment); RETURN p_cost; END $$;
+      RETURNS BIGINT LANGUAGE plpgsql AS $$ BEGIN
+        INSERT INTO test_assets VALUES(p_user,p_key,p_cost,p_equipment);
+        INSERT INTO kq_treasury_assets(user_id,source_key,account,expense_account,equipment_code,cost_cents,starts_at,ends_at,recognized_at)
+          VALUES(p_user,p_key,p_account,p_expense,p_equipment,p_cost,p_start,p_start+p_hours*interval '1 hour',p_start);
+        RETURN p_cost;
+      END $$;
+    CREATE FUNCTION kq_treasury_refresh(p_user UUID) RETURNS VOID LANGUAGE plpgsql AS $$ BEGIN END $$;
+    CREATE FUNCTION kq_treasury_queue(p_user UUID) RETURNS VOID LANGUAGE plpgsql AS $$ BEGIN END $$;
+    CREATE FUNCTION kq_treasury_pair(p_user UUID,p_kind TEXT,p_key TEXT,p_at TIMESTAMPTZ,p_debit TEXT,p_credit TEXT,p_amount BIGINT,p_reference TEXT DEFAULT NULL)
+      RETURNS VOID LANGUAGE plpgsql AS $$ BEGIN END $$;
   `);
   await db.exec(await migration("20260830000100_kq_durable_equipment_shop.sql"));
   await db.exec(await migration("20260830000200_kq_post_harvest_market.sql"));
@@ -200,7 +214,121 @@ try {
     assert.equal(await rpc("has_function_privilege($1,'public.rpc_kq_upgrade_production_equipment(uuid,uuid,text,integer,integer)','EXECUTE')", [role]), role === "service_role");
   }
   assert((await query("SELECT * FROM test_settlements WHERE user_id=$1", [user])).length > 10);
-  console.log("Production expansion PostgreSQL: pricing, stale quotes, idempotency, rollback, fleet maintenance, run guards, invoices, 4000g lots and API grants passed.");
+  // Preserve already paid copies and exact historical replay while changing new purchases.
+  await db.exec(`CREATE FUNCTION rpc_kq_commerce_command(p_user_id UUID,p_action TEXT,p_payload JSONB,p_request_key UUID) RETURNS JSONB
+    LANGUAGE plpgsql AS $$ DECLARE installed TEXT[]; BEGIN
+      installed:=(SELECT COALESCE(array_agg(equipment_code ORDER BY equipment_code),ARRAY[]::TEXT[]) FROM public.kq_equipment_loadouts WHERE user_id=p_user_id);
+      RETURN to_jsonb(installed);
+    END $$;`);
+  const gearBeforeSplit = await query("SELECT * FROM kq_player_equipment WHERE user_id=$1 ORDER BY equipment_code", [user]);
+  await db.query("UPDATE kq_treasury_assets SET recognized_cents=LEAST(cost_cents,73) WHERE user_id=$1", [user]);
+  const assetBeforeSplit = await one("SELECT sum(cost_cents) AS cost,sum(recognized_cents) AS recognized FROM kq_treasury_assets WHERE user_id=$1", [user]);
+  const walletBeforeSplit = await wallet();
+  await db.exec(await migration("20260924000300_kq_individual_tents.sql"));
+  assert.deepEqual(await wallet(), walletBeforeSplit);
+  assert.deepEqual(await one("SELECT sum(cost_cents) AS cost,sum(recognized_cents) AS recognized FROM kq_treasury_assets WHERE user_id=$1", [user]), assetBeforeSplit);
+  for (const original of gearBeforeSplit) {
+    const copies = await query("SELECT * FROM kq_player_equipment WHERE user_id=$1 AND equipment_code=$2 ORDER BY tent_number", [user, original.equipment_code]);
+    assert.equal(copies.length, 8);
+    assert.equal(copies.reduce((sum, copy) => sum + copy.purchase_price_cents, 0), original.purchase_price_cents);
+    for (const copy of copies) for (const field of ["level", "culture_wear_percent", "culture_wear_version", "wear_cycles", "maintenance_version"])
+      assert.equal(copy[field], original[field]);
+  }
+  assert.deepEqual(await expansion(1, 30000, key), { ...expanded, replayed: true });
+  assert.equal((await rpc("rpc_kq_upgrade_equipment($1,$2,'LED-300',1)", [user, upgradeKey])).replayed, true);
+  await assert.rejects(() => buy(["AIR-EC6"]), /production_units_changed/);
+
+  const individualUser = randomUUID();
+  await db.query("INSERT INTO auth.users VALUES($1)", [individualUser]);
+  await db.query("SELECT kq_business_settle($1)", [individualUser]);
+  await db.query("INSERT INTO kq_treasury_accounts(user_id) VALUES($1)", [individualUser]);
+  await db.query("UPDATE kq_equipment_wallets SET cash_cents=100000000 WHERE user_id=$1", [individualUser]);
+  await db.exec(`CREATE TRIGGER test_tent_purchase AFTER INSERT ON kq_equipment_purchase_receipts FOR EACH ROW EXECUTE FUNCTION kq_treasury_observe();
+    CREATE TRIGGER test_tent_upgrade AFTER INSERT ON kq_equipment_upgrade_receipts FOR EACH ROW EXECUTE FUNCTION kq_treasury_observe();
+    CREATE TRIGGER test_tent_replacement AFTER INSERT ON kq_culture_equipment_replacements FOR EACH ROW EXECUTE FUNCTION kq_treasury_observe();`);
+  const tentBuy = (tent, codes, requestKey = randomUUID()) => rpc("rpc_kq_purchase_tent_equipment($1,$2,$3,$4)", [individualUser, requestKey, codes, tent]);
+  const tentEquip = (tent, code) => rpc("rpc_kq_equip_tent_equipment($1,$2,$3)", [individualUser, code, tent]);
+  const tentGear = (tent, code) => one("SELECT * FROM kq_player_equipment WHERE user_id=$1 AND tent_number=$2 AND equipment_code=$3", [individualUser, tent, code]);
+  const expensivePurchase = await tentBuy(1, ["LED-300", "STATIC-PLASMA", "SECURITY-DOG"]);
+  assert.equal(expensivePurchase.totalPriceCents, 35900 + 2280000 + 100000);
+  await tentEquip(1, "LED-300");
+  await tentEquip(1, "STATIC-PLASMA");
+  await tentEquip(1, "SECURITY-DOG");
+  const firstUpgrade = randomUUID();
+  assert.equal((await rpc("rpc_kq_upgrade_tent_equipment($1,$2,'LED-300',1,1)", [individualUser, firstUpgrade])).priceCents, 3590);
+  const beforeBasic = await wallet(individualUser), firstTent = await tentGear(1, "LED-300");
+  await assert.rejects(() => expansion(1, 2_440_000, randomUUID(), individualUser), /production_price_changed/);
+  const basicKey = randomUUID();
+  assert.equal((await expansion(1, 30000, basicKey, individualUser)).priceCents, 30000);
+  assert.equal((await wallet(individualUser)).cash_cents, beforeBasic.cash_cents - 30000);
+  assert.deepEqual(await tentGear(1, "LED-300"), firstTent);
+  assert.deepEqual((await query("SELECT equipment_code FROM kq_player_equipment WHERE user_id=$1 AND tent_number=2 ORDER BY equipment_code", [individualUser])).map(row => row.equipment_code), [...starters].sort());
+  const afterBasic = await wallet(individualUser);
+  assert.equal((await expansion(1, 30000, basicKey, individualUser)).replayed, true);
+  assert.deepEqual(await wallet(individualUser), afterBasic);
+  await assert.rejects(() => tentBuy(3, ["LED-300"]), /production_invalid_tent/);
+  await assert.rejects(() => tentEquip(2, "STATIC-PLASMA"), /equipment_not_purchased/);
+  const secondBuyKey = randomUUID();
+  assert.equal((await tentBuy(2, ["LED-300"], secondBuyKey)).totalPriceCents, 35900);
+  assert.equal((await tentBuy(2, ["LED-300"], secondBuyKey)).replayed, true);
+  await assert.rejects(() => tentBuy(1, ["LED-300"], secondBuyKey), /equipment_purchase_request_mismatch/);
+  assert.equal((await tentGear(2, "LED-300")).level, 1);
+  await tentEquip(2, "LED-300");
+  assert.equal((await tentGear(1, "LED-300")).level, 2);
+  await assert.rejects(() => rpc("rpc_kq_upgrade_tent_equipment($1,$2,'LED-300',1,2)", [individualUser, firstUpgrade]), /equipment_upgrade_request_mismatch/);
+
+  const individualSnapshot = async () => {
+    const tents = [];
+    for (let tentNumber = 1; tentNumber <= (await wallet(individualUser)).production_units; tentNumber++) {
+      const rows = await query("SELECT e.equipment_code,e.level FROM kq_equipment_loadouts l JOIN kq_player_equipment e USING(user_id,tent_number,equipment_code) WHERE l.user_id=$1 AND l.tent_number=$2 ORDER BY e.equipment_code", [individualUser, tentNumber]);
+      tents.push({ tentNumber, codes: rows.map(row => row.equipment_code), levels: Object.fromEntries(rows.map(row => [row.equipment_code, row.level])) });
+    }
+    return { equipment: { ...tents[0], tents, productionUnits: tents.length }, harvestGrams: 100 * tents.length, energy: { version: 1, mode: "balanced", totalCents: 1206, totalWattHours: 40200 } };
+  };
+  const mixedState = await individualSnapshot();
+  const tampered = structuredClone(mixedState); tampered.equipment.tents[1].levels["LED-300"] = 2;
+  await assert.rejects(() => db.query("INSERT INTO kq_runs(user_id,state) VALUES($1,$2)", [individualUser, JSON.stringify(tampered)]), /kq_culture_equipment_changed/);
+  const mixedRun = (await one("INSERT INTO kq_runs(user_id,state) VALUES($1,$2) RETURNING id", [individualUser, JSON.stringify(mixedState)])).id;
+  await assert.rejects(() => expansion(2, 30000, randomUUID(), individualUser), /production_active_run/);
+  await assert.rejects(() => db.query("UPDATE kq_runs SET state=jsonb_set(state,'{equipment,tents,1,levels,LED-300}','2') WHERE id=$1", [mixedRun]), /kq_energy_quote_immutable/);
+  await finish(mixedRun);
+  assert.equal((await tentGear(1, "LED-300")).culture_wear_percent, 5);
+  assert.equal((await tentGear(2, "LED-300")).culture_wear_percent, 5);
+  assert.equal((await tentGear(1, "STATIC-PLASMA")).wear_cycles, 1);
+  assert.equal((await one("SELECT dog_care FROM kq_energy_invoices WHERE run_id=$1", [mixedRun])).dog_care.foodCents, 800);
+  assert.equal((await one("SELECT amount_cents FROM kq_lab_invoices WHERE run_id=$1", [mixedRun])).amount_cents, 9000);
+  const wearAfter = await tentGear(2, "LED-300"); await finish(mixedRun); assert.deepEqual(await tentGear(2, "LED-300"), wearAfter);
+
+  // Replacing one copy retires only that tent's assets and preserves the other.
+  await db.query("UPDATE kq_player_equipment SET culture_wear_percent=100 WHERE user_id=$1 AND tent_number=2 AND equipment_code='LED-300'", [individualUser]);
+  const firstAssets = await query("SELECT * FROM kq_treasury_assets WHERE user_id=$1 AND tent_number=1 AND equipment_code='LED-300' ORDER BY source_key", [individualUser]);
+  const beforeReplacement = await wallet(individualUser);
+  const replacementReceipt = await rpc("rpc_kq_replace_tent_culture_equipment($1,'LED-300',$2,35900,$3,2)", [individualUser, wearAfter.culture_wear_version, randomUUID()]);
+  assert.equal(replacementReceipt.paidCents, 35900);
+  assert.equal((await wallet(individualUser)).cash_cents, beforeReplacement.cash_cents - 35900);
+  assert.equal((await tentGear(2, "LED-300")).culture_wear_percent, 0);
+  assert.equal((await tentGear(1, "LED-300")).culture_wear_percent, 5);
+  assert.deepEqual(await query("SELECT * FROM kq_treasury_assets WHERE user_id=$1 AND tent_number=1 AND equipment_code='LED-300' ORDER BY source_key", [individualUser]), firstAssets);
+  assert.equal((await query("SELECT * FROM kq_treasury_assets WHERE user_id=$1 AND tent_number=2 AND equipment_code='LED-300' AND retired_at IS NOT NULL", [individualUser])).length, 1);
+
+  await tentBuy(2, ["STATIC-PLASMA"]); await tentEquip(2, "STATIC-PLASMA");
+  await db.query("UPDATE kq_player_equipment SET wear_cycles=10,maintenance_version=9 WHERE user_id=$1 AND tent_number=1 AND equipment_code='STATIC-PLASMA'", [individualUser]);
+  await db.query("SELECT kq_assert_processing_maintenance($1,'static-sift')", [individualUser]);
+  await db.query("UPDATE kq_player_equipment SET wear_cycles=10,maintenance_version=4 WHERE user_id=$1 AND tent_number=2 AND equipment_code='STATIC-PLASMA'", [individualUser]);
+  await assert.rejects(() => db.query("SELECT kq_assert_processing_maintenance($1,'static-sift')", [individualUser]), /commerce_machine_maintenance/);
+  assert.equal((await rpc("rpc_kq_repair_tent_machine($1,'STATIC-PLASMA',4,20000,$2,2)", [individualUser, randomUUID()])).paidCents, 20000);
+  assert.equal((await tentGear(1, "STATIC-PLASMA")).wear_cycles, 10);
+  assert.equal((await tentGear(2, "STATIC-PLASMA")).wear_cycles, 0);
+  await db.query("SELECT kq_assert_processing_maintenance($1,'static-sift')", [individualUser]);
+  const pool = await rpc("rpc_kq_commerce_command($1,'preview','{}',$2)", [individualUser, randomUUID()]);
+  assert.equal(pool.length, new Set(pool).size);
+  for (const units of [2, 3, 4]) assert.equal((await expansion(units, units === 4 ? 2120000 : 30000, randomUUID(), individualUser)).productionUnits, units === 4 ? 8 : units + 1);
+  assert.equal((await query("SELECT * FROM kq_player_equipment WHERE user_id=$1 AND tent_number=8", [individualUser])).length, 3);
+  for (const role of ["anon", "authenticated", "service_role"]) {
+    for (const signature of ["rpc_kq_purchase_tent_equipment(uuid,uuid,text[],integer)", "rpc_kq_upgrade_tent_equipment(uuid,uuid,text,integer,integer)", "rpc_kq_equip_tent_equipment(uuid,text,integer)", "rpc_kq_repair_tent_machine(uuid,text,integer,integer,uuid,integer)", "rpc_kq_replace_tent_culture_equipment(uuid,text,integer,integer,uuid,integer)"])
+      assert.equal(await rpc("has_function_privilege($1,$2,'EXECUTE')", [role, `public.${signature}`]), role === "service_role");
+  }
+  console.log("Production PostgreSQL passed: historical fleet/replay, individual starter tents, scoped purchases/upgrades/repairs, frozen mixed cultures, wear, invoices, shared machines, asset isolation and grants.");
 } finally {
   await db.close();
 }

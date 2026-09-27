@@ -7,8 +7,10 @@ import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import styles from "./KqWarehouseInventory.module.css";
 
-export function KqCultureEquipmentWear({ code, name, condition, cashCents, activeRun, disabled, onUpdated }: {
+export function KqCultureEquipmentWear({ code, name, condition, cashCents, activeRun, tentNumber = 1, productionUnits = 1, disabled, onUpdated }: {
   code: string;
+  tentNumber?: number;
+  productionUnits?: number;
   name: string;
   condition: KqCultureEquipmentCondition;
   cashCents: number;
@@ -20,7 +22,7 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [replacedVersion, setReplacedVersion] = useState<number | null>(null);
-  const request = useRef<{ version: number; costCents: number; key: string } | null>(null);
+  const request = useRef<{ version: number; costCents: number; tentNumber: number; key: string } | null>(null);
   const locked = useRef(false);
   const confirmButton = useRef<HTMLButtonElement>(null);
   const replaceButton = useRef<HTMLButtonElement>(null);
@@ -37,14 +39,14 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
     locked.current = true;
     setBusy(true);
     setError("");
-    if (request.current?.version !== condition.version || request.current.costCents !== condition.replacementCents) {
-      request.current = { version: condition.version, costCents: condition.replacementCents, key: createClientRequestKey() };
+    if (request.current?.version !== condition.version || request.current.costCents !== condition.replacementCents || request.current.tentNumber !== tentNumber) {
+      request.current = { version: condition.version, costCents: condition.replacementCents, tentNumber, key: createClientRequestKey() };
     }
     try {
       const response = await fetch("/api/arena/placard/equipment", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "replace", equipmentCode: code, requestKey: request.current.key,
+        body: JSON.stringify({ action: "replace", tentNumber, expectedUnits: productionUnits, equipmentCode: code, requestKey: request.current.key,
           expectedVersion: condition.version, expectedCostCents: condition.replacementCents }),
         signal: AbortSignal.timeout(15000),
       });

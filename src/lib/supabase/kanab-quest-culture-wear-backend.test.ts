@@ -6,7 +6,7 @@ import { getKqEnergySnapshot } from "./kanab-quest-energy-backend";
 import { startKqGame } from "../kanab-quest-game";
 import { quoteKqTentEnergy } from "../kanab-quest-energy";
 const userId = "11000000-0000-4000-8000-000000000001";
-const input = { userId, requestKey: "11000000-0000-4000-8000-000000000002", equipmentCode: "LED-300", expectedVersion: 10, expectedCostCents: 35900 };
+const input = { userId, tentNumber: 1, requestKey: "11000000-0000-4000-8000-000000000002", equipmentCode: "LED-300", expectedVersion: 10, expectedCostCents: 35900 };
 function snapshotDb() {
   const data: Record<string, unknown> = {
     kq_equipment_wallets: { cash_cents: 100000, reputation: 0, chanvrier: { strength: "handyperson" } },
@@ -32,7 +32,7 @@ describe("culture equipment backend", () => {
   it("keeps physical inventory but removes broken bonuses and preserves processing maintenance", async () => {
     snapshotDb(); const shop = await getKqEquipmentShopSnapshot(userId);
     expect(shop.equippedCodes).toContain("LED-300"); expect(shop.ownedCodes).toContain("LED-300");
-    expect(shop.cultureOperationalCodes).toEqual(["AIR-EC6", "PRESS-0600", "TENT-080-STARTER", "LED-150-STARTER"]);
+    expect(shop.cultureOperationalCodes).toEqual(["AIR-EC6", "TENT-080-STARTER", "LED-150-STARTER", "PRESS-0600"]);
     expect(shop.operationalCodes).toEqual(["AIR-EC6", "TENT-080-STARTER", "LED-150-STARTER"]);
     expect(shop.cultureWear?.["LED-300"]).toMatchObject({ conditionPercent: 0, due: true, replacementCents: 68210, version: 10 });
     expect(shop.maintenance?.["PRESS-0600"]).toMatchObject({ due: true, repairCents: 0 });
@@ -50,7 +50,7 @@ describe("culture equipment backend", () => {
   it("sends expected price and version to the authoritative replacement transaction", async () => {
     const rpc = vi.fn().mockResolvedValue({ data: { paidCents: 35900, level: 1, replayed: false }, error: null }); mocks.client.mockReturnValue({ rpc });
     await expect(replaceKqCultureEquipment(input)).resolves.toMatchObject({ paidCents: 35900 });
-    expect(rpc).toHaveBeenCalledWith("rpc_kq_replace_culture_equipment", { p_user_id: userId, p_equipment_code: "LED-300", p_request_key: input.requestKey, p_expected_version: 10, p_expected_cost_cents: 35900 });
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_replace_tent_culture_equipment", { p_tent_number: 1, p_user_id: userId, p_equipment_code: "LED-300", p_request_key: input.requestKey, p_expected_version: 10, p_expected_cost_cents: 35900 });
   });
   it.each(["LED-150-STARTER", "SECURITY-DOG", "PRESS-0600", "constructor"])("rejects replacement of excluded equipment %s", async equipmentCode => {
     await expect(replaceKqCultureEquipment({ ...input, equipmentCode })).rejects.toThrow("Remplacement invalide");

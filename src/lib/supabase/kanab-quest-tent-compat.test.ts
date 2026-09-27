@@ -75,6 +75,21 @@ describe("culture compatibility with individually equipped tents", () => {
     expect(result.state.equipment!.tents![1].codes).not.toContain("LED-300");
   });
 
+  it("freezes the installed common workshop once when launching a multi-tent culture", async () => {
+    const fixture = structuredClone(productionFixture);
+    fixture.owned.find(row => row.tent_number === 1 && row.equipment_code === "WASHER-25L")!.level = 3;
+    fixture.owned.push({ tent_number: 2, equipment_code: "WASHER-25L", level: 9, culture_wear_percent: 0, purchase_price_cents: 125000 });
+    fixture.loadouts.push({ tent_number: 1, equipment_code: "WASHER-25L", slot: "washing" });
+    fixture.loadouts.push({ tent_number: 2, equipment_code: "WASHER-25L", slot: "washing" });
+    const { rpc } = database(fixture);
+    const result = await startKqPlayerRun(userId, input);
+    expect(result.state.equipment?.shared?.codes.filter(code => code === "WASHER-25L")).toHaveLength(1);
+    expect(result.state.equipment?.shared?.levels["WASHER-25L"]).toBe(3);
+    expect(result.state.equipment?.tents?.every(tent => !tent.codes.includes("WASHER-25L"))).toBe(true);
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_start_run_with_heritage", expect.objectContaining({ p_initial_state: result.state }));
+    expect(parseKqGameSave(encodeKqSave(result.state))).toEqual(result.state);
+  });
+
   it("does not overwrite a level or broken state with another copy of the same model", async () => {
     const fixture = structuredClone(productionFixture);
     fixture.owned.push({ tent_number: 2, equipment_code: "LED-300", level: 1, culture_wear_percent: 100, purchase_price_cents: 35900 });
@@ -109,6 +124,15 @@ describe("culture compatibility with individually equipped tents", () => {
     expect(result.state.equipment!.tents).toHaveLength(1);
     expect(result.state.energy).toEqual(energy.quotes.balanced);
     expect(parseKqGameSave(encodeKqSave(result.state))).toEqual(result.state);
+  });
+
+  it.each(["kq_culture_equipment_changed", "kq_shared_equipment_changed"])("explains a stale %s launch snapshot without exposing the database error", async message => {
+    const { rpc } = database();
+    const respond = rpc.getMockImplementation()!;
+    rpc.mockImplementation(name => name === "rpc_kq_start_run_with_heritage"
+      ? Promise.resolve({ data: null, error: { message } })
+      : respond(name));
+    await expect(startKqPlayerRun(userId, input)).rejects.toThrow("Actualise le devis avant de lancer la culture");
   });
 
   it("accepts historical homogeneous saves and rejects altered tent snapshots", () => {

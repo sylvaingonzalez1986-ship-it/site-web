@@ -23,12 +23,12 @@ function publicEquipmentError(error: unknown, fallback: string) {
     : { message, status: 400 };
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
-    return NextResponse.json(await getKqEquipmentShopSnapshot(session.customerId));
+    return NextResponse.json(await getKqEquipmentShopSnapshot(session.customerId, Number(new URL(request.url).searchParams.get("tentNumber") ?? 1)));
   } catch (error) {
     const failure = publicEquipmentError(error, "Catalogue matériel indisponible.");
     return NextResponse.json({ error: failure.message }, { status: failure.status });
@@ -50,12 +50,13 @@ export async function POST(request: Request) {
     });
   }
   try {
-    const payload = await request.json() as { requestKey?: string; equipmentCodes?: string[]; expectedUnits?: number };
+    const payload = await request.json() as { requestKey?: string; equipmentCodes?: string[]; expectedUnits?: number; tentNumber?: number };
     return NextResponse.json(await purchaseKqDurableEquipment({
       userId: session.customerId,
       requestKey: String(payload.requestKey ?? ""),
       equipmentCodes: Array.isArray(payload.equipmentCodes) ? payload.equipmentCodes : [],
       expectedUnits: payload.expectedUnits ?? 1,
+      ...(payload.tentNumber !== undefined ? { tentNumber: payload.tentNumber } : {}),
     }));
   } catch (error) {
     const failure = publicEquipmentError(error, "Achat d’équipement impossible.");
@@ -80,6 +81,7 @@ export async function PATCH(request: Request) {
     const payload = await request.json() as {
       action?: "route-plan" | "upgrade" | "repair" | "replace" | "expand-production";
       expectedUnits?: number;
+      tentNumber?: number;
       expectedVersion?: number;
       expectedCostCents?: number;
       requestKey?: string;
@@ -94,10 +96,12 @@ export async function PATCH(request: Request) {
     if (payload.action === "replace") return NextResponse.json(await replaceKqCultureEquipment({
       userId: session.customerId, equipmentCode: String(payload.equipmentCode ?? ""), requestKey: String(payload.requestKey ?? ""),
       expectedVersion: payload.expectedVersion ?? -1, expectedCostCents: payload.expectedCostCents ?? -1,
+      ...(payload.tentNumber !== undefined ? { tentNumber: payload.tentNumber } : {}),
     }));
     if (payload.action === "repair") return NextResponse.json(await repairKqMachine({
       userId: session.customerId, equipmentCode: String(payload.equipmentCode ?? ""), requestKey: String(payload.requestKey ?? ""),
       expectedVersion: payload.expectedVersion ?? -1, expectedCostCents: payload.expectedCostCents ?? -1,
+      ...(payload.tentNumber !== undefined ? { tentNumber: payload.tentNumber } : {}),
     }));
     if (payload.action === "upgrade") {
       return NextResponse.json(await upgradeKqDurableEquipment({
@@ -106,6 +110,7 @@ export async function PATCH(request: Request) {
         equipmentCode: String(payload.equipmentCode ?? ""),
         expectedLevel: payload.expectedLevel ?? 0,
         expectedUnits: payload.expectedUnits ?? 1,
+        ...(payload.tentNumber !== undefined ? { tentNumber: payload.tentNumber } : {}),
       }));
     }
     if (payload.action === "route-plan") {
@@ -124,6 +129,7 @@ export async function PATCH(request: Request) {
     }
     return NextResponse.json(await equipKqDurableEquipment({
       userId: session.customerId,
+      ...(payload.tentNumber !== undefined ? { tentNumber: payload.tentNumber } : {}),
       equipmentCode: String(payload.equipmentCode ?? ""),
     }));
   } catch (error) {

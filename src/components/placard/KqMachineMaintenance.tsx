@@ -2,20 +2,21 @@
 import { useRef, useState } from "react";
 import { Wrench } from "lucide-react";
 import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
-import { formatKqCash } from "@/lib/kanab-quest-equipment";
+import { formatKqCash, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
 import styles from "./KqEquipmentUpgrade.module.css";
-export function KqMachineMaintenance({ code, condition, cashCents, disabled, onUpdated }: { code: string; condition: KqMachineCondition; cashCents: number; disabled?: boolean; onUpdated: () => void }) {
+export function KqMachineMaintenance({ code, condition, cashCents, tentNumber = 1, productionUnits = 1, disabled, onUpdated }: { code: string; tentNumber?: number; productionUnits?: number; condition: KqMachineCondition; cashCents: number; disabled?: boolean; onUpdated: () => void }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const request = useRef<{ version: number; key: string } | null>(null);
+  const request = useRef<{ version: number; tentNumber: number; key: string } | null>(null);
   const locked = useRef(false);
+  const targetTent = isKqSharedEquipment(code) ? 1 : tentNumber;
   const repair = async () => {
     if (locked.current || !condition.due || disabled) return;
     locked.current = true; setBusy(true); setError("");
-    if (request.current?.version !== condition.version) request.current = { version: condition.version, key: crypto.randomUUID() };
+    if (request.current?.version !== condition.version || request.current.tentNumber !== targetTent) request.current = { version: condition.version, tentNumber: targetTent, key: crypto.randomUUID() };
     try {
       const response = await fetch("/api/arena/placard/equipment", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
-        action: "repair", equipmentCode: code, requestKey: request.current.key, expectedVersion: condition.version, expectedCostCents: condition.repairCents,
+        action: "repair", tentNumber: targetTent, expectedUnits: productionUnits, equipmentCode: code, requestKey: request.current.key, expectedVersion: condition.version, expectedCostCents: condition.repairCents,
       }), signal: AbortSignal.timeout(15000) });
       const body = await response.json(); if (!response.ok) throw new Error(body.error || "Réparation impossible.");
       window.dispatchEvent(new Event("kq:equipment-updated")); onUpdated();

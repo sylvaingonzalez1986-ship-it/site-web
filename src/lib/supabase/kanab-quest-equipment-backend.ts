@@ -6,6 +6,7 @@ import { getKqCultureEquipmentCondition, getKqCultureOperationalCodes, type KqCu
 
 import {
   getKqEquipmentDefinition,
+  isKqSharedEquipment,
   getKqEquipmentAtLevel,
   getKqEquipmentUpgradeCost,
   getKqEquipmentRequirementState,
@@ -29,16 +30,30 @@ function assertProductionUnits(value: number) {
   if (!KQ_PRODUCTION_UNITS.some(units => units === value)) throw new Error("Capacité de production invalide.");
 }
 
+function assertTentNumber(value: number) {
+  if (!Number.isInteger(value) || value < 1 || value > 8) throw new Error("Tente invalide.");
+}
+
 export type KqTentEquipmentSnapshot = {
   tentNumber: number;
+  ownedCodes: string[];
+  purchasedCodes: string[];
   equippedCodes: string[];
   levels: Record<string, number>;
+  maintenance: Record<string, KqMachineCondition>;
   cultureWear: Record<string, KqCultureEquipmentCondition>;
   cultureOperationalCodes: string[];
+  operationalCodes: string[];
 };
 
+export type KqSharedEquipmentSnapshot = Pick<KqTentEquipmentSnapshot,
+  "ownedCodes" | "purchasedCodes" | "equippedCodes" | "levels" | "maintenance" | "operationalCodes">;
+
 export type KqEquipmentShopSnapshot = {
+  tentNumber: number;
+  equipmentPricingUnits: 1;
   tents: KqTentEquipmentSnapshot[];
+  sharedEquipment: KqSharedEquipmentSnapshot;
   productionUnits: number;
   production: KqProductionExpansion;
   strength?: ChanvrierStrength | null;
@@ -100,8 +115,9 @@ export async function getKqEquipmentRoutePlan(userId: string): Promise<KqEquipme
   return parseKqEquipmentRoutePlan(result.data);
 }
 
-export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEquipmentShopSnapshot> {
+export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNumber = 1): Promise<KqEquipmentShopSnapshot> {
   assertUuid(userId, "Compte équipement invalide.");
+  assertTentNumber(requestedTentNumber);
   const supabase = createSupabaseServiceClient();
   const ensured = await supabase.rpc("rpc_kq_ensure_equipment_profile", { p_user_id: userId });
   if (ensured.error) throw new Error(`[supabase:rpc_kq_ensure_equipment_profile] ${ensured.error.message}`);
@@ -127,50 +143,56 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
   if (routeMasteries.error) throw new Error(`[supabase:kq_player_route_masteries] ${routeMasteries.error.message}`);
   const routePlan = parseKqEquipmentRoutePlan(wallet.data);
   const productionUnits = getKqProductionUnits(Number(wallet.data.production_units ?? 1));
-  // Keep each physical installation separate for culture snapshots and energy quotes.
-  // Existing shop/pricing fields and all equipment write methods retain their contract.
-  const tents: KqTentEquipmentSnapshot[] = Array.from({ length: productionUnits }, (_, index) => {
-    const tentNumber = index + 1;
-    const tentOwned = (owned.data ?? []).filter(row => Number(row.tent_number ?? 1) === tentNumber
-      && !KQ_RETIRED_EQUIPMENT_CODES.includes(String(row.equipment_code)));
-    const tentLevels = Object.fromEntries(tentOwned.map(row => [String(row.equipment_code), Number(row.level ?? 1)]));
-    const tentCodes = (loadout.data ?? []).filter(row => Number(row.tent_number ?? 1) === tentNumber)
-      .map(row => String(row.equipment_code)).filter(code => !KQ_RETIRED_EQUIPMENT_CODES.includes(code));
-    const tentWear = Object.fromEntries(tentOwned.flatMap(row => {
+  const profile = wallet.data.chanvrier as unknown as { strength: ChanvrierStrength } | null;
+  const strength = profile?.strength ?? null;
+  const buildProfile = (tentNumber: number, shared: boolean): KqTentEquipmentSnapshot => {
+    const availableOwned = (owned.data ?? []).filter(row => Number(row.tent_number ?? 1) === tentNumber
+      && !KQ_RETIRED_EQUIPMENT_CODES.includes(String(row.equipment_code))
+      && isKqSharedEquipment(String(row.equipment_code)) === shared);
+    const levels = Object.fromEntries(availableOwned.map(row => [String(row.equipment_code), Number(row.level ?? 1)]));
+    const maintenance = Object.fromEntries(availableOwned.flatMap(row => {
+      const condition = getKqMachineCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.wear_cycles ?? 0), Number(row.maintenance_version ?? 0), strength);
+      return condition ? [[String(row.equipment_code), condition]] : [];
+    })) as Record<string, KqMachineCondition>;
+    const equippedCodes = (loadout.data ?? []).filter(row => Number(row.tent_number ?? 1) === tentNumber)
+      .map(row => String(row.equipment_code)).filter(code => !KQ_RETIRED_EQUIPMENT_CODES.includes(code) && isKqSharedEquipment(code) === shared);
+    const cultureWear = Object.fromEntries(availableOwned.flatMap(row => {
       const condition = getKqCultureEquipmentCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.culture_wear_percent ?? 0), Number(row.culture_wear_version ?? 0));
       return condition ? [[String(row.equipment_code), condition]] : [];
     })) as Record<string, KqCultureEquipmentCondition>;
-    return { tentNumber, equippedCodes: tentCodes, levels: tentLevels, cultureWear: tentWear,
-      cultureOperationalCodes: getKqCultureOperationalCodes(tentCodes, tentWear) };
-  });
-  const availableOwned = (owned.data ?? []).filter((row) => !KQ_RETIRED_EQUIPMENT_CODES.includes(String(row.equipment_code)));
-  const levels = Object.fromEntries(availableOwned.map((row) => [String(row.equipment_code), Number(row.level ?? 1)]));
-  const profile = wallet.data.chanvrier as unknown as { strength: ChanvrierStrength } | null;
-  const strength = profile?.strength ?? null;
-  const maintenance = Object.fromEntries(availableOwned.flatMap(row => {
-    const condition = getKqMachineCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.wear_cycles ?? 0), Number(row.maintenance_version ?? 0), strength);
-    return condition ? [[String(row.equipment_code), { ...condition, repairCents: condition.repairCents * productionUnits }]] : [];
-  })) as Record<string, KqMachineCondition>;
-  const equippedCodes = (loadout.data ?? []).map(row => String(row.equipment_code)).filter(code => !KQ_RETIRED_EQUIPMENT_CODES.includes(code));
-  const cultureWear = Object.fromEntries(availableOwned.flatMap(row => {
-    const condition = getKqCultureEquipmentCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.culture_wear_percent ?? 0), Number(row.culture_wear_version ?? 0));
-    return condition ? [[String(row.equipment_code), { ...condition, replacementCents: condition.replacementCents * productionUnits }]] : [];
-  })) as Record<string, KqCultureEquipmentCondition>;
-  const cultureOperationalCodes = getKqCultureOperationalCodes(equippedCodes, cultureWear);
-
-  const purchasedCodes = availableOwned.filter(row => Number(row.purchase_price_cents ?? 0) > 0).map(row => String(row.equipment_code));
+    const cultureOperationalCodes = shared ? equippedCodes : getKqCultureOperationalCodes(equippedCodes, cultureWear);
+    return {
+      tentNumber, levels, maintenance, cultureWear, equippedCodes, cultureOperationalCodes,
+      operationalCodes: cultureOperationalCodes.filter(code => !maintenance[code]?.due),
+      ownedCodes: availableOwned.map(row => String(row.equipment_code)),
+      purchasedCodes: availableOwned.filter(row => Number(row.purchase_price_cents ?? 0) > 0).map(row => String(row.equipment_code)),
+    };
+  };
+  const common = buildProfile(1, true);
+  const sharedEquipment: KqSharedEquipmentSnapshot = {
+    ownedCodes: common.ownedCodes, purchasedCodes: common.purchasedCodes,
+    equippedCodes: common.equippedCodes, levels: common.levels,
+    maintenance: common.maintenance, operationalCodes: common.operationalCodes,
+  };
+  const tents = Array.from({ length: productionUnits }, (_, index) => buildProfile(index + 1, false));
+  const selectedTent = tents.find(tent => tent.tentNumber === requestedTentNumber) ?? tents[0];
+  // The top-level view also serves the catalogue and its shared prerequisites.
+  const selected = {
+    ...selectedTent,
+    ownedCodes: [...selectedTent.ownedCodes, ...sharedEquipment.ownedCodes],
+    purchasedCodes: [...selectedTent.purchasedCodes, ...sharedEquipment.purchasedCodes],
+    equippedCodes: [...selectedTent.equippedCodes, ...sharedEquipment.equippedCodes],
+    levels: { ...selectedTent.levels, ...sharedEquipment.levels },
+    maintenance: { ...selectedTent.maintenance, ...sharedEquipment.maintenance },
+    cultureOperationalCodes: [...selectedTent.cultureOperationalCodes, ...sharedEquipment.equippedCodes],
+    operationalCodes: [...selectedTent.operationalCodes, ...sharedEquipment.operationalCodes],
+  };
   return {
-    tents, productionUnits, production: getKqProductionExpansion(productionUnits, purchasedCodes, levels),
-    strength, maintenance, cultureWear, cultureOperationalCodes,
-    operationalCodes: cultureOperationalCodes.filter(code => !maintenance[code]?.due),
+    ...selected, tents, sharedEquipment, equipmentPricingUnits: 1,
+    productionUnits, production: getKqProductionExpansion(productionUnits, selected.purchasedCodes, selected.levels),
+    strength,
     cashCents: Number(wallet.data.cash_cents ?? 0),
-    levels,
     reputation: Number(wallet.data.reputation ?? 0),
-    ownedCodes: availableOwned.map((row) => String(row.equipment_code)),
-    purchasedCodes: availableOwned
-      .filter((row) => Number(row.purchase_price_cents ?? 0) > 0)
-      .map((row) => String(row.equipment_code)),
-    equippedCodes,
     activeRun: Number(activeRuns.count ?? 0) > 0,
     readyLotCount: Number(readyLots.count ?? 0),
     availableFlowerCount: Number(availableFlowers.count ?? 0),
@@ -187,7 +209,7 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
         masteredAt: String(row.mastered_at ?? ""),
       }];
     }),
-    catalog: KQ_EQUIPMENT_CATALOG.filter((item) => item.purchasable).map((item) => ({ ...getKqEquipmentAtLevel(item.code, levels[item.code])!, priceCents: item.priceCents * productionUnits })),
+    catalog: KQ_EQUIPMENT_CATALOG.filter((item) => item.purchasable).map((item) => ({ ...getKqEquipmentAtLevel(item.code, selected.levels[item.code])!, priceCents: item.priceCents })),
   };
 }
 
@@ -218,7 +240,9 @@ export async function purchaseKqDurableEquipment(input: {
   requestKey: string;
   equipmentCodes: string[];
   expectedUnits?: number;
+  tentNumber?: number;
 }) {
+  assertTentNumber(input.tentNumber === undefined ? 1 : input.tentNumber);
   assertUuid(input.userId, "Compte équipement invalide.");
   assertUuid(input.requestKey, "Demande d’achat invalide.");
   assertProductionUnits(input.expectedUnits ?? 1);
@@ -230,13 +254,15 @@ export async function purchaseKqDurableEquipment(input: {
     throw new Error("Un équipement du panier n’est pas disponible.");
   }
 
-  const result = await createSupabaseServiceClient().rpc("rpc_kq_purchase_production_equipment", {
+  const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_purchase_production_equipment" : "rpc_kq_purchase_tent_equipment", {
     p_user_id: input.userId,
     p_request_key: input.requestKey,
     p_equipment_codes: equipmentCodes,
-    p_expected_units: input.expectedUnits ?? 1,
+    ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : { p_tent_number: equipmentCodes.every(isKqSharedEquipment) ? 1 : input.tentNumber }),
   });
   if (result.error) {
+    if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
+    if (result.error.message.includes("production_invalid_tent")) throw new Error("Cette tente n’est pas disponible. Actualise ton entrepôt.");
     const message = result.error.message || "Achat d’équipement impossible.";
     if (message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise le panier.");
     if (message.includes("insufficient_equipment_cash")) throw new Error("Solde insuffisant.");
@@ -254,20 +280,23 @@ export async function purchaseKqDurableEquipment(input: {
 }
 
 export async function upgradeKqDurableEquipment(input: {
-  userId: string; requestKey: string; equipmentCode: string; expectedLevel: number; expectedUnits?: number;
+  userId: string; requestKey: string; equipmentCode: string; expectedLevel: number; expectedUnits?: number; tentNumber?: number;
 }) {
+  assertTentNumber(input.tentNumber === undefined ? 1 : input.tentNumber);
   assertUuid(input.userId, "Compte équipement invalide.");
   assertUuid(input.requestKey, "Demande d’amélioration invalide.");
   assertProductionUnits(input.expectedUnits ?? 1);
   if (getKqEquipmentUpgradeCost(input.equipmentCode, input.expectedLevel) === null) {
     throw new Error("Niveau maximal atteint ou équipement non améliorable.");
   }
-  const result = await createSupabaseServiceClient().rpc("rpc_kq_upgrade_production_equipment", {
+  const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_upgrade_production_equipment" : "rpc_kq_upgrade_tent_equipment", {
     p_user_id: input.userId, p_request_key: input.requestKey,
     p_equipment_code: input.equipmentCode, p_expected_level: input.expectedLevel,
-    p_expected_units: input.expectedUnits ?? 1,
+    ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : { p_tent_number: isKqSharedEquipment(input.equipmentCode) ? 1 : input.tentNumber }),
   });
   if (result.error) {
+    if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
+    if (result.error.message.includes("production_invalid_tent")) throw new Error("Cette tente n’est pas disponible. Actualise ton entrepôt.");
     const message = result.error.message;
     if (message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise le prix de l’amélioration.");
     if (message.includes("insufficient_equipment_cash")) throw new Error("Solde insuffisant pour cette amélioration.");
@@ -280,16 +309,20 @@ export async function upgradeKqDurableEquipment(input: {
   return result.data as { equipmentCode: string; level: number; priceCents: number; cashAfterCents: number; replayed: boolean };
 }
 
-export async function repairKqMachine(input: { userId: string; equipmentCode: string; requestKey: string; expectedVersion: number; expectedCostCents: number }) {
+export async function repairKqMachine(input: { userId: string; equipmentCode: string; requestKey: string; expectedVersion: number; expectedCostCents: number; tentNumber?: number }) {
+  assertTentNumber(input.tentNumber === undefined ? 1 : input.tentNumber);
   assertUuid(input.userId, "Compte équipement invalide.");
   assertUuid(input.requestKey, "Demande de réparation invalide.");
   if (!getKqMachineCondition(input.equipmentCode, 1, 0) || !Number.isSafeInteger(input.expectedVersion) || input.expectedVersion < 0
     || !Number.isSafeInteger(input.expectedCostCents) || input.expectedCostCents < 0) throw new Error("Réparation invalide.");
-  const result = await createSupabaseServiceClient().rpc("rpc_kq_repair_machine", {
+  const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_repair_machine" : "rpc_kq_repair_tent_machine", {
     p_user_id: input.userId, p_equipment_code: input.equipmentCode, p_request_key: input.requestKey,
     p_expected_version: input.expectedVersion, p_expected_cost_cents: input.expectedCostCents,
+    ...(input.tentNumber !== undefined ? { p_tent_number: isKqSharedEquipment(input.equipmentCode) ? 1 : input.tentNumber } : {}),
   });
   if (result.error) {
+    if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
+    if (result.error.message.includes("production_invalid_tent")) throw new Error("Cette tente n’est pas disponible. Actualise ton entrepôt.");
     const messages: Record<string, string> = {
       machine_not_owned: "Cette machine ne t’appartient pas.", machine_unavailable: "Cette machine ne peut pas être réparée.",
       machine_not_due: "Cette machine fonctionne encore : aucune réparation nécessaire.", machine_condition_changed: "L’état ou le coût a changé. Actualise ton entrepôt.",
@@ -302,13 +335,14 @@ export async function repairKqMachine(input: { userId: string; equipmentCode: st
   return result.data;
 }
 
-export async function equipKqDurableEquipment(input: { userId: string; equipmentCode: string }) {
+export async function equipKqDurableEquipment(input: { userId: string; equipmentCode: string; tentNumber?: number }) {
+  assertTentNumber(input.tentNumber === undefined ? 1 : input.tentNumber);
   assertUuid(input.userId, "Compte équipement invalide.");
   if (KQ_RETIRED_EQUIPMENT_CODES.includes(input.equipmentCode)) throw new Error("Cet équipement n’est plus disponible.");
   const equipment = getKqEquipmentDefinition(input.equipmentCode);
   if (!equipment) throw new Error("Équipement inconnu.");
   const supabase = createSupabaseServiceClient();
-  const owned = await supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,culture_wear_percent").eq("user_id", input.userId);
+  const owned = await supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,culture_wear_percent").eq("user_id", input.userId).eq("tent_number", isKqSharedEquipment(input.equipmentCode) ? 1 : input.tentNumber ?? 1);
   if (owned.error) throw new Error(`[supabase:kq_player_equipment] ${owned.error.message}`);
   const ownedCodes = (owned.data ?? []).map((row) => String(row.equipment_code));
   const ownership = (owned.data ?? []).find((row) => String(row.equipment_code) === equipment.code);
@@ -328,11 +362,14 @@ export async function equipKqDurableEquipment(input: { userId: string; equipment
       throw new Error(`Installation bloquée · prérequis : ${requirementState.missing.map((requirement) => requirement.label).join(" ou ")}.`);
     }
   }
-  const result = await supabase.rpc("rpc_kq_equip_durable", {
+  const result = await supabase.rpc(input.tentNumber === undefined ? "rpc_kq_equip_durable" : "rpc_kq_equip_tent_equipment", {
     p_user_id: input.userId,
     p_equipment_code: input.equipmentCode,
+    ...(input.tentNumber !== undefined ? { p_tent_number: isKqSharedEquipment(input.equipmentCode) ? 1 : input.tentNumber } : {}),
   });
   if (result.error) {
+    if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
+    if (result.error.message.includes("production_invalid_tent")) throw new Error("Cette tente n’est pas disponible. Actualise ton entrepôt.");
     const message = result.error.message || "Installation impossible.";
     if (message.includes("equipment_not_owned")) throw new Error("Cet équipement ne t’appartient pas.");
     if (message.includes("equipment_not_purchased")) throw new Error("Cet équipement doit être acheté avant de pouvoir être installé.");
@@ -342,18 +379,22 @@ export async function equipKqDurableEquipment(input: { userId: string; equipment
   return result.data as { equipmentCode: string; slot: string; equipped: boolean };
 }
 
-export async function replaceKqCultureEquipment(input: { userId: string; equipmentCode: string; requestKey: string; expectedVersion: number; expectedCostCents: number }) {
+export async function replaceKqCultureEquipment(input: { userId: string; equipmentCode: string; requestKey: string; expectedVersion: number; expectedCostCents: number; tentNumber?: number }) {
+  assertTentNumber(input.tentNumber === undefined ? 1 : input.tentNumber);
   assertUuid(input.userId, "Compte équipement invalide.");
   assertUuid(input.requestKey, "Demande de remplacement invalide.");
   if (!getKqCultureEquipmentCondition(input.equipmentCode) || !Number.isSafeInteger(input.expectedVersion) || input.expectedVersion < 0
     || !Number.isSafeInteger(input.expectedCostCents) || input.expectedCostCents <= 0 || input.expectedCostCents > 2147483647) {
     throw new Error("Remplacement invalide.");
   }
-  const result = await createSupabaseServiceClient().rpc("rpc_kq_replace_culture_equipment", {
+  const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_replace_culture_equipment" : "rpc_kq_replace_tent_culture_equipment", {
     p_user_id: input.userId, p_equipment_code: input.equipmentCode, p_request_key: input.requestKey,
     p_expected_version: input.expectedVersion, p_expected_cost_cents: input.expectedCostCents,
+    ...(input.tentNumber !== undefined ? { p_tent_number: input.tentNumber } : {}),
   });
   if (result.error) {
+    if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
+    if (result.error.message.includes("production_invalid_tent")) throw new Error("Cette tente n’est pas disponible. Actualise ton entrepôt.");
     const messages: Record<string, string> = {
       culture_equipment_not_owned: "Cet équipement ne t’appartient pas.",
       culture_equipment_unavailable: "Cet équipement ne peut pas être remplacé.",
@@ -384,6 +425,8 @@ export async function expandKqProduction(input: {
     p_expected_units: input.expectedUnits, p_expected_cost_cents: input.expectedCostCents,
   });
   if (result.error) {
+    if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
+    if (result.error.message.includes("production_invalid_tent")) throw new Error("Cette tente n’est pas disponible. Actualise ton entrepôt.");
     const messages: Record<string, string> = {
       production_invalid_request: "Devis d’agrandissement invalide.",
       production_request_mismatch: "Cette demande a déjà servi à un autre agrandissement.",

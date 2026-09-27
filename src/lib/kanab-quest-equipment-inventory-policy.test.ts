@@ -8,7 +8,6 @@ const styles = readFileSync(join(process.cwd(), "src/components/placard/KqWareho
 
 describe("Kanab Quest equipment inventory policy", () => {
   it("keeps only the selected dashboard section visible", () => {
-    expect(hud).toContain('useState<"overview" | "equipment" | "goals" | "energy">("overview")');
     expect(hud).toContain('aria-controls="placard-hud-content"');
     expect(hud).toContain('activeTab === "overview" ?');
     expect(hud).toContain('activeTab === "equipment" ?');
@@ -16,8 +15,8 @@ describe("Kanab Quest equipment inventory policy", () => {
     expect(hud).toContain('aria-label="Résumé de l’atelier"');
   });
 
-  it("opens a dedicated inventory from the Placard hub", () => {
-    expect(hud).toContain("KqEquipmentInventoryModal");
+  it("opens a dedicated inventory from the full dashboard", () => {
+    expect(hud).toContain("KqWarehouseEntry");
     expect(hud).toContain("setInventoryOpen(true)");
     expect(hud).toContain("Inventaire");
   });
@@ -27,9 +26,9 @@ describe("Kanab Quest equipment inventory policy", () => {
     expect(inventory).toContain("En réserve");
     expect(inventory).toContain("Remplace {installed.name}, qui reste en réserve.");
     expect(inventory).toContain("{item.tradeoff}");
-    expect(inventory).toContain("Un modèle actif par emplacement et par tente.");
-    expect(inventory).toContain("Chaque tente produit sa part du lot avec son propre matériel");
-    expect(inventory).toContain("aucun changement sur les cultures déjà lancées");
+    expect(inventory).toContain("KqTentSelector");
+    expect(inventory).toContain("Matériel et niveaux propres à la tente {tentNumber}");
+    expect(inventory).toContain("Les changements s’appliquent à la prochaine culture commune.");
     expect(inventory).toContain("getKqEquipmentRequirementState");
     expect(inventory).toContain("purchasedCodes");
     expect(inventory).toContain("!purchasedCodes.includes(item.code)");
@@ -38,7 +37,7 @@ describe("Kanab Quest equipment inventory policy", () => {
   it("installs owned equipment through the durable equipment endpoint", () => {
     expect(inventory).toContain('fetch("/api/arena/placard/equipment"');
     expect(inventory).toContain('method:"PATCH"');
-    expect(inventory).toContain("JSON.stringify({equipmentCode:item.code})");
+    expect(inventory).toContain("JSON.stringify({equipmentCode:item.code,tentNumber:targetTent,expectedUnits:units})");
     expect(inventory).toContain('new Event("kq:equipment-updated")');
   });
 

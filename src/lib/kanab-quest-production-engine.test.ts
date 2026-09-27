@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { quoteKqEnergy, type KqEnergyMode } from "./kanab-quest-energy";
+import { quoteKqEnergy, quoteKqTentEnergy, applyKqEnergyHarvest, type KqEnergyMode } from "./kanab-quest-energy";
 import { advanceKqStage, getKqHarvestBreakdown, getKqRunProjection, resolveKqStage, startKqGame, type KqGameState } from "./kanab-quest-game";
 import { createKqIntegrityCode, encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
-import { getKqMarketEquipmentGoal, getKqRoutePlanEquipmentGoal, quoteKqMarketRoutes } from "./kanab-quest-market";
+import { getKqMarketEquipmentGoal, getKqRoutePlanEquipmentGoal, quoteKqMarketRoutes, calculateKqHarvestGrams, calculateKqEquipmentQualityBonus } from "./kanab-quest-market";
 import { buildKqEconomyBalanceReport, getKqEquipmentPaybackScenarios } from "./kanab-quest-economy-balance";
 
 const equipmentCodes = ["TENT-120", "LED-300", "AIR-EC6", "SOLAR-BACKUP"];
@@ -105,5 +105,81 @@ describe("large harvest commercial quotes", () => {
     expect(marketGoal.priceCents).toBe(goal.equipmentPriceCents);
     expect(marketGoal.affordable).toBe(false);
     expect(marketGoal.remainingCents).toBe(singleGoal.equipmentPriceCents * (productionUnits - 1));
+  });
+});
+
+describe("independently equipped tents with one common culture", () => {
+  const starterCodes = ["TENT-080-STARTER", "LED-150-STARTER", "AIR-STARTER"];
+  const starterLevels = Object.fromEntries(starterCodes.map(code => [code, 1]));
+  const tents = () => [
+    { tentNumber: 1, codes: [...equipmentCodes], levels: { ...equipmentLevels } },
+    { tentNumber: 2, codes: [...starterCodes], levels: { ...starterLevels } },
+  ];
+
+  it("freezes distinct equipment and averages bonuses without copying upgraded equipment", () => {
+    const input = tents();
+    const mixed = startKqGame(300, { equipmentTents: input, energyMode: "balanced" });
+    const upgraded = start();
+    const basic = startKqGame(300, { equipmentCodes: starterCodes });
+    expect(mixed.equipment!.productionUnits).toBe(2);
+    expect(mixed.equipment!.tents![1]).toEqual(input[1]);
+    expect(mixed.equipment!.codes).toEqual(upgraded.equipment!.codes);
+    expect(mixed.equipment!.quantityPercent).toBe((upgraded.equipment!.quantityPercent + basic.equipment!.quantityPercent) / 2);
+    expect(mixed.equipment!.qualityMaxBonus).toBe((upgraded.equipment!.qualityMaxBonus + basic.equipment!.qualityMaxBonus) / 2);
+    expect(mixed.equipment!.powerWatts).toBe(upgraded.equipment!.powerWatts + basic.equipment!.powerWatts);
+    expect(mixed.equipment!.unlocks).not.toContain("power-backup");
+    input[0].levels["LED-300"] = 10;
+    input[1].codes.push("SOLAR-BACKUP");
+    expect(mixed.equipment!.tents![0].levels["LED-300"]).toBe(7);
+    expect(mixed.equipment!.tents![1].codes).not.toContain("SOLAR-BACKUP");
+    expect(parseKqGameSave(encodeKqSave(mixed))).toEqual(mixed);
+  });
+
+  it.each(["eco", "balanced", "intensive"] as KqEnergyMode[])("sums each tent's capped yield with shared quality in %s mode", mode => {
+    const mixed = complete({ ...startKqGame(300, { equipmentTents: tents(), energyMode: mode }), harvestLossPercent: 37 });
+    const one = complete(start(1, mode));
+    const successfulStages = mixed.history.filter(entry => entry.outcome === "success" || entry.outcome === "critical").length;
+    expect(mixed.situationCodes).toEqual(one.situationCodes);
+    expect(mixed.history).toEqual(one.history);
+    expect(mixed.equipmentQualityBonus).toBe(calculateKqEquipmentQualityBonus(mixed.equipment!.qualityMaxBonus, successfulStages));
+    expect(mixed.quality).toBeLessThan(one.quality);
+    const quantityBonuses = [start().equipment!.quantityPercent, startKqGame(300, { equipmentCodes: starterCodes }).equipment!.quantityPercent];
+    const expectedHarvest = quantityBonuses.reduce((sum, quantityPercent) => {
+      const gross = calculateKqHarvestGrams({ quality: mixed.quality, successfulStages, quantityPercent });
+      return sum + applyKqEnergyHarvest(Math.round(gross * 0.63 * 10) / 10, mixed.energy);
+    }, 0);
+    expect(mixed.harvestGrams).toBeCloseTo(expectedHarvest, 1);
+    expect(mixed.harvestGrams).toBeLessThan(one.harvestGrams! * 2);
+    const breakdown = getKqHarvestBreakdown(mixed);
+    expect(breakdown.grossHarvestGrams - breakdown.lostHarvestGrams + breakdown.energyAdjustmentGrams).toBeCloseTo(mixed.harvestGrams!, 1);
+    expect(parseKqGameSave(encodeKqSave(mixed))).toEqual(mixed);
+  });
+
+  it("bills the starter load separately without extending the first tent's solar discount", () => {
+    const mixed = quoteKqTentEnergy(tents());
+    const upgraded = quoteKqEnergy(equipmentCodes, equipmentLevels);
+    const basic = quoteKqEnergy(starterCodes, starterLevels);
+    expect(mixed.totalCents).toBe(upgraded.totalCents + basic.totalCents);
+    expect(mixed.totalWattHours).toBe(upgraded.totalWattHours + basic.totalWattHours);
+    expect(mixed.savingsCents).toBe(upgraded.savingsCents);
+    expect(mixed.solarPercent).toBeLessThan(upgraded.solarPercent);
+    expect(mixed.lines.filter(line => line.tentNumber === 2).map(({ tentNumber, ...line }) => { void tentNumber; return line; })).toEqual(basic.lines);
+  });
+
+  it("rejects missing, duplicate and tampered tent snapshots and invoice attribution", () => {
+    const state = startKqGame(300, { equipmentTents: tents(), energyMode: "balanced" });
+    for (const invalidTents of [tents().slice(0, 1), [tents()[0], tents()[0]], [tents()[0], { ...tents()[1], tentNumber: 3 }], [tents()[0], { ...tents()[1], levels: {} }]]) {
+      expect(parseKqGameSave(encodeKqSave({ ...state, equipment: { ...state.equipment, tents: invalidTents } }))).toBeNull();
+    }
+    const changed = tents();
+    changed[1].codes.push("SOLAR-BACKUP");
+    changed[1].levels["SOLAR-BACKUP"] = 10;
+    expect(parseKqGameSave(encodeKqSave({ ...state, equipment: { ...state.equipment, tents: changed } }))).toBeNull();
+    expect(parseKqGameSave(encodeKqSave({ ...state, energy: { ...state.energy, lines: state.energy!.lines.map(line => ({ ...line, tentNumber: 1 })) } }))).toBeNull();
+    expect(createKqIntegrityCode(state)).not.toBe(createKqIntegrityCode({ ...state, equipment: { ...state.equipment!, tents: changed } }));
+    const dead = resolve(advanceKqStage(resolve(state, [2, 2, 3])), [2, 2, 3]);
+    expect(dead.harvestGrams).toBe(0);
+    expect(dead.energy).toEqual(state.energy);
+    expect(parseKqGameSave(encodeKqSave(dead))).toEqual(dead);
   });
 });

@@ -1,7 +1,7 @@
 import { isKqEnergyQuoteValid } from "@/lib/kanab-quest-energy";
-import { KQ_RETIRED_SUBSTRATE_CODES, isKqRetiredSubstrate, getKqHandCodes, getKqStateHeritage, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState } from "@/lib/kanab-quest-game";
+import { KQ_RETIRED_SUBSTRATE_CODES, isKqRetiredSubstrate, getKqHandCodes, getKqStateHeritage, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState, type KqSharedEquipmentRunProfile } from "@/lib/kanab-quest-game";
 import { isKqHeritageEffect, isKqHeritageTiming } from "@/lib/kanab-quest-heritage";
-import { getKqEquipmentDefinition, summarizeKqEquipmentLoadout } from "@/lib/kanab-quest-equipment";
+import { getKqEquipmentDefinition, isKqSharedEquipment, summarizeKqEquipmentLoadout } from "@/lib/kanab-quest-equipment";
 import type { KqBattle } from "@/lib/kanab-quest-battle";
 import type { KqRankProfile } from "@/lib/kanab-quest-ranking";
 import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
@@ -48,6 +48,17 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       const levels = state.equipment.levels;
       if (levels !== undefined && (!isRecord(levels) || Object.entries(levels).some(([code, level]) =>
         !equipmentCodes.includes(code) || !Number.isInteger(level) || Number(level) < 1 || Number(level) > 10))) return null;
+      const shared = state.equipment.shared;
+      if (shared !== undefined) {
+        if (!isRecord(shared) || !Array.isArray(shared.codes) || shared.codes.length > 6
+          || new Set(shared.codes).size !== shared.codes.length
+          || shared.codes.some(code => typeof code !== "string" || !isKqSharedEquipment(code))) return null;
+        if (new Set(shared.codes.map(code => getKqEquipmentDefinition(String(code))?.slot)).size !== shared.codes.length) return null;
+        if (!isRecord(shared.levels) || Object.entries(shared.levels).some(([code, level]) =>
+          !(shared.codes as unknown[]).includes(code) || !Number.isInteger(level) || Number(level) < 1 || Number(level) > 10)
+          || shared.codes.some(code => !Object.hasOwn(shared.levels as object, code))) return null;
+        if (equipmentCodes.some(code => isKqSharedEquipment(String(code)))) return null;
+      }
       const tents = state.equipment.tents;
       if (tents !== undefined) {
         if (!Array.isArray(tents) || tents.length !== productionUnits) return null;
@@ -58,6 +69,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
           numbers.add(Number(tent.tentNumber));
           if (!Array.isArray(tent.codes) || tent.codes.length > 12 || new Set(tent.codes).size !== tent.codes.length
             || tent.codes.some(code => typeof code !== "string" || !getKqEquipmentDefinition(code))) return null;
+          if (shared !== undefined && tent.codes.some(code => isKqSharedEquipment(String(code)))) return null;
           if (!isRecord(tent.levels) || Object.entries(tent.levels).some(([code, level]) =>
             !(tent.codes as unknown[]).includes(code) || !Number.isInteger(level) || Number(level) < 1 || Number(level) > 10)) return null;
           if (tent.codes.some(code => !Object.hasOwn(tent.levels as object, code))) return null;
@@ -66,9 +78,12 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
         if (equipmentCodes.join("|") !== first.codes.join("|") || !isRecord(levels)
           || equipmentCodes.some(code => levels[String(code)] !== first.levels[String(code)])) return null;
       }
-      const expected = tents === undefined
+      const expected = tents === undefined && shared === undefined
         ? summarizeKqEquipmentLoadout(equipmentCodes as string[], levels as Record<string, number> | undefined)
-        : summarizeKqTentEquipment(tents as KqTentEquipmentProfile[]);
+        : summarizeKqTentEquipment(
+          (tents ?? [{ tentNumber: 1, codes: equipmentCodes, levels: levels ?? {} }]) as KqTentEquipmentProfile[],
+          shared as KqSharedEquipmentRunProfile | undefined,
+        );
       for (const field of ["quantityPercent", "qualityMaxBonus", "regularityPercent", "pressureDelta", "powerWatts", "energyDiscountPercent", "processingPrecision", "processingCapacityPercent"] as const) {
         if (state.equipment[field] !== expected[field]) return null;
       }
@@ -207,6 +222,7 @@ export function createKqIntegrityCode(state: KqGameState) {
     usedCards: state.usedCards, quality: state.quality, xp: state.xp, pressure: state.pressure, traits: state.traits, combos: state.combos, bonusDie: state.bonusDie ?? null, effectNotices: state.effectNotices ?? [],
     ...(getKqProductionUnits(state.equipment?.productionUnits) > 1 ? { productionUnits: state.equipment?.productionUnits } : {}),
     ...(state.equipment?.tents ? { equipmentTents: state.equipment.tents } : {}),
+    ...(state.equipment?.shared ? { equipmentShared: state.equipment.shared } : {}),
     equipmentCodes: state.equipment?.codes ?? [], equipmentQualityBonus: state.equipmentQualityBonus ?? 0, harvestGrams: state.harvestGrams ?? null,
     powerOutage: state.powerOutage ?? false, harvestLossPercent: state.harvestLossPercent ?? 0,
     history: state.history.map((entry) => ({ stage: entry.stage, dice: entry.dice, total: entry.total, target: entry.target, outcome: entry.outcome, trait: entry.trait, dangers: entry.dangers, sparks: entry.sparks, pressureAfter: entry.pressureAfter, qualityDelta: entry.qualityDelta, xpGain: entry.xpGain, harvestLossPercent: entry.harvestLossPercent })),

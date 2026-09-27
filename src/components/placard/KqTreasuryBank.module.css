@@ -1,5 +1,5 @@
 .bank { min-width: 0; }
-.intro { margin-bottom: 24px; }
+.intro { margin-bottom: 16px; }
 .intro > small,.columns header small { color: #b7d4c4; font: 700 .6rem/1.5 ui-monospace,monospace; text-transform: uppercase; letter-spacing: .065em; }
 .intro h2 { margin: 7px 0 0; font: 900 1.6rem/1.15 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
 .intro p { color: #bfd9cc; font-size: .8rem; line-height: 1.65; }
@@ -35,7 +35,7 @@
 
 .desks { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin-bottom: 24px; }
 .desks button { display: flex; justify-content: center; align-items: center; gap: 10px; min-height: 54px; padding: 12px; color: #fff4d9; background: #002d24; border: 1px solid #80aa9660; font-size: .8rem; font-weight: 750; }
-.desks button[aria-selected="true"] { color: #103b2e; background: #fff4d9; border-color: #fff4d9; box-shadow: 0 4px #f4c43d; }
+.desks button[aria-selected="true"] { color: #103b2e; background: #f4c43d; border-color: #f4c43d; box-shadow: 0 3px #00251e; }
 .deskPanel { min-width: 0; min-height: 300px; }
 .deskPanel:focus { outline: none; }
 @media(max-width: 600px) { .desks { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; } .desks button { flex-direction: column; padding: 10px 5px; font-size: .68rem; gap: 8px; } }

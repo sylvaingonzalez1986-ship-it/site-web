@@ -123,3 +123,63 @@ describe("Kanab Quest persistence and integrity", () => {
     expect(createKqIntegrityCode({ ...game, history: game.history.map((entry, index) => index === 0 ? { ...entry, xpGain: (entry.xpGain ?? 0) + 1 } : entry) })).not.toBe(createKqIntegrityCode(game));
   });
 });
+
+
+describe("shared workshop run snapshots", () => {
+  const makeState = () => startKqGame(123, {
+    productionUnits: 2,
+    energyMode: "balanced",
+    equipmentTents: [
+      { tentNumber: 1, codes: ["LED-300"], levels: { "LED-300": 2 } },
+      { tentNumber: 2, codes: ["LED-150-STARTER"], levels: { "LED-150-STARTER": 1 } },
+    ],
+    equipmentShared: { codes: ["WASHER-25L", "FREEZE-DRYER"], levels: { "WASHER-25L": 3, "FREEZE-DRYER": 1 } },
+  });
+
+  it("freezes the shared profile once, preserving its bonus and counting its power once", () => {
+    const state = makeState();
+    expect(state.equipment?.shared).toEqual({ codes: ["WASHER-25L", "FREEZE-DRYER"], levels: { "WASHER-25L": 3, "FREEZE-DRYER": 1 } });
+    expect(state.equipment?.tents?.flatMap(tent => tent.codes)).toEqual(["LED-300", "LED-150-STARTER"]);
+    const withoutShared = startKqGame(123, { equipmentTents: state.equipment!.tents });
+    expect(state.equipment!.qualityMaxBonus - withoutShared.equipment!.qualityMaxBonus).toBe(3);
+    const sharedOnly = startKqGame(123, { equipmentCodes: ["WASHER-25L", "FREEZE-DRYER"], equipmentLevels: { "WASHER-25L": 3 } });
+    expect(state.equipment!.powerWatts).toBe(withoutShared.equipment!.powerWatts + sharedOnly.equipment!.powerWatts);
+    expect(parseKqGameSave(encodeKqSave(state))).toEqual(state);
+    const changed = structuredClone(state);
+    changed.equipment!.shared!.levels["WASHER-25L"] = 4;
+    expect(createKqIntegrityCode(changed)).not.toBe(createKqIntegrityCode(state));
+    expect(state.equipment!.shared!.levels["WASHER-25L"]).toBe(3);
+  });
+
+  it.each([
+    { codes: ["LED-300"], levels: { "LED-300": 1 } },
+    { codes: ["WASHER-25L", "WASHER-25L"], levels: { "WASHER-25L": 1 } },
+    { codes: ["WASHER-25L", "WASHER-75G"], levels: { "WASHER-25L": 1, "WASHER-75G": 1 } },
+    { codes: ["WASHER-25L"], levels: {} },
+    { codes: ["WASHER-25L"], levels: { "WASHER-25L": 11 } },
+    { codes: ["WASHER-25L"], levels: { "WASHER-25L": 1, "FREEZE-DRYER": 1 } },
+  ])("rejects malformed shared equipment %j", shared => {
+    const state = makeState();
+    expect(parseKqGameSave(encodeKqSave({ ...state, equipment: { ...state.equipment, shared } }))).toBeNull();
+  });
+
+  it("rejects tampered processing levels and duplicate processing inside the tent profile", () => {
+    const state = makeState();
+    const tampered = structuredClone(state);
+    tampered.equipment!.shared!.levels["FREEZE-DRYER"] = 10;
+    expect(parseKqGameSave(encodeKqSave(tampered))).toBeNull();
+    const duplicated = structuredClone(state);
+    duplicated.equipment!.tents![1].codes.push("WASHER-25L");
+    duplicated.equipment!.tents![1].levels["WASHER-25L"] = 3;
+    expect(parseKqGameSave(encodeKqSave(duplicated))).toBeNull();
+  });
+
+  it("keeps legacy runs containing per-tent processing reloadable", () => {
+    const legacy = startKqGame(123, { equipmentTents: [
+      { tentNumber: 1, codes: ["WASHER-25L"], levels: { "WASHER-25L": 2 } },
+      { tentNumber: 2, codes: ["WASHER-25L"], levels: { "WASHER-25L": 3 } },
+    ] });
+    expect(legacy.equipment?.shared).toBeUndefined();
+    expect(parseKqGameSave(encodeKqSave(legacy))).toEqual(legacy);
+  });
+});

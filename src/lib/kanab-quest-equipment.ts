@@ -788,6 +788,15 @@ export function getKqEquipmentDefinition(code: string) {
   return EQUIPMENT_BY_CODE.get(code) ?? null;
 }
 
+/** Transformation machines are purchased once for the whole installation. */
+export function isKqSharedEquipmentSlot(slot: KqEquipmentSlot): boolean {
+  return ["sifting", "washing", "filtration", "static-separation", "press", "drying"].includes(slot);
+}
+
+export function isKqSharedEquipment(code: string): boolean {
+  return getKqEquipmentDefinition(code)?.category === "processing";
+}
+
 export const KQ_EQUIPMENT_MAX_LEVEL = 10;
 export type KqEquipmentLevels = Record<string, number>;
 

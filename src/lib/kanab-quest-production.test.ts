@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getKqProductionExpansion, getKqProductionUnits } from "./kanab-quest-production";
-import { getKqEquipmentDefinition, getKqEquipmentCartTotal, getKqEquipmentUpgradeCost, getKqNextEquipmentGoal, validateKqEquipmentCart } from "./kanab-quest-equipment";
+import { getKqEquipmentCartTotal, getKqEquipmentUpgradeCost, getKqNextEquipmentGoal, validateKqEquipmentCart } from "./kanab-quest-equipment";
 
 describe("production expansion", () => {
   it.each([[1,2],[2,3],[3,4],[4,8]])("adds capacity from %i to %i", (units, nextUnits) => {
@@ -10,16 +10,15 @@ describe("production expansion", () => {
     expect(getKqProductionExpansion(4, [])).toMatchObject({ warehouseCount:1, nextUnits:8, equipmentCostCents:120000, propertyCostCents:2000000, totalCostCents:2120000 });
     expect(getKqProductionExpansion(8, [])).toMatchObject({ warehouseCount:2, nextUnits:null, addedUnits:0, totalCostCents:0 });
   });
-  it("includes the starter kit only for slots without paid equipment", () => {
+  it("always supplies a basic starter tent for 300 euros", () => {
     expect(getKqProductionExpansion(1, []).totalCostCents).toBe(30000);
-    expect(getKqProductionExpansion(1, ["TENT-120"]).totalCostCents).toBe(19900+12000+6000);
-    expect(getKqProductionExpansion(1, ["TENT-120","LED-300","AIR-EC6"]).totalCostCents).toBe(19900+35900+14900);
+    expect(getKqProductionExpansion(1, ["TENT-120"]).totalCostCents).toBe(30000);
+    expect(getKqProductionExpansion(1, ["TENT-120", "LED-300", "AIR-EC6"]).totalCostCents).toBe(30000);
   });
-  it("replicates acquired upgrades and reserve equipment without charging duplicates or retired models", () => {
-    const led = getKqEquipmentDefinition("LED-300")!;
-    const camera = getKqEquipmentDefinition("SECURITY-CAMERA")!;
-    expect(getKqProductionExpansion(2,[led.code,led.code,camera.code,"SECURITY-FENCE"],{[led.code]:3}).totalCostCents)
-      .toBe(18000+led.priceCents+camera.priceCents+Math.ceil(led.priceCents/10)+Math.ceil(led.priceCents*2/10));
+  it("never copies or charges existing upgrades and reserve equipment", () => {
+    const codes = ["LED-300", "LED-300", "SECURITY-CAMERA", "SECURITY-FENCE"];
+    expect(getKqProductionExpansion(2, codes, { "LED-300": 10 }).totalCostCents).toBe(30000);
+    expect(getKqProductionExpansion(4, codes, { "LED-300": 10 }).totalCostCents).toBe(2120000);
   });
   it.each([undefined,0,-1,1.5,5,7,9,NaN,Infinity])("defaults legacy or invalid capacity %s to one tent", value => {
     expect(getKqProductionUnits(value)).toBe(1);

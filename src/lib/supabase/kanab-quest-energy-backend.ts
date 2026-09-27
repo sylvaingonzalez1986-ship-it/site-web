@@ -15,7 +15,7 @@ export async function getKqEnergySnapshot(userId: string): Promise<KqEnergySnaps
   const [summary, shop] = await Promise.all([getKqEnergySummary(userId), getKqEquipmentShopSnapshot(userId)]);
   return { ...summary, tents: shop.tents, productionUnits: shop.productionUnits, cashCents: shop.cashCents, chanvrierStrength: shop.strength,
     cultureWear: shop.cultureWear, cultureEquipmentCodes: shop.equippedCodes, cultureOperationalCodes: shop.cultureOperationalCodes,
-    maintenanceDueNext: shop.equippedCodes.filter(code => shop.maintenance?.[code] && shop.maintenance[code].remaining <= 1).map(code => getKqEquipmentDefinition(code)?.name ?? code),
+    maintenanceDueNext: shop.sharedEquipment.equippedCodes.filter(code => shop.sharedEquipment.maintenance[code]?.remaining <= 1).map(code => `Atelier commun · ${getKqEquipmentDefinition(code)?.name ?? code}`),
     quotes: Object.fromEntries(
     (Object.keys(KQ_ENERGY_MODES) as KqEnergyMode[]).map((mode) => [mode, quoteKqTentEnergy(shop.tents.map(tent => ({ tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels })), mode)]),
   ) as KqEnergySnapshot["quotes"] };

@@ -1,13 +1,13 @@
 ﻿import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), replace: vi.fn(), expand: vi.fn(), rate: vi.fn() }));
+const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), replace: vi.fn(), expand: vi.fn(), shop: vi.fn(), purchase: vi.fn(), rate: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: vi.fn() }));
 vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({
-  expandKqProduction: mocks.expand, replaceKqCultureEquipment: mocks.replace, getKqEquipmentShopSnapshot: vi.fn(), equipKqDurableEquipment: vi.fn(),
-  purchaseKqDurableEquipment: vi.fn(), setKqEquipmentRoutePlan: vi.fn(), upgradeKqDurableEquipment: vi.fn(), repairKqMachine: vi.fn(),
+  expandKqProduction: mocks.expand, replaceKqCultureEquipment: mocks.replace, getKqEquipmentShopSnapshot: mocks.shop, equipKqDurableEquipment: vi.fn(),
+  purchaseKqDurableEquipment: mocks.purchase, setKqEquipmentRoutePlan: vi.fn(), upgradeKqDurableEquipment: vi.fn(), repairKqMachine: vi.fn(),
 }));
-import { PATCH } from "./route";
+import { GET, POST, PATCH } from "./route";
 const body = { action: "replace", equipmentCode: "LED-300", requestKey: "replacement-key", expectedVersion: 10, expectedCostCents: 35900 };
 const request = (extra: Record<string, unknown> = {}) => new Request("http://localhost/api/arena/placard/equipment", { method: "PATCH", body: JSON.stringify({ ...body, ...extra }) });
 describe("culture equipment replacement endpoint", () => {
@@ -23,8 +23,8 @@ describe("culture equipment replacement endpoint", () => {
     expect((await PATCH(request())).status).toBe(401); expect(mocks.replace).not.toHaveBeenCalled();
   });
   it("uses the authenticated owner and the confirmed price/version", async () => {
-    expect((await PATCH(request({ userId: "another-player" }))).status).toBe(200);
-    expect(mocks.replace).toHaveBeenCalledWith({ userId: "session-owner", equipmentCode: "LED-300", requestKey: "replacement-key", expectedVersion: 10, expectedCostCents: 35900 });
+    expect((await PATCH(request({ userId: "another-player", tentNumber: 2 }))).status).toBe(200);
+    expect(mocks.replace).toHaveBeenCalledWith({ userId: "session-owner", equipmentCode: "LED-300", requestKey: "replacement-key", expectedVersion: 10, expectedCostCents: 35900, tentNumber: 2 });
   });
   it("rate limits replacements before spending any cash", async () => {
     mocks.rate.mockResolvedValue({ allowed: false, retryAfterSeconds: 12 });
@@ -70,5 +70,25 @@ describe("production expansion endpoint", () => {
     mocks.expand.mockRejectedValueOnce(new Error("[supabase:production-expansion] private details"));
     const response=await PATCH(expandRequest()); expect(response.status).toBe(500);
     expect(await response.json()).toEqual({error:"Service momentanément indisponible."});
+  });
+});
+
+describe("individual tent equipment endpoints", () => {
+  beforeEach(() => {
+    vi.clearAllMocks(); mocks.enabled.mockResolvedValue(true);
+    mocks.session.mockResolvedValue({ customerId: "session-owner", customer: { email: "owner@example.test" } });
+    mocks.rate.mockResolvedValue({ allowed: true });
+    mocks.shop.mockResolvedValue({ tentNumber: 2 });
+    mocks.purchase.mockResolvedValue({ totalPriceCents: 35900 });
+  });
+  it("reads the selected tent for the authenticated owner", async () => {
+    const response = await GET(new Request("http://localhost/api/arena/placard/equipment?tentNumber=2&userId=another-player"));
+    expect(response.status).toBe(200);
+    expect(mocks.shop).toHaveBeenCalledWith("session-owner", 2);
+  });
+  it("passes the selected tent to a purchase without accepting a forged owner", async () => {
+    const response = await POST(request({ equipmentCodes: ["LED-300"], userId: "forged", tentNumber: 2, expectedUnits: 4 }));
+    expect(response.status).toBe(200);
+    expect(mocks.purchase).toHaveBeenCalledWith({ userId: "session-owner", requestKey: body.requestKey, equipmentCodes: ["LED-300"], expectedUnits: 4, tentNumber: 2 });
   });
 });

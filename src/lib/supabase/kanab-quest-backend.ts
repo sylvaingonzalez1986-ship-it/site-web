@@ -1003,6 +1003,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     equipmentCodes: equipmentShop.cultureOperationalCodes ?? equipmentShop.equippedCodes,
     equipmentLevels: equipmentShop.levels,
     equipmentTents: equipmentShop.tents?.map(tent => ({ tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels })),
+    equipmentShared: equipmentShop.sharedEquipment ? { codes: equipmentShop.sharedEquipment.equippedCodes, levels: equipmentShop.sharedEquipment.levels } : undefined,
     productionUnits: equipmentShop.productionUnits,
     energyMode: input.energyMode ?? "balanced",
   });
@@ -1022,7 +1023,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     const message = result.error.message || "Création de partie impossible.";
     if (message.includes("kq_active_run_exists")) throw new Error("Une culture Supabase est déjà active.");
     if (message.includes("kq_domiciliation_changed")) throw new Error("Ta domiciliation a changé. Actualise avant de lancer la culture.");
-    if (message.includes("kq_production_units_changed") || message.includes("kq_culture_equipment_changed") || message.includes("kq_culture_equipment_broken")) throw new Error("L’état du matériel a changé. Actualise le devis avant de lancer la culture.");
+    if (message.includes("kq_production_units_changed") || message.includes("kq_culture_equipment_changed") || message.includes("kq_shared_equipment_changed") || message.includes("kq_culture_equipment_broken")) throw new Error("L’état du matériel a changé. Actualise le devis avant de lancer la culture.");
     if (message.includes("kq_buddie_rotation_locked")) {
       let remaining = KQ_BUDDIE_ROTATION_REQUIRED;
       try {

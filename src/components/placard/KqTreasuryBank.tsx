@@ -10,7 +10,7 @@ import { KqStockMarket } from "./KqStockMarket";
 import styles from "./KqTreasuryBank.module.css";
 
 const DESKS = [
-  { id: "loans", label: "Le banquier", icon: Landmark },
+  { id: "loans", label: "Le banquier · Prêts", icon: Landmark },
   { id: "savings", label: "Livret d’épargne", icon: PiggyBank },
   { id: "crypto", label: "Crypto · Top 100", icon: ChartNoAxesCombined },
   { id: "stocks", label: "Bourse", icon: ChartCandlestick },
@@ -56,7 +56,7 @@ export function KqTreasuryBank() {
     event.preventDefault(); setDesk(DESKS[target].id); document.getElementById(`bank-desk-${DESKS[target].id}`)?.focus();
   }
   return <div className={styles.bank}>
-    <header className={styles.intro}><small>02 / Banque</small><h2>La Banque du Placard</h2><p>Un œil sur ta réputation. L’autre sur les taux.</p></header>
+    <header className={styles.intro}><h2>Financer et placer</h2></header>
     <nav className={styles.desks} role="tablist" aria-label="Guichets de la banque">{DESKS.map((item, index) => <button type="button" role="tab" key={item.id} id={`bank-desk-${item.id}`} aria-controls={`bank-panel-${item.id}`} aria-selected={desk === item.id} tabIndex={desk === item.id ? 0 : -1} onClick={() => setDesk(item.id)} onKeyDown={event => navigate(event, index)}><item.icon size={20} aria-hidden="true" /><span>{item.label}</span></button>)}</nav>
     <section id={`bank-panel-${desk}`} role="tabpanel" aria-labelledby={`bank-desk-${desk}`} tabIndex={0} className={styles.deskPanel}>
       {desk === "loans" ? <KqBankLoans /> : desk === "crypto" ? <KqCryptoMarket /> : desk === "stocks" ? <KqStockMarket /> : <SavingsDesk />}

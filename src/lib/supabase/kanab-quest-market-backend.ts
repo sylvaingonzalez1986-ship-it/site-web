@@ -4,6 +4,7 @@ import { getKqEnergySummary } from "./kanab-quest-energy-backend";
 
 import {
   buildKqEquipmentGoalReceipt,
+  isKqSharedEquipment,
   getKqEquipmentProgressionStatus,
   summarizeKqEquipmentLoadout,
   type KqEquipmentGoalReceipt,
@@ -22,7 +23,7 @@ import {
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 import { getKqCultureSystemSummary } from "@/lib/kanab-quest-game";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
-import { getKqEquipmentShopSnapshot } from "@/lib/supabase/kanab-quest-equipment-backend";
+import { getKqEquipmentShopSnapshot, type KqEquipmentShopSnapshot } from "@/lib/supabase/kanab-quest-equipment-backend";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -145,6 +146,29 @@ type StoredMarketLot = {
   selected_route: string | null; payout_cents: number | null; reputation_gain: number | null; settled_at: string | null;
 };
 
+/** One common workshop serves the harvest, alongside each tent's individual equipment. */
+export function getKqSharedWorkshop(shop: KqEquipmentShopSnapshot) {
+  const individual = shop.tents?.length ? shop.tents : [shop];
+  const tents = shop.sharedEquipment ? [
+    ...individual.map(tent => ({
+      ...tent,
+      ownedCodes: tent.ownedCodes.filter(code => !isKqSharedEquipment(code)),
+      equippedCodes: tent.equippedCodes.filter(code => !isKqSharedEquipment(code)),
+      operationalCodes: (tent.operationalCodes ?? tent.equippedCodes).filter(code => !isKqSharedEquipment(code)),
+    })),
+    shop.sharedEquipment,
+  ] : individual;
+  const equippedCodes = [...new Set(tents.flatMap(tent => tent.equippedCodes))];
+  const operationalCodes = [...new Set(tents.flatMap(tent => tent.operationalCodes ?? tent.equippedCodes))];
+  const levels: Record<string, number> = {};
+  const installedLevels: Record<string, number> = {};
+  for (const tent of tents) {
+    for (const code of tent.equippedCodes) installedLevels[code] = Math.max(installedLevels[code] ?? 1, tent.levels[code] ?? 1);
+    for (const code of tent.operationalCodes ?? tent.equippedCodes) levels[code] = Math.max(levels[code] ?? 1, tent.levels[code] ?? 1);
+  }
+  return { equippedCodes, operationalCodes, levels, installedLevels, ownedCodes: [...new Set(tents.flatMap(tent => tent.ownedCodes))] };
+}
+
 export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string[], options: { previewOnly?: boolean } = {}) {
   assertUuid(userId, "Compte marché invalide.");
   const supabase = createSupabaseServiceClient();
@@ -184,7 +208,8 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
   const humanOne = new Map((humanOneResult.data ?? []).map((battle) => [String(battle.flower_one_id), toRounds(battle.rounds)]));
   const humanTwo = new Map((humanTwoResult.data ?? []).map((battle) => [String(battle.flower_two_id), toRounds(battle.rounds)]));
   const bots = new Map((botResult.data ?? []).map((battle) => [String(battle.flower_id), toRounds(battle.rounds)]));
-  const equippedCodes = equipmentShop.equippedCodes;
+  const workshop = getKqSharedWorkshop(equipmentShop);
+  const equippedCodes = workshop.equippedCodes;
   const energySummary = await getKqEnergySummary(userId);
   const previews = new Map<string, { harvest_grams: number; jury_score: number; quality_band: string; options: KqMarketQuote[] }>();
 
@@ -201,9 +226,9 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
           ? getKqJuryScoreFromRounds(botRounds, "player")
           : getKqJuryScoreFromStats(flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats as Record<string, number> : {});
     const { harvestGrams } = getKqMarketRunSummary(runStates.get(String(flower.run_id)), Number(flower.quality));
-    const quotes = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equipmentShop.operationalCodes ?? equippedCodes, equipmentLevels: equipmentShop.levels, marketContext });
-    if (equippedCodes.some(code => equipmentShop.maintenance?.[code]?.due)) {
-      const installedQuotes = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: equipmentShop.levels, marketContext });
+    const quotes = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: workshop.operationalCodes, equipmentLevels: workshop.levels, marketContext });
+    if (equippedCodes.some(code => !workshop.operationalCodes.includes(code))) {
+      const installedQuotes = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: workshop.installedLevels, marketContext });
       for (const quote of quotes) if (!quote.available && installedQuotes.find(item => item.route === quote.route)?.available) {
         quote.blockedReason = "Une machine de cette filière doit être réparée. Ouvre ton entrepôt.";
       }
@@ -281,13 +306,14 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
   return {
     cashCents: equipmentShop.cashCents,
     productionUnits: equipmentShop.productionUnits,
+    equipmentPricingUnits: 1,
     reputation: equipmentShop.reputation,
     reputationRank: Number(betterRankedResult.count ?? 0) + 1,
-    ownedCodes: equipmentShop.ownedCodes,
+    ownedCodes: workshop.ownedCodes,
     equippedCodes,
     routePlan: equipmentShop.routePlan,
     routeMasteries: equipmentShop.routeMasteries,
-    equipmentSummary: summarizeKqEquipmentLoadout(equipmentShop.operationalCodes ?? equippedCodes, equipmentShop.levels),
+    equipmentSummary: summarizeKqEquipmentLoadout(workshop.operationalCodes, workshop.levels),
     electricityOutstandingCents: energySummary.outstandingCents,
     lots,
   };
@@ -333,6 +359,6 @@ export async function sellKqMarketLot(input: {
   return mapKqMarketSaleReceipt(
     result.data as KqMarketRpcSaleReceipt,
     marketSnapshot.ownedCodes,
-    marketSnapshot.productionUnits,
+    marketSnapshot.equipmentPricingUnits,
   );
 }

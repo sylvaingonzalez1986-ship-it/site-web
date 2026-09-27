@@ -3,7 +3,7 @@ const mocks = vi.hoisted(() => ({ rpc: vi.fn(), from: vi.fn(), shop: vi.fn(), en
 vi.mock("./admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc, from: mocks.from }) }));
 vi.mock("./kanab-quest-equipment-backend", () => ({ getKqEquipmentShopSnapshot: mocks.shop }));
 vi.mock("./kanab-quest-energy-backend", () => ({ getKqEnergySummary: mocks.energy }));
-import { getKqMarketSnapshot } from "./kanab-quest-market-backend";
+import { getKqMarketSnapshot, getKqSharedWorkshop } from "./kanab-quest-market-backend";
 import { startKqGame } from "../kanab-quest-game";
 import { KQ_STARTING_EQUIPMENT_CODES } from "../kanab-quest-equipment";
 
@@ -81,6 +81,38 @@ describe("market browsing egress and transactional boundaries", () => {
     expect(mocks.rpc.mock.calls.some(([name]) => name === "rpc_kq_prepare_market_lot")).toBe(false);
     const persisted = await getKqMarketSnapshot(user, ["flower-1"]);
     expect(preview.lots).toEqual(persisted.lots);
+  });
+  it("uses equipment from any tent and selects the highest working copy for the common harvest", async () => {
+    const base = await mocks.shop();
+    const shop = { ...base, tents: [
+      { ...base, tentNumber: 1, equippedCodes: [...base.equippedCodes, "SIFT-TRAY"], operationalCodes: base.equippedCodes, levels: { "SIFT-TRAY": 10 } },
+      { ...base, tentNumber: 2, equippedCodes: [...base.equippedCodes, "SIFT-TRAY"], operationalCodes: [...base.equippedCodes, "SIFT-TRAY"], levels: { "SIFT-TRAY": 2 } },
+    ] };
+    const workshop = getKqSharedWorkshop(shop);
+    expect(workshop.equippedCodes.filter(code => code === "SIFT-TRAY")).toHaveLength(1);
+    expect(workshop.operationalCodes).toContain("SIFT-TRAY");
+    expect(workshop.levels["SIFT-TRAY"]).toBe(2);
+    mocks.shop.mockResolvedValue(shop);
+    rows.kq_flowers[1].battle_stats = { aroma: 85, resin: 85 };
+    const preview = await getKqMarketSnapshot(user, ["flower-1"], { previewOnly: true });
+    expect(preview.lots[0].equipmentCodes).toContain("SIFT-TRAY");
+    expect(preview.lots[0].options.find(option => option.route === "dry-sift")?.available).toBe(true);
+    expect(preview.equipmentPricingUnits).toBe(1);
+  });
+  it("uses the common workshop instead of a stronger stale per-tent processing copy", async () => {
+    const base = await mocks.shop();
+    const sharedEquipment = { ownedCodes: ["SIFT-TRAY"], purchasedCodes: ["SIFT-TRAY"], equippedCodes: ["SIFT-TRAY"], operationalCodes: ["SIFT-TRAY"], levels: { "SIFT-TRAY": 2 }, maintenance: {} };
+    const shop = { ...base, sharedEquipment, tents: [
+      { ...base, tentNumber: 1, equippedCodes: [...base.equippedCodes, "SIFT-TRAY"], levels: { "SIFT-TRAY": 10 } },
+      { ...base, tentNumber: 2, equippedCodes: [...base.equippedCodes, "WASHER-25L"], levels: { "WASHER-25L": 10 } },
+    ] };
+    const workshop = getKqSharedWorkshop(shop);
+    expect(workshop.equippedCodes.filter(code => code === "SIFT-TRAY")).toHaveLength(1);
+    expect(workshop.levels["SIFT-TRAY"]).toBe(2);
+    expect(workshop.equippedCodes).not.toContain("WASHER-25L");
+    const stopped = getKqSharedWorkshop({ ...shop, sharedEquipment: { ...sharedEquipment, operationalCodes: [] } });
+    expect(stopped.operationalCodes).not.toContain("SIFT-TRAY");
+    expect(stopped.levels["SIFT-TRAY"]).toBeUndefined();
   });
   it("cannot preview another player's flower and preserves sold status on a concurrent sale", async () => {
     rows.kq_flowers[0].owner_id = "another-account";
