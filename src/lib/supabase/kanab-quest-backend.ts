@@ -1002,6 +1002,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     heritageCard,
     equipmentCodes: equipmentShop.cultureOperationalCodes ?? equipmentShop.equippedCodes,
     equipmentLevels: equipmentShop.levels,
+    equipmentTents: equipmentShop.tents?.map(tent => ({ tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels })),
     productionUnits: equipmentShop.productionUnits,
     energyMode: input.energyMode ?? "balanced",
   });

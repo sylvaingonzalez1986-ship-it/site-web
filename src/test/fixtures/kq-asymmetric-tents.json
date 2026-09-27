@@ -1,0 +1,196 @@
+{
+  "productionUnits": 2,
+  "owned": [
+    {
+      "tent_number": 1,
+      "equipment_code": "AIR-STARTER",
+      "level": 1,
+      "culture_wear_percent": 0,
+      "purchase_price_cents": 0
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "LED-150-STARTER",
+      "level": 1,
+      "culture_wear_percent": 0,
+      "purchase_price_cents": 0
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "TENT-080-STARTER",
+      "level": 1,
+      "culture_wear_percent": 0,
+      "purchase_price_cents": 0
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "SIFT-TRAY",
+      "level": 7,
+      "culture_wear_percent": 0,
+      "purchase_price_cents": 8500
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "AIR-EC6",
+      "level": 10,
+      "culture_wear_percent": 21,
+      "purchase_price_cents": 8500
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "PRESS-0600",
+      "level": 5,
+      "culture_wear_percent": 0,
+      "purchase_price_cents": 19900
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "WASHER-25L",
+      "level": 9,
+      "culture_wear_percent": 0,
+      "purchase_price_cents": 12000
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "CLIMATE-SMART",
+      "level": 10,
+      "culture_wear_percent": 14,
+      "purchase_price_cents": 13900
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "SECURITY-CAMERA",
+      "level": 9,
+      "culture_wear_percent": 6,
+      "purchase_price_cents": 6999
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "LED-300",
+      "level": 10,
+      "culture_wear_percent": 35,
+      "purchase_price_cents": 57900
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "TENT-120",
+      "level": 10,
+      "culture_wear_percent": 13,
+      "purchase_price_cents": 19900
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "SOLAR-BACKUP",
+      "level": 5,
+      "culture_wear_percent": 14,
+      "purchase_price_cents": 114900
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "AUTO-SIEVE",
+      "level": 1,
+      "culture_wear_percent": 0,
+      "purchase_price_cents": 499500
+    },
+    {
+      "tent_number": 1,
+      "equipment_code": "DRYING-ROOM",
+      "level": 5,
+      "culture_wear_percent": 14,
+      "purchase_price_cents": 60000
+    },
+    {
+      "tent_number": 2,
+      "equipment_code": "TENT-080-STARTER",
+      "level": 1,
+      "culture_wear_percent": 0,
+      "purchase_price_cents": 0
+    },
+    {
+      "tent_number": 2,
+      "equipment_code": "AIR-STARTER",
+      "level": 1,
+      "culture_wear_percent": 0,
+      "purchase_price_cents": 0
+    },
+    {
+      "tent_number": 2,
+      "equipment_code": "LED-150-STARTER",
+      "level": 1,
+      "culture_wear_percent": 0,
+      "purchase_price_cents": 0
+    }
+  ],
+  "loadouts": [
+    {
+      "tent_number": 1,
+      "slot": "air",
+      "equipment_code": "AIR-EC6"
+    },
+    {
+      "tent_number": 2,
+      "slot": "air",
+      "equipment_code": "AIR-STARTER"
+    },
+    {
+      "tent_number": 1,
+      "slot": "climate-controller",
+      "equipment_code": "CLIMATE-SMART"
+    },
+    {
+      "tent_number": 1,
+      "slot": "energy",
+      "equipment_code": "SOLAR-BACKUP"
+    },
+    {
+      "tent_number": 1,
+      "slot": "filtration",
+      "equipment_code": "AUTO-SIEVE"
+    },
+    {
+      "tent_number": 1,
+      "slot": "flower-drying",
+      "equipment_code": "DRYING-ROOM"
+    },
+    {
+      "tent_number": 1,
+      "slot": "lighting",
+      "equipment_code": "LED-300"
+    },
+    {
+      "tent_number": 2,
+      "slot": "lighting",
+      "equipment_code": "LED-150-STARTER"
+    },
+    {
+      "tent_number": 1,
+      "slot": "press",
+      "equipment_code": "PRESS-0600"
+    },
+    {
+      "tent_number": 1,
+      "slot": "security",
+      "equipment_code": "SECURITY-CAMERA"
+    },
+    {
+      "tent_number": 1,
+      "slot": "sifting",
+      "equipment_code": "SIFT-TRAY"
+    },
+    {
+      "tent_number": 2,
+      "slot": "tent",
+      "equipment_code": "TENT-080-STARTER"
+    },
+    {
+      "tent_number": 1,
+      "slot": "tent",
+      "equipment_code": "TENT-120"
+    },
+    {
+      "tent_number": 1,
+      "slot": "washing",
+      "equipment_code": "WASHER-25L"
+    }
+  ]
+}

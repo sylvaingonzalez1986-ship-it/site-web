@@ -4,7 +4,8 @@ import { isKqHeritageEffect, isKqHeritageTiming } from "@/lib/kanab-quest-herita
 import { getKqEquipmentDefinition, summarizeKqEquipmentLoadout } from "@/lib/kanab-quest-equipment";
 import type { KqBattle } from "@/lib/kanab-quest-battle";
 import type { KqRankProfile } from "@/lib/kanab-quest-ranking";
-import { getKqProductionUnits } from "./kanab-quest-production-scale";
+import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
+import { summarizeKqTentEquipment } from "./kanab-quest-production";
 
 type SaveEnvelope<T> = { version: 1; payload: T };
 const KQ_LEGACY_HAND_SIZE = 10;
@@ -47,7 +48,27 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       const levels = state.equipment.levels;
       if (levels !== undefined && (!isRecord(levels) || Object.entries(levels).some(([code, level]) =>
         !equipmentCodes.includes(code) || !Number.isInteger(level) || Number(level) < 1 || Number(level) > 10))) return null;
-      const expected = summarizeKqEquipmentLoadout(equipmentCodes as string[], levels as Record<string, number> | undefined);
+      const tents = state.equipment.tents;
+      if (tents !== undefined) {
+        if (!Array.isArray(tents) || tents.length !== productionUnits) return null;
+        const numbers = new Set<number>();
+        for (const tent of tents) {
+          if (!isRecord(tent) || !Number.isInteger(tent.tentNumber) || Number(tent.tentNumber) < 1 || Number(tent.tentNumber) > productionUnits) return null;
+          if (numbers.has(Number(tent.tentNumber))) return null;
+          numbers.add(Number(tent.tentNumber));
+          if (!Array.isArray(tent.codes) || tent.codes.length > 12 || new Set(tent.codes).size !== tent.codes.length
+            || tent.codes.some(code => typeof code !== "string" || !getKqEquipmentDefinition(code))) return null;
+          if (!isRecord(tent.levels) || Object.entries(tent.levels).some(([code, level]) =>
+            !(tent.codes as unknown[]).includes(code) || !Number.isInteger(level) || Number(level) < 1 || Number(level) > 10)) return null;
+          if (tent.codes.some(code => !Object.hasOwn(tent.levels as object, code))) return null;
+        }
+        const first = (tents as KqTentEquipmentProfile[]).find(tent => tent.tentNumber === 1)!;
+        if (equipmentCodes.join("|") !== first.codes.join("|") || !isRecord(levels)
+          || equipmentCodes.some(code => levels[String(code)] !== first.levels[String(code)])) return null;
+      }
+      const expected = tents === undefined
+        ? summarizeKqEquipmentLoadout(equipmentCodes as string[], levels as Record<string, number> | undefined)
+        : summarizeKqTentEquipment(tents as KqTentEquipmentProfile[]);
       for (const field of ["quantityPercent", "qualityMaxBonus", "regularityPercent", "pressureDelta", "powerWatts", "energyDiscountPercent", "processingPrecision", "processingCapacityPercent"] as const) {
         if (state.equipment[field] !== expected[field]) return null;
       }
@@ -55,7 +76,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       if (levels !== undefined ? state.equipment.unlocks.join("|") !== expected.unlocks.join("|")
         : state.equipment.unlocks.some((unlock) => !expected.unlocks.includes(unlock as typeof expected.unlocks[number]))) return null;
     }
-    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined, productionUnits))) return null;
+    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined, productionUnits, state.equipment.tents as KqTentEquipmentProfile[] | undefined))) return null;
     if (typeof state.varietyCode !== "string" || typeof state.varietyName !== "string") return null;
     if (state.challengeDayKey !== undefined && (typeof state.challengeDayKey !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(state.challengeDayKey))) return null;
     if (state.startedAt !== undefined && (typeof state.startedAt !== "string" || Number.isNaN(Date.parse(state.startedAt)))) return null;
@@ -185,6 +206,7 @@ export function createKqIntegrityCode(state: KqGameState) {
     seed: state.seed, varietyCode: state.varietyCode, deckCodes: state.deckCodes, handCodes: getKqHandCodes(state), heritageReserveCodes: state.heritageReserveCodes ?? [], handRedrawsUsed: state.handRedrawsUsed ?? 0, heritageCode: state.heritageCode ?? null, heritageName: state.heritageName ?? null, heritageTiming: state.heritageTiming ?? null, heritageEffect: state.heritageEffect ?? null, heritageProducerName: state.heritageProducerName ?? null, heritageImageUrl: state.heritageImageUrl ?? null, heritageUsed: state.heritageUsed ?? false, situationCodes: state.situationCodes,
     usedCards: state.usedCards, quality: state.quality, xp: state.xp, pressure: state.pressure, traits: state.traits, combos: state.combos, bonusDie: state.bonusDie ?? null, effectNotices: state.effectNotices ?? [],
     ...(getKqProductionUnits(state.equipment?.productionUnits) > 1 ? { productionUnits: state.equipment?.productionUnits } : {}),
+    ...(state.equipment?.tents ? { equipmentTents: state.equipment.tents } : {}),
     equipmentCodes: state.equipment?.codes ?? [], equipmentQualityBonus: state.equipmentQualityBonus ?? 0, harvestGrams: state.harvestGrams ?? null,
     powerOutage: state.powerOutage ?? false, harvestLossPercent: state.harvestLossPercent ?? 0,
     history: state.history.map((entry) => ({ stage: entry.stage, dice: entry.dice, total: entry.total, target: entry.target, outcome: entry.outcome, trait: entry.trait, dangers: entry.dangers, sparks: entry.sparks, pressureAfter: entry.pressureAfter, qualityDelta: entry.qualityDelta, xpGain: entry.xpGain, harvestLossPercent: entry.harvestLossPercent })),

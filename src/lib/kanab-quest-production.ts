@@ -1,5 +1,5 @@
-import { getKqEquipmentDefinition, getKqEquipmentLevel, getKqEquipmentUpgradeCost, KQ_RETIRED_EQUIPMENT_CODES } from "./kanab-quest-equipment";
-import { getKqProductionUnits, KQ_FINAL_WAREHOUSE_PRICE_CENTS } from "./kanab-quest-production-scale";
+import { summarizeKqEquipmentLoadout, getKqEquipmentDefinition, getKqEquipmentLevel, getKqEquipmentUpgradeCost, KQ_RETIRED_EQUIPMENT_CODES } from "./kanab-quest-equipment";
+import { getKqProductionUnits, KQ_FINAL_WAREHOUSE_PRICE_CENTS, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
 
 export { getKqProductionUnits, KQ_PRODUCTION_UNITS, KQ_FINAL_WAREHOUSE_PRICE_CENTS } from "./kanab-quest-production-scale";
 
@@ -32,4 +32,18 @@ export function getKqProductionExpansion(requestedUnits: number, purchasedCodes:
     propertyCostCents, unitEquipmentCostCents, equipmentCostCents,
     totalCostCents: propertyCostCents + equipmentCostCents,
   };
+}
+
+/** Shared culture effects are averaged; installed electrical power is additive. */
+export function summarizeKqTentEquipment(tents: KqTentEquipmentProfile[]) {
+  const summaries = tents.map(tent => summarizeKqEquipmentLoadout(tent.codes, tent.levels));
+  const summary = summarizeKqEquipmentLoadout([]);
+  if (!summaries.length) return summary;
+  for (const field of ["quantityPercent", "qualityMaxBonus", "regularityPercent", "pressureDelta", "energyDiscountPercent", "processingPrecision", "processingCapacityPercent"] as const) {
+    summary[field] = summaries.reduce((sum, item) => sum + item[field], 0) / summaries.length;
+  }
+  summary.powerWatts = summaries.reduce((sum, item) => sum + item.powerWatts, 0);
+  // A common culture is fully protected only when each tent has that protection.
+  summary.unlocks = summaries[0].unlocks.filter(unlock => summaries.every(item => item.unlocks.includes(unlock)));
+  return summary;
 }

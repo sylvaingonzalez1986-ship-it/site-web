@@ -4,7 +4,7 @@ vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: mocks.clie
 import { getKqEquipmentShopSnapshot, replaceKqCultureEquipment, equipKqDurableEquipment } from "./kanab-quest-equipment-backend";
 import { getKqEnergySnapshot } from "./kanab-quest-energy-backend";
 import { startKqGame } from "../kanab-quest-game";
-import { quoteKqEnergy } from "../kanab-quest-energy";
+import { quoteKqTentEnergy } from "../kanab-quest-energy";
 const userId = "11000000-0000-4000-8000-000000000001";
 const input = { userId, requestKey: "11000000-0000-4000-8000-000000000002", equipmentCode: "LED-300", expectedVersion: 10, expectedCostCents: 35900 };
 function snapshotDb() {
@@ -40,9 +40,10 @@ describe("culture equipment backend", () => {
   });
   it("quotes the same effective installation used by the next culture", async () => {
     snapshotDb(); const energy = await getKqEnergySnapshot(userId); const shop = await getKqEquipmentShopSnapshot(userId);
-    const state = startKqGame(1, { equipmentCodes: shop.cultureOperationalCodes, equipmentLevels: shop.levels, energyMode: "intensive" });
+    const tents = shop.tents.map(tent => ({ tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels }));
+    const state = startKqGame(1, { equipmentTents: tents, energyMode: "intensive" });
     expect(energy.quotes.intensive).toEqual(state.energy);
-    expect(energy.quotes.eco).toEqual(quoteKqEnergy(shop.cultureOperationalCodes!, shop.levels, "eco"));
+    expect(energy.quotes.eco).toEqual(quoteKqTentEnergy(tents, "eco"));
     expect(energy.quotes.intensive.solarPercent).toBe(0);
     expect(energy.cultureEquipmentCodes).toContain("LED-300");
   });

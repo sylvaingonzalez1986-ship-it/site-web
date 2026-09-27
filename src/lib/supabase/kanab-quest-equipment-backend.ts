@@ -29,7 +29,16 @@ function assertProductionUnits(value: number) {
   if (!KQ_PRODUCTION_UNITS.some(units => units === value)) throw new Error("Capacité de production invalide.");
 }
 
+export type KqTentEquipmentSnapshot = {
+  tentNumber: number;
+  equippedCodes: string[];
+  levels: Record<string, number>;
+  cultureWear: Record<string, KqCultureEquipmentCondition>;
+  cultureOperationalCodes: string[];
+};
+
 export type KqEquipmentShopSnapshot = {
+  tents: KqTentEquipmentSnapshot[];
   productionUnits: number;
   production: KqProductionExpansion;
   strength?: ChanvrierStrength | null;
@@ -99,8 +108,8 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
 
   const [wallet, owned, loadout, activeRuns, readyLots, availableFlowers, routeMasteries] = await Promise.all([
     supabase.from("kq_equipment_wallets").select("cash_cents,production_units,reputation,planned_route_code,planned_equipment_code,chanvrier:arena_chanvrier_profiles(strength)").eq("user_id", userId).single(),
-    supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,level,wear_cycles,maintenance_version,culture_wear_percent,culture_wear_version").eq("user_id", userId).order("acquired_at"),
-    supabase.from("kq_equipment_loadouts").select("equipment_code").eq("user_id", userId).order("slot"),
+    supabase.from("kq_player_equipment").select("tent_number,equipment_code,purchase_price_cents,level,wear_cycles,maintenance_version,culture_wear_percent,culture_wear_version").eq("user_id", userId).order("acquired_at"),
+    supabase.from("kq_equipment_loadouts").select("tent_number,equipment_code").eq("user_id", userId).order("slot"),
     supabase.from("kq_runs").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "active"),
     supabase.from("kq_market_lots").select("flower_id", { count: "exact", head: true }).eq("owner_id", userId).eq("status", "ready"),
     supabase.from("kq_flowers").select("id", { count: "exact", head: true }).eq("owner_id", userId).eq("status", "available"),
@@ -118,6 +127,22 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
   if (routeMasteries.error) throw new Error(`[supabase:kq_player_route_masteries] ${routeMasteries.error.message}`);
   const routePlan = parseKqEquipmentRoutePlan(wallet.data);
   const productionUnits = getKqProductionUnits(Number(wallet.data.production_units ?? 1));
+  // Keep each physical installation separate for culture snapshots and energy quotes.
+  // Existing shop/pricing fields and all equipment write methods retain their contract.
+  const tents: KqTentEquipmentSnapshot[] = Array.from({ length: productionUnits }, (_, index) => {
+    const tentNumber = index + 1;
+    const tentOwned = (owned.data ?? []).filter(row => Number(row.tent_number ?? 1) === tentNumber
+      && !KQ_RETIRED_EQUIPMENT_CODES.includes(String(row.equipment_code)));
+    const tentLevels = Object.fromEntries(tentOwned.map(row => [String(row.equipment_code), Number(row.level ?? 1)]));
+    const tentCodes = (loadout.data ?? []).filter(row => Number(row.tent_number ?? 1) === tentNumber)
+      .map(row => String(row.equipment_code)).filter(code => !KQ_RETIRED_EQUIPMENT_CODES.includes(code));
+    const tentWear = Object.fromEntries(tentOwned.flatMap(row => {
+      const condition = getKqCultureEquipmentCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.culture_wear_percent ?? 0), Number(row.culture_wear_version ?? 0));
+      return condition ? [[String(row.equipment_code), condition]] : [];
+    })) as Record<string, KqCultureEquipmentCondition>;
+    return { tentNumber, equippedCodes: tentCodes, levels: tentLevels, cultureWear: tentWear,
+      cultureOperationalCodes: getKqCultureOperationalCodes(tentCodes, tentWear) };
+  });
   const availableOwned = (owned.data ?? []).filter((row) => !KQ_RETIRED_EQUIPMENT_CODES.includes(String(row.equipment_code)));
   const levels = Object.fromEntries(availableOwned.map((row) => [String(row.equipment_code), Number(row.level ?? 1)]));
   const profile = wallet.data.chanvrier as unknown as { strength: ChanvrierStrength } | null;
@@ -135,7 +160,7 @@ export async function getKqEquipmentShopSnapshot(userId: string): Promise<KqEqui
 
   const purchasedCodes = availableOwned.filter(row => Number(row.purchase_price_cents ?? 0) > 0).map(row => String(row.equipment_code));
   return {
-    productionUnits, production: getKqProductionExpansion(productionUnits, purchasedCodes, levels),
+    tents, productionUnits, production: getKqProductionExpansion(productionUnits, purchasedCodes, levels),
     strength, maintenance, cultureWear, cultureOperationalCodes,
     operationalCodes: cultureOperationalCodes.filter(code => !maintenance[code]?.due),
     cashCents: Number(wallet.data.cash_cents ?? 0),

@@ -1,6 +1,7 @@
 import { quoteKqEnergy, applyKqEnergyHarvest, KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
 import type { KqDomiciliation } from "./kanab-quest-business";
-import { getKqProductionUnits } from "./kanab-quest-production-scale";
+import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
+import { summarizeKqTentEquipment } from "./kanab-quest-production";
 import {
   KQ_HERITAGE_CARDS,
   resolveKqHeritageCard,
@@ -12,6 +13,7 @@ import {
   getKqEquipmentDefinition,
   getKqEquipmentLevel,
   summarizeKqEquipmentLoadout,
+  KQ_STARTING_EQUIPMENT_CODES,
 } from "@/lib/kanab-quest-equipment";
 import {
   calculateKqEquipmentQualityBonus,
@@ -94,6 +96,8 @@ export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadou
   levels?: Record<string, number>;
   /** Capacity frozen when the culture starts; historical runs have one unit. */
   productionUnits?: number;
+  /** Independent equipment snapshots, frozen for the shared culture. */
+  tents?: KqTentEquipmentProfile[];
 };
 
 export type KqGameState = {
@@ -476,7 +480,7 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
 
 export function startKqGame(
   seed = Date.now(),
-  config: { domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number } = {},
+  config: { domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[] } = {},
 ): KqGameState {
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
   const requestedDeck = config.deckCodes ?? KQ_CARDS.slice(0, 6).map((card) => card.code);
@@ -487,12 +491,23 @@ export function startKqGame(
   const situationCodes = buildKqScenarioPath(clampSeed(seed), config.recentSituationCodes, config.requiredSituationTags, config.allowedPests, config.domiciliation);
   const heritage = config.heritageCard
     ?? KQ_HERITAGE_CARDS.find((card) => card.code === config.heritageCode);
-  const equipmentCodes = [...new Set(config.equipmentCodes ?? [])]
-    .filter((code) => Boolean(getKqEquipmentDefinition(code)));
-  const levels = Object.fromEntries(equipmentCodes.map((code) => [code, getKqEquipmentLevel(config.equipmentLevels?.[code])]));
-  const productionUnits = getKqProductionUnits(config.productionUnits);
-  const equipment = { codes: equipmentCodes, levels, ...(productionUnits > 1 ? { productionUnits } : {}), ...summarizeKqEquipmentLoadout(equipmentCodes, levels) };
-  const energy = config.energyMode ? quoteKqEnergy(equipmentCodes, levels, config.energyMode, productionUnits) : undefined;
+  const productionUnits = getKqProductionUnits(config.productionUnits ?? config.equipmentTents?.length);
+  const normalizeEquipment = (codes: string[], requestedLevels: Record<string, number> = {}) => {
+    const installedCodes = [...new Set(codes)].filter(code => Boolean(getKqEquipmentDefinition(code)));
+    return { codes: installedCodes, levels: Object.fromEntries(installedCodes.map(code => [code, getKqEquipmentLevel(requestedLevels[code])])) };
+  };
+  const tents = config.equipmentTents ? Array.from({ length: productionUnits }, (_, index) => {
+    const tentNumber = index + 1;
+    const requested = config.equipmentTents!.find(tent => tent.tentNumber === tentNumber);
+    return { tentNumber, ...normalizeEquipment(requested?.codes ?? [...KQ_STARTING_EQUIPMENT_CODES], requested?.levels) };
+  }) : undefined;
+  const { codes: equipmentCodes, levels } = tents?.[0] ?? normalizeEquipment(config.equipmentCodes ?? [], config.equipmentLevels);
+  const equipment: KqEquipmentRunProfile = {
+    codes: equipmentCodes, levels, ...(productionUnits > 1 ? { productionUnits } : {}),
+    ...(tents ? { tents } : {}),
+    ...(tents ? summarizeKqTentEquipment(tents) : summarizeKqEquipmentLoadout(equipmentCodes, levels)),
+  };
+  const energy = config.energyMode ? quoteKqEnergy(equipmentCodes, levels, config.energyMode, productionUnits, tents) : undefined;
   const initialState: KqGameState = {
     ...(config.domiciliation ? { domiciliation: config.domiciliation } : {}),
     ...(energy ? { energy } : {}),
@@ -1195,14 +1210,9 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
   const tierIndex = Math.max(0, KQ_HARVEST_TIERS.findLastIndex((tier) => projectedQuality >= tier.minimumQuality));
   const nextTier = KQ_HARVEST_TIERS[tierIndex + 1] ?? null;
   const harvestLossPercent = Math.max(0, Math.min(80, state.harvestLossPercent ?? 0));
-  const grossHarvestGrams = calculateKqHarvestGrams({
-    quality: projectedQuality,
-    successfulStages,
-    quantityPercent: state.equipment?.quantityPercent ?? 0,
-  });
   const harvestGrams = cultureDead ? 0 : state.phase === "complete" && state.harvestGrams !== undefined
     ? state.harvestGrams
-    : Math.round(applyKqEnergyHarvest(Math.round(grossHarvestGrams * (1 - harvestLossPercent / 100) * 10) / 10, state.energy) * getKqProductionUnits(state.equipment?.productionUnits) * 10) / 10;
+    : calculateKqInstallationHarvest(state, projectedQuality, successfulStages, harvestLossPercent).finalGrams;
 
   return {
     currentQuality: state.quality,
@@ -1218,6 +1228,27 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
   };
 }
 
+/** Preserve each tent's yield cap and rounding, including legacy identical installations. */
+function calculateKqInstallationHarvest(state: KqGameState, quality: number, successfulStages: number, lossPercent: number) {
+  const quantityBonuses = state.equipment?.tents
+    ? state.equipment.tents.map(tent => summarizeKqEquipmentLoadout(tent.codes, tent.levels).quantityPercent)
+    : Array.from({ length: getKqProductionUnits(state.equipment?.productionUnits) }, () => state.equipment?.quantityPercent ?? 0);
+  const totals = quantityBonuses.reduce((sum, quantityPercent) => {
+    const gross = calculateKqHarvestGrams({ quality, successfulStages, quantityPercent });
+    const afterIncident = Math.round(gross * (1 - lossPercent / 100) * 10) / 10;
+    return {
+      grossGrams: sum.grossGrams + gross,
+      afterIncidentGrams: sum.afterIncidentGrams + afterIncident,
+      finalGrams: sum.finalGrams + applyKqEnergyHarvest(afterIncident, state.energy),
+    };
+  }, { grossGrams: 0, afterIncidentGrams: 0, finalGrams: 0 });
+  return {
+    grossGrams: Math.round(totals.grossGrams * 10) / 10,
+    afterIncidentGrams: Math.round(totals.afterIncidentGrams * 10) / 10,
+    finalGrams: Math.round(totals.finalGrams * 10) / 10,
+  };
+}
+
 /** Exact audit trail for the two formulas applied when a culture completes. */
 export function getKqHarvestBreakdown(state: KqGameState): KqHarvestBreakdown {
   const cultureDead = isKqCultureDead(state);
@@ -1226,13 +1257,10 @@ export function getKqHarvestBreakdown(state: KqGameState): KqHarvestBreakdown {
     ?? calculateKqEquipmentQualityBonus(state.equipment?.qualityMaxBonus ?? 0, successfulStages));
   const finalQuality = state.phase === "complete" ? state.quality : state.quality + equipmentQualityBonus;
   const quantityPercent = state.equipment?.quantityPercent ?? 0;
-  const productionUnits = getKqProductionUnits(state.equipment?.productionUnits);
-  const unitGrossHarvestGrams = cultureDead ? 0 : calculateKqHarvestGrams({ quality: finalQuality, successfulStages, quantityPercent });
-  const grossHarvestGrams = Math.round(unitGrossHarvestGrams * productionUnits * 10) / 10;
   const harvestLossPercent = Math.max(0, Math.min(80, state.harvestLossPercent ?? 0));
-  const unitAfterIncidentGrams = Math.round(unitGrossHarvestGrams * (1 - harvestLossPercent / 100) * 10) / 10;
-  const afterIncidentGrams = Math.round(unitAfterIncidentGrams * productionUnits * 10) / 10;
-  const calculatedFinalGrams = Math.round(applyKqEnergyHarvest(unitAfterIncidentGrams, state.energy) * productionUnits * 10) / 10;
+  const harvest = cultureDead ? { grossGrams: 0, afterIncidentGrams: 0, finalGrams: 0 }
+    : calculateKqInstallationHarvest(state, finalQuality, successfulStages, harvestLossPercent);
+  const { grossGrams: grossHarvestGrams, afterIncidentGrams, finalGrams: calculatedFinalGrams } = harvest;
   const finalHarvestGrams = cultureDead ? 0 : state.phase === "complete" && state.harvestGrams !== undefined
     ? state.harvestGrams
     : calculatedFinalGrams;

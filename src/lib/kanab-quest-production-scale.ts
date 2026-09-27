@@ -5,3 +5,10 @@ export const KQ_FINAL_WAREHOUSE_PRICE_CENTS = 2_000_000;
 export function getKqProductionUnits(value?: number): number {
   return KQ_PRODUCTION_UNITS.some(units => units === value) ? value! : 1;
 }
+
+/** Installed equipment for one independently upgradable tent. */
+export type KqTentEquipmentProfile = {
+  tentNumber: number;
+  codes: string[];
+  levels: Record<string, number>;
+};
