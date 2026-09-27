@@ -27,8 +27,8 @@ describe("Kanab Quest equipment inventory policy", () => {
     expect(inventory).toContain("En réserve");
     expect(inventory).toContain("Remplace {installed.name}, qui reste en réserve.");
     expect(inventory).toContain("{item.tradeoff}");
-    expect(inventory).toContain("Un modèle actif par emplacement");
-    expect(inventory).toContain("partagé entre tes {units}");
+    expect(inventory).toContain("Un modèle actif par emplacement et par tente.");
+    expect(inventory).toContain("Chaque tente produit sa part du lot avec son propre matériel");
     expect(inventory).toContain("aucun changement sur les cultures déjà lancées");
     expect(inventory).toContain("getKqEquipmentRequirementState");
     expect(inventory).toContain("purchasedCodes");
