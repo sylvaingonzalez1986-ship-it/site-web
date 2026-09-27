@@ -50,6 +50,7 @@ const modules = {
         options: quoteKqMarketRoutes({juryScore: score, harvestGrams: 100, equipmentCodes: fixture.equippedCodes})}];
     }
     window.fetch = async (input, options) => {
+      if (String(input) === '/api/arena/tutorial') return Response.json({error:'Local guest fixture'}, {status:401});
       if (String(input) === '/api/arena/rewards') return Response.json({error:'Preview unavailable state'}, {status:503});
       if (String(input).includes('/rankings')) return Response.json({items:[],entries:[]});
       if (screen?.startsWith('market-') && String(input).endsWith('/market') && options?.method === 'POST') {
@@ -83,7 +84,7 @@ const modules = {
   `,
   "preview-cart": `export const useCart=()=>({addToCart:()=>{},authLoading:false,customer:null,items:[]});`,
   "next/image": `import React from 'react'; export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}) { return React.createElement('img', {...props, src: typeof src === 'string' ? src : src.src, style: {...(fill ? {position:'absolute',inset:0,width:'100%',height:'100%'} : {}), ...props.style}}); }`,
-  "next/link": `import React from 'react'; export default function Link({prefetch,scroll,replace,...props}) {return React.createElement('a',props);}`,
+  "next/link": `import React from 'react'; export const useLinkStatus=()=>({pending:false}); export default function Link({prefetch,scroll,replace,...props}) {return React.createElement('a',props);}`,
   "next/dynamic": `import React from 'react'; export default function dynamic(loader, options={}) {const Component=React.lazy(() => loader().then(defaultExport => ({default:defaultExport.default || defaultExport}))); return function Dynamic(props){return React.createElement(React.Suspense,{fallback:options.loading ? React.createElement(options.loading) : null},React.createElement(Component,props));};}`,
   "next/navigation": `export const usePathname=()=>location.pathname; export const useSearchParams=()=>new URLSearchParams(location.search); export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});`,
   "@/components/cookies/CookieConsentProvider": `export const useCookieConsent=()=>({showBanner:false, hasConsent:()=>false});`,
@@ -219,34 +220,20 @@ try {
       if (overflow) throw new Error(`Horizontal overflow: ${screen} at ${width}px`);
       if (screen === "landing") {
         const destinations = {carnet: '/arene/carnet/regular', jouer: '/arene/placard', classement: '/arene?vue=classement'};
-        if (auditLobby) {
-          if (await page.$('[aria-label="Sons du menu"]')) throw new Error('The lobby sound toggle must be absent');
-          const animations = new Set();
-          for (const id of Object.keys(destinations)) {
-            await page.click('button[data-mode="' + id + '"]');
-            await page.waitForSelector('[data-lobby-mode="' + id + '"]');
-            if (await page.$eval('[data-lobby-enter]', el => el.getAttribute('href')) !== destinations[id]) throw new Error('Wrong entry destination');
-            if ((await page.$$('nav[aria-label="Choisir un mode"]')).length !== 1 || (await page.$$('[data-lobby-enter]')).length !== 1) throw new Error('Duplicate navigation');
-            await page.waitForFunction(() => Array.from(document.querySelectorAll('[data-scene] img')).every(img => img.complete && img.naturalWidth > 0));
-            animations.add(await page.$eval('[data-scene][data-active] img', el => getComputedStyle(el.parentElement).animationName));
-            await page.evaluate(() => Promise.all(document.getAnimations().map(a => a.finished.catch(() => {}))));
-            await page.screenshot({path: resolve(reportDir, 'lobby-' + id + '-' + width + '.png'), fullPage: true});
-          }
-          if (animations.size !== 3 || animations.has('none')) throw new Error('Each mode needs a distinct animation');
-          await page.emulateMediaFeatures([{name: 'prefers-reduced-motion', value: 'reduce'}]);
-          await page.focus('button[data-mode="carnet"]');
-          const reduced = await page.$eval('[data-scene][data-active] img', el => getComputedStyle(el.parentElement).animationName);
-          if (reduced !== 'none') throw new Error('Reduced motion not respected');
-          await page.emulateMediaFeatures([]);
-          console.log('OK three scenes, single entry, no sound toggle, reduced motion ' + width + 'px');
+        await page.waitForSelector('[data-arena-activity="carnet"]');
+        for (const [id, href] of Object.entries(destinations)) {
+          if (await page.$eval('a[data-arena-activity="' + id + '"]', el => el.getAttribute('href')) !== href) throw new Error('Wrong direct activity destination');
         }
-        await page.focus('button[data-mode="carnet"]');
-        await page.keyboard.press("ArrowRight");
-        if (await page.evaluate(() => document.activeElement?.getAttribute("data-mode")) !== "jouer") throw new Error("Keyboard selection failed");
-        await page.keyboard.press("End");
-        await page.waitForSelector('[data-lobby-mode="classement"]');
-        await page.keyboard.press("Home");
-        await page.waitForSelector('[data-lobby-mode="carnet"]');
+        if ((await page.$$('nav[aria-label="Choisir une activité"]')).length !== 1 || (await page.$$('[data-arena-activity]')).length !== 3) throw new Error('Expected three direct activities');
+        if ((await page.$$('[data-arena-scene] img')).length !== 1) throw new Error('Only one scene should load');
+        await page.waitForFunction(() => Array.from(document.querySelectorAll('[data-arena-scene] img')).every(img => img.complete && img.naturalWidth > 0));
+        if (await page.$('dialog[open],[role="dialog"]')) throw new Error('The hub must not open a dialog automatically');
+        await page.focus('a[data-arena-activity="carnet"]');
+        for (const id of ['jouer','classement']) {
+          await page.keyboard.press('Tab');
+          if (await page.evaluate(() => document.activeElement?.getAttribute('data-arena-activity')) !== id) throw new Error('Direct activities must follow normal keyboard order');
+        }
+        if (auditLobby) console.log('OK three direct activities, one scene, optional help, keyboard order ' + width + 'px');
       }
       if (auditSections && ["notebook", "rankings", "flowers", "placard"].includes(screen)) {
         const scene = await page.$('[data-arena-scene]');

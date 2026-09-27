@@ -1,4 +1,4 @@
-/** Isolated visual review of real market components. Regional map and its interactions. No backend, credentials or orders. */
+/** Isolated arena prelaunch review. Local profile fixture only; no credentials or remote writes. */
 import { createServer } from 'vite';
 import ts from 'typescript';
 import tailwindcss from '@tailwindcss/postcss';
@@ -47,18 +47,17 @@ try {
   for(const width of [320,390,768,1440]) {
     await page.setViewport({width,height:width<700?844:1000});
     await page.goto('http://127.0.0.1:3218/',{waitUntil:'networkidle0'});
-    await page.waitForSelector('[data-lobby-enter]');
-    for(const mode of ['carnet','jouer','classement']) {
-      await page.click(`[data-mode="${mode}"]`);
-      assert.equal(await page.$eval('[data-lobby-mode]',el=>el.dataset.lobbyMode),mode);
-      assert.equal(await page.$eval('[data-scene][data-active]',el=>el.dataset.scene),mode);
-      await page.click('[data-lobby-enter]'); await page.waitForSelector('#arena-opening-notice');
-      assert.match(await page.$eval('#arena-opening-notice',el=>el.textContent),/Rendez-vous le 15 octobre/);
-      assert.equal(new URL(page.url()).pathname,'/');
-      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-      await page.screenshot({path:resolve(output,`locked-${mode}-${width}.png`),fullPage:true});
-      await page.keyboard.press('Escape'); assert.equal(await page.$('#arena-opening-notice'),null);
-    }
+    await page.waitForSelector('[data-arena-scene]');
+    assert.equal(await page.$$eval('[data-arena-scene] img',images=>images.length),1);
+    assert.deepEqual(await page.$$eval('[data-arena-activity]',items=>items.map(item=>({mode:item.dataset.arenaActivity,tag:item.tagName}))),
+      ['carnet','jouer','classement'].map(mode=>({mode,tag:'DIV'})));
+    assert.equal(await page.$$eval('[data-arena-activity] a,[data-arena-activity] button',items=>items.length),0);
+    assert.match(await page.$eval('body',el=>el.textContent),/Rendez-vous le 15 octobre/);
+    assert.equal(new URL(page.url()).pathname,'/');
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+    await page.screenshot({path:resolve(output,`locked-${width}.png`),fullPage:true});
+    await page.keyboard.press('Escape');
+    assert.match(await page.$eval('body',el=>el.textContent),/Rendez-vous le 15 octobre/);
   }
   await clickText('Créer mon personnage'); await page.waitForSelector('dialog[open]');
   await page.type('input[autocomplete="nickname"]','Camille29');
@@ -69,8 +68,9 @@ try {
   assert.equal(await page.$eval('input[autocomplete="nickname"]',el=>el.value),'Camille29');
   await page.keyboard.press('Escape');
   await page.goto('http://127.0.0.1:3218/?guest&notice',{waitUntil:'networkidle0'});
-  await page.waitForSelector('#arena-opening-notice');
+  await page.waitForSelector('[data-arena-scene]');
+  assert.match(await page.$eval('body',el=>el.textContent),/Rendez-vous le 15 octobre/);
   assert(await page.$('a[href="/compte/connexion?next=%2Farene"]'));
   assert(requests.every(path=>path==='/api/arena/chanvrier'),'no gameplay or tutorial requests');
-  assert.deepEqual(errors,[]); console.log('Arena prelaunch passed: 4 widths, 3 scenes and locked entries, guest, character creation/editing, no gameplay requests.');
+  assert.deepEqual(errors,[]); console.log('Arena prelaunch passed: 4 widths, one scene, 3 inactive activities, permanent date, guest, character creation/editing, no gameplay requests.');
 } finally {await browser?.close(); await server.close();}

@@ -28,3 +28,10 @@
 @media(prefers-reduced-motion:no-preference){.card[open]{animation:unfold .18s ease-out}.unlock{animation:glow .6s ease-out}@keyframes unfold{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes glow{from{background:#ffe683}to{background:#e2edc1}}}
 
 @media(max-width:650px){.dock{bottom:calc(100px + env(safe-area-inset-bottom))}}
+
+.dock[data-inline] { position: static; z-index: auto; right: auto; bottom: auto; min-width: 0; max-width: 100%; }
+.dock[data-inline] .trigger { min-height: 44px; max-width: min(260px, calc(100vw - 32px)); gap: 8px; padding: 5px 10px 5px 6px; border: 1px solid #fffaf15c; border-radius: 8px; background: #002d24b8; color: #fffaf1; box-shadow: none; }
+.dock[data-inline] .thumbnail { width: 26px; height: 32px; border-radius: 4px; }
+.dock[data-inline] .thumbnail canvas { width: 26px; height: 35px; }
+.dock[data-inline] .label small { font-size: 8px; }
+.dock[data-inline] .label strong { max-width: 140px; font-size: 12px; }

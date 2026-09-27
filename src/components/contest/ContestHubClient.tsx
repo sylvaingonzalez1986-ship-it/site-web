@@ -2444,16 +2444,6 @@ export function ContestTesterLeaderboard({
 
   return (
     <>
-      <div className={arenaStyles.customerRewardPlacement}>
-        <ArenaCustomerRewardPot
-          rankingId={rankingId}
-          rewardPool={rewardPool}
-          onRewardPoolChange={setRewardPool}
-          loading={!rewardPoolLoaded && !rewardPool}
-          unavailable={rewardPoolUnavailable}
-          viewerPseudo={viewerPseudo}
-        />
-      </div>
       <div id={rankingId} className={`${arenaStyles.scorePanel} ${arenaStyles.playerLeaderboardPanel}`}>
       <div className={arenaStyles.playerLeaderboardHeading}>
         <div>
@@ -2561,6 +2551,16 @@ export function ContestTesterLeaderboard({
       </div>
       </div>
 
+      <div className={arenaStyles.customerRewardPlacement}>
+        <ArenaCustomerRewardPot
+          rankingId={rankingId}
+          rewardPool={rewardPool}
+          onRewardPoolChange={setRewardPool}
+          loading={!rewardPoolLoaded && !rewardPool}
+          unavailable={rewardPoolUnavailable}
+          viewerPseudo={viewerPseudo}
+        />
+      </div>
     </>
   );
 }

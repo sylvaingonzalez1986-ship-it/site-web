@@ -47,7 +47,7 @@ function getFocusableElements(container: HTMLElement | null): HTMLElement[] {
   ].join(","))).filter((element) => !element.hasAttribute("hidden"));
 }
 
-export function ArenaFirstVisitTutorial() {
+export function ArenaFirstVisitTutorial({ label = "Comment fonctionne l’Arène ?", className }: { label?: string; className?: string }) {
   const titleId = useId();
   const descriptionId = useId();
   const dialogRef = useRef<HTMLElement | null>(null);
@@ -215,8 +215,8 @@ export function ArenaFirstVisitTutorial() {
 
   return (
     <>
-      <button type="button" className={styles.replayButton} onClick={reopen}>
-        <CircleHelp aria-hidden="true" />Comment fonctionne l’Arène ?
+      <button type="button" className={className ?? styles.replayButton} onClick={reopen}>
+        <CircleHelp aria-hidden="true" />{label}
       </button>
       {modal && typeof document !== "undefined" ? createPortal(modal, document.body) : modal}
     </>

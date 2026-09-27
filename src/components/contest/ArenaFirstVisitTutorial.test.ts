@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import {
+  ArenaFirstVisitTutorial,
   ARENA_TUTORIAL_STEPS,
   ARENA_TUTORIAL_STORAGE_KEY,
   markArenaTutorialSeen,
@@ -8,7 +11,7 @@ import {
 import { ARENA_TUTORIAL_REPUTATION_ROWS } from "@/lib/arena-tutorial";
 
 describe("ArenaFirstVisitTutorial", () => {
-  it("opens on the first visit and stays dismissed afterwards", () => {
+  it("remembers whether the editorial guide was read", () => {
     const values = new Map<string, string>();
     const storage = {
       getItem: vi.fn((key: string) => values.get(key) ?? null),
@@ -19,6 +22,15 @@ describe("ArenaFirstVisitTutorial", () => {
     markArenaTutorialSeen(storage);
     expect(values.get(ARENA_TUTORIAL_STORAGE_KEY)).toBe("seen");
     expect(shouldShowArenaTutorial(storage)).toBe(false);
+  });
+
+  it("keeps an unread guide closed until the reader asks for it", () => {
+    expect(shouldShowArenaTutorial({ getItem: () => null, setItem: vi.fn() })).toBe(true);
+    const html = renderToStaticMarkup(createElement(ArenaFirstVisitTutorial, { label: "Lire le guide", className: "inline-help" }));
+    expect(html).toContain("Lire le guide");
+    expect(html).toContain('class="inline-help"');
+    expect(html).not.toContain('role="dialog"');
+    expect(html).not.toContain("Huit étapes");
   });
 
   it("remains usable when private storage is unavailable", () => {

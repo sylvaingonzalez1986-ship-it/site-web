@@ -26,7 +26,7 @@ function Meter({ value, target, label }: { value: number; target: number; label:
   return <progress className={styles.meter} value={Math.min(value, target)} max={target} aria-label={label} />;
 }
 
-export function ChanvrierPlayerCard({ profile, onEdit }: { profile: ChanvrierProfile; onEdit: () => void }) {
+export function ChanvrierPlayerCard({ profile, onEdit, inline = false }: { profile: ChanvrierProfile; onEdit: () => void; inline?: boolean }) {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<"journey" | "achievements" | "badges">("journey");
   const [filter, setFilter] = useState<AchievementCategory | "all">("all");
@@ -108,7 +108,7 @@ export function ChanvrierPlayerCard({ profile, onEdit }: { profile: ChanvrierPro
     ...achievements.filter(a => !a.completed).map(a => ({ key: a.code, title: a.name, value: a.value, target: a.target, hint: a.code === data.showcase.tracked ? "Objectif épinglé" : "Succès", href: `/arene/placard?view=${a.category === "commerce" ? "market" : a.category === "arena" ? "arena" : "game"}`, priority: a.code === data.showcase.tracked ? 3 : a.value / a.target })),
   ].sort((a, b) => b.priority - a.priority).slice(0, 3) : [];
 
-  return <div className={styles.dock} data-chanvrier-card>
+  return <div className={styles.dock} data-chanvrier-card data-inline={inline || undefined}>
     <button ref={trigger} type="button" className={styles.trigger} aria-expanded={open} aria-controls={open ? id : undefined} aria-haspopup="dialog" onClick={() => setOpen(v => !v)}>
       <span className={styles.thumbnail} aria-hidden="true"><ChanvrierAvatar profile={profile} /></span>
       <span className={styles.label}><small>MA CARTE {dirty ? <span className={styles.dot} aria-label="Parcours actualisé" /> : null}</small><strong>{profile.nickname}</strong></span><ChevronUp size={18} />

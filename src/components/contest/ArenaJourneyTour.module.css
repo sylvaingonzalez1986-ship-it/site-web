@@ -1,12 +1,16 @@
-.replay { cursor: pointer; min-height: 44px; font: inherit; font-size: 12px; font-weight: 800; }
-.replay:focus-visible { outline: 3px solid #008674; outline-offset: 3px; }
-.replay { position: fixed; z-index: 85; bottom: calc(12px + env(safe-area-inset-bottom)); left: max(16px,env(safe-area-inset-left)); display: flex; align-items: center; gap: 6px; min-height: 44px; box-sizing: border-box; border: 2px solid #102c26; padding: 9px 12px; background: #fff8e8; color: #102c26; box-shadow: 3px 3px 0 #f5cd42; }
-.profileButton { position: fixed; right: max(20px,env(safe-area-inset-right)); bottom: calc(80px + env(safe-area-inset-bottom)); z-index: 45; display: flex; align-items: center; gap: 8px; min-height: 44px; max-width: calc(100vw - 40px); padding: 10px 16px; border: 2px solid #f4c43d; background: #063f32; color: #fff3d4; box-shadow: 3px 3px 0 #001e17; font-weight: 800; cursor: pointer; }
-.profileButton:focus-visible { outline: 3px solid #55e6d0; outline-offset: 3px; }
-.loadError { position: fixed; z-index: 85; bottom: max(12px,env(safe-area-inset-bottom)); right: 12px; max-width: min(310px,calc(100vw - 24px)); padding: 12px; border: 2px solid #102c26; background: #fff8e8; color: #102c26; box-shadow: 3px 3px 0 #f5cd42; }
-.loadError p { margin: 0 0 8px; font-size: 12px; line-height: 1.5; }
-.loadError button { cursor: pointer; min-height: 44px; width: 100%; padding: 8px 12px; border: 2px solid #102c26; background: #f5cd42; color: #102c26; font: 800 12px/1.4 inherit; }
+.controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .65rem; min-width: 0; }
+.help { position: relative; }
+.helpButton, .profileButton { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 44px; padding: .55rem .75rem; border: 1px solid #fffaf15c; border-radius: 8px; background: #002d24b8; color: #fffaf1; font: 800 .78rem/1.3 var(--font-body), Arial, sans-serif; cursor: pointer; }
+.helpButton[aria-expanded="true"] { background: #fff4d5; border-color: #e9c96b; color: #173f32; }
+.controls :where(button, a):focus-visible { outline: 3px solid #f4c43d; outline-offset: 3px; }
+.helpPanel { position: absolute; top: calc(100% + 8px); right: 0; z-index: 60; width: min(280px, calc(100vw - 32px)); box-sizing: border-box; padding: .55rem; border: 1px solid #d4bd81; border-radius: 10px; background: #fff8e8; color: #173f32; box-shadow: 0 10px 32px #001e195c; text-align: left; }
+.helpPanel[hidden] { display: none; }
+.helpPanel > p { margin: .6rem; font-size: .8rem; line-height: 1.5; }
+.helpAction { display: flex; align-items: center; gap: .65rem; width: 100%; box-sizing: border-box; min-height: 44px; padding: .75rem .6rem; margin: 0; border: 0; border-radius: 6px; background: transparent; color: #173f32; font: 800 .8rem/1.4 var(--font-body), Arial, sans-serif; text-align: left; text-decoration: none; cursor: pointer; }
+.helpAction svg { width: 18px; height: 18px; flex-shrink: 0; }
+.helpAction:hover { background: #ede3c7; }
+.helpAction:disabled { cursor: wait; opacity: .65; }
+.loadError { margin: .5rem; font-size: .8rem; line-height: 1.5; }
+.loadError p { margin: 0 0 .5rem; }
+.loadError button { min-height: 44px; padding: .5rem .75rem; border: 1px solid #466855; border-radius: 6px; background: #173f32; color: #fff8e8; font: inherit; cursor: pointer; }
 .loadError button:disabled { cursor: wait; opacity: .65; }
-.loadError button:focus-visible { outline: 3px solid #008674; outline-offset: 3px; }
-
-@media(max-width:650px) { .profileButton { bottom: calc(100px + env(safe-area-inset-bottom)); } }

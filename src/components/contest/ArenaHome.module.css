@@ -1,0 +1,90 @@
+.home {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto minmax(180px, 1fr) auto;
+  min-height: 100svh;
+  padding: 6rem clamp(1rem, 4vw, 4rem) 1.25rem;
+  background: #003f30;
+  color: #fffaf1;
+}
+
+.scene, .shade { position: absolute; inset: 0; pointer-events: none; }
+.scene { z-index: -2; overflow: hidden; }
+.scene img { object-fit: cover; object-position: center 42%; }
+.shade {
+  z-index: -1;
+  background: linear-gradient(180deg, #002d24d9, #002d242e 24%, #002d240a 40%, #002d24c9 67%, #002d24 92%);
+}
+.topBar { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding-block: .75rem; }
+.brand { flex-shrink: 0; }
+.brand > span, .eyebrow { color: #f4c43d; font-size: .65rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.brand h1 { margin: .15rem 0 0; font: 900 2.25rem/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.tools { display: flex; justify-content: flex-end; flex-wrap: wrap; min-width: 0; }
+.tools > div { max-width: 100%; }
+.breathingRoom { min-height: 180px; }
+.activities { width: min(1080px, 100%); margin-inline: auto; }
+.intro { margin-bottom: 1.25rem; text-shadow: 0 2px 12px #002d24; }
+.intro h2 { margin: 0; font: 900 clamp(2rem, 4vw, 3rem)/1.1 var(--font-display), Impact, sans-serif; }
+.intro p { margin: .4rem 0 0; color: #fffaf1e6; font-size: .9rem; }
+.eyebrow { display: block; margin-bottom: .5rem; }
+.activityGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+.activity {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  min-width: 0;
+  min-height: 132px;
+  padding: 1.15rem;
+  border: 1px solid #fffaf15c;
+  border-radius: 12px;
+  background: #fffaf1;
+  color: #003f30;
+  text-decoration: none;
+  box-shadow: 0 4px 16px #001e1926;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+.activityIcon { display: grid; place-items: center; flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; background: #00563f0d; }
+.activityText { display: grid; gap: .3rem; min-width: 0; }
+.activityName { font-size: .65rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .75; }
+.activityText strong { font-size: 1.2rem; line-height: 1.15; }
+.description { font-size: .78rem; line-height: 1.45; }
+.arrow { flex-shrink: 0; margin-left: auto; }
+.locked { background: #003f30e6; color: #fffaf1; box-shadow: none; }
+.locked .activityIcon { background: #fffaf10d; }
+.soon { display: flex; align-items: center; gap: .25rem; margin-left: auto; color: #f4c43d; font-size: .65rem; white-space: nowrap; }
+.rewardLink { display: flex; justify-content: center; align-items: center; gap: .4rem; width: fit-content; min-height: 44px; margin: .65rem auto 0; color: #f4c43d; font-size: .8rem; text-align: center; text-decoration: none; }
+.rewardLink svg { flex-shrink: 0; }
+.home :where(a, button, summary):focus-visible { outline-color: #f4c43d; }
+@media (hover: hover) {
+  a.activity:hover { background: #fff1c2; border-color: #f4c43d; }
+  .rewardLink:hover { text-decoration: underline; text-underline-offset: 4px; }
+}
+@media (max-width: 900px) {
+  .activity { gap: .6rem; padding: .9rem; }
+  .activityIcon { width: 34px; height: 34px; }
+  .activityText strong { font-size: 1.05rem; }
+  .description { font-size: .75rem; }
+  .locked { flex-wrap: wrap; }
+}
+@media (max-width: 700px) {
+  .home { grid-template-rows: auto minmax(145px, 1fr) auto; padding-top: 5.75rem; padding-bottom: .75rem; }
+  .topBar { flex-wrap: wrap; align-items: center; gap: .75rem; }
+  .brand h1 { font-size: 1.9rem; }
+  .tools { flex: 1 1 175px; }
+  .breathingRoom { min-height: 145px; }
+  .scene img { object-position: 44% 30%; }
+  .shade { background: linear-gradient(180deg, #002d24e0, #002d2433 22%, #002d2426 35%, #002d24e8 62%, #002d24 90%); }
+  .intro { margin-bottom: .85rem; }
+  .intro h2 { font-size: 2rem; }
+  .intro p { font-size: .8rem; }
+  .activityGrid { grid-template-columns: minmax(0, 1fr); gap: .5rem; }
+  .activity { min-height: 80px; padding: .75rem .9rem; gap: .8rem; }
+  .activityText { gap: .18rem; }
+  .activityText strong { font-size: 1.1rem; }
+  .activityName { font-size: .6rem; }
+  .locked { flex-wrap: nowrap; }
+  .soon { font-size: .6rem; }
+  .rewardLink { margin-top: .35rem; font-size: .72rem; }
+}
+@media (prefers-reduced-motion: reduce) { .activity { transition: none; } }
