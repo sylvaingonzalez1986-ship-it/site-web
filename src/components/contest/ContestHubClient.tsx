@@ -201,11 +201,11 @@ export const CONTEST_BADGE_CATALOG = [
 ] as const;
 
 const CONTEST_ACHIEVEMENT_BADGE_CATALOG = [
-  { id: "contest-badge-premier-carnet", code: "premier-carnet", label: "Première dégustation", condition: "Fais valider ta première critique concours.", rewardPacks: 1, rewardFamily: "botte", rewardLabel: "1 booster La Botte" },
+  { id: "contest-badge-premier-carnet", code: "premier-carnet", label: "Première dégustation", condition: "Fais valider ta première critique concours.", rewardPacks: 0, rewardFamily: "botte", rewardLabel: "Distinction de dégustation" },
   { id: "contest-badge-gouteur-regulier", code: "gouteur-regulier", label: "Goûteur régulier", condition: "Fais valider 3 critiques concours.", rewardPacks: 2, rewardFamily: "botte", rewardLabel: "1 booster La Botte + 2 Coups de pouce" },
   { id: "contest-badge-marathon-des-lots", code: "marathon-des-lots", label: "Marathon des lots", condition: "Fais valider 10 critiques concours.", rewardPacks: 4, rewardFamily: "buddies", rewardLabel: "4 boosters Kanab Quest" },
   { id: "contest-badge-premiere-piste", code: "premiere-piste", label: "Première piste", condition: "Identifie 1 terpène dominant.", rewardPacks: 1, rewardFamily: "botte", rewardLabel: "1 booster La Botte" },
-  { id: "contest-badge-combo-aromatique", code: "combo-aromatique", label: "Combo aromatique", condition: "Identifie 3 terpènes sur une même critique.", rewardPacks: 3, rewardFamily: "botte", rewardLabel: "1 booster La Botte + 1 Coup de pouce" },
+  { id: "contest-badge-combo-aromatique", code: "combo-aromatique", label: "Combo aromatique", condition: "Identifie 3 terpènes sur une même critique.", rewardPacks: 0, rewardFamily: "botte", rewardLabel: "Distinction de dégustation" },
   { id: "contest-badge-nez-absolu", code: "nez-absolu", label: "Nez absolu", condition: "Identifie tous les terpènes dominants d’une fleur.", rewardPacks: 3, rewardFamily: "botte", rewardLabel: "2 boosters La Botte + 1 Coup de pouce" },
   { id: "contest-badge-nez-divin", code: "nez-divin", label: "Nez divin", condition: "Obtiens Nez absolu sur 3 critiques.", rewardPacks: 6, rewardFamily: "buddies", rewardLabel: "6 boosters Kanab Quest" },
   { id: "contest-badge-tour-de-saison", code: "tour-de-saison", label: "Tour de saison", condition: "Teste 3 fleurs différentes pendant la même saison.", rewardPacks: 2, rewardFamily: "buddies", rewardLabel: "2 boosters Kanab Quest" },
@@ -843,63 +843,6 @@ function getUnlockedContestBadgeCount(badges: PublicContestProfileBadge[]) {
   ).length;
 }
 
-const CONTEST_NOTEBOOK_MISSIONS = [
-  {
-    badgeCode: "combo-aromatique",
-    title: "Les bons terpènes et goûts",
-    condition: "Retrouve 3 terpènes ou goûts justes dans la liste lors d’une même dégustation.",
-  },
-  {
-    badgeCode: "premier-carnet",
-    title: "Critique élaborée",
-    condition: "Complète ta dégustation, rédige ta critique et fais-la valider.",
-  },
-] as const;
-
-function ContestNotebookMissionCards({
-  badges,
-  isAuthenticated,
-}: {
-  badges: PublicContestProfileBadge[];
-  isAuthenticated: boolean;
-}) {
-  const unlockedCodes = new Set(
-    badges.map((profileBadge) => profileBadge.badge?.code || profileBadge.badgeId),
-  );
-
-  return (
-    <div className="grid gap-3 sm:grid-cols-2" aria-label="Missions de dégustation">
-      {CONTEST_NOTEBOOK_MISSIONS.map((mission, index) => {
-        const unlocked = unlockedCodes.has(mission.badgeCode)
-          || unlockedCodes.has(`contest-badge-${mission.badgeCode}`);
-        return (
-          <article
-            key={mission.badgeCode}
-            className={`flex min-h-48 flex-col rounded border-2 border-ink p-4 shadow-[3px_3px_0_#1a1a1a] ${
-              unlocked ? "bg-[#dff2df]" : "bg-[#fffaf0]"
-            }`}
-          >
-            <div className="flex items-start justify-between gap-3">
-              <span className="inline-grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-ink bg-yellow text-sm font-black">
-                {index + 1}
-              </span>
-              <span className={`rounded-full border border-ink px-2 py-1 text-[10px] font-black uppercase ${unlocked ? "bg-green text-white" : "bg-white text-charcoal"}`}>
-                {unlocked ? "Mission réussie" : isAuthenticated ? "À accomplir" : "Connexion requise"}
-              </span>
-            </div>
-            <h4 className="mt-3 font-display text-xl uppercase leading-none text-ink">{mission.title}</h4>
-            <p className="mt-2 text-xs font-semibold leading-relaxed text-charcoal">{mission.condition}</p>
-            <div className="mt-auto border-t-2 border-dashed border-ink pt-3">
-              <span className="text-[10px] font-black uppercase tracking-[0.12em] text-green">Récompense</span>
-              <strong className="block text-sm text-ink">1 pack · 10 cartes La Botte</strong>
-            </div>
-          </article>
-        );
-      })}
-    </div>
-  );
-}
-
 function ContestBotteCollection({
   isAuthenticated,
   entryId,
@@ -1077,7 +1020,6 @@ function ContestBotteCollection({
 
 export function ContestNotebookCollectionTab({
   isAuthenticated,
-  badges,
   entryId,
   entryTitle,
   entryTrack,
@@ -1108,15 +1050,6 @@ export function ContestNotebookCollectionTab({
         reviewApproved={reviewApproved}
       />
 
-      <div className="mt-4 border-t-2 border-ink pt-4">
-        <p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Missions de dégustation</p>
-        <h3 className="font-display text-xl uppercase">Deux défis, deux packs La Botte</h3>
-        <p className="mt-1 text-xs font-semibold text-charcoal">Réussis chaque mission pour débloquer un pack de 10 cartes pour ton coffre.</p>
-      </div>
-      <ContestNotebookMissionCards
-        badges={badges}
-        isAuthenticated={isAuthenticated}
-      />
     </div>
   );
 }
@@ -2679,7 +2612,7 @@ export function ContestBadgeGallery({
 
               {unlocked ? (badge.rewardFamily === "botte" ? (
                 <div className="mt-3 min-h-[38px] rounded border-2 border-[#1a1a1a] bg-[#e8f4e7] px-3 py-2 text-center text-[11px] font-black uppercase text-green">
-                  Gain Placard prévu au lancement
+                  {badge.rewardPacks === 0 ? "Distinction obtenue" : "Gain Placard prévu au lancement"}
                 </div>
               ) : claimed ? (
                 <div className="mt-3 min-h-[38px] rounded border-2 border-[#1a1a1a] bg-white px-3 py-2 text-center text-[11px] font-black uppercase text-charcoal">

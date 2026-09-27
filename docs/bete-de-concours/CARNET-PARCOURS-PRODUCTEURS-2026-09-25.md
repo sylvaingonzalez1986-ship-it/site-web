@@ -26,12 +26,14 @@ Le bonus demandé est de **100 € de monnaie de jeu par fleur distincte** du pr
 - **Fréquence :** un bonus de dégustation et un tirage par client et producteur, sans remise à zéro à chaque saison. L’ajout ultérieur de fleurs ne permet pas de toucher une seconde récompense. Les produits qualifiants et le montant effectivement versé sont conservés dans le reçu. Les anciens reçus restent inchangés ; la vérification du 27 septembre a trouvé un seul reçu, pour une fleur et 100 €, déjà conforme au nouveau tarif.
 - **Héritage :** le premier avis approuvé sur une fleur éligible de la campagne conserve le déblocage de la carte Héritage. Le choix des fleurs dans l’administration concerne cet Héritage ; la progression complète considère toutes les fleurs publiées du producteur.
 - **Anciens packs :** les packs déjà attribués restent disponibles et ouvrables. Les nouveaux avis Concours ne donnent plus automatiquement cinq packs.
+- **Missions retirées :** « Les bons terpènes et goûts » et « Critique élaborée » ne figurent plus dans le carnet et ne créent plus de packs. Les règles `combo-aromatique` et `premier-carnet` sont désactivées ; l’ancienne réclamation de boosters est aussi bloquée pour ces deux codes. Les badges restent des distinctions, sans nouvelle récompense de mission. Les packs déjà attribués, les autres missions du Placard et les bonus par producteur sont conservés.
 
 Les deux attributions sont indépendantes. Les avis validés déclenchent le bonus monétaire ; les commandes payées ouvrent le tirage. Lire la progression n’écrit ni portefeuille ni récompense.
 
 ## Mise en œuvre
 
 - Migrations : `supabase/migrations/20260925000200_kq_producer_tasting_completion.sql`, puis `20260927000200_kq_producer_completion_per_flower.sql` pour le montant proportionnel. La seconde remplace les fonctions de calcul et de versement sans modifier les crédits existants. Le code accepte le montant historique pendant le déploiement et utilise ensuite le montant fourni par la base.
+- Retrait des missions à packs : `20260927000300_retire_notebook_pack_missions.sql`, sans suppression des reçus ni des packs acquis. Les anciennes promesses de boosters dans le guide des terpènes sont remplacées par des conseils de dégustation.
 - API : `GET /api/contest/producer-rewards` pour la progression ; `POST` avec `action: "completion"` ou `action: "purchase-buddie"` et `producerId` pour récupérer une récompense. L’identité vient exclusivement de la session.
 - Deux reçus uniques par couple client/producteur empêchent les doubles attributions. Les appels répétés rendent le résultat existant. Recycler une carte ne rend pas un nouveau tirage possible.
 - Les écritures passent par des fonctions serveur avec validation et verrouillage. Les nouvelles tables n’exposent que la lecture à `service_role` ; les fonctions auxiliaires ne sont pas exécutables par les rôles API.

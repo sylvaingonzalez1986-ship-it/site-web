@@ -1,10 +1,15 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { createSupabaseServiceClient } = vi.hoisted(() => ({
+const { createSupabaseServiceClient, featureFlags } = vi.hoisted(() => ({
   createSupabaseServiceClient: vi.fn(),
+  featureFlags: { live: false },
 }));
 
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient }));
+vi.mock("@/lib/kanab-quest-notebook-rewards", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@/lib/kanab-quest-notebook-rewards")>(),
+  get KQ_NOTEBOOK_REWARDS_LIVE() { return featureFlags.live; },
+}));
 
 import {
   KQ_NOTEBOOK_RETRO_BATCH_SIZE,
@@ -14,6 +19,11 @@ import {
 } from "@/lib/supabase/kanab-quest-notebook-rewards-backend";
 
 describe("Kanab Quest notebook reward hook", () => {
+  beforeEach(() => {
+    createSupabaseServiceClient.mockReset();
+    featureFlags.live = true;
+  });
+
   it("returns safely when no active mission rule exists", async () => {
     createSupabaseServiceClient.mockReturnValue({
       from: vi.fn(() => ({ select: vi.fn(() => ({ eq: vi.fn().mockResolvedValue({ data: [], error: null }) })) })),
@@ -84,5 +94,35 @@ describe("Kanab Quest notebook reward hook", () => {
       nextCursor: null,
     });
     expect(rpc).not.toHaveBeenCalled();
+  });
+});
+
+describe("retired notebook mission rewards", () => {
+  beforeEach(() => {
+    featureFlags.live = false;
+    createSupabaseServiceClient.mockReset().mockImplementation(() => {
+      throw new Error("Retired missions must not read or write the database");
+    });
+  });
+
+  it("does not grant a customer's badge packs even before the SQL rules are retired", async () => {
+    await expect(syncKqNotebookRewardsForCustomer("customer-with-old-badges")).resolves.toEqual({
+      live: false, eligibleBadges: 0, granted: 0, alreadyGranted: 0,
+    });
+    expect(createSupabaseServiceClient).not.toHaveBeenCalled();
+  });
+
+  it("does not resume an old retro-attribution cursor", async () => {
+    await expect(syncKqNotebookRewardBatch(120)).resolves.toEqual({
+      live: false, processed: 0, granted: 0, alreadyGranted: 0, nextCursor: null,
+    });
+    expect(createSupabaseServiceClient).not.toHaveBeenCalled();
+  });
+
+  it("reports no pending mission rewards or cursor without consulting historical grants", async () => {
+    await expect(previewKqNotebookRewardBatch(120)).resolves.toEqual({
+      live: false, processed: 0, pending: 0, alreadyGranted: 0, nextCursor: null,
+    });
+    expect(createSupabaseServiceClient).not.toHaveBeenCalled();
   });
 });

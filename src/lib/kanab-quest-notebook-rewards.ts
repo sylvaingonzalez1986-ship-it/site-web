@@ -5,12 +5,10 @@ export type KqNotebookReward = {
 
 export const KQ_CULTURE_TOKEN_START_XP = 1;
 export const KQ_CULTURE_TOKEN_RUN_CAP = 2;
-export const KQ_NOTEBOOK_REWARDS_LIVE = true;
+export const KQ_NOTEBOOK_REWARDS_LIVE = false;
 
-export const KQ_NOTEBOOK_REWARDS_BY_BADGE_CODE: Readonly<Record<string, KqNotebookReward>> = {
-  "premier-carnet": { supportBoosters: 1, cultureTokens: 0 },
-  "combo-aromatique": { supportBoosters: 1, cultureTokens: 0 },
-};
+// Tasting missions are retired. Existing packs and culture tokens remain usable.
+export const KQ_NOTEBOOK_REWARDS_BY_BADGE_CODE: Readonly<Record<string, KqNotebookReward>> = {};
 
 export function getKqNotebookReward(badgeCode: string): KqNotebookReward {
   return KQ_NOTEBOOK_REWARDS_BY_BADGE_CODE[badgeCode] ?? { supportBoosters: 0, cultureTokens: 0 };

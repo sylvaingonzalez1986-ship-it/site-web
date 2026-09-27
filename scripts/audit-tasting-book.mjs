@@ -96,6 +96,11 @@ const server = await createServer({
         }
         if (request.url?.startsWith('/api/')) {
           response.setHeader('Content-Type','application/json');
+          if (request.url === '/api/arena/placard/boosters' && request.method === 'GET') {
+            response.end(JSON.stringify({availableEntitlements:rewardFixture.legacyPackAvailable ? [{
+              id:'legacy-notebook-pack',source:'notebook-review',cardCount:10,createdAt:'2026-09-10',
+            }] : []})); return;
+          }
           if (request.url === '/api/contest/producer-rewards' && request.method === 'GET') {
             response.end(JSON.stringify({campaigns:[producerCampaign()]})); return;
           }
@@ -395,12 +400,16 @@ try {
   }
   }
   if (!notesOnly) {
+    const removedMissionCopy = ['Missions de dégustation','Deux défis, deux packs','Critique élaborée','Les bons terpènes et goûts'];
     const openRewards = async (entryId) => {
       await page.goto('http://127.0.0.1:3197/',{waitUntil:'networkidle0'});
       await click('Ouvrir mon carnet de dégustation'); await openChapter(entryId.startsWith('concours-') ? 'concours' : 'regular','outdoor');
       await page.click(`[data-book-entry="${entryId}"]`); await click('Voir les récompenses de cette fleur');
       await page.waitForSelector('progress[aria-label="Fleurs dégustées avec un avis validé"]',{visible:true});
       await page.waitForFunction(()=>!document.querySelector('[data-opening]'));
+      const rewardText = await page.$eval('.contest-notebook-collection-tab',element=>element.textContent);
+      for (const text of removedMissionCopy) assert(!rewardText.includes(text),`Removed tasting mission still displayed: ${text}`);
+      assert.equal(await page.$$eval('[aria-label="Missions de dégustation"]',elements=>elements.length),0);
     };
     const claimButton = async (label) => {
       await page.evaluate((text) => {
@@ -417,7 +426,7 @@ try {
     for (const width of [320,390]) {
       const flowerCount = width===320 ? 2 : 3;
       const completionEuros = flowerCount * 100;
-      rewardFixture = { flowerCount, completed: false, purchasedAll: false, completionGranted: false, purchaseGranted: false, rarity: width===320 ? 'silver' : 'gold', failAction: null };
+      rewardFixture = { flowerCount, completed: false, purchasedAll: false, completionGranted: false, purchaseGranted: false, legacyPackAvailable:true, rarity: width===320 ? 'silver' : 'gold', failAction: null };
       rewardRequests.length = 0;
       await page.setViewport({width,height:844,isMobile:true,hasTouch:true});
       const entryId = width===320 ? 'regular-outdoor-0' : 'concours-outdoor-0';
@@ -464,7 +473,12 @@ try {
       await shot(`producer-rewards-claimed-${width}`);
       await page.$eval('[data-book-scroll]',element=>{element.scrollTop=element.scrollHeight;});
       await shot(`producer-rewards-buddie-${width}`);
-      rewardResults.push({width,entryId,flowerCount,completionEuros,distinctProductsDeduplicated:true,partialLayout,claimedLayout,completionClaimed:true,completionAmountPersistsOnReload:true,purchaseClaimed:true,rarity:rewardFixture.rarity,errorRetryPreservesProgress:true,claimsPersistOnReload:true,noRedraw:true});
+      const legacyChest = 'section[aria-labelledby="contest-botte-chest-title"]';
+      assert(await page.$eval(legacyChest,element=>element.textContent.includes('Mes packs La Botte') && element.textContent.includes('1 pack de 10 cartes disponible')));
+      assert.deepEqual(await page.$$eval(`${legacyChest} button`,buttons=>buttons.map(button=>({text:button.textContent.trim(),disabled:button.disabled}))),[{text:'Ouvrir un pack',disabled:false}]);
+      await page.$eval(legacyChest,element=>element.scrollIntoView({block:'center'}));
+      await shot(`producer-rewards-legacy-chest-${width}`);
+      rewardResults.push({width,entryId,flowerCount,completionEuros,distinctProductsDeduplicated:true,partialLayout,claimedLayout,completionClaimed:true,completionAmountPersistsOnReload:true,purchaseClaimed:true,rarity:rewardFixture.rarity,errorRetryPreservesProgress:true,claimsPersistOnReload:true,noRedraw:true,tastingMissionsAbsent:true,legacyPackChestPreserved:true,legacyPackOpeningButtonEnabled:true});
     }
     // A historical receipt keeps its actual credited amount if the current catalogue changes.
     rewardFixture = { flowerCount:3, completed:true, purchasedAll:false, completionGranted:true, completionCashCents:20_000, purchaseGranted:false, rarity:'gold', failAction:null };

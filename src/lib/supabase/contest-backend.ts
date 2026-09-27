@@ -164,7 +164,7 @@ const CONTEST_BADGE_REWARDS = {
     label: "Premier Carnet",
     description: "Fais valider ta première critique dans L'Arène.",
     icon: "book-open",
-    boosterPacks: 1,
+    boosterPacks: 0,
   },
   regularTaster: {
     id: "contest-badge-gouteur-regulier",
@@ -196,7 +196,7 @@ const CONTEST_BADGE_REWARDS = {
     label: "Combo Aromatique",
     description: "Trouve 3 terpenes corrects dans une meme critique.",
     icon: "blend",
-    boosterPacks: 3,
+    boosterPacks: 0,
   },
   absoluteNose: {
     id: "contest-badge-nez-absolu",
@@ -279,6 +279,8 @@ const CONTEST_BADGE_REWARDS = {
     boosterPacks: 1,
   },
 } satisfies Record<string, ContestBadgeRewardDefinition>;
+
+const RETIRED_NOTEBOOK_PACK_BADGE_CODES = new Set(["premier-carnet", "combo-aromatique"]);
 
 const CONTEST_ELIGIBLE_PAYMENT_STATES = ["paid"] as const;
 const ADMIN_CONTEST_LIST_DEFAULT_LIMIT = 200;
@@ -2590,6 +2592,10 @@ export async function claimContestBadgeReward(input: {
     throw new Error("Badge concours invalide.");
   }
 
+  if (RETIRED_NOTEBOOK_PACK_BADGE_CODES.has(requestedBadge.replace(/^contest-badge-/, ""))) {
+    throw new Error("Ce badge ne donne pas de recompense a reclamer.");
+  }
+
   await syncContestBadgeRewardsForCustomer(safeCustomerId);
 
   const supabase = createSupabaseServiceClient();
@@ -2603,6 +2609,9 @@ export async function claimContestBadgeReward(input: {
   const badgeId = toText(badge?.id);
   if (!badgeId) {
     throw new Error("Badge concours invalide.");
+  }
+  if (RETIRED_NOTEBOOK_PACK_BADGE_CODES.has(toText(badge?.code))) {
+    throw new Error("Ce badge ne donne pas de recompense a reclamer.");
   }
 
   const profileBadgeResult = await supabase

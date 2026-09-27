@@ -284,7 +284,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
     expect(report.contentReady).toBe(false);
     expect(report.blockers).toContain("14 prix boutique Supabase alignés sur le catalogue");
   });
-  it("previews only the two active notebook missions", () => {
+  it("offers no retired mission rewards even when badges and historical grants exist", () => {
     expect(buildKqNotebookRewardPreview(
       [
         { id: 11, badge_id: "badge-first" },
@@ -296,12 +296,13 @@ describe("Kanab Quest Supabase inventory mapping", () => {
       ],
       [11],
     )).toMatchObject({
-      rewardsLive: true,
-      unlockedBadges: 2,
-      alreadyGranted: 1,
-      pendingBadges: 1,
-      pendingSupportBoosters: 1,
+      rewardsLive: false,
+      unlockedBadges: 0,
+      alreadyGranted: 0,
+      pendingBadges: 0,
+      pendingSupportBoosters: 0,
       pendingCultureTokens: 0,
+      badges: [],
     });
   });
   it("counts physical copies and ignores unrelated definitions", () => {

@@ -148,6 +148,9 @@ async function loadKqNotebookRetroBatch(afterProfileBadgeId: number) {
 export async function previewKqNotebookRewardBatch(
   afterProfileBadgeId = 0,
 ): Promise<KqNotebookRetroPreviewResult> {
+  if (!KQ_NOTEBOOK_REWARDS_LIVE) {
+    return { live: false, processed: 0, pending: 0, alreadyGranted: 0, nextCursor: null };
+  }
   const batch = await loadKqNotebookRetroBatch(afterProfileBadgeId);
   const alreadyGranted = batch.badges.filter((badge) => batch.grantedIds.has(badge.id)).length;
   return {

@@ -84,7 +84,7 @@ const GUIDE_PAGE_MASCOTS: readonly TastingStepMascotKey[] = [
 const QUICK_STEP_SUMMARY = [
   "Choisis ton mode de dégustation.",
   "Note l'aspect de la fleur.",
-  "Trouve les terpènes: boosters à gagner.",
+  "Repère les terpènes que tu reconnais.",
   "Note le goût et le confort.",
   "Relis, ajoute une phrase, envoie.",
 ] as const;
@@ -1114,7 +1114,7 @@ export function ContestNotebookPanel({
               </div>
               {savedTerpeneRewardUnlocked ? (
                 <p className="mt-3 rounded border-2 border-[#1a1a1a] bg-yellow px-3 py-2 text-sm font-black text-ink">
-                  Badge Nez Absolu débloqué: 3 packs booster sont ajoutés à ton album.
+                  Badge Nez Absolu débloqué : ta reconnaissance des terpènes est validée.
                 </p>
               ) : null}
             </div>
@@ -1422,14 +1422,14 @@ export function ContestNotebookPanel({
               {isConcoursEntry ? (
                 <div className="rounded border-2 border-[#1a1a1a] bg-[#fff0c9] p-4 shadow-[3px_3px_0_rgba(23,19,14,0.25)]">
                   <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#6d4b00]">
-                    Défi terpènes
+                    Repères aromatiques
                   </p>
                   <h4 className="mt-1 text-xl font-black leading-tight text-ink">
-                    Trouve le bon combo, débloque 3 boosters
+                    Reconnais les terpènes dominants
                   </h4>
                   <p className="mt-2 text-sm font-semibold leading-relaxed text-charcoal">
-                    Dans l&apos;étape Odeur, coche les terpènes dominants que tu reconnais. Si le combo
-                    est exact et que ton avis est validé, le badge Nez Absolu donne 3 packs booster.
+                    Dans l&apos;étape Odeur, coche les terpènes dominants que tu reconnais.
+                    Prends le temps de décrire tes impressions pour compléter ta dégustation.
                   </p>
                 </div>
               ) : null}
@@ -1558,7 +1558,7 @@ export function ContestNotebookPanel({
                 title={isConcoursEntry ? "Odeur et terpènes" : "Odeur et arômes"}
                 body={
                   isConcoursEntry
-                    ? "Repère les terpènes dominants : si ton combo est juste, tu peux débloquer des boosters."
+                    ? "Repère les terpènes dominants et décris les arômes que tu reconnais."
                     : "Repère les familles aromatiques dominantes et note la qualité du nez."
                 }
                 mascotStep="smell"
@@ -1568,10 +1568,10 @@ export function ContestNotebookPanel({
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#6d4b00]">
-                        Défi Nez Absolu
+                        Repères aromatiques
                       </p>
                       <h4 className="mt-1 text-xl font-black leading-tight text-ink">
-                        Combo exact = 3 boosters
+                        Quels terpènes reconnais-tu ?
                       </h4>
                     </div>
                     <span className="rounded-full border-2 border-[#1a1a1a] bg-white px-3 py-1 text-xs font-black text-ink">
@@ -1579,8 +1579,8 @@ export function ContestNotebookPanel({
                     </span>
                   </div>
                   <p className="mt-2 text-sm font-semibold leading-relaxed text-charcoal">
-                    Coche les terpènes que tu reconnais dans la fleur. Le bonus est accordé après
-                    validation de l&apos;avis si ton combo correspond aux terpènes dominants.
+                    Coche les terpènes que tu reconnais dans la fleur pour préciser
+                    tes impressions olfactives.
                   </p>
                   {expectedTerpenes.length > 0 ? (
                     <p className={`mt-3 rounded border-2 border-[#1a1a1a] px-3 py-2 text-sm font-black ${
@@ -1588,7 +1588,7 @@ export function ContestNotebookPanel({
                     }`}>
                       {visibleTerpeneRewardUnlocked
                         ? "Combo exact détecté: garde cette sélection avant d'envoyer ton avis."
-                        : "Trouve le combo exact pour viser le bonus boosters."}
+                        : "Compare les arômes perçus avec les terpènes proposés."}
                     </p>
                   ) : null}
                   <details className="mt-4 rounded border-2 border-[#1a1a1a] bg-[#fffaf0] p-3">
