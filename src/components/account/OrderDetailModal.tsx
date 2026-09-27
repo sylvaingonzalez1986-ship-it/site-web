@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { OrderCashRewardReceipt } from "@/components/checkout/OrderCashReward";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { formatPrice } from "@/lib/utils";
 import { isInvoiceEligibleOrder } from "@/lib/invoice-utils";
@@ -197,6 +198,8 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
             Paiement: {paymentStateLabels[order.paymentState]}
           </span>
         </div>
+
+        <OrderCashRewardReceipt orderId={order.id} paymentState={order.paymentState} />
 
         {hasShippingInfo && (
           <div className="mt-6 card-cartoon bg-white p-4">

@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CartBenefitSummaryModal } from "@/components/cart/CartBenefitSummaryModal";
+import { OrderCashRewardPreview } from "@/components/checkout/OrderCashReward";
 import { useCart } from "@/context/CartContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useCmsStore } from "@/hooks/useCmsStore";
@@ -1009,6 +1010,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               )}
             </button>
           </div>}
+          <OrderCashRewardPreview productsAmount={checkoutAmount} active={open} />
           <div className={styles.checkoutArea}>
             {isAuthenticated && <>
             <ol className={styles.steps} aria-label="Étapes de la commande">

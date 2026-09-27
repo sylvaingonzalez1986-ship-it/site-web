@@ -9,6 +9,7 @@ import {
   getKqPlayerOwnedBuddies,
 } from "@/lib/supabase/kanab-quest-backend";
 import { getKqEquipmentRoutePlan } from "@/lib/supabase/kanab-quest-equipment-backend";
+import { syncKqOrderCashRewards } from "@/lib/supabase/kanab-quest-order-cash-backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,6 +22,14 @@ export async function GET() {
   const session = await getCurrentCustomerSessionByBackend("identity");
   const authenticatedAt = performance.now();
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
+
+  // Recover a deferred payment reward, including a newly verified guest order,
+  // before loading the player's state. An optional reward cannot block the game.
+  try {
+    await syncKqOrderCashRewards(session.customerId);
+  } catch {
+    console.warn("Order cash reward synchronization temporarily unavailable.");
+  }
 
   const [
     collectionResult,

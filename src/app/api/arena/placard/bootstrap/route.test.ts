@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const {
   getCurrentCustomerSessionByBackend,
@@ -8,6 +8,7 @@ const {
   getKqPlayerHeritageSnapshot,
   getKqPlayerCoreSnapshot,
   getKqEquipmentRoutePlan,
+  syncKqOrderCashRewards,
 } = vi.hoisted(() => ({
   getCurrentCustomerSessionByBackend: vi.fn(),
   getKqPlayerCollectionSnapshot: vi.fn(),
@@ -16,6 +17,7 @@ const {
   getKqPlayerHeritageSnapshot: vi.fn(),
   getKqPlayerCoreSnapshot: vi.fn(),
   getKqEquipmentRoutePlan: vi.fn(),
+  syncKqOrderCashRewards: vi.fn(),
 }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
@@ -26,6 +28,7 @@ vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
   getKqPlayerCoreSnapshot,
 }));
 vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({ getKqEquipmentRoutePlan }));
+vi.mock("@/lib/supabase/kanab-quest-order-cash-backend", () => ({ syncKqOrderCashRewards }));
 
 import { GET } from "@/app/api/arena/placard/bootstrap/route";
 
@@ -38,6 +41,7 @@ describe("GET /api/arena/placard/bootstrap", () => {
     getKqPlayerBuddieRotation.mockResolvedValue({ requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] });
     process.env.KQ_PLAYER_API_LIVE = "true";
     getCurrentCustomerSessionByBackend.mockResolvedValue({ customerId });
+    syncKqOrderCashRewards.mockResolvedValue({ available: true, receipts: [] });
     getKqPlayerCollectionSnapshot.mockResolvedValue({ inventory: { "BOTTE-001": 1 } });
     getKqPlayerOwnedBuddies.mockResolvedValue([{
       code: "HH2026-003",
@@ -55,6 +59,7 @@ describe("GET /api/arena/placard/bootstrap", () => {
     getKqPlayerCoreSnapshot.mockResolvedValue({ activeRun: null, flowers: [], battles: [], progress: null });
     getKqEquipmentRoutePlan.mockResolvedValue({ route: "rosin-signature", equipmentCode: "PRESS-20T" });
   });
+  afterEach(() => vi.restoreAllMocks());
   afterAll(() => {
     if (previousFlag === undefined) delete process.env.KQ_PLAYER_API_LIVE;
     else process.env.KQ_PLAYER_API_LIVE = previousFlag;
@@ -64,6 +69,37 @@ describe("GET /api/arena/placard/bootstrap", () => {
     process.env.KQ_PLAYER_API_LIVE = "false";
     expect((await GET()).status).toBe(404);
     expect(getKqPlayerCollectionSnapshot).not.toHaveBeenCalled();
+    expect(syncKqOrderCashRewards).not.toHaveBeenCalled();
+  });
+
+  it("does not synchronize rewards without an authenticated customer", async () => {
+    getCurrentCustomerSessionByBackend.mockResolvedValue(null);
+    expect((await GET()).status).toBe(401);
+    expect(syncKqOrderCashRewards).not.toHaveBeenCalled();
+    expect(getKqPlayerCollectionSnapshot).not.toHaveBeenCalled();
+  });
+
+  it("finishes reward reconciliation before loading any game snapshot", async () => {
+    let resolveSync!: () => void;
+    syncKqOrderCashRewards.mockReturnValue(new Promise<void>((resolve) => { resolveSync = resolve; }));
+    const response = GET();
+    await vi.waitFor(() => expect(syncKqOrderCashRewards).toHaveBeenCalledExactlyOnceWith(customerId));
+    for (const snapshot of [getKqPlayerCollectionSnapshot, getKqPlayerOwnedBuddies,
+      getKqPlayerHeritageSnapshot, getKqPlayerCoreSnapshot, getKqEquipmentRoutePlan,
+      getKqPlayerBuddieRotation]) expect(snapshot).not.toHaveBeenCalled();
+    resolveSync();
+    expect((await response).status).toBe(200);
+    expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
+  });
+
+  it("keeps the game available without disclosing a reward synchronization failure", async () => {
+    const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+    syncKqOrderCashRewards.mockRejectedValue(new Error("private reward detail"));
+    const response = await GET();
+    expect(response.status).toBe(200);
+    expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
+    expect(JSON.stringify(await response.json())).not.toContain("private reward detail");
+    expect(warning).toHaveBeenCalledExactlyOnceWith("Order cash reward synchronization temporarily unavailable.");
   });
 
   it("loads collection and game session in one authenticated request", async () => {
