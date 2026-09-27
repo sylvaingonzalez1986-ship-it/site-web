@@ -1,12 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const mocks = vi.hoisted(() => ({ session: vi.fn(), progress: vi.fn(), claim: vi.fn(), completion: vi.fn(), purchase: vi.fn() }));
+const mocks = vi.hoisted(() => ({ session: vi.fn(), progress: vi.fn(), claim: vi.fn(), completion: vi.fn(), purchase: vi.fn(), quantity: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/supabase/kanab-quest-producer-rewards-backend", () => ({
   getKqProducerRewardProgressForCustomer: mocks.progress,
   claimKqProducerHeritageForCustomer: mocks.claim,
   claimKqProducerCompletionForCustomer: mocks.completion,
   claimKqProducerPurchaseBuddieForCustomer: mocks.purchase,
+  claimKqProducerQuantityBonusForCustomer: mocks.quantity,
 }));
 
 import { GET, POST } from "@/app/api/contest/producer-rewards/route";
@@ -27,6 +28,10 @@ describe("GET /api/contest/producer-rewards", () => {
     const response = await GET();
     expect(mocks.progress).toHaveBeenCalledWith("customer-1");
     expect(await response.json()).toEqual({ campaigns: [{ campaignId: "campaign-1" }] });
+    expect(mocks.claim).not.toHaveBeenCalled();
+    expect(mocks.completion).not.toHaveBeenCalled();
+    expect(mocks.purchase).not.toHaveBeenCalled();
+    expect(mocks.quantity).not.toHaveBeenCalled();
   });
 
   it("hides infrastructure failures", async () => {
@@ -72,14 +77,15 @@ describe("GET /api/contest/producer-rewards", () => {
     expect(response.status).toBe(401);
     expect(mocks.claim).not.toHaveBeenCalled();
   });
-  it.each(["completion", "purchase-buddie"])("authorizes %s only for the session and producer", async (action) => {
+  it.each(["completion", "purchase-buddie", "quantity-bonus"])("authorizes %s only for the session and producer", async (action) => {
     mocks.session.mockResolvedValue({ customerId: "customer-1" });
-    const claim = action === "completion" ? mocks.completion : mocks.purchase;
+    const claim = action === "completion" ? mocks.completion : action === "purchase-buddie" ? mocks.purchase : mocks.quantity;
     claim.mockResolvedValue({ producerId: "p1", alreadyGranted: false });
     mocks.progress.mockResolvedValue([{ producerId: "p1", entries: [], completionReward: { granted: true } }]);
     const response = await POST(new Request("http://localhost/api/contest/producer-rewards", {
       method: "POST", headers: { "content-type": "application/json" },
-      body: JSON.stringify({ action, producerId: "p1", customerId: "forged", eligible: true, cashCents: 999999, cardCode: "HH2026-001" }),
+      body: JSON.stringify({ action, producerId: "p1", customerId: "forged", eligible: true, cashCents: 999999,
+        cardCode: "HH2026-001", bestOrderGrams: 999, purchaseOdds: { gold: 100 } }),
     }));
     expect(response.status).toBe(200);
     expect(claim).toHaveBeenCalledWith({ customerId: "customer-1", producerId: "p1" });
@@ -96,6 +102,7 @@ describe("GET /api/contest/producer-rewards", () => {
     expect(mocks.claim).not.toHaveBeenCalled();
     expect(mocks.completion).not.toHaveBeenCalled();
     expect(mocks.purchase).not.toHaveBeenCalled();
+    expect(mocks.quantity).not.toHaveBeenCalled();
   });
 
   it("does not trust client eligibility when the purchase RPC rejects", async () => {

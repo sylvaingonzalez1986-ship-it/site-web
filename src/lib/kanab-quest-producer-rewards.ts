@@ -1,7 +1,20 @@
+import type { KqNotebookBuddieOdds } from "@/lib/kanab-quest-notebook-quantity";
+
+export type { KqNotebookBuddieOdds } from "@/lib/kanab-quest-notebook-quantity";
+
+export type KqNotebookQuantityProgress = {
+  productId: string;
+  bestOrderGrams: number;
+  totalCashCents: number;
+  bonusCashCents: number;
+  grantedCashCents: number;
+  availableCashCents: number;
+};
+
 export type KqProducerRewardCard = {
   code: string;
   name: string;
-  rarity: "silver" | "gold";
+  rarity: "common" | "silver" | "gold";
   imageUrl: string;
 };
 
@@ -23,6 +36,7 @@ export type KqProducerRewardEntryProgress = {
   reviewed: boolean;
   purchased: boolean;
   boosterGranted: boolean;
+  quantityReward: KqNotebookQuantityProgress;
   packReward: {
     eligible: boolean;
     totalPacks: number;
@@ -49,7 +63,9 @@ export type KqProducerRewardProgress = {
   purchasedCount: number;
   requiredCount: number;
   completionReward: { kind: "cash"; cashCents: number; granted: boolean };
-  purchaseReward: { eligible: boolean; granted: boolean; card: KqProducerRewardCard | null };
+  quantityRewardsAvailable: boolean;
+  quantityReward: { bonusCashCents: number; grantedCashCents: number; availableCashCents: number };
+  purchaseReward: { eligible: boolean; granted: boolean; card: KqProducerRewardCard | null; odds: KqNotebookBuddieOdds | null };
   entries: KqProducerRewardEntryProgress[];
 };
 
@@ -103,11 +119,17 @@ export function buildKqProducerRewardProgress(input: {
   completionCashCents?: number;
   purchaseGranted?: boolean;
   purchaseCard?: KqProducerRewardCard | null;
+  quantityRewardsAvailable?: boolean;
+  quantityRewards?: KqNotebookQuantityProgress[];
+  purchaseOdds?: KqNotebookBuddieOdds | null;
 }): KqProducerRewardProgress {
   const approvedEntries = new Set(input.approvedEntryIds ?? []);
   const approvedProducts = new Set(input.approvedProductIds ?? []);
   const purchasedProducts = new Set(input.purchasedProductIds ?? []);
   const rewarded = new Set(input.rewardedEntryIds ?? []);
+  const quantityByProduct = new Map(input.quantityRewardsAvailable
+    ? input.quantityRewards?.map((quantity) => [quantity.productId, quantity])
+    : []);
   const products = new Map<string, typeof input.entries>();
   for (const entry of input.entries) {
     const productId = entry.productId || entry.entryId;
@@ -116,7 +138,7 @@ export function buildKqProducerRewardProgress(input: {
     products.set(productId, aliases);
   }
   const entries: KqProducerRewardEntryProgress[] = [...products].map(([productId, aliases]) => {
-    const entry = aliases[0];
+    const entry = aliases.find((alias) => alias.track === "concours") ?? aliases[0];
     const packs = aliases.map((alias) => input.packProgressByEntryId?.get(alias.entryId) ?? {
       grantedPacks: rewarded.has(alias.entryId) ? 1 : 0,
       availablePacks: 0,
@@ -134,6 +156,10 @@ export function buildKqProducerRewardProgress(input: {
       reviewed: approvedProducts.has(productId) || aliases.some((alias) => approvedEntries.has(alias.entryId)),
       purchased: purchasedProducts.has(productId),
       boosterGranted: grantedPacks > 0,
+      quantityReward: quantityByProduct.get(productId) ?? {
+        productId, bestOrderGrams: 0, totalCashCents: 0,
+        bonusCashCents: 0, grantedCashCents: 0, availableCashCents: 0,
+      },
       // Previously awarded packs remain available; new reviews no longer promise packs.
       packReward: { eligible: false, totalPacks: grantedPacks, grantedPacks, availablePacks, openedPacks, availableEntitlementIds },
     };
@@ -160,10 +186,17 @@ export function buildKqProducerRewardProgress(input: {
       cashCents: input.completionCashCents ?? getKqProducerCompletionCashCents(entries.length),
       granted: input.completionGranted === true,
     },
+    quantityRewardsAvailable: input.quantityRewardsAvailable === true,
+    quantityReward: entries.reduce((total, entry) => ({
+      bonusCashCents: total.bonusCashCents + entry.quantityReward.bonusCashCents,
+      grantedCashCents: total.grantedCashCents + entry.quantityReward.grantedCashCents,
+      availableCashCents: total.availableCashCents + entry.quantityReward.availableCashCents,
+    }), { bonusCashCents: 0, grantedCashCents: 0, availableCashCents: 0 }),
     purchaseReward: {
       eligible: entries.length > 0 && purchasedCount === entries.length,
       granted: input.purchaseGranted === true,
       card: input.purchaseCard ?? null,
+      odds: input.quantityRewardsAvailable ? input.purchaseOdds ?? null : null,
     },
     entries,
   };

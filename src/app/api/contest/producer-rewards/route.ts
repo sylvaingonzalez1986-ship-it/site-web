@@ -5,6 +5,7 @@ import {
   claimKqProducerCompletionForCustomer,
   claimKqProducerHeritageForCustomer,
   claimKqProducerPurchaseBuddieForCustomer,
+  claimKqProducerQuantityBonusForCustomer,
   getKqProducerRewardProgressForCustomer,
 } from "@/lib/supabase/kanab-quest-producer-rewards-backend";
 
@@ -34,7 +35,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Demande invalide." }, { status: 400, headers: NO_STORE_HEADERS });
   }
   const action = value.action ?? "heritage";
-  if (action !== "heritage" && action !== "completion" && action !== "purchase-buddie") {
+  if (action !== "heritage" && action !== "completion" && action !== "purchase-buddie" && action !== "quantity-bonus") {
     return NextResponse.json({ error: "Récompense inconnue." }, { status: 400, headers: NO_STORE_HEADERS });
   }
   try {
@@ -44,11 +45,13 @@ export async function POST(request: Request) {
       ? await claimKqProducerCompletionForCustomer({ customerId: session.customerId, producerId })
       : action === "purchase-buddie"
         ? await claimKqProducerPurchaseBuddieForCustomer({ customerId: session.customerId, producerId })
-        : await claimKqProducerHeritageForCustomer({
-          customerId: session.customerId,
-          campaignId: typeof value.campaignId === "string" ? value.campaignId : "",
-          entryId,
-        });
+        : action === "quantity-bonus"
+          ? await claimKqProducerQuantityBonusForCustomer({ customerId: session.customerId, producerId })
+          : await claimKqProducerHeritageForCustomer({
+            customerId: session.customerId,
+            campaignId: typeof value.campaignId === "string" ? value.campaignId : "",
+            entryId,
+          });
     const campaigns = await getKqProducerRewardProgressForCustomer(session.customerId);
     const campaign = action === "heritage"
       ? findKqProducerRewardForEntry(campaigns, entryId)

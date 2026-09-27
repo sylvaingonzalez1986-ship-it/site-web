@@ -29,6 +29,19 @@
 .heritageLink:hover { background: #003f30; }
 .heritageLink:focus-visible { outline: 3px solid #002d24; outline-offset: 3px; }
 
+.claimButton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 44px; margin-top: 12px; padding: 10px 12px; border: 2px solid #002d24; border-radius: 4px; background: #00563f; color: #fffaf1; font-size: 12px; font-weight: 900; line-height: 1.5; cursor: pointer; }
+.claimButton svg { flex-shrink: 0; }
+.claimButton[data-tone="completion"] { background: #f4c26f; color: #002d24; }
+.claimButton:hover:not(:disabled) { filter: brightness(.92); }
+.claimButton:focus-visible { outline: 3px solid #002d24; outline-offset: 3px; }
+.claimButton:disabled { background: #f2efe7; color: #425049; border-color: #708078; cursor: not-allowed; }
+.rewardRules { margin-top: 6px; font-size: 12px; line-height: 1.65; }
+.rewardRules summary { display: flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 800; text-decoration: underline; cursor: pointer; }
+.rewardRules summary::before { content: "+"; }
+.rewardRules[open] summary::before { content: "−"; }
+.rewardRules summary:focus-visible { outline: 3px solid #002d24; outline-offset: 3px; }
+.rewardRules p { margin-top: 4px; }
+
 @container (min-width: 440px) {
   .heritageBody { grid-template-columns: minmax(0, 220px) minmax(0, 1fr); }
 }

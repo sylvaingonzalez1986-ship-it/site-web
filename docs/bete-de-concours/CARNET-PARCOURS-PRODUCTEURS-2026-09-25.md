@@ -22,13 +22,50 @@ Le bonus demandé est de **100 € de monnaie de jeu par fleur distincte** du pr
 
 - **Dégustation :** toutes les fleurs publiées du producteur dans la saison courante du carnet doivent avoir un avis approuvé. Chaque produit compte une seule fois, y compris si des avis existent sur d'anciennes fiches en double. La dernière approbation attribue 100 € × le nombre de produits distincts au portefeuille du Placard ; un bouton permet aussi de récupérer un bonus antérieur éligible.
 - **Achat :** les achats payés et non annulés de toutes ces fleurs permettent un tirage de Buddie. Les achats peuvent provenir de plusieurs commandes ; les variantes d’un même produit sont regroupées. Un achat invité exige une adresse confirmée correspondant au compte, sur une commande sans autre propriétaire.
-- **Tirage :** chaque carte active Argent ou Or de la collection `HEMP_HEROES_2026` a la même probabilité. Il ne s’agit pas d’un partage 50/50 entre les deux raretés. Le serveur effectue le tirage au moment de la réclamation.
+- **Tirage :** la règle initiale choisissait uniformément parmi les Argent et Or. La nouvelle règle de quantité ci-dessous inclut les Communs et sélectionne d'abord la rareté selon des probabilités explicites, puis une carte active de cette rareté dans `HEMP_HEROES_2026`.
 - **Fréquence :** un bonus de dégustation et un tirage par client et producteur, sans remise à zéro à chaque saison. L’ajout ultérieur de fleurs ne permet pas de toucher une seconde récompense. Les produits qualifiants et le montant effectivement versé sont conservés dans le reçu. Les anciens reçus restent inchangés ; la vérification du 27 septembre a trouvé un seul reçu, pour une fleur et 100 €, déjà conforme au nouveau tarif.
 - **Héritage :** le premier avis approuvé sur une fleur éligible de la campagne conserve le déblocage de la carte Héritage. La carte est affichée en grand, avant le bonus monétaire, sans volet à ouvrir. Son recto reste grisé tant que l’attribution n’est pas confirmée (`heritageGranted`), puis apparaît en couleur avec son avantage. Le visuel du producteur fourni par la base est prioritaire, avec le recto du manifeste comme secours. Le choix des fleurs dans l’administration concerne cet Héritage ; la progression complète considère toutes les fleurs publiées du producteur.
 - **Anciens packs :** les blocs « Mes packs La Botte » et « Inventaire La Botte » sont retirés du carnet, ainsi que leurs chargements et leur action d’ouverture. Les packs déjà attribués restent disponibles dans le Placard. Les nouveaux avis Concours ne donnent plus automatiquement cinq packs.
 - **Missions retirées :** « Les bons terpènes et goûts » et « Critique élaborée » ne figurent plus dans le carnet et ne créent plus de packs. Les règles `combo-aromatique` et `premier-carnet` sont désactivées ; l’ancienne réclamation de boosters est aussi bloquée pour ces deux codes. Les badges restent des distinctions, sans nouvelle récompense de mission. Les packs déjà attribués, les autres missions du Placard et les bonus par producteur sont conservés.
 
 Les deux attributions sont indépendantes. Les avis validés déclenchent le bonus monétaire ; les commandes payées ouvrent le tirage. Lire la progression n’écrit ni portefeuille ni récompense.
+
+## Bonus de quantité et tirages pondérés — 27 septembre
+
+La version `notebook-quantity-v1` ajoute un supplément par fleur au bonus de découverte. Les 100 € de base restent versés à la fin du parcours producteur. Le supplément se débloque dès qu'un avis de la fleur est approuvé, même si les autres fleurs du producteur restent à découvrir. Tous ces montants sont de la monnaie du Placard.
+
+| Grammes de la même fleur dans une commande | Total, base comprise | Supplément | Or Regular | Or Concours |
+| --- | ---: | ---: | ---: | ---: |
+| 1 g | 100 € | 0 € | 1 % | 3 % |
+| 3 g | 330 € | 230 € | 1,25 % | 3,75 % |
+| 5 g | 600 € | 500 € | 1,5 % | 4,5 % |
+| 10 g et plus | 1 300 € | 1 200 € | 2 % | 6 % |
+
+Le montant total suit `100 € × min(grammes, 10) × multiplicateur` : 1 avant 3 g, 1,10 dès 3 g, 1,20 dès 5 g et 1,30 dès 10 g. Le supplément est ce total moins les 100 € de base, sans valeur négative. Ainsi 2 g donnent 200 € au total, 4 g 440 € et 9 g 1 080 €. La comparaison porte sur les montants totaux débloqués : cinq fleurs de 1 g valent 500 €, une fleur de 5 g vaut 600 €.
+
+Les lignes identiques d'un produit sont regroupées dans chaque commande payée et non annulée, puis seule la commande ayant le plus de grammes est retenue. Cinq commandes de 1 g ne deviennent pas un achat de 5 g. Le calcul utilise le poids enregistré dans la ligne de commande, jamais le poids actuel du catalogue. Les commandes invitées conservent les règles de rapprochement par adresse confirmée. Les lignes de variantes `::` dont le poids historique n'est pas fiable restent utilisables pour valider l'achat d'une fleur, mais n'augmentent pas ce bonus ; elles ne font pas l'objet d'une estimation depuis leur libellé.
+
+Le crédit de quantité est unique par client et produit et conserve le montant déjà versé. Un achat plus important ouvre seulement la différence : passer de 3 g à 5 g donne 270 € de supplément supplémentaire. Le bouton du carnet permet de récupérer un supplément après un nouvel achat ou pour un ancien avis approuvé ; l'approbation d'un avis traite aussi automatiquement le supplément éligible. Ouvrir le carnet ne crédite rien. Les crédits et les anciens reçus de découverte sont conservés.
+
+La probabilité d'Argent est de 10 % pour une Regular et de 18 % pour une Concours. L'Or suit le tableau, avec les mêmes paliers de grammes ; le reste revient aux Communs. Pour le tirage unique du producteur, les probabilités sont la moyenne des contributions de chaque produit distinct du parcours. Quatre Regular de 1 g et une Concours de 1 g donnent donc 87 % Commun, 11,6 % Argent et 1,4 % Or. Si d'anciennes fiches dupliquent un produit dans les deux parcours, sa contribution Concours est retenue une seule fois.
+
+Les probabilités et leur version sont enregistrées au moment du tirage. Les achats suivants ne donnent aucun nouveau Buddie et ne changent pas le reçu. Les anciens tirages conservent une probabilité historique inconnue, sans reconstruction depuis le nouveau barème. Les trois raretés doivent disposer d'une carte active avant de lancer l'aléatoire. Sinon la réclamation échoue sans consommer le tirage, afin que les nouvelles tentatives ne favorisent pas les seules raretés disponibles.
+
+La fiche produit affiche une estimation aux clients connectés lorsque le produit appartient au carnet actuel et que la base annonce la disponibilité de cette règle. Les poids inconnus et variantes ambiguës ne donnent pas lieu à une promesse de quantité. Le carnet affiche les grammes retenus, le supplément reçu ou disponible et les probabilités du tirage. Le déploiement du code avant la migration garde ces nouveaux affichages désactivés.
+
+Migration : `20260927000400_kq_notebook_quantity_rewards.sql`. La préparation et les tests locaux n'appliquent pas cette migration à la base distante.
+
+Vérification de cette évolution : 183 tests ciblés de barème, progression, backend, API client et administration ; 92 contrôles SQL isolés avec PGlite ; vérification des permissions sur 254 migrations. Le scénario SQL couvre notamment les achats répartis entre commandes, les lignes regroupées, les achats invités, les paliers, les différences déjà versées, les limites du portefeuille, l'équilibre du journal et les anciennes récompenses. Les requêtes concurrentes PGlite restent sérialisées sur une connexion ; l'ordre des verrous entre complétion, quantité et portefeuille fait aussi l'objet d'un contrôle explicite.
+
+Commandes de vérification reproductibles :
+
+```powershell
+node scripts/test-producer-notebook-quantity-rewards.mjs output/notebook-rewards/pglite/node_modules/@electric-sql/pglite/dist/index.js
+node scripts/audit-notebook-quantity.mjs
+npm.cmd run check:supabase-grants
+```
+
+Le test SQL écrit `output/notebook-rewards/quantity-sql-verification.json`. L'audit navigateur utilise des données synthétiques et les vrais composants, avec rapports et captures dans `output/notebook-quantity` : supplément avant la fin du parcours, erreur et nouvelle tentative, onglet déjà payé, Commun, probabilités conservées après un achat supérieur, aperçu boutique et absence de promesses sur les progressions historiques sans nouvelle règle.
 
 ## Mise en œuvre
 

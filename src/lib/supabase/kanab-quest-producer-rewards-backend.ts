@@ -3,6 +3,8 @@ import "server-only";
 import {
   buildKqProducerRewardProgress,
   KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE,
+  type KqNotebookBuddieOdds,
+  type KqNotebookQuantityProgress,
   type KqProducerNotebookRewardReceipt,
   type KqProducerRewardCard,
   type KqProducerRewardProgress,
@@ -20,6 +22,9 @@ type ProducerState = {
   completionCashCents: number;
   purchaseGranted: boolean;
   purchaseCard: KqProducerRewardCard | null;
+  quantityRewardsAvailable: boolean;
+  quantityRewards: KqNotebookQuantityProgress[];
+  purchaseOdds: KqNotebookBuddieOdds | null;
 };
 
 function record(value: unknown): Record<string, unknown> {
@@ -31,7 +36,7 @@ function stringIds(value: unknown) {
 function rewardCard(value: unknown): KqProducerRewardCard | null {
   const card = record(value);
   return typeof card.code === "string" && typeof card.name === "string"
-    && (card.rarity === "silver" || card.rarity === "gold")
+    && (card.rarity === "common" || card.rarity === "silver" || card.rarity === "gold")
     ? { code: card.code, name: card.name, rarity: card.rarity, imageUrl: typeof card.imageUrl === "string" ? card.imageUrl : "" }
     : null;
 }
@@ -41,6 +46,53 @@ const LEGACY_PRODUCER_COMPLETION_CASH_CENTS = 10_000;
 const MAX_DATABASE_CASH_CENTS = 2_147_483_647;
 function isPositiveCashCents(value: unknown): value is number {
   return typeof value === "number" && Number.isInteger(value) && value > 0 && value <= MAX_DATABASE_CASH_CENTS;
+}
+function isNonnegativeCashCents(value: unknown): value is number {
+  return value === 0 || isPositiveCashCents(value);
+}
+
+function quantityProgress(state: Record<string, unknown>, qualifyingProductIds: string[]) {
+  const unavailable = () => new Error("Progression producteur indisponible.");
+  if (state.quantityRewardsAvailable !== undefined && typeof state.quantityRewardsAvailable !== "boolean") {
+    throw unavailable();
+  }
+  // Do not advertise quantities or probabilities before their authoritative RPC is deployed.
+  if (state.quantityRewardsAvailable !== true) {
+    return { quantityRewardsAvailable: false, quantityRewards: [], purchaseOdds: null };
+  }
+  if (!Array.isArray(state.quantityRewards)) throw unavailable();
+  const productIds = new Set<string>();
+  const quantityRewards: KqNotebookQuantityProgress[] = state.quantityRewards.map((value: unknown) => {
+    const reward = record(value);
+    if (typeof reward.productId !== "string" || !qualifyingProductIds.includes(reward.productId)
+      || productIds.has(reward.productId)
+      || typeof reward.bestOrderGrams !== "number" || !Number.isFinite(reward.bestOrderGrams) || reward.bestOrderGrams < 0
+      || !isNonnegativeCashCents(reward.totalCashCents) || !isNonnegativeCashCents(reward.bonusCashCents)
+      || !isNonnegativeCashCents(reward.grantedCashCents) || !isNonnegativeCashCents(reward.availableCashCents)
+      || reward.bonusCashCents > reward.totalCashCents
+      || reward.availableCashCents > Math.max(0, reward.bonusCashCents - reward.grantedCashCents)) {
+      throw unavailable();
+    }
+    productIds.add(reward.productId);
+    return {
+      productId: reward.productId, bestOrderGrams: reward.bestOrderGrams,
+      totalCashCents: reward.totalCashCents, bonusCashCents: reward.bonusCashCents,
+      grantedCashCents: reward.grantedCashCents, availableCashCents: reward.availableCashCents,
+    };
+  });
+  if (productIds.size !== qualifyingProductIds.length) throw unavailable();
+  let purchaseOdds: KqNotebookBuddieOdds | null = null;
+  if (state.purchaseOdds !== null) {
+    const odds = record(state.purchaseOdds);
+    if (typeof odds.common !== "number" || !Number.isFinite(odds.common) || odds.common < 0 || odds.common > 100
+      || typeof odds.silver !== "number" || !Number.isFinite(odds.silver) || odds.silver < 0 || odds.silver > 100
+      || typeof odds.gold !== "number" || !Number.isFinite(odds.gold) || odds.gold < 0 || odds.gold > 100
+      || Math.abs(odds.common + odds.silver + odds.gold - 100) > 0.0001) {
+      throw unavailable();
+    }
+    purchaseOdds = { common: odds.common, silver: odds.silver, gold: odds.gold };
+  }
+  return { quantityRewardsAvailable: true, quantityRewards, purchaseOdds };
 }
 
 async function loadProducerStates(client: ServiceClient, customerId: string): Promise<ProducerState[]> {
@@ -72,6 +124,7 @@ async function loadProducerStates(client: ServiceClient, customerId: string): Pr
       completionCashCents: completionCashCents as number,
       purchaseGranted: state.purchaseGranted,
       purchaseCard: rewardCard(state.purchaseCard),
+      ...quantityProgress(state, qualifyingProductIds),
     };
   });
 }
@@ -206,6 +259,8 @@ export async function getKqProducerRewardProgressForCustomer(customerId: string)
       )),
       completionGranted: state.completionGranted, completionCashCents: state.completionCashCents,
       purchaseGranted: state.purchaseGranted, purchaseCard: state.purchaseCard,
+      quantityRewardsAvailable: state.quantityRewardsAvailable, quantityRewards: state.quantityRewards,
+      purchaseOdds: state.purchaseOdds,
     })];
   });
 }
@@ -239,7 +294,7 @@ export async function claimKqProducerPurchaseBuddieForCustomer(input: { customer
   const parameters = producerClaimInput(input);
   const result = await createSupabaseServiceClient().rpc("rpc_kq_claim_producer_purchase_buddie", parameters);
   if (result.error) {
-    if (result.error.message.includes("kq_producer_purchase_incomplete")) throw new Error("Achète chaque fleur du producteur pour recevoir ton Buddie Argent ou Or.");
+    if (result.error.message.includes("kq_producer_purchase_incomplete")) throw new Error("Achète chaque fleur du producteur pour recevoir ton Buddie Commun, Argent ou Or.");
     throw new Error("Buddie producteur momentanément indisponible.");
   }
   const receipt = record(result.data);
@@ -250,6 +305,18 @@ export async function claimKqProducerPurchaseBuddieForCustomer(input: { customer
   return { producerId: parameters.p_producer_id, cardCode: card.code, cardName: card.name, cardRarity: card.rarity,
     cardImageUrl: card.imageUrl, cardInstanceId: receipt.cardInstanceId, alreadyGranted: receipt.alreadyGranted,
     qualifyingProductIds: stringIds(receipt.qualifyingProductIds) };
+}
+
+export async function claimKqProducerQuantityBonusForCustomer(input: { customerId: string; producerId: string }) {
+  const parameters = producerClaimInput(input);
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_claim_producer_quantity_bonus", parameters);
+  if (result.error) throw new Error("Bonus de quantité momentanément indisponible.");
+  const receipt = record(result.data);
+  if (receipt.producerId !== parameters.p_producer_id || !isNonnegativeCashCents(receipt.cashCents)
+    || typeof receipt.alreadyGranted !== "boolean" || receipt.alreadyGranted !== (receipt.cashCents === 0)) {
+    throw new Error("Bonus de quantité momentanément indisponible.");
+  }
+  return { producerId: parameters.p_producer_id, cashCents: receipt.cashCents, alreadyGranted: receipt.alreadyGranted };
 }
 
 export async function claimKqProducerHeritageForCustomer(input: { customerId: string; campaignId: string; entryId: string }) {
@@ -389,6 +456,7 @@ export async function previewKqProducerNotebookRewardBatch(offset = 0): Promise<
     .map((row) => [String(row.id), row]));
   const heritageKeys = new Set((grantsResult.data ?? []).map((row) => `${row.user_id}:${row.campaign_id}`));
   const completionKeys = new Set<string>();
+  const quantityKeys = new Set<string>();
   for (const review of reviews) {
     const entry = entries.get(String(review.entry_id));
     if (!entry?.producer_id) continue;
@@ -402,12 +470,18 @@ export async function previewKqProducerNotebookRewardBatch(offset = 0): Promise<
     const complete = Boolean(state?.qualifyingProductIds.length
       && state.qualifyingProductIds.every((id) => state.reviewedProductIds.includes(id)));
     const completionEligible = complete;
-    if (!heritageKey && !completionEligible) continue;
+    const pendingQuantityCashCents = state?.quantityRewards.reduce((total, reward) => total + reward.availableCashCents, 0) ?? 0;
+    if (!heritageKey && !completionEligible && pendingQuantityCashCents === 0) continue;
     preview.eligibleReviews += 1;
     let pending = false;
     if (heritageKey && !heritageKeys.has(heritageKey)) {
       heritageKeys.add(heritageKey);
       preview.pendingHeritages += 1;
+      pending = true;
+    }
+    if (pendingQuantityCashCents > 0 && !quantityKeys.has(key)) {
+      quantityKeys.add(key);
+      preview.pendingCashCents += pendingQuantityCashCents;
       pending = true;
     }
     if (completionEligible && state && !state.completionGranted && !completionKeys.has(key)) {

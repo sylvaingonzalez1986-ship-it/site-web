@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import Link from "@/components/navigation/NavigationLink";
 import { Plus } from "lucide-react";
 import { ProductAnalysisModal } from "@/components/boutique/ProductAnalysisModal";
+import { NotebookQuantityBonusPreview } from "@/components/contest/NotebookQuantityBonus";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import type { Product } from "@/data/products";
@@ -122,6 +123,12 @@ export function ProductDetailActions({
           <Plus size={16} /> {inStock ? "Ajouter au panier" : "Rupture de stock"}
         </button>
       </div>
+
+      {inStock && product.category === "fleurs" && !product.isPack && !product.variantOptions?.length
+        && typeof product.weightGrams === "number" && product.weightGrams > 0 ? <NotebookQuantityBonusPreview
+          productId={product.id}
+          grams={qty * product.weightGrams}
+        /> : null}
 
       {product.analysisPdf && (
         <>

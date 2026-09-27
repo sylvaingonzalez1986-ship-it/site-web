@@ -55,7 +55,7 @@ describe("unified producer notebook rewards", () => {
     const card = { code: "HH2026-010", name: "Lifter", rarity: "silver" as const, imageUrl: "/lifter.webp" };
     const complete = buildKqProducerRewardProgress({ ...base, purchasedProductIds: ["product-a", "product-b"],
       purchaseGranted: true, purchaseCard: card });
-    expect(complete.purchaseReward).toEqual({ eligible: true, granted: true, card });
+    expect(complete.purchaseReward).toEqual({ eligible: true, granted: true, card, odds: null });
     expect(complete.completed).toBe(false);
   });
 
@@ -81,5 +81,37 @@ describe("unified producer notebook rewards", () => {
     expect(progress.heritageEligible).toBe(false);
     expect(progress.purchaseReward).toMatchObject({ eligible: false, granted: true });
     expect(progress.completionReward.granted).toBe(true);
+  });
+
+  it("aggregates supplements once per product independently of producer completion", () => {
+    const progress = buildKqProducerRewardProgress({ ...base, approvedProductIds: ["product-a"],
+      quantityRewardsAvailable: true,
+      quantityRewards: [
+        { productId: "product-a", bestOrderGrams: 5, totalCashCents: 60_000, bonusCashCents: 50_000, grantedCashCents: 23_000, availableCashCents: 27_000 },
+        { productId: "product-b", bestOrderGrams: 3, totalCashCents: 33_000, bonusCashCents: 23_000, grantedCashCents: 0, availableCashCents: 0 },
+        { productId: "old-product", bestOrderGrams: 10, totalCashCents: 130_000, bonusCashCents: 120_000, grantedCashCents: 0, availableCashCents: 120_000 },
+      ], purchaseOdds: { common: 77.875, silver: 18, gold: 4.125 },
+    });
+    expect(progress.completed).toBe(false);
+    expect(progress.entries[0].track).toBe("concours");
+    expect(progress.quantityReward).toEqual({ bonusCashCents: 73_000, grantedCashCents: 23_000, availableCashCents: 27_000 });
+    expect(progress.completionReward.cashCents).toBe(20_000);
+    expect(progress.purchaseReward.odds).toEqual({ common: 77.875, silver: 18, gold: 4.125 });
+  });
+
+  it("does not advertise new rewards or odds before the database supports them", () => {
+    const progress = buildKqProducerRewardProgress({ ...base,
+      quantityRewards: [{ productId: "product-a", bestOrderGrams: 5, totalCashCents: 60_000, bonusCashCents: 50_000, grantedCashCents: 0, availableCashCents: 50_000 }],
+      purchaseOdds: { common: 89, silver: 10, gold: 1 },
+    });
+    expect(progress.quantityRewardsAvailable).toBe(false);
+    expect(progress.quantityReward).toEqual({ bonusCashCents: 0, grantedCashCents: 0, availableCashCents: 0 });
+    expect(progress.purchaseReward.odds).toBeNull();
+  });
+
+  it("preserves a recorded common card with unknown historical odds", () => {
+    const card = { code: "HH2026-020", name: "Buddie commun", rarity: "common" as const, imageUrl: "/common.webp" };
+    const progress = buildKqProducerRewardProgress({ ...base, quantityRewardsAvailable: true, purchaseGranted: true, purchaseCard: card });
+    expect(progress.purchaseReward).toMatchObject({ granted: true, card, odds: null });
   });
 });

@@ -1,0 +1,15 @@
+.tiers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 12px 0; }
+.tiers > div { min-width: 0; padding: 8px; border: 1px solid #002d2430; border-radius: 4px; background: #fffaf1; text-align: center; }
+.tiers dt { color: #486353; font-size: 11px; font-weight: 700; }
+.tiers dd { margin: 4px 0 0; color: #002d24; font-size: 14px; font-weight: 900; overflow-wrap: anywhere; }
+.preview { padding: 14px; border: 2px solid #00563f; border-radius: 4px; background: #fffaf1; color: #002d24; overflow-wrap: anywhere; }
+.preview h3 { display: flex; align-items: center; gap: 7px; margin: 0; font-size: 13px; font-weight: 900; }
+.preview p { margin: 9px 0 0; font-size: 12px; line-height: 1.6; }
+.amount strong { display: block; font-size: 16px; }
+.preview .nextTier { color: #00563f; font-weight: 800; }
+.rules summary { display: flex; align-items: center; min-height: 44px; font-size: 12px; font-weight: 800; cursor: pointer; text-decoration: underline; }
+.rules summary::before { content: "+"; margin-right: 8px; }
+.rules[open] summary::before { content: "−"; }
+.rules summary:focus-visible, .link:focus-visible { outline: 3px solid #002d24; outline-offset: 3px; }
+.link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 5px; color: #00563f; font-size: 12px; font-weight: 800; text-decoration: underline; }
+@media (min-width: 420px) { .tiers { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
