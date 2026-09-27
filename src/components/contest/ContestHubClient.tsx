@@ -11,7 +11,6 @@ import Link from "@/components/navigation/NavigationLink";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import {
-  useCallback,
   useEffect,
   useMemo,
   useId,
@@ -33,7 +32,6 @@ import {
   ChevronUp,
   CircleHelp,
   FileCheck2,
-  PackageOpen,
   Sprout,
   ThumbsDown,
   ThumbsUp,
@@ -50,14 +48,8 @@ import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import { categoryLabels, type Product, type ProductCategory } from "@/data/products";
 import { useLotteryExperience } from "@/hooks/useLotteryExperience";
-import { KQ_CARDS } from "@/lib/kanab-quest-game";
 import { ArenaCustomerRewardPot, type ArenaCustomerRewardPool } from "./ArenaCustomerRewards";
-import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import { getKqReputationProgress } from "@/lib/kanab-quest-reputation";
-import {
-  findKqProducerRewardForEntry,
-  type KqProducerRewardProgress,
-} from "@/lib/kanab-quest-producer-rewards";
 import {
   CONTEST_AROMA_TAG_LABELS,
   CONTEST_CONSUMPTION_METHOD_LABELS,
@@ -843,187 +835,9 @@ function getUnlockedContestBadgeCount(badges: PublicContestProfileBadge[]) {
   ).length;
 }
 
-function ContestBotteCollection({
-  isAuthenticated,
-  entryId,
-}: {
-  isAuthenticated: boolean;
-  entryId: string;
-  entryTitle: string;
-  entryTrack: ContestEntryTrack;
-  reviewApproved: boolean;
-}) {
-  const [snapshot, setSnapshot] = useState<{
-    collection?: { cards?: Array<{ code: string; ownedCopies: number }> };
-    heritage?: { cards?: Array<{ code: string; ownedCopies: number }>; fragmentBalance?: number } | null;
-  } | null>(null);
-  const [shop, setShop] = useState<{
-    availableEntitlements: Array<{ id: string; source: string; cardCount: number; createdAt: string }>;
-  } | null>(null);
-  const [campaigns, setCampaigns] = useState<KqProducerRewardProgress[]>([]);
-  const [openedCards, setOpenedCards] = useState<Array<{
-    code: string;
-    name: string;
-    rarity: string;
-    imageUrl?: string;
-  }>>([]);
-  const [loading, setLoading] = useState(isAuthenticated);
-  const [opening, setOpening] = useState(false);
-  const [notice, setNotice] = useState("");
-
-  const refreshCollection = useCallback(async (signal?: AbortSignal) => {
-    const [bootstrapResponse, boostersResponse] = await Promise.all([
-      fetch("/api/arena/placard/bootstrap", { cache: "no-store", signal }),
-      fetch("/api/arena/placard/boosters", { cache: "no-store", signal }),
-    ]);
-    if (!bootstrapResponse.ok) throw new Error("Collection indisponible");
-    if (!boostersResponse.ok) throw new Error("Coffre indisponible");
-    const [nextSnapshot, nextShop] = await Promise.all([
-      bootstrapResponse.json(),
-      boostersResponse.json(),
-    ]);
-    setSnapshot(nextSnapshot);
-    setShop(nextShop);
-  }, []);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setLoading(false);
-      return;
-    }
-    const controller = new AbortController();
-    void refreshCollection(controller.signal)
-      .catch((error: unknown) => {
-        if (!(error instanceof DOMException && error.name === "AbortError")) {
-          setSnapshot(null);
-          setShop(null);
-          setNotice("Le coffre est momentanément indisponible.");
-        }
-      })
-      .finally(() => setLoading(false));
-    return () => controller.abort();
-  }, [isAuthenticated, refreshCollection]);
-
-  const supportCopies = new Map((snapshot?.collection?.cards ?? []).map((card) => [card.code, Number(card.ownedCopies)]));
-  const supportOwned = KQ_CARDS.filter((card) => (supportCopies.get(card.code) ?? 0) > 0).length;
-  const selectedCampaign = findKqProducerRewardForEntry(campaigns, entryId);
-  const selectedFlower = selectedCampaign?.entries.find((entry) => entry.entryId === entryId || entry.entryIds.includes(entryId)) ?? null;
-  const availableTenCardPacks = (shop?.availableEntitlements ?? []).filter((item) => item.cardCount === 10);
-  const selectedFlowerEntitlementId = selectedFlower?.packReward.availableEntitlementIds[0];
-  const nextEntitlement = availableTenCardPacks.find((item) => item.id === selectedFlowerEntitlementId)
-    ?? availableTenCardPacks[0]
-    ?? null;
-
-  const openNextPack = async () => {
-    if (!nextEntitlement || opening) return;
-    setOpening(true);
-    setNotice("");
-    try {
-      const response = await fetch("/api/arena/placard/boosters", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ entitlementId: nextEntitlement.id }),
-      });
-      const payload = await response.json() as {
-        cards?: Array<{ code: string; name: string; rarity: string; imageUrl?: string }>;
-        error?: string;
-      };
-      if (!response.ok) throw new Error(payload.error || "Ouverture impossible.");
-      setOpenedCards(payload.cards ?? []);
-      await refreshCollection();
-      window.dispatchEvent(new Event("kq:boosters-updated"));
-      window.dispatchEvent(new Event("kq:collection-updated"));
-      window.dispatchEvent(new Event("kq:producer-rewards-changed"));
-      setNotice(`${payload.cards?.length ?? 10} cartes La Botte ont rejoint ton inventaire.`);
-    } catch (error) {
-      setNotice(error instanceof Error ? error.message : "Ouverture impossible.");
-    } finally {
-      setOpening(false);
-    }
-  };
-
-  if (!isAuthenticated) return <div className="rounded border-2 border-ink bg-white p-5 text-sm font-bold">Connecte-toi pour voir tes cartes La Botte et tes Héritages.</div>;
-  if (loading) return <div className="rounded border-2 border-ink bg-white p-5 text-sm font-bold">Chargement de La Botte…</div>;
-
-  const renderCard = (card: { code: string; name: string; description: string }, copies: number) => {
-    const artwork = getKqCardArtwork(card.code);
-    return <article key={card.code} className={`w-40 shrink-0 rounded border-2 border-ink p-2 shadow-[3px_3px_0_#1a1a1a] ${copies > 0 ? "bg-white" : "bg-[#dedbd2] opacity-75"}`}>
-      {artwork ? <div className={`relative aspect-[2/3] overflow-hidden border border-ink ${copies > 0 ? "" : "grayscale"}`}><Image src={artwork} alt={`Carte ${card.name}`} fill sizes="160px" className="object-cover" /></div> : null}
-      <span className="mt-2 block text-[9px] font-black uppercase tracking-wider text-green">La Botte · consommable</span>
-      <strong className="mt-1 block text-sm leading-tight">{card.name}</strong>
-      <small className="mt-1 block text-[10px] leading-snug text-charcoal">{card.description}</small>
-      <b className="mt-2 block text-xs">{copies > 0 ? `Possédée ×${copies}` : "À découvrir"}</b>
-    </article>;
-  };
-
-  return <div className="grid min-w-0 gap-5">
-    <ProducerRewardJourney
-      isAuthenticated={isAuthenticated}
-      entryId={entryId}
-      embedded
-      onCampaignsChange={setCampaigns}
-    />
-
-    <section className="min-w-0 overflow-hidden rounded border-2 border-ink bg-white p-4 shadow-[4px_4px_0_#17130e]" aria-labelledby="contest-botte-chest-title">
-      <div className="flex items-start gap-3">
-        <PackageOpen size={30} className="shrink-0 text-green" aria-hidden="true" />
-        <div className="min-w-0">
-          <h3 id="contest-botte-chest-title" className="break-words font-display text-2xl uppercase leading-none text-ink">Mes packs La Botte</h3>
-          <p className="mt-2 text-xs font-semibold leading-relaxed text-charcoal">Retrouve ici tes packs disponibles. Chaque pack ci-dessous contient 10 cartes pour le Placard.</p>
-        </div>
-      </div>
-
-      <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-xs font-black text-ink">{availableTenCardPacks.length} pack{availableTenCardPacks.length > 1 ? "s" : ""} de 10 cartes disponible{availableTenCardPacks.length > 1 ? "s" : ""}</p>
-        <button type="button" disabled={!nextEntitlement || opening} onClick={() => void openNextPack()} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded border-2 border-ink bg-yellow px-4 text-xs font-black uppercase shadow-[3px_3px_0_#17130e] disabled:cursor-not-allowed disabled:bg-white disabled:opacity-55 sm:w-auto">
-          <PackageOpen size={20} aria-hidden="true" />
-          {opening ? "Ouverture…" : nextEntitlement ? "Ouvrir un pack" : "Aucun pack à ouvrir"}
-        </button>
-      </div>
-      {notice ? <p className="mt-3 text-xs font-bold text-ink" role="status">{notice}</p> : null}
-
-      {openedCards.length > 0 ? (
-        <div className="mt-5 border-t-2 border-dashed border-ink pt-4" aria-live="polite">
-          <div className="flex items-center justify-between gap-3">
-            <div><p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Pack ouvert</p><h4 className="font-display text-xl uppercase">Tes 10 nouvelles cartes</h4></div>
-            <button type="button" onClick={() => setOpenedCards([])} className="grid h-11 w-11 shrink-0 place-items-center rounded border-2 border-ink bg-white" aria-label="Fermer les cartes révélées"><X size={20} /></button>
-          </div>
-          <div className="mt-3 overflow-x-auto pb-3">
-            <div className="grid w-max grid-flow-col auto-cols-[9rem] gap-3 md:w-full md:grid-flow-row md:grid-cols-5">
-              {openedCards.map((card, index) => {
-                const artwork = getKqCardArtwork(card.code) ?? card.imageUrl;
-                return <article key={`${card.code}-${index}`} className="min-w-0 rounded border-2 border-ink bg-white p-2 shadow-[2px_2px_0_#17130e]">
-                  {artwork ? <div className="relative aspect-[2/3] overflow-hidden rounded border border-ink"><Image src={artwork} alt={`Carte ${card.name}`} fill sizes="(max-width: 767px) 144px, 180px" className="object-contain" /></div> : null}
-                  <small className="mt-2 block truncate text-[9px] font-black uppercase text-green">{card.rarity}</small>
-                  <strong className="mt-0.5 block text-xs leading-tight">{card.name}</strong>
-                </article>;
-              })}
-            </div>
-          </div>
-        </div>
-      ) : null}
-    </section>
-
-    <section className="rounded border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#17130e]">
-      <div className="flex items-center justify-between gap-3">
-        <div><p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Cartes possédées</p><h3 className="font-display text-xl uppercase">Inventaire La Botte</h3></div>
-        <b className="text-lg">{supportOwned}/{KQ_CARDS.length}</b>
-      </div>
-      <p className="mt-1 text-xs font-semibold text-charcoal">Consulte ici toutes les cartes déjà révélées et le nombre d’exemplaires possédés.</p>
-      <details className="mt-3 border-t-2 border-dashed border-ink pt-3">
-        <summary className="flex min-h-11 cursor-pointer items-center justify-center border-2 border-ink bg-yellow px-4 text-xs font-black uppercase shadow-[2px_2px_0_#17130e]">Voir l&apos;inventaire</summary>
-        <div className="mt-3 flex gap-3 overflow-x-auto pb-3">{KQ_CARDS.map((card) => renderCard(card, supportCopies.get(card.code) ?? 0))}</div>
-      </details>
-    </section>
-  </div>;
-}
-
 export function ContestNotebookCollectionTab({
   isAuthenticated,
   entryId,
-  entryTitle,
-  entryTrack,
-  reviewApproved,
 }: {
   isAuthenticated: boolean;
   badges: PublicContestProfileBadge[];
@@ -1034,20 +848,10 @@ export function ContestNotebookCollectionTab({
 }) {
   return (
     <div className="contest-notebook-collection-tab">
-      <div className="contest-lab-sheet-header">
-        <div className="min-w-0">
-          <p className="text-[10px] font-black uppercase tracking-[0.14em] text-charcoal">
-            Carnet de dégustation
-          </p>
-          <h2 className="mt-1 text-xl font-black leading-tight text-ink">Tes récompenses de dégustation</h2>
-        </div>
-      </div>
-      <ContestBotteCollection
+      <ProducerRewardJourney
         isAuthenticated={isAuthenticated}
         entryId={entryId}
-        entryTitle={entryTitle}
-        entryTrack={entryTrack}
-        reviewApproved={reviewApproved}
+        embedded
       />
 
     </div>

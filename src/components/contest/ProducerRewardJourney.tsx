@@ -3,9 +3,10 @@
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import { useEffect, useId, useState } from "react";
-import { Check, Dices, Gift, LockKeyhole, ShoppingBag } from "lucide-react";
-import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
+import { Check, Dices, Gift, Leaf, LockKeyhole, ShoppingBag } from "lucide-react";
+import producerHeritageCards from "@/data/producer-heritage-cards.json";
 import { findKqProducerRewardForEntry, getKqProducerCompletionCashCents, type KqProducerRewardProgress } from "@/lib/kanab-quest-producer-rewards";
+import styles from "./ProducerRewardJourney.module.css";
 
 async function fetchProducerRewardCampaigns(signal?: AbortSignal) {
   const response = await fetch("/api/contest/producer-rewards", { cache: "no-store", signal });
@@ -17,6 +18,55 @@ async function fetchProducerRewardCampaigns(signal?: AbortSignal) {
 const formatGameEuros = (cents: number) => new Intl.NumberFormat("fr-FR", {
   style: "currency", currency: "EUR", maximumFractionDigits: 0,
 }).format(cents / 100);
+
+function ProducerHeritageReward({ campaign }: { campaign: KqProducerRewardProgress }) {
+  const titleId = useId();
+  const [failedSources, setFailedSources] = useState<string[]>([]);
+  const definition = producerHeritageCards.cards.find((card) => card.code === campaign.heritageCode);
+  const artwork = [campaign.heritageImage.trim(), definition?.frontUrl]
+    .find((source) => source && !failedSources.includes(source));
+
+  return <section className={styles.heritage} data-heritage-reward data-unlocked={campaign.heritageGranted} aria-labelledby={titleId}>
+    <header className={styles.heritageHeader}>
+      <h3 id={titleId}>Carte Héritage</h3>
+      <span className={styles.heritageStatus}>
+        {campaign.heritageGranted ? <Check size={15} aria-hidden="true" /> : <LockKeyhole size={15} aria-hidden="true" />}
+        {campaign.heritageGranted ? "Débloquée" : "À gagner"}
+      </span>
+    </header>
+    <div className={styles.heritageBody}>
+      <div className={styles.heritageArtwork}>
+        {artwork ? <Image
+          src={artwork}
+          alt={`Carte Héritage ${campaign.heritageName} de ${campaign.producerName}`}
+          width={240}
+          height={360}
+          sizes="220px"
+          loading="eager"
+          className={styles.heritageImage}
+          onError={() => setFailedSources((sources) => [...sources, artwork])}
+        /> : <div className={styles.heritagePlaceholder} role="img" aria-label={`Carte Héritage ${campaign.heritageName}`}>
+          <Leaf size={48} aria-hidden="true" />
+          <strong>{campaign.heritageName}</strong>
+          <span>{campaign.producerName}</span>
+        </div>}
+      </div>
+      <div className={styles.heritageCopy}>
+        <h4>{campaign.heritageName}</h4>
+        <div className={styles.heritageEffect}>
+          <p>Ton avantage dans le jeu</p>
+          <strong>{campaign.heritageDescription}</strong>
+        </div>
+        <p className={styles.heritageCondition}>{campaign.heritageGranted
+          ? "Cette carte permanente est à toi. Retrouve-la dans le Placard pour profiter de son avantage."
+          : campaign.heritageEligible
+            ? "Ton avis est validé. La carte passera en couleur dès que son attribution sera confirmée."
+            : `Goûte une fleur éligible de ${campaign.producerName}, puis fais valider ton avis pour gagner cette carte.`}</p>
+        {campaign.heritageGranted ? <Link href="/arene/placard" className={styles.heritageLink}>Retrouver ma carte dans le Placard</Link> : <p className={styles.heritageHint}>Une seule fleur suffit pour l’Héritage.</p>}
+      </div>
+    </div>
+  </section>;
+}
 
 export function ProducerRewardJourney({
   isAuthenticated, embedded = false, entryId, onCampaignsChange,
@@ -98,11 +148,12 @@ export function ProducerRewardJourney({
     <header>
       <p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Les découvertes du producteur</p>
       <h2 id={titleId} className="mt-1 break-words font-display text-3xl uppercase leading-tight text-ink">{campaign?.producerName ?? "Ton parcours de dégustation"}</h2>
-      <p className="mt-2 text-sm leading-relaxed text-charcoal">Regular ou Concours, chaque fleur compte dans le même parcours.</p>
+      {!embedded ? <p className="mt-2 text-sm leading-relaxed text-charcoal">Regular ou Concours, chaque fleur compte dans le même parcours.</p> : null}
     </header>
     {!entryId && campaigns.length > 1 ? <label className="mt-3 block text-xs font-bold">Choisir un producteur<select value={campaign?.producerId ?? ""} onChange={(event) => { setSelectedProducerId(event.target.value); setNotice(""); }} className="mt-1 min-h-11 w-full rounded border-2 border-ink bg-white px-3">{campaigns.map((item) => <option key={item.producerId} value={item.producerId}>{item.producerName}</option>)}</select></label> : null}
     {!loaded ? <p role="status" className="mt-4 text-sm">Chargement de tes dégustations…</p> : null}
     {campaign ? <div className="mt-4 grid min-w-0 gap-4">
+      {campaign.heritageCode ? <ProducerHeritageReward key={`${campaign.producerId}:${campaign.heritageCode}:${campaign.heritageImage}`} campaign={campaign} /> : null}
       <div className="rounded border-2 border-ink bg-white p-3">
         <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-black"><span>{campaign.reviewedCount} / {campaign.requiredCount} fleurs dégustées</span><span className="text-green">{formatGameEuros(campaign.completionReward.cashCents) + (campaign.completionReward.granted ? " reçus dans le jeu" : " dans le jeu")}</span></div>
         <progress className="mt-3 block h-3 w-full accent-green" value={campaign.reviewedCount} max={Math.max(1, campaign.requiredCount)} aria-label="Fleurs dégustées avec un avis validé" />
@@ -130,13 +181,6 @@ export function ProducerRewardJourney({
         </>}
       </div>
 
-      {campaign.heritageCode ? <details className="rounded border-2 border-ink bg-white p-3">
-        <summary className="cursor-pointer text-sm font-black">Carte Héritage · {campaign.heritageGranted ? "Débloquée" : "Au premier avis éligible validé"}</summary>
-        <div className="mt-3 flex flex-wrap items-start gap-3">
-          {campaign.heritageImage || getKqCardArtwork(campaign.heritageCode) ? <Image src={campaign.heritageImage || getKqCardArtwork(campaign.heritageCode)!} alt={"Carte Héritage " + campaign.heritageName} width={120} height={180} sizes="120px" className={"h-auto w-28 rounded " + (campaign.heritageGranted ? "" : "grayscale")} /> : null}
-          <div className="min-w-0 flex-1 basis-36"><strong className="block text-sm">{campaign.heritageName}</strong><p className="mt-1 text-xs leading-relaxed">{campaign.heritageDescription}</p><p className="mt-2 text-xs font-semibold">{campaign.heritageGranted ? "Disponible dans ton album et utilisable dans le Placard." : "Un premier avis validé sur une fleur éligible du producteur débloque cette carte."}</p></div>
-        </div>
-      </details> : null}
     </div> : null}
     {notice ? <p role="status" className="mt-3 text-sm font-bold text-green">{notice}</p> : null}
     {error ? <p role="alert" className="mt-3 text-sm font-bold text-red-800">{error}</p> : null}

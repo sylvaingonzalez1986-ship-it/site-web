@@ -65,11 +65,18 @@ const modules = {
 const submissions = [];
 let rewardFixture = { completed: false, purchasedAll: false, completionGranted: false, purchaseGranted: false, rarity: 'silver', failAction: null };
 const rewardRequests = [];
+const collectionApiRequests = [];
+const heritageFixture = {
+  code:'HERITAGE-019',name:'Floraison généreuse',
+  description:'En Floraison, ajoute +3 au dé le plus faible, sans dépasser 6.',
+  imageUrl:'/app/kanab-quest/card-fronts/heritage-019-iznofarm-front-v2.webp',
+};
 const rewardProducts = () => Array.from({length:rewardFixture.flowerCount ?? 2},(_,index)=>`product-${index}`);
 const producerCampaign = () => buildKqProducerRewardProgress({
-  campaignId: 'campaign-preview', producerId: 'producer', producerName: 'Le jardin de Sylvain',
-  heritageCode: '', heritageName: '', heritageDescription: '', heritageGranted: false,
-  approvedProductIds: rewardFixture.completed ? rewardProducts() : [],
+  campaignId: 'campaign-preview', producerId: 'producer', producerName: 'Iznofarm',
+  heritageCode: heritageFixture.code, heritageName: heritageFixture.name, heritageDescription: heritageFixture.description,
+  heritageImage: heritageFixture.imageUrl, heritageGranted: rewardFixture.heritageGranted === true,
+  approvedProductIds: rewardFixture.completed ? rewardProducts() : rewardProducts().slice(0,rewardFixture.approvedCount ?? 0),
   purchasedProductIds: rewardFixture.purchasedAll ? rewardProducts() : ['product-0'],
   completionGranted: rewardFixture.completionGranted,
   completionCashCents: rewardFixture.completionCashCents,
@@ -96,10 +103,8 @@ const server = await createServer({
         }
         if (request.url?.startsWith('/api/')) {
           response.setHeader('Content-Type','application/json');
-          if (request.url === '/api/arena/placard/boosters' && request.method === 'GET') {
-            response.end(JSON.stringify({availableEntitlements:rewardFixture.legacyPackAvailable ? [{
-              id:'legacy-notebook-pack',source:'notebook-review',cardCount:10,createdAt:'2026-09-10',
-            }] : []})); return;
+          if (['/api/arena/placard/bootstrap','/api/arena/placard/boosters'].includes(request.url.split('?')[0])) {
+            collectionApiRequests.push({method:request.method,url:request.url});
           }
           if (request.url === '/api/contest/producer-rewards' && request.method === 'GET') {
             response.end(JSON.stringify({campaigns:[producerCampaign()]})); return;
@@ -400,6 +405,7 @@ try {
   }
   }
   if (!notesOnly) {
+    collectionApiRequests.length = 0;
     const removedMissionCopy = ['Missions de dégustation','Deux défis, deux packs','Critique élaborée','Les bons terpènes et goûts'];
     const openRewards = async (entryId) => {
       await page.goto('http://127.0.0.1:3197/',{waitUntil:'networkidle0'});
@@ -410,6 +416,11 @@ try {
       const rewardText = await page.$eval('.contest-notebook-collection-tab',element=>element.textContent);
       for (const text of removedMissionCopy) assert(!rewardText.includes(text),`Removed tasting mission still displayed: ${text}`);
       assert.equal(await page.$$eval('[aria-label="Missions de dégustation"]',elements=>elements.length),0);
+      for (const text of ['Mes packs La Botte','Inventaire La Botte','Voir l’inventaire','Ouvrir un pack']) {
+        assert(!rewardText.includes(text),`Removed collection control still displayed: ${text}`);
+      }
+      assert.equal(await page.$$eval('#contest-botte-chest-title',elements=>elements.length),0);
+      assert.deepEqual(collectionApiRequests,[],'Notebook rewards must not request the Placard bootstrap or boosters API');
     };
     const claimButton = async (label) => {
       await page.evaluate((text) => {
@@ -423,10 +434,52 @@ try {
       await page.waitForFunction(text => [...document.querySelectorAll('.contest-notebook-collection-tab span')]
         .some(element=>element.textContent.replace(/\s+/g,' ').trim()===text), {}, expected);
     };
+    const assertHeritage = async (granted) => {
+      await page.waitForFunction(()=>{
+        const image = document.querySelector('[data-heritage-reward] img');
+        return image?.complete && image.naturalWidth > 0;
+      });
+      const state = await page.$eval('[data-heritage-reward]',section=>{
+        const image = section.querySelector('img');
+        const progress = document.querySelector('progress[aria-label="Fleurs dégustées avec un avis validé"]');
+        const imageRect = image.getBoundingClientRect();
+        const scrollRect = document.querySelector('[data-book-scroll]').getBoundingClientRect();
+        return {
+          unlocked:section.dataset.unlocked,
+          insideDetails:!!section.closest('details') || !!section.querySelector('details,summary'),
+          firstReward:section.parentElement.firstElementChild === section,
+          beforeCompletion:!!(section.compareDocumentPosition(progress) & Node.DOCUMENT_POSITION_FOLLOWING),
+          imageSource:image.getAttribute('src'),filter:getComputedStyle(image).filter,
+          imageWidth:imageRect.width,imageTop:imageRect.top,imageBottom:imageRect.bottom,
+          imageFullyVisible:imageRect.top >= scrollRect.top-1 && imageRect.bottom <= scrollRect.bottom+1,
+          statusText:section.querySelector('header span')?.textContent.trim(),
+          statusHasIcon:!!section.querySelector('header span svg'),
+          text:section.textContent,
+        };
+      });
+      assert.equal(state.unlocked,String(granted));
+      assert.equal(state.insideDetails,false);
+      assert.equal(state.firstReward,true);
+      assert.equal(state.beforeCompletion,true);
+      assert.equal(state.imageSource,heritageFixture.imageUrl);
+      assert(state.imageWidth >= 140 && state.imageWidth <= 241,`Heritage card must remain legible: ${state.imageWidth}px`);
+      const grayscale = state.filter.match(/grayscale\(([^)]+)\)/);
+      if (granted) assert(!grayscale || Number.parseFloat(grayscale[1]) === 0,`Granted Heritage remains grey: ${state.filter}`);
+      else assert.match(state.filter,/grayscale\((?:1|100%)\)/);
+      assert.equal(state.statusText,granted ? 'Débloquée' : 'À gagner');
+      assert.equal(state.statusHasIcon,true);
+      assert(state.text.includes(heritageFixture.name));
+      assert(state.text.includes(heritageFixture.description));
+      return state;
+    };
+    const shotCompletion = async (name) => {
+      await page.$eval('progress[aria-label="Fleurs dégustées avec un avis validé"]',element=>element.parentElement.scrollIntoView({block:'center'}));
+      await shot(name);
+    };
     for (const width of [320,390]) {
       const flowerCount = width===320 ? 2 : 3;
       const completionEuros = flowerCount * 100;
-      rewardFixture = { flowerCount, completed: false, purchasedAll: false, completionGranted: false, purchaseGranted: false, legacyPackAvailable:true, rarity: width===320 ? 'silver' : 'gold', failAction: null };
+      rewardFixture = { flowerCount, completed: false, purchasedAll: false, completionGranted: false, purchaseGranted: false, rarity: width===320 ? 'silver' : 'gold', failAction: null };
       rewardRequests.length = 0;
       await page.setViewport({width,height:844,isMobile:true,hasTouch:true});
       const entryId = width===320 ? 'regular-outdoor-0' : 'concours-outdoor-0';
@@ -435,12 +488,13 @@ try {
       assert.equal(await page.$eval('progress',progress=>progress.value),0);
       assert.equal(await page.$eval('progress',progress=>progress.max),flowerCount);
       assert.equal(await page.$$eval('ul[aria-label="Fleurs du producteur"] > li',flowers=>flowers.length),flowerCount);
+      await assertHeritage(false);
       await assertCompletionAmount(completionEuros,false);
       assert(await page.$eval('.contest-notebook-collection-tab',element=>element.textContent.includes('100 € de monnaie de jeu par fleur, versés ensemble à la fin du parcours')));
       const partialLayout = await checkLayout(); assert.equal(partialLayout.overflow,false); assert.deepEqual(partialLayout.outside,[]);
       await shot(`producer-rewards-partial-${width}`);
 
-      rewardFixture.completed = true; rewardFixture.failAction = 'completion';
+      rewardFixture.completed = true; rewardFixture.heritageGranted = true; rewardFixture.failAction = 'completion';
       await openRewards(entryId); await claimButton('Récupérer mon bonus');
       await page.waitForFunction(()=>document.body.textContent.includes('ta progression est conservée'));
       assert.equal(rewardFixture.completionGranted,false);
@@ -453,7 +507,8 @@ try {
       await openRewards(entryId);
       assert.equal(await page.$$eval('.contest-notebook-collection-tab button',buttons=>buttons.filter(button=>button.textContent.includes('Récupérer mon bonus')).length),0);
       await assertCompletionAmount(completionEuros,true);
-      await shot(`producer-rewards-completion-${flowerCount}-flowers-${width}`);
+      await assertHeritage(true);
+      await shotCompletion(`producer-rewards-completion-${flowerCount}-flowers-${width}`);
 
       rewardFixture.purchasedAll = true; rewardFixture.failAction = 'purchase-buddie';
       await openRewards(entryId); await claimButton('Tirer mon Buddie');
@@ -473,12 +528,8 @@ try {
       await shot(`producer-rewards-claimed-${width}`);
       await page.$eval('[data-book-scroll]',element=>{element.scrollTop=element.scrollHeight;});
       await shot(`producer-rewards-buddie-${width}`);
-      const legacyChest = 'section[aria-labelledby="contest-botte-chest-title"]';
-      assert(await page.$eval(legacyChest,element=>element.textContent.includes('Mes packs La Botte') && element.textContent.includes('1 pack de 10 cartes disponible')));
-      assert.deepEqual(await page.$$eval(`${legacyChest} button`,buttons=>buttons.map(button=>({text:button.textContent.trim(),disabled:button.disabled}))),[{text:'Ouvrir un pack',disabled:false}]);
-      await page.$eval(legacyChest,element=>element.scrollIntoView({block:'center'}));
-      await shot(`producer-rewards-legacy-chest-${width}`);
-      rewardResults.push({width,entryId,flowerCount,completionEuros,distinctProductsDeduplicated:true,partialLayout,claimedLayout,completionClaimed:true,completionAmountPersistsOnReload:true,purchaseClaimed:true,rarity:rewardFixture.rarity,errorRetryPreservesProgress:true,claimsPersistOnReload:true,noRedraw:true,tastingMissionsAbsent:true,legacyPackChestPreserved:true,legacyPackOpeningButtonEnabled:true});
+      assert.deepEqual(collectionApiRequests,[]);
+      rewardResults.push({width,entryId,flowerCount,completionEuros,distinctProductsDeduplicated:true,partialLayout,claimedLayout,completionClaimed:true,completionAmountPersistsOnReload:true,purchaseClaimed:true,rarity:rewardFixture.rarity,errorRetryPreservesProgress:true,claimsPersistOnReload:true,noRedraw:true,tastingMissionsAbsent:true,chestAndInventoryAbsent:true,noCollectionApiRequests:true});
     }
     // A historical receipt keeps its actual credited amount if the current catalogue changes.
     rewardFixture = { flowerCount:3, completed:true, purchasedAll:false, completionGranted:true, completionCashCents:20_000, purchaseGranted:false, rarity:'gold', failAction:null };
@@ -490,7 +541,7 @@ try {
     await openRewards('concours-outdoor-0');
     await assertCompletionAmount(200,true);
     assert.deepEqual(rewardRequests,[]);
-    await shot('producer-rewards-historical-receipt-390');
+    await shotCompletion('producer-rewards-historical-receipt-390');
     rewardResults.push({width:390,flowerCount:3,historicalReceiptEuros:200,historicalAmountPersistsOnReload:true,noCompletionReclaim:true});
     rewardFixture = { completed: true, purchasedAll: true, completionGranted: true, purchaseGranted: false, rarity: 'gold', failAction: null };
     rewardRequests.length = 0;
@@ -508,9 +559,36 @@ try {
     await page.$eval('[data-book-scroll]',element=>{element.scrollTop=element.scrollHeight;});
     await shot('producer-rewards-already-granted-390');
     rewardResults.push({width:390,staleTabAlreadyGranted:true,missingCardKeepsGrantedState:true,noRedraw:true});
+
+    for (const width of [320,390,1440]) {
+      await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});
+      rewardRequests.length = 0;
+      for (const fixture of [
+        {name:'before-review',approvedCount:0,heritageGranted:false},
+        {name:'eligible-awaiting-grant',approvedCount:1,heritageGranted:false},
+        {name:'first-review-granted',approvedCount:1,heritageGranted:true},
+        {name:'historical-grant',approvedCount:0,heritageGranted:true},
+      ]) {
+        rewardFixture = { flowerCount:3,completed:false,purchasedAll:false,completionGranted:false,purchaseGranted:false,rarity:'silver',failAction:null,...fixture };
+        await openRewards('regular-outdoor-0');
+        const heritage = await assertHeritage(fixture.heritageGranted);
+        if (width<700) assert(heritage.imageFullyVisible,`The full Heritage card must be visible without scrolling at ${width}px (${heritage.imageTop}–${heritage.imageBottom})`);
+        assert.equal(await page.$eval('progress',element=>element.value),fixture.approvedCount);
+        assert.equal(await page.$eval('progress',element=>element.max),3);
+        assert.equal(producerCampaign().heritageEligible,fixture.approvedCount>0);
+        assert.equal(await page.$$eval('.contest-notebook-collection-tab button',buttons=>buttons.filter(button=>button.textContent.includes('Récupérer mon bonus')).length),0);
+        await assertCompletionAmount(300,false);
+        if (fixture.name === 'eligible-awaiting-grant') assert(heritage.text.includes('La carte passera en couleur dès que son attribution sera confirmée.'));
+        const layout = await checkLayout(); assert.equal(layout.overflow,false); assert.deepEqual(layout.outside,[]);
+        await shot(`producer-rewards-heritage-${fixture.name}-${width}`);
+        rewardResults.push({width,heritageState:fixture.name,reviewedCount:fixture.approvedCount,requiredCount:3,unlocked:fixture.heritageGranted,imageWidth:heritage.imageWidth,imageTop:heritage.imageTop,imageBottom:heritage.imageBottom,imageFullyVisibleAtOpen:heritage.imageFullyVisible,filter:heritage.filter,heritageFirst:true,heritageAlwaysOpen:true,statusText:heritage.statusText,statusIcon:true,completionStillPending:true,layout});
+      }
+      assert.deepEqual(rewardRequests,[],'Opening the Heritage reward must never claim a reward');
+    }
+    assert.deepEqual(collectionApiRequests,[],'Notebook rewards must not call collection APIs, including after claims');
   }
   assert.deepEqual(errors,[]);
   const notesChecks={errors,notesStayInBook:true,notesStatuses:['approved','pending','rejected'],playerAndCommunityScores:true,missingAverage:true,crossTrackReviewsPreserved:true};
-  await writeFile(resolve(reportDir,rewardsOnly?'rewards-report.json':notesOnly?'notes-report.json':'report.json'),JSON.stringify(rewardsOnly?{errors,rewardResults}:notesOnly?notesChecks:{results,...notesChecks,chapters:6,tracksSeparated:true,chapterBoundaries:true,flowerBoundaries:true,crossTrackDraftsPreserved:true,concoursSubmission:true,initialTrackRespected:true,imageResults,empty:true,locked:true,reducedMotion:true,swipe:true,keyboardBack:true,rewards:true,rewardResults,siteChromeHidden:true},null,2));
-  console.log(JSON.stringify({passed:true,notesOnly,rewardsOnly,widths:rewardsOnly?[320,390]:notesOnly?[320,390,1440]:results.map(x=>x.width),screenshots:reportDir}));
+  await writeFile(resolve(reportDir,rewardsOnly?'rewards-report.json':notesOnly?'notes-report.json':'report.json'),JSON.stringify(rewardsOnly?{errors,rewardResults,collectionApiRequests}:notesOnly?notesChecks:{results,...notesChecks,chapters:6,tracksSeparated:true,chapterBoundaries:true,flowerBoundaries:true,crossTrackDraftsPreserved:true,concoursSubmission:true,initialTrackRespected:true,imageResults,empty:true,locked:true,reducedMotion:true,swipe:true,keyboardBack:true,rewards:true,rewardResults,collectionApiRequests,siteChromeHidden:true},null,2));
+  console.log(JSON.stringify({passed:true,notesOnly,rewardsOnly,widths:rewardsOnly?[320,390,1440]:notesOnly?[320,390,1440]:results.map(x=>x.width),screenshots:reportDir}));
 } finally { await browser?.close(); await server.close(); }

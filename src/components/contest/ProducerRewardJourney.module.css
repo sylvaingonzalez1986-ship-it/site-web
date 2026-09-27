@@ -1,0 +1,34 @@
+.heritage {
+  container-type: inline-size;
+  min-width: 0;
+  padding: 14px;
+  border: 2px solid #002d24;
+  border-radius: 6px;
+  background: #f4efe3;
+  color: #002d24;
+}
+
+.heritage[data-unlocked="true"] { background: #fff1bd; }
+.heritageHeader { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+.heritageHeader h3 { margin: 0; font: 900 25px/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.heritageStatus { display: inline-flex; align-items: center; gap: 5px; padding: 6px 9px; border: 1px solid currentColor; border-radius: 20px; background: #fffaf1; font-size: 11px; font-weight: 800; }
+.heritage[data-unlocked="true"] .heritageStatus { color: #fffaf1; background: #00563f; }
+.heritageBody { display: grid; gap: 20px; align-items: center; }
+.heritageArtwork { width: min(100%, 220px); margin-inline: auto; }
+.heritageImage { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: contain; border-radius: 10px; box-shadow: 0 5px 12px #002d2430; }
+.heritage[data-unlocked="false"] .heritageImage { filter: grayscale(1); opacity: .76; }
+.heritagePlaceholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; aspect-ratio: 2 / 3; padding: 20px; border: 2px dashed #486353; border-radius: 10px; background: #e6e3db; text-align: center; }
+.heritageCopy { min-width: 0; overflow-wrap: anywhere; }
+.heritageCopy h4 { margin: 0 0 12px; font: 900 27px/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.heritageEffect { padding: 12px; border-left: 4px solid #e2b332; background: #fffaf1; }
+.heritageEffect p { margin: 0 0 6px; color: #486353; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.heritageEffect strong { display: block; font-size: 14px; line-height: 1.55; }
+.heritageCondition { margin: 14px 0 0; font-size: 12px; line-height: 1.65; }
+.heritageHint { margin: 10px 0 0; font-size: 11px; font-weight: 800; }
+.heritageLink { display: flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 14px; padding: 10px; border: 2px solid #002d24; border-radius: 4px; background: #00563f; color: #fffaf1; font-size: 12px; font-weight: 800; text-align: center; text-decoration: none; }
+.heritageLink:hover { background: #003f30; }
+.heritageLink:focus-visible { outline: 3px solid #002d24; outline-offset: 3px; }
+
+@container (min-width: 440px) {
+  .heritageBody { grid-template-columns: minmax(0, 220px) minmax(0, 1fr); }
+}
