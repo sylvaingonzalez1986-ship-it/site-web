@@ -33,10 +33,27 @@ const modules = {
       stats:{approvedReviewCount:0,averageScore:0,criterionAverages:{},consumptionCounts:{}},
     }))));
     const params = new URLSearchParams(location.search);
+    if (params.has('images')) {
+      Object.assign(entries.find(e=>e.id==='regular-outdoor-0'), {
+        imageUrl:' /__book-images/missing-primary.jpg ',
+        product:{id:'product-0',image:' /product_flower.jpg?book-image=product '},
+        galleryUrls:['/product_flower.jpg?book-image=unused-gallery'],
+      });
+      Object.assign(entries.find(e=>e.id==='regular-outdoor-1'), {
+        imageUrl:'/__book-images/missing-entry-gallery.jpg',
+        product:{id:'product-1',image:'/__book-images/missing-product.jpg'},
+        galleryUrls:[' /product_flower.jpg?book-image=gallery ','/product_flower.jpg?book-image=gallery'],
+      });
+      Object.assign(entries.find(e=>e.id==='regular-greenhouse-0'), {
+        imageUrl:'/__book-images/missing-all-entry.jpg',
+        product:{id:'product-0',image:'/__book-images/missing-all-product.jpg'},
+        galleryUrls:[' /__book-images/missing-all-gallery.jpg ','/__book-images/missing-all-gallery.jpg'],
+      });
+    }
     const visible = params.has('empty') ? entries.filter(e => e.category!=='indoor') : entries;
     if (!params.has('noAverage')) for (const entry of entries) entry.stats = {approvedReviewCount:3, averageScore:74, criterionAverages:Object.fromEntries(CONTEST_SCORE_CRITERIA.map(c=>[c,74])), consumptionCounts:{}};
     const unlocks = entries.filter(e=>e.id.endsWith('-0')).map(e=>({entryId:e.id,unlockedAt:'2026-09-10',review:params.has('review') ? {
-      id:'review-'+e.id,entryId:e.id,seasonId:'season',pseudo:'Sylvain',consumptionMethod:'vaporizer',comment:'Mes notes enregistrées sur cette fleur.',status:params.get('review'),adminNote:'',qualityMark:'standard',createdAt:'2026-09-10',updatedAt:'2026-09-10',scores:CONTEST_SCORE_CRITERIA.map(criterion=>({criterion,score:92})),aromaTags:[],terpeneGuesses:[]
+      id:'review-'+e.id,entryId:e.id,seasonId:'season',pseudo:'Sylvain',consumptionMethod:'vaporizer',comment:'Mes notes enregistrées sur cette fleur.'+(params.has('reviewDistinct')?' '+e.id:''),status:params.get('review'),adminNote:'',qualityMark:'standard',createdAt:'2026-09-10',updatedAt:'2026-09-10',scores:CONTEST_SCORE_CRITERIA.map(criterion=>({criterion,score:92})),aromaTags:[],terpeneGuesses:[]
     } : undefined}));
     createRoot(document.getElementById('root')).render(React.createElement(ContestTastingBook,{entries:visible,unlocks:params.has('locked')?[]:unlocks,viewerProfile:{pseudo:'Sylvain',createdAt:'2026-09-10',updatedAt:'2026-09-10'},badges:[],isAuthenticated:true,seasonLabel:'Les dégustations de l’Arène · Saison 2026',initialTrack:params.get('initialTrack') || 'regular',initialCategory:params.get('category') || 'outdoor'}));
   `,
@@ -70,6 +87,11 @@ const server = await createServer({
     load(id) { if (id.startsWith("\0")) return modules[id.slice(1)]; },
     configureServer(vite) {
       vite.middlewares.use((request, response, next) => {
+        if (request.url?.startsWith('/__book-images/')) {
+          response.statusCode = 404;
+          response.setHeader('Content-Type', 'text/plain');
+          response.end('Missing flower image fixture'); return;
+        }
         if (request.url?.startsWith('/api/')) {
           response.setHeader('Content-Type','application/json');
           if (request.url === '/api/contest/producer-rewards' && request.method === 'GET') {
@@ -110,6 +132,7 @@ let browser;
 const errors = [];
 const results = [];
 const rewardResults = [];
+const imageResults = [];
 try {
   await mkdir(reportDir,{recursive:true}); await server.listen();
   browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, userDataDir: resolve(reportDir,'chrome-profile'), args:['--no-sandbox','--disable-gpu'] });
@@ -117,7 +140,20 @@ try {
   page.on('pageerror',error=>{errors.push(error.message);console.error(error.message);});
   await page.setRequestInterception(true);
   page.on('request',request=> { const url = new URL(request.url()); if(url.protocol==='data:' || (url.hostname==='127.0.0.1' && url.port==='3197')) void request.continue(); else void request.abort(); });
-  const click = async (label) => { await page.waitForSelector(`button[aria-label="${label}"]`,{visible:true}); await page.click(`button[aria-label="${label}"]`); };
+  const click = async (label) => {
+    const handle = await page.waitForFunction(text => [...document.querySelectorAll('button[aria-label]')]
+      .find(button=>button.getAttribute('aria-label')===text && button.getClientRects().length && !button.closest('[hidden]')), {}, label);
+    await handle.asElement().click(); await handle.dispose();
+  };
+  const trackLabels = { regular: 'Regular', concours: 'Concours' };
+  const categoryLabels = { outdoor: 'Outdoor', greenhouse: 'Greenhouse', indoor: 'Indoor' };
+  const chapters = ['regular','concours'].flatMap(track=>['outdoor','greenhouse','indoor'].map(category=>({track,category})));
+  const chapterLabel = (track, category, count=2) => `${trackLabels[track]} · ${categoryLabels[category]}, ${count} fleurs`;
+  const openChapter = (track, category, count=2) => click(chapterLabel(track,category,count));
+  const assertChapterEntries = async (track, category, count=2) => {
+    assert.deepEqual(await page.$$eval('[data-book-entry]',buttons=>buttons.map(button=>({id:button.dataset.bookEntry,track:button.dataset.track}))),
+      Array.from({length:count},(_,index)=>({id:`${track}-${category}-${index}`,track})));
+  };
   const shot = async name => { await new Promise(r=>setTimeout(r,300)); await page.screenshot({path:resolve(reportDir,`${name}.png`)}); };
   const checkLayout = async () => page.evaluate(()=> {
     const book = document.querySelector('[data-tasting-book]');
@@ -135,15 +171,23 @@ try {
     await new Promise(r=>setTimeout(r,750)); await shot(`contents-${width}`);
     assert.equal(await page.$eval('#site-footer',e=>getComputedStyle(e).visibility),'hidden');
     assert.equal(await page.locator('h2').map(e=>e.textContent).wait(),'Table des matières');
-    assert.equal(await page.$$eval('button[data-culture]',buttons=>buttons.length),3);
-    for (const category of ['Outdoor','Greenhouse','Indoor']) {
-      await click(`${category}, 4 fleurs`);
-      assert.deepEqual(await page.$$eval('[data-book-entry]',buttons=>buttons.map(button=>button.dataset.track)),['regular','regular','concours','concours']);
+    assert.deepEqual(await page.$$eval('button[data-culture]',buttons=>buttons.map(button=>({track:button.dataset.track,category:button.dataset.culture}))),chapters);
+    for (const {track,category} of chapters) {
+      await openChapter(track,category);
+      await assertChapterEntries(track,category);
       assert(await page.$$eval('[data-book-entry]',buttons=>buttons.every(button=>button.textContent.includes('Le jardin de Sylvain'))));
       await click('Table des matières');
     }
-    await click('Outdoor, 4 fleurs'); await shot(`flowers-${width}`);
+    await openChapter('regular','outdoor'); await shot(`flowers-${width}`);
     if (width === 390) {
+      assert.equal(await page.$eval('button[aria-label="Chapitre précédent"]',button=>button.disabled),true);
+      for (const {track,category} of chapters.slice(1)) {
+        await click('Chapitre suivant'); await assertChapterEntries(track,category);
+      }
+      assert.equal(await page.$eval('button[aria-label="Chapitre suivant"]',button=>button.disabled),true);
+      for (const {track,category} of chapters.slice(0,-1).reverse()) {
+        await click('Chapitre précédent'); await assertChapterEntries(track,category);
+      }
       await page.evaluate(() => {
         const target=document.querySelector('[data-book-scroll]');
         const start=new Touch({identifier:1,target,clientX:280,clientY:300});
@@ -156,26 +200,36 @@ try {
     }
     await page.click('[data-book-entry="regular-outdoor-0"]');
     if (width === 390) {
-      await click('Fleur suivante'); await click('Fleur suivante');
-      assert(await page.$eval('[data-tasting-book]',book=>book.textContent.includes('Outdoor · Concours')));
-      await click('Fleur précédente'); await click('Fleur précédente');
+      assert.equal(await page.$eval('button[aria-label="Fleur précédente"]',button=>button.disabled),true);
+      await click('Fleur suivante');
+      assert.equal(await page.$eval('h2',heading=>heading.textContent),'Fleur du soleil');
+      assert.equal(await page.$eval('button[aria-label="Fleur suivante"]',button=>button.disabled),true);
+      await click('Fleur précédente');
     }
     await shot(`flower-${width}`);
     await page.locator('::-p-text(Déguster cette fleur)').click();
-    await page.waitForSelector('[data-tasting-scroll]',{visible:true});
+    await page.waitForSelector('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll]',{visible:true});
     await shot(`tasting-start-${width}`);
     await click('Étape 2 : Aspect');
-    await page.$eval('input[type=range]',el=>{const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;setter.call(el,'83');el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));});
+    await page.$eval('[data-book-scroll] > div:not([hidden]) input[type=range]',el=>{const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;setter.call(el,'83');el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));});
     await shot(`tasting-score-${width}`);
     const layout=await checkLayout();assert.equal(layout.overflow,false);assert.deepEqual(layout.outside,[]);
-    const footer=await page.$eval('[data-tasting-scroll] + footer',e=>{const r=e.getBoundingClientRect();return {height:r.height,bottom:r.bottom};});
+    const footer=await page.$eval('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll] + footer',e=>{const r=e.getBoundingClientRect();return {height:r.height,bottom:r.bottom};});
     assert(footer.height>=44 && footer.bottom<=layout.height, 'Tasting controls must stay visible');
     await click('Étape 5 : Verdict');
-    await page.type('textarea','Mes impressions restent dans le carnet.');
-    await click('Table des matières'); await click('Outdoor, 4 fleurs');
+    await page.type('[data-book-scroll] > div:not([hidden]) textarea','Mes impressions restent dans le carnet.');
+    if (width === 390) {
+      await click('Table des matières'); await openChapter('concours','outdoor');
+      await page.click('[data-book-entry="concours-outdoor-0"]');
+      await page.locator('::-p-text(Déguster cette fleur)').click();
+      await page.waitForSelector('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll]',{visible:true});
+      await click('Étape 5 : Verdict');
+      await page.type('[data-book-scroll] > div:not([hidden]) textarea','Mes impressions Concours restent distinctes.');
+    }
+    await click('Table des matières'); await openChapter('regular','outdoor');
     await page.click('[data-book-entry="regular-outdoor-0"]');
     await page.locator('::-p-text(Déguster cette fleur)').click();
-    assert.equal(await page.$eval('textarea',e=>e.value),'Mes impressions restent dans le carnet.');
+    assert.equal(await page.$eval('[data-book-scroll] > div:not([hidden]) textarea',e=>e.value),'Mes impressions restent dans le carnet.');
     await page.locator('::-p-text(Envoyer mon avis)').click();
     await page.waitForFunction(()=>document.body.textContent.includes('Erreur de test'));
     assert.equal(submissions.at(-1).scores.appearance,83);
@@ -185,33 +239,42 @@ try {
       await page.keyboard.press('Escape');
       await page.waitForFunction(()=>document.querySelector('h2').textContent==='Douceur de Bretagne' && document.body.textContent.includes('La fiche botanique'));
       await page.locator('::-p-text(Déguster cette fleur)').click();
-      assert.equal(await page.$eval('textarea',e=>e.value),'Mes impressions restent dans le carnet.');
+      assert.equal(await page.$eval('[data-book-scroll] > div:not([hidden]) textarea',e=>e.value),'Mes impressions restent dans le carnet.');
+      await click('Table des matières'); await openChapter('concours','outdoor');
+      await page.click('[data-book-entry="concours-outdoor-0"]');
+      await page.locator('::-p-text(Déguster cette fleur)').click();
+      assert.equal(await page.$eval('[data-book-scroll] > div:not([hidden]) textarea',e=>e.value),'Mes impressions Concours restent distinctes.');
+      await click('Table des matières'); await openChapter('regular','outdoor');
+      await page.click('[data-book-entry="regular-outdoor-0"]');
+      await page.locator('::-p-text(Déguster cette fleur)').click();
       await page.setViewport({width:390,height:480,isMobile:true,hasTouch:true});
-      const small=await checkLayout(); const footerBottom=await page.$eval('[data-tasting-scroll] + footer',e=>e.getBoundingClientRect().bottom);
+      await page.waitForFunction(()=>innerHeight===480
+        && document.querySelector('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll] + footer')?.getBoundingClientRect().bottom<=480);
+      const small=await checkLayout(); const footerBottom=await page.$eval('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll] + footer',e=>e.getBoundingClientRect().bottom);
       assert(footerBottom<=480); assert.equal(small.overflow,false); await shot('keyboard-height-390');
     }
-    results.push({width,layout,footer,draftPreserved:true,submissionFailurePreservesDraft:true});
+    results.push({width,layout,footer,draftPreserved:true,submissionFailurePreservesDraft:true,chaptersSeparated:true,chapterFlowerCount:2});
   }
   await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});
   for (const initialTrack of ['regular','concours']) {
     await page.goto(`http://127.0.0.1:3197/?initialTrack=${initialTrack}&category=greenhouse`,{waitUntil:'networkidle0'});
     await click('Ouvrir mon carnet de dégustation');
-    await click('Explorer les fleurs');
+    await click(`Explorer ${trackLabels[initialTrack]} · Greenhouse`);
     assert.equal(await page.$eval('h2',heading=>heading.textContent),'Greenhouse');
-    assert.equal(await page.$$eval('[data-book-entry]',buttons=>buttons.length),4);
+    await assertChapterEntries(initialTrack,'greenhouse');
   }
   await page.click('[data-book-entry="concours-greenhouse-0"]');
   await page.locator('::-p-text(Déguster cette fleur)').click();
-  await page.waitForSelector('[data-tasting-scroll]',{visible:true});
+  await page.waitForSelector('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll]',{visible:true});
   await click('Étape 5 : Verdict');
-  await page.type('textarea','Ma dégustation Concours compte dans le même carnet.');
+  await page.type('[data-book-scroll] > div:not([hidden]) textarea','Ma dégustation Concours compte dans le même carnet.');
   await page.locator('::-p-text(Envoyer mon avis)').click();
   await page.waitForFunction(()=>document.body.textContent.includes('Erreur de test'));
   assert.equal(submissions.at(-1).entryId,'concours-greenhouse-0');
   assert.equal(submissions.at(-1).comment,'Ma dégustation Concours compte dans le même carnet.');
   await page.goto('http://127.0.0.1:3197/',{waitUntil:'networkidle0'});
   await click('Ouvrir mon carnet de dégustation');
-  await click('Outdoor, 4 fleurs');
+  await openChapter('regular','outdoor');
   await page.click('[data-book-entry="regular-outdoor-0"]');
   await click('Voir les récompenses de cette fleur');
   await page.waitForSelector('.contest-notebook-collection-tab',{visible:true});
@@ -223,23 +286,59 @@ try {
   await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
   await page.goto('http://127.0.0.1:3197/?empty=1&locked=1',{waitUntil:'networkidle0'});
   await click('Ouvrir mon carnet de dégustation');
-  await click('Indoor, 0 fleurs'); await shot('empty-390');
+  await openChapter('regular','indoor',0); await shot('empty-390');
   assert(await page.locator('[data-book-scroll]').map(e=>e.textContent.includes('encore en culture')).wait());
-  await click('Table des matières'); await click('Outdoor, 4 fleurs');
+  await click('Table des matières'); await openChapter('regular','outdoor');
   await page.click('[data-book-entry="regular-outdoor-0"]');
   await page.locator('::-p-text(Déguster cette fleur)').click();
   await page.waitForFunction(()=>document.body.textContent.includes('ayant acheté ce lot'));
-  assert.equal(await page.$$eval('textarea',els=>els.length),0);
+  assert.equal(await page.$$eval('[data-book-scroll] > div:not([hidden]) textarea',els=>els.length),0);
   await shot('locked-390');
   await click('Fermer le carnet');
-  assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('aria-label')),'Ouvrir mon carnet de dégustation');
+  await page.waitForFunction(()=>document.activeElement?.getAttribute('aria-label')==='Ouvrir mon carnet de dégustation');
+  for (const width of [320,390,1440]) {
+    await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});
+    await page.goto('http://127.0.0.1:3197/?images=1',{waitUntil:'networkidle0'});
+    await click('Ouvrir mon carnet de dégustation'); await openChapter('regular','outdoor');
+    const assertImage = async (selector, expected) => page.waitForFunction((selector, expected) => {
+      const image=document.querySelector(selector);
+      if (!image || !image.complete || image.naturalWidth===0) return false;
+      const source=new URL(image.currentSrc||image.src,location.href);
+      return source.pathname+source.search===expected;
+    },{},selector,expected);
+    const productImage='/product_flower.jpg?book-image=product';
+    const galleryImage='/product_flower.jpg?book-image=gallery';
+    await assertImage('[data-book-entry="regular-outdoor-0"] img',productImage);
+    await assertImage('[data-book-entry="regular-outdoor-1"] img',galleryImage);
+    await shot(`image-fallback-thumbnails-${width}`);
+    await page.click('[data-book-entry="regular-outdoor-0"]');
+    await assertImage('[data-book-scroll] > article img',productImage);
+    await click('Fleur suivante');
+    await assertImage('[data-book-scroll] > article img',galleryImage);
+    await shot(`image-gallery-fallback-${width}`);
+    await click('Fleur précédente');
+    await assertImage('[data-book-scroll] > article img',productImage);
+    await click('Table des matières'); await openChapter('regular','greenhouse');
+    await page.waitForSelector('[data-book-entry="regular-greenhouse-0"] [role="img"][aria-label="Image de la fleur indisponible"]',{visible:true});
+    assert.equal(await page.$$eval('[data-book-entry="regular-greenhouse-0"] img',images=>images.length),0);
+    await page.click('[data-book-entry="regular-greenhouse-0"]');
+    await page.waitForSelector('[data-book-scroll] > article [role="img"][aria-label="Image de la fleur indisponible"]',{visible:true});
+    assert.equal(await page.$$eval('[data-book-scroll] > article img',images=>images.length),0);
+    await shot(`image-unavailable-${width}`);
+    await click('Fleur suivante');
+    await assertImage('[data-book-scroll] > article img','/product_flower.jpg');
+    await click('Fleur précédente');
+    await page.waitForSelector('[data-book-scroll] > article [role="img"][aria-label="Image de la fleur indisponible"]',{visible:true});
+    const layout=await checkLayout(); assert.equal(layout.overflow,false); assert.deepEqual(layout.outside,[]);
+    imageResults.push({width,primary404UsesProduct:true,product404UsesGallery:true,all404UsesAccessibleIcon:true,thumbnailAndDetail:true,entrySwitchResetsCandidates:true,layout});
+  }
   }
   if (!rewardsOnly) {
   for (const width of [320,390,1440]) for (const status of ['approved','pending','rejected']) {
     await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});
     await page.goto(`http://127.0.0.1:3197/?review=${status}`,{waitUntil:'networkidle0'});
     await click('Ouvrir mon carnet de dégustation');
-    await click('Outdoor, 4 fleurs');
+    await openChapter('regular','outdoor');
     await page.click('[data-book-entry="regular-outdoor-0"]');
     await page.locator('::-p-text(Retrouver mes notes)').click();
     await page.waitForSelector('[data-book-notes]',{visible:true});
@@ -251,18 +350,18 @@ try {
     const notesLayout=await checkLayout(); assert.equal(notesLayout.overflow,false); assert.deepEqual(notesLayout.outside,[]);
     await shot(`notes-${status}-${width}`);
     await page.locator(`::-p-text(${status==='pending'?'Modifier mes notes':'Lire mes notes'})`).click();
-    await page.waitForSelector('[data-tasting-scroll]',{visible:true});
+    await page.waitForSelector('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll]',{visible:true});
     if(status!=='pending') {
       await click('Étape 2 : Aspect');
-      assert(await page.$$eval('[data-tasting-scroll] input[type="range"]',els=>els.length>0 && els.every(e=>e.disabled)));
+      assert(await page.$$eval('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll] input[type="range"]',els=>els.length>0 && els.every(e=>e.disabled)));
     }
     await click('Étape 5 : Verdict');
     if(status==='pending') {
-      assert.equal(await page.$eval('textarea',e=>e.value),'Mes notes enregistrées sur cette fleur.');
-      await page.type('textarea',' Modification conservée.');
+      assert.equal(await page.$eval('[data-book-scroll] > div:not([hidden]) textarea',e=>e.value),'Mes notes enregistrées sur cette fleur.');
+      await page.type('[data-book-scroll] > div:not([hidden]) textarea',' Modification conservée.');
     }
     await shot(`notes-detail-${status}-${width}`);
-    await page.locator('[data-tasting-scroll] + footer button:last-child').click();
+    await page.locator('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll] + footer button:last-child').click();
     await page.waitForSelector('[data-book-notes]',{visible:true});
     if(status==='pending') assert(await page.$eval('[data-book-notes]',e=>e.textContent.includes('Modification conservée.')));
     await page.locator('::-p-text(Retour à la fleur)').click();
@@ -273,16 +372,27 @@ try {
     assert.equal(await page.$$eval('[role="dialog"]',els=>els.length),0);
   }
   await page.goto('http://127.0.0.1:3197/?review=pending&noAverage=1',{waitUntil:'networkidle0'});
-  await click('Ouvrir mon carnet de dégustation'); await click('Outdoor, 4 fleurs');
+  await click('Ouvrir mon carnet de dégustation'); await openChapter('regular','outdoor');
   await page.click('[data-book-entry="regular-outdoor-0"]');
   await page.locator('::-p-text(Retrouver mes notes)').click(); await page.waitForSelector('[data-book-notes]',{visible:true});
   assert.equal(await page.$$eval('.contest-review-skill-area-average',els=>els.length),0);
   assert.equal(await page.$eval('[data-score="community"] strong',e=>e.textContent),'—');
+  await page.goto('http://127.0.0.1:3197/?review=approved&reviewDistinct=1',{waitUntil:'networkidle0'});
+  await click('Ouvrir mon carnet de dégustation');
+  for (const track of ['regular','concours','regular']) {
+    await openChapter(track,'outdoor');
+    const id=`${track}-outdoor-0`;
+    await page.click(`[data-book-entry="${id}"]`);
+    await page.locator('::-p-text(Retrouver mes notes)').click();
+    await page.waitForFunction(id=>[...document.querySelectorAll('[data-book-notes]')]
+      .some(notes=>!notes.closest('[hidden]') && notes.textContent.includes(id)),{},id);
+    await click('Table des matières');
+  }
   }
   if (!notesOnly) {
     const openRewards = async (entryId) => {
       await page.goto('http://127.0.0.1:3197/',{waitUntil:'networkidle0'});
-      await click('Ouvrir mon carnet de dégustation'); await click('Outdoor, 4 fleurs');
+      await click('Ouvrir mon carnet de dégustation'); await openChapter(entryId.startsWith('concours-') ? 'concours' : 'regular','outdoor');
       await page.click(`[data-book-entry="${entryId}"]`); await click('Voir les récompenses de cette fleur');
       await page.waitForSelector('progress[aria-label="Fleurs dégustées avec un avis validé"]',{visible:true});
       await page.waitForFunction(()=>!document.querySelector('[data-opening]'));
@@ -357,7 +467,7 @@ try {
     rewardResults.push({width:390,staleTabAlreadyGranted:true,missingCardKeepsGrantedState:true,noRedraw:true});
   }
   assert.deepEqual(errors,[]);
-  const notesChecks={errors,notesStayInBook:true,notesStatuses:['approved','pending','rejected'],playerAndCommunityScores:true,missingAverage:true};
-  await writeFile(resolve(reportDir,rewardsOnly?'rewards-report.json':notesOnly?'notes-report.json':'report.json'),JSON.stringify(rewardsOnly?{errors,rewardResults}:notesOnly?notesChecks:{results,...notesChecks,chapters:3,combinedTracks:true,concoursSubmission:true,legacyTrackProps:true,empty:true,locked:true,reducedMotion:true,swipe:true,keyboardBack:true,rewards:true,rewardResults,siteChromeHidden:true},null,2));
+  const notesChecks={errors,notesStayInBook:true,notesStatuses:['approved','pending','rejected'],playerAndCommunityScores:true,missingAverage:true,crossTrackReviewsPreserved:true};
+  await writeFile(resolve(reportDir,rewardsOnly?'rewards-report.json':notesOnly?'notes-report.json':'report.json'),JSON.stringify(rewardsOnly?{errors,rewardResults}:notesOnly?notesChecks:{results,...notesChecks,chapters:6,tracksSeparated:true,chapterBoundaries:true,flowerBoundaries:true,crossTrackDraftsPreserved:true,concoursSubmission:true,initialTrackRespected:true,imageResults,empty:true,locked:true,reducedMotion:true,swipe:true,keyboardBack:true,rewards:true,rewardResults,siteChromeHidden:true},null,2));
   console.log(JSON.stringify({passed:true,notesOnly,rewardsOnly,widths:rewardsOnly?[320,390]:notesOnly?[320,390,1440]:results.map(x=>x.width),screenshots:reportDir}));
 } finally { await browser?.close(); await server.close(); }

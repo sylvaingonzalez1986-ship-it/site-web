@@ -164,7 +164,9 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
       ? await getPublicContestEntries({ seasonCode: params.season, track: surface === "notebook" ? undefined : selectedTrack })
       : { entries: [], selectedSeason: null };
     const selectedSeasonCode = entryPayload.selectedSeason?.code ?? params.season;
-    const categoryCounts = getContestCategoryCounts(entryPayload.entries);
+    const categoryCounts = getContestCategoryCounts(surface === "notebook"
+      ? entryPayload.entries.filter((entry) => entry.track === selectedTrack)
+      : entryPayload.entries);
     const activeCategory = resolveActiveContestCategory(categoryCounts, requestedCategory);
     const visibleEntries = entryPayload.entries.filter((entry) => entry.category === activeCategory);
     const includeCommunityPanels = arenaView === "carnet" && (surface === "arena" || surface === "notebook-ranking");

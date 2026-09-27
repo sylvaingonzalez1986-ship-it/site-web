@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { mkdir, readdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
+import { collectStorageImageReferences } from "@/lib/storage-image-references.mjs";
 import {
   PRODUCT_IMAGE_PUBLIC_UPLOAD_PREFIX,
   PRODUCT_IMAGE_UPLOAD_MAX_BYTES,
@@ -120,22 +121,6 @@ function isSupabaseStorageBackendEnabled(): boolean {
   return true;
 }
 
-function extractSupabaseObjectPath(imagePath: string, bucket: string): string | null {
-  try {
-    const url = new URL(imagePath);
-    const marker = `/storage/v1/object/public/${bucket}/`;
-    const markerIndex = url.pathname.indexOf(marker);
-    if (markerIndex === -1) {
-      return null;
-    }
-
-    const objectPath = decodeURIComponent(url.pathname.slice(markerIndex + marker.length));
-    return objectPath || null;
-  } catch {
-    return null;
-  }
-}
-
 function isUploadProductImagePath(imagePath: string): boolean {
   if (!imagePath.startsWith(PRODUCT_IMAGE_PUBLIC_UPLOAD_PREFIX)) {
     return false;
@@ -220,11 +205,13 @@ export async function saveProductImageUpload(file: File): Promise<string> {
 export async function cleanupUnusedProductUploads(imagePaths: string[]): Promise<void> {
   if (isSupabaseStorageBackendEnabled()) {
     const supabase = createSupabaseServiceClient();
-    const referencedObjects = new Set(
-      imagePaths
-        .map((imagePath) => extractSupabaseObjectPath(imagePath, PRODUCT_IMAGE_BUCKET))
-        .filter((value): value is string => Boolean(value)),
-    );
+    const referencedObjects = await collectStorageImageReferences({
+      supabase,
+      bucket: PRODUCT_IMAGE_BUCKET,
+      initialUrls: imagePaths,
+      // Historical and unpublished lots can retain photos no longer used by the shop.
+      sources: [{ table: "contest_entries", fields: ["image_url", "gallery_urls"] }],
+    });
 
     const removablePaths: string[] = [];
     let offset = 0;
@@ -236,7 +223,7 @@ export async function cleanupUnusedProductUploads(imagePaths: string[]): Promise
         offset,
       });
       if (listResult.error) {
-        break;
+        throw new Error(`Cannot safely clean ${PRODUCT_IMAGE_BUCKET}: ${listResult.error.message}`);
       }
 
       const entries = listResult.data ?? [];

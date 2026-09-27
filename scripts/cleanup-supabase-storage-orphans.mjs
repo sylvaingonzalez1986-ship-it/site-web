@@ -1,30 +1,31 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 import { createClient } from "@supabase/supabase-js";
+import { collectStorageImageReferences } from "../src/lib/storage-image-references.mjs";
 
 const ROOT = process.cwd();
 
-const SCOPES = [
+export const SCOPES = [
   {
     bucket: "products",
-    table: "products",
-    fields: ["image", "images"],
+    sources: [
+      { table: "products", fields: ["image", "images"] },
+      { table: "contest_entries", fields: ["image_url", "gallery_urls"] },
+    ],
   },
   {
     bucket: "producers",
-    table: "producers",
-    fields: ["image"],
+    sources: [{ table: "producers", fields: ["image"] }],
   },
   {
     bucket: "blog",
-    table: "blog_posts",
-    fields: ["cover_image"],
+    sources: [{ table: "blog_posts", fields: ["cover_image"] }],
   },
   {
     bucket: "product-analyses",
-    table: "products",
-    fields: ["analysis_pdf"],
+    sources: [{ table: "products", fields: ["analysis_pdf"] }],
   },
 ];
 
@@ -68,54 +69,6 @@ async function loadEnv() {
 
 function normalizeString(value) {
   return typeof value === "string" ? value.trim() : "";
-}
-
-function extractObjectPathFromUrl(rawValue, bucket) {
-  const value = normalizeString(rawValue);
-  if (!value) {
-    return null;
-  }
-
-  try {
-    const url = new URL(value);
-    const marker = `/storage/v1/object/public/${bucket}/`;
-    const markerIndex = url.pathname.indexOf(marker);
-    if (markerIndex === -1) {
-      return null;
-    }
-    const pathPart = url.pathname.slice(markerIndex + marker.length);
-    const decoded = decodeURIComponent(pathPart);
-    return decoded || null;
-  } catch {
-    return null;
-  }
-}
-
-function collectReferencedObjectPaths(rows, fields, bucket) {
-  const referenced = new Set();
-
-  for (const row of rows ?? []) {
-    for (const field of fields) {
-      const value = row[field];
-
-      if (Array.isArray(value)) {
-        for (const item of value) {
-          const objectPath = extractObjectPathFromUrl(item, bucket);
-          if (objectPath) {
-            referenced.add(objectPath);
-          }
-        }
-        continue;
-      }
-
-      const objectPath = extractObjectPathFromUrl(value, bucket);
-      if (objectPath) {
-        referenced.add(objectPath);
-      }
-    }
-  }
-
-  return referenced;
 }
 
 async function listAllStorageObjects(supabase, bucket, prefix = "") {
@@ -180,19 +133,14 @@ function isIgnoredObjectPath(objectPath) {
   return normalized === ".gitkeep" || normalized.endsWith("/.gitkeep");
 }
 
-async function cleanupScope({
+export async function cleanupScope({
   supabase,
   bucket,
-  table,
-  fields,
+  sources,
   applyChanges,
 }) {
-  const query = await supabase.from(table).select("*");
-  if (query.error) {
-    throw new Error(`select ${table} failed: ${query.error.message}`);
-  }
-
-  const referenced = collectReferencedObjectPaths(query.data, fields, bucket);
+  // Merge all tables before the bucket's single pass; never clean each source separately.
+  const referenced = await collectStorageImageReferences({ supabase, bucket, sources });
   const allObjects = await listAllStorageObjects(supabase, bucket);
   const orphanPaths = allObjects.filter(
     (objectPath) => !referenced.has(objectPath) && !isIgnoredObjectPath(objectPath),
@@ -260,7 +208,9 @@ async function main() {
   }
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

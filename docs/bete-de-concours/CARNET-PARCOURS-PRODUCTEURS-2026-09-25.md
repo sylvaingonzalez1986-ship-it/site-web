@@ -1,6 +1,16 @@
 # Parcours de dégustation par producteur — 25 septembre 2026
 
-Le carnet réunit les fleurs Regular et Concours. Les chapitres suivent le mode de culture ; le type de fiche reste conservé pour les formulaires et les avis existants. La progression des récompenses se lit par producteur.
+Le carnet distingue deux sections, Regular et Concours, chacune avec trois chapitres : Outdoor, Greenhouse et Indoor. La progression des récompenses reste commune par producteur : une même fleur présente dans les deux sections compte une seule fois pour son bonus.
+
+## Correctifs du 27 septembre
+
+L'audit en lecture seule de la saison `001` relève 22 fiches publiées pour 18 produits : 18 Regular (11 Outdoor, 7 Greenhouse) et 4 Concours (Greenhouse). Les quatre produits communs aux deux parcours étaient affichés côte à côte dans les mêmes listes ; aucun doublon n'existe au sein d'un parcours. Les listes, compteurs et flèches utilisent désormais le couple parcours/culture. L'ouverture directe du carnet Concours choisit une culture de ce parcours. Les identifiants des fiches et leurs avis restent distincts.
+
+Trois anciennes URL de photos renvoient `Object not found` : Heaven, Pink Pineapple et Legendary Platinium (ce dernier concerne les deux parcours). Leurs photos produit actuelles répondent correctement, y compris via l'optimiseur Next.js. Miniature et fiche partagent un repli automatique : photo du lot, photo actuelle du produit, galerie du lot, puis pictogramme si aucune image n'est disponible.
+
+Le nettoyage des photos boutique protège aussi les références de toutes les fiches du carnet, y compris historiques et non publiées. Il lit toutes les pages de références avant de calculer les fichiers inutilisés et abandonne sans suppression si cette lecture échoue. Le script de nettoyage regroupe les références boutique et carnet avant une seule passe sur le bucket `products`.
+
+Audits de production : `output/notebook-fix/catalog.json` et `images.json`. Contrôle navigateur reproductible : `node scripts/audit-tasting-book.mjs` ; tests de préservation des photos : `src/lib/product-image-storage.test.ts`. Ces tests utilisent des données simulées et n'exécutent aucun nettoyage distant.
 
 ## Règles retenues
 
@@ -42,6 +52,6 @@ node scripts/test-producer-notebook-rewards.mjs output/reputation-test-tools/nod
 
 La migration `20260925000200_kq_producer_tasting_completion.sql` a été appliquée le 25 septembre 2026 au projet Supabase lié `eyowwwpdmfrulhkpvlnf`, à la demande de l’utilisateur. Une copie isolée de l’historique a permis de vérifier puis d’appliquer cette seule migration avec `supabase db push --linked --yes --workdir output/producer-notebook-migration/deploy`. L’historique distant confirme la version ; la prévisualisation du lot isolé indique que la base est à jour pour ce lot. Reçu : `output/producer-notebook-migration/application.json`.
 
-La migration éditoriale Héritage `20260925000100` reste en attente : son application ultérieure devra inclure cette version antérieure dans le lot contrôlé (`--include-all` après prévisualisation). Le code de l’interface n’a pas été déployé par cette opération.
+La migration éditoriale Héritage `20260925000100` a ensuite été appliquée le 26 septembre, après déploiement du commit `5e3b247` et vérification des quinze rectos publics. Les quinze définitions distantes correspondent au manifeste. Rapport : `output/heritage-release/release.json`.
 
 Vérification distante après application : quatre signatures RPC présentes, colonne de provenance présente, lecture à zéro ligne réussie sur les deux nouvelles tables et exécution refusée pour les quatre fonctions auxiliaires privées. Rapport : `output/producer-notebook-migration/verification.json`. Aucun compte joueur n’a été utilisé et aucune récompense n’a été attribuée pendant ces contrôles.

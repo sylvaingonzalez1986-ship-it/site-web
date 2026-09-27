@@ -6,11 +6,12 @@ import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import dynamic from "next/dynamic";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type TouchEvent } from "react";
-import { ArrowLeft, ArrowRight, BookOpen, Check, ChevronLeft, ChevronRight, Flower2, Gift, Leaf, List, LockKeyhole, Sprout, Sun, Trophy, Warehouse, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Check, ChevronLeft, ChevronRight, Gift, Leaf, List, LockKeyhole, Sprout, Sun, Trophy, Warehouse, X } from "lucide-react";
 import type { PublicContestNotebookUnlock, PublicContestProfile, PublicContestProfileBadge } from "@/lib/contest-public-api";
 import { getContestProductHref } from "@/lib/contest-ui";
 import { getContestEntryAnalysisUrl } from "@/lib/contest-analysis";
-import { CONTEST_ENTRY_CATEGORIES, CONTEST_ENTRY_CATEGORY_LABELS, type ContestEntryCategory, type ContestEntrySummary, type ContestEntryTrack, type ContestReviewEligibility } from "@/types/contest";
+import { CONTEST_ENTRY_CATEGORIES, CONTEST_ENTRY_CATEGORY_LABELS, CONTEST_ENTRY_TRACKS, CONTEST_ENTRY_TRACK_LABELS, type ContestEntryCategory, type ContestEntrySummary, type ContestEntryTrack, type ContestReviewEligibility } from "@/types/contest";
+import { ContestFlowerImage } from "./ContestFlowerImage";
 import styles from "./ContestTastingBook.module.css";
 
 const NotebookPanel = dynamic(() => import("./ContestNotebookPanel").then((module) => module.ContestNotebookPanel), {
@@ -21,7 +22,7 @@ const NotebookRewards = dynamic(() => import("./ContestHubClient").then((module)
 });
 
 type View = "contents" | "flowers" | "flower" | "tasting" | "rewards";
-type Chapter = { category: ContestEntryCategory };
+type Chapter = { track: ContestEntryTrack; category: ContestEntryCategory };
 type Props = {
   entries: ContestEntrySummary[];
   unlocks: PublicContestNotebookUnlock[];
@@ -37,14 +38,14 @@ const CULTURES = {
   greenhouse: { icon: Sprout, description: "À l’abri des serres", subtitle: "La lumière naturelle, sous serre." },
   indoor: { icon: Warehouse, description: "En culture intérieure", subtitle: "Un environnement maîtrisé." },
 };
-const CHAPTERS = CONTEST_ENTRY_CATEGORIES.map((category) => ({ category }));
+const CHAPTERS: Chapter[] = CONTEST_ENTRY_TRACKS.flatMap((track) => CONTEST_ENTRY_CATEGORIES.map((category) => ({ track, category })));
 const PRODUCER_REWARD_RULE = "Regular et Concours comptent ensemble : fais valider tes avis sur toutes les fleurs d’un producteur pour débloquer son bonus.";
 
-export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, isAuthenticated, seasonLabel, initialCategory }: Props) {
+export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, isAuthenticated, seasonLabel, initialTrack, initialCategory }: Props) {
   const [open, setOpen] = useState(false);
   const [opening, setOpening] = useState(false);
   const [view, setView] = useState<View>("contents");
-  const [chapter, setChapter] = useState<Chapter>({ category: initialCategory });
+  const [chapter, setChapter] = useState<Chapter>({ track: initialTrack, category: initialCategory });
   const [entryId, setEntryId] = useState<string | null>(null);
   const [visitedNotes, setVisitedNotes] = useState<string[]>([]);
   const [turn, setTurn] = useState(0);
@@ -54,9 +55,10 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
   const coverRef = useRef<HTMLButtonElement>(null);
   const touchRef = useRef<{ x: number; y: number } | null>(null);
   const unlockById = useMemo(() => new Map(unlocks.map((unlock) => [unlock.entryId, unlock])), [unlocks]);
-  const flowers = useMemo(() => entries.filter((entry) => entry.category === chapter.category), [entries, chapter.category]);
-  const entry = entries.find((item) => item.id === entryId);
-  const chapterIndex = CHAPTERS.findIndex((item) => item.category === chapter.category);
+  const flowers = useMemo(() => entries.filter((entry) => entry.track === chapter.track && entry.category === chapter.category), [entries, chapter.track, chapter.category]);
+  const entry = flowers.find((item) => item.id === entryId);
+  const chapterIndex = CHAPTERS.findIndex((item) => item.track === chapter.track && item.category === chapter.category);
+  const chapterLabel = `${CONTEST_ENTRY_TRACK_LABELS[chapter.track]} · ${CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}`;
   const flowerIndex = flowers.findIndex((item) => item.id === entryId);
   const CultureIcon = CULTURES[chapter.category].icon;
   const inFlower = view === "flower" || view === "tasting" || view === "rewards";
@@ -96,8 +98,14 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
   }, [opening]);
 
   const go = (next: View) => { setView(next); setTurn((value) => value + 1); };
-  const openChapter = (next: Chapter) => { setChapter(next); go("flowers"); };
-  const openFlower = (id: string) => { setEntryId(id); go("flower"); };
+  const openChapter = (next: Chapter) => { setChapter(next); setEntryId(null); go("flowers"); };
+  const openFlower = (id: string) => {
+    const next = entries.find((item) => item.id === id);
+    if (!next) return;
+    setChapter({ track: next.track, category: next.category });
+    setEntryId(id);
+    go("flower");
+  };
   const close = () => { setOpening(false); setOpen(false); requestAnimationFrame(() => coverRef.current?.focus({ preventScroll: true })); };
   const startNotes = () => {
     if (!entry) return;
@@ -169,7 +177,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
         <aside className={styles.frontispiece} aria-label="Repères du carnet">
           <span className={styles.imprint}>Le carnet de l’Arène</span>
           <span className={styles.guideBadge}><BookOpen size={16} aria-hidden="true" /> À toi de jouer</span>
-          <p className={styles.asideTitle}>{view === "contents" ? <>À chaque fleur,<br /><em>sa découverte !</em></> : <>Toutes les fleurs<br /><em>{CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}</em></>}</p>
+          <p className={styles.asideTitle}>{view === "contents" ? <>À chaque fleur,<br /><em>sa découverte !</em></> : <>Les fleurs {CONTEST_ENTRY_TRACK_LABELS[chapter.track]}<br /><em>{CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}</em></>}</p>
           <p>{view === "contents" ? PRODUCER_REWARD_RULE : CULTURES[chapter.category].subtitle}</p>
           <div className={styles.scrapbook}>
             <div className={styles.memo}><span>Note à moi-même</span><strong>Prendre le temps.<br />Suivre mes sens.</strong><p>Le meilleur avis,<br />c’est le tien.</p></div>
@@ -182,7 +190,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
         <div className={styles.page} onTouchStart={touchStart} onTouchEnd={touchEnd} onTouchCancel={() => { touchRef.current = null; }}>
           <header className={styles.pageHeader}>
             <button type="button" onClick={() => view === "contents" ? close() : go(inFlower ? "flowers" : "contents")} aria-label={view === "contents" ? "Fermer le carnet" : inFlower ? "Revenir aux fleurs" : "Revenir au sommaire"}><ChevronLeft size={20} aria-hidden="true" /></button>
-            <span>{view === "contents" ? "Première page" : `${CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}${inFlower && entry?.track === "concours" ? " · Concours" : ""}`}</span>
+            <span>{view === "contents" ? "Première page" : chapterLabel}</span>
             <button type="button" onClick={() => go("contents")} aria-label="Table des matières"><List size={19} aria-hidden="true" /></button>
           </header>
           <div className={styles.pageHeading}>
@@ -193,34 +201,39 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
             {view === "contents" ? <div key={`contents-${turn}`} className={styles.pageTurn}>
               <div className={styles.sylvainWelcome}>
                 <Image src="/contest/mascot/tasting/tasting-start.png" alt="Ton guide de dégustation" width={408} height={771} sizes="64px" />
-                <p><strong>On déguste ?</strong><span>Choisis ta culture, je te guide pour la suite.</span><small>{PRODUCER_REWARD_RULE}</small></p>
+                <p><strong>On déguste ?</strong><span>Regular ou Concours, puis choisis ta culture.</span><small>{PRODUCER_REWARD_RULE}</small></p>
               </div>
-              <section className={styles.chapterGroup} aria-label="Toutes les dégustations par culture">
-                <h3><span><Leaf size={15} aria-hidden="true" /> Toutes les fleurs</span><small>Classées par culture</small></h3>
-                {CONTEST_ENTRY_CATEGORIES.map((category, index) => {
-                  const count = entries.filter((item) => item.category === category).length;
-                  const Icon = CULTURES[category].icon;
-                  return <button type="button" key={category} className={styles.contentsRow} data-culture={category} onClick={() => openChapter({ category })} aria-label={`${CONTEST_ENTRY_CATEGORY_LABELS[category]}, ${count} ${count === 1 ? "fleur" : "fleurs"}`}>
-                    <Icon size={20} aria-hidden="true" /><span className={styles.contentsCopy}><strong>{CONTEST_ENTRY_CATEGORY_LABELS[category]}</strong><small>{CULTURES[category].description}</small></span><small>{count} {count === 1 ? "fleur" : "fleurs"}</small><span className={styles.pageNumber}>{String(2 + index).padStart(2, "0")}</span>
-                  </button>;
-                })}
-              </section>
+              {CONTEST_ENTRY_TRACKS.map((track) => {
+                const TrackIcon = track === "concours" ? Trophy : Leaf;
+                const trackCount = entries.filter((item) => item.track === track).length;
+                return <section key={track} className={styles.chapterGroup} data-track={track} aria-label={`Dégustations ${CONTEST_ENTRY_TRACK_LABELS[track]} par culture`}>
+                  <h3><span><TrackIcon size={15} aria-hidden="true" /> {CONTEST_ENTRY_TRACK_LABELS[track]}</span><small>{trackCount} {trackCount === 1 ? "fleur" : "fleurs"} · 3 cultures</small></h3>
+                  {CONTEST_ENTRY_CATEGORIES.map((category) => {
+                    const count = entries.filter((item) => item.track === track && item.category === category).length;
+                    const index = CHAPTERS.findIndex((item) => item.track === track && item.category === category);
+                    const Icon = CULTURES[category].icon;
+                    return <button type="button" key={category} className={styles.contentsRow} data-track={track} data-culture={category} data-selected={chapter.track === track && chapter.category === category || undefined} onClick={() => openChapter({ track, category })} aria-label={`${CONTEST_ENTRY_TRACK_LABELS[track]} · ${CONTEST_ENTRY_CATEGORY_LABELS[category]}, ${count} ${count === 1 ? "fleur" : "fleurs"}`}>
+                      <Icon size={20} aria-hidden="true" /><span className={styles.contentsCopy}><strong>{CONTEST_ENTRY_CATEGORY_LABELS[category]}</strong><small>{CULTURES[category].description}</small></span><small>{count} {count === 1 ? "fleur" : "fleurs"}</small><span className={styles.pageNumber}>{String(2 + index).padStart(2, "0")}</span>
+                    </button>;
+                  })}
+                </section>;
+              })}
               <nav className={styles.appendix} aria-label="Les annexes du carnet"><Link href="/profil/collection"><Gift size={16} aria-hidden="true" /> Ma collection</Link><Link href="/arene/carnet/classement"><Trophy size={16} aria-hidden="true" /> Classement des fleurs</Link></nav>
             </div> : null}
 
             {view === "flowers" ? <div key={`flowers-${turn}`} className={styles.pageTurn}>
-              <p className={styles.caption}>{flowers.length ? "Choisis une fleur pour retrouver sa fiche et écrire tes impressions." : "Ce chapitre attend ses premières fleurs. Reviens bientôt ou explore une autre culture."}</p>
+              <p className={styles.caption}>{flowers.length ? `${flowers.length} ${flowers.length === 1 ? "fleur" : "fleurs"} dans le chapitre ${chapterLabel}. Choisis une fleur pour retrouver sa fiche et écrire tes impressions.` : `Le chapitre ${chapterLabel} attend ses premières fleurs. Reviens bientôt ou explore une autre culture ou section.`}</p>
               {!flowers.length ? <div className={styles.empty}><CultureIcon size={44} strokeWidth={1} aria-hidden="true" /><p>La prochaine découverte<br />est encore en culture.</p><button type="button" onClick={() => go("contents")}>Explorer le sommaire <ArrowRight size={16} /></button></div> : <div className={styles.flowerList}>{flowers.map((item, index) => {
                 const unlock = unlockById.get(item.id);
                 return <button type="button" key={item.id} className={styles.flowerRow} data-book-entry={item.id} data-track={item.track} onClick={() => openFlower(item.id)}>
-                  <span className={styles.flowerImage}>{item.imageUrl || item.product?.image ? <Image src={item.imageUrl || item.product!.image} alt="" fill sizes="80px" /> : <Flower2 size={32} aria-hidden="true" />}</span>
-                  <span className={styles.flowerCopy}><small>Fleur {String(index + 1).padStart(2, "0")} · {item.producer?.name || "Producteur non renseigné"}{item.track === "concours" ? " · Concours" : ""}</small><strong>{item.title}</strong><span className={styles.flowerStatus} data-status={unlock?.review ? "reviewed" : unlock ? "unlocked" : "locked"}>{unlock?.review ? <><Check size={13} /> Mes notes</> : unlock ? <><BookOpen size={13} /> À déguster</> : <><LockKeyhole size={12} /> À découvrir</>}</span></span><ChevronRight size={18} aria-hidden="true" />
+                  <span className={styles.flowerImage}><ContestFlowerImage entry={item} alt="" sizes="80px" /></span>
+                  <span className={styles.flowerCopy}><small>Fleur {String(index + 1).padStart(2, "0")} · {item.producer?.name || "Producteur non renseigné"} · {CONTEST_ENTRY_TRACK_LABELS[item.track]}</small><strong>{item.title}</strong><span className={styles.flowerStatus} data-status={unlock?.review ? "reviewed" : unlock ? "unlocked" : "locked"}>{unlock?.review ? <><Check size={13} /> Mes notes</> : unlock ? <><BookOpen size={13} /> À déguster</> : <><LockKeyhole size={12} /> À découvrir</>}</span></span><ChevronRight size={18} aria-hidden="true" />
                 </button>;
               })}</div>}
             </div> : null}
 
             {view === "flower" && entry ? <article key={`flower-${turn}`} className={`${styles.flowerPage} ${styles.pageTurn}`}>
-              <div className={styles.specimen}>{entry.imageUrl || entry.product?.image ? <Image src={entry.imageUrl || entry.product!.image} alt={entry.title} fill sizes="(max-width: 767px) 85vw, 450px" /> : <Flower2 size={90} strokeWidth={1} />}<span><CultureIcon size={14} /> {CONTEST_ENTRY_CATEGORY_LABELS[entry.category]}</span></div>
+              <div className={styles.specimen}><ContestFlowerImage entry={entry} alt={entry.title} sizes="(max-width: 767px) 85vw, 450px" fallbackSize={90} /><span><CultureIcon size={14} /> {CONTEST_ENTRY_CATEGORY_LABELS[entry.category]}</span></div>
               <div className={styles.flowerActions}><button type="button" className={styles.primary} onClick={startNotes}><BookOpen size={18} />{unlockById.get(entry.id)?.review ? "Retrouver mes notes" : "Déguster cette fleur"}<ArrowRight size={18} /></button><button type="button" className={styles.rewardButton} onClick={() => go("rewards")} aria-label="Voir les récompenses de cette fleur"><Gift size={19} /></button></div>
               <dl className={styles.facts}>
                 <div><dt>Producteur</dt><dd>{entry.producer?.name || "Non renseigné"}</dd></div>
@@ -261,8 +274,8 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
           </div>
           {view !== "tasting" ? <footer className={styles.pageFooter}>
             <button type="button" onClick={() => flip(-1)} disabled={view === "contents" || view === "rewards" || (view === "flowers" ? chapterIndex === 0 : flowerIndex <= 0)} aria-label={view === "flower" ? "Fleur précédente" : "Chapitre précédent"}><ChevronLeft size={18} /></button>
-            <button type="button" className={styles.footerIndex} onClick={() => go("contents")}><span>{view === "contents" ? "01 · Sommaire" : view === "flowers" ? `${String(chapterIndex + 2).padStart(2, "0")} · ${CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}` : `${Math.max(1, flowerIndex + 1)} / ${flowers.length} · ${view === "rewards" ? "Récompenses" : "Fleurs"}`}</span><small>{view === "contents" ? "Trois cultures à explorer" : "Revenir au sommaire"}</small></button>
-            <button type="button" onClick={() => view === "contents" ? openChapter(chapter) : flip(1)} disabled={view === "rewards" || (view === "flowers" ? chapterIndex === CHAPTERS.length - 1 : view === "flower" && flowerIndex >= flowers.length - 1)} aria-label={view === "contents" ? "Explorer les fleurs" : view === "flower" ? "Fleur suivante" : "Chapitre suivant"}><ChevronRight size={18} /></button>
+            <button type="button" className={styles.footerIndex} onClick={() => go("contents")}><span>{view === "contents" ? "01 · Sommaire" : view === "flowers" ? `${String(chapterIndex + 2).padStart(2, "0")} · ${chapterLabel}` : `${Math.max(1, flowerIndex + 1)} / ${flowers.length} · ${view === "rewards" ? "Récompenses" : "Fleurs"}`}</span><small>{view === "contents" ? "Deux sections · six chapitres" : inFlower ? `${chapterLabel} · Sommaire` : "Revenir au sommaire"}</small></button>
+            <button type="button" onClick={() => view === "contents" ? openChapter(chapter) : flip(1)} disabled={view === "rewards" || (view === "flowers" ? chapterIndex === CHAPTERS.length - 1 : view === "flower" && flowerIndex >= flowers.length - 1)} aria-label={view === "contents" ? `Explorer ${chapterLabel}` : view === "flower" ? "Fleur suivante" : "Chapitre suivant"}><ChevronRight size={18} /></button>
           </footer> : null}
         </div>
       </div>

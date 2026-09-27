@@ -77,10 +77,12 @@
 .pageContent { min-height: 0; min-width: 0; overflow-y: auto; overflow-x: hidden; padding: 20px 23px 24px; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--green) transparent; -webkit-overflow-scrolling: touch; }
 .pageTurn { animation: pageTurn 240ms ease-out both; transform-origin: left center; }
 .chapterGroup { --chapter-color: var(--green); --chapter-ink: var(--paper); margin: 0 0 22px; }
+.chapterGroup[data-track="concours"] { --chapter-color: var(--gold); --chapter-ink: var(--ink); }
 .chapterGroup h3 { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 5px 8px; margin: 0 0 10px; padding: 9px 10px; border: 2px solid var(--ink); border-radius: 3px; background: var(--chapter-color); color: var(--chapter-ink); box-shadow: 3px 3px var(--ink); }
 .chapterGroup h3 > span { display: flex; align-items: center; gap: 7px; font: 900 20px/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .chapterGroup h3 > small { font-size: 9px; font-weight: 600; }
 .contentsRow { display: flex; width: 100%; align-items: center; gap: 9px; min-height: 62px; margin: 0 0 9px; border: 2px solid var(--ink); border-radius: 4px; padding: 8px; background: var(--paper); box-shadow: 3px 3px var(--ink); text-align: left; transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease; }
+.contentsRow[data-selected] { background: #f9edbb; }
 .contentsRow > svg { flex-shrink: 0; width: 34px; height: 36px; padding: 6px; border: 1px solid var(--ink); border-radius: 2px; color: var(--ink); background: var(--gold); }
 .contentsCopy { display: grid; flex: 1; gap: 3px; min-width: 0; }
 .contentsCopy > strong { font: 900 22px/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
@@ -134,7 +136,7 @@
 .empty button { display: flex; gap: 8px; align-items: center; min-height: 44px; padding: 10px; background: var(--gold); color: var(--ink); border: 2px solid var(--ink); border-radius: 3px; font-size: 12px; font-weight: 800; }
 .pageFooter { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 64px; margin: 0; border-top: 2px solid var(--ink); padding: 7px 16px; background: var(--forest); color: var(--paper); }
 .pageFooter > button { display: grid; place-items: center; min-width: 44px; min-height: 44px; border: 2px solid var(--ink); border-radius: 3px; background: var(--gold); color: var(--ink); box-shadow: 2px 2px var(--ink); }
-.pageFooter .footerIndex { gap: 4px; padding: 4px 8px; background: transparent; color: var(--paper); border-color: transparent; box-shadow: none; }
+.pageFooter .footerIndex { flex: 1; min-width: 0; gap: 4px; padding: 4px 8px; background: transparent; color: var(--paper); border-color: transparent; box-shadow: none; text-align: center; overflow-wrap: anywhere; }
 .footerIndex > span { font: 800 10px/1.3 ui-monospace, Consolas, monospace; }
 .footerIndex > small { font-size: 9px; color: #d8e6d8; }
 .tastingContent { overflow: hidden; padding: 0; }
