@@ -7,6 +7,7 @@ import { syncKqProducerNotebookRewardsForReview } from "@/lib/supabase/kanab-que
 import { CONTEST_SCORE_MAX, CONTEST_SCORE_MIN } from "@/lib/contest-score";
 import { CANNABIS_TERPENE_CODES, normalizeContestTerpene } from "@/lib/contest-terpenes";
 import { selectContestProductTastingEntry } from "@/lib/contest-product-tasting";
+import { classifyContestProductTrack, type ContestProductPricing } from "@/lib/contest-product-track";
 import {
   CONTEST_AROMA_TAGS,
   CONTEST_CONSUMPTION_METHODS,
@@ -2132,11 +2133,42 @@ async function ensureUniqueContestEntrySlug(candidateSlug: string, ignoreEntryId
   }
 }
 
-async function loadProductForContestEntry(productId: string): Promise<ContestLinkedProduct & { producerId?: string }> {
+function getContestProductPricing(row: Record<string, unknown>): ContestProductPricing {
+  return {
+    category: toOptionalText(row.category),
+    price: Number(row.price),
+    originalPrice: Number(row.original_price),
+    weightGrams: Number(row.weight_grams),
+    isPack: row.is_pack === true,
+    variantOptions: row.variant_options == null ? undefined : Array.isArray(row.variant_options) ? row.variant_options : [row.variant_options],
+  };
+}
+
+function assertContestProductTrack(product: ContestProductPricing, track: ContestEntryTrack, allowIneligible = false): void {
+  const classification = classifyContestProductTrack(product);
+  if (classification.status === "ineligible" && !allowIneligible) {
+    throw new Error("Ce produit n’est pas éligible au carnet : Regular à 2,50 €/g TTC, Concours au-dessus de 2,50 €/g TTC.");
+  }
+  if (classification.status === "eligible" && classification.track !== track) {
+    throw new Error(`Ce tarif de référence correspond au carnet ${classification.track === "regular" ? "Regular" : "Concours"}.`);
+  }
+}
+
+async function assertUniquePublishedContestProduct(productId: string, seasonId: string, ignoreEntryId?: string): Promise<void> {
+  const supabase = createSupabaseServiceClient();
+  let query = supabase.from("contest_entries").select("id")
+    .eq("product_id", productId).eq("season_id", seasonId).eq("is_published", true);
+  if (ignoreEntryId) query = query.neq("id", ignoreEntryId);
+  const result = await query.limit(1).maybeSingle();
+  failIfError(result.error, "check unique published notebook product");
+  if (result.data) throw new Error("Ce produit possède déjà une fiche publiée pour cette saison. Modifie cette fiche plutôt que d’en publier une seconde.");
+}
+
+async function loadProductForContestEntry(productId: string): Promise<ContestLinkedProduct & ContestProductPricing & { producerId?: string }> {
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("products")
-    .select("id,name,price,image,category,analysis_pdf,producer_id")
+    .select("id,name,price,original_price,weight_grams,is_pack,variant_options,image,category,analysis_pdf,producer_id")
     .eq("id", productId)
     .maybeSingle();
 
@@ -2147,6 +2179,7 @@ async function loadProductForContestEntry(productId: string): Promise<ContestLin
   }
 
   return {
+    ...getContestProductPricing(row),
     id: toText(row.id),
     name: toText(row.name),
     price: toMoney(row.price, 0),
@@ -2181,82 +2214,69 @@ function buildShopFlowerTechnicalSheet(product: ContestShopFlowerRow): ContestEn
   };
 }
 
-async function ensureRegularContestEntriesForShopFlowers(season: ContestSeason | null): Promise<void> {
-  if (!season) {
+export async function syncContestEntriesForShopFlowers(season: ContestSeason | null): Promise<void> {
+  if (!season?.isActive || season.isArchived) {
     return;
   }
 
   const supabase = createSupabaseServiceClient();
-  const productsResult = await supabase
-    .from("products")
-    .select([
-      "id",
-      "name",
-      "category",
-      "culture_type",
-      "image",
-      "images",
-      "producer_id",
-      "description",
-      "track_stock",
-      "stock_quantity",
-      "variant_options",
-      "position",
-    ].join(","))
-    .eq("category", "fleurs")
-    .order("position", { ascending: true });
-
-  failIfError(productsResult.error, "read shop flowers for regular contest sync");
-
-  const flowersForSale = toRowArray(productsResult.data).filter((product) => isShopFlowerForSale(product));
-  if (flowersForSale.length === 0) {
-    return;
-  }
-
-  const productIds = uniqueStrings(flowersForSale.map((product) => toOptionalText(product.id)));
-  if (productIds.length === 0) {
-    return;
-  }
-
-  const existingResult = await supabase
-    .from("contest_entries")
-    .select("id,product_id,is_published")
-    .eq("season_id", season.id)
-    .eq("track", "regular")
-    .in("product_id", productIds);
-
-  failIfError(existingResult.error, "read existing regular contest entries for shop flowers");
-
-  const existingRows = toRowArray(existingResult.data);
-  const existingProductIds = new Set(existingRows.map((row) => toText(row.product_id)).filter(Boolean));
-  const unpublishedEntryIds = uniqueStrings(
-    existingRows
-      .filter((row) => row.is_published !== true)
-      .map((row) => toOptionalText(row.id)),
-  );
-
-  if (unpublishedEntryIds.length > 0) {
-    const publishResult = await supabase
-      .from("contest_entries")
-      .update({ is_published: true, updated_at: new Date().toISOString() })
-      .in("id", unpublishedEntryIds);
-    failIfError(publishResult.error, "publish regular contest entries for shop flowers");
-  }
+  const loadRows = async (table: "products" | "contest_entries", columns: string) => {
+    const rows: Record<string, unknown>[] = [];
+    let offset = 0;
+    while (true) {
+      let query = supabase.from(table).select(columns).order("id", { ascending: true }).range(offset, offset + 99);
+      query = table === "products" ? query.eq("category", "fleurs") : query.eq("season_id", season.id);
+      const result = await query;
+      failIfError(result.error, `read ${table} for notebook sync`);
+      if (!Array.isArray(result.data)) throw new Error(`Invalid ${table} response for notebook sync.`);
+      const page = toRowArray(result.data);
+      if (!page.length) return rows;
+      rows.push(...page);
+      offset += page.length;
+    }
+  };
+  const [products, existingRows] = await Promise.all([
+    loadRows("products", "id,name,category,culture_type,price,original_price,weight_grams,is_pack,image,images,producer_id,description,track_stock,stock_quantity,variant_options,position"),
+    loadRows("contest_entries", "id,product_id,track,is_published"),
+  ]);
 
   const rowsToInsert: ContestEntryRow[] = [];
-  for (const product of flowersForSale) {
+  const unpublishIds: string[] = [];
+  for (const product of products) {
     const productId = toText(product.id);
-    if (!productId || existingProductIds.has(productId)) {
+    if (!productId) continue;
+    const classification = classifyContestProductTrack(getContestProductPricing(product));
+    if (classification.status === "unknown") continue;
+    const existing = existingRows.filter((row) => row.product_id === productId);
+    if (classification.status === "ineligible") {
+      unpublishIds.push(...existing.filter((row) => row.is_published === true).map((row) => toText(row.id)));
       continue;
     }
+    const track = classification.track;
+    if (existing.length > 0) {
+      const published = existing.filter((row) => row.is_published === true);
+      const hasCorrectPublished = published.some((row) => row.track === track);
+      const uniqueEntry = published.length === 1 ? published[0] : existing.length === 1 ? existing[0] : undefined;
+      if (!hasCorrectPublished && uniqueEntry && uniqueEntry.track !== track) {
+        // Keep the entry ID, notes and publication state, including manual drafts.
+        const updateResult = await supabase.from("contest_entries")
+          .update({ track, updated_at: new Date().toISOString() }).eq("id", toText(uniqueEntry.id));
+        failIfError(updateResult.error, "classify existing notebook entry");
+      } else if (hasCorrectPublished) {
+        // Historical duplicate rows keep their original track and all related records.
+        unpublishIds.push(...existing.filter((row) => row.track !== track && row.is_published === true).map((row) => toText(row.id)));
+      }
+      continue;
+    }
+    if (!isShopFlowerForSale(product)) continue;
 
     const title = (toOptionalText(product.name) ?? productId).slice(0, 160);
     const imageUrl = getShopFlowerImage(product);
     const galleryUrls = uniqueStrings([imageUrl, ...toStringArray(product.images)]);
     const productSlug = slugifyContestText(productId || title);
     const seasonSlug = slugifyContestText(season.code || season.id);
-    const slug = await ensureUniqueContestEntrySlug(`regular-${seasonSlug}-${productSlug || title}`);
-    const id = `contest-entry-regular-${seasonSlug || slugifyContestText(season.id)}-${productSlug || slug}`;
+    const slug = await ensureUniqueContestEntrySlug(`${track}-${seasonSlug}-${productSlug || title}`);
+    const id = `contest-entry-${track}-${seasonSlug || slugifyContestText(season.id)}-${productSlug || slug}`;
 
     rowsToInsert.push({
       id,
@@ -2266,7 +2286,7 @@ async function ensureRegularContestEntriesForShopFlowers(season: ContestSeason |
       producer_id: toOptionalText(product.producer_id) ?? null,
       season_id: season.id,
       category: normalizeCategory(toOptionalText(product.culture_type)) ?? "outdoor",
-      track: "regular",
+      track,
       story: sanitizeStory(toOptionalText(product.description)),
       technical_sheet: buildShopFlowerTechnicalSheet(product),
       image_url: imageUrl,
@@ -2276,14 +2296,20 @@ async function ensureRegularContestEntriesForShopFlowers(season: ContestSeason |
     });
   }
 
+  if (unpublishIds.length > 0) {
+    const result = await supabase.from("contest_entries")
+      .update({ is_published: false, updated_at: new Date().toISOString() }).in("id", unpublishIds);
+    failIfError(result.error, "hide ineligible or duplicate notebook entries");
+  }
+
   if (rowsToInsert.length === 0) {
     return;
   }
 
   const insertResult = await supabase
     .from("contest_entries")
-    .upsert(rowsToInsert, { onConflict: "id" });
-  failIfError(insertResult.error, "sync regular contest entries for shop flowers");
+    .upsert(rowsToInsert, { onConflict: "id", ignoreDuplicates: true });
+  failIfError(insertResult.error, "sync notebook entries for shop flowers");
 }
 
 export function parseContestReviewStatus(value: string | null): ContestReviewStatus | undefined {
@@ -2355,7 +2381,7 @@ export async function getPublicContestEntries(input: {
 export async function getAdminContestEntries(
   input: ContestAdminPaginationInput = {},
 ): Promise<ContestAdminPaginatedResult<ContestEntrySummary>> {
-  await ensureRegularContestEntriesForShopFlowers(await resolveContestSeason());
+  await syncContestEntriesForShopFlowers(await resolveContestSeason());
 
   const pagination = normalizeAdminContestPagination(input);
   const supabase = createSupabaseServiceClient();
@@ -3549,9 +3575,12 @@ export async function createContestEntry(input: ContestEntryInput): Promise<Cont
   if (!category) {
     throw new Error("Categorie de lot invalide.");
   }
-  const track = normalizeTrack(input.track) ?? "regular";
-
   const product = await loadProductForContestEntry(input.productId.trim());
+  const classification = classifyContestProductTrack(product);
+  const track = normalizeTrack(input.track) ?? (classification.status === "eligible" ? classification.track : undefined);
+  if (!track) throw new Error("Choisis explicitement Regular ou Concours : le tarif de référence de ce produit est indéterminé.");
+  assertContestProductTrack(product, track);
+  if (input.isPublished === true) await assertUniquePublishedContestProduct(product.id, input.seasonId.trim());
   await ensureContestSeasonExists(input.seasonId.trim());
   const slug = await ensureUniqueContestEntrySlug(input.slug ?? title);
   const imageUrl = toOptionalText(input.imageUrl) ?? product.image;
@@ -3682,6 +3711,19 @@ export async function updateContestEntry(entryId: string, input: Partial<Contest
 
   if (typeof input.position === "number") {
     patch.position = Math.max(0, Math.floor(input.position));
+  }
+
+  const nextProductId = toText(patch.product_id ?? current.productId);
+  const nextSeasonId = toText(patch.season_id ?? current.seasonId);
+  const nextTrack = (patch.track ?? current.track) as ContestEntryTrack;
+  const nextPublished = typeof patch.is_published === "boolean" ? patch.is_published : current.isPublished;
+  const classificationChanged = nextProductId !== current.productId || nextSeasonId !== current.seasonId || nextTrack !== current.track;
+  const newlyPublished = nextPublished && !current.isPublished;
+  // Historical notes remain editable; validate a new classification or publication.
+  if (classificationChanged || newlyPublished) {
+    const product = await loadProductForContestEntry(nextProductId);
+    assertContestProductTrack(product, nextTrack, !nextPublished);
+    if (nextPublished) await assertUniquePublishedContestProduct(nextProductId, nextSeasonId, safeEntryId);
   }
 
   const supabase = createSupabaseServiceClient();

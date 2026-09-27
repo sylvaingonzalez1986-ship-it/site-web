@@ -1,10 +1,14 @@
 # Parcours de dégustation par producteur — 25 septembre 2026
 
-Le carnet distingue deux sections, Regular et Concours, chacune avec trois chapitres : Outdoor, Greenhouse et Indoor. La progression des récompenses reste commune par producteur : une même fleur présente dans les deux sections compte une seule fois pour son bonus.
+Le carnet distingue deux sections, Regular et Concours, chacune avec trois chapitres : Outdoor, Greenhouse et Indoor. Une fleur figure dans un seul parcours selon son tarif de référence TTC par gramme : 2,50 € en Regular, au-dessus de 2,50 € en Concours. La progression des récompenses reste commune par producteur et compte chaque produit une seule fois.
 
 ## Correctifs du 27 septembre
 
-L'audit en lecture seule de la saison `001` relève 22 fiches publiées pour 18 produits : 18 Regular (11 Outdoor, 7 Greenhouse) et 4 Concours (Greenhouse). Les quatre produits communs aux deux parcours étaient affichés côte à côte dans les mêmes listes ; aucun doublon n'existe au sein d'un parcours. Les listes, compteurs et flèches utilisent désormais le couple parcours/culture. L'ouverture directe du carnet Concours choisit une culture de ce parcours. Les identifiants des fiches et leurs avis restent distincts.
+L'audit initial de la saison `001` relevait 22 fiches publiées pour 18 produits : 18 Regular et 4 Concours. La séparation visuelle des parcours corrigeait les listes, compteurs et flèches, mais la vérification des tarifs a ensuite confirmé que les quatre doubles publications étaient erronées. La synchronisation de l'administration créait une fiche Regular pour toute fleur, même déjà publiée en Concours.
+
+La migration `20260927000100_contest_flower_price_tracks.sql` retire la publication des doublons Regular de Cake Brulée, Strawnana OG, Legendary Platinium et Shaolin. White CBG, à 4 €/g, passe en Concours avec le même identifiant. Small Bud Mix, à 1 €/g, est retiré du carnet à la demande de l'utilisateur ; sa fiche et son avis restent conservés. Le résultat attendu est 17 produits publiés sans doublon : 12 Regular et 5 Concours. Aucun prix boutique n'est modifié.
+
+La synchronisation et l'administration utilisent le tarif hors promotion, ramené au gramme et arrondi au centime. Les tarifs inférieurs à 2,50 €/g ne sont pas éligibles. Les poids inconnus, packs et variantes complexes ne sont pas classés automatiquement. Une fiche cachée ne doit pas être republiée automatiquement. Les saisons archivées, avis, droits et récompenses déjà acquis sont conservés ; les obligations de dégustation et d'achat utilisent les fleurs encore publiées.
 
 Trois anciennes URL de photos renvoient `Object not found` : Heaven, Pink Pineapple et Legendary Platinium (ce dernier concerne les deux parcours). Leurs photos produit actuelles répondent correctement, y compris via l'optimiseur Next.js. Miniature et fiche partagent un repli automatique : photo du lot, photo actuelle du produit, galerie du lot, puis pictogramme si aucune image n'est disponible.
 
@@ -16,7 +20,7 @@ Audits de production : `output/notebook-fix/catalog.json` et `images.json`. Cont
 
 Les valeurs ci-dessous sont les réglages de travail annoncés dans la conversation, en attendant un éventuel choix différent de l’utilisateur : **100 € de jeu** et **un tirage après l’achat de toutes les fleurs du producteur**.
 
-- **Dégustation :** toutes les fleurs publiées du producteur dans la saison courante du carnet doivent avoir un avis approuvé. Un produit présent en Regular et en Concours compte une seule fois. La dernière approbation attribue 100 € au portefeuille du Placard ; un bouton permet aussi de récupérer un bonus antérieur éligible.
+- **Dégustation :** toutes les fleurs publiées du producteur dans la saison courante du carnet doivent avoir un avis approuvé. Chaque produit compte une seule fois, y compris si des avis existent sur d'anciennes fiches en double. La dernière approbation attribue 100 € au portefeuille du Placard ; un bouton permet aussi de récupérer un bonus antérieur éligible.
 - **Achat :** les achats payés et non annulés de toutes ces fleurs permettent un tirage de Buddie. Les achats peuvent provenir de plusieurs commandes ; les variantes d’un même produit sont regroupées. Un achat invité exige une adresse confirmée correspondant au compte, sur une commande sans autre propriétaire.
 - **Tirage :** chaque carte active Argent ou Or de la collection `HEMP_HEROES_2026` a la même probabilité. Il ne s’agit pas d’un partage 50/50 entre les deux raretés. Le serveur effectue le tirage au moment de la réclamation.
 - **Fréquence :** un bonus de dégustation et un tirage par client et producteur, sans remise à zéro à chaque saison. L’ajout ultérieur de fleurs ne permet pas de toucher une seconde récompense. Les produits qualifiants sont conservés dans le reçu.

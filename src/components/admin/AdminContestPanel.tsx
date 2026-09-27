@@ -18,6 +18,7 @@ import {
 } from "@/lib/contest-terpenes";
 import { formatContestAverage, getContestReviewAverage } from "@/lib/contest-ui";
 import { CONTEST_SCORE_MAX } from "@/lib/contest-score";
+import { classifyContestProductTrack } from "@/lib/contest-product-track";
 import type { Producer } from "@/types/store";
 import {
   CONTEST_CONSUMPTION_METHOD_LABELS,
@@ -602,6 +603,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
 
   const selectedEntry = entries.find((entry) => entry.id === selectedEntryId) ?? null;
   const selectedProduct = availableProducts.find((product) => product.id === entryForm.productId) ?? null;
+  const selectedProductClassification = selectedProduct ? classifyContestProductTrack(selectedProduct) : null;
   const selectedProducer =
     availableProducers.find((producer) => producer.id === entryForm.producerId) ?? null;
   const entryImages = getEntryImagePaths(entryForm);
@@ -672,13 +674,14 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
 
   const handleProductSelect = (productId: string) => {
     const product = availableProducts.find((item) => item.id === productId) ?? null;
+    const classification = product ? classifyContestProductTrack(product) : null;
     setEntryForm((current) => ({
       ...current,
       productId,
       title: current.id || current.title.trim() ? current.title : product?.name ?? "",
       producerId: current.id ? current.producerId : product?.producerId ?? "",
       imageUrl: current.id || current.imageUrl.trim() ? current.imageUrl : product?.image ?? "",
-      track: current.id ? current.track : product?.category === "fleurs" ? "regular" : "concours",
+      track: classification?.status === "eligible" ? classification.track : current.track,
       category:
         product?.cultureMode && CONTEST_ENTRY_CATEGORIES.includes(product.cultureMode)
           ? product.cultureMode
@@ -736,6 +739,14 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
     const validationError = validateEntryForm(entryForm);
     if (validationError) {
       setStatus(validationError);
+      return;
+    }
+
+    const storedEntry = entries.find((entry) => entry.id === entryForm.id);
+    const classificationChanged = !storedEntry || storedEntry.productId !== entryForm.productId || storedEntry.seasonId !== entryForm.seasonId || storedEntry.track !== entryForm.track;
+    const newlyPublished = entryForm.isPublished && !storedEntry?.isPublished;
+    if (selectedProductClassification?.status === "ineligible" && (!entryForm.id || entryForm.isPublished && (classificationChanged || newlyPublished))) {
+      setStatus("Ce produit n’est pas éligible au carnet : Regular à 2,50 €/g TTC, Concours au-dessus de 2,50 €/g TTC.");
       return;
     }
 
@@ -1181,7 +1192,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
                     }
                   >
                     {CONTEST_ENTRY_TRACKS.map((track) => (
-                      <option key={track} value={track}>
+                      <option key={track} value={track} disabled={selectedProductClassification?.status === "eligible" && selectedProductClassification.track !== track}>
                         {CONTEST_ENTRY_TRACK_LABELS[track]}
                       </option>
                     ))}
