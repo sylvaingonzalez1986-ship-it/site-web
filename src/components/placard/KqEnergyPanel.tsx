@@ -3,18 +3,20 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Check, Leaf, RefreshCw, Sun, Zap } from "lucide-react";
 import { formatKqCash, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
-import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote, type KqEnergySnapshot } from "@/lib/kanab-quest-energy";
+import { KQ_ENERGY_MODES, quoteKqEnergy, type KqEnergyMode, type KqEnergyQuote, type KqEnergySnapshot } from "@/lib/kanab-quest-energy";
 import { getKqProductionUnits } from "@/lib/kanab-quest-production";
+import type { KqTentEquipmentProfile } from "@/lib/kanab-quest-production-scale";
 import { getKqCultureWearPreview } from "@/lib/kanab-quest-culture-wear";
 import styles from "./KqEnergyPanel.module.css";
 
-export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, lockedQuote, runId, productionUnits = 1, disabled = false }: {
+export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, lockedQuote, lockedTents, runId, productionUnits = 1, disabled = false }: {
   productionUnits?: number;
   disabled?: boolean;
   selectedMode?: KqEnergyMode;
   onModeChange?: (mode: KqEnergyMode) => void;
   onQuoteChange?: (quote: KqEnergyQuote | null) => void;
   lockedQuote?: KqEnergyQuote;
+  lockedTents?: KqTentEquipmentProfile[];
   runId?: string | null;
 }) {
   const [snapshot, setSnapshot] = useState<KqEnergySnapshot | null>(null);
@@ -44,6 +46,19 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   }, [refresh]);
   const quote = lockedQuote ?? (selectedMode ? snapshot?.quotes[selectedMode] : undefined);
   const units = getKqProductionUnits(lockedQuote ? lockedQuote.productionUnits : quote?.productionUnits ?? snapshot?.productionUnits ?? productionUnits);
+  const quotedTents = lockedQuote ? lockedTents : snapshot?.tents?.map(tent => ({
+    tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels,
+  }));
+  const tentQuotes = quote && quotedTents?.length === units ? [...quotedTents]
+    .sort((left, right) => left.tentNumber - right.tentNumber)
+    .map(tent => ({ tentNumber: tent.tentNumber,
+      starter: tent.codes.every(code => getKqEquipmentDefinition(code)?.purchasable === false),
+      quote: quoteKqEnergy(tent.codes, tent.levels, quote.mode),
+    })) : [];
+  // A saved invoice must describe its frozen equipment, never today's installation.
+  const showTentQuotes = units > 1 && quote && tentQuotes.length === units
+    && tentQuotes.reduce((sum, tent) => sum + tent.quote.totalCents, 0) === quote.totalCents
+    && tentQuotes.reduce((sum, tent) => sum + tent.quote.totalWattHours, 0) === quote.totalWattHours;
   const cultureTents = snapshot?.tents?.length ? snapshot.tents : [{
     tentNumber: 1, equippedCodes: snapshot?.cultureEquipmentCodes ?? [],
     cultureWear: snapshot?.cultureWear ?? {}, cultureOperationalCodes: snapshot?.cultureOperationalCodes ?? [],
@@ -78,12 +93,27 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
 
   return <section className={styles.panel} aria-label="Charges du Placard">
     <header><Zap aria-hidden="true" /><div><small>{lockedQuote ? "Facture de fin de cycle" : selectedMode ? "Avant de lancer la culture" : "Charges du Placard"}</small><h3>{lockedQuote ? KQ_ENERGY_MODES[lockedQuote.mode].name : "Électricité et entretien"}</h3></div><button type="button" aria-label="Actualiser les charges" onClick={() => void refresh()}><RefreshCw size={16} /></button></header>
-    {quote || snapshot ? <p><strong>{units} tente{units>1?"s":""} · capacité ×{units}</strong> · les montants couvrent toute ton installation.</p> : null}
+    {quote || snapshot ? <p><strong>{units} tente{units>1?"s":""} {lockedQuote ? "pour cette culture" : "dans ton installation"}</strong> · les montants couvrent toutes ces tentes.</p> : null}
     {selectedMode && snapshot?.chanvrierStrength === "green-thumb" ? <p><Leaf size={16} /> Main Verte · +2 XP au départ, en plus du bonus de ton Buddie.</p> : null}
     {selectedMode && !!snapshot?.maintenanceDueNext?.length ? <p><strong>Entretien à prévoir :</strong> {snapshot.maintenanceDueNext.join(", ")}. Consulte ton entrepôt avant la prochaine transformation.</p> : null}
     {selectedMode && onModeChange ? <div className={styles.modes} role="group" aria-label="Mode énergétique">
       {(Object.entries(KQ_ENERGY_MODES) as [KqEnergyMode, typeof KQ_ENERGY_MODES[KqEnergyMode]][]).map(([mode, config]) => <button type="button" key={mode} disabled={disabled} aria-pressed={selectedMode === mode} onClick={() => onModeChange(mode)}><strong>{config.name}</strong><small>{config.label}</small>{snapshot ? <><b>{formatKqCash(snapshot.quotes[mode].totalCents)} d’électricité</b>{wearPreviews.length > 0 ? <small>Usure estimée : {formatKqCash(getWearPreviews(mode).reduce((sum, item) => sum + item.wearCostCents, 0))}</small> : null}</> : null}</button>)}
     </div> : null}
+    {quote ? <>
+      <div className={styles.meter}><div><small>Consommation totale · {units} tente{units > 1 ? "s" : ""}</small><strong>{(quote.totalWattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} <em>kWh</em></strong></div><div><small>{lockedQuote ? "Électricité totale" : "Électricité totale prévue"}</small><strong>{formatKqCash(quote.totalCents)}</strong></div></div>
+      {showTentQuotes ? <div className={styles.tentTotals} aria-label="Électricité par tente">
+        <strong>Les consommations de tes {units} tentes s’additionnent</strong>
+        <dl>{tentQuotes.map(tent => <div key={tent.tentNumber}>
+          <dt>Tente {tent.tentNumber}<small>{tent.starter ? "Kit de départ" : "Matériel aménagé"}</small></dt>
+          <dd><b>{formatKqCash(tent.quote.totalCents)}</b><small>{(tent.quote.totalWattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kWh</small></dd>
+        </div>)}</dl>
+        <p>Le total dépend du matériel installé dans chaque tente.</p>
+      </div> : null}
+      {quote.savingsCents > 0 ? <p className={styles.solar}><Sun size={16} /> Solaire : {quote.solarPercent} % couverts · {formatKqCash(quote.savingsCents)} économisés</p> : null}
+      <details><summary>Détail par appareil</summary><ul>{quote.lines.map((line) => <li key={`${line.tentNumber ?? "legacy"}:${line.code}`}><span>{line.tentNumber ? `Tente ${line.tentNumber} · ` : ""}{getKqEquipmentDefinition(line.code)?.name ?? line.name} · niv. {line.level}{!line.tentNumber && units > 1 ? ` ×${units}` : ""}</span><b>{(line.wattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kWh</b></li>)}</ul><p>0,30 € virtuel / kWh. Seuls les appareils de culture et de sécurité installés comptent. Le temps hors ligne ne change pas le montant.</p></details>
+      {invoice ? <p className={styles.stamp} data-paid={invoice.remainingCents === 0}>{invoice.remainingCents === 0 ? <><Check size={17} /> Réglée</> : `Reste sur ce cycle : ${formatKqCash(invoice.remainingCents)}`}</p> : null}
+      {lockedQuote && invoice && quote.totalWattHours > 0 ? <p><Leaf size={16} /> Rendement énergétique : {(invoice.harvestGrams * 1000 / quote.totalWattHours).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} g/kWh</p> : null}
+    </> : !snapshot && !error ? <p role="status">Lecture du compteur…</p> : null}
     {selectedMode && brokenEquipment.length > 0 ? <p className={styles.error} role="status"><strong>Matériel hors service :</strong> {brokenEquipment.join(", ")}. Ses bonus sont désactivés.{fallbackEquipment.length > 0 ? ` Dépannage : ${fallbackEquipment.join(", ")}.` : ""} Remplace-le dans ton entrepôt pour retrouver ses bonus.</p> : null}
     {selectedMode && wearPreviews.length > 0 ? <section className={styles.wearPreview} aria-label="Usure prévue du matériel">
       <strong>Matériel après cette culture · {KQ_ENERGY_MODES[selectedMode].name}</strong>
@@ -97,13 +127,6 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
       <p><strong>Usure estimée : {formatKqCash(wearCostCents)}</strong> de matériel consommé. À prévoir pour les futurs rachats ; seul le remplacement débite ta trésorerie.</p>
       <p>L’éco prolonge la durée de vie. L’état du matériel ne remonte jamais entre deux cultures. Le kit de départ reste disponible pour le dépannage.</p>
     </section> : null}
-    {quote ? <>
-      <div className={styles.meter}><div><small>Consommation du cycle</small><strong>{(quote.totalWattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} <em>kWh</em></strong></div><div><small>{lockedQuote ? "Électricité" : "Électricité prévue"}</small><strong>{formatKqCash(quote.totalCents)}</strong></div></div>
-      {quote.savingsCents > 0 ? <p className={styles.solar}><Sun size={16} /> Solaire : {quote.solarPercent} % couverts · {formatKqCash(quote.savingsCents)} économisés</p> : null}
-      <details><summary>Détail par appareil</summary><ul>{quote.lines.map((line) => <li key={`${line.tentNumber ?? "legacy"}:${line.code}`}><span>{line.tentNumber ? `Tente ${line.tentNumber} · ` : ""}{getKqEquipmentDefinition(line.code)?.name ?? line.name} · niv. {line.level}{!line.tentNumber && units > 1 ? ` ×${units}` : ""}</span><b>{(line.wattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kWh</b></li>)}</ul><p>0,30 € virtuel / kWh. Seuls les appareils de culture et de sécurité installés comptent. Le temps hors ligne ne change pas le montant.</p></details>
-      {invoice ? <p className={styles.stamp} data-paid={invoice.remainingCents === 0}>{invoice.remainingCents === 0 ? <><Check size={17} /> Réglée</> : `Reste sur ce cycle : ${formatKqCash(invoice.remainingCents)}`}</p> : null}
-      {lockedQuote && invoice && quote.totalWattHours > 0 ? <p><Leaf size={16} /> Rendement énergétique : {(invoice.harvestGrams * 1000 / quote.totalWattHours).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} g/kWh</p> : null}
-    </> : !snapshot && !error ? <p role="status">Lecture du compteur…</p> : null}
     {invoice?.dogCare ? <div className={styles.dogCare}>
       <Image src="/app/kanab-quest/equipment/equipment-SECURITY-DOG-hero-v1.webp" alt="" width={88} height={88} />
       <div><strong>Soins du compagnon · cycle {invoice.dogCare.cycle}</strong>

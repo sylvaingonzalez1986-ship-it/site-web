@@ -1182,6 +1182,14 @@ export type KqRunProjection = {
   harvestLossPercent: number;
 };
 
+export type KqTentHarvestBreakdown = {
+  tentNumber: number;
+  quantityPercent: number;
+  grossHarvestGrams: number;
+  afterLossHarvestGrams: number;
+  finalHarvestGrams: number;
+};
+
 export type KqHarvestBreakdown = {
   stageQuality: number;
   equipmentQualityBonus: number;
@@ -1193,6 +1201,7 @@ export type KqHarvestBreakdown = {
   lostHarvestGrams: number;
   energyAdjustmentGrams: number;
   finalHarvestGrams: number;
+  tentHarvests: KqTentHarvestBreakdown[] | null;
 };
 
 /**
@@ -1231,21 +1240,29 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
 /** Preserve each tent's yield cap and rounding, including legacy identical installations. */
 function calculateKqInstallationHarvest(state: KqGameState, quality: number, successfulStages: number, lossPercent: number) {
   const quantityBonuses = state.equipment?.tents
-    ? state.equipment.tents.map(tent => summarizeKqEquipmentLoadout(tent.codes, tent.levels).quantityPercent)
-    : Array.from({ length: getKqProductionUnits(state.equipment?.productionUnits) }, () => state.equipment?.quantityPercent ?? 0);
-  const totals = quantityBonuses.reduce((sum, quantityPercent) => {
+    ? state.equipment.tents.map(tent => ({ tentNumber: tent.tentNumber, quantityPercent: summarizeKqEquipmentLoadout(tent.codes, tent.levels).quantityPercent }))
+    : Array.from({ length: getKqProductionUnits(state.equipment?.productionUnits) }, (_, index) => ({ tentNumber: index + 1, quantityPercent: state.equipment?.quantityPercent ?? 0 }));
+  const tentHarvests = quantityBonuses.map(({ tentNumber, quantityPercent }) => {
     const gross = calculateKqHarvestGrams({ quality, successfulStages, quantityPercent });
     const afterIncident = Math.round(gross * (1 - lossPercent / 100) * 10) / 10;
     return {
-      grossGrams: sum.grossGrams + gross,
-      afterIncidentGrams: sum.afterIncidentGrams + afterIncident,
-      finalGrams: sum.finalGrams + applyKqEnergyHarvest(afterIncident, state.energy),
+      tentNumber,
+      quantityPercent,
+      grossHarvestGrams: gross,
+      afterLossHarvestGrams: afterIncident,
+      finalHarvestGrams: applyKqEnergyHarvest(afterIncident, state.energy),
     };
-  }, { grossGrams: 0, afterIncidentGrams: 0, finalGrams: 0 });
+  });
+  const totals = tentHarvests.reduce((sum, tent) => ({
+    grossGrams: sum.grossGrams + tent.grossHarvestGrams,
+    afterIncidentGrams: sum.afterIncidentGrams + tent.afterLossHarvestGrams,
+    finalGrams: sum.finalGrams + tent.finalHarvestGrams,
+  }), { grossGrams: 0, afterIncidentGrams: 0, finalGrams: 0 });
   return {
     grossGrams: Math.round(totals.grossGrams * 10) / 10,
     afterIncidentGrams: Math.round(totals.afterIncidentGrams * 10) / 10,
     finalGrams: Math.round(totals.finalGrams * 10) / 10,
+    tentHarvests,
   };
 }
 
@@ -1258,7 +1275,7 @@ export function getKqHarvestBreakdown(state: KqGameState): KqHarvestBreakdown {
   const finalQuality = state.phase === "complete" ? state.quality : state.quality + equipmentQualityBonus;
   const quantityPercent = state.equipment?.quantityPercent ?? 0;
   const harvestLossPercent = Math.max(0, Math.min(80, state.harvestLossPercent ?? 0));
-  const harvest = cultureDead ? { grossGrams: 0, afterIncidentGrams: 0, finalGrams: 0 }
+  const harvest = cultureDead ? { grossGrams: 0, afterIncidentGrams: 0, finalGrams: 0, tentHarvests: [] }
     : calculateKqInstallationHarvest(state, finalQuality, successfulStages, harvestLossPercent);
   const { grossGrams: grossHarvestGrams, afterIncidentGrams, finalGrams: calculatedFinalGrams } = harvest;
   const finalHarvestGrams = cultureDead ? 0 : state.phase === "complete" && state.harvestGrams !== undefined
@@ -1276,5 +1293,7 @@ export function getKqHarvestBreakdown(state: KqGameState): KqHarvestBreakdown {
     lostHarvestGrams: Math.round(Math.max(0, grossHarvestGrams - afterIncidentGrams) * 10) / 10,
     energyAdjustmentGrams: Math.round((finalHarvestGrams - afterIncidentGrams) * 10) / 10,
     finalHarvestGrams,
+    // An older saved receipt remains authoritative if its original formula differed.
+    tentHarvests: finalHarvestGrams === calculatedFinalGrams ? harvest.tentHarvests : null,
   };
 }

@@ -4,9 +4,9 @@ import { ArrowDown, ArrowUp, Check, CircleAlert, PackageOpen, RefreshCw, Setting
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentImpactLabels, getKqEquipmentRequirementState, KQ_EQUIPMENT_CATALOG, KQ_EQUIPMENT_SLOT_LABELS, summarizeKqEquipmentLoadout, type KqEquipmentDefinition, type KqEquipmentSlot } from "@/lib/kanab-quest-equipment";
-import { getKqProductionExpansion, getKqProductionUnits } from "@/lib/kanab-quest-production";
+import { getKqProductionExpansion, getKqProductionUnits, summarizeKqTentEquipment } from "@/lib/kanab-quest-production";
 import { KqProductionCapacity, type KqProductionSnapshot } from "./KqProductionCapacity";
-import { quoteKqEnergy } from "@/lib/kanab-quest-energy";
+import { quoteKqEnergy, quoteKqTentEnergy } from "@/lib/kanab-quest-energy";
 import { getKqCultureOperationalCodes, type KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
 import { KqMachineMaintenance } from "./KqMachineMaintenance";
@@ -21,9 +21,19 @@ const WAREHOUSE_GROUPS: readonly { code: string; label: string; description: str
   { code: "services", label: "Services", description: "Les essentiels de l’atelier", slots: ["flower-drying", "energy", "security"], icon: ShieldCheck },
 ];
 
-export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,productionUnits=1,production,maintenance={},cultureWear={},activeRun=false,loading,loadError,onClose,onOpenShop,onRetry,initialSlot="tent"}:{
+export type KqInventoryTentSnapshot = {
+  tentNumber: number;
+  equippedCodes: string[];
+  levels: Record<string, number>;
+  cultureWear: Record<string, KqCultureEquipmentCondition>;
+};
+
+const formatBonus = (value: number) => value.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
+
+export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,productionUnits=1,production,tents,maintenance={},cultureWear={},activeRun=false,loading,loadError,onClose,onOpenShop,onRetry,initialSlot="tent"}:{
   productionUnits?:number;
   production?:KqProductionSnapshot;
+  tents?:KqInventoryTentSnapshot[];
   maintenance?:Record<string,KqMachineCondition>;
   cultureWear?:Record<string,KqCultureEquipmentCondition>;
   activeRun?:boolean;
@@ -44,8 +54,15 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   const expansion=production??getKqProductionExpansion(units,purchasedCodes,levels);
   const activeCodes=override??equippedCodes;
   const operationalCodes=useMemo(()=>getKqCultureOperationalCodes(activeCodes,cultureWear),[activeCodes,cultureWear]);
-  const summary=useMemo(()=>summarizeKqEquipmentLoadout(operationalCodes,levels),[operationalCodes,levels]);
-  const energy=useMemo(()=>quoteKqEnergy(operationalCodes,levels,"balanced",units),[operationalCodes,levels,units]);
+  const tentProfiles=useMemo(()=>tents?.length?tents.map(tent=>({tentNumber:tent.tentNumber,codes:getKqCultureOperationalCodes(tent.equippedCodes,tent.cultureWear),levels:tent.levels})):null,[tents]);
+  const summary=useMemo(()=>tentProfiles?summarizeKqTentEquipment(tentProfiles):summarizeKqEquipmentLoadout(operationalCodes,levels),[tentProfiles,operationalCodes,levels]);
+  const energy=useMemo(()=>tentProfiles?quoteKqTentEnergy(tentProfiles,"balanced"):quoteKqEnergy(operationalCodes,levels,"balanced",units),[tentProfiles,operationalCodes,levels,units]);
+  const tentSummaries=useMemo(()=>tentProfiles?.map(tent=>({
+    tentNumber:tent.tentNumber,
+    fitted:tents!.find(item=>item.tentNumber===tent.tentNumber)!.equippedCodes.some(code=>getKqEquipmentAtLevel(code)?.purchasable),
+    summary:summarizeKqEquipmentLoadout(tent.codes,tent.levels),
+    energy:quoteKqEnergy(tent.codes,tent.levels,"balanced",1),
+  }))??[],[tentProfiles,tents]);
   const equipment=useMemo(()=>[...new Set([...ownedCodes,...activeCodes])].map(code=>getKqEquipmentAtLevel(code,levels[code])).filter((item):item is KqEquipmentDefinition=>!!item),[ownedCodes,activeCodes,levels]);
   const choices=equipment.filter(item=>item.slot===slot);
   const installed=choices.find(item=>activeCodes.includes(item.code));
@@ -103,9 +120,10 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
             <nav className={styles.slots} aria-label="Emplacements de l’entrepôt">{groupZones.map(zone=><button key={zone.slot} type="button" aria-pressed={slot===zone.slot} data-installed={installedSlots.has(zone.slot)} onClick={()=>select(zone.slot)}><span>{KQ_EQUIPMENT_SLOT_LABELS[zone.slot]}</span><small>{installedSlots.has(zone.slot)?<><Check size={12} aria-hidden="true"/>Installé</>:"Libre"}</small></button>)}</nav>
             <div className={styles.selectionSummary}><div><small>Ta sélection</small><strong>{KQ_EQUIPMENT_SLOT_LABELS[slot]}</strong><span>{installed?.name??"Emplacement libre"}</span></div><button type="button" onClick={showDetails}>Voir le détail<ArrowDown size={16} aria-hidden="true"/></button></div>
           </div>
-          <div className={styles.performance}><h3>Ton installation en un coup d’œil</h3><dl className={styles.stats}><div><dt>Récolte ×{units}</dt><dd>+{summary.quantityPercent} %</dd></div><div><dt>Qualité max.</dt><dd>+{summary.qualityMaxBonus}</dd></div><div><dt>Régularité</dt><dd>+{summary.regularityPercent} %</dd></div><div><dt>Électricité / cycle</dt><dd>{formatKqCash(energy.totalCents)}</dd></div></dl>
-          <small className={styles.estimate}>Estimation en mode équilibré, hors usure, nourriture et vétérinaire. Les bonus du matériel hors service sont désactivés ; le kit de départ prend le relais aux emplacements concernés. L’installation est fixée au lancement de chaque culture.</small></div>
-          <KqProductionCapacity tentArtwork={activeCodes.includes("TENT-080-STARTER")?"tent-starter":"tent-pro"} production={expansion} cashCents={cashCents} activeRun={activeRun} disabled={loading||!!loadError||!!pending} onUpdated={onRetry} onPendingChange={busy=>setPending(busy?"production":null)}/>
+          <div className={styles.performance} data-equipment-totals><h3>{units} tente{units>1?"s":""} · bonus moyens de culture</h3><dl className={styles.stats}><div><dt>Bonus récolte moyen</dt><dd>+{formatBonus(summary.quantityPercent)} %</dd></div><div><dt>Qualité max. moyenne</dt><dd>+{formatBonus(summary.qualityMaxBonus)}</dd></div><div><dt>Régularité moyenne</dt><dd>+{formatBonus(summary.regularityPercent)} %</dd></div><div><dt>Électricité totale / cycle</dt><dd>{formatKqCash(energy.totalCents)}</dd></div></dl>
+          {tentSummaries.length?<ul className={styles.tentSummary} aria-label="Équipement et consommation par tente">{tentSummaries.map(tent=><li key={tent.tentNumber} data-inventory-tent={tent.tentNumber}><div><strong>Tente {tent.tentNumber}</strong><small>{tent.fitted?"Aménagée":"Kit de départ"} · récolte +{formatBonus(tent.summary.quantityPercent)} %</small></div><span>{formatKqCash(tent.energy.totalCents)}<small>/ cycle</small></span></li>)}</ul>:null}
+          <small className={styles.estimate}>Chaque tente produit sa part du lot avec son propre matériel. Une tente en kit de départ n’hérite pas des améliorations des autres. L’électricité s’additionne ; les bonus ci-dessus sont la moyenne des tentes.<br/>Mode équilibré, hors usure, nourriture et vétérinaire. Le matériel hors service perd ses bonus. L’installation est fixée au lancement de la culture.</small></div>
+          <KqProductionCapacity tents={tents} tentArtwork={activeCodes.includes("TENT-080-STARTER")?"tent-starter":"tent-pro"} production={expansion} cashCents={cashCents} activeRun={activeRun} disabled={loading||!!loadError||!!pending} onUpdated={onRetry} onPendingChange={busy=>setPending(busy?"production":null)}/>
         </div>
         <aside ref={panel} className={styles.panel} tabIndex={-1} aria-labelledby="warehouse-slot-title">
           <button type="button" className={styles.backToScene} onClick={showWorkshop}><ArrowUp size={16} aria-hidden="true"/>Retour à l’entrepôt</button>
@@ -126,7 +144,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
             {!choices.length?<p className={styles.empty}><PackageOpen/>Cet emplacement est prêt à accueillir ton matériel.</p>:null}
             {suggestion?<button type="button" className={styles.shopButton} onClick={()=>openShop(suggestion.code)}><ShoppingBag size={17}/>{slot==="flower-drying"?`Aménager le séchoir · ${formatKqCash(suggestion.priceCents*units)}`:"Voir le matériel en boutique"}</button>:null}
           </>}
-          <small className={styles.rule}>Acheter, installer, puis améliorer. Un modèle actif par emplacement, partagé entre tes {units} tente{units>1?"s":""} ; aucun changement sur les cultures déjà lancées.</small>
+          <small className={styles.rule}>Un modèle actif par emplacement et par tente. La synthèse indique la contribution de chaque tente ; aucun changement sur les cultures déjà lancées.</small>
         </aside>
       </div>
     </section>

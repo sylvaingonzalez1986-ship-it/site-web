@@ -13,6 +13,14 @@
 .panel.panel .modes small { font-size: 10px; }
 .panel.panel .meter { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 0; border-bottom: 1px dashed #79938b; }
 .panel.panel .meter strong { display: block; color: #00746e; font-size: clamp(18px,4.8vw,26px); font-weight: 900; }
+.panel.panel .tentTotals { margin: 12px 0; padding: 12px; border: 1px solid #99b2a0; background: #edf3e4; }
+.panel.panel .tentTotals>strong { display: block; font-size: 12px; line-height: 1.5; }
+.panel.panel .tentTotals dl { margin: 7px 0 0; }
+.panel.panel .tentTotals dl>div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #c7d5c3; }
+.panel.panel .tentTotals dt { font-size: 12px; font-weight: 800; }
+.panel.panel .tentTotals dd { margin: 0; text-align: right; font-size: 13px; }
+.panel.panel .tentTotals dd b { white-space: nowrap; }
+.panel.panel .tentTotals p { margin-bottom: 0; }
 .panel.panel em { font-style: normal; font-size: 13px; }
 .panel.panel p { color: #234d50; font-size: 12px; line-height: 1.5; margin: 10px 0; }
 .panel.panel p>svg { vertical-align: middle; margin-right: 5px; }

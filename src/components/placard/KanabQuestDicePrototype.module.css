@@ -667,6 +667,24 @@
 .yieldEquation>span[data-final]{background:#173c33;color:#fff}
 .yieldEquation small{font-size:.5rem;font-weight:850;line-height:1.2;text-transform:uppercase}
 .yieldEquation strong{flex:0 0 auto;font-size:.8rem}
+.tentHarvestBreakdown{min-width:0;margin-top:.65rem;padding:.7rem;border:1px solid var(--kq-ink,#111512);background:#f6edda;color:#173c33}
+.tentHarvestBreakdown>h3{margin:0 0 .5rem;font-size:.85rem;line-height:1.3}
+.tentHarvestBreakdown>p{margin:.5rem 0 0;font-size:.7rem;line-height:1.4}
+.tentHarvestBreakdown .yieldEquation{grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr))}
+.tentHarvestBreakdown .yieldEquation small{font-size:.65rem;text-transform:none}
+.tentHarvestList{display:grid;gap:.4rem;margin:0;padding:0;list-style:none}
+.tentHarvestList>li{display:flex;align-items:center;justify-content:space-between;gap:.7rem;min-width:0;padding:.5rem;border:1px solid #b7c7b3;background:#fff}
+.tentHarvestList>li>span{display:grid;min-width:0;gap:.15rem}
+.tentHarvestList>li>span:last-child{text-align:right}
+.tentHarvestList b{font-size:.8rem}
+.tentHarvestList strong{font-size:.95rem;white-space:nowrap}
+.tentHarvestList small{font-size:.65rem;line-height:1.3}
+.tentHarvestBreakdown>.tentHarvestTotal{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.6rem;background:#173c33;color:#fff;font-size:.78rem;font-weight:800}
+.tentHarvestTotal strong{flex:0 0 auto;font-size:1rem}
+.tentHarvestDetails{min-width:0;border-top:1px solid rgba(255,255,255,.28)}
+.tentHarvestDetails>summary{min-height:44px;padding:.7rem .25rem;color:#f4bc3c;font-size:.75rem;font-weight:800;line-height:1.4;cursor:pointer}
+.tentHarvestDetails>summary:focus-visible{outline:2px solid #f4bc3c;outline-offset:2px}
+.tentHarvestDetails[open]>.tentHarvestBreakdown{margin-top:0}
 .harvestScoreSheet .harvestStageLedger{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem;margin:.75rem 0 0;padding:0;list-style:none}
 .harvestScoreSheet .harvestStageLedger>li{display:grid;grid-template-columns:24px minmax(0,1fr) auto;align-items:center;gap:.1rem .45rem;padding:.5rem;border:1px solid var(--kq-ink,#111512);background:#fff}
 .harvestStageLedger>li>b{display:grid;grid-row:1/3;width:24px;height:24px;place-items:center;border-radius:50%;background:#173c33;color:#fff;font-size:.62rem}

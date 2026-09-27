@@ -442,6 +442,33 @@ function SupportCard({ card, state, copies, handCopies, deckCopies, serverValida
   );
 }
 
+function HarvestYieldBreakdown({ state }: { state: KqGameState }) {
+  const breakdown = getKqHarvestBreakdown(state);
+  const tentCount = getKqProductionUnits(state.equipment?.productionUnits);
+  const grams = (value: number) => `${value.toLocaleString("fr-FR")} g`;
+  const isComplete = state.phase === "complete";
+  return (
+    <section className={styles.tentHarvestBreakdown} aria-label="Détail de la récolte par tente">
+      <h3>{tentCount > 1 ? `${tentCount} tentes · récoltes additionnées` : "Récolte de la tente"}</h3>
+      {breakdown.tentHarvests === null ? <p>Le total enregistré de cette ancienne récolte est conservé.</p> : <>
+        {breakdown.tentHarvests.length > 1 ? <ul className={styles.tentHarvestList}>
+          {breakdown.tentHarvests.map(tent => <li key={tent.tentNumber}>
+            <span><b>Tente {tent.tentNumber}</b><small>{tent.quantityPercent > 0 ? `Matériel : +${tent.quantityPercent.toLocaleString("fr-FR")} % de quantité` : "Matériel : quantité de base"}</small></span>
+            <span><strong>{grams(tent.finalHarvestGrams)}</strong>{breakdown.harvestLossPercent > 0 ? <small>{grams(tent.grossHarvestGrams)} avant pertes</small> : null}</span>
+          </li>)}
+        </ul> : null}
+        <div className={styles.yieldEquation}>
+          <span><small>Total avant pertes</small><strong>{grams(breakdown.grossHarvestGrams)}</strong></span>
+          <span data-loss={breakdown.harvestLossPercent > 0 || undefined}><small>Pertes{breakdown.harvestLossPercent > 0 ? ` · −${breakdown.harvestLossPercent} %` : ""}</small><strong>{breakdown.lostHarvestGrams > 0 ? `−${grams(breakdown.lostHarvestGrams)}` : "Aucune"}</strong></span>
+          {state.energy && breakdown.energyAdjustmentGrams !== 0 ? <span><small>Mode {KQ_ENERGY_MODES[state.energy.mode].name}</small><strong>{breakdown.energyAdjustmentGrams > 0 ? "+" : ""}{grams(breakdown.energyAdjustmentGrams)}</strong></span> : null}
+        </div>
+      </>}
+      <p className={styles.tentHarvestTotal}><span>{isComplete ? "Total récolté" : "Total estimé"}{breakdown.harvestLossPercent > 0 ? " après pertes" : ""}</span><strong>{grams(breakdown.finalHarvestGrams)}</strong></p>
+      {tentCount > 1 ? <p>Chaque tente contribue selon son propre matériel ; une tente de départ produit moins qu’une tente améliorée.</p> : null}
+    </section>
+  );
+}
+
 function HarvestScoreSheet({ state }: { state: KqGameState }) {
   const breakdown = getKqHarvestBreakdown(state);
   const signed = (value: number) => `${value > 0 ? "+" : ""}${value}`;
@@ -453,12 +480,7 @@ function HarvestScoreSheet({ state }: { state: KqGameState }) {
         <article><small>Matériel durable</small><strong>{signed(breakdown.equipmentQualityBonus)}</strong></article><b>=</b>
         <article data-final><small>Qualité finale</small><strong>{breakdown.finalQuality}</strong></article>
       </div>
-      <div className={styles.yieldEquation}>
-        <span><small>Poids avant incident · {getKqProductionUnits(state.equipment?.productionUnits)} tente{getKqProductionUnits(state.equipment?.productionUnits)>1?"s":""} · quantité matériel {signed(breakdown.quantityPercent)} %</small><strong>{breakdown.grossHarvestGrams.toLocaleString("fr-FR")} g</strong></span>
-        <span data-loss={breakdown.harvestLossPercent > 0 || undefined}><small>Pertes de récolte</small><strong>{breakdown.harvestLossPercent > 0 ? `−${breakdown.harvestLossPercent} % · −${breakdown.lostHarvestGrams.toLocaleString("fr-FR")} g` : "Aucune"}</strong></span>
-        {state.energy ? <span><small>Mode {KQ_ENERGY_MODES[state.energy.mode].name}</small><strong>{signed(breakdown.energyAdjustmentGrams)} g</strong></span> : null}
-        <span data-final><small>Lot final</small><strong>{breakdown.finalHarvestGrams.toLocaleString("fr-FR")} g</strong></span>
-      </div>
+      <HarvestYieldBreakdown state={state} />
       <ol className={styles.harvestStageLedger}>
         {state.history.map((entry, index) => <li key={entry.stage} data-outcome={entry.outcome}><b>{index + 1}</b><span><strong>{entry.stage}</strong><small>{entry.situation} · dés {entry.dice.join("-")}</small></span><em>{KQ_OUTCOME_LABELS[entry.outcome]}</em><mark data-negative={(entry.qualityDelta ?? 0) < 0 || undefined}>{entry.qualityDelta === undefined ? "Ancien reçu" : `${signed(entry.qualityDelta)} qualité · +${entry.xpGain ?? 0} XP`}</mark></li>)}
       </ol>
@@ -2014,7 +2036,7 @@ export function KanabQuestDicePrototype({
               <article><Flame /><span><small>Copies brûlées · {burnedCards.length}</small><div>{burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>)}</div></span></article>
               <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte conservée</em>}</div></span></article>
             </div>
-            {state.energy ? <KqEnergyPanel lockedQuote={state.energy} productionUnits={state.equipment?.productionUnits} runId={remoteRunId} /> : null}
+            {state.energy ? <KqEnergyPanel lockedQuote={state.energy} lockedTents={state.equipment?.tents} productionUnits={state.equipment?.productionUnits} runId={remoteRunId} /> : null}
             <HarvestScoreSheet state={state} />
             <div className={styles.traitsList}>{flower.traits.map((trait, index) => <span key={`${trait}-${index}`}><Star />{trait}</span>)}</div>
             <section className={styles.harvestFlowerCard} aria-label="Carte Fleur obtenue">
@@ -2135,9 +2157,10 @@ export function KanabQuestDicePrototype({
         <div>
           <article><Star aria-hidden="true" /><span><strong>{runProjection.projectedQuality}</strong><small>Qualité projetée{runProjection.equipmentQualityBonus > 0 ? ` · +${runProjection.equipmentQualityBonus} matériel` : ""}</small></span></article>
           <article><Trophy aria-hidden="true" /><span><strong>{runProjection.tier}</strong><small>{runProjection.nextTier ? `${runProjection.qualityToNextTier} point${runProjection.qualityToNextTier > 1 ? "s" : ""} avant ${runProjection.nextTier}` : "Palier maximal atteint"}</small></span></article>
-          <article><Scale aria-hidden="true" /><span><strong>{runProjection.harvestGrams.toLocaleString("fr-FR")} g</strong><small>Lot estimé · {getKqProductionUnits(state.equipment?.productionUnits)} tente{getKqProductionUnits(state.equipment?.productionUnits)>1?"s":""}{runProjection.harvestLossPercent > 0 ? ` · −${runProjection.harvestLossPercent} % vol` : ""}</small></span></article>
+          <article><Scale aria-hidden="true" /><span><strong>{runProjection.harvestGrams.toLocaleString("fr-FR")} g</strong><small>Total estimé · {getKqProductionUnits(state.equipment?.productionUnits)} tente{getKqProductionUnits(state.equipment?.productionUnits)>1?"s":""}{runProjection.harvestLossPercent > 0 ? " · après pertes" : ""}</small></span></article>
           <article><Sparkles aria-hidden="true" /><span><strong>{runProjection.remainingStages}</strong><small>Étape{runProjection.remainingStages > 1 ? "s" : ""} encore ouverte{runProjection.remainingStages > 1 ? "s" : ""}</small></span></article>
         </div>
+        {getKqProductionUnits(state.equipment?.productionUnits) > 1 || runProjection.harvestLossPercent > 0 ? <details className={styles.tentHarvestDetails}><summary>Voir le détail par tente et les pertes</summary><HarvestYieldBreakdown state={state} /></details> : null}
         {plannedMarketRoute ? <aside className={styles.runRouteTarget}><Target aria-hidden="true" /><span><small>Cap commercial épinglé</small><strong>{plannedMarketRoute.name} · jury ≥ {plannedMarketRoute.minimumJuryScore.toFixed(1)}/10</strong><em>La Qualité de culture prépare la Fleur ; seul le verdict officiel donnera la note commerciale.</em></span></aside> : null}
         <p>Projection non garantie : seuls les résultats déjà validés et le matériel installé sont comptés.</p>
       </section>

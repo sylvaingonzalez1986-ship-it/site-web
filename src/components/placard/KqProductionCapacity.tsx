@@ -9,7 +9,8 @@ import styles from "./KqProductionCapacity.module.css";
 
 export type KqProductionSnapshot = ReturnType<typeof getKqProductionExpansion>;
 
-export function KqProductionCapacity({ production, cashCents, activeRun, disabled, onUpdated, onPendingChange, tentArtwork = "tent-pro" }: {
+export function KqProductionCapacity({ production, cashCents, activeRun, disabled, onUpdated, onPendingChange, tents, tentArtwork = "tent-pro" }: {
+  tents?: Array<{ tentNumber: number; equippedCodes: string[] }>;
   tentArtwork?: "tent-starter" | "tent-pro";
   production: KqProductionSnapshot;
   cashCents: number;
@@ -80,8 +81,10 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
                   const number = warehouse * 4 + index + 1;
                   const owned = number <= production.units;
                   const next = !owned && number <= targetUnits;
+                  const tent = tents?.find(item => item.tentNumber === number);
+                  const artwork = !owned || tent?.equippedCodes.includes("TENT-080-STARTER") ? "tent-starter" : tent ? "tent-pro" : tentArtwork;
                   return <li key={number} data-owned={owned} data-next={next} aria-label={`Tente ${number} · ${owned ? "installée" : next ? "prochain agrandissement" : "emplacement libre"}`}>
-                    {owned || next ? <Image src={`/placard/warehouse-v2/${tentArtwork}.webp`} width={366} height={488} sizes="80px" alt="" draggable={false} /> : <span className={styles.emptySlot} aria-hidden="true" />}
+                    {owned || next ? <Image src={`/placard/warehouse-v2/${artwork}.webp`} width={366} height={488} sizes="80px" alt={owned ? `Tente ${number} · ${artwork === "tent-starter" ? "modèle de départ" : "modèle aménagé"}` : "Tente en kit de départ"} draggable={false} /> : <span className={styles.emptySlot} aria-hidden="true" />}
                     <small>{String(number).padStart(2, "0")}{next ? <Plus size={9} aria-hidden="true" /> : null}</small>
                   </li>;
                 })}
@@ -93,12 +96,12 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
         <div className={styles.offer}>
           <small className={styles.eyebrow}>{production.nextUnits === null ? "Installation complète" : "Prochain agrandissement"}</small>
           <h4>{production.nextUnits === null ? "Les deux entrepôts sont à toi." : isFinalWarehouse ? "Un second entrepôt." : `Une ${production.nextUnits === 2 ? "deuxième" : production.nextUnits === 3 ? "troisième" : "quatrième"} tente.`}</h4>
-          <p>{production.nextUnits === null ? "Tes huit tentes cultivent ensemble, avec le même matériel et les mêmes réglages." : isFinalWarehouse ? "Quatre tentes supplémentaires, équipées comme les premières." : "Un emplacement de plus, équipé au même niveau que tes tentes actuelles."}</p>
+          <p>{production.nextUnits === null ? "Tes huit tentes contribuent au même lot, chacune avec son propre matériel." : isFinalWarehouse ? "Quatre tentes supplémentaires en kit de départ, à aménager séparément." : "Une tente supplémentaire en kit de départ. Les améliorations des autres tentes ne sont pas copiées."}</p>
           {production.nextUnits !== null ? <>
             <div className={styles.capacityChange}><span>{production.units}<small>tente{production.units > 1 ? "s" : ""}</small></span><ArrowRight size={19} aria-hidden="true" /><strong>{production.nextUnits}<small>tentes</small></strong></div>
             <details className={styles.quote}>
               <summary><span>Détail du devis</span><ChevronDown size={13} aria-hidden="true" /></summary>
-              <dl>{production.propertyCostCents > 0 ? <div><dt>Second entrepôt</dt><dd>{formatKqCash(production.propertyCostCents)}</dd></div> : null}<div><dt>Matériel et améliorations ×{production.addedUnits}</dt><dd>{formatKqCash(production.equipmentCostCents)}</dd></div></dl>
+              <dl>{production.propertyCostCents > 0 ? <div><dt>Second entrepôt</dt><dd>{formatKqCash(production.propertyCostCents)}</dd></div> : null}<div><dt>Installation de {production.addedUnits} tente{production.addedUnits > 1 ? "s" : ""}</dt><dd>{formatKqCash(production.equipmentCostCents)}</dd></div></dl>
             </details>
             <div className={styles.purchase}>
               <div className={styles.price}><small>Investissement total</small><strong>{formatKqCash(production.totalCostCents)}</strong></div>
@@ -110,7 +113,7 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
           </> : <p className={styles.complete}><Check size={16} aria-hidden="true" />Deux entrepôts, huit tentes : capacité maximale atteinte.</p>}
         </div>
       </div>
-      <p className={styles.footnote}>La récolte et les charges suivent le nombre de tentes. Chaque achat, amélioration ou remplacement équipe toute l’installation.</p>
+      <p className={styles.footnote}>Les récoltes et la consommation des tentes s’additionnent. Les bonus de culture dépendent du matériel réellement installé dans chacune.</p>
       {notice ? <p role="status" className={styles.notice}><Check size={15} aria-hidden="true" />{notice}</p> : null}
       {error ? <p role="alert" className={styles.error}>{error} <button type="button" onClick={onUpdated}>Actualiser</button></p> : null}
     </div>
