@@ -2,6 +2,7 @@ import "server-only";
 
 import {
   createSocialMissionInSupabase,
+  getMissionBuddyOptionsFromSupabase,
   chooseReferralRewardInSupabase,
   createReferralPendingRewardInSupabase,
   getAdminMissionsOverviewFromSupabase,
@@ -18,6 +19,9 @@ import {
 } from "@/lib/supabase/missions-backend";
 import type {
   AdminMissionsOverview,
+  MissionBuddyOption,
+  MissionProofSubmissionInput,
+  MissionReviewInput,
   MissionSubmission,
   MissionWithUserStatus,
   ReferralRewardSettings,
@@ -34,15 +38,7 @@ export async function getCustomerMissionsByBackend(
   return getCustomerMissionsFromSupabase(userId);
 }
 
-export async function submitMissionProofByBackend(input: {
-  userId: string;
-  missionId: string;
-  proofUrl?: string;
-  proofStoragePath?: string;
-  proofContentType?: string;
-  proofFileSize?: number;
-  proofText?: string;
-}): Promise<MissionSubmission> {
+export async function submitMissionProofByBackend(input: MissionProofSubmissionInput): Promise<MissionSubmission> {
   return submitMissionProofInSupabase(input);
 }
 
@@ -78,12 +74,7 @@ export async function getAdminSocialMissionsByBackend(): Promise<SocialMission[]
   return getAdminSocialMissionsFromSupabase();
 }
 
-export async function reviewMissionSubmissionByBackend(input: {
-  submissionId: string;
-  action: "approve" | "reject";
-  adminEmail: string;
-  adminNote?: string;
-}): Promise<void> {
+export async function reviewMissionSubmissionByBackend(input: MissionReviewInput): Promise<void> {
   return reviewMissionSubmissionInSupabase(input);
 }
 
@@ -121,4 +112,8 @@ export async function updateReferralRewardSettingsByBackend(input: {
   packsAmount: number;
 }): Promise<ReferralRewardSettings> {
   return updateReferralRewardSettingsInSupabase(input);
+}
+
+export async function getMissionBuddyOptionsByBackend(): Promise<MissionBuddyOption[]> {
+  return getMissionBuddyOptionsFromSupabase();
 }

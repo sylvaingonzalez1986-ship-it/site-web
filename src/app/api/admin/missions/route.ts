@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
+import { isMissionUuid, isSameOriginMissionRequest, MissionRequestError } from "@/lib/mission-proof-policy";
+import { hitRateLimit } from "@/lib/security-rate-limit";
 import { logAuditEvent } from "@/lib/audit-log";
 import { denyIfNotAdminApi, getValidatedAdminContext } from "@/lib/admin-guard";
 import {
   createSocialMissionByBackend,
+  getMissionBuddyOptionsByBackend,
   getAdminMissionsOverviewByBackend,
   getAdminReferralPendingRewardsByBackend,
   getAdminSocialMissionsByBackend,
@@ -30,6 +33,7 @@ function toMissionInput(value: unknown): SocialMissionEditorInput | null {
         ? raw.rewardType
         : "packs") as SocialMissionEditorInput["rewardType"],
     rewardAmount: typeof raw.rewardAmount === "number" ? raw.rewardAmount : Number(raw.rewardAmount),
+    rewardCardId: typeof raw.rewardCardId === "string" ? raw.rewardCardId : null,
     maxCompletionsPerUser:
       typeof raw.maxCompletionsPerUser === "number"
         ? raw.maxCompletionsPerUser
@@ -63,11 +67,12 @@ export async function GET() {
   }
 
   try {
-    const [overview, missions, pendingReferrals, referralSettings] = await Promise.all([
+    const [overview, missions, pendingReferrals, referralSettings, buddyOptions] = await Promise.all([
       getAdminMissionsOverviewByBackend(),
       getAdminSocialMissionsByBackend(),
       getAdminReferralPendingRewardsByBackend(),
       getReferralRewardSettingsByBackend(),
+      getMissionBuddyOptionsByBackend(),
     ]);
 
     return NextResponse.json({
@@ -75,19 +80,15 @@ export async function GET() {
       missions,
       pendingReferrals,
       referralSettings,
-    });
+      buddyOptions,
+    }, { headers: { "Cache-Control": "private, no-store" } });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Erreur chargement missions admin.",
-      },
-      { status: 500 },
-    );
+    return missionErrorResponse(error);
   }
 }
 
 export async function POST(request: Request) {
+  if (!isSameOriginMissionRequest(request)) return NextResponse.json({ error: "Origine invalide." }, { status: 403 });
   const denied = await denyIfNotAdminApi();
   if (denied) {
     return denied;
@@ -99,18 +100,22 @@ export async function POST(request: Request) {
   }
 
   try {
-    const payload = (await request.json()) as {
+    const rate = await hitRateLimit({ key: `admin_missions:${context.email}`, windowSeconds: 60, maxHits: 60 });
+    if (!rate.allowed) return NextResponse.json({ error: "Trop de demandes. Réessaie dans un instant." }, { status: 429 });
+    const payload = (await readAdminPayload(request)) as {
       submissionId?: string;
       action?: string;
       adminNote?: string;
+      requestKey?: string;
+      expectedRevision?: number;
     };
 
     const submissionId =
       typeof payload.submissionId === "string" ? payload.submissionId.trim() : "";
     const action =
-      payload.action === "approve" || payload.action === "reject" ? payload.action : "";
+      payload.action === "approve" || payload.action === "reject" || payload.action === "request_changes" ? payload.action : "";
 
-    if (!submissionId || !action) {
+    if (!isMissionUuid(submissionId) || !action || !isMissionUuid(payload.requestKey) || !Number.isSafeInteger(payload.expectedRevision) || (payload.expectedRevision ?? 0) < 1 || (payload.adminNote !== undefined && typeof payload.adminNote !== "string")) {
       return NextResponse.json(
         { error: "Donnees invalides (submissionId + action requis)." },
         { status: 400 },
@@ -120,6 +125,8 @@ export async function POST(request: Request) {
     await reviewMissionSubmissionByBackend({
       submissionId,
       action,
+      requestKey: payload.requestKey,
+      expectedRevision: payload.expectedRevision!,
       adminEmail: context.email,
       adminNote: payload.adminNote,
     });
@@ -135,16 +142,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : "Erreur traitement soumission.",
-      },
-      { status: 400 },
-    );
+    return missionErrorResponse(error);
   }
 }
 
 export async function PUT(request: Request) {
+  if (!isSameOriginMissionRequest(request)) return NextResponse.json({ error: "Origine invalide." }, { status: 403 });
   const denied = await denyIfNotAdminApi();
   if (denied) {
     return denied;
@@ -156,7 +159,9 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const payload = (await request.json()) as { mission?: unknown };
+    const rate = await hitRateLimit({ key: `admin_missions:${context.email}`, windowSeconds: 60, maxHits: 60 });
+    if (!rate.allowed) return NextResponse.json({ error: "Trop de demandes. Réessaie dans un instant." }, { status: 429 });
+    const payload = (await readAdminPayload(request)) as { mission?: unknown };
     const mission = toMissionInput(payload.mission);
 
     if (!mission) {
@@ -176,16 +181,12 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ mission: createdMission }, { status: 201 });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : "Erreur creation mission.",
-      },
-      { status: 400 },
-    );
+    return missionErrorResponse(error);
   }
 }
 
 export async function PATCH(request: Request) {
+  if (!isSameOriginMissionRequest(request)) return NextResponse.json({ error: "Origine invalide." }, { status: 403 });
   const denied = await denyIfNotAdminApi();
   if (denied) {
     return denied;
@@ -197,7 +198,9 @@ export async function PATCH(request: Request) {
   }
 
   try {
-    const payload = (await request.json()) as
+    const rate = await hitRateLimit({ key: `admin_missions:${context.email}`, windowSeconds: 60, maxHits: 60 });
+    if (!rate.allowed) return NextResponse.json({ error: "Trop de demandes. Réessaie dans un instant." }, { status: 429 });
+    const payload = (await readAdminPayload(request)) as
       | {
           kind?: "mission";
           missionId?: string;
@@ -282,11 +285,18 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json({ error: "Operation inconnue." }, { status: 400 });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : "Erreur mise a jour missions.",
-      },
-      { status: 400 },
-    );
+    return missionErrorResponse(error);
   }
+}
+
+async function readAdminPayload(request: Request): Promise<unknown> {
+  if (Number(request.headers.get("content-length") ?? 0) > 32768) throw new MissionRequestError("Demande trop volumineuse.", 413);
+  const body = await request.text();
+  if (body.length > 32768) throw new MissionRequestError("Demande trop volumineuse.", 413);
+  try { return JSON.parse(body); } catch { throw new MissionRequestError("Formulaire invalide."); }
+}
+
+function missionErrorResponse(error: unknown) {
+  if (error instanceof MissionRequestError) return NextResponse.json({ error: error.message }, { status: error.status });
+  return NextResponse.json({ error: "Impossible de traiter la demande pour le moment." }, { status: 503 });
 }

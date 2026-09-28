@@ -28,42 +28,48 @@
 .intro h2 { margin: 0; font: 900 clamp(2rem, 4vw, 3rem)/1.1 var(--font-display), Impact, sans-serif; }
 .intro p { margin: .4rem 0 0; color: #fffaf1e6; font-size: .9rem; }
 .eyebrow { display: block; margin-bottom: .5rem; }
-.activityGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+.activityGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .activity {
+  --activity-accent: #00503c;
+  --activity-yellow: #f4c43d;
+  --activity-hover: #ffda66;
   display: flex;
   align-items: center;
   gap: .85rem;
   min-width: 0;
   min-height: 132px;
   padding: 1.15rem;
-  border: 1px solid #f4c43d;
+  border: 2px solid var(--activity-accent);
+  border-left-width: 6px;
   border-radius: 12px;
-  background: #f4c43d;
+  background: var(--activity-yellow);
   color: #003f30;
   text-decoration: none;
-  box-shadow: 0 4px 16px #001e1926;
-  transition: background 150ms ease, border-color 150ms ease;
+  box-shadow: 0 5px 0 #001e19, 0 8px 16px #001e1926;
+  transition: background 150ms ease, transform 150ms ease;
 }
-.activityIcon { display: grid; place-items: center; flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; background: #00563f0d; }
+.activity[data-arena-activity="carnet"] { --activity-accent: #713543; --activity-yellow: #fae5a8; --activity-hover: #fff0c6; }
+.activity[data-arena-activity="classement"] { --activity-accent: #243e5b; --activity-yellow: #efad43; --activity-hover: #ffc46c; }
+.activityIcon { display: grid; place-items: center; flex-shrink: 0; width: 50px; height: 50px; border-radius: 12px; background: var(--activity-accent); color: #fffaf1; }
 .activityText { display: grid; gap: .3rem; min-width: 0; }
-.activityName { font-size: .65rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; }
-.activityText strong { font-size: 1.2rem; line-height: 1.15; }
+.activityName { color: var(--activity-accent); font: 900 clamp(1.45rem, 2.1vw, 1.85rem)/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.activityAction { font-size: .8rem; font-weight: 800; line-height: 1.35; }
 .description { font-size: .78rem; line-height: 1.45; }
-.arrow { flex-shrink: 0; margin-left: auto; }
-.locked { background: #e8cd7e; border-color: #e8cd7e; color: #003f30; box-shadow: none; }
+.arrow { flex-shrink: 0; width: 30px; height: 30px; margin-left: auto; padding: 5px; border-radius: 50%; background: var(--activity-accent); color: #fffaf1; }
+.locked { background: #e8cd7e; color: #003f30; box-shadow: none; }
 .soon { display: flex; align-items: center; gap: .25rem; margin-left: auto; color: #003f30; font-size: .65rem; white-space: nowrap; }
 .rewardLink { display: flex; justify-content: center; align-items: center; gap: .4rem; width: fit-content; min-height: 44px; margin: .65rem auto 0; color: #f4c43d; font-size: .8rem; text-align: center; text-decoration: none; }
 .rewardLink svg { flex-shrink: 0; }
 .home :where(a, button, summary):focus-visible { outline-color: #f4c43d; }
-.home a.activity:focus-visible { outline-color: #003f30; }
+.home a.activity:focus-visible { outline: 3px solid #fffaf1; outline-offset: 4px; box-shadow: 0 0 0 4px #002d24; }
 @media (hover: hover) {
-  a.activity:hover { background: #ffda66; border-color: #ffda66; }
+  a.activity:hover { background: var(--activity-hover); transform: translateY(-2px); }
   .rewardLink:hover { text-decoration: underline; text-underline-offset: 4px; }
 }
 @media (max-width: 900px) {
-  .activity { gap: .6rem; padding: .9rem; }
-  .activityIcon { width: 34px; height: 34px; }
-  .activityText strong { font-size: 1.05rem; }
+  .activity { gap: .6rem; padding: .8rem; }
+  .activityIcon { width: 40px; height: 40px; border-radius: 10px; }
+  .arrow { width: 26px; height: 26px; padding: 4px; }
   .description { font-size: .75rem; }
   .locked { flex-wrap: wrap; }
 }
@@ -78,11 +84,11 @@
   .intro { margin-bottom: .85rem; }
   .intro h2 { font-size: 2rem; }
   .intro p { font-size: .8rem; }
-  .activityGrid { grid-template-columns: minmax(0, 1fr); gap: .5rem; }
-  .activity { min-height: 80px; padding: .75rem .9rem; gap: .8rem; }
+  .activityGrid { grid-template-columns: minmax(0, 1fr); gap: .75rem; }
+  .activity { min-height: 96px; padding: .8rem; gap: .7rem; }
   .activityText { gap: .18rem; }
-  .activityText strong { font-size: 1.1rem; }
-  .activityName { font-size: .6rem; }
+  .activityName { font-size: 1.5rem; }
+  .activityAction { font-size: .75rem; }
   .locked { flex-wrap: nowrap; }
   .soon { font-size: .6rem; }
   .rewardLink { margin-top: .35rem; font-size: .72rem; }

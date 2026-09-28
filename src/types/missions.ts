@@ -1,8 +1,8 @@
 // ── Social Missions Types ──
 
 export type MissionIcon = "instagram" | "facebook" | "tiktok" | "camera" | "star";
-export type MissionRewardType = "packs" | "points";
-export type MissionSubmissionStatus = "pending" | "approved" | "rejected";
+export type MissionRewardType = "packs" | "points" | "support_pack" | "buddies" | "game_cash";
+export type MissionSubmissionStatus = "pending" | "approved" | "rejected" | "changes_requested";
 export type ReferralChoiceStatus = "pending" | "chosen_points" | "chosen_packs";
 
 export type SocialMission = {
@@ -18,9 +18,12 @@ export type SocialMission = {
   proofInstructions: string | null;
   isActive: boolean;
   sortOrder: number;
+  rewardCardName?: string | null;
+  rewardCardId: string | null;
 };
 
 export type SocialMissionEditorInput = {
+  rewardCardId: string | null;
   slug: string;
   title: string;
   description: string;
@@ -48,6 +51,13 @@ export type MissionSubmission = {
   reviewedBy: string | null;
   reviewedAt: string | null;
   rewardGranted: boolean;
+  revision: number;
+  rewardType: MissionRewardType;
+  rewardAmount: number;
+  rewardCardId: string | null;
+  rewardCardName: string | null;
+  rewardLabel: string | null;
+  missionTitle: string;
   createdAt: string;
 };
 
@@ -83,6 +93,7 @@ export type AdminMissionSubmissionView = MissionSubmission & {
   missionTitle: string;
   missionSlug: string;
   proofSignedUrl: string | null;
+  legacyReview: boolean;
 };
 
 export type AdminMissionsOverview = {
@@ -91,6 +102,7 @@ export type AdminMissionsOverview = {
   pendingSubmissions: number;
   approvedSubmissions: number;
   rejectedSubmissions: number;
+  changesRequestedSubmissions: number;
   submissions: AdminMissionSubmissionView[];
 };
 
@@ -99,4 +111,29 @@ export type AdminMissionsDashboard = {
   missions: SocialMission[];
   pendingReferrals: ReferralPendingReward[];
   referralSettings: ReferralRewardSettings;
+  buddyOptions: MissionBuddyOption[];
+};
+
+export type MissionBuddyOption = { id: string; name: string; rarity: string; imageUrl: string };
+
+export type MissionProofSubmissionInput = {
+  userId: string;
+  missionId: string;
+  requestKey: string;
+  submissionId?: string;
+  expectedRevision?: number;
+  proofUrl?: string;
+  proofStoragePath?: string;
+  proofContentType?: string;
+  proofFileSize?: number;
+  proofText?: string;
+};
+
+export type MissionReviewInput = {
+  submissionId: string;
+  expectedRevision: number;
+  requestKey: string;
+  action: "approve" | "reject" | "request_changes";
+  adminEmail: string;
+  adminNote?: string;
 };

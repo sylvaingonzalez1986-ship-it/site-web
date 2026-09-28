@@ -5,6 +5,7 @@ import Link from "@/components/navigation/NavigationLink";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, Gift, LockKeyhole, RefreshCw, Sprout, Store, Trophy, Users } from "lucide-react";
 import { KQ_MISSION_COPY, KQ_MISSION_TRACKS, type KqMission, type KqMissionClaim, type KqMissionSnapshot } from "@/lib/kanab-quest-missions";
+import { CommunityMissionWelcome, CommunityMissionsBoard } from "@/components/missions/CommunityMissionsBoard";
 import styles from "./KqMissionCenter.module.css";
 
 const TRACKS = {
@@ -15,6 +16,7 @@ const TRACKS = {
 const PACK_IMAGE = "/placard/shop-item-packs-v2.webp";
 
 export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" | "shop") => void }) {
+  const [section, setSection] = useState<"community" | "challenges">("community");
   const [data, setData] = useState<KqMissionSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
@@ -75,10 +77,9 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" |
   const availablePacks = data?.missions.filter((mission) => mission.packAvailable).length ?? 0;
 
   return <main className={styles.center}>
-    <header className={styles.header}>
-      <div><span className={styles.eyebrow}>Centre de missions</span><h1 data-arena-tour="missions">Tes défis, tes cartes.</h1><p>Cultive, fidélise et développe ton réseau. Chaque objectif atteint te rapporte un pack La Botte.</p></div>
-      <Image src={PACK_IMAGE} alt="Packs de cartes La Botte à gagner" width={140} height={140} sizes="140px" />
-    </header>
+    <CommunityMissionWelcome />
+    <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Tous mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button></nav>
+    {section === "community" ? <CommunityMissionsBoard /> : <>
     <div className={styles.toolbar}>
       <span><Trophy size={19} aria-hidden="true" /> {claimed} / {data?.missions.length ?? 9} missions accomplies</span>
       <button type="button" disabled={loading || busy !== null} onClick={() => void refresh()}><RefreshCw size={16} aria-hidden="true" />{loading ? "Actualisation…" : "Actualiser"}</button>
@@ -119,5 +120,6 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" |
         <details><summary>Comment progressent mes missions ?</summary><p>Une mission active par parcours, sans limite de temps. Récupère son pack pour débloquer la suivante. Chaque récompense se gagne une seule fois par compte.</p><p>Tes cultures déjà terminées comptent, même si leurs fleurs ont été vendues ou utilisées en duel. Pour la vente en ligne et les boutiques, garde le nombre de clients ou de partenaires demandé jusqu’à la réclamation du pack. Une mission récompensée reste acquise.</p><p>La vente en ligne nécessite l’ordinateur et un accès Internet actif, disponibles dans le jeu. Les packs de mission rejoignent les packs disponibles à la boutique La Botte.</p></details>
       </footer>
     </> : null}
+    </>}
   </main>;
 }

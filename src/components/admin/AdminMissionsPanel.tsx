@@ -3,22 +3,21 @@
 import {
   ArrowDown,
   ArrowUp,
-  Check,
   Loader2,
   Plus,
   RefreshCcw,
   Save,
-  X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { AdminMissionReviews } from "./AdminMissionReviews";
+import { formatMissionReward } from "@/lib/community-missions";
 import type {
   AdminMissionsDashboard,
   AdminMissionSubmissionView,
   SocialMission,
   SocialMissionEditorInput,
+  MissionReviewInput,
 } from "@/types/missions";
-
-type MissionFilter = "all" | "pending" | "approved" | "rejected";
 
 type MissionFormState = {
   slug: string;
@@ -27,6 +26,7 @@ type MissionFormState = {
   icon: SocialMissionEditorInput["icon"];
   rewardType: SocialMissionEditorInput["rewardType"];
   rewardAmount: string;
+  rewardCardId: string;
   maxCompletionsPerUser: string;
   requiresProof: boolean;
   proofInstructions: string;
@@ -43,24 +43,13 @@ const EMPTY_MISSION_FORM: MissionFormState = {
   title: "",
   description: "",
   icon: "star",
-  rewardType: "packs",
+  rewardType: "support_pack",
   rewardAmount: "1",
+  rewardCardId: "",
   maxCompletionsPerUser: "1",
   requiresProof: true,
   proofInstructions: "",
-  isActive: true,
-};
-
-const statusLabels: Record<string, string> = {
-  pending: "En attente",
-  approved: "Approuvee",
-  rejected: "Refusee",
-};
-
-const statusColors: Record<string, string> = {
-  pending: "bg-yellow-100 text-yellow-800",
-  approved: "bg-green-100 text-green-800",
-  rejected: "bg-red-100 text-red-800",
+  isActive: false,
 };
 
 const referralStatusLabels: Record<string, string> = {
@@ -97,7 +86,8 @@ function missionToFormState(mission: SocialMission): MissionFormState {
     description: mission.description,
     icon: mission.icon,
     rewardType: mission.rewardType,
-    rewardAmount: String(mission.rewardAmount),
+    rewardAmount: String(mission.rewardType === "game_cash" ? mission.rewardAmount / 100 : mission.rewardAmount),
+    rewardCardId: mission.rewardCardId ?? "",
     maxCompletionsPerUser: String(mission.maxCompletionsPerUser),
     requiresProof: mission.requiresProof,
     proofInstructions: mission.proofInstructions ?? "",
@@ -112,7 +102,8 @@ function formStateToMissionInput(form: MissionFormState): SocialMissionEditorInp
     description: form.description,
     icon: form.icon,
     rewardType: form.rewardType,
-    rewardAmount: Number(form.rewardAmount),
+    rewardAmount: form.rewardType === "game_cash" ? Math.round(Number(form.rewardAmount) * 100) : Number(form.rewardAmount),
+    rewardCardId: form.rewardType === "buddies" ? form.rewardCardId || null : null,
     maxCompletionsPerUser: Number(form.maxCompletionsPerUser),
     requiresProof: form.requiresProof,
     proofInstructions: form.requiresProof ? form.proofInstructions : null,
@@ -151,7 +142,12 @@ export function AdminMissionsPanel() {
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState<string | null>(null);
   const [processingId, setProcessingId] = useState<string | null>(null);
-  const [filter, setFilter] = useState<MissionFilter>("pending");
+  const [section, setSection] = useState<"review" | "catalog" | "referral">("review");
+  const reviewInFlight = useRef(false);
+  const reviewRequests = useRef(new Map<string, string>());
+  const catalogMutation = useRef(false);
+  const noteRevisions = useRef(new Map<string, number>());
+  const loadGeneration = useRef(0);
   const [notesById, setNotesById] = useState<Record<string, string>>({});
   const [editingMissionId, setEditingMissionId] = useState<string | null>(null);
   const [missionForm, setMissionForm] = useState<MissionFormState>(EMPTY_MISSION_FORM);
@@ -163,6 +159,7 @@ export function AdminMissionsPanel() {
   const [referralSettingsSaving, setReferralSettingsSaving] = useState(false);
 
   const loadData = async (options?: { preserveStatus?: boolean }) => {
+    const generation = ++loadGeneration.current;
     setLoading(true);
     if (!options?.preserveStatus) {
       setStatus(null);
@@ -172,12 +169,13 @@ export function AdminMissionsPanel() {
       const response = await fetch("/api/admin/missions", { cache: "no-store" });
       if (!response.ok) {
         const payload = (await response.json()) as { error?: string };
+        if (generation !== loadGeneration.current) return;
         setStatus(payload.error || "Erreur chargement missions.");
-        setDashboard(null);
         return;
       }
 
       const payload = (await response.json()) as Partial<AdminMissionsDashboard>;
+      if (generation !== loadGeneration.current) return;
       const nextDashboard =
         payload.overview && payload.missions && payload.pendingReferrals && payload.referralSettings
           ? {
@@ -185,37 +183,38 @@ export function AdminMissionsPanel() {
               missions: payload.missions,
               pendingReferrals: payload.pendingReferrals,
               referralSettings: payload.referralSettings,
+              buddyOptions: payload.buddyOptions ?? [],
             }
           : null;
 
       setDashboard(nextDashboard);
+      if (!nextDashboard) setStatus("Réponse incomplète. Rechargez les missions.");
+      const previousRevisions = noteRevisions.current;
+      noteRevisions.current = new Map(nextDashboard?.overview.submissions.map((submission) => [submission.id, submission.revision]) ?? []);
       setNotesById((current) => {
         const next: Record<string, string> = {};
         for (const submission of nextDashboard?.overview.submissions ?? []) {
-          next[submission.id] = current[submission.id] ?? submission.adminNote ?? "";
+          next[submission.id] = previousRevisions.get(submission.id) === submission.revision
+            ? current[submission.id] ?? submission.adminNote ?? ""
+            : submission.adminNote ?? "";
         }
         return next;
       });
       setReferralSettingsForm(getReferralSettingsFormState(nextDashboard));
     } catch {
-      setStatus("Erreur reseau.");
-      setDashboard(null);
+      if (generation === loadGeneration.current) setStatus("Chargement impossible. Vérifiez votre connexion puis rechargez.");
     } finally {
-      setLoading(false);
+      if (generation === loadGeneration.current) setLoading(false);
     }
   };
 
   useEffect(() => {
     void loadData();
+    return () => { loadGeneration.current += 1; };
   }, []);
 
   const missions = dashboard?.missions ?? [];
   const pendingReferrals = dashboard?.pendingReferrals ?? [];
-  const filteredSubmissions =
-    dashboard?.overview.submissions.filter((submission) =>
-      filter === "all" ? true : submission.status === filter,
-    ) ?? [];
-
   const resetMissionEditor = () => {
     setEditingMissionId(null);
     setMissionForm(EMPTY_MISSION_FORM);
@@ -223,8 +222,19 @@ export function AdminMissionsPanel() {
 
   const handleReview = async (
     submission: AdminMissionSubmissionView,
-    action: "approve" | "reject",
+    action: MissionReviewInput["action"],
   ) => {
+    if (reviewInFlight.current) return;
+    const adminNote = notesById[submission.id]?.trim() || "";
+    if (action !== "approve" && !adminNote) {
+      setStatus("Ajoutez un message au joueur pour expliquer la correction ou le refus.");
+      document.getElementById(`review-note-${submission.id}`)?.focus();
+      return;
+    }
+    reviewInFlight.current = true;
+    const requestSignature = JSON.stringify([submission.id, submission.revision, action, adminNote]);
+    const requestKey = reviewRequests.current.get(requestSignature) ?? crypto.randomUUID();
+    reviewRequests.current.set(requestSignature, requestKey);
     setProcessingId(submission.id);
 
     try {
@@ -234,7 +244,9 @@ export function AdminMissionsPanel() {
         body: JSON.stringify({
           submissionId: submission.id,
           action,
-          adminNote: notesById[submission.id]?.trim() || undefined,
+          adminNote: adminNote || undefined,
+          expectedRevision: submission.revision,
+          requestKey,
         }),
       });
 
@@ -246,18 +258,23 @@ export function AdminMissionsPanel() {
 
       setStatus(
         action === "approve"
-          ? `Mission approuvee pour ${submission.userName}.`
-          : `Mission refusee pour ${submission.userName}.`,
+          ? `Participation validée pour ${submission.userName} : ${formatMissionReward(submission)} attribué(s).`
+          : action === "request_changes"
+            ? `Correction demandée à ${submission.userName}. Aucun gain attribué.`
+            : `Participation refusée pour ${submission.userName}. Aucun gain attribué.`,
       );
       await loadData({ preserveStatus: true });
     } catch {
       setStatus("Erreur reseau.");
     } finally {
+      reviewInFlight.current = false;
       setProcessingId(null);
     }
   };
 
   const handleSaveMission = async () => {
+    if (catalogMutation.current) return;
+    catalogMutation.current = true;
     setMissionSaving(true);
 
     try {
@@ -289,11 +306,14 @@ export function AdminMissionsPanel() {
     } catch {
       setStatus("Erreur reseau.");
     } finally {
+      catalogMutation.current = false;
       setMissionSaving(false);
     }
   };
 
   const handleToggleMission = async (mission: SocialMission) => {
+    if (catalogMutation.current) return;
+    catalogMutation.current = true;
     setCatalogBusyId(mission.id);
 
     try {
@@ -321,11 +341,13 @@ export function AdminMissionsPanel() {
     } catch {
       setStatus("Erreur reseau.");
     } finally {
+      catalogMutation.current = false;
       setCatalogBusyId(null);
     }
   };
 
   const handleMoveMission = async (missionId: string, direction: -1 | 1) => {
+    if (catalogMutation.current) return;
     const currentIndex = missions.findIndex((mission) => mission.id === missionId);
     const targetIndex = currentIndex + direction;
 
@@ -337,6 +359,7 @@ export function AdminMissionsPanel() {
     const [movedMission] = reordered.splice(currentIndex, 1);
     reordered.splice(targetIndex, 0, movedMission);
 
+    catalogMutation.current = true;
     setCatalogBusyId(missionId);
 
     try {
@@ -360,6 +383,7 @@ export function AdminMissionsPanel() {
     } catch {
       setStatus("Erreur reseau.");
     } finally {
+      catalogMutation.current = false;
       setCatalogBusyId(null);
     }
   };
@@ -382,11 +406,11 @@ export function AdminMissionsPanel() {
 
       const payload = (await response.json()) as { error?: string };
       if (!response.ok) {
-        setStatus(payload.error || "Impossible d'enregistrer les rewards.");
+        setStatus(payload.error || "Impossible d'enregistrer les récompenses.");
         return;
       }
 
-      setStatus("Rewards de parrainage mis a jour.");
+      setStatus("Récompenses de parrainage mises à jour.");
       await loadData({ preserveStatus: true });
     } catch {
       setStatus("Erreur reseau.");
@@ -402,17 +426,18 @@ export function AdminMissionsPanel() {
         <button
           type="button"
           className="btn-cartoon btn-secondary"
+          disabled={loading || Boolean(processingId) || missionSaving || Boolean(catalogBusyId)}
           onClick={() => void loadData()}
         >
           <RefreshCcw size={14} /> Recharger
         </button>
       </div>
 
-      {status && <p className="mt-2 text-sm text-charcoal">{status}</p>}
+      {status && <p role="status" className="mt-3 rounded-lg border-2 border-ink bg-white p-3 text-sm text-ink">{status}</p>}
 
-      {loading || !dashboard ? (
+      {!dashboard ? (
         <div className="mt-4 card-cartoon bg-white p-4 text-charcoal">
-          Chargement missions...
+          {loading ? "Chargement des missions…" : "Les missions ne sont pas disponibles. Utilisez Recharger pour réessayer."}
         </div>
       ) : (
         <div className="mt-5 grid gap-6">
@@ -434,7 +459,13 @@ export function AdminMissionsPanel() {
             />
           </div>
 
-          <div className="grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
+          <nav className="flex flex-wrap gap-2" aria-label="Gestion des missions">
+            {([{ key: "review", label: "Preuves à vérifier" }, { key: "catalog", label: "Catalogue et récompenses" }, { key: "referral", label: "Parrainage" }] as const).map((item) => (
+              <button key={item.key} type="button" aria-pressed={section === item.key} onClick={() => setSection(item.key)} className={`min-h-11 rounded-lg border-2 border-ink px-4 text-sm font-bold ${section === item.key ? "bg-[#f4c43d] text-[#003f30]" : "bg-white text-ink"}`}>{item.label}</button>
+            ))}
+          </nav>
+          {section === "review" && <AdminMissionReviews submissions={dashboard.overview.submissions} busy={loading || Boolean(processingId)} notes={notesById} onNote={(id, note) => setNotesById((current) => ({ ...current, [id]: note }))} onReview={(submission, action) => void handleReview(submission, action)} />}
+          {section === "catalog" && <fieldset disabled={loading || missionSaving || Boolean(catalogBusyId)} className="grid min-w-0 gap-5 xl:grid-cols-[1.15fr_0.85fr]">
             <article className="card-cartoon bg-white p-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
@@ -480,8 +511,7 @@ export function AdminMissionsPanel() {
                         <p className="mt-2 text-sm text-charcoal">{mission.description}</p>
                         <div className="mt-3 flex flex-wrap gap-2 text-xs text-ink">
                           <span className="pill-cartoon inline-flex items-center px-3 py-1">
-                            {mission.rewardAmount}{" "}
-                            {mission.rewardType === "packs" ? "pack(s)" : "points"}
+                            {formatMissionReward(mission)}
                           </span>
                           <span className="pill-cartoon inline-flex items-center px-3 py-1">
                             {mission.maxCompletionsPerUser} fois max
@@ -554,7 +584,7 @@ export function AdminMissionsPanel() {
                     {editingMissionId ? "Modifier la mission" : "Nouvelle mission"}
                   </h3>
                   <p className="text-sm text-charcoal">
-                    Titre, reward, preuve et visibilite client.
+                    Les gains des participations déjà déposées restent inchangés.
                   </p>
                 </div>
                 {editingMissionId && (
@@ -570,10 +600,10 @@ export function AdminMissionsPanel() {
 
               <div className="mt-4 grid gap-4">
                 <div>
-                  <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
+                  <label htmlFor="mission-title" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
                     Titre
                   </label>
-                  <input
+                  <input id="mission-title"
                     type="text"
                     value={missionForm.title}
                     onChange={(event) =>
@@ -584,25 +614,25 @@ export function AdminMissionsPanel() {
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
+                  <label htmlFor="mission-slug" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
                     Slug
                   </label>
-                  <input
+                  <input id="mission-slug"
                     type="text"
                     value={missionForm.slug}
                     onChange={(event) =>
                       setMissionForm((current) => ({ ...current, slug: event.target.value }))
                     }
                     className="mt-1 h-11 w-full rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] px-3 text-sm text-ink"
-                    placeholder="follow-instagram"
+                    placeholder="presente-ta-fleur"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
+                  <label htmlFor="mission-description" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
                     Description
                   </label>
-                  <textarea
+                  <textarea id="mission-description"
                     value={missionForm.description}
                     onChange={(event) =>
                       setMissionForm((current) => ({
@@ -616,10 +646,10 @@ export function AdminMissionsPanel() {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
+                    <label htmlFor="mission-icon" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
                       Icone
                     </label>
-                    <select
+                    <select id="mission-icon"
                       value={missionForm.icon}
                       onChange={(event) =>
                         setMissionForm((current) => ({
@@ -638,33 +668,39 @@ export function AdminMissionsPanel() {
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
-                      Type de reward
+                    <label htmlFor="mission-rewardType" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
+                      Récompense
                     </label>
-                    <select
+                    <select id="mission-rewardType"
                       value={missionForm.rewardType}
                       onChange={(event) =>
                         setMissionForm((current) => ({
                           ...current,
                           rewardType: event.target.value as MissionFormState["rewardType"],
+                          rewardAmount: "1",
                         }))
                       }
                       className="mt-1 h-11 w-full rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] px-3 text-sm text-ink"
                     >
-                      <option value="packs">Packs</option>
-                      <option value="points">Points</option>
+                      <option value="support_pack">Pack La Botte · 3 cartes</option>
+                      <option value="buddies">Buddy à collectionner</option>
+                      <option value="game_cash">Argent du Placard (virtuel)</option>
+                      <option value="packs">Pack Buddies</option>
+                      <option value="points">Points fidélité</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
-                      Quantite reward
+                    <label htmlFor="mission-rewardAmount" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
+                      {missionForm.rewardType === "game_cash" ? "Montant en € virtuels" : "Quantité"}
                     </label>
-                    <input
+                    <input id="mission-rewardAmount"
                       type="number"
-                      min={1}
+                      min={missionForm.rewardType === "game_cash" ? 0.01 : 1}
+                      step={missionForm.rewardType === "game_cash" ? 0.01 : 1}
+                      max={{ packs: 20, points: 1000, support_pack: 5, buddies: 1, game_cash: 1000 }[missionForm.rewardType]}
                       value={missionForm.rewardAmount}
                       onChange={(event) =>
                         setMissionForm((current) => ({
@@ -677,12 +713,13 @@ export function AdminMissionsPanel() {
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
+                    <label htmlFor="mission-maxCompletionsPerUser" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
                       Max par client
                     </label>
-                    <input
+                    <input id="mission-maxCompletionsPerUser"
                       type="number"
                       min={1}
+                      max={20}
                       value={missionForm.maxCompletionsPerUser}
                       onChange={(event) =>
                         setMissionForm((current) => ({
@@ -695,6 +732,14 @@ export function AdminMissionsPanel() {
                   </div>
                 </div>
 
+                {missionForm.rewardType === "buddies" && <div>
+                  <label htmlFor="mission-buddy" className="text-sm font-semibold text-ink">Buddy offert</label>
+                  <select id="mission-buddy" value={missionForm.rewardCardId} onChange={(event) => setMissionForm((current) => ({ ...current, rewardCardId: event.target.value }))} className="mt-1 min-h-11 w-full rounded border-2 border-ink bg-white px-3 text-sm text-ink">
+                    <option value="">Choisir un Buddy</option>
+                    {dashboard.buddyOptions.map((buddy) => <option key={buddy.id} value={buddy.id}>{buddy.name} · {buddy.rarity}</option>)}
+                  </select>
+                  {dashboard.buddyOptions.length === 0 && <p className="mt-1 text-sm text-charcoal">Aucun Buddy éligible dans le catalogue.</p>}
+                </div>}
                 <label className="flex items-center gap-3 rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] px-3 py-3 text-sm text-ink">
                   <input
                     type="checkbox"
@@ -707,14 +752,14 @@ export function AdminMissionsPanel() {
                     }
                     className="h-4 w-4 accent-[#0a7b61]"
                   />
-                  Preuve requise pour cette mission
+                  Capture requise pour cette mission
                 </label>
 
                 <div>
-                  <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
+                  <label htmlFor="mission-proofInstructions" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
                     Instructions de preuve
                   </label>
-                  <textarea
+                  <textarea id="mission-proofInstructions"
                     value={missionForm.proofInstructions}
                     onChange={(event) =>
                       setMissionForm((current) => ({
@@ -739,7 +784,7 @@ export function AdminMissionsPanel() {
                     }
                     className="h-4 w-4 accent-[#0a7b61]"
                   />
-                  Visible cote client
+                  Mission active et visible par les joueurs
                 </label>
 
                 <div className="flex gap-2">
@@ -767,9 +812,9 @@ export function AdminMissionsPanel() {
                 </div>
               </div>
             </article>
-          </div>
+          </fieldset>}
 
-          <div className="grid gap-5 xl:grid-cols-[0.8fr_1.2fr]">
+          {section === "referral" && <div className="grid gap-5 xl:grid-cols-[0.8fr_1.2fr]">
             <article className="card-cartoon bg-white p-4">
               <h3 className="font-display text-2xl text-ink">Rewards de parrainage</h3>
               <p className="mt-1 text-sm text-charcoal">
@@ -863,165 +908,9 @@ export function AdminMissionsPanel() {
                 </div>
               )}
             </article>
-          </div>
+          </div>}
 
-          <article className="card-cartoon bg-white p-4">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <h3 className="font-display text-2xl text-ink">Moderation des preuves</h3>
-                <p className="text-sm text-charcoal">
-                  Validation et refus des soumissions clients.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {(["pending", "all", "approved", "rejected"] as const).map((value) => (
-                  <button
-                    key={value}
-                    type="button"
-                    onClick={() => setFilter(value)}
-                    className={`pill-cartoon flex min-h-[36px] items-center px-3 py-1 text-xs font-bold uppercase tracking-[0.09em] ${
-                      filter === value
-                        ? "bg-[#1a1a1a] text-white"
-                        : "border-2 border-[#1a1a1a] bg-white text-ink hover:bg-[#f0f0f0]"
-                    }`}
-                  >
-                    {value === "all"
-                      ? "Toutes"
-                      : value === "pending"
-                        ? "En attente"
-                        : value === "approved"
-                          ? "Approuvees"
-                          : "Refusees"}
-                  </button>
-                ))}
-              </div>
-            </div>
 
-            {filteredSubmissions.length === 0 ? (
-              <p className="mt-4 text-sm text-charcoal">
-                Aucune soumission dans cette categorie.
-              </p>
-            ) : (
-              <div className="mt-4 grid gap-3">
-                {filteredSubmissions.map((submission) => (
-                  <article
-                    key={submission.id}
-                    className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-4"
-                  >
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div>
-                        <p className="text-sm font-semibold text-ink">{submission.missionTitle}</p>
-                        <p className="text-xs text-charcoal">
-                          {submission.userName} ({submission.userEmail})
-                        </p>
-                        <p className="text-xs text-charcoal">{formatDate(submission.createdAt)}</p>
-                      </div>
-                      <span
-                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold ${
-                          statusColors[submission.status] ?? "bg-gray-100 text-gray-800"
-                        }`}
-                      >
-                        {statusLabels[submission.status] ?? submission.status}
-                      </span>
-                    </div>
-
-                    {submission.proofText && (
-                      <div className="mt-2 rounded border border-[#ccc] bg-white p-2">
-                        <p className="text-xs text-charcoal">{submission.proofText}</p>
-                      </div>
-                    )}
-
-                    {submission.proofSignedUrl && (
-                      <div className="mt-3 overflow-hidden rounded border border-[#1a1a1a] bg-white">
-                        <a
-                          href={submission.proofSignedUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {/* Signed proof URLs are best rendered with native img in admin moderation. */}
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={submission.proofSignedUrl}
-                            alt={`Preuve mission ${submission.missionTitle}`}
-                            className="h-56 w-full object-contain bg-[#f7f4ee]"
-                          />
-                        </a>
-                      </div>
-                    )}
-
-                    {submission.proofUrl && (
-                      <p className="mt-1 text-xs">
-                        <a
-                          href={submission.proofUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-700 underline"
-                        >
-                          Voir la preuve
-                        </a>
-                      </p>
-                    )}
-
-                    {submission.adminNote && (
-                      <p className="mt-2 text-xs text-charcoal">
-                        Note admin: {submission.adminNote}
-                      </p>
-                    )}
-
-                    {submission.status === "pending" && (
-                      <div className="mt-3 space-y-3">
-                        <div>
-                          <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-charcoal">
-                            Note admin
-                          </label>
-                          <textarea
-                            value={notesById[submission.id] ?? ""}
-                            onChange={(event) =>
-                              setNotesById((current) => ({
-                                ...current,
-                                [submission.id]: event.target.value,
-                              }))
-                            }
-                            disabled={processingId === submission.id}
-                            className="mt-1 h-20 w-full resize-none rounded border border-[#1a1a1a] bg-white px-3 py-2 text-sm text-ink"
-                            placeholder="Note interne sur la preuve..."
-                          />
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            type="button"
-                            onClick={() => void handleReview(submission, "approve")}
-                            disabled={processingId === submission.id}
-                            className="btn-cartoon inline-flex h-8 items-center justify-center gap-1 bg-green-600 px-3 text-xs leading-none text-white hover:bg-green-700"
-                          >
-                            {processingId === submission.id ? (
-                              <Loader2 className="h-3 w-3 animate-spin" />
-                            ) : (
-                              <Check size={14} />
-                            )}
-                            Approuver
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => void handleReview(submission, "reject")}
-                            disabled={processingId === submission.id}
-                            className="btn-cartoon inline-flex h-8 items-center justify-center gap-1 bg-red-600 px-3 text-xs leading-none text-white hover:bg-red-700"
-                          >
-                            {processingId === submission.id ? (
-                              <Loader2 className="h-3 w-3 animate-spin" />
-                            ) : (
-                              <X size={14} />
-                            )}
-                            Refuser
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </article>
-                ))}
-              </div>
-            )}
-          </article>
         </div>
       )}
     </section>

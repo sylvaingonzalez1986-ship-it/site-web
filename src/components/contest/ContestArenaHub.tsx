@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
-import { ArrowUpRight, BookOpen, Gamepad2, LockKeyhole, Trophy } from "lucide-react";
+import { ArrowUpRight, BookOpen, LockKeyhole, Sprout, Trophy } from "lucide-react";
 import { ArenaJourneyEntry } from "./ArenaJourneyEntry";
 import { ArenaPrelaunchCharacter } from "./ArenaPrelaunchCharacter";
 import { ARENA_LOBBY_MODES, ARENA_LOBBY_MODE_ORDER, type ArenaLobbyMode } from "@/lib/arena-lobby";
@@ -12,7 +12,7 @@ import styles from "./ArenaHome.module.css";
 
 const ACTIVITIES = {
   carnet: { Icon: BookOpen, title: "Déguster", description: "Note les fleurs que tu as goûtées." },
-  jouer: { Icon: Gamepad2, title: "Cultiver", description: "Fais grandir tes cultures." },
+  jouer: { Icon: Sprout, title: "Cultiver", description: "Fais grandir tes cultures." },
   classement: { Icon: Trophy, title: "Voir le classement", description: "Retrouve ta place dans la saison." },
 };
 
@@ -58,8 +58,8 @@ export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer
             const content = <>
               <span className={styles.activityIcon}><Icon size={23} aria-hidden="true" /></span>
               <span className={styles.activityText}>
-                <span className={styles.activityName}>{ARENA_LOBBY_MODES[id].name}</span>
-                <strong>{title}</strong>
+                <strong className={styles.activityName}>{ARENA_LOBBY_MODES[id].name}</strong>
+                <span className={styles.activityAction}>{title}</span>
                 <span className={styles.description}>{description}</span>
               </span>
               {activitiesLocked ? <span className={styles.soon}><LockKeyhole size={14} aria-hidden="true" />Bientôt</span>

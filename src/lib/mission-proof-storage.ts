@@ -1,10 +1,13 @@
 import "server-only";
 
 import { randomUUID } from "node:crypto";
+import sharp from "sharp";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import {
   MISSION_PROOF_BUCKET,
   MISSION_PROOF_UPLOAD_MAX_BYTES,
+  MISSION_PROOF_MAX_PIXELS,
+  isMissionUuid,
   isSupportedMissionProofMimeType,
 } from "@/lib/mission-proof-policy";
 
@@ -79,6 +82,7 @@ export async function saveMissionProofUpload(file: File, userId: string): Promis
   contentType: string;
   fileSize: number;
 }> {
+  if (!isMissionUuid(userId)) throw new MissionProofUploadError("Compte invalide.", 400);
   if (file.size <= 0) {
     throw new MissionProofUploadError("Fichier vide.", 400);
   }
@@ -109,23 +113,33 @@ export async function saveMissionProofUpload(file: File, userId: string): Promis
     );
   }
 
-  const objectPath = `${userId}/${randomUUID()}.${detected.extension}`;
+  let normalized: Buffer;
+  try {
+    const image = sharp(bytes, { limitInputPixels: MISSION_PROOF_MAX_PIXELS, animated: false, failOn: "warning" });
+    const metadata = await image.metadata();
+    if ((metadata.pages ?? 1) !== 1 || !metadata.width || !metadata.height) throw new Error();
+    normalized = await image.rotate().webp({ quality: 92 }).toBuffer();
+  } catch {
+    throw new MissionProofUploadError("Image illisible ou trop grande. Utilise une capture JPG, PNG ou WEBP.", 415);
+  }
+  if (normalized.length > MISSION_PROOF_UPLOAD_MAX_BYTES) throw new MissionProofUploadError("Image trop volumineuse.", 413);
+  const objectPath = `${userId}/${randomUUID()}.webp`;
   const supabase = createSupabaseServiceClient();
   const uploadResult = await supabase.storage
     .from(MISSION_PROOF_BUCKET)
-    .upload(objectPath, Buffer.from(arrayBuffer), {
-      contentType: detected.mimeType,
+    .upload(objectPath, normalized, {
+      contentType: "image/webp",
       upsert: false,
     });
 
   if (uploadResult.error) {
-    throw new MissionProofUploadError(uploadResult.error.message, 500);
+    throw new MissionProofUploadError("Impossible d’enregistrer la capture. Réessaie plus tard.", 503);
   }
 
   return {
     storagePath: objectPath,
-    contentType: detected.mimeType,
-    fileSize: file.size,
+    contentType: "image/webp",
+    fileSize: normalized.length,
   };
 }
 
@@ -157,6 +171,29 @@ export async function deleteMissionProof(storagePath: string): Promise<void> {
   const supabase = createSupabaseServiceClient();
   const result = await supabase.storage.from(MISSION_PROOF_BUCKET).remove([storagePath]);
   if (result.error) {
-    throw new MissionProofUploadError(result.error.message, 500);
+    throw new MissionProofUploadError("Impossible de supprimer la capture inutilisée.", 503);
   }
+}
+
+/** Enumerate only this user's flat private folder, including previous revisions and unreferenced uploads. */
+export async function listMissionProofPathsForUser(userId: string): Promise<string[]> {
+  if (!isMissionUuid(userId)) throw new MissionProofUploadError("Compte invalide.", 400);
+  const bucket = createSupabaseServiceClient().storage.from(MISSION_PROOF_BUCKET);
+  const paths: string[] = [];
+  const pageSize = 100;
+  const maximumObjects = 10000;
+  for (let offset = 0; offset <= maximumObjects; offset += pageSize) {
+    const result = await bucket.list(userId, { limit: pageSize, offset, sortBy: { column: "name", order: "asc" } });
+    if (result.error) throw new MissionProofUploadError("Impossible de préparer la suppression des captures.", 503);
+    const rows = result.data ?? [];
+    for (const row of rows) {
+      if (!row.id || typeof row.name !== "string" || !/^[0-9a-f-]{36}\.(?:jpg|png|webp)$/i.test(row.name)) {
+        throw new MissionProofUploadError("Une capture nécessite une vérification avant suppression du compte.", 503);
+      }
+      paths.push(userId + "/" + row.name);
+      if (paths.length > maximumObjects) throw new MissionProofUploadError("Trop de captures pour une suppression immédiate. Contacte l’équipe.", 503);
+    }
+    if (rows.length < pageSize) return [...new Set(paths)];
+  }
+  throw new MissionProofUploadError("La suppression des captures doit être réessayée.", 503);
 }

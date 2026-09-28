@@ -1,10 +1,15 @@
 import "server-only";
 
-import { createMissionProofSignedUrl, deleteMissionProof } from "@/lib/mission-proof-storage";
+import { createMissionProofSignedUrl } from "@/lib/mission-proof-storage";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
+import { MissionRequestError, isMissionUuid, normalizeMissionProofUrl, MISSION_PROOF_TEXT_MAX_LENGTH } from "@/lib/mission-proof-policy";
+import { MISSION_REWARD_LIMITS } from "@/lib/community-missions";
 import { grantLotteryTicketsToCustomerInSupabase } from "@/lib/supabase/lottery-backend";
 import type {
   AdminMissionsOverview,
+  MissionBuddyOption,
+  MissionProofSubmissionInput,
+  MissionReviewInput,
   AdminMissionSubmissionView,
   MissionIcon,
   MissionRewardType,
@@ -25,6 +30,8 @@ const SELECT_SOCIAL_MISSIONS_COLUMNS = [
   "icon",
   "reward_type",
   "reward_amount",
+  "reward_card_id",
+  "reward_card:lottery_card_definitions!social_missions_reward_card_id_fkey(name)",
   "max_completions_per_user",
   "requires_proof",
   "proof_instructions",
@@ -47,6 +54,15 @@ const SELECT_MISSION_SUBMISSIONS_COLUMNS = [
   "reviewed_by",
   "reviewed_at",
   "reward_granted",
+  "revision",
+  "review_version",
+  "reward_type_snapshot",
+  "reward_amount_snapshot",
+  "reward_card_id_snapshot",
+  "reward_card_name_snapshot",
+  "reward_label_snapshot",
+  "mission_title_snapshot",
+  "mission_slug_snapshot",
   "created_at",
 ].join(",");
 
@@ -82,13 +98,14 @@ const MISSION_ICON_VALUES = new Set<MissionIcon>([
   "star",
 ]);
 
-const MISSION_REWARD_TYPE_VALUES = new Set<MissionRewardType>(["packs", "points"]);
+const MISSION_REWARD_TYPE_VALUES = new Set<MissionRewardType>(["packs", "points", "support_pack", "buddies", "game_cash"]);
 
 // ── Helpers ──
 
 function failIfError(error: { message: string } | null, context: string): void {
   if (error) {
-    throw new Error(`[supabase:${context}] ${error.message}`);
+    console.error("[missions] database operation failed", { context });
+    throw new MissionRequestError("Le service missions est indisponible. Réessaie plus tard.", 503);
   }
 }
 
@@ -112,6 +129,7 @@ function toInt(value: unknown, fallback: number): number {
 }
 
 function toNullableInt(value: unknown): number | null {
+  if (value == null) return null;
   const n = Number(value);
   if (!Number.isFinite(n)) {
     return null;
@@ -151,25 +169,32 @@ function normalizeMissionEditorInput(input: SocialMissionEditorInput): SocialMis
   const slug = normalizeSlug(input.slug);
   const title = toText(input.title).trim();
   const description = toText(input.description).trim();
-  const rewardAmount = Math.max(1, toInt(input.rewardAmount, 1));
-  const maxCompletionsPerUser = Math.max(1, toInt(input.maxCompletionsPerUser, 1));
+  const rewardType = input.rewardType;
+  const rewardAmount = input.rewardAmount;
+  const maxCompletionsPerUser = input.maxCompletionsPerUser;
+  if (!MISSION_REWARD_TYPE_VALUES.has(rewardType) || !Number.isSafeInteger(rewardAmount) || rewardAmount < 1 || rewardAmount > MISSION_REWARD_LIMITS[rewardType]) throw new MissionRequestError("Récompense invalide ou supérieure au plafond autorisé.");
+  if (!Number.isSafeInteger(maxCompletionsPerUser) || maxCompletionsPerUser < 1 || maxCompletionsPerUser > 20) throw new MissionRequestError("Choisis entre 1 et 20 participations par joueur.");
+  const rewardCardId = rewardType === "buddies" ? toText(input.rewardCardId).trim() : null;
+  if (rewardType === "buddies" && !isMissionUuid(rewardCardId)) throw new MissionRequestError("Choisis un Buddy disponible.");
   const requiresProof = toBoolean(input.requiresProof, true);
   const proofInstructions = toText(input.proofInstructions).trim();
 
+  if (slug.length > 120 || title.length > 160 || description.length > 4000 || proofInstructions.length > 2000) throw new MissionRequestError("Le contenu de la mission est trop long.");
+
   if (!slug) {
-    throw new Error("Le slug de mission est requis.");
+    throw new MissionRequestError("Le slug de mission est requis.");
   }
 
   if (!title) {
-    throw new Error("Le titre de mission est requis.");
+    throw new MissionRequestError("Le titre de mission est requis.");
   }
 
   if (!description) {
-    throw new Error("La description de mission est requise.");
+    throw new MissionRequestError("La description de mission est requise.");
   }
 
   if (requiresProof && !proofInstructions) {
-    throw new Error("Les instructions de preuve sont requises.");
+    throw new MissionRequestError("Les instructions de preuve sont requises.");
   }
 
   return {
@@ -177,7 +202,8 @@ function normalizeMissionEditorInput(input: SocialMissionEditorInput): SocialMis
     title,
     description,
     icon: toMissionIcon(input.icon),
-    rewardType: toMissionRewardType(input.rewardType),
+    rewardType,
+    rewardCardId,
     rewardAmount,
     maxCompletionsPerUser,
     requiresProof,
@@ -197,6 +223,8 @@ function rowToMission(row: Record<string, unknown>): SocialMission {
     icon: (toText(row.icon) || "star") as MissionIcon,
     rewardType: (toText(row.reward_type) || "packs") as MissionRewardType,
     rewardAmount: toInt(row.reward_amount, 1),
+    rewardCardId: typeof row.reward_card_id === "string" ? row.reward_card_id : null,
+    rewardCardName: row.reward_card && typeof row.reward_card === "object" && "name" in row.reward_card ? toText(row.reward_card.name) : null,
     maxCompletionsPerUser: toInt(row.max_completions_per_user, 1),
     requiresProof: row.requires_proof === true,
     proofInstructions: typeof row.proof_instructions === "string" ? row.proof_instructions : null,
@@ -224,6 +252,13 @@ function rowToSubmission(row: Record<string, unknown>): MissionSubmission {
     reviewedBy: typeof row.reviewed_by === "string" ? row.reviewed_by : null,
     reviewedAt: typeof row.reviewed_at === "string" ? row.reviewed_at : null,
     rewardGranted: row.reward_granted === true,
+    revision: toInt(row.revision, 1),
+    rewardType: toMissionRewardType(row.reward_type_snapshot),
+    rewardAmount: toInt(row.reward_amount_snapshot, 1),
+    rewardCardId: typeof row.reward_card_id_snapshot === "string" ? row.reward_card_id_snapshot : null,
+    rewardCardName: typeof row.reward_card_name_snapshot === "string" ? row.reward_card_name_snapshot : null,
+    rewardLabel: typeof row.reward_label_snapshot === "string" ? row.reward_label_snapshot : null,
+    missionTitle: toText(row.mission_title_snapshot),
     createdAt: toText(row.created_at) || new Date().toISOString(),
   };
 }
@@ -261,7 +296,6 @@ export async function getCustomerMissionsFromSupabase(
     supabase
       .from("social_missions")
       .select(SELECT_SOCIAL_MISSIONS_COLUMNS)
-      .eq("is_active", true)
       .order("sort_order", { ascending: true }),
     supabase
       .from("social_mission_submissions")
@@ -277,15 +311,15 @@ export async function getCustomerMissionsFromSupabase(
     rowToMission(row as unknown as Record<string, unknown>),
   );
   const submissions = (submissionsResult.data ?? []).map((row) =>
-    rowToSubmission(row as unknown as Record<string, unknown>),
+    ({ ...rowToSubmission(row as unknown as Record<string, unknown>), reviewedBy: null }),
   );
 
-  return missions.map((mission) => {
+  return missions.filter((mission) => mission.isActive || submissions.some((s) => s.missionId === mission.id)).map((mission) => {
     const userSubmissions = submissions.filter((s) => s.missionId === mission.id);
     const approvedCount = userSubmissions.filter((s) => s.status === "approved").length;
     const pendingCount = userSubmissions.filter((s) => s.status === "pending").length;
     const canSubmit =
-      approvedCount < mission.maxCompletionsPerUser && pendingCount === 0;
+      pendingCount === 0 && (userSubmissions.some((s) => s.status === "changes_requested") || (mission.isActive && approvedCount < mission.maxCompletionsPerUser));
 
     return {
       ...mission,
@@ -298,93 +332,79 @@ export async function getCustomerMissionsFromSupabase(
 
 // ── Customer: submit a mission for review ──
 
-export async function submitMissionProofInSupabase(input: {
-  userId: string;
-  missionId: string;
-  proofUrl?: string;
-  proofStoragePath?: string;
-  proofContentType?: string;
-  proofFileSize?: number;
-  proofText?: string;
-}): Promise<MissionSubmission> {
-  const userId = input.userId.trim();
-  const missionId = input.missionId.trim();
-  if (!userId || !missionId) {
-    throw new Error("Données invalides.");
+export async function submitMissionProofInSupabase(input: MissionProofSubmissionInput): Promise<MissionSubmission> {
+  if (!isMissionUuid(input.userId) || !isMissionUuid(input.missionId) || !isMissionUuid(input.requestKey) ||
+    (input.submissionId && !isMissionUuid(input.submissionId)) ||
+    (input.submissionId && (!Number.isSafeInteger(input.expectedRevision) || (input.expectedRevision ?? 0) < 1))) {
+    throw new MissionRequestError("Données de participation invalides.");
   }
-
-  const supabase = createSupabaseServiceClient();
-
-  // Verify mission exists and is active
-  const missionResult = await supabase
-    .from("social_missions")
-    .select("id,max_completions_per_user,requires_proof")
-    .eq("id", missionId)
-    .eq("is_active", true)
-    .maybeSingle();
-  failIfError(missionResult.error, "check mission");
-
-  if (!missionResult.data) {
-    throw new Error("Mission introuvable ou inactive.");
-  }
-
-  const missionRow = missionResult.data as Record<string, unknown>;
-  const maxCompletions = toInt(missionRow.max_completions_per_user, 1);
-  const requiresProof = missionRow.requires_proof === true;
-
-  // Check user hasn't exceeded max completions or has pending
-  const existingResult = await supabase
-    .from("social_mission_submissions")
-    .select("id,status")
-    .eq("user_id", userId)
-    .eq("mission_id", missionId);
-  failIfError(existingResult.error, "check existing submissions");
-
-  const existing = (existingResult.data ?? []) as { id: string; status: string }[];
-  const approvedCount = existing.filter((s) => s.status === "approved").length;
-  const pendingCount = existing.filter((s) => s.status === "pending").length;
-
-  if (approvedCount >= maxCompletions) {
-    throw new Error("Tu as déjà complété cette mission.");
-  }
-
-  if (pendingCount > 0) {
-    throw new Error("Tu as déjà une soumission en attente de validation pour cette mission.");
-  }
-
-  if (requiresProof && !input.proofStoragePath?.trim()) {
-    throw new Error("Une capture d'ecran est requise pour cette mission.");
-  }
-
-  const insertResult = await supabase
-    .from("social_mission_submissions")
-    .insert({
-      user_id: userId,
-      mission_id: missionId,
-      proof_url: input.proofUrl?.trim() || null,
-      proof_storage_path: input.proofStoragePath?.trim() || null,
-      proof_content_type: input.proofContentType?.trim() || null,
-      proof_file_size:
-        typeof input.proofFileSize === "number" && Number.isFinite(input.proofFileSize)
-          ? Math.max(0, Math.floor(input.proofFileSize))
-          : null,
-      proof_uploaded_at: input.proofStoragePath?.trim() ? new Date().toISOString() : null,
-      proof_text: input.proofText?.trim() || null,
-      status: "pending",
-    })
-    .select(SELECT_MISSION_SUBMISSIONS_COLUMNS)
-    .single();
-  failIfError(insertResult.error, "insert mission submission");
-
-  return rowToSubmission(insertResult.data as unknown as Record<string, unknown>);
+  const proofUrl = normalizeMissionProofUrl(input.proofUrl);
+  const proofText = input.proofText?.trim() || "";
+  if (proofText.length > MISSION_PROOF_TEXT_MAX_LENGTH) throw new MissionRequestError("Ton message est trop long.");
+  if (input.proofStoragePath && !input.proofStoragePath.startsWith(input.userId + "/")) throw new MissionRequestError("Capture invalide.");
+  const result = await createSupabaseServiceClient().rpc("rpc_submit_social_mission", {
+    p_user_id: input.userId, p_mission_id: input.missionId, p_request_key: input.requestKey,
+    p_submission_id: input.submissionId ?? null, p_expected_revision: input.expectedRevision ?? null,
+    p_proof_url: proofUrl || null, p_proof_text: proofText || null,
+    p_proof_storage_path: input.proofStoragePath || null, p_proof_content_type: input.proofContentType || null,
+    p_proof_file_size: input.proofFileSize ?? null,
+  });
+  throwMissionRpcError(result.error);
+  const data = result.data as { submission?: Record<string, unknown> } | null;
+  if (!data?.submission) throw new MissionRequestError("Le service missions est indisponible. Réessaie avec le même envoi.", 503);
+  return rowToSubmission(data.submission);
 }
 
-// ── Admin: overview of all submissions ──
+function throwMissionRpcError(error: { message: string; code?: string } | null): void {
+  if (!error) return;
+  const code = error.message.trim().toLowerCase();
+  const messages: Record<string, [number, string]> = {
+    mission_invalid_request: [400, "Données de participation invalides."],
+    mission_invalid_review: [400, "Données de validation invalides."],
+    mission_invalid_proof: [400, "La capture ou le lien est invalide."],
+    mission_proof_required: [400, "Ajoute une capture pour cette mission."],
+    mission_note_required: [400, "Ajoute un motif pour le refus ou la correction."],
+    mission_not_found: [404, "Mission introuvable."],
+    mission_submission_not_found: [404, "Participation introuvable."],
+    mission_inactive: [409, "Cette mission n’accepte plus de nouvelles participations."],
+    mission_already_pending: [409, "Tu as déjà une preuve en cours de vérification pour cette mission."],
+    mission_already_reviewed: [409, "Cette participation a déjà été traitée. Actualise les missions."],
+    mission_completion_limit: [409, "Tu as atteint le nombre de participations pour cette mission."],
+    mission_request_key_reused: [409, "Cet envoi a changé. Actualise les missions avant de le renvoyer."],
+    mission_reward_already_granted: [409, "La récompense a déjà été attribuée."],
+    mission_stale_revision: [409, "La preuve a été modifiée. Actualise les missions avant de continuer."],
+    mission_submission_not_correctable: [409, "Cette participation ne peut plus être corrigée."],
+    mission_buddy_unavailable: [409, "Ce Buddy n’est plus disponible. La preuve reste en attente."],
+    mission_collection_inactive: [409, "Cette collection est momentanément indisponible. La preuve reste en attente."],
+    mission_invalid_reward: [409, "La récompense doit être vérifiée avant de continuer."],
+    mission_profile_missing: [409, "Le compte joueur n’est plus disponible."],
+    mission_wallet_limit: [409, "Le portefeuille du joueur ne permet pas cette attribution."],
+  };
+  const known = messages[code];
+  if (known) throw new MissionRequestError(known[1], known[0], error.code === "P0001");
+  console.error("[missions] transaction unavailable", { code: error.code });
+  throw new MissionRequestError("Impossible de traiter cette demande pour le moment. Réessaie avec le même envoi.", 503);
+}
+
+async function listOpenMissionSubmissions(): Promise<Record<string, unknown>[]> {
+  const supabase = createSupabaseServiceClient();
+  const rows: Record<string, unknown>[] = [];
+  const pageSize = 500;
+  const cutoff = new Date().toISOString();
+  for (let offset = 0; ; offset += pageSize) {
+    const result = await supabase.from("social_mission_submissions").select(SELECT_MISSION_SUBMISSIONS_COLUMNS)
+      .in("status", ["pending", "changes_requested"]).lte("created_at", cutoff)
+      .order("created_at", { ascending: true }).order("id", { ascending: true }).range(offset, offset + pageSize - 1);
+    failIfError(result.error, "open mission submissions");
+    rows.push(...((result.data ?? []) as unknown as Record<string, unknown>[]));
+    if ((result.data ?? []).length < pageSize) return rows;
+  }
+}
 
 export async function getAdminMissionsOverviewFromSupabase(): Promise<AdminMissionsOverview> {
   const supabase = createSupabaseServiceClient();
 
-  const [missionsResult, submissionsResult, usersResult] = await Promise.all([
+  const [missionsResult, historyResult, openSubmissions] = await Promise.all([
     supabase
       .from("social_missions")
       .select(SELECT_SOCIAL_MISSIONS_COLUMNS)
@@ -392,21 +412,22 @@ export async function getAdminMissionsOverviewFromSupabase(): Promise<AdminMissi
     supabase
       .from("social_mission_submissions")
       .select(SELECT_MISSION_SUBMISSIONS_COLUMNS)
+      .in("status", ["approved", "rejected"])
       .order("created_at", { ascending: false })
       .limit(300),
-    supabase.auth.admin.listUsers(),
+    listOpenMissionSubmissions(),
   ]);
 
   failIfError(missionsResult.error, "admin list missions");
-  failIfError(submissionsResult.error, "admin list submissions");
-  failIfError(usersResult.error, "auth.admin.listUsers for missions");
+  failIfError(historyResult.error, "admin list submissions");
+  const submissionRows = [...openSubmissions, ...((historyResult.data ?? []) as unknown as Record<string, unknown>[])];
 
   const missions = (missionsResult.data ?? []).map((row) =>
     rowToMission(row as unknown as Record<string, unknown>),
   );
   const missionsById = new Map(missions.map((m) => [m.id, m]));
 
-  const rawSubmissions = (submissionsResult.data ?? []).map((row) =>
+  const rawSubmissions = submissionRows.map((row) =>
     rowToSubmission(row as unknown as Record<string, unknown>),
   );
 
@@ -430,9 +451,11 @@ export async function getAdminMissionsOverviewFromSupabase(): Promise<AdminMissi
   }
 
   const emailById = new Map<string, string>();
-  for (const user of usersResult.data.users ?? []) {
-    if (user.id) {
-      emailById.set(user.id, user.email ?? "");
+  for (let offset = 0; offset < userIds.length; offset += 10) {
+    const users = await Promise.all(userIds.slice(offset, offset + 10).map((id) => supabase.auth.admin.getUserById(id)));
+    for (const result of users) {
+      failIfError(result.error, "mission participant identity");
+      if (result.data.user?.id) emailById.set(result.data.user.id, result.data.user.email ?? "");
     }
   }
 
@@ -456,9 +479,10 @@ export async function getAdminMissionsOverviewFromSupabase(): Promise<AdminMissi
       ...sub,
       userEmail: emailById.get(sub.userId) ?? "",
       userName: fullName,
-      missionTitle: mission?.title ?? "Mission inconnue",
+      missionTitle: sub.missionTitle || mission?.title || "Mission inconnue",
       missionSlug: mission?.slug ?? "",
       proofSignedUrl: signedUrlById.get(sub.id) ?? null,
+      legacyReview: submissionRows.some((row) => row.id === sub.id && row.review_version === 0),
     };
   });
 
@@ -468,6 +492,7 @@ export async function getAdminMissionsOverviewFromSupabase(): Promise<AdminMissi
     pendingSubmissions: rawSubmissions.filter((s) => s.status === "pending").length,
     approvedSubmissions: rawSubmissions.filter((s) => s.status === "approved").length,
     rejectedSubmissions: rawSubmissions.filter((s) => s.status === "rejected").length,
+    changesRequestedSubmissions: rawSubmissions.filter((s) => s.status === "changes_requested").length,
     submissions,
   };
 }
@@ -514,6 +539,7 @@ export async function createSocialMissionInSupabase(
       icon: mission.icon,
       reward_type: mission.rewardType,
       reward_amount: mission.rewardAmount,
+      reward_card_id: mission.rewardCardId,
       max_completions_per_user: mission.maxCompletionsPerUser,
       requires_proof: mission.requiresProof,
       proof_instructions: mission.proofInstructions,
@@ -525,7 +551,7 @@ export async function createSocialMissionInSupabase(
     .maybeSingle();
 
   if (result.error?.message.includes("social_missions_slug_key")) {
-    throw new Error("Une mission avec ce slug existe deja.");
+    throw new MissionRequestError("Une mission avec ce slug existe deja.");
   }
   failIfError(result.error, "create social_mission");
 
@@ -557,6 +583,7 @@ export async function updateSocialMissionInSupabase(input: {
       icon: mission.icon,
       reward_type: mission.rewardType,
       reward_amount: mission.rewardAmount,
+      reward_card_id: mission.rewardCardId,
       max_completions_per_user: mission.maxCompletionsPerUser,
       requires_proof: mission.requiresProof,
       proof_instructions: mission.proofInstructions,
@@ -568,7 +595,7 @@ export async function updateSocialMissionInSupabase(input: {
     .maybeSingle();
 
   if (result.error?.message.includes("social_missions_slug_key")) {
-    throw new Error("Une mission avec ce slug existe deja.");
+    throw new MissionRequestError("Une mission avec ce slug existe deja.");
   }
   failIfError(result.error, "update social_mission");
 
@@ -689,124 +716,31 @@ export async function updateReferralRewardSettingsInSupabase(input: {
   return rowToReferralRewardSettings(result.data as unknown as Record<string, unknown>);
 }
 
-export async function reviewMissionSubmissionInSupabase(input: {
-  submissionId: string;
-  action: "approve" | "reject";
-  adminEmail: string;
-  adminNote?: string;
-}): Promise<void> {
-  const submissionId = input.submissionId.trim();
-  if (!submissionId) {
-    throw new Error("Soumission invalide.");
+export async function reviewMissionSubmissionInSupabase(input: MissionReviewInput): Promise<void> {
+  if (!isMissionUuid(input.submissionId) || !isMissionUuid(input.requestKey) || !Number.isSafeInteger(input.expectedRevision) || input.expectedRevision < 1) {
+    throw new MissionRequestError("Données de validation invalides.");
   }
-
-  const supabase = createSupabaseServiceClient();
-
-  // Fetch submission
-  const subResult = await supabase
-    .from("social_mission_submissions")
-    .select(SELECT_MISSION_SUBMISSIONS_COLUMNS)
-    .eq("id", submissionId)
-    .maybeSingle();
-  failIfError(subResult.error, "fetch submission for review");
-
-  if (!subResult.data) {
-    throw new Error("Soumission introuvable.");
-  }
-
-  const submission = rowToSubmission(subResult.data as unknown as Record<string, unknown>);
-
-  if (submission.status !== "pending") {
-    throw new Error("Cette soumission a déjà été traitée.");
-  }
-
-  const nextStatus: MissionSubmissionStatus =
-    input.action === "approve" ? "approved" : "rejected";
-
-  // If approving, grant the reward
-  let rewardGranted = false;
-  if (input.action === "approve") {
-    // Fetch mission to know reward
-    const missionResult = await supabase
-      .from("social_missions")
-      .select("reward_type,reward_amount")
-      .eq("id", submission.missionId)
-      .maybeSingle();
-    failIfError(missionResult.error, "fetch mission for reward");
-
-    if (missionResult.data) {
-      const mission = missionResult.data as { reward_type: string; reward_amount: number };
-
-      if (mission.reward_type === "packs") {
-        await grantLotteryTicketsToCustomerInSupabase({
-          userId: submission.userId,
-          ticketCount: mission.reward_amount,
-          reason: `Mission: ${submission.missionId}`,
-          adminEmail: input.adminEmail,
-        });
-        rewardGranted = true;
-      } else if (mission.reward_type === "points") {
-        // Grant loyalty points: read current then update
-        const profileResult = await supabase
-          .from("profiles")
-          .select("loyalty_points")
-          .eq("id", submission.userId)
-          .maybeSingle();
-        if (profileResult.data) {
-          const currentPoints = toInt(
-            (profileResult.data as Record<string, unknown>).loyalty_points,
-            0,
-          );
-          const updateResult = await supabase
-            .from("profiles")
-            .update({ loyalty_points: currentPoints + mission.reward_amount })
-            .eq("id", submission.userId);
-          failIfError(updateResult.error, "grant mission points");
-        }
-        rewardGranted = true;
-      }
-    }
-  }
-
-  // Update submission status
-  const updateResult = await supabase
-    .from("social_mission_submissions")
-    .update({
-      status: nextStatus,
-      admin_note: input.adminNote?.trim() || null,
-      reviewed_by: input.adminEmail,
-      reviewed_at: new Date().toISOString(),
-      reward_granted: rewardGranted,
-    })
-    .eq("id", submissionId);
-  failIfError(updateResult.error, "update mission submission status");
-
-  if (submission.proofStoragePath) {
-    try {
-      await deleteMissionProof(submission.proofStoragePath);
-
-      const cleanupResult = await supabase
-        .from("social_mission_submissions")
-        .update({
-          proof_url: null,
-          proof_storage_path: null,
-          proof_content_type: null,
-          proof_file_size: null,
-          proof_uploaded_at: null,
-        })
-        .eq("id", submissionId);
-      failIfError(cleanupResult.error, "cleanup mission proof metadata");
-    } catch (error) {
-      console.error("[missions] proof cleanup failed", {
-        submissionId,
-        proofStoragePath: submission.proofStoragePath,
-        error,
-      });
-    }
-  }
+  const note = input.adminNote?.trim() || "";
+  if (note.length > 2000 || (input.action !== "approve" && !note)) throw new MissionRequestError("Un motif est requis pour un refus ou une correction (2 000 caractères maximum).");
+  const decision = input.action === "approve" ? "approved" : input.action === "reject" ? "rejected" : "changes_requested";
+  const result = await createSupabaseServiceClient().rpc("rpc_review_social_mission", {
+    p_submission_id: input.submissionId, p_expected_revision: input.expectedRevision,
+    p_request_key: input.requestKey, p_decision: decision,
+    p_admin_email: input.adminEmail, p_admin_note: note || null,
+  });
+  throwMissionRpcError(result.error);
 }
 
-// ── Referral Pending Rewards ──
+export async function getMissionBuddyOptionsFromSupabase(): Promise<MissionBuddyOption[]> {
+  const result = await createSupabaseServiceClient().from("lottery_card_definitions")
+    .select("id,name,rarity,image_url,lottery_card_collections!inner(code,is_active)")
+    .eq("is_active", true).eq("lottery_card_collections.code", "HEMP_HEROES_2026")
+    .eq("lottery_card_collections.is_active", true).order("card_number", { ascending: true });
+  failIfError(result.error, "mission buddy options");
+  return (result.data ?? []).map((row) => ({
+    id: toText(row.id), name: toText(row.name), rarity: toText(row.rarity), imageUrl: toText(row.image_url),
+  }));
+}
 
 export async function createReferralPendingRewardInSupabase(input: {
   referrerId: string;

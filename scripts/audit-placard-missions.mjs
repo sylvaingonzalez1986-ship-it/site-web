@@ -17,6 +17,8 @@ const modules={
  const earned=new Map(scenario==='complete'?definitions.map(d=>[d[0],'pack-'+d[0]]):[]);
  const state=()=>({collectionActive:scenario!=='inactive',missions:definitions.map(([code,track,step,target,cardCount,metric])=>{const previous=definitions.find(d=>d[1]===track&&d[2]===step-1);const claimed=earned.has(code),unlocked=!previous||earned.has(previous[0]);return {code,track,step,target,cardCount,claimed,unlocked,claimable:!claimed&&unlocked&&window.__counts[metric]>=target,progress:claimed?target:Math.min(target,window.__counts[metric]),entitlementId:earned.get(code)??null,packAvailable:claimed};})});
  const nativeFetch=window.fetch.bind(window);window.fetch=async(url,init={})=>{
+  if(String(url)==='/api/account/missions')return new Response(JSON.stringify({missions:[],pendingRewards:[]}));
+  if(String(url).startsWith('/api/arena/placard/equipment'))return new Response(JSON.stringify({activeRun:false,readyLotCount:0,availableFlowerCount:0,productionUnits:1,ownedCodes:[],cashCents:0}));
   if(String(url)!=='/api/arena/placard/missions')return nativeFetch(url,init);
   if(scenario==='guest')return new Response(JSON.stringify({error:'Connecte-toi pour retrouver tes missions.'}),{status:401});
   if(window.__fail)return new Response(JSON.stringify({error:'Le centre de missions est momentanément indisponible.'}),{status:503});
@@ -41,7 +43,7 @@ try {
  browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});
  const page=await browser.newPage();const errors=[];page.on('pageerror',e=>{errors.push(e.message);console.error(e.message);});
  await page.setRequestInterception(true);page.on('request',r=>{const u=new URL(r.url());if(u.protocol==='data:'||(u.hostname==='127.0.0.1'&&u.port==='3201'))void r.continue();else void r.abort();});
- const goto=async(scenario='ready')=>{await page.goto('http://127.0.0.1:3201/?scenario='+scenario,{waitUntil:'networkidle0'});};
+ const goto=async(scenario='ready')=>{await page.goto('http://127.0.0.1:3201/?scenario='+scenario,{waitUntil:'networkidle0'});if(scenario!=='lobby')await page.$$eval('button',buttons=>buttons.find(button=>button.textContent.includes('Tous mes défis')).click());};
  const overflow=async()=>assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
  const shot=async(name)=>{await page.evaluate(async()=>{await Promise.allSettled([...document.images].map(img=>img.decode()));});await page.screenshot({path:resolve(output,name+'.png'),fullPage:true});};
  for(const width of [320,390,768,1440]) {
@@ -76,8 +78,7 @@ try {
   if(scenario==='inactive')assert.equal(await page.$$eval('section button',buttons=>buttons.every(b=>b.disabled)),true);
   if(scenario==='complete')assert.equal(await page.$$eval('h2',els=>els.filter(el=>el.textContent.includes('Parcours terminé')).length),3);
   if(scenario==='lobby'){
-   await page.$$eval('nav[aria-label="Activités du Placard"] button',buttons=>buttons.find(b=>b.textContent.includes('Missions')).click());
-   await page.$$eval('button',buttons=>buttons.find(b=>b.textContent.includes('Voir mes missions')).click());
+   await page.click('[aria-label="Missions du Placard"] button');
    assert.equal(await page.evaluate(()=>window.__destination),'missions');
   }
  }

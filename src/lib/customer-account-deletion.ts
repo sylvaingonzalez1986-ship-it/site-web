@@ -1,6 +1,6 @@
 import "server-only";
 
-import { deleteMissionProof } from "@/lib/mission-proof-storage";
+import { deleteMissionProof, listMissionProofPathsForUser } from "@/lib/mission-proof-storage";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 
 export type CustomerAccountDeletionSummary = {
@@ -8,10 +8,6 @@ export type CustomerAccountDeletionSummary = {
   anonymizedOrderCount: number;
   deletedNewsletterSubscription: boolean;
   deletedMissionProofCount: number;
-};
-
-type MissionProofRow = {
-  proof_storage_path: string | null;
 };
 
 export function normalizeDeletionConfirmationEmail(value: unknown): string {
@@ -23,39 +19,9 @@ export function buildDeletedAccountEmail(customerId: string): string {
   return `deleted+${shortId}@privacy.invalid`;
 }
 
-async function listMissionProofPaths(userId: string): Promise<string[]> {
-  const supabase = createSupabaseServiceClient();
-  const result = await supabase
-    .from("social_mission_submissions")
-    .select("proof_storage_path")
-    .eq("user_id", userId);
-
-  if (result.error) {
-    throw new Error(`[supabase:list mission proof paths] ${result.error.message}`);
-  }
-
-  return Array.from(
-    new Set(
-      (result.data as MissionProofRow[] | null ?? [])
-        .map((row) => (typeof row.proof_storage_path === "string" ? row.proof_storage_path.trim() : ""))
-        .filter((value) => value.length > 0),
-    ),
-  );
-}
-
 async function deleteMissionProofs(storagePaths: string[]): Promise<number> {
-  let deletedCount = 0;
-
-  for (const storagePath of storagePaths) {
-    try {
-      await deleteMissionProof(storagePath);
-      deletedCount += 1;
-    } catch (error) {
-      console.error("Mission proof deletion failed:", storagePath, error);
-    }
-  }
-
-  return deletedCount;
+  for (const storagePath of storagePaths) await deleteMissionProof(storagePath);
+  return storagePaths.length;
 }
 
 async function anonymizeOrders(input: {
@@ -158,7 +124,7 @@ export async function deleteCustomerAccount(input: {
     throw new Error("Suppression de compte invalide.");
   }
 
-  const proofPaths = await listMissionProofPaths(customerId);
+  const proofPaths = await listMissionProofPathsForUser(customerId);
   const deletedMissionProofCount = await deleteMissionProofs(proofPaths);
   const anonymizedOrderCount = await anonymizeOrders({ customerId, customerEmail });
   const deletedNewsletterSubscription = await deleteNewsletterSubscription(customerEmail);
