@@ -6,7 +6,7 @@ export function getKqProductionUnits(value?: number): number {
   return KQ_PRODUCTION_UNITS.some(units => units === value) ? value! : 1;
 }
 
-/** Installed equipment for one independently upgradable tent. */
+/** Effective equipment for a physical tent; older runs may retain distinct profiles. */
 export type KqTentEquipmentProfile = {
   tentNumber: number;
   codes: string[];

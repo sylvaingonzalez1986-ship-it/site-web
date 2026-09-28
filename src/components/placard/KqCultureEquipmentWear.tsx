@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import type { KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
-import { formatKqCash } from "@/lib/kanab-quest-equipment";
+import { formatKqCash, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import styles from "./KqWarehouseInventory.module.css";
 
@@ -27,6 +27,7 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
   const confirmButton = useRef<HTMLButtonElement>(null);
   const replaceButton = useRef<HTMLButtonElement>(null);
   const wasConfirming = useRef(false);
+  const targetTent = isKqSharedEquipment(code) ? 1 : tentNumber;
   const unavailable = disabled || activeRun || cashCents < condition.replacementCents || replacedVersion === condition.version;
   useEffect(() => {
     if (confirming) confirmButton.current?.focus();
@@ -39,14 +40,14 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
     locked.current = true;
     setBusy(true);
     setError("");
-    if (request.current?.version !== condition.version || request.current.costCents !== condition.replacementCents || request.current.tentNumber !== tentNumber) {
-      request.current = { version: condition.version, costCents: condition.replacementCents, tentNumber, key: createClientRequestKey() };
+    if (request.current?.version !== condition.version || request.current.costCents !== condition.replacementCents || request.current.tentNumber !== targetTent) {
+      request.current = { version: condition.version, costCents: condition.replacementCents, tentNumber: targetTent, key: createClientRequestKey() };
     }
     try {
       const response = await fetch("/api/arena/placard/equipment", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "replace", tentNumber, expectedUnits: productionUnits, equipmentCode: code, requestKey: request.current.key,
+        body: JSON.stringify({ action: "replace", tentNumber: targetTent, expectedUnits: productionUnits, equipmentCode: code, requestKey: request.current.key,
           expectedVersion: condition.version, expectedCostCents: condition.replacementCents }),
         signal: AbortSignal.timeout(15000),
       });
@@ -67,7 +68,7 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
   return <section className={styles.cultureWear} aria-label={`État de ${name}`} data-due={condition.due}>
     <strong>{condition.due ? "Hors service · à remplacer" : `État : ${condition.conditionPercent.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %`}</strong>
     <progress value={condition.conditionPercent} max={100} aria-label={`État de ${name}`} />
-    <small>Remplacement : {formatKqCash(condition.replacementCents)} · niveaux conservés.</small>
+    <small>Remplacement pour toutes les tentes : {formatKqCash(condition.replacementCents)} · niveaux conservés.</small>
     {condition.due ? <p>Ses bonus sont désactivés. Le matériel de départ assure le dépannage aux emplacements qui en disposent.</p>
       : <p>L’usure est définitive. Le mode éco ralentit l’usure ; l’intensif l’accélère, encore davantage sous 30 % d’état. En réserve, ce matériel ne s’use pas.</p>}
     {condition.due && replacedVersion !== condition.version ? <>

@@ -30,7 +30,7 @@ export const WAREHOUSE_ZONES: readonly WarehouseZone[] = [
 
 const TENT_CENTERS = [13, 33, 53, 73] as const;
 const TENT_BASELINE = 59;
-const SHARED_SLOTS: readonly KqEquipmentSlot[] = ["sifting", "press", "washing", "filtration", "drying", "static-separation"];
+const PROCESSING_SLOTS: readonly KqEquipmentSlot[] = ["sifting", "press", "washing", "filtration", "drying", "static-separation"];
 const assets: Record<string, { width: number; height: number }> = assetManifest.assets;
 
 function artworkFor(slot: KqEquipmentSlot, code: string | undefined, level: number) {
@@ -48,13 +48,13 @@ function positionFor(zone: WarehouseZone, asset: string, depth: number): CSSProp
 }
 
 export function KqWarehouseScene({
-  tents, selectedTentNumber, equippedCodes, levels, sharedEquipment, selectedSlot, onSelect, onShowList, onExpand, disabled = false,
+  tents, selectedTentNumber, sharedEquipment, selectedSlot, onSelect, onShowList, onExpand, disabled = false,
 }: {
   tents: KqTentOverview[];
   selectedTentNumber: number;
   equippedCodes: string[];
   levels: Record<string, number>;
-  sharedEquipment?: { equippedCodes: string[]; levels: Record<string, number> };
+  sharedEquipment: { equippedCodes: string[]; levels: Record<string, number> };
   selectedSlot: KqEquipmentSlot;
   onSelect: (tentNumber: number, slot: KqEquipmentSlot) => void;
   onShowList?: () => void;
@@ -64,21 +64,10 @@ export function KqWarehouseScene({
   const viewport = useRef<HTMLDivElement>(null);
   const initialPositionSet = useRef(false);
   const [overview, setOverview] = useState(true);
-  const profiles = tents.length ? tents : [{ tentNumber: selectedTentNumber, equippedCodes, levels }];
+  const profiles = tents.length ? tents : [{ tentNumber: selectedTentNumber }];
   const roomCount = profiles.some(tent => tent.tentNumber > 4) ? 2 : 1;
   const selectedWarehouse = Math.floor((selectedTentNumber - 1) / 4);
-  const selectedProfile = { tentNumber: selectedTentNumber, equippedCodes, levels };
-  const sharedModels = new Map<KqEquipmentSlot, { code: string; level: number }>();
-  for (const profile of profiles) for (const code of profile.equippedCodes) {
-    const item = getKqEquipmentAtLevel(code, profile.levels[code]);
-    if (item && SHARED_SLOTS.includes(item.slot) && (profile.levels[code] ?? 1) > (sharedModels.get(item.slot)?.level ?? 0)) {
-      sharedModels.set(item.slot, { code, level: profile.levels[code] ?? 1 });
-    }
-  }
-  const commonProfile = { tentNumber: selectedTentNumber, ...(sharedEquipment ?? {
-    equippedCodes: [...sharedModels.values()].map(item => item.code),
-    levels: Object.fromEntries([...sharedModels.values()].map(item => [item.code, item.level])),
-  }) };
+  const { equippedCodes, levels } = sharedEquipment;
 
   useEffect(() => {
     if (initialPositionSet.current || !tents.length) return;
@@ -100,47 +89,47 @@ export function KqWarehouseScene({
     });
   };
 
-  const equipmentButton = (zone: WarehouseZone, profile: KqTentOverview, depth: number, tentLabel = false, shared = false) => {
-    const code = profile.equippedCodes.find(item => getKqEquipmentAtLevel(item)?.slot === zone.slot);
-    const installed = code ? getKqEquipmentAtLevel(code, profile.levels[code]) : null;
-    const selected = profile.tentNumber === selectedTentNumber && selectedSlot === zone.slot;
+  const equipmentButton = (zone: WarehouseZone, physicalTent: number | undefined, depth: number, tentLabel = false) => {
+    const code = equippedCodes.find(item => getKqEquipmentAtLevel(item)?.slot === zone.slot);
+    const installed = code ? getKqEquipmentAtLevel(code, levels[code]) : null;
+    const selected = (physicalTent === undefined || physicalTent === selectedTentNumber) && selectedSlot === zone.slot;
     // Unowned equipment stays in the list/detail; only the selected vacant position is marked.
     if (!installed && !tentLabel && !selected) return null;
-    const level = installed?.purchasable ? profile.levels[installed.code] ?? 1 : 1;
+    const level = installed?.purchasable ? levels[installed.code] ?? 1 : 1;
     const asset = artworkFor(zone.slot, code, level);
     const dimensions = assets[asset];
-    return <button type="button" key={`${shared ? "shared" : profile.tentNumber}:${zone.slot}`}
-      data-warehouse-slot={zone.slot} data-tent-number={shared ? undefined : profile.tentNumber} data-equipment-scope={shared ? "shared" : "tent"} data-warehouse-scope={shared ? "shared" : "tent"}
+    return <button type="button" key={`${physicalTent ?? "shared"}:${zone.slot}`}
+      data-warehouse-slot={zone.slot} data-tent-number={physicalTent} data-equipment-scope="shared" data-warehouse-scope="shared"
       data-installed={!!installed} data-selected={selected}
-      data-tent-selected={tentLabel ? profile.tentNumber === selectedTentNumber : undefined}
+      data-tent-selected={tentLabel ? physicalTent === selectedTentNumber : undefined}
       data-accessory={depth === 4 || undefined} data-support={zone.support ?? (depth === 7 ? "floor" : undefined)}
       disabled={disabled} className={styles.zone} style={positionFor(zone, asset, depth)} aria-pressed={selected}
-      aria-label={`${shared ? "Atelier commun" : `Tente ${profile.tentNumber}`} · ${KQ_EQUIPMENT_SLOT_LABELS[zone.slot]} · ${installed ? `${installed.name}, ${installed.purchasable ? `niveau ${level}` : "fourni"}` : "emplacement libre"}`}
-      onClick={() => onSelect(profile.tentNumber, zone.slot)}>
+      aria-label={`${physicalTent === undefined ? "Atelier commun" : `Tente ${physicalTent} · matériel commun`} · ${KQ_EQUIPMENT_SLOT_LABELS[zone.slot]} · ${installed ? `${installed.name}, ${installed.purchasable ? `niveau ${level}` : "fourni"}` : "emplacement libre"}`}
+      onClick={() => onSelect(physicalTent ?? selectedTentNumber, zone.slot)}>
       {installed || tentLabel ? <Image src={`/placard/warehouse-v2/${asset}.webp`} alt=""
         width={dimensions.width} height={dimensions.height} sizes={tentLabel ? "(max-width: 600px) 90px, 200px" : "180px"}
         className={styles.sprite} draggable={false}/> : <span className={styles.vacant} aria-hidden="true"/>}
-      {tentLabel ? <span className={styles.tentBadge}>Tente {profile.tentNumber}</span> : <span className={styles.label}>
+      {tentLabel ? <span className={styles.tentBadge}>Tente {physicalTent}</span> : <span className={styles.label}>
         {KQ_EQUIPMENT_SLOT_LABELS[zone.slot]}<small>{installed ? (installed.purchasable ? `Niv. ${level}` : "Fourni") : "À aménager"}</small>
       </span>}
     </button>;
   };
 
-  const tentEquipment = (profile: KqTentOverview, center: number) => {
-    const tentCode = profile.equippedCodes.find(code => getKqEquipmentAtLevel(code)?.slot === "tent");
+  const tentEquipment = (tentNumber: number, center: number) => {
+    const tentCode = equippedCodes.find(code => getKqEquipmentAtLevel(code)?.slot === "tent");
     const starter = !tentCode || tentCode.includes("STARTER");
     const height = starter ? 34 : 38;
     const tentAsset = assets[starter ? "tent-starter" : "tent-pro"];
     const width = height * tentAsset.width / tentAsset.height / 2;
     const top = TENT_BASELINE - height;
     const accessory = (slot: "lighting" | "air" | "climate-controller", widthRatio: number, offset: number, bottomRatio: number) => {
-      const code = profile.equippedCodes.find(item => getKqEquipmentAtLevel(item)?.slot === slot);
+      const code = equippedCodes.find(item => getKqEquipmentAtLevel(item)?.slot === slot);
       const asset = assets[artworkFor(slot, code, 1)];
       return equipmentButton({ slot, center: center + width * offset, bottom: top + height * bottomRatio,
-        height: width * widthRatio * 2 * asset.height / asset.width }, profile, 4);
+        height: width * widthRatio * 2 * asset.height / asset.width }, tentNumber, 4);
     };
-    return <div key={profile.tentNumber} className={styles.tentGroup} data-warehouse-tent={profile.tentNumber}>
-      {equipmentButton({ slot: "tent", center, bottom: TENT_BASELINE, height }, profile, 2, true)}
+    return <div key={tentNumber} className={styles.tentGroup} data-warehouse-tent={tentNumber}>
+      {equipmentButton({ slot: "tent", center, bottom: TENT_BASELINE, height }, tentNumber, 2, true)}
       {accessory("lighting", .5, -.07, .52)}
       {accessory("air", .22, .24, .11)}
       {accessory("climate-controller", .08, .37, .61)}
@@ -171,14 +160,14 @@ export function KqWarehouseScene({
             if (!snapshot) return number === profiles.length + 1 && onExpand
               ? <button key={number} type="button" className={styles.addTent} style={{ left: `${center}%` }} onClick={onExpand} disabled={disabled} aria-label={`Ajouter la tente ${number} · voir le devis`}><span aria-hidden="true">+</span>Ajouter une tente</button>
               : <span key={number} className={styles.futureTent} style={{ left: `${center}%`, top: `${TENT_BASELINE + 2}%` }} aria-label={`Emplacement libre pour la tente ${number}`}><span>{String(number).padStart(2, "0")}</span></span>;
-            return tentEquipment(number === selectedTentNumber ? selectedProfile : snapshot, center);
+            return tentEquipment(number, center);
           })}
           {warehouse === 0 ? <div className={styles.workshop} data-warehouse-workshop data-equipment-scope="shared" data-warehouse-scope="shared">
-            {WAREHOUSE_ZONES.filter(zone => SHARED_SLOTS.includes(zone.slot)).map(zone => equipmentButton(zone, commonProfile, 7, false, true))}
+            {WAREHOUSE_ZONES.filter(zone => PROCESSING_SLOTS.includes(zone.slot)).map(zone => equipmentButton(zone, undefined, 7))}
           </div> : null}
-          {warehouse === selectedWarehouse ? <div className={styles.workshop} data-tent-services={selectedTentNumber}>
-            {WAREHOUSE_ZONES.filter(zone => !SHARED_SLOTS.includes(zone.slot)).map(zone => equipmentButton(zone.slot === "security" && equippedCodes.includes("SECURITY-DOG")
-              ? { ...zone, center: 84, bottom: 94, height: 15 } : zone, selectedProfile, zone.slot === "flower-drying" || zone.slot === "security" && !equippedCodes.includes("SECURITY-DOG") ? 4 : 7))}
+          {warehouse === 0 ? <div className={styles.workshop} data-warehouse-services data-equipment-scope="shared" data-warehouse-scope="shared">
+            {WAREHOUSE_ZONES.filter(zone => !PROCESSING_SLOTS.includes(zone.slot)).map(zone => equipmentButton(zone.slot === "security" && equippedCodes.includes("SECURITY-DOG")
+              ? { ...zone, center: 84, bottom: 94, height: 15 } : zone, undefined, zone.slot === "flower-drying" || zone.slot === "security" && !equippedCodes.includes("SECURITY-DOG") ? 4 : 7))}
           </div> : null}
           {warehouse === 0 ? <div className={styles.workshopCaption}><strong>Atelier commun</strong></div> : null}
         </section>)}

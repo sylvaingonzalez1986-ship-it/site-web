@@ -99,17 +99,19 @@ describe("market browsing egress and transactional boundaries", () => {
     expect(preview.lots[0].options.find(option => option.route === "dry-sift")?.available).toBe(true);
     expect(preview.equipmentPricingUnits).toBe(1);
   });
-  it("uses the common workshop instead of a stronger stale per-tent processing copy", async () => {
+  it("uses the whole canonical inventory instead of stronger stale per-tent copies", async () => {
     const base = await mocks.shop();
-    const sharedEquipment = { ownedCodes: ["SIFT-TRAY"], purchasedCodes: ["SIFT-TRAY"], equippedCodes: ["SIFT-TRAY"], operationalCodes: ["SIFT-TRAY"], levels: { "SIFT-TRAY": 2 }, maintenance: {} };
+    const sharedEquipment = { ownedCodes: ["SIFT-TRAY", "LED-300"], purchasedCodes: ["SIFT-TRAY", "LED-300"], equippedCodes: ["SIFT-TRAY", "LED-300"], operationalCodes: ["SIFT-TRAY", "LED-300"], levels: { "SIFT-TRAY": 2, "LED-300": 3 }, maintenance: {}, cultureWear: {}, cultureOperationalCodes: ["SIFT-TRAY", "LED-300"] };
     const shop = { ...base, sharedEquipment, tents: [
       { ...base, tentNumber: 1, equippedCodes: [...base.equippedCodes, "SIFT-TRAY"], levels: { "SIFT-TRAY": 10 } },
-      { ...base, tentNumber: 2, equippedCodes: [...base.equippedCodes, "WASHER-25L"], levels: { "WASHER-25L": 10 } },
+      { ...base, tentNumber: 2, equippedCodes: [...base.equippedCodes, "WASHER-25L", "LED-300"], levels: { "WASHER-25L": 10, "LED-300": 10 } },
     ] };
     const workshop = getKqSharedWorkshop(shop);
     expect(workshop.equippedCodes.filter(code => code === "SIFT-TRAY")).toHaveLength(1);
     expect(workshop.levels["SIFT-TRAY"]).toBe(2);
     expect(workshop.equippedCodes).not.toContain("WASHER-25L");
+    expect(workshop.levels["LED-300"]).toBe(3);
+    expect(workshop.ownedCodes).toEqual(sharedEquipment.ownedCodes);
     const stopped = getKqSharedWorkshop({ ...shop, sharedEquipment: { ...sharedEquipment, operationalCodes: [] } });
     expect(stopped.operationalCodes).not.toContain("SIFT-TRAY");
     expect(stopped.levels["SIFT-TRAY"]).toBeUndefined();

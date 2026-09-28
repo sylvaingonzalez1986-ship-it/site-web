@@ -16,13 +16,15 @@ const modules = {
     import React from 'react'; import {createRoot} from 'react-dom/client';
     import '/src/app/globals.css';
     import {KqEquipmentCatalogModal} from '/src/components/placard/KqEquipmentCatalogModal';
-    import {KQ_EQUIPMENT_CATALOG,KQ_STARTING_EQUIPMENT_CODES,getKqEquipmentAtLevel,getKqEquipmentDefinition,getKqEquipmentUpgradeCost,isKqSharedEquipment,formatKqCash} from '/src/lib/kanab-quest-equipment';
+    import {KQ_EQUIPMENT_CATALOG,KQ_STARTING_EQUIPMENT_CODES,getKqEquipmentAtLevel,getKqEquipmentDefinition,getKqEquipmentUpgradeCost,isKqProcessingEquipment,formatKqCash} from '/src/lib/kanab-quest-equipment';
+    import {getKqCultureEquipmentCondition} from '/src/lib/kanab-quest-culture-wear';
     sessionStorage.setItem('kq:selected-tent','2');
     const starter=[...KQ_STARTING_EQUIPMENT_CODES];
-    const sharedEquipment={ownedCodes:['WASHER-25L'],purchasedCodes:['WASHER-25L'],equippedCodes:['WASHER-25L'],levels:{'WASHER-25L':4},maintenance:{},operationalCodes:['WASHER-25L']};
-    const tents=Array.from({length:8},(_,i)=>({tentNumber:i+1,ownedCodes:[...starter,...(i===0?['LED-300']:[])],purchasedCodes:i===0?['LED-300']:[],equippedCodes:starter,levels:i===0?{'LED-300':3}:{},maintenance:{},cultureWear:{},cultureOperationalCodes:starter,operationalCodes:starter}));
-    const state={cashCents:10000000,productionUnits:8,sharedEquipment,tents};
-    window.__state=state; window.__mutations=[]; window.__reads=[]; window.__unexpected=[]; window.__holdUpgrade=false; window.__releaseUpgrade=null; window.__holdReadTent=null; window.__releaseRead=null; window.__holdPurchaseRead=false;
+    const sharedEquipment={ownedCodes:[...starter,'WASHER-25L'],purchasedCodes:['WASHER-25L'],equippedCodes:[...starter,'WASHER-25L'],levels:{'WASHER-25L':4},maintenance:{},cultureWear:{},operationalCodes:[...starter,'WASHER-25L']};
+    const state={cashCents:10000000,productionUnits:8,sharedEquipment,tents:[]};
+    const refreshTents=()=>{const common=state.sharedEquipment,local=code=>!isKqProcessingEquipment(code);state.tents=Array.from({length:8},(_,i)=>({tentNumber:i+1,ownedCodes:common.ownedCodes.filter(local),purchasedCodes:common.purchasedCodes.filter(local),equippedCodes:common.equippedCodes.filter(local),levels:Object.fromEntries(Object.entries(common.levels).filter(([code])=>local(code))),maintenance:{},cultureWear:structuredClone(common.cultureWear),cultureOperationalCodes:common.operationalCodes.filter(local),operationalCodes:common.operationalCodes.filter(local)}));};
+    refreshTents();
+    window.__state=state; window.__mutations=[]; window.__reads=[]; window.__unexpected=[]; window.__holdUpgrade=false; window.__releaseUpgrade=null; window.__holdReadTent=null; window.__releaseRead=null; window.__holdPurchaseRead=false; window.__rejectHeldRead=false; window.__failNextRead=false;
     window.__meta=Object.fromEntries(KQ_EQUIPMENT_CATALOG.map(item=>[item.code,{name:item.name,price:item.priceCents}]));
     window.__upgradePrice=formatKqCash(getKqEquipmentUpgradeCost('WASHER-25L',4,1));
     const response=payload=>new Response(JSON.stringify(payload),{headers:{'Content-Type':'application/json'}});
@@ -36,19 +38,16 @@ const modules = {
       const method=init.method||'GET';
       if(method==='GET'){
         const tentNumber=Number(parsed.searchParams.get('tentNumber')||1);window.__reads.push(tentNumber);
-        const selected=state.tents.find(tent=>tent.tentNumber===tentNumber);
-        if(!selected)throw new Error('Unknown tent');
-        const levels={...selected.levels,...state.sharedEquipment.levels};
-        const payload={...state,...selected,levels,equipmentPricingUnits:1,reputation:0,routePlan:null,activeRun:false,
-          ownedCodes:[...selected.ownedCodes,...state.sharedEquipment.ownedCodes],
-          purchasedCodes:[...selected.purchasedCodes,...state.sharedEquipment.purchasedCodes],
-          equippedCodes:[...selected.equippedCodes,...state.sharedEquipment.equippedCodes],
-          catalog:KQ_EQUIPMENT_CATALOG.filter(item=>item.purchasable).map(item=>getKqEquipmentAtLevel(item.code,levels[item.code]))};
-        if(window.__holdReadTent===tentNumber){window.__holdReadTent=null;await new Promise(resolve=>{window.__releaseRead=resolve;});}
+        if(window.__failNextRead){window.__failNextRead=false;return new Response(JSON.stringify({error:'Actualisation locale indisponible.'}),{status:503});}
+        refreshTents();
+        const levels=state.sharedEquipment.levels;
+        const payload=structuredClone({...state,...state.sharedEquipment,tentNumber,levels,equipmentPricingUnits:1,reputation:0,routePlan:null,activeRun:false,
+          catalog:KQ_EQUIPMENT_CATALOG.filter(item=>item.purchasable).map(item=>getKqEquipmentAtLevel(item.code,levels[item.code]))});
+        if(window.__holdReadTent===tentNumber){const rejectHeld=window.__rejectHeldRead;window.__rejectHeldRead=false;window.__holdReadTent=null;await new Promise(resolve=>{window.__releaseRead=resolve;});if(rejectHeld)throw new TypeError('Ancienne connexion locale interrompue.');}
         return response(payload);
       }
       const body=JSON.parse(init.body);window.__mutations.push({method,body});
-      if(body.expectedUnits!==8)throw new Error('Wrong production capacity');
+      if(body.expectedUnits!==8||body.tentNumber!==1)throw new Error('Wrong global equipment target');
       if(method==='PATCH'&&body.action==='upgrade'){
         if(window.__holdUpgrade){window.__holdUpgrade=false;await new Promise(resolve=>{window.__releaseUpgrade=resolve;});}
         if(body.tentNumber!==1||body.equipmentCode!=='WASHER-25L'||body.expectedLevel!==state.sharedEquipment.levels['WASHER-25L'])throw new Error('Invalid shared upgrade target');
@@ -59,13 +58,22 @@ const modules = {
       if(method==='POST'){
         const total=body.equipmentCodes.reduce((sum,code)=>sum+getKqEquipmentDefinition(code).priceCents,0);
         for(const code of body.equipmentCodes){
-          const target=isKqSharedEquipment(code)?state.sharedEquipment:state.tents.find(tent=>tent.tentNumber===body.tentNumber);
+          const target=state.sharedEquipment;
           if(target.ownedCodes.includes(code))throw new Error('Duplicate ownership');
           target.ownedCodes.push(code);target.purchasedCodes.push(code);target.levels[code]=1;
+          const wear=getKqCultureEquipmentCondition(code,1,0,0);if(wear)target.cultureWear[code]=wear;
         }
+        refreshTents();
         state.cashCents-=total;
         if(window.__holdPurchaseRead){window.__holdPurchaseRead=false;window.__holdReadTent=body.tentNumber;}
         return response({equipmentCodes:body.equipmentCodes,totalPriceCents:total,cashAfterCents:state.cashCents});
+      }
+      if(method==='PATCH'&&!body.action){
+        const common=state.sharedEquipment,definition=getKqEquipmentDefinition(body.equipmentCode);
+        if(!definition||!common.purchasedCodes.includes(body.equipmentCode))throw new Error('Installing unowned common equipment');
+        common.equippedCodes=common.equippedCodes.filter(code=>getKqEquipmentDefinition(code).slot!==definition.slot).concat(body.equipmentCode);
+        common.operationalCodes=[...common.equippedCodes];refreshTents();
+        return response({equipped:true});
       }
       window.__unexpected.push(method+' '+parsed.href);throw new Error('Unexpected mutation');
     };
@@ -81,7 +89,7 @@ const server=await createServer({root,configFile:false,envDir:false,cacheDir:res
   server:{host:'127.0.0.1',port:3244,strictPort:true,hmr:false,watch:null}});
 
 let browser,page; const errors=[],blocked=[],results=[];
-const detail='aside[aria-label^="D\u00e9tails de"]', upgrade='section[aria-label^="Niveau de"]';
+const detail='aside[aria-label^="D\u00e9tails de"]', upgrade='section[aria-label^="Niveau de"]', tentSelector='select[aria-label="Tente à observer"]';
 try{
   await mkdir(output,{recursive:true});await server.listen();
   browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});
@@ -97,7 +105,12 @@ try{
   const card=async code=>page.evaluateHandle(code=>[...document.querySelectorAll('main article')].find(article=>article.querySelector('button')?.getAttribute('aria-label')==='Voir '+window.__meta[code].name),code);
   const open=async code=>{const node=(await card(code)).asElement();assert.ok(node,code);const button=await node.$('button');await button.evaluate(el=>el.scrollIntoView({block:'center'}));await button.click();await page.waitForSelector(detail);};
   const closeDetail=async()=>{await page.click('button[aria-label="Fermer la fiche"]');await page.waitForSelector(detail,{hidden:true});};
-  const select=async number=>{await page.select('select[aria-label="Tente \u00e0 am\u00e9nager"]',String(number));await page.waitForFunction(number=>window.__reads.at(-1)===number&&document.querySelector('select[aria-label="Tente \u00e0 am\u00e9nager"]')?.disabled===false,{},number);};
+  const select=async number=>{
+    const reads=await page.evaluate(()=>window.__reads.length);
+    await page.select(tentSelector,String(number));
+    await page.waitForFunction(({selector,number})=>document.querySelector(selector)?.value===String(number),{},{selector:tentSelector,number});
+    assert.equal(await page.evaluate(()=>window.__reads.length),reads,'Observing another tent never reloads the global catalogue');
+  };
   const checkSharedOwned=async level=>{
     const node=(await card('WASHER-25L')).asElement();
     assert.equal(await node.evaluate(el=>el.dataset.owned),'true');
@@ -108,7 +121,7 @@ try{
   for(const width of [320,390,1440]){
     await page.setViewport({width,height:950,isMobile:width<700,hasTouch:width<700});
     await page.goto(origin,{waitUntil:'networkidle0'});await page.waitForSelector(upgrade+' button');
-    assert.equal(await page.$eval('select[aria-label="Tente \u00e0 am\u00e9nager"]',el=>el.value),'2');
+    assert.equal(await page.$eval(tentSelector,el=>el.value),'2');
     await checkSharedOwned(4);
     const price=await page.evaluate(()=>window.__upgradePrice);
     assert.ok((await page.$eval(upgrade+' button',el=>el.textContent)).includes(price));
@@ -119,48 +132,75 @@ try{
     await page.screenshot({path:resolve(output,`shared-upgrade-${width}.png`)});
     await closeDetail();
     for(const tent of [1,8,2]){await select(tent);await open('WASHER-25L');await checkSharedOwned(5);await closeDetail();}
-    for(const code of ['LED-300','PRESS-0600']){
+    const purchaseCodes=['LED-300','DRYING-ROOM','SOLAR-BACKUP','SECURITY-DOG','PRESS-0600'];
+    for(const code of purchaseCodes){
       const node=(await card(code)).asElement();assert.ok(node,code);const add=await node.$('footer button');
       assert.equal(await add.evaluate(el=>el.textContent),'Ajouter');await add.evaluate(el=>el.scrollIntoView({block:'center'}));await add.click();
     }
+    await select(8);
     await page.click('button[aria-label^="Ouvrir le panier,"]');await clickText('Valider le panier');await page.waitForSelector('[aria-labelledby="checkout-title"]');
     const destination=await page.$$eval('[aria-labelledby="checkout-title"] > div > p > span',els=>els.map(el=>el.textContent));
     const names=await page.evaluate(()=>window.__meta);
-    assert.ok(destination.includes(names['LED-300'].name+' \u00b7 tente 2'));
-    assert.ok(destination.includes(names['PRESS-0600'].name+' \u00b7 atelier commun'));
+    for(const code of purchaseCodes)assert.ok(destination.some(text=>text.toLocaleLowerCase('fr').includes(names[code].name.toLocaleLowerCase('fr')+' · toutes les tentes')),code+' bought once for all tents');
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
-    await page.screenshot({path:resolve(output,`mixed-checkout-${width}.png`)});
+    await page.screenshot({path:resolve(output,`global-checkout-${width}.png`)});
     if(width===1440)await page.evaluate(()=>{window.__holdPurchaseRead=true;});
     await clickText('Confirmer l');await page.waitForSelector('[aria-labelledby="equipment-purchase-title"]');
     const purchases=await page.evaluate(()=>window.__mutations.filter(call=>call.method==='POST'));
-    assert.equal(purchases.length,1);assert.equal(purchases[0].body.tentNumber,2);assert.equal(purchases[0].body.expectedUnits,8);
-    assert.deepEqual(purchases[0].body.equipmentCodes,['LED-300','PRESS-0600']);
-    assert.equal(await page.evaluate(()=>window.__state.sharedEquipment.ownedCodes.includes('PRESS-0600')),true);
-    assert.equal(await page.evaluate(()=>window.__state.tents[1].ownedCodes.includes('LED-300')),true);
-    assert.equal(await page.evaluate(()=>window.__state.tents.some(tent=>tent.ownedCodes.includes('PRESS-0600'))),false);
-    assert.equal(await page.evaluate(()=>window.__state.tents[7].ownedCodes.includes('LED-300')),false);
+    assert.equal(purchases.length,1);assert.equal(purchases[0].body.tentNumber,1);assert.equal(purchases[0].body.expectedUnits,8);
+    assert.deepEqual(purchases[0].body.equipmentCodes,purchaseCodes);
+    assert.equal(await page.evaluate(codes=>codes.every(code=>window.__state.sharedEquipment.purchasedCodes.filter(owned=>owned===code).length===1),purchaseCodes),true,'Each item has one global acquisition');
+    assert.equal(await page.evaluate(()=>window.__state.tents.every(tent=>['LED-300','DRYING-ROOM','SOLAR-BACKUP','SECURITY-DOG'].every(code=>tent.ownedCodes.includes(code)))),true,'Every physical tent inherits non-processing acquisitions');
+    assert.equal(await page.evaluate(()=>window.__state.tents.some(tent=>tent.ownedCodes.includes('PRESS-0600'))),false,'Processing remains one common workshop');
     await clickText('Continuer les achats');
     if(width===1440){
       await page.waitForFunction(()=>window.__releaseRead!==null);
-      assert.equal(await page.$eval('select[aria-label="Tente \u00e0 am\u00e9nager"]',el=>el.disabled),true,'A purchase refresh keeps the destination locked');
       await page.evaluate(()=>window.__releaseRead());
-      await page.waitForFunction(()=>!document.querySelector('select[aria-label="Tente \u00e0 am\u00e9nager"]')?.disabled);
+      await page.waitForFunction(selector=>!document.querySelector(selector)?.disabled,{},tentSelector);
     }
-    await select(8);
-    assert.equal(await(await card('PRESS-0600')).asElement().evaluate(el=>el.dataset.owned),'true');
-    assert.equal(await(await card('LED-300')).asElement().evaluate(el=>el.dataset.owned),undefined);
+    for(const number of [1,2,8]){
+      await select(number);
+      for(const code of purchaseCodes){
+        const owned=(await card(code)).asElement();
+        assert.equal(await owned.evaluate(el=>el.dataset.owned),'true',code+' remains owned from tent '+number);
+        assert.notEqual(await owned.$eval('footer button',el=>el.textContent),'Ajouter',code+' cannot be bought again');
+      }
+    }
+    for(const code of purchaseCodes){
+      const owned=(await card(code)).asElement(),install=await owned.$('footer button');
+      assert.equal(await install.evaluate(el=>el.textContent),'Équiper',code+' is owned and available for one global installation');
+      await install.evaluate(el=>el.scrollIntoView({block:'center'}));await install.click();
+      await page.waitForFunction(code=>document.querySelector('main article button[aria-label="Voir '+window.__meta[code].name+'"]')?.closest('article')?.querySelector('footer button')?.textContent==='Équipé',{},code);
+    }
+    await select(1);
+    for(const code of purchaseCodes)assert.equal(await(await card(code)).asElement().$eval('footer button',el=>el.textContent),'Équipé',code+' installation applies to all tents');
     assert.deepEqual(await page.evaluate(()=>window.__unexpected),[]);
-    results.push({width,initialTent:2,sharedOwnershipPreserved:true,unitUpgradePrice:price,upgradeTarget:1,checkedTents:[1,8,2],mixedDestinations:destination,purchaseCount:1});
+    results.push({width,initialTent:2,allOwnershipShared:true,unitUpgradePrice:price,upgradeTarget:1,checkedTents:[1,8,2],globalDestinations:destination,purchaseCodes,purchaseCount:1,cartSurvivesTentSelection:true});
   }
-  // An older GET cannot replace the current tent's combined inventory.
+  // An older GET cannot roll back the global inventory after a newer refresh.
   await page.goto(origin,{waitUntil:'networkidle0'});await page.waitForSelector(upgrade+' button');await closeDetail();
-  await page.evaluate(()=>{window.__holdReadTent=2;window.dispatchEvent(new Event('kq:equipment-updated'));});
+  await page.evaluate(()=>{window.__holdReadTent=1;window.dispatchEvent(new Event('kq:equipment-updated'));});
   await page.waitForFunction(()=>window.__releaseRead!==null);await select(8);
+  await page.evaluate(()=>{const common=window.__state.sharedEquipment;common.ownedCodes.push('LED-300');common.purchasedCodes.push('LED-300');common.levels['LED-300']=6;window.dispatchEvent(new Event('kq:equipment-updated'));});
+  await page.waitForFunction(()=>document.querySelector('main article button[aria-label="Voir '+window.__meta['LED-300'].name+'"]')?.closest('article')?.dataset.owned==='true');
   await page.evaluate(()=>window.__releaseRead());
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-  assert.equal(await page.$eval('select[aria-label="Tente \u00e0 am\u00e9nager"]',el=>el.value),'8');
+  assert.equal(await page.$eval(tentSelector,el=>el.value),'8');
   assert.equal(await(await card('WASHER-25L')).asElement().evaluate(el=>el.dataset.owned),'true');
-  assert.equal(await(await card('LED-300')).asElement().evaluate(el=>el.dataset.owned),undefined);
+  assert.equal(await(await card('LED-300')).asElement().evaluate(el=>el.dataset.owned),'true','Late GET cannot discard a new common acquisition');
+  // A rejected old connection cannot overwrite the outcome of a newer GET.
+  await page.goto(origin,{waitUntil:'networkidle0'});await page.waitForSelector(upgrade+' button');await closeDetail();
+  await page.evaluate(()=>{window.__holdReadTent=1;window.__rejectHeldRead=true;window.dispatchEvent(new Event('kq:equipment-updated'));});
+  await page.waitForFunction(()=>window.__releaseRead!==null);
+  await page.evaluate(()=>{const common=window.__state.sharedEquipment;common.ownedCodes.push('LED-300');common.purchasedCodes.push('LED-300');common.levels['LED-300']=6;window.dispatchEvent(new Event('kq:equipment-updated'));});
+  await page.waitForFunction(()=>document.querySelector('main article button[aria-label="Voir '+window.__meta['LED-300'].name+'"]')?.closest('article')?.dataset.owned==='true');
+  await page.evaluate(()=>window.__releaseRead());
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  assert.equal(await page.$('[role="alert"]'),null,'An obsolete rejected GET does not publish an error over a fresh successful inventory');
+  await page.evaluate(()=>{window.__failNextRead=true;window.dispatchEvent(new Event('kq:equipment-updated'));});
+  await page.waitForFunction(()=>[...document.querySelectorAll('[role="alert"]')].some(el=>el.textContent.includes('Actualisation locale indisponible.')));
+  await page.evaluate(()=>window.dispatchEvent(new Event('kq:equipment-updated')));
+  await page.waitForSelector('[role="alert"]',{hidden:true});
   // A shared upgrade must not return the player to the previously selected tent.
   await page.goto(origin,{waitUntil:'networkidle0'});await page.waitForSelector(upgrade+' button');
   await page.evaluate(()=>{window.__holdUpgrade=true;});
@@ -170,10 +210,10 @@ try{
   await page.evaluate(()=>window.__releaseUpgrade());
   await page.waitForFunction(()=>window.__state.sharedEquipment.levels['WASHER-25L']===5);
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-  assert.equal(await page.$eval('select[aria-label="Tente \u00e0 am\u00e9nager"]',el=>el.value),'8','Late shared upgrade must keep the newly selected tent');
+  assert.equal(await page.$eval(tentSelector,el=>el.value),'8','Late shared upgrade must keep the newly selected tent');
   assert.ok((await card('WASHER-25L')).asElement(),'Late upgrade must leave the selected catalogue populated');
   assert.deepEqual(errors,[]);assert.deepEqual(blocked,[]);
-  await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,results,lateUpgradeKeepsSelection:true,staleReadIgnored:true,purchaseRefreshLocksDestination:true,errors,blocked},null,2));
+  await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,results,lateUpgradeKeepsSelection:true,staleReadIgnored:true,staleRejectedReadIgnored:true,successfulRefreshClearsError:true,purchaseRefreshGlobal:true,allEquipmentBoughtOnce:true,errors,blocked},null,2));
   console.log(JSON.stringify({passed:true,viewports:results.map(result=>result.width),output}));
 }catch(error){await page?.screenshot({path:resolve(output,'failure.png')}).catch(()=>{});await writeFile(resolve(output,'failure.json'),JSON.stringify({error:error.message,errors,blocked,results},null,2));throw error;}
 finally{await browser?.close();await server.close();}

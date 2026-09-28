@@ -1,7 +1,7 @@
 import { isKqEnergyQuoteValid } from "@/lib/kanab-quest-energy";
 import { KQ_RETIRED_SUBSTRATE_CODES, isKqRetiredSubstrate, getKqHandCodes, getKqStateHeritage, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState, type KqSharedEquipmentRunProfile } from "@/lib/kanab-quest-game";
 import { isKqHeritageEffect, isKqHeritageTiming } from "@/lib/kanab-quest-heritage";
-import { getKqEquipmentDefinition, isKqSharedEquipment, summarizeKqEquipmentLoadout } from "@/lib/kanab-quest-equipment";
+import { getKqEquipmentDefinition, isKqProcessingEquipment, summarizeKqEquipmentLoadout } from "@/lib/kanab-quest-equipment";
 import type { KqBattle } from "@/lib/kanab-quest-battle";
 import type { KqRankProfile } from "@/lib/kanab-quest-ranking";
 import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
@@ -42,6 +42,8 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (state.harvestLossPercent !== undefined && (!isFiniteNumber(state.harvestLossPercent) || state.harvestLossPercent < 0 || state.harvestLossPercent > 80)) return null;
     if (state.equipment !== undefined) {
       if (!isRecord(state.equipment) || !Array.isArray(state.equipment.codes) || state.equipment.codes.length > 12) return null;
+      const scope = state.equipment.scope;
+      if (scope !== undefined && scope !== "installation") return null;
       const equipmentCodes = state.equipment.codes;
       if (equipmentCodes.some((code) => typeof code !== "string" || !getKqEquipmentDefinition(code))) return null;
       if (new Set(equipmentCodes).size !== equipmentCodes.length) return null;
@@ -52,12 +54,12 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       if (shared !== undefined) {
         if (!isRecord(shared) || !Array.isArray(shared.codes) || shared.codes.length > 6
           || new Set(shared.codes).size !== shared.codes.length
-          || shared.codes.some(code => typeof code !== "string" || !isKqSharedEquipment(code))) return null;
+          || shared.codes.some(code => typeof code !== "string" || !isKqProcessingEquipment(code))) return null;
         if (new Set(shared.codes.map(code => getKqEquipmentDefinition(String(code))?.slot)).size !== shared.codes.length) return null;
         if (!isRecord(shared.levels) || Object.entries(shared.levels).some(([code, level]) =>
           !(shared.codes as unknown[]).includes(code) || !Number.isInteger(level) || Number(level) < 1 || Number(level) > 10)
           || shared.codes.some(code => !Object.hasOwn(shared.levels as object, code))) return null;
-        if (equipmentCodes.some(code => isKqSharedEquipment(String(code)))) return null;
+        if (equipmentCodes.some(code => isKqProcessingEquipment(String(code)))) return null;
       }
       const tents = state.equipment.tents;
       if (tents !== undefined) {
@@ -69,7 +71,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
           numbers.add(Number(tent.tentNumber));
           if (!Array.isArray(tent.codes) || tent.codes.length > 12 || new Set(tent.codes).size !== tent.codes.length
             || tent.codes.some(code => typeof code !== "string" || !getKqEquipmentDefinition(code))) return null;
-          if (shared !== undefined && tent.codes.some(code => isKqSharedEquipment(String(code)))) return null;
+          if (shared !== undefined && tent.codes.some(code => isKqProcessingEquipment(String(code)))) return null;
           if (!isRecord(tent.levels) || Object.entries(tent.levels).some(([code, level]) =>
             !(tent.codes as unknown[]).includes(code) || !Number.isInteger(level) || Number(level) < 1 || Number(level) > 10)) return null;
           if (tent.codes.some(code => !Object.hasOwn(tent.levels as object, code))) return null;
@@ -78,11 +80,16 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
         if (equipmentCodes.join("|") !== first.codes.join("|") || !isRecord(levels)
           || equipmentCodes.some(code => levels[String(code)] !== first.levels[String(code)])) return null;
       }
+      if (scope === "installation") {
+        if (!Array.isArray(tents) || shared === undefined || !isRecord(levels)) return null;
+        if ((tents as KqTentEquipmentProfile[]).some(tent => tent.codes.length !== equipmentCodes.length
+          || tent.codes.some(code => !equipmentCodes.includes(code) || tent.levels[code] !== levels[code]))) return null;
+      }
       const expected = tents === undefined && shared === undefined
         ? summarizeKqEquipmentLoadout(equipmentCodes as string[], levels as Record<string, number> | undefined)
         : summarizeKqTentEquipment(
           (tents ?? [{ tentNumber: 1, codes: equipmentCodes, levels: levels ?? {} }]) as KqTentEquipmentProfile[],
-          shared as KqSharedEquipmentRunProfile | undefined,
+          shared as KqSharedEquipmentRunProfile | undefined, scope,
         );
       for (const field of ["quantityPercent", "qualityMaxBonus", "regularityPercent", "pressureDelta", "powerWatts", "energyDiscountPercent", "processingPrecision", "processingCapacityPercent"] as const) {
         if (state.equipment[field] !== expected[field]) return null;
@@ -91,7 +98,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       if (levels !== undefined ? state.equipment.unlocks.join("|") !== expected.unlocks.join("|")
         : state.equipment.unlocks.some((unlock) => !expected.unlocks.includes(unlock as typeof expected.unlocks[number]))) return null;
     }
-    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined, productionUnits, state.equipment.tents as KqTentEquipmentProfile[] | undefined))) return null;
+    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined, productionUnits, state.equipment.tents as KqTentEquipmentProfile[] | undefined, state.equipment.scope as "installation" | undefined))) return null;
     if (typeof state.varietyCode !== "string" || typeof state.varietyName !== "string") return null;
     if (state.challengeDayKey !== undefined && (typeof state.challengeDayKey !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(state.challengeDayKey))) return null;
     if (state.startedAt !== undefined && (typeof state.startedAt !== "string" || Number.isNaN(Date.parse(state.startedAt)))) return null;
@@ -223,6 +230,7 @@ export function createKqIntegrityCode(state: KqGameState) {
     ...(getKqProductionUnits(state.equipment?.productionUnits) > 1 ? { productionUnits: state.equipment?.productionUnits } : {}),
     ...(state.equipment?.tents ? { equipmentTents: state.equipment.tents } : {}),
     ...(state.equipment?.shared ? { equipmentShared: state.equipment.shared } : {}),
+    ...(state.equipment?.scope ? { equipmentScope: state.equipment.scope } : {}),
     equipmentCodes: state.equipment?.codes ?? [], equipmentQualityBonus: state.equipmentQualityBonus ?? 0, harvestGrams: state.harvestGrams ?? null,
     powerOutage: state.powerOutage ?? false, harvestLossPercent: state.harvestLossPercent ?? 0,
     history: state.history.map((entry) => ({ stage: entry.stage, dice: entry.dice, total: entry.total, target: entry.target, outcome: entry.outcome, trait: entry.trait, dangers: entry.dangers, sparks: entry.sparks, pressureAfter: entry.pressureAfter, qualityDelta: entry.qualityDelta, xpGain: entry.xpGain, harvestLossPercent: entry.harvestLossPercent })),

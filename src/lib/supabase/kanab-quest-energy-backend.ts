@@ -17,7 +17,7 @@ export async function getKqEnergySnapshot(userId: string): Promise<KqEnergySnaps
     cultureWear: shop.cultureWear, cultureEquipmentCodes: shop.equippedCodes, cultureOperationalCodes: shop.cultureOperationalCodes,
     maintenanceDueNext: shop.sharedEquipment.equippedCodes.filter(code => shop.sharedEquipment.maintenance[code]?.remaining <= 1).map(code => `Atelier commun · ${getKqEquipmentDefinition(code)?.name ?? code}`),
     quotes: Object.fromEntries(
-    (Object.keys(KQ_ENERGY_MODES) as KqEnergyMode[]).map((mode) => [mode, quoteKqTentEnergy(shop.tents.map(tent => ({ tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels })), mode)]),
+    (Object.keys(KQ_ENERGY_MODES) as KqEnergyMode[]).map((mode) => [mode, quoteKqTentEnergy(shop.tents.map(tent => ({ tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels })), mode, "installation")]),
   ) as KqEnergySnapshot["quotes"] };
 }
 export async function payKqEnergy(input: { userId: string; requestKey: string; expectedCents: number }) {

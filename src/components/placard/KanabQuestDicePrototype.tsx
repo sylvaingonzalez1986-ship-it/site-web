@@ -2030,7 +2030,7 @@ export function KanabQuestDicePrototype({
               <article><Flame /><span><small>Copies brûlées · {burnedCards.length}</small><div>{burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>)}</div></span></article>
               <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte conservée</em>}</div></span></article>
             </div>
-            {state.energy ? <KqEnergyPanel lockedQuote={state.energy} lockedTents={state.equipment?.tents} productionUnits={state.equipment?.productionUnits} runId={remoteRunId} /> : null}
+            {state.energy ? <KqEnergyPanel lockedQuote={state.energy} lockedTents={state.equipment?.tents} lockedScope={state.equipment?.scope} productionUnits={state.equipment?.productionUnits} runId={remoteRunId} /> : null}
             <HarvestScoreSheet state={state} />
             <div className={styles.traitsList}>{flower.traits.map((trait, index) => <span key={`${trait}-${index}`}><Star />{trait}</span>)}</div>
             <section className={styles.harvestFlowerCard} aria-label="Carte Fleur obtenue">

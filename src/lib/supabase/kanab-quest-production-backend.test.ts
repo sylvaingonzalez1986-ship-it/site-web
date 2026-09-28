@@ -33,7 +33,7 @@ describe("production backend", () => {
     createSupabaseServiceClient.mockReturnValue({rpc:vi.fn().mockResolvedValue({error:{message:code}})});
     await expect(expandKqProduction(input)).rejects.toThrow(message);
   });
-  it("returns unit prices and independently scoped inventory, maintenance and replacements", async () => {
+  it("keeps one inventory, level and wear across existing and expanded tents at unit prices", async () => {
     const rows:Record<string,unknown>={
       kq_equipment_wallets:{cash_cents:1000000,reputation:0,production_units:4},
       kq_player_equipment:[{equipment_code:"LED-300",purchase_price_cents:35900,level:3,culture_wear_percent:50},{equipment_code:"WASHER-25L",purchase_price_cents:125000,level:2,wear_cycles:10},{tent_number:2,equipment_code:"LED-300",purchase_price_cents:35900,level:1,culture_wear_percent:0}],
@@ -54,9 +54,11 @@ describe("production backend", () => {
     expect(snapshot.tents).toHaveLength(4);
     const second = await getKqEquipmentShopSnapshot(input.userId, 2);
     expect(second.tentNumber).toBe(2);
+    expect(second.sharedEquipment).toEqual(snapshot.sharedEquipment);
+    expect(second.tents.every(tent => tent.levels["LED-300"] === 3 && tent.cultureWear["LED-300"].wearPercent === 50)).toBe(true);
     expect(second.purchasedCodes).toEqual(["LED-300", "WASHER-25L"]);
-    expect(second.levels["LED-300"]).toBe(1);
-    expect(second.cultureWear?.["LED-300"].wearPercent).toBe(0);
+    expect(second.levels["LED-300"]).toBe(3);
+    expect(second.cultureWear?.["LED-300"].wearPercent).toBe(50);
     expect(second.maintenance?.["WASHER-25L"]).toEqual(snapshot.sharedEquipment.maintenance["WASHER-25L"]);
     expect(second.tents[1].maintenance["WASHER-25L"]).toBeUndefined();
     expect(second.production.totalCostCents).toBe(2120000);

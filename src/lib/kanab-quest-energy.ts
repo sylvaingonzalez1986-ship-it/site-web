@@ -1,4 +1,4 @@
-import { getKqEquipmentAtLevel, getKqEquipmentLevel } from "@/lib/kanab-quest-equipment";
+import { getKqEquipmentDefinition, getKqEquipmentAtLevel, getKqEquipmentLevel } from "@/lib/kanab-quest-equipment";
 import type { ChanvrierStrength } from "./arena-chanvrier";
 import type { KqCultureEquipmentCondition } from "./kanab-quest-culture-wear";
 import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
@@ -18,8 +18,8 @@ export type KqEnergyLine = { code: string; name: string; level: number; watts: n
 export type KqEnergyQuote = { version: 1; mode: KqEnergyMode; productionUnits?: number; lines: KqEnergyLine[]; totalWattHours: number; solarPercent: number; tariffCentsPerKwh: number; totalCents: number; savingsCents: number };
 
 /** Fixed equivalent operating hours, never time spent logged in or offline. */
-export function quoteKqEnergy(codes: string[], levels: Record<string, number> = {}, mode: KqEnergyMode = "balanced", productionUnits = 1, tents?: KqTentEquipmentProfile[]): KqEnergyQuote {
-  if (tents) return quoteKqTentEnergy(tents, mode);
+export function quoteKqEnergy(codes: string[], levels: Record<string, number> = {}, mode: KqEnergyMode = "balanced", productionUnits = 1, tents?: KqTentEquipmentProfile[], scope?: "installation"): KqEnergyQuote {
+  if (tents) return quoteKqTentEnergy(tents, mode, scope);
   const units = getKqProductionUnits(productionUnits);
   const equipment = [...new Set(codes)].map((code) => getKqEquipmentAtLevel(code, levels[code])).filter((item) => item !== null);
   const solarPercent = Math.min(60, equipment.reduce((sum, item) => sum + (item.effects.energyDiscountPercent ?? 0), 0));
@@ -33,10 +33,15 @@ export function quoteKqEnergy(codes: string[], levels: Record<string, number> = 
   return { version: 1 as const, mode, ...(units > 1 ? { productionUnits: units } : {}), lines, totalWattHours, solarPercent, tariffCentsPerKwh: 30,
     totalCents, savingsCents: Math.round(totalWattHours / units * 30 / 1000) * units - totalCents };
 }
-/** Charge each tent for its installed appliances and its own solar equipment. */
-export function quoteKqTentEnergy(tents: KqTentEquipmentProfile[], mode: KqEnergyMode = "balanced"): KqEnergyQuote {
+/** Legacy invoices remain per-tent; installation scope charges common services once. */
+export function quoteKqTentEnergy(tents: KqTentEquipmentProfile[], mode: KqEnergyMode = "balanced", scope?: "installation"): KqEnergyQuote {
   const quotes = [...tents].sort((left, right) => left.tentNumber - right.tentNumber)
-    .map(tent => ({ tentNumber: tent.tentNumber, quote: quoteKqEnergy(tent.codes, tent.levels, mode) }));
+    .map((tent, index) => ({ tentNumber: tent.tentNumber, quote: quoteKqEnergy(
+      scope === "installation" && index > 0
+        ? tent.codes.filter(code => !["security", "flower-drying"].includes(getKqEquipmentDefinition(code)?.slot ?? ""))
+        : tent.codes,
+      tent.levels, mode,
+    ) }));
   const totalWattHours = quotes.reduce((sum, { quote }) => sum + quote.totalWattHours, 0);
   const solarPercent = totalWattHours === 0 ? 0 : Math.round(quotes.reduce((sum, { quote }) => sum + quote.totalWattHours * quote.solarPercent, 0) / totalWattHours * 100) / 100;
   return {
@@ -48,11 +53,11 @@ export function quoteKqTentEnergy(tents: KqTentEquipmentProfile[], mode: KqEnerg
   };
 }
 
-export function isKqEnergyQuoteValid(value: unknown, codes: string[], levels?: Record<string, number>, productionUnits = 1, tents?: KqTentEquipmentProfile[]): value is KqEnergyQuote {
+export function isKqEnergyQuoteValid(value: unknown, codes: string[], levels?: Record<string, number>, productionUnits = 1, tents?: KqTentEquipmentProfile[], scope?: "installation"): value is KqEnergyQuote {
   if (!value || typeof value !== "object") return false;
   const row = value as Record<string, unknown>;
   if (!isKqEnergyMode(row.mode)) return false;
-  const expected = quoteKqEnergy(codes, levels, row.mode, productionUnits, tents);
+  const expected = quoteKqEnergy(codes, levels, row.mode, productionUnits, tents, scope);
   if (row.productionUnits !== expected.productionUnits) return false;
   return Object.entries(expected).every(([key, item]) => key === "lines"
     ? Array.isArray(row.lines) && row.lines.length === expected.lines.length && expected.lines.every((line, index) =>

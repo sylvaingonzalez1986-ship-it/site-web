@@ -38,7 +38,7 @@ describe("Kanab Quest durable equipment installation", () => {
     const input = { userId: USER_ID, requestKey: "11000000-0000-4000-8000-000000000002", equipmentCode: "LED-300", expectedLevel: 4, tentNumber: 2 };
     await expect(upgradeKqDurableEquipment(input)).resolves.toMatchObject({ level: 5 });
     expect(rpc).toHaveBeenCalledWith("rpc_kq_upgrade_tent_equipment", {
-      p_user_id: USER_ID, p_request_key: input.requestKey, p_equipment_code: "LED-300", p_expected_level: 4, p_tent_number: 2,
+      p_user_id: USER_ID, p_request_key: input.requestKey, p_equipment_code: "LED-300", p_expected_level: 4, p_tent_number: 1,
     });
     rpc.mockResolvedValue({ data: null, error: { message: "equipment_level_changed" } });
     await expect(upgradeKqDurableEquipment(input)).rejects.toThrow("Le niveau a changé");
@@ -129,11 +129,11 @@ describe("Kanab Quest durable equipment installation", () => {
 
     expect(database.rpc).not.toHaveBeenCalled();
   });
-  it("does not install equipment from another tent", async () => {
+  it("installs an owned culture model globally from another selected tent", async () => {
     const database = mockEquipmentOwnership([{ equipment_code: "LED-300", purchase_price_cents: 35900, tent_number: 1 }]);
-    await expect(equipKqDurableEquipment({ userId: USER_ID, equipmentCode: "LED-300", tentNumber: 2 })).rejects.toThrow("appartient pas");
-    expect(database.eq).toHaveBeenCalledWith("tent_number", 2);
-    expect(database.rpc).not.toHaveBeenCalled();
+    await equipKqDurableEquipment({ userId: USER_ID, equipmentCode: "LED-300", tentNumber: 2 });
+    expect(database.eq).toHaveBeenCalledWith("tent_number", 1);
+    expect(database.rpc).toHaveBeenCalledWith("rpc_kq_equip_tent_equipment", { p_user_id: USER_ID, p_equipment_code: "LED-300", p_tent_number: 1 });
   });
   it.each([0, -1, 1.5, 9, NaN])("rejects invalid tent %s before spending", async tentNumber => {
     await expect(purchaseKqDurableEquipment({ userId: USER_ID, requestKey: "11000000-0000-4000-8000-000000000002", equipmentCodes: ["LED-300"], tentNumber })).rejects.toThrow("Tente invalide");
@@ -154,7 +154,7 @@ describe("Kanab Quest durable equipment installation", () => {
 });
 
 
-describe("shared processing workshop", () => {
+describe("shared installation inventory", () => {
   beforeEach(() => createSupabaseServiceClient.mockReset());
   const requestKey = "11000000-0000-4000-8000-000000000002";
 
@@ -180,13 +180,13 @@ describe("shared processing workshop", () => {
     });
   });
 
-  it("keeps mixed purchases atomic while normalizing all-shared baskets", async () => {
+  it("purchases culture and processing equipment in one canonical transaction", async () => {
     const rpc = vi.fn().mockResolvedValue({ data: {}, error: null });
     createSupabaseServiceClient.mockReturnValue({ rpc });
     await purchaseKqDurableEquipment({ userId: USER_ID, requestKey, equipmentCodes: ["LED-300", "WASHER-25L"], tentNumber: 8 });
     expect(rpc).toHaveBeenCalledTimes(1);
     expect(rpc).toHaveBeenLastCalledWith("rpc_kq_purchase_tent_equipment", {
-      p_user_id: USER_ID, p_request_key: requestKey, p_equipment_codes: ["LED-300", "WASHER-25L"], p_tent_number: 8,
+      p_user_id: USER_ID, p_request_key: requestKey, p_equipment_codes: ["LED-300", "WASHER-25L"], p_tent_number: 1,
     });
     await purchaseKqDurableEquipment({ userId: USER_ID, requestKey, equipmentCodes: ["WASHER-25L"], tentNumber: 8 });
     expect(rpc).toHaveBeenLastCalledWith("rpc_kq_purchase_tent_equipment", {
@@ -200,12 +200,12 @@ describe("shared processing workshop", () => {
       kq_player_equipment: [
         { tent_number: 1, equipment_code: "WASHER-25L", purchase_price_cents: 125000, level: 3, wear_cycles: 10, maintenance_version: 6 },
         { tent_number: 2, equipment_code: "WASHER-25L", purchase_price_cents: 125000, level: 9, wear_cycles: 0 },
-        { tent_number: 2, equipment_code: "LED-300", purchase_price_cents: 35900, level: 2 },
+        { tent_number: 1, equipment_code: "LED-300", purchase_price_cents: 35900, level: 2, culture_wear_percent: 50 },
       ],
       kq_equipment_loadouts: [
         { tent_number: 1, equipment_code: "WASHER-25L" },
         { tent_number: 2, equipment_code: "WASHER-25L" },
-        { tent_number: 2, equipment_code: "LED-300" },
+        { tent_number: 1, equipment_code: "LED-300" },
       ],
     };
     createSupabaseServiceClient.mockReturnValue({ rpc: vi.fn().mockResolvedValue({ error: null }), from: (table: string) => {
@@ -216,13 +216,16 @@ describe("shared processing workshop", () => {
     const second = await getKqEquipmentShopSnapshot(USER_ID, 2);
     const first = await getKqEquipmentShopSnapshot(USER_ID, 1);
     expect(second.sharedEquipment).toEqual(first.sharedEquipment);
-    expect(second.sharedEquipment.equippedCodes).toEqual(["WASHER-25L"]);
-    expect(second.sharedEquipment.levels).toEqual({ "WASHER-25L": 3 });
+    expect(second.sharedEquipment.equippedCodes).toEqual(["WASHER-25L", "LED-300"]);
+    expect(second.sharedEquipment.levels).toEqual({ "WASHER-25L": 3, "LED-300": 2 });
     expect(second.sharedEquipment.maintenance["WASHER-25L"].due).toBe(true);
-    expect(second.sharedEquipment.operationalCodes).toEqual([]);
+    expect(second.sharedEquipment.operationalCodes).toEqual(["LED-300", "TENT-080-STARTER", "AIR-STARTER"]);
     expect(second.tents[1].ownedCodes).toEqual(["LED-300"]);
     expect(second.tents[0].maintenance).toEqual({});
-    expect(second.equippedCodes).toEqual(["LED-300", "WASHER-25L"]);
+    expect(second.tents[0].equippedCodes).toEqual(second.tents[1].equippedCodes);
+    expect(second.sharedEquipment.cultureWear["LED-300"].wearPercent).toBe(50);
+    expect(second.sharedEquipment.cultureOperationalCodes).toContain("LED-300");
+    expect(second.equippedCodes).toEqual(first.equippedCodes);
     expect(second.catalog.find(item => item.code === "WASHER-25L")?.effects.processingCapacity).toBe(57);
   });
 });

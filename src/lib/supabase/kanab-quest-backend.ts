@@ -20,7 +20,7 @@ import { isKqPublicPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 import { LOTTERY_POINTS_PACK_MAX_PER_PURCHASE } from "@/lib/lottery-collection";
 import { KQ_SUPPORT_BOOSTER_POINTS_COST } from "@/lib/kanab-quest-booster";
 import { calculateArenaScore } from "@/lib/arena-ranking";
-import { auditKqEquipmentCatalog, type KqEquipmentCatalogRow } from "@/lib/kanab-quest-equipment";
+import { auditKqEquipmentCatalog, isKqProcessingEquipment, type KqEquipmentCatalogRow } from "@/lib/kanab-quest-equipment";
 import { getKqEquipmentShopSnapshot } from "@/lib/supabase/kanab-quest-equipment-backend";
 import type { KqBusinessState } from "@/lib/kanab-quest-business";
 import { getKqLaunchApprovalChecks, getKqLaunchApprovals, getKqLaunchDossier, type KqLaunchApprovals, type KqLaunchDossier } from "@/lib/kanab-quest-launch-approvals";
@@ -1002,8 +1002,9 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     heritageCard,
     equipmentCodes: equipmentShop.cultureOperationalCodes ?? equipmentShop.equippedCodes,
     equipmentLevels: equipmentShop.levels,
+    equipmentScope: "installation",
     equipmentTents: equipmentShop.tents?.map(tent => ({ tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels })),
-    equipmentShared: equipmentShop.sharedEquipment ? { codes: equipmentShop.sharedEquipment.equippedCodes, levels: equipmentShop.sharedEquipment.levels } : undefined,
+    equipmentShared: equipmentShop.sharedEquipment ? { codes: equipmentShop.sharedEquipment.equippedCodes.filter(isKqProcessingEquipment), levels: equipmentShop.sharedEquipment.levels } : undefined,
     productionUnits: equipmentShop.productionUnits,
     energyMode: input.energyMode ?? "balanced",
   });

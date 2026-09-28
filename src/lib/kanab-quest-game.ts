@@ -11,7 +11,7 @@ import {
 } from "@/lib/kanab-quest-heritage";
 import {
   getKqEquipmentDefinition,
-  isKqSharedEquipment,
+  isKqProcessingEquipment,
   getKqEquipmentLevel,
   summarizeKqEquipmentLoadout,
   KQ_STARTING_EQUIPMENT_CODES,
@@ -99,10 +99,12 @@ export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadou
   levels?: Record<string, number>;
   /** Capacity frozen when the culture starts; historical runs have one unit. */
   productionUnits?: number;
-  /** Independent equipment snapshots, frozen for the shared culture. */
+  /** Effective tent profiles; historical runs can retain different models. */
   tents?: KqTentEquipmentProfile[];
   /** Common processing machines frozen once, independently of the grow tents. */
   shared?: KqSharedEquipmentRunProfile;
+  /** New installations share ownership, wear and service costs; absent in legacy runs. */
+  scope?: "installation";
 };
 
 export type KqGameState = {
@@ -485,7 +487,7 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
 
 export function startKqGame(
   seed = Date.now(),
-  config: { domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile } = {},
+  config: { domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" } = {},
 ): KqGameState {
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
   const requestedDeck = config.deckCodes ?? KQ_CARDS.slice(0, 6).map((card) => card.code);
@@ -501,11 +503,13 @@ export function startKqGame(
     const installedCodes = [...new Set(codes)].filter(code => Boolean(getKqEquipmentDefinition(code)));
     return { codes: installedCodes, levels: Object.fromEntries(installedCodes.map(code => [code, getKqEquipmentLevel(requestedLevels[code])])) };
   };
-  const shared = config.equipmentShared ? normalizeEquipment(config.equipmentShared.codes.filter(isKqSharedEquipment), config.equipmentShared.levels) : undefined;
-  const individualCodes = (codes: string[]) => shared ? codes.filter(code => !isKqSharedEquipment(code)) : codes;
-  const tents = config.equipmentTents ? Array.from({ length: productionUnits }, (_, index) => {
+  const installation = config.equipmentScope === "installation";
+  const shared = config.equipmentShared ? normalizeEquipment(config.equipmentShared.codes.filter(isKqProcessingEquipment), config.equipmentShared.levels) : installation ? normalizeEquipment((config.equipmentCodes ?? []).filter(isKqProcessingEquipment), config.equipmentLevels) : undefined;
+  const individualCodes = (codes: string[]) => shared ? codes.filter(code => !isKqProcessingEquipment(code)) : codes;
+  const tents = config.equipmentTents || installation ? Array.from({ length: productionUnits }, (_, index) => {
     const tentNumber = index + 1;
-    const requested = config.equipmentTents!.find(tent => tent.tentNumber === tentNumber);
+    const requested = config.equipmentTents?.find(tent => tent.tentNumber === (installation ? 1 : tentNumber))
+      ?? (installation ? { codes: config.equipmentCodes ?? [...KQ_STARTING_EQUIPMENT_CODES], levels: config.equipmentLevels } : undefined);
     return { tentNumber, ...normalizeEquipment(individualCodes(requested?.codes ?? [...KQ_STARTING_EQUIPMENT_CODES]), requested?.levels) };
   }) : undefined;
   const { codes: equipmentCodes, levels } = tents?.[0] ?? normalizeEquipment(individualCodes(config.equipmentCodes ?? []), config.equipmentLevels);
@@ -513,9 +517,10 @@ export function startKqGame(
     codes: equipmentCodes, levels, ...(productionUnits > 1 ? { productionUnits } : {}),
     ...(tents ? { tents } : {}),
     ...(shared ? { shared } : {}),
-    ...(tents || shared ? summarizeKqTentEquipment(tents ?? [{ tentNumber: 1, codes: equipmentCodes, levels }], shared) : summarizeKqEquipmentLoadout(equipmentCodes, levels)),
+    ...(installation ? { scope: "installation" } : {}),
+    ...(tents || shared ? summarizeKqTentEquipment(tents ?? [{ tentNumber: 1, codes: equipmentCodes, levels }], shared, config.equipmentScope) : summarizeKqEquipmentLoadout(equipmentCodes, levels)),
   };
-  const energy = config.energyMode ? quoteKqEnergy(equipmentCodes, levels, config.energyMode, productionUnits, tents) : undefined;
+  const energy = config.energyMode ? quoteKqEnergy(equipmentCodes, levels, config.energyMode, productionUnits, tents, config.equipmentScope) : undefined;
   const initialState: KqGameState = {
     ...(config.domiciliation ? { domiciliation: config.domiciliation } : {}),
     ...(energy ? { energy } : {}),

@@ -81,8 +81,8 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
                   const number = warehouse * 4 + index + 1;
                   const owned = number <= production.units;
                   const next = !owned && number <= targetUnits;
-                  const installedTent = tents.find(tent => tent.tentNumber === number)?.equippedCodes.find(code => getKqEquipmentDefinition(code)?.slot === "tent");
-                  const tentArtwork = owned && installedTent && getKqEquipmentDefinition(installedTent)?.purchasable ? "tent-pro" : "tent-starter";
+                  const installedTent = tents[0]?.equippedCodes.find(code => getKqEquipmentDefinition(code)?.slot === "tent");
+                  const tentArtwork = installedTent && getKqEquipmentDefinition(installedTent)?.purchasable ? "tent-pro" : "tent-starter";
                   return <li key={number} data-owned={owned} data-next={next} aria-label={`Tente ${number} · ${owned ? "installée" : next ? "prochain agrandissement" : "emplacement libre"}`}>
                     {owned || next ? <Image src={`/placard/warehouse-v2/${tentArtwork}.webp`} width={366} height={488} sizes="80px" alt="" draggable={false} /> : <span className={styles.emptySlot} aria-hidden="true" />}
                     <small>{String(number).padStart(2, "0")}{next ? <Plus size={9} aria-hidden="true" /> : null}</small>
@@ -96,12 +96,12 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
         <div className={styles.offer}>
           <small className={styles.eyebrow}>{production.nextUnits === null ? "Installation complète" : "Prochain agrandissement"}</small>
           <h4>{production.nextUnits === null ? "Les deux entrepôts sont à toi." : isFinalWarehouse ? "Un second entrepôt." : `Une ${production.nextUnits === 2 ? "deuxième" : production.nextUnits === 3 ? "troisième" : "quatrième"} tente.`}</h4>
-          <p>{production.nextUnits === null ? "Tes huit tentes cultivent ensemble. Tu peux améliorer chacune à son rythme." : isFinalWarehouse ? "Quatre tentes supplémentaires avec leur kit de départ, à améliorer séparément." : "Une tente basique avec éclairage et extraction de départ. Achète puis améliore son matériel à ton rythme."}</p>
+          <p>{production.nextUnits === null ? "Tes huit tentes cultivent ensemble et bénéficient du même matériel." : isFinalWarehouse ? "Quatre tentes supplémentaires qui bénéficient de tout le matériel déjà acquis." : "Une tente supplémentaire qui bénéficie de ton installation et de ses améliorations."}</p>
           {production.nextUnits !== null ? <>
             <div className={styles.capacityChange}><span>{production.units}<small>tente{production.units > 1 ? "s" : ""}</small></span><ArrowRight size={19} aria-hidden="true" /><strong>{production.nextUnits}<small>tentes</small></strong></div>
             <details className={styles.quote}>
               <summary><span>Détail du devis</span><ChevronDown size={13} aria-hidden="true" /></summary>
-              <dl>{production.propertyCostCents > 0 ? <div><dt>Second entrepôt</dt><dd>{formatKqCash(production.propertyCostCents)}</dd></div> : null}<div><dt>Kit de départ ×{production.addedUnits}</dt><dd>{formatKqCash(production.equipmentCostCents)}</dd></div></dl>
+              <dl>{production.propertyCostCents > 0 ? <div><dt>Second entrepôt</dt><dd>{formatKqCash(production.propertyCostCents)}</dd></div> : null}<div><dt>Nouvelle tente ×{production.addedUnits}</dt><dd>{formatKqCash(production.equipmentCostCents)}</dd></div></dl>
             </details>
             <div className={styles.purchase}>
               <div className={styles.price}><small>Investissement total</small><strong>{formatKqCash(production.totalCostCents)}</strong></div>
@@ -113,7 +113,7 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
           </> : <p className={styles.complete}><Check size={16} aria-hidden="true" />Deux entrepôts, huit tentes : capacité maximale atteinte.</p>}
         </div>
       </div>
-      <p className={styles.footnote}>Chaque nouvelle tente démarre avec son kit de base. Les améliorations restent propres à chaque tente. La culture est commune ; ses résultats reflètent la moyenne du matériel installé.</p>
+      <p className={styles.footnote}>Le matériel est acquis une seule fois pour l’installation. Les nouvelles tentes bénéficient des mêmes modèles, niveaux et états d’usure ; aucun équipement n’est à racheter.</p>
       {notice ? <p role="status" className={styles.notice}><Check size={15} aria-hidden="true" />{notice}</p> : null}
       {error ? <p role="alert" className={styles.error}>{error} <button type="button" onClick={onUpdated}>Actualiser</button></p> : null}
     </div>

@@ -788,12 +788,21 @@ export function getKqEquipmentDefinition(code: string) {
   return EQUIPMENT_BY_CODE.get(code) ?? null;
 }
 
-/** Transformation machines are purchased once for the whole installation. */
+/** Every owned model, upgrade and condition belongs to the whole installation. */
 export function isKqSharedEquipmentSlot(slot: KqEquipmentSlot): boolean {
-  return ["sifting", "washing", "filtration", "static-separation", "press", "drying"].includes(slot);
+  return KQ_EQUIPMENT_CATALOG.some(equipment => equipment.slot === slot);
 }
 
 export function isKqSharedEquipment(code: string): boolean {
+  return getKqEquipmentDefinition(code) !== null;
+}
+
+/** Processing remains a distinct group in frozen culture snapshots. */
+export function isKqProcessingEquipmentSlot(slot: KqEquipmentSlot): boolean {
+  return ["sifting", "washing", "filtration", "static-separation", "press", "drying"].includes(slot);
+}
+
+export function isKqProcessingEquipment(code: string): boolean {
   return getKqEquipmentDefinition(code)?.category === "processing";
 }
 

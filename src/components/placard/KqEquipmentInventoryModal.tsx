@@ -3,11 +3,11 @@
 import { ArrowUp, Check, ChevronDown, CircleAlert, ImageIcon, PackageOpen, RefreshCw, ShoppingBag, X, Zap } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
-import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentImpactLabels, getKqEquipmentRequirementState, isKqSharedEquipment, isKqSharedEquipmentSlot, KQ_EQUIPMENT_CATALOG, KQ_EQUIPMENT_SLOT_LABELS, summarizeKqEquipmentLoadout, type KqEquipmentDefinition, type KqEquipmentSlot } from "@/lib/kanab-quest-equipment";
+import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentImpactLabels, getKqEquipmentRequirementState, isKqProcessingEquipment, KQ_EQUIPMENT_CATALOG, KQ_EQUIPMENT_SLOT_LABELS, summarizeKqEquipmentLoadout, type KqEquipmentDefinition, type KqEquipmentSlot } from "@/lib/kanab-quest-equipment";
 import { getKqProductionExpansion, getKqProductionUnits } from "@/lib/kanab-quest-production";
 import { KqTentSelector, type KqTentOverview, type KqSharedEquipmentOverview } from "./KqTentSelector";
 import { KqProductionCapacity, type KqProductionSnapshot } from "./KqProductionCapacity";
-import { quoteKqEnergy } from "@/lib/kanab-quest-energy";
+import { quoteKqTentEnergy } from "@/lib/kanab-quest-energy";
 import { getKqCultureOperationalCodes, type KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
 import { KqMachineMaintenance } from "./KqMachineMaintenance";
@@ -64,25 +64,19 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   }
   const tentState=tentStates[tentNumber]??{...EMPTY_TENT_UI,slot:initialSlot};
   const {slot,selectedCode}=tentState;
-  const sharedSlot=isKqSharedEquipmentSlot(slot);
-  const operationState=sharedSlot?(tentStates[0]??EMPTY_TENT_UI):tentState;
+  const operationState=tentStates[0]??EMPTY_TENT_UI;
   const {pending,error,notice}=operationState;
   const busy=productionPending||!!pending;
   const updateTent=(number:number,patch:Partial<TentUiState>)=>setTentStates(current=>({...current,[number]:{...(current[number]??{...EMPTY_TENT_UI,slot:initialSlot}),...patch}}));
   const units=getKqProductionUnits(productionUnits);
   const expansion=production??getKqProductionExpansion(units,purchasedCodes,levels);
-  const tentCodes=tentState.override?.baseCodes===equippedCodes?tentState.override.codes:equippedCodes;
-  const sharedSource=useMemo(()=>sharedEquipment?.equippedCodes??equippedCodes.filter(isKqSharedEquipment),[sharedEquipment,equippedCodes]);
+  const sharedSource=sharedEquipment?.equippedCodes??equippedCodes;
   const sharedOverride=tentStates[0]?.override;
   const sharedCodes=sharedOverride?.baseCodes===sharedSource?sharedOverride.codes:sharedSource;
-  const activeCodes=useMemo(()=>[...tentCodes.filter(code=>!isKqSharedEquipment(code)),...sharedCodes],[tentCodes,sharedCodes]);
-  const sceneTents=tents.map(tent=>{
-    const override=tentStates[tent.tentNumber]?.override;
-    return override?.baseCodes===tent.equippedCodes?{...tent,equippedCodes:override.codes}:tent;
-  });
+  const activeCodes=sharedCodes;
   const operationalCodes=useMemo(()=>getKqCultureOperationalCodes(activeCodes,cultureWear),[activeCodes,cultureWear]);
   const summary=useMemo(()=>summarizeKqEquipmentLoadout(operationalCodes,levels),[operationalCodes,levels]);
-  const energy=useMemo(()=>quoteKqEnergy(operationalCodes,levels,"balanced",1),[operationalCodes,levels]);
+  const energy=useMemo(()=>quoteKqTentEnergy(Array.from({length:units},(_,index)=>({tentNumber:index+1,codes:operationalCodes.filter(code=>!isKqProcessingEquipment(code)),levels})),"balanced","installation"),[operationalCodes,levels,units]);
   const equipment=useMemo(()=>[...new Set([...ownedCodes,...activeCodes])].map(code=>getKqEquipmentAtLevel(code,levels[code])).filter((item):item is KqEquipmentDefinition=>!!item),[ownedCodes,activeCodes,levels]);
   const choices=equipment.filter(item=>item.slot===slot);
   const installed=choices.find(item=>activeCodes.includes(item.code));
@@ -99,7 +93,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   },[onClose]);
   const select=(next:KqEquipmentSlot)=>{
     updateTent(tentNumber,{slot:next,selectedCode:null,error:""});
-    if(isKqSharedEquipmentSlot(next))updateTent(0,{error:""});
+    updateTent(0,{error:""});
     if(window.matchMedia("(max-width: 899px)").matches)scrollToSection(panel.current);
   };
   const selectInScene=(number:number,next:KqEquipmentSlot)=>{
@@ -123,13 +117,13 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   const changeView=(showList:boolean)=>{viewChanged.current=true;setListView(showList);};
   const openShop=(code?:string)=>onOpenShop(code);
   const equip=async(item:KqEquipmentDefinition)=>{
-    const shared=isKqSharedEquipment(item.code),targetKey=shared?0:tentNumber,targetTent=shared?1:tentNumber;
+    const targetKey=0,targetTent=1;
     if(locks.current.has(targetKey)||loading||loadError||productionPending||activeCodes.includes(item.code)||!purchasedCodes.includes(item.code)||cultureWear[item.code]?.due)return;
     locks.current.add(targetKey);updateTent(targetKey,{pending:item.code,error:"",notice:""});
     try {
       const response=await fetch("/api/arena/placard/equipment",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({equipmentCode:item.code,tentNumber:targetTent,expectedUnits:units})});
       const body=await response.json();if(!response.ok)throw new Error(body.error||"Installation impossible.");
-      updateTent(targetKey,{override:{baseCodes:shared?sharedSource:equippedCodes,codes:[...(shared?sharedCodes:activeCodes).filter(code=>getKqEquipmentAtLevel(code)?.slot!==item.slot),item.code]},notice:shared?`${item.name} installé dans l’atelier commun, disponible pour toutes les tentes.`:`${item.name} installé dans la tente ${targetTent}. Ses bonus seront pris en compte à la prochaine culture.`});
+      updateTent(targetKey,{override:{baseCodes:sharedSource,codes:[...sharedCodes.filter(code=>getKqEquipmentAtLevel(code)?.slot!==item.slot),item.code]},notice:`${item.name} installé pour toutes les tentes. Ses bonus seront pris en compte à la prochaine culture.`});
       window.dispatchEvent(new Event("kq:equipment-updated"));
     } catch(reason){updateTent(targetKey,{error:reason instanceof Error?reason.message:"Installation impossible."});}
     finally{locks.current.delete(targetKey);updateTent(targetKey,{pending:null});}
@@ -155,12 +149,12 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
             {WAREHOUSE_GROUPS.map(group=><section key={group.code} className={styles.listGroup} aria-label={group.label}>
               <h3>{group.label}</h3><div className={styles.slots}>{group.slots.map(groupSlot=><button key={groupSlot} type="button" disabled={loading||!!loadError||busy} aria-pressed={slot===groupSlot} data-installed={installedSlots.has(groupSlot)} onClick={()=>select(groupSlot)}><span>{KQ_EQUIPMENT_SLOT_LABELS[groupSlot]}</span><small>{installedSlots.has(groupSlot)?<><Check size={12} aria-hidden="true"/>Installé</>:"Libre"}</small></button>)}</div>
             </section>)}
-          </div>:<KqWarehouseScene tents={sceneTents} selectedTentNumber={tentNumber} equippedCodes={activeCodes} levels={levels} sharedEquipment={{equippedCodes:sharedCodes,levels:sharedEquipment?.levels??levels}} selectedSlot={slot} onSelect={selectInScene} onExpand={showExpansion} onShowList={()=>changeView(true)} disabled={productionPending||(!tents.length&&(loading||!!loadError))}/>}
-          <p className={styles.panHint}>Choisis une tente ou une machine. L’atelier de transformation est commun à toutes les tentes.</p>
+          </div>:<KqWarehouseScene tents={tents} selectedTentNumber={tentNumber} equippedCodes={activeCodes} levels={levels} sharedEquipment={{equippedCodes:sharedCodes,levels:sharedEquipment?.levels??levels}} selectedSlot={slot} onSelect={selectInScene} onExpand={showExpansion} onShowList={()=>changeView(true)} disabled={productionPending||(!tents.length&&(loading||!!loadError))}/>}
+          <p className={styles.panHint}>Choisis une tente ou un équipement. Tout le matériel est commun à l’ensemble des tentes.</p>
         </div>
-        <aside key={sharedSlot?"shared":tentNumber} ref={panel} className={styles.panel} tabIndex={-1} aria-labelledby="warehouse-slot-title">
+        <aside ref={panel} className={styles.panel} tabIndex={-1} aria-labelledby="warehouse-slot-title">
           <button type="button" className={styles.backToScene} onClick={showWorkshop}><ArrowUp size={16} aria-hidden="true"/>Retour à l’entrepôt</button>
-          <div className={styles.panelHeading}><small>{sharedSlot?"Atelier commun · Toutes les tentes":`Tente ${tentNumber} · ${selectedGroup.label}`}</small><span data-installed={!!installed}>{installed?<><Check size={12} aria-hidden="true"/>Installé</>:"Libre"}</span></div><h3 id="warehouse-slot-title">{KQ_EQUIPMENT_SLOT_LABELS[slot]}</h3>
+          <div className={styles.panelHeading}><small>Matériel commun · {selectedGroup.label}</small><span data-installed={!!installed}>{installed?<><Check size={12} aria-hidden="true"/>Installé</>:"Libre"}</span></div><h3 id="warehouse-slot-title">{KQ_EQUIPMENT_SLOT_LABELS[slot]}</h3>
           {slot==="flower-drying"?<p>Ta pièce dédiée aux fleurs récoltées. Chaque niveau renforce la régularité ; la qualité maximale augmente aux niveaux 4, 7 et 10.</p>:null}
           <div aria-live="polite">{error||loadError?<p role="alert" className={styles.error}><CircleAlert size={16}/>{error||loadError}</p>:null}{notice?<p role="status" className={styles.notice}><Check size={16}/>{notice}</p>:null}</div>
           {loading?<p role="status">Actualisation de l’atelier…</p>:loadError?<button type="button" onClick={onRetry}><RefreshCw size={16}/>Réessayer</button>:<>
@@ -170,19 +164,19 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
               <ul>{getKqEquipmentImpactLabels(item).map(label=><li key={label}>{label}</li>)}</ul><small>{item.tradeoff}</small>
               {!isInstalled&&installed?<p>Remplace {installed.name}, qui reste en réserve.</p>:null}
               {!requirement.compatible?<p className={styles.error}>Prérequis : {requirement.missing.map(r=>r.label).join(", ")}</p>:null}
-              {!isInstalled?<button type="button" disabled={!purchasedCodes.includes(item.code)||!requirement.compatible||busy||loading||cultureWear[item.code]?.due} onClick={()=>void equip(item)}>{pending===item.code?"Installation…":cultureWear[item.code]?.due?"À remplacer avant installation":sharedSlot?"Installer dans l’atelier commun":`Installer · tente ${tentNumber}`}</button>:null}
-              {cultureWear[item.code]?<KqCultureEquipmentWear tentNumber={tentNumber} productionUnits={units} code={item.code} name={item.name} condition={cultureWear[item.code]} cashCents={cashCents} activeRun={activeRun} disabled={busy||loading} onUpdated={onRetry}/>:null}
-              {item.purchasable&&purchasedCodes.includes(item.code)&&!cultureWear[item.code]?.due?<KqEquipmentUpgrade code={item.code} level={levels[item.code]??1} cashCents={cashCents} tentNumber={tentNumber} productionUnits={units} disabled={busy||loading} onUpdated={onRetry}/>:null}
-              {maintenance[item.code]?<KqMachineMaintenance tentNumber={tentNumber} productionUnits={units} code={item.code} condition={maintenance[item.code]} cashCents={cashCents} disabled={busy||loading} onUpdated={onRetry}/>:null}
+              {!isInstalled?<button type="button" disabled={!purchasedCodes.includes(item.code)||!requirement.compatible||busy||loading||cultureWear[item.code]?.due} onClick={()=>void equip(item)}>{pending===item.code?"Installation…":cultureWear[item.code]?.due?"À remplacer avant installation":"Installer pour toutes les tentes"}</button>:null}
+              {cultureWear[item.code]?<KqCultureEquipmentWear tentNumber={1} productionUnits={units} code={item.code} name={item.name} condition={cultureWear[item.code]} cashCents={cashCents} activeRun={activeRun} disabled={busy||loading} onUpdated={onRetry}/>:null}
+              {item.purchasable&&purchasedCodes.includes(item.code)&&!cultureWear[item.code]?.due?<KqEquipmentUpgrade code={item.code} level={levels[item.code]??1} cashCents={cashCents} tentNumber={1} productionUnits={units} disabled={busy||loading} onUpdated={onRetry}/>:null}
+              {maintenance[item.code]?<KqMachineMaintenance tentNumber={1} productionUnits={units} code={item.code} condition={maintenance[item.code]} cashCents={cashCents} disabled={busy||loading} onUpdated={onRetry}/>:null}
             </article>;}):null}
             {!choices.length?<p className={styles.empty}><PackageOpen/>Cet emplacement est prêt à accueillir ton matériel.</p>:null}
-            <button type="button" className={styles.shopButton} onClick={()=>openShop(suggestion?.code)}><ShoppingBag size={17}/>{sharedSlot?"Matériel de l’atelier commun":slot==="flower-drying"&&suggestion?`Aménager le séchoir · ${formatKqCash(suggestion.priceCents)}`:`Acheter du matériel · tente ${tentNumber}`}</button>
+            <button type="button" className={styles.shopButton} onClick={()=>openShop(suggestion?.code)}><ShoppingBag size={17}/>Acheter du matériel commun</button>
           </>}
-          <small className={styles.rule}>{sharedSlot?"Un seul achat pour toutes les tentes. Installation, niveau et entretien communs.":<>Matériel et niveaux propres à la tente {tentNumber}. Les changements s’appliquent à la prochaine culture commune.</>}</small>
+          <small className={styles.rule}>Un seul achat pour toutes les tentes. Installation, niveau et entretien communs.</small>
         </aside>
         <div ref={management} className={styles.management}>
-          <details className={styles.performance}><summary><span>Bilan de la tente {tentNumber}<small>Bonus et estimation d’électricité</small></span><ChevronDown size={18} aria-hidden="true"/></summary><div className={styles.performanceContent}><dl className={styles.stats}><div><dt>Quantité</dt><dd>+{summary.quantityPercent} %</dd></div><div><dt>Qualité max.</dt><dd>+{summary.qualityMaxBonus}</dd></div><div><dt>Régularité</dt><dd>+{summary.regularityPercent} %</dd></div><div><dt>Électricité / cycle</dt><dd>{formatKqCash(energy.totalCents)}</dd></div></dl>
-          <small className={styles.estimate}>Estimation en mode équilibré, hors usure, nourriture et vétérinaire. Les bonus du matériel hors service sont désactivés ; le kit de départ prend le relais aux emplacements concernés. Le matériel de chaque tente est fixé au lancement de la culture commune.</small></div></details>
+          <details className={styles.performance}><summary><span>Bilan de l’installation<small>Bonus communs et estimation d’électricité</small></span><ChevronDown size={18} aria-hidden="true"/></summary><div className={styles.performanceContent}><dl className={styles.stats}><div><dt>Quantité</dt><dd>+{summary.quantityPercent} %</dd></div><div><dt>Qualité max.</dt><dd>+{summary.qualityMaxBonus}</dd></div><div><dt>Régularité</dt><dd>+{summary.regularityPercent} %</dd></div><div><dt>Électricité / cycle</dt><dd>{formatKqCash(energy.totalCents)}</dd></div></dl>
+          <small className={styles.estimate}>Estimation en mode équilibré, hors usure, nourriture et vétérinaire. Les bonus du matériel hors service sont désactivés ; le kit de départ prend le relais aux emplacements concernés. Le matériel commun est fixé au lancement de la culture.</small></div></details>
           <KqProductionCapacity tents={tents} production={expansion} cashCents={cashCents} activeRun={activeRun} disabled={loading||!!loadError||productionPending||Object.values(tentStates).some(state=>!!state.pending)} onUpdated={onRetry} onPendingChange={setProductionPending}/>
           <details className={styles.charges} onToggle={event=>setChargesOpen(event.currentTarget.open)}><summary><Zap size={19} aria-hidden="true"/><span>Charges et énergie<small>Factures de l’ensemble des tentes</small></span><ChevronDown size={18} aria-hidden="true"/></summary>{chargesOpen?<div className={styles.chargesContent}><KqEnergyPanel productionUnits={units}/></div>:null}</details>
         </div>

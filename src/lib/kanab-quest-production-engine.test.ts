@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { summarizeKqEquipmentLoadout } from "./kanab-quest-equipment";
 import { quoteKqEnergy, quoteKqTentEnergy, applyKqEnergyHarvest, type KqEnergyMode } from "./kanab-quest-energy";
 import { advanceKqStage, getKqHarvestBreakdown, getKqRunProjection, resolveKqStage, startKqGame, type KqGameState } from "./kanab-quest-game";
 import { createKqIntegrityCode, encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
@@ -181,5 +182,74 @@ describe("independently equipped tents with one common culture", () => {
     expect(dead.harvestGrams).toBe(0);
     expect(dead.energy).toEqual(state.energy);
     expect(parseKqGameSave(encodeKqSave(dead))).toEqual(dead);
+  });
+});
+
+
+describe("one installation serving every tent", () => {
+  const cultureCodes = ["TENT-120", "LED-300", "AIR-EC6", "CLIMATE-SMART", "SOLAR-BACKUP", "SECURITY-CAMERA", "DRYING-ROOM"];
+  const levels = Object.fromEntries(cultureCodes.map(code => [code, 3]));
+  const processing = { codes: ["WASHER-25L", "FREEZE-DRYER"], levels: { "WASHER-25L": 2, "FREEZE-DRYER": 3 } };
+  const installation = (productionUnits: number, mode: KqEnergyMode = "balanced") => startKqGame(300, {
+    equipmentScope: "installation", equipmentCodes: [...cultureCodes], equipmentLevels: { ...levels },
+    equipmentShared: processing, productionUnits, energyMode: mode,
+  });
+
+  it.each([2, 4, 8])("repeats culture appliances across %i tents but counts services and processing power once", units => {
+    const state = installation(units);
+    const single = installation(1);
+    const replicatedCodes = cultureCodes.filter(code => !["SOLAR-BACKUP", "SECURITY-CAMERA", "DRYING-ROOM"].includes(code));
+    const growingPower = summarizeKqEquipmentLoadout(replicatedCodes, levels).powerWatts;
+    expect(state.equipment!.powerWatts).toBe(single.equipment!.powerWatts + growingPower * (units - 1));
+    expect(state.equipment!.qualityMaxBonus).toBe(single.equipment!.qualityMaxBonus);
+    expect(state.equipment!.quantityPercent).toBe(single.equipment!.quantityPercent);
+    expect(state.equipment!.unlocks).toEqual(single.equipment!.unlocks);
+    expect(state.equipment!.tents!.every(tent => JSON.stringify(tent.codes) === JSON.stringify(cultureCodes))).toBe(true);
+    expect(state.equipment!.shared).toEqual(processing);
+    for (const mode of ["eco", "balanced", "intensive"] as const) {
+      const energy = installation(units, mode).energy!;
+      const growing = quoteKqEnergy(cultureCodes.filter(code => !["SECURITY-CAMERA", "DRYING-ROOM"].includes(code)), levels, mode);
+      const first = installation(1, mode).energy!;
+      expect(energy.totalWattHours).toBe(first.totalWattHours + growing.totalWattHours * (units - 1));
+      expect(energy.totalCents).toBe(first.totalCents + growing.totalCents * (units - 1));
+      expect(energy.solarPercent).toBe(first.solarPercent);
+      expect(energy.lines.filter(line => line.code === "SECURITY-CAMERA")).toHaveLength(1);
+      expect(energy.lines.filter(line => line.code === "DRYING-ROOM")).toHaveLength(1);
+      expect(energy.lines.filter(line => line.code === "LED-300")).toHaveLength(units);
+    }
+    const harvest = complete(state);
+    const firstHarvest = complete(single);
+    expect(harvest.harvestGrams).toBeCloseTo(firstHarvest.harvestGrams! * units, 1);
+    expect(harvest.quality).toBe(firstHarvest.quality);
+    expect(parseKqGameSave(encodeKqSave(harvest))).toEqual(harvest);
+  });
+
+  it("freezes the shared culture model without borrowing mutable arrays or levels", () => {
+    const source = [{ tentNumber: 1, codes: [...cultureCodes], levels: { ...levels } }];
+    const state = startKqGame(300, { equipmentScope: "installation", equipmentTents: source, equipmentShared: processing, productionUnits: 2 });
+    source[0].levels["LED-300"] = 10;
+    source[0].codes.length = 0;
+    expect(state.equipment!.tents!.map(tent => tent.levels["LED-300"])).toEqual([3, 3]);
+    expect(state.equipment!.tents![0].codes).toEqual(cultureCodes);
+    expect(state.equipment!.tents![0].codes).not.toBe(state.equipment!.tents![1].codes);
+    expect(state.equipment!.tents![0].levels).not.toBe(state.equipment!.tents![1].levels);
+    expect(parseKqGameSave(encodeKqSave(state))).toEqual(state);
+  });
+
+  it("rejects altered scope, asymmetric installation profiles and service invoices while preserving legacy saves", () => {
+    const current = installation(2);
+    const asymmetric = structuredClone(current);
+    asymmetric.equipment!.tents![1].levels["LED-300"] = 4;
+    expect(parseKqGameSave(encodeKqSave(asymmetric))).toBeNull();
+    expect(parseKqGameSave(encodeKqSave({ ...current, equipment: { ...current.equipment, scope: "tent" } }))).toBeNull();
+    const missingFlag = structuredClone(current);
+    delete missingFlag.equipment!.scope;
+    expect(parseKqGameSave(encodeKqSave(missingFlag))).toBeNull();
+    expect(createKqIntegrityCode(missingFlag)).not.toBe(createKqIntegrityCode(current));
+    const old = startKqGame(300, { productionUnits: 2, equipmentTents: current.equipment!.tents, equipmentShared: processing, energyMode: "balanced" });
+    expect(old.equipment!.scope).toBeUndefined();
+    expect(old.energy!.totalCents).toBeGreaterThan(current.energy!.totalCents);
+    expect(parseKqGameSave(encodeKqSave(old))).toEqual(old);
+    expect(parseKqGameSave(encodeKqSave({ ...current, energy: old.energy }))).toBeNull();
   });
 });

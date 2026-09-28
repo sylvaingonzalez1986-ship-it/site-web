@@ -27,8 +27,8 @@ describe("Kanab Quest equipment inventory policy", () => {
     expect(inventory).toContain("Remplace {installed.name}, qui reste en réserve.");
     expect(inventory).toContain("{item.tradeoff}");
     expect(inventory).toContain("KqTentSelector");
-    expect(inventory).toContain("Matériel et niveaux propres à la tente {tentNumber}");
-    expect(inventory).toContain("Les changements s’appliquent à la prochaine culture commune.");
+    expect(inventory).toContain("Un seul achat pour toutes les tentes. Installation, niveau et entretien communs.");
+    expect(inventory).toContain("Le matériel commun est fixé au lancement de la culture.");
     expect(inventory).toContain("getKqEquipmentRequirementState");
     expect(inventory).toContain("purchasedCodes");
     expect(inventory).toContain("!purchasedCodes.includes(item.code)");

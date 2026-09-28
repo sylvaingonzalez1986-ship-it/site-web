@@ -4,7 +4,6 @@ import { getKqEnergySummary } from "./kanab-quest-energy-backend";
 
 import {
   buildKqEquipmentGoalReceipt,
-  isKqSharedEquipment,
   getKqEquipmentProgressionStatus,
   summarizeKqEquipmentLoadout,
   type KqEquipmentGoalReceipt,
@@ -146,18 +145,9 @@ type StoredMarketLot = {
   selected_route: string | null; payout_cents: number | null; reputation_gain: number | null; settled_at: string | null;
 };
 
-/** One common workshop serves the harvest, alongside each tent's individual equipment. */
+/** One installation inventory serves every tent and the whole harvest. */
 export function getKqSharedWorkshop(shop: KqEquipmentShopSnapshot) {
-  const individual = shop.tents?.length ? shop.tents : [shop];
-  const tents = shop.sharedEquipment ? [
-    ...individual.map(tent => ({
-      ...tent,
-      ownedCodes: tent.ownedCodes.filter(code => !isKqSharedEquipment(code)),
-      equippedCodes: tent.equippedCodes.filter(code => !isKqSharedEquipment(code)),
-      operationalCodes: (tent.operationalCodes ?? tent.equippedCodes).filter(code => !isKqSharedEquipment(code)),
-    })),
-    shop.sharedEquipment,
-  ] : individual;
+  const tents = shop.sharedEquipment ? [shop.sharedEquipment] : shop.tents?.length ? shop.tents : [shop];
   const equippedCodes = [...new Set(tents.flatMap(tent => tent.equippedCodes))];
   const operationalCodes = [...new Set(tents.flatMap(tent => tent.operationalCodes ?? tent.equippedCodes))];
   const levels: Record<string, number> = {};
