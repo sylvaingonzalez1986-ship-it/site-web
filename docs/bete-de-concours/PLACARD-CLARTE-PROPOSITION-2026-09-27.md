@@ -1,6 +1,6 @@
 # Clarté du Placard — proposition du 27 septembre 2026
 
-Statut : mise en œuvre et validation locale terminées, avec ajustement de l’entrepôt après retour utilisateur. La migration de l’atelier commun reste à appliquer à la base distante avant le déploiement du code serveur.
+Statut : mise en œuvre et validation initiale terminées, avec ajustement de l’entrepôt puis de l’accueil après retour utilisateur. Le 28 septembre, le Bureau devient un secteur autonome et les six accès aux secteurs adoptent les encarts jaunes. La migration de l’atelier commun a été appliquée le 27 septembre ; celle des crédits de commandes le 28 septembre.
 
 Contrainte confirmée : préserver la place des illustrations, des personnages et des lieux, notamment le banquier. La simplification porte sur les commandes, les textes et les niveaux de navigation.
 
@@ -46,23 +46,26 @@ Chaque espace conserve sa propre scène et son identité. L’illustration stabl
 - **L’Entrepôt** : conserver la pièce illustrée et le matériel installé comme vue principale. Cliquer un emplacement ouvre sa fiche ; la liste sert de vue alternative accessible.
 - **La culture et le jury** : conserver les situations illustrées, les personnages et les réactions aux résultats. Les informations secondaires se replient autour de ces moments de jeu.
 
-Une scène lisible accueille un panneau d’action à la fois. Les illustrations existantes servent de base. Les noms de lieux restent visibles, accompagnés d’un repère fonctionnel constant : « Le Bureau · Trésorerie », « La Boutique · Cartes et matériel ».
+Une scène lisible accueille un panneau d’action à la fois. Les illustrations existantes servent de base. Les noms de lieux restent visibles : « Bureau » désigne le secteur des comptes, de la banque et de la gestion ; « La Boutique · Cartes et matériel » garde son repère fonctionnel.
 
 Sur ordinateur, scène/personnage et panneau d’action peuvent être côte à côte. Sur mobile, un cadrage adapté conserve le personnage et les éléments caractéristiques du lieu, avec les commandes immédiatement à proximité. Vérifier que le banquier, Sylvain et les éléments interactifs restent reconnaissables et ne sont pas recouverts par les panneaux.
 
 La cohérence avec l’Arène repose ainsi sur une même association entre illustration généreuse et choix clairement hiérarchisés.
 
-## Accueil proposé
+## Accueil ajusté — 28 septembre 2026
 
-Trois accès principaux, chacun ouvert en un clic :
+Six encarts jaunes de même importance, chacun ouvert en un clic :
 
 | Entrée | Description courte | Contenu et état utile |
 | --- | --- | --- |
 | **Cultiver** | Fais grandir ta prochaine récolte. | Préparation et culture. Le libellé devient « Reprendre ma culture » si une partie est en cours ; l’étape s’affiche dans la carte. |
 | **Aménager** | Équipe et entretiens tes tentes. | Entrepôt, matériel, améliorations, entretien et agrandissement. Résumé du nombre de tentes et alerte éventuelle. |
-| **Vendre** | Transforme et vends tes récoltes. | Marché et accès clairement nommé « Trésorerie ». Résumé des lots prêts ou de la prochaine condition à remplir. |
+| **Vendre** | Transforme et vends tes récoltes. | Marché, lots prêts et prochaine condition à remplir. |
+| **Bureau** | Tes factures, tes comptes et ton banquier. | Secteur autonome de comptabilité, banque et gestion. |
+| **Jury & duels** | Présente tes Fleurs et relève les défis. | Fleurs disponibles, verdicts et combats. |
+| **Collection** | Tes cartes, tes Héritages et tes packs. | Collection La Botte et accès aux packs. |
 
-Sous ces trois cartes, une ligne secondaire stable : **Jury & duels · Missions · Collection**. Ces accès restent explicites, y compris pour un joueur qui revient uniquement faire un duel ou récupérer une récompense.
+Sous les six cartes, **Missions** reste le seul accès secondaire. Le Bureau possède son entrée directe et son propre titre ; il n’est plus une entrée globale du Marché. Le raccourci métier vers la création ou la réactivation d’un site de vente reste disponible quand cette action est nécessaire.
 
 En haut : retour Arène, titre « Le Placard », Aide discrète. Une illustration stable laisse respirer l’accueil. Les badges signalent seulement une action en attente.
 
@@ -81,7 +84,16 @@ AMÉNAGER                  →
 VENDRE                    →
 2 lots prêts
 
-Jury & duels · Missions · Collection
+BUREAU                    →
+Comptes, banque et gestion
+
+JURY & DUELS              →
+Fleurs disponibles
+
+COLLECTION                →
+Cartes, Héritages et packs
+
+Missions
 ```
 
 Exemple de contenu fictif, à adapter à l’état réel du joueur. Les cartes conservent leur ordre ; leur description rend la prochaine action visible. La recommandation du tableau de bord doit être réutilisée sans ajouter un nouveau grand panneau ni un bouton qui double la carte.
@@ -95,8 +107,9 @@ Exemple de contenu fictif, à adapter à l’état réel du joueur. Les cartes c
 | Achat de matériel | Depuis Aménager et la fiche de l’équipement concerné ; accès au catalogue dans l’univers de la Boutique |
 | Packs La Botte | Depuis Collection et après obtention d’une récompense ; conserver Sylvain et la scène de Boutique |
 | Marché | Carte Vendre |
-| Trésorerie, banque, gestion | Accès « Le Bureau · Trésorerie » dans Vendre et depuis un coût ou une facture ; conserver les scènes du Bureau et du banquier |
-| Fleurs, jury et duels | Lien Jury & duels ; raccourci après récolte |
+| Trésorerie, banque, gestion | Carte Bureau, indépendante du Marché ; conserver les scènes du Bureau et du banquier |
+| Fleurs, jury et duels | Carte Jury & duels ; raccourci après récolte |
+| Collection | Carte Collection ; accès aux packs depuis la collection |
 | Missions | Lien Missions avec badge si récompense disponible |
 | Tableau de bord | États courts dans les cartes ; détails répartis dans leur espace pertinent |
 
@@ -130,7 +143,7 @@ Dans le Bureau, conserver les scènes illustrées de chaque pôle, notamment cel
 
 ### Navigation et vocabulaire
 
-Associer systématiquement lieu et fonction : « Le Placard » désigne l’espace ; « Cultiver » désigne l’activité ; « Entrepôt » désigne l’installation ; « Le Bureau · Trésorerie » identifie les comptes. Les noms de lieux gardent leur place dans les titres. Distinguer « Boutique La Botte » et le site de vente du joueur.
+Associer systématiquement lieu et fonction : « Le Placard » désigne l’espace ; « Cultiver » désigne l’activité ; « Entrepôt » désigne l’installation ; « Bureau » identifie le secteur des comptes, de la banque et de la gestion. Les noms de lieux gardent leur place dans les titres. Distinguer « Boutique La Botte » et le site de vente du joueur.
 
 Les écrans internes utilisent un en-tête de navigation compact : retour au Placard, titre courant et outil nécessaire. Chaque lieu conserve une illustration généreuse, composée avec les commandes pour rendre le personnage et l’action accessibles ensemble.
 
@@ -148,16 +161,16 @@ La réussite attendue : dès l’arrivée, le joueur distingue ce qu’il peut f
 
 ## Réalisation et validation locale
 
-- Accueil à trois accès directs, historique navigateur et liens vers équipement préservés ; objectifs disponibles dans Missions, achats de packs depuis Collection.
+- Accueil à six encarts jaunes directs, Missions seule en accès secondaire, historique navigateur et liens vers équipement préservés ; achats de packs depuis Collection.
 - Situation et dés réunis dans le parcours de culture mobile ; main et informations secondaires repliables, avertissements de décision conservés.
-- Bureau et banque conservés avec leur personnage ; dossiers comptables regroupés et lien Trésorerie explicite depuis le marché.
+- Bureau autonome depuis l’accueil, banque conservée avec son personnage et dossiers comptables regroupés ; le Marché conserve uniquement son raccourci métier de création ou réactivation du site.
 - Entrepôt persistant, tentes côte à côte, atelier de transformation commun, une fiche active ; vue liste disponible et agrandissement accessible depuis le prochain emplacement libre.
 
 Les audits navigateur utilisent les composants réels avec des réponses API locales simulées, aux largeurs 320, 390, 768 et 1 440 px. Ils vérifient la disposition, l’absence de débordement, la navigation, la sélection, les achats mixtes et les réponses retardées. Rapports dans `output/placard-clarity`, `output/placard-culture-clarity`, `output/placard-treasury`, `output/placard-warehouse-clarity` et `output/placard-shared-catalog`.
 
 La nouvelle migration d’atelier commun est vérifiée dans PGlite, sans réseau : canonisation des machines, conservation des soldes et reçus, achats atomiques, rejeu des requêtes, entretien commun et compatibilité des anciennes cultures. Les fonctions externes de calendrier et de comptabilité utilisent les fixtures du test de production ; les migrations de matériel et les observateurs d’actifs sont exécutés. TypeScript, ESLint et le contrôle des permissions Supabase complètent la validation.
 
-Pour revoir uniquement l’entrepôt avec des données de démonstration : `node scripts/audit-placard-warehouse-clarity.mjs --preview`, puis `http://127.0.0.1:3241/?units=2` (également `units=4` ou `units=8`). Cette prévisualisation est distincte du compte joueur. Le site Next.js local existant reste sur le port 3000 ; ses opérations réelles d’atelier commun nécessitent la nouvelle migration, qui n’a pas été appliquée à la base distante.
+Pour revoir uniquement l’entrepôt avec des données de démonstration : `node scripts/audit-placard-warehouse-clarity.mjs --preview`, puis `http://127.0.0.1:3241/?units=2` (également `units=4` ou `units=8`). Cette prévisualisation est distincte du compte joueur. Le site Next.js local existant reste sur le port 3000. Les migrations de l’atelier commun et des crédits de commandes ont été appliquées et vérifiées séparément ; les rapports d’application sont dans `output/shared-workshop-migration` et `output/order-cash-migration`.
 
 La retouche des proportions prend en compte les ensembles illustrés complets, supports et pompes compris : la presse est agrandie, la filtration et le lyophilisateur rééquilibrés, le séparateur haut réduit. Le tamisage et la presse reposent sur le plateau à 68,2 % de la hauteur du décor ; les quatre machines au sol partagent un appui à 89 %. Les ombres de contact de l’établi sont distinctes de celles du sol. Les images gardent leurs proportions natives et leur taille reste identique quel que soit le niveau d’amélioration.
 

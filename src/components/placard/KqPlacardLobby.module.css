@@ -27,15 +27,12 @@
 .arrow { margin-left: auto; flex-shrink: 0; }
 .secondary { display: flex; align-items: stretch; justify-content: center; flex-wrap: wrap; column-gap: 24px; margin-top: 12px; }
 .secondary button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 6px 4px; border: 0; background: transparent; color: #fffaf1; font-size: 12px; font-weight: 650; cursor: pointer; }
-.secondary button > span { display: grid; gap: 3px; text-align: left; }
-.secondary small { color: #f4c43d; font-size: 10px; font-weight: 500; }
-.secondary [data-recommended] { color: #f4c43d; }
 .status { margin: 8px 0 0; font-size: 12px; text-align: center; }
 .status button { min-height: 44px; padding: 4px 8px; color: #f4c43d; background: transparent; border: 0; text-decoration: underline; cursor: pointer; }
 .lobby :where(button, a, summary):focus-visible { outline: 3px solid #f4c43d; outline-offset: 4px; }
 .lobby .activity:focus-visible { outline: 3px solid #fffaf1; box-shadow: inset 0 0 0 3px #003f30; }
 @media (hover: hover) { .activity:hover { background: #ffda66; } .secondary button:hover, .back:hover { color: #f4c43d; } }
-@media (min-width: 701px) and (max-width: 1000px) { .activity { gap: 9px; padding: 14px 10px; } .activityIcon { width: 28px; } .activityText strong { font-size: 17px; } .next { display: block; } }
+@media (min-width: 701px) and (max-width: 1000px) { .activityGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .activity { gap: 9px; padding: 14px; } .activityIcon { width: 28px; } .activityText strong { font-size: 17px; } .next { display: block; } }
 @media (max-width: 700px) {
   .lobby { grid-template-rows: auto minmax(145px, 1fr) auto; padding-top: 12px; padding-bottom: 12px; }
   .breathingRoom { min-height: 145px; }
@@ -50,7 +47,6 @@
   .intro { margin-bottom: 14px; }
   .secondary { column-gap: 16px; margin-top: 8px; }
   .secondary button { font-size: 11px; gap: 5px; }
-  .secondary small { font-size: 9px; }
 }
 @media (max-width: 360px) { .secondary { column-gap: 10px; } .secondary button { gap: 4px; } .secondary button > svg { width: 15px; } .place { font-size: 9px; } }
 @media (prefers-reduced-motion: reduce) { .activity { transition: none; } }

@@ -143,12 +143,12 @@ export function KqTreasuryDesk({ onOpenShop, onOpenMarket }: {
       try {
         const response = await fetch(`/api/arena/placard/treasury?period=${period}&offset=${offset}&limit=25`, { cache: "no-store", signal: controller.signal });
         const payload: unknown = await response.json();
-        if (!response.ok) throw new Error(payload && typeof payload === "object" && "error" in payload && typeof payload.error === "string" ? payload.error : "La trésorerie est momentanément indisponible.");
-        if (!isKqTreasurySnapshot(payload)) throw new Error("Les données comptables sont incomplètes. Actualise la trésorerie.");
+        if (!response.ok) throw new Error(payload && typeof payload === "object" && "error" in payload && typeof payload.error === "string" ? payload.error : "Le Bureau est momentanément indisponible.");
+        if (!isKqTreasurySnapshot(payload)) throw new Error("Les données comptables sont incomplètes. Actualise les comptes.");
         getKqTreasuryReport(payload);
         if (!controller.signal.aborted) { setState({ key, data: payload, error: "" }); }
       } catch (failure) {
-        if (!controller.signal.aborted) setState({ key, data: null, error: failure instanceof Error ? failure.message : "Impossible de charger la trésorerie." });
+        if (!controller.signal.aborted) setState({ key, data: null, error: failure instanceof Error ? failure.message : "Impossible de charger le Bureau." });
       }
     }
     void load();
@@ -168,7 +168,7 @@ export function KqTreasuryDesk({ onOpenShop, onOpenMarket }: {
     event.preventDefault(); setPole(POLES[target].id); document.getElementById(`treasury-pole-${POLES[target].id}`)?.focus();
   }
   return <main className={styles.page}>
-    <header className={styles.header}><div className={styles.welcome}><small><Wallet size={16} aria-hidden="true" /> Trésorerie du Placard</small><h1>Le Bureau</h1><p>Tes factures, tes comptes et ton banquier.</p><button type="button" className={styles.marketLink} onClick={onOpenMarket}>Vendre mes récoltes <ArrowRight size={17} aria-hidden="true" /></button></div><figure className={styles.officeArt}><div className={styles.officePicture}><Image src={OFFICE_ART[pole].src} alt={OFFICE_ART[pole].alt} fill sizes="(max-width: 650px) 100vw, 50vw" priority /></div><figcaption>{OFFICE_ART[pole].caption}</figcaption></figure></header>
+    <header className={styles.header}><div className={styles.welcome}><small><Wallet size={16} aria-hidden="true" /> Comptabilité, banque & gestion</small><h1>Bureau</h1><p>Tes factures, tes comptes et ton banquier.</p><button type="button" className={styles.marketLink} onClick={onOpenMarket}>Vendre mes récoltes <ArrowRight size={17} aria-hidden="true" /></button></div><figure className={styles.officeArt}><div className={styles.officePicture}><Image src={OFFICE_ART[pole].src} alt={OFFICE_ART[pole].alt} fill sizes="(max-width: 650px) 100vw, 50vw" priority /></div><figcaption>{OFFICE_ART[pole].caption}</figcaption></figure></header>
     <nav className={styles.poles} role="tablist" aria-label="Pôles du bureau">{POLES.map((item, index) => <button type="button" role="tab" id={`treasury-pole-${item.id}`} aria-controls={`treasury-office-${item.id}`} aria-selected={pole === item.id} tabIndex={pole === item.id ? 0 : -1} key={item.id} onClick={() => setPole(item.id)} onKeyDown={event => navigatePole(event, index)}><item.icon size={24} aria-hidden="true" /><span className={styles.poleLabel}><strong>{item.label}</strong><small>{item.description}</small></span><ArrowRight size={19} className={styles.poleArrow} aria-hidden="true" /></button>)}</nav>
     <section id={`treasury-office-${pole}`} role="tabpanel" aria-labelledby={`treasury-pole-${pole}`} className={styles.officePanel} tabIndex={0}>
     {pole === "bank" ? <KqTreasuryBank /> : pole === "management" ? <><div className={styles.managementIntro}><small className={styles.eyebrow}>03 / Gestion</small><h2>Pilote ton entreprise</h2><p>Ton site internet, tes campagnes publicitaires et l’adresse de ton commerce.</p></div><KqTreasuryManagement key="management" onOpenShop={onOpenShop} section="management" /><button type="button" className={styles.inlineLink} onClick={() => { setPole("accounting"); selectTab("invoices"); }}>Retrouver mes factures en comptabilité <ArrowRight size={16} aria-hidden="true" /></button></> : <>

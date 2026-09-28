@@ -159,7 +159,7 @@ export function PlacardPlayerShell() {
 
   if (view !== "hub") {
     const currentTitle =
-      view === "workshop" ? "L’Entrepôt · Aménager" : view === "shop" ? "La Boutique · La Botte" : view === "game" ? "La Culture" : view === "market" ? "Le Marché · Vendre" : view === "treasury" ? "Le Bureau · Trésorerie" : view === "missions" ? "Les Missions" : "Jury & duels";
+      view === "workshop" ? "L’Entrepôt · Aménager" : view === "shop" ? "La Boutique · La Botte" : view === "game" ? "La Culture" : view === "market" ? "Le Marché · Vendre" : view === "treasury" ? "Le Bureau" : view === "missions" ? "Les Missions" : "Jury & duels";
 
     return (
       <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
