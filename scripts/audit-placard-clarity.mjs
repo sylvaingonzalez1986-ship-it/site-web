@@ -59,22 +59,46 @@ if(preview){
  const visit=async(state='starter',query='')=>{scenario=state;failed=false;await page.goto(origin+'/arene/placard?scenario='+state+(query?'&'+query:''),{waitUntil:'networkidle0'});await page.evaluate(()=>document.fonts.ready);};
  const view=async value=>{await page.waitForSelector(`[data-placard-view="${value}"]`);if(value!=="hub")await page.waitForSelector(`[data-placard-view="${value}"] [data-destination]`);};
  const clickText=async text=>{const button=await page.waitForFunction(text=>[...document.querySelectorAll('button')].find(el=>el.textContent.trim()===text&&el.checkVisibility()),{},text);await button.asElement().click();await button.dispose();};
- const measure=()=>page.evaluate(()=>({width:innerWidth,overflow:document.documentElement.scrollWidth>innerWidth+1,primary:[...document.querySelectorAll('[data-placard-activity]')].map(el=>({id:el.dataset.placardActivity,text:el.innerText,background:getComputedStyle(el).backgroundColor})),visibleControls:[...document.querySelectorAll('button,a,summary')].filter(el=>el.checkVisibility()).length,brokenImages:[...document.images].filter(el=>el.complete&&!el.naturalWidth).map(el=>el.src)}));
+ const measure=()=>page.evaluate(()=>{
+  const color=value=>{const channels=value.match(/[\d.]+/g)?.map(Number)||[0,0,0];return [...channels.slice(0,3),channels[3]??1];};
+  const blend=(foreground,background)=>foreground.slice(0,3).map((value,index)=>value*foreground[3]+background[index]*(1-foreground[3]));
+  const backgroundOf=element=>{const ancestors=[];for(let current=element;current;current=current.parentElement)ancestors.push(current);return ancestors.reverse().reduce((background,current)=>blend(color(getComputedStyle(current).backgroundColor),background),[255,255,255]);};
+  const luminance=channels=>channels.map(value=>{const channel=value/255;return channel<=.04045?channel/12.92:((channel+.055)/1.055)**2.4;}).reduce((sum,value,index)=>sum+value*[.2126,.7152,.0722][index],0);
+  const contrast=(foreground,background)=>{const values=[luminance(foreground),luminance(background)].sort((a,b)=>b-a);return (values[0]+.05)/(values[1]+.05);};
+  const elementContrast=element=>{const background=backgroundOf(element);return contrast(blend(color(getComputedStyle(element).color),background),background);};
+  const primary=[...document.querySelectorAll('[data-placard-activity]')].map(element=>{
+   const textContrasts=[];const walker=document.createTreeWalker(element,NodeFilter.SHOW_TEXT);let node;
+   while((node=walker.nextNode()))if(node.textContent.trim())textContrasts.push({text:node.textContent.trim(),contrast:elementContrast(node.parentElement)});
+   const bounds=element.getBoundingClientRect();
+   return {id:element.dataset.placardActivity,text:element.innerText,background:getComputedStyle(element).backgroundColor,accent:getComputedStyle(element).borderLeftColor,width:bounds.width,top:bounds.top,bottom:bounds.bottom,textContrasts,iconContrasts:[...element.querySelectorAll('svg')].map(elementContrast)};
+  });
+  return {width:innerWidth,overflow:document.documentElement.scrollWidth>innerWidth+1,gridWidth:document.querySelector('[aria-label="Activités du Placard"]').getBoundingClientRect().width,primary,visibleControls:[...document.querySelectorAll('button,a,summary')].filter(el=>el.checkVisibility()).length,brokenImages:[...document.images].filter(el=>el.complete&&!el.naturalWidth).map(el=>el.src)};
+ });
  for(const width of [320,390,768,1440]){
   await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});
   for(const state of ['starter','active','jury','lots']){
    await visit(state);await view('hub');await page.mouse.move(0,0);
    assert.equal(await page.$$eval('dialog[open]',els=>els.length),0);
-   const m=await measure();assert.equal(m.overflow,false);assert.deepEqual(m.brokenImages,[]);assert.deepEqual(m.primary.map(x=>x.id),['game','workshop','market','treasury','arena','collection']);assert.equal(m.visibleControls,9);
-   assert(m.primary.every(x=>x.background==='rgb(244, 196, 61)'),'All six activity cards share the yellow background');
-   assert.deepEqual(await page.$$eval('[aria-label="Missions du Placard"] button',els=>els.map(el=>el.textContent.trim())),['Missions']);
-   assert.equal(await page.$('[aria-label="Activités du Placard"] [aria-label="Missions du Placard"]'),null);
+   const m=await measure();assert.equal(m.overflow,false);assert.deepEqual(m.brokenImages,[]);assert.deepEqual(m.primary.map(x=>x.id),['game','workshop','market','treasury','arena','collection','missions']);assert.equal(m.visibleControls,9);
+   assert.equal(new Set(m.primary.map(card=>card.background)).size,7,'Each of the seven activity cards has its own background tone');
+   assert.equal(new Set(m.primary.map(card=>card.accent)).size,7,'Each of the seven activity cards has its own accent color');
+   for(const card of m.primary){
+    assert(card.textContrasts.length>0,`${card.id} has readable destination text`);
+    for(const label of card.textContrasts)assert(label.contrast>=4.5,`${card.id}: "${label.text}" has contrast ${label.contrast.toFixed(2)} (minimum 4.5)`);
+    assert(card.iconContrasts.length>=2,`${card.id} has a destination icon and a navigation arrow`);
+    assert(card.iconContrasts.every(value=>value>=3),`${card.id} icons contrast with their background by at least 3:1`);
+   }
+   const missionCard=m.primary.find(card=>card.id==='missions');
+   assert(Math.abs(missionCard.width-m.gridWidth)<=1,'Missions occupies the complete final grid row');
+   assert(missionCard.top>=Math.max(...m.primary.filter(card=>card.id!=='missions').map(card=>card.bottom)),'Missions follows the six other destinations');
+   assert.equal(await page.$$eval('[aria-label="Activités du Placard"] [data-placard-activity="missions"]',els=>els.length),1);
+   assert.equal(await page.$('[aria-label="Missions du Placard"]'),null,'Missions is no longer a separate secondary navigation link');
    if(state==='active'){assert(m.primary[0].text.includes('Reprendre ma culture'));assert(m.primary[1].text.includes('4 tentes'));}
    if(state==='lots')assert(m.primary[2].text.includes('2 lots prêts'));
    if(state==='jury')assert(m.primary.find(x=>x.id==='arena').text.includes('1 Fleur disponible'));
    await page.screenshot({path:resolve(output,`lobby-${state}-${width}.png`),fullPage:true});results.push({state,...m});
   }
-  for(const target of ['game','workshop','market','treasury','arena']){
+  for(const target of ['game','workshop','market','treasury','arena','missions']){
    await visit();await page.click(`[data-placard-activity="${target}"]`);await view(target);assert.equal(new URL(page.url()).searchParams.get('view'),target);
    await page.goBack();await view('hub');await page.goForward();await view(target);
   }
@@ -93,6 +117,6 @@ if(preview){
  await visit('error');await page.waitForSelector('[data-placard-lobby] [role="status"]');await clickText('Réessayer');await page.waitForSelector('[data-placard-lobby] [role="status"]',{hidden:true});
  await visit('starter','view=unknown');await view('hub');
  assert(requests.every(r=>r.method==='GET'));assert.deepEqual(errors,[]);
- await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,scope:'Real lobby, shell, collection, progression; other destinations stubbed for navigation only',results,sixYellowCards:true,missionsOnlySecondary:true,directTreasuryAndArena:true,browserHistory:true,equipmentDeepLinks:true,collectionToShop:true,helpOnDemand:true,progressionOnDemand:true,retry:true,readOnly:true,requests,errors},null,2));
+ await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,scope:'Real lobby, shell, collection, progression; other destinations stubbed for navigation only',results,sevenActivityCards:true,contrastingActivityCards:true,textContrastMinimum:4.5,iconContrastMinimum:3,missionsFullWidthCard:true,directTreasuryAndArena:true,browserHistory:true,missionNavigationAndHistory:true,equipmentDeepLinks:true,collectionToShop:true,helpOnDemand:true,progressionOnDemand:true,retry:true,readOnly:true,requests,errors},null,2));
  console.log(JSON.stringify({passed:true,viewports:4,states:4,browserHistory:true,errors,output}));
 }finally{await browser?.close();await server.close();}

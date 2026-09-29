@@ -16,37 +16,40 @@
 .intro { margin-bottom: 18px; text-shadow: 0 2px 12px #002d24; }
 .intro h2 { margin: 0; font: 900 clamp(28px, 4vw, 42px)/1.1 var(--font-display), Impact, sans-serif; }
 .intro p { margin: 6px 0 0; font-size: 13px; color: #fffaf1e6; }
-.activityGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.activity { display: flex; align-items: center; gap: 12px; min-width: 0; min-height: 132px; padding: 18px; border: 1px solid #f4c43d; border-radius: 12px; background: #f4c43d; color: #003f30; text-align: left; box-shadow: 0 4px 16px #001e1926; cursor: pointer; transition: background 150ms ease; }
-.activityIcon { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background: #00563f0d; }
+.activityGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.activity { --activity-accent: #00503c; --activity-yellow: #f4c43d; --activity-hover: #ffda66; display: flex; align-items: center; gap: 12px; min-width: 0; min-height: 132px; padding: 18px; border: 2px solid var(--activity-accent); border-left-width: 6px; border-radius: 12px; background: var(--activity-yellow); color: #003f30; text-align: left; box-shadow: 0 5px 0 #001e19, 0 8px 16px #001e1926; cursor: pointer; transition: background 150ms ease, transform 150ms ease; }
+.activity[data-placard-activity="workshop"] { --activity-accent: #783719; --activity-yellow: #f8c38f; --activity-hover: #ffdab6; }
+.activity[data-placard-activity="market"] { --activity-accent: #006574; --activity-yellow: #f2e9ad; --activity-hover: #fff6cc; }
+.activity[data-placard-activity="treasury"] { --activity-accent: #284e93; --activity-yellow: #efd480; --activity-hover: #ffe5a0; }
+.activity[data-placard-activity="arena"] { --activity-accent: #7c2039; --activity-yellow: #f0ad4e; --activity-hover: #ffc775; }
+.activity[data-placard-activity="collection"] { --activity-accent: #62418c; --activity-yellow: #fff1c5; --activity-hover: #fff8e1; }
+.activity[data-placard-activity="missions"] { --activity-accent: #735700; --activity-yellow: #ffe263; --activity-hover: #fff09a; grid-column: 1 / -1; min-height: 112px; }
+.activityIcon { display: grid; place-items: center; flex-shrink: 0; width: 50px; height: 50px; border-radius: 12px; background: var(--activity-accent); color: #fffaf1; }
 .activityText { display: grid; gap: 5px; min-width: 0; }
-.place { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
-.next { white-space: nowrap; font-weight: 600; letter-spacing: 0; text-transform: none; }
-.activityText strong { font-size: 19px; line-height: 1.2; }
+.place { color: var(--activity-accent); font: 900 clamp(24px, 2.1vw, 30px)/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.action { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; font-size: 13px; font-weight: 800; line-height: 1.35; }
+.next { padding: 2px 5px; border: 1px solid #003f3040; border-radius: 4px; font-size: 10px; font-weight: 600; line-height: 1.4; white-space: nowrap; }
 .description { font-size: 12px; line-height: 1.45; }
-.arrow { margin-left: auto; flex-shrink: 0; }
-.secondary { display: flex; align-items: stretch; justify-content: center; flex-wrap: wrap; column-gap: 24px; margin-top: 12px; }
-.secondary button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 6px 4px; border: 0; background: transparent; color: #fffaf1; font-size: 12px; font-weight: 650; cursor: pointer; }
+.arrow { margin-left: auto; flex-shrink: 0; width: 30px; height: 30px; padding: 5px; border-radius: 50%; background: var(--activity-accent); color: #fffaf1; }
 .status { margin: 8px 0 0; font-size: 12px; text-align: center; }
 .status button { min-height: 44px; padding: 4px 8px; color: #f4c43d; background: transparent; border: 0; text-decoration: underline; cursor: pointer; }
 .lobby :where(button, a, summary):focus-visible { outline: 3px solid #f4c43d; outline-offset: 4px; }
-.lobby .activity:focus-visible { outline: 3px solid #fffaf1; box-shadow: inset 0 0 0 3px #003f30; }
-@media (hover: hover) { .activity:hover { background: #ffda66; } .secondary button:hover, .back:hover { color: #f4c43d; } }
-@media (min-width: 701px) and (max-width: 1000px) { .activityGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .activity { gap: 9px; padding: 14px; } .activityIcon { width: 28px; } .activityText strong { font-size: 17px; } .next { display: block; } }
+.lobby .activity:focus-visible { outline: 3px solid #fffaf1; outline-offset: 4px; box-shadow: 0 0 0 4px #002d24; }
+@media (hover: hover) { .activity:hover { background: var(--activity-hover); transform: translateY(-2px); } .back:hover { color: #f4c43d; } }
+@media (min-width: 701px) and (max-width: 1000px) { .activityGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .activity { gap: 10px; padding: 14px; } .activityIcon { width: 44px; height: 44px; } .arrow { width: 26px; height: 26px; padding: 4px; } }
 @media (max-width: 700px) {
   .lobby { grid-template-rows: auto minmax(145px, 1fr) auto; padding-top: 12px; padding-bottom: 12px; }
   .breathingRoom { min-height: 145px; }
   .backdrop img { object-position: 44% 30%; }
   .lobby::before { background: linear-gradient(#002d24d9, #002d2426 25%, #002d241a 38%, #002d24e8 65%, #002d24 92%); }
-  .activityGrid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-  .activity { min-height: 88px; padding: 12px 14px; gap: 12px; }
-  .activityIcon { width: 34px; height: 34px; }
+  .activityGrid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .activity { min-height: 100px; padding: 12px; gap: 10px; }
+  .activityIcon { width: 40px; height: 40px; border-radius: 10px; }
   .activityText { gap: 3px; }
-  .activityText strong { font-size: 18px; }
+  .place { font-size: 24px; }
+  .action { font-size: 12px; }
   .description { font-size: 12px; }
+  .arrow { width: 26px; height: 26px; padding: 4px; }
   .intro { margin-bottom: 14px; }
-  .secondary { column-gap: 16px; margin-top: 8px; }
-  .secondary button { font-size: 11px; gap: 5px; }
 }
-@media (max-width: 360px) { .secondary { column-gap: 10px; } .secondary button { gap: 4px; } .secondary button > svg { width: 15px; } .place { font-size: 9px; } }
 @media (prefers-reduced-motion: reduce) { .activity { transition: none; } }
