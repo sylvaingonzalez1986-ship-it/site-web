@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
 import { formatPrice } from "@/lib/utils";
 import type { AdminCustomer } from "@/types/customer";
 import type { LoyaltySummary } from "@/types/loyalty";
@@ -41,16 +40,16 @@ type AdminCustomerDetail = {
 const orderStatusLabels: Record<OrderStatus, string> = {
   new: "Nouvelle",
   pending_payment: "Paiement en attente",
-  paid: "PayÃ©e",
-  processing: "En prÃ©paration",
-  shipped: "ExpÃ©diÃ©e",
-  cancelled: "AnnulÃ©e",
+  paid: "Payée",
+  processing: "En préparation",
+  shipped: "Expédiée",
+  cancelled: "Annulée",
 };
 
 const collectionRewardStatusLabels: Record<"locked" | "claimable" | "claimed", string> = {
-  locked: "VerrouillÃ©e",
-  claimable: "RÃ©compense disponible",
-  claimed: "RÃ©compensÃ©e",
+  locked: "Verrouillée",
+  claimable: "Récompense disponible",
+  claimed: "Récompensée",
 };
 
 function formatPercent(value: number): string {
@@ -329,7 +328,7 @@ export function AdminCustomersPanel() {
 
   if (selectedCustomerId) {
     return (
-      <div className="cartoon-border bg-cream p-6 md:p-8">
+      <div className="admin-customers-panel cartoon-border min-w-0 bg-cream p-3 sm:p-5 md:p-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <button
             type="button"
@@ -338,7 +337,7 @@ export function AdminCustomersPanel() {
           >
             Retour liste clients
           </button>
-          {status && <p className="text-sm font-semibold text-charcoal">{status}</p>}
+          {status && <p role="status" className="text-sm font-semibold text-charcoal">{status}</p>}
         </div>
 
         {loadingDetail || !detail ? (
@@ -347,28 +346,24 @@ export function AdminCustomersPanel() {
           <div className="mt-4 grid gap-6">
             <article className="card-cartoon bg-white p-5">
               <div className="flex flex-wrap items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[#f7f4ee] font-display text-2xl text-ink">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[#f7f4ee] font-display text-2xl text-ink">
                   {getInitials(detail.customer.firstName, detail.customer.lastName)}
                 </div>
-                <div>
-                  <p className="text-xl font-semibold text-ink">
+                <div className="min-w-0 flex-1">
+                  <p className="break-words text-xl font-semibold text-ink">
                     {detail.customer.firstName} {detail.customer.lastName}
                   </p>
-                  <p className="text-sm text-charcoal">{detail.customer.email}</p>
+                  <p className="break-all text-sm text-charcoal">{detail.customer.email}</p>
                   <p className="text-xs text-charcoal">
                     Inscrit le {new Date(detail.customer.createdAt).toLocaleDateString("fr-FR")}
                   </p>
                   <p className="text-xs text-charcoal">
-                    Date de naissance: {detail.customer.dateOfBirth || "Non renseignÃ©"}
+                    Date de naissance: {detail.customer.dateOfBirth || "Non renseignée"}
                   </p>
                 </div>
-                <div className="ml-auto flex items-center gap-3">
-                  <LoyaltyBadgeIllustration
-                    badgeId={detail.loyalty.currentBadge.id}
-                    unlocked={detail.loyalty.currentBadge.unlocked}
-                    size="md"
-                  />
+                <div className="w-full rounded-xl border border-[#003f30]/20 bg-[#f7f4ee] p-3 sm:ml-auto sm:w-auto sm:max-w-xs">
                   <div>
+                    <p className="text-xs font-bold uppercase tracking-wider text-charcoal">Fidélité</p>
                     <p className="text-sm font-semibold text-ink">{detail.loyalty.currentBadge.label}</p>
                     <p className="text-xs text-charcoal">{detail.loyalty.totalPoints} points</p>
                     <p className="mt-1 text-xs text-charcoal">
@@ -382,31 +377,62 @@ export function AdminCustomersPanel() {
             <form onSubmit={saveCustomer} className="card-cartoon bg-white p-5">
               <h3 className="font-display text-2xl text-ink">Informations client</h3>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
-                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={firstName} onChange={(event) => setFirstName(event.target.value)} placeholder="PrÃ©nom" />
-                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={lastName} onChange={(event) => setLastName(event.target.value)} placeholder="Nom" />
-                <input className="h-11 border-2 border-[#1a1a1a] bg-[#f4f4f4] px-3 md:col-span-2" value={detail.customer.email} readOnly />
-                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="TÃ©lÃ©phone" />
-                <input className="h-11 border-2 border-[#1a1a1a] px-3 md:col-span-2" value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Adresse" />
-                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={city} onChange={(event) => setCity(event.target.value)} placeholder="Ville" />
-                <input className="h-11 border-2 border-[#1a1a1a] px-3" value={postalCode} onChange={(event) => setPostalCode(event.target.value)} placeholder="Code postal" />
-                <input className="h-11 border-2 border-[#1a1a1a] px-3 md:col-span-2" value={country} onChange={(event) => setCountry(event.target.value)} placeholder="Pays" />
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+                  Prénom
+                  <input className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal" autoComplete="given-name" value={firstName} onChange={(event) => setFirstName(event.target.value)} />
+                </label>
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+                  Nom
+                  <input className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal" autoComplete="family-name" value={lastName} onChange={(event) => setLastName(event.target.value)} />
+                </label>
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink md:col-span-2">
+                  Adresse e-mail
+                  <input className="h-11 min-w-0 border-2 border-[#1a1a1a] bg-[#f4f4f4] px-3 font-normal" type="email" value={detail.customer.email} readOnly />
+                </label>
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+                  Téléphone
+                  <input className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal" type="tel" autoComplete="tel" value={phone} onChange={(event) => setPhone(event.target.value)} />
+                </label>
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink md:col-span-2">
+                  Adresse
+                  <input className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal" autoComplete="street-address" value={address} onChange={(event) => setAddress(event.target.value)} />
+                </label>
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+                  Ville
+                  <input className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal" autoComplete="address-level2" value={city} onChange={(event) => setCity(event.target.value)} />
+                </label>
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+                  Code postal
+                  <input className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal" autoComplete="postal-code" value={postalCode} onChange={(event) => setPostalCode(event.target.value)} />
+                </label>
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink md:col-span-2">
+                  Pays
+                  <input className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal" autoComplete="country-name" value={country} onChange={(event) => setCountry(event.target.value)} />
+                </label>
               </div>
 
               <div className="mt-4 grid gap-3 md:grid-cols-2">
-                <textarea
-                  className="min-h-24 border-2 border-[#1a1a1a] p-3 md:col-span-2"
-                  value={notes}
-                  onChange={(event) => setNotes(event.target.value)}
-                  placeholder="Notes internes admin"
-                />
-                <input
-                  type="number"
-                  className="h-11 border-2 border-[#1a1a1a] px-3"
-                  value={loyaltyPoints}
-                  onChange={(event) => setLoyaltyPoints(event.target.value)}
-                  placeholder="Points bonus"
-                />
-                <label className="flex min-h-11 items-center gap-3 border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-2 text-sm font-semibold text-ink">
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink md:col-span-2">
+                  Notes internes
+                  <textarea
+                    className="min-h-24 min-w-0 border-2 border-[#1a1a1a] p-3 font-normal"
+                    value={notes}
+                    onChange={(event) => setNotes(event.target.value)}
+                    placeholder="Notes internes admin"
+                  />
+                </label>
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+                  Points bonus
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal"
+                    value={loyaltyPoints}
+                    onChange={(event) => setLoyaltyPoints(event.target.value)}
+                    placeholder="Points bonus"
+                  />
+                </label>
+                <label className="flex min-h-11 items-center gap-3 self-end border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-2 text-sm font-semibold text-ink">
                   <input
                     type="checkbox"
                     className="h-5 w-5 accent-[#118575]"
@@ -427,17 +453,23 @@ export function AdminCustomersPanel() {
                 ) : null}
               </div>
 
-              <button type="submit" disabled={saving} className="btn-cartoon btn-primary mt-4">
+              <button type="submit" disabled={saving} className="btn-cartoon btn-primary mt-4 w-full sm:w-auto">
                 {saving ? "Sauvegarde..." : "Sauvegarder client"}
               </button>
             </form>
 
             <article className="card-cartoon bg-white p-5">
               <h3 className="font-display text-2xl text-ink">Codes promo</h3>
-              <form onSubmit={addPromo} className="mt-3 grid gap-2 md:grid-cols-[1fr,160px,auto]">
-                <input className="h-11 border-2 border-[#1a1a1a] px-3" placeholder="CODEPROMO" value={promoCode} onChange={(event) => setPromoCode(event.target.value.toUpperCase())} />
-                <input className="h-11 border-2 border-[#1a1a1a] px-3" type="number" min={1} max={80} value={promoPercent} onChange={(event) => setPromoPercent(event.target.value)} />
-                <button type="submit" className="btn-cartoon btn-secondary h-11 px-4" disabled={addingPromo}>
+              <form onSubmit={addPromo} className="mt-3 grid items-end gap-3 md:grid-cols-[minmax(0,1fr)_160px_auto]">
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+                  Code promo
+                  <input className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal" placeholder="CODEPROMO" autoCapitalize="characters" autoCorrect="off" value={promoCode} onChange={(event) => setPromoCode(event.target.value.toUpperCase())} />
+                </label>
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+                  Réduction (%)
+                  <input className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal" type="number" inputMode="numeric" min={1} max={80} value={promoPercent} onChange={(event) => setPromoPercent(event.target.value)} />
+                </label>
+                <button type="submit" className="btn-cartoon btn-secondary min-h-11 px-4" disabled={addingPromo}>
                   {addingPromo ? "..." : "Ajouter"}
                 </button>
               </form>
@@ -453,7 +485,7 @@ export function AdminCustomersPanel() {
                     <span className="text-xs">{promo.used ? "Utilise" : "Actif"}</span>
                     <button
                       type="button"
-                      className="btn-cartoon btn-secondary ml-auto h-8 px-3 text-xs"
+                      className="btn-cartoon btn-secondary ml-auto min-h-11 px-3 text-xs"
                       onClick={async () => {
                         await navigator.clipboard.writeText(promo.code);
                         setStatus(`Code ${promo.code} copie.`);
@@ -468,21 +500,28 @@ export function AdminCustomersPanel() {
 
             <article className="card-cartoon bg-white p-5">
               <h3 className="font-display text-2xl text-ink">Pack promo</h3>
-              <form onSubmit={grantTickets} className="mt-3 grid gap-2 md:grid-cols-[220px,1fr,auto]">
-                <input
-                  className="h-11 border-2 border-[#1a1a1a] px-3"
-                  type="number"
-                  min={1}
-                  max={200}
-                  value={ticketGrantCount}
-                  onChange={(event) => setTicketGrantCount(event.target.value)}
-                />
-                <input
-                  className="h-11 border-2 border-[#1a1a1a] px-3"
-                  value={ticketGrantReason}
-                  onChange={(event) => setTicketGrantReason(event.target.value)}
-                  placeholder="Raison de l'attribution"
-                />
+              <form onSubmit={grantTickets} className="mt-3 grid items-end gap-3 md:grid-cols-[160px_minmax(0,1fr)_auto]">
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+                  Nombre de packs
+                  <input
+                    className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal"
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    max={200}
+                    value={ticketGrantCount}
+                    onChange={(event) => setTicketGrantCount(event.target.value)}
+                  />
+                </label>
+                <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+                  Raison de l&apos;attribution
+                  <input
+                    className="h-11 min-w-0 border-2 border-[#1a1a1a] px-3 font-normal"
+                    value={ticketGrantReason}
+                    onChange={(event) => setTicketGrantReason(event.target.value)}
+                    placeholder="Raison de l'attribution"
+                  />
+                </label>
                 <button
                   type="submit"
                   className="btn-cartoon btn-secondary h-11 px-4"
@@ -517,11 +556,11 @@ export function AdminCustomersPanel() {
                         {collectionSummary.summary.ownedUnique} / {collectionSummary.summary.totalCards} cartes
                       </p>
                       <p className="text-xs text-charcoal">
-                        ComplÃ©tion {formatPercent(collectionSummary.summary.completionPercent)}
+                        Complétion {formatPercent(collectionSummary.summary.completionPercent)}
                       </p>
                     </div>
                     <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
-                      <p className="text-charcoal">Copies possÃ©dÃ©es</p>
+                      <p className="text-charcoal">Copies possédées</p>
                       <p className="text-lg font-semibold text-ink">
                         {collectionSummary.summary.totalOwnedCopies}
                       </p>
@@ -531,12 +570,12 @@ export function AdminCustomersPanel() {
                     </div>
                   </div>
                   <div className="mt-4 overflow-hidden rounded border-2 border-[#1a1a1a]">
-                    <div className="grid border-b border-[#1a1a1a] bg-[#efebe4] px-3 py-2 text-xs font-semibold text-ink md:grid-cols-[1fr,0.9fr,0.75fr,0.75fr,1fr]">
-                      <p>RaretÃ©</p>
-                      <p className="text-right">PossÃ©dÃ©es</p>
+                    <div className="hidden border-b border-[#1a1a1a] bg-[#efebe4] px-3 py-2 text-xs font-semibold text-ink md:grid md:grid-cols-[1fr_0.9fr_0.75fr_0.75fr_1fr] md:gap-2">
+                      <p>Rareté</p>
+                      <p className="text-right">Possédées</p>
                       <p className="text-right">Doublons</p>
-                      <p className="text-right">ComplÃ©tion</p>
-                      <p>RÃ©compense</p>
+                      <p className="text-right">Complétion</p>
+                      <p>Récompense</p>
                     </div>
                     {RARITY_ORDER.map((rarity) => {
                       const pageSummary = collectionSummary.pages.find((entry) => entry.rarity === rarity);
@@ -545,8 +584,8 @@ export function AdminCustomersPanel() {
                       }
 
                       return (
-                        <div key={rarity} className="grid items-center gap-2 border-b border-[#dedede] px-3 py-3 text-sm last:border-b-0 md:grid-cols-[1fr,0.9fr,0.75fr,0.75fr,1fr]">
-                          <div className="flex items-center gap-2">
+                        <div key={rarity} className="grid grid-cols-2 items-center gap-3 border-b border-[#dedede] px-3 py-3 text-sm last:border-b-0 md:grid-cols-[1fr_0.9fr_0.75fr_0.75fr_1fr] md:gap-2">
+                          <div className="col-span-2 flex items-center gap-2 md:col-span-1">
                             <span
                               className="inline-block h-3 w-3 rounded-full border border-[#1a1a1a]"
                               style={{ backgroundColor: rarityAccentColor[rarity] }}
@@ -557,12 +596,14 @@ export function AdminCustomersPanel() {
                               <span className="text-xs text-charcoal">{pageSummary.label}</span>
                             </p>
                           </div>
-                          <p className="text-right">
+                          <p className="md:text-right">
+                            <span className="block text-xs text-charcoal md:hidden">Possédées</span>
                             {pageSummary.ownedUnique} / {pageSummary.totalSlots - pageSummary.missingCount}
                           </p>
-                          <p className="text-right">{pageSummary.duplicateCopies}</p>
-                          <p className="text-right">{formatPercent(pageSummary.completionPercent)}</p>
+                          <p className="md:text-right"><span className="block text-xs text-charcoal md:hidden">Doublons</span>{pageSummary.duplicateCopies}</p>
+                          <p className="md:text-right"><span className="block text-xs text-charcoal md:hidden">Complétion</span>{formatPercent(pageSummary.completionPercent)}</p>
                           <p className="text-xs capitalize">
+                            <span className="block text-charcoal md:hidden">Récompense</span>
                             {collectionRewardStatusLabels[pageSummary.rewardStatus]}
                           </p>
                         </div>
@@ -582,7 +623,7 @@ export function AdminCustomersPanel() {
                 {detail.orders.map((order) => (
                   <article key={order.id} className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <p className="font-semibold text-ink">{order.id}</p>
+                      <p className="break-all font-semibold text-ink">{order.id}</p>
                       <p className="text-xs text-charcoal">
                         {new Date(order.createdAt).toLocaleString("fr-FR")}
                       </p>
@@ -602,28 +643,35 @@ export function AdminCustomersPanel() {
   }
 
   return (
-    <div className="cartoon-border bg-cream p-6 md:p-8">
+    <div className="admin-customers-panel cartoon-border min-w-0 bg-cream p-3 sm:p-5 md:p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-display text-3xl">Clients ({customers.length})</h2>
-        {status && <p className="text-sm font-semibold text-charcoal">{status}</p>}
+        {status && <p role="status" className="text-sm font-semibold text-charcoal">{status}</p>}
       </div>
 
-      <div className="mt-4 grid gap-3 md:grid-cols-[1fr,220px]">
-        <input
-          className="h-11 border-2 border-[#1a1a1a] bg-white px-3"
-          placeholder="Recherche nom, email, ville"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-        <select
-          className="h-11 border-2 border-[#1a1a1a] bg-white px-3"
-          value={sortBy}
-          onChange={(event) => setSortBy(event.target.value as "name" | "createdAt" | "totalSpent")}
-        >
-          <option value="createdAt">Tri: date inscription</option>
-          <option value="name">Tri: nom</option>
-          <option value="totalSpent">Tri: total depense</option>
-        </select>
+      <div className="mt-4 grid gap-3 md:grid-cols-[minmax(0,1fr)_220px]">
+        <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+          Rechercher un client
+          <input
+            className="h-11 min-w-0 border-2 border-[#1a1a1a] bg-white px-3 font-normal"
+            type="search"
+            placeholder="Nom, e-mail, ville…"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        </label>
+        <label className="grid min-w-0 gap-1.5 text-sm font-semibold text-ink">
+          Trier les clients
+          <select
+            className="h-11 min-w-0 border-2 border-[#1a1a1a] bg-white px-3 font-normal"
+            value={sortBy}
+            onChange={(event) => setSortBy(event.target.value as "name" | "createdAt" | "totalSpent")}
+          >
+            <option value="createdAt">Date d&apos;inscription</option>
+            <option value="name">Nom</option>
+            <option value="totalSpent">Total dépensé</option>
+          </select>
+        </label>
       </div>
 
       {loadingList ? (
@@ -637,11 +685,11 @@ export function AdminCustomersPanel() {
             <button
               key={customer.id}
               type="button"
-              className="card-cartoon w-full bg-white p-4 text-left hover:bg-[#f7f4ee]"
+              className="admin-customer-card card-cartoon min-w-0 w-full bg-white p-4 text-left hover:bg-[#f7f4ee]"
               onClick={() => setSelectedCustomerId(customer.id)}
             >
               <div className="flex flex-wrap items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[#f7f4ee] font-semibold text-ink">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[#f7f4ee] font-semibold text-ink">
                   {getInitials(customer.firstName, customer.lastName)}
                 </div>
                 <div className="min-w-0 flex-1">
@@ -650,23 +698,20 @@ export function AdminCustomersPanel() {
                   </p>
                   <p className="truncate text-sm text-charcoal">{customer.email}</p>
                 </div>
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <span className="pill-cartoon px-3 py-1 text-xs font-semibold text-ink">{customer.currentBadge.label}</span>
                 {customer.contestBetaEnabled ? (
                   <span className="rounded-full border-2 border-[#1a1a1a] bg-yellow px-3 py-1 text-xs font-black uppercase tracking-[0.08em] text-ink">
                     Beta concours
                   </span>
                 ) : null}
-                <div className="flex items-center gap-2">
-                  <LoyaltyBadgeIllustration
-                    badgeId={customer.currentBadge.id}
-                    unlocked={customer.currentBadge.unlocked}
-                  />
-                </div>
               </div>
-              <div className="mt-3 grid gap-2 text-xs text-charcoal sm:grid-cols-4">
-                <p>Ville: {customer.city || "-"}</p>
-                <p>Commandes: {customer.ordersCount}</p>
-                <p>Total: {formatPrice(customer.totalSpent)}</p>
-                <p>Inscription: {new Date(customer.createdAt).toLocaleDateString("fr-FR")}</p>
+              <div className="mt-3 grid grid-cols-2 gap-3 border-t border-[#003f30]/15 pt-3 text-sm text-ink sm:grid-cols-4">
+                <p className="min-w-0 break-words"><span className="block text-xs text-charcoal">Ville</span>{customer.city || "—"}</p>
+                <p><span className="block text-xs text-charcoal">Commandes</span>{customer.ordersCount}</p>
+                <p className="font-semibold"><span className="block text-xs font-normal text-charcoal">Total dépensé</span>{formatPrice(customer.totalSpent)}</p>
+                <p><span className="block text-xs text-charcoal">Inscription</span>{new Date(customer.createdAt).toLocaleDateString("fr-FR")}</p>
               </div>
             </button>
           ))}

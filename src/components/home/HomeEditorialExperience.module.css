@@ -526,23 +526,11 @@
   background: #f4f5ec;
 }
 
-.productsHeader,
-.bonusGrid {
+.productsHeader {
   display: flex;
   align-items: end;
   justify-content: space-between;
   gap: 2rem;
-}
-
-.bonusGrid {
-  align-items: center;
-}
-
-.bonusGrid > div:first-child {
-  position: relative;
-  z-index: 1;
-  max-width: 680px;
-  flex: 1 1 54%;
 }
 
 .productsHeader { padding-bottom: 1.5rem; border-bottom: 2px solid var(--poster-green-dark); }
@@ -698,76 +686,86 @@
 }
 
 .bonusLead {
+  max-width: 760px;
   color: var(--poster-charcoal, #343b36);
 }
 
-.boosterOffer {
-  max-width: 650px;
-  margin-top: clamp(2rem, 4vw, 3.25rem);
-  padding-top: clamp(1.25rem, 2vw, 1.75rem);
-  border-top: 4px solid var(--poster-green);
+.bonusOpening {
+  margin: 1rem 0 0;
+  color: var(--poster-green);
+  font-size: .85rem;
+  font-weight: 700;
 }
 
-.boosterEyebrow {
+.bonusCards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.bonusCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: clamp(1.2rem, 2vw, 1.75rem);
+  border: 2px solid var(--poster-green);
+  border-top: 5px solid var(--poster-green);
+  background: var(--poster-cream);
+  box-shadow: 0 5px 0 #003f3020;
+}
+
+.bonusCardFeatured {
+  border-top-color: var(--poster-yellow);
+  background: var(--poster-green-dark);
+  color: var(--poster-cream);
+}
+
+.bonusEyebrow {
   margin: 0;
   color: var(--poster-green);
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   font-weight: 900;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
-.boosterOffer h3 {
-  margin: 0.55rem 0 0;
-  color: var(--poster-green-dark);
+.bonusCard h3 {
+  margin: 1rem 0 0;
+  color: inherit;
   font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
-  font-size: clamp(2.3rem, 4.2vw, 4.5rem);
+  font-size: clamp(1.85rem, 2.8vw, 2.65rem);
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.035em;
   text-transform: uppercase;
 }
 
-.boosterDescription {
+.bonusDescription {
   margin: 1.15rem 0 0;
   color: var(--poster-charcoal, #343b36);
-  font-size: clamp(0.95rem, 1.35vw, 1.08rem);
-  font-weight: 600;
-  line-height: 1.55;
+  font-size: .95rem;
+  line-height: 1.65;
 }
 
-.boosterBenefits {
-  display: grid;
-  max-width: 650px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  list-style: none;
+.bonusFinePrint {
+  margin: 1rem 0 1.5rem;
+  color: var(--poster-charcoal);
+  font-size: .8rem;
+  line-height: 1.6;
 }
 
-.boosterBenefits li {
-  display: flex;
-  min-height: 52px;
-  align-items: center;
-  padding: 0.7rem 0.85rem;
-  border: 2px solid var(--poster-ink);
-  background: #fff;
-  box-shadow: 4px 4px 0 var(--poster-yellow);
-  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
-  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-  font-weight: 900;
-  line-height: 1.05;
-  letter-spacing: 0.035em;
-  text-transform: uppercase;
-}
+.bonusCardFeatured .bonusEyebrow { color: var(--poster-yellow); }
+.bonusCardFeatured .bonusDescription { color: var(--poster-cream); }
+.bonusCardFeatured .bonusFinePrint { color: #d0dfd4; }
 
 .boosterCta {
   display: inline-flex;
   min-height: 48px;
   align-items: center;
   gap: 0.65rem;
-  margin-top: 1.5rem;
+  margin-top: auto;
   padding: 0.75rem 1rem;
   border: 2px solid var(--poster-ink);
   background: var(--poster-green);
@@ -788,19 +786,39 @@
 .boosterCta svg {
   width: 18px;
   height: 18px;
+  flex-shrink: 0;
 }
 
-.boosterIllustration {
-  width: min(49vw, 700px);
-  flex: 0 1 700px;
-  margin: clamp(-2rem, -3vw, -1rem) clamp(-2rem, -2vw, 0rem);
+.bonusCardFeatured .boosterCta {
+  background: var(--poster-yellow);
+  color: var(--poster-green-dark);
 }
 
-.boosterImage {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: drop-shadow(0 8px 0 rgba(0, 63, 48, 0.12));
+.page .bonusCardFeatured a:focus-visible { outline-color: var(--poster-yellow); }
+
+@media (min-width: 1051px) {
+  .bonusCard > .boosterCta:last-child { margin-bottom: calc(44px + .65rem); }
+}
+
+.bonusTextLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: .65rem;
+  font-size: .8rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 1050px) {
+  .bonusCards { grid-template-columns: 1fr; }
+  .bonusCard { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 2rem; }
+  .bonusCard > * { grid-column: 2; }
+  .bonusCard > .bonusEyebrow, .bonusCard > h3 { grid-column: 1; }
+  .bonusCard > .bonusEyebrow { grid-row: 1; }
+  .bonusCard > h3 { grid-row: 2 / span 3; }
+  .bonusDescription { grid-row: 1 / span 2; margin-top: 0; }
+  .boosterCta { justify-self: start; }
 }
 
 .seoSection {
@@ -1074,8 +1092,7 @@
     height: 95%;
   }
 
-  .productsHeader,
-  .bonusGrid {
+  .productsHeader {
     align-items: flex-start;
     flex-direction: column;
   }
@@ -1084,24 +1101,8 @@
     grid-template-columns: 1fr;
   }
 
-  .bonusGrid {
-    gap: 1.25rem;
-  }
-
-  .bonusGrid > div:first-child {
-    max-width: none;
-  }
-
-  .boosterIllustration {
-    width: min(86%, 430px);
-    margin: 0 auto -0.75rem;
-    align-self: center;
-    flex-basis: auto;
-  }
-
-  .boosterBenefits {
-    grid-template-columns: 1fr;
-  }
+  .bonusCard { display: flex; }
+  .bonusDescription { margin-top: 1rem; }
 
   .boosterCta {
     width: 100%;

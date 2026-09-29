@@ -2,6 +2,10 @@
 
 import { useEffect, useMemo, useState, type ClipboardEvent } from "react";
 import dynamic from "next/dynamic";
+import Link from "@/components/navigation/NavigationLink";
+import { ArrowUpRight, LogOut, RefreshCw, Save, Settings2 } from "lucide-react";
+import { AdminNavigation, type AdminTab } from "@/components/admin/AdminNavigation";
+import styles from "./AdminWorkspace.module.css";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { defaultStore } from "@/data/default-store";
 import { AdminTextCarousel } from "@/components/admin/AdminTextCarousel";
@@ -118,62 +122,6 @@ function getPaymentStateColorClass(paymentState: CmsOrder["paymentState"]): stri
       return "bg-[#f7f4ee] text-ink";
   }
 }
-type AdminTab =
-  | "commandes"
-  | "ventes"
-  | "clients"
-  | "parrainage"
-  | "missions"
-  | "promos"
-  | "loterie"
-  | "newsletter"
-  | "printful"
-  | "concours"
-  | "produits"
-  | "copains"
-  | "blog"
-  | "blog_comments"
-  | "pages"
-  | "textes";
-
-const adminTabs: AdminTab[] = [
-  "commandes",
-  "ventes",
-  "clients",
-  "parrainage",
-  "missions",
-  "promos",
-  "loterie",
-  "newsletter",
-  "printful",
-  ...(contestAdminEnabled ? (["concours"] as const) : []),
-  "produits",
-  "copains",
-  "blog",
-  "blog_comments",
-  "pages",
-  "textes",
-];
-
-const tabLabels: Record<AdminTab, string> = {
-  commandes: "Commandes",
-  ventes: "Ventes",
-  clients: "Clients",
-  parrainage: "Parrainage",
-  missions: "Missions",
-  promos: "Promos",
-  loterie: "Loterie",
-  newsletter: "Newsletter",
-  printful: "Printful",
-  concours: "L'Arène",
-  produits: "Mes Produits",
-  copains: "Coin des Copains",
-  blog: "Blog",
-  blog_comments: "Commentaires",
-  pages: "Pages",
-  textes: "Textes",
-};
-
 function formatProducerLocation(department: string, region: string): string {
   return [department.trim(), region.trim()].filter(Boolean).join(", ") || "France";
 }
@@ -1003,7 +951,7 @@ export function AdminPanel() {
             {variantOptions.map((option, optionIndex) => (
               <div
                 key={`${option.id}-${optionIndex}`}
-                className="grid gap-2 rounded border border-[#1a1a1a] bg-white p-2 md:grid-cols-[2fr,1fr,auto,auto,1fr,auto] md:items-center"
+                className="grid gap-2 rounded border border-[#1a1a1a] bg-white p-2 xl:grid-cols-[2fr_1fr_auto_auto_1fr_auto] md:items-center"
               >
                 <input
                   className="h-9 border-2 border-[#1a1a1a] px-2 text-xs"
@@ -1431,48 +1379,38 @@ export function AdminPanel() {
 
   return (
     <section
-      className="section-band bg-mint halftone-overlay paper-grain pt-32"
+      className={styles.workspace}
       onPasteCapture={handlePasteCapture}
     >
-      <div className="retro-container grid gap-8">
-        <div className="cartoon-border bg-cream p-6 md:p-8">
-          <h1 className="section-title">ADMIN BOUTIQUE</h1>
-          <p className="mt-3 text-charcoal">
-            Modifie les textes du site et la liste des produits depuis cet ecran.
-          </p>
-          <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
-            <span className="pill-cartoon px-3 py-1">Etat: {status}</span>
-            <span className="pill-cartoon px-3 py-1">Derniere mise a jour: {updatedLabel}</span>
-            <button type="button" onClick={loadStore} className="btn-cartoon btn-secondary">
-              Recharger
-            </button>
-            <button type="button" onClick={saveStore} disabled={saving} className="btn-cartoon btn-primary">
-              {saving ? "Sauvegarde..." : "Sauvegarder"}
-            </button>
-            <button type="button" onClick={logout} className="btn-cartoon btn-secondary">
-              Se deconnecter
-            </button>
+      <a href="#admin-content" className={styles.skipLink}>Aller au contenu</a>
+      <header className={styles.header}>
+        <div className={styles.brand}>
+          <span className={styles.brandMark}><Settings2 size={24} aria-hidden="true" /></span>
+          <div>
+            <p>Les Chanvriers Bretons</p>
+            <h1>Le poste de commande</h1>
           </div>
         </div>
-
-        <div className="cartoon-border bg-cream p-4 md:p-6">
-          <div className="admin-tabs-row flex flex-nowrap gap-2 overflow-x-auto md:flex-wrap">
-            {adminTabs.map((tab) => (
-              <button
-                key={tab}
-                type="button"
-                onClick={() => setActiveTab(tab)}
-                className={`pill-cartoon shrink-0 px-4 py-2 font-display text-sm transition-colors ${
-                  activeTab === tab
-                    ? "bg-[#1a1a1a] text-white"
-                    : "bg-white text-ink hover:bg-[#f0f0f0]"
-                }`}
-              >
-                {tabLabels[tab]}
-              </button>
-            ))}
-          </div>
+        <div className={styles.headerActions}>
+          <Link href="/">Voir le site <ArrowUpRight size={16} aria-hidden="true" /></Link>
+          <button type="button" onClick={logout}><LogOut size={16} aria-hidden="true" /> Déconnexion</button>
         </div>
+      </header>
+      <div className={styles.layout}>
+        <AdminNavigation activeTab={activeTab} showContest={contestAdminEnabled} onChange={(tab) => {
+          setActiveTab(tab);
+          window.scrollTo({ top: 0, behavior: "instant" });
+        }} />
+        <div id="admin-content" className={styles.content} tabIndex={-1}>
+          <div className={styles.intro}>
+            <div>
+              <p role="status">{status}</p>
+              <small>Sauvegarde boutique : {updatedLabel}</small>
+            </div>
+            <button type="button" onClick={loadStore} disabled={saving} className={styles.reload}>
+              <RefreshCw size={15} aria-hidden="true" /> Recharger
+            </button>
+          </div>
 
         {activeTab === "textes" && (
           <div className="grid gap-6">
@@ -1489,8 +1427,12 @@ export function AdminPanel() {
 
         {activeTab === "commandes" && (
         <div className="cartoon-border bg-cream p-6 md:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="font-display text-3xl">Commandes recues ({draft.orders.length})</h2>
+          <div className={styles.panelHeader}>
+            <div>
+              <h2 className="font-display text-3xl">Les commandes <span>({draft.orders.length})</span></h2>
+              <p>Retrouve les achats, prépare les colis et suis les paiements.</p>
+            </div>
+            <div className={styles.exportActions}>
             <button
               type="button"
               className="btn-cartoon btn-secondary"
@@ -1507,15 +1449,22 @@ export function AdminPanel() {
             >
               {exportingMr ? "Export MR..." : "Export Mondial Relay"}
             </button>
+            </div>
           </div>
 
-          <div className="mt-4 grid gap-3 md:grid-cols-4">
+          <div className={styles.filters}>
+            <label>
+              Rechercher une commande
             <input
+              type="search"
               className="h-11 border-2 border-[#1a1a1a] bg-white px-3 md:col-span-2"
-              placeholder="Recherche commande, produit ou client"
+              placeholder="N° de commande, produit ou client"
               value={orderSearch}
               onChange={(event) => setOrderSearch(event.target.value)}
             />
+            </label>
+            <label>
+              Statut
             <select
               className="h-11 border-2 border-[#1a1a1a] bg-white px-3"
               value={orderStatusFilter}
@@ -1530,28 +1479,35 @@ export function AdminPanel() {
                 </option>
               ))}
             </select>
-            <div className="flex gap-2">
+            </label>
+            <details className={styles.dateDisclosure}>
+              <summary>Filtrer par dates{(orderDateFrom || orderDateTo) ? " (actif)" : ""}</summary>
+              <div className={styles.dateFilters}>
+              <label>Du
               <input
                 type="date"
                 className="h-11 w-full border-2 border-[#1a1a1a] bg-white px-2"
                 value={orderDateFrom}
                 onChange={(event) => setOrderDateFrom(event.target.value)}
               />
+              </label>
+              <label>Au
               <input
                 type="date"
                 className="h-11 w-full border-2 border-[#1a1a1a] bg-white px-2"
                 value={orderDateTo}
                 onChange={(event) => setOrderDateTo(event.target.value)}
               />
-            </div>
+              </label>
+              </div>
+            </details>
           </div>
 
-          <div className="mt-4 card-cartoon bg-white p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.1em] text-charcoal">
-              Parametres Mondial Relay
-            </p>
+          <details className={styles.logistics}>
+            <summary>Paramètres Mondial Relay</summary>
             <div className="mt-3 grid gap-3 md:grid-cols-3">
               <select
+                aria-label="Type de collecte Mondial Relay"
                 className="h-11 border-2 border-[#1a1a1a] bg-white px-3 text-sm"
                 value={draft.content.logistics.mondialRelay.collectionType}
                 onChange={(event) =>
@@ -1564,6 +1520,7 @@ export function AdminPanel() {
                 <option value="D">Collecte Domicile</option>
               </select>
               <input
+                aria-label="Identifiant du point relais de collecte"
                 className="h-11 border-2 border-[#1a1a1a] bg-white px-3 text-sm"
                 value={draft.content.logistics.mondialRelay.collectionRelayId}
                 onChange={(event) =>
@@ -1572,6 +1529,7 @@ export function AdminPanel() {
                 placeholder="ID Point Relais collecte (6 chiffres)"
               />
               <input
+                aria-label="Pays de collecte"
                 className="h-11 border-2 border-[#1a1a1a] bg-white px-3 text-sm"
                 value={draft.content.logistics.mondialRelay.collectionCountry}
                 onChange={(event) =>
@@ -1580,7 +1538,7 @@ export function AdminPanel() {
                 placeholder="Pays collecte (ISO, ex: FR)"
               />
             </div>
-          </div>
+          </details>
 
           {exportMrError && (
             <p className="mt-3 text-sm font-semibold text-red-700">{exportMrError}</p>
@@ -1594,8 +1552,8 @@ export function AdminPanel() {
           <div className="mt-4 grid gap-4">
             {filteredOrders.map((order) => (
               <article key={order.id} className="card-cartoon bg-white p-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
+                <div className={styles.orderHeading}>
+                  <div className={styles.orderInfo}>
                     <p className="font-semibold text-ink">{order.id}</p>
                     <p className="text-sm text-charcoal">
                       {new Date(order.createdAt).toLocaleString("fr-FR")} - {order.itemsCount} article(s)
@@ -1611,7 +1569,7 @@ export function AdminPanel() {
                         {orderStatusLabels[order.status]}
                       </span>
                       <span className={`pill-cartoon px-3 py-1 ${getPaymentStateColorClass(order.paymentState)}`}>
-                        Paiement: {order.paymentState}
+                        Paiement : {({ pending: "En attente", paid: "Payé", failed: "Échec", not_configured: "Validation manuelle" })[order.paymentState]}
                       </span>
                     </div>
                     {order.trackingNumber && (
@@ -1619,15 +1577,16 @@ export function AdminPanel() {
                     )}
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className={styles.orderActions}>
                     <button
                       type="button"
                       onClick={() => setSelectedOrderId(order.id)}
                       className="btn-cartoon btn-secondary"
                     >
-                      Detail
+                      Voir le détail
                     </button>
                     <select
+                      aria-label={`Statut de la commande ${order.id}`}
                       className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
                       value={order.status}
                       onChange={(e) => updateOrderStatusDraft(order.id, e.target.value as OrderStatus)}
@@ -1640,6 +1599,7 @@ export function AdminPanel() {
                     </select>
                     {(order.status === "processing" || order.status === "shipped") && (
                       <input
+                        aria-label={`Numéro de suivi de la commande ${order.id}`}
                         className="h-10 min-w-[180px] border-2 border-[#1a1a1a] px-2 text-sm"
                         value={order.trackingNumber ?? ""}
                         onChange={(event) =>
@@ -1654,7 +1614,7 @@ export function AdminPanel() {
                       disabled={updatingOrderId === order.id}
                       className="btn-cartoon btn-secondary"
                     >
-                      {updatingOrderId === order.id ? "..." : "Mettre a jour"}
+                      {updatingOrderId === order.id ? "..." : "Mettre à jour"}
                     </button>
                     <button
                       type="button"
@@ -1724,7 +1684,7 @@ export function AdminPanel() {
             </button>
           </div>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-[320px,1fr]">
+          <div className="mt-6 grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)]">
             <div className="grid gap-3">
               {draft.blog.length === 0 && (
                 <p className="text-charcoal">Aucun article pour le moment.</p>
@@ -2084,68 +2044,86 @@ export function AdminPanel() {
               )}
               {ownProducts.map(({ product, index }) => (
                 <article key={`${product.id}-${index}`} className="card-cartoon bg-white p-4">
-                  <div className="grid gap-3 md:grid-cols-8">
-                    <input
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
-                      value={product.id}
-                      onChange={(e) => updateProduct(index, "id", e.target.value)}
-                      placeholder="id"
-                    />
-                    <input
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
-                      value={product.name}
-                      onChange={(e) => updateProduct(index, "name", e.target.value)}
-                      placeholder="nom"
-                    />
-                    <select
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                      value={product.category}
-                      onChange={(e) =>
-                        updateProduct(index, "category", e.target.value as ProductCategory)
-                      }
-                    >
-                      {productCategoryOptions.map((category) => (
-                        <option key={category} value={category}>
-                          {categoryLabels[category]}
-                        </option>
-                      ))}
-                    </select>
-                    <input
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                      value={product.price}
-                      type="number"
-                      step="0.01"
-                      onChange={(e) => updateProduct(index, "price", Number(e.target.value) || 0)}
-                      placeholder="prix"
-                    />
-                    <input
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                      value={Number.isFinite(product.weightGrams) ? product.weightGrams : ""}
-                      type="number"
-                      min={0}
-                      step={1}
-                      onChange={(event) => {
-                        const raw = event.target.value;
-                        if (!raw) {
-                          updateProduct(index, "weightGrams", undefined);
-                          return;
+                  <div className={styles.productFields}>
+                    <label data-wide>
+                      Identifiant
+                      <input
+                        className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                        value={product.id}
+                        onChange={(e) => updateProduct(index, "id", e.target.value)}
+                        placeholder="id"
+                      />
+                    </label>
+                    <label data-wide>
+                      Nom du produit
+                      <input
+                        className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                        value={product.name}
+                        onChange={(e) => updateProduct(index, "name", e.target.value)}
+                        placeholder="nom"
+                      />
+                    </label>
+                    <label>
+                      Catégorie
+                      <select
+                        className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                        value={product.category}
+                        onChange={(e) =>
+                          updateProduct(index, "category", e.target.value as ProductCategory)
                         }
-                        const parsed = Math.max(0, Math.round(Number(raw) || 0));
-                        updateProduct(index, "weightGrams", parsed > 0 ? parsed : undefined);
-                      }}
-                      placeholder="poids (g)"
-                    />
-                    <select
-                      className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                      value={product.vatRate ?? 20}
-                      onChange={(e) => updateProduct(index, "vatRate", Number(e.target.value) as VatRate)}
-                    >
-                      {VAT_RATE_OPTIONS.map((rate) => (
-                        <option key={rate} value={rate}>
-                          TVA {rate}%
-                        </option>
-                      ))}
-                    </select>
+                      >
+                        {productCategoryOptions.map((category) => (
+                          <option key={category} value={category}>
+                            {categoryLabels[category]}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Prix (€)
+                      <input
+                        className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                        value={product.price}
+                        type="number"
+                        step="0.01"
+                        onChange={(e) => updateProduct(index, "price", Number(e.target.value) || 0)}
+                        placeholder="prix"
+                      />
+                    </label>
+                    <label>
+                      Poids (g)
+                      <input
+                        className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                        value={Number.isFinite(product.weightGrams) ? product.weightGrams : ""}
+                        type="number"
+                        min={0}
+                        step={1}
+                        onChange={(event) => {
+                          const raw = event.target.value;
+                          if (!raw) {
+                            updateProduct(index, "weightGrams", undefined);
+                            return;
+                          }
+                          const parsed = Math.max(0, Math.round(Number(raw) || 0));
+                          updateProduct(index, "weightGrams", parsed > 0 ? parsed : undefined);
+                        }}
+                        placeholder="poids (g)"
+                      />
+                    </label>
+                    <label>
+                      TVA
+                      <select
+                        className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                        value={product.vatRate ?? 20}
+                        onChange={(e) => updateProduct(index, "vatRate", Number(e.target.value) as VatRate)}
+                      >
+                        {VAT_RATE_OPTIONS.map((rate) => (
+                          <option key={rate} value={rate}>
+                            TVA {rate}%
+                          </option>
+                        ))}
+                      </select>
+                    </label>
                   </div>
                   <div className="mt-3 grid gap-3 md:grid-cols-3">
                     <ProductImageUpload
@@ -2192,7 +2170,7 @@ export function AdminPanel() {
                     />
                   </label>
                   {renderVariantEditor(product, index)}
-                  <div className="mt-3 grid gap-3 md:grid-cols-[auto,1fr] md:items-center">
+                  <div className="mt-3 grid gap-3 md:grid-cols-[auto_minmax(0,1fr)] md:items-center">
                     <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
                       <input
                         type="checkbox"
@@ -2266,7 +2244,7 @@ export function AdminPanel() {
               </button>
             </div>
 
-            <div className="mt-6 grid gap-6 lg:grid-cols-[300px_1fr]">
+            <div className="mt-6 grid gap-6 xl:grid-cols-[260px_minmax(0,1fr)]">
               <aside className="card-cartoon bg-white p-4">
                 <h3 className="font-display text-2xl">Producteurs ({draft.producers.length})</h3>
                 <div className="mt-3 grid gap-2">
@@ -2537,7 +2515,7 @@ export function AdminPanel() {
                         />
                       </div>
 
-                      <div className="mt-3 grid gap-3 md:grid-cols-[1fr,auto] md:items-start">
+                      <div className="mt-3 grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
                         <ProducerImageUpload
                           value={selectedProducer.image}
                           onChange={(nextImagePath) =>
@@ -2574,70 +2552,88 @@ export function AdminPanel() {
                         )}
                         {selectedProducerProducts.map(({ product, index }) => (
                           <article key={`${product.id}-${index}`} className="rounded border-2 border-[#1a1a1a] bg-[#fdfcf9] p-4">
-                            <div className="grid gap-3 md:grid-cols-7">
-                              <input
-                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
-                                value={product.id}
-                                onChange={(e) => updateProduct(index, "id", e.target.value)}
-                                placeholder="id"
-                              />
-                              <input
-                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm md:col-span-2"
-                                value={product.name}
-                                onChange={(e) => updateProduct(index, "name", e.target.value)}
-                                placeholder="nom"
-                              />
-                              <select
-                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                                value={product.category}
-                                onChange={(e) =>
-                                  updateProduct(index, "category", e.target.value as ProductCategory)
-                                }
-                              >
-                                {productCategoryOptions.map((category) => (
-                                  <option key={category} value={category}>
-                                    {categoryLabels[category]}
-                                  </option>
-                                ))}
-                              </select>
-                              <input
-                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                                value={product.price}
-                                type="number"
-                                step="0.01"
-                                onChange={(e) => updateProduct(index, "price", Number(e.target.value) || 0)}
-                                placeholder="prix"
-                              />
-                              <input
-                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                                value={Number.isFinite(product.weightGrams) ? product.weightGrams : ""}
-                                type="number"
-                                min={0}
-                                step={1}
-                                onChange={(event) => {
-                                  const raw = event.target.value;
-                                  if (!raw) {
-                                    updateProduct(index, "weightGrams", undefined);
-                                    return;
+                            <div className={styles.productFields}>
+                              <label data-wide>
+                                Identifiant
+                                <input
+                                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                                  value={product.id}
+                                  onChange={(e) => updateProduct(index, "id", e.target.value)}
+                                  placeholder="id"
+                                />
+                              </label>
+                              <label data-wide>
+                                Nom du produit
+                                <input
+                                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                                  value={product.name}
+                                  onChange={(e) => updateProduct(index, "name", e.target.value)}
+                                  placeholder="nom"
+                                />
+                              </label>
+                              <label>
+                                Catégorie
+                                <select
+                                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                                  value={product.category}
+                                  onChange={(e) =>
+                                    updateProduct(index, "category", e.target.value as ProductCategory)
                                   }
-                                  const parsed = Math.max(0, Math.round(Number(raw) || 0));
-                                  updateProduct(index, "weightGrams", parsed > 0 ? parsed : undefined);
-                                }}
-                                placeholder="poids (g)"
-                              />
-                              <select
-                                className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
-                                value={product.vatRate ?? 20}
-                                onChange={(e) =>
-                                  updateProduct(index, "vatRate", Number(e.target.value) as VatRate)
-                                }
-                              >
-                                {VAT_RATE_OPTIONS.map((rate) => (
-                                  <option key={rate} value={rate}>
-                                    TVA {rate}%
-                                  </option>
-                                ))}
-                              </select>
+                                >
+                                  {productCategoryOptions.map((category) => (
+                                    <option key={category} value={category}>
+                                      {categoryLabels[category]}
+                                    </option>
+                                  ))}
+                                </select>
+                              </label>
+                              <label>
+                                Prix (€)
+                                <input
+                                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                                  value={product.price}
+                                  type="number"
+                                  step="0.01"
+                                  onChange={(e) => updateProduct(index, "price", Number(e.target.value) || 0)}
+                                  placeholder="prix"
+                                />
+                              </label>
+                              <label>
+                                Poids (g)
+                                <input
+                                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                                  value={Number.isFinite(product.weightGrams) ? product.weightGrams : ""}
+                                  type="number"
+                                  min={0}
+                                  step={1}
+                                  onChange={(event) => {
+                                    const raw = event.target.value;
+                                    if (!raw) {
+                                      updateProduct(index, "weightGrams", undefined);
+                                      return;
+                                    }
+                                    const parsed = Math.max(0, Math.round(Number(raw) || 0));
+                                    updateProduct(index, "weightGrams", parsed > 0 ? parsed : undefined);
+                                  }}
+                                  placeholder="poids (g)"
+                                />
+                              </label>
+                              <label>
+                                TVA
+                                <select
+                                  className="h-10 border-2 border-[#1a1a1a] px-2 text-sm"
+                                  value={product.vatRate ?? 20}
+                                  onChange={(e) =>
+                                    updateProduct(index, "vatRate", Number(e.target.value) as VatRate)
+                                  }
+                                >
+                                  {VAT_RATE_OPTIONS.map((rate) => (
+                                    <option key={rate} value={rate}>
+                                      TVA {rate}%
+                                    </option>
+                                  ))}
+                                </select>
+                              </label>
                             </div>
                             <div className="mt-3 grid gap-3 md:grid-cols-3">
                               <ProductImageUpload
@@ -2684,7 +2680,7 @@ export function AdminPanel() {
                               />
                             </label>
                             {renderVariantEditor(product, index)}
-                            <div className="mt-3 grid gap-3 md:grid-cols-[auto,1fr] md:items-center">
+                            <div className="mt-3 grid gap-3 md:grid-cols-[auto_minmax(0,1fr)] md:items-center">
                               <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
                                 <input
                                   type="checkbox"
@@ -2754,6 +2750,15 @@ export function AdminPanel() {
           </div>
         )}
 
+        {(["commandes", "produits", "copains", "promos", "blog", "textes"] as AdminTab[]).includes(activeTab) && (
+          <div className={styles.saveBar}>
+            <p>Enregistre les modifications de la boutique.</p>
+            <button type="button" onClick={saveStore} disabled={saving}>
+              <Save size={18} aria-hidden="true" /> {saving ? "Sauvegarde…" : "Sauvegarder"}
+            </button>
+          </div>
+        )}
+        </div>
         {selectedOrder && (
           <AdminOrderDetailModal
             order={selectedOrder}

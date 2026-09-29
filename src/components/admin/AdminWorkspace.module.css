@@ -1,0 +1,91 @@
+.workspace { min-height: 100svh; padding-bottom: 2rem; }
+.skipLink { position: fixed; top: -100px; left: 1rem; z-index: 100; padding: 1rem; background: #f4c43d; color: #003f30; }
+.skipLink:focus { top: 1rem; }
+.header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; max-width: 1600px; margin: auto; padding: 1.5rem 2rem; color: #fffaf1; }
+.brand { display: flex; align-items: center; gap: .85rem; }
+.brandMark { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #f4c43d; border-radius: 6px; color: #f4c43d; }
+.brand p { margin: 0 0 .2rem; color: #f4c43d; font: 700 .65rem/1.4 ui-monospace, Consolas, monospace; letter-spacing: .13em; text-transform: uppercase; }
+.brand h1 { font: 900 2rem/1 var(--font-display), Impact, sans-serif; letter-spacing: -.025em; text-transform: uppercase; }
+.headerActions { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
+.headerActions a, .headerActions button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px; padding: .6rem .85rem; border: 1px solid #fffaf14d; border-radius: 5px; background: transparent; color: #fffaf1; font-size: .8rem; font-weight: 600; }
+.headerActions a:hover, .headerActions button:hover { background: #ffffff12; }
+.layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); align-items: start; gap: 1.5rem; max-width: 1600px; margin: auto; padding: 0 2rem; }
+.navigation { position: sticky; top: 1rem; min-width: 0; color: #fffaf1; }
+.desktopNavigation { display: grid; gap: 1.3rem; max-height: calc(100svh - 2rem); overflow-y: auto; scrollbar-width: thin; }
+.navGroup > p { margin: 0 0 .5rem; padding-left: .75rem; color: #adc9bb; font: 700 .625rem/1.4 ui-monospace, Consolas, monospace; letter-spacing: .13em; text-transform: uppercase; }
+.navGroup button { display: flex; align-items: center; gap: .65rem; width: 100%; min-height: 44px; margin: 2px 0; padding: .55rem .75rem; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #fffaf1; text-align: left; font-size: .8rem; font-weight: 600; }
+.navGroup button svg { flex-shrink: 0; }
+.navGroup button:hover { background: #ffffff12; }
+.navGroup button[aria-current] { border-color: #f4c43d; background: #f4c43d; color: #003f30; box-shadow: 0 3px 0 #002d24; font-weight: 700; }
+.mobileNavigation { display: none; }
+.content { display: grid; gap: 1.25rem; min-width: 0; }
+.intro { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .75rem; padding: 1.1rem 1.25rem; border: 1px solid #fffaf133; border-radius: 8px; background: #00563f; color: #fffaf1; }
+.intro p { margin: 0; font-size: .8rem; }
+.intro small { display: block; margin-top: .3rem; color: #d3e1d6; font-size: .7rem; }
+.reload { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: .5rem .75rem; border: 1px solid #fffaf16b; border-radius: 5px; background: transparent; color: #fffaf1; font-size: .75rem; }
+.saveBar { position: sticky; bottom: max(.75rem, env(safe-area-inset-bottom)); z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .8rem 1rem; border: 1px solid #00563f; border-radius: 8px; background: #fffaf1; box-shadow: 0 4px 20px #002d2440; }
+.saveBar p { margin: 0; color: #43554c; font-size: .75rem; }
+.saveBar button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; flex-shrink: 0; min-height: 44px; padding: .7rem 1rem; border: 1px solid #003f30; border-radius: 5px; background: #f4c43d; color: #003f30; font-weight: 700; font-size: .85rem; }
+.saveBar button:disabled { opacity: .6; }
+.panelHeader { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+.panelHeader h2 { color: #003f30; }
+.panelHeader p { margin: .35rem 0 0; color: #43554c; font-size: .8rem; }
+.exportActions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.filters { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: .85rem; margin-top: 1.5rem; }
+.filters label { display: grid; gap: .35rem; color: #43554c; font-size: .75rem; font-weight: 600; }
+.filters input, .filters select { width: 100%; padding: .65rem .75rem; }
+.dateFilters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem; grid-column: 1 / -1; }
+.logistics { margin-top: 1rem; padding: .15rem .85rem; border: 1px solid #00563f33; border-radius: 5px; background: #f0efe5; }
+.logistics summary { color: #00563f; font-size: .8rem; font-weight: 700; }
+.logistics[open] { padding-bottom: 1rem; }
+.orderHeading { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+.orderInfo { min-width: 0; flex: 1 1 240px; }
+.orderInfo > p:first-child { color: #00563f; font-family: ui-monospace, Consolas, monospace; font-size: .85rem; }
+.orderActions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; width: min(100%, 360px); }
+.orderActions > * { min-width: 0; width: 100%; }
+.orderActions input { grid-column: 1 / -1; }
+
+@media (max-width: 1023px) {
+  .header { padding: 1rem; }
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 1rem; padding: 0 1rem; }
+  .navigation { top: 0; z-index: 30; margin-inline: -1rem; padding: .65rem 1rem; border-bottom: 1px solid #fffaf133; background: #003f30; }
+  .desktopNavigation { display: none; }
+  .mobileNavigation { display: flex; align-items: center; gap: .8rem; }
+  .mobileNavigation label { color: #f4c43d; font: 700 .7rem ui-monospace, Consolas, monospace; text-transform: uppercase; }
+  .mobileNavigation select { flex: 1; width: 100%; padding: .65rem .75rem; border-color: #f4c43d; background: #fffaf1; color: #003f30; font-weight: 700; }
+  .content { gap: 1rem; }
+}
+
+@media (max-width: 600px) {
+  .header { gap: .75rem; padding-bottom: .5rem; }
+  .brand h1 { font-size: 1.75rem; }
+  .brand p { font-size: .6rem; }
+  .headerActions { width: 100%; }
+  .headerActions a, .headerActions button { flex: 1; padding: .5rem; font-size: .75rem; }
+  .brandMark { width: 40px; height: 40px; }
+  .layout { padding-inline: .75rem; }
+  .navigation { margin-inline: -.75rem; padding-inline: .75rem; }
+  .intro { padding: .8rem; }
+  .intro small { font-size: .65rem; }
+  .reload { padding: .5rem; }
+  .panelHeader { gap: .75rem; }
+  .exportActions { width: 100%; }
+  .exportActions > button { flex: 1; padding-inline: .6rem; }
+  .filters { grid-template-columns: minmax(0, 1fr); gap: .75rem; margin-top: 1.2rem; }
+  .dateFilters { gap: .6rem; }
+  .dateFilters input { padding-inline: .35rem; }
+  .orderActions { width: 100%; }
+  .saveBar { gap: .6rem; padding: .65rem; }
+  .saveBar p { max-width: 17ch; font-size: .7rem; }
+  .saveBar button { padding-inline: .75rem; font-size: .8rem; }
+}
+
+.productFields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem; }
+.productFields label { display: grid; min-width: 0; gap: .35rem; color: #43554c; font-size: .75rem; font-weight: 600; }
+.productFields label[data-wide] { grid-column: 1 / -1; }
+.productFields input, .productFields select { width: 100%; }
+@media (min-width: 1200px) { .productFields { grid-template-columns: repeat(4, minmax(0, 1fr)); } .productFields label[data-wide] { grid-column: span 2; } }
+
+.dateDisclosure { grid-column: 1 / -1; color: #00563f; }
+.dateDisclosure summary { width: fit-content; min-height: 44px; font-size: .8rem; font-weight: 600; cursor: pointer; }
+.dateDisclosure[open] .dateFilters { padding-top: .5rem; }

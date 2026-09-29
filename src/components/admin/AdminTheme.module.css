@@ -1,0 +1,113 @@
+.theme {
+  --admin-green: #00563f;
+  --admin-dark: #003f30;
+  --admin-paper: #fffaf1;
+  --admin-yellow: #f4c43d;
+  --cream: #f6f0e6;
+  --ink: #111512;
+  --charcoal: #43554c;
+  --teal: #00563f;
+  --yellow: #f4c43d;
+  min-height: 100svh;
+  background: var(--admin-dark);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scope the existing admin panels to the arena palette without changing the public site. */
+.theme :global(.cartoon-border),
+.theme :global(.cartoon-panel),
+.theme :global(.cartoon-border-sm),
+.theme :global(.card-cartoon) {
+  min-width: 0;
+  border: 1px solid #00563f40;
+  border-radius: 8px;
+  background: var(--admin-paper);
+  box-shadow: 0 3px 0 #002d241a;
+}
+
+.theme :global(.card-cartoon):hover {
+  transform: none;
+  border-color: #00563f40;
+  box-shadow: 0 3px 0 #002d241a;
+}
+
+.theme :global(.card-cartoon) :global(.card-cartoon) {
+  box-shadow: none;
+}
+
+.theme :global(.pill-cartoon) {
+  border: 1px solid #00563f35;
+  border-radius: 4px;
+  box-shadow: none;
+  font-family: var(--font-body), sans-serif;
+  letter-spacing: .015em;
+  text-transform: none;
+}
+
+.theme :global(.btn-cartoon) {
+  min-height: 44px;
+  height: auto;
+  padding: .65rem 1rem;
+  border: 1px solid var(--admin-green);
+  border-radius: 5px;
+  box-shadow: 0 3px 0 #002d2433;
+  font-family: var(--font-body), sans-serif;
+  font-size: .8125rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: normal;
+}
+
+.theme :global(.btn-primary) { background: var(--admin-green); color: var(--admin-paper); }
+.theme :global(.btn-secondary) { background: var(--admin-paper); color: var(--admin-green); }
+.theme :global(.btn-cartoon):hover { transform: none; filter: brightness(.96); }
+.theme :global(.btn-cartoon):disabled { opacity: .5; box-shadow: none; filter: none; }
+
+.theme :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea) {
+  min-width: 0;
+  max-width: 100%;
+  min-height: 44px;
+  border: 1px solid #00563f66;
+  border-radius: 5px;
+  background-color: #fffefa;
+  color: var(--ink);
+  font-family: var(--font-body), sans-serif;
+  line-height: 1.4;
+}
+
+.theme :where(input[type="checkbox"], input[type="radio"]) { accent-color: var(--admin-green); }
+.theme :where(textarea) { padding: .75rem; resize: vertical; }
+.theme :where(input, textarea)::placeholder { color: #64736b; opacity: 1; }
+.theme :where(input:disabled, select:disabled, textarea:disabled) { background: #ecece4; }
+.theme :where(button, a, summary, input, select, textarea, [tabindex]):focus-visible { outline: 3px solid #9c7300; outline-offset: 3px; }
+.theme :where(button, a, summary, input, select, textarea) { touch-action: manipulation; }
+.theme :where(button:not(:disabled), summary, select:not(:disabled)) { cursor: pointer; }
+.theme :where(button:disabled) { cursor: not-allowed; }
+.theme :where(summary) { min-height: 44px; align-content: center; }
+.theme :where(h1, h2, h3, h4, p, label, article) { overflow-wrap: anywhere; }
+.theme :where(:global(.grid) > *, :global(.flex) > *) { min-width: 0; }
+.theme :global(.overflow-x-auto) { max-width: 100%; overscroll-behavior-x: contain; }
+.theme :where(table) { font-variant-numeric: tabular-nums; }
+.theme :where(th) { background: #e9eee4; color: var(--admin-green); }
+.theme :where(th, td) { padding: .8rem; }
+
+@media (max-width: 767px) {
+  .theme :global(.cartoon-border):not(:global(.admin-order-dialog)) { padding: 1rem; }
+  .theme :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea) { font-size: 16px; }
+  .theme :where(input[type="checkbox"], input[type="radio"]) { width: 20px; height: 20px; flex-shrink: 0; }
+  .theme :where(label:has(input[type="checkbox"]), label:has(input[type="radio"])) { min-height: 44px; }
+  .theme :where(h2:global(.font-display)) { font-size: 1.65rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme *, .theme *::before, .theme *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+}
+
+.theme :global(.admin-order-dialog-header) > button { width: 44px; height: 44px; padding: 0; }
+.theme :global(.card-cartoon)[class~="bg-[#e8f7f2]"] { border-color: var(--admin-green); background: #e8f0e3; box-shadow: inset 3px 0 0 var(--admin-green); }
+
+.theme button:global(.pill-cartoon)[aria-pressed="true"],
+.theme button:global(.pill-cartoon)[class~="bg-[#1a1a1a]"] { background: var(--admin-green); color: var(--admin-paper); border-color: var(--admin-green); }

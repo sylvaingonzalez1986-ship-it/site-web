@@ -216,7 +216,7 @@ export function AdminSalesDashboardPanel() {
           </div>
 
           <div className="card-cartoon bg-white p-4">
-            <div className="grid gap-3 lg:grid-cols-[auto,1fr,auto] lg:items-center">
+            <div className="grid gap-3 lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center">
               <div className="flex flex-wrap gap-2">
                 {([
                   ["all", "Depuis le debut"],
@@ -226,7 +226,8 @@ export function AdminSalesDashboardPanel() {
                   <button
                     key={value}
                     type="button"
-                    className={`pill-cartoon px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] ${
+                    aria-pressed={view === value}
+                    className={`pill-cartoon min-h-11 px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] ${
                       view === value ? "bg-[#1a1a1a] text-white" : "bg-[#f7f4ee] text-ink"
                     }`}
                     onClick={() => setView(value)}
@@ -239,6 +240,7 @@ export function AdminSalesDashboardPanel() {
               <div>
                 {view !== "all" && (
                   <select
+                    aria-label="Période des ventes"
                     className="h-11 w-full border-2 border-[#1a1a1a] bg-white px-3 text-sm"
                     value={selectedPeriod.periodKey}
                     onChange={(event) => setPeriodKey(event.target.value)}
@@ -253,6 +255,7 @@ export function AdminSalesDashboardPanel() {
               </div>
 
               <select
+                aria-label="Trier les produits vendus"
                 className="h-11 border-2 border-[#1a1a1a] bg-white px-3 text-sm"
                 value={sortKey}
                 onChange={(event) => setSortKey(event.target.value as SortKey)}
@@ -267,7 +270,7 @@ export function AdminSalesDashboardPanel() {
           <article className="card-cartoon bg-white p-4">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
-                <h3 className="font-display text-2xl text-ink">{selectedPeriod.periodLabel}</h3>
+                <h3 id="admin-sales-period-title" className="font-display text-2xl text-ink">{selectedPeriod.periodLabel}</h3>
                 <p className="text-sm text-charcoal">
                   {selectedPeriod.startsAt && selectedPeriod.endsAt
                     ? `${formatDate(selectedPeriod.startsAt)} - ${formatDate(selectedPeriod.endsAt)}`
@@ -279,8 +282,18 @@ export function AdminSalesDashboardPanel() {
               </p>
             </div>
 
-            <div className="mt-4 overflow-x-auto">
+            <p id="admin-sales-scroll-hint" className="mt-3 text-xs text-charcoal lg:hidden">
+              Faites défiler le tableau horizontalement pour voir toutes les colonnes.
+            </p>
+            <div
+              className="mt-4 overflow-x-auto rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#be9008]"
+              role="region"
+              aria-labelledby="admin-sales-period-title"
+              aria-describedby="admin-sales-scroll-hint"
+              tabIndex={0}
+            >
               <table className="w-full min-w-[860px] border-collapse text-left text-xs sm:text-sm">
+                <caption className="sr-only">Ventes par produit pour la période {selectedPeriod.periodLabel}</caption>
                 <thead>
                   <tr className="bg-[#f4f1ea]">
                     <th className="border border-[#1a1a1a] px-2 py-2 font-semibold">Produit</th>

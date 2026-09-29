@@ -218,7 +218,7 @@ export function Navbar() {
 
   // Les espaces de jeu possèdent leur propre navigation plein écran. Conserver
   // ici la barre globale fixe la placerait au-dessus de leurs boutons et modales.
-  if (pathname === "/arene/placard" || pathname.startsWith("/arene/carnet")) {
+  if (pathname === "/admin" || pathname.startsWith("/admin/") || pathname === "/arene/placard" || pathname.startsWith("/arene/carnet")) {
     return null;
   }
 

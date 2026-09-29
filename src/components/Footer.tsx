@@ -3,6 +3,7 @@
 import Link from "@/components/navigation/NavigationLink";
 import { ArrowRight, Instagram, MapPin } from "lucide-react";
 import { useMemo } from "react";
+import { usePathname } from "next/navigation";
 import {
   ContactEmailButton,
   CONTACT_EMAIL,
@@ -56,6 +57,12 @@ function FooterLinkList({ links }: { links: FooterLink[] | readonly FooterLink[]
 }
 
 export function Footer() {
+  const pathname = usePathname();
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return null;
+  return <FooterContent />;
+}
+
+function FooterContent() {
   const { store, loading } = useCmsStore();
   const { pages: cmsPages } = useCmsPages();
   const footer = store.content.footer;
