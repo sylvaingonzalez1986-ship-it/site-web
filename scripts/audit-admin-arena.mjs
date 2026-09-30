@@ -36,6 +36,7 @@ window.fetch=async(input,init={})=>{
   return Response.json(store);
  }
  if(url.pathname==='/api/admin/customers')return Response.json({customers});
+ if(url.pathname.startsWith('/api/admin/orders/')&&url.pathname.endsWith('/invoice/message'))return Response.json({personalMessage:''});
  if(url.pathname==='/api/admin/login'){
   const body=JSON.parse(init.body);
   return body.totp?Response.json({error:'Code de démonstration refusé.'},{status:401}):Response.json({requireTotp:true},{status:401});

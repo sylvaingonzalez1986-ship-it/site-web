@@ -1,5 +1,6 @@
 import "server-only";
 
+import { validateInvoicePersonalMessage } from "@/lib/invoice-message";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import type { IssuedInvoice } from "@/types/invoice";
 
@@ -90,4 +91,49 @@ export async function issueInvoiceForOrderInSupabase(orderId: string): Promise<I
   }
 
   return mapped;
+}
+
+export async function getInvoicePersonalMessageFromSupabase(orderId: string): Promise<string> {
+  const safeOrderId = orderId.trim();
+  if (!safeOrderId) {
+    throw new Error("orderId facture invalide.");
+  }
+
+  const result = await createSupabaseServiceClient()
+    .from("invoices")
+    .select("personal_message")
+    .eq("order_id", safeOrderId)
+    .maybeSingle();
+
+  failIfError(result.error, "select invoice personal message");
+  return result.data?.personal_message ?? "";
+}
+
+export async function setInvoicePersonalMessageInSupabase(
+  orderId: string,
+  message: string,
+): Promise<string> {
+  const safeOrderId = orderId.trim();
+  if (!safeOrderId) {
+    throw new Error("orderId facture invalide.");
+  }
+
+  const validated = validateInvoicePersonalMessage(message);
+  if (!validated.ok) {
+    throw new Error(validated.error);
+  }
+
+  const result = await createSupabaseServiceClient()
+    .from("invoices")
+    .update({ personal_message: validated.message })
+    .eq("order_id", safeOrderId)
+    .select("personal_message")
+    .single();
+
+  failIfError(result.error, "update invoice personal message");
+  if (typeof result.data?.personal_message !== "string") {
+    throw new Error("Facture introuvable lors de l'enregistrement du message.");
+  }
+
+  return result.data.personal_message;
 }

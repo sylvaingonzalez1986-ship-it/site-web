@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { buildInvoiceResponse } from "@/lib/invoice-pdf";
-import { issueInvoiceForOrder } from "@/lib/invoice-store";
+import { getInvoicePersonalMessage, issueInvoiceForOrder } from "@/lib/invoice-store";
 import { isInvoiceEligibleOrder } from "@/lib/invoice-utils";
 import { getOrderByIdByBackend } from "@/lib/order-backend";
 
@@ -39,6 +39,7 @@ export async function GET(
       Promise.resolve(session.customer),
       issueInvoiceForOrder(order.id),
     ]);
+    const personalMessage = await getInvoicePersonalMessage(order.id);
 
     return await buildInvoiceResponse(order, issuedInvoice, {
       name:
@@ -51,7 +52,7 @@ export async function GET(
       city: order.shippingCity?.trim() || customer?.city || "",
       postalCode: order.shippingPostalCode?.trim() || customer?.postalCode || "",
       country: order.shippingCountry?.trim() || customer?.country || "",
-    });
+    }, { personalMessage });
   } catch (error) {
     console.error("Customer invoice download failed:", error);
 

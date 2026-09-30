@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { AdminInvoiceDownload } from "@/components/admin/AdminInvoiceDownload";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { isInvoiceEligibleOrder } from "@/lib/invoice-utils";
 import { getDeliveryMethodLabel } from "@/lib/shipping";
@@ -58,8 +59,6 @@ function getPaymentStateClass(paymentState: CmsOrder["paymentState"]): string {
 }
 
 export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalProps) {
-  const [invoiceLoading, setInvoiceLoading] = useState(false);
-  const [invoiceError, setInvoiceError] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   useBodyScrollLock(Boolean(order));
 
@@ -100,11 +99,6 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
     };
   }, [order, onClose]);
 
-  useEffect(() => {
-    setInvoiceError(null);
-    setInvoiceLoading(false);
-  }, [order?.id]);
-
   if (!order) {
     return null;
   }
@@ -131,62 +125,6 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
     ? Number(order.totalHt.toFixed(2))
     : Number((order.totalAmount - (order.totalVat ?? 0)).toFixed(2));
   const totalVat = Number.isFinite(order.totalVat) ? Number(order.totalVat.toFixed(2)) : 0;
-
-  const downloadInvoice = async () => {
-    setInvoiceError(null);
-    setInvoiceLoading(true);
-    try {
-      const invoiceUrl = `/api/admin/orders/${encodeURIComponent(order.id)}/invoice`;
-      const response = await fetch(invoiceUrl, {
-        method: "GET",
-        cache: "no-store",
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        try {
-          const data = (await response.json()) as { error?: string };
-          setInvoiceError(data.error ?? "Impossible de télécharger la facture.");
-        } catch {
-          setInvoiceError("Impossible de télécharger la facture.");
-        }
-        return;
-      }
-
-      const contentType = response.headers.get("content-type") ?? "";
-      if (!contentType.toLowerCase().includes("application/pdf")) {
-        setInvoiceError("Le fichier reçu n'est pas une facture PDF valide.");
-        return;
-      }
-
-      const blob = await response.blob();
-      if (blob.size < 100) {
-        setInvoiceError("Facture vide reçue. Réessayez dans quelques secondes.");
-        return;
-      }
-
-      const url = URL.createObjectURL(blob);
-      const opened = window.open(url, "_blank", "noopener,noreferrer");
-      if (!opened) {
-        const anchor = document.createElement("a");
-        anchor.href = url;
-        anchor.download = `facture-${order.id}.pdf`;
-        anchor.style.display = "none";
-        document.body.appendChild(anchor);
-        anchor.click();
-        anchor.remove();
-      }
-      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
-    } catch {
-      window.open(
-        `/api/admin/orders/${encodeURIComponent(order.id)}/invoice`,
-        "_blank",
-        "noopener,noreferrer",
-      );
-    } finally {
-      setInvoiceLoading(false);
-    }
-  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-2 sm:p-4">
@@ -367,24 +305,7 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
             </div>
           </div>
 
-          <div className="mt-6">
-            <button
-              type="button"
-              className="btn-cartoon btn-primary w-full sm:w-auto"
-              disabled={!canDownloadInvoice || invoiceLoading}
-              onClick={downloadInvoice}
-            >
-              {invoiceLoading ? "Téléchargement..." : "Télécharger la facture"}
-            </button>
-            {!canDownloadInvoice && (
-              <p className="mt-2 text-sm text-charcoal">
-                Facture disponible uniquement pour les commandes payées.
-              </p>
-            )}
-            {invoiceError && (
-              <p role="alert" className="mt-2 text-sm font-semibold text-red-700">{invoiceError}</p>
-            )}
-          </div>
+          <AdminInvoiceDownload orderId={order.id} eligible={canDownloadInvoice} />
         </div>
       </div>
     </div>

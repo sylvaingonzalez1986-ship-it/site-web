@@ -25,6 +25,10 @@ export type InvoiceCustomerInfo = {
   country: string;
 };
 
+export type InvoicePdfOptions = {
+  personalMessage?: string;
+};
+
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                           */
 /* ------------------------------------------------------------------ */
@@ -146,6 +150,7 @@ export async function generateInvoicePdf(
   order: CmsOrder,
   issuedInvoice: IssuedInvoice,
   customer: InvoiceCustomerInfo,
+  options: InvoicePdfOptions = {},
 ): Promise<Buffer> {
   // Lazy-load PDFKit — only imported at runtime, never at build time.
   const { default: PDFDocument } = await import("pdfkit/js/pdfkit.standalone");
@@ -181,6 +186,7 @@ export async function generateInvoicePdf(
 
   const doc = new PDFDocument({ size: "A4", margin: 48 });
   const pdfPromise = buildPdfBuffer(doc);
+  const pageBottom = doc.page.height - doc.page.margins.bottom;
 
   // --- Company header ---
   const [logoDataUri, thankYouImageDataUri, fontBuffers] = await Promise.all([
@@ -277,14 +283,17 @@ export async function generateInvoicePdf(
   const xUnitHt = 345;
   const xRate = 430;
   const xTotalHt = 485;
-  doc.font(bodyBoldFont).fontSize(9).text("Designation", xDesignation, startY);
-  doc.text("Qte", xQty, startY);
-  doc.text("P.U. HT", xUnitHt, startY);
-  doc.text("TVA", xRate, startY);
-  doc.text("Total HT", xTotalHt, startY);
+  const renderTableHeader = (headerY: number): number => {
+    doc.font(bodyBoldFont).fontSize(9).text("Designation", xDesignation, headerY);
+    doc.text("Qte", xQty, headerY);
+    doc.text("P.U. HT", xUnitHt, headerY);
+    doc.text("TVA", xRate, headerY);
+    doc.text("Total HT", xTotalHt, headerY);
+    doc.font(bodyFont).fontSize(8.8);
+    return headerY + 16;
+  };
 
-  let y = startY + 16;
-  doc.font(bodyFont).fontSize(8.8);
+  let y = renderTableHeader(startY);
   for (const item of order.items) {
     const itemVatRate = sanitizeOrderVatRate(item.vatRate);
     const displayName = item.parentPackName
@@ -303,6 +312,10 @@ export async function generateInvoicePdf(
       15,
       doc.heightOfString(displayName, { width: 245, lineGap: 0 }) + 3,
     );
+    if (y + rowHeight > pageBottom) {
+      doc.addPage();
+      y = renderTableHeader(doc.page.margins.top);
+    }
     doc.text(displayName, xDesignation, y, { width: 245, lineGap: 0 });
     doc.text(String(item.quantity), xQty, y);
     doc.text(formatMoney(itemUnitHt), xUnitHt, y);
@@ -313,6 +326,20 @@ export async function generateInvoicePdf(
   doc.font(bodyFont).fontSize(9);
 
   // --- Totals ---
+  // Keep the totals and their legal footer together when the table fills a page.
+  const totalRowsBeforeGrandTotal =
+    2 +
+    (discountAmount > 0 ? 1 : 0) +
+    (INVOICE_SETTINGS.vatMode === "taxable" ? vatBreakdown.length + 2 : 0);
+  const legalFooterHeight = doc.fontSize(8.5).heightOfString(getInvoiceLegalFooter(), {
+    width: 499,
+  });
+  const totalsHeight = 10 + totalRowsBeforeGrandTotal * 14 + 24 + legalFooterHeight;
+  doc.fontSize(9);
+  if (y + totalsHeight > pageBottom) {
+    doc.addPage();
+    y = doc.page.margins.top;
+  }
   doc.moveTo(48, y).lineTo(547, y).strokeColor(INK_COLOR).stroke();
   y += 10;
   doc.text("Sous-total TTC", xUnitHt - 10, y, { width: 120 });
@@ -360,6 +387,43 @@ export async function generateInvoicePdf(
     .font(bodyFont)
     .fontSize(8.5)
     .text(getInvoiceLegalFooter(), 48, legalFooterY, { width: 499, align: "left" });
+
+  // --- Optional personal message ---
+  const personalMessage = options.personalMessage?.replace(/\r\n?/g, "\n").trim();
+  if (personalMessage) {
+    const personalMessageTitle = "Un petit mot pour vous";
+    const textOptions = { width: 499, align: "left" as const, lineGap: 2 };
+    const headingHeight = doc.font(displayFont).fontSize(11).heightOfString(
+      personalMessageTitle,
+      { width: textOptions.width },
+    );
+    doc.font(bodyFont).fontSize(9);
+    const bodyHeight = doc.heightOfString(personalMessage, textOptions);
+    const blockHeight = headingHeight + 5 + bodyHeight;
+    const availableHeight = pageBottom - doc.y - 12;
+    const fullPageHeight = pageBottom - doc.page.margins.top;
+    const headingAndFirstLinesHeight = headingHeight + 5 + doc.currentLineHeight(true) * 2;
+
+    // Keep short messages together. Longer ones can flow across pages without
+    // clipping text or leaving their heading alone at the foot of a page.
+    if (
+      blockHeight > availableHeight &&
+      (blockHeight <= fullPageHeight || availableHeight < headingAndFirstLinesHeight)
+    ) {
+      doc.addPage();
+    } else {
+      doc.y += 12;
+    }
+    doc
+      .fillColor(INK_COLOR)
+      .font(displayFont)
+      .fontSize(11)
+      .text(personalMessageTitle, 48, doc.y, { width: textOptions.width });
+    doc
+      .font(bodyFont)
+      .fontSize(9)
+      .text(personalMessage, 48, doc.y + 5, textOptions);
+  }
 
   // --- Customer thank-you and CBD driving notice ---
   const messageX = 48;
@@ -412,7 +476,6 @@ export async function generateInvoicePdf(
     5 +
     noticeSourceHeight +
     messagePadding;
-  const pageBottom = doc.page.height - 48;
   const messageGap = 6;
   let thankYouY = doc.y + 8;
 
@@ -513,8 +576,9 @@ export async function buildInvoiceResponse(
   order: CmsOrder,
   issuedInvoice: IssuedInvoice,
   customer: InvoiceCustomerInfo,
+  options: InvoicePdfOptions = {},
 ): Promise<Response> {
-  const pdfBuffer = await generateInvoicePdf(order, issuedInvoice, customer);
+  const pdfBuffer = await generateInvoicePdf(order, issuedInvoice, customer, options);
 
   return new Response(new Uint8Array(pdfBuffer), {
     status: 200,
