@@ -38,6 +38,8 @@ try {
     INSERT INTO lottery_card_definitions(collection_id,code,card_number,name,rarity)
       SELECT id,'TEST-GOLD-'||n,n,'Gold '||n,'gold' FROM lottery_card_collections CROSS JOIN generate_series(1,3) n WHERE code='HEMP_HEROES_2026';
     INSERT INTO lottery_card_definitions(collection_id,code,card_number,name,rarity)
+      SELECT id,'TEST-EPIC-'||n,10+n,'Epic '||n,'epic' FROM lottery_card_collections CROSS JOIN generate_series(1,2) n WHERE code='HEMP_HEROES_2026';
+    INSERT INTO lottery_card_definitions(collection_id,code,card_number,name,rarity)
       SELECT id,'BOTTE-001',1,'Botte common','common' FROM lottery_card_collections WHERE code='BOTTE_DU_CHANVRIER_2026';
   `);
   await db.exec(await readFile('supabase/migrations/20260919000300_kq_pioneer_pack.sql','utf8'));
@@ -57,14 +59,29 @@ try {
   const cash = id => scalar('SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1',[id]);
   const count = (table,id) => scalar('SELECT count(*)::INTEGER FROM '+table+' WHERE user_id=$1',[id]);
 
+  // Apply the upgrade over a real historical grant, preserving its amount and draw.
+  const legacy=await user(); await order(legacy);
+  const legacyGrant=await claim(legacy);
+  assert.equal(legacyGrant.cashCents,100000);
+  await db.exec(await readFile('supabase/migrations/20261001000100_kq_pioneer_pack_rewards.sql','utf8'));
+  assert.equal((await claim(legacy)).cashCents,100000);
+  assert.equal((await claim(legacy)).goldCard.code,legacyGrant.goldCard.code);
+  assert.equal(await cash(legacy),135000,'upgrade never recredits an existing gift');
+  assert.equal(await count('kq_support_booster_entitlements',legacy),10);
+  await db.exec("SELECT set_config('test.clock','2026-10-14 21:59:59.999999+00',false)");
+  await assert.rejects(()=>claim(legacy),/pioneer_not_open/);
+  await db.exec("SELECT set_config('test.clock','2026-10-15 00:00:00 Europe/Paris',false)");
+
   const old=await user(); await order(old,{date:'2020-01-01 00:00:00+00'}); await order(old);
   assert.equal((await state(old)).eligible,true,'site history has no lower bound');
+  assert.equal((await state(old)).cashCents,500000,'preview advertises the new amount');
   assert.equal(await count('kq_pioneer_pack_grants',old),0,'GET state must not credit');
   const first=await claim(old), replay=await claim(old);
   assert.equal(first.replayed,false); assert.equal(replay.replayed,true);
-  assert.equal(first.cashCents,100000); assert.equal(first.packCount,10);
+  assert.equal(first.cashCents,500000); assert.equal(first.packCount,10);
   assert.equal(first.goldCard.code,'TEST-GOLD-1'); assert.deepEqual(replay.goldCard,first.goldCard);
-  assert.equal(await cash(old),135000,'default starting cash plus 1000 euros');
+  assert.equal(first.goldCard.rarity,'gold');
+  assert.equal(await cash(old),535000,'default starting cash plus 5000 euros');
   assert.equal(await count('lottery_card_instances',old),2);
   assert.equal(await count('kq_support_booster_entitlements',old),10);
   assert.equal(await count('kq_pioneer_pack_grants',old),1);
@@ -95,13 +112,22 @@ try {
   await db.query('INSERT INTO kq_equipment_wallets(user_id,cash_cents) VALUES($1,87654)',[edge]);
   const duplicates=await Promise.all([claim(edge),claim(edge)]);
   assert.equal(duplicates.filter(value=>!value.replayed).length,1);
-  assert.equal(await cash(edge),187654);
+  assert.equal(await cash(edge),587654);
   assert.equal(await count('kq_support_booster_entitlements',edge),10);
   // Missing catalog content leaves every reward untouched.
   await db.exec("UPDATE lottery_card_collections SET is_active=false WHERE code='BOTTE_DU_CHANVRIER_2026'");
   await assert.rejects(()=>claim(guest),/pioneer_unavailable/);
   assert.equal(await count('kq_pioneer_pack_grants',guest),0);
   await db.exec("UPDATE lottery_card_collections SET is_active=true WHERE code='BOTTE_DU_CHANVRIER_2026'");
+  for (const rarity of ['gold','epic']) {
+    await db.query("UPDATE lottery_card_definitions SET is_active=false WHERE rarity=$1",[rarity]);
+    assert.equal((await state(guest)).available,false,'both rarity pools must be available');
+    await assert.rejects(()=>claim(guest),/pioneer_unavailable/);
+    assert.equal(await count('kq_pioneer_pack_grants',guest),0);
+    assert.equal(await count('lottery_card_instances',guest),0);
+    assert.equal(await count('kq_equipment_wallets',guest),0);
+    await db.query("UPDATE lottery_card_definitions SET is_active=true WHERE rarity=$1",[rarity]);
+  }
   // A late insert failure rolls back cash, card instances and the attribution ledger together.
   await db.query("INSERT INTO kq_support_booster_entitlements(user_id,source,reward_key) VALUES($1,'mission',$2)",[guest,'kq-pioneer:2026:'+guest+':10']);
   await assert.rejects(()=>claim(guest),/unique constraint/);
@@ -117,12 +143,35 @@ try {
   assert.equal(opened.cards.length,10); assert(opened.cards.every(card=>card.code==='BOTTE-001'));
   await assert.rejects(()=>scalar('SELECT rpc_kq_open_support_booster($1,$2)',[pack,old]),/unavailable/);
   await claim(old); assert.equal(await count('lottery_card_instances',old),12);
-  // The upper RNG bound still selects an active gold Buddie, never another collection or inactive card.
+  // Ten equiprobable rarity outcomes give exactly nine gold and one epic,
+  // even though the two card pools have different sizes.
+  await db.exec(`CREATE OR REPLACE FUNCTION lottery_secure_random_int(a INTEGER,b INTEGER) RETURNS INTEGER LANGUAGE sql AS $$
+    SELECT CASE WHEN a=1 AND b=10 THEN current_setting('test.rarity_roll')::INTEGER ELSE a END $$`);
+  const rarities=[];
+  for(let roll=1;roll<=10;roll++) {
+    await db.query("SELECT set_config('test.rarity_roll',$1,false)",[String(roll)]);
+    const player=await user(); await order(player);
+    const reward=await claim(player);
+    assert.equal(reward.goldCard.rarity,roll<=9?'gold':'epic');
+    assert.equal(reward.goldCard.code,roll<=9?'TEST-GOLD-1':'TEST-EPIC-1');
+    assert.equal(reward.cashCents,500000);
+    assert.equal(await cash(player),535000);
+    assert.deepEqual((await claim(player)).goldCard,reward.goldCard,'replay never rerolls rarity');
+    rarities.push(reward.goldCard.rarity);
+  }
+  assert.equal(rarities.filter(rarity=>rarity==='gold').length,9);
+  assert.equal(rarities.filter(rarity=>rarity==='epic').length,1);
+  // Upper card indexes never select another collection or an inactive card.
   const upper=await user(); await order(upper);
   await db.exec("INSERT INTO lottery_card_definitions(collection_id,code,card_number,name,rarity,is_active) SELECT id,'INACTIVE-GOLD',4,'Inactive','gold',false FROM lottery_card_collections WHERE code='HEMP_HEROES_2026'");
   await db.exec("INSERT INTO lottery_card_definitions(collection_id,code,card_number,name,rarity) SELECT id,'OTHER-GOLD',2,'Other collection','gold' FROM lottery_card_collections WHERE code='BOTTE_DU_CHANVRIER_2026'");
+  await db.exec("INSERT INTO lottery_card_definitions(collection_id,code,card_number,name,rarity,is_active) SELECT id,'INACTIVE-EPIC',13,'Inactive','epic',false FROM lottery_card_collections WHERE code='HEMP_HEROES_2026'");
+  await db.exec("INSERT INTO lottery_card_definitions(collection_id,code,card_number,name,rarity) SELECT id,'OTHER-EPIC',3,'Other collection','epic' FROM lottery_card_collections WHERE code='BOTTE_DU_CHANVRIER_2026'");
   await db.exec('CREATE OR REPLACE FUNCTION lottery_secure_random_int(a INTEGER,b INTEGER) RETURNS INTEGER LANGUAGE sql AS $$ SELECT b $$');
-  assert.equal((await claim(upper)).goldCard.code,'TEST-GOLD-3');
+  assert.equal((await claim(upper)).goldCard.code,'TEST-EPIC-2');
+  const upperGold=await user(); await order(upperGold);
+  await db.exec('CREATE OR REPLACE FUNCTION lottery_secure_random_int(a INTEGER,b INTEGER) RETURNS INTEGER LANGUAGE sql AS $$ SELECT CASE WHEN a=1 AND b=10 THEN 9 ELSE b END $$');
+  assert.equal((await claim(upperGold)).goldCard.code,'TEST-GOLD-3');
   // Normal order cleanup cannot remove a collected gift or block archive operations.
   await db.query('DELETE FROM orders WHERE customer_id=$1',[old]);
   assert.equal((await state(old)).claimed,true);
@@ -143,5 +192,5 @@ try {
   await db.exec('RESET ROLE; SET ROLE service_role');
   assert.equal((await state(old)).claimed,true);
   await db.exec('RESET ROLE');
-  console.log('Pioneer pack SQL passed: exact Paris cutoff, history, guest eligibility, 1000 euros, random-gold pool, 10 working packs, replay, rollback, batch and access controls.');
+  console.log('Pioneer pack SQL passed: exact Paris cutoff, history, guest eligibility, 5000 euros, 90/10 gold/epic odds, legacy grants, 10 working packs, replay, rollback, batch and access controls.');
 } catch (error) { console.error(error.message, error.detail || "", error.where || ""); process.exitCode=1; } finally { await db.close(); }

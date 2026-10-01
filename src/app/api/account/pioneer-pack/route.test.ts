@@ -6,7 +6,7 @@ vi.mock("@/lib/audit-log", () => ({ logAuditEvent: mocks.audit }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: mocks.logRejection }));
 import { GET, POST } from "./route";
 const request = () => new Request("http://localhost/api/account/pioneer-pack", { method: "POST", body: JSON.stringify({ userId: "victim", cashCents: 99999999, goldCard: "chosen", eligible: true }) });
-const state = { eligible: true, claimed: false, available: true, cashCents: 100000, packCount: 10, grantedAt: null, goldCard: null };
+const state = { eligible: true, claimed: false, available: true, cashCents: 500000, packCount: 10, grantedAt: null, goldCard: null };
 describe("Pioneer pack API", () => {
   beforeEach(() => {
     vi.resetAllMocks();
@@ -20,11 +20,12 @@ describe("Pioneer pack API", () => {
     expect(response.headers.get("Cache-Control")).toBe("private, no-store");
     expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_pioneer_pack_state", { p_user_id: "signed-in-user" });
   });
-  it("ignores forged identity, amount, eligibility and chosen Buddie", async () => {
-    mocks.rpc.mockResolvedValue({ data: { ...state, claimed: true, replayed: false }, error: null });
+  it.each(["gold", "epic"])("ignores forged rewards and returns the server's %s Buddie", async (rarity) => {
+    const goldCard = { code: "server-draw", name: "Server draw", imageUrl: null, rarity };
+    mocks.rpc.mockResolvedValue({ data: { ...state, claimed: true, replayed: false, goldCard }, error: null });
     const response = await POST(request());
     expect(response.status).toBe(200);
-    expect((await response.json()).cashCents).toBe(100000);
+    expect(await response.json()).toMatchObject({ cashCents: 500000, goldCard });
     expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_claim_pioneer_pack", { p_user_id: "signed-in-user" });
     expect(mocks.audit).toHaveBeenCalledOnce();
   });
