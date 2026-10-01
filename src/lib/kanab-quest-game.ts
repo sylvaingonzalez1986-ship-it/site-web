@@ -103,8 +103,8 @@ export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadou
   tents?: KqTentEquipmentProfile[];
   /** Common processing machines frozen once, independently of the grow tents. */
   shared?: KqSharedEquipmentRunProfile;
-  /** New installations share ownership, wear and service costs; absent in legacy runs. */
-  scope?: "installation";
+  /** Tent ownership is explicit; installation scope preserves historical shared runs. */
+  scope?: "installation" | "tent";
 };
 
 export type KqGameState = {
@@ -487,7 +487,7 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
 
 export function startKqGame(
   seed = Date.now(),
-  config: { domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" } = {},
+  config: { domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" | "tent" } = {},
 ): KqGameState {
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
   const requestedDeck = config.deckCodes ?? KQ_CARDS.slice(0, 6).map((card) => card.code);
@@ -517,7 +517,7 @@ export function startKqGame(
     codes: equipmentCodes, levels, ...(productionUnits > 1 ? { productionUnits } : {}),
     ...(tents ? { tents } : {}),
     ...(shared ? { shared } : {}),
-    ...(installation ? { scope: "installation" } : {}),
+    ...(config.equipmentScope ? { scope: config.equipmentScope } : {}),
     ...(tents || shared ? summarizeKqTentEquipment(tents ?? [{ tentNumber: 1, codes: equipmentCodes, levels }], shared, config.equipmentScope) : summarizeKqEquipmentLoadout(equipmentCodes, levels)),
   };
   const energy = config.energyMode ? quoteKqEnergy(equipmentCodes, levels, config.energyMode, productionUnits, tents, config.equipmentScope) : undefined;

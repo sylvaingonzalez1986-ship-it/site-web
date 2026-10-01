@@ -21,27 +21,32 @@ export function KqWarehouseEntry({initialEquipmentCode,onClose,onOpenShop}:{init
   useEffect(()=>{
     const controller=new AbortController();let cancelled=false;
     void(async()=>{try{
-      const response=await fetch("/api/arena/placard/equipment?tentNumber=1",{cache:"no-store",signal:controller.signal});const body=await response.json();
+      const response=await fetch("/api/arena/placard/equipment?tentNumber="+tentNumber,{cache:"no-store",signal:controller.signal});const body=await response.json();
       if(!response.ok)throw new Error(body.error||"Entrepôt indisponible.");
       if(!body||!Array.isArray(body.ownedCodes)||!Array.isArray(body.purchasedCodes)||!Array.isArray(body.equippedCodes)||!body.levels||!Number.isFinite(body.cashCents))throw new Error("Les informations de l’entrepôt sont incomplètes.");
-      if(!cancelled){setSnapshot(body);setError("");}
+      if(!cancelled){setSnapshot(body);setError("");if(body.tentNumber && body.tentNumber!==tentNumber)selectKqTent(body.tentNumber);}
     }catch(reason){if(!cancelled)setError(reason instanceof Error?reason.message:"Entrepôt indisponible.");}
     finally{if(!cancelled)setLoading(false);}})();
     return()=>{cancelled=true;controller.abort();};
-  },[revision]);
-  useEffect(()=>{
-    if(snapshot.tents?.length&&!snapshot.tents.some(tent=>tent.tentNumber===tentNumber))selectKqTent(snapshot.tents[0].tentNumber);
-  },[snapshot.tents,tentNumber]);
+  },[revision,tentNumber]);
+  const selectedTent=snapshot.tents?.find(tent=>tent.tentNumber===tentNumber);
+  const selected=selectedTent?.ownedCodes&&selectedTent.purchasedCodes
+    ? {...selectedTent,ownedCodes:selectedTent.ownedCodes,purchasedCodes:selectedTent.purchasedCodes}
+    : (snapshot.tentNumber??1)===tentNumber?snapshot:null;
   const selectTent=(number:number)=>{
     if(!snapshot.tents?.some(tent=>tent.tentNumber===number))return;
-    selectKqTent(number);
+    setError("");selectKqTent(number);
   };
-  const shared=snapshot.sharedEquipment??snapshot;
-  return <KqEquipmentInventoryModal {...snapshot} {...shared}
+  const shared=snapshot.sharedEquipment;
+  return <KqEquipmentInventoryModal {...snapshot} {...(selected??EMPTY)}
     cashCents={snapshot.cashCents}
-    sharedEquipment={{...shared,maintenance:shared.maintenance??{}}}
-    cultureWear={shared.cultureWear??{}}
+    sharedEquipment={shared}
+    ownedCodes={[...new Set([...(selected?.ownedCodes??[]),...(shared?.ownedCodes??[])])]}
+    purchasedCodes={[...new Set([...(selected?.purchasedCodes??[]),...(shared?.purchasedCodes??[])])]}
+    equippedCodes={[...new Set([...(selected?.equippedCodes??[]),...(shared?.equippedCodes??[])])]}
+    levels={{...selected?.levels,...shared?.levels}}
+    maintenance={{...selected?.maintenance,...shared?.maintenance}} cultureWear={selected?.cultureWear??{}}
     tentNumber={tentNumber} tents={snapshot.tents??[]} onSelectTent={selectTent}
-    loading={loading} loadError={error} onRetry={refresh} onClose={onClose} onOpenShop={onOpenShop}
+    loading={loading||(!error&&!selected)} loadError={error} onRetry={refresh} onClose={onClose} onOpenShop={onOpenShop}
     initialSlot={getKqEquipmentDefinition(initialEquipmentCode??"")?.slot}/>;
 }

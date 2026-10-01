@@ -66,7 +66,7 @@ export function KqPlacardLobby({ onOpen, onOpenCollection }: {
         <div className={styles.helpContent}>
           <strong>Une récolte, plusieurs possibilités.</strong>
           <p>Cultive, présente ta Fleur au jury, puis retrouve ton lot au marché pour le transformer ou le vendre.</p>
-          <p>Dans l’entrepôt, les tentes sont côte à côte. Tout le matériel est acquis une seule fois pour l’ensemble de l’installation.</p>
+          <p>Dans l’entrepôt, le récapitulatif indique le matériel installé et les emplacements à compléter dans chaque tente. Seules les machines de transformation sont communes.</p>
           <p>Le Bureau réunit tes comptes et ton banquier. Les packs t’attendent à la Boutique, depuis ta collection.</p>
         </div>
       </details>

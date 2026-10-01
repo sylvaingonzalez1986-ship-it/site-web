@@ -18,7 +18,7 @@ export type KqEnergyLine = { code: string; name: string; level: number; watts: n
 export type KqEnergyQuote = { version: 1; mode: KqEnergyMode; productionUnits?: number; lines: KqEnergyLine[]; totalWattHours: number; solarPercent: number; tariffCentsPerKwh: number; totalCents: number; savingsCents: number };
 
 /** Fixed equivalent operating hours, never time spent logged in or offline. */
-export function quoteKqEnergy(codes: string[], levels: Record<string, number> = {}, mode: KqEnergyMode = "balanced", productionUnits = 1, tents?: KqTentEquipmentProfile[], scope?: "installation"): KqEnergyQuote {
+export function quoteKqEnergy(codes: string[], levels: Record<string, number> = {}, mode: KqEnergyMode = "balanced", productionUnits = 1, tents?: KqTentEquipmentProfile[], scope?: "installation" | "tent"): KqEnergyQuote {
   if (tents) return quoteKqTentEnergy(tents, mode, scope);
   const units = getKqProductionUnits(productionUnits);
   const equipment = [...new Set(codes)].map((code) => getKqEquipmentAtLevel(code, levels[code])).filter((item) => item !== null);
@@ -33,8 +33,8 @@ export function quoteKqEnergy(codes: string[], levels: Record<string, number> = 
   return { version: 1 as const, mode, ...(units > 1 ? { productionUnits: units } : {}), lines, totalWattHours, solarPercent, tariffCentsPerKwh: 30,
     totalCents, savingsCents: Math.round(totalWattHours / units * 30 / 1000) * units - totalCents };
 }
-/** Legacy invoices remain per-tent; installation scope charges common services once. */
-export function quoteKqTentEnergy(tents: KqTentEquipmentProfile[], mode: KqEnergyMode = "balanced", scope?: "installation"): KqEnergyQuote {
+/** Each tent pays for its own services; historical installation invoices remain valid. */
+export function quoteKqTentEnergy(tents: KqTentEquipmentProfile[], mode: KqEnergyMode = "balanced", scope?: "installation" | "tent"): KqEnergyQuote {
   const quotes = [...tents].sort((left, right) => left.tentNumber - right.tentNumber)
     .map((tent, index) => ({ tentNumber: tent.tentNumber, quote: quoteKqEnergy(
       scope === "installation" && index > 0
@@ -53,7 +53,7 @@ export function quoteKqTentEnergy(tents: KqTentEquipmentProfile[], mode: KqEnerg
   };
 }
 
-export function isKqEnergyQuoteValid(value: unknown, codes: string[], levels?: Record<string, number>, productionUnits = 1, tents?: KqTentEquipmentProfile[], scope?: "installation"): value is KqEnergyQuote {
+export function isKqEnergyQuoteValid(value: unknown, codes: string[], levels?: Record<string, number>, productionUnits = 1, tents?: KqTentEquipmentProfile[], scope?: "installation" | "tent"): value is KqEnergyQuote {
   if (!value || typeof value !== "object") return false;
   const row = value as Record<string, unknown>;
   if (!isKqEnergyMode(row.mode)) return false;

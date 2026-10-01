@@ -46,7 +46,7 @@ function database(fixture = structuredClone(productionFixture)) {
 
 beforeEach(() => vi.clearAllMocks());
 
-describe("culture compatibility with one shared installation", () => {
+describe("culture compatibility with individual tents and a shared workshop", () => {
   it.each(["eco", "balanced", "intensive"] as const)("uses the production fixture from shop through %s quote, launch RPC and saved game", async energyMode => {
     const { rpc, reads } = database();
     const shop = await getKqEquipmentShopSnapshot(userId);
@@ -54,9 +54,9 @@ describe("culture compatibility with one shared installation", () => {
     expect(reads.find(read => read.table === "kq_equipment_loadouts")?.columns).toContain("tent_number");
     expect(shop.tents).toHaveLength(2);
     expect(shop.tents[0].levels["LED-300"]).toBe(10);
-    expect(shop.tents[1].cultureOperationalCodes).toEqual(shop.tents[0].cultureOperationalCodes);
+    expect(shop.tents[1].cultureOperationalCodes).toEqual(["AIR-STARTER", "LED-150-STARTER", "TENT-080-STARTER"]);
     const energy = await getKqEnergySnapshot(userId);
-    const expectedEnergyCents = quoteKqTentEnergy(shop.tents.map(tent => ({ tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels })), energyMode, "installation").totalCents;
+    const expectedEnergyCents = quoteKqTentEnergy(shop.tents.map(tent => ({ tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels })), energyMode).totalCents;
     expect(energy.quotes[energyMode].totalCents).toBe(expectedEnergyCents);
     const result = await startKqPlayerRun(userId, { ...input, energyMode, expectedEnergyCents });
     expect(result.state.energy).toEqual(energy.quotes[energyMode]);
@@ -72,8 +72,9 @@ describe("culture compatibility with one shared installation", () => {
       p_user_id: userId, p_initial_state: result.state,
     }));
     expect(parseKqGameSave(encodeKqSave(result.state))).toEqual(result.state);
-    expect(result.state.equipment!.tents![1].codes).toContain("LED-300");
-    expect(result.state.equipment!.scope).toBe("installation");
+    expect(result.state.equipment!.tents![1].codes).toContain("LED-150-STARTER");
+    expect(result.state.equipment!.tents![1].codes).not.toContain("LED-300");
+    expect(result.state.equipment!.scope).toBe("tent");
   });
 
   it("freezes the installed common workshop once when launching a multi-tent culture", async () => {
@@ -99,9 +100,11 @@ describe("culture compatibility with one shared installation", () => {
     const shop = await getKqEquipmentShopSnapshot(userId);
     expect(shop.tents[0].cultureOperationalCodes).toContain("LED-300");
     expect(shop.tents[0].levels["LED-300"]).toBe(10);
-    expect(shop.tents[1].cultureOperationalCodes).toContain("LED-300");
-    expect(shop.tents[1].levels["LED-300"]).toBe(10);
-    expect(shop.sharedEquipment.cultureWear["LED-300"].due).toBe(false);
+    expect(shop.tents[1].cultureOperationalCodes).not.toContain("LED-300");
+    expect(shop.tents[1].cultureOperationalCodes).toContain("LED-150-STARTER");
+    expect(shop.tents[1].levels["LED-300"]).toBe(1);
+    expect(shop.tents[0].cultureWear["LED-300"].due).toBe(false);
+    expect(shop.tents[1].cultureWear["LED-300"].due).toBe(true);
     const energy = await getKqEnergySnapshot(userId);
     const result = await startKqPlayerRun(userId, { ...input, energyMode: "balanced", expectedEnergyCents: energy.quotes.balanced.totalCents });
     expect(result.state.energy).toEqual(energy.quotes.balanced);

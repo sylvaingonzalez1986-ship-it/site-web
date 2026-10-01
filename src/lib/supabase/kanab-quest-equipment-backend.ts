@@ -6,6 +6,7 @@ import { getKqCultureEquipmentCondition, getKqCultureOperationalCodes, type KqCu
 
 import {
   getKqEquipmentDefinition,
+  getKqEquipmentStorageTent,
   isKqProcessingEquipment,
   getKqEquipmentAtLevel,
   getKqEquipmentUpgradeCost,
@@ -144,21 +145,23 @@ export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNu
   const productionUnits = getKqProductionUnits(Number(wallet.data.production_units ?? 1));
   const profile = wallet.data.chanvrier as unknown as { strength: ChanvrierStrength } | null;
   const strength = profile?.strength ?? null;
-  const buildProfile = (): KqSharedEquipmentSnapshot => {
-    const availableOwned = (owned.data ?? []).filter(row => Number(row.tent_number ?? 1) === 1
+  const buildProfile = (tentNumber: number, shared: boolean): KqSharedEquipmentSnapshot => {
+    const belongsToProfile = (row: { tent_number?: number; equipment_code: string }) => Number(row.tent_number ?? 1) === tentNumber
+      && isKqProcessingEquipment(String(row.equipment_code)) === shared;
+    const availableOwned = (owned.data ?? []).filter(row => belongsToProfile(row)
       && !KQ_RETIRED_EQUIPMENT_CODES.includes(String(row.equipment_code)));
     const levels = Object.fromEntries(availableOwned.map(row => [String(row.equipment_code), Number(row.level ?? 1)]));
     const maintenance = Object.fromEntries(availableOwned.flatMap(row => {
       const condition = getKqMachineCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.wear_cycles ?? 0), Number(row.maintenance_version ?? 0), strength);
       return condition ? [[String(row.equipment_code), condition]] : [];
     })) as Record<string, KqMachineCondition>;
-    const equippedCodes = (loadout.data ?? []).filter(row => Number(row.tent_number ?? 1) === 1)
+    const equippedCodes = (loadout.data ?? []).filter(belongsToProfile)
       .map(row => String(row.equipment_code)).filter(code => !KQ_RETIRED_EQUIPMENT_CODES.includes(code));
     const cultureWear = Object.fromEntries(availableOwned.flatMap(row => {
       const condition = getKqCultureEquipmentCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.culture_wear_percent ?? 0), Number(row.culture_wear_version ?? 0));
       return condition ? [[String(row.equipment_code), condition]] : [];
     })) as Record<string, KqCultureEquipmentCondition>;
-    const cultureOperationalCodes = getKqCultureOperationalCodes(equippedCodes, cultureWear);
+    const cultureOperationalCodes = shared ? equippedCodes : getKqCultureOperationalCodes(equippedCodes, cultureWear);
     return {
       levels, maintenance, cultureWear, equippedCodes, cultureOperationalCodes,
       operationalCodes: cultureOperationalCodes.filter(code => !maintenance[code]?.due),
@@ -166,25 +169,25 @@ export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNu
       purchasedCodes: availableOwned.filter(row => Number(row.purchase_price_cents ?? 0) > 0).map(row => String(row.equipment_code)),
     };
   };
-  const sharedEquipment = buildProfile();
-  // Physical tents receive the same installed culture models. Ownership, levels,
-  // maintenance and replacements remain one canonical installation inventory.
-  const cultureCodes = (codes: string[]) => codes.filter(code => !isKqProcessingEquipment(code));
-  const cultureEntries = <T,>(entries: Record<string, T>) => Object.fromEntries(
-    Object.entries(entries).filter(([code]) => !isKqProcessingEquipment(code)),
-  );
+  const sharedEquipment = buildProfile(1, true);
+  // Models, levels and wear remain attached to each physical tent. Only the
+  // transformation workshop is merged into the selected shop for compatibility.
   const tents = Array.from({ length: productionUnits }, (_, index): KqTentEquipmentSnapshot => ({
     tentNumber: index + 1,
-    ownedCodes: cultureCodes(sharedEquipment.ownedCodes),
-    purchasedCodes: cultureCodes(sharedEquipment.purchasedCodes),
-    equippedCodes: cultureCodes(sharedEquipment.equippedCodes),
-    levels: cultureEntries(sharedEquipment.levels),
-    maintenance: cultureEntries(sharedEquipment.maintenance),
-    cultureWear: cultureEntries(sharedEquipment.cultureWear),
-    cultureOperationalCodes: cultureCodes(sharedEquipment.cultureOperationalCodes),
-    operationalCodes: cultureCodes(sharedEquipment.operationalCodes),
+    ...buildProfile(index + 1, false),
   }));
-  const selected = { ...sharedEquipment, tentNumber: requestedTentNumber <= productionUnits ? requestedTentNumber : 1 };
+  const selectedTent = tents[(requestedTentNumber <= productionUnits ? requestedTentNumber : 1) - 1];
+  const selected = {
+    tentNumber: selectedTent.tentNumber,
+    ownedCodes: [...selectedTent.ownedCodes, ...sharedEquipment.ownedCodes],
+    purchasedCodes: [...selectedTent.purchasedCodes, ...sharedEquipment.purchasedCodes],
+    equippedCodes: [...selectedTent.equippedCodes, ...sharedEquipment.equippedCodes],
+    levels: { ...selectedTent.levels, ...sharedEquipment.levels },
+    maintenance: { ...selectedTent.maintenance, ...sharedEquipment.maintenance },
+    cultureWear: selectedTent.cultureWear,
+    cultureOperationalCodes: [...selectedTent.cultureOperationalCodes, ...sharedEquipment.cultureOperationalCodes],
+    operationalCodes: [...selectedTent.operationalCodes, ...sharedEquipment.operationalCodes],
+  };
   return {
     ...selected, tents, sharedEquipment, equipmentPricingUnits: 1,
     productionUnits, production: getKqProductionExpansion(productionUnits, selected.purchasedCodes, selected.levels),
@@ -256,7 +259,7 @@ export async function purchaseKqDurableEquipment(input: {
     p_user_id: input.userId,
     p_request_key: input.requestKey,
     p_equipment_codes: equipmentCodes,
-    ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : { p_tent_number: 1 }),
+    ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : { p_tent_number: input.tentNumber }),
   });
   if (result.error) {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
@@ -290,7 +293,7 @@ export async function upgradeKqDurableEquipment(input: {
   const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_upgrade_production_equipment" : "rpc_kq_upgrade_tent_equipment", {
     p_user_id: input.userId, p_request_key: input.requestKey,
     p_equipment_code: input.equipmentCode, p_expected_level: input.expectedLevel,
-    ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : { p_tent_number: 1 }),
+    ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : { p_tent_number: getKqEquipmentStorageTent(input.equipmentCode, input.tentNumber) }),
   });
   if (result.error) {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
@@ -316,7 +319,7 @@ export async function repairKqMachine(input: { userId: string; equipmentCode: st
   const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_repair_machine" : "rpc_kq_repair_tent_machine", {
     p_user_id: input.userId, p_equipment_code: input.equipmentCode, p_request_key: input.requestKey,
     p_expected_version: input.expectedVersion, p_expected_cost_cents: input.expectedCostCents,
-    ...(input.tentNumber !== undefined ? { p_tent_number: 1 } : {}),
+    ...(input.tentNumber !== undefined ? { p_tent_number: getKqEquipmentStorageTent(input.equipmentCode, input.tentNumber) } : {}),
   });
   if (result.error) {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
@@ -340,7 +343,8 @@ export async function equipKqDurableEquipment(input: { userId: string; equipment
   const equipment = getKqEquipmentDefinition(input.equipmentCode);
   if (!equipment) throw new Error("Équipement inconnu.");
   const supabase = createSupabaseServiceClient();
-  const owned = await supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,culture_wear_percent").eq("user_id", input.userId).eq("tent_number", 1);
+  const storageTent = getKqEquipmentStorageTent(input.equipmentCode, input.tentNumber ?? 1);
+  const owned = await supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,culture_wear_percent").eq("user_id", input.userId).eq("tent_number", storageTent);
   if (owned.error) throw new Error(`[supabase:kq_player_equipment] ${owned.error.message}`);
   const ownedCodes = (owned.data ?? []).map((row) => String(row.equipment_code));
   const ownership = (owned.data ?? []).find((row) => String(row.equipment_code) === equipment.code);
@@ -363,7 +367,7 @@ export async function equipKqDurableEquipment(input: { userId: string; equipment
   const result = await supabase.rpc(input.tentNumber === undefined ? "rpc_kq_equip_durable" : "rpc_kq_equip_tent_equipment", {
     p_user_id: input.userId,
     p_equipment_code: input.equipmentCode,
-    ...(input.tentNumber !== undefined ? { p_tent_number: 1 } : {}),
+    ...(input.tentNumber !== undefined ? { p_tent_number: storageTent } : {}),
   });
   if (result.error) {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
@@ -388,7 +392,7 @@ export async function replaceKqCultureEquipment(input: { userId: string; equipme
   const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_replace_culture_equipment" : "rpc_kq_replace_tent_culture_equipment", {
     p_user_id: input.userId, p_equipment_code: input.equipmentCode, p_request_key: input.requestKey,
     p_expected_version: input.expectedVersion, p_expected_cost_cents: input.expectedCostCents,
-    ...(input.tentNumber !== undefined ? { p_tent_number: 1 } : {}),
+    ...(input.tentNumber !== undefined ? { p_tent_number: getKqEquipmentStorageTent(input.equipmentCode, input.tentNumber) } : {}),
   });
   if (result.error) {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");

@@ -68,12 +68,12 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
   return <section className={styles.cultureWear} aria-label={`État de ${name}`} data-due={condition.due}>
     <strong>{condition.due ? "Hors service · à remplacer" : `État : ${condition.conditionPercent.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %`}</strong>
     <progress value={condition.conditionPercent} max={100} aria-label={`État de ${name}`} />
-    <small>Remplacement pour toutes les tentes : {formatKqCash(condition.replacementCents)} · niveaux conservés.</small>
+    <small>Remplacement {isKqSharedEquipment(code) ? "dans l’atelier commun" : `dans la tente ${tentNumber}`} : {formatKqCash(condition.replacementCents)} · niveaux conservés.</small>
     {condition.due ? <p>Ses bonus sont désactivés. Le matériel de départ assure le dépannage aux emplacements qui en disposent.</p>
       : <p>L’usure est définitive. Le mode éco ralentit l’usure ; l’intensif l’accélère, encore davantage sous 30 % d’état. En réserve, ce matériel ne s’use pas.</p>}
     {condition.due && replacedVersion !== condition.version ? <>
       {confirming ? <div className={styles.replaceConfirm} role="group" aria-label={`Confirmer le remplacement de ${name}`}>
-        <p>Racheter {name} pour <strong>{formatKqCash(condition.replacementCents)}</strong> ? Son état revient à 100 % et ses niveaux sont conservés.</p>
+        <p>Racheter {name} {isKqSharedEquipment(code) ? "pour l’atelier commun" : `pour la tente ${tentNumber}`} pour <strong>{formatKqCash(condition.replacementCents)}</strong> ? Son état revient à 100 % et ses niveaux sont conservés.</p>
         <button ref={confirmButton} type="button" disabled={busy || unavailable} onClick={() => void replace()}>{busy ? "Remplacement…" : `Confirmer · ${formatKqCash(condition.replacementCents)}`}</button>
         <button type="button" disabled={busy} onClick={() => setConfirming(false)}>Annuler</button>
       </div> : <button ref={replaceButton} type="button" disabled={busy || unavailable} onClick={() => setConfirming(true)}><RefreshCw size={16} aria-hidden="true" />Remplacer · {formatKqCash(condition.replacementCents)}</button>}

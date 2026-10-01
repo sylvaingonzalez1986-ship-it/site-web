@@ -99,7 +99,7 @@ describe("market browsing egress and transactional boundaries", () => {
     expect(preview.lots[0].options.find(option => option.route === "dry-sift")?.available).toBe(true);
     expect(preview.equipmentPricingUnits).toBe(1);
   });
-  it("uses the whole canonical inventory instead of stronger stale per-tent copies", async () => {
+  it("uses canonical workshop machines and retains local equipment for the raw route", async () => {
     const base = await mocks.shop();
     const sharedEquipment = { ownedCodes: ["SIFT-TRAY", "LED-300"], purchasedCodes: ["SIFT-TRAY", "LED-300"], equippedCodes: ["SIFT-TRAY", "LED-300"], operationalCodes: ["SIFT-TRAY", "LED-300"], levels: { "SIFT-TRAY": 2, "LED-300": 3 }, maintenance: {}, cultureWear: {}, cultureOperationalCodes: ["SIFT-TRAY", "LED-300"] };
     const shop = { ...base, sharedEquipment, tents: [
@@ -110,11 +110,20 @@ describe("market browsing egress and transactional boundaries", () => {
     expect(workshop.equippedCodes.filter(code => code === "SIFT-TRAY")).toHaveLength(1);
     expect(workshop.levels["SIFT-TRAY"]).toBe(2);
     expect(workshop.equippedCodes).not.toContain("WASHER-25L");
-    expect(workshop.levels["LED-300"]).toBe(3);
-    expect(workshop.ownedCodes).toEqual(sharedEquipment.ownedCodes);
+    expect(workshop.levels["LED-300"]).toBe(10);
+    expect(workshop.ownedCodes).toEqual([...KQ_STARTING_EQUIPMENT_CODES, "SIFT-TRAY"]);
     const stopped = getKqSharedWorkshop({ ...shop, sharedEquipment: { ...sharedEquipment, operationalCodes: [] } });
     expect(stopped.operationalCodes).not.toContain("SIFT-TRAY");
     expect(stopped.levels["SIFT-TRAY"]).toBeUndefined();
+  });
+  it("keeps raw flower sales available with an empty shared workshop", async () => {
+    const base = await mocks.shop();
+    const sharedEquipment = { ownedCodes: [], purchasedCodes: [], equippedCodes: [], operationalCodes: [], cultureOperationalCodes: [], levels: {}, maintenance: {}, cultureWear: {} };
+    mocks.shop.mockResolvedValue({ ...base, sharedEquipment, tents: [{ ...base, tentNumber: 1 }] });
+    rows.kq_flowers[1].battle_stats = { aroma: 85, resin: 85 };
+    const preview = await getKqMarketSnapshot(user, ["flower-1"], { previewOnly: true });
+    expect(preview.lots[0].options.find(option => option.route === "raw")?.available).toBe(true);
+    expect(preview.lots[0].options.find(option => option.route === "dry-sift")?.available).toBe(false);
   });
   it("cannot preview another player's flower and preserves sold status on a concurrent sale", async () => {
     rows.kq_flowers[0].owner_id = "another-account";

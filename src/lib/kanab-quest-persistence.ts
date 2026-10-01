@@ -43,7 +43,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (state.equipment !== undefined) {
       if (!isRecord(state.equipment) || !Array.isArray(state.equipment.codes) || state.equipment.codes.length > 12) return null;
       const scope = state.equipment.scope;
-      if (scope !== undefined && scope !== "installation") return null;
+      if (scope !== undefined && scope !== "installation" && scope !== "tent") return null;
       const equipmentCodes = state.equipment.codes;
       if (equipmentCodes.some((code) => typeof code !== "string" || !getKqEquipmentDefinition(code))) return null;
       if (new Set(equipmentCodes).size !== equipmentCodes.length) return null;
@@ -80,6 +80,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
         if (equipmentCodes.join("|") !== first.codes.join("|") || !isRecord(levels)
           || equipmentCodes.some(code => levels[String(code)] !== first.levels[String(code)])) return null;
       }
+      if (scope === "tent" && (!Array.isArray(tents) || shared === undefined)) return null;
       if (scope === "installation") {
         if (!Array.isArray(tents) || shared === undefined || !isRecord(levels)) return null;
         if ((tents as KqTentEquipmentProfile[]).some(tent => tent.codes.length !== equipmentCodes.length
@@ -98,7 +99,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       if (levels !== undefined ? state.equipment.unlocks.join("|") !== expected.unlocks.join("|")
         : state.equipment.unlocks.some((unlock) => !expected.unlocks.includes(unlock as typeof expected.unlocks[number]))) return null;
     }
-    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined, productionUnits, state.equipment.tents as KqTentEquipmentProfile[] | undefined, state.equipment.scope as "installation" | undefined))) return null;
+    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined, productionUnits, state.equipment.tents as KqTentEquipmentProfile[] | undefined, state.equipment.scope as "installation" | "tent" | undefined))) return null;
     if (typeof state.varietyCode !== "string" || typeof state.varietyName !== "string") return null;
     if (state.challengeDayKey !== undefined && (typeof state.challengeDayKey !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(state.challengeDayKey))) return null;
     if (state.startedAt !== undefined && (typeof state.startedAt !== "string" || Number.isNaN(Date.parse(state.startedAt)))) return null;

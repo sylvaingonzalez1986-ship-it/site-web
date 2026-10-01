@@ -37,7 +37,9 @@ import {
   getKqEquipmentDefinition,
   getKqEquipmentImpactLabels,
   getKqEquipmentRequirementState,
+  getKqEquipmentStorageTent,
   isKqEquipmentImmediatelyPurchasable,
+  isKqSharedEquipment,
   isKqEquipmentSuperseded,
   KQ_EQUIPMENT_CATEGORY_LABELS,
   KQ_EQUIPMENT_CATEGORIES,
@@ -75,6 +77,7 @@ type EquipmentSnapshot = {
 };
 
 type PurchaseResult = {
+  tentNumber: number;
   equipmentCodes: string[];
   totalPriceCents: number;
   cashAfterCents: number;
@@ -164,6 +167,7 @@ export function KqEquipmentCatalogModal({
     ? initialEquipmentCode
     : null;
   const tentNumber = useKqTentSelection();
+  const currentTent = useRef(tentNumber);
   const refreshGeneration = useRef(0);
   const [snapshot, setSnapshot] = useState<EquipmentSnapshot | null>(null);
   const [pending, setPending] = useState<"load" | "purchase" | "equip" | null>("load");
@@ -174,7 +178,14 @@ export function KqEquipmentCatalogModal({
   const [compatibleOnly, setCompatibleOnly] = useState(false);
   const [affordableOnly, setAffordableOnly] = useState(false);
   const [sortMode, setSortMode] = useState<KqEquipmentCatalogSort>("progression");
-  const [cartCodes, setCartCodes] = useState<string[]>([]);
+  const [carts, setCarts] = useState<Record<number, string[]>>({});
+  const cartCodes = useMemo(() => [...(carts[0] ?? []), ...(carts[tentNumber] ?? [])], [carts, tentNumber]);
+  const setCartCodes = (update: string[] | ((codes: string[]) => string[])) => {
+    setCarts((previous) => {
+      const codes = typeof update === "function" ? update([...(previous[0] ?? []), ...(previous[tentNumber] ?? [])]) : update;
+      return { ...previous, 0: codes.filter(isKqSharedEquipment), [tentNumber]: codes.filter(code => !isKqSharedEquipment(code)) };
+    });
+  };
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedCode, setSelectedCode] = useState<string | null>(recommendedEquipmentCode);
@@ -197,7 +208,7 @@ export function KqEquipmentCatalogModal({
   const refresh = useCallback(async () => {
     const generation = ++refreshGeneration.current;
     try {
-      const response = await fetch("/api/arena/placard/equipment?tentNumber=1", { cache: "no-store" });
+      const response = await fetch(`/api/arena/placard/equipment?tentNumber=${currentTent.current}`, { cache: "no-store" });
       const payload = await response.json() as EquipmentSnapshot & { error?: string };
       if (generation !== refreshGeneration.current) return;
       if (!response.ok) throw new Error(payload.error || "Catalogue matériel indisponible.");
@@ -211,13 +222,14 @@ export function KqEquipmentCatalogModal({
 
   useEffect(() => {
     let cancelled = false;
+    currentTent.current = tentNumber;
     setPending("load");
     refresh()
       .catch((reason: unknown) => { if (!cancelled) setError(reason instanceof Error ? reason.message : "Catalogue indisponible."); })
       .finally(() => { if (!cancelled) setPending(null); });
     const invalidate = () => { refreshGeneration.current++; };
     return () => { cancelled = true; invalidate(); };
-  }, [refresh]);
+  }, [refresh, tentNumber]);
 
   useEffect(() => {
     const updated = () => { void refresh().catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "Catalogue indisponible.")); };
@@ -233,8 +245,11 @@ export function KqEquipmentCatalogModal({
 
   const totalProductionUnits = getKqProductionUnits(snapshot?.productionUnits);
   const productionUnits = 1;
-  const snapshotReady = snapshot !== null;
+  const snapshotReady = snapshot?.tentNumber === tentNumber;
+  const equipmentDestination = (code: string) => isKqSharedEquipment(code) ? "Atelier commun" : `Tente ${tentNumber}`;
   const selectTent = (number: number) => {
+    setNotice("");
+    setError("");
     selectKqTent(number);
   };
   const filteredCatalog = useMemo(() => {
@@ -370,7 +385,7 @@ export function KqEquipmentCatalogModal({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "route-plan",
-          tentNumber: 1,
+          tentNumber,
           route: nextPlan?.route ?? null,
           equipmentCode: nextPlan?.equipmentCode ?? null,
         }),
@@ -409,18 +424,18 @@ export function KqEquipmentCatalogModal({
   };
 
   const purchase = async () => {
-    if (!snapshot || pending !== null || !cartValidation || cartValidation.errors.length > 0) return;
+    if (!snapshot || !snapshotReady || pending !== null || !cartValidation || cartValidation.errors.length > 0) return;
     setPending("purchase");
     setError("");
     try {
       const response = await fetch("/api/arena/placard/equipment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ requestKey: createClientRequestKey(), equipmentCodes: cartValidation.uniqueCodes, tentNumber: 1, expectedUnits: totalProductionUnits }),
+        body: JSON.stringify({ requestKey: createClientRequestKey(), equipmentCodes: cartValidation.uniqueCodes, tentNumber, expectedUnits: totalProductionUnits }),
       });
       const payload = await response.json() as PurchaseResult & { error?: string };
       if (!response.ok) throw new Error(payload.error || "Achat impossible.");
-      setPurchaseResult(payload);
+      setPurchaseResult({ ...payload, tentNumber });
       setCheckoutOpen(false);
       setCartOpen(false);
       setCartCodes([]);
@@ -441,7 +456,7 @@ export function KqEquipmentCatalogModal({
       const response = await fetch("/api/arena/placard/equipment", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ equipmentCode, tentNumber: 1, expectedUnits: totalProductionUnits }),
+        body: JSON.stringify({ equipmentCode, tentNumber: getKqEquipmentStorageTent(equipmentCode, tentNumber), expectedUnits: totalProductionUnits }),
       });
       const payload = await response.json() as { error?: string };
       if (!response.ok) throw new Error(payload.error || "Installation impossible.");
@@ -513,9 +528,9 @@ export function KqEquipmentCatalogModal({
           <button type="button" data-active={category === "owned" || undefined} onClick={() => setCategory("owned")}><Check aria-hidden="true" /><span>Déjà possédés</span></button>
           <button type="button" data-active={category === "commerce" || undefined} onClick={() => setCategory("commerce")}><Laptop aria-hidden="true" /><span>Vente en ligne</span></button>
           <div className={styles.loadoutSummary} data-arena-tour="installation">
-            <small>Matériel commun · Toutes les tentes</small>
+            <small>Tente {tentNumber} · Son équipement</small>
             <strong>{currentLoadout.powerWatts * productionUnits} W</strong>
-            <span>Tente et atelier commun</span>
+            <span>Avec les machines de l’atelier commun</span>
             <span>Quantité +{currentLoadout.quantityPercent} %</span>
             <span>Qualité max +{currentLoadout.qualityMaxBonus}</span>
           </div>
@@ -524,7 +539,7 @@ export function KqEquipmentCatalogModal({
         <main className={styles.productArea}>
           <div className={styles.productAreaHeader}>
             <div><small>{category === "commerce" ? "Ordinateur et abonnement" : `${filteredCatalog.length} référence${filteredCatalog.length > 1 ? "s" : ""}`}</small><strong>{category === "all" ? "Tout le matériel" : category === "owned" ? "Ton matériel" : category === "commerce" ? "Le coin du commerce" : KQ_EQUIPMENT_CATEGORY_LABELS[category]}</strong></div>
-            <span>Un seul achat pour toutes les tentes</span>
+            <span>Culture : tente {tentNumber} · Transformation : atelier commun</span>
           </div>
 
           {category === "commerce" ? <KqCommerceComputer /> : null}
@@ -563,7 +578,7 @@ export function KqEquipmentCatalogModal({
                     </span>
                   </button>
                   <footer>
-                    <span><strong>{equipment.purchasable ? formatKqCash(equipment.priceCents) : "Fourni"}</strong><small>Toutes les tentes · {equipment.powerWatts > 0 ? `${equipment.powerWatts} W` : "Sans consommation"}</small></span>
+                    <span><strong>{equipment.purchasable ? formatKqCash(equipment.priceCents) : "Fourni"}</strong><small>{equipmentDestination(equipment.code)} · {equipment.powerWatts > 0 ? `${equipment.powerWatts} W` : "Sans consommation"}</small></span>
                     {owned ? (
                       <button type="button" disabled={pending !== null || (broken ? !onOpenWorkshop : equipped || !equipment.purchasable || !requirementState.compatible)} onClick={() => onOpenWorkshop ? onOpenWorkshop(equipment.code) : void equip(equipment.code)}>{broken ? "À remplacer" : equipped ? "Équipé" : !equipment.purchasable ? "Kit de départ" : !requirementState.compatible ? "Prérequis" : "Équiper"}</button>
                     ) : (
@@ -577,7 +592,7 @@ export function KqEquipmentCatalogModal({
         </main>
 
         <aside className={styles.cartPanel} inert={!cartOpen} data-open={cartOpen || undefined} aria-label="Panier matériel">
-          <header><div><small>Commande en préparation</small><h3>À la caisse</h3></div><button type="button" onClick={() => setCartOpen(false)} aria-label="Fermer le panier"><X /></button></header>
+          <header><div><small>Tente {tentNumber} et atelier commun</small><h3>À la caisse</h3></div><button type="button" onClick={() => setCartOpen(false)} aria-label="Fermer le panier"><X /></button></header>
           {plannedRouteScenario && plannedRouteProgress ? <section className={styles.cartRoutePlan} aria-label="Objectif de filière du panier">
             <header><span><small>Projet d’atelier sauvegardé</small><strong>{plannedRouteScenario.name}</strong></span><button type="button" onClick={() => void updateRoutePlan(null)} aria-label="Retirer l’objectif de filière"><X aria-hidden="true" /></button></header>
             <p>{plannedRouteScenario.projectedEquipmentNames.join(" · ")}</p>
@@ -603,7 +618,7 @@ export function KqEquipmentCatalogModal({
             {cartEquipment.length === 0 ? <div className={styles.emptyCart}><ShoppingCart aria-hidden="true" /><strong>Le chariot est vide</strong><span>Ajoute du matériel depuis le catalogue.</span></div> : null}
             {cartEquipment.map((equipment) => {
               const Icon = CATEGORY_ICONS[equipment.category];
-              return <article key={equipment.code}><span data-category={equipment.category}><Icon aria-hidden="true" /></span><div><strong>{equipment.name}</strong><small>{equipment.specification}</small><b>{formatKqCash(equipment.priceCents)}</b></div><button type="button" onClick={() => removeFromCart(equipment.code)} aria-label={`Retirer ${equipment.name}`}><Trash2 /></button></article>;
+              return <article key={equipment.code}><span data-category={equipment.category}><Icon aria-hidden="true" /></span><div><strong>{equipment.name}</strong><small>{equipmentDestination(equipment.code)} · {equipment.specification}</small><b>{formatKqCash(equipment.priceCents)}</b></div><button type="button" onClick={() => removeFromCart(equipment.code)} aria-label={`Retirer ${equipment.name}`}><Trash2 /></button></article>;
             })}
           </div>
           {cartValidation?.warnings.length ? <div className={styles.cartWarnings}>{cartValidation.warnings.map((warning) => <p key={warning}><AlertTriangle aria-hidden="true" />{warning}</p>)}</div> : null}
@@ -634,10 +649,10 @@ export function KqEquipmentCatalogModal({
         <h3>{selectedEquipment.name}</h3>
         <strong className={styles.detailPrice}>{selectedEquipment.purchasable ? formatKqCash(selectedEquipment.priceCents) : "Équipement fourni"}</strong>
         <p>{selectedEquipment.shortDescription}</p>
-        <p>Matériel commun à toutes les tentes. Achat, installation, niveaux et entretien partagés.</p>
+        <p>{isKqSharedEquipment(selectedEquipment.code) ? "Machine de transformation de l’atelier commun. Un achat, une installation et un entretien pour toutes les tentes." : `Matériel réservé à la tente ${tentNumber}. Achat, installation, niveau et usure propres à cette tente.`}</p>
         <EquipmentBenefits equipment={selectedEquipment} />
         {selectedWearRates ? <p>Usure par culture : éco {selectedWearRates.eco} %, équilibré {selectedWearRates.balanced} %, intensif {selectedWearRates.intensive} %. L’intensif use davantage sous 30 % d’état. À 0 %, rachète ce matériel dans ton entrepôt ; ses niveaux sont conservés.{selectedCondition ? ` État actuel : ${selectedCondition.conditionPercent} % · remplacement ${formatKqCash(selectedCondition.replacementCents)}.` : ""}</p> : null}
-        {snapshot?.purchasedCodes?.includes(selectedEquipment.code) ? <KqEquipmentUpgrade key={selectedEquipment.code} tentNumber={1} code={selectedEquipment.code} level={snapshot.levels?.[selectedEquipment.code] ?? 1} cashCents={snapshot.cashCents} productionUnits={totalProductionUnits} disabled={pending !== null || selectedCondition?.due} onUpdated={refresh} /> : <p>Achat au niveau 1 · améliorable jusqu’au niveau 10 · nouvelle apparence aux niveaux 5 et 10.</p>}
+        {snapshot?.purchasedCodes?.includes(selectedEquipment.code) ? <KqEquipmentUpgrade key={`${equipmentDestination(selectedEquipment.code)}:${selectedEquipment.code}`} tentNumber={tentNumber} code={selectedEquipment.code} level={snapshot.levels?.[selectedEquipment.code] ?? 1} cashCents={snapshot.cashCents} productionUnits={totalProductionUnits} disabled={pending !== null || selectedCondition?.due} onUpdated={refresh} /> : <p>Achat au niveau 1 · améliorable jusqu’au niveau 10 · nouvelle apparence aux niveaux 5 et 10.</p>}
         <section className={styles.detailProjection} aria-label="Projection personnalisée dans ton atelier" data-blocked={selectedProjectionBlocked || undefined}>
           <h4>Dans ton atelier</h4>
           {selectedCondition?.due ? <p><AlertTriangle aria-hidden="true" />Cette pièce est hors service : ses bonus sont désactivés. Remplace-la dans ton entrepôt pour retrouver ses effets.</p> : snapshot?.equippedCodes.includes(selectedEquipment.code) ? <p><Check aria-hidden="true" />Cette pièce est installée : ses bonus seront actifs au lancement de la prochaine culture.</p> : selectedProjectionBlocked ? <p><AlertTriangle aria-hidden="true" />Projection suspendue : règle d’abord le prérequis ou le conflit d’emplacement signalé.</p> : (
@@ -679,8 +694,8 @@ export function KqEquipmentCatalogModal({
         <section><h4>Contrepartie</h4><p>{selectedEquipment.tradeoff}</p></section>
         <section>
           <h4>Fiche matériel</h4>
-          <p>{selectedEquipment.specification} · {selectedEquipment.powerWatts} W · toutes les tentes</p>
-          <small>Emplacement : {KQ_EQUIPMENT_SLOT_LABELS[selectedEquipment.slot]} · un modèle actif pour toutes les tentes</small>
+          <p>{selectedEquipment.specification} · {selectedEquipment.powerWatts} W · {equipmentDestination(selectedEquipment.code)}</p>
+          <small>Emplacement : {KQ_EQUIPMENT_SLOT_LABELS[selectedEquipment.slot]} · un modèle actif {isKqSharedEquipment(selectedEquipment.code) ? "dans l’atelier commun" : `dans la tente ${tentNumber}`}</small>
         </section>
         <section>
           <h4>{selectedEquipment.realWorldAnchor.priceKind === "game-balance" ? "Inspiration et règles de jeu" : "Équivalent réel vérifié"}</h4>
@@ -697,10 +712,10 @@ export function KqEquipmentCatalogModal({
 
       {checkoutOpen && cartValidation ? <div className={styles.checkoutOverlay} role="presentation" onClick={() => setCheckoutOpen(false)}><section role="alertdialog" aria-modal="true" aria-labelledby="checkout-title" onClick={(event) => event.stopPropagation()}>
         <small>Dernière vérification</small><h3 id="checkout-title">Confirmer l’investissement</h3>
-        <p>Tout le matériel est acquis une seule fois pour l’ensemble des tentes, actuelles et futures.</p>
+        <p>Le matériel de culture est destiné à la tente {tentNumber}. Les machines de transformation rejoignent l’atelier commun.</p>
         {error ? <p className={styles.checkoutError} role="alert"><AlertTriangle aria-hidden="true" />{error}</p> : null}
-        <div>{cartEquipment.map((equipment) => <p key={equipment.code}><span>{equipment.name} · toutes les tentes</span><strong>{formatKqCash(equipment.priceCents)}</strong></p>)}</div>
-        {cartEquipment.filter((equipment) => equipment.category === "security").map((equipment) => <p className={styles.checkoutWarning} key={`charges-${equipment.code}`}><AlertTriangle aria-hidden="true" />{equipment.name} · installation entière : {equipment.tradeoff}</p>)}
+        <div>{cartEquipment.map((equipment) => <p key={equipment.code}><span>{equipment.name} · {equipmentDestination(equipment.code)}</span><strong>{formatKqCash(equipment.priceCents)}</strong></p>)}</div>
+        {cartEquipment.filter((equipment) => equipment.category === "security").map((equipment) => <p className={styles.checkoutWarning} key={`charges-${equipment.code}`}><AlertTriangle aria-hidden="true" />{equipment.name} · tente {tentNumber} : {equipment.tradeoff}</p>)}
         {cartValidation.warnings.map((warning) => <p className={styles.checkoutWarning} key={warning}><AlertTriangle aria-hidden="true" />{warning}</p>)}
         <section className={styles.checkoutImpact} aria-label="Bénéfices projetés après installation">
           <h4>Ce que cet investissement change</h4>

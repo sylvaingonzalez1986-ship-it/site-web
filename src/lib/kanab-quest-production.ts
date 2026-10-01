@@ -6,7 +6,7 @@ export { getKqProductionUnits, KQ_PRODUCTION_UNITS, KQ_FINAL_WAREHOUSE_PRICE_CEN
 export const KQ_STARTER_TENT_PRICE_CENTS = 30_000;
 export type KqProductionExpansion = ReturnType<typeof getKqProductionExpansion>;
 
-/** Expansion adds growing capacity; every tent inherits the installation equipment. */
+/** Expansion adds independent tents with a starter kit to equip individually. */
 export function getKqProductionExpansion(requestedUnits: number, _purchasedCodes: string[] = [], _levels: Record<string, number> = {}) {
   // Retain the previous call signature; upgrades do not alter the capacity price.
   void _purchasedCodes;
@@ -24,8 +24,8 @@ export function getKqProductionExpansion(requestedUnits: number, _purchasedCodes
   };
 }
 
-/** Shared culture effects are averaged; installed electrical power is additive. */
-export function summarizeKqTentEquipment(tents: KqTentEquipmentProfile[], shared?: Pick<KqTentEquipmentProfile, "codes" | "levels">, scope?: "installation") {
+/** Tent effects are averaged; the common workshop is counted once for power. */
+export function summarizeKqTentEquipment(tents: KqTentEquipmentProfile[], shared?: Pick<KqTentEquipmentProfile, "codes" | "levels">, scope?: "installation" | "tent") {
   const summaries = tents.map(tent => summarizeKqEquipmentLoadout(
     shared ? [...tent.codes, ...shared.codes] : tent.codes,
     shared ? { ...tent.levels, ...shared.levels } : tent.levels,

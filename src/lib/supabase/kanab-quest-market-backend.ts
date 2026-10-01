@@ -5,6 +5,7 @@ import { getKqEnergySummary } from "./kanab-quest-energy-backend";
 import {
   buildKqEquipmentGoalReceipt,
   getKqEquipmentProgressionStatus,
+  isKqProcessingEquipment,
   summarizeKqEquipmentLoadout,
   type KqEquipmentGoalReceipt,
 } from "@/lib/kanab-quest-equipment";
@@ -145,9 +146,22 @@ type StoredMarketLot = {
   selected_route: string | null; payout_cents: number | null; reputation_gain: number | null; settled_at: string | null;
 };
 
-/** One installation inventory serves every tent and the whole harvest. */
+/** Local tents retain raw-sale access; transformation uses the canonical workshop once. */
 export function getKqSharedWorkshop(shop: KqEquipmentShopSnapshot) {
-  const tents = shop.sharedEquipment ? [shop.sharedEquipment] : shop.tents?.length ? shop.tents : [shop];
+  const localTents = shop.tents?.length ? shop.tents : [shop];
+  const localCodes = (codes: string[]) => codes.filter(code => !isKqProcessingEquipment(code));
+  const tents = shop.sharedEquipment ? [
+    ...localTents.map(tent => ({ ...tent,
+      ownedCodes: localCodes(tent.ownedCodes),
+      equippedCodes: localCodes(tent.equippedCodes),
+      operationalCodes: localCodes(tent.operationalCodes ?? tent.equippedCodes),
+    })),
+    { ...shop.sharedEquipment,
+      ownedCodes: shop.sharedEquipment.ownedCodes.filter(isKqProcessingEquipment),
+      equippedCodes: shop.sharedEquipment.equippedCodes.filter(isKqProcessingEquipment),
+      operationalCodes: shop.sharedEquipment.operationalCodes.filter(isKqProcessingEquipment),
+    },
+  ] : localTents;
   const equippedCodes = [...new Set(tents.flatMap(tent => tent.equippedCodes))];
   const operationalCodes = [...new Set(tents.flatMap(tent => tent.operationalCodes ?? tent.equippedCodes))];
   const levels: Record<string, number> = {};

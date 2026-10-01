@@ -788,13 +788,24 @@ export function getKqEquipmentDefinition(code: string) {
   return EQUIPMENT_BY_CODE.get(code) ?? null;
 }
 
-/** Every owned model, upgrade and condition belongs to the whole installation. */
+/** Only transformation machines belong to the workshop shared by all tents. */
 export function isKqSharedEquipmentSlot(slot: KqEquipmentSlot): boolean {
-  return KQ_EQUIPMENT_CATALOG.some(equipment => equipment.slot === slot);
+  return isKqProcessingEquipmentSlot(slot);
 }
 
 export function isKqSharedEquipment(code: string): boolean {
-  return getKqEquipmentDefinition(code) !== null;
+  return isKqProcessingEquipment(code);
+}
+
+export type KqEquipmentScope = "tent" | "workshop";
+
+export function getKqEquipmentScope(code: string): KqEquipmentScope | null {
+  const equipment = getKqEquipmentDefinition(code);
+  return equipment ? isKqSharedEquipmentSlot(equipment.slot) ? "workshop" : "tent" : null;
+}
+
+export function getKqEquipmentStorageTent(code: string, tentNumber: number) {
+  return isKqSharedEquipment(code) ? 1 : tentNumber;
 }
 
 /** Processing remains a distinct group in frozen culture snapshots. */
@@ -808,6 +819,48 @@ export function isKqProcessingEquipment(code: string): boolean {
 
 export const KQ_EQUIPMENT_MAX_LEVEL = 10;
 export type KqEquipmentLevels = Record<string, number>;
+
+export const KQ_TENT_EQUIPMENT_SLOTS = ["tent", "lighting", "air", "climate-controller", "flower-drying", "energy", "security"] as const satisfies readonly KqEquipmentSlot[];
+export type KqTentEquipmentSlotStatus = "installed" | "missing" | "optional" | "available" | "worn";
+export type KqTentEquipmentSlotSummary = {
+  slot: (typeof KQ_TENT_EQUIPMENT_SLOTS)[number];
+  label: string;
+  required: boolean;
+  equipment: KqEquipmentDefinition | null;
+  level: number | null;
+  status: KqTentEquipmentSlotStatus;
+  ownedAlternatives: KqEquipmentDefinition[];
+};
+
+/** Reports physical equipment only; automatic starter fallbacks are not installations. */
+export function buildKqTentEquipmentSummary(input: {
+  ownedCodes: string[];
+  equippedCodes: string[];
+  levels?: KqEquipmentLevels;
+  cultureWear?: Record<string, { due?: boolean; wearPercent?: number }>;
+}) {
+  const installed = input.equippedCodes.map(getKqEquipmentDefinition).filter((item): item is KqEquipmentDefinition => Boolean(item));
+  const owned = [...new Set(input.ownedCodes)].map(getKqEquipmentDefinition).filter((item): item is KqEquipmentDefinition => Boolean(item) && !KQ_RETIRED_EQUIPMENT_CODES.includes(item!.code));
+  const slots: KqTentEquipmentSlotSummary[] = KQ_TENT_EQUIPMENT_SLOTS.map(slot => {
+    const equipment = installed.find(item => item.slot === slot && !KQ_RETIRED_EQUIPMENT_CODES.includes(item.code)) ?? null;
+    const required = ["tent", "lighting", "air"].includes(slot);
+    const condition = equipment ? input.cultureWear?.[equipment.code] : undefined;
+    const worn = condition?.due === true || (condition?.wearPercent ?? 0) >= 100;
+    const ownedAlternatives = owned.filter(item => item.slot === slot && item.code !== equipment?.code);
+    const status: KqTentEquipmentSlotStatus = equipment ? worn ? "worn" : "installed" : ownedAlternatives.length ? "available" : required ? "missing" : "optional";
+    return { slot, label: KQ_EQUIPMENT_SLOT_LABELS[slot], required, equipment, level: equipment ? getKqEquipmentLevel(input.levels?.[equipment.code]) : null, status, ownedAlternatives };
+  });
+  const missingRequiredCount = slots.filter(slot => slot.required && !slot.equipment).length;
+  const wornCount = slots.filter(slot => slot.status === "worn").length;
+  return {
+    slots,
+    missingRequiredCount,
+    wornCount,
+    availableCount: slots.filter(slot => slot.status === "available").length,
+    installedCount: slots.filter(slot => slot.equipment !== null).length,
+    ready: missingRequiredCount === 0 && slots.every(slot => !slot.required || slot.status !== "worn"),
+  };
+}
 
 export function getKqEquipmentLevel(level: number | undefined) {
   return Number.isInteger(level) && Number(level) >= 1 && Number(level) <= KQ_EQUIPMENT_MAX_LEVEL ? Number(level) : 1;

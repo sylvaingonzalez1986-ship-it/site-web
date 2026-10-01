@@ -19,7 +19,7 @@
 .entryCopy { display: grid; flex: 1; gap: 5px; min-width: 0; }
 .entryCopy strong { font-size: 13px; font-weight: 750; line-height: 1.3; }
 .entryCopy small { font-size: 10px; line-height: 1.4; color: #b4c6b4; }
-.chevron { flex-shrink: 0; color: #d2c18f; transition: transform .18s ease; }
+.chevron { flex-shrink: 0; margin-right: 4px; color: #d2c18f; transition: transform .18s ease; }
 .capacity[open] > .entry .chevron { transform: rotate(180deg); }
 .entry:hover .entryCopy strong { color: #f7d779; }
 .entry:focus-visible, .quote summary:focus-visible { outline: 2px solid #e8c672; outline-offset: 3px; border-radius: 3px; }

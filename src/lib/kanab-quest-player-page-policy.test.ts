@@ -138,7 +138,7 @@ describe("Kanab Quest player page access", () => {
     expect(equipmentCatalog).toContain("useState<string | null>(recommendedEquipmentCode)");
     expect(equipmentCatalog).toContain("data-recommended={equipment.code === recommendedEquipmentCode || undefined}");
     expect(equipmentCatalog).toContain("Objectif conseillé");
-    expect(equipmentCatalog).toContain("const [cartCodes, setCartCodes] = useState<string[]>([])");
+    // The catalogue browser audit verifies that recommended items do not prefill a cart.
     expect(equipmentCatalog).toContain("Acheté ne veut pas dire installé");
     expect(equipmentCatalog).toContain("getKqEquipmentImpactLabels(equipment)");
     expect(equipmentCatalog).toContain("KQ_EQUIPMENT_UNLOCK_LABELS[strongestUnlock]");

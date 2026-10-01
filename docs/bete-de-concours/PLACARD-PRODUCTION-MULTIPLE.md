@@ -3,45 +3,48 @@
 La progression ajoute des tentes à l'entrepôt existant : 1 → 2 → 3 → 4.
 L'agrandissement final achète un second entrepôt de quatre tentes, soit huit tentes au total.
 Le joueur lance une seule variété et une culture commune, avec les mêmes cartes, dés et situations pour toutes les tentes.
-Tout le matériel appartient à l’installation : les achats, modèles installés, niveaux et états d’usure sont communs à toutes les tentes, actuelles et futures. Sélectionner une tente change uniquement le contexte visuel, sans déplacer les objets ni filtrer l’inventaire.
+Depuis la révision du 1er octobre 2026, **seules les machines de transformation sont communes** : tamisage, lavage, filtration, séparation statique, presse et lyophilisateur. Chaque tente possède son modèle de tente, son éclairage, son extraction, son contrôleur climatique, son séchoir à fleurs, son énergie et sa sécurité. Achats, modèles installés, niveaux et usure de ce matériel suivent la tente sélectionnée.
+
+Le récapitulatif de l’entrepôt affiche les sept emplacements de chaque tente, avec le modèle, le niveau et l’état : installé, en réserve à installer, essentiel manquant, option non installée ou hors service. Les trois essentiels sont la tente, l’éclairage et l’extraction ; les autres emplacements sont facultatifs. Chaque ligne ouvre la bonne fiche, et l’atelier commun possède son propre récapitulatif.
 
 ## Coûts et capacité
 
-Chaque tente supplémentaire ajoute de la capacité pour 300 € virtuels et bénéficie immédiatement du matériel commun. Aucun modèle amélioré n’est à racheter et aucun niveau ni état d’usure n’est réinitialisé.
+Chaque tente supplémentaire coûte 300 € virtuels et reçoit uniquement son kit de départ : tente, éclairage et extraction. Ses équipements améliorés doivent être achetés et installés pour elle. Elle accède aux machines de transformation déjà acquises dans l’atelier commun.
 Le second entrepôt coûte 20 000 € virtuels plus quatre places de culture à 300 €, soit 21 200 €.
-Chaque modèle de matériel s’achète une seule fois. Un seul modèle par emplacement est installé pour toute l’installation ; les autres restent acquis en réserve. Les mêmes règles valent pour la tente, l’éclairage, l’extraction, le climat, le séchoir, le solaire, la sécurité et toutes les machines de transformation.
+Un modèle de matériel de culture ou de service s’achète pour une tente ; un modèle de transformation s’achète une seule fois pour l’atelier commun. Chaque emplacement accepte un seul modèle installé ; les autres restent dans la réserve de leur tente ou de l’atelier. Le catalogue indique la destination de chaque article et conserve le panier propre à chaque tente ainsi que le panier des machines communes.
 
 ## Culture commune
 
-Les nouveaux lancements enregistrent `equipment.scope = "installation"`. Le profil commun hors transformation est répété dans `equipment.tents` pour calculer la capacité physique ; `equipment.shared` reste réservé aux machines de transformation pour préserver les anciennes sauvegardes.
-Les bonus sont communs à toutes les tentes. Les effets des machines de transformation, notamment le bonus de qualité du lyophilisateur, s’appliquent une seule fois.
+Les nouveaux lancements enregistrent `equipment.scope = "tent"`. `equipment.tents` contient le profil opérationnel réel de chaque tente ; `equipment.shared` contient uniquement les machines de transformation. Les effets propres aux tentes sont agrégés pour la culture commune ; les effets de transformation, notamment le bonus de qualité du lyophilisateur, s’appliquent une seule fois.
 La qualité finale dépend des étapes réussies, selon la règle habituelle.
 La quantité totale est la somme des rendements des tentes avec cette qualité commune, le matériel opérationnel, les pertes et le mode énergétique choisi.
 Le plafond reste 500 g par tente, soit 4 000 g pour les deux entrepôts.
-Une nouvelle tente bénéficie du même équipement que les autres, y compris des améliorations déjà acquises.
+Une nouvelle tente ne copie ni les améliorations, ni l’usure des autres tentes.
 
-La facture additionne l’éclairage, l’extraction et le climat de chaque tente. Les services communs de sécurité et de séchage des fleurs consomment une seule fois pour l’installation ; le solaire réduit la facture globale.
+La facture additionne les consommations de chaque tente, y compris son séchoir et sa sécurité. Le solaire réduit uniquement la consommation de la tente où il est installé. Les devis détaillent la contribution de chaque tente.
 Les anciens cycles conservent leurs instantanés, leur capacité et leur calcul historique. Sans capacité enregistrée, ils restent à une tente.
-L’usure du matériel et l’entretien des machines progressent une seule fois par culture équipée, quel que soit le nombre de tentes. Les soins du chien sont également comptés une seule fois pour les nouvelles cultures.
+L’usure progresse sur les équipements de chaque tente engagés au lancement de la culture. Les machines communes sont entretenues une seule fois. Pour les nouveaux cycles, les soins des chiens acquis sont facturés par tente ; les anciens cycles conservent leurs règles historiques.
 Les bonus de réputation restent attribués une seule fois par culture. Les frais de laboratoire restent de 45 € virtuels par tente et la transformation est facturée selon les grammes traités.
 
 ## Installation et vérification
 
 La migration `20260924000300_kq_individual_tents.sql` a été appliquée le 24 septembre 2026, puis `20260927000600_kq_shared_processing_workshop.sql` le 27 septembre 2026. La règle commune à tout le matériel est portée par `20260928000100_kq_shared_installation_equipment.sql`, appliquée à la base distante le 28 septembre 2026 à la demande de l’utilisateur.
-Le backend correspondant reste à déployer : les nouveaux départs de culture transmettent le marqueur `equipment.scope = "installation"`, exigé par la nouvelle garde SQL. Les cultures déjà lancées conservent leurs données et peuvent se terminer.
+La révision du 1er octobre est portée par `20261001000200_kq_tent_equipment_and_shared_workshop.sql`, appliquée le 1er octobre 2026 à la base distante liée au projet `eyowwwpdmfrulhkpvlnf`. L’historique distant confirme son application et la vérification à blanc ne signale aucune migration en attente. Le backend correspondant doit accompagner cette migration : la nouvelle garde exige `equipment.scope = "tent"` pour les nouveaux départs. Les cultures déjà lancées conservent leurs données et peuvent se terminer.
 Les agrandissements sont interdits pendant une culture. Un devis de capacité ou de prix périmé est refusé.
 Les clés de requête permettent de rejouer une réponse après une coupure sans débiter deux fois la trésorerie.
 
-La nouvelle migration regroupe tous les modèles dans le stockage canonique de la tente 1, sans les présenter comme son matériel individuel. Elle conserve les soldes, reçus, parties déjà lancées et valeurs comptables. Les doublons gardent le niveau maximum acquis et l’usure maximale constatée ; leurs prix historiques sont additionnés, sans nouveau débit ni remboursement automatique. Pour un emplacement occupé dans plusieurs anciennes tentes, un modèle payé déjà installé est préféré au kit gratuit ; entre modèles payés, le choix de la première tente est prioritaire. Les modèles en réserve restent disponibles sans être installés automatiquement.
+La migration du 1er octobre matérialise les droits déjà acquis pour chaque tente existante : tous les modèles possédés sont conservés, avec leurs niveaux, usure et choix installé/en réserve. Les machines de transformation restent dans leur stockage commun. Les prix d’acquisition et actifs comptables existants sont répartis au centime entre les copies, sans créer de valeur, débiter de trésorerie ou modifier les reçus historiques. Le marqueur `equipment_scope_version = 2` empêche toute seconde conversion lors d’un rejeu.
 
 - src/lib/kanab-quest-production.test.ts : progression et prix de la capacité supplémentaire.
 - src/lib/kanab-quest-production-engine.test.ts : culture commune, matériel mixte, moyennes, rendements, factures, anciennes sauvegardes et altérations refusées.
 - src/lib/supabase/kanab-quest-production-backend.test.ts : validation des devis et montants servis au client.
 - scripts/test-placard-production-expansion.mjs : répétition SQL locale, coûts, reçus, permissions, factures et sauvegardes.
 - scripts/test-placard-shared-workshop.mjs : migration et transactions de l'atelier commun dans PostgreSQL isolé (PGlite), sans connexion distante.
-- scripts/test-placard-shared-installation.mjs : fusion de tout le matériel, anciennes cultures actives, achats et opérations uniques, agrandissements sans réinitialisation, huit tentes et une seule usure, permissions SQL.
-- scripts/audit-placard-warehouse-clarity.mjs : tentes côte à côte, sélection persistante, atelier partagé et proportions à 320, 390, 768 et 1 440 px.
-- scripts/audit-placard-production.mjs : parcours navigateur à 320, 390 et 1 440 px, agrandissement avec matériel commun, achats et améliorations globaux, sélection conservée et énergie commune.
+- scripts/test-placard-shared-installation.mjs : vérification historique de la fusion du 28 septembre, avant sa conversion en équipements par tente.
+- scripts/test-placard-tent-equipment.mjs : conversion et rejeu, préservation des valeurs, achats mixtes, opérations par tente, atelier commun, nouvelles tentes et compatibilité de trois générations de cultures.
+- scripts/audit-placard-warehouse-clarity.mjs : récapitulatif par tente, réserve, états d’usure, sélection persistante, atelier partagé, réponses tardives et proportions à 320, 390, 768 et 1 440 px.
+- scripts/audit-placard-production.mjs : agrandissements avec kits de départ, matériel et charges par tente, factures historiques figées.
+- scripts/audit-placard-shared-catalog.mjs : paniers par destination, achats locaux et communs, actions et réponses tardives.
 
 Validation locale du 24 septembre 2026 : 1 747 tests réussis dans 265 fichiers, compilation de production Next.js réussie, contrôles TypeScript et ESLint réussis, tests PostgreSQL locaux et contrôle des permissions sur 248 migrations réussis. Audit navigateur validé aux trois largeurs indiquées.
 

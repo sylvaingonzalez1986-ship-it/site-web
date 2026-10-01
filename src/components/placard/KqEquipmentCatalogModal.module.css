@@ -94,3 +94,5 @@
 .productArea>section[aria-label="Matériel de vente en ligne"]{background:#003f30e8;box-shadow:0 8px 0 #ba8749;border:1px solid #dfbd80}
 @media(max-width:700px){.productCard>footer{padding:7px 8px}.catalogBody,.categoryNav{min-width:0;max-width:100%}.catalogHeader{min-width:0}.catalogBrand{min-width:0}.cartPanel .cartItems{padding:10px}.productCard .productArtwork::after{left:-3px;right:-3px}}
 .checkoutError{display:flex;align-items:flex-start;gap:.5rem;padding:.75rem;border:2px solid #8d2f1b;background:#ffd9cc;color:#8d2f1b;font-size:.85rem;font-weight:800}.checkoutError svg{flex-shrink:0;width:20px}
+.errorNotice,.statusNotice{position:relative;z-index:2;top:auto;left:auto;flex-shrink:0;width:auto;margin:8px 22px 0;transform:none}
+@media(max-width:700px){.errorNotice,.statusNotice{margin:8px 12px 0}}
