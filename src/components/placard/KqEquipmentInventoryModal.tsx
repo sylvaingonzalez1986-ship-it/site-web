@@ -118,7 +118,11 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
     selectInScene(number,next);
     requestAnimationFrame(()=>scrollToSection(panel.current));
   };
-  const showWorkshop=()=>scrollToSection(workshop.current?.parentElement?.querySelector<HTMLElement>('[aria-labelledby="warehouse-overview-title"]')??workshop.current);
+  const showWorkshop=()=>{
+    const recap=workshop.current?.querySelector<HTMLDetailsElement>("[data-warehouse-recap]");
+    if(recap)recap.open=true;
+    scrollToSection(recap?.querySelector<HTMLElement>("summary")??workshop.current);
+  };
   const showExpansion=()=>{
     const details=management.current?.querySelector<HTMLDetailsElement>("[data-production-capacity]");
     if(!details)return;
@@ -153,8 +157,6 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
         <div className={styles.balance}><small>Trésorerie</small><strong>{formatKqCash(cashCents)}</strong></div><button ref={closeButton} type="button" onClick={onClose} aria-label="Fermer l’inventaire"><X/></button>
       </header>
       <div className={styles.layout}>
-        <KqWarehouseOverview tents={loading&&!tents.length?[]:sceneTents} sharedEquipment={sharedEquipment?{...sharedEquipment,equippedCodes:sharedCodes}:undefined}
-          selectedTentNumber={tentNumber} selectedSlot={slot} disabled={loading||!!loadError||busy} loading={loading} error={loadError} onRetry={onRetry} onSelect={selectInOverview}/>
         <div ref={workshop} className={styles.workshop} tabIndex={-1} aria-label="Explorer l’entrepôt">
           {listView?<div className={styles.listView}>
             <div className={styles.listHeading}><strong>Choisir un emplacement</strong><button type="button" data-warehouse-view-toggle onClick={()=>changeView(false)}><ImageIcon size={16} aria-hidden="true"/>Voir le décor</button></div>
@@ -164,6 +166,8 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
             </section>)}
           </div>:<KqWarehouseScene tents={sceneTents} selectedTentNumber={tentNumber} equippedCodes={activeCodes} levels={levels} sharedEquipment={{equippedCodes:sharedCodes,levels:sharedEquipment?.levels??levels}} selectedSlot={slot} onSelect={selectInScene} onExpand={showExpansion} onShowList={()=>changeView(true)} disabled={productionPending||(!tents.length&&(loading||!!loadError))}/>}
           <p className={styles.panHint}>Tente {tentNumber} sélectionnée : éclairage, extraction, climat, séchoir, énergie et sécurité lui appartiennent. Seules les machines de transformation sont communes.</p>
+          <KqWarehouseOverview tents={loading&&!tents.length?[]:sceneTents} sharedEquipment={sharedEquipment?{...sharedEquipment,equippedCodes:sharedCodes}:undefined}
+            selectedTentNumber={tentNumber} selectedSlot={slot} disabled={loading||!!loadError||busy} loading={loading} error={loadError} onRetry={onRetry} onSelect={selectInOverview}/>
         </div>
         <aside key={sharedSlot?"shared":tentNumber} ref={panel} className={styles.panel} tabIndex={-1} aria-labelledby="warehouse-slot-title">
           <button type="button" className={styles.backToScene} onClick={showWorkshop}><ArrowUp size={16} aria-hidden="true"/>Retour au récapitulatif</button>

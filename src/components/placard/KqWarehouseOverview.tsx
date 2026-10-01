@@ -1,7 +1,6 @@
 "use client";
 
-import { Check, ChevronRight, CircleAlert, PackageOpen, Settings2, Tent } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Check, ChevronDown, ChevronRight, CircleAlert, PackageOpen, Settings2, Tent } from "lucide-react";
 import { buildKqTentEquipmentSummary, getKqEquipmentAtLevel, isKqSharedEquipmentSlot, KQ_EQUIPMENT_SLOT_LABELS, type KqEquipmentSlot } from "@/lib/kanab-quest-equipment";
 import type { KqSharedEquipmentOverview, KqTentOverview } from "./KqTentSelector";
 import styles from "./KqWarehouseOverview.module.css";
@@ -20,30 +19,24 @@ export function KqWarehouseOverview({ tents, sharedEquipment, selectedTentNumber
   onRetry: () => void;
   onSelect: (tentNumber: number, slot: KqEquipmentSlot) => void;
 }) {
-  const tentList = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const list = tentList.current;
-    const selected = list?.querySelector<HTMLElement>(`[data-tent-recap="${selectedTentNumber}"]`);
-    if (!list || !selected || list.scrollWidth <= list.clientWidth) return;
-    const bounds = list.getBoundingClientRect(), card = selected.getBoundingClientRect();
-    if (card.left < bounds.left || card.right > bounds.right) list.scrollLeft += card.left - bounds.left;
-  }, [tents.length, selectedTentNumber]);
+  const summaries = tents.map(tent => ({ tent, summary: buildKqTentEquipmentSummary({ ownedCodes: tent.ownedCodes ?? tent.equippedCodes, equippedCodes: tent.equippedCodes, levels: tent.levels, cultureWear: tent.cultureWear }) }));
+  const attentionCount = summaries.filter(({ summary }) => !summary.ready || summary.wornCount > 0).length;
   return <section className={styles.overview} tabIndex={-1} aria-labelledby="warehouse-overview-title" aria-busy={loading}>
-    <div className={styles.heading}>
-      <div><small>Qui possède quoi ?</small><h3 id="warehouse-overview-title">Le matériel de chaque tente</h3></div>
-      <span>{tents.length} tente{tents.length > 1 ? "s" : ""}</span>
-    </div>
-    <p className={styles.intro}>Chaque tente a son matériel, ses niveaux et son usure. Les machines de transformation sont communes à toutes les tentes.</p>
     {error ? <p className={styles.feedback} role="alert">{error}<button type="button" onClick={onRetry}>Réessayer</button></p>
       : loading && !tents.length ? <p className={styles.feedback} role="status">Chargement du matériel des tentes…</p> : null}
-    {tents.length > 1 ? <p className={styles.mobileHint}>Fais défiler les fiches pour comparer tes tentes.</p> : null}
-    <div ref={tentList} className={styles.tents} aria-label="Récapitulatif par tente">
-      {tents.map(tent => {
-        const summary = buildKqTentEquipmentSummary({ ownedCodes: tent.ownedCodes ?? tent.equippedCodes, equippedCodes: tent.equippedCodes, levels: tent.levels, cultureWear: tent.cultureWear });
-        return <article key={tent.tentNumber} className={styles.tent} data-tent-recap={tent.tentNumber} data-selected={selectedTentNumber === tent.tentNumber}>
-          <header><Tent size={21} aria-hidden="true"/><div><h4>Tente {tent.tentNumber}</h4><small>Entrepôt {Math.floor((tent.tentNumber - 1) / 4) + 1}</small></div>
-            <span data-attention={!summary.ready || summary.wornCount > 0}>{summary.missingRequiredCount > 0 ? `${summary.missingRequiredCount} essentiel${summary.missingRequiredCount > 1 ? "s" : ""} à installer` : summary.wornCount > 0 ? "Entretien à prévoir" : "Essentiels en place"}</span>
-          </header>
+    <details className={styles.disclosure} data-warehouse-recap>
+      <summary id="warehouse-overview-title" className={styles.heading}>
+        <PackageOpen size={17} aria-hidden="true"/>
+        <span>Matériel des tentes<small>{tents.length} tente{tents.length > 1 ? "s" : ""} · Atelier commun{attentionCount > 0 ? ` · ${attentionCount} tente${attentionCount > 1 ? "s" : ""} à vérifier` : ""}</small></span>
+        <ChevronDown size={16} className={styles.chevron} aria-hidden="true"/>
+      </summary>
+      <div className={styles.tents} aria-label="Récapitulatif par tente">
+      {summaries.map(({ tent, summary }) => {
+        return <details key={tent.tentNumber} className={styles.tent} data-tent-recap={tent.tentNumber} data-selected={selectedTentNumber === tent.tentNumber}>
+          <summary><Tent size={16} aria-hidden="true"/><span className={styles.tentLabel}>Tente {tent.tentNumber}<small>{summary.installedCount}/{summary.slots.length} installés{tents.length > 4 ? ` · Entrepôt ${Math.floor((tent.tentNumber - 1) / 4) + 1}` : ""}</small></span>
+            <span className={styles.tentStatus} data-attention={!summary.ready || summary.wornCount > 0}>{summary.missingRequiredCount > 0 ? `${summary.missingRequiredCount} essentiel${summary.missingRequiredCount > 1 ? "s" : ""} à installer` : summary.wornCount > 0 ? "Entretien à prévoir" : "Essentiels en place"}</span>
+            <ChevronDown size={14} className={styles.chevron} aria-hidden="true"/>
+          </summary>
           <ul>{summary.slots.map(item => <li key={item.slot}>
             <button type="button" data-recap-slot={item.slot} data-status={item.status} disabled={disabled} aria-pressed={selectedTentNumber === tent.tentNumber && selectedSlot === item.slot}
               aria-label={`Tente ${tent.tentNumber} · ${item.label} · ${item.equipment?.name ?? item.ownedAlternatives[0]?.name ?? "Aucun équipement"} · ${STATUS_LABELS[item.status]}`}
@@ -54,11 +47,11 @@ export function KqWarehouseOverview({ tents, sharedEquipment, selectedTentNumber
               <ChevronRight size={14} className={styles.arrow} aria-hidden="true"/>
             </button>
           </li>)}</ul>
-        </article>;
+        </details>;
       })}
-    </div>
-    <section className={styles.shared} aria-labelledby="warehouse-shared-title">
-      <div className={styles.sharedHeading}><Settings2 size={22} aria-hidden="true"/><div><h4 id="warehouse-shared-title">Atelier de transformation commun</h4><p>Un seul achat, une installation et un entretien pour toutes les tentes.</p></div></div>
+      </div>
+    <details className={styles.shared} data-shared-recap>
+      <summary className={styles.sharedHeading}><Settings2 size={16} aria-hidden="true"/><span>Atelier de transformation<small>Machines communes à toutes les tentes</small></span><ChevronDown size={14} className={styles.chevron} aria-hidden="true"/></summary>
       <ul>{WORKSHOP_SLOTS.filter(isKqSharedEquipmentSlot).map(slot => {
         const code = sharedEquipment?.equippedCodes.find(code => getKqEquipmentAtLevel(code)?.slot === slot);
         const reservedCode = sharedEquipment?.ownedCodes.find(code => getKqEquipmentAtLevel(code)?.slot === slot);
@@ -70,6 +63,7 @@ export function KqWarehouseOverview({ tents, sharedEquipment, selectedTentNumber
           <span className={styles.slotName}>{KQ_EQUIPMENT_SLOT_LABELS[slot]}</span><strong>{equipment?.name ?? "À acheter selon ta filière"}</strong><small>{status}{equipment && code ? ` · niv. ${sharedEquipment?.levels[code] ?? 1}` : ""}</small><ChevronRight size={14} className={styles.arrow} aria-hidden="true"/>
         </button></li>;
       })}</ul>
-    </section>
+    </details>
+    </details>
   </section>;
 }

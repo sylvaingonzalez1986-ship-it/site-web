@@ -5,7 +5,7 @@ L'agrandissement final achète un second entrepôt de quatre tentes, soit huit t
 Le joueur lance une seule variété et une culture commune, avec les mêmes cartes, dés et situations pour toutes les tentes.
 Depuis la révision du 1er octobre 2026, **seules les machines de transformation sont communes** : tamisage, lavage, filtration, séparation statique, presse et lyophilisateur. Chaque tente possède son modèle de tente, son éclairage, son extraction, son contrôleur climatique, son séchoir à fleurs, son énergie et sa sécurité. Achats, modèles installés, niveaux et usure de ce matériel suivent la tente sélectionnée.
 
-Le récapitulatif de l’entrepôt affiche les sept emplacements de chaque tente, avec le modèle, le niveau et l’état : installé, en réserve à installer, essentiel manquant, option non installée ou hors service. Les trois essentiels sont la tente, l’éclairage et l’extraction ; les autres emplacements sont facultatifs. Chaque ligne ouvre la bonne fiche, et l’atelier commun possède son propre récapitulatif.
+Le récapitulatif de l’entrepôt reste discret sous l’image, replié par défaut. En l’ouvrant, puis en dépliant une tente, on retrouve ses sept emplacements, avec le modèle, le niveau et l’état : installé, en réserve à installer, essentiel manquant, option non installée ou hors service. Les trois essentiels sont la tente, l’éclairage et l’extraction ; les autres emplacements sont facultatifs. Chaque ligne ouvre la bonne fiche, et l’atelier commun possède son propre volet repliable.
 
 ## Coûts et capacité
 

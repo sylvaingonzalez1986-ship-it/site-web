@@ -304,7 +304,11 @@ try {
 
     // Visible recap distinguishes each tent, its reserve, its optional gaps, and the shared workshop.
     await visit(2);
-    await page.$eval('[aria-labelledby="warehouse-overview-title"]',el=>{el.parentElement.scrollTop=0;});
+    assert.equal(await page.$eval('[data-warehouse-recap]',el=>el.open),false,'Recap starts collapsed');
+    await page.click('[data-warehouse-recap] > summary');
+    await page.click('[data-tent-recap="1"] > summary');
+    await page.click('[data-tent-recap="2"] > summary');
+    await page.$eval('[aria-labelledby="warehouse-overview-title"]',el=>el.scrollIntoView({block:'start'}));
     assert.equal(await page.$$eval('[data-tent-recap]',els=>els.length),2);
     assert.equal(await page.$$eval('[data-tent-recap="2"] [data-recap-slot]',els=>els.length),7);
     assert.equal(await page.$$eval('[data-workshop-recap]',els=>els.length),6);
@@ -319,11 +323,13 @@ try {
     await clickText('Installer · tente 2');
     await page.waitForFunction(()=>document.querySelector('[data-tent-recap="2"] [data-recap-slot="flower-drying"]')?.dataset.status==='installed');
     assert.deepEqual(await page.evaluate(()=>{const r=window.__requests.at(-1);return{equipmentCode:r.equipmentCode,tentNumber:r.tentNumber};}),{equipmentCode:'DRYING-ROOM',tentNumber:2});
+    await page.click('[data-shared-recap] > summary');
     await page.click('[data-workshop-recap="washing"]');
     await page.waitForFunction(selector=>document.querySelector(selector)?.textContent.includes('Atelier commun'),{},panel);
     interactions.push({width,perTentRecap:true,reserveActionTargetsCorrectTent:true,sharedWorkshopSeparate:true});
   }
   await visit(2,false,'worn');
+  await page.click('[data-warehouse-recap] > summary');
   assert.equal(await page.$eval('[data-tent-recap="1"] [data-recap-slot="lighting"]',el=>el.dataset.status),'worn');
   assert.equal(await page.$eval('[data-tent-recap="2"] [data-recap-slot="lighting"]',el=>el.dataset.status),'installed');
   await page.evaluate(()=>{window.__failNextRead=true;window.dispatchEvent(new Event('kq:equipment-updated'));});
