@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUp, Check, ChevronDown, CircleAlert, ImageIcon, PackageOpen, RefreshCw, ShoppingBag, X, Zap } from "lucide-react";
+import { ArrowUp, Check, ChevronDown, CircleAlert, ImageIcon, PackageOpen, RefreshCw, Settings2, ShoppingBag, Tent, X, Zap } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentImpactLabels, getKqEquipmentRequirementState, isKqSharedEquipment, isKqSharedEquipmentSlot, KQ_EQUIPMENT_CATALOG, KQ_EQUIPMENT_SLOT_LABELS, summarizeKqEquipmentLoadout, type KqEquipmentDefinition, type KqEquipmentSlot } from "@/lib/kanab-quest-equipment";
@@ -165,7 +165,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
               <h3>{group.label}</h3><div className={styles.slots}>{group.slots.map(groupSlot=><button key={groupSlot} type="button" disabled={loading||!!loadError||busy} aria-pressed={slot===groupSlot} data-installed={installedSlots.has(groupSlot)} onClick={()=>select(groupSlot)}><span>{KQ_EQUIPMENT_SLOT_LABELS[groupSlot]}</span><small>{installedSlots.has(groupSlot)?<><Check size={12} aria-hidden="true"/>Installé</>:"Libre"}</small></button>)}</div>
             </section>)}
           </div>:<KqWarehouseScene tents={sceneTents} selectedTentNumber={tentNumber} equippedCodes={activeCodes} levels={levels} sharedEquipment={{equippedCodes:sharedCodes,levels:sharedEquipment?.levels??levels}} selectedSlot={slot} onSelect={selectInScene} onExpand={showExpansion} onShowList={()=>changeView(true)} disabled={productionPending||(!tents.length&&(loading||!!loadError))}/>}
-          <p className={styles.panHint}>Tente {tentNumber} sélectionnée : éclairage, extraction, climat, séchoir, énergie et sécurité lui appartiennent. Seules les machines de transformation sont communes.</p>
+          <div className={styles.panHint}><span><Tent size={16} aria-hidden="true"/><strong>Tente {tentNumber}</strong> · matériel individuel</span><span><Settings2 size={16} aria-hidden="true"/>Transformation · atelier commun</span></div>
           <KqWarehouseOverview tents={loading&&!tents.length?[]:sceneTents} sharedEquipment={sharedEquipment?{...sharedEquipment,equippedCodes:sharedCodes}:undefined}
             selectedTentNumber={tentNumber} selectedSlot={slot} disabled={loading||!!loadError||busy} loading={loading} error={loadError} onRetry={onRetry} onSelect={selectInOverview}/>
         </div>
