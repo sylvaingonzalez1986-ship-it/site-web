@@ -1,6 +1,6 @@
 import "server-only";
 
-import nodemailer from "nodemailer";
+import nodemailer, { type Transporter } from "nodemailer";
 
 export type SmtpConfig = {
   host: string;
@@ -13,7 +13,7 @@ export type SmtpConfig = {
   replyTo?: string;
 };
 
-let cachedTransporter: nodemailer.Transporter | null = null;
+let cachedTransporter: Transporter | null = null;
 let cachedConfigKey: string | null = null;
 
 function parseBoolean(value: string | undefined, defaultValue: boolean): boolean {
@@ -70,7 +70,7 @@ export function getNewsletterSmtpConfig(): SmtpConfig {
   };
 }
 
-export function getTransporter(config: SmtpConfig): nodemailer.Transporter {
+export function getTransporter(config: SmtpConfig): Transporter {
   const configKey = JSON.stringify({
     host: config.host,
     port: config.port,

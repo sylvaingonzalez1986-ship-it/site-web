@@ -9,6 +9,7 @@ const {
   getKqPlayerCoreSnapshot,
   getKqEquipmentRoutePlan,
   syncKqOrderCashRewards,
+  syncContestBundleRewards,
 } = vi.hoisted(() => ({
   getCurrentCustomerSessionByBackend: vi.fn(),
   getKqPlayerCollectionSnapshot: vi.fn(),
@@ -18,6 +19,7 @@ const {
   getKqPlayerCoreSnapshot: vi.fn(),
   getKqEquipmentRoutePlan: vi.fn(),
   syncKqOrderCashRewards: vi.fn(),
+  syncContestBundleRewards: vi.fn(),
 }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
@@ -29,11 +31,16 @@ vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
 }));
 vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({ getKqEquipmentRoutePlan }));
 vi.mock("@/lib/supabase/kanab-quest-order-cash-backend", () => ({ syncKqOrderCashRewards }));
+vi.mock("@/lib/supabase/contest-bundle-rewards-backend", () => ({ syncContestBundleRewards }));
 
 import { GET } from "@/app/api/arena/placard/bootstrap/route";
 
 const previousFlag = process.env.KQ_PLAYER_API_LIVE;
 const customerId = "dddddddd-dddd-dddd-dddd-dddddddddddd";
+const rewardSynchronizations = [
+  { reward: "order cash", synchronize: syncKqOrderCashRewards, warning: "Order cash reward synchronization temporarily unavailable." },
+  { reward: "contest bundle", synchronize: syncContestBundleRewards, warning: "Contest bundle reward synchronization temporarily unavailable." },
+];
 
 describe("GET /api/arena/placard/bootstrap", () => {
   beforeEach(() => {
@@ -42,6 +49,7 @@ describe("GET /api/arena/placard/bootstrap", () => {
     process.env.KQ_PLAYER_API_LIVE = "true";
     getCurrentCustomerSessionByBackend.mockResolvedValue({ customerId });
     syncKqOrderCashRewards.mockResolvedValue({ available: true, receipts: [] });
+    syncContestBundleRewards.mockResolvedValue({ available: true, receipts: [] });
     getKqPlayerCollectionSnapshot.mockResolvedValue({ inventory: { "BOTTE-001": 1 } });
     getKqPlayerOwnedBuddies.mockResolvedValue([{
       code: "HH2026-003",
@@ -70,42 +78,66 @@ describe("GET /api/arena/placard/bootstrap", () => {
     expect((await GET()).status).toBe(404);
     expect(getKqPlayerCollectionSnapshot).not.toHaveBeenCalled();
     expect(syncKqOrderCashRewards).not.toHaveBeenCalled();
+    expect(syncContestBundleRewards).not.toHaveBeenCalled();
   });
 
   it("does not synchronize rewards without an authenticated customer", async () => {
     getCurrentCustomerSessionByBackend.mockResolvedValue(null);
     expect((await GET()).status).toBe(401);
     expect(syncKqOrderCashRewards).not.toHaveBeenCalled();
+    expect(syncContestBundleRewards).not.toHaveBeenCalled();
     expect(getKqPlayerCollectionSnapshot).not.toHaveBeenCalled();
   });
 
-  it("finishes reward reconciliation before loading any game snapshot", async () => {
+  it.each(rewardSynchronizations)("waits for $reward reconciliation before loading any game snapshot", async ({ synchronize }) => {
     let resolveSync!: () => void;
-    syncKqOrderCashRewards.mockReturnValue(new Promise<void>((resolve) => { resolveSync = resolve; }));
+    synchronize.mockReturnValue(new Promise<void>((resolve) => { resolveSync = resolve; }));
     const response = GET();
-    await vi.waitFor(() => expect(syncKqOrderCashRewards).toHaveBeenCalledExactlyOnceWith(customerId));
+    await vi.waitFor(() => expect(synchronize).toHaveBeenCalledExactlyOnceWith(customerId));
     for (const snapshot of [getKqPlayerCollectionSnapshot, getKqPlayerOwnedBuddies,
       getKqPlayerHeritageSnapshot, getKqPlayerCoreSnapshot, getKqEquipmentRoutePlan,
       getKqPlayerBuddieRotation]) expect(snapshot).not.toHaveBeenCalled();
     resolveSync();
     expect((await response).status).toBe(200);
+    expect(syncKqOrderCashRewards).toHaveBeenCalledExactlyOnceWith(customerId);
+    expect(syncContestBundleRewards).toHaveBeenCalledExactlyOnceWith(customerId);
     expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
   });
 
-  it("keeps the game available without disclosing a reward synchronization failure", async () => {
+  it.each(rewardSynchronizations)("isolates a $reward synchronization failure without disclosing private details", async ({ synchronize, warning: expectedWarning }) => {
     const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
-    syncKqOrderCashRewards.mockRejectedValue(new Error("private reward detail"));
+    synchronize.mockRejectedValue(new Error("private reward detail"));
     const response = await GET();
     expect(response.status).toBe(200);
+    expect(syncKqOrderCashRewards).toHaveBeenCalledExactlyOnceWith(customerId);
+    expect(syncContestBundleRewards).toHaveBeenCalledExactlyOnceWith(customerId);
     expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
     expect(JSON.stringify(await response.json())).not.toContain("private reward detail");
-    expect(warning).toHaveBeenCalledExactlyOnceWith("Order cash reward synchronization temporarily unavailable.");
+    expect(warning).toHaveBeenCalledExactlyOnceWith(expectedWarning);
+  });
+
+  it("keeps the game available when both reward synchronizations fail", async () => {
+    const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+    syncKqOrderCashRewards.mockRejectedValue(new Error("private cash detail"));
+    syncContestBundleRewards.mockRejectedValue(new Error("private contest detail"));
+    const response = await GET();
+    expect(response.status).toBe(200);
+    expect(syncKqOrderCashRewards).toHaveBeenCalledExactlyOnceWith(customerId);
+    expect(syncContestBundleRewards).toHaveBeenCalledExactlyOnceWith(customerId);
+    expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
+    const payload = await response.json();
+    expect(JSON.stringify(payload)).not.toContain("private cash detail");
+    expect(JSON.stringify(payload)).not.toContain("private contest detail");
+    expect(payload.warnings).toEqual([]);
+    expect(warning.mock.calls).toEqual(rewardSynchronizations.map(({ warning: message }) => [message]));
   });
 
   it("loads collection and game session in one authenticated request", async () => {
     const response = await GET();
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
+    expect(syncKqOrderCashRewards).toHaveBeenCalledExactlyOnceWith(customerId);
+    expect(syncContestBundleRewards).toHaveBeenCalledExactlyOnceWith(customerId);
     expect(getKqPlayerCollectionSnapshot).toHaveBeenCalledWith(customerId);
     expect(getKqPlayerOwnedBuddies).toHaveBeenCalledWith(customerId);
     expect(getKqPlayerHeritageSnapshot).toHaveBeenCalledWith(customerId);

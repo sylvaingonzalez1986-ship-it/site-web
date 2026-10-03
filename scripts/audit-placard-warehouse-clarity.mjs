@@ -252,10 +252,10 @@ try {
     assert.equal(await page.evaluate(()=>window.__requests.length),0,'Viewing the expansion quote never purchases');
     await visit(2);
     await captureCommon();
-    await page.evaluate(({scene,panel,dialog})=>{
+    await page.evaluate(({scene,dialog})=>{
       window.__sceneNode=document.querySelector(scene);window.__dialogNode=document.querySelector(dialog);
       window.__scrollBefore=[...document.querySelectorAll(dialog+' *')].filter(el=>el.scrollHeight>el.clientHeight+1&&/auto|scroll/.test(getComputedStyle(el).overflowY)).map(el=>[el,el.scrollTop]);
-    },{scene,panel,dialog});
+    },{scene,dialog});
     await selectTent(2);
     assert.equal(await page.evaluate(({scene,dialog})=>window.__sceneNode===document.querySelector(scene)&&window.__dialogNode===document.querySelector(dialog),{scene,dialog}),true,'Selecting a tent keeps scene and dialog mounted');
     assert.equal(await page.evaluate(()=>window.__scrollBefore.every(([el,top])=>Math.abs(el.scrollTop-top)<=1)),true,'Selecting a tent preserves vertical scroll');
