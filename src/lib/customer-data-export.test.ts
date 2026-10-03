@@ -8,12 +8,18 @@ const {
   mockGetCustomerOrdersForLoyaltyByBackend,
   mockMaybeSingle,
   mockEq,
+  mockMailingEq,
+  mockMailingRange,
   mockCreateSupabaseServiceClient,
 } = vi.hoisted(() => {
   const hoistedMaybeSingle = vi.fn();
   const hoistedEq = vi.fn(() => ({ maybeSingle: hoistedMaybeSingle }));
   const hoistedSelect = vi.fn(() => ({ eq: hoistedEq }));
-  const hoistedFrom = vi.fn(() => ({ select: hoistedSelect }));
+  const hoistedMailingRange = vi.fn();
+  const hoistedMailingEq = vi.fn(() => ({ order: vi.fn(() => ({ range: hoistedMailingRange })) }));
+  const hoistedFrom = vi.fn((table: string) => ({
+    select: table === "mailing_recipients" ? vi.fn(() => ({ eq: hoistedMailingEq })) : hoistedSelect,
+  }));
 
   return {
     mockGetCustomerByIdFullByBackend: vi.fn(),
@@ -23,6 +29,8 @@ const {
     mockGetCustomerOrdersForLoyaltyByBackend: vi.fn(),
     mockMaybeSingle: hoistedMaybeSingle,
     mockEq: hoistedEq,
+    mockMailingEq: hoistedMailingEq,
+    mockMailingRange: hoistedMailingRange,
     mockSelect: hoistedSelect,
     mockFrom: hoistedFrom,
     mockCreateSupabaseServiceClient: vi.fn(() => ({ from: hoistedFrom })),
@@ -57,6 +65,7 @@ describe("customer-data-export", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-01-15T10:30:00.000Z"));
     vi.clearAllMocks();
+    mockMailingRange.mockResolvedValue({ data: [], error: null });
   });
 
   afterEach(() => {
@@ -71,7 +80,7 @@ describe("customer-data-export", () => {
     expect(mockCreateSupabaseServiceClient).not.toHaveBeenCalled();
   });
 
-  it("aggregates account, order, mission, lottery, and newsletter data", async () => {
+  it("aggregates account, order, mission, lottery, newsletter, and mailing data", async () => {
     mockGetCustomerByIdFullByBackend.mockResolvedValue({
       id: "customer-1",
       email: "USER@example.com",
@@ -115,6 +124,7 @@ describe("customer-data-export", () => {
         updatedAt: "2025-01-02T00:00:00.000Z",
         lastContactedAt: undefined,
       },
+      mailingHistory: [],
     });
 
     expect(mockGetCustomerOrdersForLoyaltyByBackend).toHaveBeenCalledWith({
@@ -122,6 +132,8 @@ describe("customer-data-export", () => {
       customerEmail: "USER@example.com",
     });
     expect(mockEq).toHaveBeenCalledWith("email_normalized", "user@example.com");
+    expect(mockMailingEq).toHaveBeenCalledWith("email", "user@example.com");
+    expect(mockMailingRange).toHaveBeenCalledWith(0, 499);
   });
 
   it("returns no newsletter subscription when the customer email is blank", async () => {
@@ -137,6 +149,38 @@ describe("customer-data-export", () => {
     const result = await exportCustomerData("customer-2");
 
     expect(result?.newsletterSubscription).toBeNull();
+    expect(result?.mailingHistory).toEqual([]);
     expect(mockCreateSupabaseServiceClient).not.toHaveBeenCalled();
+  });
+
+  it("exports every mailing history page without leaking extra database columns", async () => {
+    mockGetCustomerByIdFullByBackend.mockResolvedValue({ id: "customer-1", email: "USER@example.com" });
+    mockMaybeSingle.mockResolvedValue({ data: null, error: null });
+    const row = {
+      id: "recipient-1", campaign_id: "campaign-1", email: "user@example.com", first_name: "Alice",
+      status: "sent", error: null, sent_at: "2026-01-02T00:00:00Z", created_at: "2026-01-01T00:00:00Z",
+      updated_at: "2026-01-02T00:00:00Z", internal_value: "never-export-this",
+    };
+    mockMailingRange
+      .mockResolvedValueOnce({ data: Array.from({ length: 500 }, (_, index) => ({ ...row, id: String(index) })), error: null })
+      .mockResolvedValueOnce({ data: [{ ...row, id: "last-recipient" }], error: null });
+
+    const result = await exportCustomerData("customer-1");
+
+    expect(result?.mailingHistory).toHaveLength(501);
+    expect(mockMailingRange.mock.calls).toEqual([[0, 499], [500, 999]]);
+    expect(result?.mailingHistory.at(-1)).toEqual({
+      id: "last-recipient", campaignId: "campaign-1", email: "user@example.com", firstName: "Alice",
+      status: "sent", error: null, sentAt: row.sent_at, createdAt: row.created_at, updatedAt: row.updated_at,
+    });
+    expect(JSON.stringify(result?.mailingHistory)).not.toContain("never-export-this");
+  });
+
+  it("fails the export when mailing history cannot be read instead of returning incomplete data", async () => {
+    mockGetCustomerByIdFullByBackend.mockResolvedValue({ id: "customer-1", email: "user@example.com" });
+    mockMaybeSingle.mockResolvedValue({ data: null, error: null });
+    mockMailingRange.mockResolvedValue({ data: null, error: { message: "database unavailable" } });
+
+    await expect(exportCustomerData("customer-1")).rejects.toThrow("export mailing history");
   });
 });

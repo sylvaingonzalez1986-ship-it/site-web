@@ -20,7 +20,7 @@ const groups = [
     { id: "missions", label: "Missions", icon: Target },
     { id: "concours", label: "L’Arène", icon: Swords },
     { id: "loterie", label: "Loterie", icon: Gift },
-    { id: "newsletter", label: "Newsletter", icon: Mail },
+    { id: "newsletter", label: "Centre de mailing", icon: Mail },
   ] },
   { label: "Le contenu", items: [
     { id: "blog", label: "Blog", icon: BookOpen },

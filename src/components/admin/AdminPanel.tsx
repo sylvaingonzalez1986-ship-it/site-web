@@ -78,7 +78,7 @@ const AdminBlogCommentsPanel = dynamic(() => import("@/components/admin/AdminBlo
 const AdminContestPanel = dynamic(() => import("@/components/admin/AdminContestPanel").then((m) => m.AdminContestPanel), { loading: AdminPanelLoading });
 const AdminMissionsPanel = dynamic(() => import("@/components/admin/AdminMissionsPanel").then((m) => m.AdminMissionsPanel), { loading: AdminPanelLoading });
 const AdminLotteryPanel = dynamic(() => import("@/components/admin/AdminLotteryPanel").then((m) => m.AdminLotteryPanel), { loading: AdminPanelLoading });
-const AdminNewsletterPanel = dynamic(() => import("@/components/admin/AdminNewsletterPanel").then((m) => m.AdminNewsletterPanel), { loading: AdminPanelLoading });
+const AdminMailingPanel = dynamic(() => import("@/components/admin/AdminMailingPanel").then((m) => m.AdminMailingPanel), { loading: AdminPanelLoading });
 const AdminPrintfulPanel = dynamic(() => import("@/components/admin/AdminPrintfulPanel").then((m) => m.AdminPrintfulPanel), { loading: AdminPanelLoading });
 const BlogImageUpload = dynamic(() => import("@/components/admin/BlogImageUpload").then((m) => m.BlogImageUpload));
 const ProductAnalysisUpload = dynamic(() => import("@/components/admin/ProductAnalysisUpload").then((m) => m.ProductAnalysisUpload));
@@ -1669,7 +1669,7 @@ export function AdminPanel() {
 
         {activeTab === "loterie" && <AdminLotteryPanel />}
 
-        {activeTab === "newsletter" && <AdminNewsletterPanel />}
+        {activeTab === "newsletter" && <AdminMailingPanel />}
 
         {activeTab === "printful" && <AdminPrintfulPanel />}
 

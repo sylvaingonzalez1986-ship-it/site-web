@@ -114,6 +114,14 @@ async function deleteAuthUser(userId: string): Promise<void> {
   }
 }
 
+async function deleteMailingContact(email: string): Promise<void> {
+  const supabase = createSupabaseServiceClient();
+  const result = await supabase.rpc("rpc_delete_mailing_contact", { p_email: email });
+  if (result.error) {
+    throw new Error(`[supabase:delete mailing contact] ${result.error.message}`);
+  }
+}
+
 export async function deleteCustomerAccount(input: {
   customerId: string;
   customerEmail: string;
@@ -128,6 +136,8 @@ export async function deleteCustomerAccount(input: {
   const deletedMissionProofCount = await deleteMissionProofs(proofPaths);
   const anonymizedOrderCount = await anonymizeOrders({ customerId, customerEmail });
   const deletedNewsletterSubscription = await deleteNewsletterSubscription(customerEmail);
+  // Remove queued recipients and historical contact details before deleting Auth.
+  await deleteMailingContact(customerEmail);
   await deleteAuthUser(customerId);
 
   return {
