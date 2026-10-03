@@ -5,13 +5,15 @@ import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import dynamic from "next/dynamic";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type TouchEvent } from "react";
-import { ArrowLeft, ArrowRight, BookOpen, Check, ChevronLeft, ChevronRight, Gift, Leaf, List, LockKeyhole, Sprout, Sun, Trophy, Warehouse, X } from "lucide-react";
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type TouchEvent } from "react";
+import { ArrowLeft, ArrowRight, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, Gift, Leaf, List, LockKeyhole, Sprout, Sun, Trophy, Warehouse, X } from "lucide-react";
 import type { PublicContestNotebookUnlock, PublicContestProfile, PublicContestProfileBadge } from "@/lib/contest-public-api";
+import type { ContestBundleOffer, ContestBundleRewards } from "@/lib/contest-bundle-rewards";
 import { getContestProductHref } from "@/lib/contest-ui";
 import { getContestEntryAnalysisUrl } from "@/lib/contest-analysis";
 import { CONTEST_ENTRY_CATEGORIES, CONTEST_ENTRY_CATEGORY_LABELS, CONTEST_ENTRY_TRACKS, CONTEST_ENTRY_TRACK_LABELS, type ContestEntryCategory, type ContestEntrySummary, type ContestEntryTrack, type ContestReviewEligibility } from "@/types/contest";
 import { ContestFlowerImage } from "./ContestFlowerImage";
+import { ContestBundleNotebookNote } from "./ContestBundleNotebookNote";
 import styles from "./ContestTastingBook.module.css";
 
 const NotebookPanel = dynamic(() => import("./ContestNotebookPanel").then((module) => module.ContestNotebookPanel), {
@@ -32,6 +34,7 @@ type Props = {
   seasonLabel: string;
   initialTrack: ContestEntryTrack;
   initialCategory: ContestEntryCategory;
+  contestBundleOffer?: ContestBundleOffer | null;
 };
 const CULTURES = {
   outdoor: { icon: Sun, description: "Sous le soleil", subtitle: "Les fleurs de plein air." },
@@ -41,7 +44,18 @@ const CULTURES = {
 const CHAPTERS: Chapter[] = CONTEST_ENTRY_TRACKS.flatMap((track) => CONTEST_ENTRY_CATEGORIES.map((category) => ({ track, category })));
 const PRODUCER_REWARD_RULE = "Regular et Concours comptent ensemble : fais valider tes avis sur toutes les fleurs d’un producteur pour débloquer son bonus.";
 
-export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, isAuthenticated, seasonLabel, initialTrack, initialCategory }: Props) {
+export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, isAuthenticated, seasonLabel, initialTrack, initialCategory, contestBundleOffer: initialContestBundleOffer }: Props) {
+  const [updatedBundleOffer, setUpdatedBundleOffer] = useState<{ source: typeof initialContestBundleOffer; value: ContestBundleOffer } | null>(null);
+  const bundleRequestVersionRef = useRef(0);
+  const contestBundleOffer = updatedBundleOffer && updatedBundleOffer.source === initialContestBundleOffer ? updatedBundleOffer.value : initialContestBundleOffer;
+  const updateBundleOffer = (value: ContestBundleOffer) => {
+    bundleRequestVersionRef.current += 1;
+    setUpdatedBundleOffer({ source: initialContestBundleOffer, value });
+  };
+  const bundleLoginHref = `/compte/connexion?next=${encodeURIComponent(`/arene/carnet/${initialTrack}`)}`;
+  const coverBonusId = useId();
+  const contentsBonusId = useId();
+  const [contentsBonusOpen, setContentsBonusOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [opening, setOpening] = useState(false);
   const [view, setView] = useState<View>("contents");
@@ -55,16 +69,50 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
   const coverRef = useRef<HTMLButtonElement>(null);
   const touchRef = useRef<{ x: number; y: number } | null>(null);
   const unlockById = useMemo(() => new Map(unlocks.map((unlock) => [unlock.entryId, unlock])), [unlocks]);
+  const bundleFlowerEntries = useMemo(() => entries.filter((item) => item.track === "concours").map((item) => ({ productId: item.productId, entryId: item.id })), [entries]);
   const flowers = useMemo(() => entries.filter((entry) => entry.track === chapter.track && entry.category === chapter.category), [entries, chapter.track, chapter.category]);
   const entry = flowers.find((item) => item.id === entryId);
   const chapterIndex = CHAPTERS.findIndex((item) => item.track === chapter.track && item.category === chapter.category);
   const chapterLabel = `${CONTEST_ENTRY_TRACK_LABELS[chapter.track]} · ${CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}`;
   const flowerIndex = flowers.findIndex((item) => item.id === entryId);
   const CultureIcon = CULTURES[chapter.category].icon;
+  const hasContestBundleOffer = Boolean(contestBundleOffer?.available && contestBundleOffer.flowers.length > 0);
   const inFlower = view === "flower" || view === "tasting" || view === "rewards";
   const pageTitle = view === "contents" ? "Table des matières" : view === "flowers" ? CONTEST_ENTRY_CATEGORY_LABELS[chapter.category] : entry?.title ?? "Ta fleur";
 
   useBodyScrollLock(true);
+
+  useEffect(() => {
+    if (!initialContestBundleOffer || !isAuthenticated) return;
+    const controller = new AbortController();
+    const refreshBundle = async () => {
+      const requestVersion = ++bundleRequestVersionRef.current;
+      try {
+        const response = await fetch("/api/account/contest-bundle-rewards", { credentials: "include", cache: "no-store", signal: controller.signal });
+        const payload = await response.json().catch(() => null) as { rewards?: ContestBundleRewards } | null;
+        if (controller.signal.aborted || requestVersion !== bundleRequestVersionRef.current) return;
+        if (response.status === 401) {
+          setUpdatedBundleOffer({ source: initialContestBundleOffer, value: { ...initialContestBundleOffer, progress: null } });
+          return;
+        }
+        if (!response.ok || !payload?.rewards) return;
+        const { available, startsAt, minGrams, buddiesPacks, bottePacks, flowers, progress } = payload.rewards;
+        setUpdatedBundleOffer({ source: initialContestBundleOffer, value: { available, startsAt, minGrams, buddiesPacks, bottePacks, flowers, progress } });
+      } catch {
+        // Keep the server-rendered offer when a read-only refresh is unavailable.
+      }
+    };
+    const onReturn = () => { void refreshBundle(); };
+    onReturn();
+    window.addEventListener("focus", onReturn);
+    window.addEventListener("pageshow", onReturn);
+    return () => {
+      controller.abort();
+      bundleRequestVersionRef.current += 1;
+      window.removeEventListener("focus", onReturn);
+      window.removeEventListener("pageshow", onReturn);
+    };
+  }, [initialContestBundleOffer, isAuthenticated]);
 
   useEffect(() => {
     const alreadyOpen = document.body.classList.contains("contest-notebook-open");
@@ -159,12 +207,14 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
 
     <h1 className={styles.srOnly}>Mon carnet de dégustation</h1>
     {!open || opening ? <div className={styles.closedStage} data-opening={opening || undefined} aria-hidden={open || undefined}>
-      <button ref={coverRef} data-arena-tour="notebook" type="button" className={styles.cover} tabIndex={open ? -1 : 0} onClick={() => { setOpening(true); setOpen(true); go("contents"); }} aria-label="Ouvrir mon carnet de dégustation">
+      <button ref={coverRef} data-arena-tour="notebook" type="button" className={styles.cover} tabIndex={open ? -1 : 0} onClick={() => { setOpening(true); setOpen(true); go("contents"); }} aria-label="Ouvrir mon carnet de dégustation" aria-describedby={hasContestBundleOffer ? coverBonusId : undefined}>
         <span className={styles.coverBorder}>
           <span className={styles.coverKicker}>L’Arène · Carnet de dégustation</span>
           <span className={styles.coverEmblem}><Image src="/contest/mascot/tasting/tasting-start.png" alt="La mascotte avec son carnet" width={408} height={771} sizes="120px" priority /><span aria-hidden="true">À toi de jouer !</span></span>
           <span className={styles.coverTitle}>Mon carnet<span>de dégustation</span></span>
-          <span className={styles.coverSubtitle}>Tes fleurs. Tes notes. Tes découvertes.</span>
+          {hasContestBundleOffer
+            ? <span id={coverBonusId} className={styles.coverBonus} data-contest-bundle-cover><Gift size={14} aria-hidden="true" /> Bonus Concours à découvrir</span>
+            : <span className={styles.coverSubtitle}>Tes fleurs. Tes notes. Tes découvertes.</span>}
           <span className={styles.coverSignature}>{viewerProfile?.pseudo || "À toi d’écrire la suite"}</span>
           <span className={styles.coverAction}>Ouvrir le carnet <ArrowRight size={18} aria-hidden="true" /></span>
         </span>
@@ -206,8 +256,21 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
               {CONTEST_ENTRY_TRACKS.map((track) => {
                 const TrackIcon = track === "concours" ? Trophy : Leaf;
                 const trackCount = entries.filter((item) => item.track === track).length;
+                const hasBonus = track === "concours" && hasContestBundleOffer;
                 return <section key={track} className={styles.chapterGroup} data-track={track} aria-label={`Dégustations ${CONTEST_ENTRY_TRACK_LABELS[track]} par culture`}>
-                  <h3><span><TrackIcon size={15} aria-hidden="true" /> {CONTEST_ENTRY_TRACK_LABELS[track]}</span><small>{trackCount} {trackCount === 1 ? "fleur" : "fleurs"} · 3 cultures</small></h3>
+                  <h3 data-bonus={hasBonus || undefined}>{hasBonus ? <button type="button" className={styles.contestBonusToggle} aria-expanded={contentsBonusOpen} aria-controls={contentsBonusId} onClick={(event) => {
+                    const heading = event.currentTarget.parentElement;
+                    setContentsBonusOpen(!contentsBonusOpen);
+                    if (!contentsBonusOpen) requestAnimationFrame(() => heading?.scrollIntoView({ block: "start" }));
+                  }}>
+                    <span className={styles.chapterTitle}><TrackIcon size={15} aria-hidden="true" /> {CONTEST_ENTRY_TRACK_LABELS[track]}</span>
+                    <ChevronDown size={19} className={styles.bonusChevron} aria-hidden="true" />
+                    <small>{trackCount} {trackCount === 1 ? "fleur" : "fleurs"} · 3 cultures</small>
+                    <span className={styles.bonusHint}><Gift size={13} aria-hidden="true" /> Bonus cadeau</span>
+                  </button> : <><span><TrackIcon size={15} aria-hidden="true" /> {CONTEST_ENTRY_TRACK_LABELS[track]}</span><small>{trackCount} {trackCount === 1 ? "fleur" : "fleurs"} · 3 cultures</small></>}</h3>
+                  {hasBonus && <div id={contentsBonusId} className={styles.contentsBonus} hidden={!contentsBonusOpen}>
+                    {contentsBonusOpen && <ContestBundleNotebookNote offer={contestBundleOffer} flowerEntries={bundleFlowerEntries} onSelectFlower={openFlower} onOfferChange={updateBundleOffer} loginHref={bundleLoginHref} />}
+                  </div>}
                   {CONTEST_ENTRY_CATEGORIES.map((category) => {
                     const count = entries.filter((item) => item.track === track && item.category === category).length;
                     const index = CHAPTERS.findIndex((item) => item.track === track && item.category === category);
@@ -222,6 +285,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
             </div> : null}
 
             {view === "flowers" ? <div key={`flowers-${turn}`} className={styles.pageTurn}>
+              {chapter.track === "concours" && <ContestBundleNotebookNote offer={contestBundleOffer} flowerEntries={bundleFlowerEntries} onSelectFlower={openFlower} onOfferChange={updateBundleOffer} loginHref={bundleLoginHref} />}
               <p className={styles.caption}>{flowers.length ? `${flowers.length} ${flowers.length === 1 ? "fleur" : "fleurs"} dans le chapitre ${chapterLabel}. Choisis une fleur pour retrouver sa fiche et écrire tes impressions.` : `Le chapitre ${chapterLabel} attend ses premières fleurs. Reviens bientôt ou explore une autre culture ou section.`}</p>
               {!flowers.length ? <div className={styles.empty}><CultureIcon size={44} strokeWidth={1} aria-hidden="true" /><p>La prochaine découverte<br />est encore en culture.</p><button type="button" onClick={() => go("contents")}>Explorer le sommaire <ArrowRight size={16} /></button></div> : <div className={styles.flowerList}>{flowers.map((item, index) => {
                 const unlock = unlockById.get(item.id);
@@ -235,6 +299,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
             {view === "flower" && entry ? <article key={`flower-${turn}`} className={`${styles.flowerPage} ${styles.pageTurn}`}>
               <div className={styles.specimen}><ContestFlowerImage entry={entry} alt={entry.title} sizes="(max-width: 767px) 85vw, 450px" fallbackSize={90} /><span><CultureIcon size={14} /> {CONTEST_ENTRY_CATEGORY_LABELS[entry.category]}</span></div>
               <div className={styles.flowerActions}><button type="button" className={styles.primary} onClick={startNotes}><BookOpen size={18} />{unlockById.get(entry.id)?.review ? "Retrouver mes notes" : "Déguster cette fleur"}<ArrowRight size={18} /></button><button type="button" className={styles.rewardButton} onClick={() => go("rewards")} aria-label="Voir les récompenses de cette fleur"><Gift size={19} /></button></div>
+              {entry.track === "concours" && contestBundleOffer?.flowers.some((flower) => flower.productId === entry.productId) && <ContestBundleNotebookNote offer={contestBundleOffer} flowerEntries={bundleFlowerEntries} onSelectFlower={openFlower} onOfferChange={updateBundleOffer} loginHref={bundleLoginHref} compact />}
               <dl className={styles.facts}>
                 <div><dt>Producteur</dt><dd>{entry.producer?.name || "Non renseigné"}</dd></div>
                 <div><dt>Origine</dt><dd>{entry.producer?.region || entry.producer?.location || String(entry.technicalSheet.origin || "Non renseignée")}</dd></div>

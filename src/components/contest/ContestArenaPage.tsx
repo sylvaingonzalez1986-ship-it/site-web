@@ -24,6 +24,7 @@ import {
 } from "@/lib/contest-backend";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { getContestBundleRewards } from "@/lib/supabase/contest-bundle-rewards-backend";
 import { isSupabaseAuthCookieName } from "@/lib/supabase-auth-cookies";
 import {
   CONTEST_ENTRY_CATEGORIES,
@@ -181,6 +182,7 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
       viewerProgress,
       testerSeasonRankings,
       testerGlobalRankings,
+      contestBundleOffer,
     ] = await Promise.all([
       includeCommunityPanels ? getContestSeasons() : Promise.resolve([]),
       includeCommunityPanels
@@ -205,6 +207,14 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
         : null,
       Promise.resolve({ items: [] }),
       Promise.resolve({ items: [] }),
+      surface === "notebook" && entryPayload.selectedSeason?.isActive && !entryPayload.selectedSeason.isArchived
+        ? getContestBundleRewards(session?.customerId ?? null).then(({ available, startsAt, minGrams, buddiesPacks, bottePacks, flowers, progress }) => (
+          { available, startsAt, minGrams, buddiesPacks, bottePacks, flowers, progress }
+        )).catch((error: unknown) => {
+          console.error("[contest:notebook] Bonus concours indisponible", error);
+          return null;
+        })
+        : Promise.resolve(null),
     ]);
 
     if (surface === "notebook") {
@@ -217,6 +227,7 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
         seasonLabel={entryPayload.selectedSeason?.label ?? "Les dégustations de l’Arène"}
         initialTrack={selectedTrack}
         initialCategory={requestedCategory ?? "outdoor"}
+        contestBundleOffer={contestBundleOffer}
       />;
     }
 

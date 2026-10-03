@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { OrderCashRewardReceipt } from "@/components/checkout/OrderCashReward";
+import { ContestBundleRewardReceipt } from "@/components/checkout/ContestBundleReward";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { formatPrice } from "@/lib/utils";
 import { isInvoiceEligibleOrder } from "@/lib/invoice-utils";
@@ -200,6 +201,7 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
         </div>
 
         <OrderCashRewardReceipt orderId={order.id} paymentState={order.paymentState} />
+        <ContestBundleRewardReceipt orderId={order.id} paymentState={order.paymentState} />
 
         {hasShippingInfo && (
           <div className="mt-6 card-cartoon bg-white p-4">

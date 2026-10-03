@@ -1,0 +1,39 @@
+.card { display: grid; gap: 10px; min-width: 0; margin-top: 16px; padding: 14px; border: 1px solid #00563f; border-radius: 3px; background: #fff6d2; color: #153d2e; text-align: left; overflow-wrap: anywhere; }
+.card p { margin: 0; font-size: .8rem; line-height: 1.55; }
+.card .title { display: flex; align-items: center; gap: 7px; color: #00563f; font-size: .7rem; font-weight: 800; letter-spacing: .035em; text-transform: uppercase; }
+.title svg, .credited svg, .progressLabel svg { flex-shrink: 0; }
+.rewards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; margin: 0; padding: 0; list-style: none; }
+.rewards li { display: flex; align-items: flex-start; gap: 7px; min-width: 0; padding: 9px 7px; border: 1px solid #c9cc96; border-radius: 3px; background: #fffaf0; }
+.rewards li > strong { color: #00563f; font-size: 1.55rem; font-weight: 900; line-height: 1; }
+.rewards li > span { display: grid; gap: 2px; font-size: .65rem; line-height: 1.25; }
+.rewards b { font-size: .72rem; }
+.rewards small { margin-top: 3px; color: #526044; font-size: .59rem; line-height: 1.4; }
+.progress { display: grid; gap: 7px; }
+.card .progressLabel { display: flex; align-items: center; gap: 5px; font-size: .75rem; font-weight: 700; }
+.progress progress { display: block; width: 100%; height: 8px; overflow: hidden; border: 0; border-radius: 9px; background: #dce2c4; accent-color: #00563f; }
+.progress progress::-webkit-progress-bar { background: #dce2c4; }
+.progress progress::-webkit-progress-value { border-radius: 9px; background: #00563f; }
+.requirements { min-width: 0; border-block: 1px solid #cbd4ac; }
+.requirements summary { min-height: 44px; padding: 12px 0; cursor: pointer; font-size: .75rem; font-weight: 700; }
+.requirements summary:focus-visible, .links a:focus-visible { outline: 2px solid #00563f; outline-offset: 3px; }
+.requirements ul { max-height: 245px; overflow-y: auto; overscroll-behavior: contain; margin: 0; padding: 0 0 8px; list-style: none; }
+.requirements li { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-top: 1px solid #e1e4cb; font-size: .75rem; }
+.requirements li > span:first-child { display: grid; min-width: 0; gap: 2px; }
+.requirements li small { color: #526044; font-size: .67rem; }
+.flowerStatus { display: inline-flex; flex-shrink: 0; align-items: center; gap: 3px; color: #795215; font-size: .65rem; font-weight: 700; }
+.requirements li[data-complete] .flowerStatus { color: #00563f; }
+.card .detail { color: #526044; font-size: .71rem; }
+.card .credited { display: flex; align-items: center; gap: 6px; color: #00563f; font-weight: 800; }
+.epicCard { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #bcc8a3; border-radius: 3px; background: #fffaf0; }
+.epicCard > svg { flex-shrink: 0; color: #00563f; }
+.epicCard > span { display: grid; min-width: 0; gap: 4px; }
+.epicCard small { color: #526044; font-size: .7rem; }
+.epicCard strong { font-size: 1rem; }
+.receiptPacks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.receiptPacks li { display: grid; gap: 3px; padding: 8px 0; font-size: .8rem; }
+.receiptPacks span { color: #526044; font-size: .68rem; }
+.links { display: flex; align-items: center; flex-wrap: wrap; gap: 3px 16px; }
+.links a { display: inline-flex; align-items: center; min-height: 44px; color: #00563f; font-size: .75rem; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.claimLink { display: inline-flex; align-items: center; min-height: 44px; color: #00563f; font-size: .8rem; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.claimLink:focus-visible { outline: 2px solid #00563f; outline-offset: 3px; }
+@media (max-width: 380px) { .card { padding: 12px; } .rewards li { display: grid; gap: 5px; padding-inline: 6px; } .rewards li > strong { font-size: 1.3rem; } .flowerStatus { font-size: .62rem; } .receiptPacks { grid-template-columns: minmax(0, 1fr); gap: 0; } }

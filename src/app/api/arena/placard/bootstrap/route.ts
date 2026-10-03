@@ -10,6 +10,7 @@ import {
 } from "@/lib/supabase/kanab-quest-backend";
 import { getKqEquipmentRoutePlan } from "@/lib/supabase/kanab-quest-equipment-backend";
 import { syncKqOrderCashRewards } from "@/lib/supabase/kanab-quest-order-cash-backend";
+import { syncContestBundleRewards } from "@/lib/supabase/contest-bundle-rewards-backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -29,6 +30,11 @@ export async function GET() {
     await syncKqOrderCashRewards(session.customerId);
   } catch {
     console.warn("Order cash reward synchronization temporarily unavailable.");
+  }
+  try {
+    await syncContestBundleRewards(session.customerId);
+  } catch {
+    console.warn("Contest bundle reward synchronization temporarily unavailable.");
   }
 
   const [

@@ -1,5 +1,6 @@
 import { VivaPaymentReturnEffects } from "@/components/checkout/VivaPaymentReturnEffects";
 import { OrderCashRewardReceipt } from "@/components/checkout/OrderCashReward";
+import { ContestBundleRewardReceipt } from "@/components/checkout/ContestBundleReward";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getOrderByVivaOrderCodeByBackend } from "@/lib/order-backend";
 import { formatPrice } from "@/lib/utils";
@@ -198,7 +199,10 @@ export async function VivaPaymentReturnPage({
           )}
 
           {order && (
-            <OrderCashRewardReceipt orderId={order.id} paymentState={order.paymentState} />
+            <>
+              <OrderCashRewardReceipt orderId={order.id} paymentState={order.paymentState} />
+              <ContestBundleRewardReceipt orderId={order.id} paymentState={order.paymentState} />
+            </>
           )}
 
           {!session && (
