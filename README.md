@@ -1,5 +1,56 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Ventes et règlements producteurs
+
+Dans **Admin → Ventes → Producteurs et règlements**, sélectionner un producteur
+et une plage de mois, ou laisser les mois vides pour cumuler depuis le début.
+Le montant dû correspond par défaut à **80 % des ventes HT**, après remises et
+hors livraison. Les 20 % restants constituent la marge boutique. Les grammes
+vendus sont cumulés sur la sélection, avec un repère tous les 100 g ; ce volume
+inclut les ventes déjà réglées, tandis que le solde déduit les paiements.
+
+**Règlement de cette période** enregistre un paiement déjà effectué, total ou
+partiel, avec sa date réelle et sa référence. Un règlement peut couvrir plusieurs
+mois : il est réparti sur les soldes les plus anciens de la plage, puis tout
+excédent apparaît comme avance sur le dernier mois. L'historique conserve le
+virement unique et ses éventuelles annulations de saisie avec motif. Aucun
+virement bancaire n'est déclenché. Une nouvelle tentative du même formulaire
+utilise le même identifiant pour éviter un double enregistrement.
+
+Le détail mensuel permet de définir, au besoin, un tarif particulier par référence
+ou variante (par unité, par gramme avec poids explicite, ou en pourcentage HT).
+Un tarif s'applique depuis son mois d'effet jusqu'au suivant ; sa correction
+recalcule les mois concernés. Les ventes payées ou historiques `not_configured`
+sont retenues, hors commandes annulées/archivées et cadeaux synthétiques, selon
+le mois de création de commande en Europe/Paris.
+
+Avant déploiement, appliquer
+`supabase/migrations/20261003000300_producer_settlements.sql`.
+Cette migration crée les
+tables privées de tarifs/règlements et fige le producteur et le poids des nouvelles
+lignes de commande. L'historique est reconstitué avec le catalogue encore présent ;
+les attributions ou poids impossibles à retrouver sont signalés dans l'interface.
+Pour les variantes, seuls les libellés de poids explicites tels que « 5 g » sont
+convertis, sans reprendre le poids d'un autre format.
+
+La migration a été appliquée le 3 octobre 2026 au projet Supabase lié
+`eyowwwpdmfrulhkpvlnf`, à la demande de l'utilisateur. Elle était la seule en
+attente ; l'historique distant et la prévisualisation après application confirment
+que la base est à jour. Le recalcul des récompenses du jeu est désactivé uniquement
+pendant la reprise des anciennes lignes de commande, puis réactivé dans la même
+transaction. La publication du code de l'interface reste une étape distincte.
+Les vérifications distantes confirment l'accès serveur aux nouvelles tables et
+colonnes, le refus des tables de règlements aux visiteurs anonymes et la
+cohérence des attributions producteurs. Aucun paiement de test n'a été créé.
+Rapport : `output/producer-settlements-migration/verification.json`.
+
+Vérifications : `npx vitest run src/lib/producer-settlements.test.ts
+src/lib/producer-settlements-backend.test.ts
+src/app/api/admin/producer-settlements/route.test.ts`,
+`npm run check:supabase-grants`, `node scripts/test-producer-settlements.mjs`
+(PostgreSQL isolé via PGlite ; chemin du module en argument si nécessaire) et
+`node scripts/audit-admin-producer-settlements.mjs` (navigateur, données fictives).
+
 ## Centre de mailing admin
 
 Dans l’admin, **La communauté → Centre de mailing** permet de préparer des

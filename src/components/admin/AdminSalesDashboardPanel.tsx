@@ -2,6 +2,7 @@
 
 import { RefreshCcw } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { AdminProducerSettlementsPanel } from "@/components/admin/AdminProducerSettlementsPanel";
 import type {
   AdminProductSalesDashboard,
   AdminSalesPeriodSummary,
@@ -88,6 +89,34 @@ function sortProducts(
 }
 
 export function AdminSalesDashboardPanel() {
+  const [section, setSection] = useState<"products" | "producers">("products");
+  const [producersVisited, setProducersVisited] = useState(false);
+
+  return (
+    <div className="grid min-w-0 gap-4">
+      <nav aria-label="Vue des ventes" className="flex flex-wrap gap-2">
+        {([
+          ["products", "Produits"],
+          ["producers", "Producteurs et règlements"],
+        ] as const).map(([value, label]) => (
+          <button
+            key={value}
+            type="button"
+            aria-pressed={section === value}
+            className={`pill-cartoon min-h-11 px-4 py-2 text-sm font-semibold ${section === value ? "bg-[#1a1a1a] text-white" : "bg-white text-ink"}`}
+            onClick={() => { setSection(value); if (value === "producers") setProducersVisited(true); }}
+          >
+            {label}
+          </button>
+        ))}
+      </nav>
+      <div hidden={section !== "products"}><AdminProductSalesPanel /></div>
+      <div hidden={section !== "producers"}>{producersVisited && <AdminProducerSettlementsPanel />}</div>
+    </div>
+  );
+}
+
+function AdminProductSalesPanel() {
   const [dashboard, setDashboard] = useState<AdminProductSalesDashboard | null>(null);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState<string | null>(null);
@@ -177,15 +206,19 @@ export function AdminSalesDashboardPanel() {
             </p>
           )}
         </div>
-        <button type="button" className="btn-cartoon btn-secondary" onClick={loadDashboard}>
+        <button type="button" className="btn-cartoon btn-secondary" onClick={loadDashboard} disabled={loading}>
           <RefreshCcw size={14} /> Recharger
         </button>
       </div>
 
       {status && <p className="mt-2 text-sm text-charcoal">{status}</p>}
 
-      {loading || !dashboard || !selectedPeriod ? (
+      {loading ? (
         <div className="mt-4 card-cartoon bg-white p-4 text-charcoal">Chargement ventes...</div>
+      ) : !dashboard || !selectedPeriod ? (
+        <div role="alert" className="mt-4 card-cartoon bg-white p-4 text-charcoal">
+          Les ventes ne sont pas disponibles. Utilisez « Recharger » pour réessayer.
+        </div>
       ) : dashboard.allTime.products.length === 0 ? (
         <div className="mt-4 card-cartoon bg-white p-4 text-charcoal">
           Aucune vente realisee a comptabiliser.
