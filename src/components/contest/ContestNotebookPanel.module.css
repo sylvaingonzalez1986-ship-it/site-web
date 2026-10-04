@@ -1087,6 +1087,7 @@
 .bookPanel .notebook input[type="checkbox"] { accent-color: var(--notebook-green); }
 .bookPanel .notebook :global(input[type="text"]), .bookPanel .notebook textarea { border: 2px solid var(--notebook-ink); border-radius: 3px; background: var(--notebook-paper); font-size: 16px; color: var(--notebook-ink); }
 .bookPanel .notebook :global(.btn-cartoon) { border-width: 2px; border-radius: 3px; box-shadow: 3px 3px 0 var(--notebook-ink); text-transform: uppercase; letter-spacing: .04em; }
+.bookPanel .notebook :global(.btn-primary) { background: var(--notebook-green); color: var(--notebook-paper); }
 .bookPanel .verdictTextarea { min-height: 130px; height: 150px; max-height: none; }
 .bookPanel [hidden] { display: none !important; }
 .bookPanel button { min-height: 44px; }
@@ -1147,3 +1148,13 @@
   .bookPanel .stepTabLabel { font-size: 8px; }
   .bookPanel .navButton { font-size: 9px; }
 }
+.formFields { margin: 0; padding: 0; min-width: 0; border: 0; }
+.feedback:empty { display: none; }
+.feedback { margin-bottom: 12px; font-size: 13px; line-height: 1.5; }
+.feedback p { margin: 0 0 8px; }
+.feedback [role="alert"] { color: #7a1010; font-weight: 700; }
+.confirmScore { min-height: 44px; padding: 8px 12px; margin-top: 8px; border: 2px solid currentColor; border-radius: 4px; background: #fffaf0; font-size: 13px; font-weight: 700; }
+.olderDraft { margin: 0 0 16px; padding: 12px; border: 2px solid currentColor; border-radius: 4px; font-size: 13px; }
+.olderDraft summary { min-height: 44px; cursor: pointer; font-weight: 700; }
+.olderDraft textarea { width: 100%; }
+.olderDraft dl > div { display: flex; justify-content: space-between; gap: 12px; margin: 8px 0; }

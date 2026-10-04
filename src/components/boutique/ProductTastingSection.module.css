@@ -158,3 +158,8 @@
 @media (prefers-reduced-motion: reduce) {
   .reviewDetails > summary svg, .criteria > summary svg { transition: none; }
 }
+
+.loadMore { display: block; width: 100%; min-height: 48px; margin-top: 1.25rem; padding: .75rem 1rem; border: 2px solid var(--market-green); background: var(--market-paper); color: var(--market-green); font-size: .85rem; font-weight: 800; cursor: pointer; }
+.loadMore:disabled { opacity: .65; cursor: wait; }
+.loadMore:focus-visible { outline: 3px solid var(--market-yellow); outline-offset: 3px; }
+.paginationStatus { margin-top: 1rem; font-size: .85rem; line-height: 1.5; }

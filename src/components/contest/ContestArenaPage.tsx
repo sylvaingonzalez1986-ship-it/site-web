@@ -42,7 +42,7 @@ import {
 import type { PublicCustomer } from "@/types/customer";
 
 export type ContestArenaPageProps = {
-  searchParams: Promise<{ season?: string; category?: string; track?: string; vue?: string; mode?: string; ouverture?: string }>;
+  searchParams: Promise<{ season?: string; category?: string; track?: string; vue?: string; mode?: string; ouverture?: string; entry?: string; edit?: string; view?: string }>;
   surface?: "arena" | "notebook" | "notebook-ranking";
 };
 
@@ -139,10 +139,13 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
           : surface === "notebook"
             ? `/arene/carnet/${selectedTrack}`
             : "/arene/carnet/classement";
-        const nextPath = `${basePath}${params.season || params.category || selectedTrack !== "regular" ? `?${new URLSearchParams(
+        const nextPath = `${basePath}${params.season || params.category || params.entry || params.edit || selectedTrack !== "regular" ? `?${new URLSearchParams(
           Object.entries({
             season: params.season,
             category: params.category,
+            entry: params.entry,
+            edit: params.edit,
+            view: params.view,
             track: surface === "arena" && selectedTrack !== "regular" ? selectedTrack : undefined,
           }).filter((entry): entry is [string, string] => typeof entry[1] === "string"),
         ).toString()}` : ""}`;
@@ -219,6 +222,7 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
 
     if (surface === "notebook") {
       return <ContestTastingBook
+        key={`${session?.customerId ?? "anonymous"}:${selectedSeasonCode ?? "active"}:${selectedTrack}:${params.entry ?? ""}`}
         entries={entryPayload.entries}
         unlocks={notebookUnlocks.map(sanitizePublicContestNotebookUnlock)}
         viewerProfile={viewerProfile ? sanitizePublicContestProfile(viewerProfile) : null}
@@ -227,12 +231,16 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
         seasonLabel={entryPayload.selectedSeason?.label ?? "Les dégustations de l’Arène"}
         initialTrack={selectedTrack}
         initialCategory={requestedCategory ?? "outdoor"}
+        initialEntryId={params.entry}
+        initialEditNotes={params.edit === "notes" || params.view === "notes"}
+        draftOwnerId={session?.customerId ?? null}
         contestBundleOffer={contestBundleOffer}
       />;
     }
 
     return (
       <ContestHubClient
+        draftOwnerId={session?.customerId ?? null}
         seasons={seasons}
         selectedSeasonCode={entryPayload.selectedSeason?.code}
         selectedTrack={selectedTrack}

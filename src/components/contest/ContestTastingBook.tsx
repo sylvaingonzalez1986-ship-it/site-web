@@ -34,6 +34,9 @@ type Props = {
   seasonLabel: string;
   initialTrack: ContestEntryTrack;
   initialCategory: ContestEntryCategory;
+  initialEntryId?: string;
+  initialEditNotes?: boolean;
+  draftOwnerId?: string | null;
   contestBundleOffer?: ContestBundleOffer | null;
 };
 const CULTURES = {
@@ -44,7 +47,8 @@ const CULTURES = {
 const CHAPTERS: Chapter[] = CONTEST_ENTRY_TRACKS.flatMap((track) => CONTEST_ENTRY_CATEGORIES.map((category) => ({ track, category })));
 const PRODUCER_REWARD_RULE = "Regular et Concours comptent ensemble : fais valider tes avis sur toutes les fleurs d’un producteur pour débloquer son bonus.";
 
-export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, isAuthenticated, seasonLabel, initialTrack, initialCategory, contestBundleOffer: initialContestBundleOffer }: Props) {
+export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, isAuthenticated, seasonLabel, initialTrack, initialCategory, initialEntryId, initialEditNotes = false, draftOwnerId, contestBundleOffer: initialContestBundleOffer }: Props) {
+  const initialEntry = entries.find((item) => item.id === initialEntryId);
   const [updatedBundleOffer, setUpdatedBundleOffer] = useState<{ source: typeof initialContestBundleOffer; value: ContestBundleOffer } | null>(null);
   const bundleRequestVersionRef = useRef(0);
   const contestBundleOffer = updatedBundleOffer && updatedBundleOffer.source === initialContestBundleOffer ? updatedBundleOffer.value : initialContestBundleOffer;
@@ -56,12 +60,12 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
   const coverBonusId = useId();
   const contentsBonusId = useId();
   const [contentsBonusOpen, setContentsBonusOpen] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(Boolean(initialEntry));
   const [opening, setOpening] = useState(false);
-  const [view, setView] = useState<View>("contents");
-  const [chapter, setChapter] = useState<Chapter>({ track: initialTrack, category: initialCategory });
-  const [entryId, setEntryId] = useState<string | null>(null);
-  const [visitedNotes, setVisitedNotes] = useState<string[]>([]);
+  const [view, setView] = useState<View>(initialEntry ? initialEditNotes ? "tasting" : "flower" : "contents");
+  const [chapter, setChapter] = useState<Chapter>({ track: initialEntry?.track ?? initialTrack, category: initialEntry?.category ?? initialCategory });
+  const [entryId, setEntryId] = useState<string | null>(initialEntry?.id ?? null);
+  const [visitedNotes, setVisitedNotes] = useState<string[]>(initialEntry && initialEditNotes ? [initialEntry.id] : []);
   const [turn, setTurn] = useState(0);
   const deskRef = useRef<HTMLElement>(null);
   const pageRef = useRef<HTMLDivElement>(null);
@@ -81,6 +85,15 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
   const pageTitle = view === "contents" ? "Table des matières" : view === "flowers" ? CONTEST_ENTRY_CATEGORY_LABELS[chapter.category] : entry?.title ?? "Ta fleur";
 
   useBodyScrollLock(true);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (open && entryId && (view === "flower" || view === "tasting" || view === "rewards")) url.searchParams.set("entry", entryId);
+    else url.searchParams.delete("entry");
+    if (open && view === "tasting") url.searchParams.set("view", "notes");
+    else { url.searchParams.delete("view"); url.searchParams.delete("edit"); }
+    if (url.href !== window.location.href) window.history.replaceState(window.history.state, "", url);
+  }, [open, view, entryId]);
 
   useEffect(() => {
     if (!initialContestBundleOffer || !isAuthenticated) return;
@@ -189,6 +202,11 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
     const unlock = unlockById.get(item.id);
     if (unlock?.review) return { eligible: false, reason: "already_reviewed" };
     return unlock ? { eligible: true, reason: "ok" } : { eligible: false, reason: "not_purchased" };
+  };
+  const loginHrefFor = (item: ContestEntrySummary) => {
+    const params = new URLSearchParams({ entry: item.id, edit: "notes" });
+    if (item.season?.code) params.set("season", item.season.code);
+    return `/compte/connexion?next=${encodeURIComponent(`/arene/carnet/${item.track}?${params.toString()}`)}`;
   };
 
   return <section ref={deskRef} className={styles.desk} data-world="arena" data-tasting-book data-open={open || undefined}
@@ -332,7 +350,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
               const item = entries.find((candidate) => candidate.id === id);
               if (!item) return null;
               return <div key={id} hidden={view !== "tasting" || entryId !== id} className={styles.notesPage}>
-                <NotebookPanel entry={item} viewerProfile={viewerProfile} viewerReview={unlockById.get(id)?.review ?? null} eligibility={eligibilityFor(item)} loginHref={`/compte/connexion?next=${encodeURIComponent(`/arene/carnet/${item.track}?category=${item.category}`)}`} productHref={getContestProductHref(item.product)} displayMode="book" defaultGuideOpen={!unlockById.get(id)?.review} onCloseGuide={() => go("flower")} />
+                <NotebookPanel entry={item} draftOwnerId={draftOwnerId} viewerProfile={viewerProfile} viewerReview={unlockById.get(id)?.review ?? null} eligibility={eligibilityFor(item)} loginHref={loginHrefFor(item)} productHref={getContestProductHref(item.product)} displayMode="book" defaultGuideOpen={!unlockById.get(id)?.review} onCloseGuide={() => go("flower")} />
               </div>;
             })}
             {view === "rewards" && entry ? <div className={styles.rewardsPage}><NotebookRewards isAuthenticated={isAuthenticated} badges={badges} entryId={entry.id} entryTitle={entry.title} entryTrack={entry.track} reviewApproved={unlockById.get(entry.id)?.review?.status === "approved"} /></div> : null}

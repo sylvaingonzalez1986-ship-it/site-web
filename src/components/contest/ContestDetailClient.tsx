@@ -9,6 +9,7 @@ import { ProductDetailActions } from "@/components/boutique/ProductDetailActions
 import { ContestEntryCard } from "@/components/contest/ContestEntryCard";
 import { ContestHeritageUnlockCard } from "@/components/contest/ContestHeritageUnlockCard";
 import { ContestNotebookPanel } from "@/components/contest/ContestNotebookPanel";
+import { useContestReviewPages } from "@/components/contest/useContestReviewPages";
 import {
   ContestReviewTicker,
   type ContestTickerItem,
@@ -39,6 +40,7 @@ type ContestDetailClientProps = {
   lowStockThresholdGrams: number;
   loginHref: string;
   isAuthenticated: boolean;
+  draftOwnerId?: string;
 };
 
 function buildTechnicalRows(detail: PublicContestEntryDetail) {
@@ -93,8 +95,11 @@ export function ContestDetailClient({
   lowStockThresholdGrams,
   loginHref,
   isAuthenticated,
+  draftOwnerId,
 }: ContestDetailClientProps) {
-  const [reviews, setReviews] = useState(detail.reviews);
+  const { reviews, setReviews, hasMore, loading, error: reviewPageError, loadMore } = useContestReviewPages(
+    detail.reviews, detail.nextReviewCursor, `/api/contest/review-pages/${encodeURIComponent(detail.entry.id)}`,
+  );
   const [selectedPublicReviewId, setSelectedPublicReviewId] = useState<string | null>(
     detail.reviews[0]?.id ?? null,
   );
@@ -332,7 +337,7 @@ export function ContestDetailClient({
                     Moyenne publique
                   </p>
                   <p className="mt-2 text-2xl font-bold leading-none text-ink">
-                    {formatContestAverage(detail.entry.stats.averageScore)} / {CONTEST_SCORE_MAX}
+                    {formatContestAverage(detail.entry.stats.approvedReviewCount > 0 ? detail.entry.stats.averageScore : null)} / {CONTEST_SCORE_MAX}
                   </p>
                 </div>
                 <div className="flex min-h-[96px] flex-col justify-between rounded border-2 border-[#1a1a1a] bg-white p-4">
@@ -386,6 +391,7 @@ export function ContestDetailClient({
           </div>
 
           <ContestNotebookPanel
+            draftOwnerId={draftOwnerId}
             entry={detail.entry}
             viewerProfile={detail.viewerProfile}
             viewerReview={detail.viewerReview}
@@ -412,6 +418,7 @@ export function ContestDetailClient({
                   Avis publics
                 </p>
                 <h2 className="font-display text-3xl leading-none text-ink">Carnets publiés</h2>
+                <p className="text-sm text-charcoal" aria-live="polite">{reviews.length} avis {reviews.length > 1 ? "affichés" : "affiché"} · plus récents d’abord</p>
               </div>
               <Link
                 href="/arene"
@@ -577,6 +584,12 @@ export function ContestDetailClient({
               </div>
             )}
 
+            {reviewPageError ? <p role="alert" className="mt-4 text-sm text-charcoal">{reviewPageError}</p> : null}
+            {hasMore ? (
+              <button type="button" className="btn-cartoon btn-secondary mt-4 min-h-[48px] px-5 py-3 text-sm" disabled={loading} onClick={() => void loadMore()}>
+                {loading ? "Chargement des avis…" : reviewPageError ? "Réessayer de charger les avis" : "Lire les avis suivants"}
+              </button>
+            ) : null}
             <div className="hidden" aria-hidden="true">
             {reviews.length > 0 ? (
               <div className="mt-5 grid gap-4 lg:grid-cols-2">

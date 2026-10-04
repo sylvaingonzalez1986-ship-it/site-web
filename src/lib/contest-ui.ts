@@ -4,6 +4,8 @@ import type {
   ContestReviewEligibilityReason,
   ContestReviewScore,
 } from "@/types/contest";
+import { CONTEST_SCORE_CRITERIA } from "@/types/contest";
+import { CONTEST_SCORE_MAX, CONTEST_SCORE_MIN } from "@/lib/contest-score";
 
 const PRODUCT_CATEGORY_SLUGS: Record<string, string> = {
   fleurs: "fleurs-cbd",
@@ -51,9 +53,9 @@ export const CONTEST_CATEGORY_DESCRIPTIONS: Record<ContestEntryCategory, string>
   indoor: "Les lots de précision pour les amateurs de profils techniques et denses.",
 };
 
-export function formatContestAverage(value: number): string {
-  if (!Number.isFinite(value)) {
-    return "0,0";
+export function formatContestAverage(value: number | null | undefined): string {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return "—";
   }
 
   return value.toFixed(1).replace(".", ",");
@@ -103,9 +105,12 @@ export function getContestEligibilityMessage(reason: ContestReviewEligibilityRea
   }
 }
 
-export function getContestReviewAverage(scores: ContestReviewScore[]): number {
-  if (scores.length === 0) {
-    return 0;
+export function getContestReviewAverage(scores: ContestReviewScore[]): number | null {
+  const criteria = new Set(scores.map(({ criterion }) => criterion));
+  if (scores.length !== CONTEST_SCORE_CRITERIA.length ||
+      !CONTEST_SCORE_CRITERIA.every((criterion) => criteria.has(criterion)) ||
+      scores.some(({ score }) => !Number.isFinite(score) || score < CONTEST_SCORE_MIN || score > CONTEST_SCORE_MAX)) {
+    return null;
   }
 
   const total = scores.reduce((sum, score) => sum + score.score, 0);

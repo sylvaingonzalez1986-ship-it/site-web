@@ -14,6 +14,7 @@ import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import type { ContestReviewSubmissionInput } from "@/types/contest";
 import { getPublicContestError } from "@/lib/contest-api-error";
+import { ContestReviewVersionConflictError, isContestReviewVersion } from "@/lib/contest-review-moderation";
 
 export const runtime = "nodejs";
 
@@ -167,6 +168,10 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Payload invalide." }, { status: 400 });
   }
 
+  if (!isContestReviewVersion(payload.expectedUpdatedAt)) {
+    return NextResponse.json({ error: "Recharge l’avis avant de le modifier." }, { status: 400 });
+  }
+
   try {
     const review = await updateContestReview({
       customerId: session.customerId,
@@ -189,6 +194,9 @@ export async function PUT(request: Request) {
       message: "Avis modifie. Il reste en moderation.",
     });
   } catch (error) {
+    if (error instanceof ContestReviewVersionConflictError) {
+      return NextResponse.json({ error: error.message }, { status: 409 });
+    }
     if (isContestSchemaMissingError(error)) {
       return NextResponse.json({ error: CONTEST_SCHEMA_MISSING_MESSAGE }, { status: 503 });
     }

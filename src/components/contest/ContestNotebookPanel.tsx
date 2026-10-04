@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
-import { useCallback, useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState, useTransition, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { ContestReviewSkillRadar } from "@/components/contest/ContestReviewSkillRadar";
 import styles from "./ContestNotebookPanel.module.css";
+import { contestDraftKey, contestReviewVersion, readContestDraft, type ContestNotebookDraft } from "@/lib/contest-notebook-draft";
 import {
   CONTEST_AROMA_TAG_LABELS,
   CONTEST_AROMA_TAGS,
@@ -60,6 +61,7 @@ type ContestNotebookPanelProps = {
   useDesktopSpreadGuide?: boolean;
   onOpenGuide?: () => void;
   onCloseGuide?: () => void;
+  draftOwnerId?: string | null;
 };
 
 type ReviewScoreMap = Record<ContestScoreCriterion, number>;
@@ -213,20 +215,23 @@ function ScoreSlider({
   value,
   onChange,
   disabled = false,
+  evaluated = true,
 }: {
   criterion: ContestScoreCriterion;
   value: number;
   onChange: (criterion: ContestScoreCriterion, nextValue: number) => void;
   disabled?: boolean;
+  evaluated?: boolean;
 }) {
   return (
-    <label className={styles.scoreCard}>
+    <div className={styles.scoreCard}>
+    <label>
       <div className={styles.scoreTop}>
         <span className={styles.scoreLabel}>
           {CONTEST_SCORE_CRITERION_LABELS[criterion]}
         </span>
         <span className={styles.scorePill}>
-          {value}/{CONTEST_SCORE_MAX}
+          {evaluated ? `${value}/${CONTEST_SCORE_MAX}` : "À noter"}
         </span>
       </div>
       <input
@@ -238,9 +243,12 @@ function ScoreSlider({
         onChange={(event) => onChange(criterion, Number(event.target.value))}
         disabled={disabled}
         className={styles.scoreRange}
+        aria-valuetext={evaluated ? `${value} sur ${CONTEST_SCORE_MAX}` : "Non évalué. Ajuste le curseur ou confirme la valeur proposée."}
       />
-      <p className={styles.scoreHint}>{getScoreHint(value)}</p>
+      <p className={styles.scoreHint}>{evaluated ? getScoreHint(value) : "Ce critère ne compte pas encore dans ta note."}</p>
     </label>
+    {!evaluated && !disabled ? <button type="button" className={styles.confirmScore} onClick={() => onChange(criterion, value)} aria-label={`Confirmer ${value} sur 100 pour ${CONTEST_SCORE_CRITERION_LABELS[criterion]}`}>Confirmer {value}/100</button> : null}
+    </div>
   );
 }
 
@@ -487,11 +495,13 @@ function ScoreSliderStack({
   scores,
   onChange,
   disabled,
+  evaluatedCriteria,
 }: {
   criteria: ContestScoreCriterion[];
   scores: ReviewScoreMap;
   onChange: (criterion: ContestScoreCriterion, nextValue: number) => void;
   disabled: boolean;
+  evaluatedCriteria: ContestScoreCriterion[];
 }) {
   return (
     <div className={styles.scoreStack}>
@@ -502,6 +512,7 @@ function ScoreSliderStack({
           value={scores[criterion]}
           onChange={onChange}
           disabled={disabled}
+          evaluated={disabled || evaluatedCriteria.includes(criterion)}
         />
       ))}
     </div>
@@ -525,10 +536,14 @@ function TastingContentGrid({
   );
 }
 
-export function ContestNotebookPanel({
+export function ContestNotebookPanel(props: ContestNotebookPanelProps) {
+  return <ContestNotebookEditor key={`${props.draftOwnerId ?? "anonymous"}:${props.entry.id}:${contestReviewVersion(props.viewerReview)}`} {...props} />;
+}
+
+function ContestNotebookEditor({
   entry,
   viewerProfile,
-  viewerReview,
+  viewerReview: initialServerReview,
   eligibility,
   loginHref,
   productHref,
@@ -537,7 +552,12 @@ export function ContestNotebookPanel({
   useDesktopSpreadGuide = false,
   onOpenGuide,
   onCloseGuide,
+  draftOwnerId,
 }: ContestNotebookPanelProps) {
+  const serverReview = useRef(initialServerReview).current;
+  const [submittedReview, setSubmittedReview] = useState<ViewerContestReview | null>(null);
+  const viewerReview = submittedReview ?? serverReview;
+  const fieldId = useId();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -546,11 +566,11 @@ export function ContestNotebookPanel({
   const isInlineDisplayMode = displayMode === "button" || isSpreadDisplayMode || displayMode === "book";
   const shouldOpenReviewEditor =
     searchParams.get("edit") === "notes" &&
-    (viewerReview?.status === "pending" || (!viewerReview && eligibility.eligible));
+    (viewerReview?.status === "pending" || viewerReview?.status === "rejected" || (!viewerReview && eligibility.eligible));
   const [isPending, startTransition] = useTransition();
   const [isGuideOpen, setIsGuideOpen] = useState(shouldOpenReviewEditor || defaultGuideOpen);
   const [isEditingReview, setIsEditingReview] = useState(
-    shouldOpenReviewEditor && viewerReview?.status === "pending",
+    shouldOpenReviewEditor && (viewerReview?.status === "pending" || viewerReview?.status === "rejected"),
   );
   const [pageIndex, setPageIndex] = useState(0);
   const inlineGuideRef = useRef<HTMLElement | null>(null);
@@ -585,12 +605,73 @@ export function ContestNotebookPanel({
   );
   const [reviewMessage, setReviewMessage] = useState<string | null>(null);
   const [reviewError, setReviewError] = useState<string | null>(null);
+  const reviewFeedbackRef = useRef<HTMLDivElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSavingPseudo, setIsSavingPseudo] = useState(false);
+  const submissionLock = useRef(false);
+  const pseudoLock = useRef(false);
+  const [evaluatedCriteria, setEvaluatedCriteria] = useState<ContestScoreCriterion[]>(shouldOpenReviewEditor && viewerReview ? [...CONTEST_SCORE_CRITERIA] : []);
+  const [draftLoaded, setDraftLoaded] = useState(false);
+  const [draftMessage, setDraftMessage] = useState<string | null>(null);
+  const [olderDraft, setOlderDraft] = useState<ContestNotebookDraft | null>(null);
+  const [reviewConflict, setReviewConflict] = useState(false);
+  const [hasDraftEdits, setHasDraftEdits] = useState(false);
+  const draftKey = draftOwnerId ? contestDraftKey(draftOwnerId, entry.id) : null;
+
+  useEffect(() => {
+    if (!reviewMessage && !reviewError) return;
+    reviewFeedbackRef.current?.focus({ preventScroll: true });
+    reviewFeedbackRef.current?.scrollIntoView({ block: "nearest" });
+  }, [reviewMessage, reviewError]);
+
+  useEffect(() => {
+    if (draftKey && draftOwnerId) {
+      try {
+        const raw = localStorage.getItem(draftKey);
+        const draft = readContestDraft(raw, draftOwnerId, entry.id, serverReview);
+        if (draft) {
+          setScores(draft.scores);
+          setConsumptionMethod(draft.consumptionMethod);
+          setConsumptionDetails(draft.consumptionDetails ?? "");
+          setComment(draft.comment);
+          setSelectedTags(draft.aromaTags.map((item) => item.tag));
+          setSelectedTerpenes(normalizeTerpeneSelection(draft.terpeneGuesses));
+          setOtherAromaLabel(draft.aromaTags.find((item) => item.tag === "other")?.customLabel ?? "");
+          setEvaluatedCriteria(draft.evaluatedCriteria);
+          setPageIndex(draft.pageIndex);
+          setIsEditingReview(Boolean(serverReview));
+          setIsGuideOpen(true);
+          setHasDraftEdits(true);
+          setDraftMessage("Brouillon retrouvé sur cet appareil. Tu peux reprendre ta dégustation.");
+        } else if (raw) {
+          const older = readContestDraft(raw, draftOwnerId, entry.id, serverReview, Date.now(), true);
+          if (older) setOlderDraft(older);
+          else localStorage.removeItem(draftKey);
+        }
+      } catch {
+        setDraftMessage("La sauvegarde sur cet appareil est indisponible. Garde cette page ouverte jusqu’à l’envoi.");
+      }
+    }
+    setDraftLoaded(true);
+  }, [draftKey, draftOwnerId, entry.id, serverReview]);
+
+  useEffect(() => {
+    if (!draftLoaded || !draftKey || !draftOwnerId || !hasDraftEdits || (viewerReview && !isEditingReview)) return;
+    const draft: ContestNotebookDraft = {
+      version: 1, ownerId: draftOwnerId, entryId: entry.id, baseReviewVersion: contestReviewVersion(viewerReview), savedAt: Date.now(), pageIndex,
+      scores, consumptionMethod, consumptionDetails, comment, evaluatedCriteria,
+      aromaTags: selectedTags.map((tag) => tag === "other" ? { tag, customLabel: otherAromaLabel } : { tag }),
+      terpeneGuesses: selectedTerpenes,
+    };
+    try { localStorage.setItem(draftKey, JSON.stringify(draft)); }
+    catch { setDraftMessage("La sauvegarde sur cet appareil est indisponible. Garde cette page ouverte jusqu’à l’envoi."); }
+  }, [draftLoaded, draftKey, draftOwnerId, hasDraftEdits, viewerReview, isEditingReview, entry.id, pageIndex, scores, consumptionMethod, consumptionDetails, comment, evaluatedCriteria, selectedTags, otherAromaLabel, selectedTerpenes]);
 
   const scoreAverage = useMemo(() => {
-    const values = Object.values(scores);
+    const values = evaluatedCriteria.map((criterion) => scores[criterion]);
     const total = values.reduce((sum, value) => sum + value, 0);
-    return values.length > 0 ? total / values.length : 0;
-  }, [scores]);
+    return values.length > 0 ? total / values.length : null;
+  }, [scores, evaluatedCriteria]);
 
   const notebookIntro = getContestEligibilityMessage(eligibility.reason);
   const technicalSheet = {
@@ -651,20 +732,27 @@ export function ContestNotebookPanel({
     const contextText = visibleConsumptionDetails.trim()
       ? ` (${visibleConsumptionDetails.trim()})`
       : "";
+    const writtenScore = (criterion: ContestScoreCriterion) => isReviewReadOnly || evaluatedCriteria.includes(criterion)
+      ? `${visibleScores[criterion]}/${CONTEST_SCORE_MAX}`
+      : "à préciser";
 
     return [
       `Dégustée en ${CONTEST_CONSUMPTION_METHOD_LABELS[visibleConsumptionMethod].toLowerCase()}${contextText}.`,
-      `Aspect: ${visibleScores.appearance}/${CONTEST_SCORE_MAX}, nez: ${visibleScores.cold_aroma}/${CONTEST_SCORE_MAX}, goût: ${visibleScores.flavor}/${CONTEST_SCORE_MAX}.`,
+      `Aspect: ${writtenScore("appearance")}, nez: ${writtenScore("cold_aroma")}, goût: ${writtenScore("flavor")}.`,
       `Arômes perçus: ${aromaText}.`,
-      `Impression générale: ${visibleScores.overall_impression}/${CONTEST_SCORE_MAX}.`,
+      `Impression générale: ${writtenScore("overall_impression")}.`,
     ].join(" ");
   };
 
   const fillCommentDraft = () => {
+    if (comment.trim()) return;
     setComment(buildReviewCommentDraft());
+    setHasDraftEdits(true);
   };
 
   const handleScoreChange = (criterion: ContestScoreCriterion, nextValue: number) => {
+    setHasDraftEdits(true);
+    setEvaluatedCriteria((current) => current.includes(criterion) ? current : [...current, criterion]);
     setScores((current) => ({
       ...current,
       [criterion]: nextValue,
@@ -672,12 +760,14 @@ export function ContestNotebookPanel({
   };
 
   const handleToggleTag = (tag: ContestAromaTag) => {
+    setHasDraftEdits(true);
     setSelectedTags((current) =>
       current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag],
     );
   };
 
   const handleToggleTerpene = (terpene: string) => {
+    setHasDraftEdits(true);
     setSelectedTerpenes((current) =>
       current.includes(terpene)
         ? current.filter((item) => item !== terpene)
@@ -770,6 +860,9 @@ export function ContestNotebookPanel({
   }, [isGuideOpen, isInlineDisplayMode]);
 
   const savePseudo = async () => {
+    if (pseudoLock.current) return;
+    pseudoLock.current = true;
+    setIsSavingPseudo(true);
     setProfileMessage(null);
     setProfileError(null);
 
@@ -790,12 +883,26 @@ export function ContestNotebookPanel({
       refreshPage();
     } catch {
       setProfileError("Erreur réseau lors de l'enregistrement du pseudo.");
+    } finally {
+      pseudoLock.current = false;
+      setIsSavingPseudo(false);
     }
   };
 
   const submitReview = async () => {
+    if (submissionLock.current) return;
     setReviewMessage(null);
     setReviewError(null);
+    setReviewConflict(false);
+    const missing = CONTEST_SCORE_CRITERIA.filter((criterion) => !evaluatedCriteria.includes(criterion));
+    if (missing.length) {
+      setReviewError(`Il reste ${missing.length} critère${missing.length > 1 ? "s" : ""} à évaluer. Ajuste ou confirme chaque note avant l’envoi.`);
+      const group = SCORE_GROUPS.findIndex((item) => item.criteria.includes(missing[0]));
+      setPageIndex(group + 1);
+      return;
+    }
+    submissionLock.current = true;
+    setIsSubmitting(true);
 
     const aromaTags: ContestReviewAromaSelection[] = selectedTags.map((tag) => {
       if (tag === "other") {
@@ -815,6 +922,7 @@ export function ContestNotebookPanel({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           entryId: entry.id,
+          ...(isUpdate ? { expectedUpdatedAt: viewerReview?.updatedAt } : {}),
           consumptionMethod,
           consumptionDetails,
           comment,
@@ -824,9 +932,16 @@ export function ContestNotebookPanel({
         } satisfies ContestReviewSubmissionInput),
       });
 
-      const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+      const payload = (await response.json().catch(() => null)) as { error?: string; review?: ViewerContestReview } | null;
       if (!response.ok) {
-        setReviewError(payload?.error || "Impossible de soumettre l'avis.");
+        setReviewConflict(response.status === 409);
+        setReviewError(response.status === 409
+          ? "Cet avis a changé depuis son ouverture. Ton brouillon est conservé. Charge la nouvelle version pour comparer tes notes avant de les renvoyer."
+          : payload?.error || "Impossible de soumettre l'avis.");
+        return;
+      }
+      if (!payload?.review) {
+        setReviewError("L’envoi n’a pas pu être confirmé. Ton brouillon est conservé ; recharge le carnet pour vérifier ton avis.");
         return;
       }
 
@@ -836,9 +951,16 @@ export function ContestNotebookPanel({
           : "Guide envoyé. Il apparaîtra publiquement après modération.",
       );
       setIsEditingReview(false);
+      setSubmittedReview(payload.review);
+      setHasDraftEdits(false);
+      setDraftMessage(null);
+      try { if (draftKey) localStorage.removeItem(draftKey); } catch { /* Saved server review takes precedence on the next visit. */ }
       refreshPage();
     } catch {
       setReviewError("Erreur réseau lors de l'envoi du guide.");
+    } finally {
+      submissionLock.current = false;
+      setIsSubmitting(false);
     }
   };
 
@@ -848,6 +970,7 @@ export function ContestNotebookPanel({
     }
 
     setScores(buildScoresFromReview(viewerReview));
+    setEvaluatedCriteria([...CONTEST_SCORE_CRITERIA]);
     setConsumptionMethod(viewerReview.consumptionMethod);
     setConsumptionDetails(viewerReview.consumptionDetails ?? "");
     setComment(viewerReview.comment);
@@ -932,10 +1055,11 @@ export function ContestNotebookPanel({
     if (!viewerProfile) {
       return (
         <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
-          <label className="block text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
+          <label htmlFor={`${fieldId}-pseudo`} className="block text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
             Pseudo dégustateur
           </label>
           <input
+            id={`${fieldId}-pseudo`}
             type="text"
             value={pseudo}
             onChange={(event) => setPseudo(event.target.value)}
@@ -948,13 +1072,13 @@ export function ContestNotebookPanel({
           <button
             type="button"
             onClick={savePseudo}
-            disabled={isPending}
+            disabled={isPending || isSavingPseudo}
             className="btn-cartoon btn-primary mt-4 inline-flex min-h-[44px] items-center justify-center px-5 text-xs leading-none disabled:opacity-60"
           >
-            {isPending ? "Enregistrement..." : "Enregistrer mon pseudo"}
+            {isPending || isSavingPseudo ? "Enregistrement..." : "Enregistrer mon pseudo"}
           </button>
-          {profileMessage ? <p className="mt-3 text-sm font-semibold text-[#1f5a2f]">{profileMessage}</p> : null}
-          {profileError ? <p className="mt-3 text-sm font-semibold text-[#7a1010]">{profileError}</p> : null}
+          {profileMessage ? <p role="status" className="mt-3 text-sm font-semibold text-[#1f5a2f]">{profileMessage}</p> : null}
+          {profileError ? <p role="alert" className="mt-3 text-sm font-semibold text-[#7a1010]">{profileError}</p> : null}
         </div>
       );
     }
@@ -987,7 +1111,7 @@ export function ContestNotebookPanel({
         <ContestTastingStepMascot step="verdict" compact />
       </div>
       <p className={styles.bookReviewStatus}>
-        {viewerReview ? CONTEST_REVIEW_STATUS_LABELS[viewerReview.status] : "Brouillon · notes non envoyées"}
+        {viewerReview ? CONTEST_REVIEW_STATUS_LABELS[viewerReview.status] : `Brouillon · ${evaluatedCriteria.length}/${CONTEST_SCORE_CRITERIA.length} critères évalués · notes non envoyées`}
         {isEditingReview ? " · Modifications en cours" : ""}
       </p>
       <div className={styles.bookScoreTotals}>
@@ -995,7 +1119,7 @@ export function ContestNotebookPanel({
         <div data-score="community"><span>Moyenne des joueurs</span><strong>{entry.stats.approvedReviewCount > 0 ? <>{formatContestAverage(entry.stats.averageScore)}<small>/100</small></> : "—"}</strong></div>
       </div>
       <ContestReviewSkillRadar
-        review={{ scores: CONTEST_SCORE_CRITERIA.map((criterion) => ({ criterion, score: visibleScores[criterion] })) }}
+        review={{ scores: CONTEST_SCORE_CRITERIA.filter((criterion) => isReviewReadOnly || evaluatedCriteria.includes(criterion)).map((criterion) => ({ criterion, score: visibleScores[criterion] })) }}
         comparisonScores={entry.stats.approvedReviewCount > 0 ? entry.stats.criterionAverages : undefined}
         showValues={false}
         showTotals={false}
@@ -1006,18 +1130,31 @@ export function ContestNotebookPanel({
     </section>
   );
 
+  const renderOlderDraft = () => olderDraft ? (
+    <details className={styles.olderDraft}>
+      <summary>Retrouver mon brouillon d’une version précédente</summary>
+      <p>Les notes enregistrées sur le serveur ont changé. Ce brouillon reste disponible pour comparer, sans remplacer ton avis actuel.</p>
+      <p>{CONTEST_CONSUMPTION_METHOD_LABELS[olderDraft.consumptionMethod]}{olderDraft.consumptionDetails ? ` · ${olderDraft.consumptionDetails}` : ""}</p>
+      {olderDraft.aromaTags.length > 0 ? <p>Arômes : {olderDraft.aromaTags.map((item) => item.tag === "other" ? item.customLabel : CONTEST_AROMA_TAG_LABELS[item.tag]).join(", ")}</p> : null}
+      {olderDraft.terpeneGuesses?.length ? <p>Terpènes : {olderDraft.terpeneGuesses.map((code) => CANNABIS_TERPENE_OPTIONS.find((item) => item.code === code)?.label ?? code).join(", ")}</p> : null}
+      <textarea aria-label="Critique de mon ancien brouillon" readOnly value={olderDraft.comment} rows={4} />
+      <dl>{olderDraft.evaluatedCriteria.map((criterion) => <div key={criterion}><dt>{CONTEST_SCORE_CRITERION_LABELS[criterion]}</dt><dd>{olderDraft.scores[criterion]}/100</dd></div>)}</dl>
+    </details>
+  ) : null;
+
   const renderBookNotes = () => (
     <div className={styles.bookNotes} data-book-notes>
+      {renderOlderDraft()}
       {renderBookScoreSummary()}
       {visibleComment ? <section className={styles.bookWrittenNotes}><h3>Mes impressions</h3><p>{visibleComment}</p></section> : null}
       {viewerReview?.adminNote ? <p className={styles.bookScoreCaption}>Retour de modération : {viewerReview.adminNote}</p> : null}
       <div className={styles.bookNotesActions}>
         <button type="button" className={styles.navButton} onClick={onCloseGuide}>Retour à la fleur</button>
         <button type="button" className={`${styles.navButton} ${styles.navButtonPrimary}`} onClick={() => {
-          if (viewerReview?.status === "pending" && !isEditingReview) startReviewEdit();
+          if ((viewerReview?.status === "pending" || viewerReview?.status === "rejected") && !isEditingReview) startReviewEdit();
           else if (viewerReview && !isEditingReview) openGuide();
           else setIsGuideOpen(true);
-        }}>{viewerReview?.status === "pending" ? "Modifier mes notes" : viewerReview ? "Lire mes notes" : "Continuer la dégustation"}</button>
+        }}>{viewerReview?.status === "rejected" ? "Corriger mes notes" : viewerReview?.status === "pending" ? "Modifier mes notes" : viewerReview ? "Lire mes notes" : "Continuer la dégustation"}</button>
       </div>
     </div>
   );
@@ -1112,9 +1249,9 @@ export function ContestNotebookPanel({
                   );
                 })}
               </div>
-              {savedTerpeneRewardUnlocked ? (
+              {savedTerpeneRewardUnlocked && viewerReview.status === "approved" ? (
                 <p className="mt-3 rounded border-2 border-[#1a1a1a] bg-yellow px-3 py-2 text-sm font-black text-ink">
-                  Badge Nez Absolu débloqué : ta reconnaissance des terpènes est validée.
+                  Ta sélection correspond aux terpènes du lot.
                 </p>
               ) : null}
             </div>
@@ -1137,17 +1274,17 @@ export function ContestNotebookPanel({
             </p>
           ) : null}
 
-          {viewerReview.status === "pending" ? (
+          {viewerReview.status === "pending" || viewerReview.status === "rejected" ? (
             <button
               type="button"
               onClick={startReviewEdit}
               className="btn-cartoon btn-secondary mt-5 inline-flex min-h-[44px] items-center justify-center px-5 text-xs leading-none"
             >
-              Modifier mon guide
+              {viewerReview.status === "rejected" ? "Corriger et renvoyer mon guide" : "Modifier mon guide"}
             </button>
           ) : (
             <p className="mt-4 text-sm font-semibold text-charcoal">
-              Les notes ne sont modifiables que tant que le guide est en attente de modération.
+              Ce guide a été validé. Ses notes publiées sont conservées.
             </p>
           )}
         </div>
@@ -1257,7 +1394,7 @@ export function ContestNotebookPanel({
                 </div>
               </div>
               {savedTerpeneRewardUnlocked ? (
-                <p className="contest-review-summary-reward">Badge Nez Absolu debloque.</p>
+                <p className="contest-review-summary-reward">Ta sélection correspond aux terpènes du lot.</p>
               ) : null}
             </article>
 
@@ -1356,7 +1493,14 @@ export function ContestNotebookPanel({
       </nav>
 
       <div key={pageIndex} className={styles.contentViewport} data-tasting-scroll>
-        {renderGuidePage()}
+        <div ref={reviewFeedbackRef} tabIndex={-1} className={styles.feedback}>
+          {draftMessage ? <p role="status">{draftMessage}</p> : hasDraftEdits && draftKey && !submittedReview ? <p>Ton brouillon est sauvegardé sur cet appareil.</p> : null}
+          {reviewMessage ? <p role="status">{reviewMessage}</p> : null}
+          {reviewError ? <p role="alert">{reviewError}</p> : null}
+          {reviewConflict ? <button type="button" className={styles.confirmScore} onClick={refreshPage} disabled={isPending}>Charger la nouvelle version</button> : null}
+        </div>
+        {renderOlderDraft()}
+        <fieldset disabled={isSubmitting} className={styles.formFields}>{renderGuidePage()}</fieldset>
       </div>
 
       <footer className={styles.notebookFooter}>
@@ -1458,9 +1602,11 @@ export function ContestNotebookPanel({
                       onClick={() => {
                         if (!isReviewReadOnly) {
                           setConsumptionMethod(method);
+                          setHasDraftEdits(true);
                         }
                       }}
                       disabled={isReviewReadOnly}
+                      aria-pressed={visibleConsumptionMethod === method}
                       className={`flex min-h-[54px] items-center rounded border-2 px-3 py-2 text-left ${
                         visibleConsumptionMethod === method
                           ? "border-[#1a1a1a] bg-yellow text-ink"
@@ -1476,8 +1622,10 @@ export function ContestNotebookPanel({
                 <input
                   type="text"
                   value={visibleConsumptionDetails}
-                  onChange={(event) => setConsumptionDetails(event.target.value)}
+                  onChange={(event) => { setConsumptionDetails(event.target.value); setHasDraftEdits(true); }}
                   readOnly={isReviewReadOnly}
+                  aria-label="Précisions sur ton mode de dégustation"
+                  maxLength={300}
                   placeholder="Optionnel: température, roulage, matériel..."
                   className="mt-3 h-12 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 text-sm text-ink"
                 />
@@ -1533,6 +1681,7 @@ export function ContestNotebookPanel({
               />
               <ScoreSliderStack
                 criteria={visualCriteria}
+                evaluatedCriteria={evaluatedCriteria}
                 scores={visibleScores}
                 onChange={handleScoreChange}
                 disabled={isReviewReadOnly}
@@ -1658,8 +1807,10 @@ export function ContestNotebookPanel({
                   <input
                     type="text"
                     value={visibleOtherAromaLabel}
-                    onChange={(event) => setOtherAromaLabel(event.target.value)}
-                    readOnly={isReviewReadOnly}
+                  onChange={(event) => { setOtherAromaLabel(event.target.value); setHasDraftEdits(true); }}
+                  readOnly={isReviewReadOnly}
+                  aria-label="Autre arôme détecté"
+                  maxLength={80}
                     placeholder="Autre arôme détecté"
                     className="mt-3 h-12 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 text-sm text-ink"
                   />
@@ -1667,6 +1818,7 @@ export function ContestNotebookPanel({
               </div>
               <ScoreSliderStack
                 criteria={aromaCriteria}
+                evaluatedCriteria={evaluatedCriteria}
                 scores={visibleScores}
                 onChange={handleScoreChange}
                 disabled={isReviewReadOnly}
@@ -1696,6 +1848,7 @@ export function ContestNotebookPanel({
               />
               <ScoreSliderStack
                 criteria={tastingCriteria}
+                evaluatedCriteria={evaluatedCriteria}
                 scores={visibleScores}
                 onChange={handleScoreChange}
                 disabled={isReviewReadOnly}
@@ -1737,6 +1890,7 @@ export function ContestNotebookPanel({
               </div>}
               <ScoreSliderStack
                 criteria={verdictCriteria}
+                evaluatedCriteria={evaluatedCriteria}
                 scores={visibleScores}
                 onChange={handleScoreChange}
                 disabled={isReviewReadOnly}
@@ -1750,6 +1904,8 @@ export function ContestNotebookPanel({
                     <button
                       type="button"
                       onClick={fillCommentDraft}
+                      disabled={Boolean(comment.trim())}
+                      title={comment.trim() ? "Ton texte est conservé. Vide le champ pour utiliser le modèle." : "Créer un modèle à partir de tes notes"}
                       className="rounded-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-2 text-[10px] font-black uppercase tracking-[0.08em] text-ink"
                     >
                       Préremplir
@@ -1758,7 +1914,8 @@ export function ContestNotebookPanel({
                 </div>
                 <textarea
                   value={visibleComment}
-                  onChange={(event) => setComment(event.target.value)}
+                  onChange={(event) => { setComment(event.target.value); setHasDraftEdits(true); }}
+                  aria-label="Critique rédigée"
                   onFocus={(event) => {
                     const field = event.currentTarget;
                     window.setTimeout(() => field.scrollIntoView({ behavior: "smooth", block: "center" }), 280);
@@ -1774,14 +1931,12 @@ export function ContestNotebookPanel({
                 <button
                   type="button"
                   onClick={submitReview}
-                  disabled={isPending}
+                  disabled={isPending || isSubmitting}
                   className="btn-cartoon btn-primary inline-flex min-h-[48px] items-center justify-center px-6 text-xs leading-none disabled:opacity-60"
                 >
-                  {isPending ? "Envoi..." : isEditingReview ? "Enregistrer mes modifications" : "Envoyer mon avis"}
+                  {isPending || isSubmitting ? "Envoi..." : viewerReview?.status === "rejected" && isEditingReview ? "Renvoyer mon avis corrigé" : isEditingReview ? "Enregistrer mes modifications" : "Envoyer mon avis"}
                 </button>
               )}
-              {reviewMessage ? <p className="text-sm font-semibold text-[#1f5a2f]">{reviewMessage}</p> : null}
-              {reviewError ? <p className="text-sm font-semibold text-[#7a1010]">{reviewError}</p> : null}
             </>
           }
           right={

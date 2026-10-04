@@ -190,6 +190,15 @@ describe("admin notebook publication validation", () => {
     expect(state.rows.contest_entries).toHaveLength(1);
   });
 
+  it.each(["pending", "approved", "rejected"])("keeps a lot's product and season attached to its %s review", async status => {
+    const state = fixture([product("p"), product("other")], [entry("reviewed", "p")]);
+    state.rows.contest_reviews = [{ id: "review", entry_id: "reviewed", status }];
+    await expect(updateContestEntry("reviewed", { productId: "other" })).rejects.toThrow("possède déjà des avis");
+    await expect(updateContestEntry("reviewed", { seasonId: "archived" })).rejects.toThrow("possède déjà des avis");
+    expect(state.writes).toEqual([]);
+    await expect(updateContestEntry("reviewed", { title: "Description améliorée" })).resolves.toMatchObject({ title: "Description améliorée" });
+  });
+
   it("allows publishing a valid entry when its old counterpart is hidden", async () => {
     const state = fixture([product("p", 4)], [entry("old-hidden", "p", "regular", false), entry("new-hidden", "p", "concours", false)]);
     const result = await updateContestEntry("new-hidden", { isPublished: true });

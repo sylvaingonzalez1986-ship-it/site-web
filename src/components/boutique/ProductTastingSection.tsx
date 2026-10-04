@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "@/components/navigation/NavigationLink";
+import { useContestReviewPages } from "@/components/contest/useContestReviewPages";
 import { ArrowDown, ArrowUpRight, BookOpen, ChevronDown, MessageCircle, Star } from "lucide-react";
 import type { ContestScoreCriterion } from "@/types/contest";
 import {
@@ -56,7 +59,11 @@ function CriterionRow({ criterion, score }: { criterion: ContestScoreCriterion; 
 }
 
 export function ProductTastingSection({ summary, showArenaLink }: ProductTastingProps) {
-  const { entry, reviews } = summary;
+  const { entry } = summary;
+  const { reviews, hasMore, loading, error, loadMore } = useContestReviewPages(
+    summary.reviews, summary.nextReviewCursor, `/api/boutique/tasting/${encodeURIComponent(entry.id)}/reviews`,
+  );
+  const notebookHref = `/arene/carnet/${entry.track}?entry=${encodeURIComponent(entry.id)}${entry.season?.code ? `&season=${encodeURIComponent(entry.season.code)}` : ""}`;
   const reviewCount = entry.stats.approvedReviewCount;
   const criterionAverages = CONTEST_SCORE_CRITERIA.flatMap((criterion) => {
     const score = entry.stats.criterionAverages[criterion];
@@ -73,7 +80,8 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
         </div>
         <div className={styles.edition}>
           <span>Le lot dégusté</span>
-          <strong>{entry.season?.label ?? entry.title}</strong>
+          <strong>{entry.title}</strong>
+          {entry.season ? <span>{entry.season.label}{entry.season.isArchived ? " · Archive" : ""}</span> : null}
           <span>Avis publiés après modération</span>
         </div>
       </header>
@@ -87,6 +95,7 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
               <span>/ {CONTEST_SCORE_MAX}</span>
             </div>
             <p className={styles.reviewCount}>{reviewCount > 0 ? formatReviewCount(reviewCount) : "La première note se fait attendre"}</p>
+            <p className={styles.criteriaHint}>Moyenne des {CONTEST_SCORE_CRITERIA.length} critères de dégustation.</p>
           </div>
 
           {criterionAverages.length > 0 ? (
@@ -99,18 +108,23 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
             </details>
           ) : null}
 
-          <p className={styles.sourceNote}><BookOpen size={18} aria-hidden="true" /><span>Ces notes et critiques proviennent des carnets de dégustation remplis pour ce lot.</span></p>
+          <p className={styles.sourceNote}><BookOpen size={18} aria-hidden="true" /><span>Ces notes et critiques concernent le lot indiqué. La moyenne prend en compte tous les avis publiés après modération.</span></p>
           {showArenaLink ? (
-            <Link href={`/arene/${entry.slug}`} className={styles.carnetLink}>
-              Voir le carnet complet <ArrowUpRight size={17} aria-hidden="true" />
-            </Link>
+            <>
+              <Link href={`${notebookHref}&edit=notes`} className={styles.carnetLink}>
+                Donner mon avis <ArrowUpRight size={17} aria-hidden="true" />
+              </Link>
+              <Link href={notebookHref} className={styles.carnetLink}>
+                Ouvrir mon carnet <ArrowUpRight size={17} aria-hidden="true" />
+              </Link>
+            </>
           ) : null}
         </aside>
 
         <div className={styles.reviews}>
           <div className={styles.reviewsHeading}>
             <h3 className={styles.subheading}><MessageCircle size={20} aria-hidden="true" /> À lire dans le Carnet</h3>
-            {reviews.length > 0 ? <span>{reviews.length < reviewCount ? `${reviews.length} derniers avis sur ${reviewCount}` : formatReviewCount(reviewCount)}</span> : null}
+            {reviews.length > 0 ? <span aria-live="polite">{reviews.length} avis {reviews.length > 1 ? "affichés" : "affiché"} · plus récents d’abord</span> : null}
           </div>
 
           {reviews.length > 0 ? (
@@ -169,6 +183,12 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
               <p>Ce lot n’a pas encore d’avis publié. Les notes et critiques apparaîtront ici après modération.</p>
             </div>
           )}
+          {error ? <p role="alert" className={styles.paginationStatus}>{error}</p> : null}
+          {hasMore ? (
+            <button type="button" className={styles.loadMore} onClick={() => void loadMore()} disabled={loading}>
+              {loading ? "Chargement des avis…" : error ? "Réessayer de charger les avis" : "Lire les avis suivants"}
+            </button>
+          ) : null}
         </div>
       </div>
     </section>

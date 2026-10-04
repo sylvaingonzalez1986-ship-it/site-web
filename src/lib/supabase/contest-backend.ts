@@ -7,6 +7,8 @@ import { syncKqProducerNotebookRewardsForReview } from "@/lib/supabase/kanab-que
 import { CONTEST_SCORE_MAX, CONTEST_SCORE_MIN } from "@/lib/contest-score";
 import { CANNABIS_TERPENE_CODES, normalizeContestTerpene } from "@/lib/contest-terpenes";
 import { selectContestProductTastingEntry } from "@/lib/contest-product-tasting";
+import { createContestReviewCursor, parseContestReviewCursor } from "@/lib/contest-review-pagination";
+import { ContestReviewVersionConflictError, isContestReviewVersion } from "@/lib/contest-review-moderation";
 import { classifyContestProductTrack, type ContestProductPricing } from "@/lib/contest-product-track";
 import {
   CONTEST_AROMA_TAGS,
@@ -770,8 +772,9 @@ function mapReviewRow(row: ContestReviewRow): ContestReview {
     qualityMark: toContestReviewQualityMark(row.quality_mark),
     reviewedBy: toOptionalText(row.reviewed_by) ?? null,
     reviewedAt: toOptionalText(row.reviewed_at) ?? null,
-    createdAt: toIsoString(row.created_at),
-    updatedAt: toIsoString(row.updated_at),
+    // Preserve PostgreSQL microseconds for moderation versions and page cursors.
+    createdAt: preserveReviewTimestamp(row.created_at),
+    updatedAt: preserveReviewTimestamp(row.updated_at),
     scores: [],
     aromaTags: [],
     terpeneGuesses: [],
@@ -1002,6 +1005,15 @@ async function hydrateReviews(
   rows: ContestReviewRow[],
   options: { includeEntry?: boolean; includeSeason?: boolean; viewerCustomerId?: string } = {},
 ): Promise<ContestReview[]> {
+  // Ten scores per review: bounded batches stay below the Data API row cap,
+  // including when callers hydrate several products or a long review history.
+  if (rows.length > 40) {
+    const hydrated: ContestReview[] = [];
+    for (let offset = 0; offset < rows.length; offset += 40) {
+      hydrated.push(...await hydrateReviews(rows.slice(offset, offset + 40), options));
+    }
+    return hydrated;
+  }
   const reviews = rows.map((row) => mapReviewRow(row));
   if (reviews.length === 0) {
     return [];
@@ -1254,16 +1266,12 @@ async function getPaidContestOrderRowsForCustomer(
     .limit(limit);
 
   const safeCustomerEmail = normalizeEmail(customerEmail);
+  // SQL equality treats _, % and PostgREST's * alias as literal email data.
   const byEmailPromise = safeCustomerEmail
-    ? supabase
-        .from("orders")
-        .select("id,created_at")
-        .is("customer_id", null)
-        .ilike("customer_email", safeCustomerEmail)
-        .in("payment_state", [...CONTEST_ELIGIBLE_PAYMENT_STATES])
-        .neq("status", "cancelled")
-        .order("created_at", { ascending: false })
-        .limit(limit)
+    ? supabase.rpc("rpc_get_contest_paid_guest_orders", {
+        p_email: safeCustomerEmail,
+        p_limit: limit,
+      })
     : Promise.resolve({ data: [], error: null } as {
         data: Array<Record<string, unknown>>;
         error: SupabaseContestError | null;
@@ -2146,6 +2154,10 @@ function getContestProductPricing(row: Record<string, unknown>): ContestProductP
   };
 }
 
+function preserveReviewTimestamp(value: unknown): string {
+  return typeof value === "string" && Number.isFinite(Date.parse(value)) ? value : toIsoString(value);
+}
+
 function assertContestProductTrack(product: ContestProductPricing, track: ContestEntryTrack, allowIneligible = false): void {
   const classification = classifyContestProductTrack(product);
   if (classification.status === "ineligible" && !allowIneligible) {
@@ -2421,39 +2433,79 @@ export async function getContestProductTastingSummaries(
     return [];
   }
 
-  const safeReviewLimit = Math.max(0, Math.min(6, Math.floor(reviewLimitPerProduct)));
+  const safeReviewLimit = Number.isFinite(reviewLimitPerProduct)
+    ? Math.max(0, Math.min(6, Math.floor(reviewLimitPerProduct))) : 2;
   if (safeReviewLimit === 0) {
-    return entries.map((entry) => ({ entry, reviews: [] }));
+    return entries.map((entry) => ({ entry, reviews: [], nextReviewCursor: null }));
   }
 
-  const supabase = createSupabaseServiceClient();
-  const reviewsResult = await supabase
-    .from("contest_reviews")
-    .select(SELECT_REVIEW_COLUMNS)
-    .in("entry_id", entries.map((entry) => entry.id))
-    .eq("status", "approved")
-    .order("reviewed_at", { ascending: false, nullsFirst: false })
-    .order("created_at", { ascending: false });
-
-  failIfError(reviewsResult.error, "read approved contest reviews by products");
-  const reviews = await hydrateReviews(toRowArray(reviewsResult.data), {
-    includeEntry: true,
-    includeSeason: true,
-  });
+  const rows = await readPublishedReviewRows(entries.map((entry) => entry.id), safeReviewLimit + 1);
+  const selectedRows: ContestReviewRow[] = [];
+  const rowsByEntryId = new Map<string, ContestReviewRow[]>();
+  for (const row of rows) {
+    const entryId = toText(row.entry_id);
+    const entryRows = rowsByEntryId.get(entryId) ?? [];
+    entryRows.push(row);
+    rowsByEntryId.set(entryId, entryRows);
+    if (entryRows.length <= safeReviewLimit) selectedRows.push(row);
+  }
+  // Only the visible reviews reach the scores/tags queries.
+  const reviews = await hydrateReviews(selectedRows);
   const reviewsByEntryId = new Map<string, ContestReview[]>();
-
   for (const review of reviews) {
     const entryReviews = reviewsByEntryId.get(review.entryId) ?? [];
-    if (entryReviews.length < safeReviewLimit) {
-      entryReviews.push(review);
-      reviewsByEntryId.set(review.entryId, entryReviews);
-    }
+    entryReviews.push(review);
+    reviewsByEntryId.set(review.entryId, entryReviews);
   }
 
-  return entries.map((entry) => ({
-    entry,
-    reviews: reviewsByEntryId.get(entry.id) ?? [],
-  }));
+  return entries.map((entry) => {
+    const entryReviews = reviewsByEntryId.get(entry.id) ?? [];
+    return {
+      entry,
+      reviews: entryReviews,
+      nextReviewCursor: (rowsByEntryId.get(entry.id)?.length ?? 0) > safeReviewLimit
+        ? createContestReviewCursor(entryReviews[entryReviews.length - 1]) : null,
+    };
+  });
+}
+
+async function readPublishedReviewRows(entryIds: string[], limit: number, cursor?: string | null): Promise<ContestReviewRow[]> {
+  const before = parseContestReviewCursor(cursor);
+  const supabase = createSupabaseServiceClient();
+  const rows: ContestReviewRow[] = [];
+  for (let offset = 0; offset < entryIds.length; offset += 20) {
+    const result = await supabase.rpc("rpc_contest_public_review_page", {
+      p_entry_ids: entryIds.slice(offset, offset + 20),
+      p_limit: limit,
+      p_before_date: before?.publishedAt ?? null,
+      p_before_id: before?.id ?? null,
+    });
+    failIfError(result.error, "read published contest review page");
+    rows.push(...toRowArray(result.data));
+  }
+  return rows;
+}
+
+async function loadPublishedReviewPage(entryId: string, input: { limit?: number; cursor?: string | null; viewerCustomerId?: string } = {}) {
+  const limit = Number.isFinite(input.limit) ? Math.max(1, Math.min(40, Math.floor(input.limit!))) : 12;
+  const rows = await readPublishedReviewRows([entryId], limit + 1, input.cursor);
+  const reviews = await hydrateReviews(rows.slice(0, limit), { viewerCustomerId: input.viewerCustomerId });
+  return {
+    reviews,
+    nextReviewCursor: rows.length > limit ? createContestReviewCursor(reviews[reviews.length - 1]) : null,
+  };
+}
+
+export async function getContestEntryReviewsPage(
+  entryId: string,
+  input: { limit?: number; cursor?: string | null; viewerCustomerId?: string } = {},
+) {
+  const result = await createSupabaseServiceClient().from("contest_entries")
+    .select("id,product_id").eq("id", entryId).eq("is_published", true).maybeSingle();
+  failIfError(result.error, "read published entry before review page");
+  const entry = toRow(result.data);
+  if (!entry) return null;
+  return { ...await loadPublishedReviewPage(toText(entry.id), input), productId: toText(entry.product_id) };
 }
 
 export async function getContestProductTastingEntries(
@@ -2518,21 +2570,7 @@ export async function getContestEntryDetailBySlug(
     return null;
   }
 
-  const approvedReviewsResult = await supabase
-    .from("contest_reviews")
-    .select(SELECT_REVIEW_COLUMNS)
-    .eq("entry_id", entry.id)
-    .eq("status", "approved")
-    .order("reviewed_at", { ascending: true, nullsFirst: false })
-    .order("created_at", { ascending: true })
-    .limit(40);
-
-  failIfError(approvedReviewsResult.error, "read approved contest reviews by entry");
-  const reviews = (await hydrateReviews(toRowArray(approvedReviewsResult.data), {
-    includeEntry: true,
-    includeSeason: true,
-    viewerCustomerId: customerId,
-  })).sort(compareReviewValidationOrder);
+  const { reviews, nextReviewCursor } = await loadPublishedReviewPage(entry.id, { viewerCustomerId: customerId });
 
   const viewerProfile = customerId ? await getContestProfile(customerId) : null;
   const viewerReviewRow = customerId
@@ -2550,6 +2588,7 @@ export async function getContestEntryDetailBySlug(
   return {
     entry,
     reviews,
+    nextReviewCursor,
     viewerProfile,
     viewerReview,
     viewerBadges,
@@ -2904,6 +2943,7 @@ export async function submitContestReview(input: {
   const atomicInsert = await supabase.rpc("rpc_create_contest_review_atomic", {
     p_entry_id: entry.id,
     p_season_id: entry.seasonId,
+    p_expected_product_id: entry.productId,
     p_customer_id: safeCustomerId,
     p_pseudo_snapshot: profile.pseudo,
     p_consumption_method: consumptionMethod,
@@ -2948,6 +2988,11 @@ export async function updateContestReview(input: {
     throw new Error("Lot premium introuvable.");
   }
 
+  const expectedUpdatedAt = input.payload.expectedUpdatedAt;
+  if (!isContestReviewVersion(expectedUpdatedAt)) {
+    throw new Error("Recharge l’avis avant de le modifier.");
+  }
+
   const entryRow = await getContestEntryRowById(safeEntryId);
   if (!entryRow) {
     throw new Error("Lot premium introuvable.");
@@ -2968,8 +3013,8 @@ export async function updateContestReview(input: {
     throw new Error("Aucun avis a modifier pour ce lot.");
   }
 
-  if (toContestReviewStatus(existingReview.status) !== "pending") {
-    throw new Error("Seuls les avis encore en attente de moderation peuvent etre modifies.");
+  if (toContestReviewStatus(existingReview.status) === "approved") {
+    throw new Error("Les avis deja approuves ne peuvent plus etre modifies.");
   }
 
   const hasPurchased = await hasCustomerPurchasedContestProduct(
@@ -2995,6 +3040,7 @@ export async function updateContestReview(input: {
   const atomicUpdate = await supabase.rpc("rpc_update_contest_review_atomic", {
     p_review_id: reviewId,
     p_customer_id: safeCustomerId,
+    p_expected_updated_at: expectedUpdatedAt,
     p_pseudo_snapshot: profile.pseudo,
     p_consumption_method: consumptionMethod,
     p_consumption_details: consumptionDetails,
@@ -3003,6 +3049,9 @@ export async function updateContestReview(input: {
     p_aroma_tags: aromaTags,
     p_terpene_guesses: terpeneGuesses,
   });
+  if (atomicUpdate.error?.message.includes("contest_review_version_conflict")) {
+    throw new ContestReviewVersionConflictError("Cet avis a changé depuis son chargement. Recharge sa nouvelle version avant de reprendre tes corrections.");
+  }
   failIfError(atomicUpdate.error, "update contest review atomically");
   const reviewRow = await getContestReviewRowByEntryAndCustomer(entry.id, safeCustomerId);
   if (!reviewRow || toText(atomicUpdate.data) !== reviewId) {
@@ -3473,6 +3522,7 @@ export async function getAdminContestReviews(
 
 export async function moderateContestReview(input: {
   reviewId: string;
+  expectedUpdatedAt: string;
   status: Exclude<ContestReviewStatus, "pending">;
   adminNote?: string;
   qualityMark?: ContestReviewQualityMark;
@@ -3487,6 +3537,10 @@ export async function moderateContestReview(input: {
     throw new Error("Statut de moderation invalide.");
   }
 
+  if (!isContestReviewVersion(input.expectedUpdatedAt)) {
+    throw new Error("Recharge l’avis avant de le modérer.");
+  }
+
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("contest_reviews")
@@ -3499,11 +3553,15 @@ export async function moderateContestReview(input: {
       updated_at: new Date().toISOString(),
     })
     .eq("id", safeReviewId)
+    .eq("updated_at", input.expectedUpdatedAt)
     .select("id,customer_id")
     .maybeSingle();
 
   failIfError(result.error, "moderate contest review");
   const moderatedReview = toRow(result.data);
+  if (!moderatedReview) {
+    throw new ContestReviewVersionConflictError();
+  }
   if (moderatedReview) {
     await syncContestTesterPointsForReview(safeReviewId);
     if (input.status === "approved") {
@@ -3726,6 +3784,18 @@ export async function updateContestEntry(entryId: string, input: Partial<Contest
   const nextSeasonId = toText(patch.season_id ?? current.seasonId);
   const nextTrack = (patch.track ?? current.track) as ContestEntryTrack;
   const nextPublished = typeof patch.is_published === "boolean" ? patch.is_published : current.isPublished;
+  if (nextProductId !== current.productId || nextSeasonId !== current.seasonId) {
+    const existingReview = await createSupabaseServiceClient()
+      .from("contest_reviews")
+      .select("id")
+      .eq("entry_id", safeEntryId)
+      .limit(1)
+      .maybeSingle();
+    failIfError(existingReview.error, "check tasting lot identity");
+    if (existingReview.data) {
+      throw new Error("Ce lot possède déjà des avis. Crée un nouveau lot pour changer de produit ou de saison.");
+    }
+  }
   const classificationChanged = nextProductId !== current.productId || nextSeasonId !== current.seasonId || nextTrack !== current.track;
   const newlyPublished = nextPublished && !current.isPublished;
   // Historical notes remain editable; validate a new classification or publication.

@@ -112,11 +112,13 @@ export async function ContestArenaDetailPage({ params }: ContestDetailPageProps)
 
   return (
     <ContestDetailClient
+      key={detail.entry.id}
       detail={sanitizePublicContestEntryDetail(detail)}
       product={product}
       lowStockThresholdGrams={store.content.boutique.lowStockThresholdGrams}
       loginHref={loginHref}
       isAuthenticated={Boolean(session?.customerId)}
+      draftOwnerId={session?.customerId}
     />
   );
 }

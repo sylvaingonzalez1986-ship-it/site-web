@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 type ArenaNotebookTrackPageProps = {
   params: Promise<{ track: string }>;
-  searchParams: Promise<{ season?: string; category?: string }>;
+  searchParams: Promise<{ season?: string; category?: string; entry?: string; edit?: string; view?: string }>;
 };
 
 export default async function ArenaNotebookTrackPage({ params, searchParams }: ArenaNotebookTrackPageProps) {

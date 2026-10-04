@@ -405,6 +405,7 @@ export type ContestReviewEligibility = {
 export type ContestEntryDetail = {
   entry: ContestEntrySummary;
   reviews: ContestReview[];
+  nextReviewCursor?: string | null;
   viewerProfile: ContestProfile | null;
   viewerReview: ContestReview | null;
   viewerBadges: ContestProfileBadge[];
@@ -414,6 +415,7 @@ export type ContestEntryDetail = {
 export type ContestProductTastingSummary = {
   entry: ContestEntrySummary;
   reviews: ContestReview[];
+  nextReviewCursor?: string | null;
 };
 
 export type ContestNotebookUnlock = {
@@ -473,6 +475,7 @@ export type ContestEntryInput = {
 };
 
 export type ContestReviewSubmissionInput = {
+  expectedUpdatedAt?: string;
   entryId: string;
   consumptionMethod: ContestConsumptionMethod;
   consumptionDetails?: string;

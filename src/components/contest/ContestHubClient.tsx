@@ -99,6 +99,7 @@ type ContestHubClientProps = {
   rankings: ContestEntrySummary[];
   feed: ContestFeedItem[];
   notebookUnlocks: PublicContestNotebookUnlock[];
+  draftOwnerId?: string | null;
   viewerProfile: PublicContestProfile | null;
   viewerBadges: PublicContestProfileBadge[];
   viewerProgress: PublicContestTesterProgress | null;
@@ -2455,6 +2456,7 @@ export function ContestHubClient({
   rankings,
   feed,
   notebookUnlocks,
+  draftOwnerId,
   viewerProfile,
   viewerBadges: initialViewerBadges,
   viewerProgress,
@@ -3222,6 +3224,7 @@ export function ContestHubClient({
                     <div className="contest-notes-desktop-spread">
                       <ContestNotebookPanel
                         key={`desktop-notes-spread-${selectedEntry.id}`}
+                        draftOwnerId={draftOwnerId}
                         entry={selectedEntry}
                         viewerProfile={viewerProfile}
                         viewerReview={selectedUnlock?.review ?? null}
@@ -3275,15 +3278,18 @@ export function ContestHubClient({
                           <span className="font-black text-ink">
                             {CONTEST_REVIEW_STATUS_LABELS[selectedUnlock.review.status]}
                           </span>
-                          {selectedUnlock.review.status === "pending"
-                            ? " · modifiable jusqu'a validation."
-                            : " · consultation seule apres validation."}
+                          {selectedUnlock.review.status === "approved"
+                            ? " · consultation seule après validation."
+                            : selectedUnlock.review.status === "rejected"
+                              ? " · corrige ton avis pour le soumettre à nouveau."
+                              : " · modifiable jusqu’à validation."}
                         </p>
                       ) : null}
 
                       <div className="contest-notebook-notes-body min-h-0 flex-1 overflow-y-auto pr-1">
                         <ContestNotebookPanel
                           key={selectedEntry.id}
+                          draftOwnerId={draftOwnerId}
                           entry={selectedEntry}
                           viewerProfile={viewerProfile}
                           viewerReview={selectedUnlock?.review ?? null}

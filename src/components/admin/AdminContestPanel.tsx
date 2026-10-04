@@ -395,6 +395,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
   const [entryDeletingId, setEntryDeletingId] = useState<string | null>(null);
   const [selectedEntryId, setSelectedEntryId] = useState<string | null>(null);
   const [busyReviewId, setBusyReviewId] = useState<string | null>(null);
+  const reviewModerationPending = useRef(false);
   const [loadingMoreEntries, setLoadingMoreEntries] = useState(false);
   const [loadingMoreReviews, setLoadingMoreReviews] = useState(false);
   const [notesByReviewId, setNotesByReviewId] = useState<Record<string, string>>({});
@@ -830,6 +831,9 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
     reviewId: string,
     nextStatus: Exclude<ContestReviewStatus, "pending">,
   ) => {
+    const review = reviews.find((item) => item.id === reviewId);
+    if (!review || reviewModerationPending.current) return;
+    reviewModerationPending.current = true;
     setBusyReviewId(reviewId);
     setStatus(null);
 
@@ -839,6 +843,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           status: nextStatus,
+          expectedUpdatedAt: review.updatedAt,
           adminNote: notesByReviewId[reviewId] ?? "",
           qualityMark: qualityByReviewId[reviewId] ?? "",
         }),
@@ -846,6 +851,9 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
 
       if (!response.ok) {
         setStatus(await extractErrorMessage(response, "Impossible de moderer l'avis."));
+        if (response.status === 409) {
+          await loadData(reviewFilter, { preserveStatus: true });
+        }
         return;
       }
 
@@ -854,6 +862,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
     } catch {
       setStatus("Erreur reseau pendant la moderation.");
     } finally {
+      reviewModerationPending.current = false;
       setBusyReviewId(null);
     }
   };
@@ -890,7 +899,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
           </span>
         </div>
 
-        {status && <p className="mt-3 text-sm font-semibold text-charcoal">{status}</p>}
+        {status && <p role="status" className="mt-3 text-sm font-semibold text-charcoal">{status}</p>}
         {loading && (
           <p className="mt-3 text-sm text-charcoal">Chargement du tableau de bord concours...</p>
         )}
@@ -1522,9 +1531,18 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
                       </div>
                     )}
 
+                    <label htmlFor={`moderation-message-${review.id}`} className="mt-4 block text-sm font-semibold text-ink">
+                      Message visible par le client
+                    </label>
+                    <p id={`moderation-message-help-${review.id}`} className="mt-1 text-xs text-charcoal">
+                      Explique le motif du refus et les corrections attendues. Ne saisis aucune note interne ici.
+                    </p>
                     <textarea
-                      className="mt-4 min-h-20 w-full border-2 border-[#1a1a1a] p-3 text-sm"
-                      placeholder="Note admin visible seulement en moderation"
+                      id={`moderation-message-${review.id}`}
+                      aria-describedby={`moderation-message-help-${review.id}`}
+                      maxLength={500}
+                      className="mt-2 min-h-20 w-full border-2 border-[#1a1a1a] p-3 text-sm"
+                      placeholder="Retour de modération destiné à l’auteur de l’avis"
                       value={notesByReviewId[review.id] ?? ""}
                       onChange={(event) =>
                         setNotesByReviewId((current) => ({
@@ -1558,7 +1576,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
                       <button
                         type="button"
                         className="btn-cartoon btn-secondary inline-flex items-center gap-2"
-                        disabled={busyReviewId === review.id}
+                        disabled={Boolean(busyReviewId)}
                         onClick={() => void handleReviewModeration(review.id, "approved")}
                       >
                         <Check size={14} /> Approuver
@@ -1566,7 +1584,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
                       <button
                         type="button"
                         className="btn-cartoon btn-primary inline-flex items-center gap-2"
-                        disabled={busyReviewId === review.id}
+                        disabled={Boolean(busyReviewId)}
                         onClick={() => void handleReviewModeration(review.id, "rejected")}
                       >
                         <X size={14} /> Rejeter

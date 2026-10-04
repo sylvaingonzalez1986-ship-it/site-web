@@ -8,14 +8,14 @@ import { ProductTastingBadge, ProductTastingSection } from "@/components/boutiqu
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getOwnProducer } from "@/lib/own-producer";
-import { isProductTastingStorefrontEnabled } from "@/lib/product-tasting-feature";
+import { isProductTastingStorefrontEnabled, isProductTastingNotebookLinkEnabled } from "@/lib/product-tasting-feature";
 import { getSiteUrl } from "@/lib/site-url";
 import { buildProductMetaDescription } from "@/lib/product-discovery";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { isRemoteImageUrl } from "@/lib/image-source";
 import { isProductCultureModeEligible, type Product } from "@/data/products";
 import { getContestProductTastingSummary, isContestSchemaMissingError } from "@/lib/contest-backend";
-import { isContestBetaAccessRestrictedServer, isContestFeatureEnabledServer } from "@/lib/contest-feature";
+import { isContestFeatureEnabledServer } from "@/lib/contest-feature";
 import {
   sanitizePublicContestProductTastingSummary,
   type PublicContestProductTastingSummary,
@@ -331,8 +331,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         {tastingSummary ? (
           <ProductTastingSection
+            key={tastingSummary.entry.id}
             summary={tastingSummary}
-            showArenaLink={!isContestBetaAccessRestrictedServer()}
+            showArenaLink={isProductTastingNotebookLinkEnabled()}
           />
         ) : null}
 

@@ -55,14 +55,16 @@ const modules = {
     const unlocks = entries.filter(e=>e.id.endsWith('-0')).map(e=>({entryId:e.id,unlockedAt:'2026-09-10',review:params.has('review') ? {
       id:'review-'+e.id,entryId:e.id,seasonId:'season',pseudo:'Sylvain',consumptionMethod:'vaporizer',comment:'Mes notes enregistrées sur cette fleur.'+(params.has('reviewDistinct')?' '+e.id:''),status:params.get('review'),adminNote:'',qualityMark:'standard',createdAt:'2026-09-10',updatedAt:'2026-09-10',scores:CONTEST_SCORE_CRITERIA.map(criterion=>({criterion,score:92})),aromaTags:[],terpeneGuesses:[]
     } : undefined}));
-    createRoot(document.getElementById('root')).render(React.createElement(ContestTastingBook,{entries:visible,unlocks:params.has('locked')?[]:unlocks,viewerProfile:{pseudo:'Sylvain',createdAt:'2026-09-10',updatedAt:'2026-09-10'},badges:[],isAuthenticated:true,seasonLabel:'Les dégustations de l’Arène · Saison 2026',initialTrack:params.get('initialTrack') || 'regular',initialCategory:params.get('category') || 'outdoor'}));
+    createRoot(document.getElementById('root')).render(React.createElement(ContestTastingBook,{entries:visible,unlocks:params.has('locked')?[]:unlocks,viewerProfile:params.has('missingProfile') ? null : {pseudo:'Sylvain',createdAt:'2026-09-10',updatedAt:'2026-09-10'},badges:[],isAuthenticated:!params.has('anonymous'),draftOwnerId:params.get('owner'),initialEntryId:params.get('entry'),initialEditNotes:params.get('edit')==='notes'||params.get('view')==='notes',seasonLabel:'Les dégustations de l’Arène · Saison 2026',initialTrack:params.get('initialTrack') || 'regular',initialCategory:params.get('category') || 'outdoor'}));
   `,
   "next/image": `import React from 'react'; export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}) { return React.createElement('img', {...props, src: typeof src === 'string' ? src : src.src, style: {...(fill ? {position:'absolute',inset:0,width:'100%',height:'100%'} : {}), ...props.style}}); }`,
   "next/link": `import React from 'react'; export const useLinkStatus=()=>({pending:false}); export default function Link({prefetch,scroll,replace,...props}) {return React.createElement('a',props);}`,
   "next/dynamic": `import React from 'react'; export default function dynamic(loader, options={}) {const Component=React.lazy(() => loader().then(m => ({default:m.default || m}))); return function Dynamic(props){return React.createElement(React.Suspense,{fallback:options.loading ? React.createElement(options.loading) : null},React.createElement(Component,props));};}`,
-  "next/navigation": `export const usePathname=()=>'/arene/carnet/regular'; export const useSearchParams=()=>new URLSearchParams(); export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{window.__bookRefreshes=(window.__bookRefreshes||0)+1;}});`,
+  "next/navigation": `export const usePathname=()=>location.pathname; export const useSearchParams=()=>new URLSearchParams(location.search); export const useRouter=()=>({push:()=>{},replace:(href)=>history.replaceState(history.state,'',href),refresh:()=>{window.__bookRefreshes=(window.__bookRefreshes||0)+1;}});`,
 };
 const submissions = [];
+let reviewFixture = { status: 503, delay: 0 };
+const profileSubmissions = [];
 let rewardFixture = { completed: false, purchasedAll: false, completionGranted: false, purchaseGranted: false, rarity: 'silver', failAction: null };
 const rewardRequests = [];
 const collectionApiRequests = [];
@@ -130,8 +132,19 @@ const server = await createServer({
               response.end(JSON.stringify({campaign:producerCampaign()}));
             }); return;
           }
-          if (request.url === '/api/contest/reviews' && request.method === 'POST') {
-            let body=''; request.on('data',chunk=>body+=chunk); request.on('end',()=>{submissions.push(JSON.parse(body));response.end('{"error":"Erreur de test : réessaie sans perdre tes notes."}');}); response.statusCode=503; return;
+          if (request.url === '/api/contest/reviews' && ['POST','PUT'].includes(request.method)) {
+            let body=''; request.on('data',chunk=>body+=chunk); request.on('end',()=>{
+              const payload = JSON.parse(body); submissions.push({...payload,method:request.method});
+              setTimeout(()=>{
+                response.statusCode=reviewFixture.status;
+                response.end(JSON.stringify(reviewFixture.status===200 ? {review:{...payload,id:'saved-'+payload.entryId,seasonId:'season',pseudo:'Sylvain',status:'pending',adminNote:'',qualityMark:'standard',createdAt:'2026-10-04',updatedAt:'2026-10-04',scores:Object.entries(payload.scores).map(([criterion,score])=>({criterion,score}))}} : {error:'Erreur de test : réessaie sans perdre tes notes.'}));
+              },reviewFixture.delay);
+            }); return;
+          }
+          if (request.url === '/api/contest/profile' && request.method === 'POST') {
+            let body=''; request.on('data',chunk=>body+=chunk); request.on('end',()=>{
+              profileSubmissions.push(JSON.parse(body)); setTimeout(()=>response.end('{}'),600);
+            }); return;
           }
           response.end('{"availableEntitlements":[],"campaigns":[],"collection":{"cards":[]}}'); return;
         }
@@ -155,6 +168,9 @@ try {
   page.on('pageerror',error=>{errors.push(error.message);console.error(error.message);});
   await page.setRequestInterception(true);
   page.on('request',request=> { const url = new URL(request.url()); if(url.protocol==='data:' || (url.hostname==='127.0.0.1' && url.port==='3197')) void request.continue(); else void request.abort(); });
+  // Reused synthetic Chrome profiles must not carry drafts between audit runs.
+  await page.goto('http://127.0.0.1:3197/',{waitUntil:'networkidle0'});
+  await page.evaluate(()=>localStorage.clear());
   const click = async (label) => {
     const handle = await page.waitForFunction(text => [...document.querySelectorAll('button[aria-label]')]
       .find(button=>button.getAttribute('aria-label')===text && button.getClientRects().length && !button.closest('[hidden]')), {}, label);
@@ -165,6 +181,12 @@ try {
   const chapters = ['regular','concours'].flatMap(track=>['outdoor','greenhouse','indoor'].map(category=>({track,category})));
   const chapterLabel = (track, category, count=2) => `${trackLabels[track]} · ${categoryLabels[category]}, ${count} fleurs`;
   const openChapter = (track, category, count=2) => click(chapterLabel(track,category,count));
+  const assessAllCriteria = async () => {
+    for (const [index,label] of [[2,'Aspect'],[3,'Odeur'],[4,'Goût'],[5,'Verdict']]) {
+      await click(`Étape ${index} : ${label}`);
+      await page.$$eval('[data-book-scroll] > div:not([hidden]) button[aria-label^="Confirmer"]',buttons=>buttons.forEach(button=>button.click()));
+    }
+  };
   const assertChapterEntries = async (track, category, count=2) => {
     assert.deepEqual(await page.$$eval('[data-book-entry]',buttons=>buttons.map(button=>({id:button.dataset.bookEntry,track:button.dataset.track}))),
       Array.from({length:count},(_,index)=>({id:`${track}-${category}-${index}`,track})));
@@ -245,6 +267,7 @@ try {
     await page.click('[data-book-entry="regular-outdoor-0"]');
     await page.locator('::-p-text(Déguster cette fleur)').click();
     assert.equal(await page.$eval('[data-book-scroll] > div:not([hidden]) textarea',e=>e.value),'Mes impressions restent dans le carnet.');
+    await assessAllCriteria();
     await page.locator('::-p-text(Envoyer mon avis)').click();
     await page.waitForFunction(()=>document.body.textContent.includes('Erreur de test'));
     assert.equal(submissions.at(-1).scores.appearance,83);
@@ -283,6 +306,7 @@ try {
   await page.waitForSelector('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll]',{visible:true});
   await click('Étape 5 : Verdict');
   await page.type('[data-book-scroll] > div:not([hidden]) textarea','Ma dégustation Concours compte dans le même carnet.');
+  await assessAllCriteria();
   await page.locator('::-p-text(Envoyer mon avis)').click();
   await page.waitForFunction(()=>document.body.textContent.includes('Erreur de test'));
   assert.equal(submissions.at(-1).entryId,'concours-greenhouse-0');
@@ -349,6 +373,79 @@ try {
   }
   }
   if (!rewardsOnly) {
+  await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});
+  const draftUrl = 'http://127.0.0.1:3197/?owner=alice&entry=regular-outdoor-0&edit=notes';
+  await page.goto(draftUrl,{waitUntil:'networkidle0'});
+  await page.waitForSelector('[data-tasting-scroll]',{visible:true});
+  const beforeEmptySubmission = submissions.length;
+  await click('Étape 5 : Verdict');
+  await page.locator('::-p-text(Envoyer mon avis)').click();
+  await page.waitForFunction(()=>document.querySelector('[role="alert"]')?.textContent.includes('10 critères'));
+  assert.equal(submissions.length,beforeEmptySubmission,'Untouched default scores must never be sent');
+  await assessAllCriteria();
+  await page.type('textarea','Mon brouillon privé repris après actualisation.');
+  await page.waitForFunction(()=>Object.keys(localStorage).some(key=>key.includes('alice')&&localStorage.getItem(key).includes('Mon brouillon privé')));
+  assert.equal(await page.locator('::-p-text(Préremplir)').map(button=>button.disabled).wait(),true,'Prefill must not replace written impressions');
+  await page.reload({waitUntil:'networkidle0'});
+  await page.waitForFunction(()=>document.querySelector('textarea')?.value==='Mon brouillon privé repris après actualisation.');
+  assert(await page.$eval('[data-tasting-book]',element=>element.dataset.open==='true'));
+  assert(await page.$eval('[data-tasting-scroll]',element=>element.textContent.includes('Brouillon retrouvé')));
+  await page.goto(draftUrl.replace('alice','bob'),{waitUntil:'networkidle0'});
+  await click('Étape 5 : Verdict');
+  assert.equal(await page.$eval('textarea',element=>element.value),'','Another account must not see the saved private draft');
+  await page.goto(draftUrl,{waitUntil:'networkidle0'});
+  await page.waitForFunction(()=>document.querySelector('textarea')?.value==='Mon brouillon privé repris après actualisation.');
+  await page.goto(draftUrl+'&review=approved',{waitUntil:'networkidle0'});
+  await page.waitForSelector('[data-book-notes]',{visible:true});
+  assert.equal(await page.$eval('[data-score="player"] strong',element=>element.textContent),'92,0/100','A server review must win over an obsolete draft');
+  assert.equal(await page.$eval('textarea[aria-label="Critique de mon ancien brouillon"]',element=>element.value),'Mon brouillon privé repris après actualisation.','The old draft remains available for comparison only');
+
+  reviewFixture = {status:200,delay:700};
+  await page.goto(draftUrl.replace('alice','submitter'),{waitUntil:'networkidle0'});
+  await assessAllCriteria();
+  await page.type('textarea','Un seul envoi et un accusé de réception visible.');
+  const beforeSuccess = submissions.length;
+  const successResponse = page.waitForResponse(response=>response.url().endsWith('/api/contest/reviews'));
+  await page.evaluate(()=>{const button=[...document.querySelectorAll('button')].find(item=>item.textContent==='Envoyer mon avis');button.click();button.click();});
+  await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(button=>button.textContent==='Envoi...'&&button.disabled));
+  await successResponse;
+  await page.waitForFunction(()=>[...document.querySelectorAll('[role="status"]')].some(element=>element.textContent.includes('Guide envoyé')));
+  assert.equal(submissions.length,beforeSuccess+1,'Two immediate clicks must cause exactly one request');
+  assert.equal(await page.$$eval('textarea',fields=>fields.length),0,'Saved review must immediately become read only');
+  assert.equal(await page.evaluate(()=>Object.keys(localStorage).some(key=>key.includes('submitter'))),false,'Success must clear the local draft');
+
+  await page.goto(draftUrl.replace('alice','corrector')+'&review=rejected',{waitUntil:'networkidle0'});
+  await click('Étape 5 : Verdict');
+  await page.type('textarea',' Avis corrigé.');
+  await page.locator('::-p-text(Renvoyer mon avis corrigé)').click();
+  await page.waitForFunction(()=>[...document.querySelectorAll('[role="status"]')].some(element=>element.textContent.includes('Guide modifié')));
+  assert.equal(submissions.at(-1).method,'PUT');
+  assert(submissions.at(-1).comment.includes('Avis corrigé.'));
+  assert.equal(submissions.at(-1).expectedUpdatedAt,'2026-09-10');
+  reviewFixture = {status:409,delay:0};
+  await page.goto(draftUrl.replace('alice','conflict')+'&review=pending',{waitUntil:'networkidle0'});
+  await click('Étape 5 : Verdict');
+  await page.type('textarea',' Conflit sans perte.');
+  await page.locator('::-p-text(Enregistrer mes modifications)').click();
+  await page.waitForFunction(()=>document.querySelector('[role="alert"]')?.textContent.includes('Cet avis a changé'));
+  assert((await page.$eval('textarea',element=>element.value)).includes('Conflit sans perte.'));
+  assert(await page.evaluate(()=>Object.keys(localStorage).some(key=>key.includes('conflict')&&localStorage.getItem(key).includes('Conflit sans perte'))));
+
+  await page.goto(draftUrl.replace('alice','profile')+'&missingProfile=1',{waitUntil:'networkidle0'});
+  await page.waitForSelector('input[id$="-pseudo"]',{visible:true});
+  await page.type('input[id$="-pseudo"]','Degustateur');
+  const beforePseudo = profileSubmissions.length;
+  const profileResponse = page.waitForResponse(response=>response.url().endsWith('/api/contest/profile'));
+  await page.evaluate(()=>{const button=[...document.querySelectorAll('button')].find(item=>item.textContent==='Enregistrer mon pseudo');button.click();button.click();});
+  await profileResponse;
+  assert.equal(profileSubmissions.length,beforePseudo+1);
+  await page.goto(draftUrl+'&anonymous=1',{waitUntil:'networkidle0'});
+  const loginHref = await page.$eval('a[href^="/compte/connexion"]',link=>link.getAttribute('href'));
+  const returnUrl = new URL(new URL(loginHref,'http://127.0.0.1:3197').searchParams.get('next'),'http://127.0.0.1:3197');
+  assert.equal(returnUrl.searchParams.get('entry'),'regular-outdoor-0');
+  assert.equal(returnUrl.searchParams.get('edit'),'notes');
+  reviewFixture = {status:503,delay:0};
+
   for (const width of [320,390,1440]) for (const status of ['approved','pending','rejected']) {
     await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});
     await page.goto(`http://127.0.0.1:3197/?review=${status}`,{waitUntil:'networkidle0'});
@@ -364,26 +461,26 @@ try {
     assert.equal(await page.$eval('.contest-review-skill-legend',e=>getComputedStyle(e).opacity),'1');
     const notesLayout=await checkLayout(); assert.equal(notesLayout.overflow,false); assert.deepEqual(notesLayout.outside,[]);
     await shot(`notes-${status}-${width}`);
-    await page.locator(`::-p-text(${status==='pending'?'Modifier mes notes':'Lire mes notes'})`).click();
+    await page.locator(`::-p-text(${status==='rejected'?'Corriger mes notes':status==='pending'?'Modifier mes notes':'Lire mes notes'})`).click();
     await page.waitForSelector('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll]',{visible:true});
-    if(status!=='pending') {
+    if(status==='approved') {
       await click('Étape 2 : Aspect');
       assert(await page.$$eval('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll] input[type="range"]',els=>els.length>0 && els.every(e=>e.disabled)));
     }
     await click('Étape 5 : Verdict');
-    if(status==='pending') {
+    if(status!=='approved') {
       assert.equal(await page.$eval('[data-book-scroll] > div:not([hidden]) textarea',e=>e.value),'Mes notes enregistrées sur cette fleur.');
       await page.type('[data-book-scroll] > div:not([hidden]) textarea',' Modification conservée.');
     }
     await shot(`notes-detail-${status}-${width}`);
     await page.locator('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll] + footer button:last-child').click();
     await page.waitForSelector('[data-book-notes]',{visible:true});
-    if(status==='pending') assert(await page.$eval('[data-book-notes]',e=>e.textContent.includes('Modification conservée.')));
+    if(status!=='approved') assert(await page.$eval('[data-book-notes]',e=>e.textContent.includes('Modification conservée.')));
     await page.locator('::-p-text(Retour à la fleur)').click();
     assert(await page.$eval('[data-tasting-book]',e=>e.dataset.open==='true'));
     await page.locator('::-p-text(Retrouver mes notes)').click();
     await page.waitForSelector('[data-book-notes]',{visible:true});
-    assert.equal(page.url(),`http://127.0.0.1:3197/?review=${status}`);
+    assert.equal(new URL(page.url()).searchParams.get('review'),status);
     assert.equal(await page.$$eval('[role="dialog"]',els=>els.length),0);
   }
   await page.goto('http://127.0.0.1:3197/?review=pending&noAverage=1',{waitUntil:'networkidle0'});
@@ -588,7 +685,7 @@ try {
     assert.deepEqual(collectionApiRequests,[],'Notebook rewards must not call collection APIs, including after claims');
   }
   assert.deepEqual(errors,[]);
-  const notesChecks={errors,notesStayInBook:true,notesStatuses:['approved','pending','rejected'],playerAndCommunityScores:true,missingAverage:true,crossTrackReviewsPreserved:true};
+  const notesChecks={errors,notesStayInBook:true,notesStatuses:['approved','pending','rejected'],playerAndCommunityScores:true,missingAverage:true,crossTrackReviewsPreserved:true,draftSurvivesReload:true,draftOwnerIsolation:true,serverReviewWinsOverDraft:true,untouchedScoresBlocked:true,reviewAndPseudoDoubleClicksBlocked:true,successClearsDraft:true,rejectedReviewCorrectable:true,loginRetainsFlower:true};
   await writeFile(resolve(reportDir,rewardsOnly?'rewards-report.json':notesOnly?'notes-report.json':'report.json'),JSON.stringify(rewardsOnly?{errors,rewardResults,collectionApiRequests}:notesOnly?notesChecks:{results,...notesChecks,chapters:6,tracksSeparated:true,chapterBoundaries:true,flowerBoundaries:true,crossTrackDraftsPreserved:true,concoursSubmission:true,initialTrackRespected:true,imageResults,empty:true,locked:true,reducedMotion:true,swipe:true,keyboardBack:true,rewards:true,rewardResults,collectionApiRequests,siteChromeHidden:true},null,2));
   console.log(JSON.stringify({passed:true,notesOnly,rewardsOnly,widths:rewardsOnly?[320,390,1440]:notesOnly?[320,390,1440]:results.map(x=>x.width),screenshots:reportDir}));
 } finally { await browser?.close(); await server.close(); }

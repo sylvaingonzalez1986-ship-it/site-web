@@ -24,7 +24,6 @@ import {
 } from "@/lib/contest-ui";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import {
-  CONTEST_SCORE_CRITERIA,
   CONTEST_SCORE_CRITERION_LABELS,
 } from "@/types/contest";
 import type { Producer } from "@/types/store";
@@ -74,10 +73,10 @@ export function ProductCard({
     isProductCultureModeEligible(product.category) && Boolean(product.cultureMode);
   const tastingEntry = tastingSummary?.entry;
   const tastingCriteria = tastingEntry
-    ? CONTEST_SCORE_CRITERIA.flatMap((criterion) => {
+    ? (["appearance", "cold_aroma", "flavor", "overall_impression"] as const).flatMap((criterion) => {
         const score = tastingEntry.stats.criterionAverages[criterion];
         return typeof score === "number" ? [{ criterion, score }] : [];
-      }).slice(0, 4)
+      })
     : [];
 
   const safeBonusPoints =
@@ -200,7 +199,7 @@ export function ProductCard({
 
             <div className={styles.tastingBody}>
               <p className={styles.tastingLot}>
-                Lot {tastingEntry.season?.label ?? tastingEntry.title} · avis publiés après modération.
+                {tastingEntry.title}{tastingEntry.season ? ` · ${tastingEntry.season.label}` : ""} · moyenne de 10 critères, avis publiés après modération.
               </p>
 
               {tastingCriteria.length > 0 ? (
