@@ -12,11 +12,14 @@
 }
 .navigation button:hover:not(:disabled) { background: var(--market-yellow); color: var(--market-dark); }
 .page [data-tutorial="category-filter"] { justify-content: center; }
-.page [data-tutorial="category-filter"] button {
+.page :is([data-tutorial="category-filter"], .cultureOptions) button {
   border: 1px solid #fffaf16b; border-radius: 2px; background: transparent; color: var(--market-paper); box-shadow: none;
   font: 700 .7rem/1.4 ui-monospace, monospace;
 }
-.page [data-tutorial="category-filter"] button[aria-pressed="true"] { border-color: var(--market-yellow); background: var(--market-yellow); color: var(--market-dark); }
+.page :is([data-tutorial="category-filter"], .cultureOptions) button[aria-pressed="true"] { border-color: var(--market-yellow); background: var(--market-yellow); color: var(--market-dark); }
+.cultureFilter { min-width: 0; margin-top: 20px; padding: 0; border: 0; }
+.cultureFilter legend { margin: 0 auto 8px; color: var(--market-paper); font: 700 .7rem/1.4 ui-monospace, monospace; text-transform: uppercase; letter-spacing: .08em; }
+.cultureOptions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 .hero :where(button):focus-visible { outline: 3px solid var(--market-yellow); outline-offset: 3px; box-shadow: none; }
 .sectionIntro { margin-bottom: 24px; padding: clamp(18px, 3vw, 32px); border: 1px solid var(--market-green); border-left: 6px solid var(--market-green); background: var(--market-paper); }
 .sectionIntro h2 { text-transform: uppercase; font-size: clamp(28px, 4vw, 46px); line-height: 1; }

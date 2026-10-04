@@ -8,7 +8,14 @@ import { EditorialWorldHero } from "@/components/EditorialWorldHero";
 import { ProductCard } from "@/components/ProductCard";
 import { ProducerBar } from "@/components/boutique/ProducerBar";
 import { ProducerTcgCard } from "@/components/boutique/ProducerTcgCard";
-import { categoryLabels, type Product, type ProductCategory } from "@/data/products";
+import {
+  categoryLabels,
+  isProductCultureModeEligible,
+  PRODUCT_CULTURE_LABELS,
+  type Product,
+  type ProductCategory,
+  type ProductCultureType,
+} from "@/data/products";
 import { resolveProductProducer } from "@/lib/own-producer";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { mergeUniqueProductsById } from "@/lib/boutique-helpers";
@@ -28,6 +35,8 @@ const ProducerTcgModal = dynamic(
 );
 
 type Filter = "all" | "promos" | ProductCategory;
+type CultureFilter = "all" | ProductCultureType;
+const CULTURE_FILTERS: CultureFilter[] = ["all", "outdoor", "greenhouse", "indoor"];
 type ShowcaseMode = "products" | "neighbors" | "copains" | "regions";
 
 type BoutiquePageClientProps = {
@@ -59,6 +68,7 @@ export function BoutiquePageClient({
 }: BoutiquePageClientProps) {
   const loading = false;
   const [filter, setFilter] = useState<Filter>("all");
+  const [cultureFilter, setCultureFilter] = useState<CultureFilter>("all");
   const [showcaseMode, setShowcaseMode] = useState<ShowcaseMode>("products");
   const [selectedOwnProducerId, setSelectedOwnProducerId] = useState<string | null>(null);
 
@@ -116,6 +126,11 @@ export function BoutiquePageClient({
   }, [globalAccessoriesProducts, modeProducts]);
 
   const effectiveFilter: Filter = availableFilters.includes(filter) ? filter : "all";
+  const showCultureFilter =
+    effectiveFilter === "all" ||
+    effectiveFilter === "promos" ||
+    isProductCultureModeEligible(effectiveFilter);
+  const effectiveCultureFilter = showCultureFilter ? cultureFilter : "all";
 
   const displayedProducts = useMemo(() => {
     let selection;
@@ -131,6 +146,14 @@ export function BoutiquePageClient({
       selection = modeProducts.filter((item) => item.category === effectiveFilter);
     }
 
+    if (effectiveCultureFilter !== "all") {
+      selection = selection.filter(
+        (product) =>
+          isProductCultureModeEligible(product.category) &&
+          product.cultureMode === effectiveCultureFilter,
+      );
+    }
+
     // Rotate the selected list, so even a small category has its own full cycle.
     // Reopening a tab/filter reuses the server's day instead of drawing again.
     return rotateProductsForDay(
@@ -139,7 +162,7 @@ export function BoutiquePageClient({
       effectiveFilter === "accessoires" ? "boutique:accessoires" : `boutique:${showcaseMode}:${effectiveFilter}`,
       { ownProductsFirst: true },
     );
-  }, [effectiveFilter, globalAccessoriesProducts, modeProducts, rotationDay, showcaseMode]);
+  }, [effectiveCultureFilter, effectiveFilter, globalAccessoriesProducts, modeProducts, rotationDay, showcaseMode]);
 
   const displayedOwnProducts = useMemo(
     () => displayedProducts.filter((product) => !product.producerId),
@@ -241,6 +264,24 @@ export function BoutiquePageClient({
               {showcaseMode !== "regions" && availableFilters.length > 1 && (
                 <CategoryFilter selected={effectiveFilter} filters={availableFilters} onChange={setFilter} />
               )}
+              {showcaseMode !== "regions" && showCultureFilter && (
+                <fieldset className={styles.cultureFilter}>
+                  <legend>Type de culture</legend>
+                  <div className={styles.cultureOptions}>
+                    {CULTURE_FILTERS.map((culture) => (
+                      <button
+                        key={culture}
+                        type="button"
+                        aria-pressed={effectiveCultureFilter === culture}
+                        onClick={() => setCultureFilter(culture)}
+                        className="pill-cartoon min-h-[44px] px-4 py-2 text-sm uppercase tracking-wide transition"
+                      >
+                        {culture === "all" ? "Tous" : PRODUCT_CULTURE_LABELS[culture]}
+                      </button>
+                    ))}
+                  </div>
+                </fieldset>
+              )}
             </div>
           </EditorialWorldHero>
         );
@@ -303,7 +344,7 @@ export function BoutiquePageClient({
 
             <div className={styles.catalogueHeading}>
               <h2>{effectiveFilter === "all" ? "Tous les produits" : effectiveFilter === "promos" ? "Les bonnes affaires" : categoryLabels[effectiveFilter]}</h2>
-              <span>{displayedProducts.length} produit{displayedProducts.length > 1 ? "s" : ""}</span>
+              <span aria-live="polite" aria-atomic="true">{displayedProducts.length} produit{displayedProducts.length > 1 ? "s" : ""}</span>
             </div>
             {isPartnerMode && hasProducerProducts ? (
               <ProducerBar
@@ -365,13 +406,24 @@ export function BoutiquePageClient({
 
             {displayedProducts.length === 0 && !loading && (
               <div className="cartoon-border mt-6 bg-cream p-6 text-center text-charcoal">
-                {effectiveFilter === "promos"
+                {effectiveCultureFilter !== "all"
+                  ? `Aucun produit en culture ${PRODUCT_CULTURE_LABELS[effectiveCultureFilter]} pour ces filtres.`
+                  : effectiveFilter === "promos"
                   ? "Aucune promotion en cours."
                   : isNeighborsMode
                     ? "Aucun produit voisin pour ce filtre."
                     : isCopainsMode
                     ? "Aucun produit partenaire pour ce filtre."
                     : boutique.emptyMessage}
+                {effectiveCultureFilter !== "all" && (
+                  <button
+                    type="button"
+                    className="btn-cartoon btn-secondary mx-auto mt-4 block"
+                    onClick={() => setCultureFilter("all")}
+                  >
+                    Voir tous les types de culture
+                  </button>
+                )}
               </div>
             )}
           </div>
