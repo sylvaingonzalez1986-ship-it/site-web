@@ -17,6 +17,7 @@ import {createRoot} from 'react-dom/client';
 import '/src/app/globals.css';
 import AdminLayout from '/src/app/admin/layout';
 import {AdminProducerSettlementsPanel} from '/src/components/admin/AdminProducerSettlementsPanel';
+import {AdminSalesDashboardPanel} from '/src/components/admin/AdminSalesDashboardPanel';
 import {buildProducerSettlementsDashboard} from '/src/lib/producer-settlements';
 const scenario=new URLSearchParams(location.search).get('scenario');
 const base={paymentState:'paid',status:'shipped',archivedAt:null,productId:'flower::10g',productName:'Fleur de démonstration · 10 g',producerId:'farm',producerName:'Ferme de démonstration',attribution:'producer',lineTotal:120,lineTotalHt:100,vatRate:20,unitWeightGrams:10};
@@ -36,6 +37,7 @@ window.fetch=async(input,init={})=>{
  if(!url.pathname.startsWith('/api/'))return nativeFetch(input,init);
  const state=window.__fixture,method=init.method||'GET',body=init.body?JSON.parse(init.body):null;
  state.requests.push({path:url.pathname,method,body});
+ if(url.pathname==='/api/admin/sales-dashboard'&&method==='GET')return Response.json({dashboard:{generatedAt:new Date().toISOString(),timezone:'Europe/Paris',includedPaymentStates:['paid'],allTime:{periodKey:'all',periodLabel:'Toutes les ventes',startsAt:'2026-09-01',endsAt:'2026-10-31',ordersCount:0,quantitySold:0,revenueTtc:0,revenueHt:0,vatAmount:0,products:[]},byWeek:[],byMonth:[]}});
  if(url.pathname!=='/api/admin/producer-settlements')throw new Error('Unexpected fixture API '+url.pathname);
  if(method==='GET'){
   if(state.failLoad)return Response.json({error:'Chargement de démonstration indisponible.'},{status:503});
@@ -61,7 +63,7 @@ window.fetch=async(input,init={})=>{
  }
  return Response.json({error:'Unexpected fixture action'},{status:400});
 };
-createRoot(document.getElementById('root')).render(React.createElement(AdminLayout,null,React.createElement('main',{style:{maxWidth:1440,margin:'auto',padding:12}},React.createElement(AdminProducerSettlementsPanel))));
+createRoot(document.getElementById('root')).render(React.createElement(AdminLayout,null,React.createElement('main',{style:{maxWidth:1440,margin:'auto',padding:12}},React.createElement(scenario==='parent'?AdminSalesDashboardPanel:AdminProducerSettlementsPanel))));
 `;
 
 const server = await createServer({
@@ -132,29 +134,82 @@ try {
     }, value);
   };
   const fieldValue = async label => page.$eval(await field(label), control => control.value);
-  const visiblePeriods = () => page.$$eval("details article h4", headings => headings.map(heading => heading.parentElement.textContent));
+  const visiblePeriods = () => page.$$eval("article[aria-label]", cards => cards.filter(card => card.checkVisibility()
+    && [...card.querySelectorAll("button")].some(button => button.textContent.trim() === "Saisir un montant déjà réglé"))
+    .map(card => ({ label: card.getAttribute("aria-label"), text: card.textContent.replace(/\s+/g, " ") })));
+  const monthlyCard = async (producer, month) => {
+    await page.$$eval("article[aria-label]", (cards, { producer, month }) => {
+      const card = cards.find(card => card.getAttribute("aria-label").includes(producer) && card.getAttribute("aria-label").includes(month));
+      if (!card || !card.checkVisibility()) throw new Error("Visible monthly card not found: " + producer + " " + month);
+      document.querySelector('[data-audit-card="active"]')?.removeAttribute("data-audit-card");
+      card.setAttribute("data-audit-card", "active");
+    }, { producer, month });
+    return '[data-audit-card="active"]';
+  };
   const record = (name, width) => { results.push({ name, width, passed: true }); console.log(`PASS ${name} ${width}`); };
   const overflow = async () => assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, "The document must fit the viewport");
 
   for (const width of widths) {
     await page.setViewport({ width, height: width < 768 ? 844 : 1000 });
-    await go(); await waitText("Cumul par producteur"); await overflow();
+    await go(); await waitText("Par mois"); await overflow();
+    assert.equal(await page.$$eval("button", buttons => buttons.find(button => button.textContent.trim() === "Par mois").getAttribute("aria-pressed")), "true");
+    assert.equal((await visiblePeriods()).length, 3, "Monthly producer cards must be visible without opening a collapsed section");
+    const monthHeadings = await page.$$eval("h3,h4", headings => headings.filter(heading => heading.checkVisibility()).map(heading => heading.textContent.trim().toLowerCase()));
+    assert(monthHeadings.includes("octobre 2026"));
+    assert(monthHeadings.includes("septembre 2026"));
     await page.screenshot({ path: resolve(output, `settlements-${width}.png`), fullPage: true });
-    record("responsive-producer-settlements", width);
+    record("responsive-default-monthly-breakdown", width);
   }
 
   await page.setViewport({ width: 390, height: 844 });
-  await go(); await waitText("Cumul par producteur");
+  await go(); await waitText("Par mois");
+  const septemberCard = await monthlyCard("Ferme de démonstration", "septembre 2026");
+  await page.$eval(septemberCard, card => [...card.querySelectorAll("button")].find(button => button.textContent.trim() === "Saisir un montant déjà réglé").click());
+  await waitText("Mois des ventes réglées");
+  assert.equal(await fieldValue("Producteur payé"), "farm");
+  assert.equal(await fieldValue("Mois des ventes réglées"), "2026-09");
+  assert.equal(await fieldValue("Montant payé (€)"), "");
+  assert.equal(await fieldValue("Date réelle du paiement"), "");
+  await click("Valider le paiement effectué");
+  assert.equal(await page.evaluate(() => window.__fixture.requests.filter(request => request.method === "POST").length), 0, "A historical payment needs an explicit amount and actual date");
+  await page.setViewport({ width: 320, height: 844 });
+  await overflow();
+  await page.screenshot({ path: resolve(output, "historical-month-payment-form-320.png"), fullPage: true });
+  await page.setViewport({ width: 390, height: 844 });
+  await setField("Montant payé (€)", "30");
+  await setField("Date réelle du paiement", "2026-09-20");
+  await setField("Référence du paiement (facultatif)", "VIR-SEPT-DEJA-REGLE");
+  await click("Valider le paiement effectué");
+  await waitText("Le règlement a été enregistré");
+  const monthlyPayment = await page.evaluate(() => window.__fixture.sources.payments[0]);
+  assert.equal(monthlyPayment.producerId, "farm");
+  assert.equal(monthlyPayment.salesFromMonth, "2026-09");
+  assert.equal(monthlyPayment.salesMonth, "2026-09");
+  assert.equal(monthlyPayment.amountCents, 3000);
+  assert.equal(monthlyPayment.paidOn, "2026-09-20");
+  const monthlyBalances = await page.evaluate(() => window.__dashboard().periods.map(period => [period.producerId, period.month, period.paidCents, period.balanceCents]));
+  assert.deepEqual(monthlyBalances, [["farm", "2026-10", 0, 8000], ["farm2", "2026-09", 0, 4000], ["farm", "2026-09", 3000, 5000]]);
+  const afterMonthly = await visiblePeriods();
+  assert(afterMonthly.find(card => card.label.includes("Ferme de démonstration") && card.label.includes("septembre 2026")).text.includes("30,00 €"));
+  assert(afterMonthly.find(card => card.label.includes("Ferme de démonstration") && card.label.includes("septembre 2026")).text.includes("50,00 €"));
+  assert(afterMonthly.find(card => card.label.includes("Ferme de démonstration") && card.label.includes("octobre 2026")).text.includes("80,00 €"));
+  await overflow();
+  await page.screenshot({ path: resolve(output, "historical-month-payment-recorded-390.png"), fullPage: true });
+  record("past-month-payment-only-updates-its-producer-and-sales-month", 390);
+  record("past-payment-requires-explicit-amount-and-date", 320);
+
+  await go(); await waitText("Par mois");
   await setField("Producteur", "farm");
   await setField("Du mois (inclus)", "2026-09");
   await setField("Au mois (inclus)", "2026-10");
   assert.equal((await visiblePeriods()).length, 2);
-  assert((await visiblePeriods()).every(text => text.includes("Ferme de démonstration")));
+  assert((await visiblePeriods()).every(card => card.text.includes("Ferme de démonstration")));
+  await click("Cumul sur la période");
   const cumulative = await page.$$eval("article", articles => articles.find(article => article.querySelector("dl") && article.textContent.includes("Ferme de démonstration")).textContent);
   assert(cumulative.includes("110 g"));
   assert(cumulative.includes("1 palier(s) de 100 g atteint(s)"));
   assert(cumulative.replace(/\s+/g, " ").includes("160,00 €"));
-  await page.$$eval("summary", summaries => summaries.find(summary => summary.textContent === "Détail par mois et par produit").click());
+  await click("Par mois");
   await click("Détail des ventes et tarifs");
   await waitText("80 % du CA HT");
   assert.equal(await page.$eval("table", table => table.textContent.replace(/\s+/g, " ").includes("100,00 € HT")), true);
@@ -168,9 +223,10 @@ try {
   await waitText("Le mois de fin doit être égal ou postérieur au mois de début.");
   assert.equal((await visiblePeriods()).length, 0);
   await setField("Du mois (inclus)", "2026-09");
-  await page.waitForFunction(() => document.querySelectorAll("details article h4").length === 2);
+  assert.equal((await visiblePeriods()).length, 2);
   record("reversed-period-is-explicit-and-recovers", 390);
 
+  await click("Cumul sur la période");
   await click("Règlement de cette période");
   await waitText("Enregistrer un règlement effectué");
   assert.equal(await fieldValue("Producteur payé"), "farm");
@@ -184,6 +240,7 @@ try {
   await setField("Premier mois des ventes", "2026-09");
   await setField("Dernier mois des ventes", "2026-10");
   await setField("Montant payé (€)", "100");
+  await setField("Date réelle du paiement", "2026-10-03");
   await setField("Référence du paiement (facultatif)", "VIR-SEPT-OCT");
   await page.evaluate(() => { window.__fixture.losePaymentResponse = true; });
   await click("Valider le paiement effectué");
@@ -233,10 +290,31 @@ try {
   assert.equal((await visiblePeriods()).length, 0);
   await page.evaluate(() => { window.__fixture.failLoad = false; });
   await click("Réessayer le chargement");
-  await waitText("Cumul par producteur");
+  await waitText("Par mois");
   assert.equal((await visiblePeriods()).length, 3);
   await overflow();
   record("load-errors-can-be-retried-without-showing-stale-balances", 1440);
+
+  await page.setViewport({ width: 390, height: 844 });
+  await go("parent"); await waitText("Par mois");
+  assert.equal(await page.$$eval('nav[aria-label="Vue des ventes"] button', buttons => buttons.find(button => button.textContent.trim() === "Producteurs et règlements").getAttribute("aria-pressed")), "true");
+  assert.equal((await visiblePeriods()).length, 3);
+  assert.equal(await page.evaluate(() => window.__fixture.requests.some(request => request.path === "/api/admin/sales-dashboard")), false);
+  await page.$eval(await monthlyCard("Ferme de démonstration", "septembre 2026"), card => [...card.querySelectorAll("button")].find(button => button.textContent.trim() === "Saisir un montant déjà réglé").click());
+  await setField("Montant payé (€)", "17.50");
+  await setField("Date réelle du paiement", "2026-09-20");
+  await click("Produits"); await waitText("Aucune vente realisee a comptabiliser.");
+  assert.equal((await visiblePeriods()).length, 0);
+  assert.equal(await page.evaluate(() => window.__fixture.requests.filter(request => request.path === "/api/admin/sales-dashboard").length), 1);
+  await click("Producteurs et règlements");
+  assert.equal((await visiblePeriods()).length, 3);
+  assert.equal(await fieldValue("Montant payé (€)"), "17.50");
+  assert.equal(await fieldValue("Date réelle du paiement"), "2026-09-20");
+  assert.equal(await fieldValue("Mois des ventes réglées"), "2026-09");
+  assert.equal(await page.evaluate(() => window.__fixture.requests.some(request => request.method === "POST")), false);
+  await overflow();
+  await page.screenshot({ path: resolve(output, "admin-sales-monthly-entry-390.png"), fullPage: true });
+  record("sales-tab-defaults-to-monthly-producers-and-preserves-unsaved-payments", 390);
 
   const report = { passed: errors.length === 0 && blockedRequests.length === 0, widths, results, errors, blockedRequests };
   await writeFile(resolve(output, "report.json"), JSON.stringify(report, null, 2));
@@ -244,6 +322,10 @@ try {
   assert.deepEqual(blockedRequests, []);
   console.log(`Admin producer settlements audit passed: ${results.length} checks.`);
 } catch (error) {
+  await writeFile(resolve(output, "report.json"), JSON.stringify({
+    passed: false, widths, results, errors, blockedRequests,
+    failure: error instanceof Error ? error.message : String(error),
+  }, null, 2));
   if (page && !page.isClosed()) {
     await page.screenshot({ path: resolve(output, "failure.png"), fullPage: true });
     console.error(await page.evaluate(() => ({

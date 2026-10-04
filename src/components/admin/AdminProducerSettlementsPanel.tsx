@@ -19,7 +19,8 @@ const monthFormatter = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "
 
 type PaymentInput = Pick<ProducerPayment, "id" | "producerId" | "producerName" | "salesMonth" | "amountCents" | "paidOn" | "reference" | "note"> & { salesFromMonth: string };
 type Mutation = ({ action: "rate" } & ProducerRate) | ({ action: "payment" } & PaymentInput) | { action: "void"; id: string; reason: string };
-type PaymentDraft = { id: string; producerId: string; salesFromMonth: string; salesMonth: string; amount: string; paidOn: string; reference: string; note: string };
+type PaymentDraft = { id: string; producerId: string; scope: "month" | "range"; salesFromMonth: string; salesMonth: string; amount: string; paidOn: string; reference: string; note: string };
+type PaymentSummary = Pick<ProducerSalesPeriod, "dueCents" | "paidCents" | "balanceCents" | "missingRateCount">;
 type RateSelection = { period: ProducerSalesPeriod; product: ProducerProductSales };
 type ProducerTotal = { producerId: string; producerName: string; fromMonth: string; toMonth: string; dueCents: number; paidCents: number; balanceCents: number; revenueHtCents: number; missingRateCount: number; grams: number; unknownGrams: boolean; months: number };
 
@@ -125,9 +126,10 @@ function RateForm({ selection, rates, busy, onClose, onSave }: {
   );
 }
 
-function PaymentForm({ draft, producers, busy, onChange, onClose, onSave }: {
+function PaymentForm({ draft, producers, summary, busy, onChange, onClose, onSave }: {
   draft: PaymentDraft;
   producers: ProducerSettlementsDashboard["producers"];
+  summary: PaymentSummary;
   busy: boolean;
   onChange: (value: PaymentDraft) => void;
   onClose: () => void;
@@ -135,7 +137,10 @@ function PaymentForm({ draft, producers, busy, onChange, onClose, onSave }: {
 }) {
   const titleId = useId();
   const heading = useRef<HTMLHeadingElement>(null);
-  useEffect(() => { heading.current?.focus(); }, []);
+  useEffect(() => {
+    heading.current?.focus({ preventScroll: true });
+    heading.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, []);
   const update = (key: keyof PaymentDraft, value: string) => onChange({ ...draft, [key]: value });
 
   return (
@@ -152,11 +157,20 @@ function PaymentForm({ draft, producers, busy, onChange, onClose, onSave }: {
       <fieldset disabled={busy} className="min-w-0">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h3 id={titleId} tabIndex={-1} ref={heading} className="font-display text-2xl text-ink">Enregistrer un règlement effectué</h3>
-            <p className="mt-1 text-sm text-charcoal">Saisissez un paiement déjà effectué, total ou partiel. Aucun virement n’est déclenché ici.</p>
+            <h3 id={titleId} tabIndex={-1} ref={heading} className="font-display text-2xl text-ink">{draft.scope === "month" ? "Saisir un montant déjà réglé" : "Enregistrer un règlement effectué"}</h3>
+            <p className="mt-1 text-sm text-charcoal">Renseignez le montant réellement versé et sa date, même si le paiement est ancien. Ce montant s’ajoute aux règlements déjà enregistrés.</p>
           </div>
           <button type="button" aria-label="Fermer le formulaire de règlement" className={smallButtonClass} onClick={onClose}><X size={18} aria-hidden="true" /></button>
         </div>
+        <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Période couverte par le règlement">
+          <button type="button" aria-pressed={draft.scope === "month"} className={smallButtonClass} onClick={() => onChange({ ...draft, scope: "month", salesFromMonth: draft.salesMonth })}>Un mois</button>
+          <button type="button" aria-pressed={draft.scope === "range"} className={smallButtonClass} onClick={() => onChange({ ...draft, scope: "range" })}>Plusieurs mois</button>
+        </div>
+        {draft.producerId && <dl className="mt-4 grid gap-3 sm:grid-cols-3">
+          <div><dt className="text-xs text-charcoal">Dû sur la période</dt><dd className="mt-1 font-semibold">{euros(summary.dueCents)}{summary.missingRateCount > 0 ? " (provisoire)" : ""}</dd></div>
+          <div><dt className="text-xs text-charcoal">Règlements déjà enregistrés</dt><dd className="mt-1 font-semibold">{euros(summary.paidCents)}</dd></div>
+          <div><dt className="text-xs text-charcoal">{summary.balanceCents < 0 ? "Avance avant cette saisie" : "Reste avant cette saisie"}</dt><dd className="mt-1 font-semibold">{euros(Math.abs(summary.balanceCents))}</dd></div>
+        </dl>}
         <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           <label className="grid gap-1 text-sm font-semibold">
             Producteur payé
@@ -165,14 +179,17 @@ function PaymentForm({ draft, producers, busy, onChange, onClose, onSave }: {
               {producers.map((producer) => <option key={producer.id} value={producer.id}>{producer.name}</option>)}
             </select>
           </label>
-          <label className="grid gap-1 text-sm font-semibold">
+          {draft.scope === "month" ? <label className="grid gap-1 text-sm font-semibold">
+            Mois des ventes réglées
+            <input type="month" required min="2000-01" max="2099-12" className={inputClass} value={draft.salesMonth} onChange={(event) => onChange({ ...draft, salesMonth: event.target.value, salesFromMonth: event.target.value })} />
+          </label> : <><label className="grid gap-1 text-sm font-semibold">
             Premier mois des ventes
             <input type="month" required min="2000-01" max={draft.salesMonth || "2099-12"} className={inputClass} value={draft.salesFromMonth} onChange={(event) => update("salesFromMonth", event.target.value)} />
           </label>
           <label className="grid gap-1 text-sm font-semibold">
             Dernier mois des ventes
             <input type="month" required min={draft.salesFromMonth || "2000-01"} max="2099-12" className={inputClass} value={draft.salesMonth} onChange={(event) => update("salesMonth", event.target.value)} />
-          </label>
+          </label></>}
           <label className="grid gap-1 text-sm font-semibold">
             Montant payé (€)
             <input type="number" inputMode="decimal" required min="0.01" max="1000000" step="0.01" className={inputClass} value={draft.amount} onChange={(event) => update("amount", event.target.value)} />
@@ -190,7 +207,8 @@ function PaymentForm({ draft, producers, busy, onChange, onClose, onSave }: {
             <input type="text" maxLength={1000} className={inputClass} placeholder="Ex. acompte sur les ventes de septembre" value={draft.note} onChange={(event) => update("note", event.target.value)} />
           </label>
         </div>
-        <p className="mt-3 text-sm text-charcoal">Un seul règlement peut couvrir plusieurs mois cumulés. Le montant est imputé aux soldes des mois sélectionnés, du plus ancien au plus récent ; un excédent reste visible en avance.</p>
+        {draft.scope === "month" ? <p className="mt-3 text-sm text-charcoal">Ce règlement sera rattaché au mois choisi. Saisissez uniquement un versement qui ne figure pas encore dans l’historique.</p>
+          : <p className="mt-3 text-sm text-charcoal">Un seul règlement peut couvrir plusieurs mois cumulés. Le montant est imputé aux soldes des mois sélectionnés, du plus ancien au plus récent ; un excédent reste visible en avance.</p>}
         <div className="mt-4 flex flex-wrap gap-2">
           <button type="submit" className="btn-cartoon btn-primary"><Save size={15} aria-hidden="true" /> {busy ? "Enregistrement…" : "Valider le paiement effectué"}</button>
           <button type="button" className={smallButtonClass} onClick={onClose}>Fermer</button>
@@ -244,6 +262,7 @@ export function AdminProducerSettlementsPanel() {
   const [producerId, setProducerId] = useState("");
   const [fromMonth, setFromMonth] = useState("");
   const [toMonth, setToMonth] = useState("");
+  const [view, setView] = useState<"month" | "cumulative">("month");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [rateSelection, setRateSelection] = useState<RateSelection | null>(null);
   const [paymentDraft, setPaymentDraft] = useState<PaymentDraft | null>(null);
@@ -310,6 +329,15 @@ export function AdminProducerSettlementsPanel() {
   const invalidRange = !!fromMonth && !!toMonth && fromMonth > toMonth;
   const matchesFilters = useCallback((id: string, month: string) => !invalidRange && (!producerId || producerId === id) && (!fromMonth || month >= fromMonth) && (!toMonth || month <= toMonth), [fromMonth, toMonth, producerId, invalidRange]);
   const periods = useMemo(() => (dashboard?.periods ?? []).filter((period) => matchesFilters(period.producerId, period.month)).sort((a, b) => b.month.localeCompare(a.month) || a.producerName.localeCompare(b.producerName, "fr")), [dashboard, matchesFilters]);
+  const monthlyGroups = useMemo(() => {
+    const groups = new Map<string, ProducerSalesPeriod[]>();
+    for (const period of periods) {
+      const group = groups.get(period.month) ?? [];
+      group.push(period);
+      groups.set(period.month, group);
+    }
+    return [...groups].map(([month, monthlyPeriods]) => ({ month, periods: monthlyPeriods }));
+  }, [periods]);
   const payments = useMemo(() => (dashboard?.payments ?? []).filter((payment) => !invalidRange && (!producerId || payment.producerId === producerId) && (!fromMonth || payment.salesMonth >= fromMonth) && (!toMonth || (payment.salesFromMonth ?? payment.salesMonth) <= toMonth)).sort((a, b) => b.paidOn.localeCompare(a.paidOn) || b.createdAt.localeCompare(a.createdAt)), [dashboard, fromMonth, toMonth, producerId, invalidRange]);
   const totals = useMemo(() => periods.reduce((acc, period) => ({ revenue: acc.revenue + period.revenueTtcCents, revenueHt: acc.revenueHt + period.revenueHtCents, due: acc.due + period.dueCents, paid: acc.paid + period.paidCents, balance: acc.balance + period.balanceCents, missing: acc.missing + period.missingRateCount, advance: acc.advance + Math.max(0, -period.balanceCents) }), { revenue: 0, revenueHt: 0, due: 0, paid: 0, balance: 0, missing: 0, advance: 0 }), [periods]);
   const producerTotals = useMemo(() => {
@@ -335,21 +363,29 @@ export function AdminProducerSettlementsPanel() {
   const remainingCents = producerTotals.reduce((sum, producer) => sum + Math.max(0, producer.balanceCents), 0);
   const advanceCents = producerTotals.reduce((sum, producer) => sum + Math.max(0, -producer.balanceCents), 0);
   const disabled = busy || loading;
+  const paymentSummary = useMemo(() => (dashboard?.periods ?? [])
+    .filter((period) => paymentDraft && period.producerId === paymentDraft.producerId
+      && period.month >= paymentDraft.salesFromMonth && period.month <= paymentDraft.salesMonth)
+    .reduce<PaymentSummary>((sum, period) => ({ dueCents: sum.dueCents + period.dueCents,
+      paidCents: sum.paidCents + period.paidCents, balanceCents: sum.balanceCents + period.balanceCents,
+      missingRateCount: sum.missingRateCount + period.missingRateCount }),
+    { dueCents: 0, paidCents: 0, balanceCents: 0, missingRateCount: 0 }), [dashboard, paymentDraft]);
 
   const openPayment = (period?: ProducerSalesPeriod, cumulative?: ProducerTotal) => {
+    const monthly = Boolean(period) || (!cumulative && view === "month");
     const targetId = period?.producerId ?? cumulative?.producerId ?? producerId;
     const summary = cumulative ?? producerTotals.find((item) => item.producerId === targetId);
     const targetTo = period?.month ?? (toMonth || summary?.toMonth || parisToday().slice(0, 7));
-    const targetFrom = period?.month ?? (fromMonth || summary?.fromMonth || targetTo);
+    const targetFrom = monthly ? targetTo : (fromMonth || summary?.fromMonth || targetTo);
     const balance = period?.balanceCents ?? summary?.balanceCents ?? 0;
     const missing = period?.missingRateCount ?? summary?.missingRateCount ?? 0;
-    setPaymentDraft({ id: crypto.randomUUID(), producerId: targetId, salesFromMonth: targetFrom, salesMonth: targetTo, amount: !missing && balance > 0 ? (balance / 100).toFixed(2) : "", paidOn: parisToday(), reference: "", note: "" });
+    setPaymentDraft({ id: crypto.randomUUID(), producerId: targetId, scope: monthly ? "month" : "range", salesFromMonth: targetFrom, salesMonth: targetTo, amount: !monthly && !missing && balance > 0 ? (balance / 100).toFixed(2) : "", paidOn: monthly ? "" : parisToday(), reference: "", note: "" });
     setError(null);
     setNotice(null);
   };
 
   const changePaymentDraft = (draft: PaymentDraft) => {
-    if (draft.producerId !== paymentDraft?.producerId) {
+    if (draft.producerId !== paymentDraft?.producerId && draft.scope === "range") {
       const summary = producerTotals.find((item) => item.producerId === draft.producerId);
       if (summary) {
         setPaymentDraft({ ...draft, salesFromMonth: fromMonth || summary.fromMonth, salesMonth: toMonth || summary.toMonth, amount: !summary.missingRateCount && summary.balanceCents > 0 ? (summary.balanceCents / 100).toFixed(2) : "" });
@@ -364,7 +400,7 @@ export function AdminProducerSettlementsPanel() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="font-display text-3xl text-ink">Ventes & règlements producteurs</h2>
-          <p className="mt-2 max-w-3xl text-sm text-charcoal">Cumulez les ventes sur plusieurs mois, suivez vos volumes par palier de 100 g et enregistrez les règlements quand vous les effectuez.</p>
+          <p className="mt-2 max-w-3xl text-sm text-charcoal">Retrouvez les ventes mois par mois et saisissez les montants déjà versés à chaque producteur. Le cumul reste disponible pour vos règlements par tranche de 100 g.</p>
         </div>
         <button type="button" disabled={disabled} className="btn-cartoon btn-secondary" onClick={() => void loadDashboard()}><RefreshCcw size={14} aria-hidden="true" /> Recharger</button>
       </div>
@@ -378,7 +414,7 @@ export function AdminProducerSettlementsPanel() {
         </div>
         <div className="card-cartoon bg-white p-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="font-semibold text-ink">Mois de ventes à cumuler</h3>
+            <h3 className="font-semibold text-ink">Période des ventes</h3>
             <div className="flex flex-wrap gap-2">
               <button type="button" className={smallButtonClass} onClick={() => { setFromMonth(""); setToMonth(""); }}>Depuis le début</button>
               <button type="button" className={smallButtonClass} onClick={() => { const month = parisToday().slice(0, 7); setFromMonth(month); setToMonth(month); }}>Ce mois-ci</button>
@@ -414,12 +450,18 @@ export function AdminProducerSettlementsPanel() {
         {totals.missing > 0 && <p className="rounded border-2 border-[#1a1a1a] bg-[#fff8db] p-3 text-sm"><strong>Des tarifs restent à définir.</strong> Ouvrez le détail des ventes pour renseigner votre rémunération par unité, par gramme ou en pourcentage du CA HT. Le dû et le solde restent provisoires tant que tous les tarifs ne sont pas renseignés.</p>}
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h3 className="font-display text-2xl text-ink">Cumul par producteur</h3>
-          <button type="button" disabled={disabled || dashboard.producers.length === 0 || paymentDraft !== null} className="btn-cartoon btn-primary" onClick={() => openPayment()}><Plus size={16} aria-hidden="true" /> Enregistrer un règlement</button>
+          <div role="group" aria-label="Ventilation des ventes producteurs" className="flex flex-wrap gap-2">
+            {([["month", "Par mois"], ["cumulative", "Cumul sur la période"]] as const).map(([value, label]) => <button key={value} type="button" aria-pressed={view === value}
+              className={`pill-cartoon min-h-11 px-4 py-2 text-sm font-semibold ${view === value ? "bg-[#1a1a1a] text-white" : "bg-white text-ink"}`} onClick={() => setView(value)}>{label}</button>)}
+          </div>
+          <button type="button" disabled={disabled || dashboard.producers.length === 0 || paymentDraft !== null} className="btn-cartoon btn-primary" onClick={() => openPayment()}><Plus size={16} aria-hidden="true" /> Ajouter un règlement déjà effectué</button>
         </div>
-        {paymentDraft && <PaymentForm draft={paymentDraft} producers={dashboard.producers} busy={disabled} onChange={changePaymentDraft} onClose={() => setPaymentDraft(null)} onSave={(payment) => mutate({ action: "payment", ...payment }, "Le règlement a été enregistré et réparti sur les mois de ventes concernés.")} />}
+        {paymentDraft && <PaymentForm draft={paymentDraft} producers={dashboard.producers} summary={paymentSummary} busy={disabled} onChange={changePaymentDraft} onClose={() => setPaymentDraft(null)} onSave={(payment) => mutate({ action: "payment", ...payment }, "Le règlement a été enregistré. Le déjà réglé et le reste à payer ont été mis à jour pour les mois concernés.")} />}
 
-        {producerTotals.length > 0 && <div className="grid gap-3">{producerTotals.map((producer) => <article key={producer.producerId} className="card-cartoon min-w-0 bg-white p-4 sm:p-5">
+        {view === "cumulative" && <section aria-labelledby="producer-cumulative-title" className="grid min-w-0 gap-3">
+          <h3 id="producer-cumulative-title" className="font-display text-2xl text-ink">Cumul par producteur</h3>
+          {producerTotals.length === 0 && <p className="card-cartoon bg-white p-4 text-sm text-charcoal">Aucune vente ni aucun règlement pour cette sélection.</p>}
+          {producerTotals.map((producer) => <article key={producer.producerId} className="card-cartoon min-w-0 bg-white p-4 sm:p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div><h4 className="text-xl font-bold text-ink">{producer.producerName}</h4><p className="mt-1 text-sm text-charcoal">{monthLabel(producer.fromMonth)}{producer.fromMonth !== producer.toMonth && ` → ${monthLabel(producer.toMonth)}`} · {producer.months} mois cumulé(s)</p></div>
             <button type="button" disabled={disabled || paymentDraft !== null} className="btn-cartoon btn-primary" onClick={() => openPayment(undefined, producer)}>Règlement de cette période</button>
@@ -432,29 +474,32 @@ export function AdminProducerSettlementsPanel() {
             <div><dt className="text-xs font-semibold text-charcoal">{balanceLabel(producer.balanceCents, producer.missingRateCount > 0)}</dt><dd className="mt-1 text-xl font-bold">{euros(producer.missingRateCount ? producer.balanceCents : Math.abs(producer.balanceCents))}</dd></div>
           </dl>
           <p className="mt-3 text-xs text-charcoal">Le volume est celui des ventes de la période, paiements déjà effectués compris. Le reste à payer tient compte de tous les règlements enregistrés.</p>
-        </article>)}</div>}
+        </article>)}</section>}
 
-        <details className="min-w-0" open={periods.length === 0}>
-          <summary className="cursor-pointer font-display text-2xl text-ink">Détail par mois et par produit</summary>
+        {view === "month" && <section aria-labelledby="producer-monthly-title" className="min-w-0">
+          <h3 id="producer-monthly-title" className="font-display text-2xl text-ink">Ventes et règlements par mois</h3>
+          <p className="mt-1 text-sm text-charcoal">Pour chaque mois, retrouvez le dû, les montants déjà réglés et le solde. Ajoutez vos règlements antérieurs depuis le producteur concerné.</p>
           <div className="mt-4">
 
         {periods.length === 0 ? <p className="card-cartoon bg-white p-4 text-sm text-charcoal">{invalidRange ? "Corrigez la période pour afficher les ventes et les règlements." : "Aucune vente ni aucun règlement pour cette sélection. Vous pouvez enregistrer un paiement antérieur avec son mois de ventes."}</p> : (
-          <div className="grid gap-3">
-            {periods.map((period) => {
+          <div className="grid gap-6">
+            {monthlyGroups.map((group) => <section key={group.month} aria-labelledby={`producer-month-${group.month}`} className="grid min-w-0 gap-3">
+              <h4 id={`producer-month-${group.month}`} className="border-b-2 border-[#1a1a1a] pb-2 text-xl font-bold capitalize text-ink">{monthLabel(group.month)}</h4>
+            {group.periods.map((period) => {
               const key = `${period.producerId}:${period.month}`;
               const open = expanded === key;
               const incomplete = period.missingRateCount > 0;
-              return <article key={key} className="card-cartoon min-w-0 bg-white p-4">
+              return <article key={key} aria-label={`${period.producerName} · ${monthLabel(period.month)}`} className="card-cartoon min-w-0 bg-white p-4">
                 <div className="grid gap-4 lg:grid-cols-[minmax(0,1.5fr)_repeat(4,minmax(0,1fr))] lg:items-center">
-                  <div><h4 className="break-words text-lg font-bold text-ink">{period.producerName}</h4><p className="text-sm capitalize text-charcoal">{monthLabel(period.month)}</p><p className="mt-1 text-xs text-charcoal">{number.format(period.quantity)} unité(s) · {period.ordersCount} commande(s)</p></div>
-                  <div><p className="text-xs text-charcoal">CA TTC · HT</p><p className="font-semibold">{euros(period.revenueTtcCents)}</p><p className="text-xs text-charcoal">{euros(period.revenueHtCents)} HT</p></div>
+                  <div><h5 className="break-words text-lg font-bold text-ink">{period.producerName}</h5><p className="mt-1 text-sm font-semibold text-charcoal">{period.gramsSold == null ? "Poids indisponible" : `${number.format(period.gramsSold)} g vendus`}</p><p className="mt-1 text-xs text-charcoal">{number.format(period.quantity)} unité(s) · {period.ordersCount} commande(s)</p></div>
+                  <div><p className="text-xs text-charcoal">Ventes HT</p><p className="font-semibold">{euros(period.revenueHtCents)}</p><p className="text-xs text-charcoal">{euros(period.revenueTtcCents)} TTC</p></div>
                   <div><p className="text-xs text-charcoal">{incomplete ? "Dû connu (incomplet)" : "Dû au producteur"}</p><p className="font-semibold">{euros(period.dueCents)}</p>{incomplete && <p className="mt-1 text-xs font-semibold">{period.missingRateCount} tarif(s) manquant(s)</p>}</div>
-                  <div><p className="text-xs text-charcoal">Déjà payé</p><p className="font-semibold">{euros(period.paidCents)}</p></div>
+                  <div><p className="text-xs text-charcoal">Déjà réglé</p><p className="font-semibold">{euros(period.paidCents)}</p></div>
                   <div><p className="text-xs font-semibold text-charcoal">{balanceLabel(period.balanceCents, incomplete)}</p><p className="text-xl font-bold">{euros(incomplete ? period.balanceCents : Math.abs(period.balanceCents))}</p></div>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
+                  <button type="button" disabled={disabled || paymentDraft !== null} className="btn-cartoon btn-primary" onClick={() => openPayment(period)}><Plus size={15} aria-hidden="true" /> Saisir un montant déjà réglé</button>
                   <button type="button" aria-expanded={open} aria-controls={`producer-details-${key}`} className={smallButtonClass} onClick={() => setExpanded(open ? null : key)}><span className="flex items-center gap-2"><ChevronDown size={16} aria-hidden="true" className={open ? "rotate-180" : ""} />{open ? "Masquer le détail" : "Détail des ventes et tarifs"}</span></button>
-                  <button type="button" disabled={disabled || paymentDraft !== null} className={smallButtonClass} onClick={() => openPayment(period)}>Saisir un paiement pour ce mois</button>
                 </div>
                 {open && <div id={`producer-details-${key}`} className="mt-4 border-t-2 border-[#1a1a1a] pt-4">
                   {period.products.length === 0 ? <p className="text-sm text-charcoal">Aucune vente comptabilisée pour ce mois. Le solde correspond aux règlements enregistrés.</p> : <>
@@ -476,11 +521,11 @@ export function AdminProducerSettlementsPanel() {
                   {rateSelection?.period.producerId === period.producerId && rateSelection.period.month === period.month && <div className="mt-4"><RateForm key={`${rateSelection.product.productId}:${rateSelection.period.month}`} selection={rateSelection} rates={dashboard.rates} busy={disabled} onClose={() => setRateSelection(null)} onSave={(rate) => mutate({ action: "rate", ...rate }, "Tarif enregistré. Les montants dus ont été recalculés pour les mois concernés.")} /></div>}
                 </div>}
               </article>;
-            })}
+            })}</section>)}
           </div>
         )}
           </div>
-        </details>
+        </section>}
 
         <section aria-labelledby="producer-payments-title" className="mt-2 min-w-0">
           <h3 id="producer-payments-title" className="font-display text-2xl text-ink">Historique des règlements</h3>

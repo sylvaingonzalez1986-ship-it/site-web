@@ -89,29 +89,29 @@ function sortProducts(
 }
 
 export function AdminSalesDashboardPanel() {
-  const [section, setSection] = useState<"products" | "producers">("products");
-  const [producersVisited, setProducersVisited] = useState(false);
+  const [section, setSection] = useState<"products" | "producers">("producers");
+  const [productsVisited, setProductsVisited] = useState(false);
 
   return (
     <div className="grid min-w-0 gap-4">
       <nav aria-label="Vue des ventes" className="flex flex-wrap gap-2">
         {([
-          ["products", "Produits"],
           ["producers", "Producteurs et règlements"],
+          ["products", "Produits"],
         ] as const).map(([value, label]) => (
           <button
             key={value}
             type="button"
             aria-pressed={section === value}
             className={`pill-cartoon min-h-11 px-4 py-2 text-sm font-semibold ${section === value ? "bg-[#1a1a1a] text-white" : "bg-white text-ink"}`}
-            onClick={() => { setSection(value); if (value === "producers") setProducersVisited(true); }}
+            onClick={() => { setSection(value); if (value === "products") setProductsVisited(true); }}
           >
             {label}
           </button>
         ))}
       </nav>
-      <div hidden={section !== "products"}><AdminProductSalesPanel /></div>
-      <div hidden={section !== "producers"}>{producersVisited && <AdminProducerSettlementsPanel />}</div>
+      <div hidden={section !== "producers"}><AdminProducerSettlementsPanel /></div>
+      <div hidden={section !== "products"}>{productsVisited && <AdminProductSalesPanel />}</div>
     </div>
   );
 }

@@ -2,8 +2,17 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Ventes et règlements producteurs
 
-Dans **Admin → Ventes → Producteurs et règlements**, sélectionner un producteur
-et une plage de mois, ou laisser les mois vides pour cumuler depuis le début.
+Dans **Admin → Ventes**, l'onglet **Producteurs et règlements** s'ouvre sur la vue
+**Par mois**. Chaque mois présente les producteurs, leurs ventes, le dû, le déjà
+réglé et le reste à payer. Le bouton **Saisir un montant déjà réglé** préremplit
+le producteur et le mois ; renseigner le montant effectivement versé et sa date
+réelle. Ces deux champs restent vides pour la saisie d'un règlement antérieur.
+Le formulaire affiche les règlements déjà enregistrés et le solde courant ;
+la validation met à jour le déjà réglé et le reste à payer.
+
+Sélectionner un producteur et une plage de mois, ou laisser les mois vides pour
+voir tout l'historique. La vue **Cumul sur la période** regroupe les mois pour
+les règlements par tranche de 100 g.
 Le montant dû correspond par défaut à **80 % des ventes HT**, après remises et
 hors livraison. Les 20 % restants constituent la marge boutique. Les grammes
 vendus sont cumulés sur la sélection, avec un repère tous les 100 g ; ce volume
