@@ -8,6 +8,8 @@ import {
 import { logAuditEvent } from "@/lib/audit-log";
 import { rejectOversizedBody } from "@/lib/body-size-guard";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
+import { sanitizeNextPath } from "@/lib/safe-next-path";
+import { getSiteUrl } from "@/lib/site-url";
 
 export async function POST(request: Request) {
   try {
@@ -26,6 +28,7 @@ export async function POST(request: Request) {
       city?: string;
       postalCode?: string;
       country?: string;
+      next?: string;
     };
     const email = typeof payload.email === "string" ? payload.email.trim().toLowerCase() : "";
     const ip = getRequestIp(request);
@@ -71,6 +74,12 @@ export async function POST(request: Request) {
       );
     }
 
+    const nextPath = sanitizeNextPath(payload.next, "/profil");
+    const verificationUrl = new URL("/api/auth/callback", getSiteUrl());
+    if (nextPath !== "/profil") {
+      verificationUrl.searchParams.set("next", nextPath);
+    }
+
     const result = await registerCustomerByBackend({
       email: payload.email,
       firstName: payload.firstName,
@@ -83,6 +92,7 @@ export async function POST(request: Request) {
       city: payload.city,
       postalCode: payload.postalCode,
       country: payload.country,
+      emailRedirectTo: verificationUrl.toString(),
     });
 
     await clearLegacyCustomerCookie();

@@ -12,6 +12,19 @@
 - Deux colonnes sur mobile, quatre sur grand écran ; introduction plus courte et bouton boutique avant l'illustration sur mobile.
 - Bloc livraison retiré de l'accueil à la demande de l'utilisateur. Les frais et avantages de fidélité restent présentés dans le panier.
 
+## Continuité de la commande — 5 octobre 2026
+
+- Les coordonnées modifiées, le mode de livraison et le point relais restent en mémoire dans le contexte panier lors de sa fermeture, de sa réouverture et de la navigation interne, même si le tiroir est remonté.
+- Les champs non modifiés suivent le profil chargé ou actualisé ; une saisie, y compris un champ volontairement effacé, n'est pas écrasée par une actualisation du compte. Une panne temporaire du service de compte ne vide pas le brouillon.
+- Le brouillon est effacé lors d'une déconnexion, d'un changement de compte ou lorsque le panier est vidé, notamment après paiement confirmé. Une réponse de session ancienne ne peut pas rétablir un compte après connexion ou déconnexion.
+- La conservation du brouillon n'ajoute aucun stockage navigateur : elle reste en mémoire, séparément du mécanisme existant de tentative de paiement (qui conserve sa signature en sessionStorage). Le brouillon ne survit donc pas à un rechargement complet ou à la fermeture de l'onglet ; le panier de produits conserve sa durée de 48 heures.
+- Un compte majeur sans coordonnées de livraison enregistrées peut commander en les renseignant dans le panier. Le serveur contrôle toujours la session, la majorité du profil, les coordonnées de contact, la destination, les prix et les stocks. Une livraison en relais utilise l'adresse du relais et n'exige pas d'adresse personnelle.
+- Le retour au panier est transmis à l'inscription, au lien de vérification et à la connexion. Les destinations externes sont refusées. La connexion met immédiatement à jour le contexte client pour rouvrir le panier sans attendre son rafraîchissement périodique.
+
+Pour la vérification par email, `NEXT_PUBLIC_SITE_URL` doit correspondre à l'origine publiée et Supabase doit autoriser l'URL `/api/auth/callback` avec son paramètre `next` dans les redirections. Les callbacks localhost/127.0.0.1 sont déclarés dans `supabase/config.toml` pour Supabase local ; utiliser aussi une origine locale dans `NEXT_PUBLIC_SITE_URL` dans ce cas. Les modèles d'email personnalisés doivent conserver la redirection fournie (voir la [documentation Supabase](https://supabase.com/docs/guides/auth/redirect-urls)). La configuration Supabase distante et l'envoi d'un véritable email ne font pas partie des vérifications locales.
+
+Vérifications : tests Vitest `checkout-draft`, `cart-mutations`, `cart-session-storage`, `customer-checkout-eligibility`, `safe-next-path` et routes `account/register`, `auth/callback`, `checkout/viva` ; audit navigateur `node scripts/audit-checkout-continuity.mjs` avec comptes, relais et paiements simulés. Aucun achat ni email réel.
+
 ## Étude du paiement invité — proposition à valider séparément
 
 Le lot A validé prévoit une étude du paiement invité. Il n'est pas activé par ces changements : le compte reste nécessaire au paiement.

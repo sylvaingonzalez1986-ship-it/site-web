@@ -6,6 +6,7 @@ import {
   ensureSupabaseProfileRow,
 } from "@/lib/supabase/customer-backend";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { sanitizeNextPath } from "@/lib/safe-next-path";
 
 function toStringValue(value: unknown): string | undefined {
   if (typeof value !== "string") {
@@ -19,6 +20,10 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const redirectUrl = new URL("/compte/connexion", url.origin);
+  const nextPath = sanitizeNextPath(url.searchParams.get("next"), "/profil");
+  if (nextPath !== "/profil") {
+    redirectUrl.searchParams.set("next", nextPath);
+  }
 
   if (!code) {
     redirectUrl.searchParams.set("error", "verification_invalide");

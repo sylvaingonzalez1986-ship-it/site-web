@@ -2,6 +2,9 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
+import { useCart } from "@/context/CartContext";
+import { sanitizeNextPath } from "@/lib/safe-next-path";
+import type { PublicCustomer } from "@/types/customer";
 
 type AccountLoginFormProps = {
   nextUrl: string;
@@ -9,6 +12,7 @@ type AccountLoginFormProps = {
 
 export function AccountLoginForm({ nextUrl }: AccountLoginFormProps) {
   const router = useRouter();
+  const { setUser } = useCart();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -32,7 +36,11 @@ export function AccountLoginForm({ nextUrl }: AccountLoginFormProps) {
         return;
       }
 
-      router.replace(nextUrl);
+      const data = (await response.json()) as { user: PublicCustomer };
+      setUser(data.user);
+      router.replace(sanitizeNextPath(nextUrl, "/profil"));
+    } catch {
+      setError("Connexion impossible pour le moment. Réessaie dans quelques instants.");
     } finally {
       setLoading(false);
     }

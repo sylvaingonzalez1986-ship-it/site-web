@@ -35,8 +35,6 @@ import {
   getRelayFreeShippingProgressMessage,
   getRelayFreeShippingThreshold,
   getShippingPricingConfig,
-  type DeliveryMethod,
-  type MondialRelayPoint,
 } from "@/lib/shipping";
 import { formatPrice } from "@/lib/utils";
 
@@ -98,18 +96,22 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     setQuantity,
     removeFromCart,
     clearCart,
+    checkoutDraft,
+    updateCheckoutDraft,
   } = useCart();
   const { store: cmsStore } = useCmsStore();
 
-  const [shippingName, setShippingName] = useState("");
-  const [shippingEmail, setShippingEmail] = useState("");
-  const [shippingPhone, setShippingPhone] = useState("");
-  const [shippingAddress, setShippingAddress] = useState("");
-  const [shippingCity, setShippingCity] = useState("");
-  const [shippingPostalCode, setShippingPostalCode] = useState("");
-  const [shippingCountry, setShippingCountry] = useState("France");
-  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("home");
-  const [selectedRelayPoint, setSelectedRelayPoint] = useState<MondialRelayPoint | null>(null);
+  const {
+    shippingName,
+    shippingEmail,
+    shippingPhone,
+    shippingAddress,
+    shippingCity,
+    shippingPostalCode,
+    shippingCountry,
+    deliveryMethod,
+    selectedRelayPoint,
+  } = checkoutDraft;
   const [promoCode, setPromoCode] = useState("");
   const [promoLoading, setPromoLoading] = useState(false);
   const [promoError, setPromoError] = useState<string | null>(null);
@@ -141,21 +143,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       return;
     }
 
-    setShippingName(
-      user ? `${user.firstName} ${user.lastName}`.trim() : "",
-    );
-    setShippingEmail(user?.email ?? "");
-    setShippingPhone(user?.phone ?? "");
-    setShippingAddress(user?.address ?? "");
-    setShippingCity(user?.city ?? "");
-    setShippingPostalCode(user?.postalCode ?? "");
-    setShippingCountry(user?.country || "France");
-    setSelectedRelayPoint(null);
     setCartError(null);
     if (isAuthenticated) {
       void refreshSession({ silent: true, force: true });
     }
-  }, [isAuthenticated, open, refreshSession, user]);
+  }, [isAuthenticated, open, refreshSession]);
 
   const buildCartStockError = (productName: string, maxAvailable?: number) => {
     if (typeof maxAvailable === "number" && maxAvailable > 0) {
@@ -434,11 +426,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         shippingName.trim() &&
           shippingEmail.trim() &&
           shippingPhone.trim() &&
-          (deliveryMethod === "relay" || shippingAddress.trim()) &&
-          shippingCity.trim() &&
-          shippingPostalCode.trim() &&
-          shippingCountry.trim() &&
-          (deliveryMethod === "home" || selectedRelayPoint),
+          (deliveryMethod === "home"
+            ? shippingAddress.trim() && shippingCity.trim() && shippingPostalCode.trim() && shippingCountry.trim()
+            : selectedRelayPoint),
       ),
     [
       deliveryMethod,
@@ -779,7 +769,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 <input
                   className={styles.input}
                   value={shippingName}
-                  onChange={(event) => setShippingName(event.target.value)}
+                  onChange={(event) => updateCheckoutDraft({ shippingName: event.target.value })}
                   aria-label="Nom complet"
                   autoComplete="name"
                   placeholder="Nom complet"
@@ -788,7 +778,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   className={styles.input}
                   type="email"
                   value={shippingEmail}
-                  onChange={(event) => setShippingEmail(event.target.value)}
+                  onChange={(event) => updateCheckoutDraft({ shippingEmail: event.target.value })}
                   aria-label="Email"
                   autoComplete="email"
                   placeholder="Email"
@@ -796,7 +786,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 <input
                   className={styles.input}
                   value={shippingPhone}
-                  onChange={(event) => setShippingPhone(event.target.value)}
+                  onChange={(event) => updateCheckoutDraft({ shippingPhone: event.target.value })}
                   aria-label="Téléphone"
                   autoComplete="tel"
                   placeholder="Téléphone"
@@ -810,7 +800,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                       type="button"
                       className={styles.deliveryChoice}
                       aria-pressed={deliveryMethod === "home"}
-                      onClick={() => setDeliveryMethod("home")}
+                      onClick={() => updateCheckoutDraft({ deliveryMethod: "home" })}
                     >
                       Domicile {homeShippingFee <= 0 ? "(offert)" : `(${formatPrice(homeShippingFee)})`}
                     </button>
@@ -818,7 +808,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                       type="button"
                       className={styles.deliveryChoice}
                       aria-pressed={deliveryMethod === "relay"}
-                      onClick={() => setDeliveryMethod("relay")}
+                      onClick={() => updateCheckoutDraft({ deliveryMethod: "relay" })}
                     >
                       Point relais {relayShippingFee <= 0 ? "(offert)" : `(${formatPrice(relayShippingFee)})`}
                     </button>
@@ -835,7 +825,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     aria-label="Adresse de livraison"
                     className={styles.input}
                     value={shippingAddress}
-                    onChange={(event) => setShippingAddress(event.target.value)}
+                    onChange={(event) => updateCheckoutDraft({ shippingAddress: event.target.value })}
                     placeholder="Adresse"
                   />
                 )}
@@ -843,7 +833,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   <input
                     className={styles.input}
                     value={shippingCity}
-                    onChange={(event) => setShippingCity(event.target.value)}
+                    onChange={(event) => updateCheckoutDraft({ shippingCity: event.target.value })}
                     aria-label="Ville"
                   autoComplete="address-level2"
                   placeholder="Ville"
@@ -851,7 +841,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   <input
                     className={styles.input}
                     value={shippingPostalCode}
-                    onChange={(event) => setShippingPostalCode(event.target.value)}
+                    onChange={(event) => updateCheckoutDraft({ shippingPostalCode: event.target.value })}
                     aria-label="Code postal"
                   autoComplete="postal-code"
                   placeholder="Code postal"
@@ -860,7 +850,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 <input
                   className={styles.input}
                   value={shippingCountry}
-                  onChange={(event) => setShippingCountry(event.target.value)}
+                  onChange={(event) => updateCheckoutDraft({ shippingCountry: event.target.value })}
                   aria-label="Pays"
                   autoComplete="country-name"
                   placeholder="Pays"
@@ -871,7 +861,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     city={shippingCity}
                     country={shippingCountry}
                     selectedPoint={selectedRelayPoint}
-                    onSelect={setSelectedRelayPoint}
+                    onSelect={(point) => updateCheckoutDraft({ selectedRelayPoint: point })}
                     minHeightClassName="min-h-[300px] md:min-h-[360px]"
                   />
                 )}
@@ -1070,8 +1060,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             {!authLoading && !isAuthenticated && items.length > 0 && (
               <div className="space-y-2">
                 <div className={styles.deliverySwitch} role="group" aria-label="Estimer la livraison">
-                  <button type="button" aria-pressed={deliveryMethod === "home"} className={styles.deliveryChoice} onClick={() => setDeliveryMethod("home")}>Domicile</button>
-                  <button type="button" aria-pressed={deliveryMethod === "relay"} className={styles.deliveryChoice} onClick={() => setDeliveryMethod("relay")}>Point relais</button>
+                  <button type="button" aria-pressed={deliveryMethod === "home"} className={styles.deliveryChoice} onClick={() => updateCheckoutDraft({ deliveryMethod: "home" })}>Domicile</button>
+                  <button type="button" aria-pressed={deliveryMethod === "relay"} className={styles.deliveryChoice} onClick={() => updateCheckoutDraft({ deliveryMethod: "relay" })}>Point relais</button>
                 </div>
                 <p className="text-xs text-charcoal">Ton panier est conservé sur ce navigateur pendant 48 h. Connecte-toi ou crée ton compte pour poursuivre la commande.</p>
                 <button type="button" onClick={goToLogin} className="btn-cartoon btn-primary min-h-11 w-full px-3 py-3 text-sm">Continuer ma commande</button>

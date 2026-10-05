@@ -593,6 +593,7 @@ export async function registerSupabaseCustomerWithEmailVerification(input: {
   city?: string;
   postalCode?: string;
   country?: string;
+  emailRedirectTo: string;
 }): Promise<{ needsEmailVerification: true; email: string }> {
   const email = normalizeEmail(input.email);
   const firstName = sanitizeText(input.firstName, 80);
@@ -615,6 +616,7 @@ export async function registerSupabaseCustomerWithEmailVerification(input: {
     email,
     password: input.password,
     options: {
+      emailRedirectTo: input.emailRedirectTo,
       data: {
         firstName,
         lastName,

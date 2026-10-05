@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getCustomerCheckoutEligibility } from "@/lib/customer-checkout-eligibility";
 import type { PublicCustomer } from "@/types/customer";
@@ -25,14 +25,35 @@ function makeCustomer(overrides: Partial<PublicCustomer> = {}): PublicCustomer {
 }
 
 describe("customer-checkout-eligibility", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-10-05T12:00:00Z"));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("allows a complete adult profile", () => {
     expect(getCustomerCheckoutEligibility(makeCustomer())).toEqual({ allowed: true });
   });
 
-  it("rejects an incomplete profile", () => {
-    expect(getCustomerCheckoutEligibility(makeCustomer({ phone: "" }))).toEqual({
+  it("allows an adult to provide contact and delivery details in the cart", () => {
+    expect(getCustomerCheckoutEligibility(makeCustomer({
+      firstName: "",
+      lastName: "",
+      phone: "",
+      address: "",
+      city: "",
+      postalCode: "",
+      country: "",
+    }))).toEqual({ allowed: true });
+  });
+
+  it("requires a birth date even when the delivery profile is complete", () => {
+    expect(getCustomerCheckoutEligibility(makeCustomer({ dateOfBirth: undefined }))).toEqual({
       allowed: false,
-      error: "Profil incomplet. Complète ton profil avant de commander.",
+      error: "Date de naissance requise pour commander (18+).",
     });
   });
 
@@ -43,10 +64,15 @@ describe("customer-checkout-eligibility", () => {
     });
   });
 
-  it("rejects an invalid birth date", () => {
-    expect(getCustomerCheckoutEligibility(makeCustomer({ dateOfBirth: "bad-date" }))).toEqual({
+  it.each(["bad-date", "1990-02-30", "1990-13-01", "2030-01-01"])("rejects an invalid or future birth date: %s", (dateOfBirth) => {
+    expect(getCustomerCheckoutEligibility(makeCustomer({ dateOfBirth }))).toEqual({
       allowed: false,
       error: "Commande réservée aux personnes majeures (18+).",
     });
+  });
+
+  it("allows checkout on the eighteenth birthday but not the day before", () => {
+    expect(getCustomerCheckoutEligibility({ dateOfBirth: "2008-10-05" })).toEqual({ allowed: true });
+    expect(getCustomerCheckoutEligibility({ dateOfBirth: "2008-10-06" }).allowed).toBe(false);
   });
 });

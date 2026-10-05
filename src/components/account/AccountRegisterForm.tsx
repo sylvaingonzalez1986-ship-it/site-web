@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Link from "@/components/navigation/NavigationLink";
+import { sanitizeNextPath } from "@/lib/safe-next-path";
 
 type AccountRegisterFormProps = {
   nextUrl: string;
@@ -9,7 +10,8 @@ type AccountRegisterFormProps = {
 };
 
 export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: AccountRegisterFormProps) {
-  void nextUrl;
+  const nextPath = sanitizeNextPath(nextUrl, "/profil");
+  const loginHref = `/compte/connexion?next=${encodeURIComponent(nextPath)}`;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
@@ -72,6 +74,7 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
           postalCode,
           country,
           referralCode,
+          next: nextPath,
         }),
       });
 
@@ -82,6 +85,8 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
       }
       const data = (await response.json()) as { email?: string };
       setVerificationEmail(data.email ?? email);
+    } catch {
+      setError("Inscription impossible pour le moment. Réessaie dans quelques instants.");
     } finally {
       setLoading(false);
     }
@@ -200,7 +205,7 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
           </p>
           <p className="mt-1">
             Clique sur le lien recu, puis connecte-toi ici :{" "}
-            <Link href="/compte/connexion" className="font-semibold text-ink underline">
+            <Link href={loginHref} className="font-semibold text-ink underline">
               aller a la connexion
             </Link>
             .

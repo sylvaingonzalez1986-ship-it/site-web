@@ -50,43 +50,16 @@ function isAtLeast18(dateOfBirth: string, now = new Date()): boolean {
   return age >= 18;
 }
 
-function hasValue(value: string | undefined): boolean {
-  return typeof value === "string" && value.trim().length > 0;
-}
-
 export type CheckoutEligibilityResult = {
   allowed: boolean;
   error?: string;
 };
 
 export function getCustomerCheckoutEligibility(
-  customer: Pick<
-    PublicCustomer,
-    | "firstName"
-    | "lastName"
-    | "dateOfBirth"
-    | "phone"
-    | "address"
-    | "city"
-    | "postalCode"
-    | "country"
-  >,
+  customer: Pick<PublicCustomer, "dateOfBirth">,
 ): CheckoutEligibilityResult {
-  if (
-    !hasValue(customer.firstName) ||
-    !hasValue(customer.lastName) ||
-    !hasValue(customer.phone) ||
-    !hasValue(customer.address) ||
-    !hasValue(customer.city) ||
-    !hasValue(customer.postalCode) ||
-    !hasValue(customer.country)
-  ) {
-    return {
-      allowed: false,
-      error: "Profil incomplet. Complète ton profil avant de commander.",
-    };
-  }
-
+  // Delivery details belong to the current order and are validated at checkout.
+  // Only the account's birth date determines customer eligibility.
   if (!customer.dateOfBirth) {
     return {
       allowed: false,

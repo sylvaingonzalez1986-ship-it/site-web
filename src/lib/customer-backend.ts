@@ -65,6 +65,7 @@ export async function registerCustomerByBackend(input: {
   city?: string;
   postalCode?: string;
   country?: string;
+  emailRedirectTo: string;
 }): Promise<{ needsEmailVerification: true; email: string }> {
   return registerSupabaseCustomerWithEmailVerification(input);
 }

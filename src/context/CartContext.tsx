@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { Product } from "@/data/products";
 import { readBrowserCart, saveBrowserCart } from "@/lib/cart-session-storage";
+import { alignCheckoutDraft, resolveCheckoutDraft, type CheckoutDraft, type CheckoutDraftState } from "@/lib/checkout-draft";
 import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
 import { addCartItem, changeCartQuantity, type CartActionResult } from "@/lib/cart-mutations";
 export type { CartActionResult } from "@/lib/cart-mutations";
@@ -40,6 +41,8 @@ type CartContextValue = {
   decreaseQuantity: (productId: string) => void;
   setQuantity: (productId: string, quantity: number) => CartActionResult;
   clearCart: () => void;
+  checkoutDraft: CheckoutDraft;
+  updateCheckoutDraft: (patch: Partial<CheckoutDraft>) => void;
 };
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
@@ -50,10 +53,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     pathname === "/compte/reinitialiser-mot-de-passe" || pathname === "/compte/mot-de-passe-oublie";
   const REFRESH_COOLDOWN_MS = 30_000;
   const lastRefreshAtRef = useRef(0);
+  const sessionRequestIdRef = useRef(0);
+  const currentUserIdRef = useRef<string | null>(null);
   const itemsRef = useRef<CartLine[]>([]);
   const [items, setItems] = useState<CartLine[]>([]);
   const [cartSessionReady, setCartSessionReady] = useState(false);
-  const [user, setUser] = useState<PublicCustomer | null>(null);
+  const [user, setUserState] = useState<PublicCustomer | null>(null);
+  const [checkoutDraftState, setCheckoutDraftState] = useState<CheckoutDraftState>({ customerId: null, edits: {} });
   const [orders, setOrders] = useState<CmsOrder[]>([]);
   const [loyalty, setLoyalty] = useState<LoyaltySummary>(buildEmptyLoyaltySummary());
   const [tickets, setTickets] = useState<LotteryTicket[]>([]);
@@ -62,6 +68,36 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [hasWelcomePack, setHasWelcomePack] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
   const isAuthenticated = Boolean(user);
+
+  const applyUser = useCallback((nextUser: PublicCustomer | null) => {
+    const customerId = nextUser?.id ?? null;
+    if (currentUserIdRef.current !== customerId) {
+      setOrders([]);
+      setLoyalty(buildEmptyLoyaltySummary());
+      setTickets([]);
+      setLotteryInventory(null);
+      setLotteryConfig(null);
+      setHasWelcomePack(false);
+      currentUserIdRef.current = customerId;
+    }
+    setUserState(nextUser);
+    setCheckoutDraftState(current => alignCheckoutDraft(current, customerId));
+  }, []);
+
+  const setUser = useCallback((nextUser: PublicCustomer | null) => {
+    // A login/logout must win over a refresh started for the previous session.
+    sessionRequestIdRef.current += 1;
+    lastRefreshAtRef.current = 0;
+    applyUser(nextUser);
+    setAuthLoading(false);
+  }, [applyUser]);
+
+  const updateCheckoutDraft = useCallback((patch: Partial<CheckoutDraft>) => {
+    setCheckoutDraftState(current => {
+      const scoped = alignCheckoutDraft(current, user?.id ?? null);
+      return { ...scoped, edits: { ...scoped.edits, ...patch } };
+    });
+  }, [user?.id]);
 
   useEffect(() => {
     const storedItems = readBrowserCart();
@@ -102,6 +138,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     lastRefreshAtRef.current = now;
+    const requestId = ++sessionRequestIdRef.current;
 
     if (!silent) {
       setAuthLoading(true);
@@ -109,28 +146,23 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     try {
       const meResponse = await fetch("/api/account/me", { cache: "no-store" });
+      if (requestId !== sessionRequestIdRef.current) return;
       if (!meResponse.ok) {
-        setUser(null);
-        setOrders([]);
-        setLoyalty(buildEmptyLoyaltySummary());
-        setTickets([]);
-        setLotteryInventory(null);
-        setLotteryConfig(null);
-        setHasWelcomePack(false);
+        if (meResponse.status === 401 || meResponse.status === 403) {
+          applyUser(null);
+        } else {
+          // A temporary outage is not a logout: keep the current order draft.
+          lastRefreshAtRef.current = 0;
+        }
         return;
       }
 
       const meData = (await meResponse.json()) as { user: PublicCustomer | null };
+      if (requestId !== sessionRequestIdRef.current) return;
       const nextUser = meData.user ?? null;
-      setUser(nextUser);
+      applyUser(nextUser);
 
       if (!nextUser) {
-        setOrders([]);
-        setLoyalty(buildEmptyLoyaltySummary());
-        setTickets([]);
-        setLotteryInventory(null);
-        setLotteryConfig(null);
-        setHasWelcomePack(false);
         return;
       }
 
@@ -139,12 +171,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         fetch("/api/account/tickets", { cache: "no-store" }),
         fetch("/api/account/welcome-pack", { cache: "no-store" }),
       ]);
+      if (requestId !== sessionRequestIdRef.current) return;
 
       if (ordersResponse.ok) {
         const ordersData = (await ordersResponse.json()) as {
           orders?: CmsOrder[];
           loyalty?: LoyaltySummary;
         };
+        if (requestId !== sessionRequestIdRef.current) return;
         setOrders(Array.isArray(ordersData.orders) ? ordersData.orders : []);
         setLoyalty(ordersData.loyalty ?? buildEmptyLoyaltySummary());
       } else {
@@ -158,6 +192,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           inventory?: LotteryInventory | null;
           config?: LotteryConfig | null;
         };
+        if (requestId !== sessionRequestIdRef.current) return;
         setTickets(ticketsData.tickets ?? []);
         setLotteryInventory(ticketsData.inventory ?? null);
         setLotteryConfig(ticketsData.config ?? null);
@@ -169,16 +204,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
       if (welcomePackResponse.ok) {
         const welcomePackData = (await welcomePackResponse.json()) as { eligible?: boolean };
+        if (requestId !== sessionRequestIdRef.current) return;
         setHasWelcomePack(Boolean(welcomePackData.eligible));
       } else {
         setHasWelcomePack(false);
       }
+    } catch {
+      // Retry on the next focus/open without discarding delivery details.
+      if (requestId === sessionRequestIdRef.current) lastRefreshAtRef.current = 0;
     } finally {
-      if (!silent) {
+      if (requestId === sessionRequestIdRef.current) {
         setAuthLoading(false);
       }
     }
-  }, []);
+  }, [applyUser]);
 
   useEffect(() => {
     if (isAuthRecoveryPage) {
@@ -232,6 +271,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     itemsRef.current = next;
     setItems(next);
     saveBrowserCart(next);
+    if (next.length === 0) {
+      setCheckoutDraftState(current => ({ customerId: current.customerId, edits: {} }));
+    }
   }, []);
 
   const addToCart = (product: Product, variantId?: string, quantity = 1): CartActionResult => {
@@ -281,6 +323,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     decreaseQuantity,
     setQuantity,
     clearCart,
+    checkoutDraft: resolveCheckoutDraft(checkoutDraftState, user),
+    updateCheckoutDraft,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

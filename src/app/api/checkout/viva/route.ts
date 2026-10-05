@@ -7,9 +7,9 @@ import {
 } from "@/lib/checkout-attempt";
 import {
   getCurrentCustomerSessionByBackend,
-  isAtLeast18,
   previewPromoCodeByBackend,
 } from "@/lib/customer-backend";
+import { getCustomerCheckoutEligibility } from "@/lib/customer-checkout-eligibility";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { INVOICE_SETTINGS } from "@/lib/invoice-config";
 import { buildLoyaltySummaryWithBonus } from "@/lib/loyalty";
@@ -534,15 +534,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Trop de requetes." }, { status: 429 });
   }
 
-  if (!customer.dateOfBirth) {
+  const checkoutEligibility = getCustomerCheckoutEligibility(customer);
+  if (!checkoutEligibility.allowed) {
     return NextResponse.json(
-      { error: "Date de naissance requise pour commander (18+)." },
-      { status: 403 },
-    );
-  }
-  if (!isAtLeast18(customer.dateOfBirth)) {
-    return NextResponse.json(
-      { error: "Commande reservee aux personnes majeures (18+)." },
+      { error: checkoutEligibility.error },
       { status: 403 },
     );
   }
@@ -619,9 +614,8 @@ export async function POST(request: Request) {
     !shippingName ||
     !shippingEmail ||
     !shippingPhone ||
-    !shippingCity ||
-    !shippingPostalCode ||
-    !shippingCountry
+    (requestedDeliveryMethod === "home" &&
+      (!shippingCity || !shippingPostalCode || !shippingCountry))
   ) {
     return NextResponse.json(
       { error: "Informations de livraison manquantes." },

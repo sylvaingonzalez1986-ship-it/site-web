@@ -411,7 +411,9 @@ export function ProfilePanel() {
   };
 
   const logout = async () => {
-    await fetch("/api/account/logout", { method: "POST" });
+    const response = await fetch("/api/account/logout", { method: "POST" });
+    if (!response.ok) return;
+    setUser(null);
     router.replace("/");
   };
 
