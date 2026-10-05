@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
-import { ArrowLeft, ArrowUpRight, Banknote, BookOpen, BriefcaseBusiness, ChevronDown, CircleHelp, Sprout, Swords, Target, Warehouse } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Banknote, BookOpen, BriefcaseBusiness, ChevronDown, CircleHelp, ShoppingBag, Sprout, Swords, Target, Warehouse } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getKqNextEquipmentGoal } from "@/lib/kanab-quest-equipment";
 import { getKqPlacardNextAction } from "@/lib/kanab-quest-hub";
@@ -51,7 +51,7 @@ export function KqPlacardLobby({ onOpen, onOpenCollection }: {
     { id: "market", place: "Le marché", title: "Vendre", description: snapshot?.readyLotCount ? `${snapshot.readyLotCount} lot${snapshot.readyLotCount > 1 ? "s" : ""} prêt${snapshot.readyLotCount > 1 ? "s" : ""} · transforme ou vends ta récolte.` : "Transforme et vends tes récoltes.", Icon: Banknote },
     { id: "treasury", place: "Le Bureau", title: "Gérer mes comptes", description: "Tes factures, tes comptes et ton banquier.", Icon: BriefcaseBusiness },
     { id: "arena", place: "Jury & duels", title: "Présenter mes Fleurs", description: snapshot && snapshot.availableFlowerCount > 0 ? `${snapshot.availableFlowerCount} Fleur${snapshot.availableFlowerCount > 1 ? "s" : ""} disponible${snapshot.availableFlowerCount > 1 ? "s" : ""} · entre dans l’arène.` : "Présente tes Fleurs et relève les défis.", Icon: Swords },
-    { id: "collection", place: "La collection", title: "La Botte", description: "Tes cartes, tes Héritages et tes packs.", Icon: BookOpen },
+    { id: "shop", place: "La Boutique", title: "Packs et matériel", description: "Retrouve tes packs et équipe ton placard.", Icon: ShoppingBag },
     { id: "missions", place: "Les missions", title: "Relever les défis", description: "Des packs, des Buddies et de l’argent du jeu à gagner.", Icon: Target },
   ] as const;
 
@@ -67,7 +67,7 @@ export function KqPlacardLobby({ onOpen, onOpenCollection }: {
           <strong>Une récolte, plusieurs possibilités.</strong>
           <p>Cultive, présente ta Fleur au jury, puis retrouve ton lot au marché pour le transformer ou le vendre.</p>
           <p>Dans l’entrepôt, le récapitulatif indique le matériel installé et les emplacements à compléter dans chaque tente. Seules les machines de transformation sont communes.</p>
-          <p>Le Bureau réunit tes comptes et ton banquier. Les packs t’attendent à la Boutique, depuis ta collection.</p>
+          <p>Le Bureau réunit tes comptes et ton banquier. La Boutique donne accès aux packs et au matériel. Retrouve ta collection en bas de page.</p>
         </div>
       </details>
     </header>
@@ -75,13 +75,18 @@ export function KqPlacardLobby({ onOpen, onOpenCollection }: {
     <section className={styles.activities} aria-labelledby="placard-activities-title">
       <div className={styles.intro}><h2 id="placard-activities-title">À toi de jouer.</h2><p>Fais grandir ton placard, à ton rythme.</p></div>
       <nav className={styles.activityGrid} aria-label="Activités du Placard">
-        {activities.map(({ id, place, title, description, Icon }) => <button key={id} type="button" className={styles.activity} data-placard-activity={id} data-recommended={recommended === id || undefined} data-arena-tour={id === "collection" ? "collection" : undefined} aria-haspopup={id === "collection" ? "dialog" : undefined} onClick={() => id === "collection" ? onOpenCollection() : onOpen(id)}>
+        {activities.map(({ id, place, title, description, Icon }) => <button key={id} type="button" className={styles.activity} data-placard-activity={id} data-recommended={recommended === id || undefined} onClick={() => onOpen(id)}>
           <span className={styles.activityIcon}><Icon size={23} aria-hidden="true" /></span>
           <span className={styles.activityText}><strong className={styles.place}>{place}</strong><span className={styles.action}>{title}{recommended === id ? <span className={styles.next}>À poursuivre</span> : null}</span><span className={styles.description}>{description}</span></span>
           <ArrowUpRight className={styles.arrow} size={22} aria-hidden="true" />
         </button>)}
       </nav>
       {error ? <p className={styles.status} role="status">Ton résumé est indisponible. Les activités restent accessibles. <button type="button" onClick={() => { setError(false); setRevision(value => value + 1); }}>Réessayer</button></p> : null}
+      <footer className={styles.footer}>
+        <button type="button" className={styles.collectionLink} data-arena-tour="collection" onClick={onOpenCollection} aria-haspopup="dialog">
+          <BookOpen size={16} aria-hidden="true" /> Ma collection La Botte
+        </button>
+      </footer>
     </section>
   </main>;
 }

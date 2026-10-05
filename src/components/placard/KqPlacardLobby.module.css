@@ -22,7 +22,7 @@
 .activity[data-placard-activity="market"] { --activity-accent: #006574; --activity-yellow: #f2e9ad; --activity-hover: #fff6cc; }
 .activity[data-placard-activity="treasury"] { --activity-accent: #284e93; --activity-yellow: #efd480; --activity-hover: #ffe5a0; }
 .activity[data-placard-activity="arena"] { --activity-accent: #7c2039; --activity-yellow: #f0ad4e; --activity-hover: #ffc775; }
-.activity[data-placard-activity="collection"] { --activity-accent: #62418c; --activity-yellow: #fff1c5; --activity-hover: #fff8e1; }
+.activity[data-placard-activity="shop"] { --activity-accent: #62418c; --activity-yellow: #fff1c5; --activity-hover: #fff8e1; }
 .activity[data-placard-activity="missions"] { --activity-accent: #735700; --activity-yellow: #ffe263; --activity-hover: #fff09a; grid-column: 1 / -1; min-height: 112px; }
 .activityIcon { display: grid; place-items: center; flex-shrink: 0; width: 50px; height: 50px; border-radius: 12px; background: var(--activity-accent); color: #fffaf1; }
 .activityText { display: grid; gap: 5px; min-width: 0; }
@@ -33,9 +33,11 @@
 .arrow { margin-left: auto; flex-shrink: 0; width: 30px; height: 30px; padding: 5px; border-radius: 50%; background: var(--activity-accent); color: #fffaf1; }
 .status { margin: 8px 0 0; font-size: 12px; text-align: center; }
 .status button { min-height: 44px; padding: 4px 8px; color: #f4c43d; background: transparent; border: 0; text-decoration: underline; cursor: pointer; }
+.footer { display: flex; justify-content: center; margin-top: 12px; }
+.collectionLink { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 6px 8px; border: 0; background: transparent; color: #fffaf1; font-size: 12px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .lobby :where(button, a, summary):focus-visible { outline: 3px solid #f4c43d; outline-offset: 4px; }
 .lobby .activity:focus-visible { outline: 3px solid #fffaf1; outline-offset: 4px; box-shadow: 0 0 0 4px #002d24; }
-@media (hover: hover) { .activity:hover { background: var(--activity-hover); transform: translateY(-2px); } .back:hover { color: #f4c43d; } }
+@media (hover: hover) { .activity:hover { background: var(--activity-hover); transform: translateY(-2px); } .back:hover, .collectionLink:hover { color: #f4c43d; } }
 @media (min-width: 701px) and (max-width: 1000px) { .activityGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .activity { gap: 10px; padding: 14px; } .activityIcon { width: 44px; height: 44px; } .arrow { width: 26px; height: 26px; padding: 4px; } }
 @media (max-width: 700px) {
   .lobby { grid-template-rows: auto minmax(145px, 1fr) auto; padding-top: 12px; padding-bottom: 12px; }

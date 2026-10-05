@@ -79,7 +79,7 @@ if(preview){
   for(const state of ['starter','active','jury','lots']){
    await visit(state);await view('hub');await page.mouse.move(0,0);
    assert.equal(await page.$$eval('dialog[open]',els=>els.length),0);
-   const m=await measure();assert.equal(m.overflow,false);assert.deepEqual(m.brokenImages,[]);assert.deepEqual(m.primary.map(x=>x.id),['game','workshop','market','treasury','arena','collection','missions']);assert.equal(m.visibleControls,9);
+   const m=await measure();assert.equal(m.overflow,false);assert.deepEqual(m.brokenImages,[]);assert.deepEqual(m.primary.map(x=>x.id),['game','workshop','market','treasury','arena','shop','missions']);assert.equal(m.visibleControls,10);
    assert.equal(new Set(m.primary.map(card=>card.background)).size,7,'Each of the seven activity cards has its own background tone');
    assert.equal(new Set(m.primary.map(card=>card.accent)).size,7,'Each of the seven activity cards has its own accent color');
    for(const card of m.primary){
@@ -98,11 +98,11 @@ if(preview){
    if(state==='jury')assert(m.primary.find(x=>x.id==='arena').text.includes('1 Fleur disponible'));
    await page.screenshot({path:resolve(output,`lobby-${state}-${width}.png`),fullPage:true});results.push({state,...m});
   }
-  for(const target of ['game','workshop','market','treasury','arena','missions']){
+  for(const target of ['game','workshop','market','treasury','arena','shop','missions']){
    await visit();await page.click(`[data-placard-activity="${target}"]`);await view(target);assert.equal(new URL(page.url()).searchParams.get('view'),target);
    await page.goBack();await view('hub');await page.goForward();await view(target);
   }
-  await visit();await page.click('[data-placard-activity="collection"]');await page.waitForSelector('dialog[open]');
+  await visit();await page.click('[data-placard-lobby] footer [data-arena-tour="collection"]');await page.waitForSelector('dialog[open]');
   assert.equal(await page.$eval('dialog[open]',el=>el.scrollWidth>el.clientWidth+1),false);
   await page.screenshot({path:resolve(output,`collection-${width}.png`),fullPage:true});
   await page.click('dialog footer button');await view('shop');assert.equal(await page.$eval('[data-catalog]',el=>el.textContent),'Packs');assert.equal(await page.$('dialog[open]'),null);
