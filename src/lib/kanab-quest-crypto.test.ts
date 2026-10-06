@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatKqCryptoQuantity, getKqCryptoRefreshDelayMs, isKqCryptoQuoteFresh, isKqCryptoRefreshStatus, isKqCryptoSnapshot, parseKqCryptoAction, parseKqCryptoEuros, type KqCryptoSnapshot } from "./kanab-quest-crypto";
+import { formatKqCryptoQuantity, getKqCryptoNextRefreshAt, getKqCryptoRefreshDelayMs, isKqCryptoProviderQuoteFresh, isKqCryptoQuoteFresh, isKqCryptoRefreshStatus, isKqCryptoSnapshot, parseKqCryptoAction, parseKqCryptoEuros, type KqCryptoSnapshot } from "./kanab-quest-crypto";
 describe("virtual crypto orders", () => {
  it("parses euro input without floating point rounding", () => {
   expect(parseKqCryptoEuros("1,13")).toBe(113); expect(parseKqCryptoEuros("123.45")).toBe(12345);
@@ -15,11 +15,54 @@ describe("virtual crypto orders", () => {
  });
  it.each([0,-1,1.5,99,100000001,Number.MAX_SAFE_INTEGER])("rejects invalid buy cents %s", amountCents => expect(() => parseKqCryptoAction({action:"preview",side:"buy",assetId:1,amountCents})).toThrow());
  it.each(["-1","0","NaN","1e-18","1.0000000000000000001","100000000000000000000",1])("rejects unsafe quantities %s", quantity => expect(() => parseKqCryptoAction({action:"preview",side:"sell",assetId:1,quantity})).toThrow());
- it("rejects ten-minute-old or future quotes", () => {
+ it("rejects ten-minute-old or future provider responses when collecting the daily prices", () => {
   const now=Date.parse("2026-09-23T15:00:00Z");
-  expect(isKqCryptoQuoteFresh("2026-09-23T14:50:01Z",now)).toBe(true);
-  expect(isKqCryptoQuoteFresh("2026-09-23T14:50:00Z",now)).toBe(false);
-  expect(isKqCryptoQuoteFresh("2026-09-23T15:02:00Z",now)).toBe(false);
+  expect(isKqCryptoProviderQuoteFresh("2026-09-23T14:50:01Z",now)).toBe(true);
+  expect(isKqCryptoProviderQuoteFresh("2026-09-23T14:50:00Z",now)).toBe(false);
+  expect(isKqCryptoProviderQuoteFresh("2026-09-23T15:02:00Z",now)).toBe(false);
+ });
+});
+
+describe("daily crypto prices at 19:00 Paris", () => {
+ it.each([
+  ["2026-07-10T16:59:59.999Z", "2026-07-10T17:00:00.000Z"],
+  ["2026-07-10T17:00:00.000Z", "2026-07-11T17:00:00.000Z"],
+  ["2026-01-10T17:59:59.999Z", "2026-01-10T18:00:00.000Z"],
+  ["2026-01-10T18:00:00.000Z", "2026-01-11T18:00:00.000Z"],
+  ["2026-03-28T18:00:00.000Z", "2026-03-29T17:00:00.000Z"],
+  ["2026-03-29T00:30:00.000Z", "2026-03-29T17:00:00.000Z"],
+  ["2026-10-24T17:00:00.000Z", "2026-10-25T18:00:00.000Z"],
+  ["2026-10-25T00:30:00.000Z", "2026-10-25T18:00:00.000Z"],
+  ["2026-12-31T23:30:00.000Z", "2027-01-01T18:00:00.000Z"],
+ ])("schedules the next Paris collection after %s", (now, expected) => {
+  expect(new Date(getKqCryptoNextRefreshAt(Date.parse(now))).toISOString()).toBe(expected);
+ });
+ it("keeps the daily price tradable until the next collection, including the provider timestamp tolerance", () => {
+  const quotedAt = "2026-09-23T16:54:00Z";
+  expect(isKqCryptoQuoteFresh(quotedAt, Date.parse("2026-09-23T17:11:00Z"))).toBe(true);
+  expect(isKqCryptoQuoteFresh(quotedAt, Date.parse("2026-09-24T16:59:59.999Z"))).toBe(true);
+  expect(isKqCryptoQuoteFresh(quotedAt, Date.parse("2026-09-24T17:00:00Z"))).toBe(false);
+ });
+ it("does not carry a quote from before the preceding daily collection into the new day", () => {
+  const now = Date.parse("2026-09-23T17:00:00Z");
+  expect(isKqCryptoQuoteFresh("2026-09-23T16:49:59.999Z", now)).toBe(false);
+  expect(isKqCryptoQuoteFresh("2026-09-23T16:50:00Z", now)).toBe(true);
+  expect(isKqCryptoQuoteFresh("2026-09-22T17:01:00Z", now)).toBe(false);
+ });
+ it.each([
+  ["2026-03-28T17:55:00Z", "2026-03-29T17:00:00Z"],
+  ["2026-10-24T16:55:00Z", "2026-10-25T18:00:00Z"],
+ ])("expires a daily price across a DST change: %s", (quotedAt, cutoff) => {
+  expect(isKqCryptoQuoteFresh(quotedAt, Date.parse(cutoff) - 1)).toBe(true);
+  expect(isKqCryptoQuoteFresh(quotedAt, Date.parse(cutoff))).toBe(false);
+ });
+ it("rejects invalid timestamps and future quotes outside the allowed clock skew", () => {
+  const now = Date.parse("2026-09-23T17:00:00Z");
+  expect(isKqCryptoQuoteFresh("2026-09-23T17:01:00Z", now)).toBe(true);
+  expect(isKqCryptoQuoteFresh("2026-09-23T17:01:00.001Z", now)).toBe(false);
+  expect(isKqCryptoQuoteFresh("invalid", now)).toBe(false);
+  expect(isKqCryptoQuoteFresh("2026-09-23T17:00:00Z", NaN)).toBe(false);
+  expect(getKqCryptoNextRefreshAt(NaN)).toBeNaN();
  });
 });
 

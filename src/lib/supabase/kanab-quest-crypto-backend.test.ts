@@ -31,7 +31,7 @@ describe("crypto server authority",()=>{
  it("publishes good top100 quotes while honoring a held-asset Retry-After",async()=>{
   rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,heldAssetIds:[101]}}).mockResolvedValueOnce({error:null,data:true});
   quotes.mockRejectedValue(new CoinMarketCapRequestError("[cmc] unavailable (HTTP 429)","rate_limited",600));
-  await refreshKqCryptoQuotes();
+  expect(await refreshKqCryptoQuotes()).toBe("updated");
   expect(rpc).toHaveBeenLastCalledWith("rpc_kq_crypto_refresh_publish",{p_lease_id:id,p_assets:[asset],p_retry_after_seconds:600});
  });
  it("returns only client refresh metadata and omits operational counters",async()=>{
@@ -50,21 +50,21 @@ describe("crypto server authority",()=>{
  });
  it("records publication failures separately from provider failures",async()=>{
   rpc.mockImplementation(async(name:string)=>name==="rpc_kq_crypto_refresh_publish"?{data:null,error:{code:"P0001",message:"crypto_invalid_quotes"}}:{error:null,data:name==="rpc_kq_crypto_refresh_claim"?{leaseId:id,heldAssetIds:[]}:true});
-  await refreshKqCryptoQuotes();
+  expect(await refreshKqCryptoQuotes()).toBe("failed");
   expect(rpc).toHaveBeenLastCalledWith("rpc_kq_crypto_refresh_fail",{p_lease_id:id,p_failure_code:"publish_failed",p_retry_after_seconds:null});
  });
  it("reads session owner only and retains positions during provider outages",async()=>{
   rpc.mockImplementation(async(name:string)=>({error:null,data:name==="rpc_kq_crypto_refresh_claim"?{leaseId:id,heldAssetIds:[]}:snapshot}));top.mockRejectedValue(new Error("network"));
   expect(await getKqCryptoSnapshot(owner)).toEqual(snapshot);expect(rpc).toHaveBeenCalledWith("rpc_kq_crypto_command",{p_user_id:owner,p_action:"state",p_payload:{},p_market_enabled:true});
  });
- it("a lease prevents external calls by losing server instances",async()=>{await refreshKqCryptoQuotes();expect(top).not.toHaveBeenCalled();expect(quotes).not.toHaveBeenCalled();});
+ it("a lease prevents external calls by losing server instances",async()=>{expect(await refreshKqCryptoQuotes()).toBe("skipped");expect(top).not.toHaveBeenCalled();expect(quotes).not.toHaveBeenCalled();});
  it("fetches only held IDs missing from top100 and publishes the shared quotes",async()=>{
   rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,heldAssetIds:[1,101]}}).mockResolvedValueOnce({error:null,data:true});quotes.mockResolvedValue([{...asset,id:101,rank:101,inTop100:false}]);
   await refreshKqCryptoQuotes();expect(quotes).toHaveBeenCalledWith([101]);expect(rpc).toHaveBeenLastCalledWith("rpc_kq_crypto_refresh_publish",{p_lease_id:id,p_assets:[asset,{...asset,id:101,rank:101,inTop100:false}]});
  });
  it("reports a rejected publication without pretending the cache was updated",async()=>{
   rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,heldAssetIds:[]}}).mockResolvedValueOnce({error:null,data:false});
-  await refreshKqCryptoQuotes();expect(console.warn).toHaveBeenCalledWith("[crypto:refresh] publication lease expired");
+  expect(await refreshKqCryptoQuotes()).toBe("failed");expect(console.warn).toHaveBeenCalledWith("[crypto:refresh] publication lease expired");
  });
  it("keeps diagnostics useful without recording provider secrets or player data",async()=>{
   rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,heldAssetIds:[]}});top.mockRejectedValue(new Error("https://provider/?secret=private-token"));

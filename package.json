@@ -11,6 +11,7 @@
     "test": "vitest",
     "test:ci": "vitest run --coverage",
     "test:coverage": "vitest run --coverage",
+    "test:crypto:sql": "node scripts/test-placard-crypto-daily.mjs",
     "seed:supabase": "node scripts/seed-supabase-from-json.mjs",
     "migrate:customers:supabase": "node scripts/migrate-customers-to-supabase-auth.mjs",
     "link:orders:supabase": "node scripts/link-orders-to-supabase-customers.mjs",

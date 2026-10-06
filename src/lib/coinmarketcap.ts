@@ -1,5 +1,5 @@
 import "server-only";
-import { isKqCryptoAsset, isKqCryptoQuoteFresh, isRecord, type KqCryptoAsset } from "./kanab-quest-crypto";
+import { isKqCryptoAsset, isKqCryptoProviderQuoteFresh, isRecord, type KqCryptoAsset } from "./kanab-quest-crypto";
 
 export const hasCoinMarketCapKey = () => Boolean(process.env.CMC_API_KEY?.trim());
 export class CoinMarketCapRequestError extends Error {
@@ -51,14 +51,15 @@ export function parseCoinMarketCapAssets(body: unknown, top100: boolean, now = D
     if (!isKqCryptoAsset(asset)) throw new Error("[cmc] invalid asset");
     if (seen.has(asset.id)) throw new Error("[cmc] duplicate asset");
     // Preserve stale timestamps for display without preventing the other top-100
-    // quotes from updating. Trading still checks each asset's original quote age.
-    if (Date.parse(asset.quotedAt) > now + 60_000 || (!top100 && !isKqCryptoQuoteFresh(asset.quotedAt, now))) throw new Error("[cmc] stale quote");
+    // quotes from updating. Ingestion keeps its ten-minute freshness requirement
+    // independently of the daily price's lifetime in the game.
+    if (Date.parse(asset.quotedAt) > now + 60_000 || (!top100 && !isKqCryptoProviderQuoteFresh(asset.quotedAt, now))) throw new Error("[cmc] stale quote");
     if (top100 && asset.rank !== null && ranks.has(asset.rank)) throw new Error("[cmc] duplicate rank");
     seen.add(asset.id);
     if (asset.rank !== null) ranks.add(asset.rank);
     return asset;
   });
-  if (top100 && !assets.some(asset => isKqCryptoQuoteFresh(asset.quotedAt, now))) throw new Error("[cmc] stale quote");
+  if (top100 && !assets.some(asset => isKqCryptoProviderQuoteFresh(asset.quotedAt, now))) throw new Error("[cmc] stale quote");
   return assets;
 }
 

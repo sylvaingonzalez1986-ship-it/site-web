@@ -41,6 +41,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:supabase-grants
+      - run: npm run test:crypto:sql
       - run: npm run test:ci
 
   audit:

@@ -1,5 +1,24 @@
 /** Virtual positions only. All execution maths belongs to PostgreSQL NUMERIC. */
 export const KQ_CRYPTO_MAX_QUOTE_AGE_MS = 10 * 60 * 1000;
+const parisClock = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/Paris", year: "numeric", month: "2-digit", day: "2-digit",
+  hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23",
+});
+function parisWallTimeMs(timestamp: number): number {
+  const parts = parisClock.formatToParts(timestamp);
+  const part = (name: Intl.DateTimeFormatPartTypes) => Number(parts.find(value => value.type === name)?.value);
+  return Date.UTC(part("year"), part("month") - 1, part("day"), part("hour"), part("minute"), part("second"));
+}
+/** The next daily 19:00 Europe/Paris slot, including 23- and 25-hour DST days. */
+export function getKqCryptoNextRefreshAt(now: number): number {
+  if (!Number.isFinite(now)) return NaN;
+  const local = new Date(parisWallTimeMs(now));
+  const today = Date.UTC(local.getUTCFullYear(), local.getUTCMonth(), local.getUTCDate(), 19);
+  // At 19:00 UTC, Paris has already passed any DST transition on that civil day.
+  const atParis19 = (civilTime: number) => civilTime - (parisWallTimeMs(civilTime) - civilTime);
+  const candidate = atParis19(today);
+  return now < candidate ? candidate : atParis19(today + 86_400_000);
+}
 export const KQ_CRYPTO_MAX_ORDER_CENTS = 100_000_000;
 export const KQ_CRYPTO_DECIMAL = /^(?:0|[1-9]\d{0,19})(?:\.\d{1,18})?$/;
 export type KqCryptoAsset = { id: number; rank: number | null; name: string; symbol: string; priceEur: string; change24h: number | null; quotedAt: string; inTop100: boolean };
@@ -65,9 +84,16 @@ export function getKqCryptoRefreshDelayMs(snapshot: Pick<KqCryptoSnapshot, "mark
   const nextAttempt = snapshot.refresh?.nextAttemptAt ? Date.parse(snapshot.refresh.nextAttemptAt) : NaN;
   return Number.isFinite(nextAttempt) ? Math.max(5_000, Math.min(60_000, nextAttempt - now)) : 60_000;
 }
-export function isKqCryptoQuoteFresh(quotedAt: string, now: number) {
+/** Upstream responses must still contain recent prices when collected. */
+export function isKqCryptoProviderQuoteFresh(quotedAt: string, now: number) {
   const age = now - Date.parse(quotedAt);
   return Number.isFinite(age) && age >= -60_000 && age < KQ_CRYPTO_MAX_QUOTE_AGE_MS;
+}
+/** The daily fixing remains tradable until the next 19:00 Paris collection. */
+export function isKqCryptoQuoteFresh(quotedAt: string, now: number) {
+  const timestamp = Date.parse(quotedAt);
+  return Number.isFinite(timestamp) && Number.isFinite(now) && timestamp <= now + 60_000
+    && now < getKqCryptoNextRefreshAt(timestamp + KQ_CRYPTO_MAX_QUOTE_AGE_MS);
 }
 /** Parse player euros without binary floating point multiplication. */
 export function parseKqCryptoEuros(input: string): number | null {

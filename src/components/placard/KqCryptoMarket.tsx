@@ -2,12 +2,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowDownLeft, ArrowUpRight, ChartNoAxesCombined, RefreshCw, Search, Wallet, X } from "lucide-react";
-import { formatKqCryptoQuantity, getKqCryptoRefreshDelayMs, isKqCryptoOrder, isKqCryptoQuoteFresh, isKqCryptoSnapshot, isKqCryptoTrade, isRecord, parseKqCryptoEuros, type KqCryptoAsset, type KqCryptoOrder, type KqCryptoSnapshot } from "@/lib/kanab-quest-crypto";
+import { formatKqCryptoQuantity, getKqCryptoNextRefreshAt, getKqCryptoRefreshDelayMs, isKqCryptoOrder, isKqCryptoQuoteFresh, isKqCryptoSnapshot, isKqCryptoTrade, isRecord, parseKqCryptoEuros, type KqCryptoAsset, type KqCryptoOrder, type KqCryptoSnapshot } from "@/lib/kanab-quest-crypto";
 import styles from "./KqCryptoMarket.module.css";
 const euros = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
 const price = (value: string) => Number(value).toLocaleString("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: Number(value) < 1 ? 18 : 2 });
 const quantityLabel = formatKqCryptoQuantity;
-const dateLabel = (value: string) => new Date(value).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+const dateLabel = (value: string | number) => new Date(value).toLocaleString("fr-FR", { timeZone: "Europe/Paris", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
 function CryptoLogo({ asset }: { asset: Pick<KqCryptoAsset, "id" | "symbol"> }) {
  const [failedId, setFailedId] = useState<number | null>(null);
  const hasLogo = Number.isSafeInteger(asset.id) && asset.id > 0 && failedId !== asset.id;
@@ -168,7 +168,7 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
  return <section className={styles.market} aria-label="Comptoir crypto" data-testid="crypto-market">
   <header className={styles.header}><div className={styles.icon}><ChartNoAxesCombined size={36} aria-hidden="true" /></div><div><small>Les placements du placard</small><h3>Le comptoir crypto</h3><p>Les vrais cours. Ton argent de jeu.</p></div><span className={styles.stamp}>TOP 100<br />COINMARKETCAP</span></header>
   <p className={styles.disclaimer}>Portefeuille virtuel : tu places uniquement tes euros de jeu. Les cours réels en euros peuvent monter ou baisser ; aucun achat de cryptomonnaie réelle.</p>
-  <div className={styles.status}><span><i data-live={data?.marketStatus === "live"} />{data?.marketStatus === "live" ? "Cours disponibles" : data?.marketStatus === "stale" ? "Derniers cours connus · certaines opérations suspendues" : "Connexion au marché en attente"}{data?.updatedAt ? <small>Actualisé le {dateLabel(data.updatedAt)} · relevé toutes les 5 min</small> : null}</span><button type="button" aria-label="Actualiser les cours crypto" disabled={loading || busy} onClick={() => void reload()}><RefreshCw size={16} aria-hidden="true" /> {loading ? "Actualisation…" : "Actualiser"}</button></div>
+  <div className={styles.status}><span><i data-live={data?.marketStatus === "live"} />{data?.marketStatus === "live" ? "Cours disponibles" : data?.marketStatus === "stale" ? "Derniers cours connus · certaines opérations suspendues" : "Connexion au marché en attente"}{data?.updatedAt ? <small>Actualisé le {dateLabel(data.updatedAt)}</small> : null}<small>Relevé chaque jour à 19 h (heure de Paris)</small>{data ? <small>Prochain relevé le {dateLabel(getKqCryptoNextRefreshAt(now))}</small> : null}</span><button type="button" aria-label="Actualiser les cours crypto" disabled={loading || busy} onClick={() => void reload()}><RefreshCw size={16} aria-hidden="true" /> {loading ? "Actualisation…" : "Actualiser"}</button></div>
   {error ? <p role="alert" className={styles.error}>{error}</p> : null}
   {message ? <p role="status" className={styles.success}>{message}</p> : null}
   {!data && loading ? <p role="status">Connexion au comptoir…</p> : null}

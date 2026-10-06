@@ -25,9 +25,10 @@ async function rpc(name: string, params?: Record<string, unknown>): Promise<unkn
 function refreshReason(error: unknown) {
  return error instanceof Error && /^\[(cmc|supabase:crypto)\] [a-zA-Z0-9 :()-]+$/.test(error.message) ? error.message : "provider request failed";
 }
-async function refreshQuotes() {
+export type KqCryptoRefreshResult = "updated" | "skipped" | "failed";
+async function refreshQuotes(): Promise<KqCryptoRefreshResult> {
  const claim = await rpc("rpc_kq_crypto_refresh_claim");
- if (claim === null) return;
+ if (claim === null) return "skipped";
  if (!isRecord(claim) || typeof claim.leaseId !== "string" || !KQ_CRYPTO_UUID.test(claim.leaseId) || !Array.isArray(claim.heldAssetIds)
   || claim.heldAssetIds.length > 250 || claim.heldAssetIds.some(id => !Number.isSafeInteger(id) || Number(id) <= 0)) throw new Error("[supabase:crypto] invalid refresh lease");
  let phase: "provider" | "publish" = "provider";
@@ -44,6 +45,7 @@ async function refreshQuotes() {
   const published = await rpc("rpc_kq_crypto_refresh_publish", { p_lease_id: claim.leaseId, p_assets: [...top100, ...held],
    ...(retryAfterSeconds === null ? {} : { p_retry_after_seconds: retryAfterSeconds }) });
   if (published !== true) console.warn("[crypto:refresh] publication lease expired");
+  return published === true ? "updated" : "failed";
  } catch (error) {
   console.warn("[crypto:refresh] retaining last quotes", { reason: refreshReason(error) });
   // Every instance observes the same provider pause; a stale lease cannot defer a newer one.
@@ -53,13 +55,14 @@ async function refreshQuotes() {
     p_failure_code: providerError?.kind ?? (phase === "publish" ? "publish_failed" : "provider_unavailable"),
     p_retry_after_seconds: providerError?.retryAfterSeconds ?? null });
   } catch { /* The lease expiry still permits recovery if failure reporting is unavailable. */ }
+  return "failed";
  }
 }
 /** Join local refreshes; the database lease bounds calls across all server instances. */
-let refreshInFlight: Promise<void> | null = null;
+let refreshInFlight: Promise<KqCryptoRefreshResult> | null = null;
 export async function refreshKqCryptoQuotes() {
  if (!refreshInFlight) refreshInFlight = refreshQuotes().finally(() => { refreshInFlight = null; });
- await refreshInFlight;
+ return refreshInFlight;
 }
 export async function getKqCryptoSnapshot(userId: string): Promise<KqCryptoSnapshot> {
  checkUser(userId);
