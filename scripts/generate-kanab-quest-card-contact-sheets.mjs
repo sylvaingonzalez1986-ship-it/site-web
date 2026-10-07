@@ -73,5 +73,5 @@ await mkdir(outputDir, { recursive: true });
 const bottePath = await renderSheet("botte", illustrations.filter(({ code }) => code.startsWith("BOTTE-")));
 const heritagePath = await renderSheet("heritage", illustrations.filter(({ code }) => code.startsWith("HERITAGE-")));
 
-console.log(`36 cartes La Botte -> ${bottePath}`);
+console.log(`36 cartes Botte du Chanvrier -> ${bottePath}`);
 console.log(`12 cartes Héritage -> ${heritagePath}`);

@@ -493,7 +493,7 @@ export function KqEquipmentCatalogModal({
       <header className={styles.catalogHeader}>
         <button type="button" onClick={onClose} className={styles.backButton} aria-label="Retour à la boutique"><ArrowLeft aria-hidden="true" />Boutique</button>
         <div className={styles.catalogBrand}>
-          <small>La Botte · Le fond de la boutique</small>
+          <small>Botte du Chanvrier · Le fond de la boutique</small>
           <h2 id="equipment-catalog-title">Le rayon matériel</h2>
         </div>
         <div className={styles.accountSummary}>

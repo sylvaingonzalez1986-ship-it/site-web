@@ -513,7 +513,7 @@ try {
       const rewardText = await page.$eval('.contest-notebook-collection-tab',element=>element.textContent);
       for (const text of removedMissionCopy) assert(!rewardText.includes(text),`Removed tasting mission still displayed: ${text}`);
       assert.equal(await page.$$eval('[aria-label="Missions de dégustation"]',elements=>elements.length),0);
-      for (const text of ['Mes packs La Botte','Inventaire La Botte','Voir l’inventaire','Ouvrir un pack']) {
+      for (const text of ['Mes packs Botte du Chanvrier','Inventaire Botte du Chanvrier','Voir l’inventaire','Ouvrir un pack']) {
         assert(!rewardText.includes(text),`Removed collection control still displayed: ${text}`);
       }
       assert.equal(await page.$$eval('#contest-botte-chest-title',elements=>elements.length),0);

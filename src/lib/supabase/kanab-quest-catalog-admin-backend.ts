@@ -88,12 +88,12 @@ export async function updateKqBotteCard(input: {
   const name = cleanText(input.name, 120);
   const advantage = cleanText(input.advantage, 500);
   if (!/^[0-9a-f-]{36}$/i.test(input.cardId) || name.length < 3 || advantage.length < 3 || !ALLOWED_RARITIES.has(input.rarity)) {
-    throw new Error("Carte La Botte invalide.");
+    throw new Error("Carte Botte du Chanvrier invalide.");
   }
   const client = createSupabaseServiceClient();
   const definition = await client.from("lottery_card_definitions").select("id,code")
     .eq("id", input.cardId).like("code", "BOTTE-%").single();
-  if (definition.error) throw new Error("Carte La Botte introuvable.");
+  if (definition.error) throw new Error("Carte Botte du Chanvrier introuvable.");
   if (!KQ_CARDS.some((card) => card.code === definition.data.code)) throw new Error("Règle de carte non prise en charge.");
   const update = await client.rpc("rpc_kq_update_botte_card_editorial", {
     p_card_id: input.cardId, p_name: name, p_rarity: input.rarity,

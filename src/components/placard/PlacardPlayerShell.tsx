@@ -159,7 +159,7 @@ export function PlacardPlayerShell() {
 
   if (view !== "hub") {
     const currentTitle =
-      view === "workshop" ? "L’Entrepôt · Aménager" : view === "shop" ? "La Boutique · La Botte" : view === "game" ? "La Culture" : view === "market" ? "Le Marché · Vendre" : view === "treasury" ? "Le Bureau" : view === "missions" ? "Les Missions" : "Jury & duels";
+      view === "workshop" ? "L’Entrepôt · Aménager" : view === "shop" ? "La Boutique · Botte du Chanvrier" : view === "game" ? "La Culture" : view === "market" ? "Le Marché · Vendre" : view === "treasury" ? "Le Bureau" : view === "missions" ? "Les Missions" : "Jury & duels";
 
     return (
       <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
@@ -177,7 +177,7 @@ export function PlacardPlayerShell() {
               <span className="sm:hidden">Placard</span>
             </button>
             <p className="hidden min-w-0 flex-1 truncate text-center text-sm font-bold uppercase tracking-wide md:block">{currentTitle}</p>
-            <button type="button" onClick={() => setCollectionOpen(true)} aria-haspopup="dialog" aria-label="Ouvrir ma collection La Botte" className="inline-flex min-h-11 shrink-0 items-center gap-2 border-2 border-ink bg-yellow px-3 text-xs font-black text-ink shadow-[3px_3px_0_#111]"><BookOpen size={18} aria-hidden="true" /><span>Collection</span></button>
+            <button type="button" onClick={() => setCollectionOpen(true)} aria-haspopup="dialog" aria-label="Ouvrir ma collection Botte du Chanvrier" className="inline-flex min-h-11 shrink-0 items-center gap-2 border-2 border-ink bg-yellow px-3 text-xs font-black text-ink shadow-[3px_3px_0_#111]"><BookOpen size={18} aria-hidden="true" /><span>Collection</span></button>
             <Link
               href="/arene"
               className="hidden min-h-11 items-center border-2 border-ink bg-white px-3 font-black uppercase shadow-[3px_3px_0_#111] transition hover:-translate-y-0.5 sm:inline-flex"

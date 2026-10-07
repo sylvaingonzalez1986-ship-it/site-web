@@ -43,7 +43,7 @@ export async function GET() {
     return NextResponse.json({ ...shop, spendablePoints: context.loyalty.spendablePoints });
   } catch (error) {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Boutique La Botte indisponible." },
+      { error: error instanceof Error ? error.message : "Boutique Botte du Chanvrier indisponible." },
       { status: 500 },
     );
   }
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
     });
     return NextResponse.json(purchase);
   } catch (error) {
-    const failure = publicBoosterError(error, "Achat La Botte impossible.");
+    const failure = publicBoosterError(error, "Achat Botte du Chanvrier impossible.");
     return NextResponse.json({ error: failure.message }, { status: failure.status });
   }
 }
@@ -126,7 +126,7 @@ export async function PATCH(request: Request) {
     );
     return NextResponse.json(opening);
   } catch (error) {
-    const failure = publicBoosterError(error, "Ouverture La Botte impossible.");
+    const failure = publicBoosterError(error, "Ouverture Botte du Chanvrier impossible.");
     return NextResponse.json({ error: failure.message }, { status: failure.status });
   }
 }

@@ -34,7 +34,7 @@ try {
       ADD CONSTRAINT lottery_card_instances_source_required CHECK(ticket_id IS NOT NULL OR kq_support_entitlement_id IS NOT NULL OR source_bot_battle_id IS NOT NULL),ADD UNIQUE(kq_support_entitlement_id,pack_slot);
     -- Deterministic draws make rarity/collection assertions reproducible; production uses its secure RNG.
     CREATE FUNCTION lottery_secure_random_int(a INTEGER,b INTEGER) RETURNS INTEGER LANGUAGE sql AS $$ SELECT a $$;
-    INSERT INTO lottery_card_collections(code,title) VALUES('HEMP_HEROES_2026','Buddies'),('BOTTE_DU_CHANVRIER_2026','La Botte');
+    INSERT INTO lottery_card_collections(code,title) VALUES('HEMP_HEROES_2026','Buddies'),('BOTTE_DU_CHANVRIER_2026','Botte du Chanvrier');
     INSERT INTO lottery_card_definitions(collection_id,code,card_number,name,rarity)
       SELECT id,'TEST-GOLD-'||n,n,'Gold '||n,'gold' FROM lottery_card_collections CROSS JOIN generate_series(1,3) n WHERE code='HEMP_HEROES_2026';
     INSERT INTO lottery_card_definitions(collection_id,code,card_number,name,rarity)
@@ -136,7 +136,7 @@ try {
   assert.equal(await count('kq_equipment_wallets',guest),0);
   await db.query('DELETE FROM kq_support_booster_entitlements WHERE user_id=$1',[guest]);
   await claim(guest);
-  // Packs use the unchanged real opening RPC and deliver ten cards from La Botte.
+  // Packs use the unchanged real opening RPC and deliver ten cards from Botte du Chanvrier.
   const pack=await scalar('SELECT id FROM kq_support_booster_entitlements WHERE user_id=$1 LIMIT 1',[old]);
   await assert.rejects(()=>scalar('SELECT rpc_kq_open_support_booster($1,$2)',[pack,guest]),/unavailable/);
   const opened=await scalar('SELECT rpc_kq_open_support_booster($1,$2)',[pack,old]);

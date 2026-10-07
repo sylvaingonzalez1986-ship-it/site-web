@@ -17,7 +17,7 @@ export function getKqNotebookReward(badgeCode: string): KqNotebookReward {
 export function formatKqNotebookReward(reward: KqNotebookReward): string {
   const parts: string[] = [];
   if (reward.supportBoosters > 0) {
-    parts.push(`${reward.supportBoosters} booster${reward.supportBoosters > 1 ? "s" : ""} La Botte`);
+    parts.push(`${reward.supportBoosters} booster${reward.supportBoosters > 1 ? "s" : ""} Botte du Chanvrier`);
   }
   if (reward.cultureTokens > 0) {
     parts.push(`${reward.cultureTokens} jeton${reward.cultureTokens > 1 ? "s" : ""} Coup de pouce`);

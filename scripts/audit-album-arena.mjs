@@ -78,7 +78,7 @@ try {
     await page.click('button[aria-label="Page précédente"]');
     await page.$eval('[aria-label="Mes cartes"]',el=>el.scrollIntoView({block:'start',behavior:'instant'}));await shot('cards-'+width);
     await page.click('button[title="#1 Carte 1"]');await page.waitForSelector('[role="dialog"]');await shot('detail-'+width);await page.click('[role="dialog"] button[aria-label="Fermer"]');
-    await page.locator('::-p-text(La Botte & Héritages)').click();await page.waitForSelector('[aria-label="Progression La Botte"]');assert.equal((await layout()).overflow,false);await shot('placard-'+width);
+    await page.locator('::-p-text(Botte du Chanvrier & Héritages)').click();await page.waitForSelector('[aria-label="Progression Botte du Chanvrier"]');assert.equal((await layout()).overflow,false);await shot('placard-'+width);
     await back();await page.click('[data-album-enter]');await page.waitForSelector('[aria-label="Glissez pour ouvrir le booster"]');
     assert(await page.$('img[src="/app/lottery/sealed-booster-pack-sylvain-v3.webp"]'));
     await new Promise(r=>setTimeout(r,750));await shot('pack-sealed-'+width);

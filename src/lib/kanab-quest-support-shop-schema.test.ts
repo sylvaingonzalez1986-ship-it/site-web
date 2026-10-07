@@ -11,7 +11,7 @@ const activationMigration = readFileSync(
   "utf8",
 );
 
-describe("Kanab Quest La Botte points shop schema", () => {
+describe("Kanab Quest Botte du Chanvrier points shop schema", () => {
   it("keeps purchases separate from Buddies tickets and uses the shared loyalty wallet", () => {
     expect(migration).toContain("'points_purchase'");
     expect(migration).toContain("loyalty_points_spent");
@@ -26,12 +26,12 @@ describe("Kanab Quest La Botte points shop schema", () => {
     expect(migration).toContain("pg_advisory_xact_lock");
   });
 
-  it("keeps the shop dormant while the La Botte collection is inactive", () => {
+  it("keeps the shop dormant while the Botte du Chanvrier collection is inactive", () => {
     expect(migration).toContain("code = 'BOTTE_DU_CHANVRIER_2026' AND is_active = TRUE");
     expect(migration).toContain("support_collection_unavailable");
   });
 
-  it("activates ten-card La Botte boosters without changing Buddies definitions", () => {
+  it("activates ten-card Botte du Chanvrier boosters without changing Buddies definitions", () => {
     expect(activationMigration).toContain("FOR v_slot_index IN 1..10 LOOP");
     expect(activationMigration).toContain("code = 'BOTTE_DU_CHANVRIER_2026'");
     expect(activationMigration).toContain("SET is_active = TRUE");

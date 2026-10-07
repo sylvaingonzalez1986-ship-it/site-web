@@ -128,19 +128,19 @@ try {
     record("partial-cart-shows-missing-flower", width);
 
     await setItems(items()); await progress(5); await layout();
-    assert.match(await text(), /3\s*packs Buddies/i); assert.match(await text(), /5\s*packs La Botte/i);
+    assert.match(await text(), /3\s*packs Buddies/i); assert.match(await text(), /5\s*packs Botte du Chanvrier/i);
     assert.deepEqual(await page.$$eval('ul[aria-label="Bonus du grand tour"] > li', rows => rows.slice(1).map(row => ({
       packs: row.querySelector(":scope > strong").textContent,
       collection: row.querySelector("b").textContent,
       size: row.querySelector("small").textContent,
     }))), [
       { packs: "3", collection: "Buddies", size: "3 cartes par pack" },
-      { packs: "5", collection: "La Botte", size: "10 cartes par pack" },
+      { packs: "5", collection: "Botte du Chanvrier", size: "10 cartes par pack" },
     ]);
     assert.deepEqual(requests, [{ method: "GET" }]);
     await page.screenshot({ path: resolve(output, `qualified-${width}.png`), fullPage: true });
     await setItems(items(6)); await progress(5);
-    assert.match(await text(), /3\s*packs Buddies/i); assert.match(await text(), /5\s*packs La Botte/i);
+    assert.match(await text(), /3\s*packs Buddies/i); assert.match(await text(), /5\s*packs Botte du Chanvrier/i);
     await setItems(items(2)); await progress(0);
     record("threshold-updates-without-refetch-or-double-bonus", width);
 
@@ -200,7 +200,7 @@ try {
       size: row.querySelector("span").textContent,
     }))), [
       { label: "3 packs Buddies", size: "3 cartes par pack" },
-      { label: "5 packs La Botte", size: "10 cartes par pack" },
+      { label: "5 packs Botte du Chanvrier", size: "10 cartes par pack" },
     ]);
     assert.deepEqual(requests, [{ method: "POST" }]);
     await page.screenshot({ path: resolve(output, `receipt-${width}.png`), fullPage: true });

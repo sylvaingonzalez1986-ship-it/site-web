@@ -73,7 +73,7 @@ export function KqBotteCollection({ onClose, onOpenShop }: { onClose: () => void
     try {
       const response = await fetch("/api/arena/placard/collection", { cache: "no-store", signal: controller.signal });
       const payload = await response.json() as { error?: string; collection?: { cards?: Array<{ code: string; ownedCopies: number }> } };
-      if (!response.ok) throw new Error(response.status === 401 ? "Connecte-toi pour retrouver ta collection La Botte." : payload.error || "Impossible de charger ta collection.");
+      if (!response.ok) throw new Error(response.status === 401 ? "Connecte-toi pour retrouver ta collection Botte du Chanvrier." : payload.error || "Impossible de charger ta collection.");
       if (!Array.isArray(payload.collection?.cards)) throw new Error("Les informations de ta collection sont indisponibles.");
       const counts = Object.fromEntries(payload.collection.cards.map((card) => [card.code, Number.isFinite(card.ownedCopies) ? Math.max(0, Math.floor(card.ownedCopies)) : 0]));
       if (!controller.signal.aborted) setInventory(counts);
@@ -100,7 +100,7 @@ export function KqBotteCollection({ onClose, onOpenShop }: { onClose: () => void
   return createPortal(<>
     <dialog ref={dialog} className={styles.collectionDialog} aria-labelledby="botte-collection-title" onCancel={(event) => { event.preventDefault(); onClose(); }} onKeyDown={(event) => { if (event.key === "Escape") event.stopPropagation(); }} onClick={(event) => { if (clickedBackdrop(event)) onClose(); }}>
       <div className={styles.albumLayout}>
-        <header className={styles.header}><div><small><BookOpen size={16} aria-hidden="true" /> Ton album du Placard</small><h2 id="botte-collection-title">Ma collection La Botte</h2><p>Tes cartes, tes doublons et celles qu’il te manque.</p></div><button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button></header>
+        <header className={styles.header}><div><small><BookOpen size={16} aria-hidden="true" /> Ton album du Placard</small><h2 id="botte-collection-title">Ma collection Botte du Chanvrier</h2><p>Tes cartes, tes doublons et celles qu’il te manque.</p></div><button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button></header>
         <section className={styles.progress} aria-label="État de ta collection"><div><strong>{inventory ? `${owned} / ${KQ_CARDS.length}` : "…"}</strong><span>cartes différentes en stock</span></div><progress value={inventory ? owned : 0} max={KQ_CARDS.length} aria-label="Cartes différentes possédées" /><div><strong>{inventory ? copies : "…"}</strong><span>exemplaires disponibles</span></div></section>
         <div className={styles.filters}>
           <nav aria-label="Afficher les cartes"><button type="button" aria-pressed={ownership === "all"} onClick={() => setOwnership("all")}>Toutes <b>{KQ_CARDS.length}</b></button><button type="button" aria-pressed={ownership === "owned"} disabled={!inventory} onClick={() => setOwnership("owned")}>Possédées <b>{inventory ? owned : "…"}</b></button><button type="button" aria-pressed={ownership === "missing"} disabled={!inventory} onClick={() => setOwnership("missing")}>Manquantes <b>{inventory ? KQ_CARDS.length - owned : "…"}</b></button></nav>
@@ -115,7 +115,7 @@ export function KqBotteCollection({ onClose, onOpenShop }: { onClose: () => void
               <span className={styles.thumbnail}>{artwork ? <Image src={artwork} alt="" width={1024} height={1536} sizes="(max-width: 480px) 42vw, (max-width: 800px) 28vw, 210px" /> : null}</span>
               <span className={styles.cardInfo}><strong>{card.name}</strong><small>{role.label} · {card.xpCost} XP</small><b>{count > 0 ? <><Check size={14} aria-hidden="true" /> ×{count} en stock</> : "À trouver"}<ZoomIn size={15} aria-hidden="true" /></b></span>
             </button>;
-          })}</div>{visible.length === 0 ? <p className={styles.empty}>{ownership === "missing" && owned === KQ_CARDS.length ? "Tu possèdes toutes les cartes La Botte !" : "Aucune carte ne correspond à ces filtres."}<button type="button" onClick={() => { setOwnership("all"); setUtility("all"); setQuery(""); }}>Voir toutes les cartes</button></p> : null}</> : null}
+          })}</div>{visible.length === 0 ? <p className={styles.empty}>{ownership === "missing" && owned === KQ_CARDS.length ? "Tu possèdes toutes les cartes Botte du Chanvrier !" : "Aucune carte ne correspond à ces filtres."}<button type="button" onClick={() => { setOwnership("all"); setUtility("all"); setQuery(""); }}>Voir toutes les cartes</button></p> : null}</> : null}
         </div>
         <footer className={styles.footer}><span>Les cartes jouées consomment un exemplaire.</span>{onOpenShop ? <button type="button" className={styles.shopLink} onClick={onOpenShop}><ShoppingBag size={18} aria-hidden="true" /><span>La Boutique <small>Packs et nouvelles cartes</small></span></button> : null}</footer>
       </div>

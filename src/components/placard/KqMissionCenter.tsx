@@ -85,10 +85,10 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" |
       <button type="button" disabled={loading || busy !== null} onClick={() => void refresh()}><RefreshCw size={16} aria-hidden="true" />{loading ? "Actualisation…" : "Actualiser"}</button>
     </div>
     {error ? <div className={styles.error} role="alert"><p>{error}</p>{signedOut ? <Link href="/compte/connexion?next=%2Farene%2Fplacard%3Fview%3Dmissions">Me connecter</Link> : <button type="button" disabled={loading || busy !== null} onClick={() => void refresh()}>Réessayer</button>}</div> : null}
-    {reward ? <div className={styles.receipt} role="status"><Gift aria-hidden="true" /><div><strong>{reward.replayed ? "Ton pack est déjà récupéré." : `Bravo ! Un pack de ${reward.cardCount} cartes gagné.`}</strong><p>Retrouve-le à la boutique La Botte pour découvrir tes cartes.</p></div><button type="button" onClick={() => onOpen("shop")}>Ouvrir la boutique <ArrowRight size={18} aria-hidden="true" /></button></div> : null}
+    {reward ? <div className={styles.receipt} role="status"><Gift aria-hidden="true" /><div><strong>{reward.replayed ? "Ton pack est déjà récupéré." : `Bravo ! Un pack de ${reward.cardCount} cartes gagné.`}</strong><p>Retrouve-le à la boutique Botte du Chanvrier pour découvrir tes cartes.</p></div><button type="button" onClick={() => onOpen("shop")}>Ouvrir la boutique <ArrowRight size={18} aria-hidden="true" /></button></div> : null}
     {loading && !data ? <p role="status" className={styles.loading}>On retrouve ta progression…</p> : null}
     {data ? <>
-      {!data.collectionActive ? <p className={styles.error}>Les récompenses La Botte sont momentanément indisponibles. Ta progression reste conservée.</p> : null}
+      {!data.collectionActive ? <p className={styles.error}>Les récompenses Botte du Chanvrier sont momentanément indisponibles. Ta progression reste conservée.</p> : null}
       <div className={styles.tracks}>
         {KQ_MISSION_TRACKS.map((track) => {
           const info = TRACKS[track];
@@ -117,7 +117,7 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" |
       </div>
       <footer className={styles.footer}>
         {availablePacks > 0 ? <button type="button" onClick={() => onOpen("shop")}><Gift size={19} aria-hidden="true" />{availablePacks} pack{availablePacks > 1 ? "s" : ""} de mission à ouvrir<ArrowRight size={18} aria-hidden="true" /></button> : null}
-        <details><summary>Comment progressent mes missions ?</summary><p>Une mission active par parcours, sans limite de temps. Récupère son pack pour débloquer la suivante. Chaque récompense se gagne une seule fois par compte.</p><p>Tes cultures déjà terminées comptent, même si leurs fleurs ont été vendues ou utilisées en duel. Pour la vente en ligne et les boutiques, garde le nombre de clients ou de partenaires demandé jusqu’à la réclamation du pack. Une mission récompensée reste acquise.</p><p>La vente en ligne nécessite l’ordinateur et un accès Internet actif, disponibles dans le jeu. Les packs de mission rejoignent les packs disponibles à la boutique La Botte.</p></details>
+        <details><summary>Comment progressent mes missions ?</summary><p>Une mission active par parcours, sans limite de temps. Récupère son pack pour débloquer la suivante. Chaque récompense se gagne une seule fois par compte.</p><p>Tes cultures déjà terminées comptent, même si leurs fleurs ont été vendues ou utilisées en duel. Pour la vente en ligne et les boutiques, garde le nombre de clients ou de partenaires demandé jusqu’à la réclamation du pack. Une mission récompensée reste acquise.</p><p>La vente en ligne nécessite l’ordinateur et un accès Internet actif, disponibles dans le jeu. Les packs de mission rejoignent les packs disponibles à la boutique Botte du Chanvrier.</p></details>
       </footer>
     </> : null}
     </>}

@@ -80,7 +80,7 @@ function CollectionCard({
       </div>
       <div className="p-3">
         <span className="block text-[10px] font-black uppercase tracking-[0.12em] text-green" style={role ? { background: role.color, color: "#103b2e", padding: "5px 7px" } : undefined}>
-          {permanent ? card.producerName || "Héritage permanent" : role?.label ?? "La Botte · consommable"}
+          {permanent ? card.producerName || "Héritage permanent" : role?.label ?? "Botte du Chanvrier · consommable"}
         </span>
         <h3 className="mt-1 font-display text-lg uppercase leading-none text-ink">{card.name}</h3>
         {!permanent && card.rarity ? <small className="mt-2 block text-xs font-bold text-green">{RARITY_LABELS[card.rarity] ?? card.rarity}{support ? ` · ${support.xpCost} XP` : ""}</small> : null}
@@ -169,12 +169,12 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
     fetch("/api/arena/placard/bootstrap", { cache: "no-store", signal: controller.signal })
       .then(async (response) => {
         const body = (await response.json().catch(() => null)) as BotteSnapshot & { error?: string };
-        if (!response.ok) throw new Error(body?.error ?? "Collection La Botte indisponible.");
+        if (!response.ok) throw new Error(body?.error ?? "Collection Botte du Chanvrier indisponible.");
         setSnapshot(body);
       })
       .catch((fetchError) => {
         if (fetchError instanceof DOMException && fetchError.name === "AbortError") return;
-        setError(fetchError instanceof Error ? fetchError.message : "Collection La Botte indisponible.");
+        setError(fetchError instanceof Error ? fetchError.message : "Collection Botte du Chanvrier indisponible.");
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoading(false);
@@ -238,18 +238,18 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
       <header className={albumStyles.gameCollectionHeader}>
         <p className="text-xs font-black uppercase tracking-[0.16em] text-[#91d9c9]">Collection de jeu du Placard</p>
         <h2 className="mt-2 font-display text-3xl uppercase leading-none text-[#fffaf1] sm:text-5xl">
-          La Botte du Chanvrier
+          Botte du Chanvrier
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#e1f1e9]">
-          Les cartes La Botte sont consommées quand tu les joues. Les Héritages restent dans ton
+          Les cartes Botte du Chanvrier sont consommées quand tu les joues. Les Héritages restent dans ton
           album et peuvent accompagner plusieurs cultures.
         </p>
       </header>
 
-      <section className="grid grid-cols-2 gap-3 sm:grid-cols-3" aria-label="Progression La Botte">
+      <section className="grid grid-cols-2 gap-3 sm:grid-cols-3" aria-label="Progression Botte du Chanvrier">
         <div className="border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#1a1a1a]">
           <strong className="font-display text-2xl text-ink">{supportOwned}/{KQ_CARDS.length}</strong>
-          <span className="block text-xs text-charcoal">La Botte découvertes</span>
+          <span className="block text-xs text-charcoal">Cartes Botte du Chanvrier découvertes</span>
         </div>
         <div className="border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#1a1a1a]">
           <strong className="font-display text-2xl text-ink">{heritageOwned}/{heritageCards.filter((card) => card.isActive).length}</strong>
@@ -278,7 +278,7 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
       <section>
         <div className="mb-4">
           <p className="text-xs font-black uppercase tracking-[0.14em] text-green">{KQ_CARDS.length} cartes à collectionner</p>
-          <h2 className="font-display text-2xl uppercase text-ink">Cartes La Botte</h2>
+          <h2 className="font-display text-2xl uppercase text-ink">Cartes Botte du Chanvrier</h2>
           <p className="text-sm text-charcoal">Auxiliaires, équipements et savoir-faire pour tes cultures sur sol vivant.</p>
           <p className="mt-1 text-xs text-charcoal">Clique sur une carte pour l’agrandir et lire ses détails.</p>
         </div>

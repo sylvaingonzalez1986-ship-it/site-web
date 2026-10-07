@@ -84,7 +84,7 @@ export function KqPlacardLobby({ onOpen, onOpenCollection }: {
       {error ? <p className={styles.status} role="status">Ton résumé est indisponible. Les activités restent accessibles. <button type="button" onClick={() => { setError(false); setRevision(value => value + 1); }}>Réessayer</button></p> : null}
       <footer className={styles.footer}>
         <button type="button" className={styles.collectionLink} data-arena-tour="collection" onClick={onOpenCollection} aria-haspopup="dialog">
-          <BookOpen size={16} aria-hidden="true" /> Ma collection La Botte
+          <BookOpen size={16} aria-hidden="true" /> Ma collection Botte du Chanvrier
         </button>
       </footer>
     </section>

@@ -25,7 +25,7 @@ const number=(value:number)=>new Intl.NumberFormat('fr-FR',{maximumFractionDigit
 const SATISFACTION={satisfied:'Acheteurs satisfaits',neutral:'Acheteurs neutres',disappointed:'Acheteurs déçus','not-applicable':'Reprise sans fidélisation'};
 const INTRO=[
  'Avant de cultiver, repère les deux activités : le Carnet garde tes dégustations réelles ; le Placard est le jeu. Cette partie d’essai reste entièrement fictive.',
- 'Choisis une variété avec ton Buddie, prépare tes soutiens La Botte, puis équipe un Héritage permanent. Découvre les trois avant de continuer.',
+ 'Choisis une variété avec ton Buddie, prépare tes soutiens Botte du Chanvrier, puis équipe un Héritage permanent. Découvre les trois avant de continuer.',
  'Les packs de cartes coûtent des points. Le matériel durable coûte des euros du jeu. Achète cette LED avec ton budget de démonstration.',
  'Acheter ne suffit pas : installe le matériel dans son emplacement. La LED, le séchoir et le tamis prêtés serviront à cette culture.',
  '',
@@ -112,14 +112,14 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:str
       <article className={styles.panel}><Leaf size={52} aria-hidden="true"/><h3>{KQ_TRIAL_BUDDIE.name}</h3><strong>Rareté Or · +{KQ_TRIAL_BUDDIE.advantageLevel} XP au départ</strong><p>Le Buddie détermine ta variété et son bonus initial. Commun : +0 ; Argent : +1 ; Or : +2 ; Épique : +3 ; Légendaire : +4 XP.</p><button type="button" data-trial-check="buddie" onClick={()=>dispatch({type:'check',value:'buddie'})}>{s.checked.includes('buddie')?'✓ Buddie choisi':'Choisir le Buddie fictif'}</button></article>
       <article className={styles.panel}><Image src={getKqCardArtwork(heritage.code)!} alt="Héritage de démonstration" width={160} height={240}/><h3>{heritage.name}</h3><p>{heritage.description}</p><p>Un seul Héritage équipé, hors de la main. Celui-ci s’active une fois par culture, sans brûler la carte.</p><button type="button" data-trial-check="heritage" onClick={()=>dispatch({type:'check',value:'heritage'})}>{s.checked.includes('heritage')?'✓ Héritage équipé':'Équiper l’Héritage prêté'}</button></article>
      </div>
-     <h3>9 cartes La Botte + une réserve anti-ravageurs</h3><p>Une main contient jusqu’à 5 cartes. Seules les copies jouées sont consommées. Clique sur une carte pour lire son coût, son timing et ses limites. La Chrysope reste en réserve, hors du deck, jusqu’au diagnostic.</p>
+     <h3>9 cartes Botte du Chanvrier + une réserve anti-ravageurs</h3><p>Une main contient jusqu’à 5 cartes. Seules les copies jouées sont consommées. Clique sur une carte pour lire son coût, son timing et ses limites. La Chrysope reste en réserve, hors du deck, jusqu’au diagnostic.</p>
      <div className={styles.cards}>{[...KQ_TRIAL_DECK,'BOTTE-002'].map(code=>cardButton(KQ_CARDS.find(card=>card.code===code)!))}</div>
      <button type="button" data-trial-check="deck" onClick={()=>dispatch({type:'check',value:'deck'})}>{s.checked.includes('deck')?'✓ Deck prêt':'Préparer ce deck d’essai'}</button>
     </>:null}
     {s.chapter===2?<>
-     <Image className={styles.scene} src="/placard/booster-shop-counter-v5.webp" alt="Le comptoir de la boutique La Botte" width={1000} height={650} sizes="(max-width: 760px) 100vw, 800px"/>
+     <Image className={styles.scene} src="/placard/booster-shop-counter-v5.webp" alt="Le comptoir de la boutique Botte du Chanvrier" width={1000} height={650} sizes="(max-width: 760px) 100vw, 800px"/>
      <section className={styles.panel}><h3>{getKqEquipmentDefinition('LED-300')!.name}</h3><p>{getKqEquipmentDefinition('LED-300')!.benefit}</p><p>{getKqEquipmentDefinition('LED-300')!.tradeoff} La qualité maximale n’est pas garantie : tes réussites en culture comptent aussi.</p><button type="button" disabled={s.bought} onClick={()=>dispatch({type:'buy'})}>{s.bought?'✓ LED achetée':`Acheter pour ${euro(getKqEquipmentDefinition('LED-300')!.priceCents)} fictifs`}</button></section>
-     <details><summary>Packs, collection, niveaux et prérequis</summary><p>Les packs La Botte enrichissent ta collection. Les filtres aident à choisir les cartes adaptées. Les doublons fournissent des copies consommables ; les Héritages sont permanents.</p><p>Le catalogue matériel affiche les bonus, les charges, les prérequis et les améliorations. Les niveaux supérieurs coûtent davantage ; une machine achetée doit être installée pour servir.</p></details>
+     <details><summary>Packs, collection, niveaux et prérequis</summary><p>Les packs Botte du Chanvrier enrichissent ta collection. Les filtres aident à choisir les cartes adaptées. Les doublons fournissent des copies consommables ; les Héritages sont permanents.</p><p>Le catalogue matériel affiche les bonus, les charges, les prérequis et les améliorations. Les niveaux supérieurs coûtent davantage ; une machine achetée doit être installée pour servir.</p></details>
     </>:null}
     {s.chapter===3?<>
      <Image className={styles.scene} src="/placard/warehouse-v2/room.webp" alt="L’entrepôt et ses espaces de culture, de transformation et de séchage" width={1774} height={887} sizes="(max-width: 760px) 100vw, 800px"/>

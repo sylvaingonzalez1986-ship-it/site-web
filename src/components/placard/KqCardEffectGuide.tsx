@@ -7,7 +7,7 @@ import styles from "./KanabQuestDicePrototype.module.css";
 const ROLE_ICONS = { bug: Bug, check: Check, dice: Dice5, search: Search, shield: Shield, star: Star };
 
 export function KqCardRoleLegend() {
-  return <div className={styles.cardRoleLegend} aria-label="Utilité des cartes La Botte">
+  return <div className={styles.cardRoleLegend} aria-label="Utilité des cartes Botte du Chanvrier">
     {Object.entries(KQ_CARD_ROLES).map(([key, role]) => {
       const Icon = ROLE_ICONS[role.icon];
       return <span key={key} style={{ "--card-role": role.color } as CSSProperties}><Icon size={15} aria-hidden="true" />{role.label}</span>;

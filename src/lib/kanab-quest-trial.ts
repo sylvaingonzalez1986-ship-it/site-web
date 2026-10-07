@@ -50,7 +50,7 @@ export function trialInstruction(state: KqTrialState) {
  if (g.phase === 'prepare' && g.stageIndex === 0 && !g.preparationPlayed) return 'Joue Arrosage mesuré : une préparation se joue avant les dés et coûte de l’XP.';
  if (g.phase === 'prepare' && g.stageIndex === 2 && !g.revealedPest) return 'Joue la Loupe d’inspection pour identifier le ravageur. La réserve anti-ravageurs devient alors utilisable.';
  if (g.phase === 'prepare') return 'Lis la situation et ses catégories. Prépare ton lancer avec une carte adaptée, ou conserve tes cartes et lance les dés.';
- if (g.phase === 'rolled' && !g.heritageUsed && canActivateKqHeritage(g).allowed) return 'Active ton Héritage : il transforme un dé neutre en Étincelle, sans consommer de carte La Botte.';
+ if (g.phase === 'rolled' && !g.heritageUsed && canActivateKqHeritage(g).allowed) return 'Active ton Héritage : il transforme un dé neutre en Étincelle, sans consommer de carte Botte du Chanvrier.';
  if (g.phase === 'rolled' && g.stageIndex === 2 && !g.reactionPlayed && canPlayKqCard(g, KQ_CARDS.find(c=>c.code==='BOTTE-002')!).allowed) return 'Le ravageur est identifié : joue la Chrysope depuis ta réserve pour corriger un dé faible.';
  if (g.phase === 'rolled') return 'Observe les dés et le résultat prévu. Tu peux jouer une réaction avant de valider. Chaque 6 rapporte 1 XP au verdict.';
  return getKqZeroSuccessStageCount(g) === 1

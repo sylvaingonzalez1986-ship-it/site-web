@@ -347,7 +347,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
         <div className={arenaStyles.workspaceBody}>
           {screen === "cards" && <nav className={arenaStyles.collectionNav} aria-label="Collections">
             <button type="button" aria-pressed={collection === "buddies"} onClick={() => setCollection("buddies")}>Les Buddies</button>
-            <button type="button" aria-pressed={collection === "placard"} onClick={() => setCollection("placard")}>La Botte & Héritages</button>
+            <button type="button" aria-pressed={collection === "placard"} onClick={() => setCollection("placard")}>Botte du Chanvrier & Héritages</button>
           </nav>}
           {screen === "cards" && collection === "placard" && <BotteAlbumCollection isAuthenticated={isAuthenticated} />}
           {screen === "cards" && collection === "buddies" &&

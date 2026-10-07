@@ -682,7 +682,7 @@ export function AdminMissionsPanel() {
                       }
                       className="mt-1 h-11 w-full rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] px-3 text-sm text-ink"
                     >
-                      <option value="support_pack">Pack La Botte · 3 cartes</option>
+                      <option value="support_pack">Pack Botte du Chanvrier · 3 cartes</option>
                       <option value="buddies">Buddy à collectionner</option>
                       <option value="game_cash">Argent du Placard (virtuel)</option>
                       <option value="packs">Pack Buddies</option>

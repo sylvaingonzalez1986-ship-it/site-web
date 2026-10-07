@@ -227,7 +227,7 @@ export function getKqLaunchApprovalChecks(
     },
     {
       code: "collection-odds-approved",
-      label: "Probabilités La Botte et Héritage validées",
+      label: "Probabilités Botte du Chanvrier et Héritage validées",
       ready: sections.odds.ready && approvals.collectionOddsApproved,
       detail: detail(sections.odds, approvals.collectionOddsApproved),
     },

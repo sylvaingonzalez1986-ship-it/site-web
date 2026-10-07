@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { addKqBoosterToInventory, applyKqArenaStreakReward, KQ_SUPPORT_BOOSTER_POINTS_COST, openKqSupportBooster } from "@/lib/kanab-quest-booster";
 import { createKqRankProfile } from "@/lib/kanab-quest-ranking";
 
-describe("La Botte du Chanvrier boosters", () => {
+describe("Botte du Chanvrier boosters", () => {
   it("costs five loyalty points in the Arena shop", () => {
     expect(KQ_SUPPORT_BOOSTER_POINTS_COST).toBe(5);
   });

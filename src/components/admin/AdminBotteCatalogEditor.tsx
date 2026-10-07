@@ -49,10 +49,10 @@ export function AdminBotteCatalogEditor() {
     finally { setSaving(false); }
   }
 
-  if (!catalog) return <article className="cartoon-border bg-cream p-6"><p>{status || "Chargement de La Botte…"}</p></article>;
+  if (!catalog) return <article className="cartoon-border bg-cream p-6"><p>{status || "Chargement de Botte du Chanvrier…"}</p></article>;
   return <article className="cartoon-border bg-[#fff0c9] p-6 xl:col-span-2">
     <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Éditeur de collection</p>
-    <h4 className="mt-1 font-display text-3xl">La Botte</h4>
+    <h4 className="mt-1 font-display text-3xl">Botte du Chanvrier</h4>
     <p className="mt-2 max-w-3xl text-sm">Modifie les textes et illustrations sans toucher aux calculs sensibles du moteur. Les effets exécutables sont affichés en lecture seule.</p>
     {status ? <p className="mt-3 border-2 border-ink bg-white p-3 text-sm font-bold" role="status">{status}</p> : null}
     <details className="mt-5 border-2 border-ink bg-white p-4">
@@ -66,7 +66,7 @@ export function AdminBotteCatalogEditor() {
       <button className="btn-cartoon btn-primary mt-4" type="button" disabled={saving} onClick={() => void saveCollection()}>Enregistrer la collection</button>
     </details>
     <div className="mt-5 grid gap-5 lg:grid-cols-[280px_1fr]">
-      <div className="max-h-[650px] overflow-y-auto border-2 border-ink bg-white p-2" aria-label="Cartes La Botte">
+      <div className="max-h-[650px] overflow-y-auto border-2 border-ink bg-white p-2" aria-label="Cartes Botte du Chanvrier">
         {catalog.cards.map((card) => <button type="button" key={card.id} onClick={() => { setSelectedId(card.id); setDraft(null); }} className={`mb-2 flex w-full items-center gap-3 border-2 p-2 text-left ${selectedId === card.id ? "border-green bg-mint" : "border-ink bg-cream"}`}><span className="w-8 font-black">#{card.cardNumber}</span><span className="min-w-0 flex-1"><strong className="block truncate">{card.name}</strong><small>{card.category} · {card.rarity}</small></span><i className={`h-3 w-3 rounded-full border border-ink ${card.isActive ? "bg-green" : "bg-white"}`} /></button>)}
       </div>
       {activeDraft ? <div className="border-2 border-ink bg-white p-4">

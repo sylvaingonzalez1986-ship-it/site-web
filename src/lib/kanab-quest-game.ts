@@ -50,7 +50,7 @@ export function getKqEffectNoticeKind(notice: string): "applied" | "missed" {
 
 export const KQ_COLLECTIONS = {
   buddies: { code: "KANAB_QUEST_2026", title: "Buddies", totalCards: 52 },
-  support: { code: "BOTTE_DU_CHANVRIER_2026", title: "La Botte du Chanvrier", totalCards: 32, alphaCards: 32 },
+  support: { code: "BOTTE_DU_CHANVRIER_2026", title: "Botte du Chanvrier", totalCards: 32, alphaCards: 32 },
 } as const;
 
 export type KqBuddie = {

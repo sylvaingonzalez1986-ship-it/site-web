@@ -23,7 +23,7 @@ describe("Kanab Quest notebook rewards", () => {
   });
 
   it("can still format historical reward receipts", () => {
-    expect(formatKqNotebookReward({ supportBoosters: 1, cultureTokens: 0 })).toBe("1 booster La Botte");
-    expect(formatKqNotebookReward({ supportBoosters: 2, cultureTokens: 1 })).toBe("2 boosters La Botte + 1 jeton Coup de pouce");
+    expect(formatKqNotebookReward({ supportBoosters: 1, cultureTokens: 0 })).toBe("1 booster Botte du Chanvrier");
+    expect(formatKqNotebookReward({ supportBoosters: 2, cultureTokens: 1 })).toBe("2 boosters Botte du Chanvrier + 1 jeton Coup de pouce");
   });
 });

@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   if (!await getValidatedAdminContext()) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try { return NextResponse.json(await getKqBotteCatalogAdmin(), { headers: { "Cache-Control": "private, no-store" } }); }
-  catch { return NextResponse.json({ error: "Catalogue La Botte indisponible." }, { status: 503 }); }
+  catch { return NextResponse.json({ error: "Catalogue Botte du Chanvrier indisponible." }, { status: 503 }); }
 }
 
 export async function PUT(request: Request) {

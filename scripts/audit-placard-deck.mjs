@@ -14,7 +14,7 @@ import {KQ_CARDS} from '/src/lib/kanab-quest-game';
 import {getKqCardArtwork} from '/src/lib/kanab-quest-artwork';
 import styles from '/src/components/placard/KanabQuestDicePrototype.module.css';
 createRoot(document.getElementById('root')).render(React.createElement('main',{className:styles.page},
-React.createElement('section',{className:styles.deckPanel},React.createElement('h1',null,'La Botte · Prépare ton deck'),
+React.createElement('section',{className:styles.deckPanel},React.createElement('h1',null,'Botte du Chanvrier · Prépare ton deck'),
 React.createElement('p',{className:styles.deckRulesGuide},'Une préparation avant les dés, une réaction après. 1 = Danger · 2–3 = neutre · 4–6 = réussite.'),
 React.createElement(KqCardRoleLegend),
 React.createElement('div',{className:styles.deckChoices},KQ_CARDS.filter(c=>['BOTTE-013','BOTTE-004','BOTTE-006','BOTTE-032','BOTTE-021','BOTTE-010'].includes(c.code)).map(card=>React.createElement('article',{key:card.code,className:styles.deckChoiceCard},

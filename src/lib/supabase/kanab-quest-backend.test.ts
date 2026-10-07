@@ -237,7 +237,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
       launchApprovals: APPROVED_LAUNCH_DECISIONS,
       launchDossier: COMPLETE_LAUNCH_DOSSIER,
     });
-    expect(report.blockers).toContain("32 illustrations La Botte distinctes");
+    expect(report.blockers).toContain("32 illustrations Botte du Chanvrier distinctes");
     expect(report.safelyDormant).toBe(false);
     expect(report.contentReady).toBe(false);
     expect(report.readyForActivation).toBe(false);
@@ -262,7 +262,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
     expect(report.contentReady).toBe(true);
     expect(report.safelyDormant).toBe(false);
     expect(report.readyForActivation).toBe(false);
-    expect(report.blockers).toContain("Collection La Botte encore inactive");
+    expect(report.blockers).toContain("Collection Botte du Chanvrier encore inactive");
     expect(report.activationStillRequired).toContain(
       "Exécuter les rétro-attributions des missions Carnet puis des avis producteurs depuis l’interface admin",
     );

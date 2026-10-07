@@ -384,14 +384,14 @@ export function AdminPlacardOperationsPanel() {
         <div className="grid gap-5">
           <article className="cartoon-border bg-[#fff0c9] p-6">
             <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Collections</p>
-            <h4 className="mt-1 font-display text-2xl">La Botte & Héritages</h4>
+            <h4 className="mt-1 font-display text-2xl">Botte du Chanvrier & Héritages</h4>
             <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-              <b className="border-2 border-ink bg-white p-3">{supportCards.length}<small className="block font-normal">cartes La Botte</small></b>
+              <b className="border-2 border-ink bg-white p-3">{supportCards.length}<small className="block font-normal">cartes Botte du Chanvrier</small></b>
               <b className="border-2 border-ink bg-white p-3">{supportCards.reduce((sum, card) => sum + Number(card.ownedCopies ?? 0), 0)}<small className="block font-normal">copies admin</small></b>
               <b className="border-2 border-ink bg-white p-3">{heritageCards.length}<small className="block font-normal">Héritages</small></b>
               <b className="border-2 border-ink bg-white p-3">{Number(heritage?.pendingPurchaseUnits ?? 0)}<small className="block font-normal">tirages admin en attente</small></b>
             </div>
-            <p className="mt-3 text-sm">La Botte : {collection?.collectionActive ? "active" : "dormante"} · Héritages : {heritage?.collectionActive ? "actifs" : "dormants"}</p>
+            <p className="mt-3 text-sm">Botte du Chanvrier : {collection?.collectionActive ? "active" : "dormante"} · Héritages : {heritage?.collectionActive ? "actifs" : "dormants"}</p>
             {heritageRetroPreview ? (
               <p className="mt-4 border-2 border-ink bg-white p-3 text-sm">
                 Lot simulé : {Number(heritageRetroPreview.processedItems ?? 0)} ligne(s) · {Number(heritageRetroPreview.pendingUnits ?? 0)} tirage(s) à créer · {Number(heritageRetroPreview.alreadyAwarded ?? 0)} déjà traité(s).

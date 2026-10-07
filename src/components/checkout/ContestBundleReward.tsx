@@ -39,7 +39,7 @@ export function ContestBundleRewardPreview({ items, active }: { items: ContestBu
   if (rewards.progress?.rewarded) return <aside className={styles.card} aria-labelledby={titleId}>
     <p className={styles.title} id={titleId}><Check size={18} aria-hidden="true" /> Bonus Concours déjà débloqué</p>
     <p>Ta carte épique et tes packs ont été crédités. Ce bonus est unique pour ton compte.</p>
-    <nav className={styles.links} aria-label="Mes récompenses Concours"><Link href="/profil/collection">Mes Buddies</Link><Link href="/arene/placard?view=shop">Mes packs La Botte</Link></nav>
+    <nav className={styles.links} aria-label="Mes récompenses Concours"><Link href="/profil/collection">Mes Buddies</Link><Link href="/arene/placard?view=shop">Mes packs Botte du Chanvrier</Link></nav>
   </aside>;
   if (!rewards.available || progress.requiredCount === 0) return null;
 
@@ -50,7 +50,7 @@ export function ContestBundleRewardPreview({ items, active }: { items: ContestBu
       <ul className={styles.rewards} aria-label="Bonus du grand tour">
         <li><strong>1</strong><span>carte Buddies <b>épique</b><small>Tirée au sort</small></span></li>
         <li><strong>{rewards.buddiesPacks}</strong><span>packs <b>Buddies</b><small>3 cartes par pack</small></span></li>
-        <li><strong>{rewards.bottePacks}</strong><span>packs <b>La Botte</b><small>10 cartes par pack</small></span></li>
+        <li><strong>{rewards.bottePacks}</strong><span>packs <b>Botte du Chanvrier</b><small>10 cartes par pack</small></span></li>
       </ul>
       <div className={styles.progress}>
         <p className={styles.progressLabel} aria-live="polite">{rewards.progress?.eligible ? <><Check size={16} aria-hidden="true" /> Tes achats payés remplissent déjà les conditions</> : progress.eligible ? <><Check size={16} aria-hidden="true" /> Objectif atteint après paiement de ce panier</> : `${progress.completedCount} / ${progress.requiredCount} fleurs à ${formatGrams(rewards.minGrams)} g avec ce panier`}</p>
@@ -97,10 +97,10 @@ export function ContestBundleRewardReceipt({ orderId, paymentState }: { orderId:
       <div className={styles.epicCard}><Sparkles size={22} aria-hidden="true" /><span><small>1 carte Buddies épique</small><strong>{receipt.card.name}</strong></span></div>
       <ul className={styles.receiptPacks} aria-label="Packs crédités">
         <li><strong>{receipt.buddiesPacks} pack{receipt.buddiesPacks > 1 ? "s" : ""} Buddies</strong><span>3 cartes par pack</span></li>
-        <li><strong>{receipt.bottePacks} pack{receipt.bottePacks > 1 ? "s" : ""} La Botte</strong><span>10 cartes par pack</span></li>
+        <li><strong>{receipt.bottePacks} pack{receipt.bottePacks > 1 ? "s" : ""} Botte du Chanvrier</strong><span>10 cartes par pack</span></li>
       </ul>
       <p>Ce bonus s’ajoute à tes récompenses habituelles. Il est attribué une seule fois par compte.</p>
-      <nav className={styles.links} aria-label="Retrouver mes récompenses concours"><Link href="/profil/collection">Mes cartes et packs Buddies</Link><Link href="/arene/placard?view=shop">Mes packs La Botte</Link></nav>
+      <nav className={styles.links} aria-label="Retrouver mes récompenses concours"><Link href="/profil/collection">Mes cartes et packs Buddies</Link><Link href="/arene/placard?view=shop">Mes packs Botte du Chanvrier</Link></nav>
     </aside>
   );
 }

@@ -15,7 +15,7 @@ export async function GET() {
       headers: { "Cache-Control": "private, no-store, max-age=0" },
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Collection La Botte indisponible.";
+    const message = error instanceof Error ? error.message : "Collection Botte du Chanvrier indisponible.";
     return NextResponse.json({ error: message }, { status: 503 });
   }
 }

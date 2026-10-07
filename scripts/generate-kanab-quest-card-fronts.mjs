@@ -216,7 +216,7 @@ async function renderCard(card) {
   fillStroke(ctx, category.dark, "#111512", 5);
   ctx.fillStyle = "#fff8e8";
   ctx.font = "900 18px Arial";
-  ctx.fillText(card.category === "heritage" ? "HÉRITAGES DE CONCOURS" : "LA BOTTE DU CHANVRIER", 122, 1399);
+  ctx.fillText(card.category === "heritage" ? "HÉRITAGES DE CONCOURS" : "BOTTE DU CHANVRIER", 122, 1399);
   ctx.textAlign = "right";
   ctx.fillText(costLabel, 902, 1399);
   ctx.textAlign = "left";
@@ -264,7 +264,7 @@ async function renderArenaSupportCard(card) {
   // A single role-coloured edge replaces the stacked ornamental rings.
   block(46,46,18,1444,role.color,ink,0);
   block(64,46,914,132,ink,ink,0);
-  text("LA BOTTE  /  L’ARÈNE",86,74,23,"#f4c43d");
+  text("BOTTE DU CHANVRIER  /  L’ARÈNE",86,74,23,"#f4c43d");
   fitted(card.name.toUpperCase(),86,126,708,57,35,paper,"ArenaDisplay");
   block(827,62,133,99,"#f4c43d",paper,3);
   ctx.textAlign="center";text(String(card.xpCost),893,99,60);text("XP",893,142,24);ctx.textAlign="left";

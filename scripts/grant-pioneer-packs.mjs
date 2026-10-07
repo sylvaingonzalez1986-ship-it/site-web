@@ -27,6 +27,6 @@ do {
   console.log(JSON.stringify(totals));
 } while (cursor);
 if (totals.unavailable > 0) {
-  console.error('Certains packs restent en attente : vérifier les collections Buddies / La Botte avant de relancer.');
+  console.error('Certains packs restent en attente : vérifier les collections Buddies / Botte du Chanvrier avant de relancer.');
   process.exitCode = 1;
 }

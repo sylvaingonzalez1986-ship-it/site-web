@@ -68,7 +68,7 @@ export function PioneerPackReward({ onClaimed }: { onClaimed?: () => void | Prom
         <li><Sparkles aria-hidden="true" /><span><strong>Les Pionniers</strong><small>Ta carte souvenir exclusive holographique</small></span></li>
         <li><Coins aria-hidden="true" /><span><strong>{cashAmount} € de jeu</strong><small>Crédités dans ta trésorerie</small></span></li>
         <li><Sparkles aria-hidden="true" /><span><strong>1 Buddie or ou épique</strong><small>90 % or · 10 % épique<br />Tiré au hasard, ajouté à ton album</small></span></li>
-        <li><Layers aria-hidden="true" /><span><strong>10 packs La Botte</strong><small>10 cartes par pack, à découvrir</small></span></li>
+        <li><Layers aria-hidden="true" /><span><strong>10 packs Botte du Chanvrier</strong><small>10 cartes par pack, à découvrir</small></span></li>
       </ul>
       <p className={styles.terms}>Offert une seule fois par compte pour une commande payée et non annulée, passée depuis l’ouverture du site jusqu’au <strong>10 octobre 2026 inclus</strong> (heure de Paris).</p>
       <div className={styles.action} aria-live="polite">
@@ -76,7 +76,7 @@ export function PioneerPackReward({ onClaimed }: { onClaimed?: () => void | Prom
           : state?.claimed ? <div className={styles.success}>
             <strong><Check size={18} aria-hidden="true" /> Ton pack a rejoint ta collection.</strong>
             {state.goldCard && <p>Ton Buddie {state.goldCard.rarity === "epic" ? "épique" : "or"} : <b>{state.goldCard.name}</b>.</p>}
-            <Link href="/arene/placard?view=shop">Ouvrir mes packs La Botte <ArrowUpRight size={16} aria-hidden="true" /></Link>
+            <Link href="/arene/placard?view=shop">Ouvrir mes packs Botte du Chanvrier <ArrowUpRight size={16} aria-hidden="true" /></Link>
           </div> : state?.eligible ? <>
             <button type="button" className={styles.button} disabled={isArenaPrelaunch() || claiming || !state.available} onClick={() => void claim()}>{isArenaPrelaunch() ? ARENA_OPENING_MESSAGE : claiming ? "Ton pack arrive…" : "Recevoir mon pack offert"}<Gift size={18} aria-hidden="true" /></button>
             {!state.available && <p>Ton pack est réservé. Son contenu est momentanément indisponible.</p>}

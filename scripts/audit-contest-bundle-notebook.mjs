@@ -287,8 +287,8 @@ try {
     assert.match(copy, /3\s*g/); assert.match(copy, /chaque fleur/i);
     assert.match(copy, /toutes cultures/i); assert.match(copy, /une ou plusieurs commandes payées/i);
     assert.match(copy, /achats payés, y compris les précédents/i); assert.match(copy, /une seule fois par compte/i);
-    assert.match(copy, /épique/i); assert.match(copy, /3\s*packs?\s*Buddies/i); assert.match(copy, /5\s*packs?\s*La Botte/i);
-    assert.match(copy, /Buddies contient 3 cartes/i); assert.match(copy, /La Botte, 10 cartes/i);
+    assert.match(copy, /épique/i); assert.match(copy, /3\s*packs?\s*Buddies/i); assert.match(copy, /5\s*packs?\s*Botte du Chanvrier/i);
+    assert.match(copy, /Buddies contient 3 cartes/i); assert.match(copy, /Botte du Chanvrier, 10 cartes/i);
     await layout();
     await page.screenshot({ path: resolve(output, `contents-${width}.png`) });
     record("contents-bonus-opens-directly-under-concours-bar-before-cultures", width);

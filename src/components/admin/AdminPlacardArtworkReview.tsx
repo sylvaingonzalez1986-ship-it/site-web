@@ -23,7 +23,7 @@ const STORAGE_KEY = "kq-admin-artwork-review-v2";
 
 const groupOptions: Array<{ value: GroupFilter; label: string }> = [
   { value: "all", label: "Tous" },
-  { value: "support", label: "La Botte" },
+  { value: "support", label: "Botte du Chanvrier" },
   { value: "heritage", label: "Héritages" },
   { value: "situation", label: "Situations" },
   { value: "reaction", label: "Réactions" },

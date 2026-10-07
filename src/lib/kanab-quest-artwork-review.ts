@@ -36,9 +36,9 @@ export const KQ_ARTWORK_REVIEW_ASSETS: readonly KqArtworkReviewAsset[] = [
     code: card.code,
     name: card.name,
     group: "support" as const,
-    groupLabel: "La Botte",
+    groupLabel: "Botte du Chanvrier",
     src: KQ_CARD_ARTWORK[card.code],
-    alt: `Carte La Botte « ${card.name} »`,
+    alt: `Carte Botte du Chanvrier « ${card.name} »`,
     format: "portrait" as const,
   })),
   ...KQ_HERITAGE_CARDS.map((card) => ({

@@ -12,7 +12,7 @@ export function KqCulturePreparation({ cardCount, note, disabled, disabledReason
   return <section className={styles.preparation} aria-labelledby="culture-preparation-title" data-culture-preparation>
     <div className={styles.intro}>
       <div className={styles.deckStamp} aria-hidden="true"><Layers3 /><b>{cardCount}</b><span>CARTE{cardCount > 1 ? "S" : ""}</span></div>
-      <div className={styles.heading}><span>DERNIERS PRÉPARATIFS</span><h2 id="culture-preparation-title">À toi de jouer.</h2><p>{cardCount > 0 ? "Tes cartes sont prêtes. Joue-les au bon moment pour aider ta culture." : "Tu pars sans carte La Botte. Tu peux en ajouter ou tenter ta chance avec les dés."}</p></div>
+      <div className={styles.heading}><span>DERNIERS PRÉPARATIFS</span><h2 id="culture-preparation-title">À toi de jouer.</h2><p>{cardCount > 0 ? "Tes cartes sont prêtes. Joue-les au bon moment pour aider ta culture." : "Tu pars sans carte Botte du Chanvrier. Tu peux en ajouter ou tenter ta chance avec les dés."}</p></div>
       <button type="button" className={styles.edit} disabled={busy} onClick={onEditDeck}><SlidersHorizontal size={16} />Ajuster mon deck</button>
     </div>
     <ol className={styles.steps} aria-label="Le déroulement d’un tour">
@@ -28,7 +28,7 @@ export function KqCulturePreparation({ cardCount, note, disabled, disabledReason
       </div>
     </details>
     <footer className={styles.launch}>
-      <div className={styles.reassurance}><Check size={20} aria-hidden="true" /><div><strong>{cardCount === 0 ? "Départ sans carte La Botte" : `${cardCount} carte${cardCount > 1 ? "s" : ""} dans ton deck`}</strong><p>{note}</p>{disabled && !busy ? <p className={styles.warning}>{disabledReason || "Choisis un Buddie que tu possèdes pour commencer."}</p> : null}</div></div>
+      <div className={styles.reassurance}><Check size={20} aria-hidden="true" /><div><strong>{cardCount === 0 ? "Départ sans carte Botte du Chanvrier" : `${cardCount} carte${cardCount > 1 ? "s" : ""} dans ton deck`}</strong><p>{note}</p>{disabled && !busy ? <p className={styles.warning}>{disabledReason || "Choisis un Buddie que tu possèdes pour commencer."}</p> : null}</div></div>
       <button type="button" className={styles.start} disabled={disabled || busy} aria-busy={busy} onClick={onStart}>{busy ? "Action en cours…" : "Lancer ma culture"}<ArrowRight size={21} /></button>
     </footer>
   </section>;

@@ -65,7 +65,7 @@ export function ContestBundleNotebookNote({ offer: initialOffer, flowerEntries =
       <p className={styles.condition}>Cumule au moins <strong>{minGrams} g de chaque fleur concours</strong>, toutes cultures confondues, <strong>sur une ou plusieurs commandes payées</strong> :</p>
       <ul className={styles.rewards} aria-label="Les récompenses du grand tour">
         <li><strong>1 carte Buddies épique</strong> aléatoire</li>
-        <li><strong>{offer.buddiesPacks} packs Buddies</strong> + <strong>{offer.bottePacks} packs La Botte</strong></li>
+        <li><strong>{offer.buddiesPacks} packs Buddies</strong> + <strong>{offer.bottePacks} packs Botte du Chanvrier</strong></li>
       </ul>
       <p className={styles.rule}>Tes achats payés, y compris les précédents, s’additionnent. Sans avis à déposer. Ce bonus se débloque une seule fois par compte.</p>
       {progress ? <div className={styles.progress} role="status">
@@ -87,8 +87,8 @@ export function ContestBundleNotebookNote({ offer: initialOffer, flowerEntries =
         })}</ul>
       {error && <p className={styles.error} role="alert">{error}</p>}
       {progress?.eligible && !progress.rewarded && <button type="button" className={styles.claim} onClick={() => void claimBonus()} disabled={claiming}><Gift size={16} aria-hidden="true" />{claiming ? "Déblocage en cours…" : "Débloquer mon bonus"}</button>}
-      {progress?.rewarded && <div className={styles.success}><p><Check size={16} aria-hidden="true" /> Ta carte et tes packs ont été crédités.</p><nav aria-label="Mes récompenses Concours"><Link href="/profil/collection">Mes Buddies</Link><Link href="/arene/placard?view=shop">Mes packs La Botte</Link></nav></div>}
-      <p className={styles.rule}>Chaque pack Buddies contient 3 cartes ; chaque pack La Botte, 10 cartes. Tes récompenses habituelles s’ajoutent à ce bonus.</p>
+      {progress?.rewarded && <div className={styles.success}><p><Check size={16} aria-hidden="true" /> Ta carte et tes packs ont été crédités.</p><nav aria-label="Mes récompenses Concours"><Link href="/profil/collection">Mes Buddies</Link><Link href="/arene/placard?view=shop">Mes packs Botte du Chanvrier</Link></nav></div>}
+      <p className={styles.rule}>Chaque pack Buddies contient 3 cartes ; chaque pack Botte du Chanvrier, 10 cartes. Tes récompenses habituelles s’ajoutent à ce bonus.</p>
     </aside>
   );
 }

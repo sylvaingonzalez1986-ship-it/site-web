@@ -82,11 +82,11 @@ describe("Placard consolidated launch evidence report", () => {
     expect(getKqCombinedLaunchStatus({
       ...common,
       serverReadyForActivation: false,
-      serverBlockers: ["Collection La Botte encore inactive"],
+      serverBlockers: ["Collection Botte du Chanvrier encore inactive"],
     })).toMatchObject({
       code: "server-blocked",
       readyForActivationWindow: false,
-      nextAction: expect.stringContaining("Collection La Botte"),
+      nextAction: expect.stringContaining("Collection Botte du Chanvrier"),
     });
     expect(getKqCombinedLaunchStatus({
       ...common,

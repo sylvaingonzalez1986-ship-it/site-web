@@ -6,7 +6,7 @@ import { KQ_CARDS } from "@/lib/kanab-quest-game";
 import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
 
 describe("Kanab Quest card artwork", () => {
-  it("covers every La Botte and Heritage card with a distinct local WebP", () => {
+  it("covers every Botte du Chanvrier and Heritage card with a distinct local WebP", () => {
     const codes = [...KQ_CARDS, ...KQ_HERITAGE_CARDS].map((card) => card.code);
     const paths = codes.map((code) => KQ_CARD_ARTWORK[code]);
     expect(codes).toHaveLength(44);
@@ -34,7 +34,7 @@ describe("Kanab Quest card artwork", () => {
     expect(KQ_CARD_ILLUSTRATIONS["BOTTE-021"]).toContain("diagnostic-croise-v1.webp");
     expect(KQ_CARD_ARTWORK["BOTTE-007"]).toContain("hydroponie-recirculante-front-v2.webp");
     expect(KQ_CARD_ARTWORK["BOTTE-008"]).toContain("aeroponie-haute-pression-front-v2.webp");
-    expect(KQ_CARD_ARTWORK["BOTTE-021"]).toContain("diagnostic-croise-front-v5.webp");
+    expect(KQ_CARD_ARTWORK["BOTTE-021"]).toContain("diagnostic-croise-front-v6.webp");
     expect(KQ_CARD_ILLUSTRATIONS["HERITAGE-011"]).toContain("canopy-legacy-v2.webp");
     expect(KQ_CARD_ILLUSTRATIONS["HERITAGE-012"]).toContain("signature-maitre-v2.webp");
     expect(KQ_CARD_ARTWORK["HERITAGE-011"]).toContain("front-v4.webp");

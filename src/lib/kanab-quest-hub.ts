@@ -54,7 +54,7 @@ export function getKqPlacardNextAction(input: {
     destination: "game",
     eyebrow: "Prochaine récolte",
     title: "Lance une nouvelle culture",
-    description: "Choisis ton mode de culture, ton Buddie et ta Botte, puis construis un lot assez bon pour ta réputation.",
+    description: "Choisis ton mode de culture, ton Buddie et tes cartes Botte du Chanvrier, puis construis un lot assez bon pour ta réputation.",
     buttonLabel: "Préparer la culture",
   };
 }

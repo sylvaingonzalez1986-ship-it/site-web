@@ -56,7 +56,7 @@ const KQ_CARD_FRONT_VERSION_OVERRIDES: Readonly<Record<string, number>> = {
 
 export const KQ_CARD_ARTWORK: Readonly<Record<string, string>> = Object.fromEntries(
   Object.entries(KQ_CARD_ILLUSTRATIONS).map(([code, source]) => {
-    const override = code.startsWith("BOTTE-") && !["BOTTE-001", "BOTTE-007", "BOTTE-008", "BOTTE-009"].includes(code) ? 5 : KQ_CARD_FRONT_VERSION_OVERRIDES[code];
+    const override = code.startsWith("BOTTE-") && !["BOTTE-001", "BOTTE-007", "BOTTE-008", "BOTTE-009"].includes(code) ? 6 : KQ_CARD_FRONT_VERSION_OVERRIDES[code];
     const frontSuffix = override
       ? `-front-v${override}.webp`
       : code.startsWith("HERITAGE-")

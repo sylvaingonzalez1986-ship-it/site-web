@@ -32,7 +32,7 @@ export function KqInventoryCarousel({ inventory, selectedCodes, onAdd, onRemove,
   const matchingOwnership = unavailable ? [] : KQ_CARDS.filter(card => filter === "all" || (filter === "owned" ? (inventory[card.code] ?? 0) > 0 : (inventory[card.code] ?? 0) === 0));
   const cards = matchingOwnership.filter(card => category === "all" || card.category === category);
   return <>
-    <KqCardCarousel id="inventory-carousel-title" title="2. Ton inventaire de jeu" label="Cartes La Botte de ton inventaire" count={cards.length} resetKey={`${filter}:${category}`}
+    <KqCardCarousel id="inventory-carousel-title" title="2. Ton inventaire de jeu" label="Cartes Botte du Chanvrier de ton inventaire" count={cards.length} resetKey={`${filter}:${category}`}
       intro={<div className={styles.toolbar}>
         <nav aria-label="Filtrer ton inventaire">{([['owned', 'Possédées'], ['all', 'Toutes'], ['missing', 'Manquantes']] as const).map(([value, label]) => <button type="button" key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{label}</button>)}</nav>
         <span role="status">{loading ? "Chargement de tes cartes…" : error ? "Stock indisponible" : `${owned}/${KQ_CARDS.length} cartes possédées · ${cards.length} affichée${cards.length > 1 ? "s" : ""} · ${selectedCodes.length} dans ton deck`}</span>

@@ -29,6 +29,7 @@ const original=window.fetch.bind(window);window.fetch=async(url,init={})=>{
 function App(){const [view,setView]=useState(query.get('view')||'hub'),[open,setOpen]=useState(false);return <>{view==='hub'?<KqPlacardLobby onOpen={()=>setView('shop')} onOpenEquipment={()=>setView('shop')} onOpenCollection={()=>setOpen(true)}/>:view==='profile'?<BotteAlbumCollection isAuthenticated/>:<KqSupportBoosterShop autoOpen onOpenCollection={()=>setOpen(true)} onExit={()=>setView('hub')}/>} {open?<KqBotteCollection onClose={()=>setOpen(false)}/>:null}</>;}createRoot(document.getElementById('root')).render(<App/>);`,
  "next/image":`import React from 'react';export default function Image({src,fill,priority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,
  "@/components/navigation/NavigationLink":`import React from 'react';export default function Link({children,...props}){return <a {...props}>{children}</a>;}`,
+ "next/link":`import React from 'react';export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>;}`,
  "next/dynamic":`import React,{lazy,Suspense} from 'react';export default function dynamic(load){const C=lazy(()=>load().then(defaultExport=>({default:defaultExport})));return props=><Suspense fallback={null}><C {...props}/></Suspense>;}`,
 };
 const server=await createServer({root,configFile:false,envDir:false,cacheDir:resolve(output,'vite-cache'),publicDir:resolve(root,'public'),optimizeDeps:{include:['react','react-dom/client','react-dom','lucide-react']},esbuild:{jsx:'automatic',loader:'tsx'},resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},
@@ -38,9 +39,9 @@ const album='dialog[aria-labelledby="botte-collection-title"]', detail='dialog[a
 try{
  await mkdir(output,{recursive:true});await server.listen();browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});
  const page=await browser.newPage();page.on('pageerror',e=>{errors.push(e.message);console.error(e.message);});await page.setRequestInterception(true);page.on('request',r=>{if(r.url().startsWith('http://127.0.0.1:3206')||r.url().startsWith('data:'))void r.continue();else void r.abort();});
- const clickText=async(text)=>{const handle=await page.evaluateHandle(text=>[...document.querySelectorAll('button')].find(b=>b.textContent.trim()===text),text);assert.ok(handle.asElement(),text);await handle.asElement().click();};
+ const clickText=async(text)=>{const handle=await page.evaluateHandle(text=>[...(document.querySelector('dialog[open]')||document).querySelectorAll('button')].find(b=>b.textContent.trim()===text),text);assert.ok(handle.asElement(),text);await handle.asElement().click();};
  const visit=async(query='')=>{await page.goto('http://127.0.0.1:3206/?'+query,{waitUntil:'networkidle0'});};
- const open=async()=>{await page.waitForSelector('button[aria-haspopup="dialog"]');await clickText('Ma collection La Botte');await page.waitForSelector(album+'[open]');};
+ const open=async()=>{await page.waitForSelector('button[aria-haspopup="dialog"]');await clickText('Ma collection Botte du Chanvrier');await page.waitForSelector(album+'[open]');};
  const waitCards=async(n)=>{await page.waitForFunction((selector,n)=>document.querySelectorAll(selector+' button[data-owned]').length===n,{},album,n);};
  const snap=async(name)=>{await page.evaluate(()=>Promise.all([...document.images].map(i=>i.decode().catch(()=>{}))));await page.screenshot({path:resolve(output,name+'.png')});};
  for(const [width,height]of[[320,740],[390,844],[768,1024],[1440,1000],[844,390]]){
@@ -58,7 +59,7 @@ try{
   await clickText('Possédées 3');await waitCards(3);await page.type('[aria-label="Rechercher une carte"]','ombrage');await waitCards(1);await page.click(album+' button[data-owned=true]');await page.waitForSelector(detail+'[open]');
   assert.equal(await page.$eval(detail,el=>el.textContent.includes('3 exemplaires en stock')),true);
   await page.click('button[aria-label="Fermer la carte agrandie"]');await page.keyboard.press('Escape');await page.waitForSelector(album,{hidden:true});
-  assert.equal(await page.evaluate(()=>document.activeElement?.textContent.includes('Ma collection La Botte')),true);
+  assert.equal(await page.evaluate(()=>document.activeElement?.textContent.includes('Ma collection Botte du Chanvrier')),true);
   assert.equal(await page.evaluate(()=>document.body.style.overflow),'');results.push({width,height,owned:3,missing:29,zoom:true,focusRestored:true});
  }
  await page.setViewport({width:390,height:844});await visit('view=shop');await snap('shop-entry');await clickText('Ma collection');await waitCards(32);await snap('shop-album');await page.keyboard.press('Escape');await page.waitForSelector(album,{hidden:true});assert.ok(await page.$('[aria-label="Quitter la boutique"]'));assert.equal(await page.evaluate(()=>document.body.style.overflow),'hidden');

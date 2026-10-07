@@ -104,7 +104,7 @@ try {
     await db.query("INSERT INTO kq_equipment_wallets(user_id) VALUES($1)", [owner]);
   }
   const buddyCollection = (await one("INSERT INTO lottery_card_collections(code,title) VALUES('HEMP_HEROES_2026','Buddies') RETURNING id")).id;
-  const supportCollection = (await one("INSERT INTO lottery_card_collections(code,title) VALUES('BOTTE_DU_CHANVRIER_2026','La Botte') RETURNING id")).id;
+  const supportCollection = (await one("INSERT INTO lottery_card_collections(code,title) VALUES('BOTTE_DU_CHANVRIER_2026','Botte du Chanvrier') RETURNING id")).id;
   await db.query(`INSERT INTO lottery_card_definitions(id,collection_id,code,card_number,name,rarity)
     VALUES($1,$2,'BUDDY-001',1,'Buddy promis','silver'),($3,$2,'BUDDY-002',2,'Autre Buddy','gold')`, [card, buddyCollection, otherCard]);
   const legacyMission = (await one("INSERT INTO social_missions(slug,title,description,reward_type,reward_amount,max_completions_per_user) VALUES('legacy','Ancienne','Ancienne','points',5,1) RETURNING id")).id;
@@ -180,7 +180,7 @@ try {
     const granted = await review(submitted.submission.id, { key });
     await review(submitted.submission.id, { key });
     check((await counts(user))[field] === before[field] + delta, `${type} grants exactly once`);
-    if (type === "support_pack") check((await query("SELECT card_count FROM kq_support_booster_entitlements WHERE id=ANY($1::UUID[])", [granted.reward.entitlementIds])).every(item => item.card_count === 3), "each La Botte pack contains three cards");
+    if (type === "support_pack") check((await query("SELECT card_count FROM kq_support_booster_entitlements WHERE id=ANY($1::UUID[])", [granted.reward.entitlementIds])).every(item => item.card_count === 3), "each Botte du Chanvrier pack contains three cards");
     if (type === "buddies") check((await one("SELECT card_definition_id FROM lottery_card_instances WHERE id=$1", [granted.reward.cardInstanceId])).card_definition_id === card, "fixed Buddy uses the deposited snapshot, not the edited catalogue");
   }
 

@@ -33,7 +33,7 @@ export function KqSeasonBoard({ seasonCode, rank, score, rating, seasonPoints, r
         </dl>
         <p className={styles.record}><Swords size={16} aria-hidden="true" /><strong>{wins} victoire{wins !== 1 ? "s" : ""}</strong><span>·</span>{losses} défaite{losses !== 1 ? "s" : ""}</p>
         <div className={styles.reward}>
-          <Gift size={26} aria-hidden="true" /><div><strong>Ton prochain pack La Botte</strong><p>Encore {remainingWins} victoire{remainingWins !== 1 ? "s" : ""} d’affilée pour un pack de 10 cartes.</p><div className={styles.steps} aria-label={`${seriesProgress} victoire sur 3 vers le prochain pack`}>{[0, 1, 2].map(n => <i key={n} data-won={n < seriesProgress} />)}</div><small>Série actuelle : {streak} · Une défaite remet la série à zéro.</small></div>
+          <Gift size={26} aria-hidden="true" /><div><strong>Ton prochain pack Botte du Chanvrier</strong><p>Encore {remainingWins} victoire{remainingWins !== 1 ? "s" : ""} d’affilée pour un pack de 10 cartes.</p><div className={styles.steps} aria-label={`${seriesProgress} victoire sur 3 vers le prochain pack`}>{[0, 1, 2].map(n => <i key={n} data-won={n < seriesProgress} />)}</div><small>Série actuelle : {streak} · Une défaite remet la série à zéro.</small></div>
         </div>
         {!local ? <div className={styles.play}>{onOpenArena ? <button type="button" onClick={onOpenArena}>{duelAction}</button> : <Link prefetch={false} href="/arene/placard?view=arena">{duelAction}</Link>}<p>Adversaire tiré au sort dans la file commune.</p></div> : null}
       </div>

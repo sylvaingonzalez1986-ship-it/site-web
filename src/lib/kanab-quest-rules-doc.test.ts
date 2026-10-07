@@ -21,7 +21,7 @@ describe("Kanab Quest Placard rules draft", () => {
     expect(design).not.toContain("Une defaite ne detruit rien");
   });
 
-  it("protects the Buddie, Heritage and unused La Botte cards", () => {
+  it("protects the Buddie, Heritage and unused Botte du Chanvrier cards", () => {
     expect(normalizedRules).toContain("La carte Buddie d'origine n'est jamais détruite");
     expect(normalizedRules).toContain("Héritage équipée est permanente");
     expect(normalizedRules).toContain("sans être jouées ne brûlent pas");

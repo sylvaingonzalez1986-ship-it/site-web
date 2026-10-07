@@ -98,7 +98,7 @@ export function KqSupportBoosterShop({
   const refresh = useCallback(async () => {
     const response = await fetch("/api/arena/placard/boosters", { cache: "no-store" });
     const payload = await response.json() as ShopPayload & { error?: string };
-    if (!response.ok) throw new Error(payload.error || "Boutique La Botte indisponible.");
+    if (!response.ok) throw new Error(payload.error || "Boutique Botte du Chanvrier indisponible.");
     setShop(payload);
   }, []);
 
@@ -126,7 +126,7 @@ export function KqSupportBoosterShop({
       const payload = await response.json() as { error?: string };
       if (!response.ok) throw new Error(payload.error || "Achat impossible.");
       await refresh();
-      setNotice("Booster La Botte ajouté. Tu peux maintenant l’ouvrir.");
+      setNotice("Booster Botte du Chanvrier ajouté. Tu peux maintenant l’ouvrir.");
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Achat impossible.");
     } finally {
@@ -178,7 +178,7 @@ export function KqSupportBoosterShop({
       setOpenedCards(payload.cards ?? []);
       await refresh();
       window.dispatchEvent(new Event("kq:collection-updated"));
-      setNotice(`${payload.cards?.length ?? entitlement.cardCount} cartes La Botte ont rejoint ta collection.`);
+      setNotice(`${payload.cards?.length ?? entitlement.cardCount} cartes Botte du Chanvrier ont rejoint ta collection.`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Ouverture impossible.");
     } finally {
@@ -205,9 +205,9 @@ export function KqSupportBoosterShop({
   return (
     <section id="boutique-la-botte" className="mx-auto mt-8 max-w-5xl">
       <button type="button" onClick={() => setShopOpen(true)} aria-haspopup="dialog" className="group relative block aspect-[3/2] w-full overflow-hidden border-2 border-ink bg-green text-left shadow-[6px_6px_0_#1a1a1a] transition-transform hover:-translate-y-1 focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-green">
-        <Image src="/placard/booster-shop-front-v2.webp" alt="Façade de la boutique La Botte" fill priority sizes="(max-width: 768px) 100vw, 1024px" className="object-cover transition-transform duration-500 group-hover:scale-[1.025]" />
+        <Image src="/placard/booster-shop-front-v2.webp" alt="Façade de la boutique Botte du Chanvrier" fill priority sizes="(max-width: 768px) 100vw, 1024px" className="object-cover transition-transform duration-500 group-hover:scale-[1.025]" />
         <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-black/90 via-black/55 to-transparent p-4 pt-16 text-white sm:p-6">
-          <span><small className="block text-xs font-black uppercase tracking-[.16em] text-yellow">Boutique de l’Arène</small><strong className="mt-1 block font-display text-3xl uppercase sm:text-5xl">Entre dans La Botte</strong></span>
+          <span><small className="block text-xs font-black uppercase tracking-[.16em] text-yellow">Boutique de l’Arène</small><strong className="mt-1 block font-display text-3xl uppercase sm:text-5xl">Entre dans Botte du Chanvrier</strong></span>
           <b className="shrink-0 border-2 border-white bg-green px-4 py-3 text-xs font-black uppercase shadow-[3px_3px_0_#fff]">Ouvrir la boutique</b>
         </span>
       </button>
@@ -225,7 +225,7 @@ export function KqSupportBoosterShop({
             <source media="(max-width: 639px) and (orientation: portrait)" srcSet="/placard/booster-shop-counter-mobile-v1.webp" />
             <Image src="/placard/booster-shop-counter-v5.webp" alt="Sylvain au comptoir, avec les récompenses de duel, les boîtes de packs, la caisse et le livre du matériel." fill unoptimized priority sizes="(max-width: 768px) 100vw, 1152px" className={styles.interior} />
           </picture>
-          <h2 id="kq-shop-title" className="sr-only">La Botte · Boutique de l’Arène</h2>
+          <h2 id="kq-shop-title" className="sr-only">Botte du Chanvrier · Boutique de l’Arène</h2>
           <button type="button" aria-label="Quitter la boutique" onClick={closeShop} className={styles.exit}><X aria-hidden="true" /></button>
           {onOpenCollection ? <button type="button" className={styles.collectionButton} onClick={onOpenCollection} aria-haspopup="dialog"><BookOpen size={17} aria-hidden="true" /><span>Ma collection</span></button> : null}
           <div className={styles.wallet}><small>Ta cagnotte</small><b>{shop ? shop.spendablePoints.toLocaleString("fr-FR") : "…"}<span> points</span></b></div>

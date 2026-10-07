@@ -81,7 +81,7 @@ export async function claimKqWelcomeSupportBooster(userId: string) {
   });
   if (result.error) {
     const message = result.error.message || "Booster de bienvenue indisponible.";
-    if (message.includes("support_collection_unavailable")) throw new Error("La collection La Botte n’est pas encore active.");
+    if (message.includes("support_collection_unavailable")) throw new Error("La collection Botte du Chanvrier n’est pas encore active.");
     throw new Error(`[supabase:rpc_kq_claim_welcome_support_booster] ${message}`);
   }
   return result.data as { entitlementId: string; claimed: boolean; replayed: boolean; status: string };
@@ -108,9 +108,9 @@ export async function purchaseKqSupportBoostersWithPoints(input: {
     p_base_points: Math.max(0, Math.floor(input.basePoints)),
   });
   if (result.error) {
-    const message = result.error.message || "Achat La Botte impossible.";
+    const message = result.error.message || "Achat Botte du Chanvrier impossible.";
     if (message.includes("insufficient_points")) throw new Error("Points insuffisants.");
-    if (message.includes("support_collection_unavailable")) throw new Error("La boutique La Botte n’est pas encore active.");
+    if (message.includes("support_collection_unavailable")) throw new Error("La boutique Botte du Chanvrier n’est pas encore active.");
     throw new Error(`[supabase:rpc_kq_purchase_support_boosters_with_points] ${message}`);
   }
   return result.data as {
@@ -125,14 +125,14 @@ export async function purchaseKqSupportBoostersWithPoints(input: {
 
 export async function openKqSupportBoosterEntitlement(userId: string, entitlementId: string) {
   if (!/^[0-9a-f-]{36}$/i.test(userId) || !/^[0-9a-f-]{36}$/i.test(entitlementId)) {
-    throw new Error("Booster La Botte invalide.");
+    throw new Error("Booster Botte du Chanvrier invalide.");
   }
   const result = await createSupabaseServiceClient().rpc("rpc_kq_open_support_booster", {
     p_entitlement_id: entitlementId,
     p_user_id: userId,
   });
   if (result.error) {
-    const message = result.error.message || "Ouverture La Botte impossible.";
+    const message = result.error.message || "Ouverture Botte du Chanvrier impossible.";
     if (message.includes("unavailable")) throw new Error("Ce booster n’est plus disponible.");
     throw new Error(`[supabase:rpc_kq_open_support_booster] ${message}`);
   }
@@ -546,14 +546,14 @@ export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
     { code: "heritage-catalog", label: `Catalogue Héritage · ${expectedHeritageCount} producteur(s), une carte chacun`, ready: expectedHeritageCount > 0 && producerHeritageCards.length === expectedHeritageCount },
     { code: "heritage-effects", label: `${expectedHeritageCount} pouvoirs Héritage distincts et pris en charge`, ready: heritageEffects.length === expectedHeritageCount && heritageEffects.every(isKqHeritageEffect) && new Set(heritageEffects).size === expectedHeritageCount },
     { code: "heritage-art", label: `${expectedHeritageCount} illustrations Héritage producteur`, ready: heritageArtwork.length === expectedHeritageCount && new Set(heritageArtwork).size === expectedHeritageCount },
-    { code: "support-catalog", label: `${KQ_CARDS.length} cartes La Botte`, ready: input.supportCards.length === KQ_CARDS.length },
-    { code: "support-art", label: `${KQ_CARDS.length} illustrations La Botte distinctes`, ready: supportArtwork.length === KQ_CARDS.length && new Set(supportArtwork).size === KQ_CARDS.length },
+    { code: "support-catalog", label: `${KQ_CARDS.length} cartes Botte du Chanvrier`, ready: input.supportCards.length === KQ_CARDS.length },
+    { code: "support-art", label: `${KQ_CARDS.length} illustrations Botte du Chanvrier distinctes`, ready: supportArtwork.length === KQ_CARDS.length && new Set(supportArtwork).size === KQ_CARDS.length },
     { code: "notebook-rules", label: "2 missions carnet → Placard configurées", ready: input.notebookRules.length === 2 },
     { code: "season-rules", label: "4 paliers de récompenses de saison", ready: input.seasonRules.length === 4 && new Set(input.seasonRules.map((rule) => rule.tier_code)).size === 4 },
     { code: "season-no-early-grants", label: "Aucune récompense de saison prématurée", ready: input.seasonGrantCount === 0 },
   ];
   const dormantChecks = [
-    { code: "support-dormant", label: "Collection La Botte encore inactive", ready: !input.supportCollectionActive && input.supportCards.every((card) => !card.is_active) },
+    { code: "support-dormant", label: "Collection Botte du Chanvrier encore inactive", ready: !input.supportCollectionActive && input.supportCards.every((card) => !card.is_active) },
     { code: "heritage-dormant", label: "Collection Héritage encore inactive", ready: input.heritageCards.every((card) => !card.is_active) },
     { code: "heritage-purchase-dormant", label: "Tirages Héritage après achat encore inactifs", ready: !featureFlags.heritagePurchaseDrawsLive },
     { code: "notebook-dormant", label: "Récompenses du carnet encore inactives", ready: input.notebookRules.every((rule) => !rule.is_active) && !featureFlags.notebookRewardsLive },
@@ -578,7 +578,7 @@ export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
     activationStillRequired: [
       "Valider les cinq décisions du dossier de lancement puis publier PLACARD-RULES-DRAFT",
       "Importer un rapport consolidé vert couvrant le socle graphique, chaque Héritage producteur actif et les 10 autres preuves de recette",
-      "Ouvrir la fenêtre coordonnée et activer les collections La Botte et Héritage",
+      "Ouvrir la fenêtre coordonnée et activer les collections Botte du Chanvrier et Héritage",
       "Contrôler les 2 missions Carnet et les 4 paliers de saison dans Supabase",
       "Basculer ensemble KQ_NOTEBOOK_REWARDS_LIVE, KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE et KQ_SEASON_REWARDS_LIVE",
       "Exécuter les rétro-attributions des missions Carnet puis des avis producteurs depuis l’interface admin",
@@ -595,7 +595,7 @@ export async function getKqAdminLaunchReadiness(adminEmail: string) {
   const seasonCode = await getKqActiveSeasonCode();
   const collectionResult = await supabase.from("lottery_card_collections")
     .select("id,is_active").eq("code", BOTTE_COLLECTION_CODE).maybeSingle();
-  if (collectionResult.error || !collectionResult.data) throw new Error("Collection La Botte introuvable.");
+  if (collectionResult.error || !collectionResult.data) throw new Error("Collection Botte du Chanvrier introuvable.");
   const [heritageResult, producerResult, supportResult, rulesResult, seasonRulesResult, seasonGrantsResult, equipmentResult] = await Promise.all([
     supabase.from("kq_heritage_card_definitions").select("image_url,is_active,producer_id,effect_code").not("producer_id", "is", null),
     supabase.from("producers").select("id", { count: "exact", head: true }),
@@ -684,7 +684,7 @@ async function getCachedKqBotteCatalog(): Promise<{
     if (collectionResult.error) {
       throw new Error(`[supabase:lottery_card_collections] ${collectionResult.error.message}`);
     }
-    if (!collectionResult.data) throw new Error("Collection La Botte introuvable.");
+    if (!collectionResult.data) throw new Error("Collection Botte du Chanvrier introuvable.");
 
     const definitionsResult = await supabase
       .from("lottery_card_definitions")
