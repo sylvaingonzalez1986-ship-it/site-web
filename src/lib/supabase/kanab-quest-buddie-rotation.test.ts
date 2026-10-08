@@ -15,10 +15,14 @@ function database(options: {
   startError?: { message: string; details?: string };
 } = {}) {
   const reads: Array<[string, ...unknown[]]> = [];
-  const rpc = vi.fn().mockImplementation((name: string) => Promise.resolve(name === "rpc_kq_commerce_state"
+  const rpc = vi.fn().mockImplementation((name: string, args?: { p_initial_state?: unknown }) => Promise.resolve(name === "rpc_kq_commerce_state"
     ? { error: null, data: { business: { version: 1, domiciliation: { mode: "home", active: true } } } }
-    : { error: options.startError ?? null, data: { run: { id: "run-new" }, burnReceipt: null } }));
-  mocks.equipment.mockResolvedValue({ strength: "green-thumb", equippedCodes: [], levels: {} });
+    : { error: options.startError ?? null, data: { run: { id: "run-new", state: args?.p_initial_state }, burnReceipt: null } }));
+  mocks.equipment.mockResolvedValue({
+    strength: "green-thumb", equippedCodes: [], levels: {},
+    tents: [{ tentNumber: 1, cultureOperationalCodes: [], levels: {} }],
+    sharedEquipment: { equippedCodes: [], levels: {} },
+  });
   mocks.client.mockReturnValue({ rpc, from: (table: string) => {
     const data = table === "kq_buddie_rotation" ? (options.missing ? null : { recent_buddie_codes: options.recent ?? [] })
       : table === "lottery_card_collections" ? { id: "botte", is_active: true }

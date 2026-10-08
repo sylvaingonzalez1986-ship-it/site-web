@@ -18,6 +18,7 @@ import { KQ_MARKET_ROUTES } from '@/lib/kanab-quest-market';
 import { KQ_REPUTATION_TIERS } from '@/lib/kanab-quest-reputation';
 import { canTrialContinue, canTrialResolve, canTrialRoll, createKqTrial, kqTrialStorageKey, KQ_TRIAL_BUDDIE, KQ_TRIAL_CHAPTERS, KQ_TRIAL_DECK, KQ_TRIAL_EQUIPMENT, KQ_TRIAL_VERSION, reduceKqTrial, restoreKqTrial, trialCardPermission, trialInstruction, trialQuality, trialRoutes, type KqTrialAction } from '@/lib/kanab-quest-trial';
 import { KqBotteCardDetail } from './KqBotteCollection';
+import { createKqWorkshop, isKqWorkshopComplete, kqWorkshopStorageKey, KQ_WORKSHOPS, KQ_WORKSHOP_VERSION, reduceKqWorkshop, restoreKqWorkshop, type KqWorkshopId } from '@/lib/kanab-quest-workshops';
 import styles from './KqGuidedTrial.module.css';
 
 const euro=(cents:number)=>new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(cents/100);
@@ -35,16 +36,19 @@ const INTRO=[
  'Ensuite, compare les débouchés. Vends tout ton stock fictif, en une ou plusieurs commandes. Tu peux mélanger les circuits ou faire avancer l’horloge de cet essai.',
  'Tu as parcouru toute la boucle. Les cartes, les ventes, les clients et les gains de cet essai restent fictifs : ton aventure réelle commence avec ton propre inventaire.',
 ];
-function load(userId:string) {
- try{return restoreKqTrial(JSON.parse(sessionStorage.getItem(kqTrialStorageKey(userId))??'null'));}catch{return restoreKqTrial(null);}
+function load({userId,workshop}:{userId:string;workshop?:KqWorkshopId}) {
+ const restore=(value:unknown)=>workshop?restoreKqWorkshop(workshop,value):restoreKqTrial(value);
+ try{return restore(JSON.parse(sessionStorage.getItem(workshop?kqWorkshopStorageKey(userId,workshop):kqTrialStorageKey(userId))??'null'));}catch{return restore(null);}
 }
-export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:string;onPause:()=>void;onComplete:()=>void;busy:boolean;error:string}) {
+export function KqGuidedTrial({userId,onPause,onComplete,busy,error,workshop}:{userId:string;onPause:()=>void;onComplete:()=>void;busy:boolean;error:string;workshop?:KqWorkshopId}) {
  const [saved,dispatch]=useReducer((current:ReturnType<typeof load>,action:KqTrialAction|{type:'restart'})=>{
-  if(action.type==='restart')return {state:createKqTrial(),actions:[]};
-  const state=reduceKqTrial(current.state,action);
+  if(action.type==='restart')return {state:workshop?createKqWorkshop(workshop):createKqTrial(),actions:[]};
+  const state=workshop?reduceKqWorkshop(workshop,current.state,action):reduceKqTrial(current.state,action);
   return state===current.state?current:{state,actions:[...current.actions,action]};
- },userId,load);
+ },{userId,workshop},load);
  const s=saved.state,g=s.game,c=s.commerce;
+ const lesson=workshop?KQ_WORKSHOPS.find(item=>item.id===workshop):undefined;
+ const workshopComplete=!!workshop&&isKqWorkshopComplete(workshop,s);
  const cultureDead=!!g&&isKqCultureDead(g);
  const outcomeArtwork=g?getKqOutcomeArtwork(g):null;
  const [detail,setDetail]=useState<KqSupportCard|null>(null);
@@ -59,8 +63,12 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:str
  useEffect(()=>{const element=dialog.current,previous=document.activeElement;element?.showModal();return()=>{element?.close();if(previous instanceof HTMLElement&&previous.isConnected)previous.focus();};},[]);
  // A failed browser-storage write is an external I/O result that must be shown to the player.
  // eslint-disable-next-line react-hooks/set-state-in-effect
- useEffect(()=>{try{sessionStorage.setItem(kqTrialStorageKey(userId),JSON.stringify({version:KQ_TRIAL_VERSION,actions:saved.actions}));}catch{setStorageWarning(true);}},[saved.actions,userId]);
- useEffect(()=>{heading.current?.focus({preventScroll:true});heading.current?.scrollIntoView({block:'nearest'});},[s.chapter,g?.stageIndex,g?.phase]);
+ useEffect(()=>{try{sessionStorage.setItem(workshop?kqWorkshopStorageKey(userId,workshop):kqTrialStorageKey(userId),JSON.stringify({version:workshop?KQ_WORKSHOP_VERSION:KQ_TRIAL_VERSION,...(workshop?{workshop}:{}),actions:saved.actions}));}catch{setStorageWarning(true);}},[saved.actions,userId,workshop]);
+ useEffect(()=>{
+  heading.current?.focus({preventScroll:true});
+  const result=s.chapter===4?dialog.current?.querySelector(g?.phase==='rolled'?'[data-trial-dice]':'[data-outcome]'):null;
+  (result??heading.current)?.scrollIntoView({block:result?'center':'nearest'});
+ },[s.chapter,g?.stageIndex,g?.phase]);
  const heritage=KQ_HERITAGE_CARDS.find(h=>h.code==='HERITAGE-007')!;
  const stock=c.stocks.find(item=>item.id===stockId&&item.remainingUnits>0)??c.stocks.find(item=>item.remainingUnits>0);
  const offer=stock?quoteKqCommerce(c,stock,channel,policy,undefined,s.clock):null;
@@ -73,6 +81,14 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:str
  const situation=g?getKqSituation(g):null;
  const situationArtwork=situation&&(g?.phase==='prepare'||g?.phase==='rolled')?getKqSituationArtwork(situation.code,Boolean(g?.powerOutage)):null;
  const prediction=g?.phase==='rolled'?previewKqResolution(g):null;
+ const cultureAction:(KqTrialAction&{label:string})|null=s.chapter!==4||!g?null
+  :cultureDead?{type:'restart-culture',label:'Réessayer cette culture'}
+  :g.phase==='prepare'&&!canTrialRoll(s)?{type:'play',code:g.stageIndex===0?'BOTTE-005':'BOTTE-004',label:g.stageIndex===0?'Jouer Arrosage mesuré':'Jouer la Loupe d’inspection'}
+  :g.phase==='prepare'?{type:'roll',label:'Lancer les dés'}
+  :g.phase==='rolled'&&!g.heritageUsed&&canActivateKqHeritage(g).allowed?{type:'heritage',label:'Activer mon Héritage'}
+  :g.phase==='rolled'&&!canTrialResolve(s)?{type:'play',code:'BOTTE-002',label:'Jouer la Chrysope'}
+  :g.phase==='rolled'?{type:'resolve',label:'Valider le résultat'}
+  :g.phase==='resolved'?{type:'advance',label:g.stageIndex===5?'Découvrir ma récolte':'Étape suivante'}:null;
  const cardButton=(card:KqSupportCard,playing=false)=>{
   const art=getKqCardArtwork(card.code), permission=trialCardPermission(s,card.code);
   return <article key={card.code} className={styles.card}>
@@ -81,31 +97,33 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:str
    {playing?<><button type="button" data-trial-card={card.code} disabled={!permission.allowed} onClick={()=>dispatch({type:'play',code:card.code})}>Jouer cette copie d’essai</button>{!permission.allowed?<small>{permission.reason}</small>:null}</>:null}
   </article>;
  };
- return <dialog ref={dialog} className={styles.dialog} data-arena-journey-ui data-trial-chapter={s.chapter} aria-labelledby="trial-title" onCancel={event=>{event.preventDefault();if(!detail)onPause();}}>
-  <header className={styles.top}><span><Compass aria-hidden="true"/> LE PLACARD · PARTIE D’ESSAI</span><button type="button" disabled={busy} onClick={onPause} aria-label="Mettre l’essai en pause"><X aria-hidden="true"/> <span>Pause</span></button></header>
+ return <dialog ref={dialog} className={styles.dialog} data-arena-journey-ui data-trial-workshop={workshop} data-trial-chapter={s.chapter} aria-labelledby="trial-title" onCancel={event=>{event.preventDefault();if(!detail)onPause();}}>
+  <header className={styles.top}><span><Compass aria-hidden="true"/> {lesson?'ATELIER · '+lesson.title:'LE PLACARD · PARTIE D’ESSAI'}</span><button type="button" disabled={busy} onClick={onPause} aria-label={lesson?'Retour aux ateliers':'Mettre l’essai en pause'}><X aria-hidden="true"/> <span>{lesson?'Ateliers':'Pause'}</span></button></header>
   <div className={styles.layout}>
    <aside className={styles.coach}>
     <Image src="/contest/mascot/arena-scene-carnet-v1.png" alt="Sylvain t’accompagne dans l’arène" width={640} height={360} sizes="(max-width: 760px) 100vw, 320px"/>
-    <span className={styles.kicker}>AVEC SYLVAIN · {s.chapter+1} / {KQ_TRIAL_CHAPTERS.length}</span>
-    <h2 id="trial-title" ref={heading} tabIndex={-1}>{KQ_TRIAL_CHAPTERS[s.chapter]}</h2>
-    <p className={styles.instruction}>{s.chapter===4?trialInstruction(s):INTRO[s.chapter]}</p>
-    <progress aria-label="Avancement de l’essai" value={s.chapter} max={9}/>
+    <span className={styles.kicker}>AVEC SYLVAIN · {lesson?`${Math.min(s.chapter-lesson.startChapter+1,lesson.endChapter-lesson.startChapter+1)} / ${lesson.endChapter-lesson.startChapter+1}`:`${s.chapter+1} / ${KQ_TRIAL_CHAPTERS.length}`}</span>
+    <h2 id="trial-title" ref={heading} tabIndex={-1}>{workshopComplete?'Bien joué !':KQ_TRIAL_CHAPTERS[s.chapter]}</h2>
+    <p className={styles.instruction}>{workshopComplete?'Tu peux rejouer, essayer une autre mécanique ou revenir plus tard.':s.chapter===4?trialInstruction(s):INTRO[s.chapter]}</p>
+    <progress aria-label="Avancement de l’essai" value={lesson?Math.min(s.chapter-lesson.startChapter,lesson.endChapter-lesson.startChapter+1):s.chapter} max={lesson?lesson.endChapter-lesson.startChapter+1:9}/>
     <p className={styles.sandbox}>Matériel, cartes et euros fictifs. Aucun classement, badge ni récompense réelle.</p>
-    <details><summary>Retrouver les étapes</summary><ol>{KQ_TRIAL_CHAPTERS.map((label,index)=><li key={label} aria-current={index===s.chapter?'step':undefined}>{index<s.chapter?'✓ ':''}{label}</li>)}</ol></details>
-    {s.chapter>0&&s.chapter<9?<button type="button" className={styles.subtle} onClick={()=>setRestartPrompt(true)}><RotateCcw size={16}/> Recommencer l’essai</button>:null}
-    {restartPrompt?<div role="alert"><p>Repartir du début efface uniquement la progression de cet essai.</p><button type="button" onClick={()=>{dispatch({type:'restart'});setRestartPrompt(false);}}>Recommencer</button><button type="button" onClick={()=>setRestartPrompt(false)}>Continuer cet essai</button></div>:null}
+    {lesson?<details><summary>Ce qui t’est prêté</summary><p>{lesson.prerequisites}</p></details>:<details><summary>Retrouver les étapes</summary><ol>{KQ_TRIAL_CHAPTERS.map((label,index)=><li key={label} aria-current={index===s.chapter?'step':undefined}>{index<s.chapter?'✓ ':''}{label}</li>)}</ol></details>}
+    {!workshopComplete&&s.chapter>0&&s.chapter<9?<button type="button" className={styles.subtle} onClick={()=>setRestartPrompt(true)}><RotateCcw size={16}/> {lesson?'Recommencer cet atelier':'Recommencer l’essai'}</button>:null}
+    {restartPrompt?<div role="alert"><p>Repartir du début efface uniquement la progression de {lesson?'cet atelier':'cet essai'}.</p><button type="button" onClick={()=>{dispatch({type:'restart'});setRestartPrompt(false);}}>Recommencer</button><button type="button" onClick={()=>setRestartPrompt(false)}>Continuer</button></div>:null}
    </aside>
    <main className={styles.main}>
-    <div className={styles.wallet} aria-label="Compte de démonstration"><span>Budget fictif <strong>{euro(c.cashCents)}</strong></span><span>Réputation <strong>{c.reputation}</strong></span><span>Clients <strong>{c.clients}</strong></span><span>Shops <strong>{c.shopPartners}</strong></span></div>
     {storageWarning?<p role="status">La sauvegarde locale est indisponible. Garde cette page ouverte pour terminer l’essai.</p>:null}
     {error?<p role="alert">{error}</p>:null}
+    {workshopComplete?<section className={styles.panel} data-workshop-complete><Check size={40} aria-hidden="true"/><h3>{lesson?.title} : atelier terminé</h3><p>{lesson?.description}</p><p>Tu as réalisé les actions de cet atelier. Le matériel, le lot et les gains restent fictifs.</p><button type="button" onClick={onComplete}>Explorer un autre atelier</button><button type="button" className={styles.subtle} onClick={()=>dispatch({type:'restart'})}>Rejouer cet atelier</button></section>:<>
+    {[2,3,8,9].includes(s.chapter)?<div className={styles.wallet} aria-label="Compte de démonstration"><span>Budget fictif <strong>{euro(c.cashCents)}</strong></span>{s.chapter>=8?<><span>Réputation <strong>{c.reputation}</strong></span><span>Clients <strong>{c.clients}</strong></span><span>Shops <strong>{c.shopPartners}</strong></span></>:null}</div>:null}
+    {lesson?<p className={styles.prerequisites}>{lesson.prerequisites}</p>:null}
     {s.chapter===0?<section className={styles.panel}>
      <h3>Un tour complet, à ton rythme</h3><p>Prépare tes cartes, achète et installe une LED, joue les six étapes de culture, rencontre le jury, transforme puis vends ton lot.</p>
-     <p>Le scénario et les premières mains sont préparés pour apprendre. Les cartes et les calculs utilisent les règles du jeu. Les résultats d’une vraie partie varieront.</p>
+     <p>Le scénario et les premières mains sont préparés pour apprendre. Si un lancer devait arrêter ta culture, un dé est ajusté à 4 pour poursuivre jusqu’à la récolte fictive. Les résultats d’une vraie partie varieront.</p>
      <p>Pour comparer les débouchés, l’essai te prête aussi 200 points de réputation, 8 clients et 2 shops. Ce ne sont pas les valeurs de départ de ton vrai compte.</p>
      <h3>Le Carnet reste lié à tes vraies dégustations</h3><p>Tu y notes uniquement les fleurs réellement goûtées. Les objectifs du Carnet et les missions du Placard peuvent rapporter des récompenses selon leurs conditions.</p>
      <button type="button" onClick={()=>dispatch({type:'check',value:'notebook'})}>{s.checked.includes('notebook')?'✓ Compris':'J’ai compris : Carnet réel, essai fictif'}</button>
-     <p><small>Tu peux mettre l’essai en pause et le reprendre avec Guide dans l’arène, depuis ce même onglet.</small></p>
+     <p><small>Tu peux mettre l’essai en pause et le reprendre avec Aide dans l’arène, depuis ce même onglet.</small></p>
     </section>:null}
     {s.chapter===1?<>
      <div className={styles.grid}>
@@ -131,8 +149,8 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:str
     {s.chapter===4&&g&&situation?<>
      <div className={styles.stages}>{KQ_STAGES.map((name,i)=><span key={name} data-active={i===g.stageIndex}>{i<g.stageIndex?'✓ ':''}{name}</span>)}</div>
      <section className={styles.panel}><span className={styles.kicker}>ÉTAPE {g.stageIndex+1} / 6 · {g.phase==='prepare'?'AVANT LES DÉS':g.phase==='rolled'?'APRÈS LES DÉS':'VERDICT'}</span><div className={styles.cultureScene} data-has-art={!!situationArtwork}>{situationArtwork?<Image key={situationArtwork.src} data-trial-situation={situation.code} src={situationArtwork.src} alt={situationArtwork.alt} width={768} height={768} sizes="(max-width: 760px) calc(100vw - 56px), 320px" loading="eager"/>:null}<div><h3>{situation.name}</h3><p>{situation.story}</p></div></div><p><strong>{getKqStageTarget(g)} réussites demandées</strong> · XP disponibles : {g.xp} · Qualité : {g.quality} · Pression : {g.pressure}/4</p><p>1 = Danger · 2–3 = neutre · 4–5 = réussite · 6 = Étincelle, une réussite et +1 XP au verdict. À partir de 3 Pression, la difficulté augmente.</p>
-      <p>Étapes à 0 réussite : <strong>{getKqZeroSuccessStageCount(g)}/2</strong>. La culture meurt dès la deuxième, même si elles ne se suivent pas.</p>
-      {g.dice?<div className={styles.dice} aria-label={`Dés : ${g.dice.join(', ')}`}>{g.dice.map((die,i)=><span key={i} data-value={die}>{die}<small>{die===1?'Danger':die===6?'Étincelle':die>=4?'Réussite':'Neutre'}</small></span>)}</div>:null}
+      <p data-trial-learning-protection>Étapes à 0 réussite : <strong>{getKqZeroSuccessStageCount(g)}</strong>. Dans cet essai, une assistance ajuste un dé si nécessaire pour te permettre d’atteindre la récolte.</p>
+      {g.dice?<div className={styles.dice} data-trial-dice aria-label={`Dés : ${g.dice.join(', ')}`}>{g.dice.map((die,i)=><span key={i} data-value={die}>{die}<small>{die===1?'Danger':die===6?'Étincelle':die>=4?'Réussite':'Neutre'}</small></span>)}</div>:null}
       {prediction?<p role="status">Prévision : <strong>{KQ_OUTCOME_LABELS[prediction.outcome]}</strong> · {prediction.total}/{prediction.target} réussites · {prediction.dangers} Danger non protégé</p>:null}
       {g.phase==='prepare'?<button type="button" data-trial-action="roll" disabled={!canTrialRoll(s)} onClick={()=>dispatch({type:'roll'})}>Lancer les dés</button>:null}
       {g.phase==='rolled'?<><button type="button" data-trial-action="heritage" disabled={!canActivateKqHeritage(g).allowed} onClick={()=>dispatch({type:'heritage'})}>{g.heritageUsed?'Héritage déjà utilisé':'Activer mon Héritage'}</button><button type="button" data-trial-action="resolve" disabled={!canTrialResolve(s)} onClick={()=>dispatch({type:'resolve'})}>Valider le résultat</button></>:null}
@@ -179,10 +197,17 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error}:{userId:str
      <details><summary>Réputation, saturation et fidélisation</summary><p>Une qualité insuffisante peut entraîner un refus, une baisse de prix ou des départs. Les shops prennent davantage mais paient moins ; leur barème évolue avec la qualité et le réseau. Les grossistes reprennent tout à prix réduit.</p><p>La réputation progresse par paliers, pas à chaque clic. Elle améliore les prix en ligne ; aux hauts paliers le prix est mieux protégé, mais tout vendre n’est jamais garanti. Les événements et la saturation changent aussi la demande.</p><ul>{KQ_REPUTATION_TIERS.map(tier=><li key={tier.minimum}>{tier.minimum} · {tier.name}</li>)}</ul><p>Les gains de clientèle et de partenaires sont limités sur 24 h. Recommencer une culture ne recharge pas immédiatement le marché.</p></details>
     </>:null}
     {s.chapter===9?<section className={styles.panel}><Check size={48} aria-hidden="true"/><h3>Première boucle accomplie</h3><p>Préparer → installer → cultiver → passer devant le jury → valoriser → vendre → investir.</p><p>{number(g?.harvestGrams??0)} g récoltés · {number(trialQuality(s))}/10 au jury · {s.receipts.length} ventes fictives.</p><p>Ton budget de démonstration finit à {euro(c.cashCents)}. Facture d’énergie encore due : {euro(s.electricity)}. Un chiffre d’affaires élevé n’est pas un bénéfice : pense aux achats et aux charges.</p><h3>Choisis ton prochain objectif</h3><p>Dans les Missions, retrouve les objectifs et les packs à gagner. Ta carte de chanvrier dans l’arène rassemble ton parcours, tes succès et tes badges. Un triple 6, une belle culture ou un bon duel peuvent faire progresser différents succès.</p><p>Ton avantage personnel s’applique dans ta vraie partie : Main Verte +2 XP par culture, Trésorier 1 000 € au départ et un livret à 5 % toutes les 24 h, Commercial pour une capacité de vente et des recettes ×1,5, Bricoleur pour les réparations gratuites.</p><button type="button" disabled={busy} onClick={onComplete}>{busy?'Enregistrement…':'Terminer le tutoriel'}</button><button type="button" className={styles.subtle} onClick={()=>dispatch({type:'restart'})}>Rejouer l’essai</button></section>:null}
-    {canTrialContinue(s)?<footer className={styles.next}><button type="button" data-trial-action="next" onClick={()=>dispatch({type:'next'})}>{s.chapter===3?'Lancer ma culture d’essai':s.chapter===8?'Découvrir mon bilan':'Continuer'}<ArrowRight size={18}/></button></footer>:null}
+    {canTrialContinue(s)?<footer className={styles.next}><button type="button" data-trial-action="next" onClick={()=>dispatch({type:'next'})}>{lesson&&s.chapter===lesson.endChapter?'Terminer cet atelier':s.chapter===3?'Lancer ma culture d’essai':s.chapter===8?'Découvrir mon bilan':'Continuer'}<ArrowRight size={18}/></button></footer>:null}
     {s.chapter===9?<p><Link href="/arene/placard" onClick={onPause}>Retrouver mon vrai Placard</Link></p>:null}
+    </>}
    </main>
   </div>
+  {!workshopComplete&&cultureAction?<div className={styles.trainingDock}>
+   {prediction?<span aria-live="polite">{prediction.total}/{prediction.target} réussites · {KQ_OUTCOME_LABELS[prediction.outcome]}</span>:<span>Étape {(g?.stageIndex??0)+1}/6 · {g?.xp} XP disponibles</span>}
+   <button type="button" data-trial-primary-action={cultureAction.type} onClick={()=>{
+    const {label:_,...action}=cultureAction; void _; dispatch(action);
+   }}>{cultureAction.label}<ArrowRight size={17} aria-hidden="true"/></button>
+  </div>:null}
   {detail?<KqBotteCardDetail card={detail} copies={1} onClose={()=>setDetail(null)}/>:null}
  </dialog>;
 }

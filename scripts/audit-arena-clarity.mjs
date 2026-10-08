@@ -150,7 +150,9 @@ try {
       assert.equal(layout.activities.length,3,'Exactly three activity choices');
       assert.equal(layout.sceneImages.length,1,'Exactly one scene image in the DOM');
       assert.equal(layout.sceneRequests.length,1,'Only the chosen scene is loaded');
-      assert(layout.renderedControls<8,'Fewer initial actions than the previous eight-control hub');
+      assert(layout.renderedControls<=8,'Learning stays alongside concise account and activity controls');
+      assert.equal(await visibleCount('[data-arena-first-culture-trigger]'),0,'The retired first culture is absent');
+      assert.equal(await visibleCount('[data-arena-discovery-entry] [data-arena-learning-trigger]'),1,'Learning remains directly available before and after opening');
       assert.equal(layout.controls.filter(control=>control.position==='fixed').length,0,'Account/help controls stay inline');
       assert.equal(await visibleCount('a[href*="pack-pionniers"],a[href*="view=missions"]'),0,'Pack and mission shortcuts are not permanently displayed');
       assert(requests.slice(requestStart).every(request=>request.method==='GET'),'Arrival must not mutate profile or tutorial progress');

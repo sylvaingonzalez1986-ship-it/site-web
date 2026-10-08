@@ -5,6 +5,8 @@ import Link from "@/components/navigation/NavigationLink";
 import { ArrowUpRight, BookOpen, LockKeyhole, Sprout, Trophy } from "lucide-react";
 import { ArenaJourneyEntry } from "./ArenaJourneyEntry";
 import { ArenaPrelaunchCharacter } from "./ArenaPrelaunchCharacter";
+import { ArenaLearningLauncher } from "./ArenaLearningLauncher";
+import { ArenaPlayerResume } from "./ArenaPlayerResume";
 import { ARENA_LOBBY_MODES, ARENA_LOBBY_MODE_ORDER, type ArenaLobbyMode } from "@/lib/arena-lobby";
 import { ARENA_OPENING_MESSAGE } from "@/lib/arena-opening";
 import retro from "./ArenaRetro.module.css";
@@ -21,9 +23,10 @@ type ArenaHubProps = {
   initialMode?: ArenaLobbyMode;
   /** Kept for incoming prelaunch routes; the opening date is now always visible. */
   initialNotice?: boolean;
+  personalSummaryEnabled?: boolean;
 };
 
-export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer" }: ArenaHubProps) {
+export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer", personalSummaryEnabled = false }: ArenaHubProps) {
   const scene = ARENA_LOBBY_MODES[initialMode];
 
   return (
@@ -46,11 +49,16 @@ export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer
         {activitiesLocked ? <div className={styles.intro}>
           <span className={styles.eyebrow}>Ouverture de l’Arène</span>
           <h2 id="arena-activities-title">{ARENA_OPENING_MESSAGE}</h2>
-          <p>Prépare ton personnage. Les activités arrivent bientôt !</p>
+          <p>Découvre les possibilités de l’Arène avant l’ouverture.</p>
         </div> : <div className={styles.intro}>
           <h2 id="arena-activities-title">À toi de jouer.</h2>
           <p>Choisis ton activité.</p>
         </div>}
+
+        {personalSummaryEnabled && !activitiesLocked ? <ArenaPlayerResume /> : null}
+        <div className={styles.discovery} data-arena-discovery-entry>
+          <ArenaLearningLauncher className={styles.discoveryButton} />
+        </div>
 
         <nav className={styles.activityGrid} aria-label="Choisir une activité">
           {ARENA_LOBBY_MODE_ORDER.map(id => {

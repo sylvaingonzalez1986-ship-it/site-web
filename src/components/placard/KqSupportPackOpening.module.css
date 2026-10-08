@@ -1,0 +1,11 @@
+.dialog { position: fixed; inset: 0; margin: auto; box-sizing: border-box; width: min(820px, calc(100vw - 24px)); max-width: none; max-height: calc(100dvh - 24px); padding: 0; overflow: auto; border: 2px solid #f4c43d; border-radius: 10px; background: #081a14; color: #fff5df; }
+.dialog::backdrop { background: #001b15dc; }
+.content { position: relative; height: clamp(360px, 65dvh, 540px); }
+.status { display: flex; min-height: 360px; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; text-align: center; }
+.status > svg { color: #f4c43d; }
+.status h2 { font: 900 1.6rem/1.2 var(--font-display), sans-serif; }
+.status p { max-width: 45ch; font-size: 14px; line-height: 1.6; }
+.status button { min-height: 48px; padding: 10px 18px; border: 2px solid #f4c43d; background: #f4c43d; color: #002d24; font-weight: 800; }
+.dialog button { cursor: pointer; }
+.dialog button:focus-visible { outline: 3px solid #8ce7ce; outline-offset: 3px; }
+@media (max-width: 600px) { .content { height: 400px; } }

@@ -5,6 +5,14 @@ import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
 import { isContestFeatureEnabledServer } from "@/lib/contest-feature";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { loadContestBetaTesterEnabled } from "@/lib/supabase/customer-backend";
+
+/** Same access rules, using a verified identity without creating a customer profile. */
+export async function isKqPlayerIdentityEnabled(session: { customerId: string; customer: { email: string } } | null): Promise<boolean> {
+  if (!isArenaPrelaunch() && isKqPlayerApiEnabled()) return true;
+  if (!isContestFeatureEnabledServer() || !session) return false;
+  return isAllowedAdminEmail(session.customer.email) || await loadContestBetaTesterEnabled(session.customerId);
+}
 
 /** Private production preview uses the existing, server-verified customer roles.
  * Public launch approvals remain independent. Never cache this across requests.

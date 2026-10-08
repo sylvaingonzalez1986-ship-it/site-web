@@ -107,6 +107,28 @@ export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadou
   scope?: "installation" | "tent";
 };
 
+/** Position immediately before validation, after all cards and Heritage actions.
+ * This is not a stock receipt: real account copies are intentionally unknown. */
+export type KqStageDecision = {
+  version: 1;
+  xp: number;
+  quality: number;
+  pressure: number;
+  handCodes: string[];
+  usedCards: string[];
+  playedThisStage: string[];
+  preparationPlayed: boolean;
+  reactionPlayed: boolean;
+  revealedPest: KqPest | null;
+  cancelledDangers: number;
+  rollNonce: number;
+  bonusDie: number | null;
+  heritageUsed: boolean;
+  heritageArmed: boolean;
+  powerOutage: boolean;
+  harvestLossPercent: number;
+};
+
 export type KqGameState = {
   rulesVersion?: 2;
   /** Recorded once at culture start; later changes apply to the next culture. */
@@ -118,6 +140,8 @@ export type KqGameState = {
   completedAt?: string;
   /** A terminal loss; completed cultures saved before this rule stay unchanged. */
   cultureDead?: boolean;
+  /** Server grants one rescue to the account's first official culture only. */
+  firstCultureRescue?: boolean;
   varietyCode: string;
   varietyName: string;
   deckCodes: string[];
@@ -172,6 +196,10 @@ export type KqGameState = {
     qualityDelta?: number;
     xpGain?: number;
     harvestLossPercent?: number;
+    /** A failed stage excluded from the death counter; its result stays unchanged. */
+    rescued?: boolean;
+    /** Optional for cultures saved before explanatory recaps were introduced. */
+    decision?: KqStageDecision;
   }>;
 };
 
@@ -487,7 +515,7 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
 
 export function startKqGame(
   seed = Date.now(),
-  config: { domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" | "tent" } = {},
+  config: { domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; firstCultureRescue?: boolean; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" | "tent" } = {},
 ): KqGameState {
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
   const requestedDeck = config.deckCodes ?? KQ_CARDS.slice(0, 6).map((card) => card.code);
@@ -522,6 +550,7 @@ export function startKqGame(
   };
   const energy = config.energyMode ? quoteKqEnergy(equipmentCodes, levels, config.energyMode, productionUnits, tents, config.equipmentScope) : undefined;
   const initialState: KqGameState = {
+    ...(config.firstCultureRescue === true ? { firstCultureRescue: true } : {}),
     ...(config.domiciliation ? { domiciliation: config.domiciliation } : {}),
     ...(energy ? { energy } : {}),
     seed: clampSeed(seed), ...(config.challengeDayKey ? { challengeDayKey: config.challengeDayKey } : {}), ...(config.startedAt ? { startedAt: config.startedAt } : {}), varietyCode: buddie.code, varietyName: buddie.name, deckCodes,
@@ -1020,6 +1049,15 @@ export function getKqZeroSuccessStageCount(state: Pick<KqGameState, "history">) 
   return state.history.filter((entry) => entry.total === 0).length;
 }
 
+export function hasKqFirstCultureRescue(state: Pick<KqGameState, "firstCultureRescue" | "history">) {
+  return state.firstCultureRescue === true && !state.history.some((entry) => entry.rescued === true);
+}
+
+export function getKqUnrescuedZeroSuccessStageCount(state: Pick<KqGameState, "firstCultureRescue" | "history">) {
+  return state.history.filter((entry) => entry.total === 0
+    && !(state.firstCultureRescue === true && entry.rescued === true)).length;
+}
+
 export function isKqCultureDead(state: Pick<KqGameState, "cultureDead">) {
   return state.cultureDead === true;
 }
@@ -1033,7 +1071,9 @@ function endKqDeadCulture(state: KqGameState): KqGameState {
     equipmentQualityBonus: 0,
     harvestGrams: 0,
     powerOutage: false,
-    effectNotices: appendKqEffectNotice(state.effectNotices, "Culture morte : deux étapes à 0 réussite. Aucune récolte ni carte Fleur."),
+    effectNotices: appendKqEffectNotice(state.effectNotices, state.history.some((entry) => entry.rescued === true)
+      ? "Culture morte : deux étapes à 0 réussite non secourues. Aucune récolte ni carte Fleur."
+      : "Culture morte : deux étapes à 0 réussite. Aucune récolte ni carte Fleur."),
   };
 }
 
@@ -1042,6 +1082,8 @@ export function resolveKqStage(state: KqGameState): KqGameState {
   const situation = getKqSituation(state);
   const result = previewKqResolution(state);
   if (!situation || !result) return state;
+  const rescued = result.total === 0 && hasKqFirstCultureRescue(state)
+    && getKqUnrescuedZeroSuccessStageCount(state) === 1;
   const heritage = getKqStateHeritage(state);
   const failureRecovery = !state.heritageUsed && heritage?.effect === "failure-to-fragile" && result.outcome === "failure";
   const dryingRecovery = !state.heritageUsed
@@ -1120,7 +1162,8 @@ export function resolveKqStage(state: KqGameState): KqGameState {
     powerOutage,
     harvestLossPercent: Math.min(80, (state.harvestLossPercent ?? 0) + theftLoss),
     heritageUsed: failureRecovery || dryingRecovery || sparkPressureRelief ? true : state.heritageUsed,
-    effectNotices: nextNotices,
+    effectNotices: rescued ? appendKqEffectNotice(nextNotices,
+      "Secours de première culture utilisé : cette étape à 0 réussite ne compte pas pour la mort. Dés, résultat et gains inchangés.") : nextNotices,
     traits: [...state.traits, trait], combos: [...state.combos, ...newCombos], lastOutcome: effectiveOutcome,
     history: [...state.history, {
       stage: situation.stage,
@@ -1137,14 +1180,34 @@ export function resolveKqStage(state: KqGameState): KqGameState {
       qualityDelta,
       xpGain,
       harvestLossPercent: theftLoss,
+      ...(rescued ? { rescued: true } : {}),
+      decision: {
+        version: 1,
+        xp: state.xp,
+        quality: state.quality,
+        pressure: state.pressure,
+        handCodes: [...getKqHandCodes(state)],
+        usedCards: [...state.usedCards],
+        playedThisStage: [...state.playedThisStage],
+        preparationPlayed: state.preparationPlayed,
+        reactionPlayed: state.reactionPlayed,
+        revealedPest: state.revealedPest,
+        cancelledDangers: state.cancelledDangers,
+        rollNonce: state.rollNonce,
+        bonusDie: state.bonusDie ?? null,
+        heritageUsed: state.heritageUsed === true,
+        heritageArmed: state.heritageArmed === true,
+        powerOutage: state.powerOutage === true,
+        harvestLossPercent: state.harvestLossPercent ?? 0,
+      },
     }],
   };
-  return getKqZeroSuccessStageCount(resolved) >= 2 ? endKqDeadCulture(resolved) : resolved;
+  return getKqUnrescuedZeroSuccessStageCount(resolved) >= 2 ? endKqDeadCulture(resolved) : resolved;
 }
 
 export function advanceKqStage(state: KqGameState): KqGameState {
   if (state.phase !== "resolved") return state;
-  if (getKqZeroSuccessStageCount(state) >= 2) return endKqDeadCulture(state);
+  if (getKqUnrescuedZeroSuccessStageCount(state) >= 2) return endKqDeadCulture(state);
   if (state.stageIndex >= KQ_STAGES.length - 1) {
     const projection = getKqRunProjection(state);
     const { equipmentQualityBonus, projectedQuality: quality, harvestGrams } = projection;

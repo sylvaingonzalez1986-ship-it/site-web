@@ -1043,8 +1043,12 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     if (message.includes("kq_heritage_state_mismatch")) throw new Error("État Héritage invalide.");
     throw new Error(`[supabase:rpc_kq_start_run] ${message}`);
   }
+  // Start triggers own first-culture eligibility; return their persisted state,
+  // including changes preserved by the heritage wrapper, instead of our input.
+  const persistedState = parseKqGameSave(encodeKqSave(result.data?.run?.state));
+  if (!persistedState) throw new Error("[supabase:rpc_kq_start_run] État de culture persisté invalide.");
   return {
-    ...mapKqStartRunResult(result.data), state,
+    ...mapKqStartRunResult(result.data), state: persistedState,
     buddieRotation: { ...buddieRotation, recentBuddieCodes: recordKqBuddieUse(input.buddieCode, buddieRotation.recentBuddieCodes) },
   };
 }

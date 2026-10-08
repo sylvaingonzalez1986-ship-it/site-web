@@ -1,4 +1,7 @@
 "use client";
+
+import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowDownLeft, ArrowUpRight, ChartNoAxesCombined, RefreshCw, Search, Wallet, X } from "lucide-react";
@@ -9,13 +12,15 @@ const price = (value: string) => Number(value).toLocaleString("fr-FR", { style: 
 const quantityLabel = formatKqCryptoQuantity;
 const dateLabel = (value: string | number) => new Date(value).toLocaleString("fr-FR", { timeZone: "Europe/Paris", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
 function CryptoLogo({ asset }: { asset: Pick<KqCryptoAsset, "id" | "symbol"> }) {
+ const api = useKqTutorialApi();
  const [failedId, setFailedId] = useState<number | null>(null);
- const hasLogo = Number.isSafeInteger(asset.id) && asset.id > 0 && failedId !== asset.id;
+ const hasLogo = !api.isTutorial && Number.isSafeInteger(asset.id) && asset.id > 0 && failedId !== asset.id;
  return <span className={styles.coin} aria-hidden="true" data-crypto-logo={asset.id}>
   {hasLogo ? <Image src={`https://s2.coinmarketcap.com/static/img/coins/64x64/${asset.id}.png`} width={64} height={64} alt="" unoptimized loading="lazy" onError={() => setFailedId(asset.id)} /> : <span className={styles.coinFallback}>{asset.symbol}</span>}
  </span>;
 }
 export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => void } = {}) {
+  const api = useKqTutorialApi();
  const [data, setData] = useState<KqCryptoSnapshot | null>(null);
  const [error, setError] = useState("");
  const [orderError, setOrderError] = useState("");
@@ -43,7 +48,7 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
   const version = ++loadVersion.current;
   setLoading(true);
   try {
-   const response = await fetch("/api/arena/placard/crypto", { cache: "no-store", signal });
+   const response = await api.request("/api/arena/placard/crypto", { cache: "no-store", signal });
    const body: unknown = await response.json();
    if (!response.ok || !isKqCryptoSnapshot(body)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "Le marché crypto est indisponible.");
    if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) {
@@ -54,21 +59,21 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
      // A polling read can settle due loan instalments. Notify the other panels
      // after updating our reference, without fetching our own snapshot again.
      notifyingWallet.current = true;
-     try { window.dispatchEvent(new Event("kq:equipment-updated")); window.dispatchEvent(new Event("kq:treasury-updated")); }
+     try { api.notify("kq:equipment-updated"); api.notify("kq:treasury-updated"); }
      finally { notifyingWallet.current = false; }
     }
    }
   } catch (cause) { if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) setError(cause instanceof Error ? cause.message : "Le marché crypto est indisponible."); }
   finally { if (version === loadVersion.current && !mutationInFlight.current) setLoading(false); }
- }, []);
+ }, [api]);
  useEffect(() => { const controller = new AbortController(); void reload(controller.signal);
   const update = () => { if (!notifyingWallet.current && !document.hidden && !dialog.current?.open) void reload(controller.signal); };
   const resume = () => { if (!document.hidden && !dialog.current?.open) { setClock(Date.now()); void reload(controller.signal); } };
-  window.addEventListener("kq:equipment-updated", update);
+  const unsubscribe_kq_equipment_updated = api.subscribe(["kq:equipment-updated"], update);
   window.addEventListener("focus", resume);
   document.addEventListener("visibilitychange", resume);
-  return () => { controller.abort(); window.removeEventListener("kq:equipment-updated", update); window.removeEventListener("focus", resume); document.removeEventListener("visibilitychange", resume); };
- }, [reload]);
+  return () => { controller.abort(); unsubscribe_kq_equipment_updated(); window.removeEventListener("focus", resume); document.removeEventListener("visibilitychange", resume); };
+ }, [api, reload]);
  useEffect(() => {
   if (selected || busy) return;
   const controller = new AbortController();
@@ -84,24 +89,13 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
   return () => { controller.abort(); window.clearTimeout(timeout); };
  }, [data, reload, selected, busy, serverOffset]);
  useEffect(() => { const interval = window.setInterval(() => setClock(Date.now()), 1000); return () => window.clearInterval(interval); }, []);
+ useBodyScrollLock(Boolean(selected));
  useEffect(() => {
   if (!selected) return;
   const element = dialog.current;
   if (!element) return;
-  const rootOverflow = document.documentElement.style.overflow;
-  const bodyOverflow = document.body.style.overflow;
-  const scrollbarGap = window.innerWidth - document.documentElement.clientWidth;
-  const bodyPadding = document.body.style.paddingRight;
-  document.documentElement.style.overflow = "hidden";
-  document.body.style.overflow = "hidden";
-  if (scrollbarGap > 0) document.body.style.paddingRight = `${parseFloat(getComputedStyle(document.body).paddingRight) + scrollbarGap}px`;
   element.showModal();
-  return () => {
-   element.close();
-   document.documentElement.style.overflow = rootOverflow;
-   document.body.style.overflow = bodyOverflow;
-   document.body.style.paddingRight = bodyPadding;
-  };
+  return () => element.close();
  }, [selected]);
  useEffect(() => {
   if (!selected) return;
@@ -139,7 +133,7 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
   mutationInFlight.current = true; ++loadVersion.current; setLoading(false);
   setBusy(true); setOrderError("");
   try {
-   const response = await fetch("/api/arena/placard/crypto", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "preview", side: selected.side, assetId: selected.asset.id, ...(selected.side === "buy" ? { amountCents } : { quantity: quantity.replace(",", ".") }) }) });
+   const response = await api.request("/api/arena/placard/crypto", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "preview", side: selected.side, assetId: selected.asset.id, ...(selected.side === "buy" ? { amountCents } : { quantity: quantity.replace(",", ".") }) }) });
    const body: unknown = await response.json();
    if (!response.ok || !isKqCryptoOrder(body)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "L’ordre n’a pas pu être préparé.");
    setOrder(body); setConfirmAttempted(false);
@@ -151,13 +145,13 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
   mutationInFlight.current = true; ++loadVersion.current; setLoading(false);
   setBusy(true); setConfirmAttempted(true); setOrderError("");
   try {
-   const response = await fetch("/api/arena/placard/crypto", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "confirm", orderId: order.orderId }) });
+   const response = await api.request("/api/arena/placard/crypto", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "confirm", orderId: order.orderId }) });
    const body: unknown = await response.json();
    if (!response.ok || !isRecord(body) || !isKqCryptoTrade(body.trade)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "Confirmation non reçue. Réessaie cet ordre pour vérifier son exécution.");
    setMessage(`${body.trade.side === "buy" ? "Achat" : "Vente"} enregistré : ${euros(body.trade.amountCents)} de jeu.`);
    setOrder(null); setSelected(null); setConfirmAttempted(false);
    cashCentsRef.current = body.trade.cashAfterCents;
-   window.dispatchEvent(new Event("kq:equipment-updated")); window.dispatchEvent(new Event("kq:treasury-updated")); onWalletRefresh?.(); mutationInFlight.current = false; await reload();
+   api.notify("kq:equipment-updated"); api.notify("kq:treasury-updated"); onWalletRefresh?.(); mutationInFlight.current = false; await reload();
   } catch (cause) { setOrderError(cause instanceof Error ? cause.message : "Confirmation non reçue. Réessaie cet ordre."); }
   finally { mutationInFlight.current = false; setBusy(false); }
  }
@@ -212,6 +206,6 @@ export function KqCryptoMarket({ onWalletRefresh }: { onWalletRefresh?: () => vo
    </dialog> : null}
    {data.recentTrades.length ? <details className={styles.history}><summary>Les derniers mouvements ({data.recentTrades.length})</summary>{data.recentTrades.map(trade => <div key={trade.orderId}><span>{trade.side === "buy" ? "Achat" : "Vente"} {data.assets.find(a => a.id === trade.assetId)?.symbol ?? `#${trade.assetId}`}<small>{dateLabel(trade.createdAt)}</small></span><strong>{euros(trade.amountCents)}</strong></div>)}</details> : null}
   </> : null}
-  <footer className={styles.source}>Cours EUR fournis par <a href="https://coinmarketcap.com/" target="_blank" rel="noreferrer">CoinMarketCap</a>. Valeurs arrondies à l’affichage. Les gains et pertes réalisés rejoignent ta comptabilité.</footer>
+  {!api.isTutorial ? <footer className={styles.source}>Cours EUR fournis par <a href="https://coinmarketcap.com/" target="_blank" rel="noreferrer">CoinMarketCap</a>. Valeurs arrondies à l’affichage. Les gains et pertes réalisés rejoignent ta comptabilité.</footer> : null}
  </section>;
 }

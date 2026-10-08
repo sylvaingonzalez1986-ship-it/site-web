@@ -28,6 +28,9 @@
 .intro h2 { margin: 0; font: 900 clamp(2rem, 4vw, 3rem)/1.1 var(--font-display), Impact, sans-serif; }
 .intro p { margin: .4rem 0 0; color: #fffaf1e6; font-size: .9rem; }
 .eyebrow { display: block; margin-bottom: .5rem; }
+.discovery { margin-bottom: 1.25rem; }
+.discoveryButton { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px; padding: .65rem 1rem; border: 1px solid #f4c43d99; border-radius: 8px; background: #00382ef2; color: #fffaf1; font: 700 .85rem/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; }
+.discoveryButton:hover { background: #00503c; }
 .activityGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .activity {
   --activity-accent: #00503c;

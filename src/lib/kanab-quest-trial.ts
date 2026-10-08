@@ -13,6 +13,7 @@ export const KQ_TRIAL_BUDDIE = { ...KQ_BUDDIES.find(b => b.rarity === 'gold')!, 
 export const KQ_TRIAL_DECK = ['BOTTE-005', 'BOTTE-024', 'BOTTE-004', 'BOTTE-003', 'BOTTE-006', 'BOTTE-015', 'BOTTE-032', 'BOTTE-016', 'BOTTE-030'];
 export const KQ_TRIAL_EQUIPMENT = ['TENT-080-STARTER', 'AIR-STARTER', 'LED-300', 'DRYING-ROOM', 'SIFT-TRAY'];
 const TIME = Date.parse('2026-09-16T12:00:00Z');
+const TRIAL_RESCUE_NOTICE = 'Essai guidé : un dé passe à 4 pour éviter la mort et poursuivre jusqu’à la récolte fictive.';
 const HANDS = [
  ['BOTTE-005','BOTTE-024','BOTTE-006','BOTTE-003','BOTTE-004'],
  ['BOTTE-024','BOTTE-006','BOTTE-003','BOTTE-004','BOTTE-015'],
@@ -39,6 +40,15 @@ export function createKqTrial(): KqTrialState {
 function teachingHand(game: KqGameState): KqGameState {
  return { ...game, handCodes: HANDS[game.stageIndex].filter(code => !game.usedCards.includes(code)).slice(0, 5) };
 }
+// Keep this assistance entirely inside the fictitious tutorial. Display the
+// prepared dice before validation so the ordinary engine still awards exactly
+// what the player sees. Official runs never receive adjusted dice here.
+function teachingRescue(game: KqGameState): KqGameState {
+ if (game.phase !== 'rolled' || !game.dice || getKqZeroSuccessStageCount(game) < 1 || game.dice.some(die => die >= 4)) return game;
+ const dice = [...game.dice] as [number, number, number];
+ dice[dice.indexOf(Math.max(...dice))] = 4;
+ return {...game,dice,effectNotices:[...(game.effectNotices??[]),TRIAL_RESCUE_NOTICE].slice(-12)};
+}
 export function startKqTrialCulture(mode: KqEnergyMode = 'balanced', seed = 2) {
  const game = startKqGame(seed, { varietyCode: KQ_TRIAL_BUDDIE.code, deckCodes: KQ_TRIAL_DECK, collectionCodes: [...KQ_TRIAL_DECK,'BOTTE-002'], heritageCode: 'HERITAGE-007', equipmentCodes: KQ_TRIAL_EQUIPMENT, energyMode: mode, startedAt: new Date(TIME).toISOString() });
  return teachingHand({ ...game, varietyName: KQ_TRIAL_BUDDIE.name, situationCodes: ['SIT-016','SIT-020','SIT-003','SIT-004','SIT-005','SIT-006'] });
@@ -54,8 +64,8 @@ export function trialInstruction(state: KqTrialState) {
  if (g.phase === 'rolled' && g.stageIndex === 2 && !g.reactionPlayed && canPlayKqCard(g, KQ_CARDS.find(c=>c.code==='BOTTE-002')!).allowed) return 'Le ravageur est identifié : joue la Chrysope depuis ta réserve pour corriger un dé faible.';
  if (g.phase === 'rolled') return 'Observe les dés et le résultat prévu. Tu peux jouer une réaction avant de valider. Chaque 6 rapporte 1 XP au verdict.';
  return getKqZeroSuccessStageCount(g) === 1
-  ? 'Une étape a fini à 0 réussite. Une deuxième, même plus tard, fera mourir la culture. Utilise tes cartes pour améliorer tes dés avant de valider.'
-  : 'Lis le résultat : qualité, XP et pression ont évolué. Deux étapes à 0 réussite font mourir la culture, même si elles ne se suivent pas.';
+  ? 'Une étape a fini à 0 réussite. Une deuxième, même plus tard, tuerait une culture non secourue. Cet essai prépare un dé si nécessaire pour te laisser découvrir la récolte fictive.'
+  : 'Lis le résultat : qualité, XP et pression ont évolué. Cet essai prépare un dé si nécessaire pour te laisser découvrir la récolte fictive. En jeu, deux étapes à 0 réussite non secourues font mourir la culture.';
 }
 export function trialCardPermission(s: KqTrialState, code: string) {
  const g=s.game, card=KQ_CARDS.find(c=>c.code===code);
@@ -96,7 +106,10 @@ export function reduceKqTrial(s: KqTrialState, a: KqTrialAction): KqTrialState {
  const g=s.game, c=s.commerce;
  if(g && isKqCultureDead(g) && a.type!=='restart-culture')return s;
  switch(a.type) {
- case 'restart-culture': return s.chapter===4 && g && isKqCultureDead(g) ? {...s,game:startKqTrialCulture(s.mode),battle:null,rounds:0}:s;
+ // A v2 journal may request a restart after a formerly fatal roll which the
+ // current tutorial now assists. Honor that explicit action without replaying
+ // the setup chapters or resetting the rest of the tutorial.
+ case 'restart-culture': return s.chapter===4 && g && (isKqCultureDead(g) || g.effectNotices?.includes(TRIAL_RESCUE_NOTICE)) ? {...s,game:startKqTrialCulture(s.mode),battle:null,rounds:0}:s;
  case 'check': return s.chapter<=1 && ['notebook','buddie','deck','heritage'].includes(a.value) ? {...s, checked:[...new Set([...s.checked,a.value])]} : s;
  case 'buy': {const price=getKqEquipmentDefinition('LED-300')!.priceCents;return s.chapter===2&&!s.bought&&c.cashCents>=price?{...s,bought:true,commerce:{...c,cashCents:c.cashCents-price}}:s;}
  case 'install': return s.chapter===3 && ['LED-300','DRYING-ROOM','SIFT-TRAY'].includes(a.code) && !s.installed.includes(a.code) ? {...s,installed:[...s.installed,a.code]}:s;
@@ -107,10 +120,10 @@ export function reduceKqTrial(s: KqTrialState, a: KqTrialAction): KqTrialState {
  // Keep the first teaching actions available: no competing preparation or redraw can consume their slot.
  if(g.phase==='prepare' && ((g.stageIndex===0&&a.code!=='BOTTE-005')||(g.stageIndex===2&&a.code!=='BOTTE-004')))return s;
  const card=KQ_CARDS.find(c=>c.code===a.code);if(!card||!trialCardPermission(s,card.code).allowed)return s;
- return {...s,game:playKqCard(g,a.code)};
+ return {...s,game:teachingRescue(playKqCard(g,a.code))};
  }
  case 'redraw': return s.chapter===4&&g&&!([0,2].includes(g.stageIndex)) ? {...s,game:redrawKqHand(g)}:s;
- case 'roll': return s.chapter===4&&canTrialRoll(s)?{...s,game:rollKqDice(g!)}:s;
+ case 'roll': return s.chapter===4&&canTrialRoll(s)?{...s,game:teachingRescue(rollKqDice(g!))}:s;
  case 'heritage': return s.chapter===4&&g&&canActivateKqHeritage(g).allowed?{...s,game:activateKqHeritage(g)}:s;
  case 'resolve': return s.chapter===4&&canTrialResolve(s)?{...s,game:resolveKqStage(g!)}:s;
  case 'advance': {

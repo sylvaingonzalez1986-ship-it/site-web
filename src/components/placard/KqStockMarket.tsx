@@ -1,5 +1,8 @@
 "use client";
 
+import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowDownLeft, ArrowUpRight, ChartNoAxesCombined, Clock3, RefreshCw, Search, Wallet, X } from "lucide-react";
@@ -42,6 +45,7 @@ function StockQuote({ asset, now }: { asset: KqStockAsset | undefined; now: numb
 }
 
 export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => void } = {}) {
+  const api = useKqTutorialApi();
   const [data, setData] = useState<KqStockSnapshot | null>(null);
   const [tab, setTab] = useState<StockTab>("cac40");
   const [search, setSearch] = useState("");
@@ -79,7 +83,7 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
     setLoading(true);
     try {
       const query = `?${new URLSearchParams({ ids: requestedIds })}`;
-      const response = await fetch(`/api/arena/placard/stocks${query}`, { cache: "no-store", signal });
+      const response = await api.request(`/api/arena/placard/stocks${query}`, { cache: "no-store", signal });
       const body: unknown = await response.json();
       if (!response.ok || !isKqStockSnapshot(body)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "Le comptoir boursier ne répond pas. Réessaie dans un instant.");
       if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) {
@@ -88,13 +92,13 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
         setData(body); setServerOffset(Date.parse(body.serverNow) - Date.now()); setError("");
         if (cashChanged) {
           notifyingWallet.current = true;
-          try { window.dispatchEvent(new Event("kq:equipment-updated")); window.dispatchEvent(new Event("kq:treasury-updated")); }
+          try { api.notify("kq:equipment-updated"); api.notify("kq:treasury-updated"); }
           finally { notifyingWallet.current = false; }
         }
       }
     } catch (cause) { if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) setError(cause instanceof Error ? cause.message : "Le comptoir boursier est indisponible."); }
     finally { if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) setLoading(false); }
-  }, [requestedIds]);
+  }, [api, requestedIds]);
   useEffect(() => {
     const timeout = window.setTimeout(() => { setDebouncedSearch(search); setPage(0); }, 300);
     return () => window.clearTimeout(timeout);
@@ -104,21 +108,18 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
     void reload(controller.signal);
     const update = () => { if (!document.hidden && !dialog.current?.open && !notifyingWallet.current) void reload(controller.signal); };
     const interval = window.setInterval(update, 60_000);
-    window.addEventListener("kq:equipment-updated", update);
+    const unsubscribe_kq_equipment_updated = api.subscribe(["kq:equipment-updated"], update);
     document.addEventListener("visibilitychange", update);
     window.addEventListener("focus", update);
-    return () => { controller.abort(); window.clearInterval(interval); window.removeEventListener("kq:equipment-updated", update); document.removeEventListener("visibilitychange", update); window.removeEventListener("focus", update); };
-  }, [reload]);
+    return () => { controller.abort(); window.clearInterval(interval); unsubscribe_kq_equipment_updated(); document.removeEventListener("visibilitychange", update); window.removeEventListener("focus", update); };
+  }, [api, reload]);
   useEffect(() => { const interval = window.setInterval(() => setClock(Date.now()), 1000); return () => window.clearInterval(interval); }, []);
+  useBodyScrollLock(Boolean(selected));
   useEffect(() => {
     if (!selected || !dialog.current) return;
     const element = dialog.current;
-    const rootOverflow = document.documentElement.style.overflow, bodyOverflow = document.body.style.overflow, bodyPadding = document.body.style.paddingRight;
-    const scrollbarGap = window.innerWidth - document.documentElement.clientWidth;
-    document.documentElement.style.overflow = "hidden"; document.body.style.overflow = "hidden";
-    if (scrollbarGap > 0) document.body.style.paddingRight = `${parseFloat(getComputedStyle(document.body).paddingRight) + scrollbarGap}px`;
     element.showModal();
-    return () => { element.close(); document.documentElement.style.overflow = rootOverflow; document.body.style.overflow = bodyOverflow; document.body.style.paddingRight = bodyPadding; };
+    return () => element.close();
   }, [selected]);
   useEffect(() => {
     if (!selected) return;
@@ -153,7 +154,7 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
     if (selected.side === "buy" && amountCents === null) { setOrderError("Entre un montant valide en euros de jeu, avec deux décimales au maximum."); return; }
     mutationInFlight.current = true; ++loadVersion.current; setLoading(false); setBusy(true); setOrderError("");
     try {
-      const response = await fetch("/api/arena/placard/stocks", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "preview", side: selected.side, assetId: selected.asset.id, ...(selected.side === "buy" ? { amountCents } : { quantity: quantity.replace(",", ".") }) }) });
+      const response = await api.request("/api/arena/placard/stocks", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "preview", side: selected.side, assetId: selected.asset.id, ...(selected.side === "buy" ? { amountCents } : { quantity: quantity.replace(",", ".") }) }) });
       const body: unknown = await response.json();
       if (!response.ok || !isKqStockOrder(body)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "L’offre n’a pas pu être préparée. Actualise les cours et réessaie.");
       setOrder(body); setConfirmAttempted(false);
@@ -164,12 +165,12 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
     if (!order || mutationInFlight.current) return;
     mutationInFlight.current = true; ++loadVersion.current; setLoading(false); setBusy(true); setConfirmAttempted(true); setOrderError("");
     try {
-      const response = await fetch("/api/arena/placard/stocks", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "confirm", orderId: order.orderId }) });
+      const response = await api.request("/api/arena/placard/stocks", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "confirm", orderId: order.orderId }) });
       const body: unknown = await response.json();
       if (!response.ok || !isRecord(body) || !isKqStockTrade(body.trade)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "Confirmation non reçue. Réessaie cet ordre pour vérifier son exécution.");
       setNotice(`${body.trade.side === "buy" ? "Achat" : "Vente"} enregistré : ${euros(body.trade.amountCents)} de jeu.`);
       setOrder(null); setSelected(null); setConfirmAttempted(false); cashCentsRef.current = body.trade.cashAfterCents;
-      window.dispatchEvent(new Event("kq:equipment-updated")); window.dispatchEvent(new Event("kq:treasury-updated")); onWalletRefresh?.();
+      api.notify("kq:equipment-updated"); api.notify("kq:treasury-updated"); onWalletRefresh?.();
       mutationInFlight.current = false; await reload();
     } catch (cause) { setOrderError(cause instanceof Error ? cause.message : "Confirmation non reçue. Réessaie le même ordre."); }
     finally { mutationInFlight.current = false; setBusy(false); }
@@ -218,6 +219,6 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
       {!order ? <form onSubmit={event => { event.preventDefault(); void preview(); }}><div className={styles.orderContext}><span>Prix indicatif en euros<strong>{selected.asset.priceEur ? price(selected.asset.priceEur) : "Cours à actualiser"}</strong></span><span>{selected.side === "buy" ? "Disponible" : "Ta position"}<strong>{selected.side === "buy" ? euros(data.cashCents) : `${formatKqStockQuantity(positionFor(selected.asset.id)?.quantity ?? "0")} ${selected.asset.symbol}`}</strong></span></div><label htmlFor="stock-order-amount">{selected.side === "buy" ? "Montant en euros de jeu" : "Quantité à vendre"}<div className={styles.amountField}><input id="stock-order-amount" inputMode="decimal" value={selected.side === "buy" ? amount : quantity} onChange={event => selected.side === "buy" ? setAmount(event.target.value) : setQuantity(event.target.value)} disabled={busy} aria-describedby="stock-amount-help" /><span aria-hidden="true">{selected.side === "buy" ? "€" : selected.asset.symbol}</span></div></label><small id="stock-amount-help">Vérifie le prix et le total en euros avant de confirmer.</small><div className={styles.actions}><button type="submit" disabled={busy}>{busy ? "Préparation…" : "Préparer l’offre"}</button><button type="button" disabled={busy} onClick={closeOrder}>Annuler</button></div></form> : <div><dl className={styles.orderTotals}><div><dt>Quantité</dt><dd>{formatKqStockQuantity(order.quantity)} {selected.asset.symbol}</dd></div><div><dt>Prix bloqué en euros</dt><dd>{price(order.priceEur)}</dd></div><div className={styles.orderTotal}><dt>{order.side === "buy" ? "À débiter" : "À recevoir"}</dt><dd>{euros(order.amountCents)}<small>euros de jeu</small></dd></div></dl><p className={styles.expiry} data-expired={secondsLeft === 0}>Cours du {date(order.quotedAt)}.<br />{secondsLeft > 0 ? `Offre valable encore ${secondsLeft} s. Le montant confirmé sera exactement celui affiché.` : "Offre expirée : prépare une nouvelle offre."}</p><div className={styles.actions}><button type="button" data-stock-confirm disabled={busy || (secondsLeft === 0 && !confirmAttempted)} onClick={() => void confirm()}>{busy ? "Confirmation…" : confirmAttempted ? "Vérifier / réessayer cet ordre" : `Confirmer ${order.side === "buy" ? "l’achat" : "la vente"}`}</button><button type="button" disabled={busy} onClick={() => { setOrder(null); setConfirmAttempted(false); setOrderError(""); }}>Modifier l’ordre</button></div>{confirmAttempted ? <small>Si la réponse se perd, réessaie cet ordre : il ne sera exécuté qu’une seule fois.</small> : null}</div>}
     </div></dialog> : null}
     {data?.recentTrades.length ? <details className={styles.history}><summary>Les derniers mouvements ({data.recentTrades.length})</summary>{data.recentTrades.map(trade => <div key={trade.orderId}><span>{trade.side === "buy" ? "Achat" : "Vente"} {KQ_STOCK_INSTRUMENTS.find(instrument => instrument.id === trade.assetId)?.symbol ?? trade.assetId}<small>{date(trade.createdAt)}</small></span><strong>{euros(trade.amountCents)}</strong></div>)}</details> : null}
-    <footer className={styles.source}><p>Cours et change fournis par <a href="https://finance.yahoo.com/" target="_blank" rel="noreferrer">Yahoo Finance</a>. Tous les placements sont virtuels et suivent uniquement les prix ; les dividendes ne sont pas versés. Les gains et pertes réalisés rejoignent ta comptabilité.</p><p>{cacSource ? <>Composition CAC 40 : <a href={cacSource.url} target="_blank" rel="noreferrer">Euronext</a>. </> : null}{usSource ? <>Univers S&amp;P 500 : actions cotées du portefeuille <a href={usSource.url} target="_blank" rel="noreferrer">iShares IVV</a>, relevé du {new Date(usSource.asOf).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}.</> : null}</p></footer>
+    {!api.isTutorial ? <footer className={styles.source}><p>Cours et change fournis par <a href="https://finance.yahoo.com/" target="_blank" rel="noreferrer">Yahoo Finance</a>. Tous les placements sont virtuels et suivent uniquement les prix ; les dividendes ne sont pas versés. Les gains et pertes réalisés rejoignent ta comptabilité.</p><p>{cacSource ? <>Composition CAC 40 : <a href={cacSource.url} target="_blank" rel="noreferrer">Euronext</a>. </> : null}{usSource ? <>Univers S&amp;P 500 : actions cotées du portefeuille <a href={usSource.url} target="_blank" rel="noreferrer">iShares IVV</a>, relevé du {new Date(usSource.asOf).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}.</> : null}</p></footer> : null}
   </section>;
 }

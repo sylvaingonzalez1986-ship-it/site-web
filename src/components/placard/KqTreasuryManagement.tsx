@@ -1,5 +1,7 @@
 ﻿"use client";
 
+import { useKqTutorialApi, type KqTutorialApi } from "./KqTutorialApiContext";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, LoaderCircle, RefreshCw, X } from "lucide-react";
 import { createClientRequestKey } from "@/lib/client-request-key";
@@ -12,8 +14,8 @@ import { KqTreasuryInvoices } from "./KqTreasuryInvoices";
 import styles from "./KqTreasuryManagement.module.css";
 
 type Confirmation = { title: string; description: string; body: Record<string, unknown>; cost: number; endpoint: "commerce" | "energy" };
-async function request<T>(body?: Record<string, unknown>, endpoint: "commerce" | "energy" = "commerce"): Promise<T> {
-  const response = await fetch(`/api/arena/placard/${endpoint}${body || endpoint === "energy" ? "" : "?shop=1"}`, body
+async function request<T>(api: KqTutorialApi, body?: Record<string, unknown>, endpoint: "commerce" | "energy" = "commerce"): Promise<T> {
+  const response = await api.request(`/api/arena/placard/${endpoint}${body || endpoint === "energy" ? "" : "?shop=1"}`, body
     ? { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }
     : { cache: "no-store" });
   const result = await response.json();
@@ -43,6 +45,7 @@ function ManagementConfirmation({ confirmation, busy, error, onClose, onConfirm 
 export function KqTreasuryManagement({ onOpenShop, onUpdated, section = "management" }: {
   onOpenShop: (equipmentCode?: string) => void; onUpdated?: () => void; section?: "invoices" | "management";
 }) {
+  const api = useKqTutorialApi();
   const [data, setData] = useState<KqCommerceSnapshot | null>(null);
   const [energy, setEnergy] = useState<KqEnergySnapshot | null>(null);
   const [energyError, setEnergyError] = useState("");
@@ -61,8 +64,8 @@ export function KqTreasuryManagement({ onOpenShop, onUpdated, section = "managem
     const pending = (async () => {
       try {
         const [commerceResult, energyResult] = await Promise.allSettled([
-          request<KqCommerceSnapshot>(),
-          section === "invoices" ? request<KqEnergySnapshot>(undefined, "energy") : Promise.resolve(null),
+          request<KqCommerceSnapshot>(api),
+          section === "invoices" ? request<KqEnergySnapshot>(api, undefined, "energy") : Promise.resolve(null),
         ]);
         if (commerceResult.status === "rejected") throw commerceResult.reason;
         const result = commerceResult.value;
@@ -75,27 +78,27 @@ export function KqTreasuryManagement({ onOpenShop, onUpdated, section = "managem
           && energyResult.value.outstandingCents >= 0))) { setEnergy(energyResult.value); setEnergyError(""); }
         else { setEnergy(null); setEnergyError("Le détail des factures d’électricité et de soins n’a pas pu être chargé."); }
         // Reading the business calendar can settle due invoices and subscriptions.
-        window.dispatchEvent(new Event("kq:treasury-updated"));
+        api.notify("kq:treasury-updated");
       } catch (failure) { setError(failure instanceof Error ? failure.message : "Gestion indisponible."); }
       finally { setLoading(false); }
     })();
     inFlight.current = pending;
     void pending.finally(() => { if (inFlight.current === pending) inFlight.current = null; });
     return pending;
-  }, [section]);
+  }, [api, section]);
   useEffect(() => {
     void load();
     const refresh = () => { void load(); };
-    window.addEventListener("kq:equipment-updated", refresh);
-    return () => window.removeEventListener("kq:equipment-updated", refresh);
-  }, [load]);
+    const unsubscribe_kq_equipment_updated = api.subscribe(["kq:equipment-updated"], refresh);
+    return () => unsubscribe_kq_equipment_updated();
+  }, [api, load]);
   useEffect(() => {
     const tick = () => { if (!document.hidden && clock.current) setLiveNow(clock.current.server + Math.max(0, performance.now() - clock.current.received)); };
     const resume = () => { tick(); if (!document.hidden) void load(); };
     const timer = window.setInterval(tick, 15000);
     document.addEventListener("visibilitychange", resume);
     return () => { window.clearInterval(timer); document.removeEventListener("visibilitychange", resume); };
-  }, [load]);
+  }, [api, load]);
   useEffect(() => {
     const next = data?.business?.nextEventAt;
     if (next && liveNow && liveNow >= Date.parse(next) && next !== refreshedEvent.current && !busy && !confirmation) {
@@ -111,12 +114,12 @@ export function KqTreasuryManagement({ onOpenShop, onUpdated, section = "managem
     if (!confirmation || committing.current) return;
     committing.current = true; setBusy(true); setError("");
     try {
-      await request(confirmation.body, confirmation.endpoint);
+      await request(api, confirmation.body, confirmation.endpoint);
       setConfirmation(null); setNotice(confirmation.endpoint === "energy" || confirmation.body.action === "pay-lab" ? "Règlement enregistré. Tes factures ont été actualisées." : "La gestion de ton entreprise a été mise à jour.");
       if (inFlight.current) await inFlight.current;
       await load();
-      window.dispatchEvent(new Event("kq:equipment-updated"));
-      window.dispatchEvent(new Event("kq:treasury-updated"));
+      api.notify("kq:equipment-updated");
+      api.notify("kq:treasury-updated");
       onUpdated?.();
     } catch (failure) { setError(failure instanceof Error ? failure.message : "Opération indisponible."); }
     finally { committing.current = false; setBusy(false); }

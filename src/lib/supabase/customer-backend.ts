@@ -428,7 +428,7 @@ async function loadPromoCodesByCustomerIds(customerIds: string[]): Promise<Map<s
   return map;
 }
 
-async function loadContestBetaTesterEnabled(customerId: string): Promise<boolean> {
+export async function loadContestBetaTesterEnabled(customerId: string): Promise<boolean> {
   const supabase = createSupabaseServiceClient();
   const result = await supabase
     .from("contest_beta_testers")

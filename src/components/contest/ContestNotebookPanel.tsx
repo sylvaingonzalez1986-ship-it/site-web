@@ -6,6 +6,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState, useTransition
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { ContestReviewSkillRadar } from "@/components/contest/ContestReviewSkillRadar";
+import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 import styles from "./ContestNotebookPanel.module.css";
 import { contestDraftKey, contestReviewVersion, readContestDraft, type ContestNotebookDraft } from "@/lib/contest-notebook-draft";
 import {
@@ -554,6 +555,7 @@ function ContestNotebookEditor({
   onCloseGuide,
   draftOwnerId,
 }: ContestNotebookPanelProps) {
+  const api = useKqTutorialApi();
   const serverReview = useRef(initialServerReview).current;
   const [submittedReview, setSubmittedReview] = useState<ViewerContestReview | null>(null);
   const viewerReview = submittedReview ?? serverReview;
@@ -776,6 +778,7 @@ function ContestNotebookEditor({
   };
 
   const refreshPage = () => {
+    if (api.isTutorial) return;
     startTransition(() => {
       router.refresh();
     });
@@ -789,7 +792,7 @@ function ContestNotebookEditor({
       window.requestAnimationFrame(() => launchButtonRef.current?.focus({ preventScroll: true }));
     }
 
-    if (searchParams.get("edit") !== "notes") {
+    if (api.isTutorial || searchParams.get("edit") !== "notes") {
       return;
     }
 
@@ -797,7 +800,7 @@ function ContestNotebookEditor({
     params.delete("edit");
     const query = params.toString();
     router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
-  }, [isInlineDisplayMode, onCloseGuide, pathname, router, searchParams]);
+  }, [isInlineDisplayMode, onCloseGuide, pathname, router, searchParams, api]);
 
   useEffect(() => {
     if (!isGuideOpen || isBookDisplayMode) {
@@ -867,7 +870,7 @@ function ContestNotebookEditor({
     setProfileError(null);
 
     try {
-      const response = await fetch("/api/contest/profile", {
+      const response = await api.request("/api/contest/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ pseudo }),
@@ -917,7 +920,7 @@ function ContestNotebookEditor({
 
     try {
       const isUpdate = Boolean(viewerReview && isEditingReview);
-      const response = await fetch("/api/contest/reviews", {
+      const response = await api.request("/api/contest/reviews", {
         method: isUpdate ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -946,7 +949,7 @@ function ContestNotebookEditor({
       }
 
       setReviewMessage(
-        isUpdate
+        api.isTutorial ? "Fiche d’essai terminée. Ces notes fictives restent dans le didacticiel." : isUpdate
           ? "Guide modifié. Il reste en modération avant publication."
           : "Guide envoyé. Il apparaîtra publiquement après modération.",
       );

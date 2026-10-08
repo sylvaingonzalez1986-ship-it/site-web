@@ -1,4 +1,6 @@
 "use client";
+
+import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 import { useEffect, useRef, useState } from "react";
 import { PiggyBank, RefreshCw } from "lucide-react";
 import { createClientRequestKey } from "@/lib/client-request-key";
@@ -8,6 +10,7 @@ const euro = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "
 export function ChanvrierSavingsPanel({ embedded = false, onSnapshot, refreshKey = 0 }: {
   embedded?: boolean; onSnapshot?: (snapshot: ChanvrierSavings) => void; refreshKey?: number;
 } = {}) {
+  const api = useKqTutorialApi();
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<ChanvrierSavings | null>(null);
   const [amount, setAmount] = useState("");
@@ -24,29 +27,29 @@ export function ChanvrierSavingsPanel({ embedded = false, onSnapshot, refreshKey
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 15000);
     setBusy(true); setError("");
-    void fetch("/api/arena/chanvrier/savings", { cache: "no-store", signal: controller.signal }).then(async response => {
+    void api.request("/api/arena/chanvrier/savings", { cache: "no-store", signal: controller.signal }).then(async response => {
       const body = await response.json();
       if (!response.ok) throw new Error(body.error);
       if (!disposed) {
         setData(body); onSnapshot?.(body);
-        if (body.interestCreditedCents > 0) window.dispatchEvent(new Event("kq:treasury-updated"));
+        if (body.interestCreditedCents > 0) api.notify("kq:treasury-updated");
       }
     }).catch(() => { if (!disposed) setError("Impossible d’ouvrir le livret. Réessaie."); }).finally(() => { clearTimeout(timer); if (!disposed) setBusy(false); });
     return () => { disposed = true; clearTimeout(timer); controller.abort(); };
-  }, [open, embedded, refresh, refreshKey, onSnapshot]);
+  }, [api, open, embedded, refresh, refreshKey, onSnapshot]);
   async function transfer(action: "deposit" | "withdraw") {
     if (!cents || busy || inFlight.current) return;
     inFlight.current = true; setBusy(true); setError(""); setNotice("");
     const command = pending.current?.action === action && pending.current.amountCents === cents ? pending.current : { action, amountCents: cents, requestKey: createClientRequestKey() };
     pending.current = command;
     try {
-      const response = await fetch("/api/arena/chanvrier/savings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(command), signal: AbortSignal.timeout(15000) });
+      const response = await api.request("/api/arena/chanvrier/savings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(command), signal: AbortSignal.timeout(15000) });
       const body = await response.json();
       if (!response.ok) { if (response.status < 500) pending.current = null; throw new Error(body.error); }
       setData(body); onSnapshot?.(body); setAmount(""); pending.current = null;
       setNotice(`${euro(cents)} ${action === "deposit" ? "déposés sur ton livret" : "retirés vers ta trésorerie"}.`);
-      window.dispatchEvent(new Event("kq:equipment-updated"));
-      window.dispatchEvent(new Event("kq:treasury-updated"));
+      api.notify("kq:equipment-updated");
+      api.notify("kq:treasury-updated");
     } catch (cause) { setError(cause instanceof Error && cause.name !== "TimeoutError" && !(cause instanceof TypeError) ? cause.message : "Réponse interrompue. Réessaie le même montant : l’opération ne sera comptée qu’une fois."); }
     finally { setBusy(false); inFlight.current = false; }
   }

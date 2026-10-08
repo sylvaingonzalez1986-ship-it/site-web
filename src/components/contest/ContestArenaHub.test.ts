@@ -11,11 +11,12 @@ vi.mock("@/components/navigation/NavigationLink", () => ({ default: (props: Anch
 vi.mock("next/image", () => ({
   default: ({ src, alt }: ImgHTMLAttributes<HTMLImageElement>) => createElement("img", { src, alt }),
 }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock("./ArenaJourneyEntry", () => ({ ArenaJourneyEntry: () => createElement("div", { "data-inline-account": true }, "Ma carte · Aide") }));
 vi.mock("./ArenaPrelaunchCharacter", () => ({ ArenaPrelaunchCharacter: () => createElement("button", {}, "Créer mon personnage") }));
 
 describe("Arena home", () => {
-  it("offers three direct activity links without a preview or second entry action", () => {
+  it("keeps the learning launcher alongside the three activity links", () => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub));
     for (const [id, mode] of Object.entries(ARENA_LOBBY_MODES)) {
       expect(html).toMatch(new RegExp(`<a[^>]*data-arena-activity="${id}"[^>]*href="${mode.href.replace("?", "\\?")}"`));
@@ -26,6 +27,10 @@ describe("Arena home", () => {
     expect(html).toContain("Voir le classement");
     expect(html).toContain("Ma carte · Aide");
     expect(html).toContain("Des fleurs à gagner en fin de saison");
+    expect(html).toContain("Explorer les possibilités");
+    expect(html).toContain("data-arena-learning-trigger");
+    expect(html).not.toContain("data-arena-first-culture");
+    expect(html).not.toContain("<dialog");
     expect(html).not.toContain("data-lobby-enter");
     expect(html).not.toContain("aria-pressed");
     expect(html).not.toContain("Pack des Pionniers");
@@ -46,9 +51,12 @@ describe("Arena home", () => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub, { activitiesLocked: true, initialNotice }));
     expect(html).toContain(ARENA_OPENING_MESSAGE);
     expect(html).toContain("Créer mon personnage");
+    expect(html).toContain("Explorer les possibilités");
+    expect(html).not.toContain("Ta première culture");
     expect(html.match(/Bientôt/g)).toHaveLength(3);
     expect(html).not.toContain("<a ");
     expect(html).not.toContain("data-inline-account");
     expect(html).not.toContain("data-lobby-enter");
   });
+
 });

@@ -42,7 +42,7 @@ import {
 import type { PublicCustomer } from "@/types/customer";
 
 export type ContestArenaPageProps = {
-  searchParams: Promise<{ season?: string; category?: string; track?: string; vue?: string; mode?: string; ouverture?: string; entry?: string; edit?: string; view?: string }>;
+  searchParams: Promise<{ season?: string; category?: string; track?: string; vue?: string; mode?: string; ouverture?: string; entry?: string; edit?: string; view?: string; "premiere-culture"?: string }>;
   surface?: "arena" | "notebook" | "notebook-ranking";
 };
 
@@ -132,6 +132,11 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
       const initialMode = requested === "carnet" || requested === "classement" ? requested : "jouer";
       return <ContestArenaHub activitiesLocked initialMode={initialMode} initialNotice={params.ouverture === "1" || !!params.vue || surface !== "arena"} />;
     }
+    // The public discovery hub is local. Real activities and their APIs keep
+    // their account/beta checks below and in their own routes.
+    if (surface === "arena" && !params.vue && isContestFeatureEnabledServer()) {
+      return <ContestArenaHub key={session?.customerId ?? "guest"} personalSummaryEnabled={!!session && canCustomerAccessContestFeatureServer(session.customer, { adminAuthorized })} />;
+    }
     if (!canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
       if (isContestFeatureEnabledServer() && isContestBetaAccessRestrictedServer() && !session && !adminAuthorized) {
         const basePath = surface === "arena"
@@ -154,9 +159,6 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
       notFound();
     }
 
-    if (surface === "arena" && !params.vue) {
-      return <ContestArenaHub />;
-    }
     if (surface === "arena" && arenaView === "carnet") {
       redirect("/arene/carnet/regular");
     }

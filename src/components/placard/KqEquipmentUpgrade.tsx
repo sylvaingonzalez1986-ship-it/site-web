@@ -4,11 +4,13 @@ import { useRef, useState } from "react";
 import { ArrowUp, Check, LoaderCircle, Sparkles } from "lucide-react";
 import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentImpactLabels, getKqEquipmentUpgradeCost, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
 import styles from "./KqEquipmentUpgrade.module.css";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 
 export function KqEquipmentUpgrade({ code, level, cashCents, productionUnits = 1, tentNumber = 1, disabled, onUpdated }: {
   code: string; level: number; cashCents: number; productionUnits?: number; tentNumber?: number; disabled?: boolean;
   onUpdated: () => void | Promise<void>;
 }) {
+  const api = useKqTutorialApi();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -32,7 +34,7 @@ export function KqEquipmentUpgrade({ code, level, cashCents, productionUnits = 1
     setPending(true); setError(""); setNotice("");
     if (request.current?.level !== level || request.current.units !== productionUnits || request.current.tentNumber !== targetTent) request.current = { level, units: productionUnits, tentNumber: targetTent, key: crypto.randomUUID() };
     try {
-      const response = await fetch("/api/arena/placard/equipment", {
+      const response = await api.request("/api/arena/placard/equipment", {
         method: "PATCH", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "upgrade", tentNumber: targetTent, equipmentCode: code, expectedLevel: level, expectedUnits: productionUnits, requestKey: request.current.key }),
       });
@@ -40,7 +42,7 @@ export function KqEquipmentUpgrade({ code, level, cashCents, productionUnits = 1
       if (!response.ok) throw new Error(result.error || "Amélioration impossible.");
       setCompletedLevel(result.level);
       setNotice(`Niveau ${result.level} atteint${result.level === 5 || result.level === 10 ? " · nouvelle apparence débloquée !" : " !"}`);
-      window.dispatchEvent(new Event("kq:equipment-updated"));
+      api.notify("kq:equipment-updated");
       await onUpdated();
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Amélioration impossible.");

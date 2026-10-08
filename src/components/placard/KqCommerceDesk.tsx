@@ -10,6 +10,7 @@ import { KQ_MARKET_ROUTES, getKqMarketReputationRule, type KqMarketRouteCode } f
 import { KqCommerceOverview } from "./KqCommerceOverview";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import styles from "./KqCommerceDesk.module.css";
+import { useKqTutorialApi, type KqTutorialApi } from "./KqTutorialApiContext";
 const grams = (units: number) => `${(units / 10).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g`;
 const productName = (route: string) => route === "raw" ? "Fleurs entières" : KQ_MARKET_ROUTES.find(r => r.code === route)?.name ?? route;
 const qualityScore = (score: number) => `${score.toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}/10`;
@@ -37,8 +38,8 @@ function ChannelQuality({ stock, channel }: { stock: KqCommerceStock; channel: K
     <span>{minimum === null ? "Toute qualité acceptée" : stock.route === "biomass" ? "Biomasse non acceptée" : `${!accepted ? "Qualité refusée" : risky ? channel === "cbd-shop" ? "Partenaires à risque" : "Clients à risque" : "Qualité suffisante"} · min. ${qualityScore(minimum)}`}</span>
   </span>;
 }
-async function request<T>(body?: Record<string, unknown>, shopOnly = false): Promise<T> {
-  const response = await fetch(`/api/arena/placard/commerce${shopOnly ? "?shop=1" : ""}`, body ? { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) } : { cache: "no-store" });
+async function request<T>(api: KqTutorialApi, body?: Record<string, unknown>, shopOnly = false): Promise<T> {
+  const response = await api.request(`/api/arena/placard/commerce${shopOnly ? "?shop=1" : ""}`, body ? { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) } : { cache: "no-store" });
   const payload = await response.json();
   if (!response.ok) throw new Error(payload.error ?? "Le comptoir ne répond pas. Réessaie.");
   return payload as T;
@@ -80,14 +81,15 @@ function Confirm({ confirmation, busy, error, now, onRequote, onClose, onConfirm
 }
 
 export function KqCommerceComputer() {
+  const api = useKqTutorialApi();
   const [data, setData] = useState<KqCommerceSnapshot | null>(null);
   const [error, setError] = useState(""); const [busy, setBusy] = useState(false); const [confirm, setConfirm] = useState(false);
   const key = useRef("");
-  const load = useCallback(() => { void request<KqCommerceSnapshot>(undefined, true).then(setData).catch(e => setError(e.message)); }, []);
+  const load = useCallback(() => { void request<KqCommerceSnapshot>(api, undefined, true).then(setData).catch(e => setError(e.message)); }, [api]);
   useEffect(() => { load(); }, [load]);
   async function buy() {
     setBusy(true); setError("");
-    try { await request({ action: "buy-computer", requestKey: key.current }); setConfirm(false); load(); window.dispatchEvent(new Event("kq:equipment-updated")); }
+    try { await request(api, { action: "buy-computer", requestKey: key.current }); setConfirm(false); load(); api.notify("kq:equipment-updated"); }
     catch (e) { setError(e instanceof Error ? e.message : "Achat indisponible."); } finally { setBusy(false); }
   }
   return <section className={styles.computer} aria-label="Matériel de vente en ligne">
@@ -107,6 +109,7 @@ const channelTradeoffs: Record<KqSalesChannel, { advantage: string; drawback: st
 };
 
 export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (equipmentCode?: string) => void; onOpenTreasury?: () => void }) {
+  const api = useKqTutorialApi();
   const heading = useRef<HTMLHeadingElement>(null);
   const clock = useRef<{ server: number; received: number } | null>(null);
   const inFlight = useRef<Promise<void> | null>(null);
@@ -121,7 +124,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
     if (inFlight.current) return inFlight.current;
     const pending = (async () => {
       try {
-        const result = await request<KqCommerceSnapshot>();
+        const result = await request<KqCommerceSnapshot>(api);
         if (result.business || result.demand) {
           const server = Date.parse(result.business?.serverNow ?? result.demand!.serverNow);
           clock.current = { server, received: performance.now() }; setLiveNow(server);
@@ -133,7 +136,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
     inFlight.current = pending;
     void pending.finally(() => { if (inFlight.current === pending) inFlight.current = null; });
     return pending;
-  }, []);
+  }, [api]);
   useEffect(() => {
     const tick = () => {
       if (!document.hidden && clock.current) setLiveNow(clock.current.server + Math.max(0, performance.now() - clock.current.received));
@@ -150,7 +153,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
       refreshedPeriod.current = reset; void load();
     }
   }, [data?.demand?.growthResetsAt, data?.business?.nextEventAt, liveNow, busy, confirmation, load]);
-  useEffect(() => { void load(); const handler = () => { void load(); }; window.addEventListener("kq:equipment-updated", handler); return () => window.removeEventListener("kq:equipment-updated", handler); }, [load]);
+  useEffect(() => { void load(); return api.subscribe(["kq:equipment-updated"], () => { void load(); }); }, [load, api]);
   const stock = data?.stocks.find(s => s.id === selectedId);
   const raw = data?.rawLots.find(l => `raw:${l.flowerId}` === selectedId);
   const saleComplete = receipt?.action === "sell";
@@ -174,7 +177,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
     if (!stock || !offer || !channel || offer.reason || inputInvalid) return;
     setBusy(true); setError("");
     try {
-      const prepared = await request<PreparedOffer>({ action: "quote", stockId: stock.id, channel, policy, units: offer.units });
+      const prepared = await request<PreparedOffer>(api, { action: "quote", stockId: stock.id, channel, policy, units: offer.units });
       if (prepared.offer.reason || prepared.offer.units <= 0) throw new Error(prepared.offer.reason ?? "Aucune commande disponible.");
       setConfirmation({ title: `Vendre · ${KQ_CHANNELS[channel].name}`, description: `${stock.name} · ${productName(stock.route)} · Qualité ${qualityScore(stock.juryScore)}. ${grams(stock.remainingUnits - prepared.offer.units)} resteront en stock.`, offer: prepared,
         body: { action: "sell", quoteId: prepared.quoteId, expectedPayoutCents: prepared.offer.payoutCents, requestKey: createClientRequestKey() } });
@@ -184,7 +187,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
     if (!confirmation || busy) return;
     setBusy(true); setError("");
     try {
-      const result = await request<KqCommerceReceipt>(confirmation.body);
+      const result = await request<KqCommerceReceipt>(api, confirmation.body);
       // Use the server quote's starting clientele and the committed receipt's final value.
       // Keeping the quote through retries avoids attributing a later sale's gains to this one.
       const quoted = confirmation.offer?.offer;
@@ -194,7 +197,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
         ? { satisfaction, clientsDelta: result.clientsAfter! - clientsBefore! } : undefined;
       setConfirmation(null); setReceipt({ ...result, feedback }); setQuantity("");
       if (result.action === "prepare" && result.stockId) { setSelectedId(result.stockId); setChannel(null); }
-      await load(); window.dispatchEvent(new Event("kq:equipment-updated"));
+      await load(); api.notify("kq:equipment-updated");
     } catch (e) { setError(e instanceof Error ? e.message : "Opération indisponible."); } finally { setBusy(false); }
   }
   const title = saleComplete ? "Vente terminée" : stock ? channel ? KQ_CHANNELS[channel].name : "Choisis ton circuit" : raw ? "Transforme ton lot" : "Choisis ton lot";

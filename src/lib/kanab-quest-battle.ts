@@ -45,7 +45,15 @@ export type KqBattle = {
 const roundTenth = (value: number) => Math.round(value * 10) / 10;
 const clampStat = (value: number) => Math.max(35, Math.min(99, roundTenth(value)));
 const outcomeValue: Record<KqOutcome, number> = { critical: 4, success: 3, fragile: 2, failure: 0 };
-type FlowerStat = keyof KqFlowerCard["stats"];
+export type KqFlowerStat = keyof KqFlowerCard["stats"];
+type FlowerStat = KqFlowerStat;
+
+export const KQ_JURY_SCORING = {
+  primaryWeight: 0.65,
+  secondaryWeight: 0.35,
+  adjustmentMin: -3,
+  adjustmentMax: 3,
+} as const;
 
 const JURY_SCENARIOS: Array<{ code: string; group: number; label: string; explanation: string; primary: FlowerStat; secondary: FlowerStat }> = [
   { code: "visual-impact", group: 0, label: "Impact visuel", explanation: "Le jury compare l’apparence et la vigueur de chaque fleur.", primary: "appearance", secondary: "vigor" },
@@ -67,6 +75,15 @@ const JURY_SCENARIOS: Array<{ code: string; group: number; label: string; explan
 
 export const KQ_JURY_SCENARIO_COUNT = JURY_SCENARIOS.length;
 
+/** Shared by the resolver and verdict explanations; unknown historical codes stay unknown. */
+export function getKqJuryScoringCriteria(code: string): Array<{ stat: KqFlowerStat; weight: number }> | null {
+  const scenario = JURY_SCENARIOS.find(item => item.code === code);
+  return scenario ? [
+    { stat: scenario.primary, weight: KQ_JURY_SCORING.primaryWeight },
+    { stat: scenario.secondary, weight: KQ_JURY_SCORING.secondaryWeight },
+  ] : null;
+}
+
 export function getKqJuryProgram(seed: number, recentScenarioCodes: string[] = []) {
   return [0, 1, 2].map((group) => {
     const pool = JURY_SCENARIOS.filter((scenario) => scenario.group === group);
@@ -79,7 +96,7 @@ export function getKqJuryProgram(seed: number, recentScenarioCodes: string[] = [
 
 function statNoise(seed: number, salt: number) {
   const x = Math.sin(seed * 12.9898 + salt * 78.233) * 43758.5453;
-  return Math.floor((x - Math.floor(x)) * 7) - 3;
+  return Math.floor((x - Math.floor(x)) * (KQ_JURY_SCORING.adjustmentMax - KQ_JURY_SCORING.adjustmentMin + 1)) + KQ_JURY_SCORING.adjustmentMin;
 }
 
 export function resolveKqJuryWinner(playerScore: number, opponentScore: number, seed: number, roundIndex: number) {
@@ -160,8 +177,8 @@ export function resolveKqBattle(battle: KqBattle, seed: number, verdictAt = new 
   const program = getKqJuryProgram(seed, recentScenarioCodes);
   const definitions = program.map((entry) => JURY_SCENARIOS.find((scenario) => scenario.code === entry.code)!);
   const rounds = definitions.map((round, index) => {
-    const playerBase = player[round.primary] * 0.65 + player[round.secondary] * 0.35;
-    const opponentBase = opponent[round.primary] * 0.65 + opponent[round.secondary] * 0.35;
+    const playerBase = player[round.primary] * KQ_JURY_SCORING.primaryWeight + player[round.secondary] * KQ_JURY_SCORING.secondaryWeight;
+    const opponentBase = opponent[round.primary] * KQ_JURY_SCORING.primaryWeight + opponent[round.secondary] * KQ_JURY_SCORING.secondaryWeight;
     const playerScore = roundTenth(playerBase + statNoise(seed, 10 + index));
     const opponentScore = roundTenth(opponentBase + statNoise(seed, 20 + index));
     const decision = resolveKqJuryWinner(playerScore, opponentScore, seed, index);

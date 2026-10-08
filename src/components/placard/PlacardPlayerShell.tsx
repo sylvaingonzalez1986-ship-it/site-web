@@ -218,6 +218,7 @@ export function PlacardPlayerShell() {
             viewMode={view === "arena" ? "arena" : "game"}
             onOpenArena={() => openView("arena")}
             onOpenMarket={() => openView("market")}
+            onOpenGame={() => openView("game")}
           />
         )}
       </div>

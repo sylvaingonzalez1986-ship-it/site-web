@@ -16,6 +16,14 @@ export function ArenaPrelaunchCharacter() {
   const [error, setError] = useState("");
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
+    const updateProfile = (event: Event) => {
+      const saved = parseChanvrierProfile((event as CustomEvent).detail);
+      if (saved) setProfile(saved);
+    };
+    window.addEventListener("arena:profile-updated", updateProfile);
+    return () => window.removeEventListener("arena:profile-updated", updateProfile);
+  }, []);
+  useEffect(() => {
     if (authLoading) return;
     const controller = new AbortController();
     async function load() {

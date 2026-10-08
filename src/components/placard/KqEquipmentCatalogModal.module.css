@@ -96,3 +96,5 @@
 .checkoutError{display:flex;align-items:flex-start;gap:.5rem;padding:.75rem;border:2px solid #8d2f1b;background:#ffd9cc;color:#8d2f1b;font-size:.85rem;font-weight:800}.checkoutError svg{flex-shrink:0;width:20px}
 .errorNotice,.statusNotice{position:relative;z-index:2;top:auto;left:auto;flex-shrink:0;width:auto;margin:8px 22px 0;transform:none}
 @media(max-width:700px){.errorNotice,.statusNotice{margin:8px 12px 0}}
+.catalog[data-embedded]{position:relative;inset:auto;z-index:auto;width:100%;height:min(820px,calc(100dvh - 180px));min-height:560px;isolation:isolate}
+.catalog[data-embedded] button{min-height:44px}

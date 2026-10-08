@@ -4,7 +4,9 @@ import { Wrench } from "lucide-react";
 import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { formatKqCash, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
 import styles from "./KqEquipmentUpgrade.module.css";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 export function KqMachineMaintenance({ code, condition, cashCents, tentNumber = 1, productionUnits = 1, disabled, onUpdated }: { code: string; tentNumber?: number; productionUnits?: number; condition: KqMachineCondition; cashCents: number; disabled?: boolean; onUpdated: () => void }) {
+  const api = useKqTutorialApi();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const request = useRef<{ version: number; tentNumber: number; key: string } | null>(null);
@@ -15,11 +17,11 @@ export function KqMachineMaintenance({ code, condition, cashCents, tentNumber = 
     locked.current = true; setBusy(true); setError("");
     if (request.current?.version !== condition.version || request.current.tentNumber !== targetTent) request.current = { version: condition.version, tentNumber: targetTent, key: crypto.randomUUID() };
     try {
-      const response = await fetch("/api/arena/placard/equipment", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+      const response = await api.request("/api/arena/placard/equipment", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         action: "repair", tentNumber: targetTent, expectedUnits: productionUnits, equipmentCode: code, requestKey: request.current.key, expectedVersion: condition.version, expectedCostCents: condition.repairCents,
       }), signal: AbortSignal.timeout(15000) });
       const body = await response.json(); if (!response.ok) throw new Error(body.error || "Réparation impossible.");
-      window.dispatchEvent(new Event("kq:equipment-updated")); onUpdated();
+      api.notify("kq:equipment-updated"); onUpdated();
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Réparation impossible."); }
     finally { locked.current = false; setBusy(false); }
   };

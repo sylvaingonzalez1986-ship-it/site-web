@@ -6,6 +6,7 @@ import type { KqBattle } from "@/lib/kanab-quest-battle";
 import type { KqRankProfile } from "@/lib/kanab-quest-ranking";
 import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
 import { summarizeKqTentEquipment } from "./kanab-quest-production";
+import { isKqStageDecision } from "./kanab-quest-culture-analysis";
 
 type SaveEnvelope<T> = { version: 1; payload: T };
 const KQ_LEGACY_HAND_SIZE = 10;
@@ -31,6 +32,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (!isFiniteNumber(state.seed) || !isFiniteNumber(state.stageIndex) || state.stageIndex < 0 || state.stageIndex >= KQ_STAGES.length) return null;
     if (!phases.includes(String(state.phase)) || !isFiniteNumber(state.xp) || state.xp < 0 || !isFiniteNumber(state.quality)) return null;
     if (state.cultureDead !== undefined && typeof state.cultureDead !== "boolean") return null;
+    if (state.firstCultureRescue !== undefined && typeof state.firstCultureRescue !== "boolean") return null;
     const cultureDead = state.cultureDead === true;
     const requestedUnits = isRecord(state.equipment) ? state.equipment.productionUnits : undefined;
     if (requestedUnits !== undefined && (typeof requestedUnits !== "number" || getKqProductionUnits(requestedUnits) !== requestedUnits)) return null;
@@ -127,13 +129,26 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (!Array.isArray(state.history) || state.history.length > KQ_STAGES.length || !Array.isArray(state.traits) || !Array.isArray(state.combos)) return null;
     if (state.history.some((entry) => {
       if (!isRecord(entry)) return true;
+      if (entry.rescued !== undefined && typeof entry.rescued !== "boolean") return true;
       if (entry.qualityDelta !== undefined && (!Number.isInteger(entry.qualityDelta) || Number(entry.qualityDelta) < -1 || Number(entry.qualityDelta) > 6)) return true;
       if (entry.xpGain !== undefined && (!Number.isInteger(entry.xpGain) || Number(entry.xpGain) < 0 || Number(entry.xpGain) > 20)) return true;
       if (entry.harvestLossPercent !== undefined && (!Number.isInteger(entry.harvestLossPercent) || Number(entry.harvestLossPercent) < 0 || Number(entry.harvestLossPercent) > 35)) return true;
       return false;
     })) return null;
+    let zeroSuccessStages = 0;
+    let rescuedStages = 0;
+    for (const entry of state.history) {
+      if (entry.total === 0) zeroSuccessStages += 1;
+      if (entry.rescued === true) {
+        rescuedStages += 1;
+        if (state.firstCultureRescue !== true || entry.total !== 0 || zeroSuccessStages !== 2 || rescuedStages > 1) return null;
+      }
+    }
+    if (state.firstCultureRescue === true && zeroSuccessStages >= 2 && rescuedStages !== 1) return null;
+    const unrescuedZeroStages = zeroSuccessStages - rescuedStages;
+    if (state.firstCultureRescue === true && !cultureDead && unrescuedZeroStages >= 2) return null;
     if (!Array.isArray(state.usedCards) || !Array.isArray(state.playedThisStage) || state.usedCards.some((code) => typeof code !== "string" || !knownCards.has(code)) || state.playedThisStage.some((code) => typeof code !== "string" || !knownCards.has(code))) return null;
-    if (cultureDead && state.history.filter((entry) => isRecord(entry) && entry.total === 0).length < 2) return null;
+    if (cultureDead && unrescuedZeroStages < 2) return null;
     const expectedHistoryLength = cultureDead ? Number(state.stageIndex) + 1
       : state.phase === "complete" ? KQ_STAGES.length : Number(state.stageIndex) + (state.phase === "resolved" ? 1 : 0);
     if (state.history.length !== expectedHistoryLength) return null;
@@ -163,6 +178,13 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (typeof state.preparationPlayed !== "boolean" || typeof state.reactionPlayed !== "boolean") return null;
     return {
       ...state,
+      // A damaged optional explanation must not erase an otherwise valid culture.
+      history: state.history.map(entry => {
+        if (entry.decision === undefined || isKqStageDecision(entry.decision)) return entry;
+        const { decision: _decision, ...receipt } = entry;
+        void _decision;
+        return receipt;
+      }),
       deckCodes: state.deckCodes.filter((code) => !isKqRetiredSubstrate(String(code))),
       collectionCodes: state.collectionCodes.filter((code) => !isKqRetiredSubstrate(String(code))),
       playedThisStage: state.playedThisStage.filter((code) => !isKqRetiredSubstrate(String(code))),
@@ -225,6 +247,7 @@ export function parseKqRankSave(raw: string | null): KqRankProfile | null {
 
 export function createKqIntegrityCode(state: KqGameState) {
   const canonical = JSON.stringify({
+    ...(state.firstCultureRescue === true ? { firstCultureRescue: true } : {}),
     ...(state.domiciliation ? { domiciliation: state.domiciliation } : {}),
     seed: state.seed, varietyCode: state.varietyCode, deckCodes: state.deckCodes, handCodes: getKqHandCodes(state), heritageReserveCodes: state.heritageReserveCodes ?? [], handRedrawsUsed: state.handRedrawsUsed ?? 0, heritageCode: state.heritageCode ?? null, heritageName: state.heritageName ?? null, heritageTiming: state.heritageTiming ?? null, heritageEffect: state.heritageEffect ?? null, heritageProducerName: state.heritageProducerName ?? null, heritageImageUrl: state.heritageImageUrl ?? null, heritageUsed: state.heritageUsed ?? false, situationCodes: state.situationCodes,
     usedCards: state.usedCards, quality: state.quality, xp: state.xp, pressure: state.pressure, traits: state.traits, combos: state.combos, bonusDie: state.bonusDie ?? null, effectNotices: state.effectNotices ?? [],
@@ -234,7 +257,7 @@ export function createKqIntegrityCode(state: KqGameState) {
     ...(state.equipment?.scope ? { equipmentScope: state.equipment.scope } : {}),
     equipmentCodes: state.equipment?.codes ?? [], equipmentQualityBonus: state.equipmentQualityBonus ?? 0, harvestGrams: state.harvestGrams ?? null,
     powerOutage: state.powerOutage ?? false, harvestLossPercent: state.harvestLossPercent ?? 0,
-    history: state.history.map((entry) => ({ stage: entry.stage, dice: entry.dice, total: entry.total, target: entry.target, outcome: entry.outcome, trait: entry.trait, dangers: entry.dangers, sparks: entry.sparks, pressureAfter: entry.pressureAfter, qualityDelta: entry.qualityDelta, xpGain: entry.xpGain, harvestLossPercent: entry.harvestLossPercent })),
+    history: state.history.map((entry) => ({ stage: entry.stage, dice: entry.dice, total: entry.total, target: entry.target, outcome: entry.outcome, trait: entry.trait, dangers: entry.dangers, sparks: entry.sparks, pressureAfter: entry.pressureAfter, qualityDelta: entry.qualityDelta, xpGain: entry.xpGain, harvestLossPercent: entry.harvestLossPercent, ...(entry.rescued === true ? { rescued: true } : {}), ...(entry.decision ? { decision: entry.decision } : {}) })),
   });
   let hash = 2166136261;
   for (let index = 0; index < canonical.length; index += 1) {

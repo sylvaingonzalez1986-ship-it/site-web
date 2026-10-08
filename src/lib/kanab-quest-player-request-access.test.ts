@@ -1,11 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const mocks = vi.hoisted(() => ({ session: vi.fn(), activeRun: vi.fn(), startRun: vi.fn(), limit: vi.fn() }));
+const mocks = vi.hoisted(() => ({ session: vi.fn(), beta: vi.fn(), activeRun: vi.fn(), startRun: vi.fn(), limit: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
+vi.mock("@/lib/supabase/customer-backend", () => ({ loadContestBetaTesterEnabled: mocks.beta }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({ getKqPlayerActiveRun: mocks.activeRun, startKqPlayerRun: mocks.startRun }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.limit, logRateLimitRejection: vi.fn() }));
 
-import { isKqPlayerRequestEnabled } from "./kanab-quest-player-request-access";
+import { isKqPlayerRequestEnabled, isKqPlayerIdentityEnabled } from "./kanab-quest-player-request-access";
 import { isKqPublicPlayerApiEnabled } from "./kanab-quest-player-access";
 import { ADMIN_ALLOWED_EMAIL } from "./admin-allowlist";
 import { GET, POST } from "@/app/api/arena/placard/runs/route";
@@ -23,6 +24,7 @@ beforeEach(() => {
   vi.stubEnv("KQ_PLAYER_API_LIVE", "false");
   vi.stubEnv("KQ_LAUNCH_DOSSIER_JSON", "");
   mocks.session.mockResolvedValue(null);
+  mocks.beta.mockResolvedValue(false);
   mocks.activeRun.mockResolvedValue(null);
   mocks.startRun.mockResolvedValue({ runId: "new-run" });
   mocks.limit.mockResolvedValue({ allowed: true });
@@ -30,6 +32,21 @@ beforeEach(() => {
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
 
 describe("private production Placard access", () => {
+  it("checks a read-only summary from verified identity without hydrating a profile", async () => {
+    const identity = player("beta@example.test");
+    mocks.beta.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
+    expect(await isKqPlayerIdentityEnabled(identity)).toBe(true);
+    expect(await isKqPlayerIdentityEnabled(identity)).toBe(false);
+    expect(mocks.beta).toHaveBeenCalledWith(identity.customerId);
+    expect(mocks.session).not.toHaveBeenCalled();
+  });
+  it("keeps read-only identity access closed to guests and disabled modules", async () => {
+    expect(await isKqPlayerIdentityEnabled(null)).toBe(false);
+    vi.stubEnv("CONTEST_FEATURE_ENABLED", "false");
+    expect(await isKqPlayerIdentityEnabled(player(ADMIN_ALLOWED_EMAIL))).toBe(false);
+    expect(mocks.beta).not.toHaveBeenCalled();
+    expect(mocks.session).not.toHaveBeenCalled();
+  });
   it.each([
     ["admin", ADMIN_ALLOWED_EMAIL, false],
     ["beta", "beta@example.test", true],

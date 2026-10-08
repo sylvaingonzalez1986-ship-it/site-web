@@ -25,7 +25,7 @@ const modules={
       window.__sync=async values=>{setValues(values);return ref.current.sync(values);};
       window.__reveal=()=>{setValidated(true);return ref.current.reveal(values);};
       window.__fallback=()=>{setActive(false);setValidated(true);};
-      return React.createElement('main',{className:styles.page,style:{minHeight:'100vh',padding:16}},
+      return React.createElement('main',{className:styles.page,'data-culture-play':true,style:{minHeight:'100vh',padding:16}},
         React.createElement('section',{className:styles.diceBoard,style:{maxWidth:660,margin:'auto'}},
           React.createElement('span',{className:styles.buddyName},'Le Placard'),React.createElement('h2',null,'À toi de lancer'),
           React.createElement('div',{className:styles.diceTray,'data-phase':'rolled','data-physics':active||undefined,'data-motion-phase':phase,'data-rolling':phase!=='idle'||undefined},

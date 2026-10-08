@@ -17,6 +17,7 @@ import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { KqWarehouseScene } from "./KqWarehouseScene";
 import { KqWarehouseOverview } from "./KqWarehouseOverview";
 import styles from "./KqWarehouseInventory.module.css";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 
 const WAREHOUSE_GROUPS: readonly { code: string; label: string; slots: readonly KqEquipmentSlot[] }[] = [
   { code: "grow", label: "Cultiver", slots: ["tent", "lighting", "air", "climate-controller"] },
@@ -48,6 +49,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   onClose:()=>void;onOpenShop:(equipmentCode?:string)=>void;onRetry:()=>void;
   initialSlot?:KqEquipmentSlot;
 }) {
+  const api = useKqTutorialApi();
   const closeButton=useRef<HTMLButtonElement>(null);
   const panel=useRef<HTMLElement>(null);
   const workshop=useRef<HTMLDivElement>(null);
@@ -91,13 +93,14 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   const suggestion=KQ_EQUIPMENT_CATALOG.find(item=>item.slot===slot&&item.purchasable&&!ownedCodes.includes(item.code));
   const installedSlots=new Set(equipment.filter(item=>activeCodes.includes(item.code)).map(item=>item.slot));
   const selectedGroup=WAREHOUSE_GROUPS.find(group=>group.slots.includes(slot))??WAREHOUSE_GROUPS[0];
-  useBodyScrollLock(true);
+  useBodyScrollLock(!api.isTutorial);
   useEffect(()=>{const previous=document.activeElement instanceof HTMLElement?document.activeElement:null;closeButton.current?.focus({preventScroll:true});return()=>{if(previous?.isConnected)previous.focus({preventScroll:true});};},[]);
   useEffect(()=>{if(viewChanged.current)workshop.current?.querySelector<HTMLButtonElement>("[data-warehouse-view-toggle]")?.focus({preventScroll:true});},[listView]);
   useEffect(()=>{
+    if(api.isTutorial)return;
     const escape=(event:KeyboardEvent)=>{if(event.key==="Escape"&&!event.defaultPrevented)onClose();};
     document.addEventListener("keydown",escape);return()=>document.removeEventListener("keydown",escape);
-  },[onClose]);
+  },[onClose,api]);
   const select=(next:KqEquipmentSlot)=>{
     updateTent(tentNumber,{slot:next,selectedCode:null,error:""});
     if(isKqSharedEquipmentSlot(next))updateTent(0,{error:""});
@@ -136,16 +139,17 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
     if(locks.current.has(targetKey)||loading||loadError||productionPending||activeCodes.includes(item.code)||!purchasedCodes.includes(item.code)||cultureWear[item.code]?.due)return;
     locks.current.add(targetKey);updateTent(targetKey,{pending:item.code,error:"",notice:""});
     try {
-      const response=await fetch("/api/arena/placard/equipment",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({equipmentCode:item.code,tentNumber:targetTent,expectedUnits:units})});
+      const response=await api.request("/api/arena/placard/equipment",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({equipmentCode:item.code,tentNumber:targetTent,expectedUnits:units})});
       const body=await response.json();if(!response.ok)throw new Error(body.error||"Installation impossible.");
       updateTent(targetKey,{override:{baseCodes:shared?sharedSource:equippedCodes,codes:[...(shared?sharedCodes:activeCodes).filter(code=>getKqEquipmentAtLevel(code)?.slot!==item.slot),item.code]},notice:shared?`${item.name} installé dans l’atelier commun, disponible pour toutes les tentes.`:`${item.name} installé dans la tente ${targetTent}. Ses bonus seront pris en compte à la prochaine culture.`});
-      window.dispatchEvent(new Event("kq:equipment-updated"));
+      api.notify("kq:equipment-updated");
     } catch(reason){updateTent(targetKey,{error:reason instanceof Error?reason.message:"Installation impossible."});}
     finally{locks.current.delete(targetKey);updateTent(targetKey,{pending:null});}
   };
-  return <div className={styles.overlay}>
-    <button type="button" tabIndex={-1} className={styles.backdrop} onClick={onClose} aria-label="Fermer l’entrepôt"/>
-    <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="equipment-inventory-title" data-arena-tour-surface="warehouse" onKeyDown={event=>{
+  return <div className={styles.overlay} data-embedded={api.isTutorial||undefined}>
+    {!api.isTutorial?<button type="button" tabIndex={-1} className={styles.backdrop} onClick={onClose} aria-label="Fermer l’entrepôt"/>:null}
+    <section className={styles.dialog} role={api.isTutorial?"region":"dialog"} aria-modal={api.isTutorial?undefined:true} aria-labelledby="equipment-inventory-title" data-arena-tour-surface="warehouse" onKeyDown={event=>{
+      if(api.isTutorial)return;
       if(event.key==="Escape"){event.preventDefault();event.stopPropagation();onClose();return;}
       if(event.key!=="Tab")return;
       const controls=Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),summary,[tabindex="0"]')).filter(el=>el.getClientRects().length>0);

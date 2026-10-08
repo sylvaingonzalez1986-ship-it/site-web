@@ -1,5 +1,7 @@
 "use client";
 
+import { useKqTutorialApi } from "./KqTutorialApiContext";
+
 import { useEffect, useRef, useState } from "react";
 import { BadgeCheck, ChevronDown, Landmark, RefreshCw, TrendingDown, TrendingUp } from "lucide-react";
 import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, parseKqBankEuros, KQ_BANK_INSTALLMENT_COUNT, KQ_BANK_INSTALLMENT_GAME_DAYS, KQ_BANK_SCENARIOS, KQ_BANK_TIERS, type KqBankCommand, type KqBankSnapshot } from "@/lib/kanab-quest-bank";
@@ -11,6 +13,7 @@ const date = (value: string) => new Date(value).toLocaleString("fr-FR", { day: "
 type Draft = Omit<Extract<KqBankCommand, { action: "borrow" }>, "requestKey"> | Omit<Extract<KqBankCommand, { action: "repay" }>, "requestKey">;
 
 export function KqBankLoans() {
+  const api = useKqTutorialApi();
   const [data, setData] = useState<KqBankSnapshot | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -28,29 +31,29 @@ export function KqBankLoans() {
     const version = mutationVersion.current;
     async function load() {
       try {
-        const response = await fetch("/api/arena/placard/bank", { cache: "no-store", signal: controller.signal });
+        const response = await api.request("/api/arena/placard/bank", { cache: "no-store", signal: controller.signal });
         const value: unknown = await response.json();
         if (!response.ok || !isKqBankSnapshot(value)) throw new Error("Le banquier ne peut pas ouvrir ton dossier pour le moment.");
         if (!controller.signal.aborted && version === mutationVersion.current && !inFlight.current) {
           setData(value); setError("");
           if (value.autoPaidCents > 0) {
             setNotice(`${euros(value.autoPaidCents)} prélevés pour les échéances de ton prêt.`);
-            window.dispatchEvent(new CustomEvent("kq:equipment-updated"));
-            window.dispatchEvent(new CustomEvent("kq:treasury-updated"));
+            api.notify("kq:equipment-updated");
+            api.notify("kq:treasury-updated");
           }
         }
       } catch (cause) { if (!controller.signal.aborted && version === mutationVersion.current) setError(cause instanceof Error ? cause.message : "Guichet indisponible."); }
     }
     void load();
     return () => controller.abort();
-  }, [refresh]);
+  }, [api, refresh]);
   useEffect(() => {
     const update = () => { if (!document.hidden && !inFlight.current) setRefresh(value => value + 1); };
     const timer = window.setInterval(update, 60_000);
-    window.addEventListener("kq:equipment-updated", update);
+    const unsubscribe_kq_equipment_updated = api.subscribe(["kq:equipment-updated"], update);
     document.addEventListener("visibilitychange", update);
-    return () => { window.clearInterval(timer); window.removeEventListener("kq:equipment-updated", update); document.removeEventListener("visibilitychange", update); };
-  }, []);
+    return () => { window.clearInterval(timer); unsubscribe_kq_equipment_updated(); document.removeEventListener("visibilitychange", update); };
+  }, [api]);
   const amountCents = parseKqBankEuros(amount) ?? 0;
   const offer = data?.offer;
   const validAmount = !!offer && amountCents >= offer.minCents && amountCents <= offer.maxCents;
@@ -64,7 +67,7 @@ export function KqBankLoans() {
     const fingerprint = JSON.stringify(draft);
     if (retry.current?.fingerprint !== fingerprint) retry.current = { fingerprint, command: { ...draft, requestKey: crypto.randomUUID() } };
     try {
-      const response = await fetch("/api/arena/placard/bank", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(retry.current.command) });
+      const response = await api.request("/api/arena/placard/bank", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(retry.current.command) });
       const value = await response.json();
       if (!response.ok) {
         if (response.status < 500) retry.current = null;
@@ -74,8 +77,8 @@ export function KqBankLoans() {
       setData(value); retry.current = null;
       setNotice(draft.action === "borrow" ? "Contrat signé. Le capital est disponible dans ta trésorerie." : "Prêt soldé. Ton dossier est à jour.");
       dialog.current?.close(); setDraft(null);
-      window.dispatchEvent(new CustomEvent("kq:equipment-updated"));
-      window.dispatchEvent(new CustomEvent("kq:treasury-updated"));
+      api.notify("kq:equipment-updated");
+      api.notify("kq:treasury-updated");
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Connexion interrompue. Réessaie la même opération."); }
     finally { inFlight.current = false; setBusy(false); }
   }

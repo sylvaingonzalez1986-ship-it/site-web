@@ -10,6 +10,8 @@ import { openKqSupportBooster } from "@/lib/kanab-quest-booster";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import { KqEquipmentCatalogModal } from "./KqEquipmentCatalogModal";
 import styles from "./KqSupportBoosterShop.module.css";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { KqSupportPackReveal, type KqOpenedSupportCard } from "./KqSupportPackOpening";
 
 type ShopPayload = {
   collectionActive: boolean;
@@ -19,7 +21,7 @@ type ShopPayload = {
   welcomeClaimed: boolean;
 };
 
-type OpenedCard = { code: string; name: string; rarity: string; imageUrl?: string };
+type OpenedCard = KqOpenedSupportCard;
 type ShopEntitlement = ShopPayload["availableEntitlements"][number];
 
 export function splitShopEntitlements(entitlements: ShopEntitlement[]) {
@@ -46,6 +48,7 @@ export function KqSupportBoosterShop({
   autoClaimWelcome?: boolean;
   onOpenWorkshop?: (equipmentCode?:string)=>void;
 } = {}) {
+  const api = useKqTutorialApi();
   const dialogRef = useRef<HTMLElement>(null);
   const actionLock = useRef(false);
   const [shop, setShop] = useState<ShopPayload | null>(null);
@@ -96,21 +99,21 @@ export function KqSupportBoosterShop({
   }, [openedCards.length]);
 
   const refresh = useCallback(async () => {
-    const response = await fetch("/api/arena/placard/boosters", { cache: "no-store" });
+    const response = await api.request("/api/arena/placard/boosters", { cache: "no-store" });
     const payload = await response.json() as ShopPayload & { error?: string };
     if (!response.ok) throw new Error(payload.error || "Boutique Botte du Chanvrier indisponible.");
     setShop(payload);
-  }, []);
+  }, [api]);
 
   useEffect(() => {
     setLocalPreview(["localhost", "127.0.0.1"].includes(window.location.hostname));
     const handleBoosterUpdate = () => void refresh().catch(() => setNotice("Impossible d’actualiser les packs. Réessaie dans un instant."));
-    window.addEventListener("kq:boosters-updated", handleBoosterUpdate);
+    const unsubscribe = api.subscribe(["kq:boosters-updated"], handleBoosterUpdate);
     refresh()
       .catch((error: unknown) => setNotice(error instanceof Error ? error.message : "Boutique indisponible."))
       .finally(() => setPending(null));
-    return () => window.removeEventListener("kq:boosters-updated", handleBoosterUpdate);
-  }, [refresh]);
+    return unsubscribe;
+  }, [refresh, api]);
 
   const purchase = async () => {
     if (actionLock.current) return;
@@ -118,7 +121,7 @@ export function KqSupportBoosterShop({
     setPending("buy");
     setNotice("");
     try {
-      const response = await fetch("/api/arena/placard/boosters", {
+      const response = await api.request("/api/arena/placard/boosters", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ packCount: 1, requestKey: createClientRequestKey() }),
@@ -141,7 +144,7 @@ export function KqSupportBoosterShop({
     setPending("claim");
     setNotice("");
     try {
-      const response = await fetch("/api/arena/placard/boosters", { method: "PUT" });
+      const response = await api.request("/api/arena/placard/boosters", { method: "PUT" });
       const payload = await response.json() as { claimed?: boolean; replayed?: boolean; error?: string };
       if (!response.ok) throw new Error(payload.error || "Réclamation impossible.");
       await refresh();
@@ -168,7 +171,7 @@ export function KqSupportBoosterShop({
     setPending("open");
     setNotice("");
     try {
-      const response = await fetch("/api/arena/placard/boosters", {
+      const response = await api.request("/api/arena/placard/boosters", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ entitlementId: entitlement.id }),
@@ -177,7 +180,7 @@ export function KqSupportBoosterShop({
       if (!response.ok) throw new Error(payload.error || "Ouverture impossible.");
       setOpenedCards(payload.cards ?? []);
       await refresh();
-      window.dispatchEvent(new Event("kq:collection-updated"));
+      api.notify("kq:collection-updated");
       setNotice(`${payload.cards?.length ?? entitlement.cardCount} cartes Botte du Chanvrier ont rejoint ta collection.`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Ouverture impossible.");
@@ -246,7 +249,7 @@ export function KqSupportBoosterShop({
           {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
           {!shop?.collectionActive && pending !== "load" && !notice ? <p className={styles.notice}><Flame size={16} />La vente de packs est momentanément fermée. Le matériel reste consultable.</p> : null}
         </div>
-        {openedCards.length > 0 ? <div className="absolute inset-0 z-50 flex flex-col bg-[#081a14]/95 p-3 backdrop-blur-sm sm:p-6"><button type="button" aria-label="Fermer le pack ouvert" onClick={() => setOpenedCards([])} className="absolute right-3 top-3 z-10 grid h-11 w-11 place-items-center border-2 border-ink bg-white shadow-[3px_3px_0_#f4c43d]"><X /></button><header className="shrink-0 pr-14 text-center text-white"><small className="font-black uppercase tracking-[.14em] text-yellow">Pack débloqué</small><h3 className="font-display text-3xl uppercase sm:text-5xl">Tes nouvelles cartes</h3></header><div className="my-3 flex min-h-0 flex-1 items-center gap-2 overflow-x-auto px-1 pb-2 sm:gap-3">{openedCards.map((card, index) => { const src = getKqCardArtwork(card.code) ?? card.imageUrl; return <article key={`${card.code}-${index}`} className="w-28 shrink-0 border-2 border-[#d5a72d] bg-white p-1 shadow-[3px_3px_0_#d5a72d] sm:w-40">{src ? <div className="relative aspect-[2/3] overflow-hidden"><Image src={src} alt={card.name} fill sizes="160px" className="object-cover" /></div> : null}<small className="mt-1 block text-[9px] font-black uppercase text-green sm:text-xs">{card.rarity}</small><strong className="block text-[10px] sm:text-sm">{card.name}</strong></article>; })}</div><button type="button" onClick={() => { setOpenedCards([]); setNotice(""); }} className="mx-auto min-h-12 shrink-0 border-2 border-ink bg-yellow px-6 font-black uppercase shadow-[4px_4px_0_#fff]">Retour à la boutique</button></div> : null}
+        {openedCards.length > 0 ? <KqSupportPackReveal cards={openedCards} onClose={() => setOpenedCards([])} onContinue={() => { setOpenedCards([]); setNotice(""); }} /> : null}
         {equipmentCatalogOpen ? <KqEquipmentCatalogModal initialEquipmentCode={initialEquipmentCode} onClose={() => setEquipmentCatalogOpen(false)} onOpenWorkshop={onOpenWorkshop}/> : null}
       </section></div> : null}
     </section>

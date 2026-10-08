@@ -15,6 +15,7 @@ import { CONTEST_ENTRY_CATEGORIES, CONTEST_ENTRY_CATEGORY_LABELS, CONTEST_ENTRY_
 import { ContestFlowerImage } from "./ContestFlowerImage";
 import { ContestBundleNotebookNote } from "./ContestBundleNotebookNote";
 import styles from "./ContestTastingBook.module.css";
+import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 
 const NotebookPanel = dynamic(() => import("./ContestNotebookPanel").then((module) => module.ContestNotebookPanel), {
   loading: () => <p role="status" className={styles.loading}>Préparation de ta page de dégustation…</p>,
@@ -38,6 +39,7 @@ type Props = {
   initialEditNotes?: boolean;
   draftOwnerId?: string | null;
   contestBundleOffer?: ContestBundleOffer | null;
+  onExitTutorial?: () => void;
 };
 const CULTURES = {
   outdoor: { icon: Sun, description: "Sous le soleil", subtitle: "Les fleurs de plein air." },
@@ -47,7 +49,8 @@ const CULTURES = {
 const CHAPTERS: Chapter[] = CONTEST_ENTRY_TRACKS.flatMap((track) => CONTEST_ENTRY_CATEGORIES.map((category) => ({ track, category })));
 const PRODUCER_REWARD_RULE = "Regular et Concours comptent ensemble : fais valider tes avis sur toutes les fleurs d’un producteur pour débloquer son bonus.";
 
-export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, isAuthenticated, seasonLabel, initialTrack, initialCategory, initialEntryId, initialEditNotes = false, draftOwnerId, contestBundleOffer: initialContestBundleOffer }: Props) {
+export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, isAuthenticated, seasonLabel, initialTrack, initialCategory, initialEntryId, initialEditNotes = false, draftOwnerId, contestBundleOffer: initialContestBundleOffer, onExitTutorial }: Props) {
+  const api = useKqTutorialApi();
   const initialEntry = entries.find((item) => item.id === initialEntryId);
   const [updatedBundleOffer, setUpdatedBundleOffer] = useState<{ source: typeof initialContestBundleOffer; value: ContestBundleOffer } | null>(null);
   const bundleRequestVersionRef = useRef(0);
@@ -87,13 +90,14 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
   useBodyScrollLock(true);
 
   useEffect(() => {
+    if (api.isTutorial) return;
     const url = new URL(window.location.href);
     if (open && entryId && (view === "flower" || view === "tasting" || view === "rewards")) url.searchParams.set("entry", entryId);
     else url.searchParams.delete("entry");
     if (open && view === "tasting") url.searchParams.set("view", "notes");
     else { url.searchParams.delete("view"); url.searchParams.delete("edit"); }
     if (url.href !== window.location.href) window.history.replaceState(window.history.state, "", url);
-  }, [open, view, entryId]);
+  }, [open, view, entryId, api]);
 
   useEffect(() => {
     if (!initialContestBundleOffer || !isAuthenticated) return;
@@ -101,7 +105,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
     const refreshBundle = async () => {
       const requestVersion = ++bundleRequestVersionRef.current;
       try {
-        const response = await fetch("/api/account/contest-bundle-rewards", { credentials: "include", cache: "no-store", signal: controller.signal });
+        const response = await api.request("/api/account/contest-bundle-rewards", { credentials: "include", cache: "no-store", signal: controller.signal });
         const payload = await response.json().catch(() => null) as { rewards?: ContestBundleRewards } | null;
         if (controller.signal.aborted || requestVersion !== bundleRequestVersionRef.current) return;
         if (response.status === 401) {
@@ -125,7 +129,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
       window.removeEventListener("focus", onReturn);
       window.removeEventListener("pageshow", onReturn);
     };
-  }, [initialContestBundleOffer, isAuthenticated]);
+  }, [initialContestBundleOffer, isAuthenticated, api]);
 
   useEffect(() => {
     const alreadyOpen = document.body.classList.contains("contest-notebook-open");
@@ -218,7 +222,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
       else go(view === "tasting" || view === "rewards" ? "flower" : view === "flower" ? "flowers" : "contents");
     }}>
     <header className={styles.deskHeader}>
-      <Link href="/arene"><ArrowLeft size={17} aria-hidden="true" /> L’Arène</Link>
+      {api.isTutorial ? <button type="button" className={styles.tutorialExit} onClick={onExitTutorial}><ArrowLeft size={17} aria-hidden="true" /> Les possibilités</button> : <Link href="/arene"><ArrowLeft size={17} aria-hidden="true" /> L’Arène</Link>}
       <span>Les Chanvriers Bretons</span>
       {open ? <button type="button" onClick={close} aria-label="Fermer le carnet"><X size={18} aria-hidden="true" /></button> : <BookOpen size={18} aria-hidden="true" />}
     </header>
@@ -299,7 +303,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
                   })}
                 </section>;
               })}
-              <nav className={styles.appendix} aria-label="Les annexes du carnet"><Link href="/profil/collection"><Gift size={16} aria-hidden="true" /> Ma collection</Link><Link href="/arene/carnet/classement"><Trophy size={16} aria-hidden="true" /> Classement des fleurs</Link></nav>
+              <nav className={styles.appendix} aria-label="Les annexes du carnet">{api.isTutorial ? <button type="button" onClick={onExitTutorial}><ArrowLeft size={16} aria-hidden="true" /> Explorer les possibilités</button> : <><Link href="/profil/collection"><Gift size={16} aria-hidden="true" /> Ma collection</Link><Link href="/arene/carnet/classement"><Trophy size={16} aria-hidden="true" /> Classement des fleurs</Link></>}</nav>
             </div> : null}
 
             {view === "flowers" ? <div key={`flowers-${turn}`} className={styles.pageTurn}>
@@ -342,7 +346,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
                 {entry.technicalSheet.notes ? <p>{entry.technicalSheet.notes}</p> : null}
               </details>
               {entry.story ? <div className={styles.story}><h3>L’histoire de cette fleur</h3><p>{entry.story}</p></div> : null}
-              <nav className={styles.flowerLinks} aria-label="Informations de la fleur">{getContestProductHref(entry.product) ? <Link href={getContestProductHref(entry.product)!}>Voir en boutique <ArrowRight size={14} /></Link> : null}{getContestEntryAnalysisUrl(entry) ? <a href={getContestEntryAnalysisUrl(entry)!} target="_blank" rel="noopener noreferrer">Analyse du lot ↗</a> : null}</nav>
+              {!api.isTutorial ? <nav className={styles.flowerLinks} aria-label="Informations de la fleur">{getContestProductHref(entry.product) ? <Link href={getContestProductHref(entry.product)!}>Voir en boutique <ArrowRight size={14} /></Link> : null}{getContestEntryAnalysisUrl(entry) ? <a href={getContestEntryAnalysisUrl(entry)!} target="_blank" rel="noopener noreferrer">Analyse du lot ↗</a> : null}</nav> : null}
             </article> : null}
 
             {/* Keep visited forms mounted so turning back to a flower never discards notes. */}

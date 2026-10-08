@@ -15,6 +15,7 @@ import { KqCulturePreparation } from "./KqCulturePreparation";
 import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
 
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import Link from "@/components/navigation/NavigationLink";
 import { Banknote, Dices, Flame, RotateCcw, Scale, ShoppingBag, Sparkles, Star, Swords, Target, Trophy, X, Zap } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -23,7 +24,6 @@ import {
   advanceKqStage,
   activateKqHeritage,
   canActivateKqHeritage,
-  canPlayKqCard,
   getKqHandCodes,
   getKqEffectNoticeKind,
   getKqHarvestBreakdown,
@@ -31,8 +31,8 @@ import {
   getKqStateHeritage,
   getKqRunProjection,
   getKqStageTarget,
-  getKqZeroSuccessStageCount,
-  getKqVisibleActionCards,
+  getKqUnrescuedZeroSuccessStageCount,
+  hasKqFirstCultureRescue,
   getKqCardTradeoff,
   KQ_LIVING_SOIL,
   getKqCultureSystemSituationStatus,
@@ -76,10 +76,14 @@ import { startArenaVisiblePolling } from "@/lib/arena-visible-polling";
 import { formatKqQueueWait } from "@/lib/kanab-quest-random-queue";
 import { getKqRemainingDailyChallengePoints, KQ_REWARD_BALANCE } from "@/lib/kanab-quest-reward-balance";
 import { KqPhysicsDice, type KqDiceMotionPhase, type KqPhysicsDiceHandle } from "./KqPhysicsDice";
+import { assistKqPlayableLesson, type KqPlayableLessonPort } from "@/lib/kanab-quest-playable-lesson";
+import { getKqPlayerCardChoices, getKqPlayerCardPermission } from "@/lib/kanab-quest-player-feedback";
+import { KqCultureRecap, KqJuryRecap } from "./KqPersonalRecap";
 import styles from "./KanabQuestDicePrototype.module.css";
 
 const LOCAL_COLLECTION_CODES = KQ_CARDS.map((card) => card.code);
 const DEFAULT_LOCAL_INVENTORY = Object.fromEntries(KQ_CARDS.map((card) => [card.code, 3]));
+const RecoveryTrial = dynamic(() => import("./KqFirstCultureTrial").then(module => module.KqFirstCultureTrial), { ssr: false });
 type RemoteCollectionStatus = {
   loading: boolean;
   error: string;
@@ -414,22 +418,24 @@ function CardArtwork({ code, name, producerName, imageUrl }: { code: string; nam
   ) : null;
 }
 
-function SupportCard({ card, state, copies, handCopies, deckCopies, serverValidatedCopy = false, onPlay }: { card: KqSupportCard; state: KqGameState; copies: number; handCopies: number; deckCopies: number; serverValidatedCopy?: boolean; onPlay: (code: string) => void }) {
-  const permission = canPlayKqCard(state, card);
+function SupportCard({ card, state, copies, handCopies, deckCopies, onPlay }: { card: KqSupportCard; state: KqGameState; copies: number; handCopies: number; deckCopies: number; onPlay: (code: string) => void }) {
+  const permission = getKqPlayerCardPermission(state, card, copies);
   const exhausted = card.category !== "pbi"
     && state.usedCards.filter((code) => code === card.code).length >= state.deckCodes.filter((code) => code === card.code).length;
   const active = state.playedThisStage.includes(card.code);
-  const unavailable = copies <= 0 && !serverValidatedCopy;
+  const unavailable = copies <= 0;
   return (
     <button
       type="button"
       className={styles.supportCard}
       data-category={card.category}
       data-rarity={card.rarity}
+      data-action-card={card.code}
+      data-card-playable={permission.allowed}
       data-active={active || undefined}
       disabled={!permission.allowed || unavailable}
       onClick={() => onPlay(card.code)}
-      aria-label={`${card.name}. ${card.description} ${active ? "Active pour cette étape." : exhausted ? "Toutes les copies du deck ont été brûlées." : permission.reason}`}
+      aria-label={`${card.name}. ${card.description} ${active ? "Active pour cette étape." : exhausted ? "Toutes les copies du deck ont été brûlées." : unavailable ? "Aucune copie restante." : permission.reason}`}
     >
       <CardArtwork code={card.code} name={card.name} />
       <span className={styles.cardCost}>{card.xpCost === 0 ? "∞" : card.xpCost}<small>XP</small></span>
@@ -490,26 +496,37 @@ function HarvestScoreSheet({ state }: { state: KqGameState }) {
 
 export function KanabQuestDicePrototype({
   apiScope = "admin",
-  showAdminOperations = true,
+  showAdminOperations: requestedAdminOperations = true,
   showPackLab = false,
   viewMode = "full",
   onOpenArena,
+  onOpenGame,
   onOpenMarket,
+  tutorial,
 }: {
   apiScope?: KqApiScope;
   showAdminOperations?: boolean;
   showPackLab?: boolean;
   viewMode?: "full" | "game" | "arena";
   onOpenArena?: () => void;
+  onOpenGame?: () => void;
   onOpenMarket?: () => void;
+  tutorial?: KqPlayableLessonPort;
 }) {
-  const isPlayerMode = apiScope === "player";
-  const remoteRequest = useMemo(() => createKqScopedRequest(apiScope), [apiScope]);
+  const isPlayerMode = !tutorial && apiScope === "player";
+  const playerPresentation = isPlayerMode || Boolean(tutorial);
+  const showAdminOperations = !tutorial && requestedAdminOperations;
+  const remoteRequest = useMemo(() => tutorial
+    ? async () => Response.json({ error: "Action officielle indisponible dans cet essai." }, { status: 403 })
+    : createKqScopedRequest(apiScope), [apiScope, tutorial]);
   const sessionStoragePrefix = isPlayerMode ? "kq-player" : "kq-admin";
-  const [state, setState] = useState<KqGameState>(() => startKqGame(2026));
+  const [state, setState] = useState<KqGameState>(() => tutorial?.initialGame ?? startKqGame(2026));
   const cultureDead = isKqCultureDead(state);
   const outcomeArtwork = getKqOutcomeArtwork(state);
-  const zeroSuccessStages = getKqZeroSuccessStageCount(state);
+  const zeroSuccessStages = getKqUnrescuedZeroSuccessStageCount(state);
+  const firstCultureRescueAvailable = hasKqFirstCultureRescue(state);
+  const rescuedStageIndex = state.history.findIndex(entry => entry.rescued === true);
+  const [recoveryTrialOpen, setRecoveryTrialOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [rolling, setRolling] = useState(false);
   const rollInFlightRef = useRef(false);
@@ -522,9 +539,9 @@ export function KanabQuestDicePrototype({
   const [battleHistory, setBattleHistory] = useState<KqBattle[]>([]);
   const [burnHistory, setBurnHistory] = useState<KqBurnReceipt[]>([]);
   const [inventory, setInventory] = useState<Record<string, number>>(() => ({ ...DEFAULT_LOCAL_INVENTORY }));
-  const [setupOpen, setSetupOpen] = useState(true);
-  const [selectedBuddie, setSelectedBuddie] = useState(KQ_BUDDIES[0].code);
-  const [selectedCards, setSelectedCards] = useState<string[]>(["BOTTE-003", "BOTTE-004", "BOTTE-005", "BOTTE-006"]);
+  const [setupOpen, setSetupOpen] = useState(tutorial?.setupOpen ?? true);
+  const [selectedBuddie, setSelectedBuddie] = useState(tutorial?.initialGame.varietyCode ?? KQ_BUDDIES[0].code);
+  const [selectedCards, setSelectedCards] = useState<string[]>(tutorial?.initialGame.deckCodes ?? ["BOTTE-003", "BOTTE-004", "BOTTE-005", "BOTTE-006"]);
   const [selectedHeritage, setSelectedHeritage] = useState("");
   const [heritageSwapOutIndex, setHeritageSwapOutIndex] = useState<number | null>(null);
   const [heritageExchangeTab, setHeritageExchangeTab] = useState<"hand" | "reserve">("hand");
@@ -618,6 +635,8 @@ export function KanabQuestDicePrototype({
   const [officialBattles, setOfficialBattles] = useState<KqOfficialBattle[]>([]);
   const [pendingOfficialVerdictId, setPendingOfficialVerdictId] = useState<string | null>(null);
   const [officialBattleResult, setOfficialBattleResult] = useState<OfficialBattleResult | null>(null);
+  const botRecapBattle = botBattleResult ? officialBattles.find(item => item.id === botBattleResult.battleId) : undefined;
+  const officialRecapBattle = officialBattleResult ? officialBattles.find(item => item.id === officialBattleResult.battleId) : undefined;
   const [officialChallengeReward, setOfficialChallengeReward] = useState<{ points: number; titles: string[] } | null>(null);
   const [remoteAction, setRemoteAction] = useState<"start" | "card" | "game" | null>(null);
   const [remoteNotice, setRemoteNotice] = useState("");
@@ -708,10 +727,11 @@ export function KanabQuestDicePrototype({
   }, [isPlayerMode, sessionStoragePrefix]);
 
   useEffect(() => {
+    if (tutorial) return;
     const refreshCollection = () => setCollectionRefreshNonce((value) => value + 1);
     window.addEventListener("kq:collection-updated", refreshCollection);
     return () => window.removeEventListener("kq:collection-updated", refreshCollection);
-  }, []);
+  }, [tutorial]);
 
   useEffect(() => {
     if (!isPlayerMode) return;
@@ -731,19 +751,23 @@ export function KanabQuestDicePrototype({
   }, [isPlayerMode]);
 
   useEffect(() => {
-    const repository = createLocalKqRepository(window.localStorage);
+    const repository = tutorial?.repository ?? createLocalKqRepository(window.localStorage);
     repositoryRef.current = repository;
-    setRemoteRunId(window.sessionStorage.getItem(`${sessionStoragePrefix}-remote-run-id`));
-    setPersistedFlowerId(window.sessionStorage.getItem(`${sessionStoragePrefix}-remote-flower-id`));
-    setRemoteBurnsEnabled(isPlayerMode || window.sessionStorage.getItem(`${sessionStoragePrefix}-remote-burns`) === "1");
-    setDirectDiceResult(window.localStorage.getItem("kq-dice-direct-result") === "1");
+    if (!tutorial) {
+      setRemoteRunId(window.sessionStorage.getItem(`${sessionStoragePrefix}-remote-run-id`));
+      setPersistedFlowerId(window.sessionStorage.getItem(`${sessionStoragePrefix}-remote-flower-id`));
+      setRemoteBurnsEnabled(isPlayerMode || window.sessionStorage.getItem(`${sessionStoragePrefix}-remote-burns`) === "1");
+    }
+    setDirectDiceResult((tutorial?.storage ?? window.localStorage).getItem("kq-dice-direct-result") === "1");
+    let cancelled = false;
     void repository.loadSession().then((snapshot) => {
+      if (cancelled) return;
       if (!isPlayerMode && snapshot.game) {
         setState(snapshot.game);
         setSelectedBuddie(snapshot.game.varietyCode);
 
         setSelectedCards(snapshot.game.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")));
-        setSetupOpen(false);
+        setSetupOpen(tutorial ? tutorial.storage.getItem("setup-open") !== "0" && tutorial.setupOpen : false);
       }
       if (!isPlayerMode) {
         if (snapshot.battle) setBattle(snapshot.battle);
@@ -752,11 +776,21 @@ export function KanabQuestDicePrototype({
         if (snapshot.ranking) setRankProfile(snapshot.ranking);
         if (snapshot.inventory) setInventory({ ...DEFAULT_LOCAL_INVENTORY, ...snapshot.inventory });
       }
+      if (tutorial) {
+        try {
+          const preparation = JSON.parse(tutorial.storage.getItem("preparation") ?? "null") as { buddie?: unknown; cards?: unknown; heritage?: unknown; energy?: unknown } | null;
+          if (KQ_BUDDIES.some(item => item.code === preparation?.buddie)) setSelectedBuddie(preparation!.buddie as string);
+          if (Array.isArray(preparation?.cards) && preparation.cards.every(code => typeof code === "string")) setSelectedCards(sanitizeKqDeckSelection(preparation.cards as string[], snapshot.inventory ?? DEFAULT_LOCAL_INVENTORY));
+          if (preparation?.heritage === "" || KQ_HERITAGE_CARDS.some(item => item.code === preparation?.heritage)) setSelectedHeritage(preparation!.heritage as string);
+          if (preparation?.energy === "eco" || preparation?.energy === "balanced" || preparation?.energy === "intensive") setEnergyMode(preparation.energy);
+        } catch { /* Invalid local preferences do not invalidate the culture. */ }
+      }
       setFavoriteDeck(snapshot.favoriteDeck);
-      setShowOnboarding(!snapshot.onboardingSeen && !isPlayerMode);
+      setShowOnboarding(!snapshot.onboardingSeen && !isPlayerMode && !tutorial);
       setHydrated(true);
     });
-  }, [isPlayerMode, sessionStoragePrefix]);
+    return () => { cancelled = true; };
+  }, [isPlayerMode, sessionStoragePrefix, tutorial]);
 
   useEffect(() => {
     void refreshOfficialRanking();
@@ -1023,6 +1057,17 @@ export function KanabQuestDicePrototype({
     if (hydrated && !isPlayerMode) void repositoryRef.current?.saveInventory(inventory);
   }, [hydrated, inventory, isPlayerMode]);
 
+  useEffect(() => {
+    if (!hydrated || !tutorial) return;
+    tutorial.storage.setItem("setup-open", setupOpen ? "1" : "0");
+    tutorial.onProgress({ game: state, battle, setupOpen, revealedRounds });
+  }, [battle, hydrated, revealedRounds, setupOpen, state, tutorial]);
+
+  useEffect(() => {
+    if (!hydrated || !tutorial) return;
+    tutorial.storage.setItem("preparation", JSON.stringify({ buddie: selectedBuddie, cards: selectedCards, heritage: selectedHeritage, energy: energyMode }));
+  }, [energyMode, hydrated, selectedBuddie, selectedCards, selectedHeritage, tutorial]);
+
   useEffect(() => () => {
     if (rollTimerRef.current) window.clearTimeout(rollTimerRef.current);
     if (verdictTimerRef.current) window.clearTimeout(verdictTimerRef.current);
@@ -1057,7 +1102,8 @@ export function KanabQuestDicePrototype({
     : rankProfile.claimedChallengeCodes;
   const rewardableDailyChallenges = dailyChallenges.filter((challenge) => !claimedChallengeCodes.includes(challenge.claimKey));
   const remainingDailyChallengePoints = getKqRemainingDailyChallengePoints(dailyChallenges, claimedChallengeCodes);
-  const availableCards = useMemo(() => getKqVisibleActionCards(state), [state]);
+  const cardChoices = useMemo(() => getKqPlayerCardChoices(state, activeInventory), [state, activeInventory]);
+  const availableCards = cardChoices.choices.map(choice => choice.card);
   const handCodes = useMemo(() => getKqHandCodes(state), [state]);
   const supportDeckSize = state.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")).length;
   const burnedSupportCount = state.usedCards.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")).length;
@@ -1093,7 +1139,8 @@ export function KanabQuestDicePrototype({
   const applyGameAction = async (action: "roll" | "resolve" | "advance" | "redraw" | "heritage", deferState = false): Promise<KqGameState | null> => {
     setGameActionError("");
     if (!remoteBurnsEnabled) {
-      const nextState = action === "roll" ? rollKqDice(state) : action === "resolve" ? resolveKqStage(state) : action === "advance" ? advanceKqStage(state) : action === "redraw" ? redrawKqHand(state) : activateKqHeritage(state);
+      const next = action === "roll" ? rollKqDice(state) : action === "resolve" ? resolveKqStage(state) : action === "advance" ? advanceKqStage(state) : action === "redraw" ? redrawKqHand(state) : activateKqHeritage(state);
+      const nextState = tutorial ? assistKqPlayableLesson(next) : next;
       if (!deferState) setState(nextState);
       return nextState;
     }
@@ -1135,7 +1182,8 @@ export function KanabQuestDicePrototype({
   const swapHeritageCard = async (reserveIndex: number) => {
     if (heritageSwapOutIndex === null || remoteAction !== null) return;
     if (!remoteBurnsEnabled) {
-      const nextState = swapKqHeritageHandCard(state, heritageSwapOutIndex, reserveIndex);
+      const swapped = swapKqHeritageHandCard(state, heritageSwapOutIndex, reserveIndex);
+      const nextState = tutorial ? assistKqPlayableLesson(swapped) : swapped;
       setState(nextState);
       setHeritageSwapOutIndex(null);
       setHeritageExchangeTab("hand");
@@ -1217,7 +1265,7 @@ export function KanabQuestDicePrototype({
   const toggleDirectDiceResult = () => {
     setDirectDiceResult((current) => {
       const next = !current;
-      window.localStorage.setItem("kq-dice-direct-result", next ? "1" : "0");
+      (tutorial?.storage ?? window.localStorage).setItem("kq-dice-direct-result", next ? "1" : "0");
       return next;
     });
   };
@@ -1232,17 +1280,27 @@ export function KanabQuestDicePrototype({
     setSelectedCards((current) => sanitizeKqDeckSelection(current, activeInventory));
     setSetupOpen(true);
     setPersistedFlowerId(null);
-    window.sessionStorage.removeItem(`${sessionStoragePrefix}-remote-flower-id`);
+    if (!tutorial) window.sessionStorage.removeItem(`${sessionStoragePrefix}-remote-flower-id`);
   };
 
   const setRemoteMode = (enabled: boolean) => {
-    if (isPlayerMode) return;
+    if (isPlayerMode || tutorial) return;
     setRemoteBurnsEnabled(enabled);
     if (enabled && selectedHeritage && !remoteHeritageOwnedCodes.includes(selectedHeritage)) setSelectedHeritage("");
     setRemoteNotice(enabled
       ? "Mode officiel activé : chaque confirmation brûlera une vraie copie."
       : "Mode simulation locale : aucune copie enregistrée ne sera touchée.");
     window.sessionStorage.setItem(`${sessionStoragePrefix}-remote-burns`, enabled ? "1" : "0");
+  };
+
+  const prepareAfterVerdict = () => {
+    setOfficialBattleResult(null);
+    setBotBattleResult(null);
+    // Arena/game share this component instance. Update its screen before the
+    // parent changes views, preserving a different culture still in progress.
+    if (remoteRunId && state.phase !== "complete") setSetupOpen(false);
+    else reset();
+    onOpenGame?.();
   };
 
   const joinRandomBattleQueue = async (flowerId: string) => {
@@ -1500,7 +1558,7 @@ export function KanabQuestDicePrototype({
       setRemoteNotice(buddieStartBlockReason);
       return;
     }
-    if (isPlayerMode && (!energyEstimate || energyEstimate.mode !== energyMode)) return;
+    if (playerPresentation && (!energyEstimate || energyEstimate.mode !== energyMode)) return;
     const currentDailyChallenges = getKqDailyChallenges();
     if (dailyChallenges[0]?.dayKey !== currentDailyChallenges[0]?.dayKey) {
       setDailyChallenges(currentDailyChallenges);
@@ -1552,7 +1610,7 @@ export function KanabQuestDicePrototype({
     const allowedPests = [...new Set(KQ_CARDS
       .filter((card) => card.category === "pbi" && (activeInventory[card.code] ?? 0) > 0)
       .flatMap((card) => card.targets ?? []))];
-    const nextState = startKqGame(Date.now(), {
+    const startConfig: Parameters<typeof startKqGame>[1] = {
       varietyCode: selectedBuddie,
       deckCodes: [...selectedCards],
       collectionCodes: LOCAL_COLLECTION_CODES.filter((code) => (activeInventory[code] ?? 0) > 0),
@@ -1563,8 +1621,10 @@ export function KanabQuestDicePrototype({
       startingXp: hasBiocontrolChallenge ? 2 : 1,
       heritageCode: selectedHeritage || undefined,
       heritageCard: selectedHeritageCard,
+      ...(tutorial ? { energyMode } : {}),
       startedAt: new Date().toISOString(),
-    });
+    };
+    const nextState = tutorial ? tutorial.startGame(startConfig) : startKqGame(Date.now(), startConfig);
     setState(nextState);
     setBattle(null);
     void repositoryRef.current?.saveGame(nextState);
@@ -1600,8 +1660,9 @@ export function KanabQuestDicePrototype({
       }
       return;
     }
-    const next = playKqCard(state, code);
-    if (next === state) return;
+    const played = playKqCard(state, code);
+    if (played === state) return;
+    const next = tutorial ? assistKqPlayableLesson(played) : played;
     const nextInventory = { ...inventory, [code]: Math.max(0, (inventory[code] ?? 0) - 1) };
     const card = KQ_CARDS.find((item) => item.code === code);
     const receipt: KqBurnReceipt = { id: `BURN-${next.seed}-${next.stageIndex}-${code}-${next.usedCards.length}`, cardCode: code, runSeed: next.seed, stageIndex: next.stageIndex, useKind: card?.category === "pbi" ? "pbi" : "support", burnedAt: new Date().toISOString() };
@@ -1758,10 +1819,10 @@ export function KanabQuestDicePrototype({
     const deckCoverage = getKqDeckCoverage(selectedCards);
     const mostBurned = Object.entries(burnHistory.reduce<Record<string, number>>((counts, receipt) => ({ ...counts, [receipt.cardCode]: (counts[receipt.cardCode] ?? 0) + 1 }), {})).sort((a, b) => b[1] - a[1]).slice(0, 3);
     return (
-      <main ref={gameViewportRef} className={styles.page} data-player-mode={isPlayerMode || undefined} data-admin-operations={showAdminOperations || undefined} data-view-mode={viewMode}>
+      <main ref={gameViewportRef} className={styles.page} data-player-mode={playerPresentation || undefined} data-playable-lesson={Boolean(tutorial) || undefined} data-admin-operations={showAdminOperations || undefined} data-view-mode={viewMode}>
         <section className={styles.setupPanel}>
-          <header className={styles.setupHero}><div className={styles.setupHeroCopy}><span>Le Placard Kanab Quest{isPlayerMode ? "" : " · local"}</span><h1>Prépare <em>ta culture.</em></h1><i aria-hidden="true" /><p>Choisis ta variété et tes cartes. Tout pousse sur sol vivant.</p></div><div className={styles.setupHeroArt} aria-hidden="true"><span /><Image src="/contest/mascot/arena-scene-placard-v1.png" alt="" width={1536} height={1024} priority sizes="(max-width: 760px) 100vw, 520px" /></div></header>
-          <p className={styles.cultureFailureRule}>Deux étapes validées à 0 réussite, même non consécutives, entraînent la mort de la culture : aucune récolte ni carte Fleur.</p>
+          <header className={styles.setupHero}><div className={styles.setupHeroCopy}><span>Le Placard Kanab Quest{tutorial ? " · essai" : isPlayerMode ? "" : " · local"}</span><h1>Prépare <em>ta culture.</em></h1><i aria-hidden="true" /><p>Choisis ta variété et tes cartes. Tout pousse sur sol vivant.</p></div><div className={styles.setupHeroArt} aria-hidden="true"><span /><Image src="/contest/mascot/arena-scene-placard-v1.png" alt="" width={1536} height={1024} priority sizes="(max-width: 760px) 100vw, 520px" /></div></header>
+          <p className={styles.cultureFailureRule}>{tutorial ? "Essai assisté : un dé peut être ajusté avant validation pour poursuivre jusqu’à la récolte fictive." : <>Deux étapes validées à 0 réussite, même non consécutives, mettent fin à la culture sans récolte.{isPlayerMode ? " Pour la toute première culture du compte, un secours gratuit permet de continuer une fois, avec les pénalités de l’étape." : null}</>}</p>
           {showAdminOperations && !isPlayerMode ? <div className={styles.remoteCollectionStatus} data-error={remoteCollection.error || undefined}>
             <span>{isPlayerMode ? "Mes cartes Botte du Chanvrier" : "Données sécurisées · test admin"}</span>
             {remoteCollection.loading ? <strong>Chargement de tes cartes…</strong> : remoteCollection.error ? <strong>{remoteCollection.error}</strong> : <strong>{remoteCollection.totalCopies} carte{remoteCollection.totalCopies > 1 ? "s" : ""} disponible{remoteCollection.totalCopies > 1 ? "s" : ""}</strong>}
@@ -1773,7 +1834,7 @@ export function KanabQuestDicePrototype({
           {seasonRewardPreview ? <details className={styles.seasonRewardPreview}><summary><span>Fin de saison · {seasonRewardPreview.rewardsLive ? "distribution active" : "aperçu dormant"}</span><strong>{seasonRewardPreview.eligiblePlayers} joueur(s) éligible(s)</strong><small>{seasonRewardPreview.rewardsLive ? "La commande applique les reçus idempotents après confirmation." : "Aucune récompense n’est distribuée pendant les tests."}</small></summary><div><b>{seasonRewardPreview.pendingGrants}<small>attributions en attente</small></b><b>{seasonRewardPreview.alreadyGranted}<small>déjà attribuées</small></b><b>{seasonRewardPreview.totalSupportBoosters}<small>boosters Botte du Chanvrier prévus</small></b><b>{seasonRewardPreview.totalHeritageFragments}<small>fragments Héritage prévus</small></b></div><p>Distribution {seasonRewardPreview.rewardsLive ? "active" : "dormante"} · palier minimum : 3 duels terminés. Les titres, cadres et rubans restent prioritaires sur la puissance.</p><button type="button" className={styles.seasonDistributionButton} disabled={!seasonRewardPreview.rewardsLive || seasonRewardPreview.pendingGrants <= 0 || seasonDistributionPending} title={!seasonRewardPreview.rewardsLive ? "Le verrou KQ_SEASON_REWARDS_LIVE est désactivé." : undefined} onClick={() => void distributeSeasonRewards()}>{seasonDistributionPending ? "Distribution en cours…" : seasonRewardPreview.rewardsLive ? "Distribuer les récompenses" : "Distribution verrouillée"}</button></details> : null}
           {seasonRolloverPreview ? <details className={styles.seasonRewardPreview}><summary><span>Passage de saison · préflight seul</span><strong>{seasonRolloverPreview.fromSeason} → {seasonRolloverPreview.toSeason ?? "à planifier"}</strong><small>{seasonRolloverPreview.ready ? "Toutes les conditions techniques sont réunies." : "La clôture reste impossible tant que les blocages ne sont pas levés."}</small></summary><div><b>{seasonRolloverPreview.players}<small>joueurs classés</small></b><b>{seasonRolloverPreview.eligiblePlayers}<small>éligibles aux lots</small></b><b>{seasonRolloverPreview.missingRewardGrants}<small>récompenses manquantes</small></b><b>{seasonRolloverPreview.lockedBattles}<small>duels verrouillés</small></b></div><p>{seasonRolloverPreview.blockers.length > 0 ? seasonRolloverPreview.blockers.join(" · ") : "Archive et remise à zéro prêtes. Aucune exécution n’est exposée dans l’interface."}</p><button type="button" className={styles.seasonDistributionButton} disabled>Clôture non activée</button></details> : null}
           {notebookRewardPreview ? <details className={styles.notebookRewardPreview}><summary><span>Carnet → Placard · {notebookRewardPreview.rewardsLive ? "actif" : "aperçu dormant"}</span><strong>{notebookRewardPreview.pendingBadges} badge{notebookRewardPreview.pendingBadges > 1 ? "s" : ""} avec gains prévus</strong><small>La note donnée n’influence jamais la récompense.</small></summary><div className={styles.notebookRewardTotals}><b>{notebookRewardPreview.pendingSupportBoosters}<small>boosters Botte du Chanvrier prévus</small></b><b>{notebookRewardPreview.pendingCultureTokens}<small>jetons Coup de pouce prévus</small></b><b>{notebookRewardPreview.alreadyGranted}<small>badges déjà traités</small></b></div><ul>{notebookRewardPreview.badges.map((badge) => <li key={badge.profileBadgeId} data-granted={badge.granted || undefined}><span><strong>{badge.label}</strong><small>{badge.granted ? "Déjà attribué" : notebookRewardPreview.rewardsLive ? "À attribuer automatiquement" : "Prévu au lancement"}</small></span><b>{badge.supportBoosters > 0 ? `${badge.supportBoosters} booster${badge.supportBoosters > 1 ? "s" : ""}` : ""}{badge.supportBoosters > 0 && badge.cultureTokens > 0 ? " + " : ""}{badge.cultureTokens > 0 ? `${badge.cultureTokens} jeton${badge.cultureTokens > 1 ? "s" : ""}` : ""}</b></li>)}</ul><p>Aucun bouton client de réclamation : les gains seront attribués automatiquement et une seule fois après validation du badge.</p><button type="button" className={styles.notebookRetroButton} disabled={!notebookRewardPreview.rewardsLive || notebookRetroCursor === null || notebookRetroPending} title={!notebookRewardPreview.rewardsLive ? "Le verrou KQ_NOTEBOOK_REWARDS_LIVE est désactivé." : undefined} onClick={() => void runNotebookRetroBatch()}>{notebookRetroPending ? "Traitement du lot…" : !notebookRewardPreview.rewardsLive ? "Rétro-attribution verrouillée" : notebookRetroCursor === null ? "Rétro-attribution terminée" : notebookRetroCursor === 0 ? "Lancer la rétro-attribution" : "Traiter le lot suivant"}</button></details> : null}
-          {!isPlayerMode ? <div className={styles.albumSummary}>
+          {!playerPresentation ? <div className={styles.albumSummary}>
             <article><span>Collection variétés</span><strong>{KQ_COLLECTIONS.buddies.title}</strong><p><b>{KQ_BUDDIES.length}</b> variétés jouables dans le prototype · {KQ_COLLECTIONS.buddies.totalCards} cartes dans l’album complet</p><div><i style={{ width: `${KQ_BUDDIES.length / KQ_COLLECTIONS.buddies.totalCards * 100}%` }} /></div></article>
             <article><span>Collection auxiliaire</span><strong>{KQ_COLLECTIONS.support.title}</strong><p><b>{ownedBotteCount}</b> références disponibles · {totalBotteCopies} copies · objectif {KQ_COLLECTIONS.support.totalCards}</p><div><i style={{ width: `${ownedBotteCount / KQ_COLLECTIONS.support.totalCards * 100}%` }} /></div></article>
           </div> : null}
@@ -1818,7 +1879,7 @@ export function KanabQuestDicePrototype({
           {burnHistory.length > 0 ? <div className={styles.burnArchive}><Flame /><span><small>Registre permanent · {burnHistory.length} burns</small><strong>Cartes les plus utilisées</strong><div>{mostBurned.map(([code, count]) => <b key={code}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code} ×{count}</b>)}</div></span></div> : null}
           <KqBuddieCarousel buddies={KQ_BUDDIES.filter(buddie => !isPlayerMode || ownedBuddieCodes.includes(buddie.code))}
             artwork={ownedBuddieArtwork} selectedCode={selectedBuddie} rotation={remoteBurnsEnabled ? buddieRotation : undefined} onSelect={setSelectedBuddie} />
-          {isPlayerMode ? <>
+          {playerPresentation ? <>
             <KqInventoryCarousel inventory={activeInventory} selectedCodes={selectedCards} onAdd={addCardCopy} onRemove={removeCardCopy}
               loading={remoteBurnsEnabled && remoteCollection.loading} error={remoteBurnsEnabled ? remoteCollection.error : ""} />
             <KqHeritageCarousel cards={selectableHeritageCards} ownedCodes={remoteHeritageOwnedCodes}
@@ -1900,11 +1961,11 @@ export function KanabQuestDicePrototype({
               ) : <p className={styles.emptyFlowerReserve}>Termine une culture officielle pour créer ta première Fleur officielle.</p>}
             </section>
           ) : null}
-          {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}><span>Jury officiel</span><h2>Mes duels officiels</h2>{officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}{officialBattles.map((officialBattle) => <article key={officialBattle.id} data-status={officialBattle.status} data-opponent={officialBattle.opponentType}><header><div><strong>{officialBattle.playerFlower.variety}</strong><small>Ta Fleur</small></div><b>VS</b><div><strong>{officialBattle.opponentFlower.variety}</strong><small>{officialBattle.opponentType === "bot" ? "🤖 Entraînement" : "Adversaire"}</small></div></header>{officialBattle.status === "locked" ? <><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(officialBattle.id)}><Trophy /> Demander le verdict</button></> : officialBattle.status === "cancelled" ? <><h3>Duel expiré</h3><p>Aucun verdict, aucun burn et aucun point. Les deux Fleurs sont redevenues disponibles.</p><small>Engagement annulé après 48 heures · {formatKqDate(officialBattle.lockedAt)}</small></> : <><h3>{officialBattle.winner === "player" ? "Victoire" : "Défaite"}{officialBattle.opponentType === "bot" ? " d’entraînement" : " officielle"}</h3><div className={styles.officialRounds}>{officialBattle.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div><small>{officialBattle.opponentType === "bot" ? `Ta Fleur brûlée · +${Number(officialBattle.experienceAwarded ?? KQ_REWARD_BALANCE.training.arenaExperience.min).toLocaleString("fr-FR")} EXP d’Arène` : `Deux Fleurs brûlées · +${Number(officialBattle.experienceAwarded ?? 0).toLocaleString("fr-FR")} EXP d’Arène`} · {formatKqDate(officialBattle.verdictAt)}</small></>}</article>)}</section> : null}
+          {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}><span>Jury officiel</span><h2>Mes duels officiels</h2>{officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}{officialBattles.map((officialBattle) => <article key={officialBattle.id} data-status={officialBattle.status} data-opponent={officialBattle.opponentType}><header><div><strong>{officialBattle.playerFlower.variety}</strong><small>Ta Fleur</small></div><b>VS</b><div><strong>{officialBattle.opponentFlower.variety}</strong><small>{officialBattle.opponentType === "bot" ? "🤖 Entraînement" : "Adversaire"}</small></div></header>{officialBattle.status === "locked" ? <><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(officialBattle.id)}><Trophy /> Demander le verdict</button></> : officialBattle.status === "cancelled" ? <><h3>Duel expiré</h3><p>Aucun verdict, aucun burn et aucun point. Les deux Fleurs sont redevenues disponibles.</p><small>Engagement annulé après 48 heures · {formatKqDate(officialBattle.lockedAt)}</small></> : <><h3>{officialBattle.winner === "player" ? "Victoire" : "Défaite"}{officialBattle.opponentType === "bot" ? " d’entraînement" : " officielle"}</h3><div className={styles.officialRounds}>{officialBattle.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div><details className={styles.archivedJuryRecap} data-archived-jury-recap><summary>Comprendre ce duel</summary><KqJuryRecap rounds={officialBattle.rounds} playerStats={officialBattle.playerFlower.stats} opponentStats={officialBattle.opponentFlower.stats} /></details><small>{officialBattle.opponentType === "bot" ? `Ta Fleur brûlée · +${Number(officialBattle.experienceAwarded ?? KQ_REWARD_BALANCE.training.arenaExperience.min).toLocaleString("fr-FR")} EXP d’Arène` : `Deux Fleurs brûlées · +${Number(officialBattle.experienceAwarded ?? 0).toLocaleString("fr-FR")} EXP d’Arène`} · {formatKqDate(officialBattle.verdictAt)}</small></>}</article>)}</section> : null}
           {battleHistory.length > 0 ? <section className={styles.battleHistory}><span>Archives locales</span><h2>Derniers concours</h2><div>{battleHistory.slice(0, 5).map((receipt) => <article key={receipt.id}><Flame /><span><strong>{receipt.playerFlower.variety} vs {receipt.opponentFlower.variety}</strong><small>{receipt.winner === "player" ? "Victoire" : "Défaite"} · brûlées le {formatKqDate(receipt.burnedAt)}</small></span><b>{receipt.rounds.filter((round) => round.winner === "player").length}–{receipt.rounds.filter((round) => round.winner === "opponent").length}</b></article>)}</div></section> : null}
         </section>
         {showOnboarding ? <div className={styles.onboardingBackdrop} role="presentation" onClick={closeOnboarding}><section className={styles.onboarding} role="dialog" aria-modal="true" aria-labelledby="kq-guide-title" aria-describedby="kq-guide-intro" onClick={(event) => event.stopPropagation()}><button type="button" className={styles.onboardingClose} aria-label="Fermer les règles" onClick={closeOnboarding}><X /></button><span>Le Placard · la boucle en 1 minute</span><h2 id="kq-guide-title">Cultive. Transforme. Réinvestis.</h2><p id="kq-guide-intro" className={styles.onboardingIntro}>Tes choix de culture fabriquent une récolte unique. Sa qualité ouvre de meilleurs débouchés, finance ton atelier et construit ta réputation.</p><div className={styles.onboardingSteps}><article><ShoppingBag /><b>1. Prépare ton atelier</b><p>Tout pousse sur sol vivant. Choisis ton Buddie et tes cartes <strong>Botte du Chanvrier</strong>. Les équipements durables déjà achetés renforcent chaque nouvelle partie.</p></article><article><Dices /><b>2. Passe les 6 étapes</b><p>Lance les dés, réponds aux situations et dépense tes cartes au bon moment. Protège à la fois la <strong>qualité</strong> et la quantité récoltée.</p></article><article><Scale /><b>3. Affronte le jury</b><p>À la récolte, le jury note la fleur. La note détermine son palier, sa valeur brute et les transformations réellement accessibles.</p></article><article><Flame /><b>4. Choisis ton débouché</b><p>Vends le lot brut, transforme les belles fleurs en hash ou en rosin, ou écoule les lots ratés en biomasse. Chaque voie a son rendement.</p></article><article><Trophy /><b>5. Réinvestis intelligemment</b><p>Utilise ton argent pour améliorer tente, lumière et machines. La qualité vendue augmente aussi ta <strong>réputation</strong> et départage le classement.</p></article></div><button type="button" className={styles.primaryButton} onClick={closeOnboarding}>C’est parti · préparer mon atelier</button></section></div> : null}
-          {pendingStart ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingStart(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="culture-system-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>Démarrage sur sol vivant</span><h2 id="culture-system-burn-title">Commencer la culture ?</h2><p>Le sol vivant est inclus et aucune carte n’est consommée au lancement. Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{isPlayerMode ? <KqEnergyPanel disabled={remoteAction !== null} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}{buddieStartBlockReason || remoteNotice ? <small className={styles.modalNotice}>{buddieStartBlockReason || remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingStart(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null || Boolean(buddieStartBlockReason) || (isPlayerMode && (!energyEstimate || energyEstimate.mode !== energyMode))} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : "Commencer"}</button></div></section></div> : null}
+          {pendingStart ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingStart(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="culture-system-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>Démarrage sur sol vivant</span><h2 id="culture-system-burn-title">Commencer la culture ?</h2><p>Le sol vivant est inclus et aucune carte n’est consommée au lancement. Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{playerPresentation ? <KqEnergyPanel disabled={remoteAction !== null} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}{buddieStartBlockReason || remoteNotice ? <small className={styles.modalNotice}>{buddieStartBlockReason || remoteNotice}</small> : null}<div><button type="button" disabled={remoteAction !== null} onClick={() => setPendingStart(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={remoteAction !== null || Boolean(buddieStartBlockReason) || (playerPresentation && (!energyEstimate || energyEstimate.mode !== energyMode))} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : "Commencer"}</button></div></section></div> : null}
           {pendingRandomQueueFlowerId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingRandomQueueFlowerId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="random-queue-title" onClick={(event) => event.stopPropagation()}><Swords /><span>Arène aléatoire · classée</span><h2 id="random-queue-title">Mettre cette Fleur à disposition ?</h2><p>Le serveur choisira au hasard une Fleur appartenant à un autre joueur, quelle que soit sa qualité. Tu pourras retirer la tienne tant qu’elle attend ; dès qu’un adversaire arrive, le jury se lance et les deux Fleurs brûlent automatiquement.</p><small>Gain garanti au verdict : {KQ_REWARD_BALANCE.pvp.directSeasonPoints.min} à {KQ_REWARD_BALANCE.pvp.directSeasonPoints.max} points de saison directs et {KQ_REWARD_BALANCE.pvp.arenaExperience.min} à {KQ_REWARD_BALANCE.pvp.arenaExperience.max} EXP. Le gagnant reçoit {KQ_REWARD_BALANCE.pvp.winnerCardCount} cartes Botte du Chanvrier.</small>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingRandomQueueFlowerId(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void joinRandomBattleQueue(pendingRandomQueueFlowerId)}><Swords /> {matchmakingLoading ? "Recherche…" : "Entrer dans la file"}</button></div></section></div> : null}
           {pendingTrainingFlowerId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingTrainingFlowerId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="remote-battle-title" onClick={(event) => event.stopPropagation()}><Swords /><span>Entraînement aléatoire</span><h2 id="remote-battle-title">Confier cette Fleur au jury ?</h2><p>Le serveur tirera le bot au hasard et le révélera avec le verdict. Le duel immédiat brûlera ta Fleur et rapportera {KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP d’Arène et une carte seulement en cas de victoire. Il ne modifie ni ton Elo ni ta série ; les défis du jour validés peuvent toutefois ajouter leurs points de saison.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingTrainingFlowerId(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void confirmRemoteBattle()}><Swords /> {matchmakingLoading ? "Tirage et jury…" : "Lancer l’entraînement"}</button></div></section></div> : null}
           {botBattleResult ? (
@@ -1916,6 +1977,7 @@ export function KanabQuestDicePrototype({
                 <h2 id="bot-result-title">{botBattleResult.winner === "player" ? "Victoire !" : "Défaite"}</h2>
                 <p>Face à {botBattleResult.opponentName} avec {botBattleResult.varietyName}.</p>
                 <div className={styles.officialRounds}>{botBattleResult.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><small>{round.explanation}</small><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div>
+                <KqJuryRecap rounds={botBattleResult.rounds} playerStats={botRecapBattle?.playerFlower.stats} opponentStats={botRecapBattle?.opponentFlower.stats} onPrepare={onOpenGame || viewMode !== "arena" ? prepareAfterVerdict : undefined} prepareHref={!tutorial ? "/arene/placard?view=game" : undefined} prepareLabel={remoteRunId && state.phase !== "complete" ? "Reprendre ma culture en cours" : undefined} />
                 <VerdictMarketTarget route={routePlan?.route ?? null} rounds={botBattleResult.rounds} onOpenMarket={onOpenMarket ? () => { setBotBattleResult(null); onOpenMarket(); } : undefined} />
                 {botBattleResult.completedChallenges.length > 0 ? (
                   <div className={styles.officialChallengeReward}>
@@ -1943,6 +2005,7 @@ export function KanabQuestDicePrototype({
                 <p>{officialBattleResult.playerVariety} face à {officialBattleResult.opponentVariety}.</p>
                 <strong className={styles.verdictScore}>{officialBattleResult.rounds.filter((round) => round.winner === "player").length} – {officialBattleResult.rounds.filter((round) => round.winner === "opponent").length}</strong>
                 <div className={styles.officialRounds}>{officialBattleResult.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><small>{round.explanation}</small><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div>
+                <KqJuryRecap rounds={officialBattleResult.rounds} playerStats={officialRecapBattle?.playerFlower.stats} opponentStats={officialRecapBattle?.opponentFlower.stats} onPrepare={onOpenGame || viewMode !== "arena" ? prepareAfterVerdict : undefined} prepareHref={!tutorial ? "/arene/placard?view=game" : undefined} prepareLabel={remoteRunId && state.phase !== "complete" ? "Reprendre ma culture en cours" : undefined} />
                 <VerdictMarketTarget route={routePlan?.route ?? null} rounds={officialBattleResult.rounds} onOpenMarket={onOpenMarket ? () => { setOfficialBattleResult(null); onOpenMarket(); } : undefined} />
                 <div className={styles.officialResultRewards}>
                   <p><b>Arène</b>+{officialBattleResult.experienceAwarded.toLocaleString("fr-FR")} EXP · deux Fleurs brûlées</p>
@@ -1967,7 +2030,7 @@ export function KanabQuestDicePrototype({
     const preservedCards = economy.preservedCodes.map((code) => KQ_CARDS.find((card) => card.code === code)).filter((card): card is KqSupportCard => Boolean(card));
     if (cultureDead) {
       return (
-        <main ref={gameViewportRef} className={styles.page} data-player-mode={isPlayerMode || undefined} data-view-mode={viewMode}>
+        <main ref={gameViewportRef} className={styles.page} data-player-mode={playerPresentation || undefined} data-view-mode={viewMode}>
           <section className={styles.cultureDeath} aria-labelledby="culture-death-title" data-outcome="dead" data-outcome-stage={outcomeArtwork?.stage}>
             {outcomeArtwork?.outcome === "dead" ? (
               <span className={styles.cultureDeathArtwork}>
@@ -1976,18 +2039,29 @@ export function KanabQuestDicePrototype({
             ) : null}
             <div className={styles.cultureDeathCopy}>
               <span>Culture terminée · {state.varietyName}</span>
-              <h1 id="culture-death-title">Culture morte</h1>
-              <p>Deux étapes ont été validées à 0 réussite. Même non consécutives, elles mettent fin à la culture.</p>
+              <h1 id="culture-death-title">Culture terminée sans récolte</h1>
+              <p>La dernière étape a été validée à 0 réussite alors que ta culture avait déjà une étape à zéro{rescuedStageIndex >= 0 ? " et que ton secours avait été utilisé" : ""}.</p>
               <strong>Aucune récolte · Aucune carte Fleur</strong>
+            </div>
+          </section>
+          <section className={styles.recoveryPanel} data-culture-recovery aria-label="Comprendre et préparer la suite">
+            <h2>Ton aventure continue</h2>
+            <p><strong>Tu gardes ta collection :</strong> ton Buddie, ton Héritage et les cartes non jouées. Les copies utilisées pendant cette culture restent consommées.</p>
+            <KqCultureRecap state={state} />
+            <p><strong>Pour la prochaine culture :</strong> garde si possible une réaction pour un lancer à zéro. Avant de valider, ouvre « Jouer une réaction » et vérifie les cartes compatibles avec tes XP disponibles.</p>
+            <p>Tu peux aussi t’entraîner avec du matériel prêté : l’essai gratuit garantit une récolte fictive.</p>
+            <div className={styles.recoveryActions}>
+              <button type="button" className={styles.primaryButton} data-culture-recovery-action="prepare" onClick={reset}><RotateCcw /> Préparer une nouvelle culture</button>
+              <button type="button" data-culture-recovery-action="trial" onClick={() => setRecoveryTrialOpen(true)}>M’entraîner sans frais</button>
             </div>
           </section>
           <section className={styles.traitsPanel}>
             <h2>L’histoire de cette culture</h2>
             <ol className={styles.cultureDeathHistory} aria-label="Résultats des étapes validées">
               {state.history.map((entry, index) => (
-                <li key={entry.stage} data-zero={entry.total === 0 || undefined}>
+                <li key={entry.stage} data-zero={entry.total === 0 && !entry.rescued || undefined} data-rescued={entry.rescued || undefined}>
                   <span><strong>{index + 1}. {entry.stage}</strong><small>{entry.situation}</small></span>
-                  <b>{entry.total} réussite{entry.total === 1 ? "" : "s"}</b>
+                  <b>{entry.total} réussite{entry.total === 1 ? "" : "s"}{entry.rescued ? " · secours utilisé" : ""}</b>
                 </li>
               ))}
             </ol>
@@ -1995,8 +2069,9 @@ export function KanabQuestDicePrototype({
               <article><Flame /><span><small>Copies brûlées · {burnedCards.length}</small><div>{burnedCards.length > 0 ? burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte brûlée</em>}</div></span></article>
               <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte du deck conservée</em>}</div></span></article>
             </div>
-            <button type="button" className={styles.primaryButton} onClick={reset}><RotateCcw /> Préparer une nouvelle culture</button>
           </section>
+          {recoveryTrialOpen ? <RecoveryTrial storageKey="recovery" continueLabel="Préparer ma prochaine culture"
+            onClose={() => setRecoveryTrialOpen(false)} onContinue={() => { setRecoveryTrialOpen(false); reset(); }} /> : null}
         </main>
       );
     }
@@ -2031,6 +2106,7 @@ export function KanabQuestDicePrototype({
               <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte conservée</em>}</div></span></article>
             </div>
             {state.energy ? <KqEnergyPanel lockedQuote={state.energy} lockedTents={state.equipment?.tents} lockedScope={state.equipment?.scope} productionUnits={state.equipment?.productionUnits} runId={remoteRunId} /> : null}
+            <KqCultureRecap state={state} />
             <HarvestScoreSheet state={state} />
             <div className={styles.traitsList}>{flower.traits.map((trait, index) => <span key={`${trait}-${index}`}><Star />{trait}</span>)}</div>
             <section className={styles.harvestFlowerCard} aria-label="Carte Fleur obtenue">
@@ -2053,7 +2129,7 @@ export function KanabQuestDicePrototype({
       );
     }
     return (
-      <main ref={gameViewportRef} className={styles.page}>
+      <main ref={gameViewportRef} className={styles.page} data-player-mode={playerPresentation || undefined} data-playable-lesson={Boolean(tutorial) || undefined}>
         <section className={styles.harvestHero}>
           <Image src="/dev/placard/charles.webp" width={180} height={210} alt="Charles présente la récolte" />
           <div><span>{persistedFlowerId ? "Carte Fleur officielle obtenue" : "Carte Récolte obtenue"}</span><h1>{tier}</h1><p>{state.varietyName} · créée le {formatKqDate(flower.createdAt)}</p><small className={styles.integrityCode}>Culture #{String(state.seed).padStart(5, "0")} · Empreinte {flower.integrityCode}{persistedFlowerId ? ` · Fleur ${persistedFlowerId.slice(0, 8)}` : ""}</small></div>
@@ -2065,6 +2141,7 @@ export function KanabQuestDicePrototype({
             <article><Flame /><span><small>Copies brûlées · {burnedCards.length}</small><div>{burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>)}</div></span></article>
             <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte du deck conservée</em>}</div></span></article>
           </div>
+          <KqCultureRecap state={state} />
           <HarvestScoreSheet state={state} />
           <div className={styles.traitsList}>{flower.traits.map((trait, index) => <span key={`${trait}-${index}`}><Star />{trait}</span>)}</div>
           {state.combos.length > 0 ? <div className={styles.comboList}>{state.combos.map((combo) => <span key={combo}><Sparkles />Combo · {combo}</span>)}</div> : null}
@@ -2108,11 +2185,12 @@ export function KanabQuestDicePrototype({
               <button type="button" className={styles.primaryButton} onClick={() => setPendingBattleVerdict(true)}>Lancer le verdict du jury</button>
             </div>
           ) : null}
-          {battle?.status === "locked" && pendingBattleVerdict ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => setPendingBattleVerdict(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="flower-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>Verdict irréversible</span><h2 id="flower-burn-title">Brûler les deux fleurs ?</h2><p>{battle.playerFlower.variety} et {battle.opponentFlower.variety} seront détruites après les trois manches. Le résultat sera ajouté au classement et ne pourra pas être rejoué.</p><div><button type="button" onClick={() => setPendingBattleVerdict(false)}>Retour au duel</button><button type="button" className={styles.burnButton} onClick={judgeBattle}><Flame /> Confirmer le verdict</button></div></section></div> : null}
+          {battle?.status === "locked" && pendingBattleVerdict ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => setPendingBattleVerdict(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="flower-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>{tutorial ? "Verdict d’essai" : "Verdict irréversible"}</span><h2 id="flower-burn-title">Brûler les deux fleurs ?</h2><p>{battle.playerFlower.variety} et {battle.opponentFlower.variety} seront détruites après les trois manches. {tutorial ? "Seules les Fleurs prêtées et le classement fictif de cet essai sont concernés." : "Le résultat sera ajouté au classement et ne pourra pas être rejoué."}</p><div><button type="button" onClick={() => setPendingBattleVerdict(false)}>Retour au duel</button><button type="button" className={styles.burnButton} onClick={judgeBattle}><Flame /> Confirmer le verdict</button></div></section></div> : null}
           {battle?.status === "verdict" ? (
             <div className={styles.verdictPanel}>
-              <span className={styles.verdictKicker}>Verdict officiel</span>
+              <span className={styles.verdictKicker}>{tutorial ? "Verdict fictif" : "Verdict officiel"}</span>
               <h2>{revealedRounds >= battle.rounds.length ? battle.winner === "player" ? "Victoire !" : "Défaite honorable" : "Délibération du jury…"}</h2>
+              {revealedRounds >= battle.rounds.length ? <KqJuryRecap rounds={battle.rounds} playerStats={battle.playerFlower.stats} opponentStats={battle.opponentFlower.stats} onPrepare={reset} /> : null}
               {revealedRounds >= battle.rounds.length ? <small className={styles.verdictDate}>Fleurs brûlées le {formatKqDate(battle.burnedAt)}</small> : null}
               {revealedRounds >= battle.rounds.length && rankProfile.lastArenaRewardCards.length > 0 ? <div className={styles.arenaBoosterReward}><Sparkles /><span><small>Série de {rankProfile.streak} victoires · booster gagné</small><strong>{rankProfile.lastArenaRewardCards.map((code) => KQ_CARDS.find((card) => card.code === code)?.name ?? code).join(" · ")}</strong></span></div> : null}
               <div className={styles.battleRounds}>{battle.rounds.slice(0, revealedRounds).map((round) => <div key={round.code} data-winner={round.winner}><strong>{round.label}<small>{round.explanation}</small></strong><span>{round.playerScore}<small>{round.winner === "player" ? "Gagné" : ""}</small></span><b>–</b><span>{round.opponentScore}<small>{round.winner === "opponent" ? "Gagné" : ""}</small></span></div>)}</div>
@@ -2128,11 +2206,39 @@ export function KanabQuestDicePrototype({
   const runChallenges = getKqDailyChallenges(getKqGameChallengeDate(state));
   const runProjection = getKqRunProjection(state);
   const lastStageReward = state.phase === "resolved" ? state.history.at(-1) ?? null : null;
+  const primaryAction = state.phase === "prepare" ? "roll" : state.phase === "rolled" ? "resolve" : "advance";
+  const actionContext = state.phase === "prepare"
+    ? `${getKqStageTarget(state)} réussite${getKqStageTarget(state) > 1 ? "s" : ""} requise${getKqStageTarget(state) > 1 ? "s" : ""} · ${cardChoices.label.toLowerCase()}`
+    : state.phase === "rolled" && preview
+      ? preview.total === 0
+        ? zeroSuccessStages > 0
+          ? firstCultureRescueAvailable ? "0 réussite : ton secours permettra de continuer." : "0 réussite : valider fera mourir la culture."
+          : "0 réussite : valider comptera comme une première étape à risque."
+        : `${preview.total}/${preview.target} réussites · ${cardChoices.label.toLowerCase()}`
+      : `${lastStageReward ? KQ_OUTCOME_LABELS[lastStageReward.outcome] : "Étape validée"} · ${state.xp} XP disponibles`;
+  const focusTurnElement = (selector: string) => {
+    window.requestAnimationFrame(() => {
+      const element = gameViewportRef.current?.querySelector<HTMLElement>(selector);
+      element?.focus({ preventScroll: true });
+      element?.scrollIntoView({ block: "start", behavior: "instant" });
+    });
+  };
+  const performTurnAction = async () => {
+    if (pendingBurnCode || rolling || remoteAction !== null || diceVisualSyncing) return;
+    if (primaryAction === "roll") {
+      focusTurnElement("[data-culture-decision]");
+      await roll();
+    } else {
+      const nextState = await applyGameAction(primaryAction);
+      if (nextState?.phase === "prepare") focusTurnElement("[data-culture-situation]");
+      else if (nextState?.phase === "resolved" && !isKqCultureDead(nextState)) focusTurnElement("[data-culture-result]");
+    }
+  };
 
   return (
-    <main ref={gameViewportRef} className={styles.page} data-view-mode={viewMode} data-player-mode={isPlayerMode || undefined} data-culture-play>
+    <main ref={gameViewportRef} className={styles.page} data-view-mode={viewMode} data-player-mode={playerPresentation || undefined} data-playable-lesson={Boolean(tutorial) || undefined} data-culture-play>
       <header className={styles.topbar}>
-        <div className={styles.gameBrand}><span className={styles.gameBrandMark} aria-hidden="true"><Image src="/mascots/home-welcome.png" alt="" width={1122} height={1402} sizes="64px" /></span><div><span>{isPlayerMode ? "Kanab Quest · Culture officielle" : "Kanab Quest · Prototype local"}</span><h1>Botte du Chanvrier</h1></div></div>
+        <div className={styles.gameBrand}><span className={styles.gameBrandMark} aria-hidden="true"><Image src="/mascots/home-welcome.png" alt="" width={1122} height={1402} sizes="64px" /></span><div><span>{tutorial ? "Kanab Quest · Culture d’essai" : isPlayerMode ? "Kanab Quest · Culture officielle" : "Kanab Quest · Prototype local"}</span><h1>Botte du Chanvrier</h1></div></div>
         <div className={styles.resources}><span><Zap />{state.xp} XP</span><span><Star /> Qualité {runProjection.projectedQuality}</span><span>Pression {state.pressure}/4</span>{!isPlayerMode ? <button type="button" onClick={reset}><RotateCcw /> Recommencer</button> : null}</div>
       </header>
 
@@ -2140,7 +2246,12 @@ export function KanabQuestDicePrototype({
         {KQ_STAGES.map((stage, index) => <span key={stage} data-current={index === state.stageIndex || undefined} data-done={index < state.stageIndex || undefined} aria-current={index === state.stageIndex ? "step" : undefined}><b>{index + 1}</b><small>{stage}</small></span>)}
       </nav>
 
-      {zeroSuccessStages > 0 ? <aside className={styles.cultureFailureRule} data-warning role="status"><strong>1 étape à 0 réussite.</strong> Une deuxième étape validée à 0, même plus tard, entraînera la mort de la culture sans récolte.</aside> : null}
+      {state.firstCultureRescue ? <aside className={styles.rescueNotice} data-culture-rescue data-status={firstCultureRescueAvailable ? "available" : "used"} role="status">
+        <strong>{firstCultureRescueAvailable ? "Première culture · 1 secours gratuit disponible" : `Secours utilisé à l’étape ${rescuedStageIndex + 1}`}</strong>
+        <span>{firstCultureRescueAvailable
+          ? "Au deuxième résultat validé à zéro, ta culture continuera. Les dés, la qualité et les XP de l’étape garderont leur résultat normal."
+          : "Ta culture a pu continuer. Un nouveau résultat validé à zéro mettra fin à cette culture sans récolte."}</span>
+      </aside> : zeroSuccessStages > 0 ? <aside className={styles.cultureFailureRule} data-warning role="status"><strong>1 étape à 0 réussite.</strong> {tutorial ? "Dans cet essai, un dé sera assisté si nécessaire pour te laisser découvrir la récolte." : "Une deuxième étape validée à 0, même plus tard, entraînera la mort de la culture sans récolte."}</aside> : null}
 
       <section className={styles.gameGrid}>
         <div className={styles.situationCard} data-culture-situation tabIndex={-1}>
@@ -2156,19 +2267,21 @@ export function KanabQuestDicePrototype({
               priority={state.stageIndex === 0}
             />
           </div>
-          <h2>{situation.name}</h2>
-          <p>{situation.story}</p>
-          <div className={styles.tags}>{situation.tags.map((tag) => <span key={tag}>{tag === "pest" ? state.revealedPest ? `Ravageur : ${PEST_LABELS[state.revealedPest]}` : "Ravageur non identifié" : SITUATION_TAG_LABELS[tag] ?? tag}</span>)}</div>
+          <div className={styles.situationCopy}>
+            <h2>{situation.name}</h2>
+            <p>{situation.story}</p>
+            <div className={styles.tags}>{situation.tags.map((tag) => <span key={tag}>{tag === "pest" ? state.revealedPest ? `Ravageur : ${PEST_LABELS[state.revealedPest]}` : "Ravageur non identifié" : SITUATION_TAG_LABELS[tag] ?? tag}</span>)}</div>
+          </div>
           <div className={styles.target}><small>Réussites requises</small><strong>{getKqStageTarget(state)}</strong></div>
         </div>
 
-        <div className={styles.diceBoard} aria-label="Décision du tour">
+        <div className={styles.diceBoard} aria-label="Décision du tour" data-culture-decision data-phase={state.phase} tabIndex={-1}>
           <span className={styles.buddyName}>Buddie cultivé</span>
           <h2>{state.varietyName}</h2>
           {state.powerOutage ? <div className={styles.outageAlert}><Zap /><span><strong>Coupure de courant</strong><small>Le meilleur dé deviendra un Danger pendant cette étape.</small></span></div> : null}
           <div className={styles.pressureMeter} role="meter" aria-label={`Pression ${state.pressure} sur 4`} aria-valuemin={0} aria-valuemax={4} aria-valuenow={state.pressure}>
             <span>{[1, 2, 3, 4].map((level) => <i key={level} data-filled={level <= state.pressure || undefined} data-danger={level >= 3 || undefined} />)}</span>
-            <small>{state.pressure >= 3 ? "Sous tension · +1 réussite requise" : "Culture stable · danger à partir de 3"} · un lancer parfait retire 1 Pression</small>
+            <small>{state.pressure >= 3 ? "Sous tension · +1 réussite requise" : "Culture stable · danger à partir de 3"}</small>
           </div>
           <div className={styles.diceTray} data-phase={state.phase} data-motion-phase={diceMotionPhase} data-rolling={rolling || undefined} data-result={state.phase === "rolled" || undefined} data-direct-result={directDiceResult || undefined} data-physics={physicsDiceActive || undefined}>
             {!directDiceResult ? <KqPhysicsDice ref={physicsDiceRef} /> : null}
@@ -2185,6 +2298,50 @@ export function KanabQuestDicePrototype({
             <span data-kind="neutral"><b>2–3</b> Neutre</span>
             <span data-kind="success"><b>4–5</b> Réussite</span>
             <span data-kind="spark"><b>6</b> Étincelle</span>
+          </div>
+          {state.phase === "rolled" && preview ? (
+            <div className={styles.rollResult} data-culture-result tabIndex={-1} aria-live="polite">
+              <span>Réussites</span><strong>{preview.total}/{preview.target}</strong><small>{preview.dangers} Danger · {preview.sparks} Étincelle</small>
+              <em className={styles.provisionalOutcome} data-outcome={preview.outcome}>Résultat provisoire · {zeroSuccessStages > 0 && preview.total === 0 ? firstCultureRescueAvailable ? "Secours disponible" : "Culture en danger" : KQ_OUTCOME_LABELS[preview.outcome]}</em>
+              {preview.total === 0 ? <p className={styles.cultureDeathWarning}>{tutorial ? "Cette étape restera ratée. L’essai assistera un dé si nécessaire aux étapes suivantes pour permettre la récolte fictive." : zeroSuccessStages > 0
+                ? firstCultureRescueAvailable
+                  ? `Valider utilisera ton secours gratuit : la culture continuera, sans changer le résultat de cette étape.${cardChoices.playableCount > 0 ? " Tu peux encore jouer une réaction pour conserver ce secours." : ""}`
+                  : `Valider ce résultat à 0 réussite mettra fin à ta culture.${cardChoices.playableCount > 0 ? " Tu peux encore tenter de la sauver avec une carte de réaction." : ""}`
+                : firstCultureRescueAvailable
+                  ? "Ce zéro restera une étape ratée. Ton secours sera gardé pour un éventuel deuxième résultat à zéro."
+                  : "Valider ce résultat comptera comme une étape à 0 réussite. Une deuxième étape à 0 entraînera la mort de ta culture sans récolte."}</p> : null}
+              <p>{cardChoices.playableCount > 0 ? `${cardChoices.label} avant de valider. Leur effet est indiqué dans ta main.` : "Aucune carte de réaction ne peut être jouée maintenant."}</p>
+            </div>
+          ) : null}
+          {state.phase === "resolved" && outcomeArtwork && outcomeArtwork.outcome !== "dead" ? (
+            <div className={styles.outcome} data-culture-result tabIndex={-1} data-outcome={outcomeArtwork.outcome} data-outcome-stage={outcomeArtwork.stage} role="status" aria-live="polite">
+              <span key={outcomeArtwork.src} className={styles.outcomeReaction}>
+                <Image
+                  src={outcomeArtwork.src}
+                  alt={outcomeArtwork.alt}
+                  fill
+                  sizes="(max-width: 760px) 110px, 220px"
+                />
+              </span>
+              {state.history.at(-1)?.dice.every(face => face === 6) ? <div className={styles.tripleSpark} role="status"><Sparkles size={22} /><div><strong>Triple étincelle !</strong><span>Trois 6 conservés. Termine la culture pour avancer dans ce succès.</span></div></div> : null}
+                <h3>{KQ_OUTCOME_LABELS[outcomeArtwork.outcome]}</h3><strong>{lastStageReward?.trait ?? state.traits.at(-1)}</strong>{(lastStageReward?.combos?.length ?? 0) > 0 ? <small className={styles.comboNotice}><Sparkles aria-hidden="true" /> {lastStageReward?.combos?.join(" · ")}</small> : null}{outcomeArtwork.outcome === "critical" ? <small className={styles.pressureRelief}>Pression −1 · la culture reprend son souffle</small> : null}
+              {lastStageReward ? <div className={styles.stageRewardReceipt} aria-label="Gains de l’étape"><span data-negative={(lastStageReward.qualityDelta ?? 0) < 0 || undefined}><Star aria-hidden="true" /><strong>{(lastStageReward.qualityDelta ?? 0) > 0 ? "+" : ""}{lastStageReward.qualityDelta ?? 0}</strong><small>Qualité</small></span><span><Zap aria-hidden="true" /><strong>+{lastStageReward.xpGain ?? 0}</strong><small>XP gagnés</small></span><span><Scale aria-hidden="true" /><strong>{runProjection.harvestGrams.toLocaleString("fr-FR")} g</strong><small>Lot projeté</small></span>{(lastStageReward.harvestLossPercent ?? 0) > 0 ? <span data-negative><Flame aria-hidden="true" /><strong>−{lastStageReward.harvestLossPercent} %</strong><small>Récolte volée</small></span> : null}</div> : null}
+              <p>Réserve disponible : {state.xp} XP.</p>
+              {lastStageReward?.rescued ? <p className={styles.rescueReceipt} data-culture-rescue-receipt><strong>Ton secours a permis de continuer.</strong> Le résultat et les gains de cette étape restent inchangés. Le secours de première culture est maintenant utilisé.</p> : null}
+            </div>
+          ) : null}
+          <div className={styles.turnActions} data-culture-actionbar data-suspended={Boolean(pendingBurnCode) || undefined}>
+            <small className={styles.turnActionContext} data-warning={state.phase === "rolled" && preview?.total === 0 || undefined}>{actionContext}</small>
+            <button type="button" className={state.phase === "prepare" ? styles.rollButton : styles.primaryButton}
+              data-culture-primary-action data-action={primaryAction}
+              disabled={Boolean(pendingBurnCode) || remoteAction !== null || rolling || diceVisualSyncing}
+              aria-busy={remoteAction !== null || rolling || diceVisualSyncing}
+              onClick={() => void performTurnAction()}>
+              {state.phase === "prepare" ? <Dices aria-hidden="true" /> : null}
+              {rolling ? "Les dés roulent…" : diceVisualSyncing ? "Mise à jour des dés…" : remoteAction !== null ? "Confirmation…"
+                : state.phase === "prepare" ? "Lancer les dés" : state.phase === "rolled" ? "Valider le résultat"
+                  : state.stageIndex === KQ_STAGES.length - 1 ? "Révéler la Récolte" : "Étape suivante"}
+            </button>
           </div>
           {activeHeritage && activeHeritage.timing === "once-per-run" && (heritagePermission.allowed || state.heritageArmed) ? (
             <aside className={styles.heritageInPlay} data-used={state.heritageUsed || undefined} data-armed={state.heritageArmed || undefined} aria-label={`Héritage équipé : ${activeHeritage.name}`}>
@@ -2207,9 +2364,10 @@ export function KanabQuestDicePrototype({
               <div><CardArtwork code={activeHeritage.code} name={activeHeritage.name} producerName={activeHeritage.producerName} imageUrl={activeHeritage.imageUrl} /><span><strong>Héritage équipé · ne brûle pas</strong><p>{activeHeritage.description}</p>{activeHeritage.timing === "once-per-run" && !state.heritageUsed ? <small>{heritagePermission.reason}</small> : null}</span></div>
             </details>
           ) : null}
-          <details className={styles.handDetails}>
-            <summary><span>{state.phase === "resolved" ? "Consulter ma main" : state.phase === "rolled" ? "Jouer une réaction" : "Préparer une carte"}</span><small>{handCodes.length} cartes · facultatif</small></summary>
+          <details className={styles.handDetails} data-culture-hand>
+            <summary><span>{state.phase === "resolved" ? "Consulter ma main" : state.phase === "rolled" ? "Jouer une réaction" : "Préparer une carte"}</span><small data-playable-card-count={cardChoices.playableCount}>{cardChoices.label}</small></summary>
             <section className={styles.deckPanel}>
+              <p className={styles.cardChoiceHint} data-card-choice-hint>{cardChoices.explanation}</p>
               <header><div><span>Album Kanab Quest</span><h2>Ta main · Botte du Chanvrier</h2></div><p>{handCodes.length} copie{handCodes.length > 1 ? "s" : ""} distribuée{handCodes.length > 1 ? "s" : ""} · {Math.max(0, supportDeckSize - burnedSupportCount)} copie{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""} non brûlée{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""}. Les doublons occupent plusieurs places dans la main.</p></header>
               <details className={styles.handGuide}><summary>Rôle des cartes</summary><KqCardRoleLegend /></details>
               <div className={styles.handActions}><span>{(state.handRedrawsUsed ?? 0) < redrawLimit ? `${redrawLimit - (state.handRedrawsUsed ?? 0)} changement${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""} de main disponible${redrawLimit - (state.handRedrawsUsed ?? 0) > 1 ? "s" : ""}.` : "Changement de main déjà utilisé pour cette culture."}</span><button type="button" disabled={!canRedrawHand || remoteAction !== null} onClick={() => void applyGameAction("redraw")}><RotateCcw /> Changer ma main</button></div>
@@ -2228,48 +2386,11 @@ export function KanabQuestDicePrototype({
               ) : null}
               {state.revealedPest ? <div className={styles.pestReveal}><strong>🔎 {PEST_LABELS[state.revealedPest]} révélés</strong><span>{availableCards.filter((card) => card.category === "pbi").length} auxiliaire(s) compatible(s) de ta collection affiché(s).</span></div> : situation.pest ? <div className={styles.pestHidden}><strong>Ravageur inconnu</strong><span>Joue la Loupe d’inspection avant les dés pour ouvrir la réserve PBI.</span></div> : null}
               <div className={styles.substrate} data-tone={cultureSystemStatus?.tone}><Sparkles /><span><small>Culture indoor</small><strong>{activeSubstrate.name}</strong><em>{cultureSystemStatus?.detail ?? activeSubstrate.description}</em></span>{cultureSystemStatus ? <b className={styles.cultureSystemStatus}>{cultureSystemStatus.label}</b> : null}</div>
-              <div className={styles.cardRow}>{availableCards.map((card) => { const usedCopies = state.usedCards.filter((code) => code === card.code).length; const deckCopies = card.category === "pbi" ? 0 : Math.max(0, state.deckCodes.filter((code) => code === card.code).length - usedCopies); return <SupportCard key={card.code} card={card} state={state} copies={activeInventory[card.code] ?? 0} handCopies={card.category === "pbi" ? 0 : handCodes.filter((code) => code === card.code).length} deckCopies={deckCopies} serverValidatedCopy={remoteBurnsEnabled && card.category !== "pbi" && deckCopies > 0} onPlay={setPendingBurnCode} />; })}</div>
+              <div className={styles.cardRow}>{availableCards.map((card) => { const usedCopies = state.usedCards.filter((code) => code === card.code).length; const deckCopies = card.category === "pbi" ? 0 : Math.max(0, state.deckCodes.filter((code) => code === card.code).length - usedCopies); return <SupportCard key={card.code} card={card} state={state} copies={activeInventory[card.code] ?? 0} handCopies={card.category === "pbi" ? 0 : handCodes.filter((code) => code === card.code).length} deckCopies={deckCopies} onPlay={setPendingBurnCode} />; })}</div>
 
             </section>
           </details>
           {(state.effectNotices?.length ?? 0) > 0 ? <div className={styles.effectNotices} role="status" aria-live="polite" aria-atomic="true"><strong><Sparkles /> Résultat des effets</strong>{state.effectNotices?.map((notice, index) => { const kind = getKqEffectNoticeKind(notice); return <p key={`${notice}-${index}`} data-kind={kind}>{kind === "applied" ? "✓" : "○"} {notice}</p>; })}</div> : null}
-          {state.phase === "prepare" ? (
-            <><p>Prépare une carte si tu le souhaites, puis tente ta chance.</p><button type="button" className={styles.rollButton} onClick={roll} disabled={rolling || remoteAction !== null}><Dices />{rolling ? "Les dés roulent…" : "Lancer les dés"}</button></>
-          ) : null}
-          {state.phase === "rolled" && preview ? (
-            <div className={styles.rollResult} aria-live="polite">
-              <span>Réussites</span><strong>{preview.total}/{preview.target}</strong><small>{preview.dangers} Danger · {preview.sparks} Étincelle</small>
-              <em className={styles.provisionalOutcome} data-outcome={preview.outcome}>Résultat provisoire · {zeroSuccessStages > 0 && preview.total === 0 ? "Culture en danger" : KQ_OUTCOME_LABELS[preview.outcome]}</em>
-              {preview.total === 0 ? <p className={styles.cultureDeathWarning}>{zeroSuccessStages > 0 ? "Valider ce deuxième résultat à 0 réussite entraînera la mort de ta culture. Tu peux encore la sauver avec une carte de réaction." : "Valider ce résultat comptera comme une étape à 0 réussite. Une deuxième étape à 0 entraînera la mort de ta culture sans récolte."}</p> : null}
-              <p>Tu peux encore jouer une carte de réaction avant de valider.</p>
-              <button type="button" className={styles.primaryButton} disabled={remoteAction !== null || diceVisualSyncing} onClick={() => void applyGameAction("resolve")}>{diceVisualSyncing ? "Mise à jour des dés…" : "Valider le résultat"}</button>
-            </div>
-          ) : null}
-          {state.phase === "resolved" && outcomeArtwork && outcomeArtwork.outcome !== "dead" ? (
-            <div className={styles.outcome} data-outcome={outcomeArtwork.outcome} data-outcome-stage={outcomeArtwork.stage} role="status" aria-live="polite">
-              <span key={outcomeArtwork.src} className={styles.outcomeReaction}>
-                <Image
-                  src={outcomeArtwork.src}
-                  alt={outcomeArtwork.alt}
-                  fill
-                  sizes="(max-width: 760px) 170px, 220px"
-                />
-              </span>
-              {state.history.at(-1)?.dice.every(face => face === 6) ? <div className={styles.tripleSpark} role="status"><Sparkles size={22} /><div><strong>Triple étincelle !</strong><span>Trois 6 conservés. Termine la culture pour avancer dans ce succès.</span></div></div> : null}
-                <h3>{KQ_OUTCOME_LABELS[outcomeArtwork.outcome]}</h3><strong>{lastStageReward?.trait ?? state.traits.at(-1)}</strong>{(lastStageReward?.combos?.length ?? 0) > 0 ? <small className={styles.comboNotice}><Sparkles aria-hidden="true" /> {lastStageReward?.combos?.join(" · ")}</small> : null}{outcomeArtwork.outcome === "critical" ? <small className={styles.pressureRelief}>Pression −1 · la culture reprend son souffle</small> : null}
-              {lastStageReward ? <div className={styles.stageRewardReceipt} aria-label="Gains de l’étape"><span data-negative={(lastStageReward.qualityDelta ?? 0) < 0 || undefined}><Star aria-hidden="true" /><strong>{(lastStageReward.qualityDelta ?? 0) > 0 ? "+" : ""}{lastStageReward.qualityDelta ?? 0}</strong><small>Qualité</small></span><span><Zap aria-hidden="true" /><strong>+{lastStageReward.xpGain ?? 0}</strong><small>XP gagnés</small></span><span><Scale aria-hidden="true" /><strong>{runProjection.harvestGrams.toLocaleString("fr-FR")} g</strong><small>Lot projeté</small></span>{(lastStageReward.harvestLossPercent ?? 0) > 0 ? <span data-negative><Flame aria-hidden="true" /><strong>−{lastStageReward.harvestLossPercent} %</strong><small>Récolte volée</small></span> : null}</div> : null}
-              <p>Réserve disponible : {state.xp} XP.</p>
-              <button type="button" className={styles.primaryButton} disabled={remoteAction !== null} onClick={async () => {
-                const nextState = await applyGameAction("advance");
-                if (nextState?.phase !== "prepare") return;
-                window.requestAnimationFrame(() => {
-                  const nextSituation = gameViewportRef.current?.querySelector<HTMLElement>("[data-culture-situation]");
-                  nextSituation?.focus({ preventScroll: true });
-                  nextSituation?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
-                });
-              }}>{state.stageIndex === KQ_STAGES.length - 1 ? "Révéler la Récolte" : "Étape suivante"}</button>
-            </div>
-          ) : null}
         </div>
       </section>
 
@@ -2297,12 +2418,12 @@ export function KanabQuestDicePrototype({
         </details>
         <details className={styles.cultureDisclosure}>
           <summary><span>Historique et cartes brûlées</span><small>{state.history.length} étape{state.history.length > 1 ? "s" : ""} validée{state.history.length > 1 ? "s" : ""}</small></summary>
-          {state.history.length > 0 ? <ol className={styles.cultureHistory}>{state.history.map((entry, index) => <li key={entry.stage}><span><strong>{index + 1}. {entry.stage} · {KQ_OUTCOME_LABELS[entry.outcome]}</strong><small>{entry.situation} · dés {entry.dice.join("–")}</small></span><b>{entry.qualityDelta === undefined ? "Ancien reçu" : `${entry.qualityDelta > 0 ? "+" : ""}${entry.qualityDelta} qualité · +${entry.xpGain ?? 0} XP`}</b></li>)}</ol> : <p className={styles.cultureHelp}>Aucune étape validée pour le moment.</p>}
+          {state.history.length > 0 ? <ol className={styles.cultureHistory}>{state.history.map((entry, index) => <li key={entry.stage}><span><strong>{index + 1}. {entry.stage} · {KQ_OUTCOME_LABELS[entry.outcome]}{entry.rescued ? " · secours utilisé" : ""}</strong><small>{entry.situation} · dés {entry.dice.join("–")}</small></span><b>{entry.qualityDelta === undefined ? "Ancien reçu" : `${entry.qualityDelta > 0 ? "+" : ""}${entry.qualityDelta} qualité · +${entry.xpGain ?? 0} XP`}</b></li>)}</ol> : <p className={styles.cultureHelp}>Aucune étape validée pour le moment.</p>}
           <div className={styles.ashes}><Flame /><span><small>Cendres de cette culture · {state.usedCards.length} copie{state.usedCards.length === 1 ? "" : "s"} brûlée{state.usedCards.length === 1 ? "" : "s"}</small><div>{state.usedCards.map((code, index) => <b key={`${code}-${index}`}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</b>)}</div></span></div>
         </details>
         <details className={styles.cultureDisclosure}>
           <summary><span>Règles et animation des dés</span></summary>
-          <div className={styles.cultureHelp}><p>Deux étapes validées à 0 réussite, même non consécutives, entraînent la mort de la culture sans récolte.</p><p>Tu peux jouer une carte avant le lancer, ou une carte de réaction avant de valider, selon son effet. Jouer une carte Botte du Chanvrier brûle une copie de ton album ; la confirmation affiche son avantage et son risque.</p>
+          <div className={styles.cultureHelp}><p>Deux étapes validées à 0 réussite, même non consécutives, entraînent la mort de la culture sans récolte. La toute première culture du compte dispose d’un secours automatique : une seule étape à zéro est écartée de ce compteur, en gardant ses pénalités.</p><p>À partir de 3 Pression, il faut une réussite supplémentaire. Un lancer parfait retire 1 Pression.</p><p>Tu peux jouer une carte avant le lancer, ou une carte de réaction avant de valider, selon son effet. Jouer une carte Botte du Chanvrier brûle une copie de ton album ; la confirmation affiche son avantage et son risque.</p>
           <button
             type="button"
             className={styles.directResultToggle}

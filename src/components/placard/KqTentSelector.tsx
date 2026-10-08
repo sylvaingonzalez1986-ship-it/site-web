@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { createContext, useContext, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import { getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import type { KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
@@ -27,6 +27,18 @@ export type KqSharedEquipmentOverview = {
 };
 
 const CHANGE_EVENT = "kq:tent-selected";
+const LessonTentContext = createContext<{ selected: number; select: (number: number) => void } | null>(null);
+
+/** Lesson selections stay inside this tree and never change the real session. */
+export function KqLessonTentProvider({ children }: { children: ReactNode }) {
+  const [selected, select] = useState(1);
+  const value = useMemo(() => ({ selected, select }), [selected]);
+  return <LessonTentContext.Provider value={value}>{children}</LessonTentContext.Provider>;
+}
+
+export function useKqSelectTent() {
+  return useContext(LessonTentContext)?.select ?? selectKqTent;
+}
 let selectedInMemory = 1;
 
 function readSelectedTent() {
@@ -53,7 +65,9 @@ function subscribe(listener: () => void) {
 }
 
 export function useKqTentSelection() {
-  return useSyncExternalStore(subscribe, readSelectedTent, () => 1);
+  const lesson = useContext(LessonTentContext);
+  const realSelection = useSyncExternalStore(subscribe, readSelectedTent, () => 1);
+  return lesson?.selected ?? realSelection;
 }
 
 export function KqTentSelector({ tents, tentNumber, disabled, onSelect = selectKqTent }: {

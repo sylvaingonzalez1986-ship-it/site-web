@@ -6,6 +6,7 @@ import type { KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear
 import { formatKqCash, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import styles from "./KqWarehouseInventory.module.css";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 
 export function KqCultureEquipmentWear({ code, name, condition, cashCents, activeRun, tentNumber = 1, productionUnits = 1, disabled, onUpdated }: {
   code: string;
@@ -18,6 +19,7 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
   disabled?: boolean;
   onUpdated: () => void;
 }) {
+  const api = useKqTutorialApi();
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -44,7 +46,7 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
       request.current = { version: condition.version, costCents: condition.replacementCents, tentNumber: targetTent, key: createClientRequestKey() };
     }
     try {
-      const response = await fetch("/api/arena/placard/equipment", {
+      const response = await api.request("/api/arena/placard/equipment", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "replace", tentNumber: targetTent, expectedUnits: productionUnits, equipmentCode: code, requestKey: request.current.key,
@@ -55,7 +57,7 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
       if (!response.ok) throw new Error(body.error || "Remplacement impossible.");
       setReplacedVersion(condition.version);
       setConfirming(false);
-      window.dispatchEvent(new Event("kq:equipment-updated"));
+      api.notify("kq:equipment-updated");
       onUpdated();
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Remplacement impossible.");

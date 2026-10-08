@@ -55,7 +55,8 @@ import {
 } from "@/lib/kanab-quest-equipment";
 import styles from "./KqEquipmentCatalogModal.module.css";
 import { KqCommerceComputer } from "./KqCommerceDesk";
-import { KqTentSelector, selectKqTent, useKqTentSelection, type KqTentOverview } from "./KqTentSelector";
+import { KqTentSelector, useKqSelectTent, useKqTentSelection, type KqTentOverview } from "./KqTentSelector";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
 import { KqEquipmentTierBadge } from "./KqEquipmentTierBadge";
 import { getKqCultureOperationalCodes, KQ_CULTURE_WEAR_RATES, type KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
@@ -163,6 +164,8 @@ export function KqEquipmentCatalogModal({
   onClose: () => void;
   onOpenWorkshop?: (equipmentCode?:string)=>void;
 }) {
+  const api = useKqTutorialApi();
+  const selectKqTent = useKqSelectTent();
   const recommendedEquipmentCode = initialEquipmentCode && getKqEquipmentDefinition(initialEquipmentCode)
     ? initialEquipmentCode
     : null;
@@ -208,7 +211,7 @@ export function KqEquipmentCatalogModal({
   const refresh = useCallback(async () => {
     const generation = ++refreshGeneration.current;
     try {
-      const response = await fetch(`/api/arena/placard/equipment?tentNumber=${currentTent.current}`, { cache: "no-store" });
+      const response = await api.request(`/api/arena/placard/equipment?tentNumber=${currentTent.current}`, { cache: "no-store" });
       const payload = await response.json() as EquipmentSnapshot & { error?: string };
       if (generation !== refreshGeneration.current) return;
       if (!response.ok) throw new Error(payload.error || "Catalogue matériel indisponible.");
@@ -218,7 +221,7 @@ export function KqEquipmentCatalogModal({
     } catch (reason) {
       if (generation === refreshGeneration.current) throw reason;
     }
-  }, []);
+  }, [api]);
 
   useEffect(() => {
     let cancelled = false;
@@ -233,15 +236,14 @@ export function KqEquipmentCatalogModal({
 
   useEffect(() => {
     const updated = () => { void refresh().catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "Catalogue indisponible.")); };
-    window.addEventListener("kq:equipment-updated", updated);
-    return () => window.removeEventListener("kq:equipment-updated", updated);
-  }, [refresh]);
+    return api.subscribe(["kq:equipment-updated"], updated);
+  }, [refresh, api]);
 
   useEffect(() => {
     if (snapshot?.tents.length && !snapshot.tents.some(tent => tent.tentNumber === tentNumber)) {
       selectKqTent(snapshot.tents[0].tentNumber);
     }
-  }, [snapshot?.tents, tentNumber]);
+  }, [snapshot?.tents, tentNumber, selectKqTent]);
 
   const totalProductionUnits = getKqProductionUnits(snapshot?.productionUnits);
   const productionUnits = 1;
@@ -380,7 +382,7 @@ export function KqEquipmentCatalogModal({
     const previousPlan = routePlan;
     setRoutePlan(nextPlan);
     try {
-      const response = await fetch("/api/arena/placard/equipment", {
+      const response = await api.request("/api/arena/placard/equipment", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -392,7 +394,7 @@ export function KqEquipmentCatalogModal({
       });
       const payload = await response.json() as { error?: string };
       if (!response.ok) throw new Error(payload.error || "Objectif impossible à enregistrer.");
-      window.dispatchEvent(new Event("kq:equipment-updated"));
+      api.notify("kq:equipment-updated");
     } catch (reason) {
       setRoutePlan(previousPlan);
       setError(reason instanceof Error ? reason.message : "Objectif impossible à enregistrer.");
@@ -428,7 +430,7 @@ export function KqEquipmentCatalogModal({
     setPending("purchase");
     setError("");
     try {
-      const response = await fetch("/api/arena/placard/equipment", {
+      const response = await api.request("/api/arena/placard/equipment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ requestKey: createClientRequestKey(), equipmentCodes: cartValidation.uniqueCodes, tentNumber, expectedUnits: totalProductionUnits }),
@@ -440,7 +442,7 @@ export function KqEquipmentCatalogModal({
       setCartOpen(false);
       setCartCodes([]);
       await refresh();
-      window.dispatchEvent(new Event("kq:equipment-updated"));
+      api.notify("kq:equipment-updated");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Achat impossible.");
     } finally {
@@ -453,7 +455,7 @@ export function KqEquipmentCatalogModal({
     setPending("equip");
     setError("");
     try {
-      const response = await fetch("/api/arena/placard/equipment", {
+      const response = await api.request("/api/arena/placard/equipment", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ equipmentCode, tentNumber: getKqEquipmentStorageTent(equipmentCode, tentNumber), expectedUnits: totalProductionUnits }),
@@ -462,7 +464,7 @@ export function KqEquipmentCatalogModal({
       if (!response.ok) throw new Error(payload.error || "Installation impossible.");
       await refresh();
       setNotice(`${getKqEquipmentDefinition(equipmentCode)?.name ?? "Équipement"} installé.`);
-      window.dispatchEvent(new Event("kq:equipment-updated"));
+      api.notify("kq:equipment-updated");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Installation impossible.");
     } finally {
@@ -471,7 +473,8 @@ export function KqEquipmentCatalogModal({
   };
 
   return (
-    <section ref={catalogRef} data-arena-tour-surface="catalog" data-arena-tour-blocked={!!activeLayer||undefined} className={styles.catalog} role="dialog" aria-modal="true" aria-labelledby="equipment-catalog-title" onKeyDown={(event) => {
+    <section ref={catalogRef} data-embedded={api.isTutorial||undefined} data-arena-tour-surface="catalog" data-arena-tour-blocked={!!activeLayer||undefined} className={styles.catalog} role={api.isTutorial?"region":"dialog"} aria-modal={api.isTutorial?undefined:true} aria-labelledby="equipment-catalog-title" onKeyDown={(event) => {
+      if(api.isTutorial&&!activeLayer)return;
       if (event.key === "Tab") {
         event.stopPropagation();
         const scope = activeLayer ? event.currentTarget.querySelector(`.${activeLayer}`) : event.currentTarget;
@@ -482,6 +485,7 @@ export function KqEquipmentCatalogModal({
         return;
       }
       if (event.key !== "Escape") return;
+      event.preventDefault();
       event.stopPropagation();
       if (purchaseResult) setPurchaseResult(null);
       else if (checkoutOpen) setCheckoutOpen(false);

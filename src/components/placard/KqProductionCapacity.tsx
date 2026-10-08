@@ -7,6 +7,7 @@ import { formatKqCash, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipm
 import { getKqProductionExpansion } from "@/lib/kanab-quest-production";
 import type { KqTentOverview } from "./KqTentSelector";
 import styles from "./KqProductionCapacity.module.css";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 
 export type KqProductionSnapshot = ReturnType<typeof getKqProductionExpansion>;
 
@@ -19,6 +20,7 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
   onUpdated: () => void;
   onPendingChange: (pending: boolean) => void;
 }) {
+  const api = useKqTutorialApi();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -37,7 +39,7 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
       request.current = { units: production.units, cost: production.totalCostCents, key: crypto.randomUUID() };
     }
     try {
-      const response = await fetch("/api/arena/placard/equipment", {
+      const response = await api.request("/api/arena/placard/equipment", {
         method: "PATCH", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "expand-production", requestKey: request.current.key,
           expectedUnits: production.units, expectedCostCents: production.totalCostCents }),
@@ -47,7 +49,7 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
       if (!response.ok) throw new Error(body.error || "Agrandissement impossible.");
       setCompletedUnits(production.units);
       setNotice(`${isFinalWarehouse ? "Entrepôt final ouvert" : "Nouvelle tente installée"} : ${production.nextUnits} tentes prêtes pour la prochaine culture.`);
-      window.dispatchEvent(new Event("kq:equipment-updated"));
+      api.notify("kq:equipment-updated");
       onUpdated();
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Agrandissement impossible.");

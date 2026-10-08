@@ -24,13 +24,13 @@ function database(fixture = structuredClone(productionFixture)) {
     kq_culture_token_wallets: { balance: 0 },
   };
   const reads: Array<{ table: string; columns: string }> = [];
-  const rpc = vi.fn().mockImplementation(async (name: string) => ({
+  const rpc = vi.fn().mockImplementation(async (name: string, args?: { p_initial_state?: unknown }) => ({
     error: null,
     data: name === "rpc_kq_commerce_state"
       ? { business: { version: 1, domiciliation: { mode: "home", active: true } } }
       : name === "rpc_kq_energy_snapshot"
         ? { outstandingCents: 0, invoiceCount: 0, bestGramsPerKwh: null, invoices: [] }
-        : { run: { id: "run-compat" }, burnReceipt: null },
+        : { run: { id: "run-compat", state: args?.p_initial_state }, burnReceipt: null },
   }));
   mocks.client.mockReturnValue({ rpc, from: (table: string) => {
     const query = {

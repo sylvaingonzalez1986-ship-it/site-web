@@ -7,6 +7,8 @@ import { ArrowRight, Check, Gift, LockKeyhole, RefreshCw, Sprout, Store, Trophy,
 import { KQ_MISSION_COPY, KQ_MISSION_TRACKS, type KqMission, type KqMissionClaim, type KqMissionSnapshot } from "@/lib/kanab-quest-missions";
 import { CommunityMissionWelcome, CommunityMissionsBoard } from "@/components/missions/CommunityMissionsBoard";
 import styles from "./KqMissionCenter.module.css";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { KqSupportPackOpening, requestKqSupportPackOpening, type KqOpenedSupportCard } from "./KqSupportPackOpening";
 
 const TRACKS = {
   culture: { title: "Culture", image: "/contest/mascot/arena-scene-placard-v1.png", icon: Sprout, unit: "objectif" },
@@ -14,15 +16,23 @@ const TRACKS = {
   shops: { title: "Boutiques partenaires", image: "/placard/channel-cbd-shop-v1.webp", icon: Store, unit: "partenaires" },
 };
 const PACK_IMAGE = "/placard/shop-item-packs-v2.webp";
+type MissionPack = KqMissionClaim & { code: KqMission["code"] };
 
 export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" | "shop") => void }) {
-  const [section, setSection] = useState<"community" | "challenges">("community");
+  const api = useKqTutorialApi();
+  const [section, setSection] = useState<"community" | "challenges">(api.isTutorial ? "challenges" : "community");
   const [data, setData] = useState<KqMissionSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [signedOut, setSignedOut] = useState(false);
-  const [reward, setReward] = useState<KqMissionClaim | null>(null);
+  const [reward, setReward] = useState<MissionPack | null>(null);
+  const [activePack, setActivePack] = useState<MissionPack | null>(null);
+  const [packCards, setPackCards] = useState<KqOpenedSupportCard[]>([]);
+  const [packError, setPackError] = useState("");
+  const [opening, setOpening] = useState(false);
+  const [openedEntitlements, setOpenedEntitlements] = useState<string[]>([]);
+  const openingLock = useRef(false);
   const claiming = useRef(false);
   const requestVersion = useRef(0);
   const invalidateRequests = useCallback(() => { requestVersion.current++; }, []);
@@ -31,7 +41,7 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" |
     const version = ++requestVersion.current;
     setLoading(true);
     try {
-      const response = await fetch("/api/arena/placard/missions", { cache: "no-store" });
+      const response = await api.request("/api/arena/placard/missions", { cache: "no-store", signal: AbortSignal.timeout(10_000) });
       const payload = await response.json();
       if (version !== requestVersion.current) return;
       setSignedOut(response.status === 401);
@@ -40,41 +50,68 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" |
     } catch (failure) {
       if (version === requestVersion.current) setError(failure instanceof Error ? failure.message : "Connexion interrompue. Réessaie.");
     } finally { if (version === requestVersion.current) setLoading(false); }
-  }, []);
+  }, [api]);
 
   useEffect(() => {
     void refresh();
-    const update = () => { if (!claiming.current) void refresh(); };
-    window.addEventListener("focus", update);
-    window.addEventListener("kq:market-updated", update);
-    window.addEventListener("kq:boosters-updated", update);
+    const update = () => { if (!claiming.current && !openingLock.current) void refresh(); };
+    const unsubscribe = api.subscribe(["focus", "kq:market-updated", "kq:boosters-updated"], update);
     return () => {
       invalidateRequests();
-      window.removeEventListener("focus", update);
-      window.removeEventListener("kq:market-updated", update);
-      window.removeEventListener("kq:boosters-updated", update);
+      unsubscribe();
     };
-  }, [refresh, invalidateRequests]);
+  }, [refresh, invalidateRequests, api]);
 
   async function claim(mission: KqMission) {
     if (claiming.current) return;
     claiming.current = true; setBusy(mission.code); setError(""); setReward(null);
     try {
-      const response = await fetch("/api/arena/placard/missions", {
+      const response = await api.request("/api/arena/placard/missions", {
         method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: mission.code }),
+        signal: AbortSignal.timeout(15_000),
       });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || "Impossible de récupérer ce pack.");
-      setReward(payload);
-      window.dispatchEvent(new Event("kq:boosters-updated"));
+      setReward({ ...payload, code: mission.code });
+      api.notify("kq:boosters-updated");
       await refresh();
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : "Connexion interrompue. Tu peux réessayer sans perdre ton pack.");
     } finally { claiming.current = false; setBusy(null); }
   }
 
+  async function openPack(pack: MissionPack) {
+    if (openingLock.current || openedEntitlements.includes(pack.entitlementId)) return;
+    openingLock.current = true;
+    setActivePack(pack); setOpening(true); setPackCards([]); setPackError("");
+    try {
+      const cards = await requestKqSupportPackOpening(api.request, pack.entitlementId);
+      setPackCards(cards);
+      setOpenedEntitlements(current => [...current, pack.entitlementId]);
+      setData(current => current ? { ...current, missions: current.missions.map(mission => mission.entitlementId === pack.entitlementId ? { ...mission, packAvailable: false } : mission) } : current);
+      api.notify("kq:collection-updated");
+      api.notify("kq:boosters-updated");
+    } catch (failure) {
+      setPackError(failure instanceof Error && failure.name !== "TimeoutError" ? failure.message : "Connexion interrompue. Actualise tes missions avant de réessayer.");
+    } finally {
+      // Reconcile after an ambiguous response too: the server may have opened
+      // the pack even if its response did not reach this browser.
+      await refresh();
+      openingLock.current = false; setOpening(false);
+    }
+  }
+
+  const packIsOpened = (entitlementId: string) => openedEntitlements.includes(entitlementId) || data?.missions.some(mission => mission.entitlementId === entitlementId && mission.packAvailable === false) === true;
+  const continueActivity = (pack: MissionPack) => {
+    setActivePack(null);
+    if (!api.isTutorial) onOpen(KQ_MISSION_COPY[pack.code].destination);
+  };
+
   const claimed = data?.missions.filter((mission) => mission.claimed).length ?? 0;
-  const availablePacks = data?.missions.filter((mission) => mission.packAvailable).length ?? 0;
+  const availableMissions = data?.missions.filter((mission) => mission.packAvailable && mission.entitlementId && !openedEntitlements.includes(mission.entitlementId)) ?? [];
+  const availablePacks = availableMissions.length;
+  const nextPack = availableMissions[0];
+  const rewardOpened = reward ? packIsOpened(reward.entitlementId) : false;
 
   return <main className={styles.center}>
     <CommunityMissionWelcome />
@@ -85,7 +122,7 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" |
       <button type="button" disabled={loading || busy !== null} onClick={() => void refresh()}><RefreshCw size={16} aria-hidden="true" />{loading ? "Actualisation…" : "Actualiser"}</button>
     </div>
     {error ? <div className={styles.error} role="alert"><p>{error}</p>{signedOut ? <Link href="/compte/connexion?next=%2Farene%2Fplacard%3Fview%3Dmissions">Me connecter</Link> : <button type="button" disabled={loading || busy !== null} onClick={() => void refresh()}>Réessayer</button>}</div> : null}
-    {reward ? <div className={styles.receipt} role="status"><Gift aria-hidden="true" /><div><strong>{reward.replayed ? "Ton pack est déjà récupéré." : `Bravo ! Un pack de ${reward.cardCount} cartes gagné.`}</strong><p>Retrouve-le à la boutique Botte du Chanvrier pour découvrir tes cartes.</p></div><button type="button" onClick={() => onOpen("shop")}>Ouvrir la boutique <ArrowRight size={18} aria-hidden="true" /></button></div> : null}
+    {reward ? <div className={styles.receipt} role="status" data-mission-receipt><Gift aria-hidden="true" /><div><strong>{rewardOpened ? "Ton pack est ouvert." : reward.replayed ? "Ton pack est déjà récupéré." : `Bravo ! Un pack de ${reward.cardCount} cartes gagné.`}</strong><p>{rewardOpened ? "Tes cartes ont rejoint ta collection. La suite de ton aventure t’attend." : "Découvre tes cartes ici, puis reprends ton activité."}</p></div>{rewardOpened ? <button type="button" onClick={() => api.isTutorial ? setReward(null) : continueActivity(reward)}>{api.isTutorial ? "Continuer mes défis" : KQ_MISSION_COPY[reward.code].action}<ArrowRight size={18} aria-hidden="true" /></button> : <button type="button" disabled={opening || busy !== null} onClick={() => void openPack(reward)}>Ouvrir mon pack <ArrowRight size={18} aria-hidden="true" /></button>}</div> : null}
     {loading && !data ? <p role="status" className={styles.loading}>On retrouve ta progression…</p> : null}
     {data ? <>
       {!data.collectionActive ? <p className={styles.error}>Les récompenses Botte du Chanvrier sont momentanément indisponibles. Ta progression reste conservée.</p> : null}
@@ -116,10 +153,11 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" |
         })}
       </div>
       <footer className={styles.footer}>
-        {availablePacks > 0 ? <button type="button" onClick={() => onOpen("shop")}><Gift size={19} aria-hidden="true" />{availablePacks} pack{availablePacks > 1 ? "s" : ""} de mission à ouvrir<ArrowRight size={18} aria-hidden="true" /></button> : null}
-        <details><summary>Comment progressent mes missions ?</summary><p>Une mission active par parcours, sans limite de temps. Récupère son pack pour débloquer la suivante. Chaque récompense se gagne une seule fois par compte.</p><p>Tes cultures déjà terminées comptent, même si leurs fleurs ont été vendues ou utilisées en duel. Pour la vente en ligne et les boutiques, garde le nombre de clients ou de partenaires demandé jusqu’à la réclamation du pack. Une mission récompensée reste acquise.</p><p>La vente en ligne nécessite l’ordinateur et un accès Internet actif, disponibles dans le jeu. Les packs de mission rejoignent les packs disponibles à la boutique Botte du Chanvrier.</p></details>
+        {nextPack?.entitlementId ? <button type="button" disabled={opening || busy !== null} onClick={() => void openPack({ entitlementId: nextPack.entitlementId!, cardCount: nextPack.cardCount, code: nextPack.code, replayed: true })}><Gift size={19} aria-hidden="true" />{availablePacks} pack{availablePacks > 1 ? "s" : ""} de mission à ouvrir<ArrowRight size={18} aria-hidden="true" /></button> : null}
+        <details><summary>Comment progressent mes missions ?</summary><p>Une mission active par parcours, sans limite de temps. Récupère son pack pour débloquer la suivante. Chaque récompense se gagne une seule fois par compte.</p><p>Tes cultures déjà terminées comptent, même si leurs fleurs ont été vendues ou utilisées en duel. Pour la vente en ligne et les boutiques, garde le nombre de clients ou de partenaires demandé jusqu’à la réclamation du pack. Une mission récompensée reste acquise.</p><p>La vente en ligne nécessite l’ordinateur et un accès Internet actif, disponibles dans le jeu. Ouvre tes packs de mission directement ici ; ils restent aussi disponibles à la boutique Botte du Chanvrier tant qu’ils ne sont pas ouverts.</p></details>
       </footer>
     </> : null}
     </>}
+    {activePack ? <KqSupportPackOpening cards={packCards} cardCount={activePack.cardCount} busy={opening} error={packIsOpened(activePack.entitlementId) && !packCards.length ? "Ce pack a déjà été ouvert. Ses cartes sont dans ta collection." : packError} canRetry={!opening && !packIsOpened(activePack.entitlementId)} onRetry={() => void openPack(activePack)} onClose={() => { if (!openingLock.current || packCards.length) setActivePack(null); }} onContinue={() => continueActivity(activePack)} continueLabel={api.isTutorial ? "Retour aux missions" : KQ_MISSION_COPY[activePack.code].action} /> : null}
   </main>;
 }

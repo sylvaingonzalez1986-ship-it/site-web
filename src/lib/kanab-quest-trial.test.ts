@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { canActivateKqHeritage, isKqCultureDead, KQ_CARDS } from './kanab-quest-game';
+import { canActivateKqHeritage, getKqZeroSuccessStageCount, isKqCultureDead, KQ_CARDS, previewKqResolution } from './kanab-quest-game';
 import { getKqCommerceReplenishment, quoteKqCommerce } from './kanab-quest-commerce';
-import { canTrialContinue, canTrialRoll, createKqTrial, KQ_TRIAL_VERSION, reduceKqTrial, restoreKqTrial, trialCardPermission, trialInstruction, trialQuality, trialRoutes, type KqTrialAction } from './kanab-quest-trial';
+import { canTrialContinue, canTrialRoll, createKqTrial, KQ_TRIAL_VERSION, reduceKqTrial, restoreKqTrial, startKqTrialCulture, trialCardPermission, trialInstruction, trialQuality, trialRoutes, type KqTrialAction } from './kanab-quest-trial';
 
 function prepared(mode: 'eco'|'balanced'|'intensive'='balanced') {
  let s=createKqTrial();
@@ -80,6 +80,79 @@ describe('isolated Placard learning run',()=>{
   const {s,actions}=culture();const loaded=restoreKqTrial({version:KQ_TRIAL_VERSION,actions,cashCents:99999999});
   expect(loaded.state.game?.history).toEqual(s.game?.history);expect(loaded.state.commerce).toEqual(s.commerce);
   expect(restoreKqTrial({version:0,actions}).state).toEqual(createKqTrial());expect(restoreKqTrial({version:1,actions:new Array(501).fill({type:'buy'})}).state).toEqual(createKqTrial());
+ });
+ it('finishes assisted cultures with varied seeds, modes, cards and redraws without an official rescue right',()=>{
+  let assisted=0;
+  for(const mode of ['eco','balanced','intensive'] as const)for(let seed=1;seed<=75;seed++){
+   let s={...prepared(mode).s,game:startKqTrialCulture(mode,seed)};
+   const act=(action:KqTrialAction)=>{s=reduceKqTrial(s,action) as typeof s;};
+   for(let index=0;index<6;index++){
+    expect(s.game.stageIndex).toBe(index);
+    if(index===0)act({type:'play',code:'BOTTE-005'});
+    if(index===2)act({type:'play',code:'BOTTE-004'});
+    if(index>=3&&seed%3===0)act({type:'redraw'});
+    if(index>=3&&seed%2===0){const cards=KQ_CARDS.filter(card=>trialCardPermission(s,card.code).allowed);if(cards.length)act({type:'play',code:cards[seed%cards.length].code});}
+    act({type:'roll'});
+    if(canActivateKqHeritage(s.game).allowed)act({type:'heritage'});
+    if(index===2&&trialCardPermission(s,'BOTTE-002').allowed)act({type:'play',code:'BOTTE-002'});
+    if(index>=3&&seed%2===1){const cards=KQ_CARDS.filter(card=>trialCardPermission(s,card.code).allowed);if(cards.length)act({type:'play',code:cards[seed%cards.length].code});}
+    if(canActivateKqHeritage(s.game).allowed)act({type:'heritage'});
+    const preview=previewKqResolution(s.game)!;
+    if(s.game.effectNotices?.some(notice=>notice.startsWith('Essai guidé :'))){assisted++;expect(preview.total).toBeGreaterThan(0);}
+    act({type:'resolve'});
+    expect(s.game.phase,`${mode}, seed ${seed}, stage ${index}`).toBe('resolved');
+    expect(s.game.history.at(-1)?.total).toBe(preview.total);
+    act({type:'advance'});
+   }
+   expect(s.chapter).toBe(5);
+   expect(s.game.harvestGrams).toBeGreaterThan(0);
+   expect(getKqZeroSuccessStageCount(s.game)).toBeLessThan(2);
+   expect(s.game.firstCultureRescue).toBeUndefined();
+  }
+  expect(assisted).toBeGreaterThan(0);
+ });
+ it('restores a complete v2 journal through the jury, sales and final chapter without resetting setup',()=>{
+  const run=culture();let s=run.s;
+  const act=(action:KqTrialAction)=>{run.actions.push(action);s=reduceKqTrial(s,action);};
+  for(const action of [{type:'next'},{type:'duel'},{type:'round'},{type:'round'},{type:'round'},{type:'next'},{type:'transform',route:'raw'}] as KqTrialAction[])act(action);
+  for(const stock of s.commerce.stocks)act({type:'sell',stockId:stock.id,channel:'wholesale',policy:'advised'});
+  act({type:'next'});
+  expect(s.chapter).toBe(9);
+  const restored=restoreKqTrial({version:2,actions:run.actions}).state;
+  expect(restored.chapter).toBe(9);
+  expect(restored.checked).toEqual(s.checked);
+  expect(restored.installed).toEqual(s.installed);
+  expect(restored.game?.history).toEqual(s.game?.history);
+  expect(restored.game?.harvestGrams).toBe(s.game?.harvestGrams);
+  expect(restored.battle?.rounds).toEqual(s.battle?.rounds);
+  expect(restored.battle?.status).toBe(s.battle?.status);
+  expect(restored.battle?.playerFlower.stats).toEqual(s.battle?.playerFlower.stats);
+  expect(restored.battle?.playerFlower.integrityCode).toBe(s.battle?.playerFlower.integrityCode);
+  expect(restored.receipts).toEqual(s.receipts);
+  expect(restored.commerce).toEqual(s.commerce);
+ });
+ it('honors an old v2 restart action after a roll that is now assisted, keeping the preparation chapters',()=>{
+  const initial=prepared();let state=initial.s;
+  state=reduceKqTrial(state,{type:'play',code:'BOTTE-005'});
+  state=reduceKqTrial(state,{type:'roll'});
+  // Model a first zero produced by a historical tutorial rule set.
+  state={...state,game:{...state.game!,dice:[2,2,2],heritageUsed:true}};
+  state=reduceKqTrial(state,{type:'resolve'});
+  state=reduceKqTrial(state,{type:'advance'});
+  let assisted:typeof state|undefined;
+  for(let seed=1;seed<=100;seed++){
+   const rolled=reduceKqTrial({...state,game:{...state.game!,seed}},{type:'roll'});
+   if(rolled.game?.effectNotices?.some(notice=>notice.startsWith('Essai guidé :'))){assisted=rolled;break;}
+  }
+  expect(assisted).toBeDefined();
+  const resolved=reduceKqTrial(assisted!,{type:'resolve'});
+  expect(resolved.game?.phase).toBe('resolved');
+  const restarted=reduceKqTrial(resolved,{type:'restart-culture'});
+  expect(restarted.chapter).toBe(4);
+  expect(restarted.game).toEqual(initial.s.game);
+  expect(restarted.checked).toEqual(initial.s.checked);
+  expect(restarted.installed).toEqual(initial.s.installed);
+  expect(restarted.commerce).toEqual(initial.s.commerce);
  });
  it('evaluates a local opponent and does not skip the jury or transformation',()=>{
   const {s}=culture();expect(reduceKqTrial(s,{type:'transform',route:'raw'})).toBe(s);

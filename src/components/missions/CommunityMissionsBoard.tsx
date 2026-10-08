@@ -8,6 +8,7 @@ import { formatMissionReward, getMissionRewardDestination } from "@/lib/communit
 import type { MissionSubmission, MissionWithUserStatus, ReferralPendingReward } from "@/types/missions";
 import { CommunityMissionDialog, MissionDialog } from "./CommunityMissionDialog";
 import styles from "./CommunityMissions.module.css";
+import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 
 export function CommunityMissionWelcome({ title = "Centre de missions", children }: { title?: string; children?: React.ReactNode }) {
   return <header className={styles.welcome}>
@@ -33,6 +34,7 @@ function SubmissionHistory({ submission, mission }: { submission: MissionSubmiss
 }
 
 function ReferralChoice({ reward, onClose, onChosen }: { reward: ReferralPendingReward; onClose: () => void; onChosen: () => void }) {
+  const api = useKqTutorialApi();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const sending = useRef(false);
@@ -40,7 +42,7 @@ function ReferralChoice({ reward, onClose, onChosen }: { reward: ReferralPending
     if (sending.current) return;
     sending.current = true; setBusy(true); setError("");
     try {
-      const response = await fetch("/api/account/referral-choice", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pendingRewardId: reward.id, choice }) });
+      const response = await api.request("/api/account/referral-choice", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pendingRewardId: reward.id, choice }) });
       const data = await response.json() as { error?: string };
       if (!response.ok) throw new Error(data.error || "Impossible de choisir ta récompense.");
       onChosen();
@@ -51,6 +53,7 @@ function ReferralChoice({ reward, onClose, onChosen }: { reward: ReferralPending
 }
 
 export function CommunityMissionsBoard() {
+  const api = useKqTutorialApi();
   const [missions, setMissions] = useState<MissionWithUserStatus[]>([]);
   const [referrals, setReferrals] = useState<ReferralPendingReward[]>([]);
   const [loading, setLoading] = useState(true);
@@ -68,7 +71,7 @@ export function CommunityMissionsBoard() {
     const request = ++version.current;
     setLoading(true);
     try {
-      const response = await fetch("/api/account/missions", { cache: "no-store" });
+      const response = await api.request("/api/account/missions", { cache: "no-store" });
       const payload = await response.json() as { error?: string; missions?: MissionWithUserStatus[]; pendingRewards?: ReferralPendingReward[] };
       if (version.current !== request) return;
       setSignedOut(response.status === 401);
@@ -77,14 +80,13 @@ export function CommunityMissionsBoard() {
       setMissions(payload.missions); setReferrals(payload.pendingRewards); setLoaded(true); setError("");
     } catch (failure) { if (version.current === request) setError(failure instanceof Error ? failure.message : "Connexion interrompue. Réessaie."); }
     finally { if (version.current === request) setLoading(false); }
-  }, []);
+  }, [api]);
   useEffect(() => {
     void refresh();
     const update = () => { void refresh(); };
-    window.addEventListener("focus", update);
-    window.addEventListener("community:missions-updated", update);
-    return () => { invalidateRequests(); window.removeEventListener("focus", update); window.removeEventListener("community:missions-updated", update); };
-  }, [refresh, invalidateRequests]);
+    const unsubscribe = api.subscribe(["focus", "community:missions-updated"], update);
+    return () => { invalidateRequests(); unsubscribe(); };
+  }, [refresh, invalidateRequests, api]);
 
   const active = missions.filter((mission) => mission.isActive || mission.userSubmissions.some((submission) => submission.status === "changes_requested"));
   const history = missions.flatMap((mission) => mission.userSubmissions.map((submission) => ({ mission, submission }))).sort((a, b) => b.submission.createdAt.localeCompare(a.submission.createdAt));

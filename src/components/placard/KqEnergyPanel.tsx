@@ -8,6 +8,7 @@ import { getKqProductionUnits } from "@/lib/kanab-quest-production";
 import type { KqTentEquipmentProfile } from "@/lib/kanab-quest-production-scale";
 import { getKqCultureWearPreview } from "@/lib/kanab-quest-culture-wear";
 import styles from "./KqEnergyPanel.module.css";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 
 export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, lockedQuote, lockedTents, lockedScope, runId, productionUnits = 1, disabled = false }: {
   productionUnits?: number;
@@ -20,6 +21,7 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   lockedScope?: "tent" | "installation";
   runId?: string | null;
 }) {
+  const api = useKqTutorialApi();
   const [snapshot, setSnapshot] = useState<KqEnergySnapshot | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -30,21 +32,21 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   const refresh = useCallback(async () => {
     const id = ++generation.current;
     try {
-      const response = await fetch("/api/arena/placard/energy", { cache: "no-store" });
+      const response = await api.request("/api/arena/placard/energy", { cache: "no-store" });
       const body = await response.json() as KqEnergySnapshot & { error?: string };
       if (!response.ok) throw new Error(body.error || "Compteur indisponible.");
       if (id === generation.current) { setSnapshot(body); setError(""); }
     } catch (reason) {
       if (id === generation.current) setError(reason instanceof Error ? reason.message : "Compteur indisponible.");
     }
-  }, []);
+  }, [api]);
   useEffect(() => {
     void refresh();
     const update = () => { void refresh(); };
-    window.addEventListener("kq:equipment-updated", update);
+    const unsubscribe = api.subscribe(["kq:equipment-updated"], update);
     const invalidate = () => { generation.current++; };
-    return () => { invalidate(); window.removeEventListener("kq:equipment-updated", update); };
-  }, [refresh]);
+    return () => { invalidate(); unsubscribe(); };
+  }, [refresh, api]);
   const quote = lockedQuote ?? (selectedMode ? snapshot?.quotes[selectedMode] : undefined);
   const sharedInstallation = Boolean(lockedQuote && lockedScope === "installation");
   const units = getKqProductionUnits(lockedQuote ? lockedQuote.productionUnits : quote?.productionUnits ?? snapshot?.productionUnits ?? productionUnits);
@@ -86,12 +88,12 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
     inFlight.current = true; setPending(true); setError(""); setNotice("");
     if (payment.current?.amount !== due) payment.current = { amount: due, key: crypto.randomUUID() };
     try {
-      const response = await fetch("/api/arena/placard/energy", { method: "POST", headers: { "Content-Type": "application/json" },
+      const response = await api.request("/api/arena/placard/energy", { method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ requestKey: payment.current.key, expectedCents: due }) });
       const result = await response.json() as { error?: string; paidCents: number };
       if (!response.ok) throw new Error(result.error || "Règlement impossible.");
       setNotice(`${formatKqCash(result.paidCents)} réglés. Factures acquittées !`);
-      await refresh(); window.dispatchEvent(new Event("kq:equipment-updated"));
+      await refresh(); api.notify("kq:equipment-updated");
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Règlement impossible."); }
     finally { inFlight.current = false; setPending(false); }
   };

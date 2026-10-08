@@ -1,5 +1,7 @@
 "use client";
 
+import { useKqTutorialApi } from "./KqTutorialApiContext";
+
 import { useEffect, useState, type KeyboardEvent } from "react";
 import { ChartNoAxesCombined, ChartCandlestick, Landmark, LockKeyhole, PiggyBank, RefreshCw } from "lucide-react";
 import type { ChanvrierProfile } from "@/lib/arena-chanvrier";
@@ -18,13 +20,14 @@ const DESKS = [
 type Desk = typeof DESKS[number]["id"];
 
 function SavingsDesk() {
+  const api = useKqTutorialApi();
   const [state, setState] = useState<{ profile: ChanvrierProfile | null; loaded: boolean; error: string }>({ profile: null, loaded: false, error: "" });
   const [refresh, setRefresh] = useState(0);
   useEffect(() => {
     const controller = new AbortController();
     async function load() {
       try {
-        const response = await fetch("/api/arena/chanvrier", { cache: "no-store", signal: controller.signal });
+        const response = await api.request("/api/arena/chanvrier", { cache: "no-store", signal: controller.signal });
         const body = await response.json();
         if (!response.ok || !body || !("profile" in body)) throw new Error("Ton accès au livret est momentanément indisponible.");
         if (!controller.signal.aborted) setState({ profile: body.profile, loaded: true, error: "" });
@@ -32,14 +35,14 @@ function SavingsDesk() {
     }
     void load();
     return () => controller.abort();
-  }, [refresh]);
+  }, [api, refresh]);
   useEffect(() => {
     const update = () => setRefresh(value => value + 1);
     const resume = () => { if (!document.hidden) update(); };
-    window.addEventListener("kq:equipment-updated", update);
+    const unsubscribe_kq_equipment_updated = api.subscribe(["kq:equipment-updated"], update);
     document.addEventListener("visibilitychange", resume);
-    return () => { window.removeEventListener("kq:equipment-updated", update); document.removeEventListener("visibilitychange", resume); };
-  }, []);
+    return () => { unsubscribe_kq_equipment_updated(); document.removeEventListener("visibilitychange", resume); };
+  }, [api]);
   return <div className={styles.columns}>
     <section className={styles.savings} aria-label="Placements"><header><PiggyBank size={24} aria-hidden="true" /><div><small>La réserve du Trésorier</small><h3>Ton livret</h3></div></header>
       {state.error ? <div className={styles.error} role="alert">{state.error}<button type="button" onClick={() => setRefresh(value => value + 1)}><RefreshCw size={17} aria-hidden="true" /> Réessayer</button></div> : !state.loaded ? <p role="status">Ouverture de ton livret…</p> : state.profile?.strength === "treasurer" ? <ChanvrierSavingsPanel embedded refreshKey={refresh} /> : <div className={styles.locked}><LockKeyhole size={24} aria-hidden="true" /><h4>Le livret du Trésorier</h4><p>Le livret est l’avantage de la spécialité Trésorier : 5 % toutes les 24 heures sur la monnaie du jeu, avec retrait libre.</p><span>Spécialité Trésorier requise</span><p>{state.profile ? "Ta spécialité actuelle ne donne pas accès à ce placement. Les guichets Crypto et Bourse restent accessibles." : "Ton personnage n’a pas encore de spécialité enregistrée."}</p></div>}
@@ -48,8 +51,8 @@ function SavingsDesk() {
   </div>;
 }
 
-export function KqTreasuryBank() {
-  const [desk, setDesk] = useState<Desk>("loans");
+export function KqTreasuryBank({ initialDesk = "loans" }: { initialDesk?: Desk } = {}) {
+  const [desk, setDesk] = useState<Desk>(initialDesk);
   function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     const target = event.key === "ArrowRight" ? (index + 1) % DESKS.length : event.key === "ArrowLeft" ? (index + DESKS.length - 1) % DESKS.length : event.key === "Home" ? 0 : event.key === "End" ? DESKS.length - 1 : null;
     if (target === null) return;

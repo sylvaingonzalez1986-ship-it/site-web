@@ -8,9 +8,10 @@ import producerHeritageCards from "@/data/producer-heritage-cards.json";
 import { findKqProducerRewardForEntry, getKqProducerCompletionCashCents, type KqProducerRewardProgress } from "@/lib/kanab-quest-producer-rewards";
 import { formatNotebookGameEuros, NotebookQuantityTiers } from "./NotebookQuantityBonus";
 import styles from "./ProducerRewardJourney.module.css";
+import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 
-async function fetchProducerRewardCampaigns(signal?: AbortSignal) {
-  const response = await fetch("/api/contest/producer-rewards", { cache: "no-store", signal });
+async function fetchProducerRewardCampaigns(request: typeof fetch, signal?: AbortSignal) {
+  const response = await request("/api/contest/producer-rewards", { cache: "no-store", signal });
   if (!response.ok) throw new Error("La progression du producteur est momentanément indisponible.");
   const payload = await response.json() as { campaigns?: KqProducerRewardProgress[] };
   return Array.isArray(payload.campaigns) ? payload.campaigns : [];
@@ -77,6 +78,7 @@ export function ProducerRewardJourney({
   entryId?: string;
   onCampaignsChange?: (campaigns: KqProducerRewardProgress[]) => void;
 }) {
+  const api = useKqTutorialApi();
   const titleId = useId();
   const [campaigns, setCampaigns] = useState<KqProducerRewardProgress[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -89,7 +91,7 @@ export function ProducerRewardJourney({
     if (!isAuthenticated) return;
     const controller = new AbortController();
     const refresh = () => {
-      void fetchProducerRewardCampaigns(controller.signal)
+      void fetchProducerRewardCampaigns(api.request, controller.signal)
         .then((next) => {
           setCampaigns(next);
           onCampaignsChange?.(next);
@@ -100,13 +102,13 @@ export function ProducerRewardJourney({
         })
         .finally(() => { if (!controller.signal.aborted) setLoaded(true); });
     };
-    window.addEventListener("kq:producer-rewards-changed", refresh);
+    const unsubscribe = api.subscribe(["kq:producer-rewards-changed"], refresh);
     refresh();
     return () => {
       controller.abort();
-      window.removeEventListener("kq:producer-rewards-changed", refresh);
+      unsubscribe();
     };
-  }, [isAuthenticated, onCampaignsChange]);
+  }, [isAuthenticated, onCampaignsChange, api]);
 
   const campaign = entryId
     ? findKqProducerRewardForEntry(campaigns, entryId)
@@ -118,7 +120,7 @@ export function ProducerRewardJourney({
     setNotice("");
     setError("");
     try {
-      const response = await fetch("/api/contest/producer-rewards", {
+      const response = await api.request("/api/contest/producer-rewards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action, producerId: campaign.producerId }),
@@ -136,9 +138,9 @@ export function ProducerRewardJourney({
           ? `${formatGameEuros(payload.receipt!.cashCents!)} de bonus quantité ont rejoint ton portefeuille du Placard.`
           : "Tous tes suppléments disponibles ont déjà été reçus."
         : action === "completion" ? "Ton bonus de dégustation est disponible dans le Placard." : payload.receipt?.alreadyGranted ? "Tu as déjà reçu le Buddie de ce producteur." : "Ton Buddie a rejoint ta collection !");
-      window.dispatchEvent(new Event("kq:producer-rewards-changed"));
-      window.dispatchEvent(new Event("kq:collection-updated"));
-      window.dispatchEvent(new Event("kq:boosters-updated"));
+      api.notify("kq:producer-rewards-changed");
+      api.notify("kq:collection-updated");
+      api.notify("kq:boosters-updated");
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : "Récompense indisponible.");
     } finally {

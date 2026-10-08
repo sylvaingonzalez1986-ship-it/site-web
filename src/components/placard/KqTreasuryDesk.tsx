@@ -1,5 +1,7 @@
 ﻿"use client";
 
+import { useKqTutorialApi } from "./KqTutorialApiContext";
+
 import Image from "next/image";
 import { useEffect, useState, type KeyboardEvent } from "react";
 import { ArrowDownLeft, ArrowRight, ArrowUpRight, BookOpen, CalendarClock, ChartNoAxesCombined, Check, ChevronLeft, ChevronRight, FileText, Landmark, LoaderCircle, ReceiptText, RefreshCw, Search, Settings2, Wallet } from "lucide-react";
@@ -124,10 +126,12 @@ function ChartOfAccounts({ data }: { data: KqTreasurySnapshot }) {
   </section>;
 }
 
-export function KqTreasuryDesk({ onOpenShop, onOpenMarket }: {
+export function KqTreasuryDesk({ onOpenShop, onOpenMarket, initialPole = "accounting", initialBankDesk }: {
   onOpenShop: (equipmentCode?: string) => void; onOpenMarket: () => void;
+  initialPole?: Pole; initialBankDesk?: "loans" | "savings" | "crypto" | "stocks";
 }) {
-  const [pole, setPole] = useState<Pole>("accounting");
+  const api = useKqTutorialApi();
+  const [pole, setPole] = useState<Pole>(initialPole);
   const [tab, setTab] = useState<Tab>("invoices");
   const [period, setPeriod] = useState<KqTreasuryPeriod>("current");
   const [offset, setOffset] = useState(0);
@@ -141,7 +145,7 @@ export function KqTreasuryDesk({ onOpenShop, onOpenMarket }: {
     const controller = new AbortController();
     async function load() {
       try {
-        const response = await fetch(`/api/arena/placard/treasury?period=${period}&offset=${offset}&limit=25`, { cache: "no-store", signal: controller.signal });
+        const response = await api.request(`/api/arena/placard/treasury?period=${period}&offset=${offset}&limit=25`, { cache: "no-store", signal: controller.signal });
         const payload: unknown = await response.json();
         if (!response.ok) throw new Error(payload && typeof payload === "object" && "error" in payload && typeof payload.error === "string" ? payload.error : "Le Bureau est momentanément indisponible.");
         if (!isKqTreasurySnapshot(payload)) throw new Error("Les données comptables sont incomplètes. Actualise les comptes.");
@@ -153,14 +157,14 @@ export function KqTreasuryDesk({ onOpenShop, onOpenMarket }: {
     }
     void load();
     return () => controller.abort();
-  }, [key, offset, period]);
+  }, [api, key, offset, period]);
   useEffect(() => {
     const update = () => setRefresh(value => value + 1);
     const resume = () => { if (!document.hidden) update(); };
-    window.addEventListener("kq:treasury-updated", update);
+    const unsubscribe_kq_treasury_updated = api.subscribe(["kq:treasury-updated"], update);
     document.addEventListener("visibilitychange", resume);
-    return () => { window.removeEventListener("kq:treasury-updated", update); document.removeEventListener("visibilitychange", resume); };
-  }, []);
+    return () => { unsubscribe_kq_treasury_updated(); document.removeEventListener("visibilitychange", resume); };
+  }, [api]);
   function selectTab(next: Tab) { setTab(next); }
   function navigatePole(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     const target = event.key === "ArrowRight" ? (index + 1) % POLES.length : event.key === "ArrowLeft" ? (index + POLES.length - 1) % POLES.length : event.key === "Home" ? 0 : event.key === "End" ? POLES.length - 1 : null;
@@ -171,7 +175,7 @@ export function KqTreasuryDesk({ onOpenShop, onOpenMarket }: {
     <header className={styles.header}><div className={styles.welcome}><small><Wallet size={16} aria-hidden="true" /> Comptabilité, banque & gestion</small><h1>Bureau</h1><p>Tes factures, tes comptes et ton banquier.</p><button type="button" className={styles.marketLink} onClick={onOpenMarket}>Vendre mes récoltes <ArrowRight size={17} aria-hidden="true" /></button></div><figure className={styles.officeArt}><div className={styles.officePicture}><Image src={OFFICE_ART[pole].src} alt={OFFICE_ART[pole].alt} fill sizes="(max-width: 650px) 100vw, 50vw" priority /></div><figcaption>{OFFICE_ART[pole].caption}</figcaption></figure></header>
     <nav className={styles.poles} role="tablist" aria-label="Pôles du bureau">{POLES.map((item, index) => <button type="button" role="tab" id={`treasury-pole-${item.id}`} aria-controls={`treasury-office-${item.id}`} aria-selected={pole === item.id} tabIndex={pole === item.id ? 0 : -1} key={item.id} onClick={() => setPole(item.id)} onKeyDown={event => navigatePole(event, index)}><item.icon size={24} aria-hidden="true" /><span className={styles.poleLabel}><strong>{item.label}</strong><small>{item.description}</small></span><ArrowRight size={19} className={styles.poleArrow} aria-hidden="true" /></button>)}</nav>
     <section id={`treasury-office-${pole}`} role="tabpanel" aria-labelledby={`treasury-pole-${pole}`} className={styles.officePanel} tabIndex={0}>
-    {pole === "bank" ? <KqTreasuryBank /> : pole === "management" ? <><div className={styles.managementIntro}><small className={styles.eyebrow}>03 / Gestion</small><h2>Pilote ton entreprise</h2><p>Ton site internet, tes campagnes publicitaires et l’adresse de ton commerce.</p></div><KqTreasuryManagement key="management" onOpenShop={onOpenShop} section="management" /><button type="button" className={styles.inlineLink} onClick={() => { setPole("accounting"); selectTab("invoices"); }}>Retrouver mes factures en comptabilité <ArrowRight size={16} aria-hidden="true" /></button></> : <>
+    {pole === "bank" ? <KqTreasuryBank initialDesk={initialBankDesk} /> : pole === "management" ? <><div className={styles.managementIntro}><small className={styles.eyebrow}>03 / Gestion</small><h2>Pilote ton entreprise</h2><p>Ton site internet, tes campagnes publicitaires et l’adresse de ton commerce.</p></div><KqTreasuryManagement key="management" onOpenShop={onOpenShop} section="management" /><button type="button" className={styles.inlineLink} onClick={() => { setPole("accounting"); selectTab("invoices"); }}>Retrouver mes factures en comptabilité <ArrowRight size={16} aria-hidden="true" /></button></> : <>
     <label className={styles.dossierPicker} htmlFor="treasury-dossier"><span>Dossier comptable</span><select id="treasury-dossier" value={tab} onChange={event => selectTab(event.target.value as Tab)} aria-controls={`treasury-panel-${tab}`}>{TABS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
     <section id={`treasury-panel-${tab}`} aria-label={TABS.find(item => item.id === tab)?.label} className={styles.tabPanel}>
       {tab === "invoices" ? <KqTreasuryManagement key="invoices" onOpenShop={onOpenShop} section="invoices" /> : <>

@@ -4,6 +4,7 @@ import { Leaf, Coins, Handshake, Wrench, Check, ArrowRight, X, Shuffle, RotateCc
 import { CHANVRIER_APPEARANCE_OPTIONS, getChanvrierAppearance, CHANVRIER_CLOTHES, CHANVRIER_SKINS, CHANVRIER_STRENGTHS, type ChanvrierAppearance, type ChanvrierProfile } from "@/lib/arena-chanvrier";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { ChanvrierAvatar } from "./ChanvrierAvatar";
+import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 import styles from "./ChanvrierProfileEditor.module.css";
 const ICONS = [Leaf, Coins, Handshake, Wrench];
 const LOOK_TABS = [{ code: "face", label: "Visage" }, { code: "hair", label: "Cheveux" }, { code: "outfit", label: "Tenue" }, { code: "details", label: "Accessoires" }] as const;
@@ -15,6 +16,7 @@ const LOOK_FIELDS: Record<typeof LOOK_TABS[number]["code"], { key: keyof Chanvri
 };
 const NEW_LOOK: ChanvrierAppearance = { ...getChanvrierAppearance({ gender: "male" }), hairColor: "black", mouth: "grin", top: "tee", bottomColor: "teal", shoes: "work" };
 export function ChanvrierProfileEditor({ profile, onSaved, onClose }: { profile: ChanvrierProfile | null; onSaved: (profile: ChanvrierProfile) => void; onClose: () => void }) {
+  const api = useKqTutorialApi();
   const [draft, setDraft] = useState<ChanvrierProfile>(profile ?? { nickname: "", gender: "male", clothing: "ochre", skin: "ivory", strength: "green-thumb", appearance: NEW_LOOK });
   const [portraitView, setPortraitView] = useState<"full" | "portrait">("portrait");
   const [step, setStep] = useState<"look" | "strength">("look");
@@ -49,11 +51,11 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose }: { profile:
     if (inFlight.current) return;
     inFlight.current = true; setBusy(true); setError("");
     try {
-      const response = await fetch("/api/arena/chanvrier", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...draft, appearance }), signal: AbortSignal.timeout(15000) });
+      const response = await api.request("/api/arena/chanvrier", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...draft, appearance }), signal: AbortSignal.timeout(15000) });
       const body = await response.json();
       if (!response.ok) throw new Error(body.error || "Enregistrement impossible.");
-      window.dispatchEvent(new Event("kq:equipment-updated"));
-      window.dispatchEvent(new CustomEvent("arena:profile-updated", { detail: body.profile }));
+      api.notify("kq:equipment-updated");
+      api.notify("arena:profile-updated", body.profile);
       onSaved(body.profile);
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Enregistrement impossible. Réessaie."); }
     finally { inFlight.current = false; setBusy(false); }

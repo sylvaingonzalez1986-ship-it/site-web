@@ -9,6 +9,7 @@ import { useCookieConsent } from "@/components/cookies/CookieConsentProvider";
 import { ARENA_JOURNEY_STEP_COUNT, advanceArenaJourney, arenaJourneyStorageKey, parseArenaJourneyProgress, type ArenaJourneyAction, type ArenaJourneyProgress } from "@/lib/arena-journey";
 import { parseChanvrierProfile, type ChanvrierProfile } from "@/lib/arena-chanvrier";
 import { ArenaFirstVisitTutorial } from "./ArenaFirstVisitTutorial";
+import { ArenaLearningLauncher } from "./ArenaLearningLauncher";
 import { ChanvrierProfileEditor } from "./ChanvrierProfileEditor";
 import { ChanvrierPlayerCard } from "./ChanvrierPlayerCard";
 import styles from "./ArenaJourneyTour.module.css";
@@ -57,6 +58,14 @@ export function ArenaJourneyTour() {
   const active = trialOpen && !!userId && !showBanner && !profileOpen;
 
   useEffect(() => { alive.current = true; return () => { alive.current = false; }; }, []);
+  useEffect(() => {
+    const updateProfile = (event: Event) => {
+      const profile = parseChanvrierProfile((event as CustomEvent).detail);
+      if (profile) setChanvrier(profile);
+    };
+    window.addEventListener("arena:profile-updated", updateProfile);
+    return () => window.removeEventListener("arena:profile-updated", updateProfile);
+  }, []);
   useEffect(() => {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 8000);
@@ -212,12 +221,13 @@ export function ArenaJourneyTour() {
         <CircleHelp size={17} aria-hidden="true" />Aide<ChevronDown size={14} aria-hidden="true" />
       </button>
       <div id={helpId} className={styles.helpPanel} hidden={!helpOpen}>
+        <ArenaLearningLauncher className={styles.helpAction} />
         <ArenaFirstVisitTutorial label="Lire le guide" className={styles.helpAction} />
         {loading ? <p role="status">Chargement de ton parcours…</p>
           : userId && progress ? <button type="button" className={styles.helpAction} data-arena-trial-trigger disabled={busy} onClick={requestTrial}>
-              <Compass size={17} aria-hidden="true" />{busy ? "Ouverture de l’essai…" : "Lancer la partie d’essai"}
+              <Compass size={17} aria-hidden="true" />{busy ? "Ouverture de l’essai…" : "Approfondir avec le parcours complet"}
             </button>
-          : !error ? <Link className={styles.helpAction} href="/compte/connexion?next=%2Farene"><UserRound size={17} aria-hidden="true" />Me connecter pour essayer</Link>
+          : !error ? <Link className={styles.helpAction} href="/compte/connexion?next=%2Farene"><UserRound size={17} aria-hidden="true" />Parcours complet avec mon compte</Link>
           : null}
         {error ? <div className={styles.loadError} role="status">
           <p>{error}</p>

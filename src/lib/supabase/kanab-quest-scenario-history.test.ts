@@ -8,10 +8,14 @@ import { buildKqScenarioPath, KQ_BUDDIES, KQ_STAGES } from "../kanab-quest-game"
 const userId = "11000000-0000-4000-8000-000000000001";
 function database(history: unknown[], error: { message: string } | null = null) {
   const historyCalls: Array<[string, ...unknown[]]> = [];
-  const rpc = vi.fn().mockImplementation((name: string) => Promise.resolve({ error: null, data: name === "rpc_kq_commerce_state"
+  const rpc = vi.fn().mockImplementation((name: string, args?: { p_initial_state?: unknown }) => Promise.resolve({ error: null, data: name === "rpc_kq_commerce_state"
     ? { business: { version: 1, domiciliation: { mode: "home", active: true } } }
-    : { run: { id: "new-run" }, burnReceipt: null } }));
-  mocks.equipment.mockResolvedValue({ strength: "green-thumb", equippedCodes: [], levels: {} });
+    : { run: { id: "new-run", state: args?.p_initial_state }, burnReceipt: null } }));
+  mocks.equipment.mockResolvedValue({
+    strength: "green-thumb", equippedCodes: [], levels: {},
+    tents: [{ tentNumber: 1, cultureOperationalCodes: [], levels: {} }],
+    sharedEquipment: { equippedCodes: [], levels: {} },
+  });
   mocks.client.mockReturnValue({ rpc, from: (table: string) => {
     const data = table === "kq_runs" ? history : table === "lottery_card_collections" ? { id: "botte", is_active: true }
       : table === "kq_culture_token_wallets" ? { balance: 0 } : [];
@@ -70,12 +74,50 @@ describe("server culture scenario history", () => {
 
   it("freezes server-owned production capacity and its electricity quote at launch", async () => {
     const {rpc}=database([]);
-    mocks.equipment.mockResolvedValue({equippedCodes:["LED-150-STARTER"],levels:{},productionUnits:4});
+    mocks.equipment.mockResolvedValue({
+      equippedCodes:["LED-150-STARTER"], levels:{}, productionUnits:4,
+      tents: Array.from({ length: 4 }, (_, index) => ({ tentNumber: index + 1, cultureOperationalCodes: ["LED-150-STARTER"], levels: {} })),
+      sharedEquipment: { equippedCodes: [], levels: {} },
+    });
     const result=await startKqPlayerRun(userId,{buddieCode:KQ_BUDDIES[0].code,deckCodes:[],energyMode:"balanced"});
     expect(result.state.equipment?.productionUnits).toBe(4);
     expect(result.state.energy?.productionUnits).toBe(4);
     expect(result.state.energy?.totalCents).toBe(414*4);
     expect(rpc).toHaveBeenCalledWith("rpc_kq_start_run_with_heritage",expect.objectContaining({p_initial_state:expect.objectContaining({equipment:expect.objectContaining({productionUnits:4})})}));
+  });
+
+  it("returns the welcome rescue granted by the database without claiming it in the start request", async () => {
+    const { rpc } = database([]);
+    const respond = rpc.getMockImplementation()!;
+    rpc.mockImplementation(async (name, args) => {
+      const response = await respond(name, args);
+      if (name === "rpc_kq_start_run_with_heritage") {
+        response.data.run.state = { ...response.data.run.state, firstCultureRescue: true };
+      }
+      return response;
+    });
+    const result = await startKqPlayerRun(userId, { buddieCode: KQ_BUDDIES[0].code, deckCodes: [] });
+    expect(result.state).toHaveProperty("firstCultureRescue", true);
+    const start = rpc.mock.calls.find(([name]) => name === "rpc_kq_start_run_with_heritage")!;
+    expect(start[1].p_initial_state).not.toHaveProperty("firstCultureRescue");
+  });
+
+  it("does not invent a rescue when a later or legacy database start omits it", async () => {
+    database([]);
+    const result = await startKqPlayerRun(userId, { buddieCode: KQ_BUDDIES[0].code, deckCodes: [] });
+    expect(result.state).not.toHaveProperty("firstCultureRescue");
+  });
+
+  it.each([undefined, { phase: "prepare" }])("rejects an invalid persisted start state instead of returning the unpersisted input", async persisted => {
+    const { rpc } = database([]);
+    const respond = rpc.getMockImplementation()!;
+    rpc.mockImplementation(async (name, args) => {
+      const response = await respond(name, args);
+      if (name === "rpc_kq_start_run_with_heritage") response.data.run.state = persisted;
+      return response;
+    });
+    await expect(startKqPlayerRun(userId, { buddieCode: KQ_BUDDIES[0].code, deckCodes: [] }))
+      .rejects.toThrow("[supabase:rpc_kq_start_run]");
   });
 
   it("does not silently start without history when the read fails", async () => {

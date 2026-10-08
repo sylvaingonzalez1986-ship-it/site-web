@@ -1,0 +1,10 @@
+.lesson{min-width:0;max-width:100%;background:#073c31;color:#fff4d6}
+.nav{display:flex;flex-wrap:wrap;gap:7px;padding:10px 12px;background:#073c31;border-bottom:1px solid #c5b078}
+.nav button,.completion button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 12px;border:1px solid #c5b078;border-radius:7px;background:#164d3f;color:#fff4d6;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.nav button[aria-pressed=true]{background:#f4ce67;color:#193c2e}
+.lesson button:focus-visible{outline:3px solid #f4ce67;outline-offset:3px}
+.surface{min-width:0;position:relative}
+.energy{padding:16px;max-width:980px;margin:auto}
+.energy>p,.notice{font-size:14px;line-height:1.5;padding:12px 16px}
+.completion{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-top:1px solid #c5b078;background:#123f32;font-size:14px}
+@media(max-width:420px){.nav{gap:5px;padding:8px}.nav button{flex:1;font-size:12px;padding:8px}.energy{padding:8px}.completion{padding:12px}}

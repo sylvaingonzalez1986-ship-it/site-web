@@ -2,28 +2,29 @@
 
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { Camera, Check, Send, X } from "lucide-react";
 import { MISSION_PROOF_ACCEPT_ATTRIBUTE, MISSION_PROOF_UPLOAD_MAX_BYTES, isSupportedMissionProofMimeType } from "@/lib/mission-proof-policy";
 import { formatMissionReward } from "@/lib/community-missions";
 import type { MissionSubmission, MissionWithUserStatus } from "@/types/missions";
 import styles from "./CommunityMissions.module.css";
+import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 
 export function MissionDialog({ title, children, busy = false, onClose }: { title: string; children: ReactNode; busy?: boolean; onClose: () => void }) {
+  const api = useKqTutorialApi();
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
+  useBodyScrollLock(true);
   useEffect(() => {
     const element = dialog.current;
     const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const overflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     element?.showModal();
     return () => {
       element?.close();
-      document.body.style.overflow = overflow;
       if (opener?.isConnected) opener.focus({ preventScroll: true });
     };
   }, []);
-  return createPortal(<dialog ref={dialog} className={styles.dialog} aria-labelledby={titleId} onKeyDown={(event) => {
+  const content = <dialog ref={dialog} className={styles.dialog} aria-labelledby={titleId} onKeyDown={(event) => {
     if (event.key !== "Tab") return;
     const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter((element) => element.getClientRects().length > 0);
     if (!controls.length) { event.preventDefault(); return; }
@@ -33,10 +34,12 @@ export function MissionDialog({ title, children, busy = false, onClose }: { titl
   }} onCancel={(event) => { event.preventDefault(); if (!busy) onClose(); }} onClick={(event) => { if (event.target === event.currentTarget && !busy) { const bounds = event.currentTarget.getBoundingClientRect(); if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose(); } }}>
     <header className={styles.dialogHeader}><h2 id={titleId}>{title}</h2><button type="button" aria-label="Fermer la mission" disabled={busy} onClick={onClose}><X size={22} aria-hidden="true" /></button></header>
     {children}
-  </dialog>, document.body);
+  </dialog>;
+  return api.isTutorial ? content : createPortal(content, document.body);
 }
 
 export function CommunityMissionDialog({ mission, correction, onClose, onSubmitted }: { mission: MissionWithUserStatus; correction?: MissionSubmission; onClose: () => void; onSubmitted: () => void }) {
+  const api = useKqTutorialApi();
   const [proofUrl, setProofUrl] = useState(correction?.proofUrl ?? "");
   const [proofText, setProofText] = useState(correction?.proofText ?? "");
   const [file, setFile] = useState<File | null>(null);
@@ -70,10 +73,10 @@ export function CommunityMissionDialog({ mission, correction, onClose, onSubmitt
       body.set("proofUrl", proofUrl.trim()); body.set("proofText", proofText.trim());
       if (file) body.set("file", file);
       if (correction) { body.set("submissionId", correction.id); body.set("expectedRevision", String(revision.current)); }
-      const response = await fetch("/api/account/missions", { method: "POST", body });
+      const response = await api.request("/api/account/missions", { method: "POST", body });
       const payload = await response.json() as { error?: string };
       if (!response.ok) throw new Error(payload.error || "Impossible d’envoyer ta preuve. Tes informations sont conservées.");
-      window.dispatchEvent(new Event("community:missions-updated"));
+      api.notify("community:missions-updated");
       onSubmitted();
     } catch (failure) { setError(failure instanceof Error ? failure.message : "Connexion interrompue. Tes informations sont conservées, réessaie."); }
     finally { sending.current = false; setBusy(false); }
