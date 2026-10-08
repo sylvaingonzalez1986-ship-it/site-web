@@ -46,7 +46,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "server-only": "^0.0.1",
-    "sharp": "0.35.4"
+    "sharp": "0.35.5"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",
@@ -75,7 +75,7 @@
     "eslint-plugin-react-hooks": "7.0.1",
     "minimatch": "10.2.6",
     "postcss": "8.5.23",
-    "sharp": "0.35.4",
+    "sharp": "0.35.5",
     "typescript-eslint": "8.48.0"
   }
 }

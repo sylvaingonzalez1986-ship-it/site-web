@@ -21,7 +21,13 @@ describe("Kanab Quest player session ownership policy", () => {
   it("checks access for the current request on every player endpoint", () => {
     expect(playerRouteFiles.length).toBeGreaterThanOrEqual(10);
     for (const route of playerRouteFiles) {
-      expect(readFileSync(route, "utf8"), route).toContain("!await isKqPlayerRequestEnabled()");
+      const source = readFileSync(route, "utf8");
+      // The summary uses the same access policy with the already verified identity,
+      // avoiding profile creation during a read. Its route tests cover rejection.
+      const gate = route === join(playerRouteRoot, "summary", "route.ts")
+        ? "!await isKqPlayerIdentityEnabled(session)"
+        : "!await isKqPlayerRequestEnabled()";
+      expect(source, route).toContain(gate);
     }
   });
 

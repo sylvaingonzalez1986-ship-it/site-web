@@ -1,4 +1,5 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { KQ_CARDS, KQ_SITUATIONS, KQ_STAGES, buildKqScenarioPath, canPlayKqCard, playKqCard, previewKqResolution, rollKqDice, startKqGame, type KqGameState } from "@/lib/kanab-quest-game";
 import { getKqCardGuide } from "@/lib/kanab-quest-card-guide";
@@ -109,15 +110,22 @@ describe("Le Placard : deck indoor", () => {
     expect(buildKqScenarioPath(13)).toEqual(first);
   });
 
-  it("synchronizes all 32 SQL definitions, images and rules without touching ownership", () => {
+  it("keeps all 32 SQL rules aligned and historical artwork available without touching ownership", () => {
     const sql = readFileSync("supabase/migrations/20260913000600_kq_indoor_deck_redesign.sql", "utf8");
     const rows = JSON.parse(sql.split("$deck$")[1]);
     expect(rows).toHaveLength(KQ_CARDS.length);
-    for (const card of KQ_CARDS) expect(rows.find((row: { code: string }) => row.code === card.code)).toMatchObject({
-      name: card.name, description: card.description, image_url: getKqCardArtwork(card.code), effect: card.effect,
-      category: card.category, timing: card.timing, xp_cost: card.xpCost, tags: card.tags, targets: card.targets ?? [],
-      advantage: getKqCardGuide(card).benefit, drawback: getKqCardGuide(card).risk,
-    });
+    for (const card of KQ_CARDS) {
+      const row = rows.find((item: { code: string }) => item.code === card.code);
+      expect(row, card.code).toMatchObject({
+        name: card.name, description: card.description, effect: card.effect,
+        category: card.category, timing: card.timing, xp_cost: card.xpCost, tags: card.tags, targets: card.targets ?? [],
+        advantage: getKqCardGuide(card).benefit, drawback: getKqCardGuide(card).risk,
+      });
+      // This applied migration shipped v5. The current frontend can use a later front
+      // without changing the card's rules or breaking persisted historical image URLs.
+      expect(row.image_url, card.code).toBe(getKqCardArtwork(card.code)?.replace(/-front-v\d+\.webp$/, "-front-v5.webp"));
+      expect(existsSync(join(process.cwd(), "public", row.image_url.slice(1))), row.image_url).toBe(true);
+    }
     expect(sql).not.toMatch(/DELETE FROM|UPDATE public\.lottery_card_instances|SET rarity|SET is_active/i);
   });
 });

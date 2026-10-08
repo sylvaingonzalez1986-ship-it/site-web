@@ -35,10 +35,11 @@ describe("Kanab Quest equipment inventory policy", () => {
   });
 
   it("installs owned equipment through the durable equipment endpoint", () => {
-    expect(inventory).toContain('fetch("/api/arena/placard/equipment"');
+    expect(inventory).toContain("const api = useKqTutorialApi()");
+    expect(inventory).toContain('api.request("/api/arena/placard/equipment"');
     expect(inventory).toContain('method:"PATCH"');
     expect(inventory).toContain("JSON.stringify({equipmentCode:item.code,tentNumber:targetTent,expectedUnits:units})");
-    expect(inventory).toContain('new Event("kq:equipment-updated")');
+    expect(inventory).toContain('api.notify("kq:equipment-updated")');
   });
 
   it("keeps the dialog usable on a smartphone", () => {

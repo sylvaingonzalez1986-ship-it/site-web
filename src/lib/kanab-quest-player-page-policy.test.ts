@@ -277,9 +277,11 @@ describe("Kanab Quest player page access", () => {
   });
 
   it("forces real server mode and hides prototype controls from players", () => {
-    expect(gameClient).toContain('const isPlayerMode = apiScope === "player"');
+    expect(gameClient).toContain('const isPlayerMode = !tutorial && apiScope === "player"');
+    expect(playerShell).not.toContain("tutorial=");
+    expect(gameClient).toContain("const showAdminOperations = !tutorial && requestedAdminOperations");
     expect(gameClient).toContain("useState(isPlayerMode)");
-    expect(gameClient).toContain("if (isPlayerMode) return");
+    expect(gameClient).toContain("if (isPlayerMode || tutorial) return");
     expect(gameClient).toContain("!isPlayerMode ? <button");
     expect(gameClient).toContain("!isPlayerMode && (showAdminOperations || showPackLab) ? <details");
   });

@@ -141,7 +141,14 @@ describe("independently equipped tents with one common culture", () => {
     const one = complete(start(1, mode));
     const successfulStages = mixed.history.filter(entry => entry.outcome === "success" || entry.outcome === "critical").length;
     expect(mixed.situationCodes).toEqual(one.situationCodes);
-    expect(mixed.history).toEqual(one.history);
+    // The stage results agree, while the saved positions retain each run's own loss.
+    const outcomes = (state: KqGameState) => state.history.map(({ decision, ...outcome }) => {
+      void decision;
+      return outcome;
+    });
+    expect(outcomes(mixed)).toEqual(outcomes(one));
+    expect(mixed.history.map(entry => entry.decision?.harvestLossPercent)).toEqual(Array(6).fill(37));
+    expect(one.history.map(entry => entry.decision?.harvestLossPercent)).toEqual(Array(6).fill(0));
     expect(mixed.equipmentQualityBonus).toBe(calculateKqEquipmentQualityBonus(mixed.equipment!.qualityMaxBonus, successfulStages));
     expect(mixed.quality).toBeLessThan(one.quality);
     const quantityBonuses = [start().equipment!.quantityPercent, startKqGame(300, { equipmentCodes: starterCodes }).equipment!.quantityPercent];
