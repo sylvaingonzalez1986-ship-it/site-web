@@ -47,11 +47,16 @@ const KqWarehouseEntry = dynamic(() => import("./KqWarehouseEntry").then((module
 const KqPlacardHud = dynamic(() => import("./KqPlacardHud").then((module) => module.KqPlacardHud), { loading: PlacardViewLoading });
 
 type PlacardView = "hub" | "shop" | "game" | "arena" | "market" | "treasury" | "missions" | "workshop";
-type PlacardNavigationOptions = { equipmentCode?: string; catalog?: boolean; from?: PlacardView };
+type TreasuryPole = "accounting" | "bank" | "management";
+type PlacardNavigationOptions = { equipmentCode?: string; catalog?: boolean; from?: PlacardView; treasuryPole?: TreasuryPole };
 const LOCATION_EVENT = "kq:placard-location";
 
 function isPlacardView(value: string | null): value is PlacardView {
   return value === "hub" || value === "shop" || value === "game" || value === "arena" || value === "market" || value === "treasury" || value === "missions" || value === "workshop";
+}
+
+function isTreasuryPole(value: string | null): value is TreasuryPole {
+  return value === "accounting" || value === "bank" || value === "management";
 }
 
 const getPlacardLocation = () => window.location.search;
@@ -82,6 +87,8 @@ export function PlacardPlayerShell() {
   const guidedVisit = params.get("guide") === "1";
   const requestedView = params.get("view");
   const view: PlacardView = isPlacardView(requestedView) ? requestedView : "hub";
+  const requestedTreasuryPole = params.get("pole");
+  const treasuryPole: TreasuryPole = view === "treasury" && isTreasuryPole(requestedTreasuryPole) ? requestedTreasuryPole : "accounting";
   const [collectionOpen, setCollectionOpen] = useState(false);
   const [progressOpen, setProgressOpen] = useState(false);
   const [pendingView, setPendingView] = useState<PlacardView | null>(null);
@@ -95,8 +102,9 @@ export function PlacardPlayerShell() {
 
   const openView = useCallback((nextView: PlacardView, options: PlacardNavigationOptions = {}) => {
     const url = new URL(window.location.href);
-    for (const key of ["view", "catalog", "equipment", "from"]) url.searchParams.delete(key);
+    for (const key of ["view", "catalog", "equipment", "from", "pole"]) url.searchParams.delete(key);
     if (nextView !== "hub") url.searchParams.set("view", nextView);
+    if (nextView === "treasury" && options.treasuryPole) url.searchParams.set("pole", options.treasuryPole);
     if (options.catalog && nextView === "shop") url.searchParams.set("catalog", "equipment");
     if (options.equipmentCode) url.searchParams.set("equipment", options.equipmentCode);
     if (options.from) url.searchParams.set("from", options.from);
@@ -152,14 +160,14 @@ export function PlacardPlayerShell() {
     >
       <span className="inline-flex items-center gap-2 whitespace-nowrap border-2 border-ink bg-yellow px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_#111]">
         <Hourglass className="animate-spin motion-reduce:animate-none" aria-hidden="true" size={16} strokeWidth={3} />
-        Ouverture {PLACARD_VIEW_LABELS[pendingView]}…
+        Ouverture {pendingView === "treasury" && treasuryPole === "bank" ? "de la Banque" : PLACARD_VIEW_LABELS[pendingView]}…
       </span>
     </div>
   ) : null;
 
   if (view !== "hub") {
     const currentTitle =
-      view === "workshop" ? "L’Entrepôt · Aménager" : view === "shop" ? "La Boutique · Botte du Chanvrier" : view === "game" ? "La Culture" : view === "market" ? "Le Marché · Vendre" : view === "treasury" ? "Le Bureau" : view === "missions" ? "Les Missions" : "Jury & duels";
+      view === "workshop" ? "L’Entrepôt · Aménager" : view === "shop" ? "La Boutique · Botte du Chanvrier" : view === "game" ? "La Culture" : view === "market" ? "Le Marché · Vendre" : view === "treasury" ? (treasuryPole === "bank" ? "La Banque" : "Le Bureau") : view === "missions" ? "Les Missions" : "Jury & duels";
 
     return (
       <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
@@ -173,8 +181,8 @@ export function PlacardPlayerShell() {
               className="pointer-events-auto inline-flex min-h-11 touch-manipulation items-center gap-2 border-2 border-ink bg-white px-3 font-black uppercase shadow-[3px_3px_0_#111] transition hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#111]"
             >
               <ArrowLeft aria-hidden="true" size={18} strokeWidth={3} />
-              <span className="hidden sm:inline">Retour au Placard</span>
-              <span className="sm:hidden">Placard</span>
+              <span className="hidden sm:inline">Retour à la carte</span>
+              <span className="sm:hidden">La carte</span>
             </button>
             <p className="hidden min-w-0 flex-1 truncate text-center text-sm font-bold uppercase tracking-wide md:block">{currentTitle}</p>
             <button type="button" onClick={() => setCollectionOpen(true)} aria-haspopup="dialog" aria-label="Ouvrir ma collection Botte du Chanvrier" className="inline-flex min-h-11 shrink-0 items-center gap-2 border-2 border-ink bg-yellow px-3 text-xs font-black text-ink shadow-[3px_3px_0_#111]"><BookOpen size={18} aria-hidden="true" /><span>Collection</span></button>
@@ -209,7 +217,7 @@ export function PlacardPlayerShell() {
             </details>
           </>
         ) : view === "treasury" ? (
-          <KqTreasuryDesk onOpenShop={openEquipmentCatalog} onOpenMarket={() => openView("market")} />
+          <KqTreasuryDesk key={treasuryPole} initialPole={treasuryPole} onOpenShop={openEquipmentCatalog} onOpenMarket={() => openView("market")} />
         ) : view === "market" ? (
           <KqMarketDesk onOpenShop={openEquipmentCatalog} onOpenTreasury={() => openView("treasury")} />
         ) : (

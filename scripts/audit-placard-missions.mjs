@@ -78,7 +78,8 @@ try {
   if(scenario==='inactive')assert.equal(await page.$$eval('section button',buttons=>buttons.every(b=>b.disabled)),true);
   if(scenario==='complete')assert.equal(await page.$$eval('h2',els=>els.filter(el=>el.textContent.includes('Parcours terminé')).length),3);
   if(scenario==='lobby'){
-   await page.click('[data-placard-activity="missions"]');
+   await page.locator('[data-map-building="missions"]').click();
+   await page.locator('[data-placard-activity="missions"]').click();
    assert.equal(await page.evaluate(()=>window.__destination),'missions');
   }
  }

@@ -31,8 +31,8 @@ const playerShell = readFileSync(
   join(process.cwd(), "src/components/placard/PlacardPlayerShell.tsx"),
   "utf8",
 );
-const placardLobby = readFileSync(
-  join(process.cwd(), "src/components/placard/KqPlacardLobby.tsx"),
+const placardMap = readFileSync(
+  join(process.cwd(), "src/components/placard/KqPlacardMap.tsx"),
   "utf8",
 );
 const placardHud = readFileSync(
@@ -127,8 +127,8 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).toContain('"/api/arena/placard/bootstrap"');
     expect(gameClient).toContain('"/api/arena/placard/session"');
     expect(playerShell).toContain("<KqPlacardLobby");
-    expect(placardLobby).toContain('src="/contest/mascot/arena-scene-placard-v1.png"');
-    expect(placardLobby).toContain('sizes="100vw" priority');
+    expect(placardMap).toContain('src="/placard/map/placard-world-v1.webp"');
+    expect(placardMap).toContain('loading="eager" fetchPriority="high"');
   });
 
   it("opens the recommended investment directly without forcing it into the cart", () => {
