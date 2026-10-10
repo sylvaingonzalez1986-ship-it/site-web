@@ -32,7 +32,7 @@ describe("server culture death persistence", () => {
   beforeEach(() => vi.clearAllMocks());
 
   it("persists the second zero-success stage immediately without a flower", async () => {
-    const firstFailure = afterStage(startKqGame(42, { deckCodes: [] }), [1, 2, 3]);
+    const firstFailure = afterStage(startKqGame(42, { rulesVersion: 2, deckCodes: [] }), [1, 2, 3]);
     const state: KqGameState = { ...advanceKqStage(firstFailure), phase: "rolled", dice: [2, 2, 3] };
     const rpc = database(state);
 
@@ -52,7 +52,7 @@ describe("server culture death persistence", () => {
   });
 
   it("also ends a culture when its zero-success stages are separated by a success", async () => {
-    const firstFailure = afterStage(startKqGame(42, { deckCodes: [] }), [1, 2, 3]);
+    const firstFailure = afterStage(startKqGame(42, { rulesVersion: 2, deckCodes: [] }), [1, 2, 3]);
     const successfulStage = afterStage(advanceKqStage(firstFailure), [4, 4, 4]);
     const state: KqGameState = { ...advanceKqStage(successfulStage), phase: "rolled", dice: [2, 2, 3] };
     database(state);
@@ -65,7 +65,7 @@ describe("server culture death persistence", () => {
   });
 
   it("does not persist or award a second terminal result when a dead culture is replayed", async () => {
-    const firstFailure = afterStage(startKqGame(42, { deckCodes: [] }), [1, 2, 3]);
+    const firstFailure = afterStage(startKqGame(42, { rulesVersion: 2, deckCodes: [] }), [1, 2, 3]);
     const dead = afterStage(advanceKqStage(firstFailure), [2, 2, 3]);
     const rpc = database(dead, "abandoned");
 
@@ -90,5 +90,33 @@ describe("server culture death persistence", () => {
     expect(rpc).toHaveBeenCalledWith("rpc_kq_update_run_state", expect.objectContaining({
       p_flower: expect.objectContaining({ varietyCode: state.varietyCode }),
     }));
+  });
+
+  it("persists an exhausted v3 culture immediately without creating a flower", async () => {
+    const initial = startKqGame(42, { deckCodes: [] });
+    const state: KqGameState = { ...initial, care: { ...initial.care!, vitality: 1 }, phase: "rolled", dice: [1, 2, 3] };
+    const rpc = database(state);
+
+    const result = await applyKqPlayerRunAction(userId, runId, "resolve");
+
+    expect(result.state).toMatchObject({ rulesVersion: 3, phase: "complete", cultureDead: true, harvestGrams: 0, stageIndex: 0, care: { vitality: 0 } });
+    expect(result.state.history).toHaveLength(1);
+    expect(result.persistedFlower).toBeNull();
+    expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_update_run_state", expect.objectContaining({ p_next_state: result.state, p_flower: null }));
+  });
+
+  it("keeps a v3 culture active after two zero-success stages when vitality remains", async () => {
+    const firstFailure = afterStage(startKqGame(42, { deckCodes: [] }), [1, 2, 3]);
+    const state: KqGameState = { ...advanceKqStage(firstFailure), phase: "rolled", dice: [2, 2, 3] };
+    const rpc = database(state);
+
+    const result = await applyKqPlayerRunAction(userId, runId, "resolve");
+
+    expect(result.state).toMatchObject({ rulesVersion: 3, phase: "resolved", stageIndex: 1 });
+    expect(result.state.cultureDead).not.toBe(true);
+    expect(result.state.care!.vitality).toBeGreaterThan(0);
+    expect(result.state.history.map(stage => stage.total)).toEqual([0, 0]);
+    expect(result.persistedFlower).toBeNull();
+    expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_update_run_state", expect.objectContaining({ p_next_state: result.state, p_flower: null }));
   });
 });

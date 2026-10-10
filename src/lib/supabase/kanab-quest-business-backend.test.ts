@@ -6,15 +6,22 @@ vi.mock("./kanab-quest-market-backend", () => ({ getKqMarketSnapshot: mocks.mark
 import { createKqBusinessPreview, KQ_GAME_MONTH_MS } from "../kanab-quest-business";
 import { getKqCommerceSnapshot, handleKqCommerceAction } from "./kanab-quest-commerce-backend";
 import type { KqCommerceState } from "../kanab-quest-commerce";
+import { createKqStorageLot, KQ_CURING_DURATION_MS, type KqStorageLot } from "../kanab-quest-storage";
 const user = "11111111-1111-4111-8111-111111111111";
 const stockId = "22222222-2222-4222-8222-222222222222";
 const now = Date.parse("2026-09-21T12:00:00Z");
-function snapshot(): KqCommerceState {
+function snapshot(): KqCommerceState & { stocks: Array<KqCommerceState["stocks"][number] & { storageState: KqStorageLot }> } {
   const business = createKqBusinessPreview(now);
   business.shop = { name: "Mon shop", createdAt: new Date(now).toISOString(), paidUntil: new Date(now + KQ_GAME_MONTH_MS).toISOString(), active: true, renew: true };
   return { business, revision: 1, cashCents: 10000, reputation: 0, clients: 0, computerOwned: true, internetRenew: false,
     campaign: { id: user, revision: 1, reputation: 0, clientsStart: 0, event: "normal", internetPaid: true, directUsed: 0, shopUsed: 0, goodUnits: 0, disappointmentUnits: 0 },
-    stocks: [{ id: stockId, flowerId: user, name: "Test", route: "raw", batchRoute: "raw", juryScore: 8, initialUnits: 1200,
+    stocks: [{ id: stockId, flowerId: user, name: "Test", route: "raw", batchRoute: "raw", juryScore: 8.1, initialUnits: 1200,
+      // A mature lot that remains in the same retail price band. These tests
+      // isolate business taxes/debt and subscription deadlines from curing.
+      storageRevision: 1, storageState: createKqStorageLot({ flowerId: user,
+        harvestedAt: new Date(now - KQ_CURING_DURATION_MS).toISOString(), methodCode: "STORAGE-CANNATROL",
+        baseline: { varietyCode: "KQ-VAR-001", juryScore: 8.1, aroma: 90,
+          care: { terpenes: 90, cannabinoidExpression: 90, cannabinoidConversion: 5, cannabinoidOxidation: 0 } } }),
       remainingUnits: 1200, equivalentUnits: 1200, originalUnits: 1200, baseUnitCents: 180, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false }],
     receipts: [], marketVolumes: {}, ownVolumes: {}, routeSales: {},
     demand: { serverNow: new Date(now).toISOString(), updatedAt: new Date(now).toISOString(), onlineDebt: 0, shopDebt: 0, growthResetsAt: new Date(now + 86400000).toISOString() } };

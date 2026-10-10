@@ -4,26 +4,33 @@ Statut: recherche initiale conservee + orientation jouable actuelle
 Univers: L'Arene / Hemp Heroes / carnet de degustation  
 Plateforme: web responsive, Next.js, Vercel et Supabase
 
-## 0. Orientation actuelle - source de verite du prototype
+## 0. Contrat actuel — culture vivante et La Botte, 10 octobre 2026
 
 Les sections historiques plus bas documentent la premiere piste de simulation
 quotidienne. Elles restent utiles pour le vocabulaire, la sobriete technique et
 les futures extensions, mais ne decrivent plus la boucle jouable actuelle.
 
-La version locale actuelle est un jeu de cartes et de des grand public:
+Cette section décrit l’implémentation préparée pour le lancement du 15 octobre
+2026. Elle prime sur les propositions historiques ci-dessous. L’application
+des migrations et la publication du site sont des opérations distinctes.
+
+La boucle actuelle est un jeu de cartes et de dés avec suivi de santé :
 
 ```text
 Album Kanab Quest
   -> choisir 1 Buddie CBD reel
-  -> choisir 1 mode de culture + autant de copies La Botte que l'album le permet
+  -> commencer sur le Sol vivant commun, avec les copies La Botte choisies
   -> piocher une main de 5 cartes a chaque etape
   -> jouer 6 etapes courtes avec 3 des
+  -> observer gratuitement la sante et engager les soins achetes en boutique
   -> gagner et depenser de l'XP pour jouer des cartes
   -> subir des incidents Energie, DDTM et Securite avec des reponses dediees
-  -> creer 1 carte Fleur unique
+  -> achever le sechage et creer 1 carte Fleur unique
   -> deposer sa Fleur dans la file de duel aleatoire
   -> appariement automatique puis 3 manches de jury
   -> bruler les 2 Fleurs au verdict
+  -> commencer le curing de 6 heures reelles
+  -> reserver les contenants et regler le surplus sous 1 heure reelle
   -> vendre en biomasse ou en brut, ou transformer avec le materiel possede
   -> gagner de l'argent et une reputation qualite permanente
   -> reinvestir dans le catalogue d'equipements durables
@@ -34,8 +41,13 @@ Regles validees:
 
 - 3 des: `1` Danger, `2-3` neutre, `4-6` reussite, `6` Etincelle;
 - 6 etapes: Germination, Enracinement, Croissance, Floraison, Recolte,
-  Sechage et affinage;
-- 36 cartes consommables dans `La Botte du Chanvrier`;
+  Sechage ; l’affinage commence après le jury et le duel;
+- 30 cartes actives dans `La Botte du Chanvrier` : 12 communes, 7 peu communes,
+  7 rares et 4 épiques;
+- une préparation avant les dés et une réaction après, avec une seule carte
+  épique jouée par culture, même si plusieurs références ou copies sont possédées;
+- chaque carte spécialisée déclare ses situations compatibles ; un tag partagé
+  ne suffit pas. La même règle décide de la jouabilité et du bonus d’opération pertinente;
 - deck sans limite arbitraire: chaque copie possedee peut etre engagee;
 - main deterministe de 5 cartes, figee pendant toute l'etape; aucune carte
   brulee n'est remplacee avant l'etape suivante, les cartes non jouees
@@ -47,52 +59,70 @@ Regles validees:
   Sechage, sans bloquer les decks incomplets;
 - trois raccourcis permettent d'engager une copie de chaque reference, toutes
   les copies jouables ou de vider le deck avant ajustement manuel;
-- les quatre modes reels (Terreau, Hydroponie, Aeroponie et Sol vivant)
-  affichent leur technique, leur niveau de pilotage, leur dependance electrique,
-  leur avantage et leur risque avant la selection;
-- seul le Terreau horticole peut servir de mode standard gratuit quand aucun
-  mode de culture n'est possede;
-- le mode choisi rejoint les traits de la Fleur et son dossier de vente sous
-  forme de trace descriptive; il ne rajoute aucun bonus cache au jury ou au
-  prix, ses effets restent ceux joues pendant la culture;
-- pendant chaque Situation, le panneau du mode annonce si son avantage est
-  actif, en veille ou menace par une coupure; Hydroponie et Aeroponie perdent
-  leur bonus de pompe sans courant, avec une penalite double pour l'Aeroponie;
-- un emplacement favori local memorise le Buddie, le mode de culture et chaque copie;
+- le Sol vivant est commun, gratuit et ne consomme aucune carte Substrat;
+- un emplacement favori local memorise le Buddie et chaque copie;
   sa restauration retire automatiquement les copies brulees depuis;
-- toute carte de mode de culture possedee est brulee au depart et toute carte La Botte est brulee a
-  chaque utilisation;
-- les PBI restent hors deck, apparaissent apres la Loupe et ciblent uniquement
-  le ravageur revele;
-- 9 Buddies CBD jouables et non consommables;
-- 30 situations de culture, soit 5 par etape, dont pucerons, acariens et
-  thrips;
-- trois incidents satiriques avec consequences persistantes: facture
-  electrique et coupure, controle DDTM, vol de recolte;
+- chaque carte La Botte est brulee seulement lorsqu’elle est effectivement jouee;
+- observation gratuite dans le panneau Santé ; quatre intrants et six PBI
+  ciblées dans la boutique de soins, jamais dans les packs La Botte;
+- les anciennes cartes PBI et d’observation sont archivées avec leurs exemplaires
+  et reçus, ainsi que les quatre anciens Substrats;
+- vitalité persistante : à zéro, la culture s’arrête ; un secours unique de
+  première culture existe. Les résultats des opérations et les interventions
+  choisies produisent un bilan, sans dégâts dus à la simple absence;
+- 52 Buddies jouables et non consommables, avec rotation de cinq autres
+  références différentes avant réutilisation;
+- 50 situations de culture, au moins huit par etape, dont pucerons, acariens et thrips;
+- trois incidents avec consequences persistantes : surcharge electrique et
+  coupure, controle DDTM, vol de recolte;
 - quatre reponses specialisees: Papiers en regle, Branchement illegal,
-  Echeancier negocie et Gros molosse;
+  Charge répartie et Gros molosse;
 - 15 formats de jury repartis en Presentation, Aromes et Maitrise;
 - 3 defis quotidiens parmi 9, verrouilles au depart de la culture;
 - classement Elo, ligues Graine / Pousse / Canopee / Fleur / Grand Cru;
 - 1 booster La Botte toutes les 3 victoires consecutives;
 - la Fleur du joueur et celle de l'adversaire sont brulees au verdict;
-- portefeuille materiel initialise a 350 USD, catalogue de 22 equipements dont
-  13 machines de transformation aux prix publics US, panier, validation et
-  equipement par slot;
-- quatre modes de culture reels et differencies: Terreau, Hydroponie,
-  Aeroponie et Sol vivant; perlite, biochar et engrais bio sont consommables;
+- portefeuille matériel initialisé à 350 € de jeu ; achats, usure, niveaux
+  et transformations suivent le catalogue d’équipements actuel;
 - marche post-recolte avec jury qualite, biomasse, lot brut, dry sift, static
   sift, ice water hash et quatre paliers de rosin selon l'equipement et la note;
+- curing de 6 heures réelles après le verdict, indépendant du calendrier du jeu ; seul le grossiste
+  achète avant maturité. Contenants achetés en quantité, réservés par lot sans mélange;
+- surplus sans contenant : 1 heure réelle après le verdict pour acheter de la place ou vendre,
+  puis vente automatique au grossiste du seul surplus, même hors connexion;
 - la qualite pilote le prix et la reputation; la reputation departage le
   classement officiel apres cote et points de saison, avant le bilan sportif;
-- aucune boucle temps reel, aucun moteur 2D, aucun WebSocket;
+- pas de moteur 2D ni de WebSocket ; les bilans de culture suivent les opérations,
+  tandis que conservation et échéance du surplus utilisent l’horloge serveur;
 - calcul local deterministe, sauvegarde locale avec journaux de reprise;
-- futur serveur: mutations service-role, burns atomiques, snapshot du
-  classement une fois par jour Europe/Paris.
+- serveur : mutations service-role, burns atomiques, reçus et classement partagé.
+
+Six cartes complètent le catalogue : Reprise délicate (`BOTTE-037`) et Humidité
+rééquilibrée (`BOTTE-038`) sont communes ; Reprise experte (`BOTTE-039`), Réglage
+d’urgence (`BOTTE-040`), Équipe de récolte (`BOTTE-041`) et Séchage sous contrôle
+(`BOTTE-042`) sont épiques. Les réactions épiques corrigent des dés faibles pour
+3 ou 4 XP ; Réglage d’urgence peut aussi servir uniquement à réduire la Pression.
+Aucune ne soigne directement un parasite, ne restitue les pertes passées ou ne
+raccourcit le curing. Tri et isolement répond notamment au pollen indésirable
+en contenant un Danger, sans le transformer en réussite.
+
+Les instruments conservés traduisent une décision après la mesure, jamais un
+accès payant à l’observation. Les anciens incidents de bocaux du dernier tour
+sont désormais des incidents du séchoir : plateau surchargé, condensation et
+porte mal fermée. La capacité des bocaux appartient à l’entrepôt après le duel.
+
+Chaque emplacement aléatoire suit **Commun 70 %, Peu commune 23 %, Rare 6 %,
+Épique 1 %**. Le premier emplacement d’un pack est Commun ; une carte de victoire
+bot isolée utilise la table entière. Les références d’une même rareté ont le même
+poids. Les tailles des packs déjà attribués sont conservées. Voir le
+[règlement de travail](PLACARD-RULES-DRAFT.md), [le suivi de santé](CULTURE-VIVANTE-2026-10-15.md)
+et [le stockage](STOCKAGE-CURING-2026-10-15.md) pour les limites détaillées.
 
 Sources de verite techniques:
 
 - `src/lib/kanab-quest-game.ts`: culture, situations, cartes et des;
+- `src/lib/kanab-quest-care.ts`: observation, vitalité, intrants et PBI;
+- `src/lib/kanab-quest-storage.ts`: contenants, conservation, curing et surplus;
 - `src/lib/kanab-quest-battle.ts`: Fleur, jury et burn;
 - `src/lib/kanab-quest-ranking.ts`: Elo, matchmaking et ligues;
 - `src/lib/kanab-quest-challenges.ts`: rotation quotidienne;
@@ -101,10 +131,11 @@ Sources de verite techniques:
 - `src/lib/kanab-quest-market.ts`: note du jury, rendements, prix et reputation;
 - `src/lib/kanab-quest-repository.ts`: persistance locale atomique;
 - `supabase/migrations/20260722000100_kanab_quest_game_foundation.sql`:
-  fondation serveur historique, completee par les migrations datees du
-  30 aout 2026 pour l'equipement, le marche et les incidents.
+  fondation serveur historique, complétée par les migrations ultérieures;
+- `supabase/migrations/20261010000500_botte_situations_epic.sql` : catalogue
+  Botte actif, portées précises, raretés et consommation épique atomique.
 
-### 0.1 Statut de la verticale locale
+### 0.1 Parcours de validation
 
 La verticale locale est fonctionnellement complete pour les tests produit:
 
@@ -114,7 +145,7 @@ La verticale locale est fonctionnellement complete pour les tests produit:
 - deck sans plafond, raccourcis de composition, probabilites, couverture et
   favori restaure selon le stock restant;
 - main figee de 5 copies par etape et un changement de main par culture;
-- 30 situations toutes atteignables, 6 etapes, pression, XP, combos et PBI;
+- 50 situations atteignables, 6 étapes, pression, XP et suivi Santé séparé;
 - carte Fleur unique avec statistiques et code d'integrite;
 - file de duel aleatoire, programme du jury, trois manches et burn des 2 Fleurs;
 - Elo, ligues, saison, 9 defis quotidiens et booster de serie;
@@ -124,18 +155,25 @@ La verticale locale est fonctionnellement complete pour les tests produit:
   sur les proportions et les attributs de la mascotte de reference;
 - sauvegardes locales, journaux de reprise et validation anti-injection.
 
-Ne sont volontairement pas actives dans le mode local historique:
+Le mode local ne réalise pas les opérations de production suivantes :
 
 - comptes et inventaires Supabase reels;
 - matchmaking entre deux comptes reels;
 - classement partage et rotation serveur quotidienne;
-- application distante des migrations 003 a 006 sans autorisation explicite;
+- application distante des migrations ou publication du site;
 - validation humaine finale de toute la collection illustree.
 
 Le parcours joueur officiel et les economies serveur existent maintenant, mais
 restent derriere leurs verrous de lancement. Une connexion, une migration ou un
 deploiement distant ne doit jamais etre simule comme termine par le prototype
 local.
+
+## Archives de conception — propositions et étapes historiques
+
+Les sections suivantes conservent la recherche initiale et les anciennes étapes
+de livraison. Les mentions de modes Substrat, PBI après Loupe, 36 cartes ou
+d’affinage avant jury y décrivent les anciennes propositions. Le contrat actuel
+est la section 0 ci-dessus ; aucune de ces archives ne réactive une règle retirée.
 
 ## 1. Vision
 

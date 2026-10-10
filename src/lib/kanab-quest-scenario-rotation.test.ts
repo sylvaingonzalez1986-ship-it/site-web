@@ -194,7 +194,7 @@ describe("culture situation rotation", () => {
 
   it("preserves an archived culture's stored path through save loading and play", () => {
     const legacyPath = ["SIT-031", "SIT-033", "SIT-014", "SIT-024", "SIT-027", "SIT-038"];
-    const oldState = { ...startKqGame(42), situationCodes: legacyPath };
+    const oldState = { ...startKqGame(42, { rulesVersion: 2 }), situationCodes: legacyPath };
     // An archived save predates both the domicile and the current rules marker.
     delete oldState.domiciliation;
     delete oldState.rulesVersion;

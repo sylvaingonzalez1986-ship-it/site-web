@@ -1,0 +1,114 @@
+{
+  "mode": "Built-in image_gen",
+  "date": "2026-10-10",
+  "references": [
+    {
+      "file": "le-parfait-1l.jpg",
+      "url": "https://www.leparfait.com/fr/products/le-parfait%C2%AE-color-vis"
+    },
+    {
+      "file": "grove-1lb.png",
+      "url": "https://grovebags.com/products/terploc-window-pouch-single"
+    },
+    {
+      "file": "cvault-2oz.jpg",
+      "url": "https://store.vivipacks.com/products/cvault"
+    },
+    {
+      "file": "cvault-1lb.jpg",
+      "url": "https://store.vivipacks.com/products/cvault"
+    },
+    {
+      "file": "vivi-fresh.jpg",
+      "url": "https://store.vivipacks.com/products/vivi-fresh"
+    },
+    {
+      "file": "cannatrol-original.png",
+      "url": "https://cannatrols.com/pages/cool-cure-models"
+    }
+  ],
+  "entries": [
+    {
+      "code": "GLASS-1L",
+      "prompt": "Use case: product-mockup / realistic product illustration. Create a single polished photorealistic studio packshot illustration for a French game's warehouse catalogue. The input is a genuine manufacturer product photo used as strict OBJECT/DESIGN REFERENCE, not a background to reproduce. Match the object's real proportions, construction, lid/closure, materials, recognizable brand details and color precisely. Photograph-like physically credible materials with delicate highlights, clean reflections, fine surface detail and soft grounded contact shadow. Premium calm editorial product photography, warm-neutral light from upper left, shallow three-quarter front view at about tabletop eye height. Entire product clearly visible, centered with generous breathing room, sharp edges without cartoon outlines, no stylized cartoon, no person/Sylvain/hands, no extra props, no cannabis leaves decorating background, no game UI/borders/badges, no floating text, no added claims, no price/measurement annotations, no watermark. Seamless LIGHT WARM IVORY studio background #f6f0e2, subtle soft shadow, no horizon or visible room, no transparent background. Square 1024x1024 composition, product occupies roughly 70-80% of frame height unless specified. Preserve existing small brand mark only where physically on object, do not invent additional labeling. Object-specific request: One EMPTY Le Parfait Color Vis 1 litre glass jar. Exact clear cylindrical glass, rounded shoulders and thick bottom rim, WIDE ORANGE PLASTIC SCREW LID, subtle embossed Le Parfait script as in reference. Height-to-width about1.57 (real17cmhigh,10.8cmdiameter). Jar occupies65%canvasheight, centered on bottom baseline at87%height. Keep convincing transparent glass and ivory visible through it; no brown glass, wire latch, metal lid or contents. Lid closed. Smallest jar of a consistent series.",
+      "references": [
+        "C:/lesiteinternetquitue/output/storage-visuals/references/le-parfait-1l.jpg"
+      ],
+      "destination": "public/app/kanab-quest/storage/glass-1l-v1.webp",
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-0bee2be4-ca48-4679-9d3f-ce2f0d9ba8de.png"
+    },
+    {
+      "code": "GLASS-2L",
+      "prompt": "Use case: product-mockup / realistic product illustration. Create a single polished photorealistic studio packshot illustration for a French game's warehouse catalogue. The input is a genuine manufacturer product photo used as strict OBJECT/DESIGN REFERENCE, not a background to reproduce. Match the object's real proportions, construction, lid/closure, materials, recognizable brand details and color precisely. Photograph-like physically credible materials with delicate highlights, clean reflections, fine surface detail and soft grounded contact shadow. Premium calm editorial product photography, warm-neutral light from upper left, shallow three-quarter front view at about tabletop eye height. Entire product clearly visible, centered with generous breathing room, sharp edges without cartoon outlines, no stylized cartoon, no person/Sylvain/hands, no extra props, no cannabis leaves decorating background, no game UI/borders/badges, no floating text, no added claims, no price/measurement annotations, no watermark. Seamless LIGHT WARM IVORY studio background #f6f0e2, subtle soft shadow, no horizon or visible room, no transparent background. Square 1024x1024 composition, product occupies roughly 70-80% of frame height unless specified. Preserve existing small brand mark only where physically on object, do not invent additional labeling. Object-specific request: One EMPTY Le Parfait Color Vis 2 litre glass jar, the TALLER corresponding real format of the reference1litre model. Same clear glass rounded shoulder, slightly broad cylindrical body, wide orange plastic SCREW lid and subtle embossed brand. Real proportions24.5cmhigh to12.2cmdiameter, height aboutTWICEdiameter. Occupies76%canvasheight, base at87%. Natural reflections and transparent ivory background through jar. No wire latch, no metal lid, lidclosed. A distinct taller medium format, not a copy of small jar.",
+      "references": [
+        "C:/lesiteinternetquitue/output/storage-visuals/references/le-parfait-1l.jpg"
+      ],
+      "destination": "public/app/kanab-quest/storage/glass-2l-v1.webp",
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-d7d676a3-f639-4fae-899f-2e1caaa00f42.png"
+    },
+    {
+      "code": "GLASS-3L",
+      "prompt": "Use case: product-mockup / realistic product illustration. Create a single polished photorealistic studio packshot illustration for a French game's warehouse catalogue. The input is a genuine manufacturer product photo used as strict OBJECT/DESIGN REFERENCE, not a background to reproduce. Match the object's real proportions, construction, lid/closure, materials, recognizable brand details and color precisely. Photograph-like physically credible materials with delicate highlights, clean reflections, fine surface detail and soft grounded contact shadow. Premium calm editorial product photography, warm-neutral light from upper left, shallow three-quarter front view at about tabletop eye height. Entire product clearly visible, centered with generous breathing room, sharp edges without cartoon outlines, no stylized cartoon, no person/Sylvain/hands, no extra props, no cannabis leaves decorating background, no game UI/borders/badges, no floating text, no added claims, no price/measurement annotations, no watermark. Seamless LIGHT WARM IVORY studio background #f6f0e2, subtle soft shadow, no horizon or visible room, no transparent background. Square 1024x1024 composition, product occupies roughly 70-80% of frame height unless specified. Preserve existing small brand mark only where physically on object, do not invent additional labeling. Object-specific request: One EMPTY Le Parfait Color Vis 3 litre glass jar, the LARGEST taller and broader corresponding real format. Clear glass cylindrical body with rounded shoulders, thick base and wide orange plastic SCREW lid, subtle embossed script. Real proportions27.5cmhigh to13.8cmdiameter, height aboutTWICEdiameter. Occupies84%canvasheight withbaseat90%, noticeably more substantial than the small jar. No wire latch, metal lid or contents, lid closed. Crisp believable thick glass.",
+      "references": [
+        "C:/lesiteinternetquitue/output/storage-visuals/references/le-parfait-1l.jpg"
+      ],
+      "destination": "public/app/kanab-quest/storage/glass-3l-v1.webp",
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-e3e5f152-c19e-4825-96b4-b2831963b091.png"
+    },
+    {
+      "code": "GROVE-1OZ",
+      "prompt": "Use case: product-mockup / realistic product illustration. Create a single polished photorealistic studio packshot illustration for a French game's warehouse catalogue. The input is a genuine manufacturer product photo used as strict OBJECT/DESIGN REFERENCE, not a background to reproduce. Match the object's real proportions, construction, lid/closure, materials, recognizable brand details and color precisely. Photograph-like physically credible materials with delicate highlights, clean reflections, fine surface detail and soft grounded contact shadow. Premium calm editorial product photography, warm-neutral light from upper left, shallow three-quarter front view at about tabletop eye height. Entire product clearly visible, centered with generous breathing room, sharp edges without cartoon outlines, no stylized cartoon, no person/Sylvain/hands, no extra props, no cannabis leaves decorating background, no game UI/borders/badges, no floating text, no added claims, no price/measurement annotations, no watermark. Seamless LIGHT WARM IVORY studio background #f6f0e2, subtle soft shadow, no horizon or visible room, no transparent background. Square 1024x1024 composition, product occupies roughly 70-80% of frame height unless specified. Preserve existing small brand mark only where physically on object, do not invent additional labeling. Object-specific request: One small Grove Bags TerpLoc WINDOW pouch,1OUNCE size. Match the reference BLACK MATTE/satin laminate with fine flexible creases, high horizontal zip, flat gusset base, lower rectangular clear window outlined green, small Grove Bags logo in green/white. This is the small15.9x22.9cmformat, fillindication1OZ only if legible, NEVER1POUNDfromreference. Stand slightlythreequarter front,window visiblyclear withempty beige backdrop. Pouchoccupies69%canvasheightwithbaseat87%. No jar, no contents spilling, no extra packaging.",
+      "references": [
+        "C:/lesiteinternetquitue/output/storage-visuals/references/grove-1lb.png"
+      ],
+      "destination": "public/app/kanab-quest/storage/grove-1oz-v1.webp",
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-88b9ffef-ea73-4d55-b5d3-4d374ec92fc4.png"
+    },
+    {
+      "code": "GROVE-1LB",
+      "prompt": "Use case: product-mockup / realistic product illustration. Create a single polished photorealistic studio packshot illustration for a French game's warehouse catalogue. The input is a genuine manufacturer product photo used as strict OBJECT/DESIGN REFERENCE, not a background to reproduce. Match the object's real proportions, construction, lid/closure, materials, recognizable brand details and color precisely. Photograph-like physically credible materials with delicate highlights, clean reflections, fine surface detail and soft grounded contact shadow. Premium calm editorial product photography, warm-neutral light from upper left, shallow three-quarter front view at about tabletop eye height. Entire product clearly visible, centered with generous breathing room, sharp edges without cartoon outlines, no stylized cartoon, no person/Sylvain/hands, no extra props, no cannabis leaves decorating background, no game UI/borders/badges, no floating text, no added claims, no price/measurement annotations, no watermark. Seamless LIGHT WARM IVORY studio background #f6f0e2, subtle soft shadow, no horizon or visible room, no transparent background. Square 1024x1024 composition, product occupies roughly 70-80% of frame height unless specified. Preserve existing small brand mark only where physically on object, do not invent additional labeling. Object-specific request: One LARGE Grove Bags TerpLoc WINDOW pouch1POUND. Faithfully match supplied photo's large broad BLACK MATTE/satin laminate bag, horizontal zip closure, gusset standup base, green outlined rectangular clear lower window, small green/white Grove Bags logo and01POUND print. Broad substantial bulk storage bag with subtle pliable creases, not a tiny sachet. Approx35.6x47cmratio. Stand slightlythreequarterfront at82%canvasheight,base90%. Empty window natural ivory visible. No other props.",
+      "references": [
+        "C:/lesiteinternetquitue/output/storage-visuals/references/grove-1lb.png"
+      ],
+      "destination": "public/app/kanab-quest/storage/grove-1lb-v1.webp",
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-961ed2f3-4a07-4ded-82a5-511bccfb5c8a.png"
+    },
+    {
+      "code": "BOVEDA-1L",
+      "prompt": "Use case: product-mockup / realistic product illustration. Create a single polished photorealistic studio packshot illustration for a French game's warehouse catalogue. The input is a genuine manufacturer product photo used as strict OBJECT/DESIGN REFERENCE, not a background to reproduce. Match the object's real proportions, construction, lid/closure, materials, recognizable brand details and color precisely. Photograph-like physically credible materials with delicate highlights, clean reflections, fine surface detail and soft grounded contact shadow. Premium calm editorial product photography, warm-neutral light from upper left, shallow three-quarter front view at about tabletop eye height. Entire product clearly visible, centered with generous breathing room, sharp edges without cartoon outlines, no stylized cartoon, no person/Sylvain/hands, no extra props, no cannabis leaves decorating background, no game UI/borders/badges, no floating text, no added claims, no price/measurement annotations, no watermark. Seamless LIGHT WARM IVORY studio background #f6f0e2, subtle soft shadow, no horizon or visible room, no transparent background. Square 1024x1024 composition, product occupies roughly 70-80% of frame height unless specified. Preserve existing small brand mark only where physically on object, do not invent additional labeling. Object-specific request: A clear Le Parfait Color Vis1L glass jar with closed orange PLASTIC screw lid, PLUS exactlyONE small flat Vivi Fresh bidirectional humidity sachet propped in front of it against the lower right side, not floating. Image1strictjarreference;image2strictaccessorydesignreference. Sachet roughly7cmwide versusjar10.8cmdiameter, thin KRAFT paper beige with MUTED BLUE upperband and large RED Vivi logo, real sealed flatedges. Use the FRONT sachet only, not both front/back fromimage2. Entirejarandpacket visible, compactbalanced arrangement. Jar65%canvasheightbase87%,sachet22%canvasheight. No hygrometer, not an electronic gadget.",
+      "references": [
+        "C:/lesiteinternetquitue/output/storage-visuals/references/le-parfait-1l.jpg",
+        "C:/lesiteinternetquitue/output/storage-visuals/references/vivi-fresh.jpg"
+      ],
+      "destination": "public/app/kanab-quest/storage/boveda-1l-v1.webp",
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-3fd2db57-3a46-4bb6-9df9-7d0b8e3ecf21.png"
+    },
+    {
+      "code": "CVAULT-2OZ",
+      "prompt": "Use case: product-mockup / realistic product illustration. Create a single polished photorealistic studio packshot illustration for a French game's warehouse catalogue. The input is a genuine manufacturer product photo used as strict OBJECT/DESIGN REFERENCE, not a background to reproduce. Match the object's real proportions, construction, lid/closure, materials, recognizable brand details and color precisely. Photograph-like physically credible materials with delicate highlights, clean reflections, fine surface detail and soft grounded contact shadow. Premium calm editorial product photography, warm-neutral light from upper left, shallow three-quarter front view at about tabletop eye height. Entire product clearly visible, centered with generous breathing room, sharp edges without cartoon outlines, no stylized cartoon, no person/Sylvain/hands, no extra props, no cannabis leaves decorating background, no game UI/borders/badges, no floating text, no added claims, no price/measurement annotations, no watermark. Seamless LIGHT WARM IVORY studio background #f6f0e2, subtle soft shadow, no horizon or visible room, no transparent background. Square 1024x1024 composition, product occupies roughly 70-80% of frame height unless specified. Preserve existing small brand mark only where physically on object, do not invent additional labeling. Object-specific request: A small real CVault2oz hermetic stainless steel container from reference, broad low cylindrical body, Ø12cmheight8.5cm, shiny but realistic brushed/polished INOX, correctlyshapedclosed round lid with black/green CVault disc and THREEmetal toggle/clamp latches aroundperimeter, jointseam. ExactlyTWOViviFresh small beige/blue/red paper sachets naturally stackedflatnearbase like reference, no otherproducts. Maincontaineroccupies60%canvaswidth to visuallycommunicatesmallformat, baseat82%. Camera slightlyabove to showlidandfrontside, premiumsoftreflections no plasticappearance.",
+      "references": [
+        "C:/lesiteinternetquitue/output/storage-visuals/references/cvault-2oz.jpg"
+      ],
+      "destination": "public/app/kanab-quest/storage/cvault-2oz-v1.webp",
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-b62a78d1-e936-4b40-9cda-0ecfa6c4d6bc.png"
+    },
+    {
+      "code": "CVAULT-1LB",
+      "prompt": "Use case: product-mockup / realistic product illustration. Create a single polished photorealistic studio packshot illustration for a French game's warehouse catalogue. The input is a genuine manufacturer product photo used as strict OBJECT/DESIGN REFERENCE, not a background to reproduce. Match the object's real proportions, construction, lid/closure, materials, recognizable brand details and color precisely. Photograph-like physically credible materials with delicate highlights, clean reflections, fine surface detail and soft grounded contact shadow. Premium calm editorial product photography, warm-neutral light from upper left, shallow three-quarter front view at about tabletop eye height. Entire product clearly visible, centered with generous breathing room, sharp edges without cartoon outlines, no stylized cartoon, no person/Sylvain/hands, no extra props, no cannabis leaves decorating background, no game UI/borders/badges, no floating text, no added claims, no price/measurement annotations, no watermark. Seamless LIGHT WARM IVORY studio background #f6f0e2, subtle soft shadow, no horizon or visible room, no transparent background. Square 1024x1024 composition, product occupies roughly 70-80% of frame height unless specified. Preserve existing small brand mark only where physically on object, do not invent additional labeling. Object-specific request: A LARGE real CVault1lb opaque stainless steel container from reference, very broad larger cylindrical storagebowl with same roundedmetalbody, strongclosedroundlid subtlyembossed, exactlyTHREEcorrectmetaltogglelatches. Match the supplied real large model proportion, NOT a tall cookingstockpot, no saucepanhandles. Maincontaineroccupies79%canvaswidth, baseat86%. ExactlyTWOlargerthin Vivi Fresh beige/blue/red sachets overlapped beside lowerleft, rightphysicalscale. Camera slightlyabove lid, naturalstudio stainlesssteelspeculars, no overlyglossy plastic. Distinct substantial largeformat.",
+      "references": [
+        "C:/lesiteinternetquitue/output/storage-visuals/references/cvault-1lb.jpg"
+      ],
+      "destination": "public/app/kanab-quest/storage/cvault-1lb-v1.webp",
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-be7ee2fd-81fe-455a-bf15-99f17e114206.png"
+    },
+    {
+      "code": "CANNATROL",
+      "prompt": "Use case: product-mockup / realistic product illustration. Create a single polished photorealistic studio packshot illustration for a French game's warehouse catalogue. The input is a genuine manufacturer product photo used as strict OBJECT/DESIGN REFERENCE, not a background to reproduce. Match the object's real proportions, construction, lid/closure, materials, recognizable brand details and color precisely. Photograph-like physically credible materials with delicate highlights, clean reflections, fine surface detail and soft grounded contact shadow. Premium calm editorial product photography, warm-neutral light from upper left, shallow three-quarter front view at about tabletop eye height. Entire product clearly visible, centered with generous breathing room, sharp edges without cartoon outlines, no stylized cartoon, no person/Sylvain/hands, no extra props, no cannabis leaves decorating background, no game UI/borders/badges, no floating text, no added claims, no price/measurement annotations, no watermark. Seamless LIGHT WARM IVORY studio background #f6f0e2, subtle soft shadow, no horizon or visible room, no transparent background. Square 1024x1024 composition, product occupies roughly 70-80% of frame height unless specified. Preserve existing small brand mark only where physically on object, do not invent additional labeling. Object-specific request: One Cannatrol Cool Cure ORIGINAL countertop cabinet EXACTgeneration in photo: compactblackrectangularbody, UV tinted GLASSfrontdoorwithblackborder, SIX slim metaltraylevels inside, rear smallcircularfan, smallroundlock atlowerdoorcenter. A SEPARATE smallblack controllerbox sitsCENTEREDONTOP withsmallsubdueddigitaldisplay. Preserve the photograph's geometry and smallCannatrolmark above door. Not a fullheight domesticrefrigerator, not new C/C+opaquedoor, not stainlessC2, nohybrid, no imaginary hoses orstacks. Stand at gentlethreequarterangleshowingleftside, entireapplianceandcontroller visibleat80%canvasheight,base90%. Cabinetemptywithtrays clearlyvisible throughglass. No plants, jars, smoke or foregroundobjects.",
+      "references": [
+        "C:/lesiteinternetquitue/output/storage-visuals/references/cannatrol-original.png"
+      ],
+      "destination": "public/app/kanab-quest/storage/cannatrol-v1.webp",
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-055fd360-0fae-4dc9-87a0-99604a6832a8.png"
+    }
+  ]
+}

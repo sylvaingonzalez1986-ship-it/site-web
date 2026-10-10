@@ -1,7 +1,8 @@
 import type { KqBattle } from "@/lib/kanab-quest-battle";
-import { KQ_BUDDIES, KQ_CARDS, type KqGameState } from "@/lib/kanab-quest-game";
+import { KQ_BUDDIES, KQ_ACTIVE_CARDS, type KqGameState } from "@/lib/kanab-quest-game";
 import { encodeKqSave, parseKqBattleSave, parseKqGameSave, parseKqRankSave } from "@/lib/kanab-quest-persistence";
 import type { KqRankProfile } from "@/lib/kanab-quest-ranking";
+import { recoverKqLocalCare } from "@/lib/kanab-quest-care-local";
 
 export const KQ_LOCAL_KEYS = {
   game: "kanab-quest-dice-prototype-v7",
@@ -79,10 +80,7 @@ export function createLocalKqRepository(storage: KeyValueStorage): KqRepository 
       if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return null;
       const deck = parsed as KqFavoriteDeck;
       if (!KQ_BUDDIES.some((buddie) => buddie.code === deck.buddieCode) || !Array.isArray(deck.supportCodes)) return null;
-      if (deck.supportCodes.some((code) => {
-        const card = KQ_CARDS.find((item) => item.code === code);
-        return !card || card.category === "substrate" || card.category === "pbi";
-      })) return null;
+      if (deck.supportCodes.some(code => !KQ_ACTIVE_CARDS.some(card => card.code === code))) return null;
       return { buddieCode: deck.buddieCode, supportCodes: deck.supportCodes };
     } catch { return null; }
   };
@@ -109,6 +107,7 @@ export function createLocalKqRepository(storage: KeyValueStorage): KqRepository 
   };
   return {
     async loadSession() {
+      recoverKqLocalCare(storage);
       const journal = loadBurnJournal();
       const verdictJournal = loadVerdictJournal();
       if (journal) {

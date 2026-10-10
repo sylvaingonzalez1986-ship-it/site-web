@@ -26,7 +26,7 @@ export type KqJuryAnalysis = {
   limits: string[];
 };
 
-const LABELS: Record<KqFlowerStat, string> = { appearance: "Apparence", aroma: "Arômes", vigor: "Vigueur", mastery: "Maîtrise", regularity: "Régularité" };
+const LABELS: Record<KqFlowerStat, string> = { appearance: "Apparence", aroma: "Arômes", vigor: "Vigueur", mastery: "Maîtrise", regularity: "Régularité", cannabinoids: "Potentiel cannabinoïde" };
 // These links follow createKqFlower, not a guessed association between scenario
 // names and culture stages. They explain levers, never a player's missing history.
 const LEVERS: Record<KqFlowerStat, Omit<KqJuryRecommendation, "stat">> = {
@@ -36,7 +36,7 @@ const LEVERS: Record<KqFlowerStat, Omit<KqJuryRecommendation, "stat">> = {
   },
   aroma: {
     title: "Soigner les trois dernières étapes",
-    explanation: "Floraison, Récolte et Séchage & affinage entrent directement dans les Arômes, avec la Qualité finale. Garde des options adaptées aux situations de fin de culture et compare leur effet dans l’aperçu du résultat.",
+    explanation: "Floraison, Récolte et Séchage entrent directement dans les Arômes, avec la Qualité finale. Garde des options adaptées aux situations de fin de culture et compare leur effet dans l’aperçu du résultat.",
   },
   vigor: {
     title: "Consolider le début de culture",
@@ -49,6 +49,10 @@ const LEVERS: Record<KqFlowerStat, Omit<KqJuryRecommendation, "stat">> = {
   regularity: {
     title: "Limiter les étapes en échec",
     explanation: "Les réussites renforcent la Régularité, les échecs la diminuent. Elle tient aussi compte du bonus de régularité du matériel retenu au début de la culture. Consulte ces effets dans la préparation et l’aperçu du résultat.",
+  },
+  cannabinoids: {
+    title: "Développer puis préserver le potentiel de ta variété",
+    explanation: "Le potentiel cannabinoïde est un indice de jeu entre 35 et 99, distinct des taux de CBD, CBG et THC en %. Les opérations réussies en Floraison et à la Récolte le font progresser ; le Séchage peut le conserver ou le réduire. Les intrants ne lui ajoutent aucun bonus direct. Le jury compare cet indice propre à chaque variété : un taux de THC plus élevé ne rapporte aucun bonus. Les taux affichés sont simulés.",
   },
 };
 const rounded = (value: number) => Math.round((value + Number.EPSILON) * 1000) / 1000;
@@ -71,9 +75,14 @@ export function getKqJuryAnalysis({ rounds, playerStats, opponentStats }: KqJury
   const margin = rounded(focus.playerScore - focus.opponentScore);
   const tied = focus.playerScore === focus.opponentScore;
   const definitions = getKqJuryScoringCriteria(focus.code);
+  const linkedAroma = typeof playerStats?.cannabinoids === "number" && Number.isFinite(playerStats.cannabinoids);
+  const lever = (stat: KqFlowerStat) => stat === "aroma" && linkedAroma ? {
+    title: "Développer et préserver le bouquet",
+    explanation: "La note Terpènes et arômes est alimentée par l’expression des terpènes consignée dans le suivi, puis par la qualité des opérations de fin de culture. Consulte les progressions et les pertes de Floraison, Récolte et Séchage. L’indice terpénique explique cette note ; le jury ne lui ajoute pas une deuxième pondération. L’affinage continue ensuite dans l’entrepôt, sans réécrire ce verdict.",
+  } : LEVERS[stat];
   const criteria: KqJuryCriterionAnalysis[] = (definitions ?? []).map(({ stat, weight }) => {
     const playerValue = readStat(playerStats, stat), opponentValue = readStat(opponentStats, stat);
-    return { stat, label: LABELS[stat], weightPercent: weight * 100, playerValue, opponentValue,
+    return { stat, label: stat === "aroma" && linkedAroma ? "Terpènes et arômes" : LABELS[stat], weightPercent: weight * 100, playerValue, opponentValue,
       weightedGap: playerValue !== null && opponentValue !== null ? rounded((playerValue - opponentValue) * weight) : null };
   });
   const facts = [`${focus.label} : ${number(focus.playerScore)} pour ta Fleur, ${number(focus.opponentScore)} pour l’adversaire.`];
@@ -114,17 +123,17 @@ export function getKqJuryAnalysis({ rounds, playerStats, opponentStats }: KqJury
               ? `${lead.label} (${number(lead.weightPercent)} %) apporte ${points(lead.weightedGap!)} à ton avantage avant la variation du jury : ${number(lead.playerValue!)} contre ${number(lead.opponentValue!)}.`
               : "Les deux critères sont identiques pour les deux Fleurs. La variation du jury explique l’écart de note de cette manche.";
       const target = deficit ?? criteria[0];
-      recommendations.push({ stat: target.stat, ...LEVERS[target.stat] });
+      recommendations.push({ stat: target.stat, ...lever(target.stat) });
     } else {
       // Without the matching two flower snapshots, a score is not evidence of
       // which statistic caused the result. Keep the advice explicitly general.
       for (const criterion of criteria) criterion.weightedGap = null;
       reason = completeStats
-        ? "Les statistiques fournies ne reconstituent pas ces notes avec le barème actuel. Aucun écart n’est attribué à une étape de ta culture."
+        ? "Les statistiques fournies ne reconstituent pas ces notes avec le barème enregistré. Aucun écart n’est attribué à une étape de ta culture."
         : "Les statistiques complètes des deux Fleurs ne sont pas disponibles pour ce verdict. Impossible d’identifier un critère responsable de l’écart.";
       limits.push(reason);
       const target = criteria[0];
-      recommendations.push({ stat: target.stat, title: `Repère pour la prochaine culture : ${target.label}`, explanation: LEVERS[target.stat].explanation });
+      recommendations.push({ stat: target.stat, title: `Repère pour la prochaine culture : ${target.label}`, explanation: lever(target.stat).explanation });
     }
     limits.push("La variation du jury et l’arrondi s’ajoutent aux critères. Les statistiques de la Fleur sont bornées entre 35 et 99 : un levier déjà au plafond peut ne plus les augmenter.");
   }

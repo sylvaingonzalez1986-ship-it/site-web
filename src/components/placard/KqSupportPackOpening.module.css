@@ -8,4 +8,5 @@
 .status button { min-height: 48px; padding: 10px 18px; border: 2px solid #f4c43d; background: #f4c43d; color: #002d24; font-weight: 800; }
 .dialog button { cursor: pointer; }
 .dialog button:focus-visible { outline: 3px solid #8ce7ce; outline-offset: 3px; }
+.revealCards{display:flex;flex:1;min-height:0;align-items:flex-start;gap:12px;margin:12px 0;padding:4px 4px 12px;overflow:auto;overscroll-behavior:contain}.revealCard{flex:0 0 192px;border:2px solid #d5a72d;background:#fffaf1;color:#103b2e;box-shadow:3px 3px 0 #d5a72d}.revealCard[data-rarity=epic]{border-color:#cd99eb;box-shadow:3px 3px 0 #cd99eb}.revealArtwork{position:relative;aspect-ratio:2/3;overflow:hidden}.revealCopy{display:grid;gap:6px;padding:9px}.revealCopy>small{font-size:11px;font-weight:900}.revealCard[data-rarity=epic] small{color:#732a98}.revealCopy>strong{font-size:15px;line-height:1.25}.revealCopy>span{font-size:10px;font-weight:800}.revealCopy p{margin:0;font-size:12px;line-height:1.5}.revealCopy>b{font-size:11px;color:#732a98}.revealCard[data-rarity=epic] .revealCopy{background:#f4eafa}
 @media (max-width: 600px) { .content { height: 400px; } }

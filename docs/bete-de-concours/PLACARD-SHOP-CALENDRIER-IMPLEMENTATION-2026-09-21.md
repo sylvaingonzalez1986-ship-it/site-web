@@ -146,7 +146,8 @@ le montant net versé.
 ## Analyses et recouvrement
 
 Chaque nouvelle culture terminée donne lieu à **une seule facture de 45 €**,
-identifiée par la culture. Elle est due exactement **120 heures réelles** après
+identifiée par la session de culture et couvrant son lot commun, quel que soit
+le nombre de tentes. Elle est due exactement **120 heures réelles** après
 sa facturation. Transformation, fractionnement du lot, ventes multiples et
 répétition d’une requête ne créent pas d’analyses supplémentaires. Une culture
 abandonnée avant son achèvement n’en crée pas.

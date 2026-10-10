@@ -12,30 +12,38 @@ const modules={
   fixture:`import React from 'react';import{createRoot}from'react-dom/client';import'/src/app/globals.css';
     import{KqCultureRecap,KqJuryRecap}from'/src/components/placard/KqPersonalRecap';
     import{startKqTrialCulture}from'/src/lib/kanab-quest-trial';
-    import{rollKqDice,resolveKqStage,advanceKqStage,playKqCard}from'/src/lib/kanab-quest-game';
+    import{rollKqDice,resolveKqStage,advanceKqStage,playKqCard,getKqStageDisplayName}from'/src/lib/kanab-quest-game';
     import{encodeKqSave,parseKqGameSave}from'/src/lib/kanab-quest-persistence';
     import{getKqCultureAnalysis}from'/src/lib/kanab-quest-culture-analysis';
+    import{applyKqCareProduct,canApplyKqCareProduct,performKqBasicCare}from'/src/lib/kanab-quest-care';
     import styles from'/src/components/placard/KanabQuestDicePrototype.module.css';
     const scenario=new URLSearchParams(location.search).get('scenario')||'culture';
     const legacyEntry=entry=>{const{decision,...receipt}=entry;return receipt;};
-    function buildCulture(){
-      for(let seed=1;seed<=500;seed++){
-        let candidate=startKqTrialCulture('balanced',seed);
+    function buildCulture(rulesVersion=3,dead=false,withCare=false){
+      for(let seed=1;seed<=1000;seed++){
+        let candidate=startKqTrialCulture('balanced',seed,rulesVersion);
         for(let index=0;index<6;index++){
           if(index===0)candidate=playKqCard(candidate,'BOTTE-005');
+          if(withCare){
+            candidate=performKqBasicCare(candidate);
+            const code=index===0?'CARE-SEAWEED':index===2?'CARE-APHIDIUS':null;
+            if(code&&canApplyKqCareProduct(candidate,code).allowed)candidate=applyKqCareProduct(candidate,code);
+          }
           candidate=resolveKqStage(rollKqDice(candidate));
           if(candidate.cultureDead)break;
           candidate=advanceKqStage(candidate);
         }
-        if(candidate.phase==='complete'&&!candidate.cultureDead&&candidate.history.length===6&&candidate.history.some(entry=>entry.outcome==='failure'||entry.outcome==='fragile')&&getKqCultureAnalysis(candidate).advice.some(advice=>advice.basis==='verified-position'))return candidate;
+        if(dead&&candidate.cultureDead)return candidate;
+        if(!dead&&candidate.phase==='complete'&&!candidate.cultureDead&&candidate.history.length===6&&candidate.history.some(entry=>entry.outcome==='failure'||entry.outcome==='fragile')&&getKqCultureAnalysis(candidate).advice.some(advice=>advice.basis==='verified-position'))return candidate;
       }
       throw new Error('No valid engine-generated culture found for the recap audit.');
     }
-    let game=buildCulture();
+    let game=buildCulture(scenario==='culture-v2'?2:3,scenario==='culture-dead',scenario==='culture-care');
     if(scenario==='culture-legacy')game={...game,history:game.history.map(legacyEntry)};
     if(scenario==='culture-partial')game={...game,history:game.history.map((entry,index)=>index<3?entry:legacyEntry(entry))};
-    const storageKey='recap-audit-fixture-v1:'+scenario;
-    if(scenario.startsWith('culture')){const saved=parseKqGameSave(localStorage.getItem(storageKey));if(saved)game=saved;else localStorage.setItem(storageKey,encodeKqSave(game));}
+    const storageKey='recap-audit-fixture-v2:'+scenario;
+    let restored=false;
+    if(scenario.startsWith('culture')){const saved=parseKqGameSave(localStorage.getItem(storageKey));if(saved){game=saved;restored=true;}else localStorage.setItem(storageKey,encodeKqSave(game));}
     const round=(code,label,playerScore,opponentScore,winner)=>({code,label,explanation:'Manche locale préparée pour vérifier le bilan.',playerScore,opponentScore,winner});
     let rounds=[round('visual-impact','Impact visuel',90,91,'opponent'),round('blind-aroma','Arômes à l’aveugle',60,50,'player'),round('technical-jury','Jury technique',85,95,'opponent')];
     if(scenario==='jury-tie')rounds=[round('visual-impact','Impact visuel',90,90,'opponent'),round('blind-aroma','Arômes à l’aveugle',60,50,'player'),round('technical-jury','Jury technique',85,95,'opponent')];
@@ -43,7 +51,7 @@ const modules={
     if(scenario==='jury-legacy')rounds=rounds.map((entry,index)=>({...entry,code:'archived-unknown-'+index}));
     const playerStats={appearance:90,vigor:90,aroma:60,regularity:60,mastery:85};
     const opponentStats={appearance:91,vigor:91,aroma:50,regularity:50,mastery:95};
-    window.__recapFixture={game,rounds,playerStats,opponentStats};
+    window.__recapFixture={game,rounds,playerStats,opponentStats,restored,stageLabels:game.history.map(entry=>getKqStageDisplayName(entry.stage))};
     function Fixture(){const[prepared,setPrepared]=React.useState(false);const recap=scenario.startsWith('culture')?React.createElement(KqCultureRecap,{state:game}):React.createElement('div',{className:styles.verdictPanel},React.createElement(KqJuryRecap,{rounds,...(scenario==='jury-no-stats'?{}:{playerStats,opponentStats}),onPrepare:()=>setPrepared(true)}));return React.createElement('main',{className:styles.page,'data-player-mode':true},prepared?React.createElement('p',{'data-audit-prepared':true},'Préparation locale ouverte'):React.createElement('section',{className:styles.traitsPanel},recap));}
     createRoot(document.getElementById('root')).render(React.createElement(Fixture));`,
   link:`import React from'react';export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props)}`,
@@ -54,25 +62,83 @@ const server=await createServer({configFile:false,envDir:false,root,cacheDir:res
 const report={passed:false,results:[],apiRequests:[],remote:[],errors:[]};let browser,page,scenario='';
 async function visit(name,width){scenario=name;await page.setViewport({width,height:900});await page.goto(origin+'/?scenario='+name,{waitUntil:'networkidle0'});await page.waitForSelector(name.startsWith('culture')?'[data-culture-personal-recap]':'[data-jury-personal-recap]');}
 async function shot(name){assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),name+': horizontal overflow');await page.screenshot({path:resolve(output,name+'.png'),fullPage:true});}
-async function details(selector){const summary=await page.waitForSelector(selector+'>summary');assert((await summary.boundingBox()).height>=44,'Details target at least44px');await summary.focus();await page.keyboard.press('Enter');await page.waitForSelector(selector+'[open]');}
+async function details(selector){const summary=await page.waitForSelector(selector+'>summary');const bounds=await summary.boundingBox();assert(bounds&&bounds.height>=44,'Details target at least 44px: '+selector+' ('+(bounds?.height??'hidden')+'px)');await summary.focus();await page.keyboard.press('Enter');await page.waitForSelector(selector+'[open]');}
+async function openStageDetails(){
+  for(const stage of await page.$$('[data-analysis-stage]')){
+    for(const disclosure of await stage.$$('details')){
+      if(await disclosure.evaluate(el=>el.open))continue;
+      const summary=await disclosure.$(':scope>summary');
+      assert(summary,'Every stage disclosure has an accessible summary');
+      assert((await summary.boundingBox()).height>=44,'Stage calculations have a 44px keyboard target');
+      await summary.focus();await page.keyboard.press('Enter');
+      assert(await disclosure.evaluate(el=>el.open),'Stage calculations open from the keyboard');
+    }
+  }
+}
+async function loadedImages(selector){
+  const images=await page.$$(selector);
+  assert(images.length>0,'An illustration is present: '+selector);
+  for(const image of images){
+    await image.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
+    await page.waitForFunction(el=>el.complete&&el.naturalWidth>0,{},image);
+  }
+  return page.$$eval(selector,nodes=>nodes.map(img=>({alt:img.alt,src:img.getAttribute('src'),loaded:img.complete&&img.naturalWidth>0})));
+}
 try{
   await mkdir(output,{recursive:true});await server.listen();browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});page=await browser.newPage();page.setDefaultTimeout(20000);page.setDefaultNavigationTimeout(60000);page.on('pageerror',error=>report.errors.push({scenario,message:error.message}));await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await page.setRequestInterception(true);
   page.on('request',request=>{const url=new URL(request.url());if(url.protocol==='data:'||url.protocol==='blob:')return void request.continue();if(url.origin!==origin){report.remote.push(url.href);return void request.abort();}if(url.pathname.startsWith('/api/')){report.apiRequests.push({scenario,method:request.method(),path:url.pathname});return void request.respond({status:503,contentType:'application/json',body:'{}'});}void request.continue();});
-  for(const width of [390,1440]){
-    for(const [name,coverage] of [['culture','detailed'],['culture-partial','partial'],['culture-legacy','legacy']]){
-      await visit(name,width);const receipt=await page.evaluate(()=>window.__recapFixture.game);assert.equal(receipt.history.length,6);assert.equal(receipt.phase,'complete');assert.equal(receipt.usedCards.includes('BOTTE-005'),true);
+  for(const width of [320,390,768,1440]){
+    for(const [name,coverage] of [['culture','detailed'],['culture-care','detailed'],['culture-partial','partial'],['culture-legacy','legacy'],['culture-v2','detailed'],['culture-dead','detailed']]){
+      await visit(name,width);const receipt=await page.evaluate(()=>window.__recapFixture.game);const dead=name==='culture-dead';
+      if(dead){assert.equal(receipt.cultureDead,true);assert.equal(receipt.harvestGrams,0);}
+      else assert.equal(receipt.history.length,6);
+      assert.equal(receipt.phase,'complete');assert.equal(receipt.usedCards.includes('BOTTE-005'),true);
+      assert.equal(receipt.rulesVersion,name==='culture-v2'?2:3,'Current and archived game rules are exercised separately');
       assert.equal(await page.$eval('[data-culture-personal-recap]',el=>el.dataset.analysisCoverage),coverage);await page.waitForSelector('[data-culture-analysis]');await shot(name+'-'+width+'-summary');
-      assert.equal(await page.$$eval('[data-recap-card]',nodes=>nodes.filter(node=>node.checkVisibility()).length),1,'The summary presents one primary card');
+      const mainText=await page.$eval('[data-culture-personal-recap]',el=>el.innerText);
+      assert(!/fidélité cannabinoïde/i.test(mainText),'The ambiguous cannabinoid label has been removed');
+      const portrait=await loadedImages('[data-recap-sylvain]');assert(portrait.every(image=>/Sylvain/i.test(image.alt)),'The guide is explicitly Sylvain');
+      if(receipt.rulesVersion===3&&!dead){
+        assert(/(?:score|indice)/i.test(mainText)&&/(?:taux|pourcentage|%)/i.test(mainText),'The visible recap explains the score and its distinction from a cannabinoid percentage');
+        await details('[data-recap-cannabinoids]');
+        const profile=await page.$eval('[data-recap-cannabinoids]',el=>el.innerText);
+        for(const cannabinoid of ['CBD','CBG','THC'])assert(profile.includes(cannabinoid),'Profile names '+cannabinoid);
+        assert(/simul/i.test(profile),'The profile clearly describes simulated results');
+        await details('[data-recap-cannabinoids] [data-cannabinoid-report]');
+        assert((await page.$$('[data-recap-cannabinoids] table')).length>0,'The cannabinoid report is a readable table');
+        assert.equal(await page.$$eval('[data-recap-cannabinoids] tbody tr',rows=>rows.length),7,'All seven cannabinoid families remain available');
+        await shot(name+'-'+width+'-profile');
+        await page.focus('[data-recap-cannabinoids]>summary');await page.keyboard.press('Enter');
+      }
+      if(dead){
+        assert(/sans récolte|aucune récolte/i.test(mainText),'A dead culture clearly has no harvest');
+        assert(!await page.$('[data-recap-cannabinoids]'),'A dead culture does not receive a fictitious lab report');
+        assert(!/État du lot|Prêt pour le curing|Ton lot est prêt/i.test(mainText),'A dead culture is not described as a ready lot');
+      }
+      if(name==='culture-care'){
+        assert(receipt.care.applications.some(application=>application.productCode==='CARE-APHIDIUS'),'The care fixture includes a real targeted PBI application');
+        await details('[data-recap-care]');
+        const applied=await page.$eval('[data-recap-care]',el=>el.innerText);
+        assert(/Aphidius/.test(applied)&&/algues/i.test(applied),'The recap names the products actually applied');
+        assert((await loadedImages('[data-recap-care] img')).length>=2,'Applied products retain their illustrations');
+        assert.equal((await page.$$('[data-recap-care] a[href^="http"]')).length,0,'Care receipts do not reintroduce documentary product links');
+        await shot(name+'-'+width+'-care');
+        await page.focus('[data-recap-care]>summary');await page.keyboard.press('Enter');
+      }
+      const primaryCards=await page.$$eval('[data-recap-card]',nodes=>nodes.filter(node=>node.checkVisibility()).length);
+      assert.equal(primaryCards,1,'The summary presents one primary card');
       await details('[data-recap-card-details]');assert((await page.$eval('[data-recap-card-details]',el=>el.textContent)).includes('stock'),'Card conditions preserve the inventory caveat');if(width===390)await shot(name+'-'+width+'-card-conditions');await page.focus('[data-recap-card-details]>summary');await page.keyboard.press('Enter');
-      await details('[data-culture-analysis-details]');assert.equal(await page.$$eval('[data-analysis-stage]',nodes=>nodes.length),6);
-      const lines=await page.$$eval('[data-analysis-stage]',nodes=>nodes.map(node=>node.textContent));receipt.history.forEach((entry,index)=>{assert(lines[index].includes(entry.stage));assert(lines[index].includes(entry.situation));assert(lines[index].includes(entry.dice.join(' · ')));});
-      if(width===390){const readable=await page.$$eval('[data-analysis-stage]',nodes=>nodes.map(node=>({row:node.getBoundingClientRect().width,paragraph:node.querySelector('p').getBoundingClientRect().width,facts:[...node.querySelectorAll('ul>li')].map(fact=>fact.getBoundingClientRect().width)})));assert(readable.every(row=>row.paragraph>=row.row*.75&&row.facts.every(fact=>fact>=row.row*.65)),`Culture details remain readable inside the real parent styles: ${JSON.stringify(readable)}`);}
+      await details('[data-culture-analysis-details]');assert.equal(await page.$$eval('[data-analysis-stage]',nodes=>nodes.length),receipt.history.length);
+      await openStageDetails();
+      const lines=await page.$$eval('[data-analysis-stage]',nodes=>nodes.map(node=>node.textContent));const labels=await page.evaluate(()=>window.__recapFixture.stageLabels);receipt.history.forEach((entry,index)=>{assert(lines[index].includes(labels[index]));assert(lines[index].includes(entry.situation));assert(lines[index].includes(entry.dice.join(' · ')));});
+      const stageImages=await loadedImages('[data-analysis-stage] img');assert.equal(stageImages.length,receipt.history.length,'Every recorded stage has a loaded illustration');
+      assert(stageImages.every(image=>image.alt.length>0),'Stage illustrations carry accessible text');
       if(coverage!=='detailed')assert(await page.$('[data-analysis-legacy]'),'Older decisions are explicitly unavailable');
-      if(coverage==='detailed')assert(await page.$('[data-recap-card][data-advice-basis="verified-position"]'),'Detailed receipts explain an actual alternative card');
+      if(coverage==='detailed'&&!dead)assert(await page.$('[data-recap-card][data-advice-basis="verified-position"]'),'Detailed receipts explain an actual alternative card');
       if(coverage==='legacy')assert.equal(await page.$$eval('[data-recap-card][data-advice-basis="verified-position"]',nodes=>nodes.length),0,'No alleged playable historical card without a recorded decision');
-      const cardImages=await page.$$eval('[data-recap-card] img',nodes=>nodes.map(img=>({alt:img.alt,loaded:img.complete&&img.naturalWidth>0})));assert(cardImages.every(image=>image.alt.startsWith('Carte ')&&image.loaded),'Recommended cards have a loaded visual and accessible label');await shot(name+'-'+width+'-details');
-      const text=await page.$eval('[data-culture-personal-recap]',el=>el.textContent);assert(!/NaN|undefined|Infinity/.test(text));
-      await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('[data-culture-personal-recap]');assert.equal(await page.$eval('[data-culture-personal-recap]',el=>el.textContent),text,'Reload retains the recorded analysis');assert.deepEqual(await page.evaluate(()=>window.__recapFixture.game),receipt,'Reading the recap never rewrites the culture');report.results.push({name,width,coverage,reload:true});
+      const cardImages=await loadedImages('[data-recap-card] img');assert(cardImages.every(image=>image.alt.startsWith('Carte ')&&image.loaded),'Recommended cards have a loaded visual and accessible label');await shot(name+'-'+width+'-details');
+      const text=await page.$eval('[data-culture-personal-recap]',el=>el.textContent);assert(!/NaN|undefined|Infinity/.test(text));assert(!/fidélité cannabinoïde/i.test(text),'The obsolete label is absent even from detailed explanations');
+      await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('[data-culture-personal-recap]');assert.equal(await page.$eval('[data-culture-personal-recap]',el=>el.textContent),text,'Reload retains the recorded analysis');assert.equal(await page.evaluate(()=>window.__recapFixture.restored),true,'The saved receipt was restored through the persistence validator');assert.deepEqual(await page.evaluate(()=>window.__recapFixture.game),receipt,'Reading the recap never rewrites the culture');report.results.push({name,width,coverage,rulesVersion:receipt.rulesVersion,dead,stages:receipt.history.length,reload:true,illustrations:true,keyboardDetails:true});
     }
     for(const name of ['jury','jury-tie','jury-victory','jury-legacy','jury-no-stats']){
       await visit(name,width);await page.waitForSelector('[data-jury-analysis]');assert((await page.$eval('[data-jury-analysis]>h4',el=>el.textContent)).includes('Impact visuel'),'Focus is the closest loss or victory, not the lowest absolute score');await shot(name+'-'+width+'-summary');await details('[data-jury-analysis-details]');const text=await page.$eval('[data-jury-personal-recap]',el=>el.textContent);assert(!/NaN|undefined|Infinity/.test(text));

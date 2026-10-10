@@ -1,6 +1,6 @@
 # Règlement du Placard — brouillon de lancement
 
-Version de travail `2026-09-23-draft-6`. Ce document n'est pas publié aux
+Version de travail `2026-10-10-draft-7`. Ce document n'est pas publié aux
 clients et ne vaut pas règlement commercial tant que les lots, les dates de
 saison et les probabilités des collections ne sont pas validés.
 
@@ -28,12 +28,46 @@ Il faut donc posséder au moins six Buddies différents pour jouer en continu.
 - Le Sol vivant est la base commune gratuite ; les anciennes cartes Substrat sont archivées.
 - Chaque autre carte La Botte brûle uniquement lorsqu'elle est effectivement
   jouée.
-- Une carte PBI reste hors du deck. Elle devient jouable après l'inspection à
-  la Loupe lorsqu'un ravageur compatible est identifié, puis brûle à son usage.
+- Les PBI se trouvent dans la boutique de soins, en dehors de La Botte et du
+  deck. Les observations du panneau Santé sont gratuites et accessibles sans carte.
 - Les cartes restées dans le deck ou dans la main sans être jouées ne brûlent
   pas.
 - Chaque burn produit un reçu serveur et retire exactement une copie physique
   de l'inventaire numérique.
+- Une seule préparation avant les dés et une seule réaction après les dés
+  sont autorisées à chaque étape. Une seule carte épique peut être jouée par culture,
+  même si plusieurs références ou copies sont possédées. Une carte refusée ne brûle pas.
+
+La Botte comprend **30 cartes actives** : 12 communes, 7 peu communes,
+7 rares et 4 épiques. Les six anciennes PBI ainsi que la Loupe d’inspection
+et la Plaque engluée de suivi sont archivées. Elles ne sont plus distribuées,
+affichées dans la collection active ni jouables dans les nouvelles cultures ;
+les anciens exemplaires et reçus ne sont pas supprimés.
+
+Chaque carte spécialisée possède une liste explicite de situations compatibles.
+Partager une famille « Eau », « Climat » ou « Récolte » ne suffit pas : une réserve
+d’eau ne répond pas à un excès d’eau, la Loupe à trichomes ne répond pas à un vol,
+et Charge répartie ne répare pas un minuteur décalé. Deuxième chance, Main verte
+et Diagnostic croisé restent polyvalentes. Les instruments rémunèrent la décision
+ou la correction qui suit une mesure ; ils ne rendent pas l’observation payante.
+
+Les six nouvelles cartes complètent les situations de reprise, d’humidité et de secours :
+
+| Code | Carte | Rareté | XP | Moment | Effet de jeu |
+| --- | --- | --- | ---: | --- | --- |
+| BOTTE-037 | Reprise délicate | Commune | 1 | Après les dés | Un 2 ou un 3 devient 4, face à une difficulté de reprise compatible. |
+| BOTTE-038 | Humidité rééquilibrée | Commune | 1 | Avant les dés | −1 Pression et protection contre un Danger, sans créer de réussite. |
+| BOTTE-039 | Reprise experte | Épique | 4 | Après les dés | Les deux dés faibles les plus bas deviennent 4 ; le Danger restant est protégé. |
+| BOTTE-040 | Réglage d’urgence | Épique | 3 | Après les dés | Les deux dés faibles les plus bas deviennent 4 et la Pression retombe à zéro. |
+| BOTTE-041 | Équipe de récolte | Épique | 3 | Après les dés | Le dé faible le plus bas devient 6, puis un autre devient 4 ; +1 Qualité si l’étape réussit. |
+| BOTTE-042 | Séchage sous contrôle | Épique | 4 | Après les dés | Tous les dés faibles deviennent 4 ; les 4, 5 et 6 déjà obtenus sont conservés. |
+
+Un dé faible vaut 1, 2 ou 3. Les épiques exigent un dé faible à améliorer ;
+Réglage d’urgence reste utile sans dé faible si la Pression est supérieure à zéro.
+Leur portée reste limitée aux situations prévues. Elles ne guérissent pas directement
+les carences ou les parasites, ne restaurent pas les pertes passées et ne raccourcissent
+pas l’affinage. Tri et isolement contient notamment le risque de pollen avec un
+Danger transformé en 3, sans annuler les dégâts déjà subis.
 
 ## 3. Culture et Fleur
 
@@ -43,20 +77,30 @@ et les reçus. Une culture menée à la récolte crée une seule Fleur avec ses 
 traits et combos. La Fleur est distincte de la carte Buddie qui a servi de
 variété.
 
-La culture meurt dès que deux étapes sont validées avec **0 réussite**, même
-si elles ne se suivent pas. Le total retenu est celui des dés après les
-cartes et les effets, au moment de la validation ; transformer le verdict
-« Échec » en « Fragile » ne change pas ce total. Après le premier zéro,
-un avertissement rappelle le risque. Au deuxième, la partie s'arrête sans
-récolte ni carte Fleur. Les cartes déjà jouées restent consommées ; le Buddie,
-l'Héritage et les cartes non jouées sont conservés. Les récoltes déjà
-terminées avant cette règle restent inchangées.
+Les nouvelles cultures suivent une vitalité persistante de 0 à 100. À zéro,
+la culture s’arrête sans récolte ni carte Fleur ; un secours unique existe pour
+la première culture. Les bilans interviennent à la validation des opérations,
+sans dommage causé par une simple consultation ou une absence. Les réussites
+et les opérations pertinentes comptent dans l’expression aromatique et le
+potentiel cannabinoïde développé puis conservé. Ce dernier est un indice de
+jeu entre 35 et 99, distinct des teneurs simulées de CBD, CBG et THC en %.
+Les intrants et les PBI sont des
+interventions distinctes, achetées puis engagées depuis le suivi Santé.
+L’entretien de base coûte 5 € de jeu, une seule fois par étape jusqu’à la
+récolte. Un solde insuffisant bloque son activation. L’observation reste gratuite.
+Les cartes déjà jouées restent consommées ; le Buddie, l’Héritage et les cartes
+non jouées sont conservés.
+
+**Archive des anciennes règles :** les cultures historiques de version 2
+utilisaient deux étapes à 0 réussite comme condition de mort, avec le secours
+de première culture lorsqu’il était accordé. Leurs résultats enregistrés restent
+inchangés ; cette condition ne remplace pas la vitalité des nouvelles cultures.
 
 Les Buddies donnent un bonus d’XP de départ selon leur rareté : Commun +0,
 Argent +1, Or +2, Épique +3, Légendaire +4. Avec l’XP de base, cela donne
 respectivement 1, 2, 3, 4 et 5 XP au début d’une culture, avant les bonus de
 mission et d’Héritage. Les Buddies n’ont pas de talent lié à une étape.
-Les 32 cartes La Botte actives ont chacune un effet distinct ; leur coût et
+Les 30 cartes La Botte actives ont chacune un effet distinct ; leur coût et
 leur fenêtre d’utilisation imposent un choix.
 
 Les statistiques de la Fleur et les notes du jury sont conservées au
@@ -72,17 +116,20 @@ dixième afin de limiter les égalités sans inventer un bonus aléatoire caché
   cartes La Botte effectivement engagées ou utilisées dans le Placard.
 - Les Héritages ne figurent dans aucun de ces boosters. Ils restent liés au
   parcours des fleurs concours.
-- Les nouveaux packs ne remplacent ni ne modifient rétroactivement les packs
-  déjà obtenus.
+- Les droits d’ouverture et la taille des packs déjà attribués sont conservés.
+  Leur contenu est tiré à l’ouverture dans le catalogue actif à cette date.
 
 ## 3 ter. Probabilités techniques proposées
 
 Un booster La Botte standard contient dix cartes. Son premier emplacement est
 toujours Commun. Chacun des neuf autres emplacements est tiré indépendamment :
-Commun `70 %`, Peu commune `24 %`, Rare `6 %`. À rareté fixée, chaque référence
+Commun `70 %`, Peu commune `23 %`, Rare `6 %`, Épique `1 %`. À rareté fixée, chaque référence
 active possède le même poids. Les doublons restent possibles, y compris dans un
 même booster. Un booster de victoire en duel contient trois cartes et applique
 la même garantie sur son premier emplacement puis la même table aux deux autres.
+La carte gagnée seule contre un bot suit cette table de raretés sans emplacement
+Commun garanti. Les probabilités s’appliquent à chaque emplacement aléatoire,
+pas à la probabilité d’obtenir au moins une épique dans tout le pack.
 
 Les Héritages ont la même valeur technique et aucune rareté publique. Le
 catalogue contient une carte par producteur présent sur la plateforme. Un avis
@@ -154,6 +201,11 @@ ne déclenchent aucun frais. Les soins sont déduits du portefeuille à la réco
 si le solde ne suffit pas, la différence rejoint les charges à régler. Aucun
 double prélèvement lors d’une nouvelle tentative. Le détail et la prochaine visite
 sont visibles dans l’onglet Charges. Les montants sont des règles économiques de jeu.
+
+Chaque session de culture terminée donne lieu à une seule facture d’analyse de
+`45 €` pour son lot commun, quel que soit le nombre de tentes. Elle est payable
+sous 30 jours de jeu (5 jours réels). Transformer ou fractionner le lot ne crée
+pas d’analyse supplémentaire.
 
 La tente, l'éclairage et le climat modifient la quantité, la qualité maximale,
 la régularité, la pression ou la consommation. Les machines de transformation
@@ -237,10 +289,10 @@ payants**. Le plateau de tamisage manuel est exempté de cet entretien.
 
 ## 5. Incidents de culture
 
-- **La facture qui pique** : un résultat Fragile ou un Échec programme une
+- **Surcharge au compteur** : un résultat Fragile ou un Échec programme une
   coupure à l'étape suivante. Pendant cette coupure, le meilleur dé devient un
-  Danger. Le Panneau solaire et batterie empêche la coupure. L'Échéancier
-  négocié réduit le seuil d'une réussite ; le Branchement illégal transforme
+  Danger. Le Panneau solaire et batterie empêche la coupure. Charge répartie
+  réduit le seuil d'une réussite ; le Branchement illégal transforme
   les deux dés les plus faibles après le lancer, mais ajoute 2 Pression.
 - **Contrôle DDTM** : la situation suit les résultats habituels du lancer.
   Papiers en règle fixe les trois dés sur une réussite et garantit donc trois
@@ -297,9 +349,22 @@ appliquer un nouveau gain.
 
 Après le verdict d'un duel humain ou d'un entraînement bot, la Fleur brûlée
 devient un lot valorisable. La note du jury est la moyenne des trois manches,
-ramenée sur 10 et conservée au dixième. Chaque Fleur ne peut être vendue qu'une
-fois. La vente, le gain d'argent virtuel et la réputation produisent un reçu
-serveur idempotent.
+ramenée sur 10 et conservée au dixième. Les ventes peuvent être fractionnées,
+mais une même quantité ne peut pas être vendue deux fois. La vente, le gain
+d'argent virtuel et la réputation produisent un reçu serveur idempotent.
+
+Le séchage est joué **avant le jury et le duel**. L’affinage, ou curing, commence
+**après leur verdict** et dure 6 heures réelles, indépendamment du calendrier
+du jeu. Une vente avant cette maturité reste possible uniquement
+au grossiste. Une carte de séchage ne supprime pas ce délai.
+
+L’entrepôt réserve des contenants achetés à l’unité, sans mélanger deux récoltes
+dans le même contenant. Le joueur dispose d’**1 heure réelle après le duel**
+pour acheter la capacité manquante ou vendre le surplus au grossiste. Après
+l’échéance, seul le surplus est vendu automatiquement, y compris hors connexion ;
+le traitement programmé passe toutes les cinq minutes. Acheter ou déplacer des
+contenants ne repousse pas cette échéance. La note archivée du jury reste fixe,
+tandis que la qualité commerciale du lot dépend ensuite de sa conservation.
 
 | Voie | Note minimale | Rendement de base | Prix de base du produit |
 | --- | ---: | ---: | ---: |
@@ -440,7 +505,9 @@ et Signature, débités lors de la préparation. L’électricité est ensuite r
 à hauteur de 50 % au plus de chaque recette. Le reçu indique le montant net versé.
 Le serveur refuse un devis périmé, un stock modifié, une campagne remplacée ou
 un changement de réputation ou de dette électrique entre devis et confirmation.
-Conserver le lot ne le détériore pas et ne demande aucun clic régulier.
+La conservation ne demande aucun clic régulier. Le temps et la protection des
+contenants font évoluer la qualité commerciale selon les paramètres du jeu ;
+ils ne modifient pas rétroactivement le jury ni le résultat du duel.
 
 ## 8. Classement
 

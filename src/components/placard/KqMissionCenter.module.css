@@ -1,20 +1,20 @@
-.center { width: min(1180px, 100%); margin: auto; padding: 28px clamp(16px, 3vw, 32px) 48px; color: #fff5df; background: #003f30; }
+.center { width: min(1180px, 100%); margin: auto; padding: 28px clamp(16px, 3vw, 32px) 48px; color: #123b2f; background: #f4efdf; --community-ink: #123b2f; --community-muted: #48604e; --community-accent: #70531a; --community-line: #123b2f30; --community-focus: #173f30; --community-success-ink: #235b47; --community-success-paper: #e1eee4; --community-error-ink: #7c351d; --community-error-paper: #fff0dd; }
 .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .header h1 { margin: 8px 0; font: 900 clamp(34px, 5vw, 62px)/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
-.header p { max-width: 65ch; margin: 12px 0; color: #c3dfd3; font-size: 14px; line-height: 1.7; }
+.header p { max-width: 65ch; margin: 12px 0; color: #48604e; font-size: 14px; line-height: 1.7; }
 .header > img { object-fit: contain; width: clamp(85px, 16vw, 140px); height: auto; filter: drop-shadow(0 8px 12px #001e1970); }
 .eyebrow { color: #f4c43d; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; }
-.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 22px 0; padding-block: 14px; border-block: 1px solid #aedecb30; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 22px 0; padding-block: 14px; border-block: 1px solid #123b2f30; }
 .toolbar > span, .toolbar button { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; }
-.toolbar > span > svg { color: #f4c43d; }
+.toolbar > span > svg { color: #70531a; }
 .center button, .center a { cursor: pointer; }
-.toolbar button { padding: 10px; min-height: 44px; border: 0; color: #c3dfd3; background: transparent; }
+.toolbar button { padding: 10px; min-height: 44px; border: 0; color: #48604e; background: transparent; }
 .tracks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .sections { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 30px; }
 .sections button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 12px 18px; border: 1px solid #f4c43d80; border-radius: 7px; background: #002d24; color: #fff5df; font-size: 13px; font-weight: 800; }
 .sections button[aria-pressed=true] { background: #f4c43d; color: #003f30; }
 .sections span { padding: 3px 6px; background: #003f3020; border-radius: 4px; font-size: 10px; }
-.track { min-width: 0; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #aad7c640; background: #002d24; border-radius: 10px; }
+.track { min-width: 0; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #aad7c640; background: #002d24; border-radius: 10px; color: #fff5df; }
 .track[data-ready] { border-color: #f4c43d; box-shadow: 0 0 24px #f4c43d12; }
 .art { position: relative; height: 158px; background: #004536; }
 .art img { object-fit: cover; object-position: center 40%; }
@@ -39,7 +39,7 @@
 .claim, .action { min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; padding: 10px; border: 1px solid #54d5bb80; border-radius: 5px; background: #004536; color: #fff5df; font-size: 12px; font-weight: 900; }
 .claim { background: #f4c43d; color: #002d24; border-color: #f4c43d; box-shadow: 0 3px #a77817; }
 .center button:disabled { opacity: .55; cursor: wait; }
-.center :where(button, a, summary):focus-visible { outline: 3px solid #f4c43d; outline-offset: 4px; }
+.center :where(button, a, summary):focus-visible { outline: 3px solid #173f30; outline-offset: 4px; box-shadow: 0 0 0 7px #fffaf1; }
 .journey { margin-top: 20px; border-top: 1px solid #aad7c625; padding-top: 10px; }
 .journey summary, .footer summary { min-height: 44px; align-content: center; color: #c3dfd3; font-size: 12px; cursor: pointer; }
 .journey ol { list-style: none; margin: 6px 0 0; padding: 0; }
@@ -51,19 +51,19 @@
 .complete { flex: 1; padding: 20px 0; text-align: center; }
 .complete > svg { margin: auto; color: #f4c43d; }
 .complete p { color: #c3dfd3; font-size: 13px; line-height: 1.6; }
-.receipt { display: flex; align-items: center; gap: 14px; padding: 20px; margin-bottom: 22px; background: #54d5bb18; border: 1px solid #54d5bb; border-radius: 8px; }
-.receipt > svg { color: #f4c43d; flex-shrink: 0; }
-.receipt p { margin: 6px 0 0; font-size: 12px; line-height: 1.6; color: #c3dfd3; }
+.receipt { display: flex; align-items: center; gap: 14px; padding: 20px; margin-bottom: 22px; background: #e1eee4; border: 1px solid #537450; border-radius: 8px; }
+.receipt > svg { color: #70531a; flex-shrink: 0; }
+.receipt p { margin: 6px 0 0; font-size: 12px; line-height: 1.6; color: #48604e; }
 .receipt strong { font-size: 14px; }
 .receipt button, .footer > button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 14px; background: #f4c43d; color: #002d24; border: 0; border-radius: 5px; font-size: 12px; font-weight: 900; }
 .receipt button { margin-left: auto; flex-shrink: 0; }
-.error { margin: 16px 0; padding: 14px; border-left: 3px solid #e7ad66; background: #e7ad6612; color: #ffdab0; font-size: 13px; line-height: 1.6; }
+.error { margin: 16px 0; padding: 14px; border-left: 3px solid #a5562d; background: #fff0dd; color: #7c351d; font-size: 13px; line-height: 1.6; }
 .error button, .error a { color: inherit; text-decoration: underline; background: transparent; border: 0; min-height: 44px; }
-.loading { padding: 50px 0; text-align: center; color: #c3dfd3; }
+.loading { padding: 50px 0; text-align: center; color: #48604e; }
 .footer { margin-top: 24px; }
 .footer > button { margin: 0 0 20px auto; }
-.footer details { border-top: 1px solid #aad7c630; }
-.footer p { max-width: 90ch; color: #a8cabb; font-size: 12px; line-height: 1.7; margin: 8px 0; }
+.footer details { border-top: 1px solid #123b2f30; }
+.footer p { max-width: 90ch; color: #48604e; font-size: 12px; line-height: 1.7; margin: 8px 0; }
 @media (max-width: 760px) {
   .tracks { grid-template-columns: 1fr; }
   .art { height: 150px; }
@@ -76,3 +76,4 @@
   .header > img { width: 80px; }
   .header p { font-size: 13px; }
 }
+.footer summary { color: #48604e; }

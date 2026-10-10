@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { LotteryCardImageUpload } from "@/components/admin/LotteryCardImageUpload";
+import { getKqCardRarityLabel } from "@/lib/kanab-quest-card-guide";
 
 type Card = { id: string; code: string; cardNumber: number; name: string; rarity: string; description: string; imageUrl: string; isActive: boolean; category: string; timing: string; effect: string; xpCost: number; tags: string[]; targets: string[]; advantage: string; drawback: string; rulesVersion: number };
 type Catalog = { collection: { code: string; title: string; description: string; imageUrl: string; isActive: boolean }; cards: Card[]; supportedEffects: string[] };
@@ -67,13 +68,13 @@ export function AdminBotteCatalogEditor() {
     </details>
     <div className="mt-5 grid gap-5 lg:grid-cols-[280px_1fr]">
       <div className="max-h-[650px] overflow-y-auto border-2 border-ink bg-white p-2" aria-label="Cartes Botte du Chanvrier">
-        {catalog.cards.map((card) => <button type="button" key={card.id} onClick={() => { setSelectedId(card.id); setDraft(null); }} className={`mb-2 flex w-full items-center gap-3 border-2 p-2 text-left ${selectedId === card.id ? "border-green bg-mint" : "border-ink bg-cream"}`}><span className="w-8 font-black">#{card.cardNumber}</span><span className="min-w-0 flex-1"><strong className="block truncate">{card.name}</strong><small>{card.category} · {card.rarity}</small></span><i className={`h-3 w-3 rounded-full border border-ink ${card.isActive ? "bg-green" : "bg-white"}`} /></button>)}
+        {catalog.cards.map((card) => <button type="button" key={card.id} onClick={() => { setSelectedId(card.id); setDraft(null); }} className={`mb-2 flex w-full items-center gap-3 border-2 p-2 text-left ${selectedId === card.id ? "border-green bg-mint" : "border-ink bg-cream"}`}><span className="w-8 font-black">#{card.cardNumber}</span><span className="min-w-0 flex-1"><strong className="block truncate">{card.name}</strong><small>{card.category} · {getKqCardRarityLabel(card.rarity)}</small></span><i className={`h-3 w-3 rounded-full border border-ink ${card.isActive ? "bg-green" : "bg-white"}`} /></button>)}
       </div>
       {activeDraft ? <div className="border-2 border-ink bg-white p-4">
         <div className="flex flex-wrap justify-between gap-3"><div><small className="font-black">{activeDraft.code}</small><h5 className="font-display text-2xl">Carte #{activeDraft.cardNumber}</h5></div><label className="flex items-center gap-2 font-bold"><input type="checkbox" checked={activeDraft.isActive} onChange={(event) => setDraft({ ...activeDraft, isActive: event.target.checked })} /> Active</label></div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <label className="grid gap-1 text-sm font-bold">Nom<input className="border-2 border-ink p-2" value={activeDraft.name} onChange={(event) => setDraft({ ...activeDraft, name: event.target.value })} /></label>
-          <label className="grid gap-1 text-sm font-bold">Rareté<select className="border-2 border-ink p-2" value={activeDraft.rarity} onChange={(event) => setDraft({ ...activeDraft, rarity: event.target.value })}><option value="common">Commune</option><option value="silver">Argent</option><option value="gold">Or</option></select></label>
+          <label className="grid gap-1 text-sm font-bold">Rareté<input className="border-2 border-ink bg-cream p-2" value={getKqCardRarityLabel(activeDraft.rarity)} readOnly /><small className="font-normal text-charcoal">Fixée par les règles du jeu pour préserver les probabilités des packs et la limite des épiques.</small></label>
           <label className="grid gap-1 text-sm font-bold sm:col-span-2">Description courte<textarea className="min-h-16 border-2 border-ink p-2" value={activeDraft.description} onChange={(event) => setDraft({ ...activeDraft, description: event.target.value })} /></label>
           <label className="grid gap-1 text-sm font-bold"><span className="text-green">Avantage</span><textarea className="min-h-24 border-2 border-green p-2" value={activeDraft.advantage} onChange={(event) => setDraft({ ...activeDraft, advantage: event.target.value })} /></label>
           <label className="grid gap-1 text-sm font-bold"><span className="text-red-700">Inconvénient</span><textarea className="min-h-24 border-2 border-red-700 p-2" placeholder="Coût, limite ou contrepartie" value={activeDraft.drawback} onChange={(event) => setDraft({ ...activeDraft, drawback: event.target.value })} /></label>

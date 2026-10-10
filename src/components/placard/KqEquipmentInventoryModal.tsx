@@ -16,6 +16,7 @@ import { KqEnergyPanel } from "./KqEnergyPanel";
 import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { KqWarehouseScene } from "./KqWarehouseScene";
 import { KqWarehouseOverview } from "./KqWarehouseOverview";
+import { KqWarehouseStorage } from "./KqWarehouseStorage";
 import styles from "./KqWarehouseInventory.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 
@@ -35,7 +36,7 @@ type TentUiState = {
 };
 const EMPTY_TENT_UI: TentUiState = { slot: "tent", selectedCode: null, pending: null, override: null, error: "", notice: "" };
 
-export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,productionUnits=1,tentNumber=1,tents=[],sharedEquipment,onSelectTent,production,maintenance={},cultureWear={},activeRun=false,loading,loadError,onClose,onOpenShop,onRetry,initialSlot="tent"}:{
+export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,productionUnits=1,tentNumber=1,tents=[],sharedEquipment,onSelectTent,production,maintenance={},cultureWear={},activeRun=false,loading,loadError,onClose,onOpenShop,onRetry,initialSlot="tent",initialSection="equipment"}:{
   productionUnits?:number;
   tentNumber?:number;
   tents?:KqTentOverview[];
@@ -48,6 +49,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;loading:boolean;loadError:string;
   onClose:()=>void;onOpenShop:(equipmentCode?:string)=>void;onRetry:()=>void;
   initialSlot?:KqEquipmentSlot;
+  initialSection?:"equipment"|"storage";
 }) {
   const api = useKqTutorialApi();
   const closeButton=useRef<HTMLButtonElement>(null);
@@ -61,6 +63,8 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   const [listView,setListView]=useState(false);
   const [chargesOpen,setChargesOpen]=useState(false);
   const [productionPending,setProductionPending]=useState(false);
+  const [warehouseSection,setWarehouseSection]=useState<"equipment"|"storage">(initialSection);
+  const [storageBusy,setStorageBusy]=useState(false);
   if(requestedSlot!==initialSlot){
     setRequestedSlot(initialSlot);
     setTentStates(current=>({...current,[tentNumber]:{...(current[tentNumber]??EMPTY_TENT_UI),slot:initialSlot,selectedCode:null,error:""}}));
@@ -98,9 +102,9 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   useEffect(()=>{if(viewChanged.current)workshop.current?.querySelector<HTMLButtonElement>("[data-warehouse-view-toggle]")?.focus({preventScroll:true});},[listView]);
   useEffect(()=>{
     if(api.isTutorial)return;
-    const escape=(event:KeyboardEvent)=>{if(event.key==="Escape"&&!event.defaultPrevented)onClose();};
+    const escape=(event:KeyboardEvent)=>{if(event.key==="Escape"&&!event.defaultPrevented&&!storageBusy)onClose();};
     document.addEventListener("keydown",escape);return()=>document.removeEventListener("keydown",escape);
-  },[onClose,api]);
+  },[onClose,api,storageBusy]);
   const select=(next:KqEquipmentSlot)=>{
     updateTent(tentNumber,{slot:next,selectedCode:null,error:""});
     if(isKqSharedEquipmentSlot(next))updateTent(0,{error:""});
@@ -147,10 +151,10 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
     finally{locks.current.delete(targetKey);updateTent(targetKey,{pending:null});}
   };
   return <div className={styles.overlay} data-embedded={api.isTutorial||undefined}>
-    {!api.isTutorial?<button type="button" tabIndex={-1} className={styles.backdrop} onClick={onClose} aria-label="Fermer l’entrepôt"/>:null}
+    {!api.isTutorial?<button type="button" tabIndex={-1} className={styles.backdrop} onClick={onClose} disabled={storageBusy} aria-label="Fermer l’entrepôt"/>:null}
     <section className={styles.dialog} role={api.isTutorial?"region":"dialog"} aria-modal={api.isTutorial?undefined:true} aria-labelledby="equipment-inventory-title" data-arena-tour-surface="warehouse" onKeyDown={event=>{
       if(api.isTutorial)return;
-      if(event.key==="Escape"){event.preventDefault();event.stopPropagation();onClose();return;}
+      if(event.key==="Escape"){event.preventDefault();event.stopPropagation();if(!storageBusy)onClose();return;}
       if(event.key!=="Tab")return;
       const controls=Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),summary,[tabindex="0"]')).filter(el=>el.getClientRects().length>0);
       if(event.shiftKey&&document.activeElement===controls[0]){event.preventDefault();controls.at(-1)?.focus();}
@@ -158,9 +162,13 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
     }}>
       <header className={styles.header}>
         <div><small>Le Placard · Aménager</small><h2 id="equipment-inventory-title" data-arena-tour="warehouse">L’Entrepôt</h2></div>
-        <div className={styles.balance}><small>Trésorerie</small><strong>{formatKqCash(cashCents)}</strong></div><button ref={closeButton} type="button" onClick={onClose} aria-label="Fermer l’inventaire"><X/></button>
+        <div className={styles.balance}><small>Trésorerie</small><strong>{formatKqCash(cashCents)}</strong></div><button ref={closeButton} type="button" onClick={onClose} disabled={storageBusy} aria-label="Fermer l’inventaire"><X/></button>
       </header>
-      <div className={styles.layout}>
+      <nav className={styles.sections} aria-label="Sections de l’entrepôt">
+        <button type="button" aria-pressed={warehouseSection==="equipment"} disabled={storageBusy} onClick={()=>setWarehouseSection("equipment")}>Culture & atelier</button>
+        <button type="button" aria-pressed={warehouseSection==="storage"} disabled={busy||Object.values(tentStates).some(state=>!!state.pending)} onClick={()=>setWarehouseSection("storage")}>Stockage & curing</button>
+      </nav>
+      {warehouseSection==="storage"?<div className={styles.storageView}><KqWarehouseStorage onChanged={onRetry} onBusyChange={setStorageBusy}/></div>:<div className={styles.layout}>
         <div ref={workshop} className={styles.workshop} tabIndex={-1} aria-label="Explorer l’entrepôt">
           {listView?<div className={styles.listView}>
             <div className={styles.listHeading}><strong>Choisir un emplacement</strong><button type="button" data-warehouse-view-toggle onClick={()=>changeView(false)}><ImageIcon size={16} aria-hidden="true"/>Voir le décor</button></div>
@@ -201,7 +209,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
           <KqProductionCapacity tents={tents} production={expansion} cashCents={cashCents} activeRun={activeRun} disabled={loading||!!loadError||productionPending||Object.values(tentStates).some(state=>!!state.pending)} onUpdated={onRetry} onPendingChange={setProductionPending}/>
           <details className={styles.charges} onToggle={event=>setChargesOpen(event.currentTarget.open)}><summary><Zap size={19} aria-hidden="true"/><span>Charges et énergie<small>Factures de l’ensemble des tentes</small></span><ChevronDown size={18} aria-hidden="true"/></summary>{chargesOpen?<div className={styles.chargesContent}><KqEnergyPanel productionUnits={units}/></div>:null}</details>
         </div>
-      </div>
+      </div>}
     </section>
   </div>;
 }

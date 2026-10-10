@@ -17,6 +17,7 @@
 .zone::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(100%,28px);height:max(100%,28px)}
 .zone[data-accessory=true]::after{width:max(100%,22px);height:max(100%,22px)}
 .sprite{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(1px 2px 1px #14251c45);pointer-events:none;user-select:none;transition:filter .18s}
+.dryingFlowers{position:absolute;left:28%;top:34%;display:block;width:48%;height:auto;pointer-events:none;user-select:none}
 .zone[data-warehouse-slot=tent]::before,.zone[data-support][data-installed=true]::before{content:'';position:absolute;left:5%;right:4%;bottom:.5%;height:4%;border-radius:50%;background:#172f224d;filter:blur(2px);pointer-events:none}
 .zone[data-support=bench]::before{left:8%;right:6%;bottom:.5%;height:2.5%;background:#352b2166;filter:blur(.7px)}
 .zone[data-selected=true] .sprite,.zone[data-tent-selected=true] .sprite,.zone:hover .sprite,.zone:focus-visible .sprite{filter:drop-shadow(0 0 2px #ffe097) drop-shadow(1px 2px 2px #14251c55)}

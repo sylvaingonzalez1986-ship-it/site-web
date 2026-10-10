@@ -29,3 +29,25 @@
 .overlay[data-embedded]{position:relative;inset:auto;z-index:auto;display:block;padding:0}
 .overlay[data-embedded]>.dialog{width:100%;height:auto;max-height:none;border-radius:0;box-shadow:none}
 .overlay[data-embedded] .layout{overflow:visible}
+.sections{display:flex;gap:8px;flex-shrink:0;padding:10px 16px;background:#073c31;border-bottom:1px solid #9b956047}.sections button{flex:1;padding:8px 12px;border:1px solid #779480;border-radius:8px;background:#164a40;color:#fff2d6;font-size:13px;font-weight:750}.sections button[aria-pressed=true]{background:#fbedd0;border-color:#fbedd0;color:#17372b}.storageView{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;background:#fbf2dc}.overlay[data-embedded] .storageView{overflow:visible}
+
+/* The warehouse uses the same paper surfaces as the neighbourhood map. */
+.overlay{color:#123b2f}
+.backdrop{background:#f4efdf}
+.dialog{background:#f4efdf;border-color:#123b2f}
+.header{background:#f8f2e4;color:#123b2f;border-bottom-color:#123b2f30}
+.header small{color:#735619}
+.header p,.balance small{color:#4a604d}
+.balance strong{color:#123b2f}
+.header button{background:#fffaf1;color:#123b2f;border-color:#123b2f66}
+.workshop,.listView,.sections{background:#f4efdf;color:#123b2f}
+.listHeading button,.slots button,.sections button{background:#fffaf1;color:#123b2f;border-color:#123b2f66}
+.listGroup h3{color:#4a604d}
+.slots button>small,.slots button[data-installed=true]>small{color:#4a604d}
+.slots button:hover{background:#f8f2e4;border-color:#123b2f}
+.slots button[aria-pressed=true],.sections button[aria-pressed=true]{background:#f4c43d;color:#123b2f;border-color:#123b2f;box-shadow:inset 0 0 0 1px #123b2f30}
+.slots button[aria-pressed=true]>small{color:#123b2f}
+.sections{border-bottom-color:#123b2f30}
+.management,.storageView{background:#f4efdf;color:#123b2f}
+.panel,.panHint{background:#f8f2e4;color:#123b2f}
+.performance,.charges,.item{background:#fffaf1;color:#123b2f;border-color:#123b2f40}

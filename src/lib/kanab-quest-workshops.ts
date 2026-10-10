@@ -4,7 +4,7 @@ import {
   type KqTrialAction, type KqTrialState,
 } from "./kanab-quest-trial";
 
-export const KQ_WORKSHOP_VERSION = 1;
+export const KQ_WORKSHOP_VERSION = 2;
 export const KQ_WORKSHOPS = [
   {
     id: "cards", title: "Tes cartes", description: "Prépare un Buddie, un Héritage et une main de soutien.",
@@ -17,7 +17,7 @@ export const KQ_WORKSHOPS = [
     prerequisites: "Les cartes sont déjà préparées. Tu disposes de 2 000 € fictifs et d’un kit de départ.",
   },
   {
-    id: "culture", title: "La culture", description: "Joue les six étapes, utilise tes cartes et découvre la récolte.",
+    id: "culture", title: "La culture", description: "Joue les six étapes, suis la santé et découvre les terpènes de ta récolte.",
     startChapter: 4, endChapter: 5,
     prerequisites: "Buddie, Héritage, cartes et installation sont prêts. La culture reste entièrement fictive.",
   },
@@ -29,7 +29,7 @@ export const KQ_WORKSHOPS = [
   {
     id: "market", title: "Transformer et vendre", description: "Choisis une filière, compare les circuits et vends ton lot.",
     startChapter: 7, endChapter: 8,
-    prerequisites: "Un lot déjà évalué, du matériel, 200 points de réputation, 8 clients et 2 shops fictifs sont prêtés.",
+    prerequisites: "Un lot déjà évalué, du matériel, 200 points de réputation, 8 clients et 2 shops fictifs sont prêtés. Le calendrier de cet essai avance à maturité pour comparer tous les circuits.",
   },
 ] as const;
 
@@ -61,9 +61,9 @@ function fixedWorkshopDates(state: KqTrialState): KqTrialState {
 }
 
 /** Supply prerequisites through real tutorial actions, never an account snapshot. */
-export function createKqWorkshop(id: KqWorkshopId): KqTrialState {
+export function createKqWorkshop(id: KqWorkshopId, rulesVersion: 2 | 3 = 3): KqTrialState {
   const { startChapter } = workshopDefinition(id);
-  let state = createKqTrial();
+  let state = createKqTrial(rulesVersion);
   const apply = (action: KqTrialAction) => {
     const next = reduceKqTrial(state, action);
     if (next === state) throw new Error("Les prérequis de cet atelier sont indisponibles.");
@@ -81,18 +81,18 @@ export function createKqWorkshop(id: KqWorkshopId): KqTrialState {
   apply({ type: "next" });
   if (startChapter === 4) return state;
 
-  // The fixed lesson uses the same legal preparations, PBI and Heritage as the
-  // guided culture. Rewards, yield, invoices and the jury score remain derived.
+  // Rewards, yield, invoices and the jury score remain derived from a played
+  // culture. New lessons never require an inspection or auxiliary card.
   for (let stage = 0; stage < 6; stage += 1) {
     if (stage === 0) apply({ type: "play", code: "BOTTE-005" });
-    if (stage === 2) apply({ type: "play", code: "BOTTE-004" });
+    if (stage === 2 && rulesVersion === 2) apply({ type: "play", code: "BOTTE-004" });
     if (stage >= 3) {
       const card = KQ_CARDS.find(item => trialCardPermission(state, item.code).allowed);
       if (card) apply({ type: "play", code: card.code });
     }
     apply({ type: "roll" });
     if (canActivateKqHeritage(state.game!).allowed) apply({ type: "heritage" });
-    if (stage === 2 && trialCardPermission(state, "BOTTE-002").allowed) apply({ type: "play", code: "BOTTE-002" });
+    if (stage === 2 && rulesVersion === 2 && trialCardPermission(state, "BOTTE-002").allowed) apply({ type: "play", code: "BOTTE-002" });
     apply({ type: "resolve" });
     apply({ type: "advance" });
   }
@@ -125,10 +125,10 @@ export function restoreKqWorkshop(id: KqWorkshopId, value: unknown): KqWorkshopS
   const empty: KqWorkshopSession = { state: createKqWorkshop(id), actions: [] };
   if (!value || typeof value !== "object") return empty;
   const saved = value as { version?: unknown; workshop?: unknown; actions?: unknown };
-  if (saved.version !== KQ_WORKSHOP_VERSION || saved.workshop !== id
+  if ((saved.version !== 1 && saved.version !== KQ_WORKSHOP_VERSION) || saved.workshop !== id
     || !Array.isArray(saved.actions) || saved.actions.length > MAX_WORKSHOP_ACTIONS) return empty;
   try {
-    let state = empty.state;
+    let state = saved.version === 1 ? createKqWorkshop(id, 2) : empty.state;
     const actions: KqTrialAction[] = [];
     for (const action of saved.actions) {
       if (!action || typeof action !== "object" || Array.isArray(action)) return empty;

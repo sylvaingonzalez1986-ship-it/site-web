@@ -10,14 +10,14 @@ const root = process.cwd(), output = resolve(root, "output/placard-indoor-deck")
 const entry = `import React from 'react'; import {createRoot} from 'react-dom/client';
 import '/src/app/globals.css';
 import {KqCardEffectGuide,KqCardRoleLegend} from '/src/components/placard/KqCardEffectGuide';
-import {KQ_CARDS} from '/src/lib/kanab-quest-game';
+import {KQ_ACTIVE_CARDS as KQ_CARDS} from '/src/lib/kanab-quest-game';
 import {getKqCardArtwork} from '/src/lib/kanab-quest-artwork';
 import styles from '/src/components/placard/KanabQuestDicePrototype.module.css';
 createRoot(document.getElementById('root')).render(React.createElement('main',{className:styles.page},
 React.createElement('section',{className:styles.deckPanel},React.createElement('h1',null,'Botte du Chanvrier · Prépare ton deck'),
 React.createElement('p',{className:styles.deckRulesGuide},'Une préparation avant les dés, une réaction après. 1 = Danger · 2–3 = neutre · 4–6 = réussite.'),
 React.createElement(KqCardRoleLegend),
-React.createElement('div',{className:styles.deckChoices},KQ_CARDS.filter(c=>['BOTTE-013','BOTTE-004','BOTTE-006','BOTTE-032','BOTTE-021','BOTTE-010'].includes(c.code)).map(card=>React.createElement('article',{key:card.code,className:styles.deckChoiceCard},
+React.createElement('div',{className:styles.deckChoices},KQ_CARDS.filter(c=>['BOTTE-013','BOTTE-037','BOTTE-006','BOTTE-032','BOTTE-039','BOTTE-042'].includes(c.code)).map(card=>React.createElement('article',{key:card.code,className:styles.deckChoiceCard},
 React.createElement('span',{className:styles.cardArtwork},React.createElement('img',{src:getKqCardArtwork(card.code),alt:card.name,style:{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'contain'}})),
 React.createElement('strong',null,card.name),React.createElement(KqCardEffectGuide,{card}),React.createElement('div',null,React.createElement('button',null,'−'),React.createElement('b',null,'1 / 2'),React.createElement('button',null,'+'))))))));`;
 const server = await createServer({ root, cacheDir: resolve(output,"vite-cache"), configFile:false, envDir:false,
@@ -35,7 +35,7 @@ try {
     await page.setViewport({width,height:1000});await page.goto("http://127.0.0.1:3204/",{waitUntil:"networkidle0"});
     await page.waitForSelector("article");
     assert.equal(await page.$$eval("article",cards=>cards.length),6);
-    assert.equal(await page.$$eval('[data-card-role]',cards=>new Set(cards.map(c=>c.dataset.cardRole)).size),6);
+    assert.equal(await page.$$eval('[data-card-role]',cards=>new Set(cards.map(c=>c.dataset.cardRole)).size),4);
     const overflow = await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
     if (overflow) {
       await page.screenshot({path:resolve(output,`overflow-${width}.png`),fullPage:true});

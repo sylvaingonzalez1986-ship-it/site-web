@@ -266,7 +266,8 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).toContain('window.addEventListener("kq:equipment-updated", refreshRoutePlan)');
     expect(gameClient).toContain("getKqPinnedRouteVerdictStatus");
     expect(gameClient).toContain('aria-label="Résultat commercial du jury"');
-    expect(gameClient).toContain("Note commerciale officielle");
+    expect(gameClient).toContain("Note du jury au verdict");
+    expect(gameClient).toContain("La conservation fera évoluer sa qualité commerciale.");
     expect(gameClient).toContain("Valoriser ce lot");
     expect(playerShell).toContain('onOpenMarket={() => openView("market")}');
     expect(gameClient).toContain('aria-label="Gains de l’étape"');

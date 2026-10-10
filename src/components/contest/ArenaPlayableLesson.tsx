@@ -8,6 +8,7 @@ import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { ARENA_PLAYABLE_LESSONS, type ArenaLessonProgress, type ArenaPlayableLessonId } from "@/lib/arena-playable-learning";
 import { resetKqPlayableOperationsLesson } from "@/lib/kanab-quest-operations-session";
 import styles from "./ArenaPlayableLesson.module.css";
+import { kqPlayableLessonPrefix } from "@/lib/kanab-quest-playable-lesson";
 
 const loading = () => <p role="status" className={styles.loading}>Préparation de ton espace de jeu…</p>;
 const Culture = dynamic(() => import("../placard/KqPlayableCultureLesson").then(module => module.KqPlayableCultureLesson), { ssr: false, loading });
@@ -59,7 +60,7 @@ export function ArenaPlayableLesson({ lesson, onClose, onCompleted }: { lesson: 
       resetKqPlayableOperationsLesson(lesson);
     } else if (lesson === "cards" || lesson === "culture" || lesson === "jury") {
       try {
-        const prefix = `kq-playable-lesson-v2:discovery-visual:${lesson}:`;
+        const prefix = kqPlayableLessonPrefix("discovery-visual", lesson);
         const keys = Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index));
         for (const key of keys) if (key?.startsWith(prefix)) localStorage.removeItem(key);
       } catch { /* The lesson remains playable when storage is unavailable. */ }

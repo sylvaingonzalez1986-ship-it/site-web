@@ -19,6 +19,7 @@ import {
   getKqCultureSystemSituationStatus,
   getKqCultureSystemSummary,
   KQ_BUDDIES,
+  KQ_ACTIVE_CARDS,
   KQ_CARDS,
   KQ_COLLECTIONS,
   KQ_SITUATIONS,
@@ -28,11 +29,14 @@ import {
   redrawKqHand,
   resolveKqStage,
   rollKqDice,
-  startKqGame,
+  startKqGame as startKqGameCurrent,
   swapKqHeritageHandCard,
   type KqGameState,
 } from "@/lib/kanab-quest-game";
 import { getKqHeritageEffectTemplate, type KqHeritageEffect } from "@/lib/kanab-quest-heritage";
+
+// Existing tests pin the historical rules; v3 behavior has a dedicated care suite.
+const startKqGame = (seed?: number, config?: Parameters<typeof startKqGameCurrent>[1]) => startKqGameCurrent(seed, { ...config, rulesVersion: 2 });
 
 function startWithHeritageEffect(effect: KqHeritageEffect, seed = 700) {
   const template = getKqHeritageEffectTemplate(effect);
@@ -99,6 +103,7 @@ describe("Kanab Quest dice prototype", () => {
 
   it("keeps the hand fixed after a card is burned and redraws only on the next stage", () => {
     let state = startKqGame(79, { deckCodes: ["BOTTE-001", "BOTTE-003", "BOTTE-004", "BOTTE-005", "BOTTE-006", "BOTTE-017", "BOTTE-018"], startingXp: 9 });
+    state = { ...state, situationCodes: ["SIT-016", ...state.situationCodes.slice(1)] };
     const hand = getKqHandCodes(state);
     const playable = hand.map((code) => KQ_CARDS.find((card) => card.code === code)!).find((card) => canPlayKqCard(state, card).allowed)!;
     state = playKqCard(state, playable.code);
@@ -510,8 +515,8 @@ describe("Kanab Quest dice prototype", () => {
     expect(visiblePbi.some((card) => card.targets?.includes("aphids") && !card.targets?.includes("mites"))).toBe(false);
   });
 
-  it("exposes the complete 32-card set across four families", () => {
-    expect(KQ_CARDS).toHaveLength(32);
+  it("keeps the complete current and historical support definitions across four families", () => {
+    expect(KQ_CARDS).toHaveLength(38);
     expect(new Set(KQ_CARDS.map((card) => card.category)).size).toBe(4);
     expect(KQ_CARDS.every((card) => card.effect.length > 0)).toBe(true);
   });
@@ -519,8 +524,8 @@ describe("Kanab Quest dice prototype", () => {
 
 
   it("matches the complete support collection target", () => {
-    expect(KQ_CARDS).toHaveLength(KQ_COLLECTIONS.support.alphaCards);
-    expect(KQ_COLLECTIONS.support.totalCards).toBe(32);
+    expect(KQ_ACTIVE_CARDS).toHaveLength(KQ_COLLECTIONS.support.alphaCards);
+    expect(KQ_COLLECTIONS.support.totalCards).toBe(30);
     expect(KQ_COLLECTIONS.buddies.totalCards).toBe(52);
   });
 
@@ -599,7 +604,8 @@ describe("Kanab Quest dice prototype", () => {
   });
 
   it("spends XP and consumes a compatible card", () => {
-    const state = { ...startKqGame(1), xp: 3 };
+    const base = startKqGame(1);
+    const state = { ...base, situationCodes: ["SIT-016", ...base.situationCodes.slice(1)], xp: 3 };
     const next = playKqCard(state, "BOTTE-005");
     expect(next.xp).toBe(2);
     expect(next.preparationPlayed).toBe(true);
@@ -650,7 +656,7 @@ describe("Kanab Quest dice prototype", () => {
 
   it("records a visible before-and-after confirmation for the infrared reaction", () => {
     const base = startKqGame(30, { deckCodes: ["BOTTE-001", "BOTTE-018"], startingXp: 5 });
-    const reacted = playKqCard({ ...base, situationCodes: ["SIT-031", ...base.situationCodes.slice(1)], phase: "rolled", dice: [3, 4, 5] }, "BOTTE-018");
+    const reacted = playKqCard({ ...base, situationCodes: ["SIT-007", ...base.situationCodes.slice(1)], phase: "rolled", dice: [3, 4, 5] }, "BOTTE-018");
     expect(reacted.dice).not.toEqual([3, 4, 5]);
     expect(reacted.effectNotices?.at(-1)).toContain("3 · 4 · 5 →");
   });
@@ -667,6 +673,7 @@ describe("Kanab Quest dice prototype", () => {
 
   it("allows at most one preparation and one reaction per stage", () => {
     let state = { ...startKqGame(1, { deckCodes: ["BOTTE-001", "BOTTE-005", "BOTTE-017", "BOTTE-006", "BOTTE-018"] }), xp: 9 };
+    state = { ...state, situationCodes: ["SIT-016", ...state.situationCodes.slice(1)] };
     state = playKqCard(state, "BOTTE-005");
     expect(canPlayKqCard(state, KQ_CARDS.find((card) => card.code === "BOTTE-017")!).allowed).toBe(false);
     state = rollKqDice(state);

@@ -3,6 +3,7 @@ export const KQ_GAME_DAY_MS = 4 * 60 * 60 * 1000;
 export const KQ_GAME_MONTH_MS = 30 * KQ_GAME_DAY_MS;
 export const KQ_SHOP_CREATION_CENTS = 100_000;
 export const KQ_SHOP_MONTHLY_CENTS = 10_000;
+/** One analysis for the session's shared harvest, regardless of tent count. */
 export const KQ_LAB_ANALYSIS_CENTS = 4_500;
 export const KQ_DOMICILIATION_MONTHLY_CENTS = 5_000;
 export type KqDomiciliation = "home" | "external";

@@ -1,5 +1,39 @@
 # Cadres La Botte dans le style de l’arène
 
+## Mise à jour du 10 octobre 2026
+
+Le catalogue courant comporte 30 cartes actives, dont quatre épiques. Les quatre
+rôles affichés sont Protection, Relance & dés, Qualité et Réussite. Les PBI sont
+dans la boutique de soins ; les anciennes cartes de diagnostic et de suivi ne
+figurent plus dans la collection active. Le règlement courant est décrit dans
+`PLACARD-RULES-DRAFT.md`.
+
+Les rectos actifs sont en version 7 et conservent le cadre vert et crème, les
+polices, le cartouche XP et les couleurs de rôle de la collection. La rareté
+reste un repère distinct du rôle. Les sept illustrations remplacées (031 et
+037–042) utilisent **Sylvain**, à partir de `public/sylvain.png` et des cartes
+Arrosage mesuré et Séchage patient : visage crème sans barbe, yeux noirs,
+casquette turquoise et beige à visière noire, chemise beige, salopette turquoise,
+contours noirs et trame imprimée. Leur cadrage conserve le visage, la casquette
+et le geste dans la fenêtre existante de 840 × 730.
+
+Les scènes 021, 029, 038 et 049 montrent désormais la surcharge électrique en
+croissance, le plateau de séchage surchargé, la condensation au séchoir et sa
+porte mal fermée. Elles suivent le même Sylvain et les références des situations
+existantes. Les bocaux et le curing interviennent après le jury et le duel.
+
+Images produites avec l’outil intégré `image_gen`. Références, prompts et chemins
+des onze visuels : `botte-redesign-sylvain.prompts.json`. Les variantes écartées
+sont conservées dans `output/botte-redesign/rejected/`. Génération des rectos :
+`node scripts/generate-kanab-quest-card-fronts.mjs --support-only`.
+
+Validation : TypeScript, contrôles des images et audit navigateur des collections,
+packs et inventaire. La migration `20261010000500_botte_situations_epic.sql` est
+préparée et testée localement ; sa mise en service doit être coordonnée avec la
+publication du moteur qui reconnaît les six nouvelles références.
+
+## Archive du 13 septembre 2026
+
 Les 32 cartes jouables utilisent un cadre vert profond et crème, une typographie condensée, un cartouche XP jaune et une bordure liée à l'utilité. Les illustrations sources et leur cadrage dans le recto sont conservés (zone 840 × 730, position 92 × 194). Aucune règle de jeu, rareté ou probabilité de pack n'est modifiée.
 
 | Utilité principale | Repère | Sens |

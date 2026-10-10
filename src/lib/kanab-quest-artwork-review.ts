@@ -1,7 +1,7 @@
 import { KQ_CARD_ARTWORK } from "@/lib/kanab-quest-artwork";
 import { getKqEquipmentArtwork, KQ_EQUIPMENT_ARTWORK } from "@/lib/kanab-quest-equipment-artwork";
 import { getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
-import { KQ_CARDS, KQ_SITUATIONS } from "@/lib/kanab-quest-game";
+import { KQ_ACTIVE_CARDS, KQ_SITUATIONS } from "@/lib/kanab-quest-game";
 import { KQ_HERITAGE_CARDS } from "@/lib/kanab-quest-heritage";
 import { KQ_OUTCOME_ARTWORK_ASSETS } from "@/lib/kanab-quest-outcome-artwork";
 import {
@@ -32,7 +32,7 @@ export type KqArtworkReviewHeritageSource = {
 };
 
 export const KQ_ARTWORK_REVIEW_ASSETS: readonly KqArtworkReviewAsset[] = [
-  ...KQ_CARDS.map((card) => ({
+  ...KQ_ACTIVE_CARDS.map((card) => ({
     code: card.code,
     name: card.name,
     group: "support" as const,

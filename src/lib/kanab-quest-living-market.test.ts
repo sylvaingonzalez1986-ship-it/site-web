@@ -129,7 +129,7 @@ describe("Living market and differentiated cards", () => {
     expect(rescued.pressure).toBe(2);
     expect(rescued.xp).toBe(3);
     const mites = KQ_SITUATIONS.find((s) => s.pest === "mites")!;
-    const protectedState = playKqCard({ ...state, revealedPest: "mites", situationCodes: [mites.code, ...state.situationCodes.slice(1)] }, "BOTTE-022");
+    const protectedState = playKqCard({ ...state, rulesVersion: 2, revealedPest: "mites", situationCodes: [mites.code, ...state.situationCodes.slice(1)] }, "BOTTE-022");
     expect(protectedState.dice).toEqual([4, 1, 5]);
     expect(protectedState.cancelledDangers).toBe(1);
     expect(protectedState.pressure).toBe(1);

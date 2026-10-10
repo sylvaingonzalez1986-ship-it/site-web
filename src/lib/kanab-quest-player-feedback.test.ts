@@ -38,13 +38,14 @@ describe("playable card presentation", () => {
     expect(getKqPlayerCardChoices(played, inventory).playableCount).toBe(0);
   });
 
-  it("includes only the identified PBI reserve and checks its real remaining copies", () => {
-    const base = startKqTrialCulture();
+  it("keeps historical PBI card counts without exposing that reserve in new cultures", () => {
+    const base = startKqTrialCulture("balanced", 2, 2);
     const game = { ...base, stageIndex: 2, phase: "rolled" as const, handCodes: [], dice: [1, 2, 3] as [number, number, number], xp: 10, revealedPest: "aphids" as const };
     expect(getKqPlayerCardChoices({ ...game, revealedPest: null }, inventory).playableCount).toBe(0);
     expect(getKqPlayerCardChoices(game, inventory).choices.find(choice => choice.card.code === "BOTTE-002")?.allowed).toBe(true);
     expect(getKqPlayerCardChoices(game, { ...inventory, "BOTTE-002": 0 }).playableCount).toBe(0);
     expect(getKqPlayerCardChoices({ ...game, dice: [6, 6, 6] }, inventory).playableCount).toBe(0);
+    expect(getKqPlayerCardChoices({ ...game, rulesVersion: 3 }, inventory).choices).toEqual([]);
   });
 
   it("never advertises a playable card after the result is resolved", () => {

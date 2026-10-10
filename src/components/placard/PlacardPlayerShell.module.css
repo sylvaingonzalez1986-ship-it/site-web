@@ -1,3 +1,11 @@
+.section[data-placard-view] { background: #f4efdf; color: #123b2f; }
+.section .sectionNav { background: #ede8d5f5; color: #123b2f; border-color: #123b2f25; }
+.section .sectionNav button, .section .sectionNav a { border: 1px solid #123b2f55; border-radius: 6px; background: #fffaf1; color: #123b2f; box-shadow: 0 2px 0 #123b2f20; }
+.section .sectionNav button[aria-haspopup="dialog"] { background: #f4c43d; }
+@media (hover: hover) {
+  .section .sectionNav button:hover, .section .sectionNav a:hover { background: #f4c43d; border-color: #123b2f; }
+}
+
 .progress { width: min(1100px, calc(100% - 32px)); margin: 0 auto 32px; color: #003f30; border: 1px solid #003f3040; border-radius: 12px; background: #fffaf1; }
 .progress > summary { min-height: 60px; padding: 16px 20px; font-weight: 800; cursor: pointer; }
 .progress > summary span { display: block; padding-top: 5px; font-size: 12px; font-weight: 500; }

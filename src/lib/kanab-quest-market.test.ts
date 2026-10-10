@@ -22,6 +22,17 @@ import {
 } from "@/lib/kanab-quest-market";
 
 describe("Kanab Quest post-harvest market", () => {
+  it("does not round conservation quality up across a transformation or raw-sale threshold", () => {
+    for (const [route, minimum] of [["raw", 5.8], ["rosin-premium", 8]] as const) {
+      const quoteAt = (juryScore: number) => quoteKqMarketRoutes({ juryScore, harvestGrams: 120,
+        equipmentCodes: ["TENT-080-STARTER", "SIFT-TRAY", "PRESS-10T"] }).find(quote => quote.route === route)!;
+      const below = quoteAt(minimum - .04), accepted = quoteAt(minimum);
+      expect(below.available).toBe(false);
+      expect(accepted.available).toBe(true);
+      expect(below.productBaseUnitCents).toBe(accepted.productBaseUnitCents);
+    }
+  });
+
   it("turns jury stats and rounds into a stable score out of ten", () => {
     expect(getKqJuryScoreFromStats({ appearance: 80, aroma: 70, vigor: 75, mastery: 85, regularity: 90 })).toBe(8);
     expect(getKqJuryScoreFromRounds([

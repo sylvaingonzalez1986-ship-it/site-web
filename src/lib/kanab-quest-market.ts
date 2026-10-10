@@ -332,11 +332,14 @@ export function getKqMarketQualityBand(juryScore: number): KqMarketQualityBand {
   return "biomass";
 }
 
-export function getKqJuryScoreFromStats(stats: Record<string, number>) {
+export function getKqJuryScoreFromStats(stats: Record<string, number | undefined>) {
+  // Aroma already includes terpene development and preservation. Keeping one
+  // aromatic axis prevents the analytical index from receiving a second weight.
   const values = ["appearance", "aroma", "vigor", "mastery", "regularity"]
-    .map((key) => Number(stats[key]))
-    .filter(Number.isFinite);
+    .map((key) => Number(stats[key])).filter(Number.isFinite);
   if (values.length === 0) return 0;
+  if (typeof stats.cannabinoids === "number" && Number.isFinite(stats.cannabinoids)
+    && stats.cannabinoids >= 35 && stats.cannabinoids <= 99) values.push(stats.cannabinoids);
   return roundTenth(clamp(values.reduce((total, value) => total + value, 0) / values.length / 10, 0, 10));
 }
 
@@ -396,7 +399,9 @@ export function quoteKqMarketRoutes(input: {
   equipmentLevels?: Record<string, number>;
   marketContext?: KqMarketContext;
 }): KqMarketQuote[] {
-  const juryScore = roundTenth(clamp(input.juryScore, 0, 10));
+  // Jury archives have one decimal; a stored lot's current condition can have
+  // two. Do not round a degraded lot up across a route's minimum quality.
+  const juryScore = clamp(input.juryScore, 0, 10);
   const harvestGrams = roundTenth(clamp(input.harvestGrams, 0, 4_000));
   const rawRoute = KQ_MARKET_ROUTES.find((route) => route.code === "raw");
   if (!rawRoute) throw new Error("La voie de vente brute est absente du marché.");
@@ -649,7 +654,7 @@ export function prioritizeKqPinnedMarketRoute(
 /** Gives a pre-jury quality signal; the official three-round verdict remains authoritative. */
 export function getKqPinnedRouteFlowerPreview(input: {
   route: KqMarketRouteCode | null;
-  stats: Record<string, number>;
+  stats: Record<string, number | undefined>;
 }): KqPinnedRouteFlowerPreview | null {
   if (!input.route) return null;
   const route = KQ_MARKET_ROUTES.find((item) => item.code === input.route);

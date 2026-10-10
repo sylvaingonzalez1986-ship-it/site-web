@@ -3,13 +3,16 @@ import {
   activateKqHeritage, advanceKqStage, getKqHarvestBreakdown, getKqRunProjection,
   getKqZeroSuccessStageCount, isKqCultureDead, KQ_SITUATIONS, KQ_STAGES,
   playKqCard, previewKqResolution, redrawKqHand, resolveKqStage, rollKqDice,
-  startKqGame, type KqGameState,
+  startKqGame as startKqGameCurrent, type KqGameState,
 } from "./kanab-quest-game";
 import { createKqFlower } from "./kanab-quest-battle";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 
 const resolveDice = (state: KqGameState, dice: [number, number, number]) =>
   resolveKqStage({ ...state, phase: "rolled", dice });
+
+// This suite pins historical v2 death/rescue receipts; care.test covers v3 vitality.
+const startKqGame = (seed?: number, config?: Parameters<typeof startKqGameCurrent>[1]) => startKqGameCurrent(seed, { ...config, rulesVersion: 2 });
 
 function firstZero() {
   return resolveDice(startKqGame(300, { equipmentCodes: ["TENT-120", "LED-300", "AIR-EC6"] }), [2, 2, 3]);

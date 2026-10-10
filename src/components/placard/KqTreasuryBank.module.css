@@ -1,13 +1,13 @@
-.bank { min-width: 0; }
+.bank { min-width: 0; color: #123b2f; background: #f4efdf; }
 .intro { margin-bottom: 16px; }
 .intro > small,.columns header small { color: #b7d4c4; font: 700 .6rem/1.5 ui-monospace,monospace; text-transform: uppercase; letter-spacing: .065em; }
 .intro h2 { margin: 7px 0 0; font: 900 1.6rem/1.15 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
-.intro p { color: #bfd9cc; font-size: .8rem; line-height: 1.65; }
+.intro p { color: #48604e; font-size: .8rem; line-height: 1.65; }
 .columns { display: grid; grid-template-columns: 1.1fr 1fr; gap: 22px; align-items: start; }
 .columns header { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
 .columns header > svg { color: #71e3c9; flex-shrink: 0; }
 .columns h3 { font: 900 1.5rem/1.2 var(--font-display),Impact,sans-serif; text-transform: uppercase; margin: 4px 0; }
-.savings,.reputation,.loans { min-width: 0; padding: 24px; background: #002d24; border-top: 2px solid #71e3c9; }
+.savings,.reputation,.loans { min-width: 0; padding: 24px; background: #002d24; border-top: 2px solid #71e3c9; color: #fffaf1; }
 .savings > header { margin-bottom: 22px; }
 .dossier { display: grid; gap: 20px; }
 .reputation { background: #fff4d9; color: #103b2e; border-color: #f4c43d; }
@@ -39,3 +39,4 @@
 .deskPanel { min-width: 0; min-height: 300px; }
 .deskPanel:focus { outline: none; }
 @media(max-width: 600px) { .desks { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; } .desks button { flex-direction: column; padding: 10px 5px; font-size: .68rem; gap: 8px; } }
+.intro > small { color: #70531a; }

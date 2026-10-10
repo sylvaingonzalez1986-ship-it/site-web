@@ -9,6 +9,16 @@ const ART_DIR = path.join(ROOT, "public", "app", "kanab-quest", "cards");
 const OUT_DIR = path.join(ROOT, "public", "app", "kanab-quest", "card-fronts");
 const WIDTH = 1024;
 const HEIGHT = 1536;
+// Keep Sylvain's cap, face and gesture inside the existing illustration window.
+const supportFocalY = {
+  "BOTTE-031": 0.39,
+  "BOTTE-037": 0.37,
+  "BOTTE-038": 0.36,
+  "BOTTE-039": 0.38,
+  "BOTTE-040": 0.39,
+  "BOTTE-041": 0.445,
+  "BOTTE-042": 0.44,
+};
 GlobalFonts.registerFromPath(path.join(ROOT, "public/fonts/invoice/BarlowCondensed-Bold.ttf"), "ArenaDisplay");
 GlobalFonts.registerFromPath(path.join(ROOT, "public/fonts/invoice/SpaceGrotesk-Bold.ttf"), "ArenaBody");
 
@@ -43,7 +53,7 @@ try {
   const heritage = await vite.ssrLoadModule("/src/lib/kanab-quest-heritage.ts");
   const artwork = await vite.ssrLoadModule("/src/lib/kanab-quest-artwork.ts");
   const guide = await vite.ssrLoadModule("/src/lib/kanab-quest-card-guide.ts");
-  supportCards = game.KQ_CARDS;
+  supportCards = game.KQ_ACTIVE_CARDS;
   heritageCards = heritage.KQ_HERITAGE_CARDS.map((card) => ({ ...card, category: "heritage", xpCost: 0 }));
   artworkByCode = Object.fromEntries(Object.entries(artwork.KQ_CARD_ILLUSTRATIONS).map(([code, file]) => [code, path.basename(file)]));
   frontByCode = artwork.KQ_CARD_ARTWORK;
@@ -268,8 +278,8 @@ async function renderArenaSupportCard(card) {
   fitted(card.name.toUpperCase(),86,126,708,57,35,paper,"ArenaDisplay");
   block(827,62,133,99,"#f4c43d",paper,3);
   ctx.textAlign="center";text(String(card.xpCost),893,99,60);text("XP",893,142,24);ctx.textAlign="left";
-  // Keep the original illustration and its original crop/position exactly.
-  ctx.save();roundedRect(ctx,92,194,840,730,30);ctx.clip();drawCover(ctx,art,92,194,840,730,.5);ctx.restore();
+  // Preserve the frame; focus new portraits on Sylvain and the operation.
+  ctx.save();roundedRect(ctx,92,194,840,730,30);ctx.clip();drawCover(ctx,art,92,194,840,730,supportFocalY[card.code] ?? .5);ctx.restore();
   roundedRect(ctx,92,194,840,730,30);ctx.strokeStyle=ink;ctx.lineWidth=7;ctx.stroke();
   block(64,947,914,75,role.color,ink,5);drawRoleIcon(ctx,role.icon,112,984);
   fitted(role.label.toUpperCase(),158,984,785,57,38,ink,"ArenaDisplay");

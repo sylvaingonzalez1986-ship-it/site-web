@@ -6,9 +6,9 @@
 .placeholder strong { font-size: 1.2rem; color: #fff8e6; }
 .placeholder > span { font-size: .75rem; }
 .picture:disabled { cursor: default; filter: grayscale(.75); opacity: .65; }
-.rotationRule { margin-bottom: 16px; padding: 14px 16px; border: 1px solid #71e3c955; border-radius: 4px; background: #002d2470; }
-.rotationRule strong { color: #f4c43d; }
-.rotationRule p { margin: 6px 0; color: #c2d9cc; font-size: .85rem; line-height: 1.5; }
-.rotationRule small { display: block; margin-top: 6px; color: #c2d9cc; line-height: 1.5; }
-p.rotationStatus { display: flex; align-items: center; gap: 6px; color: #f4c43d; font-weight: 700; }
+.rotationRule { margin-bottom: 16px; padding: 14px 16px; border: 1px solid #123b2f35; border-radius: 4px; background: #f8f2e4; }
+.rotationRule strong { color: #123b2f; }
+.rotationRule p { margin: 6px 0; color: #48604e; font-size: .85rem; line-height: 1.5; }
+.rotationRule small { display: block; margin-top: 6px; color: #48604e; line-height: 1.5; }
+p.rotationStatus { display: flex; align-items: center; gap: 6px; color: #735619; font-weight: 700; }
 .rotationStatus svg { flex-shrink: 0; }

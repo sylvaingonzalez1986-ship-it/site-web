@@ -5,11 +5,15 @@ import { getKqMarketSnapshot } from "./kanab-quest-market-backend";
 import { getKqEnergySummary } from "./kanab-quest-energy-backend";
 import { KQ_SALES_CHANNELS, quoteKqCommerce, type KqCommerceState, type KqSalesChannel, type KqOnlinePrice } from "../kanab-quest-commerce";
 import { isKqAdvertisingKind, normalizeKqShopName, previewKqBusinessPayment } from "../kanab-quest-business";
+import { isKqStorageLot, projectKqStorageLot } from "../kanab-quest-storage";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 function uuid(value: unknown) { if (typeof value !== "string" || !UUID.test(value)) throw new Error("Identifiant invalide. Actualise le marché."); return value; }
 function integer(value: unknown) { if (typeof value !== "number" || !Number.isSafeInteger(value) || value < 0) throw new Error("Montant ou quantité invalide."); return value; }
 function databaseError(message: string): never {
   const errors: Record<string, string> = {
+    commerce_storage_overflow: "Une partie de cette récolte manque de contenants. Achète du stockage ou vends son surplus aux grossistes avant de la préparer.",
+    commerce_curing_required: "Ce lot termine son curing. Les grossistes restent disponibles avant son échéance.",
+    commerce_storage_changed: "La conservation de ce lot a évolué. Recalcule l’offre.",
     commerce_machine_maintenance: "Une machine de cette filière doit être réparée dans ton entrepôt.",
     commerce_demand_exhausted: "Ces commandes viennent d’être prises. Actualise l’offre ou attends leur renouvellement.",
     commerce_offer_changed: "Les conditions ont changé. Recalcule l’offre avant de confirmer.",
@@ -41,6 +45,12 @@ async function state(userId: string): Promise<KqCommerceState> {
   if (result.error) databaseError(result.error.message);
   const current = result.data as KqCommerceState;
   if (current.business?.version !== 1) throw new Error("[supabase:commerce] business_calendar_migration_required");
+  const nowMs = Date.parse(current.business.serverNow);
+  current.stocks = current.stocks.map(stock => {
+    const { storageState, ...publicStock } = stock as typeof stock & { storageState?: unknown };
+    if (!isKqStorageLot(storageState) || !Number.isSafeInteger(stock.storageRevision)) throw new Error("[supabase:commerce] storage_migration_required");
+    return { ...publicStock, storage: projectKqStorageLot(storageState, nowMs, stock.juryScore) };
+  });
   return current;
 }
 export async function getKqCommerceSnapshot(userId: string, shopOnly = false) {
@@ -73,14 +83,16 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
     const serverNow = Date.parse(business.serverNow);
     const growthReset = current.demand?.growthResetsAt ? Date.parse(current.demand.growthResetsAt) : Infinity;
     const businessDeadline = business.nextEventAt ? Date.parse(business.nextEventAt) : Infinity;
-    const expiresAt = new Date(Math.min(serverNow + 10 * 60 * 1000, growthReset, businessDeadline)).toISOString();
+    const storageDeadline = stock.storage ? Date.parse(stock.storage.nextChangeAt) : Infinity;
+    const expiresAt = new Date(Math.min(serverNow + 10 * 60 * 1000, growthReset, businessDeadline, storageDeadline)).toISOString();
     const energy = await getKqEnergySummary(userId);
     const payment = previewKqBusinessPayment(offer.payoutCents, business, energy.outstandingCents);
     Object.assign(offer, payment);
     if (!offer.reason && offer.units > 0) {
       const stored = await db.from("kq_commerce_quotes").insert({ id: quoteId, user_id: userId, stock_id: stock.id,
         account_revision: current.revision, campaign_id: current.campaign?.id ?? null, campaign_revision: current.campaign?.revision ?? null,
-        stock_units: stock.remainingUnits, reputation: current.reputation, energy_outstanding_cents: energy.outstandingCents, offer, expires_at: expiresAt });
+        stock_units: stock.remainingUnits, reputation: current.reputation, energy_outstanding_cents: energy.outstandingCents,
+        storage_revision: stock.storageRevision, offer, expires_at: expiresAt });
       if (stored.error) databaseError(stored.error.message);
     }
     return { quoteId, offer, expiresAt, ...payment };

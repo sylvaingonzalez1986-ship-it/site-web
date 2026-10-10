@@ -15,7 +15,7 @@ describe("Kanab Quest card economy", () => {
       roots: 0,
       water: 0,
       climate: 2,
-      pest: 1,
+      pest: 0,
       flower: 0,
       drying: 2,
       versatile: 1,
@@ -24,8 +24,8 @@ describe("Kanab Quest card economy", () => {
 
   it("builds quick decks from the exact available collection", () => {
     const inventory = { "BOTTE-003": 2, "BOTTE-004": 1, "BOTTE-002": 4, "BOTTE-001": 3 };
-    expect(buildKqCollectionDeck(inventory, "one-each")).toEqual(["BOTTE-003", "BOTTE-004"]);
-    expect(buildKqCollectionDeck(inventory, "all-copies")).toEqual(["BOTTE-003", "BOTTE-003", "BOTTE-004"]);
+    expect(buildKqCollectionDeck(inventory, "one-each")).toEqual(["BOTTE-003"]);
+    expect(buildKqCollectionDeck(inventory, "all-copies")).toEqual(["BOTTE-003", "BOTTE-003"]);
   });
 
   it("separates burned copies from unused deck cards", () => {
@@ -65,15 +65,16 @@ describe("Kanab Quest card economy", () => {
   it("marks only cards whose effect directly supports a daily objective", () => {
     const loupe = KQ_CARDS.find((card) => card.code === "BOTTE-004")!;
     const ventilateur = KQ_CARDS.find((card) => card.code === "BOTTE-003")!;
-    expect(getKqCardChallengeFit(loupe, ["biocontrol"])).toBe(true);
+    expect(getKqCardChallengeFit(loupe, ["biocontrol"])).toBe(false);
     expect(getKqCardChallengeFit(ventilateur, ["biocontrol"])).toBe(false);
     expect(getKqCardChallengeFit(ventilateur, ["no-failure"])).toBe(true);
   });
 
-  it("puts daily challenge support ahead of the Buddie fallback", () => {
+  it("does not recommend obsolete observation cards for biological control", () => {
     const inventory = Object.fromEntries(KQ_CARDS.map((card) => [card.code, 1]));
     const deck = buildKqRecommendedDeck("starting-xp-1", inventory, ["biocontrol"]);
-    expect(deck.support).toContain("BOTTE-004");
+    expect(deck.support).not.toContain("BOTTE-004");
+    expect(deck.support).not.toContain("BOTTE-025");
     expect(deck.support).toHaveLength(4);
   });
 });

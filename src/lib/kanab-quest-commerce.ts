@@ -2,6 +2,7 @@ import { calculateKqMarketReputation, getKqMarketReputationRule, type KqMarketQu
 import { getKqMarketReputationProgress } from "./kanab-quest-market-demand";
 import { getChanvrierSalesMultiplier, type ChanvrierStrength } from "./arena-chanvrier";
 import { getKqAdvertisingMultiplier, isKqShopActive, type KqBusinessState } from "./kanab-quest-business";
+import type { KqStorageProjection } from "./kanab-quest-storage";
 
 export const KQ_COMPUTER_PRICE_CENTS = 45000;
 /** Historical snapshots only; the live API requires the business calendar. */
@@ -32,6 +33,7 @@ export type KqCommerceStock = {
   id: string; flowerId: string; name: string; route: KqMarketRouteCode; batchRoute: KqMarketRouteCode;
   juryScore: number; initialUnits: number; remainingUnits: number; equivalentUnits: number; originalUnits: number;
   baseUnitCents: number; payoutExact?: number; payoutRounded?: number; repExact: number; repRounded: number; professionalUnits: number; counted: boolean;
+  storage?: KqStorageProjection; storageRevision?: number;
 };
 export const KQ_DEMAND_REFILL_MS = { online: 4 * 60 * 60 * 1000, "cbd-shop": 12 * 60 * 60 * 1000 } as const;
 export type KqCommerceDemand = {
@@ -55,7 +57,7 @@ export type KqCommerceReceipt = {
   satisfaction?: KqCustomerSatisfaction; clientsBefore?: number; shopPartnersBefore?: number; shopPartnersAfter?: number; shopPartnersDelta?: number; shopPricePercent?: number;
   expertiseBonus?: number; clientsAfter?: number; remainingUnits?: number; replayed?: boolean;
 };
-export type KqCommerceRawLot = { flowerId: string; varietyName: string; juryScore: number; harvestGrams: number; options: KqMarketQuote[] };
+export type KqCommerceRawLot = { flowerId: string; varietyName: string; juryScore: number; harvestGrams: number; options: KqMarketQuote[]; storage?: KqStorageProjection };
 export type KqCommerceSnapshot = KqCommerceState & { rawLots: KqCommerceRawLot[]; electricityOutstandingCents: number };
 export type KqCustomerSatisfaction = "satisfied" | "neutral" | "disappointed" | "not-applicable";
 export type KqCommerceOffer = {
@@ -69,6 +71,15 @@ export type KqCommerceOffer = {
 };
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 const round6 = (n: number) => Math.round(n * 1e6) / 1e6;
+/** The original verdict remains an archive; conservation changes today's lot. */
+export function getKqCommerceStockQuality(stock: Pick<KqCommerceStock, "juryScore" | "storage">) {
+  return Math.round(clamp(stock.juryScore + Math.min(0, stock.storage?.qualityDelta ?? 0), 0, 10) * 100) / 100;
+}
+export function isKqCommerceStockMature(stock: Pick<KqCommerceStock, "storage">, nowMs?: number) {
+  if (!stock.storage) return true;
+  const now = Math.max(Date.parse(stock.storage.serverNow), nowMs ?? Date.parse(stock.storage.serverNow));
+  return Number.isFinite(now) && now >= Date.parse(stock.storage.readyAt);
+}
 export function getKqCommerceMinimumQuality(route: KqMarketRouteCode, channel: KqSalesChannel): number | null {
   if (channel === "wholesale") return null;
   return channel === "online" ? 5.8 : route === "raw" ? 6.5 : 7.5;
@@ -91,6 +102,7 @@ export function getKqShopBudget(partners: number, event: string = "normal") {
   return (4000 + clamp(partners, 0, KQ_SHOP_MAX_PARTNERS) * 250) * (event === "restock" ? 1.25 : event === "promotion" ? .75 : 1);
 }
 export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, channel: KqSalesChannel, policy: KqOnlinePrice = "advised", requestedUnits?: number, nowMs?: number): KqCommerceOffer {
+  const commercialQuality = getKqCommerceStockQuality(stock);
   const salesMultiplier = getChanvrierSalesMultiplier(state.strength);
   const campaign = state.campaign;
   const capacity = getKqCommerceCapacity(campaign?.reputation ?? state.reputation);
@@ -99,7 +111,7 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const salvage = stock.route === "biomass";
   const transformed = stock.route !== "raw" && !salvage;
   const family = stock.route.startsWith("rosin") ? "rosin" : transformed ? "hash" : "flower";
-  const factorQuality = stock.juryScore >= 9.5 ? 1.1 : stock.juryScore >= rule.gainFrom ? 1 : stock.juryScore >= rule.neutralFrom ? .75 : .4;
+  const factorQuality = commercialQuality >= 9.5 ? 1.1 : commercialQuality >= rule.gainFrom ? 1 : commercialQuality >= rule.neutralFrom ? .75 : .4;
   const factorPrice = policy === "discovery" ? 1.2 : policy === "premium" ? .7 : 1;
   const eventFactor = campaign?.event === `spot-${family}` ? 1.25 : campaign?.event === "promotion" ? .75 : 1;
   const volumes = Object.values(state.marketVolumes).reduce((a, b) => a + (b ?? 0), 0);
@@ -108,7 +120,7 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const directBudget = salesMultiplier * capacity.baseUnits * (1 + .25 * Math.min(1, (campaign?.clientsStart ?? 0) / capacity.maxClients))
     * getKqAdvertisingMultiplier(state.business, nowMs);
   const shopPartnersStart = campaign?.shopPartnersStart ?? 0;
-  const shopBand = getKqShopQualityBand(stock.route, stock.juryScore);
+  const shopBand = getKqShopQualityBand(stock.route, commercialQuality);
   const shopPricePercent = shopBand.pricePercent + getKqShopNetworkBonus(shopPartnersStart);
   const shopBudget = salesMultiplier * getKqShopBudget(shopPartnersStart, campaign?.event);
   let reason: string | null = null;
@@ -118,8 +130,11 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
     if (!state.business.shop.createdAt) reason = "Économise 1 000 € et crée ton shop pour vendre en ligne.";
     else if (!isKqShopActive(state.business, nowMs)) reason = "Réactive ton site : 100 € pour 30 jours de jeu (5 jours réels).";
   } else if (channel === "online" && !campaign?.internetPaid) reason = "Crée ton shop pour vendre en ligne.";
-  if (channel === "online" && (salvage || stock.juryScore < getKqCommerceMinimumQuality(stock.route, "online")!)) reason = "Qualité insuffisante pour la vente directe. Le grossiste reprend ce lot.";
-  if (channel === "cbd-shop" && (salvage || stock.juryScore < getKqCommerceMinimumQuality(stock.route, "cbd-shop")!)) reason = "La boutique refuse cette qualité. Le grossiste reste disponible.";
+  if (channel === "online" && (salvage || commercialQuality < getKqCommerceMinimumQuality(stock.route, "online")!)) reason = "Qualité insuffisante pour la vente directe. Le grossiste reprend ce lot.";
+  if (channel === "cbd-shop" && (salvage || commercialQuality < getKqCommerceMinimumQuality(stock.route, "cbd-shop")!)) reason = "La boutique refuse cette qualité. Le grossiste reste disponible.";
+  const storageNow = nowMs ?? (state.business ? Date.parse(state.business.serverNow) : state.demand ? Date.parse(state.demand.serverNow) : undefined);
+  if (channel !== "wholesale" && !isKqCommerceStockMature(stock, storageNow)) reason = "Curing en cours : seul le grossiste reprend ce lot avant sa maturité commerciale.";
+  if (channel !== "wholesale" && (stock.storage?.capacity?.overflowUnits ?? 0) > 0) reason = "Une partie de ce lot manque de contenants : stocke-la ou vends le surplus au grossiste depuis l’entrepôt.";
   const eqPerUnit = stock.equivalentUnits / stock.initialUnits;
   const replenishment = getKqCommerceReplenishment(state, channel, nowMs);
   const availableEq = replenishment ? (channel === "online" ? directBudget * demandFactor : shopBudget) * replenishment.availableFraction : channel === "online" ? Math.max(0, directBudget - (campaign?.directUsed ?? 0)) * demandFactor
@@ -130,7 +145,7 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const equivalentSold = round6(units * eqPerUnit);
   const protectedPrice = tier.guaranteedPolicy === "premium";
   const onlinePrice = Math.max(.6, (policy === "premium" ? 1.22 : policy === "discovery" ? .9 : 1) * (1 + tier.priceBonusPercent / 100)
-    * (.7 + stock.juryScore / 20) * (protectedPrice ? Math.max(1, eventFactor) : eventFactor * (1 - saturation)));
+    * (.7 + commercialQuality / 20) * (protectedPrice ? Math.max(1, eventFactor) : eventFactor * (1 - saturation)));
   const professionalPrice = channel === "cbd-shop" ? shopPricePercent / 100
     : campaign?.event === "promotion" ? .25 : campaign?.event === "restock" ? .33 : .3;
   const unitCents = round6(salesMultiplier * (salvage ? stock.baseUnitCents : stock.baseUnitCents * (channel === "online" ? onlinePrice : professionalPrice)));
@@ -138,12 +153,12 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const payoutExactAfter = round6((stock.payoutExact ?? 0) + units * unitCents / 10);
   const payoutRoundedAfter = Math.round(payoutExactAfter);
   const payoutCents = payoutRoundedAfter - (stock.payoutRounded ?? 0);
-  const repExactAfter = round6(stock.repExact + calculateKqMarketReputation(stock.route, stock.juryScore) * equivalentSold / stock.originalUnits * (channel === "online" ? 1 : channel === "cbd-shop" ? .5 : 0));
+  const repExactAfter = round6(stock.repExact + calculateKqMarketReputation(stock.route, commercialQuality) * equivalentSold / stock.originalUnits * (channel === "online" ? 1 : channel === "cbd-shop" ? .5 : 0));
   const repRoundedAfter = Math.sign(repExactAfter) * Math.floor(Math.abs(repExactAfter) + .5);
   const reputationDelta = repRoundedAfter - stock.repRounded;
-  const goodUnitsAfter = round6((campaign?.goodUnits ?? 0) + (channel === "online" && stock.juryScore >= rule.gainFrom ? equivalentSold * salesMultiplier : 0));
-  const disappointmentAfter = round6((campaign?.disappointmentUnits ?? 0) + (channel === "online" && stock.juryScore < rule.neutralFrom
-    ? equivalentSold * (stock.juryScore < rule.neutralFrom - .5 ? .25 : .1) : 0));
+  const goodUnitsAfter = round6((campaign?.goodUnits ?? 0) + (channel === "online" && commercialQuality >= rule.gainFrom ? equivalentSold * salesMultiplier : 0));
+  const disappointmentAfter = round6((campaign?.disappointmentUnits ?? 0) + (channel === "online" && commercialQuality < rule.neutralFrom
+    ? equivalentSold * (commercialQuality < rule.neutralFrom - .5 ? .25 : .1) : 0));
   const clientsAfter = channel === "online" ? clamp((campaign?.clientsStart ?? 0) + Math.floor(Math.min(5 * salesMultiplier, goodUnitsAfter / capacity.baseUnits * 5))
     - Math.floor((campaign?.clientsStart ?? 0) * Math.min(.25, disappointmentAfter / capacity.baseUnits)), 0, capacity.maxClients) : state.clients;
   // Weighted equivalent mass has a common integer denominator: no per-sale rounding of partners.
@@ -158,10 +173,10 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const shopChurnAfter = channel === "cbd-shop" ? round6(churn % KQ_SHOP_PROGRESS_UNITS) : state.shopChurn ?? 0;
   const satisfaction: KqCustomerSatisfaction = channel === "wholesale" ? "not-applicable"
     : channel === "cbd-shop" ? shopBand.satisfaction
-    : stock.juryScore >= rule.gainFrom ? "satisfied" : stock.juryScore >= rule.neutralFrom ? "neutral" : "disappointed";
+    : commercialQuality >= rule.gainFrom ? "satisfied" : commercialQuality >= rule.neutralFrom ? "neutral" : "disappointed";
   const message = channel === "wholesale" ? "Reprise de tout le volume, sans exigence de note ni gain de réputation."
     : channel === "cbd-shop" ? `${shopBand.label} : reprise à ${shopPricePercent} % du tarif de référence. ${shopBand.churnWeight ? "Ces livraisons fragilisent tes partenariats." : shopBand.recruitmentWeight ? "Ces livraisons construisent ton réseau de boutiques." : "Ces livraisons maintiennent tes partenariats."}`
-    : stock.juryScore < rule.neutralFrom ? "Une livraison décevante peut faire partir des clients. La perte dépend du volume livré."
+    : commercialQuality < rule.neutralFrom ? "Une livraison décevante peut faire partir des clients. La perte dépend du volume livré."
     : protectedPrice ? "Ta réputation protège le prix, mais les commandes restent limitées." : "Les bons lots fidélisent ta clientèle. Sa progression est limitée sur 24 heures.";
   return { shopPartnersBefore: state.shopPartners ?? 0, shopPartnersAfter, shopRecruitmentAfter, shopChurnAfter, shopGoodUnitsAfter, shopBadUnitsAfter, shopPricePercent, satisfaction, clientsBefore: state.clients, channel, policy, units, maxUnits, unitCents, payoutCents, payoutExactAfter, payoutRoundedAfter, directCost: channel === "online" ? round6(equivalentSold / demandFactor) : 0,
     shopCost: channel === "cbd-shop" ? equivalentSold : 0, equivalentSold, repExactAfter, repRoundedAfter, reputationDelta,

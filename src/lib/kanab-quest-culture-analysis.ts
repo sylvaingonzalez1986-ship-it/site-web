@@ -1,9 +1,10 @@
 import {
-  canPlayKqCard, getKqCardTradeoff, getKqSituation, getKqStageTarget,
+  canPlayKqCard, doesKqCardMatchSituation, getKqCardTradeoff, getKqSituation, getKqStageTarget,
   getKqStateHeritage, KQ_CARDS, KQ_RETIRED_SUBSTRATE_CODES, KQ_STAGES,
   playKqCard, previewKqResolution, resolveKqStage,
   type KqGameState, type KqOutcome, type KqStageDecision, type KqSupportCard,
 } from "./kanab-quest-game";
+import { isKqCareState, isKqCareReplacedCard } from "./kanab-quest-care";
 
 type Receipt = KqGameState["history"][number];
 export type KqCultureStageAnalysis = {
@@ -69,7 +70,8 @@ const codes = (value: unknown, limit: number) => Array.isArray(value) && value.l
 export function isKqStageDecision(value: unknown): value is KqStageDecision {
   if (!value || typeof value !== "object" || Array.isArray(value)) return false;
   const d = value as Record<string, unknown>;
-  return Object.keys(d).length === 17 && d.version === 1
+  return ((d.version === 1 && Object.keys(d).length === 17 && d.care === undefined)
+    || (d.version === 2 && Object.keys(d).length === 18 && isKqCareState(d.care)))
     && integer(d.xp, 0, 10000) && integer(d.quality, -100, 10000)
     && integer(d.pressure, 0, 4) && integer(d.cancelledDangers, 0, 10)
     && integer(d.rollNonce, 0, 10000) && integer(d.harvestLossPercent, 0, 80)
@@ -98,6 +100,7 @@ function restoreDecision(state: KqGameState, index: number): KqGameState | null 
   const history = state.history.slice(0, index);
   const position: KqGameState = {
     ...state, ...decision,
+    ...(entry.decision.version === 1 ? { rulesVersion: state.rulesVersion === 3 ? 2 : state.rulesVersion, care: undefined } : { rulesVersion: 3 }),
     stageIndex: index, phase: "rolled", dice: [...entry.dice], history,
     traits: history.map(item => item.trait), combos: history.flatMap(item => item.combos ?? []),
     cultureDead: false, harvestGrams: undefined, equipmentQualityBonus: undefined,
@@ -120,9 +123,15 @@ function describeStage(entry: Receipt, index: number, position: KqGameState | nu
   const evidence: string[] = [
     `Dés validés : ${entry.dice.join(" · ")}. ${entry.total} réussite${entry.total === 1 ? "" : "s"} pour un seuil de ${entry.target}.`,
   ];
+  if (position?.rulesVersion === 3 && position.care) {
+    const after = resolveKqStage(position).care!;
+    evidence.push(`Vitalité : ${position.care.vitality} → ${after.vitality}. Expression des terpènes : ${position.care.terpenes} → ${after.terpenes}. Expression cannabinoïde : ${position.care.cannabinoidExpression} → ${after.cannabinoidExpression}.`);
+    const followup = after.history.findLast(item => item.kind === "resolution" && item.stageIndex === index);
+    if (followup) evidence.push(followup.message);
+  }
   if (entry.qualityDelta !== undefined) evidence.push(`${OUTCOME[entry.outcome]} : ${signed(entry.qualityDelta)} Qualité${entry.xpGain !== undefined ? ` et +${entry.xpGain} XP à la validation` : ""}.`);
   if ((entry.harvestLossPercent ?? 0) > 0) evidence.push(`Le vol a retiré ${entry.harvestLossPercent} points de pourcentage au rendement final.`);
-  if (entry.rescued) evidence.push("Le secours a évité une mort de culture ; l’échec, les dés et les gains sont restés identiques.");
+  if (entry.rescued) evidence.push(position?.rulesVersion === 3 ? "Le secours a rétabli la vitalité à 15 ; les pertes déjà subies restent enregistrées." : "Le secours a évité une mort de culture ; l’échec, les dés et les gains sont restés identiques.");
   if (position) {
     const preview = previewKqResolution(position)!;
     const heritage = getKqStateHeritage(position);
@@ -168,6 +177,7 @@ const FIXED_REACTIONS = new Set([
   "water-rescue", "pbi-mite-shield", "pbi-neutral-strong", "pbi-success", "pbi-success-xp",
   "pbi-thrips-relief", "pbi-strong-success", "three-to-success", "moisture-calibration",
   "danger-to-neutral", "timer-reset", "cross-diagnosis", "illegal-power",
+  "gentle-recovery", "expert-recovery", "emergency-adjustment", "harvest-team", "controlled-drying",
 ]);
 
 function verifiedAdvice(position: KqGameState, index: number): { advice: KqCultureCardAdvice; score: number }[] {
@@ -215,7 +225,9 @@ function nextRunAdvice(state: KqGameState, stage: KqCultureStageAnalysis, positi
     { code: "BOTTE-016", when: !weak && situation.tags.includes("drying"), condition: "Avant les dés au Séchage, à la place d’une autre préparation ; le bonus Qualité exige ensuite une Réussite ou un Critique." },
     { code: "BOTTE-015", when: weak && situation.tags.includes("flower") && situation.code !== "SIT-046", condition: "Avant les dés d’une situation Floraison compatible, à la place d’une autre préparation ; il faut ensuite obtenir un 2 ou un 3." },
   ];
-  const option = options.find(item => item.when && !position?.playedThisStage.includes(item.code));
+  const option = options.find(item => item.when && !position?.playedThisStage.includes(item.code)
+    && doesKqCardMatchSituation(KQ_CARDS.find(card => card.code === item.code)!, situation)
+    && (state.rulesVersion !== 3 || !isKqCareReplacedCard(item.code)));
   if (!option) return null;
   const card = KQ_CARDS.find(item => item.code === option.code) as KqSupportCard;
   return {
@@ -240,7 +252,7 @@ export function getKqCultureAnalysis(state: KqGameState): KqCultureAnalysis {
   const best = [...stages].sort((a, b) => (b.qualityDelta ?? 0) - (a.qualityDelta ?? 0))[0];
   const zeroStages = stages.filter(stage => stage.total === 0 && !stage.rescued);
   const headline = state.cultureDead
-    ? `${zeroStages.length} étapes à zéro réussite non secourues ont arrêté la culture.`
+    ? state.rulesVersion === 3 ? "La vitalité épuisée a arrêté la culture." : `${zeroStages.length} étapes à zéro réussite non secourues ont arrêté la culture.`
     : (costly.harvestLossPercent ?? 0) > 0
       ? `${costly.stage} : le vol a réduit le rendement de ${costly.harvestLossPercent} %.`
       : losses.length

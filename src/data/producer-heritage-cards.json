@@ -135,7 +135,7 @@
       "effect": "drying-lowest-to-spark",
       "timing": "once-per-run",
       "description": "À la dernière étape, transforme le dé le plus faible en Étincelle.",
-      "drawback": "Réservé à la dernière étape de Séchage & affinage.",
+      "drawback": "Réservé à la dernière étape de Séchage ; ne raccourcit pas l’affinage en entrepôt.",
       "activationLabel": "APRÈS LE LANCER · SÉCHAGE & AFFINAGE",
       "illustrationUrl": "/app/kanab-quest/cards/heritage-014-cap-estuaire-v2.webp",
       "frontUrl": "/app/kanab-quest/card-fronts/heritage-014-cap-estuaire-front-v2.webp",

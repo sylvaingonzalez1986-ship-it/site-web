@@ -5,6 +5,8 @@ import { useEffect, useId, useRef } from "react";
 import { Gift, X } from "lucide-react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
+import { KQ_ACTIVE_CARDS } from "@/lib/kanab-quest-game";
+import { getKqCardGuide, getKqCardRarityLabel } from "@/lib/kanab-quest-card-guide";
 import styles from "./KqSupportPackOpening.module.css";
 
 export type KqOpenedSupportCard = { code: string; name: string; rarity: string; imageUrl?: string };
@@ -33,8 +35,19 @@ export function KqSupportPackReveal({ cards, onClose, onContinue = onClose, cont
   return <div className="absolute inset-0 z-50 flex flex-col bg-[#081a14]/95 p-3 backdrop-blur-sm sm:p-6" data-support-pack-reveal>
     <button type="button" aria-label="Fermer le pack ouvert" onClick={onClose} className="absolute right-3 top-3 z-10 grid h-11 w-11 place-items-center border-2 border-ink bg-white text-ink shadow-[3px_3px_0_#f4c43d]"><X /></button>
     <header className="shrink-0 pr-14 text-center text-white"><small className="font-black uppercase tracking-[.14em] text-yellow">Pack débloqué · {cards.length} cartes</small><h3 id={titleId} className="font-display text-3xl uppercase sm:text-5xl">Tes nouvelles cartes</h3></header>
-    <div className="my-3 flex min-h-0 flex-1 items-center gap-2 overflow-x-auto px-1 pb-2 sm:gap-3" aria-label="Les cartes de ton pack">
-      {cards.map((card, index) => { const src = getKqCardArtwork(card.code) ?? card.imageUrl; return <article key={`${card.code}-${index}`} className="w-28 shrink-0 border-2 border-[#d5a72d] bg-white p-1 text-ink shadow-[3px_3px_0_#d5a72d] sm:w-40">{src ? <div className="relative aspect-[2/3] overflow-hidden"><Image src={src} alt={card.name} fill sizes="160px" className="object-cover" /></div> : null}<small className="mt-1 block text-[9px] font-black uppercase text-green sm:text-xs">{card.rarity}</small><strong className="block text-[10px] sm:text-sm">{card.name}</strong></article>; })}
+    <div className={styles.revealCards} aria-label="Les cartes de ton pack">
+      {cards.map((card, index) => {
+        const src = getKqCardArtwork(card.code) ?? card.imageUrl;
+        const definition = KQ_ACTIVE_CARDS.find(item => item.code === card.code);
+        const guide = definition ? getKqCardGuide(definition) : null;
+        const rarity = definition?.rarity ?? card.rarity;
+        return <article key={`${card.code}-${index}`} className={styles.revealCard} data-rarity={rarity}>
+          {src ? <div className={styles.revealArtwork}><Image src={src} alt={card.name} fill sizes="192px" className="object-cover" /></div> : null}
+          <div className={styles.revealCopy}><small>{getKqCardRarityLabel(rarity)}{definition ? ` · ${definition.xpCost} XP` : ""}</small><strong>{card.name}</strong>
+            {guide ? <><span>{guide.timing} · {guide.scope}</span><p>{guide.benefit}</p>{rarity === "epic" ? <b>Une épique jouée par culture.</b> : null}</> : null}
+          </div>
+        </article>;
+      })}
     </div>
     <button type="button" onClick={onContinue} className="mx-auto min-h-12 shrink-0 border-2 border-ink bg-yellow px-6 font-black uppercase text-ink shadow-[4px_4px_0_#fff]">{continueLabel}</button>
   </div>;

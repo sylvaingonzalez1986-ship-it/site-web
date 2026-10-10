@@ -92,10 +92,11 @@ describe("stage-aware culture outcome artwork", () => {
     expect(getKqOutcomeArtwork(resolved)).toBe(KQ_OUTCOME_ARTWORK.Germination.fragile);
   });
 
-  it("keeps the first zero nonterminal and prioritizes death on the second zero", () => {
+  it("keeps a zero nonterminal while vitality remains and prioritizes death when it is exhausted", () => {
     const firstZero = resolveDice(startKqGame(336), [2, 2, 3]);
     expect(getKqOutcomeArtwork(firstZero)).toBe(KQ_OUTCOME_ARTWORK.Germination.failure);
-    const dead = resolveDice(advanceKqStage(firstZero), [2, 2, 3]);
+    const next = advanceKqStage(firstZero);
+    const dead = resolveDice({ ...next, care: { ...next.care!, vitality: 1 } }, [2, 2, 3]);
     expect(getKqOutcomeArtwork(dead)).toBe(KQ_DEAD_CULTURE_ARTWORK.Enracinement);
     const recoveredVerdict = {
       ...dead,
@@ -105,17 +106,21 @@ describe("stage-aware culture outcome artwork", () => {
     expect(getKqOutcomeArtwork(recoveredVerdict)).toBe(KQ_DEAD_CULTURE_ARTWORK.Enracinement);
   });
 
-  it("retains the harvested drying stage for a completed run or a lost final lot", () => {
+  it("retains the harvested drying stage and freezes plant vitality while lot quality can fall", () => {
     const dried = advanceKqStage(resolveDice(prepareStage(5), [4, 5, 6]));
     expect(getKqOutcomeArtwork(dried)).toBe(KQ_OUTCOME_ARTWORK["Séchage & affinage"].critical);
     const firstZero = resolveDice(startKqGame(337), [2, 2, 3]);
-    const lost = resolveDice(prepareStage(5, advanceKqStage(firstZero)), [2, 2, 3]);
-    expect(getKqOutcomeArtwork(lost)).toBe(KQ_DEAD_CULTURE_ARTWORK["Séchage & affinage"]);
+    const finalStage = prepareStage(5, advanceKqStage(firstZero));
+    const lost = resolveDice({ ...finalStage, care: { ...finalStage.care!, vitality: 1 } }, [2, 2, 3]);
+    expect(getKqOutcomeArtwork(lost)).toBe(KQ_OUTCOME_ARTWORK["Séchage & affinage"].failure);
+    expect(lost.care?.vitality).toBe(1);
+    expect(lost.care!.terpenes).toBeLessThan(finalStage.care!.terpenes);
   });
 
   it.each([false, true])("restores the same illustration after saving, terminal: %s", (terminal) => {
     const first = resolveDice(startKqGame(338), [2, 2, 3]);
-    const state = terminal ? resolveDice(advanceKqStage(first), [2, 2, 3]) : first;
+    const next = advanceKqStage(first);
+    const state = terminal ? resolveDice({ ...next, care: { ...next.care!, vitality: 1 } }, [2, 2, 3]) : first;
     const restored = parseKqGameSave(encodeKqSave(state));
     expect(restored).not.toBeNull();
     expect(getKqOutcomeArtwork(restored!)).toEqual(getKqOutcomeArtwork(state));

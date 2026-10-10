@@ -3,17 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
 import { ArrowRight, Check, Clock3, Coins, FlaskConical, Frown, Leaf, LoaderCircle, Meh, Minus, PackageOpen, ShoppingBag, Smile, Sparkles, Star, Users, X } from "lucide-react";
-import { KQ_CHANNELS, KQ_COMMERCE_EVENTS, KQ_COMPUTER_PRICE_CENTS, KQ_SALES_CHANNELS, KQ_SHOP_QUALITY_BANDS, getKqShopNetworkBonus, getKqShopQualityBand, getKqCommerceMinimumQuality, getKqCommerceReplenishment, quoteKqCommerce,
+import { KQ_CHANNELS, KQ_COMMERCE_EVENTS, KQ_COMPUTER_PRICE_CENTS, KQ_SALES_CHANNELS, KQ_SHOP_QUALITY_BANDS, getKqShopNetworkBonus, getKqShopQualityBand, getKqCommerceMinimumQuality, getKqCommerceReplenishment, getKqCommerceStockQuality, isKqCommerceStockMature, quoteKqCommerce,
   type KqCommerceOffer, type KqCommerceReceipt, type KqCommerceSnapshot, type KqCommerceStock, type KqOnlinePrice, type KqSalesChannel } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { KQ_MARKET_ROUTES, getKqMarketReputationRule, type KqMarketRouteCode } from "@/lib/kanab-quest-market";
 import { KqCommerceOverview } from "./KqCommerceOverview";
+import { KqStorageStatus } from "./KqStorageStatus";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import styles from "./KqCommerceDesk.module.css";
 import { useKqTutorialApi, type KqTutorialApi } from "./KqTutorialApiContext";
 const grams = (units: number) => `${(units / 10).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g`;
 const productName = (route: string) => route === "raw" ? "Fleurs entières" : KQ_MARKET_ROUTES.find(r => r.code === route)?.name ?? route;
-const qualityScore = (score: number) => `${score.toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}/10`;
+const qualityScore = (score: number) => `${score.toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 2 })}/10`;
 function DemandStatus({ data, channel, offer, now }: { data: KqCommerceSnapshot; channel: KqSalesChannel; offer: KqCommerceOffer; now?: number }) {
   const refill = getKqCommerceReplenishment(data, channel, now);
   if (!refill) return channel === "wholesale" ? <span className={styles.demandStatus}><Check size={16} /> Reprise disponible immédiatement</span> : null;
@@ -27,12 +28,15 @@ function DemandStatus({ data, channel, offer, now }: { data: KqCommerceSnapshot;
 }
 function LotQuality({ stock }: { stock: KqCommerceStock }) {
   const rule = getKqMarketReputationRule(stock.route);
-  return <span className={styles.qualityBadge} data-tone={stock.juryScore >= rule.gainFrom ? "good" : stock.juryScore >= rule.neutralFrom ? "neutral" : "warning"}><Star size={18} aria-hidden="true" /><span>Qualité du lot <strong>{qualityScore(stock.juryScore)}</strong></span></span>;
+  const quality = getKqCommerceStockQuality(stock);
+  return <span className={styles.qualityBadge} data-tone={quality >= rule.gainFrom ? "good" : quality >= rule.neutralFrom ? "neutral" : "warning"}><Star size={18} aria-hidden="true" /><span>Qualité commerciale <strong>{qualityScore(quality)}</strong>{stock.storage ? <small> · Jury : {qualityScore(stock.juryScore)}</small> : null}</span></span>;
 }
-function ChannelQuality({ stock, channel }: { stock: KqCommerceStock; channel: KqSalesChannel }) {
+function ChannelQuality({ stock, channel, now }: { stock: KqCommerceStock; channel: KqSalesChannel; now?: number }) {
+  if (channel !== "wholesale" && !isKqCommerceStockMature(stock, now)) return <span className={styles.qualityFit} data-tone="warning"><Clock3 size={15} aria-hidden="true" /><span>Curing en cours · circuit disponible à maturité</span></span>;
   const minimum = getKqCommerceMinimumQuality(stock.route, channel);
-  const accepted = minimum === null || (stock.route !== "biomass" && stock.juryScore >= minimum);
-  const risky = accepted && (channel === "online" ? stock.juryScore < getKqMarketReputationRule(stock.route).neutralFrom : channel === "cbd-shop" && getKqShopQualityBand(stock.route, stock.juryScore).churnWeight > 0);
+  const quality = getKqCommerceStockQuality(stock);
+  const accepted = minimum === null || (stock.route !== "biomass" && quality >= minimum);
+  const risky = accepted && (channel === "online" ? quality < getKqMarketReputationRule(stock.route).neutralFrom : channel === "cbd-shop" && getKqShopQualityBand(stock.route, quality).churnWeight > 0);
   return <span className={styles.qualityFit} data-tone={!accepted || risky ? "warning" : "good"}>
     {accepted && !risky ? <Check size={15} aria-hidden="true" /> : <Minus size={15} aria-hidden="true" />}
     <span>{minimum === null ? "Toute qualité acceptée" : stock.route === "biomass" ? "Biomasse non acceptée" : `${!accepted ? "Qualité refusée" : risky ? channel === "cbd-shop" ? "Partenaires à risque" : "Clients à risque" : "Qualité suffisante"} · min. ${qualityScore(minimum)}`}</span>
@@ -108,12 +112,12 @@ const channelTradeoffs: Record<KqSalesChannel, { advantage: string; drawback: st
   wholesale: { advantage: "Tout le lot repris, quelle que soit sa qualité.", drawback: "Prix très bas ; aucun gain de réputation." },
 };
 
-export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (equipmentCode?: string) => void; onOpenTreasury?: () => void }) {
+export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenStorage }: { onOpenShop: (equipmentCode?: string) => void; onOpenTreasury?: () => void; onOpenStorage?: () => void }) {
   const api = useKqTutorialApi();
   const heading = useRef<HTMLHeadingElement>(null);
   const clock = useRef<{ server: number; received: number } | null>(null);
   const inFlight = useRef<Promise<void> | null>(null);
-  const refreshedPeriod = useRef("");
+  const refreshedPeriods = useRef(new Set<string>());
   const [liveNow, setLiveNow] = useState<number | undefined>(undefined);
   const [data, setData] = useState<KqCommerceSnapshot | null>(null);
   const [loading, setLoading] = useState(true); const [error, setError] = useState(""); const [busy, setBusy] = useState(false);
@@ -147,13 +151,13 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
     return () => { window.clearInterval(timer); document.removeEventListener("visibilitychange", resume); };
   }, [load]);
   useEffect(() => {
-    const events = [data?.demand?.growthResetsAt, data?.business?.nextEventAt].filter((value): value is string => Boolean(value));
+    const events = [data?.demand?.growthResetsAt, data?.business?.nextEventAt, ...(data?.rawLots ?? []).map(lot => lot.storage?.nextChangeAt), ...(data?.stocks ?? []).map(lot => lot.storage?.nextChangeAt)].filter((value): value is string => Boolean(value) && !refreshedPeriods.current.has(value!));
     const reset = events.sort((a, b) => Date.parse(a) - Date.parse(b))[0];
-    if (reset && liveNow && liveNow >= Date.parse(reset) && refreshedPeriod.current !== reset && !busy && !confirmation) {
-      refreshedPeriod.current = reset; void load();
+    if (reset && liveNow && liveNow >= Date.parse(reset) && !busy && !confirmation) {
+      refreshedPeriods.current.add(reset); void load();
     }
-  }, [data?.demand?.growthResetsAt, data?.business?.nextEventAt, liveNow, busy, confirmation, load]);
-  useEffect(() => { void load(); return api.subscribe(["kq:equipment-updated"], () => { void load(); }); }, [load, api]);
+  }, [data, liveNow, busy, confirmation, load]);
+  useEffect(() => { void load(); return api.subscribe(["kq:equipment-updated", "kq:storage-updated"], () => { void load(); }); }, [load, api]);
   const stock = data?.stocks.find(s => s.id === selectedId);
   const raw = data?.rawLots.find(l => `raw:${l.flowerId}` === selectedId);
   const saleComplete = receipt?.action === "sell";
@@ -164,7 +168,8 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
   const offer = data && stock && channel ? quoteKqCommerce(data, stock, channel, policy, requestedUnits, liveNow) : null;
   const inputInvalid = quantity !== "" && (!Number.isFinite(requestedUnits) || requestedUnits! <= 0 || requestedUnits! > (offer?.maxUnits ?? 0));
   const cost = activeProduct?.market?.processingCostCents ?? 0;
-  const canPrepare = activeProduct && (activeProduct.route === "raw" || activeProduct.route === "biomass" || activeProduct.available);
+  const overflowUnits = raw?.storage?.capacity?.overflowUnits ?? 0;
+  const canPrepare = !overflowUnits && activeProduct && (activeProduct.route === "raw" || activeProduct.route === "biomass" || activeProduct.available);
   function choose(id: string) { setSelectedId(id); setQuantity(""); setRoute("raw"); setChannel(null); setPolicy("advised"); setReceipt(null); setError(""); }
   function chooseChannel(code: KqSalesChannel | null) { setChannel(code); setQuantity(""); setPolicy("advised"); setError(""); }
   function ask(title: string, description: string, body: Record<string, unknown>, cost?: number) {
@@ -173,13 +178,16 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
   function openTreasury(event: MouseEvent<HTMLAnchorElement>) {
     if (onOpenTreasury) { event.preventDefault(); onOpenTreasury(); }
   }
+  function openStorage(event: MouseEvent<HTMLAnchorElement>) {
+    if (onOpenStorage) { event.preventDefault(); onOpenStorage(); }
+  }
   async function examineSale() {
     if (!stock || !offer || !channel || offer.reason || inputInvalid) return;
     setBusy(true); setError("");
     try {
       const prepared = await request<PreparedOffer>(api, { action: "quote", stockId: stock.id, channel, policy, units: offer.units });
       if (prepared.offer.reason || prepared.offer.units <= 0) throw new Error(prepared.offer.reason ?? "Aucune commande disponible.");
-      setConfirmation({ title: `Vendre · ${KQ_CHANNELS[channel].name}`, description: `${stock.name} · ${productName(stock.route)} · Qualité ${qualityScore(stock.juryScore)}. ${grams(stock.remainingUnits - prepared.offer.units)} resteront en stock.`, offer: prepared,
+      setConfirmation({ title: `Vendre · ${KQ_CHANNELS[channel].name}`, description: `${stock.name} · ${productName(stock.route)} · Qualité commerciale ${qualityScore(getKqCommerceStockQuality(stock))}. ${grams(stock.remainingUnits - prepared.offer.units)} resteront en stock.`, offer: prepared,
         body: { action: "sell", quoteId: prepared.quoteId, expectedPayoutCents: prepared.offer.payoutCents, requestKey: createClientRequestKey() } });
     } catch (e) { setError(e instanceof Error ? e.message : "Offre indisponible."); } finally { setBusy(false); }
   }
@@ -217,17 +225,20 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
         <button className={styles.primary} onClick={() => choose((receipt.remainingUnits ?? 0) > 0 && stock ? stock.id : "")}>{(receipt.remainingUnits ?? 0) > 0 && stock ? "Vendre le reste" : "Retour aux lots"} <ArrowRight size={18} /></button>
       </div> : raw && activeProduct ? <div className={styles.preparation}>
         <div className={styles.workshopArt}><Image src="/placard/market-workshop-v1.webp" width={1536} height={1024} alt="Presse, tamis et laveuse de l’atelier du Placard" sizes="(max-width: 700px) 100vw, 450px" /><span className={styles.artLabel}><FlaskConical size={16} aria-hidden="true" /> Atelier de transformation</span></div>
-        <div><p className={styles.lotSummary}>{raw.varietyName} · {raw.harvestGrams.toLocaleString("fr-FR")} g · {raw.juryScore.toFixed(1)}/10</p>
+        <div><p className={styles.lotSummary}>{raw.varietyName} · {raw.harvestGrams.toLocaleString("fr-FR")} g · Jury : {qualityScore(raw.juryScore)}</p>
+          <KqStorageStatus storage={raw.storage} nowMs={liveNow} />
+          {overflowUnits > 0 ? <div role="status"><p className={styles.error}>{grams(overflowUnits)} n’ont pas de contenant. Achète la place nécessaire ou vends uniquement ce surplus avant de préparer le lot.</p><Link prefetch={false} href="/arene/placard?view=workshop&section=storage" className={styles.primary} onClick={openStorage}>Gérer mes contenants et le surplus <ArrowRight size={18} /></Link></div> : null}
           <label className={styles.field}>Que veux-tu obtenir ?<select value={activeProduct.route} onChange={e => setRoute(e.target.value as KqMarketRouteCode)}>{raw.options.map(q => <option key={q.route} value={q.route}>{q.route === "raw" ? "Fleurs entières (sans transformation)" : q.name}{q.available || q.route === "raw" || q.route === "biomass" ? "" : " · verrouillé"}</option>)}</select></label>
           <p>{activeProduct.route === "raw" ? "Garde tes fleurs entières : aucune transformation nécessaire." : activeProduct.description}</p>
           <div className={styles.figures}><span>Produit obtenu<strong>{grams(Math.round(activeProduct.productGrams * 10))}</strong></span><span>Coût<strong>{formatKqCash(cost)}</strong></span></div>
           {activeProduct.remainderGrams > 0 ? <p>{activeProduct.remainderGrams.toLocaleString("fr-FR")} g de fleurs non traitées seront conservés séparément.</p> : null}
-          {!canPrepare ? <p className={styles.error}>{activeProduct.blockedReason}</p> : null}
+          {!canPrepare && !overflowUnits ? <p className={styles.error}>{activeProduct.blockedReason}</p> : null}
           <button className={styles.primary} disabled={busy || !canPrepare || cost > data.cashCents} onClick={() => ask("Préparer ce lot", `${raw.varietyName} : ${activeProduct.name}. Une fois préparé, tu choisiras une offre de distribution.`, { action: "prepare", flowerId: raw.flowerId, route: activeProduct.route, expectedCostCents: cost }, cost)}>{cost > data.cashCents ? "Trésorerie insuffisante" : activeProduct.route === "raw" ? "Préparer les fleurs et continuer" : "Transformer et continuer"} <ArrowRight size={18} /></button>
         </div>
       </div> : stock && !channel ? <>
-        <p className={styles.lotSummary}>{stock.name} · {productName(stock.route)} · <strong>{grams(stock.remainingUnits)} prêts à vendre</strong></p>
+        <p className={styles.lotSummary}>{stock.name} · {productName(stock.route)} · <strong>{grams(stock.remainingUnits)} en stock</strong></p>
         <LotQuality stock={stock} />
+        <KqStorageStatus storage={stock.storage} nowMs={liveNow} />
         <p>Les commandes reviennent avec le temps, même hors connexion. Tous tes lots partagent la demande de chaque circuit ; les invendus restent en stock.</p>
         {data.campaign && data.campaign.event !== "normal" ? <p className={styles.event}>{KQ_COMMERCE_EVENTS[data.campaign.event]}</p> : null}
         <div className={styles.offers} aria-label="Circuits de vente">{KQ_SALES_CHANNELS.map(code => {
@@ -240,8 +251,8 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
               </div>
             </div>
             <div className={styles.offerCopy}>
-              <DemandStatus data={data} channel={code} offer={proposal} now={liveNow} />
-              <ChannelQuality stock={stock} channel={code} />
+              {code === "wholesale" || isKqCommerceStockMature(stock, liveNow) ? <DemandStatus data={data} channel={code} offer={proposal} now={liveNow} /> : null}
+              <ChannelQuality stock={stock} channel={code} now={liveNow} />
               {code === "cbd-shop" ? <small>{proposal.shopPricePercent} % de reprise · {data.shopPartners ?? 0} boutiques partenaires</small> : null}
               {proposal.reason ? <span className={styles.unavailableReason}>{proposal.reason}</span> : null}
               <span className={styles.tradeoff}><Check size={16} aria-hidden="true" /><span><b>Avantage</b> {channelTradeoffs[code].advantage}</span></span><span className={styles.tradeoff}><Minus size={16} aria-hidden="true" /><span><b>À prévoir</b> {channelTradeoffs[code].drawback}</span></span>
@@ -252,8 +263,9 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
       </> : stock && offer && channel ? <div className={styles.selectedOffer}>
         <div className={styles.selectedArt}><Image src={KQ_CHANNELS[channel].image} alt="" width={1200} height={800} sizes="(max-width: 700px) 100vw, 400px" /><span className={styles.artLabel}><ShoppingBag size={16} aria-hidden="true" /> {KQ_CHANNELS[channel].name}</span></div>
         <div><p className={styles.lotSummary}>{stock.name} · {productName(stock.route)} · {grams(stock.remainingUnits)} en stock</p>
-          <LotQuality stock={stock} /><ChannelQuality stock={stock} channel={channel} />
-          <DemandStatus data={data} channel={channel} offer={offer} now={liveNow} />
+          <LotQuality stock={stock} /><ChannelQuality stock={stock} channel={channel} now={liveNow} />
+          <KqStorageStatus storage={stock.storage} nowMs={liveNow} />
+          {channel === "wholesale" || isKqCommerceStockMature(stock, liveNow) ? <DemandStatus data={data} channel={channel} offer={offer} now={liveNow} /> : null}
           {channel === "cbd-shop" ? <details className={styles.adjustments}><summary>Barème des boutiques · {offer.shopPricePercent} % de reprise</summary>
             <p>{data.shopPartners ?? 0} boutiques partenaires · Bonus sur cette période : +{getKqShopNetworkBonus(data.campaign?.shopPartnersStart ?? data.shopPartners ?? 0)} points sur la reprise.</p>
             <ul className={styles.shopScale}>{KQ_SHOP_QUALITY_BANDS.map((band, index) => <li key={band.label}><strong>{qualityScore(stock.route === "raw" ? band.flowerMinimum : band.extractMinimum)}{index === KQ_SHOP_QUALITY_BANDS.length - 1 ? " et plus" : ` à moins de ${qualityScore(stock.route === "raw" ? KQ_SHOP_QUALITY_BANDS[index + 1].flowerMinimum : KQ_SHOP_QUALITY_BANDS[index + 1].extractMinimum)}`} · {band.pricePercent} %</strong><span>{band.recruitmentWeight ? `1 partenaire par ${band.recruitmentWeight === 4 ? "150" : "200"} g équivalents livrés` : band.churnWeight ? "1 partenaire perdu par 100 g équivalents livrés" : "Réseau stable"}</span></li>)}</ul>
@@ -278,12 +290,12 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury }: { onOpenShop: (eq
           </>}
         </div>
       </div> : data.rawLots.length || data.stocks.length ? <>
-        <p>Une récolte à transformer, ou un produit déjà prêt à distribuer.</p>
+        <p>Prépare tes récoltes et suis leur maturité. Pendant le curing, seul le grossiste reprend les lots.</p>
         <div className={styles.inventory}>
         <div className={styles.inventoryArt} aria-hidden="true"><Image src="/placard/market-workshop-v1.webp" alt="" width={1536} height={1024} sizes="(max-width: 700px) 100vw, 540px" /><span><PackageOpen size={18} /> Ta réserve</span></div>
         <div className={styles.lotList} aria-label="Tes lots">
-          {data.rawLots.map(item => <button key={item.flowerId} onClick={() => choose(`raw:${item.flowerId}`)}><span className={styles.lotIcon}><Leaf size={24} aria-hidden="true" /></span><span className={styles.lotText}><strong>{item.varietyName}</strong><small>{item.harvestGrams.toLocaleString("fr-FR")} g · {item.juryScore.toFixed(1)}/10</small></span><span>Transformer <ArrowRight size={18} /></span></button>)}
-          {data.stocks.map(item => <button key={item.id} onClick={() => choose(item.id)}><span className={styles.lotIcon}><PackageOpen size={24} aria-hidden="true" /></span><span className={styles.lotText}><strong>{item.name}</strong><small>{productName(item.route)} · {grams(item.remainingUnits)} · Qualité {qualityScore(item.juryScore)} · Déjà préparé</small></span><span>Distribuer <ArrowRight size={18} /></span></button>)}
+          {data.rawLots.map(item => <button key={item.flowerId} onClick={() => choose(`raw:${item.flowerId}`)}><span className={styles.lotIcon}><Leaf size={24} aria-hidden="true" /></span><span className={styles.lotText}><strong>{item.varietyName}</strong><small>{item.harvestGrams.toLocaleString("fr-FR")} g · Jury : {qualityScore(item.juryScore)}</small><KqStorageStatus storage={item.storage} nowMs={liveNow} compact /></span><span>Transformer <ArrowRight size={18} /></span></button>)}
+          {data.stocks.map(item => <button key={item.id} onClick={() => choose(item.id)}><span className={styles.lotIcon}><PackageOpen size={24} aria-hidden="true" /></span><span className={styles.lotText}><strong>{item.name}</strong><small>{productName(item.route)} · {grams(item.remainingUnits)} · Qualité commerciale {qualityScore(getKqCommerceStockQuality(item))} · Déjà préparé</small><KqStorageStatus storage={item.storage} nowMs={liveNow} compact /></span><span>Distribuer <ArrowRight size={18} /></span></button>)}
         </div></div>
       </> : <div className={styles.empty}><Image src="/placard/market-workshop-v1.webp" width={1536} height={1024} alt="L’atelier attend la prochaine récolte" sizes="(max-width: 700px) 100vw, 700px" /><div><strong>Ta réserve est vide</strong><p>Termine une culture et son duel pour récupérer un nouveau lot.</p></div></div>}
     </section> : null}

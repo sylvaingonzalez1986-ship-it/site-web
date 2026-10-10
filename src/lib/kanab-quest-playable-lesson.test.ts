@@ -4,6 +4,7 @@ import { advanceKqStage, isKqCultureDead, KQ_BUDDIES, resolveKqStage, rollKqDice
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 import { createLocalKqRepository, KQ_LOCAL_KEYS } from "./kanab-quest-repository";
 import { createKqLessonStorage, createKqPlayableLesson, assistKqPlayableLesson, getKqPlayableLessonProgress, kqPlayableLessonPrefix, KQ_PLAYABLE_ASSISTANCE_NOTICE } from "./kanab-quest-playable-lesson";
+import { startKqTrialCulture } from "./kanab-quest-trial";
 
 function memoryStorage() {
   const map = new Map<string, string>();
@@ -65,7 +66,7 @@ describe("real game screens in isolated playable lessons", () => {
   });
 
   it("leaves the first zero untouched then visibly assists only a fatal second zero", () => {
-    const initial = lesson("culture").initialGame;
+    const initial = startKqTrialCulture("balanced", 2, 2);
     const zero = { ...rollKqDice(initial), dice: [1, 2, 3] as [number, number, number], bonusDie: null };
     expect(assistKqPlayableLesson(zero)).toBe(zero);
     const first = advanceKqStage(resolveKqStage(zero));

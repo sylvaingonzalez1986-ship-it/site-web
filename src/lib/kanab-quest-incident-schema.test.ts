@@ -8,7 +8,7 @@ const migration = readFileSync(
   "utf8",
 );
 
-const indoorMigration = readFileSync(join(process.cwd(), "supabase/migrations/20260913000600_kq_indoor_deck_redesign.sql"), "utf8");
+const currentMigration = readFileSync(join(process.cwd(), "supabase/migrations/20261010000500_botte_situations_epic.sql"), "utf8");
 
 const incidentCardCodes = ["BOTTE-027", "BOTTE-028", "BOTTE-031", "BOTTE-034"];
 
@@ -24,9 +24,11 @@ describe("Kanab Quest incident support card migration", () => {
       const card = KQ_CARDS.find((candidate) => candidate.code === code);
       expect(card).toBeDefined();
       expect(migration).toContain(`'${card?.code}'`);
-      expect(migration).toContain(`'${card?.name.replaceAll("'", "''")}'`);
       expect(migration).toContain(`'${card?.effect}'`);
-      expect(indoorMigration).toContain(card?.description);
+      // Historical migrations retain their original labels; the latest catalogue owns the current wording.
+      expect(currentMigration).toContain(`"code": ${JSON.stringify(card?.code)}`);
+      expect(currentMigration).toContain(`"name": ${JSON.stringify(card?.name)}`);
+      expect(currentMigration).toContain(`"description": ${JSON.stringify(card?.description)}`);
     });
   });
 

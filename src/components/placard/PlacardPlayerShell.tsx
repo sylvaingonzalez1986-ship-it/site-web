@@ -48,7 +48,7 @@ const KqPlacardHud = dynamic(() => import("./KqPlacardHud").then((module) => mod
 
 type PlacardView = "hub" | "shop" | "game" | "arena" | "market" | "treasury" | "missions" | "workshop";
 type TreasuryPole = "accounting" | "bank" | "management";
-type PlacardNavigationOptions = { equipmentCode?: string; catalog?: boolean; from?: PlacardView; treasuryPole?: TreasuryPole };
+type PlacardNavigationOptions = { equipmentCode?: string; catalog?: boolean; from?: PlacardView; treasuryPole?: TreasuryPole; warehouseSection?: "storage" };
 const LOCATION_EVENT = "kq:placard-location";
 
 function isPlacardView(value: string | null): value is PlacardView {
@@ -94,6 +94,7 @@ export function PlacardPlayerShell() {
   const [pendingView, setPendingView] = useState<PlacardView | null>(null);
   const navigationTimerRef = useRef<number | null>(null);
   const requestedEquipmentCode = params.get("equipment");
+  const warehouseSection = params.get("section") === "storage" ? "storage" : "equipment";
   const autoOpenEquipmentCatalog = view === "shop" && params.get("catalog") === "equipment";
   const from = params.get("from");
   const shopReturnView: PlacardView = isPlacardView(from) && from !== "shop" ? from : "hub";
@@ -102,9 +103,10 @@ export function PlacardPlayerShell() {
 
   const openView = useCallback((nextView: PlacardView, options: PlacardNavigationOptions = {}) => {
     const url = new URL(window.location.href);
-    for (const key of ["view", "catalog", "equipment", "from", "pole"]) url.searchParams.delete(key);
+    for (const key of ["view", "catalog", "equipment", "from", "pole", "section"]) url.searchParams.delete(key);
     if (nextView !== "hub") url.searchParams.set("view", nextView);
     if (nextView === "treasury" && options.treasuryPole) url.searchParams.set("pole", options.treasuryPole);
+    if (nextView === "workshop" && options.warehouseSection) url.searchParams.set("section", options.warehouseSection);
     if (options.catalog && nextView === "shop") url.searchParams.set("catalog", "equipment");
     if (options.equipmentCode) url.searchParams.set("equipment", options.equipmentCode);
     if (options.from) url.searchParams.set("from", options.from);
@@ -170,10 +172,10 @@ export function PlacardPlayerShell() {
       view === "workshop" ? "L’Entrepôt · Aménager" : view === "shop" ? "La Boutique · Botte du Chanvrier" : view === "game" ? "La Culture" : view === "market" ? "Le Marché · Vendre" : view === "treasury" ? (treasuryPole === "bank" ? "La Banque" : "Le Bureau") : view === "missions" ? "Les Missions" : "Jury & duels";
 
     return (
-      <div ref={surfaceRef} className={`${retro.surface} ${retro.shell}`} data-placard-view={view}>
+      <div ref={surfaceRef} className={`${retro.surface} ${retro.shell} ${styles.section}`} data-placard-view={view}>
         {collectionOpen ? <KqBotteCollection onClose={() => setCollectionOpen(false)} onOpenShop={openPacks} /> : null}
         {navigationFeedback}
-        <nav className={`${retro.shellNav} sticky top-0 z-[80] border-b-2 border-ink bg-cream/95 px-3 py-3 backdrop-blur sm:px-5`} aria-label="Navigation du Placard">
+        <nav className={`${retro.shellNav} ${styles.sectionNav} sticky top-0 z-[80] border-b-2 border-ink bg-cream/95 px-3 py-3 backdrop-blur sm:px-5`} aria-label="Navigation du Placard">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
             <button
               type="button"
@@ -207,7 +209,7 @@ export function PlacardPlayerShell() {
             onExit={() => openView(shopReturnView)}
           />
         ) : view === "workshop" ? (
-          <KqWarehouseEntry initialEquipmentCode={requestedEquipmentCode} onClose={()=>openView("hub")} onOpenShop={openEquipmentCatalog}/>
+          <KqWarehouseEntry key={warehouseSection} initialEquipmentCode={requestedEquipmentCode} initialSection={warehouseSection} onClose={()=>openView("hub")} onOpenShop={openEquipmentCatalog}/>
         ) : view === "missions" ? (
           <>
             <KqMissionCenter onOpen={(next) => openView(next, next === "shop" ? { from: "missions" } : {})} />
@@ -219,7 +221,7 @@ export function PlacardPlayerShell() {
         ) : view === "treasury" ? (
           <KqTreasuryDesk key={treasuryPole} initialPole={treasuryPole} onOpenShop={openEquipmentCatalog} onOpenMarket={() => openView("market")} />
         ) : view === "market" ? (
-          <KqMarketDesk onOpenShop={openEquipmentCatalog} onOpenTreasury={() => openView("treasury")} />
+          <KqMarketDesk onOpenShop={openEquipmentCatalog} onOpenTreasury={() => openView("treasury")} onOpenStorage={() => openView("workshop", { warehouseSection: "storage" })} />
         ) : (
           <KanabQuestDicePrototype
             apiScope="player"

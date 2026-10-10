@@ -28,6 +28,7 @@ import { buildKqRandomQueueHealth, type KqRandomQueueHealth } from "@/lib/kanab-
 import { KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE } from "@/lib/kanab-quest-producer-rewards";
 import { calculateKqPlacardScore } from "@/lib/kanab-quest-reputation";
 import { KQ_REWARD_BALANCE } from "@/lib/kanab-quest-reward-balance";
+import { KQ_ACTIVE_CARDS } from "@/lib/kanab-quest-game";
 
 const BOTTE_COLLECTION_CODE = "BOTTE_DU_CHANVRIER_2026";
 const KQ_INITIAL_SEASON_CODE = "KQ-2026-S1";
@@ -546,8 +547,8 @@ export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
     { code: "heritage-catalog", label: `Catalogue Héritage · ${expectedHeritageCount} producteur(s), une carte chacun`, ready: expectedHeritageCount > 0 && producerHeritageCards.length === expectedHeritageCount },
     { code: "heritage-effects", label: `${expectedHeritageCount} pouvoirs Héritage distincts et pris en charge`, ready: heritageEffects.length === expectedHeritageCount && heritageEffects.every(isKqHeritageEffect) && new Set(heritageEffects).size === expectedHeritageCount },
     { code: "heritage-art", label: `${expectedHeritageCount} illustrations Héritage producteur`, ready: heritageArtwork.length === expectedHeritageCount && new Set(heritageArtwork).size === expectedHeritageCount },
-    { code: "support-catalog", label: `${KQ_CARDS.length} cartes Botte du Chanvrier`, ready: input.supportCards.length === KQ_CARDS.length },
-    { code: "support-art", label: `${KQ_CARDS.length} illustrations Botte du Chanvrier distinctes`, ready: supportArtwork.length === KQ_CARDS.length && new Set(supportArtwork).size === KQ_CARDS.length },
+    { code: "support-catalog", label: `${KQ_ACTIVE_CARDS.length} cartes Botte du Chanvrier`, ready: input.supportCards.length === KQ_ACTIVE_CARDS.length },
+    { code: "support-art", label: `${KQ_ACTIVE_CARDS.length} illustrations Botte du Chanvrier distinctes`, ready: supportArtwork.length === KQ_ACTIVE_CARDS.length && new Set(supportArtwork).size === KQ_ACTIVE_CARDS.length },
     { code: "notebook-rules", label: "2 missions carnet → Placard configurées", ready: input.notebookRules.length === 2 },
     { code: "season-rules", label: "4 paliers de récompenses de saison", ready: input.seasonRules.length === 4 && new Set(input.seasonRules.map((rule) => rule.tier_code)).size === 4 },
     { code: "season-no-early-grants", label: "Aucune récompense de saison prématurée", ready: input.seasonGrantCount === 0 },
@@ -599,7 +600,7 @@ export async function getKqAdminLaunchReadiness(adminEmail: string) {
   const [heritageResult, producerResult, supportResult, rulesResult, seasonRulesResult, seasonGrantsResult, equipmentResult] = await Promise.all([
     supabase.from("kq_heritage_card_definitions").select("image_url,is_active,producer_id,effect_code").not("producer_id", "is", null),
     supabase.from("producers").select("id", { count: "exact", head: true }),
-    supabase.from("lottery_card_definitions").select("image_url,is_active").eq("collection_id", collectionResult.data.id).in("code", KQ_CARDS.map((card) => card.code)),
+    supabase.from("lottery_card_definitions").select("image_url,is_active").eq("collection_id", collectionResult.data.id).in("code", KQ_ACTIVE_CARDS.map((card) => card.code)),
     supabase.from("kq_notebook_reward_rules").select("is_active"),
     supabase.from("kq_season_reward_rules").select("tier_code,is_active").eq("season_code", seasonCode),
     supabase.from("kq_season_reward_grants").select("id", { count: "exact", head: true }).eq("season_code", seasonCode),
@@ -699,7 +700,7 @@ async function getCachedKqBotteCatalog(): Promise<{
         id: String(collectionResult.data.id),
         is_active: collectionResult.data.is_active === true,
       },
-      definitions: ((definitionsResult.data ?? []) as CardDefinitionRow[]).filter((definition) => KQ_CARDS.some((card) => card.code === definition.code)),
+      definitions: ((definitionsResult.data ?? []) as CardDefinitionRow[]).filter((definition) => definition.is_active && KQ_ACTIVE_CARDS.some((card) => card.code === definition.code)),
     };
   });
 }
@@ -1097,7 +1098,7 @@ export async function getKqPlayerFlowers(ownerId: string) {
   const supabase = createSupabaseServiceClient();
   const [result, queueResult] = await Promise.all([
     supabase.from("kq_flowers")
-      .select("id,run_id,variety_code,variety_name,quality,traits,combos,battle_stats,status,created_at,locked_at,burned_at")
+      .select("id,run_id,variety_code,variety_name,quality,traits,combos,battle_stats,rules_version,cannabinoid_report,status,created_at,locked_at,burned_at")
       .eq("owner_id", ownerId)
       .in("status", ["available", "locked"])
       .order("created_at", { ascending: false })
@@ -1120,6 +1121,8 @@ export async function getKqPlayerFlowers(ownerId: string) {
     traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
     combos: Array.isArray(flower.combos) ? flower.combos.map(String) : [],
     stats: flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats : {},
+    rulesVersion: Number(flower.rules_version ?? 2),
+    cannabinoidReport: flower.cannabinoid_report ?? undefined,
     status: queuedFlowers.has(String(flower.id)) ? "queued" : String(flower.status),
     createdAt: String(flower.created_at),
     queuedAt: queuedFlowers.get(String(flower.id)) ?? null,
@@ -1184,6 +1187,8 @@ export function mapKqPlayerCoreSnapshot(
       traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
       combos: Array.isArray(flower.combos) ? flower.combos.map(String) : [],
       stats: flower.stats && typeof flower.stats === "object" ? flower.stats : {},
+      rulesVersion: Number(flower.rulesVersion ?? 2),
+      cannabinoidReport: (flower.cannabinoidReport ?? undefined) as KqFlowerCard["cannabinoidReport"],
       status: queuedAtByFlowerId.has(String(flower.id)) ? "queued" : String(flower.status),
       createdAt: String(flower.createdAt),
       queuedAt: queuedAtByFlowerId.get(String(flower.id)) ?? null,
@@ -1199,6 +1204,8 @@ export function mapKqPlayerCoreSnapshot(
     return mapKqOfficialFlowerCard({
       id: String(flower.id),
       variety_name: String(flower.variety_name),
+      rules_version: Number(flower.rules_version ?? 2),
+      cannabinoid_report: flower.cannabinoid_report as KqFlowerCard["cannabinoidReport"],
       quality: Number(flower.quality),
       traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
       battle_stats: flower.battle_stats && typeof flower.battle_stats === "object"
@@ -1427,11 +1434,12 @@ export async function getKqPlayerFlowerRivals(ownerId: string, flowerId: string)
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Fleur invalide.");
   const supabase = createSupabaseServiceClient();
-  const ownResult = await supabase.from("kq_flowers").select("id,quality,status")
+  const ownResult = await supabase.from("kq_flowers").select("id,quality,status,rules_version")
     .eq("id", flowerId).eq("owner_id", ownerId).maybeSingle();
   if (ownResult.error) throw new Error(`[supabase:kq_flowers] ${ownResult.error.message}`);
   if (!ownResult.data || ownResult.data.status !== "available") throw new Error("Cette Fleur n’est pas disponible.");
   const quality = Number(ownResult.data.quality);
+  const rulesVersion = ownResult.data.rules_version === 3 ? 3 : 2;
 
   const todayStart = new Date();
   todayStart.setUTCHours(0, 0, 0, 0);
@@ -1449,13 +1457,16 @@ export async function getKqPlayerFlowerRivals(ownerId: string, flowerId: string)
       ownerName: definition.name,
       variety: definition.variety,
       rating: 1000 + (quality - 12) * 12,
+      rulesVersion,
     });
     return {
       flowerId: `bot:${definition.code}`,
       varietyName: bot.variety,
-      quality: Math.max(quality - 3, Math.min(quality + 3, Math.round((Object.values(bot.stats).reduce((sum, value) => sum + value, 0) / 5 - 52) / 2.4))),
+      quality: Math.max(quality - 3, Math.min(quality + 3, Math.round((Object.values(bot.stats).reduce((sum, value) => sum + value, 0) / Object.values(bot.stats).length - 52) / 2.4))),
       traits: bot.traits,
       stats: bot.stats,
+      rulesVersion: bot.rulesVersion,
+      cannabinoidReport: bot.cannabinoidReport,
       createdAt: new Date().toISOString(),
       opponentType: "bot" as const,
       opponentName: definition.name,
@@ -1472,7 +1483,7 @@ export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: strin
   const definition = KQ_TRAINING_BOTS.find((bot) => bot.code === botCode)!;
   const supabase = createSupabaseServiceClient();
   const flowerResult = await supabase.from("kq_flowers")
-    .select("id,run_id,variety_name,quality,traits,battle_stats,status,created_at")
+    .select("id,run_id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,status,created_at")
     .eq("id", flowerId).eq("owner_id", ownerId).maybeSingle();
   if (flowerResult.error) throw new Error(`[supabase:kq_flowers:bot] ${flowerResult.error.message}`);
   if (!flowerResult.data || flowerResult.data.status !== "available") throw new Error("Ta Fleur n’est plus disponible.");
@@ -1488,6 +1499,7 @@ export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: strin
     ownerName: definition.name,
     variety: definition.variety,
     rating: 1000 + (Number(row.quality) - 12) * 12,
+    rulesVersion: row.rules_version === 3 ? 3 : 2,
   });
   const verdict = resolveKqBattle(lockKqBattle(playerFlower, opponentFlower, seed), seed, new Date());
   if (!verdict.winner || !verdict.burnedAt) throw new Error("Le bot n’a pas produit de verdict.");
@@ -1689,6 +1701,8 @@ export async function leaveKqAdminRandomBattleQueue(adminEmail: string, flowerId
 
 type KqFlowerBattleRow = {
   id: string; variety_name: string; quality: number; traits: string[];
+  rules_version?: number;
+  cannabinoid_report?: KqFlowerCard["cannabinoidReport"];
   battle_stats: Record<string, number>; status: string; created_at: string;
 };
 
@@ -1700,6 +1714,8 @@ function mapKqOfficialFlowerCard(row: KqFlowerBattleRow, ownerName: string): KqF
     createdAt: row.created_at, integrityCode: `DB-${row.id.slice(0, 8).toUpperCase()}`,
     traits: Array.isArray(row.traits) ? row.traits : [],
     stats: row.battle_stats as KqFlowerCard["stats"],
+    rulesVersion: row.rules_version === 3 ? 3 : 2,
+    ...(row.cannabinoid_report ? { cannabinoidReport: row.cannabinoid_report } : {}),
   };
 }
 
@@ -1727,7 +1743,7 @@ export async function getKqPlayerBattles(ownerId: string, limit = 30) {
   const battles = battlesResult.data ?? [];
   const flowerIds = [...new Set(battles.flatMap((battle) => [battle.flower_one_id, battle.flower_two_id]))];
   const flowersResult = flowerIds.length > 0
-    ? await supabase.from("kq_flowers").select("id,variety_name,quality,traits,battle_stats,status,created_at").in("id", flowerIds)
+    ? await supabase.from("kq_flowers").select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,status,created_at").in("id", flowerIds)
     : { data: [], error: null };
   if (flowersResult.error) throw new Error(`[supabase:kq_flowers:battles] ${flowersResult.error.message}`);
   const flowers = new Map((flowersResult.data ?? []).map((flower) => [flower.id, flower as KqFlowerBattleRow]));
@@ -1755,7 +1771,7 @@ export async function getKqPlayerBattles(ownerId: string, limit = 30) {
   if (botResult.error) throw new Error(`[supabase:kq_bot_battles:history] ${botResult.error.message}`);
   const botFlowerIds = (botResult.data ?? []).map((battle) => battle.flower_id);
   const botFlowersResult = botFlowerIds.length > 0
-    ? await supabase.from("kq_flowers").select("id,variety_name,quality,traits,battle_stats,status,created_at").in("id", botFlowerIds)
+    ? await supabase.from("kq_flowers").select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,status,created_at").in("id", botFlowerIds)
     : { data: [], error: null };
   if (botFlowersResult.error) throw new Error(`[supabase:kq_flowers:bot-history] ${botFlowersResult.error.message}`);
   const botFlowers = new Map((botFlowersResult.data ?? []).map((flower) => [flower.id, flower as KqFlowerBattleRow]));
@@ -1798,7 +1814,7 @@ export async function getKqPlayerBattle(ownerId: string, battleId: string) {
   if (!battle) return null;
   const flowerIds = [battle.flower_one_id, battle.flower_two_id];
   const flowersResult = await supabase.from("kq_flowers")
-    .select("id,variety_name,quality,traits,battle_stats,status,created_at")
+    .select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,status,created_at")
     .in("id", flowerIds);
   if (flowersResult.error) throw new Error(`[supabase:kq_flowers:battle] ${flowersResult.error.message}`);
   const flowers = new Map((flowersResult.data ?? []).map((flower) => [flower.id, flower as KqFlowerBattleRow]));
@@ -2361,6 +2377,7 @@ export async function applyKqPlayerRunAction(
           traits: flower.traits,
           combos: nextState.combos,
           battleStats: flower.stats,
+          cannabinoidReport: flower.cannabinoidReport ?? null,
           integrityCode: flower.integrityCode,
         } : null,
       });

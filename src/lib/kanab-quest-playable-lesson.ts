@@ -1,7 +1,7 @@
 import type { KqBattle } from "./kanab-quest-battle";
 import { canActivateKqHeritage, getKqZeroSuccessStageCount, isKqCultureDead, KQ_CARDS, startKqGame, type KqGameState } from "./kanab-quest-game";
 import { createLocalKqRepository, type KqRepository } from "./kanab-quest-repository";
-import { KQ_TRIAL_EQUIPMENT, startKqTrialCulture } from "./kanab-quest-trial";
+import { assistKqTutorialCare, KQ_TRIAL_EQUIPMENT, startKqTrialCulture } from "./kanab-quest-trial";
 import { createKqWorkshop } from "./kanab-quest-workshops";
 
 export type KqPlayableLessonId = "cards" | "culture" | "jury";
@@ -21,7 +21,7 @@ export const KQ_PLAYABLE_ASSISTANCE_NOTICE = "Essai assisté : un dé passe à 4
 const LESSON_TIME = "2026-09-16T12:00:00.000Z";
 
 export function kqPlayableLessonPrefix(scope: string, lesson: KqPlayableLessonId) {
-  return `kq-playable-lesson-v2:${encodeURIComponent(scope)}:${lesson}:`;
+  return `kq-playable-lesson-v3:${encodeURIComponent(scope)}:${lesson}:`;
 }
 
 /** Even auxiliary preferences and transaction journals remain in this exercise. */
@@ -62,6 +62,7 @@ export function createKqPlayableLesson(lesson: KqPlayableLessonId, storage: Less
 
 /** Prepare a visible die before resolution; official game functions stay intact. */
 export function assistKqPlayableLesson(game: KqGameState): KqGameState {
+  if (game.rulesVersion === 3) return assistKqTutorialCare(game);
   if (game.phase !== "rolled" || !game.dice || getKqZeroSuccessStageCount(game) < 1 || game.dice.some(die => die >= 4)) return game;
   const dice = [...game.dice] as [number, number, number];
   dice[dice.indexOf(Math.max(...dice))] = 4;
@@ -73,10 +74,10 @@ export function getKqPlayableLessonProgress(lesson: KqPlayableLessonId, snapshot
   const complete = lesson === "cards" ? !setupOpen
     : lesson === "jury" ? battle?.status === "verdict" && revealedRounds >= battle.rounds.length
       : game.phase === "complete" && !isKqCultureDead(game) && game.history.length === 6;
-  if (complete) return { complete: true, instruction: lesson === "cards" ? "Préparation lancée : tes choix sont enregistrés dans cet essai." : lesson === "jury" ? "Les trois manches sont révélées. Compare les notes et les critères du jury." : "Ta Fleur est récoltée. Consulte sa qualité, sa quantité et les cartes consommées." };
+  if (complete) return { complete: true, instruction: lesson === "cards" ? "Préparation lancée : tes choix sont enregistrés dans cet essai." : lesson === "jury" ? "Les trois manches sont révélées. Compare les notes et les critères du jury." : "Ta Fleur est récoltée et séchée. Consulte sa qualité, sa quantité, ses terpènes et le bilan des interventions. L’affinage continue ensuite dans l’entrepôt : avant maturité, seul le grossiste reprend le lot." };
   if (setupOpen) return { complete: false, instruction: "Choisis un Buddie, compose ta main et sélectionne un Héritage dans les vrais carrousels. Prépare ensuite la culture et confirme son lancement fictif." };
   if (lesson === "jury") return { complete: false, instruction: !battle ? "Une Fleur récoltée t’est prêtée. Trouve un adversaire pour engager ton duel fictif." : battle.status === "locked" ? "Compare les deux Fleurs et les critères, puis demande et confirme le verdict." : "Observe les trois manches : chaque jury valorise des caractéristiques différentes." };
-  if (game.phase === "prepare") return { complete: false, instruction: "Lis la situation. Choisis une préparation dans tes cartes ou conserve-les, puis lance les dés sur le tapis." };
+  if (game.phase === "prepare") return { complete: false, instruction: game.rulesVersion === 3 ? "Consulte gratuitement le suivi de santé : vitalité, problèmes et interventions. Choisis ensuite une préparation ou conserve tes cartes, puis lance les dés." : "Lis la situation. Choisis une préparation dans tes cartes ou conserve-les, puis lance les dés sur le tapis." };
   if (game.phase === "rolled") return { complete: false, instruction: canActivateKqHeritage(game).allowed ? "Ton Héritage est disponible. Essaie son pouvoir, puis observe le résultat prévu avant de valider l’étape." : "Observe les dés et le résultat prévu. Tu peux jouer une réaction avant de valider l’étape." };
-  return { complete: false, instruction: "Lis le résultat : qualité, XP et pression ont évolué. Passe à l’étape suivante pour poursuivre ta culture. Un dé est assisté si nécessaire pour atteindre la récolte." };
+  return { complete: false, instruction: game.rulesVersion === 3 ? "Lis le résultat et les variations de vitalité et de terpènes dans le suivi. Les interventions restent accessibles entre les étapes. À 0 vitalité, une culture se termine ; cet essai annonce une aide si nécessaire pour poursuivre." : "Lis le résultat : qualité, XP et pression ont évolué. Passe à l’étape suivante pour poursuivre ta culture. Un dé est assisté si nécessaire pour atteindre la récolte." };
 }

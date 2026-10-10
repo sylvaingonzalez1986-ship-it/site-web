@@ -1,20 +1,22 @@
 import { describe, expect, it } from 'vitest';
-import { canActivateKqHeritage, getKqZeroSuccessStageCount, isKqCultureDead, KQ_CARDS, previewKqResolution } from './kanab-quest-game';
+import { canActivateKqHeritage, isKqCultureDead, KQ_CARDS, previewKqResolution } from './kanab-quest-game';
 import { getKqCommerceReplenishment, quoteKqCommerce } from './kanab-quest-commerce';
-import { canTrialContinue, canTrialRoll, createKqTrial, KQ_TRIAL_VERSION, reduceKqTrial, restoreKqTrial, startKqTrialCulture, trialCardPermission, trialInstruction, trialQuality, trialRoutes, type KqTrialAction } from './kanab-quest-trial';
+import { KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_SHOP_MONTHLY_CENTS } from './kanab-quest-business';
+import { KQ_CURING_DURATION_MS } from './kanab-quest-storage';
+import { assistKqTutorialCare, canTrialContinue, canTrialRoll, createKqTrial, KQ_TRIAL_VERSION, KQ_TUTORIAL_CARE_RESCUE_NOTICE, reduceKqTrial, restoreKqTrial, startKqTrialCulture, trialCardPermission, trialInstruction, trialQuality, trialRoutes, type KqTrialAction } from './kanab-quest-trial';
 
-function prepared(mode: 'eco'|'balanced'|'intensive'='balanced') {
- let s=createKqTrial();
+function prepared(mode: 'eco'|'balanced'|'intensive'='balanced', rulesVersion: 2 | 3 = 3) {
+ let s=createKqTrial(rulesVersion);
  const actions:KqTrialAction[]=[{type:'check',value:'notebook'},{type:'next'},...['buddie','heritage','deck'].map(value=>({type:'check' as const,value})),{type:'next'},{type:'buy'},{type:'next'},...['LED-300','DRYING-ROOM','SIFT-TRAY'].map(code=>({type:'install' as const,code})),{type:'mode',mode},{type:'next'}];
  actions.forEach(a=>{s=reduceKqTrial(s,a);});return {s,actions};
 }
-function culture(mode: 'eco'|'balanced'|'intensive'='balanced',support=true) {
- const result=prepared(mode);let s=result.s;
+function culture(mode: 'eco'|'balanced'|'intensive'='balanced',support=true,rulesVersion: 2 | 3 = 3) {
+ const result=prepared(mode,rulesVersion);let s=result.s;
  const act=(a:KqTrialAction)=>{result.actions.push(a);s=reduceKqTrial(s,a);};
  for(let index=0;index<6;index++) {
   expect(s.game?.stageIndex).toBe(index);
   if(index===0)act({type:'play',code:'BOTTE-005'});
-  if(index===2)act({type:'play',code:'BOTTE-004'});
+  if(index===2&&rulesVersion===2)act({type:'play',code:'BOTTE-004'});
   if(index>=3&&support){const card=KQ_CARDS.find(card=>trialCardPermission(s,card.code).allowed);if(card)act({type:'play',code:card.code});}
   act({type:'roll'});expect(s.game?.phase).toBe('rolled');
   if(canActivateKqHeritage(s.game!).allowed)act({type:'heritage'});
@@ -41,10 +43,10 @@ describe('isolated Placard learning run',()=>{
  });
  for(const mode of ['eco','balanced','intensive'] as const)for(const support of [true,false])it(`finishes all six stages with ${mode}, support=${support}`,()=>{
   const {s}=culture(mode,support);expect(s.chapter).toBe(5);expect(s.game?.history).toHaveLength(6);expect(s.game?.heritageUsed).toBe(true);
-  expect(s.game?.usedCards).toContain('BOTTE-002');expect(s.game?.harvestGrams).toBeGreaterThan(0);expect(s.electricity).toBeGreaterThan(0);
+  expect(s.game?.usedCards).not.toContain('BOTTE-002');expect(s.game?.usedCards).not.toContain('BOTTE-004');expect(s.game?.harvestGrams).toBeGreaterThan(0);expect(s.electricity).toBeGreaterThan(0);
  });
  it('ends the culture at the second zero-success stage and lets the player retry without repeating preparation',()=>{
-  const preparedTrial=prepared('eco');let s=preparedTrial.s;
+  const preparedTrial=prepared('eco',2);let s=preparedTrial.s;
   expect(reduceKqTrial(s,{type:'restart-culture'})).toBe(s);
   s=reduceKqTrial(s,{type:'play',code:'BOTTE-005'});
   s=reduceKqTrial(s,{type:'roll'});
@@ -82,14 +84,12 @@ describe('isolated Placard learning run',()=>{
   expect(restoreKqTrial({version:0,actions}).state).toEqual(createKqTrial());expect(restoreKqTrial({version:1,actions:new Array(501).fill({type:'buy'})}).state).toEqual(createKqTrial());
  });
  it('finishes assisted cultures with varied seeds, modes, cards and redraws without an official rescue right',()=>{
-  let assisted=0;
   for(const mode of ['eco','balanced','intensive'] as const)for(let seed=1;seed<=75;seed++){
    let s={...prepared(mode).s,game:startKqTrialCulture(mode,seed)};
    const act=(action:KqTrialAction)=>{s=reduceKqTrial(s,action) as typeof s;};
    for(let index=0;index<6;index++){
     expect(s.game.stageIndex).toBe(index);
     if(index===0)act({type:'play',code:'BOTTE-005'});
-    if(index===2)act({type:'play',code:'BOTTE-004'});
     if(index>=3&&seed%3===0)act({type:'redraw'});
     if(index>=3&&seed%2===0){const cards=KQ_CARDS.filter(card=>trialCardPermission(s,card.code).allowed);if(cards.length)act({type:'play',code:cards[seed%cards.length].code});}
     act({type:'roll'});
@@ -98,7 +98,6 @@ describe('isolated Placard learning run',()=>{
     if(index>=3&&seed%2===1){const cards=KQ_CARDS.filter(card=>trialCardPermission(s,card.code).allowed);if(cards.length)act({type:'play',code:cards[seed%cards.length].code});}
     if(canActivateKqHeritage(s.game).allowed)act({type:'heritage'});
     const preview=previewKqResolution(s.game)!;
-    if(s.game.effectNotices?.some(notice=>notice.startsWith('Essai guidé :'))){assisted++;expect(preview.total).toBeGreaterThan(0);}
     act({type:'resolve'});
     expect(s.game.phase,`${mode}, seed ${seed}, stage ${index}`).toBe('resolved');
     expect(s.game.history.at(-1)?.total).toBe(preview.total);
@@ -106,13 +105,25 @@ describe('isolated Placard learning run',()=>{
    }
    expect(s.chapter).toBe(5);
    expect(s.game.harvestGrams).toBeGreaterThan(0);
-   expect(getKqZeroSuccessStageCount(s.game)).toBeLessThan(2);
+   expect(s.game.care?.vitality).toBeGreaterThan(0);
+   expect(s.game.usedCards).not.toContain('BOTTE-004');
+   expect(s.game.usedCards).not.toContain('BOTTE-002');
    expect(s.game.firstCultureRescue).toBeUndefined();
   }
-  expect(assisted).toBeGreaterThan(0);
+ });
+ it('announces a vitality rescue before a fatal tutorial result without changing its dice or existing losses',()=>{
+  const initial=startKqTrialCulture();
+  const fatal={...initial,phase:'rolled' as const,dice:[1,1,1] as [number,number,number],care:{...initial.care!,vitality:1,yieldLossPercent:12},heritageUsed:true};
+  const assisted=assistKqTutorialCare(fatal);
+  expect(assisted.care?.vitality).toBe(100);
+  expect(assisted.care?.yieldLossPercent).toBe(12);
+  expect(assisted.dice).toEqual(fatal.dice);
+  expect(assisted.effectNotices).toContain(KQ_TUTORIAL_CARE_RESCUE_NOTICE);
+  expect(assistKqTutorialCare(assisted)).toBe(assisted);
+  expect(trialInstruction({...prepared().s,game:{...assisted,phase:'resolved'}})).toContain('vitalité à 0');
  });
  it('restores a complete v2 journal through the jury, sales and final chapter without resetting setup',()=>{
-  const run=culture();let s=run.s;
+  const run=culture('balanced',true,2);let s=run.s;
   const act=(action:KqTrialAction)=>{run.actions.push(action);s=reduceKqTrial(s,action);};
   for(const action of [{type:'next'},{type:'duel'},{type:'round'},{type:'round'},{type:'round'},{type:'next'},{type:'transform',route:'raw'}] as KqTrialAction[])act(action);
   for(const stock of s.commerce.stocks)act({type:'sell',stockId:stock.id,channel:'wholesale',policy:'advised'});
@@ -132,7 +143,7 @@ describe('isolated Placard learning run',()=>{
   expect(restored.commerce).toEqual(s.commerce);
  });
  it('honors an old v2 restart action after a roll that is now assisted, keeping the preparation chapters',()=>{
-  const initial=prepared();let state=initial.s;
+  const initial=prepared('balanced',2);let state=initial.s;
   state=reduceKqTrial(state,{type:'play',code:'BOTTE-005'});
   state=reduceKqTrial(state,{type:'roll'});
   // Model a first zero produced by a historical tutorial rule set.
@@ -170,6 +181,50 @@ describe('isolated Placard learning run',()=>{
   expect(s.receipts).toHaveLength(1);expect(s.receipts[0].units).toBeGreaterThan(0);expect(s.receipts[0].units).toBeLessThan(stock.initialUnits);
   expect(getKqCommerceReplenishment(s.commerce,'online',s.clock)!.availableFraction).toBeLessThan(.02);
   s=reduceKqTrial(s,{type:'wait'});expect(getKqCommerceReplenishment(s.commerce,'online',s.clock)!.availableFraction).toBe(1);
+ });
+ it('loans a mature lot exactly six hours after its verdict without paying future charges early',()=>{
+  let {s}=culture();
+  const harvestedAt=s.game!.completedAt!, harvestClock=s.clock;
+  s={...s,clock:s.clock+3*KQ_GAME_DAY_MS};
+  for(const action of [{type:'next'},{type:'duel'},{type:'round'},{type:'round'},{type:'round'},{type:'next'}] as KqTrialAction[])s=reduceKqTrial(s,action);
+  const verdict=s.battle!, before=s.commerce.cashCents, labDue=s.commerce.business!.lab.outstandingCents;
+  expect(Date.parse(verdict.burnedAt!)).toBe(harvestClock+3*KQ_GAME_DAY_MS);
+  const soldLesson=reduceKqTrial(s,{type:'transform',route:'raw'});
+  expect(soldLesson.clock).toBe(Date.parse(verdict.burnedAt!)+6*3600000);
+  expect(soldLesson.clock-Date.parse(verdict.burnedAt!)).toBe(KQ_CURING_DURATION_MS);
+  expect(soldLesson.commerce.stocks[0].storage).toMatchObject({stage:'ready',progressPercent:100,remainingMs:0,harvestedAt,curingStartedAt:verdict.burnedAt});
+  expect(soldLesson.commerce.business!.lab.outstandingCents).toBe(labDue);
+  expect(soldLesson.commerce.business!.lab.overdueCents).toBe(0);
+  expect(soldLesson.commerce.cashCents).toBe(before);
+  expect(soldLesson.battle).toBe(verdict);
+  expect(s.clock).toBe(Date.parse(verdict.burnedAt!));
+  const later=reduceKqTrial(soldLesson,{type:'wait'});
+  expect(later.clock-soldLesson.clock).toBe(KQ_GAME_DAY_MS);
+  expect(later.commerce.stocks[0].storage!.elapsedGameDays).toBe(2);
+  expect(later.commerce.stocks[0].storage!.conditionScore).toBeLessThanOrEqual(soldLesson.commerce.stocks[0].storage!.conditionScore);
+  expect(later.commerce.cashCents).toBe(soldLesson.commerce.cashCents);
+  expect(later.battle).toBe(verdict);
+ });
+ it('settles charges falling inside the final partial day of simulated curing exactly once',()=>{
+  let {s}=culture();
+  for(const action of [{type:'next'},{type:'duel'},{type:'round'},{type:'round'},{type:'round'},{type:'next'}] as KqTrialAction[])s=reduceKqTrial(s,action);
+  const business=s.commerce.business!,before=s.commerce.cashCents,labDue=business.lab.outstandingCents;
+  const dueAt=new Date(s.clock+5*3600000).toISOString();
+  business.lab.invoices[0].dueAt=dueAt;
+  business.shop={name:'Essai',createdAt:new Date(s.clock).toISOString(),paidUntil:dueAt,renew:true,active:true};
+  business.vat={...business.vat,reservedCents:3200,nextSettlementAt:dueAt};
+  const matured=reduceKqTrial(s,{type:'transform',route:'raw'});
+  expect(matured.clock-s.clock).toBe(6*3600000);
+  expect(matured.commerce.cashCents).toBe(before-labDue-KQ_SHOP_MONTHLY_CENTS);
+  expect(matured.commerce.business!.lab).toMatchObject({outstandingCents:0,overdueCents:0});
+  expect(matured.commerce.business!.shop.paidUntil).toBe(new Date(Date.parse(dueAt)+KQ_GAME_MONTH_MS).toISOString());
+  expect(matured.commerce.business!.vat).toMatchObject({paidCents:3200,reservedCents:0,nextSettlementAt:new Date(Date.parse(dueAt)+KQ_GAME_MONTH_MS).toISOString()});
+  const later=reduceKqTrial(matured,{type:'wait'});
+  expect(later.commerce.cashCents).toBe(matured.commerce.cashCents);
+  expect(later.commerce.business!.lab).toEqual(matured.commerce.business!.lab);
+  expect(later.commerce.business!.vat).toEqual(matured.commerce.business!.vat);
+  expect(business.lab.outstandingCents).toBe(labDue);
+  expect(business.vat.reservedCents).toBe(3200);
  });
  it('settles charges once, preserves mass, completes after selling the remainder and cannot double-sell',()=>{
   let s=commerce();const cash=s.commerce.cashCents,energy=s.electricity;

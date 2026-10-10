@@ -707,8 +707,8 @@
   .setupHeroCopy > span { font-size: .6rem; }
 }
 
-/* Match the arena scene and controls throughout culture and duels. */
-.page { background: var(--arcade-dark); }
+/* Cream neighborhood surface, with green panels and gold controls. */
+.page { background: #f4efdf; color: #123b2f; }
 .setupHero { grid-template-columns: 1fr 1fr; gap: 20px; background: #005441; border: 0; border-radius: 8px; box-shadow: none; padding: 24px; }
 .setupPanel .setupHeroCopy h1, .setupPanel .setupHeroCopy p { color: #fff5da; }
 .setupPanel .setupHeroCopy h1 em, .setupHeroCopy > span { color: #f4c43d; }
@@ -754,6 +754,7 @@
 .page .deckChoiceCard,.page .supportCard{border-radius:2px;border-color:#003f30;background:#fffaf1;box-shadow:4px 4px 0 #003f30}
 .page .deckChoiceCard[data-selected]{outline:3px solid #f4c43d;outline-offset:2px}
 .page .deckChoiceCard>.cardArtwork,.page .supportCard>.cardArtwork{border:0;background:#003f30}
+.cardRarity{align-self:flex-start;padding:3px 7px;background:#eee8dc;color:#354334;font-size:.66rem;font-weight:900}.cardRarity[data-rarity=uncommon]{background:#d7eaee}.cardRarity[data-rarity=rare]{background:#ffe59a}.cardRarity[data-rarity=epic]{background:#e4c7f6;color:#542174}.cardSituations{font-size:.64rem;line-height:1.5;color:#425743}.cardSituations>b{display:block;font-size:.58rem;text-transform:uppercase}.cardCompatibility{padding:4px 6px;background:#e1ede3;color:#225635;font-size:.65rem;font-weight:800}.cardCompatibility[data-matches=false]{background:#ede5d9;color:#795b39}.deckRarityFilter{display:flex;align-items:center;gap:10px;margin:12px 0;font-size:.8rem;font-weight:800}.deckRarityFilter select{max-width:100%;min-height:44px;padding:8px;border:2px solid #103b2e;background:#fffaf1;color:#103b2e}.supportCard[data-rarity=epic],.boosterReveal article[data-rarity=epic]{background:linear-gradient(145deg,#fff5ff,#e2c0f2)}
 .cardRoleLegend{display:flex;flex-wrap:wrap;gap:.4rem;margin:.8rem 0;color:#103b2e}
 .cardRoleLegend>span{display:inline-flex;align-items:center;gap:.35rem;padding:.35rem .5rem;border:1px solid #103b2e;background:var(--card-role);color:#103b2e;font-size:.72rem;font-weight:850;line-height:1.2}
 .cardRoleLegend svg{flex-shrink:0}.page .supportCard[data-active]{outline:3px solid #f4c43d;outline-offset:2px}
@@ -839,7 +840,7 @@
 .page[data-culture-play] .target strong { margin: 0; font-size: 1.65rem; line-height: 1; }
 .page[data-culture-play] .diceBoard { gap: .3rem; justify-content: flex-start; }
 .page[data-culture-play] .diceTray { max-width: 420px; }
-.page[data-culture-play] .situationCard:focus-visible { outline: 3px solid #fff5da; outline-offset: 3px; }
+.page[data-culture-play] .situationCard:focus-visible { outline: 3px solid #00563f; outline-offset: 3px; }
 .page[data-culture-play] .diceBoard > .heritageInPlay { width: 100%; grid-template-columns: 54px minmax(0, 1fr); margin: .5rem 0; text-align: left; }
 .page[data-culture-play] .heritageInPlay > .cardArtwork { width: 54px; }
 .page[data-culture-play] .heritageInPlay > footer { grid-column: 1 / -1; }

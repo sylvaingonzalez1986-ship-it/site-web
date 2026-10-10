@@ -36,7 +36,7 @@ describe("Kanab Quest situation artwork", () => {
   });
 
   it("gives an active outage priority over the current incident", () => {
-    expect(getKqSituationArtwork("SIT-021")?.src).toContain("facture-electricite");
+    expect(getKqSituationArtwork("SIT-021")?.src).toContain("surcharge-compteur");
     expect(getKqSituationArtwork("SIT-021", true)).toBe(KQ_POWER_OUTAGE_ARTWORK);
     expect(getKqSituationArtwork("SIT-001")?.src).toContain("depart-hesitant");
     expect(getKqSituationArtwork("SIT-999")).toBeNull();

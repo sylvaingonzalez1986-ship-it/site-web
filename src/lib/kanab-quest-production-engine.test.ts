@@ -57,6 +57,7 @@ describe("production capacity through a complete culture", () => {
 
   it.each([2, 3, 4, 8])("keeps a dead culture at zero with its full %i-unit invoice", units => {
     const initial = start(units);
+    initial.care!.vitality = 35;
     const dead = resolve(advanceKqStage(resolve(initial, [2, 2, 3])), [2, 2, 3]);
     expect(dead.cultureDead).toBe(true);
     expect(dead.harvestGrams).toBe(0);
@@ -185,6 +186,7 @@ describe("independently equipped tents with one common culture", () => {
     expect(parseKqGameSave(encodeKqSave({ ...state, equipment: { ...state.equipment, tents: changed } }))).toBeNull();
     expect(parseKqGameSave(encodeKqSave({ ...state, energy: { ...state.energy, lines: state.energy!.lines.map(line => ({ ...line, tentNumber: 1 })) } }))).toBeNull();
     expect(createKqIntegrityCode(state)).not.toBe(createKqIntegrityCode({ ...state, equipment: { ...state.equipment!, tents: changed } }));
+    state.care!.vitality = 35;
     const dead = resolve(advanceKqStage(resolve(state, [2, 2, 3])), [2, 2, 3]);
     expect(dead.harvestGrams).toBe(0);
     expect(dead.energy).toEqual(state.energy);

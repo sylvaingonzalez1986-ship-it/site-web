@@ -599,7 +599,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
                 ) : null}
                 {activeQuote?.market ? <section className={styles.demandPanel} aria-label="Demande et prix">
                   <div><strong>{activeQuote.market.trend}</strong><span>Saturation {activeQuote.market.saturation >= 30 ? "forte" : activeQuote.market.saturation >= 15 ? "modérée" : "faible"}</span></div>
-                  <p>La qualité fixe la valeur du lot. Les ventes des dernières 24 heures peuvent saturer une filière ; les tendances changent toutes les 6 heures. Conserver un lot ne le détériore pas.</p>
+                  <p>La qualité commerciale fixe la valeur du lot et évolue avec sa conservation en entrepôt. Les ventes des dernières 24 heures peuvent saturer une filière ; les tendances changent toutes les 6 heures.</p>
                   <div className={styles.marketTier}>
                     <strong>{marketReputation.tier.name} · {marketReputation.reputation} réputation</strong>
                     <p>{activeQuote.family === "salvage" ? "La biomasse garde son tarif de secours, sans bonus de réputation." : `Bonus de prix +${marketReputation.tier.priceBonusPercent} % avant frais · impact de la saturation réduit de ${marketReputation.tier.saturationProtectionPercent} %.`}</p>

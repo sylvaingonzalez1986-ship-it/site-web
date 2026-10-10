@@ -1,12 +1,12 @@
 import "server-only";
 
-import { KQ_CARDS } from "@/lib/kanab-quest-game";
+import { KQ_ACTIVE_CARDS, KQ_CARDS } from "@/lib/kanab-quest-game";
 import { isKqHeritageEffect, isKqHeritageTiming } from "@/lib/kanab-quest-heritage";
 import { buildKqHeritageAdminState } from "@/lib/kanab-quest-heritage-admin";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 
 const COLLECTION_CODE = "BOTTE_DU_CHANVRIER_2026";
-const ALLOWED_RARITIES = new Set(["common", "silver", "gold"]);
+const ALLOWED_RARITIES = new Set(["common", "silver", "gold", "epic"]);
 
 export async function getKqBotteCatalogAdmin() {
   const client = createSupabaseServiceClient();
@@ -94,7 +94,13 @@ export async function updateKqBotteCard(input: {
   const definition = await client.from("lottery_card_definitions").select("id,code")
     .eq("id", input.cardId).like("code", "BOTTE-%").single();
   if (definition.error) throw new Error("Carte Botte du Chanvrier introuvable.");
-  if (!KQ_CARDS.some((card) => card.code === definition.data.code)) throw new Error("Règle de carte non prise en charge.");
+  const officialCard = KQ_CARDS.find((card) => card.code === definition.data.code);
+  if (!officialCard) throw new Error("Règle de carte non prise en charge.");
+  const officialRarity = { common: "common", uncommon: "silver", rare: "gold", epic: "epic" }[officialCard.rarity];
+  if (input.rarity !== officialRarity) throw new Error("La rareté officielle de cette carte est fixée par les règles du jeu.");
+  if (input.isActive && !KQ_ACTIVE_CARDS.some((card) => card.code === definition.data.code)) {
+    throw new Error("Cette carte est archivée ; les auxiliaires et l’observation sont gérés dans le suivi de santé.");
+  }
   const update = await client.rpc("rpc_kq_update_botte_card_editorial", {
     p_card_id: input.cardId, p_name: name, p_rarity: input.rarity,
     p_description: cleanText(input.description, 500), p_image_url: cleanText(input.imageUrl, 2000),

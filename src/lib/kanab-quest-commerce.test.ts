@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { quoteKqCommerce, getKqCommerceReplenishment, getKqCommerceCapacity, type KqCommerceState, type KqCommerceStock, type KqCommerceOffer } from "./kanab-quest-commerce";
+import { quoteKqCommerce, getKqCommerceReplenishment, getKqCommerceCapacity, getKqCommerceStockQuality, type KqCommerceState, type KqCommerceStock, type KqCommerceOffer } from "./kanab-quest-commerce";
+import { createKqStorageLot, KQ_CURING_DURATION_MS, planKqStorageAllocation, projectKqStorageLot } from "./kanab-quest-storage";
+import { createKqCareState } from "./kanab-quest-care";
+import { KQ_GAME_DAY_MS } from "./kanab-quest-business";
 const stock: KqCommerceStock = { id: "stock", flowerId: "flower", name: "Test", route: "raw", batchRoute: "raw", juryScore: 9, initialUnits: 1200, remainingUnits: 1200, equivalentUnits: 1200, originalUnits: 1200, baseUnitCents: 180, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false };
 const state: KqCommerceState = { revision: 0, cashCents: 100000, reputation: 1500, clients: 100, computerOwned: true, internetRenew: true,
   campaign: { id: "cycle", revision: 0, reputation: 1500, clientsStart: 100, event: "normal", internetPaid: true, directUsed: 0, shopUsed: 0, goodUnits: 0, disappointmentUnits: 0 }, stocks: [stock], receipts: [], marketVolumes: {}, ownVolumes: {}, routeSales: {} };
@@ -9,6 +12,50 @@ function consume(s: KqCommerceState, item: KqCommerceStock, q: KqCommerceOffer) 
   if (s.campaign) { s.campaign.directUsed += q.directCost; s.campaign.shopUsed += q.shopCost; s.campaign.shopGoodUnits=q.shopGoodUnitsAfter; s.campaign.shopBadUnits=q.shopBadUnitsAfter; s.campaign.goodUnits = q.goodUnitsAfter; s.campaign.disappointmentUnits = q.disappointmentAfter; }
 }
 describe("Three sales channels", () => {
+  it("does not turn an unprotected surplus into retail stock by waiting for maturity", () => {
+    const origin = Date.parse("2026-10-10T12:00:00.000Z");
+    const lot = createKqStorageLot({ flowerId: stock.flowerId, harvestedAt: new Date(origin).toISOString(),
+      capacity: planKqStorageAllocation({ totalUnits: stock.remainingUnits, ownedContainers: { "GLASS-1L": 2 }, nowMs: origin }),
+      baseline: { varietyCode: "TEST", juryScore: stock.juryScore, aroma: 90, care: createKqCareState() } });
+    const item = { ...stock, storage: projectKqStorageLot(lot, origin + KQ_CURING_DURATION_MS) };
+    for (const route of ["raw", "dry-sift", "rosin-trial"] as const) {
+      for (const channel of ["online", "cbd-shop"] as const) {
+        expect(quoteKqCommerce(state, { ...item, route }, channel)).toMatchObject({ maxUnits: 0, reason: expect.stringContaining("contenants") });
+      }
+      expect(quoteKqCommerce(state, { ...item, route }, "wholesale")).toMatchObject({ maxUnits: 1200, reason: null });
+    }
+  });
+
+  it("reserves immature lots for wholesalers, including splits and transformations", () => {
+    const origin = Date.parse("2026-10-10T12:00:00.000Z");
+    const lot = createKqStorageLot({ flowerId: stock.flowerId, harvestedAt: new Date(origin).toISOString(),
+      baseline: { varietyCode: "TEST", juryScore: stock.juryScore, aroma: 90, care: createKqCareState() } });
+    const item = { ...stock, storage: projectKqStorageLot(lot, origin + KQ_CURING_DURATION_MS - 1) };
+    for (const route of ["raw", "dry-sift", "rosin-trial"] as const) {
+      const batch = { ...item, id: `split-${route}`, route };
+      for (const channel of ["online", "cbd-shop"] as const) expect(quoteKqCommerce(state, batch, channel)).toMatchObject({ maxUnits: 0, reason: expect.stringContaining("Curing") });
+      expect(quoteKqCommerce(state, batch, "wholesale")).toMatchObject({ maxUnits: 1200, reason: null, reputationDelta: 0 });
+    }
+    const ready = { ...item, storage: projectKqStorageLot(lot, origin + KQ_CURING_DURATION_MS) };
+    expect(quoteKqCommerce(state, ready, "online").maxUnits).toBeGreaterThan(0);
+    expect(quoteKqCommerce(state, ready, "cbd-shop").maxUnits).toBeGreaterThan(0);
+  });
+
+  it("uses current conservation quality for commercial gates, prices and reputation, preserving the verdict", () => {
+    const origin = Date.parse("2026-10-10T12:00:00.000Z");
+    const lot = createKqStorageLot({ flowerId: stock.flowerId, harvestedAt: new Date(origin).toISOString(),
+      baseline: { varietyCode: "TEST", juryScore: 9, aroma: 90, care: createKqCareState() } });
+    const storage = projectKqStorageLot(lot, origin + 60 * KQ_GAME_DAY_MS);
+    const original = { ...stock, juryScore: 6.6, storage };
+    expect(getKqCommerceStockQuality(original)).toBe(6.4);
+    expect(quoteKqCommerce(state, original, "cbd-shop").maxUnits).toBe(0);
+    expect(quoteKqCommerce(state, { ...original, juryScore: 5.9 }, "online").maxUnits).toBe(0);
+    const kept = { ...stock, juryScore: 9, storage };
+    expect(quoteKqCommerce(state, kept, "online")).toEqual(quoteKqCommerce(state, { ...stock, juryScore: 8.8 }, "online"));
+    expect(original.juryScore).toBe(6.6);
+    expect(storage.conditionScore).toBe(8.8);
+  });
+
   it("keeps fractional shop progress at database precision after crossing a partner threshold", () => {
     const large = { ...stock, initialUnits: 10000, remainingUnits: 10000, equivalentUnits: 10000, originalUnits: 10000 };
     for (const strength of [undefined, "merchant"] as const) {

@@ -32,7 +32,6 @@ function playWorkshop(id: KqWorkshopId) {
     case "culture":
       for (let stage = 0; stage < 6; stage += 1) {
         if (stage === 0) act({ type: "play", code: "BOTTE-005" });
-        if (stage === 2) act({ type: "play", code: "BOTTE-004" });
         if (stage >= 3) {
           const card = KQ_CARDS.find(item => trialCardPermission(state, item.code).allowed);
           if (card) act({ type: "play", code: card.code });
@@ -130,26 +129,26 @@ describe("independent fictitious Placard workshops", () => {
     expect(restoreKqTrial(guided)).toEqual(before);
     expect(before.state.chapter).toBe(1);
     expect(before.state.checked).toEqual(["notebook", "buddie"]);
-    expect(actions.reduce(reduceKqTrial, createKqTrial())).toEqual(before.state);
+    expect(actions.reduce(reduceKqTrial, createKqTrial(2))).toEqual(before.state);
   });
 
   it("ignores supplied snapshots and rejects malformed, cross-workshop or impossible journals", () => {
     const empty = restoreKqWorkshop("cards", null);
     const { state, actions } = playWorkshop("cards");
     for (const value of [
-      null, [], "snapshot", { version: 2, workshop: "cards", actions },
-      { version: 1, workshop: "jury", actions },
-      { version: 1, actions },
-      { version: 1, workshop: "cards", actions: null },
-      { version: 1, workshop: "cards", actions: new Array(501).fill({ type: "check", value: "deck" }) },
-      { version: 1, workshop: "cards", actions: [null] },
-      { version: 1, workshop: "cards", actions: ["next"] },
-      { version: 1, workshop: "cards", actions: [{ type: "teleport", chapter: 9 }] },
-      { version: 1, workshop: "cards", actions: [{ type: "next" }] },
-      { version: 1, workshop: "cards", actions: [...actions, { type: "buy" }] },
+      null, [], "snapshot", { version: 0, workshop: "cards", actions },
+      { version: KQ_WORKSHOP_VERSION, workshop: "jury", actions },
+      { version: KQ_WORKSHOP_VERSION, actions },
+      { version: KQ_WORKSHOP_VERSION, workshop: "cards", actions: null },
+      { version: KQ_WORKSHOP_VERSION, workshop: "cards", actions: new Array(501).fill({ type: "check", value: "deck" }) },
+      { version: KQ_WORKSHOP_VERSION, workshop: "cards", actions: [null] },
+      { version: KQ_WORKSHOP_VERSION, workshop: "cards", actions: ["next"] },
+      { version: KQ_WORKSHOP_VERSION, workshop: "cards", actions: [{ type: "teleport", chapter: 9 }] },
+      { version: KQ_WORKSHOP_VERSION, workshop: "cards", actions: [{ type: "next" }] },
+      { version: KQ_WORKSHOP_VERSION, workshop: "cards", actions: [...actions, { type: "buy" }] },
     ]) expect(restoreKqWorkshop("cards", value)).toEqual(empty);
-    expect(restoreKqWorkshop("cards", { version: 1, workshop: "cards", actions: [], state, cashCents: 99999999 })).toEqual(empty);
-    expect(restoreKqWorkshop("cards", { version: 1, workshop: "cards", actions, state: { chapter: 0 } })).toEqual({ state, actions });
+    expect(restoreKqWorkshop("cards", { version: KQ_WORKSHOP_VERSION, workshop: "cards", actions: [], state, cashCents: 99999999 })).toEqual(empty);
+    expect(restoreKqWorkshop("cards", { version: KQ_WORKSHOP_VERSION, workshop: "cards", actions, state: { chapter: 0 } })).toEqual({ state, actions });
   });
 
   it("returns fresh states so one exercise cannot modify another exercise's supplies", () => {

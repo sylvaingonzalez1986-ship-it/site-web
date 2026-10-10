@@ -13,8 +13,10 @@ import {KqBotteCollection} from '/src/components/placard/KqBotteCollection';
 import {KqPlacardLobby} from '/src/components/placard/KqPlacardLobby';
 import {KqSupportBoosterShop} from '/src/components/placard/KqSupportBoosterShop';
 import {BotteAlbumCollection} from '/src/components/account/BotteAlbumCollection';
-import {KQ_CARDS} from '/src/lib/kanab-quest-game';
-const query=new URLSearchParams(location.search);window.__counts=query.has('empty')?{}:query.has('complete')?Object.fromEntries(KQ_CARDS.map(c=>[c.code,1])):{'BOTTE-002':2,'BOTTE-004':1,'BOTTE-013':3};window.__fail=query.has('fail');window.__requests=[];
+import {KqInventoryCarousel} from '/src/components/placard/KqInventoryCarousel';
+import {KqSupportPackReveal} from '/src/components/placard/KqSupportPackOpening';
+import {KQ_ACTIVE_CARDS as KQ_CARDS} from '/src/lib/kanab-quest-game';
+const query=new URLSearchParams(location.search);window.__counts=query.has('empty')?{}:query.has('complete')?Object.fromEntries(KQ_CARDS.map(c=>[c.code,1])):{'BOTTE-003':2,'BOTTE-006':1,'BOTTE-013':3};window.__fail=query.has('fail');window.__requests=[];
 const original=window.fetch.bind(window);window.fetch=async(url,init={})=>{
  if(!String(url).startsWith('/api/'))return original(url,init);window.__requests.push({url,method:init.method||'GET'});
  if(String(url).endsWith('/collection')){
@@ -26,7 +28,7 @@ const original=window.fetch.bind(window);window.fetch=async(url,init={})=>{
  if(String(url).endsWith('/boosters'))return new Response(JSON.stringify({collectionActive:true,costPerPack:5,spendablePoints:50,welcomeClaimed:true,availableEntitlements:[]}));
  return new Response('{}');
 };
-function App(){const [view,setView]=useState(query.get('view')||'hub'),[open,setOpen]=useState(false);return <>{view==='hub'?<KqPlacardLobby onOpen={()=>setView('shop')} onOpenEquipment={()=>setView('shop')} onOpenCollection={()=>setOpen(true)}/>:view==='profile'?<BotteAlbumCollection isAuthenticated/>:<KqSupportBoosterShop autoOpen onOpenCollection={()=>setOpen(true)} onExit={()=>setView('hub')}/>} {open?<KqBotteCollection onClose={()=>setOpen(false)} onOpenShop={()=>{setOpen(false);setView('shop');}}/>:null}</>;}createRoot(document.getElementById('root')).render(<App/>);`,
+function App(){const [view,setView]=useState(query.get('view')||'hub'),[open,setOpen]=useState(false);return <>{view==='pack'?<section style={{height:'100dvh',position:'relative'}}><KqSupportPackReveal cards={KQ_CARDS.filter(c=>['BOTTE-037','BOTTE-039','BOTTE-041'].includes(c.code))} onClose={()=>setView('hub')}/></section>:view==='inventory'?<main style={{background:'#fffaf1',padding:16}}><KqInventoryCarousel inventory={Object.fromEntries(KQ_CARDS.map(c=>[c.code,1]))} selectedCodes={[]} onAdd={()=>{}} onRemove={()=>{}}/></main>:view==='hub'?<KqPlacardLobby onOpen={()=>setView('shop')} onOpenEquipment={()=>setView('shop')} onOpenCollection={()=>setOpen(true)}/>:view==='profile'?<BotteAlbumCollection isAuthenticated/>:<KqSupportBoosterShop autoOpen onOpenCollection={()=>setOpen(true)} onExit={()=>setView('hub')}/>} {open?<KqBotteCollection onClose={()=>setOpen(false)} onOpenShop={()=>{setOpen(false);setView('shop');}}/>:null}</>;}createRoot(document.getElementById('root')).render(<App/>);`,
  "next/image":`import React from 'react';export default function Image({src,fill,priority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,
  "@/components/navigation/NavigationLink":`import React from 'react';export default function Link({children,...props}){return <a {...props}>{children}</a>;}`,
  "next/link":`import React from 'react';export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>;}`,
@@ -45,13 +47,15 @@ try{
  const waitCards=async(n)=>{await page.waitForFunction((selector,n)=>document.querySelectorAll(selector+' button[data-owned]').length===n,{},album,n);};
  const snap=async(name)=>{await page.evaluate(()=>Promise.all([...document.images].map(i=>i.decode().catch(()=>{}))));await page.screenshot({path:resolve(output,name+'.png')});};
  for(const [width,height]of(collectionOnly?[[320,740],[390,844],[1440,1000]]:[[320,740],[390,844],[768,1024],[1440,1000],[844,390]])){
-  await page.setViewport({width,height,isMobile:width<700,hasTouch:width<700});await visit();await snap('entry-'+width);await open();await waitCards(32);
+  await page.setViewport({width,height,isMobile:width<700,hasTouch:width<700});await visit();await snap('entry-'+width);await open();await waitCards(30);
   assert.equal(await page.$$eval(album+' [data-owned=true]',els=>els.length),3);
   assert.equal(await page.$eval(album+' progress',el=>el.value),3);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
   assert.equal(await page.$eval(album,el=>el.scrollWidth>el.clientWidth+1),false);
-  await snap('album-'+width);
-  await clickText('Manquantes 29');await waitCards(29);await page.click(album+' button[data-owned=false]');await page.waitForSelector(detail+'[open]');
+  await snap('album-'+width);assert.equal(await page.$$eval(album+' button[data-card-code] img',els=>els.every(img=>img.complete&&img.naturalWidth>0)),true,'Every active card artwork must load');
+  await page.select('[aria-label="Filtrer par rareté"]','epic');await waitCards(4);assert.equal(await page.$$eval(album+' [data-rarity=epic]',els=>els.filter(el=>el.matches('button')).length),4);await snap('epics-'+width);await page.select('[aria-label="Filtrer par rareté"]','all');await waitCards(30);
+  assert.equal(await page.$$eval(album+' button[data-card-code]',els=>els.some(el=>['BOTTE-002','BOTTE-004','BOTTE-010','BOTTE-011','BOTTE-012','BOTTE-022','BOTTE-023','BOTTE-025'].includes(el.dataset.cardCode))),false);
+  await clickText('Manquantes 27');await waitCards(27);await page.click(album+' button[data-owned=false]');await page.waitForSelector(detail+'[open]');
   assert.equal(await page.$eval(detail,el=>el.textContent.includes('Cette carte te manque')),true);
   assert.equal(await page.$eval(detail,el=>el.scrollWidth>el.clientWidth+1),false);
   await snap('detail-'+width);await page.keyboard.press('Escape');await page.waitForSelector(detail,{hidden:true});assert.equal(await page.$eval(album,d=>d.open),true);
@@ -60,14 +64,18 @@ try{
   assert.equal(await page.$eval(detail,el=>el.textContent.includes('3 exemplaires en stock')),true);
   await page.click('button[aria-label="Fermer la carte agrandie"]');await page.keyboard.press('Escape');await page.waitForSelector(album,{hidden:true});
   await page.waitForFunction(selector=>document.activeElement?.matches(selector),{},collectionPin);
-  assert.equal(await page.evaluate(()=>document.body.style.overflow),'');results.push({width,height,owned:3,missing:29,zoom:true,focusRestored:true});
+  assert.equal(await page.evaluate(()=>document.body.style.overflow),'');results.push({width,height,owned:3,missing:27,zoom:true,focusRestored:true});
  }
- await page.setViewport({width:390,height:844});await visit();await open();await waitCards(32);assert((await page.$eval(album+' footer button',el=>el.textContent)).includes('La Boutique'));await page.locator(album+' footer button').click();await page.waitForSelector('[aria-label="Quitter la boutique"]');assert.equal(await page.$(album+'[open]'),null);await snap('map-collection-to-shop');
- await visit('view=shop');await snap('shop-entry');await clickText('Ma collection');await waitCards(32);await snap('shop-album');await page.keyboard.press('Escape');await page.waitForSelector(album,{hidden:true});assert.ok(await page.$('[aria-label="Quitter la boutique"]'));assert.equal(await page.evaluate(()=>document.body.style.overflow),'hidden');assert.equal(await page.evaluate(()=>document.activeElement?.textContent.trim()),'Ma collection');
- await visit('fail');await open();await page.waitForSelector(album+' [role=alert]');assert.equal(await page.$$eval(album+' button[data-owned]',els=>els.length),0);await page.evaluate(()=>window.__fail=false);await clickText('Réessayer');await waitCards(32);
+ await page.setViewport({width:390,height:844});await visit();await open();await waitCards(30);assert((await page.$eval(album+' footer button',el=>el.textContent)).includes('La Boutique'));await page.locator(album+' footer button').click();await page.waitForSelector('[aria-label="Quitter la boutique"]');assert.equal(await page.$(album+'[open]'),null);await snap('map-collection-to-shop');
+ await visit('view=shop');await snap('shop-entry');await clickText('Ma collection');await waitCards(30);await snap('shop-album');await page.keyboard.press('Escape');await page.waitForSelector(album,{hidden:true});assert.ok(await page.$('[aria-label="Quitter la boutique"]'));assert.equal(await page.evaluate(()=>document.body.style.overflow),'hidden');assert.equal(await page.evaluate(()=>document.activeElement?.textContent.trim()),'Ma collection');
+ await visit('fail');await open();await page.waitForSelector(album+' [role=alert]');assert.equal(await page.$$eval(album+' button[data-owned]',els=>els.length),0);await page.evaluate(()=>window.__fail=false);await clickText('Réessayer');await waitCards(30);
  await page.evaluate(()=>{window.__counts['BOTTE-005']=1;window.dispatchEvent(new Event('kq:collection-updated'));});await page.waitForFunction(()=>document.querySelector('dialog progress')?.value===4);
- await visit('empty');await open();await waitCards(32);assert.equal(await page.$eval(album+' progress',el=>el.value),0);await clickText('Possédées 0');await waitCards(0);await clickText('Manquantes 32');await waitCards(32);await page.click(album+' button[data-owned=false]');await page.waitForSelector(detail+'[open]');await page.mouse.click(2,2);await page.waitForSelector(detail,{hidden:true});assert.equal(await page.$eval(album,d=>d.open),true);
- await visit('complete');await open();await waitCards(32);await clickText('Manquantes 0');await page.waitForFunction(()=>document.querySelector('dialog')?.textContent.includes('Tu possèdes toutes les cartes'));
- await visit('view=profile');await page.waitForSelector('button[aria-label="Agrandir Chrysope affamée"]');await page.click('button[aria-label="Agrandir Chrysope affamée"]');await page.waitForSelector(detail+'[open]');assert.equal(await page.$eval(detail,el=>el.textContent.includes('2 exemplaires en stock')),true);await page.keyboard.press('Escape');
+ await visit('empty');await open();await waitCards(30);assert.equal(await page.$eval(album+' progress',el=>el.value),0);await clickText('Possédées 0');await waitCards(0);await clickText('Manquantes 30');await waitCards(30);await page.click(album+' button[data-owned=false]');await page.waitForSelector(detail+'[open]');await page.mouse.click(2,2);await page.waitForSelector(detail,{hidden:true});assert.equal(await page.$eval(album,d=>d.open),true);
+ await visit('complete');await open();await waitCards(30);await clickText('Manquantes 0');await page.waitForFunction(()=>document.querySelector('dialog')?.textContent.includes('Tu possèdes toutes les cartes'));
+ await visit('view=profile');await page.waitForSelector('button[aria-label="Agrandir Brassage ajusté"]');await page.click('button[aria-label="Agrandir Brassage ajusté"]');await page.waitForSelector(detail+'[open]');assert.equal(await page.$eval(detail,el=>el.textContent.includes('2 exemplaires en stock')),true);await page.keyboard.press('Escape');
+ for(const width of [320,1440]){
+  await page.setViewport({width,height:900});await visit('view=pack');await page.waitForSelector('[data-support-pack-reveal] article');assert.equal(await page.$$eval('[data-support-pack-reveal] article',els=>els.length),3);assert.equal(await page.$$eval('[data-support-pack-reveal] article[data-rarity=epic]',els=>els.every(el=>el.textContent.includes('Une épique jouée par culture'))),true);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);await snap('pack-'+width);
+  await visit('view=inventory');await page.waitForSelector('[role=listitem]');assert.equal(await page.$$eval('[role=listitem]',els=>els.length),30);await page.select('[aria-label="Filtrer l’inventaire par rareté"]','epic');await page.waitForFunction(()=>document.querySelectorAll('[role=listitem]').length===4);assert.equal(await page.$$eval('[role=listitem]',els=>els.every(el=>el.dataset.rarity==='epic')),true);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);await snap('inventory-epics-'+width);
+ }
  assert.equal(await page.evaluate(()=>window.__requests.every(r=>r.method==='GET')),true);assert.deepEqual(errors,[]);await writeFile(resolve(output,collectionOnly?'collection-map-report.json':'report.json'),JSON.stringify({passed:true,results,errors,mapPinOpener:true,mapPinFocusRestored:true,collectionToShop:true,shopCollectionFocusRestored:true,retry:true,refresh:true,completeCollection:true,profileZoom:true,readOnly:true},null,2));console.log(JSON.stringify({passed:true,viewports:results.length,zoom:true,filters:true,errors}));
 }finally{await browser?.close();await server.close();}

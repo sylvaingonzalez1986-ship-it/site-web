@@ -6,8 +6,8 @@ import Link from "@/components/navigation/NavigationLink";
 import { Sparkles, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
-import { KQ_CARDS, type KqSupportCard } from "@/lib/kanab-quest-game";
-import { getKqCardRole } from "@/lib/kanab-quest-card-guide";
+import { KQ_ACTIVE_CARDS as KQ_CARDS, type KqSupportCard } from "@/lib/kanab-quest-game";
+import { getKqCardRole, getKqCardRarityLabel, KQ_CARD_RARITY_LABELS } from "@/lib/kanab-quest-card-guide";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import albumStyles from "@/components/lottery/AlbumExperience.module.css";
 
@@ -36,13 +36,6 @@ type DisplayCard = {
   producerName?: string;
 };
 
-const RARITY_LABELS: Record<string, string> = {
-  common: "Commune",
-  uncommon: "Peu commune",
-  rare: "Rare",
-  epic: "Épique",
-};
-
 function CollectionCard({
   card,
   copies,
@@ -61,6 +54,7 @@ function CollectionCard({
 
   return (
     <article
+      data-rarity={card.rarity}
       style={role ? { borderColor: role.color } : undefined}
       className={`min-w-0 overflow-hidden border-2 border-ink shadow-[4px_4px_0_#1a1a1a] ${
         discovered ? "bg-white" : "bg-[#ddd8ce]"
@@ -83,7 +77,7 @@ function CollectionCard({
           {permanent ? card.producerName || "Héritage permanent" : role?.label ?? "Botte du Chanvrier · consommable"}
         </span>
         <h3 className="mt-1 font-display text-lg uppercase leading-none text-ink">{card.name}</h3>
-        {!permanent && card.rarity ? <small className="mt-2 block text-xs font-bold text-green">{RARITY_LABELS[card.rarity] ?? card.rarity}{support ? ` · ${support.xpCost} XP` : ""}</small> : null}
+        {!permanent && card.rarity ? <small className={`mt-2 block text-xs font-bold ${card.rarity === "epic" ? "text-purple-800" : "text-green"}`}>{getKqCardRarityLabel(card.rarity)}{support ? ` · ${support.xpCost} XP` : ""}</small> : null}
         <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-charcoal">{card.description}</p>
         <strong className="mt-3 block text-xs text-ink">
           {discovered ? `Dans ton album · ×${copies}` : "À découvrir"}
@@ -155,6 +149,7 @@ function HeritageCraftModal({
 
 export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boolean }) {
   const [selectedCard, setSelectedCard] = useState<KqSupportCard | null>(null);
+  const [rarity, setRarity] = useState("all");
   const [snapshot, setSnapshot] = useState<BotteSnapshot | null>(null);
   const [loading, setLoading] = useState(isAuthenticated);
   const [error, setError] = useState<string | null>(null);
@@ -279,11 +274,12 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
         <div className="mb-4">
           <p className="text-xs font-black uppercase tracking-[0.14em] text-green">{KQ_CARDS.length} cartes à collectionner</p>
           <h2 className="font-display text-2xl uppercase text-ink">Cartes Botte du Chanvrier</h2>
-          <p className="text-sm text-charcoal">Auxiliaires, équipements et savoir-faire pour tes cultures sur sol vivant.</p>
+          <p className="text-sm text-charcoal">Gestes, équipements ponctuels et coups de chance pour répondre aux incidents. Les intrants et PBI sont dans leur rayon de la boutique.</p>
           <p className="mt-1 text-xs text-charcoal">Clique sur une carte pour l’agrandir et lire ses détails.</p>
+          <label className="mt-3 flex items-center gap-3 text-sm font-bold text-ink">Rareté<select aria-label="Filtrer les cartes Botte par rareté" value={rarity} onChange={event => setRarity(event.target.value)} className="min-h-11 border-2 border-ink bg-white p-2"><option value="all">Toutes les raretés</option>{Object.entries(KQ_CARD_RARITY_LABELS).map(([code, label]) => <option key={code} value={code}>{label}</option>)}</select></label>
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {KQ_CARDS.map((card) => (
+          {KQ_CARDS.filter(card => rarity === "all" || card.rarity === rarity).map((card) => (
             <CollectionCard key={card.code} card={card} copies={supportCopies.get(card.code) ?? 0} permanent={false} onInspect={() => setSelectedCard(card)} />
           ))}
         </div>

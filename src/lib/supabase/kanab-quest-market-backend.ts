@@ -1,6 +1,8 @@
 import "server-only";
 import { getKqMarketWindow, KQ_PRICE_POLICIES, type KqMarketContext, type KqPricePolicy } from "@/lib/kanab-quest-market-demand";
 import { getKqEnergySummary } from "./kanab-quest-energy-backend";
+import { getKqStorageRecords, projectKqStoredStorageLot } from "./kanab-quest-storage-backend";
+import type { KqStorageProjection } from "@/lib/kanab-quest-storage";
 
 import {
   buildKqEquipmentGoalReceipt,
@@ -85,6 +87,7 @@ export function mapKqMarketSaleReceipt(
 }
 
 export type KqMarketLot = {
+  storage?: KqStorageProjection;
   flowerId: string;
   varietyCode: string;
   varietyName: string;
@@ -176,7 +179,10 @@ export function getKqSharedWorkshop(shop: KqEquipmentShopSnapshot) {
 export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string[], options: { previewOnly?: boolean } = {}) {
   assertUuid(userId, "Compte marché invalide.");
   const supabase = createSupabaseServiceClient();
+  const storage = await getKqStorageRecords(userId);
   const equipmentShop = await getKqEquipmentShopSnapshot(userId);
+  const storageLots = new Map(storage.lots.map(lot => [lot.flowerId, lot]));
+  const storageNow = Date.parse(storage.serverNow);
   const pulse = await supabase.rpc("rpc_kq_market_pulse", { p_user_id: userId });
   if (pulse.error) throw new Error(`[supabase:rpc_kq_market_pulse] ${pulse.error.message}`);
   const marketContext: KqMarketContext = {
@@ -229,10 +235,20 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
         : botRounds?.length
           ? getKqJuryScoreFromRounds(botRounds, "player")
           : getKqJuryScoreFromStats(flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats as Record<string, number> : {});
-    const { harvestGrams } = getKqMarketRunSummary(runStates.get(String(flower.run_id)), Number(flower.quality));
-    const quotes = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: workshop.operationalCodes, equipmentLevels: workshop.levels, marketContext });
+    const runSummary = getKqMarketRunSummary(runStates.get(String(flower.run_id)), Number(flower.quality));
+    const storageLot = storageLots.get(flowerId);
+    if (!storageLot) throw new Error("[supabase:market] storage_lot_missing");
+    const harvestGrams = storageLot.state.capacity ? storageLot.state.capacity.totalUnits / 10 : runSummary.harvestGrams;
+    if (harvestGrams <= 0) return;
+    const condition = projectKqStoredStorageLot({ ...storageLot, juryScore }, storageNow);
+    const quotes = quoteKqMarketRoutes({ juryScore: condition.conditionScore, harvestGrams, equipmentCodes: workshop.operationalCodes, equipmentLevels: workshop.levels, marketContext })
+      .map(quote => ({ ...quote, storageRevision: storageLot.revision, storageChangeAt: condition.nextChangeAt }));
+    if (condition.capacity && condition.capacity.overflowUnits > 0) for (const quote of quotes) {
+      quote.available = false;
+      quote.blockedReason = "Achète des contenants ou vends le surplus aux grossistes avant de préparer cette récolte.";
+    }
     if (equippedCodes.some(code => !workshop.operationalCodes.includes(code))) {
-      const installedQuotes = quoteKqMarketRoutes({ juryScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: workshop.installedLevels, marketContext });
+      const installedQuotes = quoteKqMarketRoutes({ juryScore: condition.conditionScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: workshop.installedLevels, marketContext });
       for (const quote of quotes) if (!quote.available && installedQuotes.find(item => item.route === quote.route)?.available) {
         quote.blockedReason = "Une machine de cette filière doit être réparée. Ouvre ton entrepôt.";
       }
@@ -274,8 +290,9 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
   const marketLots = new Map((lotsResult.data ?? []).map((lot) => [String(lot.flower_id), lot]));
 
   const lots: KqMarketLot[] = flowers.flatMap((flower) => {
-    const lot = marketLots.get(String(flower.id)) ?? (options.previewOnly ? {
-      ...previews.get(String(flower.id)), equipment_codes: equippedCodes,
+    const preview = previews.get(String(flower.id));
+    const lot = marketLots.get(String(flower.id)) ?? (options.previewOnly && preview ? {
+      ...preview, equipment_codes: equippedCodes,
       status: "ready", selected_route: null, payout_cents: null, reputation_gain: null, settled_at: null,
     } : null);
     if (!lot) return [];
@@ -291,6 +308,7 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
       quality: Number(flower.quality),
       harvestGrams: Number(lot.harvest_grams),
       juryScore: Number(lot.jury_score),
+      storage: storageLots.has(String(flower.id)) ? projectKqStoredStorageLot({ ...storageLots.get(String(flower.id))!, juryScore: Number(lot.jury_score) }, storageNow) : undefined,
       qualityBand: String(lot.quality_band) as KqMarketLot["qualityBand"],
       equipmentCodes: options.previewOnly && lot.status === "ready"
         ? equippedCodes

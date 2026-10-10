@@ -1,4 +1,4 @@
-import { KQ_RETIRED_CARDS, KQ_CARDS, KQ_HAND_SIZE, KQ_BUDDIES, type KqBuddieEffect, type KqGameState, type KqSupportCard } from "@/lib/kanab-quest-game";
+import { KQ_RETIRED_CARDS, KQ_ACTIVE_CARDS, KQ_CARDS, KQ_HAND_SIZE, KQ_BUDDIES, type KqBuddieEffect, type KqGameState, type KqSupportCard } from "@/lib/kanab-quest-game";
 
 export function getKqOpeningHandChance(deckSize: number, copies: number, handSize = KQ_HAND_SIZE) {
   const safeDeckSize = Math.max(0, Math.floor(deckSize));
@@ -19,8 +19,8 @@ export function getKqDeckCoverage(selectedCodes: string[]) {
   const coverage = Object.fromEntries(KQ_DECK_COVERAGE_TAGS.map((tag) => [tag, 0])) as Record<(typeof KQ_DECK_COVERAGE_TAGS)[number], number>;
   let versatile = 0;
   selectedCodes.forEach((code) => {
-    const card = KQ_CARDS.find((item) => item.code === code);
-    if (!card || card.category === "substrate" || card.category === "pbi") return;
+    const card = KQ_ACTIVE_CARDS.find((item) => item.code === code);
+    if (!card) return;
     if (card.tags.length === 0) versatile += 1;
     KQ_DECK_COVERAGE_TAGS.forEach((tag) => {
       if (card.tags.includes(tag)) coverage[tag] += 1;
@@ -30,8 +30,7 @@ export function getKqDeckCoverage(selectedCodes: string[]) {
 }
 
 export function buildKqCollectionDeck(inventory: Record<string, number>, mode: "one-each" | "all-copies") {
-  return KQ_CARDS
-    .filter((card) => card.category !== "substrate" && card.category !== "pbi")
+  return KQ_ACTIVE_CARDS
     .flatMap((card) => Array.from(
       { length: mode === "one-each" ? Math.min(1, inventory[card.code] ?? 0) : Math.max(0, Math.floor(inventory[card.code] ?? 0)) },
       () => card.code,
@@ -67,7 +66,7 @@ export function summarizeKqCardEconomy(state: Pick<KqGameState, "deckCodes" | "u
 export function sanitizeKqDeckSelection(selectedCodes: string[], inventory: Record<string, number>) {
   const selectedCounts: Record<string, number> = {};
   return selectedCodes.filter((code) => {
-    if (!KQ_CARDS.some((card) => card.code === code && card.category !== "pbi")) return false;
+    if (!KQ_ACTIVE_CARDS.some((card) => card.code === code)) return false;
     selectedCounts[code] = (selectedCounts[code] ?? 0) + 1;
     return selectedCounts[code] <= (inventory[code] ?? 0);
   });
@@ -75,12 +74,13 @@ export function sanitizeKqDeckSelection(selectedCodes: string[], inventory: Reco
 
 export function getKqCardChallengeFit(card: KqSupportCard, challengeCodes: string[]) {
   const effectsByChallenge: Record<string, KqSupportCard["effect"][]> = {
-    "steady-grower": ["cancel-danger"],
-    "no-failure": ["cancel-danger"],
-    "green-streak": ["neutral-to-success", "reroll-neutral"],
-    "spark-hunter": ["four-keep-three", "reroll-two-low"],
-    "critical-touch": ["four-keep-three", "reroll-two-low"],
-    biocontrol: ["reveal-pest"],
+    "steady-grower": ["cancel-danger", "humidity-balance", "expert-recovery", "controlled-drying"],
+    "no-failure": ["cancel-danger", "humidity-balance", "expert-recovery", "controlled-drying"],
+    "green-streak": ["neutral-to-success", "reroll-neutral", "gentle-recovery", "emergency-adjustment"],
+    "spark-hunter": ["four-keep-three", "reroll-two-low", "harvest-team"],
+    "critical-touch": ["four-keep-three", "reroll-two-low", "controlled-drying"],
+    // Biological control is managed through care stock, independently of cards.
+    biocontrol: [],
   };
   return challengeCodes.some((code) => effectsByChallenge[code]?.includes(card.effect));
 }
@@ -89,14 +89,14 @@ const RECOMMENDED_DECKS: Record<KqBuddieEffect, { support: string[] }> = {
   none: { support: ["BOTTE-003", "BOTTE-005", "BOTTE-017", "BOTTE-006"] },
   "starting-xp-1": { support: ["BOTTE-005", "BOTTE-003", "BOTTE-017", "BOTTE-018"] },
   "starting-xp-2": { support: ["BOTTE-014", "BOTTE-015", "BOTTE-018", "BOTTE-006"] },
-  "starting-xp-3": { support: ["BOTTE-004", "BOTTE-015", "BOTTE-017", "BOTTE-006"] },
-  "starting-xp-4": { support: ["BOTTE-004", "BOTTE-006", "BOTTE-018", "BOTTE-017"] },
+  "starting-xp-3": { support: ["BOTTE-020", "BOTTE-015", "BOTTE-017", "BOTTE-006"] },
+  "starting-xp-4": { support: ["BOTTE-020", "BOTTE-006", "BOTTE-018", "BOTTE-017"] },
 };
 
 export function buildKqRecommendedDeck(effect: KqBuddieEffect, inventory: Record<string, number>, challengeCodes: string[] = [], buddieCode?: string) {
   const preferred = RECOMMENDED_DECKS[effect];
-  const available = (code: string) => (inventory[code] ?? 0) > 0;
-  const playable = KQ_CARDS.filter((card) => card.category !== "substrate" && card.category !== "pbi" && available(card.code));
+  const available = (code: string) => KQ_ACTIVE_CARDS.some(card => card.code === code) && (inventory[code] ?? 0) > 0;
+  const playable = KQ_ACTIVE_CARDS.filter(card => available(card.code));
   const buddie = KQ_BUDDIES.find((card) => card.code === buddieCode);
   if (buddie) {
     const startingXp = 1 + buddie.advantageLevel;
@@ -112,14 +112,22 @@ export function buildKqRecommendedDeck(effect: KqBuddieEffect, inventory: Record
         + (card.tags.length === 0 ? 1 : 0) - card.xpCost * 0.35;
       candidates.sort((left, right) => score(right) - score(left) || left.code.localeCompare(right.code));
       const card = candidates.shift()!;
+      if (card.rarity === "epic" && selected.some(item => item.rarity === "epic")) continue;
       selected.push(card);
       card.tags.forEach((tag) => covered.add(tag));
     }
     return { support: selected.map((card) => card.code) };
   }
   const challengeSupport = playable.filter((card) => getKqCardChallengeFit(card, challengeCodes)).slice(0, 2).map((card) => card.code);
+  let selectedEpic = false;
   const support = [...challengeSupport, ...preferred.support.filter(available), ...playable.map((card) => card.code)]
     .filter((code, index, codes) => codes.indexOf(code) === index)
+    .filter(code => {
+      if (KQ_ACTIVE_CARDS.find(card => card.code === code)?.rarity !== "epic") return true;
+      if (selectedEpic) return false;
+      selectedEpic = true;
+      return true;
+    })
     .slice(0, 4);
   return { support };
 }

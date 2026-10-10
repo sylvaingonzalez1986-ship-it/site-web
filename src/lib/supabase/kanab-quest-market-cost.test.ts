@@ -6,6 +6,7 @@ vi.mock("./kanab-quest-energy-backend", () => ({ getKqEnergySummary: mocks.energ
 import { getKqMarketSnapshot, getKqSharedWorkshop } from "./kanab-quest-market-backend";
 import { startKqGame } from "../kanab-quest-game";
 import { KQ_STARTING_EQUIPMENT_CODES } from "../kanab-quest-equipment";
+import { createKqStorageLot, type KqStorageCapacity } from "../kanab-quest-storage";
 
 type Row = Record<string, unknown>;
 const user = "11111111-1111-4111-8111-111111111111";
@@ -25,6 +26,16 @@ beforeEach(() => {
   mocks.energy.mockResolvedValue({ outstandingCents: 0 });
   mocks.rpc.mockImplementation(async (name: string, input: Row) => {
     if (name === "rpc_kq_market_pulse") return response({ recentSales: {}, marketVolumes: {} });
+    if (name === "rpc_kq_storage_state") return response({ serverNow: "2026-09-13T12:00:00Z", cashCents: 100000,
+      ownedMethodCodes: ["STORAGE-GLASS"], defaultMethodCode: "STORAGE-GLASS",
+      lots: rows.kq_flowers.filter(flower => flower.owner_id === input.p_user_id).map(flower => ({
+        flowerId: flower.id, varietyName: flower.variety_name, flowerStatus: flower.status, harvestGrams: 120,
+        revision: 1, juryScore: null, state: createKqStorageLot({ flowerId: String(flower.id), harvestedAt: String(flower.burned_at),
+          ...(flower.storageCapacity ? { capacity: flower.storageCapacity as KqStorageCapacity } : {}),
+          baseline: { varietyCode: String(flower.variety_code), juryScore: 7, aroma: 70,
+            care: { terpenes: 70, cannabinoidExpression: 70, cannabinoidConversion: 5, cannabinoidOxidation: 0 } } }),
+      })),
+    });
     if (name !== "rpc_kq_prepare_market_lot") throw new Error(`Unexpected RPC ${name}`);
     const lot = { owner_id: input.p_user_id, flower_id: input.p_flower_id, harvest_grams: input.p_harvest_grams,
       jury_score: input.p_jury_score, quality_band: input.p_quality_band, equipment_codes: input.p_equipment_codes,
@@ -70,6 +81,18 @@ describe("market browsing egress and transactional boundaries", () => {
     expect(rows.kq_market_lots).toHaveLength(0);
     await getKqMarketSnapshot(user, ["flower-1"]);
     expect(rows.kq_market_lots.map(row => row.flower_id)).toEqual(["flower-1"]);
+  });
+  it("does not recreate a harvest whose entire overflow sold before first market preparation", async () => {
+    rows.kq_flowers[1].storageCapacity = { totalUnits: 0, allocations: [], overflowDeadlineAt: "2026-09-14T12:00:00Z" };
+    expect((await getKqMarketSnapshot(user, ["flower-1"], { previewOnly: true })).lots).toEqual([]);
+    expect(rows.kq_market_lots).toEqual([]);
+  });
+  it("uses the remaining saleable mass and blocks routes while an unprotected fraction remains", async () => {
+    rows.kq_flowers[1].storageCapacity = { totalUnits: 600, allocations: [{ containerCode: "GLASS-1L", quantity: 1, storedUnits: 500 }], overflowDeadlineAt: "2026-09-14T12:00:00Z" };
+    const preview = await getKqMarketSnapshot(user, ["flower-1"], { previewOnly: true });
+    expect(preview.lots[0].harvestGrams).toBe(60);
+    expect(preview.lots[0].options.every(option => !option.available)).toBe(true);
+    expect(preview.lots[0].options.find(option => option.route === "raw")?.blockedReason).toContain("surplus");
   });
   it("uses currently installed equipment even when a previous lot snapshot exists", async () => {
     await getKqMarketSnapshot(user, ["flower-1"]);

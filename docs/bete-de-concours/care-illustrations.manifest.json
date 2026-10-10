@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-10",
+  "generationMode": "Built-in image_gen",
+  "purpose": "Compact collapsible health follow-up and realistic ink-and-watercolor game illustrations faithful to real retailer product photographs.",
+  "assetDirectory": "public/app/kanab-quest/care/",
+  "promptSets": [
+    "care-inputs-health.prompts.json",
+    "care-retailer-intrants.prompts.json",
+    "care-pbi-illustrations.prompts.json"
+  ],
+  "referencesStoredInternally": "Retailer photographs and documentary sources are retained in the prompt sets and product metadata. No reference links are displayed on input or PBI product cards. A charge remains a game unit.",
+  "assets": [
+    {
+      "name": "plant-health",
+      "file": "public/app/kanab-quest/care/plant-health-v1.webp"
+    },
+    {
+      "name": "compost-tea",
+      "file": "public/app/kanab-quest/care/compost-tea-v1.webp"
+    },
+    {
+      "name": "vermicompost",
+      "file": "public/app/kanab-quest/care/vermicompost-v1.webp"
+    },
+    {
+      "name": "organic-feed",
+      "file": "public/app/kanab-quest/care/organic-feed-v1.webp"
+    },
+    {
+      "name": "seaweed",
+      "file": "public/app/kanab-quest/care/seaweed-v1.webp"
+    },
+    {
+      "name": "aphidius",
+      "file": "public/app/kanab-quest/care/aphidius-v1.webp"
+    },
+    {
+      "name": "phytoseiulus",
+      "file": "public/app/kanab-quest/care/phytoseiulus-v1.webp"
+    },
+    {
+      "name": "swirskii",
+      "file": "public/app/kanab-quest/care/swirskii-v1.webp"
+    },
+    {
+      "name": "orius",
+      "file": "public/app/kanab-quest/care/orius-v1.webp"
+    },
+    {
+      "name": "chrysoperla",
+      "file": "public/app/kanab-quest/care/chrysoperla-v1.webp"
+    },
+    {
+      "name": "coccinella",
+      "file": "public/app/kanab-quest/care/coccinella-v1.webp"
+    }
+  ],
+  "validation": {
+    "typescript": "passed",
+    "eslint": "passed",
+    "careBrowserChecks": 18,
+    "careWidths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "shopWidths": [
+      320,
+      390,
+      768,
+      1440,
+      844
+    ],
+    "careReport": "output/culture-care/result.json",
+    "shopReport": "output/placard-shop/report.json"
+  }
+}

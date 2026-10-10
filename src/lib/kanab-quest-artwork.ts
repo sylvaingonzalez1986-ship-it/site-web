@@ -29,12 +29,18 @@ export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
   "BOTTE-028": "/app/kanab-quest/cards/botte-028-branchement-illegal-v3.webp",
   "BOTTE-029": "/app/kanab-quest/cards/botte-029-effeuillage-mesure-v1.webp",
   "BOTTE-030": "/app/kanab-quest/cards/botte-030-sonde-humidite-v2.webp",
-  "BOTTE-031": "/app/kanab-quest/cards/botte-031-echeancier-negocie-v3.webp",
+  "BOTTE-031": "/app/kanab-quest/cards/botte-031-charge-repartie-sylvain-v4.webp",
   "BOTTE-032": "/app/kanab-quest/cards/botte-032-loupe-trichomes-v2.webp",
   "BOTTE-033": "/app/kanab-quest/cards/botte-033-recolte-frais-v2.webp",
   "BOTTE-034": "/app/kanab-quest/cards/botte-034-gros-molosse-v3.webp",
   "BOTTE-035": "/app/kanab-quest/cards/botte-035-recolte-lots-v2.webp",
   "BOTTE-036": "/app/kanab-quest/cards/botte-036-secateur-propre-v2.webp",
+  "BOTTE-037": "/app/kanab-quest/cards/botte-037-reprise-delicate-sylvain-v2.webp",
+  "BOTTE-038": "/app/kanab-quest/cards/botte-038-humidite-reequilibree-sylvain-v2.webp",
+  "BOTTE-039": "/app/kanab-quest/cards/botte-039-reprise-experte-sylvain-v2.webp",
+  "BOTTE-040": "/app/kanab-quest/cards/botte-040-reglage-urgence-sylvain-v2.webp",
+  "BOTTE-041": "/app/kanab-quest/cards/botte-041-equipe-recolte-sylvain-v2.webp",
+  "BOTTE-042": "/app/kanab-quest/cards/botte-042-sechage-controle-sylvain-v2.webp",
   "HERITAGE-001": "/app/kanab-quest/cards/heritage-001-racines-solides-producer-v2.webp",
   "HERITAGE-002": "/app/kanab-quest/cards/heritage-002-reserve-jardinier-producer-v2.webp",
   "HERITAGE-003": "/app/kanab-quest/cards/heritage-003-main-prevoyante-producer-v2.webp",
@@ -56,7 +62,9 @@ const KQ_CARD_FRONT_VERSION_OVERRIDES: Readonly<Record<string, number>> = {
 
 export const KQ_CARD_ARTWORK: Readonly<Record<string, string>> = Object.fromEntries(
   Object.entries(KQ_CARD_ILLUSTRATIONS).map(([code, source]) => {
-    const override = code.startsWith("BOTTE-") && !["BOTTE-001", "BOTTE-007", "BOTTE-008", "BOTTE-009"].includes(code) ? 6 : KQ_CARD_FRONT_VERSION_OVERRIDES[code];
+    const retiredSubstrate = ["BOTTE-001", "BOTTE-007", "BOTTE-008", "BOTTE-009"].includes(code);
+    const retiredCare = ["BOTTE-002", "BOTTE-004", "BOTTE-010", "BOTTE-011", "BOTTE-012", "BOTTE-022", "BOTTE-023", "BOTTE-025"].includes(code);
+    const override = code.startsWith("BOTTE-") && !retiredSubstrate ? retiredCare ? 6 : 7 : KQ_CARD_FRONT_VERSION_OVERRIDES[code];
     const frontSuffix = override
       ? `-front-v${override}.webp`
       : code.startsWith("HERITAGE-")

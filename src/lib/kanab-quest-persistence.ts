@@ -7,6 +7,7 @@ import type { KqRankProfile } from "@/lib/kanab-quest-ranking";
 import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
 import { summarizeKqTentEquipment } from "./kanab-quest-production";
 import { isKqStageDecision } from "./kanab-quest-culture-analysis";
+import { isKqCareState, isKqCareReplacedCard } from "./kanab-quest-care";
 
 type SaveEnvelope<T> = { version: 1; payload: T };
 const KQ_LEGACY_HAND_SIZE = 10;
@@ -24,7 +25,9 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     const envelope: unknown = JSON.parse(raw);
     if (!isRecord(envelope) || envelope.version !== 1 || !isRecord(envelope.payload)) return null;
     const state = envelope.payload;
-    if (state.rulesVersion !== undefined && state.rulesVersion !== 2) return null;
+    if (state.rulesVersion !== undefined && state.rulesVersion !== 2 && state.rulesVersion !== 3) return null;
+    const healthRules = state.rulesVersion === 3;
+    if (healthRules ? !isKqCareState(state.care) : state.care !== undefined) return null;
     if (state.domiciliation !== undefined && state.domiciliation !== "home" && state.domiciliation !== "external") return null;
     const phases = ["prepare", "rolled", "resolved", "complete"];
     const knownCards = new Set<string>([...KQ_CARDS.map((card) => card.code), ...KQ_RETIRED_SUBSTRATE_CODES]);
@@ -38,7 +41,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (requestedUnits !== undefined && (typeof requestedUnits !== "number" || getKqProductionUnits(requestedUnits) !== requestedUnits)) return null;
     const productionUnits = getKqProductionUnits(requestedUnits as number | undefined);
     if (cultureDead && (state.phase !== "complete" || state.harvestGrams !== 0 || state.equipmentQualityBonus !== 0)) return null;
-    if (state.harvestGrams !== undefined && (!isFiniteNumber(state.harvestGrams) || state.harvestGrams < (cultureDead ? 0 : 20 * productionUnits) || state.harvestGrams > 500 * productionUnits)) return null;
+    if (state.harvestGrams !== undefined && (!isFiniteNumber(state.harvestGrams) || state.harvestGrams < (cultureDead || healthRules ? 0 : 20 * productionUnits) || state.harvestGrams > 500 * productionUnits)) return null;
     if (state.equipmentQualityBonus !== undefined && (!Number.isInteger(state.equipmentQualityBonus) || Number(state.equipmentQualityBonus) < 0 || Number(state.equipmentQualityBonus) > 20)) return null;
     if (state.powerOutage !== undefined && typeof state.powerOutage !== "boolean") return null;
     if (state.harvestLossPercent !== undefined && (!isFiniteNumber(state.harvestLossPercent) || state.harvestLossPercent < 0 || state.harvestLossPercent > 80)) return null;
@@ -107,6 +110,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (state.startedAt !== undefined && (typeof state.startedAt !== "string" || Number.isNaN(Date.parse(state.startedAt)))) return null;
     if (state.completedAt !== undefined && (typeof state.completedAt !== "string" || Number.isNaN(Date.parse(state.completedAt)))) return null;
     if (!Array.isArray(state.deckCodes) || state.deckCodes.some((code) => typeof code !== "string" || !knownCards.has(code))) return null;
+    if (healthRules && state.deckCodes.some(code => isKqCareReplacedCard(String(code)))) return null;
     if (state.handCodes !== undefined && (!Array.isArray(state.handCodes) || state.handCodes.length > KQ_LEGACY_HAND_SIZE || state.handCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
     if (state.heritageReserveCodes !== undefined && (!Array.isArray(state.heritageReserveCodes) || state.heritageReserveCodes.length > KQ_HERITAGE_RESERVE_SIZE || state.heritageReserveCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
     if (state.heritageCode !== undefined) {
@@ -141,14 +145,24 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       if (entry.total === 0) zeroSuccessStages += 1;
       if (entry.rescued === true) {
         rescuedStages += 1;
-        if (state.firstCultureRescue !== true || entry.total !== 0 || zeroSuccessStages !== 2 || rescuedStages > 1) return null;
+        if (state.firstCultureRescue !== true || (!healthRules && (entry.total !== 0 || zeroSuccessStages !== 2)) || rescuedStages > 1) return null;
       }
     }
-    if (state.firstCultureRescue === true && zeroSuccessStages >= 2 && rescuedStages !== 1) return null;
+    if (!healthRules && state.firstCultureRescue === true && zeroSuccessStages >= 2 && rescuedStages !== 1) return null;
     const unrescuedZeroStages = zeroSuccessStages - rescuedStages;
-    if (state.firstCultureRescue === true && !cultureDead && unrescuedZeroStages >= 2) return null;
+    if (!healthRules && state.firstCultureRescue === true && !cultureDead && unrescuedZeroStages >= 2) return null;
     if (!Array.isArray(state.usedCards) || !Array.isArray(state.playedThisStage) || state.usedCards.some((code) => typeof code !== "string" || !knownCards.has(code)) || state.playedThisStage.some((code) => typeof code !== "string" || !knownCards.has(code))) return null;
-    if (cultureDead && unrescuedZeroStages < 2) return null;
+    if (state.usedCards.filter(code => KQ_CARDS.find(card => card.code === code)?.rarity === "epic").length > 1) return null;
+    if (!healthRules && cultureDead && unrescuedZeroStages < 2) return null;
+    if (healthRules && isKqCareState(state.care)) {
+      if (cultureDead !== (state.care.vitality === 0)) return null;
+      const latestAllowed = Number(state.stageIndex) + Number(state.phase === "resolved");
+      if (state.care.applications.some(item => item.stageIndex > latestAllowed)
+        || state.care.problems.some(item => item.appearedAt > Number(state.stageIndex))
+        || state.care.history.some(item => item.stageIndex > latestAllowed)
+        || (state.care.lastBasicCareStage !== null && state.care.lastBasicCareStage > latestAllowed)) return null;
+      if (state.usedCards.some(code => isKqCareReplacedCard(String(code))) || state.playedThisStage.some(code => isKqCareReplacedCard(String(code)))) return null;
+    }
     const expectedHistoryLength = cultureDead ? Number(state.stageIndex) + 1
       : state.phase === "complete" ? KQ_STAGES.length : Number(state.stageIndex) + (state.phase === "resolved" ? 1 : 0);
     if (state.history.length !== expectedHistoryLength) return null;
@@ -247,6 +261,7 @@ export function parseKqRankSave(raw: string | null): KqRankProfile | null {
 
 export function createKqIntegrityCode(state: KqGameState) {
   const canonical = JSON.stringify({
+    ...(state.rulesVersion === 3 ? { rulesVersion: 3, care: state.care } : {}),
     ...(state.firstCultureRescue === true ? { firstCultureRescue: true } : {}),
     ...(state.domiciliation ? { domiciliation: state.domiciliation } : {}),
     seed: state.seed, varietyCode: state.varietyCode, deckCodes: state.deckCodes, handCodes: getKqHandCodes(state), heritageReserveCodes: state.heritageReserveCodes ?? [], handRedrawsUsed: state.handRedrawsUsed ?? 0, heritageCode: state.heritageCode ?? null, heritageName: state.heritageName ?? null, heritageTiming: state.heritageTiming ?? null, heritageEffect: state.heritageEffect ?? null, heritageProducerName: state.heritageProducerName ?? null, heritageImageUrl: state.heritageImageUrl ?? null, heritageUsed: state.heritageUsed ?? false, situationCodes: state.situationCodes,

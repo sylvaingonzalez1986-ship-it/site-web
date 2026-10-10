@@ -170,7 +170,8 @@ try {
   assert.equal((await rpc("rpc_kq_purchase_production_equipment($1,$2,$3,4)", [user, guardedPurchaseKey, ["SECURITY-CAMERA"]])).replayed, true);
   assert.equal((await rpc("rpc_kq_upgrade_production_equipment($1,$2,'SECURITY-CAMERA',1,4)", [user, guardedUpgradeKey])).replayed, true);
 
-  // All eight copies cost money; lab/energy/dog charges use frozen culture units.
+  await db.exec(await migration("20261010000900_kq_lab_analysis_per_session.sql"));
+  // Equipment, energy and dog care scale; the shared lot gets one lab analysis.
   assert.equal((await buy(["SECURITY-DOG"])).totalPriceCents, 800000);
   const snapshot = await rpc("rpc_kq_energy_snapshot($1)", [user]);
   assert.equal(snapshot.dogCare.nextTotalCents, 6400);
@@ -180,7 +181,7 @@ try {
   assert.equal(bill.total_cents, 603 * 8 + 800 * 8);
   assert.equal(bill.remaining_cents, 603 * 8);
   assert.equal(bill.dog_care.foodCents, 6400);
-  assert.equal((await one("SELECT amount_cents,remaining_cents FROM kq_lab_invoices WHERE run_id=$1", [run])).amount_cents, 36000);
+  assert.equal((await one("SELECT amount_cents,remaining_cents FROM kq_lab_invoices WHERE run_id=$1", [run])).amount_cents, 4500);
   const beforeReplay = await wallet();
   await finish(run);
   assert.deepEqual(await wallet(), beforeReplay);
@@ -296,7 +297,7 @@ try {
   assert.equal((await tentGear(2, "LED-300")).culture_wear_percent, 5);
   assert.equal((await tentGear(1, "STATIC-PLASMA")).wear_cycles, 1);
   assert.equal((await one("SELECT dog_care FROM kq_energy_invoices WHERE run_id=$1", [mixedRun])).dog_care.foodCents, 800);
-  assert.equal((await one("SELECT amount_cents FROM kq_lab_invoices WHERE run_id=$1", [mixedRun])).amount_cents, 9000);
+  assert.equal((await one("SELECT amount_cents FROM kq_lab_invoices WHERE run_id=$1", [mixedRun])).amount_cents, 4500);
   const wearAfter = await tentGear(2, "LED-300"); await finish(mixedRun); assert.deepEqual(await tentGear(2, "LED-300"), wearAfter);
 
   // Replacing one copy retires only that tent's assets and preserves the other.

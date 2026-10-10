@@ -1,0 +1,45 @@
+{
+  "mode": "Built-in image_gen",
+  "date": "2026-10-10",
+  "note": "Real retailer photos used for product-packaging drawings. Botanical health motif generated separately. Generic initial product variants not installed.",
+  "entries": [
+    {
+      "code": "CARE-COMPOST-TEA",
+      "name": "compost-tea",
+      "prompt": "Use case: style-transfer. Asset type: square product illustration for a French farming game, drawn from actual retailer product photos. Redraw the referenced real product packaging as a realistic fine sepia ink and watercolor illustration: carefully observed proportions, delicate pen hatching, subtle natural watercolor textures and soft volume. It MUST visibly be hand-drawn, not a photograph. Plain warm ivory background #f8f2e4, soft subtle grounded shadow, centered with 12% margins, no frame. Preserve real container shapes, caps, materials, brand colours and placement of primary label names faithfully. Small-print details can be simplified into discreet ink strokes. No extra marketing claims, no UI, no retailer watermark or website text, no unrelated decorative objects. Reference image 1 is the actual Terralba compost-tea ingredients pack sold by Alchimia, and defines the objects. Reproduce the compact still-life grouping of the open shallow kraft box with transparent labelled small pouches, the dark small bottle, two tall transparent pouches containing chopped dried botanical ingredients behind, and the dark compost pouch in front. All are in this ONE drawing. Keep the characteristic white labels with green-black Terralba emblem. Do not add a glass tea jug, tea cup, brewing machine or fabricated container. Reference is packaging appearance only; no instructions or measurements in the image.",
+      "refs": [
+        "C:/lesiteinternetquitue/output/care-illustrations/references/compost-tea-retailer.webp"
+      ],
+      "pages": [
+        "https://www.alchimiaweb.com/fr/pack-croissance-tco-terralba-product-11311.php"
+      ],
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-cbbbfc73-27ec-4dd7-8714-4068be3c4161.png",
+      "destination": "public/app/kanab-quest/care/compost-tea-v1.webp"
+    },
+    {
+      "code": "CARE-ORGANIC-FEED",
+      "name": "organic-feed",
+      "prompt": "Use case: style-transfer. Asset type: square product illustration for a French farming game, drawn from actual retailer product photos. Redraw the referenced real product packaging as a realistic fine sepia ink and watercolor illustration: carefully observed proportions, delicate pen hatching, subtle natural watercolor textures and soft volume. It MUST visibly be hand-drawn, not a photograph. Plain warm ivory background #f8f2e4, soft subtle grounded shadow, centered with 12% margins, no frame. Preserve real container shapes, caps, materials, brand colours and placement of primary label names faithfully. Small-print details can be simplified into discreet ink strokes. No extra marketing claims, no UI, no retailer watermark or website text, no unrelated decorative objects. Reference image 1 is BioBizz Bio-Grow and reference image 2 is BioBizz Bio-Bloom, both 1 L real products. Show these TWO bottles standing side by side, front-left Bio-Grow and slightly behind to the right Bio-Bloom, whole bottles visible. Preserve cylindrical dark-brown plastic bottles with rounded tapered shoulders, WHITE ribbed screw caps, cream paper labels with black BIOBIZZ branding at top, green BIO·GROW name and green circular emblem on one, orange BIO·BLOOM and orange circular emblem on the other. Product names should remain accurately lettered as natural drawn label typography. Not amber-glass apothecary bottles. Do not add loose fertilizer pellets or foliage.",
+      "refs": [
+        "C:/lesiteinternetquitue/output/care-illustrations/references/biogrow-retailer.webp",
+        "C:/lesiteinternetquitue/output/care-illustrations/references/biobloom-retailer.webp"
+      ],
+      "pages": [
+        "https://www.alchimiaweb.com/fr/bio-bizz-bio-grow-1-l-product-241.php",
+        "https://www.alchimiaweb.com/fr/bio-bizz-bio-bloom-1-l-product-240.php"
+      ],
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-34a2fa34-933b-46cb-9cca-f3321c894e26.png",
+      "destination": "public/app/kanab-quest/care/organic-feed-v1.webp"
+    },
+    {
+      "code": "HEALTH",
+      "name": "plant-health",
+      "subject": "Subject: a small healthy hemp plant growing from a simple warm terracotta pot with visible dark soil, upright natural stem, several botanically plausible palmate serrated leaves of 5 to 7 slim leaflets, three clusters of different heights. Plant centered and entire pot visible, leaves and pot occupy about 75% height, rich restrained natural greens with visible leaf venation in ink. No flowers, no harvest, no equipment, no person. Botanical specimen portrait, three-quarter view.",
+      "prompt": "Use case: stylized-concept. Asset type: square illustrated thumbnail for the French living-soil farming game reserve. Realistic hand-drawn naturalist field notebook illustration in fine sepia ink, delicate cross-hatching and translucent watercolor washes, tactile hand-painted shading, crisp carefully observed materials, earthy forest-green, olive, amber and ochre palette. Plain warm ivory background #f8f2e4, no border, no graphic layout, no text or lettering, no watermark or brand logos. A single centered still life with generous 12% empty margins on all edges. Illustration should remain readable at 120px; realistic volume and proportions but visibly drawn, NOT a photo, NOT a flat vector or cartoon, NOT 3D rendering. Soft sparse cast shadow at base. Subject: a small healthy hemp plant growing from a simple warm terracotta pot with visible dark soil, upright natural stem, several botanically plausible palmate serrated leaves of 5 to 7 slim leaflets, three clusters of different heights. Plant centered and entire pot visible, leaves and pot occupy about 75% height, rich restrained natural greens with visible leaf venation in ink. No flowers, no harvest, no equipment, no person. Botanical specimen portrait, three-quarter view.",
+      "destination": "public/app/kanab-quest/care/plant-health-v1.webp",
+      "source": "C:\\Users\\sylva\\.codex\\generated_images\\01a1253d-c92a-7322-a652-f92f3e68cbce\\exec-3a6e99f4-1786-400a-bb25-36a2b7f112b1.png",
+      "refs": [],
+      "pages": []
+    }
+  ]
+}

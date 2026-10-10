@@ -1,0 +1,91 @@
+{
+  "generatedAt": "2026-10-10",
+  "mode": "built-in image_gen",
+  "intent": "Faithful watercolor and fine ink drawings from real reseller product photographs, replacing generic organism-only draft concepts.",
+  "background": "#f8f2e4",
+  "notes": [
+    "Reference photographs remain in output/care-illustrations/pbi-references for traceability; generated originals remain under CODEX_HOME.",
+    "Packaging sizes and organism counts are visual reference details, not a change to the game's one-charge purchase unit.",
+    "Original natural-history insect drafts were not installed as catalogue assets after the user's clarification."
+  ],
+  "items": [
+    {
+      "key": "aphidius",
+      "product": "Koppert Aphipar",
+      "page": "https://saltonverde.com/fr/produit/aphipar-aphidius-colemani-koppert/",
+      "url": "https://saltonverde.com/wp-content/uploads/2026/04/aphipar-aphidius-colemani-koppert-01.jpg",
+      "prompt": "Use case: style-transfer. Asset type: compact illustrated real product in a French botanical gardening game catalogue. Use the attached RESELLER PRODUCT PHOTOGRAPH as the authoritative packaging reference. Create a faithful hand-drawn realistic illustration of this exact commercial product. Preserve its silhouette, proportions, cap, material, label color blocks, product name, visible main brand name and label artwork, with no invented packaging. Rendering: delicate sepia ink outlines with naturalistic translucent watercolor washes, careful material detail, warm ivory background #f8f2e4 completely opaque, premium restrained botanical field-guide aesthetic. This is a DRAWING faithful to the real photograph, not a photograph, not a generic substitute, not glossy 3D. Product alone upright at a slight three-quarter angle, centered in a square canvas and filling about 74% of height, ample margins, subtle watercolor grounding shadow. Keep text ONLY where it belongs on the physical label. No surrounding captions, no extra frame, no fake instruction panels, no people. Make the MAIN product name on its label legible; small label text can remain unobtrusive drawn micro-detail. Exact subject: the Koppert Aphipar bottle photographed here, translucent tall cylindrical white/frosted plastic with narrow sloping shoulders, a ribbed forest-green cap, beige fine carrier material visible below label, lime-green label photo panel with parasitoid wasp, large white K, Koppert and dark-green \"Aphipar\" at the base of label, blue count pill. Reproduce the real package without adding an external insect or changing product name.",
+      "referencePath": "C:/lesiteinternetquitue/output/care-illustrations/pbi-references/aphidius.jpg",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a125ca-d6d1-7433-b014-b97a4aec38cb\\exec-e64a3816-c868-4a1f-9a01-0d0eec0b9869.png",
+      "destination": "public/app/kanab-quest/care/aphidius-v1.webp",
+      "width": 640,
+      "height": 640,
+      "webpQuality": 82
+    },
+    {
+      "key": "phytoseiulus",
+      "product": "Koppert Spidex Vital",
+      "page": "https://retail.koppert.ca/fr/products/spidex-vital",
+      "url": "https://retail.koppert.ca/cdn/shop/products/spidex-vital-2000-100ml.jpg?v=1735832518",
+      "prompt": "Use case: style-transfer. Asset type: compact illustrated real product in a French botanical gardening game catalogue. Use the attached RESELLER PRODUCT PHOTOGRAPH as the authoritative packaging reference. Create a faithful hand-drawn realistic illustration of this exact commercial product. Preserve its silhouette, proportions, cap, material, label color blocks, product name, visible main brand name and label artwork, with no invented packaging. Rendering: delicate sepia ink outlines with naturalistic translucent watercolor washes, careful material detail, warm ivory background #f8f2e4 completely opaque, premium restrained botanical field-guide aesthetic. This is a DRAWING faithful to the real photograph, not a photograph, not a generic substitute, not glossy 3D. Product alone upright at a slight three-quarter angle, centered in a square canvas and filling about 74% of height, ample margins, subtle watercolor grounding shadow. Keep text ONLY where it belongs on the physical label. No surrounding captions, no extra frame, no fake instruction panels, no people. Make the MAIN product name on its label legible; small label text can remain unobtrusive drawn micro-detail. Exact subject: the small Koppert Spidex Vital bottle photographed here, straight slim cylindrical frosted-plastic body, ribbed dark-green cap nearly as wide as the bottle, green leaf-and-pale-mite label image, white K and Koppert, large dark-green \"Spidex Vital\", small purple count pill, beige carrier at base. Preserve the short straight cap-to-body transition and slim bottle proportions. No external insect.",
+      "referencePath": "C:/lesiteinternetquitue/output/care-illustrations/pbi-references/phytoseiulus.jpg",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a125ca-d6d1-7433-b014-b97a4aec38cb\\exec-1faf6729-a719-46a1-907a-6365126c0f32.png",
+      "destination": "public/app/kanab-quest/care/phytoseiulus-v1.webp",
+      "width": 640,
+      "height": 640,
+      "webpQuality": 82
+    },
+    {
+      "key": "swirskii",
+      "product": "Koppert Swirski-Mite Plus",
+      "page": "https://retail.koppert.ca/collections/amblyseius-swirskii/products/swirskimite-plus",
+      "url": "https://retail.koppert.ca/cdn/shop/files/swirski-plus-sachets.jpg?v=1735832571",
+      "prompt": "Use case: style-transfer. Asset type: compact illustrated real product in a French botanical gardening game catalogue. Use the attached RESELLER PRODUCT PHOTOGRAPH as the authoritative packaging reference. Create a faithful hand-drawn realistic illustration of this exact commercial product. Preserve its silhouette, proportions, cap, material, label color blocks, product name, visible main brand name and label artwork, with no invented packaging. Rendering: delicate sepia ink outlines with naturalistic translucent watercolor washes, careful material detail, warm ivory background #f8f2e4 completely opaque, premium restrained botanical field-guide aesthetic. This is a DRAWING faithful to the real photograph, not a photograph, not a generic substitute, not glossy 3D. Product alone upright at a slight three-quarter angle, centered in a square canvas and filling about 74% of height, ample margins, subtle watercolor grounding shadow. Keep text ONLY where it belongs on the physical label. No surrounding captions, no extra frame, no fake instruction panels, no people. Make the MAIN product name on its label legible; small label text can remain unobtrusive drawn micro-detail. Exact subject: ONE Koppert Swirski-Mite Plus hanging paper sachet. Faithfully preserve the long narrow packet, dark forest-green cardboard hanging tab with large punched circular hole and left slit, off-white center with large green K and Koppert wordmark, terracotta-orange lower panel carrying white \"Swirski-Mite Plus\", and orange sealed bottom edge. Only this sachet, no bottle, no box, no external insect. Paper creases and cardboard cutout should be delicately drawn.",
+      "referencePath": "C:/lesiteinternetquitue/output/care-illustrations/pbi-references/swirskii.jpg",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a125ca-d6d1-7433-b014-b97a4aec38cb\\exec-132e8256-4567-4512-bf85-7ad1bef66048.png",
+      "destination": "public/app/kanab-quest/care/swirskii-v1.webp",
+      "width": 640,
+      "height": 640,
+      "webpQuality": 82
+    },
+    {
+      "key": "orius",
+      "product": "Koppert Thripor-L",
+      "page": "https://www.saltonverde.com/fr/produit/thripor-l-orius-laevigatus-koppert/",
+      "url": "https://saltonverde.com/wp-content/uploads/2026/04/thripor-l-orius-laevigatus-koppert-01.jpg",
+      "prompt": "Use case: style-transfer. Asset type: compact illustrated real product in a French botanical gardening game catalogue. Use the attached RESELLER PRODUCT PHOTOGRAPH as the authoritative packaging reference. Create a faithful hand-drawn realistic illustration of this exact commercial product. Preserve its silhouette, proportions, cap, material, label color blocks, product name, visible main brand name and label artwork, with no invented packaging. Rendering: delicate sepia ink outlines with naturalistic translucent watercolor washes, careful material detail, warm ivory background #f8f2e4 completely opaque, premium restrained botanical field-guide aesthetic. This is a DRAWING faithful to the real photograph, not a photograph, not a generic substitute, not glossy 3D. Product alone upright at a slight three-quarter angle, centered in a square canvas and filling about 74% of height, ample margins, subtle watercolor grounding shadow. Keep text ONLY where it belongs on the physical label. No surrounding captions, no extra frame, no fake instruction panels, no people. Make the MAIN product name on its label legible; small label text can remain unobtrusive drawn micro-detail. Exact subject: Koppert Thripor-L straight cylindrical frosted bottle in the source photograph, broad forest-green ribbed cap, pale green label with a dark predatory insect portrait, white K and Koppert, dark-green \"Thripor-L\" product name, green count pill and small ORIUS LAEVIGATUS beneath. Dark grey-brown buckwheat carrier visible at bottom. Preserve the actual label layout, no invented packaging, no external insect.",
+      "referencePath": "C:/lesiteinternetquitue/output/care-illustrations/pbi-references/orius.jpg",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a125ca-d6d1-7433-b014-b97a4aec38cb\\exec-992be52f-4063-4de5-9ac5-40d9beb1e3b3.png",
+      "destination": "public/app/kanab-quest/care/orius-v1.webp",
+      "width": 640,
+      "height": 640,
+      "webpQuality": 82
+    },
+    {
+      "key": "chrysoperla",
+      "product": "Koppert Chrysopa",
+      "page": "https://retail.koppert.ca/products/chrysopa",
+      "url": "https://retail.koppert.ca/cdn/shop/products/chrysopa-1000-500ml.jpg?v=1735832585",
+      "prompt": "Use case: style-transfer. Asset type: compact illustrated real product in a French botanical gardening game catalogue. Use the attached RESELLER PRODUCT PHOTOGRAPH as the authoritative packaging reference. Create a faithful hand-drawn realistic illustration of this exact commercial product. Preserve its silhouette, proportions, cap, material, label color blocks, product name, visible main brand name and label artwork, with no invented packaging. Rendering: delicate sepia ink outlines with naturalistic translucent watercolor washes, careful material detail, warm ivory background #f8f2e4 completely opaque, premium restrained botanical field-guide aesthetic. This is a DRAWING faithful to the real photograph, not a photograph, not a generic substitute, not glossy 3D. Product alone upright at a slight three-quarter angle, centered in a square canvas and filling about 74% of height, ample margins, subtle watercolor grounding shadow. Keep text ONLY where it belongs on the physical label. No surrounding captions, no extra frame, no fake instruction panels, no people. Make the MAIN product name on its label legible; small label text can remain unobtrusive drawn micro-detail. Exact subject: the Koppert Chrysopa 500 ml bottle photographed here, broad translucent white plastic body with sloping shoulders and narrower ribbed dark-green cap, dark-green label with pale green lacewing-wing artwork and white K and Koppert, dark-green \"Chrysopa\" and a light blue \"1000\" pill, dark brown buckwheat-hull carrier showing below label. Preserve the actual label artwork even though the product carries larvae. Do not add a winged adult outside the package.",
+      "referencePath": "C:/lesiteinternetquitue/output/care-illustrations/pbi-references/chrysoperla.jpg",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a125ca-d6d1-7433-b014-b97a4aec38cb\\exec-0aac54d5-7258-47a8-b158-994822772a4d.png",
+      "destination": "public/app/kanab-quest/care/chrysoperla-v1.webp",
+      "width": 640,
+      "height": 640,
+      "webpQuality": 82
+    },
+    {
+      "key": "coccinella",
+      "product": "Plantura Siebenpunkt-Marienkäfer",
+      "page": "https://shop.plantura.garden/products/marienkaefer",
+      "url": "https://shop.plantura.garden/cdn/shop/files/plantura-siebenpunkt-marienkaefer.png?v=1790066564",
+      "prompt": "Use case: style-transfer. Asset type: compact illustrated real product in a French botanical gardening game catalogue. Use the attached RESELLER PRODUCT PHOTOGRAPH as the authoritative packaging reference. Create a faithful hand-drawn realistic illustration of this exact commercial product. Preserve its silhouette, proportions, cap, material, label color blocks, product name, visible main brand name and label artwork, with no invented packaging. Rendering: delicate sepia ink outlines with naturalistic translucent watercolor washes, careful material detail, warm ivory background #f8f2e4 completely opaque, premium restrained botanical field-guide aesthetic. This is a DRAWING faithful to the real photograph, not a photograph, not a generic substitute, not glossy 3D. Product alone upright at a slight three-quarter angle, centered in a square canvas and filling about 74% of height, ample margins, subtle watercolor grounding shadow. Keep text ONLY where it belongs on the physical label. No surrounding captions, no extra frame, no fake instruction panels, no people. Make the MAIN product name on its label legible; small label text can remain unobtrusive drawn micro-detail. Exact subject: from the Plantura product photo show ONLY the real tan KRAFT PAPER cylindrical release pot and its clear plastic circular lid leaning beside it. Omit the large marketing leaflet standing behind. Preserve straw-like pale wood wool inside the open kraft pot and 2 small realistic red-and-black seven-spot ladybirds visible on the wood wool, anatomically plausible. Each visible ladybird should be Coccinella septempunctata, seven black spots on red elytra. Preserve the navy-blue circular lid label, Plantura logo and \"PLANTURA\", white German product name \"SIEBENPUNKT-MARIENKÄFER\" and small \"gegen Blattläuse\". Three-quarter view. Do NOT turn the pot into a bottle or add a mascot. The source image has transparent outer pixels shown black in some viewers; replace all background with requested opaque warm ivory.",
+      "referencePath": "C:/lesiteinternetquitue/output/care-illustrations/pbi-references/coccinella.png",
+      "generatedSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a125ca-d6d1-7433-b014-b97a4aec38cb\\exec-332d0da8-3b51-4904-aff9-ba46fd01033d.png",
+      "destination": "public/app/kanab-quest/care/coccinella-v1.webp",
+      "width": 640,
+      "height": 640,
+      "webpQuality": 82
+    }
+  ]
+}

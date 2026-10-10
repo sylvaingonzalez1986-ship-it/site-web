@@ -1,20 +1,21 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { KQ_CARDS, KQ_SITUATIONS, KQ_STAGES, buildKqScenarioPath, canPlayKqCard, playKqCard, previewKqResolution, rollKqDice, startKqGame, type KqGameState } from "@/lib/kanab-quest-game";
+import { KQ_ACTIVE_CARDS, KQ_CARDS, KQ_SITUATIONS, KQ_STAGES, buildKqScenarioPath, canPlayKqCard, playKqCard, previewKqResolution, rollKqDice, startKqGame, type KqGameState } from "@/lib/kanab-quest-game";
 import { getKqCardGuide } from "@/lib/kanab-quest-card-guide";
-import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
+import { isKqCareReplacedCard } from "@/lib/kanab-quest-care";
 
-function stateFor(code: string, situationCode: string, dice: [number, number, number], seed = 42): KqGameState {
+function stateFor(code: string, situationCode: string, dice: [number, number, number], seed = 42, rulesVersion: 2 | 3 = 3): KqGameState {
   const situation = KQ_SITUATIONS.find((item) => item.code === situationCode)!;
   const stageIndex = KQ_STAGES.indexOf(situation.stage);
-  const base = startKqGame(seed, { deckCodes: [code], collectionCodes: [code], startingXp: 9 });
+  const base = startKqGame(seed, { rulesVersion, deckCodes: [code], collectionCodes: [code], startingXp: 9 });
   return { ...base, stageIndex, situationCodes: base.situationCodes.map((item, i) => i === stageIndex ? situationCode : item), handCodes: [code], phase: "rolled", dice, revealedPest: situation.pest ?? null };
 }
 
 describe("Le Placard : deck indoor", () => {
   it("replaces soil accessories without removing collectible codes or changing rarity", () => {
-    expect(KQ_CARDS).toHaveLength(32);
+    expect(KQ_ACTIVE_CARDS).toHaveLength(30);
+    expect(KQ_CARDS).toHaveLength(38);
     const expected = { "BOTTE-013": "common", "BOTTE-018": "uncommon", "BOTTE-019": "common", "BOTTE-020": "uncommon", "BOTTE-021": "rare", "BOTTE-024": "common" };
     for (const [code, rarity] of Object.entries(expected)) {
       expect(KQ_CARDS.find((card) => card.code === code)?.rarity).toBe(rarity);
@@ -35,14 +36,14 @@ describe("Le Placard : deck indoor", () => {
     });
   });
 
-  it("keeps every card playable on at least one incident and die combination", () => {
+  it("keeps active operation cards playable and leaves observation and PBI to the care panel", () => {
     for (const card of KQ_CARDS) {
       const usable = KQ_SITUATIONS.some((situation) => [[1, 2, 3], [2, 4, 5], [1, 1, 4]].some((dice) => {
         const state = stateFor(card.code, situation.code, dice as [number, number, number]);
         if (card.timing === "before-roll") state.phase = "prepare";
         return canPlayKqCard(state, card).allowed;
       }));
-      expect(usable, card.code).toBe(true);
+      expect(usable, card.code).toBe(!isKqCareReplacedCard(card.code));
     }
   });
 
@@ -89,11 +90,11 @@ describe("Le Placard : deck indoor", () => {
     expect(previewKqResolution(next)?.outcome).toBe("fragile");
   });
 
-  it("specializes Swirskii on thrips while preserving Persimilis for mites", () => {
+  it("retains historical Swirskii card rules for archived runs", () => {
     const card = KQ_CARDS.find((item) => item.code === "BOTTE-011")!;
     expect(card.xpCost).toBe(1);
-    expect(canPlayKqCard(stateFor(card.code, "SIT-013", [2, 3, 5]), card).allowed).toBe(false);
-    expect(playKqCard(stateFor(card.code, "SIT-014", [2, 3, 5]), card.code).dice).toEqual([5, 3, 5]);
+    expect(canPlayKqCard(stateFor(card.code, "SIT-013", [2, 3, 5], 42, 2), card).allowed).toBe(false);
+    expect(playKqCard(stateFor(card.code, "SIT-014", [2, 3, 5], 42, 2), card.code).dice).toEqual([5, 3, 5]);
   });
 
   it("visits every incident, including seven-item pools, and avoids recent events", () => {
@@ -110,20 +111,18 @@ describe("Le Placard : deck indoor", () => {
     expect(buildKqScenarioPath(13)).toEqual(first);
   });
 
-  it("keeps all 32 SQL rules aligned and historical artwork available without touching ownership", () => {
+  it("keeps the applied 32-card migration and its artwork readable without rewriting history", () => {
     const sql = readFileSync("supabase/migrations/20260913000600_kq_indoor_deck_redesign.sql", "utf8");
     const rows = JSON.parse(sql.split("$deck$")[1]);
-    expect(rows).toHaveLength(KQ_CARDS.length);
-    for (const card of KQ_CARDS) {
+    expect(rows).toHaveLength(32);
+    for (const card of KQ_CARDS.filter(item => Number(item.code.slice(6)) <= 36)) {
       const row = rows.find((item: { code: string }) => item.code === card.code);
       expect(row, card.code).toMatchObject({
-        name: card.name, description: card.description, effect: card.effect,
-        category: card.category, timing: card.timing, xp_cost: card.xpCost, tags: card.tags, targets: card.targets ?? [],
-        advantage: getKqCardGuide(card).benefit, drawback: getKqCardGuide(card).risk,
+        effect: card.effect, category: card.category, timing: card.timing,
+        xp_cost: card.xpCost, targets: card.targets ?? [],
       });
-      // This applied migration shipped v5. The current frontend can use a later front
-      // without changing the card's rules or breaking persisted historical image URLs.
-      expect(row.image_url, card.code).toBe(getKqCardArtwork(card.code)?.replace(/-front-v\d+\.webp$/, "-front-v5.webp"));
+      // Current names and scopes evolve in a new migration; these applied image URLs stay readable.
+      expect(row.image_url, card.code).toMatch(/-front-v5\.webp$/);
       expect(existsSync(join(process.cwd(), "public", row.image_url.slice(1))), row.image_url).toBe(true);
     }
     expect(sql).not.toMatch(/DELETE FROM|UPDATE public\.lottery_card_instances|SET rarity|SET is_active/i);

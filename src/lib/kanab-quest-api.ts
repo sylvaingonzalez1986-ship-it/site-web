@@ -1,6 +1,8 @@
 import type { KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import type { KqEnergyMode } from "@/lib/kanab-quest-energy";
 import type { KqGameState } from "@/lib/kanab-quest-game";
+import type { KqCareProduct, getKqCannabinoidReport } from "@/lib/kanab-quest-care";
+import type { KqStorageContainer, KqStorageMethod, KqStorageMethodCode, KqStorageProjection } from "@/lib/kanab-quest-storage";
 
 export type KqApiBurnReceipt = {
   id: string;
@@ -12,6 +14,8 @@ export type KqApiBurnReceipt = {
 };
 
 export type KqOfficialFlower = {
+  rulesVersion?: number;
+  cannabinoidReport?: ReturnType<typeof getKqCannabinoidReport>;
   id: string;
   runId: string;
   varietyCode: string;
@@ -28,6 +32,8 @@ export type KqOfficialFlower = {
 };
 
 export type KqFlowerRival = {
+  rulesVersion?: number;
+  cannabinoidReport?: ReturnType<typeof getKqCannabinoidReport>;
   flowerId: string;
   varietyName: string;
   quality: number;
@@ -44,8 +50,8 @@ export type KqOfficialBattle = {
   id: string;
   status: "locked" | "verdict" | "cancelled";
   seed: number;
-  playerFlower: { id: string; variety: string; stats: Record<string, number> };
-  opponentFlower: { id: string; variety: string; stats: Record<string, number> };
+  playerFlower: { id: string; variety: string; stats: Record<string, number>; rulesVersion?: number; cannabinoidReport?: ReturnType<typeof getKqCannabinoidReport> };
+  opponentFlower: { id: string; variety: string; stats: Record<string, number>; rulesVersion?: number; cannabinoidReport?: ReturnType<typeof getKqCannabinoidReport> };
   rounds: Array<{ code: string; label: string; explanation: string; playerScore: number; opponentScore: number; winner: "player" | "opponent" }>;
   winner: "player" | "opponent" | null;
   lockedAt: string;
@@ -105,6 +111,46 @@ async function readKqResponse<T>(response: Response): Promise<T> {
   }
   if (!response.ok) throw new Error(payload.error || "Le serveur du Placard ne répond pas.");
   return payload;
+}
+
+export type KqCareInventory = Array<{ productCode: string; quantity: number }>;
+export type KqStorageSnapshot = {
+  serverNow: string; cashCents: number; ownedMethodCodes: KqStorageMethodCode[]; defaultMethodCode: KqStorageMethodCode;
+  catalog: readonly KqStorageMethod[];
+  containers: readonly KqStorageContainer[];
+  ownedContainers: Record<string, number>;
+  capacity: { totalUnits: number; usedUnits: number; freeUnits: number; reservedUnits: number; overflowUnits: number };
+  overflowSales: Array<{ flowerId: string; units: number; payoutCents: number; netPayoutCents: number; soldAt: string; automatic: boolean }>;
+  lots: Array<{ flowerId: string; varietyName: string; harvestGrams: number; flowerStatus: string; projection: KqStorageProjection;
+    overflowOffer?: { units: number; payoutCents: number; netPayoutCents: number } }>;
+};
+export async function getKqRemoteStorage(request: typeof fetch = fetch) {
+  return readKqResponse<KqStorageSnapshot>(await request("/api/admin/placard/storage", { cache: "no-store" }));
+}
+export async function changeKqRemoteStorage(input: {
+  action: "buy" | "select-default" | "assign" | "sell-overflow"; methodCode?: KqStorageMethodCode;
+  containerCode?: string; quantity?: number; flowerId?: string; requestKey: string;
+}, request: typeof fetch = fetch) {
+  return readKqResponse<KqStorageSnapshot>(await request("/api/admin/placard/storage", {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(input),
+  }));
+}
+export type KqCareShop = { cashCents: number; basicCarePriceCents?: number; inventory: KqCareInventory; catalog: readonly KqCareProduct[] };
+
+export async function getKqRemoteCareShop(request: typeof fetch = fetch) {
+  return readKqResponse<KqCareShop>(await request("/api/admin/placard/care", { cache: "no-store" }));
+}
+
+export async function purchaseKqRemoteCareProduct(input: { productCode: string; quantity: number; requestKey: string }, request: typeof fetch = fetch) {
+  return readKqResponse<{ cashCents: number; inventory: KqCareInventory; totalPriceCents: number; replayed: boolean }>(await request("/api/admin/placard/care", {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(input),
+  }));
+}
+
+export async function applyKqRemoteCare(runId: string, input: { productCode?: string; action?: "basic"; basicPriceCents?: number; requestKey: string; expectedUpdatedAt?: string }, request: typeof fetch = fetch) {
+  return readKqResponse<{ state: KqGameState; updatedAt: string; cashCents: number; chargedCents: number; inventory: KqCareInventory; replayed: boolean }>(await request(`/api/admin/placard/runs/${encodeURIComponent(runId)}/care`, {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(input),
+  }));
 }
 
 export async function startKqRemoteRun(

@@ -511,6 +511,103 @@ async function checkStockAccounting(owner) {
   console.log('PASS: securities acquisition, cost basis, replay, realized EUR gain/loss and current/previous/all periods reconcile independently of crypto.');
 }
 
+async function checkLabSessionCorrection() {
+  // Execute the former fleet billing function, then correct its real invoices
+  // using the existing treasury observers, with no manual accounting postings.
+  const oldSql=await migration('20260923001000_kq_production_expansion.sql');
+  await db.exec(oldSql.slice(oldSql.indexOf('CREATE FUNCTION public.kq_run_production_units'),oldSql.indexOf('CREATE FUNCTION public.rpc_kq_expand_production')));
+  await db.exec(oldSql.slice(oldSql.indexOf('ALTER TABLE public.kq_lab_invoices'),oldSql.indexOf('CREATE OR REPLACE FUNCTION public.kq_invoice_completed_cycle')));
+  const fixtures=[];
+  for(const scenario of [
+    {name:'unpaid',units:2,paid:0,stock:true},
+    {name:'partially paid below fee',units:2,paid:2000},
+    {name:'already paid exact fee',units:2,paid:4500},
+    {name:'partially overpaid',units:2,paid:7000},
+    {name:'fully paid',units:2,paid:9000},
+    {name:'eight tents fully paid',units:8,paid:36000},
+    {name:'uninitialized treasury',units:8,paid:12000,uninitialized:true},
+    {name:'already correct',units:1,paid:0},
+  ]) {
+    const owner=await player({balance:35000,completed:false});
+    await reward(owner,100000);
+    if(scenario.uninitialized) await db.query('DELETE FROM kq_treasury_accounts WHERE user_id=$1',[owner]);
+    const run=randomUUID();
+    await db.query("INSERT INTO kq_runs(id,user_id,state,status) VALUES($1,$2,$3::jsonb,'active')",[run,owner,JSON.stringify({equipment:{productionUnits:scenario.units}})]);
+    await db.query("UPDATE kq_runs SET status='completed',completed_at=now() WHERE id=$1",[run]);
+    let invoice=await result('SELECT * FROM kq_lab_invoices WHERE run_id=$1',[run]);
+    assert.equal(invoice.amount_cents,4500*scenario.units,scenario.name+' exercises historical charge');
+    if(scenario.paid===invoice.amount_cents) {
+      await command(owner,'pay-lab',{invoiceId:invoice.id});
+    } else if(scenario.paid>0) {
+      await db.transaction(async tx=>{
+        await tx.query('UPDATE kq_equipment_wallets SET cash_cents=cash_cents-$2 WHERE user_id=$1',[owner,scenario.paid]);
+        await tx.query('UPDATE kq_lab_invoices SET remaining_cents=remaining_cents-$2,due_processed_at=now() WHERE id=$1',[invoice.id,scenario.paid]);
+        await tx.query("INSERT INTO kq_business_ledger(user_id,kind,amount_cents) VALUES($1,'lab-paid',$2)",[owner,scenario.paid]);
+      });
+    }
+    if(scenario.stock) {
+      const stockId=await stock(owner);
+      await db.query('UPDATE kq_flowers SET run_id=$2 WHERE id=(SELECT flower_id FROM kq_commerce_stock WHERE id=$1)',[stockId,run]);
+    }
+    invoice=await result('SELECT * FROM kq_lab_invoices WHERE run_id=$1',[run]);
+    const before=scenario.uninitialized?null:await inspected(owner);
+    fixtures.push({...scenario,owner,run,invoice,before,cash:await cash(owner),revision:(await result('SELECT revision FROM kq_commerce_accounts WHERE user_id=$1',[owner])).revision});
+  }
+  // Multiple invoices share one account lock and one quote revision bump.
+  const multipleOwner=fixtures[0].owner,multipleRun=randomUUID();
+  await db.query("INSERT INTO kq_runs(id,user_id,state,status) VALUES($1,$2,'{\"equipment\":{\"productionUnits\":4}}','active')",[multipleRun,multipleOwner]);
+  await db.query("UPDATE kq_runs SET status='completed',completed_at=now() WHERE id=$1",[multipleRun]);
+  const multipleInvoice=await result('SELECT * FROM kq_lab_invoices WHERE run_id=$1',[multipleRun]);
+  fixtures[0].revision=(await result('SELECT revision FROM kq_commerce_accounts WHERE user_id=$1',[multipleOwner])).revision;
+  fixtures[0].before=await inspected(multipleOwner);
+  const historicLedger=(await db.query('SELECT * FROM kq_business_ledger ORDER BY id')).rows;
+  const saleReceipts=(await db.query('SELECT * FROM kq_market_sale_receipts ORDER BY id')).rows;
+  const commandReceipts=(await db.query('SELECT * FROM kq_commerce_requests ORDER BY user_id,request_key')).rows;
+  await db.exec(await migration('20261010000900_kq_lab_analysis_per_session.sql'));
+  for(const fixture of fixtures) {
+    const invoice=await result('SELECT * FROM kq_lab_invoices WHERE id=$1',[fixture.invoice.id]);
+    const remaining=Math.max(4500-fixture.paid,0),refund=Math.max(fixture.paid-4500,0);
+    assert.deepEqual(invoice,{...fixture.invoice,amount_cents:4500,remaining_cents:remaining},fixture.name+' keeps invoice identity and dates');
+    assert.equal(await cash(fixture.owner),fixture.cash+refund,fixture.name+' refunds exact overpayment');
+    assert.equal((await result('SELECT revision FROM kq_commerce_accounts WHERE user_id=$1',[fixture.owner])).revision,fixture.revision+(fixture.units>1?1:0),fixture.name+' invalidates stale offers');
+    const adjusted=Number((await result("SELECT COALESCE(sum(amount_cents),0) AS amount FROM kq_business_ledger WHERE user_id=$1 AND kind='lab-adjusted'",[fixture.owner])).amount);
+    const refunded=Number((await result("SELECT COALESCE(sum(amount_cents),0) AS amount FROM kq_business_ledger WHERE user_id=$1 AND kind='lab-refunded'",[fixture.owner])).amount);
+    assert.equal(adjusted,fixture.invoice.remaining_cents-remaining+(fixture.owner===multipleOwner?13500:0));
+    assert.equal(refunded,refund);
+    const view=await inspected(fixture.owner);
+    assert.equal(view.report.income.revenueCents,fixture.before?.report.income.revenueCents??0,'refund never becomes revenue');
+    assert.equal(view.report.cash.availableCents,fixture.cash+refund);
+    assert.equal(view.data.closingBalances.lab_payable,0-remaining-(fixture.owner===multipleOwner?4500:0));
+    if(fixture.stock) assert.equal(view.data.closingBalances.stock,4500,'stock uses single analysis cost');
+    if(fixture.uninitialized) assert.equal(view.data.journal.total,1,'uninitialized treasury opens at corrected balances');
+  }
+  assert.deepEqual(await result('SELECT * FROM kq_lab_invoices WHERE id=$1',[multipleInvoice.id]),{...multipleInvoice,amount_cents:4500,remaining_cents:4500});
+  assert.deepEqual((await db.query("SELECT * FROM kq_business_ledger WHERE kind NOT IN ('lab-adjusted','lab-refunded') ORDER BY id")).rows,historicLedger,'original issue/payment history survives');
+  assert.deepEqual((await db.query('SELECT * FROM kq_market_sale_receipts ORDER BY id')).rows,saleReceipts,'historical sale deductions survive');
+  assert.deepEqual((await db.query('SELECT * FROM kq_commerce_requests ORDER BY user_id,request_key')).rows,commandReceipts,'historical command receipts survive');
+  async function correctionSnapshot() {
+    return (await result(`SELECT jsonb_build_object(
+      'invoices',(SELECT jsonb_agg(to_jsonb(i) ORDER BY id) FROM kq_lab_invoices i),
+      'wallets',(SELECT jsonb_agg(to_jsonb(w) ORDER BY user_id) FROM kq_equipment_wallets w),
+      'ledger',(SELECT count(*) FROM kq_business_ledger),'journal',(SELECT count(*) FROM kq_treasury_journal),
+      'revisions',(SELECT jsonb_agg(jsonb_build_array(user_id,revision) ORDER BY user_id) FROM kq_commerce_accounts)) AS value`)).value;
+  }
+  const corrected=await correctionSnapshot();
+  await db.exec(await migration('20261010000900_kq_lab_analysis_per_session.sql'));
+  assert.deepEqual(await correctionSnapshot(),corrected,'migration replay cannot duplicate refunds or postings');
+  for(const units of [1,2,3,4,8]) {
+    const owner=fixtures.at(-1).owner,run=randomUUID();
+    await db.query("INSERT INTO kq_runs(id,user_id,state,status) VALUES($1,$2,$3::jsonb,'active')",[run,owner,JSON.stringify({equipment:{productionUnits:units}})]);
+    await db.query("UPDATE kq_runs SET status='completed',completed_at=now() WHERE id=$1",[run]);
+    const invoice=await result('SELECT * FROM kq_lab_invoices WHERE run_id=$1',[run]);
+    assert.equal(invoice.amount_cents,4500,units+' tents get one analysis');
+    await db.query("UPDATE kq_runs SET status='completed' WHERE id=$1",[run]);
+    assert.deepEqual(await result('SELECT * FROM kq_lab_invoices WHERE run_id=$1',[run]),invoice,'completion replay preserves one invoice');
+  }
+  await assert.rejects(()=>db.query('UPDATE kq_lab_invoices SET amount_cents=9000 WHERE id=$1',[multipleInvoice.id]),/kq_lab_invoices_amount_cents_check/);
+  console.log('PASS: flat session analysis, historical debt/refunds, receipts, stock repricing, initialized/uninitialized treasury, completion and migration replay.');
+}
+
 async function checkPermissions(owner) {
   for(const role of ['anon','authenticated']) {
     const routines=await db.query(`SELECT proname FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname='public' AND (proname LIKE 'kq_treasury_%' OR proname='rpc_kq_treasury_snapshot') AND has_function_privilege($1,p.oid,'EXECUTE')`,[role]);
@@ -550,6 +647,7 @@ try {
   await checkBankAccounting(owners.banking);
   await checkCryptoAccounting(owners.crypto);
   await checkStockAccounting(owners.stocks);
+  await checkLabSessionCorrection();
   await checkPermissions(owners.opening);
   console.log('PASS: isolated treasury accounting integration with real economy migrations.');
 } catch(error) {console.error(error.stack??error.message,error.where??'');process.exitCode=1;}

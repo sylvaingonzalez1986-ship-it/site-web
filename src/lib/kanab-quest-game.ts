@@ -20,10 +20,15 @@ import {
   calculateKqEquipmentQualityBonus,
   calculateKqHarvestGrams,
 } from "@/lib/kanab-quest-market";
+import { createKqCareState, observeKqCareStage, resolveKqCareStage, isKqCareReplacedCard, getKqCareProduct, getKqCareProblem, type KqCareState } from "./kanab-quest-care";
 
 export const KQ_STAGES = ["Germination", "Enracinement", "Croissance", "Floraison", "Récolte", "Séchage & affinage"] as const;
 
 export type KqStage = (typeof KQ_STAGES)[number];
+/** Preserve archived stage identifiers while moving long curing after the jury. */
+export function getKqStageDisplayName(stage: string): string {
+  return stage === "Séchage & affinage" ? "Séchage" : stage;
+}
 export type KqTiming = "passive" | "before-roll" | "after-roll";
 export type KqCardCategory = "substrate" | "pbi" | "equipment" | "know-how" | "luck";
 export type KqSupportEffect = "hygrometer-balance" | "water-rescue" | "patient-curing" | "leaf-thinning" | "pbi-neutral-strong" | "pbi-mite-shield" | "reroll-neutral" | "pbi-success" | "pbi-strong-success" | "pbi-success-xp" | "cancel-danger" | "reveal-pest" | "reroll-two-low" | "neutral-to-success" | "four-keep-three" | "three-to-success"
@@ -32,7 +37,9 @@ export type KqSupportEffect = "hygrometer-balance" | "water-rescue" | "patient-c
   | "compliance-clearance" | "illegal-power" | "bill-relief" | "theft-guard"
   | "shade-screen" | "living-soil-buffer" | "starter-stability"
   | "hydroponic-control" | "aeroponic-precision" | "timer-reset"
-  | "hygiene-buffer" | "cross-diagnosis" | "pbi-thrips-relief";
+  | "hygiene-buffer" | "cross-diagnosis" | "pbi-thrips-relief"
+  | "gentle-recovery" | "humidity-balance" | "expert-recovery"
+  | "emergency-adjustment" | "harvest-team" | "controlled-drying";
 export type KqSituationTag = "roots" | "water" | "climate" | "pest" | "flower" | "harvest" | "drying" | "energy" | "compliance" | "security" | "light" | "hygiene";
 export type KqPest = "aphids" | "mites" | "thrips";
 export type KqBuddieEffect = "none" | "starting-xp-1" | "starting-xp-2" | "starting-xp-3" | "starting-xp-4";
@@ -50,7 +57,7 @@ export function getKqEffectNoticeKind(notice: string): "applied" | "missed" {
 
 export const KQ_COLLECTIONS = {
   buddies: { code: "KANAB_QUEST_2026", title: "Buddies", totalCards: 52 },
-  support: { code: "BOTTE_DU_CHANVRIER_2026", title: "Botte du Chanvrier", totalCards: 32, alphaCards: 32 },
+  support: { code: "BOTTE_DU_CHANVRIER_2026", title: "Botte du Chanvrier", totalCards: 30, alphaCards: 30 },
 } as const;
 
 export type KqBuddie = {
@@ -67,11 +74,13 @@ export type KqSupportCard = {
   code: string;
   name: string;
   category: KqCardCategory;
-  rarity: "common" | "uncommon" | "rare";
+  rarity: "common" | "uncommon" | "rare" | "epic";
   xpCost: number;
   timing: KqTiming;
   description: string;
   tags: KqSituationTag[];
+  /** Exact compatible operations. Absent for universal cards and archived rules. */
+  situationCodes?: string[];
   targets?: KqPest[];
   effect: KqSupportEffect;
 };
@@ -110,7 +119,8 @@ export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadou
 /** Position immediately before validation, after all cards and Heritage actions.
  * This is not a stock receipt: real account copies are intentionally unknown. */
 export type KqStageDecision = {
-  version: 1;
+  version: 1 | 2;
+  care?: KqCareState;
   xp: number;
   quality: number;
   pressure: number;
@@ -130,7 +140,8 @@ export type KqStageDecision = {
 };
 
 export type KqGameState = {
-  rulesVersion?: 2;
+  rulesVersion?: 2 | 3;
+  care?: KqCareState;
   /** Recorded once at culture start; later changes apply to the next culture. */
   domiciliation?: KqDomiciliation;
   energy?: KqEnergyQuote;
@@ -261,7 +272,7 @@ export const KQ_BUDDIES: KqBuddie[] = KQ_BUDDIE_NAMES.map((name, index) => {
 const KQ_CARD_CATALOG: KqSupportCard[] = [
   { code: "BOTTE-001", name: "Terreau horticole", category: "substrate", rarity: "common", xpCost: 0, timing: "passive", description: "Sur Racines ou Eau, si aucun dé ne réussit, transforme le meilleur dé neutre en 4.", tags: ["roots", "water"], effect: "starter-stability" },
   { code: "BOTTE-002", name: "Chrysope affamée", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Un dé faible (1, 2 ou 3) devient 4. Cible : pucerons ou thrips identifiés.", tags: ["pest"], targets: ["aphids", "thrips"], effect: "pbi-success" },
-  { code: "BOTTE-003", name: "Petit ventilateur", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Protège contre un Danger (1). Le dé ne devient pas une réussite.", tags: ["climate", "drying"], effect: "cancel-danger" },
+  { code: "BOTTE-003", name: "Brassage ajusté", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Adapte la circulation d’air et protège contre un Danger (1). Le dé ne devient pas une réussite.", tags: ["climate", "drying"], effect: "cancel-danger" },
   { code: "BOTTE-004", name: "Loupe d’inspection", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Identifie le ravageur, ouvre la réserve PBI et protège contre un Danger (1).", tags: ["pest"], effect: "reveal-pest" },
   { code: "BOTTE-005", name: "Arrosage mesuré", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Relance un dé neutre (2 ou 3). Le nouveau résultat est conservé.", tags: ["water", "roots"], effect: "reroll-neutral" },
   { code: "BOTTE-006", name: "Deuxième chance", category: "luck", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Relance les deux dés les plus faibles. Les nouveaux résultats sont conservés.", tags: [], effect: "reroll-two-low" },
@@ -272,11 +283,11 @@ const KQ_CARD_CATALOG: KqSupportCard[] = [
   { code: "BOTTE-011", name: "Amblyseius swirskii", category: "pbi", rarity: "uncommon", xpCost: 1, timing: "after-roll", description: "Un dé neutre (2 ou 3) devient 5. Cible : thrips identifiés.", tags: ["pest"], targets: ["thrips"], effect: "pbi-neutral-strong" },
   { code: "BOTTE-012", name: "Aphidius colemani", category: "pbi", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Un dé faible devient 4. +1 XP si l’étape réussit. Cible : pucerons identifiés.", tags: ["pest"], targets: ["aphids"], effect: "pbi-success-xp" },
   { code: "BOTTE-013", name: "Voile d’ombrage", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Un Danger (1) devient neutre (3). +1 Pression dès que la carte est jouée.", tags: ["light", "climate"], effect: "shade-screen" },
-  { code: "BOTTE-014", name: "Hygromètre vintage", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "−1 Pression immédiatement. Au lancer, un 3 devient 4.", tags: ["water", "climate", "drying"], effect: "hygrometer-balance" },
+  { code: "BOTTE-014", name: "Hygromètre vintage", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Ajuste les conditions à partir de la mesure : −1 Pression immédiatement. Au lancer, un 3 devient 4.", tags: ["water", "climate", "drying"], effect: "hygrometer-balance" },
   { code: "BOTTE-015", name: "Palissage doux", category: "know-how", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Au lancer, un dé neutre (2 ou 3) devient une réussite (4).", tags: ["flower"], effect: "neutral-to-success" },
   { code: "BOTTE-016", name: "Séchage patient", category: "know-how", rarity: "rare", xpCost: 2, timing: "before-roll", description: "−1 Pression immédiatement. +1 Qualité si l’étape réussit.", tags: ["drying"], effect: "patient-curing" },
   { code: "BOTTE-017", name: "Main verte", category: "luck", rarity: "common", xpCost: 2, timing: "before-roll", description: "Lance 4 dés et garde les 3 meilleurs.", tags: [], effect: "four-keep-three" },
-  { code: "BOTTE-018", name: "Thermomètre infrarouge", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Relance le dé le plus faible. Récupère 1 XP si sa valeur augmente.", tags: ["climate", "light"], effect: "thermal-check" },
+  { code: "BOTTE-018", name: "Thermomètre infrarouge", category: "equipment", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Corrige un écart thermique : relance le dé le plus faible. Récupère 1 XP si sa valeur augmente.", tags: ["climate", "light"], effect: "thermal-check" },
   { code: "BOTTE-019", name: "Minuteur recalé", category: "equipment", rarity: "common", xpCost: 1, timing: "after-roll", description: "Corrige un seul dé : un 1 devient 2 ; sans 1, un 2 devient 4.", tags: ["light", "energy"], effect: "timer-reset" },
   { code: "BOTTE-020", name: "Nettoyage du placard", category: "know-how", rarity: "uncommon", xpCost: 2, timing: "before-roll", description: "Au lancer, un 1 devient 3 et retire 1 Pression. Sans 1, aucun effet.", tags: ["pest", "hygiene"], effect: "hygiene-buffer" },
   { code: "BOTTE-021", name: "Diagnostic croisé", category: "know-how", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Avec exactement 2 réussites, le dernier dé neutre devient 6 : réussite critique et +1 XP au verdict.", tags: [], effect: "cross-diagnosis" },
@@ -288,20 +299,65 @@ const KQ_CARD_CATALOG: KqSupportCard[] = [
   { code: "BOTTE-027", name: "Papiers en règle", category: "equipment", rarity: "rare", xpCost: 3, timing: "before-roll", description: "Les 3 dés deviennent 4 : réussite critique garantie au contrôle DDTM.", tags: ["compliance"], effect: "compliance-clearance" },
   { code: "BOTTE-028", name: "Branchement illégal", category: "luck", rarity: "uncommon", xpCost: 1, timing: "after-roll", description: "Sur une surcharge non maîtrisée, les 2 dés les plus faibles deviennent 4. +2 Pression.", tags: ["energy"], effect: "illegal-power" },
   { code: "BOTTE-029", name: "Effeuillage mesuré", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Relance un dé neutre (2 ou 3) en gardant la meilleure valeur. +1 Pression immédiate.", tags: ["flower", "climate"], effect: "leaf-thinning" },
-  { code: "BOTTE-030", name: "Sonde d’humidité", category: "equipment", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Un 3 devient 5 ; sans 3, un 2 devient 4. Une seule correction.", tags: ["drying"], effect: "moisture-calibration" },
-  { code: "BOTTE-031", name: "Échéancier négocié", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Réduit de 1 le nombre de réussites demandé, avec un minimum de 1.", tags: ["energy"], effect: "bill-relief" },
+  { code: "BOTTE-030", name: "Sonde d’humidité", category: "equipment", rarity: "rare", xpCost: 2, timing: "after-roll", description: "Ajuste le séchage après la mesure : un 3 devient 5 ; sans 3, un 2 devient 4. Une seule correction.", tags: ["drying"], effect: "moisture-calibration" },
+  { code: "BOTTE-031", name: "Charge répartie", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Face à la surcharge, réduit de 1 le nombre de réussites demandé, avec un minimum de 1.", tags: ["energy"], effect: "bill-relief" },
   { code: "BOTTE-032", name: "Loupe à trichomes", category: "equipment", rarity: "rare", xpCost: 2, timing: "before-roll", description: "Lance 4 dés, garde les 3 meilleurs. +1 Qualité si l’étape réussit.", tags: ["harvest"], effect: "harvest-four-quality" },
   { code: "BOTTE-033", name: "Récolte au frais", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "Protège contre un Danger (1). −1 Pression si cette protection sert.", tags: ["harvest", "climate"], effect: "harvest-cool" },
   { code: "BOTTE-034", name: "Gros molosse", category: "equipment", rarity: "rare", xpCost: 2, timing: "before-roll", description: "Aucune perte de récolte lors du vol, même si les dés échouent.", tags: ["security"], effect: "theft-guard" },
-  { code: "BOTTE-035", name: "Récolte par lots", category: "know-how", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Un Danger (1) devient neutre (3). Sauve un jet risqué sans relance.", tags: ["harvest", "drying", "hygiene"], effect: "danger-to-neutral" },
+  { code: "BOTTE-035", name: "Tri et isolement", category: "know-how", rarity: "uncommon", xpCost: 2, timing: "after-roll", description: "Un Danger (1) devient neutre (3). Contient le risque sans réparer les dégâts déjà subis.", tags: ["harvest", "drying", "hygiene", "flower"], effect: "danger-to-neutral" },
   { code: "BOTTE-036", name: "Sécateur propre", category: "equipment", rarity: "common", xpCost: 1, timing: "before-roll", description: "Protège contre un Danger (1). +1 XP si l’étape réussit.", tags: ["harvest", "hygiene"], effect: "clean-cut" },
+  { code: "BOTTE-037", name: "Reprise délicate", category: "know-how", rarity: "common", xpCost: 1, timing: "after-roll", description: "Accompagne la reprise : un dé neutre (2 ou 3) devient une réussite (4).", tags: ["roots"], effect: "gentle-recovery" },
+  { code: "BOTTE-038", name: "Humidité rééquilibrée", category: "know-how", rarity: "common", xpCost: 1, timing: "before-roll", description: "−1 Pression immédiatement et protège contre un Danger (1). Le dé ne devient pas une réussite.", tags: ["water", "climate", "drying"], effect: "humidity-balance" },
+  { code: "BOTTE-039", name: "Reprise experte", category: "know-how", rarity: "epic", xpCost: 4, timing: "after-roll", description: "Les deux dés faibles les plus bas deviennent 4. Protège contre le Danger restant.", tags: ["roots", "water"], effect: "expert-recovery" },
+  { code: "BOTTE-040", name: "Réglage d’urgence", category: "know-how", rarity: "epic", xpCost: 3, timing: "after-roll", description: "Les deux dés faibles les plus bas deviennent 4. La Pression retombe à zéro.", tags: ["climate", "light", "energy"], effect: "emergency-adjustment" },
+  { code: "BOTTE-041", name: "Équipe de récolte", category: "know-how", rarity: "epic", xpCost: 3, timing: "after-roll", description: "Le dé faible le plus bas devient 6, puis un autre dé faible devient 4. +1 Qualité si l’étape réussit.", tags: ["harvest", "hygiene"], effect: "harvest-team" },
+  { code: "BOTTE-042", name: "Séchage sous contrôle", category: "know-how", rarity: "epic", xpCost: 4, timing: "after-roll", description: "Tous les dés faibles deviennent 4. Les réussites et les Étincelles déjà obtenues sont conservées.", tags: ["drying"], effect: "controlled-drying" },
 ];
+
+const situationCodes = (...numbers: number[]) => numbers.map(number => `SIT-${String(number).padStart(3, "0")}`);
+const KQ_CARD_SITUATIONS: Readonly<Record<string, string[]>> = {
+  "BOTTE-003": situationCodes(4, 6, 10, 22, 32, 34, 45),
+  "BOTTE-005": situationCodes(1, 8, 16, 20, 42),
+  "BOTTE-013": situationCodes(4, 31, 45),
+  "BOTTE-014": situationCodes(6, 12, 17, 18, 20, 22, 28, 29, 30, 38),
+  "BOTTE-015": situationCodes(9, 10, 23, 43),
+  "BOTTE-016": situationCodes(6, 12, 28, 29, 30),
+  "BOTTE-018": situationCodes(4, 7, 26, 45),
+  "BOTTE-019": situationCodes(33),
+  "BOTTE-020": situationCodes(3, 13, 14, 34, 36, 37, 40, 47, 50),
+  "BOTTE-024": situationCodes(1, 8, 16, 42),
+  "BOTTE-026": situationCodes(4, 6, 10, 22, 34, 45),
+  "BOTTE-027": situationCodes(24),
+  "BOTTE-028": situationCodes(21),
+  "BOTTE-029": situationCodes(9, 10, 22),
+  "BOTTE-030": situationCodes(6, 12, 28, 29, 30, 38),
+  "BOTTE-031": situationCodes(21),
+  "BOTTE-032": situationCodes(5, 11, 25),
+  "BOTTE-033": situationCodes(26),
+  "BOTTE-034": situationCodes(27),
+  "BOTTE-035": situationCodes(11, 25, 29, 36, 37, 40, 46, 48, 50),
+  "BOTTE-036": situationCodes(5, 11, 25, 26, 36, 37, 40, 47),
+  "BOTTE-037": situationCodes(1, 2, 15, 19, 41),
+  "BOTTE-038": situationCodes(6, 12, 17, 18, 20, 22, 28, 29, 30, 38, 49),
+  "BOTTE-039": situationCodes(1, 2, 8, 15, 16, 17, 18, 19, 20, 41, 42, 44),
+  "BOTTE-040": situationCodes(4, 7, 9, 10, 21, 22, 26, 28, 31, 32, 33, 34, 35, 39, 45),
+  "BOTTE-041": situationCodes(5, 11, 25, 26, 37, 47, 48),
+  "BOTTE-042": situationCodes(6, 12, 28, 29, 30, 38, 49, 50),
+};
+
+/** Tags describe families; only this predicate determines actual compatibility. */
+export function doesKqCardMatchSituation(card: KqSupportCard, situation: KqSituation) {
+  return card.situationCodes ? card.situationCodes.includes(situation.code)
+    : card.tags.length === 0 || card.tags.some(tag => situation.tags.includes(tag));
+}
 
 // Retired definitions remain readable for historical receipts and saved runs.
 export const KQ_RETIRED_SUBSTRATE_CODES = ["BOTTE-001", "BOTTE-007", "BOTTE-008", "BOTTE-009"] as const;
 export const isKqRetiredSubstrate = (code: string) => KQ_RETIRED_SUBSTRATE_CODES.some((retired) => retired === code);
 export const KQ_RETIRED_CARDS = KQ_CARD_CATALOG.filter((card) => isKqRetiredSubstrate(card.code));
-export const KQ_CARDS = KQ_CARD_CATALOG.filter((card) => !isKqRetiredSubstrate(card.code));
+export const KQ_CARDS = KQ_CARD_CATALOG.filter((card) => !isKqRetiredSubstrate(card.code))
+  .map(card => KQ_CARD_SITUATIONS[card.code] ? { ...card, situationCodes: KQ_CARD_SITUATIONS[card.code] } : card);
+export const KQ_ACTIVE_CARDS = KQ_CARDS.filter(card => !isKqCareReplacedCard(card.code));
 export const KQ_LIVING_SOIL = {
   code: "living-soil", name: "Sol vivant", technique: "Culture indoor sur sol vivant",
   mastery: "Base commune", electricity: "Éclairage et ventilation",
@@ -335,12 +391,18 @@ const KQ_CARD_LIMITS: Readonly<Record<string, string>> = {
   "BOTTE-028": "Ajoute 2 Pression : la réussite reste soumise au nouveau seuil.",
   "BOTTE-029": "Ajoute 1 Pression même sans dé neutre.",
   "BOTTE-030": "Exige un dé neutre au Séchage. Ne corrige pas les Dangers.",
-  "BOTTE-031": "Ne retire pas les Dangers et ne sert qu’en Énergie.",
+  "BOTTE-031": "Ne retire pas les Dangers et ne répond qu’à la surcharge au compteur.",
   "BOTTE-032": "Réservée à la Récolte. Le bonus Qualité exige une réussite.",
   "BOTTE-033": "Sans Danger protégé, aucune baisse de Pression.",
   "BOTTE-034": "Ne change ni les dés ni la qualité obtenue à cette étape.",
   "BOTTE-035": "Coûte 2 XP et ne crée aucune réussite.",
   "BOTTE-036": "Le remboursement exige une réussite de l’étape.",
+  "BOTTE-037": "Exige un 2 ou un 3. Ne corrige pas les Dangers ni toutes les causes d’une mauvaise reprise.",
+  "BOTTE-038": "Sans Danger, seule la baisse de Pression sert. Ne crée aucune réussite.",
+  "BOTTE-039": "Une seule épique par culture. Coûte 4 XP ; deux réussites ne suffisent pas toujours à un seuil de 3.",
+  "BOTTE-040": "Une seule épique par culture. Un Danger restant peut encore empêcher la réussite.",
+  "BOTTE-041": "Une seule épique par culture. Le bonus Qualité exige une réussite ; les dégâts antérieurs restent acquis.",
+  "BOTTE-042": "Une seule épique par culture. Coûte 4 XP. Ne raccourcit pas l’affinage et ne restaure pas les pertes passées.",
 };
 
 export function getKqCardTradeoff(card: KqSupportCard) {
@@ -372,7 +434,7 @@ export const KQ_SITUATIONS: KqSituation[] = [
   { code: "SIT-005", stage: "Récolte", name: "Fenêtre idéale", story: "Il faut choisir le bon moment sans se précipiter.", difficulty: 2, tags: ["harvest"], successTrait: "Récolte précise", fragileTrait: "Récolte honnête", failureTrait: "Récolte précipitée" },
   { code: "SIT-011", stage: "Récolte", name: "Maturation inégale", story: "Toutes les fleurs ne semblent pas prêtes au même instant.", difficulty: 2, tags: ["harvest", "flower"], successTrait: "Tri méticuleux", fragileTrait: "Lot contrasté", failureTrait: "Tri approximatif" },
   { code: "SIT-006", stage: "Séchage & affinage", name: "Lot encore humide", story: "Le cœur du lot évolue moins vite que l’extérieur.", difficulty: 2, tags: ["drying", "climate"], successTrait: "Arômes préservés", fragileTrait: "Séchage acceptable", failureTrait: "Séchage irrégulier" },
-  { code: "SIT-012", stage: "Séchage & affinage", name: "Séchage trop pressé", story: "L’extérieur du lot évolue rapidement et menace son équilibre.", difficulty: 3, tags: ["drying", "climate"], successTrait: "Affinage patient", fragileTrait: "Séchage rapide", failureTrait: "Arômes dissipés" },
+  { code: "SIT-012", stage: "Séchage & affinage", name: "Séchage trop pressé", story: "L’extérieur du lot évolue rapidement et menace son équilibre.", difficulty: 3, tags: ["drying", "climate"], successTrait: "Séchage patient", fragileTrait: "Séchage rapide", failureTrait: "Arômes dissipés" },
   { code: "SIT-015", stage: "Germination", name: "Coque tenace", story: "La jeune pousse peine à se libérer complètement de son enveloppe.", difficulty: 2, tags: ["roots"], successTrait: "Émergence nette", fragileTrait: "Pousse volontaire", failureTrait: "Départ contraint" },
   { code: "SIT-016", stage: "Germination", name: "Surface trop sèche", story: "La couche supérieure perd son humidité plus vite que prévu.", difficulty: 2, tags: ["water", "roots"], successTrait: "Humidité régulière", fragileTrait: "Réveil tardif", failureTrait: "Levée irrégulière" },
   { code: "SIT-017", stage: "Germination", name: "Excès d’humidité", story: "Le jeune système racinaire manque d’air dans un milieu trop chargé en eau.", difficulty: 3, tags: ["water", "roots"], successTrait: "Départ bien aéré", fragileTrait: "Pousse sensible", failureTrait: "Racines engorgées" },
@@ -387,8 +449,8 @@ export const KQ_SITUATIONS: KqSituation[] = [
   { code: "SIT-026", stage: "Récolte", name: "Matinée trop chaude", story: "La température monte rapidement et menace la fraîcheur aromatique du lot.", difficulty: 2, tags: ["harvest", "climate"], successTrait: "Fraîcheur préservée", fragileTrait: "Récolte accélérée", failureTrait: "Arômes échauffés" },
   { code: "SIT-027", stage: "Récolte", name: "Renard à deux pattes", story: "Quelqu’un vient de repartir avec une caisse de la production. Sans protection, une partie du poids final disparaît.", difficulty: 3, tags: ["harvest", "security"], incident: "crop-theft", successTrait: "Voleur repoussé", fragileTrait: "Caisse entamée", failureTrait: "Production dérobée" },
   { code: "SIT-028", stage: "Séchage & affinage", name: "Air trop sec", story: "L’extérieur des fleurs sèche vite alors que leur cœur demande encore du temps.", difficulty: 3, tags: ["drying", "climate"], successTrait: "Séchage progressif", fragileTrait: "Surface sèche", failureTrait: "Fleurs cassantes" },
-  { code: "SIT-029", stage: "Séchage & affinage", name: "Bocal trop rempli", story: "Le lot manque d’espace pour retrouver un équilibre homogène.", difficulty: 2, tags: ["drying"], successTrait: "Affinage homogène", fragileTrait: "Lot surveillé", failureTrait: "Affinage inégal" },
-  { code: "SIT-030", stage: "Séchage & affinage", name: "Parfum encore vert", story: "Les premières notes végétales dominent encore et demandent de la patience.", difficulty: 2, tags: ["drying"], successTrait: "Bouquet affiné", fragileTrait: "Profil jeune", failureTrait: "Notes végétales" },
+  { code: "SIT-029", stage: "Séchage & affinage", name: "Plateau de séchage surchargé", story: "Les fleurs sont trop serrées sur le plateau. Leur répartition demande une correction pour un séchage plus homogène.", difficulty: 2, tags: ["drying"], successTrait: "Séchage homogène", fragileTrait: "Lot surveillé", failureTrait: "Séchage inégal" },
+  { code: "SIT-030", stage: "Séchage & affinage", name: "Parfum encore vert", story: "Les premières notes végétales dominent pendant le séchage. Préserver le lot demande de la patience ; l’affinage suivra le jury.", difficulty: 2, tags: ["drying"], successTrait: "Bouquet préservé", fragileTrait: "Profil jeune", failureTrait: "Notes végétales" },
   { code: "SIT-031", stage: "Germination", name: "Lampe trop agressive", story: "La jeune pousse reçoit une lumière trop intense. Un incident d’éclairage, pas forcément de chaleur.", difficulty: 2, tags: ["light", "climate"], successTrait: "Lumière adoucie", fragileTrait: "Pousse surveillée", failureTrait: "Départ stressé" },
   { code: "SIT-032", stage: "Enracinement", name: "Soufflerie de face", story: "Les jeunes feuilles encaissent un courant d’air permanent.", difficulty: 2, tags: ["climate"], successTrait: "Air bien réparti", fragileTrait: "Feuilles secouées", failureTrait: "Pousse malmenée" },
   { code: "SIT-033", stage: "Enracinement", name: "Horloge décalée", story: "Le minuteur ne suit plus le rythme prévu. L’installation demande une vérification.", difficulty: 2, tags: ["light", "energy"], successTrait: "Cycle régulier", fragileTrait: "Rythme retrouvé", failureTrait: "Éclairage irrégulier" },
@@ -396,7 +458,7 @@ export const KQ_SITUATIONS: KqSituation[] = [
   { code: "SIT-035", stage: "Floraison", name: "Fuite de lumière", story: "Une lumière parasite perturbe la période de repos du placard.", difficulty: 2, tags: ["light"], successTrait: "Obscurité retrouvée", fragileTrait: "Repos perturbé", failureTrait: "Rythme instable" },
   { code: "SIT-036", stage: "Floraison", name: "Dépôt suspect sur les feuilles", story: "Un dépôt inhabituel fait craindre une maladie. Inspection et hygiène deviennent prioritaires.", difficulty: 3, tags: ["hygiene"], successTrait: "Foyer contenu", fragileTrait: "Feuillage sous surveillance", failureTrait: "Feuillage dégradé" },
   { code: "SIT-037", stage: "Récolte", name: "Fleur suspecte dans le lot", story: "Une fleur semble altérée. Le tri et la propreté passent avant la précipitation.", difficulty: 2, tags: ["harvest", "hygiene"], successTrait: "Tri rigoureux", fragileTrait: "Lot isolé", failureTrait: "Tri insuffisant" },
-  { code: "SIT-038", stage: "Séchage & affinage", name: "Condensation au bocal", story: "Des gouttelettes apparaissent sur les parois. Le lot demande un nouveau contrôle.", difficulty: 2, tags: ["drying", "climate", "hygiene"], successTrait: "Lot contrôlé", fragileTrait: "Affinage surveillé", failureTrait: "Conservation fragile" },
+  { code: "SIT-038", stage: "Séchage & affinage", name: "Condensation au séchoir", story: "Des gouttelettes apparaissent sur une paroi du séchoir. Le lot et les conditions du local demandent une vérification.", difficulty: 2, tags: ["drying", "climate", "hygiene"], successTrait: "Lot contrôlé", fragileTrait: "Séchage surveillé", failureTrait: "Conservation fragile" },
   { code: "SIT-039", stage: "Germination", name: "Semis filant", story: "La tige s’allonge et se penche vers la lampe : la lumière manque au niveau des semis. Ce départ fragile demande une observation attentive.", difficulty: 2, tags: ["light", "roots"], successTrait: "Pousse mieux éclairée", fragileTrait: "Tige surveillée", failureTrait: "Semis étiolé" },
   { code: "SIT-040", stage: "Germination", name: "Fonte des semis", story: "Un semis s’effondre, le collet aminci et brun. Il ne repartira pas : l’enjeu est de protéger les pousses encore saines dans le plateau.", difficulty: 3, tags: ["hygiene", "roots"], successTrait: "Semis voisins protégés", fragileTrait: "Plateau sous surveillance", failureTrait: "Levée décimée" },
   { code: "SIT-041", stage: "Enracinement", name: "Motte bousculée", story: "Au rempotage, la motte s’est effritée et des radicelles ont été abîmées. La plante accuse le choc et sa reprise ralentit.", difficulty: 2, tags: ["roots"], successTrait: "Reprise assurée", fragileTrait: "Reprise prudente", failureTrait: "Choc de rempotage" },
@@ -407,7 +469,7 @@ export const KQ_SITUATIONS: KqSituation[] = [
   { code: "SIT-046", stage: "Floraison", name: "Pollen indésirable", story: "De petites fleurs mâles sont repérées dans le placard. Le pollen peut féconder les fleurs voisines et donner des graines dans un lot destiné aux fleurs.", difficulty: 3, tags: ["flower"], successTrait: "Risque de pollen contenu", fragileTrait: "Floraison à surveiller", failureTrait: "Graines dans le lot" },
   { code: "SIT-047", stage: "Récolte", name: "Ciseaux encrassés", story: "La résine et les débris collent aux lames. Les coupes deviennent moins nettes et l’outil sale menace la propreté du lot.", difficulty: 2, tags: ["harvest", "hygiene"], successTrait: "Coupes propres", fragileTrait: "Manucure ralentie", failureTrait: "Fleurs malmenées" },
   { code: "SIT-048", stage: "Récolte", name: "Étiquettes mélangées", story: "Deux étiquettes se sont détachées des bacs. Avant de constituer l’échantillon du labo, il faut retrouver quel lot correspond au carnet de culture.", difficulty: 2, tags: ["harvest", "compliance"], successTrait: "Lots identifiés", fragileTrait: "Traçabilité reconstituée", failureTrait: "Traçabilité incertaine" },
-  { code: "SIT-049", stage: "Séchage & affinage", name: "Joint de bocal fatigué", story: "Le joint fissuré ne ferme plus correctement le bocal. L’air de la pièce perturbe la conservation et l’humidité du lot devient instable.", difficulty: 2, tags: ["drying", "climate"], successTrait: "Étanchéité retrouvée", fragileTrait: "Conservation surveillée", failureTrait: "Bocal peu étanche" },
+  { code: "SIT-049", stage: "Séchage & affinage", name: "Porte du séchoir mal fermée", story: "La porte ferme mal et laisse entrer un air différent de celui du séchoir. Retrouver une fermeture correcte aide à stabiliser l’humidité du lot.", difficulty: 2, tags: ["drying", "climate"], successTrait: "Séchoir stabilisé", fragileTrait: "Séchage surveillé", failureTrait: "Air instable au séchoir" },
   { code: "SIT-050", stage: "Séchage & affinage", name: "Poussière au séchoir", story: "Un dépôt s’est accumulé sur le filet et près des fleurs. Le lot exposé demande un contrôle ; nettoyer le local ne rend pas automatiquement les fleurs propres.", difficulty: 3, tags: ["drying", "hygiene"], successTrait: "Lot contrôlé et trié", fragileTrait: "Lot tenu à l’écart", failureTrait: "Lot souillé" },
 ];
 
@@ -420,7 +482,10 @@ function deterministicDie(seed: number, stageIndex: number, nonce: number, dieIn
 
 export function getKqSituation(state: Pick<KqGameState, "stageIndex">) {
   const code = "situationCodes" in state ? (state as Pick<KqGameState, "situationCodes">).situationCodes[state.stageIndex] : undefined;
-  return KQ_SITUATIONS.find((situation) => situation.code === code) ?? KQ_SITUATIONS.filter((situation) => situation.stage === KQ_STAGES[state.stageIndex])[0];
+  const situation = KQ_SITUATIONS.find((situation) => situation.code === code) ?? KQ_SITUATIONS.filter((situation) => situation.stage === KQ_STAGES[state.stageIndex])[0];
+  return "rulesVersion" in state && state.rulesVersion === 3 && situation.pest
+    ? { ...situation, story: "Des traces de ravageurs sont suivies dans le panneau Santé. Consulte les observations et les interventions actives avant de préparer cette opération." }
+    : situation;
 }
 
 export type KqCultureSystemSituationStatus = {
@@ -515,13 +580,14 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
 
 export function startKqGame(
   seed = Date.now(),
-  config: { domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; firstCultureRescue?: boolean; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" | "tent" } = {},
+  config: { rulesVersion?: 2 | 3; domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; firstCultureRescue?: boolean; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" | "tent" } = {},
 ): KqGameState {
+  const rulesVersion = config.rulesVersion ?? 3;
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
-  const requestedDeck = config.deckCodes ?? KQ_CARDS.slice(0, 6).map((card) => card.code);
+  const requestedDeck = config.deckCodes ?? (rulesVersion === 3 ? KQ_ACTIVE_CARDS : KQ_CARDS).slice(0, 6).map((card) => card.code);
   const requestedCards = requestedDeck
     .map((code) => KQ_CARDS.find((card) => card.code === code))
-    .filter((card): card is KqSupportCard => Boolean(card) && card?.category !== "pbi");
+    .filter((card): card is KqSupportCard => Boolean(card) && card?.category !== "pbi" && (rulesVersion === 2 || !isKqCareReplacedCard(card!.code)));
   const deckCodes = requestedCards.map((card) => card.code);
   const situationCodes = buildKqScenarioPath(clampSeed(seed), config.recentSituationCodes, config.requiredSituationTags, config.allowedPests, config.domiciliation);
   const heritage = config.heritageCard
@@ -550,6 +616,8 @@ export function startKqGame(
   };
   const energy = config.energyMode ? quoteKqEnergy(equipmentCodes, levels, config.energyMode, productionUnits, tents, config.equipmentScope) : undefined;
   const initialState: KqGameState = {
+    rulesVersion,
+    ...(rulesVersion === 3 ? { care: createKqCareState() } : {}),
     ...(config.firstCultureRescue === true ? { firstCultureRescue: true } : {}),
     ...(config.domiciliation ? { domiciliation: config.domiciliation } : {}),
     ...(energy ? { energy } : {}),
@@ -577,15 +645,17 @@ export function startKqGame(
     traits: [], combos: [], lastOutcome: null, history: [],
   };
   const openingDraw = drawKqAvailableHandCodes(initialState, heritage?.effect === "opening-hand-reserve" ? KQ_HAND_SIZE + KQ_HERITAGE_RESERVE_SIZE : KQ_HAND_SIZE);
-  return {
+  const drawnState: KqGameState = {
     ...initialState,
     handCodes: openingDraw.slice(0, KQ_HAND_SIZE),
     ...(openingDraw.length > KQ_HAND_SIZE ? { heritageReserveCodes: openingDraw.slice(KQ_HAND_SIZE) } : {}),
     handRedrawsUsed: 0,
   };
+  return observeKqCareStage(drawnState, getKqSituation(drawnState));
 }
 
 export function canPlayKqCard(state: KqGameState, card: KqSupportCard) {
+  if (state.rulesVersion === 3 && isKqCareReplacedCard(card.code)) return { allowed: false, reason: "Observation et auxiliaires accessibles dans le suivi de sante." };
   const situation = getKqSituation(state);
   if (!situation || state.phase === "resolved" || state.phase === "complete") return { allowed: false, reason: "L’étape est déjà terminée." };
   const ownsCard = state.collectionCodes.includes(card.code);
@@ -599,12 +669,15 @@ export function canPlayKqCard(state: KqGameState, card: KqSupportCard) {
   if (!collectionPbi && usedCopies >= deckCopies) return { allowed: false, reason: "Toutes les copies de cette carte ont été utilisées." };
   if (collectionPbi && card.category === "pbi" && state.playedThisStage.includes(card.code)) return { allowed: false, reason: "Cet auxiliaire a déjà été utilisé à cette étape." };
   if (state.xp < card.xpCost) return { allowed: false, reason: `Il faut ${card.xpCost} XP.` };
+  if (card.rarity === "epic" && state.usedCards.some(code => KQ_CARDS.find(item => item.code === code)?.rarity === "epic")) return { allowed: false, reason: "Une carte épique a déjà été jouée dans cette culture." };
   if (card.category === "pbi" && !state.revealedPest) return { allowed: false, reason: "Identifie d’abord le ravageur avec la Loupe ou la Plaque de suivi." };
   if (card.category === "pbi" && state.revealedPest && !card.targets?.includes(state.revealedPest)) return { allowed: false, reason: "Cet auxiliaire ne cible pas le ravageur révélé." };
   if (card.timing === "before-roll" && state.phase !== "prepare") return { allowed: false, reason: "À jouer avant les dés." };
   if (card.timing === "after-roll" && state.phase !== "rolled") return { allowed: false, reason: "À jouer après les dés." };
   if (card.timing === "before-roll" && state.preparationPlayed) return { allowed: false, reason: "Une préparation a déjà été jouée." };
   if (card.timing === "after-roll" && state.reactionPlayed) return { allowed: false, reason: "Une réaction a déjà été jouée." };
+  if (card.effect === "gentle-recovery" && state.dice && !state.dice.some(die => die === 2 || die === 3)) return { allowed: false, reason: "Il faut un dé neutre (2 ou 3) pour accompagner la reprise." };
+  if (card.rarity === "epic" && state.dice && state.dice.every(die => die >= 4) && !(card.effect === "emergency-adjustment" && state.pressure > 0)) return { allowed: false, reason: "Aucun dé faible ne justifie ce secours épique." };
   if (["water-rescue", "pbi-mite-shield"].includes(card.effect) && state.dice && !state.dice.includes(1)) return { allowed: false, reason: "Il faut un Danger à corriger." };
   if (card.effect === "pbi-neutral-strong" && state.dice && !state.dice.some((die) => die === 2 || die === 3)) return { allowed: false, reason: "Il faut un dé neutre à améliorer." };
   if (card.effect === "three-to-success" && state.dice && !state.dice.includes(3)) return { allowed: false, reason: "Il faut un dé affichant 3 à transformer." };
@@ -619,7 +692,7 @@ export function canPlayKqCard(state: KqGameState, card: KqSupportCard) {
   if (card.effect === "illegal-power" && situation.incident !== "electricity-bill") return { allowed: false, reason: "Cette prise de risque ne répond qu’à la surcharge électrique." };
   if (card.effect === "illegal-power" && state.dice && ["success", "critical"].includes(previewKqResolution(state)?.outcome ?? "")) return { allowed: false, reason: "La surcharge est déjà maîtrisée : inutile de prendre ce risque." };
   if (card.category === "pbi" && state.dice && state.dice.every((die) => die >= 4)) return { allowed: false, reason: "Tous les dés sont déjà des réussites." };
-  if (card.tags.length > 0 && !card.tags.some((tag) => situation.tags.includes(tag))) return { allowed: false, reason: "Cette carte ne répond pas à la Situation." };
+  if (!doesKqCardMatchSituation(card, situation)) return { allowed: false, reason: "Cette carte ne répond pas à la Situation." };
   return { allowed: true, reason: card.timing === "before-roll" ? "Prépare le lancer." : "Peut modifier le résultat." };
 }
 
@@ -717,7 +790,7 @@ export function canActivateKqHeritage(state: KqGameState) {
   if (heritage.effect === "flower-lowest-plus-three" && KQ_STAGES[state.stageIndex] !== "Floraison") return { allowed: false, reason: "Réservé à la Floraison." };
   if (heritage.effect === "flower-lowest-plus-three" && state.dice.every((die) => die === 6)) return { allowed: false, reason: "Les trois dés valent déjà 6." };
   if (heritage.effect === "flower-neutrals-to-success" && KQ_STAGES[state.stageIndex] !== "Floraison") return { allowed: false, reason: "Réservé à la Floraison." };
-  if (heritage.effect === "drying-lowest-to-spark" && state.stageIndex !== KQ_STAGES.length - 1) return { allowed: false, reason: "Réservé au séchage et à l’affinage." };
+  if (heritage.effect === "drying-lowest-to-spark" && state.stageIndex !== KQ_STAGES.length - 1) return { allowed: false, reason: "Réservé au séchage." };
   if (heritage.effect === "neutral-to-spark" && !state.dice.some((die) => die === 2 || die === 3)) return { allowed: false, reason: "Aucun dé neutre à transformer." };
   if (heritage.effect === "flower-neutrals-to-success" && !state.dice.some((die) => die === 2 || die === 3)) return { allowed: false, reason: "Aucun dé neutre à transformer." };
   if (heritage.effect === "dangers-to-success" && state.dice.filter((die) => die === 1).length <= state.cancelledDangers) return { allowed: false, reason: "Aucun Danger non protégé à transformer." };
@@ -798,6 +871,7 @@ export function activateKqHeritage(state: KqGameState): KqGameState {
 export function getKqVisibleActionCards(state: KqGameState) {
   const handCodes = getKqHandCodes(state);
   return KQ_CARDS.filter((card) => {
+    if (state.rulesVersion === 3 && isKqCareReplacedCard(card.code)) return false;
     if (card.timing === "passive") return false;
     if (handCodes.includes(card.code)) return true;
     return card.category === "pbi"
@@ -827,7 +901,19 @@ export function playKqCard(state: KqGameState, cardCode: string): KqGameState {
   }
   let extraDangerShield = 0;
   let pressureRelief = 0;
-  if (["patient-curing", "hygrometer-balance"].includes(card.effect)) pressureRelief = 1;
+  if (["patient-curing", "hygrometer-balance", "humidity-balance"].includes(card.effect)) pressureRelief = 1;
+  if (card.effect === "emergency-adjustment") pressureRelief = state.pressure;
+  if (dice && card.effect === "gentle-recovery") {
+    const index = dice.findIndex(die => die === 2 || die === 3);
+    dice = dice.map((die, dieIndex) => dieIndex === index ? 4 : die) as [number, number, number];
+  }
+  if (dice && ["expert-recovery", "emergency-adjustment", "harvest-team"].includes(card.effect)) {
+    const indexes = [0, 1, 2].filter(index => dice![index] < 4).sort((a, b) => dice![a] - dice![b]).slice(0, 2);
+    dice = dice.map((die, index) => !indexes.includes(index) ? die
+      : card.effect === "harvest-team" && index === indexes[0] ? 6 : 4) as [number, number, number];
+    if (card.effect === "expert-recovery") extraDangerShield = Math.max(0, dice.filter(die => die === 1).length - state.cancelledDangers);
+  }
+  if (dice && card.effect === "controlled-drying") dice = dice.map(die => die < 4 ? 4 : die) as [number, number, number];
   if (dice && ["water-rescue", "pbi-mite-shield", "pbi-neutral-strong"].includes(card.effect)) {
     const index = dice.findIndex((die) => card.effect === "pbi-neutral-strong" ? die === 2 || die === 3 : die === 1);
     if (index >= 0) {
@@ -883,7 +969,7 @@ export function playKqCard(state: KqGameState, cardCode: string): KqGameState {
   }
 
   const effectNotice = diceBefore && dice
-    ? `${card.name} : ${diceBefore.join(" · ")} → ${dice.join(" · ")}.${pressureRelief ? " Pression −1." : ""}`
+    ? `${card.name} : ${diceBefore.join(" · ")} → ${dice.join(" · ")}.${pressureRelief ? ` Pression −${pressureRelief}.` : ""}${extraDangerShield ? " Danger restant protégé." : ""}`
     : ["reveal-pest", "pest-monitor"].includes(card.effect) && revealedPest
       ? `${card.name} : ${revealedPest === "aphids" ? "pucerons" : revealedPest === "mites" ? "acariens" : "thrips"} identifiés, réserve PBI ouverte.`
       : `${card.name} activée : ${card.description}`;
@@ -980,7 +1066,7 @@ export function rollKqDice(state: KqGameState): KqGameState {
     effectNotices.push(`Coupure de courant : le meilleur dé ${previous} devient un Danger.`);
   }
   let cancelledDangers = playedEffects.includes("double-danger-shield") ? 2
-    : playedEffects.some((effect) => ["cancel-danger", "harvest-cool", "clean-cut", "reveal-pest"].includes(effect ?? "")) ? 1 : 0;
+    : playedEffects.some((effect) => ["cancel-danger", "harvest-cool", "clean-cut", "reveal-pest", "humidity-balance"].includes(effect ?? "")) ? 1 : 0;
   const heritage = getKqStateHeritage(state);
   const heritageDangerShield = !state.heritageUsed
     && heritage?.effect === "first-danger-shield"
@@ -1071,7 +1157,9 @@ function endKqDeadCulture(state: KqGameState): KqGameState {
     equipmentQualityBonus: 0,
     harvestGrams: 0,
     powerOutage: false,
-    effectNotices: appendKqEffectNotice(state.effectNotices, state.history.some((entry) => entry.rescued === true)
+    effectNotices: appendKqEffectNotice(state.effectNotices, state.rulesVersion === 3
+      ? "Culture perdue : la vitalité ou l’intégrité du lot est épuisée. Aucune récolte ni carte Fleur."
+      : state.history.some((entry) => entry.rescued === true)
       ? "Culture morte : deux étapes à 0 réussite non secourues. Aucune récolte ni carte Fleur."
       : "Culture morte : deux étapes à 0 réussite. Aucune récolte ni carte Fleur."),
   };
@@ -1082,7 +1170,7 @@ export function resolveKqStage(state: KqGameState): KqGameState {
   const situation = getKqSituation(state);
   const result = previewKqResolution(state);
   if (!situation || !result) return state;
-  const rescued = result.total === 0 && hasKqFirstCultureRescue(state)
+  let rescued = state.rulesVersion !== 3 && result.total === 0 && hasKqFirstCultureRescue(state)
     && getKqUnrescuedZeroSuccessStageCount(state) === 1;
   const heritage = getKqStateHeritage(state);
   const failureRecovery = !state.heritageUsed && heritage?.effect === "failure-to-fragile" && result.outcome === "failure";
@@ -1091,9 +1179,24 @@ export function resolveKqStage(state: KqGameState): KqGameState {
     && state.stageIndex === KQ_STAGES.length - 1
     && result.outcome === "fragile";
   const effectiveOutcome: KqOutcome = failureRecovery ? "fragile" : dryingRecovery ? "success" : result.outcome;
+  const relevantOperation = state.playedThisStage.some(code => {
+    const card = KQ_CARDS.find(item => item.code === code);
+    return card && card.category !== "pbi" && card.timing !== "passive" && card.tags.length > 0 && doesKqCardMatchSituation(card, situation);
+  });
+  let care = resolveKqCareStage(state, situation, effectiveOutcome, relevantOperation);
+  if (state.rulesVersion === 3 && care?.vitality === 0 && hasKqFirstCultureRescue(state)) {
+    rescued = true;
+    care = { ...care, vitality: 15, history: [...care.history, { stageIndex: state.stageIndex, kind: "intervention" as const, message: "Secours de première culture : vitalité rétablie à 15. Les pertes déjà subies sont conservées.", vitalityDelta: 15, terpenesDelta: 0 }].slice(-48) };
+  }
+  const targetedPbi = state.rulesVersion === 3 && state.stageIndex < 5 && state.care?.interventions.some(intervention => {
+    const product = getKqCareProduct(intervention.productCode);
+    return intervention.stageIndex <= state.stageIndex && product?.kind === "pbi"
+      && !(product.code === "CARE-PHYTOSEIULUS" && state.care?.problems.some(problem => problem.code === "HEAT"))
+      && state.care?.problems.some(problem => product.targets.includes(getKqCareProblem(problem.code)!.target));
+  });
   const trait = effectiveOutcome === "critical" || effectiveOutcome === "success" ? situation.successTrait : effectiveOutcome === "fragile" ? situation.fragileTrait : situation.failureTrait;
-  const harvestQualityBonus = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "harvest-four-quality")
-    && (effectiveOutcome === "critical" || effectiveOutcome === "success") ? 1 : 0;
+  const harvestQualityBonus = effectiveOutcome === "critical" || effectiveOutcome === "success"
+    ? state.playedThisStage.filter(code => ["harvest-four-quality", "harvest-team"].includes(KQ_CARDS.find(card => card.code === code)?.effect ?? "")).length : 0;
   const heritageQualityBonus = effectiveOutcome === "critical" && heritage?.effect === "critical-quality-boost" ? 1
     : effectiveOutcome === "fragile" && heritage?.effect === "fragile-quality-boost" ? 1
     : 0;
@@ -1103,6 +1206,7 @@ export function resolveKqStage(state: KqGameState): KqGameState {
   const aphidiusBonus = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "pbi-success-xp") && (result.outcome === "critical" || result.outcome === "success") ? 1 : 0;
   const playedPbi = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.category === "pbi");
   const stageCombos = [
+    ...(targetedPbi ? ["PBI ciblée"] : []),
     ...(state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "reveal-pest") && playedPbi ? ["PBI ciblée"] : []),
     ...(effectiveOutcome === "critical" ? ["Coup parfait"] : []),
     ...(state.playedThisStage.filter((code) => KQ_CARDS.find((card) => card.code === code)?.timing !== "passive").length >= 2 ? ["Main bien préparée"] : []),
@@ -1158,11 +1262,12 @@ export function resolveKqStage(state: KqGameState): KqGameState {
   const nextNotices = incidentNotices.reduce((notices, notice) => appendKqEffectNotice(notices, notice), heritageEffectNotices);
   const resolved: KqGameState = {
     ...state, phase: "resolved", xp: state.xp + xpGain, quality: state.quality + qualityDelta,
+    ...(care ? { care } : {}),
     pressure: pressureAfter,
     powerOutage,
     harvestLossPercent: Math.min(80, (state.harvestLossPercent ?? 0) + theftLoss),
     heritageUsed: failureRecovery || dryingRecovery || sparkPressureRelief ? true : state.heritageUsed,
-    effectNotices: rescued ? appendKqEffectNotice(nextNotices,
+    effectNotices: rescued && state.rulesVersion === 3 ? appendKqEffectNotice(nextNotices, "Secours de première culture : vitalité rétablie à 15, pertes conservées.") : rescued ? appendKqEffectNotice(nextNotices,
       "Secours de première culture utilisé : cette étape à 0 réussite ne compte pas pour la mort. Dés, résultat et gains inchangés.") : nextNotices,
     traits: [...state.traits, trait], combos: [...state.combos, ...newCombos], lastOutcome: effectiveOutcome,
     history: [...state.history, {
@@ -1182,7 +1287,8 @@ export function resolveKqStage(state: KqGameState): KqGameState {
       harvestLossPercent: theftLoss,
       ...(rescued ? { rescued: true } : {}),
       decision: {
-        version: 1,
+        version: state.rulesVersion === 3 ? 2 : 1,
+        ...(state.rulesVersion === 3 && state.care ? { care: structuredClone(state.care) } : {}),
         xp: state.xp,
         quality: state.quality,
         pressure: state.pressure,
@@ -1202,12 +1308,12 @@ export function resolveKqStage(state: KqGameState): KqGameState {
       },
     }],
   };
-  return getKqUnrescuedZeroSuccessStageCount(resolved) >= 2 ? endKqDeadCulture(resolved) : resolved;
+  return (state.rulesVersion === 3 ? care?.vitality === 0 : getKqUnrescuedZeroSuccessStageCount(resolved) >= 2) ? endKqDeadCulture(resolved) : resolved;
 }
 
 export function advanceKqStage(state: KqGameState): KqGameState {
   if (state.phase !== "resolved") return state;
-  if (getKqUnrescuedZeroSuccessStageCount(state) >= 2) return endKqDeadCulture(state);
+  if (state.rulesVersion === 3 ? state.care?.vitality === 0 : getKqUnrescuedZeroSuccessStageCount(state) >= 2) return endKqDeadCulture(state);
   if (state.stageIndex >= KQ_STAGES.length - 1) {
     const projection = getKqRunProjection(state);
     const { equipmentQualityBonus, projectedQuality: quality, harvestGrams } = projection;
@@ -1230,7 +1336,7 @@ export function advanceKqStage(state: KqGameState): KqGameState {
     preparationPlayed: false, reactionPlayed: false, revealedPest: null,
     playedThisStage: [], lastOutcome: null,
   };
-  return { ...nextState, handCodes: drawKqAvailableHandCodes(nextState), heritageReserveCodes: undefined };
+  return observeKqCareStage({ ...nextState, handCodes: drawKqAvailableHandCodes(nextState), heritageReserveCodes: undefined }, getKqSituation(nextState));
 }
 
 const KQ_HARVEST_TIERS = [
@@ -1319,8 +1425,10 @@ function calculateKqInstallationHarvest(state: KqGameState, quality: number, suc
     ? state.equipment.tents.map(tent => ({ tentNumber: tent.tentNumber, quantityPercent: summarizeKqEquipmentLoadout(tent.codes, tent.levels).quantityPercent }))
     : Array.from({ length: getKqProductionUnits(state.equipment?.productionUnits) }, (_, index) => ({ tentNumber: index + 1, quantityPercent: state.equipment?.quantityPercent ?? 0 }));
   const tentHarvests = quantityBonuses.map(({ tentNumber, quantityPercent }) => {
-    const gross = calculateKqHarvestGrams({ quality, successfulStages, quantityPercent });
-    const afterIncident = Math.round(gross * (1 - lossPercent / 100) * 10) / 10;
+    const inputBonus = state.rulesVersion === 3 ? state.care?.yieldBonusPercent ?? 0 : 0;
+    const healthLoss = state.rulesVersion === 3 ? state.care?.yieldLossPercent ?? 0 : 0;
+    const gross = Math.min(500, Math.round(calculateKqHarvestGrams({ quality, successfulStages, quantityPercent }) * (1 + inputBonus / 100) * 10) / 10);
+    const afterIncident = Math.round(gross * (1 - lossPercent / 100) * (1 - healthLoss / 100) * 10) / 10;
     return {
       tentNumber,
       quantityPercent,

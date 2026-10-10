@@ -2,10 +2,13 @@ import { describe, expect, it } from "vitest";
 import {
   advanceKqStage, getKqUnrescuedZeroSuccessStageCount, getKqZeroSuccessStageCount,
   hasKqFirstCultureRescue, isKqCultureDead, playKqCard, resolveKqStage,
-  startKqGame, type KqGameState,
+  startKqGame as startKqGameCurrent, type KqGameState,
 } from "./kanab-quest-game";
 import { createKqFlower } from "./kanab-quest-battle";
 import { createKqIntegrityCode, encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
+
+// This suite pins historical v2 death/rescue receipts; care.test covers v3 vitality.
+const startKqGame = (seed?: number, config?: Parameters<typeof startKqGameCurrent>[1]) => startKqGameCurrent(seed, { ...config, rulesVersion: 2 });
 
 const resolveDice = (state: KqGameState, dice: [number, number, number] = [2, 2, 3]) =>
   resolveKqStage({ ...state, phase: "rolled", dice });

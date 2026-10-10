@@ -1,12 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
-  advanceKqStage, KQ_CARDS, playKqCard, resolveKqStage, rollKqDice, startKqGame,
+  advanceKqStage, KQ_CARDS, playKqCard, resolveKqStage, rollKqDice, startKqGame as startKqGameCurrent,
   type KqGameState,
 } from "./kanab-quest-game";
 import { getKqCultureAnalysis, isKqStageDecision } from "./kanab-quest-culture-analysis";
 import { createKqIntegrityCode, encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 
 const support = ["BOTTE-024", "BOTTE-021", "BOTTE-030", "BOTTE-026", "BOTTE-016"];
+// Existing tests pin the historical rules; v3 behavior has a dedicated care suite.
+const startKqGame = (seed?: number, config?: Parameters<typeof startKqGameCurrent>[1]) => startKqGameCurrent(seed, { ...config, rulesVersion: 2 });
+
 function positionAt(index = 0, overrides: Partial<KqGameState> = {}): KqGameState {
   let state = startKqGame(42, { startingXp: 10, deckCodes: support });
   state.situationCodes = ["SIT-001", "SIT-008", "SIT-003", "SIT-004", "SIT-005", "SIT-006"];

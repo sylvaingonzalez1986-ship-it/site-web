@@ -510,6 +510,7 @@ try {
   const historical = await player();
   const legacy = await historicalSale(historical);
   await db.exec(await migration("20260921000100_kq_business_calendar.sql"));
+  await db.exec(await migration("20261010000900_kq_lab_analysis_per_session.sql"));
   ({ quoteKqCommerce } = await vite.ssrLoadModule("/src/lib/kanab-quest-commerce.ts"));
   ({ previewKqBusinessPayment, KQ_ADVERTISING } = await vite.ssrLoadModule("/src/lib/kanab-quest-business.ts"));
   assert.equal((await state(historical)).business !== undefined, true, "migration adds authoritative business snapshot");

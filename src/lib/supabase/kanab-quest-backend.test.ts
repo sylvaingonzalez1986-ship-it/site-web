@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { applyKqRunAction, buildKqLaunchReadiness, buildKqNotebookRewardPreview, countKqInventoryCopies, getKqRandomTrainingBotCode, isKqFinalArtworkUrl, mapKqCardBurnResult, mapKqChallengeClaimKeys, mapKqPlayerCoreSnapshot, mapKqSeasonRolloverPreview, mapKqStartRunResult, prepareKqCardPlay } from "@/lib/supabase/kanab-quest-backend";
-import { KQ_CARDS, startKqGame } from "@/lib/kanab-quest-game";
+import { KQ_ACTIVE_CARDS, KQ_CARDS, startKqGame } from "@/lib/kanab-quest-game";
 import { KQ_EQUIPMENT_CATALOG } from "@/lib/kanab-quest-equipment";
 import { KQ_HERITAGE_EFFECTS } from "@/lib/kanab-quest-heritage";
 import { getKqLaunchDossier, KQ_LAUNCH_ODDS_VERSION } from "@/lib/kanab-quest-launch-approvals";
@@ -129,7 +129,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   it("can become ready for activation with complete content and every public feature dormant", () => {
     const report = buildKqLaunchReadiness({
       heritageCards: heritageReadinessCards((index) => `/h-${index}.webp`),
-      supportCards: Array.from({ length: 32 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
+      supportCards: Array.from({ length: KQ_ACTIVE_CARDS.length }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
       supportCollectionActive: false,
       notebookRules: Array.from({ length: 2 }, () => ({ is_active: false })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
@@ -152,7 +152,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
     heritageCards[1] = { ...heritageCards[1], effect_code: heritageCards[0].effect_code };
     const report = buildKqLaunchReadiness({
       heritageCards,
-      supportCards: Array.from({ length: 32 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
+      supportCards: Array.from({ length: KQ_ACTIVE_CARDS.length }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
       supportCollectionActive: false,
       notebookRules: Array.from({ length: 2 }, () => ({ is_active: false })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
@@ -168,7 +168,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   it("blocks activation when producer rewards are already live", () => {
     const report = buildKqLaunchReadiness({
       heritageCards: heritageReadinessCards((index) => `/h-${index}.webp`),
-      supportCards: Array.from({ length: 32 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
+      supportCards: Array.from({ length: KQ_ACTIVE_CARDS.length }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
       supportCollectionActive: false,
       notebookRules: Array.from({ length: 2 }, () => ({ is_active: false })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
@@ -205,7 +205,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   it("reports missing artwork while confirming the activated rewards are not dormant", () => {
     const report = buildKqLaunchReadiness({
       heritageCards: heritageReadinessCards(() => ""),
-      supportCards: Array.from({ length: 32 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
+      supportCards: Array.from({ length: KQ_ACTIVE_CARDS.length }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
       supportCollectionActive: false,
       notebookRules: Array.from({ length: 15 }, () => ({ is_active: false })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
@@ -228,7 +228,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   it("detects unsafe season rewards before launch", () => {
     const report = buildKqLaunchReadiness({
       heritageCards: heritageReadinessCards((index) => `/h-${index}.webp`),
-      supportCards: Array.from({ length: 32 }, () => ({ image_url: "/card.webp", is_active: false })),
+      supportCards: Array.from({ length: KQ_ACTIVE_CARDS.length }, () => ({ image_url: "/card.webp", is_active: false })),
       supportCollectionActive: false,
       notebookRules: Array.from({ length: 2 }, () => ({ is_active: true })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code, index) => ({ tier_code, is_active: index === 0 })),
@@ -237,7 +237,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
       launchApprovals: APPROVED_LAUNCH_DECISIONS,
       launchDossier: COMPLETE_LAUNCH_DOSSIER,
     });
-    expect(report.blockers).toContain("32 illustrations Botte du Chanvrier distinctes");
+    expect(report.blockers).toContain(`${KQ_ACTIVE_CARDS.length} illustrations Botte du Chanvrier distinctes`);
     expect(report.safelyDormant).toBe(false);
     expect(report.contentReady).toBe(false);
     expect(report.readyForActivation).toBe(false);
@@ -247,7 +247,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   it("distinguishes complete content from a safely activatable launch", () => {
     const report = buildKqLaunchReadiness({
       heritageCards: heritageReadinessCards((index) => `/h-${index}.webp`),
-      supportCards: Array.from({ length: 32 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: true })),
+      supportCards: Array.from({ length: KQ_ACTIVE_CARDS.length }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: true })),
       supportCollectionActive: true,
       notebookRules: Array.from({ length: 2 }, () => ({ is_active: true })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),
@@ -270,7 +270,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   it("blocks launch when a Supabase checkout price diverges from the verified catalog", () => {
     const report = buildKqLaunchReadiness({
       heritageCards: heritageReadinessCards((index) => `/h-${index}.webp`),
-      supportCards: Array.from({ length: 32 }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
+      supportCards: Array.from({ length: KQ_ACTIVE_CARDS.length }, (_, index) => ({ image_url: `/card-${index}.webp`, is_active: false })),
       supportCollectionActive: false,
       notebookRules: Array.from({ length: 2 }, () => ({ is_active: true })),
       seasonRules: ["champion", "podium", "finalist", "participant"].map((tier_code) => ({ tier_code, is_active: false })),

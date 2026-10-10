@@ -6,7 +6,8 @@ import Image from "next/image";
 import { BookOpen, Flame, PackageOpen, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
-import { openKqSupportBooster } from "@/lib/kanab-quest-booster";
+import { openKqSupportBooster, KQ_SUPPORT_RARITY_WEIGHTS } from "@/lib/kanab-quest-booster";
+import { getKqCardRarityLabel } from "@/lib/kanab-quest-card-guide";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import { KqEquipmentCatalogModal } from "./KqEquipmentCatalogModal";
 import styles from "./KqSupportBoosterShop.module.css";
@@ -59,14 +60,16 @@ export function KqSupportBoosterShop({
   const [welcomeChecked, setWelcomeChecked] = useState(false);
   const [shopOpen, setShopOpen] = useState(autoOpen);
   const [equipmentCatalogOpen, setEquipmentCatalogOpen] = useState(autoOpenEquipment);
+  const [equipmentBusy, setEquipmentBusy] = useState(false);
 
   const closeShop = useCallback(() => {
+    if (equipmentBusy) return;
     setOpenedCards([]);
     setNotice("");
     setEquipmentCatalogOpen(false);
     setShopOpen(false);
     onExit?.();
-  }, [onExit]);
+  }, [onExit, equipmentBusy]);
 
   useBodyScrollLock(shopOpen);
 
@@ -74,6 +77,7 @@ export function KqSupportBoosterShop({
     if (!shopOpen) return;
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
+      if (equipmentBusy) return;
       if (equipmentCatalogOpen) setEquipmentCatalogOpen(false);
       else if (openedCards.length > 0) setOpenedCards([]);
       else closeShop();
@@ -82,7 +86,7 @@ export function KqSupportBoosterShop({
     return () => {
       window.removeEventListener("keydown", handleEscape);
     };
-  }, [closeShop, equipmentCatalogOpen, openedCards.length, shopOpen]);
+  }, [closeShop, equipmentCatalogOpen, openedCards.length, shopOpen, equipmentBusy]);
 
   useEffect(() => {
     if (!shopOpen) return;
@@ -218,7 +222,7 @@ export function KqSupportBoosterShop({
       {shopOpen ? <div className={styles.backdrop} role="presentation" onClick={closeShop}>
         <section ref={dialogRef} data-arena-tour-surface="shop" data-arena-tour-blocked={openedCards.length>0||undefined} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="kq-shop-title" className={styles.shopDialog} data-equipment-open={equipmentCatalogOpen || undefined} onClick={(event) => event.stopPropagation()} onKeyDown={(event) => {
           if (event.key !== "Tab") return;
-          const buttons = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), input, select, [tabindex="0"]')).filter((node) => !node.closest('[inert]') && node.getClientRects().length > 0);
+          const buttons = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input, select, summary, [tabindex="0"]')).filter((node) => !node.closest('[inert]') && node.getClientRects().length > 0);
           const first = buttons[0], last = buttons.at(-1);
           if (event.shiftKey && (document.activeElement === first || document.activeElement === event.currentTarget)) { event.preventDefault(); last?.focus(); }
           else if (!event.shiftKey && (document.activeElement === last || document.activeElement === event.currentTarget)) { event.preventDefault(); first?.focus(); }
@@ -233,6 +237,7 @@ export function KqSupportBoosterShop({
           {onOpenCollection ? <button type="button" className={styles.collectionButton} onClick={onOpenCollection} aria-haspopup="dialog"><BookOpen size={17} aria-hidden="true" /><span>Ma collection</span></button> : null}
           <div className={styles.wallet}><small>Ta cagnotte</small><b>{shop ? shop.spendablePoints.toLocaleString("fr-FR") : "…"}<span> points</span></b></div>
           <p className={styles.shopHint}>Touche un objet pour découvrir le rayon.</p>
+          <details className={styles.packOdds}><summary>Raretés des packs</summary><div><strong>Une première carte commune garantie.</strong><p>Pour chaque emplacement suivant :</p><ul>{Object.entries(KQ_SUPPORT_RARITY_WEIGHTS).map(([rarity, weight]) => <li key={rarity}>{getKqCardRarityLabel(rarity)} <b>{weight} %</b></li>)}</ul><p>Les doublons sont possibles. Une seule épique peut être jouée par culture.</p></div></details>
           <button type="button" className={`${styles.hotspot} ${styles.duels}`} aria-label={nextDuelReward ? `Ouvrir un pack de duel, ${duelRewards.length} en attente` : "Aucun gain de duel à récupérer"} disabled={!shop?.collectionActive || pending !== null || !nextDuelReward} onClick={() => void openEntitlement(nextDuelReward)}>
             <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>Gains de duel</strong><small>{duelRewards.length ? `${duelRewards.length} pack${duelRewards.length > 1 ? "s" : ""} à ouvrir` : "Gagne un duel"}</small></span>
           </button>
@@ -243,14 +248,14 @@ export function KqSupportBoosterShop({
             <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>{pending === "buy" ? "Achat…" : "Acheter un pack"}</strong><small>{shop?.costPerPack ?? 5} points{shop && shop.spendablePoints < shop.costPerPack ? " · solde insuffisant" : " · 10 cartes"}</small></span>
           </button>
           <button type="button" data-arena-tour="equipment-book" className={`${styles.hotspot} ${styles.catalogBook}`} onClick={() => setEquipmentCatalogOpen(true)} aria-label="Ouvrir le rayon matériel" aria-haspopup="dialog">
-            <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>Le matériel</strong><small>Machines & installation →</small></span>
+            <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>Le matériel</strong><small>Équipement, intrants & PBI →</small></span>
           </button>
           {!shop?.collectionActive && localPreview ? <button type="button" onClick={openPreview} className={styles.preview}><PackageOpen size={16} />Test local</button> : null}
           {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
           {!shop?.collectionActive && pending !== "load" && !notice ? <p className={styles.notice}><Flame size={16} />La vente de packs est momentanément fermée. Le matériel reste consultable.</p> : null}
         </div>
         {openedCards.length > 0 ? <KqSupportPackReveal cards={openedCards} onClose={() => setOpenedCards([])} onContinue={() => { setOpenedCards([]); setNotice(""); }} /> : null}
-        {equipmentCatalogOpen ? <KqEquipmentCatalogModal initialEquipmentCode={initialEquipmentCode} onClose={() => setEquipmentCatalogOpen(false)} onOpenWorkshop={onOpenWorkshop}/> : null}
+        {equipmentCatalogOpen ? <KqEquipmentCatalogModal initialEquipmentCode={initialEquipmentCode} onClose={() => setEquipmentCatalogOpen(false)} onOpenWorkshop={onOpenWorkshop} onBusyChange={setEquipmentBusy}/> : null}
       </section></div> : null}
     </section>
   );

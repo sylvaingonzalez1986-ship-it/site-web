@@ -11,7 +11,7 @@ import type { KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear
 
 type Snapshot={tentNumber?:number;tents?:KqTentOverview[];sharedEquipment?:KqSharedEquipmentOverview;ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;productionUnits?:number;production?:KqProductionSnapshot;maintenance?:Record<string,KqMachineCondition>;cultureWear?:Record<string,KqCultureEquipmentCondition>;activeRun?:boolean};
 const EMPTY:Snapshot={ownedCodes:[],purchasedCodes:[],equippedCodes:[],levels:{},cashCents:0};
-export function KqWarehouseEntry({initialEquipmentCode,onClose,onOpenShop}:{initialEquipmentCode?:string|null;onClose:()=>void;onOpenShop:(code?:string)=>void}){
+export function KqWarehouseEntry({initialEquipmentCode,initialSection="equipment",onClose,onOpenShop}:{initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage";onClose:()=>void;onOpenShop:(code?:string)=>void}){
   const api=useKqTutorialApi();
   const selectKqTent=useKqSelectTent();
   const tentNumber=useKqTentSelection();
@@ -51,5 +51,5 @@ export function KqWarehouseEntry({initialEquipmentCode,onClose,onOpenShop}:{init
     maintenance={{...selected?.maintenance,...shared?.maintenance}} cultureWear={selected?.cultureWear??{}}
     tentNumber={tentNumber} tents={snapshot.tents??[]} onSelectTent={selectTent}
     loading={loading||(!error&&!selected)} loadError={error} onRetry={refresh} onClose={onClose} onOpenShop={onOpenShop}
-    initialSlot={getKqEquipmentDefinition(initialEquipmentCode??"")?.slot}/>;
+    initialSection={initialSection} initialSlot={getKqEquipmentDefinition(initialEquipmentCode??"")?.slot}/>;
 }

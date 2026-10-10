@@ -8,6 +8,7 @@ import {
   ExternalLink,
   Lightbulb,
   Laptop,
+  Leaf,
   Package,
   Search,
   Settings,
@@ -55,6 +56,7 @@ import {
 } from "@/lib/kanab-quest-equipment";
 import styles from "./KqEquipmentCatalogModal.module.css";
 import { KqCommerceComputer } from "./KqCommerceDesk";
+import { KqCareShop } from "./KqCareShop";
 import { KqTentSelector, useKqSelectTent, useKqTentSelection, type KqTentOverview } from "./KqTentSelector";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
@@ -159,10 +161,12 @@ export function KqEquipmentCatalogModal({
   initialEquipmentCode = null,
   onClose,
   onOpenWorkshop,
+  onBusyChange,
 }: {
   initialEquipmentCode?: string | null;
   onClose: () => void;
   onOpenWorkshop?: (equipmentCode?:string)=>void;
+  onBusyChange?: (busy: boolean) => void;
 }) {
   const api = useKqTutorialApi();
   const selectKqTent = useKqSelectTent();
@@ -177,7 +181,17 @@ export function KqEquipmentCatalogModal({
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<KqEquipmentCategory | "all" | "owned" | "commerce">("all");
+  const [category, setCategory] = useState<KqEquipmentCategory | "all" | "owned" | "commerce" | "care">("all");
+  const [careBusy, setCareBusy] = useState(false);
+  const careRequest = useCallback<typeof fetch>((input, init) => api.request(typeof input === "string" ? input.replace("/api/admin/placard", "/api/arena/placard") : input, init), [api]);
+  const handleCareBusy = useCallback((busy: boolean) => {
+    setCareBusy(busy);
+    onBusyChange?.(busy);
+  }, [onBusyChange]);
+  const handleCarePurchase = useCallback((cashCents: number) => {
+    setSnapshot(current => current ? { ...current, cashCents } : current);
+    api.notify("kq:equipment-updated");
+  }, [api]);
   const [compatibleOnly, setCompatibleOnly] = useState(false);
   const [affordableOnly, setAffordableOnly] = useState(false);
   const [sortMode, setSortMode] = useState<KqEquipmentCatalogSort>("progression");
@@ -487,6 +501,7 @@ export function KqEquipmentCatalogModal({
       if (event.key !== "Escape") return;
       event.preventDefault();
       event.stopPropagation();
+      if (careBusy) return;
       if (purchaseResult) setPurchaseResult(null);
       else if (checkoutOpen) setCheckoutOpen(false);
       else if (selectedCode) setSelectedCode(null);
@@ -495,24 +510,24 @@ export function KqEquipmentCatalogModal({
     }}>
       <Image src="/placard/equipment-showroom-v1.webp" alt="" fill sizes="100vw" className={styles.showroomBackdrop} />
       <header className={styles.catalogHeader}>
-        <button type="button" onClick={onClose} className={styles.backButton} aria-label="Retour à la boutique"><ArrowLeft aria-hidden="true" />Boutique</button>
+        <button type="button" disabled={careBusy} onClick={onClose} className={styles.backButton} aria-label="Retour à la boutique"><ArrowLeft aria-hidden="true" />Boutique</button>
         <div className={styles.catalogBrand}>
           <small>Botte du Chanvrier · Le fond de la boutique</small>
           <h2 id="equipment-catalog-title">Le rayon matériel</h2>
         </div>
         <div className={styles.accountSummary}>
-          {onOpenWorkshop?<button type="button" onClick={()=>onOpenWorkshop()} aria-label="Installer dans mon entrepôt"><Box aria-hidden="true"/></button>:null}
+          {onOpenWorkshop?<button type="button" disabled={careBusy} onClick={()=>onOpenWorkshop()} aria-label="Installer dans mon entrepôt"><Box aria-hidden="true"/></button>:null}
           <span><small>Trésorerie</small><strong>{formatKqCash(snapshot?.cashCents ?? 0)}</strong></span>
           <span><small>Réputation</small><strong>{snapshot?.reputation ?? 0}</strong></span>
-          <button type="button" onClick={() => setCartOpen(true)} aria-label={`Ouvrir le panier, ${cartCodes.length} article(s)`}>
+          <button type="button" disabled={careBusy} onClick={() => setCartOpen(true)} aria-label={`Ouvrir le panier, ${cartCodes.length} article(s)`}>
             <ShoppingCart aria-hidden="true" /><b>{cartCodes.length}</b>
           </button>
         </div>
       </header>
-      <KqTentSelector tents={snapshot?.tents ?? []} tentNumber={tentNumber} disabled={pending !== null || !!activeLayer} onSelect={selectTent}/>
+      {category !== "care" ? <KqTentSelector tents={snapshot?.tents ?? []} tentNumber={tentNumber} disabled={pending !== null || !!activeLayer} onSelect={selectTent}/> : null}
 
-      <button type="button" className={styles.filterToggle} aria-expanded={filtersOpen} aria-controls="equipment-filters" onClick={() => setFiltersOpen(!filtersOpen)}><Search size={16} />{filtersOpen ? "Ranger les filtres" : "Chercher et filtrer"}</button>
-      <div id="equipment-filters" className={styles.toolbar} hidden={!filtersOpen}>
+      {category !== "care" ? <button type="button" className={styles.filterToggle} aria-expanded={filtersOpen} aria-controls="equipment-filters" onClick={() => setFiltersOpen(!filtersOpen)}><Search size={16} />{filtersOpen ? "Ranger les filtres" : "Chercher et filtrer"}</button> : null}
+      <div id="equipment-filters" className={styles.toolbar} hidden={!filtersOpen || category === "care"}>
         <label><Search aria-hidden="true" /><span className="sr-only">Rechercher</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher une tente, une LED, une presse…" /></label>
         <label className={styles.compatibilityToggle}><input type="checkbox" checked={compatibleOnly} onChange={(event) => setCompatibleOnly(event.target.checked)} /><span>Compatible seulement</span></label>
         <label className={`${styles.compatibilityToggle} ${styles.budgetToggle}`}><input type="checkbox" checked={affordableOnly} onChange={(event) => setAffordableOnly(event.target.checked)} /><span>Achetable maintenant</span></label>
@@ -524,23 +539,25 @@ export function KqEquipmentCatalogModal({
 
       <div className={styles.catalogBody}>
         <nav className={styles.categoryNav} aria-label="Catégories du catalogue">
-          <button type="button" data-active={category === "all" || undefined} onClick={() => setCategory("all")}><Package aria-hidden="true" /><span>Tout le matériel</span></button>
+          <button type="button" disabled={careBusy} data-active={category === "all" || undefined} onClick={() => setCategory("all")}><Package aria-hidden="true" /><span>Tout le matériel</span></button>
+          {!api.isTutorial ? <button type="button" disabled={careBusy} aria-pressed={category === "care"} data-active={category === "care" || undefined} onClick={() => setCategory("care")}><Leaf aria-hidden="true" /><span>Intrants & PBI</span></button> : null}
           {KQ_EQUIPMENT_CATEGORIES.map((item) => {
             const Icon = CATEGORY_ICONS[item];
-            return <button key={item} type="button" data-active={category === item || undefined} onClick={() => setCategory(item)}><Icon aria-hidden="true" /><span>{KQ_EQUIPMENT_CATEGORY_LABELS[item]}</span></button>;
+            return <button key={item} type="button" disabled={careBusy} data-active={category === item || undefined} onClick={() => setCategory(item)}><Icon aria-hidden="true" /><span>{KQ_EQUIPMENT_CATEGORY_LABELS[item]}</span></button>;
           })}
-          <button type="button" data-active={category === "owned" || undefined} onClick={() => setCategory("owned")}><Check aria-hidden="true" /><span>Déjà possédés</span></button>
-          <button type="button" data-active={category === "commerce" || undefined} onClick={() => setCategory("commerce")}><Laptop aria-hidden="true" /><span>Vente en ligne</span></button>
-          <div className={styles.loadoutSummary} data-arena-tour="installation">
+          <button type="button" disabled={careBusy} data-active={category === "owned" || undefined} onClick={() => setCategory("owned")}><Check aria-hidden="true" /><span>Déjà possédés</span></button>
+          <button type="button" disabled={careBusy} data-active={category === "commerce" || undefined} onClick={() => setCategory("commerce")}><Laptop aria-hidden="true" /><span>Vente en ligne</span></button>
+          {category !== "care" ? <div className={styles.loadoutSummary} data-arena-tour="installation">
             <small>Tente {tentNumber} · Son équipement</small>
             <strong>{currentLoadout.powerWatts * productionUnits} W</strong>
             <span>Avec les machines de l’atelier commun</span>
             <span>Quantité +{currentLoadout.quantityPercent} %</span>
             <span>Qualité max +{currentLoadout.qualityMaxBonus}</span>
-          </div>
+          </div> : null}
         </nav>
 
         <main className={styles.productArea}>
+          {category === "care" ? <KqCareShop request={careRequest} embedded refreshKey={snapshot?.cashCents} disabled={pending !== null || !!activeLayer} onBusyChange={handleCareBusy} onPurchased={handleCarePurchase} /> : <>
           <div className={styles.productAreaHeader}>
             <div><small>{category === "commerce" ? "Ordinateur et abonnement" : `${filteredCatalog.length} référence${filteredCatalog.length > 1 ? "s" : ""}`}</small><strong>{category === "all" ? "Tout le matériel" : category === "owned" ? "Ton matériel" : category === "commerce" ? "Le coin du commerce" : KQ_EQUIPMENT_CATEGORY_LABELS[category]}</strong></div>
             <span>Culture : tente {tentNumber} · Transformation : atelier commun</span>
@@ -593,6 +610,7 @@ export function KqEquipmentCatalogModal({
               );
             })}
           </div>
+          </>}
         </main>
 
         <aside className={styles.cartPanel} inert={!cartOpen} data-open={cartOpen || undefined} aria-label="Panier matériel">

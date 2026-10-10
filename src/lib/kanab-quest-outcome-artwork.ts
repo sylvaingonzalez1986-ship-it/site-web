@@ -1,4 +1,4 @@
-import { KQ_STAGES, type KqGameState, type KqOutcome, type KqStage } from "@/lib/kanab-quest-game";
+import { getKqStageDisplayName, KQ_STAGES, type KqGameState, type KqOutcome, type KqStage } from "@/lib/kanab-quest-game";
 
 export type KqOutcomeArtwork = {
   code: string;
@@ -29,7 +29,7 @@ function artwork(stage: KqStage, outcome: KqOutcome | "dead", alt: string): KqOu
   const slug = stageSlugs[stage];
   return {
     code: `OUTCOME-${slug.toUpperCase()}-${outcome.toUpperCase()}`,
-    name: `${stage} · ${outcome === "dead" ? "Culture morte" : KQ_OUTCOME_LABELS[outcome]}`,
+    name: `${getKqStageDisplayName(stage)} · ${outcome === "dead" ? "Culture morte" : KQ_OUTCOME_LABELS[outcome]}`,
     src: `/app/kanab-quest/reactions/stages-v3/${slug}-${outcome}.webp`,
     alt,
     stage,
@@ -53,16 +53,17 @@ export const KQ_OUTCOME_ARTWORK: Record<KqStage, Record<KqOutcome, KqOutcomeArtw
   Croissance: stageOutcomes("Croissance", "une plante en croissance végétative, sans fleurs"),
   Floraison: stageOutcomes("Floraison", "une plante portant des fleurs"),
   Récolte: stageOutcomes("Récolte", "des fleurs mûres en cours de récolte"),
-  "Séchage & affinage": stageOutcomes("Séchage & affinage", "des branches récoltées et des fleurs en cours de séchage et d’affinage"),
+  "Séchage & affinage": stageOutcomes("Séchage & affinage", "des branches récoltées et des fleurs en cours de séchage"),
 };
 
-/** Two validated zero-success stages are required, so germination cannot be terminal. */
+/** A full initial vitality bar cannot be exhausted by the first stage alone.
+ * Historical two-zero rules likewise cannot end a culture in Germination. */
 export const KQ_DEAD_CULTURE_ARTWORK: Record<Exclude<KqStage, "Germination">, KqOutcomeArtwork> = {
   Enracinement: artwork("Enracinement", "dead", "Sylvain attristé devant une petite plantule morte et ses racines desséchées."),
   Croissance: artwork("Croissance", "dead", "Sylvain attristé devant une plante végétative morte, sans fleurs."),
   Floraison: artwork("Floraison", "dead", "Sylvain attristé devant une plante fleurie morte."),
   Récolte: artwork("Récolte", "dead", "Sylvain attristé devant des fleurs de récolte perdues, posées dans un plateau."),
-  "Séchage & affinage": artwork("Séchage & affinage", "dead", "Sylvain attristé devant un lot récolté perdu pendant le séchage et l’affinage."),
+  "Séchage & affinage": artwork("Séchage & affinage", "dead", "Sylvain attristé devant un lot récolté perdu pendant le séchage."),
 };
 
 /** Stable stage / verdict order for the artwork review and production checks. */

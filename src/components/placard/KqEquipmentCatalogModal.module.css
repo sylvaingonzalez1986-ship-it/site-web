@@ -98,3 +98,29 @@
 @media(max-width:700px){.errorNotice,.statusNotice{margin:8px 12px 0}}
 .catalog[data-embedded]{position:relative;inset:auto;z-index:auto;width:100%;height:min(820px,calc(100dvh - 180px));min-height:560px;isolation:isolate}
 .catalog[data-embedded] button{min-height:44px}
+
+/* Cream room surfaces keep the equipment, shelves and gold actions distinct. */
+.catalog{background:#f4efdf;color:#123b2f}
+.catalog::before{background:#f4efdf}
+.catalogHeader{background:#f8f2e4;color:#123b2f;border-bottom-color:#123b2f;box-shadow:0 3px 0 #f4c43d}
+.catalogBrand h2{color:#123b2f}
+.catalogBrand small{color:#735619}
+.backButton,.accountSummary>span,.filterToggle,.toolbar{background:#fffaf1;color:#123b2f}
+.categoryNav,.productArea{scrollbar-color:#738363 #f4efdf}
+.categoryNav>button{background:#f8f2e4;color:#123b2f}
+.categoryNav>button:hover,.categoryNav>button[data-active]{background:#f4c43d;color:#123b2f;border-color:#123b2f}
+.loadoutSummary,.productAreaHeader{background:#f8f2e4;color:#123b2f;border-color:#123b2f40}
+.loadoutSummary small,.productAreaHeader small{color:#735619}
+.loadoutSummary span,.productAreaHeader>span{color:#4a604d}
+.productCopy,.productCard>footer{background:#fffaf1;color:#123b2f}
+.productCopy{border:1px solid #123b2f40;border-bottom:0}
+.productCard>footer{border-inline:1px solid #123b2f40;border-bottom:1px solid #123b2f40}
+.cartPanel,.detailPanel{background:#f8f2e4;color:#123b2f}
+.cartPanel>header,.cartFooter{background:#f4efdf;color:#123b2f}
+.cartPanel header small{color:#735619}
+.cartPanel header button{background:#fffaf1;color:#123b2f;border-color:#123b2f}
+.cartItems article,.checkoutOverlay>section,.purchaseOverlay>section{background:#fffaf1;color:#123b2f}
+.loadingState,.emptyState{background:#f8f2e4;color:#123b2f}
+.productArea>section[aria-label="Matériel de vente en ligne"]{background:#f8f2e4;color:#123b2f;border-color:#123b2f40}
+.productArea>section[aria-label="Matériel de vente en ligne"] small{color:#735619}
+.catalog button:focus-visible,.catalog a:focus-visible{outline-color:#123b2f;box-shadow:0 0 0 5px #fffaf1}

@@ -1,0 +1,48 @@
+{
+  "generatedOn": "2026-10-10",
+  "intent": "Realistically drawn illustrations based on actual retailer photographs for the care reserve",
+  "entries": [
+    {
+      "code": "CARE-VERMICOMPOST",
+      "name": "vermicompost",
+      "reference": "C:/lesiteinternetquitue/output/care-illustrations/references/vermicompost-retailer.webp",
+      "prompt": "Use case: product-mockup. Asset type: square in-game shop illustration, realistically hand drawn from a retailer product reference photograph. Style: meticulous sepia ink pen contours and fine cross-hatching, restrained transparent watercolor washes, natural realistic proportions and tactile material, clearly a beautiful drawing rather than a photograph, no cartoon. Backdrop: completely plain warm ivory #f8f2e4, without border, frame, decorative motifs, scenery or extra objects. Composition: one complete upright product centered in a square canvas, straight-on view matching the reference, comfortably uncropped with at least 12 percent empty margin on every side, only a tiny soft watercolor grounding shadow. Reference photograph defines the real packaging geometry, cap or seams, product colors, label arrangement and brand identity. Retain the main readable product name and BIOBIZZ branding; simplify tiny secondary text into subtle ink indications. Do not introduce invented slogans. Draw the package afresh; do not copy photographic watermarks or retailer logos. Subject: BIOBIZZ WORM·HUMUS 40 L bag exactly based on image 1. Tall crinkled bright green flexible plastic sack with white sealed top strip, white BIOBIZZ near upper center, white 40 L and WORM·HUMUS wording, large white circular Biobizz emblem on lower half. Preserve the real sack silhouette and folds, translate highlights into subtle ivory watercolor and fine ink, saturated but refined greens. Only the single sealed sack, no worms, no loose soil, no leaves.",
+      "mode": "built-in image_gen",
+      "referenceRole": "Retailer product photograph used to faithfully draw the real packaging",
+      "retailer": "Alchimia Grow Shop",
+      "referencePage": "https://www.alchimiaweb.com/fr/biobizz-worm-humus-40-l-product-18550.php",
+      "referenceImageUrl": "https://www.alchimiaweb.com/ils/30810023/largest-0/5/worm-humus-de-biobizz-40-l.webp",
+      "sourcePng": "C:\\Users\\sylva\\.codex\\generated_images\\01a125ca-a540-7f00-93dc-b244dcfd179c\\exec-87cb9254-3cf3-4555-83a9-d2a4fe6f2c3b.png",
+      "retainedPng": "output/care-illustrations/originals/vermicompost-retailer-v1.png",
+      "destination": "public/app/kanab-quest/care/vermicompost-v1.webp",
+      "encoding": {
+        "width": 640,
+        "height": 640,
+        "format": "webp",
+        "quality": 82
+      },
+      "validation": "Inspected generated output: realistic ink-and-watercolor drawing, recognizable real packaging, main text retained, complete isolated product, no retailer watermark."
+    },
+    {
+      "code": "CARE-SEAWEED",
+      "name": "seaweed",
+      "reference": "C:/lesiteinternetquitue/output/care-illustrations/references/seaweed-retailer.webp",
+      "prompt": "Use case: product-mockup. Asset type: square in-game shop illustration, realistically hand drawn from a retailer product reference photograph. Style: meticulous sepia ink pen contours and fine cross-hatching, restrained transparent watercolor washes, natural realistic proportions and tactile material, clearly a beautiful drawing rather than a photograph, no cartoon. Backdrop: completely plain warm ivory #f8f2e4, without border, frame, decorative motifs, scenery or extra objects. Composition: one complete upright product centered in a square canvas, straight-on view matching the reference, comfortably uncropped with at least 12 percent empty margin on every side, only a tiny soft watercolor grounding shadow. Reference photograph defines the real packaging geometry, cap or seams, product colors, label arrangement and brand identity. Retain the main readable product name and BIOBIZZ branding; simplify tiny secondary text into subtle ink indications. Do not introduce invented slogans. Draw the package afresh; do not copy photographic watermarks or retailer logos. Subject: BIOBIZZ ALG·A·MIC 1 L bottle exactly based on image 1. Olive green translucent cylindrical plastic bottle with sloped rounded shoulders and white vertically ribbed screw cap, cream kraft-paper label wrapping the bottle, black BIOBIZZ brand, green ALG·A·MIC wording and large green circular Biobizz emblem beneath it. Preserve the real bottle proportions and the label layout. Render ribbed cap with delicate sepia hatchwork and pale olive watercolor, not glossy photography. Only this bottle, no algae leaves, no drops, no additional packaging.",
+      "mode": "built-in image_gen",
+      "referenceRole": "Retailer product photograph used to faithfully draw the real packaging",
+      "retailer": "Alchimia Grow Shop",
+      "referencePage": "https://www.alchimiaweb.com/fr/bio-bizz-algamic-1-l-product-243.php",
+      "referenceImageUrl": "https://www.alchimiaweb.com/ils/30002006/largest-0/5/biobizz-algamic-1-l.webp",
+      "sourcePng": "C:\\Users\\sylva\\.codex\\generated_images\\01a125ca-a540-7f00-93dc-b244dcfd179c\\exec-2fa45ef7-bd90-4505-82ce-0529b7046df9.png",
+      "retainedPng": "output/care-illustrations/originals/seaweed-retailer-v1.png",
+      "destination": "public/app/kanab-quest/care/seaweed-v1.webp",
+      "encoding": {
+        "width": 640,
+        "height": 640,
+        "format": "webp",
+        "quality": 82
+      },
+      "validation": "Inspected generated output: realistic ink-and-watercolor drawing, recognizable real packaging, main text retained, complete isolated product, no retailer watermark."
+    }
+  ]
+}

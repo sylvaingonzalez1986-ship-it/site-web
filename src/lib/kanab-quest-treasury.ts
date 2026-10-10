@@ -81,6 +81,7 @@ export const KQ_TREASURY_ENTRY_LABELS: Record<string, string> = {
   opening: "Ouverture des comptes", cash: "Mouvement de trésorerie", sale: "Vente",
   "vat-reserve": "Mise en réserve de TVA", "vat-paid": "Reversement de TVA",
   "lab-issued": "Facture laboratoire", "lab-paid": "Règlement laboratoire",
+  "lab-adjusted": "Dette d’analyse excédentaire annulée", "lab-refunded": "Trop-perçu d’analyse remboursé",
   "energy-issued": "Facture électricité et soins", "energy-paid": "Règlement électricité et soins",
   "shop-created": "Création du site", "shop-renewed": "Hébergement du site",
   "domicile-paid": "Domiciliation", "advertising-started": "Campagne publicitaire",

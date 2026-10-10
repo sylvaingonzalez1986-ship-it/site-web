@@ -24,7 +24,7 @@ Une nouvelle tente ne copie ni les améliorations, ni l’usure des autres tente
 La facture additionne les consommations de chaque tente, y compris son séchoir et sa sécurité. Le solaire réduit uniquement la consommation de la tente où il est installé. Les devis détaillent la contribution de chaque tente.
 Les anciens cycles conservent leurs instantanés, leur capacité et leur calcul historique. Sans capacité enregistrée, ils restent à une tente.
 L’usure progresse sur les équipements de chaque tente engagés au lancement de la culture. Les machines communes sont entretenues une seule fois. Pour les nouveaux cycles, les soins des chiens acquis sont facturés par tente ; les anciens cycles conservent leurs règles historiques.
-Les bonus de réputation restent attribués une seule fois par culture. Les frais de laboratoire restent de 45 € virtuels par tente et la transformation est facturée selon les grammes traités.
+Les bonus de réputation restent attribués une seule fois par culture. L’analyse du lot commun coûte **45 € virtuels une seule fois par session de culture terminée**, quel que soit le nombre de tentes. La transformation est facturée selon les grammes traités.
 
 ## Installation et vérification
 
@@ -49,6 +49,14 @@ La migration du 1er octobre matérialise les droits déjà acquis pour chaque te
 Validation locale du 24 septembre 2026 : 1 747 tests réussis dans 265 fichiers, compilation de production Next.js réussie, contrôles TypeScript et ESLint réussis, tests PostgreSQL locaux et contrôle des permissions sur 248 migrations réussis. Audit navigateur validé aux trois largeurs indiquées.
 
 Validation locale du 28 septembre 2026 : 2 053 cas Vitest validés (une ancienne assertion de texte corrigée puis relancée), 110 assertions PostgreSQL pour la migration de matériel commun et contrôle des permissions sur 257 migrations. TypeScript et ESLint réussissent. Les audits navigateur avec API simulées couvrent l’entrepôt à 320, 390, 768 et 1 440 px, ainsi que catalogue et agrandissements à 320, 390 et 1 440 px : achats et états communs, panier conservé, héritage des nouvelles tentes, anciennes factures préservées. Rapports dans `output/placard-warehouse-clarity`, `output/placard-shared-catalog` et `output/production`. Ces contrôles locaux n’appliquent pas la migration distante.
+
+## Correction des analyses — 10 octobre 2026
+
+La migration `20261010000900_kq_lab_analysis_per_session.sql` fixe l’analyse à **45 € par session terminée**, pour le lot commun à toutes les tentes. La clé unique de culture empêche une seconde facture. Les factures antérieures supérieures à 45 € sont régularisées en tenant compte des paiements : excédent impayé annulé, trop-perçu rendu au portefeuille de jeu, échéances et reçus historiques conservés. Une réexécution ne rembourse rien une seconde fois.
+
+La migration a été appliquée seule au projet Supabase lié le 10 octobre 2026 ; le registre distant et la prévisualisation suivante ont été vérifiés à 17 h 47, heure de Paris. PostgreSQL confirme **9 factures corrigées**, **135 € virtuels de dette annulée** et **270 € virtuels remboursés**. Reçu : `output/lab-analysis-per-session/application.json`. Le code de l’interface n’a pas été publié par cette opération.
+
+Validation : 105 tests ciblés, TypeScript et ESLint valides ; scénarios SQL business, production et trésorerie réussis, incluant 1/2/3/4/8 tentes, paiements partiels et complets, factures multiples, comptes avec ou sans suivi comptable initialisé, revalorisation du stock, conservation des reçus et rejeu. Le contrôle des permissions couvre 283 migrations.
 
 ## Application distante — 23 septembre 2026
 

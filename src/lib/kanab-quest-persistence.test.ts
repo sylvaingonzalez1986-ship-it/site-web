@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { advanceKqStage, KQ_CARDS, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "@/lib/kanab-quest-game";
+import { advanceKqStage, KQ_CARDS, resolveKqStage, rollKqDice, startKqGame as startKqGameCurrent, swapKqHeritageHandCard, type KqGameState } from "@/lib/kanab-quest-game";
 import { createKqFlower, createKqOpponent, lockKqBattle, resolveKqBattle } from "@/lib/kanab-quest-battle";
 import { createKqRankProfile } from "@/lib/kanab-quest-ranking";
 import { createKqIntegrityCode, encodeKqSave, parseKqBattleSave, parseKqGameSave, parseKqRankSave } from "@/lib/kanab-quest-persistence";
+
+// Existing tests pin the historical rules; v3 behavior has a dedicated care suite.
+const startKqGame = (seed?: number, config?: Parameters<typeof startKqGameCurrent>[1]) => startKqGameCurrent(seed, { ...config, rulesVersion: 2 });
 
 function completedGame(seed = 33) {
   let state: KqGameState = startKqGame(seed);

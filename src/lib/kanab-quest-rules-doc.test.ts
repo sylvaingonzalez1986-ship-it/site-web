@@ -2,6 +2,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { formatKqCash, KQ_EQUIPMENT_CATALOG } from "@/lib/kanab-quest-equipment";
+import { KQ_ACTIVE_CARDS } from "@/lib/kanab-quest-game";
+import { KQ_SUPPORT_RARITY_WEIGHTS } from "@/lib/kanab-quest-booster";
 
 const design = readFileSync(
   join(process.cwd(), "docs/bete-de-concours/PLACARD-GAME-DESIGN.md"),
@@ -13,6 +15,8 @@ const rules = readFileSync(
 );
 const normalizedDesign = design.replace(/\s+/g, " ");
 const normalizedRules = rules.replace(/\s+/g, " ");
+const care = readFileSync(join(process.cwd(), "docs/bete-de-concours/CULTURE-VIVANTE-2026-10-15.md"), "utf8").replace(/\s+/g, " ");
+const currentDesign = normalizedDesign.split("## Archives de conception")[0];
 
 describe("Kanab Quest Placard rules draft", () => {
   it("states that both generated Flowers burn at the verdict", () => {
@@ -34,7 +38,8 @@ describe("Kanab Quest Placard rules draft", () => {
   });
 
   it("publishes booster odds and the deterministic producer Heritage model", () => {
-    expect(normalizedRules).toContain("Commun `70 %`, Peu commune `24 %`, Rare `6 %`");
+    const odds = KQ_SUPPORT_RARITY_WEIGHTS;
+    expect(normalizedRules).toContain(`Commun \`${odds.common} %\`, Peu commune \`${odds.uncommon} %\`, Rare \`${odds.rare} %\`, Épique \`${odds.epic} %\``);
     expect(normalizedRules).toContain("une carte par producteur présent sur la plateforme");
     expect(normalizedRules).toContain("débloque la carte de ce producteur de façon idempotente");
     expect(normalizedDesign).toContain(
@@ -42,9 +47,35 @@ describe("Kanab Quest Placard rules draft", () => {
     );
   });
 
+  it("keeps the active thirty-card contract separate from archived PBI and observation", () => {
+    expect(normalizedRules).toContain(`**${KQ_ACTIVE_CARDS.length} cartes actives**`);
+    expect(normalizedRules).toContain("Une seule carte épique peut être jouée par culture");
+    expect(normalizedRules).toContain("Les PBI se trouvent dans la boutique de soins");
+    expect(normalizedRules).toContain("observations du panneau Santé sont gratuites");
+    expect(normalizedRules).toContain("liste explicite de situations compatibles");
+    expect(currentDesign).toContain("30 cartes actives");
+    expect(currentDesign).not.toContain("les PBI restent hors deck, apparaissent apres la Loupe");
+    expect(normalizedDesign).toContain("Archives de conception");
+    expect(care).toContain("Une seule carte épique peut être jouée par culture");
+    for (const card of KQ_ACTIVE_CARDS.filter(item => Number(item.code.slice(-3)) >= 37)) {
+      expect(normalizedRules).toContain(`| ${card.code} | ${card.name} | ${card.rarity === "epic" ? "Épique" : "Commune"} | ${card.xpCost} |`);
+    }
+  });
+
+  it("places timed curing after the jury and states the one-hour surplus deadline", () => {
+    expect(normalizedRules).toContain("avant le jury et le duel");
+    expect(normalizedRules).toContain("après leur verdict");
+    expect(normalizedRules).toContain("6 heures réelles, indépendamment du calendrier du jeu");
+    expect(normalizedRules).toContain("1 heure réelle après le duel");
+    expect(normalizedRules).toContain("seul le surplus est vendu automatiquement");
+    expect(currentDesign).toContain("Aucune ne soigne directement un parasite");
+    expect(care).toContain("aucune carte ne raccourcit ses 6 heures réelles");
+  });
+
   it("documents the durable equipment economy with the implemented prices", () => {
     expect(normalizedRules).toContain("Chaque joueur commence avec `350 €` virtuels");
     expect(normalizedRules).toContain("ne peut pas être acheté, retiré, remboursé ou converti en argent réel");
+    expect(normalizedRules).toContain("une seule facture d’analyse de `45 €` pour son lot commun, quel que soit le nombre de tentes");
     KQ_EQUIPMENT_CATALOG.filter((equipment) => equipment.purchasable).forEach((equipment) => {
       const price = formatKqCash(equipment.priceCents).replace(/\s+/g, " ");
       expect(normalizedRules).toContain(`| ${equipment.name} | ${price} |`);
