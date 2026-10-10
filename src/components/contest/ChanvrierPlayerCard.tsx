@@ -1,11 +1,12 @@
 "use client";
 import { ChanvrierSavingsPanel } from "./ChanvrierSavingsPanel";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useImperativeHandle, useRef, useState, type Ref } from "react";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { Award, BookOpen, Check, ChevronUp, Dices, Gift, Leaf, LockKeyhole, Medal, Pencil, Pin, ShieldCheck, Sparkles, Store, Swords, Target, Trophy, X } from "lucide-react";
 import { CHANVRIER_STRENGTHS, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import type { ArenaProfileLauncherHandle } from "@/lib/arena-profile-launcher";
 import { ACHIEVEMENTS, ACHIEVEMENT_CATEGORIES, BADGE_TIERS, achievementProgress, type AchievementCategory, type ChanvrierBadge, type ChanvrierProgress, type ChanvrierShowcase } from "@/lib/chanvrier-progress";
 import { getKqReputationProgress } from "@/lib/kanab-quest-reputation";
 import { KQ_MISSION_COPY } from "@/lib/kanab-quest-missions";
@@ -26,7 +27,12 @@ function Meter({ value, target, label }: { value: number; target: number; label:
   return <progress className={styles.meter} value={Math.min(value, target)} max={target} aria-label={label} />;
 }
 
-export function ChanvrierPlayerCard({ profile, onEdit, inline = false }: { profile: ChanvrierProfile; onEdit: () => void; inline?: boolean }) {
+export function ChanvrierPlayerCard({ profile, onEdit, inline = false, launcherRef }: {
+  profile: ChanvrierProfile;
+  onEdit: (origin?: HTMLElement) => void;
+  inline?: boolean;
+  launcherRef?: Ref<ArenaProfileLauncherHandle>;
+}) {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<"journey" | "achievements" | "badges">("journey");
   const [filter, setFilter] = useState<AchievementCategory | "all">("all");
@@ -42,11 +48,21 @@ export function ChanvrierPlayerCard({ profile, onEdit, inline = false }: { profi
   const fetchedAt = useRef(0);
   const requestVersion = useRef(0);
   const trigger = useRef<HTMLButtonElement>(null);
+  const returnFocus = useRef<HTMLElement | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const badgeDetail = useRef<HTMLDivElement>(null);
   const id = useId();
   const strength = CHANVRIER_STRENGTHS.find(item => item.code === profile.strength)!;
-  const close = () => { dialog.current?.close(); setOpen(false); setData(current => current ? { ...current, newBadgeCount: 0 } : null); trigger.current?.focus({ preventScroll: true }); };
+  const close = () => {
+    dialog.current?.close();
+    setOpen(false);
+    setData(current => current ? { ...current, newBadgeCount: 0 } : null);
+    (returnFocus.current?.isConnected ? returnFocus.current : trigger.current)?.focus({ preventScroll: true });
+  };
+
+  useImperativeHandle(launcherRef, () => ({
+    open: origin => { returnFocus.current = origin; setOpen(true); },
+  }), []);
 
   useBodyScrollLock(open);
   useEffect(() => { if (tab === "badges" && selectedBadge) badgeDetail.current?.scrollIntoView({ block: "nearest" }); }, [selectedBadge, tab]);
@@ -109,7 +125,7 @@ export function ChanvrierPlayerCard({ profile, onEdit, inline = false }: { profi
   ].sort((a, b) => b.priority - a.priority).slice(0, 3) : [];
 
   return <div className={styles.dock} data-chanvrier-card data-inline={inline || undefined}>
-    <button ref={trigger} type="button" className={styles.trigger} aria-expanded={open} aria-controls={open ? id : undefined} aria-haspopup="dialog" onClick={() => setOpen(v => !v)}>
+    <button ref={trigger} type="button" className={styles.trigger} aria-expanded={open} aria-controls={open ? id : undefined} aria-haspopup="dialog" onClick={event => { returnFocus.current = event.currentTarget; setOpen(v => !v); }}>
       <span className={styles.thumbnail} aria-hidden="true"><ChanvrierAvatar profile={profile} /></span>
       <span className={styles.label}><small>MA CARTE {dirty ? <span className={styles.dot} aria-label="Parcours actualisé" /> : null}</small><strong>{profile.nickname}</strong></span><ChevronUp size={18} />
     </button>
@@ -121,7 +137,7 @@ export function ChanvrierPlayerCard({ profile, onEdit, inline = false }: { profi
           <div className={styles.identity}><small>MON PERSONNAGE · MON HISTOIRE</small><h2 id={`${id}-name`}>{profile.nickname}</h2><p className={styles.chosenTitle}>{chosenTitle || (profile.gender === "female" ? "Chanvrière de la guilde" : "Chanvrier de la guilde")}</p>
             <div className={styles.pinned} aria-label="Mes trois distinctions"><span className={styles.pinnedLabel}>Ma vitrine</span>{[0, 1, 2].map(index => <button key={index} type="button" title={pinned[index]?.label || "Choisir un badge"} aria-label={pinned[index]?.label || `Choisir le badge ${index + 1}`} onClick={() => { setTab("badges"); setSelectedBadge(pinned[index]?.id ?? null); }}>{pinned[index] ? <BadgeMedal badge={pinned[index]} /> : <Medal size={22} />}</button>)}</div>
             <details className={styles.specialty}><summary>Ma spécialité · {strength.badge}</summary><p>{strength.description}</p></details>
-            <button type="button" className={styles.edit} onClick={() => { close(); onEdit(); }}><Pencil size={13} />Personnaliser mon personnage</button>
+            <button type="button" className={styles.edit} onClick={() => { const origin = returnFocus.current ?? trigger.current; close(); onEdit(origin ?? undefined); }}><Pencil size={13} />Personnaliser mon personnage</button>
           </div>
         </div>
         {profile.strength === "treasurer" ? <ChanvrierSavingsPanel /> : null}

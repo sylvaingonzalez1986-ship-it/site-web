@@ -2,12 +2,14 @@
 
 import dynamic from "next/dynamic";
 import Link from "@/components/navigation/NavigationLink";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { ChevronDown, CircleHelp, Compass, UserRound } from "lucide-react";
 import { createPortal } from "react-dom";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useImperativeHandle, useRef, useState } from "react";
 import { useCookieConsent } from "@/components/cookies/CookieConsentProvider";
 import { ARENA_JOURNEY_STEP_COUNT, advanceArenaJourney, arenaJourneyStorageKey, parseArenaJourneyProgress, type ArenaJourneyAction, type ArenaJourneyProgress } from "@/lib/arena-journey";
 import { parseChanvrierProfile, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import type { ArenaProfileAvailability, ArenaProfileLauncherHandle, ArenaProfileLauncherProps } from "@/lib/arena-profile-launcher";
 import { ArenaFirstVisitTutorial } from "./ArenaFirstVisitTutorial";
 import { ArenaLearningLauncher } from "./ArenaLearningLauncher";
 import { ChanvrierProfileEditor } from "./ChanvrierProfileEditor";
@@ -34,7 +36,15 @@ function remember(userId: string, progress: ArenaJourneyProgress, pending: boole
   } catch { return false; }
 }
 
-export function ArenaJourneyTour() {
+function ProfileLauncher({ launcherRef, onOpen }: Pick<ArenaProfileLauncherProps, "launcherRef"> & { onOpen: (origin: HTMLElement) => boolean }) {
+  const router = useRouter();
+  useImperativeHandle(launcherRef, () => ({
+    open: origin => { if (onOpen(origin)) router.push("/compte/connexion?next=%2Farene"); },
+  }), [onOpen, router]);
+  return null;
+}
+
+export function ArenaJourneyTour({ launcherRef, onProfileAvailabilityChange }: ArenaProfileLauncherProps = {}) {
   const [chanvrier, setChanvrier] = useState<ChanvrierProfile | null>(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const [startAfterProfile, setStartAfterProfile] = useState(false);
@@ -51,11 +61,17 @@ export function ArenaJourneyTour() {
   const controls = useRef<HTMLDivElement>(null);
   const helpButton = useRef<HTMLButtonElement>(null);
   const profileButton = useRef<HTMLButtonElement>(null);
+  const profileOrigin = useRef<HTMLElement | null>(null);
+  const playerCard = useRef<ArenaProfileLauncherHandle | null>(null);
   const help = useRef<HTMLDivElement>(null);
   const inFlight = useRef(false);
   const alive = useRef(true);
   // Saved progress is a preference, never permission to open an overlay.
   const active = trialOpen && !!userId && !showBanner && !profileOpen;
+  const profileAvailability: ArenaProfileAvailability = showBanner || busy || trialOpen
+    ? "blocked" : loading ? "loading" : error && !userId ? "error" : "ready";
+
+  useEffect(() => { onProfileAvailabilityChange?.(profileAvailability); }, [onProfileAvailabilityChange, profileAvailability]);
 
   useEffect(() => { alive.current = true; return () => { alive.current = false; }; }, []);
   useEffect(() => {
@@ -164,6 +180,7 @@ export function ArenaJourneyTour() {
   const requestTrial = () => {
     if (busy || !userId || !progress) return;
     if (!chanvrier) {
+      profileOrigin.current = null;
       setHelpOpen(false);
       setStartAfterProfile(true);
       setProfileOpen(true);
@@ -172,9 +189,35 @@ export function ArenaJourneyTour() {
     }
   };
   const focusProfile = () => {
-    const button = controls.current?.querySelector<HTMLButtonElement>("[data-chanvrier-card] button")
-      ?? profileButton.current ?? helpButton.current;
+    const button = profileOrigin.current?.isConnected ? profileOrigin.current
+      : controls.current?.querySelector<HTMLButtonElement>("[data-chanvrier-card] button")
+        ?? profileButton.current ?? helpButton.current;
+    profileOrigin.current = null;
     button?.focus({ preventScroll: true });
+  };
+  const editProfile = (origin?: HTMLElement) => {
+    profileOrigin.current = origin ?? null;
+    setStartAfterProfile(false);
+    setHelpOpen(false);
+    setProfileOpen(true);
+  };
+  const requestProfile = (origin: HTMLElement): boolean => {
+    if (profileAvailability === "blocked" || profileAvailability === "loading" || profileOpen) return false;
+    if (profileAvailability === "error") {
+      setError("");
+      setLoading(true);
+      setHelpOpen(true);
+      setRetry(value => value + 1);
+      return false;
+    }
+    if (!userId) return true;
+    if (chanvrier) {
+      setHelpOpen(false);
+      playerCard.current?.open(origin);
+    } else {
+      editProfile(origin);
+    }
+    return false;
   };
   const closeProfile = () => {
     const returnToHelp = startAfterProfile;
@@ -203,9 +246,10 @@ export function ArenaJourneyTour() {
 
   if (showBanner) return null;
   return <div ref={controls} className={styles.controls} data-arena-account-controls>
+    {launcherRef ? <ProfileLauncher launcherRef={launcherRef} onOpen={requestProfile} /> : null}
     {userId ? chanvrier
-      ? <ChanvrierPlayerCard inline profile={chanvrier} onEdit={() => { setStartAfterProfile(false); setHelpOpen(false); setProfileOpen(true); }} />
-      : <button ref={profileButton} type="button" className={styles.profileButton} onClick={() => { setStartAfterProfile(false); setHelpOpen(false); setProfileOpen(true); }}>
+      ? <ChanvrierPlayerCard inline profile={chanvrier} launcherRef={playerCard} onEdit={editProfile} />
+      : <button ref={profileButton} type="button" className={styles.profileButton} onClick={event => editProfile(event.currentTarget)}>
           <UserRound size={17} aria-hidden="true" />Créer mon personnage
         </button>
       : null}
