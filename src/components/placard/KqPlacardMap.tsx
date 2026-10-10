@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, BriefcaseBusiness, Compass, Landmark, MapPin, MoveHorizontal, Scan, ShoppingBag, Sprout, Store, Swords, Target, Warehouse, ZoomIn } from "lucide-react";
+import { ArrowRight, BookOpen, BriefcaseBusiness, ChevronDown, CircleHelp, Compass, Landmark, MapPin, MoveHorizontal, Scan, ShoppingBag, Sprout, Store, Swords, Target, Tent, Wallet, Warehouse, ZoomIn } from "lucide-react";
 import { useRef, useState, type CSSProperties } from "react";
+import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import styles from "./KqPlacardMap.module.css";
 
 export type PlacardMapView = "game" | "market" | "treasury" | "shop" | "arena" | "missions" | "workshop";
@@ -12,16 +13,19 @@ const BUILDINGS = [
   { id: "warehouse", name: "L’Entrepôt", number: "01", category: "Le cœur de ta culture", description: "Derrière les grandes portes, ton placard prend vie. Fais pousser ta prochaine récolte et prends soin de ton installation.", Icon: Warehouse, x: 24, y: 25, width: 32, height: 37 },
   { id: "bank", name: "La Banque", number: "02", category: "De quoi voir plus grand", description: "Pousse la porte du banquier pour financer tes projets, mettre de côté et suivre tes placements.", Icon: Landmark, x: 53, y: 18, width: 20, height: 31 },
   { id: "office", name: "Le Bureau", number: "03", category: "Les affaires en ordre", description: "Les factures sur le bureau, les projets dans les tiroirs. Pilote tes comptes et développe ton activité.", Icon: BriefcaseBusiness, x: 79, y: 29, width: 21, height: 37 },
-  { id: "market", name: "Le Marché", number: "04", category: "De la récolte au comptoir", description: "C’est ici que tes récoltes trouvent leur prochaine vie. Transforme tes lots et choisis comment les vendre.", Icon: Store, x: 22, y: 61, width: 25, height: 35 },
+  { id: "market", name: "Le Marché", number: "04", category: "De la récolte au comptoir", description: "C’est ici que tes récoltes trouvent leur prochaine vie. Transforme tes lots et choisis comment les vendre.", Icon: Store, x: 22, y: 58, width: 25, height: 27 },
   { id: "shop", name: "La Boutique", number: "05", category: "Un coup de pouce pour la suite", description: "Du matériel pour ton installation et des packs Botte du Chanvrier pour tes prochaines cultures.", Icon: ShoppingBag, x: 48, y: 73, width: 23, height: 33 },
   { id: "arena", name: "Jury & duels", number: "06", category: "Fais pousser ta réputation", description: "Entre dans les gradins, présente tes Fleurs au jury et mesure tes récoltes à celles des autres joueurs.", Icon: Swords, x: 77, y: 66, width: 27, height: 36 },
   { id: "missions", name: "Les Missions", number: "07", category: "Toujours une nouvelle aventure", description: "Passe au tableau des missions. Des défis t’attendent, avec des packs, des Buddies et de l’argent du jeu à gagner.", Icon: Target, x: 48, y: 45, width: 15, height: 23 },
+  { id: "collection", name: "La Collection", number: "08", category: "Botte du Chanvrier", description: "Retrouve tes cartes, tes doublons et celles qui te manquent. Ouvre une carte pour découvrir ses effets.", Icon: BookOpen, x: 27.5, y: 82, width: 17, height: 21 },
 ] as const;
 type BuildingId = typeof BUILDINGS[number]["id"];
 
-export function KqPlacardMap({ onOpen, activeRun, tents, readyLotCount, availableFlowerCount, recommended }: {
+export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, tents, readyLotCount, availableFlowerCount, recommended }: {
   onOpen: PlacardMapOpen;
+  onOpenCollection: () => void;
   activeRun?: boolean;
+  cashCents: number | null;
   tents: number | null;
   readyLotCount?: number;
   availableFlowerCount?: number;
@@ -41,6 +45,10 @@ export function KqPlacardMap({ onOpen, activeRun, tents, readyLotCount, availabl
     setSelected(id);
     centerBuilding(id);
   };
+  const openCollection = (origin: HTMLButtonElement) => {
+    origin.focus({ preventScroll: true });
+    onOpenCollection();
+  };
   const toggleZoom = () => {
     setZoomed(!zoomed);
     // Recenter after the CSS layout has switched between the full map and details.
@@ -54,21 +62,41 @@ export function KqPlacardMap({ onOpen, activeRun, tents, readyLotCount, availabl
   return <section className={styles.world} aria-label="Carte du Placard" data-placard-map data-map-zoomed={zoomed || undefined}>
     <div className={styles.mapColumn}>
       <div className={styles.mapHeading}>
-        <span><Compass size={17} aria-hidden="true" /> Carte du quartier</span><span className={styles.placeCount}>7 lieux à explorer</span>
+        <div className={styles.mapIdentity}>
+          <h1>Mon quartier<span>.</span></h1>
+          <p>Ton quartier. Tes cultures. Tes affaires.</p>
+        </div>
         <button type="button" className={styles.zoomButton} data-map-zoom-toggle aria-pressed={zoomed} aria-controls="placard-map-viewport" onClick={toggleZoom}>
           {zoomed ? <Scan size={17} aria-hidden="true" /> : <ZoomIn size={17} aria-hidden="true" />}{zoomed ? "Vue d’ensemble" : "Agrandir"}
         </button>
+        <div className={styles.mapTools}>
+          <div className={styles.wallet} aria-label="Résumé de ton Placard">
+            <span><Wallet size={16} aria-hidden="true" /><span><small>Argent du jeu</small><strong>{cashCents !== null ? formatKqCash(cashCents) : "—"}</strong></span></span>
+            <span><Tent size={16} aria-hidden="true" /><span><small>Ton installation</small><strong>{tents ? tents + " tente" + (tents > 1 ? "s" : "") : "—"}</strong></span></span>
+          </div>
+          <details className={styles.help}>
+            <summary><CircleHelp size={17} aria-hidden="true" /> Aide <ChevronDown size={14} aria-hidden="true" /></summary>
+            <div className={styles.helpContent}>
+              <strong>Tout commence dans ton quartier.</strong>
+              <p>Sélectionne un bâtiment sur la carte, puis choisis ce que tu veux y faire. Sur mobile, touche un numéro ou utilise le sélecteur de lieux. Agrandis la carte pour explorer le quartier en faisant glisser le décor.</p>
+              <p>L’entrepôt abrite ton Placard : entre pour cultiver, ou aménage et entretiens tes tentes. Le marché accueille tes récoltes, le jury et les duels tes Fleurs.</p>
+              <p>Le Bureau réunit la comptabilité et la gestion. La Banque donne directement accès aux prêts, à l’épargne et aux placements. Passe à la Boutique pour tes packs et ton matériel.</p>
+            </div>
+          </details>
+        </div>
       </div>
       <div ref={viewport} id="placard-map-viewport" className={styles.viewport}>
         <div className={styles.terrain}>
-          <Image src="/placard/map/placard-world-v1.webp" alt="Un quartier isométrique au milieu des bois : un entrepôt de culture, une banque, un bureau, un marché, une boutique, un amphithéâtre et un pavillon des missions reliés par des chemins." fill sizes="(max-width: 760px) 760px, (max-width: 1100px) 100vw, 1100px" loading="eager" fetchPriority="high" draggable={false} />
+          <Image src="/placard/map/placard-world-v2.webp" alt="Un quartier isométrique au milieu des bois : un entrepôt de culture, une banque, un bureau, un marché, une boutique, un amphithéâtre, un pavillon des missions et une maison de collection de cartes reliés par des chemins." fill sizes="(max-width: 760px) 760px, (max-width: 1100px) 100vw, 1100px" loading="eager" fetchPriority="high" draggable={false} />
           <nav aria-label="Les bâtiments du Placard">
             {BUILDINGS.map(({ id, name, number, Icon, x, y, width, height }) => <button key={id} type="button"
               className={styles.building} data-map-building={id} data-selected={selected === id || undefined}
               data-recommended={recommendedBuilding === id || undefined}
+              data-arena-tour={id === "collection" ? "collection" : undefined}
               style={{ "--x": `${x}%`, "--y": `${y}%`, "--width": `${width}%`, "--height": `${height}%` } as CSSProperties}
-              aria-label={`Explorer ${name}`} aria-pressed={selected === id} aria-controls="placard-building-details"
-              onClick={() => selectBuilding(id)}>
+              aria-label={id === "collection" ? "Ouvrir ma collection Botte du Chanvrier" : `Explorer ${name}`} aria-pressed={selected === id} aria-controls="placard-building-details"
+              aria-haspopup={id === "collection" ? "dialog" : undefined}
+              onClick={event => { selectBuilding(id); if (id === "collection") openCollection(event.currentTarget); }}>
               <span className={styles.mobileNumber} aria-hidden="true">{number}</span>
               <span className={styles.marker}><MapPin size={19} aria-hidden="true" /></span>
               <span className={styles.buildingLabel}><Icon size={15} aria-hidden="true" />{name}<span className={styles.recommendation} aria-label={recommendedBuilding === id ? "Activité conseillée" : undefined} /></span>
@@ -87,7 +115,7 @@ export function KqPlacardMap({ onOpen, activeRun, tents, readyLotCount, availabl
         </select>
       </label>
       <div className={styles.detailHeading} aria-live="polite" aria-atomic="true">
-        <div className={styles.detailTop}><span>Le quartier / {building.number}</span><building.Icon size={24} aria-hidden="true" /></div>
+        <div className={styles.detailTop}><building.Icon size={24} aria-hidden="true" /></div>
         <span className={styles.category}>{building.category}</span>
         <h2 id="placard-building-title">{building.name}</h2>
         <p>{building.description}</p>
@@ -102,7 +130,8 @@ export function KqPlacardMap({ onOpen, activeRun, tents, readyLotCount, availabl
           : selected === "office" ? <>
             <button type="button" data-placard-activity="treasury" onClick={() => onOpen("treasury", { treasuryPole: "accounting" })}><BriefcaseBusiness size={20} aria-hidden="true" /><span>Ouvrir mes comptes<small>Factures et comptabilité</small></span><ArrowRight size={17} aria-hidden="true" /></button>
             <button type="button" data-placard-activity="management" onClick={() => onOpen("treasury", { treasuryPole: "management" })}><Target size={20} aria-hidden="true" /><span>Gérer mon activité<small>Site, publicité et domiciliation</small></span><ArrowRight size={17} aria-hidden="true" /></button>
-          </> : <button type="button" data-placard-activity={selected} onClick={() => onOpen(selected)}><building.Icon size={20} aria-hidden="true" /><span>{selected === "market" ? "Ouvrir le marché" : selected === "shop" ? "Entrer dans la boutique" : selected === "arena" ? "Présenter mes Fleurs" : "Voir mes missions"}<small>{selected === "market" ? "Transformer et vendre" : selected === "shop" ? "Packs et matériel" : selected === "arena" ? "Jury et duels" : "Défis et récompenses"}</small></span><ArrowRight size={17} aria-hidden="true" /></button>}
+          </> : selected === "collection" ? <button type="button" data-placard-activity="collection" aria-haspopup="dialog" onClick={event => openCollection(event.currentTarget)}><BookOpen size={20} aria-hidden="true" /><span>Ma collection Botte du Chanvrier<small>Cartes, doublons et effets</small></span><ArrowRight size={17} aria-hidden="true" /></button>
+          : <button type="button" data-placard-activity={selected} onClick={() => onOpen(selected)}><building.Icon size={20} aria-hidden="true" /><span>{selected === "market" ? "Ouvrir le marché" : selected === "shop" ? "Entrer dans la boutique" : selected === "arena" ? "Présenter mes Fleurs" : "Voir mes missions"}<small>{selected === "market" ? "Transformer et vendre" : selected === "shop" ? "Packs et matériel" : selected === "arena" ? "Jury et duels" : "Défis et récompenses"}</small></span><ArrowRight size={17} aria-hidden="true" /></button>}
       </nav>
       <div className={styles.note}><Compass size={21} aria-hidden="true" /><p>Une récolte, plusieurs chemins.<br /><strong>À toi de tracer le tien.</strong></p></div>
     </aside>

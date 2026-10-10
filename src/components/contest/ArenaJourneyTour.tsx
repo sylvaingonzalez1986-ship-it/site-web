@@ -248,7 +248,7 @@ export function ArenaJourneyTour({ launcherRef, onProfileAvailabilityChange }: A
   return <div ref={controls} className={styles.controls} data-arena-account-controls>
     {launcherRef ? <ProfileLauncher launcherRef={launcherRef} onOpen={requestProfile} /> : null}
     {userId ? chanvrier
-      ? <ChanvrierPlayerCard inline profile={chanvrier} launcherRef={playerCard} onEdit={editProfile} />
+      ? <ChanvrierPlayerCard inline profile={chanvrier} showTrigger={!launcherRef} launcherRef={playerCard} onEdit={editProfile} />
       : <button ref={profileButton} type="button" className={styles.profileButton} onClick={event => editProfile(event.currentTarget)}>
           <UserRound size={17} aria-hidden="true" />Créer mon personnage
         </button>

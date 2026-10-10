@@ -13,10 +13,7 @@
 .mapFooter { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 20px 0; }
 .discoveryButton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid #c1d3a557; border-radius: 6px; background: #073f31; color: #fffaf1; font: 600 12px/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; }
 .discoveryButton:hover { background: #00503c; }
-.rewardLink { display: inline-flex; justify-content: center; align-items: center; gap: 5px; min-height: 44px; color: #f4c43d; font-size: 12px; text-decoration: none; }
-.rewardLink svg { flex-shrink: 0; }
 .home :where(a, button, summary):focus-visible { outline-color: #f4c43d; }
-@media (hover: hover) { .rewardLink:hover { text-decoration: underline; text-underline-offset: 4px; } }
 @media (max-width: 700px) {
   .home { padding: 5.5rem max(12px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); }
   .topBar { gap: 12px; padding: 12px 0 18px; flex-wrap: wrap; align-items: flex-start; }
@@ -26,5 +23,4 @@
   .intro { gap: 7px; padding: 12px 0; }
   .mapFooter { flex-direction: column; gap: 4px; padding: 16px 0 12px; }
   .discovery, .discoveryButton { width: 100%; }
-  .rewardLink { font-size: 11px; }
 }

@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "@/components/navigation/NavigationLink";
-import { ArrowUpRight } from "lucide-react";
 import { useRef, useState } from "react";
 import { ArenaJourneyEntry } from "./ArenaJourneyEntry";
 import { ArenaPrelaunchCharacter } from "./ArenaPrelaunchCharacter";
@@ -44,7 +42,6 @@ export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer
         <ArenaWorldMap activitiesLocked={activitiesLocked} initialMode={initialMode} profileLauncher={profileLauncher} profileAvailability={profileAvailability} />
         <div className={styles.mapFooter}>
           <div className={styles.discovery} data-arena-discovery-entry><ArenaLearningLauncher className={styles.discoveryButton} /></div>
-          {!activitiesLocked && <Link href="/arene?vue=classement" className={styles.rewardLink}>Des fleurs à gagner en fin de saison <ArrowUpRight size={16} aria-hidden="true" /></Link>}
         </div>
         {personalSummaryEnabled && !activitiesLocked ? <ArenaPlayerResume /> : null}
       </section>

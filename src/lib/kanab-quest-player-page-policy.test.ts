@@ -127,7 +127,7 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).toContain('"/api/arena/placard/bootstrap"');
     expect(gameClient).toContain('"/api/arena/placard/session"');
     expect(playerShell).toContain("<KqPlacardLobby");
-    expect(placardMap).toContain('src="/placard/map/placard-world-v1.webp"');
+    expect(placardMap).toContain('src="/placard/map/placard-world-v2.webp"');
     expect(placardMap).toContain('loading="eager" fetchPriority="high"');
   });
 

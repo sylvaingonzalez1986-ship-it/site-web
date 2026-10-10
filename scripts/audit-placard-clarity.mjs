@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/postcss';
 import {Launcher} from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
-const root=process.cwd(), output=resolve(root,'output/placard-clarity'), port=3224, origin=`http://127.0.0.1:${port}`, preview=process.argv.includes('--preview');
+const root=process.cwd(), output=resolve(root,'output/placard-clarity'), port=3224, origin=`http://127.0.0.1:${port}`, preview=process.argv.includes('--preview'), collectionOnly=process.argv.includes('--collection-only');
 function fixturePayload(path,scenario){
  if(path==='/api/arena/placard/equipment')return {tentNumber:1,tents:[{tentNumber:1,equippedCodes:[],levels:{}}],productionUnits:scenario==='active'?4:1,ownedCodes:[],purchasedCodes:[],equippedCodes:[],cashCents:0,levels:{},reputation:0,activeRun:scenario==='active',readyLotCount:scenario==='lots'?2:0,availableFlowerCount:scenario==='jury'?1:0,routeMasteries:[],routePlan:null};
  if(path==='/api/arena/placard/collection')return {collection:{cards:[]}};
@@ -34,7 +34,7 @@ const modules={
 const fonts=`@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#003f30}button{cursor:pointer}`;
 const server=await createServer({root,configFile:false,envDir:false,cacheDir:resolve(output,'vite-cache'),publicDir:resolve(root,'public'),optimizeDeps:{include:['react','react-dom','react-dom/client','lucide-react']},resolve:{alias:{'@':resolve(root,'src')},dedupe:['react','react-dom']},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'placard-clarity',enforce:'pre',resolveId(id,importer){if(importer?.replaceAll('\\','/').endsWith('/PlacardPlayerShell.tsx')&&id in destinations)return '\0destination:'+id;if(id in modules)return '\0'+id;},async load(id){if(id.startsWith('\0')&&modules[id.slice(1)])return(await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code;},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(!['/','/arene/placard'].includes(req.url?.split('?')[0]))return next();res.setHeader('Content-Type','text/html');res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Placard — vérification locale</title><style>${fonts}</style><div id="root"></div><script type="module" src="/@id/__x00__entry"></script></html>`);});}}],server:{host:'127.0.0.1',port,strictPort:true,hmr:false,watch:null}});
 let browser,scenario='starter',failed=false;
-const errors=[],requests=[],results=[],touchResults=[],compactResults=[];
+const errors=[],requests=[],results=[],touchResults=[],compactResults=[],collectionResults=[];
 if(preview){
  await mkdir(output,{recursive:true});await server.listen();
  console.log(`Prévisualisation locale du menu · données de démonstration et destinations simulées : ${origin}/arene/placard?scenario=starter`);
@@ -59,7 +59,8 @@ if(preview){
  const visit=async(state='starter',query='')=>{scenario=state;failed=false;await page.goto(origin+'/arene/placard?scenario='+state+(query?'&'+query:''),{waitUntil:'networkidle0'});await page.evaluate(()=>document.fonts.ready);};
  const view=async value=>{await page.waitForSelector(`[data-placard-view="${value}"]`);if(value!=="hub")await page.waitForSelector(`[data-placard-view="${value}"] [data-destination]`);};
  const clickText=async text=>{const button=await page.waitForFunction(text=>[...document.querySelectorAll('button')].find(el=>el.textContent.trim()===text&&el.checkVisibility()),{},text);await button.asElement().click();await button.dispose();};
- const buildings=['warehouse','bank','office','market','shop','arena','missions'];
+ const buildings=['warehouse','bank','office','market','shop','arena','missions','collection'];
+ const collectionPin='[data-map-building="collection"]',collectionAction='[data-placard-activity="collection"]',album='dialog[aria-labelledby="botte-collection-title"]';
  const destinationsToAudit=[
   {building:'warehouse',activity:'game',view:'game'},
   {building:'warehouse',activity:'workshop',view:'workshop'},
@@ -103,7 +104,7 @@ if(preview){
   const map=document.querySelector('[data-placard-map]'),mapImage=map.querySelector('img'),mapViewport=mapImage.parentElement.parentElement,details=document.querySelector('#placard-building-details');
   const buildings=[...map.querySelectorAll('[data-map-building]')].map(element=>{const bounds=element.getBoundingClientRect();return {id:element.dataset.mapBuilding,text:element.innerText,pressed:element.getAttribute('aria-pressed'),controls:element.getAttribute('aria-controls'),label:element.getAttribute('aria-label'),bounds:{left:bounds.left,right:bounds.right,top:bounds.top,bottom:bounds.bottom,width:bounds.width,height:bounds.height}};});
   const viewportBounds=mapViewport.getBoundingClientRect(),zoomToggle=map.querySelector('[data-map-zoom-toggle]');
-  return {width:innerWidth,height:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth+1,buildings,primary,mapImageLoaded:mapImage.complete&&mapImage.naturalWidth>0,mapImageWidth:mapImage.getBoundingClientRect().width,mapZoomed:map.getAttribute('data-map-zoomed')==='true',zoomTogglePressed:zoomToggle?.getAttribute('aria-pressed')??null,mapViewport:{width:mapViewport.clientWidth,scrollWidth:mapViewport.scrollWidth,scrollLeft:mapViewport.scrollLeft,left:viewportBounds.left,right:viewportBounds.right,overflowX:getComputedStyle(mapViewport).overflowX},detailsBelowMap:details.getBoundingClientRect().top>=viewportBounds.bottom,brokenImages:[...document.images].filter(el=>el.complete&&!el.naturalWidth).map(el=>el.src)};
+  return {width:innerWidth,height:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth+1,buildings,primary,mapImageLoaded:mapImage.complete&&mapImage.naturalWidth>0,mapImageSource:mapImage.getAttribute('src'),mapImageWidth:mapImage.getBoundingClientRect().width,mapZoomed:map.getAttribute('data-map-zoomed')==='true',zoomTogglePressed:zoomToggle?.getAttribute('aria-pressed')??null,mapViewport:{width:mapViewport.clientWidth,scrollWidth:mapViewport.scrollWidth,scrollLeft:mapViewport.scrollLeft,left:viewportBounds.left,right:viewportBounds.right,overflowX:getComputedStyle(mapViewport).overflowX},detailsBelowMap:details.getBoundingClientRect().top>=viewportBounds.bottom,brokenImages:[...document.images].filter(el=>el.complete&&!el.naturalWidth).map(el=>el.src)};
  });
  const assertBuildingTargets=measurement=>{
   for(const [index,building] of measurement.buildings.entries()){
@@ -127,6 +128,44 @@ if(preview){
    assert(building.bounds.left>=measurement.mapViewport.left-.5&&building.bounds.right<=measurement.mapViewport.right+.5,`${building.id} is visible in the overview`);
    assert(building.text.includes(String(index+1).padStart(2,'0')),`${building.id} has a visible numbered pin`);
   }
+ };
+ const closeCollection=async origin=>{
+  await page.keyboard.press('Escape');await page.waitForSelector(album,{hidden:true});
+  await page.waitForFunction(selector=>document.activeElement?.matches(selector),{},origin);
+  assert.equal(await page.evaluate(()=>document.body.style.overflow),'');
+ };
+ const auditCollectionMap=async width=>{
+  await visit();await view('hub');
+  const m=await measure();assert.equal(m.overflow,false);assert.equal(m.mapImageLoaded,true);assert.equal(m.mapImageSource,'/placard/map/placard-world-v2.webp');assert.deepEqual(m.brokenImages,[]);
+  assert.deepEqual(m.buildings.map(building=>building.id),buildings);assertBuildingTargets(m);if(width<=700)assertMobileOverview(m);
+  assert.equal(await page.$$eval('[data-arena-tour="collection"]',els=>els.length),1);
+  assert.equal(await page.$eval(collectionPin,el=>el.getAttribute('data-arena-tour')),'collection');
+  assert.equal(await page.$eval(collectionPin,el=>el.getAttribute('aria-haspopup')),'dialog');
+  assert.equal(await page.$('[data-placard-lobby] footer [data-arena-tour="collection"]'),null);
+  await page.screenshot({path:resolve(output,`collection-map-${width}.png`),fullPage:true});
+  for(const key of ['Enter','Space']){
+   await page.focus(collectionPin);await page.keyboard.press(key);await page.waitForSelector(album+'[open]');
+   assert.equal(await page.$eval(collectionPin,el=>el.getAttribute('aria-pressed')),'true');
+   await closeCollection(collectionPin);
+  }
+  await page.screenshot({path:resolve(output,`collection-map-selected-${width}.png`),fullPage:true});
+  await page.select('[aria-label="Choisir un bâtiment"]','warehouse');
+  await page.select('[aria-label="Choisir un bâtiment"]','collection');await page.waitForSelector(collectionPin+'[aria-pressed="true"]');
+  assert.equal(await page.$(album+'[open]'),null,'Selecting the collection in the list only reveals its activity');
+  assert((await page.$eval(collectionAction,el=>el.textContent)).includes('Ma collection Botte du Chanvrier'));
+  await page.locator(collectionAction).click();await page.waitForSelector(album+'[open]');await closeCollection(collectionAction);
+  if(width<=700)await tap(collectionPin);else await page.locator(collectionPin).click();
+  await page.waitForSelector(album+'[open]');assert.equal(await page.$eval(album,el=>el.scrollWidth>el.clientWidth+1),false);
+  await page.screenshot({path:resolve(output,`collection-${width}.png`),fullPage:true});
+  await page.locator(album+' footer button').click();await view('shop');assert.equal(await page.$eval('[data-catalog]',el=>el.textContent),'Packs');assert.equal(await page.$(album+'[open]'),null);
+  await clickText('Ma collection');await page.waitForSelector(album+'[open]');await page.keyboard.press('Escape');await page.waitForSelector(album,{hidden:true});await view('shop');
+  assert.equal(await page.evaluate(()=>document.activeElement?.textContent),'Ma collection');
+  await clickText('Quitter la boutique');await view('hub');
+  await enterActivity({building:'office',activity:'treasury',view:'treasury',pole:'accounting'});
+  const shellCollection='button[aria-label="Ouvrir ma collection Botte du Chanvrier"]';
+  await page.locator(shellCollection).click();await page.waitForSelector(album+'[open]');await closeCollection(shellCollection);await view('treasury');
+  await visit();await view('hub');
+  collectionResults.push({width,eightPlaces:true,imageLoaded:true,distinctHitAreas:true,minimumTarget:44,uniqueTourAnchor:true,keyboardEnterAndSpace:true,pinFocusRestored:true,dropdownDoesNotOpen:true,panelFocusRestored:true,touchPin:width<=700,collectionToShop:true,shopCollectionPreserved:true,subviewCollectionPreserved:true,noOverflow:true});
  };
  const auditTouchMap=async(width,height)=>{
   await page.setViewport({width,height,isMobile:true,hasTouch:true});await visit('active');await view('hub');
@@ -153,6 +192,15 @@ if(preview){
   await tap('[data-placard-activity="bank"]');await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'bank');
   touchResults.push({width,height,overviewFits:true,numberedPins:true,touchBuildingSelection:true,touchZoom:true,touchPan:true,touchUnzoom:true,touchNavigation:true});
  };
+ if(collectionOnly){
+  for(const width of [320,390,1440]){
+   await page.setViewport({width,height:width<=700?844:1000,isMobile:width<=700,hasTouch:width<=700});
+   await auditCollectionMap(width);
+  }
+  assert(requests.every(r=>r.method==='GET'));assert.deepEqual(errors,[]);
+  await writeFile(resolve(output,'collection-map-report.json'),JSON.stringify({passed:true,scope:'Collection map integration: real map, shell and album, destination stubs',collectionResults,readOnly:true,requests,errors},null,2));
+  console.log(JSON.stringify({passed:true,collectionViewports:collectionResults.length,errors,output}));
+ }else{
  for(const width of [320,390,430,768,1440]){
   await page.setViewport({width,height:width<=700?844:1000,isMobile:width<=700,hasTouch:width<=700});
   for(const state of ['starter','active','jury','lots']){
@@ -189,11 +237,7 @@ if(preview){
   await page.keyboard.press('Tab');assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('data-map-building')),'office');await page.keyboard.press('Space');await page.waitForSelector('[data-map-building="office"][aria-pressed="true"]');
   assert.deepEqual(await page.$$eval('[data-placard-activity]',els=>els.map(el=>el.dataset.placardActivity)),['treasury','management']);assert.equal((await measure()).overflow,false);
   if(width<=700){await page.select('[aria-label="Choisir un bâtiment"]','missions');await page.waitForSelector('[data-map-building="missions"][aria-pressed="true"]');await page.locator('[data-placard-activity="missions"]').click();await view('missions');}
-  await visit();await page.click('[data-placard-lobby] footer [data-arena-tour="collection"]');await page.waitForSelector('dialog[open]');
-  assert.equal(await page.$eval('dialog[open]',el=>el.scrollWidth>el.clientWidth+1),false);
-  await page.screenshot({path:resolve(output,`collection-${width}.png`),fullPage:true});
-  await page.click('dialog footer button');await view('shop');assert.equal(await page.$eval('[data-catalog]',el=>el.textContent),'Packs');assert.equal(await page.$('dialog[open]'),null);
-  await clickText('Quitter la boutique');await view('hub');
+  await auditCollectionMap(width);
   await page.click('summary');assert.equal(await page.$eval('details',el=>el.open),true);assert.equal((await measure()).overflow,false);await page.screenshot({path:resolve(output,`help-${width}.png`),fullPage:true});
   if(width<=700)await auditTouchMap(width,844);
  }
@@ -202,7 +246,7 @@ if(preview){
   await page.setViewport({width,height,isMobile:true,hasTouch:true});await visit('active');await view('hub');
   let m=await measure();assert.equal(m.overflow,false);assertBuildingTargets(m);if(width<=700)assertMobileOverview(m);
   await page.screenshot({path:resolve(output,`touch-compact-${width}x${height}.png`),fullPage:true});
-  for(const building of buildings){await tap(`[data-map-building="${building}"]`);await page.waitForSelector(`[data-map-building="${building}"][aria-pressed="true"]`);}
+  for(const building of buildings){await tap(`[data-map-building="${building}"]`);await page.waitForSelector(`[data-map-building="${building}"][aria-pressed="true"]`);if(building==='collection'){await page.waitForSelector(album+'[open]');await closeCollection(collectionPin);}}
   for(const target of destinationsToAudit.filter(target=>['warehouse','office'].includes(target.building))){
    await visit('active');await tap(`[data-map-building="${target.building}"]`);await page.waitForSelector(`[data-map-building="${target.building}"][aria-pressed="true"]`);
    m=await measure();assert.equal(m.overflow,false);assertBuildingTargets(m);
@@ -223,6 +267,7 @@ if(preview){
  await visit('error');await page.waitForSelector('[data-placard-lobby] [role="status"]');await clickText('Réessayer');await page.waitForSelector('[data-placard-lobby] [role="status"]',{hidden:true});
  await visit('starter','view=unknown');await view('hub');
  assert(requests.every(r=>r.method==='GET'));assert.deepEqual(errors,[]);
- await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,scope:'Real map, lobby, shell, collection, progression; other destinations stubbed for navigation only',results,touchResults,compactResults,sevenBuildingControls:true,distinctBuildingHitAreas:true,touchTargetMinimum:44,keyboardBuildingSelection:true,mobileBuildingSelector:true,mapImageLoaded:true,mobileOverviewFits:true,mobileZoomPanning:true,mobileTouchNavigation:true,shortPortraitHeight:568,phoneLandscape:true,textContrastMinimum:4.5,iconContrastMinimum:3,bankAndOfficePoles:true,validatedTreasuryDeepLinks:true,directTreasuryAndArena:true,browserHistory:true,missionNavigationAndHistory:true,equipmentDeepLinks:true,collectionToShop:true,helpOnDemand:true,progressionOnDemand:true,retry:true,readOnly:true,requests,errors},null,2));
+ await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,scope:'Real map, lobby, shell, collection, progression; other destinations stubbed for navigation only',results,touchResults,compactResults,collectionResults,eightBuildingControls:true,distinctBuildingHitAreas:true,touchTargetMinimum:44,keyboardBuildingSelection:true,mobileBuildingSelector:true,mapImageLoaded:true,mobileOverviewFits:true,mobileZoomPanning:true,mobileTouchNavigation:true,shortPortraitHeight:568,phoneLandscape:true,textContrastMinimum:4.5,iconContrastMinimum:3,bankAndOfficePoles:true,validatedTreasuryDeepLinks:true,directTreasuryAndArena:true,browserHistory:true,missionNavigationAndHistory:true,equipmentDeepLinks:true,collectionToShop:true,helpOnDemand:true,progressionOnDemand:true,retry:true,readOnly:true,requests,errors},null,2));
  console.log(JSON.stringify({passed:true,viewports:5,states:4,touchViewports:touchResults.length,browserHistory:true,errors,output}));
+ }
 }finally{await browser?.close();await server.close();}

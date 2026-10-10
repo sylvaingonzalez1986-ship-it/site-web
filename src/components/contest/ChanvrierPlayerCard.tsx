@@ -27,10 +27,11 @@ function Meter({ value, target, label }: { value: number; target: number; label:
   return <progress className={styles.meter} value={Math.min(value, target)} max={target} aria-label={label} />;
 }
 
-export function ChanvrierPlayerCard({ profile, onEdit, inline = false, launcherRef }: {
+export function ChanvrierPlayerCard({ profile, onEdit, inline = false, showTrigger = true, launcherRef }: {
   profile: ChanvrierProfile;
   onEdit: (origin?: HTMLElement) => void;
   inline?: boolean;
+  showTrigger?: boolean;
   launcherRef?: Ref<ArenaProfileLauncherHandle>;
 }) {
   const [open, setOpen] = useState(false);
@@ -124,11 +125,13 @@ export function ChanvrierPlayerCard({ profile, onEdit, inline = false, launcherR
     ...achievements.filter(a => !a.completed).map(a => ({ key: a.code, title: a.name, value: a.value, target: a.target, hint: a.code === data.showcase.tracked ? "Objectif épinglé" : "Succès", href: `/arene/placard?view=${a.category === "commerce" ? "market" : a.category === "arena" ? "arena" : "game"}`, priority: a.code === data.showcase.tracked ? 3 : a.value / a.target })),
   ].sort((a, b) => b.priority - a.priority).slice(0, 3) : [];
 
-  return <div className={styles.dock} data-chanvrier-card data-inline={inline || undefined}>
-    <button ref={trigger} type="button" className={styles.trigger} aria-expanded={open} aria-controls={open ? id : undefined} aria-haspopup="dialog" onClick={event => { returnFocus.current = event.currentTarget; setOpen(v => !v); }}>
-      <span className={styles.thumbnail} aria-hidden="true"><ChanvrierAvatar profile={profile} /></span>
-      <span className={styles.label}><small>MA CARTE {dirty ? <span className={styles.dot} aria-label="Parcours actualisé" /> : null}</small><strong>{profile.nickname}</strong></span><ChevronUp size={18} />
-    </button>
+  return <>
+    {showTrigger && <div className={styles.dock} data-chanvrier-card data-inline={inline || undefined}>
+      <button ref={trigger} type="button" className={styles.trigger} aria-expanded={open} aria-controls={open ? id : undefined} aria-haspopup="dialog" onClick={event => { returnFocus.current = event.currentTarget; setOpen(v => !v); }}>
+        <span className={styles.thumbnail} aria-hidden="true"><ChanvrierAvatar profile={profile} /></span>
+        <span className={styles.label}><small>MA CARTE {dirty ? <span className={styles.dot} aria-label="Parcours actualisé" /> : null}</small><strong>{profile.nickname}</strong></span><ChevronUp size={18} />
+      </button>
+    </div>}
     {open ? createPortal(<dialog ref={dialog} id={id} aria-labelledby={`${id}-name`} className={styles.card} data-chanvrier-palmares onCancel={event => { event.preventDefault(); close(); }} onClick={event => { if (event.target === event.currentTarget) close(); }}>
       <div className={styles.sheet}>
         <header className={styles.header}><span>LA GUILDE DES CHANVRIERS</span><button type="button" aria-label="Replier ma carte" onClick={close}><X size={20} /></button></header>
@@ -184,5 +187,5 @@ export function ChanvrierPlayerCard({ profile, onEdit, inline = false, launcherR
         <footer className={styles.footer}><Link prefetch={false} onClick={close} href="/arene/carnet/regular"><BookOpen size={15} />Mon Carnet</Link><Link prefetch={false} onClick={close} href="/arene/placard?view=missions"><Target size={15} />Mes missions</Link><Link prefetch={false} onClick={close} href="/arene/placard"><Dices size={15} />Mes cartes Botte du Chanvrier</Link></footer>
       </div>
     </dialog>, document.body) : null}
-  </div>;
+  </>;
 }

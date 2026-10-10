@@ -39,7 +39,7 @@ function fixturePayload(fixture,path,method,rawBody){
 const previewFetch=preview?`const sampleProfile=${JSON.stringify(sampleProfile)};const resetFixture=${resetFixture.toString()};const fixturePayload=${fixturePayload.toString()};const fixture=resetFixture(new URLSearchParams(location.search).get('state')||'returning');const nativeFetch=window.fetch.bind(window);window.fetch=async(input,init={})=>{const url=new URL(input instanceof Request?input.url:String(input),location.href);if(url.origin!==location.origin)throw new TypeError('Prévisualisation locale uniquement');if(!url.pathname.startsWith('/api/'))return nativeFetch(input,init);const method=init.method||(input instanceof Request?input.method:'GET');const payload=fixturePayload(fixture,url.pathname,method,init.body);return new Response(JSON.stringify(payload?.body||{error:'API non simulée'}),{status:payload?.status||404,headers:{'Content-Type':'application/json'}});};`:'';
 const activities = [
   { id:'carnet', label:'Le Carnet', href:'/arene/carnet/regular' },
-  { id:'jouer', label:'Le Placard', href:'/arene/placard' },
+  { id:'jouer', label:'JOUER', href:'/arene/placard' },
   { id:'classement', label:'Le Classement', href:'/arene?vue=classement' },
 ];
 const modules = {
@@ -146,15 +146,16 @@ if(preview){
       if(Math.min(a.right,b.right)-Math.max(a.left,b.left)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>1)overlaps.push([describe(first).label,describe(second).label]);
     }));
     const map=document.querySelector('[data-arena-map]'),viewport=document.querySelector('#arena-map-viewport'),image=map.querySelector('img'),imageBounds=image.getBoundingClientRect();
-    const sites=[...map.querySelectorAll('[data-arena-activity],[data-arena-profile-trigger]')].map(element=>{const row=describe(element);return {...row,quadrant:((row.left+row.right)/2<imageBounds.left+imageBounds.width/2?'left':'right')+'-'+((row.top+row.bottom)/2<imageBounds.top+scrollY+imageBounds.height/2?'top':'bottom')};});
+    const sites=[...map.querySelectorAll('[data-arena-activity],[data-arena-profile-trigger]')].map(element=>{const row=describe(element),label=describe(element.querySelector(':scope > span'));return {...row,labelBounds:label,quadrant:((row.left+row.right)/2<imageBounds.left+imageBounds.width/2?'left':'right')+'-'+((row.top+row.bottom)/2<imageBounds.top+scrollY+imageBounds.height/2?'top':'bottom')};});
+    const face={left:imageBounds.left+imageBounds.width*.37,right:imageBounds.left+imageBounds.width*.58,top:imageBounds.top+scrollY+imageBounds.height*.35,bottom:imageBounds.top+scrollY+imageBounds.height*.54};
     return {width:innerWidth,height:innerHeight,documentHeight:document.documentElement.scrollHeight,
       horizontalOverflow:document.documentElement.scrollWidth>innerWidth+1,
       outside:rows.filter(row=>row.left< -1||row.right>innerWidth+1).map(row=>row.label),overlaps,
       renderedControls:rows.length,viewportControls:rows.filter(row=>row.inViewport).length,controls:rows,
       activities:[...document.querySelectorAll('[data-arena-activity]')].map(describe),
-      sites,mapZoomed:map.getAttribute('data-map-zoomed')==='true',zoomPressed:map.querySelector('[data-arena-map-zoom]')?.getAttribute('aria-pressed'),mapViewport:{width:viewport.clientWidth,scrollWidth:viewport.scrollWidth,scrollLeft:viewport.scrollLeft,overflowX:getComputedStyle(viewport).overflowX},mapImageWidth:imageBounds.width,
+      sites,face,mapZoomed:map.getAttribute('data-map-zoomed')==='true',zoomPressed:map.querySelector('[data-arena-map-zoom]')?.getAttribute('aria-pressed'),mapViewport:{width:viewport.clientWidth,scrollWidth:viewport.scrollWidth,scrollLeft:viewport.scrollLeft,overflowX:getComputedStyle(viewport).overflowX},mapImageWidth:imageBounds.width,
       sceneImages:[...document.querySelectorAll('[data-arena-scene] img')].map(image=>image.getAttribute('src')),
-      sceneRequests:[...new Set(performance.getEntriesByType('resource').map(resource=>resource.name).filter(name=>name.includes('/contest/map/arena-world-')))]};
+      sceneRequests:[...new Set(performance.getEntriesByType('resource').map(resource=>resource.name).filter(name=>name.includes('/contest/map/arena-desk-')))]};
   });
   const assertLayout=layout=>{
     assert.equal(layout.horizontalOverflow,false,'No horizontal page overflow');
@@ -162,7 +163,13 @@ if(preview){
     assert.deepEqual(layout.overlaps,[],'Interactive controls must not overlap');
     assert.equal(layout.sites.length,4,'Four map destinations');
     assert.equal(new Set(layout.sites.map(site=>site.quadrant)).size,4,'One destination in each map quadrant');
-    for(const site of layout.sites)assert(site.width>=44&&site.height>=44,`${site.id} has at least a 44px target`);
+    const intersects=(first,second)=>Math.min(first.right,second.right)-Math.max(first.left,second.left)>.5&&Math.min(first.bottom,second.bottom)-Math.max(first.top,second.top)>.5;
+    for(const site of layout.sites){
+      assert(site.width>=44&&site.height>=44,`${site.id} has at least a 44px target`);
+      assert.equal(site.quadrant,{carnet:'left-bottom',jouer:'right-bottom',classement:'right-top',profil:'left-top'}[site.id],`${site.id} matches its illustrated desk object`);
+      assert.equal(intersects(site.labelBounds,layout.face),false,`${site.id} leaves Sylvain’s face visible`);
+      for(const other of layout.sites.filter(other=>other.id!==site.id))assert.equal(intersects(site.labelBounds,other),false,`${site.id} label does not cover the ${other.id} target`);
+    }
     if(layout.width<=700){assert.equal(layout.mapZoomed,false);assert.equal(layout.zoomPressed,'false');assert(layout.mapViewport.scrollWidth<=layout.mapViewport.width+1,'The whole map fits on mobile');assert(Math.abs(layout.mapImageWidth-layout.mapViewport.width)<=1,'The mobile overview displays the complete image');}
   };
   const screenshot=name=>page.screenshot({path:resolve(output,`${name}.png`),fullPage:true});
@@ -181,7 +188,7 @@ if(preview){
       assert.equal(layout.activities.length,3,'Exactly three activity choices');
       assert.equal(layout.sceneImages.length,1,'Exactly one scene image in the DOM');
       assert.equal(layout.sceneRequests.length,1,'Only the map image is loaded');
-      assert.equal(layout.sceneImages[0],'/contest/map/arena-world-v1.webp');
+      assert.equal(layout.sceneImages[0],'/contest/map/arena-desk-v4.webp');
       assert(layout.renderedControls<=10,'Learning stays alongside concise account and map controls');
       assert.equal(await visibleCount('[data-arena-first-culture-trigger]'),0,'The retired first culture is absent');
       assert.equal(await visibleCount('[data-arena-discovery-entry] [data-arena-learning-trigger]'),1,'Learning remains directly available before and after opening');
@@ -271,7 +278,7 @@ if(preview){
   const directProfileStart=requests.length;
   await page.locator('[data-arena-profile-trigger]').click(); await page.waitForSelector('[data-chanvrier-profile][open]',{visible:true});
   await saveProfile('Nouveau29');
-  await page.waitForSelector('[data-chanvrier-card][data-inline="true"]',{visible:true});
+  await page.waitForSelector('[data-arena-profile-trigger]:not(:disabled)',{visible:true});
   await noModal();await assertProfileFocus();
   assert.deepEqual(requests.slice(directProfileStart).filter(request=>request.method==='POST').map(request=>request.path),['/api/arena/chanvrier'],'Direct profile creation does not start or mutate the trial');
   await screenshot('new-profile-saved-no-trial-390');
@@ -324,7 +331,7 @@ if(preview){
   await page.keyboard.press('Escape'); await noModal();
   for(const mode of ['carnet','jouer','classement']){
     await load('returning',mode);
-    assert.equal((await measure()).sceneImages[0],'/contest/map/arena-world-v1.webp','All modes share one map image');
+    assert.equal((await measure()).sceneImages[0],'/contest/map/arena-desk-v4.webp','All modes share one illustrated desk');
     assert.equal(await page.$eval('[data-arena-activity][data-current="true"]',element=>element.getAttribute('data-arena-activity')),mode);
   }
   const initialTransform=await page.$eval('[data-arena-scene]',element=>getComputedStyle(element).transform);
