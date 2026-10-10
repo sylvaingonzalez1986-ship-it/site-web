@@ -38,9 +38,9 @@ function fixturePayload(fixture,path,method,rawBody){
 }
 const previewFetch=preview?`const sampleProfile=${JSON.stringify(sampleProfile)};const resetFixture=${resetFixture.toString()};const fixturePayload=${fixturePayload.toString()};const fixture=resetFixture(new URLSearchParams(location.search).get('state')||'returning');const nativeFetch=window.fetch.bind(window);window.fetch=async(input,init={})=>{const url=new URL(input instanceof Request?input.url:String(input),location.href);if(url.origin!==location.origin)throw new TypeError('Prévisualisation locale uniquement');if(!url.pathname.startsWith('/api/'))return nativeFetch(input,init);const method=init.method||(input instanceof Request?input.method:'GET');const payload=fixturePayload(fixture,url.pathname,method,init.body);return new Response(JSON.stringify(payload?.body||{error:'API non simulée'}),{status:payload?.status||404,headers:{'Content-Type':'application/json'}});};`:'';
 const activities = [
-  { id:'carnet', label:'Déguster', href:'/arene/carnet/regular' },
-  { id:'jouer', label:'Cultiver', href:'/arene/placard' },
-  { id:'classement', label:'Classement', href:'/arene?vue=classement' },
+  { id:'carnet', label:'Le Carnet', href:'/arene/carnet/regular' },
+  { id:'jouer', label:'Le Placard', href:'/arene/placard' },
+  { id:'classement', label:'Le Classement', href:'/arene?vue=classement' },
 ];
 const modules = {
   'arena-clarity-fixture': `

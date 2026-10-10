@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "@/components/navigation/NavigationLink";
-import { ArrowUpRight, Map } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useRef, useState } from "react";
 import { ArenaJourneyEntry } from "./ArenaJourneyEntry";
 import { ArenaPrelaunchCharacter } from "./ArenaPrelaunchCharacter";
@@ -29,20 +29,16 @@ export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer
   return (
     <main data-world="arena" data-lobby-mode={initialMode} className={`${retro.surface} ${styles.home}`}>
       <header className={styles.topBar}>
-        <div className={styles.brand}><span>Kanab Quest</span><h1>L’Arène<span>.</span></h1><p>Un village. Mille façons de te faire un nom.</p></div>
+        <div className={styles.brand}><span>Kanab Quest</span><h1>L’Arène<span>.</span></h1></div>
         <div className={styles.tools}>
           {activitiesLocked ? <ArenaPrelaunchCharacter launcherRef={profileLauncher} onProfileAvailabilityChange={setProfileAvailability} /> : <ArenaJourneyEntry launcherRef={profileLauncher} onProfileAvailabilityChange={setProfileAvailability} />}
         </div>
       </header>
 
-      <section className={styles.activities} aria-labelledby="arena-activities-title">
-        {activitiesLocked ? <div className={styles.intro}>
+      <section className={styles.activities} aria-label="Activités de l’Arène">
+        {activitiesLocked && <div className={styles.intro}>
           <span className={styles.eyebrow}>Ouverture de l’Arène</span>
-          <h2 id="arena-activities-title">{ARENA_OPENING_MESSAGE}</h2>
-          <p>Découvre les possibilités de l’Arène avant l’ouverture.</p>
-        </div> : <div className={styles.intro}>
-          <h2 id="arena-activities-title"><Map size={17} aria-hidden="true" /> À toi d’explorer.</h2>
-          <p>Le Carnet, le jeu, les talents de la saison… choisis ta destination.</p>
+          <h2>{ARENA_OPENING_MESSAGE}</h2>
         </div>}
 
         <ArenaWorldMap activitiesLocked={activitiesLocked} initialMode={initialMode} profileLauncher={profileLauncher} profileAvailability={profileAvailability} />
