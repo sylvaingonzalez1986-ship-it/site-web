@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import ts from "typescript";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   isKqLocalPlayerPreviewEnabled,
@@ -31,6 +32,19 @@ const playerShell = readFileSync(
   join(process.cwd(), "src/components/placard/PlacardPlayerShell.tsx"),
   "utf8",
 );
+const playerShellAst = ts.createSourceFile("PlacardPlayerShell.tsx", playerShell, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+function playerShellJsxProp(component: string, prop: string): string | undefined {
+  // JSX callbacks may contain >; parse the element rather than treating it as HTML.
+  function find(node: ts.Node): ts.Expression | undefined {
+    if ((ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) && node.tagName.getText(playerShellAst) === component) {
+      const attribute = node.attributes.properties.find((item): item is ts.JsxAttribute => ts.isJsxAttribute(item) && item.name.getText(playerShellAst) === prop);
+      if (attribute?.initializer && ts.isJsxExpression(attribute.initializer)) return attribute.initializer.expression;
+    }
+    return ts.forEachChild(node, find);
+  }
+  const expression = find(playerShellAst);
+  return expression ? ts.createPrinter().printNode(ts.EmitHint.Expression, expression, playerShellAst) : undefined;
+}
 const placardMap = readFileSync(
   join(process.cwd(), "src/components/placard/KqPlacardMap.tsx"),
   "utf8",
@@ -218,8 +232,8 @@ describe("Kanab Quest player page access", () => {
     expect(marketDesk).not.toContain("crypto.randomUUID()");
     expect(equipmentCatalog).toContain("createClientRequestKey()");
     expect(boosterShop).toContain("createClientRequestKey()");
-    expect(playerShell).toMatch(/<KqMarketDesk\b[^>]*onOpenShop=\{openEquipmentCatalog\}/);
-    expect(playerShell).toContain("openView(shopReturnView)");
+    expect(playerShellJsxProp("KqMarketDesk", "onOpenShop")).toBe("openEquipmentCatalog");
+    expect(playerShellJsxProp("KqSupportBoosterShop", "onExit")).toBe("() => openView(shopReturnView, { marketSection: shopReturnMarketSection })");
     expect(placardHud).toContain("Progression principale terminée");
     expect(placardHud).toContain("Filière épinglée · objectif sauvegardé");
     expect(placardHud).toContain("getKqEquipmentPaybackScenarios");

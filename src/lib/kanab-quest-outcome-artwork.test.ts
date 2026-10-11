@@ -81,15 +81,16 @@ describe("stage-aware culture outcome artwork", () => {
     expect(getKqOutcomeArtwork(resolved)?.outcome).toBe(resolved.history.at(-1)?.outcome);
   });
 
-  it("uses a passive Heritage's final outcome rather than its preview", () => {
+  it("uses an automatic Heritage's final outcome rather than its preview", () => {
     const base = startKqGame(335, { heritageCard: {
-      code: "HERITAGE-900", name: "Reprise vigoureuse", timing: "passive", effect: "failure-to-fragile",
-      description: "Le premier échec devient fragile.", producerName: "Test",
+      code: "HERITAGE-900", name: "Reprise vigoureuse", timing: "once-per-run", effect: "failure-to-fragile",
+      description: "Le premier échec devient une réussite.", producerName: "Test",
     } });
     const rolled: KqGameState = { ...base, phase: "rolled", dice: [2, 2, 3] };
     expect(previewKqResolution(rolled)?.outcome).toBe("failure");
     const resolved = resolveKqStage(rolled);
-    expect(getKqOutcomeArtwork(resolved)).toBe(KQ_OUTCOME_ARTWORK.Germination.fragile);
+    expect(resolved.heritageUsed).toBe(true);
+    expect(getKqOutcomeArtwork(resolved)).toBe(KQ_OUTCOME_ARTWORK.Germination.success);
   });
 
   it("keeps a zero nonterminal while vitality remains and prioritizes death when it is exhausted", () => {

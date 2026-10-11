@@ -83,11 +83,18 @@ describe("Kanab Quest Placard rules draft", () => {
   });
 
   it("documents incidents with their exact persistent consequences", () => {
-    expect(normalizedRules).toContain("le meilleur dé devient un Danger");
-    expect(normalizedRules).toContain("ajoute 2 Pression");
-    expect(normalizedRules).toContain("garantit donc trois réussites");
-    expect(normalizedRules).toContain("un résultat Fragile retire 15 %");
-    expect(normalizedRules).toContain("un Échec en retire 35 %");
+    const incidents = normalizedRules.split("## 5. Incidents de culture")[1]?.split("## 6. Duel classé")[0] ?? "";
+    expect(incidents).toContain("un résultat Fragile ou un Échec retire 10 points de rendement aux tentes de chaque bâtiment sans secours solaire");
+    expect(incidents).toContain("Le Panneau solaire et batterie protège uniquement son bâtiment");
+    expect(incidents).toContain("Les dés de la culture commune restent inchangés");
+    expect(incidents).toContain("Les anciennes cultures conservent la coupure à l'étape suivante : le meilleur dé devient un Danger");
+    expect(incidents).toContain("Charge répartie réduit le seuil d'une réussite");
+    expect(incidents).toContain("le Branchement illégal transforme les deux dés les plus faibles après le lancer, mais ajoute 2 Pression");
+    expect(incidents).toContain("Papiers en règle fixe les trois dés sur une réussite et garantit donc trois réussites pour ce contrôle");
+    expect(incidents).toContain("sans protection, un résultat Fragile retire 15 points de rendement et un Échec en retire 35");
+    expect(incidents).toContain("La sécurité installée protège les tentes de son bâtiment ; seules les tentes non protégées subissent ces pertes");
+    expect(incidents).toContain("Gros molosse et l’Héritage de protection du vol couvrent toute la culture");
+    expect(incidents).toContain("Les anciennes cultures conservent leur protection et leur perte globales");
   });
 
   it("documents every market threshold and the quality reputation incentive", () => {

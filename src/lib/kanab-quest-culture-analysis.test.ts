@@ -158,13 +158,15 @@ describe("explanations based on the played culture", () => {
     });
     const analysis = getKqCultureAnalysis(resolveKqStage(position));
     expect(analysis.coverage).toBe("detailed");
-    expect(analysis.stages[0].qualityDelta).toBe(2);
-    expect(analysis.advice[0].exactEffect?.before.qualityDelta).toBe(2);
+    // Art du compromis adds +2 to a Fragile result's base +1 Quality.
+    expect(analysis.stages[0]).toMatchObject({ outcome: "fragile", qualityDelta: 3 });
+    expect(analysis.advice[0].exactEffect?.before.qualityDelta).toBe(3);
     expect(analysis.advice[0].exactEffect?.after.qualityDelta).toBe(3);
     const recovery = { ...position, heritageTiming: "once-per-run" as const, heritageEffect: "failure-to-fragile" as const, dice: [1, 2, 3] as [number, number, number] };
     const rescued = getKqCultureAnalysis(resolveKqStage(recovery));
     expect(rescued.coverage).toBe("detailed");
-    expect(rescued.stages[0].evidence.join(" ")).toContain("transformé Échec en Fragile");
+    expect(rescued.stages[0]).toMatchObject({ outcome: "success", qualityDelta: 2 });
+    expect(rescued.stages[0].evidence.join(" ")).toContain("transformé Échec en Réussite");
   });
 
   it("isolates an earned curing bonus without replaying or undoing the dice", () => {

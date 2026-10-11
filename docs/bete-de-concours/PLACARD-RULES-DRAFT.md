@@ -343,7 +343,7 @@ payants**.
   de rendement aux tentes de chaque bâtiment sans secours solaire. Le Panneau
   solaire et batterie protège uniquement son bâtiment. Les dés de la culture
   commune restent inchangés. Les anciennes cultures conservent la coupure à
-  l'étape suivante, qui transforme le meilleur dé en Danger. Charge répartie
+  l'étape suivante : le meilleur dé devient un Danger. Charge répartie
   réduit le seuil d'une réussite ; le Branchement illégal transforme
   les deux dés les plus faibles après le lancer, mais ajoute 2 Pression.
 - **Contrôle DDTM** : la situation suit les résultats habituels du lancer.
