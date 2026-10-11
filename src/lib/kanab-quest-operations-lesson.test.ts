@@ -189,7 +189,7 @@ describe('real operations on a loaned installation', () => {
       const route = lot.options.find(item => item.route === 'raw')!;
       const prepared = applyKqOperationsRequest(initial, commerce({ action: 'prepare', flowerId: lot.flowerId, route: 'raw', expectedCostCents: route.market!.processingCostCents })).state;
       const stock = prepared.trial.commerce.stocks[0];
-      const retail = quoteKqCommerce(prepared.trial.commerce, stock, 'online', 'advised', 10, prepared.trial.clock);
+      const retail = quoteKqCommerce(prepared.trial.commerce, stock, 'cbd-shop', 'advised', 10, prepared.trial.clock);
       expect(stock.storage!.stage).toBe(mature ? 'ready' : 'curing');
       if (mature) expect(retail.reason).toBeNull();
       else expect(retail.reason).toContain('Curing en cours');

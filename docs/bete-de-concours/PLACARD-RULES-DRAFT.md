@@ -503,63 +503,149 @@ restent en stock. Plusieurs ventes peuvent écouler le même lot.
 
 | Circuit | Tarif | Quantité et qualité |
 | --- | --- | --- |
-| Vente en ligne | Tarif conseillé lié à la qualité et à la réputation ; choix à 90 %, 100 % ou 122 % | Commandes limitées ; les mauvais lots font partir des clients |
-| CBD shops | 40–55 % selon la qualité, bonus réseau de 0–4 points | Réseau de partenaires ; fleur dès 6,5/10, transformation dès 7,5/10 |
-| Grossistes | Fleur brute dès 6,5/10 : 38 % normalement, 35 % en promotion, 39 % en réassort. Autres lots : 30 / 25 / 33 % | Reprise de tout le volume, sans gain de réputation ; biomasse au tarif industriel |
+| Vente en ligne | Prix TTC libre au centime par paquet de 5 g ou 10 g | Commandes automatiques progressives, selon visibilité, qualité, prix et confiance |
+| CBD shops | Fleur brute : 500–1 500 €/kg selon la qualité actuelle ; transformations au barème spécifique existant | Paiement immédiat, volume limité par le réseau ; fleur dès 6,5/10, transformation dès 7,5/10 |
+| Grossistes | Fleur brute : ancien barème plafonné à 60 % du nouveau prix shop de cette qualité | Reprise de tout le volume, sans gain de réputation ; autres transformations et biomasse au barème existant |
 
 La fleur sous 5,8/10 peut désormais être préparée brute pour la reprise grossiste.
 Les exigences de qualité et de matériel pour fabriquer les transformations
 restent inchangées. La biomasse est reprise au tarif industriel dans ce circuit.
 Le prix affiché par le joueur en ligne ne modifie jamais les tarifs professionnels.
 
-La qualité retenue pour la reprise commerciale est celle du lot conservé au moment
-du devis : une fleur descendue sous 6,5/10 retrouve le tarif de déstockage. Le
-surplus sans contenant conserve sa reprise d'urgence distincte à 0,54 €/g,
-manuelle ou automatique. Ni cette reprise ni la biomasse ne garantissent une marge.
-Pour une récolte de départ de 100 g, sans bonus, la reprise commerciale produit
-68,40 € TTC en marché normal. Après 11,40 € de TVA, 45 € d'analyse par session
-et 6,03 € d'électricité du kit initial, il reste 5,97 € ; 1,47 € en promotion,
-7,47 € en réassort. Ce résultat suppose les 100 g et une note d'au moins 6,5/10.
-La boutique paie toujours davantage au gramme (au moins 40 %) et développe le réseau.
+Les shops proposent 500 €/kg à 6,5/10, 1 000 €/kg à 8/10 et 1 500 €/kg dès
+9,5/10, avec interpolation entre ces notes. La conservation fait évoluer cette
+qualité ; ni le réseau ni le talent Marchand ne dépassent ce plafond de prix.
+Le réseau augmente le volume disponible. Les seuils de recrutement restent
+distincts : fleur 6,5–6,9 fragile, 7–7,9 stable, 8–8,9 favorable, 9–10 excellente ;
+hash/rosin 7,5 / 8 / 9 / 9,5. Maximum 20 partenaires, progression selon la masse
+équivalente vendue. La prospection reste possible sans partenaire.
+Le surplus sans contenant conserve sa reprise d’urgence séparée à 0,54 €/g.
+Aucune reprise ne garantit une marge après culture et charges.
 
-Le serveur enregistre le devis complet ; SQL règle exactement ce devis avec ses
-contrôles d'identité, quantité, révision, échéance et montant confirmé. Un devis
-encore valide émis à l'ancien tarif reste honoré ; les reçus rejoués gardent leur
-montant initial. Ce changement de tarif ne réécrit aucune donnée ni migration SQL.
+Le serveur enregistre les devis professionnels et contrôle identité, quantité,
+révision, échéance et montant confirmé. Le nouveau circuit en ligne ferme la
+vente instantanée, y compris la confirmation d’un ancien devis online.
+Les reçus déjà exécutés restent rejouables sans nouveau débit ou nouvelle vente.
 
-Les shops ont un réseau distinct des clients en ligne : 20 partenaires au maximum,
-avec au plus un nouveau par cycle. Fleur 6,5–6,9 : 40 % et départ progressif ;
-7–7,9 : 45 % et réseau stable ; 8–8,9 : 50 % et recrutement ; 9–10 : 55 %
-et recrutement plus rapide. Pour le hash/rosin, les seuils sont 7,5 / 8 / 9 / 9,5.
-Les petits volumes s’additionnent ; la masse est ramenée à la fleur équivalente.
-Le bonus est de +1 point dès 1 boutique, +2 dès 4, +3 dès 8 et +4 dès 12.
-Les partenaires de début de cycle fixent le tarif réseau et le volume disponible
-pour tout le cycle. La prospection reste possible sans partenaire.
+#### Boutique progressive et conditionnement
 
-La vente en ligne exige un ordinateur acheté `450 €` dans la boutique et un
-abonnement Internet à `15 €` par culture terminée. Les quotas et l’événement du
-cycle sont renouvelés une fois à la fin de la culture, jamais à l’actualisation.
-L’abonnement est désactivable et l’accès déjà payé reste actif pour le cycle.
-Sans trésorerie suffisante, la vente en ligne est suspendue ; boutiques et
-grossistes restent ouverts. Une absence sans nouvelle culture n’est pas facturée.
+Le conditionnement suit le parcours « Transformer et vendre » : choisir un
+lot, puis le circuit « Vente en ligne ». Les emballages, formats et prix ne
+s’affichent qu’à cette étape, pour le lot choisi. Ils n’apparaissent ni à
+l’accueil des lots, ni dans les offres aux shops ou aux grossistes.
 
-| Réputation | Titre | Bonus de prix en ligne |
-| ---: | --- | ---: |
-| 0 | Cultivateur novice | +0 % |
-| 60 | Main sûre | +5 % |
-| 200 | Artisan du lot | +12 % |
-| 600 | Signature locale | +20 % |
-| 1500 | Maître du Placard | +30 % |
-| 3000 | Référence du jury | +45 % |
+Après confirmation d’une mise en vente, le joueur arrive dans l’onglet
+« Tableau de bord » du Marché (`?view=market&section=dashboard`). Cet espace
+reste accessible même sans stock en vrac. Il rassemble les paquets vendus,
+restants, en vente, en pause, retirés ou bloqués par leur qualité, les recettes
+et les dernières commandes. Les filtres d’annonces permettent de modifier un
+prix, mettre en pause, retirer du rayon ou reprendre une annonce. Le retrait
+conserve les paquets ; l’action distincte « Jeter les paquets » est définitive.
+« Préparer une nouvelle annonce » revient au choix du lot et du circuit.
 
-Dès 1 500 points, les tendances défavorables et la saturation ne diminuent plus
-le prix unitaire en ligne ; les quantités commandées restent limitées. Il n’y a
-plus de garantie d’écoulement intégral. Les événements du cycle et les volumes
-vendus sur 24 heures influencent la demande, avec une pénalité de saturation
-plafonnée à 35 %. Les clients fidèles améliorent les commandes des cycles suivants.
-Leur gain est plafonné à cinq par cycle ; les pertes liées à la qualité sont
-pondérées par le volume réellement livré et plafonnées à 25 % de la clientèle
-initiale. Aucune perte de clients n’est causée par une absence.
+La migration `20261011150000_kq_online_commerce.sql` a été appliquée le
+11 octobre 2026 au projet Supabase lié, à la demande de l’utilisateur. Son
+enregistrement distant, les fonctions Data API et l’absence de migration restante
+dans ce lot isolé ont été vérifiés. La migration indépendante de La Botte est
+restée exclue. Reçu : `output/online-commerce-migration/application.json`.
+Cette opération concerne la base ; l’interface et le cron Vercel ne sont pas déployés.
+
+L’ordinateur coûte toujours 450 €. La boutique de base ouvre gratuitement,
+sans abonnement, avec 2,5 % de frais de vente. Le joueur commence sans abonnés,
+avec une confiance commerciale de 60/100 et une audience de référence de
+24 visiteurs par jour réel : généralement moins d’une commande quotidienne
+sans publicité. Une commande n’est jamais garantie, quel que soit le prestige.
+
+Le joueur achète des emballages puis prépare un nombre entier de paquets.
+La masse sort immédiatement du stock en vrac et ne peut plus être vendue aux
+professionnels. Un emballage est consommé par paquet ; sa vente ne débite pas
+une seconde fois l’emballage. Pause et retrait gardent les paquets préparés,
+sans remboursement ni retour au vrac, et permettent la reprise ultérieure.
+Une action distincte permet de jeter définitivement les paquets invendus après
+confirmation : aucun remboursement, aucune vente ni réputation gagnée, et leur
+valeur sort du stock. Les paquets devenus invendables ne restent pas immobilisés.
+
+| Emballage | Coût 5 g | Coût 10 g | Effet dans le jeu |
+| --- | ---: | ---: | --- |
+| Doypack kraft, étiquette artisanale | 0,25 € | 0,30 € | Présentation simple, conservation de base |
+| Doypack imprimé à la marque | 1,10 € | 1,25 € | Graphiste requis, satisfaction +4, vieillissement réduit de 20 % |
+| Pot en verre ambré, couvercle et étiquette | 1,80 € | 2,10 € | Satisfaction +8, vieillissement réduit de 50 % |
+
+Ces prix virtuels sont des hypothèses de petites séries, accessoires inclus,
+pas des devis fournisseurs. Les repères vérifiés le 11 octobre 2026 incluent
+[l’impression numérique Exaprint](https://www.exaprint.fr/le-packaging/souple/doypack/),
+[les petites séries Packstyle dès 50 unités](https://www.packstyle.com/fr) et
+[les pots bruns avec couvercle](https://allbags.net/fr-fr/products/recipient-en-verre-pour-cire-de-bougie).
+Les bonus de satisfaction et de conservation sont des choix d’équilibrage.
+Les trois illustrations représentent les emballages 5 g et 10 g dans un rendu réaliste.
+
+Le prix de référence tient compte du produit, de la qualité actuelle, du coût
+du conditionnement et d’une prime de réputation bornée pour les bons lots.
+Le joueur choisit exactement son prix TTC. Monter le prix diminue progressivement
+la conversion ; à 2,5 fois la valeur de référence, la demande est nulle.
+Un lot moyen vendu honnêtement peut satisfaire ; un lot décevant trop cher
+fait baisser confiance et fidélité après achat. Un joli emballage ne compense
+pas une forte surévaluation. Aucun client ni point n’est perdu sans achat décevant.
+
+Les annonces partagent la même audience. Le format 10 g utilise deux fois le
+budget de demande du 5 g : diviser un lot ne multiplie pas les ventes.
+Le moteur traite les commandes, le vieillissement, les fins de campagne et les
+échéances dans l’ordre chronologique, même hors connexion. Les prix modifiés
+ne changent pas les ventes passées ; changer le prix réinitialise l’intention
+d’achat en cours. Le kraft perd 0,01 point de qualité par 4 heures réelles après
+conditionnement, avec les réductions du tableau ; préparer un paquet ne rajeunit
+jamais le lot. En dessous de 5,8/10 les ventes en ligne s’arrêtent.
+
+#### Développer l’entreprise
+
+La gestion de l’activité se trouve au **Marché**, à côté de « Transformer et
+vendre » : site, marque, réseaux sociaux, publicité et domiciliation. La carte
+donne directement accès à « Gérer mon activité ». Le Bureau conserve les
+factures et la comptabilité, la Banque les financements et les placements.
+Ce sont deux espaces séparés, accessibles depuis leur bâtiment sur la carte,
+sans onglets communs. La Banque ne charge pas les dossiers comptables du Bureau.
+Les anciens liens vers la gestion du Bureau redirigent vers celle du Marché.
+Un achat de matériel lancé depuis la gestion revient dans cette même section.
+
+L’interface utilise trois scènes corrigées avec l’outil intégré `image_gen` :
+`public/placard/market-counter-v2.webp` (comptoir),
+`public/placard/market-brand-studio-v2.webp` (atelier de marque) et
+`public/placard/market-social-missions-v2.webp` (missions sociales).
+Chaque édition reçoit directement `public/sylvain.png` comme référence
+d’identité et `public/placard/commerce-office-v2.webp` comme exemple fidèle :
+visage crème et rond, yeux échancrés, silhouette trapue, casquette beige et
+turquoise, pull beige sans col ni bretelles et pantalon turquoise.
+Les premières versions restent archivées. Les prompts et les originaux
+corrigés sont conservés dans
+`output/imagegen/market-ui-sylvain-v2/prompt-manifest.json`. Les photos réalistes des
+trois emballages restent utilisées dans le choix du conditionnement.
+
+| Investissement | Prix | Conditions et effet |
+| --- | ---: | --- |
+| Photos et fiches produit | 300 € | Conversion +10 %, aucun visiteur créé |
+| Identité par un graphiste | 700 € | Conversion +8 %, doypack imprimé débloqué |
+| Site amélioré | 900 € puis 30 €/mois de jeu | 5 commandes, confiance ≥45 ; conversion ×1,25 |
+| Site professionnel | 3 000 € au total puis 60 €/mois de jeu | 30 commandes, confiance ≥60 ; conversion ×1,6 |
+
+Le passage du site amélioré au professionnel coûte la différence, soit 2 100 €.
+Le premier mois est inclus ; un mois de jeu dure 5 jours réels. Les anciens sites
+payants sont repris comme sites améliorés avec leur période déjà payée conservée.
+Les abonnements non réglés suspendent les ventes ; les paquets restent en stock.
+
+Les missions sociales sont simulées dans le jeu et distinctes des missions
+communautaires avec preuves réelles. Présenter sa marque dure 24 heures réelles,
+présenter une récolte, montrer l’atelier et échanger avec les acheteurs durent
+48 heures. Une seule mission est active ; la première est unique, une récolte
+ne peut pas être présentée deux fois, et les autres missions ont un délai de
+réutilisation. Choisir Accessible, Artisanal ou Sélection améliore légèrement
+la conversion des visiteurs de cette campagne si le prix et la qualité correspondent.
+La fin de mission gagne des abonnés simulés, jamais directement des clients fidèles.
+
+Les achats satisfaisants construisent la confiance et la clientèle, avec au plus
+cinq clients gagnés par journée réelle UTC et une perte plafonnée à 25 % des
+clients du début de journée, arrondie à l’entier supérieur. La réputation
+technique reste distincte : un bon lot contribue à sa progression, vendre un
+lot moyen à prix honnête n’ajoute pas de sanction ; un achat décevant peut la réduire.
 
 La réputation du lot est répartie selon les quantités : barème complet en direct,
 moitié en boutique, zéro au grossiste. Les arrondis sont cumulés pour empêcher

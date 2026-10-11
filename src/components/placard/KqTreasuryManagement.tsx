@@ -23,8 +23,8 @@ async function request<T>(api: KqTutorialApi, body?: Record<string, unknown>, en
   return result as T;
 }
 
-function ManagementConfirmation({ confirmation, busy, error, onClose, onConfirm }: {
-  confirmation: Confirmation; busy: boolean; error: string; onClose: () => void; onConfirm: () => void;
+function ManagementConfirmation({ confirmation, busy, error, section, onClose, onConfirm }: {
+  confirmation: Confirmation; busy: boolean; error: string; section: "invoices" | "management"; onClose: () => void; onConfirm: () => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   useBodyScrollLock(true);
@@ -35,7 +35,7 @@ function ManagementConfirmation({ confirmation, busy, error, onClose, onConfirm 
   }, []);
   return <dialog ref={dialog} className={styles.confirm} aria-labelledby="treasury-management-title" onCancel={event => { if (busy) event.preventDefault(); else onClose(); }}>
     <button type="button" className={styles.close} aria-label="Fermer la confirmation" disabled={busy} onClick={onClose}><X size={22} aria-hidden="true" /></button>
-    <small>Le bureau · Confirmation de l’opération</small><h2 id="treasury-management-title">{confirmation.title}</h2><p>{confirmation.description}</p>
+    <small>{section === "invoices" ? "Le Bureau" : "Le Marché"} · Confirmation de l’opération</small><h2 id="treasury-management-title">{confirmation.title}</h2><p>{confirmation.description}</p>
     <strong className={styles.amount}>{confirmation.cost ? formatKqCash(confirmation.cost) : "Aucun débit immédiat"}</strong>
     {error ? <p className={styles.error} role="alert">{error}</p> : null}
     <footer><button type="button" className={styles.secondary} disabled={busy} onClick={onClose}>Revenir</button><button type="button" className={styles.primary} disabled={busy} onClick={onConfirm}>{busy ? <LoaderCircle size={18} className={styles.spin} aria-hidden="true" /> : <Check size={18} aria-hidden="true" />}{busy ? "Validation…" : "Confirmer"}</button></footer>
@@ -129,6 +129,6 @@ export function KqTreasuryManagement({ onOpenShop, onUpdated, section = "managem
     {error && !confirmation ? <p className={styles.error} role="alert">{error}<button type="button" className={styles.secondary} onClick={() => void load()}><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></p> : null}
     {notice ? <p className={styles.notice} role="status"><Check size={18} aria-hidden="true" /> {notice}</p> : null}
     {data ? section === "invoices" ? <KqTreasuryInvoices data={data} energy={energy} energyError={energyError} now={liveNow} busy={busy} onAsk={ask} onRetry={() => void load()} onPayEnergy={amount => ask("Régler l’électricité et les soins", `Le solde de ${formatKqCash(amount)} sera débité de ta trésorerie disponible pour acquitter les factures d’électricité et de soins. Les factures de laboratoire sont réglées séparément.`, { expectedCents: amount }, amount, "energy")} /> : <KqBusinessPanel data={data} now={liveNow} busy={busy} onAsk={ask} onOpenShop={() => onOpenShop()} expanded showAccounting={false} /> : null}
-    {confirmation ? <ManagementConfirmation confirmation={confirmation} busy={busy} error={error} onClose={() => { if (!busy) { setConfirmation(null); setError(""); } }} onConfirm={() => void commit()} /> : null}
+    {confirmation ? <ManagementConfirmation confirmation={confirmation} busy={busy} error={error} section={section} onClose={() => { if (!busy) { setConfirmation(null); setError(""); } }} onConfirm={() => void commit()} /> : null}
   </section>;
 }

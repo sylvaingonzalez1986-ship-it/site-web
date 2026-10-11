@@ -42,11 +42,11 @@ export function KqCommerceOverview({ data, onOpenShop }: {
     </summary>
     <div className={styles.content}>
       <section className={styles.reputation} aria-label="Ta réputation">
-        <div className={styles.officeArt}><Image src={officeArt} alt="Sylvain prépare ses commandes dans son bureau, entouré de colis et des portraits de ses partenaires" fill sizes="(max-width: 700px) 100vw, 400px" /></div>
+        <div className={styles.officeArt}><Image src={officeArt} alt="Sylvain prépare ses commandes dans l’espace de gestion du Marché, entouré de colis et des portraits de ses partenaires" fill sizes="(max-width: 700px) 100vw, 400px" /></div>
         <div className={styles.rankProgress}>
           <small className={styles.eyebrow}><Trophy size={17} aria-hidden="true" /> Ta réputation</small>
           <h2>{progress.tier.name}</h2>
-          <div className={styles.rankNumbers}><strong>{number(data.reputation)} <small>points</small></strong><span>+{progress.tier.priceBonusPercent} %<small>sur tes prix en ligne</small></span></div>
+          <div className={styles.rankNumbers}><strong>{number(data.reputation)} <small>points</small></strong><span>{data.online ? `${number(data.online.confidence)}/100` : `+${progress.tier.priceBonusPercent} %`}<small>{data.online ? "de confiance commerciale" : "sur tes prix en ligne"}</small></span></div>
           <div className={styles.nextRank}><span>{progress.nextTier ? "Prochain palier" : "Progression accomplie"}</span><strong>{progress.nextTier?.name ?? "Dernier palier atteint"}</strong></div>
           <progress value={progress.progressPercent} max={100} aria-label={progress.nextTier ? `Progression vers ${progress.nextTier.name}` : "Dernier palier atteint"} />
           <p>{progress.nextTier ? <><strong>{number(progress.pointsToNext)} points</strong> à gagner pour atteindre {number(progress.nextTier.minimum)}.</> : "Tu as atteint le plus haut rang du marché."}</p>
@@ -57,12 +57,12 @@ export function KqCommerceOverview({ data, onOpenShop }: {
           const current = tier.code === progress.tier.code;
           const reached = data.reputation >= tier.minimum;
           const Icon = current ? Star : reached ? Check : LockKeyhole;
-          return <li key={tier.code} data-state={current ? "current" : reached ? "reached" : "locked"} aria-current={current ? "step" : undefined}><Icon size={19} aria-hidden="true" /><small>{number(tier.minimum)} points · {current ? "Ton rang" : reached ? "Débloqué" : "À atteindre"}</small><strong>{tier.name}</strong><span>+{tier.priceBonusPercent} % sur les prix en ligne</span></li>;
-        })}</ol><p>La réputation améliore les prix et la demande en ligne. Les commandes restent limitées.</p>
+          return <li key={tier.code} data-state={current ? "current" : reached ? "reached" : "locked"} aria-current={current ? "step" : undefined}><Icon size={19} aria-hidden="true" /><small>{number(tier.minimum)} points · {current ? "Ton rang" : reached ? "Débloqué" : "À atteindre"}</small><strong>{tier.name}</strong><span>{data.online ? "Une notoriété qui développe ton audience" : `+${tier.priceBonusPercent} % sur les prix en ligne`}</span></li>;
+        })}</ol><p>{data.online ? "La réputation attire des visiteurs. La confiance dépend des ventes réellement livrées, de la qualité et du prix demandé. Même une marque connue doit proposer un bon rapport qualité-prix." : "La réputation améliore les prix et la demande en ligne. Les commandes restent limitées."}</p>
       </details>
       <div className={styles.audiences}>
-        <section aria-label="Clientèle en ligne"><Users size={28} aria-hidden="true" /><div><h3>Clients en ligne</h3><strong className={styles.stat}>{number(data.clients)} <span>fidèles</span></strong><p>{data.clients ? "Les bonnes livraisons fidélisent. Une qualité décevante peut faire partir tes clients." : "Tes premières bonnes livraisons en ligne construiront ta clientèle."}</p></div></section>
-        <section aria-label="Boutiques partenaires"><Store size={28} aria-hidden="true" /><div><h3>Boutiques partenaires</h3><strong className={styles.stat}>{number(partners)} <span>sur 20</span></strong><p>+{networkBonus} points de reprise sur cette période de 24 heures. {nextNetwork ? `Encore ${nextNetwork - partners} boutique${nextNetwork - partners > 1 ? "s" : ""} pour le prochain bonus réseau.` : "Bonus réseau maximal atteint."}</p></div></section>
+        <section aria-label="Clientèle en ligne"><Users size={28} aria-hidden="true" /><div><h3>Clients en ligne</h3><strong className={styles.stat}>{number(data.clients)} <span>fidèles</span></strong><p>{data.online ? `${number(data.online.followers)} abonnés suivent ta marque. Les commandes satisfaisantes construisent la fidélité ; les visiteurs ne deviennent pas automatiquement des clients.` : data.clients ? "Les bonnes livraisons fidélisent. Une qualité décevante peut faire partir tes clients." : "Tes premières bonnes livraisons en ligne construiront ta clientèle."}</p></div></section>
+        <section aria-label="Boutiques partenaires"><Store size={28} aria-hidden="true" /><div><h3>Boutiques partenaires</h3><strong className={styles.stat}>{number(partners)} <span>sur 20</span></strong><p>{data.online ? "Ton réseau développe les volumes de reprise. Les fleurs sont payées entre 500 et 1 500 €/kg selon la qualité ; les extraits ont leurs propres barèmes." : <>+{networkBonus} points de reprise sur cette période de 24 heures. {nextNetwork ? `Encore ${nextNetwork - partners} boutique${nextNetwork - partners > 1 ? "s" : ""} pour le prochain bonus réseau.` : "Bonus réseau maximal atteint."}</>}</p></div></section>
       </div>
       <section className={styles.history} aria-label="Dernières ventes"><header><div><small className={styles.eyebrow}>Tes résultats</small><h3>Dernières ventes</h3></div><button className={styles.shopLink} onClick={onOpenShop}><ShoppingBag size={17} aria-hidden="true" /> Boutique</button></header>
         {sales.length ? <><ul className={styles.sales}>{sales.slice(0,3).map((receipt,index)=><SaleRow key={index} receipt={receipt} />)}</ul>

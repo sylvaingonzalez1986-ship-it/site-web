@@ -1,0 +1,4 @@
+.navigation{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px;background:#073c31;border-block:1px solid #c5b078}
+.navigation button{min-height:44px;padding:9px 14px;border:1px solid #c5b078;border-radius:7px;background:#164d3f;color:#fff4d6;font:inherit;font-weight:700;cursor:pointer}
+.navigation button[aria-pressed=true]{background:#f4ce67;color:#193c2e}
+.navigation button:focus-visible{outline:3px solid #fff4d6;outline-offset:3px}

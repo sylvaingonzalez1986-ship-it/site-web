@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/postcss';
 import {Launcher} from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
-const root=process.cwd(), output=resolve(root,'output/placard-clarity'), port=3224, origin=`http://127.0.0.1:${port}`, preview=process.argv.includes('--preview'), collectionOnly=process.argv.includes('--collection-only');
+const root=process.cwd(), output=resolve(root,'output/placard-clarity'), port=Number(process.env.CLARITY_AUDIT_PORT??3224), origin=`http://127.0.0.1:${port}`, preview=process.argv.includes('--preview'), collectionOnly=process.argv.includes('--collection-only');
 function fixturePayload(path,scenario){
  if(path==='/api/arena/placard/equipment')return {tentNumber:1,tents:[{tentNumber:1,equippedCodes:[],levels:{}}],productionUnits:scenario==='active'?4:1,ownedCodes:[],purchasedCodes:[],equippedCodes:[],cashCents:0,levels:{},reputation:0,activeRun:scenario==='active',readyLotCount:scenario==='lots'?2:0,availableFlowerCount:scenario==='jury'?1:0,routeMasteries:[],routePlan:null};
  if(path==='/api/arena/placard/collection')return {collection:{cards:[]}};
@@ -18,8 +18,8 @@ const stub=(name,body)=>`import React from 'react';export function ${name}(props
 const destinations={
  './KanabQuestDicePrototype':stub('KanabQuestDicePrototype','<h1>{props.viewMode === "arena" ? "Jury & duels" : "La culture"}</h1>'),
  './KqWarehouseEntry':stub('KqWarehouseEntry','<h1>Entrepôt</h1><p data-equipment>{props.initialEquipmentCode}</p><button onClick={()=>props.onOpenShop("LED-500")}>Acheter une lampe</button>'),
- './KqMarketDesk':stub('KqMarketDesk','<h1>Marché</h1>'),
- './KqTreasuryDesk':stub('KqTreasuryDesk','<h1>{props.initialPole === "bank" ? "La Banque" : "Le Bureau"}</h1><p data-treasury-pole>{props.initialPole}</p><button onClick={props.onOpenMarket}>Aller au Marché</button>'),
+ './KqMarketDesk':stub('KqMarketDesk','<h1>Marché</h1><p data-market-section>{props.section}</p><button onClick={()=>props.onSectionChange("sales")}>Transformer et vendre</button><button onClick={()=>props.onSectionChange("dashboard")}>Suivre ma boutique</button><button onClick={()=>props.onSectionChange("management")}>Gérer mon activité</button><button onClick={()=>props.onOpenShop("COMPUTER")}>Acheter un ordinateur</button>'),
+ './KqTreasuryDesk':stub('KqTreasuryDesk','<h1>{props.initialPole === "bank" ? "La Banque" : "Le Bureau"}</h1><p data-treasury-pole>{props.initialPole}</p>'),
  './KqSupportBoosterShop':stub('KqSupportBoosterShop','<h1>La Boutique</h1><p data-catalog>{props.autoOpenEquipment ? "Matériel" : "Packs"}</p><p data-equipment>{props.initialEquipmentCode}</p><button onClick={()=>props.onOpenWorkshop(props.initialEquipmentCode)}>Installer</button><button onClick={props.onExit}>Quitter la boutique</button><button onClick={props.onOpenCollection}>Ma collection</button>'),
  './KqMissionCenter':stub('KqMissionCenter','<h1>Missions</h1><button onClick={()=>props.onOpen("shop")}>Mes packs</button>'),
 };
@@ -66,7 +66,7 @@ if(preview){
   {building:'warehouse',activity:'workshop',view:'workshop'},
   {building:'bank',activity:'bank',view:'treasury',pole:'bank'},
   {building:'office',activity:'treasury',view:'treasury',pole:'accounting'},
-  {building:'office',activity:'management',view:'treasury',pole:'management'},
+  {building:'market',activity:'management',view:'market',section:'management'},
   ...['market','shop','arena','missions'].map(id=>({building:id,activity:id,view:id})),
  ];
  const selectBuilding=async id=>{
@@ -81,7 +81,9 @@ if(preview){
   const params=new URL(page.url()).searchParams;
   assert.equal(params.get('view'),target.view);
   assert.equal(params.get('pole'),target.pole??null);
+  assert.equal(params.get('section'),target.section??null);
   if(target.pole)assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),target.pole);
+  if(target.view==='market')assert.equal(await page.$eval('[data-market-section]',el=>el.textContent),target.section??'sales');
  };
  const tap=async selector=>{
   await page.$eval(selector,element=>element.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
@@ -161,11 +163,8 @@ if(preview){
   await clickText('Ma collection');await page.waitForSelector(album+'[open]');await page.keyboard.press('Escape');await page.waitForSelector(album,{hidden:true});await view('shop');
   assert.equal(await page.evaluate(()=>document.activeElement?.textContent),'Ma collection');
   await clickText('Quitter la boutique');await view('hub');
-  await enterActivity({building:'office',activity:'treasury',view:'treasury',pole:'accounting'});
-  const shellCollection='button[aria-label="Ouvrir ma collection Botte du Chanvrier"]';
-  await page.locator(shellCollection).click();await page.waitForSelector(album+'[open]');await closeCollection(shellCollection);await view('treasury');
   await visit();await view('hub');
-  collectionResults.push({width,eightPlaces:true,imageLoaded:true,distinctHitAreas:true,minimumTarget:44,uniqueTourAnchor:true,keyboardEnterAndSpace:true,pinFocusRestored:true,dropdownDoesNotOpen:true,panelFocusRestored:true,touchPin:width<=700,collectionToShop:true,shopCollectionPreserved:true,subviewCollectionPreserved:true,noOverflow:true});
+  collectionResults.push({width,eightPlaces:true,imageLoaded:true,distinctHitAreas:true,minimumTarget:44,uniqueTourAnchor:true,keyboardEnterAndSpace:true,pinFocusRestored:true,dropdownDoesNotOpen:true,panelFocusRestored:true,touchPin:width<=700,collectionToShop:true,shopCollectionPreserved:true,noOverflow:true});
  };
  const auditTouchMap=async(width,height)=>{
   await page.setViewport({width,height,isMobile:true,hasTouch:true});await visit('active');await view('hub');
@@ -192,7 +191,35 @@ if(preview){
   await tap('[data-placard-activity="bank"]');await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'bank');
   touchResults.push({width,height,overviewFits:true,numberedPins:true,touchBuildingSelection:true,touchZoom:true,touchPan:true,touchUnzoom:true,touchNavigation:true});
  };
- if(collectionOnly){
+ const auditDestinations=async()=>{
+  for(const target of destinationsToAudit){
+   await visit();await enterActivity(target);
+   await page.goBack();await view('hub');await page.goForward();await view(target.view);
+   if(target.pole)assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),target.pole,'Browser history restores the requested treasury pole');
+   if(target.view==='market')assert.equal(await page.$eval('[data-market-section]',el=>el.textContent),target.section??'sales','Browser history restores the requested market section');
+   await page.locator('[data-placard-view] nav[aria-label="Navigation du Placard"] button:first-child').click();await view('hub');assert.equal(new URL(page.url()).searchParams.get('pole'),null);assert.equal(new URL(page.url()).searchParams.get('section'),null);
+  }
+ };
+ const auditMarketNavigation=async()=>{
+  await visit('starter','view=treasury&pole=management');await view('market');await page.waitForFunction(()=>new URLSearchParams(location.search).get('view')==='market');
+  assert.equal(new URL(page.url()).searchParams.get('section'),'management');assert.equal(new URL(page.url()).searchParams.get('pole'),null);assert.equal(await page.$eval('[data-market-section]',el=>el.textContent),'management');
+  await clickText('Transformer et vendre');await page.waitForFunction(()=>document.querySelector('[data-market-section]')?.textContent==='sales');assert.equal(new URL(page.url()).searchParams.get('section'),null);
+  await clickText('Suivre ma boutique');await page.waitForFunction(()=>document.querySelector('[data-market-section]')?.textContent==='dashboard');assert.equal(new URL(page.url()).searchParams.get('section'),'dashboard');
+  await clickText('Gérer mon activité');await page.waitForFunction(()=>document.querySelector('[data-market-section]')?.textContent==='management');
+  await page.goBack();await page.waitForFunction(()=>document.querySelector('[data-market-section]')?.textContent==='dashboard');await page.goBack();await page.waitForFunction(()=>document.querySelector('[data-market-section]')?.textContent==='sales');await page.goForward();await page.waitForFunction(()=>document.querySelector('[data-market-section]')?.textContent==='dashboard');await page.goForward();await page.waitForFunction(()=>document.querySelector('[data-market-section]')?.textContent==='management');
+  await clickText('Acheter un ordinateur');await view('shop');let params=new URL(page.url()).searchParams;assert.equal(params.get('from'),'market');assert.equal(params.get('fromSection'),'management');assert.equal(params.get('equipment'),'COMPUTER');
+  await clickText('Quitter la boutique');await view('market');params=new URL(page.url()).searchParams;assert.equal(params.get('section'),'management');assert.equal(params.get('fromSection'),null);assert.equal(await page.$eval('[data-market-section]',el=>el.textContent),'management');
+  await visit('starter','view=market&section=dashboard');await view('market');assert.equal(await page.$eval('[data-market-section]',el=>el.textContent),'dashboard','Direct dashboard links preserve the third market section');
+  await clickText('Acheter un ordinateur');await view('shop');params=new URL(page.url()).searchParams;assert.equal(params.get('from'),'market');assert.equal(params.get('fromSection'),'dashboard');assert.equal(params.get('equipment'),'COMPUTER');
+  await clickText('Quitter la boutique');await view('market');params=new URL(page.url()).searchParams;assert.equal(params.get('section'),'dashboard');assert.equal(params.get('fromSection'),null);assert.equal(await page.$eval('[data-market-section]',el=>el.textContent),'dashboard','Equipment shopping returns to the dashboard');
+  await visit();await selectBuilding('office');assert.deepEqual(await page.$$eval('[data-placard-activity]',els=>els.map(el=>el.dataset.placardActivity)),['treasury']);await selectBuilding('market');assert.deepEqual(await page.$$eval('[data-placard-activity]',els=>els.map(el=>el.dataset.placardActivity)),['market','management']);
+ };
+ if(process.argv.includes('--navigation-only')){
+  for(const width of [390,1440]){await page.setViewport({width,height:width<=700?844:1000,isMobile:width<=700,hasTouch:width<=700});await auditDestinations();await auditMarketNavigation();assert.equal((await measure()).overflow,false);}
+  assert(requests.every(r=>r.method==='GET'));assert.deepEqual(errors,[]);
+  await writeFile(resolve(output,'navigation-report.json'),JSON.stringify({passed:true,viewports:[390,1440],managementAtMarket:true,legacyManagementRedirect:true,marketSectionHistory:true,dashboardDeepLink:true,computerReturnToManagement:true,computerReturnToDashboard:true,readOnly:true,errors},null,2));
+  console.log(JSON.stringify({passed:true,managementAtMarket:true,legacyManagementRedirect:true,marketSectionHistory:true,dashboardDeepLink:true,computerReturnToManagement:true,computerReturnToDashboard:true,output}));
+ }else if(collectionOnly){
   for(const width of [320,390,1440]){
    await page.setViewport({width,height:width<=700?844:1000,isMobile:width<=700,hasTouch:width<=700});
    await auditCollectionMap(width);
@@ -227,15 +254,10 @@ if(preview){
    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
    await page.screenshot({path:resolve(output,`lobby-${state}-${width}.png`),fullPage:true});results.push({state,...m});
   }
-  for(const target of destinationsToAudit){
-   await visit();await enterActivity(target);
-   await page.goBack();await view('hub');await page.goForward();await view(target.view);
-   if(target.pole)assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),target.pole,'Browser history restores the requested treasury pole');
-   await page.locator('[data-placard-view] nav[aria-label="Navigation du Placard"] button:first-child').click();await view('hub');assert.equal(new URL(page.url()).searchParams.get('pole'),null);
-  }
+  await auditDestinations();
   await visit();await page.focus('[data-map-building="bank"]');await page.keyboard.press('Enter');await page.waitForSelector('[data-map-building="bank"][aria-pressed="true"]');
   await page.keyboard.press('Tab');assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('data-map-building')),'office');await page.keyboard.press('Space');await page.waitForSelector('[data-map-building="office"][aria-pressed="true"]');
-  assert.deepEqual(await page.$$eval('[data-placard-activity]',els=>els.map(el=>el.dataset.placardActivity)),['treasury','management']);assert.equal((await measure()).overflow,false);
+  assert.deepEqual(await page.$$eval('[data-placard-activity]',els=>els.map(el=>el.dataset.placardActivity)),['treasury']);assert.equal((await measure()).overflow,false);
   if(width<=700){await page.select('[aria-label="Choisir un bâtiment"]','missions');await page.waitForSelector('[data-map-building="missions"][aria-pressed="true"]');await page.locator('[data-placard-activity="missions"]').click();await view('missions');}
   await auditCollectionMap(width);
   await page.click('summary');assert.equal(await page.$eval('details',el=>el.open),true);assert.equal((await measure()).overflow,false);await page.screenshot({path:resolve(output,`help-${width}.png`),fullPage:true});
@@ -247,11 +269,12 @@ if(preview){
   let m=await measure();assert.equal(m.overflow,false);assertBuildingTargets(m);if(width<=700)assertMobileOverview(m);
   await page.screenshot({path:resolve(output,`touch-compact-${width}x${height}.png`),fullPage:true});
   for(const building of buildings){await tap(`[data-map-building="${building}"]`);await page.waitForSelector(`[data-map-building="${building}"][aria-pressed="true"]`);if(building==='collection'){await page.waitForSelector(album+'[open]');await closeCollection(collectionPin);}}
-  for(const target of destinationsToAudit.filter(target=>['warehouse','office'].includes(target.building))){
+  for(const target of destinationsToAudit.filter(target=>['warehouse','office','market'].includes(target.building))){
    await visit('active');await tap(`[data-map-building="${target.building}"]`);await page.waitForSelector(`[data-map-building="${target.building}"][aria-pressed="true"]`);
    m=await measure();assert.equal(m.overflow,false);assertBuildingTargets(m);
    await tap(`[data-placard-activity="${target.activity}"]`);await view(target.view);
    if(target.pole)assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),target.pole);
+   if(target.view==='market')assert.equal(await page.$eval('[data-market-section]',el=>el.textContent),target.section??'sales');
   }
   compactResults.push({width,height,allBuildingControlsReachable:true,warehouseActionsReachable:true,officeActionsReachable:true,touchNavigation:true,noOverflow:true});
  }
@@ -263,7 +286,10 @@ if(preview){
  await visit('starter','view=missions');await view('missions');await page.click('details > summary');await page.waitForSelector('[data-placard-dashboard]');await page.waitForSelector('[aria-label="Prochain investissement"]');assert.equal(await page.$('[aria-label="Vues du tableau de bord"]'),null);await page.screenshot({path:resolve(output,'progression.png'),fullPage:true});
  await visit('starter','view=treasury&pole=invalid');await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'accounting');
  await visit('starter','view=treasury');await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'accounting');
- await visit('starter','view=treasury&pole=bank');await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'bank');await clickText('Aller au Marché');await view('market');assert.equal(new URL(page.url()).searchParams.get('pole'),null);await page.goBack();await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'bank');
+ await visit('starter','view=treasury&pole=bank');await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'bank');
+ await page.locator('[data-placard-view] nav[aria-label="Navigation du Placard"] button:first-child').click();await view('hub');await enterActivity({building:'market',activity:'market',view:'market'});assert.equal(new URL(page.url()).searchParams.get('pole'),null);
+ await page.goBack();await view('hub');await page.goBack();await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'bank');
+ await auditMarketNavigation();
  await visit('error');await page.waitForSelector('[data-placard-lobby] [role="status"]');await clickText('Réessayer');await page.waitForSelector('[data-placard-lobby] [role="status"]',{hidden:true});
  await visit('starter','view=unknown');await view('hub');
  assert(requests.every(r=>r.method==='GET'));assert.deepEqual(errors,[]);

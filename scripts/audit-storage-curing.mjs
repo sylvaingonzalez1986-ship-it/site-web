@@ -30,7 +30,7 @@ window.fixture=()=>({...getKqOperationsStorage(state),prepared:state.prepared,ju
 window.replay=async index=>{const original=window.requests[index];return request(original.path,{method:original.method,body:JSON.stringify(original.body)})};
 window.mature=()=>{state.trial.clock=Date.parse(state.storage.lot.readyAt);state.trial.commerce.business.serverNow=new Date(state.trial.clock).toISOString();const projection=projectKqStorageLot(state.storage.lot,state.trial.clock);state.trial.commerce.stocks=state.trial.commerce.stocks.map(stock=>({...stock,storage:projection}));api.notify('kq:storage-updated')};
 window.expireOverflow=(offset=0)=>{state.trial.clock=Date.parse(state.storage.lot.capacity.overflowDeadlineAt)+offset;state.trial.commerce.business.serverNow=new Date(state.trial.clock).toISOString()};
-function App(){const[view,setView]=useState('equipment');const[,refresh]=useState(0);const equipment=getKqOperationsEquipment(state);return <KqTutorialApiProvider api={api}>{view==='market'?<KqCommerceDesk onOpenShop={()=>{}} onOpenStorage={()=>setView('storage')}/>:<KqEquipmentInventoryModal key={view} {...equipment} initialSection={view==='storage'?'storage':'equipment'} loading={false} loadError='' onClose={()=>setView('market')} onOpenShop={()=>{}} onRetry={()=>refresh(value=>value+1)}/>}</KqTutorialApiProvider>};createRoot(document.getElementById('root')).render(<App/>);`,
+function App(){const[view,setView]=useState('storage');const[,refresh]=useState(0);const equipment=getKqOperationsEquipment(state);return <KqTutorialApiProvider api={api}>{view==='market'?<KqCommerceDesk onOpenShop={()=>{}} onOpenStorage={()=>setView('storage')}/>:<KqEquipmentInventoryModal key={view} {...equipment} initialSection={view==='storage'?'storage':'equipment'} loading={false} loadError='' onClose={()=>setView('market')} onOpenShop={()=>{}} onRetry={()=>refresh(value=>value+1)}/>}</KqTutorialApiProvider>};createRoot(document.getElementById('root')).render(<App/>);`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,
   'next/link': `import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>;}`,
   'next/navigation': `export const usePathname=()=>location.pathname;export const useSearchParams=()=>new URLSearchParams();export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});`,
@@ -47,7 +47,7 @@ try {
   const fixture=()=>page.evaluate(()=>window.fixture());
   const selectQuantity=async(code,value)=>{const selector='[data-container-code="'+code+'"] input';await page.locator(selector).fill(String(value));};
   const buy=async(code,quantity)=>{await selectQuantity(code,quantity);const before=(await fixture()).ownedContainers[code]??0;await page.locator('[data-container-code="'+code+'"] button').click();await page.waitForFunction((code,quantity)=>window.fixture().ownedContainers[code]===quantity,{},code,before+quantity);};
-  await clickText('Stockage & curing');await page.waitForSelector('[data-storage-capacity]');
+  await page.waitForSelector('[data-storage-capacity]');
   await page.locator('[data-storage-shop] > summary').click();
   assert.equal(await page.$$eval('[data-container-code]',nodes=>nodes.length),9);
   assert.equal(await page.$$eval('[data-container-code] a',nodes=>nodes.filter(node=>node.textContent.includes('Produit de référence')).length),9);
@@ -131,7 +131,7 @@ try {
   const mutations=await page.evaluate(()=>window.requests.filter(request=>request.method==='POST'));assert.ok(mutations.every(request=>request.body.requestKey&&!('priceCents'in request.body)&&!('now'in request.body)));
   checks.push('mutations carry request identity without client price or time');
 
-  await page.reload({waitUntil:'networkidle0'});await clickText('Stockage & curing');await page.waitForSelector('[data-storage-overflow]');
+  await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('[data-storage-overflow]');
   await page.evaluate(()=>window.expireOverflow(-1));await page.locator('[aria-label="Actualiser le stockage"]').click();
   await page.waitForFunction(()=>document.querySelector('[aria-label="Actualiser le stockage"]').disabled===false);
   assert.equal((await fixture()).overflowSales.length,0);checks.push('surplus remains available one millisecond before its one-hour deadline');

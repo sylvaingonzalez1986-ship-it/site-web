@@ -1,0 +1,95 @@
+.business { padding: clamp(18px,3vw,28px); background: radial-gradient(ellipse at 100% 0,#36552d66,transparent 60%),#073c2a; color: #fffaf1; border: 1px solid #71936066; border-top: 3px solid #d5ac50; box-shadow: inset 0 0 0 6px #052d211f; }
+.business :where(button,input,select,summary):focus-visible { outline: 3px solid #f4c43d; outline-offset: 4px; }
+.business button { cursor: pointer; font: inherit; touch-action: manipulation; }
+.business button:disabled { cursor: not-allowed; opacity: .55; }
+.heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.heading > div { min-width: 0; }
+.eyebrow { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; color: #91d8b8; font: 800 .63rem/1.5 ui-monospace,monospace; text-transform: uppercase; letter-spacing: .08em; }
+.business .heading h2 { margin: 0; font: 900 1.8rem/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; overflow-wrap: anywhere; }
+.business p { color: #c5ddce; font-size: .79rem; line-height: 1.65; }
+.badge { padding: 6px 8px; flex-shrink: 0; color: #71e3c9; border: 1px solid #71e3c980; font: 800 .61rem/1.4 ui-monospace,monospace; text-transform: uppercase; }
+.badge[data-active="false"] { color: #f4d795; border-color: #f4d79580; }
+.metrics { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); margin: 20px 0; background: #05291dd9; border: 1px solid #a3ad6d52; border-bottom: 3px solid #021e15; }
+.metrics > div { display: grid; gap: 6px; padding: 14px; min-width: 0; }
+.metrics > div + div { border-left: 1px solid #749f803d; }
+.metrics dt { font-size: .67rem; color: #b6d1bd; }
+.metrics dd { margin: 0; color: #f4c43d; font: 900 1.6rem/1.2 var(--font-display),Impact,sans-serif; }
+.metrics small { font: 500 .65rem/1.5 sans-serif; color: #c5ddce; }
+.notice { padding: 14px; margin-block: 16px; background: #f4c43d0d; border-left: 2px solid #f4c43d; font-size: .76rem; line-height: 1.6; }
+.notice p { margin: 0; }
+.notice button { margin-top: 12px; }
+.business .primary,.business .secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 13px; font-size: .76rem; font-weight: 800; line-height: 1.4; border: 1px solid #7ba48a; border-radius: 3px; }
+.primary { color: #153b2c; background: #f4c43d; border-color: #f4c43d !important; box-shadow: 0 3px 0 #001e19; }
+.secondary { color: #e4eee2; background: #004331; }
+.form { display: grid; gap: 10px; margin-top: 18px; }
+.form label,.mission label { display: grid; gap: 8px; font-size: .74rem; font-weight: 800; }
+.form input,.mission select { min-width: 0; width: 100%; min-height: 44px; padding: 10px 11px; color: #153b2c; background: #fffaf1; border: 1px solid #91b39b; border-radius: 3px; font: inherit; }
+.form .primary { justify-self: start; }
+.form small { color: #bad4c0; font-size: .68rem; line-height: 1.5; }
+.nextChapter { display: flex; align-items: flex-start; gap: 18px; margin: 20px 0; padding: 20px; background: linear-gradient(110deg,#f5e9c6,#e9d9ac); border: 1px solid #eadcae; border-left: 5px solid #d1a740; color: #1f432b; box-shadow: 0 4px 0 #011e15; }
+.nextChapter > div { min-width: 0; flex: 1; }
+.nextChapter small { color: #59633b !important; font: 800 .61rem/1.4 ui-monospace,monospace !important; text-transform: uppercase; letter-spacing: .07em; }
+.business .nextChapter h3 { display: block; margin: 6px 0 12px; font: 900 1.6rem/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; color: #1a452e; }
+.business .nextChapter p { margin: 8px 0 0; color: #516345; }
+.chapterNumber { color: #b28d36; font: 900 3.2rem/1 var(--font-display),Impact,sans-serif; }
+.nextChapter ul { display: flex; flex-wrap: wrap; gap: 9px 16px; list-style: none; padding: 0; margin: 0 0 15px; }
+.nextChapter li { display: flex; align-items: center; gap: 5px; font-size: .7rem; color: #686349; }
+.nextChapter li[data-complete="true"] { color: #286341; font-weight: 800; }
+.nextChapter progress,.activeMission progress { display: block; width: 100%; height: 9px; overflow: hidden; background: #adad8355; border: 1px solid #4e704543; border-radius: 2px; accent-color: #347955; }
+.nextChapter progress::-webkit-progress-bar { background: #adad8355; }
+.nextChapter progress::-webkit-progress-value { background: #347955; }
+.nextChapter progress::-moz-progress-bar { background: #347955; }
+.section { margin-top: 30px; padding-top: 26px; border-top: 1px solid #c5c59052; }
+.business .section h3 { display: flex; align-items: center; gap: 9px; margin: 0 0 10px; color: #fffaf1; font: 900 1.3rem/1.2 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
+.business .section > p { margin: 8px 0 16px; }
+.tiers,.upgrades,.missions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+.upgrades,.missions { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.card,.mission { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; padding: 19px; border: 1px solid #a4b38157; border-bottom: 4px solid #072519; background: #123c29; }
+.card[data-current="true"] { border-color: #d0b868; background: linear-gradient(145deg,#335633,#16412a); }
+.card > svg,.mission > svg { color: #71e3c9; }
+.card h4,.mission h4 { margin: 0; font: 900 1.35rem/1.15 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
+.card > strong { color: #f4c43d; font-size: 1.3rem; }
+.card small,.mission small { color: #bad4c0; font-size: .69rem; line-height: 1.6; }
+.card p,.mission p { margin: 0; font-size: .74rem; line-height: 1.6; }
+.card button,.mission button { margin-top: auto; width: 100%; }
+.card .owned { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-block: 9px; color: #71e3c9; font-size: .75rem; font-weight: 800; }
+.tierStep { align-self: stretch; padding-bottom: 10px; margin-bottom: 1px; border-bottom: 1px solid #c6c7943d; color: #daca96; font: 800 .6rem/1.5 ui-monospace,monospace; text-transform: uppercase; }
+.contract { position: relative; background: #f1e6c9 !important; border-color: #d5c69c; color: #254c34; border-bottom-color: #92784b; }
+.contractLabel { display: flex; align-items: center; gap: 9px; padding-bottom: 12px; align-self: stretch; border-bottom: 1px dashed #ac9e72; color: #63734b; font: 800 .62rem/1.5 ui-monospace,monospace; text-transform: uppercase; }
+.contract > strong { color: #946a1d; font-size: 1.6rem; }
+.business .contract p { color: #526244; }
+.business .contract .secondary { color: #fff3d0; background: #225438; border-color: #225438; }
+.contract .owned { color: #287249; }
+.renewal { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px; margin-top: 16px; background: #002e23; font-size: .75rem; line-height: 1.6; }
+.renewal > span { display: grid; gap: 4px; }
+.renewal small { color: #bad4c0; font-size: .68rem; }
+.missionScene { position: relative; isolation: isolate; overflow: hidden; min-height: 260px; display: flex; align-items: flex-end; padding: 24px; border: 1px solid #859559; border-bottom: 4px solid #ad8135; background: #133821; }
+.missionScene > img { object-fit: cover; object-position: center 5%; z-index: -2; }
+.missionScene::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg,#052819ed,#0b2f1ac2 44%,#08291630),linear-gradient(0deg,#03221680,transparent); }
+.missionScene > div { max-width: 430px; }
+.missionScene > div > small { display: flex; align-items: center; gap: 7px; color: #e9cc87 !important; font: 800 .62rem/1.5 ui-monospace,monospace; text-transform: uppercase; letter-spacing: .07em; }
+.business .missionScene h3 { margin: 10px 0 !important; color: #fff0c5; font-size: clamp(1.8rem,3vw,2.4rem); line-height: 1; }
+.business .missionScene p { color: #e0e9d1; margin: 0; font-size: .76rem; }
+.missionTop { display: flex; align-items: center; justify-content: space-between; align-self: stretch; gap: 12px; padding-bottom: 11px; border-bottom: 1px solid #b5b98254; }
+.missionTop > span { color: #d9c080; font: 800 .62rem/1.4 ui-monospace,monospace; text-transform: uppercase; }
+.missionTop > small { display: flex; align-items: center; gap: 5px; font-size: .62rem; }
+.mission { background: linear-gradient(130deg,#1b422b,#0c3022); }
+.mission[data-active="true"] { border-color: #e0bd5c; background: #285133; }
+.mission[data-complete="true"] { border-color: #6c9d6e; }
+.activeMission { padding: 17px; margin: 15px 0; border: 1px solid #6b9a62; border-left: 4px solid #d6b652; background: #36592d; }
+.activeMission > strong { display: flex; align-items: center; gap: 8px; font-size: .83rem; }
+.activeMission p { margin: 8px 0 0; }
+.activeMission progress { margin-top: 12px; border-color: #aebe8455; background: #092d2080; accent-color: #e5c364; }
+.activeMission progress::-webkit-progress-value { background: #e5c364; }
+.activeMission progress::-moz-progress-bar { background: #e5c364; }
+.mission label { align-self: stretch; }
+.mission > strong { color: #f4c43d; font-size: .86rem; }
+.mission > small { display: block; }
+.rename { margin-top: 18px; }
+.rename summary { padding-block: 8px; cursor: pointer; font-size: .75rem; color: #bad4c0; }
+.funnel { display: flex; gap: 10px; flex-wrap: wrap; padding: 14px; margin-top: 16px; background: #002e23; font-size: .72rem; line-height: 1.6; color: #bdd9c2; }
+.funnel strong { color: #f4c43d; }
+.funnel svg { flex-shrink: 0; color: #71e3c9; margin-top: 2px; }
+@media(hover:hover) { .primary:hover:not(:disabled) { background: #ffda62; } .secondary:hover:not(:disabled) { border-color: #f4c43d; } }
+@media(max-width: 850px) { .tiers { grid-template-columns: 1fr; } .card { padding: 16px; } }
+@media(max-width: 600px) { .business { padding: 18px 14px; } .heading { flex-wrap: wrap; gap: 12px; } .business .heading h2 { font-size: 1.5rem; } .metrics > div { padding: 12px 9px; } .metrics dd { font-size: 1.35rem; } .upgrades,.missions { grid-template-columns: 1fr; } .business .section h3 { font-size: 1.15rem; } .renewal { align-items: stretch; } .renewal button { width: 100%; } .nextChapter { padding: 15px 12px; gap: 10px; } .chapterNumber { font-size: 2.3rem; } .business .nextChapter h3 { font-size: 1.3rem; } .nextChapter ul { gap: 8px; } .nextChapter li { font-size: .65rem; } .missionScene { min-height: 300px; padding: 20px 15px; } .missionScene::after { background: linear-gradient(0deg,#042617f5,#062b19b0 52%,#082d1910 90%); } .missionScene > img { object-position: 65% center; } .business .missionScene h3 { font-size: 1.9rem; } }

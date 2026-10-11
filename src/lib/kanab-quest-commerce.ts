@@ -3,6 +3,7 @@ import { getKqMarketReputationProgress } from "./kanab-quest-market-demand";
 import { getChanvrierSalesMultiplier, type ChanvrierStrength } from "./arena-chanvrier";
 import { getKqAdvertisingMultiplier, isKqShopActive, type KqBusinessState } from "./kanab-quest-business";
 import type { KqStorageProjection } from "./kanab-quest-storage";
+import type { KqOnlineSnapshot } from "./kanab-quest-online";
 
 export const KQ_COMPUTER_PRICE_CENTS = 45000;
 /** Historical snapshots only; the live API requires the business calendar. */
@@ -41,6 +42,7 @@ export type KqCommerceDemand = {
   onlineCapacityMultiplier?: number;
 };
 export type KqCommerceState = {
+  online?: KqOnlineSnapshot;
   business?: KqBusinessState;
   demand?: KqCommerceDemand;
   strength?: ChanvrierStrength | null;
@@ -61,6 +63,8 @@ export type KqCommerceRawLot = { flowerId: string; varietyName: string; juryScor
 export type KqCommerceSnapshot = KqCommerceState & { rawLots: KqCommerceRawLot[]; electricityOutstandingCents: number };
 export type KqCustomerSatisfaction = "satisfied" | "neutral" | "disappointed" | "not-applicable";
 export type KqCommerceOffer = {
+  /** Professional raw-flower tariff, in cents per kg; absent on legacy snapshots. */
+  retailPriceCentsPerKg?: number;
   vatCents?: number; labPaidCents?: number; electricityPaidCents?: number; netPayoutCents?: number;
   satisfaction: KqCustomerSatisfaction; clientsBefore: number;
   shopPartnersBefore: number; shopPartnersAfter: number; shopRecruitmentAfter: number; shopChurnAfter: number; shopGoodUnitsAfter: number; shopBadUnitsAfter: number; shopPricePercent: number;
@@ -110,6 +114,10 @@ export function getKqWholesalePricePercent(route: KqMarketRouteCode, quality: nu
     : event === "restock" ? commercialFlower ? 39 : 33
       : commercialFlower ? 38 : 30;
 }
+/** A shop buys raw flowers for 500–1,500 €/kg. Partners unlock volume, not price. */
+export function getKqRawShopUnitCents(quality: number) {
+  return round6(50 + 100 * clamp((quality - 6.5) / 3, 0, 1));
+}
 export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, channel: KqSalesChannel, policy: KqOnlinePrice = "advised", requestedUnits?: number, nowMs?: number): KqCommerceOffer {
   const commercialQuality = getKqCommerceStockQuality(stock);
   const salesMultiplier = getChanvrierSalesMultiplier(state.strength);
@@ -144,6 +152,7 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const storageNow = nowMs ?? (state.business ? Date.parse(state.business.serverNow) : state.demand ? Date.parse(state.demand.serverNow) : undefined);
   if (channel !== "wholesale" && !isKqCommerceStockMature(stock, storageNow)) reason = "Curing en cours : seul le grossiste reprend ce lot avant sa maturité commerciale.";
   if (channel !== "wholesale" && (stock.storage?.capacity?.overflowUnits ?? 0) > 0) reason = "Une partie de ce lot manque de contenants : stocke-la ou vends le surplus au grossiste depuis l’entrepôt.";
+  if (channel === "online" && state.online?.version === 1) reason = "Prépare des paquets et fixe leur prix dans ta boutique : les commandes arrivent automatiquement.";
   const eqPerUnit = stock.equivalentUnits / stock.initialUnits;
   const replenishment = getKqCommerceReplenishment(state, channel, nowMs);
   const availableEq = replenishment ? (channel === "online" ? directBudget * demandFactor : shopBudget) * replenishment.availableFraction : channel === "online" ? Math.max(0, directBudget - (campaign?.directUsed ?? 0)) * demandFactor
@@ -157,7 +166,11 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
     * (.7 + commercialQuality / 20) * (protectedPrice ? Math.max(1, eventFactor) : eventFactor * (1 - saturation)));
   const professionalPrice = channel === "cbd-shop" ? shopPricePercent / 100
     : getKqWholesalePricePercent(stock.route, commercialQuality, campaign?.event) / 100;
-  const unitCents = round6(salesMultiplier * (salvage ? stock.baseUnitCents : stock.baseUnitCents * (channel === "online" ? onlinePrice : professionalPrice)));
+  const boundedRawTariff = stock.route === "raw" && state.online?.version === 1 && channel !== "online";
+  const oldUnitCents = salesMultiplier * (salvage ? stock.baseUnitCents : stock.baseUnitCents * (channel === "online" ? onlinePrice : professionalPrice));
+  const unitCents = round6(boundedRawTariff
+    ? channel === "cbd-shop" ? getKqRawShopUnitCents(commercialQuality) : Math.min(oldUnitCents, .6 * getKqRawShopUnitCents(commercialQuality))
+    : oldUnitCents);
   // One cumulative ledger across all prices and channels prevents rounding arbitrage.
   const payoutExactAfter = round6((stock.payoutExact ?? 0) + units * unitCents / 10);
   const payoutRoundedAfter = Math.round(payoutExactAfter);
@@ -183,12 +196,15 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const satisfaction: KqCustomerSatisfaction = channel === "wholesale" ? "not-applicable"
     : channel === "cbd-shop" ? shopBand.satisfaction
     : commercialQuality >= rule.gainFrom ? "satisfied" : commercialQuality >= rule.neutralFrom ? "neutral" : "disappointed";
-  const message = channel === "wholesale" ? salvage ? "Reprise au tarif industriel, sans gain de réputation."
+  const message = boundedRawTariff ? channel === "cbd-shop"
+    ? `${shopBand.label} : reprise à ${Math.round(unitCents * 10)} €/kg. Le réseau augmente les volumes achetés. Paiement immédiat.`
+    : `Reprise à ${Math.round(unitCents * 10)} €/kg, sans gain de réputation. Une vente en volume à tarif réduit.`
+    : channel === "wholesale" ? salvage ? "Reprise au tarif industriel, sans gain de réputation."
     : `Reprise à ${getKqWholesalePricePercent(stock.route, commercialQuality, campaign?.event)} % du tarif de référence, sans gain de réputation. La fleur brute dès 6,5/10 bénéficie du tarif commercial.`
     : channel === "cbd-shop" ? `${shopBand.label} : reprise à ${shopPricePercent} % du tarif de référence. ${shopBand.churnWeight ? "Ces livraisons fragilisent tes partenariats." : shopBand.recruitmentWeight ? "Ces livraisons construisent ton réseau de boutiques." : "Ces livraisons maintiennent tes partenariats."}`
     : commercialQuality < rule.neutralFrom ? "Une livraison décevante peut faire partir des clients. La perte dépend du volume livré."
     : protectedPrice ? "Ta réputation protège le prix, mais les commandes restent limitées." : "Les bons lots fidélisent ta clientèle. Sa progression est limitée sur 24 heures.";
-  return { shopPartnersBefore: state.shopPartners ?? 0, shopPartnersAfter, shopRecruitmentAfter, shopChurnAfter, shopGoodUnitsAfter, shopBadUnitsAfter, shopPricePercent, satisfaction, clientsBefore: state.clients, channel, policy, units, maxUnits, unitCents, payoutCents, payoutExactAfter, payoutRoundedAfter, directCost: channel === "online" ? round6(equivalentSold / demandFactor) : 0,
+  return { ...(boundedRawTariff ? { retailPriceCentsPerKg: Math.round(unitCents * 1000) } : {}), shopPartnersBefore: state.shopPartners ?? 0, shopPartnersAfter, shopRecruitmentAfter, shopChurnAfter, shopGoodUnitsAfter, shopBadUnitsAfter, shopPricePercent, satisfaction, clientsBefore: state.clients, channel, policy, units, maxUnits, unitCents, payoutCents, payoutExactAfter, payoutRoundedAfter, directCost: channel === "online" ? round6(equivalentSold / demandFactor) : 0,
     shopCost: channel === "cbd-shop" ? equivalentSold : 0, equivalentSold, repExactAfter, repRoundedAfter, reputationDelta,
     goodUnitsAfter, disappointmentAfter, clientsAfter, reason, message };
 }

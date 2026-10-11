@@ -71,7 +71,6 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   const [listView,setListView]=useState(false);
   const [chargesOpen,setChargesOpen]=useState(false);
   const [productionPending,setProductionPending]=useState(false);
-  const [warehouseSection,setWarehouseSection]=useState<"equipment"|"storage">(initialSection);
   const [storageBusy,setStorageBusy]=useState(false);
   if(requestedSlot!==initialSlot){
     setRequestedSlot(initialSlot);
@@ -184,11 +183,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
         <div className={styles.balance}><small>Trésorerie</small><strong>{formatKqCash(cashCents)}</strong></div><button ref={closeButton} type="button" onClick={onClose} disabled={storageBusy} aria-label="Fermer l’inventaire"><X/></button>
       </header>
       <KqCareerProgress career={career} profile={chanvrierProfile} compact/>
-      <nav className={styles.sections} aria-label="Sections de l’entrepôt">
-        <button type="button" aria-pressed={warehouseSection==="equipment"} disabled={storageBusy} onClick={()=>setWarehouseSection("equipment")}>Culture & atelier</button>
-        <button type="button" aria-pressed={warehouseSection==="storage"} disabled={busy||Object.values(tentStates).some(state=>!!state.pending)} onClick={()=>setWarehouseSection("storage")}>Stockage & curing</button>
-      </nav>
-      {warehouseSection==="storage"?<div className={styles.storageView}><KqWarehouseStorage onChanged={onRetry} onBusyChange={setStorageBusy}/></div>:<div className={styles.layout}>
+      {initialSection==="storage"?<div className={styles.storageView}><KqWarehouseStorage onChanged={onRetry} onBusyChange={setStorageBusy}/></div>:<div className={styles.layout}>
         <div ref={workshop} className={styles.workshop} tabIndex={-1} aria-label="Explorer l’entrepôt">
           {listView?<div className={styles.listView}>
             <div className={styles.listHeading}><strong>Choisir un emplacement</strong><button type="button" data-warehouse-view-toggle onClick={()=>changeView(false)}><ImageIcon size={16} aria-hidden="true"/>Voir le décor</button></div>

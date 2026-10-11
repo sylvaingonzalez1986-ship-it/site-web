@@ -101,7 +101,7 @@ describe("daily crypto cron", () => {
 
   it("deploys daily UTC collection and recovery schedules for the authenticated route", () => {
     const config = JSON.parse(readFileSync("vercel.json", "utf8"));
-    expect(config.crons).toEqual([
+    expect(config.crons.filter((entry: { path: string }) => entry.path === "/api/cron/placard-crypto")).toEqual([
       { path: "/api/cron/placard-crypto", schedule: "0 17 * * *" },
       { path: "/api/cron/placard-crypto", schedule: "0 18 * * *" },
       { path: "/api/cron/placard-crypto", schedule: "0 19 * * *" },

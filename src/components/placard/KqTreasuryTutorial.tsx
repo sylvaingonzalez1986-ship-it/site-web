@@ -4,29 +4,38 @@ import { useEffect, useState } from "react";
 import { createKqTreasuryTutorial, type KqTreasuryTutorialLesson, type KqTreasuryTutorialProgress } from "@/lib/kanab-quest-treasury-tutorial";
 import { createKqTutorialApi, KqTutorialApiProvider } from "./KqTutorialApiContext";
 import { KqTreasuryDesk } from "./KqTreasuryDesk";
+import { KqMarketHub, type KqMarketSection } from "./KqMarketHub";
+import styles from "./KqTreasuryTutorial.module.css";
 
-export function KqTreasuryTutorial({ lesson, onProgress, onOpenShop, onOpenMarket }: {
+export function KqTreasuryTutorial({ lesson, onProgress, onOpenShop }: {
   lesson: KqTreasuryTutorialLesson;
   onProgress?: (progress: KqTreasuryTutorialProgress) => void;
   onOpenShop?: () => void;
-  onOpenMarket?: () => void;
 }) {
   const [sandbox] = useState(() => createKqTreasuryTutorial());
   const [api] = useState(() => createKqTutorialApi(sandbox.request));
   const [notice, setNotice] = useState("");
+  const [businessLocation, setBusinessLocation] = useState<"market" | "accounting">("market");
+  const [marketSection, setMarketSection] = useState<KqMarketSection>("management");
   useEffect(() => {
     const update = () => onProgress?.(sandbox.progress(lesson));
     update();
     return sandbox.subscribe(update);
   }, [lesson, onProgress, sandbox]);
+  const openShop = onOpenShop ?? (() => setNotice("L’ordinateur est déjà prêté. Retrouve les achats de matériel dans l’atelier Entrepôt du didacticiel."));
+  const businessAtMarket = lesson === "business" && businessLocation === "market";
+  const locationName = lesson !== "business" ? "Banque" : businessAtMarket ? "Marché" : "Bureau";
   return <KqTutorialApiProvider api={api}>
-    <section data-treasury-tutorial={lesson} aria-label="Bureau du didacticiel">
-      <p role="note"><strong>Bureau d’essai.</strong> 5 000 € fictifs, personnage Trésorier et ordinateur prêtés. Les opérations restent dans cet atelier. Cours de démonstration fixes à 100 € ; aucun cours réel n’est consulté.</p>
+    <section data-treasury-tutorial={lesson} aria-label={`${locationName} du didacticiel`}>
+      <p role="note"><strong>{locationName} d’essai.</strong> 5 000 € fictifs, personnage Trésorier et ordinateur prêtés. Les opérations restent dans cet atelier. {lesson === "business" ? "Gère ton activité au Marché ; retrouve tes factures et tes comptes au Bureau." : "Cours de démonstration fixes à 100 € ; aucun cours réel n’est consulté."}</p>
+      {lesson === "business" ? <nav className={styles.navigation} aria-label="Espaces de cet essai de gestion"><button type="button" aria-pressed={businessAtMarket} onClick={() => { setBusinessLocation("market"); setMarketSection("management"); }}>Marché · Gérer mon activité</button><button type="button" aria-pressed={!businessAtMarket} onClick={() => setBusinessLocation("accounting")}>Bureau · Comptabilité</button></nav> : null}
       {notice ? <p role="status">{notice}</p> : null}
-      <KqTreasuryDesk key={lesson} initialPole={lesson === "business" ? "management" : "bank"}
+      {businessAtMarket ? <KqMarketHub section={marketSection} onSectionChange={setMarketSection} onOpenShop={openShop}
+        onOpenTreasury={() => setBusinessLocation("accounting")}
+        onOpenStorage={() => setNotice("Retrouve tes contenants dans l’atelier Stockage & curing du didacticiel.")} />
+        : <KqTreasuryDesk key={`${lesson}-${businessLocation}`} initialPole={lesson === "business" ? "accounting" : "bank"}
         initialBankDesk={lesson === "investments" ? "stocks" : "loans"}
-        onOpenShop={onOpenShop ?? (() => setNotice("L’ordinateur est déjà prêté. Retrouve les achats de matériel dans l’atelier Entrepôt du didacticiel."))}
-        onOpenMarket={onOpenMarket ?? (() => setNotice("Retrouve les récoltes et leurs débouchés dans l’atelier Transformation et vente du didacticiel."))} />
+        onOpenShop={openShop} />}
     </section>
   </KqTutorialApiProvider>;
 }

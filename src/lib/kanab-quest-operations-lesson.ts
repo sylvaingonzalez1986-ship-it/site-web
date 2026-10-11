@@ -5,7 +5,9 @@ import { getKqMachineCondition, type KqMachineCondition } from './kanab-quest-ma
 import { getKqCultureEquipmentCondition, getKqCultureOperationalCodes, type KqCultureEquipmentCondition } from './kanab-quest-culture-wear';
 import { quoteKqEnergy, quoteKqTentEnergy, type KqEnergyMode } from './kanab-quest-energy';
 import { KQ_COMPUTER_PRICE_CENTS, KQ_SALES_CHANNELS, getKqCommerceCapacity, getKqShopBudget, quoteKqCommerce, type KqCommerceOffer, type KqCommerceReceipt, type KqCommerceSnapshot, type KqCommerceStock, type KqOnlinePrice, type KqSalesChannel } from './kanab-quest-commerce';
-import { previewKqBusinessPayment } from './kanab-quest-business';
+import { KQ_GAME_MONTH_MS, normalizeKqShopName, previewKqBusinessPayment } from './kanab-quest-business';
+import { createKqOnlinePreview, getKqOnlineSiteTier } from './kanab-quest-online';
+import { applyKqOperationsOnline } from './kanab-quest-operations-online';
 import { KQ_MARKET_ROUTES, isKqMarketRouteCode, quoteKqMarketRoutes, type KqMarketRouteCode } from './kanab-quest-market';
 import { getKqMarketWindow } from './kanab-quest-market-demand';
 import { createKqWorkshop } from './kanab-quest-workshops';
@@ -23,6 +25,8 @@ export type KqOperationsLessonState = {
     overflowSales: Array<{ flowerId: string; units: number; payoutCents: number; netPayoutCents: number; soldAt: string; automatic: boolean }> };
   prepared: boolean; events: string[]; routePlan: { route: string; equipmentCode: string } | null;
   quotes: Record<string, PreparedQuote>; receipts: Record<string, unknown>;
+  onlineOrderCredits?: Record<string, number>;
+  onlineSimulation?: { packedQualities: Record<string, number>; promotedFlowerIds: string[]; clientDay: string; clientsStart: number; clientsGained: number; clientsLost: number; loyaltyProgress: number; churnProgress: number };
 };
 export type KqOperationsLessonAction = { path: string; method: string; body: Record<string, unknown> };
 const LOT_ID = 'operations-lesson-flower';
@@ -57,7 +61,8 @@ export function createKqOperationsLesson(lesson: KqOperationsLessonId): KqOperat
   // A shop is lent with the evaluated lot so all three real distribution screens
   // can be explored. Creating a real shop belongs to the treasury lesson.
   trial.commerce.computerOwned = true;
-  if (trial.commerce.business) trial.commerce.business.shop = { name: 'Le shop de Sylvain · essai', createdAt: new Date(trial.clock).toISOString(), paidUntil: new Date(trial.clock + 30 * 86400000).toISOString(), renew: true, active: true };
+  trial.commerce.online = createKqOnlinePreview(trial.clock);
+  if (trial.commerce.business) trial.commerce.business.shop = { name: 'Le shop de Sylvain · essai', createdAt: new Date(trial.clock).toISOString(), paidUntil: null, renew: false, active: true, tier: 'basic', monthlyCents: 0 };
   const tent: Tent = { ...inventory(KQ_STARTING_EQUIPMENT_CODES), tentNumber: 1 };
   const building: Building = { ...inventory(lesson === 'equipment' ? [] : ['DRYING-ROOM']), buildingNumber: 1, anchorTentNumber: 1 };
   const shared = inventory(lesson === 'equipment' ? [] : ['SIFT-TRAY', 'PRESS-0600']);
@@ -289,7 +294,35 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
     }
     payload = getKqOperationsStorage(state);
   } else if (url.pathname === '/api/arena/placard/commerce') {
-    if (body.action === 'sell-overflow') {
+    if (body.action === 'online') {
+      payload = applyKqOperationsOnline(state, body.command, body.payload, {
+        spend,
+        collect: cents => collectLessonPayment(state, cents),
+        releaseStorage: () => {
+          const remaining = c.stocks.reduce((sum, stock) => sum + (stock.initialUnits > 0 ? Math.ceil(stock.equivalentUnits * stock.remainingUnits / stock.initialUnits) : 0), 0);
+          updateLessonStorage(state, resizeKqStorageCapacity(state.storage.lot.capacity!, remaining));
+        },
+      });
+    } else if (body.action === 'rename-shop') {
+      c.business!.shop.name = normalizeKqShopName(body.name);
+      c.revision++;
+      payload = { action: body.action, cashAfterCents: c.cashCents };
+    } else if (body.action === 'shop-renewal' || body.action === 'renew-shop') {
+      const online = c.online!;
+      if (body.action === 'shop-renewal') {
+        requireCondition(typeof body.enabled === 'boolean', 'Choisis une reconduction valide.');
+        online.site.renew = body.enabled;
+      } else {
+        requireCondition(!online.site.active, 'Le site est déjà actif.');
+        const tier = getKqOnlineSiteTier(online.site.tier);
+        spend(tier.monthlyCents);
+        online.site.paidUntil = tier.monthlyCents ? new Date(state.trial.clock + KQ_GAME_MONTH_MS).toISOString() : null;
+        online.site.active = true;
+      }
+      Object.assign(c.business!.shop, { paidUntil: online.site.paidUntil, active: online.site.active, renew: online.site.renew });
+      c.revision++;
+      payload = { action: body.action, cashAfterCents: c.cashCents };
+    } else if (body.action === 'sell-overflow') {
       requireCondition(body.flowerId === LOT_ID, 'Lot indisponible dans cet essai.');
       sellLessonOverflow(state, false);
       payload = getKqOperationsStorage(state);
@@ -326,6 +359,7 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
       state.prepared = true; state.events.push('prepare'); c.revision++;
       payload = { action: 'prepare', stockId: 'operations-stock', flowerId: LOT_ID, cashAfterCents: c.cashCents };
     } else if (body.action === 'quote') {
+      requireCondition(body.channel !== 'online', 'La vente en ligne passe par les annonces. Conditionne tes paquets et choisis leur prix.');
       const stock = c.stocks.find(item => item.id === body.stockId);
       requireCondition(stock && KQ_SALES_CHANNELS.includes(body.channel as KqSalesChannel) && ['advised', 'premium', 'discovery'].includes(String(body.policy)), 'Choisis un lot et un circuit disponibles.');
       const offer = quoteKqCommerce(c, stock!, body.channel as KqSalesChannel, body.policy as KqOnlinePrice, typeof body.units === 'number' ? body.units : undefined, state.trial.clock);
@@ -353,14 +387,14 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
       c.revision++; state.events.push('sell');
       const receipt: KqCommerceReceipt = { action: 'sell', stockId: stock.id, flowerId: LOT_ID, channel: offer.channel, units: offer.units, payoutCents: offer.payoutCents, ...payment, cashAfterCents: c.cashCents, reputationGain: offer.reputationDelta, satisfaction: offer.satisfaction, clientsBefore: offer.clientsBefore, clientsAfter: offer.clientsAfter, shopPartnersBefore: offer.shopPartnersBefore, shopPartnersAfter: offer.shopPartnersAfter, shopPartnersDelta: offer.shopPartnersAfter - offer.shopPartnersBefore, shopPricePercent: offer.shopPricePercent, remainingUnits: stock.remainingUnits };
       c.receipts.push(receipt); payload = receipt;
-    } else throw new Error('Cette opération se découvre dans l’atelier Trésorerie.');
+    } else throw new Error('Cette opération ne fait pas partie de cet essai. La gestion se trouve au Marché et les factures au Bureau.');
   } else throw new Error('Action indisponible dans cet atelier.');
   if (receiptKey) state.receipts[receiptKey] = payload;
   return { state, payload };
 }
 
 export function getKqOperationsProgress(state: KqOperationsLessonState) {
-  if (state.lesson === 'market') return { complete: state.events.includes('sell'), instruction: state.events.includes('sell') ? 'Ta vente est enregistrée dans cet essai. Compare un autre circuit avec le reste du lot, ou explore un autre espace.' : state.prepared ? 'Ton produit est prêt. Choisis un circuit, compare le prix et la quantité, puis confirme ta vente fictive.' : `${KQ_TUTORIAL_STORAGE_NOTICE} Des bocaux suffisants sont aussi prêtés pour ce lot. Ouvre le lot de Sylvain, puis choisis une transformation et un circuit.` };
+  if (state.lesson === 'market') return { complete: state.events.includes('sell'), instruction: state.events.includes('sell') ? 'Ta vente est enregistrée dans cet essai. Compare un autre circuit avec le reste du lot, ou explore un autre espace.' : state.events.includes('online-listing') ? 'Tes paquets sont en rayon. Essaie une mission pour attirer des visiteurs, puis avance de 24 heures fictives pour observer les ventes.' : state.prepared ? 'Ton produit est prêt. Vends aux professionnels, ou achète des emballages et fixe le prix de tes paquets dans ton commerce en ligne.' : `${KQ_TUTORIAL_STORAGE_NOTICE} Des bocaux suffisants et un site de base sont prêtés pour ce lot. Ouvre le lot de Sylvain, puis choisis une transformation et un circuit.` };
   if (state.lesson === 'warehouse') return { complete: state.events.some(event => ['upgrade', 'repair', 'expand', 'replace', 'storage-assign', 'storage-purchase', 'storage-overflow-sale'].includes(event)), instruction: state.events.length ? 'Observe les contenants occupés et la place disponible. Achète de la capacité pour ton surplus ou cède-le au grossiste ; tu peux aussi améliorer tes machines.' : 'Explore l’entrepôt : deux bocaux de 1 L sont offerts. Ajoute des contenants pour protéger ta récolte après son verdict ; le surplus encore sans contenant est vendu automatiquement au grossiste 1 heure réelle après le verdict. Le temps reste fictif dans cet atelier.' };
   return { complete: state.events.includes('purchase') && state.events.includes('install'), instruction: state.events.includes('install') ? 'Ton matériel est installé. Observe sa place dans l’entrepôt, puis compare les modes d’énergie.' : state.events.includes('purchase') ? 'Ton achat est en réserve. Ouvre l’entrepôt et installe-le à son emplacement.' : 'Choisis une lampe dans la vraie boutique. Ajoute-la au panier et confirme ton achat avec le budget prêté.' };
 }

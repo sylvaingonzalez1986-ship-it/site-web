@@ -7,13 +7,13 @@ import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import styles from "./KqPlacardMap.module.css";
 
 export type PlacardMapView = "game" | "market" | "treasury" | "shop" | "arena" | "missions" | "workshop";
-export type PlacardMapOpen = (view: PlacardMapView, options?: { treasuryPole?: "accounting" | "bank" | "management"; warehouseSection?: "storage" }) => void;
+export type PlacardMapOpen = (view: PlacardMapView, options?: { treasuryPole?: "accounting" | "bank"; marketSection?: "sales" | "management"; warehouseSection?: "storage" }) => void;
 
 const BUILDINGS = [
   { id: "warehouse", name: "L’Entrepôt", number: "01", category: "Le cœur de ta culture", description: "Derrière les grandes portes, ton placard prend vie. Fais pousser ta prochaine récolte et prends soin de ton installation.", Icon: Warehouse, x: 24, y: 25, width: 32, height: 37 },
   { id: "bank", name: "La Banque", number: "02", category: "De quoi voir plus grand", description: "Pousse la porte du banquier pour financer tes projets, mettre de côté et suivre tes placements.", Icon: Landmark, x: 53, y: 18, width: 20, height: 31 },
-  { id: "office", name: "Le Bureau", number: "03", category: "Les affaires en ordre", description: "Les factures sur le bureau, les projets dans les tiroirs. Pilote tes comptes et développe ton activité.", Icon: BriefcaseBusiness, x: 79, y: 29, width: 21, height: 37 },
-  { id: "market", name: "Le Marché", number: "04", category: "De la récolte au comptoir", description: "C’est ici que tes récoltes trouvent leur prochaine vie. Transforme tes lots et choisis comment les vendre.", Icon: Store, x: 22, y: 58, width: 25, height: 27 },
+  { id: "office", name: "Le Bureau", number: "03", category: "Les affaires en ordre", description: "Les factures sur le bureau, les comptes bien tenus. Suis ta trésorerie et règle tes échéances.", Icon: BriefcaseBusiness, x: 79, y: 29, width: 21, height: 37 },
+  { id: "market", name: "Le Marché", number: "04", category: "De la récolte au comptoir", description: "Transforme tes récoltes, choisis tes prix et développe ta marque. Du premier client à ta boutique en ligne, tes affaires se jouent ici.", Icon: Store, x: 22, y: 58, width: 25, height: 27 },
   { id: "shop", name: "La Boutique", number: "05", category: "Un coup de pouce pour la suite", description: "Du matériel pour ton installation et des packs Botte du Chanvrier pour tes prochaines cultures.", Icon: ShoppingBag, x: 48, y: 73, width: 23, height: 33 },
   { id: "arena", name: "Jury & duels", number: "06", category: "Fais pousser ta réputation", description: "Entre dans les gradins, présente tes Fleurs au jury et mesure tes récoltes à celles des autres joueurs.", Icon: Swords, x: 77, y: 66, width: 27, height: 36 },
   { id: "missions", name: "Les Missions", number: "07", category: "Toujours une nouvelle aventure", description: "Passe au tableau des missions. Des défis t’attendent, avec des packs, des Buddies et de l’argent du jeu à gagner.", Icon: Target, x: 48, y: 45, width: 15, height: 23 },
@@ -80,7 +80,7 @@ export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, t
               <strong>Tout commence dans ton quartier.</strong>
               <p>Sélectionne un bâtiment sur la carte, puis choisis ce que tu veux y faire. Sur mobile, touche un numéro ou utilise le sélecteur de lieux. Agrandis la carte pour explorer le quartier en faisant glisser le décor.</p>
               <p>L’entrepôt abrite ton Placard : entre pour cultiver, aménage et entretiens tes tentes, ou ouvre Stockage & curing pour suivre tes récoltes et gérer tes contenants. Le marché accueille tes récoltes, le jury et les duels tes Fleurs.</p>
-              <p>Le Bureau réunit la comptabilité et la gestion. La Banque donne directement accès aux prêts, à l’épargne et aux placements. Passe à la Boutique pour tes packs et ton matériel.</p>
+              <p>Le Marché réunit les ventes et la gestion de ton activité : site, marque, réseaux sociaux et publicité. Le Bureau accueille ta comptabilité et tes factures. La Banque donne directement accès aux prêts, à l’épargne et aux placements. Passe à la Boutique pour tes packs et ton matériel.</p>
             </div>
           </details>
         </div>
@@ -128,11 +128,13 @@ export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, t
           <button type="button" data-placard-activity="workshop" onClick={() => onOpen("workshop")}><Warehouse size={20} aria-hidden="true" /><span>Aménager l’entrepôt<small>Tentes, matériel et entretien</small></span><ArrowRight size={17} aria-hidden="true" /></button>
           <button type="button" data-placard-activity="storage" onClick={() => onOpen("workshop", { warehouseSection: "storage" })}><PackageCheck size={20} aria-hidden="true" /><span>Stockage & curing<small>Contenants et suivi des récoltes</small></span><ArrowRight size={17} aria-hidden="true" /></button>
         </> : selected === "bank" ? <button type="button" data-placard-activity="bank" onClick={() => onOpen("treasury", { treasuryPole: "bank" })}><Landmark size={20} aria-hidden="true" /><span>Rencontrer le banquier<small>Prêts, épargne et placements</small></span><ArrowRight size={17} aria-hidden="true" /></button>
-          : selected === "office" ? <>
+          : selected === "office" ?
             <button type="button" data-placard-activity="treasury" onClick={() => onOpen("treasury", { treasuryPole: "accounting" })}><BriefcaseBusiness size={20} aria-hidden="true" /><span>Ouvrir mes comptes<small>Factures et comptabilité</small></span><ArrowRight size={17} aria-hidden="true" /></button>
-            <button type="button" data-placard-activity="management" onClick={() => onOpen("treasury", { treasuryPole: "management" })}><Target size={20} aria-hidden="true" /><span>Gérer mon activité<small>Site, publicité et domiciliation</small></span><ArrowRight size={17} aria-hidden="true" /></button>
+          : selected === "market" ? <>
+            <button type="button" data-placard-activity="market" onClick={() => onOpen("market")}><Store size={20} aria-hidden="true" /><span>Ouvrir le marché<small>Transformer et vendre</small></span><ArrowRight size={17} aria-hidden="true" /></button>
+            <button type="button" data-placard-activity="management" onClick={() => onOpen("market", { marketSection: "management" })}><Target size={20} aria-hidden="true" /><span>Gérer mon activité<small>Site, marque et réseaux sociaux</small></span><ArrowRight size={17} aria-hidden="true" /></button>
           </> : selected === "collection" ? <button type="button" data-placard-activity="collection" aria-haspopup="dialog" onClick={event => openCollection(event.currentTarget)}><BookOpen size={20} aria-hidden="true" /><span>Ma collection Botte du Chanvrier<small>Cartes, doublons et effets</small></span><ArrowRight size={17} aria-hidden="true" /></button>
-          : <button type="button" data-placard-activity={selected} onClick={() => onOpen(selected)}><building.Icon size={20} aria-hidden="true" /><span>{selected === "market" ? "Ouvrir le marché" : selected === "shop" ? "Entrer dans la boutique" : selected === "arena" ? "Présenter mes Fleurs" : "Voir mes missions"}<small>{selected === "market" ? "Transformer et vendre" : selected === "shop" ? "Packs et matériel" : selected === "arena" ? "Jury et duels" : "Défis et récompenses"}</small></span><ArrowRight size={17} aria-hidden="true" /></button>}
+          : <button type="button" data-placard-activity={selected} onClick={() => onOpen(selected)}><building.Icon size={20} aria-hidden="true" /><span>{selected === "shop" ? "Entrer dans la boutique" : selected === "arena" ? "Présenter mes Fleurs" : "Voir mes missions"}<small>{selected === "shop" ? "Packs et matériel" : selected === "arena" ? "Jury et duels" : "Défis et récompenses"}</small></span><ArrowRight size={17} aria-hidden="true" /></button>}
       </nav>
       <div className={styles.note}><Compass size={21} aria-hidden="true" /><p>Une récolte, plusieurs chemins.<br /><strong>À toi de tracer le tien.</strong></p></div>
     </aside>

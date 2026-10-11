@@ -5,6 +5,8 @@ import { CalendarClock, Check, FlaskConical, ReceiptText, RefreshCw, Zap } from 
 import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import type { KqEnergySnapshot } from "@/lib/kanab-quest-energy";
 import { formatKqCash as money } from "@/lib/kanab-quest-equipment";
+import { KQ_SHOP_MONTHLY_CENTS } from "@/lib/kanab-quest-business";
+import { getKqOnlineSiteTier } from "@/lib/kanab-quest-online";
 import styles from "./KqTreasuryInvoices.module.css";
 
 const date = (value: string) => new Date(value).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
@@ -18,6 +20,9 @@ export function KqTreasuryInvoices({ data, energy, energyError, now: liveNow, bu
   if (!business) return null;
   const now = liveNow ?? Date.parse(business.serverNow);
   const { lab, vat, shop, domiciliation } = business;
+  const site = data.online?.site ?? shop;
+  const siteMonthlyCents = data.online ? getKqOnlineSiteTier(data.online.site.tier).monthlyCents : KQ_SHOP_MONTHLY_CENTS;
+  const siteStatus = !site.createdAt ? "Site non créé" : !site.active ? "Site suspendu" : siteMonthlyCents === 0 ? "Boutique de base · sans abonnement" : site.paidUntil ? `${site.renew ? "Renouvellement" : "Fin d’accès"} le ${date(site.paidUntil)}` : "Aucune période payée";
   const energyDue = energy?.outstandingCents ?? data.electricityOutstandingCents;
   const due = lab.outstandingCents + energyDue;
   const invoices = lab.invoices.filter(invoice => invoice.remainingCents > 0).toSorted((a, b) => Date.parse(a.dueAt) - Date.parse(b.dueAt));
@@ -55,7 +60,7 @@ export function KqTreasuryInvoices({ data, energy, energyError, now: liveNow, bu
     </section>
     <div className={styles.calendarGrid}>
       <section className={styles.calendar} aria-label="TVA réservée"><header><ReceiptText size={21} aria-hidden="true" /><h3>TVA · déjà mise de côté</h3><span className={styles.status}>Automatique</span></header><strong className={styles.reserve}>{money(vat.reservedCents)}</strong><p>La TVA de jeu ({vat.ratePercent} %) est réservée à chaque vente. Son reversement ne débite pas une seconde fois ta trésorerie disponible.</p><dl><div><dt>Prochain reversement</dt><dd><time dateTime={vat.nextSettlementAt}>{date(vat.nextSettlementAt)}</time></dd></div><div><dt>Déjà reversé</dt><dd>{money(vat.paidCents)}</dd></div></dl></section>
-      <section className={styles.calendar} aria-label="Échéances des abonnements"><header><CalendarClock size={21} aria-hidden="true" /><h3>Prochains abonnements</h3></header><p>1 mois de jeu = 5 jours réels. Retrouve les réglages et les renouvellements dans le pôle Gestion.</p><dl><div><dt>Site internet <small>{shop.active && shop.paidUntil ? `${shop.renew ? "Renouvellement" : "Fin d’accès"} le ${date(shop.paidUntil)}` : shop.createdAt ? "Site suspendu" : "Site non créé"}</small></dt><dd>{shop.active && shop.renew ? "100 €" : "Pas de prélèvement"}</dd></div><div><dt>Domiciliation <small>{domiciliation?.active && domiciliation.paidUntil ? `${domiciliation.renew ? "Renouvellement" : "Fin d’accès"} le ${date(domiciliation.paidUntil)}` : "À domicile · gratuit"}</small></dt><dd>{domiciliation?.active && domiciliation.renew ? "50 €" : "Pas de prélèvement"}</dd></div></dl><small>Un renouvellement à venir n’est pas encore une facture impayée.</small></section>
+      <section className={styles.calendar} aria-label="Échéances des abonnements"><header><CalendarClock size={21} aria-hidden="true" /><h3>Prochains abonnements</h3></header><p>1 mois de jeu = 5 jours réels. Retrouve les réglages et les renouvellements au Marché, dans « Gérer mon activité ».</p><dl><div><dt>Site internet <small>{siteStatus}</small></dt><dd>{site.active && siteMonthlyCents === 0 ? "Sans abonnement" : site.active && site.renew && site.paidUntil ? money(siteMonthlyCents) : "Pas de prélèvement"}</dd></div><div><dt>Domiciliation <small>{domiciliation?.active && domiciliation.paidUntil ? `${domiciliation.renew ? "Renouvellement" : "Fin d’accès"} le ${date(domiciliation.paidUntil)}` : "À domicile · gratuit"}</small></dt><dd>{domiciliation?.active && domiciliation.renew ? "50 €" : "Pas de prélèvement"}</dd></div></dl><small>Un renouvellement à venir n’est pas encore une facture impayée.</small></section>
     </div>
   </div>;
 }

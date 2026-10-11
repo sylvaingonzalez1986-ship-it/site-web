@@ -46,3 +46,113 @@ describe("storage-aware server commerce quotes", () => {
     expect(mocks.insert).not.toHaveBeenCalled();
   });
 });
+
+describe("persistent online commerce commands", () => {
+  const requestKey = "00000000-0000-4000-8000-000000000004";
+  const listingId = "00000000-0000-4000-8000-000000000005";
+  const listing = { stockId, formatGrams: 5, packagingCode: "kraft-5", packets: 3, packetPriceCents: 1273 };
+  const run = (command: string, payload: unknown) => handleKqCommerceAction(user, { action: "online", command, payload, requestKey });
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mocks.rpc.mockResolvedValue({ data: { action: "online", cashAfterCents: 12000 }, error: null });
+  });
+
+  it("passes exact packet cents to the dedicated RPC without trusting calculated fields", async () => {
+    await run("create-listing", { ...listing, userId: "other-player", unitCents: 1, projectedOrders: 99999, reputationGain: 1000 });
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_online_command", {
+      p_user_id: user, p_action: "create-listing", p_payload: listing, p_request_key: requestKey,
+    });
+    expect(mocks.insert).not.toHaveBeenCalled();
+  });
+
+  it.each([0, -1, 1.001, 1_000_001, Infinity, NaN, "1273", Number.MAX_SAFE_INTEGER])("rejects invalid packet price %s before reaching SQL", async value => {
+    await expect(run("create-listing", { ...listing, packetPriceCents: value })).rejects.toThrow();
+    await expect(run("update-listing", { listingId, packetPriceCents: value })).rejects.toThrow();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it.each([0, -1, 1.5, 100_001, "3", null])("rejects invalid packaging and listing quantities %s", async value => {
+    await expect(run("buy-packaging", { code: "kraft-5", quantity: value })).rejects.toThrow();
+    await expect(run("create-listing", { ...listing, packets: value })).rejects.toThrow();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it("requires an existing packaging reference matching the packet format", async () => {
+    for (const payload of [{ ...listing, formatGrams: "5" }, { ...listing, formatGrams: 7 },
+      { ...listing, packagingCode: "kraft-10" }, { ...listing, packagingCode: "free-pack" }]) {
+      await expect(run("create-listing", payload)).rejects.toThrow();
+    }
+    await expect(run("buy-packaging", { code: "free-pack", quantity: 10 })).rejects.toThrow();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it("validates identities, payload objects and unknown commands before calling SQL", async () => {
+    for (const command of ["update-listing", "pause-listing", "resume-listing", "close-listing", "discard-listing"]) {
+      await expect(run(command, { listingId: "not-a-uuid", packetPriceCents: 100 })).rejects.toThrow();
+    }
+    for (const payload of [null, [], "bad-payload"]) await expect(run("buy-packaging", payload)).rejects.toThrow();
+    await expect(run("advance-online-time", { hours: 24 })).rejects.toThrow();
+    await expect(run("set-reputation", { reputation: 1000 })).rejects.toThrow();
+    await expect(handleKqCommerceAction(user, { action: "online", command: "buy-packaging", payload: { code: "kraft-5", quantity: 1 }, requestKey: "invalid" })).rejects.toThrow();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it("accepts only catalog upgrades and requires a stock for harvest marketing", async () => {
+    await expect(run("upgrade-site", { tier: "free-unlimited" })).rejects.toThrow();
+    await expect(run("buy-upgrade", { code: "instant-clients" })).rejects.toThrow();
+    await expect(run("start-marketing", { code: "harvest", angle: "craft" })).rejects.toThrow();
+    await expect(run("start-marketing", { code: "introduction", angle: ["craft"] })).rejects.toThrow();
+    await expect(run("start-marketing", { code: "fake-reviews", angle: "craft" })).rejects.toThrow();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+    await run("start-marketing", { code: "harvest", angle: "craft", stockId, followersReward: 1_000_000 });
+    expect(mocks.rpc).toHaveBeenLastCalledWith("rpc_kq_online_command", expect.objectContaining({ p_action: "start-marketing", p_payload: { code: "harvest", angle: "craft", stockId } }));
+  });
+
+  it.each([
+    ["buy-packaging", { code: "glass-10", quantity: 100_000 }],
+    ["update-listing", { listingId, packetPriceCents: 1_000_000 }],
+    ["pause-listing", { listingId }], ["resume-listing", { listingId }], ["close-listing", { listingId }], ["discard-listing", { listingId }],
+    ["upgrade-site", { tier: "basic" }], ["upgrade-site", { tier: "pro" }],
+    ["buy-upgrade", { code: "branding" }], ["buy-upgrade", { code: "photography" }],
+    ["start-marketing", { code: "introduction", angle: "value" }],
+  ])("dispatches supported command %s with a stable idempotency key", async (command, payload) => {
+    await run(command, payload);
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_online_command", { p_user_id: user, p_action: command, p_payload: payload, p_request_key: requestKey });
+  });
+
+  it("refuses the former immediate online quote after the migration", async () => {
+    mocks.rpc.mockResolvedValue({ data: { ...current(), online: { version: 1 } }, error: null });
+    await expect(handleKqCommerceAction(user, { action: "quote", stockId, channel: "online", policy: "advised" })).rejects.toThrow("annonces");
+    expect(mocks.insert).not.toHaveBeenCalled();
+  });
+
+  it("normalizes an optional site name and rejects malformed names before the RPC", async () => {
+    for (const name of ["ab", "<b>shop</b>", 3, "a".repeat(41)]) await expect(run("upgrade-site", { tier: "basic", name })).rejects.toThrow();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+    await run("upgrade-site", { tier: "basic", name: "  Chez   Sylvain  " });
+    expect(mocks.rpc).toHaveBeenLastCalledWith("rpc_kq_online_command", expect.objectContaining({ p_payload: { tier: "basic", name: "Chez Sylvain" } }));
+  });
+
+  it("discards only the identified listing and ignores requested refunds and reputation changes", async () => {
+    await run("discard-listing", { listingId, refundCents: 99999, restoreStock: true, reputationGain: 1000 });
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_online_command", {
+      p_user_id: user, p_action: "discard-listing", p_payload: { listingId }, p_request_key: requestKey,
+    });
+  });
+
+  it.each([
+    ["commerce_shop_required", "gratuitement"], ["commerce_shop_inactive", "tarif de ta formule"],
+  ])("describes the current site model for %s", async (message, expected) => {
+    mocks.rpc.mockResolvedValue({ data: null, error: { message } });
+    await expect(run("resume-listing", { listingId })).rejects.toThrow(expected);
+  });
+
+  it("converts authoritative reservation and replay failures into actionable messages", async () => {
+    mocks.rpc.mockResolvedValueOnce({ data: null, error: { message: "online_stock_reserved" } });
+    await expect(run("create-listing", listing)).rejects.toThrow("conditionnée");
+    mocks.rpc.mockResolvedValueOnce({ data: null, error: { message: "online_request_mismatch" } });
+    await expect(run("create-listing", listing)).rejects.toThrow("autre opération");
+    mocks.rpc.mockResolvedValueOnce({ data: null, error: { message: "online_legacy_sale" } });
+    await expect(handleKqCommerceAction(user, { action: "sell", quoteId: listingId, expectedPayoutCents: 100, requestKey })).rejects.toThrow("annonces");
+  });
+});

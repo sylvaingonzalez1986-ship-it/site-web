@@ -22,7 +22,7 @@ function quantityUnits(value: string) {
   return BigInt(whole) * QUANTITY_SCALE + BigInt(fraction.padEnd(8, "0"));
 }
 
-/** Isolated transport for the real Bureau screens. It has no network fallback,
+/** Isolated transport for the real Bureau and Marché management screens. It has no network fallback,
  * storage, session or customer identifiers. Every amount and price is fictitious.
  * Shared production parsers and loan/calendar rules keep the practice consistent.
  */
@@ -288,10 +288,10 @@ export function createKqTreasuryTutorial(options: { now?: () => number } = {}) {
       if (!actions.has("crypto-buy")) return { instruction: "Passe au guichet Crypto et confirme un achat fictif pour découvrir le second portefeuille.", complete: false };
       return { instruction: "Tu as acheté et vendu un titre, puis essayé la crypto. Les cours d’essai sont fictifs et ne prédisent aucun rendement.", complete: true };
     }
-    if (!actions.has("shop-created")) return { instruction: "Dans Gestion, donne un nom à ton site et crée-le. L’ordinateur est déjà prêté pour cet essai.", complete: false };
+    if (!actions.has("shop-created")) return { instruction: "Au Marché, dans Gérer mon activité, donne un nom à ton site et crée-le. L’ordinateur est déjà prêté pour cet essai.", complete: false };
     if (!actions.has("advertising-started")) return { instruction: "Ton site est ouvert. Compare les campagnes, choisis-en une et confirme son lancement fictif.", complete: false };
-    if (!actions.has("lab-paid")) return { instruction: "Ouvre Comptabilité → Factures et règle l’analyse fictive. Observe le nouveau solde.", complete: false };
-    return { instruction: "Site créé, publicité lancée, analyse réglée : retrouve ces mouvements dans le journal du Bureau.", complete: true };
+    if (!actions.has("lab-paid")) return { instruction: "Passe au Bureau → Factures et règle l’analyse fictive. Observe le nouveau solde.", complete: false };
+    return { instruction: "Ton activité se gère au Marché. L’analyse est réglée : retrouve les mouvements dans le journal du Bureau.", complete: true };
   }
   return { request, progress, subscribe: (listener: () => void) => { listeners.add(listener); return () => { listeners.delete(listener); }; } };
 }

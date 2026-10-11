@@ -49,6 +49,7 @@
 .nameForm input { width: 100%; min-width: 0; min-height: 46px; padding: 10px 12px; border: 1px solid #8eb5a2; border-radius: 3px; background: #fffaf1; color: #003f30; font: inherit; }
 .panel .primary, .panel .secondary { display: inline-flex; justify-content: center; align-items: center; min-height: 44px; gap: 8px; padding: 10px 13px; border: 1px solid #80aa96; border-radius: 3px; color: #e5f0e8; font-size: .76rem; font-weight: 800; line-height: 1.45; }
 .panel .primary { background: #f4c43d; border-color: #f4c43d; color: #102f29; box-shadow: 0 3px #001e19; }
+.panel .secondary { background: #124933; color: #fff1cf; border-color: #a0ac76; }
 .shopName { display: block; overflow-wrap: anywhere; font-size: 1.5rem; color: #f4c43d; margin: 20px 0; }
 .dueRow { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; padding-block: 12px; border-block: 1px solid #fffaf125; font-size: .75rem; line-height: 1.5; }
 .dueRow > .deadline { flex-shrink: 0; text-align: right; }

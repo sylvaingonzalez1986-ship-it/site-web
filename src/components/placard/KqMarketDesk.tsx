@@ -820,4 +820,5 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
   );
 }
 
-export { KqCommerceDesk as KqMarketDesk } from "./KqCommerceDesk";
+export { KqMarketHub as KqMarketDesk } from "./KqMarketHub";
+export type { KqMarketSection } from "./KqMarketHub";

@@ -10,7 +10,7 @@ if (new URL(base).hostname !== project + ".supabase.co") throw new Error("Linked
 const headers = { apikey: key, Authorization: "Bearer " + key, "Content-Type": "application/json" };
 const response=await fetch(base+'/rest/v1/',{headers:{...headers,Accept:'application/openapi+json'},signal:AbortSignal.timeout(15000)});
 const schema=await response.json();
-const required=['/rpc/rpc_kq_commerce_state','/rpc/rpc_kq_commerce_command','/kq_commerce_stock','/kq_commerce_campaigns','/kq_commerce_quotes'];
+const required=['/rpc/rpc_kq_commerce_state','/rpc/rpc_kq_commerce_command','/rpc/rpc_kq_online_state','/rpc/rpc_kq_online_command','/rpc/rpc_kq_online_settle_due','/kq_commerce_stock','/kq_commerce_campaigns','/kq_commerce_quotes'];
 const missing=required.filter(path=>!schema.paths?.[path]);
 console.log(JSON.stringify({projectMatches:true,status:response.status,missing}));
 if(!response.ok||missing.length)process.exitCode=1;

@@ -22,7 +22,8 @@ export type KqBusinessState = {
   serverNow: string;
   startedAt: string;
   domiciliation: { mode: KqDomiciliation; paidUntil: string | null; renew: boolean; active: boolean };
-  shop: { name: string | null; createdAt: string | null; paidUntil: string | null; renew: boolean; active: boolean };
+  shop: { name: string | null; createdAt: string | null; paidUntil: string | null; renew: boolean; active: boolean;
+    tier?: "basic" | "improved" | "pro"; monthlyCents?: number };
   advertising: null | { id: string; kind: KqAdvertisingKind; startedAt: string; endsAt: string; boostPercent: number };
   vat: { ratePercent: number; reservedCents: number; paidCents: number; salesTtcCents: number; nextSettlementAt: string };
   lab: { outstandingCents: number; overdueCents: number; invoices: KqLabInvoice[] };
@@ -55,8 +56,9 @@ export function getKqBusinessClock(startedAt: string, nowMs: number) {
 }
 
 export function isKqShopActive(business: KqBusinessState, nowMs = Date.parse(business.serverNow)) {
-  return Boolean(business.shop.createdAt && business.shop.paidUntil && business.shop.active
-    && Date.parse(business.shop.createdAt) <= nowMs && nowMs < Date.parse(business.shop.paidUntil));
+  return Boolean(business.shop.createdAt && business.shop.active
+    && Date.parse(business.shop.createdAt) <= nowMs
+    && (business.shop.tier === "basic" || (business.shop.paidUntil && nowMs < Date.parse(business.shop.paidUntil))));
 }
 
 export function getKqAdvertisingMultiplier(business: KqBusinessState | undefined, nowMs?: number) {
