@@ -1,5 +1,6 @@
 import catalog from "./chanvrier-achievements.json";
 import type { KqMission } from "./kanab-quest-missions";
+import type { ChanvrierCareerSnapshot } from "./chanvrier-career";
 
 export type AchievementCategory = "culture" | "dice" | "commerce" | "arena";
 export const ACHIEVEMENTS = catalog as Array<{
@@ -11,6 +12,7 @@ export const BADGE_TIERS = ["Bronze", "Argent", "Or"];
 export type ChanvrierBadge = { id: string; code: string; label: string; description: string; origin: "game" | "notebook" | "season"; awardedAt: string | null };
 export type ChanvrierShowcase = { badges: string[]; title: string | null; tracked: string | null };
 export type ChanvrierProgress = {
+  career?: ChanvrierCareerSnapshot;
   metrics: Record<string, number>; reputation: number; rating: number; rank: number | null; rankAsOf: string | null;
   badges: ChanvrierBadge[]; missions: KqMission[]; showcase: ChanvrierShowcase;
   unlockedFamilies: number; packsGranted: number; newBadgeCount: number; badgeCount: number;

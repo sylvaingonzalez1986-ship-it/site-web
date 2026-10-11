@@ -105,7 +105,7 @@ export function applyKqMarketDemand(quote: KqMarketQuote, juryScore: number, con
   // Quality still determines the underlying value; fees are deducted after the tier bonus.
   const marketFactor = bounded(0.85 + trendBonus / 200 - effectiveSaturation / 180, tier.guaranteedPolicy === "premium" ? 0.85 : 0.5, 1.2);
   const referencePayoutCents = Math.max(0, Math.round(quote.payoutCents * (salvage ? 1 : marketFactor * (1 + tier.priceBonusPercent / 100)) - processingCostCents));
-  const requiredLevels: Partial<Record<KqMarketRouteCode, number>> = { "ice-water-hash": 2, "rosin-selection": 3, "rosin-premium": 6, "static-sift": 6, "rosin-signature": 9, "hash-signature": 9 };
+  const requiredLevels: Partial<Record<KqMarketRouteCode, number>> = { "ice-water-hash": 2, "rosin-selection": 4, "rosin-premium": 7, "static-sift": 6, "rosin-signature": 10, "hash-signature": 9 };
   const requiredLevel = requiredLevels[quote.route] ?? 1;
   const levelReason = (quote.processingLevel ?? 1) < requiredLevel ? `Machines de la filière : niveau ${quote.processingLevel ?? 1}/${requiredLevel} requis.` : null;
   const progressionReason = [getKqRouteProgressionReason(quote.route, context), levelReason].filter(Boolean).join(" ") || null;

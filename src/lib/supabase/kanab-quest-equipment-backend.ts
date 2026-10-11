@@ -1,17 +1,23 @@
 import "server-only";
+import type { ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
+import { getChanvrierCareer, getChanvrierCareerError } from "./chanvrier-career-backend";
+import { quoteKqEnergy } from "@/lib/kanab-quest-energy";
 import { getKqProductionExpansion, getKqProductionUnits, KQ_PRODUCTION_UNITS, type KqProductionExpansion } from "@/lib/kanab-quest-production";
-import type { ChanvrierStrength } from "@/lib/arena-chanvrier";
+import { parseChanvrierProfile, type ChanvrierProfile, type ChanvrierStrength } from "@/lib/arena-chanvrier";
 import { getKqMachineCondition, type KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { getKqCultureEquipmentCondition, getKqCultureOperationalCodes, type KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
 
 import {
   getKqEquipmentDefinition,
   getKqEquipmentStorageTent,
+  getKqEquipmentBuildingNumber,
+  isKqBuildingEquipment,
   isKqProcessingEquipment,
   getKqEquipmentAtLevel,
   getKqEquipmentUpgradeCost,
   getKqEquipmentRequirementState,
   KQ_EQUIPMENT_CATALOG,
+  KQ_STARTING_EQUIPMENT_CODES,
   KQ_RETIRED_EQUIPMENT_CODES,
 } from "@/lib/kanab-quest-equipment";
 import {
@@ -35,6 +41,12 @@ function assertTentNumber(value: number) {
   if (!Number.isInteger(value) || value < 1 || value > 8) throw new Error("Tente invalide.");
 }
 
+// Building conversion can be deferred while an old culture is running. SQL maps
+// its selected tent using the owner's scope version in the same transaction.
+function equipmentRequestTent(code: string, tentNumber: number) {
+  return isKqProcessingEquipment(code) ? 1 : tentNumber;
+}
+
 export type KqTentEquipmentSnapshot = {
   tentNumber: number;
   ownedCodes: string[];
@@ -48,8 +60,14 @@ export type KqTentEquipmentSnapshot = {
 };
 
 export type KqSharedEquipmentSnapshot = Omit<KqTentEquipmentSnapshot, "tentNumber">;
+export type KqBuildingEquipmentSnapshot = KqSharedEquipmentSnapshot & { buildingNumber: number; anchorTentNumber: number };
 
 export type KqEquipmentShopSnapshot = {
+  equipmentScopeVersion: 2 | 3;
+  buildings: KqBuildingEquipmentSnapshot[];
+  career: ChanvrierCareerSnapshot;
+  chanvrierProfile?: ChanvrierProfile | null;
+  expansionEnergyCents: number;
   tentNumber: number;
   equipmentPricingUnits: 1;
   tents: KqTentEquipmentSnapshot[];
@@ -122,8 +140,8 @@ export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNu
   const ensured = await supabase.rpc("rpc_kq_ensure_equipment_profile", { p_user_id: userId });
   if (ensured.error) throw new Error(`[supabase:rpc_kq_ensure_equipment_profile] ${ensured.error.message}`);
 
-  const [wallet, owned, loadout, activeRuns, readyLots, availableFlowers, routeMasteries] = await Promise.all([
-    supabase.from("kq_equipment_wallets").select("cash_cents,production_units,reputation,planned_route_code,planned_equipment_code,chanvrier:arena_chanvrier_profiles(strength)").eq("user_id", userId).single(),
+  const [wallet, owned, loadout, activeRuns, readyLots, availableFlowers, routeMasteries, career] = await Promise.all([
+    supabase.from("kq_equipment_wallets").select("cash_cents,production_units,equipment_scope_version,reputation,planned_route_code,planned_equipment_code,chanvrier:arena_chanvrier_profiles(nickname,gender,clothing,skin,strength,appearance)").eq("user_id", userId).single(),
     supabase.from("kq_player_equipment").select("tent_number,equipment_code,purchase_price_cents,level,wear_cycles,maintenance_version,culture_wear_percent,culture_wear_version").eq("user_id", userId).order("acquired_at"),
     supabase.from("kq_equipment_loadouts").select("tent_number,equipment_code").eq("user_id", userId).order("slot"),
     supabase.from("kq_runs").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "active"),
@@ -133,6 +151,7 @@ export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNu
       .select("route,sale_count,best_jury_score,total_payout_cents,total_reputation,mastered_at")
       .eq("user_id", userId)
       .order("mastered_at", { ascending: false }),
+    getChanvrierCareer(userId),
   ]);
   if (wallet.error) throw new Error(`[supabase:kq_equipment_wallets] ${wallet.error.message}`);
   if (owned.error) throw new Error(`[supabase:kq_player_equipment] ${owned.error.message}`);
@@ -145,9 +164,12 @@ export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNu
   const productionUnits = getKqProductionUnits(Number(wallet.data.production_units ?? 1));
   const profile = wallet.data.chanvrier as unknown as { strength: ChanvrierStrength } | null;
   const strength = profile?.strength ?? null;
-  const buildProfile = (tentNumber: number, shared: boolean): KqSharedEquipmentSnapshot => {
+  const equipmentScopeVersion = wallet.data.equipment_scope_version === 3 ? 3 : 2;
+  const buildProfile = (tentNumber: number, scope: "tent" | "building" | "workshop"): KqSharedEquipmentSnapshot => {
     const belongsToProfile = (row: { tent_number?: number; equipment_code: string }) => Number(row.tent_number ?? 1) === tentNumber
-      && isKqProcessingEquipment(String(row.equipment_code)) === shared;
+      && (scope === "workshop" ? isKqProcessingEquipment(row.equipment_code)
+        : scope === "building" ? isKqBuildingEquipment(row.equipment_code)
+          : !isKqProcessingEquipment(row.equipment_code) && (equipmentScopeVersion === 2 || !isKqBuildingEquipment(row.equipment_code)));
     const availableOwned = (owned.data ?? []).filter(row => belongsToProfile(row)
       && !KQ_RETIRED_EQUIPMENT_CODES.includes(String(row.equipment_code)));
     const levels = Object.fromEntries(availableOwned.map(row => [String(row.equipment_code), Number(row.level ?? 1)]));
@@ -161,7 +183,8 @@ export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNu
       const condition = getKqCultureEquipmentCondition(String(row.equipment_code), Number(row.level ?? 1), Number(row.culture_wear_percent ?? 0), Number(row.culture_wear_version ?? 0));
       return condition ? [[String(row.equipment_code), condition]] : [];
     })) as Record<string, KqCultureEquipmentCondition>;
-    const cultureOperationalCodes = shared ? equippedCodes : getKqCultureOperationalCodes(equippedCodes, cultureWear);
+    const cultureOperationalCodes = scope === "tent" ? getKqCultureOperationalCodes(equippedCodes, cultureWear)
+      : equippedCodes.filter(code => !cultureWear[code]?.due);
     return {
       levels, maintenance, cultureWear, equippedCodes, cultureOperationalCodes,
       operationalCodes: cultureOperationalCodes.filter(code => !maintenance[code]?.due),
@@ -169,27 +192,32 @@ export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNu
       purchasedCodes: availableOwned.filter(row => Number(row.purchase_price_cents ?? 0) > 0).map(row => String(row.equipment_code)),
     };
   };
-  const sharedEquipment = buildProfile(1, true);
-  // Models, levels and wear remain attached to each physical tent. Only the
-  // transformation workshop is merged into the selected shop for compatibility.
+  const sharedEquipment = buildProfile(1, "workshop");
+  const buildings: KqBuildingEquipmentSnapshot[] = equipmentScopeVersion === 3
+    ? Array.from({ length: Math.ceil(productionUnits / 4) }, (_, index) => ({
+      buildingNumber: index + 1, anchorTentNumber: index * 4 + 1, ...buildProfile(index * 4 + 1, "building"),
+    })) : [];
   const tents = Array.from({ length: productionUnits }, (_, index): KqTentEquipmentSnapshot => ({
     tentNumber: index + 1,
-    ...buildProfile(index + 1, false),
+    ...buildProfile(index + 1, "tent"),
   }));
   const selectedTent = tents[(requestedTentNumber <= productionUnits ? requestedTentNumber : 1) - 1];
+  const building = buildings.find(item => item.buildingNumber === getKqEquipmentBuildingNumber(selectedTent.tentNumber));
   const selected = {
     tentNumber: selectedTent.tentNumber,
-    ownedCodes: [...selectedTent.ownedCodes, ...sharedEquipment.ownedCodes],
-    purchasedCodes: [...selectedTent.purchasedCodes, ...sharedEquipment.purchasedCodes],
-    equippedCodes: [...selectedTent.equippedCodes, ...sharedEquipment.equippedCodes],
-    levels: { ...selectedTent.levels, ...sharedEquipment.levels },
+    ownedCodes: [...selectedTent.ownedCodes, ...(building?.ownedCodes ?? []), ...sharedEquipment.ownedCodes],
+    purchasedCodes: [...selectedTent.purchasedCodes, ...(building?.purchasedCodes ?? []), ...sharedEquipment.purchasedCodes],
+    equippedCodes: [...selectedTent.equippedCodes, ...(building?.equippedCodes ?? []), ...sharedEquipment.equippedCodes],
+    levels: { ...selectedTent.levels, ...building?.levels, ...sharedEquipment.levels },
     maintenance: { ...selectedTent.maintenance, ...sharedEquipment.maintenance },
-    cultureWear: selectedTent.cultureWear,
-    cultureOperationalCodes: [...selectedTent.cultureOperationalCodes, ...sharedEquipment.cultureOperationalCodes],
-    operationalCodes: [...selectedTent.operationalCodes, ...sharedEquipment.operationalCodes],
+    cultureWear: { ...selectedTent.cultureWear, ...building?.cultureWear },
+    cultureOperationalCodes: [...selectedTent.cultureOperationalCodes, ...(building?.cultureOperationalCodes ?? []), ...sharedEquipment.cultureOperationalCodes],
+    operationalCodes: [...selectedTent.operationalCodes, ...(building?.operationalCodes ?? []), ...sharedEquipment.operationalCodes],
   };
   return {
-    ...selected, tents, sharedEquipment, equipmentPricingUnits: 1,
+    ...selected, tents, buildings, equipmentScopeVersion, sharedEquipment, equipmentPricingUnits: 1, career,
+    chanvrierProfile: parseChanvrierProfile(wallet.data.chanvrier),
+    expansionEnergyCents: productionUnits < 8 ? quoteKqEnergy([...KQ_STARTING_EQUIPMENT_CODES]).totalCents : 0,
     productionUnits, production: getKqProductionExpansion(productionUnits, selected.purchasedCodes, selected.levels),
     strength,
     cashCents: Number(wallet.data.cash_cents ?? 0),
@@ -265,6 +293,8 @@ export async function purchaseKqDurableEquipment(input: {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
     if (result.error.message.includes("production_invalid_tent")) throw new Error("Cette tente n’est pas disponible. Actualise ton entrepôt.");
     const message = result.error.message || "Achat d’équipement impossible.";
+    const careerError = getChanvrierCareerError(message);
+    if (careerError) throw new Error(careerError);
     if (message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise le panier.");
     if (message.includes("insufficient_equipment_cash")) throw new Error("Solde insuffisant.");
     if (message.includes("equipment_already_owned")) throw new Error("Tu possèdes déjà un équipement du panier.");
@@ -293,12 +323,14 @@ export async function upgradeKqDurableEquipment(input: {
   const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_upgrade_production_equipment" : "rpc_kq_upgrade_tent_equipment", {
     p_user_id: input.userId, p_request_key: input.requestKey,
     p_equipment_code: input.equipmentCode, p_expected_level: input.expectedLevel,
-    ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : { p_tent_number: getKqEquipmentStorageTent(input.equipmentCode, input.tentNumber) }),
+    ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : { p_tent_number: equipmentRequestTent(input.equipmentCode, input.tentNumber) }),
   });
   if (result.error) {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
     if (result.error.message.includes("production_invalid_tent")) throw new Error("Cette tente n’est pas disponible. Actualise ton entrepôt.");
     const message = result.error.message;
+    const careerError = getChanvrierCareerError(message);
+    if (careerError) throw new Error(careerError);
     if (message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise le prix de l’amélioration.");
     if (message.includes("insufficient_equipment_cash")) throw new Error("Solde insuffisant pour cette amélioration.");
     if (message.includes("equipment_level_changed")) throw new Error("Le niveau a changé. Actualise le matériel avant de réessayer.");
@@ -319,7 +351,7 @@ export async function repairKqMachine(input: { userId: string; equipmentCode: st
   const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_repair_machine" : "rpc_kq_repair_tent_machine", {
     p_user_id: input.userId, p_equipment_code: input.equipmentCode, p_request_key: input.requestKey,
     p_expected_version: input.expectedVersion, p_expected_cost_cents: input.expectedCostCents,
-    ...(input.tentNumber !== undefined ? { p_tent_number: getKqEquipmentStorageTent(input.equipmentCode, input.tentNumber) } : {}),
+    ...(input.tentNumber !== undefined ? { p_tent_number: equipmentRequestTent(input.equipmentCode, input.tentNumber) } : {}),
   });
   if (result.error) {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
@@ -344,6 +376,7 @@ export async function equipKqDurableEquipment(input: { userId: string; equipment
   if (!equipment) throw new Error("Équipement inconnu.");
   const supabase = createSupabaseServiceClient();
   const storageTent = getKqEquipmentStorageTent(input.equipmentCode, input.tentNumber ?? 1);
+  if (!isKqBuildingEquipment(input.equipmentCode) || storageTent === (input.tentNumber ?? 1)) {
   const owned = await supabase.from("kq_player_equipment").select("equipment_code,purchase_price_cents,culture_wear_percent").eq("user_id", input.userId).eq("tent_number", storageTent);
   if (owned.error) throw new Error(`[supabase:kq_player_equipment] ${owned.error.message}`);
   const ownedCodes = (owned.data ?? []).map((row) => String(row.equipment_code));
@@ -364,10 +397,11 @@ export async function equipKqDurableEquipment(input: { userId: string; equipment
       throw new Error(`Installation bloquée · prérequis : ${requirementState.missing.map((requirement) => requirement.label).join(" ou ")}.`);
     }
   }
+  }
   const result = await supabase.rpc(input.tentNumber === undefined ? "rpc_kq_equip_durable" : "rpc_kq_equip_tent_equipment", {
     p_user_id: input.userId,
     p_equipment_code: input.equipmentCode,
-    ...(input.tentNumber !== undefined ? { p_tent_number: storageTent } : {}),
+    ...(input.tentNumber !== undefined ? { p_tent_number: equipmentRequestTent(input.equipmentCode, input.tentNumber) } : {}),
   });
   if (result.error) {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
@@ -392,7 +426,7 @@ export async function replaceKqCultureEquipment(input: { userId: string; equipme
   const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_replace_culture_equipment" : "rpc_kq_replace_tent_culture_equipment", {
     p_user_id: input.userId, p_equipment_code: input.equipmentCode, p_request_key: input.requestKey,
     p_expected_version: input.expectedVersion, p_expected_cost_cents: input.expectedCostCents,
-    ...(input.tentNumber !== undefined ? { p_tent_number: getKqEquipmentStorageTent(input.equipmentCode, input.tentNumber) } : {}),
+    ...(input.tentNumber !== undefined ? { p_tent_number: equipmentRequestTent(input.equipmentCode, input.tentNumber) } : {}),
   });
   if (result.error) {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
@@ -427,6 +461,8 @@ export async function expandKqProduction(input: {
     p_expected_units: input.expectedUnits, p_expected_cost_cents: input.expectedCostCents,
   });
   if (result.error) {
+    const careerError = getChanvrierCareerError(result.error.message);
+    if (careerError) throw new Error(careerError);
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
     if (result.error.message.includes("production_invalid_tent")) throw new Error("Cette tente n’est pas disponible. Actualise ton entrepôt.");
     const messages: Record<string, string> = {

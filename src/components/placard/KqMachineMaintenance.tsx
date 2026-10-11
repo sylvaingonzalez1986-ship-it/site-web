@@ -13,7 +13,7 @@ export function KqMachineMaintenance({ code, condition, cashCents, tentNumber = 
   const locked = useRef(false);
   const targetTent = isKqSharedEquipment(code) ? 1 : tentNumber;
   const repair = async () => {
-    if (locked.current || !condition.due || disabled) return;
+    if (locked.current || condition.cycles <= 0 || cashCents < condition.repairCents || disabled) return;
     locked.current = true; setBusy(true); setError("");
     if (request.current?.version !== condition.version || request.current.tentNumber !== targetTent) request.current = { version: condition.version, tentNumber: targetTent, key: crypto.randomUUID() };
     try {
@@ -26,10 +26,10 @@ export function KqMachineMaintenance({ code, condition, cashCents, tentNumber = 
     finally { locked.current = false; setBusy(false); }
   };
   return <section className={styles.upgrade} aria-label="Entretien de la machine">
-    <p><Wrench size={16} />{condition.due ? "Machine à l’arrêt" : `Entretien dans ${condition.remaining} cycle${condition.remaining > 1 ? "s" : ""}`}</p>
+    <p><Wrench size={16} />{condition.due ? "Machine à l’arrêt" : `Entretien dans ${condition.remaining} lot${condition.remaining > 1 ? "s" : ""} transformé${condition.remaining > 1 ? "s" : ""}`}</p>
     <progress aria-label="Usure de la machine" value={Math.min(condition.cycles, condition.interval)} max={condition.interval} style={{ width: "100%", accentColor: condition.due ? "#e39164" : "#4dddd0" }} />
-    <small>{condition.cycles} / {condition.interval} cultures équipée · réparation {condition.repairCents === 0 ? "gratuite grâce à Bricoleur" : formatKqCash(condition.repairCents)}.</small>
-    {condition.due ? <><p>Répare-la pour reprendre les transformations. Tes stocks déjà préparés restent vendables.</p><button type="button" onClick={() => void repair()} disabled={busy || disabled || cashCents < condition.repairCents}>{busy ? "Réparation…" : condition.repairCents === 0 ? "Remettre en route gratuitement" : `Réparer · ${formatKqCash(condition.repairCents)}`}</button>{cashCents < condition.repairCents ? <small>Il manque {formatKqCash(condition.repairCents - cashCents)}.</small> : null}</> : null}
+    <small>{condition.cycles} / {condition.interval} lots transformés · entretien {condition.repairCents === 0 ? "gratuit grâce à Bricoleur" : formatKqCash(condition.repairCents)}.</small>
+    {condition.cycles > 0 ? <><p>{condition.due ? "Répare-la pour reprendre les transformations. Tes stocks déjà préparés restent vendables." : "Un entretien maintenant remet le compteur d’usure à zéro, au même prix qu’une réparation."}</p><button type="button" onClick={() => void repair()} disabled={busy || disabled || cashCents < condition.repairCents}>{busy ? "Entretien…" : `${condition.due ? "Réparer" : "Entretenir"} · ${condition.repairCents === 0 ? "gratuit" : formatKqCash(condition.repairCents)}`}</button>{cashCents < condition.repairCents ? <small>Il manque {formatKqCash(condition.repairCents - cashCents)}.</small> : null}</> : null}
     {error ? <p role="alert" className={styles.error}>{error}<button type="button" onClick={onUpdated}>Actualiser</button></p> : null}
   </section>;
 }

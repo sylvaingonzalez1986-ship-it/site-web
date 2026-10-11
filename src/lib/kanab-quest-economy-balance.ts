@@ -1,5 +1,7 @@
 import { getKqProductionUnits } from "./kanab-quest-production-scale";
 import {
+  getKqEquipmentPriceMultiplier,
+  getKqEquipmentUpgradeCost,
   isKqEquipmentSuperseded,
   KQ_EQUIPMENT_CATALOG,
   KQ_STARTING_EQUIPMENT_CODES,
@@ -44,6 +46,8 @@ export type KqEconomyRouteProjection = {
   blockedReason: string | null;
   equipmentCodes: string[];
   equipmentNames: string[];
+  equipmentLevels: Record<string, number>;
+  upgradeCostCents: number;
   acquisitionCostCents: number;
   payoutCents: number;
   reputationGain: number;
@@ -169,16 +173,21 @@ export function buildKqEconomyBalanceReport(input: {
 
   const projections: KqEconomyRouteProjection[] = KQ_MARKET_ROUTE_CODES.map((route) => {
     const equipmentCodes = [...KQ_MARKET_ROUTE_MINIMUM_LOADOUTS[route]];
+    const minimumLevel = KQ_MARKET_ROUTES.find(item => item.code === route)?.minimumProcessingLevel ?? 1;
+    const equipmentLevels = Object.fromEntries(equipmentCodes.map(code => [code, minimumLevel]));
     const quote = getQuote({
       route,
       juryScore,
       harvestGrams,
       equipmentCodes: [...starterCodes, ...equipmentCodes],
+      equipmentLevels,
     });
     const equipment = equipmentCodes
       .map(getEquipment)
       .filter((item): item is NonNullable<typeof item> => item !== null);
-    const acquisitionCostCents = equipment.reduce((total, item) => total + item.priceCents, 0) * productionUnits;
+    const upgradeCostCents = equipment.reduce((total, item) => total + Array.from({ length: minimumLevel - 1 }, (_, index) =>
+      getKqEquipmentUpgradeCost(item.code, index + 1, productionUnits) ?? 0).reduce((sum, price) => sum + price, 0), 0);
+    const acquisitionCostCents = equipment.reduce((total, item) => total + item.priceCents * getKqEquipmentPriceMultiplier(item.code, productionUnits), upgradeCostCents);
     const comparisonDeltaCents = quote.payoutCents - baseline.payoutCents;
     const paybackHarvests = acquisitionCostCents > 0 && comparisonDeltaCents > 0
       ? roundTenth(acquisitionCostCents / comparisonDeltaCents)
@@ -193,6 +202,8 @@ export function buildKqEconomyBalanceReport(input: {
       blockedReason: quote.blockedReason,
       equipmentCodes,
       equipmentNames: equipment.map((item) => item.name),
+      equipmentLevels,
+      upgradeCostCents,
       acquisitionCostCents,
       payoutCents: quote.payoutCents,
       reputationGain: quote.reputationGain,
@@ -342,7 +353,7 @@ export function getKqEquipmentPaybackScenarios(
       const cartEquipmentCodes = remainingEquipmentCodes.filter((code) => cart.has(code));
       const missingAfterCartCodes = remainingEquipmentCodes.filter((code) => !cart.has(code));
       const cost = (codes: string[]) => codes.reduce(
-        (total, code) => total + (getEquipment(code)?.priceCents ?? 0) * productionUnits,
+        (total, code) => total + (getEquipment(code)?.priceCents ?? 0) * getKqEquipmentPriceMultiplier(code, productionUnits),
         0,
       );
       const remainingInvestmentCents = cost(remainingEquipmentCodes);

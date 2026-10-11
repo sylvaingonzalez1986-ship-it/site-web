@@ -1,4 +1,5 @@
 import { getKqProductionUnits } from "./kanab-quest-production-scale";
+import { getKqWorkshopMachineSpecification } from "./kanab-quest-workshop-machines";
 
 export const KQ_STARTING_CASH_CENTS = 35_000;
 
@@ -67,6 +68,8 @@ export type KqEquipmentDefinition = {
     energyDiscountPercent?: number;
     processingPrecision?: number;
     processingCapacity?: number;
+    processingBatchGrams?: number;
+    processingTuningPrecision?: number;
     processingValueBonusPercent?: number;
   };
   unlocks: KqEquipmentUnlock[];
@@ -721,6 +724,11 @@ export const KQ_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = LEGACY_EQU
   .map((item) => ({
     ...item,
     priceCents: KQ_GAME_EQUIPMENT_PRICES[item.code] ?? item.priceCents,
+    ...(getKqWorkshopMachineSpecification(item.code) ? { effects: {
+      ...item.effects,
+      processingBatchGrams: getKqWorkshopMachineSpecification(item.code)!.capacityGrams,
+      processingTuningPrecision: getKqWorkshopMachineSpecification(item.code)!.precision,
+    } } : {}),
     ...(item.slot === "tent" ? { unlocks: ["raw-sale"] as KqEquipmentUnlock[] } : {}),
     ...(item.code === "PRESS-0600" ? {
       name: "Presse à rosin",
@@ -797,15 +805,34 @@ export function isKqSharedEquipment(code: string): boolean {
   return isKqProcessingEquipment(code);
 }
 
-export type KqEquipmentScope = "tent" | "workshop";
+export function isKqBuildingEquipmentSlot(slot: KqEquipmentSlot): boolean {
+  return ["flower-drying", "energy", "security"].includes(slot);
+}
+
+export function isKqBuildingEquipment(code: string): boolean {
+  const equipment = getKqEquipmentDefinition(code);
+  return Boolean(equipment && isKqBuildingEquipmentSlot(equipment.slot));
+}
+
+export function getKqEquipmentBuildingNumber(tentNumber: number): number {
+  return tentNumber >= 5 ? 2 : 1;
+}
+
+/** Fleet estimates count physical equipment at the scale where it is installed. */
+export function getKqEquipmentPriceMultiplier(code: string, productionUnits = 1): number {
+  return isKqSharedEquipment(code) ? 1 : isKqBuildingEquipment(code)
+    ? Math.ceil(getKqProductionUnits(productionUnits) / 4) : getKqProductionUnits(productionUnits);
+}
+
+export type KqEquipmentScope = "tent" | "building" | "workshop";
 
 export function getKqEquipmentScope(code: string): KqEquipmentScope | null {
   const equipment = getKqEquipmentDefinition(code);
-  return equipment ? isKqSharedEquipmentSlot(equipment.slot) ? "workshop" : "tent" : null;
+  return equipment ? isKqSharedEquipmentSlot(equipment.slot) ? "workshop" : isKqBuildingEquipmentSlot(equipment.slot) ? "building" : "tent" : null;
 }
 
 export function getKqEquipmentStorageTent(code: string, tentNumber: number) {
-  return isKqSharedEquipment(code) ? 1 : tentNumber;
+  return isKqSharedEquipment(code) ? 1 : isKqBuildingEquipment(code) ? (getKqEquipmentBuildingNumber(tentNumber) - 1) * 4 + 1 : tentNumber;
 }
 
 /** Processing remains a distinct group in frozen culture snapshots. */
@@ -820,10 +847,11 @@ export function isKqProcessingEquipment(code: string): boolean {
 export const KQ_EQUIPMENT_MAX_LEVEL = 10;
 export type KqEquipmentLevels = Record<string, number>;
 
-export const KQ_TENT_EQUIPMENT_SLOTS = ["tent", "lighting", "air", "climate-controller", "flower-drying", "energy", "security"] as const satisfies readonly KqEquipmentSlot[];
+export const KQ_TENT_EQUIPMENT_SLOTS = ["tent", "lighting", "air", "climate-controller"] as const satisfies readonly KqEquipmentSlot[];
+export const KQ_BUILDING_EQUIPMENT_SLOTS = ["flower-drying", "energy", "security"] as const satisfies readonly KqEquipmentSlot[];
 export type KqTentEquipmentSlotStatus = "installed" | "missing" | "optional" | "available" | "worn";
 export type KqTentEquipmentSlotSummary = {
-  slot: (typeof KQ_TENT_EQUIPMENT_SLOTS)[number];
+  slot: (typeof KQ_TENT_EQUIPMENT_SLOTS)[number] | (typeof KQ_BUILDING_EQUIPMENT_SLOTS)[number];
   label: string;
   required: boolean;
   equipment: KqEquipmentDefinition | null;
@@ -834,6 +862,7 @@ export type KqTentEquipmentSlotSummary = {
 
 /** Reports physical equipment only; automatic starter fallbacks are not installations. */
 export function buildKqTentEquipmentSummary(input: {
+  equipmentScopeVersion?: 2 | 3;
   ownedCodes: string[];
   equippedCodes: string[];
   levels?: KqEquipmentLevels;
@@ -841,7 +870,8 @@ export function buildKqTentEquipmentSummary(input: {
 }) {
   const installed = input.equippedCodes.map(getKqEquipmentDefinition).filter((item): item is KqEquipmentDefinition => Boolean(item));
   const owned = [...new Set(input.ownedCodes)].map(getKqEquipmentDefinition).filter((item): item is KqEquipmentDefinition => Boolean(item) && !KQ_RETIRED_EQUIPMENT_CODES.includes(item!.code));
-  const slots: KqTentEquipmentSlotSummary[] = KQ_TENT_EQUIPMENT_SLOTS.map(slot => {
+  const physicalSlots = input.equipmentScopeVersion === 2 ? [...KQ_TENT_EQUIPMENT_SLOTS, ...KQ_BUILDING_EQUIPMENT_SLOTS] : KQ_TENT_EQUIPMENT_SLOTS;
+  const slots: KqTentEquipmentSlotSummary[] = physicalSlots.map(slot => {
     const equipment = installed.find(item => item.slot === slot && !KQ_RETIRED_EQUIPMENT_CODES.includes(item.code)) ?? null;
     const required = ["tent", "lighting", "air"].includes(slot);
     const condition = equipment ? input.cultureWear?.[equipment.code] : undefined;
@@ -880,7 +910,11 @@ export function getKqEquipmentAtLevel(code: string, requestedLevel = 1): KqEquip
   if (effects.qualityMaxBonus) effects.qualityMaxBonus += Math.floor(step / 3);
   if (base.category === "processing") {
     effects.processingCapacity = Math.min(100, (effects.processingCapacity ?? 0) + (base.slot === "press" ? 8 : base.slot === "washing" ? 6 : 2) * step);
-    effects.processingValueBonusPercent = 2 * step;
+    const workshop = getKqWorkshopMachineSpecification(code, requestedLevel);
+    if (workshop) {
+      effects.processingBatchGrams = workshop.capacityGrams;
+      effects.processingTuningPrecision = workshop.precision;
+    } else effects.processingValueBonusPercent = 2 * step;
   }
   // These devices already prevent their incident completely at level 1.
   // Their upgrades improve the harvest's regularity without weakening that protection.
@@ -892,7 +926,7 @@ export function getKqEquipmentUpgradeCost(code: string, requestedLevel: number, 
   const equipment = getKqEquipmentDefinition(code);
   const level = getKqEquipmentLevel(requestedLevel);
   if (!equipment?.purchasable || KQ_EQUIPMENT_REPLACEMENTS[code] || KQ_RETIRED_EQUIPMENT_CODES.includes(code) || level !== requestedLevel || level >= KQ_EQUIPMENT_MAX_LEVEL) return null;
-  return Math.ceil(equipment.priceCents * level / 10) * getKqProductionUnits(productionUnits);
+  return Math.ceil(equipment.priceCents * level / 10) * getKqEquipmentPriceMultiplier(code, productionUnits);
 }
 
 export function getKqEquipmentImpactLabels(equipment: KqEquipmentDefinition) {
@@ -903,8 +937,8 @@ export function getKqEquipmentImpactLabels(equipment: KqEquipmentDefinition) {
     effects.regularityPercent ? `Régularité +${effects.regularityPercent} %` : null,
     effects.pressureDelta ? `Pression de culture +${effects.pressureDelta}` : null,
     effects.energyDiscountPercent ? `Facture −${effects.energyDiscountPercent} %` : null,
-    effects.processingCapacity ? `Capacité de transformation ${effects.processingCapacity} %` : null,
-    effects.processingPrecision ? `Précision de transformation ${effects.processingPrecision} %` : null,
+    effects.processingBatchGrams ? `Capacité de transformation ${effects.processingBatchGrams} g par lot` : effects.processingCapacity ? `Capacité de transformation ${effects.processingCapacity} %` : null,
+    effects.processingTuningPrecision ? `Précision de transformation ${Math.round(effects.processingTuningPrecision * 10) / 10} %` : effects.processingPrecision ? `Précision de transformation ${effects.processingPrecision} %` : null,
     effects.processingValueBonusPercent ? `Valeur de transformation +${effects.processingValueBonusPercent} %` : null,
     ...equipment.unlocks.map((unlock) => `Débloque : ${KQ_EQUIPMENT_UNLOCK_LABELS[unlock]}`),
   ].filter((label): label is string => Boolean(label));
@@ -968,12 +1002,13 @@ export function getKqNextEquipmentGoal(input: {
     .sort((left, right) => {
       const leftUnlockPriority = left.unlocks.length > 0 ? 0 : 1;
       const rightUnlockPriority = right.unlocks.length > 0 ? 0 : 1;
-      return left.priceCents - right.priceCents
+      return left.priceCents * getKqEquipmentPriceMultiplier(left.code, input.productionUnits)
+        - right.priceCents * getKqEquipmentPriceMultiplier(right.code, input.productionUnits)
         || leftUnlockPriority - rightUnlockPriority
         || left.code.localeCompare(right.code);
     });
   const candidate = candidates[0];
-  const equipment = candidate ? { ...candidate, priceCents: candidate.priceCents * getKqProductionUnits(input.productionUnits) } : null;
+  const equipment = candidate ? { ...candidate, priceCents: candidate.priceCents * getKqEquipmentPriceMultiplier(candidate.code, input.productionUnits) } : null;
   if (!equipment) return null;
   const savedCents = Math.min(Math.max(0, input.cashCents), equipment.priceCents);
   return {
@@ -1029,8 +1064,8 @@ export function formatKqCash(cents: number) {
 export function getKqEquipmentCartTotal(codes: string[], productionUnits = 1) {
   return [...new Set(codes)].reduce((total, code) => {
     const equipment = getKqEquipmentDefinition(code);
-    return total + (equipment?.purchasable ? equipment.priceCents : 0);
-  }, 0) * getKqProductionUnits(productionUnits);
+    return total + (equipment?.purchasable ? equipment.priceCents * getKqEquipmentPriceMultiplier(code, productionUnits) : 0);
+  }, 0);
 }
 
 export function getKqEquipmentRequirementState(input: {

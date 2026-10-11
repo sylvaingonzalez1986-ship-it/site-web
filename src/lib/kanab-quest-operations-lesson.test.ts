@@ -1,10 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { getKqEquipmentDefinition, getKqEquipmentUpgradeCost } from './kanab-quest-equipment';
+import { getKqEquipmentDefinition, getKqEquipmentUpgradeCost, KQ_STARTING_EQUIPMENT_CODES } from './kanab-quest-equipment';
 import { quoteKqCommerce, type KqCommerceOffer, type KqCommerceReceipt } from './kanab-quest-commerce';
-import { applyKqOperationsRequest, createKqOperationsLesson, getKqOperationsCommerce, getKqOperationsEnergy, getKqOperationsEquipment, getKqOperationsProgress, getKqOperationsStorage, type KqOperationsLessonAction } from './kanab-quest-operations-lesson';
+import { applyKqOperationsRequest, createKqOperationsLesson, getKqOperationsCommerce, getKqOperationsEnergy, getKqOperationsEquipment, getKqOperationsProgress, getKqOperationsStorage, type KqOperationsLessonAction, type KqOperationsLessonState } from './kanab-quest-operations-lesson';
 import { createKqOperationsSession, restoreKqOperationsLesson } from './kanab-quest-operations-session';
 import { KQ_CURING_DURATION_MS, KQ_STORAGE_OVERFLOW_GRACE_MS } from './kanab-quest-storage';
 import { KQ_LAB_ANALYSIS_CENTS } from './kanab-quest-business';
+import { quoteKqEnergy } from './kanab-quest-energy';
 
 const equipment = (body: Record<string, unknown>, method = 'PATCH'): KqOperationsLessonAction => ({ path: '/api/arena/placard/equipment', method, body });
 const commerce = (body: Record<string, unknown>): KqOperationsLessonAction => ({ path: '/api/arena/placard/commerce', method: 'POST', body });
@@ -47,6 +48,78 @@ describe('real operations on a loaned installation', () => {
     expect(() => applyKqOperationsRequest(upgraded, equipment({ action: 'upgrade', equipmentCode: 'LED-300', expectedLevel: 1 }))).toThrow();
   });
 
+  it('lends drying to the first building and exposes only physical culture equipment in tents', () => {
+    const state = createKqOperationsLesson('warehouse'), snapshot = getKqOperationsEquipment(state);
+    expect(snapshot.equipmentScopeVersion).toBe(3);
+    expect(snapshot.buildings[0]).toMatchObject({ buildingNumber: 1, anchorTentNumber: 1, equippedCodes: ['DRYING-ROOM'] });
+    expect(snapshot.tents[0].ownedCodes).not.toContain('DRYING-ROOM');
+    expect(snapshot.equippedCodes).toContain('DRYING-ROOM');
+    expect(snapshot.cultureOperationalCodes).toContain('DRYING-ROOM');
+    expect(snapshot.buildings[0].cultureWear['DRYING-ROOM']).toMatchObject({ conditionPercent: 100, due: false });
+    expect(snapshot.tents[0].cultureWear['DRYING-ROOM']).toBeUndefined();
+  });
+
+  it('shares services bought from tents two and six within their own building and bills each physical service once', () => {
+    let state = createKqOperationsLesson('equipment');
+    state.trial.commerce.cashCents = 10_000_000; // Lent test budget, never an official account.
+    const expandTo = (current: KqOperationsLessonState, count: number) => {
+      while (current.tents.length < count) {
+        const expansion = getKqOperationsEquipment(current).production;
+        current = applyKqOperationsRequest(current, equipment({ action: 'expand-production', expectedUnits: current.tents.length, expectedCostCents: expansion.totalCostCents })).state;
+      }
+      return current;
+    };
+    state = expandTo(state, 4);
+    const firstServices = ['DRYING-ROOM', 'SOLAR-BACKUP', 'SECURITY-CAMERA'];
+    const before = state.trial.commerce.cashCents;
+    state = applyKqOperationsRequest(state, equipment({ tentNumber: 2, equipmentCodes: firstServices }, 'POST')).state;
+    expect(getKqOperationsEnergy(state).buildings[0].cultureWear['DRYING-ROOM']).toMatchObject({ conditionPercent: 100, due: false });
+    expect(state.trial.commerce.cashCents).toBe(before - firstServices.reduce((sum, code) => sum + getKqEquipmentDefinition(code)!.priceCents, 0));
+    for (const code of firstServices) state = applyKqOperationsRequest(state, equipment({ tentNumber: 2, equipmentCode: code })).state;
+    state = applyKqOperationsRequest(state, equipment({ action: 'upgrade', tentNumber: 4, equipmentCode: 'SOLAR-BACKUP', expectedLevel: 1 })).state;
+    for (let tent = 1; tent <= 4; tent++) {
+      const snapshot = getKqOperationsEquipment(state, tent);
+      expect(snapshot.equippedCodes).toEqual(expect.arrayContaining(firstServices));
+      expect(snapshot.levels['SOLAR-BACKUP']).toBe(2);
+      expect(snapshot.tents[tent - 1].ownedCodes).toEqual([...KQ_STARTING_EQUIPMENT_CODES]);
+    }
+    const expectedAnchor = quoteKqEnergy([...KQ_STARTING_EQUIPMENT_CODES, ...firstServices], { 'SOLAR-BACKUP': 2 });
+    const expectedOther = quoteKqEnergy([...KQ_STARTING_EQUIPMENT_CODES, 'SOLAR-BACKUP'], { 'SOLAR-BACKUP': 2 });
+    const energy = getKqOperationsEnergy(state).quotes.balanced;
+    expect(energy.totalCents).toBe(expectedAnchor.totalCents + 3 * expectedOther.totalCents);
+    expect(energy.lines.filter(line => line.code === 'DRYING-ROOM')).toMatchObject([{ tentNumber: 1, buildingNumber: 1 }]);
+    expect(energy.lines.filter(line => line.code === 'SECURITY-CAMERA')).toHaveLength(1);
+    state = expandTo(state, 5);
+    expect(state.buildings[1]).toMatchObject({ buildingNumber: 2, anchorTentNumber: 5, ownedCodes: [], equippedCodes: [] });
+    expect(getKqOperationsEquipment(state, 5).ownedCodes).not.toContain('DRYING-ROOM');
+    expect(getKqOperationsEnergy(state).quotes.balanced.totalCents).toBe(energy.totalCents + quoteKqEnergy([...KQ_STARTING_EQUIPMENT_CODES]).totalCents);
+    state = expandTo(state, 8);
+    state = applyKqOperationsRequest(state, equipment({ tentNumber: 6, equipmentCodes: ['SECURITY-DOG'] }, 'POST')).state;
+    state = applyKqOperationsRequest(state, equipment({ tentNumber: 6, equipmentCode: 'SECURITY-DOG' })).state;
+    for (let tent = 5; tent <= 8; tent++) {
+      expect(getKqOperationsEquipment(state, tent).equippedCodes).toContain('SECURITY-DOG');
+      expect(getKqOperationsEquipment(state, tent).equippedCodes).not.toContain('SECURITY-CAMERA');
+      expect(getKqOperationsEquipment(state, tent).equippedCodes).not.toContain('SOLAR-BACKUP');
+    }
+    expect(getKqOperationsEquipment(state, 2).equippedCodes).toContain('SECURITY-CAMERA');
+    expect(getKqOperationsEquipment(state, 2).equippedCodes).not.toContain('SECURITY-DOG');
+    expect(() => applyKqOperationsRequest(state, equipment({ tentNumber: 7, equipmentCodes: ['SECURITY-DOG'] }, 'POST'))).toThrow();
+  });
+
+  it('replays a building service journal once from a non-anchor tent without affecting another lesson', () => {
+    const initial = createKqOperationsLesson('equipment'), expansion = getKqOperationsEquipment(initial).production;
+    const actions = [equipment({ action: 'expand-production', expectedUnits: 1, expectedCostCents: expansion.totalCostCents, requestKey: 'second-tent' }),
+      equipment({ tentNumber: 2, equipmentCodes: ['SECURITY-CAMERA'], requestKey: 'building-camera' }, 'POST'),
+      equipment({ tentNumber: 2, equipmentCode: 'SECURITY-CAMERA' }),
+      equipment({ action: 'upgrade', tentNumber: 2, equipmentCode: 'SECURITY-CAMERA', expectedLevel: 1, requestKey: 'camera-upgrade' })];
+    const state = actions.reduce((current, action) => applyKqOperationsRequest(current, action).state, initial);
+    const restored = restoreKqOperationsLesson('equipment', { version: 1, lesson: 'equipment', actions });
+    expect(restored.state).toEqual(state);
+    expect(getKqOperationsEquipment(restored.state, 1).levels['SECURITY-CAMERA']).toBe(2);
+    expect(applyKqOperationsRequest(state, actions[1]).state).toBe(state);
+    expect(createKqOperationsLesson('equipment')).toEqual(initial);
+  });
+
   it('transforms with the official yield then sells a quoted partial quantity once', () => {
     const initial = createKqOperationsLesson('market');
     const raw = getKqOperationsCommerce(initial).rawLots[0];
@@ -54,6 +127,8 @@ describe('real operations on a loaned installation', () => {
     expect(route.available).toBe(true);
     const prepared = applyKqOperationsRequest(initial, commerce({ action: 'prepare', flowerId: raw.flowerId, route: 'dry-sift', expectedCostCents: route.market!.processingCostCents })).state;
     expect(getKqOperationsCommerce(prepared).rawLots).toHaveLength(0);
+    expect(prepared.shared.maintenance['SIFT-TRAY'].cycles).toBe(1);
+    expect(prepared.shared.maintenance['PRESS-0600']).toBeUndefined();
     const stock = prepared.trial.commerce.stocks[0];
     expect(stock.remainingUnits).toBe(Math.round(route.productGrams * 10));
     const quoted = applyKqOperationsRequest(prepared, commerce({ action: 'quote', stockId: stock.id, channel: 'wholesale', policy: 'advised', units: 10 }));

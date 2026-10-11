@@ -3,11 +3,12 @@ import { getKqProductionExpansion, getKqProductionUnits } from "./kanab-quest-pr
 import { getKqEquipmentCartTotal, getKqEquipmentUpgradeCost, getKqNextEquipmentGoal, validateKqEquipmentCart } from "./kanab-quest-equipment";
 
 describe("production expansion", () => {
-  it.each([[1,2],[2,3],[3,4],[4,8]])("adds capacity from %i to %i", (units, nextUnits) => {
+  it.each([[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]])("adds capacity from %i to %i", (units, nextUnits) => {
     expect(getKqProductionExpansion(units, [])).toMatchObject({ units, nextUnits, addedUnits: nextUnits-units });
   });
-  it("preserves the first warehouse and adds four equipped tents in the final warehouse", () => {
-    expect(getKqProductionExpansion(4, [])).toMatchObject({ warehouseCount:1, nextUnits:8, equipmentCostCents:120000, propertyCostCents:2000000, totalCostCents:2120000 });
+  it("opens the second warehouse with one tent, then equips its remaining places separately", () => {
+    expect(getKqProductionExpansion(4, [])).toMatchObject({ warehouseCount:1, nextUnits:5, equipmentCostCents:30000, propertyCostCents:2000000, totalCostCents:2030000 });
+    for (const units of [5,6,7]) expect(getKqProductionExpansion(units, [])).toMatchObject({ warehouseCount:2, nextUnits:units+1, equipmentCostCents:30000, propertyCostCents:0, totalCostCents:30000 });
     expect(getKqProductionExpansion(8, [])).toMatchObject({ warehouseCount:2, nextUnits:null, addedUnits:0, totalCostCents:0 });
   });
   it("always supplies a basic starter tent for 300 euros", () => {
@@ -18,9 +19,9 @@ describe("production expansion", () => {
   it("never copies or charges existing upgrades and reserve equipment", () => {
     const codes = ["LED-300", "LED-300", "SECURITY-CAMERA", "SECURITY-FENCE"];
     expect(getKqProductionExpansion(2, codes, { "LED-300": 10 }).totalCostCents).toBe(30000);
-    expect(getKqProductionExpansion(4, codes, { "LED-300": 10 }).totalCostCents).toBe(2120000);
+    expect(getKqProductionExpansion(4, codes, { "LED-300": 10 }).totalCostCents).toBe(2030000);
   });
-  it.each([undefined,0,-1,1.5,5,7,9,NaN,Infinity])("defaults legacy or invalid capacity %s to one tent", value => {
+  it.each([undefined,0,-1,1.5,9,NaN,Infinity])("defaults legacy or invalid capacity %s to one tent", value => {
     expect(getKqProductionUnits(value)).toBe(1);
   });
   it.each([2,3,4,8])("charges purchases and upgrades for all %i tents", units => {
@@ -31,7 +32,7 @@ describe("production expansion", () => {
     expect(cart.errors.length).toBeGreaterThan(0);
     const base=getKqNextEquipmentGoal({ownedCodes:[],cashCents:0})!;
     const fleet=getKqNextEquipmentGoal({ownedCodes:[],cashCents:base.equipment.priceCents,productionUnits:units})!;
-    expect(fleet.equipment.priceCents).toBe(base.equipment.priceCents*units);
-    expect(fleet.affordable).toBe(false);
+    expect(fleet.equipment.priceCents).toBe(base.equipment.priceCents*Math.ceil(units/4));
+    expect(fleet.affordable).toBe(units <= 4);
   });
 });

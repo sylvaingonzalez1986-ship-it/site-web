@@ -56,8 +56,9 @@ describe("Living market and differentiated cards", () => {
     const marketContext = { ...context, reputation: 200, routeSales: { "rosin-trial": 12 } };
     const quote = (level: number) => quoteKqMarketRoutes({ juryScore: 9, harvestGrams: 120, equipmentCodes, equipmentLevels: { "PRESS-0600": level }, marketContext }).find((q) => q.route === "rosin-signature")!;
     expect(quote(1).available).toBe(false);
-    expect(quote(1).market!.progressionReason).toContain("niveau 1/9");
-    expect(quote(9).available).toBe(true);
+    expect(quote(1).market!.progressionReason).toContain("niveau 1/10");
+    expect(quote(9).available).toBe(false);
+    expect(quote(10).available).toBe(true);
     const inventory = Object.fromEntries(KQ_CARDS.map((card) => [card.code, 1]));
     const deck = buildKqRecommendedDeck("none", inventory, [], "HH2026-020").support;
     expect(deck).toHaveLength(6);

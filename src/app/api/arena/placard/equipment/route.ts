@@ -13,6 +13,7 @@ import {
   expandKqProduction,
 } from "@/lib/supabase/kanab-quest-equipment-backend";
 import { isKqMarketRouteCode, type KqMarketRouteCode } from "@/lib/kanab-quest-market";
+import { getKqStorageSnapshot } from "@/lib/supabase/kanab-quest-storage-backend";
 
 export const runtime = "nodejs";
 
@@ -28,7 +29,14 @@ export async function GET(request: Request) {
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
-    return NextResponse.json(await getKqEquipmentShopSnapshot(session.customerId, Number(new URL(request.url).searchParams.get("tentNumber") ?? 1)));
+    const [equipment, storage] = await Promise.allSettled([
+      getKqEquipmentShopSnapshot(session.customerId, Number(new URL(request.url).searchParams.get("tentNumber") ?? 1)),
+      getKqStorageSnapshot(session.customerId),
+    ]);
+    if (equipment.status === "rejected") throw equipment.reason;
+    return NextResponse.json({ ...equipment.value,
+      storageCapacity: storage.status === "fulfilled" ? storage.value.capacity : null,
+    });
   } catch (error) {
     const failure = publicEquipmentError(error, "Catalogue matériel indisponible.");
     return NextResponse.json({ error: failure.message }, { status: failure.status });

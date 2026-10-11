@@ -12,11 +12,12 @@ import { getKqReputationProgress } from "@/lib/kanab-quest-reputation";
 import { KQ_MISSION_COPY } from "@/lib/kanab-quest-missions";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { ChanvrierAvatar } from "./ChanvrierAvatar";
+import { KqCareerProgress } from "../placard/KqCareerProgress";
 import styles from "./ChanvrierPlayerCard.module.css";
 
 const ICONS = { "triple-spark": Dices, "spark-collector": Sparkles, "perfect-culture": Leaf, "cool-head": ShieldCheck, "natural-defense": ShieldCheck, "jury-favorite": Trophy, "versatile-artisan": Store, "perfect-victory": Swords };
 const ORIGINS = { game: "Placard", notebook: "Carnet", season: "Saison" };
-const UPDATES = ["arena:progress-updated", "kq:market-updated", "kq:boosters-updated", "kq:missions-updated", "contest:badges-updated"];
+const UPDATES = ["arena:progress-updated", "kq:equipment-updated", "kq:market-updated", "kq:boosters-updated", "kq:missions-updated", "contest:badges-updated"];
 function BadgeMedal({ badge }: { badge: Pick<ChanvrierBadge, "code" | "awardedAt"> }) {
   const code = ACHIEVEMENTS.find(a => badge.code.startsWith(`kq-ach-${a.code}-`))?.code;
   const Icon = code ? ICONS[code as keyof typeof ICONS] : Award;
@@ -154,6 +155,7 @@ export function ChanvrierPlayerCard({ profile, onEdit, inline = false, showTrigg
           {data && !loading ? <>
             {data.newBadgeCount > 0 ? <div className={styles.unlock} role="status"><Sparkles size={21} /><span><strong>{data.newBadgeCount} nouvelle{data.newBadgeCount > 1 ? "s distinctions" : " distinction"} !</strong> Ta vitrine s’agrandit.</span><button type="button" onClick={() => setTab("badges")}>Voir</button></div> : null}
             {tab === "journey" ? <>
+              <KqCareerProgress career={data.career} profile={profile} />
               <div className={styles.reputation}><div><small>RÉPUTATION</small><h3>{reputation.tier.name}</h3><p>{reputation.nextTier ? `${reputation.pointsToNext} points avant ${reputation.nextTier.name}` : "Le plus haut palier est atteint."}</p></div><strong>{data.reputation}<small>points</small></strong><Meter value={reputation.progressPercent} target={100} label="Prochain palier de réputation" /></div>
               <div className={styles.stats}>
                 <div><Leaf /><strong>{data.metrics.cultures ?? 0}</strong><span>Cultures terminées</span></div>

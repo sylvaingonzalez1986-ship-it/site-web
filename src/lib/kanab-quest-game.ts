@@ -13,6 +13,7 @@ import {
   getKqEquipmentDefinition,
   isKqProcessingEquipment,
   getKqEquipmentLevel,
+  getKqEquipmentBuildingNumber,
   summarizeKqEquipmentLoadout,
   KQ_STARTING_EQUIPMENT_CODES,
 } from "@/lib/kanab-quest-equipment";
@@ -113,7 +114,7 @@ export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadou
   /** Common processing machines frozen once, independently of the grow tents. */
   shared?: KqSharedEquipmentRunProfile;
   /** Tent ownership is explicit; installation scope preserves historical shared runs. */
-  scope?: "installation" | "tent";
+  scope?: "installation" | "tent" | "building";
 };
 
 /** Position immediately before validation, after all cards and Heritage actions.
@@ -207,12 +208,42 @@ export type KqGameState = {
     qualityDelta?: number;
     xpGain?: number;
     harvestLossPercent?: number;
+    /** Local incident deltas; only building-scope cultures use this journal. */
+    buildingHarvestLosses?: Record<string, number>;
     /** A failed stage excluded from the death counter; its result stays unchanged. */
     rescued?: boolean;
     /** Optional for cultures saved before explanatory recaps were introduced. */
     decision?: KqStageDecision;
   }>;
 };
+
+/** Incident losses are derived from the frozen journal, never from a second counter. */
+export function getKqBuildingHarvestLosses(state: Pick<KqGameState, "equipment" | "history">): Record<string, number> {
+  const losses: Record<string, number> = {};
+  for (const tent of state.equipment?.tents ?? []) losses[getKqEquipmentBuildingNumber(tent.tentNumber)] = 0;
+  for (const entry of state.history) for (const building of Object.keys(losses)) {
+    losses[building] = Math.min(80, losses[building] + (entry.buildingHarvestLosses?.[building] ?? 0));
+  }
+  return losses;
+}
+
+/** Informational average weighted by the number of tents; harvest uses each local loss. */
+export function getKqBuildingLossAverage(state: Pick<KqGameState, "equipment">, losses: Record<string, number>): number {
+  const tents = state.equipment?.tents ?? [];
+  return tents.length ? Math.round(tents.reduce((sum, tent) => sum + (losses[getKqEquipmentBuildingNumber(tent.tentNumber)] ?? 0), 0) / tents.length * 100) / 100 : 0;
+}
+
+export function getKqBuildingIncidentLosses(state: KqGameState, situation: KqSituation, outcome: KqOutcome): Record<string, number> {
+  const globalTheftShield = state.playedThisStage.some(code => KQ_CARDS.find(card => card.code === code)?.effect === "theft-guard")
+    || getKqStateHeritage(state)?.effect === "harvest-theft-shield";
+  return Object.fromEntries((state.equipment?.tents ?? []).filter(tent => (tent.tentNumber - 1) % 4 === 0).map(tent => {
+    const unlocks = summarizeKqEquipmentLoadout(tent.codes, tent.levels).unlocks;
+    const loss = situation.incident === "crop-theft" && !globalTheftShield && !unlocks.includes("theft-protection")
+      ? outcome === "failure" ? 35 : outcome === "fragile" ? 15 : 0
+      : situation.incident === "electricity-bill" && !unlocks.includes("power-backup") && (outcome === "failure" || outcome === "fragile") ? 10 : 0;
+    return [getKqEquipmentBuildingNumber(tent.tentNumber), loss];
+  }));
+}
 
 export function getKqStateHeritage(state: Pick<KqGameState,
   "heritageCode" | "heritageName" | "heritageTiming" | "heritageEffect" | "heritageProducerName" | "heritageImageUrl"
@@ -580,7 +611,7 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
 
 export function startKqGame(
   seed = Date.now(),
-  config: { rulesVersion?: 2 | 3; domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; firstCultureRescue?: boolean; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" | "tent" } = {},
+  config: { rulesVersion?: 2 | 3; domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; firstCultureRescue?: boolean; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" | "tent" | "building" } = {},
 ): KqGameState {
   const rulesVersion = config.rulesVersion ?? 3;
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
@@ -1239,24 +1270,42 @@ export function resolveKqStage(state: KqGameState): KqGameState {
   ];
   const hasPowerBackup = state.equipment?.unlocks.includes("power-backup") ?? false;
   const billFailed = situation.incident === "electricity-bill" && (effectiveOutcome === "fragile" || effectiveOutcome === "failure");
-  const powerOutage = state.powerOutage ? false : billFailed && !hasPowerBackup;
+  const buildingScope = state.equipment?.scope === "building";
+  const powerOutage = buildingScope ? false : state.powerOutage ? false : billFailed && !hasPowerBackup;
   const theftProtected = (state.equipment?.unlocks.includes("theft-protection") ?? false)
     || state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "theft-guard")
     || heritage?.effect === "harvest-theft-shield";
   const theftLoss = situation.incident === "crop-theft" && !theftProtected
     ? effectiveOutcome === "failure" ? 35 : effectiveOutcome === "fragile" ? 15 : 0
     : 0;
+  const buildingHarvestLosses = buildingScope ? getKqBuildingIncidentLosses(state, situation, effectiveOutcome) : undefined;
+  const previousBuildingLosses = buildingScope ? getKqBuildingHarvestLosses(state) : {};
+  const nextBuildingLosses = Object.fromEntries(Object.entries(previousBuildingLosses).map(([building, loss]) =>
+    [building, Math.min(80, loss + (buildingHarvestLosses?.[building] ?? 0))]));
+  const harvestLossPercent = buildingScope ? getKqBuildingLossAverage(state, nextBuildingLosses)
+    : Math.min(80, (state.harvestLossPercent ?? 0) + theftLoss);
+  const incidentLoss = buildingScope ? Math.round((harvestLossPercent - getKqBuildingLossAverage(state, previousBuildingLosses)) * 100) / 100 : theftLoss;
+  const buildingIncidentNotices = Object.entries(buildingHarvestLosses ?? {}).flatMap(([building, loss]) => {
+    if (situation.incident === "crop-theft") return [loss > 0
+      ? `Entrepôt ${building} : vol, −${loss} points de rendement sur ses tentes uniquement.`
+      : `Entrepôt ${building} : aucune perte liée au vol${effectiveOutcome === "failure" || effectiveOutcome === "fragile" ? ", protection active" : ""}.`];
+    if (billFailed) return [loss > 0
+      ? `Entrepôt ${building} : coupure sans secours solaire, −10 points de rendement sur ses tentes. Aucun dé pénalisé à l’étape suivante.`
+      : `Entrepôt ${building} : la batterie solaire prend le relais, aucune perte liée à la coupure.`];
+    return [];
+  });
   const incidentNotices = [
-    ...(billFailed && hasPowerBackup ? ["Panneau solaire : la batterie prend le relais, aucune coupure."] : []),
+    ...buildingIncidentNotices,
+    ...(!buildingScope && billFailed && hasPowerBackup ? ["Panneau solaire : la batterie prend le relais, aucune coupure."] : []),
     ...(powerOutage ? ["Surcharge électrique : coupure de courant à la prochaine étape."] : []),
-    ...(situation.incident === "crop-theft" && theftProtected ? [
+    ...(!buildingScope && situation.incident === "crop-theft" && theftProtected ? [
       heritage?.effect === "harvest-theft-shield"
         ? `${heritage.name} : la mémoire du gardien protège toute la récolte.`
         : state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "theft-guard")
           ? "Gros molosse : récolte intégralement protégée."
           : `${state.equipment?.codes.map(getKqEquipmentDefinition).find((item) => item?.category === "security")?.name ?? "Sécurité"} : récolte intégralement protégée.`,
     ] : []),
-    ...(theftLoss > 0 ? [`Renard à deux pattes : -${theftLoss} % sur le poids final.`] : []),
+    ...(!buildingScope && theftLoss > 0 ? [`Renard à deux pattes : -${theftLoss} % sur le poids final.`] : []),
   ];
   const heritageEffectNotices = heritageNotices.reduce((notices, notice) => appendKqEffectNotice(notices, notice), state.effectNotices);
   const nextNotices = incidentNotices.reduce((notices, notice) => appendKqEffectNotice(notices, notice), heritageEffectNotices);
@@ -1265,7 +1314,7 @@ export function resolveKqStage(state: KqGameState): KqGameState {
     ...(care ? { care } : {}),
     pressure: pressureAfter,
     powerOutage,
-    harvestLossPercent: Math.min(80, (state.harvestLossPercent ?? 0) + theftLoss),
+    harvestLossPercent,
     heritageUsed: failureRecovery || dryingRecovery || sparkPressureRelief ? true : state.heritageUsed,
     effectNotices: rescued && state.rulesVersion === 3 ? appendKqEffectNotice(nextNotices, "Secours de première culture : vitalité rétablie à 15, pertes conservées.") : rescued ? appendKqEffectNotice(nextNotices,
       "Secours de première culture utilisé : cette étape à 0 réussite ne compte pas pour la mort. Dés, résultat et gains inchangés.") : nextNotices,
@@ -1284,7 +1333,8 @@ export function resolveKqStage(state: KqGameState): KqGameState {
       combos: newCombos,
       qualityDelta,
       xpGain,
-      harvestLossPercent: theftLoss,
+      harvestLossPercent: incidentLoss,
+      ...(buildingHarvestLosses ? { buildingHarvestLosses } : {}),
       ...(rescued ? { rescued: true } : {}),
       decision: {
         version: state.rulesVersion === 3 ? 2 : 1,
@@ -1421,6 +1471,7 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
 
 /** Preserve each tent's yield cap and rounding, including legacy identical installations. */
 function calculateKqInstallationHarvest(state: KqGameState, quality: number, successfulStages: number, lossPercent: number) {
+  const buildingLosses = state.equipment?.scope === "building" ? getKqBuildingHarvestLosses(state) : null;
   const quantityBonuses = state.equipment?.tents
     ? state.equipment.tents.map(tent => ({ tentNumber: tent.tentNumber, quantityPercent: summarizeKqEquipmentLoadout(tent.codes, tent.levels).quantityPercent }))
     : Array.from({ length: getKqProductionUnits(state.equipment?.productionUnits) }, (_, index) => ({ tentNumber: index + 1, quantityPercent: state.equipment?.quantityPercent ?? 0 }));
@@ -1428,7 +1479,8 @@ function calculateKqInstallationHarvest(state: KqGameState, quality: number, suc
     const inputBonus = state.rulesVersion === 3 ? state.care?.yieldBonusPercent ?? 0 : 0;
     const healthLoss = state.rulesVersion === 3 ? state.care?.yieldLossPercent ?? 0 : 0;
     const gross = Math.min(500, Math.round(calculateKqHarvestGrams({ quality, successfulStages, quantityPercent }) * (1 + inputBonus / 100) * 10) / 10);
-    const afterIncident = Math.round(gross * (1 - lossPercent / 100) * (1 - healthLoss / 100) * 10) / 10;
+    const localLoss = buildingLosses ? buildingLosses[getKqEquipmentBuildingNumber(tentNumber)] ?? 0 : lossPercent;
+    const afterIncident = Math.round(gross * (1 - localLoss / 100) * (1 - healthLoss / 100) * 10) / 10;
     return {
       tentNumber,
       quantityPercent,

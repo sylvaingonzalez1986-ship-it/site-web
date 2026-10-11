@@ -1,11 +1,12 @@
-import { KQ_EQUIPMENT_CATALOG, KQ_STARTING_EQUIPMENT_CODES, getKqEquipmentDefinition, getKqEquipmentRequirementState, getKqEquipmentUpgradeCost, isKqSharedEquipment, validateKqEquipmentCart } from './kanab-quest-equipment';
-import { getKqProductionExpansion } from './kanab-quest-production';
+import { KQ_EQUIPMENT_CATALOG, KQ_STARTING_EQUIPMENT_CODES, getKqEquipmentBuildingNumber, getKqEquipmentDefinition, getKqEquipmentRequirementState, getKqEquipmentUpgradeCost, isKqBuildingEquipment, isKqSharedEquipment, validateKqEquipmentCart } from './kanab-quest-equipment';
+import { getKqEffectiveTentProfiles, getKqProductionExpansion } from './kanab-quest-production';
+import { createChanvrierCareerSnapshot } from './chanvrier-career';
 import { getKqMachineCondition, type KqMachineCondition } from './kanab-quest-maintenance';
 import { getKqCultureEquipmentCondition, getKqCultureOperationalCodes, type KqCultureEquipmentCondition } from './kanab-quest-culture-wear';
-import { quoteKqEnergy, type KqEnergyMode } from './kanab-quest-energy';
+import { quoteKqEnergy, quoteKqTentEnergy, type KqEnergyMode } from './kanab-quest-energy';
 import { KQ_COMPUTER_PRICE_CENTS, KQ_SALES_CHANNELS, getKqCommerceCapacity, getKqShopBudget, quoteKqCommerce, type KqCommerceOffer, type KqCommerceReceipt, type KqCommerceSnapshot, type KqCommerceStock, type KqOnlinePrice, type KqSalesChannel } from './kanab-quest-commerce';
 import { previewKqBusinessPayment } from './kanab-quest-business';
-import { isKqMarketRouteCode, quoteKqMarketRoutes, type KqMarketRouteCode } from './kanab-quest-market';
+import { KQ_MARKET_ROUTES, isKqMarketRouteCode, quoteKqMarketRoutes, type KqMarketRouteCode } from './kanab-quest-market';
 import { getKqMarketWindow } from './kanab-quest-market-demand';
 import { createKqWorkshop } from './kanab-quest-workshops';
 import { advanceKqTrialClock, KQ_TUTORIAL_STORAGE_NOTICE, trialQuality, type KqTrialState } from './kanab-quest-trial';
@@ -14,9 +15,10 @@ import { changeKqStorageCapacity, changeKqStorageMethod, createKqStorageLot, fil
 export type KqOperationsLessonId = 'equipment' | 'warehouse' | 'market';
 type Inventory = { ownedCodes: string[]; purchasedCodes: string[]; equippedCodes: string[]; levels: Record<string, number>; maintenance: Record<string, KqMachineCondition>; cultureWear: Record<string, KqCultureEquipmentCondition> };
 type Tent = Inventory & { tentNumber: number };
+type Building = Inventory & { buildingNumber: number; anchorTentNumber: number };
 type PreparedQuote = { offer: KqCommerceOffer; stockId: string; revision: number };
 export type KqOperationsLessonState = {
-  lesson: KqOperationsLessonId; trial: KqTrialState; tents: Tent[]; shared: Inventory;
+  lesson: KqOperationsLessonId; trial: KqTrialState; tents: Tent[]; buildings: Building[]; shared: Inventory;
   storage: { ownedContainers: Record<string, number>; defaultMethodCode: KqStorageMethodCode; lot: KqStorageLot; revision: number;
     overflowSales: Array<{ flowerId: string; units: number; payoutCents: number; netPayoutCents: number; soldAt: string; automatic: boolean }> };
   prepared: boolean; events: string[]; routePlan: { route: string; equipmentCode: string } | null;
@@ -26,7 +28,12 @@ export type KqOperationsLessonAction = { path: string; method: string; body: Rec
 const LOT_ID = 'operations-lesson-flower';
 
 function inventory(codes: readonly string[], equipped = codes): Inventory {
-  return { ownedCodes: [...codes], purchasedCodes: codes.filter(code => getKqEquipmentDefinition(code)?.purchasable), equippedCodes: [...equipped], levels: Object.fromEntries(codes.map(code => [code, 1])), maintenance: {}, cultureWear: {} };
+  const cultureWear: Inventory['cultureWear'] = {};
+  for (const code of codes) {
+    const condition = getKqCultureEquipmentCondition(code, 1, 0);
+    if (condition) cultureWear[code] = condition;
+  }
+  return { ownedCodes: [...codes], purchasedCodes: codes.filter(code => getKqEquipmentDefinition(code)?.purchasable), equippedCodes: [...equipped], levels: Object.fromEntries(codes.map(code => [code, 1])), maintenance: {}, cultureWear };
 }
 
 export function createKqOperationsLesson(lesson: KqOperationsLessonId): KqOperationsLessonState {
@@ -52,11 +59,12 @@ export function createKqOperationsLesson(lesson: KqOperationsLessonId): KqOperat
   trial.commerce.computerOwned = true;
   if (trial.commerce.business) trial.commerce.business.shop = { name: 'Le shop de Sylvain · essai', createdAt: new Date(trial.clock).toISOString(), paidUntil: new Date(trial.clock + 30 * 86400000).toISOString(), renew: true, active: true };
   const tent: Tent = { ...inventory(KQ_STARTING_EQUIPMENT_CODES), tentNumber: 1 };
+  const building: Building = { ...inventory(lesson === 'equipment' ? [] : ['DRYING-ROOM']), buildingNumber: 1, anchorTentNumber: 1 };
   const shared = inventory(lesson === 'equipment' ? [] : ['SIFT-TRAY', 'PRESS-0600']);
   if (lesson !== 'equipment') {
-    tent.ownedCodes.push('LED-300', 'DRYING-ROOM'); tent.purchasedCodes.push('LED-300', 'DRYING-ROOM');
-    tent.equippedCodes = tent.equippedCodes.filter(code => getKqEquipmentDefinition(code)?.slot !== 'lighting').concat('LED-300', 'DRYING-ROOM');
-    tent.levels['LED-300'] = 1; tent.levels['DRYING-ROOM'] = 1;
+    tent.ownedCodes.push('LED-300'); tent.purchasedCodes.push('LED-300');
+    tent.equippedCodes = tent.equippedCodes.filter(code => getKqEquipmentDefinition(code)?.slot !== 'lighting').concat('LED-300');
+    tent.levels['LED-300'] = 1;
   }
   if (lesson === 'warehouse') {
     const machine = KQ_EQUIPMENT_CATALOG.find(item => item.category === 'processing' && getKqMachineCondition(item.code, 1, 10)?.due);
@@ -66,7 +74,7 @@ export function createKqOperationsLesson(lesson: KqOperationsLessonId): KqOperat
     if (machine) shared.maintenance[machine.code] = getKqMachineCondition(machine.code, 1, 10)!;
     tent.cultureWear['LED-300'] = getKqCultureEquipmentCondition('LED-300', 1, 60)!;
   }
-  return { lesson, trial, tents: [tent], shared, storage: { ownedContainers, defaultMethodCode: 'STORAGE-GLASS', lot, revision: 0, overflowSales: [] }, prepared: false, events: [], routePlan: null, quotes: {}, receipts: {} };
+  return { lesson, trial, tents: [tent], buildings: [building], shared, storage: { ownedContainers, defaultMethodCode: 'STORAGE-GLASS', lot, revision: 0, overflowSales: [] }, prepared: false, events: [], routePlan: null, quotes: {}, receipts: {} };
 }
 
 function lessonStorageMethods(state: KqOperationsLessonState) {
@@ -121,10 +129,26 @@ export function getKqOperationsStorage(state: KqOperationsLessonState) {
 }
 
 export function getKqOperationsEquipment(state: KqOperationsLessonState, tentNumber = 1) {
-  const tent = state.tents.find(item => item.tentNumber === tentNumber) ?? state.tents[0];
-  return { ...tent, tents: state.tents, sharedEquipment: state.shared, cashCents: state.trial.commerce.cashCents,
-    ownedCodes: [...tent.ownedCodes, ...state.shared.ownedCodes], purchasedCodes: [...tent.purchasedCodes, ...state.shared.purchasedCodes],
-    equippedCodes: [...tent.equippedCodes, ...state.shared.equippedCodes], levels: { ...tent.levels, ...state.shared.levels },
+  const profile = <T extends Inventory>(source: T, scope: 'tent' | 'building' | 'workshop') => {
+    const cultureOperationalCodes = scope === 'tent' ? getKqCultureOperationalCodes(source.equippedCodes, source.cultureWear)
+      : source.equippedCodes.filter(code => !source.cultureWear[code]?.due);
+    return { ...source, cultureOperationalCodes, operationalCodes: cultureOperationalCodes.filter(code => !source.maintenance[code]?.due) };
+  };
+  const tents = state.tents.map(tent => profile(tent, 'tent'));
+  const buildings = state.buildings.map(building => profile(building, 'building'));
+  const sharedEquipment = profile(state.shared, 'workshop');
+  const tent = tents.find(item => item.tentNumber === tentNumber) ?? tents[0];
+  const building = buildings.find(item => item.buildingNumber === getKqEquipmentBuildingNumber(tent.tentNumber))!;
+  const scopes = [tent, building, sharedEquipment];
+  return { ...tent, tents, buildings, equipmentScopeVersion: 3 as const, sharedEquipment, cashCents: state.trial.commerce.cashCents,
+    career: createChanvrierCareerSnapshot({ xp: 4500, completedCultures: 45, processingPractice: { sifting: 10, washing: 6, pressing: 6 } }),
+    storageCapacity: getKqOperationsStorage(state).capacity,
+    expansionEnergyCents: state.tents.length < 8 ? quoteKqEnergy([...KQ_STARTING_EQUIPMENT_CODES]).totalCents : 0,
+    ownedCodes: scopes.flatMap(item => item.ownedCodes), purchasedCodes: scopes.flatMap(item => item.purchasedCodes),
+    equippedCodes: scopes.flatMap(item => item.equippedCodes), levels: { ...tent.levels, ...building.levels, ...sharedEquipment.levels },
+    maintenance: { ...tent.maintenance, ...building.maintenance, ...sharedEquipment.maintenance },
+    cultureWear: { ...tent.cultureWear, ...building.cultureWear },
+    cultureOperationalCodes: scopes.flatMap(item => item.cultureOperationalCodes), operationalCodes: scopes.flatMap(item => item.operationalCodes),
     productionUnits: state.tents.length, equipmentPricingUnits: 1, production: getKqProductionExpansion(state.tents.length),
     routePlan: state.routePlan, catalog: KQ_EQUIPMENT_CATALOG, reputation: state.trial.commerce.reputation, activeRun: false,
   };
@@ -145,12 +169,12 @@ export function getKqOperationsCommerce(state: KqOperationsLessonState): KqComme
 }
 
 export function getKqOperationsEnergy(state: KqOperationsLessonState) {
-  const tents = state.tents.map(tent => ({ tentNumber: tent.tentNumber, equippedCodes: tent.equippedCodes, levels: tent.levels, cultureWear: tent.cultureWear, cultureOperationalCodes: getKqCultureOperationalCodes(tent.equippedCodes, tent.cultureWear) }));
-  const profiles = tents.map(tent => ({ tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels }));
-  const first = tents[0];
-  return { cashCents: state.trial.commerce.cashCents, productionUnits: tents.length, tents, outstandingCents: 0, invoiceCount: 0, bestGramsPerKwh: null, invoices: [],
-    cultureEquipmentCodes: first.equippedCodes, cultureOperationalCodes: first.cultureOperationalCodes, cultureWear: first.cultureWear,
-    quotes: Object.fromEntries((['eco', 'balanced', 'intensive'] as KqEnergyMode[]).map(mode => [mode, quoteKqEnergy(first.cultureOperationalCodes, first.levels, mode, tents.length, profiles)])),
+  const equipment = getKqOperationsEquipment(state);
+  const profiles = getKqEffectiveTentProfiles(equipment);
+  return { cashCents: state.trial.commerce.cashCents, productionUnits: equipment.tents.length, tents: equipment.tents,
+    buildings: equipment.buildings, equipmentScopeVersion: equipment.equipmentScopeVersion, outstandingCents: 0, invoiceCount: 0, bestGramsPerKwh: null, invoices: [],
+    cultureEquipmentCodes: equipment.equippedCodes, cultureOperationalCodes: equipment.cultureOperationalCodes, cultureWear: equipment.cultureWear,
+    quotes: Object.fromEntries((['eco', 'balanced', 'intensive'] as KqEnergyMode[]).map(mode => [mode, quoteKqTentEnergy(profiles, mode, 'building')])),
   };
 }
 
@@ -183,28 +207,34 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
     const number = Number(body.tentNumber) || 1;
     const tent = state.tents.find(item => item.tentNumber === number);
     requireCondition(tent, 'Tente indisponible.');
+    const building = state.buildings.find(item => item.buildingNumber === getKqEquipmentBuildingNumber(number))!;
+    const ownedCodes = [...tent.ownedCodes, ...building.ownedCodes, ...state.shared.ownedCodes];
+    const targetInventory = (code: string) => isKqSharedEquipment(code) ? state.shared : isKqBuildingEquipment(code) ? building : tent;
     if (body.action === 'expand-production') {
       const expansion = getKqProductionExpansion(state.tents.length);
       requireCondition(expansion.nextUnits && body.expectedUnits === state.tents.length && body.expectedCostCents === expansion.totalCostCents, 'Le projet a changé. Actualise l’entrepôt.');
       spend(expansion.totalCostCents);
       for (let next = state.tents.length + 1; next <= expansion.nextUnits!; next++) state.tents.push({ ...inventory(KQ_STARTING_EQUIPMENT_CODES), tentNumber: next });
+      if (state.buildings.length < Math.ceil(state.tents.length / 4)) state.buildings.push({ ...inventory([]), buildingNumber: 2, anchorTentNumber: 5 });
       state.events.push('expand'); payload = { productionUnits: state.tents.length, cashAfterCents: c.cashCents };
     } else if (body.action === 'route-plan') {
       state.routePlan = typeof body.route === 'string' && typeof body.equipmentCode === 'string' ? { route: body.route, equipmentCode: body.equipmentCode } : null;
       payload = { routePlan: state.routePlan };
     } else if (method === 'POST') {
       const codes = Array.isArray(body.equipmentCodes) ? body.equipmentCodes.filter((code): code is string => typeof code === 'string') : [];
-      const validation = validateKqEquipmentCart({ cartCodes: codes, ownedCodes: [...tent!.ownedCodes, ...state.shared.ownedCodes], cashCents: c.cashCents, productionUnits: 1 });
+      const validation = validateKqEquipmentCart({ cartCodes: codes, ownedCodes, cashCents: c.cashCents, productionUnits: 1 });
       requireCondition(codes.length > 0 && !validation.errors.length, validation.errors[0] ?? 'Choisis du matériel dans le catalogue.'); spend(validation.totalCents);
       for (const code of validation.uniqueCodes) {
-        const target = isKqSharedEquipment(code) ? state.shared : tent!;
+        const target = targetInventory(code);
         target.ownedCodes.push(code); target.purchasedCodes.push(code); target.levels[code] = 1;
+        const condition = getKqCultureEquipmentCondition(code, 1, 0);
+        if (condition) target.cultureWear[code] = condition;
       }
       state.events.push('purchase'); payload = { tentNumber: number, equipmentCodes: codes, totalPriceCents: validation.totalCents, cashAfterCents: c.cashCents };
     } else {
       const code = String(body.equipmentCode ?? '');
       const item = getKqEquipmentDefinition(code);
-      const target = isKqSharedEquipment(code) ? state.shared : tent!;
+      const target = targetInventory(code);
       requireCondition(item && target.purchasedCodes.includes(code), 'Équipement non acheté dans cet atelier.');
       if (body.action === 'upgrade') {
         const level = target.levels[code] ?? 1;
@@ -214,7 +244,7 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
         state.events.push('upgrade'); payload = { level: level + 1, cashAfterCents: c.cashCents };
       } else if (body.action === 'repair') {
         const condition = target.maintenance[code];
-        requireCondition(condition?.due && condition.version === body.expectedVersion, 'Cette machine est déjà prête.'); spend(condition.repairCents);
+        requireCondition(condition && condition.cycles > 0 && condition.version === body.expectedVersion, 'Cette machine est déjà prête.'); spend(condition.repairCents);
         target.maintenance[code] = getKqMachineCondition(code, target.levels[code], 0, condition.version + 1)!;
         state.events.push('repair'); payload = { repaired: true };
       } else if (body.action === 'replace') {
@@ -224,7 +254,7 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
         state.events.push('replace'); payload = { replaced: true };
       } else {
         requireCondition(!body.action, 'Action d’équipement inconnue.');
-        const requirement = getKqEquipmentRequirementState({ equipment: item!, ownedCodes: [...tent!.ownedCodes, ...state.shared.ownedCodes], cartCodes: [] });
+        const requirement = getKqEquipmentRequirementState({ equipment: item!, ownedCodes, cartCodes: [] });
         requireCondition(requirement.compatible && !target.cultureWear[code]?.due, 'Complète les prérequis avant cette installation.');
         target.equippedCodes = target.equippedCodes.filter(other => getKqEquipmentDefinition(other)?.slot !== item!.slot).concat(code);
         state.events.push('install'); payload = { installed: code };
@@ -281,6 +311,14 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
         const remainderRoute = quote.remainderDestination === 'raw' ? 'raw' : 'biomass';
         const remainder = routes(state).find(item => item.route === remainderRoute)!;
         c.stocks.push(stock('operations-remainder', remainderRoute, quote.remainderGrams, quote.remainderGrams, remainder.productBaseUnitCents ?? 30));
+      }
+      const definition = KQ_MARKET_ROUTES.find(item => item.code === route)!;
+      for (const code of state.shared.equippedCodes) {
+        const machine = getKqEquipmentDefinition(code);
+        if (!machine || !definition.requiredUnlocks.some(unlock => machine.unlocks.includes(unlock))) continue;
+        const previous = state.shared.maintenance[code];
+        const condition = getKqMachineCondition(code, state.shared.levels[code], (previous?.cycles ?? 0) + 1, (previous?.version ?? 0) + 1);
+        if (condition) state.shared.maintenance[code] = condition;
       }
       const now = new Date(state.trial.clock).toISOString();
       c.campaign = { id: 'operations-campaign', revision: 0, reputation: c.reputation, clientsStart: c.clients, shopPartnersStart: c.shopPartners, event: 'normal', internetPaid: true, directUsed: 0, shopUsed: 0, goodUnits: 0, disappointmentUnits: 0 };

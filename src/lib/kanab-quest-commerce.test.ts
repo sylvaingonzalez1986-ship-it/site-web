@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import { quoteKqCommerce, getKqCommerceReplenishment, getKqCommerceCapacity, getKqCommerceStockQuality, type KqCommerceState, type KqCommerceStock, type KqCommerceOffer } from "./kanab-quest-commerce";
 import { createKqStorageLot, KQ_CURING_DURATION_MS, planKqStorageAllocation, projectKqStorageLot } from "./kanab-quest-storage";
 import { createKqCareState } from "./kanab-quest-care";
-import { KQ_GAME_DAY_MS } from "./kanab-quest-business";
+import { getKqSaleVatCents, KQ_GAME_DAY_MS, KQ_LAB_ANALYSIS_CENTS } from "./kanab-quest-business";
+import { quoteKqEnergy } from "./kanab-quest-energy";
+import { KQ_STARTING_EQUIPMENT_CODES } from "./kanab-quest-equipment";
 const stock: KqCommerceStock = { id: "stock", flowerId: "flower", name: "Test", route: "raw", batchRoute: "raw", juryScore: 9, initialUnits: 1200, remainingUnits: 1200, equivalentUnits: 1200, originalUnits: 1200, baseUnitCents: 180, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false };
 const state: KqCommerceState = { revision: 0, cashCents: 100000, reputation: 1500, clients: 100, computerOwned: true, internetRenew: true,
   campaign: { id: "cycle", revision: 0, reputation: 1500, clientsStart: 100, event: "normal", internetPaid: true, directUsed: 0, shopUsed: 0, goodUnits: 0, disappointmentUnits: 0 }, stocks: [stock], receipts: [], marketVolumes: {}, ownVolumes: {}, routeSales: {} };
@@ -117,21 +119,53 @@ describe("Three sales channels", () => {
   });
   it("has distinct professional tariffs independent of reputation and the chosen online price", () => {
     expect(quoteKqCommerce(state, stock, "cbd-shop").unitCents).toBe(99);
-    expect(quoteKqCommerce(state, stock, "wholesale").unitCents).toBe(54);
+    expect(quoteKqCommerce(state, stock, "wholesale").unitCents).toBe(68.4);
     expect(quoteKqCommerce({ ...state, reputation: 0 }, stock, "cbd-shop", "premium").unitCents).toBe(99);
-    expect(quoteKqCommerce({ ...state, reputation: 3000 }, stock, "wholesale", "premium").unitCents).toBe(54);
+    expect(quoteKqCommerce({ ...state, reputation: 3000 }, stock, "wholesale", "premium").unitCents).toBe(68.4);
   });
   it("requires both the computer and a paid cycle online, with no such barrier for wholesalers", () => {
     expect(quoteKqCommerce({ ...state, computerOwned: false }, stock, "online").maxUnits).toBe(0);
     expect(quoteKqCommerce({ ...state, campaign: { ...state.campaign!, internetPaid: false } }, stock, "online").maxUnits).toBe(0);
     expect(quoteKqCommerce({ ...state, computerOwned: false, campaign: null }, stock, "wholesale").maxUnits).toBe(1200);
   });
-  it("quotes poor raw flowers to wholesalers at the same price, without reputation", () => {
+  it("preserves the lower clearance price for poor raw flowers without reputation", () => {
     const bad = { ...stock, juryScore: 0 };
     expect(quoteKqCommerce(state, bad, "online").maxUnits).toBe(0);
     expect(quoteKqCommerce(state, bad, "cbd-shop").maxUnits).toBe(0);
     expect(quoteKqCommerce(state, bad, "wholesale")).toMatchObject({ maxUnits: 1200, unitCents: 54, reputationDelta: 0 });
     expect(quoteKqCommerce(state, { ...stock, juryScore: 6.5 }, "cbd-shop").unitCents).toBe(72);
+  });
+  it("covers a 100 g starter session at commercial flower quality while keeping retail more rewarding", () => {
+    const cycleCost = KQ_LAB_ANALYSIS_CENTS + quoteKqEnergy([...KQ_STARTING_EQUIPMENT_CODES]).totalCents;
+    for (const juryScore of [6.5, 7, 8, 9.2]) for (const [event, expectedUnitCents] of [["normal", 68.4], ["promotion", 63], ["restock", 70.2]] as const) {
+      const account = { ...state, reputation: 0, clients: 0, campaign: { ...state.campaign!, event, reputation: 0, clientsStart: 0 } };
+      const item = { ...stock, juryScore, initialUnits: 1000, remainingUnits: 1000, equivalentUnits: 1000, originalUnits: 1000 };
+      const wholesale = quoteKqCommerce(account, item, "wholesale");
+      const retail = quoteKqCommerce(account, item, "cbd-shop");
+      expect(wholesale).toMatchObject({ reason: null, unitCents: expectedUnitCents, reputationDelta: 0, clientsAfter: 0 });
+      expect(wholesale.payoutCents - getKqSaleVatCents(wholesale.payoutCents, 0) - cycleCost).toBeGreaterThan(0);
+      expect(retail.payoutCents).toBeGreaterThan(wholesale.payoutCents);
+    }
+  });
+  it("does not subsidize poor flowers, extracts or biomass, including a lot degraded below the threshold", () => {
+    for (const [event, oldPercent] of [["normal", 30], ["promotion", 25], ["restock", 33]] as const) {
+      const account = { ...state, campaign: { ...state.campaign!, event } };
+      for (const item of [{ ...stock, juryScore: 6.49 }, { ...stock, route: "dry-sift" as const }, { ...stock, route: "rosin-trial" as const }]) {
+        expect(quoteKqCommerce(account, item, "wholesale").unitCents).toBe(180 * oldPercent / 100);
+      }
+      expect(quoteKqCommerce(account, { ...stock, route: "biomass", baseUnitCents: 30 }, "wholesale").unitCents).toBe(30);
+    }
+    const origin = Date.parse("2026-10-10T12:00:00Z");
+    const lot = createKqStorageLot({ flowerId: stock.flowerId, harvestedAt: new Date(origin).toISOString(),
+      baseline: { varietyCode: "TEST", juryScore: 6.6, aroma: 90, care: createKqCareState() } });
+    const storage = projectKqStorageLot(lot, origin + 60 * KQ_GAME_DAY_MS);
+    expect(quoteKqCommerce(state, { ...stock, juryScore: 6.6, storage }, "wholesale").unitCents).toBe(54);
+    const cycleCost = KQ_LAB_ANALYSIS_CENTS + quoteKqEnergy([...KQ_STARTING_EQUIPMENT_CODES]).totalCents;
+    for (const [route, baseUnitCents] of [["raw", 180], ["biomass", 30]] as const) {
+      const poor = { ...stock, route, baseUnitCents, juryScore: 3, initialUnits: 1000, remainingUnits: 1000, equivalentUnits: 1000, originalUnits: 1000 };
+      const offer = quoteKqCommerce(state, poor, "wholesale");
+      expect(offer.payoutCents - getKqSaleVatCents(offer.payoutCents, 0) - cycleCost).toBeLessThan(0);
+    }
   });
   it("preserves premium prices at high reputation without guaranteeing all stock will sell", () => {
     const large = { ...stock, initialUnits: 10000, remainingUnits: 10000, equivalentUnits: 10000, originalUnits: 10000 };

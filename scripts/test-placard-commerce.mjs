@@ -123,6 +123,30 @@ try {
   assert.equal(wholesale.offer.units,1200);assert.equal(wholesale.offer.reputationDelta,0);
   await command('sell',{quoteId:wholesale.id,expectedPayoutCents:wholesale.offer.payoutCents});
   assert.equal((await state()).routeSales.raw,1);
+  // SQL settles server-authored quotes at the displayed tariff. Wholesale must
+  // neither earn route mastery nor rewrite quotes/receipts issued before a price change.
+  for (const [event, percent] of [['normal',38],['promotion',35],['restock',39]]) {
+    await db.query('UPDATE kq_commerce_campaigns SET event=$2 WHERE run_id=$1',[run,event]);
+    for (const score of [6.5,9.2]) {
+      const lot=await prepare(score), offered=await quote(lot.stockId,'wholesale',1200);
+      assert.equal(offered.offer.unitCents,180*percent/100);
+      const key=randomUUID(), payload={quoteId:offered.id,expectedPayoutCents:offered.offer.payoutCents};
+      await assert.rejects(()=>command('sell',{...payload,expectedPayoutCents:payload.expectedPayoutCents+1}),/commerce_offer_changed/);
+      const receipt=await command('sell',payload,key);
+      assert.equal(receipt.payoutCents,offered.offer.payoutCents);
+      assert.equal(receipt.reputationGain,0);
+      assert.equal((await command('sell',payload,key)).replayed,true);
+    }
+  }
+  await db.query("UPDATE kq_commerce_campaigns SET event='normal' WHERE run_id=$1",[run]);
+  const archived=await prepare(9.2), archivedQuote=await quote(archived.stockId,'wholesale',1200);
+  const oldOffer={...archivedQuote.offer,unitCents:54,payoutCents:6480,payoutExactAfter:6480,payoutRoundedAfter:6480};
+  await db.query('UPDATE kq_commerce_quotes SET offer=$2::jsonb WHERE id=$1',[archivedQuote.id,JSON.stringify(oldOffer)]);
+  const archivedKey=randomUUID(), archivedPayload={quoteId:archivedQuote.id,expectedPayoutCents:6480};
+  assert.equal((await command('sell',archivedPayload,archivedKey)).payoutCents,6480);
+  const oldReplay=await command('sell',archivedPayload,archivedKey);
+  assert.equal(oldReplay.payoutCents,6480);assert.equal(oldReplay.replayed,true);
+  assert.equal((await state()).routeSales.raw,1,'Wholesale never awards retail mastery');
   const transformed=await prepare(9,'dry-sift');
   const transformedStocks=(await state()).stocks.filter(s=>s.flowerId===transformed.flowerId);
   assert.equal(transformedStocks.reduce((n,s)=>n+s.equivalentUnits,0),1200);
@@ -198,5 +222,5 @@ try {
   const replay=await command('sell',lostPayload,lostKey);assert.equal(replay.shopPartnersDelta,-1);assert.equal((await state()).shopPartners,3);
   assert.equal((await state()).campaign.shopPartnersStart,4);
   assert((await state()).receipts.some(r=>r.shopPartnersDelta===-1));
-  console.log('Commerce SQL passed: migrations, computer, cycle billing, partial stock, multi-channel receipts, low-quality wholesale, quote protection, ownership, replay, mastery and retained inventory.');
+  console.log('Commerce SQL passed: migrations, computer, cycle billing, partial stock, multi-channel receipts, commercial/clearance wholesale tariffs, preserved old quotes/receipts, quote protection, ownership, replay, mastery and retained inventory.');
 } finally { await vite.close(); await db.close(); }

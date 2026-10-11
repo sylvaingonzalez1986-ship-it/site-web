@@ -4,7 +4,7 @@ import type { ChanvrierStrength } from "./arena-chanvrier";
 export type KqMachineCondition = { cycles: number; interval: number; remaining: number; due: boolean; repairCents: number; version: number };
 export function getKqMachineCondition(code: string, level: number, cycles: number, version = 0, strength?: ChanvrierStrength | null): KqMachineCondition | null {
   const item = getKqEquipmentDefinition(code);
-  if (!item || item.category !== "processing" || code === "SIFT-TRAY") return null;
+  if (!item || item.category !== "processing") return null;
   const safeLevel = Math.max(1, Math.min(10, Math.floor(level)));
   const interval = safeLevel >= 5 || code === "FREEZE-DRYER" ? 20 : 10;
   const used = Math.max(0, Math.floor(cycles));

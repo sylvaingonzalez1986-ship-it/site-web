@@ -1,15 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
+import { getKqEquipmentBuildingNumber, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { KqEquipmentInventoryModal } from "./KqEquipmentInventoryModal";
-import { useKqSelectTent, useKqTentSelection, type KqTentOverview, type KqSharedEquipmentOverview } from "./KqTentSelector";
+import { useKqSelectTent, useKqTentSelection, type KqTentOverview, type KqSharedEquipmentOverview, type KqBuildingEquipmentOverview } from "./KqTentSelector";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import type { KqProductionSnapshot } from "./KqProductionCapacity";
 import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import type { KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
+import type { ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
+import type { ChanvrierProfile } from "@/lib/arena-chanvrier";
 
-type Snapshot={tentNumber?:number;tents?:KqTentOverview[];sharedEquipment?:KqSharedEquipmentOverview;ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;productionUnits?:number;production?:KqProductionSnapshot;maintenance?:Record<string,KqMachineCondition>;cultureWear?:Record<string,KqCultureEquipmentCondition>;activeRun?:boolean};
+type Snapshot={chanvrierProfile?:ChanvrierProfile|null;equipmentScopeVersion?:2|3;career?:ChanvrierCareerSnapshot;storageCapacity?:{freeUnits:number;totalUnits:number}|null;expansionEnergyCents?:number;tentNumber?:number;tents?:KqTentOverview[];buildings?:KqBuildingEquipmentOverview[];sharedEquipment?:KqSharedEquipmentOverview;ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;productionUnits?:number;production?:KqProductionSnapshot;maintenance?:Record<string,KqMachineCondition>;cultureWear?:Record<string,KqCultureEquipmentCondition>;activeRun?:boolean};
 const EMPTY:Snapshot={ownedCodes:[],purchasedCodes:[],equippedCodes:[],levels:{},cashCents:0};
 export function KqWarehouseEntry({initialEquipmentCode,initialSection="equipment",onClose,onOpenShop}:{initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage";onClose:()=>void;onOpenShop:(code?:string)=>void}){
   const api=useKqTutorialApi();
@@ -41,14 +43,18 @@ export function KqWarehouseEntry({initialEquipmentCode,initialSection="equipment
     setError("");selectKqTent(number);
   };
   const shared=snapshot.sharedEquipment;
+  const building=snapshot.equipmentScopeVersion===3?snapshot.buildings?.find(item=>item.buildingNumber===getKqEquipmentBuildingNumber(tentNumber)):undefined;
   return <KqEquipmentInventoryModal {...snapshot} {...(selected??EMPTY)}
     cashCents={snapshot.cashCents}
+    career={snapshot.career}
+    chanvrierProfile={snapshot.chanvrierProfile}
     sharedEquipment={shared}
-    ownedCodes={[...new Set([...(selected?.ownedCodes??[]),...(shared?.ownedCodes??[])])]}
-    purchasedCodes={[...new Set([...(selected?.purchasedCodes??[]),...(shared?.purchasedCodes??[])])]}
-    equippedCodes={[...new Set([...(selected?.equippedCodes??[]),...(shared?.equippedCodes??[])])]}
-    levels={{...selected?.levels,...shared?.levels}}
-    maintenance={{...selected?.maintenance,...shared?.maintenance}} cultureWear={selected?.cultureWear??{}}
+    buildings={snapshot.buildings}
+    ownedCodes={[...new Set([...(selected?.ownedCodes??[]),...(building?.ownedCodes??[]),...(shared?.ownedCodes??[])])]}
+    purchasedCodes={[...new Set([...(selected?.purchasedCodes??[]),...(building?.purchasedCodes??[]),...(shared?.purchasedCodes??[])])]}
+    equippedCodes={[...new Set([...(selected?.equippedCodes??[]),...(building?.equippedCodes??[]),...(shared?.equippedCodes??[])])]}
+    levels={{...selected?.levels,...building?.levels,...shared?.levels}}
+    maintenance={{...selected?.maintenance,...building?.maintenance,...shared?.maintenance}} cultureWear={{...selected?.cultureWear,...building?.cultureWear}}
     tentNumber={tentNumber} tents={snapshot.tents??[]} onSelectTent={selectTent}
     loading={loading||(!error&&!selected)} loadError={error} onRetry={refresh} onClose={onClose} onOpenShop={onOpenShop}
     initialSection={initialSection} initialSlot={getKqEquipmentDefinition(initialEquipmentCode??"")?.slot}/>;

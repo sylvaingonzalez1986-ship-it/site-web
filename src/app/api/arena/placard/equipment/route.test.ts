@@ -1,5 +1,6 @@
 ﻿import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), replace: vi.fn(), expand: vi.fn(), shop: vi.fn(), purchase: vi.fn(), rate: vi.fn() }));
+const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), replace: vi.fn(), expand: vi.fn(), shop: vi.fn(), storage: vi.fn(), purchase: vi.fn(), rate: vi.fn() }));
+vi.mock("@/lib/supabase/kanab-quest-storage-backend", () => ({ getKqStorageSnapshot: mocks.storage }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: vi.fn() }));
@@ -79,12 +80,21 @@ describe("individual tent equipment endpoints", () => {
     mocks.session.mockResolvedValue({ customerId: "session-owner", customer: { email: "owner@example.test" } });
     mocks.rate.mockResolvedValue({ allowed: true });
     mocks.shop.mockResolvedValue({ tentNumber: 2 });
+    mocks.storage.mockResolvedValue({ capacity: { freeUnits: 1000, totalUnits: 2000 } });
     mocks.purchase.mockResolvedValue({ totalPriceCents: 35900 });
   });
   it("reads the selected tent for the authenticated owner", async () => {
     const response = await GET(new Request("http://localhost/api/arena/placard/equipment?tentNumber=2&userId=another-player"));
     expect(response.status).toBe(200);
     expect(mocks.shop).toHaveBeenCalledWith("session-owner", 2);
+    expect(mocks.storage).toHaveBeenCalledWith("session-owner");
+    expect(await response.json()).toMatchObject({ storageCapacity: { freeUnits: 1000, totalUnits: 2000 } });
+  });
+  it("keeps equipment available with an explicit missing storage estimate", async () => {
+    mocks.storage.mockRejectedValueOnce(new Error("storage unavailable"));
+    const response = await GET(new Request("http://localhost/api/arena/placard/equipment"));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({ storageCapacity: null });
   });
   it("passes the selected tent to a purchase without accepting a forged owner", async () => {
     const response = await POST(request({ equipmentCodes: ["LED-300"], userId: "forged", tentNumber: 2, expectedUnits: 4 }));

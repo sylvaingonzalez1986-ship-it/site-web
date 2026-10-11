@@ -25,6 +25,12 @@ export type KqSharedEquipmentOverview = {
   maintenance: Record<string, KqMachineCondition>;
   cultureWear?: Record<string, KqCultureEquipmentCondition>;
 };
+export type KqBuildingEquipmentOverview = KqSharedEquipmentOverview & {
+  buildingNumber: number;
+  anchorTentNumber: number;
+  operationalCodes?: string[];
+  cultureOperationalCodes?: string[];
+};
 
 const CHANGE_EVENT = "kq:tent-selected";
 const LessonTentContext = createContext<{ selected: number; select: (number: number) => void } | null>(null);
@@ -70,8 +76,9 @@ export function useKqTentSelection() {
   return lesson?.selected ?? realSelection;
 }
 
-export function KqTentSelector({ tents, tentNumber, disabled, onSelect = selectKqTent }: {
+export function KqTentSelector({ tents, tentNumber, equipmentScopeVersion = 2, disabled, onSelect = selectKqTent }: {
   tents: KqTentOverview[];
+  equipmentScopeVersion?: 2 | 3;
   tentNumber: number;
   disabled?: boolean;
   onSelect?: (tentNumber: number) => void;
@@ -84,6 +91,6 @@ export function KqTentSelector({ tents, tentNumber, disabled, onSelect = selectK
         return <option key={tent.tentNumber} value={tent.tentNumber}>Tente {tent.tentNumber} · {equipment?.purchasable ? equipment.name + " · niv. " + (tent.levels[code!] ?? 1) : tent.equippedCodes.some(item => getKqEquipmentDefinition(item)?.purchasable) ? "Tente de départ aménagée" : "Kit de départ"}</option>;
       }) : <option value={tentNumber}>Tente {tentNumber}</option>}
     </select></label>
-    <p>Chaque tente a son matériel, ses niveaux et son usure. Seules les machines de transformation sont communes.</p>
+    <p>{equipmentScopeVersion===3?"La culture s’équipe par tente ; séchoir, énergie et sécurité par bâtiment de quatre places. Les machines de transformation sont communes à tous.":"Chaque tente a son matériel, ses niveaux et son usure. Seules les machines de transformation sont communes."}</p>
   </div>;
 }

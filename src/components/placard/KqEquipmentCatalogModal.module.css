@@ -124,3 +124,5 @@
 .productArea>section[aria-label="Matériel de vente en ligne"]{background:#f8f2e4;color:#123b2f;border-color:#123b2f40}
 .productArea>section[aria-label="Matériel de vente en ligne"] small{color:#735619}
 .catalog button:focus-visible,.catalog a:focus-visible{outline-color:#123b2f;box-shadow:0 0 0 5px #fffaf1}
+.careerGate { display: block; padding: 8px; margin: 5px 0; border-left: 3px solid #a47828; background: #f5e9cf; color: #594120; font-size: 12px; font-weight: 650; line-height: 1.5; }
+.productCard[data-career-locked] { outline: 1px dashed #a47828; outline-offset: 2px; }

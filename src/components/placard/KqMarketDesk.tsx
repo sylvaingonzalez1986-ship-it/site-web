@@ -652,7 +652,8 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
                       <p>{quote.description}</p>
                       <dl>
                         <div><dt>Produit fini</dt><dd>{quote.productGrams.toLocaleString("fr-FR")} g</dd></div>
-                        <div><dt>Capacité utilisée</dt><dd>{quote.processingCapacityPercent} %</dd></div>
+                        {quote.processingBatchGrams !== undefined ? <div><dt>Capacité de l’atelier par lot</dt><dd>{quote.processingBatchGrams} g de fleurs</dd></div> : null}
+                        <div><dt>Part de la récolte transformée</dt><dd>{quote.processingCapacityPercent} %</dd></div>
                         <div><dt>Prix du lot</dt><dd>{formatKqCash(quote.payoutCents)}</dd></div>
                         <div><dt>Réputation</dt><dd data-loss={quote.reputationGain < 0 || undefined}>{quote.available ? formatKqReputationDelta(quote.reputationGain) : "—"}</dd></div>
                       </dl>

@@ -1,11 +1,11 @@
 import { isKqEnergyQuoteValid } from "@/lib/kanab-quest-energy";
-import { KQ_RETIRED_SUBSTRATE_CODES, isKqRetiredSubstrate, getKqHandCodes, getKqStateHeritage, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState, type KqSharedEquipmentRunProfile } from "@/lib/kanab-quest-game";
+import { KQ_RETIRED_SUBSTRATE_CODES, isKqRetiredSubstrate, getKqHandCodes, getKqStateHeritage, getKqBuildingHarvestLosses, getKqBuildingLossAverage, getKqBuildingIncidentLosses, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState, type KqSharedEquipmentRunProfile } from "@/lib/kanab-quest-game";
 import { isKqHeritageEffect, isKqHeritageTiming } from "@/lib/kanab-quest-heritage";
 import { getKqEquipmentDefinition, isKqProcessingEquipment, summarizeKqEquipmentLoadout } from "@/lib/kanab-quest-equipment";
 import type { KqBattle } from "@/lib/kanab-quest-battle";
 import type { KqRankProfile } from "@/lib/kanab-quest-ranking";
 import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
-import { summarizeKqTentEquipment } from "./kanab-quest-production";
+import { areKqBuildingServicesConsistent, summarizeKqTentEquipment } from "./kanab-quest-production";
 import { isKqStageDecision } from "./kanab-quest-culture-analysis";
 import { isKqCareState, isKqCareReplacedCard } from "./kanab-quest-care";
 
@@ -25,6 +25,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     const envelope: unknown = JSON.parse(raw);
     if (!isRecord(envelope) || envelope.version !== 1 || !isRecord(envelope.payload)) return null;
     const state = envelope.payload;
+    const buildingScope = isRecord(state.equipment) && state.equipment.scope === "building";
     if (state.rulesVersion !== undefined && state.rulesVersion !== 2 && state.rulesVersion !== 3) return null;
     const healthRules = state.rulesVersion === 3;
     if (healthRules ? !isKqCareState(state.care) : state.care !== undefined) return null;
@@ -48,7 +49,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (state.equipment !== undefined) {
       if (!isRecord(state.equipment) || !Array.isArray(state.equipment.codes) || state.equipment.codes.length > 12) return null;
       const scope = state.equipment.scope;
-      if (scope !== undefined && scope !== "installation" && scope !== "tent") return null;
+      if (scope !== undefined && scope !== "installation" && scope !== "tent" && scope !== "building") return null;
       const equipmentCodes = state.equipment.codes;
       if (equipmentCodes.some((code) => typeof code !== "string" || !getKqEquipmentDefinition(code))) return null;
       if (new Set(equipmentCodes).size !== equipmentCodes.length) return null;
@@ -85,7 +86,8 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
         if (equipmentCodes.join("|") !== first.codes.join("|") || !isRecord(levels)
           || equipmentCodes.some(code => levels[String(code)] !== first.levels[String(code)])) return null;
       }
-      if (scope === "tent" && (!Array.isArray(tents) || shared === undefined)) return null;
+      if ((scope === "tent" || scope === "building") && (!Array.isArray(tents) || shared === undefined)) return null;
+      if (scope === "building" && !areKqBuildingServicesConsistent(tents as KqTentEquipmentProfile[])) return null;
       if (scope === "installation") {
         if (!Array.isArray(tents) || shared === undefined || !isRecord(levels)) return null;
         if ((tents as KqTentEquipmentProfile[]).some(tent => tent.codes.length !== equipmentCodes.length
@@ -104,7 +106,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       if (levels !== undefined ? state.equipment.unlocks.join("|") !== expected.unlocks.join("|")
         : state.equipment.unlocks.some((unlock) => !expected.unlocks.includes(unlock as typeof expected.unlocks[number]))) return null;
     }
-    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined, productionUnits, state.equipment.tents as KqTentEquipmentProfile[] | undefined, state.equipment.scope as "installation" | "tent" | undefined))) return null;
+    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined, productionUnits, state.equipment.tents as KqTentEquipmentProfile[] | undefined, state.equipment.scope as "installation" | "tent" | "building" | undefined))) return null;
     if (typeof state.varietyCode !== "string" || typeof state.varietyName !== "string") return null;
     if (state.challengeDayKey !== undefined && (typeof state.challengeDayKey !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(state.challengeDayKey))) return null;
     if (state.startedAt !== undefined && (typeof state.startedAt !== "string" || Number.isNaN(Date.parse(state.startedAt)))) return null;
@@ -136,9 +138,31 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       if (entry.rescued !== undefined && typeof entry.rescued !== "boolean") return true;
       if (entry.qualityDelta !== undefined && (!Number.isInteger(entry.qualityDelta) || Number(entry.qualityDelta) < -1 || Number(entry.qualityDelta) > 6)) return true;
       if (entry.xpGain !== undefined && (!Number.isInteger(entry.xpGain) || Number(entry.xpGain) < 0 || Number(entry.xpGain) > 20)) return true;
-      if (entry.harvestLossPercent !== undefined && (!Number.isInteger(entry.harvestLossPercent) || Number(entry.harvestLossPercent) < 0 || Number(entry.harvestLossPercent) > 35)) return true;
+      if (entry.harvestLossPercent !== undefined && (!isFiniteNumber(entry.harvestLossPercent) || Number(entry.harvestLossPercent) < 0 || Number(entry.harvestLossPercent) > 35
+        || (!buildingScope && !Number.isInteger(entry.harvestLossPercent)))) return true;
       return false;
     })) return null;
+    if (buildingScope) {
+      if (state.powerOutage !== false) return null;
+      const current = state as unknown as KqGameState;
+      for (let index = 0; index < current.history.length; index++) {
+        const entry = current.history[index];
+        const situation = KQ_SITUATIONS.find(item => item.code === current.situationCodes[index]);
+        // New building journals always include the decision needed to verify a
+        // local protection. Historical scopes keep their optional explanations.
+        if (!situation || !isKqStageDecision(entry.decision) || !isRecord(entry.buildingHarvestLosses) || Array.isArray(entry.buildingHarvestLosses)) return null;
+        const before = { ...current, history: current.history.slice(0, index), playedThisStage: entry.decision.playedThisStage };
+        const expected = getKqBuildingIncidentLosses(before, situation, entry.outcome);
+        if (Object.keys(entry.buildingHarvestLosses).length !== Object.keys(expected).length
+          || Object.entries(expected).some(([building, loss]) => entry.buildingHarvestLosses?.[building] !== loss)) return null;
+        const previous = getKqBuildingLossAverage(before, getKqBuildingHarvestLosses(before));
+        const after = { ...before, history: current.history.slice(0, index + 1) };
+        const next = getKqBuildingLossAverage(after, getKqBuildingHarvestLosses(after));
+        if (entry.decision.harvestLossPercent !== previous || entry.decision.powerOutage !== false
+          || entry.harvestLossPercent !== Math.round((next - previous) * 100) / 100) return null;
+      }
+      if (state.harvestLossPercent !== getKqBuildingLossAverage(current, getKqBuildingHarvestLosses(current))) return null;
+    } else if (state.history.some(entry => entry.buildingHarvestLosses !== undefined)) return null;
     let zeroSuccessStages = 0;
     let rescuedStages = 0;
     for (const entry of state.history) {
@@ -272,7 +296,7 @@ export function createKqIntegrityCode(state: KqGameState) {
     ...(state.equipment?.scope ? { equipmentScope: state.equipment.scope } : {}),
     equipmentCodes: state.equipment?.codes ?? [], equipmentQualityBonus: state.equipmentQualityBonus ?? 0, harvestGrams: state.harvestGrams ?? null,
     powerOutage: state.powerOutage ?? false, harvestLossPercent: state.harvestLossPercent ?? 0,
-    history: state.history.map((entry) => ({ stage: entry.stage, dice: entry.dice, total: entry.total, target: entry.target, outcome: entry.outcome, trait: entry.trait, dangers: entry.dangers, sparks: entry.sparks, pressureAfter: entry.pressureAfter, qualityDelta: entry.qualityDelta, xpGain: entry.xpGain, harvestLossPercent: entry.harvestLossPercent, ...(entry.rescued === true ? { rescued: true } : {}), ...(entry.decision ? { decision: entry.decision } : {}) })),
+    history: state.history.map((entry) => ({ stage: entry.stage, dice: entry.dice, total: entry.total, target: entry.target, outcome: entry.outcome, trait: entry.trait, dangers: entry.dangers, sparks: entry.sparks, pressureAfter: entry.pressureAfter, qualityDelta: entry.qualityDelta, xpGain: entry.xpGain, harvestLossPercent: entry.harvestLossPercent, ...(entry.buildingHarvestLosses ? { buildingHarvestLosses: entry.buildingHarvestLosses } : {}), ...(entry.rescued === true ? { rescued: true } : {}), ...(entry.decision ? { decision: entry.decision } : {}) })),
   });
   let hash = 2166136261;
   for (let index = 0; index < canonical.length; index += 1) {

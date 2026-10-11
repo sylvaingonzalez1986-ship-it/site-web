@@ -4,6 +4,7 @@ import {
   buildKqEquipmentGoalReceipt,
   buildKqEquipmentHudSummary,
   getKqEquipmentCartTotal,
+  getKqEquipmentUpgradeCost,
   getKqEquipmentDefinition,
   getKqEquipmentImpactLabels,
   getKqEquipmentProgressionStatus,
@@ -27,6 +28,18 @@ const ALIGNED_DATABASE_CATALOG = KQ_EQUIPMENT_CATALOG.map((equipment) => ({
 }));
 
 describe("Kanab Quest durable equipment", () => {
+  it("prices one common workshop beside independently equipped tents", () => {
+    const cashCents = 55_000 + 8 * 35_900;
+    expect(getKqEquipmentCartTotal(["SIFT-TRAY", "LED-300", "SIFT-TRAY"], 8)).toBe(cashCents);
+    expect(getKqEquipmentUpgradeCost("PRESS-0600", 3, 8)).toBe(25_500);
+    expect(getKqEquipmentUpgradeCost("LED-300", 3, 8)).toBe(86_160);
+    expect(validateKqEquipmentCart({ cartCodes: ["SIFT-TRAY", "LED-300"], ownedCodes: [], cashCents, productionUnits: 8 }))
+      .toMatchObject({ totalCents: cashCents, cashAfterCents: 0, errors: [] });
+    // Eight tents use two building cameras, while the workshop remains global.
+    expect(getKqNextEquipmentGoal({ ownedCodes: [], cashCents: 55_000, productionUnits: 8 }))
+      .toMatchObject({ equipment: { code: "SECURITY-CAMERA", priceCents: 13_998 }, affordable: true });
+  });
+
   it("keeps equipment codes unique and prices valid", () => {
     const codes = KQ_EQUIPMENT_CATALOG.map((equipment) => equipment.code);
     expect(new Set(codes).size).toBe(codes.length);

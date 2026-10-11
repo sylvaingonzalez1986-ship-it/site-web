@@ -22,6 +22,19 @@ import {
 } from "@/lib/kanab-quest-market";
 
 describe("Kanab Quest post-harvest market", () => {
+  it("requires progressively qualified press configurations even without live market context", () => {
+    for (const [route, level] of [["rosin-selection", 4], ["rosin-premium", 7], ["rosin-signature", 10]] as const) {
+      const quotes = (pressLevel: number) => quoteKqMarketRoutes({
+        juryScore: 10, harvestGrams: 100, equipmentCodes: ["PRESS-0600"], equipmentLevels: { "PRESS-0600": pressLevel },
+      });
+      const before = quotes(level - 1), after = quotes(level);
+      expect(before.find(item => item.route === route)).toMatchObject({ available: false, missingUnlocks: [] });
+      expect(after.find(item => item.route === route)?.available).toBe(true);
+      expect(getKqPinnedRouteLotStatus({ route, juryScore: 10, quotes: before }))
+        .toMatchObject({ state: "experience", available: false, blockedReason: `Presse au niveau ${level} requis pour cette filière.` });
+    }
+  });
+
   it("does not round conservation quality up across a transformation or raw-sale threshold", () => {
     for (const [route, minimum] of [["raw", 5.8], ["rosin-premium", 8]] as const) {
       const quoteAt = (juryScore: number) => quoteKqMarketRoutes({ juryScore, harvestGrams: 120,
@@ -67,28 +80,28 @@ describe("Kanab Quest post-harvest market", () => {
     const drySift = equipped.find((quote) => quote.route === "dry-sift")!;
     const premium = equipped.find((quote) => quote.route === "rosin-premium")!;
     expect(drySift.available).toBe(true);
-    expect(drySift.processingCapacityPercent).toBe(35);
+    expect(drySift.processingCapacityPercent).toBe(100);
     expect(premium.available).toBe(true);
-    expect(premium.processingCapacityPercent).toBe(55);
+    expect(premium.processingCapacityPercent).toBe(100);
     expect(premium.payoutCents).toBeGreaterThan(drySift.payoutCents);
     expect(premium.reputationGain).toBe(0);
     expect(drySift.reputationGain).toBeGreaterThan(0);
-    expect(drySift).toMatchObject({ remainderGrams: 78, remainderDestination: "raw", biomassRemainderGrams: 0 });
+    expect(drySift).toMatchObject({ remainderGrams: 0, remainderDestination: null, biomassRemainderGrams: 0 });
     expect(drySift.payoutCents).toBeGreaterThan(base.find((quote) => quote.route === "raw")!.payoutCents);
   });
 
   it("keeps biomass as the fallback for a remainder that cannot be sold raw", () => {
     const quotes = quoteKqMarketRoutes({
       juryScore: 5.2,
-      harvestGrams: 100,
+      harvestGrams: 300,
       equipmentCodes: ["SIFT-TRAY"],
     });
     const drySift = quotes.find((quote) => quote.route === "dry-sift")!;
     expect(drySift).toMatchObject({
       available: false,
-      remainderGrams: 65,
+      remainderGrams: 180,
       remainderDestination: "biomass",
-      biomassRemainderGrams: 65,
+      biomassRemainderGrams: 180,
     });
   });
 
@@ -105,7 +118,7 @@ describe("Kanab Quest post-harvest market", () => {
       harvestGrams: 120,
       equipmentCodes: ["SIFT-TRAY", "STATIC-PLASMA"],
     }).find((quote) => quote.route === "static-sift")!;
-    expect(withStatic).toMatchObject({ available: true, processingPrecision: 82 });
+    expect(withStatic).toMatchObject({ available: true, processingPrecision: 89 });
     expect(withStatic.reputationGain).toBeGreaterThan(0);
   });
 
@@ -115,8 +128,8 @@ describe("Kanab Quest post-harvest market", () => {
     const complete = quoteKqMarketRoutes({ juryScore: 9.2, harvestGrams: 150, equipmentCodes: ["WASHER-25L", "AUTO-SIEVE", "FREEZE-DRYER"] });
     expect(complete.find((quote) => quote.route === "hash-signature")).toMatchObject({
       available: true,
-      processingCapacityPercent: 45,
-      processingPrecision: 78,
+      processingCapacityPercent: 100,
+      processingPrecision: 86,
     });
   });
 
@@ -171,6 +184,16 @@ describe("Kanab Quest post-harvest market", () => {
       ["rosin-premium", true],
       ["rosin-signature", true],
     ]);
+  });
+
+  it("keeps historical machines bounded by their replacement configuration", () => {
+    const legacy = quoteKqMarketRoutes({ juryScore: 10, harvestGrams: 4000, equipmentCodes: ["PRESS-20T"] })
+      .find(quote => quote.route === "rosin-signature")!;
+    const current = quoteKqMarketRoutes({ juryScore: 10, harvestGrams: 4000, equipmentCodes: ["PRESS-0600"], equipmentLevels: { "PRESS-0600": 10 } })
+      .find(quote => quote.route === "rosin-signature")!;
+    expect(legacy.available).toBe(true);
+    expect(legacy.processedInputGrams).toBe(current.processedInputGrams);
+    expect(legacy.processedInputGrams).toBeLessThan(4000);
   });
 
   it("announces only complete market routes after a projected installation", () => {

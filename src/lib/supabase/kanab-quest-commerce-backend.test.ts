@@ -28,6 +28,12 @@ describe("storage-aware server commerce quotes", () => {
     expect(result.expiresAt).toBe(new Date(now + 60_000).toISOString());
     expect(mocks.insert).toHaveBeenCalledWith(expect.objectContaining({ storage_revision: 7, expires_at: result.expiresAt, user_id: user }));
   });
+  it("stores the authoritative wholesale price and ignores client tariff and quality overrides", async () => {
+    const result = await handleKqCommerceAction(user, { action: "quote", stockId, channel: "wholesale", policy: "premium", units: 100,
+      unitCents: 999999, payoutCents: 999999, juryScore: 10, event: "restock", wholesalePricePercent: 100 });
+    expect(result.offer).toMatchObject({ unitCents: 68.4, payoutCents: 684, reputationDelta: 0 });
+    expect(mocks.insert).toHaveBeenCalledWith(expect.objectContaining({ offer: expect.objectContaining({ unitCents: 68.4, payoutCents: 684 }) }));
+  });
   it("does not persist a refused immature retail quote", async () => {
     const result = await handleKqCommerceAction(user, { action: "quote", stockId, channel: "cbd-shop", policy: "advised", units: 100 });
     expect(result.offer.reason).toContain("Curing");

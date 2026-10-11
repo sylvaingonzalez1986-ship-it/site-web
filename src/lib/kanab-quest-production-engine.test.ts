@@ -73,7 +73,7 @@ describe("production capacity through a complete culture", () => {
     expect(old.energy!.productionUnits).toBeUndefined();
     expect(parseKqGameSave(encodeKqSave(old))).toEqual(old);
     const fleet = start(4);
-    for (const units of [0, -1, 1.5, 5, 7, 9, "4", null]) {
+    for (const units of [0, -1, 1.5, 9, "4", null]) {
       expect(parseKqGameSave(encodeKqSave({ ...fleet, equipment: { ...fleet.equipment, productionUnits: units } }))).toBeNull();
     }
     expect(parseKqGameSave(encodeKqSave({ ...fleet, energy: quoteKqEnergy(equipmentCodes, equipmentLevels, "balanced") }))).toBeNull();
@@ -90,23 +90,21 @@ describe("large harvest commercial quotes", () => {
     expect(buildKqEconomyBalanceReport({ harvestGrams: 4_000, juryScore: 8.8 }).harvestGrams).toBe(4_000);
   });
 
-  it.each([2, 3, 4, 8])("scales purchase funding and payback costs for %i units", productionUnits => {
+  it.each([2, 3, 4, 8])("buys the shared workshop once for %i tents", productionUnits => {
     const one = getKqEquipmentPaybackScenarios("PRESS-0600")[0];
     const fleet = getKqEquipmentPaybackScenarios("PRESS-0600", { productionUnits })[0];
-    expect(fleet.acquisitionCostCents).toBe(one.acquisitionCostCents * productionUnits);
-    expect(fleet.remainingInvestmentCents).toBe(one.remainingInvestmentCents * productionUnits);
-    expect(fleet.payoutCents).toBeCloseTo(one.payoutCents * productionUnits, -1);
-    expect(fleet.personalizedPaybackHarvests).toBeCloseTo(one.personalizedPaybackHarvests!, 1);
+    expect(fleet.acquisitionCostCents).toBe(one.acquisitionCostCents);
+    expect(fleet.remainingInvestmentCents).toBe(one.remainingInvestmentCents);
     const fixedHarvest = getKqEquipmentPaybackScenarios("PRESS-0600", { productionUnits, harvestGrams: 100 })[0];
     expect(fixedHarvest.payoutCents).toBe(one.payoutCents);
     const goal = getKqRoutePlanEquipmentGoal({ route: "dry-sift", ownedCodes: [], productionUnits })!;
     const singleGoal = getKqRoutePlanEquipmentGoal({ route: "dry-sift", ownedCodes: [] })!;
-    expect(goal.equipmentPriceCents).toBe(singleGoal.equipmentPriceCents * productionUnits);
+    expect(goal.equipmentPriceCents).toBe(singleGoal.equipmentPriceCents);
     const quote = quoteKqMarketRoutes({ juryScore: 8.8, harvestGrams: 100, equipmentCodes: [] }).find(q => q.route === "dry-sift")!;
     const marketGoal = getKqMarketEquipmentGoal({ quote, ownedCodes: [], equippedCodes: [], cashCents: singleGoal.equipmentPriceCents, productionUnits })!;
     expect(marketGoal.priceCents).toBe(goal.equipmentPriceCents);
-    expect(marketGoal.affordable).toBe(false);
-    expect(marketGoal.remainingCents).toBe(singleGoal.equipmentPriceCents * (productionUnits - 1));
+    expect(marketGoal.affordable).toBe(true);
+    expect(marketGoal.remainingCents).toBe(0);
   });
 });
 

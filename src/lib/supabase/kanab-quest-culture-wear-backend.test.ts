@@ -5,6 +5,7 @@ import { getKqEquipmentShopSnapshot, replaceKqCultureEquipment, equipKqDurableEq
 import { getKqEnergySnapshot } from "./kanab-quest-energy-backend";
 import { startKqGame } from "../kanab-quest-game";
 import { quoteKqTentEnergy } from "../kanab-quest-energy";
+import { createChanvrierCareerSnapshot } from "../chanvrier-career";
 const userId = "11000000-0000-4000-8000-000000000001";
 const input = { userId, tentNumber: 1, requestKey: "11000000-0000-4000-8000-000000000002", equipmentCode: "LED-300", expectedVersion: 10, expectedCostCents: 35900 };
 function snapshotDb(productionUnits = 1) {
@@ -19,7 +20,9 @@ function snapshotDb(productionUnits = 1) {
     ],
     kq_equipment_loadouts: ["TENT-120", "LED-300", "AIR-EC6", "SOLAR-BACKUP", "PRESS-0600"].map(equipment_code => ({ equipment_code })),
   };
-  const rpc = vi.fn().mockImplementation((name: string) => Promise.resolve({ error: null, data: name === "rpc_kq_energy_snapshot" ? { outstandingCents: 0, invoiceCount: 0, bestGramsPerKwh: null, invoices: [] } : null }));
+  const rpc = vi.fn().mockImplementation((name: string) => Promise.resolve({ error: null,
+    data: name === "rpc_kq_chanvrier_career" ? createChanvrierCareerSnapshot()
+      : name === "rpc_kq_energy_snapshot" ? { outstandingCents: 0, invoiceCount: 0, bestGramsPerKwh: null, invoices: [] } : null }));
   mocks.client.mockReturnValue({ rpc, from: (table: string) => {
     const query = { select: () => query, eq: () => query, order: () => query, single: () => query,
       then: (resolve: (value: unknown) => unknown) => Promise.resolve({ data: data[table] ?? [], error: null, count: 0 }).then(resolve) };

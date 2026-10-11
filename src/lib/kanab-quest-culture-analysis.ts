@@ -74,7 +74,7 @@ export function isKqStageDecision(value: unknown): value is KqStageDecision {
     || (d.version === 2 && Object.keys(d).length === 18 && isKqCareState(d.care)))
     && integer(d.xp, 0, 10000) && integer(d.quality, -100, 10000)
     && integer(d.pressure, 0, 4) && integer(d.cancelledDangers, 0, 10)
-    && integer(d.rollNonce, 0, 10000) && integer(d.harvestLossPercent, 0, 80)
+    && integer(d.rollNonce, 0, 10000) && typeof d.harvestLossPercent === "number" && Number.isFinite(d.harvestLossPercent) && d.harvestLossPercent >= 0 && d.harvestLossPercent <= 80
     && (d.bonusDie === null || integer(d.bonusDie, 1, 6))
     && (d.revealedPest === null || ["aphids", "mites", "thrips"].includes(String(d.revealedPest)))
     && codes(d.handCodes, 10) && codes(d.usedCards, 32) && codes(d.playedThisStage, 4)
@@ -112,7 +112,8 @@ function restoreDecision(state: KqGameState, index: number): KqGameState | null 
     const fields = ["stage", "situation", "total", "target", "outcome", "trait", "qualityDelta", "xpGain", "pressureAfter", "dangers", "sparks", "harvestLossPercent"] as const;
     if (fields.some(field => computed[field] !== entry[field])) return null;
     if ((computed.rescued === true) !== (entry.rescued === true)
-      || JSON.stringify(computed.combos) !== JSON.stringify(entry.combos)) return null;
+      || JSON.stringify(computed.combos) !== JSON.stringify(entry.combos)
+      || JSON.stringify(computed.buildingHarvestLosses) !== JSON.stringify(entry.buildingHarvestLosses)) return null;
     return position;
   } catch {
     return null;
@@ -130,7 +131,12 @@ function describeStage(entry: Receipt, index: number, position: KqGameState | nu
     if (followup) evidence.push(followup.message);
   }
   if (entry.qualityDelta !== undefined) evidence.push(`${OUTCOME[entry.outcome]} : ${signed(entry.qualityDelta)} Qualité${entry.xpGain !== undefined ? ` et +${entry.xpGain} XP à la validation` : ""}.`);
-  if ((entry.harvestLossPercent ?? 0) > 0) evidence.push(`Le vol a retiré ${entry.harvestLossPercent} points de pourcentage au rendement final.`);
+  if (entry.buildingHarvestLosses) {
+    for (const [building, loss] of Object.entries(entry.buildingHarvestLosses)) if (loss > 0) {
+      const cause = position && getKqSituation(position).incident === "electricity-bill" ? "la coupure" : "le vol";
+      evidence.push(`Entrepôt ${building} : ${cause} a retiré ${loss} points de rendement à ses seules tentes.`);
+    }
+  } else if ((entry.harvestLossPercent ?? 0) > 0) evidence.push(`Le vol a retiré ${entry.harvestLossPercent} points de pourcentage au rendement final.`);
   if (entry.rescued) evidence.push(position?.rulesVersion === 3 ? "Le secours a rétabli la vitalité à 15 ; les pertes déjà subies restent enregistrées." : "Le secours a évité une mort de culture ; l’échec, les dés et les gains sont restés identiques.");
   if (position) {
     const preview = previewKqResolution(position)!;
@@ -254,7 +260,7 @@ export function getKqCultureAnalysis(state: KqGameState): KqCultureAnalysis {
   const headline = state.cultureDead
     ? state.rulesVersion === 3 ? "La vitalité épuisée a arrêté la culture." : `${zeroStages.length} étapes à zéro réussite non secourues ont arrêté la culture.`
     : (costly.harvestLossPercent ?? 0) > 0
-      ? `${costly.stage} : le vol a réduit le rendement de ${costly.harvestLossPercent} %.`
+      ? `${costly.stage} : ${state.equipment?.scope === "building" ? "l’incident a réduit le rendement moyen par tente" : "le vol a réduit le rendement"} de ${costly.harvestLossPercent} %.`
       : losses.length
         ? `${costly.stage} a coûté ${Math.abs(costly.qualityDelta!)} Qualité.`
         : best.qualityDelta !== null

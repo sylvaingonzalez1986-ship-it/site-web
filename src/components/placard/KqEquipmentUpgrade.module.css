@@ -20,3 +20,5 @@
 
 .upgrade.upgrade .heading small { display: inline; }
 .upgrade.upgrade li { color: #fff8df; font-size: 12px; font-weight: 600; }
+.upgrade.upgrade .gate { display: block; padding: 9px; border-left: 3px solid #f7ce4a; background: #ffffff0a; color: #ffe6a0; }
+@media (max-width: 420px) { .milestones { flex-wrap: wrap; line-height: 1.5; } .heading { flex-wrap: wrap; } }

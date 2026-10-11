@@ -1,32 +1,116 @@
 # Production du Placard : plusieurs tentes
 
-La progression ajoute des tentes à l'entrepôt existant : 1 → 2 → 3 → 4.
-L'agrandissement final achète un second entrepôt de quatre tentes, soit huit tentes au total.
+La progression ajoute une tente à la fois : 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8.
+À la cinquième tente, le joueur ouvre un second entrepôt, puis l’équipe progressivement.
 Le joueur lance une seule variété et une culture commune, avec les mêmes cartes, dés et situations pour toutes les tentes.
-Depuis la révision du 1er octobre 2026, **seules les machines de transformation sont communes** : tamisage, lavage, filtration, séparation statique, presse et lyophilisateur. Chaque tente possède son modèle de tente, son éclairage, son extraction, son contrôleur climatique, son séchoir à fleurs, son énergie et sa sécurité. Achats, modèles installés, niveaux et usure de ce matériel suivent la tente sélectionnée.
+La révision du 11 octobre 2026 distingue trois destinations : chaque tente possède son modèle, son éclairage, son extraction et son contrôleur climatique ; chaque bâtiment partage un séchoir, un équipement solaire et une sécurité entre ses quatre places ; les machines de transformation servent tout l’atelier. Achats, modèles installés, niveaux et usure suivent leur destination physique.
 
-Le récapitulatif de l’entrepôt reste discret sous l’image, replié par défaut. Son fond crème, ses textes sombres et ses lignes distinctes facilitent la lecture : les noms des modèles sont affichés en 14 px, les catégories et les états en 12 px. Chaque état associe un badge coloré à un libellé explicite. En ouvrant le récapitulatif, puis en dépliant une tente, on retrouve ses sept emplacements, avec le modèle, le niveau et l’état : installé, en réserve à installer, essentiel manquant, option non installée ou hors service. Les trois essentiels sont la tente, l’éclairage et l’extraction ; les autres emplacements sont facultatifs. Chaque ligne ouvre la bonne fiche, et l’atelier commun possède son propre volet repliable. Le bilan et l’agrandissement reprennent le même fond clair.
+Le récapitulatif distingue les quatre emplacements de chaque tente, les trois services de chaque bâtiment et l’atelier de transformation. Chaque état associe un badge à un libellé : installé, en réserve, essentiel manquant, option non installée ou hors service. Les trois essentiels sont la tente, l’éclairage et l’extraction. Chaque ligne ouvre la bonne fiche. Les comptes dont la conversion est différée conservent temporairement leur récapitulatif historique à sept emplacements par tente.
+
+La barre de progression affiche le portrait personnalisé enregistré, le pseudo et
+la spécialité du joueur, son niveau sur dix, les XP acquis dans le palier et ceux
+qui manquent pour le suivant. Son volet de détails explique les gains d’XP des
+cultures, la pratique distincte des transformations et les dix paliers d’accès.
+Le profil accompagne la réponse d’équipement existante, sans requête de profil
+supplémentaire ; une modification du personnage actualise également la barre.
+Les exercices restent identifiés comme démonstrations et ne remplacent pas le
+portrait du joueur par un personnage fictif.
 
 ## Coûts et capacité
 
 Chaque tente supplémentaire coûte 300 € virtuels et reçoit uniquement son kit de départ : tente, éclairage et extraction. Ses équipements améliorés doivent être achetés et installés pour elle. Elle accède aux machines de transformation déjà acquises dans l’atelier commun.
-Le second entrepôt coûte 20 000 € virtuels plus quatre places de culture à 300 €, soit 21 200 €.
-Un modèle de matériel de culture ou de service s’achète pour une tente ; un modèle de transformation s’achète une seule fois pour l’atelier commun. Chaque emplacement accepte un seul modèle installé ; les autres restent dans la réserve de leur tente ou de l’atelier. Le catalogue indique la destination de chaque article et conserve le panier propre à chaque tente ainsi que le panier des machines communes.
+Le second entrepôt coûte 20 000 € virtuels plus sa première tente à 300 €, soit
+20 300 € pour passer de quatre à cinq. Les trois suivantes coûtent chacune 300 €.
+Les deuxième, troisième et quatrième tentes demandent les niveaux métier 3, 5 et 7 ;
+les cinquième à huitième demandent le niveau 10. L’interface expose le palier, le
+solde après achat, la consommation supplémentaire du kit et le stockage disponible.
+Un modèle de culture s’achète pour une tente, un service pour son bâtiment, une machine de transformation pour l’atelier commun. Chaque emplacement accepte un seul modèle installé ; les autres restent en réserve à la même destination. Le catalogue et les paniers indiquent ces destinations. Une tente supplémentaire profite des services déjà installés dans son bâtiment ; le second bâtiment ouvre avec ses services vides.
 
 ## Culture commune
 
-Les nouveaux lancements enregistrent `equipment.scope = "tent"`. `equipment.tents` contient le profil opérationnel réel de chaque tente ; `equipment.shared` contient uniquement les machines de transformation. Les effets propres aux tentes sont agrégés pour la culture commune ; les effets de transformation, notamment le bonus de qualité du lyophilisateur, s’appliquent une seule fois.
+Les nouveaux lancements des comptes convertis enregistrent `equipment.scope = "building"`. `equipment.tents` contient le profil effectif de chaque tente, incluant les services de son bâtiment ; `equipment.shared` contient uniquement les machines de transformation. Les services d’un même bâtiment doivent avoir les mêmes codes et niveaux dans tous ses profils effectifs. Le stockage physique conserve un seul appareil, rattaché à la tente 1 ou 5 ; ces identifiants techniques ne sont pas présentés comme des achats par tente. Les effets propres aux tentes sont agrégés pour la culture commune ; les effets de transformation, notamment le bonus de qualité du lyophilisateur, s’appliquent une seule fois.
 La qualité finale dépend des étapes réussies, selon la règle habituelle.
 La quantité totale est la somme des rendements des tentes avec cette qualité commune, le matériel opérationnel, les pertes et le mode énergétique choisi.
 Le plafond reste 500 g par tente, soit 4 000 g pour les deux entrepôts.
 Une nouvelle tente ne copie ni les améliorations, ni l’usure des autres tentes.
 
-La facture additionne les consommations de chaque tente, y compris son séchoir et sa sécurité. Le solaire réduit uniquement la consommation de la tente où il est installé. Les devis détaillent la contribution de chaque tente.
+La facture additionne les consommations des tentes et facture le séchoir et la caméra une seule fois par bâtiment. Le solaire réduit la consommation des tentes de son bâtiment. Les devis distinguent les charges des bâtiments et celles des tentes ; l’usure d’un service n’est pas multipliée par le nombre de tentes.
+Les incidents respectent également ce périmètre : le vol réduit uniquement le rendement du bâtiment sans sécurité ; une surcharge retire 10 points de rendement aux tentes du bâtiment sans secours solaire, sans modifier les dés de la culture commune. Le journal conserve les pertes de chaque bâtiment et vérifie leur moyenne pondérée au chargement. Ouvrir le second entrepôt ne retire donc pas la protection du premier.
 Les anciens cycles conservent leurs instantanés, leur capacité et leur calcul historique. Sans capacité enregistrée, ils restent à une tente.
-L’usure progresse sur les équipements de chaque tente engagés au lancement de la culture. Les machines communes sont entretenues une seule fois. Pour les nouveaux cycles, les soins des chiens acquis sont facturés par tente ; les anciens cycles conservent leurs règles historiques.
+L’usure progresse sur les équipements engagés au lancement de la culture. Les machines communes vieillissent uniquement lors d’une transformation qui les utilise, une fois par lot. Les soins des chiens acquis sont facturés une fois par bâtiment ; les anciens cycles conservent leurs règles historiques.
 Les bonus de réputation restent attribués une seule fois par culture. L’analyse du lot commun coûte **45 € virtuels une seule fois par session de culture terminée**, quel que soit le nombre de tentes. La transformation est facturée selon les grammes traités.
 
 ## Installation et vérification
+
+Révision locale du 11 octobre 2026 : les migrations
+`20261011120000_kq_chanvrier_career.sql` puis
+`20261011120100_kq_gradual_production_expansion.sql` ont été appliquées au projet
+lié `eyowwwpdmfrulhkpvlnf` le 11 octobre 2026 à la demande de l’utilisateur. La
+prévisualisation ciblée après application confirme qu’elles sont enregistrées.
+La migration indépendante `20261010000500_botte_situations_epic.sql`, également en
+attente, a été exclue du dossier de déploiement. Cette opération ne publie pas
+le code de l’interface.
+Les anciens reçus d’extension de quatre à huit restent rejouables, et aucun compte
+existant ne perd ses tentes ou ses machines.
+
+Les journaux privés `kq_chanvrier_career_events` et
+`kq_chanvrier_processing_practice` empêchent de recompter une culture ou un lot.
+Leur lecture passe par un RPC réservé à `service_role` ; aucune permission directe
+sur les tables n’est accordée aux rôles API. Un outil de remise à zéro explicite
+devra supprimer ces journaux avant leurs cultures/lots parents. Les simples
+consultations, ventes et suppressions techniques ne doivent pas effacer la carrière.
+
+Les paliers et capacités sont détaillés dans [les règles du Placard](PLACARD-RULES-DRAFT.md).
+La migration `20261011130000_kq_building_services.sql` regroupe sécurité, solaire et
+séchoir. Elle a également été appliquée au projet lié le 11 octobre 2026. La
+vérification distante confirme les trois migrations, l’accès au RPC de carrière
+et 20 comptes en version bâtiment, sans compte restant en version 2 au moment
+du contrôle. Reçu local : `output/chanvrier-rework/deployment-receipt.json`.
+Les acquisitions et installations d’origine sont archivées dans une table
+privée ; le regroupement conserve le niveau maximal et le meilleur état disponibles,
+la somme des bases d’achat, les valeurs comptables et leurs dates d’amortissement.
+Il n’y a ni débit ni nouvelle valeur comptable. Les devis et reçus antérieurs restent
+inchangés. Un compte avec une culture active conserve la version 2 jusqu’à sa clôture,
+puis bascule en version 3 à la prochaine initialisation de son équipement, après
+l’enregistrement de son usure et de ses factures historiques. La suppression du compte
+reste possible et supprime également l’archive privée.
+
+Contrôles dédiés : `scripts/test-chanvrier-career.mjs` exécute une répétition
+PostgreSQL isolée avec reprise de l’historique, comparaison SQL/TypeScript,
+idempotence, acquisitions anciennes, entretien et permissions.
+`scripts/test-building-services.mjs` vérifie le regroupement physique, les valeurs
+comptables, les anciens reçus, les cultures actives et la suppression de compte.
+`scripts/simulate-chanvrier-career.mjs` vérifie les paliers indépendants du capital ;
+`scripts/simulate-chanvrier-economy.mjs` compare plusieurs parcours financiers.
+`scripts/audit-chanvrier-career-ui.mjs` vérifie les états de l’interface dans un
+navigateur isolé avec des réponses simulées.
+
+Validation locale : 3 037 tests Vitest passent dans 354 fichiers, ainsi que les
+répétitions PostgreSQL et les 30 contrôles navigateur à 320 et 1 440 px, avec
+un contrôle supplémentaire du défilement à 320 × 640 px. La barre personnalisée
+est également vérifiée au clavier et après modification du portrait.
+ESLint est valide sur les fichiers modifiés ; le contrôle des permissions valide
+292 migrations. TypeScript valide le code source avec la configuration isolée
+`output/chanvrier-rework/tsconfig.json` ; le contrôle racine inclut encore un ancien
+cache dans `output/css-hmr-fix/` dont les imports générés sont invalides.
+Les captures et le rapport navigateur sont disponibles dans
+`output/chanvrier-rework/ui/`. Les trois nouveaux identifiants de migration ont été
+choisis après contrôle de leur unicité avec les autres travaux en cours.
+
+La simulation financière utilise 100 g par tente, une note de 9,2, une session par
+jour, la vente en boutique après curing et le règlement immédiat des charges.
+Pour 350 / 1 000 / 5 000 € de départ, le métier atteint le niveau 10 après 45 cultures
+terminées ; réunir l’atelier visé prend 243 / 227 / 205 sessions avec une tente,
+ou 79 / 75 / 80 avec des extensions. Ce sont des scénarios d’équilibrage, pas des
+prévisions de parcours réel. La reprise grossiste de fleur brute dès 6,5/10 passe
+à 38 % en marché normal, 35 % en promotion et 39 % en réassort. Pour 100 g,
+la marge après TVA, analyse et électricité de départ devient respectivement
+5,97 / 1,47 / 7,47 €. La boutique conserve un prix supérieur et ses gains de
+réputation. Les autres fleurs, extraits, biomasses et surplus sans contenant
+conservent leurs tarifs ; une petite récolte ou une dégradation reste risquée.
+Le simulateur contrôle les notes 6,5 / 7 / 8 / 9,2 dans les trois événements.
+À 350 € de départ, le parcours exclusivement grossiste ne passe plus en déficit
+sur 400 sessions, mais n'ouvre pas les recettes exigeant une réputation commerciale.
 
 La migration `20260924000300_kq_individual_tents.sql` a été appliquée le 24 septembre 2026, puis `20260927000600_kq_shared_processing_workshop.sql` le 27 septembre 2026. La règle commune à tout le matériel est portée par `20260928000100_kq_shared_installation_equipment.sql`, appliquée à la base distante le 28 septembre 2026 à la demande de l’utilisateur.
 La révision du 1er octobre est portée par `20261001000200_kq_tent_equipment_and_shared_workshop.sql`, appliquée le 1er octobre 2026 à la base distante liée au projet `eyowwwpdmfrulhkpvlnf`. L’historique distant confirme son application et la vérification à blanc ne signale aucune migration en attente. Le backend correspondant doit accompagner cette migration : la nouvelle garde exige `equipment.scope = "tent"` pour les nouveaux départs. Les cultures déjà lancées conservent leurs données et peuvent se terminer.

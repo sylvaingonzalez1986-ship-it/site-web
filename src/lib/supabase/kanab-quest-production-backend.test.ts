@@ -5,6 +5,7 @@ import { expandKqProduction, getKqEquipmentShopSnapshot } from "./kanab-quest-eq
 import { getKqEquipmentDefinition } from "../kanab-quest-equipment";
 import { getKqMachineCondition } from "../kanab-quest-maintenance";
 import { getKqCultureEquipmentCondition } from "../kanab-quest-culture-wear";
+import { createChanvrierCareerSnapshot } from "../chanvrier-career";
 const input = { userId:"11000000-0000-4000-8000-000000000001", requestKey:"11000000-0000-4000-8000-000000000002", expectedUnits:1, expectedCostCents:30000 };
 
 describe("production backend", () => {
@@ -15,9 +16,16 @@ describe("production backend", () => {
     expect(await expandKqProduction(input)).toMatchObject({productionUnits:2,priceCents:30000});
     expect(rpc).toHaveBeenCalledWith("rpc_kq_expand_production",{p_user_id:input.userId,p_request_key:input.requestKey,p_expected_units:1,p_expected_cost_cents:30000});
   });
-  it.each([0,1.5,5,8,Infinity])("rejects invalid expansion from %s before spending", async expectedUnits => {
+  it.each([0,1.5,8,9,Infinity])("rejects invalid expansion from %s before spending", async expectedUnits => {
     await expect(expandKqProduction({...input,expectedUnits})).rejects.toThrow("invalide");
     expect(createSupabaseServiceClient).not.toHaveBeenCalled();
+  });
+  it.each([4,5,6,7])("adds one tent from %s while preserving the confirmed property price", async expectedUnits => {
+    const expectedCostCents = expectedUnits === 4 ? 2030000 : 30000;
+    const rpc=vi.fn().mockResolvedValue({data:{productionUnits:expectedUnits+1,priceCents:expectedCostCents,replayed:false},error:null});
+    createSupabaseServiceClient.mockReturnValue({rpc});
+    expect(await expandKqProduction({...input,expectedUnits,expectedCostCents})).toMatchObject({productionUnits:expectedUnits+1,priceCents:expectedCostCents});
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_expand_production",{p_user_id:input.userId,p_request_key:input.requestKey,p_expected_units:expectedUnits,p_expected_cost_cents:expectedCostCents});
   });
   it.each([0,-1,0.5,2147483648,NaN])("rejects an invalid confirmed price %s", async expectedCostCents => {
     await expect(expandKqProduction({...input,expectedCostCents})).rejects.toThrow("invalide");
@@ -39,13 +47,14 @@ describe("production backend", () => {
       kq_player_equipment:[{equipment_code:"LED-300",purchase_price_cents:35900,level:3,culture_wear_percent:50},{equipment_code:"WASHER-25L",purchase_price_cents:125000,level:2,wear_cycles:10},{tent_number:2,equipment_code:"LED-300",purchase_price_cents:35900,level:1,culture_wear_percent:0}],
       kq_equipment_loadouts:[{equipment_code:"LED-300"},{tent_number:2,equipment_code:"LED-300"}],
     };
-    createSupabaseServiceClient.mockReturnValue({rpc:vi.fn().mockResolvedValue({error:null}),from:(table:string)=>{
+    createSupabaseServiceClient.mockReturnValue({rpc:vi.fn().mockImplementation((name:string)=>Promise.resolve({error:null,
+      data:name==="rpc_kq_chanvrier_career"?createChanvrierCareerSnapshot():null})),from:(table:string)=>{
       const query={select:()=>query,eq:()=>query,order:()=>query,single:()=>query,then:(resolve:(value:unknown)=>unknown)=>Promise.resolve({data:rows[table]??[],error:null,count:0}).then(resolve)};
       return query;
     }});
     const snapshot=await getKqEquipmentShopSnapshot(input.userId);
     expect(snapshot.productionUnits).toBe(4);
-    expect(snapshot.production.nextUnits).toBe(8);
+    expect(snapshot.production.nextUnits).toBe(5);
     expect(snapshot.catalog.find(item=>item.code==="LED-300")?.priceCents).toBe(getKqEquipmentDefinition("LED-300")!.priceCents);
     expect(snapshot.maintenance?.["WASHER-25L"].repairCents).toBe(getKqMachineCondition("WASHER-25L",2,10)!.repairCents);
     expect(snapshot.cultureWear?.["LED-300"].replacementCents).toBe(getKqCultureEquipmentCondition("LED-300",3,50)!.replacementCents);
@@ -64,7 +73,7 @@ describe("production backend", () => {
     expect(second.cultureWear?.["LED-300"].wearPercent).toBe(0);
     expect(second.maintenance?.["WASHER-25L"]).toEqual(snapshot.sharedEquipment.maintenance["WASHER-25L"]);
     expect(second.tents[1].maintenance["WASHER-25L"]).toBeUndefined();
-    expect(second.production.totalCostCents).toBe(2120000);
+    expect(second.production.totalCostCents).toBe(2030000);
     expect((await getKqEquipmentShopSnapshot(input.userId, 8)).tentNumber).toBe(1);
   });
 });

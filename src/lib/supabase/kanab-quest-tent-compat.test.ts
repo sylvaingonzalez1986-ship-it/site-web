@@ -8,16 +8,19 @@ import { getKqEquipmentShopSnapshot } from "./kanab-quest-equipment-backend";
 import { getKqEnergySnapshot } from "./kanab-quest-energy-backend";
 import { startKqPlayerRun } from "./kanab-quest-backend";
 import { quoteKqTentEnergy } from "../kanab-quest-energy";
+import { getKqEffectiveTentProfiles } from "../kanab-quest-production";
+import { isKqBuildingEquipment } from "../kanab-quest-equipment";
 import { KQ_BUDDIES, startKqGame, type KqGameState } from "../kanab-quest-game";
 import { encodeKqSave, parseKqGameSave } from "../kanab-quest-persistence";
+import { createChanvrierCareerSnapshot } from "../chanvrier-career";
 
 const userId = "11000000-0000-4000-8000-000000000001";
 const input = { buddieCode: KQ_BUDDIES[0].code, deckCodes: [] };
 type Row = Record<string, unknown>;
 
-function database(fixture = structuredClone(productionFixture)) {
+function database(fixture = structuredClone(productionFixture), equipmentScopeVersion: 2 | 3 = 2) {
   const rows: Record<string, Row | Row[]> = {
-    kq_equipment_wallets: { cash_cents: 1000000, reputation: 0, production_units: fixture.productionUnits },
+    kq_equipment_wallets: { cash_cents: 1000000, reputation: 0, production_units: fixture.productionUnits, equipment_scope_version: equipmentScopeVersion },
     kq_player_equipment: fixture.owned,
     kq_equipment_loadouts: fixture.loadouts,
     lottery_card_collections: { id: "botte", is_active: true },
@@ -26,7 +29,9 @@ function database(fixture = structuredClone(productionFixture)) {
   const reads: Array<{ table: string; columns: string }> = [];
   const rpc = vi.fn().mockImplementation(async (name: string, args?: { p_initial_state?: unknown }) => ({
     error: null,
-    data: name === "rpc_kq_commerce_state"
+    data: name === "rpc_kq_chanvrier_career"
+      ? createChanvrierCareerSnapshot()
+      : name === "rpc_kq_commerce_state"
       ? { business: { version: 1, domiciliation: { mode: "home", active: true } } }
       : name === "rpc_kq_energy_snapshot"
         ? { outstandingCents: 0, invoiceCount: 0, bestGramsPerKwh: null, invoices: [] }
@@ -47,9 +52,32 @@ function database(fixture = structuredClone(productionFixture)) {
 beforeEach(() => vi.clearAllMocks());
 
 describe("culture compatibility with individual tents and a shared workshop", () => {
+  it("separates building ownership and passes identical services through quote, launch and persisted replay", async () => {
+    database(structuredClone(productionFixture), 3);
+    const shop = await getKqEquipmentShopSnapshot(userId, 2);
+    expect(shop.equipmentScopeVersion).toBe(3);
+    expect(shop.buildings).toHaveLength(1);
+    expect(shop.buildings[0].ownedCodes).toContain("DRYING-ROOM");
+    expect(shop.tents.every(tent => !tent.ownedCodes.some(isKqBuildingEquipment))).toBe(true);
+    expect(shop.ownedCodes).toContain("DRYING-ROOM");
+    expect(shop.levels["DRYING-ROOM"]).toBe(5);
+    const effective = getKqEffectiveTentProfiles(shop);
+    expect(effective[1].codes).toContain("DRYING-ROOM");
+    expect(effective[1].codes).not.toContain("LED-300");
+    const energy = await getKqEnergySnapshot(userId);
+    expect(energy.quotes.balanced).toEqual(quoteKqTentEnergy(effective, "balanced", "building"));
+    expect(energy.quotes.balanced.lines.filter(line => line.code === "DRYING-ROOM")).toHaveLength(1);
+    const run = await startKqPlayerRun(userId, { ...input, expectedEnergyCents: energy.quotes.balanced.totalCents });
+    expect(run.state.equipment?.scope).toBe("building");
+    expect(run.state.energy).toEqual(energy.quotes.balanced);
+    expect(parseKqGameSave(encodeKqSave(run.state))).toEqual(run.state);
+  });
+
   it.each(["eco", "balanced", "intensive"] as const)("uses the production fixture from shop through %s quote, launch RPC and saved game", async energyMode => {
     const { rpc, reads } = database();
     const shop = await getKqEquipmentShopSnapshot(userId);
+    expect(shop.career.xp).toBe(0);
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_chanvrier_career", { p_user_id: userId });
     expect(reads.find(read => read.table === "kq_player_equipment")?.columns).toContain("tent_number");
     expect(reads.find(read => read.table === "kq_equipment_loadouts")?.columns).toContain("tent_number");
     expect(shop.tents).toHaveLength(2);

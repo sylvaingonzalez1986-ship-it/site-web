@@ -32,6 +32,17 @@ describe("Kanab Quest durable equipment installation", () => {
     createSupabaseServiceClient.mockReset();
   });
 
+  it("lets the atomic RPC resolve building ownership for the selected tent and translate denials", async () => {
+    const rpc = vi.fn().mockResolvedValue({ data: { equipmentCode: "SECURITY-CAMERA", equipped: true }, error: null });
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    await equipKqDurableEquipment({ userId: USER_ID, equipmentCode: "SECURITY-CAMERA", tentNumber: 6 });
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_equip_tent_equipment", {
+      p_user_id: USER_ID, p_equipment_code: "SECURITY-CAMERA", p_tent_number: 6,
+    });
+    rpc.mockResolvedValue({ data: null, error: { message: "equipment_not_owned" } });
+    await expect(equipKqDurableEquipment({ userId: USER_ID, equipmentCode: "SECURITY-CAMERA", tentNumber: 6 })).rejects.toThrow("ne t’appartient pas");
+  });
+
   it("sends only the session owner, expected level and idempotency key to the upgrade transaction", async () => {
     const rpc = vi.fn().mockResolvedValue({ data: { level: 5, cashAfterCents: 1000 }, error: null });
     createSupabaseServiceClient.mockReturnValue({ rpc });
@@ -86,7 +97,7 @@ describe("Kanab Quest durable equipment installation", () => {
       ],
       kq_equipment_loadouts: [{equipment_code:"SECURITY-FENCE"}],
     };
-    createSupabaseServiceClient.mockReturnValue({rpc:vi.fn().mockResolvedValue({error:null}),from:(table:string)=>{
+    createSupabaseServiceClient.mockReturnValue({rpc:vi.fn().mockResolvedValue({data:{xp:0},error:null}),from:(table:string)=>{
       const query = {select:()=>query,eq:()=>query,order:()=>query,single:()=>query,
         then:(resolve:(value:unknown)=>unknown)=>Promise.resolve({data:rows[table]??[],error:null,count:0}).then(resolve)};
       return query;
@@ -97,6 +108,7 @@ describe("Kanab Quest durable equipment installation", () => {
     expect(snapshot.equippedCodes).toEqual([]);
     expect(snapshot.levels).toEqual({"SECURITY-DOG":1});
     expect(snapshot.catalog.some((item)=>item.code==="SECURITY-FENCE")).toBe(false);
+    expect(snapshot.chanvrierProfile).toBeNull();
   });
 
   it("allows the RPC only after ownership has been verified", async () => {
@@ -198,7 +210,9 @@ describe("individual tent inventory and shared transformation workshop", () => {
 
   it("returns the canonical shared profile once and excludes stale copies from individual tents", async () => {
     const rows: Record<string, unknown> = {
-      kq_equipment_wallets: { cash_cents: 1000000, production_units: 2 },
+      kq_equipment_wallets: { cash_cents: 1000000, production_units: 2,
+        chanvrier: {nickname: "Lou.Chanvre", gender: "female", clothing: "teal", skin: "honey", strength: "green-thumb", appearance: {hair: "braids"}, privateField: "excluded"},
+      },
       kq_player_equipment: [
         { tent_number: 1, equipment_code: "WASHER-25L", purchase_price_cents: 125000, level: 3, wear_cycles: 10, maintenance_version: 6 },
         { tent_number: 2, equipment_code: "WASHER-25L", purchase_price_cents: 125000, level: 9, wear_cycles: 0 },
@@ -210,13 +224,16 @@ describe("individual tent inventory and shared transformation workshop", () => {
         { tent_number: 1, equipment_code: "LED-300" },
       ],
     };
-    createSupabaseServiceClient.mockReturnValue({ rpc: vi.fn().mockResolvedValue({ error: null }), from: (table: string) => {
+    createSupabaseServiceClient.mockReturnValue({ rpc: vi.fn().mockResolvedValue({ data: { xp: 700 }, error: null }), from: (table: string) => {
       const query = { select: () => query, eq: () => query, order: () => query, single: () => query,
         then: (resolve: (value: unknown) => unknown) => Promise.resolve({ data: rows[table] ?? [], error: null, count: 0 }).then(resolve) };
       return query;
     } });
     const second = await getKqEquipmentShopSnapshot(USER_ID, 2);
     const first = await getKqEquipmentShopSnapshot(USER_ID, 1);
+    expect(second.chanvrierProfile).toEqual(first.chanvrierProfile);
+    expect(second.chanvrierProfile).toMatchObject({nickname: "Lou.Chanvre", gender: "female", appearance: {hair: "braids"}});
+    expect(second.chanvrierProfile).not.toHaveProperty("privateField");
     expect(second.sharedEquipment).toEqual(first.sharedEquipment);
     expect(second.sharedEquipment.equippedCodes).toEqual(["WASHER-25L"]);
     expect(second.sharedEquipment.levels).toEqual({ "WASHER-25L": 3 });

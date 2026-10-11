@@ -77,7 +77,7 @@ describe("Kanab Quest economy balance report", () => {
   it("keeps every unlocked transformation financially useful at signature quality", () => {
     const report = buildKqEconomyBalanceReport({ juryScore: 8.8, harvestGrams: 100 });
     expect(report.signals.dominated).toBe(0);
-    expect(report.signals.tooFast).toBe(1); // Ideal Signature yield; live access requires 12 prior sales.
+    expect(report.projections.filter(item => item.status === "too-fast").map(item => item.route)).toEqual(["rosin-signature"]);
     expect(report.signals.balanced + report.signals.slowOrExcessive + report.signals.tooFast).toBe(8);
     expect(report.projections.find((projection) => projection.route === "dry-sift")?.comparisonDeltaCents)
       .toBeGreaterThan(0);
@@ -124,6 +124,8 @@ describe("Kanab Quest economy balance report", () => {
   it("offers player-facing payback scenarios for every machine that opens a processing route", () => {
     expect(KQ_PLAYER_PAYBACK_REFERENCE).toEqual({ juryScore: 8.8, harvestGrams: 100 });
     expect(getKqEquipmentPaybackScenarios("PRESS-0600").map((projection) => projection.route))
+      .toEqual(["rosin-trial"]);
+    expect(getKqEquipmentPaybackScenarios("PRESS-0600", { ownedCodes: ["PRESS-0600"], levels: { "PRESS-0600": 10 } }).map((projection) => projection.route))
       .toEqual(["rosin-trial", "rosin-selection", "rosin-premium", "rosin-signature"]);
     expect(getKqEquipmentPaybackScenarios("AUTO-SIEVE").map((projection) => projection.route))
       .toEqual(["hash-signature"]);
@@ -133,6 +135,22 @@ describe("Kanab Quest economy balance report", () => {
       .toContain("WASHER-25L");
     expect(getKqEquipmentPaybackScenarios("LED-300")).toEqual([]);
     expect(getKqEquipmentPaybackScenarios("PRESS-0600")[0]?.paybackHarvests).toBeGreaterThan(0);
+  });
+
+  it("includes all required press adjustments in higher-tier investment estimates", () => {
+    const one = buildKqEconomyBalanceReport({ juryScore: 9, harvestGrams: 100 });
+    const fleet = buildKqEconomyBalanceReport({ juryScore: 9, harvestGrams: 100, productionUnits: 8 });
+    for (const [route, level, acquisitionCostCents, upgradeCostCents] of [
+      ["rosin-selection", 4, 136_000, 51_000],
+      ["rosin-premium", 7, 263_500, 178_500],
+      ["rosin-signature", 10, 467_500, 382_500],
+    ] as const) {
+      const expectation = { available: true, equipmentLevels: { "PRESS-0600": level }, acquisitionCostCents, upgradeCostCents };
+      expect(one.projections.find(item => item.route === route)).toMatchObject(expectation);
+      expect(fleet.projections.find(item => item.route === route)).toMatchObject(expectation);
+    }
+    expect(getKqEquipmentPaybackScenarios("PRESS-0600", { ownedCodes: ["PRESS-0600"], levels: { "PRESS-0600": 4 } }).map(item => item.route))
+      .toEqual(["rosin-trial", "rosin-selection"]);
   });
 
   it("hides a lower model when the player already owns its superior replacement", () => {

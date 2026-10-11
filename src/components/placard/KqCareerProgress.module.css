@@ -1,0 +1,68 @@
+.career { position: relative; z-index: 2; flex-shrink: 0; min-width: 0; padding: 14px 20px 0; border-bottom: 1px solid #c5b98f; background: #f7efd9; color: #214633; font-family: var(--font-sans), Arial, sans-serif; }
+.overview { display: flex; align-items: center; gap: 18px 30px; }
+.identity { display: flex; align-items: center; gap: 12px; flex: 0 1 310px; min-width: 0; }
+.portrait { display: grid; place-items: center; flex: 0 0 64px; width: 64px; height: 64px; overflow: hidden; border: 2px solid #b99e59; border-radius: 16px; background: #e2ddbc; box-shadow: 0 2px 0 #fff9e7; }
+.portrait > svg { width: 32px; height: 32px; color: #788365; }
+.avatar { display: block; width: 100%; height: 100%; }
+.identityText { min-width: 0; }
+.identityText > small { display: block; font-size: 10px; line-height: 1.4; font-weight: 750; letter-spacing: .05em; text-transform: uppercase; color: #59664a; }
+.nickname { display: block; margin: 2px 0 5px; font-size: 20px; line-height: 1.15; overflow-wrap: anywhere; }
+.identityMeta { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 8px; }
+.level { padding: 3px 7px; border-radius: 5px; background: #22563e; color: #fff6df; font-size: 12px; font-weight: 800; white-space: nowrap; }
+.level > span { font-weight: 500; color: #cbdac2; }
+.strength { font-size: 11px; color: #58644c; }
+.progression { flex: 1; min-width: 0; }
+.progressHeading, .progressCaption { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 3px 10px; font-size: 12px; line-height: 1.45; }
+.progressHeading > span { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.progression progress { display: block; appearance: none; width: 100%; height: 10px; margin: 7px 0 5px; overflow: hidden; border: 1px solid #c5bd99; border-radius: 8px; background: #ddd9bd; accent-color: #287856; }
+.progression progress::-webkit-progress-bar { background: #ddd9bd; }
+.progression progress::-webkit-progress-value { border-radius: 6px; background: #287856; }
+.progression progress::-moz-progress-bar { border-radius: 6px; background: #287856; }
+.progressCaption { color: #526347; }
+.progressCaption > small { font-size: 11px; }
+.next { display: flex; align-items: flex-start; gap: 6px; margin: 6px 0 0; font-size: 12px; line-height: 1.45; }
+.next > svg { flex-shrink: 0; margin-top: 1px; }
+.loading, .tutorial { margin: 6px 0 12px; font-size: 12px; line-height: 1.5; }
+.tutorial { margin: 10px 0 0; padding-left: 9px; border-left: 3px solid #ac8935; }
+.details { margin-top: 8px; border-top: 1px solid #d7caab; }
+.details > summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 40px; padding: 5px 0; list-style: none; color: #31583c; font-size: 12px; font-weight: 750; cursor: pointer; }
+.details > summary::-webkit-details-marker { display: none; }
+.details > summary:focus-visible { outline: 3px solid #956c16; outline-offset: 2px; border-radius: 4px; }
+.details > summary > svg { flex-shrink: 0; }
+.details[open] > summary > svg { transform: rotate(180deg); }
+.detailContent { max-height: min(360px, 35dvh); overflow-y: auto; overscroll-behavior: contain; padding: 0 10px 16px 0; scrollbar-gutter: stable; }
+.detailContent h3 { margin: 0 0 7px; font-size: 13px; line-height: 1.4; font-weight: 800; }
+.detailContent p { margin: 0 0 8px; font-size: 12px; line-height: 1.6; }
+.learning { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.learning > section { min-width: 0; padding: 12px; border: 1px solid #d7caab; border-radius: 8px; background: #fff9e9; }
+.cultureCount { display: inline-block; margin-top: 3px; font-size: 12px; font-weight: 750; color: #386642; }
+.practice { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 10px 0; }
+.practice dt { font-size: 11px; text-transform: capitalize; color: #58644c; }
+.practice dd { margin: 2px 0 0; font-size: 14px; font-weight: 750; }
+.practiceRequirements { display: grid; gap: 7px; padding: 9px 0 0; margin: 0; border-top: 1px solid #e0d5b9; list-style: none; }
+.practiceRequirements li { display: grid; gap: 2px; font-size: 11px; line-height: 1.5; }
+.practiceRequirements span { color: #526347; }
+.roadmap { margin-top: 16px; }
+.roadmap ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 0; margin: 10px 0 0; list-style: none; }
+.roadmap li { min-width: 0; padding: 10px 12px; border: 1px solid #d7caab; border-left: 3px solid #c5b98f; border-radius: 5px; background: #fffcf3; }
+.roadmap li[data-reached] { border-left-color: #7b9b76; }
+.roadmap li[data-current] { border-color: #64855c; border-left-width: 3px; background: #e8efd9; }
+.milestoneHeading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 3px 8px; margin-bottom: 4px; font-size: 12px; }
+.milestoneHeading > span { font-size: 11px; color: #58644c; }
+.roadmap li p { margin: 0; font-size: 11px; overflow-wrap: anywhere; }
+.career[data-compact] { padding-top: 12px; }
+@media (max-width: 700px) {
+  .career, .career[data-compact] { padding: 10px 12px 0; }
+  .overview { flex-wrap: wrap; gap: 12px; }
+  .identity { flex-basis: 100%; gap: 10px; }
+  .portrait { flex-basis: 54px; width: 54px; height: 54px; border-radius: 13px; }
+  .nickname { font-size: 18px; }
+  .progression { flex-basis: 100%; }
+  .progressHeading { font-size: 12px; }
+  .next { font-size: 11px; }
+  .details > summary { min-height: 44px; }
+  .learning, .roadmap ol { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .details > summary > svg { transition: transform .15s; }
+}

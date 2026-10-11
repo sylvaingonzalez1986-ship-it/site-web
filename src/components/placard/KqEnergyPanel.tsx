@@ -2,9 +2,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Check, Leaf, RefreshCw, Sun, Zap } from "lucide-react";
-import { formatKqCash, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
-import { KQ_ENERGY_MODES, quoteKqEnergy, type KqEnergyMode, type KqEnergyQuote, type KqEnergySnapshot } from "@/lib/kanab-quest-energy";
-import { getKqProductionUnits } from "@/lib/kanab-quest-production";
+import { formatKqCash, getKqEquipmentBuildingNumber, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
+import { KQ_ENERGY_MODES, quoteKqEnergy, quoteKqTentEnergy, type KqEnergyMode, type KqEnergyQuote, type KqEnergySnapshot } from "@/lib/kanab-quest-energy";
+import { getKqEffectiveTentProfiles, getKqProductionUnits } from "@/lib/kanab-quest-production";
 import type { KqTentEquipmentProfile } from "@/lib/kanab-quest-production-scale";
 import { getKqCultureWearPreview } from "@/lib/kanab-quest-culture-wear";
 import styles from "./KqEnergyPanel.module.css";
@@ -18,7 +18,7 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   onQuoteChange?: (quote: KqEnergyQuote | null) => void;
   lockedQuote?: KqEnergyQuote;
   lockedTents?: KqTentEquipmentProfile[];
-  lockedScope?: "tent" | "installation";
+  lockedScope?: "tent" | "installation" | "building";
   runId?: string | null;
 }) {
   const api = useKqTutorialApi();
@@ -49,11 +49,10 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   }, [refresh, api]);
   const quote = lockedQuote ?? (selectedMode ? snapshot?.quotes[selectedMode] : undefined);
   const sharedInstallation = Boolean(lockedQuote && lockedScope === "installation");
+  const buildingInstallation = lockedQuote ? lockedScope === "building" : snapshot?.equipmentScopeVersion === 3;
   const units = getKqProductionUnits(lockedQuote ? lockedQuote.productionUnits : quote?.productionUnits ?? snapshot?.productionUnits ?? productionUnits);
-  const quotedTents = lockedQuote ? lockedTents : snapshot?.tents?.map(tent => ({
-    tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels,
-  }));
-  const tentQuotes = !sharedInstallation && quote && quotedTents?.length === units ? [...quotedTents]
+  const quotedTents = lockedQuote ? lockedTents : snapshot?.tents ? getKqEffectiveTentProfiles({ ...snapshot, tents: snapshot.tents }) : undefined;
+  const tentQuotes = !sharedInstallation && !buildingInstallation && quote && quotedTents?.length === units ? [...quotedTents]
     .sort((left, right) => left.tentNumber - right.tentNumber)
     .map(tent => ({ tentNumber: tent.tentNumber,
       starter: tent.codes.every(code => getKqEquipmentDefinition(code)?.purchasable === false),
@@ -63,23 +62,32 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   const showTentQuotes = units > 1 && quote && tentQuotes.length === units
     && tentQuotes.reduce((sum, tent) => sum + tent.quote.totalCents, 0) === quote.totalCents
     && tentQuotes.reduce((sum, tent) => sum + tent.quote.totalWattHours, 0) === quote.totalWattHours;
-  const wearProfiles = snapshot?.tents?.length ? snapshot.tents : [{
+  const buildingQuotes = buildingInstallation && quote && quotedTents?.length === units ? [...new Set(quotedTents.map(tent => getKqEquipmentBuildingNumber(tent.tentNumber)))].map(buildingNumber => ({
+    buildingNumber, quote: quoteKqTentEnergy(quotedTents.filter(tent => getKqEquipmentBuildingNumber(tent.tentNumber) === buildingNumber), quote.mode, "building"),
+  })) : [];
+  const showBuildingQuotes = buildingQuotes.length > 0 && quote
+    && buildingQuotes.reduce((sum, building) => sum + building.quote.totalCents, 0) === quote.totalCents;
+  const tentWearProfiles = snapshot?.tents?.length ? snapshot.tents : [{
     tentNumber: 1,
     equippedCodes: snapshot?.cultureEquipmentCodes ?? [],
     cultureWear: snapshot?.cultureWear ?? {},
     cultureOperationalCodes: snapshot?.cultureOperationalCodes ?? [],
   }];
+  const wearProfiles = [
+    ...tentWearProfiles.map(tent => ({...tent, destination: `Tente ${tent.tentNumber}`})),
+    ...(snapshot?.equipmentScopeVersion === 3 ? snapshot.buildings ?? [] : []).map(building => ({...building, destination: `Entrepôt ${building.buildingNumber}`})),
+  ];
   const equipmentName = (code: string) => getKqEquipmentDefinition(code)?.name ?? code;
-  const tentEquipmentName = (tentNumber: number, code: string) => `Tente ${tentNumber} · ${equipmentName(code)}`;
+  const scopedEquipmentName = (destination: string, code: string) => `${destination} · ${equipmentName(code)}`;
   const getWearPreviews = (mode: KqEnergyMode) => wearProfiles.flatMap(tent => tent.equippedCodes.flatMap(code => {
     const condition = tent.cultureWear[code];
     const preview = condition && !condition.due ? getKqCultureWearPreview(code, condition, mode) : null;
-    return preview ? [{ ...preview, key: `${tent.tentNumber}:${code}`, name: tentEquipmentName(tent.tentNumber, code) }] : [];
+    return preview ? [{ ...preview, key: `${tent.destination}:${code}`, name: scopedEquipmentName(tent.destination, code) }] : [];
   }));
   const wearPreviews = selectedMode ? getWearPreviews(selectedMode) : [];
   const wearCostCents = wearPreviews.reduce((sum, item) => sum + item.wearCostCents, 0);
-  const brokenEquipment = wearProfiles.flatMap(tent => tent.equippedCodes.filter(code => tent.cultureWear[code]?.due).map(code => tentEquipmentName(tent.tentNumber, code)));
-  const fallbackEquipment = wearProfiles.flatMap(tent => tent.cultureOperationalCodes.filter(code => !tent.equippedCodes.includes(code)).map(code => tentEquipmentName(tent.tentNumber, code)));
+  const brokenEquipment = wearProfiles.flatMap(tent => tent.equippedCodes.filter(code => tent.cultureWear[code]?.due).map(code => scopedEquipmentName(tent.destination, code)));
+  const fallbackEquipment = wearProfiles.flatMap(tent => tent.cultureOperationalCodes.filter(code => !tent.equippedCodes.includes(code)).map(code => scopedEquipmentName(tent.destination, code)));
   useEffect(() => { onQuoteChange?.(error ? null : quote ?? null); }, [quote, error, onQuoteChange]);
   const invoice = snapshot?.invoices.find((item) => item.runId === runId);
   const due = snapshot?.outstandingCents ?? 0;
@@ -116,17 +124,22 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
         </div>)}</dl>
         <p>Le total dépend du matériel installé dans chaque tente.</p>
       </div> : null}
+      {showBuildingQuotes ? <div className={styles.tentTotals} aria-label="Électricité par bâtiment">
+        <strong>Consommation des tentes et services de chaque entrepôt</strong>
+        <dl>{buildingQuotes.map(building => <div key={building.buildingNumber}><dt>Entrepôt {building.buildingNumber}<small>Tentes et services partagés</small></dt><dd><b>{formatKqCash(building.quote.totalCents)}</b><small>{(building.quote.totalWattHours / 1000).toLocaleString("fr-FR", {maximumFractionDigits: 2})} kWh</small></dd></div>)}</dl>
+        <p>Séchoir et sécurité comptés une fois par bâtiment. Le solaire couvre les appareils de son bâtiment.</p>
+      </div> : null}
       {quote.savingsCents > 0 ? <p className={styles.solar}><Sun size={16} /> Solaire : {quote.solarPercent} % couverts · {formatKqCash(quote.savingsCents)} économisés</p> : null}
       <details><summary>Détail par appareil</summary><ul>{quote.lines.map((line) => {
         const common = sharedInstallation && ["security", "flower-drying"].includes(getKqEquipmentDefinition(line.code)?.slot ?? "");
-        return <li key={`${line.tentNumber ?? "legacy"}:${line.code}`}><span>{common ? "Installation · " : line.tentNumber ? `Tente ${line.tentNumber} · ` : ""}{getKqEquipmentDefinition(line.code)?.name ?? line.name} · niv. {line.level}{!common && !line.tentNumber && units > 1 ? ` ×${units}` : ""}</span><b>{(line.wattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kWh</b></li>;
-      })}</ul><p>0,30 € virtuel / kWh. Le temps hors ligne ne change pas le montant.{sharedInstallation ? " Cette ancienne culture conserve son devis : séchoir et sécurité comptés une seule fois, solaire appliqué à l’installation." : lockedQuote ? " Les consommations suivent le matériel enregistré au début de cette culture. Ce devis reste inchangé." : " Chaque tente paie ses appareils, y compris son séchoir à fleurs et sa sécurité. Son solaire réduit uniquement sa propre facture."}</p></details>
+        return <li key={`${line.buildingNumber ? `building:${line.buildingNumber}` : line.tentNumber ?? "legacy"}:${line.code}`}><span>{common ? "Installation · " : line.buildingNumber ? `Entrepôt ${line.buildingNumber} · ` : line.tentNumber ? `Tente ${line.tentNumber} · ` : ""}{getKqEquipmentDefinition(line.code)?.name ?? line.name} · niv. {line.level}{!common && !line.tentNumber && !line.buildingNumber && units > 1 ? ` ×${units}` : ""}</span><b>{(line.wattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kWh</b></li>;
+      })}</ul><p>0,30 € virtuel / kWh. Le temps hors ligne ne change pas le montant.{sharedInstallation ? " Cette ancienne culture conserve son devis : séchoir et sécurité comptés une seule fois, solaire appliqué à l’installation." : lockedQuote ? " Les consommations suivent le matériel enregistré au début de cette culture. Ce devis reste inchangé." : buildingInstallation ? " Chaque tente consomme pour sa culture ; séchoir et sécurité sont comptés une fois par bâtiment. Le solaire réduit la facture de son bâtiment." : " Chaque tente paie ses appareils, y compris son séchoir à fleurs et sa sécurité. Son solaire réduit uniquement sa propre facture."}</p></details>
       {invoice ? <p className={styles.stamp} data-paid={invoice.remainingCents === 0}>{invoice.remainingCents === 0 ? <><Check size={17} /> Réglée</> : `Reste sur ce cycle : ${formatKqCash(invoice.remainingCents)}`}</p> : null}
       {lockedQuote && invoice && quote.totalWattHours > 0 ? <p><Leaf size={16} /> Rendement énergétique : {(invoice.harvestGrams * 1000 / quote.totalWattHours).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} g/kWh</p> : null}
     </> : !snapshot && !error ? <p role="status">Lecture du compteur…</p> : null}
     {selectedMode && brokenEquipment.length > 0 ? <p className={styles.error} role="status"><strong>Matériel hors service :</strong> {brokenEquipment.join(", ")}. Ses bonus sont désactivés.{fallbackEquipment.length > 0 ? ` Dépannage : ${fallbackEquipment.join(", ")}.` : ""} Remplace-le dans ton entrepôt pour retrouver ses bonus.</p> : null}
     {selectedMode && wearPreviews.length > 0 ? <section className={styles.wearPreview} aria-label="Usure prévue du matériel">
-      <strong>Matériel de chaque tente après cette culture · {KQ_ENERGY_MODES[selectedMode].name}</strong>
+      <strong>État du matériel après cette culture · {KQ_ENERGY_MODES[selectedMode].name}</strong>
       <ul>{wearPreviews.map((item) => <li key={item.key}>
         <div><span>{item.name}</span><b>{item.conditionBefore.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} % → {item.conditionAfter.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %</b></div>
         <progress value={item.conditionAfter} max={100} aria-label={`État prévu de ${item.name}`} />

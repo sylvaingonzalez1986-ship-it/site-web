@@ -13,7 +13,7 @@ export type KqOnlinePrice = "discovery" | "advised" | "premium";
 export const KQ_CHANNELS = {
   online: { name: "Vente en ligne", image: "/placard/channel-online-v1.webp", promise: "Ta clientèle. Tes prix.", description: "Meilleure marge au gramme, commandes limitées. La qualité fidélise tes clients." },
   "cbd-shop": { name: "CBD shops", image: "/placard/channel-cbd-shop-v1.webp", promise: "Du volume, tout de suite.", description: "La qualité et ton réseau de boutiques déterminent le prix de reprise." },
-  wholesale: { name: "Grossistes", image: "/placard/channel-wholesale-v1.webp", promise: "Une sortie pour chaque lot.", description: "Tout le volume, quelle que soit la note. Reprise à 25–33 %, sans réputation." },
+  wholesale: { name: "Grossistes", image: "/placard/channel-wholesale-v1.webp", promise: "Une sortie pour chaque lot.", description: "Fleur brute dès 6,5/10 : reprise à 35–39 %. Autres lots : 25–33 %. Sans réputation ; biomasse au tarif industriel." },
 } as const;
 export const KQ_COMMERCE_EVENTS: Record<string, string> = {
   normal: "Marché habituel", "spot-flower": "Les fleurs font parler d’elles", "spot-hash": "Le hash est à l’honneur",
@@ -101,6 +101,15 @@ export function getKqShopNetworkBonus(partners: number) {
 export function getKqShopBudget(partners: number, event: string = "normal") {
   return (4000 + clamp(partners, 0, KQ_SHOP_MAX_PARTNERS) * 250) * (event === "restock" ? 1.25 : event === "promotion" ? .75 : 1);
 }
+/** Commercial raw flowers cover a modest starter cycle; retail still pays more.
+ * Emergency storage overflow has its own unchanged fixed clearance tariff.
+ */
+export function getKqWholesalePricePercent(route: KqMarketRouteCode, quality: number, event = "normal") {
+  const commercialFlower = route === "raw" && quality >= 6.5;
+  return event === "promotion" ? commercialFlower ? 35 : 25
+    : event === "restock" ? commercialFlower ? 39 : 33
+      : commercialFlower ? 38 : 30;
+}
 export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, channel: KqSalesChannel, policy: KqOnlinePrice = "advised", requestedUnits?: number, nowMs?: number): KqCommerceOffer {
   const commercialQuality = getKqCommerceStockQuality(stock);
   const salesMultiplier = getChanvrierSalesMultiplier(state.strength);
@@ -147,7 +156,7 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const onlinePrice = Math.max(.6, (policy === "premium" ? 1.22 : policy === "discovery" ? .9 : 1) * (1 + tier.priceBonusPercent / 100)
     * (.7 + commercialQuality / 20) * (protectedPrice ? Math.max(1, eventFactor) : eventFactor * (1 - saturation)));
   const professionalPrice = channel === "cbd-shop" ? shopPricePercent / 100
-    : campaign?.event === "promotion" ? .25 : campaign?.event === "restock" ? .33 : .3;
+    : getKqWholesalePricePercent(stock.route, commercialQuality, campaign?.event) / 100;
   const unitCents = round6(salesMultiplier * (salvage ? stock.baseUnitCents : stock.baseUnitCents * (channel === "online" ? onlinePrice : professionalPrice)));
   // One cumulative ledger across all prices and channels prevents rounding arbitrage.
   const payoutExactAfter = round6((stock.payoutExact ?? 0) + units * unitCents / 10);
@@ -174,7 +183,8 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const satisfaction: KqCustomerSatisfaction = channel === "wholesale" ? "not-applicable"
     : channel === "cbd-shop" ? shopBand.satisfaction
     : commercialQuality >= rule.gainFrom ? "satisfied" : commercialQuality >= rule.neutralFrom ? "neutral" : "disappointed";
-  const message = channel === "wholesale" ? "Reprise de tout le volume, sans exigence de note ni gain de réputation."
+  const message = channel === "wholesale" ? salvage ? "Reprise au tarif industriel, sans gain de réputation."
+    : `Reprise à ${getKqWholesalePricePercent(stock.route, commercialQuality, campaign?.event)} % du tarif de référence, sans gain de réputation. La fleur brute dès 6,5/10 bénéficie du tarif commercial.`
     : channel === "cbd-shop" ? `${shopBand.label} : reprise à ${shopPricePercent} % du tarif de référence. ${shopBand.churnWeight ? "Ces livraisons fragilisent tes partenariats." : shopBand.recruitmentWeight ? "Ces livraisons construisent ton réseau de boutiques." : "Ces livraisons maintiennent tes partenariats."}`
     : commercialQuality < rule.neutralFrom ? "Une livraison décevante peut faire partir des clients. La perte dépend du volume livré."
     : protectedPrice ? "Ta réputation protège le prix, mais les commandes restent limitées." : "Les bons lots fidélisent ta clientèle. Sa progression est limitée sur 24 heures.";

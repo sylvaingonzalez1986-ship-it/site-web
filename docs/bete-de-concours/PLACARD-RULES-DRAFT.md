@@ -1,6 +1,6 @@
 # Règlement du Placard — brouillon de lancement
 
-Version de travail `2026-10-10-draft-7`. Ce document n'est pas publié aux
+Version de travail `2026-10-11-draft-8`. Ce document n'est pas publié aux
 clients et ne vaut pas règlement commercial tant que les lots, les dates de
 saison et les probabilités des collections ne sont pas validés.
 
@@ -188,13 +188,19 @@ adaptés à la progression : tamis 550 €, presse 850 €, laveuse 1 250 €.
 | Caméra de surveillance | 69,99 € |
 | Chien de garde | 1 000 € |
 
-Un seul choix de sécurité est actif à la fois. Tous empêchent les pertes de poids
+Le séchoir, le solaire et la sécurité s’installent une fois par entrepôt de quatre
+tentes. L’éclairage, l’extraction, le climat et la tente restent individuels ;
+les machines de transformation servent les deux entrepôts. Chaque bâtiment possède
+ses modèles, ses niveaux et son état. Les services sont facturés et usés une seule
+fois par culture ; le solaire réduit la consommation de son bâtiment.
+
+Un seul choix de sécurité est actif à la fois dans chaque bâtiment. Tous empêchent les pertes de poids
 lors d’un vol. Le chien apporte aussi +8 % de régularité au niveau 1.
 Les améliorations ajoutent ensuite un point de régularité par niveau.
 La caméra consomme 12 W dans le jeu. Les deux choix disponibles sont la caméra
 et le chien de garde.
 
-Posséder le chien entraîne 8 € de nourriture à chaque culture terminée et 40 €
+Posséder le chien entraîne, par bâtiment équipé, 8 € de nourriture à chaque culture terminée et 40 €
 de vétérinaire aux 10e, 20e, 30e cycles depuis l’adoption. Cela reste dû quand
 une autre protection est installée. Une culture abandonnée et le temps hors ligne
 ne déclenchent aucun frais. Les soins sont déduits du portefeuille à la récolte ;
@@ -216,11 +222,12 @@ Plasmastatic demande le pollinator à sec.
 
 ### Niveaux du matériel
 
-La boutique propose une seule référence par fonction, soit douze matériels achetables.
+La boutique propose une seule référence par fonction, soit quatorze matériels achetables.
 Chaque achat commence au **niveau 1** et peut être amélioré jusqu’au **niveau 10**.
 Le coût du niveau suivant vaut 10 % du prix de base multiplié par le niveau actuel,
 arrondi au cent supérieur. Exemple : la caméra coûte 69,99 € ; passer du niveau 1
-au niveau 2 coûte 7 €. Les améliorations utilisent uniquement l’argent virtuel.
+au niveau 2 coûte 7 €. Les améliorations utilisent l’argent virtuel et exigent
+désormais un niveau métier suffisant ; elles ne consomment pas l’expérience.
 
 Chaque niveau augmente un avantage : quantité, régularité ou transformation.
 Les bonus de quantité et régularité déjà présents augmentent de 10 % de leur valeur
@@ -229,19 +236,58 @@ gagne un point aux niveaux 4, 7 et 10. La caméra et le secours solaire conserve
 leur protection complète et gagnent un point de régularité par niveau supplémentaire.
 Les bonus restent soumis aux plafonds habituels des statistiques et de récolte.
 
-La capacité de la presse gagne 8 points par niveau, celle de la laveuse 6 points,
-et celle des autres machines de transformation 2 points, sans dépasser 100 %.
-Chaque machine de transformation gagne aussi 2 % de valeur par niveau supplémentaire.
-Si une filière utilise plusieurs machines, la moyenne de leurs bonus de valeur
-s’applique au produit transformé ; le reliquat brut ou biomasse garde son prix habituel.
-Les seuils du jury continuent à conditionner l’accès aux filières.
+Les machines de transformation possèdent une capacité fixe en grammes de fleurs
+sources par lot. Ajouter une tente ne multiplie pas cette capacité. Les indices
+1–3, 4–6 et 7–10 représentent trois configurations, avec des réglages intermédiaires.
+Au niveau 1 : pollinator 120 g, presse 80 g, laveuse 180 g, collecte automatisée
+500 g, lyophilisateur 500 g et séparation statique 120 g. Ces valeurs servent
+à l’équilibrage du jeu, sans prétendre décrire les appareils réels.
 
-L’apparence évolue uniquement aux niveaux **5** et **10** : standard, amélioré, expert.
+Les configurations multiplient la capacité initiale par 1, 2 ou 4 ; chaque réglage
+intermédiaire ajoute 15 % de la capacité de sa configuration. La précision progresse
+aussi. Le bonus automatique de valeur de 2 % par niveau est supprimé pour les modèles
+actuels. La machine la plus limitée détermine la capacité d’une chaîne ; sa précision
+est la moyenne de celles des machines utilisées. Le reliquat reste vendu brut ou en
+biomasse : cette version ne crée pas de file de plusieurs passages en atelier.
+Les recettes Rosin Sélection, Premium et Signature demandent respectivement une
+presse de niveau 4, 7 et 10. Les critères existants de qualité, réputation et ventes
+par famille continuent de s’appliquer.
+
+Les repères visuels changent aux niveaux **4** et **7**.
 Le matériel doit être installé pour appliquer ses bonus. Le niveau est enregistré
 au lancement d’une partie ; les transformations utilisent les niveaux installés
 au moment de la vente. Une requête rejouée ne peut pas débiter une seconde fois.
 Les anciens modèles sont regroupés dans la référence unique en conservant le meilleur
 palier déjà acheté, sans modifier le solde du joueur.
+
+### Expérience métier permanente
+
+L’XP métier du chanvrier est distincte de l’XP dépensable pendant une culture,
+de l’EXP de l’arène et de la réputation commerciale. Une culture officielle
+terminée rapporte 100 XP, quel que soit le nombre de tentes, le capital ou la note.
+Une mort naturelle rapporte 10 XP par étape enregistrée, avec un maximum de 60 XP ;
+un abandon volontaire ne rapporte rien. Chaque culture ne compte qu’une fois.
+Les tutoriels ne donnent pas d’XP au compte.
+
+| Niveau métier | XP cumulée | Nouveaux investissements possibles |
+| --- | ---: | --- |
+| 1 | 0 | Kit de départ, caméra |
+| 2 | 200 | Tente renforcée, LED, extraction, climat, séchoir |
+| 3 | 400 | Pollinator, solaire, chien ; deuxième tente |
+| 4 | 700 | Presse |
+| 5 | 1 200 | Laveuse ; troisième tente ; améliorations matérielles 4–6 |
+| 6 | 1 800 | AutoSieve, après trois lots lavés |
+| 7 | 2 400 | Quatrième tente |
+| 8 | 3 000 | Lyophilisateur, après six lots lavés ; améliorations matérielles 7–10 |
+| 9 | 3 700 | Consolidation de l’atelier |
+| 10 | 4 500 | Séparation statique, après dix lots tamisés ; deuxième entrepôt |
+
+Les améliorations exigent aussi le niveau métier nécessaire à l’achat du modèle.
+La pratique compte un lot de récolte une seule fois par famille, indépendamment du
+nombre de ventes ou de requêtes. Les historiques disponibles sont repris au déploiement,
+sans usure rétroactive. Le matériel déjà acquis reste installable, utilisable et
+réparable ; seules les prochaines acquisitions et améliorations sont soumises aux
+nouveaux paliers. Les contrôles sont appliqués dans les transactions PostgreSQL.
 
 ### Usure et remplacement du matériel de culture
 
@@ -282,24 +328,32 @@ L'état, l'usure du prochain cycle et le prix sont annoncés avant confirmation.
 Le coût estimé d'usure représente la part du remplacement consommée pendant
 le cycle ; il n'est pas débité en plus du remplacement.
 
-Les machines de transformation gardent leur entretien séparé tous les 10 à
-20 cycles, sans dépendre du mode d'énergie. Le Bricoleur bénéficie de réparations
+Les machines de transformation demandent un entretien après 10 lots transformés,
+ou 20 à partir du niveau 5 et pour le lyophilisateur. Seules les machines utilisées
+par la filière vieillissent, une fois par lot unique ; terminer une culture sans
+transformation ne les use plus. Le pollinator motorisé est inclus. L’entretien
+préventif est possible dès le premier usage, au tarif annoncé, sans dépendre du mode
+d’énergie. Le Bricoleur bénéficie de réparations
 gratuites pour ces machines ; **les remplacements du matériel de culture restent
-payants**. Le plateau de tamisage manuel est exempté de cet entretien.
+payants**.
 
 ## 5. Incidents de culture
 
-- **Surcharge au compteur** : un résultat Fragile ou un Échec programme une
-  coupure à l'étape suivante. Pendant cette coupure, le meilleur dé devient un
-  Danger. Le Panneau solaire et batterie empêche la coupure. Charge répartie
+- **Surcharge au compteur** : un résultat Fragile ou un Échec retire 10 points
+  de rendement aux tentes de chaque bâtiment sans secours solaire. Le Panneau
+  solaire et batterie protège uniquement son bâtiment. Les dés de la culture
+  commune restent inchangés. Les anciennes cultures conservent la coupure à
+  l'étape suivante, qui transforme le meilleur dé en Danger. Charge répartie
   réduit le seuil d'une réussite ; le Branchement illégal transforme
   les deux dés les plus faibles après le lancer, mais ajoute 2 Pression.
 - **Contrôle DDTM** : la situation suit les résultats habituels du lancer.
   Papiers en règle fixe les trois dés sur une réussite et garantit donc trois
   réussites pour ce contrôle.
-- **Renard à deux pattes** : sans protection, un résultat Fragile retire 15 %
-  du poids final et un Échec en retire 35 %. Gros molosse ou une protection de sécurité installée
-  protège intégralement le lot contre cet incident.
+- **Renard à deux pattes** : sans protection, un résultat Fragile retire 15 points
+  de rendement et un Échec en retire 35. La sécurité installée protège les tentes
+  de son bâtiment ; seules les tentes non protégées subissent ces pertes.
+  Gros molosse et l’Héritage de protection du vol couvrent toute la culture.
+  Les anciennes cultures conservent leur protection et leur perte globales.
 
 Le Branchement illégal est une caricature de risque dans le jeu. Aucune image
 ni règle ne décrit une méthode de raccordement réelle.
@@ -451,12 +505,27 @@ restent en stock. Plusieurs ventes peuvent écouler le même lot.
 | --- | --- | --- |
 | Vente en ligne | Tarif conseillé lié à la qualité et à la réputation ; choix à 90 %, 100 % ou 122 % | Commandes limitées ; les mauvais lots font partir des clients |
 | CBD shops | 40–55 % selon la qualité, bonus réseau de 0–4 points | Réseau de partenaires ; fleur dès 6,5/10, transformation dès 7,5/10 |
-| Grossistes | 25 à 33 % du tarif de référence, normalement 30 % | Reprise de tout le volume, sans exigence de note ni réputation |
+| Grossistes | Fleur brute dès 6,5/10 : 38 % normalement, 35 % en promotion, 39 % en réassort. Autres lots : 30 / 25 / 33 % | Reprise de tout le volume, sans gain de réputation ; biomasse au tarif industriel |
 
 La fleur sous 5,8/10 peut désormais être préparée brute pour la reprise grossiste.
 Les exigences de qualité et de matériel pour fabriquer les transformations
 restent inchangées. La biomasse est reprise au tarif industriel dans ce circuit.
 Le prix affiché par le joueur en ligne ne modifie jamais les tarifs professionnels.
+
+La qualité retenue pour la reprise commerciale est celle du lot conservé au moment
+du devis : une fleur descendue sous 6,5/10 retrouve le tarif de déstockage. Le
+surplus sans contenant conserve sa reprise d'urgence distincte à 0,54 €/g,
+manuelle ou automatique. Ni cette reprise ni la biomasse ne garantissent une marge.
+Pour une récolte de départ de 100 g, sans bonus, la reprise commerciale produit
+68,40 € TTC en marché normal. Après 11,40 € de TVA, 45 € d'analyse par session
+et 6,03 € d'électricité du kit initial, il reste 5,97 € ; 1,47 € en promotion,
+7,47 € en réassort. Ce résultat suppose les 100 g et une note d'au moins 6,5/10.
+La boutique paie toujours davantage au gramme (au moins 40 %) et développe le réseau.
+
+Le serveur enregistre le devis complet ; SQL règle exactement ce devis avec ses
+contrôles d'identité, quantité, révision, échéance et montant confirmé. Un devis
+encore valide émis à l'ancien tarif reste honoré ; les reçus rejoués gardent leur
+montant initial. Ce changement de tarif ne réécrit aucune donnée ni migration SQL.
 
 Les shops ont un réseau distinct des clients en ligne : 20 partenaires au maximum,
 avec au plus un nouveau par cycle. Fleur 6,5–6,9 : 40 % et départ progressif ;

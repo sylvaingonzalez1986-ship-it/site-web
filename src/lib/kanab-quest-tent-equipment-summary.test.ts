@@ -2,11 +2,12 @@ import { describe, expect, it } from "vitest";
 import { buildKqTentEquipmentSummary, getKqEquipmentScope, getKqEquipmentStorageTent, KQ_STARTING_EQUIPMENT_CODES } from "./kanab-quest-equipment";
 
 describe("tent equipment recap", () => {
-  it("makes the three essential slots and four optional services explicit", () => {
+  it("keeps three essentials and local climate in a tent, with historical services available in version two", () => {
     const summary = buildKqTentEquipmentSummary({ ownedCodes: [], equippedCodes: [] });
-    expect(summary.slots).toHaveLength(7);
+    expect(summary.slots).toHaveLength(4);
     expect(summary.slots.filter(slot => slot.required).map(slot => slot.slot)).toEqual(["tent", "lighting", "air"]);
-    expect(summary.slots.filter(slot => slot.status === "optional")).toHaveLength(4);
+    expect(summary.slots.filter(slot => slot.status === "optional")).toHaveLength(1);
+    expect(buildKqTentEquipmentSummary({ ownedCodes: [], equippedCodes: [], equipmentScopeVersion: 2 }).slots).toHaveLength(7);
     expect(summary).toMatchObject({ missingRequiredCount: 3, installedCount: 0, ready: false });
   });
 
@@ -38,9 +39,15 @@ describe("tent equipment recap", () => {
     expect(summary).toMatchObject({ missingRequiredCount: 0, wornCount: 1, ready: false });
   });
 
-  it.each(["DRYING-ROOM", "SOLAR-BACKUP", "SECURITY-DOG", "SECURITY-CAMERA", "LED-300"])("attaches %s to its own tent", code => {
+  it.each(["LED-300", "AIR-EC6", "CLIMATE-SMART", "TENT-120"])("attaches %s to its own tent", code => {
     expect(getKqEquipmentScope(code)).toBe("tent");
     expect(getKqEquipmentStorageTent(code, 4)).toBe(4);
+  });
+
+  it.each(["DRYING-ROOM", "SOLAR-BACKUP", "SECURITY-DOG", "SECURITY-CAMERA"])("shares service %s only inside its building", code => {
+    expect(getKqEquipmentScope(code)).toBe("building");
+    expect(getKqEquipmentStorageTent(code, 4)).toBe(1);
+    expect(getKqEquipmentStorageTent(code, 8)).toBe(5);
   });
 
   it.each(["SIFT-TRAY", "WASHER-25L", "AUTO-SIEVE", "STATIC-PLASMA", "PRESS-0600", "FREEZE-DRYER"])("shares transformation machine %s once", code => {

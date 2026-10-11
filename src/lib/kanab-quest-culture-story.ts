@@ -1,4 +1,4 @@
-import { getKqStageDisplayName, KQ_STAGES, type KqGameState, type KqOutcome } from "./kanab-quest-game";
+import { getKqStageDisplayName, KQ_STAGES, KQ_SITUATIONS, type KqGameState, type KqOutcome } from "./kanab-quest-game";
 import { getKqCareProduct, getKqCareProblem, KQ_CARE_SEVERITY_LABELS, type KqCareState } from "./kanab-quest-care";
 import type { KqCultureAnalysis, KqCultureStageAnalysis } from "./kanab-quest-culture-analysis";
 
@@ -95,7 +95,11 @@ function stageEffects(state: KqGameState, analysis: KqCultureAnalysis, stage: Kq
     if (support > 0) effects.push(`Soutien à la production : +${support} points de pourcentage au bonus de rendement.`);
     if (loss > 0) effects.push(`Pertes de production : ${loss} points de pourcentage supplémentaires enregistrés.`);
   }
-  if ((stage.harvestLossPercent ?? 0) > 0) effects.push(`Le vol a retiré ${stage.harvestLossPercent} points de pourcentage au rendement.`);
+  const localLosses = state.history[stage.index]?.buildingHarvestLosses;
+  if (localLosses) {
+    const cause = KQ_SITUATIONS.find(item => item.code === state.situationCodes[stage.index])?.incident === "electricity-bill" ? "la coupure" : "le vol";
+    for (const [building, loss] of Object.entries(localLosses)) if (loss > 0) effects.push(`Entrepôt ${building} : ${cause} a retiré ${loss} points de rendement à ses seules tentes.`);
+  } else if ((stage.harvestLossPercent ?? 0) > 0) effects.push(`Le vol a retiré ${stage.harvestLossPercent} points de pourcentage au rendement.`);
   return effects;
 }
 
@@ -127,7 +131,7 @@ function momentText(state: KqGameState, stage: KqCultureStageAnalysis, effects: 
 
 function narrateResult(state: KqGameState, stage: KqCultureStageAnalysis) {
   const where = stageWhere(stage.index);
-  if ((stage.harvestLossPercent ?? 0) > 0) return `Le vol a entraîné une perte de rendement lors de « ${stage.situation} » ${where}.`;
+  if ((stage.harvestLossPercent ?? 0) > 0) return `${state.equipment?.scope === "building" ? "L’incident" : "Le vol"} a entraîné une perte de rendement lors de « ${stage.situation} » ${where}.`;
   if (stage.outcome === "failure") return `L’opération « ${stage.situation} » s’est soldée par un échec ${where}.`;
   if (stage.outcome === "fragile") return `Le résultat de « ${stage.situation} » est resté fragile ${where}.`;
   if ((resolutionAt(state, stage.index)?.vitalityDelta ?? 0) < 0) return `Tu as réussi « ${stage.situation} » ${where}, mais le bilan de santé a reculé à cette étape.`;

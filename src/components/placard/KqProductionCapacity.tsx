@@ -5,13 +5,18 @@ import { ArrowRight, Building2, Check, ChevronDown, LoaderCircle, Plus } from "l
 import { useRef, useState } from "react";
 import { formatKqCash, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { getKqProductionExpansion } from "@/lib/kanab-quest-production";
+import { getChanvrierCareerGate, getChanvrierExpansionRequiredLevel, type ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
 import type { KqTentOverview } from "./KqTentSelector";
 import styles from "./KqProductionCapacity.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 
 export type KqProductionSnapshot = ReturnType<typeof getKqProductionExpansion>;
 
-export function KqProductionCapacity({ production, cashCents, activeRun, disabled, onUpdated, onPendingChange, tents = [] }: {
+export function KqProductionCapacity({ production, cashCents, career, storageCapacity, expansionEnergyCents, equipmentScopeVersion = 2, activeRun, disabled, onUpdated, onPendingChange, tents = [] }: {
+  equipmentScopeVersion?: 2 | 3;
+  career?: ChanvrierCareerSnapshot;
+  storageCapacity?: { freeUnits: number; totalUnits: number } | null;
+  expansionEnergyCents?: number;
   tents?: KqTentOverview[];
   production: KqProductionSnapshot;
   cashCents: number;
@@ -27,9 +32,10 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
   const [completedUnits, setCompletedUnits] = useState<number | null>(null);
   const inFlight = useRef(false);
   const request = useRef<{ units: number; cost: number; key: string } | null>(null);
-  const isFinalWarehouse = production.nextUnits === 8;
+  const isNewWarehouse = production.propertyCostCents > 0;
+  const careerGate = career && production.nextUnits !== null ? getChanvrierCareerGate(career.xp, getChanvrierExpansionRequiredLevel(production.nextUnits)) : null;
   const shortfall = Math.max(0, production.totalCostCents - cashCents);
-  const unavailable = disabled || pending || activeRun || shortfall > 0 || completedUnits === production.units;
+  const unavailable = disabled || pending || activeRun || shortfall > 0 || !careerGate?.allowed || completedUnits === production.units;
 
   const expand = async () => {
     if (inFlight.current || unavailable || production.nextUnits === null) return;
@@ -48,7 +54,7 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
       const body = await response.json() as { error?: string };
       if (!response.ok) throw new Error(body.error || "Agrandissement impossible.");
       setCompletedUnits(production.units);
-      setNotice(`${isFinalWarehouse ? "Entrepôt final ouvert" : "Nouvelle tente installée"} : ${production.nextUnits} tentes prêtes pour la prochaine culture.`);
+      setNotice(`${isNewWarehouse ? "Second entrepôt ouvert" : "Nouvelle tente installée"} : ${production.nextUnits} tentes prêtes pour la prochaine culture.`);
       api.notify("kq:equipment-updated");
       onUpdated();
     } catch (reason) {
@@ -76,8 +82,8 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
         <figure className={styles.plan}>
           <figcaption><span>Plan de l’installation</span><span>{production.nextUnits === null ? "Complet" : "Extension"}</span></figcaption>
           <div className={styles.warehouses} data-double={visibleWarehouses === 2}>
-            {Array.from({ length: visibleWarehouses }, (_, warehouse) => <div key={warehouse} className={styles.warehouse} data-new={warehouse === 1 && isFinalWarehouse}>
-              <div className={styles.roomLabel}><span>{warehouse === 0 ? "Entrepôt 01" : "Entrepôt 02"}</span><small>{warehouse === 1 && isFinalWarehouse ? "+ 4 tentes" : warehouse === 0 && isFinalWarehouse ? "Conservé" : ""}</small></div>
+            {Array.from({ length: visibleWarehouses }, (_, warehouse) => <div key={warehouse} className={styles.warehouse} data-new={warehouse === 1 && isNewWarehouse}>
+              <div className={styles.roomLabel}><span>{warehouse === 0 ? "Entrepôt 01" : "Entrepôt 02"}</span><small>{warehouse === 1 && isNewWarehouse ? "+ 1 tente · 4 places" : warehouse === 0 && isNewWarehouse ? "Conservé" : ""}</small></div>
               <ol aria-label={warehouse === 0 ? "Tentes du premier entrepôt" : "Tentes du second entrepôt"}>
                 {Array.from({ length: 4 }, (_, index) => {
                   const number = warehouse * 4 + index + 1;
@@ -97,25 +103,33 @@ export function KqProductionCapacity({ production, cashCents, activeRun, disable
         </figure>
         <div className={styles.offer}>
           <small className={styles.eyebrow}>{production.nextUnits === null ? "Installation complète" : "Prochain agrandissement"}</small>
-          <h4>{production.nextUnits === null ? "Les deux entrepôts sont à toi." : isFinalWarehouse ? "Un second entrepôt." : `Une ${production.nextUnits === 2 ? "deuxième" : production.nextUnits === 3 ? "troisième" : "quatrième"} tente.`}</h4>
-          <p>{production.nextUnits === null ? "Tes huit tentes cultivent ensemble, chacune avec son propre matériel." : isFinalWarehouse ? "Quatre tentes supplémentaires, chacune avec son kit de départ à aménager." : "Une tente supplémentaire avec son kit de départ : tente, lampe et extraction."}</p>
+          <h4>{production.nextUnits === null ? "Les deux entrepôts sont à toi." : isNewWarehouse ? "Un second entrepôt." : `Ta ${production.nextUnits}e tente.`}</h4>
+          <p>{production.nextUnits === null ? "Tes huit tentes cultivent ensemble, chacune avec son propre matériel." : isNewWarehouse ? "Un nouveau local et une première tente équipée. Les trois autres places s’aménagent ensuite, une tente à la fois." : "Une tente supplémentaire avec son kit de départ : tente, lampe et extraction."}</p>
           {production.nextUnits !== null ? <>
             <div className={styles.capacityChange}><span>{production.units}<small>tente{production.units > 1 ? "s" : ""}</small></span><ArrowRight size={19} aria-hidden="true" /><strong>{production.nextUnits}<small>tentes</small></strong></div>
             <details className={styles.quote}>
               <summary><span>Détail du devis</span><ChevronDown size={13} aria-hidden="true" /></summary>
               <dl>{production.propertyCostCents > 0 ? <div><dt>Second entrepôt</dt><dd>{formatKqCash(production.propertyCostCents)}</dd></div> : null}<div><dt>Nouvelle tente ×{production.addedUnits}</dt><dd>{formatKqCash(production.equipmentCostCents)}</dd></div></dl>
             </details>
+            {activeRun ? <p className={styles.constraint}>Disponible après la culture en cours.</p> : shortfall > 0 ? <p className={styles.constraint}>Il te manque {formatKqCash(shortfall)}.</p> : null}
+            {!careerGate?.allowed ? <p className={styles.constraint}>{careerGate?.reason ?? "Chargement de la progression du Chanvrier…"}</p> : null}
+            <dl className={styles.planningMetrics} aria-label="Préparer cet agrandissement">
+              <div><dt>Solde après achat</dt><dd>{formatKqCash(cashCents - production.totalCostCents)}</dd></div>
+              <div><dt>Électricité supplémentaire / culture</dt><dd>{expansionEnergyCents === undefined ? "Estimation indisponible" : `≈ ${formatKqCash(expansionEnergyCents)}`}</dd></div>
+              <div><dt>Stockage libre maintenant</dt><dd>{storageCapacity ? `${(storageCapacity.freeUnits / 10).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g sur ${(storageCapacity.totalUnits / 10).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g` : "Capacité indisponible"}</dd></div>
+              <div><dt>Récolte de la nouvelle tente</dt><dd>Jusqu’à {production.addedUnits * 500} g</dd></div>
+            </dl>
+            <p className={styles.planning}>Le plafond de récolte n’est pas une prévision. Prévois des contenants et une réserve pour les charges. L’électricité est estimée avec le kit de départ en mode équilibré, hors entretien.</p>
             <div className={styles.purchase}>
               <div className={styles.price}><small>Investissement total</small><strong>{formatKqCash(production.totalCostCents)}</strong></div>
-              <button type="button" disabled={unavailable} onClick={() => void expand()} aria-label={`${isFinalWarehouse ? "Acheter l’entrepôt final" : "Ajouter cette tente"} · ${formatKqCash(production.totalCostCents)}`}>
-                {pending ? <LoaderCircle size={16} className={styles.spinner} aria-hidden="true" /> : <Plus size={16} aria-hidden="true" />}{pending ? "Agrandissement…" : isFinalWarehouse ? "Acheter l’entrepôt final" : "Ajouter cette tente"}
+              <button type="button" disabled={unavailable} onClick={() => void expand()} aria-label={`${isNewWarehouse ? "Ouvrir le second entrepôt" : "Ajouter cette tente"} · ${formatKqCash(production.totalCostCents)}`}>
+                {pending ? <LoaderCircle size={16} className={styles.spinner} aria-hidden="true" /> : <Plus size={16} aria-hidden="true" />}{pending ? "Agrandissement…" : isNewWarehouse ? "Ouvrir le second entrepôt" : "Ajouter cette tente"}
               </button>
             </div>
-            {activeRun ? <p className={styles.constraint}>Disponible après la culture en cours.</p> : shortfall > 0 ? <p className={styles.constraint}>Il te manque {formatKqCash(shortfall)}.</p> : null}
           </> : <p className={styles.complete}><Check size={16} aria-hidden="true" />Deux entrepôts, huit tentes : capacité maximale atteinte.</p>}
         </div>
       </div>
-      <p className={styles.footnote}>Chaque nouvelle tente reçoit un kit de départ neuf. Ses équipements et améliorations s’achètent séparément ; les machines de transformation de l’atelier commun restent disponibles pour toutes les récoltes.</p>
+      <p className={styles.footnote}>Chaque nouvelle tente reçoit un kit de départ neuf. Ses équipements de culture s’achètent séparément.{equipmentScopeVersion===3?" Elle bénéficie des services déjà installés dans son bâtiment. Le second entrepôt démarre sans séchoir, solaire ni sécurité : ces services s’y achètent une fois pour ses quatre places.":""} Les machines de transformation de l’atelier commun restent disponibles pour toutes les récoltes.</p>
       {notice ? <p role="status" className={styles.notice}><Check size={15} aria-hidden="true" />{notice}</p> : null}
       {error ? <p role="alert" className={styles.error}>{error} <button type="button" onClick={onUpdated}>Actualiser</button></p> : null}
     </div>

@@ -3,6 +3,7 @@ import { KQ_ENERGY_MODES, quoteKqTentEnergy, type KqEnergyMode, type KqEnergySum
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { getKqEquipmentShopSnapshot } from "./kanab-quest-equipment-backend";
 import { getKqEquipmentDefinition } from "../kanab-quest-equipment";
+import { getKqEffectiveTentProfiles } from "../kanab-quest-production";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export async function getKqEnergySummary(userId: string): Promise<KqEnergySummary> {
@@ -13,11 +14,11 @@ export async function getKqEnergySummary(userId: string): Promise<KqEnergySummar
 }
 export async function getKqEnergySnapshot(userId: string): Promise<KqEnergySnapshot> {
   const [summary, shop] = await Promise.all([getKqEnergySummary(userId), getKqEquipmentShopSnapshot(userId)]);
-  return { ...summary, tents: shop.tents, productionUnits: shop.productionUnits, cashCents: shop.cashCents, chanvrierStrength: shop.strength,
+  return { ...summary, tents: shop.tents, buildings: shop.buildings, equipmentScopeVersion: shop.equipmentScopeVersion, productionUnits: shop.productionUnits, cashCents: shop.cashCents, chanvrierStrength: shop.strength,
     cultureWear: shop.cultureWear, cultureEquipmentCodes: shop.equippedCodes, cultureOperationalCodes: shop.cultureOperationalCodes,
     maintenanceDueNext: shop.sharedEquipment.equippedCodes.filter(code => shop.sharedEquipment.maintenance[code]?.remaining <= 1).map(code => `Atelier commun · ${getKqEquipmentDefinition(code)?.name ?? code}`),
     quotes: Object.fromEntries(
-    (Object.keys(KQ_ENERGY_MODES) as KqEnergyMode[]).map((mode) => [mode, quoteKqTentEnergy(shop.tents.map(tent => ({ tentNumber: tent.tentNumber, codes: tent.cultureOperationalCodes, levels: tent.levels })), mode)]),
+    (Object.keys(KQ_ENERGY_MODES) as KqEnergyMode[]).map((mode) => [mode, quoteKqTentEnergy(getKqEffectiveTentProfiles(shop), mode, shop.equipmentScopeVersion === 3 ? "building" : "tent")]),
   ) as KqEnergySnapshot["quotes"] };
 }
 export async function payKqEnergy(input: { userId: string; requestKey: string; expectedCents: number }) {

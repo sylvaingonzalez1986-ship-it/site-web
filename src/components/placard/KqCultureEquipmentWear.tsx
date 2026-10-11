@@ -3,13 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import type { KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
-import { formatKqCash, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
+import { formatKqCash, getKqEquipmentBuildingNumber, isKqBuildingEquipment, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import styles from "./KqWarehouseInventory.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 
-export function KqCultureEquipmentWear({ code, name, condition, cashCents, activeRun, tentNumber = 1, productionUnits = 1, disabled, onUpdated }: {
+export function KqCultureEquipmentWear({ code, name, condition, cashCents, activeRun, tentNumber = 1, productionUnits = 1, equipmentScopeVersion = 2, disabled, onUpdated }: {
   code: string;
+  equipmentScopeVersion?: 2 | 3;
   tentNumber?: number;
   productionUnits?: number;
   name: string;
@@ -30,6 +31,7 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
   const replaceButton = useRef<HTMLButtonElement>(null);
   const wasConfirming = useRef(false);
   const targetTent = isKqSharedEquipment(code) ? 1 : tentNumber;
+  const destination = isKqSharedEquipment(code) ? "l’atelier commun" : equipmentScopeVersion === 3 && isKqBuildingEquipment(code) ? `l’entrepôt ${getKqEquipmentBuildingNumber(tentNumber)}` : `la tente ${tentNumber}`;
   const unavailable = disabled || activeRun || cashCents < condition.replacementCents || replacedVersion === condition.version;
   useEffect(() => {
     if (confirming) confirmButton.current?.focus();
@@ -70,12 +72,12 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
   return <section className={styles.cultureWear} aria-label={`État de ${name}`} data-due={condition.due}>
     <strong>{condition.due ? "Hors service · à remplacer" : `État : ${condition.conditionPercent.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %`}</strong>
     <progress value={condition.conditionPercent} max={100} aria-label={`État de ${name}`} />
-    <small>Remplacement {isKqSharedEquipment(code) ? "dans l’atelier commun" : `dans la tente ${tentNumber}`} : {formatKqCash(condition.replacementCents)} · niveaux conservés.</small>
+    <small>Remplacement dans {destination} : {formatKqCash(condition.replacementCents)} · niveaux conservés.</small>
     {condition.due ? <p>Ses bonus sont désactivés. Le matériel de départ assure le dépannage aux emplacements qui en disposent.</p>
       : <p>L’usure est définitive. Le mode éco ralentit l’usure ; l’intensif l’accélère, encore davantage sous 30 % d’état. En réserve, ce matériel ne s’use pas.</p>}
     {condition.due && replacedVersion !== condition.version ? <>
       {confirming ? <div className={styles.replaceConfirm} role="group" aria-label={`Confirmer le remplacement de ${name}`}>
-        <p>Racheter {name} {isKqSharedEquipment(code) ? "pour l’atelier commun" : `pour la tente ${tentNumber}`} pour <strong>{formatKqCash(condition.replacementCents)}</strong> ? Son état revient à 100 % et ses niveaux sont conservés.</p>
+        <p>Racheter {name} pour {destination} pour <strong>{formatKqCash(condition.replacementCents)}</strong> ? Son état revient à 100 % et ses niveaux sont conservés.</p>
         <button ref={confirmButton} type="button" disabled={busy || unavailable} onClick={() => void replace()}>{busy ? "Remplacement…" : `Confirmer · ${formatKqCash(condition.replacementCents)}`}</button>
         <button type="button" disabled={busy} onClick={() => setConfirming(false)}>Annuler</button>
       </div> : <button ref={replaceButton} type="button" disabled={busy || unavailable} onClick={() => setConfirming(true)}><RefreshCw size={16} aria-hidden="true" />Remplacer · {formatKqCash(condition.replacementCents)}</button>}

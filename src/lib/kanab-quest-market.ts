@@ -1,9 +1,12 @@
 import { getKqProductionUnits } from "./kanab-quest-production-scale";
 import { applyKqMarketDemand, type KqMarketContext, type KqMarketDemand, type KqPricePolicy } from "./kanab-quest-market-demand";
 import {
+  getKqEquipmentPriceMultiplier,
+  getKqEquipmentLevel,
   getKqEquipmentRequirementState,
   getKqEquipmentAtLevel,
   KQ_EQUIPMENT_CATALOG,
+  KQ_EQUIPMENT_REPLACEMENTS,
   type KqEquipmentUnlock,
 } from "@/lib/kanab-quest-equipment";
 
@@ -29,6 +32,7 @@ export type KqMarketRouteDefinition = {
   family: "salvage" | "flower" | "hash" | "rosin";
   description: string;
   minimumJuryScore: number;
+  minimumProcessingLevel?: number;
   requiredUnlocks: KqEquipmentUnlock[];
   extractionYieldPercent: number;
   basePriceCentsPerProductGram: number;
@@ -53,6 +57,7 @@ export type KqMarketQuote = {
   remainderDestination: "raw" | "biomass" | null;
   biomassRemainderGrams: number;
   processingCapacityPercent: number;
+  processingBatchGrams?: number;
   processingPrecision: number;
   processingLevel?: number;
   payoutCents: number;
@@ -129,6 +134,7 @@ export const KQ_MARKET_ROUTES: readonly KqMarketRouteDefinition[] = [
   },
   {
     code: "rosin-selection",
+    minimumProcessingLevel: 4,
     name: "Rosin Sélection",
     family: "rosin",
     description: "Un lot plus régulier, destiné aux fleurs réellement sélectionnées par le jury.",
@@ -140,6 +146,7 @@ export const KQ_MARKET_ROUTES: readonly KqMarketRouteDefinition[] = [
   },
   {
     code: "rosin-premium",
+    minimumProcessingLevel: 7,
     name: "Rosin Premium",
     family: "rosin",
     description: "La transformation haut de gamme pour les récoltes qui méritent l'investissement.",
@@ -151,6 +158,7 @@ export const KQ_MARKET_ROUTES: readonly KqMarketRouteDefinition[] = [
   },
   {
     code: "rosin-signature",
+    minimumProcessingLevel: 10,
     name: "Rosin Signature",
     family: "rosin",
     description: "Une série automatisée réservée aux fleurs d'exception et aux ateliers déjà rentables.",
@@ -369,7 +377,7 @@ export function calculateKqHarvestGrams(input: {
 
 function getRouteEquipmentState(equipmentCodes: string[], route: KqMarketRouteDefinition, levels: Record<string, number> = {}) {
   if (route.requiredUnlocks.length === 0) {
-    return { missingUnlocks: [] as KqEquipmentUnlock[], capacityPercent: 100, precision: 100, valueBonusPercent: 0, level: 1 };
+    return { missingUnlocks: [] as KqEquipmentUnlock[], capacityPercent: 100, capacityGrams: 4000, precision: 100, valueBonusPercent: 0, level: 1 };
   }
   const equipped = equipmentCodes.map((code) => getKqEquipmentAtLevel(code, levels[code]))
     .filter((equipment): equipment is NonNullable<typeof equipment> => equipment !== null);
@@ -380,14 +388,21 @@ function getRouteEquipmentState(equipmentCodes: string[], route: KqMarketRouteDe
   const processingEquipment = selected.filter((equipment): equipment is NonNullable<typeof equipment> => equipment !== null);
   return {
     missingUnlocks,
-    level: processingEquipment.length ? Math.min(...processingEquipment.map((equipment) => Math.max(1, Math.min(10, levels[equipment.code] ?? 1)))) : 1,
+    level: processingEquipment.length ? Math.min(...processingEquipment.map((equipment) => getKqEquipmentLevel(levels[equipment.code] ?? KQ_EQUIPMENT_REPLACEMENTS[equipment.code]?.level ?? 1))) : 1,
     valueBonusPercent: processingEquipment.length > 0
       ? processingEquipment.reduce((sum, equipment) => sum + (equipment.effects.processingValueBonusPercent ?? 0), 0) / processingEquipment.length : 0,
     capacityPercent: processingEquipment.length > 0
       ? Math.min(...processingEquipment.map((equipment) => equipment.effects.processingCapacity ?? 0))
       : 0,
+    capacityGrams: processingEquipment.length > 0
+      ? Math.min(...processingEquipment.map((equipment) => {
+        const replacement = KQ_EQUIPMENT_REPLACEMENTS[equipment.code];
+        const historicalCapacity = replacement
+          ? getKqEquipmentAtLevel(replacement.code, replacement.level)?.effects.processingBatchGrams : undefined;
+        return equipment.effects.processingBatchGrams ?? historicalCapacity ?? 0;
+      })) : 0,
     precision: processingEquipment.length > 0
-      ? Math.min(...processingEquipment.map((equipment) => equipment.effects.processingPrecision ?? 0))
+      ? processingEquipment.reduce((total, equipment) => total + (equipment.effects.processingTuningPrecision ?? equipment.effects.processingPrecision ?? 0), 0) / processingEquipment.length
       : 0,
   };
 }
@@ -412,10 +427,10 @@ export function quoteKqMarketRoutes(input: {
     const equipment = getRouteEquipmentState(input.equipmentCodes, route, input.equipmentLevels);
     const scoreBlocked = juryScore < route.minimumJuryScore;
     const equipmentBlocked = equipment.missingUnlocks.length > 0;
-    const processingCapacityPercent = route.family === "hash" || route.family === "rosin"
-      ? clamp(equipment.capacityPercent, 0, 100)
-      : 100;
-    const processedInputGrams = roundTenth(harvestGrams * processingCapacityPercent / 100);
+    const processing = route.family === "hash" || route.family === "rosin";
+    const processedInputGrams = roundTenth(processing
+      ? Math.min(harvestGrams, equipment.capacityGrams) : harvestGrams);
+    const processingCapacityPercent = harvestGrams > 0 ? roundTenth(processedInputGrams / harvestGrams * 100) : 0;
     const productGrams = roundTenth(processedInputGrams * route.extractionYieldPercent / 100);
     const remainderGrams = roundTenth(Math.max(0, harvestGrams - processedInputGrams));
     const remainderDestination = remainderGrams <= 0
@@ -437,6 +452,8 @@ export function quoteKqMarketRoutes(input: {
       ? `Le jury exige au moins ${route.minimumJuryScore.toFixed(1)}/10.`
       : equipmentBlocked
         ? "Équipement de transformation manquant ou non installé."
+        : equipment.level < (route.minimumProcessingLevel ?? 1)
+          ? `Presse au niveau ${route.minimumProcessingLevel} requis pour cette filière.`
         : harvestGrams <= 0
           ? "Le lot ne contient aucune matière valorisable."
           : null;
@@ -456,6 +473,7 @@ export function quoteKqMarketRoutes(input: {
       remainderDestination,
       biomassRemainderGrams,
       processingCapacityPercent,
+      ...(processing ? { processingBatchGrams: equipment.capacityGrams } : {}),
       processingPrecision: equipment.precision,
       processingLevel: equipment.level,
       payoutCents,
@@ -504,6 +522,7 @@ export type KqPinnedRouteLotStatus = {
   qualityGap: number;
   minimumJuryScore: number;
   missingUnlocks: KqEquipmentUnlock[];
+  blockedReason: string | null;
 };
 
 export type KqPinnedRouteFlowerPreview = {
@@ -603,7 +622,7 @@ export function getKqRoutePlanEquipmentGoal(input: {
     minimumJuryScore: route.minimumJuryScore,
     equipmentCode: equipment.code,
     equipmentName: equipment.name,
-    equipmentPriceCents: equipment.priceCents * getKqProductionUnits(input.productionUnits),
+    equipmentPriceCents: equipment.priceCents * getKqEquipmentPriceMultiplier(equipment.code, input.productionUnits),
     investmentRequired: !owned.has(equipment.code),
   };
 }
@@ -627,7 +646,7 @@ export function getKqPinnedRouteLotStatus(input: {
       ? "quality" as const
       : missesEquipment
         ? "equipment" as const
-        : "ready" as const;
+        : !quote.available ? "experience" as const : "ready" as const;
 
   return {
     route: quote.route,
@@ -637,6 +656,7 @@ export function getKqPinnedRouteLotStatus(input: {
     qualityGap,
     minimumJuryScore: quote.minimumJuryScore,
     missingUnlocks: [...quote.missingUnlocks],
+    blockedReason: quote.blockedReason,
   };
 }
 
@@ -771,7 +791,7 @@ export function getKqMarketEquipmentGoal(input: {
     return {
       code: direct.code,
       name: direct.name,
-      priceCents: direct.priceCents * productionUnits,
+      priceCents: direct.priceCents * getKqEquipmentPriceMultiplier(direct.code, productionUnits),
       remainingCents: 0,
       affordable: true,
       kind: "install",
@@ -789,13 +809,14 @@ export function getKqMarketEquipmentGoal(input: {
     .filter((equipment) => getKqEquipmentRequirementState({ equipment, ownedCodes: input.ownedCodes }).compatible)
     .sort((left, right) => left.priceCents - right.priceCents || left.code.localeCompare(right.code))[0] ?? null;
   const goal = prerequisite ?? direct;
+  const priceCents = goal.priceCents * getKqEquipmentPriceMultiplier(goal.code, productionUnits);
 
   return {
     code: goal.code,
     name: goal.name,
-    priceCents: goal.priceCents * productionUnits,
-    remainingCents: Math.max(0, goal.priceCents * productionUnits - input.cashCents),
-    affordable: input.cashCents >= goal.priceCents * productionUnits,
+    priceCents,
+    remainingCents: Math.max(0, priceCents - input.cashCents),
+    affordable: input.cashCents >= priceCents,
     kind: prerequisite ? "prerequisite" : "buy",
     targetEquipmentName: prerequisite ? direct.name : null,
   };

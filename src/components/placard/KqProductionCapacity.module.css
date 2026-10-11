@@ -123,3 +123,9 @@
   .footnote { font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { .chevron { transition: none; } .spinner { animation: none; } }
+.planning { margin: 10px 0 0; color: #405c48; font-size: 12px; line-height: 1.5; }
+.planningMetrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 14px 0 0; padding: 12px; background: #e8eedf; border: 1px solid #c3cbb8; }
+.planningMetrics div { min-width: 0; }
+.planningMetrics dt { color: #405c48; font-size: 11px; line-height: 1.4; }
+.planningMetrics dd { margin: 3px 0 0; color: #214633; font-size: 14px; font-weight: 750; overflow-wrap: anywhere; }
+@media (max-width: 420px) { .planningMetrics { grid-template-columns: 1fr; } }

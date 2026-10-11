@@ -57,7 +57,7 @@ describe("unique equipment and ten-level progression", () => {
   it("raises real processing proceeds at each level, including machines already at full capacity", () => {
     for (const machine of purchasable.filter((item) => item.category === "processing")) {
       const route = machine.code === "AUTO-SIEVE" || machine.code === "FREEZE-DRYER" ? "hash-signature"
-        : machine.code === "STATIC-PLASMA" ? "static-sift" : machine.slot === "press" ? "rosin-signature"
+        : machine.code === "STATIC-PLASMA" ? "static-sift" : machine.slot === "press" ? "rosin-trial"
           : machine.slot === "washing" ? "ice-water-hash" : "dry-sift";
       let previous = 0;
       for (let level = 1; level <= 10; level++) {
