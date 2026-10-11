@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ rpc: vi.fn() }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc }) }));
-import { getKqStorageSnapshot, handleKqStorageAction } from "./kanab-quest-storage-backend";
+import { getKqStorageRecords, getKqStorageSnapshot, handleKqStorageAction } from "./kanab-quest-storage-backend";
 import { createKqStorageLot } from "@/lib/kanab-quest-storage";
 const user = "00000000-0000-4000-8000-000000000001", flower = "00000000-0000-4000-8000-000000000002", key = "00000000-0000-4000-8000-000000000003";
 const now = "2026-10-10T12:00:00.000Z";
@@ -20,6 +20,11 @@ describe("server storage API", () => {
     expect(result.lots[0]).not.toHaveProperty("state");
     expect(result.lots[0]).not.toHaveProperty("revision");
     expect(result.catalog).toHaveLength(5);
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_warehouse_storage_state", { p_user_id: user });
+  });
+  it("keeps market history on its existing RPC", async () => {
+    await getKqStorageRecords(user);
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_storage_state", { p_user_id: user });
   });
   it("never sends client prices, dates, exposures or owner to the transaction", async () => {
     await handleKqStorageAction(user, { action: "buy", containerCode: "GROVE-1LB", quantity: 3, requestKey: key, userId: "forged", priceCents: 0, state: {}, readyAt: "past" });

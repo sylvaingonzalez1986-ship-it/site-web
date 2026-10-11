@@ -13,6 +13,7 @@ let checks=0;
 const equal=(name,actual,expected)=>{assert.deepEqual(actual,expected,name);checks++;};
 const reject=async(name,fn,match)=>{await assert.rejects(fn,error=>error.message.includes(match),name);checks++;};
 const storage=owner=>scalar('SELECT rpc_kq_storage_state($1)',[owner]);
+const warehouse=owner=>scalar('SELECT rpc_kq_warehouse_storage_state($1)',[owner]);
 const command=(owner,action,args={},key=randomUUID())=>scalar('SELECT rpc_kq_storage_capacity_command($1,$2,$3,$4,$5,$6,$7)',[owner,action,args.methodCode??null,args.containerCode??null,args.quantity??null,args.flowerId??null,key]);
 const commerce=(owner,action,payload,key=randomUUID())=>scalar('SELECT rpc_kq_commerce_command($1,$2,$3::jsonb,$4)',[owner,action,JSON.stringify(payload),key]);
 try {
@@ -117,6 +118,9 @@ try {
  equal('migrated overdue sale only sells loose 50 grams',overdueSettled.overflowSales[0].units,500);
  equal('migrated overdue sale preserves six-hour curing',overdueSettled.lots[0].state.readyAt,overdueMigrated.state.readyAt);
  equal('migrated overdue sale remains idempotent',(await scalar('SELECT rpc_kq_storage_settle_due(100)')).sales,0);
+ // Both market and warehouse retain the original settlement semantics.
+ await db.exec(await sql('20261011000200_storage_budget.sql'));
+ await db.exec(await sql('20261011000200_storage_budget.sql'));
  // Freeze PostgreSQL time: no sale at 59m59.999s; sale at exactly one hour.
  await db.exec('BEGIN');
  const boundaryOwner=await player(),boundaryFlower=await harvest(boundaryOwner,150);
@@ -296,5 +300,30 @@ try {
  equal('capacity command service grant',await scalar("SELECT has_function_privilege('service_role','rpc_kq_storage_capacity_command(uuid,text,text,text,integer,uuid,uuid)','EXECUTE')"),true);
  equal('old unlimited purchase disabled',await scalar("SELECT has_function_privilege('service_role','rpc_kq_storage_command(uuid,text,text,uuid,uuid)','EXECUTE')"),false);
  equal('cron unavailable to public',await scalar("SELECT has_function_privilege('anon','rpc_kq_storage_settle_due(integer)','EXECUTE')"),false);
+ // Warehouse reads carry active states only; the shared market RPC keeps archives.
+ const archiveOwner=await player();
+ for(let index=0;index<100;index++) await harvest(archiveOwner,10);
+ await db.query("UPDATE kq_storage_lots SET overflow_sold_units=original_units,state=jsonb_set(state,'{capacity}',jsonb_build_object('totalUnits',0,'allocations','[]'::jsonb,'overflowDeadlineAt',NULL)) WHERE user_id=$1",[archiveOwner]);
+ const activeFlower=await harvest(archiveOwner,150);
+ await db.exec('BEGIN');
+ const archive=await storage(archiveOwner),active=await warehouse(archiveOwner);
+ equal('warehouse retains complete active state',active,{...archive,lots:archive.lots.filter(l=>l.marketStatus!=='sold')});
+ equal('market retains all history',archive.lots.length,101);
+ equal('warehouse includes only current lot',active.lots.map(l=>l.flowerId),[activeFlower]);
+ const historicBytes=Buffer.byteLength(JSON.stringify(archive)),activeBytes=Buffer.byteLength(JSON.stringify(active));
+ equal('warehouse fixture transfers at least 95 percent fewer bytes',activeBytes/historicBytes<.05,true);
+ equal('warehouse keeps original history in database',Number(await scalar('SELECT count(*) FROM kq_storage_lots WHERE user_id=$1',[archiveOwner])),101);
+ await db.exec('COMMIT');
+ await db.query("UPDATE kq_storage_lots SET state=jsonb_set(state,'{capacity,overflowDeadlineAt}',to_jsonb(now()-interval '1 millisecond')) WHERE flower_id=$1",[activeFlower]);
+ const settledWarehouse=await warehouse(archiveOwner);
+ equal('warehouse read settles due surplus',settledWarehouse.overflowSales[0].units,500);
+ equal('warehouse read retains protected capacity',settledWarehouse.lots[0].state.capacity.totalUnits,1000);
+ equal('warehouse repeat does not repeat sale',(await warehouse(archiveOwner)).overflowSales.length,1);
+ const activeCommand=await command(archiveOwner,'buy',{containerCode:'GLASS-1L',quantity:1});
+ equal('commands return only active lots',activeCommand.lots.map(l=>l.flowerId),[activeFlower]);
+ for(const role of ['anon','authenticated']) equal('warehouse RPC denies '+role,await scalar("SELECT has_function_privilege($1,'rpc_kq_warehouse_storage_state(uuid)','EXECUTE')",[role]),false);
+ equal('warehouse RPC service grant',await scalar("SELECT has_function_privilege('service_role','rpc_kq_warehouse_storage_state(uuid)','EXECUTE')"),true);
+ for(const signature of ['kq_storage_prepare_state(uuid)','kq_storage_snapshot(uuid,boolean)']) equal(signature+' private',await scalar("SELECT has_function_privilege('service_role',$1,'EXECUTE')",[signature]),false);
+ console.log(`Warehouse payload fixture (100 archived, 1 active): ${historicBytes} -> ${activeBytes} bytes.`);
  console.log(`Storage capacity SQL passed: ${checks} assertions.`);
 } finally {await vite.close();await db.close();}

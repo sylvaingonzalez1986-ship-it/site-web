@@ -134,6 +134,8 @@ describe("Kanab Quest player session ownership policy", () => {
       backend.indexOf("export async function getKqAdminCollectionSnapshot"),
     );
     expect(collectionSection).toContain('.eq("user_id", ownerId)');
+    expect(collectionSection).toContain('rpc("rpc_kq_card_copy_counts"');
+    expect(collectionSection).toContain("p_user_id: ownerId");
     expect(collectionSection).not.toContain("adminEmail");
     expect(collectionSection).not.toContain("listUsers");
   });
@@ -166,13 +168,15 @@ describe("Kanab Quest player session ownership policy", () => {
     expect(battleSection).toContain(".maybeSingle()");
   });
 
-  it("refreshes the live leaderboard so reputation is immediately reflected", () => {
+  it("reads a saved leaderboard while calculating the player's score from current reputation", () => {
     const progressSection = backend.slice(
       backend.indexOf("export async function getKqPlayerProgress"),
       backend.indexOf("export function prepareKqCardPlay"),
     );
     expect(progressSection).not.toContain("getKqPublicLeaderboard()");
-    expect(progressSection).toContain("rpc_kq_refresh_daily_leaderboard");
+    expect(progressSection).not.toContain("rpc_kq_refresh_daily_leaderboard");
+    expect(progressSection).toContain('from("kq_leaderboard_snapshots")');
+    expect(progressSection).toContain("calculateKqPlacardScore({");
     expect(progressSection).toContain('select("reputation")');
   });
 });

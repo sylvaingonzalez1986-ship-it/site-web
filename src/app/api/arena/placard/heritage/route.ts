@@ -14,7 +14,7 @@ export async function GET() {
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
-    const snapshot = await getKqPlayerHeritageSnapshot(session.customerId);
+    const snapshot = await getKqPlayerHeritageSnapshot(session.customerId, { includeDraws: false });
     return NextResponse.json({
       collectionActive: snapshot.collectionActive,
       fragmentBalance: snapshot.fragmentBalance,

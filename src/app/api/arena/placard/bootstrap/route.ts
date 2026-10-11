@@ -3,14 +3,12 @@ import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import {
   getKqPlayerBuddieRotation,
-  getKqPlayerCollectionSnapshot,
+  getKqPlayerCollectionBundle,
   getKqPlayerCoreSnapshot,
   getKqPlayerHeritageSnapshot,
-  getKqPlayerOwnedBuddies,
 } from "@/lib/supabase/kanab-quest-backend";
 import { getKqEquipmentRoutePlan } from "@/lib/supabase/kanab-quest-equipment-backend";
-import { syncKqOrderCashRewards } from "@/lib/supabase/kanab-quest-order-cash-backend";
-import { syncContestBundleRewards } from "@/lib/supabase/contest-bundle-rewards-backend";
+import { reconcileKqBootstrapRewards } from "@/lib/supabase/kanab-quest-bootstrap-rewards";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,32 +25,25 @@ export async function GET() {
   // Recover a deferred payment reward, including a newly verified guest order,
   // before loading the player's state. An optional reward cannot block the game.
   try {
-    await syncKqOrderCashRewards(session.customerId);
+    await reconcileKqBootstrapRewards(session.customerId);
   } catch {
-    console.warn("Order cash reward synchronization temporarily unavailable.");
-  }
-  try {
-    await syncContestBundleRewards(session.customerId);
-  } catch {
-    console.warn("Contest bundle reward synchronization temporarily unavailable.");
+    console.warn("Bootstrap reward synchronization temporarily unavailable.");
   }
 
   const [
     collectionResult,
-    buddiesResult,
     heritageResult,
     coreResult,
     routePlanResult,
     rotationResult,
   ] = await Promise.allSettled([
-    getKqPlayerCollectionSnapshot(session.customerId),
-    getKqPlayerOwnedBuddies(session.customerId),
-    getKqPlayerHeritageSnapshot(session.customerId),
+    getKqPlayerCollectionBundle(session.customerId),
+    getKqPlayerHeritageSnapshot(session.customerId, { includeDraws: false }),
     getKqPlayerCoreSnapshot(session.customerId),
     getKqEquipmentRoutePlan(session.customerId),
     getKqPlayerBuddieRotation(session.customerId),
   ] as const);
-  if (collectionResult.status === "rejected" || buddiesResult.status === "rejected") {
+  if (collectionResult.status === "rejected") {
     return NextResponse.json({ error: "Collection Placard indisponible." }, { status: 503 });
   }
   const heritage = heritageResult.status === "fulfilled" ? heritageResult.value : null;
@@ -72,10 +63,10 @@ export async function GET() {
         warnings: sessionWarnings,
       };
   return NextResponse.json({
-    collection: collectionResult.value,
+    collection: collectionResult.value.collection,
     buddieRotation: rotationResult.status === "fulfilled" ? rotationResult.value : null,
-    ownedBuddieCodes: buddiesResult.value.map((buddie) => buddie.code),
-    ownedBuddies: buddiesResult.value,
+    ownedBuddieCodes: collectionResult.value.ownedBuddies.map((buddie) => buddie.code),
+    ownedBuddies: collectionResult.value.ownedBuddies,
     heritage: heritage ? {
       collectionActive: heritage.collectionActive,
       cards: heritage.cards.map((card) => ({

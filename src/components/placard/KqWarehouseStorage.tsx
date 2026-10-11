@@ -8,6 +8,8 @@ import { KQ_STORAGE_CONTAINER_ARTWORK } from "@/lib/kanab-quest-storage-artwork"
 import type { KqStorageSnapshot } from "@/lib/kanab-quest-api";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { createClientRequestKey } from "@/lib/client-request-key";
+import { startArenaVisiblePolling } from "@/lib/arena-visible-polling";
+import { getKqStorageRefreshDelay, KQ_STORAGE_REFRESH_MS } from "@/lib/kanab-quest-storage-refresh";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqCannabinoidReport } from "./KqCannabinoidReport";
 import { KqStorageStatus } from "./KqStorageStatus";
@@ -36,7 +38,15 @@ export function KqWarehouseStorage({ onChanged, onBusyChange }: { onChanged?: ()
   const [notice, setNotice] = useState("");
   const lock = useRef(false);
   const requestVersion = useRef(0);
+  const invalidateReads = useCallback(() => { requestVersion.current += 1; }, []);
   const receipt = useRef<{ fingerprint: string; key: string } | null>(null);
+  const currentSnapshot = useRef<{ value: KqStorageSnapshot; receivedAt: number } | null>(null);
+  const polling = useRef<ReturnType<typeof startArenaVisiblePolling> | null>(null);
+  const loadFailed = useRef(false);
+  const acceptSnapshot = useCallback((value: KqStorageSnapshot) => {
+    currentSnapshot.current = { value, receivedAt: Date.now() };
+    setSnapshot(value);
+  }, []);
   const load = useCallback(async () => {
     if (lock.current) return;
     const version = ++requestVersion.current;
@@ -44,20 +54,27 @@ export function KqWarehouseStorage({ onChanged, onBusyChange }: { onChanged?: ()
       const response = await api.request("/api/arena/placard/storage", { cache: "no-store" });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Stockage indisponible.");
-      if (version === requestVersion.current) { setSnapshot(result); setError(""); }
-    } catch (reason) { if (version === requestVersion.current) setError(reason instanceof Error ? reason.message : "Stockage indisponible."); }
-  }, [api]);
+      if (version === requestVersion.current) { loadFailed.current = false; acceptSnapshot(result); setError(""); }
+    } catch (reason) {
+      if (version === requestVersion.current) {
+        loadFailed.current = true;
+        setError(reason instanceof Error ? reason.message : "Stockage indisponible.");
+      }
+    }
+  }, [api, acceptSnapshot]);
   useEffect(() => {
     heading.current?.focus({ preventScroll: true });
-    void load();
-    const refresh = () => { if (!document.hidden) void load(); };
-    const timer = window.setInterval(refresh, 30000);
-    document.addEventListener("visibilitychange", refresh);
-    return () => { window.clearInterval(timer); document.removeEventListener("visibilitychange", refresh); };
-  }, [load]);
+    const stop = startArenaVisiblePolling(load, () => {
+      if (loadFailed.current || lock.current) return KQ_STORAGE_REFRESH_MS;
+      const current = currentSnapshot.current;
+      return getKqStorageRefreshDelay(current?.value ?? null, current ? Date.now() - current.receivedAt : 0);
+    });
+    polling.current = stop;
+    return () => { stop(); polling.current = null; invalidateReads(); };
+  }, [load, invalidateReads]);
   const act = async (body: StorageAction) => {
     if (lock.current) return;
-    lock.current = true; ++requestVersion.current; onBusyChange?.(true);
+    lock.current = true; invalidateReads(); onBusyChange?.(true);
     setPending(body.action === "buy" ? body.containerCode : body.action === "select-default" ? "default" : body.flowerId); setNotice(""); setError("");
     try {
       const fingerprint = JSON.stringify(body);
@@ -65,11 +82,11 @@ export function KqWarehouseStorage({ onChanged, onBusyChange }: { onChanged?: ()
       const response = await api.request("/api/arena/placard/storage", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...body, requestKey: receipt.current.key }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Modification du stockage impossible.");
-      receipt.current = null; setSnapshot(result);
+      receipt.current = null; loadFailed.current = false; acceptSnapshot(result);
       setNotice(body.action === "buy" ? "Contenants ajoutés. La place disponible est attribuée aux lots qui en ont besoin." : body.action === "assign" ? "Répartition actualisée. Les pertes passées et les échéances restent inchangées." : body.action === "sell-overflow" ? "Surplus vendu au grossiste. La partie stockée est conservée." : "Préférence enregistrée pour les prochains lots.");
       api.notify("kq:storage-updated"); api.notify("kq:equipment-updated"); onChanged?.();
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Modification impossible."); }
-    finally { lock.current = false; setPending(null); onBusyChange?.(false); }
+    finally { lock.current = false; setPending(null); onBusyChange?.(false); polling.current?.reschedule(); }
   };
   const containers = snapshot?.containers ?? KQ_STORAGE_CONTAINERS;
   const nowMs = snapshot ? Date.parse(snapshot.serverNow) : undefined;
@@ -79,10 +96,10 @@ export function KqWarehouseStorage({ onChanged, onBusyChange }: { onChanged?: ()
     .map(lot => lot.projection.capacity?.overflowDeadlineAt).filter((date): date is string => Boolean(date))
     .sort((left, right) => Date.parse(left) - Date.parse(right))[0];
   return <section className={styles.section} aria-labelledby="warehouse-storage-title" data-warehouse-storage>
-    <header className={styles.heading}><div><small>Ton entrepôt · après le jury et le duel</small><h3 id="warehouse-storage-title" ref={heading} tabIndex={-1}>Stockage & curing</h3><p>À chaque récolte, le bon contenant. Protège tes fleurs et leurs arômes jusqu’à la vente.</p></div><button type="button" onClick={() => void load()} disabled={!!pending} aria-label="Actualiser le stockage"><RefreshCw size={18} /></button></header>
+    <header className={styles.heading}><div><small>Ton entrepôt · après le jury et le duel</small><h3 id="warehouse-storage-title" ref={heading} tabIndex={-1}>Stockage & curing</h3><p>À chaque récolte, le bon contenant. Protège tes fleurs et leurs arômes jusqu’à la vente.</p></div><button type="button" onClick={() => void polling.current?.refresh()} disabled={!!pending} aria-label="Actualiser le stockage"><RefreshCw size={18} /></button></header>
     <div className={styles.timeline} aria-label="Parcours de la récolte"><span><Check size={15} /> Récolte</span><span><Check size={15} /> Jury et duel</span><strong><Clock3 size={15} /> Curing · 6 heures réelles</strong><span>Vente</span></div>
     <p className={styles.help}>Le curing dure <strong>6 heures réelles</strong> après le verdict. Un surplus sans contenant doit être stocké ou vendu au plus tard <strong>1 heure réelle</strong> après le verdict, puis il est vendu automatiquement au grossiste.</p>
-    {error ? <p className={styles.error} role="alert">{error}<button type="button" onClick={() => void load()} disabled={!!pending}>Réessayer</button></p> : null}
+    {error ? <p className={styles.error} role="alert">{error}<button type="button" onClick={() => void polling.current?.refresh()} disabled={!!pending}>Réessayer</button></p> : null}
     {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
     {capacity ? <section className={styles.capacity} aria-label="Capacité de stockage" data-storage-capacity>
       <div className={styles.capacityMain}><div className={styles.capacityLabel}><PackageCheck size={18} aria-hidden="true" /> Place disponible</div><strong className={styles.availableCapacity}>{grams(capacity.freeUnits)}</strong><span className={styles.totalCapacity}>sur {grams(capacity.totalUnits)} de capacité achetée</span><div className={styles.capacityTrack} role="progressbar" aria-label="Capacité réservée" aria-valuemin={0} aria-valuemax={Math.max(1, capacity.totalUnits)} aria-valuenow={capacity.reservedUnits} aria-valuetext={`${grams(capacity.reservedUnits)} réservés sur ${grams(capacity.totalUnits)}`}><span style={{ width: `${Math.min(100, capacity.reservedUnits / Math.max(1, capacity.totalUnits) * 100)}%` }} /></div></div>

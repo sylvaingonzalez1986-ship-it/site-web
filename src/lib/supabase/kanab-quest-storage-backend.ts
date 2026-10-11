@@ -46,7 +46,11 @@ function snapshot(current: StoredSnapshot): KqStorageSnapshot {
     ...(lot.overflowOffer ? { overflowOffer: lot.overflowOffer } : {}),
   })) };
 }
-export async function getKqStorageSnapshot(userId: string) { return snapshot(await getKqStorageRecords(userId)); }
+export async function getKqStorageSnapshot(userId: string) {
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_warehouse_storage_state", { p_user_id: uuid(userId) });
+  if (result.error) databaseError(result.error.message);
+  return snapshot(result.data as StoredSnapshot);
+}
 export async function handleKqStorageAction(userId: string, body: Record<string, unknown>) {
   uuid(userId);
   const action = String(body.action);

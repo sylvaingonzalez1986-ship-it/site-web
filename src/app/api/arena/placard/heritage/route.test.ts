@@ -68,7 +68,7 @@ describe("GET /api/arena/placard/heritage", () => {
     expect(body.cards[0]).not.toHaveProperty("rarity");
     expect(body).not.toHaveProperty("draws");
     expect(body).not.toHaveProperty("eligiblePurchaseUnits");
-    expect(getKqPlayerHeritageSnapshot).toHaveBeenCalledWith(customerId);
+    expect(getKqPlayerHeritageSnapshot).toHaveBeenCalledWith(customerId, { includeDraws: false });
   });
 
   it("does not leak backend errors", async () => {

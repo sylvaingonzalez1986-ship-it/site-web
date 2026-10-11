@@ -19,7 +19,6 @@ import { buildKqSeasonRewardPreview, KQ_SEASON_REWARDS_LIVE } from "@/lib/kanab-
 import { isKqPublicPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 import { LOTTERY_POINTS_PACK_MAX_PER_PURCHASE } from "@/lib/lottery-collection";
 import { KQ_SUPPORT_BOOSTER_POINTS_COST } from "@/lib/kanab-quest-booster";
-import { calculateArenaScore } from "@/lib/arena-ranking";
 import { auditKqEquipmentCatalog, isKqProcessingEquipment, type KqEquipmentCatalogRow } from "@/lib/kanab-quest-equipment";
 import { getKqEquipmentShopSnapshot } from "@/lib/supabase/kanab-quest-equipment-backend";
 import type { KqBusinessState } from "@/lib/kanab-quest-business";
@@ -339,90 +338,38 @@ async function getCachedKqHeritageDefinitions(): Promise<KqHeritageDefinitionRow
   });
 }
 
-async function getCachedKqContestProductIds(): Promise<string[]> {
-  return loadCachedKqReference("contest-product-ids", 60_000, async () => {
-    const result = await createSupabaseServiceClient().from("contest_entries").select("product_id");
-    if (result.error) throw new Error(`[supabase:contest_entries] ${result.error.message}`);
-    return [...new Set((result.data ?? []).map((entry) => String(entry.product_id)))];
-  });
-}
+type KqHeritageSummary = {
+  totalPulls: number;
+  eligiblePurchaseUnits: number;
+  attributedPurchaseUnits: number;
+  ownedCounts: Record<string, number>;
+  producerNamesByCard: Record<string, string[]>;
+  fragmentBalance: number;
+  fragmentHistory: Array<{ id: string; amount: number; reason: string; created_at: string }>;
+  draws: Array<{ id: string; order_item_id: number | null; unit_index: number | null; card_code: string; was_duplicate: boolean; source: string | null; drawn_at: string }>;
+};
 
-export async function getKqPlayerHeritageSnapshot(ownerId: string) {
+export async function getKqPlayerHeritageSnapshot(ownerId: string, options: { includeDraws?: boolean } = {}) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Profil Héritage invalide.");
   const supabase = createSupabaseServiceClient();
-  const [definitions, drawsResult, stateResult, ordersResult, contestProductIdRows, fragmentWalletResult, fragmentLedgerResult] = await Promise.all([
+  const [definitions, summaryResult] = await Promise.all([
     getCachedKqHeritageDefinitions(),
-    supabase.from("kq_heritage_draws")
-      .select("id,order_item_id,unit_index,card_code,was_duplicate,source,drawn_at")
-      .eq("user_id", ownerId)
-      .order("drawn_at", { ascending: false }),
-    supabase.from("kq_heritage_player_state")
-      .select("total_pulls")
-      .eq("user_id", ownerId)
-      .maybeSingle(),
-    supabase.from("orders").select("id")
-      .eq("customer_id", ownerId).eq("payment_state", "paid").neq("status", "cancelled"),
-    getCachedKqContestProductIds(),
-    supabase.from("kq_heritage_fragment_wallets").select("balance").eq("user_id", ownerId).maybeSingle(),
-    supabase.from("kq_heritage_fragment_ledger")
-      .select("id,amount,reason,created_at")
-      .eq("user_id", ownerId).order("created_at", { ascending: false }).limit(20),
+    supabase.rpc("rpc_kq_heritage_snapshot", { p_user_id: ownerId, p_include_draws: options.includeDraws ?? true }),
   ]);
-  if (drawsResult.error) throw new Error(`[supabase:kq_heritage_draws] ${drawsResult.error.message}`);
-  if (stateResult.error) throw new Error(`[supabase:kq_heritage_player_state] ${stateResult.error.message}`);
-  if (ordersResult.error) throw new Error(`[supabase:orders] ${ordersResult.error.message}`);
-  if (fragmentWalletResult.error) throw new Error(`[supabase:kq_heritage_fragment_wallets] ${fragmentWalletResult.error.message}`);
-  if (fragmentLedgerResult.error) throw new Error(`[supabase:kq_heritage_fragment_ledger] ${fragmentLedgerResult.error.message}`);
-  const orderIds = (ordersResult.data ?? []).map((order) => String(order.id));
-  const itemsResult = orderIds.length > 0
-    ? await supabase.from("order_items").select("id,product_id,quantity").in("order_id", orderIds)
-    : { data: [], error: null };
-  if (itemsResult.error) throw new Error(`[supabase:order_items] ${itemsResult.error.message}`);
-  const contestProductIds = new Set(contestProductIdRows);
-  const eligibleItems = (itemsResult.data ?? []).filter((item) => contestProductIds.has(String(item.product_id).trim().split("::", 1)[0]?.trim() ?? ""));
-  const eligibleProductIds = [...new Set(eligibleItems.map((item) => String(item.product_id).trim().split("::", 1)[0]?.trim()).filter(Boolean))];
-  const productsResult = eligibleProductIds.length > 0
-    ? await supabase.from("products").select("id,producer_id").in("id", eligibleProductIds)
-    : { data: [], error: null };
-  if (productsResult.error) throw new Error(`[supabase:products] ${productsResult.error.message}`);
-  const producerIds = [...new Set((productsResult.data ?? []).map((product) => String(product.producer_id ?? "")).filter(Boolean))];
-  const producersResult = producerIds.length > 0
-    ? await supabase.from("producers").select("id,name").in("id", producerIds)
-    : { data: [], error: null };
-  if (producersResult.error) throw new Error(`[supabase:producers] ${producersResult.error.message}`);
-  const producerNameById = new Map((producersResult.data ?? []).map((producer) => [String(producer.id), String(producer.name)]));
-  const producerNameByProductId = new Map((productsResult.data ?? []).flatMap((product) => {
-    const producerName = producerNameById.get(String(product.producer_id ?? ""));
-    return producerName ? [[String(product.id), producerName] as const] : [];
-  }));
-  const producerNameByOrderItemId = new Map(eligibleItems.flatMap((item) => {
-    const productId = String(item.product_id).trim().split("::", 1)[0]?.trim() ?? "";
-    const producerName = producerNameByProductId.get(productId);
-    return producerName ? [[Number(item.id), producerName] as const] : [];
-  }));
-  const eligibleUnits = eligibleItems.reduce((sum, item) => sum + Number(item.quantity ?? 0), 0);
-  const eligibleItemIds = new Set(eligibleItems.map((item) => Number(item.id)));
-  const attributedUnits = (drawsResult.data ?? []).filter((draw) => eligibleItemIds.has(Number(draw.order_item_id))).length;
-  const ownedCounts = (drawsResult.data ?? []).reduce<Record<string, number>>((counts, draw) => {
-    counts[draw.card_code] = (counts[draw.card_code] ?? 0) + 1;
-    return counts;
-  }, {});
-  const producerNamesByCard = (drawsResult.data ?? []).reduce<Record<string, string[]>>((names, draw) => {
-    const producerName = producerNameByOrderItemId.get(Number(draw.order_item_id));
-    if (!producerName) return names;
-    const cardNames = names[draw.card_code] ?? [];
-    if (!cardNames.includes(producerName)) names[draw.card_code] = [...cardNames, producerName];
-    return names;
-  }, {});
+  if (summaryResult.error) throw new Error(`[supabase:rpc_kq_heritage_snapshot] ${summaryResult.error.message}`);
+  if (!summaryResult.data) throw new Error("[supabase:rpc_kq_heritage_snapshot] Snapshot missing.");
+  const summary = summaryResult.data as KqHeritageSummary;
+  const eligibleUnits = Number(summary.eligiblePurchaseUnits);
+  const attributedUnits = Number(summary.attributedPurchaseUnits);
   return {
     collectionActive: definitions.some((card) => card.is_active === true),
     purchaseDrawsLive: KQ_HERITAGE_PURCHASE_DRAWS_LIVE,
-    totalPulls: Number(stateResult.data?.total_pulls ?? drawsResult.data?.length ?? 0),
+    totalPulls: Number(summary.totalPulls),
     eligiblePurchaseUnits: eligibleUnits,
     attributedPurchaseUnits: attributedUnits,
     pendingPurchaseUnits: Math.max(0, eligibleUnits - attributedUnits),
-    fragmentBalance: Number(fragmentWalletResult.data?.balance ?? 0),
-    fragmentHistory: (fragmentLedgerResult.data ?? []).map((entry) => ({
+    fragmentBalance: Number(summary.fragmentBalance),
+    fragmentHistory: summary.fragmentHistory.map((entry) => ({
       id: String(entry.id),
       amount: Number(entry.amount),
       reason: String(entry.reason),
@@ -436,16 +383,16 @@ export async function getKqPlayerHeritageSnapshot(ownerId: string) {
       description: String(card.description),
       imageUrl: String(card.image_url ?? ""),
       isActive: card.is_active === true,
-      ownedCopies: ownedCounts[card.code] ?? 0,
+      ownedCopies: Number(summary.ownedCounts[card.code] ?? 0),
       producerId: card.producer_id ? String(card.producer_id) : null,
       producerName: String(card.producer_name ?? ""),
       producerImage: String(card.producer_image ?? ""),
       producerNames: [...new Set([
         ...(card.producer_name ? [String(card.producer_name)] : []),
-        ...(producerNamesByCard[card.code] ?? []),
+        ...(summary.producerNamesByCard[card.code] ?? []),
       ])],
     })),
-    draws: (drawsResult.data ?? []).map((draw) => ({
+    draws: summary.draws.map((draw) => ({
       id: String(draw.id),
       orderItemId: Number(draw.order_item_id),
       unitIndex: Number(draw.unit_index),
@@ -708,24 +655,42 @@ async function getCachedKqBotteCatalog(): Promise<{
 export async function getKqPlayerCollectionSnapshot(ownerId: string): Promise<KqAdminCollectionSnapshot> {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
   const supabase = createSupabaseServiceClient();
-  const { collection, definitions } = await getCachedKqBotteCatalog();
-  const [instances, tokenWallet] = await Promise.all([
-    supabase
-      .from("lottery_card_instances")
-      .select("card_definition_id")
-      .eq("user_id", ownerId)
-      .in("card_definition_id", definitions.map((definition) => definition.id)),
+  const catalog = await getCachedKqBotteCatalog();
+  const [counts, tokenWallet] = await Promise.all([
+    getKqCardCopyCounts(ownerId, catalog.definitions.map((definition) => definition.id)),
     supabase.from("kq_culture_token_wallets")
       .select("balance").eq("user_id", ownerId).maybeSingle(),
   ]);
-  if (instances.error) throw new Error(`[supabase:lottery_card_instances] ${instances.error.message}`);
   if (tokenWallet.error) throw new Error(`[supabase:kq_culture_token_wallets] ${tokenWallet.error.message}`);
+  return buildKqCollectionSnapshot(catalog, counts, Number(tokenWallet.data?.balance ?? 0));
+}
 
-  const inventory = countKqInventoryCopies(definitions, instances.data ?? []);
+async function getKqCardCopyCounts(ownerId: string, definitionIds: string[]): Promise<Record<string, number>> {
+  if (definitionIds.length === 0) return {};
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_card_copy_counts", {
+    p_user_id: ownerId, p_definition_ids: definitionIds,
+  });
+  if (result.error) throw new Error(`[supabase:rpc_kq_card_copy_counts] ${result.error.message}`);
+  if (!result.data || typeof result.data !== "object" || Array.isArray(result.data)) {
+    throw new Error("[supabase:rpc_kq_card_copy_counts] Invalid inventory.");
+  }
+  const counts = Object.fromEntries(Object.entries(result.data).map(([id, count]) => [id, Number(count)]));
+  if (Object.values(counts).some((count) => !Number.isSafeInteger(count) || count < 0)) {
+    throw new Error("[supabase:rpc_kq_card_copy_counts] Invalid copy count.");
+  }
+  return counts;
+}
+
+function buildKqCollectionSnapshot(
+  { collection, definitions }: Awaited<ReturnType<typeof getCachedKqBotteCatalog>>,
+  counts: Record<string, number>,
+  cultureTokenBalance: number,
+): KqAdminCollectionSnapshot {
+  const inventory = Object.fromEntries(definitions.map((definition) => [definition.code, counts[definition.id] ?? 0]));
   return {
     collectionActive: collection.is_active,
     ownerFound: true,
-    cultureTokenBalance: Number(tokenWallet.data?.balance ?? 0),
+    cultureTokenBalance,
     inventory,
     cards: definitions.map((definition) => ({
       code: definition.code,
@@ -769,32 +734,40 @@ async function getCachedKqBuddieDefinitions(): Promise<KqBuddieDefinitionRow[]> 
 
 export async function getKqPlayerOwnedBuddies(ownerId: string): Promise<KqOwnedBuddie[]> {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
-  const supabase = createSupabaseServiceClient();
   const definitionRows = await getCachedKqBuddieDefinitions();
-  if (definitionRows.length === 0) return [];
-  const instances = await supabase.from("lottery_card_instances")
-    .select("card_definition_id")
-    .eq("user_id", ownerId)
-    .in("card_definition_id", definitionRows.map((definition) => definition.id));
-  if (instances.error) {
-    throw new Error(`[supabase:lottery_card_instances] ${instances.error.message}`);
-  }
-  const copyCounts = (instances.data ?? []).reduce<Map<string, number>>((counts, instance) => {
-    const definitionId = String(instance.card_definition_id);
-    counts.set(definitionId, (counts.get(definitionId) ?? 0) + 1);
-    return counts;
-  }, new Map());
+  const copyCounts = await getKqCardCopyCounts(ownerId, definitionRows.map((definition) => definition.id));
+  return buildKqOwnedBuddies(definitionRows, copyCounts);
+}
+
+function buildKqOwnedBuddies(definitionRows: KqBuddieDefinitionRow[], copyCounts: Record<string, number>): KqOwnedBuddie[] {
   return definitionRows
-    .filter((definition) => (copyCounts.get(String(definition.id)) ?? 0) > 0)
+    .filter((definition) => (copyCounts[String(definition.id)] ?? 0) > 0)
     .map((definition) => ({
       code: String(definition.code),
       name: String(definition.name),
       rarity: String(definition.rarity),
       cardNumber: Number(definition.card_number),
       imageUrl: String(definition.image_url ?? ""),
-      ownedCopies: copyCounts.get(String(definition.id)) ?? 0,
+      ownedCopies: copyCounts[String(definition.id)] ?? 0,
     }))
     .sort((left, right) => left.cardNumber - right.cardNumber);
+}
+
+// Bootstrap needs both collections. Count their copies in one request without
+// caching a player's mutable inventory across purchases, rewards or card burns.
+export async function getKqPlayerCollectionBundle(ownerId: string) {
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  const supabase = createSupabaseServiceClient();
+  const [catalog, buddieDefinitions] = await Promise.all([getCachedKqBotteCatalog(), getCachedKqBuddieDefinitions()]);
+  const [counts, tokenWallet] = await Promise.all([
+    getKqCardCopyCounts(ownerId, [...catalog.definitions, ...buddieDefinitions].map((definition) => definition.id)),
+    supabase.from("kq_culture_token_wallets").select("balance").eq("user_id", ownerId).maybeSingle(),
+  ]);
+  if (tokenWallet.error) throw new Error(`[supabase:kq_culture_token_wallets] ${tokenWallet.error.message}`);
+  return {
+    collection: buildKqCollectionSnapshot(catalog, counts, Number(tokenWallet.data?.balance ?? 0)),
+    ownedBuddies: buildKqOwnedBuddies(buddieDefinitions, counts),
+  };
 }
 
 export async function getKqPlayerBuddieRotation(ownerId: string): Promise<KqBuddieRotation> {
@@ -1272,6 +1245,12 @@ export function mapKqPlayerCoreSnapshot(
     rank: rawProgress.rank === null || rawProgress.rank === undefined ? null : Number(rawProgress.rank),
     rating,
     seasonPoints: Number(rawProgress.seasonPoints),
+    reputation: Number(rawProgress.reputation ?? 0),
+    placardScore: Number(rawProgress.placardScore ?? calculateKqPlacardScore({
+      rating,
+      seasonPoints: Number(rawProgress.seasonPoints),
+      reputation: Number(rawProgress.reputation ?? 0),
+    }).score),
     wins: Number(rawProgress.wins),
     losses: Number(rawProgress.losses),
     streak: Number(rawProgress.streak),
@@ -1644,16 +1623,16 @@ export async function reconcileKqPlayerRandomBattleQueue(
 ): Promise<KqRandomBattleQueueResult | { matchStatus: "idle" }> {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Fleur invalide.");
-  const queue = await createSupabaseServiceClient()
-    .from("kq_random_battle_queue")
-    .select("flower_id")
-    .eq("owner_id", ownerId)
-    .eq("flower_id", flowerId)
-    .maybeSingle();
-  if (queue.error) throw new Error(`[supabase:kq_random_battle_queue] ${queue.error.message}`);
-  return queue.data
-    ? enqueueKqPlayerRandomBattle(ownerId, flowerId)
-    : { matchStatus: "idle" };
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_poll_random_battle_queue", {
+    p_player_id: ownerId,
+    p_flower_id: flowerId,
+  });
+  if (result.error) throw new Error(`[supabase:rpc_kq_poll_random_battle_queue] ${result.error.message}`);
+  const queue = result.data as { matchStatus?: string; queuedAt?: string; retryMatch?: boolean } | null;
+  if (queue?.matchStatus === "idle") return { matchStatus: "idle" };
+  if (queue?.matchStatus !== "queued" || !queue.queuedAt) throw new Error("Réponse de file aléatoire invalide.");
+  if (queue.retryMatch === true) return enqueueKqPlayerRandomBattle(ownerId, flowerId);
+  return { matchStatus: "queued", flowerId, queuedAt: queue.queuedAt, replayed: true };
 }
 
 export async function leaveKqPlayerRandomBattleQueue(ownerId: string, flowerId: string) {
@@ -2016,10 +1995,10 @@ export async function getKqPublicLeaderboard() {
 async function readKqPublicLeaderboard() {
   const supabase = createSupabaseServiceClient();
   const seasonCode = await getKqActiveSeasonCode();
-  const snapshotResult = await supabase.rpc("rpc_kq_refresh_daily_leaderboard", {
+  const snapshotResult = await supabase.rpc("rpc_kq_get_daily_leaderboard", {
     p_season_code: seasonCode,
   });
-  if (snapshotResult.error) throw new Error(`[supabase:rpc_kq_refresh_daily_leaderboard] ${snapshotResult.error.message}`);
+  if (snapshotResult.error) throw new Error(`[supabase:rpc_kq_get_daily_leaderboard] ${snapshotResult.error.message}`);
   const snapshot = snapshotResult.data as Record<string, unknown> | null;
   const rawLeaderboard = Array.isArray(snapshot?.leaderboard)
     ? snapshot.leaderboard as Array<Record<string, unknown>>
@@ -2054,83 +2033,35 @@ async function readKqPublicLeaderboard() {
   };
 }
 
-export async function getKqArenaLeaderboardInternal() {
+export async function getKqArenaLeaderboardInternal(options: { forceRefresh?: boolean } = {}) {
   const supabase = createSupabaseServiceClient();
   const seasonCode = await getKqActiveSeasonCode();
-  const [snapshotResult, contestSeasonResult] = await Promise.all([
-    supabase.rpc("rpc_kq_refresh_daily_leaderboard", { p_season_code: seasonCode }),
-    supabase.from("contest_seasons").select("id,code,label").eq("is_active", true).eq("is_archived", false)
-      .order("harvest_start", { ascending: false, nullsFirst: false })
-      .order("year", { ascending: false }).limit(1).maybeSingle(),
-  ]);
-  if (snapshotResult.error) throw new Error(`[supabase:rpc_kq_refresh_daily_leaderboard] ${snapshotResult.error.message}`);
-  if (contestSeasonResult.error) throw new Error(`[supabase:contest_seasons:active] ${contestSeasonResult.error.message}`);
-
+  const snapshotResult = await supabase.rpc("rpc_kq_get_arena_leaderboard", {
+    p_season_code: seasonCode,
+    p_force_refresh: options.forceRefresh === true,
+  });
+  if (snapshotResult.error) throw new Error(`[supabase:rpc_kq_get_arena_leaderboard] ${snapshotResult.error.message}`);
   const snapshot = snapshotResult.data as Record<string, unknown> | null;
-  const rawPlacard = Array.isArray(snapshot?.leaderboard)
+  const rawEntries = Array.isArray(snapshot?.leaderboard)
     ? snapshot.leaderboard as Array<Record<string, unknown>>
     : [];
-  const userIds = rawPlacard.map((entry) => String(entry.userId ?? "")).filter(Boolean);
-  const contestSeasonId = String(contestSeasonResult.data?.id ?? "");
-  const [profilesResult, notebookResult] = await Promise.all([
-    userIds.length
-      ? supabase.from("contest_profiles").select("customer_id,pseudo").in("customer_id", userIds)
-      : Promise.resolve({ data: [], error: null }),
-    userIds.length && contestSeasonId
-      ? supabase.from("contest_tester_rankings_by_season")
-          .select("customer_id,season_points,approved_review_count")
-          .eq("season_id", contestSeasonId).in("customer_id", userIds)
-      : Promise.resolve({ data: [], error: null }),
-  ]);
-  if (profilesResult.error) throw new Error(`[supabase:contest_profiles] ${profilesResult.error.message}`);
-  if (notebookResult.error) throw new Error(`[supabase:contest_tester_rankings_by_season] ${notebookResult.error.message}`);
-
-  const pseudoByUser = new Map((profilesResult.data ?? []).map((row) => [String(row.customer_id), String(row.pseudo)]));
-  const notebookByUser = new Map((notebookResult.data ?? []).map((row) => [String(row.customer_id), row]));
-  const scored = rawPlacard.map((entry) => {
-    const userId = String(entry.userId ?? "");
-    const wins = Number(entry.wins ?? 0);
-    const losses = Number(entry.losses ?? 0);
-    const notebook = notebookByUser.get(userId);
-    const score = calculateArenaScore({
-      notebookSeasonPoints: Number(notebook?.season_points ?? 0),
-      placardSeasonPoints: Number(entry.seasonPoints ?? 0),
-      placardRating: Number(entry.rating ?? 1000),
-      placardBattles: wins + losses,
-    });
-    return {
-      userId,
-      pseudo: pseudoByUser.get(userId) ?? "Cultivateur anonyme",
-      score: score.total,
-      notebookScore: score.notebook,
-      placardScore: score.placard,
-      approvedReviewCount: Number(notebook?.approved_review_count ?? 0),
-      rating: Number(entry.rating ?? 1000),
-      wins,
-      losses,
-      eligible: score.eligible,
-    };
-  }).filter((entry) => entry.eligible)
-    .sort((a, b) => b.score - a.score || b.rating - a.rating || a.userId.localeCompare(b.userId))
-    .map((entry, index) => ({
-      userId: entry.userId,
-      rank: index + 1,
-      pseudo: entry.pseudo,
-      score: entry.score,
-      notebookScore: entry.notebookScore,
-      placardScore: entry.placardScore,
-      approvedReviewCount: entry.approvedReviewCount,
-      rating: entry.rating,
-      wins: entry.wins,
-      losses: entry.losses,
-    }));
-
   return {
     seasonCode,
-    contestSeasonCode: contestSeasonResult.data?.code ?? null,
+    contestSeasonCode: snapshot?.contest_season_code ? String(snapshot.contest_season_code) : null,
     generatedAt: snapshot?.generated_at ? String(snapshot.generated_at) : new Date().toISOString(),
     formulaVersion: "arena-v1",
-    entries: scored,
+    entries: rawEntries.map((entry, index) => ({
+      userId: String(entry.userId),
+      rank: Number(entry.rank ?? index + 1),
+      pseudo: String(entry.pseudo ?? "Cultivateur anonyme"),
+      score: Number(entry.score ?? 0),
+      notebookScore: Number(entry.notebookScore ?? 0),
+      placardScore: Number(entry.placardScore ?? 0),
+      approvedReviewCount: Number(entry.approvedReviewCount ?? 0),
+      rating: Number(entry.rating ?? 1000),
+      wins: Number(entry.wins ?? 0),
+      losses: Number(entry.losses ?? 0),
+    })),
   };
 }
 
@@ -2204,14 +2135,14 @@ export async function getKqPlayerProgress(userId: string) {
   if (profileResult.error) throw new Error(`[supabase:kq_rank_profiles] ${profileResult.error.message}`);
   if (!profileResult.data) return null;
   const [snapshotResult, walletResult, claimsResult] = await Promise.all([
-    supabase.rpc("rpc_kq_refresh_daily_leaderboard", {
-      p_season_code: profileResult.data.season_code,
-    }),
+    supabase.from("kq_leaderboard_snapshots").select("leaderboard,generated_at")
+      .eq("season_code", profileResult.data.season_code)
+      .order("snapshot_date", { ascending: false }).limit(1).maybeSingle(),
     supabase.from("kq_equipment_wallets").select("reputation").eq("user_id", userId).maybeSingle(),
     supabase.from("kq_daily_challenge_claims").select("challenge_day,challenge_code")
       .eq("user_id", userId).order("challenge_day", { ascending: false }).limit(64),
   ]);
-  if (snapshotResult.error) throw new Error(`[supabase:rpc_kq_refresh_daily_leaderboard] ${snapshotResult.error.message}`);
+  if (snapshotResult.error) throw new Error(`[supabase:kq_leaderboard_snapshots] ${snapshotResult.error.message}`);
   if (walletResult.error) throw new Error(`[supabase:kq_equipment_wallets] ${walletResult.error.message}`);
   if (claimsResult.error) throw new Error(`[supabase:kq_daily_challenge_claims] ${claimsResult.error.message}`);
   const snapshot = Array.isArray(snapshotResult.data?.leaderboard)
@@ -2220,11 +2151,11 @@ export async function getKqPlayerProgress(userId: string) {
   const rating = Number(profileResult.data.rating);
   const seasonPoints = Number(profileResult.data.season_points);
   const reputation = Number(walletResult.data?.reputation ?? 0);
-  const placardScore = Number(rankEntry?.placardScore ?? calculateKqPlacardScore({
+  const placardScore = calculateKqPlacardScore({
     rating,
     seasonPoints,
     reputation,
-  }).score);
+  }).score;
   const league = getKqLeague(rating);
   return {
     seasonCode: String(profileResult.data.season_code),

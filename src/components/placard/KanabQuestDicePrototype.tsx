@@ -78,6 +78,7 @@ import {
 } from "@/lib/kanab-quest-market";
 import { applyKqRemoteAction, createKqScopedRequest, enqueueKqRemoteRandomBattle, finalizeKqRemoteBattle, finalizeKqRemoteBotBattle, getKqRemoteActiveRun, getKqRemoteBattles, getKqRemoteFlowers, leaveKqRemoteRandomBattleQueue, playKqRemoteCard, pollKqRemoteRandomBattleQueue, startKqRemoteRun, swapKqRemoteHeritageCard, type KqApiBurnReceipt, type KqApiScope, type KqOfficialBattle, type KqOfficialFlower } from "@/lib/kanab-quest-api";
 import { startArenaVisiblePolling } from "@/lib/arena-visible-polling";
+import { canReuseKqBootstrapProgress } from "@/lib/kanab-quest-bootstrap-policy";
 import { formatKqQueueWait } from "@/lib/kanab-quest-random-queue";
 import { getKqRemainingDailyChallengePoints, KQ_REWARD_BALANCE } from "@/lib/kanab-quest-reward-balance";
 import { KqPhysicsDice, type KqDiceMotionPhase, type KqPhysicsDiceHandle } from "./KqPhysicsDice";
@@ -683,8 +684,8 @@ export function KanabQuestDicePrototype({
 
   const refreshOfficialRanking = useCallback(async (includeProgress = true) => {
     if (!isPlayerMode) return;
-    // Refresh the shared standing first so the private rank reads the same
-    // composite-score snapshot, including the latest market reputation.
+    // The shared ranking may lag by a minute; transactions still return the
+    // current personal balances and rewards. Reuse bootstrap progress on entry.
     const leaderboardResponse = await fetch("/api/arena/placard/rankings", { cache: "no-store" });
     if (leaderboardResponse.ok) {
       const payload = await leaderboardResponse.json() as { entries?: OfficialLeaderboardEntry[] };
@@ -806,10 +807,6 @@ export function KanabQuestDicePrototype({
   }, [isPlayerMode, sessionStoragePrefix, tutorial]);
 
   useEffect(() => {
-    void refreshOfficialRanking();
-  }, [refreshOfficialRanking]);
-
-  useEffect(() => {
     if (!isPlayerMode) return;
     const refreshAfterMarketSale = () => void refreshOfficialRanking();
     window.addEventListener("kq:market-updated", refreshAfterMarketSale);
@@ -926,13 +923,17 @@ export function KanabQuestDicePrototype({
           cardCount: collection.cards?.length ?? 0,
           cultureTokenBalance: Math.max(0, Number(collection.cultureTokenBalance ?? 0)),
         });
-        if (isPlayerMode && payload.playerSession && (payload.playerSession.warnings?.length ?? 0) === 0) {
+        const sessionReusable = Boolean(payload.playerSession && (payload.playerSession.warnings?.length ?? 0) === 0);
+        if (isPlayerMode && payload.playerSession && sessionReusable) {
           skipNextSessionFetchRef.current = true;
           applyOfficialSessionPayload(payload.playerSession);
           const warnings = [...(payload.warnings ?? []), ...(payload.playerSession.warnings ?? [])];
           if (warnings.length > 0) setRemoteNotice(warnings.join(" · "));
         }
-        if (isPlayerMode) await refreshOfficialRanking();
+        if (isPlayerMode && !controller.signal.aborted) {
+          const progressReusable = sessionReusable && canReuseKqBootstrapProgress(payload.playerSession?.progress);
+          await refreshOfficialRanking(!progressReusable);
+        }
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;

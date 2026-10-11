@@ -235,7 +235,7 @@ export async function rollArenaCustomerRewardDice(userId: string) {
 export async function freezeArenaCustomerRewardSeason(execute: boolean) {
   const supabase = createSupabaseServiceClient();
   const seasonCode = await getActiveRewardSeasonCode();
-  const leaderboard = await getKqArenaLeaderboardInternal();
+  const leaderboard = await getKqArenaLeaderboardInternal({ forceRefresh: true });
   if (leaderboard.seasonCode !== seasonCode) throw new Error("La saison du classement ne correspond pas à celle des récompenses.");
   const result = await supabase.rpc("rpc_arena_freeze_customer_reward_snapshot", {
     p_standings: toRewardStandings(leaderboard.entries),
@@ -258,7 +258,7 @@ export async function settleArenaCustomerRewards(execute: boolean) {
   if (seasonResult.error) throw new Error("Classement de clôture indisponible.");
   let standings = seasonResult.data?.standings_snapshot as ArenaCustomerRewardStanding[] | null;
   if (!standings && pool.status === "active" && !execute) {
-    const leaderboard = await getKqArenaLeaderboardInternal();
+    const leaderboard = await getKqArenaLeaderboardInternal({ forceRefresh: true });
     if (leaderboard.seasonCode !== seasonCode) throw new Error("Saisons incompatibles.");
     standings = toRewardStandings(leaderboard.entries);
   }

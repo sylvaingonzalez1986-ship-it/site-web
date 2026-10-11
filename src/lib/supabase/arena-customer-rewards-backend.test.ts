@@ -50,6 +50,7 @@ describe("reward season data", () => {
  });
  it("passes the standings to the transactional freeze", async () => {
   await freezeArenaCustomerRewardSeason(true);
+  expect(mocks.leaderboard).toHaveBeenCalledWith({forceRefresh:true});
   expect(mocks.rpc).toHaveBeenCalledWith("rpc_arena_freeze_customer_reward_snapshot",{p_season_code:"S1",p_execute:true,p_standings:[standing]});
  });
  it("shares common reward calculations but keeps viewer projections separate", async () => {

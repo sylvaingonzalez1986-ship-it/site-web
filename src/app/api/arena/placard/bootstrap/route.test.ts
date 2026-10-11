@@ -8,8 +8,7 @@ const {
   getKqPlayerHeritageSnapshot,
   getKqPlayerCoreSnapshot,
   getKqEquipmentRoutePlan,
-  syncKqOrderCashRewards,
-  syncContestBundleRewards,
+  reconcileKqBootstrapRewards,
 } = vi.hoisted(() => ({
   getCurrentCustomerSessionByBackend: vi.fn(),
   getKqPlayerCollectionSnapshot: vi.fn(),
@@ -18,28 +17,27 @@ const {
   getKqPlayerHeritageSnapshot: vi.fn(),
   getKqPlayerCoreSnapshot: vi.fn(),
   getKqEquipmentRoutePlan: vi.fn(),
-  syncKqOrderCashRewards: vi.fn(),
-  syncContestBundleRewards: vi.fn(),
+  reconcileKqBootstrapRewards: vi.fn(),
 }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
-  getKqPlayerCollectionSnapshot,
+  getKqPlayerCollectionBundle: async (id: string) => ({
+    collection: await getKqPlayerCollectionSnapshot(id),
+    ownedBuddies: await getKqPlayerOwnedBuddies(id),
+  }),
   getKqPlayerBuddieRotation,
-  getKqPlayerOwnedBuddies,
   getKqPlayerHeritageSnapshot,
   getKqPlayerCoreSnapshot,
 }));
 vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({ getKqEquipmentRoutePlan }));
-vi.mock("@/lib/supabase/kanab-quest-order-cash-backend", () => ({ syncKqOrderCashRewards }));
-vi.mock("@/lib/supabase/contest-bundle-rewards-backend", () => ({ syncContestBundleRewards }));
+vi.mock("@/lib/supabase/kanab-quest-bootstrap-rewards", () => ({ reconcileKqBootstrapRewards }));
 
 import { GET } from "@/app/api/arena/placard/bootstrap/route";
 
 const previousFlag = process.env.KQ_PLAYER_API_LIVE;
 const customerId = "dddddddd-dddd-dddd-dddd-dddddddddddd";
 const rewardSynchronizations = [
-  { reward: "order cash", synchronize: syncKqOrderCashRewards, warning: "Order cash reward synchronization temporarily unavailable." },
-  { reward: "contest bundle", synchronize: syncContestBundleRewards, warning: "Contest bundle reward synchronization temporarily unavailable." },
+  { reward: "order cash", synchronize: reconcileKqBootstrapRewards, warning: "Bootstrap reward synchronization temporarily unavailable." },
 ];
 
 describe("GET /api/arena/placard/bootstrap", () => {
@@ -48,8 +46,7 @@ describe("GET /api/arena/placard/bootstrap", () => {
     getKqPlayerBuddieRotation.mockResolvedValue({ requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] });
     process.env.KQ_PLAYER_API_LIVE = "true";
     getCurrentCustomerSessionByBackend.mockResolvedValue({ customerId });
-    syncKqOrderCashRewards.mockResolvedValue({ available: true, receipts: [] });
-    syncContestBundleRewards.mockResolvedValue({ available: true, receipts: [] });
+    reconcileKqBootstrapRewards.mockResolvedValue(undefined);
     getKqPlayerCollectionSnapshot.mockResolvedValue({ inventory: { "BOTTE-001": 1 } });
     getKqPlayerOwnedBuddies.mockResolvedValue([{
       code: "HH2026-003",
@@ -77,15 +74,13 @@ describe("GET /api/arena/placard/bootstrap", () => {
     process.env.KQ_PLAYER_API_LIVE = "false";
     expect((await GET()).status).toBe(404);
     expect(getKqPlayerCollectionSnapshot).not.toHaveBeenCalled();
-    expect(syncKqOrderCashRewards).not.toHaveBeenCalled();
-    expect(syncContestBundleRewards).not.toHaveBeenCalled();
+    expect(reconcileKqBootstrapRewards).not.toHaveBeenCalled();
   });
 
   it("does not synchronize rewards without an authenticated customer", async () => {
     getCurrentCustomerSessionByBackend.mockResolvedValue(null);
     expect((await GET()).status).toBe(401);
-    expect(syncKqOrderCashRewards).not.toHaveBeenCalled();
-    expect(syncContestBundleRewards).not.toHaveBeenCalled();
+    expect(reconcileKqBootstrapRewards).not.toHaveBeenCalled();
     expect(getKqPlayerCollectionSnapshot).not.toHaveBeenCalled();
   });
 
@@ -99,8 +94,7 @@ describe("GET /api/arena/placard/bootstrap", () => {
       getKqPlayerBuddieRotation]) expect(snapshot).not.toHaveBeenCalled();
     resolveSync();
     expect((await response).status).toBe(200);
-    expect(syncKqOrderCashRewards).toHaveBeenCalledExactlyOnceWith(customerId);
-    expect(syncContestBundleRewards).toHaveBeenCalledExactlyOnceWith(customerId);
+    expect(reconcileKqBootstrapRewards).toHaveBeenCalledExactlyOnceWith(customerId);
     expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
   });
 
@@ -109,25 +103,21 @@ describe("GET /api/arena/placard/bootstrap", () => {
     synchronize.mockRejectedValue(new Error("private reward detail"));
     const response = await GET();
     expect(response.status).toBe(200);
-    expect(syncKqOrderCashRewards).toHaveBeenCalledExactlyOnceWith(customerId);
-    expect(syncContestBundleRewards).toHaveBeenCalledExactlyOnceWith(customerId);
+    expect(reconcileKqBootstrapRewards).toHaveBeenCalledExactlyOnceWith(customerId);
     expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
     expect(JSON.stringify(await response.json())).not.toContain("private reward detail");
     expect(warning).toHaveBeenCalledExactlyOnceWith(expectedWarning);
   });
 
-  it("keeps the game available when both reward synchronizations fail", async () => {
+  it("keeps the game available when the reward reconciliation helper fails", async () => {
     const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
-    syncKqOrderCashRewards.mockRejectedValue(new Error("private cash detail"));
-    syncContestBundleRewards.mockRejectedValue(new Error("private contest detail"));
+    reconcileKqBootstrapRewards.mockRejectedValue(new Error("private cash detail"));
     const response = await GET();
     expect(response.status).toBe(200);
-    expect(syncKqOrderCashRewards).toHaveBeenCalledExactlyOnceWith(customerId);
-    expect(syncContestBundleRewards).toHaveBeenCalledExactlyOnceWith(customerId);
+    expect(reconcileKqBootstrapRewards).toHaveBeenCalledExactlyOnceWith(customerId);
     expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
     const payload = await response.json();
     expect(JSON.stringify(payload)).not.toContain("private cash detail");
-    expect(JSON.stringify(payload)).not.toContain("private contest detail");
     expect(payload.warnings).toEqual([]);
     expect(warning.mock.calls).toEqual(rewardSynchronizations.map(({ warning: message }) => [message]));
   });
@@ -136,11 +126,10 @@ describe("GET /api/arena/placard/bootstrap", () => {
     const response = await GET();
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
-    expect(syncKqOrderCashRewards).toHaveBeenCalledExactlyOnceWith(customerId);
-    expect(syncContestBundleRewards).toHaveBeenCalledExactlyOnceWith(customerId);
+    expect(reconcileKqBootstrapRewards).toHaveBeenCalledExactlyOnceWith(customerId);
     expect(getKqPlayerCollectionSnapshot).toHaveBeenCalledWith(customerId);
     expect(getKqPlayerOwnedBuddies).toHaveBeenCalledWith(customerId);
-    expect(getKqPlayerHeritageSnapshot).toHaveBeenCalledWith(customerId);
+    expect(getKqPlayerHeritageSnapshot).toHaveBeenCalledWith(customerId, { includeDraws: false });
     expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
     expect(getKqEquipmentRoutePlan).toHaveBeenCalledWith(customerId);
     expect(getCurrentCustomerSessionByBackend).toHaveBeenCalledWith("identity");
