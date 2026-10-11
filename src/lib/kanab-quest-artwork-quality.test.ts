@@ -3,6 +3,7 @@ import { readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import sharp from "sharp";
 import { describe, expect, it } from "vitest";
+import producerHeritageCards from "@/data/producer-heritage-cards.json";
 import {
   KQ_CARD_ARTWORK,
   KQ_CARD_ILLUSTRATIONS,
@@ -20,6 +21,7 @@ const sha256 = (src: string) => createHash("sha256")
   .digest("hex");
 
 const cardIllustrations = Object.values(KQ_CARD_ILLUSTRATIONS);
+const producerIllustrations = new Set(producerHeritageCards.cards.map((card) => card.illustrationUrl));
 const cardFronts = Object.values(KQ_CARD_ARTWORK);
 const situations = [
   ...Object.values(KQ_SITUATION_ARTWORK).map((artwork) => artwork.src),
@@ -41,7 +43,7 @@ describe("Kanab Quest artwork production quality", () => {
     expect(new Set(hashes).size).toBe(everyProductionAsset.length);
   });
 
-  it("keeps cards portrait and gameplay scenes square", async () => {
+  it("keeps composed cards portrait and gameplay scenes square", async () => {
     const cardMetadata = await Promise.all(
       [...cardIllustrations, ...cardFronts].map((src) => sharp(publicPath(src)).metadata()),
     );
@@ -49,10 +51,11 @@ describe("Kanab Quest artwork production quality", () => {
       [...situations, ...equipment].map((src) => sharp(publicPath(src)).metadata()),
     );
 
-    cardMetadata.forEach(({ width, height }) => {
+    cardMetadata.forEach(({ width, height }, index) => {
       expect(width).toBeTypeOf("number");
       expect(height).toBeTypeOf("number");
-      expect(width!).toBeLessThan(height!);
+      // Producer scenes can be landscape: their composed front provides the portrait frame.
+      if (!producerIllustrations.has(cardIllustrations[index])) expect(width!).toBeLessThan(height!);
     });
     cardMetadata.slice(cardIllustrations.length).forEach(({ width, height }) => {
       expect(width! * 3).toBe(height! * 2);

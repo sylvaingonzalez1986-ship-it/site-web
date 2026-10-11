@@ -189,7 +189,7 @@ function render(card, art) {
   fittedLabel(ctx, card, card.activationLabel, 100, 996, 824, 29, 22, INK, "HeritageBody");
 
   roundedBlock(ctx, 82, 1044, 860, 338, 24, "#fffdf6", INK, 4);
-  label(ctx, "CAPACITÉ", 108, 1075, 23, "#76601d");
+  label(ctx, "AVANTAGE CULTURE", 108, 1075, 23, "#76601d");
   paragraph(ctx, card, card.description, 108, 1122, 808, 35, 29, 3, 44, INK, "HeritageBody");
 
   ctx.beginPath();
@@ -198,7 +198,7 @@ function render(card, art) {
   ctx.strokeStyle = "#d6c794";
   ctx.lineWidth = 2;
   ctx.stroke();
-  label(ctx, "À SAVOIR", 108, 1257, 21, "#76601d");
+  label(ctx, "UTILISATION", 108, 1257, 21, "#76601d");
   paragraph(ctx, card, card.drawback, 108, 1293, 808, 26, 23, 3, 31, "#4c5546", "HeritageRegular");
 
   roundedBlock(ctx, 82, 1402, 860, 62, 18, INK, INK, 0);
@@ -244,14 +244,14 @@ async function writeReview(prepared) {
   await writeFile(path.join(reviewDir, "index.html"), `<!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Les Héritages des producteurs</title><style>
 *{box-sizing:border-box}body{margin:0;background:#fff8e8;color:#233628;font-family:Arial,sans-serif}main{max-width:1440px;margin:auto;padding:42px 24px 70px}header{margin-bottom:32px;border-bottom:2px solid #d6c794;padding-bottom:28px}.eyebrow{font-size:12px;letter-spacing:.16em;font-weight:bold;text-transform:uppercase;color:#76601d}h1{font-size:clamp(32px,5vw,56px);line-height:1.08;margin:14px 0}header p{max-width:720px;font-size:18px;line-height:1.55}a{color:inherit}.sheet{font-weight:bold;color:#76601d}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(390px,1fr));gap:24px}article{display:flex;gap:20px;background:#fffdf6;border:1px solid #d6c794;border-radius:16px;padding:16px;align-items:flex-start}article>a{width:46%;flex-shrink:0}img{display:block;max-width:100%;height:auto;border-radius:10px}.details{padding-top:10px;min-width:0}.code{font-size:11px;letter-spacing:.12em;color:#76601d}h2{font-size:22px;line-height:1.15;margin:9px 0}h3{font-size:16px;font-weight:normal;margin:0 0 14px}.timing{font-size:10px;line-height:1.6;font-weight:bold;color:#76601d}.benefit{font-size:15px;line-height:1.5}.limit{font-size:12px;line-height:1.5;color:#606a5e;border-top:1px solid #e5ddc9;padding-top:12px}@media(max-width:520px){main{padding:26px 14px}.grid{grid-template-columns:1fr}article{gap:14px;padding:12px}h2{font-size:18px}.benefit{font-size:13px}}
-</style></head><body><main><header><div class="eyebrow">Carnet de dégustation · Collection Héritage</div><h1>Les savoir-faire de nos producteurs.</h1><p>${prepared.length} cartes à découvrir : chaque producteur transmet sa spécialité, avec une capacité, un moment d’activation et une limite explicites.</p><a class="sheet" href="${sheetFile}">Ouvrir la planche de toutes les cartes</a></header><section class="grid" aria-label="Cartes Héritage des producteurs">${cardsHtml}</section></main></body></html>\n`, "utf8");
+</style></head><body><main><header><div class="eyebrow">Carnet de dégustation · Collection Héritage</div><h1>Les savoir-faire de nos producteurs.</h1><p>${prepared.length} cartes à découvrir : chacune apporte au moins 2 XP au départ et un pouvoir gratuit pour aider ta culture. Choisis le savoir-faire qui te correspond.</p><a class="sheet" href="${sheetFile}">Ouvrir la planche de toutes les cartes</a></header><section class="grid" aria-label="Cartes Héritage des producteurs">${cardsHtml}</section></main></body></html>\n`, "utf8");
   console.log(`Aperçu : ${path.join(reviewDir, "index.html")}`);
   console.log(`Planche : ${path.join(reviewDir, sheetFile)}`);
 }
 
 if (CHECK_ONLY) {
   for (const card of manifest.cards) render(card, null);
-  console.log(`${manifest.cards.length} cartes vérifiées : noms, pouvoirs, limitations, timing et mise en page. Aucun fichier généré.`);
+  console.log(`${manifest.cards.length} cartes vérifiées : noms, avantages, utilisation, timing et mise en page. Aucun fichier généré.`);
 } else {
   const missing = [];
   for (const card of manifest.cards) {

@@ -1,3 +1,5 @@
+import producerHeritageCards from "@/data/producer-heritage-cards.json";
+
 export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
   "BOTTE-001": "/app/kanab-quest/cards/botte-001-terreau-universel-v1.webp",
   "BOTTE-002": "/app/kanab-quest/cards/botte-002-chrysope-affamee-v1.webp",
@@ -41,18 +43,11 @@ export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
   "BOTTE-040": "/app/kanab-quest/cards/botte-040-reglage-urgence-sylvain-v2.webp",
   "BOTTE-041": "/app/kanab-quest/cards/botte-041-equipe-recolte-sylvain-v2.webp",
   "BOTTE-042": "/app/kanab-quest/cards/botte-042-sechage-controle-sylvain-v2.webp",
-  "HERITAGE-001": "/app/kanab-quest/cards/heritage-001-racines-solides-producer-v2.webp",
-  "HERITAGE-002": "/app/kanab-quest/cards/heritage-002-reserve-jardinier-producer-v2.webp",
-  "HERITAGE-003": "/app/kanab-quest/cards/heritage-003-main-prevoyante-producer-v2.webp",
-  "HERITAGE-004": "/app/kanab-quest/cards/heritage-004-climat-stable-producer-v2.webp",
-  "HERITAGE-005": "/app/kanab-quest/cards/heritage-005-second-regard-producer-v2.webp",
-  "HERITAGE-006": "/app/kanab-quest/cards/heritage-006-reprise-vigoureuse-producer-v2.webp",
-  "HERITAGE-007": "/app/kanab-quest/cards/heritage-007-instinct-cultivateur-producer-v2.webp",
-  "HERITAGE-008": "/app/kanab-quest/cards/heritage-008-bouclier-biologique-producer-v2.webp",
   "HERITAGE-009": "/app/kanab-quest/cards/heritage-009-floraison-maitrisee-v1.webp",
   "HERITAGE-010": "/app/kanab-quest/cards/heritage-010-affinage-patient-v1.webp",
   "HERITAGE-011": "/app/kanab-quest/cards/heritage-011-canopy-legacy-v2.webp",
   "HERITAGE-012": "/app/kanab-quest/cards/heritage-012-signature-maitre-v2.webp",
+  ...Object.fromEntries(producerHeritageCards.cards.map((card) => [card.code, card.illustrationUrl])),
 };
 
 const KQ_CARD_FRONT_VERSION_OVERRIDES: Readonly<Record<string, number>> = {
@@ -60,8 +55,8 @@ const KQ_CARD_FRONT_VERSION_OVERRIDES: Readonly<Record<string, number>> = {
   "HERITAGE-012": 4,
 };
 
-export const KQ_CARD_ARTWORK: Readonly<Record<string, string>> = Object.fromEntries(
-  Object.entries(KQ_CARD_ILLUSTRATIONS).map(([code, source]) => {
+export const KQ_CARD_ARTWORK: Readonly<Record<string, string>> = Object.fromEntries([
+  ...Object.entries(KQ_CARD_ILLUSTRATIONS).map(([code, source]) => {
     const retiredSubstrate = ["BOTTE-001", "BOTTE-007", "BOTTE-008", "BOTTE-009"].includes(code);
     const retiredCare = ["BOTTE-002", "BOTTE-004", "BOTTE-010", "BOTTE-011", "BOTTE-012", "BOTTE-022", "BOTTE-023", "BOTTE-025"].includes(code);
     const override = code.startsWith("BOTTE-") && !retiredSubstrate ? retiredCare ? 6 : 7 : KQ_CARD_FRONT_VERSION_OVERRIDES[code];
@@ -75,7 +70,8 @@ export const KQ_CARD_ARTWORK: Readonly<Record<string, string>> = Object.fromEntr
       source.replace("/cards/", "/card-fronts/").replace(/-v(\d+)\.webp$/, frontSuffix),
     ];
   }),
-);
+  ...producerHeritageCards.cards.map((card) => [card.code, card.frontUrl]),
+]);
 
 export function getKqCardArtwork(code: string) {
   return KQ_CARD_ARTWORK[code] ?? null;

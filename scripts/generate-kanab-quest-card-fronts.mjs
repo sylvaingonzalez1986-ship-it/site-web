@@ -52,9 +52,14 @@ try {
   const game = await vite.ssrLoadModule("/src/lib/kanab-quest-game.ts");
   const heritage = await vite.ssrLoadModule("/src/lib/kanab-quest-heritage.ts");
   const artwork = await vite.ssrLoadModule("/src/lib/kanab-quest-artwork.ts");
+  const { default: producerHeritage } = await vite.ssrLoadModule("/src/data/producer-heritage-cards.json");
   const guide = await vite.ssrLoadModule("/src/lib/kanab-quest-card-guide.ts");
   supportCards = game.KQ_ACTIVE_CARDS;
-  heritageCards = heritage.KQ_HERITAGE_CARDS.map((card) => ({ ...card, category: "heritage", xpCost: 0 }));
+  // Producer fronts use their dedicated layout and generator.
+  const producerHeritageCodes = new Set(producerHeritage.cards.map((card) => card.code));
+  heritageCards = heritage.KQ_HERITAGE_CARDS
+    .filter((card) => !producerHeritageCodes.has(card.code))
+    .map((card) => ({ ...card, category: "heritage", xpCost: 0 }));
   artworkByCode = Object.fromEntries(Object.entries(artwork.KQ_CARD_ILLUSTRATIONS).map(([code, file]) => [code, path.basename(file)]));
   frontByCode = artwork.KQ_CARD_ARTWORK;
   cardGuide = guide.getKqCardGuide;

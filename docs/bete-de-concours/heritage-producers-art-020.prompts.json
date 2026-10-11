@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "date": "2026-10-11",
+  "tool": "image_gen.imagegen (built-in)",
+  "cards": [
+    {
+      "code": "HERITAGE-020",
+      "producer": "Original Growing",
+      "reference": "output/heritage-producers/references/HERITAGE-020.png",
+      "referenceUrl": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/producers/21956a8a-1399-41b5-b0db-2092626bb513.png",
+      "styleReference": "public/app/kanab-quest/cards/heritage-003-main-prevoyante-producer-v2.webp",
+      "prompt": "Use case: style transfer with strict official logo identity preservation. Asset type: opaque landscape illustration for an existing French Heritage collectible game card, artwork only. Reference image 1 is the official Original Growing logo: preserve the exact two-line white slanted brush-script lettering 'Original' above 'Growing', its thick connected strokes, capital O and G shapes, and long elegant underline swashes. Reference image 2 is only a STYLE reference for vintage ink engraving, fine crosshatching, restrained antique gold rays and ornamental flourishes. Do not copy its subjects. Create a premium harmonious illustration with the entire original white wordmark large and centered on deep black/forest-green printed paper. Surround the intact logo with delicate symmetrical antique gold engraved scrollwork and fine radiant lines, consistent with the existing Heritage collection. The official white lettering must remain clean, unmistakable and legible. No new emblem, no plants, no people, no scenery. The only text is exactly 'Original Growing' in its original stacked calligraphy. LANDSCAPE 4:3 composition, complete logo within canvas, generous 10% margin around its outer swashes; gold ornaments secondary and outside letters. Frontal flat artwork, no card border, no user interface, no ability text, no watermark. Every pixel fully opaque, no transparency, no alpha effects, no broad glow, no change to original logo lettering or proportions.",
+      "source": "C:/Users/sylva/.codex/generated_images/01a12b0d-9a0d-7623-a545-718bd9691a42/exec-d3e050a1-fbf1-4333-90b2-d7e36f02a25b.png",
+      "outputStem": "public/app/kanab-quest/cards/heritage-020-original-growing-v1"
+    }
+  ]
+}

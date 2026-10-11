@@ -3,7 +3,7 @@
 import { Check } from "lucide-react";
 import type { ReactNode } from "react";
 import { KqCardCarousel } from "./KqCardCarousel";
-import type { KqHeritageCard } from "@/lib/kanab-quest-heritage";
+import { KQ_HERITAGE_STARTING_XP_BONUS, type KqHeritageCard } from "@/lib/kanab-quest-heritage";
 import styles from "./KqCardCarousel.module.css";
 
 type Props = {
@@ -18,6 +18,7 @@ type Props = {
 
 export function KqHeritageCarousel({ cards, ownedCodes, ownershipRequired, producerNames, selectedCode, onSelect, renderArtwork }: Props) {
   return <KqCardCarousel id="heritage-carousel-title" title="Héritage" label="Cartes Héritage producteur" count={cards.length}
+    intro={<p>Équipe un Héritage pour gagner au moins {KQ_HERITAGE_STARTING_XP_BONUS} XP au départ et profiter de son pouvoir. La carte reste dans ta collection après chaque culture.</p>}
     footer={<>
       {!cards.length ? <p className={styles.empty}>Les cartes Héritage seront bientôt disponibles.</p> : null}
       <button type="button" className={styles.classic} aria-pressed={!selectedCode} onClick={() => onSelect("")}>{!selectedCode ? <Check size={16} aria-hidden="true" /> : null} Sans Héritage</button>

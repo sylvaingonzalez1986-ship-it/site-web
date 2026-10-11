@@ -730,7 +730,7 @@ describe("Kanab Quest dice prototype", () => {
 
   it("applies permanent Heritage starting XP without burning a card", () => {
     const state = startKqGame(12, { varietyCode: "HH2026-020", heritageCode: "HERITAGE-002" });
-    expect(state.xp).toBe(3);
+    expect(state.xp).toBe(5);
     expect(state.heritageUsed).toBe(false);
     expect(state.usedCards).not.toContain("HERITAGE-002");
   });
@@ -743,14 +743,14 @@ describe("Kanab Quest dice prototype", () => {
         name: "Héritage de la Ferme des Collines",
         timing: "passive",
         effect: "starting-xp-two",
-        description: "Commence chaque culture avec 2 XP supplémentaires.",
+        description: "+4 XP au départ pour financer les soins et les cartes de la culture.",
         producerName: "Ferme des Collines",
       },
     });
     expect(state.heritageCode).toBe("HERITAGE-013");
     expect(state.heritageEffect).toBe("starting-xp-two");
     expect(state.heritageProducerName).toBe("Ferme des Collines");
-    expect(state.xp).toBe(3);
+    expect(state.xp).toBe(5);
   });
 
   it("grants the reusable second redraw Heritage", () => {
@@ -796,7 +796,7 @@ describe("Kanab Quest dice prototype", () => {
     expect(rollKqDice(swapped).heritageReserveCodes).toBeUndefined();
   });
 
-  it("consumes Racines solides on the first Enracinement Danger", () => {
+  it("improves the weakest rooting die with Racines solides", () => {
     let protectedRoll: KqGameState | null = null;
     for (let seed = 1; seed <= 100 && !protectedRoll; seed += 1) {
       const base = startKqGame(seed, { heritageCode: "HERITAGE-001" });
@@ -806,10 +806,10 @@ describe("Kanab Quest dice prototype", () => {
     expect(protectedRoll).not.toBeNull();
     expect(protectedRoll?.heritageUsed).toBe(true);
     expect(protectedRoll?.dice).toContain(6);
-    expect(protectedRoll?.effectNotices?.some((notice) => notice.includes("Danger devient une Étincelle"))).toBe(true);
+    expect(protectedRoll?.effectNotices?.some((notice) => notice.includes("le dé le plus faible devient une Étincelle"))).toBe(true);
   });
 
-  it("does not consume Racines solides when another protection covers every Danger", () => {
+  it("improves Racines solides while preserving an existing Danger protection", () => {
     let protectedByEquipment: KqGameState | null = null;
     for (let seed = 1; seed <= 200 && !protectedByEquipment; seed += 1) {
       const base = startKqGame(seed, { heritageCode: "HERITAGE-001", deckCodes: ["BOTTE-001", "BOTTE-003"] });
@@ -823,10 +823,12 @@ describe("Kanab Quest dice prototype", () => {
     }
     expect(protectedByEquipment).not.toBeNull();
     expect(protectedByEquipment?.cancelledDangers).toBe(1);
-    expect(protectedByEquipment?.heritageUsed).toBe(false);
+    expect(protectedByEquipment?.heritageUsed).toBe(true);
+    expect(protectedByEquipment?.dice).toContain(6);
+    expect(previewKqResolution(protectedByEquipment!)?.dangers).toBe(0);
   });
 
-  it("turns the first climate Danger into a Spark with Climat stable", () => {
+  it("turns the weakest climate die into a Spark with Climat stable", () => {
     let protectedRoll: KqGameState | null = null;
     for (let seed = 1; seed <= 200 && !protectedRoll; seed += 1) {
       const base = startKqGame(seed, { heritageCode: "HERITAGE-004" });
@@ -838,12 +840,12 @@ describe("Kanab Quest dice prototype", () => {
     expect(previewKqResolution(protectedRoll!)?.sparks).toBeGreaterThanOrEqual(1);
   });
 
-  it("turns the first failure into Fragile with Reprise vigoureuse", () => {
+  it("turns the first failure into success with Reprise vigoureuse", () => {
     const base = startKqGame(8, { heritageCode: "HERITAGE-006" });
     const failed = resolveKqStage({ ...base, phase: "rolled", dice: [1, 1, 1] });
-    expect(failed.lastOutcome).toBe("fragile");
-    expect(failed.quality).toBe(base.quality + 1);
-    expect(failed.xp).toBe(base.xp + 1);
+    expect(failed.lastOutcome).toBe("success");
+    expect(failed.quality).toBe(base.quality + 2);
+    expect(failed.xp).toBe(base.xp + 2);
     expect(failed.heritageUsed).toBe(true);
     const failedAgain = resolveKqStage({ ...failed, phase: "rolled", dice: [1, 1, 1] });
     expect(failedAgain.xp).toBe(failed.xp + 1);
@@ -895,16 +897,19 @@ describe("Kanab Quest dice prototype", () => {
     expect(activated.heritageUsed).toBe(true);
   });
 
-  it("prevents wasting Héritage de la canopée without an uncovered Danger", () => {
+  it("requires a Danger for Héritage de la canopée and also improves protected ones", () => {
     const base = startKqGame(13, { heritageCode: "HERITAGE-011" });
     const safeRoll: KqGameState = { ...base, phase: "rolled", dice: [4, 5, 6] };
     expect(canActivateKqHeritage(safeRoll)).toEqual({
       allowed: false,
-      reason: "Aucun Danger non protégé à transformer.",
+      reason: "Aucun Danger à transformer.",
     });
     expect(activateKqHeritage(safeRoll)).toBe(safeRoll);
     const alreadyProtected: KqGameState = { ...base, phase: "rolled", dice: [1, 4, 5], cancelledDangers: 1 };
-    expect(canActivateKqHeritage(alreadyProtected).allowed).toBe(false);
+    const improved = activateKqHeritage(alreadyProtected);
+    expect(improved.dice).toEqual([4, 4, 5]);
+    expect(improved.cancelledDangers).toBe(1);
+    expect(previewKqResolution(improved)?.outcome).toBe("critical");
   });
 
   it("applies the four new stage-specific active Heritages only in their window", () => {
@@ -918,7 +923,7 @@ describe("Kanab Quest dice prototype", () => {
     const rootingBase = startWithHeritageEffect("rooting-pressure-reset");
     const rooting = activateKqHeritage({ ...rootingBase, stageIndex: 1, phase: "rolled", dice: [2, 4, 5], pressure: 3 });
     expect(rooting.pressure).toBe(0);
-    expect(rooting.dice).toEqual([2, 4, 5]);
+    expect(rooting.dice).toEqual([4, 4, 5]);
 
     const growthBase = startWithHeritageEffect("growth-danger-reroll");
     const growthState: KqGameState = { ...growthBase, stageIndex: 2, phase: "rolled", dice: [1, 4, 5] };
@@ -1017,7 +1022,7 @@ describe("Kanab Quest dice prototype", () => {
     expect(previewKqResolution(critical)).toMatchObject({ total: 3, sparks: 0, outcome: "critical" });
   });
 
-  it("protects harvest and upgrades only a Fragile final affinage", () => {
+  it("protects harvest and upgrades a Fragile final affinage", () => {
     const guardBase = startWithHeritageEffect("harvest-theft-shield");
     const guarded = resolveKqStage({
       ...guardBase,
@@ -1051,11 +1056,11 @@ describe("Kanab Quest dice prototype", () => {
       phase: "rolled",
       dice: [4, 5, 2],
     });
-    expect(firstSuccess.xp - firstSuccessBase.xp).toBe(4);
+    expect(firstSuccess.xp - firstSuccessBase.xp).toBe(5);
 
     const criticalBase = startWithHeritageEffect("critical-quality-boost");
     const critical = resolveKqStage({ ...criticalBase, phase: "rolled", dice: [4, 5, 6] });
-    expect(critical.quality - criticalBase.quality).toBe(4);
+    expect(critical.quality - criticalBase.quality).toBe(5);
 
     const fragileBase = startWithHeritageEffect("fragile-quality-boost");
     const fragileState: KqGameState = {
@@ -1067,7 +1072,7 @@ describe("Kanab Quest dice prototype", () => {
     };
     const fragile = resolveKqStage(fragileState);
     expect(fragile.lastOutcome).toBe("fragile");
-    expect(fragile.quality - fragileBase.quality).toBe(2);
+    expect(fragile.quality - fragileBase.quality).toBe(3);
 
     const calm = startWithHeritageEffect("calm-target-relief");
     const tenseEquivalent = { ...calm, heritageEffect: undefined };
@@ -1081,7 +1086,8 @@ describe("Kanab Quest dice prototype", () => {
       if (rolled.heritageUsed) shielded = rolled;
     }
     expect(shielded).not.toBeNull();
-    expect(shielded?.cancelledDangers).toBeGreaterThanOrEqual(1);
+    expect(shielded?.dice).toContain(6);
+    expect(shielded?.effectNotices?.some((notice) => notice.includes("Danger non protégé devient une Étincelle"))).toBe(true);
 
     const reliefBase = startWithHeritageEffect("spark-pressure-relief");
     const relieved = resolveKqStage({ ...reliefBase, phase: "rolled", pressure: 3, dice: [6, 2, 2] });

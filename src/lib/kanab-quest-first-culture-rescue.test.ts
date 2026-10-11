@@ -59,6 +59,41 @@ describe("one rescue for the first official culture", () => {
     expect(hasKqFirstCultureRescue(corrected)).toBe(true);
   });
 
+  it("keeps the onboarding rescue independent of a successful Heritage recovery", () => {
+    const base = startKqGame(300, { firstCultureRescue: true, heritageCode: "HERITAGE-006" });
+    const heritageSaved = resolveDice(base);
+    expect(heritageSaved.history.at(-1)).toMatchObject({ total: 0, outcome: "success" });
+    expect(heritageSaved.history.at(-1)?.rescued).toBeUndefined();
+    expect(getKqUnrescuedZeroSuccessStageCount(heritageSaved)).toBe(0);
+    expect(hasKqFirstCultureRescue(heritageSaved)).toBe(true);
+
+    const firstFailure = resolveDice(advanceKqStage(heritageSaved));
+    const onboardingSaved = resolveDice(advanceKqStage(firstFailure));
+    expect(onboardingSaved.history.at(-1)?.rescued).toBe(true);
+    expect(isKqCultureDead(onboardingSaved)).toBe(false);
+    expect(getKqZeroSuccessStageCount(onboardingSaved)).toBe(3);
+    expect(getKqUnrescuedZeroSuccessStageCount(onboardingSaved)).toBe(1);
+    for (const game of [heritageSaved, firstFailure, onboardingSaved]) {
+      expect(parseKqGameSave(encodeKqSave(game))).toEqual(game);
+    }
+    expect(isKqCultureDead(resolveDice(advanceKqStage(onboardingSaved)))).toBe(true);
+  });
+
+  it("does not spend onboarding rescue on a Heritage-protected last-stage failure", () => {
+    let game = advanceKqStage(firstZero());
+    while (game.stageIndex < 5) game = advanceKqStage(resolveDice(game, [4, 5, 6]));
+    const saved = resolveDice({
+      ...game, heritageCode: "HERITAGE-900", heritageEffect: "drying-fragile-to-success", heritageTiming: "once-per-run", heritageUsed: false,
+    });
+    expect(saved.history.at(-1)).toMatchObject({ total: 0, outcome: "success" });
+    expect(saved.history.at(-1)?.rescued).toBeUndefined();
+    expect(saved.heritageUsed).toBe(true);
+    expect(hasKqFirstCultureRescue(saved)).toBe(true);
+    expect(getKqUnrescuedZeroSuccessStageCount(saved)).toBe(1);
+    expect(parseKqGameSave(encodeKqSave(saved))).toEqual(saved);
+    expect(advanceKqStage(saved).harvestGrams).toBeGreaterThan(0);
+  });
+
   it("ends on the next zero, with no second rescue or flower", () => {
     const dead = resolveDice(advanceKqStage(rescued()));
     expect(dead).toMatchObject({ phase: "complete", cultureDead: true, harvestGrams: 0 });

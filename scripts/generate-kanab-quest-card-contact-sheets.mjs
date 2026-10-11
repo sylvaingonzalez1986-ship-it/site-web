@@ -1,32 +1,20 @@
-import { readFile, mkdir } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
+import { createServer } from "vite";
 
 const root = process.cwd();
 const publicDir = path.join(root, "public");
-const manifestPath = path.join(root, "src", "lib", "kanab-quest-artwork.ts");
 const outputDir = path.join(root, "output");
-const manifestSource = await readFile(manifestPath, "utf8");
-
-const illustrationPattern = /"((?:BOTTE|HERITAGE)-\d{3})":\s*"(\/app\/kanab-quest\/cards\/[^\"]+\.webp)"/g;
-const illustrations = [...manifestSource.matchAll(illustrationPattern)].map((match) => ({
-  code: match[1],
-  source: match[2],
-}));
-
-if (illustrations.length !== 48) {
-  throw new Error(`Manifeste incomplet : 48 cartes attendues, ${illustrations.length} trouvées.`);
-}
-
-function getFrontSource({ code, source }) {
-  const override = code === "HERITAGE-011" || code === "HERITAGE-012" ? 4 : null;
-  const suffix = override
-    ? `-front-v${override}.webp`
-    : code.startsWith("HERITAGE-")
-      ? "-front-v3.webp"
-      : "-front-v$1.webp";
-  return source.replace("/cards/", "/card-fronts/").replace(/-v(\d+)\.webp$/, suffix);
-}
+const vite = await createServer({ configFile: false, envDir: false, resolve: { alias: { "@": path.join(root, "src") } }, server: { middlewareMode: true, watch: null } });
+let supportCards, heritageCards;
+try {
+  const { KQ_ACTIVE_CARDS } = await vite.ssrLoadModule("/src/lib/kanab-quest-game.ts");
+  const { KQ_CARD_ARTWORK } = await vite.ssrLoadModule("/src/lib/kanab-quest-artwork.ts");
+  const { default: producerHeritage } = await vite.ssrLoadModule("/src/data/producer-heritage-cards.json");
+  supportCards = KQ_ACTIVE_CARDS.map((card) => ({ code: card.code, source: KQ_CARD_ARTWORK[card.code] }));
+  heritageCards = producerHeritage.cards.map((card) => ({ code: card.code, source: card.frontUrl }));
+} finally { await vite.close(); }
 
 async function renderSheet(name, entries) {
   const columns = 4;
@@ -40,7 +28,7 @@ async function renderSheet(name, entries) {
   for (const [index, entry] of entries.entries()) {
     const left = (index % columns) * cellWidth + 10;
     const top = Math.floor(index / columns) * cellHeight + 10;
-    const src = getFrontSource(entry);
+    const src = entry.source;
     const thumbnail = await sharp(path.join(publicDir, src.slice(1)))
       .resize(cardWidth, cardHeight, { fit: "contain", background: "#10201b" })
       .toBuffer();
@@ -70,8 +58,8 @@ async function renderSheet(name, entries) {
 }
 
 await mkdir(outputDir, { recursive: true });
-const bottePath = await renderSheet("botte", illustrations.filter(({ code }) => code.startsWith("BOTTE-")));
-const heritagePath = await renderSheet("heritage", illustrations.filter(({ code }) => code.startsWith("HERITAGE-")));
+const bottePath = await renderSheet("botte", supportCards);
+const heritagePath = await renderSheet("heritage", heritageCards);
 
-console.log(`36 cartes Botte du Chanvrier -> ${bottePath}`);
-console.log(`12 cartes Héritage -> ${heritagePath}`);
+console.log(`${supportCards.length} cartes Botte du Chanvrier -> ${bottePath}`);
+console.log(`${heritageCards.length} cartes Héritage -> ${heritagePath}`);

@@ -17,13 +17,15 @@ describe("Kanab Quest heritage cards", () => {
     expect(KQ_HERITAGE_CARDS.every((card) => !("rarity" in card))).toBe(true);
   });
 
-  it("offers twenty-five distinct producer powers with unique tradeoffs", () => {
+  it("offers twenty-five distinct producer powers with a guaranteed starting benefit", () => {
     expect(KQ_HERITAGE_EFFECT_TEMPLATES).toHaveLength(25);
     expect(KQ_HERITAGE_EFFECTS).toHaveLength(25);
     expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.effect)).size).toBe(25);
     expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.description)).size).toBe(25);
     expect(new Set(KQ_HERITAGE_EFFECT_TEMPLATES.map((card) => card.drawback)).size).toBe(25);
     expect(KQ_HERITAGE_EFFECT_TEMPLATES.every((card) => card.description.length >= 40 && card.drawback.length >= 40)).toBe(true);
+    expect(KQ_HERITAGE_EFFECT_TEMPLATES.every((card) => card.description.length <= 135)).toBe(true);
+    expect(KQ_HERITAGE_EFFECT_TEMPLATES.every((card) => card.description.startsWith(card.effect === "starting-xp-two" ? "+4 XP au départ" : "+2 XP au départ"))).toBe(true);
   });
 
   it("describes the equipped producer mechanic when a legacy code has been reassigned", () => {
@@ -37,7 +39,7 @@ describe("Kanab Quest heritage cards", () => {
       name: "Floraison généreuse · Iznofarm",
       timing: "once-per-run",
       effect: "flower-lowest-plus-three",
-      description: "En Floraison, ajoute +3 au dé le plus faible, sans dépasser 6.",
+      description: "+2 XP au départ. En Floraison, ajoute +3 au dé le plus faible, sans dépasser 6.",
       producerName: "Iznofarm",
     });
     expect(resolveKqHeritageCard({
@@ -48,14 +50,17 @@ describe("Kanab Quest heritage cards", () => {
   });
 
   it("keeps the database catalogue aligned with every stronger power", () => {
-    const migrations = [
-      "20260805000200_kq_stronger_heritage_powers.sql",
-      "20260809000100_kq_five_card_hand.sql",
-    ].map((fileName) => fs.readFileSync(path.join(process.cwd(), "supabase/migrations", fileName), "utf8")).join("\n");
+    const migrationDir = path.join(process.cwd(), "supabase/migrations");
+    const migrations = fs.readdirSync(migrationDir).filter((fileName) => fileName.endsWith(".sql"))
+      .map((fileName) => fs.readFileSync(path.join(migrationDir, fileName), "utf8")).join("\n");
     KQ_HERITAGE_CARDS.forEach((card) => {
       expect(migrations).toContain(`'${card.code}'`);
       expect(migrations).toContain(`'${card.effect}'`);
       expect(migrations).toContain(card.description.replaceAll("'", "''"));
+    });
+    KQ_HERITAGE_EFFECT_TEMPLATES.forEach((template) => {
+      expect(migrations).toContain(template.description.replaceAll("'", "''"));
+      expect(migrations).toContain(template.drawback.replaceAll("'", "''"));
     });
   });
 

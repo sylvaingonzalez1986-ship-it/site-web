@@ -4,6 +4,7 @@ import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest
 import { summarizeKqTentEquipment } from "./kanab-quest-production";
 import {
   KQ_HERITAGE_CARDS,
+  KQ_HERITAGE_STARTING_XP_BONUS,
   resolveKqHeritageCard,
   type KqHeritageCard,
   type KqHeritageEffect,
@@ -623,6 +624,9 @@ export function startKqGame(
   const situationCodes = buildKqScenarioPath(clampSeed(seed), config.recentSituationCodes, config.requiredSituationTags, config.allowedPests, config.domiciliation);
   const heritage = config.heritageCard
     ?? KQ_HERITAGE_CARDS.find((card) => card.code === config.heritageCode);
+  const heritageStartingXp = heritage
+    ? KQ_HERITAGE_STARTING_XP_BONUS + (heritage.effect === "starting-xp-two" ? 2 : 0)
+    : 0;
   const productionUnits = getKqProductionUnits(config.productionUnits ?? config.equipmentTents?.length);
   const normalizeEquipment = (codes: string[], requestedLevels: Record<string, number> = {}) => {
     const installedCodes = [...new Set(codes)].filter(code => Boolean(getKqEquipmentDefinition(code)));
@@ -665,9 +669,9 @@ export function startKqGame(
       heritageUsed: false,
       heritageArmed: false,
     } : {}),
-    stageIndex: 0, phase: "prepare", xp: Math.max(1, config.startingXp ?? 1) + buddie.advantageLevel + (heritage?.effect === "starting-xp-two" ? 2 : 0), quality: 0, equipment, dice: null, bonusDie: null, effectNotices: [
+    stageIndex: 0, phase: "prepare", xp: Math.max(1, config.startingXp ?? 1) + buddie.advantageLevel + heritageStartingXp, quality: 0, equipment, dice: null, bonusDie: null, effectNotices: [
       ...(buddie.advantageLevel > 0 ? [`${buddie.name} : +${buddie.advantageLevel} XP au départ.`] : []),
-      ...(heritage?.effect === "starting-xp-two" ? [`${heritage.name} : +2 XP au départ.`] : []),
+      ...(heritage ? [`${heritage.name} : +${heritageStartingXp} XP au départ.`] : []),
       ...(equipmentCodes.length > 0 ? [`Installation : ${equipmentCodes.length} équipement${equipmentCodes.length > 1 ? "s" : ""} · ${equipment.powerWatts} W.`] : []),
       ...(equipment.pressureDelta > 0 ? [`Grande installation : +${equipment.pressureDelta} Pression au départ.`] : []),
     ],
@@ -805,26 +809,25 @@ export function canActivateKqHeritage(state: KqGameState) {
       : { allowed: false, reason: "À activer avant le lancer." };
   }
   if (heritage.effect === "free-pest-mastery") {
-    const pest = getKqSituation(state).pest;
-    return pest && state.revealedPest === null && ["prepare", "rolled"].includes(state.phase)
-      ? { allowed: true, reason: "Révèle gratuitement le ravageur." }
-      : { allowed: false, reason: "Aucun ravageur caché à inspecter." };
+    return ["prepare", "rolled"].includes(state.phase)
+      ? { allowed: true, reason: "+2 XP et identification gratuite du ravageur présent." }
+      : { allowed: false, reason: "À activer avant ou après le lancer." };
   }
   if (state.phase !== "rolled" || !state.dice) return { allowed: false, reason: "À activer après le lancer." };
   if (heritage.effect === "germination-lowest-to-strong" && state.stageIndex !== 0) return { allowed: false, reason: "Réservé à la Germination." };
+  if (heritage.effect === "germination-lowest-to-strong" && state.dice.every((die) => die >= 5)) return { allowed: false, reason: "Tous les dés valent déjà au moins 5." };
   if (heritage.effect === "rooting-pressure-reset" && state.stageIndex !== 1) return { allowed: false, reason: "Réservé à l’Enracinement." };
-  if (heritage.effect === "rooting-pressure-reset" && state.pressure <= 0) return { allowed: false, reason: "La Pression est déjà à zéro." };
+  if (heritage.effect === "rooting-pressure-reset" && state.pressure <= 0 && state.dice.every((die) => die >= 4)) return { allowed: false, reason: "La Pression est à zéro et tous les dés sont déjà des réussites." };
   if (heritage.effect === "growth-danger-reroll" && state.stageIndex !== 2) return { allowed: false, reason: "Réservé à la Croissance." };
-  if (heritage.effect === "growth-danger-reroll" && state.dice.filter((die) => die === 1).length <= state.cancelledDangers) return { allowed: false, reason: "Aucun Danger non protégé à relancer." };
+  if (heritage.effect === "growth-danger-reroll" && state.dice.every((die) => die >= 4)) return { allowed: false, reason: "Tous les dés sont déjà des réussites." };
   if (heritage.effect === "flower-success-to-spark" && state.stageIndex !== 3) return { allowed: false, reason: "Réservé à la Floraison." };
-  if (heritage.effect === "flower-success-to-spark" && !state.dice.some((die) => die === 4 || die === 5)) return { allowed: false, reason: "Aucune réussite ordinaire à transformer." };
   if (heritage.effect === "flower-lowest-plus-three" && KQ_STAGES[state.stageIndex] !== "Floraison") return { allowed: false, reason: "Réservé à la Floraison." };
   if (heritage.effect === "flower-lowest-plus-three" && state.dice.every((die) => die === 6)) return { allowed: false, reason: "Les trois dés valent déjà 6." };
   if (heritage.effect === "flower-neutrals-to-success" && KQ_STAGES[state.stageIndex] !== "Floraison") return { allowed: false, reason: "Réservé à la Floraison." };
   if (heritage.effect === "drying-lowest-to-spark" && state.stageIndex !== KQ_STAGES.length - 1) return { allowed: false, reason: "Réservé au séchage." };
-  if (heritage.effect === "neutral-to-spark" && !state.dice.some((die) => die === 2 || die === 3)) return { allowed: false, reason: "Aucun dé neutre à transformer." };
-  if (heritage.effect === "flower-neutrals-to-success" && !state.dice.some((die) => die === 2 || die === 3)) return { allowed: false, reason: "Aucun dé neutre à transformer." };
-  if (heritage.effect === "dangers-to-success" && state.dice.filter((die) => die === 1).length <= state.cancelledDangers) return { allowed: false, reason: "Aucun Danger non protégé à transformer." };
+  if (["neutral-to-spark", "drying-lowest-to-spark", "flower-success-to-spark"].includes(heritage.effect) && state.dice.every((die) => die === 6)) return { allowed: false, reason: "Les trois dés sont déjà des Étincelles." };
+  if (heritage.effect === "flower-neutrals-to-success" && state.dice.every((die) => die >= 4)) return { allowed: false, reason: "Tous les dés sont déjà des réussites." };
+  if (heritage.effect === "dangers-to-success" && !state.dice.includes(1)) return { allowed: false, reason: "Aucun Danger à transformer." };
   return [
     "neutral-to-spark",
     "flower-neutrals-to-success",
@@ -848,43 +851,35 @@ export function activateKqHeritage(state: KqGameState): KqGameState {
     return { ...state, heritageArmed: true, effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} armée : le prochain lancer utilisera 5 dés.`) };
   }
   if (heritage.effect === "free-pest-mastery") {
-    return { ...state, heritageUsed: true, xp: state.xp + 2, revealedPest: getKqSituation(state).pest ?? null, effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} : ravageur identifié gratuitement et +2 XP.`) };
-  }
-  if (heritage.effect === "rooting-pressure-reset") {
-    return {
-      ...state,
-      pressure: 0,
-      heritageUsed: true,
-      effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} : la Pression retombe à zéro.`),
-    };
+    const pest = getKqSituation(state).pest ?? null;
+    return { ...state, heritageUsed: true, xp: state.xp + 2, revealedPest: pest, effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} : +2 XP${pest ? ", ravageur identifié gratuitement" : ""}.`) };
   }
   const dice = [...state.dice!] as [number, number, number];
   let rollNonce = state.rollNonce;
-  let cancelledDangers = state.cancelledDangers;
-  if (heritage.effect === "neutral-to-spark") {
-    const index = dice.findIndex((die) => die === 2 || die === 3);
+  const cancelledDangers = state.cancelledDangers;
+  if (heritage.effect === "neutral-to-spark" || heritage.effect === "drying-lowest-to-spark") {
+    const index = dice.indexOf(Math.min(...dice));
     dice[index] = 6;
   } else if (heritage.effect === "flower-neutrals-to-success") {
-    dice.splice(0, dice.length, ...dice.map((die) => die === 2 || die === 3 ? 4 : die) as [number, number, number]);
-  } else if (heritage.effect === "drying-lowest-to-spark") {
-    const index = dice.indexOf(Math.min(...dice));
-    dice[index] = 6;
+    dice.splice(0, dice.length, ...dice.map((die) => Math.max(4, die)) as [number, number, number]);
   } else if (heritage.effect === "dangers-to-success") {
     dice.splice(0, dice.length, ...dice.map((die) => die === 1 ? 4 : die) as [number, number, number]);
-    cancelledDangers = 0;
   } else if (heritage.effect === "germination-lowest-to-strong") {
     const index = dice.indexOf(Math.min(...dice));
-    dice[index] = 5;
+    dice[index] = Math.max(dice[index], 5);
+  } else if (heritage.effect === "rooting-pressure-reset") {
+    const index = dice.indexOf(Math.min(...dice));
+    dice[index] = Math.max(dice[index], 4);
   } else if (heritage.effect === "growth-danger-reroll") {
-    const dangerIndexes = dice.flatMap((die, index) => die === 1 ? [index] : []);
-    const index = dangerIndexes[Math.min(cancelledDangers, dangerIndexes.length - 1)];
-    if (index !== undefined) {
-      rollNonce += 1;
-      dice[index] = deterministicDie(state.seed, state.stageIndex, rollNonce, index);
-    }
+    const index = dice.indexOf(Math.min(...dice));
+    rollNonce += 1;
+    dice[index] = Math.max(4, deterministicDie(state.seed, state.stageIndex, rollNonce, index));
   } else if (heritage.effect === "flower-success-to-spark") {
-    const index = dice.findIndex((die) => die === 4 || die === 5);
-    dice[index] = 6;
+    if (dice.some((die) => die === 4 || die === 5)) {
+      dice.splice(0, dice.length, ...dice.map((die) => die === 4 || die === 5 ? 6 : die) as [number, number, number]);
+    } else {
+      dice[dice.indexOf(Math.min(...dice))] = 6;
+    }
   } else if (heritage.effect === "flower-lowest-plus-three") {
     const lowest = Math.min(...dice);
     const lowestIndexes = dice.flatMap((die, index) => die === lowest ? [index] : []);
@@ -895,6 +890,7 @@ export function activateKqHeritage(state: KqGameState): KqGameState {
   }
   return {
     ...state, dice, rollNonce, cancelledDangers, heritageUsed: true,
+    ...(heritage.effect === "rooting-pressure-reset" ? { pressure: 0 } : {}),
     effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} activé : ${heritage.description}`),
   };
 }
@@ -1096,31 +1092,31 @@ export function rollKqDice(state: KqGameState): KqGameState {
     dice = dice.map((die, dieIndex) => indexes.includes(dieIndex) ? 1 : die) as [number, number, number];
     effectNotices.push(`Coupure de courant : le meilleur dé ${previous} devient un Danger.`);
   }
-  let cancelledDangers = playedEffects.includes("double-danger-shield") ? 2
+  const cancelledDangers = playedEffects.includes("double-danger-shield") ? 2
     : playedEffects.some((effect) => ["cancel-danger", "harvest-cool", "clean-cut", "reveal-pest", "humidity-balance"].includes(effect ?? "")) ? 1 : 0;
   const heritage = getKqStateHeritage(state);
   const heritageDangerShield = !state.heritageUsed
     && heritage?.effect === "first-danger-shield"
     && dice.filter((die) => die === 1).length > cancelledDangers;
   if (heritageDangerShield) {
-    cancelledDangers += 1;
-    effectNotices.push(`${heritage.name} : un Danger non protégé est annulé.`);
+    const dangerIndexes = dice.flatMap((die, index) => die === 1 ? [index] : []);
+    dice[dangerIndexes[cancelledDangers]] = 6;
+    effectNotices.push(`${heritage.name} : un Danger non protégé devient une Étincelle.`);
   }
   const openingHandConsumed = !state.heritageUsed && heritage?.effect === "opening-hand-reserve" && state.stageIndex === 0;
   const rootSpark = !state.heritageUsed
     && heritage?.effect === "root-danger-to-spark"
     && KQ_STAGES[state.stageIndex] === "Enracinement"
-    && dice.filter((die) => die === 1).length > cancelledDangers;
+    && dice.some((die) => die < 6);
   const climateSpark = !state.heritageUsed
     && heritage?.effect === "climate-danger-to-spark"
-    && situation.tags.includes("climate")
-    && dice.filter((die) => die === 1).length > cancelledDangers;
+    && (situation.tags.includes("climate") || state.stageIndex === KQ_STAGES.length - 1)
+    && dice.some((die) => die < 6);
   const automaticSpark = rootSpark || climateSpark;
   if (automaticSpark) {
-    const dangerIndexes = dice.flatMap((die, index) => die === 1 ? [index] : []);
-    const index = dangerIndexes[Math.min(cancelledDangers, dangerIndexes.length - 1)];
-    if (index !== undefined) dice[index] = 6;
-    effectNotices.push(`${heritage?.name} : un Danger devient une Étincelle.`);
+    const index = dice.indexOf(Math.min(...dice));
+    dice[index] = 6;
+    effectNotices.push(`${heritage?.name} : le dé le plus faible devient une Étincelle.`);
   }
   if (cancelledDangers > 0) {
     const cancelledNow = Math.min(cancelledDangers, dice.filter((die) => die === 1).length);
@@ -1158,7 +1154,7 @@ export function getKqStageTarget(state: KqGameState) {
   const situation = getKqSituation(state);
   const billRelief = situation.tags.includes("energy")
     && state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "bill-relief");
-  const calmRelief = state.pressure === 0 && getKqStateHeritage(state)?.effect === "calm-target-relief";
+  const calmRelief = state.pressure <= 2 && getKqStateHeritage(state)?.effect === "calm-target-relief";
   return Math.max(1, Math.min(3, situation.difficulty - (billRelief ? 1 : 0) - (calmRelief ? 1 : 0) + (state.pressure >= 3 ? 1 : 0)));
 }
 
@@ -1172,6 +1168,7 @@ export function hasKqFirstCultureRescue(state: Pick<KqGameState, "firstCultureRe
 
 export function getKqUnrescuedZeroSuccessStageCount(state: Pick<KqGameState, "firstCultureRescue" | "history">) {
   return state.history.filter((entry) => entry.total === 0
+    && entry.outcome !== "success" && entry.outcome !== "critical"
     && !(state.firstCultureRescue === true && entry.rescued === true)).length;
 }
 
@@ -1201,15 +1198,18 @@ export function resolveKqStage(state: KqGameState): KqGameState {
   const situation = getKqSituation(state);
   const result = previewKqResolution(state);
   if (!situation || !result) return state;
-  let rescued = state.rulesVersion !== 3 && result.total === 0 && hasKqFirstCultureRescue(state)
-    && getKqUnrescuedZeroSuccessStageCount(state) === 1;
   const heritage = getKqStateHeritage(state);
   const failureRecovery = !state.heritageUsed && heritage?.effect === "failure-to-fragile" && result.outcome === "failure";
   const dryingRecovery = !state.heritageUsed
     && heritage?.effect === "drying-fragile-to-success"
     && state.stageIndex === KQ_STAGES.length - 1
-    && result.outcome === "fragile";
-  const effectiveOutcome: KqOutcome = failureRecovery ? "fragile" : dryingRecovery ? "success" : result.outcome;
+    && (result.outcome === "fragile" || result.outcome === "failure");
+  const effectiveOutcome: KqOutcome = failureRecovery || dryingRecovery ? "success" : result.outcome;
+  // A successful Heritage rescue protects the culture independently of the
+  // onboarding rescue. Keep the actual dice totals in the journal.
+  let rescued = state.rulesVersion !== 3 && result.total === 0
+    && effectiveOutcome !== "success" && effectiveOutcome !== "critical"
+    && hasKqFirstCultureRescue(state) && getKqUnrescuedZeroSuccessStageCount(state) === 1;
   const relevantOperation = state.playedThisStage.some(code => {
     const card = KQ_CARDS.find(item => item.code === code);
     return card && card.category !== "pbi" && card.timing !== "passive" && card.tags.length > 0 && doesKqCardMatchSituation(card, situation);
@@ -1228,8 +1228,9 @@ export function resolveKqStage(state: KqGameState): KqGameState {
   const trait = effectiveOutcome === "critical" || effectiveOutcome === "success" ? situation.successTrait : effectiveOutcome === "fragile" ? situation.fragileTrait : situation.failureTrait;
   const harvestQualityBonus = effectiveOutcome === "critical" || effectiveOutcome === "success"
     ? state.playedThisStage.filter(code => ["harvest-four-quality", "harvest-team"].includes(KQ_CARDS.find(card => card.code === code)?.effect ?? "")).length : 0;
-  const heritageQualityBonus = effectiveOutcome === "critical" && heritage?.effect === "critical-quality-boost" ? 1
-    : effectiveOutcome === "fragile" && heritage?.effect === "fragile-quality-boost" ? 1
+  const heritageQualityBonus = heritage?.effect === "critical-quality-boost" ? (effectiveOutcome === "critical" ? 2 : effectiveOutcome === "success" ? 1 : 0)
+    : heritage?.effect === "fragile-quality-boost" ? (effectiveOutcome === "fragile" ? 2 : effectiveOutcome === "failure" ? 1 : 0)
+    : heritage?.effect === "harvest-theft-shield" && KQ_STAGES[state.stageIndex] === "Récolte" ? 1
     : 0;
   const won = effectiveOutcome === "success" || effectiveOutcome === "critical";
   const patientQuality = won && state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "patient-curing") ? 1 : 0;
@@ -1250,7 +1251,7 @@ export function resolveKqStage(state: KqGameState): KqGameState {
     && (effectiveOutcome === "critical" || effectiveOutcome === "success") ? 1 : 0;
   const firstSuccessfulStage = (effectiveOutcome === "critical" || effectiveOutcome === "success")
     && !state.history.some((entry) => entry.outcome === "critical" || entry.outcome === "success");
-  const heritageXpBonus = heritage?.effect === "first-success-xp-two" && firstSuccessfulStage ? 2 : 0;
+  const heritageXpBonus = heritage?.effect === "first-success-xp-two" && won ? (firstSuccessfulStage ? 3 : 1) : 0;
   const xpGain = (effectiveOutcome === "critical" ? 3 : effectiveOutcome === "success" ? 2 : 1) + result.sparks + aphidiusBonus + cleanCutBonus + heritageXpBonus + (newCombos.includes("PBI ciblée") ? 1 : 0);
   const cooledHarvest = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "harvest-cool")
     && state.dice.filter((die) => die === 1).length > 0;
@@ -1262,10 +1263,10 @@ export function resolveKqStage(state: KqGameState): KqGameState {
   const pressureAfter = Math.max(0, pressureBeforeHeritage - (sparkPressureRelief ? 2 : 0));
   const heritageNotices = [
     ...(patientQuality > 0 ? ["Séchage patient : +1 Qualité grâce à une étape réussie."] : []),
-    ...(failureRecovery ? [`${heritage?.name} : le premier échec devient Fragile.`] : []),
-    ...(dryingRecovery ? [`${heritage?.name} : le résultat Fragile de l’affinage devient une réussite.`] : []),
-    ...(heritageXpBonus > 0 ? [`${heritage?.name} : première réussite, +2 XP.`] : []),
-    ...(heritageQualityBonus > 0 ? [`${heritage?.name} : +1 Qualité sur ce résultat ${effectiveOutcome === "critical" ? "critique" : "Fragile"}.`] : []),
+    ...(failureRecovery ? [`${heritage?.name} : le premier échec devient une réussite.`] : []),
+    ...(dryingRecovery ? [`${heritage?.name} : le résultat du Séchage devient une réussite.`] : []),
+    ...(heritageXpBonus > 0 ? [`${heritage?.name} : ${firstSuccessfulStage ? "première réussite" : "nouvelle réussite"}, +${heritageXpBonus} XP.`] : []),
+    ...(heritageQualityBonus > 0 ? [`${heritage?.name} : +${heritageQualityBonus} Qualité sur cette étape.`] : []),
     ...(sparkPressureRelief ? [`${heritage?.name} : l’Étincelle fait baisser la Pression de 2.`] : []),
   ];
   const hasPowerBackup = state.equipment?.unlocks.includes("power-backup") ?? false;

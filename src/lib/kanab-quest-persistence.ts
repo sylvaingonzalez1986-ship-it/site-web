@@ -166,10 +166,11 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     let zeroSuccessStages = 0;
     let rescuedStages = 0;
     for (const entry of state.history) {
-      if (entry.total === 0) zeroSuccessStages += 1;
+      const unsuccessfulZero = entry.total === 0 && entry.outcome !== "success" && entry.outcome !== "critical";
+      if (unsuccessfulZero) zeroSuccessStages += 1;
       if (entry.rescued === true) {
         rescuedStages += 1;
-        if (state.firstCultureRescue !== true || (!healthRules && (entry.total !== 0 || zeroSuccessStages !== 2)) || rescuedStages > 1) return null;
+        if (state.firstCultureRescue !== true || (!healthRules && (!unsuccessfulZero || zeroSuccessStages !== 2)) || rescuedStages > 1) return null;
       }
     }
     if (!healthRules && state.firstCultureRescue === true && zeroSuccessStages >= 2 && rescuedStages !== 1) return null;

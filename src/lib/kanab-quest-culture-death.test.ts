@@ -80,14 +80,17 @@ describe("culture death after two stages without successes", () => {
     expect(isKqCultureDead(rescued)).toBe(false);
   });
 
-  it("counts real successes even if an Heritage changes failure into fragile", () => {
+  it("keeps real dice totals but protects a success rescued by Heritage from legacy death", () => {
     const base = startKqGame(302, { heritageCard: {
       code: "HERITAGE-900", name: "Reprise vigoureuse", timing: "passive", effect: "failure-to-fragile",
-      description: "Le premier échec devient fragile.", producerName: "Test",
+      description: "Le premier échec devient une réussite.", producerName: "Test",
     } });
     const first = resolveDice(base, [2, 2, 3]);
-    expect(first.history[0]).toMatchObject({ total: 0, outcome: "fragile" });
-    expect(isKqCultureDead(resolveDice(advanceKqStage(first), [2, 2, 3]))).toBe(true);
+    expect(first.history[0]).toMatchObject({ total: 0, outcome: "success" });
+    const nextFailure = resolveDice(advanceKqStage(first), [2, 2, 3]);
+    expect(isKqCultureDead(nextFailure)).toBe(false);
+    expect(parseKqGameSave(encodeKqSave(nextFailure))).toEqual(nextFailure);
+    expect(isKqCultureDead(resolveDice(advanceKqStage(nextFailure), [2, 2, 3]))).toBe(true);
   });
 
   it("cannot resume, replay a resolution, consume cards or create a flower after death", () => {
