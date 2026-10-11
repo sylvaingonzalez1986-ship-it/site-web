@@ -20,7 +20,7 @@ type MissionPack = KqMissionClaim & { code: KqMission["code"] };
 
 export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" | "shop") => void }) {
   const api = useKqTutorialApi();
-  const [section, setSection] = useState<"community" | "challenges">(api.isTutorial ? "challenges" : "community");
+  const [section, setSection] = useState<"community" | "challenges">("challenges");
   const [data, setData] = useState<KqMissionSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
@@ -114,9 +114,9 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" |
   const rewardOpened = reward ? packIsOpened(reward.entitlementId) : false;
 
   return <main className={styles.center}>
-    <CommunityMissionWelcome />
-    <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Tous mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button></nav>
-    {section === "community" ? <CommunityMissionsBoard /> : <>
+    <header className={styles.header}><div><h1>Mes objectifs</h1><p>Une prochaine étape par parcours. Choisis un objectif et reprends ton activité.</p></div></header>
+    <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button><button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button></nav>
+    {section === "community" ? <><CommunityMissionWelcome /><CommunityMissionsBoard /></> : <>
     <div className={styles.toolbar}>
       <span><Trophy size={19} aria-hidden="true" /> {claimed} / {data?.missions.length ?? 9} missions accomplies</span>
       <button type="button" disabled={loading || busy !== null} onClick={() => void refresh()}><RefreshCw size={16} aria-hidden="true" />{loading ? "Actualisation…" : "Actualiser"}</button>

@@ -34,6 +34,7 @@ export function splitShopEntitlements(entitlements: ShopEntitlement[]) {
 
 export function KqSupportBoosterShop({
   autoOpen = false,
+  embedded = false,
   autoOpenEquipment = false,
   initialEquipmentCode = null,
   onExit,
@@ -42,6 +43,7 @@ export function KqSupportBoosterShop({
   onOpenWorkshop,
 }: {
   autoOpen?: boolean;
+  embedded?: boolean;
   autoOpenEquipment?: boolean;
   initialEquipmentCode?: string | null;
   onExit?: () => void;
@@ -71,29 +73,30 @@ export function KqSupportBoosterShop({
     onExit?.();
   }, [onExit, equipmentBusy]);
 
-  useBodyScrollLock(shopOpen);
+  useBodyScrollLock(shopOpen && !embedded);
 
   useEffect(() => {
     if (!shopOpen) return;
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      if (embedded && (!(event.target instanceof Node) || !dialogRef.current?.contains(event.target))) return;
       if (equipmentBusy) return;
       if (equipmentCatalogOpen) setEquipmentCatalogOpen(false);
       else if (openedCards.length > 0) setOpenedCards([]);
-      else closeShop();
+      else if (!embedded) closeShop();
     };
     window.addEventListener("keydown", handleEscape);
     return () => {
       window.removeEventListener("keydown", handleEscape);
     };
-  }, [closeShop, equipmentCatalogOpen, openedCards.length, shopOpen, equipmentBusy]);
+  }, [closeShop, equipmentCatalogOpen, openedCards.length, shopOpen, equipmentBusy, embedded]);
 
   useEffect(() => {
-    if (!shopOpen) return;
+    if (!shopOpen || embedded) return;
     const previous = document.activeElement as HTMLElement | null;
     dialogRef.current?.focus();
     return () => previous?.focus();
-  }, [shopOpen]);
+  }, [shopOpen, embedded]);
 
   useEffect(() => {
     if (!openedCards.length) return;
@@ -210,17 +213,18 @@ export function KqSupportBoosterShop({
   const nextShopPack = welcomeEntitlement ?? shopPacks[0];
 
   return (
-    <section id="boutique-la-botte" className="mx-auto mt-8 max-w-5xl">
-      <button type="button" onClick={() => setShopOpen(true)} aria-haspopup="dialog" className="group relative block aspect-[3/2] w-full overflow-hidden border-2 border-ink bg-green text-left shadow-[6px_6px_0_#1a1a1a] transition-transform hover:-translate-y-1 focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-green">
+    <section id="boutique-la-botte" className={embedded ? styles.embeddedShop : "mx-auto mt-8 max-w-5xl"} data-shop-page={embedded || undefined}>
+      {!embedded ? <button type="button" onClick={() => setShopOpen(true)} aria-haspopup="dialog" className="group relative block aspect-[3/2] w-full overflow-hidden border-2 border-ink bg-green text-left shadow-[6px_6px_0_#1a1a1a] transition-transform hover:-translate-y-1 focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-green">
         <Image src="/placard/booster-shop-front-v2.webp" alt="Façade de la boutique Botte du Chanvrier" fill priority sizes="(max-width: 768px) 100vw, 1024px" className="object-cover transition-transform duration-500 group-hover:scale-[1.025]" />
         <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-black/90 via-black/55 to-transparent p-4 pt-16 text-white sm:p-6">
           <span><small className="block text-xs font-black uppercase tracking-[.16em] text-yellow">Boutique de l’Arène</small><strong className="mt-1 block font-display text-3xl uppercase sm:text-5xl">Entre dans Botte du Chanvrier</strong></span>
           <b className="shrink-0 border-2 border-white bg-green px-4 py-3 text-xs font-black uppercase shadow-[3px_3px_0_#fff]">Ouvrir la boutique</b>
         </span>
-      </button>
+      </button> : null}
 
-      {shopOpen ? <div className={styles.backdrop} role="presentation" onClick={closeShop}>
-        <section ref={dialogRef} data-arena-tour-surface="shop" data-arena-tour-blocked={openedCards.length>0||undefined} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="kq-shop-title" className={styles.shopDialog} data-equipment-open={equipmentCatalogOpen || undefined} onClick={(event) => event.stopPropagation()} onKeyDown={(event) => {
+      {shopOpen ? <div className={styles.backdrop} data-embedded={embedded || undefined} role="presentation" onClick={embedded ? undefined : closeShop}>
+        <section ref={dialogRef} data-arena-tour-surface="shop" data-arena-tour-blocked={openedCards.length>0||undefined} tabIndex={-1} role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : true} aria-labelledby="kq-shop-title" className={styles.shopDialog} data-equipment-open={equipmentCatalogOpen || undefined} onClick={(event) => event.stopPropagation()} onKeyDown={(event) => {
+          if (embedded && !openedCards.length) return;
           if (event.key !== "Tab") return;
           const buttons = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input, select, summary, [tabindex="0"]')).filter((node) => !node.closest('[inert]') && node.getClientRects().length > 0);
           const first = buttons[0], last = buttons.at(-1);
@@ -247,7 +251,7 @@ export function KqSupportBoosterShop({
           <button type="button" className={`${styles.hotspot} ${styles.register}`} aria-label={`Acheter un booster pour ${shop?.costPerPack ?? 5} points`} disabled={!shop?.collectionActive || pending !== null || (shop?.spendablePoints ?? 0) < (shop?.costPerPack ?? 5)} onClick={() => void purchase()}>
             <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>{pending === "buy" ? "Achat…" : "Acheter un pack"}</strong><small>{shop?.costPerPack ?? 5} points{shop && shop.spendablePoints < shop.costPerPack ? " · solde insuffisant" : " · 10 cartes"}</small></span>
           </button>
-          <button type="button" data-arena-tour="equipment-book" className={`${styles.hotspot} ${styles.catalogBook}`} onClick={() => setEquipmentCatalogOpen(true)} aria-label="Ouvrir le rayon matériel" aria-haspopup="dialog">
+          <button type="button" data-arena-tour="equipment-book" className={`${styles.hotspot} ${styles.catalogBook}`} onClick={() => setEquipmentCatalogOpen(true)} aria-label="Ouvrir le rayon matériel" aria-haspopup={embedded ? undefined : "dialog"}>
             <span className={styles.objectOutline} aria-hidden="true" /><span className={styles.label}><strong>Le matériel</strong><small>Équipement, intrants & PBI →</small></span>
           </button>
           {!shop?.collectionActive && localPreview ? <button type="button" onClick={openPreview} className={styles.preview}><PackageOpen size={16} />Test local</button> : null}
@@ -255,7 +259,7 @@ export function KqSupportBoosterShop({
           {!shop?.collectionActive && pending !== "load" && !notice ? <p className={styles.notice}><Flame size={16} />La vente de packs est momentanément fermée. Le matériel reste consultable.</p> : null}
         </div>
         {openedCards.length > 0 ? <KqSupportPackReveal cards={openedCards} onClose={() => setOpenedCards([])} onContinue={() => { setOpenedCards([]); setNotice(""); }} /> : null}
-        {equipmentCatalogOpen ? <KqEquipmentCatalogModal initialEquipmentCode={initialEquipmentCode} onClose={() => setEquipmentCatalogOpen(false)} onOpenWorkshop={onOpenWorkshop} onBusyChange={setEquipmentBusy}/> : null}
+        {equipmentCatalogOpen ? <KqEquipmentCatalogModal embedded={embedded} initialEquipmentCode={initialEquipmentCode} onClose={() => setEquipmentCatalogOpen(false)} onOpenWorkshop={onOpenWorkshop} onBusyChange={setEquipmentBusy}/> : null}
       </section></div> : null}
     </section>
   );

@@ -1,15 +1,10 @@
 .hub { composes: surface from "../contest/ArenaRetro.module.css"; background: #f4efdf; color: #123b2f; min-height: 100svh; }
 .navigation { padding: 22px clamp(16px,4vw,56px) 0; }
-.tabs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; max-width: 1120px; margin-inline: auto; }
-.tabs button { display: flex; align-items: center; gap: 12px; min-height: 78px; min-width: 0; padding: 15px 18px; text-align: left; color: #e3e8d5; background: linear-gradient(135deg,#174d35,#073729); border: 1px solid #7b9e86; border-bottom: 4px solid #00251e; border-radius: 4px; font: inherit; cursor: pointer; touch-action: manipulation; box-shadow: inset 0 1px 0 #dddeb81a; }
-.tabs button > svg:first-child { color: #a0d4b9; flex-shrink: 0; }
-.tabs button > span { display: grid; gap: 6px; min-width: 0; }
-.tabs button strong { font-size: .92rem; line-height: 1.3; }
-.tabs button small { font-size: .69rem; line-height: 1.45; color: #b1cdbb; }
-.tabs .arrow { margin-left: auto; flex-shrink: 0; color: #f4c43d; }
-.tabs button[aria-selected="true"] { color: #143a2b; background: linear-gradient(120deg,#f4ce67,#e7b745); border-color: #c7962d; border-bottom-color: #705722; }
-.tabs button[aria-selected="true"] > svg:first-child,.tabs button[aria-selected="true"] .arrow { color: #143a2b; }
-.tabs button[aria-selected="true"] small { color: #1d5745; }
+.tabs { display: flex; gap: 6px; max-width: 1120px; margin-inline: auto; border-bottom: 1px solid #b5c3ac; }
+.tabs button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; min-width: 0; padding: 12px 18px; text-align: center; color: #4a6550; background: transparent; border: 0; border-bottom: 3px solid transparent; font: 750 .85rem/1.4 var(--font-body),Arial,sans-serif; cursor: pointer; touch-action: manipulation; }
+.tabs button > svg { flex-shrink: 0; }
+.tabs button > span { min-width: 0; }
+.tabs button[aria-selected="true"] { color: #123b2f; background: #e7eadb; border-bottom-color: #176348; }
 .hub :where(.tabs button,.accounting):focus-visible { outline: 3px solid #aa7917; outline-offset: 4px; }
 .management { padding: 28px clamp(16px,4vw,56px) 40px; }
 .management > * { max-width: 1120px; margin-inline: auto; }
@@ -18,5 +13,5 @@
 .accounting small { color: #58715b; font-size: .71rem; font-weight: 500; }
 .accounting > svg { flex-shrink: 0; }
 .accounting > svg:last-child { margin-left: auto; }
-@media(hover:hover) { .tabs button:not([aria-selected="true"]):hover { background: #0a5138; } .accounting:hover { border-color: #507d55; background: #eff3e6; } }
-@media(max-width: 600px) { .navigation { padding-top: 16px; } .tabs { grid-template-columns: 1fr; gap: 7px; } .tabs button { align-items: center; gap: 10px; padding: 10px 12px; min-height: 62px; } .tabs button > svg:first-child { width: 18px; height: 18px; margin-top: 1px; } .tabs button strong { font-size: .76rem; } .tabs button small { font-size: .61rem; } .tabs .arrow { display: none; } .management { padding-top: 24px; } .accounting { padding: 15px 13px; } }
+@media(hover:hover) { .tabs button:not([aria-selected="true"]):hover { background: #e7eadb; color: #123b2f; } .accounting:hover { border-color: #507d55; background: #eff3e6; } }
+@media(max-width: 600px) { .navigation { padding-top: 10px; } .tabs { gap: 0; } .tabs button { flex: 1; padding: 10px 6px; font-size: .72rem; } .tabs button > svg { display: none; } .management { padding-top: 20px; } .accounting { padding: 15px 13px; } }

@@ -17,6 +17,18 @@
 .panel[data-condition="watch"] { --care-accent: #9c752c; }
 .panel[data-critical], .panel[data-condition="dead"] { --care-accent: #ad5135; border-color: #9c5137; }
 .panel [hidden] { display: none; }
+.panel[data-compact] { margin: .4rem 0; border-width: 1px; border-radius: 8px; box-shadow: none; text-align: left; }
+.panel[data-compact] .summary { grid-template-columns: 52px minmax(0, 1fr); gap: 10px; padding: 12px; }
+.panel[data-compact] .portrait { width: 52px; height: 64px; border-width: 1px; box-shadow: none; }
+.panel[data-compact] .portraitName { font-size: 7px; }
+.panel[data-compact] .summaryHeading h2 { font-size: 14px; margin: 0; }
+.panel[data-compact] .eyebrow { display: none; }
+.panel[data-compact] .toggle { grid-column: 1 / -1; width: 100%; min-height: 44px; justify-content: center; background: #f7f8eb; box-shadow: none; }
+.panel[data-compact] .content { padding: 12px; }
+.panel[data-compact] .stageTrack { display: none; }
+.panel[data-compact] .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.panel[data-compact] .metrics > div { min-width: 0; overflow-wrap: anywhere; }
+.panel[data-compact] .sectionHeading { flex-wrap: wrap; }
 .summary { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; align-items: center; gap: 20px; padding: 16px 20px 16px 16px; background: radial-gradient(#8b78441c .65px, transparent .65px) 0 0 / 5px 5px, #f7efd9; }
 .portrait { position: relative; width: 120px; height: 120px; border: 3px solid var(--care-ink); border-radius: 10px; overflow: hidden; background: #ece2c9; box-shadow: 3px 3px 0 #234d3c24; }
 .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }

@@ -15,6 +15,7 @@ const modules = {
     import React from 'react'; import { createRoot } from 'react-dom/client';
     import '/src/app/globals.css';
     import { KanabQuestDicePrototype } from '/src/components/placard/KanabQuestDicePrototype';
+    import { KqPlayableCultureLesson } from '/src/components/placard/KqPlayableCultureLesson';
     import { startKqGame, resolveKqStage, advanceKqStage } from '/src/lib/kanab-quest-game';
     import { encodeKqSave, parseKqGameSave } from '/src/lib/kanab-quest-persistence';
     import { KQ_LOCAL_KEYS } from '/src/lib/kanab-quest-repository';
@@ -22,7 +23,8 @@ const modules = {
     window.__showCulture = (mode = 'prepare') => {
       sessionStorage.clear(); localStorage.clear();
       let state = startKqGame(270926, {
-        deckCodes: ['BOTTE-003', 'BOTTE-004', 'BOTTE-005', 'BOTTE-006'],
+        rulesVersion: mode === 'danger' || mode === 'first-danger' ? 2 : 3,
+        deckCodes: ['BOTTE-003', 'BOTTE-017', 'BOTTE-005', 'BOTTE-006'],
         heritageCode: mode === 'heritage' ? 'HERITAGE-007' : 'HERITAGE-002',
         startedAt: '2026-09-27T12:00:00Z'
       });
@@ -46,10 +48,14 @@ const modules = {
       const encoded = encodeKqSave(state);
       if (!parseKqGameSave(encoded)) throw new Error('Invalid culture fixture');
       localStorage.setItem(KQ_LOCAL_KEYS.game, encoded);
-      localStorage.setItem(KQ_LOCAL_KEYS.inventory, JSON.stringify(Object.fromEntries(['BOTTE-003','BOTTE-004','BOTTE-005','BOTTE-006'].map(code => [code, 3]))));
+      localStorage.setItem(KQ_LOCAL_KEYS.inventory, JSON.stringify(Object.fromEntries(['BOTTE-003','BOTTE-017','BOTTE-005','BOTTE-006'].map(code => [code, 3]))));
       localStorage.setItem(KQ_LOCAL_KEYS.onboardingSeen, '1');
       localStorage.setItem('kq-dice-direct-result', mode === 'prepare-motion' ? '0' : '1');
       root.render(<div key={++renderKey} data-culture-fixture={mode}><KanabQuestDicePrototype apiScope="admin" showAdminOperations={false} viewMode="game"/></div>);
+    };
+    window.__showSetup = () => {
+      sessionStorage.clear(); localStorage.clear();
+      root.render(<div key={++renderKey} data-setup-fixture style={{maxWidth: innerWidth > 1000 ? innerWidth - 260 : '100%', margin: '0 auto'}}><KqPlayableCultureLesson lesson="cards" scope="clarity-audit" /></div>);
     };
     window.__readCulture = () => parseKqGameSave(localStorage.getItem(KQ_LOCAL_KEYS.game));
     window.__showCulture();
@@ -175,6 +181,8 @@ try {
     assert.equal(await page.$$('nav[aria-label="Sections de la partie"]').then(els => els.length), 0);
     assert.equal(await page.$$eval('[aria-label="Détails de la culture"] > details', els => els.every(el => !el.open)), true);
     assert.equal(await page.$$('[role="dialog"]').then(els => els.length), 0);
+    assert.equal(await page.$eval('[data-culture-options]', element => Boolean(element.compareDocumentPosition(document.querySelector('[data-culture-primary-action]')) & Node.DOCUMENT_POSITION_FOLLOWING)), true, `${label}: possibilities before resolution`);
+    assert.equal(await page.$eval('[data-culture-care]', element => element.hasAttribute('data-compact')), true, `${label}: compact health summary`);
     assert.equal(await page.$$eval('button', els => els.filter(el => el.checkVisibility() && el.textContent.includes('Lancer les dés')).length), 1);
     const layout = await page.evaluate(() => {
       const bounds = selector => {
@@ -209,6 +217,14 @@ try {
     await page.waitForSelector('[role="dialog"]', { hidden: true });
     await assertPrimary('roll', `burn cancelled ${label}`, mobile);
     await clickControl('[data-culture-hand] > summary');
+    {
+      const beforeCare = await page.evaluate(() => JSON.stringify(window.__readCulture()));
+      await clickControl('[data-care-toggle]');
+      assert.equal(await page.$eval('[data-care-toggle]', element => element.getAttribute('aria-expanded')), 'true');
+      assert.equal(await page.evaluate(() => JSON.stringify(window.__readCulture())), beforeCare, 'Opening care never spends money or resolves a turn');
+      await assertNoOverflow('care expanded');
+      await clickControl('[data-care-toggle]');
+    }
     await clickText('summary', 'Projection de la récolte');
     await assertNoOverflow(`projection ${label}`);
     await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
@@ -258,9 +274,9 @@ try {
   await clickText('button', 'Activer le pouvoir');
   await page.waitForFunction(() => document.body.textContent.includes('pouvoir utilisé'));
   await show('rolled');
-  await page.$eval(primary, element => element.focus());
+  await page.$eval('[data-culture-options]', element => element.focus());
   const keyboardTargets = [];
-  for (let index = 0; index < 2; index += 1) {
+  for (let index = 0; index < 3; index += 1) {
     await page.keyboard.press('Tab');
     const focus = await page.evaluate(() => {
       const element = document.activeElement;
@@ -268,7 +284,7 @@ try {
       const hit = document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
       return { tag: element.tagName, label: element.textContent.trim(), uncovered: hit === element || element.contains(hit) };
     });
-    assert.equal(focus.tag, 'SUMMARY');
+    assert.equal(focus.tag, index === 0 ? 'BUTTON' : 'SUMMARY');
     assert.ok(focus.uncovered, `Keyboard focus remains above actionbar: ${focus.label}`);
     keyboardTargets.push(focus);
   }
@@ -277,6 +293,11 @@ try {
   assert.equal(await page.$eval('[data-culture-hand]', element => element.open), true);
   await assertPrimary('resolve', 'keyboard hand opened', true);
   report.keyboardTargets = keyboardTargets;
+  await page.evaluate(() => document.body.style.setProperty('--placard-bottom-nav-height', '68px'));
+  assert.equal(await page.$eval(actionbar, element => Math.round(innerHeight - element.getBoundingClientRect().bottom)), 68, 'Culture actions leave room for the mobile navigation');
+  await clickText(`${actionbar} button`, 'Voir mes possibilités');
+  await page.waitForFunction(() => document.activeElement?.hasAttribute('data-culture-options'));
+  await page.evaluate(() => document.body.style.removeProperty('--placard-bottom-nav-height'));
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   await show('prepare-motion');
   await page.evaluate(() => {
@@ -316,6 +337,31 @@ try {
   assert.equal(await page.$$(actionbar).then(elements => elements.length), 0, 'No obsolete actionbar on harvest screen');
   await assertNoOverflow('harvest');
   await page.screenshot({ path: resolve(output, 'harvest-390x600.png'), fullPage: true });
+  for (const width of [390, 1280]) {
+    await page.setViewport({ width, height: 900, isMobile: width < 760, hasTouch: width < 760 });
+    await page.evaluate(() => { document.querySelector('[data-simulated-arena-nav]')?.remove(); window.__showSetup(); });
+    await page.waitForSelector('[data-culture-setup-choices]');
+    assert.equal(await page.$$eval('[data-setup-choice]', elements => elements.length === 3 && elements.every(element => !element.open)), true, `${width}: preparation starts with three closed summaries`);
+    assert.equal(await page.$$('#inventory-carousel-title').then(elements => elements.length), 0, `${width}: inventory loads only when requested`);
+    await assertNoOverflow(`setup ${width}`);
+    await page.screenshot({ path: resolve(output, `setup-${width}.png`), fullPage: true });
+    await clickControl('[data-setup-choice="cards"] > summary');
+    await page.waitForSelector('#inventory-carousel-title');
+    await clickControl('[aria-label^="Ajouter une copie"]:not(:disabled)');
+    const chosenCards = await page.$eval('[data-setup-choice="cards"] > summary strong', element => element.textContent);
+    await clickText('button', 'Garder ces cartes');
+    assert.equal(await page.$eval('[data-setup-choice="cards"]', element => element.open), false);
+    assert.equal(await page.$eval('[data-setup-choice="cards"] > summary strong', element => element.textContent), chosenCards, `${width}: closing the catalogue preserves selection`);
+    await clickControl('[data-setup-choice="heritage"] > summary');
+    await clickControl('[data-setup-choice="buddie"] > summary');
+    assert.equal(await page.$$eval('[data-setup-choice]', elements => elements.filter(element => element.open).length), 1, `${width}: only one catalogue at a time`);
+    await clickText('button', 'Garder cette variété');
+    await clickText('button', 'Lancer ma culture');
+    await page.waitForSelector('[role="dialog"]');
+    assert.match(await page.$eval('[role="dialog"]', element => element.textContent), /aucune carte n’est consommée au lancement/);
+    await clickText('[role="dialog"] button', 'Annuler');
+    await assertNoOverflow(`setup choices ${width}`);
+  }
   Object.assign(report, { firstZeroWarning: true, dangerWarning: true, reactionAccessible: true, heritageActivated: true, rollResolveAdvance: true, nextSituationFocused: true, harvestTransition: true, reducedMotion: true, simulatedStickyNavigation: { height: 70, zIndex: 80, focusTargetsUncovered: true } });
   assert.deepEqual(errors, []);
   report.passed = true;

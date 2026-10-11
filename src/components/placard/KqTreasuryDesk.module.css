@@ -7,6 +7,9 @@
 .page button:disabled { cursor: not-allowed; opacity: .5; }
 .dossierPicker { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 22px; color: #48604e; font-size: .75rem; font-weight: 700; }
 .dossierPicker select { width: min(100%, 310px); min-height: 48px; padding: 10px 32px 10px 12px; border: 1px solid #84ad99; border-radius: 3px; color: #fffaf1; background: #002d24; font: inherit; font-size: .8rem; }
+.financeNav { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 22px; border-bottom: 1px solid #b5c3ac; }
+.financeNav > a, .financeNav > button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 10px 15px; border: 0; border-bottom: 3px solid transparent; color: #476452; text-decoration: none; font-size: .8rem; font-weight: 750; }
+.financeNav > [aria-pressed="true"], .financeNav > [aria-current="page"] { color: #123b2f; background: #e7eadb; border-bottom-color: #176348; }
 .tabPanel { min-height: 400px; }
 .toolbar { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 14px; padding: 18px; background: #002d24; border: 1px solid #bdd8c52b; color: #fffaf1; }
 .toolbar > label { display: grid; gap: 8px; font-size: .7rem; font-weight: 700; color: #bfd9cc; }
@@ -145,23 +148,25 @@
 .page::before { background: radial-gradient(ellipse at 0 0,#e4e4c970,transparent 65%); }
 .header { margin-bottom: 18px; }
 .officeArt { min-width: 0; margin: 0; overflow: hidden; border: 1px solid #b89b4d; border-radius: 3px; background: #00251e; box-shadow: 0 4px #00291f; }
-.officePicture { position: relative; isolation: isolate; display: grid; align-items: end; min-height: clamp(440px,46vw,620px); }
-.officePicture::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(0deg,#00251ef5 0%,#00251ea8 20%,#00251e18 46%,transparent 64%); pointer-events: none; }
+.officePicture { position: relative; isolation: isolate; display: grid; align-items: end; min-height: 210px; }
+.officePicture::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg,#00251ef0 0%,#00251e9c 38%,#00251e18 72%),linear-gradient(0deg,#00251e9c,transparent 70%); pointer-events: none; }
 .officeArt img { z-index: -2; object-fit: cover; object-position: center 35%; }
-.welcome { position: relative; padding: clamp(24px,3.5vw,46px); color: #fff4d9; }
+.welcome { position: relative; padding: 24px 28px; color: #fff4d9; }
 .welcome > small { display: flex; align-items: center; gap: 9px; color: #f4c43d; font: 800 .66rem/1.5 ui-monospace,monospace; letter-spacing: .09em; text-transform: uppercase; }
-.welcome h1 { margin: 10px 0 12px; font: 900 clamp(3.8rem,8vw,6.6rem)/.95 var(--font-display),Impact,sans-serif; color: #fff4d9; text-transform: uppercase; text-shadow: 0 3px 18px #001c16a0; }
+.welcome h1 { margin: 10px 0 12px; font: 900 clamp(2rem,4vw,3rem)/1.05 var(--font-display),Impact,sans-serif; color: #fff4d9; text-transform: uppercase; text-shadow: 0 3px 18px #001c16a0; }
 .welcome p { margin: 0; max-width: 48ch; color: #fff4d9; font-size: .95rem; line-height: 1.7; }
-.officeArt figcaption { padding: 12px clamp(24px,3.5vw,46px); border-top: 1px solid #b89b4d60; color: #e1ddbd; font-size: .75rem; line-height: 1.5; }
+.officeArt figcaption { padding: 8px 28px; border-top: 1px solid #b89b4d60; color: #e1ddbd; font-size: .7rem; line-height: 1.5; }
 @media(max-width: 650px) {
   .header { margin-bottom: 14px; }
-  .officePicture { min-height: clamp(390px,110vw,520px); }
+  .officePicture { min-height: 175px; }
   .officeArt img { object-position: 52% 35%; }
-  .welcome { padding: 24px 20px; }
+  .welcome { padding: 18px; }
   .welcome > small { font-size: .58rem; gap: 7px; letter-spacing: .06em; }
-  .welcome h1 { font-size: clamp(3.4rem,15vw,4.6rem); margin-block: 10px; }
+  .welcome h1 { font-size: 2rem; margin-block: 10px; }
   .welcome p { font-size: .8rem; line-height: 1.65; }
-  .officeArt figcaption { padding: 11px 20px; font-size: .68rem; }
+  .officeArt figcaption { padding: 8px 18px; font-size: .68rem; }
+  .financeNav { gap: 0; }
+  .financeNav > a, .financeNav > button { flex: 1; padding: 9px 6px; text-align: center; font-size: .69rem; }
 }
 .officePanel { min-width: 0; }
 .accountPlan h2 { margin: 6px 0 0; font: 900 1.8rem/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; }

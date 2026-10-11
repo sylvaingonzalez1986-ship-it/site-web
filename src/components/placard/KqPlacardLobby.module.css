@@ -1,15 +1,25 @@
-.lobby { position: relative; min-height: calc(100svh - 64px); padding: 24px clamp(16px, 3vw, 48px) 16px; color: #fffaf1; background: radial-gradient(ellipse at 50% 0, #155d43, transparent 70%), #003f30; font-family: var(--font-body), Arial, sans-serif; }
-.lobby > * { max-width: 1500px; margin-inline: auto; }
-.header { padding-bottom: 18px; }
-.back { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 14px; border: 2px solid #173f30; border-radius: 5px; background: #fff6df; color: #173f30; box-shadow: 0 3px 0 #001f1b; font: 900 18px/1.1 var(--font-display), Impact, sans-serif; text-transform: uppercase; text-decoration: none; transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
-.back svg { flex-shrink: 0; }
+﻿.lobby { position: relative; padding: 22px clamp(12px, 2.5vw, 36px) 30px; color: #173c30; background: #e9eddf; font-family: var(--font-body), Arial, sans-serif; }
+.lobby > * { max-width: 1400px; margin-inline: auto; }
+.nextAction { display: flex; align-items: center; gap: 14px; min-height: 76px; margin-bottom: 16px; padding: 13px 18px; border: 1px solid #b8c2a9; border-radius: 12px; background: #f5f4e8; }
+.nextAction > svg { color: #708352; flex-shrink: 0; }
+.nextAction > div { flex: 1; min-width: 0; }
+.nextAction span { display: block; margin-bottom: 4px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; color: #63744e; }
+.nextAction p { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.4; }
+.nextAction small { display: block; margin-top: 5px; font-size: 11px; line-height: 1.5; color: #655b3e; }
+.nextAction[data-priority="storage"] { background: #fff3d9; border-color: #d1b16b; }
+.nextAction button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 10px 16px; border: 1px solid #d1b256; border-radius: 8px; background: #edcf73; color: #26432c; font: 800 12px var(--font-body), sans-serif; cursor: pointer; }
+.nextAction button > svg { flex-shrink: 0; }
+.loading { display: flex; align-items: center; min-height: 76px; margin-bottom: 16px; padding: 16px 18px; font-size: 13px; color: #5e7057; }
 .status { margin-block: 16px 0; font-size: 12px; text-align: center; }
-.status button { min-height: 44px; padding: 4px 8px; color: #f4c43d; background: transparent; border: 0; text-decoration: underline; cursor: pointer; }
-.lobby :where(button, a, summary):focus-visible { outline: 3px solid #f4c43d; outline-offset: 4px; }
-@media (hover: hover) { .back:hover { background: #f4c43d; transform: translateY(-1px); box-shadow: 0 4px 0 #001f1b; } }
-.back:active { transform: translateY(2px); box-shadow: 0 1px 0 #001f1b; }
+.status button { min-height: 44px; padding: 4px 8px; color: #24523b; background: transparent; border: 0; text-decoration: underline; cursor: pointer; }
+.lobby :where(button, a, summary):focus-visible { outline: 3px solid #24523b; outline-offset: 4px; }
+@media (hover: hover) { .nextAction button:hover { background: #f5dc8e; } }
 @media (max-width: 700px) {
-  .lobby { padding: 8px max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); }
-  .header { padding-bottom: 12px; }
+  .lobby { padding: 12px max(8px, env(safe-area-inset-right)) 18px max(8px, env(safe-area-inset-left)); }
+  .nextAction { flex-wrap: wrap; gap: 10px; padding: 12px; margin-bottom: 12px; }
+  .nextAction > svg { display: none; }
+  .nextAction > div { flex-basis: 100%; }
+  .nextAction p { font-size: 13px; }
+  .nextAction button { width: 100%; }
+  .loading { min-height: 116px; }
 }
-@media (prefers-reduced-motion: reduce) { .back { transition: none; } }

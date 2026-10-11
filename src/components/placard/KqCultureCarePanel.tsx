@@ -17,8 +17,8 @@ import styles from "./KqCultureCare.module.css";
 const formatCash = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
 type CareBalance = { cashCents: number; basicCarePriceCents: number | null };
 
-export function KqCultureCarePanel({ state, request, storage, runId, disabled, onStateChange, onBusyChange }: {
-  state: KqGameState; request: typeof fetch; storage?: KqCareStorage; runId?: string | null; disabled?: boolean;
+export function KqCultureCarePanel({ state, request, storage, runId, disabled, compact = false, onStateChange, onBusyChange }: {
+  state: KqGameState; request: typeof fetch; storage?: KqCareStorage; runId?: string | null; disabled?: boolean; compact?: boolean;
   onStateChange: (state: KqGameState) => void; onBusyChange: (busy: boolean) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
@@ -127,7 +127,7 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, o
   const retryBasic = receipt.current?.action === basicAction;
   const quotedPriceReady = !!balance && !balanceError && balance.basicCarePriceCents === KQ_BASIC_CARE_PRICE_CENTS;
   const insufficientCash = !!balance && balance.cashCents < KQ_BASIC_CARE_PRICE_CENTS;
-  return <section className={styles.panel} aria-label="Suivi vivant de la culture" data-culture-care data-expanded={expanded} data-critical={critical || undefined} data-condition={presentation.condition} aria-busy={busyNow}>
+  return <section className={styles.panel} aria-label="Suivi vivant de la culture" data-culture-care data-compact={compact || undefined} data-expanded={expanded} data-critical={critical || undefined} data-condition={presentation.condition} aria-busy={busyNow}>
     <div className={styles.summary}>
       <div className={styles.portrait}>
         <Image src={presentation.artwork.src} alt={presentation.artwork.alt} width={240} height={240} sizes="(max-width: 600px) 80px, 120px" data-care-portrait />
@@ -142,7 +142,7 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, o
           {!dead && !postHarvest && care.interventions.length ? <span className={styles.interventionCount}><Clock3 size={13} aria-hidden="true" />{care.interventions.length} {care.interventions.length > 1 ? "interventions en cours" : "intervention en cours"}</span> : null}
         </div>
       </div>
-      <button className={styles.toggle} type="button" aria-expanded={expanded} aria-controls={contentId} disabled={busyNow} onClick={() => { if (!busy.current.care && !busy.current.shop) { setExpanded(!expanded); if (expanded) setShopOpen(false); } }} data-care-toggle><span>{expanded ? "Replier" : "Voir le suivi"}</span><ChevronDown size={18} aria-hidden="true" /></button>
+      <button className={styles.toggle} type="button" aria-expanded={expanded} aria-controls={contentId} disabled={busyNow} onClick={() => { if (!busy.current.care && !busy.current.shop) { setExpanded(!expanded); if (expanded) setShopOpen(false); } }} data-care-toggle><span>{expanded ? "Replier" : compact ? "Soins et suivi" : "Voir le suivi"}</span><ChevronDown size={18} aria-hidden="true" /></button>
     </div>
     <div id={contentId} hidden={!expanded} data-care-content>
       {expanded ? <div className={styles.content}>

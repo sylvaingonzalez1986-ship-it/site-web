@@ -38,7 +38,8 @@ type TentUiState = {
 };
 const EMPTY_TENT_UI: TentUiState = { slot: "tent", selectedCode: null, pending: null, override: null, error: "", notice: "" };
 
-export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,career,chanvrierProfile,storageCapacity,expansionEnergyCents,productionUnits=1,tentNumber=1,tents=[],buildings=[],equipmentScopeVersion=2,sharedEquipment,onSelectTent,production,maintenance={},cultureWear={},activeRun=false,loading,loadError,onClose,onOpenShop,onRetry,initialSlot="tent",initialSection="equipment"}:{
+export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCodes,levels,cashCents,career,chanvrierProfile,storageCapacity,expansionEnergyCents,productionUnits=1,tentNumber=1,tents=[],buildings=[],equipmentScopeVersion=2,sharedEquipment,onSelectTent,production,maintenance={},cultureWear={},activeRun=false,loading,loadError,onClose,onOpenShop,onRetry,embedded=false,initialSlot="tent",initialSection="equipment"}:{
+  embedded?:boolean;
   career?:ChanvrierCareerSnapshot;
   chanvrierProfile?:ChanvrierProfile|null;
   storageCapacity?:{freeUnits:number;totalUnits:number}|null;
@@ -60,6 +61,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   initialSection?:"equipment"|"storage";
 }) {
   const api = useKqTutorialApi();
+  const inline = embedded || api.isTutorial;
   const closeButton=useRef<HTMLButtonElement>(null);
   const panel=useRef<HTMLElement>(null);
   const workshop=useRef<HTMLDivElement>(null);
@@ -114,14 +116,14 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   const suggestion=KQ_EQUIPMENT_CATALOG.find(item=>item.slot===slot&&item.purchasable&&!ownedCodes.includes(item.code));
   const installedSlots=new Set(equipment.filter(item=>activeCodes.includes(item.code)).map(item=>item.slot));
   const selectedGroup=WAREHOUSE_GROUPS.find(group=>group.slots.includes(slot))??WAREHOUSE_GROUPS[0];
-  useBodyScrollLock(!api.isTutorial);
-  useEffect(()=>{const previous=document.activeElement instanceof HTMLElement?document.activeElement:null;closeButton.current?.focus({preventScroll:true});return()=>{if(previous?.isConnected)previous.focus({preventScroll:true});};},[]);
+  useBodyScrollLock(!inline);
+  useEffect(()=>{if(inline)return;const previous=document.activeElement instanceof HTMLElement?document.activeElement:null;closeButton.current?.focus({preventScroll:true});return()=>{if(previous?.isConnected)previous.focus({preventScroll:true});};},[inline]);
   useEffect(()=>{if(viewChanged.current)workshop.current?.querySelector<HTMLButtonElement>("[data-warehouse-view-toggle]")?.focus({preventScroll:true});},[listView]);
   useEffect(()=>{
-    if(api.isTutorial)return;
+    if(inline)return;
     const escape=(event:KeyboardEvent)=>{if(event.key==="Escape"&&!event.defaultPrevented&&!storageBusy)onClose();};
     document.addEventListener("keydown",escape);return()=>document.removeEventListener("keydown",escape);
-  },[onClose,api,storageBusy]);
+  },[onClose,inline,storageBusy]);
   const select=(next:KqEquipmentSlot)=>{
     updateTent(tentNumber,{slot:next,selectedCode:null,error:""});
     if(isKqSharedEquipmentSlot(next))updateTent(0,{error:""});
@@ -168,10 +170,10 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
     } catch(reason){updateTent(targetKey,{error:reason instanceof Error?reason.message:"Installation impossible."});}
     finally{locks.current.delete(targetKey);updateTent(targetKey,{pending:null});}
   };
-  return <div className={styles.overlay} data-embedded={api.isTutorial||undefined}>
-    {!api.isTutorial?<button type="button" tabIndex={-1} className={styles.backdrop} onClick={onClose} disabled={storageBusy} aria-label="Fermer l’entrepôt"/>:null}
-    <section className={styles.dialog} role={api.isTutorial?"region":"dialog"} aria-modal={api.isTutorial?undefined:true} aria-labelledby="equipment-inventory-title" data-arena-tour-surface="warehouse" onKeyDown={event=>{
-      if(api.isTutorial)return;
+  return <div className={styles.overlay} data-embedded={inline||undefined} data-page={embedded||undefined}>
+    {!inline?<button type="button" tabIndex={-1} className={styles.backdrop} onClick={onClose} disabled={storageBusy} aria-label="Fermer l’entrepôt"/>:null}
+    <section className={styles.dialog} role={inline?"region":"dialog"} aria-modal={inline?undefined:true} aria-labelledby="equipment-inventory-title" data-arena-tour-surface="warehouse" onKeyDown={event=>{
+      if(inline)return;
       if(event.key==="Escape"){event.preventDefault();event.stopPropagation();if(!storageBusy)onClose();return;}
       if(event.key!=="Tab")return;
       const controls=Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),summary,[tabindex="0"]')).filter(el=>el.getClientRects().length>0);
@@ -180,7 +182,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
     }}>
       <header className={styles.header}>
         <div><small>Le Placard · Aménager</small><h2 id="equipment-inventory-title" data-arena-tour="warehouse">L’Entrepôt</h2></div>
-        <div className={styles.balance}><small>Trésorerie</small><strong>{formatKqCash(cashCents)}</strong></div><button ref={closeButton} type="button" onClick={onClose} disabled={storageBusy} aria-label="Fermer l’inventaire"><X/></button>
+        <div className={styles.balance}><small>Trésorerie</small><strong>{formatKqCash(cashCents)}</strong></div>{!embedded?<button ref={closeButton} type="button" onClick={onClose} disabled={storageBusy} aria-label="Fermer l’inventaire"><X/></button>:null}
       </header>
       <KqCareerProgress career={career} profile={chanvrierProfile} compact/>
       {initialSection==="storage"?<div className={styles.storageView}><KqWarehouseStorage onChanged={onRetry} onBusyChange={setStorageBusy}/></div>:<div className={styles.layout}>

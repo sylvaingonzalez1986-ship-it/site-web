@@ -1,7 +1,7 @@
 .page {
   composes: surface from "../contest/ArenaRetro.module.css";
   position: relative; isolation: isolate; min-height: 100svh;
-  padding: 24px clamp(16px, 4vw, 56px) 40px; background: #f4efdf; color: #123b2f;
+  padding: 12px clamp(16px, 4vw, 56px) 32px; background: #f4efdf; color: #123b2f;
 }
 .page > * { max-width: 1120px; margin-inline: auto; }
 .page > .scenery { position: absolute; z-index: -2; inset: 0 0 auto; height: min(900px,100%); max-width: none; overflow: hidden; pointer-events: none; }
@@ -15,24 +15,28 @@
 .receiptAmounts > div { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; font-size: .8rem; line-height: 1.5; text-align: left; }
 .receiptAmounts dt { color: #c5ddce; }
 .receiptAmounts dd { margin: 0; font-weight: 800; white-space: nowrap; }
-.flow { padding-block: 24px 36px; animation: flow-arrive 240ms ease-out both; }
+.flow { padding-block: 12px 28px; animation: flow-arrive 240ms ease-out both; }
 .flow h2 { font: 900 clamp(1.8rem,3.8vw,2.8rem)/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; margin: 12px 0 16px; }
 .flow h2:focus { outline: none; }
 .flow p, .computer p { line-height: 1.6; }
 .flow > p { max-width: 70ch; color: #476452; font-size: .9rem; }
 .back { min-height: 44px; display: inline-flex; align-items: center; color: #123b2f; font-size: .78rem !important; font-weight: 700 !important; }
 .back:hover { color: #6f5412; }
-.dashboardLink { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 22px; padding: 13px 16px; min-height: 58px; color: #184632; background: #f7edce; border: 1px solid #beab76; border-left: 4px solid #b38a30; text-align: left; }
-.dashboardLink > span { display: grid; gap: 5px; min-width: 0; font-size: .82rem; font-weight: 800; }
-.dashboardLink small { color: #5d6950; font-size: .7rem; line-height: 1.5; font-weight: 500; }
-.dashboardLink > svg { flex-shrink: 0; }
-.dashboardLink > svg:last-child { margin-left: auto; }
+.standaloneNav { display: flex; gap: 8px; border-bottom: 1px solid #b5c3ac; }
+.standaloneNav button { min-height: 44px; padding: 10px 12px; color: #476452; font-size: .8rem; }
+.standaloneNav button[aria-pressed="true"] { color: #123b2f; border-bottom: 3px solid #176348; font-weight: 800; }
+.steps { display: flex; flex-wrap: wrap; gap: 10px 22px; padding: 0; margin: 0 0 20px; list-style: none; }
+.steps li { display: flex; align-items: center; gap: 7px; color: #647560; font-size: .74rem; }
+.steps li > span { display: grid; place-items: center; flex: 0 0 23px; height: 23px; border: 1px solid #a9b49d; border-radius: 50%; font-size: .65rem; }
+.steps li[aria-current="step"] { color: #123b2f; font-weight: 850; }
+.steps li[aria-current="step"] > span { background: #f4c43d; border-color: #bd9631; }
+.steps li[data-complete="true"] > span { color: #fffaf1; background: #286449; border-color: #286449; }
 .dashboardUnavailable { padding: 22px; border: 1px solid #beab76; background: #f7edce; }
 .lotSummary { margin: 0 0 14px; color: #476452; font-size: .85rem; }
-.inventory { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 24px; align-items: start; }
+.inventory { display: grid; grid-template-columns: minmax(150px,.55fr) minmax(0,1fr); gap: 24px; margin-top: 20px; align-items: start; }
 .inventoryArt, .workshopArt, .selectedArt { position: relative; overflow: hidden; background: #002d24; }
 .inventoryArt::after, .workshopArt::after, .selectedArt::after { content: ""; position: absolute; inset: 60% 0 0; background: linear-gradient(transparent,#002d24d9); pointer-events: none; }
-.inventoryArt img { display: block; width: 100%; height: 340px; object-fit: cover; object-position: center 35%; }
+.inventoryArt img { display: block; width: 100%; height: 210px; object-fit: cover; object-position: center 35%; }
 .inventoryArt > span, .artLabel { position: absolute; bottom: 20px; left: 20px; z-index: 1; display: flex; align-items: center; gap: 9px; color: #fff5da; font: 800 .7rem/1.4 ui-monospace,monospace; text-transform: uppercase; letter-spacing: .05em; }
 .inventoryArt > span { font: 900 1.6rem/1 var(--font-display),Impact,sans-serif; }
 .lotList { display: grid; gap: 12px; min-width: 0; }
@@ -43,9 +47,9 @@
 .lotText small { color: #c2d9cc; font-size: .75rem; line-height: 1.5; }
 .page [data-curing-status] small { color: inherit; }
 .lotList > button > span:last-child { display: flex; align-items: center; gap: 8px; font-size: .75rem; font-weight: 800; color: #f4c43d; }
-.preparation, .selectedOffer { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 36px; margin-top: 24px; align-items: start; }
+.preparation, .selectedOffer { display: grid; grid-template-columns: minmax(0,.7fr) minmax(0,1fr); gap: 24px; margin-top: 20px; align-items: start; }
 .preparation > div, .selectedOffer > div { min-width: 0; }
-.workshopArt img, .selectedArt img { display: block; width: 100%; height: auto; aspect-ratio: 1.1; object-fit: cover; }
+.workshopArt img, .selectedArt img { display: block; width: 100%; height: auto; max-height: 310px; aspect-ratio: 1.35; object-fit: cover; }
 .preparation > div:last-child, .selectedOffer > div:last-child { padding: 22px; background: #002d24e8; color: #fffaf1; border-top: 2px solid #54d5bb; box-shadow: 0 5px 0 #00251e; }
 .preparation .lotSummary, .selectedOffer .lotSummary { color: #d7e7dc; }
 .preparation p, .selectedOffer p { font-size: .88rem; }
@@ -59,17 +63,16 @@
 .primary svg { flex-shrink: 0; }
 .primary:active:not(:disabled) { transform: translate(2px,2px); box-shadow: 2px 2px 0 #001e19; }
 .event { display: inline-block; padding: 8px 12px; background: #f4c43d; color: #003f30 !important; font-size: .8rem !important; font-weight: 800; }
-.offers { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; margin-top: 26px; }
+.offers { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; margin-top: 22px; }
 .offerCard { display: flex; flex-direction: column; min-width: 0; color: #fffaf1; text-align: left; background: #003f30; border: 0; border-bottom: 3px solid #fffaf140; padding: 0; transition: transform 180ms ease,border-color 180ms ease; }
-.offerArt { position: relative; height: 320px; width: 100%; overflow: hidden; background: #002d24; }
+.offerHeading { display: flex; align-items: center; gap: 12px; width: 100%; padding: 16px; }
+.offerArt { position: relative; height: 80px; width: 72px; flex: 0 0 72px; overflow: hidden; border-radius: 3px; background: #002d24; }
 .offerArt img { object-fit: cover; object-position: center 35%; transition: transform 240ms ease; }
-.offerArt::after { content: ""; position: absolute; inset: 0; background: linear-gradient(#002d2420 25%,#002d24c9 66%,#002d24 100%); }
-.channelTag { position: absolute; z-index: 1; top: 14px; left: 14px; padding: 7px 9px; background: #002d24eb; border-left: 3px solid #54d5bb; font: 800 .62rem/1.3 ui-monospace,monospace; text-transform: uppercase; letter-spacing: .05em; color: #fff5da; }
-.offerCaption { position: absolute; z-index: 1; inset: auto 20px 20px; display: grid; gap: 9px; }
-.offerCaption > span { font: 900 clamp(1.6rem,2.4vw,2.25rem)/1.05 var(--font-display),Impact,sans-serif; text-transform: uppercase; text-shadow: 2px 2px 0 #00251e; }
-.offerAmount { color: #f4c43d; font-size: 1.6rem; line-height: 1.1; }
-.offerCaption > small { font-size: .76rem; color: #dcE9de; }
-.offerCopy { display: flex; flex: 1; flex-direction: column; gap: 15px; padding: 4px 20px 20px; width: 100%; font-size: .82rem; line-height: 1.5; }
+.offerCaption { display: grid; min-width: 0; gap: 7px; }
+.offerCaption > span { font: 850 .85rem/1.35 var(--font-body),Arial,sans-serif; }
+.offerAmount { color: #f4c43d; font-size: 1.45rem; line-height: 1.1; }
+.offerCaption > small { font-size: .7rem; line-height: 1.4; color: #dce9de; }
+.offerCopy { display: flex; flex: 1; flex-direction: column; gap: 10px; padding: 0 16px 16px; width: 100%; font-size: .78rem; line-height: 1.5; }
 .tradeoff { display: flex; align-items: flex-start; gap: 9px; color: #d6e8dc; }
 .tradeoff > svg { color: #54d5bb; flex-shrink: 0; margin-top: 2px; }
 .tradeoff + .tradeoff > svg { color: #f4c43d; }
@@ -125,21 +128,22 @@
 @keyframes flow-arrive { from { opacity: .5; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes reward-arrive { from { opacity: .5; transform: scale(.85); } to { opacity: 1; transform: none; } }
 @media(hover:hover) { .offerCard:hover { transform: translateY(-4px); border-bottom-color: #f4c43d; } .offerCard:hover .offerArt img { transform: scale(1.04); } .lotList > button:hover { border-color: #f4c43d; background: #00503be8; transform: translateY(-2px); } .primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 4px 6px 0 #001e19; } }
-@media(max-width: 1000px) and (min-width: 701px) { .offers { gap: 14px; } .offerArt { height: 280px; } .offerCaption { inset-inline: 14px; } .offerCopy { padding-inline: 14px; } .inventory { grid-template-columns: .8fr 1.2fr; gap: 20px; } .lotList > button { grid-template-columns: 40px minmax(0,1fr); } .lotList > button > span:last-child { grid-column: 2; } }
+@media(max-width: 1000px) and (min-width: 701px) { .offers { gap: 12px; } .offerHeading { flex-wrap: wrap; } .offerCopy { padding-inline: 14px; } .inventory { grid-template-columns: .6fr 1.2fr; gap: 20px; } .lotList > button { grid-template-columns: 40px minmax(0,1fr); } .lotList > button > span:last-child { grid-column: 2; } }
 @media(max-width: 700px) {
   .page { padding-top: 16px; } .page::before { background: linear-gradient(#f4efdfd9,#f4efdfeb 180px,#f4efdf 600px); }
   .flow { padding-block: 18px 28px; } .flow h2 { font-size: 1.9rem; } .flow > p { font-size: .83rem; }
   .inventory, .preparation, .selectedOffer { grid-template-columns: 1fr; gap: 0; }
-  .inventory { gap: 16px; } .inventoryArt img { height: 190px; } .inventoryArt > span { bottom: 16px; left: 16px; }
+  .inventory { gap: 16px; } .inventoryArt img { height: 125px; } .inventoryArt > span { bottom: 16px; left: 16px; }
   .lotList > button { grid-template-columns: 40px minmax(0,1fr) auto; gap: 10px; min-height: 90px; padding: 14px 12px; }
   .lotIcon { width: 38px; height: 44px; } .lotText strong { font-size: .85rem; } .lotText small { font-size: .7rem; }
   .lotList > button > span:last-child { font-size: .68rem; gap: 5px; }
-  .workshopArt img, .selectedArt img { height: 210px; aspect-ratio: auto; object-position: center 35%; }
+  .workshopArt img, .selectedArt img { height: 150px; aspect-ratio: auto; object-position: center 35%; }
   .artLabel { bottom: 16px; left: 16px; font-size: .62rem; }
   .preparation > div:last-child, .selectedOffer > div:last-child { padding: 18px 16px 22px; }
-  .offers { grid-template-columns: 1fr; gap: 24px; } .offerArt { height: 235px; } .offerArt img { object-position: center 42%; }
-  .offerCaption { inset: auto 18px 18px; gap: 7px; } .offerCaption > span { font-size: 1.85rem; } .offerAmount { font-size: 1.55rem; }
-  .offerCopy { gap: 13px; padding: 4px 18px 18px; font-size: .8rem; } .tradeoff b { display: inline; margin-right: 4px; }
+  .offers { grid-template-columns: 1fr; gap: 14px; } .offerArt { width: 88px; flex-basis: 88px; } .offerArt img { object-position: center 42%; }
+  .offerCaption > span { font-size: .95rem; } .offerAmount { font-size: 1.4rem; }
+  .offerCopy { gap: 9px; font-size: .78rem; } .tradeoff b { display: inline; margin-right: 4px; }
+  .steps { gap: 9px 12px; } .steps li { font-size: .67rem; }
   .offerLink { margin-top: 3px; } .primary { width: 100%; font-size: .8rem !important; } .confirm .primary { width: auto; }
   .computer { grid-template-columns: 1fr; } .computer img { max-height: 240px; object-fit: cover; }
 }

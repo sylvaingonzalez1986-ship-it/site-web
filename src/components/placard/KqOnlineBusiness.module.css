@@ -39,7 +39,14 @@
 .nextChapter progress::-webkit-progress-bar { background: #adad8355; }
 .nextChapter progress::-webkit-progress-value { background: #347955; }
 .nextChapter progress::-moz-progress-bar { background: #347955; }
-.section { margin-top: 30px; padding-top: 26px; border-top: 1px solid #c5c59052; }
+.section { margin-top: 18px; border-top: 1px solid #c5c59052; }
+.section > summary { display: flex; align-items: center; gap: 12px; min-height: 64px; padding-block: 14px; cursor: pointer; list-style: none; }
+.section > summary::-webkit-details-marker { display: none; }
+.section > summary::after { content: "+"; margin-left: auto; color: #f4c43d; font-size: 1.25rem; }
+.section[open] > summary::after { content: "−"; }
+.section > summary > svg { flex-shrink: 0; color: #71e3c9; }
+.section > summary > span { display: grid; gap: 5px; font-size: .9rem; font-weight: 800; }
+.section > summary small { color: #c5ddce; font-size: .72rem; line-height: 1.45; font-weight: 500; }
 .business .section h3 { display: flex; align-items: center; gap: 9px; margin: 0 0 10px; color: #fffaf1; font: 900 1.3rem/1.2 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
 .business .section > p { margin: 8px 0 16px; }
 .tiers,.upgrades,.missions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }

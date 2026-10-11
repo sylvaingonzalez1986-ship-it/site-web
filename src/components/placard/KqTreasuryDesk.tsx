@@ -3,6 +3,7 @@
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowDownLeft, ArrowRight, ArrowUpRight, BookOpen, CalendarClock, ChartNoAxesCombined, Check, ChevronLeft, ChevronRight, FileText, Landmark, LoaderCircle, ReceiptText, RefreshCw, Search, Wallet } from "lucide-react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
@@ -120,9 +121,10 @@ function ChartOfAccounts({ data }: { data: KqTreasurySnapshot }) {
   </section>;
 }
 
-export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initialBankDesk }: {
+export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initialBankDesk, onPoleChange }: {
   onOpenShop: (equipmentCode?: string) => void;
   initialPole?: Pole; initialBankDesk?: "loans" | "savings" | "crypto" | "stocks";
+  onPoleChange?: (pole: Pole) => void;
 }) {
   const api = useKqTutorialApi();
   const pole = initialPole;
@@ -168,17 +170,22 @@ export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initial
         <div className={styles.officePicture}>
           <Image src={OFFICE_ART[pole].src} alt={OFFICE_ART[pole].alt} fill sizes="(max-width: 650px) calc(100vw - 28px), (max-width: 1280px) 92vw, 1180px" preload />
           <div className={styles.welcome}>
-            <small>{pole === "bank" ? <><Landmark size={16} aria-hidden="true" /> Prêts & placements</> : <><BookOpen size={16} aria-hidden="true" /> Comptabilité de l’entreprise</>}</small>
-            <h1>{pole === "bank" ? "Banque" : "Bureau"}</h1>
-            <p>{pole === "bank" ? "Tes prêts, ton épargne et tes placements." : "Tes factures, tes comptes et tes échéances."}</p>
+            <small>{pole === "bank" ? <><Landmark size={16} aria-hidden="true" /> Le banquier</> : <><BookOpen size={16} aria-hidden="true" /> Au bureau</>}</small>
+            <h1>{pole === "bank" ? "Banque & placements" : "Mes finances"}</h1>
+            <p>{pole === "bank" ? "Financer un projet ou placer tes euros du jeu." : "Ce que tu peux dépenser, ce qu’il reste à payer."}</p>
           </div>
         </div>
         <figcaption>{OFFICE_ART[pole].caption}</figcaption>
       </figure>
     </header>
+    <nav className={styles.financeNav} aria-label="Mes finances">
+      {pole === "accounting" ? <button type="button" aria-pressed={tab === "invoices"} onClick={() => selectTab("invoices")}>Factures & disponible</button> : <Link href="/arene/placard?view=treasury&pole=accounting" prefetch={false} onClick={event => { if (onPoleChange) { event.preventDefault(); onPoleChange("accounting"); } }}>Factures & disponible</Link>}
+      <Link href="/arene/placard?view=treasury&pole=bank" prefetch={false} aria-current={pole === "bank" ? "page" : undefined} onClick={event => { if (onPoleChange) { event.preventDefault(); onPoleChange("bank"); } }}>Banque & placements</Link>
+      {pole === "accounting" ? <button type="button" aria-pressed={tab !== "invoices"} onClick={() => selectTab("overview")}>Comptabilité détaillée</button> : null}
+    </nav>
     <section aria-label={pole === "bank" ? "Services bancaires" : "Comptabilité du Bureau"} className={styles.officePanel}>
     {pole === "bank" ? <KqTreasuryBank initialDesk={initialBankDesk} /> : <>
-    <label className={styles.dossierPicker} htmlFor="treasury-dossier"><span>Dossier comptable</span><select id="treasury-dossier" value={tab} onChange={event => selectTab(event.target.value as Tab)} aria-controls={`treasury-panel-${tab}`}>{TABS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+    {tab !== "invoices" ? <label className={styles.dossierPicker} htmlFor="treasury-dossier"><span>Dossier comptable</span><select id="treasury-dossier" value={tab} onChange={event => selectTab(event.target.value as Tab)} aria-controls={`treasury-panel-${tab}`}>{TABS.filter(item => item.id !== "invoices").map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label> : null}
     <section id={`treasury-panel-${tab}`} aria-label={TABS.find(item => item.id === tab)?.label} className={styles.tabPanel}>
       {tab === "invoices" ? <KqTreasuryManagement key="invoices" onOpenShop={onOpenShop} section="invoices" /> : <>
         <div className={styles.toolbar}><label>Période comptable<select id="treasury-period" value={period} onChange={event => { setPeriod(event.target.value as KqTreasuryPeriod); setOffset(0); }}>{(Object.keys(KQ_TREASURY_PERIODS) as KqTreasuryPeriod[]).map(value => <option key={value} value={value}>{KQ_TREASURY_PERIODS[value]}</option>)}</select></label><button type="button" className={styles.refresh} disabled={!matching} onClick={() => setRefresh(value => value + 1)}><RefreshCw size={17} aria-hidden="true" /> Actualiser</button>{data ? <TreasuryClock key={data.serverNow} startedAt={data.businessStartedAt} serverNow={data.serverNow} /> : null}</div>

@@ -50,3 +50,10 @@
 .management,.storageView{background:#f4efdf;color:#123b2f}
 .panel,.panHint{background:#f8f2e4;color:#123b2f}
 .performance,.charges,.item{background:#fffaf1;color:#123b2f;border-color:#123b2f40}
+.overlay[data-page] { padding: 20px; }
+.overlay[data-page] > .dialog { border: 1px solid #123b2f28; border-radius: 12px; }
+.overlay[data-page] .layout { overflow: visible; }
+.overlay[data-page] .panel { top: 16px; max-height: calc(100dvh - 32px); }
+.overlay[data-page] .storageView { overflow: visible; }
+@media (max-width: 1200px) { .overlay[data-page] .layout { display: block; } .overlay[data-page] .panel { position: static; max-height: none; border-left: 0; border-top: 1px solid #123b2f28; } }
+@media (max-width: 700px) { .overlay[data-page] { padding: 10px; } }

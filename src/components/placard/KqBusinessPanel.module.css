@@ -1,4 +1,14 @@
 .panel { margin-bottom: 24px; color: #fffaf1; background: #002e24f5; border: 1px solid #b4d5bf45; }
+.clockDetails { border-bottom: 1px solid #b4d5bf35; }
+.clockDetails > summary { display: flex; align-items: center; gap: 9px; min-height: 44px; padding: 10px 20px; color: #c5ddce; font-size: .72rem; cursor: pointer; }
+.clockDetails > p { padding: 14px 20px; margin: 0; }
+.domiciliation > summary, .advertising > summary { display: flex; align-items: center; gap: 12px; min-height: 48px; list-style: none; cursor: pointer; }
+.domiciliation > summary::-webkit-details-marker, .advertising > summary::-webkit-details-marker { display: none; }
+.domiciliation > summary > svg, .advertising > summary > svg { color: #71e3c9; flex-shrink: 0; }
+.domiciliation > summary > span, .advertising > summary > span { display: grid; gap: 6px; font-size: .88rem; font-weight: 800; }
+.domiciliation > summary small, .advertising > summary small { color: #c5ddce; font-size: .72rem; line-height: 1.45; font-weight: 500; }
+.domiciliation > summary::after, .advertising > summary::after { content: "+"; margin-left: auto; color: #f4c43d; font-size: 1.25rem; }
+.domiciliation[open] > summary::after, .advertising[open] > summary::after { content: "−"; }
 .calendar { display: flex; gap: 14px; align-items: center; padding: 18px 20px; background: #003c2ee8; border-bottom: 1px solid #b4d5bf35; }
 .calendar > svg { flex-shrink: 0; color: #f4c43d; }
 .calendar > div { display: grid; gap: 5px; }

@@ -166,17 +166,20 @@ function getLoadoutProjectionMetrics(current: EquipmentLoadoutSummary, projected
 }
 
 export function KqEquipmentCatalogModal({
+  embedded = false,
   initialEquipmentCode = null,
   onClose,
   onOpenWorkshop,
   onBusyChange,
 }: {
+  embedded?: boolean;
   initialEquipmentCode?: string | null;
   onClose: () => void;
   onOpenWorkshop?: (equipmentCode?:string)=>void;
   onBusyChange?: (busy: boolean) => void;
 }) {
   const api = useKqTutorialApi();
+  const inline = embedded || api.isTutorial;
   const selectKqTent = useKqSelectTent();
   const recommendedEquipmentCode = initialEquipmentCode && getKqEquipmentDefinition(initialEquipmentCode)
     ? initialEquipmentCode
@@ -511,8 +514,8 @@ export function KqEquipmentCatalogModal({
   };
 
   return (
-    <section ref={catalogRef} data-embedded={api.isTutorial||undefined} data-arena-tour-surface="catalog" data-arena-tour-blocked={!!activeLayer||undefined} className={styles.catalog} role={api.isTutorial?"region":"dialog"} aria-modal={api.isTutorial?undefined:true} aria-labelledby="equipment-catalog-title" onKeyDown={(event) => {
-      if(api.isTutorial&&!activeLayer)return;
+    <section ref={catalogRef} data-embedded={api.isTutorial||undefined} data-arena-tour-surface="catalog" data-arena-tour-blocked={!!activeLayer||undefined} className={styles.catalog} role={inline?"region":"dialog"} aria-modal={inline?undefined:true} aria-labelledby="equipment-catalog-title" onKeyDown={(event) => {
+      if(inline&&!activeLayer)return;
       if (event.key === "Tab") {
         event.stopPropagation();
         const scope = activeLayer ? event.currentTarget.querySelector(`.${activeLayer}`) : event.currentTarget;

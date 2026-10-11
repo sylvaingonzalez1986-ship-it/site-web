@@ -13,7 +13,7 @@ import type { ChanvrierProfile } from "@/lib/arena-chanvrier";
 
 type Snapshot={chanvrierProfile?:ChanvrierProfile|null;equipmentScopeVersion?:2|3;career?:ChanvrierCareerSnapshot;storageCapacity?:{freeUnits:number;totalUnits:number}|null;expansionEnergyCents?:number;tentNumber?:number;tents?:KqTentOverview[];buildings?:KqBuildingEquipmentOverview[];sharedEquipment?:KqSharedEquipmentOverview;ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;productionUnits?:number;production?:KqProductionSnapshot;maintenance?:Record<string,KqMachineCondition>;cultureWear?:Record<string,KqCultureEquipmentCondition>;activeRun?:boolean};
 const EMPTY:Snapshot={ownedCodes:[],purchasedCodes:[],equippedCodes:[],levels:{},cashCents:0};
-export function KqWarehouseEntry({initialEquipmentCode,initialSection="equipment",onClose,onOpenShop}:{initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage";onClose:()=>void;onOpenShop:(code?:string)=>void}){
+export function KqWarehouseEntry({embedded=false,initialEquipmentCode,initialSection="equipment",onClose,onOpenShop}:{embedded?:boolean;initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage";onClose:()=>void;onOpenShop:(code?:string)=>void}){
   const api=useKqTutorialApi();
   const selectKqTent=useKqSelectTent();
   const tentNumber=useKqTentSelection();
@@ -44,7 +44,7 @@ export function KqWarehouseEntry({initialEquipmentCode,initialSection="equipment
   };
   const shared=snapshot.sharedEquipment;
   const building=snapshot.equipmentScopeVersion===3?snapshot.buildings?.find(item=>item.buildingNumber===getKqEquipmentBuildingNumber(tentNumber)):undefined;
-  return <KqEquipmentInventoryModal {...snapshot} {...(selected??EMPTY)}
+  return <KqEquipmentInventoryModal embedded={embedded} {...snapshot} {...(selected??EMPTY)}
     cashCents={snapshot.cashCents}
     career={snapshot.career}
     chanvrierProfile={snapshot.chanvrierProfile}
