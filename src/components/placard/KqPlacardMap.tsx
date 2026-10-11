@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, BookOpen, BriefcaseBusiness, ChevronDown, CircleHelp, Compass, Landmark, MapPin, MoveHorizontal, Scan, ShoppingBag, Sprout, Store, Swords, Target, Tent, Wallet, Warehouse, ZoomIn } from "lucide-react";
+import { ArrowRight, BookOpen, BriefcaseBusiness, ChevronDown, CircleHelp, Compass, Landmark, MapPin, MoveHorizontal, PackageCheck, Scan, ShoppingBag, Sprout, Store, Swords, Target, Tent, Wallet, Warehouse, ZoomIn } from "lucide-react";
 import { useRef, useState, type CSSProperties } from "react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import styles from "./KqPlacardMap.module.css";
 
 export type PlacardMapView = "game" | "market" | "treasury" | "shop" | "arena" | "missions" | "workshop";
-export type PlacardMapOpen = (view: PlacardMapView, options?: { treasuryPole?: "accounting" | "bank" | "management" }) => void;
+export type PlacardMapOpen = (view: PlacardMapView, options?: { treasuryPole?: "accounting" | "bank" | "management"; warehouseSection?: "storage" }) => void;
 
 const BUILDINGS = [
   { id: "warehouse", name: "L’Entrepôt", number: "01", category: "Le cœur de ta culture", description: "Derrière les grandes portes, ton placard prend vie. Fais pousser ta prochaine récolte et prends soin de ton installation.", Icon: Warehouse, x: 24, y: 25, width: 32, height: 37 },
@@ -79,7 +79,7 @@ export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, t
             <div className={styles.helpContent}>
               <strong>Tout commence dans ton quartier.</strong>
               <p>Sélectionne un bâtiment sur la carte, puis choisis ce que tu veux y faire. Sur mobile, touche un numéro ou utilise le sélecteur de lieux. Agrandis la carte pour explorer le quartier en faisant glisser le décor.</p>
-              <p>L’entrepôt abrite ton Placard : entre pour cultiver, ou aménage et entretiens tes tentes. Le marché accueille tes récoltes, le jury et les duels tes Fleurs.</p>
+              <p>L’entrepôt abrite ton Placard : entre pour cultiver, aménage et entretiens tes tentes, ou ouvre Stockage & curing pour suivre tes récoltes et gérer tes contenants. Le marché accueille tes récoltes, le jury et les duels tes Fleurs.</p>
               <p>Le Bureau réunit la comptabilité et la gestion. La Banque donne directement accès aux prêts, à l’épargne et aux placements. Passe à la Boutique pour tes packs et ton matériel.</p>
             </div>
           </details>
@@ -126,6 +126,7 @@ export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, t
         {selected === "warehouse" ? <>
           <button type="button" data-placard-activity="game" onClick={() => onOpen("game")}><Sprout size={20} aria-hidden="true" /><span>{activeRun ? "Reprendre ma culture" : "Entrer dans le Placard"}<small>Cultiver et récolter</small></span><ArrowRight size={17} aria-hidden="true" /></button>
           <button type="button" data-placard-activity="workshop" onClick={() => onOpen("workshop")}><Warehouse size={20} aria-hidden="true" /><span>Aménager l’entrepôt<small>Tentes, matériel et entretien</small></span><ArrowRight size={17} aria-hidden="true" /></button>
+          <button type="button" data-placard-activity="storage" onClick={() => onOpen("workshop", { warehouseSection: "storage" })}><PackageCheck size={20} aria-hidden="true" /><span>Stockage & curing<small>Contenants et suivi des récoltes</small></span><ArrowRight size={17} aria-hidden="true" /></button>
         </> : selected === "bank" ? <button type="button" data-placard-activity="bank" onClick={() => onOpen("treasury", { treasuryPole: "bank" })}><Landmark size={20} aria-hidden="true" /><span>Rencontrer le banquier<small>Prêts, épargne et placements</small></span><ArrowRight size={17} aria-hidden="true" /></button>
           : selected === "office" ? <>
             <button type="button" data-placard-activity="treasury" onClick={() => onOpen("treasury", { treasuryPole: "accounting" })}><BriefcaseBusiness size={20} aria-hidden="true" /><span>Ouvrir mes comptes<small>Factures et comptabilité</small></span><ArrowRight size={17} aria-hidden="true" /></button>

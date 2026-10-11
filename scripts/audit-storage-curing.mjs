@@ -48,6 +48,7 @@ try {
   const selectQuantity=async(code,value)=>{const selector='[data-container-code="'+code+'"] input';await page.locator(selector).fill(String(value));};
   const buy=async(code,quantity)=>{await selectQuantity(code,quantity);const before=(await fixture()).ownedContainers[code]??0;await page.locator('[data-container-code="'+code+'"] button').click();await page.waitForFunction((code,quantity)=>window.fixture().ownedContainers[code]===quantity,{},code,before+quantity);};
   await clickText('Stockage & curing');await page.waitForSelector('[data-storage-capacity]');
+  await page.locator('[data-storage-shop] > summary').click();
   assert.equal(await page.$$eval('[data-container-code]',nodes=>nodes.length),9);
   assert.equal(await page.$$eval('[data-container-code] a',nodes=>nodes.filter(node=>node.textContent.includes('Produit de référence')).length),9);
   const containerCodes=await page.$$eval('[data-container-code]',nodes=>nodes.map(node=>node.dataset.containerCode));
@@ -97,6 +98,7 @@ try {
   assert.equal(await page.$$eval('button',nodes=>nodes.find(node=>node.textContent.includes('Préparer les fleurs et continuer')).disabled),true);
   await page.locator('a[href="/arene/placard?view=workshop&section=storage"]').click();
   await page.waitForSelector('[data-container-code="GLASS-1L"]');checks.push('preparation blocked by overflow','market link opens storage directly');
+  await page.locator('[data-storage-shop] > summary').click();
 
   await buy('GLASS-1L',2);let after=await fixture();assert.equal(after.cashCents,before.cashCents-1000);assert.equal(after.capacity.overflowUnits,2500);
   await buy('GLASS-1L',1);after=await fixture();assert.equal(after.ownedContainers['GLASS-1L'],5);assert.equal(after.cashCents,before.cashCents-1500);assert.equal(after.capacity.overflowUnits,2000);
@@ -106,8 +108,8 @@ try {
   await selectQuantity('GLASS-1L',1);checks.push('quantity purchase debits unit price times quantity','same format purchased repeatedly','replayed purchase never debits twice','zero fraction and excessive quantities blocked');
 
   await buy('GROVE-1OZ',1);after=await fixture();assert.equal(after.capacity.totalUnits,2780);assert.equal(after.capacity.usedUnits,2780);assert.equal(after.capacity.overflowUnits,1720);
-  const selects=await page.$$('[data-warehouse-storage] select');assert.equal(selects.length,2);await selects[0].select('STORAGE-GROVE');await page.waitForFunction(()=>window.fixture().defaultMethodCode==='STORAGE-GROVE');
-  await selects[1].select('STORAGE-GROVE');await page.waitForFunction(()=>window.fixture().lots[0].projection.methodCode==='STORAGE-GROVE');
+  assert.equal(await page.$$eval('[data-warehouse-storage] select',nodes=>nodes.length),2);await page.select('[data-storage-shop] select','STORAGE-GROVE');await page.waitForFunction(()=>window.fixture().defaultMethodCode==='STORAGE-GROVE');
+  await page.select('[aria-labelledby="storage-lots-title"] select','STORAGE-GROVE');await page.waitForFunction(()=>window.fixture().lots[0].projection.methodCode==='STORAGE-GROVE');
   after=await fixture();assert.equal(after.lots[0].projection.readyAt,original.readyAt);assert.equal(after.lots[0].projection.conditionScore,original.conditionScore);assert.equal(after.lots[0].projection.capacity.overflowDeadlineAt,original.capacity.overflowDeadlineAt);
   checks.push('new container fills only part of surplus','default family and mixed allocation','allocation preserves quality and both deadlines');
   await page.locator('[data-cannabinoid-report] summary').click();assert.equal(await page.$$eval('[data-cannabinoid-report] tbody tr',nodes=>nodes.length),7);
