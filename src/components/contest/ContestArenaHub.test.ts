@@ -45,11 +45,11 @@ describe("Arena home", () => {
   it.each(["jouer", "carnet", "classement"] as const)("uses one illustrated desk and highlights the %s destination", initialMode => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub, { initialMode }));
     expect(html.match(/<img /g)).toHaveLength(1);
-    expect(html).toContain('/contest/map/arena-desk-v4.webp');
+    expect(html).toContain('/contest/map/arena-desk-v5.webp');
     expect(html).toContain(`data-arena-scene="${initialMode}"`);
     expect(html.match(new RegExp(`<a[^>]*data-arena-activity="${initialMode}"[^>]*>`))?.[0]).toContain('data-current="true"');
     expect(html.match(/data-current="true"/g)).toHaveLength(1);
-    expect(existsSync(resolve("public/contest/map/arena-desk-v4.webp"))).toBe(true);
+    expect(existsSync(resolve("public/contest/map/arena-desk-v5.webp"))).toBe(true);
     for (const mode of Object.values(ARENA_LOBBY_MODES)) {
       expect(html).not.toContain(mode.image);
       expect(existsSync(resolve("public" + mode.image))).toBe(true);
