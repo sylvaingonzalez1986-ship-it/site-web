@@ -34,7 +34,7 @@ function database() {
     };
     return builder;
   });
-  mocks.rpc.mockResolvedValue({ data: { [supportId]: 1505, [buddieId]: 1201 }, error: null });
+  mocks.rpc.mockImplementation(async name => ({ data: name === "rpc_kq_reserved_cards" ? [] : { [supportId]: 1505, [buddieId]: 1201 }, error: null }));
 }
 
 describe("bounded collection reads", () => {
@@ -45,12 +45,12 @@ describe("bounded collection reads", () => {
     expect(result.collection).toMatchObject({ ownerFound: true, cultureTokenBalance: 9, inventory: { [KQ_ACTIVE_CARDS[0].code]: 1505, [KQ_ACTIVE_CARDS[1].code]: 0 } });
     expect(result.collection.cards).toHaveLength(2);
     expect(result.ownedBuddies).toEqual([{ code: KQ_BUDDIES[0].code, name: "Buddie", rarity: "common", cardNumber: 1, imageUrl: "/buddie.webp", ownedCopies: 1201 }]);
-    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_card_copy_counts", { p_user_id: ownerId, p_definition_ids: [supportId, missingId, buddieId] });
+    expect(mocks.rpc).toHaveBeenCalledWith("rpc_kq_card_copy_counts", { p_user_id: ownerId, p_definition_ids: [supportId, missingId, buddieId] });
   });
 
   it("keeps standalone readers compatible and never caches an owner's mutable counts", async () => {
     expect((await getKqPlayerCollectionSnapshot(ownerId)).inventory[KQ_ACTIVE_CARDS[0].code]).toBe(1505);
-    mocks.rpc.mockResolvedValue({ data: { [supportId]: "1504" }, error: null });
+    mocks.rpc.mockImplementation(async name => ({ data: name === "rpc_kq_reserved_cards" ? [] : { [supportId]: "1504" }, error: null }));
     expect((await getKqPlayerCollectionSnapshot(ownerId)).inventory[KQ_ACTIVE_CARDS[0].code]).toBe(1504);
     expect(await getKqPlayerOwnedBuddies(ownerId)).toEqual([]);
   });
@@ -76,5 +76,16 @@ describe("bounded collection reads", () => {
     await expect(getKqPlayerCollectionBundle("invalid")).rejects.toThrow("Compte Placard invalide");
     await expect(getKqPlayerHeritageSnapshot("invalid")).rejects.toThrow("Profil Héritage invalide");
     expect(mocks.client).not.toHaveBeenCalled();
+  });
+
+  it("keeps owned copies visible while excluding active reservations from new decks", async () => {
+    mocks.rpc.mockImplementation(async name => ({ data: name === "rpc_kq_reserved_cards"
+      ? [{ cardInstanceId: "copy-one", runId: "run-one", cardCode: KQ_ACTIVE_CARDS[0].code }]
+      : { [supportId]: 2 }, error: null }));
+    const result = await getKqPlayerCollectionBundle(ownerId);
+    expect(result.collection.inventory[KQ_ACTIVE_CARDS[0].code]).toBe(2);
+    expect(result.collection.availableInventory?.[KQ_ACTIVE_CARDS[0].code]).toBe(1);
+    expect(result.collection.cards[0].ownedCopies).toBe(2);
+    expect(mocks.rpc).toHaveBeenCalledWith("rpc_kq_reserved_cards", { p_user_id: ownerId });
   });
 });

@@ -1,0 +1,12 @@
+{
+  "asset": "card-shop-sylvain-v1.webp",
+  "generatedAt": "2026-10-13",
+  "mode": "built-in imagegen",
+  "source": "exec-66f01743-d60b-4bf6-bedd-673d8acde1ba.png",
+  "references": [
+    "public/placard/map/placard-world-sylvain-v5.webp",
+    "public/sylvain.png"
+  ],
+  "prompt": "Use case: illustration-story.\nAsset type: compact panoramic illustration for a collectible-card shop in a Breton cartoon village game. Format 3:1, ideally1536x512.\nReference1 is the exact approved cartoon village: cream granite walls, crooked tan wood, turquoise fittings, dark outlines. Reference2 is Sylvain, the shopkeeper: retain his round friendly face, turquoise cap and dungarees, tan sweater, thick black outlines, flat colors and sparse halftone.\nScene: inside the village's little card shop. A friendly small Sylvain behind a chunky slightly wonky wooden counter, holding three colorful collectible cards fanned out. Either side has low turquoise shelves filled with sealed card packs in turquoise and mustard wrappers, simple geometric star and face motifs. One small round window with blue hydrangeas and glimpse of Breton sea, a discreet black-and-white pennant. Cheerful, warm, modest, playful architecture matching the village.\nAll items are collectible playing cards and sealed packs. No equipment catalogue, no book on counter, no machines, no tools, no checkout interface. Pack fronts use simple abstract shapes, no readable writing. No slogan, labels, lettering or watermark.\nThick bold black ink, rounded flat cream/tan/turquoise/mustard shapes, limited small halftone shadows. No photorealism or 3D realism. Wide low balanced composition; keep Sylvain and card displays fully within the panorama. Final project asset, not a UI mockup.",
+  "processing": "Resize to 1536 × 512, WebP quality 88. No visual edits."
+}

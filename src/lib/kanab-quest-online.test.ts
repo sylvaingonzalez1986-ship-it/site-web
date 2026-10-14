@@ -114,8 +114,8 @@ describe("Immediate shop purchases", () => {
     computerOwned: true, internetRenew: false, stocks: [stock], receipts: [], marketVolumes: {}, ownVolumes: {}, routeSales: {},
     campaign: { id: "campaign", revision: 0, reputation: 0, clientsStart: 0, internetPaid: true, event: "normal", directUsed: 0, shopUsed: 0, goodUnits: 0, disappointmentUnits: 0 } };
 
-  it("buys flowers from 500 to 1500 euros per kg solely according to quality", () => {
-    for (const [quality, unitCents] of [[6.5, 50], [8, 100], [9.5, 150], [10, 150]]) {
+  it("buys saleable indoor flowers at three euros per gram", () => {
+    for (const [quality, unitCents] of [[6.5, 300], [8, 300], [9.5, 300], [10, 300]]) {
       const result = quoteKqCommerce(state, { ...stock, juryScore: quality }, "cbd-shop", "advised", 100);
       expect(result.unitCents).toBe(unitCents);
       expect(result.payoutCents).toBe(10 * unitCents);
@@ -126,9 +126,9 @@ describe("Immediate shop purchases", () => {
 
   it("increases volume with merchant talent and network without breaching the price cap", () => {
     const established = { ...state, strength: "merchant" as const, shopPartners: 20, campaign: { ...state.campaign!, shopPartnersStart: 20 } };
-    expect(quoteKqCommerce(established, stock, "cbd-shop").unitCents).toBe(100);
+    expect(quoteKqCommerce(established, stock, "cbd-shop").unitCents).toBe(300);
     expect(quoteKqCommerce(established, stock, "cbd-shop").maxUnits).toBeGreaterThan(quoteKqCommerce(state, stock, "cbd-shop").maxUnits);
-    expect(quoteKqCommerce(established, stock, "wholesale").unitCents).toBeLessThanOrEqual(60);
+    expect(quoteKqCommerce(established, stock, "wholesale").unitCents).toBe(210);
     expect(quoteKqCommerce(state, stock, "online").maxUnits).toBe(0);
   });
 

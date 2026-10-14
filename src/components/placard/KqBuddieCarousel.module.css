@@ -1,14 +1,14 @@
-﻿.picture { display: block; width: 100%; padding: 0; overflow: hidden; border: 0; border-radius: 4px; background: transparent; color: #fff8e6; cursor: pointer; }
+.picture { display: block; width: 100%; padding: 0; overflow: hidden; border: 0; border-radius: 10px; background: transparent; color: #172923; cursor: pointer; }
 .picture > img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: contain; }
 .metadata { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; }
-.selected { display: inline-flex; align-items: center; gap: 4px; padding: 3px 6px; background: #f4c43d; color: #003c30; font-size: .65rem; font-weight: 900; text-transform: uppercase; }
-.placeholder { display: flex; aspect-ratio: 2 / 3; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 20px; background: #002d24; color: #71e3c9; text-align: center; }
-.placeholder strong { font-size: 1.2rem; color: #fff8e6; }
+.selected { display: inline-flex; align-items: center; gap: 4px; padding: 3px 6px; font-size: .7rem; font-weight: 900; text-transform: uppercase; background: #efc451; color: #172923; border-radius: 8px; }
+.placeholder { display: flex; aspect-ratio: 2 / 3; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 20px; text-align: center; background: #bfe9db; color: #172923; }
+.placeholder strong { font-size: 1.2rem; color: #172923; }
 .placeholder > span { font-size: .75rem; }
 .picture:disabled { cursor: default; filter: grayscale(.75); opacity: .65; }
-.rotationRule { margin-bottom: 16px; padding: 14px 16px; border: 1px solid #123b2f35; border-radius: 4px; background: #f8f2e4; }
-.rotationRule strong { color: #123b2f; }
-.rotationRule p { margin: 6px 0; color: #48604e; font-size: .85rem; line-height: 1.5; }
-.rotationRule small { display: block; margin-top: 6px; color: #48604e; line-height: 1.5; }
-p.rotationStatus { display: flex; align-items: center; gap: 6px; color: #735619; font-weight: 700; }
+.rotationRule { margin-bottom: 16px; padding: 14px 16px; background: #fff1d6; border: 2px solid #172923; border-radius: 12px; }
+.rotationRule strong { color: #172923; }
+.rotationRule p { margin: 6px 0; color: #172923; font-size: .85rem; line-height: 1.5; }
+.rotationRule small { display: block; margin-top: 6px; color: #172923; line-height: 1.5; }
+p.rotationStatus { display: flex; align-items: center; gap: 6px; color: #172923; font-weight: 700; }
 .rotationStatus svg { flex-shrink: 0; }

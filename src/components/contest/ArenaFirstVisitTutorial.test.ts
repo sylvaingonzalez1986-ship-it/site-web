@@ -57,7 +57,7 @@ describe("ArenaFirstVisitTutorial", () => {
     for (const step of ARENA_TUTORIAL_STEPS) {
       expect(step.features).toHaveLength(3);
       expect(step.tip).toBeTruthy();
-      expect(step.href).toMatch(/^\/arene(?:\/carnet\/regular|\/placard(?:\?view=(?:game|shop&catalog=equipment|arena|market))?|\?vue=classement)$/);
+      expect(step.href).toMatch(/^\/arene(?:\/carnet\/regular|\/placard(?:\?view=(?:game|workshop&catalog=equipment|arena|market))?|\?vue=classement)$/);
     }
   });
 
@@ -65,7 +65,8 @@ describe("ArenaFirstVisitTutorial", () => {
     const shop = ARENA_TUTORIAL_STEPS.find((step) => step.id === "boutique")!;
     expect(shop.features[0].description).toContain("Les points servent aux packs");
     expect(shop.features[0].description).toContain("monnaie de jeu");
-    expect(shop.href).toBe("/arene/placard?view=shop&catalog=equipment");
+    expect(shop.label).toBe("Entrepôt");
+    expect(shop.href).toBe("/arene/placard?view=workshop&catalog=equipment");
     const inventory = ARENA_TUTORIAL_STEPS.find((step) => step.id === "inventaire")!;
     expect(inventory.features[0].description).toContain("possédé et compatible");
     expect(inventory.details?.paragraphs[0]).toContain("laisse l’ancien dans ton inventaire avec son état actuel");

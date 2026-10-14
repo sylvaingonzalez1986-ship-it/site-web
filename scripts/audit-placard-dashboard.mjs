@@ -1,6 +1,6 @@
 /** Real dashboard and lobby, synthetic progression, no credentials or external writes. */
 import assert from 'node:assert/strict';
-import {mkdir, writeFile} from 'node:fs/promises';
+import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {createServer} from 'vite';
 import tailwindcss from '@tailwindcss/postcss';
@@ -10,11 +10,14 @@ import puppeteer from 'puppeteer-core';
 const root = process.cwd();
 const output = resolve(root, 'output/placard-workshop/dashboard');
 const modules = {
+  'warehouse-assets': `export default ${await readFile(resolve(root,'public/placard/warehouse-v2/manifest.json'),'utf8')};`,
+  'next/navigation': `export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});export const usePathname=()=>'/arene/placard';export const useSearchParams=()=>new URLSearchParams(location.search);`,
   'dashboard-entry': `
     import React from 'react';
     import {createRoot} from 'react-dom/client';
     import '/src/app/globals.css';
     import {KqPlacardHud} from '/src/components/placard/KqPlacardHud';
+    import {KqSeasonBoard} from '/src/components/placard/KqSeasonBoard';
     import {KqPlacardLobby} from '/src/components/placard/KqPlacardLobby';
     import {KQ_EQUIPMENT_CATALOG} from '/src/lib/kanab-quest-equipment';
     import {KQ_MARKET_ROUTES} from '/src/lib/kanab-quest-market';
@@ -39,7 +42,7 @@ const modules = {
     window.__opened = []; window.__patches = []; window.__failMission = false;
     let failLoad = scenario === 'error';
     window.fetch = async (url, init = {}) => {
-      if (url !== '/api/arena/placard/equipment') return originalFetch(url, init);
+      if (!String(url).startsWith('/api/arena/placard/equipment')) return originalFetch(url, init);
       if (init.method === 'PATCH') {
         const body = JSON.parse(init.body); window.__patches.push(body);
         if(window.__failMission) {window.__failMission=false; return new Response(JSON.stringify({error:'Mission indisponible pour le test.'}), {status:503});}
@@ -51,7 +54,9 @@ const modules = {
       return new Response(JSON.stringify(snapshot));
     };
     const open = (destination, code) => window.__opened.push({destination, code});
-    createRoot(document.getElementById('root')).render(scenario === 'lobby'
+    const season = {seasonCode:'KQ-2026-S1',rank:7,score:1337,rating:1160,seasonPoints:87,reputation:246,wins:12,losses:3,streak:2,arenaExperience:420,leaderboard:[{id:'first',rank:1,name:'Fleur des Embruns',placardScore:1490,isPlayer:false},{id:'player',rank:7,name:'Lou.Chanvre',placardScore:1337,isPlayer:true}],onOpenArena:()=>open('arena')};
+    createRoot(document.getElementById('root')).render(scenario === 'season'
+      ? React.createElement('main',{style:{maxWidth:1050,margin:'auto',padding:16}},React.createElement(KqSeasonBoard,season)) : scenario === 'lobby'
       ? React.createElement(KqPlacardLobby, {onOpen:destination=>open(destination), onOpenEquipment:code=>open('shop',code)})
       : React.createElement('main', {style:{maxWidth:950,margin:'0 auto',padding:16}}, React.createElement(KqPlacardHud, {
         onOpenGame:()=>open('game'), onOpenArena:()=>open('arena'), onOpenMarket:()=>open('market'), onOpenShop:code=>open('shop',code)
@@ -64,13 +69,13 @@ const server = await createServer({
   root, cacheDir:resolve(output, 'vite-cache'), optimizeDeps:{include:['react','react-dom/client','lucide-react']},
   configFile:false, envDir:false, publicDir:resolve(root,'public'), esbuild:{jsx:'automatic'},
   resolve:{alias:{'@':resolve(root,'src')}}, css:{postcss:{plugins:[tailwindcss({base:root})]}},
-  plugins:[{name:'dashboard-audit', enforce:'pre', resolveId(id){if(id in modules)return '\0'+id;}, load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},
+  plugins:[{name:'dashboard-audit', enforce:'pre', resolveId(id){if(id.endsWith('/public/placard/warehouse-v2/manifest.json'))return '\0warehouse-assets';if(id in modules)return '\0'+id;}, load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},
     configureServer(vite){vite.middlewares.use((req,res,next)=>{
       if(req.url?.split('?')[0]!=='/')return next();
       res.setHeader('Content-Type','text/html');
-      res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tableau de bord du Placard</title><style>:root{--font-display:Impact;--font-body:Arial;--font-sans:Arial}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__dashboard-entry"></script></html>');
+      res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tableau de bord du Placard</title><style>@font-face{font-family:AuditDisplay;src:url(/src/app/fonts/BarlowCondensed-Latin-Black.woff2);font-weight:900}@font-face{font-family:AuditBody;src:url(/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2);font-weight:300 700}:root{--font-display:AuditDisplay;--font-body:AuditBody;--font-sans:AuditBody}body{margin:0;background:#fff1d6}</style><div id="root"></div><script type="module" src="/@id/__x00__dashboard-entry"></script></html>');
     });}
-  }], server:{host:'127.0.0.1',port:3197,strictPort:true,hmr:false,watch:{ignored:['**/output/**','**/.next/**']}}
+  }], server:{host:'127.0.0.1',port:3197,strictPort:true,hmr:false,watch:null}
 });
 let browser;
 const errors = [], results = [];
@@ -134,8 +139,14 @@ try {
   assert.equal(await page.$('#hud-tab-overview'),null); await page.click('[role="alert"] button'); await page.waitForSelector('#hud-tab-overview');
   await page.goto('http://127.0.0.1:3197/?scenario=loading',{waitUntil:'domcontentloaded'}); await page.waitForSelector('[role="status"]');
   assert.equal(await page.$('#hud-tab-overview'),null); await page.waitForSelector('#hud-tab-overview');
-  await visit('lobby'); await page.click('details > summary');
-  await page.$eval('[data-placard-dashboard]',el=>el.scrollIntoView({block:'start'}));
+  for(const width of [320,390,1440]){
+    await page.setViewport({width,height:844,isMobile:width<700,hasTouch:width<700});
+    await page.goto('http://127.0.0.1:3197/?scenario=season',{waitUntil:'networkidle0'});await page.waitForSelector('[data-kq-season-board]');
+    assert.equal(await page.$$eval('[data-kq-season-board] i[data-won="true"]',steps=>steps.length),2);
+    await page.focus('[data-kq-season-board] button');await page.keyboard.press('Enter');assert.equal(await page.evaluate(()=>window.__opened.at(-1).destination),'arena');
+    await shot('season-'+width);await checkLayout();await page.click('[data-kq-season-board] details summary');await shot('season-details-'+width);await checkLayout();
+  }
+  await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});await page.goto('http://127.0.0.1:3197/?scenario=lobby',{waitUntil:'networkidle0'});await page.waitForSelector('[data-placard-map]');
   await shot('lobby-390'); await checkLayout();
   assert.deepEqual(errors,[]);
   await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,results,destinations:true,pinnedGoal:true,missionRetry:true,complete:true,loadingAndRetry:true,lobby:true,errors},null,2));

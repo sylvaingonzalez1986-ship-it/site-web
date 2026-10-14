@@ -14,15 +14,14 @@ export type KqStorageMethod = {
   code: KqStorageMethodCode; name: string; priceCents: number; description: string; sourceUrl: string;
   aromaRate: number; chemistryRate: number;
 };
-/** Protection families; each physical container has its own price and capacity.
- * Sources establish product identity, not a scientifically measured ranking.
+/** Fictional protection families; each container has its own price and capacity.
  * Both exposure rates and all loss coefficients below are game balancing. */
 export const KQ_STORAGE_METHODS: readonly KqStorageMethod[] = [
-  { code: "STORAGE-GLASS", name: "Bocaux en verre", priceCents: 0, description: "Bocaux réutilisables inspirés de Le Parfait. Deux bocaux de 1 L sont offerts au départ ; chaque contenant acheté ajoute une capacité limitée.", sourceUrl: "https://www.leparfait.com/fr/pages/les-bocaux-le-parfait-a-vis", aromaRate: 100, chemistryRate: 100 },
-  { code: "STORAGE-GROVE", name: "Sachets Grove Bags", priceCents: 2500, description: "Sachets TerpLoc conçus pour la conservation des fleurs. Une première amélioration pour ralentir les pertes dans ton entrepôt.", sourceUrl: "https://grovebags.com/products/terploc-window-pouch-single", aromaRate: 75, chemistryRate: 80 },
-  { code: "STORAGE-BOVEDA", name: "Bocaux et régulation bidirectionnelle", priceCents: 4500, description: "Des bocaux accompagnés de sachets Boveda / Vivi Fresh, qui absorbent ou libèrent de l’humidité. Une protection supplémentaire pour les arômes de tes lots.", sourceUrl: "https://help.bovedainc.com/what-happened-to-boveda-herbal", aromaRate: 60, chemistryRate: 65 },
-  { code: "STORAGE-CVAULT", name: "CVault et Vivi Fresh", priceCents: 12000, description: "Des contenants opaques en acier inoxydable, avec fermeture et sachets de régulation. Une installation durable pour mieux préserver tes lots.", sourceUrl: "https://store.vivipacks.com/products/cvault", aromaRate: 45, chemistryRate: 50 },
-  { code: "STORAGE-CANNATROL", name: "Armoire Cannatrol", priceCents: 180000, description: "Une armoire dédiée à la conservation contrôlée des fleurs. La meilleure protection de l’entrepôt dans le jeu, particulièrement utile pour garder tes lots longtemps.", sourceUrl: "https://cannatrols.com/pages/cool-cure-models", aromaRate: 25, chemistryRate: 30 },
+  { code: "STORAGE-GLASS", name: "Bocaux en verre", priceCents: 0, description: "Des bocaux réutilisables pour les premières récoltes. Deux bocaux de 1 L sont offerts au départ.", sourceUrl: "", aromaRate: 100, chemistryRate: 100 },
+  { code: "STORAGE-GROVE", name: "Sachets de conservation", priceCents: 2500, description: "Des sachets refermables pour ralentir les pertes dans ton entrepôt.", sourceUrl: "", aromaRate: 75, chemistryRate: 80 },
+  { code: "STORAGE-BOVEDA", name: "Bocaux régulés", priceCents: 4500, description: "Des bocaux équipés d’un régulateur pour mieux protéger tes lots.", sourceUrl: "", aromaRate: 60, chemistryRate: 65 },
+  { code: "STORAGE-CVAULT", name: "Contenants en inox", priceCents: 12000, description: "Des contenants opaques et renforcés pour conserver tes lots plus longtemps.", sourceUrl: "", aromaRate: 45, chemistryRate: 50 },
+  { code: "STORAGE-CANNATROL", name: "Armoire de conservation", priceCents: 180000, description: "Une armoire dédiée aux lots que tu souhaites garder longtemps. La meilleure protection de cette gamme.", sourceUrl: "", aromaRate: 25, chemistryRate: 30 },
 ];
 export const KQ_STORAGE_SOURCES = [
   "https://doi.org/10.3390/plants14030414",
@@ -31,29 +30,30 @@ export const KQ_STORAGE_SOURCES = [
 ] as const;
 export function getKqStorageMethod(code: string) { return KQ_STORAGE_METHODS.find(method => method.code === code); }
 
-export const KQ_STORAGE_CONTAINER_CODES = ["GLASS-1L", "GLASS-2L", "GLASS-3L", "GROVE-1OZ", "GROVE-1LB", "BOVEDA-1L", "CVAULT-2OZ", "CVAULT-1LB", "CANNATROL"] as const;
+export const KQ_STORAGE_CONTAINER_CODES = ["GLASS-1L", "GLASS-2L", "GLASS-3L", "GROVE-1OZ", "GROVE-1LB", "BOVEDA-1L", "CVAULT-2OZ", "CVAULT-1LB", "CANNATROL", "CURTEC-60L"] as const;
 export type KqStorageContainerCode = typeof KQ_STORAGE_CONTAINER_CODES[number];
 export type KqStorageContainer = {
   code: KqStorageContainerCode; methodCode: KqStorageMethodCode; name: string; capacityUnits: number;
   priceCents: number; description: string; sourceUrl: string;
 };
-/** Capacity uses the commerce unit (0.1 g). Jar weights and all prices are game
- * values; manufacturer sources establish the real product and volume format. */
+/** Capacity uses the commerce unit (0.1 g). All capacities and prices are game values. */
 export const KQ_STORAGE_CONTAINERS: readonly KqStorageContainer[] = [
-  { code: "GLASS-1L", methodCode: "STORAGE-GLASS", name: "Bocal en verre · 1 L", capacityUnits: 500, priceCents: 500, description: "Format inspiré des bocaux Le Parfait à vis. Capacité de jeu : 50 g de fleurs.", sourceUrl: "https://www.leparfait.com/fr/pages/les-bocaux-le-parfait-a-vis" },
-  { code: "GLASS-2L", methodCode: "STORAGE-GLASS", name: "Bocal en verre · 2 L", capacityUnits: 1000, priceCents: 900, description: "Un bocal plus grand pour les récoltes intermédiaires. Capacité de jeu : 100 g de fleurs.", sourceUrl: "https://www.leparfait.com/fr/pages/les-bocaux-le-parfait-a-vis" },
-  { code: "GLASS-3L", methodCode: "STORAGE-GLASS", name: "Bocal en verre · 3 L", capacityUnits: 1500, priceCents: 1200, description: "Le grand format de la gamme à vis. Capacité de jeu : 150 g de fleurs.", sourceUrl: "https://www.leparfait.com/fr/pages/les-bocaux-le-parfait-a-vis" },
-  { code: "GROVE-1OZ", methodCode: "STORAGE-GROVE", name: "Grove Bags TerpLoc · 1 oz", capacityUnits: 280, priceCents: 300, description: "Un petit sachet spécialisé pour 28 g de fleurs dans le jeu.", sourceUrl: "https://grovebags.com/products/terploc-window-pouch-single" },
-  { code: "GROVE-1LB", methodCode: "STORAGE-GROVE", name: "Grove Bags TerpLoc · 1 lb", capacityUnits: 4540, priceCents: 1500, description: "Un grand sachet spécialisé pour 454 g de fleurs dans le jeu.", sourceUrl: "https://grovebags.com/products/terploc-window-pouch-single" },
-  { code: "BOVEDA-1L", methodCode: "STORAGE-BOVEDA", name: "Bocal et Boveda / Vivi Fresh · 1 L", capacityUnits: 500, priceCents: 900, description: "Un bocal accompagné d’un régulateur bidirectionnel. Capacité de jeu : 50 g de fleurs.", sourceUrl: "https://store.vivipacks.com/products/vivi-fresh" },
-  { code: "CVAULT-2OZ", methodCode: "STORAGE-CVAULT", name: "CVault et Vivi Fresh · 2 oz", capacityUnits: 560, priceCents: 3500, description: "Un contenant opaque en inox, avec régulation, pour 56 g de fleurs dans le jeu.", sourceUrl: "https://store.vivipacks.com/products/cvault" },
-  { code: "CVAULT-1LB", methodCode: "STORAGE-CVAULT", name: "CVault et Vivi Fresh · 1 lb", capacityUnits: 4540, priceCents: 12000, description: "Un grand contenant en inox, avec régulation, pour 454 g de fleurs dans le jeu.", sourceUrl: "https://store.vivipacks.com/products/cvault" },
-  { code: "CANNATROL", methodCode: "STORAGE-CANNATROL", name: "Armoire Cannatrol Cool Cure", capacityUnits: 20000, priceCents: 180000, description: "Une armoire de conservation pour 2 kg dans le jeu. La capacité réelle annoncée varie selon le modèle et le produit.", sourceUrl: "https://cannatrols.com/pages/faq" },
+  { code: "GLASS-1L", methodCode: "STORAGE-GLASS", name: "Bocal en verre · 1 L", capacityUnits: 500, priceCents: 500, description: "Un petit bocal à vis pour accueillir 50 g de récolte.", sourceUrl: "" },
+  { code: "GLASS-2L", methodCode: "STORAGE-GLASS", name: "Bocal en verre · 2 L", capacityUnits: 1000, priceCents: 900, description: "Un bocal plus grand pour accueillir 100 g de récolte.", sourceUrl: "" },
+  { code: "GLASS-3L", methodCode: "STORAGE-GLASS", name: "Bocal en verre · 3 L", capacityUnits: 1500, priceCents: 1200, description: "Le grand format à vis pour accueillir 150 g de récolte.", sourceUrl: "" },
+  { code: "GROVE-1OZ", methodCode: "STORAGE-GROVE", name: "Sachet de conservation · 28 g", capacityUnits: 280, priceCents: 300, description: "Un petit sachet refermable pour conserver 28 g de récolte.", sourceUrl: "" },
+  { code: "GROVE-1LB", methodCode: "STORAGE-GROVE", name: "Sachet de conservation · 454 g", capacityUnits: 4540, priceCents: 1500, description: "Un grand sachet refermable pour conserver 454 g de récolte.", sourceUrl: "" },
+  { code: "BOVEDA-1L", methodCode: "STORAGE-BOVEDA", name: "Bocal régulé · 1 L", capacityUnits: 500, priceCents: 900, description: "Un bocal avec régulateur pour protéger 50 g de récolte.", sourceUrl: "" },
+  { code: "CVAULT-2OZ", methodCode: "STORAGE-CVAULT", name: "Boîte en inox · 56 g", capacityUnits: 560, priceCents: 3500, description: "Un contenant opaque et renforcé pour protéger 56 g de récolte.", sourceUrl: "" },
+  { code: "CVAULT-1LB", methodCode: "STORAGE-CVAULT", name: "Boîte en inox · 454 g", capacityUnits: 4540, priceCents: 12000, description: "Un grand contenant opaque et renforcé pour protéger 454 g de récolte.", sourceUrl: "" },
+  { code: "CANNATROL", methodCode: "STORAGE-CANNATROL", name: "Armoire de conservation", capacityUnits: 20000, priceCents: 180000, description: "Une armoire dédiée à la protection de 2 kg de récolte.", sourceUrl: "" },
+  { code: "CURTEC-60L", methodCode: "STORAGE-GLASS", name: "Fût hermétique · 60 L", capacityUnits: 30_000, priceCents: 8_550,
+    description: "Un fût réutilisable pour accueillir 3 kg de récolte, avec la même protection que les bocaux. La zone aménagée limite la place disponible.", sourceUrl: "" },
 ];
 export const KQ_STARTER_STORAGE_CONTAINERS: Readonly<Partial<Record<KqStorageContainerCode, number>>> = { "GLASS-1L": 2 };
 export function getKqStorageContainer(code: string) { return KQ_STORAGE_CONTAINERS.find(container => container.code === code); }
 export type KqStorageAllocation = { containerCode: KqStorageContainerCode; quantity: number; storedUnits: number };
-export type KqStorageCapacity = { totalUnits: number; allocations: KqStorageAllocation[]; overflowDeadlineAt: string | null };
+export type KqStorageCapacity = { totalUnits: number; allocations: KqStorageAllocation[]; overflowDeadlineAt: string | null; automaticOverflowSale?: boolean };
 export type KqStorageCapacityProjection = KqStorageCapacity & {
   protectedUnits: number; overflowUnits: number; reservedCapacityUnits: number; overflowDue: boolean;
 };
@@ -88,10 +88,11 @@ export function isKqStorageCapacity(value: unknown): value is KqStorageCapacity 
   if (!value || typeof value !== "object") return false;
   const capacity = value as KqStorageCapacity;
   return Number.isSafeInteger(capacity.totalUnits) && capacity.totalUnits >= 0 && validAllocations(capacity.allocations)
+    && (capacity.automaticOverflowSale === undefined || typeof capacity.automaticOverflowSale === "boolean")
     && new Set(capacity.allocations.map(item => item.containerCode)).size === capacity.allocations.length
     && capacity.allocations.reduce((sum, item) => sum + item.storedUnits, 0) <= capacity.totalUnits
     && (capacity.overflowDeadlineAt === null || (typeof capacity.overflowDeadlineAt === "string" && Number.isFinite(Date.parse(capacity.overflowDeadlineAt))))
-    && (capacity.allocations.reduce((sum, item) => sum + item.storedUnits, 0) === capacity.totalUnits || capacity.overflowDeadlineAt !== null);
+    && (capacity.allocations.reduce((sum, item) => sum + item.storedUnits, 0) === capacity.totalUnits || capacity.overflowDeadlineAt !== null || capacity.automaticOverflowSale === false);
 }
 
 /** Reserve whole containers for one lot. The chosen method is filled first,
@@ -142,7 +143,7 @@ export function projectKqStorageCapacity(capacity: KqStorageCapacity, nowMs: num
   const overflowUnits = capacity.totalUnits - protectedUnits;
   return { ...capacity, allocations: capacity.allocations.map(item => ({ ...item })), protectedUnits, overflowUnits,
     reservedCapacityUnits: capacity.allocations.reduce((sum, allocation) => sum + allocation.quantity * getKqStorageContainer(allocation.containerCode)!.capacityUnits, 0),
-    overflowDue: overflowUnits > 0 && capacity.overflowDeadlineAt !== null && nowMs >= Date.parse(capacity.overflowDeadlineAt) };
+    overflowDue: capacity.automaticOverflowSale !== false && overflowUnits > 0 && capacity.overflowDeadlineAt !== null && nowMs >= Date.parse(capacity.overflowDeadlineAt) };
 }
 
 /** Sales release overflow first, then whole containers from the end of the
@@ -180,7 +181,9 @@ export function fillKqStorageCapacity(capacity: KqStorageCapacity, input: {
     if (previous) { previous.quantity += allocation.quantity; previous.storedUnits += allocation.storedUnits; }
     else allocations.push(allocation);
   }
-  return { totalUnits: capacity.totalUnits, allocations, overflowDeadlineAt: capacity.overflowDeadlineAt ?? additional.overflowDeadlineAt };
+  return { totalUnits: capacity.totalUnits, allocations,
+    ...(capacity.automaticOverflowSale === undefined ? {} : { automaticOverflowSale: capacity.automaticOverflowSale }),
+    overflowDeadlineAt: capacity.automaticOverflowSale === false ? null : capacity.overflowDeadlineAt ?? additional.overflowDeadlineAt };
 }
 
 /** Integer weighted rates match SQL and keep exact integer exposure accounting.

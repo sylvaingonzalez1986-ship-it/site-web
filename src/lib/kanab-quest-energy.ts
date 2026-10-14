@@ -2,6 +2,8 @@ import { getKqEquipmentDefinition, getKqEquipmentAtLevel, getKqEquipmentLevel, i
 import type { ChanvrierStrength } from "./arena-chanvrier";
 import type { KqCultureEquipmentCondition } from "./kanab-quest-culture-wear";
 import { getKqProductionUnits, type KqTentEquipmentProfile, type KqEquipmentRunScope } from "./kanab-quest-production-scale";
+import type { KqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
+import type { KqSupplierInvoice } from "./kanab-quest-business";
 
 export const KQ_ENERGY_MODES = {
   eco: { name: "Éco", consumption: 0.75, harvest: 0.9, pressure: 0, label: "−25 % énergie · −10 % récolte" },
@@ -88,8 +90,12 @@ export function quoteKqDogCare(completedCycles: number): KqDogCareSchedule {
   return { completedCycles: cycles, nextCycle: cycles + 1, cyclesUntilVet, foodCents: 800, vetCents: 4000, nextTotalCents: 800 + (cyclesUntilVet === 1 ? 4000 : 0) };
 }
 export type KqEnergyInvoice = { runId: string; createdAt: string; totalCents: number; remainingCents: number; harvestGrams: number; quote: KqEnergyQuote; dogCare?: KqDogCare | null };
-export type KqEnergySummary = { outstandingCents: number; invoiceCount: number; bestGramsPerKwh: number | null; invoices: KqEnergyInvoice[]; dogCare?: KqDogCareSchedule | null };
+export type KqEnergySummary = { outstandingCents: number; invoiceCount: number; bestGramsPerKwh: number | null; invoices: KqEnergyInvoice[]; dogCare?: KqDogCareSchedule | null;
+  /** Invoice for the active run; null means no supplier invoice, absent means an older response. */
+  supplierInvoice?: KqSupplierInvoice | null;
+  supplierInvoices?: KqSupplierInvoice[] };
 export type KqEnergySnapshot = KqEnergySummary & {
+  warehouse?: KqWarehouseRunSnapshot;
   equipmentScopeVersion?: 2 | 3;
   buildings?: Array<{ buildingNumber: number; anchorTentNumber: number; equippedCodes: string[]; levels: Record<string, number>; cultureWear: Record<string, KqCultureEquipmentCondition>; cultureOperationalCodes: string[] }>;
   tents?: Array<{ tentNumber: number; equippedCodes: string[]; levels: Record<string, number>; cultureWear: Record<string, KqCultureEquipmentCondition>; cultureOperationalCodes: string[] }>;

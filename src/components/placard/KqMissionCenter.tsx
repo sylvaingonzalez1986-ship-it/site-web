@@ -12,8 +12,8 @@ import { KqSupportPackOpening, requestKqSupportPackOpening, type KqOpenedSupport
 
 const TRACKS = {
   culture: { title: "Culture", image: "/contest/mascot/arena-scene-placard-v1.png", icon: Sprout, unit: "objectif" },
-  online: { title: "Vente en ligne", image: "/placard/channel-online-v1.webp", icon: Users, unit: "clients fidèles" },
-  shops: { title: "Boutiques partenaires", image: "/placard/channel-cbd-shop-v1.webp", icon: Store, unit: "partenaires" },
+  online: { title: "Vente en ligne", image: "/placard/channel-online-sylvain-v2.webp", icon: Users, unit: "clients fidèles" },
+  shops: { title: "Boutiques partenaires", image: "/placard/channel-cbd-shop-sylvain-v2.webp", icon: Store, unit: "partenaires" },
 };
 const PACK_IMAGE = "/placard/shop-item-packs-v2.webp";
 type MissionPack = KqMissionClaim & { code: KqMission["code"] };
@@ -114,7 +114,7 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: "game" | "market" |
   const rewardOpened = reward ? packIsOpened(reward.entitlementId) : false;
 
   return <main className={styles.center}>
-    <header className={styles.header}><div><h1>Mes objectifs</h1><p>Une prochaine étape par parcours. Choisis un objectif et reprends ton activité.</p></div></header>
+    <header className={styles.header}><div><h1>Mes objectifs</h1><p>Avance dans tes missions et gagne des cartes.</p></div></header>
     <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button><button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button></nav>
     {section === "community" ? <><CommunityMissionWelcome /><CommunityMissionsBoard /></> : <>
     <div className={styles.toolbar}>

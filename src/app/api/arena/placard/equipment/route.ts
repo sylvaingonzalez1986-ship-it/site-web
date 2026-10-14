@@ -6,6 +6,7 @@ import {
   equipKqDurableEquipment,
   getKqEquipmentShopSnapshot,
   purchaseKqDurableEquipment,
+  purchaseKqWorkshopTier,
   setKqEquipmentRoutePlan,
   upgradeKqDurableEquipment,
   repairKqMachine,
@@ -87,16 +88,22 @@ export async function PATCH(request: Request) {
   }
   try {
     const payload = await request.json() as {
-      action?: "route-plan" | "upgrade" | "repair" | "replace" | "expand-production";
+      action?: "route-plan" | "upgrade" | "workshop-tier" | "repair" | "replace" | "expand-production";
       expectedUnits?: number;
       tentNumber?: number;
       expectedVersion?: number;
       expectedCostCents?: number;
       requestKey?: string;
       expectedLevel?: number;
+      targetLevel?: number;
+      expectedPriceCents?: number;
       route?: string | null;
       equipmentCode?: string | null;
     };
+    if (payload.action === "workshop-tier") return NextResponse.json(await purchaseKqWorkshopTier({
+      userId: session.customerId, requestKey: String(payload.requestKey ?? ""), equipmentCode: String(payload.equipmentCode ?? ""),
+      targetLevel: payload.targetLevel ?? 0, expectedLevel: payload.expectedLevel ?? -1, expectedPriceCents: payload.expectedPriceCents ?? -1,
+    }));
     if (payload.action === "expand-production") return NextResponse.json(await expandKqProduction({
       userId: session.customerId, requestKey: String(payload.requestKey ?? ""),
       expectedUnits: payload.expectedUnits ?? -1, expectedCostCents: payload.expectedCostCents ?? -1,

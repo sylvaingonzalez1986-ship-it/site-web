@@ -484,6 +484,6 @@ describe("Kanab Quest post-harvest market", () => {
       ownedCodes: [],
       equippedCodes: [],
       cashCents: 0,
-    })).toMatchObject({ code: "SIFT-TRAY", kind: "prerequisite", targetEquipmentName: "Séparateur statique Plasmastatic" });
+    })).toMatchObject({ code: "SIFT-TRAY", kind: "prerequisite", targetEquipmentName: "Séparateur compact" });
   });
 });

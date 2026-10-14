@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-13",
+  "mode": "built-in imagegen",
+  "prompt": "Use case: stylized-concept. Game background illustration for a fictional hemp farming management game.\nInput image: style and architecture reference, the existing Breton cartoon warehouse.\nCreate a new COMPACT SQUARE warehouse interior, perfectly orthographic overhead floor plan, 1024 x 1024 composition, representing a modest 10 metre by 10 metre room.\nMatch exactly the reference bold slightly wonky black ink outlines, flat creamy warm floor, teal timber brackets, honey wooden beams, pale Breton granite blocks, mustard utility lamps and playful hand drawn cartoon character.\nComposition is a square frame of walls around one completely unobstructed SQUARE floor. Critical playable empty floor is from x=128 to896 and y=128 to896 on the1024 square. All walls, props and decorative objects must stay OUTSIDE this central square. Straight horizontal/vertical walls, no perspective convergence, no isometric angle. Top wall can show its inner face like reference, but keep it within first128 pixels.\nOnly a few existing-universe decorations on the wall border: two modest warm industrial wall lamps, a small tool pegboard, hose reel, hemp leaf plaque, a tiny Breton black and white pennant. One compact closed entrance door centred in bottom border, a few granite and greenery hints outside walls. Use less decor than the wide original so this feels like a modest first growing warehouse, cozy, not a giant factory.\nFloor centre must stay fully empty, pale cream and evenly lit, with extremely subtle wear speckles only. No plants, equipment, tents, growing beds, people, furniture, walkways, grid lines or text on the central floor: the game adds its own growing-zone sprites there. No camping tents, no fruits or vegetables. No lettering, no numbers, no dimension labels, no interface, no watermark. Full square image edge to edge, opaque background.",
+  "reference": "public/placard/warehouse-v4/overhead-room-sylvain-v1.webp",
+  "source": "C:/Users/sylva/.codex/generated_images/01a130d8-b8ca-7fe0-9552-219011ecdd83/exec-48d85a2a-ec20-46d6-9823-71bf1befa3e5.png",
+  "output": "public/placard/warehouse-v4/overhead-room-100m2-sylvain-v1.webp",
+  "export": {
+    "width": 1024,
+    "height": 1024,
+    "format": "webp",
+    "quality": 88
+  },
+  "floor": {
+    "columns": 10,
+    "rows": 10,
+    "areaM2": 100
+  }
+}

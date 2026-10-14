@@ -7,6 +7,7 @@ import { rarityLabels } from "@/lib/lottery-card-ui";
 import type { KqBuddie } from "@/lib/kanab-quest-game";
 import { getKqBuddieRotationRemaining, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import { KqCardCarousel } from "./KqCardCarousel";
+import { KqBuddieFlavors } from "./KqBuddieFlavors";
 import shared from "./KqCardCarousel.module.css";
 import styles from "./KqBuddieCarousel.module.css";
 
@@ -42,6 +43,7 @@ export function KqBuddieCarousel({ buddies, artwork, selectedCode, rotation, onS
               : <span className={styles.placeholder}><Leaf size={48} aria-hidden="true" /><strong>{buddie.name}</strong><span>Buddie #{buddie.cardNumber}</span></span>}
           </button>
         </div>
+        <KqBuddieFlavors varietyCode={buddie.code} />
         <div className={styles.metadata}>
           <span className={shared.timing}>#{buddie.cardNumber} · {rarityLabels[buddie.rarity]}{illustration?.ownedCopies ? ` · ×${illustration.ownedCopies}` : ""}</span>
           {selected ? <span className={styles.selected}><Check size={14} aria-hidden="true" /> Choisi</span> : null}

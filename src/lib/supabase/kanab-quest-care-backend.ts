@@ -79,6 +79,7 @@ export async function applyKqPlayerCare(input: {
   if (input.expectedUpdatedAt && input.expectedUpdatedAt !== run.data.updated_at) throw new Error("La culture a évolué. Recharge son suivi avant d’intervenir.");
   const state = parseKqGameSave(encodeKqSave(run.data.state));
   if (!state) throw new Error("État du suivi invalide. Actualise la culture.");
+  if (state.campaign && state.campaign.leaderRunId !== input.runId) throw new Error("Ouvre la campagne commune pour intervenir sur ces cultures.");
   if (state.rulesVersion !== 3) throw new Error("Cette culture conserve ses anciennes règles jusqu’à sa fin.");
   const permission = productCode === null ? canPerformKqBasicCare(state) : canApplyKqCareProduct(state, productCode);
   if (!permission.allowed) throw new Error(permission.reason);

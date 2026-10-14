@@ -44,14 +44,14 @@ describe("business actions use authoritative commands", () => {
   it.each([
     { action: "create-shop", name: "x" }, { action: "rename-shop", name: "<script>" },
     { action: "advertise", kind: "constructor" }, { action: "shop-renewal", enabled: "true" },
-    { action: "pay-lab", invoiceId: "bad-id" }, { action: "domiciliation", mode: "anything" },
+    { action: "pay-lab", invoiceId: "bad-id" }, { action: "pay-supplier", invoiceId: "bad-id" }, { action: "domiciliation", mode: "anything" },
     { action: "internet", enabled: true },
   ])("rejects invalid or obsolete request $action before calling a mutation", async input => {
     await expect(handleKqCommerceAction(user, { ...input, requestKey: user })).rejects.toThrow();
     expect(mocks.rpc).not.toHaveBeenCalled();
   });
   it.each([
-    { action: "advertise", kind: "radio" }, { action: "pay-lab", invoiceId: stockId },
+    { action: "advertise", kind: "radio" }, { action: "pay-lab", invoiceId: stockId }, { action: "pay-supplier", invoiceId: stockId },
     { action: "domiciliation", mode: "external" }, { action: "shop-renewal", enabled: false }, { action: "renew-shop" },
   ])("dispatches $action with the idempotency key", async ({ action, ...payload }) => {
     await handleKqCommerceAction(user, { action, ...payload, requestKey: user });
@@ -64,6 +64,19 @@ describe("business actions use authoritative commands", () => {
     await expect(handleKqCommerceAction(user, { action: "quote", stockId, channel: "online", policy: "advised" })).rejects.toThrow("business_calendar_migration_required");
     expect(mocks.insert).not.toHaveBeenCalled();
   });
+  it("never forwards a client-supplied supplier payment amount", async () => {
+    await handleKqCommerceAction(user, { action: "pay-supplier", invoiceId: stockId, amountCents: 1, requestKey: user });
+    expect(mocks.rpc).toHaveBeenCalledWith("rpc_kq_commerce_command", {
+      p_user_id: user, p_action: "pay-supplier", p_payload: { invoiceId: stockId }, p_request_key: user,
+    });
+  });
+  it.each([
+    ["commerce_supplier_unavailable", "déjà réglée"],
+    ["commerce_supplier_cash", "progressivement sur les ventes"],
+  ])("explains supplier payment rejection %s", async (code, explanation) => {
+    mocks.rpc.mockResolvedValue({ data: null, error: { message: code } });
+    await expect(handleKqCommerceAction(user, { action: "pay-supplier", invoiceId: stockId, requestKey: user })).rejects.toThrow(explanation);
+  });
   it("stores tax and debt deductions and expires the quote before the next business event", async () => {
     const data = snapshot();
     data.business!.lab.overdueCents = 4500;
@@ -72,6 +85,15 @@ describe("business actions use authoritative commands", () => {
     const result = await handleKqCommerceAction(user, { action: "quote", stockId, channel: "cbd-shop", policy: "advised", vatCents: 0 });
     expect(result).toMatchObject({ vatCents: 1800, labPaidCents: 4500, electricityPaidCents: 0, netPayoutCents: 4500, expiresAt: data.business!.nextEventAt });
     expect(mocks.insert).toHaveBeenCalledWith(expect.objectContaining({ offer: expect.objectContaining({ vatCents: 1800, netPayoutCents: 4500 }) }));
+  });
+  it("includes overdue suppliers in the confirmed sale without collecting invoices before their deadline", async () => {
+    const data = snapshot();
+    data.business!.suppliers = { outstandingCents: 7000, overdueCents: 2400, invoices: [] };
+    mocks.rpc.mockResolvedValue({ data, error: null });
+    mocks.energy.mockResolvedValue({ outstandingCents: 0 });
+    const result = await handleKqCommerceAction(user, { action: "quote", stockId, channel: "cbd-shop", policy: "advised", supplierPaidCents: 0 });
+    expect(result).toMatchObject({ vatCents: 1800, supplierPaidCents: 2400, netPayoutCents: 6600 });
+    expect(mocks.insert).toHaveBeenCalledWith(expect.objectContaining({ offer: expect.objectContaining({ supplierPaidCents: 2400, netPayoutCents: 6600 }) }));
   });
   it("does not persist an online offer for a player still saving for a site", async () => {
     const data = snapshot(); data.business = createKqBusinessPreview(now);

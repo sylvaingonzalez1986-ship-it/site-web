@@ -1,0 +1,15 @@
+{
+  "tool": "Built-in image_gen",
+  "asset": "culture-barn-sylvain-v1.webp",
+  "source": "exec-0ca3925d-1b23-496a-b8e7-ace8916b6ef7.png",
+  "references": [
+    "placard-world-sylvain-v5.webp",
+    "../../sylvain.png"
+  ],
+  "prompt": "Use case: illustration-story.\nAsset type: final panoramic decorative illustration for the top of a game preparation screen, Le Placard. This replaces a large marketing block; there will be NO text on the image.\nImage1 placard-world-sylvain-v5.webp is the exact approved village art direction and architecture. Image2 sylvain.png is the supporting drawing-style reference only, not a person to include.\nDraw a cheerful, quirky Breton village barn matching the upper-left warehouse in image1: modest rounded cream granite walls, sagging dark slate roof, patched tan wooden lintel, oversized turquoise double doors, one door ajar with a warm empty workshop behind. A short path, a few wooden crates and barrels, a wonky wheelbarrow, blue hydrangeas and yellow gorse around a low granite wall, one small comic seagull on the roof, a discreet black-and-white Breton pennant. A distant sliver of turquoise sea. Calm pale cream sky.\nVery thick confident black ink contours, flat cream/tan/turquoise/mustard/dark pine colors, sparse halftone patches, rounded slightly eccentric architecture. EXACT same playful illustrated world as the village, not photorealistic, not 3D, not finely painted fantasy.\nComposition: wide LOW panorama, ideally1536x512. Barn occupies the middle of the frame, fully visible from roof to doorway, about40% of total width; side scenery continues to edges. Keep entire important scene vertically compact and centered, with sky above and quiet pale ground below. The scene must work as a shallow horizontal banner and a centered mobile crop. No people or giant mascot. No text, lettering, slogan, logo, signs with words, interface, border or watermark.",
+  "output": {
+    "width": 1536,
+    "height": 512,
+    "bytes": 138424
+  }
+}

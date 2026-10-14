@@ -7,7 +7,7 @@ describe("Arena next activity", () => {
     const actions = getArenaResumeActions({ activeRun: true, readyLotCount: 2, availableFlowerCount: 3, supportPackCount: 1, buddiePackCount: 4 });
     expect(actions.map(action => action.id)).toEqual(["culture", "market", "jury", "buddies", "support"]);
     expect(actions[0].href).toBe("/arene/placard?view=game");
-    expect(actions[1].href).toBe("/arene/placard?view=market");
+    expect(actions[1].href).toBe("/arene/placard?view=market&section=sales");
     expect(actions[2].href).toBe("/arene/placard?view=arena");
     expect(actions[3].href).toBe("/profil/collection");
     expect(actions[4].href).toBe("/arene/placard?view=shop");

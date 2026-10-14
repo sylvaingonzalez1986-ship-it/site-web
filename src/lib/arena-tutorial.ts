@@ -55,14 +55,14 @@ export const ARENA_TUTORIAL_STEPS: readonly ArenaTutorialStep[] = [
     tip: "Cartes et équipements sont deux choses différentes : les cartes servent en partie, le matériel reste dans ton inventaire.",
   },
   {
-    id: "boutique", number: "03", label: "Boutique", eyebrow: "Investir dans l’atelier",
+    id: "boutique", number: "03", label: "Entrepôt", eyebrow: "Investir dans l’atelier",
     title: "Achète le bon matériel.",
-    lead: "Dans la Boutique du Placard, ouvre le catalogue de matériel. Pas besoin de tout acheter pour commencer.",
-    href: "/arene/placard?view=shop&catalog=equipment", action: "Ouvrir le catalogue", Icon: ShoppingBag,
+    lead: "Dans l’Entrepôt du Placard, ouvre le rayon matériel. La Boutique du quartier est réservée aux packs de cartes.",
+    href: "/arene/placard?view=workshop&catalog=equipment", action: "Voir le matériel", Icon: ShoppingBag,
     features: [
       { title: "Deux budgets distincts", description: "Les points servent aux packs de cartes. La trésorerie du Placard, affichée en euros, sert aux équipements : c’est de la monnaie de jeu.", Icon: Banknote },
       { title: "Compare les machines", description: "Tentes, LED et matériel de transformation : regarde les effets, les prérequis, la capacité et les filières débloquées.", Icon: SlidersHorizontal },
-      { title: "Panier, puis validation", description: "Ajoute le matériel au panier, vérifie le total et valide l’achat si ton solde le permet.", Icon: ShoppingBag },
+      { title: "Devis, puis validation", description: "Choisis tes équipements, vérifie le total annoncé et confirme l’achat si ton solde le permet.", Icon: ShoppingBag },
     ],
     tip: "Les ventes de lots financent tes prochains achats. Une machine chère ne garantit pas une bonne réputation.",
   },

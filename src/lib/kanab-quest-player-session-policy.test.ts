@@ -67,7 +67,7 @@ describe("Kanab Quest player session ownership policy", () => {
       backend.indexOf("export async function startKqAdminRun"),
     );
     expect(startSection).toContain("p_user_id: ownerId");
-    expect(startSection).toContain('rpc("rpc_kq_start_run_with_heritage"');
+    expect(startSection).toContain('intention ? "rpc_kq_start_zone_run" : "rpc_kq_start_run_with_heritage"');
     expect(startSection).not.toContain("adminEmail");
   });
 
@@ -142,7 +142,7 @@ describe("Kanab Quest player session ownership policy", () => {
 
   it("filters runs and flowers by the authenticated owner", () => {
     const runSection = backend.slice(
-      backend.indexOf("export async function getKqPlayerActiveRun"),
+      backend.indexOf("async function readKqPlayerRuns"),
       backend.indexOf("export async function getKqAdminActiveRun"),
     );
     const flowerSection = backend.slice(

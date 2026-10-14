@@ -117,8 +117,8 @@ describe("finite warehouse containers", () => {
   const allocate = (totalUnits: number, ownedContainers: Record<string, number> = { ...KQ_STARTER_STORAGE_CONTAINERS }) => planKqStorageAllocation({ totalUnits, ownedContainers, nowMs: origin, preferredMethodCode: "STORAGE-GLASS" });
 
   it("offers several real container sizes and a finite 100 g starter capacity", () => {
-    expect(KQ_STORAGE_CONTAINERS).toHaveLength(9);
-    expect(new Set(KQ_STORAGE_CONTAINERS.map(item => item.code)).size).toBe(9);
+    expect(KQ_STORAGE_CONTAINERS).toHaveLength(10);
+    expect(new Set(KQ_STORAGE_CONTAINERS.map(item => item.code)).size).toBe(10);
     expect(KQ_STORAGE_CONTAINERS.every(item => item.capacityUnits > 0 && Number.isInteger(item.capacityUnits) && item.priceCents > 0)).toBe(true);
     const inventory = getKqStorageInventory(KQ_STARTER_STORAGE_CONTAINERS);
     expect(inventory.reduce((sum, item) => sum + item.ownedQuantity * item.capacityUnits, 0)).toBe(1000);
@@ -133,6 +133,13 @@ describe("finite warehouse containers", () => {
     expect(projectKqStorageCapacity(second, origin)).toMatchObject({ protectedUnits: 500, overflowUnits: 300, reservedCapacityUnits: 500 });
     expect(getKqStorageInventory(KQ_STARTER_STORAGE_CONTAINERS, [...first.allocations, ...second.allocations])[0]).toMatchObject({ occupiedQuantity: 2, freeQuantity: 0, storedUnits: 510 });
     expect(() => getKqStorageInventory({ "GLASS-1L": 1 }, [...first.allocations, ...second.allocations])).toThrow();
+  });
+
+  it("reserves finite 60 L drums without sharing their unused room between harvests", () => {
+    const capacity = allocate(30_001, { "CURTEC-60L": 1 });
+    expect(capacity.allocations).toEqual([{ containerCode: "CURTEC-60L", quantity: 1, storedUnits: 30_000 }]);
+    expect(projectKqStorageCapacity(capacity, origin)).toMatchObject({ protectedUnits: 30_000, overflowUnits: 1 });
+    expect(getKqStorageInventory({ "CURTEC-60L": 1 }, capacity.allocations).find(item => item.code === "CURTEC-60L")).toMatchObject({ freeQuantity: 0 });
   });
 
   it("fills mixed formats without treating one purchased jar as unlimited protection", () => {

@@ -1,15 +1,26 @@
 # Règlement du Placard — brouillon de lancement
 
-Version de travail `2026-10-11-draft-8`. Ce document n'est pas publié aux
+Version de travail `2026-10-13-draft-9`. Ce document n'est pas publié aux
 clients et ne vaut pas règlement commercial tant que les lots, les dates de
 saison et les probabilités des collections ne sont pas validés.
 
+La campagne commune décrite ici est implémentée localement. Au 13 octobre
+2026, sa migration `20261013000200_kq_shared_campaigns.sql` est appliquée et
+vérifiée en ligne ; le code du site reste à déployer. Voir l’[état de
+l’entrepôt et les validations](PLACARD-ENTREPOT-V2.md#campagne-commune-récoltes-par-buddie--13-octobre-2026).
+
 ## 1. Principe
 
-Le Placard est le jeu de cartes de culture de Kanab Quest. Une partie utilise
-une variété Buddie possédée dans l'album, le Sol vivant commun et les cartes La Botte
-choisies dans la collection du joueur. Une culture menée à la récolte produit une carte
-Fleur numérique unique qui peut participer à un duel classé.
+Le Placard est le jeu de cartes de culture de Kanab Quest. Le joueur place
+un Buddie possédé dans chaque zone de culture de son choix, puis enregistre
+le plan. Toutes les zones actives ainsi affectées démarrent une campagne
+commune, avec le Sol vivant et un seul deck La Botte. Les dés, les actions,
+l’XP et les soins sont partagés ; chaque zone menée à la récolte produit son
+propre lot et sa carte Fleur numérique, utilisable individuellement en duel.
+
+Les anciennes parties globales ou indépendantes par zone restent reprenables
+selon leurs sauvegardes. Elles doivent être terminées avant une nouvelle
+campagne commune ; leurs récoltes, cartes et factures ne sont pas recalculées.
 
 La carte Buddie d'origine n'est jamais détruite par le Placard. Une carte
 Héritage équipée est permanente et ne brûle jamais.
@@ -21,7 +32,9 @@ Les copies d'une même carte comptent comme un seul Buddie. Une culture
 démarrée compte même si elle échoue ; une tentative de démarrage refusée ne
 compte pas. La rotation est conservée entre les connexions et les saisons,
 et tient compte des cultures déjà démarrées avant son activation.
-Il faut donc posséder au moins six Buddies différents pour jouer en continu.
+Pour une seule zone, il faut donc posséder au moins six Buddies différents
+pour jouer en continu. Pour une campagne, tous les Buddies placés doivent
+être disponibles au lancement ; un même Buddie ne peut occuper deux zones.
 
 ## 2. Cartes La Botte et burns
 
@@ -34,8 +47,11 @@ Il faut donc posséder au moins six Buddies différents pour jouer en continu.
   pas.
 - Chaque burn produit un reçu serveur et retire exactement une copie physique
   de l'inventaire numérique.
+- Dans une campagne commune, le deck, les cartes jouées, les jetons et les
+  soins ne sont pas consommés à nouveau pour chaque zone. L’Héritage reste
+  un choix commun et permanent.
 - Une seule préparation avant les dés et une seule réaction après les dés
-  sont autorisées à chaque étape. Une seule carte épique peut être jouée par culture,
+  sont autorisées à chaque étape. Une seule carte épique peut être jouée par campagne,
   même si plusieurs références ou copies sont possédées. Une carte refusée ne brûle pas.
 
 La Botte comprend **30 cartes actives** : 12 communes, 7 peu communes,
@@ -71,11 +87,17 @@ Danger transformé en 3, sans annuler les dégâts déjà subis.
 
 ## 3. Culture et Fleur
 
-La culture se déroule en étapes résolues par trois dés, les cartes et les
-effets permanents autorisés. Le serveur conserve la seed, l'état de la partie
-et les reçus. Une culture menée à la récolte crée une seule Fleur avec ses statistiques,
-traits et combos. La Fleur est distincte de la carte Buddie qui a servi de
-variété.
+La campagne se déroule en étapes résolues par trois dés, les cartes et les
+effets permanents autorisés. Le serveur conserve une seed, un état commun
+et les reçus des décisions. Chaque zone conserve son Buddie et ses équipements
+figés au lancement, puis reçoit sa récolte, sa Fleur, son stock et ses factures.
+Chaque Fleur reste distincte de la carte Buddie qui lui a donné son identité.
+
+Les 52 Buddies disposent d’un profil fictif v1 : rendement, potentiels
+cannabinoïdes, potentiel de terpènes et notes aromatiques. Les spécialisations
+Quantité, Équilibre et Expression ainsi que la rareté produisent des résultats
+différents à partir du même parcours. Ces profils sont figés dans les
+sauvegardes ; ce ne sont pas des mesures ou promesses concernant une variété réelle.
 
 Les nouvelles cultures suivent une vitalité persistante de 0 à 100. À zéro,
 la culture s’arrête sans récolte ni carte Fleur ; un secours unique existe pour
@@ -86,7 +108,7 @@ potentiel cannabinoïde développé puis conservé. Ce dernier est un indice de
 jeu entre 35 et 99, distinct des teneurs simulées de CBD, CBG et THC en %.
 Les intrants et les PBI sont des
 interventions distinctes, achetées puis engagées depuis le suivi Santé.
-L’entretien de base coûte 5 € de jeu, une seule fois par étape jusqu’à la
+L’entretien de base coûte 5 € de jeu, une seule fois pour la campagne par étape jusqu’à la
 récolte. Un solde insuffisant bloque son activation. L’observation reste gratuite.
 Les cartes déjà jouées restent consommées ; le Buddie, l’Héritage et les cartes
 non jouées sont conservés.
@@ -96,10 +118,11 @@ utilisaient deux étapes à 0 réussite comme condition de mort, avec le secours
 de première culture lorsqu’il était accordé. Leurs résultats enregistrés restent
 inchangés ; cette condition ne remplace pas la vitalité des nouvelles cultures.
 
-Les Buddies donnent un bonus d’XP de départ selon leur rareté : Commun +0,
-Argent +1, Or +2, Épique +3, Légendaire +4. Avec l’XP de base, cela donne
-respectivement 1, 2, 3, 4 et 5 XP au début d’une culture, avant les bonus de
-mission et d’Héritage. Les Buddies n’ont pas de talent lié à une étape.
+Les bonus d’XP initiaux sont Commun +0, Argent +1, Or +2, Épique +3 et
+Légendaire +4. La campagne retient le meilleur bonus parmi ses Buddies une
+seule fois pour l’XP commun, avant les autres bonus autorisés ; elle ne les
+additionne pas. Les anciennes parties individuelles conservent leur bonus
+enregistré. Les Buddies n’ont pas de talent lié à une étape.
 Les 30 cartes La Botte actives ont chacune un effet distinct ; leur coût et
 leur fenêtre d’utilisation imposent un choix.
 

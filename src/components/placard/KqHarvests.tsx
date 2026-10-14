@@ -7,7 +7,7 @@ import { getKqHarvestRows, type KqHarvestState } from "@/lib/kanab-quest-harvest
 import { startArenaVisiblePolling } from "@/lib/arena-visible-polling";
 import { getKqStorageRefreshDelay } from "@/lib/kanab-quest-storage-refresh";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
-import { KqWarehouseStorage } from "./KqWarehouseStorage";
+import { KqWarehouseEntry } from "./KqWarehouseEntry";
 import { KqStorageStatus } from "./KqStorageStatus";
 import styles from "./KqHarvests.module.css";
 
@@ -64,7 +64,7 @@ export function KqHarvests({ section, onSectionChange, onOpenArena, onOpenMarket
       <button type="button" onClick={() => onOpenArena()}>Jury & duels</button>
       <button type="button" aria-current={section === "storage" ? "page" : undefined} onClick={() => onSectionChange("storage")}>Stockage & affinage</button>
     </nav>
-    {section === "storage" ? <KqWarehouseStorage /> : <>
+    {section === "storage" ? <KqWarehouseEntry embedded initialSection="storage" onClose={() => onSectionChange("overview")} /> : <>
       <div className={styles.toolbar}><label>Afficher<select value={filter} onChange={event => setFilter(event.target.value)}><option value="all">Toutes les récoltes</option><option value="jury">Jury et duels</option><option value="stock">Stockage et vente</option></select></label><button type="button" aria-label="Actualiser les récoltes" onClick={() => void polling.current?.refresh()}><RefreshCw size={18} /></button></div>
       {errors.map(error => <p role="alert" key={error} className={styles.error}>{error} <button type="button" onClick={() => void polling.current?.refresh()}>Réessayer</button></p>)}
       {!loaded ? <p role="status" className={styles.empty}>Ouverture de tes récoltes…</p> : visible.length ? <ul className={styles.list}>{visible.map(row => <li key={row.id} data-harvest-id={row.id} data-harvest-state={row.state}>

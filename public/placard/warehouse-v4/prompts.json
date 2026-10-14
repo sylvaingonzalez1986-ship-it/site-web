@@ -1,0 +1,101 @@
+{
+  "mode": "built-in image_gen",
+  "createdAt": "2026-10-11",
+  "assets": [
+    {
+      "path": "/placard/warehouse-v4/overhead-room.webp",
+      "source": "output/warehouse-v4/source/overhead-room.png",
+      "prompt": "Production-ready game environment asset. A beautiful highly detailed hand-painted architectural illustration for a warehouse management game, DIRECTLY OVERHEAD at 90 degrees, roof removed, perfectly orthographic, no isometric angle, no visible wall facades, no vanishing point. Landscape 3:2 composition. Show one enormous rectangular indoor agricultural warehouse hall with warm light grey poured concrete flooring, convincing concrete grain, hairline slab expansion joints, soft accumulated wear, thick ivory masonry perimeter walls, subtle cast shadows, steel structural details, slim overhead utility conduits along the OUTSIDE edges. A broad industrial delivery doorway at the bottom edge and a restrained yellow hazard stripe threshold. Outside the hall are slim dark desaturated blue-grey exterior margins. Lighting is soft, bright and natural, with very gentle warm industrial ambient light. Interior floor must occupy a precisely rectangular region from x=10% to x=90% and y=12% to y=87% of the image, with absolutely no props encroaching on that interior rectangle. Ratio of the rectangle must be 1.6 (40 units wide by 25 units tall). Entire interior floor is EMPTY, continuous and usable; no plants, no furnishings, no internal walls, no pots, no shelving, no machinery, no zones, no interior objects. Border details and shadows give the empty building believable physical volume. Painterly realism with delicate material texture and elegant game art finish, crisp enough to inspect at high zoom; beige concrete, off-white plaster, muted steel. Not a flat vector diagram. Not a wireframe. No text, no numbers, no logos, no labels, no grid, no UI. Keep rectangular walls aligned parallel to image edges. This image is a background to which the game adds actual owned equipment and plants dynamically.",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "purpose": "Decorative top-down room; editable culture grid overlays x168/y120, 40×25 cells of 30 image units."
+    },
+    {
+      "path": "/placard/warehouse-v4/overhead-sprites.webp",
+      "source": "output/warehouse-v4/source/overhead-sprites.png",
+      "prompt": "A production game sprite atlas with a genuinely transparent alpha background, NO checkerboard painted into the image. Landscape 3:2 canvas, arranged in an exact THREE COLUMN by TWO ROW equally sized grid of six separate unlabelled object illustrations. Each object is centered within its own cell with at least 15 percent clear padding from every cell edge, no objects touch, no frames or dividers. All six objects are viewed from DIRECTLY OVERHEAD at 90 degrees, perfectly orthographic, NO perspective, NO isometric tilt, no faces of tall objects. Elegant detailed hand-painted architectural game art with realistic small manufacturing details, soft restrained ambient shadows, muted olive green foliage, black trays, silver metal and warm natural wood. Position 1 TOP LEFT: a square black cultivation tray holding four circular pots with compact leafy green young hemp plants, believable serrated foliage and soil visible, seen directly above, isolated. Position 2 TOP CENTER: one rectangular slim silver LED grow light fixture with four parallel light bars and black cables, warm tiny LED dots, top-down view, isolated. Position 3 TOP RIGHT: one compact cylindrical inline ventilation extractor with a short ribbed aluminium duct elbow, dark charcoal metal motor housing, view directly above, isolated. Position 4 BOTTOM LEFT: a square black cultivation tray holding four circular empty dark pots containing brown soil, NO plants, top-down, isolated, footprint similar to position1. Position 5 BOTTOM CENTER: a slim metal drying rack with parallel mesh shelves, beige linen or mesh and a few hanging small botanical branches, top-down, isolated. Position 6 BOTTOM RIGHT: a wooden storage crate holding a tidy two-by-three set of glass preserving jars with metal lids, top-down isolated. Assets for an illustrated cultivation warehouse management game. No typography, no numbers, no watermarks, no logos, no full scene, no ground plane. Very clear silhouettes, crisp hand-painted detailing, consistent scale within each asset, genuinely transparent background around and between all six objects.",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "alpha": true,
+      "atlas": {
+        "columns": 3,
+        "rows": 2,
+        "cellWidth": 512,
+        "cellHeight": 512,
+        "objects": [
+          "plants",
+          "lighting",
+          "air",
+          "pots",
+          "drying",
+          "storage"
+        ]
+      },
+      "purpose": "Illustrations, not manufacturer renderings; actual purchased quantities come from the existing zone/catalogue rules."
+    },
+    {
+      "path": "/placard/warehouse-v4/overhead-devices.webp",
+      "source": "output/warehouse-v4/source/overhead-devices.png",
+      "prompt": "Two separate realistic illustrated game objects, on a genuinely transparent alpha background with no painted backdrop, for a warehouse game viewed DIRECTLY FROM ABOVE, 90 degree orthographic camera. Landscape 3:2 canvas divided into two equal vertical halves, no divider lines. Leave clear transparent margins all around each object, and between them. LEFT HALF: a compact square white-and-silver LED horticultural light panel with a shallow silver square reflector lip, a dense grid of tiny warm white LED diodes on a flat square board, small black electrical lead. This is a compact flat panel, NOT a fixture with parallel bars. RIGHT HALF: the direct overhead view of a round suspended passive mesh drying net, dark charcoal circular fabric hoop 80 cm diameter, fine beige mesh, multiple circular tiers subtly visible below the upper hoop, three slender suspension cords visible along its edge; EMPTY mesh with no plants or product. No legs, no rectangular rack. Elegant detailed hand-painted architectural game art, realistic materials and tiny manufacturing details, clean isolated silhouettes, very restrained shadows directly below the objects. Use the same slightly muted silver, ivory and warm beige palette as a concrete industrial warehouse illustration. No people, no text, no model numbers, no logo, no borders, no scene, no numbers. Both objects comfortably fit in their respective half. Preserve actual transparency, no checkerboard or colored background.",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "alpha": true,
+      "atlas": {
+        "columns": 2,
+        "rows": 1,
+        "cellWidth": 768,
+        "cellHeight": 1024,
+        "objects": [
+          "panel",
+          "drying"
+        ]
+      },
+      "purpose": "Compact LED panel and circular passive drying net; the drying rack in the first atlas is unused."
+    },
+    {
+      "path": "/placard/warehouse-v4/overhead-storage.webp",
+      "source": "output/warehouse-v4/source/overhead-storage.png",
+      "createdAt": "2026-10-12",
+      "prompt": "A production game sprite atlas with a genuinely transparent alpha background, no painted backdrop. Landscape 3:2 canvas divided into TWO equal vertical halves with no drawn divider. Exactly two separate objects, each centered in its own half with generous transparent margins on all sides. Directly overhead 90 degree orthographic view, no perspective or isometric angle. LEFT HALF: a single food-grade opaque white cylindrical plastic storage drum with a prominent red circular screw lid, a little white rim and restrained side handles visible from above. Realistic industrial reusable 60 litre drum proportions. RIGHT HALF: the top-down view of one black steel storage shelving unit with a rectangular 85 cm by 40 cm shelf footprint, metal corner posts, and twelve small glass preserving jars with silver lids neatly arranged in a six-column two-row arrangement on the top shelf. The lower shelves must not be splayed out or shown separately: viewed from above only the uppermost shelf is visible. Elegant detailed hand-painted architectural game art, convincing materials, soft restrained ambient shadows, muted ivory plastic, terracotta red lid, black steel and natural glass highlights. No text, no numbers, no logos, no labels, no grid, no frames, no ground plane, no warehouse room. Crisp isolated silhouettes for use as overhead sprites in a warehouse management game, matching warm grey concrete warehouse illustration style. Preserve true transparency around and between the two objects, no checkerboard.",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "alpha": true,
+      "tiles": {
+        "drum": {
+          "x": 0,
+          "y": 0,
+          "width": 680,
+          "height": 1024
+        },
+        "shelf": {
+          "x": 680,
+          "y": 0,
+          "width": 856,
+          "height": 1024
+        }
+      },
+      "purpose": "Decorative overhead storage options; illustrations are not official manufacturer photographs."
+    }
+  ],
+  "derivedAssets": [
+    {
+      "path": "/placard/warehouse-v4/storage-drum.webp",
+      "source": "output/warehouse-v4/source/overhead-storage.png",
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 680,
+        "height": 1024
+      },
+      "purpose": "Atlas sprite exported for the existing storage inventory image component; no illustration repainting."
+    }
+  ]
+}

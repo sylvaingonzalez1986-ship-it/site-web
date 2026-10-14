@@ -9,6 +9,7 @@ import {
   getKqEquipmentProgressionStatus,
   isKqProcessingEquipment,
   summarizeKqEquipmentLoadout,
+  getKqEquipmentDefinition,
   type KqEquipmentGoalReceipt,
 } from "@/lib/kanab-quest-equipment";
 import {
@@ -19,6 +20,7 @@ import {
   getKqNextRouteMasteryGoal,
   isKqMarketRouteCode,
   quoteKqMarketRoutes,
+  KQ_MARKET_ROUTES,
   type KqMarketQuote,
   type KqMarketRouteCode,
 } from "@/lib/kanab-quest-market";
@@ -26,6 +28,7 @@ import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 import { getKqCultureSystemSummary } from "@/lib/kanab-quest-game";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { getKqEquipmentShopSnapshot, type KqEquipmentShopSnapshot } from "@/lib/supabase/kanab-quest-equipment-backend";
+import { getKqWarehouseProcessingEquipment } from "./kanab-quest-warehouse-backend";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -218,7 +221,12 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
   const humanOne = new Map((humanOneResult.data ?? []).map((battle) => [String(battle.flower_one_id), toRounds(battle.rounds)]));
   const humanTwo = new Map((humanTwoResult.data ?? []).map((battle) => [String(battle.flower_two_id), toRounds(battle.rounds)]));
   const bots = new Map((botResult.data ?? []).map((battle) => [String(battle.flower_id), toRounds(battle.rounds)]));
-  const workshop = getKqSharedWorkshop(equipmentShop);
+  const physicalWorkshop = await getKqWarehouseProcessingEquipment(userId, equipmentShop);
+  const physicalCodes = physicalWorkshop ? [...new Set(["TENT-080-STARTER", ...physicalWorkshop.equippedCodes])].sort() : null;
+  const workshop = physicalWorkshop && physicalCodes ? {
+    equippedCodes: physicalCodes, operationalCodes: physicalWorkshop.operationalCodes, ownedCodes: physicalCodes,
+    levels: physicalWorkshop.levels, installedLevels: physicalWorkshop.levels,
+  } : getKqSharedWorkshop(equipmentShop);
   const equippedCodes = workshop.equippedCodes;
   const energySummary = await getKqEnergySummary(userId);
   const previews = new Map<string, { harvest_grams: number; jury_score: number; quality_band: string; options: KqMarketQuote[] }>();
@@ -241,14 +249,37 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
     const harvestGrams = storageLot.state.capacity ? storageLot.state.capacity.totalUnits / 10 : runSummary.harvestGrams;
     if (harvestGrams <= 0) return;
     const condition = projectKqStoredStorageLot({ ...storageLot, juryScore }, storageNow);
-    const quotes = quoteKqMarketRoutes({ juryScore: condition.conditionScore, harvestGrams, equipmentCodes: workshop.operationalCodes, equipmentLevels: workshop.levels, marketContext })
-      .map(quote => ({ ...quote, storageRevision: storageLot.revision, storageChangeAt: condition.nextChangeAt }));
+    const quotes = quoteKqMarketRoutes({ juryScore: condition.conditionScore, harvestGrams, equipmentCodes: workshop.operationalCodes, equipmentLevels: workshop.levels, marketContext,
+      processingBatchGrams: physicalWorkshop?.processingBatchGrams, processWholeLot: !!physicalWorkshop })
+      .map(quote => {
+        const route = KQ_MARKET_ROUTES.find(item => item.code === quote.route)!;
+        const processingEquipmentCodes = physicalWorkshop ? physicalWorkshop.operationalCodes
+          .filter(code => getKqEquipmentDefinition(code)?.unlocks.some(unlock => route.requiredUnlocks.includes(unlock)))
+          .filter(code => code !== "TENT-080-STARTER").sort() : [];
+        const batchSeconds = processingEquipmentCodes.reduce((sum, code) => sum + (physicalWorkshop?.processingDurationSeconds[code] ?? 0), 0);
+        const seconds = batchSeconds * Math.ceil(quote.processedInputGrams / Math.max(0.1, quote.processingBatchGrams ?? quote.processedInputGrams));
+        return { ...quote, storageRevision: storageLot.revision, storageChangeAt: condition.nextChangeAt,
+          ...(physicalWorkshop ? { warehouseRevision: physicalWorkshop.revision, warehouseState: physicalWorkshop.sourceState,
+            processingDurationSeconds: seconds, processingEquipmentCodes, workshopSnapshot: physicalWorkshop.workshopSnapshot } : {}) };
+      });
     if (condition.capacity && condition.capacity.overflowUnits > 0) for (const quote of quotes) {
       quote.available = false;
       quote.blockedReason = "Achète des contenants ou vends le surplus aux grossistes avant de préparer cette récolte.";
     }
-    if (equippedCodes.some(code => !workshop.operationalCodes.includes(code))) {
-      const installedQuotes = quoteKqMarketRoutes({ juryScore: condition.conditionScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: workshop.installedLevels, marketContext });
+    if (physicalWorkshop) for (const quote of quotes) {
+      if (quote.family !== "hash" && quote.family !== "rosin") continue;
+      if (condition.stage !== "ready") {
+        quote.available = false;
+        quote.blockedReason = "Séchage et maturation en cours : attends la fin de cette étape dans Séchage et stockage avant de transformer ce lot.";
+      } else if (!condition.capacity || condition.capacity.overflowUnits > 0) {
+        quote.available = false;
+        quote.blockedReason = "Range tout ce lot dans des contenants dans Séchage et stockage avant de le transformer.";
+      }
+    }
+    if ((!physicalWorkshop || condition.stage === "ready" && condition.capacity && condition.capacity.overflowUnits === 0)
+      && equippedCodes.some(code => !workshop.operationalCodes.includes(code))) {
+      const installedQuotes = quoteKqMarketRoutes({ juryScore: condition.conditionScore, harvestGrams, equipmentCodes: equippedCodes, equipmentLevels: workshop.installedLevels, marketContext,
+        processingBatchGrams: physicalWorkshop?.processingBatchGrams, processWholeLot: !!physicalWorkshop });
       for (const quote of quotes) if (!quote.available && installedQuotes.find(item => item.route === quote.route)?.available) {
         quote.blockedReason = "Une machine de cette filière doit être réparée. Ouvre ton entrepôt.";
       }

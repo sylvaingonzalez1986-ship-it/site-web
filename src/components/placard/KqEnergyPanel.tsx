@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Check, Leaf, RefreshCw, Sun, Zap } from "lucide-react";
 import { formatKqCash, getKqEquipmentBuildingNumber, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { KQ_ENERGY_MODES, quoteKqEnergy, quoteKqTentEnergy, type KqEnergyMode, type KqEnergyQuote, type KqEnergySnapshot } from "@/lib/kanab-quest-energy";
@@ -9,8 +10,13 @@ import type { KqTentEquipmentProfile } from "@/lib/kanab-quest-production-scale"
 import { getKqCultureWearPreview } from "@/lib/kanab-quest-culture-wear";
 import styles from "./KqEnergyPanel.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
+import type { KqWarehouseRunSnapshot } from "@/lib/kanab-quest-warehouse";
+import { getKqCampaignTotals, type KqCampaignMember } from "@/lib/kanab-quest-campaign";
 
-export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, lockedQuote, lockedTents, lockedScope, runId, productionUnits = 1, disabled = false }: {
+export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, lockedQuote, lockedTents, lockedScope, lockedWarehouse, runId, zoneId, campaign = false, campaignMembers, productionUnits = 1, disabled = false }: {
+  campaign?: boolean;
+  campaignMembers?: KqCampaignMember[];
+  lockedWarehouse?: KqWarehouseRunSnapshot;
   productionUnits?: number;
   disabled?: boolean;
   selectedMode?: KqEnergyMode;
@@ -20,6 +26,7 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   lockedTents?: KqTentEquipmentProfile[];
   lockedScope?: "tent" | "installation" | "building";
   runId?: string | null;
+  zoneId?: string;
 }) {
   const api = useKqTutorialApi();
   const [snapshot, setSnapshot] = useState<KqEnergySnapshot | null>(null);
@@ -32,14 +39,18 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   const refresh = useCallback(async () => {
     const id = ++generation.current;
     try {
-      const response = await api.request("/api/arena/placard/energy", { cache: "no-store" });
+      const params = new URLSearchParams();
+      if (zoneId) params.set("zoneId", zoneId);
+      if (runId) params.set("runId", runId);
+      if (campaign) params.set("campaign", "true");
+      const response = await api.request(`/api/arena/placard/energy${params.size ? `?${params}` : ""}`, { cache: "no-store" });
       const body = await response.json() as KqEnergySnapshot & { error?: string };
       if (!response.ok) throw new Error(body.error || "Compteur indisponible.");
       if (id === generation.current) { setSnapshot(body); setError(""); }
     } catch (reason) {
       if (id === generation.current) setError(reason instanceof Error ? reason.message : "Compteur indisponible.");
     }
-  }, [api]);
+  }, [api, campaign, runId, zoneId]);
   useEffect(() => {
     void refresh();
     const update = () => { void refresh(); };
@@ -47,7 +58,10 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
     const invalidate = () => { generation.current++; };
     return () => { invalidate(); unsubscribe(); };
   }, [refresh, api]);
-  const quote = lockedQuote ?? (selectedMode ? snapshot?.quotes[selectedMode] : undefined);
+  const quote = lockedQuote ?? (campaign ? snapshot?.quotes.balanced : selectedMode ? snapshot?.quotes[selectedMode] : undefined);
+  const warehouse = lockedQuote ? lockedWarehouse : snapshot?.warehouse;
+  const physicalQuote = !!warehouse || quote?.lines.some(line => line.code === "WAREHOUSE-CULTURE");
+  useEffect(() => { if (warehouse && selectedMode && selectedMode !== "balanced") onModeChange?.("balanced"); }, [warehouse, selectedMode, onModeChange]);
   const sharedInstallation = Boolean(lockedQuote && lockedScope === "installation");
   const buildingInstallation = lockedQuote ? lockedScope === "building" : snapshot?.equipmentScopeVersion === 3;
   const units = getKqProductionUnits(lockedQuote ? lockedQuote.productionUnits : quote?.productionUnits ?? snapshot?.productionUnits ?? productionUnits);
@@ -90,6 +104,8 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   const fallbackEquipment = wearProfiles.flatMap(tent => tent.cultureOperationalCodes.filter(code => !tent.equippedCodes.includes(code)).map(code => scopedEquipmentName(tent.destination, code)));
   useEffect(() => { onQuoteChange?.(error ? null : quote ?? null); }, [quote, error, onQuoteChange]);
   const invoice = snapshot?.invoices.find((item) => item.runId === runId);
+  const supplierInvoice = lockedQuote ? snapshot?.supplierInvoices?.find(item => item.runId === runId)
+    ?? (snapshot?.supplierInvoice && snapshot.supplierInvoice.runId === runId ? snapshot.supplierInvoice : null) : null;
   const due = snapshot?.outstandingCents ?? 0;
   const pay = async () => {
     if (inFlight.current || !snapshot || due <= 0 || snapshot.cashCents < due) return;
@@ -106,16 +122,30 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
     finally { inFlight.current = false; setPending(false); }
   };
 
+  if (campaign) {
+    const totals = campaignMembers?.length ? getKqCampaignTotals(campaignMembers) : null;
+    const energy = totals?.energyCostCents ?? quote?.totalCents;
+    const consumables = totals?.consumablesCostCents ?? warehouse?.consumablesCostCents;
+    const area = totals?.areaM2 ?? warehouse?.activeAreaM2;
+    const invoices = (snapshot?.supplierInvoices ?? []).filter(item => campaignMembers?.some(member => member.runId === item.runId));
+    return <section className={styles.panel} aria-label="Charges de la campagne" data-campaign-energy>
+      <header><Zap aria-hidden="true" /><div><small>{campaignMembers ? "Installation enregistrée" : "Avant de commencer"}</small><h3>Charges de la campagne</h3></div><button type="button" aria-label="Actualiser les charges" disabled={disabled} onClick={() => void refresh()}><RefreshCw size={16} /></button></header>
+      {energy !== undefined && consumables !== undefined ? <><p>{area} m² engagés · <strong>{formatKqCash(energy + consumables)}</strong> pour toutes les cultures.</p><div className={styles.meter}><div><small>Électricité</small><strong>{formatKqCash(energy)}</strong></div><div><small>Consommables</small><strong>{formatKqCash(consumables)}</strong></div></div><p>Consommables facturés à 5 jours réels. Les cartes jouées et les soins sont consommés une seule fois pour la campagne.</p></> : <p role="status">Calcul des charges…</p>}
+      {campaignMembers && <details><summary>Détail par zone</summary><ul>{campaignMembers.map(member => <li key={member.runId}><span>{member.warehouse.zones[0]?.name}</span><b>{formatKqCash(member.warehouse.operatingCostCents)}</b></li>)}</ul>{invoices.map(item => <p key={item.runId}>{campaignMembers.find(member => member.runId === item.runId)?.warehouse.zones[0]?.name} : {formatKqCash(item.remainingCents)} restant.</p>)}</details>}
+      {campaignMembers && <p><Link href="/arene/placard?view=treasury&pole=accounting">Consulter les factures</Link></p>}
+      {error && <p role="alert">{error}</p>}
+    </section>;
+  }
   return <section className={styles.panel} aria-label="Charges du Placard">
-    <header><Zap aria-hidden="true" /><div><small>{lockedQuote ? "Facture de fin de cycle" : selectedMode ? "Avant de lancer la culture" : "Charges du Placard"}</small><h3>{lockedQuote ? KQ_ENERGY_MODES[lockedQuote.mode].name : "Électricité et entretien"}</h3></div><button type="button" aria-label="Actualiser les charges" onClick={() => void refresh()}><RefreshCw size={16} /></button></header>
-    {quote || snapshot ? <p><strong>{units} tente{units>1?"s":""} {lockedQuote ? "pour cette culture" : "dans ton installation"}</strong> · les montants couvrent toutes ces tentes.</p> : null}
+    <header><Zap aria-hidden="true" /><div><small>{lockedQuote ? physicalQuote ? "Charges de cette culture" : "Facture de fin de cycle" : selectedMode ? "Avant de lancer la culture" : "Charges du Placard"}</small><h3>{physicalQuote ? "Charges de la chambre de culture" : lockedQuote ? KQ_ENERGY_MODES[lockedQuote.mode].name : "Électricité et entretien"}</h3></div><button type="button" aria-label="Actualiser les charges" onClick={() => void refresh()}><RefreshCw size={16} /></button></header>
+    {warehouse ? <><p><strong>{warehouse.activeAreaM2} m² engagés</strong> · appareils et consommation enregistrés pour cette culture.</p><p>Consommables {lockedQuote ? "de cette culture" : "prévus"} : <strong>{formatKqCash(warehouse.consumablesCostCents)}</strong>. Budget total avec l’énergie : <strong>{formatKqCash(warehouse.operatingCostCents)}</strong>.</p>{lockedQuote ? <>{supplierInvoice ? <p>{supplierInvoice.remainingCents === 0 ? "Facture fournisseur réglée." : <>Facture fournisseur : <strong>{formatKqCash(supplierInvoice.remainingCents)}</strong> à régler avant le <time dateTime={supplierInvoice.dueAt}>{new Date(supplierInvoice.dueAt).toLocaleString("fr-FR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" })}</time>.</>}</p> : null}<p><Link href="/arene/placard?view=treasury&pole=accounting">Consulter les factures fournisseur dans Trésorerie</Link>.</p></> : <p>Les consommables sont facturés à 30 jours de jeu, soit <strong>5 jours réels</strong> après le lancement. Aucun débit immédiat pour les consommables.</p>}</> : !physicalQuote && (quote || snapshot) ? <p><strong>{units} tente{units>1?"s":""} {lockedQuote ? "pour cette culture" : "dans ton installation"}</strong> · les montants couvrent toutes ces tentes.</p> : null}
     {selectedMode && snapshot?.chanvrierStrength === "green-thumb" ? <p><Leaf size={16} /> Main Verte · +2 XP au départ, en plus du bonus de ton Buddie.</p> : null}
     {selectedMode && !!snapshot?.maintenanceDueNext?.length ? <p><strong>Entretien à prévoir :</strong> {snapshot.maintenanceDueNext.join(", ")}. Consulte ton entrepôt avant la prochaine transformation.</p> : null}
-    {selectedMode && onModeChange ? <div className={styles.modes} role="group" aria-label="Mode énergétique">
+    {selectedMode && onModeChange && !physicalQuote ? <div className={styles.modes} role="group" aria-label="Mode énergétique">
       {(Object.entries(KQ_ENERGY_MODES) as [KqEnergyMode, typeof KQ_ENERGY_MODES[KqEnergyMode]][]).map(([mode, config]) => <button type="button" key={mode} disabled={disabled} aria-pressed={selectedMode === mode} onClick={() => onModeChange(mode)}><strong>{config.name}</strong><small>{config.label}</small>{snapshot ? <><b>{formatKqCash(snapshot.quotes[mode].totalCents)} d’électricité</b>{wearPreviews.length > 0 ? <small>Usure estimée : {formatKqCash(getWearPreviews(mode).reduce((sum, item) => sum + item.wearCostCents, 0))}</small> : null}</> : null}</button>)}
     </div> : null}
     {quote ? <>
-      <div className={styles.meter}><div><small>Consommation totale · {units} tente{units > 1 ? "s" : ""}</small><strong>{(quote.totalWattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} <em>kWh</em></strong></div><div><small>{lockedQuote ? "Électricité totale" : "Électricité totale prévue"}</small><strong>{formatKqCash(quote.totalCents)}</strong></div></div>
+      <div className={styles.meter}><div><small>Consommation totale · {warehouse ? `${warehouse.activeAreaM2} m²` : physicalQuote ? "chambre de culture" : `${units} tente${units > 1 ? "s" : ""}`}</small><strong>{(quote.totalWattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} <em>kWh</em></strong></div><div><small>{lockedQuote ? "Électricité totale" : "Électricité totale prévue"}</small><strong>{formatKqCash(quote.totalCents)}</strong></div></div>
       {showTentQuotes ? <div className={styles.tentTotals} aria-label="Électricité par tente">
         <strong>Les consommations de tes {units} tentes s’additionnent</strong>
         <dl>{tentQuotes.map(tent => <div key={tent.tentNumber}>
@@ -132,8 +162,8 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
       {quote.savingsCents > 0 ? <p className={styles.solar}><Sun size={16} /> Solaire : {quote.solarPercent} % couverts · {formatKqCash(quote.savingsCents)} économisés</p> : null}
       <details><summary>Détail par appareil</summary><ul>{quote.lines.map((line) => {
         const common = sharedInstallation && ["security", "flower-drying"].includes(getKqEquipmentDefinition(line.code)?.slot ?? "");
-        return <li key={`${line.buildingNumber ? `building:${line.buildingNumber}` : line.tentNumber ?? "legacy"}:${line.code}`}><span>{common ? "Installation · " : line.buildingNumber ? `Entrepôt ${line.buildingNumber} · ` : line.tentNumber ? `Tente ${line.tentNumber} · ` : ""}{getKqEquipmentDefinition(line.code)?.name ?? line.name} · niv. {line.level}{!common && !line.tentNumber && !line.buildingNumber && units > 1 ? ` ×${units}` : ""}</span><b>{(line.wattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kWh</b></li>;
-      })}</ul><p>0,30 € virtuel / kWh. Le temps hors ligne ne change pas le montant.{sharedInstallation ? " Cette ancienne culture conserve son devis : séchoir et sécurité comptés une seule fois, solaire appliqué à l’installation." : lockedQuote ? " Les consommations suivent le matériel enregistré au début de cette culture. Ce devis reste inchangé." : buildingInstallation ? " Chaque tente consomme pour sa culture ; séchoir et sécurité sont comptés une fois par bâtiment. Le solaire réduit la facture de son bâtiment." : " Chaque tente paie ses appareils, y compris son séchoir à fleurs et sa sécurité. Son solaire réduit uniquement sa propre facture."}</p></details>
+        return <li key={`${line.buildingNumber ? `building:${line.buildingNumber}` : line.tentNumber ?? "legacy"}:${line.code}`}><span>{common ? "Installation · " : line.buildingNumber ? `Entrepôt ${line.buildingNumber} · ` : line.tentNumber ? `Tente ${line.tentNumber} · ` : ""}{getKqEquipmentDefinition(line.code)?.name ?? line.name}{!physicalQuote ? ` · niv. ${line.level}` : ""}{!physicalQuote && !common && !line.tentNumber && !line.buildingNumber && units > 1 ? ` ×${units}` : ""}</span><b>{(line.wattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kWh</b></li>;
+      })}</ul><p>{formatKqCash(quote.tariffCentsPerKwh)} virtuel / kWh. Le temps hors ligne ne change pas le montant.{physicalQuote ? " La consommation découle des appareils entiers et des heures équivalentes simulées. L’installation est figée pour toute la culture." : sharedInstallation ? " Cette ancienne culture conserve son devis : séchoir et sécurité comptés une seule fois, solaire appliqué à l’installation." : lockedQuote ? " Les consommations suivent le matériel enregistré au début de cette culture. Ce devis reste inchangé." : buildingInstallation ? " Chaque tente consomme pour sa culture ; séchoir et sécurité sont comptés une fois par bâtiment. Le solaire réduit la facture de son bâtiment." : " Chaque tente paie ses appareils, y compris son séchoir à fleurs et sa sécurité. Son solaire réduit uniquement sa propre facture."}</p></details>
       {invoice ? <p className={styles.stamp} data-paid={invoice.remainingCents === 0}>{invoice.remainingCents === 0 ? <><Check size={17} /> Réglée</> : `Reste sur ce cycle : ${formatKqCash(invoice.remainingCents)}`}</p> : null}
       {lockedQuote && invoice && quote.totalWattHours > 0 ? <p><Leaf size={16} /> Rendement énergétique : {(invoice.harvestGrams * 1000 / quote.totalWattHours).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} g/kWh</p> : null}
     </> : !snapshot && !error ? <p role="status">Lecture du compteur…</p> : null}
@@ -167,9 +197,9 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
     {selectedMode && quote && snapshot?.dogCare ? <p><strong>Total prévu : {formatKqCash(quote.totalCents + snapshot.dogCare.nextTotalCents)}</strong> · électricité et soins du compagnon.</p> : null}
     {snapshot && !selectedMode ? <>
       {snapshot.bestGramsPerKwh !== null ? <p><Leaf size={16} /> Record personnel : {Number(snapshot.bestGramsPerKwh).toLocaleString("fr-FR")} g/kWh</p> : null}
-      {due > 0 ? <div className={styles.payment}><strong>Total restant dû : {formatKqCash(due)}</strong><button type="button" disabled={pending || snapshot.cashCents < due} onClick={() => void pay()}>{pending ? "Règlement…" : `Tout régler · ${formatKqCash(due)}`}</button><p>Sinon, tes prochaines ventes règlent automatiquement les factures, dans la limite de 50 % de chaque versement. Tu peux continuer à jouer.</p>{snapshot.cashCents < due ? <small>Trésorerie disponible : {formatKqCash(snapshot.cashCents)}</small> : null}</div> : <p className={styles.stamp} data-paid><Check size={17} /> Aucune facture en attente</p>}
-      {!lockedQuote && snapshot.invoices.length > 0 ? <details><summary>Dernières factures · {snapshot.invoiceCount} cycles au total</summary><ul>{snapshot.invoices.map((item) => <li key={item.runId}><span>{new Date(item.createdAt).toLocaleDateString("fr-FR")} · {KQ_ENERGY_MODES[item.quote.mode].name}<small>Cycle {item.runId.slice(0, 8)}</small>{item.dogCare ? <small>Électricité : {formatKqCash(item.quote.totalCents)} · Nourriture : {formatKqCash(item.dogCare.foodCents)}{item.dogCare.vetCents > 0 ? ` · Vétérinaire : ${formatKqCash(item.dogCare.vetCents)}` : ""} · Soins prélevés à la récolte : {formatKqCash(item.dogCare.paidCents)}</small> : null}</span><b>{formatKqCash(item.totalCents)}<small>{item.remainingCents ? `${formatKqCash(item.remainingCents)} restants` : "Réglée"}</small></b></li>)}</ul></details> : null}
-    </> : selectedMode ? <p>Facture à la récolte. Paiement immédiat ou prélèvement progressif sur tes ventes.</p> : null}
+      {due > 0 ? <div className={styles.payment}><strong>Électricité et soins restant dus : {formatKqCash(due)}</strong><button type="button" disabled={pending || snapshot.cashCents < due} onClick={() => void pay()}>{pending ? "Règlement…" : `Régler l’électricité et les soins · ${formatKqCash(due)}`}</button><p>Sinon, tes prochaines ventes règlent automatiquement les factures, dans la limite de 50 % de chaque versement. Tu peux continuer à jouer.</p>{snapshot.cashCents < due ? <small>Trésorerie disponible : {formatKqCash(snapshot.cashCents)}</small> : null}</div> : <p className={styles.stamp} data-paid><Check size={17} /> Aucune facture d’électricité ou de soins en attente</p>}
+      {!lockedQuote && snapshot.invoices.length > 0 ? <details><summary>Dernières factures d’énergie et de soins · {snapshot.invoiceCount} cycles au total</summary><ul>{snapshot.invoices.map((item) => <li key={item.runId}><span>{new Date(item.createdAt).toLocaleDateString("fr-FR")} · {KQ_ENERGY_MODES[item.quote.mode].name}<small>Cycle {item.runId.slice(0, 8)}</small>{item.dogCare ? <small>Électricité : {formatKqCash(item.quote.totalCents)} · Nourriture : {formatKqCash(item.dogCare.foodCents)}{item.dogCare.vetCents > 0 ? ` · Vétérinaire : ${formatKqCash(item.dogCare.vetCents)}` : ""} · Soins prélevés à la récolte : {formatKqCash(item.dogCare.paidCents)}</small> : null}</span><b>{formatKqCash(item.totalCents)}<small>{item.remainingCents ? `${formatKqCash(item.remainingCents)} restants` : "Réglée"}</small></b></li>)}</ul></details> : null}
+    </> : selectedMode ? <p>Électricité facturée à la récolte. Paiement immédiat ou prélèvement progressif sur tes ventes.</p> : null}
     {notice ? <p role="status">{notice}</p> : null}
     {error ? <p className={styles.error} role="alert">{error} Utilise Actualiser pour réessayer.</p> : null}
   </section>;

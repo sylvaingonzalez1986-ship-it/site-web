@@ -1,6 +1,7 @@
 import { getKqCultureSystemSummary, getKqHarvestTier, isKqCultureDead, KQ_BUDDIES, KQ_CARDS, type KqGameState, type KqOutcome } from "@/lib/kanab-quest-game";
 import { createKqIntegrityCode } from "@/lib/kanab-quest-persistence";
-import { createKqCareState, getKqCannabinoidReport } from "@/lib/kanab-quest-care";
+import { createKqCareState, getKqCannabinoidReport, getKqTerpeneReport, type KqTerpeneReport } from "@/lib/kanab-quest-care";
+import type { KqBuddieCultivationProfile } from "./kanab-quest-buddie-cultivation";
 
 export type KqFlowerStatus = "available" | "locked" | "burned";
 
@@ -17,6 +18,8 @@ export type KqFlowerCard = {
   traits: string[];
   /** Fictional cultivar profile and simulated rates, never a laboratory result. */
   cannabinoidReport?: ReturnType<typeof getKqCannabinoidReport>;
+  cultivationProfile?: KqBuddieCultivationProfile;
+  terpeneReport?: KqTerpeneReport;
   stats: {
     appearance: number;
     aroma: number;
@@ -168,10 +171,15 @@ export function createKqFlower(state: KqGameState, ownerName = "Toi"): KqFlowerC
     ? clampStat(clampStat(state.care!.terpenes) * 0.75 + sensoryQuality * 0.25)
     : sensoryQuality;
   const cannabinoidReport = newRules ? getKqCannabinoidReport(state) : undefined;
+  const terpeneReport = newRules ? getKqTerpeneReport(state) : undefined;
+  const identity = state.cultivationProfile
+    ? `-${state.cultivationProfile.buddieCode}${state.warehouse?.version === 2 ? `-${state.warehouse.zoneId}` : ""}` : "";
   return {
-    id: `FLOWER-${state.seed}-${state.history.map((entry) => entry.dice.join("")).join("")}`,
+    id: `FLOWER-${state.seed}-${state.history.map((entry) => entry.dice.join("")).join("")}${identity}`,
     ...(newRules ? { rulesVersion: 3 as const } : {}),
     ...(cannabinoidReport ? { cannabinoidReport } : {}),
+    ...(state.cultivationProfile ? { cultivationProfile: structuredClone(state.cultivationProfile) } : {}),
+    ...(terpeneReport ? { terpeneReport } : {}),
     ownerName,
     variety: state.varietyName,
     tier: getKqHarvestTier(state.quality),

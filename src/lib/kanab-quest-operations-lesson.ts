@@ -7,7 +7,8 @@ import { quoteKqEnergy, quoteKqTentEnergy, type KqEnergyMode } from './kanab-que
 import { KQ_COMPUTER_PRICE_CENTS, KQ_SALES_CHANNELS, getKqCommerceCapacity, getKqShopBudget, quoteKqCommerce, type KqCommerceOffer, type KqCommerceReceipt, type KqCommerceSnapshot, type KqCommerceStock, type KqOnlinePrice, type KqSalesChannel } from './kanab-quest-commerce';
 import { KQ_GAME_MONTH_MS, normalizeKqShopName, previewKqBusinessPayment } from './kanab-quest-business';
 import { createKqOnlinePreview, getKqOnlineSiteTier } from './kanab-quest-online';
-import { applyKqOperationsOnline } from './kanab-quest-operations-online';
+import { applyKqOperationsOnline, consumeKqOperationsCustomerDemand, getKqOperationsCustomerDemand } from './kanab-quest-operations-online';
+import { createKqCustomerDemandSnapshot } from './kanab-quest-customer-demand';
 import { KQ_MARKET_ROUTES, isKqMarketRouteCode, quoteKqMarketRoutes, type KqMarketRouteCode } from './kanab-quest-market';
 import { getKqMarketWindow } from './kanab-quest-market-demand';
 import { createKqWorkshop } from './kanab-quest-workshops';
@@ -18,7 +19,7 @@ export type KqOperationsLessonId = 'equipment' | 'warehouse' | 'market';
 type Inventory = { ownedCodes: string[]; purchasedCodes: string[]; equippedCodes: string[]; levels: Record<string, number>; maintenance: Record<string, KqMachineCondition>; cultureWear: Record<string, KqCultureEquipmentCondition> };
 type Tent = Inventory & { tentNumber: number };
 type Building = Inventory & { buildingNumber: number; anchorTentNumber: number };
-type PreparedQuote = { offer: KqCommerceOffer; stockId: string; revision: number };
+type PreparedQuote = { offer: KqCommerceOffer; stockId: string; revision: number; expiresAt: number };
 export type KqOperationsLessonState = {
   lesson: KqOperationsLessonId; trial: KqTrialState; tents: Tent[]; buildings: Building[]; shared: Inventory;
   storage: { ownedContainers: Record<string, number>; defaultMethodCode: KqStorageMethodCode; lot: KqStorageLot; revision: number;
@@ -26,6 +27,7 @@ export type KqOperationsLessonState = {
   prepared: boolean; events: string[]; routePlan: { route: string; equipmentCode: string } | null;
   quotes: Record<string, PreparedQuote>; receipts: Record<string, unknown>;
   onlineOrderCredits?: Record<string, number>;
+  customerDemandUsage?: Record<string, number>;
   onlineSimulation?: { packedQualities: Record<string, number>; promotedFlowerIds: string[]; clientDay: string; clientsStart: number; clientsGained: number; clientsLost: number; loyaltyProgress: number; churnProgress: number };
 };
 export type KqOperationsLessonAction = { path: string; method: string; body: Record<string, unknown> };
@@ -62,6 +64,7 @@ export function createKqOperationsLesson(lesson: KqOperationsLessonId): KqOperat
   // can be explored. Creating a real shop belongs to the treasury lesson.
   trial.commerce.computerOwned = true;
   trial.commerce.online = createKqOnlinePreview(trial.clock);
+  trial.commerce.customerDemand = createKqCustomerDemandSnapshot(trial.clock);
   if (trial.commerce.business) trial.commerce.business.shop = { name: 'Le shop de Sylvain · essai', createdAt: new Date(trial.clock).toISOString(), paidUntil: null, renew: false, active: true, tier: 'basic', monthlyCents: 0 };
   const tent: Tent = { ...inventory(KQ_STARTING_EQUIPMENT_CODES), tentNumber: 1 };
   const building: Building = { ...inventory(lesson === 'equipment' ? [] : ['DRYING-ROOM']), buildingNumber: 1, anchorTentNumber: 1 };
@@ -79,7 +82,7 @@ export function createKqOperationsLesson(lesson: KqOperationsLessonId): KqOperat
     if (machine) shared.maintenance[machine.code] = getKqMachineCondition(machine.code, 1, 10)!;
     tent.cultureWear['LED-300'] = getKqCultureEquipmentCondition('LED-300', 1, 60)!;
   }
-  return { lesson, trial, tents: [tent], buildings: [building], shared, storage: { ownedContainers, defaultMethodCode: 'STORAGE-GLASS', lot, revision: 0, overflowSales: [] }, prepared: false, events: [], routePlan: null, quotes: {}, receipts: {} };
+  return { lesson, trial, tents: [tent], buildings: [building], shared, storage: { ownedContainers, defaultMethodCode: 'STORAGE-GLASS', lot, revision: 0, overflowSales: [] }, prepared: false, events: [], routePlan: null, quotes: {}, receipts: {}, customerDemandUsage: {} };
 }
 
 function lessonStorageMethods(state: KqOperationsLessonState) {
@@ -170,7 +173,7 @@ function routes(state: KqOperationsLessonState) {
 }
 
 export function getKqOperationsCommerce(state: KqOperationsLessonState): KqCommerceSnapshot {
-  return { ...state.trial.commerce, rawLots: state.prepared ? [] : [{ flowerId: LOT_ID, varietyName: 'La récolte de Sylvain · essai', juryScore: trialQuality(state.trial), harvestGrams: (state.storage.lot.capacity?.totalUnits ?? 0) / 10, options: routes(state), storage: projectKqStorageLot(state.storage.lot, state.trial.clock) }], electricityOutstandingCents: state.trial.electricity };
+  return { ...state.trial.commerce, customerDemand: getKqOperationsCustomerDemand(state), rawLots: state.prepared ? [] : [{ flowerId: LOT_ID, varietyCode: state.trial.game?.varietyCode, varietyName: 'La récolte de Sylvain · essai', juryScore: trialQuality(state.trial), harvestGrams: (state.storage.lot.capacity?.totalUnits ?? 0) / 10, options: routes(state), storage: projectKqStorageLot(state.storage.lot, state.trial.clock) }], electricityOutstandingCents: state.trial.electricity };
 }
 
 export function getKqOperationsEnergy(state: KqOperationsLessonState) {
@@ -206,6 +209,7 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
   if (receiptKey && Object.hasOwn(current.receipts, receiptKey)) return { state: current, payload: current.receipts[receiptKey] };
   const state = structuredClone(current);
   const c = state.trial.commerce;
+  c.customerDemand = getKqOperationsCustomerDemand(state);
   let payload: unknown;
   const spend = (cents: number) => { requireCondition(Number.isFinite(cents) && cents >= 0 && c.cashCents >= cents, 'Budget fictif insuffisant.'); c.cashCents -= cents; };
   if (url.pathname === '/api/arena/placard/equipment') {
@@ -338,7 +342,7 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
       requireCondition(quote.available || route === 'raw' || route === 'biomass', quote.blockedReason ?? 'Filière indisponible.');
       const cost = quote.market?.processingCostCents ?? 0;
       requireCondition(body.expectedCostCents === cost, 'Le coût a changé.'); spend(cost);
-      const stock = (id: string, target: KqMarketRouteCode, grams: number, equivalent: number, base: number): KqCommerceStock => ({ id, flowerId: LOT_ID, name: 'La récolte de Sylvain · essai', route: target, batchRoute: target, juryScore: trialQuality(state.trial), initialUnits: Math.round(grams * 10), remainingUnits: Math.round(grams * 10), equivalentUnits: Math.round(equivalent * 10), originalUnits: Math.round((state.trial.game?.harvestGrams ?? 0) * 10), baseUnitCents: base, payoutExact: 0, payoutRounded: 0, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false, storage: projectKqStorageLot(state.storage.lot, state.trial.clock), storageRevision: state.storage.revision });
+      const stock = (id: string, target: KqMarketRouteCode, grams: number, equivalent: number, base: number): KqCommerceStock => ({ id, flowerId: LOT_ID, varietyCode: state.trial.game?.varietyCode, name: 'La récolte de Sylvain · essai', route: target, batchRoute: target, juryScore: trialQuality(state.trial), initialUnits: Math.round(grams * 10), remainingUnits: Math.round(grams * 10), equivalentUnits: Math.round(equivalent * 10), originalUnits: Math.round((state.trial.game?.harvestGrams ?? 0) * 10), baseUnitCents: base, payoutExact: 0, payoutRounded: 0, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false, storage: projectKqStorageLot(state.storage.lot, state.trial.clock), storageRevision: state.storage.revision });
       c.stocks = [stock('operations-stock', route, quote.productGrams, quote.processedInputGrams, quote.productBaseUnitCents ?? 30)];
       if (quote.remainderGrams > 0) {
         const remainderRoute = quote.remainderDestination === 'raw' ? 'raw' : 'biomass';
@@ -365,16 +369,20 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
       const offer = quoteKqCommerce(c, stock!, body.channel as KqSalesChannel, body.policy as KqOnlinePrice, typeof body.units === 'number' ? body.units : undefined, state.trial.clock);
       requireCondition(!offer.reason && offer.units > 0, offer.reason ?? 'Aucune quantité à vendre.');
       const quoteId = `operations-quote-${Object.keys(state.quotes).length + 1}`;
-      state.quotes[quoteId] = { offer, stockId: stock!.id, revision: c.revision };
+      state.quotes[quoteId] = { offer, stockId: stock!.id, revision: c.revision, expiresAt: state.trial.clock + 600000 };
       const payment = previewKqBusinessPayment(offer.payoutCents, c.business!, state.trial.electricity);
       payload = { quoteId, offer, ...payment, expiresAt: new Date(state.trial.clock + 600000).toISOString() };
     } else if (body.action === 'sell') {
       const quote = state.quotes[String(body.quoteId)];
-      requireCondition(quote && quote.revision === c.revision && quote.offer.payoutCents === body.expectedPayoutCents, 'Recalcule l’offre avant de vendre.');
+      requireCondition(quote && quote.revision === c.revision && quote.expiresAt > state.trial.clock && quote.offer.payoutCents === body.expectedPayoutCents, 'Recalcule l’offre avant de vendre.');
       const { offer } = quote;
       const stock = c.stocks.find(item => item.id === quote.stockId)!;
       requireCondition(stock.remainingUnits >= offer.units, 'Ce stock a déjà été vendu.');
+      const currentOffer = quoteKqCommerce(c, stock, offer.channel, offer.policy, offer.units, state.trial.clock);
+      requireCondition(!currentOffer.reason && currentOffer.units === offer.units && currentOffer.unitCents === offer.unitCents && currentOffer.payoutCents === offer.payoutCents
+        && JSON.stringify(currentOffer.customerDemand) === JSON.stringify(offer.customerDemand), 'Recalcule l’offre avant de vendre.');
       const payment = collectLessonPayment(state, offer.payoutCents);
+      consumeKqOperationsCustomerDemand(state, offer.channel, offer.customerDemand);
       c.reputation = Math.max(0, c.reputation + offer.reputationDelta); c.clients = offer.clientsAfter; c.shopPartners = offer.shopPartnersAfter;
       c.shopRecruitment = offer.shopRecruitmentAfter; c.shopChurn = offer.shopChurnAfter;
       c.demand!.onlineDebt = Math.min(1, c.demand!.onlineDebt + offer.directCost / (getKqCommerceCapacity(c.campaign!.reputation).baseUnits * (1 + .25 * Math.min(1, c.campaign!.clientsStart / getKqCommerceCapacity(c.campaign!.reputation).maxClients))));

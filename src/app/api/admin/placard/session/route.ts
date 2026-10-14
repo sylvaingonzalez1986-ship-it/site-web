@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
 import {
   expireKqAbandonedBattles,
-  getKqAdminActiveRun,
+  getKqAdminRunsSnapshot,
+  readKqRunSelection,
   getKqAdminBuddieRotation,
   getKqAdminBattles,
   getKqAdminFlowers,
@@ -11,9 +12,12 @@ import {
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request?: Request) {
   const admin = await getValidatedAdminContext();
   if (!admin) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
+  let selection;
+  try { selection = readKqRunSelection(request); }
+  catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Sélection invalide." }, { status: 400 }); }
   let expiryWarning = "";
   try {
     await expireKqAbandonedBattles();
@@ -21,7 +25,7 @@ export async function GET() {
     expiryWarning = `Expiration des duels : ${error instanceof Error ? error.message : "indisponible"}`;
   }
   const results = await Promise.allSettled([
-    getKqAdminActiveRun(admin.email),
+    getKqAdminRunsSnapshot(admin.email, selection),
     getKqAdminFlowers(admin.email),
     getKqAdminBattles(admin.email),
     getKqAdminBuddieRotation(admin.email),
@@ -37,7 +41,8 @@ export async function GET() {
   }
   return NextResponse.json({
     buddieRotation: results[3].status === "fulfilled" ? results[3].value : null,
-    activeRun: results[0].status === "fulfilled" ? results[0].value : null,
+    activeRun: results[0].status === "fulfilled" ? results[0].value.activeRun : null,
+    activeRuns: results[0].status === "fulfilled" ? results[0].value.activeRuns : [],
     flowers: results[1].status === "fulfilled" ? results[1].value : [],
     battles: results[2].status === "fulfilled" ? results[2].value : [],
     warnings,

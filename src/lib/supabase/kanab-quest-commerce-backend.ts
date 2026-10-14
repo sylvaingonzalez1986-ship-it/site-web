@@ -73,6 +73,9 @@ function databaseError(message: string, operation?: string): never {
     commerce_storage_changed: "La conservation de ce lot a évolué. Recalcule l’offre.",
     commerce_machine_maintenance: "Une machine de cette filière doit être réparée dans ton entrepôt.",
     commerce_demand_exhausted: "Ces commandes viennent d’être prises. Actualise l’offre ou attends leur renouvellement.",
+    warehouse_wholesale_exhausted: "Le volume de reprise des grossistes est épuisé pour cette période. Attends son renouvellement ou développe tes autres débouchés.",
+    warehouse_processing_pending: "La transformation est en cours. Ce stock sera disponible à la fin du travail de l’atelier.",
+    warehouse_drying_required: "Séchage et maturation en cours : attends la fin de cette étape dans Séchage et stockage avant de transformer ce lot.",
     commerce_offer_changed: "Les conditions ont changé. Recalcule l’offre avant de confirmer.",
     commerce_cash: "Trésorerie insuffisante. Les grossistes restent disponibles pour vendre ton stock.",
     commerce_lot_unavailable: "Ce lot a déjà été préparé ou vendu. Actualise le stock.",
@@ -90,6 +93,8 @@ function databaseError(message: string, operation?: string): never {
     commerce_ad_active: "Une campagne publicitaire est déjà en cours.",
     commerce_ad_kind: "Cette campagne publicitaire n’existe pas.",
     commerce_lab_unavailable: "Cette analyse est déjà réglée ou ne t’appartient pas.",
+    commerce_supplier_unavailable: "Cette facture fournisseur est déjà réglée ou ne t’appartient pas.",
+    commerce_supplier_cash: "Trésorerie insuffisante pour solder cette facture. Le solde échu sera réglé progressivement sur les ventes.",
     commerce_legacy_internet: "L’accès en ligne passe désormais par la création de ton shop.",
     commerce_domiciliation_mode: "Choisis une domiciliation à domicile ou à une adresse extérieure.",
     commerce_legacy_sale: "Actualise le marché pour choisir ton circuit de vente.",
@@ -133,6 +138,8 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
     if (!KQ_SALES_CHANNELS.includes(body.channel as KqSalesChannel) || !["discovery", "advised", "premium"].includes(String(body.policy))) throw new Error("Circuit ou prix invalide.");
     const units = body.units === undefined ? undefined : integer(body.units);
     const current = await state(userId);
+    // A newer app must not store new indoor prices against an older SQL tariff.
+    if (current.online?.version === 1 && current.customerDemand?.version !== 1) throw new Error("[supabase:commerce] customer_demand_migration_required");
     if (body.channel === "online" && current.online?.version === 1) databaseError("online_legacy_sale");
     const stock = current.stocks.find(s => s.id === stockId);
     if (!stock) throw new Error("Ce stock n’est plus disponible.");
@@ -143,7 +150,8 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
     const growthReset = current.demand?.growthResetsAt ? Date.parse(current.demand.growthResetsAt) : Infinity;
     const businessDeadline = business.nextEventAt ? Date.parse(business.nextEventAt) : Infinity;
     const storageDeadline = stock.storage ? Date.parse(stock.storage.nextChangeAt) : Infinity;
-    const expiresAt = new Date(Math.min(serverNow + 10 * 60 * 1000, growthReset, businessDeadline, storageDeadline)).toISOString();
+    const customerDemandDeadline = current.customerDemand ? Date.parse(current.customerDemand.endsAt) : Infinity;
+    const expiresAt = new Date(Math.min(serverNow + 10 * 60 * 1000, growthReset, businessDeadline, storageDeadline, customerDemandDeadline)).toISOString();
     const energy = await getKqEnergySummary(userId);
     const payment = previewKqBusinessPayment(offer.payoutCents, business, energy.outstandingCents);
     Object.assign(offer, payment);
@@ -178,7 +186,7 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
   } else if (action === "advertise") {
     if (!isKqAdvertisingKind(body.kind)) throw new Error("Campagne publicitaire invalide.");
     payload = { kind: body.kind };
-  } else if (action === "pay-lab") {
+  } else if (action === "pay-lab" || action === "pay-supplier") {
     payload = { invoiceId: uuid(body.invoiceId) };
   } else if (action === "domiciliation") {
     if (body.mode !== "home" && body.mode !== "external") throw new Error("Domiciliation invalide.");

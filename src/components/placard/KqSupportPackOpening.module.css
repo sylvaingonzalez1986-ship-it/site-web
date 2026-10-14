@@ -1,12 +1,23 @@
-.dialog { position: fixed; inset: 0; margin: auto; box-sizing: border-box; width: min(820px, calc(100vw - 24px)); max-width: none; max-height: calc(100dvh - 24px); padding: 0; overflow: auto; border: 2px solid #f4c43d; border-radius: 10px; background: #081a14; color: #fff5df; }
-.dialog::backdrop { background: #001b15dc; }
-.content { position: relative; height: clamp(360px, 65dvh, 540px); }
-.status { display: flex; min-height: 360px; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; text-align: center; }
-.status > svg { color: #f4c43d; }
-.status h2 { font: 900 1.6rem/1.2 var(--font-display), sans-serif; }
-.status p { max-width: 45ch; font-size: 14px; line-height: 1.6; }
-.status button { min-height: 48px; padding: 10px 18px; border: 2px solid #f4c43d; background: #f4c43d; color: #002d24; font-weight: 800; }
-.dialog button { cursor: pointer; }
-.dialog button:focus-visible { outline: 3px solid #8ce7ce; outline-offset: 3px; }
-.revealCards{display:flex;flex:1;min-height:0;align-items:flex-start;gap:12px;margin:12px 0;padding:4px 4px 12px;overflow:auto;overscroll-behavior:contain}.revealCard{flex:0 0 192px;border:2px solid #d5a72d;background:#fffaf1;color:#103b2e;box-shadow:3px 3px 0 #d5a72d}.revealCard[data-rarity=epic]{border-color:#cd99eb;box-shadow:3px 3px 0 #cd99eb}.revealArtwork{position:relative;aspect-ratio:2/3;overflow:hidden}.revealCopy{display:grid;gap:6px;padding:9px}.revealCopy>small{font-size:11px;font-weight:900}.revealCard[data-rarity=epic] small{color:#732a98}.revealCopy>strong{font-size:15px;line-height:1.25}.revealCopy>span{font-size:10px;font-weight:800}.revealCopy p{margin:0;font-size:12px;line-height:1.5}.revealCopy>b{font-size:11px;color:#732a98}.revealCard[data-rarity=epic] .revealCopy{background:#f4eafa}
-@media (max-width: 600px) { .content { height: 400px; } }
+.dialog { position: fixed; inset: 0; box-sizing: border-box; width: min(880px, calc(100vw - 24px)); max-width: none; max-height: calc(100dvh - 24px); margin: auto; padding: 0; overflow: hidden; border: 3px solid #172923; border-radius: 22px; background: #fff1d6; color: #172923; box-shadow: 5px 6px 0 #172923; }
+.dialog::backdrop { background: #172923c4; backdrop-filter: blur(3px); }
+.content { position: relative; height: clamp(420px, 76dvh, 680px); max-height: calc(100dvh - 34px); }
+.reveal { position: absolute; inset: 0; z-index: 50; display: flex; flex-direction: column; gap: 18px; padding: 24px; background: #fff1d6; color: #172923; }
+.close { position: absolute; top: 14px; right: 14px; z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; border: 2px solid #172923; border-radius: 12px; background: #fff8e7; color: #172923; box-shadow: 2px 3px 0 #172923; cursor: pointer; }
+.heading { flex: none; padding-right: 44px; }
+.heading small { font-size: 12px; font-weight: 800; letter-spacing: .05em; }
+.heading h3 { margin: 5px 0 0; font: 900 clamp(28px, 4vw, 44px)/1.05 var(--font-display), sans-serif; }
+.revealCards { display: flex; flex: 1; align-items: flex-start; gap: 16px; min-height: 0; padding: 5px 4px 14px; overflow: auto; overscroll-behavior: contain; }
+.revealCard { flex: 0 0 192px; width: 192px; overflow: hidden; border: 2px solid #172923; border-radius: 15px; background: #fff8e7; box-shadow: 3px 4px 0 #172923; color: #172923; }
+.revealCard[data-rarity="epic"] { border-color: #70468a; box-shadow: 3px 4px 0 #70468a; }
+.revealArtwork { position: relative; aspect-ratio: 2 / 3; border-bottom: 2px solid #172923; overflow: hidden; }
+.revealCopy { display: grid; gap: 5px; padding: 12px; }
+.revealCopy small { font-size: 11px; font-weight: 800; }
+.revealCopy strong { font: 900 23px/1.05 var(--font-display), sans-serif; }
+.revealCopy span, .revealCopy p, .revealCopy b { margin: 0; font-size: 11px; line-height: 1.5; }
+.revealCopy b { color: #70468a; }
+.continue, .status button { flex: none; align-self: center; min-height: 48px; max-width: 100%; padding: 10px 20px; border: 2px solid #172923; border-radius: 12px; background: #efc451; color: #172923; box-shadow: 3px 4px 0 #172923; font: 800 14px/1.3 var(--font-body), sans-serif; cursor: pointer; }
+.status { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; height: 100%; padding: 24px; text-align: center; }
+.status h2 { margin: 0; font: 900 32px/1.1 var(--font-display), sans-serif; }
+.status p { margin: 0; max-width: 45ch; font-size: 14px; line-height: 1.6; }
+.dialog button:focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
+@media (max-width: 600px) { .dialog { border-radius: 18px; } .reveal { gap: 14px; padding: 16px 12px; } .heading { padding-right: 50px; } .heading h3 { font-size: 28px; } .heading small { font-size: 10px; } .close { top: 12px; right: 12px; } .revealCards { gap: 12px; } .continue { width: 100%; } }

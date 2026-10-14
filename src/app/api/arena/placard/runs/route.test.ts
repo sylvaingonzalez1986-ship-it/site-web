@@ -2,20 +2,21 @@ import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const {
   getCurrentCustomerSessionByBackend,
-  getKqPlayerActiveRun,
+  getKqPlayerRunsSnapshot,
   startKqPlayerRun,
   hitRateLimit,
   logRateLimitRejection,
 } = vi.hoisted(() => ({
   getCurrentCustomerSessionByBackend: vi.fn(),
-  getKqPlayerActiveRun: vi.fn(),
+  getKqPlayerRunsSnapshot: vi.fn(),
   startKqPlayerRun: vi.fn(),
   hitRateLimit: vi.fn(),
   logRateLimitRejection: vi.fn(),
 }));
 
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend }));
-vi.mock("@/lib/supabase/kanab-quest-backend", () => ({ getKqPlayerActiveRun, startKqPlayerRun }));
+vi.mock("@/lib/supabase/kanab-quest-backend", async (importOriginal) => ({
+  readKqRunSelection: (await importOriginal<typeof import("@/lib/supabase/kanab-quest-backend")>()).readKqRunSelection, getKqPlayerRunsSnapshot, startKqPlayerRun }));
 vi.mock("@/lib/security-rate-limit", () => ({
   getRequestIp: () => "127.0.0.1",
   hitRateLimit,
@@ -55,17 +56,38 @@ describe("POST /api/arena/placard/runs", () => {
   });
 
   it("resumes only the authenticated player's active culture", async () => {
-    getKqPlayerActiveRun.mockResolvedValue({ runId: "run-1" });
+    getKqPlayerRunsSnapshot.mockResolvedValue({ activeRun: { runId: "run-1" }, activeRuns: [{ runId: "run-1" }] });
     const response = await GET();
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
-    expect(getKqPlayerActiveRun).toHaveBeenCalledWith(customerId);
+    expect(getKqPlayerRunsSnapshot).toHaveBeenCalledWith(customerId, {});
   });
 
   it("requires authentication before parsing or mutating", async () => {
     getCurrentCustomerSessionByBackend.mockResolvedValue(null);
     expect((await POST(request({}))).status).toBe(401);
     expect(startKqPlayerRun).not.toHaveBeenCalled();
+  });
+
+  it("passes a valid run and zone selection with authenticated ownership only", async () => {
+    const runId = "11111111-1111-4111-8111-111111111111";
+    getKqPlayerRunsSnapshot.mockResolvedValue({ activeRun: null, activeRuns: [] });
+    const response = await GET(new Request(`http://localhost/api/arena/placard/runs?runId=${runId}&zoneId=starter&userId=foreign`));
+    expect(response.status).toBe(200);
+    expect(getKqPlayerRunsSnapshot).toHaveBeenCalledWith(customerId, { runId, zoneId: "starter" });
+    expect(await response.json()).toEqual({ activeRun: null, activeRuns: [] });
+  });
+
+  it.each(["runId=invalid", "zoneId="])("rejects malformed selection before reading the database: %s", async query => {
+    expect((await GET(new Request(`http://localhost/api/arena/placard/runs?${query}`))).status).toBe(400);
+    expect(getKqPlayerRunsSnapshot).not.toHaveBeenCalled();
+  });
+
+  it("forwards the stable request key, assigned zone and exact confirmed energy", async () => {
+    startKqPlayerRun.mockResolvedValue({ runId: "run-1", replayed: true });
+    const payload = { zoneId: "starter", requestKey: "11111111-1111-4111-8111-111111111111", buddieCode: "HH2026-001", deckCodes: [], expectedEnergyCents: 123 };
+    expect((await POST(request(payload))).status).toBe(201);
+    expect(startKqPlayerRun).toHaveBeenCalledWith(customerId, expect.objectContaining(payload));
   });
 
   it("starts the atomic run for the authenticated owner only", async () => {

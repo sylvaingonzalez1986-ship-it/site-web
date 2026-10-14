@@ -1,0 +1,41 @@
+.dock { position: sticky; bottom: 8px; z-index: 20; grid-column: 1 / -1; min-width: 0; padding: 6px 9px 4px; border: 3px solid #172923; border-radius: 15px 12px 16px 13px; background: #fff1d6; color: #172923; box-shadow: 3px 4px 0 #172923; }
+.header { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; }
+.header > div:first-child { min-width: 0; }
+.header h3 { margin: 0; font-size: 14px; line-height: 1.2; font-weight: 850; color: #172923; }
+.toggle { display: flex; align-items: center; justify-content: space-between; gap: 5px; min-height: 44px; max-width: 100%; padding: 0 3px; border: 0; border-radius: 7px; background: transparent; color: inherit; font: inherit; cursor: pointer; text-align: left; }
+.toggle svg { flex: none; }
+.toggle small { margin-left: 4px; font-size: 11px; color: #076c61; }
+.toggle:hover { background: #dcefe4; }
+.dock[data-open="false"] .header > div:first-child, .dock[data-open="false"] .toggle { width: 100%; }
+.header p { margin: 3px 0 0; overflow: hidden; font-size: 11px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; color: #536058; }
+.actions { display: flex; flex: none; gap: 4px; }
+.actions button { display: grid; place-items: center; width: 44px; min-height: 44px; padding: 0; cursor: pointer; border: 2px solid #172923; border-radius: 9px; background: #efc451; color: #172923; box-shadow: 1px 2px 0 #172923; }
+.actions button:disabled { opacity: .36; cursor: default; }
+.track { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none; touch-action: pan-x pan-y; }
+.track::-webkit-scrollbar { display: none; }
+.cards { display: flex; align-items: start; gap: 8px; width: max-content; min-width: 100%; padding: 5px 2px 3px; }
+.slot { flex: none; width: 98px; }
+.card { display: flex; flex-direction: column; align-items: center; gap: 3px; width: 100%; min-width: 0; padding: 4px; background: transparent; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; border: 2px solid transparent; border-radius: 11px; color: #172923; }
+.card > * { pointer-events: none; }
+.artwork { width: 68px; flex: none; transition: transform .15s ease; filter: drop-shadow(2px 3px 0 #17292366); }
+.artwork img { -webkit-user-drag: none; }
+.card > strong { display: block; width: 100%; overflow: hidden; font-size: 10px; line-height: 12px; font-weight: 750; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+.status { display: flex; align-items: center; justify-content: center; gap: 3px; max-width: 100%; height: 12px; overflow: hidden; font-size: 9px; line-height: 12px; text-overflow: ellipsis; white-space: nowrap; color: #536058; }
+.status svg { flex: none; }
+.card:hover:not(:disabled) { background: #dcefe4; }
+.card:hover:not(:disabled) .artwork { transform: translateY(-2px); }
+.card:active:not(:disabled) { cursor: grabbing; }
+.card[data-selected] { border-color: #172923; background: #efc451; box-shadow: 2px 3px 0 #172923; }
+.card[data-dragging] .artwork { opacity: .45; transform: none; }
+.card:disabled { cursor: not-allowed; }
+.card:disabled .artwork { filter: saturate(.45); opacity: .62; }
+.card:disabled .status { color: #72522f; }
+.scrollBand { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 22px; font-size: 10px; line-height: 1; cursor: ew-resize; touch-action: pan-y; user-select: none; -webkit-user-select: none; border-top: 2px solid #17292355; color: #536058; }
+.scrollMeter { position: relative; width: 65px; height: 3px; border-radius: 5px; background: #d5a57380; }
+.scrollMeter i { position: absolute; top: 0; width: 20%; height: 3px; border-radius: 5px; background: #076c61; }
+.empty { margin: 0; min-height: 120px; display: grid; place-items: center; padding: 12px; font-size: 12px; text-align: center; color: #536058; }
+.ghost { position: fixed; z-index: 2147483000; width: 88px; pointer-events: none; transform: rotate(-7deg); filter: drop-shadow(4px 5px 0 #17292380); }
+.ghost * { pointer-events: none; }
+.toggle:focus-visible, .actions button:focus-visible, .card:focus-visible, .track:focus-visible, .scrollBand:focus-visible { outline-offset: -3px; outline: 3px solid #172923; }
+@media (max-width: 480px) { .dock { bottom: 4px; padding-inline: 6px; } .slot { width: 88px; } .artwork { width: 64px; } .actions { gap: 2px; } .header { gap: 4px; } .header h3 { font-size: 13px; } .header p { font-size: 10px; } }
+@media (prefers-reduced-motion: reduce) { .artwork { transition: none; } }

@@ -2,6 +2,7 @@
 const mocks = vi.hoisted(() => ({ client: vi.fn(), equipment: vi.fn() }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: mocks.client }));
 vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({ getKqEquipmentShopSnapshot: mocks.equipment }));
+vi.mock("./kanab-quest-warehouse-backend", () => ({ getKqWarehouseRunSnapshot: vi.fn().mockResolvedValue(null) }));
 import { getKqPlayerBuddieRotation, startKqPlayerRun } from "./kanab-quest-backend";
 import { KQ_BUDDIES } from "../kanab-quest-game";
 
@@ -15,7 +16,7 @@ function database(options: {
   startError?: { message: string; details?: string };
 } = {}) {
   const reads: Array<[string, ...unknown[]]> = [];
-  const rpc = vi.fn().mockImplementation((name: string, args?: { p_initial_state?: unknown }) => Promise.resolve(name === "rpc_kq_commerce_state"
+  const rpc = vi.fn().mockImplementation((name: string, args?: { p_initial_state?: unknown }) => Promise.resolve(name === "rpc_kq_reserved_cards" ? { data: [], error: null } : name === "rpc_kq_commerce_state"
     ? { error: null, data: { business: { version: 1, domiciliation: { mode: "home", active: true } } } }
     : { error: options.startError ?? null, data: { run: { id: "run-new", state: args?.p_initial_state }, burnReceipt: null } }));
   mocks.equipment.mockResolvedValue({

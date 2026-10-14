@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useKqTutorialApi, type KqTutorialApi } from "./KqTutorialApiContext";
 
@@ -115,7 +115,7 @@ export function KqTreasuryManagement({ onOpenShop, onUpdated, section = "managem
     committing.current = true; setBusy(true); setError("");
     try {
       await request(api, confirmation.body, confirmation.endpoint);
-      setConfirmation(null); setNotice(confirmation.endpoint === "energy" || confirmation.body.action === "pay-lab" ? "Règlement enregistré. Tes factures ont été actualisées." : "La gestion de ton entreprise a été mise à jour.");
+      setConfirmation(null); setNotice(confirmation.endpoint === "energy" || confirmation.body.action === "pay-lab" || confirmation.body.action === "pay-supplier" ? "Règlement enregistré. Tes factures ont été actualisées." : "La gestion de ton entreprise a été mise à jour.");
       if (inFlight.current) await inFlight.current;
       await load();
       api.notify("kq:equipment-updated");
@@ -128,7 +128,7 @@ export function KqTreasuryManagement({ onOpenShop, onUpdated, section = "managem
     {loading ? <p className={styles.loading} role="status"><LoaderCircle size={19} className={styles.spin} aria-hidden="true" /> {section === "invoices" ? "Ouverture des factures…" : "Ouverture de la gestion…"}</p> : null}
     {error && !confirmation ? <p className={styles.error} role="alert">{error}<button type="button" className={styles.secondary} onClick={() => void load()}><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></p> : null}
     {notice ? <p className={styles.notice} role="status"><Check size={18} aria-hidden="true" /> {notice}</p> : null}
-    {data ? section === "invoices" ? <KqTreasuryInvoices data={data} energy={energy} energyError={energyError} now={liveNow} busy={busy} onAsk={ask} onRetry={() => void load()} onPayEnergy={amount => ask("Régler l’électricité et les soins", `Le solde de ${formatKqCash(amount)} sera débité de ta trésorerie disponible pour acquitter les factures d’électricité et de soins. Les factures de laboratoire sont réglées séparément.`, { expectedCents: amount }, amount, "energy")} /> : <KqBusinessPanel data={data} now={liveNow} busy={busy} onAsk={ask} onOpenShop={() => onOpenShop()} expanded showAccounting={false} /> : null}
+    {data ? section === "invoices" ? <KqTreasuryInvoices data={data} energy={energy} energyError={energyError} now={liveNow} busy={busy} onAsk={ask} onRetry={() => void load()} onPayEnergy={amount => ask("Régler l’électricité et les soins", `Le solde de ${formatKqCash(amount)} sera débité de ta trésorerie disponible pour acquitter les factures d’électricité et de soins. Les factures de laboratoire et fournisseur sont réglées séparément.`, { expectedCents: amount }, amount, "energy")} /> : <KqBusinessPanel data={data} now={liveNow} busy={busy} onAsk={ask} onOpenShop={() => onOpenShop("COMPUTER")} expanded showAccounting={false} /> : null}
     {confirmation ? <ManagementConfirmation confirmation={confirmation} busy={busy} error={error} section={section} onClose={() => { if (!busy) { setConfirmation(null); setError(""); } }} onConfirm={() => void commit()} /> : null}
   </section>;
 }

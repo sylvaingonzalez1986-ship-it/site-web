@@ -3,17 +3,23 @@ import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { getKqEnergySnapshot, payKqEnergy } from "@/lib/supabase/kanab-quest-energy-backend";
+import { readKqRunSelection } from "@/lib/supabase/kanab-quest-backend";
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store, max-age=0" };
 function failure(error: unknown) {
   const message = error instanceof Error ? error.message : "Électricité indisponible.";
   return NextResponse.json({ error: message.startsWith("[supabase:") ? "Service électrique momentanément indisponible." : message }, { status: message.startsWith("[supabase:") ? 503 : 400, headers });
 }
-export async function GET() {
+export async function GET(request?: Request) {
   if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
-  try { return NextResponse.json(await getKqEnergySnapshot(session.customerId), { headers }); } catch (error) { return failure(error); }
+  try {
+    const selection = readKqRunSelection(request);
+    const campaign = request && new URL(request.url).searchParams.get("campaign") === "true";
+    return NextResponse.json(await (campaign ? getKqEnergySnapshot(session.customerId, { ...selection, campaign: true })
+      : Object.keys(selection).length ? getKqEnergySnapshot(session.customerId, selection) : getKqEnergySnapshot(session.customerId)), { headers });
+  } catch (error) { return failure(error); }
 }
 export async function POST(request: Request) {
   if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });

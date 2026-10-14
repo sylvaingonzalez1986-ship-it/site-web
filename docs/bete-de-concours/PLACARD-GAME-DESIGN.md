@@ -4,7 +4,7 @@ Statut: recherche initiale conservee + orientation jouable actuelle
 Univers: L'Arene / Hemp Heroes / carnet de degustation  
 Plateforme: web responsive, Next.js, Vercel et Supabase
 
-## 0. Contrat actuel — culture vivante et La Botte, 10 octobre 2026
+## 0. Contrat actuel — campagne commune et La Botte, 13 octobre 2026
 
 Les sections historiques plus bas documentent la premiere piste de simulation
 quotidienne. Elles restent utiles pour le vocabulaire, la sobriete technique et
@@ -14,19 +14,28 @@ Cette section décrit l’implémentation préparée pour le lancement du 15 oct
 2026. Elle prime sur les propositions historiques ci-dessous. L’application
 des migrations et la publication du site sont des opérations distinctes.
 
+La version locale réunit les zones actives avec un Buddie dans une campagne
+commune. Au 13 octobre 2026, `20261013000200_kq_shared_campaigns.sql` est
+appliquée et vérifiée en ligne ; le code du site reste à déployer. Le [contrat détaillé
+de l’entrepôt](PLACARD-ENTREPOT-V2.md#campagne-commune-récoltes-par-buddie--13-octobre-2026)
+précise le parcours, les profils fictifs versionnés des 52 Buddies et les
+validations locales. Les anciennes parties indépendantes peuvent être terminées
+sans perte avant de démarrer une nouvelle campagne ; elles ne sont pas converties.
+
 La boucle actuelle est un jeu de cartes et de dés avec suivi de santé :
 
 ```text
 Album Kanab Quest
-  -> choisir 1 Buddie CBD reel
-  -> commencer sur le Sol vivant commun, avec les copies La Botte choisies
+  -> placer un Buddie possédé dans chaque zone choisie de l’entrepôt
+  -> enregistrer le plan et réunir les zones actives affectées dans une campagne
+  -> commencer sur le Sol vivant commun, avec un seul deck La Botte
   -> piocher une main de 5 cartes a chaque etape
-  -> jouer 6 etapes courtes avec 3 des
-  -> observer gratuitement la sante et engager les soins achetes en boutique
+  -> jouer une seule suite de 6 étapes avec 3 dés pour toutes les zones
+  -> observer la santé commune et engager chaque soin une seule fois
   -> gagner et depenser de l'XP pour jouer des cartes
   -> subir des incidents Energie, DDTM et Securite avec des reponses dediees
-  -> achever le sechage et creer 1 carte Fleur unique
-  -> deposer sa Fleur dans la file de duel aleatoire
+  -> obtenir une récolte, une Fleur et des factures distinctes par zone/Buddie
+  -> déposer chaque Fleur dans la file de duel aléatoire
   -> appariement automatique puis 3 manches de jury
   -> bruler les 2 Fleurs au verdict
   -> commencer le curing de 6 heures reelles
@@ -45,14 +54,14 @@ Regles validees:
 - 30 cartes actives dans `La Botte du Chanvrier` : 12 communes, 7 peu communes,
   7 rares et 4 épiques;
 - une préparation avant les dés et une réaction après, avec une seule carte
-  épique jouée par culture, même si plusieurs références ou copies sont possédées;
+  épique jouée par campagne, même si plusieurs références ou copies sont possédées;
 - chaque carte spécialisée déclare ses situations compatibles ; un tag partagé
   ne suffit pas. La même règle décide de la jouabilité et du bonus d’opération pertinente;
 - deck sans limite arbitraire: chaque copie possedee peut etre engagee;
 - main deterministe de 5 cartes, figee pendant toute l'etape; aucune carte
   brulee n'est remplacee avant l'etape suivante, les cartes non jouees
   retournent alors dans la rotation et les copies brulees en sont retirees;
-- un changement de main gratuit par culture, uniquement avant toute action;
+- un changement de main gratuit par campagne, uniquement avant toute action;
 - le constructeur affiche la probabilite de voir chaque reference dans la
   premiere main afin de rendre visible le compromis entre taille et regularite;
 - il resume aussi la couverture Racines, Eau, Climat, Ravageurs, Floraison et
@@ -72,6 +81,13 @@ Regles validees:
   choisies produisent un bilan, sans dégâts dus à la simple absence;
 - 52 Buddies jouables et non consommables, avec rotation de cinq autres
   références différentes avant réutilisation;
+- les profils fictifs v1 distinguent rendement, cannabinoïdes et terpènes,
+  sans jets ou actions individuels ; les équipements restent propres à chaque zone;
+- un seul deck, une réserve d’XP et un suivi de santé communs ; le meilleur
+  bonus initial d’XP des Buddies est partagé une fois, sans cumul des membres;
+- participants, profils et équipements figés au lancement ; cliquer une zone
+  engagée reprend le même run principal, les runs membres gardant leurs lots
+  et factures séparés;
 - 50 situations de culture, au moins huit par etape, dont pucerons, acariens et thrips;
 - trois incidents avec consequences persistantes : surcharge electrique et
   coupure, controle DDTM, vol de recolte;

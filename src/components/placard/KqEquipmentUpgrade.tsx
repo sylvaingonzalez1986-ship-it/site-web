@@ -1,26 +1,33 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUp, Check, LoaderCircle } from "lucide-react";
 import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentBuildingNumber, getKqEquipmentImpactLabels, getKqEquipmentUpgradeCost, isKqBuildingEquipment, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
 import { getChanvrierCareerGate, getChanvrierEquipmentUpgradeRequiredLevel, type ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
 import { getKqWorkshopMachineSpecification } from "@/lib/kanab-quest-workshop-machines";
 import styles from "./KqEquipmentUpgrade.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { KqWorkshopTiers } from "./KqWorkshopTiers";
 
-export function KqEquipmentUpgrade({ code, level, cashCents, career, productionUnits = 1, tentNumber = 1, equipmentScopeVersion = 2, disabled, onUpdated }: {
+export function KqEquipmentUpgrade({ code, level, cashCents, career, productionUnits = 1, tentNumber = 1, equipmentScopeVersion = 2, disabled, onUpdated, onBusyChange, workshopOnly = false, maintenanceDue = false }: {
   career?: ChanvrierCareerSnapshot;
   equipmentScopeVersion?: 2 | 3;
   code: string; level: number; cashCents: number; productionUnits?: number; tentNumber?: number; disabled?: boolean;
   onUpdated: () => void | Promise<void>;
+  onBusyChange?: (busy: boolean) => void;
+  workshopOnly?: boolean;
+  maintenanceDue?: boolean;
 }) {
   const api = useKqTutorialApi();
   const [pending, setPending] = useState(false);
+  const [tierBusy, setTierBusy] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [completedLevel, setCompletedLevel] = useState(0);
   const request = useRef<{ level: number; units: number; tentNumber: number; key: string } | null>(null);
   const inFlight = useRef(false);
+  useEffect(() => { onBusyChange?.(pending || tierBusy); }, [pending, tierBusy, onBusyChange]);
+  useEffect(() => () => onBusyChange?.(false), [onBusyChange]);
   const shared = isKqSharedEquipment(code);
   const building = equipmentScopeVersion === 3 && isKqBuildingEquipment(code);
   const targetTent = shared ? 1 : tentNumber;
@@ -37,7 +44,7 @@ export function KqEquipmentUpgrade({ code, level, cashCents, career, productionU
   const tier = level >= 10 ? 10 : level >= 5 ? 5 : 1;
 
   const upgrade = async () => {
-    if (inFlight.current || !affordable || !careerGate?.allowed || disabled || level < completedLevel) return;
+    if (inFlight.current || tierBusy || maintenanceDue || !affordable || !careerGate?.allowed || disabled || level < completedLevel) return;
     inFlight.current = true;
     setPending(true); setError(""); setNotice("");
     if (request.current?.level !== level || request.current.units !== productionUnits || request.current.tentNumber !== targetTent) request.current = { level, units: productionUnits, tentNumber: targetTent, key: crypto.randomUUID() };
@@ -57,7 +64,7 @@ export function KqEquipmentUpgrade({ code, level, cashCents, career, productionU
     } finally { setPending(false); inFlight.current = false; }
   };
 
-  return <section className={styles.upgrade} data-tier={tier} aria-label={`Niveau de ${current.name}`}>
+  const upgrades = <section className={styles.upgrade} data-tier={tier} aria-label={`Niveau de ${current.name}`}>
     <div className={styles.heading}><strong>NIV. {level}<small> / 10</small></strong><span>{level >= 7 ? "Atelier avancé" : level >= 4 ? "Aménagement" : "Réglages"}</span></div>
     <div className={styles.progress} role="progressbar" aria-label="Niveau du matériel" aria-valuemin={1} aria-valuemax={10} aria-valuenow={level}>
       {Array.from({ length: 10 }, (_, index) => <i key={index} data-filled={index < level} />)}
@@ -69,15 +76,20 @@ export function KqEquipmentUpgrade({ code, level, cashCents, career, productionU
       {nextMachine ? <p className={styles.evolution}>{nextMachine.improvement}{nextMachine.configuration !== machine?.configuration ? ` · ${nextMachine.name}` : ""}</p> : null}
       <ul>{gains.map((gain) => <li key={gain}>{gain}</li>)}</ul>
       {!careerGate?.allowed ? <p className={styles.gate}>{careerGate?.reason ?? "Chargement de la progression du Chanvrier…"}</p> : null}
-      <button type="button" disabled={pending || disabled || !affordable || !careerGate?.allowed || level < completedLevel} onClick={() => void upgrade()}>
+      <button type="button" disabled={pending || tierBusy || maintenanceDue || disabled || !affordable || !careerGate?.allowed || level < completedLevel} onClick={() => void upgrade()}>
         {pending ? <LoaderCircle size={18} aria-hidden="true" /> : <ArrowUp size={18} aria-hidden="true" />}
         {pending ? "Amélioration…" : `Niveau ${level + 1} · ${formatKqCash(cost!)}`}
       </button>
       {!affordable ? <small>Il manque {formatKqCash(Math.max(0, (cost ?? 0) - cashCents))}.</small> : null}
+      {maintenanceDue ? <small>Entretiens cette machine avant de l’améliorer.</small> : null}
     </> : <p className={styles.evolution}><Check size={16} aria-hidden="true" /> Niveau maximum atteint</p>}
-    <small>{shared ? "Cette amélioration bénéficie à toutes les tentes." : building ? `Cette amélioration bénéficie aux tentes de l’entrepôt ${getKqEquipmentBuildingNumber(tentNumber)}.` : `Cette amélioration concerne uniquement la tente ${tentNumber}.`}</small>
-    <small>Bonus appliqués une fois installé, dès la prochaine partie ou transformation.</small>
+    <small>{workshopOnly ? "Cette amélioration s’applique à la machine de ton atelier." : shared ? "Cette amélioration bénéficie à toutes les tentes." : building ? `Cette amélioration bénéficie aux tentes de l’entrepôt ${getKqEquipmentBuildingNumber(tentNumber)}.` : `Cette amélioration concerne uniquement la tente ${tentNumber}.`}</small>
+    <small>{workshopOnly ? "Effets appliqués après installation, dès la prochaine transformation." : "Bonus appliqués une fois installé, dès la prochaine partie ou transformation."}</small>
     {notice ? <p role="status">{notice}</p> : null}
     {error ? <p role="alert" className={styles.error}>{error} <button type="button" onClick={() => void onUpdated()}>Actualiser</button></p> : null}
   </section>;
+  return workshopOnly && machine ? <>
+    <KqWorkshopTiers code={code} level={level} cashCents={cashCents} career={career} maintenanceDue={maintenanceDue} disabled={disabled || pending} onUpdated={onUpdated} onBusyChange={setTierBusy} />
+    <details className={styles.fineTuning}><summary>Réglages fins · niveau {level}/10</summary>{upgrades}</details>
+  </> : upgrades;
 }

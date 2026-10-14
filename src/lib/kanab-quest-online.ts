@@ -1,14 +1,15 @@
 import type { KqMarketRouteCode } from "./kanab-quest-market";
+import { getKqActiveCustomerDemand, getKqOnlineFlowerReferenceCents, type KqAppliedCustomerDemand, type KqCustomerDemandSnapshot } from "./kanab-quest-customer-demand";
 
 /** Game economy. Prices are final virtual cents; rates mirror kq_online_* SQL. */
 export const KQ_ONLINE_FEE_PERCENT = 2.5;
 export const KQ_ONLINE_PACKAGING = [
-  { code: "kraft-5", family: "kraft", formatGrams: 5, name: "Kraft artisanal · 5 g", unitCostCents: 25, image: "/placard/packaging-kraft-v1.webp", protectionRate: 1, satisfactionBonus: 0, requiresBranding: false },
-  { code: "kraft-10", family: "kraft", formatGrams: 10, name: "Kraft artisanal · 10 g", unitCostCents: 30, image: "/placard/packaging-kraft-v1.webp", protectionRate: 1, satisfactionBonus: 0, requiresBranding: false },
-  { code: "printed-5", family: "printed", formatGrams: 5, name: "Doypack à ta marque · 5 g", unitCostCents: 110, image: "/placard/packaging-printed-v1.webp", protectionRate: .8, satisfactionBonus: 4, requiresBranding: true },
-  { code: "printed-10", family: "printed", formatGrams: 10, name: "Doypack à ta marque · 10 g", unitCostCents: 125, image: "/placard/packaging-printed-v1.webp", protectionRate: .8, satisfactionBonus: 4, requiresBranding: true },
-  { code: "glass-5", family: "glass", formatGrams: 5, name: "Pot en verre ambré · 5 g", unitCostCents: 180, image: "/placard/packaging-glass-v1.webp", protectionRate: .5, satisfactionBonus: 8, requiresBranding: false },
-  { code: "glass-10", family: "glass", formatGrams: 10, name: "Pot en verre ambré · 10 g", unitCostCents: 210, image: "/placard/packaging-glass-v1.webp", protectionRate: .5, satisfactionBonus: 8, requiresBranding: false },
+  { code: "kraft-5", family: "kraft", formatGrams: 5, name: "Kraft artisanal · 5 g", unitCostCents: 25, image: "/placard/equipment-sylvain-v1/packaging-kraft.webp", protectionRate: 1, satisfactionBonus: 0, requiresBranding: false },
+  { code: "kraft-10", family: "kraft", formatGrams: 10, name: "Kraft artisanal · 10 g", unitCostCents: 30, image: "/placard/equipment-sylvain-v1/packaging-kraft.webp", protectionRate: 1, satisfactionBonus: 0, requiresBranding: false },
+  { code: "printed-5", family: "printed", formatGrams: 5, name: "Doypack à ta marque · 5 g", unitCostCents: 110, image: "/placard/equipment-sylvain-v1/packaging-printed.webp", protectionRate: .8, satisfactionBonus: 4, requiresBranding: true },
+  { code: "printed-10", family: "printed", formatGrams: 10, name: "Doypack à ta marque · 10 g", unitCostCents: 125, image: "/placard/equipment-sylvain-v1/packaging-printed.webp", protectionRate: .8, satisfactionBonus: 4, requiresBranding: true },
+  { code: "glass-5", family: "glass", formatGrams: 5, name: "Pot en verre ambré · 5 g", unitCostCents: 180, image: "/placard/equipment-sylvain-v1/packaging-glass.webp", protectionRate: .5, satisfactionBonus: 8, requiresBranding: false },
+  { code: "glass-10", family: "glass", formatGrams: 10, name: "Pot en verre ambré · 10 g", unitCostCents: 210, image: "/placard/equipment-sylvain-v1/packaging-glass.webp", protectionRate: .5, satisfactionBonus: 8, requiresBranding: false },
 ] as const;
 export type KqOnlinePackagingCode = typeof KQ_ONLINE_PACKAGING[number]["code"];
 export const KQ_ONLINE_SITE_TIERS = [
@@ -37,12 +38,15 @@ export const KQ_ONLINE_MARKETING_ANGLES = [
 export type KqOnlineMarketingAngle = typeof KQ_ONLINE_MARKETING_ANGLES[number]["code"];
 export type KqOnlineListingStatus = "active" | "paused" | "closed" | "sold-out" | "quality-blocked" | "discarded";
 export type KqOnlineListing = {
+  varietyCode?: string;
   id: string; stockId: string; name: string; route: KqMarketRouteCode;
+  /** Actual batch input mass per product unit, retained after all bulk is packed. */
+  equivalentUnitsPerProductUnit?: number;
   formatGrams: 5 | 10; packagingCode: KqOnlinePackagingCode; packetPriceCents: number;
   initialPackets: number; remainingPackets: number; soldPackets: number;
   status: KqOnlineListingStatus; qualityScore: number; baseUnitCents: number; createdAt: string;
   offer?: { ordersPerDay: number; referencePacketCents: number; valueRatio: number;
-    satisfactionScore: number; satisfaction: "satisfied" | "neutral" | "disappointed"; visitorsPerDay: number };
+    satisfactionScore: number; satisfaction: "satisfied" | "neutral" | "disappointed"; visitorsPerDay: number; customerDemand?: KqAppliedCustomerDemand | null };
 };
 export type KqOnlineSale = {
   id: string; listingId: string; name: string; soldAt: string; packets: number;
@@ -105,6 +109,7 @@ export function getKqOnlineAudience(input: { online: KqOnlineSnapshot; reputatio
 
 /** A forecast at current conditions, not a promise; SQL settles each actual sale. */
 export function estimateKqOnlineOffer(input: {
+  route?: KqMarketRouteCode; varietyCode?: string; customerDemand?: KqCustomerDemandSnapshot;
   quality: number; baseUnitCents: number; formatGrams: 5 | 10; packagingCode: string; packetPriceCents: number;
   reputation: number; clients: number; online: KqOnlineSnapshot; activeListingCount?: number; advertisingMultiplier?: number;
 }) {
@@ -112,8 +117,13 @@ export function estimateKqOnlineOffer(input: {
   if (!packaging || packaging.formatGrams !== input.formatGrams) throw new Error("Choisis un emballage adapté au format.");
   const quality = clamp(input.quality, 0, 10);
   const brandPremium = clamp(input.reputation / 15000, 0, .2) * clamp((quality - 7) / 2, 0, 1);
-  const referencePacketPriceCents = Math.max(1, Math.round(Math.max(0, input.baseUnitCents) * input.formatGrams
-    * (.7 + quality / 20) * (1 + brandPremium) + packaging.unitCostCents));
+  const request = input.route === "raw" ? getKqActiveCustomerDemand(input.customerDemand, "online", input.varietyCode, quality, Date.parse(input.online.serverNow)) : null;
+  const customerDemand = request && request.remainingUnits >= input.formatGrams * 10
+    ? { id: request.id, period: request.period, bonusPercent: request.bonusPercent, units: input.formatGrams * 10, matchedFlavorCount: request.matchedFlavorCount } satisfies KqAppliedCustomerDemand : undefined;
+  const referencePacketPriceCents = input.route === "raw"
+    ? Math.round(getKqOnlineFlowerReferenceCents(quality) * input.formatGrams * (1 + (customerDemand?.bonusPercent ?? 0) / 100))
+    : Math.max(1, Math.round(Math.max(0, input.baseUnitCents) * input.formatGrams
+      * (.7 + quality / 20) * (1 + brandPremium) + packaging.unitCostCents));
   const validPrice = Number.isSafeInteger(input.packetPriceCents) && input.packetPriceCents >= 1 && input.packetPriceCents <= 1_000_000;
   const priceRatio = validPrice ? input.packetPriceCents / referencePacketPriceCents : Infinity;
   const satisfaction = getKqOnlineSatisfaction(quality, priceRatio, packaging.satisfactionBonus);
@@ -134,6 +144,7 @@ export function estimateKqOnlineOffer(input: {
   const feeCents = validPrice ? Math.round(input.packetPriceCents * KQ_ONLINE_FEE_PERCENT / 100) : 0;
   const vatCents = validPrice ? Math.round(input.packetPriceCents / 6) : 0;
   return {
+    ...(customerDemand ? { customerDemand } : {}),
     referencePacketPriceCents, priceRatio, satisfaction,
     satisfactionLabel: satisfaction >= 75 ? "satisfied" as const : satisfaction >= 60 ? "neutral" as const : "disappointed" as const,
     visitorsPerDay, ordersPerDay, gramsPerDay: ordersPerDay * input.formatGrams,

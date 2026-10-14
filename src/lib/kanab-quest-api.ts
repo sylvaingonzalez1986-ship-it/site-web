@@ -1,7 +1,8 @@
 import type { KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import type { KqEnergyMode } from "@/lib/kanab-quest-energy";
 import type { KqGameState } from "@/lib/kanab-quest-game";
-import type { KqCareProduct, getKqCannabinoidReport } from "@/lib/kanab-quest-care";
+import type { KqCareProduct, getKqCannabinoidReport, KqTerpeneReport } from "@/lib/kanab-quest-care";
+import type { KqBuddieCultivationProfile } from "@/lib/kanab-quest-buddie-cultivation";
 import type { KqStorageContainer, KqStorageMethod, KqStorageMethodCode, KqStorageProjection } from "@/lib/kanab-quest-storage";
 
 export type KqApiBurnReceipt = {
@@ -14,6 +15,8 @@ export type KqApiBurnReceipt = {
 };
 
 export type KqOfficialFlower = {
+  cultivationProfile?: KqBuddieCultivationProfile;
+  terpeneReport?: KqTerpeneReport;
   rulesVersion?: number;
   cannabinoidReport?: ReturnType<typeof getKqCannabinoidReport>;
   id: string;
@@ -93,7 +96,7 @@ export function createKqScopedRequest(
       && /\/(?:actions|verdict|battles|bot-battles)$/.test(input)) {
       // A resolved roll or an empty queue poll is not a completed achievement event.
       void response.clone().json().then(payload => {
-        if (payload.persistedFlower || payload.status === "verdict" || payload.verdict) {
+        if (payload.persistedFlower || payload.persistedFlowers?.length || payload.status === "verdict" || payload.verdict) {
           window.dispatchEvent(new Event("arena:progress-updated"));
         }
       }).catch(() => {});
@@ -119,6 +122,8 @@ export type KqStorageSnapshot = {
   catalog: readonly KqStorageMethod[];
   containers: readonly KqStorageContainer[];
   ownedContainers: Record<string, number>;
+  /** Purchased containers currently placed in the shared floor plan. */
+  installedContainers?: Record<string, number>;
   capacity: { totalUnits: number; usedUnits: number; freeUnits: number; reservedUnits: number; overflowUnits: number };
   overflowSales: Array<{ flowerId: string; units: number; payoutCents: number; netPayoutCents: number; soldAt: string; automatic: boolean }>;
   lots: Array<{ flowerId: string; varietyName: string; harvestGrams: number; flowerStatus: string; projection: KqStorageProjection;
@@ -154,7 +159,7 @@ export async function applyKqRemoteCare(runId: string, input: { productCode?: st
 }
 
 export async function startKqRemoteRun(
-  input: { buddieCode: string; deckCodes: string[]; cultureTokens?: number; heritageCode?: string; energyMode?: KqEnergyMode; expectedEnergyCents?: number },
+  input: { buddieCode: string; deckCodes: string[]; cultureTokens?: number; heritageCode?: string; energyMode?: KqEnergyMode; expectedEnergyCents?: number; zoneId?: string; campaign?: boolean; requestKey?: string },
   request: typeof fetch = fetch,
 ) {
   const response = await request("/api/admin/placard/runs", {
@@ -162,14 +167,21 @@ export async function startKqRemoteRun(
     headers: { "content-type": "application/json" },
     body: JSON.stringify(input),
   });
-  return readKqResponse<{ runId: string; state: KqGameState; burnReceipt: KqApiBurnReceipt | null; freeSubstrate: boolean; cultureTokenBalance: number; buddieRotation: KqBuddieRotation }>(response);
+  return readKqResponse<{ runId: string; state: KqGameState; burnReceipt: KqApiBurnReceipt | null; freeSubstrate: boolean; cultureTokenBalance: number; buddieRotation: KqBuddieRotation; replayed?: boolean }>(response);
 }
 
-export async function getKqRemoteActiveRun(request: typeof fetch = fetch) {
-  const response = await request("/api/admin/placard/runs", { cache: "no-store" });
-  return readKqResponse<{ activeRun: null | {
-    runId: string; state: KqGameState; startedAt: string; updatedAt: string; burnReceipts: KqApiBurnReceipt[];
-  } }>(response);
+export type KqRemoteActiveRun = {
+  runId: string; zoneId: string | null; buddieCode: string; state: KqGameState;
+  startedAt: string; updatedAt: string; burnReceipts: KqApiBurnReceipt[];
+};
+export type KqRunSelection = { runId?: string; zoneId?: string };
+
+export async function getKqRemoteActiveRun(request: typeof fetch = fetch, selection: KqRunSelection = {}) {
+  const query = new URLSearchParams();
+  if (selection.runId !== undefined) query.set("runId", selection.runId);
+  if (selection.zoneId !== undefined) query.set("zoneId", selection.zoneId);
+  const response = await request(`/api/admin/placard/runs${query.size ? `?${query}` : ""}`, { cache: "no-store" });
+  return readKqResponse<{ activeRun: KqRemoteActiveRun | null; activeRuns: KqRemoteActiveRun[] }>(response);
 }
 
 export async function getKqRemoteFlowers(request: typeof fetch = fetch) {
@@ -297,6 +309,7 @@ export async function applyKqRemoteAction(
   return readKqResponse<{
     state: KqGameState;
     persistedFlower: null | { id: string; status: string; createdAt: string };
+    persistedFlowers?: Array<{ id: string; runId?: string; zoneId?: string; status: string; createdAt: string }>;
   }>(response);
 }
 

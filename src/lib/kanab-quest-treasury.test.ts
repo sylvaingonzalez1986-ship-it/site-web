@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getKqTreasuryReport, isKqTreasurySnapshot, type KqTreasuryAccount, type KqTreasuryBalances,
+import { getKqTreasuryEntryLabel, getKqTreasuryReport, isKqTreasurySnapshot, type KqTreasuryAccount, type KqTreasuryBalances,
   type KqTreasuryEntry, type KqTreasurySnapshot } from "./kanab-quest-treasury";
 
 const from = "2026-09-21T00:00:00.000Z", to = "2026-09-26T00:00:00.000Z";
@@ -27,7 +27,7 @@ function snapshot(entries: KqTreasuryEntry[] = [], initial = opening): KqTreasur
     journal: { items: entries, total: entries.length, offset: 0, limit: 25 },
     checks: { walletCashCents: closing.cash ?? 0, vatReserveCents: closing.vat_reserve ?? 0, savingsCents: closing.savings ?? 0,
       labDebtCents: -(closing.lab_payable ?? 0), energyDebtCents: -(closing.energy_payable ?? 0), vatDebtCents: -(closing.vat_payable ?? 0),
-      loanDebtCents: -(closing.loan_payable ?? 0), cryptoCostCents: closing.crypto_assets ?? 0, securitiesCostCents: closing.securities_assets ?? 0 },
+      supplierDebtCents: -(closing.supplier_payable ?? 0), loanDebtCents: -(closing.loan_payable ?? 0), cryptoCostCents: closing.crypto_assets ?? 0, securitiesCostCents: closing.securities_assets ?? 0 },
   };
 }
 function report(entries: KqTreasuryEntry[], initial = opening) {
@@ -61,6 +61,33 @@ describe("treasury accrual accounting", () => {
     const paid = report([invoice, entry("lab-paid", { cash: -4500, lab_payable: 4500 })]);
     expect(paid.income).toMatchObject({ expenseCents: 4500, resultCents: -4500 });
     expect(paid.cash).toMatchObject({ availableCents: 30500, unpaidCents: 0, outflowsCents: 4500 });
+  });
+
+  it("recognizes supplier consumption as debt without cash spending and never expenses payment twice", () => {
+    const invoice = entry("supplier-issued", { expense_other: 2200, supplier_payable: -2200 });
+    const issued = report([invoice]);
+    expect(issued.income).toMatchObject({ expenseCents: 2200, resultCents: -2200 });
+    expect(issued.cash).toMatchObject({ availableCents: 35000, changeCents: 0, supplierDebtCents: 2200, unpaidCents: 2200, afterDebtCents: 32800 });
+    expect(issued.balanceSheet.debts).toContainEqual({ account: "supplier_payable", label: "Consommables de culture à payer", cents: 2200 });
+    const partial = report([invoice, entry("supplier-paid", { cash: -800, supplier_payable: 800 })]);
+    expect(partial.income).toMatchObject({ expenseCents: 2200, resultCents: -2200 });
+    expect(partial.cash).toMatchObject({ availableCents: 34200, supplierDebtCents: 1400, unpaidCents: 1400, afterDebtCents: 32800, outflowsCents: 800 });
+    const paid = report([invoice, entry("supplier-paid", { cash: -2200, supplier_payable: 2200 })]);
+    expect(paid.income.resultCents).toBe(-2200);
+    expect(paid.cash).toMatchObject({ availableCents: 32800, supplierDebtCents: 0, unpaidCents: 0 });
+    expect(getKqTreasuryEntryLabel("supplier-issued")).toBe("Facture de consommables de culture");
+    expect(getKqTreasuryEntryLabel("supplier-paid")).toBe("Règlement fournisseur");
+  });
+
+  it("includes suppliers alongside laboratory and energy debts and checks their independent source", () => {
+    const data = snapshot([
+      entry("supplier-issued", { expense_other: 2200, supplier_payable: -2200 }),
+      entry("lab-issued", { expense_lab: 4500, lab_payable: -4500 }),
+      entry("energy-issued", { expense_energy: 1000, energy_payable: -1000 }),
+    ]);
+    expect(getKqTreasuryReport(data).cash).toMatchObject({ unpaidCents: 7700, afterDebtCents: 27300 });
+    data.checks.supplierDebtCents = 2100;
+    expect(getKqTreasuryReport(data)).toMatchObject({ reconciled: false, sourceDifferences: { supplier: 100 } });
   });
 
   it("keeps sale profit distinct from cash after paying a prior-period invoice", () => {
@@ -251,6 +278,19 @@ describe("treasury periods and complete aggregates", () => {
 });
 
 describe("treasury snapshot validation", () => {
+  it("accepts older snapshots without supplier fields and treats their supplier debt as zero", () => {
+    const legacy = snapshot();
+    delete legacy.checks.supplierDebtCents;
+    expect(isKqTreasurySnapshot(legacy)).toBe(true);
+    expect(getKqTreasuryReport(legacy)).toMatchObject({ reconciled: true, cash: { supplierDebtCents: 0 }, sourceDifferences: { supplier: 0 } });
+  });
+
+  it.each([-1, 0.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1, null, "2200"])("rejects malformed optional supplier source checks: %s", value => {
+    const data = snapshot();
+    Object.assign(data.checks, { supplierDebtCents: value });
+    expect(isKqTreasurySnapshot(data)).toBe(false);
+  });
+
   it("accepts a complete aggregate with an empty journal page", () => {
     expect(isKqTreasurySnapshot(snapshot())).toBe(true);
   });

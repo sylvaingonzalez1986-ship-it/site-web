@@ -1,17 +1,22 @@
-.hub { composes: surface from "../contest/ArenaRetro.module.css"; background: #f4efdf; color: #123b2f; min-height: 100svh; }
+.hub { composes: surface from "../contest/ArenaRetro.module.css"; min-height: 100svh; background: #fff1d6; color: #172923; }
 .navigation { padding: 22px clamp(16px,4vw,56px) 0; }
-.tabs { display: flex; gap: 6px; max-width: 1120px; margin-inline: auto; border-bottom: 1px solid #b5c3ac; }
-.tabs button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; min-width: 0; padding: 12px 18px; text-align: center; color: #4a6550; background: transparent; border: 0; border-bottom: 3px solid transparent; font: 750 .85rem/1.4 var(--font-body),Arial,sans-serif; cursor: pointer; touch-action: manipulation; }
+.tabs { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); max-width: 1120px; margin-inline: auto; border-bottom: 2px solid #172923; gap: 12px; border: 0; padding-bottom: 12px; }
+.tabs button { display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; padding: 12px 18px; text-align: center; border-bottom: 3px solid transparent; font: 750 .85rem/1.4 var(--font-body),Arial,sans-serif; cursor: pointer; touch-action: manipulation; background: #fff8e7; border: 2px solid #172923; border-radius: 14px; box-shadow: 3px 3px 0 #172923; color: #172923; min-height: 56px; }
 .tabs button > svg { flex-shrink: 0; }
 .tabs button > span { min-width: 0; }
-.tabs button[aria-selected="true"] { color: #123b2f; background: #e7eadb; border-bottom-color: #176348; }
-.hub :where(.tabs button,.accounting):focus-visible { outline: 3px solid #aa7917; outline-offset: 4px; }
+.tabs button[aria-selected="true"] { border-bottom-color: #172923; background: #efc451; color: #172923; border-color: #172923; box-shadow: 3px 3px 0 #172923; }
+.hub :where(.tabs button,.accounting):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
 .management { padding: 28px clamp(16px,4vw,56px) 40px; }
 .management > * { max-width: 1120px; margin-inline: auto; }
-.accounting { display: flex; align-items: center; gap: 12px; padding: 17px 20px; margin-top: 22px; background: #fffaf1; border: 1px solid #bbc9b3; color: #214c37; text-decoration: none; }
+.accounting { display: flex; align-items: center; gap: 12px; padding: 17px 20px; margin-top: 22px; text-decoration: none; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; }
 .accounting > span { display: grid; gap: 5px; font-size: .83rem; font-weight: 800; }
-.accounting small { color: #58715b; font-size: .71rem; font-weight: 500; }
+.accounting small { color: #172923; font-size: .72rem; font-weight: 500; }
 .accounting > svg { flex-shrink: 0; }
 .accounting > svg:last-child { margin-left: auto; }
-@media(hover:hover) { .tabs button:not([aria-selected="true"]):hover { background: #e7eadb; color: #123b2f; } .accounting:hover { border-color: #507d55; background: #eff3e6; } }
-@media(max-width: 600px) { .navigation { padding-top: 10px; } .tabs { gap: 0; } .tabs button { flex: 1; padding: 10px 6px; font-size: .72rem; } .tabs button > svg { display: none; } .management { padding-top: 20px; } .accounting { padding: 15px 13px; } }
+@media(hover:hover) { .tabs button:not([aria-selected="true"]):hover { background: #fff8e7; color: #172923; } .accounting:hover { border-color: #172923; background: #fff8e7; } }
+@media(max-width: 760px) { .tabs button { padding-inline: 8px; font-size: .76rem; } .tabs button > svg { width: 16px; height: 16px; } }
+@media(max-width: 600px) { .navigation { padding-top: 10px; } .tabs { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 5px; border-bottom: 0; padding-bottom: 8px; } .tabs button { justify-content: flex-start; min-height: 54px; padding: 9px 10px; font-size: .74rem; border: 2px solid #172923; border-bottom-width: 3px; border-radius: 12px; background: #fff8e7; } .tabs button[aria-selected="true"] { border-color: #172923; background: #fff8e7; } .management { padding-top: 20px; } .accounting { padding: 15px 13px; } }
+.hub :where(button,summary,a){touch-action:manipulation;min-height: 44px}
+.hub :where(button,summary,a,input,select):focus-visible{outline:3px solid #172923;outline-offset:4px}
+.hub :where(button,input,select){max-width:100%}
+@media(max-width:600px){.tabs{gap:10px}.tabs button{background:#fff8e7;border:2px solid #172923;border-radius:12px;min-height:56px}.tabs button[aria-selected="true"]{background:#efc451;border-color:#172923}}

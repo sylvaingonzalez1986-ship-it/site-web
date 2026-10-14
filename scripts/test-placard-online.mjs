@@ -38,7 +38,7 @@ try {
   '20260913000400_kq_shop_partners.sql','20260914000500_kq_shop_offer_precision.sql','20260915000300_kq_realtime_commerce_demand.sql',
   '20260921000100_kq_business_calendar.sql','20261010000200_storage_curing.sql','20261010000300_storage_capacity.sql',
   '20261010000700_storage_curing_six_hours.sql','20261010000800_storage_overflow_one_hour.sql',
-  '20261011150000_kq_online_commerce.sql',
+  '20261011150000_kq_online_commerce.sql','20261012002000_kq_variety_market_demands.sql',
  ]) {
   if (name==='20260914000500_kq_shop_offer_precision.sql') {
    const specialty=await sql('20260914000100_arena_chanvrier_profiles.sql');
@@ -123,7 +123,7 @@ try {
  equal(settled.followers,15,'completed simulated campaign recruits audience exactly once');
  await reject(()=>command(p.user,'start-marketing',{code:'introduction',angle:'craft'}),'online_progression_required');
  // Same starting conditions, one catch-up versus reads every seven hours.
- const prepare=async (price=1000,packets=20) => {
+ const prepare=async (price=4000,packets=20) => {
   const account=await player();
   await command(account.user,'buy-packaging',{code:'kraft-5',quantity:packets});
   account.listing=(await command(account.user,'create-listing',{stockId:account.stock,formatGrams:5,packagingCode:'kraft-5',packets,packetPriceCents:price})).listingId;
@@ -146,7 +146,7 @@ try {
  // Price edits settle past time using the price actually displayed then.
  const repriced=await prepare();await backdate(repriced.user,72);
  await command(repriced.user,'update-listing',{listingId:repriced.listing,packetPriceCents:1_000_000});
- equal(await scalar('SELECT bool_and(payout_cents=1000) FROM kq_online_sales WHERE user_id=$1',[repriced.user]),true,'old elapsed orders keep the old price');
+ equal(await scalar('SELECT bool_and(payout_cents=4000) FROM kq_online_sales WHERE user_id=$1',[repriced.user]),true,'old elapsed orders keep the old price');
  equal(Number(await scalar('SELECT order_progress FROM kq_online_listings WHERE id=$1',[repriced.listing])),0,'price change clears incomplete old purchase intent');
  equal((await state(repriced.user)).listings[0].offer.ordersPerDay,0,'absurd prices have zero demand');
  // A starting wallet cannot pay renewal, but revenue earned before it can.
@@ -180,9 +180,9 @@ try {
  await state(borrower.user);
  equal(await scalar('SELECT paid_cents FROM kq_bank_loans WHERE user_id=$1',[borrower.user]),1000,'only elapsed loan installment collected');
  // Quality-priced professionals: no merchant boost on shops and bulk below it.
- equal(Number(await scalar("SELECT kq_online_raw_professional_price('cbd-shop',6.5,'normal',180,1.5)")),50,'entry quality sells to shops at 500 euros/kg');
- equal(Number(await scalar("SELECT kq_online_raw_professional_price('cbd-shop',9.5,'normal',180,1.5)")),150,'top quality sells to shops at 1500 euros/kg');
- equal(Number(await scalar("SELECT kq_online_raw_professional_price('wholesale',6.5,'normal',180,1.5)")),30,'bulk cannot exceed sixty percent of new shop price');
+ equal(Number(await scalar("SELECT kq_online_raw_professional_price('cbd-shop',6.5,'normal',180,1.5)")),300,'commercial indoor flowers sell to shops at 3000 euros/kg');
+ equal(Number(await scalar("SELECT kq_online_raw_professional_price('cbd-shop',9.5,'normal',180,1.5)")),300,'quality does not multiply the fixed professional base');
+ equal(Number(await scalar("SELECT kq_online_raw_professional_price('wholesale',6.5,'normal',180,1.5)")),210,'wholesale remains thirty percent below the shop price');
  const {quoteKqCommerce}=await vite.ssrLoadModule('/src/lib/kanab-quest-commerce.ts');
  const {projectKqStorageLot}=await vite.ssrLoadModule('/src/lib/kanab-quest-storage.ts');
  const {previewKqBusinessPayment}=await vite.ssrLoadModule('/src/lib/kanab-quest-business.ts');
@@ -236,8 +236,8 @@ try {
  equal(merchantShop.offer.unitCents,shopQuote.offer.unitCents,'merchant specialty does not increase fixed shop quality tariff');
  const merchantBulk=await storedQuote(merchant,'wholesale',100);
  await scalar('SELECT rpc_kq_commerce_command($1,\'sell\',$2::jsonb,$3)',[merchant.user,JSON.stringify({quoteId:merchantBulk.quoteId,expectedPayoutCents:merchantBulk.offer.payoutCents}),randomUUID()]);
- assert(merchantBulk.offer.unitCents<=merchantShop.offer.unitCents*.6+.000001,'merchant bulk remains below direct shop tariff');checks++;
- const honest=await prepare(800),expensive=await prepare(2000);
+ assert(merchantBulk.offer.unitCents<=merchantShop.offer.unitCents*.7+.000001,'merchant bulk remains below direct shop tariff');checks++;
+ const honest=await prepare(3000),expensive=await prepare(7200);
  for (const account of [honest,expensive]) {
   await db.query('UPDATE kq_equipment_wallets SET reputation=100 WHERE user_id=$1',[account.user]);
   await db.query('UPDATE kq_commerce_accounts SET clients=50 WHERE user_id=$1',[account.user]);

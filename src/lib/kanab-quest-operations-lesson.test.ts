@@ -6,11 +6,120 @@ import { createKqOperationsSession, restoreKqOperationsLesson } from './kanab-qu
 import { KQ_CURING_DURATION_MS, KQ_STORAGE_OVERFLOW_GRACE_MS } from './kanab-quest-storage';
 import { KQ_LAB_ANALYSIS_CENTS } from './kanab-quest-business';
 import { quoteKqEnergy } from './kanab-quest-energy';
+import { KQ_BUDDIE_FLAVOR_PROFILES } from './kanab-quest-buddie-flavors';
+import { getKqCustomerDemandFlavorMatch, KQ_CUSTOMER_DEMAND_PERIOD_MS, type KqCustomerDemandChannel } from './kanab-quest-customer-demand';
 
 const equipment = (body: Record<string, unknown>, method = 'PATCH'): KqOperationsLessonAction => ({ path: '/api/arena/placard/equipment', method, body });
 const commerce = (body: Record<string, unknown>): KqOperationsLessonAction => ({ path: '/api/arena/placard/commerce', method: 'POST', body });
 const storage = (body: Record<string, unknown>): KqOperationsLessonAction => ({ path: '/api/arena/placard/storage', method: 'POST', body });
 afterEach(() => vi.unstubAllGlobals());
+
+function demandStock(channel: KqCustomerDemandChannel, matchedNotes: 0 | 1 | 2) {
+  let state = createKqOperationsLesson('market');
+  const request = getKqOperationsCommerce(state).customerDemand!.requests.find(row => row.channel === channel)!;
+  const varietyCode = Object.keys(KQ_BUDDIE_FLAVOR_PROFILES).find(code => getKqCustomerDemandFlavorMatch(request, code).matchedFlavorCount === matchedNotes)!;
+  expect(varietyCode).toBeTruthy();
+  state.trial.game!.varietyCode = varietyCode;
+  const raw = getKqOperationsCommerce(state).rawLots[0];
+  expect(raw.varietyCode).toBe(varietyCode);
+  state = applyKqOperationsRequest(state, commerce({ action: 'prepare', flowerId: raw.flowerId, route: 'raw', expectedCostCents: raw.options.find(row => row.route === 'raw')!.market!.processingCostCents })).state;
+  state.trial.commerce.stocks[0].juryScore = 9.7;
+  state.trial.commerce.stocks[0].storage!.conditionScore = 9.7;
+  return { state, request, varietyCode };
+}
+
+describe('periodic requests in the isolated market', () => {
+  it('exposes all three profiles on the virtual clock, without consuming demand on read', () => {
+    const initial = createKqOperationsLesson('market'), before = structuredClone(initial);
+    const snapshot = getKqOperationsCommerce(initial);
+    expect(snapshot.customerDemand!.serverNow).toBe(new Date(initial.trial.clock).toISOString());
+    expect(snapshot.customerDemand!.requests.map(row => row.channel)).toEqual(['online', 'cbd-shop', 'wholesale']);
+    expect(snapshot.rawLots[0].varietyCode).toBe(initial.trial.game!.varietyCode);
+    expect(initial).toEqual(before);
+  });
+
+  it.each(['cbd-shop', 'wholesale'] as const)('pays zero, half or full aroma premium through %s, only at confirmation', channel => {
+    for (const matches of [0, 1, 2] as const) {
+      const { state, request, varietyCode } = demandStock(channel, matches);
+      const stock = state.trial.commerce.stocks[0];
+      expect(stock.varietyCode).toBe(varietyCode);
+      const quoted = applyKqOperationsRequest(state, commerce({ action: 'quote', stockId: stock.id, channel, policy: 'advised', units: 50 }));
+      const quote = quoted.payload as { quoteId: string; offer: KqCommerceOffer };
+      expect(quoted.state.customerDemandUsage).toEqual({});
+      expect(quote.offer.unitCents).toBeCloseTo((channel === 'cbd-shop' ? 300 : 210) * (1 + request.bonusPercent * matches / 200), 6);
+      if (matches) expect(quote.offer.customerDemand).toMatchObject({ units: 50, bonusPercent: request.bonusPercent * matches / 2, matchedFlavorCount: matches });
+      else expect(quote.offer.customerDemand).toBeUndefined();
+      const sale = commerce({ action: 'sell', quoteId: quote.quoteId, expectedPayoutCents: quote.offer.payoutCents, requestKey: 'demand-sale' });
+      const sold = applyKqOperationsRequest(quoted.state, sale);
+      expect(sold.state.customerDemandUsage?.[request.id] ?? 0).toBe(matches ? 50 : 0);
+      expect(sold.state.trial.commerce.receipts.at(-1)!.payoutCents).toBe(quote.offer.payoutCents);
+      expect(applyKqOperationsRequest(sold.state, sale).state).toBe(sold.state);
+      expect(sold.state.trial.commerce.customerDemand!.requests.find(row => row.channel === channel)!.remainingUnits).toBe(request.capacityUnits - (matches ? 50 : 0));
+    }
+  });
+
+  it('shares the remaining bonus across lots while selling excess quantity at the regular price', () => {
+    const { state, request } = demandStock('wholesale', 2);
+    state.customerDemandUsage = { [request.id]: request.capacityUnits - 30 };
+    const stock = state.trial.commerce.stocks[0];
+    const secondUnits = Math.floor(stock.remainingUnits / 2);
+    stock.remainingUnits -= secondUnits;
+    state.trial.commerce.stocks.push({ ...structuredClone(stock), id: 'second-lot', remainingUnits: secondUnits });
+    const quoted = applyKqOperationsRequest(state, commerce({ action: 'quote', stockId: stock.id, channel: 'wholesale', policy: 'advised', units: 50 }));
+    const quote = quoted.payload as { quoteId: string; offer: KqCommerceOffer };
+    expect(quote.offer.customerDemand!.units).toBe(30);
+    expect(quote.offer.payoutCents).toBe(Math.round(210 * (20 + 30 * (1 + request.bonusPercent / 100)) / 10));
+    const sold = applyKqOperationsRequest(quoted.state, commerce({ action: 'sell', quoteId: quote.quoteId, expectedPayoutCents: quote.offer.payoutCents })).state;
+    const next = applyKqOperationsRequest(sold, commerce({ action: 'quote', stockId: 'second-lot', channel: 'wholesale', policy: 'advised', units: 50 })).payload as { offer: KqCommerceOffer };
+    expect(next.offer.customerDemand).toBeUndefined();
+    expect(next.offer.unitCents).toBe(210);
+    expect(next.offer.reason).toBeNull();
+    expect(sold.customerDemandUsage![request.id]).toBe(request.capacityUnits);
+  });
+
+  it('rolls the virtual calendar forward and rejects a quote across its period boundary', () => {
+    const { state, request } = demandStock('wholesale', 2);
+    state.trial.clock = (request.period + 1) * KQ_CUSTOMER_DEMAND_PERIOD_MS - 1000;
+    state.customerDemandUsage = { [request.id]: 50 };
+    const upcoming = getKqOperationsCommerce(state).customerDemand!.upcoming;
+    expect(upcoming).toHaveLength(3);
+    const quoted = applyKqOperationsRequest(state, commerce({ action: 'quote', stockId: state.trial.commerce.stocks[0].id, channel: 'wholesale', policy: 'advised', units: 10 }));
+    const quote = quoted.payload as { quoteId: string; offer: KqCommerceOffer };
+    quoted.state.trial.clock += 1000;
+    const next = getKqOperationsCommerce(quoted.state).customerDemand!;
+    expect(next.period).toBe(request.period + 1);
+    expect(next.requests).toEqual(upcoming);
+    expect(next.requests.every(row => row.remainingUnits === row.capacityUnits)).toBe(true);
+    expect(quoted.state.customerDemandUsage![request.id]).toBe(50);
+    expect(() => applyKqOperationsRequest(quoted.state, commerce({ action: 'sell', quoteId: quote.quoteId, expectedPayoutCents: quote.offer.payoutCents }))).toThrow('Recalcule');
+  });
+
+  it('restores a consumed allowance by replaying the saved local actions', () => {
+    let state = createKqOperationsLesson('market');
+    const actions: KqOperationsLessonAction[] = [];
+    const execute = (action: KqOperationsLessonAction) => {
+      const result = applyKqOperationsRequest(state, action);
+      state = result.state; actions.push(action);
+      return result.payload;
+    };
+    const raw = getKqOperationsCommerce(state).rawLots[0];
+    execute(commerce({ action: 'prepare', flowerId: raw.flowerId, route: 'raw', expectedCostCents: raw.options.find(row => row.route === 'raw')!.market!.processingCostCents }));
+    let channel: 'cbd-shop' | 'wholesale' | undefined;
+    for (let day = 0; day < 10; day++) {
+      channel = (['cbd-shop', 'wholesale'] as const).find(candidate => quoteKqCommerce(getKqOperationsCommerce(state), state.trial.commerce.stocks[0], candidate, 'advised', 10, state.trial.clock).customerDemand);
+      if (channel) break;
+      execute(commerce({ action: 'online', command: 'advance-online-time', payload: { hours: 24 } }));
+    }
+    expect(channel).toBeTruthy();
+    const quote = execute(commerce({ action: 'quote', stockId: state.trial.commerce.stocks[0].id, channel, policy: 'advised', units: 10 })) as { quoteId: string; offer: KqCommerceOffer };
+    const sale = commerce({ action: 'sell', quoteId: quote.quoteId, expectedPayoutCents: quote.offer.payoutCents, requestKey: 'saved-demand-sale' });
+    execute(sale);
+    expect(Object.values(state.customerDemandUsage!).reduce((sum, units) => sum + units, 0)).toBe(10);
+    const restored = restoreKqOperationsLesson('market', { version: 1, lesson: 'market', actions }).state;
+    expect(restored).toEqual(state);
+    expect(applyKqOperationsRequest(restored, sale).state).toBe(restored);
+  });
+});
 
 describe('real operations on a loaned installation', () => {
   it('purchases into reserve, installs only in the selected tent and preserves the starter', () => {

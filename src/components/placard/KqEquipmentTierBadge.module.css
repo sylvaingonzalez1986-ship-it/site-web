@@ -1,6 +1,6 @@
-.frame { position: absolute; inset: 6px; pointer-events: none; z-index: 2; color: #061d24; }
-.badge { position: absolute; top: 0; left: 0; display: flex; align-items: center; gap: 7px; padding: 5px 7px; background: #c5e1d8; color: #061d24; font-size: 10px; line-height: 1; font-weight: 950; border: 2px solid #0c292f; box-shadow: 2px 2px 0 #0c292f; }
-.badge b { font-size: 9px; letter-spacing: 1px; }
-.frame[data-tier="5"] .badge { background: #88dfff; }
-.frame[data-tier="10"] .badge { background: #f7ce4a; }
-.badge { max-width: 100%; flex-wrap: wrap; line-height: 1.3; }
+.frame { position: absolute; inset: 6px; pointer-events: none; z-index: 2; color: #172923; }
+.badge { position: absolute; top: 0; left: 0; display: flex; align-items: center; gap: 7px; padding: 5px 7px; color: #172923; font-size: 11px; line-height: 1; font-weight: 950; border: 2px solid #172923; box-shadow: 3px 3px 0 #172923; }
+.badge b { font-size: 11px; letter-spacing: 1px; }
+.frame[data-tier="5"] .badge { background: #bfe9db; }
+.frame[data-tier="10"] .badge { background: #efc451; }
+.badge { max-width: 100%; flex-wrap: wrap; line-height: 1.3; background: #fff1d6; border-radius: 8px; }

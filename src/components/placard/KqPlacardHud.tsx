@@ -225,9 +225,9 @@ export function KqPlacardHud({
 
   const actionArtwork = {
     game: "/contest/mascot/arena-scene-placard-v1.png",
-    market: "/placard/market-workshop-v1.webp",
+    market: "/placard/market-workshop-sylvain-v2.webp",
     arena: "/contest/mascot/arena-scene-classement-v2.png",
-    shop: "/placard/booster-shop-interior-v4.webp",
+    shop: "/placard/card-shop-sylvain-v1.webp",
   };
   const tabs = [{ id: "overview", label: "En bref" }, { id: "equipment", label: "Matériel" }, { id: "goals", label: "Objectifs" }, { id: "energy", label: "Charges" }] as const;
   const progressBar = (label: string, value: number) => <div className={styles.progressBar} role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={value}><span style={{ width: `${value}%` }} /></div>;

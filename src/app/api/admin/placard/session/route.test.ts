@@ -1,18 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getValidatedAdminContext, expireKqAbandonedBattles, getKqAdminActiveRun, getKqAdminFlowers, getKqAdminBattles, getKqAdminBuddieRotation } = vi.hoisted(() => ({
+const { getValidatedAdminContext, expireKqAbandonedBattles, getKqAdminRunsSnapshot, getKqAdminFlowers, getKqAdminBattles, getKqAdminBuddieRotation } = vi.hoisted(() => ({
   getValidatedAdminContext: vi.fn(),
   expireKqAbandonedBattles: vi.fn(),
-  getKqAdminActiveRun: vi.fn(),
+  getKqAdminRunsSnapshot: vi.fn(),
   getKqAdminBuddieRotation: vi.fn(),
   getKqAdminFlowers: vi.fn(),
   getKqAdminBattles: vi.fn(),
 }));
 
 vi.mock("@/lib/admin-guard", () => ({ getValidatedAdminContext }));
-vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
+vi.mock("@/lib/supabase/kanab-quest-backend", async (importOriginal) => ({
+  readKqRunSelection: (await importOriginal<typeof import("@/lib/supabase/kanab-quest-backend")>()).readKqRunSelection,
   expireKqAbandonedBattles,
-  getKqAdminActiveRun,
+  getKqAdminRunsSnapshot,
   getKqAdminBuddieRotation,
   getKqAdminFlowers,
   getKqAdminBattles,
@@ -30,12 +31,12 @@ describe("GET /api/admin/placard/session", () => {
   it("refuses unauthenticated session bootstraps", async () => {
     getValidatedAdminContext.mockResolvedValue(null);
     expect((await GET()).status).toBe(401);
-    expect(getKqAdminActiveRun).not.toHaveBeenCalled();
+    expect(getKqAdminRunsSnapshot).not.toHaveBeenCalled();
   });
 
   it("loads the official run, flowers and battles in one private response", async () => {
     getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
-    getKqAdminActiveRun.mockResolvedValue({ runId: "run-1" });
+    getKqAdminRunsSnapshot.mockResolvedValue({ activeRun: { runId: "run-1" }, activeRuns: [{ runId: "run-1" }] });
     getKqAdminFlowers.mockResolvedValue([{ id: "flower-1" }]);
     getKqAdminBattles.mockResolvedValue([{ id: "battle-1" }]);
     const response = await GET();
@@ -44,11 +45,12 @@ describe("GET /api/admin/placard/session", () => {
     expect(await response.json()).toEqual({
       buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] },
       activeRun: { runId: "run-1" },
+      activeRuns: [{ runId: "run-1" }],
       flowers: [{ id: "flower-1" }],
       battles: [{ id: "battle-1" }],
       warnings: [],
     });
-    expect(getKqAdminActiveRun).toHaveBeenCalledWith("admin@example.test");
+    expect(getKqAdminRunsSnapshot).toHaveBeenCalledWith("admin@example.test", {});
     expect(getKqAdminFlowers).toHaveBeenCalledWith("admin@example.test");
     expect(getKqAdminBattles).toHaveBeenCalledWith("admin@example.test");
     expect(expireKqAbandonedBattles).toHaveBeenCalledOnce();
@@ -57,7 +59,7 @@ describe("GET /api/admin/placard/session", () => {
   it("keeps loading the session if daily duel expiry is temporarily unavailable", async () => {
     getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
     expireKqAbandonedBattles.mockRejectedValue(new Error("RPC indisponible."));
-    getKqAdminActiveRun.mockResolvedValue(null);
+    getKqAdminRunsSnapshot.mockResolvedValue({ activeRun: null, activeRuns: [] });
     getKqAdminFlowers.mockResolvedValue([]);
     getKqAdminBattles.mockResolvedValue([]);
     const response = await GET();
@@ -67,7 +69,7 @@ describe("GET /api/admin/placard/session", () => {
 
   it("keeps the active run available when battle history fails", async () => {
     getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
-    getKqAdminActiveRun.mockResolvedValue({ runId: "run-1" });
+    getKqAdminRunsSnapshot.mockResolvedValue({ activeRun: { runId: "run-1" }, activeRuns: [{ runId: "run-1" }] });
     getKqAdminFlowers.mockResolvedValue([{ id: "flower-1" }]);
     getKqAdminBattles.mockRejectedValue(new Error("Historique indisponible."));
     const response = await GET();
@@ -80,7 +82,7 @@ describe("GET /api/admin/placard/session", () => {
 
   it("returns unavailable only when all session reads fail", async () => {
     getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
-    getKqAdminActiveRun.mockRejectedValue(new Error("A"));
+    getKqAdminRunsSnapshot.mockRejectedValue(new Error("A"));
     getKqAdminFlowers.mockRejectedValue(new Error("B"));
     getKqAdminBattles.mockRejectedValue(new Error("C"));
     const response = await GET();

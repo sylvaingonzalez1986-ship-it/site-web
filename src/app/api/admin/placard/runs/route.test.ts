@@ -1,13 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getValidatedAdminContext, getKqAdminActiveRun, startKqAdminRun } = vi.hoisted(() => ({
+const { getValidatedAdminContext, getKqAdminRunsSnapshot, startKqAdminRun } = vi.hoisted(() => ({
   getValidatedAdminContext: vi.fn(),
-  getKqAdminActiveRun: vi.fn(),
+  getKqAdminRunsSnapshot: vi.fn(),
   startKqAdminRun: vi.fn(),
 }));
 
 vi.mock("@/lib/admin-guard", () => ({ getValidatedAdminContext }));
-vi.mock("@/lib/supabase/kanab-quest-backend", () => ({ getKqAdminActiveRun, startKqAdminRun }));
+vi.mock("@/lib/supabase/kanab-quest-backend", async (importOriginal) => ({
+  readKqRunSelection: (await importOriginal<typeof import("@/lib/supabase/kanab-quest-backend")>()).readKqRunSelection, getKqAdminRunsSnapshot, startKqAdminRun }));
 
 import { GET, POST } from "@/app/api/admin/placard/runs/route";
 
@@ -47,10 +48,10 @@ describe("POST /api/admin/placard/runs", () => {
 
   it("returns the active admin run without caching", async () => {
     getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
-    getKqAdminActiveRun.mockResolvedValue({ runId: "run-1", state: { seed: 42 }, burnReceipts: [] });
+    getKqAdminRunsSnapshot.mockResolvedValue({ activeRun: { runId: "run-1", state: { seed: 42 }, burnReceipts: [] }, activeRuns: [] });
     const response = await GET();
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
-    expect(getKqAdminActiveRun).toHaveBeenCalledWith("admin@example.test");
+    expect(getKqAdminRunsSnapshot).toHaveBeenCalledWith("admin@example.test", {});
   });
 });

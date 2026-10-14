@@ -32,9 +32,9 @@ export async function requestKqSupportPackOpening(request: typeof fetch, entitle
 export function KqSupportPackReveal({ cards, onClose, onContinue = onClose, continueLabel = "Retour à la boutique", titleId }: {
   cards: readonly KqOpenedSupportCard[]; onClose: () => void; onContinue?: () => void; continueLabel?: string; titleId?: string;
 }) {
-  return <div className="absolute inset-0 z-50 flex flex-col bg-[#081a14]/95 p-3 backdrop-blur-sm sm:p-6" data-support-pack-reveal>
-    <button type="button" aria-label="Fermer le pack ouvert" onClick={onClose} className="absolute right-3 top-3 z-10 grid h-11 w-11 place-items-center border-2 border-ink bg-white text-ink shadow-[3px_3px_0_#f4c43d]"><X /></button>
-    <header className="shrink-0 pr-14 text-center text-white"><small className="font-black uppercase tracking-[.14em] text-yellow">Pack débloqué · {cards.length} cartes</small><h3 id={titleId} className="font-display text-3xl uppercase sm:text-5xl">Tes nouvelles cartes</h3></header>
+  return <div className={styles.reveal} data-support-pack-reveal>
+    <button type="button" aria-label="Fermer le pack ouvert" onClick={onClose} className={styles.close}><X /></button>
+    <header className={styles.heading}><small>Pack débloqué · {cards.length} cartes</small><h3 id={titleId}>Tes nouvelles cartes</h3></header>
     <div className={styles.revealCards} aria-label="Les cartes de ton pack">
       {cards.map((card, index) => {
         const src = getKqCardArtwork(card.code) ?? card.imageUrl;
@@ -49,7 +49,7 @@ export function KqSupportPackReveal({ cards, onClose, onContinue = onClose, cont
         </article>;
       })}
     </div>
-    <button type="button" onClick={onContinue} className="mx-auto min-h-12 shrink-0 border-2 border-ink bg-yellow px-6 font-black uppercase text-ink shadow-[4px_4px_0_#fff]">{continueLabel}</button>
+    <button type="button" onClick={onContinue} className={styles.continue}>{continueLabel}</button>
   </div>;
 }
 

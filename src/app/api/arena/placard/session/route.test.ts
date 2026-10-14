@@ -11,7 +11,8 @@ const {
 }));
 
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend }));
-vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
+vi.mock("@/lib/supabase/kanab-quest-backend", async (importOriginal) => ({
+  readKqRunSelection: (await importOriginal<typeof import("@/lib/supabase/kanab-quest-backend")>()).readKqRunSelection,
   getKqPlayerCoreSnapshot,
   getKqPlayerBuddieRotation,
 }));
@@ -56,7 +57,7 @@ describe("GET /api/arena/placard/session", () => {
     const response = await GET();
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
-    expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId);
+    expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId, {});
     expect(await response.json()).toMatchObject({
       buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] },
       activeRun: { runId: "run-1" },

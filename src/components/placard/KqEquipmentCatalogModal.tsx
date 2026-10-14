@@ -62,12 +62,15 @@ import { KqCareShop } from "./KqCareShop";
 import { KqTentSelector, useKqSelectTent, useKqTentSelection, type KqTentOverview } from "./KqTentSelector";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
+import { KqWorkshopTiers } from "./KqWorkshopTiers";
+import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { KqEquipmentTierBadge } from "./KqEquipmentTierBadge";
 import { getKqCultureOperationalCodes, KQ_CULTURE_WEAR_RATES, type KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
 import { getChanvrierEquipmentAccess, type ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
 import { KqCareerProgress } from "./KqCareerProgress";
 import type { ChanvrierProfile } from "@/lib/arena-chanvrier";
-import { getKqWorkshopMachineSpecification } from "@/lib/kanab-quest-workshop-machines";
+import { getKqWorkshopMachinePresentation, getKqWorkshopMachineSpecification } from "@/lib/kanab-quest-workshop-machines";
+import { KqWarehouse } from "./KqWarehouse";
 
 type EquipmentSnapshot = {
   chanvrierProfile?: ChanvrierProfile | null;
@@ -84,6 +87,7 @@ type EquipmentSnapshot = {
   ownedCodes: string[];
   equippedCodes: string[];
   cultureWear?: Record<string, KqCultureEquipmentCondition>;
+  maintenance?: Record<string, KqMachineCondition>;
   routePlan: EquipmentRoutePlan | null;
   catalog: KqEquipmentDefinition[];
 };
@@ -111,7 +115,7 @@ const CATEGORY_ICONS: Record<KqEquipmentCategory, typeof Box> = {
 
 function EquipmentArtwork({ equipment, level = 1 }: { equipment: KqEquipmentDefinition; level?: number }) {
   const Icon = CATEGORY_ICONS[equipment.category];
-  const artwork = getKqEquipmentArtwork(equipment.code);
+  const artwork = getKqEquipmentArtwork(equipment.code, level);
   const machine = getKqWorkshopMachineSpecification(equipment.code, level);
   return (
     <span className={styles.productArtwork} data-category={equipment.category} data-has-artwork={artwork ? true : undefined}>
@@ -165,14 +169,28 @@ function getLoadoutProjectionMetrics(current: EquipmentLoadoutSummary, projected
   ].filter((metric) => metric.before !== metric.after);
 }
 
-export function KqEquipmentCatalogModal({
+export function KqEquipmentCatalogModal(props: {
+  embedded?: boolean;
+  workshopOnly?: boolean;
+  initialEquipmentCode?: string | null;
+  onClose: () => void;
+  onOpenWorkshop?: (equipmentCode?: string) => void;
+  onBusyChange?: (busy: boolean) => void;
+}) {
+  const api = useKqTutorialApi();
+  return api.isTutorial || props.workshopOnly ? <LegacyKqEquipmentCatalogModal {...props} /> : <KqWarehouse embedded={props.embedded} initialEquipmentCode={props.initialEquipmentCode} onClose={props.onClose} />;
+}
+
+function LegacyKqEquipmentCatalogModal({
   embedded = false,
+  workshopOnly = false,
   initialEquipmentCode = null,
   onClose,
   onOpenWorkshop,
   onBusyChange,
 }: {
   embedded?: boolean;
+  workshopOnly?: boolean;
   initialEquipmentCode?: string | null;
   onClose: () => void;
   onOpenWorkshop?: (equipmentCode?:string)=>void;
@@ -181,10 +199,11 @@ export function KqEquipmentCatalogModal({
   const api = useKqTutorialApi();
   const inline = embedded || api.isTutorial;
   const selectKqTent = useKqSelectTent();
-  const recommendedEquipmentCode = initialEquipmentCode && getKqEquipmentDefinition(initialEquipmentCode)
+  const recommendedEquipmentCode = initialEquipmentCode && getKqEquipmentDefinition(initialEquipmentCode) && (!workshopOnly || isKqSharedEquipment(initialEquipmentCode))
     ? initialEquipmentCode
     : null;
-  const tentNumber = useKqTentSelection();
+  const selectedTentNumber = useKqTentSelection();
+  const tentNumber = workshopOnly ? 1 : selectedTentNumber;
   const currentTent = useRef(tentNumber);
   const refreshGeneration = useRef(0);
   const [snapshot, setSnapshot] = useState<EquipmentSnapshot | null>(null);
@@ -192,13 +211,16 @@ export function KqEquipmentCatalogModal({
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<KqEquipmentCategory | "all" | "owned" | "commerce" | "care">("all");
+  const [category, setCategory] = useState<KqEquipmentCategory | "all" | "owned" | "commerce" | "care">(workshopOnly ? "processing" : "all");
   const [careBusy, setCareBusy] = useState(false);
+  const [upgradeBusy, setUpgradeBusy] = useState(false);
   const careRequest = useCallback<typeof fetch>((input, init) => api.request(typeof input === "string" ? input.replace("/api/admin/placard", "/api/arena/placard") : input, init), [api]);
   const handleCareBusy = useCallback((busy: boolean) => {
     setCareBusy(busy);
-    onBusyChange?.(busy);
-  }, [onBusyChange]);
+  }, []);
+  const mutationPending = pending === "purchase" || pending === "equip" || careBusy || upgradeBusy;
+  useEffect(() => { onBusyChange?.(mutationPending); }, [mutationPending, onBusyChange]);
+  useEffect(() => () => onBusyChange?.(false), [onBusyChange]);
   const handleCarePurchase = useCallback((cashCents: number) => {
     setSnapshot(current => current ? { ...current, cashCents } : current);
     api.notify("kq:equipment-updated");
@@ -209,7 +231,7 @@ export function KqEquipmentCatalogModal({
   const [carts, setCarts] = useState<Record<number, string[]>>({});
   const buildingScope = snapshot?.equipmentScopeVersion === 3;
   const buildingNumber = getKqEquipmentBuildingNumber(tentNumber);
-  const cartCodes = useMemo(() => [...(carts[0] ?? []), ...(buildingScope ? carts[-buildingNumber] ?? [] : []), ...(carts[tentNumber] ?? [])], [carts, tentNumber, buildingScope, buildingNumber]);
+  const cartCodes = useMemo(() => [...(carts[0] ?? []), ...(buildingScope ? carts[-buildingNumber] ?? [] : []), ...(carts[tentNumber] ?? [])].filter(code => !workshopOnly || isKqSharedEquipment(code)), [carts, tentNumber, buildingScope, buildingNumber, workshopOnly]);
   const setCartCodes = (update: string[] | ((codes: string[]) => string[])) => {
     setCarts((previous) => {
       const codes = typeof update === "function" ? update([...(previous[0] ?? []), ...(buildingScope ? previous[-buildingNumber] ?? [] : []), ...(previous[tentNumber] ?? [])]) : update;
@@ -242,13 +264,13 @@ export function KqEquipmentCatalogModal({
       const payload = await response.json() as EquipmentSnapshot & { error?: string };
       if (generation !== refreshGeneration.current) return;
       if (!response.ok) throw new Error(payload.error || "Catalogue matériel indisponible.");
-      setSnapshot(payload);
+      setSnapshot(workshopOnly ? { ...payload, catalog: payload.catalog.filter(item => isKqSharedEquipment(item.code)).map(item => ({ ...item, ...getKqWorkshopMachinePresentation(item.code, payload.levels?.[item.code] ?? 1) })) } : payload);
       setRoutePlan(payload.routePlan);
       setError("");
     } catch (reason) {
       if (generation === refreshGeneration.current) throw reason;
     }
-  }, [api]);
+  }, [api, workshopOnly]);
 
   useEffect(() => {
     let cancelled = false;
@@ -267,10 +289,10 @@ export function KqEquipmentCatalogModal({
   }, [refresh, api]);
 
   useEffect(() => {
-    if (snapshot?.tents.length && !snapshot.tents.some(tent => tent.tentNumber === tentNumber)) {
+    if (!workshopOnly && snapshot?.tents.length && !snapshot.tents.some(tent => tent.tentNumber === tentNumber)) {
       selectKqTent(snapshot.tents[0].tentNumber);
     }
-  }, [snapshot?.tents, tentNumber, selectKqTent]);
+  }, [snapshot?.tents, tentNumber, selectKqTent, workshopOnly]);
 
   const totalProductionUnits = getKqProductionUnits(snapshot?.productionUnits);
   const productionUnits = 1;
@@ -285,6 +307,7 @@ export function KqEquipmentCatalogModal({
     if (!snapshot || !snapshotReady) return [];
     const normalizedQuery = query.trim().toLocaleLowerCase("fr-FR");
     const visibleEquipment = snapshot.catalog.filter((equipment) => {
+      if (workshopOnly && !isKqSharedEquipment(equipment.code)) return false;
       if (category === "owned" && !snapshot.ownedCodes.includes(equipment.code)) return false;
       if (category !== "all" && category !== "owned" && equipment.category !== category) return false;
       if (normalizedQuery && !`${equipment.name} ${equipment.shortDescription} ${equipment.specification}`.toLocaleLowerCase("fr-FR").includes(normalizedQuery)) return false;
@@ -313,7 +336,7 @@ export function KqEquipmentCatalogModal({
       const accessible = (code: string) => snapshot.ownedCodes.includes(code) || Boolean(snapshot.career && getChanvrierEquipmentAccess(snapshot.career, code).allowed);
       return Number(accessible(right.code)) - Number(accessible(left.code));
     }) : sorted;
-  }, [affordableOnly, cartCodes, category, compatibleOnly, query, recommendedEquipmentCode, snapshot, snapshotReady, sortMode]);
+  }, [affordableOnly, cartCodes, category, compatibleOnly, query, recommendedEquipmentCode, snapshot, snapshotReady, sortMode, workshopOnly]);
 
   const selectedEquipment = selectedCode && snapshot && snapshotReady
     ? snapshot.catalog.find((equipment) => equipment.code === selectedCode) ?? null
@@ -410,7 +433,8 @@ export function KqEquipmentCatalogModal({
   }) : null;
 
   const addToCart = (code: string) => {
-    if (!snapshot || !snapshotReady || pending !== null || snapshot.ownedCodes.includes(code) || cartCodes.includes(code)) return;
+    if (workshopOnly && !isKqSharedEquipment(code)) return;
+    if (!snapshot || !snapshotReady || pending !== null || mutationPending || snapshot.ownedCodes.includes(code) || cartCodes.includes(code)) return;
     const access = snapshot.career ? getChanvrierEquipmentAccess(snapshot.career, code) : null;
     if (!access?.allowed) { setError(access?.reason ?? "La progression du Chanvrier est indisponible. Actualise le catalogue."); return; }
     setCartCodes((current) => [...current, code]);
@@ -446,9 +470,10 @@ export function KqEquipmentCatalogModal({
     routeName: string;
     equipmentCode: string;
   }) => {
-    if (!snapshot || !snapshotReady || pending !== null) return;
+    if (!snapshot || !snapshotReady || pending !== null || mutationPending) return;
     const additions = input.codes.filter((code) => (
       !snapshot.ownedCodes.includes(code)
+      && (!workshopOnly || isKqSharedEquipment(code))
       && !cartCodes.includes(code)
       && getKqEquipmentDefinition(code)?.purchasable
     ));
@@ -463,11 +488,12 @@ export function KqEquipmentCatalogModal({
   };
 
   const removeFromCart = (code: string) => {
+    if (mutationPending) return;
     setCartCodes((current) => current.filter((item) => item !== code));
   };
 
   const purchase = async () => {
-    if (!snapshot || !snapshotReady || pending !== null || !cartValidation || cartValidation.errors.length > 0 || cartCareerErrors.length > 0) return;
+    if (!snapshot || !snapshotReady || pending !== null || mutationPending || !cartValidation || cartValidation.errors.length > 0 || cartCareerErrors.length > 0) return;
     setPending("purchase");
     setError("");
     try {
@@ -492,7 +518,7 @@ export function KqEquipmentCatalogModal({
   };
 
   const equip = async (equipmentCode: string) => {
-    if (!snapshotReady || pending !== null || snapshot?.cultureWear?.[equipmentCode]?.due) return;
+    if (!snapshotReady || pending !== null || mutationPending || snapshot?.cultureWear?.[equipmentCode]?.due) return;
     setPending("equip");
     setError("");
     try {
@@ -514,7 +540,7 @@ export function KqEquipmentCatalogModal({
   };
 
   return (
-    <section ref={catalogRef} data-embedded={api.isTutorial||undefined} data-arena-tour-surface="catalog" data-arena-tour-blocked={!!activeLayer||undefined} className={styles.catalog} role={inline?"region":"dialog"} aria-modal={inline?undefined:true} aria-labelledby="equipment-catalog-title" onKeyDown={(event) => {
+    <section ref={catalogRef} data-embedded={inline||undefined} data-workshop-only={workshopOnly||undefined} data-arena-tour-surface="catalog" data-arena-tour-blocked={!!activeLayer||undefined} className={styles.catalog} role={inline?"region":"dialog"} aria-modal={inline?undefined:true} aria-labelledby="equipment-catalog-title" onKeyDown={(event) => {
       if(inline&&!activeLayer)return;
       if (event.key === "Tab") {
         event.stopPropagation();
@@ -528,35 +554,35 @@ export function KqEquipmentCatalogModal({
       if (event.key !== "Escape") return;
       event.preventDefault();
       event.stopPropagation();
-      if (careBusy) return;
+      if (mutationPending) return;
       if (purchaseResult) setPurchaseResult(null);
       else if (checkoutOpen) setCheckoutOpen(false);
       else if (selectedCode) setSelectedCode(null);
       else if (cartOpen) setCartOpen(false);
       else onClose();
     }}>
-      <Image src="/placard/equipment-showroom-v1.webp" alt="" fill sizes="100vw" className={styles.showroomBackdrop} />
+      {workshopOnly ? <Image src="/placard/market-workshop-sylvain-v2.webp" alt="" fill sizes="100vw" className={styles.showroomBackdrop} /> : null}
       <header className={styles.catalogHeader}>
-        <button type="button" disabled={careBusy} onClick={onClose} className={styles.backButton} aria-label="Retour à la boutique"><ArrowLeft aria-hidden="true" />Boutique</button>
+        <button type="button" disabled={mutationPending} onClick={onClose} className={styles.backButton} aria-label={workshopOnly?"Retour aux machines":"Retour à la boutique"}><ArrowLeft aria-hidden="true" />{workshopOnly?"Mes machines":"Boutique"}</button>
         <div className={styles.catalogBrand}>
-          <small>Botte du Chanvrier · Le fond de la boutique</small>
-          <h2 id="equipment-catalog-title">Le rayon matériel</h2>
+          <small>{workshopOnly?"Entrepôt · Transformation":"Botte du Chanvrier · Le fond de la boutique"}</small>
+          <h2 id="equipment-catalog-title">{workshopOnly?"Équiper mon atelier":"Le rayon matériel"}</h2>
         </div>
         <div className={styles.accountSummary}>
-          {onOpenWorkshop?<button type="button" disabled={careBusy} onClick={()=>onOpenWorkshop()} aria-label="Installer dans mon entrepôt"><Box aria-hidden="true"/></button>:null}
+          {onOpenWorkshop?<button type="button" disabled={mutationPending} onClick={()=>onOpenWorkshop()} aria-label="Installer dans mon entrepôt"><Box aria-hidden="true"/></button>:null}
           <span><small>Trésorerie</small><strong>{formatKqCash(snapshot?.cashCents ?? 0)}</strong></span>
           <span><small>Réputation</small><strong>{snapshot?.reputation ?? 0}</strong></span>
-          <button type="button" disabled={careBusy} onClick={() => setCartOpen(true)} aria-label={`Ouvrir le panier, ${cartCodes.length} article(s)`}>
+          <button type="button" disabled={mutationPending} onClick={() => setCartOpen(true)} aria-label={`Ouvrir le panier, ${cartCodes.length} article(s)`}>
             <ShoppingCart aria-hidden="true" /><b>{cartCodes.length}</b>
           </button>
         </div>
       </header>
-      <KqCareerProgress career={snapshot?.career} profile={snapshot?.chanvrierProfile} compact />
-      {category !== "care" ? <KqTentSelector equipmentScopeVersion={snapshot?.equipmentScopeVersion} tents={snapshot?.tents ?? []} tentNumber={tentNumber} disabled={pending !== null || !!activeLayer} onSelect={selectTent}/> : null}
+      {!workshopOnly&&<KqCareerProgress career={snapshot?.career} profile={snapshot?.chanvrierProfile} compact />}
+      {!workshopOnly && category !== "care" ? <KqTentSelector equipmentScopeVersion={snapshot?.equipmentScopeVersion} tents={snapshot?.tents ?? []} tentNumber={tentNumber} disabled={pending !== null || !!activeLayer} onSelect={selectTent}/> : null}
 
       {category !== "care" ? <button type="button" className={styles.filterToggle} aria-expanded={filtersOpen} aria-controls="equipment-filters" onClick={() => setFiltersOpen(!filtersOpen)}><Search size={16} />{filtersOpen ? "Ranger les filtres" : "Chercher et filtrer"}</button> : null}
       <div id="equipment-filters" className={styles.toolbar} hidden={!filtersOpen || category === "care"}>
-        <label><Search aria-hidden="true" /><span className="sr-only">Rechercher</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher une tente, une LED, une presse…" /></label>
+        <label><Search aria-hidden="true" /><span className="sr-only">Rechercher</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={workshopOnly?"Rechercher une presse, une laveuse…":"Rechercher une tente, une LED, une presse…"} /></label>
         <label className={styles.compatibilityToggle}><input type="checkbox" checked={compatibleOnly} onChange={(event) => setCompatibleOnly(event.target.checked)} /><span>Compatible seulement</span></label>
         <label className={`${styles.compatibilityToggle} ${styles.budgetToggle}`}><input type="checkbox" checked={affordableOnly} onChange={(event) => setAffordableOnly(event.target.checked)} /><span>Achetable maintenant</span></label>
         <label className={styles.sortControl}><span>Trier</span><select value={sortMode} onChange={(event) => setSortMode(event.target.value as KqEquipmentCatalogSort)}><option value="progression">Progression conseillée</option><option value="price-asc">Prix croissant</option><option value="price-desc">Prix décroissant</option></select></label>
@@ -567,15 +593,15 @@ export function KqEquipmentCatalogModal({
 
       <div className={styles.catalogBody}>
         <nav className={styles.categoryNav} aria-label="Catégories du catalogue">
-          <button type="button" disabled={careBusy} data-active={category === "all" || undefined} onClick={() => setCategory("all")}><Package aria-hidden="true" /><span>Tout le matériel</span></button>
-          {!api.isTutorial ? <button type="button" disabled={careBusy} aria-pressed={category === "care"} data-active={category === "care" || undefined} onClick={() => setCategory("care")}><Leaf aria-hidden="true" /><span>Intrants & PBI</span></button> : null}
-          {KQ_EQUIPMENT_CATEGORIES.map((item) => {
+          <button type="button" disabled={mutationPending} data-active={(category === "all" || workshopOnly && category === "processing") || undefined} onClick={() => setCategory("all")}><Package aria-hidden="true" /><span>{workshopOnly?"Toutes les machines":"Tout le matériel"}</span></button>
+          {!workshopOnly&&!api.isTutorial ? <button type="button" disabled={careBusy} aria-pressed={category === "care"} data-active={category === "care" || undefined} onClick={() => setCategory("care")}><Leaf aria-hidden="true" /><span>Intrants & PBI</span></button> : null}
+          {!workshopOnly&&KQ_EQUIPMENT_CATEGORIES.map((item) => {
             const Icon = CATEGORY_ICONS[item];
             return <button key={item} type="button" disabled={careBusy} data-active={category === item || undefined} onClick={() => setCategory(item)}><Icon aria-hidden="true" /><span>{KQ_EQUIPMENT_CATEGORY_LABELS[item]}</span></button>;
           })}
-          <button type="button" disabled={careBusy} data-active={category === "owned" || undefined} onClick={() => setCategory("owned")}><Check aria-hidden="true" /><span>Déjà possédés</span></button>
-          <button type="button" disabled={careBusy} data-active={category === "commerce" || undefined} onClick={() => setCategory("commerce")}><Laptop aria-hidden="true" /><span>Vente en ligne</span></button>
-          {category !== "care" ? <div className={styles.loadoutSummary} data-arena-tour="installation">
+          <button type="button" disabled={mutationPending} data-active={category === "owned" || undefined} onClick={() => setCategory("owned")}><Check aria-hidden="true" /><span>Déjà possédés</span></button>
+          {!workshopOnly&&<button type="button" disabled={careBusy} data-active={category === "commerce" || undefined} onClick={() => setCategory("commerce")}><Laptop aria-hidden="true" /><span>Vente en ligne</span></button>}
+          {!workshopOnly && category !== "care" ? <div className={styles.loadoutSummary} data-arena-tour="installation">
             <small>Tente {tentNumber} · Son équipement</small>
             <strong>{currentLoadout.powerWatts * productionUnits} W</strong>
             <span>Avec les machines de l’atelier commun</span>
@@ -587,8 +613,8 @@ export function KqEquipmentCatalogModal({
         <main className={styles.productArea}>
           {category === "care" ? <KqCareShop request={careRequest} embedded refreshKey={snapshot?.cashCents} disabled={pending !== null || !!activeLayer} onBusyChange={handleCareBusy} onPurchased={handleCarePurchase} /> : <>
           <div className={styles.productAreaHeader}>
-            <div><small>{category === "commerce" ? "Ordinateur et abonnement" : `${filteredCatalog.length} référence${filteredCatalog.length > 1 ? "s" : ""}`}</small><strong>{category === "all" ? "Tout le matériel" : category === "owned" ? "Ton matériel" : category === "commerce" ? "Le coin du commerce" : KQ_EQUIPMENT_CATEGORY_LABELS[category]}</strong></div>
-            <span>Culture : tente {tentNumber}{buildingScope?` · Services : entrepôt ${buildingNumber}`:""} · Transformation : atelier commun</span>
+            <div><small>{category === "commerce" ? "Ordinateur et abonnement" : `${filteredCatalog.length} référence${filteredCatalog.length > 1 ? "s" : ""}`}</small><strong>{workshopOnly ? category === "owned" ? "Tes machines" : "Machines de transformation" : category === "all" ? "Tout le matériel" : category === "owned" ? "Ton matériel" : category === "commerce" ? "Le coin du commerce" : KQ_EQUIPMENT_CATEGORY_LABELS[category]}</strong></div>
+            <span>{workshopOnly?"Achat, installation, niveaux et entretien de l’atelier":<>Culture : tente {tentNumber}{buildingScope?` · Services : entrepôt ${buildingNumber}`:""} · Transformation : atelier commun</>}</span>
           </div>
 
           {category === "commerce" ? <KqCommerceComputer /> : null}
@@ -619,7 +645,7 @@ export function KqEquipmentCatalogModal({
                   data-alternative={alternative || undefined}
                   data-career-locked={careerLocked || undefined}
                 >
-                  <button type="button" className={styles.productMain} onClick={() => setSelectedCode(equipment.code)} aria-label={`Voir ${equipment.name}`}>
+                  <button type="button" disabled={mutationPending} className={styles.productMain} onClick={() => setSelectedCode(equipment.code)} aria-label={`Voir ${equipment.name}`}>
                     <EquipmentArtwork equipment={equipment} level={snapshot?.levels?.[equipment.code] ?? 1} />
                     <span className={styles.productCopy}>
                       {equipment.code === recommendedEquipmentCode ? <em className={styles.recommendedBadge}>Objectif conseillé</em> : alternative ? <em className={styles.alternativeBadge}>Modèle alternatif</em> : null}
@@ -633,9 +659,9 @@ export function KqEquipmentCatalogModal({
                   <footer>
                     <span><strong>{equipment.purchasable ? formatKqCash(equipment.priceCents) : "Fourni"}</strong><small>{equipmentDestination(equipment.code)} · {equipment.powerWatts > 0 ? `${equipment.powerWatts} W` : "Sans consommation"}</small></span>
                     {owned ? (
-                      <button type="button" disabled={pending !== null || (broken ? !onOpenWorkshop : equipped || !equipment.purchasable || !requirementState.compatible)} onClick={() => onOpenWorkshop ? onOpenWorkshop(equipment.code) : void equip(equipment.code)}>{broken ? "À remplacer" : equipped ? "Équipé" : !equipment.purchasable ? "Kit de départ" : !requirementState.compatible ? "Prérequis" : "Équiper"}</button>
+                      <button type="button" disabled={pending !== null || mutationPending || (broken ? !onOpenWorkshop : equipped || !equipment.purchasable || !requirementState.compatible)} onClick={() => onOpenWorkshop ? onOpenWorkshop(equipment.code) : void equip(equipment.code)}>{broken ? "À remplacer" : equipped ? "Équipé" : !equipment.purchasable ? "Kit de départ" : !requirementState.compatible ? "Prérequis" : "Équiper"}</button>
                     ) : (
-                      <button type="button" disabled={!equipment.purchasable || careerLocked || inCart || pending !== null} onClick={() => addToCart(equipment.code)}>{inCart ? "Au panier" : careerLocked ? "À débloquer" : "Ajouter"}</button>
+                      <button type="button" disabled={!equipment.purchasable || mutationPending || pending !== null || (!workshopOnly && (careerLocked || inCart))} onClick={() => workshopOnly ? setSelectedCode(equipment.code) : addToCart(equipment.code)}>{workshopOnly ? "Choisir la gamme" : inCart ? "Au panier" : careerLocked ? "À débloquer" : "Ajouter"}</button>
                     )}
                   </footer>
                 </article>
@@ -646,7 +672,7 @@ export function KqEquipmentCatalogModal({
         </main>
 
         <aside className={styles.cartPanel} inert={!cartOpen} data-open={cartOpen || undefined} aria-label="Panier matériel">
-          <header><div><small>Tente {tentNumber} et atelier commun</small><h3>À la caisse</h3></div><button type="button" onClick={() => setCartOpen(false)} aria-label="Fermer le panier"><X /></button></header>
+          <header><div><small>{workshopOnly?"Atelier de transformation":<>Tente {tentNumber} et atelier commun</>}</small><h3>À la caisse</h3></div><button type="button" disabled={mutationPending} onClick={() => setCartOpen(false)} aria-label="Fermer le panier"><X /></button></header>
           {plannedRouteScenario && plannedRouteProgress ? <section className={styles.cartRoutePlan} aria-label="Objectif de filière du panier">
             <header><span><small>Projet d’atelier sauvegardé</small><strong>{plannedRouteScenario.name}</strong></span><button type="button" onClick={() => void updateRoutePlan(null)} aria-label="Retirer l’objectif de filière"><X aria-hidden="true" /></button></header>
             <p>{plannedRouteScenario.projectedEquipmentNames.join(" · ")}</p>
@@ -692,11 +718,11 @@ export function KqEquipmentCatalogModal({
           </footer>
         </aside>
 
-        {cartOpen ? <button type="button" className={styles.mobileScrim} aria-label="Fermer le panier" onClick={() => setCartOpen(false)} /> : null}
+        {cartOpen ? <button type="button" disabled={mutationPending} className={styles.mobileScrim} aria-label="Fermer le panier" onClick={() => setCartOpen(false)} /> : null}
       </div>
 
       {selectedEquipment ? <aside className={styles.detailPanel} aria-label={`Détails de ${selectedEquipment.name}`}>
-        <button type="button" onClick={() => setSelectedCode(null)} aria-label="Fermer la fiche"><X /></button>
+        <button type="button" disabled={mutationPending} onClick={() => setSelectedCode(null)} aria-label="Fermer la fiche"><X /></button>
         <EquipmentArtwork equipment={selectedEquipment} level={snapshot?.levels?.[selectedEquipment.code] ?? 1} />
         {selectedEquipment.code === recommendedEquipmentCode ? <em className={styles.recommendedBadge}>Objectif conseillé</em> : null}
         {selectedEquipment.code !== recommendedEquipmentCode && isKqEquipmentSuperseded(selectedEquipment.code, snapshot?.ownedCodes ?? []) ? <em className={styles.alternativeBadge}>Modèle alternatif · un modèle supérieur est déjà acquis</em> : null}
@@ -704,13 +730,13 @@ export function KqEquipmentCatalogModal({
         <h3>{selectedEquipment.name}</h3>
         <strong className={styles.detailPrice}>{selectedEquipment.purchasable ? formatKqCash(selectedEquipment.priceCents) : "Équipement fourni"}</strong>
         <p>{selectedEquipment.shortDescription}</p>
-        <p>{isKqSharedEquipment(selectedEquipment.code) ? "Machine de transformation de l’atelier commun. Un achat, une installation et un entretien pour toutes les tentes." : buildingScope && isKqBuildingEquipment(selectedEquipment.code) ? `Service de l’entrepôt ${buildingNumber} : un achat au prix affiché pour les tentes ${buildingNumber === 1 ? "1 à 4" : "5 à 8"}. Installation, niveau et usure partagés dans ce bâtiment.` : `Matériel réservé à la tente ${tentNumber}. Achat, installation, niveau et usure propres à cette tente.`}</p>
+        <p>{workshopOnly ? "Machine de transformation : achète-la, installe-la dans son emplacement, puis améliore et entretiens ton atelier." : isKqSharedEquipment(selectedEquipment.code) ? "Machine de transformation de l’atelier commun. Un achat, une installation et un entretien pour toutes les tentes." : buildingScope && isKqBuildingEquipment(selectedEquipment.code) ? `Service de l’entrepôt ${buildingNumber} : un achat au prix affiché pour les tentes ${buildingNumber === 1 ? "1 à 4" : "5 à 8"}. Installation, niveau et usure partagés dans ce bâtiment.` : `Matériel réservé à la tente ${tentNumber}. Achat, installation, niveau et usure propres à cette tente.`}</p>
         <EquipmentBenefits equipment={selectedEquipment} level={snapshot?.levels?.[selectedEquipment.code] ?? 1} />
         {selectedWearRates ? <p>Usure par culture : éco {selectedWearRates.eco} %, équilibré {selectedWearRates.balanced} %, intensif {selectedWearRates.intensive} %. L’intensif use davantage sous 30 % d’état. À 0 %, rachète ce matériel dans ton entrepôt ; ses niveaux sont conservés.{selectedCondition ? ` État actuel : ${selectedCondition.conditionPercent} % · remplacement ${formatKqCash(selectedCondition.replacementCents)}.` : ""}</p> : null}
-        {snapshot?.purchasedCodes?.includes(selectedEquipment.code) ? <KqEquipmentUpgrade equipmentScopeVersion={snapshot.equipmentScopeVersion} key={`${equipmentDestination(selectedEquipment.code)}:${selectedEquipment.code}`} career={snapshot.career} tentNumber={tentNumber} code={selectedEquipment.code} level={snapshot.levels?.[selectedEquipment.code] ?? 1} cashCents={snapshot.cashCents} productionUnits={totalProductionUnits} disabled={pending !== null || selectedCondition?.due} onUpdated={refresh} /> : <><p>Achat au niveau 1. Réglages aux niveaux 1–3, aménagement aux niveaux 4–6, atelier avancé aux niveaux 7–10.</p>{!selectedCareerAccess?.allowed ? <p className={styles.careerGate}>{selectedCareerAccess?.reason ?? "Progression du Chanvrier indisponible."}</p> : null}</>}
+        {snapshot?.purchasedCodes?.includes(selectedEquipment.code) ? <KqEquipmentUpgrade workshopOnly={workshopOnly} maintenanceDue={snapshot.maintenance?.[selectedEquipment.code]?.due} onBusyChange={setUpgradeBusy} equipmentScopeVersion={snapshot.equipmentScopeVersion} key={`${equipmentDestination(selectedEquipment.code)}:${selectedEquipment.code}`} career={snapshot.career} tentNumber={tentNumber} code={selectedEquipment.code} level={snapshot.levels?.[selectedEquipment.code] ?? 1} cashCents={snapshot.cashCents} productionUnits={totalProductionUnits} disabled={pending !== null || selectedCondition?.due} onUpdated={refresh} /> : workshopOnly ? <KqWorkshopTiers key={selectedEquipment.code} code={selectedEquipment.code} cashCents={snapshot?.cashCents ?? 0} career={snapshot?.career} disabled={pending !== null} onBusyChange={setUpgradeBusy} onUpdated={refresh} /> : <><p>Achat au niveau 1. Réglages aux niveaux 1–3, aménagement aux niveaux 4–6, atelier avancé aux niveaux 7–10.</p>{!selectedCareerAccess?.allowed ? <p className={styles.careerGate}>{selectedCareerAccess?.reason ?? "Progression du Chanvrier indisponible."}</p> : null}</>}
         <section className={styles.detailProjection} aria-label="Projection personnalisée dans ton atelier" data-blocked={selectedProjectionBlocked || undefined}>
           <h4>Dans ton atelier</h4>
-          {selectedCondition?.due ? <p><AlertTriangle aria-hidden="true" />Cette pièce est hors service : ses bonus sont désactivés. Remplace-la dans ton entrepôt pour retrouver ses effets.</p> : snapshot?.equippedCodes.includes(selectedEquipment.code) ? <p><Check aria-hidden="true" />Cette pièce est installée : ses bonus seront actifs au lancement de la prochaine culture.</p> : selectedProjectionBlocked ? <p><AlertTriangle aria-hidden="true" />Projection suspendue : règle d’abord le prérequis ou le conflit d’emplacement signalé.</p> : (
+          {selectedCondition?.due ? <p><AlertTriangle aria-hidden="true" />Cette pièce est hors service : ses bonus sont désactivés. Remplace-la dans ton entrepôt pour retrouver ses effets.</p> : snapshot?.equippedCodes.includes(selectedEquipment.code) ? <p><Check aria-hidden="true" />{workshopOnly?"Cette machine est installée : ses effets s’appliquent à la prochaine transformation.":"Cette pièce est installée : ses bonus seront actifs au lancement de la prochaine culture."}</p> : selectedProjectionBlocked ? <p><AlertTriangle aria-hidden="true" />Projection suspendue : règle d’abord le prérequis ou le conflit d’emplacement signalé.</p> : (
             <>
               {selectedInstalledEquipment ? <p><Settings aria-hidden="true" />Remplacera {selectedInstalledEquipment.name} dans l’emplacement {KQ_EQUIPMENT_SLOT_LABELS[selectedEquipment.slot]}.</p> : null}
               {selectedProjectionMetrics.length > 0 ? <dl>{selectedProjectionMetrics.map((metric) => <div key={metric.code}><dt>{metric.label}</dt><dd>{metric.value}</dd></div>)}</dl> : <p>Cette pièce complète surtout une chaîne technique sans modifier les statistiques actives.</p>}
@@ -752,7 +778,7 @@ export function KqEquipmentCatalogModal({
           <p>{selectedEquipment.specification} · {selectedEquipment.powerWatts} W · {equipmentDestination(selectedEquipment.code)}</p>
           <small>Emplacement : {KQ_EQUIPMENT_SLOT_LABELS[selectedEquipment.slot]} · un modèle actif · {equipmentDestination(selectedEquipment.code)}</small>
         </section>
-        <section>
+        {!getKqWorkshopMachineSpecification(selectedEquipment.code) ? <section>
           <h4>{selectedEquipment.realWorldAnchor.priceKind === "game-balance" ? "Inspiration et règles de jeu" : "Équivalent réel vérifié"}</h4>
           <p>{selectedEquipment.realWorldAnchor.label}</p>
           <small>{selectedEquipment.realWorldAnchor.priceKind === "game-balance" ? "Le prix, les frais par cycle et les caractéristiques sont adaptés au jeu. La source présente l’inspiration réelle." : `Modèle de référence relevé le ${selectedEquipment.realWorldAnchor.checkedAt}. Le prix en euros affiché dans la boutique est un prix de jeu.`}
@@ -760,14 +786,14 @@ export function KqEquipmentCatalogModal({
           <a className="mt-2 inline-flex items-center gap-1 text-[.62rem] font-black uppercase text-[#0c6f5b] underline" href={selectedEquipment.realWorldAnchor.sourceUrl} target="_blank" rel="noreferrer">
             Vérifier chez {selectedEquipment.realWorldAnchor.seller}<ExternalLink aria-hidden="true" />
           </a>
-        </section>
+        </section> : null}
         {(selectedEquipment.requirements ?? []).map((requirement) => <p className={styles.requirement} key={requirement.label}><AlertTriangle aria-hidden="true" />Nécessite : {requirement.label}</p>)}
-        {snapshot?.ownedCodes.includes(selectedEquipment.code) ? <button type="button" className={styles.detailCta} disabled={pending !== null || (selectedCondition?.due ? !onOpenWorkshop : snapshot.equippedCodes.includes(selectedEquipment.code) || !selectedEquipment.purchasable || !selectedRequirementState?.compatible)} onClick={() => onOpenWorkshop ? onOpenWorkshop(selectedEquipment.code) : void equip(selectedEquipment.code)}>{selectedCondition?.due ? "Remplacer dans l’entrepôt" : snapshot.equippedCodes.includes(selectedEquipment.code) ? "Déjà équipé" : !selectedEquipment.purchasable ? "Équipement de départ fourni" : !selectedRequirementState?.compatible ? "Prérequis manquant" : "Équiper maintenant"}</button> : <button type="button" className={styles.detailCta} disabled={!selectedEquipment.purchasable || !selectedCareerAccess?.allowed || cartCodes.includes(selectedEquipment.code) || pending !== null} onClick={() => addToCart(selectedEquipment.code)}>{cartCodes.includes(selectedEquipment.code) ? "Déjà au panier" : !selectedCareerAccess?.allowed ? "À débloquer" : "Ajouter au panier"}</button>}
+        {snapshot?.ownedCodes.includes(selectedEquipment.code) ? <button type="button" className={styles.detailCta} disabled={pending !== null || mutationPending || (selectedCondition?.due ? !onOpenWorkshop : snapshot.equippedCodes.includes(selectedEquipment.code) || !selectedEquipment.purchasable || !selectedRequirementState?.compatible)} onClick={() => onOpenWorkshop ? onOpenWorkshop(selectedEquipment.code) : void equip(selectedEquipment.code)}>{selectedCondition?.due ? "Remplacer dans l’entrepôt" : snapshot.equippedCodes.includes(selectedEquipment.code) ? "Déjà équipé" : !selectedEquipment.purchasable ? "Équipement de départ fourni" : !selectedRequirementState?.compatible ? "Prérequis manquant" : "Équiper maintenant"}</button> : !workshopOnly ? <button type="button" className={styles.detailCta} disabled={!selectedEquipment.purchasable || !selectedCareerAccess?.allowed || cartCodes.includes(selectedEquipment.code) || pending !== null} onClick={() => addToCart(selectedEquipment.code)}>{cartCodes.includes(selectedEquipment.code) ? "Déjà au panier" : !selectedCareerAccess?.allowed ? "À débloquer" : "Ajouter au panier"}</button> : null}
       </aside> : null}
 
-      {checkoutOpen && cartValidation ? <div className={styles.checkoutOverlay} role="presentation" onClick={() => setCheckoutOpen(false)}><section role="alertdialog" aria-modal="true" aria-labelledby="checkout-title" onClick={(event) => event.stopPropagation()}>
+      {checkoutOpen && cartValidation ? <div className={styles.checkoutOverlay} role="presentation" onClick={() => { if (!mutationPending) setCheckoutOpen(false); }}><section role="alertdialog" aria-modal="true" aria-labelledby="checkout-title" onClick={(event) => event.stopPropagation()}>
         <small>Dernière vérification</small><h3 id="checkout-title">Confirmer l’investissement</h3>
-        <p>Le matériel de culture est destiné à la tente {tentNumber}.{buildingScope?` Les services équipent l’entrepôt ${buildingNumber}, pour ses quatre emplacements.`:""} Les machines de transformation rejoignent l’atelier commun.</p>
+        <p>{workshopOnly?"Ces machines rejoignent ton atelier de transformation. Installe-les après l’achat pour les utiliser.":<>Le matériel de culture est destiné à la tente {tentNumber}.{buildingScope?` Les services équipent l’entrepôt ${buildingNumber}, pour ses quatre emplacements.`:""} Les machines de transformation rejoignent l’atelier commun.</>}</p>
         {error ? <p className={styles.checkoutError} role="alert"><AlertTriangle aria-hidden="true" />{error}</p> : null}
         <div>{cartEquipment.map((equipment) => <p key={equipment.code}><span>{equipment.name} · {equipmentDestination(equipment.code)}</span><strong>{formatKqCash(equipment.priceCents)}</strong></p>)}</div>
         {cartEquipment.filter((equipment) => equipment.category === "security").map((equipment) => <p className={styles.checkoutWarning} key={`charges-${equipment.code}`}><AlertTriangle aria-hidden="true" />{equipment.name} · {equipmentDestination(equipment.code)} : {equipment.tradeoff}</p>)}
@@ -781,7 +807,7 @@ export function KqEquipmentCatalogModal({
         </section>
         <dl><div><dt>Total</dt><dd>{formatKqCash(cartValidation.totalCents)}</dd></div><div><dt>Solde après achat</dt><dd>{formatKqCash(cartValidation.cashAfterCents)}</dd></div></dl>
         {cartCareerErrors.map(cartError => <p className={styles.checkoutWarning} key={cartError}>{cartError}</p>)}
-        <footer><button type="button" onClick={() => setCheckoutOpen(false)}>Retour au panier</button><button type="button" disabled={pending === "purchase" || cartCareerErrors.length > 0} onClick={() => void purchase()}>{pending === "purchase" ? "Commande en cours…" : "Confirmer l’achat"}</button></footer>
+        <footer><button type="button" disabled={mutationPending} onClick={() => setCheckoutOpen(false)}>Retour au panier</button><button type="button" disabled={mutationPending || cartCareerErrors.length > 0} onClick={() => void purchase()}>{pending === "purchase" ? "Commande en cours…" : "Confirmer l’achat"}</button></footer>
       </section></div> : null}
 
       {purchaseResult ? <div className={styles.purchaseOverlay}><section role="dialog" aria-modal="true" aria-labelledby="equipment-purchase-title">
@@ -803,11 +829,11 @@ export function KqEquipmentCatalogModal({
               {equipment ? <ul>{getKqEquipmentImpactLabels(equipment).map((impact) => <li key={impact}><Check aria-hidden="true" />{impact}</li>)}</ul> : null}
               <em>{equipped ? "Bonus actifs dans l’atelier" : !requirementState?.compatible ? `En réserve · ${equipment?.requirements?.map((requirement) => requirement.label).join(" ou ") ?? "prérequis manquant"}` : "À installer pour activer ces avantages"}</em>
             </span>
-            <button type="button" disabled={equipped || !requirementState?.compatible || pending !== null} onClick={() => onOpenWorkshop ? onOpenWorkshop(code) : void equip(code)}>{equipped ? <><Check aria-hidden="true" /> Installé</> : !requirementState?.compatible ? "Prérequis" : "Installer"}</button>
+            <button type="button" disabled={equipped || !requirementState?.compatible || pending !== null || mutationPending} onClick={() => onOpenWorkshop ? onOpenWorkshop(code) : void equip(code)}>{equipped ? <><Check aria-hidden="true" /> Installé</> : !requirementState?.compatible ? "Prérequis" : "Installer"}</button>
           </article>;
         })}</div>
         <b>{formatKqCash(purchaseResult.totalPriceCents)} investis · {formatKqCash(purchaseResult.cashAfterCents)} restants</b>
-        <footer><button type="button" onClick={() => setPurchaseResult(null)}>Continuer les achats</button><button type="button" onClick={onClose}>Retour à la boutique</button></footer>
+        <footer><button type="button" disabled={mutationPending} onClick={() => setPurchaseResult(null)}>Continuer les achats</button><button type="button" disabled={mutationPending} onClick={onClose}>{workshopOnly?"Retour aux machines":"Retour à la boutique"}</button></footer>
       </section></div> : null}
     </section>
   );

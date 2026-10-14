@@ -2,6 +2,10 @@ import { quoteKqEnergy, applyKqEnergyHarvest, KQ_ENERGY_MODES, type KqEnergyMode
 import type { KqDomiciliation } from "./kanab-quest-business";
 import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
 import { summarizeKqTentEquipment } from "./kanab-quest-production";
+import { isKqWarehouseRunSnapshot, type KqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
+import { calculateKqWarehouseHarvest, quoteKqWarehouseEnergy } from "./kanab-quest-warehouse-run";
+import { applyKqBuddieYield, isKqBuddieCultivationProfile, type KqBuddieCultivationProfile } from "./kanab-quest-buddie-cultivation";
+import type { KqCampaign } from "./kanab-quest-campaign";
 import {
   KQ_HERITAGE_CARDS,
   KQ_HERITAGE_STARTING_XP_BONUS,
@@ -142,6 +146,7 @@ export type KqStageDecision = {
 };
 
 export type KqGameState = {
+  warehouse?: KqWarehouseRunSnapshot;
   rulesVersion?: 2 | 3;
   care?: KqCareState;
   /** Recorded once at culture start; later changes apply to the next culture. */
@@ -157,6 +162,9 @@ export type KqGameState = {
   firstCultureRescue?: boolean;
   varietyCode: string;
   varietyName: string;
+  /** Explicitly frozen for new shared campaigns; absent on historical cultures. */
+  cultivationProfile?: KqBuddieCultivationProfile;
+  campaign?: KqCampaign;
   deckCodes: string[];
   handCodes?: string[];
   heritageReserveCodes?: string[];
@@ -612,10 +620,19 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
 
 export function startKqGame(
   seed = Date.now(),
-  config: { rulesVersion?: 2 | 3; domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; firstCultureRescue?: boolean; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" | "tent" | "building" } = {},
+  config: { cultivationProfile?: KqBuddieCultivationProfile; warehouse?: KqWarehouseRunSnapshot; rulesVersion?: 2 | 3; domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; firstCultureRescue?: boolean; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" | "tent" | "building" } = {},
 ): KqGameState {
+  if (config.warehouse && (!isKqWarehouseRunSnapshot(config.warehouse) || config.warehouse.activeAreaM2 <= 0)) {
+    throw new Error("Aménage et active une zone de culture avant de lancer.");
+  }
+  const warehouse = config.warehouse ? structuredClone(config.warehouse) : undefined;
+  // Old equipment remains readable on historical runs. A room never inherits tent bonuses.
+  if (warehouse) config = { ...config, equipmentCodes: [], equipmentLevels: {}, equipmentTents: undefined,
+    equipmentShared: undefined, equipmentScope: undefined, productionUnits: 1, energyMode: "balanced" };
   const rulesVersion = config.rulesVersion ?? 3;
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
+  if (config.cultivationProfile && (rulesVersion !== 3 || !isKqBuddieCultivationProfile(config.cultivationProfile)
+    || config.cultivationProfile.buddieCode !== buddie.code)) throw new Error("Le profil de simulation ne correspond pas au Buddie.");
   const requestedDeck = config.deckCodes ?? (rulesVersion === 3 ? KQ_ACTIVE_CARDS : KQ_CARDS).slice(0, 6).map((card) => card.code);
   const requestedCards = requestedDeck
     .map((code) => KQ_CARDS.find((card) => card.code === code))
@@ -649,8 +666,11 @@ export function startKqGame(
     ...(config.equipmentScope ? { scope: config.equipmentScope } : {}),
     ...(tents || shared ? summarizeKqTentEquipment(tents ?? [{ tentNumber: 1, codes: equipmentCodes, levels }], shared, config.equipmentScope) : summarizeKqEquipmentLoadout(equipmentCodes, levels)),
   };
-  const energy = config.energyMode ? quoteKqEnergy(equipmentCodes, levels, config.energyMode, productionUnits, tents, config.equipmentScope) : undefined;
+  const energy = warehouse ? quoteKqWarehouseEnergy(warehouse)
+    : config.energyMode ? quoteKqEnergy(equipmentCodes, levels, config.energyMode, productionUnits, tents, config.equipmentScope) : undefined;
   const initialState: KqGameState = {
+    ...(warehouse ? { warehouse } : {}),
+    ...(config.cultivationProfile ? { cultivationProfile: structuredClone(config.cultivationProfile) } : {}),
     rulesVersion,
     ...(rulesVersion === 3 ? { care: createKqCareState() } : {}),
     ...(config.firstCultureRescue === true ? { firstCultureRescue: true } : {}),
@@ -669,10 +689,12 @@ export function startKqGame(
       heritageUsed: false,
       heritageArmed: false,
     } : {}),
-    stageIndex: 0, phase: "prepare", xp: Math.max(1, config.startingXp ?? 1) + buddie.advantageLevel + heritageStartingXp, quality: 0, equipment, dice: null, bonusDie: null, effectNotices: [
+    stageIndex: 0, phase: "prepare", xp: Math.max(1, config.startingXp ?? 1) + buddie.advantageLevel + heritageStartingXp, quality: warehouse?.qualityBonus ?? 0, equipment, dice: null, bonusDie: null, effectNotices: [
       ...(buddie.advantageLevel > 0 ? [`${buddie.name} : +${buddie.advantageLevel} XP au départ.`] : []),
       ...(heritage ? [`${heritage.name} : +${heritageStartingXp} XP au départ.`] : []),
       ...(equipmentCodes.length > 0 ? [`Installation : ${equipmentCodes.length} équipement${equipmentCodes.length > 1 ? "s" : ""} · ${equipment.powerWatts} W.`] : []),
+      ...(warehouse ? [`Pièce de culture : ${warehouse.activeAreaM2} m² actifs · matériel et coûts figés pour cette campagne.`] : []),
+      ...(warehouse?.qualityBonus ? [`Profils de l’atelier : +${warehouse.qualityBonus} Qualité au départ (bonus de simulation).`] : []),
       ...(equipment.pressureDelta > 0 ? [`Grande installation : +${equipment.pressureDelta} Pression au départ.`] : []),
     ],
     rollNonce: 0, pressure: Math.max(0, Math.min(4, equipment.pressureDelta + (energy ? KQ_ENERGY_MODES[energy.mode].pressure : 0))), cancelledDangers: 0, powerOutage: false, harvestLossPercent: 0,
@@ -1433,6 +1455,7 @@ export type KqHarvestBreakdown = {
   harvestLossPercent: number;
   lostHarvestGrams: number;
   energyAdjustmentGrams: number;
+  cultivationAdjustmentGrams?: number;
   finalHarvestGrams: number;
   tentHarvests: KqTentHarvestBreakdown[] | null;
 };
@@ -1472,6 +1495,13 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
 
 /** Preserve each tent's yield cap and rounding, including legacy identical installations. */
 function calculateKqInstallationHarvest(state: KqGameState, quality: number, successfulStages: number, lossPercent: number) {
+  if (state.warehouse) {
+    const harvest = calculateKqWarehouseHarvest({ warehouse: state.warehouse, quality, successfulStages,
+      inputBonusPercent: state.care?.yieldBonusPercent ?? 0, healthLossPercent: state.care?.yieldLossPercent ?? 0,
+      incidentLossPercent: lossPercent });
+    return { ...harvest, beforeCultivationGrams: harvest.finalGrams,
+      finalGrams: applyKqBuddieYield(harvest.finalGrams, state.cultivationProfile) };
+  }
   const buildingLosses = state.equipment?.scope === "building" ? getKqBuildingHarvestLosses(state) : null;
   const quantityBonuses = state.equipment?.tents
     ? state.equipment.tents.map(tent => ({ tentNumber: tent.tentNumber, quantityPercent: summarizeKqEquipmentLoadout(tent.codes, tent.levels).quantityPercent }))
@@ -1487,19 +1517,23 @@ function calculateKqInstallationHarvest(state: KqGameState, quality: number, suc
       quantityPercent,
       grossHarvestGrams: gross,
       afterLossHarvestGrams: afterIncident,
-      finalHarvestGrams: applyKqEnergyHarvest(afterIncident, state.energy),
+      beforeCultivationGrams: applyKqEnergyHarvest(afterIncident, state.energy),
+      finalHarvestGrams: applyKqBuddieYield(applyKqEnergyHarvest(afterIncident, state.energy), state.cultivationProfile),
     };
   });
   const totals = tentHarvests.reduce((sum, tent) => ({
     grossGrams: sum.grossGrams + tent.grossHarvestGrams,
     afterIncidentGrams: sum.afterIncidentGrams + tent.afterLossHarvestGrams,
+    beforeCultivationGrams: sum.beforeCultivationGrams + tent.beforeCultivationGrams,
     finalGrams: sum.finalGrams + tent.finalHarvestGrams,
-  }), { grossGrams: 0, afterIncidentGrams: 0, finalGrams: 0 });
+  }), { grossGrams: 0, afterIncidentGrams: 0, beforeCultivationGrams: 0, finalGrams: 0 });
   return {
     grossGrams: Math.round(totals.grossGrams * 10) / 10,
     afterIncidentGrams: Math.round(totals.afterIncidentGrams * 10) / 10,
+    beforeCultivationGrams: Math.round(totals.beforeCultivationGrams * 10) / 10,
     finalGrams: Math.round(totals.finalGrams * 10) / 10,
-    tentHarvests,
+    tentHarvests: tentHarvests.map(({ tentNumber, quantityPercent, grossHarvestGrams, afterLossHarvestGrams, finalHarvestGrams }) =>
+      ({ tentNumber, quantityPercent, grossHarvestGrams, afterLossHarvestGrams, finalHarvestGrams })),
   };
 }
 
@@ -1512,7 +1546,7 @@ export function getKqHarvestBreakdown(state: KqGameState): KqHarvestBreakdown {
   const finalQuality = state.phase === "complete" ? state.quality : state.quality + equipmentQualityBonus;
   const quantityPercent = state.equipment?.quantityPercent ?? 0;
   const harvestLossPercent = Math.max(0, Math.min(80, state.harvestLossPercent ?? 0));
-  const harvest = cultureDead ? { grossGrams: 0, afterIncidentGrams: 0, finalGrams: 0, tentHarvests: [] }
+  const harvest = cultureDead ? { grossGrams: 0, afterIncidentGrams: 0, beforeCultivationGrams: 0, finalGrams: 0, tentHarvests: [] }
     : calculateKqInstallationHarvest(state, finalQuality, successfulStages, harvestLossPercent);
   const { grossGrams: grossHarvestGrams, afterIncidentGrams, finalGrams: calculatedFinalGrams } = harvest;
   const finalHarvestGrams = cultureDead ? 0 : state.phase === "complete" && state.harvestGrams !== undefined
@@ -1528,9 +1562,10 @@ export function getKqHarvestBreakdown(state: KqGameState): KqHarvestBreakdown {
     grossHarvestGrams,
     harvestLossPercent,
     lostHarvestGrams: Math.round(Math.max(0, grossHarvestGrams - afterIncidentGrams) * 10) / 10,
-    energyAdjustmentGrams: Math.round((finalHarvestGrams - afterIncidentGrams) * 10) / 10,
+    energyAdjustmentGrams: Math.round(((state.cultivationProfile ? harvest.beforeCultivationGrams : finalHarvestGrams) - afterIncidentGrams) * 10) / 10,
+    ...(state.cultivationProfile ? { cultivationAdjustmentGrams: Math.round((finalHarvestGrams - harvest.beforeCultivationGrams) * 10) / 10 } : {}),
     finalHarvestGrams,
     // An older saved receipt remains authoritative if its original formula differed.
-    tentHarvests: finalHarvestGrams === calculatedFinalGrams ? harvest.tentHarvests : null,
+    tentHarvests: !state.warehouse && finalHarvestGrams === calculatedFinalGrams ? harvest.tentHarvests : null,
   };
 }

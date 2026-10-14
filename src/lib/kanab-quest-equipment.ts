@@ -1,5 +1,5 @@
 import { getKqProductionUnits } from "./kanab-quest-production-scale";
-import { getKqWorkshopMachineSpecification } from "./kanab-quest-workshop-machines";
+import { getKqWorkshopMachinePresentation, getKqWorkshopMachineSpecification } from "./kanab-quest-workshop-machines";
 
 export const KQ_STARTING_CASH_CENTS = 35_000;
 
@@ -723,6 +723,7 @@ export const KQ_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = LEGACY_EQU
   .filter((item) => !KQ_EQUIPMENT_REPLACEMENTS[item.code] && !KQ_RETIRED_EQUIPMENT_CODES.includes(item.code))
   .map((item) => ({
     ...item,
+    ...getKqWorkshopMachinePresentation(item.code),
     priceCents: KQ_GAME_EQUIPMENT_PRICES[item.code] ?? item.priceCents,
     ...(getKqWorkshopMachineSpecification(item.code) ? { effects: {
       ...item.effects,
@@ -731,7 +732,7 @@ export const KQ_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = LEGACY_EQU
     } } : {}),
     ...(item.slot === "tent" ? { unlocks: ["raw-sale"] as KqEquipmentUnlock[] } : {}),
     ...(item.code === "PRESS-0600" ? {
-      name: "Presse à rosin",
+      name: "Presse compacte",
       benefit: "Débloque les filières Rosin. Les niveaux augmentent la capacité et la valeur de transformation.",
       unlocks: ["rosin-trial", "rosin-selection", "rosin-premium", "rosin-signature"] as KqEquipmentUnlock[],
     } : {}),
@@ -919,7 +920,7 @@ export function getKqEquipmentAtLevel(code: string, requestedLevel = 1): KqEquip
   // These devices already prevent their incident completely at level 1.
   // Their upgrades improve the harvest's regularity without weakening that protection.
   if (base.category === "security" || base.category === "energy") effects.regularityPercent = (base.effects.regularityPercent ?? 0) + step;
-  return { ...base, effects, benefit: getKqEquipmentImpactLabels({ ...base, effects }).filter((label) => !label.startsWith("Débloque :")).slice(0, 3).join(" · ") };
+  return { ...base, ...getKqWorkshopMachinePresentation(code, requestedLevel), effects, benefit: getKqEquipmentImpactLabels({ ...base, effects }).filter((label) => !label.startsWith("Débloque :")).slice(0, 3).join(" · ") };
 }
 
 export function getKqEquipmentUpgradeCost(code: string, requestedLevel: number, productionUnits = 1): number | null {

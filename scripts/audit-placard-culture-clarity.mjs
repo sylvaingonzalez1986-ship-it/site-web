@@ -181,7 +181,7 @@ try {
     assert.equal(await page.$$('nav[aria-label="Sections de la partie"]').then(els => els.length), 0);
     assert.equal(await page.$$eval('[aria-label="Détails de la culture"] > details', els => els.every(el => !el.open)), true);
     assert.equal(await page.$$('[role="dialog"]').then(els => els.length), 0);
-    assert.equal(await page.$eval('[data-culture-options]', element => Boolean(element.compareDocumentPosition(document.querySelector('[data-culture-primary-action]')) & Node.DOCUMENT_POSITION_FOLLOWING)), true, `${label}: possibilities before resolution`);
+    assert.equal(await page.$eval('[data-culture-primary-action]', element => Boolean(element.compareDocumentPosition(document.querySelector('[data-culture-options]')) & Node.DOCUMENT_POSITION_FOLLOWING)), true, `${label}: primary decision follows the dice before optional tools`);
     assert.equal(await page.$eval('[data-culture-care]', element => element.hasAttribute('data-compact')), true, `${label}: compact health summary`);
     assert.equal(await page.$$eval('button', els => els.filter(el => el.checkVisibility() && el.textContent.includes('Lancer les dés')).length), 1);
     const layout = await page.evaluate(() => {

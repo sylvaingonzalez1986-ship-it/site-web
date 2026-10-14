@@ -6,9 +6,35 @@ const { createSupabaseServiceClient } = vi.hoisted(() => ({
 
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient }));
 
-import { repairKqMachine, equipKqDurableEquipment, upgradeKqDurableEquipment, purchaseKqDurableEquipment, getKqEquipmentShopSnapshot } from "@/lib/supabase/kanab-quest-equipment-backend";
+import { repairKqMachine, equipKqDurableEquipment, upgradeKqDurableEquipment, purchaseKqDurableEquipment, purchaseKqWorkshopTier, getKqEquipmentShopSnapshot } from "@/lib/supabase/kanab-quest-equipment-backend";
 
 const USER_ID = "11000000-0000-4000-8000-000000000001";
+
+describe("atomic workshop tier checkout", () => {
+  const input = { userId: USER_ID, requestKey: "11000000-0000-4000-8000-000000000002", equipmentCode: "PRESS-0600", targetLevel: 7, expectedLevel: 0, expectedPriceCents: 263500 };
+  beforeEach(() => createSupabaseServiceClient.mockReset());
+  it("sends the confirmed offer to one atomic RPC without a series of client-side upgrades", async () => {
+    const rpc = vi.fn().mockResolvedValue({ data: { level: 7, priceCents: 263500, replayed: false }, error: null });
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    await expect(purchaseKqWorkshopTier(input)).resolves.toMatchObject({ level: 7, priceCents: 263500 });
+    expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_purchase_workshop_tier", {
+      p_user_id: USER_ID, p_request_key: input.requestKey, p_equipment_code: "PRESS-0600", p_target_level: 7, p_expected_level: 0, p_expected_price_cents: 263500,
+    });
+  });
+  it.each([{ equipmentCode: "LED-300" }, { equipmentCode: "PRESS-20T" }, { targetLevel: 5 }, { expectedLevel: 7 }, { expectedLevel: -1 }, { expectedLevel: 1.5 }, { expectedPriceCents: 0 }])("rejects malformed offers before database access: %o", async patch => {
+    await expect(purchaseKqWorkshopTier({ ...input, ...patch })).rejects.toThrow();
+    expect(createSupabaseServiceClient).not.toHaveBeenCalled();
+  });
+  it("lets SQL resolve historical price receipts, and translates stale quotes and maintenance gates", async () => {
+    const rpc = vi.fn().mockResolvedValue({ data: { level: 7, replayed: true }, error: null });
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    await expect(purchaseKqWorkshopTier({ ...input, expectedPriceCents: 250000 })).resolves.toMatchObject({ replayed: true });
+    for (const [message, expected] of [["workshop_tier_price_changed", "Le prix a changé"], ["equipment_level_changed", "Le niveau a changé"], ["workshop_tier_maintenance", "Entretiens"], ["insufficient_equipment_cash", "Solde insuffisant"], ["workshop_tier_request_mismatch", "déjà été utilisée"]]) {
+      rpc.mockResolvedValueOnce({ data: null, error: { message } });
+      await expect(purchaseKqWorkshopTier(input)).rejects.toThrow(expected);
+    }
+  });
+});
 
 function mockEquipmentOwnership(rows: Array<{ equipment_code: string; purchase_price_cents: number; tent_number?: number }>) {
   let tentNumber = 1;

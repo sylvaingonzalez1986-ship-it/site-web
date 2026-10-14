@@ -16,9 +16,9 @@ const primary = [
 ] as const;
 const secondary = [
   { key: "treasury", label: "Finances", icon: Landmark, building: "office" },
-  { key: "collection", label: "Mes cartes", icon: BookOpen, building: "collection" },
+  { key: "collection", label: "Collections", icon: BookOpen, building: "collection" },
   { key: "missions", label: "Missions", icon: Target, building: "missions" },
-  { key: "shop", label: "Boutique · achats", icon: ShoppingBag, building: "shop" },
+  { key: "shop", label: "Boutique", icon: ShoppingBag, building: "shop" },
 ] as const;
 
 export function KqPlacardNavigation({ active, onNavigate, onHighlight }: {
@@ -49,7 +49,7 @@ export function KqPlacardNavigation({ active, onNavigate, onHighlight }: {
       <div className={styles.navGroup}><small>Pour aller plus loin</small>{secondary.map(item => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} onClick={() => navigate(item.key)} onMouseEnter={() => onHighlight(item.building)} onMouseLeave={() => onHighlight(null)} onFocus={() => onHighlight(item.building)} onBlur={() => onHighlight(null)}><item.icon size={18} aria-hidden="true" /><span>{item.label}</span></button>)}</div>
     </nav>
     <div className={styles.navFooter}>
-      <details><summary><CircleHelp size={17} aria-hidden="true" /> Comment jouer</summary><p>Cultive, présente ta récolte au jury, puis prépare sa vente. « Mes récoltes » indique à chaque fois ce que tu peux faire.</p><p>L’Entrepôt regroupe ton matériel. Le Commerce sert à vendre ; la Boutique sert à acheter.</p></details>
+      <details><summary><CircleHelp size={17} aria-hidden="true" /> Comment jouer</summary><p>Cultive, présente ta récolte au jury, puis prépare sa vente. « Mes récoltes » indique à chaque fois ce que tu peux faire.</p><p>L’Entrepôt regroupe les achats et la gestion du matériel. La Boutique propose les packs de cartes ; Collections réunit tes albums.</p></details>
       <Link href="/arene"><ArrowLeft size={16} aria-hidden="true" /> Retour à l’Arène</Link>
     </div>
   </>;

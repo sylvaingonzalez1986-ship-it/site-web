@@ -7,6 +7,7 @@ import { isKqEnergyMode, type KqEnergyMode } from "@/lib/kanab-quest-energy";
 
 import { normalizeEmail } from "@/lib/admin-allowlist";
 import { activateKqHeritage, advanceKqStage, canPlayKqCard, getKqHarvestTier, isKqCultureDead, KQ_BUDDIES, KQ_CARDS, KQ_SITUATIONS, KQ_STAGES, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "@/lib/kanab-quest-game";
+import { getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse-backend";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 import { createKqFlower, createKqOpponent, invertKqBattlePerspective, lockKqBattle, resolveKqBattle, type KqBattle, type KqFlowerCard } from "@/lib/kanab-quest-battle";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
@@ -29,6 +30,7 @@ import { KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE } from "@/lib/kanab-quest-producer-re
 import { calculateKqPlacardScore } from "@/lib/kanab-quest-reputation";
 import { KQ_REWARD_BALANCE } from "@/lib/kanab-quest-reward-balance";
 import { KQ_ACTIVE_CARDS } from "@/lib/kanab-quest-game";
+import { getKqCampaignParticipants, getKqCampaignTotals, getKqCampaignMemberState, type KqCampaignMember } from "@/lib/kanab-quest-campaign";
 
 const BOTTE_COLLECTION_CODE = "BOTTE_DU_CHANVRIER_2026";
 const KQ_INITIAL_SEASON_CODE = "KQ-2026-S1";
@@ -236,6 +238,7 @@ export type KqAdminCollectionSnapshot = {
   ownerFound: boolean;
   cultureTokenBalance: number;
   inventory: Record<string, number>;
+  availableInventory?: Record<string, number>;
   cards: Array<{
     code: string;
     name: string;
@@ -657,13 +660,30 @@ export async function getKqPlayerCollectionSnapshot(ownerId: string): Promise<Kq
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
   const supabase = createSupabaseServiceClient();
   const catalog = await getCachedKqBotteCatalog();
-  const [counts, tokenWallet] = await Promise.all([
+  const [counts, tokenWallet, reservations] = await Promise.all([
     getKqCardCopyCounts(ownerId, catalog.definitions.map((definition) => definition.id)),
     supabase.from("kq_culture_token_wallets")
       .select("balance").eq("user_id", ownerId).maybeSingle(),
+    getKqReservedCardCodes(ownerId),
   ]);
   if (tokenWallet.error) throw new Error(`[supabase:kq_culture_token_wallets] ${tokenWallet.error.message}`);
-  return buildKqCollectionSnapshot(catalog, counts, Number(tokenWallet.data?.balance ?? 0));
+  const snapshot = buildKqCollectionSnapshot(catalog, counts, Number(tokenWallet.data?.balance ?? 0));
+  return withKqAvailableInventory(snapshot, reservations);
+}
+
+async function getKqReservedCardCodes(ownerId: string): Promise<string[]> {
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_reserved_cards", { p_user_id: ownerId });
+  if (result.error) throw new Error(`[supabase:rpc_kq_reserved_cards] ${result.error.message}`);
+  if (!Array.isArray(result.data) || result.data.some(row => !row || typeof row.cardCode !== "string")) throw new Error("[supabase:rpc_kq_reserved_cards] Invalid reservations.");
+  return result.data.map(row => row.cardCode);
+}
+
+function withKqAvailableInventory(snapshot: KqAdminCollectionSnapshot, reservedCodes: string[]): KqAdminCollectionSnapshot {
+  const availableInventory = { ...snapshot.inventory };
+  for (const code of reservedCodes) {
+    if (code in availableInventory) availableInventory[code] = Math.max(0, availableInventory[code] - 1);
+  }
+  return { ...snapshot, availableInventory };
 }
 
 async function getKqCardCopyCounts(ownerId: string, definitionIds: string[]): Promise<Record<string, number>> {
@@ -760,13 +780,14 @@ export async function getKqPlayerCollectionBundle(ownerId: string) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
   const supabase = createSupabaseServiceClient();
   const [catalog, buddieDefinitions] = await Promise.all([getCachedKqBotteCatalog(), getCachedKqBuddieDefinitions()]);
-  const [counts, tokenWallet] = await Promise.all([
+  const [counts, tokenWallet, reservations] = await Promise.all([
     getKqCardCopyCounts(ownerId, [...catalog.definitions, ...buddieDefinitions].map((definition) => definition.id)),
     supabase.from("kq_culture_token_wallets").select("balance").eq("user_id", ownerId).maybeSingle(),
+    getKqReservedCardCodes(ownerId),
   ]);
   if (tokenWallet.error) throw new Error(`[supabase:kq_culture_token_wallets] ${tokenWallet.error.message}`);
   return {
-    collection: buildKqCollectionSnapshot(catalog, counts, Number(tokenWallet.data?.balance ?? 0)),
+    collection: withKqAvailableInventory(buildKqCollectionSnapshot(catalog, counts, Number(tokenWallet.data?.balance ?? 0)), reservations),
     ownedBuddies: buildKqOwnedBuddies(buddieDefinitions, counts),
   };
 }
@@ -856,6 +877,9 @@ export async function getKqAdminLaunchReadinessFromSnapshots(
 }
 
 export type KqStartRunInput = {
+  campaign?: boolean;
+  zoneId?: string;
+  requestKey?: string;
   energyMode?: KqEnergyMode;
   expectedEnergyCents?: number;
   buddieCode: string;
@@ -879,6 +903,7 @@ export function mapKqStartRunResult(data: unknown) {
   }
   return {
     runId: String(run.id),
+    ...(payload?.replayed !== undefined ? { replayed: payload.replayed === true } : {}),
     cultureTokenBalance: Number(payload?.cultureTokenBalance ?? 0),
     freeSubstrate: payload?.freeSubstrate === true,
     burnReceipt: receipt ? {
@@ -912,6 +937,10 @@ export async function getKqRecentSituationCodes(ownerId: string): Promise<string
 }
 
 export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) {
+  if (input.campaign !== undefined && typeof input.campaign !== "boolean") throw new Error("Campagne invalide.");
+  if (input.campaign && input.zoneId !== undefined) throw new Error("La campagne comprend toutes les zones affectées.");
+  if (input.zoneId !== undefined && (typeof input.zoneId !== "string" || !input.zoneId.trim() || input.zoneId.length > 80)) throw new Error("Zone de culture invalide.");
+  if ((input.campaign || input.zoneId !== undefined) && (typeof input.requestKey !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.requestKey))) throw new Error("Clé de lancement invalide.");
   if (input.energyMode !== undefined && !isKqEnergyMode(input.energyMode)) throw new Error("Mode énergétique invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
   if (!KQ_BUDDIES.some((buddie) => buddie.code === input.buddieCode)) {
@@ -925,6 +954,30 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     throw new Error("Nombre de jetons Coup de pouce invalide.");
   }
   const heritageCode = input.heritageCode?.trim() || undefined;
+  const intention = !input.campaign && input.zoneId === undefined ? undefined : {
+    ...(input.campaign ? { campaign: true } : { zoneId: input.zoneId }), buddieCode: input.buddieCode, deckCodes: input.deckCodes,
+    cultureTokens, heritageCode: heritageCode ?? null, energyMode: "balanced",
+    expectedEnergyCents: input.expectedEnergyCents ?? null,
+  };
+  // A retry must find its committed receipt before checking rotation, capacity
+  // or drawing a new seed: each of those may legitimately have changed.
+  if (intention) {
+    const replay = await createSupabaseServiceClient().rpc(input.campaign ? "rpc_kq_campaign_receipt" : "rpc_kq_zone_run_receipt", {
+      p_user_id: ownerId, p_request_key: input.requestKey, p_request: intention,
+    });
+    if (replay.error) {
+      if (replay.error.message.includes("request_mismatch")) throw new Error("Cette demande a déjà servi à une autre culture.");
+      throw new Error(`[supabase:zone-run-receipt] ${replay.error.message}`);
+    }
+    if (replay.data) {
+      const state = parseKqGameSave(encodeKqSave(replay.data.run?.state));
+      if (!state) throw new Error("[supabase:zone-run-receipt] État de culture invalide.");
+      return { ...mapKqStartRunResult(replay.data), state, buddieRotation: await getKqPlayerBuddieRotation(ownerId) };
+    }
+  }
+  if ((input.campaign || input.zoneId !== undefined) && input.deckCodes.some(code => !KQ_ACTIVE_CARDS.some(card => card.code === code && card.category !== "pbi"))) {
+    throw new Error("Le deck contient une carte indisponible pour cette culture.");
+  }
   let heritageCard: KqHeritageCard | undefined;
   if (heritageCode) {
     if (!/^HERITAGE-[0-9]{3,6}$/.test(heritageCode)) throw new Error("Héritage invalide.");
@@ -949,15 +1002,28 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     throw new Error("Le deck contient une carte interdite.");
   }
   const supabase = createSupabaseServiceClient();
-  const [collection, equipmentShop, businessResult, recentSituationCodes, buddieRotation] = await Promise.all([
+  const [collection, equipmentShop, businessResult, recentSituationCodes, buddieRotation, storedWarehouse] = await Promise.all([
     getKqPlayerCollectionSnapshot(ownerId),
     getKqEquipmentShopSnapshot(ownerId),
     supabase.rpc("rpc_kq_commerce_state", { p_user_id: ownerId }),
     getKqRecentSituationCodes(ownerId),
     getKqPlayerBuddieRotation(ownerId),
+    input.zoneId === undefined ? getKqWarehouseRunSnapshot(ownerId) : getKqWarehouseRunSnapshot(ownerId, input.zoneId),
   ]);
+  const participants = input.campaign && storedWarehouse
+    ? getKqCampaignParticipants(storedWarehouse.sourceState, storedWarehouse.revision) : [];
+  if (input.campaign && (!participants.length || participants[0].buddieCode !== input.buddieCode)) {
+    throw new Error("Affecte tes Buddies aux zones, puis actualise la préparation de la campagne.");
+  }
+  if (input.campaign && new Set(participants.map(member => member.buddieCode)).size !== participants.length) {
+    throw new Error("Chaque Buddie doit occuper une seule zone dans la campagne.");
+  }
+  const warehouse = input.campaign ? participants[0].warehouse : storedWarehouse;
   const remainingBuddies = getKqBuddieRotationRemaining(input.buddieCode, buddieRotation.recentBuddieCodes);
-  if (remainingBuddies > 0) throw new Error(getKqBuddieRotationMessage(remainingBuddies));
+  // For zoned launches the transaction checks rotation after its receipt: a
+  // concurrent retry must not be rejected because the first launch just used it.
+  if (!intention && remainingBuddies > 0) throw new Error(getKqBuddieRotationMessage(remainingBuddies));
+  if (input.zoneId !== undefined && (!warehouse || warehouse.version !== 2 || warehouse.zones[0]?.buddieCode !== input.buddieCode)) throw new Error("Le Buddie choisi ne correspond pas à cette zone. Actualise son affectation.");
   if (businessResult.error) throw new Error(`[supabase:commerce] ${businessResult.error.message}`);
   const business = businessResult.data?.business as KqBusinessState | undefined;
   if (business?.version !== 1) throw new Error("[supabase:commerce] business_calendar_migration_required");
@@ -967,6 +1033,8 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     .map(([code]) => code);
   const seed = crypto.getRandomValues(new Uint32Array(1))[0] % 100000;
   const state = startKqGame(seed, {
+    ...(warehouse ? { warehouse } : {}),
+    ...(input.campaign ? { cultivationProfile: participants[0].cultivationProfile } : {}),
     recentSituationCodes,
     domiciliation,
     varietyCode: input.buddieCode,
@@ -983,9 +1051,23 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     productionUnits: equipmentShop.productionUnits,
     energyMode: input.energyMode ?? "balanced",
   });
+  let members: KqCampaignMember[] = [];
+  if (input.campaign) {
+    members = participants.map(member => ({ ...member, runId: crypto.randomUUID() }));
+    state.campaign = { version: 1, id: crypto.randomUUID(), leaderRunId: members[0].runId, members };
+    const sharedAdvantage = Math.max(...members.map(member => KQ_BUDDIES.find(buddie => buddie.code === member.buddieCode)!.advantageLevel));
+    const leaderAdvantage = KQ_BUDDIES.find(buddie => buddie.code === input.buddieCode)!.advantageLevel;
+    state.xp += sharedAdvantage - leaderAdvantage;
+    state.effectNotices = [...(state.effectNotices ?? []).filter(notice => !notice.includes("XP au départ.")),
+      `Campagne commune : ${members.length} Buddies · avantage partagé +${sharedAdvantage} XP.`];
+  }
   if (equipmentShop.strength === "green-thumb") state.effectNotices = [...(state.effectNotices ?? []), "Main Verte : +2 XP pour cette culture."];
-  if (input.expectedEnergyCents !== undefined && input.expectedEnergyCents !== state.energy?.totalCents) throw new Error("L’installation a changé. Actualise le devis électrique avant de lancer.");
-  const result = await supabase.rpc("rpc_kq_start_run_with_heritage", {
+  if (input.expectedEnergyCents !== undefined && input.expectedEnergyCents !== (input.campaign ? getKqCampaignTotals(members).energyCostCents : state.energy?.totalCents)) throw new Error("L’installation a changé. Actualise le devis électrique avant de lancer.");
+  const result = input.campaign ? await supabase.rpc("rpc_kq_start_campaign", {
+    p_user_id: ownerId, p_request_key: input.requestKey, p_request: intention,
+    p_members: members.map(member => ({ runId: member.runId, state: getKqCampaignMemberState(state, member) })),
+    p_culture_tokens: cultureTokens, p_heritage_code: heritageCode ?? null,
+  }) : await supabase.rpc(intention ? "rpc_kq_start_zone_run" : "rpc_kq_start_run_with_heritage", {
     p_user_id: ownerId,
     p_buddie_code: input.buddieCode,
     p_seed: state.seed,
@@ -994,10 +1076,22 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     p_initial_state: state,
     p_culture_tokens: cultureTokens,
     p_heritage_code: heritageCode ?? null,
+    ...(intention ? { p_zone_id: input.zoneId, p_request_key: input.requestKey, p_request: intention } : {}),
   });
   if (result.error) {
     const message = result.error.message || "Création de partie impossible.";
+    if (message.includes("campaign_active") || message.includes("campaign_legacy_active")) throw new Error("Termine la campagne ou les cultures en cours avant d’en lancer une nouvelle.");
+    if (message.includes("campaign_members") || message.includes("campaign_manifest")) throw new Error("Les affectations ont changé. Actualise la préparation de la campagne.");
+    if (message.includes("request_mismatch")) throw new Error("Cette demande a déjà servi à une autre culture.");
+    if (message.includes("zone_busy") || message.includes("zone_active_run")) throw new Error("Cette zone possède déjà une culture en cours.");
+    if (message.includes("buddie_assigned") || message.includes("zone_buddie") || message.includes("warehouse_buddie_mismatch")) throw new Error("Le Buddie affecté à cette zone a changé. Actualise avant de lancer.");
+    if (message.includes("buddie_in_use") || message.includes("kq_buddie_busy")) throw new Error("Ce Buddie participe déjà à une autre culture.");
+    if (message.includes("deck_reserved") || message.includes("kq_deck_copy_reserved")) throw new Error("Des cartes du deck sont déjà réservées par une autre culture.");
+    if (message.includes("warehouse_legacy_run_active")) throw new Error("Termine la culture historique avant de lancer une culture par zone.");
+    if (message.includes("warehouse_zone_invalid")) throw new Error("Cette zone n’est plus disponible. Actualise l’entrepôt.");
     if (message.includes("kq_active_run_exists")) throw new Error("Une culture Supabase est déjà active.");
+    if (message.includes("warehouse_layout_changed")) throw new Error("L’aménagement a changé. Actualise le devis avant de lancer.");
+    if (message.includes("warehouse_capacity")) throw new Error("Agrandis le séchage ou libère du stockage pour cette récolte avant de lancer.");
     if (message.includes("kq_domiciliation_changed")) throw new Error("Ta domiciliation a changé. Actualise avant de lancer la culture.");
     if (message.includes("kq_production_units_changed") || message.includes("kq_culture_equipment_changed") || message.includes("kq_shared_equipment_changed") || message.includes("kq_culture_equipment_broken")) throw new Error("L’état du matériel a changé. Actualise le devis avant de lancer la culture.");
     if (message.includes("kq_buddie_rotation_locked")) {
@@ -1024,7 +1118,8 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   if (!persistedState) throw new Error("[supabase:rpc_kq_start_run] État de culture persisté invalide.");
   return {
     ...mapKqStartRunResult(result.data), state: persistedState,
-    buddieRotation: { ...buddieRotation, recentBuddieCodes: recordKqBuddieUse(input.buddieCode, buddieRotation.recentBuddieCodes) },
+    buddieRotation: intention ? await getKqPlayerBuddieRotation(ownerId)
+      : { ...buddieRotation, recentBuddieCodes: recordKqBuddieUse(input.buddieCode, buddieRotation.recentBuddieCodes) },
   };
 }
 
@@ -1034,37 +1129,99 @@ export async function startKqAdminRun(adminEmail: string, input: KqStartRunInput
   return startKqPlayerRun(ownerId, input);
 }
 
-export async function getKqPlayerActiveRun(ownerId: string) {
+export type KqRunSelection = { runId?: string; zoneId?: string };
+
+export function readKqRunSelection(request?: Request): KqRunSelection {
+  const query = request ? new URL(request.url).searchParams : new URLSearchParams();
+  const selection = { ...(query.has("runId") ? { runId: query.get("runId")! } : {}), ...(query.has("zoneId") ? { zoneId: query.get("zoneId")! } : {}) };
+  if (selection.runId !== undefined && !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(selection.runId)) throw new Error("Identifiant de culture invalide.");
+  if (selection.zoneId !== undefined && (!selection.zoneId.trim() || selection.zoneId.length > 80)) throw new Error("Zone de culture invalide.");
+  return selection;
+}
+
+export function selectKqActiveRun<T extends { runId: string; zoneId?: string | null; state?: KqGameState }>(runs: T[], selection: KqRunSelection = {}): T | null {
+  const selected = selection.runId !== undefined || selection.zoneId !== undefined ? runs.find(run =>
+    (selection.runId === undefined || run.runId === selection.runId || run.state?.campaign?.members.some(member => member.runId === selection.runId))
+    && (selection.zoneId === undefined || run.zoneId === selection.zoneId || run.state?.campaign?.members.some(member => member.zoneId === selection.zoneId))) ?? null
+    : runs.length === 1 ? runs[0] : runs.length && runs.every(run => run.state?.campaign?.id === runs[0].state?.campaign?.id) && runs[0].state?.campaign ? runs[0] : null;
+  return selected?.state?.campaign ? runs.find(run => run.runId === selected.state!.campaign!.leaderRunId) ?? selected : selected;
+}
+
+async function readKqPlayerRuns(ownerId: string, selection?: KqRunSelection) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
   const supabase = createSupabaseServiceClient();
-  const runResult = await supabase.from("kq_runs")
-    .select("id,state,started_at,updated_at")
-    .eq("user_id", ownerId).eq("status", "active")
-    .order("started_at", { ascending: false }).limit(1).maybeSingle();
+  // A shared manifest already describes every member. Read only tiny routing
+  // metadata first, so a 52-zone campaign does not transfer/validate 52 copies.
+  let metadataQuery = supabase.from("kq_runs")
+    .select("id,campaign_leader_id:state->campaign->>leaderRunId")
+    .eq("user_id", ownerId);
+  metadataQuery = selection?.runId ? metadataQuery.eq("id", selection.runId) : metadataQuery.eq("status", "active");
+  const metadata = await metadataQuery;
+  if (metadata.error) throw new Error(`[supabase:kq_runs] ${metadata.error.message}`);
+  const runIds = [...new Set((metadata.data ?? []).map(run => String(run.campaign_leader_id ?? run.id)))];
+  if (!runIds.length) return [];
+  if (runIds.some(id => !/^[0-9a-f-]{36}$/i.test(id))) throw new Error("État de culture Supabase invalide.");
+  let query = supabase.from("kq_runs").select("id,state,started_at,updated_at")
+    .eq("user_id", ownerId).in("id", runIds);
+  // The campaign may finish between both reads; active lists must stay active.
+  if (!selection?.runId) query = query.eq("status", "active");
+  const runResult = await query.order("started_at", { ascending: true }).order("id", { ascending: true });
   if (runResult.error) throw new Error(`[supabase:kq_runs] ${runResult.error.message}`);
-  if (!runResult.data) return null;
-  const state = parseKqGameSave(encodeKqSave(runResult.data.state));
-  if (!state) throw new Error("État de culture Supabase invalide.");
+  if (!runResult.data?.length) return [];
   const receiptsResult = await supabase.from("kq_card_burn_receipts")
-    .select("id,card_instance_id,card_code,stage_index,use_kind,burned_at")
-    .eq("run_id", runResult.data.id).order("burned_at", { ascending: false });
+    .select("id,run_id,card_instance_id,card_code,stage_index,use_kind,burned_at")
+    .eq("user_id", ownerId).in("run_id", runResult.data.map(run => run.id)).order("burned_at", { ascending: false });
   if (receiptsResult.error) throw new Error(`[supabase:kq_card_burn_receipts] ${receiptsResult.error.message}`);
-  return {
-    runId: String(runResult.data.id),
+  return runResult.data.map(run => {
+    const state = parseKqGameSave(encodeKqSave(run.state));
+    if (!state) throw new Error("État de culture Supabase invalide.");
+    return {
+    runId: String(run.id),
+    zoneId: state.warehouse?.version === 2 ? state.warehouse.zoneId : null,
+    buddieCode: state.varietyCode,
     state,
-    startedAt: String(runResult.data.started_at),
-    updatedAt: String(runResult.data.updated_at),
-    burnReceipts: (receiptsResult.data ?? []).map((receipt) => ({
+    startedAt: String(run.started_at),
+    updatedAt: String(run.updated_at),
+    burnReceipts: (receiptsResult.data ?? []).filter(receipt => receipt.run_id === run.id).map((receipt) => ({
       id: String(receipt.id), cardInstanceId: String(receipt.card_instance_id),
       cardCode: String(receipt.card_code), stageIndex: Number(receipt.stage_index),
       useKind: String(receipt.use_kind), burnedAt: String(receipt.burned_at),
     })),
-  };
+  }; });
 }
 
-export async function getKqAdminActiveRun(adminEmail: string) {
+export async function getKqPlayerActiveRuns(ownerId: string) {
+  return readKqPlayerRuns(ownerId);
+}
+
+export async function getKqPlayerActiveRun(ownerId: string, selection: KqRunSelection = {}) {
+  const selected = selectKqActiveRun(await readKqPlayerRuns(ownerId, selection), selection);
+  if (selected?.state.campaign && selected.runId !== selected.state.campaign.leaderRunId) {
+    return selectKqActiveRun(await readKqPlayerRuns(ownerId, { runId: selected.state.campaign.leaderRunId }));
+  }
+  return selected;
+}
+
+export async function getKqPlayerRunsSnapshot(ownerId: string, selection: KqRunSelection = {}) {
+  const activeRuns = await getKqPlayerActiveRuns(ownerId);
+  const activeRun = selectKqActiveRun(activeRuns, selection)
+    ?? (selection.runId ? await getKqPlayerActiveRun(ownerId, selection) : null);
+  return { activeRun, activeRuns };
+}
+
+export async function getKqAdminActiveRuns(adminEmail: string) {
   const ownerId = await findKqUserIdByEmail(adminEmail);
-  return ownerId ? getKqPlayerActiveRun(ownerId) : null;
+  return ownerId ? getKqPlayerActiveRuns(ownerId) : [];
+}
+
+export async function getKqAdminActiveRun(adminEmail: string, selection: KqRunSelection = {}) {
+  const ownerId = await findKqUserIdByEmail(adminEmail);
+  return ownerId ? getKqPlayerActiveRun(ownerId, selection) : null;
+}
+
+export async function getKqAdminRunsSnapshot(adminEmail: string, selection: KqRunSelection = {}) {
+  const ownerId = await findKqUserIdByEmail(adminEmail);
+  return ownerId ? getKqPlayerRunsSnapshot(ownerId, selection) : { activeRun: null, activeRuns: [] };
 }
 
 export async function getKqPlayerFlowers(ownerId: string) {
@@ -1072,7 +1229,7 @@ export async function getKqPlayerFlowers(ownerId: string) {
   const supabase = createSupabaseServiceClient();
   const [result, queueResult] = await Promise.all([
     supabase.from("kq_flowers")
-      .select("id,run_id,variety_code,variety_name,quality,traits,combos,battle_stats,rules_version,cannabinoid_report,status,created_at,locked_at,burned_at")
+      .select("id,run_id,variety_code,variety_name,quality,traits,combos,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at,locked_at,burned_at")
       .eq("owner_id", ownerId)
       .in("status", ["available", "locked"])
       .order("created_at", { ascending: false })
@@ -1097,6 +1254,8 @@ export async function getKqPlayerFlowers(ownerId: string) {
     stats: flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats : {},
     rulesVersion: Number(flower.rules_version ?? 2),
     cannabinoidReport: flower.cannabinoid_report ?? undefined,
+    cultivationProfile: (flower.cultivation_profile ?? undefined) as KqFlowerCard["cultivationProfile"],
+    terpeneReport: (flower.terpene_report ?? undefined) as KqFlowerCard["terpeneReport"],
     status: queuedFlowers.has(String(flower.id)) ? "queued" : String(flower.status),
     createdAt: String(flower.created_at),
     queuedAt: queuedFlowers.get(String(flower.id)) ?? null,
@@ -1117,36 +1276,41 @@ export function mapKqPlayerCoreSnapshot(
   data: unknown,
   queuedFlowers: Iterable<{ flowerId: string; queuedAt: string }> = [],
   claimedChallengeCodes: Iterable<string> = [],
+  selection: KqRunSelection = {},
 ) {
   if (!data || typeof data !== "object" || Array.isArray(data)) {
     throw new Error("Session Placard Supabase invalide.");
   }
   const payload = data as Record<string, unknown>;
-  const rawRun = payload.activeRun && typeof payload.activeRun === "object" && !Array.isArray(payload.activeRun)
-    ? payload.activeRun as Record<string, unknown>
-    : null;
-  const state = rawRun ? parseKqGameSave(encodeKqSave(rawRun.state)) : null;
-  if (rawRun && (!rawRun.runId || !state)) throw new Error("État de culture Supabase invalide.");
-  const rawReceipts = rawRun && Array.isArray(rawRun.burnReceipts) ? rawRun.burnReceipts : [];
-  const activeRun = rawRun && state ? {
-    runId: String(rawRun.runId),
-    state,
-    startedAt: String(rawRun.startedAt),
-    updatedAt: String(rawRun.updatedAt),
-    burnReceipts: rawReceipts.map((entry) => {
-      const receipt = entry && typeof entry === "object" && !Array.isArray(entry)
-        ? entry as Record<string, unknown>
-        : {};
-      return {
-        id: String(receipt.id),
-        cardInstanceId: String(receipt.cardInstanceId),
-        cardCode: String(receipt.cardCode),
-        stageIndex: Number(receipt.stageIndex),
-        useKind: String(receipt.useKind),
-        burnedAt: String(receipt.burnedAt),
-      };
-    }),
-  } : null;
+  const rawRuns = Array.isArray(payload.activeRuns) ? payload.activeRuns : payload.activeRun ? [payload.activeRun] : [];
+  const activeRuns = rawRuns.map(raw => {
+    const rawRun = raw && typeof raw === "object" && !Array.isArray(raw) ? raw as Record<string, unknown> : null;
+    const state = rawRun ? parseKqGameSave(encodeKqSave(rawRun.state)) : null;
+    if (!rawRun?.runId || !state) throw new Error("État de culture Supabase invalide.");
+    const rawReceipts = rawRun && Array.isArray(rawRun.burnReceipts) ? rawRun.burnReceipts : [];
+    return {
+      runId: String(rawRun.runId),
+      zoneId: state.warehouse?.version === 2 ? state.warehouse.zoneId : null,
+      buddieCode: state.varietyCode,
+      state,
+      startedAt: String(rawRun.startedAt),
+      updatedAt: String(rawRun.updatedAt),
+      burnReceipts: rawReceipts.map((entry) => {
+        const receipt = entry && typeof entry === "object" && !Array.isArray(entry)
+          ? entry as Record<string, unknown>
+          : {};
+        return {
+          id: String(receipt.id),
+          cardInstanceId: String(receipt.cardInstanceId),
+          cardCode: String(receipt.cardCode),
+          stageIndex: Number(receipt.stageIndex),
+          useKind: String(receipt.useKind),
+          burnedAt: String(receipt.burnedAt),
+        };
+      }),
+    };
+  });
+  const activeRun = selectKqActiveRun(activeRuns, selection);
   const queuedAtByFlowerId = new Map(Array.from(queuedFlowers, (flower) => [flower.flowerId, flower.queuedAt] as const));
   const flowers = (Array.isArray(payload.flowers) ? payload.flowers : []).map((entry) => {
     const flower = entry && typeof entry === "object" && !Array.isArray(entry)
@@ -1163,6 +1327,8 @@ export function mapKqPlayerCoreSnapshot(
       stats: flower.stats && typeof flower.stats === "object" ? flower.stats : {},
       rulesVersion: Number(flower.rulesVersion ?? 2),
       cannabinoidReport: (flower.cannabinoidReport ?? undefined) as KqFlowerCard["cannabinoidReport"],
+      cultivationProfile: (flower.cultivationProfile ?? undefined) as KqFlowerCard["cultivationProfile"],
+      terpeneReport: (flower.terpeneReport ?? undefined) as KqFlowerCard["terpeneReport"],
       status: queuedAtByFlowerId.has(String(flower.id)) ? "queued" : String(flower.status),
       createdAt: String(flower.createdAt),
       queuedAt: queuedAtByFlowerId.get(String(flower.id)) ?? null,
@@ -1180,6 +1346,8 @@ export function mapKqPlayerCoreSnapshot(
       variety_name: String(flower.variety_name),
       rules_version: Number(flower.rules_version ?? 2),
       cannabinoid_report: flower.cannabinoid_report as KqFlowerCard["cannabinoidReport"],
+      cultivation_profile: flower.cultivation_profile as KqFlowerCard["cultivationProfile"],
+      terpene_report: flower.terpene_report as KqFlowerCard["terpeneReport"],
       quality: Number(flower.quality),
       traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
       battle_stats: flower.battle_stats && typeof flower.battle_stats === "object"
@@ -1266,7 +1434,7 @@ export function mapKqPlayerCoreSnapshot(
     claimedChallengeCodes: [...new Set(Array.from(claimedChallengeCodes, String))],
     updatedAt: String(rawProgress.updatedAt),
   } : null;
-  return { activeRun, flowers, battles, progress };
+  return { activeRun, activeRuns, flowers, battles, progress };
 }
 
 export function mapKqChallengeClaimKeys(rows: unknown) {
@@ -1282,35 +1450,36 @@ export function mapKqChallengeClaimKeys(rows: unknown) {
   }))];
 }
 
-export async function getKqPlayerCoreSnapshot(ownerId: string) {
+export async function getKqPlayerCoreSnapshot(ownerId: string, selection: KqRunSelection = {}) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
   const supabase = createSupabaseServiceClient();
-  const [result, queueResult, claimsResult] = await Promise.all([
+  const [result, queueResult, claimsResult, runs] = await Promise.all([
     supabase.rpc("rpc_kq_player_core_snapshot", { p_user_id: ownerId }),
     supabase.from("kq_random_battle_queue").select("flower_id,queued_at").eq("owner_id", ownerId),
     supabase.from("kq_daily_challenge_claims").select("challenge_day,challenge_code")
       .eq("user_id", ownerId).order("challenge_day", { ascending: false }).limit(64),
+    getKqPlayerRunsSnapshot(ownerId, selection),
   ]);
   if (queueResult.error) throw new Error(`[supabase:kq_random_battle_queue] ${queueResult.error.message}`);
   if (claimsResult.error) throw new Error(`[supabase:kq_daily_challenge_claims] ${claimsResult.error.message}`);
-  if (!result.error) return mapKqPlayerCoreSnapshot(
-    result.data,
+  if (!result.error) return { ...mapKqPlayerCoreSnapshot(
+    { ...result.data, activeRuns: runs.activeRuns },
     (queueResult.data ?? []).map((entry) => ({
       flowerId: String(entry.flower_id),
       queuedAt: String(entry.queued_at),
     })),
     mapKqChallengeClaimKeys(claimsResult.data),
-  );
+    selection,
+  ), ...runs };
   if (!isMissingKqPlayerCoreSnapshotRpc(result.error)) {
     throw new Error(`[supabase:rpc_kq_player_core_snapshot] ${result.error.message}`);
   }
-  const [activeRun, flowers, battles, progress] = await Promise.all([
-    getKqPlayerActiveRun(ownerId),
+  const [flowers, battles, progress] = await Promise.all([
     getKqPlayerFlowers(ownerId),
     getKqPlayerBattles(ownerId, 12),
     getKqPlayerProgress(ownerId),
   ]);
-  return { activeRun, flowers, battles, progress };
+  return { ...runs, flowers, battles, progress };
 }
 
 export async function getKqAdminFlowers(adminEmail: string) {
@@ -1463,7 +1632,7 @@ export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: strin
   const definition = KQ_TRAINING_BOTS.find((bot) => bot.code === botCode)!;
   const supabase = createSupabaseServiceClient();
   const flowerResult = await supabase.from("kq_flowers")
-    .select("id,run_id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,status,created_at")
+    .select("id,run_id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at")
     .eq("id", flowerId).eq("owner_id", ownerId).maybeSingle();
   if (flowerResult.error) throw new Error(`[supabase:kq_flowers:bot] ${flowerResult.error.message}`);
   if (!flowerResult.data || flowerResult.data.status !== "available") throw new Error("Ta Fleur n’est plus disponible.");
@@ -1683,6 +1852,8 @@ type KqFlowerBattleRow = {
   id: string; variety_name: string; quality: number; traits: string[];
   rules_version?: number;
   cannabinoid_report?: KqFlowerCard["cannabinoidReport"];
+  cultivation_profile?: KqFlowerCard["cultivationProfile"];
+  terpene_report?: KqFlowerCard["terpeneReport"];
   battle_stats: Record<string, number>; status: string; created_at: string;
 };
 
@@ -1696,6 +1867,8 @@ function mapKqOfficialFlowerCard(row: KqFlowerBattleRow, ownerName: string): KqF
     stats: row.battle_stats as KqFlowerCard["stats"],
     rulesVersion: row.rules_version === 3 ? 3 : 2,
     ...(row.cannabinoid_report ? { cannabinoidReport: row.cannabinoid_report } : {}),
+    ...(row.cultivation_profile ? { cultivationProfile: row.cultivation_profile } : {}),
+    ...(row.terpene_report ? { terpeneReport: row.terpene_report } : {}),
   };
 }
 
@@ -1723,7 +1896,7 @@ export async function getKqPlayerBattles(ownerId: string, limit = 30) {
   const battles = battlesResult.data ?? [];
   const flowerIds = [...new Set(battles.flatMap((battle) => [battle.flower_one_id, battle.flower_two_id]))];
   const flowersResult = flowerIds.length > 0
-    ? await supabase.from("kq_flowers").select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,status,created_at").in("id", flowerIds)
+    ? await supabase.from("kq_flowers").select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at").in("id", flowerIds)
     : { data: [], error: null };
   if (flowersResult.error) throw new Error(`[supabase:kq_flowers:battles] ${flowersResult.error.message}`);
   const flowers = new Map((flowersResult.data ?? []).map((flower) => [flower.id, flower as KqFlowerBattleRow]));
@@ -1751,7 +1924,7 @@ export async function getKqPlayerBattles(ownerId: string, limit = 30) {
   if (botResult.error) throw new Error(`[supabase:kq_bot_battles:history] ${botResult.error.message}`);
   const botFlowerIds = (botResult.data ?? []).map((battle) => battle.flower_id);
   const botFlowersResult = botFlowerIds.length > 0
-    ? await supabase.from("kq_flowers").select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,status,created_at").in("id", botFlowerIds)
+    ? await supabase.from("kq_flowers").select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at").in("id", botFlowerIds)
     : { data: [], error: null };
   if (botFlowersResult.error) throw new Error(`[supabase:kq_flowers:bot-history] ${botFlowersResult.error.message}`);
   const botFlowers = new Map((botFlowersResult.data ?? []).map((flower) => [flower.id, flower as KqFlowerBattleRow]));
@@ -1794,7 +1967,7 @@ export async function getKqPlayerBattle(ownerId: string, battleId: string) {
   if (!battle) return null;
   const flowerIds = [battle.flower_one_id, battle.flower_two_id];
   const flowersResult = await supabase.from("kq_flowers")
-    .select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,status,created_at")
+    .select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at")
     .in("id", flowerIds);
   if (flowersResult.error) throw new Error(`[supabase:kq_flowers:battle] ${flowersResult.error.message}`);
   const flowers = new Map((flowersResult.data ?? []).map((flower) => [flower.id, flower as KqFlowerBattleRow]));
@@ -2232,6 +2405,7 @@ export async function playKqPlayerCard(ownerId: string, runId: string, cardCode:
 
   const state = parseKqGameSave(encodeKqSave(runResult.data.state));
   if (!state) throw new Error("État de culture invalide.");
+  if (state.campaign && state.campaign.leaderRunId !== runId) throw new Error("Ouvre la campagne commune pour jouer cette carte.");
   const { nextState, useKind } = prepareKqCardPlay(state, cardCode);
   const result = await supabase.rpc("rpc_kq_play_support_card", {
     p_user_id: ownerId,
@@ -2287,11 +2461,32 @@ export async function applyKqPlayerRunAction(
   const runResult = await supabase.from("kq_runs").select("state,status,updated_at")
     .eq("id", runId).eq("user_id", ownerId).maybeSingle();
   if (runResult.error) throw new Error(`[supabase:kq_runs] ${runResult.error.message}`);
-  if (!runResult.data || runResult.data.status !== "active") throw new Error("Culture active introuvable.");
+  if (!runResult.data) throw new Error("Culture active introuvable.");
   const state = parseKqGameSave(encodeKqSave(runResult.data.state));
   if (!state) throw new Error("État de culture invalide.");
+  if (state.campaign && state.campaign.leaderRunId !== runId) throw new Error("Ouvre la campagne commune pour poursuivre ces cultures.");
+  // A lost final response must return the stored harvests, never create them again.
+  if (state.campaign && state.phase === "complete" && runResult.data.status !== "active" && (action === "advance" || action === "resolve")) {
+    const stored = await supabase.from("kq_flowers").select("id,run_id,status,created_at")
+      .eq("owner_id", ownerId).in("run_id", state.campaign.members.map(member => member.runId));
+    if (stored.error) throw new Error(`[supabase:campaign-flowers] ${stored.error.message}`);
+    if (!isKqCultureDead(state) && stored.data?.length !== state.campaign.members.length) throw new Error("Le reçu de récolte de la campagne est incomplet.");
+    const persistedFlowers = (stored.data ?? []).map(entry => ({ id: String(entry.id), runId: String(entry.run_id),
+      zoneId: state.campaign!.members.find(member => member.runId === entry.run_id)?.zoneId ?? null,
+      status: String(entry.status), createdAt: String(entry.created_at) }));
+    const leaderFlower = persistedFlowers.find(entry => entry.runId === runId);
+    return { state, persistedFlowers, persistedFlower: leaderFlower
+      ? { id: leaderFlower.id, status: leaderFlower.status, createdAt: leaderFlower.createdAt } : null, replayed: true };
+  }
+  if (runResult.data.status !== "active") throw new Error("Culture active introuvable.");
   const nextState = applyKqRunAction(state, action, options);
   const flower = nextState.phase === "complete" && !isKqCultureDead(nextState) ? createKqFlower(nextState) : null;
+  const flowerPayload = (memberState: KqGameState, memberFlower: KqFlowerCard | null) => memberFlower ? {
+    varietyCode: memberState.varietyCode, varietyName: memberFlower.variety, quality: memberState.quality,
+    traits: memberFlower.traits, combos: memberState.combos, battleStats: memberFlower.stats,
+    cannabinoidReport: memberFlower.cannabinoidReport ?? null, integrityCode: memberFlower.integrityCode,
+    cultivationProfile: memberFlower.cultivationProfile ?? null, terpeneReport: memberFlower.terpeneReport ?? null,
+  } : null;
   const result = action === "heritage-swap"
     ? await supabase.rpc("rpc_kq_swap_heritage_hand", {
         p_user_id: ownerId,
@@ -2299,7 +2494,15 @@ export async function applyKqPlayerRunAction(
         p_expected_updated_at: runResult.data.updated_at,
         p_next_state: nextState,
       })
-    : await supabase.rpc("rpc_kq_update_run_state", {
+    : nextState.campaign ? await supabase.rpc("rpc_kq_update_campaign_state", {
+        p_user_id: ownerId, p_run_id: runId, p_expected_updated_at: runResult.data.updated_at,
+        p_action: action, p_next_state: nextState,
+        p_members: nextState.campaign.members.map(member => {
+          const memberState = getKqCampaignMemberState(nextState, member);
+          const memberFlower = memberState.phase === "complete" && !isKqCultureDead(memberState) ? createKqFlower(memberState) : null;
+          return { runId: member.runId, state: memberState, flower: flowerPayload(memberState, memberFlower) };
+        }),
+      }) : await supabase.rpc("rpc_kq_update_run_state", {
         p_user_id: ownerId, p_run_id: runId, p_expected_updated_at: runResult.data.updated_at,
         p_action: action, p_next_state: nextState,
         p_flower: flower ? {
@@ -2325,6 +2528,11 @@ export async function applyKqPlayerRunAction(
     ? payload.flower as Record<string, unknown> : null;
   return {
     state: payload.state as KqGameState,
+    ...(Array.isArray(payload.flowers) ? { persistedFlowers: payload.flowers.map((entry: Record<string, unknown>) => ({
+      id: String(entry.id), runId: String(entry.run_id),
+      zoneId: nextState.campaign?.members.find(member => member.runId === entry.run_id)?.zoneId ?? null,
+      status: String(entry.status), createdAt: String(entry.created_at),
+    })) } : {}),
     persistedFlower: persistedFlower ? {
       id: String(persistedFlower.id),
       status: String(persistedFlower.status),

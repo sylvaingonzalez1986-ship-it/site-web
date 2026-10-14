@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createKqBusinessPreview, getKqAdvertisingMultiplier, getKqBusinessClock, getKqSaleVatCents,
-  isKqShopActive, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, normalizeKqShopName, previewKqBusinessPayment } from "./kanab-quest-business";
+  isKqShopActive, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_SUPPLIER_PAYMENT_TERM_GAME_DAYS, KQ_SUPPLIER_PAYMENT_TERM_MS,
+  normalizeKqShopName, previewKqBusinessPayment } from "./kanab-quest-business";
 import { getKqCommerceReplenishment, quoteKqCommerce, type KqCommerceState, type KqCommerceStock } from "./kanab-quest-commerce";
 
 const start = Date.parse("2026-10-24T22:00:00Z");
@@ -47,10 +48,64 @@ describe("business calendar and billing previews", () => {
     const business = createKqBusinessPreview(start);
     business.lab.overdueCents = 4500;
     expect(previewKqBusinessPayment(30000, business, 20000)).toEqual({ vatCents: 5000, labPaidCents: 4500,
-      electricityPaidCents: 8000, netPayoutCents: 12500, electricityRemainingCents: 12000 });
+      electricityPaidCents: 8000, supplierPaidCents: 0, netPayoutCents: 12500, electricityRemainingCents: 12000 });
     business.lab.overdueCents = 0;
     business.lab.outstandingCents = 4500;
     expect(previewKqBusinessPayment(12000, business, 0)).toMatchObject({ labPaidCents: 0, vatCents: 2000, netPayoutCents: 10000 });
+  });
+  it("defines supplier maturity as 120 elapsed hours across a daylight-saving boundary", () => {
+    expect(KQ_SUPPLIER_PAYMENT_TERM_GAME_DAYS).toBe(30);
+    expect(KQ_SUPPLIER_PAYMENT_TERM_MS).toBe(120 * 60 * 60 * 1000);
+    expect(iso(start + KQ_SUPPLIER_PAYMENT_TERM_MS)).toBe("2026-10-29T22:00:00.000Z");
+  });
+
+  it("does not collect supplier invoices before maturity and keeps old responses compatible", () => {
+    const business = createKqBusinessPreview(start);
+    const legacy = previewKqBusinessPayment(12000, business, 0);
+    expect(legacy).toMatchObject({ supplierPaidCents: 0, netPayoutCents: 10000 });
+    business.suppliers = { outstandingCents: 2200, overdueCents: 0, invoices: [{
+      id: "supplier-1", runId: "run-1", issuedAt: iso(start), dueAt: iso(start + KQ_SUPPLIER_PAYMENT_TERM_MS),
+      amountCents: 2200, remainingCents: 2200,
+    }] };
+    const before = structuredClone(business);
+    expect(previewKqBusinessPayment(12000, business, 0)).toEqual(legacy);
+    expect(business).toEqual(before);
+  });
+
+  it.each([
+    { lab: 20000, energy: 20000, supplier: 22000, collected: [12500, 0, 0], net: 12500 },
+    { lab: 4500, energy: 20000, supplier: 22000, collected: [4500, 8000, 0], net: 12500 },
+    { lab: 4500, energy: 1000, supplier: 22000, collected: [4500, 1000, 7000], net: 12500 },
+    { lab: 4500, energy: 1000, supplier: 2200, collected: [4500, 1000, 2200], net: 17300 },
+    { lab: 0, energy: 0, supplier: 22000, collected: [0, 0, 12500], net: 12500 },
+  ])("shares one collection allowance in laboratory, energy, supplier order: %j", item => {
+    const business = createKqBusinessPreview(start);
+    business.lab.overdueCents = item.lab;
+    business.suppliers = { outstandingCents: item.supplier, overdueCents: item.supplier, invoices: [] };
+    const before = structuredClone(business);
+    const payment = previewKqBusinessPayment(30000, business, item.energy);
+    expect([payment.labPaidCents, payment.electricityPaidCents, payment.supplierPaidCents]).toEqual(item.collected);
+    expect(payment.netPayoutCents).toBe(item.net);
+    expect(payment.netPayoutCents + payment.vatCents + item.collected.reduce((sum, amount) => sum + amount, 0)).toBe(30000);
+    expect(business).toEqual(before);
+  });
+
+  it("preserves the net half and every cent when supplier collection reaches the allowance", () => {
+    const business = createKqBusinessPreview(start);
+    business.suppliers = { outstandingCents: 100000, overdueCents: 100000, invoices: [] };
+    for (let payout = 0; payout <= 1000; payout++) {
+      business.vat.salesTtcCents = payout % 6;
+      const result = previewKqBusinessPayment(payout, business, 0);
+      expect(result.supplierPaidCents).toBe(Math.floor((payout - result.vatCents) / 2));
+      expect(result.netPayoutCents).toBe(Math.ceil((payout - result.vatCents) / 2));
+      expect(result.netPayoutCents + result.vatCents + result.supplierPaidCents).toBe(payout);
+    }
+  });
+
+  it.each([-1, 0.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1])("rejects invalid supplier debt cents: %s", overdueCents => {
+    const business = createKqBusinessPreview(start);
+    business.suppliers = { outstandingCents: 2200, overdueCents, invoices: [] };
+    expect(() => previewKqBusinessPayment(12000, business, 0)).toThrow("Montant de gestion invalide");
   });
 });
 

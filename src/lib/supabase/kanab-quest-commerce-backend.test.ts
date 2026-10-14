@@ -6,12 +6,13 @@ vi.mock("./kanab-quest-energy-backend", () => ({ getKqEnergySummary: mocks.energ
 import { handleKqCommerceAction } from "./kanab-quest-commerce-backend";
 import { createKqStorageLot, KQ_CURING_DURATION_MS } from "@/lib/kanab-quest-storage";
 import { createKqBusinessPreview } from "@/lib/kanab-quest-business";
+import { createKqCustomerDemandSnapshot, KQ_CUSTOMER_DEMAND_PERIOD_MS } from "@/lib/kanab-quest-customer-demand";
 const user = "00000000-0000-4000-8000-000000000001", stockId = "00000000-0000-4000-8000-000000000002", flowerId = "00000000-0000-4000-8000-000000000003";
 const now = Date.parse("2026-10-10T12:00:00Z");
 function current() {
   const storageState = createKqStorageLot({ flowerId, harvestedAt: new Date(now - KQ_CURING_DURATION_MS + 60_000).toISOString(),
     baseline: { varietyCode: "KQ-VAR-001", juryScore: 9, aroma: 90, care: { terpenes: 90, cannabinoidExpression: 90, cannabinoidConversion: 5, cannabinoidOxidation: 0 } } });
-  return { revision: 3, business: createKqBusinessPreview(now), cashCents: 100000, reputation: 1500, clients: 100,
+  return { revision: 3, business: createKqBusinessPreview(now), customerDemand: createKqCustomerDemandSnapshot(now), online: { version: 1 }, cashCents: 100000, reputation: 1500, clients: 100,
     computerOwned: true, internetRenew: true, campaign: { id: "cycle", revision: 4, reputation: 1500, clientsStart: 100, event: "normal", internetPaid: true, directUsed: 0, shopUsed: 0, goodUnits: 0, disappointmentUnits: 0 },
     stocks: [{ id: stockId, flowerId, name: "Test", route: "raw", batchRoute: "raw", juryScore: 9, initialUnits: 1200, remainingUnits: 1200, equivalentUnits: 1200, originalUnits: 1200, baseUnitCents: 180, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false, storageState, storageRevision: 7 }],
     receipts: [], marketVolumes: {}, ownVolumes: {}, routeSales: {},
@@ -31,8 +32,8 @@ describe("storage-aware server commerce quotes", () => {
   it("stores the authoritative wholesale price and ignores client tariff and quality overrides", async () => {
     const result = await handleKqCommerceAction(user, { action: "quote", stockId, channel: "wholesale", policy: "premium", units: 100,
       unitCents: 999999, payoutCents: 999999, juryScore: 10, event: "restock", wholesalePricePercent: 100 });
-    expect(result.offer).toMatchObject({ unitCents: 68.4, payoutCents: 684, reputationDelta: 0 });
-    expect(mocks.insert).toHaveBeenCalledWith(expect.objectContaining({ offer: expect.objectContaining({ unitCents: 68.4, payoutCents: 684 }) }));
+    expect(result.offer).toMatchObject({ unitCents: 210, payoutCents: 2100, reputationDelta: 0 });
+    expect(mocks.insert).toHaveBeenCalledWith(expect.objectContaining({ offer: expect.objectContaining({ unitCents: 210, payoutCents: 2100 }) }));
   });
   it("does not persist a refused immature retail quote", async () => {
     const result = await handleKqCommerceAction(user, { action: "quote", stockId, channel: "cbd-shop", policy: "advised", units: 100 });
@@ -43,6 +44,23 @@ describe("storage-aware server commerce quotes", () => {
     const value = current();
     mocks.rpc.mockResolvedValue({ data: { ...value, stocks: [{ ...value.stocks[0], storageState: null }] }, error: null });
     await expect(handleKqCommerceAction(user, { action: "quote", stockId, channel: "wholesale", policy: "advised" })).rejects.toThrow("storage_migration_required");
+    expect(mocks.insert).not.toHaveBeenCalled();
+  });
+  it("expires a quote at the demand boundary and ignores client supplied deadlines", async () => {
+    const boundary = Math.ceil(now / KQ_CUSTOMER_DEMAND_PERIOD_MS) * KQ_CUSTOMER_DEMAND_PERIOD_MS;
+    const at = boundary - 30_000;
+    const snapshot = current();
+    mocks.rpc.mockResolvedValue({ data: { ...snapshot, business: createKqBusinessPreview(at),
+      customerDemand: createKqCustomerDemandSnapshot(at) }, error: null });
+    const result = await handleKqCommerceAction(user, { action: "quote", stockId, channel: "wholesale", policy: "advised", units: 100,
+      expiresAt: "2099-01-01T00:00:00Z", customerDemand: { endsAt: "2099-01-01T00:00:00Z" } });
+    expect(result.expiresAt).toBe(new Date(boundary).toISOString());
+    expect(mocks.insert).toHaveBeenCalledWith(expect.objectContaining({ expires_at: new Date(boundary).toISOString() }));
+  });
+  it("does not store new tariffs if the database still uses the previous market version", async () => {
+    mocks.rpc.mockResolvedValue({ data: { ...current(), customerDemand: undefined }, error: null });
+    await expect(handleKqCommerceAction(user, { action: "quote", stockId, channel: "wholesale", policy: "advised" }))
+      .rejects.toThrow("customer_demand_migration_required");
     expect(mocks.insert).not.toHaveBeenCalled();
   });
 });

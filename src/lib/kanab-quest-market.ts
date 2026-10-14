@@ -40,6 +40,12 @@ export type KqMarketRouteDefinition = {
 };
 
 export type KqMarketQuote = {
+  physicalEquipment?: true;
+  warehouseRevision?: number;
+  warehouseState?: import("./kanab-quest-warehouse").KqWarehouseState;
+  processingDurationSeconds?: number;
+  processingEquipmentCodes?: string[];
+  workshopSnapshot?: { equippedCodes: string[]; levels: Record<string, number> };
   productBaseUnitCents?: number;
   market?: KqMarketDemand;
   pricePolicy?: KqPricePolicy;
@@ -375,9 +381,9 @@ export function calculateKqHarvestGrams(input: {
   return roundTenth(clamp(baseGrams * (1 + clamp(input.quantityPercent, 0, 250) / 100), 20, 500));
 }
 
-function getRouteEquipmentState(equipmentCodes: string[], route: KqMarketRouteDefinition, levels: Record<string, number> = {}) {
+function getRouteEquipmentState(equipmentCodes: string[], route: KqMarketRouteDefinition, levels: Record<string, number> = {}, capacities?: Record<string, number>) {
   if (route.requiredUnlocks.length === 0) {
-    return { missingUnlocks: [] as KqEquipmentUnlock[], capacityPercent: 100, capacityGrams: 4000, precision: 100, valueBonusPercent: 0, level: 1 };
+    return { missingUnlocks: [] as KqEquipmentUnlock[], capacityPercent: 100, capacityGrams: 1_000_000, precision: 100, valueBonusPercent: 0, level: 1 };
   }
   const equipped = equipmentCodes.map((code) => getKqEquipmentAtLevel(code, levels[code]))
     .filter((equipment): equipment is NonNullable<typeof equipment> => equipment !== null);
@@ -396,6 +402,7 @@ function getRouteEquipmentState(equipmentCodes: string[], route: KqMarketRouteDe
       : 0,
     capacityGrams: processingEquipment.length > 0
       ? Math.min(...processingEquipment.map((equipment) => {
+        if (capacities && Number.isFinite(capacities[equipment.code])) return Math.max(0, capacities[equipment.code]);
         const replacement = KQ_EQUIPMENT_REPLACEMENTS[equipment.code];
         const historicalCapacity = replacement
           ? getKqEquipmentAtLevel(replacement.code, replacement.level)?.effects.processingBatchGrams : undefined;
@@ -412,23 +419,25 @@ export function quoteKqMarketRoutes(input: {
   harvestGrams: number;
   equipmentCodes: string[];
   equipmentLevels?: Record<string, number>;
+  processingBatchGrams?: Record<string, number>;
+  processWholeLot?: boolean;
   marketContext?: KqMarketContext;
 }): KqMarketQuote[] {
   // Jury archives have one decimal; a stored lot's current condition can have
   // two. Do not round a degraded lot up across a route's minimum quality.
   const juryScore = clamp(input.juryScore, 0, 10);
-  const harvestGrams = roundTenth(clamp(input.harvestGrams, 0, 4_000));
+  const harvestGrams = roundTenth(clamp(input.harvestGrams, 0, 1_000_000));
   const rawRoute = KQ_MARKET_ROUTES.find((route) => route.code === "raw");
   if (!rawRoute) throw new Error("La voie de vente brute est absente du marché.");
-  const rawEquipment = getRouteEquipmentState(input.equipmentCodes, rawRoute, input.equipmentLevels);
+  const rawEquipment = getRouteEquipmentState(input.equipmentCodes, rawRoute, input.equipmentLevels, input.processingBatchGrams);
   const rawRemainderAvailable = juryScore >= rawRoute.minimumJuryScore
     && rawEquipment.missingUnlocks.length === 0;
   return KQ_MARKET_ROUTES.map((route) => {
-    const equipment = getRouteEquipmentState(input.equipmentCodes, route, input.equipmentLevels);
+    const equipment = getRouteEquipmentState(input.equipmentCodes, route, input.equipmentLevels, input.processingBatchGrams);
     const scoreBlocked = juryScore < route.minimumJuryScore;
     const equipmentBlocked = equipment.missingUnlocks.length > 0;
     const processing = route.family === "hash" || route.family === "rosin";
-    const processedInputGrams = roundTenth(processing
+    const processedInputGrams = roundTenth(processing && !input.processWholeLot
       ? Math.min(harvestGrams, equipment.capacityGrams) : harvestGrams);
     const processingCapacityPercent = harvestGrams > 0 ? roundTenth(processedInputGrams / harvestGrams * 100) : 0;
     const productGrams = roundTenth(processedInputGrams * route.extractionYieldPercent / 100);

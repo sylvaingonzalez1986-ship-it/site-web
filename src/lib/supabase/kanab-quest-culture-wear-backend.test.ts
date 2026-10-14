@@ -1,6 +1,7 @@
 ﻿import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ client: vi.fn() }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: mocks.client }));
+vi.mock("./kanab-quest-warehouse-backend", () => ({ getKqWarehouseRunSnapshot: vi.fn().mockResolvedValue(null) }));
 import { getKqEquipmentShopSnapshot, replaceKqCultureEquipment, equipKqDurableEquipment } from "./kanab-quest-equipment-backend";
 import { getKqEnergySnapshot } from "./kanab-quest-energy-backend";
 import { startKqGame } from "../kanab-quest-game";

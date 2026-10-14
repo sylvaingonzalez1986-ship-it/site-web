@@ -1,5 +1,5 @@
 ﻿import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), replace: vi.fn(), expand: vi.fn(), shop: vi.fn(), storage: vi.fn(), purchase: vi.fn(), rate: vi.fn() }));
+const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), replace: vi.fn(), expand: vi.fn(), shop: vi.fn(), storage: vi.fn(), purchase: vi.fn(), tier: vi.fn(), rate: vi.fn() }));
 vi.mock("@/lib/supabase/kanab-quest-storage-backend", () => ({ getKqStorageSnapshot: mocks.storage }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
@@ -7,6 +7,7 @@ vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", h
 vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({
   expandKqProduction: mocks.expand, replaceKqCultureEquipment: mocks.replace, getKqEquipmentShopSnapshot: mocks.shop, equipKqDurableEquipment: vi.fn(),
   purchaseKqDurableEquipment: mocks.purchase, setKqEquipmentRoutePlan: vi.fn(), upgradeKqDurableEquipment: vi.fn(), repairKqMachine: vi.fn(),
+  purchaseKqWorkshopTier: mocks.tier,
 }));
 import { GET, POST, PATCH } from "./route";
 const body = { action: "replace", equipmentCode: "LED-300", requestKey: "replacement-key", expectedVersion: 10, expectedCostCents: 35900 };
@@ -46,6 +47,33 @@ describe("culture equipment replacement endpoint", () => {
   });
 });
 
+
+describe("direct workshop tier endpoint", () => {
+  beforeEach(() => {
+    vi.clearAllMocks(); mocks.enabled.mockResolvedValue(true);
+    mocks.session.mockResolvedValue({ customerId: "session-owner", customer: { email: "owner@example.test" } });
+    mocks.rate.mockResolvedValue({ allowed: true }); mocks.tier.mockResolvedValue({ level: 7, priceCents: 263500 });
+  });
+  const buy = () => request({ action: "workshop-tier", userId: "forged-owner", equipmentCode: "PRESS-0600", targetLevel: 7, expectedLevel: 0, expectedPriceCents: 263500 });
+  it("uses the session owner and a single explicit tier action", async () => {
+    expect((await PATCH(buy())).status).toBe(200);
+    expect(mocks.tier).toHaveBeenCalledWith({ userId: "session-owner", requestKey: body.requestKey, equipmentCode: "PRESS-0600", targetLevel: 7, expectedLevel: 0, expectedPriceCents: 263500 });
+    expect(mocks.purchase).not.toHaveBeenCalled();
+  });
+  it("requires login, feature access and rate budget before purchasing", async () => {
+    mocks.enabled.mockResolvedValue(false); expect((await PATCH(buy())).status).toBe(404);
+    mocks.enabled.mockResolvedValue(true); mocks.session.mockResolvedValue(null); expect((await PATCH(buy())).status).toBe(401);
+    mocks.session.mockResolvedValue({ customerId: "session-owner", customer: {} }); mocks.rate.mockResolvedValue({ allowed: false, retryAfterSeconds: 15 });
+    expect((await PATCH(buy())).status).toBe(429); expect(mocks.tier).not.toHaveBeenCalled();
+  });
+  it("passes omitted quote fields as invalid and hides RPC internals", async () => {
+    await PATCH(request({ action: "workshop-tier" }));
+    expect(mocks.tier).toHaveBeenCalledWith(expect.objectContaining({ targetLevel: 0, expectedLevel: -1, expectedPriceCents: -1 }));
+    mocks.tier.mockRejectedValueOnce(new Error("[supabase:rpc_kq_purchase_workshop_tier] private details"));
+    const response = await PATCH(buy()); expect(response.status).toBe(500);
+    expect(await response.json()).toEqual({ error: "Service momentanément indisponible." });
+  });
+});
 
 describe("production expansion endpoint", () => {
   beforeEach(() => {

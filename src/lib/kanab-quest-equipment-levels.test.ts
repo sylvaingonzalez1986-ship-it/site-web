@@ -71,12 +71,21 @@ describe("unique equipment and ten-level progression", () => {
     }
   });
 
-  it("changes visual tiers only at 5 and 10, reusing distinct model illustrations", () => {
+  it("preserves legacy visual tiers at 5 and 10", () => {
     expect(Array.from({ length: 10 }, (_, index) => getKqEquipmentVisualTier(index + 1))).toEqual([1, 1, 1, 1, 5, 5, 5, 5, 5, 10]);
-    for (const code of ["TENT-120", "LED-300", "WASHER-25L", "PRESS-0600"]) {
+    for (const code of ["TENT-120", "LED-300"]) {
       expect(new Set([1, 5, 10].map((level) => getKqEquipmentArtwork(code, level)?.src)).size).toBe(3);
       expect(getKqEquipmentArtwork(code, 4)?.src).toBe(getKqEquipmentArtwork(code, 1)?.src);
       expect(getKqEquipmentArtwork(code, 9)?.src).toBe(getKqEquipmentArtwork(code, 5)?.src);
+    }
+  });
+
+  it("shows the workshop's acquired configuration at levels 1, 4 and 7", () => {
+    for (const code of ["SIFT-TRAY", "PRESS-0600", "WASHER-25L", "AUTO-SIEVE", "FREEZE-DRYER", "STATIC-PLASMA"]) {
+      expect(new Set([1, 4, 7].map(level => getKqEquipmentArtwork(code, level)?.src)).size).toBe(3);
+      for (const [level, configuration] of [[1, 1], [3, 1], [4, 2], [6, 2], [7, 3], [10, 3]]) {
+        expect(getKqEquipmentArtwork(code, level)?.src).toMatch(new RegExp(`-${configuration}\\.webp$`));
+      }
     }
   });
 });

@@ -2,6 +2,7 @@ import { getKqBankTerms, KQ_BANK_INSTALLMENT_MS, KQ_BANK_TERM_DAYS, parseKqBankC
 import { createKqBusinessPreview, isKqAdvertisingKind, KQ_ADVERTISING, KQ_DOMICILIATION_MONTHLY_CENTS, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_SHOP_CREATION_CENTS, KQ_SHOP_MONTHLY_CENTS, normalizeKqShopName } from "./kanab-quest-business";
 import { parseSavingsCommand, type ChanvrierSavings } from "./chanvrier-savings";
 import type { KqCommerceSnapshot } from "./kanab-quest-commerce";
+import { createKqCustomerDemandSnapshot } from "./kanab-quest-customer-demand";
 import { quoteKqEnergy, type KqEnergySnapshot } from "./kanab-quest-energy";
 import { parseKqCryptoAction, type KqCryptoSnapshot, type KqCryptoOrder, type KqCryptoTrade } from "./kanab-quest-crypto";
 import { KQ_STOCK_INSTRUMENTS, parseKqStockAction, parseKqStockAssetIds, type KqStockSnapshot, type KqStockOrder, type KqStockTrade } from "./kanab-quest-stocks";
@@ -77,7 +78,7 @@ export function createKqTreasuryTutorial(options: { now?: () => number } = {}) {
   }
   function commerceSnapshot(): KqCommerceSnapshot {
     business.serverNow = stamp();
-    return { business, strength: "treasurer", revision: journal.length, cashCents: cash(), reputation: 600, clients: 8, shopPartners: 2,
+    return { business, customerDemand: createKqCustomerDemandSnapshot(Date.parse(business.serverNow)), strength: "treasurer", revision: journal.length, cashCents: cash(), reputation: 600, clients: 8, shopPartners: 2,
       computerOwned: true, internetRenew: business.shop.renew, campaign: null, stocks: [], receipts: [], rawLots: [],
       marketVolumes: {}, ownVolumes: {}, routeSales: {}, electricityOutstandingCents: energyDue };
   }

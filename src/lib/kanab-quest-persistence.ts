@@ -8,6 +8,10 @@ import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest
 import { areKqBuildingServicesConsistent, summarizeKqTentEquipment } from "./kanab-quest-production";
 import { isKqStageDecision } from "./kanab-quest-culture-analysis";
 import { isKqCareState, isKqCareReplacedCard } from "./kanab-quest-care";
+import { isKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
+import { isKqWarehouseEnergyQuote } from "./kanab-quest-warehouse-run";
+import { applyKqBuddieYield, isKqBuddieCultivationProfile } from "./kanab-quest-buddie-cultivation";
+import { isKqCampaign } from "./kanab-quest-campaign";
 
 type SaveEnvelope<T> = { version: 1; payload: T };
 const KQ_LEGACY_HAND_SIZE = 10;
@@ -25,10 +29,25 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     const envelope: unknown = JSON.parse(raw);
     if (!isRecord(envelope) || envelope.version !== 1 || !isRecord(envelope.payload)) return null;
     const state = envelope.payload;
+    if (state.warehouse !== undefined && !isKqWarehouseRunSnapshot(state.warehouse)) return null;
+    const warehouse = isKqWarehouseRunSnapshot(state.warehouse) ? state.warehouse : undefined;
+    if (warehouse && (warehouse.activeAreaM2 <= 0 || !isRecord(state.equipment)
+      || !Array.isArray(state.equipment.codes) || state.equipment.codes.length !== 0
+      || state.equipment.productionUnits !== undefined || state.equipment.tents !== undefined
+      || state.equipment.shared !== undefined || state.equipment.scope !== undefined)) return null;
     const buildingScope = isRecord(state.equipment) && state.equipment.scope === "building";
     if (state.rulesVersion !== undefined && state.rulesVersion !== 2 && state.rulesVersion !== 3) return null;
     const healthRules = state.rulesVersion === 3;
     if (healthRules ? !isKqCareState(state.care) : state.care !== undefined) return null;
+    if (state.cultivationProfile !== undefined && (!healthRules || !isKqBuddieCultivationProfile(state.cultivationProfile)
+      || state.cultivationProfile.buddieCode !== state.varietyCode)) return null;
+    if (state.campaign !== undefined) {
+      if (!isKqCampaign(state.campaign) || warehouse?.version !== 2 || !state.cultivationProfile) return null;
+      const member = state.campaign.members.find(item => item.zoneId === warehouse.zoneId);
+      if (!member || member.buddieCode !== state.varietyCode
+        || JSON.stringify(member.cultivationProfile) !== JSON.stringify(state.cultivationProfile)
+        || JSON.stringify(member.warehouse) !== JSON.stringify(warehouse)) return null;
+    }
     if (state.domiciliation !== undefined && state.domiciliation !== "home" && state.domiciliation !== "external") return null;
     const phases = ["prepare", "rolled", "resolved", "complete"];
     const knownCards = new Set<string>([...KQ_CARDS.map((card) => card.code), ...KQ_RETIRED_SUBSTRATE_CODES]);
@@ -42,7 +61,9 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (requestedUnits !== undefined && (typeof requestedUnits !== "number" || getKqProductionUnits(requestedUnits) !== requestedUnits)) return null;
     const productionUnits = getKqProductionUnits(requestedUnits as number | undefined);
     if (cultureDead && (state.phase !== "complete" || state.harvestGrams !== 0 || state.equipmentQualityBonus !== 0)) return null;
-    if (state.harvestGrams !== undefined && (!isFiniteNumber(state.harvestGrams) || state.harvestGrams < (cultureDead || healthRules ? 0 : 20 * productionUnits) || state.harvestGrams > 500 * productionUnits)) return null;
+    if (state.harvestGrams !== undefined && (!isFiniteNumber(state.harvestGrams) || state.harvestGrams < (cultureDead || healthRules || warehouse ? 0 : 20 * productionUnits) || state.harvestGrams > (warehouse?.estimatedHarvestGrams ?? 500 * productionUnits))) return null;
+    if (warehouse && isKqBuddieCultivationProfile(state.cultivationProfile) && isFiniteNumber(state.harvestGrams)
+      && state.harvestGrams > applyKqBuddieYield(warehouse.estimatedHarvestGrams, state.cultivationProfile)) return null;
     if (state.equipmentQualityBonus !== undefined && (!Number.isInteger(state.equipmentQualityBonus) || Number(state.equipmentQualityBonus) < 0 || Number(state.equipmentQualityBonus) > 20)) return null;
     if (state.powerOutage !== undefined && typeof state.powerOutage !== "boolean") return null;
     if (state.harvestLossPercent !== undefined && (!isFiniteNumber(state.harvestLossPercent) || state.harvestLossPercent < 0 || state.harvestLossPercent > 80)) return null;
@@ -106,7 +127,8 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       if (levels !== undefined ? state.equipment.unlocks.join("|") !== expected.unlocks.join("|")
         : state.equipment.unlocks.some((unlock) => !expected.unlocks.includes(unlock as typeof expected.unlocks[number]))) return null;
     }
-    if (state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined, productionUnits, state.equipment.tents as KqTentEquipmentProfile[] | undefined, state.equipment.scope as "installation" | "tent" | "building" | undefined))) return null;
+    if (warehouse ? !isKqWarehouseEnergyQuote(state.energy, warehouse)
+      : state.energy !== undefined && (!isRecord(state.equipment) || !isKqEnergyQuoteValid(state.energy, state.equipment.codes as string[], state.equipment.levels as Record<string, number> | undefined, productionUnits, state.equipment.tents as KqTentEquipmentProfile[] | undefined, state.equipment.scope as "installation" | "tent" | "building" | undefined))) return null;
     if (typeof state.varietyCode !== "string" || typeof state.varietyName !== "string") return null;
     if (state.challengeDayKey !== undefined && (typeof state.challengeDayKey !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(state.challengeDayKey))) return null;
     if (state.startedAt !== undefined && (typeof state.startedAt !== "string" || Number.isNaN(Date.parse(state.startedAt)))) return null;
@@ -286,6 +308,9 @@ export function parseKqRankSave(raw: string | null): KqRankProfile | null {
 
 export function createKqIntegrityCode(state: KqGameState) {
   const canonical = JSON.stringify({
+    ...(state.warehouse ? { warehouse: state.warehouse } : {}),
+    ...(state.cultivationProfile ? { cultivationProfile: state.cultivationProfile } : {}),
+    ...(state.campaign ? { campaign: state.campaign } : {}),
     ...(state.rulesVersion === 3 ? { rulesVersion: 3, care: state.care } : {}),
     ...(state.firstCultureRescue === true ? { firstCultureRescue: true } : {}),
     ...(state.domiciliation ? { domiciliation: state.domiciliation } : {}),

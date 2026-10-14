@@ -38,7 +38,7 @@ async function shot(name){assert(await page.evaluate(()=>document.documentElemen
 async function visit(name,width,{code='first-harvest',existing=false,fail=''}={}){
   scenario=name;targetCode=code;earned=new Set();opened=new Set();failure=fail;
   const target=definitions.find(row=>row[0]===code);for(const row of definitions){if(row[1]===target[1]&&row[2]<target[2]){earned.add(row[0]);opened.add(row[0]);}}if(existing)earned.add(code);
-  await page.setViewport({width,height:844});await page.goto(origin+'/?scenario='+name,{waitUntil:'networkidle0'});await clickText('Tous mes défis');await page.waitForSelector('section[aria-label="Culture"]');
+  await page.setViewport({width,height:844});await page.goto(origin+'/?scenario='+name,{waitUntil:'networkidle0'});await clickText('Mes défis');await page.waitForSelector('section[aria-label="Culture"]');
 }
 async function claimAndOpen(){
   const targetTrack=definitions.find(row=>row[0]===targetCode)[1];const label={culture:'Culture',online:'Vente en ligne',shops:'Boutiques partenaires'}[targetTrack];
@@ -69,7 +69,7 @@ try{
     }
     report.unexpected.push(entry);return void respond(405,{error:'No unconfigured API or remote writes permitted.'});
   });
-  for(const width of [390,1440]){
+  for(const width of [320,390,1440]){
     for(const [code,count,destination] of [['first-harvest',3,'game'],['contest-flower',10,'game'],['online-two',3,'market']]){
       const name=code+'-'+width;await visit(name,width,{code});await claimAndOpen();await checkReveal(count);await shot(name);
       assert.equal(report.requests.filter(row=>row.scenario===name&&row.method==='POST').length,1);assert.equal(report.requests.filter(row=>row.scenario===name&&row.method==='PATCH').length,1);

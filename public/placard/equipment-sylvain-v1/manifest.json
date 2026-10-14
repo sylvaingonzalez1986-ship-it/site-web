@@ -1,0 +1,175 @@
+{
+  "date": "2026-10-13",
+  "mode": "built-in imagegen, new sprite atlases with style reference",
+  "styleReference": "public/placard/market-workshop-sylvain-v2.webp",
+  "export": "Connected alpha regions assigned to their atlas cell, cropped without neighboring objects, alpha preserved and fitted into 512px WebP with 16px minimum padding. Tent proposals excluded: cultivation uses zones.",
+  "assets": [
+    {
+      "name": "core-equipment",
+      "cells": [
+        "lighting-1",
+        "lighting-2",
+        "lighting-3",
+        "air-1",
+        "air-2",
+        "air-3",
+        "drying-1",
+        "drying-2",
+        "drying-3"
+      ],
+      "prompt": "Create one production-ready GAME SHOP SPRITE ATLAS, square 1536x1536, exactly 3 columns by 3 rows of equally sized 512x512 cells. Nine separate centered objects, one per cell; every object entirely within its cell with at least 55px clear padding. No grid lines, labels, letters, numbers, borders, scene or people. Genuine transparent background. Use the supplied illustration ONLY as a drawing-style reference: bold near-black hand-inked outlines, playful slightly wonky shapes, flat turquoise, warm cream, mustard, tan wood, very sparse halftone. NOT photorealistic, no 3D rendering, no chrome gloss. Three-quarter view, large readable silhouettes and charming exaggerated knobs or feet. Left column economical simple object, middle column sturdier standard model, right column elaborate premium model: visibly different construction, not just color swaps. Objects are fictional decorative props for a management videogame, no technical diagram or specifications. Keep all nine icons independent, centered at x256/768/1280,y256/768/1280. ROW1: (left) small rectangular hanging lamp with 2 bright strips, (middle) medium hanging lamp with 4 bright strips and stout brackets, (right) large broad lamp with 6 bright strips and chunky controller. ROW2: (left) simple small tubular air extractor, (middle) larger turquoise duct fan with a curved hose and brass dial, (right) hefty twin-fan ventilation box with stylized filters and control dial. ROW3: (left) small open wooden mesh drying rack, (middle) taller turquoise 3-tray drying rack, (right) large enclosed drying cabinet with mesh-front doors and brass hinges. Empty racks, no plants or products.",
+      "source": "exec-d4bda032-4d49-41ac-ad19-4da76aa700ce.png"
+    },
+    {
+      "name": "modules-water-climate-control",
+      "cells": [
+        "water-1",
+        "water-2",
+        "water-3",
+        "climate-1",
+        "climate-2",
+        "climate-3",
+        "control-1",
+        "control-2",
+        "control-3"
+      ],
+      "prompt": "Create one production-ready GAME SHOP SPRITE ATLAS, square 1536x1536, exactly 3 columns by 3 rows of equally sized 512x512 cells. Nine separate centered objects, one per cell; every object entirely within its cell with at least 55px clear padding. No grid lines, labels, letters, numbers, borders, scene or people. Genuine transparent background. Use the supplied illustration ONLY as a drawing-style reference: bold near-black hand-inked outlines, playful slightly wonky shapes, flat turquoise, warm cream, mustard, tan wood, very sparse halftone. NOT photorealistic, no 3D rendering, no chrome gloss. Three-quarter view, large readable silhouettes and charming exaggerated knobs or feet. Left column economical simple object, middle column sturdier standard model, right column elaborate premium model: visibly different construction, not just color swaps. Objects are fictional decorative props for a management videogame, no technical diagram or specifications. Keep all nine icons independent, centered at x256/768/1280,y256/768/1280. ROW1: small wheeled water barrel with tap; turquoise reservoir cart with coiled hose and small pump; twin-tank water distribution cabinet with chunky fictional brass gauges. ROW2: compact wheeled dehumidifier with vents; medium air conditioning machine with big visible fan and short curved vent; large modular climate cabinet with two vents, oversized dial and yellow indicator. ROW3: two small portable sensor boxes with blank screens; medium wooden-framed control board with colored switches and analog dial; wide sturdy supervision desk with two blank teal monitors and large simple controls. No diagrams, no readable screen content.",
+      "source": "exec-c23696f6-0d68-4324-b33e-70f07fa226e0.png"
+    },
+    {
+      "name": "modules-hygiene-logistics-security",
+      "cells": [
+        "hygiene-1",
+        "hygiene-2",
+        "hygiene-3",
+        "logistics-1",
+        "logistics-2",
+        "logistics-3",
+        "security-1",
+        "security-2",
+        "security-3"
+      ],
+      "prompt": "Create one production-ready GAME SHOP SPRITE ATLAS, square 1536x1536, exactly 3 columns by 3 rows of equally sized 512x512 cells. Nine separate centered objects, one per cell; every object entirely within its cell with at least 55px clear padding. No grid lines, labels, letters, numbers, borders, scene or people. Genuine transparent background. Use the supplied illustration ONLY as a drawing-style reference: bold near-black hand-inked outlines, playful slightly wonky shapes, flat turquoise, warm cream, mustard, tan wood, very sparse halftone. NOT photorealistic, no 3D rendering, no chrome gloss. Three-quarter view, large readable silhouettes and charming exaggerated knobs or feet. Left column economical simple object, middle column sturdier standard model, right column elaborate premium model: visibly different construction, not just color swaps. Objects are fictional decorative props for a management videogame, no technical diagram or specifications. Keep all nine icons independent, centered at x256/768/1280,y256/768/1280. ROW1: bucket with cloth and long broom, floor cleaning kit; wheeled workshop canister vacuum with looped hose; standalone entry cleaning arch on a short platform with chunky button panel. ROW2: simple small two-shelf wheeled utility trolley; sturdy turquoise pallet truck carrying plain empty wooden crate; large wood-topped workbench with small drawers and simple mounted vice. ROW3: modest metal locker with big padlock; freestanding access-control gate with key card reader; security monitoring station with two blank monitors and stout swiveling camera on pole. No weapons.",
+      "source": "exec-2be6c8b6-a49d-4d3f-be2f-2ad310fd2bc3.png"
+    },
+    {
+      "name": "modules-storage-support-nutrition",
+      "cells": [
+        "storage-1",
+        "storage-2",
+        "storage-3",
+        "substrate-1",
+        "substrate-2",
+        "substrate-3",
+        "nutrition-1",
+        "nutrition-2",
+        "nutrition-3"
+      ],
+      "prompt": "Create one production-ready GAME SHOP SPRITE ATLAS, square 1536x1536, exactly 3 columns by 3 rows of equally sized 512x512 cells. Nine separate centered objects, one per cell; every object entirely within its cell with at least 55px clear padding. No grid lines, labels, letters, numbers, borders, scene or people. Genuine transparent background. Use the supplied illustration ONLY as a drawing-style reference: bold near-black hand-inked outlines, playful slightly wonky shapes, flat turquoise, warm cream, mustard, tan wood, very sparse halftone. NOT photorealistic, no 3D rendering, no chrome gloss. Three-quarter view, large readable silhouettes and charming exaggerated knobs or feet. Left column economical simple object, middle column sturdier standard model, right column elaborate premium model: visibly different construction, not just color swaps. Objects are fictional decorative props for a management videogame, no technical diagram or specifications. Keep all nine icons independent, centered at x256/768/1280,y256/768/1280. ROW1: wooden crate holding several glass clamp jars with green hemp buds; turquoise shelving with large sealed cream storage tubs; tall sturdy dark turquoise sealed storage barrel with metal clasp lid, no tap. ROW2: set of four simple square planting trays filled with plain soil; raised wooden planting bench with two rectangular empty growing trays; modular sturdy turquoise planting table with removable reusable bins. ROW3: one kraft supply bag with a simple green leaf emblem; three cream and turquoise supply canisters with leaf emblems; neat premium supply kit with two sturdy canisters, brass-handled scoop and kraft pouch in wooden caddy. Generic fictional game supplies: no dosage, ingredient formula, text, technical process or brands.",
+      "source": "exec-eb6407c9-7bec-460f-9446-44dda313f75e.png"
+    },
+    {
+      "name": "workshop-triage-press-washer",
+      "cells": [
+        "workshop-sift-1",
+        "workshop-sift-2",
+        "workshop-sift-3",
+        "workshop-press-1",
+        "workshop-press-2",
+        "workshop-press-3",
+        "workshop-washer-1",
+        "workshop-washer-2",
+        "workshop-washer-3"
+      ],
+      "prompt": "Create one production-ready GAME SHOP SPRITE ATLAS, square 1536x1536, exactly 3 columns by 3 rows of equally sized 512x512 cells. Nine separate centered objects, one per cell; every object entirely within its cell with at least 55px clear padding. No grid lines, labels, letters, numbers, borders, scene or people. Genuine transparent background. Use the supplied illustration ONLY as a drawing-style reference: bold near-black hand-inked outlines, playful slightly wonky shapes, flat turquoise, warm cream, mustard, tan wood, very sparse halftone. NOT photorealistic, no 3D rendering, no chrome gloss. Three-quarter view, large readable silhouettes and charming exaggerated knobs or feet. Left column economical simple object, middle column sturdier standard model, right column elaborate premium model: visibly different construction, not just color swaps. Objects are fictional decorative props for a management videogame, no technical diagram or specifications. Keep all nine icons independent, centered at x256/768/1280,y256/768/1280. ROW1: small wooden framed mesh sieve over an empty tray; larger bench-mounted sieve with little crank and drawer; large freestanding turquoise screening cabinet with empty mesh tray and fictional dial. ROW2: little hand-operated tabletop press with simple wooden base; medium stout turquoise workshop press with big round gauge and empty platens; big self-standing rounded turquoise press with large wheel, feet and two simple control knobs. ROW3: compact cream top-loading washer with turquoise lid; medium round-front window washing machine with stout feet; larger freestanding twin-tub workshop washer with two round windows and oversized brass controls. Empty machines only, no material, no operation in progress, no technical internals. Match the reference workshop's friendly retro machine shapes.",
+      "source": "exec-9e7efe3f-c6f4-4319-9034-57b81cab6c0b.png"
+    },
+    {
+      "name": "workshop-collector-dryer-separator",
+      "cells": [
+        "workshop-collector-1",
+        "workshop-collector-2",
+        "workshop-collector-3",
+        "workshop-dryer-1",
+        "workshop-dryer-2",
+        "workshop-dryer-3",
+        "workshop-separator-1",
+        "workshop-separator-2",
+        "workshop-separator-3"
+      ],
+      "prompt": "Create one production-ready GAME SHOP SPRITE ATLAS, square 1536x1536, exactly 3 columns by 3 rows of equally sized 512x512 cells. Nine separate centered objects, one per cell; every object entirely within its cell with at least 55px clear padding. No grid lines, labels, letters, numbers, borders, scene or people. Genuine transparent background. Use the supplied illustration ONLY as a drawing-style reference: bold near-black hand-inked outlines, playful slightly wonky shapes, flat turquoise, warm cream, mustard, tan wood, very sparse halftone. NOT photorealistic, no 3D rendering, no chrome gloss. Three-quarter view, large readable silhouettes and charming exaggerated knobs or feet. Left column economical simple object, middle column sturdier standard model, right column elaborate premium model: visibly different construction, not just color swaps. Objects are fictional decorative props for a management videogame, no technical diagram or specifications. Keep all nine icons independent, centered at x256/768/1280,y256/768/1280. ROW1: small round lidded workshop collection pot mounted on 3feet; bigger rounded collection cabinet with stout short funnel and empty glass receiver; tall turquoise twin collection cabinet with visible empty receiver and comically big dial. ROW2: compact countertop cabinet with little round porthole; sturdy medium drying cabinet with one broad circular door and cream frame; large drying cabinet on feet with two porthole doors and broad mustard control knob. ROW3: small tabletop sorting machine with two empty trays and a crank; medium rounded turquoise sorting cabinet with two empty collection drawers and angled top tray; tall premium sorting cabinet with three plain drawers, brass side wheel and oversized control dial. All fictional game objects with sealed housings, no process diagrams or readable technical content. Avoid imagery of electrical arcs or hazardous machinery; keep closed, friendly, simple.",
+      "source": "exec-bfb3a3d4-da77-47eb-8bbd-c2a196211ea1.png"
+    },
+    {
+      "name": "care-and-packaging",
+      "cells": [
+        "care-aphidius",
+        "care-phytoseiulus",
+        "care-swirskii",
+        "care-orius",
+        "care-chrysoperla",
+        "care-coccinella",
+        "packaging-kraft",
+        "packaging-printed",
+        "packaging-glass"
+      ],
+      "prompt": "Create one production-ready GAME SHOP SPRITE ATLAS, square 1536x1536, exactly 3 columns by 3 rows of equally sized 512x512 cells. Nine separate centered objects, one per cell; every object entirely within its cell with at least 55px clear padding. No grid lines, labels, letters, numbers, borders, scene or people. Genuine transparent background. Use the supplied illustration ONLY as a drawing-style reference: bold near-black hand-inked outlines, playful slightly wonky shapes, flat turquoise, warm cream, mustard, tan wood, very sparse halftone. NOT photorealistic, no 3D rendering, no chrome gloss. Three-quarter view, large readable silhouettes and charming exaggerated knobs or feet. Each cell depicts the distinct object specified, not a progression. Objects are fictional decorative props for a management videogame, no technical diagram or specifications. Keep all nine icons independent, centered at x256/768/1280,y256/768/1280. ROW1: three small standalone cream insect-supply canisters. Left has an oval label with a little black long-waisted winged parasitic wasp; middle has oval label with a bright red round predatory mite with eight legs; right has oval label with a pale tan translucent tiny mite with eight legs. The labels are simple cartoons without text. ROW2: three distinct small insect-supply canisters: left label a tiny black-and-white oval true bug; middle label a green lacewing insect with broad delicate transparent wings and golden eyes; right label a red ladybird with black spots. Each label illustration large and very readable. ROW3: a plain folded kraft retail pouch with a simple green hemp leaf emblem; a high quality cream-and-turquoise printed retail pouch with bold illustrated hemp leaves and mustard seal; a single transparent round glass jar with wood lid containing recognizable green hemp buds and a cream blank label. No fruit, vegetables, people or text.",
+      "source": "exec-2376d921-84f9-4a2c-943e-68973de5fc0b.png",
+      "excludedCells": []
+    },
+    {
+      "name": "legacy-and-supplies",
+      "cells": [
+        "tent-1",
+        "tent-2",
+        "tent-3",
+        "solar-1",
+        "camera-1",
+        "dog-1",
+        "care-compost-tea",
+        "care-vermicompost",
+        "care-seaweed"
+      ],
+      "prompt": "Create one production-ready GAME SHOP SPRITE ATLAS, square 1536x1536, exactly 3 columns by 3 rows of equally sized 512x512 cells. Nine separate centered objects, one per cell; every object entirely within its cell with at least 55px clear padding. No grid lines, labels, letters, numbers, borders, scene or people. Genuine transparent background. Use the supplied illustration ONLY as a drawing-style reference: bold near-black hand-inked outlines, playful slightly wonky shapes, flat turquoise, warm cream, mustard, tan wood, very sparse halftone. NOT photorealistic, no 3D rendering, no chrome gloss. Three-quarter view, large readable silhouettes and charming exaggerated knobs or feet. Each cell depicts the distinct object specified, not a progression. Objects are fictional decorative props for a management videogame, no technical diagram or specifications. Keep all nine icons independent, centered at x256/768/1280,y256/768/1280. ROW1: compact cream fabric equipment tent, front unzipped and interior empty, turquoise piping; sturdier medium turquoise equipment tent with cream open flap and empty interior; broad premium double-door equipment tent with brass trim and empty interior. ROW2: small slanted solar panel and rounded portable battery; a jaunty wall-mounted security camera with oversized round lens; friendly stocky black-and-tan guardian dog sitting next to a little wood kennel, expressive determined face, no aggression. ROW3: rustic cream watering jug with closed cap and a leaf emblem; open kraft compost bag showing dark loose earth with a small friendly worm motif on the bag; turquoise supply bottle with simple brown seaweed illustration on its cream label. No instructions, numbers or text.",
+      "source": "exec-0d6ead8d-596a-4922-a607-90b0a23e6634.png",
+      "excludedCells": [
+        "tent-1",
+        "tent-2",
+        "tent-3"
+      ]
+    },
+    {
+      "name": "storage-containers",
+      "cells": [
+        "container-glass-small",
+        "container-glass-medium",
+        "container-glass-large",
+        "container-pouch-small",
+        "container-pouch-large",
+        "container-humidity",
+        "container-tin-small",
+        "container-tin-large",
+        "container-cabinet"
+      ],
+      "prompt": "Create one production-ready GAME SHOP SPRITE ATLAS, square 1536x1536, exactly 3 columns by 3 rows of equally sized 512x512 cells. Nine separate centered objects, one per cell; every object entirely within its cell with at least 55px clear padding. No grid lines, labels, letters, numbers, borders, scene or people. Genuine transparent background. Use the supplied illustration ONLY as a drawing-style reference: bold near-black hand-inked outlines, playful slightly wonky shapes, flat turquoise, warm cream, mustard, tan wood, very sparse halftone. NOT photorealistic, no 3D rendering, no chrome gloss. Three-quarter view, large readable silhouettes and charming exaggerated knobs or feet. Each cell depicts the distinct object specified, not a progression. Objects are fictional decorative props for a management videogame, no technical diagram or specifications. Keep all nine icons independent, centered at x256/768/1280,y256/768/1280. ROW1: small squat glass clamp jar, medium glass clamp jar, tall large glass clamp jar; all closed, wooden or cream lids, with green hemp flower buds inside and different silhouettes. ROW2: small resealable kraft pouch with turquoise band; large sturdy resealable cream pouch with turquoise sides; glass clamp jar containing hemp buds and a little square cream humidity sachet. ROW3: small squat round lidded metal storage tin; large deeper cylindrical lidded metal storage tin with carrying handles; small turquoise climate storage cabinet with glass door, three shelves of hemp jars and a comically large brass knob. Isolated objects, no branding, text, vegetables or fruits.",
+      "source": "exec-6af0fe82-5aa5-45f8-97bf-f0f73908ab6d.png",
+      "excludedCells": []
+    },
+    {
+      "name": "overhead-game-props",
+      "cells": [
+        "scene-plants",
+        "scene-lighting",
+        "scene-air",
+        "scene-pots",
+        "scene-drying",
+        "scene-storage",
+        "scene-panel",
+        "scene-drum",
+        "scene-shelf"
+      ],
+      "prompt": "Create one 3x3 sprite atlas, square, 9 independently isolated top-down objects on true transparent background. Equal cells, objects well inside their cells with 60px margins. Reference is drawing style only: bold black ink outlines, flat turquoise, mustard, cream, wood, playful rounded wonky forms and sparse halftone. Strict bird's-eye view directly overhead, no perspective or visible front faces. No text, grids, people, scene or shadows extending out of the object. Objects for a fictional hemp management videogame: ROW1 four leafy hemp plants in a square wood tray; rectangular turquoise light panel with four bright cream strips; circular duct fan with a short curved hose. ROW2 four square empty pots with plain soil in a tray; rectangular mesh drying rack seen from above, empty; wood crate with six closed glass jars of green hemp buds seen from above. ROW3 larger rectangular turquoise lighting panel with six cream strips; round sealed turquoise barrel lid with brass clasps, viewed overhead; large rectangular storage shelf footprint with six cream closed boxes, viewed overhead. Keep each of nine objects distinct and fully separate. Simplify strongly so these remain readable as small map sprites. No photorealism, no technical diagram or operating instructions.",
+      "source": "exec-9aced3cd-094a-43ae-9c4d-ae9aeb3431c7.png"
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import puppeteer from 'puppeteer-core';
 
 const root = process.cwd(), output = resolve(root, 'output/placard-commerce-clarity');
 const port = Number(process.env.COMMERCE_CLARITY_PORT ?? 3251), origin = `http://127.0.0.1:${port}`;
+const interiorsOnly = process.argv.includes('--interiors-only');
 const modules = {
   entry: `import React from 'react';
     import {createRoot} from 'react-dom/client';
@@ -68,6 +69,19 @@ try {
   const shot=async(name)=>{await page.evaluate(async()=>{await Promise.allSettled(document.getAnimations().filter(item=>item.effect?.getComputedTiming().iterations!==Infinity).map(item=>item.finished));});await page.screenshot({path:resolve(output,name+'.png'),fullPage:true});};
   for(const width of [320,390,900,1440]) {
     await page.setViewport({width,height:900,isMobile:width<700,hasTouch:width<700});
+    if(interiorsOnly) {
+      await page.goto(origin,{waitUntil:'networkidle0'});
+      await click('Vendre ma production');await page.waitForSelector('[aria-label="Tes lots"]');
+      await page.waitForFunction(()=>[...document.querySelectorAll('img[src$="market-workshop-sylvain-v2.webp"]')].some(image=>image.complete&&image.naturalWidth===1536));
+      assert.equal(await page.evaluate(()=>window.__actions.length),0,'Browsing the harvest selection does not spend or prepare anything');
+      await noOverflow();await shot('lots-'+width);
+      await page.click('details[aria-label="Mon commerce"] > summary');
+      await page.waitForSelector('details[aria-label="Mon commerce"][open]');
+      await page.waitForFunction(()=>[...document.querySelectorAll('img[src$="commerce-office-sylvain-v3.webp"]')].every(image=>image.complete&&image.naturalWidth===1536));
+      await noOverflow();await shot('bilan-'+width);
+      results.push({width,harvestSelection:true,commerceOverview:true,distinctInteriors:true});
+      continue;
+    }
     await page.goto(origin+'/?flower=selected',{waitUntil:'networkidle0'});
     await page.waitForFunction(()=>document.querySelector('#commerce-step-title')?.textContent==='Préparer ma récolte');
     assert.equal(await page.evaluate(()=>window.__actions.length),0,'Opening a harvest never prepares or sells it');
@@ -99,6 +113,7 @@ try {
     await noOverflow();
     results.push({width,harvestLink:true,prepareQuoteSell:true,progressiveBusiness:true,financeDetails:true});
   }
+  if(!interiorsOnly) {
   await page.goto(origin+'/?flower=selected&prepared',{waitUntil:'networkidle0'});
   await page.waitForSelector('[aria-label="Circuits de vente"]');
   assert.equal(await page.evaluate(()=>window.__actions.length),0,'Prepared harvest links select its existing stock');
@@ -110,7 +125,8 @@ try {
   await page.waitForSelector('[aria-label="Tes lots"]');
   assert(await page.evaluate(()=>document.body.innerText.includes('Cette récolte n’est plus disponible')));
   assert.equal(await page.evaluate(()=>window.__actions.length),0);
+  }
   assert.deepEqual(errors,[]);
-  await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,results,preparedLink:true,missingLink:true,refreshPreservesSelection:true,errors},null,2));
+  await writeFile(resolve(output,interiorsOnly?'interiors-report.json':'report.json'),JSON.stringify({passed:true,results,...(!interiorsOnly?{preparedLink:true,missingLink:true,refreshPreservesSelection:true}:{}),errors},null,2));
   console.log(JSON.stringify({passed:true,results,output}));
 } finally { await browser?.close();await server.close(); }

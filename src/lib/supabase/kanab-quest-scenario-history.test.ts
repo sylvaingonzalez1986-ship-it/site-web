@@ -1,14 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ client: vi.fn(), equipment: vi.fn() }));
+const mocks = vi.hoisted(() => ({ client: vi.fn(), equipment: vi.fn(), warehouse: vi.fn().mockResolvedValue(null) }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: mocks.client }));
 vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({ getKqEquipmentShopSnapshot: mocks.equipment }));
+vi.mock("./kanab-quest-warehouse-backend", () => ({ getKqWarehouseRunSnapshot: mocks.warehouse }));
 import { getKqRecentSituationCodes, startKqPlayerRun } from "./kanab-quest-backend";
 import { buildKqScenarioPath, KQ_BUDDIES, KQ_STAGES } from "../kanab-quest-game";
+import { createKqWarehouseStarter, getKqWarehouseRunSnapshot } from "../kanab-quest-warehouse";
 
 const userId = "11000000-0000-4000-8000-000000000001";
 function database(history: unknown[], error: { message: string } | null = null) {
   const historyCalls: Array<[string, ...unknown[]]> = [];
-  const rpc = vi.fn().mockImplementation((name: string, args?: { p_initial_state?: unknown }) => Promise.resolve({ error: null, data: name === "rpc_kq_commerce_state"
+  const rpc = vi.fn().mockImplementation((name: string, args?: { p_initial_state?: unknown }) => Promise.resolve({ error: null, data: name === "rpc_kq_reserved_cards" ? [] : name === "rpc_kq_commerce_state"
     ? { business: { version: 1, domiciliation: { mode: "home", active: true } } }
     : { run: { id: "new-run", state: args?.p_initial_state }, burnReceipt: null } }));
   mocks.equipment.mockResolvedValue({
@@ -32,7 +34,7 @@ function database(history: unknown[], error: { message: string } | null = null) 
 }
 
 describe("server culture scenario history", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => { vi.clearAllMocks(); mocks.warehouse.mockResolvedValue(null); });
   afterEach(() => vi.unstubAllGlobals());
 
   it("reads a bounded, owner-scoped history in a stable newest-first order", async () => {
@@ -69,6 +71,19 @@ describe("server culture scenario history", () => {
     expect(rpc).toHaveBeenCalledWith("rpc_kq_start_run_with_heritage", expect.objectContaining({
       p_user_id: userId, p_scenario_codes: result.state.situationCodes,
       p_initial_state: expect.objectContaining({ situationCodes: result.state.situationCodes }),
+    }));
+  });
+
+  it("freezes the server's paid room instead of inheriting the archived tent", async () => {
+    const { rpc } = database([]);
+    const warehouse = getKqWarehouseRunSnapshot(createKqWarehouseStarter(), 7);
+    mocks.warehouse.mockResolvedValue(warehouse);
+    const result = await startKqPlayerRun(userId, { buddieCode: KQ_BUDDIES[0].code, deckCodes: [], expectedEnergyCents: warehouse.energyCostCents });
+    expect(mocks.warehouse).toHaveBeenCalledWith(userId);
+    expect(result.state.warehouse).toEqual(warehouse);
+    expect(result.state.equipment).toMatchObject({ codes: [], quantityPercent: 0 });
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_start_run_with_heritage", expect.objectContaining({
+      p_initial_state: expect.objectContaining({ warehouse, energy: expect.objectContaining({ totalCents: warehouse.energyCostCents }) }),
     }));
   });
 

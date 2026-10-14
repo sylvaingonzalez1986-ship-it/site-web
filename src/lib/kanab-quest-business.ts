@@ -1,6 +1,9 @@
 /** Virtual game economy. One game day always lasts four real hours. */
 export const KQ_GAME_DAY_MS = 4 * 60 * 60 * 1000;
 export const KQ_GAME_MONTH_MS = 30 * KQ_GAME_DAY_MS;
+/** Simulated supplier terms: 30 game days are 120 elapsed real hours. */
+export const KQ_SUPPLIER_PAYMENT_TERM_GAME_DAYS = 30;
+export const KQ_SUPPLIER_PAYMENT_TERM_MS = KQ_SUPPLIER_PAYMENT_TERM_GAME_DAYS * KQ_GAME_DAY_MS;
 export const KQ_SHOP_CREATION_CENTS = 100_000;
 export const KQ_SHOP_MONTHLY_CENTS = 10_000;
 /** One analysis for the session's shared harvest, regardless of tent count. */
@@ -17,6 +20,7 @@ export type KqAdvertisingKind = keyof typeof KQ_ADVERTISING;
 export type KqLabInvoice = {
   id: string; runId: string; issuedAt: string; dueAt: string; amountCents: number; remainingCents: number;
 };
+export type KqSupplierInvoice = KqLabInvoice;
 export type KqBusinessState = {
   version: 1;
   serverNow: string;
@@ -27,6 +31,8 @@ export type KqBusinessState = {
   advertising: null | { id: string; kind: KqAdvertisingKind; startedAt: string; endsAt: string; boostPercent: number };
   vat: { ratePercent: number; reservedCents: number; paidCents: number; salesTtcCents: number; nextSettlementAt: string };
   lab: { outstandingCents: number; overdueCents: number; invoices: KqLabInvoice[] };
+  /** Absent in historical snapshots and guided trials without supplier invoices. */
+  suppliers?: { outstandingCents: number; overdueCents: number; invoices: KqSupplierInvoice[] };
   nextEventAt: string | null;
   ledger: Array<{ id: string; kind: string; amountCents: number; occurredAt: string }>;
 };
@@ -87,8 +93,9 @@ export function previewKqBusinessPayment(payoutCents: number, business: KqBusine
   const collectionBudget = Math.floor(afterVat / 2);
   const labPaidCents = Math.min(cents(business.lab.overdueCents), collectionBudget);
   const electricityPaidCents = Math.min(cents(electricityOutstandingCents), collectionBudget - labPaidCents);
-  return { vatCents, labPaidCents, electricityPaidCents,
-    netPayoutCents: afterVat - labPaidCents - electricityPaidCents,
+  const supplierPaidCents = Math.min(cents(business.suppliers?.overdueCents ?? 0), collectionBudget - labPaidCents - electricityPaidCents);
+  return { vatCents, labPaidCents, electricityPaidCents, supplierPaidCents,
+    netPayoutCents: afterVat - labPaidCents - electricityPaidCents - supplierPaidCents,
     electricityRemainingCents: electricityOutstandingCents - electricityPaidCents };
 }
 

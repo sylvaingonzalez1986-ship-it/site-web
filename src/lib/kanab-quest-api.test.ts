@@ -2,6 +2,15 @@ import { describe, expect, it, vi } from "vitest";
 import { createKqScopedRequest, enqueueKqRemoteRandomBattle, finalizeKqRemoteBattle, finalizeKqRemoteBotBattle, getKqRemoteActiveRun, getKqRemoteBattles, getKqRemoteFlowerRivals, getKqRemoteFlowers, leaveKqRemoteRandomBattleQueue, playKqRemoteCard, pollKqRemoteRandomBattleQueue, startKqRemoteRun, swapKqRemoteHeritageCard } from "@/lib/kanab-quest-api";
 
 describe("Kanab Quest browser API", () => {
+  it("preserves explicit selection and the idempotent zone launch intent", async () => {
+    const request = vi.fn().mockImplementation(async () => new Response(JSON.stringify({ activeRun: null, activeRuns: [], runId: "run-new" }), { status: 200 }));
+    const scoped = createKqScopedRequest("player", request);
+    await getKqRemoteActiveRun(scoped, { runId: "run-one", zoneId: "zone a" });
+    expect(request).toHaveBeenLastCalledWith("/api/arena/placard/runs?runId=run-one&zoneId=zone+a", { cache: "no-store" });
+    const input = { zoneId: "zone a", requestKey: "same-request", buddieCode: "HH2026-001", deckCodes: [] };
+    await startKqRemoteRun(input, scoped);
+    expect(request).toHaveBeenLastCalledWith("/api/arena/placard/runs", expect.objectContaining({ body: JSON.stringify(input) }));
+  });
   it("invalidates progression only after a completed culture or verdict, leaving response bodies readable", async () => {
     const events = new EventTarget();
     const dispatch = vi.spyOn(events, "dispatchEvent");

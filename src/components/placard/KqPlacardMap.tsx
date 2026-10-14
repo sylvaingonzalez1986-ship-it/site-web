@@ -1,23 +1,24 @@
 ﻿"use client";
 
 import Image from "next/image";
-import { ArrowRight, BookOpen, BriefcaseBusiness, ChevronDown, CircleHelp, Landmark, MapPin, Move, PackageCheck, Scan, ShoppingBag, Sprout, Store, Swords, Target, Tent, Wallet, Warehouse, X, ZoomIn } from "lucide-react";
-import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type PointerEvent } from "react";
+import { ArrowRight, BookOpen, BriefcaseBusiness, ChevronDown, CircleHelp, Landmark, MapPin, Move, PackageCheck, Scan, ShoppingBag, Sprout, Store, Swords, Target, Wallet, Warehouse, X, ZoomIn } from "lucide-react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type CSSProperties, type PointerEvent } from "react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
+import { getPlacardMapBuildingGeometry, KQ_PLACARD_MAP_SCENE } from "./KqPlacardMap.geometry";
 import styles from "./KqPlacardMap.module.css";
 
 export type PlacardMapView = "game" | "harvests" | "market" | "treasury" | "shop" | "arena" | "missions" | "workshop";
 export type PlacardMapOpen = (view: PlacardMapView, options?: { treasuryPole?: "accounting" | "bank"; marketSection?: "sales" | "dashboard" | "management"; warehouseSection?: "storage"; harvestSection?: "storage"; catalog?: boolean; equipmentCode?: string }) => void;
 
 const BUILDINGS = [
-  { id: "warehouse", name: "Entrepôt", action: "Cultiver, aménager et suivre mes récoltes", Icon: Warehouse, x: 24, y: 25, width: 32, height: 37 },
-  { id: "bank", name: "Banque", action: "Prêts, épargne et placements", Icon: Landmark, x: 53, y: 18, width: 20, height: 31 },
-  { id: "office", name: "Bureau", action: "Factures et comptabilité", Icon: BriefcaseBusiness, x: 79, y: 29, width: 21, height: 37 },
-  { id: "market", name: "Marché", action: "Transformer, vendre et gérer mon commerce", Icon: Store, x: 22, y: 58, width: 25, height: 27 },
-  { id: "shop", name: "Boutique", action: "Acheter des packs et du matériel", Icon: ShoppingBag, x: 48, y: 73, width: 23, height: 33 },
-  { id: "arena", name: "Jury & duels", action: "Présenter mes Fleurs et participer aux duels", Icon: Swords, x: 77, y: 66, width: 27, height: 36 },
-  { id: "missions", name: "Missions", action: "Voir mes défis et récompenses", Icon: Target, x: 48, y: 45, width: 15, height: 23 },
-  { id: "collection", name: "Collection", action: "Ouvrir ma collection Botte du Chanvrier", Icon: BookOpen, x: 27.5, y: 82, width: 17, height: 21 },
+  { id: "warehouse", name: "Entrepôt", action: "Cultiver, aménager et suivre mes récoltes", Icon: Warehouse },
+  { id: "bank", name: "Banque", action: "Prêts, épargne et placements", Icon: Landmark },
+  { id: "office", name: "Bureau", action: "Factures et comptabilité", Icon: BriefcaseBusiness },
+  { id: "market", name: "Marché", action: "Transformer, vendre et gérer mon commerce", Icon: Store },
+  { id: "shop", name: "Boutique", action: "Acheter et ouvrir des packs Buddies et Botte du Chanvrier", Icon: ShoppingBag },
+  { id: "arena", name: "Jury & duels", action: "Présenter mes Fleurs et participer aux duels", Icon: Swords },
+  { id: "missions", name: "Missions", action: "Voir mes défis et récompenses", Icon: Target },
+  { id: "collection", name: "Collections", action: "Ouvrir mes albums Buddies et Botte du Chanvrier", Icon: BookOpen },
 ] as const;
 type BuildingId = typeof BUILDINGS[number]["id"];
 
@@ -37,7 +38,7 @@ function resolveBuilding(value?: string | null) {
   return value === "game" || value === "workshop" || value === "harvests" ? "warehouse" : value === "treasury" ? "office" : value;
 }
 
-export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, tents, readyLotCount, availableFlowerCount, recommended, highlightedBuilding }: {
+export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, readyLotCount, availableFlowerCount, recommended, highlightedBuilding }: {
   onOpen: PlacardMapOpen;
   onOpenCollection: () => void;
   activeRun?: boolean;
@@ -50,6 +51,9 @@ export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, t
 }) {
   const { selected, zoomed } = useSyncExternalStore(subscribeMap, getMapSnapshot, getServerMapSnapshot);
   const [dragging, setDragging] = useState(false);
+  const [hoveredBuilding, setHoveredBuilding] = useState<BuildingId | null>(null);
+  const [focusedBuilding, setFocusedBuilding] = useState<BuildingId | null>(null);
+  const maskId = useId().replace(/:/g, "");
   const viewport = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLElement>(null);
   const drag = useRef<{ id: number; x: number; y: number; left: number; top: number; moved: boolean } | null>(null);
@@ -66,8 +70,9 @@ export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, t
   function centerBuilding(id: string | null | undefined) {
     const node = viewport.current;
     const destination = BUILDINGS.find(item => item.id === id) ?? BUILDINGS[0];
+    const [x, y] = getPlacardMapBuildingGeometry(destination.id).focusPoint;
     const terrain = node?.firstElementChild as HTMLElement | null;
-    if (node && terrain) node.scrollTo({ left: terrain.offsetWidth * destination.x / 100 - node.clientWidth / 2, top: terrain.offsetHeight * destination.y / 100 - node.clientHeight / 2, behavior: "instant" });
+    if (node && terrain) node.scrollTo({ left: terrain.offsetWidth * x / KQ_PLACARD_MAP_SCENE.width - node.clientWidth / 2, top: terrain.offsetHeight * y / KQ_PLACARD_MAP_SCENE.height - node.clientHeight / 2, behavior: "instant" });
   }
   function toggleZoom() {
     rememberMap({ zoomed: !zoomed });
@@ -128,13 +133,12 @@ export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, t
       <div className={styles.mapIdentity}><span>Les Chanvriers Bretons</span><h1>Mon quartier<span>.</span></h1></div>
       <div className={styles.wallet} aria-label="Résumé de ton Placard">
         <span><Wallet size={17} aria-hidden="true" /><span><small>Argent du jeu</small><strong>{cashCents !== null ? formatKqCash(cashCents) : "—"}</strong></span></span>
-        <span><Tent size={17} aria-hidden="true" /><span><small>Installation</small><strong>{tents ? `${tents} tente${tents > 1 ? "s" : ""}` : "—"}</strong></span></span>
       </div>
       <div className={styles.mapTools}>
         <button type="button" className={styles.zoomButton} data-map-zoom-toggle aria-label={zoomed ? "Voir tout le quartier" : "Agrandir la carte"} aria-pressed={zoomed} aria-controls="placard-map-viewport" onClick={toggleZoom}>{zoomed ? <Scan size={18} aria-hidden="true" /> : <ZoomIn size={18} aria-hidden="true" />}<span>{zoomed ? "Tout le quartier" : "Agrandir"}</span></button>
         <details className={styles.help}>
           <summary aria-label="Aide du quartier"><CircleHelp size={18} aria-hidden="true" /><span>Aide</span><ChevronDown size={13} aria-hidden="true" /></summary>
-          <div className={styles.helpContent}><strong>Entre dans ton quartier.</strong><p>Touche un bâtiment pour l’ouvrir. L’Entrepôt et le Marché proposent plusieurs activités juste sous la carte.</p><p>Agrandis pour explorer le décor en le faisant glisser. Les noms restent visibles ; le menu du Placard donne aussi accès à tous les lieux.</p><p>Le Marché sert à vendre. La Boutique permet d’acheter tes packs et ton matériel. Le Bureau réunit tes factures ; la Banque, tes financements et placements.</p></div>
+          <div className={styles.helpContent}><strong>Entre dans ton quartier.</strong><p>Touche un bâtiment pour l’ouvrir. L’Entrepôt et le Marché proposent plusieurs activités juste sous la carte.</p><p>Agrandis pour explorer le décor en le faisant glisser. Les noms restent visibles ; le menu du Placard donne aussi accès à tous les lieux.</p><p>La Boutique propose les packs de cartes. Collections réunit tes albums. Pour le matériel, ouvre l’Entrepôt. Le Marché sert à vendre ; le Bureau et la Banque s’occupent des finances.</p></div>
         </details>
       </div>
     </header>
@@ -143,15 +147,31 @@ export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, t
       onScroll={event => { savedViewport.left = event.currentTarget.scrollLeft; savedViewport.top = event.currentTarget.scrollTop; }}
       onClickCapture={event => { if (suppressClick.current) { event.preventDefault(); event.stopPropagation(); suppressClick.current = false; } }}>
       <div className={styles.terrain}>
-        <Image src="/placard/map/placard-world-breton-v3.webp" alt="Le quartier des Chanvriers Bretons vu en isométrie : huit lieux en granit et ardoise, reliés par des chemins bordés d’hortensias, au bord d’une rivière." fill sizes="(max-width: 700px) 900px, (max-width: 1200px) 1200px, 1536px" loading="eager" fetchPriority="high" draggable={false} />
+        <Image src={KQ_PLACARD_MAP_SCENE.image} alt={KQ_PLACARD_MAP_SCENE.alt} fill unoptimized loading="eager" fetchPriority="high" draggable={false} />
+        <svg className={styles.lightingLayer} viewBox={`0 0 ${KQ_PLACARD_MAP_SCENE.width} ${KQ_PLACARD_MAP_SCENE.height}`} aria-hidden="true" focusable="false">
+          <defs>{BUILDINGS.map(({ id }) => <clipPath id={`${maskId}-${id}`} key={id}><polygon points={getPlacardMapBuildingGeometry(id).points} /></clipPath>)}</defs>
+          {BUILDINGS.map(({ id }) => {
+            const active = selected === id || highlighted === id || (!dragging && (hoveredBuilding === id || focusedBuilding === id));
+            const geometry = getPlacardMapBuildingGeometry(id);
+            return <g key={id} className={styles.buildingLight} data-active={active || undefined}>
+              <image href={KQ_PLACARD_MAP_SCENE.image} width={KQ_PLACARD_MAP_SCENE.width} height={KQ_PLACARD_MAP_SCENE.height} clipPath={`url(#${maskId}-${id})`} className={styles.litImage} />
+              <polygon points={geometry.points} className={styles.silhouette} data-map-silhouette={id} data-active={active || undefined} vectorEffect="non-scaling-stroke" />
+            </g>;
+          })}
+        </svg>
         <nav aria-label="Les bâtiments du Placard">
-          {BUILDINGS.map(({ id, name, action, Icon, x, y, width, height }) => {
+          {BUILDINGS.map(({ id, name, action, Icon }) => {
             const contextual = id === "warehouse" || id === "market";
             const status = buildingStatus(id);
+            const geometry = getPlacardMapBuildingGeometry(id);
             return <button key={id} type="button" className={styles.building} data-map-building={id} data-selected={selected === id || undefined} data-highlighted={highlighted === id || undefined} data-recommended={recommendedBuilding === id || undefined} data-arena-tour={id === "collection" ? "collection" : undefined}
-              style={{ "--x": `${x}%`, "--y": `${y}%`, "--width": `${width}%`, "--height": `${height}%` } as CSSProperties}
+              data-map-hit-point={geometry.hitPoint} data-map-ground-point={geometry.groundPoint}
+              style={{ left: geometry.left, top: geometry.top, width: geometry.width, height: geometry.height, "--label-x": geometry.labelLeft, "--label-y": geometry.labelTop, "--silhouette": geometry.clipPath } as CSSProperties}
+              onPointerEnter={event => { if (event.pointerType !== "touch") setHoveredBuilding(id); }} onPointerLeave={() => setHoveredBuilding(current => current === id ? null : current)}
+              onFocus={() => setFocusedBuilding(id)} onBlur={() => setFocusedBuilding(current => current === id ? null : current)}
               aria-label={`${name} · ${action}${status ? ` · ${status}` : ""}`} aria-expanded={contextual ? selected === id : undefined} aria-controls={contextual ? "placard-building-details" : undefined} aria-haspopup={id === "collection" ? "dialog" : undefined} onClick={event => visit(id, event.currentTarget)}>
-              <span className={styles.buildingLabel}><span className={styles.buildingName}><Icon size={15} aria-hidden="true" />{name}{recommendedBuilding === id ? <i className={styles.recommendation} aria-label="Activité conseillée" /> : null}</span>{status ? <span className={styles.buildingStatus}>{status}</span> : null}</span>
+              <span className={styles.buildingHitArea} data-map-hit-area={id} aria-hidden="true" />
+              <span className={styles.buildingLabel} data-map-label={id}><span className={styles.buildingName}><Icon size={15} aria-hidden="true" />{name}{recommendedBuilding === id ? <i className={styles.recommendation} aria-label="Activité conseillée" /> : null}</span>{status ? <span className={styles.buildingStatus}>{status}</span> : null}</span>
             </button>;
           })}
         </nav>
@@ -163,7 +183,7 @@ export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, t
       <nav className={styles.actions} aria-label={`Activités · ${contextualBuilding === "warehouse" ? "L’Entrepôt" : "Le Marché"}`}>
         {contextualBuilding === "warehouse" ? <>
           <button type="button" data-placard-activity="game" onClick={() => onOpen("game")}><Sprout size={20} aria-hidden="true" /><span>{activeRun ? "Reprendre ma culture" : "Commencer une culture"}<small>Cultiver et récolter</small></span><ArrowRight size={17} aria-hidden="true" /></button>
-          <button type="button" data-placard-activity="workshop" onClick={() => onOpen("workshop")}><Warehouse size={20} aria-hidden="true" /><span>Aménager l’entrepôt<small>Matériel, tentes et entretien</small></span><ArrowRight size={17} aria-hidden="true" /></button>
+          <button type="button" data-placard-activity="workshop" onClick={() => onOpen("workshop")}><Warehouse size={20} aria-hidden="true" /><span>Aménager l’entrepôt<small>Zones, matériel et entretien</small></span><ArrowRight size={17} aria-hidden="true" /></button>
           <button type="button" data-placard-activity="storage" onClick={() => onOpen("harvests")}><PackageCheck size={20} aria-hidden="true" /><span>Mes récoltes<small>Stockage, affinage et jury</small></span><ArrowRight size={17} aria-hidden="true" /></button>
         </> : <>
           <button type="button" data-placard-activity="market" onClick={() => onOpen("market")}><Store size={20} aria-hidden="true" /><span>Transformer et vendre<small>{readyLotCount ? `${readyLotCount} lot${readyLotCount > 1 ? "s" : ""} à valoriser` : "Préparer mes ventes"}</small></span><ArrowRight size={17} aria-hidden="true" /></button>

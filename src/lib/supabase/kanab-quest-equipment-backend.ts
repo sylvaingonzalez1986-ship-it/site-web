@@ -6,6 +6,7 @@ import { getKqProductionExpansion, getKqProductionUnits, KQ_PRODUCTION_UNITS, ty
 import { parseChanvrierProfile, type ChanvrierProfile, type ChanvrierStrength } from "@/lib/arena-chanvrier";
 import { getKqMachineCondition, type KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { getKqCultureEquipmentCondition, getKqCultureOperationalCodes, type KqCultureEquipmentCondition } from "@/lib/kanab-quest-culture-wear";
+import { getKqWorkshopTierPrice } from "@/lib/kanab-quest-workshop-machines";
 
 import {
   getKqEquipmentDefinition,
@@ -308,6 +309,36 @@ export async function purchaseKqDurableEquipment(input: {
     cashAfterCents: number;
     replayed: boolean;
   };
+}
+
+export async function purchaseKqWorkshopTier(input: {
+  userId: string; requestKey: string; equipmentCode: string; targetLevel: number; expectedLevel: number; expectedPriceCents: number;
+}) {
+  assertUuid(input.userId, "Compte équipement invalide.");
+  assertUuid(input.requestKey, "Demande d’achat invalide.");
+  const equipment = getKqEquipmentDefinition(input.equipmentCode);
+  const price = getKqWorkshopTierPrice(input.equipmentCode, equipment?.priceCents ?? 0, input.targetLevel, input.expectedLevel);
+  if (price === null) throw new Error("Gamme d’atelier invalide ou déjà atteinte.");
+  if (!Number.isSafeInteger(input.expectedPriceCents) || input.expectedPriceCents <= 0) {
+    throw new Error("Prix de gamme invalide.");
+  }
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_purchase_workshop_tier", {
+    p_user_id: input.userId, p_request_key: input.requestKey, p_equipment_code: input.equipmentCode,
+    p_target_level: input.targetLevel, p_expected_level: input.expectedLevel, p_expected_price_cents: input.expectedPriceCents,
+  });
+  if (result.error) {
+    const message = result.error.message ?? "Achat de gamme impossible.";
+    const careerError = getChanvrierCareerError(message);
+    if (careerError) throw new Error(careerError);
+    if (message.includes("equipment_level_changed")) throw new Error("Le niveau a changé. Actualise les gammes de l’atelier.");
+    if (message.includes("workshop_tier_price_changed")) throw new Error("Le prix a changé. Actualise les gammes de l’atelier.");
+    if (message.includes("insufficient_equipment_cash")) throw new Error("Solde insuffisant pour cette gamme.");
+    if (message.includes("workshop_tier_maintenance")) throw new Error("Entretiens cette machine avant de changer de gamme.");
+    if (message.includes("workshop_tier_request_mismatch")) throw new Error("Cette demande d’achat a déjà été utilisée pour un autre choix.");
+    if (message.includes("equipment_unavailable") || message.includes("workshop_tier_invalid")) throw new Error("Cette gamme n’est plus disponible.");
+    throw new Error(`[supabase:rpc_kq_purchase_workshop_tier] ${message}`);
+  }
+  return result.data as { equipmentCode: string; previousLevel: number; level: number; priceCents: number; cashAfterCents: number; replayed: boolean };
 }
 
 export async function upgradeKqDurableEquipment(input: {

@@ -50,8 +50,11 @@ export function getKqCannabinoidProfile(varietyCode: string): KqCannabinoidProfi
   const profile = CANNABINOID_GAME_PROFILES[(hash >>> 0) % CANNABINOID_GAME_PROFILES.length];
   return { ...profile, targets: { ...profile.targets } };
 }
-export function getKqCannabinoidReport(state: Pick<KqGameState, "varietyCode" | "care">) {
-  const profile = getKqCannabinoidProfile(state.varietyCode);
+export function getKqCannabinoidReport(state: Pick<KqGameState, "varietyCode" | "care" | "cultivationProfile">) {
+  const profile: KqCannabinoidProfile = state.cultivationProfile
+    ? { code: `GAME-BUDDIE-V1-${state.cultivationProfile.buddieCode}`, name: "Profil fictif du Buddie",
+      targets: { ...state.cultivationProfile.cannabinoidTargets } }
+    : getKqCannabinoidProfile(state.varietyCode);
   const expression = state.care?.cannabinoidExpression ?? 55;
   const score = Math.round(Math.min(99, Math.max(35, Number.isFinite(expression) ? expression : 55)));
   const conversion = Math.min(20, Math.max(0, state.care?.cannabinoidConversion ?? 5)) / 100;
@@ -79,6 +82,22 @@ export function getKqCannabinoidReport(state: Pick<KqGameState, "varietyCode" | 
   }
   return { profile, rates, totals, score, simulated: true as const };
 }
+
+/** Fictional total and sensory notes; legacy cultures retain their index only. */
+export function getKqTerpeneReport(state: Pick<KqGameState, "care" | "cultivationProfile">) {
+  if (!state.cultivationProfile) return undefined;
+  const expression = state.care?.terpenes ?? 55;
+  const score = Math.round(Math.min(99, Math.max(35, Number.isFinite(expression) ? expression : 55)));
+  return {
+    potentialPercent: state.cultivationProfile.terpenePotentialPercent,
+    totalPercent: Math.round(state.cultivationProfile.terpenePotentialPercent * score / 99 * 10_000) / 10_000,
+    score,
+    notes: [...state.cultivationProfile.terpeneNotes],
+    simulated: true as const,
+  };
+}
+
+export type KqTerpeneReport = NonNullable<ReturnType<typeof getKqTerpeneReport>>;
 
 export type KqCareProduct = {
   code: string; kind: "input" | "pbi"; name: string; priceCents: number;

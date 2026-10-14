@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
-import { getKqPlayerBuddieRotation, getKqPlayerCoreSnapshot } from "@/lib/supabase/kanab-quest-backend";
+import { getKqPlayerBuddieRotation, getKqPlayerCoreSnapshot, readKqRunSelection } from "@/lib/supabase/kanab-quest-backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request?: Request) {
   const startedAt = performance.now();
   if (!await isKqPlayerRequestEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
@@ -14,9 +14,12 @@ export async function GET() {
   const session = await getCurrentCustomerSessionByBackend("identity");
   const authenticatedAt = performance.now();
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
+  let selection;
+  try { selection = readKqRunSelection(request); }
+  catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Sélection invalide." }, { status: 400 }); }
 
   const results = await Promise.allSettled([
-    getKqPlayerCoreSnapshot(session.customerId),
+    getKqPlayerCoreSnapshot(session.customerId, selection),
     getKqPlayerBuddieRotation(session.customerId),
   ] as const);
   const labels = ["Session de jeu", "Rotation des Buddies"] as const;
@@ -29,6 +32,7 @@ export async function GET() {
   return NextResponse.json({
     buddieRotation: results[1].status === "fulfilled" ? results[1].value : null,
     activeRun: results[0].status === "fulfilled" ? results[0].value.activeRun : null,
+    activeRuns: results[0].status === "fulfilled" ? results[0].value.activeRuns : [],
     flowers: results[0].status === "fulfilled" ? results[0].value.flowers : [],
     battles: results[0].status === "fulfilled" ? results[0].value.battles : [],
     progress: results[0].status === "fulfilled" ? results[0].value.progress : null,

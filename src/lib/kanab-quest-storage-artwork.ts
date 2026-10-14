@@ -1,14 +1,15 @@
 import type { KqStorageContainerCode } from "./kanab-quest-storage";
 
-/** Product illustrations based on manufacturer references; capacities belong to the game catalogue. */
+/** Container illustrations; capacities belong to the game catalogue. */
 export const KQ_STORAGE_CONTAINER_ARTWORK: Readonly<Record<KqStorageContainerCode, { src: string; alt: string }>> = {
-  "GLASS-1L": { src: "/app/kanab-quest/storage/glass-1l-v1.webp", alt: "Bocal transparent de 1 litre, à couvercle orange à vis, inspiré de Le Parfait Color Vis." },
-  "GLASS-2L": { src: "/app/kanab-quest/storage/glass-2l-v1.webp", alt: "Bocal en verre de 2 litres, haut et cylindrique, à couvercle orange à vis." },
-  "GLASS-3L": { src: "/app/kanab-quest/storage/glass-3l-v1.webp", alt: "Grand bocal en verre de 3 litres, à épaules arrondies et couvercle orange à vis." },
-  "GROVE-1OZ": { src: "/app/kanab-quest/storage/grove-1oz-v1.webp", alt: "Petit sachet noir Grove Bags TerpLoc, avec zip et fenêtre transparente bordée de vert." },
-  "GROVE-1LB": { src: "/app/kanab-quest/storage/grove-1lb-v1.webp", alt: "Grand sachet Grove Bags TerpLoc d’une livre, à fond large et fenêtre transparente." },
-  "BOVEDA-1L": { src: "/app/kanab-quest/storage/boveda-1l-v1.webp", alt: "Bocal à couvercle orange accompagné d’un sachet de régulation Vivi Fresh beige, bleu et rouge." },
-  "CVAULT-2OZ": { src: "/app/kanab-quest/storage/cvault-2oz-v1.webp", alt: "Petit contenant CVault en inox, avec couvercle à clips et sachets Vivi Fresh." },
-  "CVAULT-1LB": { src: "/app/kanab-quest/storage/cvault-1lb-v1.webp", alt: "Grand contenant CVault en inox, fermé par trois clips, accompagné de régulateurs Vivi Fresh." },
-  CANNATROL: { src: "/app/kanab-quest/storage/cannatrol-v1.webp", alt: "Armoire Cannatrol Cool Cure Original noire, à porte vitrée, plateaux métalliques et boîtier de contrôle au-dessus." },
+  "CURTEC-60L": { src: "/placard/equipment-sylvain-v1/storage-3.webp", alt: "Fût de stockage illustré dans le style du Placard." },
+  "GLASS-1L": { src: "/placard/equipment-sylvain-v1/container-glass-small.webp", alt: "Petit bocal de conservation en verre." },
+  "GLASS-2L": { src: "/placard/equipment-sylvain-v1/container-glass-medium.webp", alt: "Bocal de conservation en verre de taille moyenne." },
+  "GLASS-3L": { src: "/placard/equipment-sylvain-v1/container-glass-large.webp", alt: "Grand bocal de conservation en verre." },
+  "GROVE-1OZ": { src: "/placard/equipment-sylvain-v1/container-pouch-small.webp", alt: "Petit sachet de conservation refermable." },
+  "GROVE-1LB": { src: "/placard/equipment-sylvain-v1/container-pouch-large.webp", alt: "Grand sachet de conservation refermable." },
+  "BOVEDA-1L": { src: "/placard/equipment-sylvain-v1/container-humidity.webp", alt: "Bocal accompagné de sachets de régulation." },
+  "CVAULT-2OZ": { src: "/placard/equipment-sylvain-v1/container-tin-small.webp", alt: "Petite boîte de conservation métallique." },
+  "CVAULT-1LB": { src: "/placard/equipment-sylvain-v1/container-tin-large.webp", alt: "Grande boîte de conservation métallique." },
+  CANNATROL: { src: "/placard/equipment-sylvain-v1/container-cabinet.webp", alt: "Armoire de conservation illustrée dans le style du Placard." },
 };

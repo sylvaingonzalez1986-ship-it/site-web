@@ -137,7 +137,7 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error,workshop}:{u
      <button type="button" data-trial-check="deck" onClick={()=>dispatch({type:'check',value:'deck'})}>{s.checked.includes('deck')?'✓ Deck prêt':'Préparer ce deck d’essai'}</button>
     </>:null}
     {s.chapter===2?<>
-     <Image className={styles.scene} src="/placard/booster-shop-counter-v5.webp" alt="Le comptoir de la boutique Botte du Chanvrier" width={1000} height={650} sizes="(max-width: 760px) 100vw, 800px"/>
+     <Image className={`${styles.scene} ${styles.panorama}`} src="/placard/card-shop-sylvain-v1.webp" alt="Sylvain présente les packs de cartes au comptoir de la Boutique" width={1536} height={512} sizes="(max-width: 760px) 100vw, 1020px"/>
      <section className={styles.panel}><h3>{getKqEquipmentDefinition('LED-300')!.name}</h3><p>{getKqEquipmentDefinition('LED-300')!.benefit}</p><p>{getKqEquipmentDefinition('LED-300')!.tradeoff} La qualité maximale n’est pas garantie : tes réussites en culture comptent aussi.</p><button type="button" disabled={s.bought} onClick={()=>dispatch({type:'buy'})}>{s.bought?'✓ LED achetée':`Acheter pour ${euro(getKqEquipmentDefinition('LED-300')!.priceCents)} fictifs`}</button></section>
      <details><summary>Packs, collection, niveaux et prérequis</summary><p>Les packs Botte du Chanvrier enrichissent ta collection. Les filtres aident à choisir les cartes adaptées. Les doublons fournissent des copies consommables ; les Héritages sont permanents.</p><p>Le catalogue matériel affiche les bonus, les charges, les prérequis et les améliorations. Les niveaux supérieurs coûtent davantage ; une machine achetée doit être installée pour servir.</p></details>
     </>:null}

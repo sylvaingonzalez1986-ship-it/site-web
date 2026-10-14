@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-13",
+  "mode": "built-in imagegen edit",
+  "source": "exec-99f0d33d-08d9-4d3f-aa90-5f457774c3f7.png",
+  "target": "placard-world-sylvain-v5.webp",
+  "file": "placard-world-sylvain-v6.webp",
+  "prompt": "Make one very localized correction to the supplied village map. Preserve ALL buildings, roofs, landscape, perspectives, positions, silhouettes, colors, outlines and resolution exactly. At the yellow-awning market stall at middle LEFT, replace ONLY the vegetables displayed for sale with clear glass jars of green hemp flower buds, kraft hemp pouches with little hemp leaf symbols, and a few small CBD dropper bottles. Remove all pumpkin, cabbage, tomatoes, onions, leafy groceries. Keep the exact stall structure, its awning, counter, crates and footprint. Match same flat cartoon with black ink outlines. No added people, labels, text, new buildings or other changes anywhere. This is a hemp trading village, not a fruit and vegetable market.",
+  "geometry": "Existing 1536x1024 map and building polygons retained; only stall merchandise changed to hemp."
+}

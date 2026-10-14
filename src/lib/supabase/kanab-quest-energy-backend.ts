@@ -4,6 +4,10 @@ import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { getKqEquipmentShopSnapshot } from "./kanab-quest-equipment-backend";
 import { getKqEquipmentDefinition } from "../kanab-quest-equipment";
 import { getKqEffectiveTentProfiles } from "../kanab-quest-production";
+import { getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse-backend";
+import { quoteKqWarehouseEnergy } from "../kanab-quest-warehouse-run";
+import { getKqPlayerActiveRun, type KqRunSelection } from "./kanab-quest-backend";
+import { getKqCampaignParticipants, getKqCampaignWarehouse } from "../kanab-quest-campaign";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export async function getKqEnergySummary(userId: string): Promise<KqEnergySummary> {
@@ -12,8 +16,34 @@ export async function getKqEnergySummary(userId: string): Promise<KqEnergySummar
   if (result.error) throw new Error(`[supabase:energy] ${result.error.message}`);
   return result.data as KqEnergySummary;
 }
-export async function getKqEnergySnapshot(userId: string): Promise<KqEnergySnapshot> {
-  const [summary, shop] = await Promise.all([getKqEnergySummary(userId), getKqEquipmentShopSnapshot(userId)]);
+export async function getKqEnergySnapshot(userId: string, selection: KqRunSelection & { campaign?: boolean } = {}): Promise<KqEnergySnapshot> {
+  const selected = selection.runId || selection.zoneId ? await getKqPlayerActiveRun(userId, selection) : null;
+  if (selection.runId && !selected) throw new Error("Culture introuvable pour ce compte.");
+  const [rawSummary, shop, storedWarehouse] = await Promise.all([
+    getKqEnergySummary(userId), getKqEquipmentShopSnapshot(userId),
+    selected ? Promise.resolve(selected.state.warehouse ?? null)
+      : selection.zoneId ? getKqWarehouseRunSnapshot(userId, selection.zoneId) : getKqWarehouseRunSnapshot(userId),
+  ]);
+  const campaignMembers = selected?.state.campaign?.members ?? (selection.campaign && storedWarehouse
+    ? getKqCampaignParticipants(storedWarehouse.sourceState, storedWarehouse.revision) : null);
+  const warehouse = campaignMembers ? getKqCampaignWarehouse(campaignMembers) : storedWarehouse;
+  const supplierInvoices = rawSummary.supplierInvoices ?? (rawSummary.supplierInvoice ? [rawSummary.supplierInvoice] : []);
+  const memberRunIds = selected?.state.campaign?.members.map(member => member.runId);
+  const summary = { ...rawSummary, supplierInvoices: memberRunIds ? supplierInvoices.filter(invoice => memberRunIds.includes(invoice.runId)) : supplierInvoices,
+    supplierInvoice: campaignMembers ? null : selected ? supplierInvoices.find(invoice => invoice.runId === selected.runId) ?? null
+      : selection.zoneId ? null : rawSummary.supplierInvoice ?? null };
+  if (warehouse) {
+    const quote = quoteKqWarehouseEnergy(warehouse);
+    return { ...summary, dogCare: null, warehouse, cashCents: shop.cashCents, chanvrierStrength: shop.strength,
+      quotes: { eco: quote, balanced: quote, intensive: quote }, maintenanceDueNext: [],
+      cultureEquipmentCodes: [], cultureOperationalCodes: [], cultureWear: {} };
+  }
+  if (selected?.state.energy) {
+    const quote = selected.state.energy;
+    return { ...summary, cashCents: shop.cashCents, chanvrierStrength: shop.strength,
+      quotes: { eco: quote, balanced: quote, intensive: quote }, maintenanceDueNext: [],
+      cultureEquipmentCodes: [], cultureOperationalCodes: [], cultureWear: {} };
+  }
   return { ...summary, tents: shop.tents, buildings: shop.buildings, equipmentScopeVersion: shop.equipmentScopeVersion, productionUnits: shop.productionUnits, cashCents: shop.cashCents, chanvrierStrength: shop.strength,
     cultureWear: shop.cultureWear, cultureEquipmentCodes: shop.equippedCodes, cultureOperationalCodes: shop.cultureOperationalCodes,
     maintenanceDueNext: shop.sharedEquipment.equippedCodes.filter(code => shop.sharedEquipment.maintenance[code]?.remaining <= 1).map(code => `Atelier commun · ${getKqEquipmentDefinition(code)?.name ?? code}`),

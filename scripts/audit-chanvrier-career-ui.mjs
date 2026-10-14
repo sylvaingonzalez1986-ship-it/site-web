@@ -12,6 +12,7 @@ const output = resolve(root, 'output/chanvrier-rework/ui');
 const port = 3267;
 const origin = `http://127.0.0.1:${port}`;
 const modules = {
+  'next/navigation': `export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});export const usePathname=()=>'/arene/placard';export const useSearchParams=()=>new URLSearchParams(location.search);`,
   'next/link': `import React from 'react';export default function Link({children,...props}){return <a {...props}>{children}</a>;}`,
   'warehouse-assets': `export default ${await readFile(resolve(root, 'public/placard/warehouse-v2/manifest.json'), 'utf8')};`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,
@@ -20,6 +21,7 @@ const modules = {
     import '/src/app/globals.css';
     import { KqWarehouseEntry } from '/src/components/placard/KqWarehouseEntry';
     import { KqEquipmentCatalogModal } from '/src/components/placard/KqEquipmentCatalogModal';
+    import { KqCareerProgress } from '/src/components/placard/KqCareerProgress';
     import { KqEnergyPanel } from '/src/components/placard/KqEnergyPanel';
     import { createKqTutorialApi, KqTutorialApiProvider } from '/src/components/placard/KqTutorialApiContext';
     import { createKqOperationsLesson, applyKqOperationsRequest, getKqOperationsEquipment } from '/src/lib/kanab-quest-operations-lesson';
@@ -83,7 +85,7 @@ const modules = {
       }
       return new Response(JSON.stringify({ok:true}));
     };
-    const view=query.get('view')==='energy'
+    const view=${process.argv.includes('--career-only')} ? <KqCareerProgress career={window.__state.career} profile={query.has('missingprofile')||query.has('tutorial')?null:window.__profile}/> : query.get('view')==='energy'
       ? <KqEnergyPanel selectedMode='balanced' onModeChange={()=>{}} /> : query.get('view')==='catalog'
       ? <KqEquipmentCatalogModal onClose={()=>{}} />
       : <KqWarehouseEntry initialEquipmentCode={query.get('equipment')} onClose={()=>{}} onOpenShop={()=>{}} />;
@@ -99,7 +101,7 @@ const server = await createServer({
     async load(id){if(id.startsWith('\0')&&modules[id.slice(1)])return(await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code;},
     configureServer(vite){vite.middlewares.use((req,res,next)=>{
       if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');
-      res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Audit local Chanvrier</title><style>:root{--font-display:Impact;--font-sans:Arial}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__career-audit"></script></html>');
+      res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Audit local Chanvrier</title><style>@font-face{font-family:AuditDisplay;src:url(/src/app/fonts/BarlowCondensed-Latin-Black.woff2);font-weight:900}@font-face{font-family:AuditBody;src:url(/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2);font-weight:300 700}:root{--font-display:AuditDisplay;--font-body:AuditBody;--font-sans:AuditBody}body{margin:0;background:#fff1d6}</style><div id="root"></div><script type="module" src="/@id/__x00__career-audit"></script></html>');
     });},
   }], server:{host:'127.0.0.1',port,strictPort:true,hmr:false,watch:null},
 });
@@ -132,8 +134,9 @@ try {
     assert.equal(await page.evaluate(()=>window.__reads.length),readCount+1);
     assert.equal(await page.evaluate(()=>window.__reads.some(url=>url.startsWith('/api/arena/chanvrier'))),false);
   };
-  for(const width of [320,1440]){
+  for(const width of [320,390,1440]){
     await page.setViewport({width,height:1000,isMobile:width<700,hasTouch:width<700});
+    if(!process.argv.includes('--career-only')){
     await visit('view=catalog');await noOverflow();
     await portraitReady();assert.match(await page.$eval('[data-career-progress]',el=>el.textContent),/Lou.Chanvre/);
     await updatePortrait();checks.push(`catalog-custom-portrait-refresh-${width}`);
@@ -221,6 +224,7 @@ try {
     await click('Installer · tente 1');await page.waitForFunction(()=>window.__state.equippedCodes.includes('DRYING-ROOM'));
     assert.equal(await page.evaluate(()=>window.__requests[0].tentNumber),1);checks.push(`legacy-service-per-tent-${width}`);
 
+    }
     await visit('view=catalog&xp=250&washing=2&cultures=3');await portraitReady();
     const career=await page.$eval('[data-career-progress]',el=>el.textContent);
     assert.match(career,/Niveau 2/);assert.match(career,/50 \/ 200 XP/);assert.match(career,/encore 150 XP/);

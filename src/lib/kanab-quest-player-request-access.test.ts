@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ session: vi.fn(), beta: vi.fn(), activeRun: vi.fn(), startRun: vi.fn(), limit: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/supabase/customer-backend", () => ({ loadContestBetaTesterEnabled: mocks.beta }));
-vi.mock("@/lib/supabase/kanab-quest-backend", () => ({ getKqPlayerActiveRun: mocks.activeRun, startKqPlayerRun: mocks.startRun }));
+vi.mock("@/lib/supabase/kanab-quest-backend", async (importOriginal) => ({ getKqPlayerRunsSnapshot: mocks.activeRun, startKqPlayerRun: mocks.startRun, readKqRunSelection: (await importOriginal<typeof import("@/lib/supabase/kanab-quest-backend")>()).readKqRunSelection }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.limit, logRateLimitRejection: vi.fn() }));
 
 import { isKqPlayerRequestEnabled, isKqPlayerIdentityEnabled } from "./kanab-quest-player-request-access";
@@ -25,7 +25,7 @@ beforeEach(() => {
   vi.stubEnv("KQ_LAUNCH_DOSSIER_JSON", "");
   mocks.session.mockResolvedValue(null);
   mocks.beta.mockResolvedValue(false);
-  mocks.activeRun.mockResolvedValue(null);
+  mocks.activeRun.mockResolvedValue({ activeRun: null, activeRuns: [] });
   mocks.startRun.mockResolvedValue({ runId: "new-run" });
   mocks.limit.mockResolvedValue({ allowed: true });
 });
@@ -55,7 +55,7 @@ describe("private production Placard access", () => {
     expect(await isKqPlayerRequestEnabled()).toBe(true);
     expect(isKqPublicPlayerApiEnabled()).toBe(false);
     expect((await GET()).status).toBe(200);
-    expect(mocks.activeRun).toHaveBeenCalledWith("verified-customer-id");
+    expect(mocks.activeRun).toHaveBeenCalledWith("verified-customer-id", {});
   });
 
   it.each([null, player("ordinary@example.test")])("denies anonymous and ordinary customers even when contest beta restrictions are disabled", async (session) => {

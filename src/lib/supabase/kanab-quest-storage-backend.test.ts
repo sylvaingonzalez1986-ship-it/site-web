@@ -68,4 +68,33 @@ describe("server storage API", () => {
     mocks.rpc.mockResolvedValue({ data: { ...result, lots: [{ ...result.lots[0], state: {} }] }, error: null });
     await expect(getKqStorageSnapshot(user)).rejects.toThrow("invalid_storage_state");
   });
+  it("uses the SQL-synchronized warehouse jars once and preserves all legacy capacity", async () => {
+    const result = stored();
+    result.ownedContainers = { "GLASS-1L": 8 }; // 2 legacy + 1 pack of 6.
+    result.capacity = { totalUnits: 4000, usedUnits: 2500, reservedUnits: 2500, freeUnits: 1500, overflowUnits: 0 };
+    result.lots[0].harvestGrams = 250;
+    result.lots[0].state.capacity = { totalUnits: 2500, allocations: [{ containerCode: "GLASS-1L", quantity: 5, storedUnits: 2500 }], overflowDeadlineAt: null, automaticOverflowSale: false };
+    mocks.rpc.mockResolvedValue({ data: result, error: null });
+    const snapshot = await getKqStorageSnapshot(user);
+    expect(snapshot.capacity).toEqual(result.capacity);
+    expect(snapshot.lots[0].projection.capacity).toMatchObject({ protectedUnits: 2500, overflowUnits: 0, overflowDue: false });
+    expect(mocks.rpc).toHaveBeenCalledTimes(1);
+  });
+  it("retains warehouse overflow as stock without a fictional automatic sale deadline", async () => {
+    const result = stored();
+    result.lots[0].state.capacity = { totalUnits: 1200, allocations: [{ containerCode: "GLASS-1L", quantity: 2, storedUnits: 1000 }], overflowDeadlineAt: null, automaticOverflowSale: false };
+    mocks.rpc.mockResolvedValue({ data: result, error: null });
+    const snapshot = await getKqStorageSnapshot(user);
+    expect(snapshot.lots[0].projection.capacity).toMatchObject({ totalUnits: 1200, protectedUnits: 1000, overflowUnits: 200, overflowDue: false, overflowDeadlineAt: null });
+  });
+  it("keeps installed capacities distinct from devices in reserve", async () => {
+    const current = stored();
+    mocks.rpc.mockResolvedValue({ data: { ...current, ownedContainers: { "GLASS-1L": 26, "CURTEC-60L": 4 }, installedContainers: { "GLASS-1L": 24, "CURTEC-60L": 0 },
+      capacity: { ...current.capacity, totalUnits: 12000 } }, error: null });
+    expect(await getKqStorageSnapshot(user)).toMatchObject({ installedContainers: { "GLASS-1L": 24, "CURTEC-60L": 0 }, capacity: { totalUnits: 12000 } });
+  });
+  it("directs stale storage purchases back to the floor plan", async () => {
+    mocks.rpc.mockResolvedValue({ data: null, error: { message: "warehouse_storage_purchase" } });
+    await expect(handleKqStorageAction(user, { action: "buy", containerCode: "CURTEC-60L", quantity: 1, requestKey: key })).rejects.toThrow("plan de l’entrepôt");
+  });
 });

@@ -3,6 +3,7 @@ import productionFixture from "@/test/fixtures/kq-asymmetric-tents.json";
 
 const mocks = vi.hoisted(() => ({ client: vi.fn() }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: mocks.client }));
+vi.mock("./kanab-quest-warehouse-backend", () => ({ getKqWarehouseRunSnapshot: vi.fn().mockResolvedValue(null) }));
 
 import { getKqEquipmentShopSnapshot } from "./kanab-quest-equipment-backend";
 import { getKqEnergySnapshot } from "./kanab-quest-energy-backend";
@@ -29,7 +30,7 @@ function database(fixture = structuredClone(productionFixture), equipmentScopeVe
   const reads: Array<{ table: string; columns: string }> = [];
   const rpc = vi.fn().mockImplementation(async (name: string, args?: { p_initial_state?: unknown }) => ({
     error: null,
-    data: name === "rpc_kq_chanvrier_career"
+    data: name === "rpc_kq_reserved_cards" ? [] : name === "rpc_kq_chanvrier_career"
       ? createChanvrierCareerSnapshot()
       : name === "rpc_kq_commerce_state"
       ? { business: { version: 1, domiciliation: { mode: "home", active: true } } }

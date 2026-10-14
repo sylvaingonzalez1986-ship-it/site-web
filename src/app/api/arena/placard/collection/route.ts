@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
-import { getKqPlayerCollectionSnapshot, getKqPlayerOwnedBuddieCodes } from "@/lib/supabase/kanab-quest-backend";
+import { getKqPlayerCollectionSnapshot, getKqPlayerOwnedBuddieCodes, getKqPlayerBuddieRotation } from "@/lib/supabase/kanab-quest-backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,11 +13,12 @@ export async function GET() {
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
-    const [collection, ownedBuddieCodes] = await Promise.all([
+    const [collection, ownedBuddieCodes, buddieRotation] = await Promise.all([
       getKqPlayerCollectionSnapshot(session.customerId),
       getKqPlayerOwnedBuddieCodes(session.customerId),
+      getKqPlayerBuddieRotation(session.customerId),
     ]);
-    return NextResponse.json({ collection, ownedBuddieCodes }, {
+    return NextResponse.json({ collection, ownedBuddieCodes, buddieRotation }, {
       headers: { "Cache-Control": "private, no-store, max-age=0" },
     });
   } catch {

@@ -3,19 +3,22 @@ import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
-import { getKqPlayerActiveRun, startKqPlayerRun } from "@/lib/supabase/kanab-quest-backend";
+import { getKqPlayerRunsSnapshot, readKqRunSelection, startKqPlayerRun } from "@/lib/supabase/kanab-quest-backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request?: Request) {
   if (!await isKqPlayerRequestEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
+  let selection;
+  try { selection = readKqRunSelection(request); }
+  catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Sélection invalide." }, { status: 400 }); }
   try {
-    return NextResponse.json({ activeRun: await getKqPlayerActiveRun(session.customerId) }, {
+    return NextResponse.json(await getKqPlayerRunsSnapshot(session.customerId, selection), {
       headers: { "Cache-Control": "private, no-store, max-age=0" },
     });
   } catch {
@@ -32,7 +35,7 @@ export async function POST(request: Request) {
 
   const ip = getRequestIp(request);
   const key = `kq_start_run:${session.customerId}:${ip}`;
-  const rateLimit = await hitRateLimit({ key, windowSeconds: 600, maxHits: 5 });
+  const rateLimit = await hitRateLimit({ key, windowSeconds: 60, maxHits: 30 });
   if (!rateLimit.allowed) {
     logRateLimitRejection({
       endpoint: "POST /api/arena/placard/runs",
@@ -40,8 +43,8 @@ export async function POST(request: Request) {
       ip,
       actorEmail: session.customer.email,
       retryAfterSeconds: rateLimit.retryAfterSeconds,
-      maxHits: 5,
-      windowSeconds: 600,
+      maxHits: 30,
+      windowSeconds: 60,
     });
     return NextResponse.json({ error: "Trop de tentatives." }, {
       status: 429,
@@ -62,7 +65,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Deck invalide." }, { status: 400 });
   }
   if (body.energyMode !== undefined && !isKqEnergyMode(body.energyMode)) return NextResponse.json({ error: "Mode énergétique invalide." }, { status: 400 });
+  if (body.campaign !== undefined && typeof body.campaign !== "boolean") return NextResponse.json({ error: "Campagne invalide." }, { status: 400 });
+  if ((body.zoneId !== undefined && typeof body.zoneId !== "string") || (body.requestKey !== undefined && typeof body.requestKey !== "string")) return NextResponse.json({ error: "Zone ou clé de lancement invalide." }, { status: 400 });
   const input = {
+    ...(body.campaign === true ? { campaign: true } : {}),
+    zoneId: typeof body.zoneId === "string" ? body.zoneId : undefined,
+    requestKey: typeof body.requestKey === "string" ? body.requestKey : undefined,
     expectedEnergyCents: typeof body.expectedEnergyCents === "number" ? body.expectedEnergyCents : undefined,
     energyMode: isKqEnergyMode(body.energyMode) ? body.energyMode : "balanced" as const,
     buddieCode: typeof body.buddieCode === "string" ? body.buddieCode : "",

@@ -530,7 +530,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
 
       {!loading && snapshot && snapshot.lots.length === 0 ? (
         <section className={styles.emptyState}>
-          <Image className={styles.emptyArt} src="/placard/market-workshop-v1.webp" alt="Atelier de transformation prêt à accueillir une récolte" width={1536} height={1024} sizes="(max-width: 900px) 100vw, 900px" />
+          <Image className={styles.emptyArt} src="/placard/market-workshop-sylvain-v2.webp" alt="Atelier de transformation prêt à accueillir une récolte" width={1536} height={1024} sizes="(max-width: 900px) 100vw, 900px" />
           <Flame aria-hidden="true" />
           <span>Aucun lot à valoriser</span>
           <h2>Le jury t’attend</h2>
@@ -566,7 +566,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
               <>
                 <div className={styles.routeHeading}><div><small>Choisis ton poste</small><h3>L’atelier de transformation</h3></div><button type="button" onClick={() => onOpenShop()}><ShoppingBag /> Équiper l’atelier</button></div>
                 <section className={styles.workshopScene} aria-label="Atelier du lot sélectionné" data-family={activeQuote?.family}>
-                  <Image src="/placard/market-workshop-v1.webp" alt="Atelier de jeu avec une presse, des tamis et une laveuse" fill sizes="(max-width: 900px) 100vw, 900px" priority />
+                  <Image src="/placard/market-workshop-sylvain-v2.webp" alt="Atelier de jeu avec une presse, des tamis et une laveuse" fill sizes="(max-width: 900px) 100vw, 900px" priority />
                   <div className={styles.sceneCaption}><span>{activeQuote?.available ? <><Check size={15} /> Poste disponible</> : <><LockKeyhole size={15} /> Conditions à remplir</>}</span><strong>{activeQuote?.name}</strong><small>{activeQuote?.available ? "Prêt pour ce lot" : activeQuote?.blockedReason}</small></div>
                 </section>
                 <div className={styles.machineCount}><span>{displayedOptions.filter((quote) => quote.available).length} postes disponibles sur {displayedOptions.length}</span><span>Faire défiler →</span></div>

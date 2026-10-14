@@ -621,6 +621,139 @@ async function checkPermissions(owner) {
   try { await assert.rejects(()=>treasury(owner),/permission denied/); } finally { await db.exec('RESET ROLE'); }
   console.log('PASS: private write helpers, RLS, service read-only tables and validated RPC arguments.');
 }
+
+async function installSupplierAccounting() {
+  // Keep the complete real ledger, wallet observers and commerce commands. Only
+  // unrelated online/warehouse guards are omitted from this accounting fixture.
+  const source=await migration('20261012000700_kq_warehouse_supplier_invoices.sql');
+  const section=(from,to)=>{
+    const start=source.indexOf(from),end=source.indexOf(to,start+from.length);
+    assert(start>=0&&end>start,`supplier accounting fixture anchor: ${from}`);
+    return source.slice(start,end);
+  };
+  let schema=section('CREATE TABLE public.kq_supplier_invoices','CREATE FUNCTION pg_temp.kq_supplier_patch');
+  const onlineColumn=/^ALTER TABLE public\.kq_online_sales ADD COLUMN supplier_paid_cents[^\r\n]+;\r?\n/m;
+  assert(onlineColumn.test(schema),'only the unrelated online table alteration is omitted');
+  schema=schema.replace(onlineColumn,'');
+  const accounting=section('CREATE FUNCTION pg_temp.kq_supplier_patch',"SELECT pg_temp.kq_supplier_patch('public.kq_validate_warehouse_run_start");
+  const snapshots=section('CREATE FUNCTION public.kq_supplier_snapshot',"SELECT pg_temp.kq_supplier_patch('public.rpc_kq_energy_snapshot");
+  const collection=section('CREATE OR REPLACE FUNCTION public.kq_business_sale_preview',"SELECT pg_temp.kq_supplier_patch('public.kq_online_collect");
+  const commands=section("SELECT pg_temp.kq_supplier_patch('public.kq_business_command", "SELECT pg_temp.kq_supplier_patch('public.kq_online_dispatch");
+  const permissions=section('REVOKE ALL ON FUNCTION public.kq_supplier_invoice_accounting()','COMMIT;');
+  await db.exec(`BEGIN;\n${schema}\n${accounting}\n${snapshots}\n${collection}\n${commands}\n${permissions}\nCOMMIT;`);
+}
+
+async function supplierRun(owner,cost=2200,{energy=0,grams=120}={}) {
+  const run=randomUUID();
+  await db.query("INSERT INTO kq_runs(id,user_id,state,status) VALUES($1,$2,$3::jsonb,'active')",
+    [run,owner,JSON.stringify({warehouse:{consumablesCostCents:cost},energy:{version:1,totalCents:energy},harvestGrams:grams})]);
+  return run;
+}
+
+async function checkSupplierAccounting() {
+  await installSupplierAccounting();
+  assert.equal(Number((await result('SELECT count(*) AS total FROM kq_supplier_invoices')).total),0,'migration never invoices historical campaigns retroactively');
+  const legacy=await player({balance:35000,completed:false});
+  await complete(legacy);
+  assert.equal(Number((await result('SELECT count(*) AS total FROM kq_supplier_invoices WHERE user_id=$1',[legacy])).total),0,'legacy campaigns keep their original payment scheme');
+  const legacyView=await inspected(legacy);
+  assert.equal(Object.hasOwn(legacyView.data.closingBalances,'supplier_payable'),false,'old accounts do not acquire an unknown zero account');
+  assert.equal(legacyView.data.checks.supplierDebtCents,0);
+
+  const owner=await player({balance:35000,completed:false});
+  await inspected(owner);
+  const originalCash=await cash(owner),run=await supplierRun(owner);
+  const invoice=await result('SELECT * FROM kq_supplier_invoices WHERE run_id=$1',[run]);
+  assert.equal(invoice.amount_cents,2200);assert.equal(invoice.remaining_cents,2200);
+  assert.equal(new Date(invoice.due_at)-new Date(invoice.issued_at),120*60*60*1000,'supplier maturity is exactly 30 game days');
+  assert.equal(await cash(owner),originalCash,'delivery creates debt without debiting wallet cash');
+  let view=await inspected(owner);
+  assert.equal(view.data.closingBalances.supplier_payable,-2200);
+  assert.equal(view.data.checks.supplierDebtCents,2200);
+  assert.equal(view.report.income.expenseCents,2200);
+  assert.equal(view.report.cash.unpaidCents,2200);
+  assert.equal(view.report.cash.supplierDebtCents,2200);
+  assert.equal(view.report.cash.outflowsCents,0);
+  const business=(await state(owner)).business;
+  assert.equal(business.suppliers.outstandingCents,2200);assert.equal(business.suppliers.overdueCents,0);
+  assert.equal(business.suppliers.invoices[0].runId,run);
+  const issuedCount=await count(owner);
+  await db.query('INSERT INTO kq_supplier_invoices(run_id,user_id,amount_cents,remaining_cents) VALUES($1,$2,2200,2200) ON CONFLICT(run_id) DO NOTHING',[run,owner]);
+  assert.equal(await count(owner),issuedCount,'duplicate delivery cannot post another supplier expense');
+  const key=randomUUID();
+  await command(owner,'pay-supplier',{invoiceId:invoice.id},key);
+  view=await inspected(owner);
+  assert.equal(view.report.cash.availableCents,originalCash-2200);
+  assert.equal(view.report.cash.unpaidCents,0);
+  assert.equal(view.report.income.expenseCents,2200,'manual payment clears the liability without expensing it twice');
+  assert.equal(view.data.closingBalances.supplier_payable,0);
+  assert.equal(view.data.checks.supplierDebtCents,0);
+  assert.equal((await result('SELECT last_paid_at IS NOT NULL AS paid FROM kq_supplier_invoices WHERE id=$1',[invoice.id])).paid,true);
+  const paidCount=await count(owner);
+  assert.equal((await command(owner,'pay-supplier',{invoiceId:invoice.id},key)).replayed,true);
+  assert.equal(await count(owner),paidCount,'supplier payment receipt replay cannot duplicate cash or ledger movements');
+  console.log('PASS: real supplier delivery/debt, 120-hour terms, manual settlement and receipt replay reconcile without a second expense.');
+
+  const emptyOwner=await player({balance:0,completed:false});
+  // Opening must be taken before this first invoice, not after its debt exists.
+  await db.query('DELETE FROM kq_treasury_accounts WHERE user_id=$1',[emptyOwner]);
+  const emptyRun=await supplierRun(emptyOwner,22000);
+  const emptyInvoice=await result('SELECT * FROM kq_supplier_invoices WHERE run_id=$1',[emptyRun]);
+  view=await inspected(emptyOwner);
+  assert.equal(view.report.cash.availableCents,0);
+  assert.equal(view.report.income.expenseCents,22000);
+  assert.equal(view.data.closingBalances.supplier_payable,-22000,'first debt is recognized once after opening');
+  assert.equal(view.report.balanceSheet.debtCents,22000);
+  assert.equal(view.report.balanceSheet.equityCents,-22000);
+  const failedCount=await count(emptyOwner);
+  await assert.rejects(()=>command(emptyOwner,'pay-supplier',{invoiceId:emptyInvoice.id}),/commerce_supplier_cash/);
+  assert.equal(await count(emptyOwner),failedCount);
+  assert.equal((await result('SELECT remaining_cents FROM kq_supplier_invoices WHERE id=$1',[emptyInvoice.id])).remaining_cents,22000);
+  assert.equal(await cash(emptyOwner),0,'unaffordable payment rolls back without blocking delivery');
+  await db.query("UPDATE kq_supplier_invoices SET issued_at=now()-interval '121 hours',due_at=now()-interval '1 hour',due_processed_at=now() WHERE id=$1",[emptyInvoice.id]);
+  const stockId=await stock(emptyOwner);
+  const offered=await quote(emptyOwner,stockId,'wholesale',1200);
+  assert(offered.offer.supplierPaidCents>0&&offered.offer.supplierPaidCents<22000,'overdue suppliers receive a partial sale collection');
+  const saleKey=randomUUID();
+  await sell(emptyOwner,offered,saleKey);
+  view=await inspected(emptyOwner);
+  assert.equal(view.report.cash.availableCents,offered.offer.netPayoutCents);
+  assert.equal(view.data.closingBalances.supplier_payable,-22000+offered.offer.supplierPaidCents);
+  assert.equal(view.data.checks.supplierDebtCents,22000-offered.offer.supplierPaidCents);
+  assert.equal(view.report.income.expenseCents,22000,'sale collection never repeats the consumption charge');
+  assert.equal(view.report.income.resultCents,offered.offer.payoutCents-offered.offer.vatCents-22000);
+  const collectedCount=await count(emptyOwner);
+  await sell(emptyOwner,offered,saleKey);
+  assert.equal(await count(emptyOwner),collectedCount,'sale replay cannot collect the supplier debt twice');
+  console.log('PASS: zero-cash delivery, prospective opening, failed-payment rollback and real sale collections reconcile against physical supplier debt.');
+
+  const productionOwner=await player({balance:35000,completed:false});
+  const productionRun=await supplierRun(productionOwner,2200,{energy:603});
+  await db.query("UPDATE kq_runs SET status='completed',completed_at=now() WHERE id=$1",[productionRun]);
+  const producedStock=await stock(productionOwner,{units:1200});
+  await db.query('UPDATE kq_flowers SET run_id=$2 WHERE id=(SELECT flower_id FROM kq_commerce_stock WHERE id=$1)',[producedStock,productionRun]);
+  view=await inspected(productionOwner);
+  assert.equal(view.data.closingBalances.stock,7303,'unsold stock includes consumables, one laboratory analysis and energy');
+  assert.equal(view.report.income.resultCents,0,'unsold consumption costs remain stock assets');
+  assert.equal(view.report.cash.unpaidCents,7303);
+  assert.equal(view.report.cash.availableCents,35000,'capitalization never charges the wallet');
+  const stockedInvoice=await result('SELECT id FROM kq_supplier_invoices WHERE run_id=$1',[productionRun]);
+  await command(productionOwner,'pay-supplier',{invoiceId:stockedInvoice.id});
+  view=await inspected(productionOwner);
+  assert.equal(view.data.closingBalances.stock,7303,'paying the supplier does not change historical stock cost');
+  assert.equal(view.report.income.resultCents,0);
+  const sale=await quote(productionOwner,producedStock,'wholesale',1200);
+  await sell(productionOwner,sale);
+  view=await inspected(productionOwner);
+  assert.equal(view.data.closingBalances.stock,0);
+  assert.equal(view.report.income.expenseCents,7303,'all production cost is expensed once when stock leaves');
+  assert.equal(view.report.income.resultCents,sale.offer.payoutCents-sale.offer.vatCents-7303);
+  for(const role of ['anon','authenticated','service_role']) {
+    assert.equal((await result("SELECT has_table_privilege($1,'kq_supplier_invoices','SELECT,INSERT,UPDATE,DELETE') AS allowed",[role])).allowed,false);
+    assert.equal((await result("SELECT has_function_privilege($1,'kq_supplier_invoice_accounting()','EXECUTE') AS allowed",[role])).allowed,false);
+  }
+  console.log('PASS: supplier production cost capitalization, payment neutrality, cost upon sale and private invoice accounting permissions.');
+}
 try {
   await bootstrap();await extendSchema();
   await db.exec(await migration('20260921000100_kq_business_calendar.sql'));
@@ -649,6 +782,7 @@ try {
   await checkStockAccounting(owners.stocks);
   await checkLabSessionCorrection();
   await checkPermissions(owners.opening);
+  await checkSupplierAccounting();
   console.log('PASS: isolated treasury accounting integration with real economy migrations.');
 } catch(error) {console.error(error.stack??error.message,error.where??'');process.exitCode=1;}
 finally {await vite.close();await db.close();}

@@ -4,10 +4,27 @@ import { calculateKqMarketReputation, getKqRouteExpertiseBonusReputation } from 
 import { projectKqStorageLot } from './kanab-quest-storage';
 import { KQ_ONLINE_MARKETING_MISSIONS, KQ_ONLINE_PACKAGING, KQ_ONLINE_SITE_TIERS, KQ_ONLINE_UPGRADES, createKqOnlinePreview, estimateKqOnlineOffer } from './kanab-quest-online';
 import type { KqOperationsLessonState } from './kanab-quest-operations-lesson';
+import { createKqCustomerDemandSnapshot, getKqCustomerDemandPeriod, KQ_CUSTOMER_DEMAND_CHANNELS, type KqAppliedCustomerDemand, type KqCustomerDemandChannel } from './kanab-quest-customer-demand';
 
 const HOUR = 3_600_000;
 type Payment = ReturnType<typeof previewKqBusinessPayment>;
 type Online = ReturnType<typeof createKqOnlinePreview>;
+
+/** Kept in the replayable local state, independently for each period and circuit. */
+export function getKqOperationsCustomerDemand(state: KqOperationsLessonState) {
+  const period = getKqCustomerDemandPeriod(state.trial.clock);
+  const consumed = Object.fromEntries(KQ_CUSTOMER_DEMAND_CHANNELS.map(channel => [channel, state.customerDemandUsage?.[`${period}:${channel}`] ?? 0]));
+  return createKqCustomerDemandSnapshot(state.trial.clock, consumed);
+}
+
+export function consumeKqOperationsCustomerDemand(state: KqOperationsLessonState, channel: KqCustomerDemandChannel, applied: KqAppliedCustomerDemand | undefined) {
+  if (!applied) return;
+  const request = getKqOperationsCustomerDemand(state).requests.find(request => request.channel === channel)!;
+  check(applied.id === request.id && applied.period === request.period && applied.units > 0 && applied.units <= request.remainingUnits, 'La demande a changé. Recalcule l’offre.');
+  const usage = state.customerDemandUsage ??= {};
+  usage[request.id] = (usage[request.id] ?? 0) + applied.units;
+  state.trial.commerce.customerDemand = getKqOperationsCustomerDemand(state);
+}
 function check(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(message); }
 function positiveInteger(value: unknown, maximum: number) {
   check(typeof value === 'number' && Number.isSafeInteger(value) && value >= 1 && value <= maximum, 'Montant ou quantité invalide.');
@@ -58,7 +75,7 @@ export function applyKqOperationsOnline(state: KqOperationsLessonState, command:
     check(stock.remainingUnits >= packets * input.formatGrams * 10, 'La quantité de vrac est insuffisante.');
     inventory.quantity -= packets;
     stock.remainingUnits -= packets * input.formatGrams * 10;
-    online.listings.push({ id: `operations-listing-${online.listings.length + 1}`, stockId: stock.id, name: stock.name, route: stock.route,
+    online.listings.push({ id: `operations-listing-${online.listings.length + 1}`, stockId: stock.id, varietyCode: stock.varietyCode, name: stock.name, route: stock.route,
       formatGrams: input.formatGrams, packagingCode: packaging.code, packetPriceCents, initialPackets: packets, remainingPackets: packets,
       status: 'active', qualityScore, baseUnitCents: stock.baseUnitCents, createdAt: now(), soldPackets: 0 });
     simulation.packedQualities[online.listings.at(-1)!.id] = qualityScore;
@@ -160,18 +177,25 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
       row.qualityScore = Math.max(0, packedQuality - Math.floor((state.trial.clock - Date.parse(row.createdAt)) / (4 * HOUR)) * 0.01 * packaging.protectionRate);
       if (row.qualityScore < 5.8) row.status = 'quality-blocked';
       if (row.status !== 'active' || !online.site.active) continue;
-      const source = commerce.stocks.find(stock => stock.id === row.stockId)!;
-      const offer = estimateKqOnlineOffer({ quality: row.qualityScore, baseUnitCents: row.baseUnitCents, formatGrams: row.formatGrams,
+      const source = commerce.stocks.find(stock => stock.id === row.stockId);
+      if (!source || !isKqCommerceStockMature(source, state.trial.clock) || (source.processingReadyAt && Date.parse(source.processingReadyAt) > state.trial.clock)) continue;
+      const quote = () => estimateKqOnlineOffer({ route: row.route, varietyCode: row.varietyCode, customerDemand: getKqOperationsCustomerDemand(state), quality: row.qualityScore, baseUnitCents: row.baseUnitCents, formatGrams: row.formatGrams,
         packagingCode: row.packagingCode, packetPriceCents: row.packetPriceCents, reputation: commerce.reputation,
         clients: commerce.clients, online, activeListingCount: active.length });
+      const offer = quote();
       online.stats.visitors += offer.visitorsPerDay / 24 / Math.max(1, active.length);
       credits[row.id] = (credits[row.id] ?? 0) + offer.ordersPerDay / 24;
       const packets = Math.min(row.remainingPackets, Math.floor(credits[row.id] + 1e-9));
-      credits[row.id] -= packets;
       if (!packets) continue;
+      let soldPackets = 0;
       for (let packet = 0; packet < packets; packet++) {
+        // Earlier packets or another listing may have used the final allowance.
+        const offer = quote();
+        if (offer.ordersPerDay <= 0) break;
         const feesCents = Math.round(row.packetPriceCents * 0.025);
         const payment = collect(row.packetPriceCents);
+        consumeKqOperationsCustomerDemand(state, 'online', offer.customerDemand);
+        soldPackets++;
         commerce.cashCents -= feesCents;
         const netPayoutCents = payment.netPayoutCents - feesCents;
         online.stats.orders++;
@@ -212,7 +236,8 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
           netPayoutCents, feesCents, packagingCostCents: packaging.unitCostCents, satisfaction: offer.satisfaction });
         state.events.push('sell');
       }
-      row.remainingPackets -= packets; row.soldPackets += packets;
+      credits[row.id] -= soldPackets;
+      row.remainingPackets -= soldPackets; row.soldPackets += soldPackets;
       if (!row.remainingPackets) row.status = 'sold-out';
     }
     const mission = online.marketing.active;
@@ -228,5 +253,6 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
   online.recentSales = online.recentSales.slice(0, 20);
   const storage = projectKqStorageLot(state.storage.lot, state.trial.clock);
   commerce.stocks.forEach(stock => { stock.storage = storage; });
+  commerce.customerDemand = getKqOperationsCustomerDemand(state);
   state.events.push('online-time');
 }

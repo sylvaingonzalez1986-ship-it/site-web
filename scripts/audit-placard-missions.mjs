@@ -36,14 +36,14 @@ const modules={
   'next/link': `import React from 'react'; export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}`,
   'next/navigation': `export const useRouter=()=>({push:()=>{},refresh:()=>{},replace:()=>{}});export const usePathname=()=>'/arene/placard';export const useSearchParams=()=>new URLSearchParams();`,
 };
-const server=await createServer({root,cacheDir:resolve(output,"vite-cache"),optimizeDeps:{include:["react","react-dom/client","lucide-react"]},configFile:false,envDir:false,publicDir:resolve(root,'public'),esbuild:{jsx:'automatic'},resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'workshop-audit',enforce:'pre',resolveId(id){if(id.endsWith('/components/navigation/NavigationLink'))return '\0@/components/navigation/NavigationLink';if(id.endsWith('/KqPlacardHud')||id==='./KqPlacardHud')return '\0mission-hud';if(id in modules)return '\0'+id;},load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Placard · Atelier</title><style>:root{--font-display:Impact;--font-body:Arial;--font-sans:Arial}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__workshop-entry"></script></html>');});}}],server:{host:'127.0.0.1',port:3201,strictPort:true,hmr:false,watch:null}});
+const server=await createServer({root,cacheDir:resolve(output,"vite-cache"),optimizeDeps:{include:["react","react-dom/client","lucide-react"]},configFile:false,envDir:false,publicDir:resolve(root,'public'),esbuild:{jsx:'automatic'},resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'workshop-audit',enforce:'pre',resolveId(id){if(id.endsWith('/components/navigation/NavigationLink'))return '\0@/components/navigation/NavigationLink';if(id.endsWith('/KqPlacardHud')||id==='./KqPlacardHud')return '\0mission-hud';if(id in modules)return '\0'+id;},load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Placard · Atelier</title><style>@font-face{font-family:AuditDisplay;src:url(/src/app/fonts/BarlowCondensed-Latin-Black.woff2);font-weight:900}@font-face{font-family:AuditBody;src:url(/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2);font-weight:300 700}:root{--font-display:AuditDisplay;--font-body:AuditBody;--font-sans:AuditBody}body{margin:0;background:#fff1d6}</style><div id="root"></div><script type="module" src="/@id/__x00__workshop-entry"></script></html>');});}}],server:{host:'127.0.0.1',port:3201,strictPort:true,hmr:false,watch:null}});
 let browser;
 try {
  await mkdir(output,{recursive:true});await server.listen();
  browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});
  const page=await browser.newPage();const errors=[];page.on('pageerror',e=>{errors.push(e.message);console.error(e.message);});
  await page.setRequestInterception(true);page.on('request',r=>{const u=new URL(r.url());if(u.protocol==='data:'||(u.hostname==='127.0.0.1'&&u.port==='3201'))void r.continue();else void r.abort();});
- const goto=async(scenario='ready')=>{await page.goto('http://127.0.0.1:3201/?scenario='+scenario,{waitUntil:'networkidle0'});if(scenario!=='lobby')await page.$$eval('button',buttons=>buttons.find(button=>button.textContent.includes('Tous mes défis')).click());};
+ const goto=async(scenario='ready')=>{await page.goto('http://127.0.0.1:3201/?scenario='+scenario,{waitUntil:'networkidle0'});if(scenario!=='lobby')await page.$$eval('button',buttons=>buttons.find(button=>button.textContent.includes('Mes défis')).click());};
  const overflow=async()=>assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
  const shot=async(name)=>{await page.evaluate(async()=>{await Promise.allSettled([...document.images].map(img=>img.decode()));});await page.screenshot({path:resolve(output,name+'.png'),fullPage:true});};
  for(const width of [320,390,768,1440]) {
@@ -62,8 +62,7 @@ try {
  await page.waitForFunction(()=>document.body.innerText.includes('Bravo ! Un pack de 10 cartes gagné.'));
  await page.waitForFunction(()=>document.querySelector('section[aria-label="Culture"]').textContent.includes('Parcours terminé'));
  await shot('claimed-390');
- await page.$$eval('button',buttons=>buttons.find(b=>b.textContent.includes('Ouvrir la boutique')).click());
- assert.equal(await page.evaluate(()=>window.__destination),'shop');
+ assert.equal(await page.$$eval('footer button',buttons=>buttons.some(button=>button.textContent.includes('de mission'))),true,'Earned packs remain accessible in the mission footer');
  await page.evaluate(()=>{window.__counts.clients=1;});
  await page.$$eval('button',buttons=>buttons.find(b=>b.textContent.includes('Actualiser')).click());
  await page.waitForFunction(()=>document.querySelector('section[aria-label="Vente en ligne"] button').textContent.includes('Vendre en ligne'));
@@ -75,11 +74,11 @@ try {
    await page.evaluate(()=>{window.__fail=false;});await page.$$eval('button',buttons=>buttons.find(b=>b.textContent.includes('Réessayer')).click());
    await page.waitForSelector('section[aria-label="Culture"]');
   }
-  if(scenario==='inactive')assert.equal(await page.$$eval('section button',buttons=>buttons.every(b=>b.disabled)),true);
+  if(scenario==='inactive')assert.equal(await page.$$eval('section button',buttons=>buttons.filter(b=>b.textContent.includes('Récupérer mon pack')).every(b=>b.disabled)),true);
   if(scenario==='complete')assert.equal(await page.$$eval('h2',els=>els.filter(el=>el.textContent.includes('Parcours terminé')).length),3);
   if(scenario==='lobby'){
-   await page.locator('[data-map-building="missions"]').click();
-   await page.locator('[data-placard-activity="missions"]').click();
+   const point=await page.$eval('[data-map-building="missions"]',button=>{document.querySelector('#placard-map-viewport').scrollIntoView({block:'center',behavior:'instant'});const [x,y]=button.dataset.mapHitPoint.split(',').map(Number),rect=document.querySelector('#placard-map-viewport img').getBoundingClientRect();return{x:rect.left+rect.width*x/100,y:rect.top+rect.height*y/100};});
+   await page.mouse.click(point.x,point.y);
    assert.equal(await page.evaluate(()=>window.__destination),'missions');
   }
  }

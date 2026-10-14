@@ -7,7 +7,7 @@ import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqMarketReputationProgress, KQ_MARKET_REPUTATION_TIERS } from "@/lib/kanab-quest-market-demand";
 import styles from "./KqCommerceOverview.module.css";
 
-const officeArt = "/placard/commerce-office-v2.webp";
+const officeArt = "/placard/commerce-office-sylvain-v3.webp";
 const number = (value: number) => value.toLocaleString("fr-FR");
 const signed = (value: number) => `${value > 0 ? "+" : "−"}${number(Math.abs(value))}`;
 
@@ -62,9 +62,9 @@ export function KqCommerceOverview({ data, onOpenShop }: {
       </details>
       <div className={styles.audiences}>
         <section aria-label="Clientèle en ligne"><Users size={28} aria-hidden="true" /><div><h3>Clients en ligne</h3><strong className={styles.stat}>{number(data.clients)} <span>fidèles</span></strong><p>{data.online ? `${number(data.online.followers)} abonnés suivent ta marque. Les commandes satisfaisantes construisent la fidélité ; les visiteurs ne deviennent pas automatiquement des clients.` : data.clients ? "Les bonnes livraisons fidélisent. Une qualité décevante peut faire partir tes clients." : "Tes premières bonnes livraisons en ligne construiront ta clientèle."}</p></div></section>
-        <section aria-label="Boutiques partenaires"><Store size={28} aria-hidden="true" /><div><h3>Boutiques partenaires</h3><strong className={styles.stat}>{number(partners)} <span>sur 20</span></strong><p>{data.online ? "Ton réseau développe les volumes de reprise. Les fleurs sont payées entre 500 et 1 500 €/kg selon la qualité ; les extraits ont leurs propres barèmes." : <>+{networkBonus} points de reprise sur cette période de 24 heures. {nextNetwork ? `Encore ${nextNetwork - partners} boutique${nextNetwork - partners > 1 ? "s" : ""} pour le prochain bonus réseau.` : "Bonus réseau maximal atteint."}</>}</p></div></section>
+        <section aria-label="Boutiques partenaires"><Store size={28} aria-hidden="true" /><div><h3>Boutiques partenaires</h3><strong className={styles.stat}>{number(partners)} <span>sur 20</span></strong><p>{data.online ? "Ton réseau développe les volumes de reprise. Les fleurs indoor commercialisables sont payées 3 €/g en shop et 2,10 €/g chez les grossistes, hors demande temporaire. Les extraits ont leurs propres barèmes." : <>+{networkBonus} points de reprise sur cette période de 24 heures. {nextNetwork ? `Encore ${nextNetwork - partners} boutique${nextNetwork - partners > 1 ? "s" : ""} pour le prochain bonus réseau.` : "Bonus réseau maximal atteint."}</>}</p></div></section>
       </div>
-      <section className={styles.history} aria-label="Dernières ventes"><header><div><small className={styles.eyebrow}>Tes résultats</small><h3>Dernières ventes</h3></div><button className={styles.shopLink} onClick={onOpenShop}><ShoppingBag size={17} aria-hidden="true" /> Boutique</button></header>
+      <section className={styles.history} aria-label="Dernières ventes"><header><div><small className={styles.eyebrow}>Tes résultats</small><h3>Dernières ventes</h3></div><button className={styles.shopLink} onClick={onOpenShop}><ShoppingBag size={17} aria-hidden="true" /> Équiper l’Entrepôt</button></header>
         {sales.length ? <><ul className={styles.sales}>{sales.slice(0,3).map((receipt,index)=><SaleRow key={index} receipt={receipt} />)}</ul>
           {sales.length > 3 ? <details className={styles.moreSales}><summary>{sales.length === 4 ? "Voir l’autre vente" : `Voir les ${sales.length - 3} autres ventes`} <ChevronDown size={16} aria-hidden="true" /></summary><ul className={styles.sales}>{sales.slice(3).map((receipt,index)=><SaleRow key={index} receipt={receipt} />)}</ul></details> : null}
         </> : <p className={styles.emptyHistory}>Ta première vente apparaîtra ici, avec le montant versé et son effet sur ta réputation.</p>}

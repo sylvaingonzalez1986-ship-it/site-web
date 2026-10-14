@@ -1,0 +1,23 @@
+{
+  "tool": "Built-in image_gen",
+  "asset": "overhead-room-sylvain-v1.webp",
+  "source": "exec-97673d23-68b8-49e0-ae1e-e54ebf8dab6a.png",
+  "references": [
+    "overhead-room-warm-v1.webp",
+    "../../sylvain.png",
+    "../map/placard-world-sylvain-v5.webp"
+  ],
+  "prompt": "Use case: style-transfer.\nAsset type: final illustrated game background, 1536x1024 landscape, for the interior of the warehouse in Le Placard.\nInput image 1 (overhead-room-warm-v1.webp) is the edit target ONLY for its exact floor geometry and overhead camera. Input image 2 (sylvain.png) is the primary DRAWING STYLE reference. Input image 3 (placard-world-sylvain-v5.webp) is the exact game's village art direction to match.\nRedraw the warehouse completely in the same cheeky, rounded, thick-black-outline cartoon style as the village and Sylvain. Flat cream plaster, uneven round granite blocks, tan chunky repaired wood beams, turquoise doors and trim, warm mustard brass details. Modest Breton barn interior with slightly wonky, expressive shapes. Crisp bold black contours, sparse comic halftone in small shadow patches. A tiny crooked Breton flag on the wall, coiled hose, comically oversized wall hook, chunky lamp and coffee cup as very small perimeter details. Restrained comic character, charming and readable. No photorealism, 3D rendering or fine realistic texturing.\nCRITICAL geometry invariants: keep camera exactly straight down, rectangular room, no isometric perspective. Output 1536x1024. Entire playable floor rectangle x=168 to1368,y=120 to870 must be uninterrupted empty pale warm cream floor. Walls, furniture, decorative props and outlines all stay outside this rectangle. Keep entrance centered at bottom. The floor should be quiet, almost flat, very few light sparse scuffs; NO tiled floor or baked-in gameplay grid, no vegetation or equipment in center. Keep perimeter narrow, no roof hiding floor. Character may be expressed through architecture but NO people, faces or eyes on room walls, no lettering, labels, UI, logo or watermark. Floor remains clearly bounded rectangular, interior wall faces can look slightly irregular around its outside. The warehouse must visibly belong to image3's upper-left turquoise-door barn.",
+  "geometry": {
+    "width": 1536,
+    "height": 1024,
+    "grid": {
+      "x": 168,
+      "y": 120,
+      "cell": 30,
+      "columns": 40,
+      "rows": 25
+    }
+  },
+  "note": "Existing equipment atlases retained; generation of replacement equipment was blocked by the image tool."
+}

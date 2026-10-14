@@ -1,56 +1,63 @@
-.shell { --placard-bottom-nav-height: 0px; display: grid; grid-template-columns: 224px minmax(0, 1fr); min-height: 100svh; background: #f4f1e8; color: #173d33; font-family: var(--font-body), sans-serif; }
+.shell { --placard-bottom-nav-height: 0px; display: grid; grid-template-columns: 224px minmax(0, 1fr); min-height: 100svh; background: #fff1d6; color: #172923; font-family: var(--font-body), sans-serif; }
 .content { min-width: 0; padding-bottom: 28px; }
-.sidebar { position: sticky; top: 0; align-self: start; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: 28px 15px 18px; background: #163e34; color: #f8f3e8; border-right: 1px solid #092e2550; }
-.navBrand { padding: 0 12px 25px; }
-.navBrand > span { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: #c1ceb9; }
-.navBrand > strong { display: block; font: 900 35px/1.2 var(--font-display), Impact, sans-serif; }
-.navBrand > strong > span { color: #efc859; }
-.navBrand > small { font-size: 11px; color: #c1ceb9; }
-.navGroup { display: grid; gap: 4px; }
-.navGroup + .navGroup { margin-top: 22px; padding-top: 17px; border-top: 1px solid #ffffff20; }
-.navGroup > small { padding: 0 12px 8px; color: #b9c8b5; font-size: 10px; }
-.navGroup button { width: 100%; display: flex; align-items: center; gap: 11px; min-height: 44px; padding: 10px 12px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: #f8f3e8; text-align: left; font: 600 13px var(--font-body), sans-serif; cursor: pointer; }
-.navGroup button svg { flex-shrink: 0; }
-.navGroup button:hover { background: #ffffff10; }
-.navGroup button[aria-current=page] { color: #183e32; background: #f0cc68; }
-.navFooter { margin-top: auto; padding: 25px 12px 0; font-size: 11px; color: #c9d3c3; }
+.sidebar { position: sticky; top: 0; align-self: start; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: 22px 15px 18px; background: #fff1d6; color: #172923; border-right: 3px solid #172923; }
+.navBrand { position: relative; margin: 0 1px 24px; padding: 13px 10px 15px; border: 2px solid #172923; border-radius: 18px 18px 24px 8px; background: #149b8b; box-shadow: 4px 4px 0 #172923; }
+.navBrand::after { content: ""; position: absolute; right: 13px; bottom: -8px; width: 14px; height: 14px; border: 2px solid #172923; border-radius: 50%; background: #efc451; }
+.navBrand > span { font-size: 9px; font-weight: 750; letter-spacing: .055em; text-transform: uppercase; color: #172923; }
+.navBrand > strong { display: block; font: 900 33px/1.2 var(--font-display), Impact, sans-serif; letter-spacing: -.02em; }
+.navBrand > strong > span { color: #fff1d6; }
+.navBrand > small { display: block; padding-top: 3px; font-size: 10px; font-weight: 650; color: #172923; }
+.navGroup { display: grid; gap: 7px; }
+.navGroup + .navGroup { margin-top: 20px; padding-top: 15px; border-top: 2px dashed #1729234d; }
+.navGroup > small { padding: 0 12px 2px; color: #4b5a4c; font-size: 10px; font-weight: 700; }
+.navGroup button { width: 100%; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 9px 11px; border: 2px solid transparent; border-radius: 13px; background: transparent; color: #172923; text-align: left; font: 700 13px var(--font-body), sans-serif; cursor: pointer; transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease; }
+.navGroup button svg { flex-shrink: 0; stroke-width: 2.4; }
+.navGroup button[aria-current=page] { color: #172923; border-color: #172923; background: #efc451; box-shadow: 3px 3px 0 #172923; }
+.navFooter { margin-top: auto; padding: 22px 10px 0; font-size: 11px; color: #40554b; }
 .navFooter summary, .navFooter a { display: flex; align-items: center; gap: 8px; min-height: 44px; }
 .navFooter p { line-height: 1.65; margin: 8px 0 12px; }
-.sectionHeader { display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 10px 28px; border-bottom: 1px solid #173d331a; background: #fbf8f0; }
-.sectionHeader button { border: 0; background: none; font-size: 12px; color: #526c5d; min-height: 44px; cursor: pointer; }
-.sectionHeader > span { color: #9ba699; }
-.sectionHeader h1 { margin: 0; color: #183e32; font-size: 15px; font-weight: 750; outline: none; }
+.sectionHeader { display: flex; align-items: center; gap: 13px; min-height: 72px; padding: 12px 28px; border-bottom: 2px solid #172923; background: #fff1d6; }
+.sectionHeader button { flex-shrink: 0; padding: 9px 12px; border: 2px solid #172923; border-radius: 12px; background: #d5a573; box-shadow: 2px 2px 0 #172923; font-size: 12px; font-weight: 750; color: #172923; min-height: 44px; cursor: pointer; }
+.sectionHeader > span { color: #677263; }
+.sectionHeader h1 { min-width: 0; margin: 0; color: #172923; font-size: 15px; font-weight: 750; outline: none; overflow-wrap: anywhere; }
 .localNav { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 24px; }
-.localNav button, .localNav span { display: flex; align-items: center; padding: 10px 14px; min-height: 44px; background: #fffaf1; border: 1px solid #173d332b; border-radius: 6px; font-size: 12px; color: #173d33; }
-.localNav [aria-current] { background: #173d33; color: #fffaf1; }
-.skipLink { position: absolute; left: 240px; top: 8px; z-index: 400; padding: 12px; background: #fffaf1; color: #163e34; transform: translateY(-250%); }
+.localNav button, .localNav span { display: flex; align-items: center; padding: 10px 14px; min-height: 44px; background: #fffaf0; border: 2px solid #172923; border-radius: 13px; box-shadow: 2px 2px 0 #172923; font-size: 12px; font-weight: 700; color: #172923; }
+.localNav [aria-current] { background: #149b8b; color: #172923; }
+.skipLink { position: absolute; left: 240px; top: 8px; z-index: 400; padding: 12px; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; color: #172923; transform: translateY(-250%); }
 .skipLink:focus { transform: none; }
 .mobileNav { display: none; }
-.navDrawer { width: min(360px, 92vw); max-width: none; height: 100dvh; max-height: none; margin: 0 0 0 auto; padding: 0; border: 0; background: #163e34; color: #f8f3e8; }
-.navDrawer::backdrop { background: #092a22a8; backdrop-filter: blur(3px); }
-.drawerBody { position: relative; min-height: 100%; display: flex; flex-direction: column; padding: 32px 18px; }
-.drawerClose { position: absolute; right: 12px; top: 8px; width: 44px; height: 44px; display: grid; place-items: center; border: 0; background: transparent; color: #fffaf1; }
-.shell :where(button,a,summary):focus-visible { outline: 3px solid #d6a634; outline-offset: 3px; }
+.navDrawer { width: min(360px, 92vw); max-width: none; height: 100dvh; max-height: none; margin: 0 0 0 auto; padding: 0; border: 0; border-left: 3px solid #172923; background: #fff1d6; color: #172923; }
+.navDrawer::backdrop { background: #172923b3; }
+.drawerBody { position: relative; min-height: 100%; display: flex; flex-direction: column; padding: 68px 18px 28px; }
+.drawerClose { position: absolute; right: 15px; top: 12px; width: 44px; height: 44px; display: grid; place-items: center; border: 2px solid #172923; border-radius: 50%; background: #efc451; color: #172923; box-shadow: 2px 2px 0 #172923; cursor: pointer; }
+.shell :where(button,a,summary):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
+@media (hover: hover) {
+  .navGroup button:hover { border-color: #172923; background: #d5a573; box-shadow: 3px 3px 0 #172923; }
+  .navGroup button[aria-current=page]:hover { background: #efc451; }
+  .sectionHeader button:hover, .localNav button:hover, .drawerClose:hover { background: #efc451; }
+}
 @media (max-width: 1000px) {
   .shell { --placard-bottom-nav-height: calc(68px + env(safe-area-inset-bottom, 0px)); display: block; padding-bottom: var(--placard-bottom-nav-height); }
   .sidebar { display: none; }
-  .mobileNav { position: fixed; inset: auto 0 0; z-index: 100; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); height: var(--placard-bottom-nav-height); padding-bottom: env(safe-area-inset-bottom, 0px); border-top: 1px solid #173d3335; background: #fffaf1f5; backdrop-filter: blur(12px); box-shadow: 0 -4px 18px #173d3310; }
-  .mobileNav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 60px; border: 0; background: transparent; color: #536b5e; font-size: 11px; font-weight: 650; }
-  .mobileNav [aria-current] { color: #174c3a; background: #e6ebdf; box-shadow: inset 0 3px #326d53; }
+  .mobileNav { position: fixed; inset: auto 0 0; z-index: 100; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 5px; height: var(--placard-bottom-nav-height); padding: 5px 7px calc(5px + env(safe-area-inset-bottom, 0px)); border-top: 3px solid #172923; background: #fff1d6; box-shadow: 0 -3px 0 #d5a573; }
+  .mobileNav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 0; min-height: 52px; border: 2px solid transparent; border-radius: 13px; background: transparent; color: #172923; font-size: 10px; font-weight: 750; }
+  .mobileNav button svg { stroke-width: 2.5; }
+  .mobileNav [aria-current], .mobileNav [aria-expanded=true] { color: #172923; border-color: #172923; background: #efc451; box-shadow: 2px 2px 0 #172923; }
   .sectionHeader { padding: 8px 16px; min-height: 56px; gap: 8px; }
   .sectionHeader h1 { font-size: 14px; }
   .localNav { padding: 12px; }
   .skipLink { left: 12px; }
 }
-.section[data-placard-view] { background: #f4efdf; color: #123b2f; }
-.section .sectionNav { background: #ede8d5f5; color: #123b2f; border-color: #123b2f25; }
-.section .sectionNav button, .section .sectionNav a { border: 1px solid #123b2f55; border-radius: 6px; background: #fffaf1; color: #123b2f; box-shadow: 0 2px 0 #123b2f20; }
+.section[data-placard-view] { background: #fff1d6; color: #172923; }
+.section .sectionNav { background: #fff1d6; color: #172923; border-color: #172923; }
+.section .sectionNav button, .section .sectionNav a { border: 2px solid #172923; border-radius: 12px; background: #fffaf0; color: #172923; box-shadow: 2px 2px 0 #172923; }
 @media (hover: hover) {
-  .section .sectionNav button:hover, .section .sectionNav a:hover { background: #f4c43d; border-color: #123b2f; }
+  .section .sectionNav button:hover, .section .sectionNav a:hover { background: #efc451; border-color: #172923; }
 }
 
-.progress { width: min(1100px, calc(100% - 32px)); margin: 0 auto 32px; color: #003f30; border: 1px solid #003f3040; border-radius: 12px; background: #fffaf1; }
+.progress { width: min(1100px, calc(100% - 32px)); margin: 0 auto 32px; color: #172923; border: 2px solid #172923; border-radius: 18px; background: #fff1d6; box-shadow: 4px 4px 0 #172923; }
 .progress > summary { min-height: 60px; padding: 16px 20px; font-weight: 800; cursor: pointer; }
 .progress > summary span { display: block; padding-top: 5px; font-size: 12px; font-weight: 500; }
-.progress > summary:focus-visible { outline: 3px solid #00563f; outline-offset: 3px; }
-.progress[open] > summary { border-bottom: 1px solid #003f3020; }
+.progress > summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.progress[open] > summary { border-bottom: 2px solid #172923; }
+@media (prefers-reduced-motion: reduce) { .navGroup button { transition: none; } }

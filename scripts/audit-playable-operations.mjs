@@ -7,9 +7,11 @@ import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const root = process.cwd(), output = resolve(root, 'output/playable-operations'), origin = 'http://127.0.0.1:3262';
+const themeOnly = process.argv.includes('--theme-only');
 const modules = {
   'warehouse-manifest': `export default ${await readFile(resolve(root,'public/placard/warehouse-v2/manifest.json'),'utf8')}`,
-  fixture: `import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';import {KqPlayableOperationsLesson} from '/src/components/placard/KqPlayableOperationsLesson';createRoot(document.getElementById('root')).render(React.createElement(KqPlayableOperationsLesson,{lesson:new URLSearchParams(location.search).get('lesson')||'equipment',onProgress:p=>window.__progress=p}));`,
+  fixture: `import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';import {KqPlayableOperationsLesson} from '/src/components/placard/KqPlayableOperationsLesson';import {KqFirstCultureTrial} from '/src/components/placard/KqFirstCultureTrial';import {KqGuidedTrial} from '/src/components/placard/KqGuidedTrial';
+    function App(){const [closed,setClosed]=React.useState(false),params=new URLSearchParams(location.search),close=()=>setClosed(true);if(closed)return React.createElement('p',{'data-theme-closed':true},'Essai fermé');if(params.get('theme')==='first')return React.createElement(KqFirstCultureTrial,{storageKey:'theme-audit-'+innerWidth,onClose:close,onContinue:close,continueLabel:'Terminer'});if(params.get('theme')==='guided')return React.createElement(KqGuidedTrial,{userId:'theme-audit-'+innerWidth,workshop:'culture',onPause:close,onComplete:close,busy:false,error:''});return React.createElement(KqPlayableOperationsLesson,{lesson:params.get('lesson')||'equipment',onProgress:p=>window.__progress=p})}createRoot(document.getElementById('root')).render(React.createElement(App));`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src:typeof src==='string'?src:src.src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}})}`,
   'next/link': `import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props)}`,
   'next/navigation': `export const usePathname=()=>'/arene';export const useSearchParams=()=>new URLSearchParams(location.search);export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});`,
@@ -30,6 +32,31 @@ try{
   await mkdir(output,{recursive:true});await server.listen();browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});page=await browser.newPage();page.setDefaultTimeout(20000);page.setDefaultNavigationTimeout(60000);
   page.on('pageerror',error=>errors.push(error.message));await page.setRequestInterception(true);page.on('request',request=>{const url=new URL(request.url());if(url.pathname.startsWith('/api/')){api.push({url:url.pathname,method:request.method()});return void request.respond({status:500,contentType:'application/json',body:'{"error":"Network prohibited in lesson"}'});}if(url.protocol!=='data:'&&url.origin!==origin)return void request.abort();void request.continue();});
   await page.evaluateOnNewDocument(()=>{sessionStorage.setItem('kq:selected-tent','8');sessionStorage.setItem('operations-audit-sentinel','unchanged');window.__globalUpdates=0;window.addEventListener('kq:equipment-updated',()=>window.__globalUpdates++);});
+  if(themeOnly) {
+    for(const width of [320,390,1440]) {
+      await page.setViewport({width,height:900,deviceScaleFactor:1});
+      await page.goto(origin+'/?theme=first',{waitUntil:'networkidle0'});
+      await page.waitForSelector('[data-first-culture-action="roll"]:not(:disabled)');
+      await page.click('[data-first-culture-action="roll"]');
+      await page.waitForSelector('[data-first-culture-action="resolve"]');
+      await snap('theme-first-culture-'+width);
+      assert(await page.$eval('dialog[open]',element=>element.scrollWidth<=element.clientWidth+1));
+      await page.keyboard.press('Escape');await page.waitForSelector('[data-theme-closed]');
+      await page.goto(origin+'/?theme=guided',{waitUntil:'networkidle0'});
+      await page.waitForSelector('dialog[data-trial-workshop="culture"][open]');
+      assert(await page.$eval('aside details > summary',element=>element.getBoundingClientRect().height>=44),'Guidance remains available on mobile');
+      await page.click('aside details > summary');
+      await snap('theme-guided-culture-'+width);
+      assert(await page.$eval('dialog[open]',element=>element.scrollWidth<=element.clientWidth+1));
+      await page.keyboard.press('Escape');await page.waitForSelector('[data-theme-closed]');
+      await visit('market',width);await button('Vendre ma production');await page.waitForSelector('[data-screen="lots"]');
+      await snap('theme-operations-market-'+width);
+      await button('Gérer mon activité','nav[aria-label="Espaces de cet essai"]');
+      await page.waitForSelector('[aria-label="Développer ma boutique en ligne"]');
+      await snap('theme-operations-business-'+width);
+      results.push({width,firstCultureRoll:true,escapeCloses:true,guidanceVisible:true,operationsNavigation:true});
+    }
+  } else {
   for(const width of [320,390,1440]){
     await visit('equipment',width);await textReady('Le rayon matériel');await snap(`equipment-${width}`);
     await page.waitForSelector('button[aria-label="Voir LED spéciale 300 W"]');
@@ -70,6 +97,7 @@ try{
   }
   await page.evaluateOnNewDocument(()=>{Storage.prototype.getItem=()=>{throw new Error('Storage denied')};Storage.prototype.setItem=()=>{throw new Error('Storage denied')};Storage.prototype.removeItem=()=>{throw new Error('Storage denied')};});
   await visit('warehouse',390,false);await page.waitForSelector('[data-warehouse-slot="lighting"]');await page.click('[data-warehouse-slot="lighting"]');await button('Niveau 2 ·');await page.waitForFunction(()=>window.__progress?.complete===true);results.push({lesson:'warehouse',storageDenied:true});
+  }
   assert.deepEqual(api,[]);assert.deepEqual(errors,[]);console.log(JSON.stringify({passed:true,results,api,errors}));
 }catch(error){if(page)await page.screenshot({path:resolve(output,'failure.png'),fullPage:true});console.error(error);console.error(await page?.evaluate(()=>[...document.querySelectorAll('button')].filter(b=>b.getClientRects().length).map(b=>({text:b.textContent,aria:b.getAttribute('aria-label'),disabled:b.disabled})))) ;process.exitCode=1;}
-finally{await writeFile(resolve(output,'report.json'),JSON.stringify({passed:!process.exitCode,results,api,errors},null,2));await browser?.close();await server.close();}
+finally{await writeFile(resolve(output,themeOnly?'theme-report.json':'report.json'),JSON.stringify({passed:!process.exitCode,results,api,errors},null,2));await browser?.close();await server.close();}

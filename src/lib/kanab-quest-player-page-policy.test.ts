@@ -141,14 +141,18 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).toContain('"/api/arena/placard/bootstrap"');
     expect(gameClient).toContain('"/api/arena/placard/session"');
     expect(playerShell).toContain("<KqPlacardLobby");
-    expect(placardMap).toContain('src="/placard/map/placard-world-breton-v3.webp"');
+    expect(placardMap).toContain('src={KQ_PLACARD_MAP_SCENE.image}');
     expect(placardMap).toContain('loading="eager" fetchPriority="high"');
   });
 
   it("opens the recommended investment directly without forcing it into the cart", () => {
     expect(placardHud).toContain("onOpenShop(nextGoal.equipment.code)");
     expect(playerShell).toContain("initialEquipmentCode={requestedEquipmentCode}");
-    expect(boosterShop).toContain("initialEquipmentCode={initialEquipmentCode}");
+    expect(playerShellJsxProp("KqWarehouseEntry", "initialEquipmentCode")).toBe("requestedEquipmentCode");
+    expect(playerShellJsxProp("KqWarehouseEntry", "initialShopOpen")).toBe("autoOpenEquipmentCatalog");
+    expect(playerShellJsxProp("KqSupportBoosterShop", "initialSection")).toBe("shopSection");
+    expect(playerShellJsxProp("KqSupportBoosterShop", "key")).toBeUndefined();
+    expect(boosterShop).not.toContain("KqEquipmentCatalogModal");
     expect(equipmentCatalog).toContain("useState<string | null>(recommendedEquipmentCode)");
     expect(equipmentCatalog).toContain("data-recommended={equipment.code === recommendedEquipmentCode || undefined}");
     expect(equipmentCatalog).toContain("Objectif conseillé");
@@ -343,7 +347,7 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).toContain("if (!isPlayerMode && snapshot.game)");
     expect(gameClient).toContain("if (hydrated && !isPlayerMode)");
     expect(gameClient).toContain("if (!hydrated || isPlayerMode) return");
-    expect(gameClient).toContain("if (isPlayerMode) {\n            setState(startKqGame(Date.now()))");
+    expect(gameClient).toMatch(/if \(isPlayerMode\) \{\s+setState\(startKqGame\(Date\.now\(\)\)\)/);
   });
 
   it("shows player links only from the server-provided access state", () => {

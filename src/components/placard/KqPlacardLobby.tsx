@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowRight, Compass } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getKqNextEquipmentGoal } from "@/lib/kanab-quest-equipment";
 import { getKqPlacardNextAction } from "@/lib/kanab-quest-hub";
@@ -84,18 +85,18 @@ export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding }
   const overflowUnits = exposedLots.reduce((total, lot) => total + lot.projection.capacity!.overflowUnits, 0);
   const deadline = exposedLots.map(lot => lot.projection.capacity?.overflowDeadlineAt).filter((date): date is string => Boolean(date)).sort((left, right) => Date.parse(left) - Date.parse(right))[0];
   const deadlineLabel = deadline ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" }).format(new Date(deadline)) : null;
-  const recommended = overflowUnits > 0 ? "harvests" : nextAction?.destination;
+  const recommended = overflowUnits > 0 ? "harvests" : nextAction?.destination === "shop" ? "workshop" : nextAction?.destination;
   const tents = snapshot ? getKqProductionUnits(snapshot.productionUnits) : null;
 
   return <main className={styles.lobby} data-placard-lobby>
     {overflowUnits > 0 ? <section className={styles.nextAction} aria-label="À faire maintenant" data-priority="storage">
-      <Compass size={23} aria-hidden="true" />
+      <span className={styles.guidePortrait} aria-hidden="true"><Image src="/sylvain.png" alt="" width={88} height={88} /></span>
       <div><span>Récolte à protéger</span><p>{(overflowUnits / 10).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g sans contenant</p><small>{deadlineLabel ? `Prochaine vente automatique au grossiste : le ${deadlineLabel} (heure de Paris).` : "Ce surplus est en attente de stockage. Ouvre tes récoltes pour connaître son échéance."}</small></div>
       <button type="button" onClick={() => onOpen("harvests", { harvestSection: "storage" })}>Protéger ma récolte<ArrowRight size={17} aria-hidden="true" /></button>
     </section> : nextAction ? <section className={styles.nextAction} aria-label="À faire maintenant">
-      <Compass size={23} aria-hidden="true" />
+      <span className={styles.guidePortrait} aria-hidden="true"><Image src="/sylvain.png" alt="" width={88} height={88} /></span>
       <div><span>À faire maintenant</span><p>{nextAction.title}</p></div>
-      <button type="button" onClick={() => onOpen(nextAction.destination, nextAction.destination === "shop" ? { catalog: true, equipmentCode: nextGoal?.equipment.code } : undefined)}>{nextAction.buttonLabel}<ArrowRight size={17} aria-hidden="true" /></button>
+      <button type="button" onClick={() => onOpen(nextAction.destination === "shop" ? "workshop" : nextAction.destination, nextAction.destination === "shop" ? { catalog: true, equipmentCode: nextGoal?.equipment.code } : undefined)}>{nextAction.buttonLabel}<ArrowRight size={17} aria-hidden="true" /></button>
     </section> : !error ? <div className={styles.loading} role="status">Ton quartier se prépare…</div> : null}
     <KqPlacardMap onOpen={onOpen} onOpenCollection={onOpenCollection} activeRun={snapshot?.activeRun} cashCents={snapshot?.cashCents ?? null} tents={tents} readyLotCount={snapshot?.readyLotCount} availableFlowerCount={snapshot?.availableFlowerCount} recommended={recommended} highlightedBuilding={highlightedBuilding} />
     {error ? <p className={styles.status} role="status">Ton résumé est indisponible. Les activités restent accessibles. <button type="button" onClick={() => { setError(false); setRevision(value => value + 1); }}>Réessayer</button></p> : null}

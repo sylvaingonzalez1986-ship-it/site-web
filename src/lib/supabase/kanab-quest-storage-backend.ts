@@ -17,7 +17,10 @@ function databaseError(message: string): never {
     storage_insufficient_cash: "Trésorerie insuffisante pour cette installation.",
     storage_lot_unavailable: "Ce lot n’est plus disponible dans ton entrepôt.",
     storage_invalid_quantity: "Choisis entre 1 et 1 000 contenants par achat.",
+    warehouse_storage_purchase: "Ajoute ou agrandis une zone de stockage sur le plan de l’entrepôt pour acheter les contenants correspondants.",
+    warehouse_storage_method_not_installed: "Cette méthode de conservation n’est pas installée dans une zone du plan.",
     storage_prepared_overflow: "Ce stock transformé nécessite des contenants supplémentaires.",
+    warehouse_wholesale_exhausted: "La capacité d’achat des grossistes est épuisée. Elle revient 24 h après chaque vente.",
   };
   for (const [code, explanation] of Object.entries(messages)) if (message.includes(code)) throw new Error(explanation);
   throw new Error(`[supabase:storage] ${message}`);

@@ -1,3 +1,5 @@
+import { getKqWorkshopProductArtwork } from "./kanab-quest-warehouse-product-artwork";
+
 export type KqEquipmentArtwork = {
   src: string;
   alt: string;
@@ -5,8 +7,8 @@ export type KqEquipmentArtwork = {
 
 export const KQ_EQUIPMENT_ARTWORK: Readonly<Record<string, KqEquipmentArtwork>> = {
   "DRYING-ROOM": {
-    src: "/app/kanab-quest/equipment/equipment-DRYING-ROOM-hero-v1.webp",
-    alt: "Pièce séchoir ouverte, aux montants turquoise et aux fleurs suspendues sur des rails en bois",
+    src: "/placard/equipment-sylvain-v1/drying-1.webp",
+    alt: "Séchoir compact en bois et turquoise, illustration du matériel du jeu",
   },
   "TENT-080-STARTER": {
     src: "/app/kanab-quest/equipment/equipment-TENT-080-STARTER-hero-v2.webp",
@@ -21,39 +23,39 @@ export const KQ_EQUIPMENT_ARTWORK: Readonly<Record<string, KqEquipmentArtwork>> 
     alt: "Grande tente de culture noire dotée de nombreux conduits et de renforts orange",
   },
   "LED-150-STARTER": {
-    src: "/app/kanab-quest/equipment/equipment-LED-150-STARTER-hero-v2.webp",
-    alt: "Panneau LED compact suspendu dont les diodes diffusent une lumière chaude",
+    src: "/placard/equipment-sylvain-v1/lighting-1.webp",
+    alt: "Éclairage compact suspendu à son support en bois, illustration du matériel du jeu",
   },
   "LED-300": {
-    src: "/app/kanab-quest/equipment/equipment-LED-300-hero-v2.webp",
-    alt: "Rampe LED réglable à deux panneaux lumineux dans un cadre turquoise",
+    src: "/placard/equipment-sylvain-v1/lighting-2.webp",
+    alt: "Éclairage standard turquoise suspendu à son support en bois",
   },
   "LED-500": {
-    src: "/app/kanab-quest/equipment/equipment-LED-500-hero-v2.webp",
-    alt: "Large cadre LED premium composé de six barres lumineuses parallèles",
+    src: "/placard/equipment-sylvain-v1/lighting-3.webp",
+    alt: "Éclairage haut de gamme turquoise avec son boîtier de commande",
   },
   "AIR-STARTER": {
-    src: "/app/kanab-quest/equipment/equipment-AIR-STARTER-hero-v2.webp",
-    alt: "Petit extracteur cylindrique rafistolé avec variateur manuel et colliers turquoise",
+    src: "/placard/equipment-sylvain-v1/air-1.webp",
+    alt: "Petit extracteur turquoise monté sur un support en bois",
   },
   "AIR-EC6": {
-    src: "/app/kanab-quest/equipment/equipment-AIR-EC6-hero-v2.webp",
-    alt: "Extracteur cylindrique renforcé avec turbine visible et commande de vitesse",
+    src: "/placard/equipment-sylvain-v1/air-2.webp",
+    alt: "Extracteur standard turquoise avec sa turbine et son conduit",
   },
   "CLIMATE-SMART": {
-    src: "/app/kanab-quest/equipment/equipment-CLIMATE-SMART-hero-v2.webp",
-    alt: "Système climatique complet réunissant filtre, extracteur, contrôleur et sondes",
+    src: "/placard/equipment-sylvain-v1/climate-3.webp",
+    alt: "Système climatique haut de gamme, illustration cartoon du matériel du jeu",
   },
   "SIFT-TRAY": {
-    src: "/app/kanab-quest/equipment/equipment-SIFT-TRAY-hero-v2.webp",
+    src: "/placard/equipment-sylvain-v1/workshop-sift-1.webp",
     alt: "Deux plateaux de tamisage en bois équipés de grilles aux mailles différentes",
   },
   "WASHER-25L": {
-    src: "/app/kanab-quest/equipment/equipment-WASHER-25L-hero-v2.webp",
+    src: "/placard/equipment-sylvain-v1/workshop-washer-1.webp",
     alt: "Laveuse compacte avec couvercle ouvert, tuyau de vidange et quatre sacs filtrants",
   },
   "AUTO-SIEVE": {
-    src: "/app/kanab-quest/equipment/equipment-AUTO-SIEVE-hero-v2.webp",
+    src: "/placard/equipment-sylvain-v1/workshop-collector-1.webp",
     alt: "Pile compacte de cinq tamis circulaires en inox avec capot transparent et moteur vibrant latéral",
   },
   "WASHER-75G": {
@@ -65,11 +67,11 @@ export const KQ_EQUIPMENT_ARTWORK: Readonly<Record<string, KqEquipmentArtwork>> 
     alt: "Système automatisé en inox réunissant trois cuves, une plateforme opérateur et un pupitre de commande",
   },
   "STATIC-PLASMA": {
-    src: "/app/kanab-quest/equipment/equipment-STATIC-PLASMA-hero-v2.webp",
+    src: "/placard/equipment-sylvain-v1/workshop-separator-1.webp",
     alt: "Séparateur électrostatique vitré avec deux plaques internes, sécheur d’air bleu et compresseur",
   },
   "PRESS-0600": {
-    src: "/app/kanab-quest/equipment/equipment-PRESS-0600-hero-v2.webp",
+    src: "/placard/equipment-sylvain-v1/workshop-press-1.webp",
     alt: "Petite presse à vis dans un bâti turquoise avec deux plaques chauffantes opposées",
   },
   "PRESS-2T": {
@@ -85,20 +87,20 @@ export const KQ_EQUIPMENT_ARTWORK: Readonly<Record<string, KqEquipmentArtwork>> 
     alt: "Imposante presse d'atelier sur pieds avec vérin central et grandes plaques chauffantes",
   },
   "FREEZE-DRYER": {
-    src: "/app/kanab-quest/equipment/equipment-FREEZE-DRYER-hero-v2.webp",
+    src: "/placard/equipment-sylvain-v1/workshop-dryer-1.webp",
     alt: "Lyophilisateur compact dont la porte ronde dévoile quatre plateaux métalliques",
   },
   "SOLAR-BACKUP": {
-    src: "/app/kanab-quest/equipment/equipment-SOLAR-BACKUP-hero-v2.webp",
-    alt: "Panneau solaire pliant relié à une batterie de secours portable renforcée",
+    src: "/placard/equipment-sylvain-v1/solar-1.webp",
+    alt: "Panneau solaire de secours, illustration cartoon du matériel du jeu",
   },
   "SECURITY-CAMERA": {
-    src: "/app/kanab-quest/equipment/equipment-SECURITY-CAMERA-hero-v3.webp",
-    alt: "Caméra de surveillance au boîtier crème intact, objectif bleu et support turquoise",
+    src: "/placard/equipment-sylvain-v1/camera-1.webp",
+    alt: "Caméra de surveillance, illustration cartoon du matériel du jeu",
   },
   "SECURITY-DOG": {
-    src: "/app/kanab-quest/equipment/equipment-SECURITY-DOG-hero-v1.webp",
-    alt: "Chien de garde attentif près de sa niche turquoise et de sa gamelle de nourriture",
+    src: "/placard/equipment-sylvain-v1/dog-1.webp",
+    alt: "Chien de garde du village, illustration cartoon du compagnon de l’entrepôt",
   },
   "SECURITY-FENCE": {
     src: "/app/kanab-quest/equipment/equipment-SECURITY-FENCE-hero-v1.webp",
@@ -113,11 +115,11 @@ export function getKqEquipmentVisualTier(level = 1): 1 | 5 | 10 {
 const EVOLVING_MODELS: Record<string, readonly [string, string, string]> = {
   "TENT-120": ["TENT-080-STARTER", "TENT-120", "TENT-150"],
   "LED-300": ["LED-150-STARTER", "LED-300", "LED-500"],
-  "WASHER-25L": ["WASHER-25L", "WASHER-75G", "TSS-225"],
-  "PRESS-0600": ["PRESS-0600", "PRESS-10T", "PRESS-20T"],
 };
 
 export function getKqEquipmentArtwork(equipmentCode: string, level?: number) {
+  const workshop = getKqWorkshopProductArtwork(equipmentCode, level);
+  if (workshop) return { src: workshop.src, alt: workshop.alt };
   const tier = getKqEquipmentVisualTier(level);
   const model = level === undefined ? equipmentCode : EVOLVING_MODELS[equipmentCode]?.[tier === 10 ? 2 : tier === 5 ? 1 : 0] ?? equipmentCode;
   const artwork = KQ_EQUIPMENT_ARTWORK[model];

@@ -1,12 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ rpc: vi.fn(), from: vi.fn(), shop: vi.fn(), energy: vi.fn() }));
+const mocks = vi.hoisted(() => ({ rpc: vi.fn(), from: vi.fn(), shop: vi.fn(), energy: vi.fn(), warehouse: vi.fn() }));
 vi.mock("./admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc, from: mocks.from }) }));
 vi.mock("./kanab-quest-equipment-backend", () => ({ getKqEquipmentShopSnapshot: mocks.shop }));
 vi.mock("./kanab-quest-energy-backend", () => ({ getKqEnergySummary: mocks.energy }));
+vi.mock("./kanab-quest-warehouse-backend", () => ({ getKqWarehouseProcessingEquipment: mocks.warehouse }));
 import { getKqMarketSnapshot, getKqSharedWorkshop } from "./kanab-quest-market-backend";
 import { startKqGame } from "../kanab-quest-game";
 import { KQ_STARTING_EQUIPMENT_CODES } from "../kanab-quest-equipment";
 import { createKqStorageLot, type KqStorageCapacity } from "../kanab-quest-storage";
+import { createKqWarehouseStarter } from "../kanab-quest-warehouse";
 
 type Row = Record<string, unknown>;
 const user = "11111111-1111-4111-8111-111111111111";
@@ -17,6 +19,7 @@ function response(data: unknown) { bytes += Buffer.byteLength(JSON.stringify(dat
 
 beforeEach(() => {
   vi.clearAllMocks(); bytes = 0; lotColumns = [];
+  mocks.warehouse.mockResolvedValue(null);
   const flowers = Array.from({ length: 4 }, (_, index) => ({
     id: `flower-${index}`, run_id: `run-${index}`, owner_id: user, status: "burned", variety_code: "BUDDIE-001",
     variety_name: "Fleur", quality: 7, battle_stats: { aroma: 7, resin: 7 }, burned_at: "2026-09-13T12:00:00Z",
@@ -63,6 +66,55 @@ beforeEach(() => {
 });
 
 describe("market browsing egress and transactional boundaries", () => {
+  it.each([false, true])("requires the existing storage maturity deadline for physical processing (mature=%s)", async (mature) => {
+    const now = Date.parse("2026-09-13T12:00:00Z");
+    rows.kq_flowers = [rows.kq_flowers[0]];
+    rows.kq_flowers[0].burned_at = new Date(now - (mature ? 6 : 1) * 3_600_000).toISOString();
+    rows.kq_flowers[0].battle_stats = { aroma: 85 };
+    rows.kq_flowers[0].storageCapacity = { totalUnits: 1_200,
+      allocations: [{ containerCode: "GLASS-1L", quantity: 3, storedUnits: 1_200 }], overflowDeadlineAt: null };
+    mocks.warehouse.mockResolvedValue({ equippedCodes: ["PRESS-0600", "TENT-080-STARTER"], operationalCodes: ["PRESS-0600", "TENT-080-STARTER"], levels: { "PRESS-0600": 1 },
+      processingBatchGrams: { "PRESS-0600": 80 }, processingDurationSeconds: { "PRESS-0600": 3_600 }, revision: 1, sourceState: createKqWarehouseStarter() });
+    const lot = (await getKqMarketSnapshot(user, ["flower-0"], { previewOnly: true })).lots[0];
+    const quote = lot.options.find(item => item.route === "rosin-trial")!;
+    expect(quote.available).toBe(mature);
+    expect(quote.blockedReason).toBe(mature ? null : "Séchage et maturation en cours : attends la fin de cette étape dans Séchage et stockage avant de transformer ce lot.");
+    expect(lot.options.find(item => item.route === "raw")?.available).toBe(true);
+  });
+
+  it("requires stored capacity for converted lots and preserves historical processing without a warehouse", async () => {
+    const now = Date.parse("2026-09-13T12:00:00Z");
+    rows.kq_flowers = [rows.kq_flowers[0]];
+    rows.kq_flowers[0].burned_at = new Date(now - 6 * 3_600_000).toISOString();
+    rows.kq_flowers[0].battle_stats = { aroma: 85 };
+    const base = await mocks.shop();
+    mocks.shop.mockResolvedValue({ ...base, equippedCodes: [...base.equippedCodes, "PRESS-0600"] });
+    mocks.warehouse.mockResolvedValue({ equippedCodes: ["PRESS-0600", "TENT-080-STARTER"], operationalCodes: ["PRESS-0600", "TENT-080-STARTER"], levels: { "PRESS-0600": 1 },
+      processingBatchGrams: { "PRESS-0600": 80 }, processingDurationSeconds: { "PRESS-0600": 3_600 }, revision: 1, sourceState: createKqWarehouseStarter() });
+    const converted = (await getKqMarketSnapshot(user, ["flower-0"], { previewOnly: true })).lots[0];
+    expect(converted.options.find(item => item.route === "rosin-trial")).toMatchObject({ available: false, blockedReason: expect.stringContaining("Range tout ce lot") });
+    mocks.warehouse.mockResolvedValue(null);
+    rows.kq_flowers[0].burned_at = new Date(now - 3_600_000).toISOString();
+    const historical = (await getKqMarketSnapshot(user, ["flower-0"], { previewOnly: true })).lots[0];
+    expect(historical.options.find(item => item.route === "rosin-trial")?.available).toBe(true);
+  });
+
+  it("quotes complete lots with the canonical workshop capacity and snapshots its installed levels", async () => {
+    rows.kq_flowers = [rows.kq_flowers[0]];
+    rows.kq_flowers[0].storageCapacity = { totalUnits: 50_000, allocations: [{ containerCode: "GLASS-1L", quantity: 100, storedUnits: 50_000 }], overflowDeadlineAt: null };
+    const sourceState = createKqWarehouseStarter();
+    const workshopSnapshot = { equippedCodes: ["PRESS-0600", "TENT-080-STARTER"], levels: { "PRESS-0600": 1, "TENT-080-STARTER": 1 } };
+    mocks.warehouse.mockResolvedValue({ ...workshopSnapshot, operationalCodes: workshopSnapshot.equippedCodes, workshopSnapshot,
+      processingBatchGrams: { "PRESS-0600": 80 }, processingDurationSeconds: { "PRESS-0600": 3_600 }, revision: 7, sourceState });
+    await getKqMarketSnapshot(user, ["flower-0"]);
+    const prepared = mocks.rpc.mock.calls.find(([name]) => name === "rpc_kq_prepare_market_lot")![1];
+    expect(prepared.p_equipment_codes).toEqual(["PRESS-0600", "TENT-080-STARTER"]);
+    expect(prepared.p_harvest_grams).toBe(5_000);
+    expect(prepared.p_options.find((quote: { route: string }) => quote.route === "rosin-trial")).toMatchObject({
+      processedInputGrams: 5_000, remainderGrams: 0, processingBatchGrams: 80,
+      warehouseRevision: 7, warehouseState: sourceState, workshopSnapshot, processingEquipmentCodes: ["PRESS-0600"], processingDurationSeconds: 63 * 3_600,
+    });
+  });
   it("keeps the same offers while cutting measured fixture response bytes by more than half", async () => {
     const persisted = await getKqMarketSnapshot(user);
     const before = bytes;

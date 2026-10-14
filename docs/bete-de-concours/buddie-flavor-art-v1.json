@@ -1,0 +1,235 @@
+{
+  "generator": "Built-in image_gen",
+  "transparentBackground": true,
+  "size": 192,
+  "assets": [
+    {
+      "code": "agrumes",
+      "image": "/placard/flavors-v1/agrumes.webp",
+      "generatedFile": "exec-7c449386-434e-47d3-8f0b-705d29b4e5aa.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One tightly grouped trio of citrus wedges: lemon yellow, orange orange, and lime green. Three thick cut wedges clearly showing segments."
+    },
+    {
+      "code": "ananas",
+      "image": "/placard/flavors-v1/ananas.webp",
+      "generatedFile": "exec-2c54763e-1479-4aa0-bac7-7deea26e2a29.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One small whole golden pineapple with a thick green spiky crown, with one cut yellow pineapple round leaning at its base."
+    },
+    {
+      "code": "anis",
+      "image": "/placard/flavors-v1/anis.webp",
+      "generatedFile": "exec-e1999d5f-154f-4f9d-810f-653e17239412.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: Two brown star anise pods, their distinctive six-to-eight-pointed star shape and seeds clearly visible. Nothing else."
+    },
+    {
+      "code": "baies",
+      "image": "/placard/flavors-v1/baies.webp",
+      "generatedFile": "exec-b0faa210-1c74-4eb6-837c-e377bf46b734.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: A small tight cluster of dark blue blueberries and deep red currants with a small green leaf. No bowl."
+    },
+    {
+      "code": "bois",
+      "image": "/placard/flavors-v1/bois.webp",
+      "generatedFile": "exec-70b4e4d1-6408-4b12-8eaf-7998b5acf6ff.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: Two short warm brown wood logs with visible cut rings and a little rough bark. Nothing growing out of them."
+    },
+    {
+      "code": "cafe",
+      "image": "/placard/flavors-v1/cafe.webp",
+      "generatedFile": "exec-1442ddd4-5ec6-44ce-b8e1-794a13f6fa14.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: A generous handful of roasted brown coffee beans, some showing their central cut, three large foreground beans. No cup, no liquid."
+    },
+    {
+      "code": "cerise",
+      "image": "/placard/flavors-v1/cerise.webp",
+      "generatedFile": "exec-19fa8e45-3858-47e9-8870-b2ad6acff949.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: Two glossy deep red cherries joined by green stems and one green leaf."
+    },
+    {
+      "code": "chocolat",
+      "image": "/placard/flavors-v1/chocolat.webp",
+      "generatedFile": "exec-da19e8af-4b26-4ee6-ab29-1aa3813b96e0.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: A chunky dark brown chocolate bar of four squares with one square broken off. Cream highlights show the molded edges."
+    },
+    {
+      "code": "citron",
+      "image": "/placard/flavors-v1/citron.webp",
+      "generatedFile": "exec-009f6cba-c421-4b50-bee3-71f7978bac01.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One whole bright golden yellow lemon with one green leaf and one cut lemon wedge."
+    },
+    {
+      "code": "creme",
+      "image": "/placard/flavors-v1/creme.webp",
+      "generatedFile": "exec-7a5801b9-79dd-49c4-9cb6-9c35265109ac.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One low cream-colored ceramic bowl filled with a clearly defined ivory whipped cream spiral. No fruit, no chocolate, no spoon."
+    },
+    {
+      "code": "diesel",
+      "image": "/placard/flavors-v1/diesel.webp",
+      "generatedFile": "exec-ac526659-062b-4c9e-9720-7fa92796a0b5.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One small vintage forest-green metal fuel jerrycan with a short pouring spout and one amber droplet. No text, letters, badges, or symbols."
+    },
+    {
+      "code": "encens",
+      "image": "/placard/flavors-v1/encens.webp",
+      "generatedFile": "exec-b8986b4f-bb35-4dbd-8b23-86e2432c8e3f.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: Two thin brown incense sticks leaning diagonally in a small ochre holder with one graceful pale cream smoke curl. The holder is part of the subject."
+    },
+    {
+      "code": "epices",
+      "image": "/placard/flavors-v1/epices.webp",
+      "generatedFile": "exec-196eeebd-4598-415b-8c81-0fd9378cc898.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: Two short cinnamon sticks and one ochre spice powder mound. No star anise, no black pepper, no chili."
+    },
+    {
+      "code": "floral",
+      "image": "/placard/flavors-v1/floral.webp",
+      "generatedFile": "exec-0903305d-22cc-41e0-8613-22bd0b94b727.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: A small cluster of three cream and soft pink wildflowers with golden centers and green leaves."
+    },
+    {
+      "code": "fraise",
+      "image": "/placard/flavors-v1/fraise.webp",
+      "generatedFile": "exec-e5914a73-6cd6-4b75-9cfe-7948982a8119.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: Two ripe red strawberries with golden seeds and green leafy tops. One berry is cut in half."
+    },
+    {
+      "code": "fromage",
+      "image": "/placard/flavors-v1/fromage.webp",
+      "generatedFile": "exec-e7ae0d49-962a-416f-9f5a-e2c551278d51.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One creamy yellow cheese wedge with a few distinctive holes, next to a small ivory brie wedge with soft rind. No plate."
+    },
+    {
+      "code": "fruite",
+      "image": "/placard/flavors-v1/fruite.webp",
+      "generatedFile": "exec-3b4557a4-47c1-482b-a524-acf9a0639e0b.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One golden peach cut in half showing a brown stone, beside a small red apple. A compact arrangement, no bowl."
+    },
+    {
+      "code": "fruits",
+      "image": "/placard/flavors-v1/fruits.webp",
+      "generatedFile": "exec-d879f704-94a6-42da-8bc3-5d772b75b884.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: A small wicker fruit bowl with one red apple, one yellow pear, a few purple grapes and one green leaf. Simple readable silhouette."
+    },
+    {
+      "code": "fruits-des-bois",
+      "image": "/placard/flavors-v1/fruits-des-bois.webp",
+      "generatedFile": "exec-f4b3a5a7-9fd7-48fa-8257-0c14b8d41026.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: A tight cluster of dark purple blackberries and two red raspberries with serrated green woodland leaves. No blueberries, no bowl."
+    },
+    {
+      "code": "fruits-tropicaux",
+      "image": "/placard/flavors-v1/fruits-tropicaux.webp",
+      "generatedFile": "exec-f77328d8-6509-4cc1-8cea-d93eeedc420e.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One golden mango slice, one purple passionfruit half showing yellow seeds and one tiny banana in a compact cluster. No bowl."
+    },
+    {
+      "code": "gingembre",
+      "image": "/placard/flavors-v1/gingembre.webp",
+      "generatedFile": "exec-20811d1c-16ce-4671-96ad-8eaf749fbf3a.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One knobbly golden beige ginger root with two cut golden discs showing the pale yellow interior."
+    },
+    {
+      "code": "kiwi",
+      "image": "/placard/flavors-v1/kiwi.webp",
+      "generatedFile": "exec-e65069e8-8db3-4811-afe4-d737ce2d0ac9.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One fuzzy brown kiwi fruit and one cut kiwi half with bright green flesh and a readable ring of tiny black seeds."
+    },
+    {
+      "code": "mandarine",
+      "image": "/placard/flavors-v1/mandarine.webp",
+      "generatedFile": "exec-f3bcc6b2-14dc-476e-9c48-c592afb2e49b.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One small orange mandarin fruit with loosened orange peel curling away and three separated mandarin segments. No full orange slice."
+    },
+    {
+      "code": "mangue",
+      "image": "/placard/flavors-v1/mangue.webp",
+      "generatedFile": "exec-0e485c26-6916-4371-999c-f9ee274b2804.png",
+      "prompt": "Use case: stylized-concept. Asset type: single square flavor illustration for a French retro cartoon collectible game. Create one isolated ripe mango fruit with one cut orange mango cheek and a small forest green leaf, clearly recognizable at 48px. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, golden yellow and orange with cream highlights. Straightforward attractive object drawing, NOT a character. Center subject, occupies 78% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no plate, no environment, no emoji, no faces, no watermarks. This is the MANGUE flavor icon; keep fruit silhouette very clear."
+    },
+    {
+      "code": "menthe",
+      "image": "/placard/flavors-v1/menthe.webp",
+      "generatedFile": "exec-9657e5ed-7650-42e8-b66e-3988a46a8d62.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: A short sprig of fresh mint with four large textured serrated green leaves."
+    },
+    {
+      "code": "miel",
+      "image": "/placard/flavors-v1/miel.webp",
+      "generatedFile": "exec-530db312-1929-4abb-9891-b6740076e2ce.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: A small golden honey jar with no label, next to a wooden honey dipper dripping a thick amber honey drop."
+    },
+    {
+      "code": "musque",
+      "image": "/placard/flavors-v1/musque.webp",
+      "generatedFile": "exec-72563276-93ea-466b-89b2-693bdf1f904a.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One small round amber perfume bottle with a dark green stopper and one small curled pale scent wisp; no label. Represents musky aromatic notes, not fruit or flowers."
+    },
+    {
+      "code": "myrtille",
+      "image": "/placard/flavors-v1/myrtille.webp",
+      "generatedFile": "exec-1a171d64-f2a8-447c-beac-46a093633924.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: Three large plump blue-purple blueberries with distinct star-shaped crowns and one small green leaf. No other berries."
+    },
+    {
+      "code": "oignon",
+      "image": "/placard/flavors-v1/oignon.webp",
+      "generatedFile": "exec-30cdaf01-2775-4c59-98f1-d2ecd21ee1fd.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One golden-brown onion bulb and one cut onion half showing ivory concentric rings, with a little dry skin."
+    },
+    {
+      "code": "orange",
+      "image": "/placard/flavors-v1/orange.webp",
+      "generatedFile": "exec-f7b98332-f67b-49b7-8fd6-30a4e674fb2a.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One round ripe orange with green leaf and a half orange cut open showing bright orange segments. Thick orange rind."
+    },
+    {
+      "code": "pin",
+      "image": "/placard/flavors-v1/pin.webp",
+      "generatedFile": "exec-61e6ff28-4368-44a4-ba36-92408b562822.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One short fresh deep green pine needle sprig beside a small warm brown pine cone."
+    },
+    {
+      "code": "poivre",
+      "image": "/placard/flavors-v1/poivre.webp",
+      "generatedFile": "exec-aec8c027-5580-410c-b3c3-a2556b4ce320.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One small vintage turned wooden pepper mill with a few clearly visible dark peppercorns clustered at its foot. No salt."
+    },
+    {
+      "code": "pomme-confite",
+      "image": "/placard/flavors-v1/pomme-confite.webp",
+      "generatedFile": "exec-d90771ae-a099-4752-b536-6454bfb1a774.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One red candied apple on a short wooden stick, thick shiny reddish amber sugar coating with a golden highlight and small caramel drip."
+    },
+    {
+      "code": "pomme-verte",
+      "image": "/placard/flavors-v1/pomme-verte.webp",
+      "generatedFile": "exec-5a825870-b486-4634-aee9-bbaf15f5dfeb.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One bright green apple with a leaf, and one crisp white apple wedge with green skin. Not a red apple."
+    },
+    {
+      "code": "raisin",
+      "image": "/placard/flavors-v1/raisin.webp",
+      "generatedFile": "exec-1af36286-1597-452b-a206-708ea2b25791.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One compact cluster of purple grapes with a small curling stem and one green vine leaf."
+    },
+    {
+      "code": "sous-bois",
+      "image": "/placard/flavors-v1/sous-bois.webp",
+      "generatedFile": "exec-a2ccc90c-56f4-4490-a6c5-06ea904b10b8.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: A little patch of deep green moss with a fallen ochre oak leaf and one tiny brown woodland mushroom. Compact standalone object cluster."
+    },
+    {
+      "code": "terre",
+      "image": "/placard/flavors-v1/terre.webp",
+      "generatedFile": "exec-6c7b88c5-59a5-4244-9f59-3974f99a176e.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: A small dark brown fertile soil mound showing a few rounded earth clumps and one small pale pebble. No plant, no leaves, no gardening tools."
+    },
+    {
+      "code": "truffe",
+      "image": "/placard/flavors-v1/truffe.webp",
+      "generatedFile": "exec-d4a512fa-45e6-4617-aa48-244c30dc9f10.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE square flavor illustration for a French retro cartoon collectible game. Warm 1930s grocery illustration style, confident very thick dark forest-green ink outlines, simple rounded shapes, subtle vintage printed grain, warm muted natural colors with cream highlights. Attractive object drawing, NOT a character. Clearly recognizable at 48px. Center subject, occupies 76% of square, generous transparent margins. Genuine transparent background. No writing, no letters, no labels, no border, no circle badge, no environment, no emoji, no faces, no watermarks. Subject: One dark knobbly round black truffle mushroom with one cut half revealing cream and brown marbling. No other mushrooms."
+    }
+  ]
+}

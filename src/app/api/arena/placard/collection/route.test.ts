@@ -10,6 +10,7 @@ vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend })
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
   getKqPlayerCollectionSnapshot,
   getKqPlayerOwnedBuddieCodes,
+  getKqPlayerBuddieRotation: vi.fn().mockResolvedValue({ requiredDistinctBuddies: 5, recentBuddieCodes: [] }),
 }));
 
 import { GET } from "@/app/api/arena/placard/collection/route";
