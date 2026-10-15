@@ -1,5 +1,6 @@
 import type { KqMarketRouteCode } from "./kanab-quest-market";
 import { getKqActiveCustomerDemand, getKqOnlineFlowerReferenceCents, type KqAppliedCustomerDemand, type KqCustomerDemandSnapshot } from "./kanab-quest-customer-demand";
+import { getKqMarketingFit, type KqMarketingCampaignActive } from "./kanab-quest-marketing";
 
 /** Game economy. Prices are final virtual cents; rates mirror kq_online_* SQL. */
 export const KQ_ONLINE_FEE_PERCENT = 2.5;
@@ -53,13 +54,15 @@ export type KqOnlineSale = {
   formatGrams: 5 | 10; packetPriceCents: number; payoutCents: number; netPayoutCents: number;
   feesCents: number; packagingCostCents: number; satisfaction: number;
 };
+export type KqOnlineMarketingCampaign = { version?: 1; id: string; code: KqOnlineMarketingCode; angle: KqOnlineMarketingAngle; startedAt: string; endsAt: string } | KqMarketingCampaignActive;
 export type KqOnlineSnapshot = {
   version: 1; serverNow: string; settledUntil: string;
   site: { tier: KqOnlineSiteTier; createdAt: string | null; active: boolean; feePercent: number; paidUntil: string | null; renew: boolean };
   upgrades: Record<KqOnlineUpgradeCode, boolean>; confidence: number; followers: number;
   packaging: Array<{ code: KqOnlinePackagingCode; quantity: number; unitCostCents: number }>;
   listings: KqOnlineListing[];
-  marketing: { active: { id: string; code: KqOnlineMarketingCode; angle: KqOnlineMarketingAngle; startedAt: string; endsAt: string } | null; completedCodes: string[]; cooldowns: Record<string, string> };
+  marketing: { version?: 2; active: KqOnlineMarketingCampaign | null; completedCodes: string[]; cooldowns: Record<string, string>;
+    history?: Array<KqOnlineMarketingCampaign & { completedAt: string }> };
   stats: { visitors: number; orders: number; revenueCents: number; netRevenueCents: number; feesCents: number; packagingCostCents: number; soldGrams: number };
   recentSales: KqOnlineSale[];
 };
@@ -101,14 +104,16 @@ export function getKqOnlineAudience(input: { online: KqOnlineSnapshot; reputatio
   const { online } = input;
   const now = Date.parse(online.serverNow);
   const active = online.marketing.active;
-  const mission = active && Date.parse(active.startedAt) <= now && Date.parse(active.endsAt) > now
+  const mission = active && active.version !== 2 && Date.parse(active.startedAt) <= now && Date.parse(active.endsAt) > now
     ? KQ_ONLINE_MARKETING_MISSIONS.find(item => item.code === active.code) : null;
-  return ((24 + clamp(online.followers, 0, 5000) * .12) * (1 + clamp(input.reputation / 6000, 0, .25))
-    + Math.max(0, input.clients) * 2.4 + (mission?.visitorsPerDay ?? 0)) * clamp(input.advertisingMultiplier ?? 1, 1, 2);
+  const organic = (24 + clamp(online.followers, 0, 5000) * .12) * (1 + clamp(input.reputation / 6000, 0, .25)) + Math.max(0, input.clients) * 2.4;
+  const campaignTraffic = active?.version === 2 && Date.parse(active.launchesAt) <= now && now < Date.parse(active.endsAt) ? active.visitorsPerDay : 0;
+  return (organic + (mission?.visitorsPerDay ?? 0)) * clamp(input.advertisingMultiplier ?? 1, 1, 2) + campaignTraffic;
 }
 
 /** A forecast at current conditions, not a promise; SQL settles each actual sale. */
 export function estimateKqOnlineOffer(input: {
+  listingId?: string;
   route?: KqMarketRouteCode; varietyCode?: string; customerDemand?: KqCustomerDemandSnapshot;
   quality: number; baseUnitCents: number; formatGrams: 5 | 10; packagingCode: string; packetPriceCents: number;
   reputation: number; clients: number; online: KqOnlineSnapshot; activeListingCount?: number; advertisingMultiplier?: number;
@@ -130,7 +135,7 @@ export function estimateKqOnlineOffer(input: {
   const visitorsPerDay = getKqOnlineAudience(input);
   const campaign = input.online.marketing.active;
   const at = Date.parse(input.online.serverNow);
-  const mission = campaign && Date.parse(campaign.startedAt) <= at && at < Date.parse(campaign.endsAt)
+  const mission = campaign && campaign.version !== 2 && Date.parse(campaign.startedAt) <= at && at < Date.parse(campaign.endsAt)
     ? KQ_ONLINE_MARKETING_MISSIONS.find(item => item.code === campaign.code) : null;
   const matchedAudience = visitorsPerDay + (mission && campaign ? mission.visitorsPerDay
     * clamp(input.advertisingMultiplier ?? 1, 1, 2) * (getKqOnlineMarketingFit(campaign.angle, quality, priceRatio) - 1) : 0);
@@ -138,16 +143,20 @@ export function estimateKqOnlineOffer(input: {
   const conversion = .025 * tier.conversionMultiplier * (input.online.upgrades.photography ? 1.1 : 1)
     * (input.online.upgrades.branding ? 1.08 : 1) * (.4 + .6 * clamp(input.online.confidence, 0, 100) / 100);
   const qualityInterest = .75 + .25 * clamp((quality - 5.8) / 3.7, 0, 1);
-  const competing = Math.max(1, input.activeListingCount ?? input.online.listings.filter(item => item.status === "active" && item.remainingPackets > 0).length);
+  const competing = Math.max(1, input.activeListingCount ?? input.online.listings.filter(item => item.status === "active" && item.remainingPackets > 0 && item.qualityScore >= 5.8).length);
   const allowed = validPrice && quality >= 5.8 && input.online.site.active && (!packaging.requiresBranding || input.online.upgrades.branding);
-  const ordersPerDay = allowed ? matchedAudience * conversion * getKqOnlinePriceAcceptance(priceRatio) * qualityInterest * 5 / input.formatGrams / competing : 0;
+  const v2Live = campaign?.version === 2 && Date.parse(campaign.launchesAt) <= at && at < Date.parse(campaign.endsAt);
+  const organicAudience = campaign?.version === 2 ? visitorsPerDay - (v2Live ? campaign.visitorsPerDay : 0) : visitorsPerDay;
+  const targetedAudience = v2Live && campaign.listingId === input.listingId ? campaign.visitorsPerDay * getKqMarketingFit(campaign.angle, quality, priceRatio) : 0;
+  const audienceShare = campaign?.version === 2 ? organicAudience / competing + targetedAudience : matchedAudience / competing;
+  const ordersPerDay = allowed ? audienceShare * conversion * getKqOnlinePriceAcceptance(priceRatio) * qualityInterest * 5 / input.formatGrams : 0;
   const feeCents = validPrice ? Math.round(input.packetPriceCents * KQ_ONLINE_FEE_PERCENT / 100) : 0;
   const vatCents = validPrice ? Math.round(input.packetPriceCents / 6) : 0;
   return {
     ...(customerDemand ? { customerDemand } : {}),
     referencePacketPriceCents, priceRatio, satisfaction,
     satisfactionLabel: satisfaction >= 75 ? "satisfied" as const : satisfaction >= 60 ? "neutral" as const : "disappointed" as const,
-    visitorsPerDay, ordersPerDay, gramsPerDay: ordersPerDay * input.formatGrams,
+    visitorsPerDay: campaign?.version === 2 ? organicAudience + targetedAudience : visitorsPerDay, ordersPerDay, gramsPerDay: ordersPerDay * input.formatGrams,
     feeCents, packagingCostCents: packaging.unitCostCents,
     // Packaging is already paid. This contribution estimate is NOT cash credited or total profit.
     netBeforeProductionCents: validPrice ? input.packetPriceCents - vatCents - feeCents - packaging.unitCostCents : 0,
@@ -163,7 +172,7 @@ export function createKqOnlinePreview(nowMs: number): KqOnlineSnapshot {
     site: { tier: "basic", createdAt: now, active: true, feePercent: KQ_ONLINE_FEE_PERCENT, paidUntil: null, renew: false },
     upgrades: { photography: false, branding: false }, confidence: 60, followers: 0,
     packaging: KQ_ONLINE_PACKAGING.map(item => ({ code: item.code, quantity: 0, unitCostCents: item.unitCostCents })), listings: [],
-    marketing: { active: null, completedCodes: [], cooldowns: {} },
+    marketing: { version: 2, active: null, completedCodes: [], cooldowns: {}, history: [] },
     stats: { visitors: 0, orders: 0, revenueCents: 0, netRevenueCents: 0, feesCents: 0, packagingCostCents: 0, soldGrams: 0 }, recentSales: [],
   };
 }

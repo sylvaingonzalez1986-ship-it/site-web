@@ -43,7 +43,7 @@ export function KqPlacardNavigation({ active, onNavigate, onHighlight }: {
     else onNavigate(key);
   };
   const items = (mobile = false) => <>
-    <div className={styles.navBrand}><span>Les Chanvriers Bretons</span><strong>KANAB QUEST<span>.</span></strong><small>Ton quartier, tes récoltes.</small></div>
+    <div className={styles.navBrand}><span>Les Chanvriers Bretons</span><strong>KANAB QUEST</strong><small>Ton quartier, tes récoltes.</small></div>
     <nav aria-label={mobile ? "Toutes les activités de Kanab Quest" : "Navigation de Kanab Quest"}>
       <div className={styles.navGroup}>{primary.map(item => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} onClick={() => navigate(item.key)} onMouseEnter={() => onHighlight(item.building)} onMouseLeave={() => onHighlight(null)} onFocus={() => onHighlight(item.building)} onBlur={() => onHighlight(null)}><item.icon size={19} aria-hidden="true" /><span>{item.label}</span></button>)}</div>
       <div className={styles.navGroup}><small>Pour aller plus loin</small>{secondary.map(item => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} onClick={() => navigate(item.key)} onMouseEnter={() => onHighlight(item.building)} onMouseLeave={() => onHighlight(null)} onFocus={() => onHighlight(item.building)} onBlur={() => onHighlight(null)}><item.icon size={18} aria-hidden="true" /><span>{item.label}</span></button>)}</div>

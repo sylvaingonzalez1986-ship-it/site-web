@@ -39,6 +39,7 @@ try {
   '20260921000100_kq_business_calendar.sql','20261010000200_storage_curing.sql','20261010000300_storage_capacity.sql',
   '20261010000700_storage_curing_six_hours.sql','20261010000800_storage_overflow_one_hour.sql',
   '20261011150000_kq_online_commerce.sql','20261012002000_kq_variety_market_demands.sql',
+  '20261015000500_kq_marketing_campaigns.sql',
  ]) {
   if (name==='20260914000500_kq_shop_offer_precision.sql') {
    const specialty=await sql('20260914000100_arena_chanvrier_profiles.sql');
@@ -55,8 +56,9 @@ try {
    const treasury=await sql('20260921000200_kq_treasury_accounting.sql');
    await db.exec(treasury.match(/CREATE FUNCTION public\.kq_treasury_stock_cost\(p_user UUID\)[\s\S]*?\$\$;/)[0]);
    await db.exec(`CREATE TABLE kq_bank_loans(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID,total_cents INTEGER,paid_cents INTEGER DEFAULT 0,accepted_at TIMESTAMPTZ,paid_at TIMESTAMPTZ,installment_hours INTEGER DEFAULT 120);
+    CREATE TABLE audit_treasury_pairs(user_id UUID,event TEXT,source TEXT,occurred_at TIMESTAMPTZ,debit TEXT,credit TEXT,cents BIGINT,label TEXT);
     CREATE FUNCTION kq_treasury_initialize(UUID) RETURNS VOID LANGUAGE sql AS 'SELECT';
-    CREATE FUNCTION kq_treasury_pair(UUID,TEXT,TEXT,TIMESTAMPTZ,TEXT,TEXT,BIGINT,TEXT) RETURNS VOID LANGUAGE sql AS 'SELECT';`);
+    CREATE FUNCTION kq_treasury_pair(UUID,TEXT,TEXT,TIMESTAMPTZ,TEXT,TEXT,BIGINT,TEXT) RETURNS VOID LANGUAGE sql AS 'INSERT INTO audit_treasury_pairs VALUES($1,$2,$3,$4,$5,$6,$7,$8)';`);
    const bank=await sql('20260924000100_kq_bank_monthly_installments.sql');
    await db.exec(bank.match(/CREATE OR REPLACE FUNCTION public\.kq_bank_settle\(p_user UUID\)[\s\S]*?\$\$;/)[0]);
    let business=await scalar("SELECT pg_get_functiondef('kq_business_settle(uuid)'::regprocedure)");
@@ -83,6 +85,10 @@ try {
   await db.query("UPDATE kq_storage_lots SET original_units=1000,state=jsonb_set(jsonb_set(state,'{readyAt}',to_jsonb(now()-interval '1 hour')),'{capacity}',jsonb_build_object('totalUnits',1000,'allocations',jsonb_build_array(jsonb_build_object('containerCode','GLASS-1L','quantity',2,'storedUnits',1000)),'overflowDeadlineAt',now()+interval '1 day')) WHERE flower_id=$1",[flower]);
   return {user,flower,stock};
  }
+ // These fixtures represent campaigns already running before version 2 shipped.
+ const legacyMarketing=(user,code='introduction',angle='craft')=>db.query(`UPDATE kq_online_accounts SET marketing=jsonb_build_object(
+  'id',gen_random_uuid(),'code',$2::text,'angle',$3::text,'startedAt',now(),
+  'endsAt',now()+(kq_online_marketing_catalog($2)->>'durationHours')::int*interval '1 hour') WHERE user_id=$1`,[user,code,angle]);
  const p=await player();
  const basicSite=(await state(p.user)).site;
  equal({...basicSite,createdAt:new Date(basicSite.createdAt).toISOString()},{tier:'basic',createdAt:new Date(now).toISOString(),active:true,paidUntil:null,renew:false,feePercent:2.5},'free template, no subscription');
@@ -103,8 +109,8 @@ try {
  await command(p.user,'resume-listing',{listingId:listing});
  await reject(()=>command(p.user,'create-listing',{stockId:p.stock,formatGrams:10,packagingCode:'kraft-5',packets:1,packetPriceCents:1000}),'online_invalid_request');
  await reject(()=>command(p.user,'update-listing',{listingId:listing,packetPriceCents:1.1}),'online_invalid_request');
- await command(p.user,'start-marketing',{code:'introduction',angle:'craft'});
- await reject(()=>command(p.user,'start-marketing',{code:'behind-scenes',angle:'craft'}),'online_marketing_active');
+ await legacyMarketing(p.user);
+ await reject(()=>command(p.user,'start-marketing',{version:2,code:'behind-scenes',angle:'craft',listingId:listing,budgetCode:'local'}),'online_marketing_active');
  // Shift a complete account timeline into the past, then advance incrementally
  // without wall clock sleeps or controls accessible to a game client.
  async function backdate(user,hours=72) {
@@ -121,7 +127,7 @@ try {
  equal((await state(p.user)).stats,settled.stats,'repeated catch-up cannot replay sales');
  equal(await scalar('SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1',[p.user]),wallet,'replay cannot credit income twice');
  equal(settled.followers,15,'completed simulated campaign recruits audience exactly once');
- await reject(()=>command(p.user,'start-marketing',{code:'introduction',angle:'craft'}),'online_progression_required');
+ await reject(()=>command(p.user,'start-marketing',{version:2,code:'introduction',angle:'craft',listingId:listing,budgetCode:'local'}),'online_progression_required');
  // Same starting conditions, one catch-up versus reads every seven hours.
  const prepare=async (price=4000,packets=20) => {
   const account=await player();
@@ -131,7 +137,7 @@ try {
  };
  const batched=await prepare(),frequent=await prepare();
  for (const account of [batched,frequent]) {
-  await command(account.user,'start-marketing',{code:'introduction',angle:'craft'});
+  await legacyMarketing(account.user);
   await backdate(account.user,200);
   await db.query('UPDATE kq_commerce_accounts SET clients=15 WHERE user_id=$1',[account.user]);
   await db.query('UPDATE kq_online_accounts SET clients_start=15 WHERE user_id=$1',[account.user]);
@@ -256,6 +262,159 @@ try {
  equal(worker.failedUsers,0,'background worker settles without hidden failure');
  assert(worker.processedUsers>=1,'background worker selects a due seller');checks++;
  assert((await state(scheduled.user)).stats.orders>0,'background worker ships while user is absent');checks++;
+
+ // Campaign v2: server-priced budgets, a real preparation slot, targeted
+ // acquisition and earned followers. Every fixture stays inside this PGlite DB.
+ const campaignInput=(account,code='behind-scenes',budgetCode='local',angle='craft')=>({version:2,code,angle,listingId:account.listing,budgetCode});
+ const money=user=>scalar('SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1',[user]);
+ const quote=(account,listingId=account.listing,hours=0)=>scalar("SELECT kq_online_offer($1,l,now()+$3*interval '1 hour') FROM kq_online_listings l WHERE id=$2",[account.user,listingId,hours]);
+ const near=(actual,expected,label)=>{assert.ok(Math.abs(actual-expected)<1e-8,label+': '+actual+' versus '+expected);checks++};
+ const campaign=await prepare(4000,10);
+ await command(campaign.user,'buy-packaging',{code:'kraft-5',quantity:10});
+ campaign.otherListing=(await command(campaign.user,'create-listing',{stockId:campaign.stock,formatGrams:5,packagingCode:'kraft-5',packets:10,packetPriceCents:4000})).listingId;
+ await reject(()=>command(campaign.user,'start-marketing',{code:'introduction',angle:'craft'}),'online_marketing_version');
+ await reject(()=>command(campaign.user,'start-marketing',{...campaignInput(campaign),version:'2'}),'online_marketing_version');
+ await reject(()=>command(campaign.user,'start-marketing',{...campaignInput(campaign),version:3}),'online_marketing_version');
+ await reject(()=>command(campaign.user,'start-marketing',campaignInput(campaign,'introduction','national')),'online_marketing_unknown');
+ await reject(()=>command(campaign.user,'start-marketing',campaignInput(campaign,'behind-scenes','free')),'online_marketing_unknown');
+ await reject(()=>command(campaign.user,'start-marketing',campaignInput(campaign,'feedback')),'online_progression_required');
+ const organicNow=await quote(campaign),organicLaunch=await quote(campaign,campaign.listing,12);
+ const otherOrganic=await quote(campaign,campaign.otherListing,12);
+ const campaignCash=await money(campaign.user),campaignKey=randomUUID();
+ const campaignReceipt=await command(campaign.user,'start-marketing',{...campaignInput(campaign),costCents:0,visitorsPerDay:999999,followersCap:999999},campaignKey);
+ const activeCampaign=(await state(campaign.user)).marketing;
+ equal(campaignReceipt.paidCents,3000,'server derives local campaign cost, ignoring forged free cost');
+ equal(await money(campaign.user),campaignCash-3000,'paid launch deducts cash immediately');
+ equal(activeCampaign.version,2,'snapshot advertises the campaign v2 capability');
+ equal(activeCampaign.active.visitorsPerDay,56.25,'server freezes budget traffic and mission multiplier');
+ equal(activeCampaign.active.followersCap,30,'client cannot choose its followers cap');
+ equal(activeCampaign.active.flowerId,null,'ordinary campaigns do not reserve a future harvest presentation');
+ equal(new Date(activeCampaign.active.launchesAt).getTime()-new Date(activeCampaign.active.startedAt).getTime(),12*3600000,'workshop campaign requires twelve real hours of preparation');
+ equal(new Date(activeCampaign.active.endsAt).getTime()-new Date(activeCampaign.active.launchesAt).getTime(),48*3600000,'diffusion lasts forty-eight hours after preparation');
+ equal(activeCampaign.active.results,{orders:0,satisfiedOrders:0,revenueCents:0,netRevenueCents:0,followersEarned:0},'active result starts empty');
+ equal((await command(campaign.user,'start-marketing',{...campaignInput(campaign),costCents:0,visitorsPerDay:999999,followersCap:999999},campaignKey)).replayed,true,'campaign retry returns the original receipt');
+ equal(await money(campaign.user),campaignCash-3000,'retry never buys the campaign twice');
+ equal(await scalar("SELECT count(*)::int FROM kq_business_ledger WHERE user_id=$1 AND kind='online-start-marketing'",[campaign.user]),1,'one paid campaign creates one ledger entry');
+ equal((await db.query("SELECT debit,cents FROM audit_treasury_pairs WHERE user_id=$1 AND event='online-start-marketing'",[campaign.user])).rows,[{debit:'expense_advertising',cents:3000}],'campaign cost reaches the advertising expense account');
+ await reject(()=>command(campaign.user,'start-marketing',campaignInput(campaign,'behind-scenes','regional'),campaignKey),'online_request_mismatch');
+ await reject(()=>command(campaign.user,'start-marketing',campaignInput(campaign,'harvest')),'online_marketing_active');
+ near((await quote(campaign)).ordersPerDay,organicNow.ordersPerDay,'preparation adds no order rate');
+ near((await quote(campaign,campaign.otherListing,12)).ordersPerDay,otherOrganic.ordersPerDay,'targeting one listing adds no demand to another listing');
+ const launched=await quote(campaign,campaign.listing,12);
+ near(launched.visitorsPerDay-organicLaunch.visitorsPerDay,56.25*1.15,'matching craft audience begins exactly at diffusion');
+ assert(launched.ordersPerDay>organicLaunch.ordersPerDay,'diffusion increases the target order rate');checks++;
+ const beforeLaunch=await quote(campaign,campaign.listing,12-1/3600000);
+ near(beforeLaunch.visitorsPerDay,organicLaunch.visitorsPerDay,'one millisecond before launch still has no campaign traffic');
+ const expired=await quote(campaign,campaign.listing,60);
+ near(expired.visitorsPerDay,organicNow.visitorsPerDay,'traffic ends exactly at the exclusive diffusion deadline');
+ await db.query("UPDATE kq_commerce_accounts SET advertising=jsonb_build_object('startedAt',now(),'endsAt',now()+interval '72 hours','boostPercent',100) WHERE user_id=$1",[campaign.user]);
+ near((await quote(campaign,campaign.listing,12)).visitorsPerDay,organicLaunch.visitorsPerDay*2+56.25*1.15,'generic advertising doubles organic visits without multiplying paid targeted traffic');
+ await db.query('UPDATE kq_commerce_accounts SET advertising=NULL WHERE user_id=$1',[campaign.user]);
+ await db.query('UPDATE kq_online_listings SET packet_price_cents=$2 WHERE id=$1',[campaign.listing,Math.round(organicLaunch.referencePacketCents*1.2)]);
+ await db.query("UPDATE kq_online_accounts SET marketing=jsonb_set(marketing,'{angle}','\"value\"') WHERE user_id=$1",[campaign.user]);
+ near((await quote(campaign,campaign.listing,12)).visitorsPerDay-organicLaunch.visitorsPerDay,56.25*.35,'expensive products waste most of a value audience');
+ await db.query("UPDATE kq_online_accounts SET marketing=jsonb_set(marketing,'{angle}','\"premium\"') WHERE user_id=$1",[campaign.user]);
+ near((await quote(campaign,campaign.listing,12)).visitorsPerDay-organicLaunch.visitorsPerDay,56.25*1.15,'premium audience matches high quality and premium prices');
+ await db.query('UPDATE kq_online_listings SET packet_price_cents=$2 WHERE id=$1',[campaign.listing,Math.round(organicLaunch.referencePacketCents*.9)]);
+ near((await quote(campaign,campaign.listing,12)).visitorsPerDay-organicLaunch.visitorsPerDay,56.25*.3,'discounted pricing is a poor fit for premium positioning');
+
+ const poor=await prepare(),poorKey=randomUUID();
+ await db.query('UPDATE kq_equipment_wallets SET cash_cents=2999 WHERE user_id=$1',[poor.user]);
+ await reject(()=>command(poor.user,'start-marketing',campaignInput(poor),poorKey),'online_cash');
+ equal(await money(poor.user),2999,'insufficient funds preserves the wallet');
+ equal((await state(poor.user)).marketing.active,null,'failed debit rolls the campaign back');
+ equal((await state(poor.user)).marketing.history,[],'failed launch creates no history');
+ equal(await scalar('SELECT count(*)::int FROM kq_online_requests WHERE user_id=$1 AND request_key=$2',[poor.user,poorKey]),0,'failed launch creates no idempotency receipt');
+ const invalid=await prepare();
+ await reject(()=>command(invalid.user,'start-marketing',{...campaignInput(invalid),listingId:poor.listing}),'online_listing_unknown');
+ await command(invalid.user,'pause-listing',{listingId:invalid.listing});
+ await reject(()=>command(invalid.user,'start-marketing',campaignInput(invalid)),'online_listing_inactive');
+ await command(invalid.user,'resume-listing',{listingId:invalid.listing});
+ await db.exec('SAVEPOINT invalid_campaign_quality');
+ await db.query('UPDATE kq_online_listings SET packed_quality=5.79 WHERE id=$1',[invalid.listing]);
+ await reject(()=>command(invalid.user,'start-marketing',campaignInput(invalid)),'online_listing_inactive');
+ await db.exec('ROLLBACK TO SAVEPOINT invalid_campaign_quality');
+ await db.exec('SAVEPOINT immature_campaign_stock');
+ await db.query("UPDATE kq_storage_lots SET state=jsonb_set(state,'{readyAt}',to_jsonb(now()+interval '1 hour')) WHERE flower_id=$1",[invalid.flower]);
+ await reject(()=>command(invalid.user,'start-marketing',campaignInput(invalid,'harvest')),'online_storage_not_ready');
+ await db.exec('ROLLBACK TO SAVEPOINT immature_campaign_stock');
+
+ // Rewind all campaign boundaries together. The production settlement still
+ // owns every dispatch; no public time-advance operation is introduced.
+ async function rewindCampaign(account,hours) {
+  await db.query(`UPDATE kq_online_accounts SET settled_until=now()-$2*interval '1 hour',growth_day=(now()-$2*interval '1 hour')::date,
+   marketing=marketing||jsonb_build_object('startedAt',(marketing->>'startedAt')::timestamptz-$2*interval '1 hour',
+    'launchesAt',(marketing->>'launchesAt')::timestamptz-$2*interval '1 hour','endsAt',(marketing->>'endsAt')::timestamptz-$2*interval '1 hour') WHERE user_id=$1`,[account.user,hours]);
+  await db.query("UPDATE kq_online_listings SET created_at=now()-$2*interval '1 hour',changed_at=now()-$2*interval '1 hour' WHERE user_id=$1",[account.user,hours]);
+  await db.query("UPDATE kq_commerce_accounts SET shop_created_at=now()-$2*interval '1 hour',business_started_at=now()-$2*interval '1 hour',demand_updated_at=now()-$2*interval '1 hour' WHERE user_id=$1",[account.user,hours]);
+ }
+ const intro=await prepare(1000000);
+ const introCash=await money(intro.user);
+ await command(intro.user,'start-marketing',campaignInput(intro,'introduction'));
+ equal(await money(intro.user),introCash,'first introductory campaign remains free');
+ await rewindCampaign(intro,25);
+ const introResult=await state(intro.user);
+ equal(introResult.followers,0,'a v2 campaign with no satisfied order earns no automatic followers');
+ equal(introResult.marketing.history[0].results.followersEarned,0,'empty campaign result explains the zero reward');
+ await reject(()=>command(intro.user,'start-marketing',campaignInput(intro,'introduction')),'online_progression_required');
+ await command(intro.user,'start-marketing',{...campaignInput(intro,'harvest','regional'),stockId:poor.stock});
+ const harvestCampaign=(await state(intro.user)).marketing.active;
+ equal(harvestCampaign.stockId,intro.stock,'harvest uses the targeted listing stock instead of a forged payload stock');
+ equal(harvestCampaign.flowerId,intro.flower,'only harvest freezes the promoted flower');
+ equal(harvestCampaign.costCents,8000,'regional budget is charged at its authoritative tariff');
+ equal(harvestCampaign.visitorsPerDay,200,'harvest applies its multiplier to the regional audience');
+ await rewindCampaign(intro,74);await state(intro.user);
+ await reject(()=>command(intro.user,'start-marketing',campaignInput(intro,'harvest')),'online_progression_required');
+ const feedback=await prepare(1000000);
+ await db.query('UPDATE kq_online_accounts SET total_packets=5 WHERE user_id=$1',[feedback.user]);
+ await command(feedback.user,'start-marketing',campaignInput(feedback,'feedback','national'));
+ const feedbackCampaign=(await state(feedback.user)).marketing.active;
+ equal({cost:feedbackCampaign.costCents,visits:feedbackCampaign.visitorsPerDay,cap:feedbackCampaign.followersCap,goal:feedbackCampaign.goalOrders},{cost:18000,visits:140,cap:40,goal:4},'feedback has a distinct budget audience and qualified-order objective');
+
+ const measured=await prepare(1000000,10);
+ await command(measured.user,'buy-packaging',{code:'kraft-5',quantity:10});
+ measured.otherListing=(await command(measured.user,'create-listing',{stockId:measured.stock,formatGrams:5,packagingCode:'kraft-5',packets:10,packetPriceCents:1000000})).listingId;
+ await command(measured.user,'start-marketing',campaignInput(measured));
+ await rewindCampaign(measured,60);
+ for (const [index,hours,microseconds,price,satisfaction,target] of [
+  [1,48,-1,1000,98,true], [2,48,0,2000,80,true], [3,24,0,3000,74,true],
+  [4,0,-1,4000,75,true], [5,0,0,5000,98,true], [1,24,0,10000,98,false],
+ ]) {
+  await db.query(`INSERT INTO kq_online_sales(user_id,listing_id,packet_number,occurred_at,payout_cents,vat_cents,fee_cents,lab_paid_cents,electricity_paid_cents,net_payout_cents,packaging_cost_cents,quality_score,value_ratio,satisfaction_score,satisfaction)
+   VALUES($1,$2,$3,now()-$4*interval '1 hour'+$5*interval '1 microsecond',$6,0,0,0,0,$6*8/10,25,9,1,$7::numeric,CASE WHEN $7::numeric>=75 THEN 'satisfied' ELSE 'neutral' END)`,[measured.user,target?measured.listing:measured.otherListing,index,hours,microseconds,price,satisfaction]);
+ }
+ await db.query('UPDATE kq_online_listings SET sold_packets=CASE WHEN id=$2 THEN 5 ELSE 1 END,remaining_packets=CASE WHEN id=$2 THEN 5 ELSE 9 END WHERE user_id=$1',[measured.user,measured.listing]);
+ const expectedResults={orders:3,satisfiedOrders:2,revenueCents:9000,netRevenueCents:7200,followersEarned:20};
+ equal(await scalar("SELECT kq_online_marketing_results($1,marketing,now()-interval '24 hours') FROM kq_online_accounts WHERE user_id=$1",[measured.user]),
+  {orders:2,satisfiedOrders:1,revenueCents:5000,netRevenueCents:4000,followersEarned:10},'live progress includes a sale exactly at the observation time before campaign end');
+ const runningSnapshot=await scalar('SELECT kq_online_snapshot($1)',[measured.user]);
+ equal(runningSnapshot.marketing.active.results,expectedResults,'live results count only target sales within inclusive launch and exclusive end');
+ const measuredResult=await state(measured.user);
+ equal(measuredResult.marketing.active,null,'completed campaign releases the preparation slot');
+ equal(measuredResult.marketing.history[0].results,expectedResults,'completion freezes the same measured results');
+ equal(measuredResult.followers,20,'only the two satisfied target orders earn followers');
+ equal((await state(measured.user)).followers,20,'repeated completion cannot award followers twice');
+ equal(await scalar("SELECT (kq_online_marketing_results($1,(marketing_history->0)||jsonb_build_object('followersCap',15),now())->>'followersEarned')::int FROM kq_online_accounts WHERE user_id=$1",[measured.user]),15,'earned audience remains capped');
+ await reject(()=>command(measured.user,'start-marketing',campaignInput(measured)),'online_progression_required');
+
+ const paidBatch=await prepare(4000),paidFrequent=await prepare(4000);
+ for (const account of [paidBatch,paidFrequent]) {
+  await command(account.user,'start-marketing',campaignInput(account,'behind-scenes','regional'));
+  await rewindCampaign(account,72);
+ }
+ for(let hours=65;hours>=0;hours-=7)await db.query("SELECT kq_online_settle_until($1,now()-$2*interval '1 hour')",[paidFrequent.user,hours]);
+ const paidBatchResult=await state(paidBatch.user),paidFrequentResult=await state(paidFrequent.user);
+ equal(paidFrequentResult.stats,paidBatchResult.stats,'v2 offline and frequent reads produce identical orders visits and receipts');
+ equal(paidFrequentResult.marketing.history[0].results,paidBatchResult.marketing.history[0].results,'v2 campaign result is independent of polling frequency');
+ equal(paidFrequentResult.followers,paidBatchResult.followers,'earned v2 followers are independent of polling frequency');
+ equal(await money(paidFrequent.user),await money(paidBatch.user),'paid campaign cash reconciles for frequent and offline players');
+ equal(await saleFacts(paidFrequent.user),await saleFacts(paidBatch.user),'v2 preparation and diffusion boundaries preserve identical per-sale economics');
+ assert(paidBatchResult.marketing.history[0].results.satisfiedOrders>0,'real v2 diffusion produces satisfied orders');checks++;
+ const historical=await player();
+ await db.query(`UPDATE kq_online_accounts SET marketing_history=(SELECT jsonb_agg(jsonb_build_object('id',n,'code','behind-scenes','startedAt',now()-n*interval '1 day','completedAt',now()-n*interval '1 day')) FROM generate_series(1,12)n) WHERE user_id=$1`,[historical.user]);
+ equal((await state(historical.user)).marketing.history.map(entry=>entry.id),[12,11,10,9,8,7,6,5,4,3],'snapshot exposes only the ten latest recorded campaign results');
+ equal(await scalar("SELECT has_function_privilege('service_role','kq_online_marketing_plan(uuid,jsonb,timestamptz)','EXECUTE')"),false,'campaign planning helper remains private to authoritative RPCs');
+ equal(await scalar("SELECT has_function_privilege('anon','kq_online_marketing_results(uuid,jsonb,timestamptz)','EXECUTE')"),false,'anonymous users cannot inspect campaign sales');
  equal(await scalar("SELECT has_table_privilege('service_role','kq_online_listings','INSERT')"),false,'listings are only writable through RPCs');
  equal(await scalar("SELECT has_function_privilege('anon','rpc_kq_online_command(uuid,text,jsonb,uuid)','EXECUTE')"),false,'anonymous users cannot mutate commerce');
  equal(await scalar("SELECT has_function_privilege('service_role','rpc_kq_online_command(uuid,text,jsonb,uuid)','EXECUTE')"),true,'server has explicit RPC permission');

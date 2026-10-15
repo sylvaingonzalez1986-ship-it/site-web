@@ -33,6 +33,38 @@ describe("fictional equipment tiers", () => {
     }
   });
 
+  it("keeps each tier more expensive for every valid zone, including partially used devices", () => {
+    const base = { ...createKqWarehouseStarter().zones[0], x: 0, y: 0 };
+    for (const kind of ["lighting", "air", "drying", "storage"] as const) {
+      const devices = KQ_WAREHOUSE_CATALOG.filter(device => device.kind === kind && device.purchasable !== false);
+      for (let width = 1; width <= 40; width++) for (let height = 1; height <= 25; height++) {
+        const area = width * height;
+        const quotes = devices.map(device => kind === "lighting" || kind === "air"
+          ? getKqWarehouseZoneQuote({ ...base, width, height, [kind === "lighting" ? "lightingCode" : "airCode"]: device.code })
+          : getKqWarehouseServiceZoneQuote({ id: "test", name: "Test", x: 0, y: 0, width, height, kind, deviceCode: device.code }));
+        for (const [index, quote] of quotes.entries()) {
+          const line = quote.devices.find(item => item.code === devices[index].code)!;
+          const expectedCount = devices[index].zoneLayout ? area * devices[index].zoneLayout.unitsPerM2
+            : Math.ceil(area / devices[index].gameCapacity.value);
+          expect(line.quantity).toBe(expectedCount);
+          if (index > 0) expect(quote.equipmentCostCents, `${kind} ${width} × ${height}`)
+            .toBeGreaterThan(quotes[index - 1].equipmentCostCents);
+        }
+      }
+    }
+  });
+
+  it("makes every module upgrade improve yield without losing a quality benefit", () => {
+    for (const family of KQ_WAREHOUSE_OPTION_FAMILIES) {
+      const options = KQ_WAREHOUSE_OPTIONS.filter(option => option.family === family.code);
+      expect(options.map(option => option.yieldBonusPercent)).toEqual([1, 2, 3]);
+      expect(options[1].qualityBonus).toBeGreaterThanOrEqual(options[0].qualityBonus);
+      expect(options[2].qualityBonus).toBeGreaterThanOrEqual(options[1].qualityBonus);
+      expect(options[1].consumablesCentsPerM2).toBeGreaterThan(options[0].consumablesCentsPerM2);
+      expect(options[2].consumablesCentsPerM2).toBeGreaterThan(options[1].consumablesCentsPerM2);
+    }
+  });
+
   it("adds real simulated drying/storage capacity without inventing electricity charges", () => {
     for (const kind of ["drying", "storage"] as const) {
       const devices = KQ_WAREHOUSE_CATALOG.filter(device => device.kind === kind);

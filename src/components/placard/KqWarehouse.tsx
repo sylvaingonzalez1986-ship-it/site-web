@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getKqWarehouseProductArtwork } from "@/lib/kanab-quest-warehouse-product-artwork";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Check, CircleAlert, Factory, Fan, Grid2X2, LampCeiling, LoaderCircle, Package, Plus, RefreshCw, Ruler, Save, ShoppingBag, Sprout, Trash2, Warehouse, Wind, X, Zap } from "lucide-react";
+import { ArrowRight, Check, CircleAlert, Factory, Fan, Grid2X2, LampCeiling, LoaderCircle, Package, Plus, RefreshCw, Ruler, Save, ShoppingBag, Sprout, Trash2, Warehouse, X, Zap } from "lucide-react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { AppDialog } from "@/components/ui/AppDialog";
 import { navigateWithDraftGuard, registerNavigationGuard } from "@/lib/navigation-guard";
@@ -15,7 +15,7 @@ import { formatKqCash, isKqProcessingEquipment } from "@/lib/kanab-quest-equipme
 import { createClientRequestKey } from "@/lib/client-request-key";
 import { KQ_WAREHOUSE_CATALOG, getKqWarehouseDevice, type KqWarehouseDevice } from "@/lib/kanab-quest-warehouse-catalog";
 import { KQ_WAREHOUSE_OPTIONS, KQ_WAREHOUSE_OPTION_FAMILIES, getKqWarehouseOption } from "@/lib/kanab-quest-warehouse-options";
-import { KQ_WAREHOUSE_SIMULATION, getKqWarehouseDimensions, getKqWarehouseQuote, getKqWarehouseSummary, getKqWarehouseZoneQuote, getKqWarehouseServiceZoneQuote, isKqWarehouseState, validateKqWarehouseState, type KqWarehouseState, type KqWarehouseZone, type KqWarehouseServiceZone } from "@/lib/kanab-quest-warehouse";
+import { getKqWarehouseDimensions, getKqWarehouseQuote, getKqWarehouseSummary, getKqWarehouseZoneQuote, getKqWarehouseServiceZoneQuote, isKqWarehouseState, validateKqWarehouseState, type KqWarehouseState, type KqWarehouseZone, type KqWarehouseServiceZone } from "@/lib/kanab-quest-warehouse";
 import type { KqStorageSnapshot } from "@/lib/kanab-quest-api";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqCommerceComputer, KqCommerceDesk } from "./KqCommerceDesk";
@@ -25,6 +25,7 @@ import { KqWarehousePlan, KqWarehouseObject } from "./KqWarehousePlan";
 import { KqEquipmentCatalogModal } from "./KqEquipmentCatalogModal";
 import { KqWarehouseShop } from "./KqWarehouseShop";
 import { KqWarehouseCulture, warehouseCultureHref, warehouseCampaignHref, warehouseCultureStage, type KqWarehouseCultureSummary, type KqWarehouseBuddies } from "./KqWarehouseCulture";
+import { KqWarehouseDashboard } from "./KqWarehouseDashboard";
 import { KqWarehouseBuddieDock } from "./KqWarehouseBuddieDock";
 import { getKqBuddieRotationRemaining } from "@/lib/kanab-quest-buddie-rotation";
 import styles from "./KqWarehouse.module.css";
@@ -456,7 +457,6 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   const stock = snapshot?.stockGrams;
   const storageReserved = snapshot?.storageReservedGrams ?? stock;
   const reservedHarvest = snapshot?.reservedHarvestGrams ?? 0;
-  const estimatedSales = typeof demand === "number" && summary && typeof stock === "number" ? Math.min(demand, stock + summary.estimatedHarvestGrams) : null;
   const savedStorageCapacity = snapshot ? getKqWarehouseSummary(snapshot.state).storageCapacityGrams : 0;
   const savedActualStorageCapacity = snapshot?.storageCapacityGrams ?? savedStorageCapacity;
   const storageCapacity = summary ? draft?.serviceZones !== undefined ? summary.storageCapacityGrams : savedActualStorageCapacity + summary.storageCapacityGrams - savedStorageCapacity : 0;
@@ -467,7 +467,6 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   const adoptionBlocked = typeof requiredStorage === "number" && Math.max(0, requiredStorage - storageCapacity) > Math.max(0, requiredStorage - savedActualStorageCapacity);
   const selectedCapacity = zoneQuote ? "capacityGrams" in zoneQuote ? zoneQuote.capacityGrams : zoneQuote.estimatedHarvestGrams : 0;
   const selectedCapacityPerM2 = zoneQuote ? "capacityGramsPerM2" in zoneQuote ? zoneQuote.capacityGramsPerM2 : selectedCapacity / zoneQuote.areaM2 : 0;
-  const futureStock = summary && typeof stock === "number" && estimatedSales !== null ? Math.max(0, stock + summary.estimatedHarvestGrams - estimatedSales) : null;
   const dryShort = !!summary && summary.estimatedHarvestGrams > summary.dryingCapacityGrams;
   const storeShort = !!summary && typeof storageReserved === "number" && storageReserved + summary.estimatedHarvestGrams > storageCapacity;
   const investment = quote?.totalCostCents ?? 0;
@@ -497,6 +496,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                     {zoneQuote && <>
                       <div className={styles.quoteLine}><span>Coût neuf / m²</span><strong>{formatKqCash(zoneQuote.costPerM2Cents)}/m²</strong></div>
                       <div className={styles.quoteLine}><span>{selectedKind === "culture" ? "Récolte estimée" : "Capacité totale"}</span><strong data-warehouse-capacity-grams={selectedCapacity}>{mass(selectedCapacity)}<small>{decimal(selectedCapacityPerM2)} g/m²</small></strong></div>
+                      {"qualityBonus" in zoneQuote && <div className={styles.quoteLine}><span>Qualité au départ</span><strong data-warehouse-zone-quality={zoneQuote.qualityBonus}>+{zoneQuote.qualityBonus} pts<small>Récolte potentielle +{zoneQuote.yieldBonusPercent} %</small></strong></div>}
                       {"operatingCostCents" in zoneQuote && <div className={styles.quoteLine}><span>Charges / m² / cycle</span><strong>{formatKqCash(Math.round(zoneQuote.operatingCostCents / zoneQuote.areaM2))}</strong></div>}
                     </>}
                     <details data-warehouse-quote-details><summary>Détail du devis</summary>
@@ -506,7 +506,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                         <div className={styles.quoteLine}><span>{selectedKind === "culture" ? "Rendement estimé" : "Capacité par m²"}</span><strong>{decimal(selectedCapacityPerM2)} g/m²</strong></div>
                         {"volumeLitres" in zoneQuote && zoneQuote.volumeLitres > 0 && <div className={styles.quoteLine}><span>Volume des contenants</span><strong>{decimal(zoneQuote.volumeLitres)} L</strong></div>}
                         {"usableSurfaceM2" in zoneQuote && zoneQuote.usableSurfaceM2 > 0 && <div className={styles.quoteLine}><span>Surface utile des filets</span><strong>{decimal(zoneQuote.usableSurfaceM2)} m²</strong></div>}
-                        {"operatingCostCents" in zoneQuote && <><div className={styles.quoteLine}><span>Charges / culture</span><strong>{formatKqCash(zoneQuote.operatingCostCents)}</strong></div><div className={styles.quoteLine}><span>Dont fournitures / m²</span><strong>{formatKqCash(Math.round(zoneQuote.consumablesCostCents / zoneQuote.areaM2))}</strong></div>{zoneQuote.qualityBonus > 0 && <div className={styles.quoteLine}><span>Bonus qualité</span><strong>+{zoneQuote.qualityBonus}</strong></div>}</>}
+                        {"operatingCostCents" in zoneQuote && <><div className={styles.quoteLine}><span>Charges / culture</span><strong>{formatKqCash(zoneQuote.operatingCostCents)}</strong></div><div className={styles.quoteLine}><span>Dont fournitures / m²</span><strong>{formatKqCash(Math.round(zoneQuote.consumablesCostCents / zoneQuote.areaM2))}</strong></div></>}
                         <ul>{zoneQuote.devices.map(line => <li key={line.code}>{line.quantity} × {line.device.name} · {formatKqCash(line.device.priceCents)}/unité</li>)}{"options" in zoneQuote && zoneQuote.options.map(line => <li key={line.code}>{line.option.name} · {line.quantity} m² × {formatKqCash(line.option.equipmentCentsPerM2)}/m² · {formatKqCash(line.option.consumablesCentsPerM2)}/m²/cycle</li>)}</ul>
                       </>}
                       <div className={styles.quoteLine}><span>Nouveaux équipements</span><strong>{formatKqCash(quote?.equipmentCostCents ?? 0)}</strong></div>{!!quote?.optionEquipmentCostCents && <div className={styles.quoteLine}><span>Dont équipements au m²</span><strong>{formatKqCash(quote.optionEquipmentCostCents)}</strong></div>}<div className={styles.quoteLine}><span>Aménagement et pose</span><strong>{formatKqCash((quote?.preparationCostCents ?? 0) + (quote?.installationCostCents ?? 0))}</strong></div>
@@ -565,14 +565,14 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                       : campaignReady && !locked ? <Link className={styles.primary} data-warehouse-campaign-action="start" href={warehouseCampaignHref()}>Lancer mes cultures<ArrowRight size={15} /></Link>
                         : <button type="button" className={styles.primary} disabled>Lancer mes cultures</button>}
                 </div>}
-                <KqWarehousePlan dimensions={dimensions} zones={draft.zones} serviceZones={draft.serviceZones ?? []} selectedId={selectedId} drawing={drawing} drawingKind={drawingKind} anchor={anchor} cursor={cursor} zoom={zoom} locked={locked} growing={snapshot.activeRun} managing={editing} activeZoneIds={zoneCultures ? occupiedZoneIds : undefined} lockedZoneIds={occupiedZoneIds} placingBuddie={!!pickedBuddie} buddieDrop={buddieDrop}
-                  onZoom={setZoom} onCursor={setCursor} onSelectPoint={selectPoint} onDrawZone={drawZone} onConfigureZone={configureZone} onKeyDown={mapKeyboard} onTransformZone={transformZone}
-                  onDrawingKind={startDrawingKind}
-                  onToggleDrawing={toggleDrawing} />
                 <div className={styles.zoneNavigation}>
                   <div className={styles.zones} aria-label="Sélection des zones">{planZones.map((zone, index) => <button key={zone.id} type="button" className={styles.zoneChip} data-zone-kind={"kind" in zone ? zone.kind : "culture"} aria-pressed={selectedId === zone.id} onClick={() => selectZone(zone)}><span>{String(index + 1).padStart(2, "0")}</span><span>{zone.name}<small>{activeRuns.find(run => run.zoneId === zone.id) ? warehouseCultureStage(activeRuns.find(run => run.zoneId === zone.id)!) : ZONE_LABELS["kind" in zone ? zone.kind : "culture"]} · {zone.width * zone.height} m²</small></span></button>)}</div>
                   {editing && <button type="button" className={`${styles.primary} ${styles.newZone}`} data-warehouse-action="draw" aria-pressed={drawing} disabled={locked} onClick={toggleDrawing}>{drawing ? <X size={16} aria-hidden="true" /> : <Plus size={16} aria-hidden="true" />}{drawing ? "Annuler le tracé" : "Nouvelle zone"}</button>}
                 </div>
+                <KqWarehousePlan dimensions={dimensions} zones={draft.zones} serviceZones={draft.serviceZones ?? []} selectedId={selectedId} drawing={drawing} drawingKind={drawingKind} anchor={anchor} cursor={cursor} zoom={zoom} locked={locked} growing={snapshot.activeRun} managing={editing} activeZoneIds={zoneCultures ? occupiedZoneIds : undefined} lockedZoneIds={occupiedZoneIds} placingBuddie={!!pickedBuddie} buddieDrop={buddieDrop}
+                  onZoom={setZoom} onCursor={setCursor} onSelectPoint={selectPoint} onDrawZone={drawZone} onConfigureZone={configureZone} onKeyDown={mapKeyboard} onTransformZone={transformZone}
+                  onDrawingKind={startDrawingKind}
+                  onToggleDrawing={toggleDrawing} />
                 <div className={styles.activity} data-warehouse-activity={snapshot.activeRun ? "growing" : "idle"}><span role="status" data-warehouse-draft={dirty || undefined}>{dirty ? draftStored ? "Brouillon conservé dans cet onglet. Enregistre pour appliquer tes modifications." : "Modifications non enregistrées. Enregistre avant de quitter pour les conserver." : snapshot.activeRun ? `${zoneCultures ? activeRuns.length : 1} culture${activeRuns.length > 1 ? "s" : ""} en cours.` : dryShort ? "Séchage à agrandir avant la récolte." : storeShort ? "Stockage à agrandir avant la récolte." : "Installation prête."}</span>{!zoneCultures && !dirty && !snapshot.legacyActiveRun && <Link className={styles.primary} href="/arene/placard?view=game">{snapshot.activeRun ? "Reprendre" : "Cultiver"}<ArrowRight size={15} /></Link>}</div>
                 {error && <p className={styles.error} role="alert"><CircleAlert size={17} />{error}</p>}
                 {notice && <p className={styles.notice} role="status"><Check size={17} />{notice}</p>}
@@ -613,14 +613,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
               </div>}
             </>}
           </div>
-          <section className={styles.flow} aria-label="Prévision de production et débouchés"><details data-warehouse-forecast><summary>Prévisions de production</summary><div className={styles.sectionTitle}><p>Récolte par culture · ventes estimées sur 24 h</p><Link href="/arene/placard?view=market">Débouchés <ArrowRight size={13} /></Link></div><div className={styles.flowSteps}>
-            <div className={styles.flowStep}><Sprout size={18} /><h4>01 · Culture</h4><strong>{mass(summary.estimatedHarvestGrams)}</strong><small>Référence pour {summary.activeAreaM2} m² actifs</small></div>
-            <div className={styles.flowStep} data-warning={dryShort}><Wind size={18} /><h4>02 · Séchage</h4><strong>{mass(summary.dryingCapacityGrams)}</strong><small>{dryShort ? "Capacité insuffisante" : "Capacité disponible"}</small></div>
-            <div className={styles.flowStep} data-warning={storeShort} data-warehouse-storage-free-grams={typeof storageReserved === "number" ? Math.max(0, storageCapacity - storageReserved - reservedHarvest) : undefined}><Package size={18} /><h4>03 · Stockage</h4><strong>{mass(Math.max(0, storageCapacity - (storageReserved ?? 0) - reservedHarvest))}</strong><small>{typeof storageReserved === "number" ? `Libres sur ${mass(storageCapacity)}` : "Capacité totale · occupation inconnue"}</small></div>
-            <div className={styles.flowStep}><Factory size={18} /><h4>04 · Transformation</h4><strong>Mon atelier</strong><small>Selon les machines installées</small></div>
-            <div className={styles.flowStep}><ShoppingBag size={18} /><h4>05 · Ventes</h4><strong>{estimatedSales === null ? "À établir" : mass(estimatedSales)}</strong><small>{estimatedSales === null ? "Selon ta clientèle" : "Estimation, sans garantie"}</small></div>
-          </div><div className={styles.flowFoot}>{futureStock !== null ? <span>Stock estimé après 24 h : <strong>{mass(futureStock)}</strong></span> : <span>Les ventes dépendent de tes acheteurs.</span>}</div></details></section>
-          <details className={styles.method}><summary>Coûts et réserve</summary><p>Aménagement : {formatKqCash(KQ_WAREHOUSE_SIMULATION.preparationCentsPerM2)}/m². Pose : {KQ_WAREHOUSE_SIMULATION.installationPercent} % du matériel ajouté. La réserve est réutilisée avant tout achat.</p><p>Électricité : {formatKqCash(KQ_WAREHOUSE_SIMULATION.electricityCentsPerKwh)}/kWh, réglée en fin de culture. Fournitures : facturées à 30 jours de jeu (5 jours réels). Prix, durées et capacités sont des valeurs de simulation.</p>{(snapshot.migrationCreditCents ?? 0) > 0 && <p>Crédit d’aménagement : <strong>{formatKqCash(snapshot.migrationCreditCents!)}</strong>, déduit avant tout prélèvement.</p>}{summary.reserve.length > 0 && <p>En réserve : {summary.reserve.map(item => `${item.quantity} × ${getKqWarehouseDevice(item.code)?.name}`).join(" · ")}.</p>}{summary.optionReserve.length > 0 && <p>Modules en réserve : {summary.optionReserve.map(item => `${getKqWarehouseOption(item.code)?.name} · ${item.quantity} m²`).join(" ; ")}.</p>}</details>
+          <KqWarehouseDashboard summary={summary} quote={quote} dirty={dirty} migrationCreditCents={snapshot.migrationCreditCents ?? 0} storageCapacity={storageCapacity} storageReserved={storageReserved} reservedHarvest={reservedHarvest} salesGramsPerDay={demand} />
         </>}
       </div>
       <AppDialog open={zoneDialogOpen} onClose={() => setZoneDialogId(null)} title="Équiper la zone" className={styles.zoneDialog} bodyClassName={styles.zoneDialogBody} dialogProps={{ "data-warehouse-zone-dialog": true }} footer={

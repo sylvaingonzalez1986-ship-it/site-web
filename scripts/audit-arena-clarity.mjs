@@ -202,7 +202,7 @@ if(preview){
         else {assert.equal(info.tag,'DIV','Prelaunch activities are non-interactive');assert.equal(info.href,null);assert.equal(info.disabled,true);assert(info.text.includes('Bientôt'));}
       }
       if(state==='prelaunch'){
-        assert(await page.$eval('body',body=>body.textContent.includes('15 octobre')),'Opening date remains visible');
+        assert(await page.$eval('body',body=>body.textContent.includes('1er novembre')),'Opening date remains visible');
         assert.equal(await page.$$eval('[data-arena-activity] a,[data-arena-activity] button',elements=>elements.length),0);
         assert.equal(await page.$eval('[data-arena-map]',element=>(element.textContent.match(/Bientôt/g)||[]).length),3);
       }

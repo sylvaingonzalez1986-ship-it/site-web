@@ -10,7 +10,7 @@ Les sections historiques plus bas documentent la premiere piste de simulation
 quotidienne. Elles restent utiles pour le vocabulaire, la sobriete technique et
 les futures extensions, mais ne decrivent plus la boucle jouable actuelle.
 
-Cette section décrit l’implémentation préparée pour le lancement du 15 octobre
+Cette section décrit l’implémentation préparée pour le lancement du 1er novembre
 2026. Elle prime sur les propositions historiques ci-dessous. L’application
 des migrations et la publication du site sont des opérations distinctes.
 

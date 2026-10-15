@@ -5,6 +5,7 @@ import { projectKqStorageLot } from './kanab-quest-storage';
 import { KQ_ONLINE_MARKETING_MISSIONS, KQ_ONLINE_PACKAGING, KQ_ONLINE_SITE_TIERS, KQ_ONLINE_UPGRADES, createKqOnlinePreview, estimateKqOnlineOffer } from './kanab-quest-online';
 import type { KqOperationsLessonState } from './kanab-quest-operations-lesson';
 import { createKqCustomerDemandSnapshot, getKqCustomerDemandPeriod, KQ_CUSTOMER_DEMAND_CHANNELS, type KqAppliedCustomerDemand, type KqCustomerDemandChannel } from './kanab-quest-customer-demand';
+import { KQ_MARKETING_BUDGETS, KQ_MARKETING_CAMPAIGNS, createKqMarketingResults, type KqMarketingBudgetCode } from './kanab-quest-marketing';
 
 const HOUR = 3_600_000;
 type Payment = ReturnType<typeof previewKqBusinessPayment>;
@@ -117,6 +118,38 @@ export function applyKqOperationsOnline(state: KqOperationsLessonState, command:
     callbacks.spend(upgrade.costCents);
     online.upgrades[upgrade.code] = true;
   } else if (command === 'start-marketing') {
+    if (input.version === 2) {
+      const definition = KQ_MARKETING_CAMPAIGNS.find(item => item.code === input.code);
+      const budget = KQ_MARKETING_BUDGETS.find(item => item.code === input.budgetCode);
+      check(definition && budget && typeof input.angle === 'string' && ['value', 'craft', 'premium'].includes(input.angle), 'Campagne, public ou budget invalide.');
+      check(!online.marketing.active, 'Une campagne occupe déjà ton atelier.');
+      check(online.site.active, 'Réactive ton site avant de préparer cette campagne.');
+      check(!definition.once || !online.marketing.completedCodes.includes(definition.code), 'Ce lancement a déjà été réalisé.');
+      check(!online.marketing.cooldowns[definition.code] || Date.parse(online.marketing.cooldowns[definition.code]) <= state.trial.clock, 'Laisse passer un peu de temps avant cette nouvelle campagne.');
+      check(online.stats.orders >= definition.minimumOrders, 'Réalise quelques commandes avant de demander des avis.');
+      const target = listing();
+      check(target.status === 'active' && target.remainingPackets > 0 && target.qualityScore >= 5.8, 'Choisis une annonce active avec des paquets de qualité suffisante.');
+      if (definition.requiresStock) {
+        const stock = commerce.stocks.find(stock => stock.id === target.stockId);
+        check(stock && isKqCommerceStockMature(stock, state.trial.clock), 'Choisis une récolte mûre à présenter.');
+        check(!simulation.promotedFlowerIds.includes(stock.flowerId), 'Cette récolte a déjà été présentée.');
+        simulation.promotedFlowerIds.push(stock.flowerId);
+      }
+      const introduction = definition.code === 'introduction';
+      const costCents = introduction ? 0 : budget.costCents;
+      callbacks.spend(costCents);
+      if (costCents && commerce.business) commerce.business.ledger.unshift({ id: `operations-marketing-cost-${state.events.length}`, kind: 'online-start-marketing', amountCents: costCents, occurredAt: now() });
+      online.marketing.active = { version: 2, id: `operations-marketing-${state.events.length}`, code: definition.code,
+        angle: input.angle as 'value' | 'craft' | 'premium', listingId: target.id, listingName: target.name,
+        budgetCode: introduction ? 'local' : budget.code as KqMarketingBudgetCode, costCents,
+        visitorsPerDay: introduction ? 35 : budget.visitorsPerDay * definition.trafficMultiplier,
+        followersPerOrder: definition.followersPerOrder, goalOrders: definition.goalOrders, followersCap: definition.followersCap,
+        startedAt: now(), launchesAt: new Date(state.trial.clock + definition.preparationHours * HOUR).toISOString(),
+        endsAt: new Date(state.trial.clock + (definition.preparationHours + definition.durationHours) * HOUR).toISOString(), results: createKqMarketingResults() };
+      state.events.push('online-marketing');
+    } else {
+    // Old replay files retain their original free tutorial missions. Live API
+    // starts require version 2; this branch never reaches a player account.
     const mission = KQ_ONLINE_MARKETING_MISSIONS.find(item => item.code === input.code);
     check(mission && typeof input.angle === 'string' && ['value', 'craft', 'premium'].includes(input.angle), 'Mission ou angle invalide.');
     check(!online.marketing.active, 'Une mission commerciale est déjà en cours.');
@@ -133,6 +166,7 @@ export function applyKqOperationsOnline(state: KqOperationsLessonState, command:
     online.marketing.active = { id: `operations-marketing-${state.events.length}`, code: mission.code,
       angle: input.angle as 'value' | 'craft' | 'premium', startedAt: now(), endsAt: new Date(state.trial.clock + mission.durationHours * HOUR).toISOString() };
     state.events.push('online-marketing');
+    }
   } else if (command === 'advance-online-time') {
     const hours = positiveInteger(input.hours, 24);
     advanceLessonOnline(state, online, hours, callbacks.collect);
@@ -149,6 +183,9 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
   const credits = state.onlineOrderCredits ??= {};
   const simulation = state.onlineSimulation!;
   for (let elapsed = 0; elapsed < hours; elapsed++) {
+    const intervalStart = state.trial.clock;
+    const preparedCampaign = online.marketing.active?.version === 2;
+    let intervalVisitors = 0;
     state.trial.clock += HOUR;
     const now = new Date(state.trial.clock).toISOString();
     online.serverNow = now;
@@ -179,22 +216,25 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
       if (row.status !== 'active' || !online.site.active) continue;
       const source = commerce.stocks.find(stock => stock.id === row.stockId);
       if (!source || !isKqCommerceStockMature(source, state.trial.clock) || (source.processingReadyAt && Date.parse(source.processingReadyAt) > state.trial.clock)) continue;
-      const quote = () => estimateKqOnlineOffer({ route: row.route, varietyCode: row.varietyCode, customerDemand: getKqOperationsCustomerDemand(state), quality: row.qualityScore, baseUnitCents: row.baseUnitCents, formatGrams: row.formatGrams,
+      const quote = (at = state.trial.clock) => estimateKqOnlineOffer({ listingId: row.id, route: row.route, varietyCode: row.varietyCode, customerDemand: getKqOperationsCustomerDemand(state), quality: row.qualityScore, baseUnitCents: row.baseUnitCents, formatGrams: row.formatGrams,
         packagingCode: row.packagingCode, packetPriceCents: row.packetPriceCents, reputation: commerce.reputation,
-        clients: commerce.clients, online, activeListingCount: active.length });
-      const offer = quote();
-      online.stats.visitors += offer.visitorsPerDay / 24 / Math.max(1, active.length);
+        clients: commerce.clients, online: at === state.trial.clock ? online : { ...online, serverNow: new Date(at).toISOString() }, activeListingCount: active.length });
+      const offer = quote(preparedCampaign ? intervalStart : state.trial.clock);
+      if (preparedCampaign) intervalVisitors = Math.max(intervalVisitors, offer.visitorsPerDay);
+      else online.stats.visitors += offer.visitorsPerDay / 24 / Math.max(1, active.length);
+      const previousCredit = credits[row.id] ?? 0;
       credits[row.id] = (credits[row.id] ?? 0) + offer.ordersPerDay / 24;
       const packets = Math.min(row.remainingPackets, Math.floor(credits[row.id] + 1e-9));
       if (!packets) continue;
       let soldPackets = 0;
       for (let packet = 0; packet < packets; packet++) {
         // Earlier packets or another listing may have used the final allowance.
-        const offer = quote();
-        if (offer.ordersPerDay <= 0) break;
+        const soldAtMs = preparedCampaign && offer.ordersPerDay > 0 ? Math.min(state.trial.clock, intervalStart + Math.max(0, packet + 1 - previousCredit) / offer.ordersPerDay * 24 * HOUR) : state.trial.clock;
+        const saleOffer = quote(soldAtMs);
+        if (saleOffer.ordersPerDay <= 0) break;
         const feesCents = Math.round(row.packetPriceCents * 0.025);
         const payment = collect(row.packetPriceCents);
-        consumeKqOperationsCustomerDemand(state, 'online', offer.customerDemand);
+        consumeKqOperationsCustomerDemand(state, 'online', saleOffer.customerDemand);
         soldPackets++;
         commerce.cashCents -= feesCents;
         const netPayoutCents = payment.netPayoutCents - feesCents;
@@ -204,26 +244,34 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
         online.stats.feesCents += feesCents;
         online.stats.packagingCostCents += packaging.unitCostCents;
         online.stats.soldGrams += row.formatGrams;
-        online.confidence = Math.max(0, Math.min(100, online.confidence + Math.max(-2, Math.min(1, (offer.satisfaction - 70) / 40)) * row.formatGrams / 10));
-        if (offer.satisfaction >= 75) {
+        const campaign = online.marketing.active;
+        if (campaign?.version === 2 && campaign.listingId === row.id && Date.parse(campaign.launchesAt) <= soldAtMs && soldAtMs < Date.parse(campaign.endsAt)) {
+          campaign.results.orders++;
+          campaign.results.revenueCents += row.packetPriceCents;
+          campaign.results.netRevenueCents += netPayoutCents;
+          if (saleOffer.satisfaction >= 75) campaign.results.satisfiedOrders++;
+          campaign.results.followersEarned = Math.min(campaign.followersCap, campaign.results.satisfiedOrders * campaign.followersPerOrder);
+        }
+        online.confidence = Math.max(0, Math.min(100, online.confidence + Math.max(-2, Math.min(1, (saleOffer.satisfaction - 70) / 40)) * row.formatGrams / 10));
+        if (saleOffer.satisfaction >= 75) {
           simulation.loyaltyProgress += row.formatGrams / 50;
           const gained = Math.min(5 - simulation.clientsGained, Math.floor(simulation.loyaltyProgress + 1e-9));
           commerce.clients = Math.min(getKqCommerceCapacity(commerce.reputation).maxClients, commerce.clients + gained);
           simulation.clientsGained += gained; simulation.loyaltyProgress = Math.min(1, simulation.loyaltyProgress - gained);
-        } else if (offer.satisfaction < 60) {
-          simulation.churnProgress += row.formatGrams / 10 * (60 - offer.satisfaction) / 20;
+        } else if (saleOffer.satisfaction < 60) {
+          simulation.churnProgress += row.formatGrams / 10 * (60 - saleOffer.satisfaction) / 20;
           const lost = Math.min(Math.max(0, Math.ceil(simulation.clientsStart * .25) - simulation.clientsLost), Math.floor(simulation.churnProgress + 1e-9));
           commerce.clients = Math.max(0, commerce.clients - lost);
           simulation.clientsLost += lost; simulation.churnProgress -= lost;
         }
         const equivalentSold = row.formatGrams * 10 * source.equivalentUnits / source.initialUnits;
         let baseReputation = calculateKqMarketReputation(row.route, row.qualityScore);
-        if (offer.satisfaction < 60) baseReputation = Math.min(-1, baseReputation);
+        if (saleOffer.satisfaction < 60) baseReputation = Math.min(-1, baseReputation);
         source.repExact += baseReputation * equivalentSold / source.originalUnits;
         const roundedReputation = Math.sign(source.repExact) * Math.floor(Math.abs(source.repExact) + .5);
         commerce.reputation = Math.max(0, commerce.reputation + roundedReputation - source.repRounded);
         source.repRounded = roundedReputation;
-        if (offer.satisfaction >= 75 && source.route === source.batchRoute) {
+        if (saleOffer.satisfaction >= 75 && source.route === source.batchRoute) {
           source.professionalUnits += equivalentSold;
           if (!source.counted && source.professionalUnits >= source.originalUnits / 2) {
             source.counted = true;
@@ -232,18 +280,20 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
           }
         }
         online.recentSales.unshift({ id: `operations-online-sale-${online.stats.orders}`, listingId: row.id, name: row.name,
-          soldAt: now, packets: 1, formatGrams: row.formatGrams, packetPriceCents: row.packetPriceCents, payoutCents: row.packetPriceCents,
-          netPayoutCents, feesCents, packagingCostCents: packaging.unitCostCents, satisfaction: offer.satisfaction });
+          soldAt: new Date(soldAtMs).toISOString(), packets: 1, formatGrams: row.formatGrams, packetPriceCents: row.packetPriceCents, payoutCents: row.packetPriceCents,
+          netPayoutCents, feesCents, packagingCostCents: packaging.unitCostCents, satisfaction: saleOffer.satisfaction });
         state.events.push('sell');
       }
       credits[row.id] -= soldPackets;
       row.remainingPackets -= soldPackets; row.soldPackets += soldPackets;
       if (!row.remainingPackets) row.status = 'sold-out';
     }
+    if (preparedCampaign) online.stats.visitors += intervalVisitors / 24;
     const mission = online.marketing.active;
     if (mission && Date.parse(mission.endsAt) <= state.trial.clock) {
-      const definition = KQ_ONLINE_MARKETING_MISSIONS.find(item => item.code === mission.code)!;
-      online.followers += definition.followersReward;
+      const definition = mission.version === 2 ? KQ_MARKETING_CAMPAIGNS.find(item => item.code === mission.code)! : KQ_ONLINE_MARKETING_MISSIONS.find(item => item.code === mission.code)!;
+      online.followers += mission.version === 2 ? mission.results.followersEarned : KQ_ONLINE_MARKETING_MISSIONS.find(item => item.code === mission.code)!.followersReward;
+      online.marketing.history = [{ ...mission, completedAt: mission.endsAt }, ...(online.marketing.history ?? [])].slice(0, 10);
       if (!online.marketing.completedCodes.includes(mission.code)) online.marketing.completedCodes.push(mission.code);
       online.marketing.cooldowns[mission.code] = new Date(Date.parse(mission.startedAt) + definition.cooldownHours * HOUR).toISOString();
       online.marketing.active = null;

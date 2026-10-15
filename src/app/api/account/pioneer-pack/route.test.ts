@@ -1,18 +1,44 @@
-﻿import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ session: vi.fn(), rpc: vi.fn(), rate: vi.fn(), logRejection: vi.fn(), audit: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc }) }));
 vi.mock("@/lib/audit-log", () => ({ logAuditEvent: mocks.audit }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: mocks.logRejection }));
 import { GET, POST } from "./route";
+import { PIONEER_PACK_OPENING_AT } from "@/lib/pioneer-pack";
 const request = () => new Request("http://localhost/api/account/pioneer-pack", { method: "POST", body: JSON.stringify({ userId: "victim", cashCents: 99999999, goldCard: "chosen", eligible: true }) });
 const state = { eligible: true, claimed: false, available: true, cashCents: 500000, packCount: 10, grantedAt: null, goldCard: null };
 describe("Pioneer pack API", () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    vi.stubEnv("NODE_ENV", "production");
+    vi.spyOn(Date, "now").mockReturnValue(Date.parse("2026-10-30T00:00:00+01:00"));
     mocks.session.mockResolvedValue({ customerId: "signed-in-user", customer: { email: "player@example.test" } });
     mocks.rate.mockResolvedValue({ allowed: true });
     mocks.rpc.mockResolvedValue({ data: state, error: null });
+  });
+  afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
+  it.each(["2026-10-15T00:00:00+02:00", "2026-10-29T22:59:59.999Z"])("blocks claims at %s without accessing rewards", async now => {
+    vi.mocked(Date.now).mockReturnValue(Date.parse(now));
+    const response = await POST(request());
+    expect(response.status).toBe(423);
+    expect(await response.json()).toEqual({ error: "Rendez-vous le 30 octobre", opensAt: PIONEER_PACK_OPENING_AT });
+    expect(response.headers.get("Cache-Control")).toBe("private, no-store");
+    expect(mocks.rpc).not.toHaveBeenCalled();
+    expect(mocks.rate).not.toHaveBeenCalled();
+    expect(mocks.audit).not.toHaveBeenCalled();
+  });
+  it("keeps eligibility readable before the gift release", async () => {
+    vi.mocked(Date.now).mockReturnValue(Date.parse("2026-10-15T12:00:00Z"));
+    expect((await GET()).status).toBe(200);
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_pioneer_pack_state", { p_user_id: "signed-in-user" });
+  });
+  it("reports the gift date when the database still rejects an early claim", async () => {
+    mocks.rpc.mockResolvedValue({ error: { message: "pioneer_not_open" } });
+    const response = await POST(request());
+    expect(response.status).toBe(423);
+    expect(await response.json()).toEqual({ error: "Rendez-vous le 30 octobre" });
+    expect(mocks.audit).not.toHaveBeenCalled();
   });
   it("reads only the authenticated player's status without caching or granting", async () => {
     const response = await GET();

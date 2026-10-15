@@ -116,6 +116,7 @@ async function zoneChecks({ db, sql, scalar, definition, equal, reject, freshAcc
   await db.query("INSERT INTO lottery_card_instances(user_id,card_definition_id) SELECT $1,id FROM lottery_card_definitions WHERE code LIKE 'BOTTE-ZONE-%'", [owner]);
   const first = await start(owner, "zone-0", buddieCodes[0], { key, deck: ["BOTTE-ZONE-A", "BOTTE-ZONE-B"], tokens: 1 });
   const second = await start(owner, "zone-1", buddieCodes[1]);
+  equal(first.run.state.warehouse.balanceVersion, 2, "actual zone RPC starts use the current balance version");
   equal((await layout(owner)).activeRuns.map(run => run.zoneId).sort(), ["zone-0", "zone-1"], "two simultaneous cultures have separate active zone associations");
   equal((await layout(owner)).reservedHarvestGrams, 500, "shared storage promises both maximum harvests");
   equal(first.run.state.firstCultureRescue, true, "first culture keeps welcome grant");
@@ -229,7 +230,7 @@ let source = await readFile(sourceUrl, "utf8");
 const marker = '  await db.exec("ROLLBACK");\n  console.log(`Warehouse:';
 source = source.replaceAll("\r\n", "\n");
 assert(source.includes(marker), "warehouse final marker changed");
-source = source.replace(marker, `  await zoneChecks({ db, sql, scalar, definition, equal, reject, freshAccount, physicalStarter, initial, getKqWarehouseQuote, getKqWarehouseRunSnapshot, quoteKqWarehouseEnergy });\n${marker}`)
+source = source.replace(marker, `  await zoneChecks({ db, sql, scalar, definition, equal, reject, freshAccount, physicalStarter, initial, getKqWarehouseQuote, getKqWarehouseRunSnapshot: getCurrentRunSnapshot, quoteKqWarehouseEnergy });\n${marker}`)
   .replace(/^import .*;\n/gm, "").replaceAll("import.meta.url", JSON.stringify(sourceUrl.href));
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 await new AsyncFunction("assert", "randomUUID", "readFile", "path", "createServer", "PGlite", "zoneChecks", source)(assert, randomUUID, readFile, path, createServer, PGlite, zoneChecks);

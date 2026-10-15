@@ -694,7 +694,7 @@ export function startKqGame(
       ...(heritage ? [`${heritage.name} : +${heritageStartingXp} XP au départ.`] : []),
       ...(equipmentCodes.length > 0 ? [`Installation : ${equipmentCodes.length} équipement${equipmentCodes.length > 1 ? "s" : ""} · ${equipment.powerWatts} W.`] : []),
       ...(warehouse ? [`Pièce de culture : ${warehouse.activeAreaM2} m² actifs · matériel et coûts figés pour cette campagne.`] : []),
-      ...(warehouse?.qualityBonus ? [`Profils de l’atelier : +${warehouse.qualityBonus} Qualité au départ (bonus de simulation).`] : []),
+      ...(warehouse?.qualityBonus ? [`Matériel et modules : +${warehouse.qualityBonus} points de Qualité au départ (bonus de simulation, distinct de la note du jury sur 10).`] : []),
       ...(equipment.pressureDelta > 0 ? [`Grande installation : +${equipment.pressureDelta} Pression au départ.`] : []),
     ],
     rollNonce: 0, pressure: Math.max(0, Math.min(4, equipment.pressureDelta + (energy ? KQ_ENERGY_MODES[energy.mode].pressure : 0))), cancelledDangers: 0, powerOutage: false, harvestLossPercent: 0,

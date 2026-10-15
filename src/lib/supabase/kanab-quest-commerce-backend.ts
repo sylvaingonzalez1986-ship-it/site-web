@@ -7,6 +7,7 @@ import { KQ_SALES_CHANNELS, quoteKqCommerce, type KqCommerceState, type KqSalesC
 import { isKqAdvertisingKind, normalizeKqShopName, previewKqBusinessPayment } from "../kanab-quest-business";
 import { isKqStorageLot, projectKqStorageLot } from "../kanab-quest-storage";
 import { KQ_ONLINE_MARKETING_MISSIONS, KQ_ONLINE_PACKAGING, KQ_ONLINE_SITE_TIERS, KQ_ONLINE_UPGRADES } from "../kanab-quest-online";
+import { KQ_MARKETING_BUDGETS } from "../kanab-quest-marketing";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 function uuid(value: unknown) { if (typeof value !== "string" || !UUID.test(value)) throw new Error("Identifiant invalide. Actualise le marché."); return value; }
 function integer(value: unknown) { if (typeof value !== "number" || !Number.isSafeInteger(value) || value < 0) throw new Error("Montant ou quantité invalide."); return value; }
@@ -41,9 +42,9 @@ function onlinePayload(command: unknown, value: unknown): { command: string; pay
     payload = { code: input.code };
   } else if (command === "start-marketing") {
     const mission = KQ_ONLINE_MARKETING_MISSIONS.find(item => item.code === input.code);
-    if (!mission || typeof input.angle !== "string" || !["value", "craft", "premium"].includes(input.angle)) throw new Error("Choisis une mission et un angle valides.");
-    payload = { code: mission.code, angle: input.angle };
-    if (mission.requiresStock || input.stockId !== undefined) payload.stockId = uuid(input.stockId);
+    if (input.version !== 2 || !mission || typeof input.angle !== "string" || !["value", "craft", "premium"].includes(input.angle)
+      || !KQ_MARKETING_BUDGETS.some(item => item.code === input.budgetCode)) throw new Error("Choisis une campagne, un public et un budget valides.");
+    payload = { version: 2, code: mission.code, angle: input.angle, listingId: uuid(input.listingId), budgetCode: mission.code === "introduction" ? "local" : input.budgetCode };
   } else throw new Error("Opération de boutique inconnue.");
   return { command, payload };
 }
@@ -62,10 +63,11 @@ function databaseError(message: string, operation?: string): never {
     online_listing_unknown: "Cette annonce n’existe plus ou ne t’appartient pas.",
     online_listing_inactive: "Cette annonce ne peut pas être modifiée dans son état actuel.",
     online_tier_unknown: "Cette formule de site n’existe pas.",
-    online_progression_required: operation === "start-marketing" ? "Cette mission n’est pas encore disponible : respecte son délai et ses commandes requises. Chaque récolte et la présentation de marque se publient une seule fois." : "Développe encore ton commerce avant cette amélioration.",
+    online_progression_required: operation === "start-marketing" ? "Cette campagne n’est pas encore disponible : respecte son délai et ses commandes requises. Une récolte et le lancement de marque se présentent une seule fois." : "Développe encore ton commerce avant cette amélioration.",
     online_branding_required: "Fais créer ton identité de marque avant d’utiliser cet emballage.",
-    online_marketing_unknown: "Cette mission commerciale n’existe pas.",
-    online_marketing_active: "Une mission commerciale est déjà en cours.",
+    online_marketing_unknown: "Cette campagne ou ce budget n’existe pas.",
+    online_marketing_version: "L’atelier de campagne a évolué. Actualise ta boutique pour préparer une campagne avec les règles actuelles.",
+    online_marketing_active: "Une campagne occupe déjà ton atelier, en préparation ou en diffusion.",
     online_request_mismatch: "Cette demande a déjà servi pour une autre opération. Actualise ton commerce.",
     online_legacy_sale: "La vente en ligne passe désormais par les annonces : conditionne tes paquets et choisis leur prix.",
     commerce_storage_overflow: "Une partie de cette récolte manque de contenants. Achète du stockage ou vends son surplus aux grossistes avant de la préparer.",

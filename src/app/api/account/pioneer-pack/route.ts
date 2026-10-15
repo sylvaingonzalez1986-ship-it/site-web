@@ -1,4 +1,4 @@
-import { isArenaPrelaunch, ARENA_OPENING_MESSAGE, ARENA_OPENING_AT } from "@/lib/arena-opening";
+import { isPioneerPackPrelaunch, PIONEER_PACK_OPENING_MESSAGE, PIONEER_PACK_OPENING_AT } from "@/lib/pioneer-pack";
 ﻿import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getPioneerPack, claimPioneerPack, PioneerPackError } from "@/lib/supabase/pioneer-pack-backend";
@@ -19,7 +19,7 @@ export async function GET() {
   } catch (error) { return failure(error); }
 }
 export async function POST(request: Request) {
-  if (isArenaPrelaunch()) return NextResponse.json({ error: ARENA_OPENING_MESSAGE, opensAt: ARENA_OPENING_AT }, { status: 423, headers });
+  if (isPioneerPackPrelaunch()) return NextResponse.json({ error: PIONEER_PACK_OPENING_MESSAGE, opensAt: PIONEER_PACK_OPENING_AT }, { status: 423, headers });
   try {
     const session = await getCurrentCustomerSessionByBackend("identity");
     if (!session) return NextResponse.json({ error: "Connecte-toi pour recevoir ton pack." }, { status: 401, headers });

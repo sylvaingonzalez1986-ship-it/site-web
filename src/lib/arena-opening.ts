@@ -1,16 +1,15 @@
 import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
 
 ﻿/** Public lobby and character creation precede the game opening (Paris time). */
-export const ARENA_OPENING_AT = "2026-10-15T00:00:00+02:00";
-export const ARENA_OPENING_MESSAGE = "Rendez-vous le 15 octobre";
+export const ARENA_OPENING_AT = "2026-11-01T00:00:00+01:00";
+export const ARENA_OPENING_MESSAGE = "Rendez-vous le 1er novembre";
 
 export function isArenaPrelaunch(now = Date.now()): boolean {
   return process.env.NODE_ENV === "production" && now < Date.parse(ARENA_OPENING_AT);
 }
 
-export function isArenaActivityApi(pathname: string, method: string): boolean {
+export function isArenaActivityApi(pathname: string): boolean {
   const path = pathname.replace(/\/+$/, "");
-  if (path === "/api/account/pioneer-pack") return method !== "GET" && method !== "HEAD";
   if (path === "/api/arena/chanvrier") return false;
   if (path === "/api/contest/access") return false;
   return path === "/api/arena" || path.startsWith("/api/arena/") || path === "/api/contest" || path.startsWith("/api/contest/");

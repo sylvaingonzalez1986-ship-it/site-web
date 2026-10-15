@@ -52,12 +52,12 @@ try {
     assert.deepEqual(await page.$$eval('[data-arena-activity]',items=>items.map(item=>({mode:item.dataset.arenaActivity,tag:item.tagName}))),
       ['carnet','jouer','classement'].map(mode=>({mode,tag:'DIV'})));
     assert.equal(await page.$$eval('[data-arena-activity] a,[data-arena-activity] button',items=>items.length),0);
-    assert.match(await page.$eval('body',el=>el.textContent),/Rendez-vous le 15 octobre/);
+    assert.match(await page.$eval('body',el=>el.textContent),/Rendez-vous le 1er novembre/);
     assert.equal(new URL(page.url()).pathname,'/');
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
     await page.screenshot({path:resolve(output,`locked-${width}.png`),fullPage:true});
     await page.keyboard.press('Escape');
-    assert.match(await page.$eval('body',el=>el.textContent),/Rendez-vous le 15 octobre/);
+    assert.match(await page.$eval('body',el=>el.textContent),/Rendez-vous le 1er novembre/);
   }
   await clickText('Créer mon personnage'); await page.waitForSelector('dialog[open]');
   await page.type('input[autocomplete="nickname"]','Camille29');
@@ -69,7 +69,7 @@ try {
   await page.keyboard.press('Escape');
   await page.goto('http://127.0.0.1:3218/?guest&notice',{waitUntil:'networkidle0'});
   await page.waitForSelector('[data-arena-scene]');
-  assert.match(await page.$eval('body',el=>el.textContent),/Rendez-vous le 15 octobre/);
+  assert.match(await page.$eval('body',el=>el.textContent),/Rendez-vous le 1er novembre/);
   assert(await page.$('a[href="/compte/connexion?next=%2Farene"]'));
   assert(requests.every(path=>path==='/api/arena/chanvrier'),'no gameplay or tutorial requests');
   assert.deepEqual(errors,[]); console.log('Arena prelaunch passed: 4 widths, one scene, 3 inactive activities, permanent date, guest, character creation/editing, no gameplay requests.');

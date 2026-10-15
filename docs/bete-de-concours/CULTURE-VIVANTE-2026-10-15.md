@@ -1,10 +1,10 @@
-# Culture vivante — lancement prévu le 15 octobre 2026
+# Culture vivante — lancement prévu le 1er novembre 2026
 
 ## Périmètre
 
 Le suivi de culture fonctionne à côté des six opérations : observation gratuite, vitalité persistante, interventions choisies dans une réserve achetée à la boutique. La refonte de La Botte est désormais définie autour de 30 cartes d’opération actives, séparées de ce suivi.
 
-Le reset du jeu et du classement est prévu le **15 octobre 2026**, confirmé par le propriétaire. Il n'est pas exécuté par cette livraison. Aucun stock PBI de bêta n'est converti : les nouvelles réserves officielles commencent vides. La migration SQL additive doit être appliquée avant activation de ces règles ; la remise à zéro et sa vérification feront l'objet d'une opération séparée. Les comptes clients et leurs achats réels ne font pas partie de ce reset du jeu.
+L’ouverture du jeu est reportée au **1er novembre 2026**, avec libération du Pack des Pionniers dès le **30 octobre** ; voir le [calendrier de préouverture](ARENA-PREOUVERTURE-2026.md). Le reset du jeu et du classement, initialement prévu le 15 octobre, reste une opération séparée à replanifier ; il n'est pas exécuté par cette livraison. Aucun stock PBI de bêta n'est converti : les nouvelles réserves officielles commencent vides. La migration SQL additive doit être appliquée avant activation de ces règles ; la remise à zéro et sa vérification feront l'objet d'une opération séparée. Les comptes clients et leurs achats réels ne font pas partie de ce reset du jeu.
 
 Les nouvelles tables à inclure dans la procédure de reset du jeu sont `kq_care_interventions`, `kq_care_purchases` et `kq_care_inventory`. Supprimer les interventions avant les cultures référencées. Après le reset, vérifier les stocks vides, l'absence de reçus d'achat réutilisables et les mêmes dotations de départ pour chaque joueur. Aucune suppression n'est programmée automatiquement par ce changement.
 
@@ -160,6 +160,6 @@ Fichiers principaux : `src/lib/kanab-quest-care.ts`, `kanab-quest-battle.ts`, `s
 
 La migration complémentaire `20261010000600_kq_care_explicit_problems.sql` porte le plafond SQL de deux à cinq problèmes. Elle a été appliquée le 10 octobre 2026 au projet lié `eyowwwpdmfrulhkpvlnf`, à la demande de l'utilisateur, avec un lot isolé ne contenant que ce correctif en attente. L'historique distant confirme la version 006 et la prévisualisation suivante confirme ce lot à jour. La migration 005 de la Botte reste en attente. Reçu : `output/pbi-care-migration/application.json`. Cette application ne réécrit aucun état et ne publie pas le code du site.
 
-Les anciennes sauvegardes restent lisibles. Les paramètres révisés s'appliquent aux cultures bêta de règles 3 : les analyses recalculées d'anciennes interventions Coccinella ou Chrysoperla peuvent différer. Ce changement vise le reset du 15 octobre, sans garantie de relecture identique de ces bilans bêta. Les tests PBI couvrent les six auxiliaires, les fenêtres, les refus sans consommation et les apparitions indépendantes des situations.
+Les anciennes sauvegardes restent lisibles. Les paramètres révisés s'appliquent aux cultures bêta de règles 3 : les analyses recalculées d'anciennes interventions Coccinella ou Chrysoperla peuvent différer. Ce changement prépare le reset de lancement, sans garantie de relecture identique de ces bilans bêta. Les tests PBI couvrent les six auxiliaires, les fenêtres, les refus sans consommation et les apparitions indépendantes des situations.
 
 Contrôles : suites Vitest du moteur, sauvegardes, jury, transactions et tutoriels ; `node scripts/test-placard-culture-care.mjs` ; `node scripts/audit-culture-care.mjs` ; `npm run check:supabase-grants` ; TypeScript et ESLint. Le script navigateur couvre les composants réels du panneau et du rayon, en mode local. Il ne remplace pas une recette du serveur déployé.

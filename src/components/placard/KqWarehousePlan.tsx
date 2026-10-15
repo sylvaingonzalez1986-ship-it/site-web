@@ -102,7 +102,7 @@ function ZoneIllustration({ zone, id, growing, grid: GRID }: { zone: KqWarehouse
     return { x: x + (cell % zone.width) * GRID.cell, y: y + Math.floor(cell / zone.width) * GRID.cell };
   };
   const running = growing && zone.active;
-  const modules = (zone.optionCodes ?? []).map(getKqWarehouseOption).filter(option => option !== undefined);
+  const modules = (zone.optionCodes ?? []).map(code => getKqWarehouseOption(code)).filter(option => option !== undefined);
   const moduleColumns = Math.max(1, Math.floor((width - 4) / 16));
   const visibleModules = modules.slice(0, Math.min(8, moduleColumns * Math.max(1, Math.floor(height / 32))));
   return <g pointerEvents="none" opacity={zone.active ? 1 : .58} data-culture-running={running}>

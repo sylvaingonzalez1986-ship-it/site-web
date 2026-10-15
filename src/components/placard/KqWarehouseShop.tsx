@@ -13,7 +13,7 @@ import styles from "./KqWarehouseShop.module.css";
 
 type Department = KqWarehouseOptionFamily | "lighting" | "air" | "drying" | "storage" | "workshop";
 type Product = { code: string; name: string; device: KqWarehouseDevice; option?: never } | { code: string; name: string; option: KqWarehouseOption; device?: never };
-type ProductQuote = { equipmentCents: number; equipmentPerM2: number; operatingPerM2: number; harvestPerM2: number | null; capacityPerM2: number | null; quantity: number; zoneArea: number };
+type ProductQuote = { equipmentCents: number; equipmentPerM2: number; operatingPerM2: number; harvestPerM2: number | null; capacityPerM2: number | null; qualityBonus: number | null; yieldBonusPercent: number | null; quantity: number; zoneArea: number };
 const TIERS = { economy: { label: "Économique", order: 0 }, standard: { label: "Standard", order: 1 }, premium: { label: "Haut de gamme", order: 2 } } as const;
 const FAMILY_ICONS: Record<KqWarehouseOptionFamily, LucideIcon> = { water: Droplets, climate: Thermometer, control: SlidersHorizontal, hygiene: Sparkles, logistics: PackageCheck, security: Shield, substrate: Flower2, nutrition: FlaskConical };
 const DEPARTMENTS: { code: Department; label: string; icon: LucideIcon }[] = [
@@ -35,25 +35,33 @@ function optionPatch(zone: KqWarehouseZone, option: KqWarehouseOption): Partial<
 function priceProduct(product: Product, zone: KqWarehouseZone): ProductQuote {
   if (product.device && (product.device.kind === "drying" || product.device.kind === "storage")) {
     const quote = getKqWarehouseServiceZoneQuote({ id: "shop-service", name: "Zone de 1 m²", x: 0, y: 0, width: 1, height: 1, kind: product.device.kind, deviceCode: product.code });
-    return { equipmentCents: quote.equipmentCostCents, equipmentPerM2: quote.equipmentCostCents, operatingPerM2: 0, harvestPerM2: null, capacityPerM2: quote.capacityGramsPerM2, quantity: quote.devices.reduce((sum, line) => sum + line.quantity, 0), zoneArea: 1 };
+    return { equipmentCents: quote.equipmentCostCents, equipmentPerM2: quote.equipmentCostCents, operatingPerM2: 0, harvestPerM2: null, capacityPerM2: quote.capacityGramsPerM2, qualityBonus: null, yieldBonusPercent: null, quantity: quote.devices.reduce((sum, line) => sum + line.quantity, 0), zoneArea: 1 };
   }
   const candidate = { ...zone, active: true, ...(product.option ? optionPatch(zone, product.option) : product.device.kind === "lighting" ? { lightingCode: product.code } : { airCode: product.code }) };
   const quote = getKqWarehouseZoneQuote(candidate);
   const line = product.option ? quote.options.find(item => item.code === product.code)! : quote.devices.find(item => item.code === product.code)!;
-  return { equipmentCents: line.totalCents, equipmentPerM2: Math.round(line.totalCents / quote.areaM2), operatingPerM2: Math.round(quote.operatingCostCents / quote.areaM2), harvestPerM2: quote.estimatedHarvestGrams / quote.areaM2, capacityPerM2: null, quantity: line.quantity, zoneArea: quote.areaM2 };
+  return { equipmentCents: line.totalCents, equipmentPerM2: Math.round(line.totalCents / quote.areaM2), operatingPerM2: Math.round(quote.operatingCostCents / quote.areaM2), harvestPerM2: quote.estimatedHarvestGrams / quote.areaM2, capacityPerM2: null, qualityBonus: quote.qualityBonus, yieldBonusPercent: quote.yieldBonusPercent, quantity: line.quantity, zoneArea: quote.areaM2 };
 }
 
-function benefit(product: Product, quote: ProductQuote) {
-  if (product.option) return [product.option.yieldBonusPercent ? `+${product.option.yieldBonusPercent} % de récolte potentielle` : "", product.option.qualityBonus ? `+${product.option.qualityBonus} Qualité au départ` : ""].filter(Boolean).join(" · ");
-  if (quote.capacityPerM2 !== null) return `${mass(quote.capacityPerM2)} de capacité par m², sans électricité.`;
-  return `${number(product.device.gameCapacity.value)} m² par appareil · ${quote.quantity} nécessaire${quote.quantity > 1 ? "s" : ""}.`;
+function benefitsComparedWithEconomy(quote: ProductQuote, economy: ProductQuote): string[] {
+  if (quote.capacityPerM2 !== null && economy.capacityPerM2 !== null) {
+    return [`×${number(quote.capacityPerM2 / economy.capacityPerM2)} de capacité par m²`];
+  }
+  const qualityGain = (quote.qualityBonus ?? 0) - (economy.qualityBonus ?? 0);
+  const harvestGain = (quote.harvestPerM2 ?? 0) - (economy.harvestPerM2 ?? 0);
+  const savings = economy.operatingPerM2 - quote.operatingPerM2;
+  return [
+    ...(qualityGain > 0 ? [`+${qualityGain} point${qualityGain > 1 ? "s" : ""} de qualité au départ`] : []),
+    ...(harvestGain > 0 ? [`+${mass(harvestGain)} de récolte potentielle / m²`] : []),
+    ...(savings > 0 ? [`−${formatKqCash(savings)} de charges / m² / cycle`] : []),
+  ];
 }
 
 function tradeoff(product: Product, quote: ProductQuote) {
   if (product.option) return `+${formatKqCash(product.option.consumablesCentsPerM2)} de fournitures / m² / cycle.`;
-  if (quote.capacityPerM2 !== null) return "Une zone dédiée sur le plan.";
+  if (quote.capacityPerM2 !== null) return product.device.kind === "drying" ? "Zone dédiée. Même durée de séchage pour les trois gammes." : `${product.device.specification} Un contenant entamé reste réservé à son lot.`;
   const spare = quote.quantity * product.device.gameCapacity.value - quote.zoneArea;
-  return `${number(product.device.watts * quote.quantity)} W pour la zone.${spare > 0 ? ` ${number(spare)} m² de couverture inutilisés.` : ""}`;
+  return `${number(product.device.gameCapacity.value)} m² couverts par appareil · ${number(product.device.watts * quote.quantity)} W pour la zone.${spare > 0 ? ` Dont ${number(spare)} m² de couverture inutilisés.` : ""}`;
 }
 
 function ProductArt({ product, index }: { product: Product; index: number }) {
@@ -100,7 +108,9 @@ export function KqWarehouseShop({ open, onClose, zone, state, locked, zoneLocked
     ? KQ_WAREHOUSE_OPTIONS.filter(option => option.family === department).map(option => ({ code: option.code, name: option.name, option }))
     : KQ_WAREHOUSE_CATALOG.filter(device => device.purchasable !== false && device.kind === department && (device.kind === "lighting" || device.kind === "air" || !!device.zoneLayout)).map(device => ({ code: device.code, name: device.name, device }));
   products.sort((a, b) => TIERS[tierOf(a)].order - TIERS[tierOf(b)].order);
-  const selectedOption = zone?.optionCodes?.map(getKqWarehouseOption).find(option => option?.family === department);
+  const offers = products.map(product => ({ product, quote: priceProduct(product, sampleZone) }));
+  const economyQuote = offers.find(({ product }) => tierOf(product) === "economy")?.quote;
+  const selectedOption = zone?.optionCodes?.map(code => getKqWarehouseOption(code)).find(option => option?.family === department);
   const services = department === "storage" || department === "drying";
 
   function changeDepartment(value: Department) {
@@ -145,22 +155,29 @@ export function KqWarehouseShop({ open, onClose, zone, state, locked, zoneLocked
           {department === "workshop" ? <div className={styles.workshop}><Wrench size={48} strokeWidth={1.1} /><p>Choisis tes machines et leurs trois gammes à l’atelier.</p><button type="button" disabled={locked} onClick={() => { onOpenWorkshop(); onClose(); }}>Ouvrir l’atelier <ArrowRight size={16} /></button></div>
           : <>
             {(services || selectedOption) && <div className={styles.choiceHint}>{services && <span>Choisis un modèle, puis trace sa zone.</span>}{selectedOption && <button type="button" data-warehouse-shop-remove={selectedOption.family} disabled={locked || zoneLocked || !validZone} onClick={() => { onChangeZone({ optionCodes: (zone?.optionCodes ?? []).filter(code => code !== selectedOption.code) }); setNotice("Équipement retiré. Le matériel acheté reste en réserve."); }}>Retirer</button>}</div>}
-            <div className={styles.products}>{products.map((product, index) => {
-              const quote = priceProduct(product, sampleZone);
+            <p className={styles.comparisonHint}>{services ? "Compare la capacité et le prix pour 1 m² aménagé. Chaque gamme reste sans électricité." : `Même zone de ${sampleZone.width * sampleZone.height} m², avec tes autres équipements. Seule la gamme de ce rayon change.`}</p>
+            <div className={styles.products}>{offers.map(({ product, quote }, index) => {
               const chosen = isChosen(product);
               const tier = tierOf(product);
               const owned = product.option ? state.optionInventory?.find(line => line.code === product.code)?.quantity ?? 0 : state.equipment.find(line => line.code === product.code)?.quantity ?? 0;
+              const gains = economyQuote ? benefitsComparedWithEconomy(quote, economyQuote) : [];
+              const extraCharges = economyQuote ? quote.operatingPerM2 - economyQuote.operatingPerM2 : 0;
               return <article key={product.code} className={styles.product} data-warehouse-shop-product={product.code} data-tier={tier} data-chosen={chosen}>
                 <div className={styles.tier}><span>{TIERS[tier].label}</span>{chosen && <Check size={15} aria-label="Modèle choisi" />}</div>
                 <ProductArt product={product} index={index} />
-                <div className={styles.productHeading}><h4>{product.name}</h4><strong data-warehouse-shop-price={quote.equipmentPerM2}>{formatKqCash(quote.equipmentPerM2)}<small> / m²</small></strong><p className={styles.zonePrice}><b data-warehouse-shop-zone-price={quote.equipmentCents}>{formatKqCash(quote.equipmentCents)}</b> pour {quote.zoneArea} m²</p></div>
-                <dl className={styles.metrics}><div><dt>Charges / m² / cycle</dt><dd>{formatKqCash(quote.operatingPerM2)}</dd></div><div><dt>{quote.capacityPerM2 !== null ? "Capacité / m²" : "Récolte potentielle / m²"}</dt><dd>{mass(quote.capacityPerM2 ?? quote.harvestPerM2 ?? 0)}</dd></div></dl>
-                <div className={styles.benefits}><span>Le plus</span><p>{benefit(product, quote)}</p></div><p className={styles.tradeoff}><b>À prévoir</b>{tradeoff(product, quote)}</p>
+                <div className={styles.productHeading}><h4>{product.name}</h4><span className={styles.priceLabel}>Achat du matériel</span><strong data-warehouse-shop-price={quote.equipmentPerM2}>{formatKqCash(quote.equipmentPerM2)}<small> / m²</small></strong><p className={styles.zonePrice}><b data-warehouse-shop-zone-price={quote.equipmentCents}>{formatKqCash(quote.equipmentCents)}</b> pour {quote.zoneArea} m²</p>{product.device && <p className={styles.unitPrice}>{quote.quantity} appareil{quote.quantity > 1 ? "s" : ""} × {formatKqCash(product.device.priceCents)} / unité</p>}</div>
+                <dl className={styles.metrics} aria-label={services ? "Capacité et coûts" : "Résultat pour cette zone"}>
+                  <div><dt>{quote.capacityPerM2 !== null ? "Capacité / m²" : "Récolte potentielle / m²"}{quote.yieldBonusPercent !== null && <small>Bonus de rendement : +{quote.yieldBonusPercent} %</small>}</dt><dd data-warehouse-shop-harvest={quote.harvestPerM2 ?? undefined} data-warehouse-shop-capacity={quote.capacityPerM2 ?? undefined}>{mass(quote.capacityPerM2 ?? quote.harvestPerM2 ?? 0)}</dd></div>
+                  {quote.qualityBonus !== null && <div className={styles.quality}><dt>Qualité au départ</dt><dd data-warehouse-shop-quality={quote.qualityBonus}>+{quote.qualityBonus} pts</dd></div>}
+                  <div><dt>{services ? "Électricité / cycle" : "Charges de la zone / m² / cycle"}</dt><dd data-warehouse-shop-operating={quote.operatingPerM2}>{formatKqCash(quote.operatingPerM2)}</dd></div>
+                  {quote.capacityPerM2 !== null && quote.capacityPerM2 > 0 && <div><dt>Achat / kg de capacité</dt><dd>{formatKqCash(Math.round(quote.equipmentPerM2 * 1000 / quote.capacityPerM2))}</dd></div>}
+                </dl>
+                <div className={styles.benefits} data-warehouse-shop-benefits>{tier === "economy" ? <><span>Le point de départ</span><p>La référence pour comparer les gains des autres gammes.</p></> : <><span>Face à l’économique</span>{gains.length > 0 ? <ul>{gains.map(gain => <li key={gain}>{gain}</li>)}</ul> : <p>Bonus déjà plafonnés avec les autres modules de cette zone.</p>}</>}</div><p className={styles.tradeoff}><b>À prévoir</b>{tradeoff(product, quote)}{extraCharges > 0 && <span className={styles.extraCharges}>Charges de la zone : +{formatKqCash(extraCharges)} / m² / cycle face à l’économique.</span>}</p>
                 {owned > 0 && <p className={styles.owned}><PackageCheck size={13} />{product.option ? `${owned} m² déjà financés` : `${owned} appareil${owned > 1 ? "s" : ""} déjà possédé${owned > 1 ? "s" : ""}`}</p>}
                 <div className={styles.productActions}><button type="button" data-warehouse-shop-choose={product.code} disabled={locked || chosen || (!services && (!validZone || zoneLocked))} onClick={() => choose(product)}>{chosen ? <><Check size={16} />Choisi</> : services ? <>Placer <ArrowRight size={16} /></> : <>Ajouter au devis <ArrowRight size={16} /></>}</button></div>
               </article>;
             })}</div>
-            <details className={styles.method}><summary>Détails du devis</summary><p>Prix du matériel neuf, hors pose et aménagement. Le devis réutilise ta réserve et calcule le montant à payer.{services ? " Le prix final dépend de la surface tracée." : " Les charges incluent tous les équipements de la zone pour un cycle."}</p><p>Prix, capacités et récoltes sont des valeurs de simulation.{products[0]?.option ? ` Bonus cumulés : maximum +${KQ_WAREHOUSE_OPTION_LIMITS.yieldBonusPercent} % de récolte et +${KQ_WAREHOUSE_OPTION_LIMITS.qualityBonus} Qualité. La qualité de départ est pondérée par les surfaces actives.` : ""}</p></details>
+            <details className={styles.method}><summary>Détails du devis</summary><p>Prix du matériel neuf, hors pose et aménagement. Le devis réutilise ta réserve et calcule le montant à payer.{services ? " Le prix final dépend de la surface tracée." : " Les charges incluent tous les équipements de la zone pour un cycle. Les appareils s’achètent entiers : un grand modèle peut consommer davantage dans une petite zone."}</p><p>Prix, capacités et récoltes sont des valeurs de simulation.{!services ? ` Bonus des modules : maximum +${KQ_WAREHOUSE_OPTION_LIMITS.yieldBonusPercent} % de récolte et +${KQ_WAREHOUSE_OPTION_LIMITS.qualityBonus} points de qualité, auxquels s’ajoute la qualité de l’éclairage et de l’extraction. Les chiffres affichés tiennent compte des plafonds. La qualité au départ améliore les conditions de la culture ; la récolte finale dépend aussi de tes soins.` : ""}</p></details>
           </>}
         </section>
       </div>

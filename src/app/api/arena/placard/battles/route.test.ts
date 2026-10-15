@@ -58,7 +58,7 @@ describe("POST /api/arena/placard/battles", () => {
     const response = await GET();
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
-    expect(getKqPlayerBattles).toHaveBeenCalledWith(customerId, 12);
+    expect(getKqPlayerBattles).toHaveBeenCalledWith(customerId, 25);
   });
 
   it("queues an owned Flower without accepting a chosen rival", async () => {

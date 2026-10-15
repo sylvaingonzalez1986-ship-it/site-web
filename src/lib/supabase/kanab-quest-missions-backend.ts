@@ -8,7 +8,9 @@ export class KqMissionError extends Error {
 function failure(message: string): never {
   if (message.includes("mission_not_ready")) throw new KqMissionError("L’objectif n’est pas encore atteint. Actualise ta progression.", 409);
   if (message.includes("mission_unknown")) throw new KqMissionError("Mission inconnue.", 400);
-  if (message.includes("mission_collection_inactive")) throw new KqMissionError("Les packs Botte du Chanvrier sont momentanément indisponibles. Ta progression est conservée.", 503);
+  if (message.includes("mission_collection_inactive")) throw new KqMissionError("Les récompenses Botte du Chanvrier sont momentanément indisponibles. Ta progression est conservée.", 503);
+  if (message.includes("mission_card_unavailable")) throw new KqMissionError("Cette carte de récompense est momentanément indisponible. Ta progression est conservée.", 503);
+  if (message.includes("mission_wallet_limit")) throw new KqMissionError("Ta caisse a atteint sa limite. Libère de la place avant de récupérer cette récompense.", 409);
   throw new KqMissionError("Le centre de missions est momentanément indisponible. Réessaie dans un instant.", 503);
 }
 export async function getKqMissions(userId: string): Promise<KqMissionSnapshot> {

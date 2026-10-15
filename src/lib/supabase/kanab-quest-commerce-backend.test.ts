@@ -115,15 +115,17 @@ describe("persistent online commerce commands", () => {
     expect(mocks.rpc).not.toHaveBeenCalled();
   });
 
-  it("accepts only catalog upgrades and requires a stock for harvest marketing", async () => {
+  it("accepts only catalog upgrades and requires a listing and budget for prepared campaigns", async () => {
     await expect(run("upgrade-site", { tier: "free-unlimited" })).rejects.toThrow();
     await expect(run("buy-upgrade", { code: "instant-clients" })).rejects.toThrow();
     await expect(run("start-marketing", { code: "harvest", angle: "craft" })).rejects.toThrow();
     await expect(run("start-marketing", { code: "introduction", angle: ["craft"] })).rejects.toThrow();
     await expect(run("start-marketing", { code: "fake-reviews", angle: "craft" })).rejects.toThrow();
     expect(mocks.rpc).not.toHaveBeenCalled();
-    await run("start-marketing", { code: "harvest", angle: "craft", stockId, followersReward: 1_000_000 });
-    expect(mocks.rpc).toHaveBeenLastCalledWith("rpc_kq_online_command", expect.objectContaining({ p_action: "start-marketing", p_payload: { code: "harvest", angle: "craft", stockId } }));
+    await expect(run("start-marketing", { version: 2, code: "harvest", angle: "craft", budgetCode: "regional" })).rejects.toThrow();
+    await expect(run("start-marketing", { version: 2, code: "harvest", angle: "craft", listingId, budgetCode: "free" })).rejects.toThrow();
+    await run("start-marketing", { version: 2, code: "harvest", angle: "craft", listingId, budgetCode: "regional", stockId, followersReward: 1_000_000, costCents: 0 });
+    expect(mocks.rpc).toHaveBeenLastCalledWith("rpc_kq_online_command", expect.objectContaining({ p_action: "start-marketing", p_payload: { version: 2, code: "harvest", angle: "craft", listingId, budgetCode: "regional" } }));
   });
 
   it.each([
@@ -132,7 +134,7 @@ describe("persistent online commerce commands", () => {
     ["pause-listing", { listingId }], ["resume-listing", { listingId }], ["close-listing", { listingId }], ["discard-listing", { listingId }],
     ["upgrade-site", { tier: "basic" }], ["upgrade-site", { tier: "pro" }],
     ["buy-upgrade", { code: "branding" }], ["buy-upgrade", { code: "photography" }],
-    ["start-marketing", { code: "introduction", angle: "value" }],
+    ["start-marketing", { version: 2, code: "introduction", angle: "value", listingId, budgetCode: "local" }],
   ])("dispatches supported command %s with a stable idempotency key", async (command, payload) => {
     await run(command, payload);
     expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_online_command", { p_user_id: user, p_action: command, p_payload: payload, p_request_key: requestKey });

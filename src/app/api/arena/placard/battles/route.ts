@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { KQ_BATTLE_HISTORY_LIMIT } from "@/lib/kanab-quest-battle-history-policy";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import {
   enqueueKqPlayerRandomBattle,
@@ -19,7 +20,7 @@ export async function GET() {
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
-    return NextResponse.json({ battles: await getKqPlayerBattles(session.customerId, 12) }, {
+    return NextResponse.json({ battles: await getKqPlayerBattles(session.customerId, KQ_BATTLE_HISTORY_LIMIT) }, {
       headers: { "Cache-Control": "private, no-store, max-age=0" },
     });
   } catch {

@@ -2,10 +2,8 @@
 .content { min-width: 0; padding-bottom: 28px; }
 .sidebar { position: sticky; top: 0; align-self: start; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: 22px 15px 18px; background: #fff1d6; color: #172923; border-right: 3px solid #172923; }
 .navBrand { position: relative; margin: 0 1px 24px; padding: 13px 10px 15px; border: 2px solid #172923; border-radius: 18px 18px 24px 8px; background: #149b8b; box-shadow: 4px 4px 0 #172923; }
-.navBrand::after { content: ""; position: absolute; right: 13px; bottom: -8px; width: 14px; height: 14px; border: 2px solid #172923; border-radius: 50%; background: #efc451; }
 .navBrand > span { font-size: 9px; font-weight: 750; letter-spacing: .055em; text-transform: uppercase; color: #172923; }
 .navBrand > strong { display: block; font: 900 30px/1.2 var(--font-display), Impact, sans-serif; letter-spacing: -.02em; }
-.navBrand > strong > span { color: #fff1d6; }
 .navBrand > small { display: block; padding-top: 3px; font-size: 10px; font-weight: 650; color: #172923; }
 .navGroup { display: grid; gap: 7px; }
 .navGroup + .navGroup { margin-top: 20px; padding-top: 15px; border-top: 2px dashed #1729234d; }

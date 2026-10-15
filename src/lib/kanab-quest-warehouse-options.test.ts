@@ -15,7 +15,8 @@ describe("fictional warehouse modules", () => {
     for (const family of KQ_WAREHOUSE_OPTION_FAMILIES) expect(KQ_WAREHOUSE_OPTIONS.filter(option => option.family === family.code)).toHaveLength(3);
     const old = starter();
     expect(old).not.toHaveProperty("optionInventory");
-    expect(getKqWarehouseRunSnapshot(old)).not.toHaveProperty("qualityBonus");
+    expect(getKqWarehouseRunSnapshot(old, 0, undefined, 1)).not.toHaveProperty("qualityBonus");
+    expect(getKqWarehouseRunSnapshot(old)).toMatchObject({ balanceVersion: 2, qualityBonus: 1 });
     expect(getKqWarehouseRunSnapshot(old)).toMatchObject({ estimatedHarvestGrams: 250, consumablesCostCents: 2200 });
     expect(isKqWarehouseRunSnapshot(getKqWarehouseRunSnapshot(old))).toBe(true);
   });
@@ -53,7 +54,8 @@ describe("fictional warehouse modules", () => {
   it("freezes recurring game supplies and gives inactive zones no recurring charge or yield", () => {
     const equipped = fit(["SIM-NUTRITION-02", "SIM-CLIMATE-02"], 2).nextState;
     const quote = getKqWarehouseZoneQuote(equipped.zones[0]);
-    expect(quote).toMatchObject({ consumablesCostCents: 2 * (2200 + 320 + 190), estimatedHarvestGrams: 510, qualityBonus: 1 });
+    expect(quote).toMatchObject({ consumablesCostCents: 2 * (2200 + 320 + 190), estimatedHarvestGrams: 520,
+      qualityBonus: 2, moduleQualityBonus: 1, equipmentQualityBonus: 1 });
     const inactive = getKqWarehouseZoneQuote({ ...equipped.zones[0], active: false });
     expect(inactive).toMatchObject({ consumablesCostCents: 0, estimatedHarvestGrams: 0, operatingCostCents: 0 });
     expect(inactive.equipmentCostCents).toBe(quote.equipmentCostCents);
@@ -71,16 +73,16 @@ describe("fictional warehouse modules", () => {
     const state = fit(["SIM-CLIMATE-02", "SIM-HYGIENE-02"], 1).nextState;
     const second = { ...state.zones[0], id: "second", x: 4, width: 3, optionCodes: [] };
     const mixed = getKqWarehouseQuote({ ...state, zones: [...state.zones, second] }, state).nextState;
-    expect(getKqWarehouseRunSnapshot(mixed).qualityBonus).toBe(0);
+    expect(getKqWarehouseRunSnapshot(mixed).qualityBonus).toBe(1);
     const all = fit(KQ_WAREHOUSE_OPTIONS.filter(option => option.code.endsWith("03")).map(option => option.code)).nextState;
-    expect(getKqWarehouseRunSnapshot(all).qualityBonus).toBe(4);
-    expect(getKqWarehouseZoneQuote(all.zones[0]).yieldBonusPercent).toBeLessThanOrEqual(20);
+    expect(getKqWarehouseRunSnapshot(all).qualityBonus).toBe(5);
+    expect(getKqWarehouseZoneQuote(all.zones[0])).toMatchObject({ yieldBonusPercent: 24, moduleQualityBonus: 4, equipmentQualityBonus: 1 });
   });
 
   it("changes actual game quality and bounded harvest and round-trips saves", () => {
     const paid = fit(["SIM-CLIMATE-03", "SIM-NUTRITION-03"]).nextState;
     const initial = startKqGame(300, { warehouse: getKqWarehouseRunSnapshot(paid) });
-    expect(initial.quality).toBe(2);
+    expect(initial.quality).toBe(4);
     expect(initial.effectNotices?.some(line => line.includes("bonus de simulation"))).toBe(true);
     let completed = initial;
     while (completed.phase !== "complete") completed = advanceKqStage(resolveKqStage({ ...completed, phase: "rolled", dice: [6, 6, 6] }));

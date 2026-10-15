@@ -71,7 +71,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "checkedAt": "2026-10-12",
     "priceBasis": "simulation",
     "priceNote": "Prix fictif du jeu ; pose et préparation de la zone calculées séparément dans le devis.",
-    "specification": "Un petit module par case : budget initial contenu, charge par m² plus importante.",
+    "specification": "Couvre 1 m². Le plus petit budget d’achat, sans bonus de qualité au départ.",
     "gameCapacity": {
       "unit": "m2",
       "value": 1,
@@ -93,7 +93,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "checkedAt": "2026-10-12",
     "priceBasis": "simulation",
     "priceNote": "Prix fictif du jeu ; pose et préparation de la zone calculées séparément dans le devis.",
-    "specification": "Deux cases par module et moins d’énergie par m², contre un prix d’achat supérieur.",
+    "specification": "Couvre 2 m². +1 Qualité au départ. Moins d’énergie par m² lorsque les deux cases sont utilisées.",
     "gameCapacity": {
       "unit": "m2",
       "value": 2,
@@ -116,7 +116,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "checkedAt": "2026-10-12",
     "priceBasis": "simulation",
     "priceNote": "Prix fictif du jeu ; pose et préparation de la zone calculées séparément dans le devis.",
-    "specification": "Quatre cases par module et charge minimale par m², avec le budget initial le plus élevé.",
+    "specification": "Couvre 4 m². +2 Qualité au départ. La meilleure efficacité énergétique lorsque les quatre cases sont utilisées.",
     "gameCapacity": {
       "unit": "m2",
       "value": 4,
@@ -162,7 +162,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "checkedAt": "2026-10-12",
     "priceBasis": "simulation",
     "priceNote": "Prix fictif du jeu ; pose et préparation de la zone calculées séparément dans le devis.",
-    "specification": "Petit module abordable, avec une charge par m² couvert plus importante.",
+    "specification": "Couvre 8 m². Le plus petit budget d’achat, sans bonus de qualité au départ.",
     "gameCapacity": {
       "unit": "m2",
       "value": 8,
@@ -185,7 +185,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "checkedAt": "2026-10-12",
     "priceBasis": "simulation",
     "priceNote": "Prix fictif du jeu ; pose et préparation de la zone calculées séparément dans le devis.",
-    "specification": "Couverture intermédiaire et charge par m² réduite par rapport à la gamme économique.",
+    "specification": "Couvre 20 m². +1 Qualité au départ. Moins d’énergie par m² lorsque toute la couverture est utilisée.",
     "gameCapacity": {
       "unit": "m2",
       "value": 20,
@@ -207,7 +207,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "checkedAt": "2026-10-12",
     "priceBasis": "simulation",
     "priceNote": "Prix fictif du jeu ; pose et préparation de la zone calculées séparément dans le devis.",
-    "specification": "Grande couverture et charge minimale par m² ; son achat se justifie surtout dans une grande zone.",
+    "specification": "Couvre 50 m². +2 Qualité au départ. La meilleure efficacité énergétique lorsque toute la couverture est utilisée.",
     "gameCapacity": {
       "unit": "m2",
       "value": 50,
@@ -443,4 +443,12 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
 
 export function getKqWarehouseDevice(code: string): KqWarehouseDevice | undefined {
   return KQ_WAREHOUSE_CATALOG.find(device => device.code === code);
+}
+
+/** Starting quality applies once per equipment family, never per purchased unit. */
+export function getKqWarehouseDeviceQualityBonus(code: string, balanceVersion: 1 | 2 = 2): number {
+  if (balanceVersion === 1) return 0;
+  const device = getKqWarehouseDevice(code);
+  if (!device || device.purchasable === false || (device.kind !== "lighting" && device.kind !== "air")) return 0;
+  return device.tier === "premium" ? 2 : device.tier === "standard" ? 1 : 0;
 }

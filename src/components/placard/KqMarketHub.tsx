@@ -66,7 +66,7 @@ export function KqMarketHub({ onOpenShop, onOpenTreasury, onOpenStorage, onOpenC
     </div> : <div id={`${id}-management-panel`} role="tabpanel" aria-labelledby={`${id}-management-tab`}>
       <main className={styles.management}>
         <h1 className="sr-only" ref={managementHeading} tabIndex={-1}>Ma boutique</h1>
-        <KqTreasuryManagement onOpenShop={onOpenShop} section="management" />
+        <KqTreasuryManagement onOpenShop={onOpenShop} section="management" onPrepareStock={() => { focusDestination.current = "sales"; select("sales"); }} onViewSales={() => { focusDestination.current = "dashboard"; select("dashboard"); }} />
         <Link className={styles.accounting} href="/arene/placard?view=treasury&pole=accounting" prefetch={false} onClick={event => { if (onOpenTreasury) { event.preventDefault(); onOpenTreasury(); } }}><ReceiptText size={19} aria-hidden="true" /><span>Mes factures<small>Montants à régler et prochaines échéances dans Finances.</small></span><ArrowRight size={18} aria-hidden="true" /></Link>
       </main>
     </div>}

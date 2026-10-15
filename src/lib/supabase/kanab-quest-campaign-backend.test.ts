@@ -124,7 +124,7 @@ describe("shared campaign backend", () => {
   });
   it("loads one full state for 52 members while preserving access through the last zone", async () => {
     const largeLayout = getKqWarehouseQuote({ ...starter, zones: Array.from({ length: 52 }, (_, index) => ({
-      ...starter.zones[0], id: `zone-${String(index).padStart(2, "0")}`, x: index % 26, y: Math.floor(index / 26),
+      ...starter.zones[0], id: `zone-${String(index).padStart(2, "0")}`, x: index % 10, y: Math.floor(index / 10),
       buddieCode: `HH2026-${String(index + 1).padStart(3, "0")}`,
     })) }).nextState;
     const participants = getKqCampaignParticipants(largeLayout, 1).map((member, index) => ({ ...member,

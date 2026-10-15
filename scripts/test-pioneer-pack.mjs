@@ -1,9 +1,8 @@
 // Real PostgreSQL execution in an isolated in-memory database. No network or credentials.
-// Setup: npm.cmd install --prefix output/reputation-test-tools --no-save --ignore-scripts --package-lock=false @electric-sql/pglite
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
-import { PGlite } from '../output/reputation-test-tools/node_modules/@electric-sql/pglite/dist/index.js';
+import { PGlite } from '@electric-sql/pglite';
 const db = new PGlite();
 try {
   await db.exec(`
@@ -73,6 +72,31 @@ try {
   await db.exec("SELECT set_config('test.clock','2026-10-15 00:00:00 Europe/Paris',false)");
 
   const old=await user(); await order(old,{date:'2020-01-01 00:00:00+00'}); await order(old);
+  await db.exec(await readFile('supabase/migrations/20261015000100_kq_pioneer_pack_release_october_30.sql','utf8'));
+  assert.equal(await scalar('SELECT count(*)::INTEGER FROM kq_pioneer_pack_grants'),1,'release migration never distributes gifts');
+  // The old opening and the final microsecond before the new Paris cutoff stay blocked.
+  for (const date of ['2026-10-15 00:00:00 Europe/Paris','2026-10-29 22:59:59.999999+00']) {
+    await db.query("SELECT set_config('test.clock',$1,false)",[date]);
+    assert.equal((await state(old)).eligible,true,'preview remains available before release');
+    assert.equal((await state(legacy)).cashCents,100000,'historical gift remains readable');
+    await assert.rejects(()=>claim(old),/pioneer_not_open/);
+    await assert.rejects(()=>claim(legacy),/pioneer_not_open/);
+    const preview=await scalar('SELECT rpc_kq_pioneer_pack_batch(NULL,100,false)');
+    assert.equal(preview.eligible,1); assert.equal(preview.granted,0);
+    await assert.rejects(()=>scalar('SELECT rpc_kq_pioneer_pack_batch(NULL,100,true)'),/pioneer_not_open/);
+    assert.equal(await count('kq_pioneer_pack_grants',old),0);
+    assert.equal(await count('kq_equipment_wallets',old),0);
+    assert.equal(await count('lottery_card_instances',old),0);
+    assert.equal(await count('kq_support_booster_entitlements',old),0);
+  }
+  // Paris has switched to UTC+1 by 30 October: release is exactly 29 October 23:00 UTC.
+  await db.exec("SELECT set_config('test.clock','2026-10-29 23:00:00+00',false)");
+  const preservedLegacy=await claim(legacy);
+  assert.equal(preservedLegacy.replayed,true);
+  assert.equal(preservedLegacy.cashCents,100000);
+  assert.equal(preservedLegacy.goldCard.code,legacyGrant.goldCard.code);
+  assert.equal(await cash(legacy),135000,'postponement never recredits historical gifts');
+  assert.equal(await count('kq_support_booster_entitlements',legacy),10);
   assert.equal((await state(old)).eligible,true,'site history has no lower bound');
   assert.equal((await state(old)).cashCents,500000,'preview advertises the new amount');
   assert.equal(await count('kq_pioneer_pack_grants',old),0,'GET state must not credit');
@@ -192,5 +216,5 @@ try {
   await db.exec('RESET ROLE; SET ROLE service_role');
   assert.equal((await state(old)).claimed,true);
   await db.exec('RESET ROLE');
-  console.log('Pioneer pack SQL passed: exact Paris cutoff, history, guest eligibility, 5000 euros, 90/10 gold/epic odds, legacy grants, 10 working packs, replay, rollback, batch and access controls.');
+  console.log('Pioneer pack SQL passed: 30 October Paris cutoff, blocked old release, preview and batch, history, guest eligibility, 5000 euros, 90/10 gold/epic odds, legacy grants, 10 working packs, replay, rollback and access controls.');
 } catch (error) { console.error(error.message, error.detail || "", error.where || ""); process.exitCode=1; } finally { await db.close(); }

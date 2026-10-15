@@ -118,7 +118,9 @@ les formats 320/768/1440 pixels, les achats en quantité et la conservation des
 parcours de curing et de vente de surplus. Les captures et résultats sont dans
 `output/storage-curing/`.
 
-## Remise à zéro prévue le 15 octobre
+## Remise à zéro de lancement
+
+Initialement prévue le 15 octobre, cette opération reste à replanifier séparément après le report de l’ouverture au 1er novembre 2026 ; voir le [calendrier de préouverture](ARENA-PREOUVERTURE-2026.md).
 
 Lors du reset transactionnel du jeu et du classement, supprimer explicitement les lignes de `public.kq_storage_requests`, `public.kq_storage_overflow_sales`, `public.kq_storage_containers` et `public.kq_storage_accounts` pour les comptes inclus dans le reset. Supprimer les reçus de surplus avant les fleurs, car leur clé étrangère utilise `ON DELETE RESTRICT`. Cela efface les reçus de demandes et de surplus, les quantités de contenants et le choix par défaut ; supprimer seulement les fleurs laisserait l’inventaire en place. La prochaine initialisation redonne exactement les deux bocaux de départ.
 

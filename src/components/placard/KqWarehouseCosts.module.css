@@ -1,0 +1,184 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.panel {
+  display: grid;
+  min-width: 0;
+  gap: 18px;
+  padding: 20px;
+  color: #172923;
+  background: #fffaf0;
+  border: 2px solid #172923;
+  border-radius: 13px;
+}
+
+.heading {
+  display: grid;
+  gap: 4px;
+}
+
+.heading h4 {
+  margin: 0;
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.heading > span,
+.note,
+.credit small {
+  color: #536058;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.total {
+  display: grid;
+  gap: 5px;
+  padding: 14px 16px;
+  background: #d8ece3;
+  border-radius: 9px;
+}
+
+.total strong {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: clamp(34px, 3vw, 44px);
+  font-weight: 900;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.total span {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.note {
+  margin: 0;
+}
+
+.rates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.rates > div {
+  min-width: 0;
+  padding: 12px;
+  background: #fff1d6;
+  border-radius: 9px;
+}
+
+.rates dt {
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.rates dd {
+  margin: 0;
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.rates small {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #536058;
+}
+
+.credit {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  background: #d8ece3;
+  border-radius: 9px;
+}
+
+.credit > span {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.credit strong {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.invoice {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid #17292340;
+}
+
+.invoice > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 5px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.invoice dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.invoice > .payable {
+  margin-top: 2px;
+  padding: 12px 14px;
+  background: #efc451;
+  border-radius: 8px;
+}
+
+.payable dt {
+  font-weight: 700;
+}
+
+.payable dd {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panel {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .rates { grid-template-columns: minmax(0, 1fr); }
+  .rates > div { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .rates dt { margin-bottom: 0; }
+  .rates dd { text-align: right; font-size: 28px; }
+}

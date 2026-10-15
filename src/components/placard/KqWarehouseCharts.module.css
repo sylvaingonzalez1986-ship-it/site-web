@@ -1,0 +1,29 @@
+.bars, .legend { margin: 0; }
+.bars { display: grid; gap: 16px; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 12px; align-items: baseline; }
+.row dt { color: #304c42; font-size: 13px; font-weight: 700; overflow-wrap: anywhere; }
+.row dd { margin: 0; text-align: right; }
+.row strong, .legend strong { color: #173c2e; font-family: var(--font-display), sans-serif; font-size: 23px; font-weight: 800; line-height: 1.05; }
+.row .note, .legend .note { display: block; grid-column: 1 / -1; color: #58665c; font-size: 11px; line-height: 1.4; text-align: left; }
+.track, .stackTrack { overflow: hidden; border-radius: 4px; background: #dedfce; box-shadow: inset 0 1px 2px #183a2510; }
+.track { grid-column: 1 / -1; height: 11px; }
+.track span { display: block; height: 100%; background: var(--chart-color); border-radius: inherit; }
+.stackTrack { display: flex; height: 24px; gap: 2px; }
+.stackTrack span { min-width: 0; background: var(--chart-color); }
+.legend { display: grid; gap: 10px; margin-top: 16px; }
+.legend > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: baseline; }
+.legend dt { display: flex; gap: 8px; align-items: center; color: #304c42; font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
+.legend i { flex: 0 0 9px; height: 9px; border-radius: 2px; background: var(--chart-color); }
+.legend dd { display: flex; align-items: baseline; flex-wrap: wrap; justify-content: flex-end; gap: 5px 12px; margin: 0; text-align: right; }
+.legend dd > span { min-width: 35px; color: #5b665c; font-size: 11px; font-variant-numeric: tabular-nums; }
+.bars [data-tone="green"], .stacked [data-tone="green"] { --chart-color: #397653; }
+.bars [data-tone="amber"], .stacked [data-tone="amber"] { --chart-color: #c68a25; }
+.bars [data-tone="blue"], .stacked [data-tone="blue"] { --chart-color: #4d8392; }
+.bars [data-tone="slate"], .stacked [data-tone="slate"] { --chart-color: #8c9883; }
+.bars [data-tone="danger"], .stacked [data-tone="danger"] { --chart-color: #ae4e35; }
+@media (max-width: 380px) {
+  .row { gap: 4px 8px; }
+  .row dt, .legend dt { font-size: 12px; }
+  .row strong, .legend strong { font-size: 21px; }
+  .legend dd { gap: 4px 6px; }
+}

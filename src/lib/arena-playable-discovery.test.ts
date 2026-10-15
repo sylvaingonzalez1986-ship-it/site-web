@@ -13,12 +13,16 @@ describe("isolated visual discovery lessons", () => {
   it("requires claiming the actual mission before opening its local reward, exactly once", async () => {
     const progress = vi.fn();
     const api = createDiscoveryTransport("missions", progress);
+    const snapshot = await (await api.request("/api/arena/placard/missions")).json();
+    expect(snapshot.missions).toHaveLength(30);
+    expect(snapshot.missions.every((mission: { target: number; reward: unknown }) => Number.isFinite(mission.target) && mission.target > 0 && mission.reward)).toBe(true);
+    expect(snapshot.missions.filter((mission: { claimable: boolean }) => mission.claimable)).toEqual([expect.objectContaining({ code: "fifteen-varieties", reward: { kind: "pack", cardCount: 3 } })]);
     const open = () => api.request("/api/arena/placard/boosters", { method: "PATCH", body: JSON.stringify({ entitlementId: "tutorial-mission-pack" }) });
     expect((await open()).ok).toBe(false);
     expect(api.progress().complete).toBe(false);
-    await api.request("/api/arena/placard/missions", post({ code: "first-harvest" }));
+    await api.request("/api/arena/placard/missions", post({ code: "fifteen-varieties" }));
     expect(api.progress().complete).toBe(false);
-    const repeated = await api.request("/api/arena/placard/missions", post({ code: "first-harvest" }));
+    const repeated = await api.request("/api/arena/placard/missions", post({ code: "fifteen-varieties" }));
     expect((await repeated.json()).replayed).toBe(true);
     expect((await (await open()).json()).cards).toHaveLength(3);
     expect(api.progress().complete).toBe(true);

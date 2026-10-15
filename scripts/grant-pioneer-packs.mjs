@@ -7,7 +7,7 @@ const apply = process.argv.includes('--apply');
 const unknown = process.argv.slice(2).filter(value => !['--apply', '--help'].includes(value));
 if (unknown.length) throw new Error('Unknown option. Use --help for usage.');
 if (process.argv.includes('--help')) {
-  console.log('node scripts/grant-pioneer-packs.mjs          Preview eligible accounts (no credits).\nnode scripts/grant-pioneer-packs.mjs --apply  Credit all eligible accounts once.\nRun again after 10 October 2026 for final distribution.');
+  console.log('node scripts/grant-pioneer-packs.mjs          Preview eligible accounts (no credits).\nnode scripts/grant-pioneer-packs.mjs --apply  Credit all eligible accounts once.\nDistribution opens on 30 October 2026 at 00:00 Europe/Paris; the qualifying order deadline remains 10 October inclusive.');
   process.exit(0);
 }
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

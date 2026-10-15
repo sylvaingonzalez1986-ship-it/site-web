@@ -65,6 +65,7 @@
 .notice svg { flex-shrink: 0; margin-top: 2px; }
 .choiceHint { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: -10px 0 20px; font-size: 13px; line-height: 1.5; color: #536058; }
 .choiceHint button { margin-left: auto; min-height: 40px; padding: 8px 0; border: 0; background: none; font-size: 13px; text-decoration: underline; text-underline-offset: 4px; color: #076c61; font-weight: 750; }
+.comparisonHint { margin: -8px 0 20px; max-width: 75ch; font-size: 13px; line-height: 1.6; color: #536058; }
 
 .products { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
 .product {
@@ -78,7 +79,7 @@
 .product[data-tier=standard] .tier { background: #a9ded3; color: #172923; border-color: #172923; }
 .product[data-tier=premium] .tier { background: #efc451; color: #172923; border-color: #172923; }
 .productArt {
-  height: 148px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
+  height: 112px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
   background: radial-gradient(circle at 50% 55%,#fffaf0 0 47%,transparent 48%), #f3d9b5;
   border-bottom: 2px solid #172923;
 }
@@ -87,27 +88,36 @@
 .product[data-tier=standard] .productArt {
   background-color: #cdebe1; }
 .serial { position: absolute; left: 16px; top: 14px; letter-spacing: -.08em; font: 900 52px/1 var(--font-display), Impact, sans-serif; color: #17292330; }
-.productImage { position: relative; width: min(100%, 160px); height: 140px; object-fit: contain; filter: drop-shadow(2px 3px 0 #17292335); }
-.productHeading { padding: 22px 18px 20px; }
+.productImage { position: relative; width: min(100%, 135px); height: 108px; object-fit: contain; filter: drop-shadow(2px 3px 0 #17292335); }
+.productHeading { padding: 18px; }
 .productHeading h4 {
-  min-height: 2.5em; margin: 0 0 18px; overflow-wrap: anywhere; color: #172923; font: 900 26px/1.15 var(--font-display), Impact, sans-serif; letter-spacing: .01em;
+  min-height: 2.5em; margin: 0 0 14px; overflow-wrap: anywhere; color: #172923; font: 900 26px/1.15 var(--font-display), Impact, sans-serif; letter-spacing: .01em;
 }
+.priceLabel { display: block; margin-bottom: 5px; font-size: 12px; color: #536058; }
 .productHeading > strong { font-size: 28px; line-height: 1.2; letter-spacing: -.035em; font-variant-numeric: tabular-nums; color: #172923; font-weight: 850; }
 .productHeading strong small { font-size: 13px; font-weight: 400; letter-spacing: 0; white-space: nowrap; color: #536058; }
 .zonePrice { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 6px; margin: 12px 0 0; font-size: 13px; line-height: 1.5; color: #536058; }
 .zonePrice b { font-size: 17px; font-weight: 650; color: #076c61; }
-.metrics { display: grid; gap: 13px; margin: 0 18px 22px; padding: 16px 0; border-top: 2px solid #17292355; border-bottom: 2px solid #17292355; }
+.unitPrice { margin: 6px 0 0; font-size: 11px; line-height: 1.5; color: #536058; }
+.metrics { display: grid; gap: 12px; margin: 0 18px 18px; padding: 14px 0; border-top: 2px solid #17292355; border-bottom: 2px solid #17292355; }
 .metrics > div { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
 .metrics dt { font-size: 12px; line-height: 1.45; color: #536058; }
+.metrics dt small { display: block; margin-top: 3px; font-size: 10px; line-height: 1.4; }
 .metrics dd { margin: 0; font-size: 15px; line-height: 1.45; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; color: #172923; }
-.benefits { padding: 0 18px; }
+.metrics .quality { align-items: center; padding: 8px; background: #dcefe4; border-radius: 7px; }
+.quality dt { color: #174d3e; font-weight: 700; }
+.quality dd { color: #174d3e; font: 900 24px/1 var(--font-display), Impact, sans-serif; }
+.benefits { margin: 0 18px 16px; padding: 10px 12px; background: #edf4e9; border-left: 3px solid #076c61; border-radius: 0 7px 7px 0; }
+.product[data-tier=premium] .benefits { background: #fcf0bc; border-color: #916208; }
 .benefits > span, .tradeoff b { display: block; margin: 0 0 5px; font-size: 12px; line-height: 1.4; font-weight: 700; }
 .benefits > span {
   color: #076c61; }
-.benefits > p { margin: 0 0 18px; font-size: 13px; line-height: 1.6; color: #536058; }
+.benefits > p { margin: 0; font-size: 12px; line-height: 1.5; color: #536058; }
+.benefits ul { display: grid; gap: 6px; list-style: none; padding: 0; margin: 0; color: #174d3e; font-size: 13px; font-weight: 750; line-height: 1.45; }
 .tradeoff { margin: 0 18px 20px; font-size: 13px; line-height: 1.6; color: #72522f; }
 .tradeoff b {
   color: #72522f; }
+.extraCharges { display: block; margin-top: 5px; }
 .owned { display: flex; align-items: flex-start; gap: 7px; margin: 0 18px 20px; font-size: 12px; line-height: 1.5; color: #076c61; }
 .owned svg { flex-shrink: 0; margin-top: 2px; }
 .productActions { margin-top: auto; padding: 16px 18px; background: #f7dfb850; border-top: 2px solid #17292355; }
@@ -161,14 +171,14 @@
   .zoneTag { max-width: 100%; padding-left: 0; border: 0; }
   .zoneTag > span { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
   .products { grid-template-columns: 1fr; gap: 26px; }
-  .productArt { height: 158px; }
-  .productImage { width: min(100%, 180px); height: 150px; }
-  .productHeading { padding: 24px 22px 22px; }
+  .productArt { height: 120px; }
+  .productImage { width: min(100%, 150px); height: 116px; }
+  .productHeading { padding: 20px 22px 18px; }
   .productHeading h4 { min-height: 0; margin-bottom: 18px; font-size: 24px; }
   .productHeading > strong { font-size: 31px; }
   .tier { padding-inline: 22px; font-size: 14px; }
   .metrics { margin-inline: 22px; }
-  .benefits { padding-inline: 22px; }
+  .benefits { margin-inline: 22px; }
   .tradeoff, .owned { margin-inline: 22px; }
   .productActions { padding-inline: 22px; }
   .footer { flex-wrap: wrap; gap: 12px; padding: 16px 20px; }

@@ -1,4 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ARENA_OPENING_AT } from "@/lib/arena-opening";
+
+const openingAt = Date.parse(ARENA_OPENING_AT);
 
 const mocks = vi.hoisted(() => ({
   cookieValues: vi.fn(),
@@ -51,7 +54,7 @@ beforeEach(() => {
   vi.stubEnv("CONTEST_FEATURE_ENABLED", "true");
   vi.stubEnv("CONTEST_FEATURE_ALLOW_PRODUCTION", "true");
   vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "true");
-  vi.spyOn(Date, "now").mockReturnValue(Date.parse("2026-10-16T12:00:00Z"));
+  vi.spyOn(Date, "now").mockReturnValue(openingAt + 1);
   mocks.cookieValues.mockReturnValue([]);
   mocks.session.mockResolvedValue(null);
   mocks.admin.mockResolvedValue(false);
@@ -118,10 +121,10 @@ describe("Arena discovery page access", () => {
   });
 
   it.each([
-    { date: "2026-10-07T12:00:00Z", prelaunch: true },
-    { date: "2026-10-16T12:00:00Z", prelaunch: false },
-  ])("ignores the retired first-culture return before/after opening: $date", async ({ date, prelaunch }) => {
-    vi.spyOn(Date, "now").mockReturnValue(Date.parse(date));
+    { phase: "before", now: openingAt - 1, prelaunch: true },
+    { phase: "after", now: openingAt + 1, prelaunch: false },
+  ])("ignores the retired first-culture return $phase opening", async ({ now, prelaunch }) => {
+    vi.spyOn(Date, "now").mockReturnValue(now);
     connectOrdinaryCustomer();
     const result = await visit({ "premiere-culture": "terminee" });
     expect(result.type).toBe(ContestArenaHub);

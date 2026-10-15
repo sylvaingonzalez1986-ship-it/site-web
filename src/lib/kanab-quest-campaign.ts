@@ -39,7 +39,7 @@ export function getKqCampaignWarehouse(members: readonly KqCampaignParticipant[]
   const first = members[0].warehouse;
   return getKqWarehouseRunSnapshot({ ...first.sourceState,
     zones: first.sourceState.zones.map(zone => ({ ...zone, active: included.has(zone.id) })),
-  }, first.revision);
+  }, first.revision, undefined, first.balanceVersion ?? 1);
 }
 
 /** Project one shared decision journal without replaying dice, cards or care.
@@ -77,7 +77,7 @@ export function isKqCampaign(value: unknown): value is KqCampaign {
     || typeof value.leaderRunId !== "string" || !uuid.test(value.leaderRunId)
     || !Array.isArray(value.members) || !value.members.length || value.members.length > 52) return false;
   const runs = new Set<string>(), zones = new Set<string>(), buddies = new Set<string>();
-  let source: string | undefined, revision: number | undefined;
+  let source: string | undefined, revision: number | undefined, balanceVersion: number | undefined;
   for (const member of value.members) {
     if (!record(member) || typeof member.runId !== "string" || !uuid.test(member.runId)
       || typeof member.zoneId !== "string" || typeof member.buddieCode !== "string"
@@ -87,8 +87,9 @@ export function isKqCampaign(value: unknown): value is KqCampaign {
       || member.cultivationProfile.buddieCode !== member.buddieCode
       || runs.has(member.runId) || zones.has(member.zoneId) || buddies.has(member.buddieCode)) return false;
     const ownSource = JSON.stringify(member.warehouse.sourceState);
-    if (source !== undefined && (source !== ownSource || revision !== member.warehouse.revision)) return false;
-    source = ownSource; revision = member.warehouse.revision;
+    const ownBalance = member.warehouse.balanceVersion ?? 1;
+    if (source !== undefined && (source !== ownSource || revision !== member.warehouse.revision || balanceVersion !== ownBalance)) return false;
+    source = ownSource; revision = member.warehouse.revision; balanceVersion = ownBalance;
     runs.add(member.runId); zones.add(member.zoneId); buddies.add(member.buddieCode);
   }
   const members = value.members as KqCampaignMember[];

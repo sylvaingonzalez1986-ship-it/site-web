@@ -36,7 +36,8 @@ const profile = (family: KqWarehouseOptionFamily, suffix: string, name: string, 
   equipmentCentsPerM2, consumablesCentsPerM2, unitsPerM2PerCycle, yieldBonusPercent, qualityBonus,
 });
 
-export const KQ_WAREHOUSE_OPTIONS: readonly KqWarehouseOption[] = [
+/** Original balance is retained for cultures already in progress. */
+export const KQ_WAREHOUSE_LEGACY_OPTIONS: readonly KqWarehouseOption[] = [
   profile("water", "01", "Réservoir mobile", "Un petit module simple à entretenir, au budget contenu.", 900, 70, 1, 1, 0),
   profile("water", "02", "Réseau distribué", "Plus de rendement de jeu, avec davantage de fournitures à chaque cycle.", 1900, 140, 2, 2, 0),
   profile("water", "03", "Centrale de distribution", "Le meilleur bonus de cette famille demande le plus gros budget.", 3200, 240, 3, 3, 0),
@@ -63,8 +64,24 @@ export const KQ_WAREHOUSE_OPTIONS: readonly KqWarehouseOption[] = [
   profile("nutrition", "03", "Fournitures confort", "Trois unités de jeu par m² et par cycle : rendement modéré et qualité de départ.", 900, 520, 3, 1, 1),
 ];
 
-export const KQ_WAREHOUSE_OPTION_LIMITS = { yieldBonusPercent: 20, qualityBonus: 4 } as const;
-export const getKqWarehouseOption = (code: string) => KQ_WAREHOUSE_OPTIONS.find(option => option.code === code);
+/** A higher tier never removes the yield or quality granted by the lower tier. */
+export const KQ_WAREHOUSE_OPTIONS: readonly KqWarehouseOption[] = KQ_WAREHOUSE_LEGACY_OPTIONS.map(option => {
+  const yieldBonusPercent = KQ_WAREHOUSE_TIERS.findIndex(tier => tier.code === option.tier) + 1;
+  const qualityBonus = option.tier === "premium" && ["climate", "hygiene", "substrate"].includes(option.family)
+    ? 2 : option.qualityBonus;
+  const quality = qualityBonus > 0 ? ` Qualité au départ : +${qualityBonus}.` : "";
+  return {
+    ...option,
+    yieldBonusPercent,
+    qualityBonus,
+    description: `${option.description.split(". ")[0]}. Récolte estimée : +${yieldBonusPercent} %.${quality}`,
+  };
+});
+
+export const KQ_WAREHOUSE_LEGACY_OPTION_LIMITS = { yieldBonusPercent: 20, qualityBonus: 4 } as const;
+export const KQ_WAREHOUSE_OPTION_LIMITS = { yieldBonusPercent: 24, qualityBonus: 4 } as const;
+export const getKqWarehouseOption = (code: string, balanceVersion: 1 | 2 = 2) =>
+  (balanceVersion === 1 ? KQ_WAREHOUSE_LEGACY_OPTIONS : KQ_WAREHOUSE_OPTIONS).find(option => option.code === code);
 
 export function validateKqWarehouseOptionCodes(value: unknown): boolean {
   if (!Array.isArray(value) || value.length > KQ_WAREHOUSE_OPTION_FAMILIES.length) return false;
@@ -86,8 +103,8 @@ export type KqWarehouseOptionLine = {
   consumablesCostCents: number;
 };
 
-export function getKqWarehouseOptionLine(code: string, quantity: number): KqWarehouseOptionLine {
-  const option = getKqWarehouseOption(code);
+export function getKqWarehouseOptionLine(code: string, quantity: number, balanceVersion: 1 | 2 = 2): KqWarehouseOptionLine {
+  const option = getKqWarehouseOption(code, balanceVersion);
   if (!option || !Number.isSafeInteger(quantity) || quantity < 0 || quantity > 100_000) throw new Error("Module de simulation invalide.");
   return { code, quantity, option, totalCents: option.equipmentCentsPerM2 * quantity,
     consumablesCostCents: option.consumablesCentsPerM2 * quantity };

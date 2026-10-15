@@ -1,0 +1,56 @@
+.dashboard { margin-top: 24px; color: #173c2e; border: 1px solid #b8bda1; border-radius: 12px; background: #f8f1dc; overflow: hidden; }
+.heading { display: flex; align-items: center; gap: 12px; padding: 17px 20px; cursor: pointer; list-style: none; background: #eee8cf; }
+.heading::-webkit-details-marker { display: none; }
+.heading > svg { flex: 0 0 auto; }
+.heading > span { flex: 1; min-width: 0; }
+.heading strong { display: block; font-family: var(--font-display), sans-serif; font-size: 29px; font-weight: 800; line-height: 1.05; }
+.heading small { display: block; margin-top: 4px; color: #52634e; font-size: 12px; }
+.dashboard[open] .chevron { transform: rotate(180deg); }
+.body { padding: 20px; }
+.tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; max-width: 560px; padding: 4px; margin-bottom: 20px; border-radius: 8px; background: #e4e5d2; }
+.tabs button { display: flex; align-items: center; justify-content: center; gap: 7px; min-width: 0; min-height: 44px; padding: 8px; border: 0; border-radius: 5px; background: transparent; color: #4e604e; font-family: var(--font-display), sans-serif; font-size: 20px; font-weight: 800; cursor: pointer; }
+.tabs button[aria-selected="true"] { color: #fff8e3; background: #244c36; box-shadow: 0 2px 4px #173c2e18; }
+.tabs button:hover { box-shadow: inset 0 0 0 1px #244c3640; }
+.heading:focus-visible, .tabs button:focus-visible, .body [role="tabpanel"]:focus-visible { outline: 3px solid #a8650a; outline-offset: -3px; }
+.body [hidden] { display: none; }
+.draft { margin: 0 0 16px; padding: 9px 12px; border-radius: 5px; background: #efe0b6; color: #72531d; font-size: 12px; line-height: 1.5; }
+.panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.panel { min-width: 0; padding: 20px; border: 2px solid #172923; border-radius: 12px; background: #fffaf0; }
+.panelHeading { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; }
+.panelHeading svg { flex: 0 0 auto; }
+.panelHeading h3 { margin: 0; color: #183d2e; font-family: var(--font-display), sans-serif; font-size: 25px; font-weight: 800; line-height: 1.08; }
+.caption { margin: -4px 0 20px; color: #5b6859; font-size: 12px; line-height: 1.5; }
+.status, .warning { margin: 18px 0 0; padding: 10px 12px; border-radius: 5px; font-size: 12px; line-height: 1.5; }
+.status { color: #36543b; background: #edf0db; }
+.warning { color: #80452b; background: #f5e3c4; border-left: 3px solid #b86c32; }
+.storageTotal { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin: -3px 0 14px; }
+.storageTotal strong { font-family: var(--font-display), sans-serif; font-size: 32px; font-weight: 800; line-height: 1.1; }
+.storageTotal span { color: #5b6859; font-size: 12px; }
+.surface { grid-column: 1 / -1; }
+.surface dl { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.surface dl > div { display: block; }
+.surface dd { justify-content: flex-start; margin-top: 7px; padding-left: 17px; }
+.outlets { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-top: 16px; padding: 0 3px; }
+.outlets p { display: grid; gap: 4px; margin: 0; font-size: 12px; line-height: 1.5; }
+.outlets p strong { color: #304c42; }
+.outlets p span { color: #5b6859; }
+.outlets a { display: inline-flex; flex-shrink: 0; align-items: center; gap: 6px; min-height: 40px; color: #244c36; font-size: 12px; font-weight: 700; text-underline-offset: 3px; }
+@media (max-width: 700px) {
+  .body { padding: 12px; }
+  .heading { padding: 16px; }
+  .heading strong { font-size: 26px; }
+  .tabs { grid-template-columns: 1.4fr .8fr .8fr; }
+  .tabs button svg { display: none; }
+  .panels { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .panel { padding: 16px; }
+  .surface dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .outlets { align-items: flex-start; flex-direction: column; gap: 2px; }
+}
+@media (max-width: 380px) {
+  .heading { gap: 8px; padding: 14px 12px; }
+  .heading strong { font-size: 24px; }
+  .tabs { grid-template-columns: 1.4fr .8fr .8fr; gap: 2px; padding: 3px; }
+  .tabs button { gap: 4px; padding: 8px 3px; font-size: 18px; }
+  .tabs button svg { display: none; }
+  .panel { padding: 13px; }
+}

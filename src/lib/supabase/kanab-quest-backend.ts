@@ -10,6 +10,7 @@ import { activateKqHeritage, advanceKqStage, canPlayKqCard, getKqHarvestTier, is
 import { getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse-backend";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 import { createKqFlower, createKqOpponent, invertKqBattlePerspective, lockKqBattle, resolveKqBattle, type KqBattle, type KqFlowerCard } from "@/lib/kanab-quest-battle";
+import { KQ_BATTLE_HISTORY_LIMIT, selectKqBattleHistory } from "@/lib/kanab-quest-battle-history-policy";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { getKqArenaExperienceAward, getKqLeague } from "@/lib/kanab-quest-ranking";
 import { evaluateKqChallenges, getKqChallengeDayKey } from "@/lib/kanab-quest-challenges";
@@ -1346,9 +1347,6 @@ export function mapKqPlayerCoreSnapshot(
       id: String(flower.id),
       variety_name: String(flower.variety_name),
       rules_version: Number(flower.rules_version ?? 2),
-      cannabinoid_report: flower.cannabinoid_report as KqFlowerCard["cannabinoidReport"],
-      cultivation_profile: flower.cultivation_profile as KqFlowerCard["cultivationProfile"],
-      terpene_report: flower.terpene_report as KqFlowerCard["terpeneReport"],
       quality: Number(flower.quality),
       traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
       battle_stats: flower.battle_stats && typeof flower.battle_stats === "object"
@@ -1393,7 +1391,7 @@ export function mapKqPlayerCoreSnapshot(
       status: "verdict",
       seed: Number(battle.seed),
       playerFlower,
-      opponentFlower: battle.opponentFlower as KqFlowerCard,
+      opponentFlower: mapKqHistoryFlowerCard(battle.opponentFlower as KqFlowerCard),
       rounds: mapKqStoredBattleRounds(battle.rounds, false),
       winner: String(battle.winner) as "player" | "opponent",
       lockedAt: String(battle.lockedAt),
@@ -1402,9 +1400,7 @@ export function mapKqPlayerCoreSnapshot(
       experienceAwarded: Number(battle.experienceAwarded),
     }];
   });
-  const battles = [...humanBattles, ...botBattles]
-    .sort((left, right) => new Date(right.lockedAt).getTime() - new Date(left.lockedAt).getTime())
-    .slice(0, 12);
+  const battles = selectKqBattleHistory([...humanBattles, ...botBattles], 12);
   const rawProgress = payload.progress && typeof payload.progress === "object" && !Array.isArray(payload.progress)
     ? payload.progress as Record<string, unknown>
     : null;
@@ -1875,6 +1871,22 @@ function mapKqOfficialFlowerCard(row: KqFlowerBattleRow, ownerName: string): KqF
   };
 }
 
+/** History uses stored scores; detailed reports stay on the authoritative verdict read. */
+function mapKqHistoryFlowerCard(flower: KqFlowerCard): KqFlowerCard {
+  return {
+    id: flower.id,
+    ownerName: flower.ownerName,
+    variety: flower.variety,
+    tier: flower.tier,
+    status: flower.status,
+    createdAt: flower.createdAt,
+    integrityCode: flower.integrityCode,
+    traits: flower.traits,
+    stats: flower.stats,
+    rulesVersion: flower.rulesVersion,
+  };
+}
+
 export function mapKqStoredBattleRounds(rawRounds: unknown, invert: boolean): KqBattle["rounds"] {
   if (!Array.isArray(rawRounds)) return [];
   const rounds = rawRounds as KqBattle["rounds"];
@@ -1887,28 +1899,89 @@ export function mapKqStoredBattleRounds(rawRounds: unknown, invert: boolean): Kq
   }));
 }
 
-export async function getKqPlayerBattles(ownerId: string, limit = 30) {
+export async function getKqPlayerBattles(ownerId: string, limit = KQ_BATTLE_HISTORY_LIMIT) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
-  if (!Number.isInteger(limit) || limit < 1 || limit > 30) throw new Error("Limite de duels invalide.");
+  if (!Number.isInteger(limit) || limit < 1 || limit > KQ_BATTLE_HISTORY_LIMIT) throw new Error("Limite de duels invalide.");
   const supabase = createSupabaseServiceClient();
-  const battlesResult = await supabase.from("kq_battles")
-    .select("id,player_one_id,player_two_id,flower_one_id,flower_two_id,status,seed,rounds,winner_id,locked_at,verdict_at")
-    .or(`player_one_id.eq.${ownerId},player_two_id.eq.${ownerId}`)
-    .order("locked_at", { ascending: false }).limit(limit);
+  const humanColumns = "id,player_one_id,player_two_id,flower_one_id,flower_two_id,status,seed,rounds,winner_id,locked_at,verdict_at";
+  const [battlesResult, cancelledResult, pendingResult, botResult] = await Promise.all([
+    supabase.from("kq_battles").select(humanColumns)
+      .or(`player_one_id.eq.${ownerId},player_two_id.eq.${ownerId}`)
+      .eq("status", "verdict")
+      .order("verdict_at", { ascending: false }).order("id", { ascending: false }).limit(limit),
+    supabase.from("kq_battles").select(humanColumns)
+      .or(`player_one_id.eq.${ownerId},player_two_id.eq.${ownerId}`)
+      .eq("status", "cancelled")
+      .order("locked_at", { ascending: false }).order("id", { ascending: false }).limit(limit),
+    // A recent-history cap must never hide an older duel still awaiting its verdict.
+    supabase.from("kq_battles").select(humanColumns)
+      .or(`player_one_id.eq.${ownerId},player_two_id.eq.${ownerId}`)
+      .eq("status", "locked")
+      .order("locked_at", { ascending: false }).order("id", { ascending: false }),
+    supabase.from("kq_bot_battles")
+      .select("id,flower_id,bot_flower,seed,rounds,winner,experience_awarded,verdict_at")
+      .eq("user_id", ownerId)
+      .order("verdict_at", { ascending: false }).order("id", { ascending: false }).limit(limit),
+  ]);
   if (battlesResult.error) throw new Error(`[supabase:kq_battles] ${battlesResult.error.message}`);
-  const battles = battlesResult.data ?? [];
-  const flowerIds = [...new Set(battles.flatMap((battle) => [battle.flower_one_id, battle.flower_two_id]))];
+  if (cancelledResult.error) throw new Error(`[supabase:kq_battles:cancelled] ${cancelledResult.error.message}`);
+  if (pendingResult.error) throw new Error(`[supabase:kq_battles:pending] ${pendingResult.error.message}`);
+  if (botResult.error) throw new Error(`[supabase:kq_bot_battles:history] ${botResult.error.message}`);
+  // If a verdict commits between the two reads, prefer its completed receipt.
+  const humanRows = [...new Map([...(pendingResult.data ?? []), ...(cancelledResult.data ?? []), ...(battlesResult.data ?? [])]
+    .map((battle) => [battle.id, battle])).values()];
+  const candidates = selectKqBattleHistory([
+    ...humanRows.map((row) => ({
+      id: String(row.id), status: String(row.status), lockedAt: String(row.locked_at),
+      verdictAt: row.verdict_at ? String(row.verdict_at) : null,
+      opponentType: "human" as const, row,
+    })),
+    ...(botResult.data ?? []).map((row) => ({
+      id: String(row.id), status: "verdict", lockedAt: String(row.verdict_at),
+      verdictAt: String(row.verdict_at),
+      opponentType: "bot" as const, row,
+    })),
+  ], limit);
+  const flowerIds = [...new Set(candidates.flatMap((battle) => battle.opponentType === "human"
+    ? [battle.row.flower_one_id, battle.row.flower_two_id]
+    : [battle.row.flower_id]))];
   const flowersResult = flowerIds.length > 0
-    ? await supabase.from("kq_flowers").select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at").in("id", flowerIds)
+    ? await supabase.from("kq_flowers")
+      .select("id,variety_name,quality,traits,battle_stats,rules_version,status,created_at").in("id", flowerIds)
     : { data: [], error: null };
   if (flowersResult.error) throw new Error(`[supabase:kq_flowers:battles] ${flowersResult.error.message}`);
   const flowers = new Map((flowersResult.data ?? []).map((flower) => [flower.id, flower as KqFlowerBattleRow]));
-  const humanBattles = battles.flatMap((battle) => {
-    const adminIsOne = battle.player_one_id === ownerId;
-    const playerFlower = flowers.get(adminIsOne ? battle.flower_one_id : battle.flower_two_id);
-    const opponentFlower = flowers.get(adminIsOne ? battle.flower_two_id : battle.flower_one_id);
+  type HistoryBattle = NonNullable<Awaited<ReturnType<typeof getKqPlayerBattle>>> & {
+    opponentType: "human" | "bot"; experienceAwarded: number;
+  };
+  return candidates.flatMap<HistoryBattle>((candidate) => {
+    if (candidate.opponentType === "bot") {
+      const battle = candidate.row;
+      const playerFlower = flowers.get(battle.flower_id);
+      const opponentFlower = battle.bot_flower && typeof battle.bot_flower === "object"
+        ? mapKqHistoryFlowerCard(battle.bot_flower as KqFlowerCard)
+        : null;
+      if (!playerFlower || !opponentFlower) return [];
+      return [{
+        id: String(battle.id),
+        status: "verdict",
+        seed: Number(battle.seed),
+        playerFlower: mapKqOfficialFlowerCard(playerFlower, "Toi"),
+        opponentFlower,
+        rounds: mapKqStoredBattleRounds(battle.rounds, false),
+        winner: String(battle.winner) as "player" | "opponent",
+        lockedAt: String(battle.verdict_at),
+        verdictAt: String(battle.verdict_at),
+        opponentType: "bot" as const,
+        experienceAwarded: Number(battle.experience_awarded),
+      }];
+    }
+    const battle = candidate.row;
+    const playerIsOne = battle.player_one_id === ownerId;
+    const playerFlower = flowers.get(playerIsOne ? battle.flower_one_id : battle.flower_two_id);
+    const opponentFlower = flowers.get(playerIsOne ? battle.flower_two_id : battle.flower_one_id);
     if (!playerFlower || !opponentFlower) return [];
-    const rounds = mapKqStoredBattleRounds(battle.rounds, !adminIsOne);
+    const rounds = mapKqStoredBattleRounds(battle.rounds, !playerIsOne);
     return [{
       id: String(battle.id), status: String(battle.status), seed: Number(battle.seed),
       playerFlower: mapKqOfficialFlowerCard(playerFlower, "Toi"),
@@ -1921,39 +1994,6 @@ export async function getKqPlayerBattles(ownerId: string, limit = 30) {
       experienceAwarded: battle.status === "verdict" ? getKqArenaExperienceAward(rounds) : 0,
     }];
   });
-  const botResult = await supabase.from("kq_bot_battles")
-    .select("id,flower_id,bot_code,bot_flower,seed,rounds,winner,experience_awarded,verdict_at")
-    .eq("user_id", ownerId).order("verdict_at", { ascending: false }).limit(limit);
-  if (botResult.error) throw new Error(`[supabase:kq_bot_battles:history] ${botResult.error.message}`);
-  const botFlowerIds = (botResult.data ?? []).map((battle) => battle.flower_id);
-  const botFlowersResult = botFlowerIds.length > 0
-    ? await supabase.from("kq_flowers").select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at").in("id", botFlowerIds)
-    : { data: [], error: null };
-  if (botFlowersResult.error) throw new Error(`[supabase:kq_flowers:bot-history] ${botFlowersResult.error.message}`);
-  const botFlowers = new Map((botFlowersResult.data ?? []).map((flower) => [flower.id, flower as KqFlowerBattleRow]));
-  const botBattles = (botResult.data ?? []).flatMap((battle) => {
-    const playerFlower = botFlowers.get(battle.flower_id);
-    const opponentFlower = battle.bot_flower && typeof battle.bot_flower === "object"
-      ? battle.bot_flower as KqFlowerCard
-      : null;
-    if (!playerFlower || !opponentFlower) return [];
-    return [{
-      id: String(battle.id),
-      status: "verdict",
-      seed: Number(battle.seed),
-      playerFlower: mapKqOfficialFlowerCard(playerFlower, "Toi"),
-      opponentFlower,
-      rounds: mapKqStoredBattleRounds(battle.rounds, false),
-      winner: String(battle.winner) as "player" | "opponent",
-      lockedAt: String(battle.verdict_at),
-      verdictAt: String(battle.verdict_at),
-      opponentType: "bot" as const,
-      experienceAwarded: Number(battle.experience_awarded),
-    }];
-  });
-  return [...humanBattles, ...botBattles]
-    .sort((left, right) => new Date(right.lockedAt).getTime() - new Date(left.lockedAt).getTime())
-    .slice(0, limit);
 }
 
 export async function getKqPlayerBattle(ownerId: string, battleId: string) {
@@ -2119,8 +2159,8 @@ export async function finalizeKqPlayerBattle(
     // Another request may have committed the same irreversible verdict while this
     // request was waiting on the battle row. Return its durable receipt instead
     // of reporting a false failure to the player.
-    const refreshedBattles = await getKqPlayerBattles(ownerId);
-    if (refreshedBattles.some((candidate) => candidate.id === battleId && candidate.status === "verdict")) {
+    const refreshedBattle = await getKqPlayerBattle(ownerId, battleId);
+    if (refreshedBattle?.status === "verdict") {
       return finalizeKqPlayerBattle(ownerId, battleId);
     }
     throw new Error(`[supabase:rpc_kq_finalize_battle_for_both_players] ${result.error.message}`);

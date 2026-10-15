@@ -101,7 +101,9 @@ try {
     await db.exec(await sql(file));
     console.log(`Applied ${file}`);
   }
-  const { createKqWarehouseStarter: createCurrentStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse.ts");
+  const { createKqWarehouseStarter: createCurrentStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot: getCurrentRunSnapshot, isKqWarehouseRunSnapshot } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse.ts");
+  // Every assertion before the balance-v2 migration uses the original rules.
+  const getKqWarehouseRunSnapshot = (state, revision, zoneId) => getCurrentRunSnapshot(state, revision, zoneId, 1);
   // These chronological tests predate floor adoption. Preserve their exact
   // historical geometry; the dedicated floor runner tests the new 100 m² start.
   const createKqWarehouseStarter = () => {
@@ -851,7 +853,7 @@ try {
   equal(await scalar("SELECT count(*)::integer FROM kq_market_sale_receipts WHERE owner_id=$1 AND supplier_paid_cents>0", [supplierBatch.user]), (await timelineFacts(supplierBatch.user)).filter(sale => sale.supplier_paid_cents > 0).length, "historical market receipts preserve the actual supplier amount collected online");
   equal((await scalar("SELECT kq_business_snapshot($1)", [dueOwner])).suppliers.invoices.some(invoice => invoice.id === dueBill && invoice.remainingCents === 0), true, "recent paid invoices remain visible alongside current debts");
   equal(await scalar("SELECT has_table_privilege('service_role','kq_supplier_invoices','SELECT')"), false, "supplier invoices stay private behind controlled RPCs");
-  const { KQ_WAREHOUSE_OPTIONS } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse-options.ts");
+  const { KQ_WAREHOUSE_LEGACY_OPTIONS: KQ_WAREHOUSE_OPTIONS, KQ_WAREHOUSE_OPTIONS: currentOptions } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse-options.ts");
   for (const option of KQ_WAREHOUSE_OPTIONS) {
     equal(await scalar("SELECT kq_warehouse_option($1)", [option.code]), {
       code: option.code, family: option.family, equipmentCentsPerM2: option.equipmentCentsPerM2,
@@ -1044,6 +1046,115 @@ try {
   equal(demandSale.payoutCents, demandOffer.payoutCents, "demand premium settles after real warehouse and supplier migration patches");
   equal((await scalar("SELECT rpc_kq_commerce_state($1)", [demandOwner.user])).customerDemand.requests.find(request => request.channel === "wholesale").remainingUnits, 4950, "full chronological schema consumes the demand quota once");
   equal((await scalar("SELECT rpc_kq_commerce_command($1,'sell',$2,$3)", [demandOwner.user,{quoteId:demandQuoteId,expectedPayoutCents:demandOffer.payoutCents},demandRequestKey])).replayed, true, "warehouse demand sale remains idempotent");
+  await db.exec("ROLLBACK");
+
+  const balanceFacts = () => scalar(`SELECT jsonb_build_object(
+    'layouts',(SELECT jsonb_agg(to_jsonb(l) ORDER BY user_id) FROM kq_warehouse_layouts l),
+    'wallets',(SELECT jsonb_agg(to_jsonb(w) ORDER BY user_id) FROM kq_equipment_wallets w),
+    'suppliers',(SELECT jsonb_agg(to_jsonb(i) ORDER BY id) FROM kq_supplier_invoices i),
+    'energy',(SELECT jsonb_agg(to_jsonb(i) ORDER BY run_id) FROM kq_energy_invoices i))`);
+  const balanceBefore = await balanceFacts();
+  const legacyRunBeforeBalance = await scalar("SELECT state FROM kq_runs WHERE id=$1", [moduleRun]);
+  const balanceMigration = await sql("20261015000400_kq_warehouse_tier_balance.sql");
+  // Production already has the zone wrapper. Probe that actual function body
+  // under a rollback-only transaction before exercising the older-schema path.
+  assert(/^BEGIN;\r?\n/.test(balanceMigration) && /\r?\nCOMMIT;\s*$/.test(balanceMigration), "balance migration transaction markers changed");
+  await db.exec("BEGIN");
+  await db.exec("ALTER FUNCTION public.kq_validate_warehouse_run_start(UUID,UUID,JSONB) RENAME TO kq_validate_warehouse_run_start_v1");
+  await db.exec(await definition("20261013000100_kq_zone_cultures.sql", "kq_validate_warehouse_run_start"));
+  const productionZoneWrapper = await scalar("SELECT pg_get_functiondef('kq_validate_warehouse_run_start(uuid,uuid,jsonb)'::regprocedure)");
+  await db.exec(balanceMigration.replace(/^BEGIN;\r?\n/, "").replace(/\r?\nCOMMIT;\s*$/, ""));
+  equal(await scalar("SELECT strpos(pg_get_functiondef('kq_validate_warehouse_run_start_v1(uuid,uuid,jsonb)'::regprocedure),'NOT BETWEEN 0.1 AND 310000')>0"), true, "production compatibility guard receives the v2 maximum when the zone wrapper exists");
+  equal(await scalar("SELECT pg_get_functiondef('kq_validate_warehouse_run_start(uuid,uuid,jsonb)'::regprocedure)"), productionZoneWrapper, "balance migration preserves the exact production zone-start wrapper");
+  await scalar("SELECT kq_warehouse_validate_options_run($1)", [getCurrentRunSnapshot(moduleSaved.state, moduleSaved.revision)]);
+  await scalar("SELECT kq_warehouse_validate_options_run($1)", [moduleFrozen]);
+  await db.exec("ROLLBACK");
+  await db.exec(balanceMigration);
+  console.log("Applied 20261015000400_kq_warehouse_tier_balance.sql");
+  await db.exec("BEGIN");
+  equal(await balanceFacts(), balanceBefore, "balance v2 preserves all owned plans, cash and existing invoices");
+  equal(await scalar("SELECT state FROM kq_runs WHERE id=$1", [moduleRun]), legacyRunBeforeBalance, "balance v2 never rewrites a frozen legacy culture");
+  equal(isKqWarehouseRunSnapshot(legacyRunBeforeBalance.warehouse), true, "a saved run without a balance marker remains valid in TypeScript");
+  await scalar("SELECT kq_warehouse_validate_options_run($1)", [legacyRunBeforeBalance.warehouse]);
+  const optionFields = option => ({ code: option.code, family: option.family, tier: option.tier,
+    equipmentCentsPerM2: option.equipmentCentsPerM2, consumablesCentsPerM2: option.consumablesCentsPerM2,
+    yieldBonusPercent: option.yieldBonusPercent, qualityBonus: option.qualityBonus });
+  for (const option of currentOptions) {
+    equal(await scalar("SELECT kq_warehouse_option($1)", [option.code]), optionFields(option), `${option.code} current bonuses and prices match TypeScript`);
+    equal(await scalar("SELECT kq_warehouse_option_v1($1)", [option.code]), optionFields(KQ_WAREHOUSE_OPTIONS.find(old => old.code === option.code)), `${option.code} legacy bonuses remain accessible without mutation`);
+  }
+  const { getKqWarehouseDeviceQualityBonus } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse-catalog.ts");
+  for (const device of tierDevices) equal(await scalar("SELECT kq_warehouse_device_quality($1)", [device.code]), getKqWarehouseDeviceQualityBonus(device.code), `${device.code} gives exactly its advertised starting quality`);
+  equal(await scalar("SELECT kq_warehouse_option('UNKNOWN')"), null, "unknown options do not acquire invented tier benefits");
+  equal(await scalar("SELECT kq_warehouse_device_quality('UNKNOWN')"), 0, "unknown devices do not acquire a quality bonus");
+
+  const maximumBalancePlan = getKqWarehouseQuote({ ...fullModules, zones: fullModules.zones.map(zone => ({
+    ...zone, lightingCode: "SIM-LIGHT-03", airCode: "SIM-AIR-03",
+  })) }, fullModules).nextState;
+  const maximumBalanceSnapshot = getCurrentRunSnapshot(maximumBalancePlan);
+  const maximumLegacySnapshot = getKqWarehouseRunSnapshot(maximumBalancePlan);
+  equal(maximumBalanceSnapshot.estimatedHarvestGrams, 310000, "all eight premium modules produce the bounded 24 percent improvement on the historical 1,000 m2 floor");
+  equal(maximumBalanceSnapshot.qualityBonus, 8, "premium lighting and extraction add four quality points alongside the four-point module cap");
+  equal(await scalar("SELECT kq_warehouse_options_projection($1)", [maximumBalancePlan]), {
+    activeAreaM2: 1000, estimatedHarvestGrams: 310000, consumablesCostCents: maximumBalanceSnapshot.consumablesCostCents,
+    qualityBonus: 8, hasOptions: true,
+  }, "SQL and TypeScript agree at the largest supported premium installation");
+  await scalar("SELECT kq_warehouse_validate_options_run($1)", [maximumBalanceSnapshot]);
+  await scalar("SELECT kq_warehouse_validate_options_run($1)", [maximumLegacySnapshot]);
+  for (const field of ["energyKwh", "energyCostCents", "consumablesCostCents", "operatingCostCents"])
+    equal(maximumBalanceSnapshot[field], maximumLegacySnapshot[field], `balance v2 leaves ${field} unchanged on the same paid plan`);
+  equal(await scalar("SELECT strpos(pg_get_functiondef('kq_validate_warehouse_run_start(uuid,uuid,jsonb)'::regprocedure),'NOT BETWEEN 0.1 AND 310000')>0"), true, "the actual run-start guard permits the full v2 potential");
+
+  const selectedBalancePlan = getKqWarehouseQuote({ ...physicalStarter, zones: [
+    { ...physicalStarter.zones[0], id: "premium-selected", lightingCode: "SIM-LIGHT-03", airCode: "SIM-AIR-03", optionCodes: maxProfiles },
+    { ...physicalStarter.zones[0], id: "economy-other", x: 5, width: 3, airCode: "SIM-AIR-01", optionCodes: [] },
+  ] }).nextState;
+  const selectedBalance = getCurrentRunSnapshot(selectedBalancePlan, 3, "premium-selected");
+  const selectedValidation = { ...selectedBalance, sourceState: { ...selectedBalance.sourceState, zones: selectedBalance.zones } };
+  await scalar("SELECT kq_warehouse_validate_options_run($1)", [selectedValidation]);
+  equal(selectedBalance.qualityBonus, 8, "a selected premium zone keeps its own quality instead of averaging another zone");
+  equal(selectedBalance.estimatedHarvestGrams, 310, "the selected-zone validation shape uses only its own simulated yield");
+  await reject(() => scalar("SELECT kq_warehouse_validate_options_run($1)", [{ ...selectedValidation, qualityBonus: 9 }]), "warehouse_layout_changed");
+  await reject(() => scalar("SELECT kq_warehouse_validate_options_run($1)", [{ ...selectedValidation, estimatedHarvestGrams: 311 }]), "warehouse_layout_changed");
+  for (const balanceVersion of [1, 3, "2", null]) await reject(() => scalar("SELECT kq_warehouse_validate_options_run($1)", [{ ...selectedValidation, balanceVersion }]), "warehouse_balance_version_invalid");
+  const removedBalanceMarker = { ...selectedValidation }; delete removedBalanceMarker.balanceVersion;
+  await reject(() => scalar("SELECT kq_warehouse_validate_options_run($1)", [removedBalanceMarker]), "warehouse_layout_changed");
+
+  const balanceOwner = await freshAccount();
+  const balanceOriginal = await scalar("SELECT rpc_kq_warehouse_initialize($1,$2)", [balanceOwner, physicalStarter]);
+  await db.query("UPDATE kq_equipment_wallets SET cash_cents=1000000 WHERE user_id=$1", [balanceOwner]);
+  const balanceDraft = { ...balanceOriginal.state, zones: balanceOriginal.state.zones.map(zone => ({
+    ...zone, lightingCode: "SIM-LIGHT-03", airCode: "SIM-AIR-03", optionCodes: maxProfiles,
+  })) };
+  const balanceQuote = getKqWarehouseQuote(balanceDraft, balanceOriginal.state);
+  const balanceSaved = await scalar("SELECT rpc_kq_warehouse_save($1,$2,$3,$4,$5,$6,$7)", [balanceOwner, randomUUID(),
+    { state: balanceDraft, expectedRevision: balanceOriginal.revision, expectedCostCents: balanceQuote.totalCostCents },
+    balanceOriginal.revision, balanceOriginal.state, balanceQuote.nextState, balanceQuote.totalCostCents]);
+  equal(balanceSaved.cashCents, 1000000 - balanceQuote.totalCostCents, "the improved premium installation still charges exactly the published equipment prices");
+  const balanceRunSnapshot = getCurrentRunSnapshot(balanceSaved.state, balanceSaved.revision);
+  const balanceRunState = { warehouse: balanceRunSnapshot, equipment: initial.equipment, energy: quoteKqWarehouseEnergy(balanceRunSnapshot) };
+  const insertBalancedRun = state => scalar("INSERT INTO kq_runs(id,user_id,state,status) VALUES($1,$2,$3,'active') RETURNING id", [randomUUID(), balanceOwner, state]);
+  for (const warehousePatch of [{ qualityBonus: 9 }, { estimatedHarvestGrams: 311 }, { consumablesCostCents: 0 }])
+    await reject(() => insertBalancedRun({ ...balanceRunState, warehouse: { ...balanceRunSnapshot, ...warehousePatch } }), "warehouse_layout_changed");
+  await reject(() => insertBalancedRun({ ...balanceRunState, warehouse: { ...balanceRunSnapshot, balanceVersion: 3 } }), "warehouse_balance_version_invalid");
+  equal(Number(await scalar("SELECT count(*) FROM kq_supplier_invoices WHERE user_id=$1", [balanceOwner])), 0, "rejected forged v2 runs leave no supplier bill");
+  await db.query("UPDATE kq_equipment_wallets SET cash_cents=0 WHERE user_id=$1", [balanceOwner]);
+  const balancedRun = await insertBalancedRun(balanceRunState);
+  const balancedInvoice = await scalar("SELECT to_jsonb(i) FROM kq_supplier_invoices i WHERE run_id=$1", [balancedRun]);
+  equal(balancedInvoice.amount_cents, balanceRunSnapshot.consumablesCostCents, "a real premium v2 culture starts with exactly one unchanged supplier bill");
+  equal(new Date(balancedInvoice.due_at) - new Date(balancedInvoice.issued_at), 120 * 3600000, "v2 retains the five-real-day supplier deadline");
+  equal(await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [balanceOwner]), 0, "v2 never introduces an upfront cash gate for cycle supplies");
+  await db.query("UPDATE kq_runs SET state=state||jsonb_build_object('harvestGrams',$2::numeric),status='completed',completed_at=now() WHERE id=$1", [balancedRun, balanceRunSnapshot.estimatedHarvestGrams]);
+  equal(Number(await scalar("SELECT remaining_cents FROM kq_energy_invoices WHERE run_id=$1", [balancedRun])), balanceRunSnapshot.energyCostCents, "the actual completed v2 culture invoices its frozen electricity cost");
+  await db.query("UPDATE kq_runs SET state=state||jsonb_build_object('harvestGrams',$2::numeric),status='completed',completed_at=now() WHERE id=$1", [moduleRun, moduleFrozen.estimatedHarvestGrams]);
+  equal(await scalar("SELECT state->'warehouse' FROM kq_runs WHERE id=$1", [moduleRun]), moduleFrozen, "the pre-migration culture finishes with its exact historical yield and quality");
+  equal(Number(await scalar("SELECT remaining_cents FROM kq_energy_invoices WHERE run_id=$1", [moduleRun])), moduleFrozen.energyCostCents, "the legacy culture retains its original electricity invoice after the rebalance");
+  for (const role of ["anon", "authenticated", "service_role"]) {
+    for (const signature of ["kq_warehouse_option_v1(text)", "kq_warehouse_options_projection_v1(jsonb)", "kq_warehouse_option(text)",
+      "kq_warehouse_device_quality(text)", "kq_warehouse_options_projection(jsonb)", "kq_warehouse_validate_options_run(jsonb)"])
+      equal(await scalar("SELECT has_function_privilege($1,$2,'EXECUTE')", [role, signature]), false, `${role} cannot directly execute ${signature}`);
+    equal(await scalar("SELECT has_function_privilege($1,'rpc_kq_warehouse_save(uuid,uuid,jsonb,integer,jsonb,jsonb,integer)','EXECUTE')", [role]), role === "service_role", `${role} retains only its existing named warehouse save permission`);
+  }
   await db.exec("ROLLBACK");
   console.log(`Warehouse: ${checks} PostgreSQL integration checks passed.`);
 } catch (error) {

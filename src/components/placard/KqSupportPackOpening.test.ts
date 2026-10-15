@@ -36,12 +36,12 @@ describe("direct mission pack opening", () => {
     const request = vi.fn(sandbox.request);
     const globalFetch = vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Real network forbidden"));
     try {
-      const receipt = await (await request("/api/arena/placard/missions", { method: "POST", body: JSON.stringify({ code: "first-harvest" }) })).json();
+      const receipt = await (await request("/api/arena/placard/missions", { method: "POST", body: JSON.stringify({ code: "fifteen-varieties" }) })).json();
       const opened = await requestKqSupportPackOpening(request, receipt.entitlementId);
       expect(opened).toHaveLength(3);
       expect(sandbox.progress().complete).toBe(true);
       const snapshot = await (await request("/api/arena/placard/missions")).json();
-      expect(snapshot.missions[0]).toMatchObject({ claimed: true, packAvailable: false });
+      expect(snapshot.missions.find((mission: { code: string }) => mission.code === "fifteen-varieties")).toMatchObject({ claimed: true, packAvailable: false });
       await expect(requestKqSupportPackOpening(request, receipt.entitlementId)).rejects.toThrow();
       expect(request.mock.calls.filter(([url, init]) => url === "/api/arena/placard/boosters" && init?.method === "GET")).toHaveLength(0);
       expect(globalFetch).not.toHaveBeenCalled();

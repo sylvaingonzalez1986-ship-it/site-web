@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
 import { middleware } from "../../middleware";
 import { isArenaPrelaunch, isArenaActivityApi, ARENA_OPENING_AT } from "./arena-opening";
+import { isPioneerPackPrelaunch, PIONEER_PACK_OPENING_AT } from "./pioneer-pack";
 import { isArenaCharacterRequestEnabled } from "./arena-character-access";
 import { isKqPlayerRequestEnabled } from "./kanab-quest-player-request-access";
 import { getContestFeatureAccessDeniedResponse } from "./contest-feature";
@@ -23,9 +24,10 @@ beforeEach(() => {
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
 const request = (path: string, method = "GET", origin = "https://example.test") => new NextRequest(`https://example.test${path}`, { method, headers: { host: "example.test", origin, "user-agent": "Googlebot" } });
 describe("arena preopening", () => {
-  it("ends precisely at midnight in Paris on October 15", () => {
-    expect(isArenaPrelaunch(Date.parse(ARENA_OPENING_AT) - 1)).toBe(true);
-    expect(isArenaPrelaunch(Date.parse(ARENA_OPENING_AT))).toBe(false);
+  it("ends precisely at midnight in Paris on November 1 after the clock change", () => {
+    expect(isArenaPrelaunch(Date.parse("2026-10-15T00:00:00+02:00"))).toBe(true);
+    expect(isArenaPrelaunch(Date.parse("2026-10-31T22:59:59.999Z"))).toBe(true);
+    expect(isArenaPrelaunch(Date.parse("2026-10-31T23:00:00Z"))).toBe(false);
     vi.stubEnv("NODE_ENV", "development");
     expect(isArenaPrelaunch()).toBe(false);
   });
@@ -38,7 +40,7 @@ describe("arena preopening", () => {
     for (const method of ["GET", "POST"]) {
       const response = await middleware(request(path, method));
       expect(response.status).toBe(423);
-      expect(await response.json()).toMatchObject({ error: "Rendez-vous le 15 octobre", opensAt: ARENA_OPENING_AT });
+      expect(await response.json()).toMatchObject({ error: "Rendez-vous le 1er novembre", opensAt: ARENA_OPENING_AT });
       expect(response.headers.get("cache-control")).toContain("no-store");
     }
   });
@@ -55,8 +57,32 @@ describe("arena preopening", () => {
     expect((await middleware(request("/api/arena/chanvrier", "POST"))).headers.get("x-middleware-next")).toBe("1");
   });
   it("keeps gift eligibility visible but prevents early distribution", async () => {
-    expect(isArenaActivityApi("/api/account/pioneer-pack", "GET")).toBe(false);
-    expect((await middleware(request("/api/account/pioneer-pack", "POST"))).status).toBe(423);
+    expect(isArenaActivityApi("/api/account/pioneer-pack")).toBe(false);
+    const response = await middleware(request("/api/account/pioneer-pack", "POST"));
+    expect(response.status).toBe(423);
+    expect(await response.json()).toEqual({ error: "Rendez-vous le 30 octobre", opensAt: PIONEER_PACK_OPENING_AT });
+    for (const method of ["GET", "HEAD"]) {
+      const req = request("/api/account/pioneer-pack", method);
+      req.cookies.set("sb-project-auth-token", "untrusted-cookie");
+      expect((await middleware(req)).headers.get("x-middleware-next")).toBe("1");
+    }
+  });
+  it("releases the gift on October 30 while keeping Arena activities closed until November 1", async () => {
+    for (const [now, giftOpen, arenaOpen] of [
+      ["2026-10-15T00:00:00+02:00", false, false],
+      ["2026-10-29T22:59:59.999Z", false, false],
+      ["2026-10-29T23:00:00Z", true, false],
+      ["2026-10-31T22:59:59.999Z", true, false],
+      ["2026-10-31T23:00:00Z", true, true],
+    ] as const) {
+      vi.mocked(Date.now).mockReturnValue(Date.parse(now));
+      expect(isPioneerPackPrelaunch()).toBe(!giftOpen);
+      const req = request("/api/account/pioneer-pack/", "POST");
+      req.cookies.set("sb-project-auth-token", "untrusted-cookie");
+      expect((await middleware(req)).status).toBe(giftOpen ? 200 : 423);
+      expect((await middleware(request("/api/arena/placard/runs"))).status).toBe(arenaOpen ? 200 : 423);
+    }
+    expect(mocks.beta).not.toHaveBeenCalled();
   });
 });
 

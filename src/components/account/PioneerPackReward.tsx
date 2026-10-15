@@ -5,7 +5,7 @@ import Link from "@/components/navigation/NavigationLink";
 import { Check, Gift, ArrowUpRight, Coins, Layers, Sparkles } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
-import { PIONEER_CARD_IMAGE, type PioneerPackState } from "@/lib/pioneer-pack";
+import { PIONEER_CARD_IMAGE, isPioneerPackPrelaunch, PIONEER_PACK_OPENING_MESSAGE, type PioneerPackState } from "@/lib/pioneer-pack";
 import { isArenaPrelaunch, ARENA_OPENING_MESSAGE } from "@/lib/arena-opening";
 import styles from "./PioneerPackReward.module.css";
 
@@ -76,9 +76,10 @@ export function PioneerPackReward({ onClaimed }: { onClaimed?: () => void | Prom
           : state?.claimed ? <div className={styles.success}>
             <strong><Check size={18} aria-hidden="true" /> Ton pack a rejoint ta collection.</strong>
             {state.goldCard && <p>Ton Buddie {state.goldCard.rarity === "epic" ? "épique" : "or"} : <b>{state.goldCard.name}</b>.</p>}
-            <Link href="/arene/placard?view=shop">Ouvrir mes packs Botte du Chanvrier <ArrowUpRight size={16} aria-hidden="true" /></Link>
+            {isArenaPrelaunch() ? <p>{ARENA_OPENING_MESSAGE} pour ouvrir tes packs Botte du Chanvrier.</p>
+              : <Link href="/arene/placard?view=shop">Ouvrir mes packs Botte du Chanvrier <ArrowUpRight size={16} aria-hidden="true" /></Link>}
           </div> : state?.eligible ? <>
-            <button type="button" className={styles.button} disabled={isArenaPrelaunch() || claiming || !state.available} onClick={() => void claim()}>{isArenaPrelaunch() ? ARENA_OPENING_MESSAGE : claiming ? "Ton pack arrive…" : "Recevoir mon pack offert"}<Gift size={18} aria-hidden="true" /></button>
+            <button type="button" className={styles.button} disabled={isPioneerPackPrelaunch() || claiming || !state.available} onClick={() => void claim()}>{isPioneerPackPrelaunch() ? PIONEER_PACK_OPENING_MESSAGE : claiming ? "Ton pack arrive…" : "Recevoir mon pack offert"}<Gift size={18} aria-hidden="true" /></button>
             {!state.available && <p>Ton pack est réservé. Son contenu est momentanément indisponible.</p>}
           </> : state ? <p>Aucune commande éligible pour le moment. Si tu as commandé sans compte, utilise la même adresse e-mail et vérifie-la.</p> : null}
       </div>

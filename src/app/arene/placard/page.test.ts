@@ -1,4 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ARENA_OPENING_AT } from "@/lib/arena-opening";
+
+const openingAt = Date.parse(ARENA_OPENING_AT);
 
 const mocks = vi.hoisted(() => ({ session: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
@@ -8,7 +11,7 @@ import PlacardPlayerPage from "./page";
 
 beforeEach(() => {
   vi.resetAllMocks();
-  vi.spyOn(Date, "now").mockReturnValue(Date.parse("2026-10-16T00:00:00Z"));
+  vi.spyOn(Date, "now").mockReturnValue(openingAt + 1);
   vi.stubEnv("NODE_ENV", "production");
   vi.stubEnv("CONTEST_FEATURE_ENABLED", "true");
   vi.stubEnv("CONTEST_FEATURE_ALLOW_PRODUCTION", "true");
@@ -41,7 +44,7 @@ describe("Placard page entry", () => {
 });
 
 it.each([true, false])("allows only beta players into the Placard before opening: %s", async beta => {
-  vi.spyOn(Date, "now").mockReturnValue(Date.parse("2026-09-19T12:00:00Z"));
+  vi.spyOn(Date, "now").mockReturnValue(openingAt - 1);
   mocks.session.mockResolvedValue({ customerId: "verified-id", customer: { email: "player@example.test", contestBetaEnabled: beta } });
   if (beta) expect(await PlacardPlayerPage()).toBeTruthy();
   else await expect(PlacardPlayerPage()).rejects.toMatchObject({ digest: "NEXT_REDIRECT;replace;/arene?mode=jouer&ouverture=1;307;" });

@@ -10,7 +10,7 @@ function cultures(codes: string[], seed = 300) {
   const starter = createKqWarehouseStarter();
   const warehouse = getKqWarehouseQuote({ ...starter, zones: codes.map((buddieCode, index) => ({
     ...starter.zones[0], id: `culture-${index}`, buddieCode,
-    x: index % 40, y: 4 + Math.floor(index / 40),
+    x: index % 10, y: Math.floor(index / 10),
   })) }, starter).nextState;
   return codes.map((varietyCode, index) => startKqGame(seed, {
     varietyCode, deckCodes: [],

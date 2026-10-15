@@ -1,4 +1,4 @@
-/** Isolated real UI with synthetic lots: no credentials, no production writes. */
+/** Real mission UI and catalog, with isolated synthetic API responses. */
 import assert from 'node:assert/strict';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
@@ -10,25 +10,36 @@ const root=process.cwd(), output=resolve(root,'output/placard-missions');
 const modules={
  'workshop-entry': `import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
  import {KqMissionCenter} from '/src/components/placard/KqMissionCenter';import retro from '/src/components/contest/ArenaRetro.module.css';
- import {KqPlacardLobby} from '/src/components/placard/KqPlacardLobby';
+ import {KQ_MISSION_DEFINITIONS as definitions} from '/src/lib/kanab-quest-missions';
  const scenario=new URLSearchParams(location.search).get('scenario');
- const definitions=[['first-harvest','culture',1,1,3,'harvests'],['three-varieties','culture',2,3,3,'varieties'],['contest-flower','culture',3,1,10,'contest'],['online-two','online',1,2,3,'clients'],['online-five','online',2,5,3,'clients'],['online-ten','online',3,10,10,'clients'],['shop-one','shops',1,1,3,'shops'],['shop-three','shops',2,3,3,'shops'],['shop-six','shops',3,6,10,'shops']];
- window.__counts={harvests:1,varieties:3,contest:1,clients:2,shops:1};window.__claims=[];window.__fail=scenario==='error';
- const earned=new Map(scenario==='complete'?definitions.map(d=>[d[0],'pack-'+d[0]]):[]);
- const state=()=>({collectionActive:scenario!=='inactive',missions:definitions.map(([code,track,step,target,cardCount,metric])=>{const previous=definitions.find(d=>d[1]===track&&d[2]===step-1);const claimed=earned.has(code),unlocked=!previous||earned.has(previous[0]);return {code,track,step,target,cardCount,claimed,unlocked,claimable:!claimed&&unlocked&&window.__counts[metric]>=target,progress:claimed?target:Math.min(target,window.__counts[metric]),entitlementId:earned.get(code)??null,packAvailable:claimed};})});
+ window.__counts=Object.fromEntries(definitions.map(d=>[d.metric,10000]));window.__claims=[];window.__opened=[];window.__notifications=[];window.__fail=scenario==='error';
+ for(const name of ['kq:equipment-updated','kq:treasury-updated','kq:collection-updated','kq:boosters-updated'])window.addEventListener(name,()=>window.__notifications.push(name));
+ const earned=new Map();
+ const seed=d=>earned.set(d.code,{reward:d.reward,entitlementId:d.reward.kind==='pack'?'pack-'+d.code:null});
+ if(scenario==='complete')definitions.forEach(seed);
+ if(scenario==='unavailable-card')definitions.filter(d=>d.track==='culture'&&d.step<3).forEach(seed);
+ if(scenario==='inactive')definitions.filter(d=>(d.track==='quality'&&d.step<3)||(d.track==='online'&&d.step<5)).forEach(seed);
+ if(scenario==='legacy')earned.set('first-harvest',{reward:{kind:'pack',cardCount:3},entitlementId:'legacy-pack'});
+ const state=()=>({collectionActive:scenario!=='inactive',missions:definitions.map(d=>{const {code,track,step,target,metric}=d;const previous=definitions.find(p=>p.track===track&&p.step===step-1);const claimed=earned.has(code),unlocked=!previous||earned.has(previous.code);const reward=earned.get(code)?.reward??d.reward,entitlementId=earned.get(code)?.entitlementId??null;
+  return {code,track,step,target,reward,cardCount:reward.kind==='pack'?reward.cardCount:0,rewardAvailable:reward.kind==='cash'||(scenario!=='inactive'&&!(scenario==='unavailable-card'&&code==='five-varieties')),claimed,unlocked,claimable:!claimed&&unlocked&&window.__counts[metric]>=target,progress:claimed?target:Math.min(target,window.__counts[metric]),entitlementId,packAvailable:!!entitlementId&&!window.__opened.includes(entitlementId)};
+ })});
  const nativeFetch=window.fetch.bind(window);window.fetch=async(url,init={})=>{
   if(String(url)==='/api/account/missions')return new Response(JSON.stringify({missions:[],pendingRewards:[]}));
-  if(String(url).startsWith('/api/arena/placard/equipment'))return new Response(JSON.stringify({activeRun:false,readyLotCount:0,availableFlowerCount:0,productionUnits:1,ownedCodes:[],cashCents:0}));
+  if(String(url)==='/api/arena/placard/boosters'&&init.method==='PATCH'){
+   const {entitlementId}=JSON.parse(init.body);const entry=[...earned.values()].find(item=>item.entitlementId===entitlementId);
+   if(!entry||window.__opened.includes(entitlementId))return Response.json({error:'Pack déjà ouvert ou introuvable'},{status:409});
+   window.__opened.push(entitlementId);return Response.json({cards:Array.from({length:entry.reward.cardCount},()=>({code:'BOTTE-006',name:'Deuxième chance',rarity:'gold'}))});
+  }
   if(String(url)!=='/api/arena/placard/missions')return nativeFetch(url,init);
   if(scenario==='guest')return new Response(JSON.stringify({error:'Connecte-toi pour retrouver tes missions.'}),{status:401});
   if(window.__fail)return new Response(JSON.stringify({error:'Le centre de missions est momentanément indisponible.'}),{status:503});
   if(init.method!=='POST')return new Response(JSON.stringify(state()));
   const {code}=JSON.parse(init.body);window.__claims.push(code);await new Promise(resolve=>setTimeout(resolve,120));
   const mission=state().missions.find(m=>m.code===code),replayed=earned.has(code);
-  if(!replayed&&!mission?.claimable)return new Response(JSON.stringify({error:'Objectif incomplet'}),{status:409});
-  earned.set(code,'pack-'+code);return new Response(JSON.stringify({entitlementId:earned.get(code),cardCount:mission.cardCount,replayed}));
+  if(!replayed&&(!mission?.claimable||!mission.rewardAvailable))return new Response(JSON.stringify({error:'Objectif incomplet ou récompense indisponible'}),{status:409});
+  if(!replayed)seed(definitions.find(d=>d.code===code));return Response.json({...earned.get(code),cardCount:mission.cardCount,replayed});
  };
- const onOpen=view=>{window.__destination=view;};createRoot(document.getElementById('root')).render(React.createElement('div',{className:retro.surface+' '+retro.shell},scenario==='lobby'?React.createElement(KqPlacardLobby,{onOpen,onOpenEquipment:()=>{}}):React.createElement(KqMissionCenter,{onOpen})));`,
+ const onOpen=view=>{window.__destination=view;};createRoot(document.getElementById('root')).render(React.createElement('div',{className:retro.surface+' '+retro.shell},React.createElement(KqMissionCenter,{onOpen})));`,
  '@/components/navigation/NavigationLink': `import React from 'react';export default function Link(props){return React.createElement('a',props);}`,
  'mission-hud': `export function KqPlacardHud(){return null;}`,
   'next/dynamic': `import React from 'react';export default function dynamic(loader,{loading:Loading}){const Component=React.lazy(async()=>({default:await loader()}));return props=>React.createElement(React.Suspense,{fallback:React.createElement(Loading)},React.createElement(Component,props));}`,
@@ -43,46 +54,74 @@ try {
  browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});
  const page=await browser.newPage();const errors=[];page.on('pageerror',e=>{errors.push(e.message);console.error(e.message);});
  await page.setRequestInterception(true);page.on('request',r=>{const u=new URL(r.url());if(u.protocol==='data:'||(u.hostname==='127.0.0.1'&&u.port==='3201'))void r.continue();else void r.abort();});
- const goto=async(scenario='ready')=>{await page.goto('http://127.0.0.1:3201/?scenario='+scenario,{waitUntil:'networkidle0'});if(scenario!=='lobby')await page.$$eval('button',buttons=>buttons.find(button=>button.textContent.includes('Mes défis')).click());};
+ const goto=async(scenario='ready')=>{await page.goto('http://127.0.0.1:3201/?scenario='+scenario,{waitUntil:'networkidle0'});await page.waitForSelector('main');};
  const overflow=async()=>assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
  const shot=async(name)=>{await page.evaluate(async()=>{await Promise.allSettled([...document.images].map(img=>img.decode()));});await page.screenshot({path:resolve(output,name+'.png'),fullPage:true});};
+ const culture='section[aria-label="Culture & Buddies"]';
+ const clickText=async(text,selector='button')=>page.$$eval(selector,(buttons,text)=>{const button=buttons.find(button=>button.textContent.includes(text));if(!button)throw new Error('Missing button: '+text);button.click();},text);
+ const waitClaim=async(code)=>page.waitForFunction(code=>window.__claims.includes(code)&&!document.body.innerText.includes('Récupération…'),{},code);
  for(const width of [320,390,768,1440]) {
-  await page.setViewport({width,height:900});await goto();await page.waitForSelector('section[aria-label="Culture"]');
-  await overflow();assert.equal(await page.$$('progress').then(e=>e.length),3);
+  await page.setViewport({width,height:900});await goto();await page.waitForSelector(culture);
+  await overflow();assert.equal(await page.$$('progress').then(e=>e.length),6);
+  assert.equal(await page.$$eval('details ol li',items=>items.length),30);
+  await page.$$eval('details',items=>items.forEach(item=>item.open=true));await overflow();
+  await page.$$eval('details',items=>items.forEach(item=>item.open=false));
   await shot('missions-'+width);
  }
  await page.setViewport({width:390,height:844});
- await page.click('section[aria-label="Culture"] button');
- await page.waitForFunction(()=>document.body.innerText.includes('Bravo ! Un pack de 3 cartes gagné.'));
+ await page.click(culture+' button');await waitClaim('first-harvest');
+ await page.waitForFunction(()=>document.querySelector('[data-mission-receipt]').textContent.includes('50 € de jeu'));
  assert.deepEqual(await page.evaluate(()=>window.__claims),['first-harvest']);
- await page.waitForFunction(()=>document.querySelector('section[aria-label="Culture"] h2').textContent.includes('Le goût'));
- await page.click('section[aria-label="Culture"] button');
- await page.waitForFunction(()=>document.querySelector('section[aria-label="Culture"] h2').textContent.includes('concours'));
- await page.click('section[aria-label="Culture"] button');
+ assert.equal(await page.$eval('[data-mission-receipt]',element=>element.textContent.includes('Ouvrir mon pack')),false);
+ assert.equal(await page.evaluate(()=>window.__notifications.includes('kq:equipment-updated')),true);
+ await page.click(culture+' button');await waitClaim('three-varieties');
+ await page.click(culture+' button');await waitClaim('five-varieties');
+ await page.waitForFunction(()=>document.querySelector('[data-mission-receipt]').textContent.includes('Deuxième chance rejoint ta collection'));
+ assert.equal(await page.$eval('[data-mission-receipt]',element=>element.textContent.includes('Ouvrir mon pack')),false);
+ assert.equal(await page.evaluate(()=>window.__notifications.includes('kq:collection-updated')),true);
+ await shot('rare-card-390');
+ await page.click(culture+' button');await waitClaim('ten-varieties');
+ await page.click(culture+' button');await waitClaim('fifteen-varieties');
+ await page.waitForFunction(()=>document.body.innerText.includes('Bravo ! Un pack de 3 cartes gagné.'));
+ await clickText('Ouvrir mon pack','[data-mission-receipt] button');
+ await page.waitForSelector('[data-support-pack-reveal]');
+ assert.equal(await page.$$('[data-support-pack-reveal] article').then(items=>items.length),3);
+ await page.click('[aria-label="Fermer le pack ouvert"]');
+ await page.click(culture+' button');await waitClaim('twenty-varieties');
  await page.waitForFunction(()=>document.body.innerText.includes('Bravo ! Un pack de 10 cartes gagné.'));
- await page.waitForFunction(()=>document.querySelector('section[aria-label="Culture"]').textContent.includes('Parcours terminé'));
+ await page.waitForFunction(selector=>document.querySelector(selector).textContent.includes('Parcours terminé'),{},culture);
  await shot('claimed-390');
  assert.equal(await page.$$eval('footer button',buttons=>buttons.some(button=>button.textContent.includes('de mission'))),true,'Earned packs remain accessible in the mission footer');
- await page.evaluate(()=>{window.__counts.clients=1;});
- await page.$$eval('button',buttons=>buttons.find(b=>b.textContent.includes('Actualiser')).click());
+ await clickText('Vente en ligne','nav[aria-label="Filtrer les parcours"] button');
+ assert.equal(await page.$$('details ol').then(items=>items.length),1);
+ await clickText('Tous les parcours','nav[aria-label="Filtrer les parcours"] button');
+ await page.click('section[aria-label="Vente en ligne"] button');await waitClaim('first-online-sale');
+ await page.evaluate(()=>{window.__counts.clients=1;});await clickText('Actualiser');
  await page.waitForFunction(()=>document.querySelector('section[aria-label="Vente en ligne"] button').textContent.includes('Vendre en ligne'));
  await page.click('section[aria-label="Vente en ligne"] button');assert.equal(await page.evaluate(()=>window.__destination),'market');
- for(const scenario of ['guest','error','inactive','complete','lobby']) {
+ for(const scenario of ['guest','error','inactive','unavailable-card','legacy','complete']) {
   await goto(scenario);await overflow();await shot(scenario+'-390');
   if(scenario==='guest')assert(await page.$('a[href*="connexion"]'));
   if(scenario==='error'){
-   await page.evaluate(()=>{window.__fail=false;});await page.$$eval('button',buttons=>buttons.find(b=>b.textContent.includes('Réessayer')).click());
-   await page.waitForSelector('section[aria-label="Culture"]');
+   await page.evaluate(()=>{window.__fail=false;});await clickText('Réessayer');await page.waitForSelector(culture);
   }
-  if(scenario==='inactive')assert.equal(await page.$$eval('section button',buttons=>buttons.filter(b=>b.textContent.includes('Récupérer mon pack')).every(b=>b.disabled)),true);
-  if(scenario==='complete')assert.equal(await page.$$eval('h2',els=>els.filter(el=>el.textContent.includes('Parcours terminé')).length),3);
-  if(scenario==='lobby'){
-   const point=await page.$eval('[data-map-building="missions"]',button=>{document.querySelector('#placard-map-viewport').scrollIntoView({block:'center',behavior:'instant'});const [x,y]=button.dataset.mapHitPoint.split(',').map(Number),rect=document.querySelector('#placard-map-viewport img').getBoundingClientRect();return{x:rect.left+rect.width*x/100,y:rect.top+rect.height*y/100};});
-   await page.mouse.click(point.x,point.y);
-   assert.equal(await page.evaluate(()=>window.__destination),'missions');
+  if(scenario==='inactive'){
+   assert.equal(await page.$eval(culture+' button',button=>button.disabled),false,'Cash remains claimable without an active collection');
+   assert.equal(await page.$eval('section[aria-label="Qualité & savoir-faire"] button',button=>button.disabled),true,'Rare cards require availability');
+   assert.equal(await page.$eval('section[aria-label="Vente en ligne"] button',button=>button.disabled),true,'Packs require availability');
+   await page.click(culture+' button');await waitClaim('first-harvest');
+   assert.equal(await page.$eval('[data-mission-receipt]',element=>element.textContent.includes('50 € de jeu')),true);
   }
+  if(scenario==='unavailable-card')assert.equal(await page.$eval(culture+' button',button=>button.disabled),true,'Individual missing card disabled even with active collection');
+  if(scenario==='legacy'){
+   await clickText('de mission à ouvrir','footer button');await page.waitForSelector('[data-support-pack-reveal]');
+   assert.deepEqual(await page.evaluate(()=>window.__opened),['legacy-pack']);
+   await page.click('[aria-label="Fermer le pack ouvert"]');
+   assert.equal(await page.$$('footer > button').then(items=>items.length),0);
+  }
+  if(scenario==='complete')assert.equal(await page.$$eval('h2',els=>els.filter(el=>el.textContent.includes('Parcours terminé')).length),5);
  }
  assert.deepEqual(errors,[]);
- await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,widths:[320,390,768,1440],states:['ready','claimed','guest','error-recovery','inactive','complete','lobby'],claims:[3,3,10],audienceRegression:true,errors},null,2));
- console.log('Missions UI passed: four widths, three sequential claims, 3/10 cards, audience regression, guest/retry/inactive/completed states and lobby navigation.');
+ await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,widths:[320,390,768,1440],missions:30,tracks:5,states:['ready','cash','rare-card','pack','guest','error-recovery','inactive','unavailable-card','legacy-pack','complete'],claims:['cash','cash','card','card','pack-3','pack-10'],audienceRegression:true,errors},null,2));
+ console.log('Missions UI passed: 30 missions, five tracks, four widths, cash/card/pack claims, direct and legacy pack opening, audience regression, guest/retry/unavailable/completed states.');
 } finally {await browser?.close();await server.close();}

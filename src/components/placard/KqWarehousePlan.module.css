@@ -11,6 +11,7 @@
   box-shadow: 5px 6px 0 var(--ink);
 }
 .plan button { font: inherit; cursor: pointer; }
+.plan button,.helpDetails summary { font-family: var(--font-display),"Arial Narrow",Impact,sans-serif; font-weight: 800; letter-spacing: .025em; text-transform: uppercase; }
 .plan button:disabled { cursor: not-allowed; opacity: .42; box-shadow: none; }
 .plan button:focus-visible, .plan input:focus-visible, .plan summary:focus-visible {
   outline: 3px solid var(--ink); outline-offset: 3px;
@@ -22,7 +23,7 @@
 .zoneTypes button {
   flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px;
   padding: 10px 8px; min-height: 44px; border: 2px solid #17292360; border-radius: 10px;
-  background: #fff1d6; color: var(--ink); font-size: 12px; font-weight: 700;
+  background: #fff1d6; color: var(--ink); font-size: 18px;
 }
 .zoneTypes button[aria-pressed=true] { background: #99d6b5; border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
 .zoneTypes button[data-warehouse-draw-kind=drying][aria-pressed=true] { background: #efc451; }
@@ -35,7 +36,7 @@
 .toolbar button {
   display: flex; align-items: center; justify-content: center; gap: 6px;
   min-width: 40px; min-height: 44px; padding: 8px;
-  color: var(--ink); background: #fff8e9; border: 2px solid transparent; border-radius: 9px; font-size: 11px; font-weight: 700;
+  color: var(--ink); background: #fff8e9; border: 2px solid transparent; border-radius: 9px; font-size: 16px;
 }
 .toolbar button:hover:not(:disabled), .tools button:hover:not(:disabled) { background: #f4d578; border-color: var(--ink); }
 .toolbar button[aria-pressed=true] { background: #149b8b; border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
@@ -75,7 +76,7 @@
 }
 .selectedName { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
 .selectedName strong {
-  display: block; font-family: var(--font-display), sans-serif; font-size: 22px; font-weight: 800;
+  display: block; font-family: var(--font-display),Impact,sans-serif; font-size: 26px; font-weight: 900; text-transform: uppercase;
   color: var(--ink); white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
 }
 .selectedName > span { color: #47554b; font-size: 11px; font-weight: 700; white-space: nowrap; }
@@ -83,7 +84,7 @@
 .tools .toolActions { flex-wrap: wrap; }
 .tools button {
   display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px; min-height: 44px;
-  color: var(--ink); font-size: 12px; font-weight: 700; border: 2px solid transparent;
+  color: var(--ink); font-size: 16px; border: 2px solid transparent;
   border-radius: 10px; background: #fff1d6; white-space: nowrap;
 }
 .tools button[aria-pressed=true] { background: #efc451; border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
@@ -92,13 +93,13 @@
   display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; padding: 12px 14px;
   background: #fff1d6; border-top: 2px solid #17292328;
 }
-.help { flex: 1 1 160px; margin: 0; color: #47554b; font-size: 11px; line-height: 1.6; }
+.help { flex: 1 1 160px; margin: 0; color: #47554b; font-size: 12px; line-height: 1.6; }
 .helpDetails { flex: 0 0 auto; min-width: 0; }
 .helpDetails[open] { flex-basis: 100%; }
 .helpDetails summary {
   display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 7px 9px;
   list-style: none; cursor: pointer; border: 2px solid #17292360; border-radius: 10px; color: var(--ink);
-  font-size: 11px; font-weight: 700; width: max-content; margin-left: auto;
+  font-size: 16px; width: max-content; margin-left: auto;
 }
 .helpDetails summary::-webkit-details-marker { display: none; }
 .helpDetails summary:hover, .helpDetails[open] summary { background: #f4d578; border-color: var(--ink); }
@@ -129,7 +130,7 @@
 }
 @container(max-width:360px) {
   .zoneTypes { padding: 8px; gap: 4px; }
-  .zoneTypes button { padding: 9px 5px; font-size: 11px; gap: 5px; }
+  .zoneTypes button { flex-direction: column; min-width: 0; padding: 9px 4px; font-size: 16px; gap: 4px; }
   .zoneTypes button svg { width: 14px; height: 14px; }
   .toolbar { padding: 6px; gap: 4px; }
   .toolbar > div { gap: 0; }
@@ -138,9 +139,9 @@
   .divider { margin: 0 2px; }
   .tools { padding: 12px; }
   .tools > div:last-child { gap: 4px; }
-  .tools button { padding: 10px 7px; font-size: 11px; }
+  .tools button { padding: 10px 7px; font-size: 16px; }
   .support { padding: 10px 12px; gap: 8px; }
-  .help { font-size: 10px; flex-basis: 150px; }
+  .help { font-size: 11px; flex-basis: 150px; }
 }
 @media(max-width:600px) {
   .viewport { height: 380px; }

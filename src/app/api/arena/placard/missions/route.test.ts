@@ -44,6 +44,21 @@ describe("Placard mission API", () => {
     mocks.rpc.mockResolvedValue({ error: { message: "mission_not_ready" } });
     expect((await POST(request({ code: "online-two" }))).status).toBe(409);
   });
+  it("accepts new objectives but never accepts client-supplied cash or rare cards", async () => {
+    const receipt = { reward: { kind: "card", code: "BOTTE-006", name: "Deuxième chance", rarity: "gold" }, cardInstanceId: "earned-card", entitlementId: null, cardCount: 1, replayed: false };
+    mocks.rpc.mockResolvedValue({ data: receipt, error: null });
+    const response = await POST(request({ code: "online-aroma-duo", userId: "victim", reward: { kind: "cash", amountCents: 99999999 }, matchedFlavorCount: 2 }));
+    expect(await response.json()).toEqual(receipt);
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_claim_mission", { p_user_id: "signed-in-user", p_code: "online-aroma-duo" });
+  });
+  it("returns recoverable card and wallet failures without exposing SQL details", async () => {
+    mocks.rpc.mockResolvedValue({ error: { message: "mission_card_unavailable: private schema" } });
+    const card = await POST(request({ code: "five-varieties" }));
+    expect(card.status).toBe(503);
+    expect(await card.text()).not.toContain("private schema");
+    mocks.rpc.mockResolvedValue({ error: { message: "mission_wallet_limit" } });
+    expect((await POST(request({ code: "first-harvest" }))).status).toBe(409);
+  });
   it("hides database details and preserves an explicit unavailable status", async () => {
     mocks.rpc.mockResolvedValue({ error: { message: "private SQL credentials" } });
     const response = await GET();

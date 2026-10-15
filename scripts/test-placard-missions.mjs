@@ -3,7 +3,6 @@ import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { PGlite } from "../output/reputation-test-tools/node_modules/@electric-sql/pglite/dist/index.js";
-import { KQ_MISSION_COPY } from "../src/lib/kanab-quest-missions.ts";
 const db = new PGlite();
 try {
   await db.exec(`
@@ -40,7 +39,8 @@ try {
   };
   let snapshot=await state();
   assert.equal(snapshot.missions.length,9);
-  assert.deepEqual(snapshot.missions.map(m=>m.code).sort(),Object.keys(KQ_MISSION_COPY).sort());
+  // Historical v1 contract; the 30-mission successor is covered separately.
+  assert.deepEqual(snapshot.missions.map(m=>m.code).sort(),["first-harvest","three-varieties","contest-flower","online-two","online-five","online-ten","shop-one","shop-three","shop-six"].sort());
   assert.equal(snapshot.missions.reduce((n,m)=>n+m.cardCount,0),48);
   assert.equal(snapshot.missions.filter(m=>m.unlocked).length,3);
   assert(snapshot.missions.every(m=>m.progress===0&&!m.claimable));

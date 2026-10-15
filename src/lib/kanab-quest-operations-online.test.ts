@@ -34,6 +34,62 @@ function demandListing(matches: 0 | 1 | 2, price = 1) {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('isolated online shop exercise', () => {
+  it('invests once, occupies preparation, and awards only earned followers at the campaign end', () => {
+    let initial = listed(3000);
+    const listingId = initial.trial.commerce.online!.listings[0].id;
+    const cash = initial.trial.commerce.cashCents;
+    const payload = { version: 2, code: 'behind-scenes', angle: 'value', listingId, budgetCode: 'regional' };
+    let prepared = run(initial, 'start-marketing', payload, 'paid-campaign');
+    expect(prepared.trial.commerce.cashCents).toBe(cash - 8000);
+    expect(run(prepared, 'start-marketing', payload, 'paid-campaign')).toBe(prepared);
+    expect(() => run(prepared, 'start-marketing', payload, 'second-campaign')).toThrow('atelier');
+    expect(prepared.trial.commerce.online!.marketing.active).toMatchObject({ version: 2, costCents: 8000, results: { orders: 0, followersEarned: 0 } });
+    initial = run(initial, 'advance-online-time', { hours: 12 });
+    prepared = run(prepared, 'advance-online-time', { hours: 12 });
+    expect(prepared.trial.commerce.online!.stats.orders).toBe(initial.trial.commerce.online!.stats.orders);
+    expect(prepared.trial.commerce.online!.followers).toBe(0);
+    expect(prepared.trial.commerce.online!.marketing.active).toMatchObject({ results: { orders: 0, followersEarned: 0 } });
+    prepared = run(prepared, 'advance-online-time', { hours: 24 });
+    expect(prepared.trial.commerce.online!.followers).toBe(0);
+    prepared = run(prepared, 'advance-online-time', { hours: 24 });
+    const online = prepared.trial.commerce.online!, report = online.marketing.history![0];
+    expect(online.marketing.active).toBeNull();
+    expect(report.version).toBe(2);
+    if (report.version !== 2) throw new Error('Prepared campaign report expected');
+    expect(report.results.orders).toBeGreaterThan(0);
+    expect(report.results.satisfiedOrders).toBeLessThanOrEqual(report.results.orders);
+    expect(report.results.followersEarned).toBe(Math.min(30, report.results.satisfiedOrders * 10));
+    expect(online.followers).toBe(report.results.followersEarned);
+    expect(report.results.revenueCents).toBe(report.results.orders * 3000);
+  });
+
+  it('keeps the advertising investment lost when the target cannot find buyers', () => {
+    let state = listed(1_000_000);
+    const listingId = state.trial.commerce.online!.listings[0].id;
+    const cash = state.trial.commerce.cashCents;
+    state = run(state, 'start-marketing', { version: 2, code: 'behind-scenes', angle: 'premium', listingId, budgetCode: 'national' });
+    for (const hours of [24, 24, 12]) state = run(state, 'advance-online-time', { hours });
+    expect(state.trial.commerce.cashCents).toBe(cash - 18000);
+    expect(state.trial.commerce.online!.followers).toBe(0);
+    expect(state.trial.commerce.online!.marketing.history![0]).toMatchObject({ results: { orders: 0, satisfiedOrders: 0, followersEarned: 0 } });
+  });
+
+  it('rejects unfunded or inactive targets and lets an introduction precede a harvest campaign', () => {
+    let state = listed(3000);
+    const listingId = state.trial.commerce.online!.listings[0].id;
+    const poor = structuredClone(state);
+    poor.trial.commerce.cashCents = 0;
+    expect(() => run(poor, 'start-marketing', { version: 2, code: 'harvest', angle: 'value', listingId, budgetCode: 'regional' })).toThrow();
+    expect(poor.trial.commerce.online!.marketing.active).toBeNull();
+    const paused = run(state, 'pause-listing', { listingId });
+    expect(() => run(paused, 'start-marketing', { version: 2, code: 'introduction', angle: 'value', listingId, budgetCode: 'local' })).toThrow('active');
+    state = run(state, 'start-marketing', { version: 2, code: 'introduction', angle: 'value', listingId, budgetCode: 'national' });
+    expect(state.trial.commerce.online!.marketing.active).toMatchObject({ costCents: 0, budgetCode: 'local', visitorsPerDay: 35 });
+    state = run(state, 'advance-online-time', { hours: 24 });
+    state = run(state, 'start-marketing', { version: 2, code: 'harvest', angle: 'value', listingId, budgetCode: 'local' });
+    expect(state.trial.commerce.online!.marketing.active?.code).toBe('harvest');
+  });
+
   it.each([0, 1, 2] as const)('settles an online purchase with %s matching aromas, preserving the chosen price', matches => {
     const { state, request } = demandListing(matches, 5500);
     const online = state.trial.commerce.online!, row = online.listings[0];

@@ -7,6 +7,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
 const root=process.cwd(),output=resolve(root,'output/pioneer-pack'),port=3197;
+const packReleaseAt=Date.parse('2026-10-29T23:00:00Z'),arenaOpeningAt=Date.parse('2026-10-31T23:00:00Z');
 const modules={
   'pioneer-preview.tsx': `
     import React from 'react';import {createRoot} from 'react-dom/client';
@@ -21,7 +22,7 @@ const modules={
       if(mode==='error'&&!failed){failed=true;return new Response(JSON.stringify({error:'Pack momentanément indisponible.'}),{status:503});}
       const claimed=mode.startsWith('claimed')||window.__posts>0;
       const legacy=mode==='claimed-legacy';
-      return new Response(JSON.stringify({eligible:mode!=='ineligible',claimed,available:mode!=='unavailable',cashCents:legacy?100000:500000,packCount:10,grantedAt:claimed?'2026-10-15T10:00:00Z':null,goldCard:claimed?{code:'HH2026-007',name:'Sour Space Candy',imageUrl:null,...(legacy?{}:{rarity:mode==='claimed-epic'?'epic':'gold'})}:null}));
+      return new Response(JSON.stringify({eligible:mode!=='ineligible',claimed,available:mode!=='unavailable',cashCents:legacy?100000:500000,packCount:10,grantedAt:claimed?'2026-10-30T10:00:00Z':null,goldCard:claimed?{code:'HH2026-007',name:'Sour Space Candy',imageUrl:null,...(legacy?{}:{rarity:mode==='claimed-epic'?'epic':'gold'})}:null}));
     };
     createRoot(document.getElementById('root')).render(<PioneerPackReward onClaimed={()=>{window.__refreshes++}}/>);
   `,
@@ -29,7 +30,7 @@ const modules={
   '@/components/navigation/NavigationLink': `import React from 'react';export default function Link(props){return React.createElement('a',props)}`,
   'next/image': `import React from 'react';export default function Image({priority,fill,...props}){return React.createElement('img',props)}`,
 };
-const server=await createServer({configFile:false,envDir:false,root,publicDir:resolve(root,'public'),resolve:{alias:{'@':resolve(root,'src')}},plugins:[{
+const server=await createServer({configFile:false,envDir:false,root,publicDir:resolve(root,'public'),define:{'process.env.NODE_ENV':'"production"'},resolve:{alias:{'@':resolve(root,'src')}},plugins:[{
   name:'pioneer-preview',enforce:'pre',
   resolveId(id){if(id in modules)return '\0'+id;const normalized=id.replaceAll('\\','/').replace(/\.(tsx?|jsx?)$/,'');for(const key of Object.keys(modules)){if(key.startsWith('@/')&&normalized.endsWith('/src/'+key.slice(2)))return '\0'+key;}},
   load(id){if(id==='\0pioneer-preview.tsx')return ts.transpileModule(modules['pioneer-preview.tsx'],{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText;if(id.startsWith('\0'))return modules[id.slice(1)];},
@@ -40,17 +41,32 @@ try {
   await mkdir(output,{recursive:true});await server.listen();
   browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],userDataDir:resolve(output,'chrome-profile'),headless:true,args:['--no-sandbox','--disable-gpu']});
   const page=await browser.newPage();page.on('pageerror',error=>errors.push(error.message));
+  await page.evaluateOnNewDocument(()=>{const now=Number(new URL(location.href).searchParams.get('now'));Date.now=()=>now;});
   await page.setRequestInterception(true);page.on('request',request=>{const url=new URL(request.url());void(url.protocol==='data:'||(url.hostname==='127.0.0.1'&&url.port===String(port))?request.continue():request.abort());});
-  const goto=async state=>{await page.goto(`http://127.0.0.1:${port}/preview?state=${state}`,{waitUntil:'networkidle0'});await page.waitForSelector('#pack-pionniers[aria-busy="false"]');await page.evaluate(()=>document.fonts.ready);};
+  const goto=async(state,now=packReleaseAt)=>{await page.goto(`http://127.0.0.1:${port}/preview?state=${state}&now=${now}`,{waitUntil:'networkidle0'});await page.waitForSelector('#pack-pionniers[aria-busy="false"]');await page.evaluate(()=>document.fonts.ready);};
   const overflow=async()=>assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'horizontal overflow');
   const panelText=async()=>page.$eval('#pack-pionniers',el=>el.textContent.replace(/\s+/g,' '));
+  const pendingArena=async()=>{
+    assert.equal(await page.$('a[href="/arene/placard?view=shop"]'),null,'closed shop is not linked before the Arena opens');
+    assert((await panelText()).includes('Rendez-vous le 1er novembre pour ouvrir tes packs Botte du Chanvrier.'),'claimed packs explain when opening becomes available');
+  };
   const holographicStyles=async()=>page.$eval('[class*="holographicCard"]',el=>{
     const rainbow=getComputedStyle(el,'::before'),shine=getComputedStyle(el,'::after');
     return {rainbow:rainbow.backgroundImage,rainbowOpacity:Number(rainbow.opacity),shine:shine.backgroundImage,animation:shine.animationName};
   });
+  await page.setViewport({width:390,height:844,deviceScaleFactor:1});
+  for(const now of [Date.parse('2026-10-15T00:00:00+02:00'),packReleaseAt-1]) {
+    await goto('eligible',now);await overflow();
+    assert.equal(await page.$eval('button',button=>button.disabled),true,'pack stays locked before 30 October in Paris');
+    assert((await panelText()).includes('Rendez-vous le 30 octobre'));
+    await page.click('button');assert.equal(await page.evaluate(()=>window.__posts),0,'locked button never submits a claim');
+    results.push({state:'before-pack-release',now:new Date(now).toISOString(),result:'pass'});
+  }
+  await page.screenshot({path:resolve(output,'before-release-390.png'),fullPage:true});
   for(const width of [320,390,768,1440]) {
     await page.setViewport({width,height:width<700?844:1000,deviceScaleFactor:1});
     await goto('eligible');await overflow();
+    assert.equal(await page.$eval('button',button=>button.disabled),false,'claim opens at exactly midnight 30 October in Paris');
     assert.equal(await page.$$eval('ul li',items=>items.length),4);
     assert(await page.$eval('img',img=>img.complete&&img.naturalWidth>0));
     const content=await panelText();
@@ -69,7 +85,7 @@ try {
     assert.equal(await page.evaluate(()=>window.__refreshes),1);
     assert.equal(await page.$('button'),null);
     assert((await panelText()).includes('Ton Buddie or :'));
-    assert(await page.$('a[href="/arene/placard?view=shop"]'));await overflow();
+    await pendingArena();await overflow();
     await page.screenshot({path:resolve(output,`claimed-${width}.png`),fullPage:true});
     results.push({width,claim:'pass',overflow:false});
   }
@@ -83,12 +99,19 @@ try {
       const content=await panelText();
       assert(content.includes(state==='claimed-epic'?'Ton Buddie épique :':'Ton Buddie or :'));
       assert(content.includes(state==='claimed-legacy'?'1 000 € de jeu':'5 000 € de jeu'),'claimed amounts reflect the recorded grant');
+      await pendingArena();
       await page.screenshot({path:resolve(output,`${state}-1440.png`),fullPage:true});
     }
     if(state==='error'){assert(await page.$('[role="alert"]'));await page.click('button');await page.waitForFunction(()=>!document.querySelector('[role="alert"]'));assert.equal(await page.evaluate(()=>window.__posts),0);}
     if(state==='claim-error'){await page.click('button');await page.waitForSelector('[role="alert"]');assert.equal(await page.evaluate(()=>window.__events.length),0);assert.equal(await page.$eval('button',el=>el.disabled),false);}
     results.push({state,result:'pass'});
   }
+  await goto('claimed',arenaOpeningAt-1);await pendingArena();
+  await goto('claimed',arenaOpeningAt);await overflow();
+  assert(await page.$('a[href="/arene/placard?view=shop"]'),'shop link appears at exactly midnight 1 November in Paris');
+  assert(!(await panelText()).includes('Rendez-vous le 1er novembre'),'opening notice disappears when the Arena opens');
+  results.push({state:'arena-opening',now:new Date(arenaOpeningAt).toISOString(),result:'pass'});
+  await page.screenshot({path:resolve(output,'arena-open-1440.png'),fullPage:true});
   await page.setViewport({width:390,height:844,deviceScaleFactor:1});
   await goto('claimed-epic');await overflow();
   await page.screenshot({path:resolve(output,'claimed-epic-390.png'),fullPage:true});
@@ -100,5 +123,5 @@ try {
   await page.screenshot({path:resolve(output,'eligible-reduced-motion-390.png'),fullPage:true});
   results.push({state:'holographic-reduced-motion',result:'pass'});
   assert.deepEqual(errors,[]);await writeFile(resolve(output,'report.json'),JSON.stringify({results,errors},null,2));
-  console.log('Pioneer panel passed: 320/390/768/1440px, 5,000 euros, 90/10 rarity, gold/epic/legacy claims, holographic finish/reduced motion, refresh, guest, eligibility, unavailable, retry and errors.');
+  console.log('Pioneer panel passed: 320/390/768/1440px, production release boundaries (30 October pack / 1 November Arena), 5,000 euros, 90/10 rarity, gold/epic/legacy claims, holographic finish/reduced motion, refresh, guest, eligibility, unavailable, retry and errors.');
 } finally {await browser?.close();await server.close();}

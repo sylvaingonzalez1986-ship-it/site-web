@@ -3,7 +3,7 @@ import { getBuddieArtwork } from "./buddie-artwork";
 import { getKqCardArtwork } from "./kanab-quest-artwork";
 import { openKqSupportBooster } from "./kanab-quest-booster";
 import { parseChanvrierProfile } from "./arena-chanvrier";
-import { KQ_MISSION_COPY, type KqMission, type KqMissionSnapshot } from "./kanab-quest-missions";
+import { KQ_MISSION_DEFINITIONS, type KqMissionSnapshot } from "./kanab-quest-missions";
 import { CONTEST_SCORE_CRITERIA, type ContestEntrySummary, type ContestReviewSubmissionInput } from "@/types/contest";
 import type { LotteryCollectedCard, LotteryCollectionPageState, ScratchResult } from "@/types/lottery";
 import type { MissionWithUserStatus } from "@/types/missions";
@@ -41,12 +41,17 @@ export const DISCOVERY_NOTEBOOK_ENTRY: ContestEntrySummary = {
 };
 
 function missions(claimed: boolean, opened: boolean): KqMissionSnapshot {
-  const codes = Object.keys(KQ_MISSION_COPY) as KqMission["code"][];
-  const targets = [1, 3, 1, 2, 5, 10, 1, 3, 6];
-  return { collectionActive: true, missions: codes.map((code, index) => ({ code, track: index < 3 ? "culture" : index < 6 ? "online" : "shops",
-    step: index % 3 + 1, target: targets[index], progress: index === 0 ? 1 : 0, cardCount: index % 3 === 2 ? 10 : 3,
-    claimed: index === 0 && claimed, unlocked: index % 3 === 0 || (index === 1 && claimed), claimable: index === 0 && !claimed,
-    entitlementId: index === 0 && claimed ? "tutorial-mission-pack" : null, packAvailable: index === 0 && claimed && !opened })) };
+  return { collectionActive: true, missions: KQ_MISSION_DEFINITIONS.map(definition => {
+    const prepared = definition.track === "culture" && definition.step < 5;
+    const featured = definition.code === "fifteen-varieties";
+    return { ...definition, progress: definition.track === "culture" ? Math.min(definition.target, 15) : 0,
+      cardCount: definition.reward.kind === "pack" ? definition.reward.cardCount : definition.reward.kind === "card" ? 1 : 0,
+      rewardAvailable: true, claimed: prepared || (featured && claimed),
+      unlocked: definition.step === 1 || prepared || featured || (definition.track === "culture" && claimed),
+      claimable: featured && !claimed,
+      entitlementId: featured && claimed ? "tutorial-mission-pack" : null,
+      packAvailable: featured && claimed && !opened };
+  }) };
 }
 
 /** A closed local transport for the real discovery screens. No network fallback. */
@@ -60,7 +65,7 @@ export function createDiscoveryTransport(lesson: ArenaDiscoveryLesson, onProgres
     userSubmissions: [], completedCount: 0, canSubmit: true,
   };
   const progress = (): ArenaLessonProgress => lesson === "missions"
-    ? { complete: claimed && opened, instruction: opened ? "Ton pack de mission a été ouvert. Les cartes montrées restent fictives." : claimed ? "Le pack est récupéré. Clique sur Ouvrir mon pack dans le reçu pour découvrir tes cartes ici." : "Une récolte est déjà accomplie dans cet essai. Récupère son pack dans Tous mes défis." }
+    ? { complete: claimed && opened, instruction: opened ? "Ton pack de mission a été ouvert. Les cartes montrées restent fictives." : claimed ? "Le pack est récupéré. Clique sur Ouvrir mon pack dans le reçu pour découvrir tes cartes ici." : "Dans cet essai, 15 Buddies ont déjà été récoltés et les quatre premiers défis sont accomplis. Récupère le pack du Jardin des connaisseurs dans le parcours Culture." }
     : lesson === "specialties" ? { complete: profileSaved, instruction: profileSaved ? "Ton personnage d’essai est prêt. Tu peux comparer une autre spécialité en recommençant ; ton vrai profil est inchangé." : "Crée un personnage d’essai : surnom, apparence, puis spécialité." }
       : { complete: Boolean(review), instruction: review ? "Tu as rempli la fiche d’entraînement. Aucun avis n’est publié ; le vrai Carnet décrit tes dégustations réelles." : "Feuillette la Fleur d’essai, ajuste chaque critère, puis termine ta fiche fictive." };
   const json = (value: unknown, status = 200) => Response.json(value, { status });
@@ -80,9 +85,9 @@ export function createDiscoveryTransport(lesson: ArenaDiscoveryLesson, onProgres
     }
     if (lesson === "missions" && url.pathname === "/api/arena/placard/missions") {
       if (method === "GET") return json(missions(claimed, opened));
-      if (method === "POST" && body.code === "first-harvest") {
+      if (method === "POST" && body.code === "fifteen-varieties") {
         const replayed = claimed; claimed = true; onProgress?.(progress());
-        return json({ entitlementId: "tutorial-mission-pack", cardCount: 3, replayed });
+        return json({ entitlementId: "tutorial-mission-pack", cardCount: 3, reward: { kind: "pack", cardCount: 3 }, replayed });
       }
     }
     if (lesson === "missions" && url.pathname === "/api/arena/placard/boosters") {

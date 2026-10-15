@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { advanceKqStage, resolveKqStage, startKqGame } from "./kanab-quest-game";
-import { getKqCampaignMemberState, getKqCampaignParticipants, isKqCampaign, type KqCampaign } from "./kanab-quest-campaign";
-import { createKqWarehouseStarter, getKqWarehouseQuote } from "./kanab-quest-warehouse";
+import { getKqCampaignMemberState, getKqCampaignParticipants, getKqCampaignWarehouse, isKqCampaign, type KqCampaign } from "./kanab-quest-campaign";
+import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 
 function fixture() {
@@ -26,7 +26,7 @@ describe("shared decisions with different zone equipment", () => {
     const own = getKqCampaignMemberState(leader, members[1]);
     expect(own.history).toEqual(leader.history);
     expect(own.care).toEqual(leader.care);
-    expect(own.quality - leader.quality).toBe(2);
+    expect(own.quality - leader.quality).toBe(3);
     expect(own.harvestGrams).toBeGreaterThan(leader.harvestGrams!);
     expect(own.harvestGrams).toBeLessThanOrEqual(members[1].warehouse.estimatedHarvestGrams);
     expect(own.energy!.totalCents).not.toBe(leader.energy!.totalCents);
@@ -54,5 +54,23 @@ describe("shared decisions with different zone equipment", () => {
     const changed = structuredClone(campaign);
     changed.members[1].warehouse.sourceState.zones[0].name = "Changed after launch";
     expect(isKqCampaign(changed)).toBe(false);
+    const mixedBalance = structuredClone(campaign);
+    const member = mixedBalance.members[1];
+    member.warehouse = getKqWarehouseRunSnapshot(member.warehouse.sourceState, 4, member.zoneId, 1);
+    expect(isKqCampaign(mixedBalance)).toBe(false);
+  });
+
+  it("keeps historical campaign summaries on the original balance", () => {
+    const { members } = fixture();
+    const oldMembers = members.map(member => ({ ...member,
+      warehouse: getKqWarehouseRunSnapshot(member.warehouse.sourceState, 4, member.zoneId, 1) }));
+    const oldSummary = getKqCampaignWarehouse(oldMembers)!;
+    expect(oldSummary).not.toHaveProperty("balanceVersion");
+    expect(oldSummary.qualityBonus).toBe(1);
+    expect(oldSummary.estimatedHarvestGrams).toBe(765);
+    const current = getKqCampaignWarehouse(members)!;
+    expect(current.balanceVersion).toBe(2);
+    expect(current.qualityBonus).toBe(3);
+    expect(current.estimatedHarvestGrams).toBe(780);
   });
 });

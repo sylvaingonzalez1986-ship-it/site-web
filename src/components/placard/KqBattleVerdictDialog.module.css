@@ -1,0 +1,58 @@
+.dialog { width: min(640px, calc(100vw - 24px)); color: #172923; font-family: var(--font-body),sans-serif; }
+.dialog[data-victory] { box-shadow: 6px 7px 0 #efc451; }
+.body { padding: 18px; }
+.hero { display: flex; align-items: center; gap: 12px; padding: 14px; border: 2px solid #172923; border-radius: 12px; background: #f4dfd5; }
+.hero[data-won=true] { background: #dcefe4; }
+.hero > div { min-width: 0; }
+.emblem { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; }
+.hero[data-won=true] .emblem { background: #efc451; transform: rotate(-5deg); }
+.emblem svg { width: 26px; height: 26px; }
+.eyebrow { font-size: 11px; font-weight: 650; }
+.hero h2 { margin: 2px 0 0; font: 900 40px/1 var(--font-display),Impact,sans-serif; text-transform: uppercase; white-space: nowrap; }
+.score { display: flex; align-items: center; gap: 5px; flex: none; margin-left: auto; font: 900 48px/1 var(--font-display),Impact,sans-serif; }
+.score span { font-size: 30px; color: #536058; }
+.matchup { margin: 12px 0; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+.gains { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin: 0; }
+.gains > div { padding: 10px; border: 1px solid #17292355; border-radius: 9px; background: #fffaf0; }
+.gains > div[data-reward] { background: #f8e6a9; border-color: #b9912b; }
+.gains dt { display: flex; align-items: center; gap: 5px; font-size: 11px; line-height: 1.3; }
+.gains dt svg { flex: none; }
+.gains dd { margin: 7px 0 0; font: 900 30px/1 var(--font-display),Impact,sans-serif; }
+.reward { margin: 8px 0 0; font-size: 12px; font-weight: 700; }
+.rank { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin: 12px 0 0; padding: 12px 0; border-block: 1px solid #17292333; }
+.rank dt { font-size: 11px; color: #536058; }
+.rank dd { margin: 4px 0 0; font-weight: 700; font-size: 16px; }
+.details { margin-top: 10px; border: 1px solid #17292355; border-radius: 10px; background: #fffaf0; }
+.dialog .details > summary { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; min-height: 48px; padding: 10px 12px; list-style: none; cursor: pointer; font-size: 13px; font-weight: 700; }
+.details > summary::-webkit-details-marker { display: none; }
+.details > summary svg { flex: none; }
+.details[open] > summary svg { transform: rotate(180deg); }
+.details > summary:focus-visible,.continue:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.analysis,.rewardDetails { padding: 12px; border-top: 1px solid #17292333; }
+.rounds > div { display: grid; grid-template-columns: minmax(0,1fr) 48px 48px; gap: 8px; padding: 10px 8px; border-bottom: 1px solid #17292322; font-size: 12px; }
+.rounds > div[data-won=true] { background: #dcefe4; }
+.rounds .roundLabels { font-size: 10px; color: #536058; }
+.rounds > div > :nth-child(2),.rounds > div > :nth-child(3) { text-align: right; }
+.rounds p { grid-column: 1 / -1; margin: 0; font-size: 11px; line-height: 1.5; color: #536058; }
+.rewardDetails h3 { margin: 0 0 7px; font: 800 22px/1.15 var(--font-display),Impact,sans-serif; }
+.rewardDetails p,.rewardDetails li { font-size: 12px; line-height: 1.5; }
+.rewardDetails ul { margin: 0; padding-left: 18px; }
+.card { display: flex; align-items: start; gap: 12px; }
+.rewardDetails > div + .card { margin-top: 16px; }
+.card img { width: 100px; height: auto; flex: none; object-fit: contain; }
+.card > div { min-width: 0; overflow-wrap: anywhere; }
+.receipt { margin: 12px 0 0; color: #536058; font-size: 10px; line-height: 1.5; }
+.dialog .continue { width: 100%; min-height: 46px; padding: 10px 16px; border: 2px solid #172923; border-radius: 10px; background: #efc451; box-shadow: 2px 3px 0 #172923; color: #172923; font: 800 20px/1.2 var(--font-display),Impact,sans-serif; text-transform: uppercase; cursor: pointer; }
+@media(max-width:400px) {
+  .body { padding: 12px; }
+  .hero { gap: 8px; padding: 10px; }
+  .emblem { width: 36px; height: 36px; }
+  .emblem svg { width: 22px; height: 22px; }
+  .hero h2 { font-size: 32px; }
+  .score { font-size: 40px; gap: 3px; }
+  .eyebrow { font-size: 10px; }
+  .gains { gap: 5px; }
+  .gains > div { padding: 8px; }
+  .gains dt { flex-wrap: wrap; font-size: 10px; }
+  .gains dd { font-size: 28px; }
+}

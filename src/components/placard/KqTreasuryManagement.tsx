@@ -42,8 +42,8 @@ function ManagementConfirmation({ confirmation, busy, error, section, onClose, o
   </dialog>;
 }
 
-export function KqTreasuryManagement({ onOpenShop, onUpdated, section = "management" }: {
-  onOpenShop: (equipmentCode?: string) => void; onUpdated?: () => void; section?: "invoices" | "management";
+export function KqTreasuryManagement({ onOpenShop, onUpdated, onPrepareStock, onViewSales, section = "management" }: {
+  onOpenShop: (equipmentCode?: string) => void; onUpdated?: () => void; onPrepareStock?: () => void; onViewSales?: () => void; section?: "invoices" | "management";
 }) {
   const api = useKqTutorialApi();
   const [data, setData] = useState<KqCommerceSnapshot | null>(null);
@@ -57,8 +57,9 @@ export function KqTreasuryManagement({ onOpenShop, onUpdated, section = "managem
   const [liveNow, setLiveNow] = useState<number | undefined>();
   const clock = useRef<{ server: number; received: number } | null>(null);
   const inFlight = useRef<Promise<void> | null>(null);
-  const refreshedEvent = useRef("");
+  const refreshedEvents = useRef(new Set<string>());
   const committing = useRef(false);
+  const hasOnline = Boolean(data?.online);
   const load = useCallback(() => {
     if (inFlight.current) return inFlight.current;
     const pending = (async () => {
@@ -88,24 +89,39 @@ export function KqTreasuryManagement({ onOpenShop, onUpdated, section = "managem
   }, [api, section]);
   useEffect(() => {
     void load();
-    const refresh = () => { void load(); };
-    const unsubscribe_kq_equipment_updated = api.subscribe(["kq:equipment-updated"], refresh);
-    return () => unsubscribe_kq_equipment_updated();
-  }, [api, load]);
+  }, [load]);
+  useEffect(() => {
+    const refresh = () => { if (!document.hidden && !busy && !confirmation) void load(); };
+    return api.subscribe(["kq:equipment-updated", "kq:commerce-updated"], refresh);
+  }, [api, load, busy, confirmation]);
   useEffect(() => {
     const tick = () => { if (!document.hidden && clock.current) setLiveNow(clock.current.server + Math.max(0, performance.now() - clock.current.received)); };
-    const resume = () => { tick(); if (!document.hidden) void load(); };
+    const resume = () => { tick(); if (!document.hidden && !busy && !confirmation) void load(); };
     const timer = window.setInterval(tick, 15000);
     document.addEventListener("visibilitychange", resume);
     return () => { window.clearInterval(timer); document.removeEventListener("visibilitychange", resume); };
-  }, [api, load]);
+  }, [load, busy, confirmation]);
   useEffect(() => {
+    if (section !== "management" || !hasOnline || busy || confirmation) return;
+    const timer = window.setInterval(() => { if (!document.hidden) void load(); }, 60000);
+    return () => window.clearInterval(timer);
+  }, [section, hasOnline, busy, confirmation, load]);
+  useEffect(() => {
+    if (liveNow === undefined || document.hidden || busy || confirmation) return;
     const next = data?.business?.nextEventAt;
-    if (next && liveNow && liveNow >= Date.parse(next) && next !== refreshedEvent.current && !busy && !confirmation) {
-      refreshedEvent.current = next;
-      void load();
-    }
-  }, [data?.business?.nextEventAt, liveNow, busy, confirmation, load]);
+    const mission = data?.online?.marketing.active;
+    const events = [
+      ...(next ? [{ key: `business:${next}`, at: next }] : []),
+      ...(mission?.version === 2 ? [{ key: `marketing-launch:${mission.id}:${mission.launchesAt}`, at: mission.launchesAt }] : []),
+      ...(mission ? [{ key: `marketing:${mission.id}:${mission.endsAt}`, at: mission.endsAt }] : []),
+    ];
+    const due = events.filter(event => liveNow >= Date.parse(event.at) && !refreshedEvents.current.has(event.key));
+    if (!due.length) return;
+    // A stale response can retain an elapsed event. Refresh each event once;
+    // regular polling can retry without a render/request loop.
+    due.forEach(event => refreshedEvents.current.add(event.key));
+    void load();
+  }, [data?.business?.nextEventAt, data?.online?.marketing.active, liveNow, busy, confirmation, load]);
   function ask(title: string, description: string, body: Record<string, unknown>, cost = 0, endpoint: "commerce" | "energy" = "commerce") {
     setError(""); setNotice("");
     setConfirmation({ title, description, body: { ...body, requestKey: createClientRequestKey() }, cost, endpoint });
@@ -128,7 +144,7 @@ export function KqTreasuryManagement({ onOpenShop, onUpdated, section = "managem
     {loading ? <p className={styles.loading} role="status"><LoaderCircle size={19} className={styles.spin} aria-hidden="true" /> {section === "invoices" ? "Ouverture des factures…" : "Ouverture de la gestion…"}</p> : null}
     {error && !confirmation ? <p className={styles.error} role="alert">{error}<button type="button" className={styles.secondary} onClick={() => void load()}><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></p> : null}
     {notice ? <p className={styles.notice} role="status"><Check size={18} aria-hidden="true" /> {notice}</p> : null}
-    {data ? section === "invoices" ? <KqTreasuryInvoices data={data} energy={energy} energyError={energyError} now={liveNow} busy={busy} onAsk={ask} onRetry={() => void load()} onPayEnergy={amount => ask("Régler l’électricité et les soins", `Le solde de ${formatKqCash(amount)} sera débité de ta trésorerie disponible pour acquitter les factures d’électricité et de soins. Les factures de laboratoire et fournisseur sont réglées séparément.`, { expectedCents: amount }, amount, "energy")} /> : <KqBusinessPanel data={data} now={liveNow} busy={busy} onAsk={ask} onOpenShop={() => onOpenShop("COMPUTER")} expanded showAccounting={false} /> : null}
+    {data ? section === "invoices" ? <KqTreasuryInvoices data={data} energy={energy} energyError={energyError} now={liveNow} busy={busy} onAsk={ask} onRetry={() => void load()} onPayEnergy={amount => ask("Régler l’électricité et les soins", `Le solde de ${formatKqCash(amount)} sera débité de ta trésorerie disponible pour acquitter les factures d’électricité et de soins. Les factures de laboratoire et fournisseur sont réglées séparément.`, { expectedCents: amount }, amount, "energy")} /> : <KqBusinessPanel data={data} now={liveNow} busy={busy} onAsk={ask} onOpenShop={() => onOpenShop("COMPUTER")} onPrepareStock={onPrepareStock} onViewSales={onViewSales} expanded showAccounting={false} /> : null}
     {confirmation ? <ManagementConfirmation confirmation={confirmation} busy={busy} error={error} section={section} onClose={() => { if (!busy) { setConfirmation(null); setError(""); } }} onConfirm={() => void commit()} /> : null}
   </section>;
 }

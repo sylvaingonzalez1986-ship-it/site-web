@@ -1,12 +1,12 @@
 ﻿import "server-only";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
-import type { PioneerPackState, PioneerPackClaim } from "@/lib/pioneer-pack";
+import { PIONEER_PACK_OPENING_MESSAGE, type PioneerPackState, type PioneerPackClaim } from "@/lib/pioneer-pack";
 
 export class PioneerPackError extends Error {
   constructor(message: string, public readonly status: number) { super(message); }
 }
 function failure(message: string): never {
-  if (message.includes("pioneer_not_open")) throw new PioneerPackError("Rendez-vous le 15 octobre", 423);
+  if (message.includes("pioneer_not_open")) throw new PioneerPackError(PIONEER_PACK_OPENING_MESSAGE, 423);
   if (message.includes("pioneer_not_eligible")) {
     throw new PioneerPackError("Aucune commande éligible n’a été retrouvée sur ton compte.", 409);
   }

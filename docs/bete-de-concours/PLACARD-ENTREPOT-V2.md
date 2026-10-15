@@ -94,6 +94,31 @@ L’[ancien inventaire des concurrents](PLACARD-BOUTIQUE-CONCURRENTS.md) et les 
 
 L’installation suit le parcours culture → séchage et stockage → transformation. La récolte est séchée et mise en stock avant d’alimenter les machines ; la vente en fleurs reste possible sans transformation. Depuis le 12 octobre, culture, séchage et stockage partagent le plan de 40 × 25 cases de 1 m², sans chevauchement. Le joueur débute avec 1 m² de culture, 1 m² de filets et 1 m² de bocaux, soit 997 m² libres. Il dessine des rectangles, choisit les appareils et confirme un devis avant toute dépense. Les cultures peuvent être désactivées ; retirer une zone conserve son matériel en réserve, réutilisé lors du prochain aménagement.
 
+### Audit des gammes et équilibre v2 — 15 octobre 2026
+
+L’audit porte sur les douze familles de la boutique de culture. Les prix d’achat sont déjà croissants à surface égale : les différences de quantité par appareil peuvent masquer cette progression. Les tarifs sont conservés ; comparer le prix d’un fût haut de gamme au prix d’un rayonnage standard sans leur quantité par m² donnait une impression trompeuse.
+
+| Famille | Économique | Standard | Haut de gamme | Base de comparaison |
+| --- | ---: | ---: | ---: | --- |
+| Éclairage | 149 € | 164,50 € | 187,25 € | Matériel / m², couverture entièrement utilisée |
+| Extraction | 6,125 € | 7,45 € | 8,98 € | Matériel / m², couverture entièrement utilisée |
+| Séchage | 39,90 € | 99,90 € | 199,90 € | Matériel / m² installé |
+| Stockage | 83,60 € | 257,20 € | 342 € | Matériel / m² installé |
+
+La boutique calcule le prix réel pour la zone sélectionnée, avec arrondi des appareils à l’unité supérieure. Elle affiche également le prix unitaire, la quantité nécessaire et les charges de toute la zone. L’efficacité énergétique par m² couvert progresse avec la gamme, mais un appareil surdimensionné peut coûter davantage en énergie dans une petite zone : la comparaison affiche alors ce surcoût, sans annoncer une économie inexistante.
+
+Six familles de modules comportaient une régression de rendement en montant en gamme : climat, pilotage, hygiène, sécurité, support et nutrition. Les huit familles accordent désormais **+1 / +2 / +3 % de récolte potentielle**. Le plafond passe à **24 %**, soit les huit modules haut de gamme : aucun remplacement standard → premium ne perd son gain de rendement à cause du plafond.
+
+L’éclairage et l’extraction ajoutent chacun **0 / +1 / +2 points de qualité au départ**, une fois par zone et indépendamment du nombre d’appareils. L’ancien éclairage retiré du catalogue conserve son comportement. Climat, hygiène et support accordent **0 / +1 / +2 points** ; les autres familles gardent leurs bonus qualité existants. Les modules restent plafonnés à +4 points, auxquels s’ajoutent jusqu’à +4 points pour éclairage et extraction. Un équipement complet standard apporte ainsi +5 points et un équipement complet haut de gamme +8 points. Ces points participent réellement à la qualité finale, au calcul de récolte et aux caractéristiques de la Fleur ; ils ne sont pas une note du jury sur 10, ni une victoire garantie.
+
+Le séchage et le stockage offrent davantage de capacité par m². Leurs fiches comparent aussi le coût d’achat par kilogramme de capacité. Ils n’accordent pas de bonus de qualité supplémentaire : le séchage garde la même durée, et les modes de conservation restent un système distinct. Le stockage standard privilégie de nombreux petits lots, tandis que les grands contenants haut de gamme privilégient le volume ; un contenant entamé occupe toute sa capacité.
+
+Les nouveaux snapshots portent `balanceVersion: 2`. Les sauvegardes sans ce champ sont recalculées avec le catalogue de bonus historique, y compris lors de l’agrégation des campagnes. Les cultures déjà lancées, les devis réglés et les inventaires ne sont pas réécrits. Les nouveaux avantages s’appliquent aussi au matériel déjà possédé lors d’un prochain lancement.
+
+**Déploiement :** `20261015000400_kq_warehouse_tier_balance.sql` a été appliquée le 15 octobre 2026 à la base Supabase liée `eyowwwpdmfrulhkpvlnf`, après 11 contrôles préalables et une prévisualisation limitée à cette seule migration. Les 14 vérifications finales confirment les bonus des 24 modules, la conservation des prix, les projections historiques et v2, la validation des deux versions de snapshots et les permissions privées des six fonctions. Une nouvelle prévisualisation confirme le lot à jour. Le code du site reste à déployer. Preuves : `output/warehouse-balance-migration/manifest.json` et `application-result.json`.
+
+Validation locale : les invariants de prix couvrent toutes les dimensions historiques de 1 à 40 × 1 à 25 m, les tests du moteur vérifient un gain de qualité et d’apparence avec les mêmes dés, et les sauvegardes historiques restent lisibles. La suite SQL entrepôt passe 623 contrôles ; la chaîne complète zones/campagnes/sol en passe 881, y compris la branche de migration utilisée en production et de vrais démarrages v2. L’audit navigateur couvre 96 combinaisons de rayon, surface et largeur, puis trois vérifications supplémentaires du texte de stockage. Le contrôle des permissions Supabase passe.
+
 ### Zones de séchage et de stockage
 
 Chaque tracé affiche la surface, le matériel nécessaire, sa capacité totale et par m², le prix complet de la zone et le montant réellement à payer après réemploi. Les dépenses restent soumises à la validation du devis. La préparation vaut 120 €/m² et la pose 15 % des nouveaux appareils, hypothèses explicites du jeu ; une surface déjà financée et du matériel en réserve ne sont pas refacturés.

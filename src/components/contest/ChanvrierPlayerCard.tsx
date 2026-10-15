@@ -122,7 +122,7 @@ export function ChanvrierPlayerCard({ profile, onEdit, inline = false, showTrigg
   const inspected = data?.badges.find(b => b.id === selectedBadge);
   const achievements = ACHIEVEMENTS.map(a => achievementProgress(a.code, data?.metrics ?? {}));
   const objectives = data ? [
-    ...data.missions.filter(m => m.unlocked && !m.claimed).map(m => ({ key: m.code, title: KQ_MISSION_COPY[m.code].title, value: m.progress, target: m.target, hint: m.claimable ? "Pack à récupérer" : "Mission", href: m.claimable ? "/arene/placard?view=missions" : `/arene/placard?view=${KQ_MISSION_COPY[m.code].destination}`, priority: m.claimable ? 2 : m.progress / m.target })),
+    ...data.missions.filter(m => m.unlocked && !m.claimed).map(m => ({ key: m.code, title: KQ_MISSION_COPY[m.code].title, value: m.progress, target: m.target, hint: m.claimable ? "Récompense à récupérer" : "Mission", href: m.claimable ? "/arene/placard?view=missions" : `/arene/placard?view=${KQ_MISSION_COPY[m.code].destination}`, priority: m.claimable ? 2 : m.progress / m.target })),
     ...achievements.filter(a => !a.completed).map(a => ({ key: a.code, title: a.name, value: a.value, target: a.target, hint: a.code === data.showcase.tracked ? "Objectif épinglé" : "Succès", href: `/arene/placard?view=${a.category === "commerce" ? "market" : a.category === "arena" ? "arena" : "game"}`, priority: a.code === data.showcase.tracked ? 3 : a.value / a.target })),
   ].sort((a, b) => b.priority - a.priority).slice(0, 3) : [];
 
