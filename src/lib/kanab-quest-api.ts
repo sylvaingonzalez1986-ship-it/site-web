@@ -110,9 +110,9 @@ async function readKqResponse<T>(response: Response): Promise<T> {
   try {
     payload = await response.json() as T & ApiError;
   } catch {
-    throw new Error(`Réponse du Placard illisible (HTTP ${response.status}). Actualise la culture pour vérifier son état, sans relancer les dés.`);
+    throw new Error(`Réponse de Kanab Quest illisible (HTTP ${response.status}). Actualise la culture pour vérifier son état, sans relancer les dés.`);
   }
-  if (!response.ok) throw new Error(payload.error || "Le serveur du Placard ne répond pas.");
+  if (!response.ok) throw new Error(payload.error || "Le serveur de Kanab Quest ne répond pas.");
   return payload;
 }
 

@@ -2,7 +2,7 @@ export const KQ_MISSION_TRACKS = ["culture", "online", "shops"] as const;
 export type KqMissionTrack = (typeof KQ_MISSION_TRACKS)[number];
 export const KQ_MISSION_COPY = {
   "first-harvest": { title: "Ta première récolte", description: "Termine une culture et récolte ta première fleur.", action: "Lancer une culture", destination: "game" },
-  "three-varieties": { title: "Le goût de la variété", description: "Récolte trois variétés différentes dans le Placard.", action: "Choisir une variété", destination: "game" },
+  "three-varieties": { title: "Le goût de la variété", description: "Récolte trois variétés différentes dans Kanab Quest.", action: "Choisir une variété", destination: "game" },
   "contest-flower": { title: "Une fleur de concours", description: "Récolte une fleur de niveau Qualité concours ou Fleur légendaire.", action: "Soigner ma culture", destination: "game" },
   "online-two": { title: "Tes premiers fidèles", description: "Atteins deux clients fidèles grâce à tes ventes en ligne.", action: "Vendre en ligne", destination: "market" },
   "online-five": { title: "Le bouche-à-oreille", description: "Fidélise cinq clients en ligne avec des lots de qualité.", action: "Développer ma clientèle", destination: "market" },

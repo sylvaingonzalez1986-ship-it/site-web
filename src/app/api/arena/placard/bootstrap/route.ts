@@ -44,7 +44,7 @@ export async function GET() {
     getKqPlayerBuddieRotation(session.customerId),
   ] as const);
   if (collectionResult.status === "rejected") {
-    return NextResponse.json({ error: "Collection Placard indisponible." }, { status: 503 });
+    return NextResponse.json({ error: "Collection Kanab Quest indisponible." }, { status: 503 });
   }
   const heritage = heritageResult.status === "fulfilled" ? heritageResult.value : null;
   const sessionResults = [coreResult] as const;

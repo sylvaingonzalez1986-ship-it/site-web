@@ -73,7 +73,7 @@ const server = await createServer({
     configureServer(vite){vite.middlewares.use((req,res,next)=>{
       if(req.url?.split('?')[0]!=='/')return next();
       res.setHeader('Content-Type','text/html');
-      res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tableau de bord du Placard</title><style>@font-face{font-family:AuditDisplay;src:url(/src/app/fonts/BarlowCondensed-Latin-Black.woff2);font-weight:900}@font-face{font-family:AuditBody;src:url(/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2);font-weight:300 700}:root{--font-display:AuditDisplay;--font-body:AuditBody;--font-sans:AuditBody}body{margin:0;background:#fff1d6}</style><div id="root"></div><script type="module" src="/@id/__x00__dashboard-entry"></script></html>');
+      res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tableau de bord de Kanab Quest</title><style>@font-face{font-family:AuditDisplay;src:url(/src/app/fonts/BarlowCondensed-Latin-Black.woff2);font-weight:900}@font-face{font-family:AuditBody;src:url(/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2);font-weight:300 700}:root{--font-display:AuditDisplay;--font-body:AuditBody;--font-sans:AuditBody}body{margin:0;background:#fff1d6}</style><div id="root"></div><script type="module" src="/@id/__x00__dashboard-entry"></script></html>');
     });}
   }], server:{host:'127.0.0.1',port:3197,strictPort:true,hmr:false,watch:null}
 });

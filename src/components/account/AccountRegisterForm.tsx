@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useId, useState } from "react";
 import Link from "@/components/navigation/NavigationLink";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
 
@@ -26,6 +26,8 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [verificationEmail, setVerificationEmail] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const formId = useId();
 
   const isAtLeast18Client = (dateValue: string): boolean => {
     if (!dateValue) {
@@ -92,25 +94,43 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
     }
   };
 
+  if (verificationEmail) {
+    return (
+      <div className="account-form mt-6 grid gap-3">
+        <div role="status" className="cartoon-border-sm bg-mint/30 p-4 text-sm text-charcoal">
+          <p className="font-semibold">Un e-mail de vérification a été envoyé à {verificationEmail}.</p>
+          <p className="mt-2">Ouvre le lien reçu pour activer ton compte. Pense à vérifier les courriers indésirables.</p>
+        </div>
+        <Link href={loginHref} className="btn-cartoon btn-primary inline-flex min-h-12 items-center justify-center">Aller à la connexion</Link>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={onSubmit} className="mt-6 grid gap-3">
+    <form onSubmit={onSubmit} className="account-form mt-6 grid gap-3" aria-busy={loading}>
       <div className="grid gap-3 md:grid-cols-2">
+        <label className="grid gap-1.5"><span className="text-sm font-bold">Prénom</span>
         <input
           type="text"
+          name="given-name"
+          autoComplete="given-name"
           className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
           value={firstName}
           onChange={(event) => setFirstName(event.target.value)}
-          placeholder="Prenom"
           required
         />
+        </label>
+        <label className="grid gap-1.5"><span className="text-sm font-bold">Nom</span>
         <input
           type="text"
+          name="family-name"
+          autoComplete="family-name"
           className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
           value={lastName}
           onChange={(event) => setLastName(event.target.value)}
-          placeholder="Nom"
           required
         />
+        </label>
       </div>
       <label className="grid gap-1.5">
         <span className="text-sm font-bold text-ink">
@@ -118,100 +138,128 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
         </span>
         <input
           type="date"
+          name="bday"
+          autoComplete="bday"
           className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
           value={dateOfBirth}
           onChange={(event) => setDateOfBirth(event.target.value)}
-          aria-describedby="date-of-birth-help"
+          aria-describedby={`${formId}-birth-help`}
           required
         />
-        <span id="date-of-birth-help" className="text-xs font-semibold text-charcoal">
+        <span id={`${formId}-birth-help`} className="text-xs font-semibold text-charcoal">
           Vous devez avoir 18 ans ou plus pour pouvoir passer commande.
         </span>
       </label>
+      <label className="grid gap-1.5"><span className="text-sm font-bold">Adresse e-mail</span>
       <input
         type="email"
+        name="email"
+        autoComplete="email"
+        autoCapitalize="none"
+        spellCheck={false}
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
         value={email}
         onChange={(event) => setEmail(event.target.value)}
-        placeholder="Email"
+        placeholder="toi@exemple.fr"
         required
       />
+      </label>
+      <label htmlFor={`${formId}-password`} className="text-sm font-bold">Mot de passe</label>
+      <p id={`${formId}-password-help`} className="text-sm text-charcoal">Au moins 8 caractères.</p>
+      <div className="account-password-field">
       <input
-        type="password"
+        id={`${formId}-password`}
+        name="password"
+        autoComplete="new-password"
+        type={showPassword ? "text" : "password"}
+        aria-describedby={`${formId}-password-help`}
         minLength={8}
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
         value={password}
         onChange={(event) => setPassword(event.target.value)}
-        placeholder="Mot de passe (8 caractères minimum)"
         required
       />
+      <button type="button" onClick={() => setShowPassword(value => !value)} aria-controls={`${formId}-password`} aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"} aria-pressed={showPassword}>{showPassword ? "Masquer" : "Afficher"}</button>
+      </div>
+      <details className="account-optional-fields">
+      <summary>Coordonnées de livraison (facultatif)</summary>
+      <p className="mb-3 text-sm text-charcoal">Tu peux les renseigner plus tard, lors d’une commande.</p>
+      <div className="grid gap-3">
+      <label className="grid gap-1.5"><span className="text-sm font-bold">Téléphone</span>
       <input
-        type="text"
+        type="tel"
+        name="tel"
+        autoComplete="tel"
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
         value={phone}
         onChange={(event) => setPhone(event.target.value)}
-        placeholder="Téléphone (optionnel)"
       />
+      </label>
+      <label className="grid gap-1.5"><span className="text-sm font-bold">Adresse</span>
       <input
         type="text"
+        name="street-address"
+        autoComplete="street-address"
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
         value={address}
         onChange={(event) => setAddress(event.target.value)}
-        placeholder="Adresse (optionnel)"
       />
+      </label>
       <div className="grid gap-3 md:grid-cols-3">
+        <label className="grid gap-1.5"><span className="text-sm font-bold">Ville</span>
         <input
           type="text"
+          name="address-level2"
+          autoComplete="address-level2"
           className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
           value={city}
           onChange={(event) => setCity(event.target.value)}
-          placeholder="Ville (optionnel)"
         />
+        </label>
+        <label className="grid gap-1.5"><span className="text-sm font-bold">Code postal</span>
         <input
           type="text"
+          name="postal-code"
+          autoComplete="postal-code"
+          inputMode={country.trim().toLowerCase() === "france" ? "numeric" : "text"}
           className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
           value={postalCode}
           onChange={(event) => setPostalCode(event.target.value)}
-          placeholder="Code postal (optionnel)"
         />
+        </label>
+        <label className="grid gap-1.5"><span className="text-sm font-bold">Pays</span>
         <input
           type="text"
+          name="country-name"
+          autoComplete="country-name"
           className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
           value={country}
           onChange={(event) => setCountry(event.target.value)}
-          placeholder="Pays"
         />
+        </label>
       </div>
+      </div>
+      </details>
+      <label className="grid gap-1.5"><span className="text-sm font-bold">Code parrain (facultatif)</span>
       <input
         type="text"
+        name="referral-code"
+        autoCapitalize="characters"
+        spellCheck={false}
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base uppercase"
         value={referralCode}
         onChange={(event) => setReferralCode(event.target.value.toUpperCase())}
-        placeholder="Code parrain (optionnel)"
       />
+      </label>
       {referralCode.trim().length > 0 && (
         <p className="text-xs font-semibold text-charcoal">
           Code parrain detecte: 10% auto sur ta premiere commande.
         </p>
       )}
-      <button type="submit" disabled={loading} className="btn-cartoon btn-primary h-12">
+      <button type="submit" disabled={loading} className="btn-cartoon btn-primary min-h-12">
         {loading ? "Création..." : "Créer mon compte"}
       </button>
-      {error && <p className="text-sm font-semibold text-red-700">{error}</p>}
-      {verificationEmail && (
-        <div className="cartoon-border-sm bg-mint/30 p-3 text-sm text-charcoal">
-          <p className="font-semibold">
-            Un email de verification a ete envoye a {verificationEmail}.
-          </p>
-          <p className="mt-1">
-            Clique sur le lien recu, puis connecte-toi ici :{" "}
-            <Link href={loginHref} className="font-semibold text-ink underline">
-              aller a la connexion
-            </Link>
-            .
-          </p>
-        </div>
-      )}
+      {error && <p role="alert" className="text-sm font-semibold text-red-700">{error}</p>}
     </form>
   );
 }

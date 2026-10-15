@@ -105,8 +105,8 @@ const LEGACY_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = [
     effects: { qualityMaxBonus: 1, regularityPercent: 2 },
     unlocks: [],
     realWorldAnchor: {
-      label: "Aménagement fictif de l’entrepôt du Placard",
-      seller: "Règles du Placard",
+      label: "Aménagement fictif de l’entrepôt de Kanab Quest",
+      seller: "Règles de Kanab Quest",
       sourceUrl: "https://github.com/sylvaingonzalez1986-ship-it/site-web/blob/master/docs/bete-de-concours/PLACARD-ENTREPOT-SECHOIR.md",
       referencePriceCents: 60000,
       priceKind: "game-balance",

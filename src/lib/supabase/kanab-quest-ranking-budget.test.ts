@@ -22,10 +22,14 @@ function readResult(data: unknown, error: { message: string } | null = null) {
   return builder;
 }
 
-beforeEach(() => vi.clearAllMocks());
+beforeEach(() => {
+  vi.clearAllMocks();
+  mocks.rpc.mockResolvedValue({ data: { score: 0, production: 0, sales: 0, companyValue: 0, productionAreaM2: 0, companyValueCents: 0 }, error: null });
+});
 
 describe("Arena budget ranking reads", () => {
   it("reads cached rank while preserving current score and durable claims without calling a refresh RPC", async () => {
+    mocks.rpc.mockResolvedValue({ data: { score: 120, production: 30, sales: 60, companyValue: 30, productionAreaM2: 25, companyValueCents: 250_000 }, error: null });
     const snapshots = readResult({ leaderboard: [{ userId, rank: 8, placardScore: 999 }], generated_at: generatedAt });
     mocks.from.mockImplementation((table: string) => {
       if (table === "kq_rank_profiles") return readResult(profile);
@@ -35,12 +39,12 @@ describe("Arena budget ranking reads", () => {
       throw new Error(`Unexpected table ${table}`);
     });
     await expect(getKqPlayerProgress(userId)).resolves.toMatchObject({
-      rank: 8, rating: 1100, seasonPoints: 20, reputation: 400, placardScore: 1185,
+      rank: 8, rating: 1100, seasonPoints: 20, reputation: 400, placardScore: 1305, businessScore: 120,
       leaderboardGeneratedAt: generatedAt, claimedChallengeCodes: ["2026-10-11:clean-sweep"],
     });
     expect(snapshots.eq).toHaveBeenCalledWith("season_code", profile.season_code);
     expect(snapshots.limit).toHaveBeenCalledWith(1);
-    expect(mocks.rpc).not.toHaveBeenCalled();
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("kq_business_development_score", { p_user_id: userId });
   });
 
   it("permits a new player's profile before any ranking snapshot has been generated", async () => {
@@ -50,19 +54,32 @@ describe("Arena budget ranking reads", () => {
     await expect(getKqPlayerProgress(userId)).resolves.toMatchObject({
       rank: null, reputation: 0, placardScore: 1105, leaderboardGeneratedAt: null,
     });
-    expect(mocks.rpc).not.toHaveBeenCalled();
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("kq_business_development_score", { p_user_id: userId });
   });
 
   it("exposes the same score, reputation and timestamp through consolidated bootstrap", () => {
     expect(mapKqPlayerCoreSnapshot({ progress: {
       seasonCode: profile.season_code, rank: 8, rating: 1100, seasonPoints: 20,
-      reputation: 400, placardScore: 1185, wins: 4, losses: 2, streak: 1,
+      reputation: 400, placardScore: 1305, businessScore: 120, wins: 4, losses: 2, streak: 1,
       burnedFlowers: 6, arenaExperience: 31, updatedAt: profile.updated_at,
       leaderboardGeneratedAt: generatedAt,
     } }, [], ["2026-10-11:clean-sweep"]).progress).toMatchObject({
-      rank: 8, rating: 1100, seasonPoints: 20, reputation: 400, placardScore: 1185,
+      rank: 8, rating: 1100, seasonPoints: 20, reputation: 400, placardScore: 1305, businessScore: 120,
       leaderboardGeneratedAt: generatedAt, claimedChallengeCodes: ["2026-10-11:clean-sweep"],
     });
+  });
+
+  it("includes development when reconstructing a missing composite score", () => {
+    expect(mapKqPlayerCoreSnapshot({ progress: {
+      seasonCode: profile.season_code, rating: 1100, seasonPoints: 20,
+      reputation: 400, businessScore: 120, wins: 4, losses: 2,
+    } }, []).progress).toMatchObject({ placardScore: 1305, businessScore: 120 });
+  });
+
+  it("fails explicitly if the authoritative business score cannot be read", async () => {
+    mocks.from.mockImplementation((table: string) => readResult(table === "kq_rank_profiles" ? profile : null));
+    mocks.rpc.mockResolvedValue({ data: null, error: { message: "business unavailable" } });
+    await expect(getKqPlayerProgress(userId)).rejects.toThrow("kq_business_development_score");
   });
 
   it("requests a shared snapshot ordinarily and an explicitly fresh snapshot for finalization", async () => {
@@ -72,12 +89,12 @@ describe("Arena budget ranking reads", () => {
     });
     mocks.rpc.mockResolvedValue({ error: null, data: {
       contest_season_code: "CARNET-1", generated_at: generatedAt,
-      leaderboard: [{ userId, rank: 1, pseudo: "Carnet", score: 325, notebookScore: 300,
-        placardScore: 25, approvedReviewCount: 1, rating: 1000, wins: 1, losses: 0 }],
+      leaderboard: [{ userId, rank: 1, pseudo: "Carnet", score: 445, notebookScore: 300,
+        placardScore: 25, businessScore: 120, approvedReviewCount: 1, rating: 1000, wins: 1, losses: 0 }],
     } });
     await expect(getKqArenaLeaderboardInternal()).resolves.toMatchObject({
       seasonCode: "KQ-2026-S1", contestSeasonCode: "CARNET-1", generatedAt,
-      entries: [{ userId, rank: 1, score: 325 }],
+      formulaVersion: "arena-v2-development", entries: [{ userId, rank: 1, score: 445, businessScore: 120 }],
     });
     expect(mocks.rpc).toHaveBeenLastCalledWith("rpc_kq_get_arena_leaderboard", {
       p_season_code: "KQ-2026-S1", p_force_refresh: false,

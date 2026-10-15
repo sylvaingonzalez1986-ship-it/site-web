@@ -28,6 +28,7 @@ import { getKqLaunchApprovalChecks, getKqLaunchApprovals, getKqLaunchDossier, ty
 import { buildKqRandomQueueHealth, type KqRandomQueueHealth } from "@/lib/kanab-quest-random-queue";
 import { KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE } from "@/lib/kanab-quest-producer-rewards";
 import { calculateKqPlacardScore } from "@/lib/kanab-quest-reputation";
+import { ARENA_FORMULA_VERSION } from "@/lib/arena-ranking";
 import { KQ_REWARD_BALANCE } from "@/lib/kanab-quest-reward-balance";
 import { KQ_ACTIVE_CARDS } from "@/lib/kanab-quest-game";
 import { getKqCampaignParticipants, getKqCampaignTotals, getKqCampaignMemberState, type KqCampaignMember } from "@/lib/kanab-quest-campaign";
@@ -56,7 +57,7 @@ export type KqSupportBoosterShopSnapshot = {
 };
 
 export async function getKqSupportBoosterShopSnapshot(userId: string): Promise<KqSupportBoosterShopSnapshot> {
-  if (!/^[0-9a-f-]{36}$/i.test(userId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(userId)) throw new Error("Compte Kanab Quest invalide.");
   const supabase = createSupabaseServiceClient();
   const [catalog, entitlements] = await Promise.all([
     getCachedKqBotteCatalog(),
@@ -78,7 +79,7 @@ export async function getKqSupportBoosterShopSnapshot(userId: string): Promise<K
 }
 
 export async function claimKqWelcomeSupportBooster(userId: string) {
-  if (!/^[0-9a-f-]{36}$/i.test(userId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(userId)) throw new Error("Compte Kanab Quest invalide.");
   const result = await createSupabaseServiceClient().rpc("rpc_kq_claim_welcome_support_booster", {
     p_user_id: userId,
   });
@@ -211,7 +212,7 @@ export async function getKqAdminSeasonRolloverPreview(): Promise<KqSeasonRollove
     .order("starts_at", { ascending: true, nullsFirst: false });
   if (seasonsResult.error) throw new Error(`[supabase:kq_seasons] ${seasonsResult.error.message}`);
   const active = (seasonsResult.data ?? []).find((season) => season.status === "active");
-  if (!active) throw new Error("Aucune saison Placard active.");
+  if (!active) throw new Error("Aucune saison Kanab Quest active.");
   const planned = (seasonsResult.data ?? []).find((season) => season.status === "planned");
   if (!planned) return mapKqSeasonRolloverPreview(String(active.season_code), null);
   const result = await supabase.rpc("rpc_kq_rollover_season", {
@@ -500,7 +501,7 @@ export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
     { code: "heritage-art", label: `${expectedHeritageCount} illustrations Héritage producteur`, ready: heritageArtwork.length === expectedHeritageCount && new Set(heritageArtwork).size === expectedHeritageCount },
     { code: "support-catalog", label: `${KQ_ACTIVE_CARDS.length} cartes Botte du Chanvrier`, ready: input.supportCards.length === KQ_ACTIVE_CARDS.length },
     { code: "support-art", label: `${KQ_ACTIVE_CARDS.length} illustrations Botte du Chanvrier distinctes`, ready: supportArtwork.length === KQ_ACTIVE_CARDS.length && new Set(supportArtwork).size === KQ_ACTIVE_CARDS.length },
-    { code: "notebook-rules", label: "2 missions carnet → Placard configurées", ready: input.notebookRules.length === 2 },
+    { code: "notebook-rules", label: "2 missions carnet → Kanab Quest configurées", ready: input.notebookRules.length === 2 },
     { code: "season-rules", label: "4 paliers de récompenses de saison", ready: input.seasonRules.length === 4 && new Set(input.seasonRules.map((rule) => rule.tier_code)).size === 4 },
     { code: "season-no-early-grants", label: "Aucune récompense de saison prématurée", ready: input.seasonGrantCount === 0 },
   ];
@@ -514,7 +515,7 @@ export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
   ];
   dormantChecks.push({
     code: "player-access-dormant",
-    label: "Accès joueur au Placard encore fermé",
+    label: "Accès joueur à Kanab Quest encore fermé",
     ready: !featureFlags.publicPlayerApiLive,
   });
   const safelyDormant = dormantChecks.every((check) => check.ready);
@@ -534,7 +535,7 @@ export function buildKqLaunchReadiness(input: KqLaunchReadinessInput) {
       "Contrôler les 2 missions Carnet et les 4 paliers de saison dans Supabase",
       "Basculer ensemble KQ_NOTEBOOK_REWARDS_LIVE, KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE et KQ_SEASON_REWARDS_LIVE",
       "Exécuter les rétro-attributions des missions Carnet puis des avis producteurs depuis l’interface admin",
-      "Contrôler les reçus, les soldes et un parcours complet avant d’ouvrir le Placard aux clients",
+      "Contrôler les reçus, les soldes et un parcours complet avant d’ouvrir Kanab Quest aux clients",
       "Basculer KQ_PLAYER_API_LIVE en dernier, puis effectuer le test fumée avec un compte client de recette",
     ],
   };
@@ -657,7 +658,7 @@ async function getCachedKqBotteCatalog(): Promise<{
 }
 
 export async function getKqPlayerCollectionSnapshot(ownerId: string): Promise<KqAdminCollectionSnapshot> {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   const supabase = createSupabaseServiceClient();
   const catalog = await getCachedKqBotteCatalog();
   const [counts, tokenWallet, reservations] = await Promise.all([
@@ -754,7 +755,7 @@ async function getCachedKqBuddieDefinitions(): Promise<KqBuddieDefinitionRow[]> 
 }
 
 export async function getKqPlayerOwnedBuddies(ownerId: string): Promise<KqOwnedBuddie[]> {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   const definitionRows = await getCachedKqBuddieDefinitions();
   const copyCounts = await getKqCardCopyCounts(ownerId, definitionRows.map((definition) => definition.id));
   return buildKqOwnedBuddies(definitionRows, copyCounts);
@@ -777,7 +778,7 @@ function buildKqOwnedBuddies(definitionRows: KqBuddieDefinitionRow[], copyCounts
 // Bootstrap needs both collections. Count their copies in one request without
 // caching a player's mutable inventory across purchases, rewards or card burns.
 export async function getKqPlayerCollectionBundle(ownerId: string) {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   const supabase = createSupabaseServiceClient();
   const [catalog, buddieDefinitions] = await Promise.all([getCachedKqBotteCatalog(), getCachedKqBuddieDefinitions()]);
   const [counts, tokenWallet, reservations] = await Promise.all([
@@ -793,7 +794,7 @@ export async function getKqPlayerCollectionBundle(ownerId: string) {
 }
 
 export async function getKqPlayerBuddieRotation(ownerId: string): Promise<KqBuddieRotation> {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   const result = await createSupabaseServiceClient().from("kq_buddie_rotation")
     .select("recent_buddie_codes").eq("user_id", ownerId).maybeSingle();
   if (result.error) throw new Error("[supabase:kq_buddie_rotation] " + result.error.message);
@@ -920,7 +921,7 @@ export function mapKqStartRunResult(data: unknown) {
 // A bounded window covers a complete rotation of the current stage pools.
 // Abandoned cultures contribute only stages that the player actually reached.
 export async function getKqRecentSituationCodes(ownerId: string): Promise<string[]> {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   const result = await createSupabaseServiceClient().from("kq_runs")
     .select("scenario_codes,status,state")
     .eq("user_id", ownerId).in("status", ["completed", "abandoned"])
@@ -942,7 +943,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   if (input.zoneId !== undefined && (typeof input.zoneId !== "string" || !input.zoneId.trim() || input.zoneId.length > 80)) throw new Error("Zone de culture invalide.");
   if ((input.campaign || input.zoneId !== undefined) && (typeof input.requestKey !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.requestKey))) throw new Error("Clé de lancement invalide.");
   if (input.energyMode !== undefined && !isKqEnergyMode(input.energyMode)) throw new Error("Mode énergétique invalide.");
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!KQ_BUDDIES.some((buddie) => buddie.code === input.buddieCode)) {
     throw new Error("Buddie invalide.");
   }
@@ -1148,7 +1149,7 @@ export function selectKqActiveRun<T extends { runId: string; zoneId?: string | n
 }
 
 async function readKqPlayerRuns(ownerId: string, selection?: KqRunSelection) {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   const supabase = createSupabaseServiceClient();
   // A shared manifest already describes every member. Read only tiny routing
   // metadata first, so a 52-zone campaign does not transfer/validate 52 copies.
@@ -1225,7 +1226,7 @@ export async function getKqAdminRunsSnapshot(adminEmail: string, selection: KqRu
 }
 
 export async function getKqPlayerFlowers(ownerId: string) {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   const supabase = createSupabaseServiceClient();
   const [result, queueResult] = await Promise.all([
     supabase.from("kq_flowers")
@@ -1279,7 +1280,7 @@ export function mapKqPlayerCoreSnapshot(
   selection: KqRunSelection = {},
 ) {
   if (!data || typeof data !== "object" || Array.isArray(data)) {
-    throw new Error("Session Placard Supabase invalide.");
+    throw new Error("Session Kanab Quest Supabase invalide.");
   }
   const payload = data as Record<string, unknown>;
   const rawRuns = Array.isArray(payload.activeRuns) ? payload.activeRuns : payload.activeRun ? [payload.activeRun] : [];
@@ -1415,10 +1416,12 @@ export function mapKqPlayerCoreSnapshot(
     rating,
     seasonPoints: Number(rawProgress.seasonPoints),
     reputation: Number(rawProgress.reputation ?? 0),
+    businessScore: Number(rawProgress.businessScore ?? 0),
     placardScore: Number(rawProgress.placardScore ?? calculateKqPlacardScore({
       rating,
       seasonPoints: Number(rawProgress.seasonPoints),
       reputation: Number(rawProgress.reputation ?? 0),
+      businessScore: Number(rawProgress.businessScore ?? 0),
     }).score),
     wins: Number(rawProgress.wins),
     losses: Number(rawProgress.losses),
@@ -1451,7 +1454,7 @@ export function mapKqChallengeClaimKeys(rows: unknown) {
 }
 
 export async function getKqPlayerCoreSnapshot(ownerId: string, selection: KqRunSelection = {}) {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   const supabase = createSupabaseServiceClient();
   const [result, queueResult, claimsResult, runs] = await Promise.all([
     supabase.rpc("rpc_kq_player_core_snapshot", { p_user_id: ownerId }),
@@ -1580,7 +1583,7 @@ export function getKqRandomTrainingBotCode(ownerId: string, flowerId: string, da
 }
 
 export async function getKqPlayerFlowerRivals(ownerId: string, flowerId: string) {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Fleur invalide.");
   const supabase = createSupabaseServiceClient();
   const ownResult = await supabase.from("kq_flowers").select("id,quality,status,rules_version")
@@ -1734,7 +1737,7 @@ export async function enqueueKqPlayerRandomBattle(
   ownerId: string,
   flowerId: string,
 ): Promise<KqRandomBattleQueueResult> {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Fleur invalide.");
   const result = await createSupabaseServiceClient().rpc("rpc_kq_enqueue_random_battle", {
     p_player_id: ownerId,
@@ -1791,7 +1794,7 @@ export async function reconcileKqPlayerRandomBattleQueue(
   ownerId: string,
   flowerId: string,
 ): Promise<KqRandomBattleQueueResult | { matchStatus: "idle" }> {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Fleur invalide.");
   const result = await createSupabaseServiceClient().rpc("rpc_kq_poll_random_battle_queue", {
     p_player_id: ownerId,
@@ -1806,7 +1809,7 @@ export async function reconcileKqPlayerRandomBattleQueue(
 }
 
 export async function leaveKqPlayerRandomBattleQueue(ownerId: string, flowerId: string) {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Fleur invalide.");
   const result = await createSupabaseServiceClient().rpc("rpc_kq_leave_random_battle_queue", {
     p_player_id: ownerId,
@@ -1885,7 +1888,7 @@ export function mapKqStoredBattleRounds(rawRounds: unknown, invert: boolean): Kq
 }
 
 export async function getKqPlayerBattles(ownerId: string, limit = 30) {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!Number.isInteger(limit) || limit < 1 || limit > 30) throw new Error("Limite de duels invalide.");
   const supabase = createSupabaseServiceClient();
   const battlesResult = await supabase.from("kq_battles")
@@ -1954,7 +1957,7 @@ export async function getKqPlayerBattles(ownerId: string, limit = 30) {
 }
 
 export async function getKqPlayerBattle(ownerId: string, battleId: string) {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(battleId)) throw new Error("Duel invalide.");
   const supabase = createSupabaseServiceClient();
   const battleResult = await supabase.from("kq_battles")
@@ -2036,7 +2039,7 @@ export async function finalizeKqPlayerBattle(
   ownerId: string,
   battleId: string,
 ): Promise<KqAdminBattleVerdictReceipt> {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(battleId)) throw new Error("Duel invalide.");
   const stored = await getKqPlayerBattle(ownerId, battleId);
   if (!stored) throw new Error("Ce duel n’est plus disponible.");
@@ -2160,7 +2163,7 @@ export async function finalizeKqAdminBattle(
   return finalizeKqPlayerBattle(ownerId, battleId);
 }
 
-const readCachedPublicLeaderboard = cacheArenaSharedRead("placard-leaderboard", () => readKqPublicLeaderboard());
+const readCachedPublicLeaderboard = cacheArenaSharedRead("placard-leaderboard-v2-development", () => readKqPublicLeaderboard());
 
 export async function getKqPublicLeaderboard() {
   return readCachedPublicLeaderboard();
@@ -2191,11 +2194,13 @@ async function readKqPublicLeaderboard() {
       const rating = Number(entry.rating ?? 1000);
       const seasonPoints = Number(entry.seasonPoints ?? 0);
       const reputation = Number(entry.reputation ?? 0);
+      const businessScore = Number(entry.businessScore ?? 0);
       return {
         rank: Number(entry.rank ?? index + 1),
         avatar: avatars.get(String(entry.userId)) ?? null,
         pseudo: pseudoByUser.get(String(entry.userId)) ?? `Cultivateur ${String(index + 1).padStart(2, "0")}`,
-        placardScore: Number(entry.placardScore ?? calculateKqPlacardScore({ rating, seasonPoints, reputation }).score),
+        placardScore: Number(entry.placardScore ?? calculateKqPlacardScore({ rating, seasonPoints, reputation, businessScore }).score),
+        businessScore,
         rating,
         seasonPoints,
         reputation,
@@ -2223,7 +2228,7 @@ export async function getKqArenaLeaderboardInternal(options: { forceRefresh?: bo
     seasonCode,
     contestSeasonCode: snapshot?.contest_season_code ? String(snapshot.contest_season_code) : null,
     generatedAt: snapshot?.generated_at ? String(snapshot.generated_at) : new Date().toISOString(),
-    formulaVersion: "arena-v1",
+    formulaVersion: ARENA_FORMULA_VERSION,
     entries: rawEntries.map((entry, index) => ({
       userId: String(entry.userId),
       rank: Number(entry.rank ?? index + 1),
@@ -2231,6 +2236,7 @@ export async function getKqArenaLeaderboardInternal(options: { forceRefresh?: bo
       score: Number(entry.score ?? 0),
       notebookScore: Number(entry.notebookScore ?? 0),
       placardScore: Number(entry.placardScore ?? 0),
+      businessScore: Number(entry.businessScore ?? 0),
       approvedReviewCount: Number(entry.approvedReviewCount ?? 0),
       rating: Number(entry.rating ?? 1000),
       wins: Number(entry.wins ?? 0),
@@ -2239,7 +2245,7 @@ export async function getKqArenaLeaderboardInternal(options: { forceRefresh?: bo
   };
 }
 
-const readCachedPublicArenaLeaderboard = cacheArenaSharedRead("arena-leaderboard", () => readKqPublicArenaLeaderboard());
+const readCachedPublicArenaLeaderboard = cacheArenaSharedRead("arena-leaderboard-v2-development", () => readKqPublicArenaLeaderboard());
 
 export async function getKqPublicArenaLeaderboard() {
   return readCachedPublicArenaLeaderboard();
@@ -2257,6 +2263,7 @@ async function readKqPublicArenaLeaderboard() {
       score: entry.score,
       notebookScore: entry.notebookScore,
       placardScore: entry.placardScore,
+      businessScore: entry.businessScore,
       approvedReviewCount: entry.approvedReviewCount,
       rating: entry.rating,
       wins: entry.wins,
@@ -2301,40 +2308,45 @@ export async function getKqAdminSeasonRewardPreview() {
 }
 
 export async function getKqPlayerProgress(userId: string) {
-  if (!/^[0-9a-f-]{36}$/i.test(userId)) throw new Error("Profil Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(userId)) throw new Error("Profil Kanab Quest invalide.");
   const supabase = createSupabaseServiceClient();
   const profileResult = await supabase.from("kq_rank_profiles")
     .select("season_code,rating,season_points,wins,losses,streak,burned_flowers,arena_experience,updated_at")
     .eq("user_id", userId).maybeSingle();
   if (profileResult.error) throw new Error(`[supabase:kq_rank_profiles] ${profileResult.error.message}`);
   if (!profileResult.data) return null;
-  const [snapshotResult, walletResult, claimsResult] = await Promise.all([
+  const [snapshotResult, walletResult, claimsResult, businessResult] = await Promise.all([
     supabase.from("kq_leaderboard_snapshots").select("leaderboard,generated_at")
       .eq("season_code", profileResult.data.season_code)
       .order("snapshot_date", { ascending: false }).limit(1).maybeSingle(),
     supabase.from("kq_equipment_wallets").select("reputation").eq("user_id", userId).maybeSingle(),
     supabase.from("kq_daily_challenge_claims").select("challenge_day,challenge_code")
       .eq("user_id", userId).order("challenge_day", { ascending: false }).limit(64),
+    supabase.rpc("kq_business_development_score", { p_user_id: userId }),
   ]);
   if (snapshotResult.error) throw new Error(`[supabase:kq_leaderboard_snapshots] ${snapshotResult.error.message}`);
   if (walletResult.error) throw new Error(`[supabase:kq_equipment_wallets] ${walletResult.error.message}`);
   if (claimsResult.error) throw new Error(`[supabase:kq_daily_challenge_claims] ${claimsResult.error.message}`);
+  if (businessResult.error) throw new Error(`[supabase:kq_business_development_score] ${businessResult.error.message}`);
   const snapshot = Array.isArray(snapshotResult.data?.leaderboard)
     ? snapshotResult.data.leaderboard as Array<Record<string, unknown>> : [];
   const rankEntry = snapshot.find((entry) => String(entry.userId) === userId);
   const rating = Number(profileResult.data.rating);
   const seasonPoints = Number(profileResult.data.season_points);
   const reputation = Number(walletResult.data?.reputation ?? 0);
+  const businessScore = Number(businessResult.data?.score ?? 0);
   const placardScore = calculateKqPlacardScore({
     rating,
     seasonPoints,
     reputation,
+    businessScore,
   }).score;
   const league = getKqLeague(rating);
   return {
     seasonCode: String(profileResult.data.season_code),
     rank: rankEntry ? Number(rankEntry.rank) : null,
     placardScore,
+    businessScore,
     rating,
     seasonPoints,
     reputation,
@@ -2390,7 +2402,7 @@ export function mapKqCardBurnResult(data: unknown) {
 }
 
 export async function playKqPlayerCard(ownerId: string, runId: string, cardCode: string) {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(runId)) throw new Error("Culture invalide.");
 
   const supabase = createSupabaseServiceClient();
@@ -2455,7 +2467,7 @@ export async function applyKqPlayerRunAction(
   action: KqRunAction,
   options?: { handIndex?: number; reserveIndex?: number },
 ) {
-  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Placard invalide.");
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(runId)) throw new Error("Culture invalide.");
   const supabase = createSupabaseServiceClient();
   const runResult = await supabase.from("kq_runs").select("state,status,updated_at")

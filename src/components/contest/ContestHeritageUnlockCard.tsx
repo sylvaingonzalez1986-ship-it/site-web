@@ -90,7 +90,7 @@ export function ContestHeritageUnlockCard({
       </div>
       <div className="border-t-2 border-ink bg-white p-3">
         {campaign.heritageGranted ? (
-          <Link href="/arene/placard" className="inline-flex min-h-11 w-full items-center justify-center border-2 border-ink bg-green px-4 text-xs font-black uppercase text-white shadow-[2px_2px_0_#17130e]">Équiper dans le Placard</Link>
+          <Link href="/arene/placard" className="inline-flex min-h-11 w-full items-center justify-center border-2 border-ink bg-green px-4 text-xs font-black uppercase text-white shadow-[2px_2px_0_#17130e]">Équiper dans Kanab Quest</Link>
         ) : (
           <div className="flex min-h-11 w-full items-center justify-center border-2 border-ink bg-[#ded8ca] px-4 text-center text-xs font-black uppercase text-ink">
             Carte débloquée après validation de l’avis

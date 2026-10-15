@@ -144,13 +144,14 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
           : surface === "notebook"
             ? `/arene/carnet/${selectedTrack}`
             : "/arene/carnet/classement";
-        const nextPath = `${basePath}${params.season || params.category || params.entry || params.edit || selectedTrack !== "regular" ? `?${new URLSearchParams(
+        const nextPath = `${basePath}${params.season || params.category || params.entry || params.edit || params.view || (surface === "arena" && params.vue) || selectedTrack !== "regular" ? `?${new URLSearchParams(
           Object.entries({
             season: params.season,
             category: params.category,
             entry: params.entry,
             edit: params.edit,
             view: params.view,
+            vue: surface === "arena" ? params.vue : undefined,
             track: surface === "arena" && selectedTrack !== "regular" ? selectedTrack : undefined,
           }).filter((entry): entry is [string, string] => typeof entry[1] === "string"),
         ).toString()}` : ""}`;

@@ -142,7 +142,7 @@ describe("server culture scenario history", () => {
   });
 
   it("rejects invalid owners before reading history", async () => {
-    await expect(getKqRecentSituationCodes("someone-else")).rejects.toThrow("Compte Placard invalide");
+    await expect(getKqRecentSituationCodes("someone-else")).rejects.toThrow("Compte Kanab Quest invalide");
     expect(mocks.client).not.toHaveBeenCalled();
   });
 });

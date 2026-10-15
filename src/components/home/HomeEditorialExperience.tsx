@@ -310,7 +310,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
               <p className={styles.bonusEyebrow}>01 · Le jeu de l&apos;Arène</p>
               <h3>Joue pour gagner de vraies fleurs.</h3>
               <p className={styles.bonusDescription}>
-                Cultive ta fleur virtuelle dans le Placard, affronte les autres joueurs
+                Cultive ta fleur virtuelle dans Kanab Quest, affronte les autres joueurs
                 et grimpe au classement. En fin de saison, le Pot de la Canopée offre
                 de vraies fleurs aux joueurs éligibles du Top 10, mais aussi à un joueur
                 tiré au sort parmi les participants éligibles hors Top 10.

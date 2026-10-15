@@ -40,7 +40,7 @@ export async function GET() {
   }
   if (sourceResults.slice(0, 6).every((result) => result.status === "rejected")) {
     return NextResponse.json({
-      error: "Initialisation Placard indisponible.",
+      error: "Initialisation Kanab Quest indisponible.",
       warnings,
     }, { status: 503 });
   }

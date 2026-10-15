@@ -5,13 +5,14 @@ import { KQ_BUDDIES } from "@/lib/kanab-quest-game";
 import { KqBuddieCarousel } from "./KqBuddieCarousel";
 
 vi.mock("@/components/lottery/BuddieCard", () => ({ BuddieCard: () => createElement("span", null, "Carte Buddie") }));
+vi.mock("@/lib/kanab-quest-buddie-varieties", () => ({ getKqBuddieVariety: () => undefined }));
 
 const buddies = KQ_BUDDIES.slice(0, 6);
 const props = { buddies, artwork: {}, selectedCode: buddies[0].code, onSelect: () => undefined };
 const cards = (html: string) => html.match(/<article\b[^>]*>[\s\S]*?<\/article>/g) ?? [];
 
 describe("Buddie rotation in culture preparation", () => {
-  it("blocks both selection buttons for recently used Buddies, even when selected and owned in multiple copies", () => {
+  it("keeps variety information accessible while blocking selection of recently used Buddies", () => {
     const html = renderToStaticMarkup(createElement(KqBuddieCarousel, {
       ...props,
       artwork: { [buddies[0].code]: { imageUrl: "", ownedCopies: 4 } },
@@ -20,7 +21,11 @@ describe("Buddie rotation in culture preparation", () => {
     const renderedCards = cards(html);
     expect(renderedCards).toHaveLength(6);
     for (const card of renderedCards.slice(0, 5)) {
-      expect(card.match(/disabled=""/g)).toHaveLength(2);
+      expect(card.match(/disabled=""/g)).toHaveLength(1);
+      const informationButton = card.match(/<button[^>]*aria-haspopup="dialog"[^>]*>/)?.[0];
+      expect(informationButton).toBeDefined();
+      expect(informationButton).not.toContain('disabled=""');
+      expect(informationButton).toContain("Voir la fiche de");
       expect(card).not.toContain('aria-pressed="true"');
     }
     expect(renderedCards[0]).toContain("Encore 5 autres Buddies différents");
@@ -39,7 +44,7 @@ describe("Buddie rotation in culture preparation", () => {
 
   it("waits for official rotation history while keeping local prototypes available", () => {
     const official = renderToStaticMarkup(createElement(KqBuddieCarousel, { ...props, rotation: null }));
-    expect(cards(official).every(card => (card.match(/disabled=""/g) ?? []).length === 2)).toBe(true);
+    expect(cards(official).every(card => (card.match(/disabled=""/g) ?? []).length === 1)).toBe(true);
     const local = renderToStaticMarkup(createElement(KqBuddieCarousel, props));
     expect(cards(local).every(card => !card.includes('disabled=""'))).toBe(true);
   });

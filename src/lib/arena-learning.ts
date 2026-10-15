@@ -23,7 +23,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
     id: "collection",
     title: "Tes cartes et tes packs",
     description: "Repère les packs Buddies, les soutiens et les Héritages.",
-    location: "Mon compte → Collection ; Placard → Boutique pour les soutiens",
+    location: "Mon compte → Collection ; Kanab Quest → Boutique pour les soutiens",
     href: "/profil/collection",
     // Sources: lottery-ticket-calculations.ts; supabase/lottery-backend.ts;
     // account/LotterySection.tsx; placard/KqSupportBoosterShop.tsx.
@@ -32,7 +32,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
     features: [
       "Les achats payés sur le site donnent un pack Buddies de 3 cartes par tranche de 5 €, selon les conditions et le plafond affichés pour la commande.",
       "Ouvre tes packs disponibles dans ta collection : les cartes rejoignent ton inventaire et peuvent inclure des doublons.",
-      "Dans le Placard, la Boutique propose aussi des packs Botte du Chanvrier : un pack acheté coûte 5 points et contient 10 cartes de soutien.",
+      "Dans Kanab Quest, la Boutique propose aussi des packs Botte du Chanvrier : un pack acheté coûte 5 points et contient 10 cartes de soutien.",
       "Choisis un Buddie pour ta variété, des soutiens consommés seulement quand tu les joues, et un Héritage permanent si tu en possèdes un.",
       "Après une culture, utilise 5 autres Buddies différents avant de reprendre le même. La collection indique les variétés que tu possèdes.",
     ],
@@ -69,7 +69,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
     id: "warehouse",
     title: "Entretenir et agrandir",
     description: "Fais durer ton installation et prépare tes prochaines cultures.",
-    location: "Placard → Entrepôt → Choisir une tente ou l’atelier commun",
+    location: "Kanab Quest → Entrepôt → Choisir une tente ou l’atelier commun",
     href: "/arene/placard?view=workshop",
     // Sources: placard/KqEquipmentInventoryModal.tsx; KqProductionCapacity.tsx;
     // KqCultureEquipmentWear.tsx; KqMachineMaintenance.tsx; KqBusinessPanel.tsx.
@@ -91,7 +91,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
     id: "missions",
     title: "Missions, succès et réputation",
     description: "Choisis un objectif et retrouve tes récompenses.",
-    location: "Placard → Missions ; carte de chanvrier pour les succès et badges",
+    location: "Kanab Quest → Missions ; carte de chanvrier pour les succès et badges",
     href: "/arene/placard?view=missions",
     // Sources: placard/KqMissionCenter.tsx; missions/CommunityMissionsBoard.tsx;
     // contest/ChanvrierPlayerCard.tsx; kanab-quest-missions.ts.
@@ -113,7 +113,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
     id: "bank",
     title: "Le banquier et le livret",
     description: "Découvre les conditions d’un prêt et la réserve du Trésorier.",
-    location: "Placard → Bureau → Banque → Prêts ou Livret d’épargne",
+    location: "Kanab Quest → Bureau → Banque → Prêts ou Livret d’épargne",
     href: "/arene/placard?view=treasury",
     // Sources: kanab-quest-bank.ts; placard/KqBankLoans.tsx; KqTreasuryBank.tsx;
     // supabase/migrations/20260923000700_kq_bank_investment_limits.sql.
@@ -134,7 +134,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
     id: "investments",
     title: "Bourse et crypto du jeu",
     description: "Lis un portefeuille et comprends ce qu’une vente change.",
-    location: "Placard → Bureau → Banque → Bourse ou Crypto",
+    location: "Kanab Quest → Bureau → Banque → Bourse ou Crypto",
     href: "/arene/placard?view=treasury",
     // Sources: placard/KqStockMarket.tsx; placard/KqCryptoMarket.tsx;
     // kanab-quest-stocks.ts; kanab-quest-crypto.ts.
@@ -155,7 +155,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
     id: "business",
     title: "Ton commerce et ses charges",
     description: "Ouvre ton site, attire des clients et garde tes comptes lisibles.",
-    location: "Placard → Bureau → Gestion ou Comptabilité",
+    location: "Kanab Quest → Bureau → Gestion ou Comptabilité",
     href: "/arene/placard?view=treasury",
     // Sources: placard/KqBusinessPanel.tsx; KqTreasuryInvoices.tsx;
     // KqTreasuryDesk.tsx; kanab-quest-business.ts; kanab-quest-commerce.ts.
@@ -177,7 +177,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
   {
     id: "notebook",
     title: "Le Carnet de dégustation",
-    description: "Retrouve tes expériences réelles à côté de l’aventure du Placard.",
+    description: "Retrouve tes expériences réelles à côté de l’aventure de Kanab Quest.",
     location: "Arène → Le Carnet",
     href: "/arene/carnet/regular",
     // Sources: arena-lobby.ts; contest/ContestNotebookPanel.tsx;
@@ -186,12 +186,12 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
       "Ouvre les fiches des lots du Carnet habituel ou du parcours Concours lorsqu’il est disponible.",
       "Pour un lot auquel ton compte a accès, décris ta dégustation réelle avec les critères, les arômes et ton commentaire.",
       "Retrouve tes notes, leur statut et les conditions des objectifs du Carnet. Les récompenses dépendent des critères du parcours.",
-      "Une Fleur gagnée dans le Placard et un résultat du tutoriel restent fictifs : ils ne remplacent pas une dégustation pour le Carnet.",
+      "Une Fleur gagnée dans Kanab Quest et un résultat du tutoriel restent fictifs : ils ne remplacent pas une dégustation pour le Carnet.",
     ],
     scenario: "Tu viens d’obtenir une belle Fleur dans le tutoriel, mais tu n’as pas dégusté le lot correspondant dans la réalité. Que peux-tu noter dans le Carnet ?",
     choices: [
       { label: "Ma dégustation réelle, quand je l’aurai faite", correct: true, feedback: "Le Carnet décrit ton expérience réelle sur les lots auxquels tu as accès. Tu peux explorer le jeu maintenant et revenir noter une vraie dégustation ensuite." },
-      { label: "La note du jury fictif comme avis personnel", correct: false, feedback: "Le jury du Placard évalue une Fleur de jeu. Sa note ne décrit pas ce que tu as goûté et ne remplace pas un avis de dégustation." },
+      { label: "La note du jury fictif comme avis personnel", correct: false, feedback: "Le jury de Kanab Quest évalue une Fleur de jeu. Sa note ne décrit pas ce que tu as goûté et ne remplace pas un avis de dégustation." },
       { label: "Une note maximale pour débloquer les récompenses", correct: false, feedback: "Les critères du Carnet servent à décrire ce que tu as réellement observé. Une note choisie seulement pour une récompense ne raconte pas ta dégustation." },
     ],
   },

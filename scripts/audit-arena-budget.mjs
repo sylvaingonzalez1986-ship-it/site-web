@@ -129,7 +129,7 @@ try {
       return board?.textContent.includes("246 de réputation") && board?.textContent.includes("#7");
     });
     const displayed = await page.$eval("[data-kq-season-board]", board => {
-      const score = [...board.querySelectorAll("dt")].find(element => element.textContent === "Score Placard")?.parentElement.querySelector("dd")?.textContent;
+      const score = [...board.querySelectorAll("dt")].find(element => element.textContent === "Score Kanab Quest")?.parentElement.querySelector("dd")?.textContent;
       return { score: Number(score?.replace(/\s/g, "")), reputation: board.textContent.includes("246 de réputation"), rank: board.textContent.includes("#7") };
     });
     assert.deepEqual(displayed, { score: 1337, reputation: true, rank: true }, `${scenarioLabel}: bootstrap/session values are displayed`);

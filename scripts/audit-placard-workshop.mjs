@@ -47,9 +47,9 @@ try{
  const layout=async()=>page.evaluate(()=>({overflow:document.documentElement.scrollWidth>innerWidth+1,brokenImages:[...document.images].filter(i=>i.complete&&!i.naturalWidth).map(i=>i.src)}));
  for(const width of [320,390,768,1440]){
   await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});
-  await page.goto('http://127.0.0.1:3198/?hub=1',{waitUntil:'networkidle0'});await page.waitForSelector('nav[aria-label="Activités du Placard"]',{timeout:60000});
+  await page.goto('http://127.0.0.1:3198/?hub=1',{waitUntil:'networkidle0'});await page.waitForSelector('nav[aria-label="Activités de Kanab Quest"]',{timeout:60000});
   await shot('hub-'+width);
-  await page.click('nav[aria-label="Activités du Placard"] button:nth-child(2)');await shot('hub-market-'+width);
+  await page.click('nav[aria-label="Activités de Kanab Quest"] button:nth-child(2)');await shot('hub-market-'+width);
   await page.locator('::-p-text(Ouvrir le marché)').click();await page.waitForSelector('[aria-label="Machines et filières"]');
   assert.equal(await page.$$eval('[aria-label="Machines et filières"] button',els=>els.length),10);
   assert.equal(await page.$$eval('#market-machine-detail > article',els=>els.length),1);

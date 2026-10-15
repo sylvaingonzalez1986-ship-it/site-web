@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "@/components/navigation/NavigationLink";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useId, useState } from "react";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 
 type ResetPasswordFormProps = {
@@ -70,6 +70,8 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [recoveryPayload, setRecoveryPayload] = useState<RecoveryPayload | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const formId = useId();
 
   useEffect(() => {
     const currentUrl = new URL(window.location.href);
@@ -143,6 +145,8 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
 
       router.replace(`${loginUrl.pathname}${loginUrl.search}`);
       router.refresh();
+    } catch {
+      setError("La mise à jour n’a pas pu être confirmée. Vérifie ta connexion. Si ce lien a déjà été utilisé, essaie de te connecter avec ton nouveau mot de passe.");
     } finally {
       setLoading(false);
     }
@@ -150,7 +154,7 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
 
   if (phase === "checking") {
     return (
-      <div className="mt-6 rounded-md border border-[#1a1a1a] bg-white px-4 py-3 text-sm font-semibold text-charcoal">
+      <div role="status" className="mt-6 rounded-md border border-[#1a1a1a] bg-white px-4 py-3 text-sm font-semibold text-charcoal">
         Verification du lien en cours...
       </div>
     );
@@ -159,7 +163,7 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
   if (phase === "invalid") {
     return (
       <div className="mt-6 grid gap-3">
-        <p className="rounded-md border border-[#1a1a1a] bg-red-100 px-4 py-3 text-sm font-semibold text-red-700">
+        <p role="alert" className="rounded-md border border-[#1a1a1a] bg-red-100 px-4 py-3 text-sm font-semibold text-red-700">
           {error || "Lien invalide ou expire. Redemande un nouvel email."}
         </p>
         <Link
@@ -173,31 +177,40 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="mt-6 grid gap-3">
+    <form onSubmit={onSubmit} className="account-form mt-6 grid gap-3" aria-busy={loading}>
+      <label htmlFor={`${formId}-password`} className="text-sm font-bold">Nouveau mot de passe</label>
+      <p id={`${formId}-help`} className="text-sm text-charcoal">Au moins 8 caractères.</p>
+      <div className="account-password-field">
       <input
-        type="password"
+        id={`${formId}-password`}
+        name="password"
+        type={showPassword ? "text" : "password"}
+        aria-describedby={`${formId}-help`}
         minLength={8}
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
         value={password}
         onChange={(event) => setPassword(event.target.value)}
-        placeholder="Nouveau mot de passe"
         autoComplete="new-password"
         required
       />
+      <button type="button" onClick={() => setShowPassword(value => !value)} aria-controls={`${formId}-password ${formId}-confirmation`} aria-label={showPassword ? "Masquer les mots de passe" : "Afficher les mots de passe"} aria-pressed={showPassword}>{showPassword ? "Masquer" : "Afficher"}</button>
+      </div>
+      <label htmlFor={`${formId}-confirmation`} className="text-sm font-bold">Confirmer le nouveau mot de passe</label>
       <input
-        type="password"
+        id={`${formId}-confirmation`}
+        name="password-confirmation"
+        type={showPassword ? "text" : "password"}
         minLength={8}
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
         value={confirmPassword}
         onChange={(event) => setConfirmPassword(event.target.value)}
-        placeholder="Confirmer le nouveau mot de passe"
         autoComplete="new-password"
         required
       />
-      <button type="submit" disabled={loading} className="btn-cartoon btn-primary h-12">
+      <button type="submit" disabled={loading} className="btn-cartoon btn-primary min-h-12">
         {loading ? "Mise a jour..." : "Mettre a jour mon mot de passe"}
       </button>
-      {error && <p className="text-sm font-semibold text-red-700">{error}</p>}
+      {error && <p role="alert" className="text-sm font-semibold text-red-700">{error}</p>}
     </form>
   );
 }

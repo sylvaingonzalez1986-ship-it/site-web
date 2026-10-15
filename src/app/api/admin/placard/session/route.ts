@@ -37,7 +37,7 @@ export async function GET(request?: Request) {
     : []);
   if (expiryWarning) warnings.push(expiryWarning);
   if (readFailureCount === 3) {
-    return NextResponse.json({ error: "Session Placard indisponible.", warnings }, { status: 503 });
+    return NextResponse.json({ error: "Session Kanab Quest indisponible.", warnings }, { status: 503 });
   }
   return NextResponse.json({
     buddieRotation: results[3].status === "fulfilled" ? results[3].value : null,

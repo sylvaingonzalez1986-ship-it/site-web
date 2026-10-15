@@ -181,15 +181,18 @@ export function CookieConsentModal({
         tabIndex={-1}
         className={styles.dialog}
       >
+        {dismissible && (
+          <div className={styles.cookieToolbar}>
+            <span>Préférences cookies</span>
+            <button type="button" onClick={onRequestClose} aria-label="Fermer les preferences cookies">Fermer <span aria-hidden="true">×</span></button>
+          </div>
+        )}
         <div className={styles.hero}>
           <div className={styles.heroCopy}>
             <p className={styles.eyebrow}>Votre visite, vos choix</p>
             <h2 id={titleId} className={styles.title}>Des cookies sans cachotterie.</h2>
           </div>
           <Image className={styles.heroVisual} src="/mascots/home-thinking.png" alt="" width={150} height={150} />
-          {dismissible ? (
-            <button type="button" onClick={onRequestClose} className={styles.close} aria-label="Fermer les preferences cookies">×</button>
-          ) : null}
         </div>
         <div className={styles.content}>
             <p id={descriptionId} className={styles.intro}>
@@ -203,8 +206,7 @@ export function CookieConsentModal({
             <div className={`${styles.notice} text-sm leading-relaxed text-ink`}>
               <p>
                 Vous pouvez accepter, refuser ou personnaliser les cookies non necessaires. Votre
-                choix reste modifiable a tout moment depuis le bouton cookies en bas de
-                l&apos;ecran.
+                choix reste modifiable à tout moment avec « Gérer mes cookies » dans le pied de page.
               </p>
             </div>
 
@@ -236,6 +238,7 @@ export function CookieConsentModal({
               </button>
               <Link
                 href="/politique-cookies"
+                onClick={onRequestClose}
                 className={styles.textLink}
               >
                 Lire la politique cookies
@@ -303,6 +306,7 @@ export function CookieConsentModal({
               )}
               <Link
                 href="/politique-cookies"
+                onClick={onRequestClose}
                 className={styles.textLink}
               >
                 Politique cookies

@@ -83,12 +83,14 @@
 .delivery h3, .summary h3 { margin-bottom: 18px; font-size: 2rem; color: var(--arcade-green); }
 .input { width: 100%; min-width: 0; min-height: 46px; padding: 10px 12px; border: 1px solid #00563f66; border-radius: 2px; background: white; color: var(--arcade-dark); font-size: 16px; }
 .input::placeholder { color: #53685b; opacity: 1; }
+.field { display: grid; gap: 5px; min-width: 0; color: var(--arcade-dark); font-size: .8rem; font-weight: 700; }
+.mobileSummary { display: none; }
 .input:disabled { background: #e8efe4; opacity: .65; }
 .deliveryOptions { margin-block: 8px; padding: 12px; border: 1px solid #00563f40; background: #e8efe4; }
 .deliverySwitch { display: flex; gap: 6px; margin-block: 8px; }
 .deliveryChoice { flex: 1; min-width: 0; min-height: 46px; padding: 9px 6px; border: 1px solid var(--arcade-green); border-radius: 2px; background: var(--arcade-paper); color: var(--arcade-green); font-size: .75rem; font-weight: 800; }
 .deliveryChoice[aria-pressed="true"] { background: var(--arcade-green); color: var(--arcade-paper); box-shadow: inset 0 -3px 0 #003f30; }
-.codeRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 8px; margin-top: 6px; }
+.codeRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 8px; margin-top: 6px; }
 .drawer .codeRow > button { min-height: 46px; padding: 8px 10px; }
 .summary { min-width: 0; padding: 20px; border: 2px solid var(--arcade-green); border-radius: 3px; background: #e8efe4; box-shadow: 0 5px 0 var(--arcade-green); }
 .summary h3 { margin-bottom: 20px; }
@@ -125,6 +127,14 @@
   .productImage { width: 60px; height: 68px; }
   .product h3 { font-size: 1.55rem; }
   .summary { padding: 16px; }
+}
+@media (max-width: 899px) {
+  .mobileSummary { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 10px; padding: 10px max(14px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left)); border-top: 2px solid var(--arcade-green); background: var(--arcade-paper); }
+  .mobileSummary > div { display: grid; gap: 2px; }
+  .mobileSummary span { font-size: .7rem; }
+  .mobileSummary strong { font-size: .9rem; }
+  .mobileSummary button { min-height: 48px; padding: 10px 12px; border: 1px solid var(--arcade-green); background: var(--arcade-green); color: var(--arcade-paper); font-size: .85rem; font-weight: 800; }
+  .drawer:has(input:focus, select:focus, textarea:focus) .mobileSummary { display: none; }
 }
 @media (hover: hover) {
   .iconButton:hover:not(:disabled), .benefit:hover { background: var(--arcade-yellow); }

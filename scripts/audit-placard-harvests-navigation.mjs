@@ -102,7 +102,7 @@ try {
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'No horizontal document overflow');
   };
   const navigate=async(key,width)=>{
-    if(width<=1000){await page.click('[aria-label="Accès rapides du Placard"] button[aria-haspopup="dialog"]');await page.waitForSelector('dialog[open]');await page.click('dialog[open] [data-placard-nav="'+key+'"]');await page.waitForSelector('dialog[open]',{hidden:true});}
+    if(width<=1000){await page.click('[aria-label="Accès rapides de Kanab Quest"] button[aria-haspopup="dialog"]');await page.waitForSelector('dialog[open]');await page.click('dialog[open] [data-placard-nav="'+key+'"]');await page.waitForSelector('dialog[open]',{hidden:true});}
     else await page.click('aside [data-placard-nav="'+key+'"]');
   };
   const unchanged=async()=>assert.deepEqual(await page.evaluate(()=>({changed:window.__snapshot()!==window.__initial,mutations:window.__calls.filter(call=>call.method!=='GET')})),{changed:false,mutations:[]},'Navigation and opening management screens must not mutate account data');
@@ -159,8 +159,8 @@ try {
   await visit();await navigate('shop',390);await clickSelector('[aria-label="Ouvrir le rayon matériel"]');await page.waitForSelector('[aria-labelledby="equipment-catalog-title"]');
   assert.equal(await page.$eval('[aria-labelledby="equipment-catalog-title"]',node=>node.getAttribute('role')),'region','Embedded catalogue remains part of the page');await unlocked();
   await page.focus('[aria-label="Retour à la boutique"]');await page.keyboard.down('Shift');await page.keyboard.press('Tab');await page.keyboard.up('Shift');
-  assert.equal(await page.$eval('[aria-label="Accès rapides du Placard"] button[aria-haspopup="dialog"]',node=>node===document.activeElement),true,'Shift+Tab can leave the catalogue and return to navigation');
-  await page.click('[aria-label="Accès rapides du Placard"] button[aria-haspopup="dialog"]');await page.waitForSelector('dialog[open]');await page.keyboard.press('Escape');await page.waitForSelector('dialog[open]',{hidden:true});
+  assert.equal(await page.$eval('[aria-label="Accès rapides de Kanab Quest"] button[aria-haspopup="dialog"]',node=>node===document.activeElement),true,'Shift+Tab can leave the catalogue and return to navigation');
+  await page.click('[aria-label="Accès rapides de Kanab Quest"] button[aria-haspopup="dialog"]');await page.waitForSelector('dialog[open]');await page.keyboard.press('Escape');await page.waitForSelector('dialog[open]',{hidden:true});
   assert.ok(await page.$('[aria-labelledby="equipment-catalog-title"]'),'Escape from navigation must preserve the underlying shop catalogue');
   await clickText('Ajouter','[data-arena-tour-surface="catalog"] main');
   await clickSelector('[aria-label^="Ouvrir le panier,"]');await page.waitForSelector('[aria-label="Panier matériel"][data-open]');

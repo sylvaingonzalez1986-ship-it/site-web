@@ -408,7 +408,12 @@ Cette refonte ne comporte ni migration ni publication.
 Dans le plan de l’Entrepôt, le carrousel des Buddies dispose d’une commande
 pour se replier et se rouvrir. Il apparaît uniquement dans le mode Cultures,
 hors aménagement et boutique, et disparaît dans l’Atelier et le Stockage.
-Son état reste mémorisé pendant la visite. Fermer le carrousel ou changer
+Depuis le 14 octobre, le plan s’ouvre sur **Aménager**, placé avant **Cultures**.
+Le retour au plan depuis une autre pièce revient aussi sur Aménager.
+Dans Cultures, le bouton **Choisir mes Buddies** ouvre le carrousel, fermé par
+défaut. Une croix visible permet de le réduire ; les cartes sont retirées
+de l’affichage et du parcours clavier jusqu’à sa réouverture.
+Fermer le carrousel ou changer
 de contexte interrompt le glisser-déposer sans modifier les affectations
 des zones. Les gestes souris et tactiles restent disponibles.
 
@@ -467,3 +472,49 @@ sauvegarde, rechargement et campagne commune. Rapports et captures dans
 `output/warehouse-100m2/`. Build et TypeScript passent. La migration de
 surface est appliquée à la base bêta, sans reset ni publication du site ;
 la compatibilité et les preuves sont décrites dans `PLACARD-ENTREPOT-V2.md`.
+
+## Arène et tableau du village — 14 octobre 2026
+
+L’accueil de l’Arène, les classements, les récompenses, les panneaux de
+progression et les commandes du guide reprennent le crème, le bois, le
+turquoise, les contours encrés et les ombres décalées du village. Le carnet
+conserve ses pages et son fonctionnement ; son cadre et sa navigation
+suivent la même palette. Les illustrations restent visibles sans voile sombre.
+
+Le nouveau tableau présente les trois contributions du classement général :
+Carnet 300, Duels 500, Entreprise 200. Le développement de l’entreprise
+affiche ses trois plafonds : chiffre d’affaires 80, production 60 et valeur
+nette 60. Seul le score Entreprise public est affiché pour les autres joueurs,
+pas leur trésorerie ni le détail de leurs placements.
+
+Les listes affichent jusqu’aux 100 joueurs renvoyés par les API. « Ma place »
+fait défiler le tableau et place le focus sur le joueur. Dégustation et Placard
+gardent leurs classements propres. Chargement, liste vide, erreur et nouvelle
+tentative sont distincts ; le bocal de récompenses reste monté entre les onglets.
+Le retour après connexion conserve désormais la destination classement.
+
+Deux illustrations sont des éditions de leurs originaux avec **imagegen
+intégré**, puis export WebP qualité 86, 1 536 × 1 024 :
+
+- `public/contest/map/arena-desk-sylvain-v6.webp` : bureau lumineux, avec les
+  coordonnées du miroir, du carnet, de l’ordinateur et du tableau conservées ;
+- `public/contest/mascot/arena-scene-classement-sylvain-v3.webp` : Sylvain et
+  son trophée sur les trois podiums, dans la halle bretonne en bois et pierre.
+
+Les JSON voisins conservent les prompts exacts, la référence village v6 et la
+provenance. Les illustrations précédentes restent disponibles.
+
+Validation locale : 38 tests de composants, accès et calcul, TypeScript et
+lint ciblé. L’audit de l’accueil couvre cinq largeurs de 320 à 1 440 px,
+les invités, nouveaux joueurs, habitués et accès avant ouverture. Le classement
+dispose de 31 contrôles navigateur sur quatre largeurs : 100 joueurs,
+position personnelle, onglets, erreurs, portraits et récompenses. Les données
+sont simulées et les appels distants bloqués. Captures et rapports dans
+`output/arena-clarity-release/` et `output/arena-village/`.
+Le carnet ouvert et fermé, les deux groupes du guide et la découverte des
+collections sont aussi contrôlés à 320, 390 et 1 440 px, sans débordement ni
+erreur JavaScript ; captures et rapport dans `output/arena-village-css/`.
+
+Cette refonte est locale, sans publication. L’activation du calcul Entreprise
+en base dépend des trois migrations préparées le 14 octobre ; la refonte
+visuelle ne les applique pas.

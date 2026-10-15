@@ -128,17 +128,17 @@ export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, r
     return null;
   }
 
-  return <section className={styles.world} aria-label="Carte du Placard" data-placard-map data-map-zoomed={zoomed || undefined}>
+  return <section className={styles.world} aria-label="Carte de Kanab Quest" data-placard-map data-map-zoomed={zoomed || undefined}>
     <header className={styles.mapHeading}>
       <div className={styles.mapIdentity}><span>Les Chanvriers Bretons</span><h1>Mon quartier<span>.</span></h1></div>
-      <div className={styles.wallet} aria-label="Résumé de ton Placard">
+      <div className={styles.wallet} aria-label="Résumé de ta partie Kanab Quest">
         <span><Wallet size={17} aria-hidden="true" /><span><small>Argent du jeu</small><strong>{cashCents !== null ? formatKqCash(cashCents) : "—"}</strong></span></span>
       </div>
       <div className={styles.mapTools}>
         <button type="button" className={styles.zoomButton} data-map-zoom-toggle aria-label={zoomed ? "Voir tout le quartier" : "Agrandir la carte"} aria-pressed={zoomed} aria-controls="placard-map-viewport" onClick={toggleZoom}>{zoomed ? <Scan size={18} aria-hidden="true" /> : <ZoomIn size={18} aria-hidden="true" />}<span>{zoomed ? "Tout le quartier" : "Agrandir"}</span></button>
         <details className={styles.help}>
           <summary aria-label="Aide du quartier"><CircleHelp size={18} aria-hidden="true" /><span>Aide</span><ChevronDown size={13} aria-hidden="true" /></summary>
-          <div className={styles.helpContent}><strong>Entre dans ton quartier.</strong><p>Touche un bâtiment pour l’ouvrir. L’Entrepôt et le Marché proposent plusieurs activités juste sous la carte.</p><p>Agrandis pour explorer le décor en le faisant glisser. Les noms restent visibles ; le menu du Placard donne aussi accès à tous les lieux.</p><p>La Boutique propose les packs de cartes. Collections réunit tes albums. Pour le matériel, ouvre l’Entrepôt. Le Marché sert à vendre ; le Bureau et la Banque s’occupent des finances.</p></div>
+          <div className={styles.helpContent}><strong>Entre dans ton quartier.</strong><p>Touche un bâtiment pour l’ouvrir. L’Entrepôt et le Marché proposent plusieurs activités juste sous la carte.</p><p>Agrandis pour explorer le décor en le faisant glisser. Les noms restent visibles ; le menu de Kanab Quest donne aussi accès à tous les lieux.</p><p>La Boutique propose les packs de cartes. Collections réunit tes albums. Pour le matériel, ouvre l’Entrepôt. Le Marché sert à vendre ; le Bureau et la Banque s’occupent des finances.</p></div>
         </details>
       </div>
     </header>
@@ -159,7 +159,7 @@ export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, r
             </g>;
           })}
         </svg>
-        <nav aria-label="Les bâtiments du Placard">
+        <nav aria-label="Les bâtiments de Kanab Quest">
           {BUILDINGS.map(({ id, name, action, Icon }) => {
             const contextual = id === "warehouse" || id === "market";
             const status = buildingStatus(id);

@@ -27,7 +27,7 @@ const euro=(cents:number)=>new Intl.NumberFormat('fr-FR',{style:'currency',curre
 const number=(value:number)=>new Intl.NumberFormat('fr-FR',{maximumFractionDigits:1}).format(value);
 const SATISFACTION={satisfied:'Acheteurs satisfaits',neutral:'Acheteurs neutres',disappointed:'Acheteurs déçus','not-applicable':'Reprise sans fidélisation'};
 const INTRO=[
- 'Avant de cultiver, repère les deux activités : le Carnet garde tes dégustations réelles ; le Placard est le jeu. Cette partie d’essai reste entièrement fictive.',
+ 'Avant de cultiver, repère les deux activités : le Carnet garde tes dégustations réelles ; Kanab Quest est le jeu. Cette partie d’essai reste entièrement fictive.',
  'Choisis une variété avec ton Buddie, prépare tes soutiens Botte du Chanvrier, puis équipe un Héritage permanent. Découvre les trois avant de continuer.',
  'Les packs de cartes coûtent des points. Le matériel durable coûte des euros du jeu. Achète cette LED avec ton budget de démonstration.',
  'Acheter ne suffit pas : installe le matériel dans son emplacement. La LED, le séchoir et le tamis prêtés serviront à cette culture.',
@@ -100,7 +100,7 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error,workshop}:{u
   </article>;
  };
  return <dialog ref={dialog} className={styles.dialog} data-arena-journey-ui data-trial-workshop={workshop} data-trial-chapter={s.chapter} aria-labelledby="trial-title" onCancel={event=>{event.preventDefault();if(!detail)onPause();}}>
-  <header className={styles.top}><span><Compass aria-hidden="true"/> {lesson?'ATELIER · '+lesson.title:'LE PLACARD · PARTIE D’ESSAI'}</span><button type="button" disabled={busy} onClick={onPause} aria-label={lesson?'Retour aux ateliers':'Mettre l’essai en pause'}><X aria-hidden="true"/> <span>{lesson?'Ateliers':'Pause'}</span></button></header>
+  <header className={styles.top}><span><Compass aria-hidden="true"/> {lesson?'ATELIER · '+lesson.title:'KANAB QUEST · PARTIE D’ESSAI'}</span><button type="button" disabled={busy} onClick={onPause} aria-label={lesson?'Retour aux ateliers':'Mettre l’essai en pause'}><X aria-hidden="true"/> <span>{lesson?'Ateliers':'Pause'}</span></button></header>
   <div className={styles.layout}>
    <aside className={styles.coach}>
     <Image src="/contest/mascot/arena-scene-carnet-v1.png" alt="Sylvain t’accompagne dans l’arène" width={640} height={360} sizes="(max-width: 760px) 100vw, 320px"/>
@@ -123,7 +123,7 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error,workshop}:{u
      <h3>Un tour complet, à ton rythme</h3><p>Prépare tes cartes, achète et installe une LED, joue les six étapes de culture, rencontre le jury, transforme puis vends ton lot.</p>
      <p>Le scénario et les premières mains sont préparés pour apprendre. Si ta vitalité devait tomber à 0, le suivi de cet essai est assisté pour découvrir la récolte fictive. Les résultats d’une vraie partie varieront.</p>
      <p>Pour comparer les débouchés, l’essai te prête aussi 200 points de réputation, 8 clients et 2 shops. Ce ne sont pas les valeurs de départ de ton vrai compte.</p>
-     <h3>Le Carnet reste lié à tes vraies dégustations</h3><p>Tu y notes uniquement les fleurs réellement goûtées. Les objectifs du Carnet et les missions du Placard peuvent rapporter des récompenses selon leurs conditions.</p>
+     <h3>Le Carnet reste lié à tes vraies dégustations</h3><p>Tu y notes uniquement les fleurs réellement goûtées. Les objectifs du Carnet et les missions de Kanab Quest peuvent rapporter des récompenses selon leurs conditions.</p>
      <button type="button" onClick={()=>dispatch({type:'check',value:'notebook'})}>{s.checked.includes('notebook')?'✓ Compris':'J’ai compris : Carnet réel, essai fictif'}</button>
      <p><small>Tu peux mettre l’essai en pause et le reprendre avec Aide dans l’arène, depuis ce même onglet.</small></p>
     </section>:null}
@@ -199,7 +199,7 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error,workshop}:{u
     </>:null}
     {s.chapter===9?<section className={styles.panel}><Check size={48} aria-hidden="true"/><h3>Première boucle accomplie</h3><p>Préparer → installer → cultiver → passer le jury et le duel → affiner en entrepôt → valoriser → vendre → investir.</p><p>{number(g?.harvestGrams??0)} g récoltés · {number(trialQuality(s))}/10 au jury · {s.receipts.length} ventes fictives.</p><p>Ton budget de démonstration finit à {euro(c.cashCents)}. Facture d’énergie encore due : {euro(s.electricity)}. Un chiffre d’affaires élevé n’est pas un bénéfice : pense aux achats et aux charges.</p><h3>Choisis ton prochain objectif</h3><p>Dans les Missions, retrouve les objectifs et les packs à gagner. Ta carte de chanvrier dans l’arène rassemble ton parcours, tes succès et tes badges. Un triple 6, une belle culture ou un bon duel peuvent faire progresser différents succès.</p><p>Ton avantage personnel s’applique dans ta vraie partie : Main Verte +2 XP par culture, Trésorier 1 000 € au départ et un livret à 5 % toutes les 24 h, Commercial pour une capacité de vente et des recettes ×1,5, Bricoleur pour les réparations gratuites.</p><button type="button" disabled={busy} onClick={onComplete}>{busy?'Enregistrement…':'Terminer le tutoriel'}</button><button type="button" className={styles.subtle} onClick={()=>dispatch({type:'restart'})}>Rejouer l’essai</button></section>:null}
     {canTrialContinue(s)?<footer className={styles.next}><button type="button" data-trial-action="next" onClick={()=>dispatch({type:'next'})}>{lesson&&s.chapter===lesson.endChapter?'Terminer cet atelier':s.chapter===3?'Lancer ma culture d’essai':s.chapter===8?'Découvrir mon bilan':'Continuer'}<ArrowRight size={18}/></button></footer>:null}
-    {s.chapter===9?<p><Link href="/arene/placard" onClick={onPause}>Retrouver mon vrai Placard</Link></p>:null}
+    {s.chapter===9?<p><Link href="/arene/placard" onClick={onPause}>Retrouver ma partie Kanab Quest</Link></p>:null}
     </>}
    </main>
   </div>

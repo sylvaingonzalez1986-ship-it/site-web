@@ -4,11 +4,13 @@ import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
 import { categoryLabels, isProductCultureModeEligible } from "@/data/products";
 import { useCmsStore } from "@/hooks/useCmsStore";
-import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { useCookieConsent } from "@/components/cookies/CookieConsentProvider";
+import { AppDialog } from "@/components/ui/AppDialog";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
+import { navigateAfterOverlays } from "@/lib/overlay-history";
 import firstVisitStyles from "@/components/FirstVisitExperience.module.css";
 
 const POPUP_STORAGE_KEY = "lcb_new_products_popup";
@@ -33,25 +35,6 @@ type StoredPopupState = {
 
 function formatPrice(value: number): string {
   return `${value.toFixed(2).replace(".", ",")} EUR`;
-}
-
-function getFocusableElements(container: HTMLElement | null): HTMLElement[] {
-  if (!container) {
-    return [];
-  }
-
-  const selector = [
-    "button:not([disabled])",
-    "[href]",
-    "input:not([disabled])",
-    "select:not([disabled])",
-    "textarea:not([disabled])",
-    "[tabindex]:not([tabindex='-1'])",
-  ].join(",");
-
-  return Array.from(container.querySelectorAll<HTMLElement>(selector)).filter(
-    (element) => !element.hasAttribute("hidden") && element.getAttribute("aria-hidden") !== "true",
-  );
 }
 
 function readStoredPopupState(): StoredPopupState | null {
@@ -84,7 +67,11 @@ function writeStoredPopupState(value: StoredPopupState) {
     return;
   }
 
-  window.localStorage.setItem(POPUP_STORAGE_KEY, JSON.stringify(value));
+  try {
+    window.localStorage.setItem(POPUP_STORAGE_KEY, JSON.stringify(value));
+  } catch {
+    // A storage restriction must never prevent closing the popup.
+  }
 }
 
 function isPaymentReturnPath(pathname: string): boolean {
@@ -98,7 +85,19 @@ function isPaymentReturnPath(pathname: string): boolean {
 }
 
 function isPopupExcludedPath(pathname: string): boolean {
-  return pathname.startsWith("/admin") || pathname.startsWith("/arene") || isPaymentReturnPath(pathname);
+  return pathname.startsWith("/admin") || pathname.startsWith("/arene") ||
+    pathname.startsWith("/compte") || pathname.startsWith("/profil") ||
+    pathname === "/age-gate" || pathname === "/politique-cookies" ||
+    isPaymentReturnPath(pathname);
+}
+
+function isVisitBusy(): boolean {
+  if (document.visibilityState !== "visible") return true;
+  const active = document.activeElement;
+  if (active instanceof HTMLElement && active.matches("input, textarea, select, [contenteditable='true']")) return true;
+  return Array.from(document.querySelectorAll<HTMLElement>("dialog[open], [role='dialog'], [role='alertdialog'], details[open]")).some(element =>
+    element.getClientRects().length > 0 && getComputedStyle(element).visibility !== "hidden",
+  );
 }
 
 export function NewProductsPopup() {
@@ -109,12 +108,13 @@ export function NewProductsPopup() {
 
 function NewProductsPopupContent({ pathname }: { pathname: string }) {
   const { store, loading } = useCmsStore();
+  const { consent, showBanner } = useCookieConsent();
+  const router = useRouter();
   const titleId = useId();
-  const dialogRef = useRef<HTMLDivElement | null>(null);
-  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const productsContainerRef = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState(false);
   const [activeProductIndex, setActiveProductIndex] = useState(0);
+  const dismissedThisVisit = useRef(false);
 
   const featuredProducts = useMemo(
     () => store.products.filter((product) => product.featuredInPopup === true).slice(0, 4),
@@ -127,19 +127,19 @@ function NewProductsPopupContent({ pathname }: { pathname: string }) {
   }, [featuredProducts, store.updatedAt]);
 
   const dismiss = useCallback(() => {
+    dismissedThisVisit.current = true;
+    setActiveProductIndex(0);
+    setOpen(false);
     writeStoredPopupState({
       signature: featuredSignature,
       dismissedAt: Date.now(),
     });
-    setActiveProductIndex(0);
-    setOpen(false);
   }, [featuredSignature]);
-
-  useBodyScrollLock(open);
 
   useEffect(() => {
     if (
-      loading ||
+      loading || open ||
+      !consent || showBanner || dismissedThisVisit.current ||
       isPopupExcludedPath(pathname) ||
       featuredProducts.length === 0
     ) {
@@ -155,65 +155,21 @@ function NewProductsPopupContent({ pathname }: { pathname: string }) {
       return;
     }
 
-    const timer = window.setTimeout(() => {
+    let timer: number;
+    const openWhenAvailable = () => {
+      if (isVisitBusy()) {
+        timer = window.setTimeout(openWhenAvailable, POPUP_OPEN_DELAY_MS);
+        return;
+      }
       setActiveProductIndex(0);
       setOpen(true);
-    }, POPUP_OPEN_DELAY_MS);
+    };
+    timer = window.setTimeout(openWhenAvailable, POPUP_OPEN_DELAY_MS);
 
     return () => {
       window.clearTimeout(timer);
     };
-  }, [featuredProducts.length, featuredSignature, loading, pathname]);
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    const previousActive = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const focusTimer = window.setTimeout(() => {
-      closeButtonRef.current?.focus();
-    }, 0);
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        dismiss();
-        return;
-      }
-
-      if (event.key !== "Tab") {
-        return;
-      }
-
-      const focusable = getFocusableElements(dialogRef.current);
-      if (focusable.length === 0) {
-        return;
-      }
-
-      const currentIndex = focusable.findIndex((element) => element === document.activeElement);
-
-      if (event.shiftKey) {
-        if (currentIndex <= 0) {
-          event.preventDefault();
-          focusable[focusable.length - 1]?.focus();
-        }
-        return;
-      }
-
-      if (currentIndex === focusable.length - 1) {
-        event.preventDefault();
-        focusable[0]?.focus();
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      window.clearTimeout(focusTimer);
-      document.removeEventListener("keydown", onKeyDown);
-      previousActive?.focus();
-    };
-  }, [dismiss, open]);
+  }, [consent, featuredProducts.length, featuredSignature, loading, open, pathname, showBanner]);
 
   useEffect(() => {
     if (!open) {
@@ -255,16 +211,8 @@ function NewProductsPopupContent({ pathname }: { pathname: string }) {
     return null;
   }
 
-  return createPortal(
-    <div className={firstVisitStyles.backdrop}>
-      <div className="absolute inset-0" onClick={dismiss} aria-hidden="true" />
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        className={`${firstVisitStyles.dialog} safe-area-bottom z-10 flex max-w-5xl flex-col overflow-hidden`}
-      >
+  return (
+    <AppDialog open={open} onClose={dismiss} title="Les nouveautés du marché" className={firstVisitStyles.productsDialog}>
         <div className={firstVisitStyles.hero}>
           <div className={firstVisitStyles.heroCopy}>
             <p className={firstVisitStyles.eyebrow}>Fraîchement arrivé au marché</p>
@@ -273,32 +221,24 @@ function NewProductsPopupContent({ pathname }: { pathname: string }) {
             </h2>
           </div>
           <Image className={firstVisitStyles.heroVisual} src="/mascots/boutique-market.png" alt="" width={150} height={150} />
-          <button
-            ref={closeButtonRef}
-            type="button"
-            onClick={dismiss}
-            className={firstVisitStyles.close}
-            aria-label="Fermer"
-          >
-            ×
-          </button>
         </div>
 
-        <div className="px-4 pb-2 pt-3 sm:hidden">
+        {featuredProducts.length > 1 && <div className="px-4 pb-2 pt-3 sm:hidden">
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-charcoal">
             Balaye pour voir les autres produits
           </p>
-        </div>
+        </div>}
 
         <div
           ref={productsContainerRef}
           onScroll={handleProductsScroll}
-          className="flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-visible px-4 pb-5 scroll-px-4 scroll-smooth overscroll-x-contain [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] [touch-action:pan-x] [&::-webkit-scrollbar]:hidden sm:grid sm:flex-none sm:grid-cols-2 sm:gap-4 sm:overflow-x-visible sm:overflow-y-auto sm:p-7 xl:grid-cols-4"
+          className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-5 scroll-px-4 scroll-smooth overscroll-x-contain [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-x-visible sm:p-7 xl:grid-cols-4"
         >
           {featuredProducts.map((product) => (
             <article
               key={product.id}
-              className="min-w-[78vw] shrink-0 snap-center snap-always overflow-hidden rounded-[24px] border-2 border-[#1a1a1a] bg-white shadow-[5px_5px_0_#1a1a1a] sm:min-w-0 sm:shrink sm:snap-none"
+              data-single={featuredProducts.length === 1 || undefined}
+              className={`${firstVisitStyles.productCard} snap-center snap-always overflow-hidden rounded-[24px] border-2 border-[#1a1a1a] bg-white shadow-[5px_5px_0_#1a1a1a] sm:snap-none`}
             >
               <div className="relative aspect-[3/2] border-b-2 border-[#1a1a1a] bg-[#f3ead8] sm:aspect-[4/3]">
                 <Image
@@ -333,7 +273,12 @@ function NewProductsPopupContent({ pathname }: { pathname: string }) {
                   </p>
                   <Link
                     href={`/boutique/${categorySlugs[product.category] ?? `${product.category}-cbd`}/${product.id}`}
-                    onClick={dismiss}
+                    onClick={event => {
+                      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                      event.preventDefault();
+                      const destination = event.currentTarget.href;
+                      navigateAfterOverlays(() => router.push(destination));
+                    }}
                     className="btn-cartoon btn-primary inline-flex h-10 items-center justify-center px-4 text-xs leading-none"
                   >
                     Voir
@@ -357,8 +302,6 @@ function NewProductsPopupContent({ pathname }: { pathname: string }) {
             ))}
           </div>
         ) : null}
-      </div>
-    </div>,
-    document.body,
+    </AppDialog>
   );
 }

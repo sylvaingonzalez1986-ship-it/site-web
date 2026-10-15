@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { hasModernBuddieArtwork } from "@/lib/buddie-artwork";
-import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { AppDialog } from "@/components/ui/AppDialog";
 import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
 import { rarityAccentColor, rarityCardClasses, rarityLabels } from "@/lib/lottery-card-ui";
 import type { LotteryCollectionCardSlot } from "@/types/lottery";
@@ -15,7 +15,6 @@ type CardDetailModalProps = {
 };
 
 export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
-  useBodyScrollLock(true);
   const isBuddie = hasModernBuddieArtwork(slot.code);
   const rawImageUrl = slot.imageUrl.trim();
   const normalizedImageUrl = rawImageUrl
@@ -27,26 +26,13 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
   const imageAlt = slot.isOwned ? slot.name : `Carte mystere #${slot.cardNumber}`;
 
   return (
-    <div
-      className={styles.modalBackdrop}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="card-detail-title"
-      onClick={onClose}
+    <AppDialog
+      open
+      onClose={onClose}
+      title={`Carte #${slot.cardNumber}`}
+      labelledBy="card-detail-title"
+      className={`${styles.dialogShell} ${styles.cardDetailDialog} ${rarityCardClasses[slot.rarity]} ${isBuddie ? styles.buddieDetailShell : ""}`}
     >
-      <div
-        className={`${styles.modalShell} max-w-sm ${rarityCardClasses[slot.rarity]} ${isBuddie ? styles.buddieDetailShell : ""}`}
-        onClick={(event) => event.stopPropagation()}
-      >
-        <button
-          type="button"
-          onClick={onClose}
-          className={styles.modalClose}
-          aria-label="Fermer"
-        >
-          ✕
-        </button>
-
         {isBuddie ? (
           <div className={styles.buddieDetailArtwork}>
             <BuddieCard
@@ -124,7 +110,6 @@ export function CardDetailModal({ slot, onClose }: CardDetailModalProps) {
             </p>
           )}
         </div>
-      </div>
-    </div>
+    </AppDialog>
   );
 }

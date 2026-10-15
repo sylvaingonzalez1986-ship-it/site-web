@@ -101,7 +101,7 @@ try{
   await page.evaluate(ids=>window.__select({zoneId:'c',runId:ids.done}),ids);await waitRun(ids.done);
   assert.equal(await page.$eval('main[data-culture-run]',node=>node.dataset.culturePhase),'complete');
   await page.waitForFunction(()=>window.__requests.some(request=>request.path.endsWith('/energy')&&request.query.includes(window.__ids.done)));
-  assert.match(await page.$eval('[aria-label="Charges du Placard"]',node=>node.innerText),/Facture fournisseur/);
+  assert.match(await page.$eval('[aria-label="Charges de Kanab Quest"]',node=>node.innerText),/Facture fournisseur/);
   checks.push('explicit terminal run restores harvest and selects its frozen energy and supplier invoice');
   await page.evaluate(ids=>window.__select({zoneId:'a',runId:ids.a}),ids);await waitRun(ids.a);
   await page.evaluate(()=>{window.__holdAction=true;});await click('[data-culture-primary-action]');await page.waitForFunction(()=>typeof window.__releaseAction==='function');
@@ -119,7 +119,7 @@ try{
   for(const width of [1440,390]){await page.setViewport({width,height:1000,isMobile:width<760,hasTouch:width<760});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);await page.screenshot({path:resolve(output,'preparation-c-'+width+'.png'),fullPage:true});}
   await clickText('Lancer ma culture');await page.waitForSelector('[aria-labelledby="culture-system-burn-title"]');
   await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(button=>button.textContent.trim()==='Commencer'&&!button.disabled));
-  assert.match(await page.$eval('[aria-label="Charges du Placard"]',node=>node.innerText),/2 m² engagés/);
+  assert.match(await page.$eval('[aria-label="Charges de Kanab Quest"]',node=>node.innerText),/2 m² engagés/);
   await page.evaluate(()=>{window.__loseStart=true;});await clickText('Commencer');
   await page.waitForFunction(()=>document.body.innerText.includes('Réponse perdue après validation. Réessaie.'));
   await clickText('Commencer');await waitRun('44444444-4444-4444-8444-444444444444');

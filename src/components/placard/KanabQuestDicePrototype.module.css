@@ -134,8 +134,8 @@
 .burnConfirmBackdrop{position:fixed;z-index:80;inset:0;display:grid;padding:1rem;place-items:center;overflow-y:auto;overscroll-behavior:contain;background:#13211dcc;backdrop-filter:blur(3px)}.burnConfirm{position:relative;width:min(100%,440px);max-height:calc(100dvh - 2rem);padding:1.2rem;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;border:3px solid #172923;border-radius:20px;background:#fffaf0;box-shadow:7px 8px 0 #172923;text-align:center;-webkit-overflow-scrolling:touch}.burnConfirm>svg{width:44px;height:44px;color:#d95722}.burnConfirm>span{display:block;color:#9b3412;font-size:.62rem;font-weight:950;text-transform:uppercase}.burnConfirm h2{margin:.2rem 0;font-family:var(--font-display),sans-serif;font-size:2rem;text-transform:uppercase}.burnConfirm p{color:#57534d}.burnConfirm>div{display:grid;grid-template-columns:1fr 1.4fr;gap:.55rem}.burnConfirm>.botCardReward{display:flex}.burnConfirm button{display:flex;align-items:center;justify-content:center;gap:.35rem;padding:.7rem;border:2px solid;border-radius:10px;background:#fff;font-weight:900}.burnConfirm>.resultCloseButton{position:sticky;top:0;z-index:4;width:max-content;min-height:44px;margin:-.45rem -.45rem .25rem auto;padding:.5rem .7rem;background:#fffaf0;box-shadow:2px 2px 0 #172923;font-size:.66rem;text-transform:none}.burnConfirm .burnButton{background:#f3c4ba;color:#782719}.burnConfirm .burnButton svg{width:17px}@media(max-width:420px){.burnConfirm>div{grid-template-columns:1fr}.burnConfirm{max-height:calc(100dvh - 1rem);padding:1rem}.burnConfirmBackdrop{padding:.5rem}}
 [data-verdict-result].burnConfirmBackdrop{animation:verdictBackdropIn .25s ease-out both}
 [data-verdict-result] .burnConfirm{width:min(100%,560px);animation:verdictPopupIn .55s cubic-bezier(.18,.9,.28,1.2) both}
-[data-verdict-result] .burnConfirm[data-victory]{border-color:var(--kq-green);box-shadow:9px 10px 0 var(--kq-yellow)}
-[data-verdict-result] .burnConfirm[data-victory]>svg{color:#c58a00;filter:drop-shadow(0 3px 0 #f4c43d);animation:verdictTrophyIn .7s .25s cubic-bezier(.18,.9,.28,1.35) both}
+.verdictDialog[data-verdict-result][data-victory]{border-color:var(--kq-green);box-shadow:9px 10px 0 var(--kq-yellow)}
+[data-verdict-result][data-victory] .burnConfirm>svg{color:#c58a00;filter:drop-shadow(0 3px 0 #f4c43d);animation:verdictTrophyIn .7s .25s cubic-bezier(.18,.9,.28,1.35) both}
 .verdictScore{display:block;margin:.3rem auto .7rem;color:var(--kq-green);font-family:var(--font-display),sans-serif;font-size:clamp(2.8rem,8vw,4.5rem);line-height:1}
 .burnConfirm>.officialResultRewards{display:grid;grid-template-columns:1fr 1fr;margin:.8rem 0;text-align:left}.officialResultRewards p{display:flex;flex-direction:column;margin:0;padding:.65rem;border:2px solid var(--kq-ink);background:#fff;font-size:.7rem}.officialResultRewards p[data-highlight]{grid-column:1/-1;background:var(--kq-yellow)}.officialResultRewards b{color:var(--kq-green);font-size:.58rem;text-transform:uppercase}
 .burnConfirm>.verdictMarketTarget{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:.55rem;margin:.8rem 0;padding:.7rem;border:2px solid var(--kq-ink);border-radius:12px;background:#fff1d6;box-shadow:3px 3px 0 var(--kq-ink);text-align:left}
@@ -1012,3 +1012,10 @@
 .setupRules[open] > summary > svg:last-child { transform: rotate(180deg); }
 .setupRules > p { margin: .65rem 0 0; padding: .8rem 1rem; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; color: #172923; font-size: .85rem; line-height: 1.6; }
 @media (max-width: 760px) { .cultureIntro { border-radius: 12px; box-shadow: 2px 3px 0 #172923; } }
+
+dialog.verdictDialog { width: min(480px, calc(100vw - 24px)); background: #fffaf0; }
+.verdictDialog .burnConfirm { width: 100%; max-height: none; min-height: 0; border: 0; border-radius: 0; box-shadow: none; }
+.verdictDialog .burnConfirm > .juryRecovery { display: block; }
+.juryRecovery { padding: 14px; margin: 12px 0; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; color: #172923; font-size: 14px; line-height: 1.5; }
+.juryRecovery p { margin: 0 0 10px; }
+.juryRecovery button { min-height: 44px; padding: 10px 14px; border: 2px solid #172923; border-radius: 10px; background: #efc451; color: #172923; font-weight: 800; }

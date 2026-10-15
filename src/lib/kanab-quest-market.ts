@@ -178,7 +178,7 @@ export const KQ_MARKET_ROUTES: readonly KqMarketRouteDefinition[] = [
     code: "hash-signature",
     name: "Hash Signature",
     family: "hash",
-    description: "Lavage, filtration automatisée et séchage spécialisé : le palier réservé aux meilleurs lots du Placard.",
+    description: "Lavage, filtration automatisée et séchage spécialisé : le palier réservé aux meilleurs lots de Kanab Quest.",
     minimumJuryScore: 8.8,
     requiredUnlocks: ["ice-water-hash", "hash-filtration", "freeze-drying"],
     extractionYieldPercent: 18,

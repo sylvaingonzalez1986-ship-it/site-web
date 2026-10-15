@@ -11,7 +11,7 @@ export async function getKqBank(userId: string, command?: KqBankCommand): Promis
   if (result.error) {
     const errors: Record<string, [string, number]> = {
       bank_invalid: ["Opération bancaire invalide.", 400],
-      bank_profile: ["Commence ton aventure dans le Placard avant d’ouvrir un dossier.", 403],
+      bank_profile: ["Commence ton aventure dans Kanab Quest avant d’ouvrir un dossier.", 403],
       bank_reputation: ["Il faut au moins 200 points de réputation pour emprunter.", 403],
       bank_experience: ["Ta première culture doit être terminée depuis au moins 24 heures.", 403],
       bank_active: ["Un prêt est déjà en cours. Rembourse-le avant d’en ouvrir un autre.", 409],

@@ -14,7 +14,7 @@ export async function GET() {
     });
   } catch (error) {
     return NextResponse.json({
-      error: error instanceof Error ? error.message : "Préflight Placard indisponible.",
+      error: error instanceof Error ? error.message : "Préflight Kanab Quest indisponible.",
     }, { status: 503 });
   }
 }

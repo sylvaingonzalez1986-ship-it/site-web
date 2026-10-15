@@ -15,7 +15,7 @@ const RARITIES = KQ_CARD_RARITY_LABELS;
 type Ownership = "all" | "owned" | "missing";
 
 export function KqBotteCardDetail({ card, copies, onClose }: { card: KqSupportCard; copies: number | null; onClose: () => void }) {
-  const dialog = useCardDialog();
+  const dialog = useCardDialog(onClose);
   const guide = getKqCardGuide(card), role = getKqCardRole(card);
   const artwork = getKqCardArtwork(card.code);
   if (typeof document === "undefined") return null;
@@ -42,7 +42,7 @@ export function KqBotteCardDetail({ card, copies, onClose }: { card: KqSupportCa
 export type KqCollectionKind = "botte" | "buddies";
 
 export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte" }: { onClose: () => void; onOpenShop?: (collection?: KqCollectionKind) => void; initialSection?: KqCollectionKind }) {
-  const dialog = useCardDialog();
+  const dialog = useCardDialog(onClose);
   const [album, setAlbum] = useState<KqCollectionKind>(initialSection);
   const request = useRef<AbortController | null>(null);
   const [inventory, setInventory] = useState<Record<string, number> | null>(null);

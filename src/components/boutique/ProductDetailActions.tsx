@@ -1,12 +1,14 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "@/components/navigation/NavigationLink";
 import { Plus } from "lucide-react";
 import { ProductAnalysisModal } from "@/components/boutique/ProductAnalysisModal";
 import { NotebookQuantityBonusPreview } from "@/components/contest/NotebookQuantityBonus";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/data/products";
 import {
   formatRemainingGrams,
@@ -38,6 +40,10 @@ export function ProductDetailActions({
   const [added, setAdded] = useState(false);
   const [stockError, setStockError] = useState<string | null>(null);
   const [analysisOpen, setAnalysisOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const addButtonRef = useRef<HTMLButtonElement>(null);
+  const [showMobileAction, setShowMobileAction] = useState(false);
+  const variantId = useId();
   const closeAnalysis = useCallback(() => setAnalysisOpen(false), []);
 
   const selectableVariants = getSelectableVariantOptions(product);
@@ -47,6 +53,13 @@ export function ProductDetailActions({
     selectableVariants[0];
   const stockInfo = getStockDisplayInfo(product, lowStockThresholdGrams, selectedVariant?.id);
   const inStock = !stockInfo.isOutOfStock;
+
+  useEffect(() => {
+    if (!addButtonRef.current) return;
+    const observer = new IntersectionObserver(([entry]) => setShowMobileAction(!entry.isIntersecting), { threshold: 0 });
+    observer.observe(addButtonRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const handleAddToCart = () => {
     if (cartLoading || !inStock) return;
@@ -69,15 +82,16 @@ export function ProductDetailActions({
   };
 
   return (
-    <div className={styles.panel}>
+    <div ref={panelRef} className={styles.panel}>
       <p className={styles.heading}>Choisir et commander</p>
       <div className="space-y-4">
       {hasVariants && (
         <div>
-          <label className="mb-1 block text-[11px] font-bold uppercase tracking-[0.09em] text-charcoal">
+          <label htmlFor={variantId} className="mb-1 block text-sm font-bold text-charcoal">
             {product.variantLabel?.trim() || "Taille"}
           </label>
           <select
+            id={variantId}
             className={styles.select}
             value={selectedVariant?.id ?? ""}
             onChange={(e) => {
@@ -101,7 +115,7 @@ export function ProductDetailActions({
         </div>
       )}
       {added && <p role="status" className="mt-2 text-xs font-semibold text-teal">Ajouté au panier. <button type="button" className="underline min-h-11" onClick={() => window.dispatchEvent(new Event("shop:open-cart"))}>Voir mon panier</button></p>}
-      {stockError && <p className="text-sm font-semibold text-[#7f1d1d]">{stockError}</p>}
+      {stockError && <p role="alert" className="text-sm font-semibold text-[#7f1d1d]">{stockError}</p>}
 
       <div className={styles.controls}>
         {inStock && (
@@ -115,6 +129,7 @@ export function ProductDetailActions({
           />
         )}
         <button
+          ref={addButtonRef}
           type="button"
           onClick={handleAddToCart}
           disabled={cartLoading || !inStock}
@@ -154,6 +169,16 @@ export function ProductDetailActions({
         </>
       )}
       </div>
+      {showMobileAction && inStock && typeof document !== "undefined" && createPortal(
+        <div className={styles.mobileAction} aria-label="Commander ce produit">
+          <div><span>{selectedVariant?.label || product.name}</span><strong>{formatPrice(selectedVariant?.price ?? product.price)} TTC</strong></div>
+          <button type="button" onClick={() => {
+            panelRef.current?.scrollIntoView({ block: "center" });
+            const target = hasVariants ? panelRef.current?.querySelector("select") : addButtonRef.current;
+            target?.focus({ preventScroll: true });
+          }}>{hasVariants ? "Choisir le format" : "Commander"}</button>
+        </div>, document.body,
+      )}
     </div>
   );
 }

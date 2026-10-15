@@ -19,7 +19,7 @@ const normalize = (value: string) => value.toLocaleLowerCase("fr-FR").normalize(
 const number = (value: number) => value.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
 
 function BuddieDetail({ slot, onClose }: { slot: LotteryCollectionCardSlot; onClose: () => void }) {
-  const dialog = useKqCollectionDialog();
+  const dialog = useKqCollectionDialog(onClose);
   const owned = slot.ownedCount > 0;
   const profile = owned ? getKqBuddieCultivationProfile(slot.code) : null;
   const buddie = catalog.get(slot.code);
@@ -34,7 +34,7 @@ function BuddieDetail({ slot, onClose }: { slot: LotteryCollectionCardSlot; onCl
         <p className={styles.detailStock}>{owned ? `${slot.ownedCount} exemplaire${slot.ownedCount > 1 ? "s" : ""} · ${Math.max(0, slot.ownedCount - 1)} doublon${slot.ownedCount > 2 ? "s" : ""}` : "Ce Buddie manque encore à ton album."}</p>
         {owned ? <>
           {slot.description ? <p className={styles.buddieDescription}>{slot.description}</p> : null}
-          {buddie ? <section className={styles.effect}><h3>Dans le Placard</h3><p>{buddie.ability}</p></section> : null}
+          {buddie ? <section className={styles.effect}><h3>Dans Kanab Quest</h3><p>{buddie.ability}</p></section> : null}
           <KqBuddieFlavors varietyCode={slot.code} />
           {profile ? <section className={styles.buddieProfile} data-buddie-collection-profile={slot.code}><h3>Profil de jeu · {archetypes[profile.archetype]}</h3>
             <dl className={styles.facts}><div><dt>Coefficient de récolte</dt><dd>×{number(profile.yieldFactor)}</dd></div><div><dt>CBD potentiel</dt><dd>{number(profile.cannabinoidTargets.cbd)} %</dd></div><div><dt>Terpènes potentiels</dt><dd>{number(profile.terpenePotentialPercent)} %</dd></div><div><dt>Notes aromatiques</dt><dd>{profile.terpeneNotes.join(" · ")}</dd></div></dl>
@@ -111,7 +111,7 @@ export function KqBuddiesCollection({ active, onOpenShop }: { active: boolean; o
         <span className={styles.cardInfo}><strong>{slot.ownedCount > 0 ? slot.name : `Buddie n°${slot.cardNumber}`}</strong><span className={styles.rarity} data-rarity={slot.rarity}>{rarityLabels[slot.rarity]}</span><b>{slot.ownedCount > 0 ? <><Check size={14} aria-hidden="true" /> ×{slot.ownedCount} possédé{slot.ownedCount > 1 ? "s" : ""}</> : "À découvrir"}<ZoomIn size={15} aria-hidden="true" /></b></span>
       </button>)}</div>{visible.length === 0 ? <div className={styles.empty}>{cards.length === 0 ? "Aucune carte Buddies n’est publiée dans cet album pour le moment." : ownership === "owned" && owned === 0 ? "Tes premiers Buddies t’attendent dans les boosters." : ownership === "duplicates" && duplicateCards === 0 ? "Tu n’as pas encore de Buddie en double." : "Aucun Buddie ne correspond à ces filtres."}<button type="button" onClick={() => { setOwnership("all"); setRarity("all"); setQuery(""); }}>Voir tous les Buddies</button></div> : null}</> : null}
     </div>
-    <footer className={styles.footer}><span>Tes Buddies de collection restent dans ton album quand tu les utilises dans le Placard.</span>{onOpenShop ? <button type="button" className={styles.shopLink} onClick={onOpenShop}><ShoppingBag size={18} aria-hidden="true" /><span>La Boutique<small>Boosters Buddies</small></span></button> : null}</footer>
+    <footer className={styles.footer}><span>Tes Buddies de collection restent dans ton album quand tu les utilises dans Kanab Quest.</span>{onOpenShop ? <button type="button" className={styles.shopLink} onClick={onOpenShop}><ShoppingBag size={18} aria-hidden="true" /><span>La Boutique<small>Boosters Buddies</small></span></button> : null}</footer>
     {active && detail ? <BuddieDetail slot={detail} onClose={() => setSelected(null)} /> : null}
   </div>;
 }

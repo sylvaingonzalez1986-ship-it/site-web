@@ -1,0 +1,9 @@
+dialog.dialog { width: min(1120px, calc(100vw - 24px)); background: #003f30; }
+.header { background: #002d24; color: #fffaf1; }
+.controls { display: flex; align-items: center; gap: 10px; }
+.controls > button { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border: 2px solid #172923; border-radius: 10px; background: #fff1d6; color: #172923; cursor: pointer; }
+.controls > button:disabled { opacity: .5; cursor: default; }
+.controls > button:focus-visible { outline: 3px solid #f4c43d; outline-offset: 3px; }
+.controls > span { font-size: 12px; line-height: 1.3; color: #fffaf1; text-align: center; }
+.controls strong { display: block; }
+@media (max-width: 380px) { .controls { gap: 4px; } .controls > span { font-size: 10px; } }

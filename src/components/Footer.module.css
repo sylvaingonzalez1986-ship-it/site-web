@@ -173,6 +173,22 @@
   color: #f4c43d;
 }
 
+.cookieSettings {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  margin-top: 1rem;
+  padding: .65rem 1rem;
+  border: 1px solid #f8f1e5;
+  color: #004c39;
+  background: #f8f1e5;
+  font-size: .8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.cookieSettings:focus-visible { outline: 3px solid #f4c43d; outline-offset: 4px; }
+
 .navLink:hover {
   border-color: #f4c43d;
   color: #fff;

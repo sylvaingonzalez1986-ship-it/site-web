@@ -8,6 +8,7 @@ import { KQ_BUDDIES, type KqBuddie } from "@/lib/kanab-quest-game";
 import { getKqBuddieRotationRemaining } from "@/lib/kanab-quest-buddie-rotation";
 import type { KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
 import type { KqWarehouseBuddies, KqWarehouseCultureSummary } from "./KqWarehouseCulture";
+import { KqBuddieVarietyPopover } from "./KqBuddieVarietyPopover";
 import styles from "./KqWarehouseBuddieDock.module.css";
 
 export type KqWarehouseBuddiePoint = { x: number; y: number };
@@ -40,6 +41,7 @@ function Artwork({ buddie }: { buddie: KqBuddie }) {
 
 export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, onOpenChange, selectedCode = null, onPick, onDragPoint, onDrop }: Props) {
   const id = useId();
+  const dock = useRef<HTMLElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const cardGesture = useRef<CardGesture | null>(null);
@@ -48,10 +50,18 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
   const callbacks = useRef({ onPick, onDragPoint, onDrop, selectedCode });
   const [ghost, setGhost] = useState<{ code: string; point: KqWarehouseBuddiePoint } | null>(null);
   const [scroll, setScroll] = useState({ previous: false, next: false, percent: 0 });
+  const [inspected, setInspected] = useState<{ code: string; trigger: HTMLButtonElement } | null>(null);
+  const inspectedRef = useRef(inspected);
   const owned = KQ_BUDDIES.filter(buddie => buddies?.ownedBuddieCodes.includes(buddie.code));
   const draggedBuddie = ghost ? KQ_BUDDIES.find(buddie => buddie.code === ghost.code) : undefined;
+  const inspectedBuddie = open && inspected ? owned.find(buddie => buddie.code === inspected.code) : undefined;
+  const inspectedRotation = inspectedBuddie ? getKqBuddieRotationRemaining(inspectedBuddie.code, buddies?.buddieRotation?.recentBuddieCodes ?? []) : 0;
+  const inspectedUnavailable = disabled ? "Le placement est indisponible pour le moment."
+    : runs.some(run => run.buddieCode === inspectedBuddie?.code) ? "Ce Buddie est déjà en culture."
+    : inspectedRotation ? `Joue encore ${inspectedRotation} autre${inspectedRotation > 1 ? "s" : ""} Buddie${inspectedRotation > 1 ? "s" : ""} avant de le placer.` : undefined;
 
   useEffect(() => { callbacks.current = { onPick, onDragPoint, onDrop, selectedCode }; }, [onPick, onDragPoint, onDrop, selectedCode]);
+  useEffect(() => { inspectedRef.current = inspected; }, [inspected]);
 
   const cancel = useCallback((updateView = true) => {
     const current = cardGesture.current;
@@ -68,6 +78,7 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
 
   useEffect(() => {
     const key = (event: globalThis.KeyboardEvent) => {
+      if (inspectedRef.current) return;
       if (event.key !== "Escape" || (!cardGesture.current && !scrollGesture.current && !callbacks.current.selectedCode)) return;
       event.preventDefault(); event.stopPropagation(); cancel();
     };
@@ -113,6 +124,7 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
 
   const changeOpen = () => {
     cancel();
+    setInspected(null);
     onOpenChange(!open);
     toggle.current?.focus({ preventScroll: true });
   };
@@ -144,7 +156,7 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
     const point = { x: event.clientX, y: event.clientY };
     if (!current.dragging && Math.hypot(point.x - current.origin.x, point.y - current.origin.y) < 6) return;
     event.preventDefault(); event.stopPropagation();
-    if (!current.dragging) { current.dragging = true; callbacks.current.onPick(current.code); }
+    if (!current.dragging) { current.dragging = true; setInspected(null); callbacks.current.onPick(current.code); }
     setGhost({ code: current.code, point });
     callbacks.current.onDragPoint(point);
   };
@@ -158,7 +170,7 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
     if (current.dragging) {
       try { callbacks.current.onDrop(current.code, { x: event.clientX, y: event.clientY }); }
       finally { callbacks.current.onDragPoint(null); callbacks.current.onPick(null); }
-    } else callbacks.current.onPick(callbacks.current.selectedCode === current.code ? null : current.code);
+    } else setInspected(previous => previous?.code === current.code ? null : { code: current.code, trigger: current.target });
   };
   const cancelCard = (event: PointerEvent<HTMLButtonElement>) => {
     if (cardGesture.current?.pointerId === event.pointerId) cancel();
@@ -181,16 +193,17 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
     scrollGesture.current = null; releasePointer(current);
   };
 
-  return <section className={styles.dock} data-warehouse-buddie-dock data-open={open} aria-labelledby={`${id}-title`}>
+  return <section ref={dock} className={styles.dock} data-warehouse-buddie-dock data-open={open} aria-labelledby={`${id}-title`}>
     <header className={styles.header}>
-      <div><h3 id={`${id}-title`}><button ref={toggle} type="button" className={styles.toggle} data-warehouse-buddie-toggle aria-expanded={open} aria-controls={`${id}-panel`} aria-label={`${open ? "Replier" : "Ouvrir"} le carrousel des Buddies`} onClick={changeOpen}><span>Mes Buddies <small>{owned.length}</small></span>{open ? <ChevronUp size={18} aria-hidden="true" /> : <ChevronDown size={18} aria-hidden="true" />}</button></h3>{open && <p role="status" aria-live="polite">{!buddies ? "Chargement…" : ghost ? "Relâche dans une zone" : selectedCode ? "Choisis une zone" : "Glisse une carte sur le plan"}</p>}</div>
+      <div><h3 id={`${id}-title`}><button ref={toggle} type="button" className={styles.toggle} data-warehouse-buddie-toggle aria-expanded={open} aria-controls={`${id}-panel`} aria-label={open ? "Réduire le carrousel des Buddies" : "Choisir mes Buddies"} onClick={changeOpen}><span>{open ? "Mes Buddies" : "Choisir mes Buddies"} <small>{owned.length}</small></span>{open ? <ChevronUp size={18} aria-hidden="true" /> : <ChevronDown size={18} aria-hidden="true" />}</button></h3>{open && <p role="status" aria-live="polite">{!buddies ? "Chargement…" : ghost ? "Relâche dans une zone" : selectedCode ? "Choisis une zone" : "Fiche au clic · glisse pour placer"}</p>}</div>
       {open && <div className={styles.actions}>
-        {selectedCode && <button type="button" aria-label="Annuler la sélection du Buddie" onClick={() => cancel()}><X size={16} /></button>}
         <button type="button" data-warehouse-buddie-scroll-by="previous" aria-label="Buddies précédents" aria-controls={`${id}-cards`} disabled={!scroll.previous} onClick={() => scrollBy(-1)}><ChevronLeft size={19} /></button>
         <button type="button" data-warehouse-buddie-scroll-by="next" aria-label="Buddies suivants" aria-controls={`${id}-cards`} disabled={!scroll.next} onClick={() => scrollBy(1)}><ChevronRight size={19} /></button>
+        <button type="button" data-warehouse-buddie-close aria-label="Réduire le carrousel des Buddies" onClick={changeOpen}><X size={18} /></button>
       </div>}
     </header>
     <div id={`${id}-panel`} hidden={!open}>
+    {open && <>
     <div ref={track} className={styles.track} id={`${id}-cards`} data-warehouse-buddie-carousel role="region" aria-roledescription="carrousel" aria-label="Tes cartes Buddies" tabIndex={0} onKeyDown={scrollKey} onScroll={measureScroll}>
       <div className={styles.cards} role="list">{owned.map(buddie => {
         const run = runs.find(item => item.buddieCode === buddie.code);
@@ -201,12 +214,13 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
         const reason = disabled ? "Indisponible pour le moment" : run ? "Déjà en culture" : remaining ? `Joue ${remaining} autre${remaining > 1 ? "s" : ""} Buddie${remaining > 1 ? "s" : ""}` : status;
         return <div key={buddie.code} role="listitem" className={styles.slot}>
           <button type="button" className={styles.card} data-warehouse-buddie-card={buddie.code} data-buddie-blocked={blocked} data-selected={selectedCode === buddie.code && !blocked || undefined} data-dragging={ghost?.code === buddie.code || undefined}
-            disabled={!!blocked} aria-pressed={selectedCode === buddie.code && !blocked} aria-label={`${blocked ? "Indisponible" : "Prendre"} : ${buddie.name}`} aria-describedby={`${id}-${buddie.code}-status`} title={`${buddie.name} · ${reason}`}
+            aria-haspopup="dialog" aria-expanded={inspectedBuddie?.code === buddie.code} aria-controls={inspectedBuddie?.code === buddie.code ? `${id}-variety` : undefined} aria-label={`Voir la fiche de ${buddie.name}`} aria-describedby={`${id}-${buddie.code}-status`} title={`${buddie.name} · ${reason}`}
             onPointerDown={event => { if (!blocked) startCard(event, buddie.code); }} onPointerMove={moveCard} onPointerUp={finishCard} onPointerCancel={cancelCard} onLostPointerCapture={cancelCard}
             onDragStart={event => event.preventDefault()} onContextMenu={event => event.preventDefault()}
             onClick={event => {
               if (event.detail > 0 && suppressedClick.current?.code === buddie.code && performance.now() < suppressedClick.current.until) { suppressedClick.current = null; event.preventDefault(); event.stopPropagation(); return; }
-              onPick(selectedCode === buddie.code ? null : buddie.code);
+              const trigger = event.currentTarget;
+              setInspected(previous => previous?.code === buddie.code ? null : { code: buddie.code, trigger });
             }}>
             <span className={styles.artwork} aria-hidden="true"><Artwork buddie={buddie} /></span>
             <strong>{buddie.name}</strong><span className={styles.status} id={`${id}-${buddie.code}-status`}>{blocked && <LockKeyhole size={10} aria-hidden="true" />}{status}</span>
@@ -219,7 +233,9 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
       onKeyDown={scrollKey} onPointerDown={startScroll} onPointerMove={moveScroll} onPointerUp={finishScroll} onPointerCancel={finishScroll} onLostPointerCapture={finishScroll}>
       <GripHorizontal size={15} aria-hidden="true" /><span>Défiler</span><span className={styles.scrollMeter} aria-hidden="true"><i style={{ left: `${scroll.percent * .8}%` }} /></span>
     </div>
+    </>}
     </div>
+    {inspectedBuddie && inspected && dock.current && <KqBuddieVarietyPopover key={inspectedBuddie.code} id={`${id}-variety`} buddie={inspectedBuddie} anchor={dock.current} trigger={inspected.trigger} onClose={() => setInspected(null)} unavailableReason={inspectedUnavailable} chooseLabel="Placer ce Buddie" onChoose={() => onPick(inspectedBuddie.code)} />}
     {ghost && draggedBuddie && typeof document !== "undefined" ? createPortal(<div className={styles.ghost} data-warehouse-buddie-ghost={ghost.code} aria-hidden="true" style={{ left: Math.max(8, Math.min(ghost.point.x + 16, window.innerWidth - 96)), top: Math.max(8, ghost.point.y - 144) }}><Artwork buddie={draggedBuddie} /></div>, document.fullscreenElement ?? document.body) : null}
   </section>;
 }

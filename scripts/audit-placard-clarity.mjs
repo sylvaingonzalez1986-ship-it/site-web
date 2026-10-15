@@ -197,7 +197,7 @@ if(preview){
    await page.goBack();await view('hub');await page.goForward();await view(target.view);
    if(target.pole)assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),target.pole,'Browser history restores the requested treasury pole');
    if(target.view==='market')assert.equal(await page.$eval('[data-market-section]',el=>el.textContent),target.section??'sales','Browser history restores the requested market section');
-   await page.locator('[data-placard-view] nav[aria-label="Navigation du Placard"] button:first-child').click();await view('hub');assert.equal(new URL(page.url()).searchParams.get('pole'),null);assert.equal(new URL(page.url()).searchParams.get('section'),null);
+   await page.locator('[data-placard-view] nav[aria-label="Navigation de Kanab Quest"] button:first-child').click();await view('hub');assert.equal(new URL(page.url()).searchParams.get('pole'),null);assert.equal(new URL(page.url()).searchParams.get('section'),null);
   }
  };
  const auditMarketNavigation=async()=>{
@@ -287,7 +287,7 @@ if(preview){
  await visit('starter','view=treasury&pole=invalid');await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'accounting');
  await visit('starter','view=treasury');await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'accounting');
  await visit('starter','view=treasury&pole=bank');await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'bank');
- await page.locator('[data-placard-view] nav[aria-label="Navigation du Placard"] button:first-child').click();await view('hub');await enterActivity({building:'market',activity:'market',view:'market'});assert.equal(new URL(page.url()).searchParams.get('pole'),null);
+ await page.locator('[data-placard-view] nav[aria-label="Navigation de Kanab Quest"] button:first-child').click();await view('hub');await enterActivity({building:'market',activity:'market',view:'market'});assert.equal(new URL(page.url()).searchParams.get('pole'),null);
  await page.goBack();await view('hub');await page.goBack();await view('treasury');assert.equal(await page.$eval('[data-treasury-pole]',el=>el.textContent),'bank');
  await auditMarketNavigation();
  await visit('error');await page.waitForSelector('[data-placard-lobby] [role="status"]');await clickText('Réessayer');await page.waitForSelector('[data-placard-lobby] [role="status"]',{hidden:true});

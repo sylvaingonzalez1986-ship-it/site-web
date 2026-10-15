@@ -12,7 +12,7 @@ export default async function ResetPasswordPage({
   const loginHref = `/compte/connexion?next=${encodeURIComponent(nextUrl)}`;
 
   return (
-    <section className="section-band bg-yellow halftone-overlay paper-grain pt-36">
+    <section className="section-band account-page bg-yellow halftone-overlay paper-grain pt-36">
       <div className="retro-container max-w-xl">
         <div className="cartoon-border bg-cream p-8">
           <h1 className="section-title">NOUVEAU MOT DE PASSE</h1>

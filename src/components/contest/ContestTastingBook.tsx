@@ -222,9 +222,9 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
       else go(view === "tasting" || view === "rewards" ? "flower" : view === "flower" ? "flowers" : "contents");
     }}>
     <header className={styles.deskHeader}>
-      {api.isTutorial ? <button type="button" className={styles.tutorialExit} onClick={onExitTutorial}><ArrowLeft size={17} aria-hidden="true" /> Les possibilités</button> : <Link href="/arene"><ArrowLeft size={17} aria-hidden="true" /> L’Arène</Link>}
+      {api.isTutorial ? <button type="button" className={styles.tutorialExit} onClick={onExitTutorial}><ArrowLeft size={17} aria-hidden="true" /> Les possibilités</button> : <Link href="/arene" className={styles.arenaExit}><ArrowLeft size={17} aria-hidden="true" /> Retour à l’Arène</Link>}
       <span>Les Chanvriers Bretons</span>
-      {open ? <button type="button" onClick={close} aria-label="Fermer le carnet"><X size={18} aria-hidden="true" /></button> : <BookOpen size={18} aria-hidden="true" />}
+      {open ? <button type="button" onClick={close} aria-label="Replier le carnet" title="Replier le carnet"><X size={18} aria-hidden="true" /></button> : <BookOpen size={18} aria-hidden="true" />}
     </header>
 
     <h1 className={styles.srOnly}>Mon carnet de dégustation</h1>
@@ -261,7 +261,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
         </aside>
         <div className={styles.page} onTouchStart={touchStart} onTouchEnd={touchEnd} onTouchCancel={() => { touchRef.current = null; }}>
           <header className={styles.pageHeader}>
-            <button type="button" onClick={() => view === "contents" ? close() : go(inFlower ? "flowers" : "contents")} aria-label={view === "contents" ? "Fermer le carnet" : inFlower ? "Revenir aux fleurs" : "Revenir au sommaire"}><ChevronLeft size={20} aria-hidden="true" /></button>
+            <button type="button" onClick={() => view === "contents" ? close() : go(inFlower ? "flowers" : "contents")} aria-label={view === "contents" ? "Replier le carnet" : inFlower ? "Revenir aux fleurs" : "Revenir au sommaire"}><ChevronLeft size={20} aria-hidden="true" /></button>
             <span>{view === "contents" ? "Première page" : chapterLabel}</span>
             <button type="button" onClick={() => go("contents")} aria-label="Table des matières"><List size={19} aria-hidden="true" /></button>
           </header>

@@ -24,7 +24,7 @@ export function AlbumArenaLobby({ packs, owned, total, rewards, points, onNaviga
   const [selected, setSelected] = useState<AlbumDestination>("boosters");
   const descriptions = {
     boosters: { title: "Mes boosters", caption: packs ? `${packs} booster${packs > 1 ? "s" : ""} à ouvrir. La prochaine carte t’attend.` : "Ton prochain booster t’attend. Échange tes points pour l’obtenir.", action: packs ? "Ouvrir un booster" : "Obtenir des boosters" },
-    cards: { title: "Ma collection", caption: `${owned} / ${total} cartes Buddies. Retrouve aussi tes cartes du Placard.`, action: "Feuilleter mon album" },
+    cards: { title: "Ma collection", caption: `${owned} / ${total} cartes Buddies. Retrouve aussi tes cartes de Kanab Quest.`, action: "Feuilleter mon album" },
     rewards: { title: "Mes récompenses", caption: rewards ? `${rewards} page${rewards > 1 ? "s" : ""} complète${rewards > 1 ? "s" : ""} : tes récompenses sont prêtes.` : "Complète tes pages et recycle tes doublons pour débloquer tes gains.", action: "Voir mes récompenses" },
   };
   const mode = descriptions[selected];

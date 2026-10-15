@@ -84,8 +84,8 @@ else try {
  const assertNoOverflow=async label=>assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,label+' stays within the viewport');
  let width=1440;
  const navTo=async key=>{
-  if(width<=1000){await click('nav[aria-label="Accès rapides du Placard"] button[aria-haspopup="dialog"]');await page.waitForSelector('dialog[aria-label="Menu du Placard"][open]');await click(`dialog[open] [data-placard-nav="${key}"]`);}
-  else await click(`nav[aria-label="Navigation du Placard"] [data-placard-nav="${key}"]`);
+  if(width<=1000){await click('nav[aria-label="Accès rapides de Kanab Quest"] button[aria-haspopup="dialog"]');await page.waitForSelector('dialog[aria-label="Menu de Kanab Quest"][open]');await click(`dialog[open] [data-placard-nav="${key}"]`);}
+  else await click(`nav[aria-label="Navigation de Kanab Quest"] [data-placard-nav="${key}"]`);
   if(key!=='collection')await view(key);
  };
  const album='dialog[aria-labelledby="botte-collection-title"]';
@@ -192,16 +192,16 @@ else try {
   }
   results.at(-1).silhouettes=await checkMapSilhouettes(width);
   if(width<=1000){
-   const trigger='nav[aria-label="Accès rapides du Placard"] button[aria-haspopup="dialog"]';
-   await page.focus(trigger);await page.keyboard.press('Enter');await page.waitForSelector('dialog[aria-label="Menu du Placard"][open]');
+   const trigger='nav[aria-label="Accès rapides de Kanab Quest"] button[aria-haspopup="dialog"]';
+   await page.focus(trigger);await page.keyboard.press('Enter');await page.waitForSelector('dialog[aria-label="Menu de Kanab Quest"][open]');
    assert.equal(await page.evaluate(()=>document.querySelector('dialog[open]').contains(document.activeElement)),true,'Drawer receives focus');
    await screenshot(`menu-${width}`);await assertNoOverflow('Mobile menu');
    for(let index=0;index<16;index++){await page.keyboard.press('Tab');const focus=await page.evaluate(()=>({contained:document.querySelector('dialog[open]').contains(document.activeElement),tag:document.activeElement?.tagName,text:document.activeElement?.textContent?.slice(0,80)}));assert(focus.contained||focus.tag==='BODY',`Modal keyboard focus never reaches a background control: ${JSON.stringify(focus)}`);}
-   await page.keyboard.press('Escape');await page.waitForSelector('dialog[aria-label="Menu du Placard"][open]',{hidden:true});
+   await page.keyboard.press('Escape');await page.waitForSelector('dialog[aria-label="Menu de Kanab Quest"][open]',{hidden:true});
    assert.equal(await page.$eval(trigger,element=>element===document.activeElement),true,'Escape returns focus to Menu');
   }else{
-   await page.hover('nav[aria-label="Navigation du Placard"] [data-placard-nav="market"]');await page.waitForSelector('[data-map-building="market"][data-highlighted]');
-   await page.focus('nav[aria-label="Navigation du Placard"] [data-placard-nav="game"]');await page.waitForSelector('[data-map-building="warehouse"][data-highlighted]');
+   await page.hover('nav[aria-label="Navigation de Kanab Quest"] [data-placard-nav="market"]');await page.waitForSelector('[data-map-building="market"][data-highlighted]');
+   await page.focus('nav[aria-label="Navigation de Kanab Quest"] [data-placard-nav="game"]');await page.waitForSelector('[data-map-building="warehouse"][data-highlighted]');
   }
   await click('[data-map-building="warehouse"]');await page.waitForSelector('#placard-building-details');
   await page.waitForFunction(()=>document.activeElement?.id==='placard-building-details');await screenshot(`entrepot-actions-${width}`);await assertNoOverflow('Warehouse choices');

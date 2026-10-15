@@ -44,7 +44,7 @@ export function ArenaWorldMap({ activitiesLocked, initialMode, profileLauncher, 
     </div>
     <div ref={viewport} className={styles.viewport} id="arena-map-viewport">
       <div className={styles.terrain} data-arena-scene={initialMode}>
-        <Image src="/contest/map/arena-desk-v5.webp" alt="Sylvain assis à son bureau, le carnet de dégustation ouvert sur une photo de fleur et ses notes manuscrites, à côté des bocaux de fleurs de cannabis. À droite, un ordinateur et le tableau des classements ; à gauche, un miroir." fill sizes="(max-width: 700px) 700px, (max-width: 1400px) 100vw, 1300px" loading="eager" fetchPriority="high" draggable={false} />
+        <Image src="/contest/map/arena-desk-sylvain-v6.webp" alt="Sylvain dans son bureau du village, entre son carnet de dégustation et ses bocaux de fleurs. À droite, un ordinateur et le tableau des classements ; à gauche, un miroir." fill sizes="(max-width: 700px) 700px, (max-width: 1400px) 100vw, 1300px" loading="eager" fetchPriority="high" draggable={false} />
         <nav aria-label="Choisir une activité">
           {ARENA_LOBBY_MODE_ORDER.map(id => {
             const { Icon, ...place } = PLACES[id];

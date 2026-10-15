@@ -62,7 +62,7 @@ export function importKqLaunchEvidenceReport(value: string | unknown): KqLaunchE
   const source = typeof value === "string" ? JSON.parse(value) as unknown : value;
   const report = asRecord(source);
   if (!report || report.schema !== "kanab-quest-launch-evidence-v1") {
-    throw new Error("Rapport consolidé du Placard invalide ou incompatible.");
+    throw new Error("Rapport consolidé de Kanab Quest invalide ou incompatible.");
   }
   const generatedAt = typeof report.generatedAt === "string" ? report.generatedAt : "";
   if (!Number.isFinite(Date.parse(generatedAt))) {

@@ -188,7 +188,7 @@ if(preview){
       assert.equal(layout.activities.length,3,'Exactly three activity choices');
       assert.equal(layout.sceneImages.length,1,'Exactly one scene image in the DOM');
       assert.equal(layout.sceneRequests.length,1,'Only the map image is loaded');
-      assert.equal(layout.sceneImages[0],'/contest/map/arena-desk-v5.webp');
+      assert.equal(layout.sceneImages[0],'/contest/map/arena-desk-sylvain-v6.webp');
       assert(layout.renderedControls<=10,'Learning stays alongside concise account and map controls');
       assert.equal(await visibleCount('[data-arena-first-culture-trigger]'),0,'The retired first culture is absent');
       assert.equal(await visibleCount('[data-arena-discovery-entry] [data-arena-learning-trigger]'),1,'Learning remains directly available before and after opening');
@@ -331,7 +331,7 @@ if(preview){
   await page.keyboard.press('Escape'); await noModal();
   for(const mode of ['carnet','jouer','classement']){
     await load('returning',mode);
-    assert.equal((await measure()).sceneImages[0],'/contest/map/arena-desk-v5.webp','All modes share one illustrated desk');
+    assert.equal((await measure()).sceneImages[0],'/contest/map/arena-desk-sylvain-v6.webp','All modes share one illustrated desk');
     assert.equal(await page.$eval('[data-arena-activity][data-current="true"]',element=>element.getAttribute('data-arena-activity')),mode);
   }
   const initialTransform=await page.$eval('[data-arena-scene]',element=>getComputedStyle(element).transform);

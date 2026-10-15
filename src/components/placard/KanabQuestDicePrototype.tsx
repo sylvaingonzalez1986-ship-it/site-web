@@ -2,6 +2,8 @@
 
 import { KqCardEffectGuide as CardEffectGuide, KqCardRoleLegend } from "./KqCardEffectGuide";
 import { KQ_SITUATION_TAG_LABELS, KQ_CARD_RARITY_LABELS, getKqCardRarityLabel } from "@/lib/kanab-quest-card-guide";
+import { AppDialog } from "@/components/ui/AppDialog";
+import { navigateAfterOverlays } from "@/lib/overlay-history";
 import { useGameViewport } from "@/hooks/useGameViewport";
 import { getBuddieArtwork, hasModernBuddieArtwork } from "@/lib/buddie-artwork";
 import { getKqProductionUnits } from "@/lib/kanab-quest-production";
@@ -110,6 +112,7 @@ type OfficialRankProgress = {
   rating: number;
   seasonPoints: number;
   reputation: number;
+  businessScore: number;
   wins: number;
   losses: number;
   streak: number;
@@ -124,6 +127,7 @@ type OfficialLeaderboardEntry = {
   rating: number;
   seasonPoints: number;
   reputation: number;
+  businessScore: number;
   wins: number;
   losses: number;
   streak: number;
@@ -520,6 +524,7 @@ type KqDiceProps = {
   onOpenMarket?: () => void;
   onOpenRun?: (selection: KqClientRunSelection) => void;
   onOpenWarehouse?: (zoneId?: string) => void;
+  showWarehouseNavigation?: boolean;
   initialFlowerId?: string;
   initialZoneId?: string;
   initialRunId?: string;
@@ -529,7 +534,7 @@ type KqDiceProps = {
 
 export function KanabQuestDicePrototype(props: KqDiceProps) {
   const warehouseHref = `/arene/placard?view=workshop${props.initialZoneId ? `&zone=${encodeURIComponent(props.initialZoneId)}` : ""}`;
-  return <>{props.apiScope === "player" && !props.tutorial && props.viewMode !== "arena" ? <nav className={styles.zoneNavigation} aria-label="Navigation de la culture">{props.onOpenWarehouse ? <button type="button" onClick={() => props.onOpenWarehouse?.(props.initialZoneId)}>← L’entrepôt</button> : <Link href={warehouseHref}>← L’entrepôt</Link>}</nav> : null}<KqGameSession key={`${props.apiScope ?? "admin"}:${props.initialZoneId ?? ""}:${props.initialRunId ?? ""}:${props.initialCampaign ? "campaign" : "single"}`} {...props} /></>;
+  return <>{props.showWarehouseNavigation !== false && props.apiScope === "player" && !props.tutorial && props.viewMode !== "arena" ? <nav className={styles.zoneNavigation} aria-label="Navigation de la culture">{props.onOpenWarehouse ? <button type="button" onClick={() => props.onOpenWarehouse?.(props.initialZoneId)}>← L’entrepôt</button> : <Link href={warehouseHref}>← L’entrepôt</Link>}</nav> : null}<KqGameSession key={`${props.apiScope ?? "admin"}:${props.initialZoneId ?? ""}:${props.initialRunId ?? ""}:${props.initialCampaign ? "campaign" : "single"}`} {...props} /></>;
 }
 
 function KqGameSession({
@@ -700,6 +705,12 @@ function KqGameSession({
     .join(","), [officialFlowers]);
   const [botBattleResult, setBotBattleResult] = useState<BotBattleResult | null>(null);
   const [matchmakingLoading, setMatchmakingLoading] = useState(false);
+  const [juryCheckNeeded, setJuryCheckNeeded] = useState(false);
+  const [juryChecking, setJuryChecking] = useState(false);
+  const juryMutationLock = useRef(false);
+  const juryUncertain = useRef(false);
+  const juryPresentation = useRef(true);
+  const juryPending = useRef<{ flowerId?: string; battleId?: string } | null>(null);
   const [pendingRandomQueueFlowerId, setPendingRandomQueueFlowerId] = useState<string | null>(null);
   const [pendingTrainingFlowerId, setPendingTrainingFlowerId] = useState<string | null>(null);
   const [officialBattles, setOfficialBattles] = useState<KqOfficialBattle[]>([]);
@@ -755,13 +766,13 @@ function KqGameSession({
     if (!isPlayerMode) return;
     // The shared ranking may lag by a minute; transactions still return the
     // current personal balances and rewards. Reuse bootstrap progress on entry.
-    const leaderboardResponse = await fetch("/api/arena/placard/rankings", { cache: "no-store" });
+    const leaderboardResponse = await fetch("/api/arena/placard/rankings", { cache: "no-store", signal: AbortSignal.timeout(20_000) });
     if (leaderboardResponse.ok) {
       const payload = await leaderboardResponse.json() as { entries?: OfficialLeaderboardEntry[] };
       setOfficialLeaderboard(payload.entries ?? []);
     }
     if (includeProgress) {
-      const progressResponse = await fetch("/api/arena/placard/me", { cache: "no-store" });
+      const progressResponse = await fetch("/api/arena/placard/me", { cache: "no-store", signal: AbortSignal.timeout(20_000) });
       if (progressResponse.ok) {
         const payload = await progressResponse.json() as { progress?: OfficialRankProgress | null };
         setOfficialRankProgress(payload.progress ?? null);
@@ -980,7 +991,7 @@ function KqGameSession({
           routePlan?: KqRoutePlan | null;
           playerSession?: PlayerSessionPayload | null;
         };
-        if (!response.ok) throw new Error(payload.error || "Initialisation Placard indisponible.");
+        if (!response.ok) throw new Error(payload.error || "Initialisation de Kanab Quest indisponible.");
         setBuddieRotation(payload.buddieRotation ?? payload.playerSession?.buddieRotation ?? null);
         if ((payload.warnings?.length ?? 0) > 0) setRemoteNotice(payload.warnings!.join(" · "));
         setLaunchReadiness(showAdminOperations ? payload.readiness ?? null : null);
@@ -1057,7 +1068,7 @@ function KqGameSession({
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
-        const message = error instanceof Error ? error.message : "Initialisation Placard indisponible.";
+        const message = error instanceof Error ? error.message : "Initialisation de Kanab Quest indisponible.";
         if (isPlayerMode) { setSelectionError(message); setSelectionReady(true); }
         setRemoteNotice(message);
         setRemoteCollection((current) => ({ ...current, loading: false, error: message }));
@@ -1092,14 +1103,14 @@ function KqGameSession({
           battles?: KqOfficialBattle[];
           progress?: OfficialRankProgress | null;
         };
-        if (!response.ok) throw new Error(payload.error || "Session Placard indisponible.");
+        if (!response.ok) throw new Error(payload.error || "Session Kanab Quest indisponible.");
         const selectedSession = await resolveSelectedSession(payload, controller.signal);
         if (controller.signal.aborted) return;
         applyOfficialSessionPayload(selectedSession);
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
-        const message = error instanceof Error ? error.message : "Session Placard indisponible.";
+        const message = error instanceof Error ? error.message : "Session Kanab Quest indisponible.";
         if (isPlayerMode) { setSelectionError(message); setSelectionReady(true); }
         setRemoteNotice(message);
       })
@@ -1408,6 +1419,55 @@ function KqGameSession({
     window.sessionStorage.setItem(`${sessionStoragePrefix}-remote-burns`, enabled ? "1" : "0");
   };
 
+  const juryRequest: typeof fetch = (input, init) => {
+    const timeout = AbortSignal.timeout(20_000);
+    return remoteRequest(input, { ...init, signal: init?.signal ? AbortSignal.any([init.signal, timeout]) : timeout });
+  };
+
+  const reconcileJury = async () => {
+    if (!lifecycle.current.mounted) return false;
+    setJuryChecking(true);
+    try {
+      const [flowersSnapshot, battlesSnapshot] = await Promise.all([
+        getKqRemoteFlowers(juryRequest), getKqRemoteBattles(juryRequest),
+      ]);
+      if (!lifecycle.current.mounted) return false;
+      setOfficialFlowers(flowersSnapshot.flowers);
+      setOfficialBattles(battlesSnapshot.battles);
+      const pending = juryPending.current;
+      const resolved = battlesSnapshot.battles.find(item => item.id === pending?.battleId || (pending?.flowerId && item.playerFlower.id === pending.flowerId));
+      const flower = flowersSnapshot.flowers.find(item => item.id === pending?.flowerId);
+      if (resolved?.status === "verdict") {
+        setRemoteNotice(`Le verdict est bien enregistré : ${resolved.winner === "player" ? "victoire" : "défaite"}. Retrouve les manches dans l’historique des duels.`);
+        setPendingTrainingFlowerId(null); setPendingRandomQueueFlowerId(null); setPendingOfficialVerdictId(null);
+        window.dispatchEvent(new Event("kq:boosters-updated"));
+        setCollectionRefreshNonce(value => value + 1);
+      } else if (resolved?.status === "locked" || flower?.status === "queued" || flower?.status === "locked") {
+        setRemoteNotice(flower?.status === "queued" ? "Ta Fleur attend dans la file. Son état a été vérifié." : "Ton duel est enregistré. Le jury n’a pas encore terminé ; retrouve-le dans l’historique.");
+        setPendingTrainingFlowerId(null); setPendingRandomQueueFlowerId(null);
+      } else if (pending?.flowerId && (!flower || flower.status === "burned")) {
+        setRemoteNotice("Ta Fleur a déjà été utilisée. Les récoltes et l’historique sont à jour.");
+        setPendingTrainingFlowerId(null); setPendingRandomQueueFlowerId(null);
+      } else {
+        setRemoteNotice("État du jury vérifié. Aucun nouveau verdict n’est enregistré pour cette demande. Tu peux réessayer si ta Fleur est disponible.");
+      }
+      juryUncertain.current = false;
+      juryPending.current = null;
+      setJuryCheckNeeded(false);
+      return true;
+    } catch {
+      if (lifecycle.current.mounted) setJuryCheckNeeded(true);
+      return false;
+    } finally {
+      if (lifecycle.current.mounted) setJuryChecking(false);
+    }
+  };
+
+  const juryRecovery = <aside className={styles.juryRecovery} role="status" data-jury-recovery>
+    <p>La réponse du jury n’a pas pu être confirmée. L’action a peut-être déjà été enregistrée. Vérifie son résultat avant de recommencer.</p>
+    <button type="button" disabled={juryChecking} onClick={() => void reconcileJury()}>{juryChecking ? "Vérification…" : "Vérifier le résultat"}</button>
+  </aside>;
+
   const prepareAfterVerdict = () => {
     setOfficialBattleResult(null);
     setBotBattleResult(null);
@@ -1419,10 +1479,14 @@ function KqGameSession({
   };
 
   const joinRandomBattleQueue = async (flowerId: string) => {
+    if (juryMutationLock.current || juryUncertain.current) return;
+    juryMutationLock.current = true;
+    juryPresentation.current = true;
+    juryPending.current = { flowerId };
     setMatchmakingLoading(true);
     setRemoteNotice("");
     try {
-      const result = await enqueueKqRemoteRandomBattle(flowerId, remoteRequest);
+      const result = await enqueueKqRemoteRandomBattle(flowerId, juryRequest);
       setPendingRandomQueueFlowerId(null);
       if (result.matchStatus === "queued") {
         setOfficialFlowers((flowers) => flowers.map((flower) => (
@@ -1435,15 +1499,15 @@ function KqGameSession({
       }
 
       const [flowersSnapshot, battlesSnapshot] = await Promise.all([
-        getKqRemoteFlowers(remoteRequest),
-        getKqRemoteBattles(remoteRequest),
+        getKqRemoteFlowers(juryRequest),
+        getKqRemoteBattles(juryRequest),
       ]);
       setOfficialFlowers(flowersSnapshot.flowers);
       setOfficialBattles(battlesSnapshot.battles);
       const matchedBattle = battlesSnapshot.battles.find((battle) => battle.id === result.battleId);
       if (result.verdict) {
         const verdict = result.verdict;
-        setOfficialBattleResult({
+        if (juryPresentation.current) setOfficialBattleResult({
           battleId: verdict.battleId,
           winner: verdict.winner,
           burnedAt: verdict.burnedAt,
@@ -1463,22 +1527,30 @@ function KqGameSession({
         });
         if (verdict.pvpBoosterGranted) window.dispatchEvent(new Event("kq:boosters-updated"));
         setRemoteNotice(`${verdict.winner === "player" ? "Victoire" : "Défaite"} · adversaire tiré au hasard · les deux Fleurs ont été jugées puis brûlées.`);
-        await refreshOfficialRanking();
+        void refreshOfficialRanking().catch(() => undefined);
       } else {
         setRemoteNotice("Adversaire aléatoire trouvé. Le duel est verrouillé ; le jury peut être relancé depuis l’historique.");
       }
     } catch (error) {
       setRemoteNotice(error instanceof Error ? error.message : "File de duel indisponible.");
+      juryUncertain.current = true; setJuryCheckNeeded(true);
+      await reconcileJury();
     } finally {
+      juryMutationLock.current = false;
+      if (!juryUncertain.current) juryPending.current = null;
       setMatchmakingLoading(false);
     }
   };
 
   const leaveRandomBattleQueue = async (flowerId: string) => {
+    if (juryMutationLock.current || juryUncertain.current) return;
+    juryMutationLock.current = true;
+    juryPresentation.current = true;
+    juryPending.current = { flowerId };
     setMatchmakingLoading(true);
     setRemoteNotice("");
     try {
-      const result = await leaveKqRemoteRandomBattleQueue(flowerId, remoteRequest);
+      const result = await leaveKqRemoteRandomBattleQueue(flowerId, juryRequest);
       setOfficialFlowers((flowers) => flowers.map((flower) => (
         flower.id === flowerId ? { ...flower, status: "available", queuedAt: null } : flower
       )));
@@ -1487,17 +1559,11 @@ function KqGameSession({
         : "Cette Fleur n’était plus dans la file.");
     } catch (error) {
       setRemoteNotice(error instanceof Error ? error.message : "Sortie de file impossible.");
-      try {
-        const [flowersSnapshot, battlesSnapshot] = await Promise.all([
-          getKqRemoteFlowers(remoteRequest),
-          getKqRemoteBattles(remoteRequest),
-        ]);
-        setOfficialFlowers(flowersSnapshot.flowers);
-        setOfficialBattles(battlesSnapshot.battles);
-      } catch {
-        // Le prochain rechargement resynchronisera l'état si le match a gagné la course.
-      }
+      juryUncertain.current = true; setJuryCheckNeeded(true);
+      await reconcileJury();
     } finally {
+      juryMutationLock.current = false;
+      if (!juryUncertain.current) juryPending.current = null;
       setMatchmakingLoading(false);
     }
   };
@@ -1505,13 +1571,17 @@ function KqGameSession({
   const confirmRemoteBattle = async () => {
     if (!pendingTrainingFlowerId) return;
     const trainingFlowerId = pendingTrainingFlowerId;
+    if (juryMutationLock.current || juryUncertain.current) return;
+    juryMutationLock.current = true;
+    juryPresentation.current = true;
+    juryPending.current = { flowerId: trainingFlowerId };
     setMatchmakingLoading(true);
     try {
-      const result = await finalizeKqRemoteBotBattle(trainingFlowerId, remoteRequest);
+      const result = await finalizeKqRemoteBotBattle(trainingFlowerId, juryRequest);
       setOfficialFlowers((flowers) => flowers.filter((flower) => flower.id !== trainingFlowerId));
       const score = `${result.rounds.filter((round) => round.winner === "player").length}–${result.rounds.filter((round) => round.winner === "opponent").length}`;
       const opponentName = result.opponentFlower.ownerName || "Bot d’entraînement";
-      setBotBattleResult({
+      if (juryPresentation.current) setBotBattleResult({
         battleId: result.battleId,
         winner: result.winner,
         burnedAt: result.burnedAt,
@@ -1536,15 +1606,19 @@ function KqGameSession({
       setRemoteNotice(`${result.winner === "player" ? "Victoire" : "Défaite"} contre ${opponentName} · ${score} · bot tiré au hasard · +${result.experienceAwarded.toLocaleString("fr-FR")} EXP d’Arène${challengeReward} · entraînement ${result.todayCount}/${result.dailyLimit}. Ta Fleur a été brûlée.`);
       setPendingTrainingFlowerId(null);
       try {
-        const refreshed = await getKqRemoteBattles(remoteRequest);
+        const refreshed = await getKqRemoteBattles(juryRequest);
         setOfficialBattles(refreshed.battles);
       } catch {
         // Le reçu affiché reste la source de vérité jusqu’au prochain rechargement.
       }
-      await refreshOfficialRanking();
+      void refreshOfficialRanking().catch(() => undefined);
     } catch (error) {
       setRemoteNotice(error instanceof Error ? error.message : "Verrouillage du duel impossible.");
+      juryUncertain.current = true; setJuryCheckNeeded(true);
+      await reconcileJury();
     } finally {
+      juryMutationLock.current = false;
+      if (!juryUncertain.current) juryPending.current = null;
       setMatchmakingLoading(false);
     }
   };
@@ -1614,15 +1688,19 @@ function KqGameSession({
 
   const confirmOfficialVerdict = async () => {
     if (!pendingOfficialVerdictId) return;
+    if (juryMutationLock.current || juryUncertain.current) return;
+    juryMutationLock.current = true;
+    juryPresentation.current = true;
+    juryPending.current = { battleId: pendingOfficialVerdictId };
     setMatchmakingLoading(true);
     try {
-      const verdict = await finalizeKqRemoteBattle(pendingOfficialVerdictId, remoteRequest);
+      const verdict = await finalizeKqRemoteBattle(pendingOfficialVerdictId, juryRequest);
       const resolvedBattle = officialBattles.find((battle) => battle.id === verdict.battleId);
       setOfficialBattles((battles) => battles.map((battle) => battle.id === verdict.battleId ? {
         ...battle, status: "verdict", rounds: verdict.rounds, winner: verdict.winner, verdictAt: verdict.burnedAt,
         playerFlower: { ...battle.playerFlower }, opponentFlower: { ...battle.opponentFlower },
       } : battle));
-      setOfficialBattleResult({
+      if (juryPresentation.current) setOfficialBattleResult({
         battleId: verdict.battleId,
         winner: verdict.winner,
         burnedAt: verdict.burnedAt,
@@ -1643,8 +1721,8 @@ function KqGameSession({
       });
       try {
         const [flowersSnapshot, battlesSnapshot] = await Promise.all([
-          getKqRemoteFlowers(remoteRequest),
-          getKqRemoteBattles(remoteRequest),
+          getKqRemoteFlowers(juryRequest),
+          getKqRemoteBattles(juryRequest),
         ]);
         setOfficialFlowers(flowersSnapshot.flowers);
         setOfficialBattles(battlesSnapshot.battles);
@@ -1658,11 +1736,15 @@ function KqGameSession({
       if (verdict.pvpBoosterGranted) {
         window.dispatchEvent(new Event("kq:boosters-updated"));
       }
-      await refreshOfficialRanking();
+      void refreshOfficialRanking().catch(() => undefined);
       setPendingOfficialVerdictId(null);
     } catch (error) {
       setRemoteNotice(error instanceof Error ? error.message : "Verdict impossible.");
+      juryUncertain.current = true; setJuryCheckNeeded(true);
+      await reconcileJury();
     } finally {
+      juryMutationLock.current = false;
+      if (!juryUncertain.current) juryPending.current = null;
       setMatchmakingLoading(false);
     }
   };
@@ -1874,11 +1956,13 @@ function KqGameSession({
   const displayedLosses = isPlayerMode ? officialRankProgress?.losses ?? 0 : rankProfile.losses;
   const displayedStreak = isPlayerMode ? officialRankProgress?.streak ?? 0 : rankProfile.streak;
   const displayedArenaExperience = isPlayerMode ? officialRankProgress?.arenaExperience ?? 0 : 0;
+  const displayedBusinessScore = isPlayerMode ? officialRankProgress?.businessScore ?? 0 : 0;
   const displayedPlacardScore = isPlayerMode
     ? officialRankProgress?.placardScore ?? calculateKqPlacardScore({
       rating: displayedRating,
       seasonPoints: displayedSeasonPoints,
       reputation: officialRankProgress?.reputation ?? 0,
+      businessScore: displayedBusinessScore,
     }).score
     : calculateKqPlacardScore({
       rating: rankProfile.rating,
@@ -1893,6 +1977,7 @@ function KqGameSession({
       placardScore: entry.placardScore,
       rating: entry.rating,
       reputation: entry.reputation,
+      businessScore: entry.businessScore ?? 0,
       isPlayer: entry.rank === officialRankProgress?.rank,
     }))
     : leaderboard.slice(0, 3).map((entry) => ({
@@ -1903,6 +1988,7 @@ function KqGameSession({
         reputation: 0,
       }).score,
       reputation: 0,
+      businessScore: 0,
     }));
   const activeSubstrate = KQ_LIVING_SOIL;
   const cultureSystemStatus = situation ? getKqCultureSystemSituationStatus(state) : null;
@@ -1971,10 +2057,11 @@ function KqGameSession({
             {!isPlayerMode ? <button type="button" className={styles.remoteModeButton} disabled={remoteCollection.loading || !remoteCollection.ownerFound || (remoteAction !== null || careBusy)} data-active={remoteBurnsEnabled || undefined} aria-pressed={remoteBurnsEnabled} onClick={() => setRemoteMode(!remoteBurnsEnabled)}>{remoteBurnsEnabled ? "🔥 Burns officiels activés" : "Simulation locale"}</button> : null}
           </div> : null}
           {remoteNotice ? <div className={styles.remoteNotice} data-tone={getKqFeedbackTone(remoteNotice)} role="status" aria-live="polite">{remoteNotice}</div> : null}
+          {juryCheckNeeded ? juryRecovery : null}
           {launchReadiness ? <details className={styles.launchReadiness} data-safe={launchReadiness.safelyDormant || undefined}><summary><span>Préflight de lancement</span><strong>{launchReadiness.readyForActivation ? "Contenu complet · activation encore verrouillée" : `${launchReadiness.blockers.length} blocage${launchReadiness.blockers.length > 1 ? "s" : ""} restant${launchReadiness.blockers.length > 1 ? "s" : ""}`}</strong><small>{launchReadiness.contentReady ? "Contenu : complet" : "Contenu : incomplet"} · {launchReadiness.safelyDormant ? "Sécurité : tous les verrous sont fermés" : "Alerte : un verrou de lancement est déjà ouvert"}</small></summary><div>{launchReadiness.checks.map((check) => { const safetyCheck = check.code.endsWith("-dormant"); return <p key={check.code} data-ready={check.ready || undefined} data-kind={safetyCheck ? "safety" : "content"}><b>{check.ready ? "✓" : "○"}</b><span>{check.label}</span><strong>{check.ready ? safetyCheck ? "Fermé" : "Prêt" : safetyCheck ? "À refermer" : "À terminer"}</strong></p>; })}<section className={styles.activationSequence}><h3>Fenêtre de lancement coordonnée</h3><small>Cette liste est volontairement informative : aucune activation automatique depuis cet écran.</small><ol>{launchReadiness.activationStillRequired.map((step) => <li key={step}>{step}</li>)}</ol></section></div></details> : null}
           {seasonRewardPreview ? <details className={styles.seasonRewardPreview}><summary><span>Fin de saison · {seasonRewardPreview.rewardsLive ? "distribution active" : "aperçu dormant"}</span><strong>{seasonRewardPreview.eligiblePlayers} joueur(s) éligible(s)</strong><small>{seasonRewardPreview.rewardsLive ? "La commande applique les reçus idempotents après confirmation." : "Aucune récompense n’est distribuée pendant les tests."}</small></summary><div><b>{seasonRewardPreview.pendingGrants}<small>attributions en attente</small></b><b>{seasonRewardPreview.alreadyGranted}<small>déjà attribuées</small></b><b>{seasonRewardPreview.totalSupportBoosters}<small>boosters Botte du Chanvrier prévus</small></b><b>{seasonRewardPreview.totalHeritageFragments}<small>fragments Héritage prévus</small></b></div><p>Distribution {seasonRewardPreview.rewardsLive ? "active" : "dormante"} · palier minimum : 3 duels terminés. Les titres, cadres et rubans restent prioritaires sur la puissance.</p><button type="button" className={styles.seasonDistributionButton} disabled={!seasonRewardPreview.rewardsLive || seasonRewardPreview.pendingGrants <= 0 || seasonDistributionPending} title={!seasonRewardPreview.rewardsLive ? "Le verrou KQ_SEASON_REWARDS_LIVE est désactivé." : undefined} onClick={() => void distributeSeasonRewards()}>{seasonDistributionPending ? "Distribution en cours…" : seasonRewardPreview.rewardsLive ? "Distribuer les récompenses" : "Distribution verrouillée"}</button></details> : null}
           {seasonRolloverPreview ? <details className={styles.seasonRewardPreview}><summary><span>Passage de saison · préflight seul</span><strong>{seasonRolloverPreview.fromSeason} → {seasonRolloverPreview.toSeason ?? "à planifier"}</strong><small>{seasonRolloverPreview.ready ? "Toutes les conditions techniques sont réunies." : "La clôture reste impossible tant que les blocages ne sont pas levés."}</small></summary><div><b>{seasonRolloverPreview.players}<small>joueurs classés</small></b><b>{seasonRolloverPreview.eligiblePlayers}<small>éligibles aux lots</small></b><b>{seasonRolloverPreview.missingRewardGrants}<small>récompenses manquantes</small></b><b>{seasonRolloverPreview.lockedBattles}<small>duels verrouillés</small></b></div><p>{seasonRolloverPreview.blockers.length > 0 ? seasonRolloverPreview.blockers.join(" · ") : "Archive et remise à zéro prêtes. Aucune exécution n’est exposée dans l’interface."}</p><button type="button" className={styles.seasonDistributionButton} disabled>Clôture non activée</button></details> : null}
-          {notebookRewardPreview ? <details className={styles.notebookRewardPreview}><summary><span>Carnet → Placard · {notebookRewardPreview.rewardsLive ? "actif" : "aperçu dormant"}</span><strong>{notebookRewardPreview.pendingBadges} badge{notebookRewardPreview.pendingBadges > 1 ? "s" : ""} avec gains prévus</strong><small>La note donnée n’influence jamais la récompense.</small></summary><div className={styles.notebookRewardTotals}><b>{notebookRewardPreview.pendingSupportBoosters}<small>boosters Botte du Chanvrier prévus</small></b><b>{notebookRewardPreview.pendingCultureTokens}<small>jetons Coup de pouce prévus</small></b><b>{notebookRewardPreview.alreadyGranted}<small>badges déjà traités</small></b></div><ul>{notebookRewardPreview.badges.map((badge) => <li key={badge.profileBadgeId} data-granted={badge.granted || undefined}><span><strong>{badge.label}</strong><small>{badge.granted ? "Déjà attribué" : notebookRewardPreview.rewardsLive ? "À attribuer automatiquement" : "Prévu au lancement"}</small></span><b>{badge.supportBoosters > 0 ? `${badge.supportBoosters} booster${badge.supportBoosters > 1 ? "s" : ""}` : ""}{badge.supportBoosters > 0 && badge.cultureTokens > 0 ? " + " : ""}{badge.cultureTokens > 0 ? `${badge.cultureTokens} jeton${badge.cultureTokens > 1 ? "s" : ""}` : ""}</b></li>)}</ul><p>Aucun bouton client de réclamation : les gains seront attribués automatiquement et une seule fois après validation du badge.</p><button type="button" className={styles.notebookRetroButton} disabled={!notebookRewardPreview.rewardsLive || notebookRetroCursor === null || notebookRetroPending} title={!notebookRewardPreview.rewardsLive ? "Le verrou KQ_NOTEBOOK_REWARDS_LIVE est désactivé." : undefined} onClick={() => void runNotebookRetroBatch()}>{notebookRetroPending ? "Traitement du lot…" : !notebookRewardPreview.rewardsLive ? "Rétro-attribution verrouillée" : notebookRetroCursor === null ? "Rétro-attribution terminée" : notebookRetroCursor === 0 ? "Lancer la rétro-attribution" : "Traiter le lot suivant"}</button></details> : null}
+          {notebookRewardPreview ? <details className={styles.notebookRewardPreview}><summary><span>Carnet → Kanab Quest · {notebookRewardPreview.rewardsLive ? "actif" : "aperçu dormant"}</span><strong>{notebookRewardPreview.pendingBadges} badge{notebookRewardPreview.pendingBadges > 1 ? "s" : ""} avec gains prévus</strong><small>La note donnée n’influence jamais la récompense.</small></summary><div className={styles.notebookRewardTotals}><b>{notebookRewardPreview.pendingSupportBoosters}<small>boosters Botte du Chanvrier prévus</small></b><b>{notebookRewardPreview.pendingCultureTokens}<small>jetons Coup de pouce prévus</small></b><b>{notebookRewardPreview.alreadyGranted}<small>badges déjà traités</small></b></div><ul>{notebookRewardPreview.badges.map((badge) => <li key={badge.profileBadgeId} data-granted={badge.granted || undefined}><span><strong>{badge.label}</strong><small>{badge.granted ? "Déjà attribué" : notebookRewardPreview.rewardsLive ? "À attribuer automatiquement" : "Prévu au lancement"}</small></span><b>{badge.supportBoosters > 0 ? `${badge.supportBoosters} booster${badge.supportBoosters > 1 ? "s" : ""}` : ""}{badge.supportBoosters > 0 && badge.cultureTokens > 0 ? " + " : ""}{badge.cultureTokens > 0 ? `${badge.cultureTokens} jeton${badge.cultureTokens > 1 ? "s" : ""}` : ""}</b></li>)}</ul><p>Aucun bouton client de réclamation : les gains seront attribués automatiquement et une seule fois après validation du badge.</p><button type="button" className={styles.notebookRetroButton} disabled={!notebookRewardPreview.rewardsLive || notebookRetroCursor === null || notebookRetroPending} title={!notebookRewardPreview.rewardsLive ? "Le verrou KQ_NOTEBOOK_REWARDS_LIVE est désactivé." : undefined} onClick={() => void runNotebookRetroBatch()}>{notebookRetroPending ? "Traitement du lot…" : !notebookRewardPreview.rewardsLive ? "Rétro-attribution verrouillée" : notebookRetroCursor === null ? "Rétro-attribution terminée" : notebookRetroCursor === 0 ? "Lancer la rétro-attribution" : "Traiter le lot suivant"}</button></details> : null}
           {!playerPresentation ? <div className={styles.albumSummary}>
             <article><span>Collection variétés</span><strong>{KQ_COLLECTIONS.buddies.title}</strong><p><b>{KQ_BUDDIES.length}</b> variétés jouables dans le prototype · {KQ_COLLECTIONS.buddies.totalCards} cartes dans l’album complet</p><div><i style={{ width: `${KQ_BUDDIES.length / KQ_COLLECTIONS.buddies.totalCards * 100}%` }} /></div></article>
             <article><span>Collection auxiliaire</span><strong>{KQ_COLLECTIONS.support.title}</strong><p><b>{ownedBotteCount}</b> références disponibles · {totalBotteCopies} copies · objectif {KQ_COLLECTIONS.support.totalCards}</p><div><i style={{ width: `${ownedBotteCount / KQ_COLLECTIONS.support.totalCards * 100}%` }} /></div></article>
@@ -2000,6 +2087,7 @@ function KqGameSession({
           <KqSeasonBoard
             seasonCode={officialRankProgress?.seasonCode} rank={displayedRank} score={displayedPlacardScore}
             rating={displayedRating} seasonPoints={displayedSeasonPoints} reputation={isPlayerMode ? officialRankProgress?.reputation ?? 0 : 0}
+            businessScore={displayedBusinessScore}
             wins={displayedWins} losses={displayedLosses} streak={displayedStreak} arenaExperience={displayedArenaExperience}
             leaderboard={displayedLeaderboard} updatedAt={officialRankProgress?.leaderboardGeneratedAt}
             local={!isPlayerMode} onOpenArena={() => {
@@ -2114,17 +2202,17 @@ function KqGameSession({
                       <PinnedRouteFlowerTarget route={routePlan?.route ?? null} stats={flower.stats} />
                       {flower.status === "available" ? (
                         <>
-                          <button type="button" disabled={matchmakingLoading} onClick={() => setPendingRandomQueueFlowerId(flower.id)}>
+                          <button type="button" disabled={matchmakingLoading || juryCheckNeeded} onClick={() => setPendingRandomQueueFlowerId(flower.id)}>
                             <Swords /> Duel aléatoire · classé
                           </button>
-                          <button type="button" disabled={matchmakingLoading} onClick={() => { setRemoteNotice(""); setPendingTrainingFlowerId(flower.id); }}>
+                          <button type="button" disabled={matchmakingLoading || juryCheckNeeded} onClick={() => { setRemoteNotice(""); setPendingTrainingFlowerId(flower.id); }}>
                             <Dices /> Entraînement · {KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP
                           </button>
                         </>
                       ) : flower.status === "queued" ? (
                         <>
                           <p className={styles.queueWait} role="status">Recherche en cours · {formatKqQueueWait(flower.queuedAt)}</p>
-                          <button type="button" disabled={matchmakingLoading} onClick={() => void leaveRandomBattleQueue(flower.id)}>
+                          <button type="button" disabled={matchmakingLoading || juryCheckNeeded} onClick={() => void leaveRandomBattleQueue(flower.id)}>
                             <X /> Retirer de la file
                           </button>
                         </>
@@ -2135,24 +2223,22 @@ function KqGameSession({
               ) : <p className={styles.emptyFlowerReserve}>Termine une culture officielle pour créer ta première Fleur officielle.</p>}
             </section>
           ) : null}
-          {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}><span>Jury officiel</span><h2>Mes duels officiels</h2>{officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}{officialBattles.map((officialBattle) => <article key={officialBattle.id} data-status={officialBattle.status} data-opponent={officialBattle.opponentType}><header><div><strong>{officialBattle.playerFlower.variety}</strong><small>Ta Fleur</small></div><b>VS</b><div><strong>{officialBattle.opponentFlower.variety}</strong><small>{officialBattle.opponentType === "bot" ? "🤖 Entraînement" : "Adversaire"}</small></div></header>{officialBattle.status === "locked" ? <><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(officialBattle.id)}><Trophy /> Demander le verdict</button></> : officialBattle.status === "cancelled" ? <><h3>Duel expiré</h3><p>Aucun verdict, aucun burn et aucun point. Les deux Fleurs sont redevenues disponibles.</p><small>Engagement annulé après 48 heures · {formatKqDate(officialBattle.lockedAt)}</small></> : <><h3>{officialBattle.winner === "player" ? "Victoire" : "Défaite"}{officialBattle.opponentType === "bot" ? " d’entraînement" : " officielle"}</h3><div className={styles.officialRounds}>{officialBattle.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div><details className={styles.archivedJuryRecap} data-archived-jury-recap><summary>Comprendre ce duel</summary><KqJuryRecap rounds={officialBattle.rounds} playerStats={officialBattle.playerFlower.stats} opponentStats={officialBattle.opponentFlower.stats} /></details><small>{officialBattle.opponentType === "bot" ? `Ta Fleur brûlée · +${Number(officialBattle.experienceAwarded ?? KQ_REWARD_BALANCE.training.arenaExperience.min).toLocaleString("fr-FR")} EXP d’Arène` : `Deux Fleurs brûlées · +${Number(officialBattle.experienceAwarded ?? 0).toLocaleString("fr-FR")} EXP d’Arène`} · {formatKqDate(officialBattle.verdictAt)}</small></>}</article>)}</section> : null}
+          {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}><span>Jury officiel</span><h2>Mes duels officiels</h2>{officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}{officialBattles.map((officialBattle) => <article key={officialBattle.id} data-status={officialBattle.status} data-opponent={officialBattle.opponentType}><header><div><strong>{officialBattle.playerFlower.variety}</strong><small>Ta Fleur</small></div><b>VS</b><div><strong>{officialBattle.opponentFlower.variety}</strong><small>{officialBattle.opponentType === "bot" ? "🤖 Entraînement" : "Adversaire"}</small></div></header>{officialBattle.status === "locked" ? <><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p><button type="button" disabled={matchmakingLoading || juryCheckNeeded} onClick={() => setPendingOfficialVerdictId(officialBattle.id)}><Trophy /> Demander le verdict</button></> : officialBattle.status === "cancelled" ? <><h3>Duel expiré</h3><p>Aucun verdict, aucun burn et aucun point. Les deux Fleurs sont redevenues disponibles.</p><small>Engagement annulé après 48 heures · {formatKqDate(officialBattle.lockedAt)}</small></> : <><h3>{officialBattle.winner === "player" ? "Victoire" : "Défaite"}{officialBattle.opponentType === "bot" ? " d’entraînement" : " officielle"}</h3><div className={styles.officialRounds}>{officialBattle.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div><details className={styles.archivedJuryRecap} data-archived-jury-recap><summary>Comprendre ce duel</summary><KqJuryRecap rounds={officialBattle.rounds} playerStats={officialBattle.playerFlower.stats} opponentStats={officialBattle.opponentFlower.stats} /></details><small>{officialBattle.opponentType === "bot" ? `Ta Fleur brûlée · +${Number(officialBattle.experienceAwarded ?? KQ_REWARD_BALANCE.training.arenaExperience.min).toLocaleString("fr-FR")} EXP d’Arène` : `Deux Fleurs brûlées · +${Number(officialBattle.experienceAwarded ?? 0).toLocaleString("fr-FR")} EXP d’Arène`} · {formatKqDate(officialBattle.verdictAt)}</small></>}</article>)}</section> : null}
           {battleHistory.length > 0 ? <section className={styles.battleHistory}><span>Archives locales</span><h2>Derniers concours</h2><div>{battleHistory.slice(0, 5).map((receipt) => <article key={receipt.id}><Flame /><span><strong>{receipt.playerFlower.variety} vs {receipt.opponentFlower.variety}</strong><small>{receipt.winner === "player" ? "Victoire" : "Défaite"} · brûlées le {formatKqDate(receipt.burnedAt)}</small></span><b>{receipt.rounds.filter((round) => round.winner === "player").length}–{receipt.rounds.filter((round) => round.winner === "opponent").length}</b></article>)}</div></section> : null}
         </section>
-        {showOnboarding ? <div className={styles.onboardingBackdrop} role="presentation" onClick={closeOnboarding}><section className={styles.onboarding} role="dialog" aria-modal="true" aria-labelledby="kq-guide-title" aria-describedby="kq-guide-intro" onClick={(event) => event.stopPropagation()}><button type="button" className={styles.onboardingClose} aria-label="Fermer les règles" onClick={closeOnboarding}><X /></button><span>Le Placard · la boucle en 1 minute</span><h2 id="kq-guide-title">Cultive. Transforme. Réinvestis.</h2><p id="kq-guide-intro" className={styles.onboardingIntro}>Tes choix de culture fabriquent une récolte unique. Sa qualité ouvre de meilleurs débouchés, finance ton atelier et construit ta réputation.</p><div className={styles.onboardingSteps}><article><ShoppingBag /><b>1. Prépare ton atelier</b><p>Tout pousse sur sol vivant. Choisis ton Buddie et tes cartes <strong>Botte du Chanvrier</strong>. Les équipements durables déjà achetés renforcent chaque nouvelle partie.</p></article><article><Dices /><b>2. Passe les 6 étapes</b><p>Lance les dés, réponds aux situations et dépense tes cartes au bon moment. Protège à la fois la <strong>qualité</strong> et la quantité récoltée.</p></article><article><Scale /><b>3. Affronte le jury</b><p>À la récolte, le jury note la fleur. La note détermine son palier, sa valeur brute et les transformations réellement accessibles.</p></article><article><Flame /><b>4. Choisis ton débouché</b><p>Vends le lot brut, transforme-le en hash ou rosin, ou valorise-le en biomasse. Après le duel, 6 heures réelles de curing commencent : seul le grossiste achète avant maturité.</p></article><article><Trophy /><b>5. Réinvestis intelligemment</b><p>Utilise ton argent pour améliorer tente, lumière et machines. La qualité vendue augmente aussi ta <strong>réputation</strong> et départage le classement.</p></article></div><button type="button" className={styles.primaryButton} onClick={closeOnboarding}>C’est parti · préparer mon atelier</button></section></div> : null}
-          {pendingStart ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingStart(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="culture-system-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>Démarrage sur sol vivant</span><h2 id="culture-system-burn-title">{isPlayerMode ? "Commencer la campagne ?" : "Commencer la culture ?"}</h2><p>Le sol vivant est inclus et aucune carte n’est consommée au lancement. Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{playerPresentation ? <KqEnergyPanel campaign={isPlayerMode} disabled={(remoteAction !== null || careBusy)} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}{buddieStartBlockReason || remoteNotice ? <small className={styles.modalNotice}>{buddieStartBlockReason || remoteNotice}</small> : null}<div><button type="button" disabled={(remoteAction !== null || careBusy)} onClick={() => setPendingStart(false)}>Annuler</button><button type="button" className={styles.burnButton} disabled={(remoteAction !== null || careBusy) || Boolean(buddieStartBlockReason) || (playerPresentation && (!energyEstimate || energyEstimate.mode !== energyMode))} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : "Commencer"}</button></div></section></div> : null}
-          {pendingRandomQueueFlowerId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingRandomQueueFlowerId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="random-queue-title" onClick={(event) => event.stopPropagation()}><Swords /><span>Arène aléatoire · classée</span><h2 id="random-queue-title">Mettre cette Fleur à disposition ?</h2><p>Le serveur choisira au hasard une Fleur appartenant à un autre joueur, quelle que soit sa qualité. Tu pourras retirer la tienne tant qu’elle attend ; dès qu’un adversaire arrive, le jury se lance et les deux Fleurs brûlent automatiquement.</p><small>Gain garanti au verdict : {KQ_REWARD_BALANCE.pvp.directSeasonPoints.min} à {KQ_REWARD_BALANCE.pvp.directSeasonPoints.max} points de saison directs et {KQ_REWARD_BALANCE.pvp.arenaExperience.min} à {KQ_REWARD_BALANCE.pvp.arenaExperience.max} EXP. Le gagnant reçoit {KQ_REWARD_BALANCE.pvp.winnerCardCount} cartes Botte du Chanvrier.</small>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingRandomQueueFlowerId(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void joinRandomBattleQueue(pendingRandomQueueFlowerId)}><Swords /> {matchmakingLoading ? "Recherche…" : "Entrer dans la file"}</button></div></section></div> : null}
-          {pendingTrainingFlowerId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingTrainingFlowerId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="remote-battle-title" onClick={(event) => event.stopPropagation()}><Swords /><span>Entraînement aléatoire</span><h2 id="remote-battle-title">Confier cette Fleur au jury ?</h2><p>Le serveur tirera le bot au hasard et le révélera avec le verdict. Le duel immédiat brûlera ta Fleur et rapportera {KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP d’Arène et une carte seulement en cas de victoire. Il ne modifie ni ton Elo ni ta série ; les défis du jour validés peuvent toutefois ajouter leurs points de saison.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingTrainingFlowerId(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void confirmRemoteBattle()}><Swords /> {matchmakingLoading ? "Tirage et jury…" : "Lancer l’entraînement"}</button></div></section></div> : null}
+        {showOnboarding ? <div className={styles.onboardingBackdrop} role="presentation" onClick={closeOnboarding}><section className={styles.onboarding} role="dialog" aria-modal="true" aria-labelledby="kq-guide-title" aria-describedby="kq-guide-intro" onClick={(event) => event.stopPropagation()}><button type="button" className={styles.onboardingClose} aria-label="Fermer les règles" onClick={closeOnboarding}><X /></button><span>Kanab Quest · la boucle en 1 minute</span><h2 id="kq-guide-title">Cultive. Transforme. Réinvestis.</h2><p id="kq-guide-intro" className={styles.onboardingIntro}>Tes choix de culture fabriquent une récolte unique. Sa qualité ouvre de meilleurs débouchés, finance ton atelier et construit ta réputation.</p><div className={styles.onboardingSteps}><article><ShoppingBag /><b>1. Prépare ton atelier</b><p>Tout pousse sur sol vivant. Choisis ton Buddie et tes cartes <strong>Botte du Chanvrier</strong>. Les équipements durables déjà achetés renforcent chaque nouvelle partie.</p></article><article><Dices /><b>2. Passe les 6 étapes</b><p>Lance les dés, réponds aux situations et dépense tes cartes au bon moment. Protège à la fois la <strong>qualité</strong> et la quantité récoltée.</p></article><article><Scale /><b>3. Affronte le jury</b><p>À la récolte, le jury note la fleur. La note détermine son palier, sa valeur brute et les transformations réellement accessibles.</p></article><article><Flame /><b>4. Choisis ton débouché</b><p>Vends le lot brut, transforme-le en hash ou rosin, ou valorise-le en biomasse. Après le duel, 6 heures réelles de curing commencent : seul le grossiste achète avant maturité.</p></article><article><Trophy /><b>5. Réinvestis intelligemment</b><p>Utilise ton argent pour améliorer tente, lumière et machines. La qualité vendue augmente aussi ta <strong>réputation</strong> et départage le classement.</p></article></div><button type="button" className={styles.primaryButton} onClick={closeOnboarding}>C’est parti · préparer mon atelier</button></section></div> : null}
+          {pendingStart ? <AppDialog open onClose={() => setPendingStart(false)} title="Ma culture" labelledBy="culture-system-burn-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Flame /><span>Démarrage sur sol vivant</span><h2 id="culture-system-burn-title">{isPlayerMode ? "Commencer la campagne ?" : "Commencer la culture ?"}</h2><p>Le sol vivant est inclus et aucune carte n’est consommée au lancement. Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{playerPresentation ? <KqEnergyPanel campaign={isPlayerMode} disabled={(remoteAction !== null || careBusy)} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}{buddieStartBlockReason || remoteNotice ? <small className={styles.modalNotice}>{buddieStartBlockReason || remoteNotice}</small> : null}<div><button type="button" onClick={() => setPendingStart(false)}>{remoteAction === "start" ? "Fermer" : "Annuler"}</button><button type="button" className={styles.burnButton} disabled={(remoteAction !== null || careBusy) || Boolean(buddieStartBlockReason) || (playerPresentation && (!energyEstimate || energyEstimate.mode !== energyMode))} onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : "Commencer"}</button></div></AppDialog> : null}
+          {pendingRandomQueueFlowerId ? <AppDialog open onClose={() => { juryPresentation.current = false; setPendingRandomQueueFlowerId(null); }} title="Le jury" labelledBy="random-queue-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Swords /><span>Arène aléatoire · classée</span><h2 id="random-queue-title">Mettre cette Fleur à disposition ?</h2><p>Le serveur choisira au hasard une Fleur appartenant à un autre joueur, quelle que soit sa qualité. Tu pourras retirer la tienne tant qu’elle attend ; dès qu’un adversaire arrive, le jury se lance et les deux Fleurs brûlent automatiquement.</p><small>Gain garanti au verdict : {KQ_REWARD_BALANCE.pvp.directSeasonPoints.min} à {KQ_REWARD_BALANCE.pvp.directSeasonPoints.max} points de saison directs et {KQ_REWARD_BALANCE.pvp.arenaExperience.min} à {KQ_REWARD_BALANCE.pvp.arenaExperience.max} EXP. Le gagnant reçoit {KQ_REWARD_BALANCE.pvp.winnerCardCount} cartes Botte du Chanvrier.</small>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => { juryPresentation.current = false; setPendingRandomQueueFlowerId(null); }}>{matchmakingLoading ? "Fermer" : "Annuler"}</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading || juryCheckNeeded} onClick={() => void joinRandomBattleQueue(pendingRandomQueueFlowerId)}><Swords /> {matchmakingLoading ? "Recherche…" : "Entrer dans la file"}</button></div>{matchmakingLoading ? <p className={styles.modalNotice}>Tu peux fermer cette fenêtre : l’action soumise au jury continue.</p> : null}{juryCheckNeeded ? juryRecovery : null}</AppDialog> : null}
+          {pendingTrainingFlowerId ? <AppDialog open onClose={() => { juryPresentation.current = false; setPendingTrainingFlowerId(null); }} title="Le jury" labelledBy="remote-battle-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Swords /><span>Entraînement aléatoire</span><h2 id="remote-battle-title">Confier cette Fleur au jury ?</h2><p>Le serveur tirera le bot au hasard et le révélera avec le verdict. Le duel immédiat brûlera ta Fleur et rapportera {KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP d’Arène et une carte seulement en cas de victoire. Il ne modifie ni ton Elo ni ta série ; les défis du jour validés peuvent toutefois ajouter leurs points de saison.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => { juryPresentation.current = false; setPendingTrainingFlowerId(null); }}>{matchmakingLoading ? "Fermer" : "Annuler"}</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading || juryCheckNeeded} onClick={() => void confirmRemoteBattle()}><Swords /> {matchmakingLoading ? "Tirage et jury…" : "Lancer l’entraînement"}</button></div>{matchmakingLoading ? <p className={styles.modalNotice}>Tu peux fermer cette fenêtre : l’action soumise au jury continue.</p> : null}{juryCheckNeeded ? juryRecovery : null}</AppDialog> : null}
           {botBattleResult ? (
-            <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => setBotBattleResult(null)}>
-              <section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="bot-result-title" onClick={(event) => event.stopPropagation()}>
-                <button type="button" className={styles.resultCloseButton} aria-label="Fermer le verdict" onClick={() => setBotBattleResult(null)}>Fermer ×</button>
+            <AppDialog open onClose={() => setBotBattleResult(null)} title="Verdict du jury" closeLabel="Fermer le verdict" labelledBy="bot-result-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}>
                 <Trophy />
                 <span>Verdict d’entraînement · {botBattleResult.todayCount}/{botBattleResult.dailyLimit}</span>
                 <h2 id="bot-result-title">{botBattleResult.winner === "player" ? "Victoire !" : "Défaite"}</h2>
                 <p>Face à {botBattleResult.opponentName} avec {botBattleResult.varietyName}.</p>
                 <div className={styles.officialRounds}>{botBattleResult.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><small>{round.explanation}</small><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div>
-                <KqJuryRecap rounds={botBattleResult.rounds} playerStats={botRecapBattle?.playerFlower.stats} opponentStats={botRecapBattle?.opponentFlower.stats} onPrepare={onOpenGame || viewMode !== "arena" ? prepareAfterVerdict : undefined} prepareHref={!tutorial ? "/arene/placard?view=game" : undefined} prepareLabel={remoteRunId && state.phase !== "complete" ? "Reprendre ma culture en cours" : undefined} />
-                <VerdictMarketTarget route={routePlan?.route ?? null} rounds={botBattleResult.rounds} onOpenMarket={onOpenMarket ? () => { setBotBattleResult(null); onOpenMarket(); } : undefined} />
+                <KqJuryRecap rounds={botBattleResult.rounds} playerStats={botRecapBattle?.playerFlower.stats} opponentStats={botRecapBattle?.opponentFlower.stats} onPrepare={onOpenGame || viewMode !== "arena" ? () => navigateAfterOverlays(prepareAfterVerdict) : undefined} prepareHref={!tutorial ? "/arene/placard?view=game" : undefined} prepareLabel={remoteRunId && state.phase !== "complete" ? "Reprendre ma culture en cours" : undefined} />
+                <VerdictMarketTarget route={routePlan?.route ?? null} rounds={botBattleResult.rounds} onOpenMarket={onOpenMarket ? () => navigateAfterOverlays(onOpenMarket) : undefined} />
                 {botBattleResult.completedChallenges.length > 0 ? (
                   <div className={styles.officialChallengeReward}>
                     <Star />
@@ -2166,21 +2252,18 @@ function KqGameSession({
                 <div className={styles.tradeoff}><p><b>Récompense</b>+{botBattleResult.experienceAwarded.toLocaleString("fr-FR")} EXP d’Arène{botBattleResult.challengePoints > 0 ? ` · +${botBattleResult.challengePoints} points` : ""}{botBattleResult.rewardCard ? " · 1 carte Botte du Chanvrier" : ""}</p><p><b>Résultat</b>{botBattleResult.rounds.filter((round) => round.winner === "player").length}–{botBattleResult.rounds.filter((round) => round.winner === "opponent").length} · Fleur brûlée</p></div>
                 <small>Verdict enregistré · {formatKqDate(botBattleResult.burnedAt)} · reçu {botBattleResult.battleId.slice(0, 8)}</small>
                 <div><button type="button" className={styles.burnButton} onClick={() => setBotBattleResult(null)}>Continuer</button></div>
-              </section>
-            </div>
+              </AppDialog>
           ) : null}
           {officialBattleResult ? (
-            <div className={styles.burnConfirmBackdrop} data-verdict-result role="presentation" onClick={() => setOfficialBattleResult(null)}>
-              <section className={styles.burnConfirm} data-victory={officialBattleResult.winner === "player" || undefined} role="dialog" aria-modal="true" aria-labelledby="official-result-title" onClick={(event) => event.stopPropagation()}>
-                <button type="button" className={styles.resultCloseButton} aria-label="Fermer le verdict" onClick={() => setOfficialBattleResult(null)}>Fermer ×</button>
+            <AppDialog open onClose={() => setOfficialBattleResult(null)} title="Verdict du jury" closeLabel="Fermer le verdict" labelledBy="official-result-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm} dialogProps={{ "data-verdict-result": true, "data-victory": officialBattleResult.winner === "player" || undefined }}>
                 <Trophy />
                 <span>Verdict officiel · reçu {officialBattleResult.battleId.slice(0, 8)}</span>
                 <h2 id="official-result-title">{officialBattleResult.winner === "player" ? "Victoire !" : "Défaite"}</h2>
                 <p>{officialBattleResult.playerVariety} face à {officialBattleResult.opponentVariety}.</p>
                 <strong className={styles.verdictScore}>{officialBattleResult.rounds.filter((round) => round.winner === "player").length} – {officialBattleResult.rounds.filter((round) => round.winner === "opponent").length}</strong>
                 <div className={styles.officialRounds}>{officialBattleResult.rounds.map((round) => <span key={round.code} data-winner={round.winner}><strong>{round.label}</strong><small>{round.explanation}</small><b>{round.playerScore} – {round.opponentScore}</b></span>)}</div>
-                <KqJuryRecap rounds={officialBattleResult.rounds} playerStats={officialRecapBattle?.playerFlower.stats} opponentStats={officialRecapBattle?.opponentFlower.stats} onPrepare={onOpenGame || viewMode !== "arena" ? prepareAfterVerdict : undefined} prepareHref={!tutorial ? "/arene/placard?view=game" : undefined} prepareLabel={remoteRunId && state.phase !== "complete" ? "Reprendre ma culture en cours" : undefined} />
-                <VerdictMarketTarget route={routePlan?.route ?? null} rounds={officialBattleResult.rounds} onOpenMarket={onOpenMarket ? () => { setOfficialBattleResult(null); onOpenMarket(); } : undefined} />
+                <KqJuryRecap rounds={officialBattleResult.rounds} playerStats={officialRecapBattle?.playerFlower.stats} opponentStats={officialRecapBattle?.opponentFlower.stats} onPrepare={onOpenGame || viewMode !== "arena" ? () => navigateAfterOverlays(prepareAfterVerdict) : undefined} prepareHref={!tutorial ? "/arene/placard?view=game" : undefined} prepareLabel={remoteRunId && state.phase !== "complete" ? "Reprendre ma culture en cours" : undefined} />
+                <VerdictMarketTarget route={routePlan?.route ?? null} rounds={officialBattleResult.rounds} onOpenMarket={onOpenMarket ? () => navigateAfterOverlays(onOpenMarket) : undefined} />
                 <div className={styles.officialResultRewards}>
                   <p><b>Arène</b>+{officialBattleResult.experienceAwarded.toLocaleString("fr-FR")} EXP · deux Fleurs brûlées</p>
                   <p><b>Défis</b>{officialBattleResult.challengePoints > 0 ? `+${officialBattleResult.challengePoints} points` : "Aucun point supplémentaire"}</p>
@@ -2190,10 +2273,9 @@ function KqGameSession({
                 {officialBattleResult.rankProfile ? <div className={styles.resultRankSummary}><span><strong>{officialBattleResult.rankProfile.rating}</strong><small>Cote</small></span><span><strong>{officialBattleResult.rankProfile.seasonPoints}</strong><small>Points saison</small></span><span><strong>{officialBattleResult.rankProfile.wins}–{officialBattleResult.rankProfile.losses}</strong><small>Victoires–défaites</small></span></div> : null}
                 <small>Verdict enregistré le {formatKqDate(officialBattleResult.burnedAt)}</small>
                 <div><button type="button" className={styles.burnButton} onClick={() => setOfficialBattleResult(null)}>Continuer</button></div>
-              </section>
-            </div>
+              </AppDialog>
           ) : null}
-          {pendingOfficialVerdictId ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => !matchmakingLoading && setPendingOfficialVerdictId(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="official-verdict-title" onClick={(event) => event.stopPropagation()}><Flame /><span>Verdict officiel irréversible</span><h2 id="official-verdict-title">Brûler les deux Fleurs ?</h2><p>Le serveur calculera les trois manches, désignera le gagnant, mettra le classement à jour puis brûlera définitivement les deux Fleurs.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={matchmakingLoading} onClick={() => setPendingOfficialVerdictId(null)}>Retour</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading} onClick={() => void confirmOfficialVerdict()}><Flame /> {matchmakingLoading ? "Jury en cours…" : "Confirmer le verdict"}</button></div></section></div> : null}
+          {pendingOfficialVerdictId ? <AppDialog open onClose={() => { juryPresentation.current = false; setPendingOfficialVerdictId(null); }} title="Le jury" labelledBy="official-verdict-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Flame /><span>Verdict officiel irréversible</span><h2 id="official-verdict-title">Brûler les deux Fleurs ?</h2><p>Le serveur calculera les trois manches, désignera le gagnant, mettra le classement à jour puis brûlera définitivement les deux Fleurs.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => { juryPresentation.current = false; setPendingOfficialVerdictId(null); }}>Fermer</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading || juryCheckNeeded} onClick={() => void confirmOfficialVerdict()}><Flame /> {matchmakingLoading ? "Jury en cours…" : "Confirmer le verdict"}</button></div>{matchmakingLoading ? <p className={styles.modalNotice}>Tu peux fermer cette fenêtre : l’action soumise au jury continue.</p> : null}{juryCheckNeeded ? juryRecovery : null}</AppDialog> : null}
       </main>
     );
   }
@@ -2374,7 +2456,7 @@ function KqGameSession({
               <button type="button" className={styles.primaryButton} onClick={() => setPendingBattleVerdict(true)}>Lancer le verdict du jury</button>
             </div>
           ) : null}
-          {battle?.status === "locked" && pendingBattleVerdict ? <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => setPendingBattleVerdict(false)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="flower-burn-title" onClick={(event) => event.stopPropagation()}><Flame /><span>{tutorial ? "Verdict d’essai" : "Verdict irréversible"}</span><h2 id="flower-burn-title">Brûler les deux fleurs ?</h2><p>{battle.playerFlower.variety} et {battle.opponentFlower.variety} seront détruites après les trois manches. {tutorial ? "Seules les Fleurs prêtées et le classement fictif de cet essai sont concernés." : "Le résultat sera ajouté au classement et ne pourra pas être rejoué."}</p><div><button type="button" onClick={() => setPendingBattleVerdict(false)}>Retour au duel</button><button type="button" className={styles.burnButton} onClick={judgeBattle}><Flame /> Confirmer le verdict</button></div></section></div> : null}
+          {battle?.status === "locked" && pendingBattleVerdict ? <AppDialog open onClose={() => setPendingBattleVerdict(false)} title="Le jury" labelledBy="flower-burn-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Flame /><span>{tutorial ? "Verdict d’essai" : "Verdict irréversible"}</span><h2 id="flower-burn-title">Brûler les deux fleurs ?</h2><p>{battle.playerFlower.variety} et {battle.opponentFlower.variety} seront détruites après les trois manches. {tutorial ? "Seules les Fleurs prêtées et le classement fictif de cet essai sont concernés." : "Le résultat sera ajouté au classement et ne pourra pas être rejoué."}</p><div><button type="button" onClick={() => setPendingBattleVerdict(false)}>Retour au duel</button><button type="button" className={styles.burnButton} onClick={judgeBattle}><Flame /> Confirmer le verdict</button></div></AppDialog> : null}
           {battle?.status === "verdict" ? (
             <div className={styles.verdictPanel}>
               <span className={styles.verdictKicker}>{tutorial ? "Verdict fictif" : "Verdict officiel"}</span>
@@ -2641,7 +2723,7 @@ function KqGameSession({
         const card = KQ_CARDS.find((item) => item.code === pendingBurnCode);
         if (!card) return null;
         const tradeoff = getKqCardTradeoff(card);
-        return <div className={styles.burnConfirmBackdrop} role="presentation" onClick={() => remoteAction === null && setPendingBurnCode(null)}><section className={styles.burnConfirm} role="dialog" aria-modal="true" aria-labelledby="burn-confirm-title" onClick={(event) => event.stopPropagation()}><Flame /><span>{remoteBurnsEnabled ? "Burn officiel" : "Simulation locale"}</span><h2 id="burn-confirm-title">Brûler {card.name} ?</h2><p>Cette action détruit une copie de ton album. Il t’en reste {activeInventory[card.code] ?? 0}.</p><div className={styles.tradeoff}><p><b>Avantage</b>{tradeoff.benefit}</p><p><b>Risque</b>{tradeoff.risk}</p></div>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" disabled={(remoteAction !== null || careBusy)} onClick={() => setPendingBurnCode(null)}>Annuler</button><button type="button" className={styles.burnButton} disabled={(remoteAction !== null || careBusy)} onClick={() => void playAndBurnCard(card.code)}><Flame /> {remoteAction === "card" ? "Confirmation…" : "Brûler et jouer"}</button></div></section></div>;
+        return <AppDialog open onClose={() => setPendingBurnCode(null)} title="Jouer une carte" labelledBy="burn-confirm-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Flame /><span>{remoteBurnsEnabled ? "Burn officiel" : "Simulation locale"}</span><h2 id="burn-confirm-title">Brûler {card.name} ?</h2><p>Cette action détruit une copie de ton album. Il t’en reste {activeInventory[card.code] ?? 0}.</p><div className={styles.tradeoff}><p><b>Avantage</b>{tradeoff.benefit}</p><p><b>Risque</b>{tradeoff.risk}</p></div>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => setPendingBurnCode(null)}>{remoteAction === "card" ? "Fermer" : "Annuler"}</button><button type="button" className={styles.burnButton} disabled={(remoteAction !== null || careBusy)} onClick={() => void playAndBurnCard(card.code)}><Flame /> {remoteAction === "card" ? "Confirmation…" : "Brûler et jouer"}</button></div></AppDialog>;
       })() : null}
 
       {gameActionError ? (

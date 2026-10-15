@@ -192,7 +192,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
       else if(!event.shiftKey&&document.activeElement===controls.at(-1)){event.preventDefault();controls[0]?.focus();}
     }}>
       <header className={styles.header}>
-        <div><small>Le Placard · {workshopOnly?"Transformation":"Aménager"}</small><h2 id="equipment-inventory-title" data-arena-tour="warehouse">{workshopOnly?"Mes machines":"L’Entrepôt"}</h2></div>
+        <div><small>Kanab Quest · {workshopOnly?"Transformation":"Aménager"}</small><h2 id="equipment-inventory-title" data-arena-tour="warehouse">{workshopOnly?"Mes machines":"L’Entrepôt"}</h2></div>
         <div className={styles.balance}><small>Trésorerie</small><strong>{formatKqCash(cashCents)}</strong></div>{!embedded?<button ref={closeButton} type="button" onClick={onClose} disabled={storageBusy||busy} aria-label="Fermer l’inventaire"><X/></button>:null}
       </header>
       {!workshopOnly&&<KqCareerProgress career={career} profile={chanvrierProfile} compact/>}

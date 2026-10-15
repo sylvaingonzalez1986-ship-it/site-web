@@ -184,6 +184,7 @@ export default async function RootLayout({
       <body
         className={`${bodyFont.variable} ${displayFont.variable} ${handwrittenFont.variable} bg-mint text-ink antialiased`}
       >
+        <a href="#main-content" className="site-skip-link">Aller au contenu</a>
         <OrganizationJsonLd />
         <WebSiteJsonLd />
         {process.env.NODE_ENV !== "production" && (
@@ -236,7 +237,7 @@ export default async function RootLayout({
             <PendingPaymentRecoveryModal />
             <div className="site-background min-h-screen">
               <Navbar />
-              <main className="relative z-0">{children}</main>
+              <main id="main-content" tabIndex={-1} className="relative z-0">{children}</main>
               <Footer />
             </div>
             <NewProductsPopup />

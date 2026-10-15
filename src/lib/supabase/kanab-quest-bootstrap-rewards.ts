@@ -8,7 +8,7 @@ const bundleWarning = "Contest bundle reward synchronization temporarily unavail
 
 export async function reconcileKqBootstrapRewards(customerId: string): Promise<void> {
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(customerId)) {
-    throw new Error("Compte Placard invalide.");
+    throw new Error("Compte Kanab Quest invalide.");
   }
   const supabase = createSupabaseServiceClient();
   // Separate transactions release cash/order locks before bundle reconciliation.

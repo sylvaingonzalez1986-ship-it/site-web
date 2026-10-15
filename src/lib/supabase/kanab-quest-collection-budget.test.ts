@@ -73,7 +73,7 @@ describe("bounded collection reads", () => {
   });
 
   it("rejects invalid owners before any database request", async () => {
-    await expect(getKqPlayerCollectionBundle("invalid")).rejects.toThrow("Compte Placard invalide");
+    await expect(getKqPlayerCollectionBundle("invalid")).rejects.toThrow("Compte Kanab Quest invalide");
     await expect(getKqPlayerHeritageSnapshot("invalid")).rejects.toThrow("Profil Héritage invalide");
     expect(mocks.client).not.toHaveBeenCalled();
   });

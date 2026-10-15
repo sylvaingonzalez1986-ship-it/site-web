@@ -7,6 +7,9 @@
 .toggle small { margin-left: 4px; font-size: 11px; color: #076c61; }
 .toggle:hover { background: #dcefe4; }
 .dock[data-open="false"] .header > div:first-child, .dock[data-open="false"] .toggle { width: 100%; }
+.dock[data-open="false"] { padding: 0; border: 0; background: transparent; box-shadow: none; }
+.dock[data-open="false"] .toggle { padding: 10px 14px; border: 2px solid #172923; border-radius: 11px; background: #efc451; box-shadow: 3px 4px 0 #172923; }
+.dock[data-open="false"] .toggle:hover { background: #f5d675; }
 .header p { margin: 3px 0 0; overflow: hidden; font-size: 11px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; color: #536058; }
 .actions { display: flex; flex: none; gap: 4px; }
 .actions button { display: grid; place-items: center; width: 44px; min-height: 44px; padding: 0; cursor: pointer; border: 2px solid #172923; border-radius: 9px; background: #efc451; color: #172923; box-shadow: 1px 2px 0 #172923; }
@@ -27,9 +30,10 @@
 .card:active:not(:disabled) { cursor: grabbing; }
 .card[data-selected] { border-color: #172923; background: #efc451; box-shadow: 2px 3px 0 #172923; }
 .card[data-dragging] .artwork { opacity: .45; transform: none; }
-.card:disabled { cursor: not-allowed; }
-.card:disabled .artwork { filter: saturate(.45); opacity: .62; }
-.card:disabled .status { color: #72522f; }
+.card[data-buddie-blocked] { cursor: pointer; touch-action: pan-x pan-y; }
+.card[data-buddie-blocked] .artwork { filter: saturate(.45); opacity: .72; }
+.card[data-buddie-blocked] .status { color: #72522f; }
+.card[aria-expanded="true"] { border-color: #172923; background: #dcefe4; }
 .scrollBand { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 22px; font-size: 10px; line-height: 1; cursor: ew-resize; touch-action: pan-y; user-select: none; -webkit-user-select: none; border-top: 2px solid #17292355; color: #536058; }
 .scrollMeter { position: relative; width: 65px; height: 3px; border-radius: 5px; background: #d5a57380; }
 .scrollMeter i { position: absolute; top: 0; width: 20%; height: 3px; border-radius: 5px; background: #076c61; }

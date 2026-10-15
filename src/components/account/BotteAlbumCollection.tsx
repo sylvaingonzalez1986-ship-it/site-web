@@ -231,7 +231,7 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
   return (
     <div className={albumStyles.gameCollection}>
       <header className={albumStyles.gameCollectionHeader}>
-        <p className="text-xs font-black uppercase tracking-[0.16em] text-[#91d9c9]">Collection de jeu du Placard</p>
+        <p className="text-xs font-black uppercase tracking-[0.16em] text-[#91d9c9]">Collection de Kanab Quest</p>
         <h2 className="mt-2 font-display text-3xl uppercase leading-none text-[#fffaf1] sm:text-5xl">
           Botte du Chanvrier
         </h2>
@@ -302,7 +302,7 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
         href="/arene/placard"
         className="inline-flex min-h-12 items-center justify-center border-2 border-ink bg-green px-5 text-sm font-black uppercase text-white shadow-[4px_4px_0_#1a1a1a]"
       >
-        Jouer au Placard
+        Jouer à Kanab Quest
       </Link>
       {craftOpen ? <HeritageCraftModal cards={craftableHeritages} fragmentBalance={fragmentBalance} craftingCode={craftingCode} notice={craftNotice} onCraft={(card) => void craftHeritage(card)} onClose={() => { if (!craftingCode) setCraftOpen(false); }} /> : null}
       {selectedCard ? <KqBotteCardDetail card={selectedCard} copies={snapshot?.collection ? supportCopies.get(selectedCard.code) ?? 0 : null} onClose={() => setSelectedCard(null)} /> : null}

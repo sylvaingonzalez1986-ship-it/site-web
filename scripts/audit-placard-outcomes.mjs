@@ -120,7 +120,7 @@ const server = await createServer({
       vite.middlewares.use((req, res, next) => {
         if (req.url?.split('?')[0] !== '/') return next();
         res.setHeader('Content-Type', 'text/html');
-        res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Audit des verdicts du Placard</title><style>:root{--font-display:Impact;--font-body:Arial;--font-sans:Arial}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__outcome-entry"></script></html>');
+        res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Audit des verdicts de Kanab Quest</title><style>:root{--font-display:Impact;--font-body:Arial;--font-sans:Arial}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__outcome-entry"></script></html>');
       });
     },
   }],

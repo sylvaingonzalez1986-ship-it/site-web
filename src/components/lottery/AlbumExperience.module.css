@@ -1,6 +1,7 @@
 .experience,
 .pageShell,
 .modalShell,
+.dialogShell,
 .statusCard {
   --album-green: #00563f;
   --album-green-dark: #102b28;
@@ -846,6 +847,11 @@ button.cardSlot:focus-visible {
   background: rgba(0, 39, 29, 0.72);
   padding: 1rem;
 }
+
+dialog.dialogShell { width: min(520px, calc(100vw - 24px)); border-radius: 0; border-color: var(--album-green-dark); background: var(--album-paper); color: var(--album-ink); box-shadow: 5px 5px 0 var(--album-yellow); }
+dialog.cardDetailDialog { width: min(384px, calc(100vw - 24px)); }
+.cardDetailDialog .buddieDetailArtwork { padding: 1rem 1rem 0; }
+.dialogShell .managerList { max-height: none; overflow: visible; }
 
 .modalShell {
   position: relative;

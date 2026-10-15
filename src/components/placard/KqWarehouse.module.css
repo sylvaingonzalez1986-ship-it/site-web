@@ -56,7 +56,14 @@
 .cultureCosts span { display: grid; gap: 8px; font-size: 12px; color: var(--muted); }
 .cultureCosts strong { font-size: 17px; color: var(--ink); }
 .culturePanel > :is(a,button) { width: 100%; justify-content: center; }
-.zones { display: flex; gap: 10px; overflow-x: auto; margin-top: 16px; scrollbar-width: thin; padding-bottom: 8px; }
+.zoneNavigation { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.zones { display: flex; flex: 1; min-width: 0; gap: 10px; overflow-x: auto; scrollbar-width: thin; padding-bottom: 8px; }
+.newZone { flex-shrink: 0; margin-bottom: 8px; min-height: 48px; }
+@media(max-width:640px) {
+  .zoneNavigation { flex-direction: column; align-items: stretch; gap: 4px; }
+  .zones { flex: auto; }
+  .newZone { justify-content: center; }
+}
 .zoneChip { display: flex; align-items: center; gap: 11px; flex-shrink: 0; max-width: 250px; padding: 12px 14px; color: var(--ink); text-align: left; font-size: 13px; cursor: pointer; border: 2px solid #172923; background: #fffaf0; border-radius: 10px; box-shadow: 2px 3px 0 #172923; }
 .zoneChip > span:first-child { font-family: var(--font-display),sans-serif; font-size: 22px; color: #076c61; }
 .zoneChip > span:last-child { min-width: 0; overflow-wrap: anywhere; }
@@ -117,6 +124,24 @@
 .secondary { border-color: var(--line); background: #fffaf0; color: #172923; border: 2px solid #172923; box-shadow: 2px 3px 0 #172923; }
 .danger { background: transparent; font-size: 12px; padding: 10px 0; color: #8f3d28; }
 .full { width: 100%; }
+.zoneEditorHint { margin: 0; font-size: 13px; line-height: 1.6; }
+.zoneDialog.zoneDialog { width: min(540px, calc(100vw - 16px)); }
+.zoneDialog .inspectorBody { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 14px 16px; }
+.zoneDialog .field :is(input, select) { font-size: 16px; }
+.zoneDialog .zoneSettings { padding-bottom: 8px; }
+.zoneDialog .zoneModules { padding: 6px 0; }
+.zoneDialog .zoneModules > .zoneOptionFields { display: grid; gap: 14px; padding-block: 10px; }
+.zoneDialog .check { min-height: 44px; }
+.zoneDialogBody { scrollbar-gutter: stable; }
+.zoneDialogSummary { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 12px; padding: 12px 16px; background: #f7dfb8; font-size: 13px; }
+.zoneDialogSummary strong { overflow-wrap: anywhere; }
+.zoneDialogSummary span { flex-shrink: 0; }
+.zoneDialogFooter { display: grid; gap: 8px; }
+.zoneDialogFooter > button { width: 100%; }
+.zoneDialogFooter > small { color: #536058; font-size: 11px; line-height: 1.4; }
+.zoneDialogTotal { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; font-size: 12px; }
+.zoneDialogTotal strong { font-size: 21px; font-variant-numeric: tabular-nums; }
+.zoneDialogError { margin: 0; max-height: 72px; overflow-y: auto; color: #873321; font-size: 12px; line-height: 1.5; }
 .buttons { display: flex; gap: 12px; flex-wrap: wrap; }
 .inspectorEmpty { display: grid; justify-items: center; gap: 18px; padding: 32px 24px; text-align: center; }
 .inspectorEmpty h3 { margin: 0; font-size: 17px; }
@@ -205,8 +230,8 @@
 @media(max-width:650px) {
   .header { flex-wrap: wrap; gap: 20px; padding: 22px 18px; }
   .headerActions { width: 100%; gap: 9px; flex-wrap: wrap; }
-  .cash { text-align: left; margin-right: auto; }
-  .cash strong { font-size: 21px; }
+  .cash { flex-basis: 100%; min-width: 0; text-align: left; margin-right: 0; }
+  .cash strong { font-size: 21px; white-space: nowrap; }
   .workshopSign h2 { font-size: 30px; }
   .signMark { width: 38px; height: 42px; }
   .tabs { padding: 0 12px; gap: 4px; }
@@ -232,3 +257,7 @@
   .overlay { padding: 8px; }
 }
 @media(prefers-reduced-motion:reduce) { .loading svg { animation: none; } }
+
+.leaveDraft { display: grid; gap: 14px; padding: 22px; color: #173f34; }
+.leaveDraft p { margin: 0; line-height: 1.6; }
+.leaveDraft button { min-height: 48px; width: 100%; justify-content: center; white-space: normal; }

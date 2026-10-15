@@ -60,11 +60,11 @@ function ProducerHeritageReward({ campaign }: { campaign: KqProducerRewardProgre
           <strong>{campaign.heritageDescription}</strong>
         </div>
         <p className={styles.heritageCondition}>{campaign.heritageGranted
-          ? "Cette carte permanente est à toi. Retrouve-la dans le Placard pour profiter de son avantage."
+          ? "Cette carte permanente est à toi. Retrouve-la dans Kanab Quest pour profiter de son avantage."
           : campaign.heritageEligible
             ? "Ton avis est validé. La carte passera en couleur dès que son attribution sera confirmée."
             : `Goûte une fleur éligible de ${campaign.producerName}, puis fais valider ton avis pour gagner cette carte.`}</p>
-        {campaign.heritageGranted ? <Link href="/arene/placard" className={styles.heritageLink}>Retrouver ma carte dans le Placard</Link> : <p className={styles.heritageHint}>Une seule fleur suffit pour l’Héritage.</p>}
+        {campaign.heritageGranted ? <Link href="/arene/placard" className={styles.heritageLink}>Retrouver ma carte dans Kanab Quest</Link> : <p className={styles.heritageHint}>Une seule fleur suffit pour l’Héritage.</p>}
       </div>
     </div>
   </section>;
@@ -135,9 +135,9 @@ export function ProducerRewardJourney({
       }
       setNotice(action === "quantity-bonus"
         ? (payload.receipt?.cashCents ?? 0) > 0
-          ? `${formatGameEuros(payload.receipt!.cashCents!)} de bonus quantité ont rejoint ton portefeuille du Placard.`
+          ? `${formatGameEuros(payload.receipt!.cashCents!)} de bonus quantité ont rejoint ton portefeuille Kanab Quest.`
           : "Tous tes suppléments disponibles ont déjà été reçus."
-        : action === "completion" ? "Ton bonus de dégustation est disponible dans le Placard." : payload.receipt?.alreadyGranted ? "Tu as déjà reçu le Buddie de ce producteur." : "Ton Buddie a rejoint ta collection !");
+        : action === "completion" ? "Ton bonus de dégustation est disponible dans Kanab Quest." : payload.receipt?.alreadyGranted ? "Tu as déjà reçu le Buddie de ce producteur." : "Ton Buddie a rejoint ta collection !");
       api.notify("kq:producer-rewards-changed");
       api.notify("kq:collection-updated");
       api.notify("kq:boosters-updated");

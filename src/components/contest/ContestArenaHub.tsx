@@ -27,7 +27,7 @@ export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer
   return (
     <main data-world="arena" data-lobby-mode={initialMode} className={`${retro.surface} ${styles.home}`}>
       <header className={styles.topBar}>
-        <div className={styles.brand}><span>Kanab Quest</span><h1>L’Arène<span>.</span></h1></div>
+        <div className={styles.brand}><span>Kanab Quest · Le bureau du village</span><h1>L’Arène<span>.</span></h1><p>Déguste, cultive et fais grandir ton entreprise.</p></div>
         <div className={styles.tools}>
           {activitiesLocked ? <ArenaPrelaunchCharacter launcherRef={profileLauncher} onProfileAvailabilityChange={setProfileAvailability} /> : <ArenaJourneyEntry launcherRef={profileLauncher} onProfileAvailabilityChange={setProfileAvailability} />}
         </div>

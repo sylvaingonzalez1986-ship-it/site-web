@@ -1,8 +1,8 @@
 ﻿"use client";
 
 import Link from "@/components/navigation/NavigationLink";
-import { ArrowLeft, ArrowUpRight, ChevronRight, Gift, Recycle, Sparkles, Ticket, X } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ArrowLeft, ArrowUpRight, ChevronRight, Gift, Recycle, Sparkles, Ticket } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { useCart } from "@/context/CartContext";
 import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal";
 import { PioneerPackReward } from "@/components/account/PioneerPackReward";
@@ -15,7 +15,7 @@ import { CardDetailModal } from "@/components/lottery/CardDetailModal";
 import { DuplicateBurnDrawer } from "@/components/lottery/DuplicateBurnDrawer";
 import { PageRewardDrawer } from "@/components/lottery/PageRewardDrawer";
 import { useLotteryExperience } from "@/hooks/useLotteryExperience";
-import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { AppDialog } from "@/components/ui/AppDialog";
 import {
   LOTTERY_DUPLICATE_BURN_RULES,
   LOTTERY_POINTS_PACK_COST,
@@ -47,6 +47,36 @@ type BurnableAlbumGroup = {
   group: LotteryDuplicateGroup;
 };
 
+type AlbumUrlState = {
+  screen: "lobby" | AlbumDestination;
+  collection: "buddies" | "placard";
+  page: string;
+};
+type AlbumScroll = { x: number; y: number; focus: boolean };
+const ALBUM_URL_EVENT = "album:navigation";
+const ALBUM_SCROLL_KEY = "lcbAlbumScroll";
+const readAlbumUrl = () => window.location.search;
+const serverAlbumUrl = () => "";
+
+function readAlbumState(search: string): AlbumUrlState {
+  const params = new URLSearchParams(search);
+  const requestedScreen = params.get("albumScreen");
+  return {
+    screen: ALBUM_DESTINATIONS.some(({ id }) => id === requestedScreen) ? requestedScreen as AlbumDestination : "lobby",
+    collection: params.get("albumCollection") === "placard" ? "placard" : "buddies",
+    page: params.get("albumPage") ?? "",
+  };
+}
+
+function readAlbumScroll(): AlbumScroll {
+  const saved = window.history.state?.[ALBUM_SCROLL_KEY];
+  return {
+    x: Number.isFinite(saved?.x) ? Math.max(0, saved.x) : 0,
+    y: Number.isFinite(saved?.y) ? Math.max(0, saved.y) : 0,
+    focus: false,
+  };
+}
+
 function DuplicateManagerModal({
   items,
   onSelect,
@@ -56,14 +86,8 @@ function DuplicateManagerModal({
   onSelect: (item: BurnableAlbumGroup) => void;
   onClose: () => void;
 }) {
-  useBodyScrollLock(true);
-
   return (
-    <div className={albumStyles.modalBackdrop} role="dialog" aria-modal="true" aria-labelledby="duplicate-manager-title" onClick={onClose}>
-      <div className={albumStyles.modalShell} onClick={(event) => event.stopPropagation()}>
-        <button type="button" className={albumStyles.modalClose} onClick={onClose} aria-label="Fermer">
-          <X aria-hidden="true" />
-        </button>
+    <AppDialog open onClose={onClose} title="Mes doublons" labelledBy="duplicate-manager-title" className={albumStyles.dialogShell}>
         <div className="p-5 sm:p-6">
           <p className={albumStyles.kicker}>Recyclage des doublons</p>
           <h2 id="duplicate-manager-title" className="pr-12 font-display text-3xl uppercase leading-none text-ink">
@@ -89,22 +113,33 @@ function DuplicateManagerModal({
             ))}
           </div>
         </div>
-      </div>
-    </div>
+    </AppDialog>
   );
 }
 
 export function CollectionAlbumContent({ embedded = false }: CollectionAlbumContentProps) {
   const screenRef = useRef<HTMLDivElement>(null);
-  const previousScreen = useRef("lobby");
-  const [screen, setScreen] = useState<"lobby" | AlbumDestination>("lobby");
-  const [collection, setCollection] = useState<"buddies" | "placard">("buddies");
-  useEffect(() => {
-    if (screen === previousScreen.current) return;
-    previousScreen.current = screen;
-    window.scrollTo({ top: 0, behavior: "instant" });
-    screenRef.current?.focus({ preventScroll: true });
-  }, [screen]);
+  const pendingScroll = useRef<AlbumScroll | null>(null);
+  const subscribeToAlbumUrl = useCallback((notify: () => void) => {
+    let previousSearch = window.location.search;
+    const onChange = () => {
+      previousSearch = window.location.search;
+      notify();
+    };
+    const onBack = () => {
+      // Closing a dialog adds no album navigation and must keep its scroll position.
+      if (window.location.search !== previousSearch) pendingScroll.current = readAlbumScroll();
+      onChange();
+    };
+    window.addEventListener("popstate", onBack);
+    window.addEventListener(ALBUM_URL_EVENT, onChange);
+    return () => {
+      window.removeEventListener("popstate", onBack);
+      window.removeEventListener(ALBUM_URL_EVENT, onChange);
+    };
+  }, []);
+  const search = useSyncExternalStore(subscribeToAlbumUrl, readAlbumUrl, serverAlbumUrl);
+  const { screen, collection, page: requestedPage } = readAlbumState(search);
   const { isAuthenticated, authLoading } = useCart();
   const {
     album,
@@ -121,7 +156,50 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     burnDuplicates,
   } = useLotteryExperience();
 
-  const [activePageIndex, setActivePageIndex] = useState(0);
+  const activePageIndex = Math.max(0, album?.pages.findIndex((page) => page.rarity === requestedPage) ?? 0);
+  const navigateAlbum = (change: Partial<AlbumUrlState>, replace = false) => {
+    const next = { screen, collection, page: album?.pages[activePageIndex]?.rarity ?? "", ...change };
+    const url = new URL(window.location.href);
+    for (const [key, value, fallback] of [
+      ["albumScreen", next.screen, "lobby"],
+      ["albumCollection", next.collection, "buddies"],
+      ["albumPage", next.page, ""],
+    ]) {
+      if (value === fallback) url.searchParams.delete(key);
+      else url.searchParams.set(key, value);
+    }
+    if (url.href === window.location.href) return;
+    const currentScroll = { x: window.scrollX, y: window.scrollY };
+    const screenChanged = next.screen !== screen;
+    const nextScroll = {
+      x: currentScroll.x,
+      y: screenChanged ? (embedded ? Math.max(0, (screenRef.current?.getBoundingClientRect().top ?? 0) + window.scrollY - 96) : 0) : currentScroll.y,
+      focus: screenChanged,
+    };
+    // Native history integrates with Next. Keep the profile tab, hash and router state.
+    window.history.replaceState({ ...window.history.state, [ALBUM_SCROLL_KEY]: currentScroll }, "");
+    window.history[replace ? "replaceState" : "pushState"](
+      { ...window.history.state, [ALBUM_SCROLL_KEY]: nextScroll }, "", url.pathname + url.search + url.hash,
+    );
+    pendingScroll.current = nextScroll;
+    window.dispatchEvent(new Event(ALBUM_URL_EVENT));
+  };
+  const setScreen = (value: "lobby" | AlbumDestination) => navigateAlbum({ screen: value });
+  const setCollection = (value: "buddies" | "placard") => navigateAlbum({ collection: value });
+  const setActivePageIndex = (index: number, replace = false) => {
+    const page = album?.pages[Math.max(0, Math.min(index, album.pages.length - 1))];
+    if (page) navigateAlbum({ page: page.rarity }, replace);
+  };
+  useEffect(() => {
+    if (!album || !pendingScroll.current) return;
+    const position = pendingScroll.current;
+    pendingScroll.current = null;
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo({ left: position.x, top: position.y, behavior: "instant" });
+      if (position.focus) screenRef.current?.focus({ preventScroll: true });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [search, album]);
   const [selectedSlot, setSelectedSlot] = useState<LotteryCollectionCardSlot | null>(null);
   const [rewardDrawerPage, setRewardDrawerPage] = useState<LotteryCollectionPageState | null>(null);
   const [burnDrawerGroup, setBurnDrawerGroup] = useState<{
@@ -415,7 +493,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
             const page = claimablePages[0];
             if (!page) return;
             const pageIndex = album.pages.findIndex((candidate) => candidate.rarity === page.rarity);
-            if (pageIndex >= 0) setActivePageIndex(pageIndex);
+            if (pageIndex >= 0) setActivePageIndex(pageIndex, true);
             setRewardDrawerPage(page);
           }}
         >

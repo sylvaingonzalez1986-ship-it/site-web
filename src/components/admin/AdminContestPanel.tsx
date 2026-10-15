@@ -909,7 +909,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.12em] text-green">Kanab Quest</p>
-            <h3 className="mt-1 font-display text-2xl text-ink">Gestion du Placard</h3>
+            <h3 className="mt-1 font-display text-2xl text-ink">Gestion de Kanab Quest</h3>
             <p className="mt-1 text-sm text-charcoal">
               Collections, récompenses, saisons et préparation du lancement.
             </p>
@@ -920,7 +920,7 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
             aria-expanded={placardOpen}
             onClick={() => setPlacardOpen((current) => !current)}
           >
-            {placardOpen ? "Fermer la gestion" : "Gérer le Placard"}
+            {placardOpen ? "Fermer la gestion" : "Gérer Kanab Quest"}
           </button>
         </div>
       </section>

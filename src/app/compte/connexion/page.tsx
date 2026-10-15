@@ -16,7 +16,7 @@ export default async function AccountLoginPage({
   const forgotPasswordHref = `/compte/mot-de-passe-oublie?next=${encodeURIComponent(nextUrl)}`;
 
   return (
-    <section className="section-band bg-yellow halftone-overlay paper-grain pt-36">
+    <section className="section-band account-page bg-yellow halftone-overlay paper-grain pt-36">
       <div className="retro-container max-w-xl">
         <div className="cartoon-border bg-cream p-8">
           <h1 className="section-title">CONNEXION</h1>

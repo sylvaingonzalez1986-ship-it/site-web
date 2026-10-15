@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-14",
+  "mode": "built-in imagegen edit",
+  "source": "exec-336020a6-3c69-4626-8560-b9530026a707.png",
+  "target": "public/contest/mascot/arena-scene-classement-v2.png",
+  "file": "arena-scene-classement-sylvain-v3.webp",
+  "geometry": "Original central Sylvain holding trophy and three-podium arrangement preserved in a bright open Breton stone and wood hall.",
+  "prompt": "Use case: style-transfer. Asset type: illustrated rankings hero for a friendly web game, landscape 1536 x 1024, opaque background.\nInput image 1 is the EDIT TARGET, arena-scene-classement-v2.png. Input image 2 is the STYLE REFERENCE ONLY, placard-world-sylvain-v6.webp.\nPrimary request: restyle the rankings illustration to match the bright Breton village style of image 2, with the original Sylvain mascot proudly holding the gold trophy, standing on the central podium.\nInvariants: keep the same Sylvain identity, black hair, friendly face, cap, pose, warm mustard top, turquoise trousers, shoes, two hands holding the trophy, and the same large gold cup with its existing leaf emblem. Keep his original central position and approximate size. Keep exactly three podiums with the original wide silhouette and positions: tall centre pedestal below Sylvain, shorter empty podium on the left, shorter empty podium on the right. Keep clear side margins for a responsive landscape hero.\nReplace the dark theatrical setting with a bright welcoming village wooden award stage inside an open Breton stone hall, natural pale stone, warm timber, a slate roof edge and simple cream-and-turquoise bunting. Match image 2's clean thick hand-drawn ink outlines, flat cream/turquoise/warm-wood/mustard palette, ink #172923, restrained paper stippling. The podium faces can be warm wooden boards with turquoise trim while preserving their shapes. Gentle daytime light and airy readable background, no dark cinematic overlay, no beams of stage light, no heavy dark vignetting or realistic 3D.\nPreserve only the original trophy leaf emblem. No extra characters, no new logos or brands, no UI text, no rank labels or title lettering, no watermark. Do not copy image 2's overhead village composition; use it only for style and architecture.",
+  "styleReference": "public/placard/map/placard-world-sylvain-v6.webp",
+  "export": {
+    "width": 1536,
+    "height": 1024,
+    "format": "webp",
+    "quality": 86
+  }
+}

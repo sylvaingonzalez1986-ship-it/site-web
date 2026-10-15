@@ -125,6 +125,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const [cartError, setCartError] = useState<string | null>(null);
   const [summaryModal, setSummaryModal] = useState<"loyalty" | "packs" | null>(null);
   const drawerRef = useRef<HTMLDialogElement>(null);
+  const checkoutAreaRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const [checkoutVisible, setCheckoutVisible] = useState(false);
   const wasOpenRef = useRef(false);
   useBodyScrollLock(open);
   useEffect(() => {
@@ -134,6 +137,16 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     else if (!open && drawer.open) drawer.close();
     return () => { if (drawer.open) drawer.close(); };
   }, [open]);
+
+  useEffect(() => {
+    if (!open || !checkoutAreaRef.current) return;
+    const observer = new IntersectionObserver(([entry]) => setCheckoutVisible(entry.isIntersecting), {
+      root: scrollAreaRef.current,
+      threshold: 0,
+    });
+    observer.observe(checkoutAreaRef.current);
+    return () => observer.disconnect();
+  }, [open, items.length, isAuthenticated]);
 
   useEffect(() => {
     const justOpened = open && !wasOpenRef.current;
@@ -633,7 +646,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           </button>
         </header>
 
-        <div className={styles.scrollArea}>
+        <div ref={scrollAreaRef} className={styles.scrollArea}>
           <div className={styles.content} data-empty={items.length === 0}>
           <div className={styles.items}>
             {items.length === 0 && (
@@ -766,7 +779,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               <p className={styles.kicker}>À la bonne adresse</p>
               <h3>Ta livraison</h3>
               <div className="mt-4 grid gap-2">
+                <label className={styles.field}>
+                  <span>Nom complet</span>
                 <input
+                  required
                   className={styles.input}
                   value={shippingName}
                   onChange={(event) => updateCheckoutDraft({ shippingName: event.target.value })}
@@ -774,7 +790,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   autoComplete="name"
                   placeholder="Nom complet"
                 />
+                </label>
+                <label className={styles.field}>
+                  <span>Email</span>
                 <input
+                  required
                   className={styles.input}
                   type="email"
                   value={shippingEmail}
@@ -783,7 +803,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   autoComplete="email"
                   placeholder="Email"
                 />
+                </label>
+                <label className={styles.field}>
+                  <span>Téléphone</span>
                 <input
+                  required
+                  type="tel"
                   className={styles.input}
                   value={shippingPhone}
                   onChange={(event) => updateCheckoutDraft({ shippingPhone: event.target.value })}
@@ -791,6 +816,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   autoComplete="tel"
                   placeholder="Téléphone"
                 />
+                </label>
                 <div className={styles.deliveryOptions}>
                   <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">
                     Mode de livraison
@@ -821,16 +847,24 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   </p>
                 </div>
                 {deliveryMethod === "home" && (
+                  <label className={styles.field}>
+                    <span>Adresse de livraison</span>
                   <input
+                    required
+                    autoComplete="street-address"
                     aria-label="Adresse de livraison"
                     className={styles.input}
                     value={shippingAddress}
                     onChange={(event) => updateCheckoutDraft({ shippingAddress: event.target.value })}
                     placeholder="Adresse"
                   />
+                  </label>
                 )}
                 <div className="grid grid-cols-2 gap-2">
+                  <label className={styles.field}>
+                    <span>Ville{deliveryMethod === "relay" ? " (facultatif)" : ""}</span>
                   <input
+                    required={deliveryMethod === "home"}
                     className={styles.input}
                     value={shippingCity}
                     onChange={(event) => updateCheckoutDraft({ shippingCity: event.target.value })}
@@ -838,7 +872,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   autoComplete="address-level2"
                   placeholder="Ville"
                   />
+                  </label>
+                  <label className={styles.field}>
+                    <span>Code postal</span>
                   <input
+                    required
+                    inputMode="numeric"
                     className={styles.input}
                     value={shippingPostalCode}
                     onChange={(event) => updateCheckoutDraft({ shippingPostalCode: event.target.value })}
@@ -846,8 +885,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   autoComplete="postal-code"
                   placeholder="Code postal"
                   />
+                  </label>
                 </div>
+                <label className={styles.field}>
+                  <span>Pays</span>
                 <input
+                  required
                   className={styles.input}
                   value={shippingCountry}
                   onChange={(event) => updateCheckoutDraft({ shippingCountry: event.target.value })}
@@ -855,6 +898,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   autoComplete="country-name"
                   placeholder="Pays"
                 />
+                </label>
                 {deliveryMethod === "relay" && (
                   <MondialRelayPicker
                     postalCode={shippingPostalCode}
@@ -866,6 +910,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   />
                 )}
                 <div className={styles.codeRow}>
+                  <label className={styles.field}>
+                    <span>Code promo (facultatif)</span>
                   <input
                     className={styles.input}
                     value={promoCode}
@@ -880,6 +926,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     placeholder="Code promo (optionnel)"
                     disabled={Boolean(selectedLotteryRewardClaimId)}
                   />
+                  </label>
                   <button
                     type="button"
                     className="btn-cartoon btn-secondary h-10 px-3 text-xs"
@@ -890,6 +937,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   </button>
                 </div>
                 <div className={styles.codeRow}>
+                  <label className={styles.field}>
+                    <span>Bon / cadeau (facultatif)</span>
                   <select
                     aria-label="Bon ou cadeau à utiliser"
                     className={styles.input}
@@ -913,6 +962,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                       </option>
                     ))}
                   </select>
+                  </label>
                   <button
                     type="button"
                     className="btn-cartoon btn-secondary h-10 px-3 text-xs"
@@ -1003,7 +1053,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           </div>}
           <OrderCashRewardPreview productsAmount={checkoutAmount} active={open} />
           <ContestBundleRewardPreview items={items} active={open} />
-          <div className={styles.checkoutArea}>
+          <div ref={checkoutAreaRef} tabIndex={-1} className={styles.checkoutArea}>
             {isAuthenticated && <>
             <ol className={styles.steps} aria-label="Étapes de la commande">
               <li>1. Coordonnées</li>
@@ -1069,11 +1119,19 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               </div>
             )}
             {isAuthenticated && !canCheckout && items.length > 0 && (
-              <p className="mt-2 text-xs font-semibold text-charcoal">
+              <div className="mt-2 text-sm font-semibold text-charcoal">
+              <p>
                 {deliveryMethod === "relay" && !selectedRelayPoint
                   ? "Sélectionne un Point Relais pour payer."
                   : "Compléter les informations de livraison pour payer."}
               </p>
+              <button type="button" className="min-h-11 underline" onClick={() => {
+                const target = drawerRef.current?.querySelector<HTMLElement>("input[required]:invalid")
+                  ?? drawerRef.current?.querySelector<HTMLElement>(".mondial-relay-widget button, input[autocomplete='postal-code']");
+                target?.scrollIntoView({ block: "center" });
+                target?.focus({ preventScroll: true });
+              }}>Compléter ma livraison</button>
+              </div>
             )}
             {!authLoading && isAuthenticated && !checkoutEligibility.allowed && (
               <div className="mt-2 space-y-2">
@@ -1093,6 +1151,13 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         </section>}
           </div>
         </div>
+        {open && items.length > 0 && !checkoutVisible && <div className={styles.mobileSummary}>
+          <div><span>{isAuthenticated ? "Total à payer" : "Total estimé"}</span><strong>{formatPrice(finalAmountToPay)} TTC</strong></div>
+          <button type="button" onClick={() => {
+            checkoutAreaRef.current?.scrollIntoView({ block: "center" });
+            checkoutAreaRef.current?.focus({ preventScroll: true });
+          }}>Récapitulatif</button>
+        </div>}
       </dialog>
       <CartBenefitSummaryModal
         open={open && summaryModal === "loyalty"}

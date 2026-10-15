@@ -57,8 +57,8 @@ export function ArenaPlayerResume() {
 
   if (status === "hidden") return null;
   if (!summary) return <section className={styles.resume} data-arena-player-resume data-resume-status={status} aria-label="Ton activité dans l’Arène">
-    <p role="status">{status === "error" ? "Ton activité est momentanément indisponible. Tu peux toujours rejoindre le Placard." : "On retrouve ton aventure…"}</p>
-    {status === "error" ? <div className={styles.fallback}><button type="button" onClick={() => { setStatus("loading"); setRevision(value => value + 1); }}>Réessayer</button><Link href="/arene/placard" prefetch={false}>Ouvrir mon placard <ArrowRight size={16} aria-hidden="true" /></Link></div> : null}
+    <p role="status">{status === "error" ? "Ton activité est momentanément indisponible. Tu peux toujours rejoindre Kanab Quest." : "On retrouve ton aventure…"}</p>
+    {status === "error" ? <div className={styles.fallback}><button type="button" onClick={() => { setStatus("loading"); setRevision(value => value + 1); }}>Réessayer</button><Link href="/arene/placard" prefetch={false}>Ouvrir Kanab Quest <ArrowRight size={16} aria-hidden="true" /></Link></div> : null}
   </section>;
   const [primary, ...shortcuts] = getArenaResumeActions(summary);
   const Icon = ICONS[primary.id];

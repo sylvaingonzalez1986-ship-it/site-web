@@ -1,11 +1,11 @@
-/* Console-era interface. Existing palette and artwork, no game-state styling. */
+/* Shared village palette, without changing game-state styling. */
 .surface {
-  --arcade-green: #00563f;
-  --arcade-dark: #003f30;
-  --arcade-cream: #f6f0e6;
-  --arcade-paper: #fffaf1;
-  --arcade-yellow: #f4c43d;
-  --arcade-ink: #111512;
+  --arcade-green: #087b70;
+  --arcade-dark: #172923;
+  --arcade-cream: #f5e6c9;
+  --arcade-paper: #fff1d6;
+  --arcade-yellow: #efc451;
+  --arcade-ink: #172923;
   --arcade-line: rgba(0, 86, 63, .09);
   font-variant-numeric: tabular-nums;
 }

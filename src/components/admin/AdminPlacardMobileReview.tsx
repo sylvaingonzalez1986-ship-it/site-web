@@ -83,7 +83,7 @@ export function AdminPlacardMobileReview() {
           <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Appareils réels · recette humaine</p>
           <h4 id="placard-mobile-review-title" className="mt-1 font-display text-2xl">Checklist mobile iOS et Android</h4>
           <p className="mt-2 max-w-3xl text-sm text-charcoal">
-            À remplir uniquement après manipulation du Placard sur les deux téléphones physiques. Aucun modèle, compte, email ou commentaire libre n’est enregistré.
+            À remplir uniquement après manipulation de Kanab Quest sur les deux téléphones physiques. Aucun modèle, compte, email ou commentaire libre n’est enregistré.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">

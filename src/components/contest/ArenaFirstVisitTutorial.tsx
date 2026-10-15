@@ -185,7 +185,7 @@ export function ArenaFirstVisitTutorial({ label = "Comment fonctionne l’Arène
         {step.id === "reputation" ? <div className={styles.scoreBand}>
           <Trophy aria-hidden="true" />
           <p>
-            <strong>La boucle du Placard</strong>
+            <strong>La boucle de Kanab Quest</strong>
             Équipe → cultive → duel → vends → réinvestis. La qualité fait la différence.
           </p>
         </div> : null}

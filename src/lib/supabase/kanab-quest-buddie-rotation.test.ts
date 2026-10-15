@@ -55,7 +55,7 @@ describe("persisted Buddie rotation", () => {
   });
 
   it("refuses invalid owners before making a database query", async () => {
-    await expect(getKqPlayerBuddieRotation("invalid")).rejects.toThrow("Compte Placard invalide");
+    await expect(getKqPlayerBuddieRotation("invalid")).rejects.toThrow("Compte Kanab Quest invalide");
     expect(mocks.client).not.toHaveBeenCalled();
   });
 

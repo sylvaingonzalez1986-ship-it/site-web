@@ -27,7 +27,7 @@ export async function GET(request?: Request) {
     ? [`${labels[index]} indisponible.`]
     : []);
   if (results[0].status === "rejected") {
-    return NextResponse.json({ error: "Session Placard indisponible.", warnings }, { status: 503 });
+    return NextResponse.json({ error: "Session Kanab Quest indisponible.", warnings }, { status: 503 });
   }
   return NextResponse.json({
     buddieRotation: results[1].status === "fulfilled" ? results[1].value : null,

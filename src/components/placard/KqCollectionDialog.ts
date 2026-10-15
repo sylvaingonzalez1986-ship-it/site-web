@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, type MouseEvent } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { useOverlayHistory } from "@/hooks/useOverlayHistory";
 
-export function useKqCollectionDialog() {
+export function useKqCollectionDialog(onClose: () => void) {
   const ref = useRef<HTMLDialogElement>(null);
+  useOverlayHistory(true, onClose);
   useBodyScrollLock(true);
   useEffect(() => {
     const dialog = ref.current;

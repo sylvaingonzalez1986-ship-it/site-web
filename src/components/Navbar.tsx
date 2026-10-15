@@ -5,8 +5,8 @@ import { isArenaPrelaunch } from "@/lib/arena-opening";
 import Link from "@/components/navigation/NavigationLink";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import { ShoppingCart, Menu } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { ShoppingCart, Menu, ChevronDown } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { LoyaltyBadgeIllustration } from "@/components/account/LoyaltyBadgeIllustration";
 import { useCart } from "@/context/CartContext";
 import { MobileNavigation } from "@/components/navigation/MobileNavigation";
@@ -83,6 +83,7 @@ export function Navbar() {
   const [hideWelcomePackBadge, setHideWelcomePackBadge] = useState(false);
   const [contestAccessCheck, setContestAccessCheck] = useState<ContestAccessCheck | null>(null);
   const contestAccessKey = user?.id || user?.email || "";
+  const moreMenuRef = useRef<HTMLDetailsElement>(null);
 
   useEffect(() => {
     const openCart = () => setCartOpen(true);
@@ -203,6 +204,30 @@ export function Navbar() {
     return Array.from(byHref.values());
   }, [cmsNavLinks, contestAccessCheck, contestAccessKey, user]);
 
+  const primaryHrefs = new Set(["/", "/boutique", "/arene", "/profil/collection", "/profil", "/compte/connexion"]);
+  const desktopPrimaryLinks = links.filter(link => primaryHrefs.has(link.href));
+  const desktopMoreLinks = links.filter(link => !primaryHrefs.has(link.href));
+  const isActiveLink = (href: string) => pathname === href ||
+    (href === "/compte/connexion" && pathname.startsWith("/compte/")) ||
+    (href !== "/" && href !== "/profil" && pathname.startsWith(`${href}/`));
+
+  useEffect(() => {
+    const dismissMore = (event: PointerEvent) => {
+      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) moreMenuRef.current.open = false;
+    };
+    const escapeMore = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || !moreMenuRef.current?.open) return;
+      moreMenuRef.current.open = false;
+      moreMenuRef.current.querySelector("summary")?.focus();
+    };
+    document.addEventListener("pointerdown", dismissMore);
+    document.addEventListener("keydown", escapeMore);
+    return () => {
+      document.removeEventListener("pointerdown", dismissMore);
+      document.removeEventListener("keydown", escapeMore);
+    };
+  }, []);
+
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 56);
     onScroll();
@@ -262,8 +287,8 @@ export function Navbar() {
             <span className={styles.wordmark}><small>Les Chanvriers</small><strong>Bretons</strong></span>
           </Link>
 
-          <nav className="game-nav-links hidden items-center gap-2 md:flex">
-            {links.map((link) => {
+          <nav aria-label="Navigation principale" className={`${styles.desktopNav} game-nav-links hidden items-center gap-2 md:flex`}>
+            {desktopPrimaryLinks.map((link) => {
               const isAccountLink = link.href === "/profil" || link.href === "/compte/connexion";
               const isAlbumLink = link.href === "/profil/collection";
               const showWelcomePackBadge =
@@ -273,6 +298,7 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  aria-current={isActiveLink(link.href) ? "page" : undefined}
                   className={`nav-link ${isAccountLink && user ? "inline-flex items-center gap-2" : ""} ${showWelcomePackBadge ? "relative inline-flex items-center" : ""}`}
                   data-tutorial={
                     link.href === "/boutique"
@@ -305,6 +331,19 @@ export function Navbar() {
                 </Link>
               );
             })}
+            {desktopMoreLinks.length > 0 && (
+              <details ref={moreMenuRef} className={styles.moreMenu}>
+                <summary data-active={desktopMoreLinks.some(link => isActiveLink(link.href)) || undefined}>Plus <ChevronDown size={14} aria-hidden="true" /></summary>
+                <div className={styles.moreLinks}>
+                  {desktopMoreLinks.map(link => (
+                    <Link key={link.href} href={link.href} aria-current={isActiveLink(link.href) ? "page" : undefined}
+                      onClick={() => { if (moreMenuRef.current) moreMenuRef.current.open = false; }}>
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </details>
+            )}
           </nav>
 
           <button

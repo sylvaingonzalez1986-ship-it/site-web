@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Gift } from "lucide-react";
 import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
 import { rarityAccentColor, rarityLabels } from "@/lib/lottery-card-ui";
-import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { AppDialog } from "@/components/ui/AppDialog";
 import type {
   LotteryCollectionPageRarity,
   LotteryCollectionPageState,
@@ -19,7 +19,6 @@ type PageRewardDrawerProps = {
 };
 
 export function PageRewardDrawer({ page, acting, onClaim, onClose }: PageRewardDrawerProps) {
-  useBodyScrollLock(true);
   const accent = rarityAccentColor[page.rarity];
 
   if (page.rewardStatus !== "claimable") {
@@ -27,26 +26,13 @@ export function PageRewardDrawer({ page, acting, onClaim, onClose }: PageRewardD
   }
 
   return (
-    <div
-      className={styles.modalBackdrop}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="page-reward-title"
-      onClick={onClose}
+    <AppDialog
+      open
+      onClose={onClose}
+      title="Récompense de collection"
+      labelledBy="page-reward-title"
+      className={styles.dialogShell}
     >
-      <div
-        className={styles.modalShell}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Close */}
-        <button
-          onClick={onClose}
-          className={styles.modalClose}
-          aria-label="Fermer"
-        >
-          ✕
-        </button>
-
         <div className="p-6 space-y-5">
           {/* Title */}
           <div className="text-center">
@@ -63,7 +49,7 @@ export function PageRewardDrawer({ page, acting, onClaim, onClose }: PageRewardD
           </div>
 
           {/* Reward options */}
-          <div className="space-y-3 max-h-[50vh] overflow-y-auto">
+          <div className="space-y-3">
             {page.rewardOptions.map((option) => (
               <button
                 key={option.rewardDefinitionId}
@@ -125,7 +111,6 @@ export function PageRewardDrawer({ page, acting, onClaim, onClose }: PageRewardD
             </p>
           )}
         </div>
-      </div>
-    </div>
+    </AppDialog>
   );
 }

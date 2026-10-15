@@ -1,7 +1,7 @@
 "use client";
 
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
-import { LeaderboardAvatar } from "./LeaderboardAvatar";
+import { ArenaRankingBoard, type ArenaRankingRow } from "./ArenaRankingBoard";
 
 import { useGameViewport } from "@/hooks/useGameViewport";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
@@ -133,6 +133,7 @@ type PlacardRankingEntry = {
   rating: number;
   seasonPoints: number;
   reputation: number;
+  businessScore: number;
   wins: number;
   losses: number;
   streak: number;
@@ -145,6 +146,7 @@ type ArenaRankingEntry = {
   score: number;
   notebookScore: number;
   placardScore: number;
+  businessScore: number;
   approvedReviewCount: number;
   rating: number;
   wins: number;
@@ -154,6 +156,7 @@ type ArenaRankingEntry = {
 type PlacardPlayerProgress = {
   rank: number | null;
   placardScore: number;
+  businessScore: number;
   rating: number;
   seasonPoints: number;
   wins: number;
@@ -1803,8 +1806,10 @@ function ContestTesterProfileCard({
 }) {
   const [placardProgress, setPlacardProgress] = useState<PlacardPlayerProgress | null>(null);
   const [placardProgressLoaded, setPlacardProgressLoaded] = useState(false);
+  const [placardProgressUnavailable, setPlacardProgressUnavailable] = useState(false);
   const [generalProgress, setGeneralProgress] = useState<ArenaRankingEntry | null>(null);
   const [generalProgressLoaded, setGeneralProgressLoaded] = useState(false);
+  const [generalProgressUnavailable, setGeneralProgressUnavailable] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated || placardProgressLoaded) return;
@@ -1814,10 +1819,14 @@ function ContestTesterProfileCard({
       .then(async (response) => {
         if (!response.ok) throw new Error("Progression indisponible");
         const payload = await response.json() as { progress?: PlacardPlayerProgress | null };
-        if (!cancelled) setPlacardProgress(payload.progress ?? null);
+        if (!cancelled) {
+          setPlacardProgress(payload.progress ?? null);
+          setPlacardProgressUnavailable(false);
+        }
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
+        if (!cancelled) setPlacardProgressUnavailable(true);
       })
       .finally(() => {
         if (!cancelled) setPlacardProgressLoaded(true);
@@ -1839,10 +1848,14 @@ function ContestTesterProfileCard({
         const entry = Array.isArray(payload.entries)
           ? payload.entries.find((item) => item.pseudo === progress.pseudo) ?? null
           : null;
-        if (!cancelled) setGeneralProgress(entry);
+        if (!cancelled) {
+          setGeneralProgress(entry);
+          setGeneralProgressUnavailable(false);
+        }
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
+        if (!cancelled) setGeneralProgressUnavailable(true);
       })
       .finally(() => {
         if (!cancelled) setGeneralProgressLoaded(true);
@@ -1930,10 +1943,11 @@ function ContestTesterProfileCard({
 
         <section className={arenaStyles.personalRankingCard} data-ranking="placard">
           <p>Classement personnel</p>
-          <h3>Placard</h3>
+          <h3>Kanab Quest</h3>
           <dl>
-            <div><dt>Score Placard</dt><dd>{placardProgress?.placardScore ?? "—"}</dd></div>
-            <div><dt>Rang saison</dt><dd>{placardProgress?.rank ? `#${placardProgress.rank}` : placardProgressLoaded ? "Non classé" : "…"}</dd></div>
+            <div><dt>Score Kanab Quest</dt><dd>{placardProgress?.placardScore ?? "—"}</dd></div>
+            <div><dt>Entreprise</dt><dd>{placardProgress ? `${placardProgress.businessScore ?? 0} / 200` : "—"}</dd></div>
+            <div><dt>Rang saison</dt><dd>{placardProgress?.rank ? `#${placardProgress.rank}` : placardProgressUnavailable ? "Indisponible" : placardProgressLoaded ? "Non classé" : "…"}</dd></div>
             <div><dt>Duels</dt><dd>{placardProgress ? `${placardProgress.wins} V / ${placardProgress.losses} D` : "—"}</dd></div>
           </dl>
         </section>
@@ -1943,7 +1957,8 @@ function ContestTesterProfileCard({
           <h3>Général</h3>
           <dl>
             <div><dt>Score Arène</dt><dd>{generalProgress?.score ?? "—"}</dd></div>
-            <div><dt>Rang général</dt><dd>{generalProgress?.rank ? `#${generalProgress.rank}` : generalProgressLoaded ? "Non classé" : "…"}</dd></div>
+            <div><dt>Entreprise</dt><dd>{generalProgress ? `${generalProgress.businessScore ?? 0} / 200` : "—"}</dd></div>
+            <div><dt>Rang général</dt><dd>{generalProgress?.rank ? `#${generalProgress.rank}` : generalProgressUnavailable ? "Indisponible" : generalProgressLoaded ? "Absent du tableau" : "…"}</dd></div>
           </dl>
         </section>
       </div>
@@ -1971,7 +1986,7 @@ function ContestTesterProfileCard({
 
         <section className={arenaStyles.placardProfileSummary}>
           <div>
-            <p>Progression Placard</p>
+            <p>Progression Kanab Quest</p>
             <strong>{placardProgress ? `${placardProgress.wins} V / ${placardProgress.losses} D · Classement ouvert à tous` : "Saison de culture"}</strong>
             <small>{placardProgress ? `${placardProgress.burnedFlowers} fleur(s) passée(s) au jury. Tous les joueurs peuvent se rencontrer dans la file commune.` : "Crée des Fleurs, relève les défis et affronte les autres joueurs pour entrer au classement."}</small>
           </div>
@@ -2003,14 +2018,14 @@ export function ContestTesterLeaderboard({
   const [arenaRankingUnavailable, setArenaRankingUnavailable] = useState(false);
   const [arenaRankingRetry, setArenaRankingRetry] = useState(0);
   const [remoteTastingItems, setRemoteTastingItems] = useState({ season: seasonItems, global: globalItems });
-  const [tastingLoaded, setTastingLoaded] = useState({ season: seasonItems.length > 0, global: globalItems.length > 0 });
+  const [tastingLoaded, setTastingLoaded] = useState({ season: false, global: false });
+  const [tastingUnavailable, setTastingUnavailable] = useState({ season: false, global: false });
   const [placardEntries, setPlacardEntries] = useState<PlacardRankingEntry[]>([]);
   const [placardRankingLoaded, setPlacardRankingLoaded] = useState(false);
   const [placardRankingUnavailable, setPlacardRankingUnavailable] = useState(false);
   const [rewardPool, setRewardPool] = useState<ArenaCustomerRewardPool | null>(null);
   const [rewardPoolLoaded, setRewardPoolLoaded] = useState(false);
   const [rewardPoolUnavailable, setRewardPoolUnavailable] = useState(false);
-  const rankingWindowRef = useRef<HTMLDivElement | null>(null);
   const rankingId = useId();
   const items = remoteTastingItems[scope];
   const isPlacardRanking = rankingType === "placard";
@@ -2019,19 +2034,26 @@ export function ContestTesterLeaderboard({
   useEffect(() => {
     if (rankingType !== "tasting" || tastingLoaded[scope]) return;
     const controller = new AbortController();
-    const params = new URLSearchParams({ scope, limit: "10" });
+    let cancelled = false;
+    const params = new URLSearchParams({ scope, limit: "100" });
     if (scope === "season" && profileSeasonCode) params.set("season", profileSeasonCode);
     void fetch(`/api/contest/testers/rankings?${params}`, { signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) throw new Error("Classement dégustation indisponible");
         const payload = await response.json() as { items?: PublicContestTesterRankingItem[] };
+        if (cancelled) return;
         setRemoteTastingItems((current) => ({ ...current, [scope]: Array.isArray(payload.items) ? payload.items : [] }));
+        setTastingUnavailable((current) => ({ ...current, [scope]: false }));
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
+        if (!cancelled) setTastingUnavailable((current) => ({ ...current, [scope]: true }));
       })
-      .finally(() => setTastingLoaded((current) => ({ ...current, [scope]: true })));
-    return () => controller.abort();
+      .finally(() => { if (!cancelled) setTastingLoaded((current) => ({ ...current, [scope]: true })); });
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
   }, [profileSeasonCode, rankingType, scope, tastingLoaded]);
 
   useEffect(() => {
@@ -2050,12 +2072,6 @@ export function ContestTesterLeaderboard({
         if (error instanceof DOMException && error.name === "AbortError") return;
         if (cancelled) return;
         setArenaRankingUnavailable(true);
-        if (arenaRankingRetry < 3) {
-          window.setTimeout(() => {
-            setArenaRankingLoaded(false);
-            setArenaRankingRetry((current) => current + 1);
-          }, 2_000);
-        }
       })
       .finally(() => {
         if (!cancelled) setArenaRankingLoaded(true);
@@ -2067,6 +2083,15 @@ export function ContestTesterLeaderboard({
   }, [arenaRankingLoaded, arenaRankingRetry, isGeneralRanking]);
 
   useEffect(() => {
+    if (!isGeneralRanking || !arenaRankingLoaded || !arenaRankingUnavailable || arenaRankingRetry >= 3) return;
+    const timer = window.setTimeout(() => {
+      setArenaRankingLoaded(false);
+      setArenaRankingRetry(current => current + 1);
+    }, 2_000);
+    return () => window.clearTimeout(timer);
+  }, [arenaRankingLoaded, arenaRankingRetry, arenaRankingUnavailable, isGeneralRanking]);
+
+  useEffect(() => {
     if (!isPlacardRanking || placardRankingLoaded) return;
     const controller = new AbortController();
     let cancelled = false;
@@ -2074,12 +2099,13 @@ export function ContestTesterLeaderboard({
       .then(async (response) => {
         const payload = await response.json() as { entries?: PlacardRankingEntry[] };
         if (!response.ok) throw new Error("Classement indisponible");
+        if (cancelled) return;
         setPlacardEntries(Array.isArray(payload.entries) ? payload.entries : []);
         setPlacardRankingUnavailable(false);
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
-        setPlacardRankingUnavailable(true);
+        if (!cancelled) setPlacardRankingUnavailable(true);
       })
       .finally(() => {
         if (!cancelled) setPlacardRankingLoaded(true);
@@ -2123,35 +2149,36 @@ export function ContestTesterLeaderboard({
     return () => { window.clearInterval(timer); window.removeEventListener("focus", refresh); };
   }, []);
 
-  const limit = compact ? 5 : 10;
   const rewardByLeaderboardRank = new Map(
     (rewardPool?.status === "active" ? rewardPool.topRewards : []).map((reward) => [reward.leaderboardRank, reward]),
   );
-  const rankingRows = isGeneralRanking
-    ? arenaEntries.filter((item, index) => index < limit || item.pseudo === viewerPseudo).map((item) => ({
+  const rankingRows: ArenaRankingRow[] = isGeneralRanking
+    ? arenaEntries.map((item) => ({
         key: `arena-${item.rank}-${item.pseudo}`,
         rank: item.rank,
         pseudo: item.pseudo,
         avatar: item.avatar ?? null,
-        detail: `Carnet ${item.notebookScore} · Placard ${item.placardScore}`,
-        score: String(item.score),
+        detail: "",
+        contributions: { notebook: item.notebookScore, duels: item.placardScore, business: item.businessScore ?? 0 },
+        score: item.score,
         scoreLabel: "pts Arène",
         rewardGrams: rewardByLeaderboardRank.get(item.rank)?.estimatedGrams ?? null,
         href: "",
       }))
     : isPlacardRanking
-      ? placardEntries.slice(0, limit).map((item) => ({
+      ? placardEntries.map((item) => ({
           key: `placard-${item.rank}-${item.pseudo}`,
           rank: item.rank,
           pseudo: item.pseudo,
           avatar: item.avatar ?? null,
           detail: `Cote ${item.rating} · ${item.seasonPoints} pts saison · ${getKqReputationProgress(item.reputation).tier.name} · ${item.reputation} réputation · ${item.wins} V · ${item.losses} D`,
-          score: String(item.placardScore),
-          scoreLabel: "Score Placard",
+          businessScore: item.businessScore ?? 0,
+          score: item.placardScore,
+          scoreLabel: "Score Kanab Quest",
           rewardGrams: null,
           href: "",
         }))
-      : items.slice(0, limit).map((item) => {
+      : items.map((item) => {
           const profileParams = new URLSearchParams();
           if (scope === "season" && profileSeasonCode) profileParams.set("season", profileSeasonCode);
           if (profileTrack !== "regular") profileParams.set("track", profileTrack);
@@ -2162,8 +2189,8 @@ export function ContestTesterLeaderboard({
             pseudo: item.pseudo,
             avatar: item.avatar ?? null,
             detail: `${item.level.label} · ${item.approvedReviewCount} critique${item.approvedReviewCount > 1 ? "s" : ""}`,
-            score: String(item.totalPoints),
-            scoreLabel: "points",
+            score: item.totalPoints,
+            scoreLabel: "pts Carnet",
             rewardGrams: null,
             href: `/arene/profils/${encodeURIComponent(item.pseudo)}${query ? `?${query}` : ""}`,
           };
@@ -2173,122 +2200,38 @@ export function ContestTesterLeaderboard({
     : isPlacardRanking
       ? !placardRankingLoaded
       : !tastingLoaded[scope];
-  const rankingUnavailable = isGeneralRanking ? arenaRankingUnavailable : isPlacardRanking ? placardRankingUnavailable : false;
-  const rankingTitle = isGeneralRanking ? "Classement général" : isPlacardRanking ? "Classement Placard" : "Classement dégustation";
-  const rankingKicker = isGeneralRanking ? "Top Arène" : isPlacardRanking ? "Top cultivateurs" : "Top testeurs";
-  const scrollRanking = (direction: -1 | 1) => {
-    rankingWindowRef.current?.scrollBy({ top: direction * 168, behavior: "smooth" });
+  const rankingUnavailable = isGeneralRanking
+    ? arenaRankingUnavailable
+    : isPlacardRanking ? placardRankingUnavailable : tastingUnavailable[scope];
+  const retryRanking = () => {
+    if (isGeneralRanking) {
+      setArenaRankingUnavailable(false);
+      setArenaRankingLoaded(false);
+      setArenaRankingRetry(0);
+    } else if (isPlacardRanking) {
+      setPlacardRankingUnavailable(false);
+      setPlacardRankingLoaded(false);
+    } else {
+      setTastingUnavailable(current => ({ ...current, [scope]: false }));
+      setTastingLoaded(current => ({ ...current, [scope]: false }));
+    }
   };
 
   return (
     <>
-      <div id={rankingId} className={`${arenaStyles.scorePanel} ${arenaStyles.playerLeaderboardPanel}`}>
-      <div className={arenaStyles.playerLeaderboardHeading}>
-        <div>
-          <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">{rankingKicker}</p>
-          <h2 className={`font-display leading-none text-ink ${compact ? "text-2xl" : "text-3xl"}`}>
-            {rankingTitle}
-          </h2>
-        </div>
-        {rankingType === "tasting" ? <div
-          className={`contest-leaderboard-scope-switch rounded border-2 border-[#1a1a1a] bg-white p-1 ${
-            compact ? "contest-leaderboard-scope-switch-compact" : ""
-          }`}
-        >
-          {(["season", "global"] as const).map((nextScope) => (
-            <button
-              key={nextScope}
-              type="button"
-              onClick={() => setScope(nextScope)}
-              className={`contest-leaderboard-scope-button px-3 py-2 text-center text-xs font-black uppercase leading-none tracking-[0.08em] ${
-                scope === nextScope ? "bg-yellow text-ink" : "text-charcoal"
-              }`}
-            >
-              {nextScope === "season" ? "Saison" : "Global"}
-            </button>
-          ))}
-        </div> : null}
-      </div>
-
-      <div className={arenaStyles.personalRankingTypeSwitch} aria-label="Type de classement">
-        <button type="button" aria-pressed={isGeneralRanking} data-active={isGeneralRanking || undefined} onClick={() => setRankingType("general")}>
-          Général
-          <small>Détermine les récompenses</small>
-        </button>
-        <button type="button" aria-pressed={rankingType === "tasting"} data-active={rankingType === "tasting" || undefined} onClick={() => setRankingType("tasting")}>
-          Dégustation
-          <small>Avis validés</small>
-        </button>
-        <button type="button" aria-pressed={isPlacardRanking} data-active={isPlacardRanking || undefined} onClick={() => setRankingType("placard")}>
-          Placard
-          <small>Cultures &amp; duels</small>
-        </button>
-      </div>
-
-      {isPlacardRanking ? (
-        <details className={arenaStyles.rankingHelp}>
-          <summary>Départager les égalités</summary>
-          <p>En cas d’égalité : meilleure cote, puis points de saison, réputation qualité, victoires et défaites.</p>
-        </details>
-      ) : null}
-
-      {isGeneralRanking ? (
-        <details className={arenaStyles.rankingHelp}>
-          <summary>Calcul du score</summary>
-          <p>Score sur 1 000 : Carnet 300 points maximum, activité et cote Placard 700. Une partie terminée est requise.</p>
-        </details>
-      ) : null}
-
-      <div className={`contest-station-board ${arenaStyles.playerStationBoard}`} aria-label={rankingTitle}>
-        <div className="contest-station-board-toolbar">
-
-          <strong>{rankingRows.length} joueur{rankingRows.length > 1 ? "s" : ""} classé{rankingRows.length > 1 ? "s" : ""}</strong>
-          <div className={arenaStyles.rankingToolbarActions}>
-          {viewerPseudo && isGeneralRanking && arenaEntries.some(entry => entry.pseudo === viewerPseudo) ? <button className={arenaStyles.findMyPosition} type="button" onClick={() => {
-            const row = rankingWindowRef.current?.querySelector<HTMLElement>('[data-viewer]');
-            row?.scrollIntoView({ block: "nearest", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-            row?.focus({ preventScroll: true });
-          }}>Voir ma position</button> : null}
-            <button type="button" onClick={() => scrollRanking(-1)} aria-label="Voir les joueurs précédents"><ChevronUp aria-hidden="true" /></button>
-            <button type="button" onClick={() => scrollRanking(1)} aria-label="Voir les joueurs suivants"><ChevronDown aria-hidden="true" /></button>
-          </div>
-        </div>
-        <div className={`contest-station-board-header ${arenaStyles.playerStationHeader}`}>
-          <span>Classement joueurs</span>
-          <span>Score</span>
-        </div>
-        <div ref={rankingWindowRef} className="contest-station-board-window" tabIndex={0}>
-          {rankingLoading ? (
-            <div className={`contest-station-empty ${arenaStyles.playerRankingState}`}>Chargement du classement…</div>
-          ) : rankingRows.length > 0 ? (
-            <div className="contest-station-board-track">
-              {rankingRows.map((row) => {
-                const content = <>
-                  <span className="contest-station-rank">{String(row.rank).padStart(2, "0")}</span>
-                  <LeaderboardAvatar profile={row.avatar} pseudo={row.pseudo} />
-                  <span className={`contest-station-title ${arenaStyles.playerStationIdentity}`}><strong>{row.pseudo}</strong><small>{row.detail}</small></span>
-                  <span className={`contest-station-score ${arenaStyles.playerStationScore}`}>
-                    <strong>{row.score}</strong>
-                    <small>{row.scoreLabel}</small>
-                    {row.rewardGrams !== null ? <em>≈ {row.rewardGrams} g</em> : null}
-                  </span>
-                </>;
-                return row.href ? (
-                  <Link key={row.key} href={row.href} className={`contest-station-row ${arenaStyles.playerStationRow}`} aria-label={`Voir le profil de ${row.pseudo}`}>{content}</Link>
-                ) : (
-                  <div key={row.key} tabIndex={-1} data-viewer={row.pseudo === viewerPseudo || undefined} className={`contest-station-row ${arenaStyles.playerStationRow}`}>{content}</div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className={`contest-station-empty ${arenaStyles.playerRankingState}`}>
-              {rankingUnavailable ? "Classement momentanément indisponible." : isPlacardRanking ? "Pas encore de cultivateur classé." : isGeneralRanking ? "Pas encore de joueur classé." : "Aucun testeur classé pour le moment."}
-            </div>
-          )}
-        </div>
-      </div>
-      </div>
-
+      <ArenaRankingBoard
+        id={rankingId}
+        mode={rankingType}
+        scope={scope}
+        rows={rankingRows}
+        loading={rankingLoading}
+        unavailable={rankingUnavailable}
+        compact={compact}
+        viewerPseudo={viewerPseudo}
+        onModeChange={setRankingType}
+        onScopeChange={setScope}
+        onRetry={retryRanking}
+      />
       <div className={arenaStyles.customerRewardPlacement}>
         <ArenaCustomerRewardPot
           rankingId={rankingId}
@@ -2417,7 +2360,7 @@ export function ContestBadgeGallery({
 
               {unlocked ? (badge.rewardFamily === "botte" ? (
                 <div className="mt-3 min-h-[38px] rounded border-2 border-[#1a1a1a] bg-[#e8f4e7] px-3 py-2 text-center text-[11px] font-black uppercase text-green">
-                  {badge.rewardPacks === 0 ? "Distinction obtenue" : "Gain Placard prévu au lancement"}
+                  {badge.rewardPacks === 0 ? "Distinction obtenue" : "Gain Kanab Quest prévu au lancement"}
                 </div>
               ) : claimed ? (
                 <div className="mt-3 min-h-[38px] rounded border-2 border-[#1a1a1a] bg-white px-3 py-2 text-center text-[11px] font-black uppercase text-charcoal">
@@ -2861,8 +2804,8 @@ export function ContestHubClient({
       <ArenaSceneHeader
         isPlacardPlayerEnabled={isPlacardPlayerEnabled}
         mode={isNotebookSurface && !isFlowerRankingSurface ? "carnet" : "classement"}
-        title={isFlowerRankingSurface ? "Classement des fleurs" : isNotebookSurface ? "Dégustation" : "Classement"}
-        description={isNotebookSurface && !isFlowerRankingSurface ? "Tes fleurs. Tes notes. Ta collection." : "Les meilleurs de la saison."}
+        title={isFlowerRankingSurface ? "Classement des fleurs" : isNotebookSurface ? "Dégustation" : "Les classements"}
+        description={isNotebookSurface && !isFlowerRankingSurface ? "Tes fleurs. Tes notes. Ta collection." : isFlowerRankingSurface ? "Les meilleurs de la saison." : "Déguste, cultive et fais grandir ton entreprise."}
       />
       {isNotebookSurface ? (
         <div className={arenaStyles.notebookSurfaceHeader}>
@@ -2889,20 +2832,20 @@ export function ContestHubClient({
           <div className={arenaStyles.arenaHubHeading}>
             <p className={arenaStyles.sectionKicker}>Choisis ton espace</p>
             <h2 id="arena-hub-title">Que veux-tu faire ?</h2>
-            <p>Tu peux commencer où tu veux. Le Carnet nourrit le Placard, et le Placard te fait entrer dans les classements.</p>
+            <p>Tu peux commencer où tu veux. Tes dégustations dans le Carnet t’aident à progresser dans Kanab Quest et ses classements.</p>
           </div>
           <div className={arenaStyles.arenaHubCards}>
             <a href="#carnet-arene" className={arenaStyles.arenaHubCard} data-space="carnet">
               <span><b>1</b><BookOpen aria-hidden="true" /></span>
               <strong>Mon Carnet</strong>
               <p>Déguster, noter et faire valider mes critiques.</p>
-              <small>À gagner : profil, badges et avantages Placard</small>
+              <small>À gagner : profil, badges et avantages Kanab Quest</small>
               <em>Ouvrir le Carnet <ChevronDown aria-hidden="true" /></em>
             </a>
             {isPlacardPlayerEnabled && isAuthenticated ? (
               <Link href="/arene/placard" className={arenaStyles.arenaHubCard} data-space="placard">
                 <span><b>2</b><Sprout aria-hidden="true" /></span>
-                <strong>Mon Placard</strong>
+                <strong>Kanab Quest</strong>
                 <p>Composer mon deck, cultiver et créer une Fleur.</p>
                 <small>À gagner : EXP d’Arène et Fleurs de concours</small>
                 <em>Jouer maintenant <ChevronRight aria-hidden="true" /></em>
@@ -2910,7 +2853,7 @@ export function ContestHubClient({
             ) : (
               <a href="#placard-arene" className={arenaStyles.arenaHubCard} data-space="placard">
                 <span><b>2</b><Sprout aria-hidden="true" /></span>
-                <strong>Le Placard</strong>
+                <strong>Kanab Quest</strong>
                 <p>Découvrir le jeu de cartes et la culture.</p>
                 <small>{isPlacardPlayerEnabled ? "Connexion requise pour jouer" : "Accès joueur bientôt disponible"}</small>
                 <em>Découvrir <ChevronDown aria-hidden="true" /></em>
@@ -2924,7 +2867,7 @@ export function ContestHubClient({
               <em>Voir les rangs <ChevronDown aria-hidden="true" /></em>
             </a>
           </div>
-          <p className={arenaStyles.arenaHubLoop}><strong>Carnet</strong><span>débloque des avantages</span><strong>Placard</strong><span>produit des Fleurs</span><strong>Classements</strong></p>
+          <p className={arenaStyles.arenaHubLoop}><strong>Carnet</strong><span>débloque des avantages</span><strong>Kanab Quest</strong><span>produit des Fleurs</span><strong>Classements</strong></p>
         </nav>
 
         <section hidden aria-labelledby="arena-how-title">
@@ -2938,7 +2881,7 @@ export function ContestHubClient({
           <div className={arenaStyles.howGrid}>
             {[
               ["1", "Déguste", "Note les fleurs de saison dans ton Carnet."],
-              ["2", "Cultive", "Utilise tes avantages et tes cartes dans le Placard."],
+              ["2", "Cultive", "Utilise tes avantages et tes cartes dans Kanab Quest."],
               ["3", "Affronte", "Présente ta Fleur au jury et progresse dans les classements."],
             ].map(([number, title, text]) => (
               <article key={number} className={arenaStyles.howCard}>
@@ -2955,7 +2898,7 @@ export function ContestHubClient({
             <div className={arenaStyles.placardCopy}>
               <p className={arenaStyles.sectionKicker}>Le jeu de L’Arène</p>
               <h2 id="arena-placard-title" className={arenaStyles.sectionTitle}>
-                Du carnet au <span>Placard.</span>
+                Du carnet à <span>Kanab Quest.</span>
               </h2>
               <p className={arenaStyles.placardLead}>
                 Cultive ta Fleur. Défie le jury.
@@ -2964,11 +2907,11 @@ export function ContestHubClient({
                 <span>{isPlacardPlayerEnabled ? "Saison ouverte" : "Accès en test"}</span>
                 <p>{isPlacardPlayerEnabled
                   ? "Crée ta Fleur, affronte un joueur ou un bot et gagne de l’EXP d’Arène."
-                  : "Le Placard est actuellement réservé à l’administration avant son ouverture aux joueurs."}</p>
+                  : "Kanab Quest est actuellement réservé à l’administration avant son ouverture aux joueurs."}</p>
               </div>
               {isPlacardPlayerEnabled && isAuthenticated ? (
                 <Link href="/arene/placard" className={arenaStyles.placardPlayAction}>
-                  Jouer au Placard <ChevronRight size={18} aria-hidden="true" />
+                  Jouer à Kanab Quest <ChevronRight size={18} aria-hidden="true" />
                 </Link>
               ) : isPlacardPlayerEnabled ? (
                 <Link href="/compte/connexion?next=%2Farene%2Fplacard" className={arenaStyles.placardPlayAction}>
@@ -2976,7 +2919,7 @@ export function ContestHubClient({
                 </Link>
               ) : isAdminAuthorized ? (
                 <Link href="/admin/placard" className={arenaStyles.placardPlayAction}>
-                  Tester le Placard <ChevronRight size={18} aria-hidden="true" />
+                  Tester Kanab Quest <ChevronRight size={18} aria-hidden="true" />
                 </Link>
               ) : null}
             </div>
@@ -2995,17 +2938,13 @@ export function ContestHubClient({
           <div className={arenaStyles.placardSummary}>
             <span><Trophy aria-hidden="true" /><strong>Deux façons de briller</strong></span>
             <p><b>Classement testeurs :</b> tes dégustations.</p>
-            <p><b>Classement Placard :</b> tes cultures et tes duels.</p>
+            <p><b>Classement Kanab Quest :</b> tes cultures, tes duels et le développement de ton entreprise.</p>
             <small>Plus les clients achètent de grammes, plus le Pot de la Canopée se remplit. Chaque semaine, le dé collectif fixe la part ajoutée.</small>
           </div>
         </section>
 
         <section hidden={activeArenaView !== "classement"} className={arenaStyles.playerRankingSection} aria-labelledby="arena-player-ranking-title">
-          <div className={arenaStyles.sectionHeading}>
-            <h2 id="arena-player-ranking-title" className={arenaStyles.sectionTitle}>
-              Classement des joueurs
-            </h2>
-          </div>
+          <h2 id="arena-player-ranking-title" className="sr-only">Les classements</h2>
           {activeArenaView === "classement" ? <>
 
             <ContestTesterLeaderboard

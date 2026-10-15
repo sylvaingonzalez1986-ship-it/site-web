@@ -82,13 +82,39 @@ try {
     checks.push('keyboard '+width+': cursor clamps to case100 and creates exactly1m² without a purchase');
 
     await visit('compact&cultures&buddieDrag&persist=compact-'+width);
+    assert.deepEqual(await page.$$eval('[aria-label="Mode du plan"] button',nodes=>nodes.map(node=>({label:node.textContent,selected:node.getAttribute('aria-pressed')}))),[{label:'Aménager',selected:'true'},{label:'Cultures',selected:'false'}],'Warehouse always starts in Aménager, before Cultures');
+    assert.equal(await page.$('[data-warehouse-buddie-dock]'),null,'No carousel in Aménager');
+    await clickText('Cultures');
+    assert.equal(await page.$eval('[data-warehouse-buddie-toggle]',node=>node.getAttribute('aria-expanded')),'false');
+    assert.equal(await page.$eval('[data-warehouse-buddie-toggle]',node=>node.textContent.includes('Choisir mes Buddies')),true);
+    assert.equal(await page.$('[data-warehouse-buddie-card]'),null,'Cards are absent until the player opens the chooser');
+    await shot('chooser-closed-'+width);
+    await page.click('[data-warehouse-buddie-toggle]');
+    await page.waitForSelector('[data-warehouse-buddie-card]',{visible:true});
+    await page.click('[data-warehouse-buddie-close]');
+    assert.equal(await page.$('[data-warehouse-buddie-card]'),null,'Explicit close button removes the cards');
+    assert.equal(await page.$eval('[data-warehouse-buddie-toggle]',node=>node===document.activeElement),true,'Closing returns focus to the chooser');
+    for(const room of ['storage','processing']){
+      await page.focus('[data-warehouse-buddie-toggle]');await page.keyboard.press('Enter');
+      await page.waitForSelector('[data-warehouse-buddie-card]',{visible:true});
+      await page.click('[data-warehouse-room="'+room+'"]');
+      assert.equal(await page.$('[data-warehouse-buddie-dock]'),null);
+      await page.click('[data-warehouse-room="culture"]');
+      assert.equal(await page.$eval('[aria-label="Mode du plan"] button',node=>node.getAttribute('aria-pressed')),'true','Returning to the plan starts in Aménager');
+      await clickText('Cultures');
+      assert.equal(await page.$('[data-warehouse-buddie-card]'),null,'The chooser is collapsed when entering Cultures again');
+    }
+    checks.push('chooser '+width+': Aménager first and default, explicit open/close with keyboard focus, collapsed on return from both rooms');
+    await page.click('[data-warehouse-buddie-toggle]');
     await page.waitForSelector('[data-warehouse-buddie-card="HH2026-003"]');
     const before=await saved();await drag('HH2026-003',{x:5,y:1},{touch});
     assert.equal((await assignments()).second,'HH2026-003');assert.deepEqual(await saved(),before,'Drop is an unpaid unsaved draft');
     await page.click('[data-warehouse-culture-action="save"]');
     await page.waitForFunction(()=>window.__snapshot.state.zones.find(zone=>zone.id==='second').buddieCode==='HH2026-003');
     assert.equal((await saved()).cash,before.cash);assert.equal((await saved()).requests,1);
-    await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('[data-warehouse-buddie-dock]');
+    await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('[aria-label="Mode du plan"]');
+    assert.equal(await page.$('[data-warehouse-buddie-dock]'),null,'Reload starts in Aménager with the carousel closed');
+    await clickText('Cultures');await page.click('[data-warehouse-buddie-toggle]');
     assert.equal((await assignments()).second,'HH2026-003');
     await action('overview');await shot('buddies-'+width);
     checks.push('Buddies '+width+': real '+(touch?'touch':'mouse')+' drop, one free save and reload preserve compact active plan');
@@ -96,11 +122,12 @@ try {
     const protectedBefore=await assignments();await drag('HH2026-003',{x:1,y:1},{touch,expected:'invalid'});assert.deepEqual(await assignments(),protectedBefore);
     await drag('HH2026-003',{x:1,y:5},{touch,cancel:true});assert.deepEqual(await assignments(),protectedBefore);
     assert.equal((await saved()).requests,0,'Rejected or cancelled gestures do not save after reload');
-    await page.focus('[data-warehouse-buddie-card="HH2026-003"]');await page.keyboard.press('Enter');await chip('third');
+    await page.focus('[data-warehouse-buddie-card="HH2026-003"]');await page.keyboard.press('Enter');await page.click('[data-buddie-variety-choose]');await chip('third');
     assert.equal((await assignments()).third,'HH2026-003');assert.equal((await assignments()).second,null);
     checks.push('Buddies '+width+': active zone rejects drop, cancellation preserves plan and keyboard transfers an idle Buddie');
 
     await visit('compact&campaign');
+    await clickText('Cultures');
     for(const id of ['starter','third']){await chip(id);assert.equal(new URL(await page.evaluate(()=>window.__navigation),origin).searchParams.get('run'),'11111111-1111-4111-8111-111111111111');}
     assert.equal((await saved()).requests,0);await action('overview');await shot('campaign-'+width);
     checks.push('campaign '+width+': both occupied compact zones resume one canonical leader without writing');

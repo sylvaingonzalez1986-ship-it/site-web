@@ -16,7 +16,7 @@ import { KqCareerProgress } from "../placard/KqCareerProgress";
 import styles from "./ChanvrierPlayerCard.module.css";
 
 const ICONS = { "triple-spark": Dices, "spark-collector": Sparkles, "perfect-culture": Leaf, "cool-head": ShieldCheck, "natural-defense": ShieldCheck, "jury-favorite": Trophy, "versatile-artisan": Store, "perfect-victory": Swords };
-const ORIGINS = { game: "Placard", notebook: "Carnet", season: "Saison" };
+const ORIGINS = { game: "Kanab Quest", notebook: "Carnet", season: "Saison" };
 const UPDATES = ["arena:progress-updated", "kq:equipment-updated", "kq:market-updated", "kq:boosters-updated", "kq:missions-updated", "contest:badges-updated"];
 function BadgeMedal({ badge }: { badge: Pick<ChanvrierBadge, "code" | "awardedAt"> }) {
   const code = ACHIEVEMENTS.find(a => badge.code.startsWith(`kq-ach-${a.code}-`))?.code;
@@ -162,7 +162,7 @@ export function ChanvrierPlayerCard({ profile, onEdit, inline = false, showTrigg
                 <div><Trophy /><strong>{data.metrics.bestJury ? `${data.metrics.bestJury.toLocaleString("fr-FR")}/10` : "—"}</strong><span>Meilleure note du jury</span></div>
                 <div><Swords /><strong>{data.metrics.wins ?? 0} <small>V ·</small> {data.metrics.losses ?? 0} <small>D</small></strong><span>Duels entre joueurs</span></div>
               </div>
-              <div className={styles.ranking}><Award size={29} /><div><strong>Classement commun</strong><p>{data.rank ? `N° ${data.rank} au Placard` : "Pas encore classé"} · Tous les chanvriers réunis</p>{data.rank && data.rankAsOf ? <small>Classement du {new Date(data.rankAsOf).toLocaleDateString("fr-FR")}</small> : null}</div><Link prefetch={false} onClick={close} href="/arene">L’arène ↗</Link></div>
+              <div className={styles.ranking}><Award size={29} /><div><strong>Classement commun</strong><p>{data.rank ? `N° ${data.rank} dans Kanab Quest` : "Pas encore classé"} · Tous les chanvriers réunis</p>{data.rank && data.rankAsOf ? <small>Classement du {new Date(data.rankAsOf).toLocaleDateString("fr-FR")}</small> : null}</div><Link prefetch={false} onClick={close} href="/arene">L’arène ↗</Link></div>
               <div className={styles.sectionTitle}><h3>Mon prochain cap</h3><Link prefetch={false} onClick={close} href="/arene/placard?view=missions">Toutes les missions ↗</Link></div>
               <div className={styles.objectives}>{objectives.map(o => <Link prefetch={false} onClick={close} key={o.key} href={o.href}><small>{o.hint}</small><strong>{o.title}</strong><Meter value={o.value} target={o.target} label={o.title} /><span>{Math.min(o.value, o.target)} / {o.target}<b>Continuer →</b></span></Link>)}</div>
               {!objectives.length ? <p>Tous tes objectifs sont atteints. Quelle sera ta prochaine fleur d’exception ?</p> : null}

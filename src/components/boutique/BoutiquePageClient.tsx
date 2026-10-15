@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { CustomSection } from "@/components/CustomSection";
 import { EditorialWorldHero } from "@/components/EditorialWorldHero";
@@ -38,6 +38,38 @@ type Filter = "all" | "promos" | ProductCategory;
 type CultureFilter = "all" | ProductCultureType;
 const CULTURE_FILTERS: CultureFilter[] = ["all", "outdoor", "greenhouse", "indoor"];
 type ShowcaseMode = "products" | "neighbors" | "copains" | "regions";
+const SHOWCASE_MODES: ShowcaseMode[] = ["products", "neighbors", "copains", "regions"];
+const CATALOG_URL_EVENT = "shop:filters-changed";
+function subscribeToCatalogUrl(notify: () => void) {
+  window.addEventListener("popstate", notify);
+  window.addEventListener(CATALOG_URL_EVENT, notify);
+  return () => {
+    window.removeEventListener("popstate", notify);
+    window.removeEventListener(CATALOG_URL_EVENT, notify);
+  };
+}
+const readCatalogUrl = () => window.location.search;
+const serverCatalogUrl = () => "";
+function readCatalogFilters(search: string): { filter: Filter; cultureFilter: CultureFilter; showcaseMode: ShowcaseMode } {
+  const params = new URLSearchParams(search);
+  const requestedFilter = params.get("categorie") ?? "all";
+  const requestedCulture = params.get("culture") as CultureFilter;
+  const requestedMode = params.get("selection") as ShowcaseMode;
+  return {
+    filter: requestedFilter === "promos" || Object.hasOwn(categoryLabels, requestedFilter) ? requestedFilter as Filter : "all",
+    cultureFilter: CULTURE_FILTERS.includes(requestedCulture) ? requestedCulture : "all",
+    showcaseMode: SHOWCASE_MODES.includes(requestedMode) ? requestedMode : "products",
+  };
+}
+function updateCatalogFilter(key: "selection" | "categorie" | "culture", value: string, defaultValue: string) {
+  const url = new URL(window.location.href);
+  if (value === defaultValue) url.searchParams.delete(key);
+  else url.searchParams.set(key, value);
+  if (url.href === window.location.href) return;
+  // Native history is integrated with the Next router; keep unrelated query parameters.
+  window.history.pushState(null, "", url.pathname + url.search + url.hash);
+  window.dispatchEvent(new Event(CATALOG_URL_EVENT));
+}
 
 type BoutiquePageClientProps = {
   rotationDay: number;
@@ -67,22 +99,14 @@ export function BoutiquePageClient({
   tastingSummariesByProductId,
 }: BoutiquePageClientProps) {
   const loading = false;
-  const [filter, setFilter] = useState<Filter>("all");
-  const [cultureFilter, setCultureFilter] = useState<CultureFilter>("all");
-  const [showcaseMode, setShowcaseMode] = useState<ShowcaseMode>("products");
+  const search = useSyncExternalStore(subscribeToCatalogUrl, readCatalogUrl, serverCatalogUrl);
+  const { filter, cultureFilter, showcaseMode } = readCatalogFilters(search);
+  const setFilter = (value: Filter) => updateCatalogFilter("categorie", value, "all");
+  const setCultureFilter = (value: CultureFilter) => updateCatalogFilter("culture", value, "all");
+  const setShowcaseMode = (value: ShowcaseMode) => updateCatalogFilter("selection", value, "products");
   const [selectedOwnProducerId, setSelectedOwnProducerId] = useState<string | null>(null);
 
-  const modeProducts = useMemo(() => {
-    if (showcaseMode === "neighbors") {
-      return voisinProducts;
-    }
-
-    if (showcaseMode === "copains") {
-      return copainsProducts;
-    }
-
-    return ownProducts;
-  }, [copainsProducts, ownProducts, showcaseMode, voisinProducts]);
+  const modeProducts = showcaseMode === "neighbors" ? voisinProducts : showcaseMode === "copains" ? copainsProducts : ownProducts;
 
   const availableFilters = useMemo(() => {
     const categoryOrder = Object.keys(categoryLabels) as ProductCategory[];

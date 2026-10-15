@@ -4,7 +4,7 @@ import { KanabQuestDicePrototype } from "@/components/placard/KanabQuestDiceProt
 import { isCurrentRequestAdminAuthorized } from "@/lib/admin-guard";
 
 export const metadata: Metadata = {
-  title: "Placard — Kanab Quest",
+  title: "Kanab Quest — Administration",
   robots: { index: false, follow: false },
 };
 

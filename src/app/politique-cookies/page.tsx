@@ -4,6 +4,7 @@ import {
   COOKIE_CONSENT_DURATION_LABEL,
 } from "@/components/cookies/cookie-consent-config";
 import { buildCmsStaticPageMetadata } from "@/lib/cms-static-pages";
+import { CookieSettingsButton } from "@/components/cookies/CookieSettingsButton";
 
 const CMS_SLUG = "politique-cookies";
 const CANONICAL_PATH = "/politique-cookies";
@@ -22,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function PolitiqueCookiesPage() {
   return (
-    <section className="section-band bg-cream halftone-overlay paper-grain pt-32">
+    <section className="section-band account-page bg-cream halftone-overlay paper-grain pt-32">
       <div className="retro-container">
         <article className="cartoon-border bg-white p-6 md:p-10">
           <h1 className="section-title">POLITIQUE DE COOKIES</h1>
@@ -38,6 +39,8 @@ export default function PolitiqueCookiesPage() {
             </a>
             .
           </p>
+
+          <div className="mt-5"><CookieSettingsButton /></div>
 
           <div className="mt-6 grid gap-6 break-words text-sm leading-relaxed text-ink [overflow-wrap:anywhere]">
             <section>
@@ -132,9 +135,8 @@ export default function PolitiqueCookiesPage() {
                 n&apos;est plus utilise.
               </p>
               <p className="mt-2">
-                Vous pouvez accepter, refuser ou personnaliser vos preferences depuis le modal de
-                consentement puis les modifier a tout moment via le bouton cookies affiche en bas a
-                gauche de l&apos;ecran.
+                Vous pouvez accepter, refuser ou personnaliser vos préférences, puis les modifier à
+                tout moment avec « Gérer mes cookies » sur cette page ou dans le pied de page.
               </p>
             </section>
 

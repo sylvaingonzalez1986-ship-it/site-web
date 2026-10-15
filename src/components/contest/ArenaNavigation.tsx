@@ -38,7 +38,7 @@ export function ArenaNavigation({ activeView, previewMode, onPreviewMode }: {
             data-mode={id} data-preview={previewMode === id || undefined}
             onPointerEnter={() => onPreviewMode?.(id)} onFocus={() => onPreviewMode?.(id)}>
             <span className={retro.modeIcon}><Icon aria-hidden="true" /></span>
-            <span><small>0{index + 1} · {id === "carnet" ? "Dégustation" : id === "jouer" ? "Le Placard" : "Records"}</small><strong>{label}</strong></span>
+            <span><small>0{index + 1} · {id === "carnet" ? "Dégustation" : id === "jouer" ? "Kanab Quest" : "Records"}</small><strong>{label}</strong></span>
             <ChevronRight aria-hidden="true" />
           </Link>
         ))}

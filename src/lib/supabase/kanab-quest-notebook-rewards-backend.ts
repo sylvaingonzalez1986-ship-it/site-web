@@ -83,7 +83,7 @@ export async function syncKqNotebookRewardsForCustomer(
     });
     if (result.error) {
       if (result.error.message.includes("kq_notebook_rewards_inactive")) {
-        throw new Error("Les récompenses Carnet vers le Placard ne sont pas activées dans Supabase.");
+        throw new Error("Les récompenses Carnet vers Kanab Quest ne sont pas activées dans Supabase.");
       }
       throw new Error(`[supabase:rpc_kq_grant_notebook_badge_reward] ${result.error.message}`);
     }

@@ -1,11 +1,11 @@
-﻿.map { overflow: hidden; border: 1px solid #fffaf147; border-radius: 12px; background: #ede8d5; color: #173f30; box-shadow: 0 7px 0 #001f1b, 0 20px 50px #001b1930; }
+.map { overflow: hidden; border: 3px solid #172923; border-radius: 16px; background: #d5a573; color: #172923; box-shadow: 5px 7px 0 #172923; }
 .heading { display: none; }
-.viewport { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #738363 #214f3d; background: #073f31; }
+.viewport { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #087b70 #fff1d6; background: #d5a573; }
 .terrain { position: relative; width: 100%; aspect-ratio: 3 / 2; isolation: isolate; }
 .terrain > img { object-fit: cover; user-select: none; pointer-events: none; }
 .place { position: absolute; left: var(--x); top: var(--y); width: var(--width); height: var(--height); min-height: 44px; display: flex; align-items: flex-end; justify-content: center; padding: 0; border: 0; border-radius: 8px; background: transparent; color: #173f30; text-decoration: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .place::before { content: ""; position: absolute; inset: 0; border: 2px solid transparent; border-radius: inherit; pointer-events: none; transition: border-color 160ms ease, background 160ms ease; }
-.label { position: relative; display: inline-flex; justify-content: center; align-items: center; gap: 7px; flex-shrink: 0; max-width: 100%; min-height: 42px; padding: 8px 12px; border: 2px solid #173f30; border-radius: 5px; background: #fff6df; box-shadow: 0 3px 0 #173f30; text-align: left; transition: background 160ms ease, transform 160ms ease; }
+.label { position: relative; display: inline-flex; justify-content: center; align-items: center; gap: 7px; flex-shrink: 0; max-width: 100%; min-height: 42px; padding: 8px 12px; border: 2px solid #172923; border-radius: 8px; background: #fff1d6; box-shadow: 2px 3px 0 #172923; text-align: left; transition: background 160ms ease, transform 160ms ease; }
 .label strong { display: block; font: 900 clamp(16px, 1.8vw, 24px)/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; white-space: nowrap; }
 .label small { display: block; margin-top: 4px; font-size: 10px; font-weight: 600; line-height: 1.3; }
 .placeIcon { display: grid; place-items: center; flex-shrink: 0; width: 20px; height: 20px; }

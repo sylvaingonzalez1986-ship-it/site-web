@@ -177,7 +177,7 @@ export function AdminPlacardOperationsPanel() {
         fetch("/api/admin/arena/customer-rewards", { cache: "no-store" }),
       ]);
       const payload = await readJson(response);
-      if (!response.ok) throw new Error(payload.error || "Pilotage Placard indisponible.");
+      if (!response.ok) throw new Error(payload.error || "Pilotage Kanab Quest indisponible.");
       setData(payload);
       if (botResponse.ok) setBotDashboard(await botResponse.json() as BotDashboard);
       else setBotDashboard(null);
@@ -191,7 +191,7 @@ export function AdminPlacardOperationsPanel() {
       }
       if (warnings.length > 0) setStatus(warnings.join(" · "));
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Pilotage Placard indisponible.");
+      setStatus(error instanceof Error ? error.message : "Pilotage Kanab Quest indisponible.");
     } finally {
       setLoading(false);
     }
@@ -322,7 +322,7 @@ export function AdminPlacardOperationsPanel() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.12em] text-green">Kanab Quest</p>
-            <h3 className="mt-1 font-display text-3xl text-ink">Pilotage du Placard</h3>
+            <h3 className="mt-1 font-display text-3xl text-ink">Pilotage de Kanab Quest</h3>
             <p className="mt-2 max-w-2xl text-sm text-charcoal">
               Collections, récompenses, saisons et contrôles de lancement sont centralisés ici.
             </p>
@@ -436,7 +436,7 @@ export function AdminPlacardOperationsPanel() {
           </article>
 
           <article className="cartoon-border bg-[#eaf4df] p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Carnet → Placard</p>
+            <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Carnet → Kanab Quest</p>
             <h4 className="mt-1 font-display text-2xl">Compte admin · {Number(notebook?.pendingBadges ?? 0)} badge(s) en attente</h4>
             <p className="mt-2 text-sm">{Number(notebook?.pendingSupportBoosters ?? 0)} booster(s) · {Number(notebook?.pendingCultureTokens ?? 0)} jeton(s) · {Number(notebook?.alreadyGranted ?? 0)} déjà traité(s)</p>
             {notebookRetroPreview ? (

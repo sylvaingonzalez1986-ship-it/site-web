@@ -40,12 +40,12 @@ export const ARENA_TUTORIAL_STEPS: readonly ArenaTutorialStep[] = [
       { title: "Récupère tes récompenses", description: "Un avis validé ou un objectif rempli peut débloquer des packs : consulte tes récompenses disponibles.", Icon: Gift },
       { title: "Découvre les Héritages", description: "Remplis les objectifs des producteurs présents sur la plateforme pour débloquer leurs cartes Héritage.", Icon: Layers3 },
     ],
-    tip: "Tu peux commencer par le Carnet ou rejoindre directement le Placard si tu as déjà les cartes nécessaires.",
+    tip: "Tu peux commencer par le Carnet ou rejoindre directement Kanab Quest si tu as déjà les cartes nécessaires.",
   },
   {
     id: "placard", number: "02", label: "Cartes", eyebrow: "Ton équipe de départ",
     title: "Prépare ta culture.",
-    lead: "Dans le Placard, tes cartes composent ta stratégie. Le matériel complète ton atelier.",
+    lead: "Dans Kanab Quest, tes cartes composent ta stratégie. Le matériel complète ton atelier.",
     href: "/arene/placard?view=game", action: "Préparer une partie", Icon: Layers3,
     features: [
       { title: "Choisis ton Buddie", description: "Sélectionne une carte Buddie parmi celles que tu possèdes.", Icon: UserRound },
@@ -57,10 +57,10 @@ export const ARENA_TUTORIAL_STEPS: readonly ArenaTutorialStep[] = [
   {
     id: "boutique", number: "03", label: "Entrepôt", eyebrow: "Investir dans l’atelier",
     title: "Achète le bon matériel.",
-    lead: "Dans l’Entrepôt du Placard, ouvre le rayon matériel. La Boutique du quartier est réservée aux packs de cartes.",
+    lead: "Dans l’Entrepôt de Kanab Quest, ouvre le rayon matériel. La Boutique du quartier est réservée aux packs de cartes.",
     href: "/arene/placard?view=workshop&catalog=equipment", action: "Voir le matériel", Icon: ShoppingBag,
     features: [
-      { title: "Deux budgets distincts", description: "Les points servent aux packs de cartes. La trésorerie du Placard, affichée en euros, sert aux équipements : c’est de la monnaie de jeu.", Icon: Banknote },
+      { title: "Deux budgets distincts", description: "Les points servent aux packs de cartes. La trésorerie de Kanab Quest, affichée en euros, sert aux équipements : c’est de la monnaie de jeu.", Icon: Banknote },
       { title: "Compare les machines", description: "Tentes, LED et matériel de transformation : regarde les effets, les prérequis, la capacité et les filières débloquées.", Icon: SlidersHorizontal },
       { title: "Devis, puis validation", description: "Choisis tes équipements, vérifie le total annoncé et confirme l’achat si ton solde le permet.", Icon: ShoppingBag },
     ],
@@ -69,7 +69,7 @@ export const ARENA_TUTORIAL_STEPS: readonly ArenaTutorialStep[] = [
   {
     id: "inventaire", number: "04", label: "Matériel", eyebrow: "Possédé ≠ installé",
     title: "Installe ce que tu possèdes.",
-    lead: "Depuis le hub du Placard, ouvre Inventaire pour choisir les équipements actifs.",
+    lead: "Depuis l’accueil de Kanab Quest, ouvre Inventaire pour choisir les équipements actifs.",
     href: "/arene/placard", action: "Revenir à mon atelier", Icon: Boxes,
     features: [
       { title: "Choisis tes équipements actifs", description: "Seul le matériel possédé et compatible peut être installé. Un seul équipement est actif par emplacement.", Icon: PackageCheck },
@@ -132,13 +132,13 @@ export const ARENA_TUTORIAL_STEPS: readonly ArenaTutorialStep[] = [
     features: [
       { title: "Le rosin est plus exigeant", description: `À 7,5/10 : ${calculateKqMarketReputation("dry-sift", 7.5)} point en hash tamisé, mais ${calculateKqMarketReputation("rosin-selection", 7.5)} points en Rosin Sélection.`, Icon: FlaskConical },
       { title: "Pas de prime pour un mauvais lot", description: "Les primes d’expertise aux ventes 3, 6 et 10 exigent un gain de réputation positif sur la vente concernée.", Icon: Sparkles },
-      { title: "Une place à défendre", description: "La réputation participe au score Placard avec ta cote de duel et tes points de saison. Une baisse peut donc peser sur ton classement.", Icon: Trophy },
+      { title: "Une place à défendre", description: "La réputation participe au score Kanab Quest avec ta cote de duel et tes points de saison. Une baisse peut donc peser sur ton classement.", Icon: Trophy },
     ],
     tip: "Les pertes sont annoncées avant vente et s’arrêtent à zéro. La biomasse reste neutre, quelle que soit la note.",
     details: { title: "Expertise et calcul du score", paragraphs: [
       "Les ventes comptent pour l’expérience de la filière. Une prime manquée à cause de la qualité n’est pas reportée. Les anciennes ventes ne sont pas recalculées.",
-      `Score Placard = cote de duel + bonus saison (25 % des points, arrondi, maximum ${KQ_PLACARD_SEASON_BONUS_CAP}) + bonus réputation (4 × racine carrée de la réputation, arrondi, maximum ${KQ_PLACARD_REPUTATION_BONUS_CAP}).`,
-      "Le classement général de l’Arène combine les scores Carnet et Placard avec son propre barème. Il ne faut pas confondre ce classement, la réputation et ton argent disponible.",
+      `Score Kanab Quest = cote de duel + bonus saison (25 % des points, arrondi, maximum ${KQ_PLACARD_SEASON_BONUS_CAP}) + bonus réputation (4 × racine carrée de la réputation, arrondi, maximum ${KQ_PLACARD_REPUTATION_BONUS_CAP}).`,
+      "Le classement général de l’Arène combine les scores Carnet et Kanab Quest avec son propre barème. Il ne faut pas confondre ce classement, la réputation et ton argent disponible.",
     ] },
   },
 ];

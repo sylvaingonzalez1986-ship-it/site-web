@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-14",
+  "mode": "built-in imagegen edit",
+  "source": "exec-ae0fbafe-41a0-4628-adf0-cf04a5d74ff9.png",
+  "target": "public/contest/map/arena-desk-v5.webp",
+  "file": "arena-desk-sylvain-v6.webp",
+  "geometry": "Original 1536x1024 composition preserved: left mirror, bottom-centre notebook, right monitor, upper-right ranking board. Same Sylvain identity and pose.",
+  "prompt": "Use case: style-transfer. Asset type: illustrated interactive web game scene, landscape 1536 x 1024, opaque background.\nInput image 1 is the EDIT TARGET, arena-desk-v5.webp. Input image 2 is the STYLE REFERENCE ONLY, placard-world-sylvain-v6.webp.\nPrimary request: restyle the desk scene to belong to the bright illustrated Breton village of image 2. Keep the exact original scene, composition, camera and every hotspot position. The result must still align with the existing interactive hotspots.\nInvariants: preserve the same Sylvain character identity, friendly face, pose, cap and clothing silhouette, seated centrally behind the desk. Preserve mirror at far left, approximately x50–310/y15–530; open notebook at bottom centre, approximately x430–1055/y650–950; computer monitor at right, approximately x965–1365/y425–770; framed ranking board upper right, approximately x1005–1445/y35–380. Preserve the jars left, lamp right, keyboard, books and plant placements. Do not shift, zoom, crop, remove or duplicate any of these landmarks.\nStyle and mood: match image 2's bold clean hand-drawn dark ink outlines, simple flat cream and turquoise fills, warm wood, mustard accents and restrained printed-paper stippling. Use ink #172923. A bright welcoming daytime village room, warm pale cream plaster and subtle Breton stone details in the existing wall areas. Consistent gentle daylight with readable forms across the whole image, no dark cinematic overlay, no spotlight mood, no heavy shadows, no glossy 3D.\nKeep the notebook's illustrated flower photo and small handwritten marks subordinate as in the original. Keep only existing simple 1, 2, 3 ranking symbols and cup on the ranking board. No UI button text, no added titles, no invented brand marks or logos, no watermark. This is an art asset only, not a screen mockup. Do not use image 2's village layout or add houses into the scene. Preserve the target's exact object geometry while changing its palette and rendering style.",
+  "styleReference": "public/placard/map/placard-world-sylvain-v6.webp",
+  "export": {
+    "width": 1536,
+    "height": 1024,
+    "format": "webp",
+    "quality": 86
+  }
+}

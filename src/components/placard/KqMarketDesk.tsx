@@ -505,7 +505,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
     <main ref={pageRef} className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.heroCopy}>
-          <span>Le Placard · Atelier & marché</span>
+          <span>Kanab Quest · Atelier & marché</span>
           <h1>Le Marché</h1>
           <p>Ta récolte. Tes machines. Ton prochain palier.</p>
         </div>

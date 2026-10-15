@@ -116,7 +116,7 @@ function buildCopy(input: {
     eyebrow: "Paiement Viva",
     title: "Confirmation du paiement en cours",
     message:
-      "Nous verifions directement la transaction aupres de Viva. Garde cette page ouverte quelques instants et ne repasse pas de commande.",
+      "Nous vérifions le statut de ta commande. Ne repasse pas de commande pendant cette vérification ; tu peux retrouver son suivi dans ton profil.",
     toneClassName: "bg-[#fff5da] text-[#6f4b00]",
     statusLabel: getPaymentStateLabel(input.order?.paymentState),
   };
@@ -155,16 +155,13 @@ export async function VivaPaymentReturnPage({
     order ? { label: "Statut commande", value: getOrderStatusLabel(order.status) } : null,
   ].filter((item): item is { label: string; value: string } => Boolean(item));
   const resumePaymentUrl =
-    order && order.paymentState !== "paid" && order.vivaOrderCode
+    order && order.paymentState !== "paid" && order.vivaOrderCode &&
+    (kind === "failure" || cancelled || order.paymentState === "failed")
       ? buildVivaCheckoutUrl(order.vivaOrderCode)
       : "";
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-36 pb-16">
-      <VivaPaymentReturnEffects
-        clearCart={order?.paymentState === "paid"}
-        pollPayment={kind === "success" && order?.paymentState === "pending"}
-      />
       <div className="retro-container">
         <div className="cartoon-border mx-auto max-w-3xl bg-cream p-6 text-center md:p-8">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-charcoal">
@@ -176,6 +173,11 @@ export async function VivaPaymentReturnPage({
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-charcoal md:text-base">
             {copy.message}
           </p>
+          <VivaPaymentReturnEffects
+            clearCart={order?.paymentState === "paid"}
+            pollPayment={kind === "success" && order?.paymentState === "pending"}
+            statusUnavailable={lookupFailed || Boolean(session && vivaOrderCode && !order)}
+          />
 
           <div
             className={`cartoon-border-sm mx-auto mt-6 inline-flex px-4 py-2 text-sm font-extrabold uppercase tracking-[0.08em] ${copy.toneClassName}`}

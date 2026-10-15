@@ -196,7 +196,7 @@ export function PlacardPrototype() {
       <section className={styles.hero}>
         <div>
           <p className={styles.kicker}>Prototype local · aucune donnée enregistrée</p>
-          <h1>Le Placard</h1>
+          <h1>Kanab Quest</h1>
           <p>Choisis un Buddie, conduis sa culture et révèle ta première carte Récolte.</p>
         </div>
         <Image src="/dev/placard/arena-duo.webp" alt="Le duo de l’Arène" width={270} height={190} priority />
@@ -240,7 +240,7 @@ export function PlacardPrototype() {
           </div>
           <div className={styles.selectionFooter}>
             <div><strong>{variety.name} · Installation {activeSetup.name}</strong><p>{variety.description}</p></div>
-            <button type="button" className={styles.primaryButton} onClick={() => setCulture(startPlacardCulture(selectedCode, 2026, selectedSetup))}>Envoyer au Placard</button>
+            <button type="button" className={styles.primaryButton} onClick={() => setCulture(startPlacardCulture(selectedCode, 2026, selectedSetup))}>Commencer dans Kanab Quest</button>
           </div>
         </section>
       ) : (
@@ -355,7 +355,7 @@ export function PlacardPrototype() {
             ) : null}
           </aside>
 
-          <nav className={styles.mobileGameNav} aria-label="Navigation du Placard">
+          <nav className={styles.mobileGameNav} aria-label="Navigation de Kanab Quest">
             <button type="button" className={mobileView === "culture" ? styles.mobileTabActive : ""} onClick={() => setMobileView("culture")} aria-pressed={mobileView === "culture"}>
               <Sprout aria-hidden="true" /><span>Culture & état</span>
             </button>

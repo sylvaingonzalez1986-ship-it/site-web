@@ -5,7 +5,7 @@ import { ARENA_LOBBY_MODES, ARENA_LOBBY_MODE_ORDER, type ArenaLobbyMode } from "
 import styles from "./ArenaSceneHeader.module.css";
 
 const icons = { carnet: BookOpen, jouer: Gamepad2, classement: Trophy };
-const labels = { carnet: "Dégustation", jouer: "Placard", classement: "Classement" };
+const labels = { carnet: "Dégustation", jouer: "Kanab Quest", classement: "Classement" };
 
 export function ArenaSceneHeader({ mode, title, description, isPlacardPlayerEnabled = true }: {
   mode: ArenaLobbyMode;
@@ -16,14 +16,17 @@ export function ArenaSceneHeader({ mode, title, description, isPlacardPlayerEnab
   const scene = ARENA_LOBBY_MODES[mode];
   return (
     <header className={styles.header} data-arena-scene={mode}>
-      <Image src={scene.image} alt="" fill priority sizes="100vw" className={styles.art} />
-      <div className={styles.shade} aria-hidden="true" />
       <div className={styles.inner}>
-        <Link href="/arene" className={styles.back}><ArrowLeft size={18} aria-hidden="true" /> L’Arène</Link>
-        <div className={styles.copy}>
-          <span>Kanab Quest · Mode {scene.number}</span>
-          <h1>{title ?? scene.name}</h1>
-          <p>{description ?? scene.label}</p>
+        <div className={styles.heading}>
+          <Link href="/arene" className={styles.back}><ArrowLeft size={18} aria-hidden="true" /> Retour à l’Arène</Link>
+          <div className={styles.copy}>
+            <span>Kanab Quest · Le village des chanvriers</span>
+            <h1>{title ?? scene.name}</h1>
+            <p>{description ?? scene.label}</p>
+          </div>
+        </div>
+        <div className={styles.scene}>
+          <Image src={scene.image} alt="" width={1536} height={mode === "jouer" ? 512 : 1024} loading="eager" fetchPriority="high" sizes="(max-width: 700px) 100vw, 540px" className={styles.art} />
         </div>
         <nav className={styles.modes} aria-label="Espaces de l’Arène">
           {ARENA_LOBBY_MODE_ORDER.filter((id) => id !== "jouer" || isPlacardPlayerEnabled).map((id) => {

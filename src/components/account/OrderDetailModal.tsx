@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { OrderCashRewardReceipt } from "@/components/checkout/OrderCashReward";
 import { ContestBundleRewardReceipt } from "@/components/checkout/ContestBundleReward";
-import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { AppDialog } from "@/components/ui/AppDialog";
 import { formatPrice } from "@/lib/utils";
 import { isInvoiceEligibleOrder } from "@/lib/invoice-utils";
 import type { CmsOrder, OrderStatus } from "@/types/store";
@@ -61,22 +61,6 @@ function getPaymentStateClass(paymentState: CmsOrder["paymentState"]): string {
 export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
   const [invoiceLoading, setInvoiceLoading] = useState(false);
   const [invoiceError, setInvoiceError] = useState<string | null>(null);
-  useBodyScrollLock(Boolean(order));
-
-  useEffect(() => {
-    if (!order) {
-      return;
-    }
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [order, onClose]);
 
   useEffect(() => {
     setInvoiceError(null);
@@ -161,35 +145,8 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <button
-        type="button"
-        className="absolute inset-0"
-        aria-label="Fermer le detail de commande"
-        onClick={onClose}
-      />
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={`Detail commande ${order.id}`}
-        className="relative z-10 max-h-[92vh] w-full max-w-3xl overflow-y-auto cartoon-border bg-cream p-6 md:p-8"
-      >
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h3 className="font-display text-3xl text-ink">Commande {order.id}</h3>
-            <p className="mt-1 text-sm text-charcoal">
-              {new Date(order.createdAt).toLocaleString("fr-FR")}
-            </p>
-          </div>
-          <button
-            type="button"
-            className="btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 text-2xl font-bold leading-none"
-            onClick={onClose}
-            aria-label="Fermer"
-          >
-            ✕
-          </button>
-        </div>
+    <AppDialog open onClose={onClose} title={`Commande ${order.id}`} label={`Détail commande ${order.id}`} bodyClassName="p-4 sm:p-6 md:p-8">
+        <p className="text-sm text-charcoal">{new Date(order.createdAt).toLocaleString("fr-FR")}</p>
 
         <div className="mt-4 flex flex-wrap gap-2 text-sm">
           <span className={`pill-cartoon px-3 py-1 ${getStatusClass(order.status)}`}>
@@ -219,7 +176,7 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
         )}
 
         <div className="mt-6 card-cartoon bg-white p-4">
-          <div className="grid grid-cols-[1fr,70px,110px,110px] gap-2 text-xs font-bold uppercase tracking-[0.08em] text-charcoal">
+          <div className="hidden grid-cols-[minmax(0,1fr)_50px_80px_80px] gap-2 text-xs font-bold uppercase tracking-[0.08em] text-charcoal sm:grid">
             <p>Produit</p>
             <p>Qte</p>
             <p>P.U.</p>
@@ -227,11 +184,11 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
           </div>
           <div className="mt-2 grid gap-2">
             {order.items.map((item, index) => (
-              <div key={`${order.id}-line-${index}`} className="grid grid-cols-[1fr,70px,110px,110px] gap-2 text-sm text-ink">
-                <p>{item.name}</p>
-                <p>{item.quantity}</p>
-                <p>{formatPrice(item.unitPrice)}</p>
-                <p>{formatPrice(item.lineTotal)}</p>
+              <div key={`${order.id}-line-${index}`} className="grid grid-cols-2 gap-2 border-b border-ink/15 py-3 text-sm text-ink sm:grid-cols-[minmax(0,1fr)_50px_80px_80px] sm:border-0 sm:py-0">
+                <p className="col-span-2 min-w-0 break-words font-semibold sm:col-span-1">{item.name}</p>
+                <p><span className="sm:hidden">Quantité : </span>{item.quantity}</p>
+                <p><span className="sm:hidden">Prix unitaire : </span>{formatPrice(item.unitPrice)}</p>
+                <p className="col-span-2 font-bold sm:col-span-1"><span className="sm:hidden">Total : </span>{formatPrice(item.lineTotal)}</p>
               </div>
             ))}
           </div>
@@ -298,7 +255,6 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
             <p className="mt-2 text-sm font-semibold text-red-700">{invoiceError}</p>
           )}
         </div>
-      </div>
-    </div>
+    </AppDialog>
   );
 }

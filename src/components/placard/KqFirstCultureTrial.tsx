@@ -127,7 +127,7 @@ export function KqFirstCultureTrial({ storageKey, onClose, onContinue, continueL
   >
     <header className={styles.header}>
       <div>
-        <span className={styles.eyebrow}>LE PLACARD · PREMIERS PAS</span>
+        <span className={styles.eyebrow}>KANAB QUEST · PREMIERS PAS</span>
         <h2 id={titleId}>{complete ? 'Ta première récolte !' : 'Ta première culture'}</h2>
       </div>
       <button type="button" className={styles.close} aria-label="Fermer l’essai" onClick={onClose}><X size={21} aria-hidden="true" /></button>

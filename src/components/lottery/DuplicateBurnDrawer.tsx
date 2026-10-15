@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Recycle } from "lucide-react";
 import { useState } from "react";
-import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { AppDialog } from "@/components/ui/AppDialog";
 import { hasModernBuddieArtwork } from "@/lib/buddie-artwork";
 import { isRemoteImageUrl, isRenderableImageSource } from "@/lib/image-source";
 import { rarityAccentColor, rarityLabels } from "@/lib/lottery-card-ui";
@@ -24,7 +24,6 @@ type DuplicateBurnDrawerProps = {
 };
 
 export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: DuplicateBurnDrawerProps) {
-  useBodyScrollLock(true);
   const [rewardChoice, setRewardChoice] = useState<LotteryDuplicateBurnChoice>("discount");
   const accent = rarityAccentColor[page.rarity];
   const burnOffer = page.burnOffer;
@@ -39,25 +38,13 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
   const canBurn = group.burnableInstanceIds.length >= burnOffer.duplicatesRequired;
 
   return (
-    <div
-      className={styles.modalBackdrop}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="duplicate-burn-title"
-      onClick={onClose}
+    <AppDialog
+      open
+      onClose={onClose}
+      title="Recycler mes doublons"
+      labelledBy="duplicate-burn-title"
+      className={styles.dialogShell}
     >
-      <div
-        className={styles.modalShell}
-        onClick={(event) => event.stopPropagation()}
-      >
-        <button
-          onClick={onClose}
-          className={styles.modalClose}
-          aria-label="Fermer"
-        >
-          x
-        </button>
-
         <div className="space-y-5 p-6">
           <div className="text-center">
             <Recycle className="mx-auto h-10 w-10 text-forest" aria-hidden="true" />
@@ -93,7 +80,7 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
               </div>
             )}
 
-            <div>
+            <div className="min-w-0 flex-1 break-words">
               <p className="font-display text-sm text-ink">{group.name}</p>
               <p className="text-xs text-charcoal">
                 #{group.cardNumber} - {rarityLabels[group.rarity]}
@@ -154,7 +141,7 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
             </p>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row">
             <button onClick={onClose} className="btn-cartoon btn-secondary min-h-[44px] flex-1 text-sm">
               Annuler
             </button>
@@ -173,7 +160,6 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
             </p>
           )}
         </div>
-      </div>
-    </div>
+    </AppDialog>
   );
 }

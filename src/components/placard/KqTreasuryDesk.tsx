@@ -23,8 +23,8 @@ const TABS = [
 type Tab = typeof TABS[number]["id"];
 type Pole = "accounting" | "bank";
 const OFFICE_ART: Record<Pole, { src: string; alt: string; caption: string }> = {
-  accounting: { src: "/placard/bureau-accounting-sylvain-v2.webp", alt: "Au bureau comptable du Placard, les factures sont classées dans un grand registre", caption: "Le registre est ouvert. On fait les comptes ?" },
-  bank: { src: "/placard/bureau-bank-sylvain-v2.webp", alt: "Le banquier du Placard, cigare à la main et pieds sur son bureau, examine les dossiers", caption: "La confiance se cultive. Le crédit aussi." },
+  accounting: { src: "/placard/bureau-accounting-sylvain-v2.webp", alt: "Au bureau comptable de Kanab Quest, les factures sont classées dans un grand registre", caption: "Le registre est ouvert. On fait les comptes ?" },
+  bank: { src: "/placard/bureau-bank-sylvain-v2.webp", alt: "Le banquier de Kanab Quest, cigare à la main et pieds sur son bureau, examine les dossiers", caption: "La confiance se cultive. Le crédit aussi." },
 };
 type Report = ReturnType<typeof getKqTreasuryReport>;
 const money = formatKqCash;

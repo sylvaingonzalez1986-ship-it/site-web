@@ -22,6 +22,6 @@ export async function GET() {
       headers: { "Cache-Control": "private, no-store, max-age=0" },
     });
   } catch {
-    return NextResponse.json({ error: "Collection Placard indisponible." }, { status: 503 });
+    return NextResponse.json({ error: "Collection Kanab Quest indisponible." }, { status: 503 });
   }
 }

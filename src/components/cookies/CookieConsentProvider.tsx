@@ -61,8 +61,10 @@ export function CookieConsentProvider({ children, initialConsent = null }: { chi
 
   const hideConsentUi = shouldHideConsentUi(pathname);
   const consent = hydrated ? getConsentFromCookie() : initialConsent;
-  const showBanner = !hideConsentUi && (settingsOpen || consent === null);
-  const dismissible = settingsOpen && consent !== null;
+  // Reading the policy must never require accepting or rejecting cookies first.
+  const readingPolicy = pathname === "/politique-cookies";
+  const showBanner = !hideConsentUi && (settingsOpen || (consent === null && !readingPolicy));
+  const dismissible = settingsOpen;
 
   const updateConsent = useCallback((selections: Partial<CookieConsentSelections>) => {
     setConsentCookie(selections);

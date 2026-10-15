@@ -15,25 +15,6 @@
 .plan button:focus-visible, .plan input:focus-visible, .plan summary:focus-visible {
   outline: 3px solid var(--ink); outline-offset: 3px;
 }
-.heading {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 18px 20px; border-bottom: 3px solid var(--ink);
-  background: #149b8b;
-  background-image: radial-gradient(#17292325 .7px, transparent .9px);
-  background-size: 7px 7px;
-}
-.heading > div { min-width: 0; }
-.heading h3 {
-  margin: 0; color: var(--ink); font-family: var(--font-display), sans-serif;
-  font-size: 30px; font-weight: 900; line-height: 1; letter-spacing: -.02em; text-transform: uppercase;
-}
-.heading > button {
-  display: flex; align-items: center; gap: 7px; min-height: 44px; padding: 10px 13px;
-  border: 2px solid var(--ink); border-radius: 10px 13px 9px 12px;
-  background: #efc451; color: var(--ink); font-size: 12px; font-weight: 800;
-  white-space: nowrap; box-shadow: 3px 3px 0 var(--ink);
-}
-.heading > button[aria-pressed=true] { background: #fff1d6; box-shadow: 1px 1px 0 var(--ink); }
 .zoneTypes {
   display: flex; align-items: center; gap: 8px; padding: 12px 14px;
   background: #f7dfb8; border-bottom: 2px solid var(--ink);
@@ -68,7 +49,7 @@
 .canvas { display: grid; place-items: center; }
 .map { display: block; max-width: none; touch-action: pan-x pan-y; user-select: none; cursor: grab; }
 .map:focus-visible { outline: 3px solid #08766b; outline-offset: -4px; }
-.map[data-drawing=true] { cursor: crosshair; }
+.map[data-drawing=true] { cursor: crosshair; touch-action: none; }
 .map[data-tool=move], .map[data-tool=resize] { touch-action: none; }
 .map[data-tool=move] .zone[data-selected=true] { cursor: move; }
 .viewport[data-panning=true] .map { cursor: grabbing; }
@@ -99,12 +80,14 @@
 }
 .selectedName > span { color: #47554b; font-size: 11px; font-weight: 700; white-space: nowrap; }
 .tools > div:last-child { display: flex; gap: 6px; }
+.tools .toolActions { flex-wrap: wrap; }
 .tools button {
   display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px; min-height: 44px;
   color: var(--ink); font-size: 12px; font-weight: 700; border: 2px solid transparent;
   border-radius: 10px; background: #fff1d6; white-space: nowrap;
 }
 .tools button[aria-pressed=true] { background: #efc451; border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.tools .configureButton { min-height: 44px; background: #149b8b; border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
 .support {
   display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; padding: 12px 14px;
   background: #fff1d6; border-top: 2px solid #17292328;
@@ -136,18 +119,15 @@
 .plan:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; display: flex; flex-direction: column; overflow: auto; background: #fff1d6; }
 .plan:fullscreen .scene { flex: 1 0 240px; min-height: 0; }
 .plan:fullscreen .viewport { position: absolute; inset: 0; height: 100%; }
-.plan:fullscreen .heading { padding-block: 12px; }
 @container(max-width:640px) {
   .toolbar button > span { display: none; }
   .tools { flex-wrap: wrap; }
   .selectedName { width: 100%; justify-content: space-between; }
   .tools > div:last-child { width: 100%; }
   .tools button { flex: 1; }
+  .tools .configureButton { flex: 1 0 100%; }
 }
 @container(max-width:360px) {
-  .heading { padding: 14px 12px; gap: 10px; }
-  .heading h3 { font-size: 25px; }
-  .heading > button { padding-inline: 10px; font-size: 11px; }
   .zoneTypes { padding: 8px; gap: 4px; }
   .zoneTypes button { padding: 9px 5px; font-size: 11px; gap: 5px; }
   .zoneTypes button svg { width: 14px; height: 14px; }
@@ -172,3 +152,24 @@
   .lampGlow, .airFlow { animation: none; }
   .lampGlow { opacity: .65; }
 }
+
+.finishManipulation { min-height: 44px; width: 100%; border: 2px solid #283c30; border-radius: 6px; margin-block: 8px; padding: 8px 12px; background: #f1cd86; color: #283c30; font: inherit; font-weight: 800; cursor: pointer; }
+
+/* Keep the entire 10 × 10 m floor visible, including on short landscape screens. */
+.plan[data-compact=true] .viewport {
+  height: min(100cqw, 620px, calc(100svh - var(--placard-bottom-nav-height, 68px) - 80px - env(safe-area-inset-top, 0px)));
+  overflow: hidden;
+  overscroll-behavior: auto;
+  scrollbar-width: none;
+  scroll-margin-block: 80px;
+}
+.plan[data-compact=true] .map { cursor: default; }
+.plan[data-compact=true] .map[data-drawing=true] { cursor: crosshair; }
+.plan[data-compact=true] .map[data-tool=move] .zone[data-selected=true] { cursor: move; }
+.plan[data-compact=true] .toolbar > strong { font-size: 12px; line-height: 1.4; }
+.plan[data-compact=true] .toolbar button { width: auto; min-width: 44px; padding-inline: 10px; }
+.plan[data-compact=true] .toolbar button > svg { flex-shrink: 0; }
+.plan[data-compact=true] .toolbar button > span { display: inline; }
+
+/* Declare this on the HTML viewport before contact, including the space around the SVG. */
+.plan .viewport[data-manipulating=true] { touch-action: none; overscroll-behavior: none; }

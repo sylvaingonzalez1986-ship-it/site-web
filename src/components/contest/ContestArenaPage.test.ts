@@ -101,8 +101,9 @@ describe("Arena discovery page access", () => {
   it.each([
     { surface: "notebook" as const, params: {}, next: "/arene/carnet/regular" },
     { surface: "notebook-ranking" as const, params: {}, next: "/arene/carnet/classement" },
-    { surface: "arena" as const, params: { vue: "classement" }, next: "/arene" },
-    { surface: "arena" as const, params: { vue: "jouer" }, next: "/arene" },
+    { surface: "arena" as const, params: { vue: "classement" }, next: "/arene?vue=classement" },
+    { surface: "arena" as const, params: { vue: "jouer" }, next: "/arene?vue=jouer" },
+    { surface: "arena" as const, params: { vue: "classement", season: "automne" }, next: "/arene?season=automne&vue=classement" },
   ])("keeps guest activity entry protected: $surface $params", async ({ surface, params, next }) => {
     await expect(visit(params, surface)).rejects.toMatchObject({
       digest: `NEXT_REDIRECT;replace;/compte/connexion?next=${encodeURIComponent(next)};307;`,

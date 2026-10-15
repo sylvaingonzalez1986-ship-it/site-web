@@ -175,13 +175,19 @@ if(process.argv.includes('--preview')){
     page.on('response',response=>{if(response.ok())loadedAssets.add(response.url());});
     await page.setRequestInterception(true);
     page.on('request',request=>void(request.url().startsWith(origin)||request.url().startsWith('data:')?request.continue():request.abort()));
-    const visit=async(query='')=>{await page.goto(origin+'/?'+query,{waitUntil:'networkidle0'});await page.waitForSelector('[data-warehouse-map] [data-zone-id]');};
+    const enterCultures=async(openChooser=true)=>{
+      await page.waitForSelector('[aria-label="Mode du plan"]');
+      await page.$$eval('[aria-label="Mode du plan"] button',nodes=>nodes.find(node=>node.textContent.trim()==='Cultures').click());
+      await page.waitForSelector('[data-warehouse-buddie-toggle]');
+      if(openChooser)await page.click('[data-warehouse-buddie-toggle]');
+    };
+    const visit=async(query='')=>{await page.goto(origin+'/?'+query,{waitUntil:'networkidle0'});await page.waitForSelector('[data-warehouse-map] [data-zone-id]');if(culturesOnly||buddieDragOnly)await enterCultures();};
     const clickAction=async(action)=>{
       const selector='[data-warehouse-action="'+action+'"]';
       await page.waitForFunction(selector=>[...document.querySelectorAll(selector)].some(node=>!node.disabled),{},selector);
       const control=await page.$(selector);assert.ok(control,'Warehouse action '+action);await control.click();
     };
-    const clickRoom=async(room)=>{await page.click('[data-warehouse-room="'+room+'"]');};
+    const clickRoom=async(room)=>{await page.click('[data-warehouse-room="'+room+'"]');if(room==='culture'&&(culturesOnly||buddieDragOnly))await enterCultures(false);};
     const openDetails=async(selector)=>{
       const details=await page.$(selector);
       if(details&&!await details.evaluate(node=>node.open)){
@@ -948,7 +954,7 @@ if(process.argv.includes('--preview')){
         await page.waitForFunction(()=>window.__snapshot.state.zones.find(zone=>zone.id==='second').buddieCode==='HH2026-003');
         const saved=await readSavedPlan();
         assert.equal(saved.requests,1,'One explicit save persists the assignment');assert.equal(saved.cashCents,before.cashCents,'Assigning an owned Buddie is free');
-        await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('[data-warehouse-buddie-dock]');
+        await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('[data-warehouse-map]');await enterCultures();
         assert.equal((await readBuddieAssignments()).second,'HH2026-003','The saved assignment survives a new frontend load');
         await assertLayout();await page.screenshot({path:resolve(output,'buddie-dock-'+width+'.png')});
         checks.push('real '+(touch?'CDP touch':'left mouse')+' drag at '+width+'px assigns a free zone, spends nothing and persists only after Save');
@@ -991,7 +997,10 @@ if(process.argv.includes('--preview')){
           assert.equal(await page.$eval(buddieCard(code),node=>node.dataset.buddieBlocked),reason,'Unavailable card exposes its reason');
           await page.$eval(buddieCard(code),node=>node.scrollIntoView({block:'nearest',inline:'center'}));
           const card=await page.$(buddieCard(code));await card.click();
-          assert.notEqual(await card.evaluate(node=>node.getAttribute('aria-pressed')),'true','Unavailable Buddie cannot be armed');
+          await page.waitForSelector('[data-buddie-variety-popover="'+code+'"]',{visible:true});
+          assert.notEqual(await card.evaluate(node=>node.dataset.selected),'true','Unavailable Buddie cannot be armed');
+          assert.equal(await page.$('[data-buddie-variety-choose]'),null,'Unavailable Buddie can be read but not placed');
+          await page.click('[data-buddie-variety-close]');
           await dragBuddie(code,{x:12,y:3},{touch,blocked:true});
           assert.deepEqual(await readBuddieAssignments(),cancelAssignments,'Dragging an unavailable Buddie cannot affect a zone');
         }
@@ -1012,7 +1021,8 @@ if(process.argv.includes('--preview')){
         await page.$eval(buddieCard('HH2026-003'),node=>node.scrollIntoView({block:'nearest',inline:'center',behavior:'instant'}));
         const pick=await page.$(buddieCard('HH2026-003'));
         if(touch){const r=await pick.boundingBox();await page.touchscreen.tap(r.x+r.width/2,r.y+r.height/2);}else{await pick.focus();await page.keyboard.press('Enter');}
-        assert.equal(await pick.evaluate(node=>node.getAttribute('aria-pressed')),'true','Tap or keyboard explicitly arms one card');
+        await page.click('[data-buddie-variety-choose]');
+        assert.equal(await pick.evaluate(node=>node.dataset.selected),'true','The profile action explicitly arms one card');
         assert.equal(await page.$eval('[data-zone-id="second"]',node=>node.dataset.buddieTarget),'true','Arming a card marks free culture zones as valid targets');
         assert.notEqual(await page.$eval('[data-zone-id="starter"]',node=>node.dataset.buddieTarget),'true','Occupied culture is never advertised as an admissible target');
         const zoneButton=await page.waitForFunction(()=>[...document.querySelectorAll('button[data-zone-kind="culture"]')].find(node=>node.textContent.includes('La relève')));
@@ -1037,6 +1047,7 @@ if(process.argv.includes('--preview')){
 
         await visit('cultures&buddieDrag');
         await page.focus(buddieCard('HH2026-003'));await page.keyboard.press('Enter');
+        await page.click('[data-buddie-variety-choose]');
         await page.focus(toggle);await page.keyboard.press('Enter');await settleView();
         assert.equal(await page.$('[data-warehouse-buddie-card][data-selected]'),null,'Closing cancels a keyboard-armed card');
         assert.equal(await page.$('[data-zone-id][data-buddie-target="true"]'),null,'Closing clears placement targets');

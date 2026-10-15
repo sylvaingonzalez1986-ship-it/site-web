@@ -29,7 +29,7 @@ const board=await page.$('.contest-station-board');await board.screenshot({path:
 await page.$eval('[aria-label="Ouvrir le détail du bocal"]',button=>button.setAttribute('data-retained-pot','true'));
 await page.$$eval('button',buttons=>buttons.find(button=>button.textContent.trim().startsWith('Dégustation')).click());
 assert.ok(await page.$('[data-retained-pot]'), 'Pot remains mounted in tasting');
-await page.$$eval('button',buttons=>buttons.find(button=>button.textContent.trim().startsWith('Placard')).click());
+await page.$$eval('button',buttons=>buttons.find(button=>button.textContent.trim().startsWith('Kanab Quest')).click());
 assert.ok(await page.$('[data-retained-pot]'), 'Pot remains mounted in Placard');
 await page.$$eval('button',buttons=>buttons.find(button=>button.textContent.trim().startsWith('Général')).click());
 assert.ok(await page.$('[data-retained-pot]'), 'Pot remains mounted on return to general');

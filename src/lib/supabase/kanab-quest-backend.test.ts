@@ -143,7 +143,7 @@ describe("Kanab Quest Supabase inventory mapping", () => {
     expect(report).toMatchObject({ contentReady: true, safelyDormant: true, readyForActivation: true, blockers: [] });
     expect(report.checks).toContainEqual({
       code: "notebook-rules",
-      label: "2 missions carnet → Placard configurées",
+      label: "2 missions carnet → Kanab Quest configurées",
       ready: true,
     });
   });
@@ -216,14 +216,14 @@ describe("Kanab Quest Supabase inventory mapping", () => {
     });
     expect(report.checks).toContainEqual({
       code: "player-access-dormant",
-      label: "Accès joueur au Placard encore fermé",
+      label: "Accès joueur à Kanab Quest encore fermé",
       ready: true,
     });
     expect(report.safelyDormant).toBe(false);
     expect(report.contentReady).toBe(false);
     expect(report.readyForActivation).toBe(false);
     expect(report.blockers).toContain("12 illustrations Héritage producteur");
-    expect(report.blockers).toContain("2 missions carnet → Placard configurées");
+    expect(report.blockers).toContain("2 missions carnet → Kanab Quest configurées");
   });
   it("detects unsafe season rewards before launch", () => {
     const report = buildKqLaunchReadiness({

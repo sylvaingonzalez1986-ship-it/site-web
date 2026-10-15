@@ -1,3 +1,5 @@
+import { KQ_BUSINESS_DEVELOPMENT_CAP } from "@/lib/kanab-quest-development";
+
 export type KqReputationTier = {
   code: string;
   name: string;
@@ -10,7 +12,7 @@ export const KQ_REPUTATION_TIERS: readonly KqReputationTier[] = [
   { code: "steady-hand", name: "Main sûre", minimum: 60 },
   { code: "lot-artisan", name: "Artisan du lot", minimum: 200 },
   { code: "local-signature", name: "Signature locale", minimum: 600 },
-  { code: "closet-master", name: "Maître du Placard", minimum: 1500 },
+  { code: "closet-master", name: "Maître de Kanab Quest", minimum: 1500 },
   { code: "jury-reference", name: "Référence du jury", minimum: 3000 },
 ] as const;
 
@@ -21,6 +23,7 @@ export type KqPlacardScoreInput = {
   rating: number;
   seasonPoints: number;
   reputation: number;
+  businessScore?: number;
 };
 
 export function calculateKqPlacardScore(input: KqPlacardScoreInput) {
@@ -29,14 +32,17 @@ export function calculateKqPlacardScore(input: KqPlacardScoreInput) {
   const reputation = Number.isFinite(input.reputation) ? Math.max(0, Math.floor(input.reputation)) : 0;
   const seasonBonus = Math.min(KQ_PLACARD_SEASON_BONUS_CAP, Math.round(seasonPoints * 0.25));
   const reputationBonus = Math.min(KQ_PLACARD_REPUTATION_BONUS_CAP, Math.round(4 * Math.sqrt(reputation)));
+  const businessBonus = Number.isFinite(input.businessScore)
+    ? Math.min(KQ_BUSINESS_DEVELOPMENT_CAP, Math.max(0, Math.floor(input.businessScore!))) : 0;
 
   return {
-    score: rating + seasonBonus + reputationBonus,
+    score: rating + seasonBonus + reputationBonus + businessBonus,
     rating,
     seasonPoints,
     reputation,
     seasonBonus,
     reputationBonus,
+    businessBonus,
   };
 }
 

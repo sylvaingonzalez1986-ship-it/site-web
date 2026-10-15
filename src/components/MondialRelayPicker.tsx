@@ -37,6 +37,8 @@ export function MondialRelayPicker({
   const [status, setStatus] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [points, setPoints] = useState<MondialRelayPoint[]>([]);
+  const [lookupFailed, setLookupFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   const onSelectRef = useRef(onSelect);
 
   const pickerHeightClassName = minHeightClassName.trim() || "min-h-[420px]";
@@ -54,13 +56,17 @@ export function MondialRelayPicker({
       setPoints([]);
       setStatus("Renseigne un code postal pour afficher les Points Relais.");
       setIsLoading(false);
+      setLookupFailed(false);
       return;
     }
 
     const controller = new AbortController();
+    let disposed = false;
     const timeoutId = window.setTimeout(async () => {
       setIsLoading(true);
+      setLookupFailed(false);
       setStatus("Recherche des Points Relais...");
+      const requestTimeout = window.setTimeout(() => controller.abort(), 12_000);
 
       try {
         const query = new URLSearchParams({
@@ -78,8 +84,11 @@ export function MondialRelayPicker({
         });
 
         const data = (await response.json().catch(() => null)) as RelayLookupResponse | null;
+        if (disposed) return;
+        if (!data || controller.signal.aborted) throw new Error("Réponse de livraison indisponible");
         if (!response.ok) {
           setPoints([]);
+          setLookupFailed(true);
           setStatus(data?.error ?? "Impossible de charger les Points Relais.");
           return;
         }
@@ -94,23 +103,26 @@ export function MondialRelayPicker({
 
         setStatus(null);
       } catch {
-        if (controller.signal.aborted) {
+        if (disposed) {
           return;
         }
         setPoints([]);
-        setStatus("Impossible de charger Mondial Relay. Réessaie dans quelques secondes.");
+        setLookupFailed(true);
+        setStatus("La recherche des Points Relais n’a pas abouti. Réessaie sans ressaisir ton adresse, ou choisis la livraison à domicile.");
       } finally {
-        if (!controller.signal.aborted) {
+        window.clearTimeout(requestTimeout);
+        if (!disposed) {
           setIsLoading(false);
         }
       }
     }, 250);
 
     return () => {
+      disposed = true;
       controller.abort();
       window.clearTimeout(timeoutId);
     };
-  }, [normalizedCity, normalizedCountry, normalizedPostalCode]);
+  }, [attempt, normalizedCity, normalizedCountry, normalizedPostalCode]);
 
   return (
     <div className="mondial-relay-widget grid gap-2">
@@ -153,6 +165,11 @@ export function MondialRelayPicker({
         <p role="status" aria-live="polite" className="text-sm font-semibold text-charcoal md:text-xs">
           {status}
         </p>
+      )}
+      {lookupFailed && (
+        <button type="button" className="btn-cartoon btn-secondary min-h-11" disabled={isLoading} onClick={() => setAttempt((value) => value + 1)}>
+          Réessayer la recherche
+        </button>
       )}
 
       {selectedPoint && (

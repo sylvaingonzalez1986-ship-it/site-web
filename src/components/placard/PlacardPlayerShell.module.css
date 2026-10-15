@@ -4,7 +4,7 @@
 .navBrand { position: relative; margin: 0 1px 24px; padding: 13px 10px 15px; border: 2px solid #172923; border-radius: 18px 18px 24px 8px; background: #149b8b; box-shadow: 4px 4px 0 #172923; }
 .navBrand::after { content: ""; position: absolute; right: 13px; bottom: -8px; width: 14px; height: 14px; border: 2px solid #172923; border-radius: 50%; background: #efc451; }
 .navBrand > span { font-size: 9px; font-weight: 750; letter-spacing: .055em; text-transform: uppercase; color: #172923; }
-.navBrand > strong { display: block; font: 900 33px/1.2 var(--font-display), Impact, sans-serif; letter-spacing: -.02em; }
+.navBrand > strong { display: block; font: 900 30px/1.2 var(--font-display), Impact, sans-serif; letter-spacing: -.02em; }
 .navBrand > strong > span { color: #fff1d6; }
 .navBrand > small { display: block; padding-top: 3px; font-size: 10px; font-weight: 650; color: #172923; }
 .navGroup { display: grid; gap: 7px; }
@@ -13,12 +13,11 @@
 .navGroup button { width: 100%; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 9px 11px; border: 2px solid transparent; border-radius: 13px; background: transparent; color: #172923; text-align: left; font: 700 13px var(--font-body), sans-serif; cursor: pointer; transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease; }
 .navGroup button svg { flex-shrink: 0; stroke-width: 2.4; }
 .navGroup button[aria-current=page] { color: #172923; border-color: #172923; background: #efc451; box-shadow: 3px 3px 0 #172923; }
-.navFooter { margin-top: auto; padding: 22px 10px 0; font-size: 11px; color: #40554b; }
+.navFooter { margin-top: auto; padding: 22px 10px 0; font-size: 13px; color: #40554b; }
 .navFooter summary, .navFooter a { display: flex; align-items: center; gap: 8px; min-height: 44px; }
 .navFooter p { line-height: 1.65; margin: 8px 0 12px; }
-.sectionHeader { display: flex; align-items: center; gap: 13px; min-height: 72px; padding: 12px 28px; border-bottom: 2px solid #172923; background: #fff1d6; }
-.sectionHeader button { flex-shrink: 0; padding: 9px 12px; border: 2px solid #172923; border-radius: 12px; background: #d5a573; box-shadow: 2px 2px 0 #172923; font-size: 12px; font-weight: 750; color: #172923; min-height: 44px; cursor: pointer; }
-.sectionHeader > span { color: #677263; }
+.sectionHeader { position: sticky; top: 0; z-index: 90; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: max(8px, env(safe-area-inset-top)) 16px 8px; border-bottom: 2px solid #172923; background: #fff1d6; }
+.sectionHeader button { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; padding: 9px 12px; border: 2px solid #172923; border-radius: 12px; background: #d5a573; box-shadow: 2px 2px 0 #172923; font-size: 12px; font-weight: 750; color: #172923; min-height: 44px; cursor: pointer; }
 .sectionHeader h1 { min-width: 0; margin: 0; color: #172923; font-size: 15px; font-weight: 750; outline: none; overflow-wrap: anywhere; }
 .localNav { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 24px; }
 .localNav button, .localNav span { display: flex; align-items: center; padding: 10px 14px; min-height: 44px; background: #fffaf0; border: 2px solid #172923; border-radius: 13px; box-shadow: 2px 2px 0 #172923; font-size: 12px; font-weight: 700; color: #172923; }
@@ -28,8 +27,13 @@
 .mobileNav { display: none; }
 .navDrawer { width: min(360px, 92vw); max-width: none; height: 100dvh; max-height: none; margin: 0 0 0 auto; padding: 0; border: 0; border-left: 3px solid #172923; background: #fff1d6; color: #172923; }
 .navDrawer::backdrop { background: #172923b3; }
-.drawerBody { position: relative; min-height: 100%; display: flex; flex-direction: column; padding: 68px 18px 28px; }
-.drawerClose { position: absolute; right: 15px; top: 12px; width: 44px; height: 44px; display: grid; place-items: center; border: 2px solid #172923; border-radius: 50%; background: #efc451; color: #172923; box-shadow: 2px 2px 0 #172923; cursor: pointer; }
+.drawerHeader { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: max(10px, env(safe-area-inset-top)) 15px 10px; background: #fff1d6; border-bottom: 2px solid #172923; }
+.drawerBody { display: flex; flex-direction: column; padding: 18px 18px max(28px, env(safe-area-inset-bottom)); }
+.drawerClose { flex-shrink: 0; width: 44px; height: 44px; display: grid; place-items: center; border: 2px solid #172923; border-radius: 50%; background: #efc451; color: #172923; box-shadow: 2px 2px 0 #172923; cursor: pointer; }
+.exitHeader { position: sticky; top: 0; z-index: 90; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: max(8px, env(safe-area-inset-top)) 16px 8px; border-bottom: 2px solid #172923; background: #fff1d6; }
+.exitHeader a { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 12px; border: 2px solid #172923; border-radius: 12px; box-shadow: 2px 2px 0 #172923; background: #efc451; color: #172923; font-size: 14px; font-weight: 800; white-space: nowrap; }
+.exitHeader > span { min-width: 0; font-size: 12px; font-weight: 750; }
+@media(max-height:500px) { .exitHeader, .sectionHeader { min-height: 52px; padding-block: max(4px, env(safe-area-inset-top)) 4px; } .exitHeader > span { display: none; } }
 .shell :where(button,a,summary):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
 @media (hover: hover) {
   .navGroup button:hover { border-color: #172923; background: #d5a573; box-shadow: 3px 3px 0 #172923; }
@@ -43,7 +47,7 @@
   .mobileNav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 0; min-height: 52px; border: 2px solid transparent; border-radius: 13px; background: transparent; color: #172923; font-size: 10px; font-weight: 750; }
   .mobileNav button svg { stroke-width: 2.5; }
   .mobileNav [aria-current], .mobileNav [aria-expanded=true] { color: #172923; border-color: #172923; background: #efc451; box-shadow: 2px 2px 0 #172923; }
-  .sectionHeader { padding: 8px 16px; min-height: 56px; gap: 8px; }
+  .sectionHeader { padding-inline: 12px; gap: 8px; }
   .sectionHeader h1 { font-size: 14px; }
   .localNav { padding: 12px; }
   .skipLink { left: 12px; }

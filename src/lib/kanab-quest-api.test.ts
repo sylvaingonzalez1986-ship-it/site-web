@@ -37,7 +37,7 @@ describe("Kanab Quest browser API", () => {
     const request = vi.fn().mockResolvedValue(new Response('<!DOCTYPE html><title>Not found</title>', {
       status: 404, headers: { 'content-type': 'text/html' },
     }));
-    await expect(playKqRemoteCard('run-1', 'BOTTE-017', request)).rejects.toThrow('Réponse du Placard illisible (HTTP 404)');
+    await expect(playKqRemoteCard('run-1', 'BOTTE-017', request)).rejects.toThrow('Réponse de Kanab Quest illisible (HTTP 404)');
     expect(request).toHaveBeenCalledTimes(1);
   });
   it("routes the same gameplay client to customer-scoped endpoints", async () => {

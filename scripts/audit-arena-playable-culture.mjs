@@ -143,7 +143,7 @@ try {
   const heritage = await page.$('[aria-labelledby="heritage-carousel-title"] button[aria-label^="Équiper"]');
   await assertClickable(heritage);
   await clickText('Lancer ma culture');
-  await page.waitForFunction(() => document.querySelector('[aria-label="Charges du Placard"]')?.textContent.includes('Équilibré'));
+  await page.waitForFunction(() => document.querySelector('[aria-label="Charges de Kanab Quest"]')?.textContent.includes('Équilibré'));
   await page.screenshot({ path: resolve(output, 'start-energy-390.png') });
   await clickText('Commencer');
   await page.waitForFunction(() => window.__complete === 'cards');

@@ -13,6 +13,7 @@ import { useCmsPages } from "@/hooks/useCmsPages";
 import { useCmsStore } from "@/hooks/useCmsStore";
 import { getActiveCatalogCategories } from "@/lib/catalog-categories";
 import styles from "./Footer.module.css";
+import { CookieSettingsButton } from "@/components/cookies/CookieSettingsButton";
 
 const MARKET_SUPPORT_LINKS = [
   { href: "/analyse-laboratoire-cbd", label: "Lire une analyse CBD" },
@@ -169,6 +170,7 @@ function FooterContent() {
               <p className={styles.columnIndex}>02</p>
               <h3 className={styles.columnTitle}>Informations</h3>
               <FooterLinkList links={legalLinks} />
+              <CookieSettingsButton className={styles.cookieSettings} />
             </section>
           </nav>
         </div>

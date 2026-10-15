@@ -174,7 +174,7 @@ export function ArenaCustomerRewardPot({
       </div> : null}
       {rewardPool && open ? <div className={styles.diceQuick}>
         <div className={styles.diceAction} aria-live="polite"><span><Dices size={18} aria-hidden="true" /> Dé collectif · taux actuel {weeklyRatePercent} %</span>
-          {diceLoading ? <span>Vérification…</span> : diceState?.viewerRoll ? <strong>Ton dé : {diceState.viewerRoll}</strong> : diceState?.eligible ? <button type="button" onClick={() => void rollWeeklyDice()} disabled={diceRolling}><Dices aria-hidden="true" />{diceRolling ? "Le dé roule…" : "Lancer mon dé"}</button> : <Link href={authenticated ? "/arene/placard" : "/compte/connexion?next=%2Farene%3Fvue%3Dclassement"}>{authenticated ? "Créer mon profil Placard" : "Me connecter pour lancer"}</Link>}
+          {diceLoading ? <span>Vérification…</span> : diceState?.viewerRoll ? <strong>Ton dé : {diceState.viewerRoll}</strong> : diceState?.eligible ? <button type="button" onClick={() => void rollWeeklyDice()} disabled={diceRolling}><Dices aria-hidden="true" />{diceRolling ? "Le dé roule…" : "Lancer mon dé"}</button> : <Link href={authenticated ? "/arene/placard" : "/compte/connexion?next=%2Farene%3Fvue%3Dclassement"}>{authenticated ? "Créer mon profil Kanab Quest" : "Me connecter pour lancer"}</Link>}
         </div>
         {diceError ? <p role="alert">{diceError}</p> : null}
       </div> : null}
@@ -217,7 +217,7 @@ export function ArenaCustomerRewardPot({
         <h3>Des ventes aux fleurs offertes</h3>
         <ol className={styles.steps}><li><b>1. Les ventes</b>Les grammes de fleurs des commandes payées alimentent le calcul, hors cadeaux et annulations.</li><li><b>2. Le bocal</b>Le taux collectif de chaque semaine transforme une part de ce volume en dotation.</li><li><b>3. Le classement</b>{rewardPool?.minimumHumanBattles ?? 3} duels officiels minimum. Le classement général détermine les parts du Top 10.</li><li><b>4. Ton cadeau</b>Après attribution, un bon en grammes de fleurs apparaît dans tes récompenses, à utiliser dans le panier.</li></ol>
         {rewardPool ? <p className={styles.formula}><strong>{formatArenaRewardGrams(rewardPool.weeklyDice.eligibleFlowerGrams)} g vendus × {weeklyRatePercent} % = {formatArenaRewardGrams(rewardPool.currentWeekGrams)} g</strong><span>Contribution de la semaine. Le taux peut monter ou descendre jusqu’à sa finalisation. Le bocal cumule les contributions des semaines et les ajustements éventuels.</span></p> : null}
-        <p className={styles.note}>Le calcul porte sur le poids des fleurs vendues, pas sur le montant en euros ni sur les ventes virtuelles du Placard. Les récompenses ne sont pas convertibles en argent. Le bon cadeau s’utilise dans une commande ; il ne déclenche pas une expédition automatique.</p>
+        <p className={styles.note}>Le calcul porte sur le poids des fleurs vendues, pas sur le montant en euros ni sur les ventes virtuelles de Kanab Quest. Les récompenses ne sont pas convertibles en argent. Le bon cadeau s’utilise dans une commande ; il ne déclenche pas une expédition automatique.</p>
       </div>
       {rewardPool && open ? <details className={styles.dice}>
         <summary><Dices aria-hidden="true" /><span>Le dé collectif de la semaine<small>Un lancer par joueur · taux actuel {weeklyRatePercent} %</small></span><ChevronDown aria-hidden="true" /></summary>

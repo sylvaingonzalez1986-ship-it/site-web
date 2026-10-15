@@ -684,7 +684,7 @@ export function AdminMissionsPanel() {
                     >
                       <option value="support_pack">Pack Botte du Chanvrier · 3 cartes</option>
                       <option value="buddies">Buddy à collectionner</option>
-                      <option value="game_cash">Argent du Placard (virtuel)</option>
+                      <option value="game_cash">Argent de Kanab Quest (virtuel)</option>
                       <option value="packs">Pack Buddies</option>
                       <option value="points">Points fidélité</option>
                     </select>

@@ -30,7 +30,30 @@ function Game() {
     {modal>0 && <Modal><button onClick={()=>setModal(0)}>Fermer</button>{modal>1 && <Modal>Catalogue</Modal>}</Modal>}
   </main><footer style={{height:1800,background:'#eee'}}>Pied de page permanent</footer></>;
 }
-createRoot(document.getElementById('root')).render(<React.StrictMode><Game/></React.StrictMode>);
+const subscribe = listener => {window.addEventListener('popstate',listener);window.addEventListener('fixture:navigate',listener);return()=>{window.removeEventListener('popstate',listener);window.removeEventListener('fixture:navigate',listener)}};
+function NestedGame({phase,height}) {
+  const ref=useGameViewport(phase);
+  return <section ref={ref} id="nested-game" style={{height,background:'#cce8dd'}}>État enfant : {phase}</section>;
+}
+function HistoryGame() {
+  const search=React.useSyncExternalStore(subscribe,()=>location.search);
+  const view=new URLSearchParams(search).get('view')||'culture';
+  const [loaded,setLoaded]=React.useState(true);
+  const [phase,setPhase]=React.useState('play');
+  const ref=useGameViewport(view,{restoreOnBack:true});
+  React.useEffect(()=>{
+    history.scrollRestoration='manual';
+    const load=()=>{setLoaded(false);setPhase('loading')};window.addEventListener('popstate',load);
+    return()=>window.removeEventListener('popstate',load);
+  },[]);
+  window.fixture={
+    navigate:next=>{window.dispatchEvent(new Event('game:navigate'));history.pushState({},'', '?history&view='+next);setLoaded(true);setPhase('play');window.dispatchEvent(new Event('fixture:navigate'));},
+    ready:()=>{setLoaded(true);setPhase('play');},
+    phase:setPhase,
+  };
+  return <><main ref={ref} data-view={view} style={{background:'#d9efe4'}}><header style={{height:100}}>Navigation persistante</header>{view==='culture'?<NestedGame phase={phase} height={loaded?3000:400}/>:<section style={{height:1100}}>Marché</section>}</main><footer style={{height:1800,background:'#eee'}}>Pied de page permanent</footer></>;
+}
+createRoot(document.getElementById('root')).render(<React.StrictMode>{location.search.includes('history')?<HistoryGame/>:<Game/>}</React.StrictMode>);
 `;
 const server = await createServer({root,configFile:false,envDir:false,cacheDir:resolve(output,'vite-cache'),
   esbuild:{jsx:'automatic'},optimizeDeps:{include:['react','react-dom/client']},
@@ -87,6 +110,27 @@ try {
     assert.equal((await position()).overflow,'');
     await page.screenshot({path:resolve(output,'navigation-'+width+'.png')});
     results.push({width,footerRegression:true,nestedModals:true,lateContent:true,manualFooterScroll:true});
+
+    await page.goto('http://127.0.0.1:3195/?history',{waitUntil:'networkidle0'});await page.waitForFunction(()=>window.fixture);
+    await page.evaluate(()=>scrollTo(0,1600));await settle();
+    await page.evaluate(()=>fixture.navigate('market'));await settle();
+    assert.equal((await position()).y,0,'Explicit view navigation starts at the outer surface');
+    await page.evaluate(()=>scrollTo(0,200));await settle();
+    await page.goBack();await page.waitForSelector('main[data-view="culture"]');await settle();
+    assert((await position()).bottom>0,'Back must wait inside the loading game, not in the footer: '+JSON.stringify(await position()));
+    await page.evaluate(()=>fixture.ready());await settle();
+    assert.equal((await position()).y,1600,'Back restores the saved position when late game content becomes available');
+    await page.evaluate(()=>fixture.phase('harvest'));await settle();
+    assert.equal((await position()).y,1600,'A delayed nested view cannot override the ancestor restoration');
+    await page.goForward();await page.waitForSelector('main[data-view="market"]');await settle();
+    assert.equal((await position()).y,200,'Forward also restores the previous market position');
+    await page.goBack();await page.waitForSelector('main[data-view="culture"]');await settle();
+    await page.evaluate(()=>fixture.ready());await settle();
+    assert.equal((await position()).y,1600);
+    await page.evaluate(()=>{document.querySelector('#nested-game').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}));fixture.phase('setup')});await settle();
+    assert.equal((await position()).y,100,'After an explicit interaction, nested navigation can move to its surface again');
+    await page.screenshot({path:resolve(output,'history-'+width+'.png')});
+    results.push({width,backRestoresLateContent:true,forwardRestoresPosition:true,nestedViewPrecedence:true,interactionReleasesRestoration:true});
   }
   assert.deepEqual(errors,[]);
   await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,results},null,2));
