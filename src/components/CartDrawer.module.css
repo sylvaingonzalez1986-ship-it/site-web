@@ -97,6 +97,14 @@
 .summary > :global(.text-base) { font-size: .85rem; }
 .grandTotal { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 12px; padding-block: 14px; border-block: 1px solid #00563f55; color: var(--arcade-dark); font-weight: 800; }
 .grandTotal > span:last-child { font-size: 1.2rem; }
+.gains { margin-top: 12px; border-block: 1px solid #00563f40; }
+.gains:has(> .gainsContent:empty) { display: none; }
+.gainsToggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 10px 2px; color: var(--arcade-green); font-size: .85rem; font-weight: 800; list-style: none; cursor: pointer; }
+.gainsToggle::-webkit-details-marker { display: none; }
+.gainsToggle:focus-visible { outline: 2px solid var(--arcade-green); outline-offset: 3px; }
+.gainsToggle > svg { flex: 0 0 auto; }
+.gains[open] > .gainsToggle > svg { transform: rotate(180deg); }
+.gainsContent { padding-bottom: 12px; }
 .benefit { min-height: 54px; min-width: 0; padding: 10px; border: 1px solid var(--arcade-green); border-radius: 2px; background: var(--arcade-paper); text-align: left; }
 .benefit:first-child { background: #f4c43d30; }
 .benefit p:last-child { margin-top: 3px; }

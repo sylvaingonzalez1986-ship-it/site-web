@@ -1,6 +1,6 @@
 "use client";
 
-import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import { ChevronDown, Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import { categoryLabels } from "@/data/products";
 import styles from "./CartDrawer.module.css";
@@ -1029,30 +1029,38 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             <span>{isAuthenticated ? "À payer" : "Total estimé"}</span>
             <span>{formatPrice(finalAmountToPay)} TTC</span>
           </div>
-          {isAuthenticated && <div className="mt-2 grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => setSummaryModal("loyalty")}
-              className={styles.benefit}
-            >
-              <p className="text-[10px] font-bold uppercase tracking-[0.06em] text-charcoal">Fidélité</p>
-              <p className="text-xs font-semibold text-ink">+{earnedTotalLoyaltyPoints} pt{earnedTotalLoyaltyPoints > 1 ? "s" : ""}</p>
-            </button>
-            <button
-              type="button"
-              onClick={() => setSummaryModal("packs")}
-              className={styles.benefit}
-            >
-              <p className="text-[10px] font-bold uppercase tracking-[0.06em] text-charcoal">Packs</p>
-              {!isAuthenticated || !lotteryConfig?.isActive ? (
-                <p className="text-xs text-charcoal">—</p>
-              ) : (
-                <p className="text-xs font-semibold text-ink">+{estimatedEarnedTickets} pack{estimatedEarnedTickets > 1 ? "s" : ""}</p>
-              )}
-            </button>
-          </div>}
-          <OrderCashRewardPreview productsAmount={checkoutAmount} active={open} />
-          <ContestBundleRewardPreview items={items} active={open} />
+          <details className={styles.gains}>
+            <summary className={styles.gainsToggle}>
+              <span>Tes gains</span>
+              <ChevronDown size={18} aria-hidden="true" />
+            </summary>
+            <div className={styles.gainsContent}>
+              {isAuthenticated && <div className="mt-2 grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSummaryModal("loyalty")}
+                  className={styles.benefit}
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-[0.06em] text-charcoal">Fidélité</p>
+                  <p className="text-xs font-semibold text-ink">+{earnedTotalLoyaltyPoints} pt{earnedTotalLoyaltyPoints > 1 ? "s" : ""}</p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSummaryModal("packs")}
+                  className={styles.benefit}
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-[0.06em] text-charcoal">Packs</p>
+                  {!isAuthenticated || !lotteryConfig?.isActive ? (
+                    <p className="text-xs text-charcoal">—</p>
+                  ) : (
+                    <p className="text-xs font-semibold text-ink">+{estimatedEarnedTickets} pack{estimatedEarnedTickets > 1 ? "s" : ""}</p>
+                  )}
+                </button>
+              </div>}
+              <OrderCashRewardPreview productsAmount={checkoutAmount} active={open} />
+              <ContestBundleRewardPreview items={items} active={open} />
+            </div>
+          </details>
           <div ref={checkoutAreaRef} tabIndex={-1} className={styles.checkoutArea}>
             {isAuthenticated && <>
             <ol className={styles.steps} aria-label="Étapes de la commande">
