@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useState } from "react";
 import Link from "@/components/navigation/NavigationLink";
-import { Gift } from "lucide-react";
+import { ChevronDown, Gift } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { getKqNotebookQuantityReward } from "@/lib/kanab-quest-notebook-quantity";
 import type { KqProducerRewardProgress } from "@/lib/kanab-quest-producer-rewards";
@@ -61,26 +61,35 @@ export function NotebookQuantityBonusPreview({ productId, grams }: { productId: 
   const nextTier = [3, 5, 10].find((tier) => tier > Math.max(grams, flower.quantityReward.bestOrderGrams));
 
   return <aside className={styles.preview} aria-labelledby={titleId}>
-    <h3 id={titleId}><Gift size={16} aria-hidden="true" /> Ton bonus dans le Carnet</h3>
-    <p className={styles.amount} aria-live="polite">Ton bonus total pour cette fleur : <strong>{formatNotebookGameEuros(reward.totalCashCents)} de monnaie de jeu</strong></p>
-    <p>{flower.quantityReward.bestOrderGrams > grams
-      ? `Ta sélection : ${new Intl.NumberFormat("fr-FR").format(grams)} g. Ton achat précédent de ${new Intl.NumberFormat("fr-FR").format(flower.quantityReward.bestOrderGrams)} g conserve ton meilleur palier.`
-      : `Avec ${new Intl.NumberFormat("fr-FR").format(grams)} g de cette fleur regroupés dans une commande.`}</p>
-    <p>{unpaidBonusCents > 0
-      ? `${formatNotebookGameEuros(unpaidBonusCents)} de supplément restent à récupérer après achat et validation de ton avis.`
-      : flower.quantityReward.grantedCashCents > 0
-        ? "Le supplément de ce palier a déjà été reçu pour cette fleur."
-        : campaign.completionReward.granted
-          ? "Le bonus de découverte de ce producteur a déjà été versé."
-          : "Les 100 € de découverte sont versés à la fin du parcours producteur."}</p>
-    {campaign.completionReward.granted && unpaidBonusCents > 0 ? <p>Le bonus de découverte de ce producteur a déjà été versé ; seul le supplément peut encore évoluer.</p> : null}
-    {nextTier ? <p className={styles.nextTier}>À {nextTier} g regroupés : {formatNotebookGameEuros(getKqNotebookQuantityReward(nextTier).totalCashCents)} au total dans le jeu.</p> : null}
-    <NotebookQuantityTiers />
-    <details className={styles.rules}>
-      <summary>Comment obtenir ce bonus ?</summary>
-      <p>Le plus gros achat de cette fleur dans une seule commande compte, jusqu’à 10 g. Des commandes séparées ne s’additionnent pas. Les 100 € de découverte sont compris dans le total et versés à la fin du parcours producteur.</p>
-      <p>Un achat plus grand améliore ton palier : seule la différence encore due est versée. Un tirage déjà effectué ne peut pas être relancé.</p>
+    <details className={styles.previewDetails}>
+      <summary className={styles.previewSummary}>
+        <Gift size={16} aria-hidden="true" />
+        <span id={titleId}>Avantages et bonus</span>
+        <ChevronDown size={18} aria-hidden="true" className={styles.previewChevron} />
+      </summary>
+      <div className={styles.previewBody}>
+        <h3>Ton bonus dans le Carnet</h3>
+        <p className={styles.amount} aria-live="polite">Ton bonus total pour cette fleur : <strong>{formatNotebookGameEuros(reward.totalCashCents)} de monnaie de jeu</strong></p>
+        <p>{flower.quantityReward.bestOrderGrams > grams
+          ? `Ta sélection : ${new Intl.NumberFormat("fr-FR").format(grams)} g. Ton achat précédent de ${new Intl.NumberFormat("fr-FR").format(flower.quantityReward.bestOrderGrams)} g conserve ton meilleur palier.`
+          : `Avec ${new Intl.NumberFormat("fr-FR").format(grams)} g de cette fleur regroupés dans une commande.`}</p>
+        <p>{unpaidBonusCents > 0
+          ? `${formatNotebookGameEuros(unpaidBonusCents)} de supplément restent à récupérer après achat et validation de ton avis.`
+          : flower.quantityReward.grantedCashCents > 0
+            ? "Le supplément de ce palier a déjà été reçu pour cette fleur."
+            : campaign.completionReward.granted
+              ? "Le bonus de découverte de ce producteur a déjà été versé."
+              : "Les 100 € de découverte sont versés à la fin du parcours producteur."}</p>
+        {campaign.completionReward.granted && unpaidBonusCents > 0 ? <p>Le bonus de découverte de ce producteur a déjà été versé ; seul le supplément peut encore évoluer.</p> : null}
+        {nextTier ? <p className={styles.nextTier}>À {nextTier} g regroupés : {formatNotebookGameEuros(getKqNotebookQuantityReward(nextTier).totalCashCents)} au total dans le jeu.</p> : null}
+        <NotebookQuantityTiers />
+        <details className={styles.rules}>
+          <summary>Comment obtenir ce bonus ?</summary>
+          <p>Le plus gros achat de cette fleur dans une seule commande compte, jusqu’à 10 g. Des commandes séparées ne s’additionnent pas. Les 100 € de découverte sont compris dans le total et versés à la fin du parcours producteur.</p>
+          <p>Un achat plus grand améliore ton palier : seule la différence encore due est versée. Un tirage déjà effectué ne peut pas être relancé.</p>
+        </details>
+        <Link href="/arene" className={styles.link}>Retrouver mes bonus dans le Carnet</Link>
+      </div>
     </details>
-    <Link href="/arene" className={styles.link}>Retrouver mes bonus dans le Carnet</Link>
   </aside>;
 }
