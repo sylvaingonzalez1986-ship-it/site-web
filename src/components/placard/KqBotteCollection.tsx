@@ -9,6 +9,7 @@ import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import { getKqCardGuide, getKqCardRole, KQ_CARD_ROLES, KQ_CARD_RARITY_LABELS } from "@/lib/kanab-quest-card-guide";
 import { useKqCollectionDialog as useCardDialog, clickedCollectionBackdrop as clickedBackdrop } from "./KqCollectionDialog";
 import { KqBuddiesCollection } from "./KqBuddiesCollection";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 import styles from "./KqBotteCollection.module.css";
 
 const RARITIES = KQ_CARD_RARITY_LABELS;
@@ -42,6 +43,7 @@ export function KqBotteCardDetail({ card, copies, onClose }: { card: KqSupportCa
 export type KqCollectionKind = "botte" | "buddies";
 
 export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte" }: { onClose: () => void; onOpenShop?: (collection?: KqCollectionKind) => void; initialSection?: KqCollectionKind }) {
+  const api = useKqTutorialApi();
   const dialog = useCardDialog(onClose);
   const [album, setAlbum] = useState<KqCollectionKind>(initialSection);
   const request = useRef<AbortController | null>(null);
@@ -58,7 +60,7 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
     const controller = new AbortController(); request.current = controller;
     setLoading(true); setError("");
     try {
-      const response = await fetch("/api/arena/placard/collection", { cache: "no-store", signal: controller.signal });
+      const response = await api.request("/api/arena/placard/collection", { cache: "no-store", signal: controller.signal });
       const payload = await response.json() as { error?: string; collection?: { cards?: Array<{ code: string; ownedCopies: number }> } };
       if (!response.ok) throw new Error(response.status === 401 ? "Connecte-toi pour retrouver ta collection Botte du Chanvrier." : payload.error || "Impossible de charger ta collection.");
       if (!Array.isArray(payload.collection?.cards)) throw new Error("Les informations de ta collection sont indisponibles.");
@@ -67,13 +69,13 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
     } catch (reason) {
       if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : "Collection indisponible.");
     } finally { if (!controller.signal.aborted) setLoading(false); }
-  }, []);
+  }, [api]);
   useEffect(() => {
     void refresh();
     const updated = () => { void refresh(); };
-    window.addEventListener("kq:collection-updated", updated);
-    return () => { request.current?.abort(); window.removeEventListener("kq:collection-updated", updated); };
-  }, [refresh]);
+    const unsubscribe = api.subscribe(["kq:collection-updated"], updated);
+    return () => { request.current?.abort(); unsubscribe(); };
+  }, [api, refresh]);
 
   const owned = KQ_CARDS.filter((card) => (inventory?.[card.code] ?? 0) > 0).length;
   const copies = KQ_CARDS.reduce((total, card) => total + (inventory?.[card.code] ?? 0), 0);

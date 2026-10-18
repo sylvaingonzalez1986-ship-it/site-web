@@ -1,0 +1,22 @@
+.buddies { min-width: 0; color: #172923; }
+.album { display: grid; justify-items: center; gap: 18px; padding: 20px; border: 2px solid #172923; border-radius: 18px; background: #fff1d6; box-shadow: 4px 4px 0 #172923; }
+.album header { display: flex; align-items: center; gap: 12px; width: 100%; }
+.album header span { margin-left: auto; font-weight: 800; white-space: nowrap; }
+.reveal { display: grid; grid-template-columns: repeat(3, minmax(0, 200px)); gap: clamp(8px, 2vw, 24px); width: 100%; justify-content: center; }
+.reveal > div[data-revealed=true] { animation: reveal .4s ease-out both; }
+.album > button, .placement > button { display: flex; justify-content: center; align-items: center; gap: 9px; min-height: 46px; padding: 12px 18px; border: 2px solid #172923; border-radius: 12px; background: #efc451; color: #172923; box-shadow: 3px 3px 0 #172923; font: 800 13px var(--font-body), sans-serif; cursor: pointer; }
+.album small { font-size: 11px; }
+.zones { display: flex; flex-wrap: wrap; gap: 12px; }
+.zones button { display: flex; align-items: center; gap: 10px; padding: 12px 15px; min-height: 64px; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; color: #172923; text-align: left; cursor: pointer; }
+.zones button[aria-pressed=true] { background: #efc451; box-shadow: 3px 3px 0 #172923; }
+.zones button span { display: grid; gap: 4px; }
+.zones strong { font-size: 13px; }
+.zones small { font-size: 11px; }
+.placement { display: grid; gap: 15px; }
+.placement :global([data-warehouse-map-viewport][data-fixed-camera=true]) { height: clamp(220px, 36dvh, 390px); min-height: 0; }
+.placement > button { justify-self: start; }
+.placement > button:disabled { opacity: .55; box-shadow: none; cursor: default; }
+.buddies button:focus-visible { outline: 3px solid #076c61; outline-offset: 4px; }
+@keyframes reveal { from { opacity: .2; transform: rotateY(-40deg); } to { opacity: 1; transform: none; } }
+@media(max-width:600px) { .album { padding: 14px 10px; gap: 14px; }.album h3 { font-size: 1rem; }.album > button, .placement > button, .zones button { width: 100%; }.zones { gap: 8px; } }
+@media(prefers-reduced-motion:reduce) { .reveal > div[data-revealed=true] { animation: none; } }

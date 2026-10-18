@@ -84,6 +84,8 @@ export const KQ_TREASURY_ENTRY_LABELS: Record<string, string> = {
   "lab-issued": "Facture laboratoire", "lab-paid": "Règlement laboratoire",
   "lab-adjusted": "Dette d’analyse excédentaire annulée", "lab-refunded": "Trop-perçu d’analyse remboursé",
   "energy-issued": "Facture électricité et soins", "energy-paid": "Règlement électricité et soins",
+  "storage-climate-issued": "Facture mensuelle de climatisation", "storage-climate-paid": "Règlement de la climatisation",
+  "storage-climate-credit": "Crédit de transition de la climatisation",
   "supplier-issued": "Facture de consommables de culture", "supplier-paid": "Règlement fournisseur",
   "warehouse-consumables": "Consommables de culture",
   "shop-created": "Création du site", "shop-renewed": "Hébergement du site",

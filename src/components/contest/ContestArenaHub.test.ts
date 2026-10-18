@@ -17,7 +17,7 @@ vi.mock("./ArenaPrelaunchCharacter", () => ({ ArenaPrelaunchCharacter: () => cre
 vi.mock("./ArenaPlayerResume", () => ({ ArenaPlayerResume: () => createElement("section", { "data-player-summary": true }, "Ton aventure continue") }));
 
 describe("Arena home", () => {
-  it("maps three direct activity links and the profile alongside learning and account controls", () => {
+  it("maps three direct activity links and the profile without the neighborhood tutorial", () => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub));
     for (const [id, mode] of Object.entries(ARENA_LOBBY_MODES)) {
       const link = html.match(new RegExp(`<a[^>]*data-arena-activity="${id}"[^>]*>`))?.[0];
@@ -31,8 +31,8 @@ describe("Arena home", () => {
     expect(html).toContain('id="arena-map-viewport"');
     expect(html).toMatch(/<button[^>]*data-arena-map-zoom[^>]*aria-pressed="false"/);
     expect(html).toContain("Aide");
-    expect(html).toContain("Explorer les possibilités");
-    expect(html).toContain("data-arena-learning-trigger");
+    expect(html).not.toContain("La relève · Apprendre à jouer");
+    expect(html).not.toContain("data-arena-learning-trigger");
     expect(html).not.toContain("data-arena-first-culture");
     expect(html).not.toContain("<dialog");
     expect(html).not.toContain("data-lobby-enter");
@@ -60,7 +60,7 @@ describe("Arena home", () => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub, { activitiesLocked: true, initialNotice }));
     expect(html).toContain(ARENA_OPENING_MESSAGE);
     expect(html).toContain("Créer mon personnage");
-    expect(html).toContain("Explorer les possibilités");
+    expect(html).not.toContain("La relève · Apprendre à jouer");
     expect(html).not.toContain("Ta première culture");
     expect(html.match(/Bientôt/g)).toHaveLength(3);
     expect(html.match(/aria-disabled="true"/g)).toHaveLength(3);

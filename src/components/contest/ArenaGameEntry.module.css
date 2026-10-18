@@ -1,0 +1,4 @@
+.loading { position: fixed; inset: 0; z-index: 100; display: grid; place-items: end center; overflow: hidden; background: #fff1d6; color: #172923; }
+.loading img { object-fit: cover; object-position: center 42%; }
+.loading span { position: relative; margin: 24px; padding: 12px 20px; border: 2px solid #172923; border-radius: 12px; background: #fff8e7; font-family: var(--font-body), sans-serif; font-weight: 700; box-shadow: 3px 4px 0 #172923; }
+@media (max-width: 700px) { .loading img { object-position: 40% center; } }

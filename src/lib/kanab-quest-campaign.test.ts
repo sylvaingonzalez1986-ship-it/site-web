@@ -3,6 +3,7 @@ import { advanceKqStage, resolveKqStage, startKqGame } from "./kanab-quest-game"
 import { getKqCampaignMemberState, getKqCampaignParticipants, getKqCampaignWarehouse, isKqCampaign, type KqCampaign } from "./kanab-quest-campaign";
 import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
+import { getKqWarehouseRunPostHarvestProfile } from "./kanab-quest-post-harvest";
 
 function fixture() {
   const initial = createKqWarehouseStarter();
@@ -58,6 +59,14 @@ describe("shared decisions with different zone equipment", () => {
     const member = mixedBalance.members[1];
     member.warehouse = getKqWarehouseRunSnapshot(member.warehouse.sourceState, 4, member.zoneId, 1);
     expect(isKqCampaign(mixedBalance)).toBe(false);
+    const mixedClimate = structuredClone(campaign);
+    const climateMember = mixedClimate.members[1];
+    climateMember.warehouse = getKqWarehouseRunSnapshot(climateMember.warehouse.sourceState, 4, climateMember.zoneId, 2, 1);
+    expect(isKqCampaign(mixedClimate)).toBe(false);
+    const mixedPostHarvest = structuredClone(campaign);
+    const harvestMember = mixedPostHarvest.members[1];
+    harvestMember.warehouse = getKqWarehouseRunSnapshot(harvestMember.warehouse.sourceState, 4, harvestMember.zoneId, 2, 2, 1);
+    expect(isKqCampaign(mixedPostHarvest)).toBe(false);
   });
 
   it("keeps historical campaign summaries on the original balance", () => {
@@ -72,5 +81,24 @@ describe("shared decisions with different zone equipment", () => {
     expect(current.balanceVersion).toBe(2);
     expect(current.qualityBonus).toBe(3);
     expect(current.estimatedHarvestGrams).toBe(780);
+  });
+
+  it("preserves historical climate charges and drying tiers in a campaign aggregate", () => {
+    const { campaign } = fixture(), room = campaign.members[0].warehouse.sourceState;
+    const equipped = getKqWarehouseQuote({ ...room, storageClimateCode: "SIM-STORAGE-CLIMATE-03",
+      serviceZones: room.serviceZones!.map(zone => zone.kind === "drying" ? { ...zone, deviceCode: "SIM-DRYING-03" } : zone) }, room).nextState;
+    const historical = { ...campaign, members: campaign.members.map(member => ({ ...member,
+      warehouse: getKqWarehouseRunSnapshot(equipped, 4, member.zoneId, 2, 1, 1) })) };
+    expect(isKqCampaign(historical)).toBe(true);
+    const aggregate = getKqCampaignWarehouse(historical.members)!;
+    expect(aggregate.climateBillingVersion).toBeUndefined();
+    expect(aggregate.postHarvestBalanceVersion).toBeUndefined();
+    expect(aggregate.energyCostCents).toBe(getKqWarehouseRunSnapshot(equipped, 4, undefined, 2, 1, 1).energyCostCents);
+    expect(getKqWarehouseRunPostHarvestProfile(aggregate).dryingQualityBonus).toBe(.4);
+    const current = getKqCampaignWarehouse(getKqCampaignParticipants(equipped, 4))!;
+    expect(current.climateBillingVersion).toBe(2);
+    expect(current.postHarvestBalanceVersion).toBe(2);
+    expect(current.energyCostCents).toBeLessThan(aggregate.energyCostCents);
+    expect(getKqWarehouseRunPostHarvestProfile(current).dryingQualityBonus).toBe(.7);
   });
 });

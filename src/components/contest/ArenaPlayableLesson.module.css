@@ -1,31 +1,11 @@
-.dialog { --arena-lesson-coach-height: 200px; position: fixed; inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; overflow: auto; overscroll-behavior: contain; background: #fff1d6; color: #172923; font-family: var(--font-body), Arial, sans-serif; scroll-padding-bottom: calc(var(--arena-lesson-coach-height) + 24px); }
+﻿.dialog { --arena-lesson-coach-height: 136px; position: fixed; inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; overflow: auto; overscroll-behavior: contain; background: #fff1d6; color: #172923; scroll-padding-bottom: calc(var(--arena-lesson-coach-height) + 24px); }
 .dialog::backdrop { background: #172923c4; }
 .stage { min-height: 100%; padding-bottom: calc(var(--arena-lesson-coach-height) + 24px); }
-.stage > p { padding: 24px; }
+.embeddedStage { min-width: 0; }
 .loading { padding: 28px; line-height: 1.6; }
-.coach { position: fixed; left: 16px; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 2147483000; box-sizing: border-box; width: min(540px, calc(100vw - 32px)); padding: 12px 16px; border: 3px solid #172923; border-radius: 18px; background: #fff1d6; box-shadow: 4px 5px 0 #172923; color: #172923; font: 400 .9rem/1.45 var(--font-body), Arial, sans-serif; }
-.coach * { box-sizing: border-box; }
-.coachBar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.coachBar strong { font-size: .72rem; letter-spacing: .03em; line-height: 1.4; color: #172923; }
-.coach p { margin: 4px 0 8px; line-height: 1.5; }
-.coach small { display: block; font-size: .7rem; color: #455748; }
-.coach button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 8px; border: 2px solid transparent; border-radius: 11px; background: transparent; color: #172923; font: 750 .75rem/1.3 var(--font-body), Arial, sans-serif; cursor: pointer; }
-.coach button:focus-visible { outline: 3px solid #172923; outline-offset: 2px; }
-.coachBar > button { width: 44px; flex-shrink: 0; border-color: #172923; background: #d5a573; }
-.actions { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-.actions .return { margin-right: auto; padding-inline: 12px; border-color: #172923; background: #efc451; color: #172923; box-shadow: 2px 3px 0 #172923; }
-.coach[data-complete=true] { background: #d7efe2; }
-.coach[data-collapsed=true] { padding-block: 6px; }
-.coach[data-collapsed=true] .coachBar > button { display: none; }
-.stage :global(dialog[open]) { padding-bottom: calc(var(--arena-lesson-coach-height) + 24px); scroll-padding-bottom: calc(var(--arena-lesson-coach-height) + 24px); }
-.stage :global([data-tasting-book]) { height: calc(100dvh - var(--arena-lesson-coach-height)); --book-height: calc(100dvh - var(--arena-lesson-coach-height)) !important; --book-top: 0px !important; }
-.stage button, .stage input, .stage select, .stage textarea { scroll-margin-block: 30px calc(var(--arena-lesson-coach-height) + 30px); }
-@media (hover: hover) { .coach button:hover { background: #d5a573; border-color: #172923; } .actions .return:hover { background: #149b8b; } }
-@media (min-width: 761px) { .coach { left: 20px; width: min(500px, calc(40vw - 32px)); } }
-@media (max-width: 600px) {
-  .coach { left: 8px; bottom: max(8px, env(safe-area-inset-bottom)); width: calc(100vw - 16px); padding: 8px 12px; font-size: .82rem; }
-  .coachBar strong { font-size: .64rem; }
-  .coach p { margin: 0 0 5px; }
-  .coach small { font-size: .65rem; }
-  .actions { margin-top: 4px; }
-}
+.guideDock { position: fixed; inset: auto 0 0; z-index: 2147483000; box-sizing: border-box; width: 100%; background: #fff9eb; border-top: 2px solid #173a31; padding: 12px 24px; color: #173a31; }
+.guideDock[data-side="top"] { top: 0; bottom: auto; border-top: 0; border-bottom: 2px solid #173a31; }
+.guideReturn, .guideRestart { display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 2px solid #173a31; border-radius: 10px; padding: 8px 12px; color: #173a31; background: #f5cd60; font: 700 .8rem/1.3 var(--font-body), sans-serif; cursor: pointer; }
+.guideRestart { width: 44px; padding: 8px; background: #fffdf3; }
+.guideReturn:focus-visible, .guideRestart:focus-visible { outline: 3px solid #08796e; outline-offset: 3px; }
+@media (max-width: 700px) { .guideDock { padding: 9px 12px; } .guideRestart { display: none; } }

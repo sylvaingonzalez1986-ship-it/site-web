@@ -142,11 +142,12 @@ if(preview){
     const rows=controls.map(describe), overlaps=[];
     controls.forEach((first,index)=>controls.slice(index+1).forEach(second=>{
       if(first.contains(second)||second.contains(first))return;
-      const a=first.getBoundingClientRect(),b=second.getBoundingClientRect();
+      // Map bounding rectangles are inert; silhouettes are checked by audit-arena-silhouettes.
+      const a=(first.querySelector('[data-arena-label]')??first).getBoundingClientRect(),b=(second.querySelector('[data-arena-label]')??second).getBoundingClientRect();
       if(Math.min(a.right,b.right)-Math.max(a.left,b.left)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>1)overlaps.push([describe(first).label,describe(second).label]);
     }));
     const map=document.querySelector('[data-arena-map]'),viewport=document.querySelector('#arena-map-viewport'),image=map.querySelector('img'),imageBounds=image.getBoundingClientRect();
-    const sites=[...map.querySelectorAll('[data-arena-activity],[data-arena-profile-trigger]')].map(element=>{const row=describe(element),label=describe(element.querySelector(':scope > span'));return {...row,labelBounds:label,quadrant:((row.left+row.right)/2<imageBounds.left+imageBounds.width/2?'left':'right')+'-'+((row.top+row.bottom)/2<imageBounds.top+scrollY+imageBounds.height/2?'top':'bottom')};});
+    const sites=[...map.querySelectorAll('[data-arena-activity],[data-arena-profile-trigger]')].map(element=>{const row=describe(element),label=describe(element.querySelector('[data-arena-label]'));return {...row,labelBounds:label,quadrant:((row.left+row.right)/2<imageBounds.left+imageBounds.width/2?'left':'right')+'-'+((row.top+row.bottom)/2<imageBounds.top+scrollY+imageBounds.height/2?'top':'bottom')};});
     const face={left:imageBounds.left+imageBounds.width*.37,right:imageBounds.left+imageBounds.width*.58,top:imageBounds.top+scrollY+imageBounds.height*.35,bottom:imageBounds.top+scrollY+imageBounds.height*.54};
     return {width:innerWidth,height:innerHeight,documentHeight:document.documentElement.scrollHeight,
       horizontalOverflow:document.documentElement.scrollWidth>innerWidth+1,
@@ -168,7 +169,7 @@ if(preview){
       assert(site.width>=44&&site.height>=44,`${site.id} has at least a 44px target`);
       assert.equal(site.quadrant,{carnet:'left-bottom',jouer:'right-bottom',classement:'right-top',profil:'left-top'}[site.id],`${site.id} matches its illustrated desk object`);
       assert.equal(intersects(site.labelBounds,layout.face),false,`${site.id} leaves Sylvain’s face visible`);
-      for(const other of layout.sites.filter(other=>other.id!==site.id))assert.equal(intersects(site.labelBounds,other),false,`${site.id} label does not cover the ${other.id} target`);
+      for(const other of layout.sites.filter(other=>other.id!==site.id))assert.equal(intersects(site.labelBounds,other.labelBounds),false,`${site.id} label does not cover the ${other.id} label`);
     }
     if(layout.width<=700){assert.equal(layout.mapZoomed,false);assert.equal(layout.zoomPressed,'false');assert(layout.mapViewport.scrollWidth<=layout.mapViewport.width+1,'The whole map fits on mobile');assert(Math.abs(layout.mapImageWidth-layout.mapViewport.width)<=1,'The mobile overview displays the complete image');}
   };
@@ -189,9 +190,9 @@ if(preview){
       assert.equal(layout.sceneImages.length,1,'Exactly one scene image in the DOM');
       assert.equal(layout.sceneRequests.length,1,'Only the map image is loaded');
       assert.equal(layout.sceneImages[0],'/contest/map/arena-desk-sylvain-v6.webp');
-      assert(layout.renderedControls<=10,'Learning stays alongside concise account and map controls');
+      assert(layout.renderedControls<=10,'Account and map controls stay concise');
       assert.equal(await visibleCount('[data-arena-first-culture-trigger]'),0,'The retired first culture is absent');
-      assert.equal(await visibleCount('[data-arena-discovery-entry] [data-arena-learning-trigger]'),1,'Learning remains directly available before and after opening');
+      assert.equal(await visibleCount('[data-arena-learning-trigger]'),0,'Learning opens from the neighborhood instead of the Arena');
       assert.equal(layout.controls.filter(control=>control.position==='fixed').length,0,'Account/help controls stay inline');
       assert.equal(await visibleCount('a[href*="pack-pionniers"],a[href*="view=missions"]'),0,'Pack and mission shortcuts are not permanently displayed');
       assert(requests.slice(requestStart).every(request=>request.method==='GET'),'Arrival must not mutate profile or tutorial progress');

@@ -94,7 +94,7 @@ describe("Arena budget ranking reads", () => {
     } });
     await expect(getKqArenaLeaderboardInternal()).resolves.toMatchObject({
       seasonCode: "KQ-2026-S1", contestSeasonCode: "CARNET-1", generatedAt,
-      formulaVersion: "arena-v2-development", entries: [{ userId, rank: 1, score: 445, businessScore: 120 }],
+      formulaVersion: "arena-v3-tasting-first", entries: [{ userId, rank: 1, score: 445, businessScore: 120 }],
     });
     expect(mocks.rpc).toHaveBeenLastCalledWith("rpc_kq_get_arena_leaderboard", {
       p_season_code: "KQ-2026-S1", p_force_refresh: false,

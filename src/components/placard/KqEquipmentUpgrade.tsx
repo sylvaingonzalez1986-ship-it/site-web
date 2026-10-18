@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { ArrowUp, Check, LoaderCircle } from "lucide-react";
 import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentBuildingNumber, getKqEquipmentImpactLabels, getKqEquipmentUpgradeCost, isKqBuildingEquipment, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
 import { getChanvrierCareerGate, getChanvrierEquipmentUpgradeRequiredLevel, type ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
 import { getKqWorkshopMachineSpecification } from "@/lib/kanab-quest-workshop-machines";
 import styles from "./KqEquipmentUpgrade.module.css";
+import summaryStyles from "./KqMachineSummaryActions.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqWorkshopTiers } from "./KqWorkshopTiers";
 
-export function KqEquipmentUpgrade({ code, level, cashCents, career, productionUnits = 1, tentNumber = 1, equipmentScopeVersion = 2, disabled, onUpdated, onBusyChange, workshopOnly = false, maintenanceDue = false }: {
+export function KqEquipmentUpgrade({ code, level, cashCents, career, productionUnits = 1, tentNumber = 1, equipmentScopeVersion = 2, disabled, onUpdated, onBusyChange, workshopOnly = false, maintenanceDue = false, compact = false }: {
   career?: ChanvrierCareerSnapshot;
   equipmentScopeVersion?: 2 | 3;
   code: string; level: number; cashCents: number; productionUnits?: number; tentNumber?: number; disabled?: boolean;
@@ -17,6 +18,7 @@ export function KqEquipmentUpgrade({ code, level, cashCents, career, productionU
   onBusyChange?: (busy: boolean) => void;
   workshopOnly?: boolean;
   maintenanceDue?: boolean;
+  compact?: boolean;
 }) {
   const api = useKqTutorialApi();
   const [pending, setPending] = useState(false);
@@ -64,6 +66,37 @@ export function KqEquipmentUpgrade({ code, level, cashCents, career, productionU
     } finally { setPending(false); inFlight.current = false; }
   };
 
+  if (compact) return <section className={summaryStyles.card} aria-label={`Niveau de ${current.name}`}>
+    <div className={summaryStyles.heading}>
+      <h4 className={summaryStyles.title}><ArrowUp size={16} aria-hidden="true" />Niveau</h4>
+      <span className={summaryStyles.badge}>{machine?.tier.label ?? (level >= 7 ? "Avancé" : level >= 4 ? "Aménagement" : "Réglages")}</span>
+    </div>
+    <div className={summaryStyles.overview}>
+      <div className={summaryStyles.gauge} style={{ "--gauge-fill": `${level * 10}%` } as CSSProperties} role="progressbar" aria-label="Niveau du matériel" aria-valuemin={1} aria-valuemax={10} aria-valuenow={level}>
+        <div className={summaryStyles.gaugeCenter}><strong>{level}</strong><span>/ 10</span></div>
+      </div>
+      <div className={summaryStyles.overviewCopy}>
+        <strong>{next ? `Prochain niveau : ${level + 1}` : "Niveau maximum"}</strong>
+        <p>{nextMachine?.improvement ?? (next ? "Améliore les performances." : "Toutes les améliorations acquises.")}</p>
+      </div>
+    </div>
+    {machine ? <dl className={summaryStyles.metrics}>
+      <div><dt>Capacité / lot</dt><dd>{machine.capacityGrams.toLocaleString("fr-FR")}{nextMachine ? <><span> → </span><strong>{nextMachine.capacityGrams.toLocaleString("fr-FR")}</strong></> : null} g</dd></div>
+      <div><dt>Précision</dt><dd>{machine.precision.toLocaleString("fr-FR", { maximumFractionDigits: 1 })}{nextMachine ? <><span> → </span><strong>{nextMachine.precision.toLocaleString("fr-FR", { maximumFractionDigits: 1 })}</strong></> : null} %</dd></div>
+    </dl> : gains.length ? <ul className={summaryStyles.gains}>{gains.map((gain) => <li key={gain}>{gain}</li>)}</ul> : null}
+    <div className={summaryStyles.actionArea}>
+      <button className={summaryStyles.action} data-machine-upgrade type="button" disabled={!next || pending || tierBusy || maintenanceDue || disabled || !affordable || !careerGate?.allowed || level < completedLevel} onClick={() => void upgrade()}>
+        {pending ? <LoaderCircle className={summaryStyles.spinner} size={16} aria-hidden="true" /> : next ? <ArrowUp size={16} aria-hidden="true" /> : <Check size={16} aria-hidden="true" />}
+        {pending ? "Amélioration…" : next ? `Améliorer · niv. ${level + 1} · ${formatKqCash(cost!)}` : "Niveau maximum"}
+      </button>
+      {next && !careerGate?.allowed ? <p className={summaryStyles.hint}>{careerGate?.reason ?? "Chargement de la progression du Chanvrier…"}</p> : null}
+      {next && !affordable ? <p className={summaryStyles.hint}>Il manque {formatKqCash(Math.max(0, (cost ?? 0) - cashCents))}.</p> : null}
+      {next && maintenanceDue ? <p className={summaryStyles.hint}>Entretiens cette machine avant de l’améliorer.</p> : null}
+      {notice ? <p className={summaryStyles.hint} role="status">{notice}</p> : null}
+      {error ? <p role="alert" className={summaryStyles.error}>{error} <button className={summaryStyles.retry} type="button" onClick={() => void onUpdated()}>Actualiser</button></p> : null}
+    </div>
+  </section>;
+
   const upgrades = <section className={styles.upgrade} data-tier={tier} aria-label={`Niveau de ${current.name}`}>
     <div className={styles.heading}><strong>NIV. {level}<small> / 10</small></strong><span>{level >= 7 ? "Atelier avancé" : level >= 4 ? "Aménagement" : "Réglages"}</span></div>
     <div className={styles.progress} role="progressbar" aria-label="Niveau du matériel" aria-valuemin={1} aria-valuemax={10} aria-valuenow={level}>
@@ -89,7 +122,7 @@ export function KqEquipmentUpgrade({ code, level, cashCents, career, productionU
     {error ? <p role="alert" className={styles.error}>{error} <button type="button" onClick={() => void onUpdated()}>Actualiser</button></p> : null}
   </section>;
   return workshopOnly && machine ? <>
+    {upgrades}
     <KqWorkshopTiers code={code} level={level} cashCents={cashCents} career={career} maintenanceDue={maintenanceDue} disabled={disabled || pending} onUpdated={onUpdated} onBusyChange={setTierBusy} />
-    <details className={styles.fineTuning}><summary>Réglages fins · niveau {level}/10</summary>{upgrades}</details>
   </> : upgrades;
 }

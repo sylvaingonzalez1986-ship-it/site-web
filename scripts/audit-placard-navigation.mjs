@@ -27,7 +27,7 @@ const destinations={
  './KqHarvests':stub('KqHarvests','<h1>Mes récoltes</h1><p data-harvest-section>{props.section}</p><button onClick={()=>props.onSectionChange("storage")}>Stockage et affinage</button><button onClick={()=>props.onOpenArena("fixture-flower")}>Présenter au jury</button><button onClick={()=>props.onOpenMarket("fixture-flower")}>Vendre cette récolte</button>'),
  './KanabQuestDicePrototype':stub('KanabQuestDicePrototype','<h1>{props.viewMode === "arena" ? "Jury & duels" : "La culture"}</h1>'),
  './KqWarehouseEntry':stub('KqWarehouseEntry','<h1>Entrepôt</h1><p data-equipment>{props.initialEquipmentCode}</p><p data-catalog>{props.initialShopOpen ? "Matériel" : "Plan"}</p><button onClick={()=>props.onOpenShop("LED-500")}>Acheter une lampe</button>'),
- './KqMarketDesk':stub('KqMarketDesk','<h1>Marché</h1><p data-market-section>{props.section}</p><button onClick={()=>props.onSectionChange("demands")}>Demandes du moment</button><button onClick={()=>props.onSectionChange("sales")}>Transformer et vendre</button><button onClick={()=>props.onSectionChange("dashboard")}>Suivre ma boutique</button><button onClick={()=>props.onSectionChange("management")}>Gérer mon activité</button><button onClick={()=>props.onOpenShop("COMPUTER")}>Acheter un ordinateur</button>'),
+ './KqMarketDesk':stub('KqMarketDesk','<h1>Ma boutique</h1><p data-market-section>{props.section}</p><button onClick={()=>props.onSectionChange("overview")}>Vue d’ensemble</button><button onClick={()=>props.onSectionChange("demands")}>Demandes clients</button><button onClick={()=>props.onSectionChange("sales")}>Vendre ma production</button><button onClick={()=>props.onSectionChange("dashboard")}>Mes ventes</button><button onClick={()=>props.onSectionChange("management")}>Développer ma boutique</button><button onClick={()=>props.onOpenShop("COMPUTER")}>Acheter un ordinateur</button>'),
  './KqTreasuryDesk':stub('KqTreasuryDesk','<h1>{props.initialPole === "bank" ? "La Banque" : "Le Bureau"}</h1><p data-treasury-pole>{props.initialPole}</p>'),
  './KqSupportBoosterShop':stub('KqSupportBoosterShop','<h1>Boutique</h1><p data-catalog>Packs</p><p data-shop-section>{props.initialSection}</p><button onClick={()=>props.onSectionChange("buddies")}>Packs Buddies</button><button onClick={props.onExit}>Quitter la boutique</button><button data-open-shop-collection onClick={()=>props.onOpenCollection(props.initialSection)}>Collections</button>'),
  './KqMissionCenter':stub('KqMissionCenter','<h1>Missions</h1><button onClick={()=>props.onOpen("shop")}>Mes packs</button>'),
@@ -242,7 +242,7 @@ else try {
   await page.goBack();await view('harvests');await clickText('Vendre cette récolte');await view('market');assert.equal(new URL(page.url()).searchParams.get('flower'),'fixture-flower');
   assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'sales','A harvest shortcut still opens its sale');
   await navTo('market');await assertNoOverflow('Commerce');await screenshot(`commerce-navigation-${width}`);
-  assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'demands','The market navigation opens client requests');
+  assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'overview','The market navigation opens the shop overview');
   await navTo('workshop');await clickText('Acheter une lampe');await view('workshop');await page.waitForFunction(()=>document.querySelector('[data-catalog]')?.textContent==='Matériel');assert.equal(new URL(page.url()).searchParams.get('equipment'),'LED-500');
   results.at(-1).navigation='passed';
  }
@@ -272,16 +272,17 @@ else try {
  assert.equal(await page.$eval('[data-catalog]',element=>element.textContent),'Packs','The sidebar enters the general shop');
  await clickText('Quitter la boutique');await view('market');assert.equal(new URL(page.url()).searchParams.get('section'),'dashboard');assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'dashboard');
  results.push({scenario:'sidebar-shop-return',destination:'market',section:'dashboard'});
- for(const [query,expected] of [['view=market','demands'],['view=market&section=sales','sales'],['view=market&section=demands&flower=fixture-flower','demands'],['view=market&flower=fixture-flower','sales']]) {
+ for(const [query,expected] of [['view=market','overview'],['view=market&section=overview','overview'],['view=market&section=sales','sales'],['view=market&section=demands','demands'],['view=market&section=demands&flower=fixture-flower','demands'],['view=market&flower=fixture-flower','sales']]) {
   await visit('starter',query);await view('market');
   assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),expected);
   await clickText('Acheter un ordinateur');await view('workshop');assert.equal(await page.$eval('[data-catalog]',element=>element.textContent),'Matériel');await page.goBack();await view('market');
   assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),expected,'Browser Back from equipment retains the chosen market section');
   results.push({scenario:'market-entry-and-return',query,section:expected});
  }
- await visit('starter','view=market');await view('market');await clickText('Transformer et vendre');
+ await visit('starter','view=market');await view('market');await clickText('Vendre ma production');
  await page.waitForFunction(()=>new URLSearchParams(location.search).get('section')==='sales');
- await clickText('Demandes du moment');await page.waitForFunction(()=>document.querySelector('[data-market-section]')?.textContent==='demands');
+ await clickText('Demandes clients');await page.waitForFunction(()=>document.querySelector('[data-market-section]')?.textContent==='demands');
+ assert.equal(new URL(page.url()).searchParams.get('section'),'demands','Client requests retain their explicit deep link');
  await page.goBack();await page.waitForFunction(()=>document.querySelector('[data-market-section]')?.textContent==='sales');
  results.push({scenario:'market-back-navigation',section:'sales'});
  await visit('starter','view=workshop&section=storage');await view('workshop');assert.equal(await page.$eval('[data-placard-view]',element=>element.dataset.placardView),'workshop');

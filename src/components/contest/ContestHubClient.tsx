@@ -1,7 +1,7 @@
 "use client";
 
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
-import { ArenaRankingBoard, type ArenaRankingRow } from "./ArenaRankingBoard";
+import { ArenaRankingBoard, type ArenaRankingMode, type ArenaRankingRow } from "./ArenaRankingBoard";
 
 import { useGameViewport } from "@/hooks/useGameViewport";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
@@ -49,7 +49,6 @@ import { useCart } from "@/context/CartContext";
 import { categoryLabels, type Product, type ProductCategory } from "@/data/products";
 import { useLotteryExperience } from "@/hooks/useLotteryExperience";
 import { ArenaCustomerRewardPot, type ArenaCustomerRewardPool } from "./ArenaCustomerRewards";
-import { getKqReputationProgress } from "@/lib/kanab-quest-reputation";
 import {
   CONTEST_AROMA_TAG_LABELS,
   CONTEST_CONSUMPTION_METHOD_LABELS,
@@ -125,21 +124,10 @@ type TestedFlowerCardItem = {
   entryIndex: number;
 };
 
-type PlacardRankingEntry = {
-  avatar?: ChanvrierAvatarProfile | null;
-  rank: number;
-  pseudo: string;
-  placardScore: number;
-  rating: number;
-  seasonPoints: number;
-  reputation: number;
-  businessScore: number;
-  wins: number;
-  losses: number;
-  streak: number;
-};
-
 type ArenaRankingEntry = {
+  entryKey: string;
+  tastedFlowerCount: number;
+  duelSeasonPoints: number;
   avatar?: ChanvrierAvatarProfile | null;
   rank: number;
   pseudo: string;
@@ -151,6 +139,15 @@ type ArenaRankingEntry = {
   rating: number;
   wins: number;
   losses: number;
+};
+
+type ArenaRankingPage = {
+  entries: ArenaRankingEntry[];
+  viewerEntry?: ArenaRankingEntry | null;
+  totalPlayers: number;
+  nextOffset: number | null;
+  generatedAt: string;
+  revision: string;
 };
 
 type PlacardPlayerProgress = {
@@ -1791,7 +1788,7 @@ function ContestFeedReviewModal({
   );
 }
 
-function ContestTesterProfileCard({
+export function ContestTesterProfileCard({
   progress,
   isAuthenticated,
   onMascotClick,
@@ -1810,6 +1807,11 @@ function ContestTesterProfileCard({
   const [generalProgress, setGeneralProgress] = useState<ArenaRankingEntry | null>(null);
   const [generalProgressLoaded, setGeneralProgressLoaded] = useState(false);
   const [generalProgressUnavailable, setGeneralProgressUnavailable] = useState(false);
+  const [tastingProgress, setTastingProgress] = useState<Partial<Record<"season" | "global", ArenaRankingEntry | null>>>({});
+  const [tastingProgressUnavailable, setTastingProgressUnavailable] = useState<Partial<Record<"season" | "global", boolean>>>({});
+  const profilePseudo = progress?.pseudo;
+  const formatPersonalScore = (value: number) => value.toLocaleString("fr-FR", { maximumFractionDigits: 1 });
+  const tastingRank = (scope: "season" | "global") => tastingProgressUnavailable[scope] ? "Indisponible" : tastingProgress[scope] === undefined ? "…" : tastingProgress[scope]?.rank ? `#${tastingProgress[scope].rank}` : "Non classé";
 
   useEffect(() => {
     if (!isAuthenticated || placardProgressLoaded) return;
@@ -1838,18 +1840,18 @@ function ContestTesterProfileCard({
   }, [isAuthenticated, placardProgressLoaded]);
 
   useEffect(() => {
-    if (!isAuthenticated || !progress || generalProgressLoaded) return;
+    if (!isAuthenticated || !profilePseudo) return;
     const controller = new AbortController();
     let cancelled = false;
-    void fetch("/api/arena/rankings", { signal: controller.signal })
+    setGeneralProgress(null);
+    setGeneralProgressLoaded(false);
+    setGeneralProgressUnavailable(false);
+    void fetch("/api/arena/rankings?category=general&limit=1", { cache: "no-store", signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) throw new Error("Classement général indisponible");
-        const payload = await response.json() as { entries?: ArenaRankingEntry[] };
-        const entry = Array.isArray(payload.entries)
-          ? payload.entries.find((item) => item.pseudo === progress.pseudo) ?? null
-          : null;
+        const payload = await response.json() as ArenaRankingPage;
         if (!cancelled) {
-          setGeneralProgress(entry);
+          setGeneralProgress(payload.viewerEntry ?? null);
           setGeneralProgressUnavailable(false);
         }
       })
@@ -1864,7 +1866,26 @@ function ContestTesterProfileCard({
       cancelled = true;
       controller.abort();
     };
-  }, [generalProgressLoaded, isAuthenticated, progress]);
+  }, [isAuthenticated, profilePseudo]);
+
+  useEffect(() => {
+    if (!isAuthenticated || !profilePseudo) return;
+    const controller = new AbortController();
+    setTastingProgress({});
+    setTastingProgressUnavailable({});
+    void Promise.allSettled((["season", "global"] as const).map(async (scope) => {
+      try {
+        const response = await fetch(`/api/arena/rankings?category=tasting&scope=${scope}&limit=1`, { cache: "no-store", signal: controller.signal });
+        if (!response.ok) throw new Error("Classement dégustation indisponible");
+        const payload = await response.json() as ArenaRankingPage;
+        if (!controller.signal.aborted) setTastingProgress(current => ({ ...current, [scope]: payload.viewerEntry ?? null }));
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        if (!controller.signal.aborted) setTastingProgressUnavailable(current => ({ ...current, [scope]: true }));
+      }
+    }));
+    return () => controller.abort();
+  }, [isAuthenticated, profilePseudo]);
 
   if (!isAuthenticated) {
     return (
@@ -1935,9 +1956,9 @@ function ContestTesterProfileCard({
           <p>Classement personnel</p>
           <h3>Dégustation</h3>
           <dl>
-            <div><dt>Points</dt><dd>{progress.totalPoints}</dd></div>
-            <div><dt>Rang saison</dt><dd>{progress.seasonRank ? `#${progress.seasonRank}` : "—"}</dd></div>
-            <div><dt>Rang global</dt><dd>{progress.globalRank ? `#${progress.globalRank}` : "—"}</dd></div>
+            <div><dt>Points de saison</dt><dd>{tastingProgressUnavailable.season ? "Indisponible" : tastingProgress.season === undefined ? "…" : formatPersonalScore(tastingProgress.season?.score ?? 0)}</dd></div>
+            <div><dt>Rang saison</dt><dd>{tastingRank("season")}</dd></div>
+            <div><dt>Rang global</dt><dd>{tastingRank("global")}</dd></div>
           </dl>
         </section>
 
@@ -1945,8 +1966,8 @@ function ContestTesterProfileCard({
           <p>Classement personnel</p>
           <h3>Kanab Quest</h3>
           <dl>
-            <div><dt>Score Kanab Quest</dt><dd>{placardProgress?.placardScore ?? "—"}</dd></div>
-            <div><dt>Entreprise</dt><dd>{placardProgress ? `${placardProgress.businessScore ?? 0} / 200` : "—"}</dd></div>
+            <div><dt>Score Kanab Quest</dt><dd>{placardProgress ? formatPersonalScore(placardProgress.placardScore) : "—"}</dd></div>
+            <div><dt>Entreprise</dt><dd>{placardProgress ? `${formatPersonalScore(placardProgress.businessScore ?? 0)} pts` : "—"}</dd></div>
             <div><dt>Rang saison</dt><dd>{placardProgress?.rank ? `#${placardProgress.rank}` : placardProgressUnavailable ? "Indisponible" : placardProgressLoaded ? "Non classé" : "…"}</dd></div>
             <div><dt>Duels</dt><dd>{placardProgress ? `${placardProgress.wins} V / ${placardProgress.losses} D` : "—"}</dd></div>
           </dl>
@@ -1956,8 +1977,8 @@ function ContestTesterProfileCard({
           <p>Classement personnel</p>
           <h3>Général</h3>
           <dl>
-            <div><dt>Score Arène</dt><dd>{generalProgress?.score ?? "—"}</dd></div>
-            <div><dt>Entreprise</dt><dd>{generalProgress ? `${generalProgress.businessScore ?? 0} / 200` : "—"}</dd></div>
+            <div><dt>Score Arène</dt><dd>{generalProgress ? formatPersonalScore(generalProgress.score) : "—"}</dd></div>
+            <div><dt>Entreprise</dt><dd>{generalProgress ? `${formatPersonalScore(generalProgress.businessScore ?? 0)} pts` : "—"}</dd></div>
             <div><dt>Rang général</dt><dd>{generalProgress?.rank ? `#${generalProgress.rank}` : generalProgressUnavailable ? "Indisponible" : generalProgressLoaded ? "Absent du tableau" : "…"}</dd></div>
           </dl>
         </section>
@@ -1965,7 +1986,7 @@ function ContestTesterProfileCard({
 
       <div className={arenaStyles.personalProgressGrid}>
         <section className={arenaStyles.tastingProgressSummary}>
-          <p className={arenaStyles.personalProgressLabel}>Progression dégustation</p>
+          <p className={arenaStyles.personalProgressLabel}>Progression du Carnet · {progress.totalPoints.toLocaleString("fr-FR")} points Carnet</p>
           <div className="flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.08em] text-charcoal">
             <span>{progress.currentLevel.label}</span>
             <span>{progress.nextLevel ? progress.nextLevel.label : "Niveau max"}</span>
@@ -1979,7 +2000,7 @@ function ContestTesterProfileCard({
           </div>
           <p className="mt-2 text-sm font-semibold text-charcoal">
             {progress.nextLevel
-              ? `${progress.pointsToNextLevel} point(s) avant ${progress.nextLevel.label}.`
+              ? `${progress.pointsToNextLevel} point(s) Carnet avant ${progress.nextLevel.label}.`
               : "Tous les niveaux de points sont atteints."}
           </p>
         </section>
@@ -1997,8 +2018,6 @@ function ContestTesterProfileCard({
 }
 
 export function ContestTesterLeaderboard({
-  seasonItems,
-  globalItems,
   profileSeasonCode,
   profileTrack,
   compact = false,
@@ -2012,109 +2031,75 @@ export function ContestTesterLeaderboard({
   viewerPseudo?: string;
 }) {
   const [scope, setScope] = useState<"season" | "global">("season");
-  const [rankingType, setRankingType] = useState<"general" | "tasting" | "placard">("general");
-  const [arenaEntries, setArenaEntries] = useState<ArenaRankingEntry[]>([]);
-  const [arenaRankingLoaded, setArenaRankingLoaded] = useState(false);
-  const [arenaRankingUnavailable, setArenaRankingUnavailable] = useState(false);
-  const [arenaRankingRetry, setArenaRankingRetry] = useState(0);
-  const [remoteTastingItems, setRemoteTastingItems] = useState({ season: seasonItems, global: globalItems });
-  const [tastingLoaded, setTastingLoaded] = useState({ season: false, global: false });
-  const [tastingUnavailable, setTastingUnavailable] = useState({ season: false, global: false });
-  const [placardEntries, setPlacardEntries] = useState<PlacardRankingEntry[]>([]);
-  const [placardRankingLoaded, setPlacardRankingLoaded] = useState(false);
-  const [placardRankingUnavailable, setPlacardRankingUnavailable] = useState(false);
+  const [rankingType, setRankingType] = useState<ArenaRankingMode>("general");
+  const [page, setPage] = useState<ArenaRankingPage | null>(null);
+  const [rankingLoading, setRankingLoading] = useState(true);
+  const [rankingUnavailable, setRankingUnavailable] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [loadMoreError, setLoadMoreError] = useState<string | null>(null);
+  const [retry, setRetry] = useState(0);
+  const requestController = useRef<AbortController | null>(null);
   const [rewardPool, setRewardPool] = useState<ArenaCustomerRewardPool | null>(null);
   const [rewardPoolLoaded, setRewardPoolLoaded] = useState(false);
   const [rewardPoolUnavailable, setRewardPoolUnavailable] = useState(false);
   const rankingId = useId();
-  const items = remoteTastingItems[scope];
-  const isPlacardRanking = rankingType === "placard";
-  const isGeneralRanking = rankingType === "general";
+  const rankingScope = rankingType === "tasting" ? scope : "season";
 
   useEffect(() => {
-    if (rankingType !== "tasting" || tastingLoaded[scope]) return;
     const controller = new AbortController();
-    let cancelled = false;
-    const params = new URLSearchParams({ scope, limit: "100" });
-    if (scope === "season" && profileSeasonCode) params.set("season", profileSeasonCode);
-    void fetch(`/api/contest/testers/rankings?${params}`, { signal: controller.signal })
-      .then(async (response) => {
-        if (!response.ok) throw new Error("Classement dégustation indisponible");
-        const payload = await response.json() as { items?: PublicContestTesterRankingItem[] };
-        if (cancelled) return;
-        setRemoteTastingItems((current) => ({ ...current, [scope]: Array.isArray(payload.items) ? payload.items : [] }));
-        setTastingUnavailable((current) => ({ ...current, [scope]: false }));
-      })
-      .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === "AbortError") return;
-        if (!cancelled) setTastingUnavailable((current) => ({ ...current, [scope]: true }));
-      })
-      .finally(() => { if (!cancelled) setTastingLoaded((current) => ({ ...current, [scope]: true })); });
-    return () => {
-      cancelled = true;
-      controller.abort();
-    };
-  }, [profileSeasonCode, rankingType, scope, tastingLoaded]);
-
-  useEffect(() => {
-    if (!isGeneralRanking || arenaRankingLoaded) return;
-    const controller = new AbortController();
-    let cancelled = false;
-    void fetch("/api/arena/rankings", { signal: controller.signal })
-      .then(async (response) => {
-        const payload = await response.json() as { entries?: ArenaRankingEntry[] };
+    requestController.current = controller;
+    setPage(null);
+    setRankingLoading(true);
+    setRankingUnavailable(false);
+    setLoadingMore(false);
+    setLoadMoreError(null);
+    const params = new URLSearchParams({ category: rankingType, scope: rankingScope, limit: "50" });
+    void fetch(`/api/arena/rankings?${params}`, { cache: "no-store", signal: controller.signal })
+      .then(async response => {
         if (!response.ok) throw new Error("Classement indisponible");
-        if (cancelled) return;
-        setArenaEntries(Array.isArray(payload.entries) ? payload.entries : []);
-        setArenaRankingUnavailable(false);
+        const payload = await response.json() as ArenaRankingPage;
+        if (!controller.signal.aborted) setPage(payload);
       })
-      .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === "AbortError") return;
-        if (cancelled) return;
-        setArenaRankingUnavailable(true);
-      })
-      .finally(() => {
-        if (!cancelled) setArenaRankingLoaded(true);
-      });
-    return () => {
-      cancelled = true;
-      controller.abort();
-    };
-  }, [arenaRankingLoaded, arenaRankingRetry, isGeneralRanking]);
+      .catch(() => { if (!controller.signal.aborted) setRankingUnavailable(true); })
+      .finally(() => { if (!controller.signal.aborted) setRankingLoading(false); });
+    return () => { controller.abort(); };
+  }, [rankingType, rankingScope, retry]);
 
-  useEffect(() => {
-    if (!isGeneralRanking || !arenaRankingLoaded || !arenaRankingUnavailable || arenaRankingRetry >= 3) return;
-    const timer = window.setTimeout(() => {
-      setArenaRankingLoaded(false);
-      setArenaRankingRetry(current => current + 1);
-    }, 2_000);
-    return () => window.clearTimeout(timer);
-  }, [arenaRankingLoaded, arenaRankingRetry, arenaRankingUnavailable, isGeneralRanking]);
-
-  useEffect(() => {
-    if (!isPlacardRanking || placardRankingLoaded) return;
-    const controller = new AbortController();
-    let cancelled = false;
-    void fetch("/api/arena/placard/rankings", { cache: "no-store", signal: controller.signal })
-      .then(async (response) => {
-        const payload = await response.json() as { entries?: PlacardRankingEntry[] };
-        if (!response.ok) throw new Error("Classement indisponible");
-        if (cancelled) return;
-        setPlacardEntries(Array.isArray(payload.entries) ? payload.entries : []);
-        setPlacardRankingUnavailable(false);
-      })
-      .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === "AbortError") return;
-        if (!cancelled) setPlacardRankingUnavailable(true);
-      })
-      .finally(() => {
-        if (!cancelled) setPlacardRankingLoaded(true);
-      });
-    return () => {
-      cancelled = true;
-      controller.abort();
-    };
-  }, [isPlacardRanking, placardRankingLoaded]);
+  const loadMore = async () => {
+    if (!page || page.nextOffset === null || loadingMore) return;
+    const controller = requestController.current;
+    if (!controller || controller.signal.aborted) return;
+    setLoadingMore(true);
+    setLoadMoreError(null);
+    const params = new URLSearchParams({ category: rankingType, scope: rankingScope, limit: "50", offset: String(page.nextOffset) });
+    try {
+      const response = await fetch(`/api/arena/rankings?${params}`, { cache: "no-store", signal: controller.signal });
+      if (!response.ok) throw new Error("Suite du classement indisponible");
+      const payload = await response.json() as ArenaRankingPage;
+      if (controller.signal.aborted) return;
+      // Scores can move between requests. Restart from the new snapshot so no
+      // participant is skipped by offset pagination after a rank change.
+      if (payload.revision !== page.revision) {
+        params.set("offset", "0");
+        const refreshed = await fetch(`/api/arena/rankings?${params}`, { cache: "no-store", signal: controller.signal });
+        if (!refreshed.ok) throw new Error("Actualisation indisponible");
+        const freshPage = await refreshed.json() as ArenaRankingPage;
+        if (!controller.signal.aborted) {
+          setPage(freshPage);
+          setLoadMoreError("Le classement a évolué : la liste a été actualisée.");
+        }
+      } else {
+        setPage(current => current ? {
+          ...payload,
+          entries: [...current.entries, ...payload.entries.filter(entry => !current.entries.some(existing => existing.entryKey === entry.entryKey))],
+        } : payload);
+      }
+    } catch {
+      if (!controller.signal.aborted) setLoadMoreError("Impossible de charger la suite. Réessaie dans un instant.");
+    } finally {
+      if (!controller.signal.aborted) setLoadingMore(false);
+    }
+  };
 
   useEffect(() => {
     if (rewardPoolLoaded) return;
@@ -2149,73 +2134,31 @@ export function ContestTesterLeaderboard({
     return () => { window.clearInterval(timer); window.removeEventListener("focus", refresh); };
   }, []);
 
-  const rewardByLeaderboardRank = new Map(
-    (rewardPool?.status === "active" ? rewardPool.topRewards : []).map((reward) => [reward.leaderboardRank, reward]),
+  const rewardByPlayer = new Map(
+    (rewardPool?.status === "active" ? rewardPool.topRewards : []).map(reward => [reward.entryKey, reward]),
   );
-  const rankingRows: ArenaRankingRow[] = isGeneralRanking
-    ? arenaEntries.map((item) => ({
-        key: `arena-${item.rank}-${item.pseudo}`,
-        rank: item.rank,
-        pseudo: item.pseudo,
-        avatar: item.avatar ?? null,
-        detail: "",
-        contributions: { notebook: item.notebookScore, duels: item.placardScore, business: item.businessScore ?? 0 },
-        score: item.score,
-        scoreLabel: "pts Arène",
-        rewardGrams: rewardByLeaderboardRank.get(item.rank)?.estimatedGrams ?? null,
-        href: "",
-      }))
-    : isPlacardRanking
-      ? placardEntries.map((item) => ({
-          key: `placard-${item.rank}-${item.pseudo}`,
-          rank: item.rank,
-          pseudo: item.pseudo,
-          avatar: item.avatar ?? null,
-          detail: `Cote ${item.rating} · ${item.seasonPoints} pts saison · ${getKqReputationProgress(item.reputation).tier.name} · ${item.reputation} réputation · ${item.wins} V · ${item.losses} D`,
-          businessScore: item.businessScore ?? 0,
-          score: item.placardScore,
-          scoreLabel: "Score Kanab Quest",
-          rewardGrams: null,
-          href: "",
-        }))
-      : items.map((item) => {
-          const profileParams = new URLSearchParams();
-          if (scope === "season" && profileSeasonCode) profileParams.set("season", profileSeasonCode);
-          if (profileTrack !== "regular") profileParams.set("track", profileTrack);
-          const query = profileParams.toString();
-          return {
-            key: `${scope}-${item.pseudo}-${item.rank}`,
-            rank: item.rank,
-            pseudo: item.pseudo,
-            avatar: item.avatar ?? null,
-            detail: `${item.level.label} · ${item.approvedReviewCount} critique${item.approvedReviewCount > 1 ? "s" : ""}`,
-            score: item.totalPoints,
-            scoreLabel: "pts Carnet",
-            rewardGrams: null,
-            href: `/arene/profils/${encodeURIComponent(item.pseudo)}${query ? `?${query}` : ""}`,
-          };
-        });
-  const rankingLoading = isGeneralRanking
-    ? !arenaRankingLoaded
-    : isPlacardRanking
-      ? !placardRankingLoaded
-      : !tastingLoaded[scope];
-  const rankingUnavailable = isGeneralRanking
-    ? arenaRankingUnavailable
-    : isPlacardRanking ? placardRankingUnavailable : tastingUnavailable[scope];
-  const retryRanking = () => {
-    if (isGeneralRanking) {
-      setArenaRankingUnavailable(false);
-      setArenaRankingLoaded(false);
-      setArenaRankingRetry(0);
-    } else if (isPlacardRanking) {
-      setPlacardRankingUnavailable(false);
-      setPlacardRankingLoaded(false);
-    } else {
-      setTastingUnavailable(current => ({ ...current, [scope]: false }));
-      setTastingLoaded(current => ({ ...current, [scope]: false }));
-    }
+  const toRow = (item: ArenaRankingEntry): ArenaRankingRow => {
+    const profileParams = new URLSearchParams();
+    if (scope === "season" && profileSeasonCode) profileParams.set("season", profileSeasonCode);
+    if (profileTrack !== "regular") profileParams.set("track", profileTrack);
+    const query = profileParams.toString();
+    return {
+      key: item.entryKey,
+      rank: item.rank,
+      pseudo: item.pseudo,
+      avatar: item.avatar ?? null,
+      detail: rankingType === "tasting"
+        ? `${item.tastedFlowerCount} fleur${item.tastedFlowerCount > 1 ? "s" : ""} dégustée${item.tastedFlowerCount > 1 ? "s" : ""}`
+        : rankingType === "duels" ? `Cote ${item.rating} · ${item.wins} V · ${item.losses} D` : "",
+      contributions: rankingType === "general" ? { notebook: item.notebookScore, duels: item.placardScore, business: item.businessScore } : undefined,
+      score: item.score,
+      scoreLabel: rankingType === "general" ? "pts Arène" : rankingType === "tasting" ? "pts Dégustation" : rankingType === "duels" ? "pts Duels" : "pts Entreprise",
+      rewardGrams: rankingType === "general" ? rewardByPlayer.get(item.entryKey)?.estimatedGrams ?? null : null,
+      href: rankingType === "tasting" ? `/arene/profils/${encodeURIComponent(item.pseudo)}${query ? `?${query}` : ""}` : "",
+    };
   };
+  const rankingRows = (page?.entries ?? []).map(toRow);
+  const retryRanking = () => setRetry(current => current + 1);
 
   return (
     <>
@@ -2224,6 +2167,12 @@ export function ContestTesterLeaderboard({
         mode={rankingType}
         scope={scope}
         rows={rankingRows}
+        totalPlayers={page?.totalPlayers}
+        viewerRow={page?.viewerEntry ? toRow(page.viewerEntry) : null}
+        hasMore={page?.nextOffset != null}
+        loadingMore={loadingMore}
+        loadMoreError={loadMoreError}
+        onLoadMore={() => void loadMore()}
         loading={rankingLoading}
         unavailable={rankingUnavailable}
         compact={compact}
@@ -2936,9 +2885,10 @@ export function ContestHubClient({
           </div>
 
           <div className={arenaStyles.placardSummary}>
-            <span><Trophy aria-hidden="true" /><strong>Deux façons de briller</strong></span>
+            <span><Trophy aria-hidden="true" /><strong>Trois façons de briller</strong></span>
             <p><b>Classement testeurs :</b> tes dégustations.</p>
-            <p><b>Classement Kanab Quest :</b> tes cultures, tes duels et le développement de ton entreprise.</p>
+            <p><b>Classement Duels :</b> ton activité et ta cote de duel.</p>
+            <p><b>Classement Entreprise :</b> tes ventes, ta production et la valeur nette de ton entreprise.</p>
             <small>Plus les clients achètent de grammes, plus le Pot de la Canopée se remplit. Chaque semaine, le dé collectif fixe la part ajoutée.</small>
           </div>
         </section>

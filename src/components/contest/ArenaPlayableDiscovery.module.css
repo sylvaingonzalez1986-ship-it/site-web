@@ -1,10 +1,2 @@
-﻿.collection { min-height: 100dvh; background: #fff1d6; color: #172923; }
-.tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 16px; border-bottom: 3px solid #172923; background: #d5a573; }
-.tabs button { min-height: 44px; max-width: 100%; padding: 10px 18px; border: 2px solid #172923; border-radius: 12px; background: #fff8e7; color: #172923; font: 800 .9rem/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; }
-.tabs button[aria-pressed=true] { background: #efc451; color: #172923; border-color: #172923; box-shadow: 3px 3px 0 #172923; }
-.tabs button:focus-visible { outline: 3px solid #172923; outline-offset: 3px; box-shadow: 0 0 0 6px #fff8e7; }
-.missions { max-width: 1440px; margin: auto; padding: 20px 16px; }
-.collection > article { max-width: 1200px; margin: auto; background: #fff8e7; color: #172923; }
-.collection :global([data-pack-phase]) { min-height: calc(100dvh - 80px); padding-bottom: var(--arena-lesson-coach-height, 180px); }
-@media (hover: hover) { .tabs button:hover { background: #d7efe2; } .tabs button[aria-pressed=true]:hover { background: #efc451; } }
-@media (max-width: 600px) { .missions { padding: 12px 8px; } .tabs { padding: 10px; gap: 8px; } .tabs button { padding-inline: 12px; font-size: .85rem; } }
+﻿.collection { min-height: 100dvh; }
+.missions { min-width: 0; }

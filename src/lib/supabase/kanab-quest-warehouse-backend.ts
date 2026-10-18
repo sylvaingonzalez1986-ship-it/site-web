@@ -92,6 +92,8 @@ function databaseError(message: string): never {
     ["warehouse_service_plan_required", "Place les zones de séchage et stockage sur le plan pour acheter leurs équipements. Une fois adoptées, ces zones doivent rester sur le plan.", 400],
     ["warehouse_service_layout_invalid", "Les zones doivent tenir dans l’entrepôt sans se chevaucher et utiliser un équipement adapté.", 400],
     ["warehouse_service_equipment_missing", "Le devis ne couvre pas le matériel nécessaire à ces zones. Actualise le plan.", 409],
+    ["warehouse_storage_climate_invalid", "Choisis un climatiseur adapté à une zone de stockage présente sur le plan.", 400],
+    ["warehouse_equipment_missing", "Le matériel du plan doit être installé et payé avant de lancer la culture.", 409],
     ["warehouse_service_capacity_in_use", "Cette modification retirerait une capacité déjà occupée ou réservée. Libère du stock ou agrandis une autre zone avant de confirmer.", 409],
     ["warehouse_legacy_equipment_archived", "L’ancien matériel est archivé. Utilise les trois pièces du nouvel entrepôt.", 409],
   ];
@@ -133,6 +135,7 @@ function cleanState(value: unknown): KqWarehouseState {
       id: zone.id, name: zone.name, x: zone.x, y: zone.y, width: zone.width, height: zone.height,
       kind: zone.kind, deviceCode: zone.deviceCode,
     })) } : {}),
+    ...(value.storageClimateCode !== undefined ? { storageClimateCode: value.storageClimateCode } : {}),
     equipment: value.equipment.map(item => ({ code: item.code, quantity: item.quantity })),
     ...(value.optionInventory !== undefined ? { optionInventory: value.optionInventory.map(item => ({ code: item.code, quantity: item.quantity })) } : {}),
     preparedAreaM2: value.preparedAreaM2,

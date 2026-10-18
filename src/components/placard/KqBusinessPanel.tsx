@@ -44,6 +44,7 @@ const ledgerLabels: Record<string, string> = {
   "rename-shop": "Nom du shop modifié", "lab-overdue": "Analyse arrivée à échéance", "shop-renewal": "Reconduction du site modifiée", "advertising-started": "Campagne publicitaire lancée",
   "advertising-ended": "Campagne publicitaire terminée", "vat-paid": "TVA reversée", "lab-issued": "Analyse facturée", "lab-paid": "Analyse réglée", "domicile-paid": "Domiciliation extérieure réglée", "domicile-expired": "Domiciliation extérieure suspendue", "domicile-home": "Domiciliation à domicile",
   "lab-adjusted": "Dette d’analyse excédentaire annulée", "lab-refunded": "Trop-perçu d’analyse remboursé",
+  "storage-climate-issued": "Climatisation du stockage facturée", "storage-climate-paid": "Climatisation du stockage réglée", "storage-climate-credit": "Crédit de climatisation déjà facturée",
 };
 
 export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, onPrepareStock, onViewSales, expanded = false, showAccounting = true }: {

@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-16",
+  "title": "La relève — planche d'intention du didacticiel narratif",
+  "status": "superseded by ferme-didacticiel-storyboard-v2; rustic interior rejected by user; not for production",
+  "tool": "Built-in image_gen__imagegen",
+  "output": "docs/bete-de-concours/assets/ferme-didacticiel-storyboard-v1.png",
+  "source": "C:/Users/sylva/.codex/generated_images/01a14604-352a-7a93-a870-ec15a35cf008/exec-84fcc291-7267-4d76-9a6e-f2286b762966.png",
+  "references": [
+    "public/placard/map/culture-barn-sylvain-v1.webp",
+    "public/sylvain.png",
+    "public/contest/map/arena-desk-sylvain-v6.webp"
+  ],
+  "prompt": "Use case: illustration-story.\nAsset type: a polished four-panel storyboard concept for the existing French Kanab Quest game's new interactive tutorial, landscape 1536x1024, opaque.\nInput image 1 (culture-barn-sylvain-v1.webp): ARCHITECTURE reference, use this exact Breton stone barn with teal double doors and slate roof as the same location throughout.\nInput image 2 (sylvain.png): CANONICAL CHARACTER IDENTITY reference, preserve the proportions and recognizable face of this exact mascot. Input image 3 (arena-desk-sylvain-v6.webp): illustrated scene STYLE reference. Sylvain is this exact cartoon mascot with small friendly ink eyes, rounded cream face, dark hair, teal-and-ochre cap, ochre shirt and teal overalls, thick dark outlines. Preserve his identity in all four scenes. Do not invent a different mentor, realistic person or animal mascot.\nPrimary request: Tell four moments of a warm story in which the player takes over grandfather's old farm and converts the former cattle barn into the game's growing warehouse, with Sylvain helping. A two-by-two grid of FOUR clearly separated equal panels, thin dark hand-drawn borders and small cream gutters. No headings, no letters, no numbers, no captions, no speech balloons, no UI or fake labels. Scenes must communicate through action. Player is implied off-camera so no imposed player identity. The barn stays recognizably the same with stone walls and teal doorway. No image title.\nTop-left: arrival at the closed barn. Sylvain stands by the weathered teal door, warmly extending an old brass key toward the viewer. Nearby a closed old farm ledger and folded letter sit on a wooden crate. Stone courtyard, hydrangeas, coastal Brittany atmosphere. Welcoming, no grief scene.\nTop-right: inside the old cattle barn with empty timber stalls, a wooden feeding trough and a few straw remnants along one wall. Sylvain crouches and uses a tape measure to sketch a SMALL first rectangle on the floor; he points to an open paper floorplan on a crate. Most of the room is deliberately empty. Visual story is careful budgeting and planning, no written currency.\nBottom-left: the same room partly converted, with timber beam and a preserved empty feeding trough recognizable. Sylvain clips a stylized collectible variety card with simple abstract leaf art near a modest modular growing area. Show a short row of pots under a single simple light, an air unit, drying rack and a small storage shelf with jars separated spatially; lots of free room remains. No engineering diagram, no detailed horticultural measurements.\nBottom-right: Sylvain at a modest wood counter in the same renovated barn, holding a small sealed unbranded paper package next to jars, a simple receipt with unlettered lines and the old ledger now open. Behind him, warm light on the small productive growing corner and well-organized storage. Show the satisfaction of the first fictional sale, with a discreet coin symbol on a small tin cash box, not a giant pile of money. No smoking or consumption.\nStyle: match source clean bold hand-drawn ink #172923, cream paper, forest green and turquoise, warm wood and mustard accents, restrained printed-paper stippling. Friendly richly illustrated game world, readable simple shapes. Cohesive graphic novel scene, not photorealistic, not glossy 3D. Strong composition in each panel, characters and main actions fully inside panel boundaries. Consistent Sylvain design, cap and clothing, no duplicate Sylvain within any panel.\n",
+  "review": {
+    "panels": 4,
+    "sceneOrder": [
+      "Arrivée et clés",
+      "Ancienne grange et tracé",
+      "Grange en activité après la première culture",
+      "Première livraison"
+    ],
+    "notes": "Visual concept inspected. Same barn, mascot and palette maintained. No UI text or prices embedded. Illustration is not a literal gameplay floorplan. Individual scene assets and mobile crops remain to produce for implementation."
+  }
+}

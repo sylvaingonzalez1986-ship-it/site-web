@@ -1,30 +1,34 @@
-export const KQ_BUSINESS_DEVELOPMENT_CAP = 200;
-export const KQ_BUSINESS_PRODUCTION_CAP = 60;
-export const KQ_BUSINESS_SALES_CAP = 80;
-export const KQ_BUSINESS_VALUE_CAP = 60;
-export const KQ_BUSINESS_PRODUCTION_POINTS_PER_M2 = 1.2;
+export const KQ_BUSINESS_PRODUCTION_WEIGHT = 27;
+export const KQ_BUSINESS_SALES_WEIGHT = 36;
+export const KQ_BUSINESS_REPUTATION_WEIGHT = 27;
+export const KQ_BUSINESS_AREA_REFERENCE_M2 = 50;
+export const KQ_BUSINESS_SALES_REFERENCE_CENTS = 1_000_000;
+export const KQ_BUSINESS_REPUTATION_REFERENCE = 600;
+export const KQ_BUSINESS_AREA_WINDOW_DAYS = 30;
 
 export type KqBusinessDevelopmentScore = {
-  score: number; production: number; sales: number; companyValue: number;
-  productionAreaM2: number; companyValueCents: number;
+  score: number; production: number; sales: number; reputation: number;
+  productionAreaM2: number; salesHtCents: number; reputationPoints: number;
 };
 export type KqBusinessDevelopmentInput = {
-  /** Funded, equipped culture surface, measured by the server; includes paused installations. */
+  /** Actual cultivated surface averaged over the trailing 30 days, from frozen run snapshots. */
   productionAreaM2?: number;
-  /** Cumulative settled in-game sales, including VAT. */
-  salesTtcCents?: number;
-  /** Current net company assets including financial holdings, minus all outstanding debts. */
-  companyValueCents?: number;
+  /** Settled in-game turnover excluding VAT during the ranking season, in cents. */
+  salesHtCents?: number;
+  /** Current commercial reputation, including losses. */
+  reputationPoints?: number;
 };
 
 const nonnegative = (value = 0) => Number.isFinite(value) ? Math.max(0, value) : 0;
+const tenth = (value: number) => Math.round(value * 10) / 10;
 
-/** Mirrors kq_business_development_score: turnover, installed size and estimated net company value. */
+/** Mirrors kq_business_development_score_for_season; rounded displayed components are summed. */
 export function calculateKqBusinessDevelopment(input: KqBusinessDevelopmentInput): KqBusinessDevelopmentScore {
   const productionAreaM2 = nonnegative(input.productionAreaM2);
-  const companyValueCents = Number.isFinite(input.companyValueCents) ? Math.trunc(input.companyValueCents!) : 0;
-  const production = Math.min(KQ_BUSINESS_PRODUCTION_CAP, Math.floor(productionAreaM2 * 6 / 5));
-  const sales = Math.min(KQ_BUSINESS_SALES_CAP, Math.floor(Math.sqrt(Math.floor(nonnegative(input.salesTtcCents)) / 100) * 4 / 5));
-  const companyValue = Math.min(KQ_BUSINESS_VALUE_CAP, Math.floor(Math.sqrt(Math.max(0, companyValueCents) / 100) * 3 / 5));
-  return { score: production + sales + companyValue, production, sales, companyValue, productionAreaM2, companyValueCents };
+  const salesHtCents = Math.floor(nonnegative(input.salesHtCents));
+  const reputationPoints = Math.floor(nonnegative(input.reputationPoints));
+  const production = tenth(KQ_BUSINESS_PRODUCTION_WEIGHT * Math.log2(1 + productionAreaM2 / KQ_BUSINESS_AREA_REFERENCE_M2));
+  const sales = tenth(KQ_BUSINESS_SALES_WEIGHT * Math.log2(1 + salesHtCents / KQ_BUSINESS_SALES_REFERENCE_CENTS));
+  const reputation = tenth(KQ_BUSINESS_REPUTATION_WEIGHT * Math.log2(1 + reputationPoints / KQ_BUSINESS_REPUTATION_REFERENCE));
+  return { score: tenth(production + sales + reputation), production, sales, reputation, productionAreaM2, salesHtCents, reputationPoints };
 }

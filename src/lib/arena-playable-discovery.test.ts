@@ -1,9 +1,25 @@
 import { describe, expect, it, vi } from "vitest";
 import { CONTEST_SCORE_CRITERIA } from "@/types/contest";
 import { createDiscoveryPack, createDiscoveryTransport, DISCOVERY_NOTEBOOK_ENTRY } from "./arena-playable-discovery";
+import { KQ_BUDDIES } from "./kanab-quest-game";
 
 const post = (body: unknown) => ({ method: "POST", body: JSON.stringify(body) });
 describe("isolated visual discovery lessons", () => {
+  it("serves the real collections with the full Buddie catalogue and the borrowed pack only", async () => {
+    const api = createDiscoveryTransport("collection"), progress = vi.fn();
+    const before = await (await api.request("/api/account/collection")).json();
+    expect(before.pages[0].slots).toHaveLength(KQ_BUDDIES.length);
+    expect(before.pages[0].slots.every((slot: { ownedCount: number }) => slot.ownedCount === 0)).toBe(true);
+    const guided = createDiscoveryTransport("collection", progress);
+    await guided.request("/api/releve/collection/open", post({}));
+    expect(progress).not.toHaveBeenCalled();
+    const after = await (await guided.request("/api/account/collection")).json();
+    expect(after.pages[0].slots.filter((slot: { ownedCount: number }) => slot.ownedCount === 1)).toHaveLength(3);
+    await guided.request("/api/releve/collection/continue", post({}));
+    expect(progress).toHaveBeenLastCalledWith(expect.objectContaining({ complete: true }));
+    expect((await (await guided.request("/api/arena/placard/collection")).json()).collection.cards).toEqual([]);
+    expect((await (await api.request("/api/account/collection")).json()).pages[0].slots.every((slot: { ownedCount: number }) => slot.ownedCount === 0)).toBe(true);
+  });
   it("supplies three prepared Buddies without generating a real pack", () => {
     const pack = createDiscoveryPack();
     expect(pack.cards).toHaveLength(3);
@@ -49,7 +65,7 @@ describe("isolated visual discovery lessons", () => {
   it("rejects unknown or unrelated operations without ever falling back to fetch", async () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Network forbidden"));
     try {
-      for (const lesson of ["missions", "notebook", "specialties"] as const) {
+      for (const lesson of ["missions", "notebook", "specialties", "collection"] as const) {
         const api = createDiscoveryTransport(lesson);
         expect((await api.request("https://example.com/api/contest/reviews", post({}))).ok).toBe(false);
         expect((await api.request("/api/arena/placard/crypto", post({}))).ok).toBe(false);

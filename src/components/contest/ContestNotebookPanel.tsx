@@ -225,7 +225,7 @@ function ScoreSlider({
   evaluated?: boolean;
 }) {
   return (
-    <div className={styles.scoreCard}>
+    <div className={styles.scoreCard} data-notebook-criterion={criterion} data-notebook-evaluated={evaluated}>
     <label>
       <div className={styles.scoreTop}>
         <span className={styles.scoreLabel}>
@@ -244,6 +244,7 @@ function ScoreSlider({
         onChange={(event) => onChange(criterion, Number(event.target.value))}
         disabled={disabled}
         className={styles.scoreRange}
+        aria-label={CONTEST_SCORE_CRITERION_LABELS[criterion]}
         aria-valuetext={evaluated ? `${value} sur ${CONTEST_SCORE_MAX}` : "Non évalué. Ajuste le curseur ou confirme la valeur proposée."}
       />
       <p className={styles.scoreHint}>{evaluated ? getScoreHint(value) : "Ce critère ne compte pas encore dans ta note."}</p>
@@ -591,6 +592,7 @@ function ContestNotebookEditor({
   const [consumptionDetails, setConsumptionDetails] = useState(() =>
     shouldOpenReviewEditor && viewerReview ? viewerReview.consumptionDetails ?? "" : "",
   );
+  const [modeConfirmed, setModeConfirmed] = useState(false);
   const [comment, setComment] = useState(() =>
     shouldOpenReviewEditor && viewerReview ? viewerReview.comment : "",
   );
@@ -1450,6 +1452,7 @@ function ContestNotebookEditor({
       ref={inlineGuideRef}
       className={`${styles.notebook} ${isInlineDisplayMode ? styles.inlineNotebook : ""}`}
       aria-label={`Carnet de dégustation de ${entry.title}`}
+      data-notebook-page={pageIndex}
     >
       <header className={styles.notebookHeader}>
         <div className={styles.headerIdentity}>
@@ -1488,6 +1491,7 @@ function ContestNotebookEditor({
             className={`${styles.stepTab} ${index === pageIndex ? styles.stepTabActive : ""}`}
             aria-current={index === pageIndex ? "page" : undefined}
             aria-label={`Étape ${index + 1} : ${page}`}
+            data-notebook-page-link={index}
           >
             <span className={styles.stepTabNumber}>{index + 1}</span>
             <span className={styles.stepTabLabel}>{page}</span>
@@ -1506,7 +1510,7 @@ function ContestNotebookEditor({
         <fieldset disabled={isSubmitting} className={styles.formFields}>{renderGuidePage()}</fieldset>
       </div>
 
-      <footer className={styles.notebookFooter}>
+      <footer className={styles.notebookFooter} data-notebook-footer>
         <button
           type="button"
           onClick={goToPreviousPage}
@@ -1530,6 +1534,7 @@ function ContestNotebookEditor({
         <button
           type="button"
           onClick={isBookDisplayMode && pageIndex === GUIDE_PAGES.length - 1 ? () => setIsGuideOpen(false) : goToNextPage}
+          data-notebook-next
           disabled={!isBookDisplayMode && pageIndex === GUIDE_PAGES.length - 1}
           className={`${styles.navButton} ${styles.navButtonPrimary}`}
         >
@@ -1597,7 +1602,7 @@ function ContestNotebookEditor({
                 <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
                   Ton mode de dégustation
                 </p>
-                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                <div className="mt-3 grid gap-2 sm:grid-cols-2" data-notebook-mode-confirmed={modeConfirmed}>
                   {CONTEST_CONSUMPTION_METHODS.map((method) => (
                     <button
                       key={method}
@@ -1605,11 +1610,13 @@ function ContestNotebookEditor({
                       onClick={() => {
                         if (!isReviewReadOnly) {
                           setConsumptionMethod(method);
+                          setModeConfirmed(true);
                           setHasDraftEdits(true);
                         }
                       }}
                       disabled={isReviewReadOnly}
                       aria-pressed={visibleConsumptionMethod === method}
+                      data-notebook-method={method}
                       className={`flex min-h-[54px] items-center rounded border-2 px-3 py-2 text-left ${
                         visibleConsumptionMethod === method
                           ? "border-[#1a1a1a] bg-yellow text-ink"
@@ -1628,6 +1635,7 @@ function ContestNotebookEditor({
                   onChange={(event) => { setConsumptionDetails(event.target.value); setHasDraftEdits(true); }}
                   readOnly={isReviewReadOnly}
                   aria-label="Précisions sur ton mode de dégustation"
+                  data-notebook-mode-details
                   maxLength={300}
                   placeholder="Optionnel: température, roulage, matériel..."
                   className="mt-3 h-12 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 text-sm text-ink"
@@ -1794,6 +1802,7 @@ function ContestNotebookEditor({
                       >
                         <input
                           type="checkbox"
+                          data-notebook-aroma={tag}
                           checked={checked}
                           onChange={() => handleToggleTag(tag)}
                           disabled={isReviewReadOnly}
@@ -1813,6 +1822,8 @@ function ContestNotebookEditor({
                   onChange={(event) => { setOtherAromaLabel(event.target.value); setHasDraftEdits(true); }}
                   readOnly={isReviewReadOnly}
                   aria-label="Autre arôme détecté"
+                  data-notebook-other-aroma
+                  data-notebook-filled={Boolean(visibleOtherAromaLabel.trim())}
                   maxLength={80}
                     placeholder="Autre arôme détecté"
                     className="mt-3 h-12 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 text-sm text-ink"
@@ -1919,9 +1930,13 @@ function ContestNotebookEditor({
                   value={visibleComment}
                   onChange={(event) => { setComment(event.target.value); setHasDraftEdits(true); }}
                   aria-label="Critique rédigée"
+                  data-notebook-comment
+                  data-notebook-filled={Boolean(visibleComment.trim())}
                   onFocus={(event) => {
                     const field = event.currentTarget;
-                    window.setTimeout(() => field.scrollIntoView({ behavior: "smooth", block: "center" }), 280);
+                    window.setTimeout(() => {
+                      if (document.activeElement === field) field.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }, 280);
                   }}
                   readOnly={isReviewReadOnly}
                   maxLength={2000}
@@ -1934,6 +1949,7 @@ function ContestNotebookEditor({
                 <button
                   type="button"
                   onClick={submitReview}
+                  data-notebook-submit
                   disabled={isPending || isSubmitting}
                   className="btn-cartoon btn-primary inline-flex min-h-[48px] items-center justify-center px-6 text-xs leading-none disabled:opacity-60"
                 >

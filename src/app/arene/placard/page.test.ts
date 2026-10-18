@@ -3,9 +3,10 @@ import { ARENA_OPENING_AT } from "@/lib/arena-opening";
 
 const openingAt = Date.parse(ARENA_OPENING_AT);
 
-const mocks = vi.hoisted(() => ({ session: vi.fn() }));
+const mocks = vi.hoisted(() => ({ session: vi.fn(), introduction: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/components/placard/PlacardPlayerShell", () => ({ PlacardPlayerShell: () => null }));
+vi.mock("@/components/contest/ArenaGameEntry", () => ({ ArenaGameEntry: () => null }));
+vi.mock("@/lib/supabase/arena-introduction-backend", () => ({ getArenaIntroductionState: mocks.introduction }));
 
 import PlacardPlayerPage from "./page";
 
@@ -17,6 +18,7 @@ beforeEach(() => {
   vi.stubEnv("CONTEST_FEATURE_ALLOW_PRODUCTION", "true");
   vi.stubEnv("KQ_PLAYER_API_LIVE", "false");
   mocks.session.mockResolvedValue(null);
+  mocks.introduction.mockResolvedValue("new");
 });
 
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
@@ -26,12 +28,14 @@ describe("Placard page entry", () => {
     await expect(PlacardPlayerPage()).rejects.toMatchObject({
       digest: "NEXT_REDIRECT;replace;/compte/connexion?next=%2Farene%2Fplacard;307;",
     });
+    expect(mocks.introduction).not.toHaveBeenCalled();
   });
 
   it("keeps the page unavailable when the module is disabled", async () => {
     vi.stubEnv("CONTEST_FEATURE_ENABLED", "false");
     await expect(PlacardPlayerPage()).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
     expect(mocks.session).not.toHaveBeenCalled();
+    expect(mocks.introduction).not.toHaveBeenCalled();
   });
 
   it("still denies a connected customer without admin or beta access", async () => {
@@ -40,6 +44,16 @@ describe("Placard page entry", () => {
       customer: { email: "ordinary@example.test", contestBetaEnabled: false },
     });
     await expect(PlacardPlayerPage()).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
+    expect(mocks.introduction).not.toHaveBeenCalled();
+  });
+
+  it.each(["new", "seen", "unavailable"])("passes the authenticated introduction state (%s) before mounting the live game", async introductionState => {
+    mocks.session.mockResolvedValue({ customerId: "verified-id", customer: { email: "player@example.test", contestBetaEnabled: true } });
+    mocks.introduction.mockResolvedValue(introductionState);
+    const entry = await PlacardPlayerPage();
+    expect(mocks.introduction).toHaveBeenCalledExactlyOnceWith("verified-id");
+    expect(entry.props).toEqual({ userId: "verified-id", introductionState });
+    expect(entry.key).toBe("verified-id");
   });
 });
 

@@ -1,0 +1,94 @@
+{
+  "version": "workshop-v1",
+  "generatedAt": "2026-10-18",
+  "mode": "built-in image_gen",
+  "useCase": "stylized-concept",
+  "room": {
+    "file": "/placard/workshop-v1/room.webp",
+    "width": 1254,
+    "height": 1254,
+    "source": "output/imagegen/workshop-v1/room-source.png",
+    "reference": "public/placard/warehouse-v4/overhead-room-renovated-v1.webp",
+    "prompt": "Use case: stylized-concept.\nAsset type: production game background, an empty workshop room viewed directly from above.\nInput image 1 is a style and camera reference: match its hand-inked illustrated industrial interior, warm cream panels, deep teal metal frame, dark charcoal outlines, subtle grain, convincing metal, and straight overhead plan view.\nCreate a NEW dedicated processing workshop room in precisely that same visual family. Square composition, orthographic camera looking straight down at a rectangular room, no perspective convergence and no isometric view. Outer architectural frame occupies approximately x2–10% and x90–98%, y2–12% and y88–98%. The fully empty usable floor extends from x10% to x90%, y12% to y88%. The floor is clean warm pale gray sealed concrete with a few extremely subtle expansion seams and fine texture; no large stains. Wall fixtures stay inside the perimeter: teal steel posts, cream wall panels, a ventilation duct and task lights along the upper edge, a little wall-mounted electrical box on the left, neatly routed conduit on the right. Include double entrance doors centered on the bottom edge, and two yellow protective bollards beside them.\nIt must read as a practical compact industrial workshop, not a warehouse full of goods. The entire central floor must remain completely empty, with no machines, no benches, no shelves, no storage bins, no tools or loose objects, and no painted machine footprints. We will place separate interactive machines on this floor in code. Match the supplied warehouse's clean modern comic game illustration style. Warm balanced lighting; subtle perimeter shadows; no people, no lettering, no signs, no logos, no text, no watermark. Opaque full image."
+  },
+  "machines": {
+    "source": "output/imagegen/workshop-v1/machines-source.png",
+    "sheet": {
+      "width": 1536,
+      "height": 1024,
+      "columns": 3,
+      "rows": 2
+    },
+    "references": [
+      "public/placard/warehouse-v4/overhead-room-renovated-v1.webp",
+      "public/placard/equipment-sylvain-v1/workshop-sift-1.webp",
+      "public/placard/equipment-sylvain-v1/workshop-washer-1.webp",
+      "public/placard/equipment-sylvain-v1/workshop-press-1.webp",
+      "public/placard/equipment-sylvain-v1/workshop-dryer-1.webp"
+    ],
+    "prompt": "Use case: stylized-concept.\nAsset type: production transparent game sprite sheet of SIX separate workshop machines.\nInput image 1 is ONLY the inked industrial art style and straight-down camera reference. Images 2–5 are subject/color references for the sift, washer, press, and dryer, NOT camera references. Redraw the machines from an orthographic camera directly overhead (90 degrees down), consistent with the room background, so they can be placed directly on its floor. Do NOT draw any room or ground.\nCanvas: landscape 3:2 aspect ratio, ideally 1536 by 1024 pixels. EXACTLY three columns and two rows of equal square cells. No visible grid. Each of the six machines is centered in its cell, with at least 15% clear transparent margin on all sides. Each silhouette uses roughly 60–70% of cell width and height. No overlapping sprites. No shared backdrop.\nTop row, left to right:\n1. Compact mechanical dry-sift rotating drum: perforated silver horizontal cylindrical screening drum in a teal rectangular frame, small side motor and mustard brass details, seen directly from above.\n2. Water and ice washer: round stainless steel open washing tub with a thick cream rim and teal outer casing, a simple small motor/control housing next to it, seen directly from above. No plants.\n3. Filtration collector: upright cylindrical teal and stainless steel filtration vessel, circular lid in top view with concentric metal rings, two small handles and a short side outlet, seen directly from above.\nBottom row, left to right:\n4. Static separator: rectangular compact teal processing machine with a brass metal receiving hopper and two cream collection trays, viewed straight from above.\n5. Small rosin press: compact teal metal frame and brass lever bar over small gray circular pressing plates; accurate top-down silhouette, viewed straight from above.\n6. Freeze dryer: rectangular industrial teal freeze dryer cabinet with pale gray top panel, simple upper cooling vents and small brass latch details; cabinet top viewed straight from above, door orientation toward canvas bottom.\nStyle: same clean hand-inked graphic-novel game illustration as image 1, bold dark charcoal outlines, teal and warm cream painted metal, warm mustard/brass accents, gray stainless steel, fine subtle grain, clean edges. Machines are believable practical appliances and their forms are clearly different. No product photography or 3D render. Absolutely no three-quarter camera, no isometric perspective, no tilted camera: all SIX machines must have a strict orthographic top-down view. Genuine transparent alpha background throughout, no floor, no shadows outside the silhouettes, no text, no labels, no cell numbers, no logos, no watermark.",
+    "packaging": "Each sprite extracted mechanically with 2 pixels of transparent padding around its measured alpha silhouette. WebP quality 90; alpha quality 100. Room WebP quality 88. No creative pixel edits.",
+    "sprites": [
+      {
+        "name": "sift",
+        "file": "/placard/workshop-v1/sift.webp",
+        "sourceBounds": {
+          "left": 36,
+          "top": 99,
+          "width": 512,
+          "height": 337
+        }
+      },
+      {
+        "name": "washer",
+        "file": "/placard/workshop-v1/washer.webp",
+        "sourceBounds": {
+          "left": 586,
+          "top": 72,
+          "width": 436,
+          "height": 391
+        }
+      },
+      {
+        "name": "collector",
+        "file": "/placard/workshop-v1/collector.webp",
+        "sourceBounds": {
+          "left": 1067,
+          "top": 52,
+          "width": 432,
+          "height": 389
+        }
+      },
+      {
+        "name": "separator",
+        "file": "/placard/workshop-v1/separator.webp",
+        "sourceBounds": {
+          "left": 41,
+          "top": 540,
+          "width": 451,
+          "height": 407
+        }
+      },
+      {
+        "name": "press",
+        "file": "/placard/workshop-v1/press.webp",
+        "sourceBounds": {
+          "left": 554,
+          "top": 577,
+          "width": 430,
+          "height": 349
+        }
+      },
+      {
+        "name": "dryer",
+        "file": "/placard/workshop-v1/dryer.webp",
+        "sourceBounds": {
+          "left": 1047,
+          "top": 554,
+          "width": 450,
+          "height": 400
+        }
+      }
+    ]
+  }
+}

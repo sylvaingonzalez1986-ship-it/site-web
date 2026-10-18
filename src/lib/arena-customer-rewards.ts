@@ -1,3 +1,5 @@
+import { ARENA_FORMULA_VERSION } from "@/lib/arena-ranking";
+
 export const ARENA_CUSTOMER_REWARD_RATE_BPS = 100;
 export const ARENA_CUSTOMER_REWARD_MIN_BATTLES = 3;
 export const ARENA_CUSTOMER_REWARD_TOP_SIZE = 10;
@@ -51,6 +53,8 @@ export type ArenaCustomerRewardStanding = {
   rating: number;
   wins: number;
   losses: number;
+  tastedFlowerCount?: number;
+  rankingFormulaVersion?: string;
 };
 
 export type ArenaCustomerRewardProjection = {
@@ -110,11 +114,13 @@ export function projectArenaCustomerRewardPool(poolGrams: number): ArenaCustomer
 }
 
 export function isArenaCustomerRewardEligible(
-  standing: Pick<ArenaCustomerRewardStanding, "playerId" | "wins" | "losses">,
+  standing: Pick<ArenaCustomerRewardStanding, "playerId" | "wins" | "losses" | "tastedFlowerCount" | "rankingFormulaVersion">,
   minBattles = ARENA_CUSTOMER_REWARD_MIN_BATTLES,
 ) {
-  return standing.playerId.trim().length > 0
-    && standing.wins + standing.losses >= Math.max(0, Math.floor(minBattles));
+  return standing.playerId.trim().length > 0 && (
+    standing.wins + standing.losses >= Math.max(0, Math.floor(minBattles))
+    || standing.rankingFormulaVersion === ARENA_FORMULA_VERSION && (standing.tastedFlowerCount ?? 0) >= 1
+  );
 }
 
 export function buildArenaCustomerRewardPreview(
@@ -124,25 +130,53 @@ export function buildArenaCustomerRewardPreview(
 ) {
   const projection = projectArenaCustomerRewardPool(poolGrams);
   const seenPlayers = new Set<string>();
-  const eligibleStandings = [...standings]
+  const uniqueStandings = [...standings]
     .filter((standing) => {
-      if (seenPlayers.has(standing.playerId) || !isArenaCustomerRewardEligible(standing, minBattles)) return false;
+      if (seenPlayers.has(standing.playerId) || !standing.playerId.trim()) return false;
       seenPlayers.add(standing.playerId);
       return true;
     })
-    .sort((left, right) => left.leaderboardRank - right.leaderboardRank || left.playerId.localeCompare(right.playerId));
+    .sort((left, right) => left.leaderboardRank - right.leaderboardRank || (left.playerId < right.playerId ? -1 : left.playerId > right.playerId ? 1 : 0));
+  const eligibleStandings = uniqueStandings.filter((standing) => isArenaCustomerRewardEligible(standing, minBattles));
   const rankingSlots = projection.slots.filter((slot) => slot.kind === "ranking");
+  const tieGroups = new Map<number, ArenaCustomerRewardStanding[]>();
+  for (const standing of uniqueStandings) {
+    const group = tieGroups.get(standing.leaderboardRank) ?? [];
+    group.push(standing);
+    tieGroups.set(standing.leaderboardRank, group);
+  }
+  const tieIndexes = new Map(uniqueStandings.map((standing) => [standing.playerId, 0]));
+  let previousOccupiedRank = 0;
+  for (const [rank, group] of tieGroups) {
+    if (group.some(standing => standing.rankingFormulaVersion === ARENA_FORMULA_VERSION)) {
+      if (!Number.isInteger(rank) || rank <= previousOccupiedRank) throw new Error("Overlapping customer reward ranking positions");
+      previousOccupiedRank = rank + group.length - 1;
+    }
+    group.forEach((standing, index) => tieIndexes.set(standing.playerId, index));
+  }
   const rankingWinners = eligibleStandings
     .filter((standing) => standing.leaderboardRank >= 1 && standing.leaderboardRank <= ARENA_CUSTOMER_REWARD_TOP_SIZE)
     .map((standing) => {
       const slot = rankingSlots.find((candidate) => candidate.rewardRank === standing.leaderboardRank);
       if (!slot) throw new Error(`Missing customer reward slot for rank ${standing.leaderboardRank}`);
+      // Ineligible members still occupy their tied places and retain their
+      // unissued share. The remaining players must never inherit that share.
+      const tied = standing.rankingFormulaVersion === ARENA_FORMULA_VERSION
+        ? tieGroups.get(standing.leaderboardRank)!
+        : [standing];
+      const occupiedThroughRank = standing.leaderboardRank + tied.length - 1;
+      const groupSlots = rankingSlots.filter((candidate) => candidate.rewardRank! >= standing.leaderboardRank && candidate.rewardRank! <= occupiedThroughRank);
+      const groupGrams = groupSlots.reduce((sum, candidate) => sum + candidate.grams, 0);
+      const groupShareBps = groupSlots.reduce((sum, candidate) => sum + candidate.shareBps, 0);
+      const index = standing.rankingFormulaVersion === ARENA_FORMULA_VERSION ? tieIndexes.get(standing.playerId)! : 0;
       return {
         ...standing,
         rewardRank: standing.leaderboardRank,
         slotCode: slot.code,
-        shareBps: slot.shareBps,
-        grams: slot.grams,
+        shareBps: Number((groupShareBps / tied.length).toFixed(8)),
+        grams: Math.floor(groupGrams / tied.length) + (index < groupGrams % tied.length ? 1 : 0),
+        tiedPlayers: tied.length,
+        occupiedThroughRank,
       };
     });
   const surpriseCandidates = eligibleStandings.filter(

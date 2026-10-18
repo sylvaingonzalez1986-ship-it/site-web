@@ -19,7 +19,7 @@ type WarehouseEntryProps = {draftOwnerId?:string;embedded?:boolean;workshopOnly?
 /** Existing teaching sessions keep their isolated equipment fixture and never migrate an account. */
 export function KqWarehouseEntry(props: WarehouseEntryProps) {
   const api = useKqTutorialApi();
-  return api.isTutorial || props.workshopOnly ? <LegacyKqWarehouseEntry {...props} /> : <KqWarehouse key={props.draftOwnerId ?? "local"} {...props} />;
+  return (api.isTutorial && !api.nativeWarehouse) || props.workshopOnly ? <LegacyKqWarehouseEntry {...props} /> : <KqWarehouse key={props.draftOwnerId ?? "local"} {...props} draftStore={api.warehouseDraftStore} onOpenCulture={api.onOpenCulture} />;
 }
 
 function LegacyKqWarehouseEntry({embedded=false,workshopOnly=false,initialEquipmentCode,initialSection="equipment",onClose,onOpenShop=()=>{},onBusyChange}:WarehouseEntryProps){

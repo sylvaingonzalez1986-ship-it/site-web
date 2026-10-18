@@ -8,6 +8,7 @@ import type { KqOfficialBattle } from "@/lib/kanab-quest-api";
 import styles from "./KqBattleVerdictDialog.module.css";
 
 type Props = {
+  battleId?: string;
   kind: "official" | "training";
   winner: "player" | "opponent";
   subtitle: string;
@@ -24,14 +25,14 @@ type Props = {
   onClose: () => void;
 };
 
-export function KqBattleVerdictDialog({ kind, winner, subtitle, rounds, experience, challengePoints, challenges, cardCount, rewardCard, rank, trainingProgress, receipt, children, onClose }: Props) {
+export function KqBattleVerdictDialog({ battleId, kind, winner, subtitle, rounds, experience, challengePoints, challenges, cardCount, rewardCard, rank, trainingProgress, receipt, children, onClose }: Props) {
   const won = winner === "player";
   const titleId = kind === "training" ? "bot-result-title" : "official-result-title";
   const playerScore = rounds.filter(round => round.winner === "player").length;
   const opponentScore = rounds.filter(round => round.winner === "opponent").length;
   return <AppDialog open onClose={onClose} title="Verdict du jury" closeLabel="Fermer le verdict" labelledBy={titleId}
     className={styles.dialog} bodyClassName={styles.body}
-    dialogProps={{ "data-verdict-result": true, "data-victory": won || undefined }}
+    dialogProps={{ "data-verdict-result": true, "data-battle-id": battleId, "data-victory": won || undefined }}
     footer={<button type="button" className={styles.continue} onClick={onClose}>Continuer</button>}>
     <div className={styles.hero} data-won={won}>
       <span className={styles.emblem}>{won ? <Trophy aria-hidden="true" /> : <Swords aria-hidden="true" />}</span>

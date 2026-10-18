@@ -14,6 +14,7 @@ import { getContestEntryAnalysisUrl } from "@/lib/contest-analysis";
 import { CONTEST_ENTRY_CATEGORIES, CONTEST_ENTRY_CATEGORY_LABELS, CONTEST_ENTRY_TRACKS, CONTEST_ENTRY_TRACK_LABELS, type ContestEntryCategory, type ContestEntrySummary, type ContestEntryTrack, type ContestReviewEligibility } from "@/types/contest";
 import { ContestFlowerImage } from "./ContestFlowerImage";
 import { ContestBundleNotebookNote } from "./ContestBundleNotebookNote";
+import { ContestNotebookHelp } from "./ContestNotebookHelp";
 import styles from "./ContestTastingBook.module.css";
 import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 
@@ -213,7 +214,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
     return `/compte/connexion?next=${encodeURIComponent(`/arene/carnet/${item.track}?${params.toString()}`)}`;
   };
 
-  return <section ref={deskRef} className={styles.desk} data-world="arena" data-tasting-book data-open={open || undefined}
+  return <section ref={deskRef} className={styles.desk} data-world="arena" data-tasting-book data-notebook-view={open ? view : "closed"} data-open={open || undefined}
     onKeyDown={(event) => {
       if (event.key !== "Escape") return;
       event.stopPropagation();
@@ -222,7 +223,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
       else go(view === "tasting" || view === "rewards" ? "flower" : view === "flower" ? "flowers" : "contents");
     }}>
     <header className={styles.deskHeader}>
-      {api.isTutorial ? <button type="button" className={styles.tutorialExit} onClick={onExitTutorial}><ArrowLeft size={17} aria-hidden="true" /> Les possibilités</button> : <Link href="/arene" className={styles.arenaExit}><ArrowLeft size={17} aria-hidden="true" /> Retour à l’Arène</Link>}
+      {api.isTutorial ? <button type="button" className={styles.tutorialExit} onClick={onExitTutorial}><ArrowLeft size={17} aria-hidden="true" /> Retour au carnet</button> : <Link href="/arene" className={styles.arenaExit}><ArrowLeft size={17} aria-hidden="true" /> Retour à l’Arène</Link>}
       <span>Les Chanvriers Bretons</span>
       {open ? <button type="button" onClick={close} aria-label="Replier le carnet" title="Replier le carnet"><X size={18} aria-hidden="true" /></button> : <BookOpen size={18} aria-hidden="true" />}
     </header>
@@ -241,7 +242,10 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
           <span className={styles.coverAction}>Ouvrir le carnet <ArrowRight size={18} aria-hidden="true" /></span>
         </span>
       </button>
-      <p className={styles.closedHint}>{seasonLabel}</p>
+      <div className={styles.closedActions}>
+        {!api.isTutorial && !open ? <ContestNotebookHelp className={styles.helpButton} /> : null}
+        <p className={styles.closedHint}>{seasonLabel}</p>
+      </div>
     </div> : null}
 
     <div className={styles.bookStage} hidden={!open}>
@@ -303,7 +307,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
                   })}
                 </section>;
               })}
-              <nav className={styles.appendix} aria-label="Les annexes du carnet">{api.isTutorial ? <button type="button" onClick={onExitTutorial}><ArrowLeft size={16} aria-hidden="true" /> Explorer les possibilités</button> : <><Link href="/profil/collection"><Gift size={16} aria-hidden="true" /> Ma collection</Link><Link href="/arene/carnet/classement"><Trophy size={16} aria-hidden="true" /> Classement des fleurs</Link></>}</nav>
+              <nav className={styles.appendix} aria-label="Les annexes du carnet">{api.isTutorial ? <button type="button" onClick={onExitTutorial}><ArrowLeft size={16} aria-hidden="true" /> Retour au carnet</button> : <><Link href="/profil/collection"><Gift size={16} aria-hidden="true" /> Ma collection</Link><Link href="/arene/carnet/classement"><Trophy size={16} aria-hidden="true" /> Classement des fleurs</Link></>}</nav>
             </div> : null}
 
             {view === "flowers" ? <div key={`flowers-${turn}`} className={styles.pageTurn}>

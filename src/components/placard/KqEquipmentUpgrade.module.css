@@ -19,8 +19,6 @@
 .upgrade.upgrade .error { display: block; color: #873321; }
 
 .upgrade.upgrade .heading small { display: inline; }
-.fineTuning { margin-top: 14px; }
-.fineTuning > summary { padding: 12px; font-size: 12px; font-weight: 800; cursor: pointer; border: 2px solid #172923; background: #f7dfb8; color: #172923; border-radius: 9px; }
 .upgrade.upgrade li { font-size: 12px; font-weight: 600; color: #172923; }
 .upgrade.upgrade .gate { display: block; padding: 9px; border-left: 4px solid #172923; background: #f7dfb8; color: #172923; border-radius: 0 8px 8px 0; }
 @media (max-width: 420px) { .milestones { flex-wrap: wrap; line-height: 1.5; } .heading { flex-wrap: wrap; } }

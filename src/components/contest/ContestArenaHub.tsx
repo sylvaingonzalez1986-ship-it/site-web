@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { ArenaJourneyEntry } from "./ArenaJourneyEntry";
 import { ArenaPrelaunchCharacter } from "./ArenaPrelaunchCharacter";
-import { ArenaLearningLauncher } from "./ArenaLearningLauncher";
 import { ArenaPlayerResume } from "./ArenaPlayerResume";
 import { type ArenaLobbyMode } from "@/lib/arena-lobby";
 import type { ArenaProfileAvailability, ArenaProfileLauncherHandle } from "@/lib/arena-profile-launcher";
@@ -40,9 +39,6 @@ export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer
         </div>}
 
         <ArenaWorldMap activitiesLocked={activitiesLocked} initialMode={initialMode} profileLauncher={profileLauncher} profileAvailability={profileAvailability} />
-        <div className={styles.mapFooter}>
-          <div className={styles.discovery} data-arena-discovery-entry><ArenaLearningLauncher className={styles.discoveryButton} /></div>
-        </div>
         {personalSummaryEnabled && !activitiesLocked ? <ArenaPlayerResume /> : null}
       </section>
     </main>

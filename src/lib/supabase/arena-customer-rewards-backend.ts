@@ -1,11 +1,14 @@
 import "server-only";
 import { cacheArenaSharedRead, invalidateArenaSharedReads } from "@/lib/arena-shared-cache";
 import { getArenaRewardMilestone } from "@/lib/arena-reward-presentation";
+import { ARENA_FORMULA_VERSION } from "@/lib/arena-ranking";
+import { arenaPublicPlayerKey } from "@/lib/arena-public-player-key";
 
 import { createHash } from "node:crypto";
 import {
   ARENA_CUSTOMER_REWARD_SLOTS,
   buildArenaCustomerRewardPreview,
+  isArenaCustomerRewardEligible,
   type ArenaCustomerRewardStanding,
 } from "@/lib/arena-customer-rewards";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
@@ -34,7 +37,7 @@ const toNumber = (value: unknown, fallback = 0) => {
   return Number.isFinite(number) ? number : fallback;
 };
 
-function toRewardStandings(entries: Awaited<ReturnType<typeof getKqArenaLeaderboardInternal>>["entries"]): ArenaCustomerRewardStanding[] {
+function toRewardStandings(entries: Awaited<ReturnType<typeof getKqArenaLeaderboardInternal>>["entries"], rankingFormulaVersion?: string): ArenaCustomerRewardStanding[] {
   return entries.map((entry) => ({
     playerId: entry.userId,
     leaderboardRank: entry.rank,
@@ -43,6 +46,7 @@ function toRewardStandings(entries: Awaited<ReturnType<typeof getKqArenaLeaderbo
     rating: entry.rating,
     wins: entry.wins,
     losses: entry.losses,
+    ...(rankingFormulaVersion ? { rankingFormulaVersion, tastedFlowerCount: entry.tastedFlowerCount ?? 0 } : {}),
   }));
 }
 
@@ -77,16 +81,18 @@ async function loadSharedRewardPool(finalizePreviousWeeks = false) {
   const leaderboard = raw.status === "active" ? await getKqArenaLeaderboardInternal() : null;
   const snapshot = seasonResult.data?.standings_snapshot as ArenaCustomerRewardStanding[] | null;
   const standings = leaderboard && leaderboard.seasonCode === seasonCode
-    ? toRewardStandings(leaderboard.entries)
+    ? toRewardStandings(leaderboard.entries, leaderboard.formulaVersion)
     : Array.isArray(snapshot) ? snapshot : [];
-  return { seasonCode, raw, standings };
+  const rankingFormulaVersion = leaderboard && leaderboard.seasonCode === seasonCode
+    ? leaderboard.formulaVersion : standings[0]?.rankingFormulaVersion ?? seasonResult.data?.ranking_formula_version;
+  return { seasonCode, raw, standings, rankingFormulaVersion };
 }
 
 const readCachedRewardPool = cacheArenaSharedRead("reward-pool", () => loadSharedRewardPool());
 
 export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?: boolean; viewerId?: string; fresh?: boolean } = {}) {
   const supabase = createSupabaseServiceClient();
-  const { seasonCode, raw, standings } = input.fresh || input.finalizePreviousWeeks
+  const { seasonCode, raw, standings, rankingFormulaVersion } = input.fresh || input.finalizePreviousWeeks
     ? await loadSharedRewardPool(input.finalizePreviousWeeks === true)
     : await readCachedRewardPool();
   const poolGrams = Math.max(0, toNumber(raw.poolGrams));
@@ -114,10 +120,14 @@ export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?
     viewer: input.viewerId ? {
       rank: viewerStanding?.leaderboardRank ?? null,
       battles: viewerStanding ? viewerStanding.wins + viewerStanding.losses : 0,
+      tastedFlowerCount: viewerStanding?.tastedFlowerCount ?? 0,
+      eligible: viewerStanding ? isArenaCustomerRewardEligible(viewerStanding, minHumanBattles) : false,
       estimatedGrams: viewerProjection?.grams ?? null,
       grant: viewerGrant,
     } : null,
     formulaVersion: String(raw.formulaVersion ?? "arena-customer-v1"),
+    rankingFormulaVersion: rankingFormulaVersion ?? "arena-v2",
+    minimumTastedFlowers: rankingFormulaVersion === ARENA_FORMULA_VERSION ? 1 : null,
     contributionRateBps: Math.floor(toNumber(raw.contributionRateBps, 100)),
     poolGrams,
     wholePoolGrams: preview.wholePoolGrams,
@@ -145,12 +155,17 @@ export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?
     milestone: getArenaRewardMilestone(poolGrams),
     minimumHumanBattles: minHumanBattles,
     eligiblePlayers: preview.eligiblePlayers,
-    topRewards: preview.rankingWinners.map((winner) => ({
+    // A large tie can contain thousands of zero-gram projections. Keep those
+    // in the private viewer calculation, but only publish distributable gifts.
+    topRewards: preview.rankingWinners.filter((winner) => winner.grams > 0).map((winner) => ({
+      entryKey: arenaPublicPlayerKey(winner.playerId),
       leaderboardRank: winner.leaderboardRank,
       rewardRank: winner.rewardRank,
       pseudo: winner.pseudo,
       shareBps: winner.shareBps,
       estimatedGrams: winner.grams,
+      tiedPlayers: winner.tiedPlayers,
+      occupiedThroughRank: winner.occupiedThroughRank,
     })),
     distribution: preview.slots.map((slot) => ({
       code: slot.code,
@@ -238,7 +253,7 @@ export async function freezeArenaCustomerRewardSeason(execute: boolean) {
   const leaderboard = await getKqArenaLeaderboardInternal({ forceRefresh: true });
   if (leaderboard.seasonCode !== seasonCode) throw new Error("La saison du classement ne correspond pas à celle des récompenses.");
   const result = await supabase.rpc("rpc_arena_freeze_customer_reward_snapshot", {
-    p_standings: toRewardStandings(leaderboard.entries),
+    p_standings: toRewardStandings(leaderboard.entries, leaderboard.formulaVersion),
     p_season_code: seasonCode,
     p_execute: execute,
   });
@@ -260,7 +275,7 @@ export async function settleArenaCustomerRewards(execute: boolean) {
   if (!standings && pool.status === "active" && !execute) {
     const leaderboard = await getKqArenaLeaderboardInternal({ forceRefresh: true });
     if (leaderboard.seasonCode !== seasonCode) throw new Error("Saisons incompatibles.");
-    standings = toRewardStandings(leaderboard.entries);
+    standings = toRewardStandings(leaderboard.entries, leaderboard.formulaVersion);
   }
   if (!Array.isArray(standings)) throw new Error("Aucun classement figé disponible. Vérifier la clôture avant attribution.");
   const preview = buildArenaCustomerRewardPreview(pool.poolGrams, standings, pool.minimumHumanBattles);
@@ -274,6 +289,7 @@ export async function settleArenaCustomerRewards(execute: boolean) {
     rating: winner.rating,
     wins: winner.wins,
     losses: winner.losses,
+    ...(winner.rankingFormulaVersion ? { rankingFormulaVersion: winner.rankingFormulaVersion, tastedFlowerCount: winner.tastedFlowerCount ?? 0 } : {}),
   }));
   const surpriseCandidates = preview.surpriseCandidates.map((candidate) => ({
     userId: candidate.playerId,
@@ -282,6 +298,7 @@ export async function settleArenaCustomerRewards(execute: boolean) {
     rating: candidate.rating,
     wins: candidate.wins,
     losses: candidate.losses,
+    ...(candidate.rankingFormulaVersion ? { rankingFormulaVersion: candidate.rankingFormulaVersion, tastedFlowerCount: candidate.tastedFlowerCount ?? 0 } : {}),
   }));
   const candidateHash = createHash("sha256")
     .update(surpriseCandidates.map((candidate) => `${candidate.leaderboardRank}:${candidate.userId}`).join("\n"))

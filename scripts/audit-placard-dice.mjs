@@ -9,9 +9,9 @@ import {Launcher} from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const root=process.cwd(), output=resolve(root,'output/placard-workshop/dice');
-const game=await readFile(resolve(root,'src/components/placard/KanabQuestDicePrototype.tsx'),'utf8');
-// Exercise the existing private renderer without exposing a new production API.
-const faces=game.slice(game.indexOf('const dieKind ='),game.indexOf('const formatKqDate =')).replace('function GameDie(', 'export function GameDie(');
+const game=await readFile(resolve(root,'src/components/placard/KqGameCards.tsx'),'utf8');
+// Exercise the shared renderer used by both the game and its guided tutorial.
+const faces=game.slice(game.indexOf('const dieKind ='),game.indexOf('export function KqCardArtwork(')).replace('export function KqGameDie(', 'export function GameDie(');
 const faceModule=ts.transpileModule('import styles from "/src/components/placard/KanabQuestDicePrototype.module.css";\n'+faces,{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}});
 const modules={
   'dice-faces':faceModule.outputText,

@@ -31,6 +31,7 @@ function BattleReceipt({ battle }: { battle: KqOfficialBattle }) {
     data-status={battle.status}
     data-result={cancelled ? "cancelled" : won ? "won" : "lost"}
     data-archived-jury-recap={cancelled ? undefined : true}
+    data-battle-id={battle.id}
   >
     <summary className={styles.receiptSummary}>
       <span className={styles.result}>
@@ -97,7 +98,7 @@ export function KqBattleHistory({ battles, pending, onRequestVerdict, onLoadRece
 
     {locked.length > 0 ? <div className={styles.pendingList}>
       <h3><Clock3 aria-hidden="true" /> {locked.length} duel{locked.length > 1 ? "s" : ""} en attente de verdict</h3>
-      {locked.map(battle => <div key={battle.id} className={styles.pendingBattle} data-pending-battle>
+      {locked.map(battle => <div key={battle.id} className={styles.pendingBattle} data-pending-battle data-battle-id={battle.id}>
         <div><strong>{battle.playerFlower.variety} <span>face à</span> {battle.opponentFlower.variety}</strong><p>Les deux Fleurs sont verrouillées. Le verdict les brûlera définitivement.</p></div>
         <button type="button" disabled={pending} onClick={() => onRequestVerdict(battle.id)}><Trophy aria-hidden="true" /> Demander le verdict</button>
       </div>)}

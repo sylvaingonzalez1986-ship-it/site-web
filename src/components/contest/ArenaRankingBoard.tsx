@@ -7,7 +7,7 @@ import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 import { LeaderboardAvatar } from "./LeaderboardAvatar";
 import styles from "./ArenaRankingBoard.module.css";
 
-export type ArenaRankingMode = "general" | "tasting" | "placard";
+export type ArenaRankingMode = "general" | "tasting" | "duels" | "business";
 export type ArenaRankingRow = {
   key: string;
   rank: number;
@@ -19,7 +19,6 @@ export type ArenaRankingRow = {
   rewardGrams: number | null;
   href: string;
   contributions?: { notebook: number; duels: number; business: number };
-  businessScore?: number;
 };
 
 export type ArenaRankingBoardProps = {
@@ -31,6 +30,12 @@ export type ArenaRankingBoardProps = {
   unavailable: boolean;
   compact?: boolean;
   viewerPseudo?: string;
+  viewerRow?: ArenaRankingRow | null;
+  totalPlayers?: number;
+  hasMore?: boolean;
+  loadingMore?: boolean;
+  loadMoreError?: string | null;
+  onLoadMore?: () => void;
   onModeChange: (mode: ArenaRankingMode) => void;
   onScopeChange: (scope: "season" | "global") => void;
   onRetry: () => void;
@@ -39,27 +44,48 @@ export type ArenaRankingBoardProps = {
 const modes = [
   { id: "general", label: "Général", description: "La course aux récompenses", icon: Trophy },
   { id: "tasting", label: "Dégustation", description: "Les fins connaisseurs", icon: BookOpen },
-  { id: "placard", label: "Kanab Quest", description: "Les talents du village", icon: Sprout },
+  { id: "duels", label: "Duels", description: "Les meilleurs adversaires", icon: Swords },
+  { id: "business", label: "Entreprise", description: "Les entreprises qui grandissent", icon: Building2 },
 ] as const;
 
-const titles = { general: "Le classement général", tasting: "Les meilleurs testeurs", placard: "Les champions de Kanab Quest" };
-const emptyMessages = {
-  general: "Le tableau attend ses premiers joueurs. Termine un duel officiel pour entrer dans le classement.",
-  tasting: "Aucun testeur classé pour le moment. Les avis validés dans le Carnet font gagner les premiers points.",
-  placard: "Pas encore de cultivateur classé. Une première Fleur au jury, et l’aventure commence !",
+const titles = { general: "Le classement général", tasting: "Les meilleurs testeurs", duels: "Les champions des duels", business: "Les meilleures entreprises" };
+const intros = {
+  general: "Découvre des fleurs, remporte des duels et développe ton entreprise. Chaque progrès compte.",
+  tasting: "Une nouvelle fleur achetée et un avis validé : 100 points de plus pour tes découvertes.",
+  duels: "Affronte les autres chanvriers. Chaque point gagné en duel fait progresser ton score.",
+  business: "Cultive, développe tes ventes et construis ta réputation. Trois façons de grandir.",
 };
+const scoreHeadings = { general: "Score général", tasting: "Points dégustation", duels: "Points duels", business: "Points entreprise" };
+const emptyMessages = {
+  general: "Le tableau attend ses premiers joueurs. Une dégustation validée, un duel ou des points d’entreprise suffisent pour entrer.",
+  tasting: "Aucun testeur classé pour le moment. Fais valider un avis sur une fleur achetée pour gagner tes premiers points.",
+  duels: "Pas encore de duel au tableau. Termine un duel officiel pour entrer dans le classement.",
+  business: "Pas encore d’entreprise classée. Développe ton entreprise pour marquer tes premiers points.",
+};
+
+const formatScore = (value: number) => value.toLocaleString("fr-FR", { maximumFractionDigits: 1 });
+
+function TastingRules() {
+  return <><p><strong>100 points par fleur différente achetée et évaluée par un avis validé dans la saison.</strong> Un produit compte une seule fois par joueur et par saison, quels que soient son grammage, le nombre de commandes ou les corrections de l’avis. Un avis critique validé rapporte autant qu’un avis positif.</p><p>Les distinctions de qualité et les votes restent utiles dans le Carnet, sans ajouter de points à ce classement. Une fleur peut compter à nouveau la saison suivante avec un nouvel achat et un nouvel avis validé.</p></>;
+}
+
+function DuelRules() {
+  return <><p>Seuls les points gagnés en duels contre d’autres joueurs pendant la saison comptent. Les défis contre les bots sont exclus. Les gains diminuent progressivement, sans plafond : 100 points de duels rapportent 158,5 points au classement ; 400 en rapportent 317.</p><p>Calcul : 100 × log₂(1 + points de duels humains / 50).</p></>;
+}
 
 function BusinessRules() {
   return <>
-    <p>Le chiffre d’affaires encaissé dans le jeu, TTC et cumulé, apporte jusqu’à 80 points à 10 000 €. La valeur nette estimée apporte jusqu’à 60 points à 10 000 €. Ces deux bonus augmentent de moins en moins vite.</p>
-    <p>La production rapporte 1,2 point par m² de culture équipé, jusqu’à 60 points pour 50 m². Une surface équipée compte même en pause ; les espaces vides, de séchage et de stockage sont exclus.</p>
-    <p>La valeur nette estimée correspond à ce que possède encore ton entreprise, placements compris, moins ses dettes. Les placements sont évalués au dernier cours disponible ou, à défaut, à leur prix d’achat.</p>
+    <p>La surface réellement cultivée est moyennée sur les 30 derniers jours. Les espaces vides, le séchage et le stockage ne comptent pas. Le chiffre d’affaires correspond aux ventes du jeu encaissées pendant la saison, hors taxes et annulations. La réputation est ta réputation commerciale actuelle.</p>
+    <p>Les trois critères progressent sans plafond, avec des gains dégressifs. Le profil de référence — 50 m² cultivés en moyenne, 10 000 € de ventes et 600 de réputation — rapporte 90 points : 27 pour les cultures, 36 pour les ventes et 27 pour la réputation.</p>
+    <p>Calcul : 27 × log₂(1 + surface / 50) + 36 × log₂(1 + chiffre d’affaires / 10 000) + 27 × log₂(1 + réputation / 600). Les repères de calcul ne sont pas des limites.</p>
   </>;
 }
 
-export function ArenaRankingBoard({ id, mode, scope, rows, loading, unavailable, compact = false, viewerPseudo, onModeChange, onScopeChange, onRetry }: ArenaRankingBoardProps) {
+export function ArenaRankingBoard({ id, mode, scope, rows, loading, unavailable, compact = false, viewerPseudo, viewerRow, totalPlayers, hasMore = false, loadingMore = false, loadMoreError, onLoadMore, onModeChange, onScopeChange, onRetry }: ArenaRankingBoardProps) {
   const listRef = useRef<HTMLDivElement>(null);
-  const viewer = rows.find(row => row.pseudo === viewerPseudo);
+  const viewer = viewerRow !== undefined ? viewerRow : rows.find(row => row.pseudo === viewerPseudo);
+  const pinnedViewer = viewerRow && !rows.some(row => row.key === viewerRow.key) ? viewerRow : null;
+  const playerCount = totalPlayers ?? rows.length;
   const titleId = `${id}-title`;
   const listId = `${id}-players`;
   const scrollBehavior = (): ScrollBehavior => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
@@ -72,11 +98,21 @@ export function ArenaRankingBoard({ id, mode, scope, rows, loading, unavailable,
     listRef.current?.scrollTo({ top: 0 });
     onModeChange(nextMode);
   };
+  const renderRow = (row: ArenaRankingRow) => {
+    const isViewer = viewerRow !== undefined ? row.key === viewerRow?.key : row.pseudo === viewerPseudo;
+    const content = <>
+      <span className={styles.rank} data-podium={row.rank <= 3 || undefined} aria-label={`Place ${row.rank}`}>{row.rank === 1 ? <Trophy size={13} aria-hidden="true" /> : null}<b>{row.rank}</b></span>
+      <span className={styles.avatar}><LeaderboardAvatar profile={row.avatar} pseudo={row.pseudo} /></span>
+      <span className={styles.identity}><span className={styles.playerName}><strong>{row.pseudo}</strong>{isViewer ? <em>Toi</em> : null}</span>{row.contributions ? <span className={styles.contributions}><span>Dégustation <b>{formatScore(row.contributions.notebook)}</b></span><span>Duels <b>{formatScore(row.contributions.duels)}</b></span><span>Entreprise <b>{formatScore(row.contributions.business)}</b></span></span> : row.detail ? <small className={styles.detail}>{row.detail}</small> : null}</span>
+      <span className={styles.score}><strong>{formatScore(row.score)}</strong><small>{row.scoreLabel}</small>{row.rewardGrams !== null ? <em>≈ {formatScore(row.rewardGrams)} g</em> : null}</span>
+    </>;
+    return <li key={row.key} value={row.rank}>{row.href ? <Link href={row.href} className={styles.row} data-viewer={isViewer || undefined} aria-label={`Voir le profil de ${row.pseudo}, place ${row.rank}`}>{content}</Link> : <div className={styles.row} tabIndex={-1} data-viewer={isViewer || undefined}>{content}</div>}</li>;
+  };
 
   return <section id={id} className={styles.board} data-arena-ranking-board data-compact={compact || undefined} aria-labelledby={titleId}>
     <header className={styles.heading}>
-      <div><p className={styles.eyebrow}><Trophy size={15} aria-hidden="true" />Le tableau du village</p><h3 id={titleId}>{titles[mode]}</h3><p className={styles.intro}>{mode === "general" ? "Un bon carnet, de belles Fleurs et une entreprise qui grandit. À toi de faire ta place !" : mode === "tasting" ? "Les avis validés font la différence. Chaque dégustation enrichit le Carnet." : "Cultive, affronte le jury et développe ton entreprise pour monter au tableau."}</p></div>
-      <span className={styles.seal}><Trophy size={24} aria-hidden="true" /><strong>{mode === "general" ? "1 000" : mode === "tasting" ? "Carnet" : "Kanab Quest"}</strong><small>{mode === "general" ? "points à viser" : "le palmarès"}</small></span>
+      <div><p className={styles.eyebrow}><Trophy size={15} aria-hidden="true" />Le tableau du village</p><h3 id={titleId}>{titles[mode]}</h3><p className={styles.intro}>{intros[mode]}</p></div>
+      <span className={styles.seal}><Trophy size={24} aria-hidden="true" /><strong>∞</strong><small>sans plafond</small></span>
     </header>
 
     <div className={styles.modeSwitch} role="group" aria-label="Type de classement">
@@ -84,19 +120,19 @@ export function ArenaRankingBoard({ id, mode, scope, rows, loading, unavailable,
     </div>
 
     <div className={styles.paper}>
-      {mode === "general" ? <div className={styles.scoreRecipe} aria-label="Répartition des 1 000 points du classement général">
-        <div data-criterion="notebook"><BookOpen aria-hidden="true" /><span><strong>Carnet</strong><small>Avis validés</small></span><b>300<small>pts max.</small></b></div>
-        <div data-criterion="duels"><Swords aria-hidden="true" /><span><strong>Duels</strong><small>Activité + cote</small></span><b>500<small>pts max.</small></b></div>
-        <div data-criterion="business"><Building2 aria-hidden="true" /><span><strong>Entreprise</strong><small>Ton développement</small></span><b>200<small>pts max.</small></b></div>
+      {mode === "general" ? <div className={styles.scoreRecipe} aria-label="Les trois contributions au classement général, sans plafond">
+        <div data-criterion="notebook"><BookOpen aria-hidden="true" /><span><strong>Dégustation</strong><small>Priorité aux découvertes</small></span><b>+100<small>par fleur</small></b></div>
+        <div data-criterion="duels"><Swords aria-hidden="true" /><span><strong>Duels</strong><small>Contre des joueurs</small></span><b>↗<small>gains dégressifs</small></b></div>
+        <div data-criterion="business"><Building2 aria-hidden="true" /><span><strong>Entreprise</strong><small>Cultures, ventes, réputation</small></span><b>↗<small>gains dégressifs</small></b></div>
       </div> : null}
 
-      {mode !== "tasting" ? <div className={styles.businessRecipe} aria-label="Les trois critères du développement de l’entreprise">
-        <span><Building2 size={18} aria-hidden="true" /><strong>Entreprise · 200 points max.</strong></span>
-        <ul><li>Chiffre d’affaires <b>80</b></li><li>Production <b>60</b></li><li>Valeur nette <b>60</b></li></ul>
+      {mode === "general" || mode === "business" ? <div className={styles.businessRecipe} aria-label="Les trois critères du développement de l’entreprise">
+        <span><Building2 size={18} aria-hidden="true" /><strong>Entreprise · 3 moteurs de progression</strong></span>
+        <ul><li>Surface cultivée</li><li>Chiffre d’affaires</li><li>Réputation</li></ul>
       </div> : null}
 
       <div className={styles.toolbar}>
-        <div className={styles.listLabel}><span className={styles.liveDot} aria-hidden="true" /><strong>{loading ? "Le tableau se prépare…" : unavailable ? "Tableau indisponible" : `${rows.length} joueur${rows.length > 1 ? "s" : ""} au tableau`}</strong>{!loading && !unavailable && rows.length > 0 ? <small>{mode === "tasting" ? scope === "season" ? "Cette saison" : "Toutes les saisons" : "Classement de la saison"}</small> : null}</div>
+        <div className={styles.listLabel}><span className={styles.liveDot} aria-hidden="true" /><strong>{loading ? "Le tableau se prépare…" : unavailable ? "Tableau indisponible" : `${playerCount.toLocaleString("fr-FR")} joueur${playerCount > 1 ? "s" : ""} au tableau`}</strong>{!loading && !unavailable && rows.length > 0 ? <small>{mode === "tasting" && scope === "global" ? "Toutes les saisons" : "Classement de la saison"}</small> : null}</div>
         <div className={styles.toolbarActions}>
           {mode === "tasting" ? <div className={styles.scopeSwitch} role="group" aria-label="Période du classement dégustation">{(["season", "global"] as const).map(nextScope => <button key={nextScope} type="button" aria-pressed={scope === nextScope} onClick={() => onScopeChange(nextScope)}>{nextScope === "season" ? "Saison" : "Global"}</button>)}</div> : null}
           {viewer && !loading && !unavailable ? <button className={styles.myPosition} type="button" onClick={findMyPosition}><Crosshair size={16} aria-hidden="true" />Ma place <b>#{viewer.rank}</b></button> : null}
@@ -104,27 +140,19 @@ export function ArenaRankingBoard({ id, mode, scope, rows, loading, unavailable,
         </div>
       </div>
 
-      <div className={styles.listHeading} aria-hidden="true"><span>Place &amp; joueur</span><span>{mode === "general" ? "Score / 1 000" : mode === "placard" ? "Score Kanab Quest" : "Points Carnet"}</span></div>
-      <div id={listId} ref={listRef} className={styles.listWindow} role="region" aria-label={titles[mode]} aria-busy={loading} tabIndex={0}>
+      <div className={styles.listHeading} aria-hidden="true"><span>Place &amp; joueur</span><span>{scoreHeadings[mode]}</span></div>
+      <div id={listId} ref={listRef} className={styles.listWindow} role="region" aria-label={titles[mode]} aria-busy={loading || loadingMore} tabIndex={0}>
         {loading ? <div className={styles.state} role="status"><RefreshCw className={styles.loadingIcon} size={28} aria-hidden="true" /><strong>On accroche les résultats…</strong><p>Chargement du classement.</p></div>
           : unavailable ? <div className={styles.state} role="status"><CircleHelp size={30} aria-hidden="true" /><strong>Le tableau prend une pause.</strong><p>Le classement est momentanément indisponible.</p><button type="button" onClick={onRetry}><RefreshCw size={16} aria-hidden="true" />Réessayer</button></div>
           : rows.length === 0 ? <div className={styles.state} role="status"><Sprout size={32} aria-hidden="true" /><strong>Une place à prendre !</strong><p>{emptyMessages[mode]}</p></div>
-          : <ol className={styles.rows}>{rows.map(row => {
-            const isViewer = row.pseudo === viewerPseudo;
-            const content = <>
-              <span className={styles.rank} data-podium={row.rank <= 3 || undefined} aria-label={`Place ${row.rank}`}>{row.rank === 1 ? <Trophy size={13} aria-hidden="true" /> : null}<b>{row.rank}</b></span>
-              <span className={styles.avatar}><LeaderboardAvatar profile={row.avatar} pseudo={row.pseudo} /></span>
-              <span className={styles.identity}><span className={styles.playerName}><strong>{row.pseudo}</strong>{isViewer ? <em>Toi</em> : null}</span>{row.contributions ? <span className={styles.contributions}><span>Carnet <b>{row.contributions.notebook}</b></span><span>Duels <b>{row.contributions.duels}</b></span><span>Entreprise <b>{row.contributions.business}</b></span></span> : <small className={styles.detail}>{row.detail}</small>}{row.businessScore !== undefined && !row.contributions ? <span className={styles.businessScore}>Entreprise <b>{row.businessScore} / 200</b></span> : null}</span>
-              <span className={styles.score}><strong>{row.score.toLocaleString("fr-FR")}</strong><small>{row.scoreLabel}</small>{row.rewardGrams !== null ? <em>≈ {row.rewardGrams} g</em> : null}</span>
-            </>;
-            return <li key={row.key} value={row.rank}>{row.href ? <Link href={row.href} className={styles.row} data-viewer={isViewer || undefined} aria-label={`Voir le profil de ${row.pseudo}, place ${row.rank}`}>{content}</Link> : <div className={styles.row} tabIndex={-1} data-viewer={isViewer || undefined}>{content}</div>}</li>;
-          })}</ol>}
+          : <><ol className={styles.rows}>{rows.map(renderRow)}</ol>{hasMore && onLoadMore ? <div className={styles.pagination}><button type="button" disabled={loadingMore} onClick={onLoadMore} aria-controls={listId}>{loadingMore ? <RefreshCw className={styles.loadingIcon} size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}{loadingMore ? "Chargement…" : "Voir les joueurs suivants"}</button><small>{rows.length.toLocaleString("fr-FR")} joueurs affichés{totalPlayers !== undefined ? ` sur ${totalPlayers.toLocaleString("fr-FR")}` : ""}</small></div> : null}{pinnedViewer ? <div className={styles.viewerPosition}><p>Ta place dans le classement</p><ol className={styles.rows}>{renderRow(pinnedViewer)}</ol></div> : null}</>}
       </div>
+      {loadMoreError && !loading && !unavailable ? <p className={styles.paginationError} role="status">{loadMoreError}</p> : null}
       {!loading && !unavailable && rows.length > 5 ? <p className={styles.listFootnote}>Fais défiler pour voir la suite du classement.</p> : null}
 
       <details className={styles.rules}>
         <summary><CircleHelp size={17} aria-hidden="true" /><span>{mode === "tasting" ? "Comment gagner des points ?" : "Comment les points sont calculés"}</span><ChevronDown size={17} aria-hidden="true" /></summary>
-        <div>{mode === "general" ? <><p><strong>Le classement général est sur 1 000 points.</strong> Carnet : 300 maximum. Duels : 500 maximum, dont 400 pour l’activité et 100 pour la cote. Entreprise : 200 maximum. Un duel officiel terminé est requis pour être classé.</p><BusinessRules /></> : mode === "placard" ? <><p>Le <strong>Score Kanab Quest</strong> additionne la cote de duel, le bonus de saison (150 maximum), le bonus de réputation (100 maximum) et le développement de l’entreprise (200 maximum).</p><BusinessRules /><p>À Score Kanab Quest égal : meilleure réputation, puis meilleure cote, plus de victoires, moins de défaites et enfin plus de points de saison.</p></> : <p>Les avis validés dans le Carnet font progresser ton profil testeur et tes points. Le classement de saison suit la récolte en cours ; le classement global réunit toutes les saisons. Clique sur un testeur pour consulter son profil.</p>}</div>
+        <div>{mode === "general" ? <><p><strong>Le score général additionne dégustation, duels et entreprise, sans plafond.</strong> La dégustation est le premier moteur de progression, puis viennent les duels et l’entreprise. Tes premiers points suffisent pour être classé, sans duel obligatoire.</p><TastingRules /><DuelRules /><BusinessRules /><p>À score égal : score de dégustation, puis score de duels, puis score d’entreprise. Si tous ces critères sont identiques, les joueurs sont ex æquo.</p></> : mode === "duels" ? <><p><strong>Le classement Duels progresse sans plafond.</strong> Un duel officiel contre un joueur terminé est requis pour être classé.</p><DuelRules /></> : mode === "business" ? <><p><strong>Le classement Entreprise additionne cultures, ventes et réputation, sans plafond.</strong> Tes premiers points d’entreprise suffisent pour être classé, même sans duel.</p><BusinessRules /></> : <><TastingRules /><p>Le classement de saison suit les découvertes de la saison Kanab Quest en cours ; le classement global additionne toutes les saisons. Clique sur un testeur pour consulter son profil.</p></>}</div>
       </details>
     </div>
   </section>;

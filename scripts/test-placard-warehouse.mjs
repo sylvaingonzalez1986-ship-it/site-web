@@ -102,8 +102,14 @@ try {
     console.log(`Applied ${file}`);
   }
   const { createKqWarehouseStarter: createCurrentStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot: getCurrentRunSnapshot, isKqWarehouseRunSnapshot } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse.ts");
+  // This isolated runner ends before the monthly-climate/repricing migration.
+  // Keep the catalogue in its historical state for every chronological quote.
+  const { KQ_WAREHOUSE_CATALOG: fixtureCatalog } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse-catalog.ts");
+  const historicalPostHarvestPrices = { "SJ-DRYIT90": 3990, "SIM-DRYING-02": 9990, "SIM-DRYING-03": 19990,
+    "LP-SUPER-1L": 2090, "BROR-JARS-48": 25720, "CURTEC-60L": 8550 };
+  for (const device of fixtureCatalog) if (Object.hasOwn(historicalPostHarvestPrices, device.code)) device.priceCents = historicalPostHarvestPrices[device.code];
   // Every assertion before the balance-v2 migration uses the original rules.
-  const getKqWarehouseRunSnapshot = (state, revision, zoneId) => getCurrentRunSnapshot(state, revision, zoneId, 1);
+  const getKqWarehouseRunSnapshot = (state, revision, zoneId) => getCurrentRunSnapshot(state, revision, zoneId, 1, 1);
   // These chronological tests predate floor adoption. Preserve their exact
   // historical geometry; the dedicated floor runner tests the new 100 m² start.
   const createKqWarehouseStarter = () => {
@@ -914,7 +920,10 @@ try {
   await db.exec("BEGIN");
   equal(await scalar("SELECT jsonb_agg(jsonb_build_object('user',user_id,'state',state,'revision',revision) ORDER BY user_id) FROM kq_warehouse_layouts"), preservedBeforeTiers, "tier catalogue never rewrites existing ownership or plans");
   equal(await scalar("SELECT state FROM kq_runs WHERE id=$1", [moduleRun]), frozenBeforeTiers, "new tiers preserve active frozen runs exactly");
-  const { KQ_WAREHOUSE_CATALOG: tierDevices } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse-catalog.ts");
+  const { KQ_WAREHOUSE_CATALOG: currentDevices } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse-catalog.ts");
+  // Storage climate belongs to the later postharvest migration. Keep this
+  // chronological fixture on the catalogue that existed at the tier boundary.
+  const tierDevices = currentDevices.filter(device => device.kind !== "climate");
   for (const device of tierDevices) {
     const expected = { code: device.code, kind: device.kind, tier: device.tier, priceCents: device.priceCents, watts: device.watts,
       purchasable: device.purchasable !== false, gameCapacity: { unit: device.gameCapacity.unit, value: device.gameCapacity.value },

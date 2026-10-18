@@ -1,6 +1,7 @@
 "use client";
 
 import { getBuddieArtwork } from "@/lib/buddie-artwork";
+import { KQ_WAREHOUSE_ROOM_ARTWORK } from "@/lib/kanab-quest-warehouse-artwork";
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
 import { Focus, Grid2X2, Maximize2, Minimize2, Plus, Minus, Move, MousePointer2, Scaling, Scan, CircleHelp, Sprout, Wind, Package, Settings2 } from "lucide-react";
 import { getKqWarehouseDevice } from "@/lib/kanab-quest-warehouse-catalog";
@@ -8,8 +9,6 @@ import { getKqWarehouseOption, type KqWarehouseOptionFamily } from "@/lib/kanab-
 import { doKqWarehouseZonesOverlap, getKqWarehouseServiceZoneQuote, type KqWarehouseZone, type KqWarehouseServiceZone } from "@/lib/kanab-quest-warehouse";
 import styles from "./KqWarehousePlan.module.css";
 
-const COMPACT_ROOM = "/placard/warehouse-v4/overhead-room-100m2-sylvain-v1.webp";
-const LEGACY_ROOM = "/placard/warehouse-v4/overhead-room-sylvain-v1.webp";
 const COMPACT_GRID = { x: 50, y: 50, cell: 30, columns: 10, rows: 10 } as const;
 const LEGACY_GRID = { x: 168, y: 120, cell: 30, columns: 40, rows: 25 } as const;
 type PlanGrid = { x: number; y: number; cell: number; columns: number; rows: number };
@@ -132,9 +131,11 @@ function ServiceZoneIllustration({ zone, id, grid: GRID }: { zone: KqWarehouseSe
   </g>;
 }
 
-export function KqWarehousePlan({ zones, serviceZones, dimensions, selectedId, drawing, drawingKind, anchor, cursor, zoom, locked, growing, managing = true, activeZoneIds, lockedZoneIds = [], placingBuddie = false, buddieDrop, onZoom, onDrawingKind, onToggleDrawing, onSelectPoint, onDrawZone, onConfigureZone, onCursor, onKeyDown, onTransformZone }: {
+export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, interactionHint, selectedId, drawing, drawingKind, anchor, cursor, zoom, locked, growing, managing = true, activeZoneIds, lockedZoneIds = [], placingBuddie = false, buddieDrop, onZoom, onDrawingKind, onToggleDrawing, onSelectPoint, onDrawZone, onConfigureZone, onCursor, onKeyDown, onTransformZone }: {
   zones: KqWarehouseZone[]; serviceZones: KqWarehouseServiceZone[]; selectedId: string | null; drawing: boolean; drawingKind: ZoneKind; anchor: Point | null; cursor: Point;
   dimensions?: { columns: number; rows: number };
+  roomArtwork?: string;
+  interactionHint?: string;
   managing?: boolean; activeZoneIds?: string[]; lockedZoneIds?: string[];
   placingBuddie?: boolean; buddieDrop?: { zoneId: string | null; allowed: boolean } | null;
   zoom: number; locked: boolean; growing: boolean; onZoom: (zoom: number) => void; onToggleDrawing: () => void;
@@ -562,12 +563,12 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, selectedId, d
 
   const transform = !selectedLocked && !drawing ? preview : null;
   const handleZone = transform && transform.zoneId === selectedValid?.id ? transform.rectangle : selectedValid;
-  const contextMessage = placingBuddie ? buddieDrop?.zoneId ? buddieDrop.allowed ? "Relâche pour affecter ton Buddie." : "Cette zone ne peut pas recevoir ton Buddie." : "Dépose la carte dans une zone libre." : !managing ? "Glisse un Buddie sur une zone, puis ouvre sa culture." : notice || (drawing ? drawingRectangle ? `${drawingRectangle.width} × ${drawingRectangle.height} m · ${selectionArea} m² · ${drawPreview ? drawPreview.valid ? "Relâche pour tracer la zone." : "Chevauchement : choisis un espace libre." : "Choisis le second coin avec Entrée."}` : "Appuie sur le plan, glisse sans lever le doigt, puis relâche pour tracer."
+  const contextMessage = interactionHint ?? (placingBuddie ? buddieDrop?.zoneId ? buddieDrop.allowed ? "Relâche pour affecter ton Buddie." : "Cette zone ne peut pas recevoir ton Buddie." : "Dépose la carte dans une zone libre." : !managing ? "Glisse un Buddie sur une zone, puis ouvre sa culture." : notice || (drawing ? drawingRectangle ? `${drawingRectangle.width} × ${drawingRectangle.height} m · ${selectionArea} m² · ${drawPreview ? drawPreview.valid ? "Relâche pour tracer la zone." : "Chevauchement : choisis un espace libre." : "Choisis le second coin avec Entrée."}` : "Appuie sur le plan, glisse sans lever le doigt, puis relâche pour tracer."
     : locked ? growing ? "Culture en cours : plan verrouillé." : "Plan verrouillé pour le moment."
     : selectedLocked && selectedValid ? "Culture en cours : cette zone est verrouillée."
     : tool === "move" ? "Glisse la zone pour la déplacer."
     : tool === "resize" ? "Glisse le coin doré pour ajuster la taille."
-    : selectedValid ? "Double appui sur la zone ou Configurer pour choisir son équipement." : "Sélectionne une zone sur le plan.");
+    : selectedValid ? "Double appui sur la zone ou Configurer pour choisir son équipement." : "Sélectionne une zone sur le plan."));
 
   const dimensionRectangle = drawing ? drawingRectangle : transform?.rectangle;
   const dimensionX = dimensionRectangle ? clamp(GRID.x + (dimensionRectangle.x + dimensionRectangle.width / 2) * GRID.cell - 70 * markerScale, 4 * markerScale, sceneWidth - 144 * markerScale) : 0;
@@ -624,7 +625,7 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, selectedId, d
         }}
         onPointerDown={beginGesture} onPointerMove={movePointer} onPointerUp={finishGesture} onPointerCancel={cancelGesture} onLostPointerCapture={event => { if (gesture.current?.pointerId === event.pointerId) cancelGesture(); }}>
         <SceneDefinitions id={id} grid={GRID} />
-        <image href={legacy ? LEGACY_ROOM : COMPACT_ROOM} width={sceneWidth} height={sceneHeight} pointerEvents="none" />
+        <image data-warehouse-room-artwork href={roomArtwork ?? KQ_WAREHOUSE_ROOM_ARTWORK} width={sceneWidth} height={sceneHeight} preserveAspectRatio="none" pointerEvents="none" />
         <rect x={GRID.x} y={GRID.y} width={GRID.columns * GRID.cell} height={GRID.rows * GRID.cell} fill="none" stroke="#645d42" strokeOpacity=".45" strokeWidth="1" strokeDasharray="8 8" pointerEvents="none" />
         <g pointerEvents="none" className={styles.measurements} style={{ fontSize: 12 * markerScale }}>{axisMarks(GRID.columns).map(n => <text key={n} x={GRID.x + n * GRID.cell} y={GRID.y - 14} textAnchor="middle">{n} m</text>)}{axisMarks(GRID.rows).map(n => <text key={n} x={GRID.x - 18} y={GRID.y + n * GRID.cell + 4 * markerScale} textAnchor="end">{n}</text>)}</g>
         {validZones.map((zone, index) => <g key={zone.id} className={styles.zone} data-zone-id={zone.id} data-zone-kind={kindOf(zone)} data-selected={zone.id === selectedId} data-buddie-drop={placingBuddie && buddieDrop?.zoneId === zone.id ? buddieDrop.allowed ? "valid" : "invalid" : undefined} data-buddie-target={placingBuddie && !("kind" in zone) && !lockedZoneIds.includes(zone.id) || undefined}>

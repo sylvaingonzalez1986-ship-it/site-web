@@ -1,5 +1,6 @@
 import { KQ_GAME_DAY_MS } from "./kanab-quest-business";
 import { createKqCareState, getKqCannabinoidReport, type KqCareState } from "./kanab-quest-care";
+import type { KqPostHarvestProfile } from "./kanab-quest-post-harvest";
 
 /** Six real hours after the verdict, independent of the accelerated game clock. */
 export const KQ_CURING_DURATION_MS = 6 * 60 * 60 * 1000;
@@ -188,32 +189,42 @@ export function fillKqStorageCapacity(capacity: KqStorageCapacity, input: {
 
 /** Integer weighted rates match SQL and keep exact integer exposure accounting.
  * Pending overflow receives only the baseline protection until its sale. */
-export function getKqStorageExposureRates(lot: Pick<KqStorageLot, "methodCode" | "capacity">) {
+export function getKqStorageExposureRates(lot: Pick<KqStorageLot, "methodCode" | "capacity" | "postHarvest">) {
+  const aromaFactor = lot.postHarvest?.aromaRateFactor ?? 100;
+  const chemistryFactor = lot.postHarvest?.chemistryRateFactor ?? 100;
   if (!lot.capacity || lot.capacity.totalUnits === 0) {
     const method = getKqStorageMethod(lot.methodCode);
     if (!method) throw new Error("Méthode de conservation invalide.");
-    return { aromaRate: method.aromaRate, chemistryRate: method.chemistryRate };
+    return { aromaRate: Math.ceil(method.aromaRate * aromaFactor / 100), chemistryRate: Math.ceil(method.chemistryRate * chemistryFactor / 100) };
   }
   if (!isKqStorageCapacity(lot.capacity)) throw new Error("Capacité de stockage invalide.");
   const stored = lot.capacity.allocations.reduce((sum, item) => sum + item.storedUnits, 0);
-  let aroma = (lot.capacity.totalUnits - stored) * 100, chemistry = aroma;
+  // Integer numerators avoid rounding a mathematically integral rate upwards.
+  let aroma = (lot.capacity.totalUnits - stored) * 10000, chemistry = aroma;
   for (const allocation of lot.capacity.allocations) {
     const method = getKqStorageMethod(getKqStorageContainer(allocation.containerCode)!.methodCode)!;
-    aroma += allocation.storedUnits * method.aromaRate;
-    chemistry += allocation.storedUnits * method.chemistryRate;
+    aroma += allocation.storedUnits * method.aromaRate * aromaFactor;
+    chemistry += allocation.storedUnits * method.chemistryRate * chemistryFactor;
   }
-  return { aromaRate: Math.ceil(aroma / lot.capacity.totalUnits), chemistryRate: Math.ceil(chemistry / lot.capacity.totalUnits) };
+  return { aromaRate: Math.ceil(aroma / (lot.capacity.totalUnits * 100)), chemistryRate: Math.ceil(chemistry / (lot.capacity.totalUnits * 100)) };
 }
 
 export type KqStorageBaseline = {
   varietyCode: string; juryScore: number; aroma: number;
   care: Pick<KqCareState, "terpenes" | "cannabinoidExpression" | "cannabinoidConversion" | "cannabinoidOxidation">;
 };
+export type KqStoragePostHarvest = KqPostHarvestProfile & {
+  containerQualityBonus: number;
+  /** Exact centi-points × elapsed milliseconds accumulated only before curing ends. */
+  curingBonusWeightedMs: number;
+};
 export type KqStorageLot = {
   version: 1; flowerId: string; harvestedAt: string; curingStartedAt: string; readyAt: string;
   lastSettledAt: string; methodCode: KqStorageMethodCode; baseline: KqStorageBaseline;
   exposure: { aromaWeightedMs: number; chemistryWeightedMs: number };
   capacity?: KqStorageCapacity;
+  /** Absent in historical saves: their quality and exposure stay unchanged. */
+  postHarvest?: KqStoragePostHarvest;
 };
 export type KqStorageProjection = {
   stage: "curing" | "ready"; serverNow: string; harvestedAt: string; curingStartedAt: string;
@@ -222,14 +233,59 @@ export type KqStorageProjection = {
   terpeneRetentionPercent: number; cannabinoidReport: ReturnType<typeof getKqCannabinoidReport>;
   qualityLoss: number; qualityDelta: number; conditionScore: number;
   capacity?: KqStorageCapacityProjection;
+  postHarvest?: Omit<KqStoragePostHarvest, "curingBonusWeightedMs"> & { curingQualityBonus: number; qualityBonus: number };
 };
 const round2 = (value: number) => Math.round(value * 100) / 100;
+/** Match PostgreSQL NUMERIC rounding even for a jury override with >2 decimals.
+ * Add decimal inputs before rounding; negative half-points round away from zero. */
+function qualityCentiSum(...values: number[]): number {
+  const parts = values.map(value => {
+    const [mantissa, exponent = "0"] = value.toString().split("e");
+    const scale = (mantissa.split(".")[1]?.length ?? 0) - Number(exponent);
+    return { digits: BigInt(mantissa.replace(".", "")), scale };
+  });
+  const precision = Math.max(2, ...parts.map(part => part.scale));
+  const zero = BigInt(0), ten = BigInt(10);
+  const total = parts.reduce((sum, part) => sum + part.digits * ten ** BigInt(precision - part.scale), zero);
+  const divisor = ten ** BigInt(precision - 2);
+  const magnitude = total < zero ? -total : total;
+  const rounded = (magnitude + divisor / BigInt(2)) / divisor;
+  return Number(total < zero ? -rounded : rounded);
+}
 const dateMs = (value: string) => {
   const parsed = Date.parse(value);
   if (!Number.isFinite(parsed)) throw new Error("Date de conservation invalide.");
   return parsed;
 };
 const inRange = (value: unknown, min: number, max: number): value is number => typeof value === "number" && Number.isFinite(value) && value >= min && value <= max;
+function validPostHarvest(value: KqStoragePostHarvest | undefined): boolean {
+  if (!value || typeof value !== "object") return false;
+  // Keep earlier local saves readable; current equipment awards at most .7/.6/.5.
+  return inRange(value.dryingQualityBonus, 0, 1.2) && inRange(value.storageQualityBonus, 0, 1)
+    && inRange(value.climateQualityBonus, 0, .8) && inRange(value.containerQualityBonus, 0, .3)
+    && inRange(value.aromaRateFactor, 1, 100) && Number.isInteger(value.aromaRateFactor)
+    && inRange(value.chemistryRateFactor, 1, 100) && Number.isInteger(value.chemistryRateFactor)
+    && Number.isSafeInteger(value.curingBonusWeightedMs) && value.curingBonusWeightedMs >= 0;
+}
+export function getKqStorageContainerQualityBonus(lot: Pick<KqStorageLot, "methodCode" | "capacity">): number {
+  const bonus: Record<KqStorageMethodCode, number> = { "STORAGE-GLASS": 0, "STORAGE-GROVE": 10, "STORAGE-BOVEDA": 15, "STORAGE-CVAULT": 20, "STORAGE-CANNATROL": 30 };
+  if (!lot.capacity) return bonus[lot.methodCode] / 100;
+  if (!lot.capacity.totalUnits) return 0;
+  return Math.round(lot.capacity.allocations.reduce((sum, allocation) => sum + allocation.storedUnits * bonus[getKqStorageContainer(allocation.containerCode)!.methodCode], 0) / lot.capacity.totalUnits) / 100;
+}
+function curingBonusAt(lot: KqStorageLot, nowMs: number): number {
+  const profile = lot.postHarvest;
+  if (!profile) return 0;
+  const elapsed = Math.max(0, Math.min(nowMs, dateMs(lot.readyAt)) - Math.max(dateMs(lot.lastSettledAt), dateMs(lot.curingStartedAt)));
+  const protectedUnits = lot.capacity?.allocations.reduce((sum, allocation) => sum + allocation.storedUnits, 0) ?? 1;
+  const totalUnits = lot.capacity?.totalUnits ?? 1;
+  const roomRate = Math.round(profile.storageQualityBonus * 100) + Math.round(profile.climateQualityBonus * 100);
+  const containerRate = Math.round(profile.containerQualityBonus * 100);
+  const rate = totalUnits > 0 ? Math.round((roomRate * protectedUnits + containerRate * totalUnits) / totalUnits) : 0;
+  const weighted = profile.curingBonusWeightedMs + elapsed * rate;
+  if (!Number.isSafeInteger(weighted)) throw new Error("Bonus de conservation invalide.");
+  return weighted;
+}
 export function isKqStorageLot(value: unknown): value is KqStorageLot {
   if (!value || typeof value !== "object") return false;
   const lot = value as KqStorageLot, baseline = lot.baseline, care = baseline?.care;
@@ -244,12 +300,16 @@ export function isKqStorageLot(value: unknown): value is KqStorageLot {
     && inRange(care?.cannabinoidOxidation, 0, 20) && Number.isInteger(care.cannabinoidOxidation)
     && Number.isSafeInteger(lot.exposure?.aromaWeightedMs) && lot.exposure.aromaWeightedMs >= 0
     && Number.isSafeInteger(lot.exposure?.chemistryWeightedMs) && lot.exposure.chemistryWeightedMs >= 0
-    && (lot.capacity === undefined || isKqStorageCapacity(lot.capacity));
+    && (lot.capacity === undefined || isKqStorageCapacity(lot.capacity))
+    && (lot.postHarvest === undefined || (validPostHarvest(lot.postHarvest)
+      // Earlier local saves could earn 210 centipoints; new equipment tops out at 140.
+      && lot.postHarvest.curingBonusWeightedMs <= (timestamps[2] - timestamps[1]) * 210));
 }
 export function createKqStorageLot(input: {
   flowerId: string; harvestedAt: string; curingStartedAt?: string; methodCode?: KqStorageMethodCode;
   baseline: KqStorageBaseline; curingDurationMs?: number;
   capacity?: KqStorageCapacity;
+  postHarvest?: KqPostHarvestProfile;
 }): KqStorageLot {
   const started = dateMs(input.curingStartedAt ?? input.harvestedAt);
   const duration = input.curingDurationMs ?? KQ_CURING_DURATION_MS;
@@ -264,6 +324,7 @@ export function createKqStorageLot(input: {
     exposure: { aromaWeightedMs: 0, chemistryWeightedMs: 0 },
     ...(input.capacity ? { capacity: structuredClone(input.capacity) } : {}),
   };
+  if (input.postHarvest) lot.postHarvest = { ...input.postHarvest, containerQualityBonus: getKqStorageContainerQualityBonus(lot), curingBonusWeightedMs: 0 };
   if (!isKqStorageLot(lot)) throw new Error("Lot de conservation invalide.");
   return lot;
 }
@@ -282,12 +343,15 @@ function exposureAt(lot: KqStorageLot, nowMs: number) {
 /** Checkpoints exact exposure; frequent saves cannot erase fractions of a day. */
 export function settleKqStorageLot(lot: KqStorageLot, nowMs: number): KqStorageLot {
   const exposure = exposureAt(lot, nowMs);
-  return { ...lot, lastSettledAt: new Date(Math.max(nowMs, dateMs(lot.lastSettledAt))).toISOString(), exposure };
+  return { ...lot, lastSettledAt: new Date(Math.max(nowMs, dateMs(lot.lastSettledAt))).toISOString(), exposure,
+    ...(lot.postHarvest ? { postHarvest: { ...lot.postHarvest, curingBonusWeightedMs: curingBonusAt(lot, nowMs) } } : {}) };
 }
 /** Settle the old installation first. A purchase never restores lost quality. */
 export function changeKqStorageMethod(lot: KqStorageLot, code: KqStorageMethodCode, nowMs: number): KqStorageLot {
   if (!getKqStorageMethod(code)) throw new Error("Installation de conservation inconnue.");
-  return { ...settleKqStorageLot(lot, nowMs), methodCode: code };
+  const next = { ...settleKqStorageLot(lot, nowMs), methodCode: code };
+  if (next.postHarvest) next.postHarvest = { ...next.postHarvest, containerQualityBonus: getKqStorageContainerQualityBonus(next) };
+  return next;
 }
 /** Reallocation checkpoints the old protection. Resolving a temporary shortage
  * never grants a fresh one-hour grace period if the same lot overflows again. */
@@ -295,7 +359,17 @@ export function changeKqStorageCapacity(lot: KqStorageLot, capacity: KqStorageCa
   if (!isKqStorageCapacity(capacity)) throw new Error("Capacité de stockage invalide.");
   const previousDeadline = lot.capacity?.overflowDeadlineAt;
   const nextCapacity = { ...structuredClone(capacity), overflowDeadlineAt: previousDeadline ?? capacity.overflowDeadlineAt };
-  return { ...settleKqStorageLot(lot, nowMs), capacity: nextCapacity };
+  const next = { ...settleKqStorageLot(lot, nowMs), capacity: nextCapacity };
+  if (next.postHarvest) next.postHarvest = { ...next.postHarvest, containerQualityBonus: getKqStorageContainerQualityBonus(next) };
+  return next;
+}
+/** Preserve completed drying and all previous exposure; upgrades affect only future time. */
+export function changeKqStoragePostHarvest(lot: KqStorageLot, profile: KqPostHarvestProfile, nowMs: number): KqStorageLot {
+  const next = settleKqStorageLot(lot, nowMs);
+  next.postHarvest = { ...profile, dryingQualityBonus: next.postHarvest?.dryingQualityBonus ?? 0,
+    containerQualityBonus: getKqStorageContainerQualityBonus(next), curingBonusWeightedMs: next.postHarvest?.curingBonusWeightedMs ?? 0 };
+  if (!isKqStorageLot(next)) throw new Error("Profil de conservation invalide.");
+  return next;
 }
 /** Reading is pure and stable within a game day. A method change creates a new
  * exact checkpoint and invalidates earlier quotations. Maturity uses the exact
@@ -325,6 +399,11 @@ export function projectKqStorageLot(lot: KqStorageLot, nowMs: number, juryScoreO
   const methods = capacity ? [...new Set(capacity.allocations.map(allocation => getKqStorageContainer(allocation.containerCode)!.methodCode))] : [];
   const methodName = !capacity ? getKqStorageMethod(lot.methodCode)!.name : capacity.protectedUnits === 0 ? "En attente de contenant"
     : methods.length > 1 ? "Contenants mixtes" : getKqStorageMethod(methods[0])!.name;
+  const curingQualityBonus = lot.postHarvest ? Math.round(curingBonusAt(lot, now) / (ready - started)) / 100 : 0;
+  const qualityBonus = qualityCentiSum(lot.postHarvest?.dryingQualityBonus ?? 0, curingQualityBonus) / 100;
+  const conditionScore = lot.postHarvest
+    ? Math.max(0, Math.min(1000, qualityCentiSum(juryScore, qualityBonus, -qualityLoss))) / 100
+    : Math.max(0, round2(juryScore - qualityLoss));
   return {
     stage: now >= ready ? "ready" : "curing", serverNow: new Date(now).toISOString(), harvestedAt: lot.harvestedAt,
     curingStartedAt: lot.curingStartedAt, readyAt: lot.readyAt, nextChangeAt, elapsedGameDays,
@@ -332,7 +411,11 @@ export function projectKqStorageLot(lot: KqStorageLot, nowMs: number, juryScoreO
     methodCode: lot.methodCode, methodName,
     aroma, terpenes, terpeneRetentionPercent: round2(terpenes / initial.terpenes * 100),
     cannabinoidReport: getKqCannabinoidReport({ varietyCode: baseline.varietyCode, care }),
-    qualityLoss, qualityDelta: qualityLoss === 0 ? 0 : -qualityLoss, conditionScore: Math.max(0, round2(juryScore - qualityLoss)),
+    qualityLoss, qualityDelta: lot.postHarvest ? qualityCentiSum(conditionScore, -juryScore) / 100 : qualityLoss === 0 ? 0 : -qualityLoss, conditionScore,
     ...(capacity ? { capacity } : {}),
+    ...(lot.postHarvest ? { postHarvest: { dryingQualityBonus: lot.postHarvest.dryingQualityBonus,
+      storageQualityBonus: lot.postHarvest.storageQualityBonus, climateQualityBonus: lot.postHarvest.climateQualityBonus,
+      containerQualityBonus: lot.postHarvest.containerQualityBonus, aromaRateFactor: lot.postHarvest.aromaRateFactor,
+      chemistryRateFactor: lot.postHarvest.chemistryRateFactor, curingQualityBonus, qualityBonus } } : {}),
   };
 }

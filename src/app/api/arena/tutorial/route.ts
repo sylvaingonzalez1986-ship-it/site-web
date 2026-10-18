@@ -33,8 +33,24 @@ export async function POST(request: Request) {
     let body: unknown; try { body = await request.json(); } catch { return NextResponse.json({error:"Étape invalide."},{status:400,headers}); }
     const progress = parseArenaJourneyProgress(body);
     if (!progress) return NextResponse.json({error:"Étape invalide."},{status:400,headers});
+    const intent = (body as Record<string, unknown>).intent;
+    if (intent !== undefined && (intent !== "introduction" || progress.step !== 0 || progress.status !== "active")) {
+      return NextResponse.json({error:"Étape invalide."},{status:400,headers});
+    }
     // Only tutorial preferences are written; identity/version always come from the server.
-    const result = await createSupabaseServiceClient().from("arena_journey_progress").upsert({user_id:session.customerId,version:ARENA_JOURNEY_VERSION,...progress,updated_at:new Date().toISOString()},{onConflict:"user_id,version"});
+    const supabase = createSupabaseServiceClient();
+    const updatedAt = new Date().toISOString();
+    let result = await supabase.from("arena_journey_progress").upsert(
+      {user_id:session.customerId,version:ARENA_JOURNEY_VERSION,...progress,updated_at:updatedAt},
+      {onConflict:"user_id,version",...(intent === "introduction" ? {ignoreDuplicates:true} : {})},
+    );
+    if (intent === "introduction" && !result.error) {
+      // An old/prefetched tab must never reset a completed, skipped or active
+      // guide. Insert absent rows, then change only a still-new preference.
+      result = await supabase.from("arena_journey_progress")
+        .update({...progress,updated_at:updatedAt})
+        .eq("user_id",session.customerId).eq("version",ARENA_JOURNEY_VERSION).eq("status","new");
+    }
     if (result.error && !missing(result.error)) throw result.error;
     return NextResponse.json({progress,persisted:!result.error},{headers});
   } catch { return NextResponse.json({error:"Impossible de mémoriser le parcours."},{status:503,headers}); }

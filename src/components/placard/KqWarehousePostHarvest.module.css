@@ -1,0 +1,178 @@
+.section { --room: #d59b43; --room-light: #f6dfb0; --room-dark: #825217; --ink: #172923; --muted: #586157; display: grid; gap: 20px; min-width: 0; color: var(--ink); }
+.section[data-post-harvest=storage] { --room: #159b8a; --room-light: #d8ebe0; --room-dark: #086e62; }
+.section * { box-sizing: border-box; }
+.section :is(h3,h4,h5,p) { margin: 0; }
+.section :is(h3,h4,h5) { font-family: var(--font-display), Impact, "Arial Narrow", sans-serif; font-weight: 900; letter-spacing: .015em; }
+.section :is(button,a,input):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
+.section button:disabled { cursor: not-allowed; opacity: .55; }
+.section button { font-family: inherit; }
+.journey { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; list-style: none; margin: 0; padding: 0; }
+.journey li { display: flex; position: relative; align-items: center; gap: 10px; min-width: 0; padding: 12px 22px 12px 12px; border: 1px solid #17292333; border-radius: 11px; color: var(--muted); background: #fff9ed; }
+.journey li[data-current=true] { color: var(--ink); border: 2px solid var(--ink); background: var(--room-light); padding: 11px 21px 11px 11px; box-shadow: 2px 2px 0 var(--ink); }
+.journey li > span { display: grid; place-items: center; width: 31px; height: 31px; border: 1px solid #17292333; border-radius: 50%; flex: 0 0 auto; }
+.journey li[data-current=true] > span { background: var(--room); border-color: var(--ink); }
+.journey li > div { min-width: 0; }
+.journey strong { display: block; font-size: 12px; }
+.journey small { display: block; margin-top: 3px; font-size: 10px; line-height: 1.45; }
+.journeyArrow { position: absolute; right: -13px; z-index: 1; background: #fff1d6; border-radius: 50%; padding: 2px; width: 23px; height: 23px; color: var(--ink); }
+.hero { display: grid; grid-template-columns: 1.3fr 1fr; min-height: 260px; overflow: hidden; border: 2px solid var(--ink); border-radius: 17px 13px 19px 14px; background: var(--room-light); box-shadow: 3px 4px 0 var(--ink); }
+.heroCopy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 28px 32px; }
+.eyebrow { display: block; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .11em; color: var(--room-dark); }
+.hero h3 { margin-top: 10px; font-size: clamp(31px,3.4vw,45px); line-height: 1.12; text-transform: uppercase; }
+.hero p { max-width: 560px; margin-top: 13px; font-size: 13px; line-height: 1.7; }
+.roomTag { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 8px 12px; border: 1px solid #17292344; border-radius: 30px; background: #fff9edb8; font-size: 11px; font-weight: 700; }
+.roomVisual { position: relative; isolation: isolate; display: grid; place-items: center; min-height: 260px; overflow: hidden; background: linear-gradient(90deg,#17292312 1px,transparent 1px) 0 0/65px 100%, linear-gradient(0deg,#fff9ed30,#fff9ed80); border-left: 2px solid #17292344; }
+.floor { position: absolute; z-index: -1; left: -40%; right: -40%; bottom: -80%; height: 130%; transform: perspective(270px) rotateX(48deg); transform-origin: center top; background: repeating-linear-gradient(0deg,transparent,transparent 45px,#17292322 46px,#17292322 47px), repeating-linear-gradient(90deg,#fff9ed70,#fff9ed70 45px,#17292322 46px,#17292322 47px); border-top: 3px solid #17292355; }
+.wallSign { position: absolute; top: 19px; left: 20px; z-index: 2; padding: 7px 10px; background: #fff1d6; border: 2px solid var(--ink); border-radius: 5px; font-size: 9px; font-weight: 800; letter-spacing: .1em; transform: rotate(-3deg); box-shadow: 2px 2px 0 #17292333; }
+.window { position: absolute; right: 20px; top: 20px; width: 75px; height: 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 3px; border: 3px solid #17292388; padding: 3px; background: #fff1d6; border-radius: 7px; }
+.window i { background: #c2dfdf; }
+.roomDevice { position: relative; z-index: 1; display: block; width: min(65%,230px); height: auto; object-fit: contain; margin-top: 14px; filter: drop-shadow(0 15px 8px #17292330); }
+.roomVisual[data-has-climate=true] .roomDevice { width: min(55%,215px); transform: translateX(-22%); }
+.roomClimate { position: absolute; right: 5%; bottom: 48px; z-index: 1; display: block; width: min(26%,110px); height: auto; object-fit: contain; filter: drop-shadow(0 8px 5px #17292330); }
+.roomSymbol { position: absolute; right: 25px; bottom: 69px; color: var(--room-dark); }
+.visualCaption { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); padding: 6px 12px; white-space: nowrap; border-radius: 6px; background: #fff9edee; font-size: 10px; font-weight: 700; border: 1px solid #17292344; }
+.metrics { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+.metrics > div { min-width: 0; padding: 15px 18px; border: 1px solid #17292355; border-radius: 11px; background: #fff9ed; }
+.metrics > div > span { display: flex; gap: 7px; align-items: center; font-size: 11px; color: var(--muted); }
+.metrics > div > strong { display: block; margin: 9px 0 5px; font-size: 29px; font-family: var(--font-display),Impact,sans-serif; font-variant-numeric: tabular-nums; }
+.metrics > div > strong small { font: 500 13px var(--font-body),sans-serif; }
+.metrics > div > small { font-size: 10px; color: var(--muted); }
+.qualityBar { height: 8px; overflow: hidden; width: 100%; border: 1px solid #17292388; border-radius: 4px; background: #ede3ce; }
+.qualityBar > span { display: block; height: 100%; background: var(--room); }
+.metrics .qualityBar { width: 80%; margin-top: 9px; }
+.qualityNote { display: flex; align-items: flex-start; gap: 10px; padding: 0 3px; font-size: 12px; line-height: 1.6; }
+.qualityNote > svg { flex-shrink: 0; margin-top: 2px; color: var(--room-dark); }
+.qualityNote span { display: block; margin-top: 4px; font-size: 10px; color: var(--muted); }
+.comparison { padding: 22px; border: 2px solid var(--ink); border-radius: 14px; background: #fff9ed; }
+.comparisonHeading { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
+.comparisonHeading > div { flex: 1 1 300px; }
+.comparisonHeading h4 { margin-top: 6px; font-size: 27px; }
+.comparisonHeading p { margin-top: 8px; max-width: 650px; font-size: 12px; line-height: 1.6; color: var(--muted); }
+.comparisonControl { display: grid; gap: 8px; flex: 0 1 280px; min-width: 0; width: 100%; padding: 13px 16px; border: 1px solid #17292355; border-radius: 9px; background: #fff1d6; }
+.comparisonControl > span { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; }
+.comparisonControl output { font-size: 18px; font-variant-numeric: tabular-nums; }
+.comparisonControl input { width: 100%; min-width: 0; min-height: 26px; margin: 0; accent-color: #087e70; cursor: pointer; }
+.comparisonControl small { color: var(--muted); font-size: 10px; }
+.comparisonTiers { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-top: 20px; }
+.comparisonTier { min-width: 0; padding: 17px; border: 1px solid #17292355; border-radius: 10px; background: #f4efdf; }
+.comparisonTier[data-quality-tier=standard] { background: #e4eee3; }
+.comparisonTier[data-quality-tier=premium] { background: #d1e9dc; border: 2px solid #087e70; padding: 16px; }
+.comparisonTier h5 { font-size: 24px; }
+.comparisonScore { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 5px; margin: 15px 0 11px; }
+.comparisonScore > strong { font-size: 33px; line-height: 1.1; font-family: var(--font-display),Impact,sans-serif; font-variant-numeric: tabular-nums; }
+.comparisonScore small { font-size: 13px; font-family: var(--font-body),sans-serif; font-weight: 500; }
+.comparisonScore > span { font-size: 10px; font-weight: 700; color: #086e62; }
+.comparisonTrack { display: flex; height: 12px; border: 1px solid #17292366; border-radius: 4px; overflow: hidden; background: #fff9ed; }
+.comparisonBase { background: #a8b4aa; }
+.comparisonGain { background: #087e70; }
+.comparisonTrack > span { height: 100%; flex-shrink: 0; }
+.comparisonTier > p { margin-top: 8px; font-size: 10px; line-height: 1.6; color: var(--muted); }
+.comparisonTier > p > b { display: block; color: #086e62; }
+.comparisonProtection { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding-top: 13px; margin-top: 13px; border-top: 1px solid #17292333; font-size: 10px; }
+.comparisonProtection svg { color: #086e62; }
+.comparisonLegend { display: flex; flex-wrap: wrap; gap: 9px 18px; margin-top: 14px; font-size: 10px; color: var(--muted); }
+.comparisonLegend > span { display: flex; align-items: center; gap: 6px; }
+.comparisonLegend i { display: block; height: 9px; width: 16px; border: 1px solid #17292344; border-radius: 2px; }
+.comparison .comparisonFootnote { margin-top: 12px; font-size: 10px; line-height: 1.6; color: var(--muted); }
+@media(max-width:760px) { .comparison { padding: 17px; } .comparisonTiers { gap: 9px; } .comparisonTier { padding: 13px; } .comparisonTier[data-quality-tier=premium] { padding: 12px; } .comparisonTier h5 { font-size: 22px; } }
+@media(max-width:600px) { .comparison { padding: 15px; } .comparisonHeading h4 { font-size: 25px; } .comparisonHeading p { font-size: 11px; } .comparisonControl { flex: 1 1 100%; } .comparisonTiers { grid-template-columns: 1fr; } .comparisonScore { margin-top: 9px; } .comparisonScore > strong { font-size: 31px; } .comparisonProtection { margin-top: 10px; padding-top: 10px; font-size: 11px; } }
+.sectionHeading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; }
+.sectionHeading h4 { margin-top: 6px; font-size: 25px; line-height: 1.15; }
+.sectionHeading p { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.count { display: block; padding: 6px 10px; background: var(--room-light); border: 1px solid #17292388; border-radius: 8px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.zones { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,330px),1fr)); gap: 14px; }
+.zone { padding: 14px; border: 2px solid var(--ink); background: #fff9ed; border-radius: 12px; }
+.zoneIdentity { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.zoneArt { width: 79px; height: 79px; object-fit: contain; flex-shrink: 0; padding: 3px; border-radius: 10px; background: var(--room-light); }
+.zoneIdentity > div { flex: 1; min-width: 0; }
+.zoneIdentity small { display: block; color: var(--room-dark); font-size: 10px; font-weight: 700; }
+.zoneIdentity h5 { font-size: 22px; margin: 4px 0; overflow-wrap: anywhere; }
+.zoneIdentity span { display: block; font-size: 11px; line-height: 1.5; color: var(--muted); }
+.iconButton { display: grid; place-items: center; min-width: 42px; min-height: 42px; border: 1px solid var(--ink); border-radius: 9px; background: #fff1d6; color: var(--ink); cursor: pointer; }
+.zoneBonus { display: flex; align-items: center; gap: 7px; padding: 12px 0; font-size: 11px; }
+.zoneBonus strong { margin-left: auto; font-size: 13px; }
+.upgrades { display: flex; flex-wrap: wrap; gap: 8px; }
+.upgradeButton { display: grid; gap: 5px; flex: 1 1 170px; padding: 10px; min-height: 54px; border: 2px solid var(--ink); background: #efc451; color: var(--ink); border-radius: 8px; cursor: pointer; box-shadow: 1px 2px 0 var(--ink); }
+.upgradeButton > span { display: flex; justify-content: center; align-items: center; gap: 5px; font-size: 11px; font-weight: 800; }
+.upgradeButton small { font-size: 10px; }
+.maximum { display: flex; justify-content: center; align-items: center; gap: 7px; min-height: 43px; padding: 8px; font-size: 11px; color: #086e62; background: #d8ebe0; border: 1px solid #086e6270; border-radius: 8px; }
+.empty { display: flex; gap: 14px; align-items: center; padding: 20px; border: 2px dashed #17292355; border-radius: 12px; }
+.empty > svg { flex-shrink: 0; color: var(--room-dark); }
+.empty > div { flex: 1; }
+.empty strong { font-size: 12px; }
+.empty p { margin-top: 6px; font-size: 11px; color: var(--muted); line-height: 1.6; }
+.catalog { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; }
+.product { min-width: 0; display: flex; flex-direction: column; overflow: hidden; border: 2px solid var(--ink); border-radius: 14px 11px 14px 11px; background: #fff9ed; box-shadow: 2px 3px 0 var(--ink); }
+.productVisual { position: relative; display: grid; place-items: center; min-height: 185px; padding: 10px 10px 35px; background: radial-gradient(ellipse at bottom,#1729231c,transparent 70%),var(--room-light); border-bottom: 1px solid var(--ink); }
+.productArt { width: 160px; height: 160px; max-width: 85%; object-fit: contain; filter: drop-shadow(0 8px 4px #17292318); }
+.tierBadge { position: absolute; right: 12px; top: 12px; width: 39px; height: 39px; display: flex; justify-content: center; align-items: baseline; padding-top: 8px; border: 1px solid var(--ink); border-radius: 50%; background: #fff9ed; font-size: 18px; font-weight: 800; }
+.tierBadge small { font-size: 9px; margin-left: 2px; }
+.productOwned { position: absolute; bottom: 10px; left: 12px; right: 12px; text-align: center; font-size: 10px; font-weight: 600; }
+.productBody { display: grid; align-content: start; gap: 13px; padding: 18px; flex: 1; }
+.productBody h5 { font-size: 25px; text-transform: uppercase; }
+.productCapacity { display: flex; align-items: center; gap: 8px; color: var(--room-dark); }
+.productCapacity strong { font-size: 20px; font-variant-numeric: tabular-nums; }
+.productCapacity small { font-size: 11px; font-weight: 500; }
+.productQuality { display: flex; flex-wrap: wrap; gap: 5px 10px; align-items: center; justify-content: space-between; font-size: 11px; }
+.productQuality > span { display: flex; gap: 5px; align-items: center; color: var(--muted); }
+.productQuality strong { white-space: nowrap; }
+.productBody > .qualityBar { margin-top: -6px; }
+.protection { display: flex; gap: 6px; align-items: center; color: var(--room-dark); font-size: 11px; }
+.productDescription { font-size: 11px; line-height: 1.6; color: var(--muted); }
+.productFooter { display: grid; gap: 12px; padding: 16px 18px; border-top: 1px solid #17292344; }
+.productFooter strong { display: block; font-size: 23px; font-variant-numeric: tabular-nums; }
+.productFooter small { display: block; margin-top: 4px; font-size: 10px; color: var(--muted); }
+.primary,.selectedButton { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 9px; min-height: 44px; width: 100%; color: var(--ink); border: 2px solid var(--ink); border-radius: 8px; background: #efc451; font-size: 12px; font-weight: 800; cursor: pointer; box-shadow: 1px 2px 0 var(--ink); }
+.primary:hover:not(:disabled),.upgradeButton:hover:not(:disabled) { background: #f8d56a; transform: translateY(-1px); }
+.climate { margin-top: 8px; display: grid; gap: 18px; padding: 22px; background: #e1eced; border: 2px solid var(--ink); border-radius: 15px; }
+.climateIntro { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 14px; }
+.climateMark { display: grid; place-items: center; flex-shrink: 0; width: 54px; height: 54px; background: #fff9ed; border: 2px solid var(--ink); border-radius: 12px; color: #176b7a; box-shadow: 2px 2px 0 var(--ink); }
+.climateIntro > div:nth-child(2) { flex: 1 1 270px; }
+.climateIntro h4 { margin-top: 5px; font-size: 27px; }
+.climateIntro p { max-width: 670px; margin-top: 9px; font-size: 12px; line-height: 1.6; }
+.climateStatus { display: flex; align-items: center; gap: 6px; border: 1px solid #17292388; border-radius: 7px; background: #fff9ed; padding: 7px 10px; font-size: 11px; font-weight: 700; }
+.climateRequirement { padding: 11px 13px; border: 1px solid #a36a20; border-radius: 8px; background: #fff1d6; font-size: 11px; line-height: 1.5; }
+.climateBilling { display: flex; flex-wrap: wrap; gap: 12px; }
+.climateCurrent,.climatePreview { flex: 1 1 280px; min-width: 0; padding: 18px; border: 1px solid #17292366; border-radius: 11px; background: #fff9ed; }
+.climatePreview { border: 2px dashed #9b7317; background: #fff1d6; padding: 17px; }
+.climateCurrent > .eyebrow { display: flex; align-items: center; gap: 6px; }
+.climateCurrent > strong,.climatePreview > strong { display: block; margin: 12px 0 7px; font-size: 29px; font-variant-numeric: tabular-nums; }
+.climateCurrent > strong small,.climatePreview > strong small { font-size: 11px; font-weight: 500; }
+.climateCurrent > p,.climatePreview > p { font-size: 11px; line-height: 1.6; }
+.climatePreview > small { display: block; margin-top: 10px; font-size: 10px; color: #77510f; }
+.climateDue { display: grid; gap: 8px; border-top: 1px solid #17292333; margin-top: 14px; padding-top: 12px; }
+.climateDue > span { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 10px; font-size: 11px; }
+.climateDebt { color: #943e28; }
+.climateBillingNote { flex: 1 1 100%; font-size: 10px; line-height: 1.7; color: var(--muted); }
+.climateRunningCost { grid-column: 1/-1; padding: 12px; background: #e1eced; border: 1px solid #176b7a55; border-radius: 8px; }
+.climateRunningCost > span { display: block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.climateRunningCost > strong { display: block; margin-top: 7px; font-size: 22px; font-variant-numeric: tabular-nums; }
+.climateRunningCost > strong small { font-size: 11px; font-weight: 500; }
+.climateRunningCost > p { margin-top: 4px; font-size: 10px; line-height: 1.5; }
+.climateChoices { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 13px; }
+.climateCard { display: grid; grid-template-columns: 90px minmax(0,1fr); gap: 12px 8px; align-items: center; min-width: 0; padding: 14px; border: 1px solid #17292366; border-radius: 11px; background: #fff9ed; }
+.climateCard[data-selected=true] { border: 2px solid #086e62; padding: 13px; background: #edf7e8; box-shadow: 0 0 0 2px #086e6218; }
+.climateArt { display: block; width: 90px; height: 90px; object-fit: contain; }
+.climateCard h5 { font-size: 20px; overflow-wrap: anywhere; }
+.climatePower { display: flex; align-items: center; gap: 3px; font-size: 10px; margin-top: 7px; color: var(--muted); }
+.climateBenefit { grid-column: 1/-1; display: grid; gap: 7px; font-size: 11px; }
+.climateBenefit span { display: flex; align-items: center; gap: 6px; }
+.climateBenefit span:first-child { font-weight: 800; color: #086e62; }
+.climatePrice { grid-column: 1/-1; font-size: 20px; }
+.climatePrice small { display: block; margin-top: 4px; font-size: 10px; color: var(--muted); font-weight: 500; }
+.climateCard > button { grid-column: 1/-1; font-size: 11px; }
+.section .selectedButton:disabled { opacity: 1; background: #d8ebe0; color: #086e62; border-color: #086e62; box-shadow: none; }
+.removeClimate { justify-self: start; border: 0; padding: 8px 0; text-align: left; min-height: 44px; background: transparent; color: #344c4b; text-decoration: underline; text-underline-offset: 3px; font-size: 11px; cursor: pointer; }
+.qualityEquation { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 16px; background: #fff9ed; border: 1px solid #17292355; border-radius: 11px; }
+.qualityEquation > span { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; column-gap: 5px; font-size: 10px; flex: 1 1 90px; }
+.qualityEquation b { width: 100%; text-align: center; margin-top: 6px; font-size: 20px; }
+.qualityEquation i { font-size: 18px; font-style: normal; color: #586157; }
+.qualityEquation > .qualityTotal { display: grid; justify-content: center; gap: 5px; text-align: center; color: #086e62; }
+.qualityTotal strong { font-size: 23px; }
+.climateFootnote { font-size: 10px; line-height: 1.6; color: var(--muted); }
+@media(min-width:1500px) { .productFooter { grid-template-columns: 1fr 1fr; align-items: center; gap: 8px; } }
+@media(max-width:1000px) { .journey li { gap: 6px; padding-left: 8px; } .journey li[data-current=true] { padding-left: 7px; } .journey small { display: none; } .heroCopy { padding: 24px; } .climateCard { grid-template-columns: 1fr; text-align: center; } .climateArt { justify-self: center; } .climatePower { justify-content: center; } .climateBenefit { text-align: left; } }
+@media(max-width:760px) { .journey { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; } .journey li:nth-child(2) .journeyArrow { display: none; } .journey small { display: block; font-size: 9px; } .hero { grid-template-columns: 1.15fr 1fr; min-height: 240px; } .heroCopy { padding: 20px; } .hero h3 { font-size: 31px; } .hero p { font-size: 12px; } .roomTag { font-size: 10px; padding: 7px 8px; } .roomVisual { min-height: 240px; } .window { width: 53px; height: 47px; right: 12px; } .wallSign { font-size: 8px; top: 18px; left: 11px; } .roomSymbol { right: 13px; bottom: 65px; } .metrics { gap: 8px; } .metrics > div { padding: 13px 11px; } .metrics > div > span { font-size: 10px; align-items: flex-start; } .metrics > div > span svg { flex-shrink: 0; } .metrics > div > strong { font-size: 24px; } .catalog { gap: 11px; } .productVisual { min-height: 160px; } .productArt { width: 130px; height: 130px; } .productBody { padding: 14px 12px; } .productBody h5 { font-size: 22px; } .productCapacity strong { font-size: 17px; } .productFooter { padding: 14px 12px; } .productFooter strong { font-size: 20px; } .climate { padding: 16px; } .climateChoices { gap: 9px; } .climateCard { padding: 12px 10px; } .climateCard[data-selected=true] { padding: 11px 9px; } .climateCard h5 { font-size: 19px; } }
+@media(max-width:600px) { .section { gap: 16px; } .hero { grid-template-columns: 1fr; } .heroCopy { padding: 21px 20px; } .hero h3 { font-size: 33px; } .hero p { font-size: 12px; } .roomTag { margin-top: 13px; font-size: 10px; } .roomVisual { min-height: 205px; border-left: 0; border-top: 1px solid #17292344; } .roomDevice { width: 175px; margin-top: 0; } .window { width: 63px; height: 50px; right: 25px; } .wallSign { top: 21px; left: 22px; } .roomSymbol { right: 30px; bottom: 70px; } .metrics { grid-template-columns: 1fr 1fr; } .metrics > div:last-child { grid-column: 1/-1; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 7px; } .metrics > div:last-child > strong { margin: 0; } .metrics .qualityBar { grid-column: 1/-1; margin: 0; width: 100%; } .sectionHeading h4 { font-size: 24px; } .catalog { grid-template-columns: 1fr; gap: 16px; } .product { display: grid; grid-template-columns: 110px minmax(0,1fr); } .productVisual { border-bottom: 0; border-right: 1px solid #17292355; min-height: 208px; padding: 20px 5px 38px; } .productArt { width: 105px; max-width: 100%; height: 125px; } .tierBadge { top: 9px; right: auto; left: 9px; height: 30px; width: 30px; font-size: 14px; padding-top: 6px; } .tierBadge small { font-size: 8px; } .productOwned { left: 5px; right: 5px; font-size: 9px; line-height: 1.5; } .productBody { padding: 17px 14px; gap: 10px; } .productBody h5 { font-size: 24px; } .productCapacity { gap: 5px; } .productCapacity strong { font-size: 18px; } .productQuality { gap: 5px; font-size: 10px; } .productDescription { font-size: 10px; } .protection { font-size: 10px; gap: 4px; } .protection svg { flex-shrink: 0; } .productFooter { grid-column: 1/-1; grid-template-columns: 1fr 1fr; align-items: center; gap: 8px; padding: 13px; } .productFooter strong { font-size: 21px; } .productFooter small { font-size: 9px; line-height: 1.4; } .primary { font-size: 11px; } .climateIntro > div:nth-child(2) { flex-basis: calc(100% - 75px); } .climateIntro h4 { font-size: 25px; } .climateMark { width: 45px; height: 45px; } .climateIntro p { font-size: 11px; } .climateChoices { grid-template-columns: 1fr; } .climateCard,.climateCard[data-selected=true] { grid-template-columns: 80px minmax(0,1fr); text-align: left; padding: 13px; gap: 10px; } .climateCard[data-selected=true] { padding: 12px; } .climateArt { width: 80px; height: 80px; } .climateCard h5 { font-size: 23px; } .climatePower { justify-content: flex-start; } .climateBenefit { grid-column: 1/-1; display: flex; flex-wrap: wrap; gap: 7px 16px; } .climatePrice { grid-column: 1; font-size: 17px; } .climateCard > button { grid-column: 2; } .qualityEquation { display: grid; grid-template-columns: 1fr 20px 1fr; padding: 13px; gap: 12px 6px; } .qualityEquation > span { min-width: 0; font-size: 10px; } .qualityEquation > i:nth-child(4) { display: none; } .qualityEquation > span:nth-child(5) { grid-column: 1; } .qualityEquation > span:last-child { grid-column: 3; } .qualityEquation i { text-align: center; } .qualityTotal strong { font-size: 21px; } }
+@media(max-width:360px) { .journey { gap: 7px; } .journey li { gap: 6px; padding: 9px 12px 9px 8px; } .journey li[data-current=true] { padding: 8px 11px 8px 7px; } .journey li > span { width: 27px; height: 27px; } .journey strong { font-size: 10px; } .journey small { font-size: 8px; } .heroCopy { padding: 18px 15px; } .hero h3 { font-size: 29px; } .roomTag { font-size: 9px; } .metrics > div { padding: 11px 9px; } .metrics > div > strong { font-size: 22px; } .zone { padding: 11px; } .zoneIdentity { gap: 8px; } .zoneArt { width: 57px; height: 65px; } .zoneIdentity h5 { font-size: 20px; } .zoneIdentity span { font-size: 10px; } .zoneBonus { font-size: 10px; } .zoneBonus strong { font-size: 11px; } .empty { padding: 15px; gap: 10px; } .empty > svg:last-child { display: none; } .product { grid-template-columns: 90px minmax(0,1fr); } .productBody { padding: 14px 11px; } .productBody h5 { font-size: 22px; } .productArt { width: 86px; height: 105px; } .productCapacity strong { font-size: 16px; } .productFooter { padding: 11px; } .primary { gap: 4px; font-size: 10px; } .primary svg { width: 14px; flex-shrink: 0; } .climate { padding: 13px; } .climateIntro { gap: 11px; } .climateIntro h4 { font-size: 24px; } .climateCard,.climateCard[data-selected=true] { grid-template-columns: 70px minmax(0,1fr); } .climateArt { width: 70px; height: 75px; } .climateCard h5 { font-size: 21px; } }
+@media(max-width:600px) { .qualityEquation { grid-template-columns: 1fr 1fr; gap: 17px 10px; } .qualityEquation > i { display: none; } .qualityEquation > span:nth-child(5),.qualityEquation > span:last-child { grid-column: auto; } }

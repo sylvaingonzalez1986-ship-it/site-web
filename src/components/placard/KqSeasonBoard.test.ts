@@ -28,8 +28,8 @@ describe("season board business development", () => {
       ],
     }));
     expect(html).toContain("Dont +125 pour ton entreprise");
-    expect(html).toContain("Entreprise 81 / 200");
-    expect(html).toContain("Entreprise 125 / 200");
+    expect(html).toContain("Entreprise 81 pts");
+    expect(html).toContain("Entreprise 125 pts");
     expect(html).not.toContain("Score calculé actuellement");
   });
 
@@ -41,7 +41,23 @@ describe("season board business development", () => {
     }));
     expect(html).toContain("Simulation locale");
     expect(html).toContain("Dont +0 pour ton entreprise");
-    expect(html).toContain("Entreprise 0 / 200");
+    expect(html).toContain("Entreprise 0 pts");
+    expect(html).not.toContain("Score calculé actuellement");
+  });
+
+  it("preserves uncapped decimal business scores and explains the new criteria", () => {
+    const html = renderToStaticMarkup(createElement(KqSeasonBoard, {
+      ...props,
+      score: 1426.5,
+      businessScore: 426.5,
+      leaderboard: [{ id: "player", rank: 2, name: "Moi", placardScore: 1426.5, businessScore: 426.5, isPlayer: true }],
+    }));
+    expect(html).toContain("Dont +426,5 pour ton entreprise");
+    expect(html).toContain("Entreprise 426,5 pts");
+    expect(html).toContain("réputation commerciale");
+    expect(html).toContain("hors taxes et annulations");
+    expect(html).not.toContain("/ 200");
+    expect(html).not.toContain("Valeur nette");
     expect(html).not.toContain("Score calculé actuellement");
   });
 });

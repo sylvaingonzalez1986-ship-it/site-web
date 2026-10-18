@@ -25,7 +25,11 @@ describe("inline Arena account controls", () => {
     expect(html.match(/data-arena-help-trigger/g)).toHaveLength(1);
     expect(html).toContain('aria-expanded="false"');
     expect(html).toMatch(/<div[^>]*id="[^"]+"[^>]*hidden=""/);
-    expect(html).toContain("Lire le guide");
+    expect(html).not.toContain("data-arena-learning-trigger");
+    expect(html).toContain("sous la carte du quartier");
+    expect(html).not.toContain("Lire le guide");
+    expect(html).not.toContain("Approfondir avec le parcours complet");
+    expect(html).not.toContain("data-arena-trial-trigger");
     expect(html).not.toContain('role="dialog"');
     expect(html).not.toContain("data-chanvrier-profile");
     expect(html).not.toContain("data-arena-journey-ui");

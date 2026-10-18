@@ -19,8 +19,9 @@ type Props = {
   selectedCode: string;
   rotation?: KqBuddieRotation | null;
   onSelect: (code: string) => void;
+  onInspect?: (code: string) => void;
 };
-export function KqBuddieCarousel({ buddies, artwork, selectedCode, rotation, onSelect }: Props) {
+export function KqBuddieCarousel({ buddies, artwork, selectedCode, rotation, onSelect, onInspect }: Props) {
   const id = useId();
   const [inspected, setInspected] = useState<{ code: string; trigger: HTMLButtonElement; anchor: HTMLElement } | null>(null);
   const rotationEnabled = rotation !== undefined;
@@ -48,7 +49,10 @@ export function KqBuddieCarousel({ buddies, artwork, selectedCode, rotation, onS
           <button type="button" data-carousel-drag data-buddie-variety-card={buddie.code} className={styles.picture} data-unavailable={locked || undefined} aria-label={`Voir la fiche de ${buddie.name}`} aria-describedby={locked ? `buddie-rotation-${buddie.code}` : undefined} aria-haspopup="dialog" aria-expanded={inspectedBuddie?.code === buddie.code} aria-controls={inspectedBuddie?.code === buddie.code ? `${id}-variety` : undefined} onClick={event => {
             const trigger = event.currentTarget;
             const anchor = trigger.closest<HTMLElement>('[role="list"]');
-            if (anchor) setInspected(previous => previous?.code === buddie.code ? null : { code: buddie.code, trigger, anchor });
+            if (anchor) {
+              if (inspected?.code !== buddie.code) onInspect?.(buddie.code);
+              setInspected(previous => previous?.code === buddie.code ? null : { code: buddie.code, trigger, anchor });
+            }
           }}>
             {hasModernBuddieArtwork(buddie.code) ? <BuddieCard code={buddie.code} name={buddie.name} rarity={buddie.rarity} cardNumber={buddie.cardNumber} imageUrl={illustration?.imageUrl} sizes="(max-width: 600px) 74vw, 275px" />
               : illustration?.imageUrl ? <Image src={illustration.imageUrl} alt={`Carte ${buddie.name}`} width={1024} height={1536} sizes="(max-width: 600px) 74vw, 275px" />
@@ -62,7 +66,7 @@ export function KqBuddieCarousel({ buddies, artwork, selectedCode, rotation, onS
         </div>
         <h3>{buddie.name}</h3><p>{buddie.ability}</p>
         {locked ? <p id={`buddie-rotation-${buddie.code}`} className={styles.rotationStatus}><LockKeyhole size={14} aria-hidden="true" />{availabilityLabel}</p> : null}
-        <button type="button" disabled={locked} aria-label={`${locked ? "Indisponible" : selected ? "Sélectionné" : "Choisir"} : ${buddie.name}`} aria-describedby={locked ? `buddie-rotation-${buddie.code}` : undefined} aria-pressed={selected} onClick={() => onSelect(buddie.code)}>{locked ? "Buddie en rotation" : selected ? "Sélectionné" : "Choisir ce Buddie"}</button>
+        <button type="button" data-buddie-select={buddie.code} disabled={locked} aria-label={`${locked ? "Indisponible" : selected ? "Sélectionné" : "Choisir"} : ${buddie.name}`} aria-describedby={locked ? `buddie-rotation-${buddie.code}` : undefined} aria-pressed={selected} onClick={() => onSelect(buddie.code)}>{locked ? "Buddie en rotation" : selected ? "Sélectionné" : "Choisir ce Buddie"}</button>
       </article>;
     })}
   </KqCardCarousel>

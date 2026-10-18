@@ -63,3 +63,8 @@
 .progress > summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
 .progress[open] > summary { border-bottom: 2px solid #172923; }
 @media (prefers-reduced-motion: reduce) { .navGroup button { transition: none; } }
+
+.navGroup button[data-placard-unavailable], .mobileNav button[data-placard-unavailable] { opacity: .46; cursor: not-allowed; box-shadow: none; }
+@media (hover: hover) {
+  .navGroup button[data-placard-unavailable]:hover { border-color: transparent; background: transparent; box-shadow: none; }
+}

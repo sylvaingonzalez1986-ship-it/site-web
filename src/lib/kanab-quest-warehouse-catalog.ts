@@ -55,7 +55,7 @@ export const KQ_WAREHOUSE_CATALOG_CHECKED_AT = "2026-10-12";
 /** Fictional volume conversion; never a product density. */
 export const KQ_WAREHOUSE_STORAGE_SIMULATED_GRAMS_PER_LITRE = 50;
 
-/** Historical prices, capacities and loads stay unchanged for owned stock and frozen runs. */
+/** Current purchase prices; capacities and historical run loads keep their saved rules. */
 export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
   {
     "code": "MH-TS1000",
@@ -221,7 +221,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "name": "Séchage économique",
     "room": "storage",
     "kind": "drying",
-    "priceCents": 3990,
+    "priceCents": 14900,
     "zoneLayout": {
       "unitsPerM2": 1,
       "capacityGramsPerUnit": 1000,
@@ -251,7 +251,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "name": "Séchage standard",
     "room": "storage",
     "kind": "drying",
-    "priceCents": 9990,
+    "priceCents": 69900,
     "zoneLayout": {
       "unitsPerM2": 1,
       "capacityGramsPerUnit": 2500,
@@ -280,7 +280,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "name": "Séchage haut de gamme",
     "room": "storage",
     "kind": "drying",
-    "priceCents": 19990,
+    "priceCents": 249900,
     "zoneLayout": {
       "unitsPerM2": 1,
       "capacityGramsPerUnit": 6000,
@@ -309,7 +309,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "name": "Stockage économique",
     "room": "storage",
     "kind": "storage",
-    "priceCents": 2090,
+    "priceCents": 2990,
     "zoneLayout": {
       "unitsPerM2": 4,
       "capacityGramsPerUnit": 300,
@@ -338,7 +338,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "name": "Stockage standard",
     "room": "storage",
     "kind": "storage",
-    "priceCents": 25720,
+    "priceCents": 64900,
     "watts": 0,
     "wattsBasis": "passive",
     "footprintM2": 0.34,
@@ -367,7 +367,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "name": "Stockage haut de gamme",
     "room": "storage",
     "kind": "storage",
-    "priceCents": 8550,
+    "priceCents": 89900,
     "watts": 0,
     "wattsBasis": "passive",
     "footprintM2": 0.139876,
@@ -390,6 +390,60 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
       "note": "Capacité de jeu par m². Aucune charge électrique pour cet équipement passif."
     },
     "tier": "premium"
+  },
+  {
+    "code": "SIM-STORAGE-CLIMATE-01",
+    "name": "Climatiseur de stockage économique",
+    "room": "storage",
+    "kind": "climate",
+    "tier": "economy",
+    "priceCents": 49900,
+    "watts": 120,
+    "wattsBasis": "simulation",
+    "footprintM2": 0,
+    "footprintBasis": "simulation",
+    "sourceUrl": "",
+    "checkedAt": "2026-10-18",
+    "priceBasis": "simulation",
+    "priceNote": "Prix fictif du jeu ; pose calculée séparément dans le devis.",
+    "specification": "Stabilise la salle de stockage. Jusqu’à +0,10 de qualité pendant le curing et 10 % de pertes en moins.",
+    "gameCapacity": { "unit": "m2", "value": 100, "note": "Un appareil actif pour toute la salle de stockage du jeu." }
+  },
+  {
+    "code": "SIM-STORAGE-CLIMATE-02",
+    "name": "Climatiseur de stockage standard",
+    "room": "storage",
+    "kind": "climate",
+    "tier": "standard",
+    "priceCents": 179900,
+    "watts": 200,
+    "wattsBasis": "simulation",
+    "footprintM2": 0,
+    "footprintBasis": "simulation",
+    "sourceUrl": "",
+    "checkedAt": "2026-10-18",
+    "priceBasis": "simulation",
+    "priceNote": "Prix fictif du jeu ; pose calculée séparément dans le devis.",
+    "specification": "Régule la salle de stockage. Jusqu’à +0,20 de qualité pendant le curing et 20 % de pertes en moins.",
+    "gameCapacity": { "unit": "m2", "value": 100, "note": "Un appareil actif pour toute la salle de stockage du jeu." }
+  },
+  {
+    "code": "SIM-STORAGE-CLIMATE-03",
+    "name": "Climatiseur de stockage haut de gamme",
+    "room": "storage",
+    "kind": "climate",
+    "tier": "premium",
+    "priceCents": 499900,
+    "watts": 350,
+    "wattsBasis": "simulation",
+    "footprintM2": 0,
+    "footprintBasis": "simulation",
+    "sourceUrl": "",
+    "checkedAt": "2026-10-18",
+    "priceBasis": "simulation",
+    "priceNote": "Prix fictif du jeu ; pose calculée séparément dans le devis.",
+    "specification": "Régulation renforcée de la salle. Jusqu’à +0,30 de qualité pendant le curing et 30 % de pertes en moins.",
+    "gameCapacity": { "unit": "m2", "value": 100, "note": "Un appareil actif pour toute la salle de stockage du jeu." }
   },
   {
     "code": "GV-GP50-7",

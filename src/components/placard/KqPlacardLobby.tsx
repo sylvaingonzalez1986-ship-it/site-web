@@ -9,6 +9,7 @@ import { getKqProductionUnits } from "@/lib/kanab-quest-production";
 import type { KqStorageSnapshot } from "@/lib/kanab-quest-api";
 import { startArenaVisiblePolling } from "@/lib/arena-visible-polling";
 import { getKqStorageRefreshDelay } from "@/lib/kanab-quest-storage-refresh";
+import { ArenaLearningLauncher } from "../contest/ArenaLearningLauncher";
 import { useKqTentSelection } from "./KqTentSelector";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqPlacardMap, type PlacardMapOpen } from "./KqPlacardMap";
@@ -99,6 +100,7 @@ export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding }
       <button type="button" onClick={() => onOpen(nextAction.destination === "shop" ? "workshop" : nextAction.destination, nextAction.destination === "shop" ? { catalog: true, equipmentCode: nextGoal?.equipment.code } : undefined)}>{nextAction.buttonLabel}<ArrowRight size={17} aria-hidden="true" /></button>
     </section> : !error ? <div className={styles.loading} role="status">Ton quartier se prépare…</div> : null}
     <KqPlacardMap onOpen={onOpen} onOpenCollection={onOpenCollection} activeRun={snapshot?.activeRun} cashCents={snapshot?.cashCents ?? null} tents={tents} readyLotCount={snapshot?.readyLotCount} availableFlowerCount={snapshot?.availableFlowerCount} recommended={recommended} highlightedBuilding={highlightedBuilding} />
+    <div className={styles.learning} data-placard-learning-entry><ArenaLearningLauncher className={styles.learningButton} /></div>
     {error ? <p className={styles.status} role="status">Ton résumé est indisponible. Les activités restent accessibles. <button type="button" onClick={() => { setError(false); setRevision(value => value + 1); }}>Réessayer</button></p> : null}
   </main>;
 }

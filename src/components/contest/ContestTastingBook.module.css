@@ -9,6 +9,7 @@
   --muted: #486353;
   --gold: #f4c43d;
   --turquoise: #54d5bb;
+  --desk-surface: #dce8df;
   position: fixed;
   z-index: 70;
   inset: var(--book-top, 0px) 0 auto;
@@ -17,7 +18,7 @@
   grid-template-rows: auto minmax(0, 1fr);
   overflow: hidden;
   padding: env(safe-area-inset-top, 0px) 12px max(14px, env(safe-area-inset-bottom, 0px));
-  background: #d5a573;
+  background: var(--desk-surface);
   color: #172923;
   font-family: var(--font-body), Arial, sans-serif;
   isolation: isolate;
@@ -57,6 +58,12 @@
 .coverSignature { padding: 5px 15px; border-bottom: 2px dashed #54d5bb; font-size: 11px; font-weight: 800; }
 .coverAction { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 48px; flex-shrink: 0; width: 100%; padding: 8px; border: 2px solid #102f29; border-radius: 6px; background: var(--gold); color: var(--ink); box-shadow: 3px 4px #102f29; font-size: 12px; font-weight: 900; }
 .closedHint { margin: 0; font-size: 10px; letter-spacing: .1em; color: #172923; text-align: center; }
+.closedActions { display: grid; justify-items: center; gap: 12px; flex-shrink: 0; }
+.closedStage:has(.helpButton) .cover { max-height: calc(100% - 112px); }
+.desk .helpButton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px; border: 2px solid var(--ink); border-radius: 10px; background: var(--gold); color: var(--ink); box-shadow: 3px 3px var(--ink); font-size: 14px; font-weight: 800; }
+.helpButton:hover { background: #ffdc72; }
+.helpButton:active { transform: translate(2px, 2px); box-shadow: none; }
+.closedStage[data-opening] .closedActions { visibility: hidden; }
 .bookStage { display: grid; place-items: center; min-height: 0; perspective: 1500px; padding: 6px 5px 8px 0; }
 .book { display: grid; grid-template-columns: minmax(0, 1fr); width: min(100%, 530px); height: 100%; max-height: 850px; min-height: 0; border-radius: 5px 12px 12px 5px; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 3px 2px #cfc4a7, 5px 3px #f8f1df, 7px 4px #b9aa87, 10px 5px #173728, 15px 18px 40px #041d1799; animation: bookOpen 480ms cubic-bezier(.2,.7,.2,1) both; transform-origin: left center; }
 .frontispiece { display: none; }
@@ -150,7 +157,7 @@
 .empty > svg { color: var(--gold); }
 .empty p { font: 900 27px/1.1 var(--font-display), Impact, sans-serif; text-transform: uppercase; margin: 18px 0; }
 .empty button { display: flex; gap: 8px; align-items: center; min-height: 44px; padding: 10px; background: var(--gold); color: var(--ink); border: 2px solid var(--ink); border-radius: 3px; font-size: 12px; font-weight: 800; }
-.pageFooter { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 64px; margin: 0; border-top: 2px solid #172923; padding: 7px 16px; background: #d5a573; color: #172923; }
+.pageFooter { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 64px; margin: 0; border-top: 2px solid #172923; padding: 7px 16px; background: var(--desk-surface); color: #172923; }
 .pageFooter > button { display: grid; place-items: center; min-width: 44px; min-height: 44px; border: 2px solid var(--ink); border-radius: 3px; background: var(--gold); color: var(--ink); box-shadow: 2px 2px var(--ink); }
 .pageFooter .footerIndex { flex: 1; min-width: 0; gap: 4px; padding: 4px 8px; background: transparent; color: #172923; border-color: transparent; box-shadow: none; text-align: center; overflow-wrap: anywhere; }
 .footerIndex > span { font: 800 10px/1.3 ui-monospace, Consolas, monospace; }

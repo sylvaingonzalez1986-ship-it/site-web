@@ -1,5 +1,3 @@
-import { KQ_BUSINESS_DEVELOPMENT_CAP } from "@/lib/kanab-quest-development";
-
 export type KqReputationTier = {
   code: string;
   name: string;
@@ -33,10 +31,10 @@ export function calculateKqPlacardScore(input: KqPlacardScoreInput) {
   const seasonBonus = Math.min(KQ_PLACARD_SEASON_BONUS_CAP, Math.round(seasonPoints * 0.25));
   const reputationBonus = Math.min(KQ_PLACARD_REPUTATION_BONUS_CAP, Math.round(4 * Math.sqrt(reputation)));
   const businessBonus = Number.isFinite(input.businessScore)
-    ? Math.min(KQ_BUSINESS_DEVELOPMENT_CAP, Math.max(0, Math.floor(input.businessScore!))) : 0;
+    ? Math.max(0, Math.round(input.businessScore! * 10) / 10) : 0;
 
   return {
-    score: rating + seasonBonus + reputationBonus + businessBonus,
+    score: Math.round((rating + seasonBonus + reputationBonus + businessBonus) * 10) / 10,
     rating,
     seasonPoints,
     reputation,

@@ -13,6 +13,11 @@
 .loading { display: flex; align-items: center; min-height: 88px; margin-bottom: 20px; padding: 16px 18px; font-size: 13px; color: #40554b; }
 .status { margin-block: 20px 0; padding: 10px 14px; border: 2px solid #172923; border-radius: 14px; background: #fff1d6; font-size: 12px; text-align: center; }
 .status button { min-height: 44px; padding: 4px 8px; color: #172923; background: transparent; border: 0; font-weight: 750; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.learning { display: flex; padding-top: 20px; }
+.learningButton { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 46px; padding: 11px 16px; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; color: #172923; box-shadow: 3px 3px 0 #172923; font: 800 12px/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; }
+.learningButton svg { flex-shrink: 0; }
+.learningButton:hover { background: #efc451; }
+.learningButton:active { box-shadow: 1px 1px 0 #172923; }
 .lobby :where(button, a, summary):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
 .nextAction button:active { box-shadow: 1px 1px 0 #172923; }
 @media (hover: hover) { .nextAction button:hover { background: #149b8b; } }
@@ -24,6 +29,7 @@
   .nextAction > div { flex-basis: calc(100% - 64px); }
   .nextAction p { font-size: 13px; }
   .nextAction button { width: 100%; }
+  .learningButton { width: 100%; }
   .loading { min-height: 126px; }
 }
 @media (prefers-reduced-motion: reduce) { .nextAction button { transition: none; } }

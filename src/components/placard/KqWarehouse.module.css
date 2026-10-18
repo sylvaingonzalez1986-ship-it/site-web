@@ -183,6 +183,9 @@
 .equipmentBasket { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin: 24px 0; padding: 22px; background: #dcefe4; border: 2px solid #172923; border-radius: 12px; box-shadow: 2px 3px 0 #172923; }
 .equipmentBasket p { margin: 0; font-size: 14px; line-height: 1.6; }
 .equipmentBasket small { display: block; font-size: 12px; color: var(--muted); }
+.postHarvestBasket { position: sticky; top: 12px; z-index: 8; }
+.equipmentBasket .basketClimateCost { display: flex; align-items: center; gap: 5px; color: #176b7a; font-weight: 700; }
+.basketClimateCost > svg { flex-shrink: 0; }
 .lots { margin-top: 32px; }
 .lot { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
 .lot strong,.lot small { display: block; }
@@ -230,7 +233,7 @@
   .workshopSign h2 { font-size: 36px; }
   .signMark { width: 38px; height: 42px; }
   .tabs { padding: 0 8px; gap: 4px; }
-  .tab { flex: 1; gap: 6px; padding: 15px 6px; font-size: 18px; }
+  .tab { flex: 1; min-width: 0; gap: 6px; padding: 12px 4px; font-size: 16px; flex-direction: column; }
   .cultureToolbar { flex-wrap: wrap; gap: 8px; }
   .content { padding: 0 16px 16px; }
   .stats { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px 16px; padding: 24px 0; margin: 0; }

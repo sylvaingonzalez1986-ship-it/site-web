@@ -56,6 +56,8 @@ export type KqWarehouseState = {
   zones: KqWarehouseZone[];
   /** Absent only in historical plans. When present, capacities require a placed zone. */
   serviceZones?: KqWarehouseServiceZone[];
+  /** One selected storage climate unit. Other purchased models remain in reserve. */
+  storageClimateCode?: string;
   /** All owned devices, including culture equipment kept in reserve. */
   equipment: KqWarehouseEquipment[];
   /** Owned simulation-module coverage, in whole square metres. Removed modules stay in reserve. */
@@ -154,6 +156,10 @@ export type KqWarehouseSummary = {
 export type KqWarehouseRunSnapshot = {
   /** Absent on historical runs, which keep their original yield and quality rules. */
   balanceVersion?: 2;
+  /** Version 2 bills storage climate monthly; absent runs retain their cycle charge. */
+  climateBillingVersion?: 2;
+  /** New crop captures use the stronger drying tiers; historical runs keep theirs. */
+  postHarvestBalanceVersion?: 2;
   revision: number;
   sourceState: KqWarehouseState;
   zones: KqWarehouseZone[];
@@ -265,6 +271,11 @@ export function validateKqWarehouseState(value: unknown): string[] {
   const dimensions = getKqWarehouseDimensions(value as KqWarehouseState);
   const errors = validateKqWarehouseZones(value.zones, dimensions);
   if ("serviceZones" in value) errors.push(...validateKqWarehouseServiceZones(value.serviceZones, errors.length ? [] : value.zones as KqWarehouseZone[], dimensions));
+  if ("storageClimateCode" in value) {
+    const climate = typeof value.storageClimateCode === "string" ? deviceByCode(value.storageClimateCode) : undefined;
+    if (climate?.kind !== "climate" || climate.room !== "storage") errors.push("Le climatiseur de stockage est invalide.");
+    if (!Array.isArray(value.serviceZones) || !value.serviceZones.some(zone => record(zone) && zone.kind === "storage")) errors.push("Aménage une zone de stockage avant d’installer son climatiseur.");
+  }
   if (!natural(value.preparedAreaM2) || value.preparedAreaM2 > dimensions.columns * dimensions.rows) errors.push("Surface aménagée invalide.");
   if ("optionInventory" in value) {
     if (!Array.isArray(value.optionInventory) || value.optionInventory.length > KQ_WAREHOUSE_OPTIONS.length) errors.push("Réserve de modules invalide.");
@@ -359,7 +370,7 @@ export function getKqWarehouseServiceZoneQuote(zone: KqWarehouseServiceZone): Kq
   };
 }
 
-export function getKqWarehouseEquipmentDemand(zones: KqWarehouseZone[], serviceZones: KqWarehouseServiceZone[] = []): KqWarehouseEquipment[] {
+export function getKqWarehouseEquipmentDemand(zones: KqWarehouseZone[], serviceZones: KqWarehouseServiceZone[] = [], storageClimateCode?: string): KqWarehouseEquipment[] {
   const errors = validateKqWarehouseZones(zones);
   errors.push(...validateKqWarehouseServiceZones(serviceZones, zones));
   if (errors.length) throw new Error(errors.join(" "));
@@ -369,6 +380,11 @@ export function getKqWarehouseEquipmentDemand(zones: KqWarehouseZone[], serviceZ
   }
   for (const zone of serviceZones) {
     for (const line of getKqWarehouseServiceZoneQuote(zone).devices) quantities.set(line.code, (quantities.get(line.code) ?? 0) + line.quantity);
+  }
+  if (storageClimateCode) {
+    const climate = requireDevice(storageClimateCode);
+    if (climate.kind !== "climate" || climate.room !== "storage" || !serviceZones.some(zone => zone.kind === "storage")) throw new Error("Le climatiseur requiert une zone de stockage.");
+    quantities.set(storageClimateCode, 1);
   }
   return [...quantities].map(([code, quantity]) => ({ code, quantity })).sort((a, b) => a.code.localeCompare(b.code));
 }
@@ -389,7 +405,7 @@ export function getKqWarehouseQuote(candidate: KqWarehouseState, previous?: KqWa
   if (previous?.serviceZones !== undefined && candidate.serviceZones === undefined) throw new Error("Les zones de séchage et stockage doivent rester présentes dans le plan.");
   const owned = new Map(previous?.equipment.map((item) => [item.code, item.quantity]) ?? []);
   const target = new Map(owned);
-  for (const item of [...candidate.equipment, ...getKqWarehouseEquipmentDemand(candidate.zones, candidate.serviceZones)]) target.set(item.code, Math.max(target.get(item.code) ?? 0, item.quantity));
+  for (const item of [...candidate.equipment, ...getKqWarehouseEquipmentDemand(candidate.zones, candidate.serviceZones, candidate.storageClimateCode)]) target.set(item.code, Math.max(target.get(item.code) ?? 0, item.quantity));
   const purchases = [...target].map(([code, quantity]) => deviceLine(code, Math.max(0, quantity - (owned.get(code) ?? 0)))).filter((line) => line.quantity > 0);
   if (purchases.some(line => line.device.purchasable === false)) {
     throw new Error("Cet équipement historique peut être réutilisé depuis la réserve, mais ne peut plus être acheté.");
@@ -417,6 +433,7 @@ export function getKqWarehouseQuote(candidate: KqWarehouseState, previous?: KqWa
       ...(candidate.floor ? { floor: { ...candidate.floor } } : {}),
       zones: candidate.zones.map(copyZone),
       ...(candidate.serviceZones !== undefined ? { serviceZones: candidate.serviceZones.map(zone => ({ ...zone })) } : {}),
+      ...(candidate.storageClimateCode !== undefined ? { storageClimateCode: candidate.storageClimateCode } : {}),
       equipment: [...target].filter(([, quantity]) => quantity > 0).map(([code, quantity]) => ({ code, quantity })).sort((a, b) => a.code.localeCompare(b.code)),
       ...(targetOptions.size || candidate.optionInventory !== undefined || previous?.optionInventory !== undefined ? {
         optionInventory: [...targetOptions].filter(([, quantity]) => quantity > 0).map(([code, quantity]) => ({ code, quantity })).sort((a, b) => a.code.localeCompare(b.code)),
@@ -428,7 +445,23 @@ export function getKqWarehouseQuote(candidate: KqWarehouseState, previous?: KqWa
   };
 }
 
-export function getKqWarehouseSummary(state: KqWarehouseState, balanceVersion: 1 | 2 = 2): KqWarehouseSummary {
+export const KQ_STORAGE_CLIMATE_KWH_PER_M2_MONTH: Readonly<Record<string, number>> = {
+  "SIM-STORAGE-CLIMATE-01": 6,
+  "SIM-STORAGE-CLIMATE-02": 12,
+  "SIM-STORAGE-CLIMATE-03": 24,
+};
+
+/** A game month costs the same whether cultivation is running or the room is empty. */
+export function getKqWarehouseStorageClimateQuote(state: KqWarehouseState) {
+  const areaM2 = (state.serviceZones ?? []).reduce((sum, zone) => sum + (zone.kind === "storage" ? zone.width * zone.height : 0), 0);
+  const code = areaM2 > 0 && state.storageClimateCode && Object.hasOwn(KQ_STORAGE_CLIMATE_KWH_PER_M2_MONTH, state.storageClimateCode)
+    ? state.storageClimateCode : null;
+  const kwhPerM2 = code ? KQ_STORAGE_CLIMATE_KWH_PER_M2_MONTH[code] : 0;
+  const centsPerM2 = kwhPerM2 * KQ_WAREHOUSE_SIMULATION.electricityCentsPerKwh;
+  return { code, areaM2, kwhPerM2, monthlyKwh: kwhPerM2 * areaM2, monthlyCents: centsPerM2 * areaM2, centsPerM2 };
+}
+
+export function getKqWarehouseSummary(state: KqWarehouseState, balanceVersion: 1 | 2 = 2, climateBillingVersion: 1 | 2 = 2): KqWarehouseSummary {
   assertState(state);
   const dimensions = getKqWarehouseDimensions(state);
   const totalAreaM2 = dimensions.columns * dimensions.rows;
@@ -439,7 +472,7 @@ export function getKqWarehouseSummary(state: KqWarehouseState, balanceVersion: 1
   const storageAreaM2 = serviceZones.reduce((sum, zone) => sum + (zone.kind === "storage" ? zone.width * zone.height : 0), 0);
   const allocatedAreaM2 = equippedAreaM2 + dryingAreaM2 + storageAreaM2;
   const activeAreaM2 = state.zones.reduce((sum, zone) => sum + (zone.active ? zone.width * zone.height : 0), 0);
-  const demand = new Map(getKqWarehouseEquipmentDemand(state.zones, serviceZones).map((item) => [item.code, item.quantity]));
+  const demand = new Map(getKqWarehouseEquipmentDemand(state.zones, serviceZones, state.storageClimateCode).map((item) => [item.code, item.quantity]));
   const equipment = state.equipment.map((item) => deviceLine(item.code, item.quantity));
   const options = (state.optionInventory ?? []).map(item => getKqWarehouseOptionLine(item.code, item.quantity, balanceVersion));
   const optionDemand = new Map(getKqWarehouseOptionDemand(state.zones).map(item => [item.code, item.quantity]));
@@ -449,13 +482,14 @@ export function getKqWarehouseSummary(state: KqWarehouseState, balanceVersion: 1
   const capacity = (kind: "drying" | "storage") => state.serviceZones !== undefined
     ? serviceZones.reduce((sum, zone) => sum + (zone.kind === kind ? getKqWarehouseServiceZoneQuote(zone).capacityGrams : 0), 0)
     : equipment.reduce((sum, line) => sum + (line.device.kind === kind && line.device.gameCapacity?.unit === "g" ? line.quantity * line.device.gameCapacity.value : 0), 0);
-  const energyKwh = rounded(quotes.reduce((sum, quote) => sum + quote.energyKwh, 0));
+  const storageClimateWatts = climateBillingVersion === 1 && activeAreaM2 > 0 && storageAreaM2 > 0 && state.storageClimateCode ? requireDevice(state.storageClimateCode).watts : 0;
+  const energyKwh = rounded(quotes.reduce((sum, quote) => sum + quote.energyKwh, 0) + storageClimateWatts * KQ_WAREHOUSE_SIMULATION.equivalentAirHours / 1000);
   const energyCostCents = Math.round(energyKwh * KQ_WAREHOUSE_SIMULATION.electricityCentsPerKwh);
   const consumablesCostCents = quotes.reduce((sum, quote) => sum + quote.consumablesCostCents, 0);
   return {
     totalAreaM2, equippedAreaM2, cultureAreaM2: equippedAreaM2, dryingAreaM2, storageAreaM2, allocatedAreaM2,
     activeAreaM2, freeAreaM2: totalAreaM2 - allocatedAreaM2,
-    powerWatts: quotes.reduce((sum, quote) => sum + quote.powerWatts, 0),
+    powerWatts: quotes.reduce((sum, quote) => sum + quote.powerWatts, 0) + storageClimateWatts,
     energyKwh, energyCostCents, consumablesCostCents, operatingCostCents: energyCostCents + consumablesCostCents,
     estimatedHarvestGrams: quotes.reduce((sum, quote) => sum + quote.estimatedHarvestGrams, 0),
     investmentCents, investmentPerM2Cents: allocatedAreaM2 ? Math.round(investmentCents / allocatedAreaM2) : 0,
@@ -517,10 +551,10 @@ export function compactKqWarehouseToStarterFloor(state: KqWarehouseState): KqWar
   return isKqWarehouseState(next) ? next : null;
 }
 
-export function getKqWarehouseRunSnapshot(state: KqWarehouseState, revision = 0, zoneId?: string, balanceVersion: 1 | 2 = 2): KqWarehouseRunSnapshot {
+export function getKqWarehouseRunSnapshot(state: KqWarehouseState, revision = 0, zoneId?: string, balanceVersion: 1 | 2 = 2, climateBillingVersion: 1 | 2 = 2, postHarvestBalanceVersion: 1 | 2 = 2): KqWarehouseRunSnapshot {
   if (!natural(revision)) throw new Error("Révision de l’entrepôt invalide.");
-  const fullSummary = getKqWarehouseSummary(state, balanceVersion);
-  const demand = getKqWarehouseEquipmentDemand(state.zones, state.serviceZones);
+  const fullSummary = getKqWarehouseSummary(state, balanceVersion, climateBillingVersion);
+  const demand = getKqWarehouseEquipmentDemand(state.zones, state.serviceZones, state.storageClimateCode);
   const optionDemand = getKqWarehouseOptionDemand(state.zones);
   if (fullSummary.allocatedAreaM2 > state.preparedAreaM2 || demand.some((required) => required.quantity > (state.equipment.find((item) => item.code === required.code)?.quantity ?? 0))
     || optionDemand.some(required => required.quantity > (state.optionInventory?.find(item => item.code === required.code)?.quantity ?? 0))) {
@@ -529,11 +563,22 @@ export function getKqWarehouseRunSnapshot(state: KqWarehouseState, revision = 0,
   const selected = zoneId === undefined ? undefined : state.zones.find(zone => zone.id === zoneId);
   if (zoneId !== undefined && (!selected || !selected.active)) throw new Error("Choisis une zone de culture active.");
   const zones = selected ? [selected] : state.zones;
-  const summary = selected ? getKqWarehouseSummary({ ...state, zones }, balanceVersion) : fullSummary;
+  const summary = selected ? getKqWarehouseSummary({ ...state, zones }, balanceVersion, climateBillingVersion) : fullSummary;
   if (!summary.activeAreaM2) throw new Error("Active au moins une zone avant de commencer.");
+  // Shared storage climate is charged once across simultaneous zone runs.
+  if (climateBillingVersion === 1 && selected && state.storageClimateCode && fullSummary.storageAreaM2 > 0) {
+    const watts = requireDevice(state.storageClimateCode).watts;
+    const share = summary.activeAreaM2 / fullSummary.activeAreaM2;
+    summary.powerWatts = rounded(summary.powerWatts - watts + watts * share);
+    summary.energyKwh = rounded(summary.energyKwh - watts * KQ_WAREHOUSE_SIMULATION.equivalentAirHours / 1000 * (1 - share));
+    summary.energyCostCents = Math.round(summary.energyKwh * KQ_WAREHOUSE_SIMULATION.electricityCentsPerKwh);
+    summary.operatingCostCents = summary.energyCostCents + summary.consumablesCostCents;
+  }
   return {
     ...(zoneId === undefined ? { version: 1 as const } : { version: 2 as const, zoneId }), revision,
     ...(balanceVersion === 2 ? { balanceVersion: 2 as const } : {}),
+    ...(climateBillingVersion === 2 ? { climateBillingVersion: 2 as const } : {}),
+    ...(postHarvestBalanceVersion === 2 ? { postHarvestBalanceVersion: 2 as const } : {}),
     sourceState: { ...state, ...(state.floor ? { floor: { ...state.floor } } : {}), zones: state.zones.map(copyZone), equipment: state.equipment.map((item) => ({ ...item })),
       ...(state.optionInventory !== undefined ? { optionInventory: state.optionInventory.map(item => ({ ...item })) } : {}),
       ...(state.serviceZones !== undefined ? { serviceZones: state.serviceZones.map(zone => ({ ...zone })) } : {}) },
@@ -549,10 +594,12 @@ export function getKqWarehouseRunSnapshot(state: KqWarehouseState, revision = 0,
 export function isKqWarehouseRunSnapshot(value: unknown): value is KqWarehouseRunSnapshot {
   if (!record(value) || ![1, 2].includes(Number(value.version)) || !natural(value.revision) || !isKqWarehouseState(value.sourceState)) return false;
   if (value.balanceVersion !== undefined && value.balanceVersion !== 2) return false;
+  if (value.climateBillingVersion !== undefined && value.climateBillingVersion !== 2) return false;
+  if (value.postHarvestBalanceVersion !== undefined && value.postHarvestBalanceVersion !== 2) return false;
   if (value.version === 2 ? typeof value.zoneId !== "string" || !value.zoneId : value.version !== 1 || value.zoneId !== undefined) return false;
   try {
     const expected = getKqWarehouseRunSnapshot(value.sourceState, value.revision, value.version === 2 ? value.zoneId as string : undefined,
-      value.balanceVersion === 2 ? 2 : 1);
+      value.balanceVersion === 2 ? 2 : 1, value.climateBillingVersion === 2 ? 2 : 1, value.postHarvestBalanceVersion === 2 ? 2 : 1);
     const fields = ["activeAreaM2", "estimatedHarvestGrams", "powerWatts", "energyKwh", "energyCostCents", "consumablesCostCents", "operatingCostCents", "dryingCapacityGrams", "storageCapacityGrams"] as const;
     return fields.every((field) => value[field] === expected[field]) && value.qualityBonus === expected.qualityBonus && JSON.stringify(value.zones) === JSON.stringify(expected.zones);
   } catch {

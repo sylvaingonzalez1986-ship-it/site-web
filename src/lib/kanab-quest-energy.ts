@@ -3,7 +3,7 @@ import type { ChanvrierStrength } from "./arena-chanvrier";
 import type { KqCultureEquipmentCondition } from "./kanab-quest-culture-wear";
 import { getKqProductionUnits, type KqTentEquipmentProfile, type KqEquipmentRunScope } from "./kanab-quest-production-scale";
 import type { KqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
-import type { KqSupplierInvoice } from "./kanab-quest-business";
+import type { KqStorageClimateBilling, KqSupplierInvoice } from "./kanab-quest-business";
 
 export const KQ_ENERGY_MODES = {
   eco: { name: "Éco", consumption: 0.75, harvest: 0.9, pressure: 0, label: "−25 % énergie · −10 % récolte" },
@@ -95,6 +95,7 @@ export type KqEnergySummary = { outstandingCents: number; invoiceCount: number; 
   supplierInvoice?: KqSupplierInvoice | null;
   supplierInvoices?: KqSupplierInvoice[] };
 export type KqEnergySnapshot = KqEnergySummary & {
+  storageClimate?: KqStorageClimateBilling;
   warehouse?: KqWarehouseRunSnapshot;
   equipmentScopeVersion?: 2 | 3;
   buildings?: Array<{ buildingNumber: number; anchorTentNumber: number; equippedCodes: string[]; levels: Record<string, number>; cultureWear: Record<string, KqCultureEquipmentCondition>; cultureOperationalCodes: string[] }>;

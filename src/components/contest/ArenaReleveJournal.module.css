@@ -1,0 +1,49 @@
+.tools { display: flex; justify-content: flex-end; gap: 8px; padding: 14px 0 4px; }
+.tools button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-width: 44px; min-height: 44px; padding: 8px 13px; border: 2px solid #172923; border-radius: 11px; background: #fff8e7; color: #172923; font: 800 .75rem/1.25 var(--font-body), sans-serif; box-shadow: 2px 2px 0 #172923; cursor: pointer; }
+.tools svg { flex-shrink: 0; }
+.tools button:focus-visible, .dialog button:focus-visible, .dialog summary:focus-visible { outline: 3px solid #007d70; outline-offset: 4px; }
+.dialog { width: min(760px, calc(100vw - 24px)); background: #fff8e7; color: #172923; }
+.body { padding: 0; }
+.scene { position: relative; overflow: hidden; border-bottom: 2px solid #172923; }
+.scene > img { display: block; width: 100%; height: clamp(180px, 32dvh, 300px); object-fit: cover; }
+.scene > span { position: absolute; bottom: 12px; left: 16px; padding: 6px 10px; border: 2px solid #172923; border-radius: 8px; background: #f4c858; font-size: .7rem; font-weight: 850; }
+.notes { padding: 20px; }
+.notes h2 { margin: 0 0 13px; font: 900 clamp(1.2rem, 3vw, 1.6rem)/1.1 var(--font-display), sans-serif; }
+.notes p { font-size: .9rem; line-height: 1.65; }
+.coach { margin: 0 0 18px; }
+.notes details { border-top: 1px solid #d3c7af; }
+.notes summary { display: flex; gap: 8px; align-items: center; min-height: 44px; padding: 12px 0; font: 800 .8rem/1.3 var(--font-body), sans-serif; cursor: pointer; }
+.notes summary::before { content: "+"; display: grid; place-items: center; width: 21px; height: 21px; border: 1px solid #172923; border-radius: 50%; color: #006c62; flex-shrink: 0; }
+.notes details[open] > summary::before { content: "−"; }
+.notes summary::-webkit-details-marker { display: none; }
+.letter p { font-family: Georgia, serif; font-style: italic; }
+.journey { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; padding: 20px; margin: 0; list-style: none; }
+.journey li { min-width: 0; overflow: hidden; border: 2px solid #172923; border-radius: 12px; background: #fffcf4; }
+.journey li[aria-current="step"] { box-shadow: 3px 3px 0 #007d70; border-color: #007d70; }
+.thumbnail { position: relative; border-bottom: 2px solid #172923; }
+.thumbnail > img { display: block; width: 100%; height: 120px; object-fit: cover; }
+.number { position: absolute; top: 8px; left: 8px; display: grid; place-items: center; width: 27px; height: 27px; border: 2px solid #172923; border-radius: 50%; background: #fff8e7; color: #172923; font-size: .75rem; font-weight: 850; }
+.journey li[data-done="true"] .number { background: #a6ddc6; }
+.chapterIcon { position: absolute; right: 9px; bottom: 9px; display: grid; place-items: center; width: 40px; height: 40px; border: 2px solid #172923; border-radius: 10px; background: #fff8e7ee; }
+.caption { padding: 11px; }
+.caption strong { display: block; font-size: .79rem; line-height: 1.35; }
+.caption > span { display: block; margin-top: 8px; font-size: .65rem; color: #58675f; }
+.journey li[aria-current="step"] .caption { background: #d7efe2; }
+.journey li[aria-current="step"] .caption > span { color: #006456; font-weight: 850; }
+.options { display: grid; gap: 13px; padding: 20px; }
+.options button { display: flex; align-items: center; gap: 15px; width: 100%; min-height: 72px; padding: 15px; border: 2px solid #172923; border-radius: 12px; background: #fffcf4; color: #172923; text-align: left; font: inherit; cursor: pointer; }
+.options button:first-child { background: #d7efe2; }
+.options svg { flex-shrink: 0; }
+.options strong, .options small { display: block; }
+.options strong { font-size: .9rem; line-height: 1.3; }
+.options small { margin-top: 6px; color: #58675f; font-size: .75rem; line-height: 1.4; }
+@media (hover: hover) { .tools button:hover, .options button:hover { background: #f4c858; } }
+@media (max-width: 700px) {
+  .tools { justify-content: center; gap: 7px; }
+  .tools button { flex: 1; max-width: 130px; padding: 8px; font-size: .7rem; }
+  .notes, .options { padding: 16px; }
+  .journey { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 14px; gap: 10px; }
+  .thumbnail > img { height: 110px; }
+  .caption { padding: 9px; }
+  .caption strong { font-size: .74rem; }
+}

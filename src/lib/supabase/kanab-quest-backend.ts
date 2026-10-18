@@ -1,8 +1,10 @@
 import "server-only";
+import { createHash } from "node:crypto";
 import { KQ_BUDDIE_ROTATION_REQUIRED, getKqBuddieRotationRemaining, getKqBuddieRotationMessage, recordKqBuddieUse, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import { getArenaRankingAvatars } from "./arena-ranking-avatars";
 import { getChanvrierStartingXp } from "@/lib/arena-chanvrier";
 import { cacheArenaSharedRead } from "@/lib/arena-shared-cache";
+import { arenaPublicPlayerKey } from "@/lib/arena-public-player-key";
 import { isKqEnergyMode, type KqEnergyMode } from "@/lib/kanab-quest-energy";
 
 import { normalizeEmail } from "@/lib/admin-allowlist";
@@ -29,7 +31,7 @@ import { getKqLaunchApprovalChecks, getKqLaunchApprovals, getKqLaunchDossier, ty
 import { buildKqRandomQueueHealth, type KqRandomQueueHealth } from "@/lib/kanab-quest-random-queue";
 import { KQ_PRODUCER_NOTEBOOK_REWARDS_LIVE } from "@/lib/kanab-quest-producer-rewards";
 import { calculateKqPlacardScore } from "@/lib/kanab-quest-reputation";
-import { ARENA_FORMULA_VERSION } from "@/lib/arena-ranking";
+import { ARENA_FORMULA_VERSION, type ArenaRankingCategory } from "@/lib/arena-ranking";
 import { KQ_REWARD_BALANCE } from "@/lib/kanab-quest-reward-balance";
 import { KQ_ACTIVE_CARDS } from "@/lib/kanab-quest-game";
 import { getKqCampaignParticipants, getKqCampaignTotals, getKqCampaignMemberState, type KqCampaignMember } from "@/lib/kanab-quest-campaign";
@@ -2268,7 +2270,7 @@ export async function getKqArenaLeaderboardInternal(options: { forceRefresh?: bo
     seasonCode,
     contestSeasonCode: snapshot?.contest_season_code ? String(snapshot.contest_season_code) : null,
     generatedAt: snapshot?.generated_at ? String(snapshot.generated_at) : new Date().toISOString(),
-    formulaVersion: ARENA_FORMULA_VERSION,
+    formulaVersion: String(snapshot?.formula_version ?? ARENA_FORMULA_VERSION),
     entries: rawEntries.map((entry, index) => ({
       userId: String(entry.userId),
       rank: Number(entry.rank ?? index + 1),
@@ -2278,6 +2280,8 @@ export async function getKqArenaLeaderboardInternal(options: { forceRefresh?: bo
       placardScore: Number(entry.placardScore ?? 0),
       businessScore: Number(entry.businessScore ?? 0),
       approvedReviewCount: Number(entry.approvedReviewCount ?? 0),
+      tastedFlowerCount: Number(entry.tastedFlowerCount ?? 0),
+      duelSeasonPoints: Number(entry.duelSeasonPoints ?? 0),
       rating: Number(entry.rating ?? 1000),
       wins: Number(entry.wins ?? 0),
       losses: Number(entry.losses ?? 0),
@@ -2285,29 +2289,98 @@ export async function getKqArenaLeaderboardInternal(options: { forceRefresh?: bo
   };
 }
 
-const readCachedPublicArenaLeaderboard = cacheArenaSharedRead("arena-leaderboard-v2-development", () => readKqPublicArenaLeaderboard());
+type ArenaLeaderboardPageOptions = { offset?: number; limit?: number; viewerId?: string };
+type ArenaInternalEntry = Awaited<ReturnType<typeof getKqArenaLeaderboardInternal>>["entries"][number];
 
-export async function getKqPublicArenaLeaderboard() {
-  return readCachedPublicArenaLeaderboard();
+async function projectArenaLeaderboardPage<T extends { entries: ArenaInternalEntry[] }>(
+  leaderboard: T,
+  options: ArenaLeaderboardPageOptions,
+) {
+  const { entries: internalEntries, ...metadata } = leaderboard;
+  const offset = Math.max(0, Math.floor(options.offset ?? 0));
+  const limit = Math.max(1, Math.min(100, Math.floor(options.limit ?? 50)));
+  const page = internalEntries.slice(offset, offset + limit);
+  const viewer = options.viewerId ? internalEntries.find(entry => entry.userId === options.viewerId) : null;
+  const userIds = [...new Set([...page.map(entry => entry.userId), ...(viewer ? [viewer.userId] : [])])];
+  const avatars = await getArenaRankingAvatars(userIds);
+  const projectEntry = (entry: ArenaInternalEntry) => ({
+    entryKey: arenaPublicPlayerKey(entry.userId),
+    rank: entry.rank,
+    avatar: avatars.get(entry.userId) ?? null,
+    pseudo: entry.pseudo,
+    score: entry.score,
+    notebookScore: entry.notebookScore,
+    placardScore: entry.placardScore,
+    businessScore: entry.businessScore,
+    approvedReviewCount: entry.approvedReviewCount,
+    tastedFlowerCount: entry.tastedFlowerCount,
+    duelSeasonPoints: entry.duelSeasonPoints,
+    rating: entry.rating,
+    wins: entry.wins,
+    losses: entry.losses,
+  });
+  return {
+    ...metadata,
+    entries: page.map(projectEntry),
+    totalPlayers: internalEntries.length,
+    revision: createHash("sha256").update(JSON.stringify(internalEntries)).digest("hex"),
+    nextOffset: offset + limit < internalEntries.length ? offset + limit : null,
+    viewerEntry: viewer ? projectEntry(viewer) : null,
+  };
 }
 
-async function readKqPublicArenaLeaderboard() {
-  const leaderboard = await getKqArenaLeaderboardInternal();
-  const avatars = await getArenaRankingAvatars(leaderboard.entries.map((entry) => entry.userId));
+const readCachedArenaLeaderboard = cacheArenaSharedRead("arena-leaderboard-v3-tasting-first", () => getKqArenaLeaderboardInternal());
+
+export async function getKqPublicArenaLeaderboard(options: ArenaLeaderboardPageOptions = {}) {
+  return projectArenaLeaderboardPage(await readCachedArenaLeaderboard(), options);
+}
+
+const readCachedArenaCategoryLeaderboards = {
+  tasting: cacheArenaSharedRead("arena-tasting-leaderboard-v3", () => readKqArenaCategoryLeaderboard("tasting")),
+  "tasting-global": cacheArenaSharedRead("arena-tasting-global-leaderboard-v3", () => readKqArenaCategoryLeaderboard("tasting-global")),
+  duels: cacheArenaSharedRead("arena-duels-leaderboard-v3", () => readKqArenaCategoryLeaderboard("duels")),
+  business: cacheArenaSharedRead("arena-business-leaderboard-v3", () => readKqArenaCategoryLeaderboard("business")),
+};
+
+export async function getKqPublicArenaCategoryLeaderboard(
+  category: ArenaRankingCategory,
+  options: ArenaLeaderboardPageOptions & { scope?: "season" | "global" } = {},
+) {
+  const key = category === "tasting" && options.scope === "global" ? "tasting-global" : category;
+  const leaderboard = await readCachedArenaCategoryLeaderboards[key]();
+  return projectArenaLeaderboardPage({ ...leaderboard, category, scope: options.scope ?? "season" }, options);
+}
+
+async function readKqArenaCategoryLeaderboard(category: ArenaRankingCategory | "tasting-global") {
+  const seasonCode = await getKqActiveSeasonCode();
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_get_arena_category_leaderboard", {
+    p_season_code: seasonCode,
+    p_category: category,
+  });
+  if (result.error) throw new Error(`[supabase:rpc_kq_get_arena_category_leaderboard] ${result.error.message}`);
+  const snapshot = result.data as Record<string, unknown> | null;
+  const rawEntries = Array.isArray(snapshot?.leaderboard)
+    ? snapshot.leaderboard as Array<Record<string, unknown>>
+    : [];
   return {
-    ...leaderboard,
-    entries: leaderboard.entries.map((entry) => ({
-      rank: entry.rank,
-      avatar: avatars.get(entry.userId) ?? null,
-      pseudo: entry.pseudo,
-      score: entry.score,
-      notebookScore: entry.notebookScore,
-      placardScore: entry.placardScore,
-      businessScore: entry.businessScore,
-      approvedReviewCount: entry.approvedReviewCount,
-      rating: entry.rating,
-      wins: entry.wins,
-      losses: entry.losses,
+    seasonCode,
+    generatedAt: snapshot?.generatedAt ? String(snapshot.generatedAt) : new Date().toISOString(),
+    formulaVersion: String(snapshot?.formulaVersion ?? ARENA_FORMULA_VERSION),
+    category,
+    entries: rawEntries.map((entry, index) => ({
+      userId: String(entry.userId),
+      rank: Number(entry.rank ?? index + 1),
+      pseudo: String(entry.pseudo ?? "Cultivateur anonyme"),
+      score: Number(entry.score ?? 0),
+      notebookScore: Number(entry.notebookScore ?? 0),
+      placardScore: Number(entry.placardScore ?? 0),
+      businessScore: Number(entry.businessScore ?? 0),
+      approvedReviewCount: Number(entry.approvedReviewCount ?? 0),
+      tastedFlowerCount: Number(entry.tastedFlowerCount ?? 0),
+      duelSeasonPoints: Number(entry.duelSeasonPoints ?? 0),
+      rating: Number(entry.rating ?? 1000),
+      wins: Number(entry.wins ?? 0),
+      losses: Number(entry.losses ?? 0),
     })),
   };
 }

@@ -226,7 +226,7 @@ describe("warehouse service boundary", () => {
     createSupabaseServiceClient.mockReturnValue({ rpc });
     await expect(saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state: candidate, expectedCostCents: quote.totalCostCents })).rejects.toMatchObject({ status: 409 });
     expect(rpc.mock.calls.find(([name]) => name === "rpc_kq_warehouse_save")![1]).toMatchObject({
-      p_cost_cents: 39_330, p_next_state: { serviceZones: candidate.serviceZones, equipment: expect.arrayContaining([{ code: "CURTEC-60L", quantity: 4 }]) },
+      p_cost_cents: 413_540, p_next_state: { serviceZones: candidate.serviceZones, equipment: expect.arrayContaining([{ code: "CURTEC-60L", quantity: 4 }]) },
     });
   });
 

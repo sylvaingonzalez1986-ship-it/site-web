@@ -10,6 +10,7 @@ import { rarityAccentColor, rarityLabels, RARITY_ORDER } from "@/lib/lottery-car
 import type { LotteryCollectionAlbum, LotteryCollectionCardSlot } from "@/types/lottery";
 import { KqBuddieFlavors } from "./KqBuddieFlavors";
 import { clickedCollectionBackdrop, useKqCollectionDialog } from "./KqCollectionDialog";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 import styles from "./KqBotteCollection.module.css";
 
 type Ownership = "owned" | "all" | "duplicates" | "missing";
@@ -49,6 +50,7 @@ function BuddieDetail({ slot, onClose }: { slot: LotteryCollectionCardSlot; onCl
 }
 
 export function KqBuddiesCollection({ active, onOpenShop }: { active: boolean; onOpenShop?: () => void }) {
+  const api = useKqTutorialApi();
   const request = useRef<AbortController | null>(null);
   const loaded = useRef(false);
   const [slots, setSlots] = useState<LotteryCollectionCardSlot[] | null>(null);
@@ -63,7 +65,7 @@ export function KqBuddiesCollection({ active, onOpenShop }: { active: boolean; o
     const controller = new AbortController(); request.current = controller;
     setLoading(true); setError("");
     try {
-      const response = await fetch("/api/account/collection", { cache: "no-store", signal: controller.signal });
+      const response = await api.request("/api/account/collection", { cache: "no-store", signal: controller.signal });
       const payload = await response.json() as LotteryCollectionAlbum & { error?: string };
       if (!response.ok) throw new Error(response.status === 401 ? "Connecte-toi pour retrouver tes Buddies." : payload.error || "Impossible de charger ton album Buddies.");
       if (!Array.isArray(payload.pages) || !payload.pages.every(page => Array.isArray(page.slots))) throw new Error("Les informations de ton album Buddies sont indisponibles.");
@@ -73,16 +75,14 @@ export function KqBuddiesCollection({ active, onOpenShop }: { active: boolean; o
       if (!controller.signal.aborted) { loaded.current = true; setSlots(cards.sort((a, b) => a.cardNumber - b.cardNumber)); }
     } catch (reason) { if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : "Album Buddies indisponible."); }
     finally { if (!controller.signal.aborted) setLoading(false); }
-  }, []);
+  }, [api]);
   useEffect(() => {
     if (active && !loaded.current) void refresh();
   }, [active, refresh]);
   useEffect(() => {
     const updated = () => { loaded.current = false; if (active) void refresh(); };
-    window.addEventListener("kq:collection-updated", updated);
-    window.addEventListener("welcome-pack-claimed", updated);
-    return () => { window.removeEventListener("kq:collection-updated", updated); window.removeEventListener("welcome-pack-claimed", updated); };
-  }, [active, refresh]);
+    return api.subscribe(["kq:collection-updated", "welcome-pack-claimed"], updated);
+  }, [api, active, refresh]);
   useEffect(() => () => request.current?.abort(), []);
 
   const cards = slots ?? [];

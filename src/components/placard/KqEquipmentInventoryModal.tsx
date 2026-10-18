@@ -23,6 +23,10 @@ import { useKqTutorialApi } from "./KqTutorialApiContext";
 import type { ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
 import type { ChanvrierProfile } from "@/lib/arena-chanvrier";
 import { KqCareerProgress } from "./KqCareerProgress";
+import { KqWorkshopScene } from "./KqWorkshopScene";
+import { KqWorkshopMachineDialog } from "./KqWorkshopMachineDialog";
+import { KqWorkshopTiers } from "./KqWorkshopTiers";
+import { KqWorkshopMachineSummary } from "./KqWorkshopMachineSummary";
 
 const WAREHOUSE_GROUPS: readonly { code: string; label: string; slots: readonly KqEquipmentSlot[] }[] = [
   { code: "grow", label: "Cultiver", slots: ["tent", "lighting", "air", "climate-controller"] },
@@ -82,6 +86,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
   const [storageBusy,setStorageBusy]=useState(false);
   const [upgradeBusy,setUpgradeBusy]=useState(false);
   const [maintenanceBusy,setMaintenanceBusy]=useState(false);
+  const [machineDialogOpen,setMachineDialogOpen]=useState(false);
   if(requestedSlot!==initialSlot){
     setRequestedSlot(initialSlot);
     setTentStates(current=>({...current,[tentNumber]:{...(current[tentNumber]??EMPTY_TENT_UI),slot:initialSlot,selectedCode:null,error:""}}));
@@ -139,7 +144,8 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
     updateTent(tentNumber,{slot:next,selectedCode:null,error:""});
     if(isKqSharedEquipmentSlot(next))updateTent(0,{error:""});
     if(buildingScope&&isKqBuildingEquipmentSlot(next))updateTent(-buildingNumber,{error:""});
-    if(window.matchMedia("(max-width: 899px)").matches)scrollToSection(panel.current);
+    if(workshopOnly)setMachineDialogOpen(true);
+    else if(window.matchMedia("(max-width: 899px)").matches)scrollToSection(panel.current);
   };
   const selectInScene=(number:number,next:KqEquipmentSlot)=>{
     if(number!==tentNumber){
@@ -168,7 +174,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
     scrollToSection(details.querySelector<HTMLElement>("summary"));
   };
   const changeView=(showList:boolean)=>{viewChanged.current=true;setListView(showList);};
-  const openShop=(code?:string)=>onOpenShop(code);
+  const openShop=(code?:string)=>{if(busy)return;setMachineDialogOpen(false);onOpenShop(code);};
   const equip=async(item:KqEquipmentDefinition)=>{
     const shared=isKqSharedEquipment(item.code),buildingItem=buildingScope&&isKqBuildingEquipment(item.code),targetKey=shared?0:buildingItem?-buildingNumber:tentNumber,targetTent=shared?1:tentNumber;
     if(locks.current.has(targetKey)||loading||loadError||busy||activeCodes.includes(item.code)||!purchasedCodes.includes(item.code)||cultureWear[item.code]?.due)return;
@@ -181,10 +187,36 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
     } catch(reason){updateTent(targetKey,{error:reason instanceof Error?reason.message:"Installation impossible."});}
     finally{locks.current.delete(targetKey);updateTent(targetKey,{pending:null});}
   };
+  const equipmentPanel = <aside key={sharedSlot?"shared":buildingSlot?`building:${buildingNumber}`:tentNumber} ref={panel} className={styles.panel} tabIndex={-1} aria-labelledby="warehouse-slot-title">
+          {!workshopOnly&&<button type="button" className={styles.backToScene} onClick={showWorkshop}><ArrowUp size={16} aria-hidden="true"/>Retour au récapitulatif</button>}
+          {!workshopOnly&&<div className={styles.panelHeading}><small>{sharedSlot?"Atelier commun · Toutes les tentes":buildingSlot?`Entrepôt ${buildingNumber} · Services partagés`:`Tente ${tentNumber} · ${selectedGroup.label}`}</small><span data-installed={!!installed}>{installed?<><Check size={12} aria-hidden="true"/>Installé</>:"Libre"}</span></div>}<h3 id="warehouse-slot-title" className={workshopOnly?styles.workshopTitle:undefined}>{KQ_EQUIPMENT_SLOT_LABELS[slot]}</h3>
+          {slot==="flower-drying"?<p>Le séchoir des fleurs {buildingScope?`de l’entrepôt ${buildingNumber}, commun à ses tentes`:`de la tente ${tentNumber}`}. Chaque niveau renforce la régularité ; la qualité maximale augmente aux niveaux 4, 7 et 10.</p>:null}
+          <div aria-live="polite">{error||loadError?<p role="alert" className={styles.error}><CircleAlert size={16}/>{error||loadError}</p>:null}{notice?<p role="status" className={styles.notice}><Check size={16}/>{notice}</p>:null}</div>
+          {loading?<p role="status">Actualisation de l’atelier…</p>:loadError?<button type="button" onClick={onRetry}><RefreshCw size={16}/>Réessayer</button>:<>
+            {choices.length>1?<label className={styles.modelChoice}>Matériel de cet emplacement<select value={selectedEquipment.code} onChange={event=>updateTent(tentNumber,{selectedCode:event.target.value})} disabled={busy}><option disabled value="">Choisir un modèle</option>{choices.map(item=><option key={item.code} value={item.code}>{item.name} · {activeCodes.includes(item.code)?"installé":"en réserve"}</option>)}</select></label>:null}
+            {selectedEquipment?[selectedEquipment].map(item=>{const isInstalled=activeCodes.includes(item.code),requirement=getKqEquipmentRequirementState({equipment:item,ownedCodes}),artwork=getKqWorkshopProductArtwork(item.code,levels[item.code]??1),workshopMachine=workshopOnly&&purchasedCodes.includes(item.code);return <article key={item.code} className={workshopMachine?styles.workshopMachine:styles.item} data-installed={isInstalled}>
+              {!workshopMachine&&<>
+              <span>{cultureWear[item.code]?.due?"Hors service":isInstalled?"Installé":item.purchasable?"En réserve":"Fourni"}{item.purchasable?` · niveau ${levels[item.code]??1}`:""}</span><h4>{item.name}</h4>
+              {artwork?<Image src={artwork.src} alt="" width={512} height={512} sizes="180px" className={styles.machineArtwork} data-workshop-inventory-artwork={item.code}/>:null}
+              <ul>{getKqEquipmentImpactLabels(item).map(label=><li key={label}>{label}</li>)}</ul><small>{item.tradeoff}</small>
+              </>}
+              {workshopMachine?<KqWorkshopMachineSummary code={item.code} level={levels[item.code]??1} condition={maintenance[item.code]} cashCents={cashCents} career={career} installed={isInstalled} tentNumber={tentNumber} productionUnits={units} equipmentScopeVersion={equipmentScopeVersion} disabled={busy||loading} onUpdated={onRetry} onBusyChange={setUpgradeBusy}/>:null}
+              {!isInstalled&&installed?<p>Remplace {installed.name}, qui reste en réserve.</p>:null}
+              {!requirement.compatible?<p className={styles.error}>Prérequis : {requirement.missing.map(r=>r.label).join(", ")}</p>:null}
+              {!isInstalled?<button type="button" disabled={!purchasedCodes.includes(item.code)||!requirement.compatible||busy||loading||cultureWear[item.code]?.due} onClick={()=>void equip(item)}>{pending===item.code?"Installation…":cultureWear[item.code]?.due?"À remplacer avant installation":sharedSlot?"Installer dans l’atelier commun":buildingSlot?`Installer · entrepôt ${buildingNumber}`:`Installer · tente ${tentNumber}`}</button>:null}
+              {cultureWear[item.code]?<KqCultureEquipmentWear equipmentScopeVersion={equipmentScopeVersion} tentNumber={tentNumber} productionUnits={units} code={item.code} name={item.name} condition={cultureWear[item.code]} cashCents={cashCents} activeRun={activeRun} disabled={busy||loading} onUpdated={onRetry}/>:null}
+              {!workshopMachine&&item.purchasable&&purchasedCodes.includes(item.code)&&!cultureWear[item.code]?.due?<KqEquipmentUpgrade workshopOnly={workshopOnly} maintenanceDue={maintenance[item.code]?.due} onBusyChange={setUpgradeBusy} equipmentScopeVersion={equipmentScopeVersion} career={career} code={item.code} level={levels[item.code]??1} cashCents={cashCents} tentNumber={tentNumber} productionUnits={units} disabled={busy||loading} onUpdated={onRetry}/>:null}
+              {!workshopMachine&&maintenance[item.code]?<KqMachineMaintenance onBusyChange={setMaintenanceBusy} tentNumber={tentNumber} productionUnits={units} code={item.code} condition={maintenance[item.code]} cashCents={cashCents} disabled={busy||loading} onUpdated={onRetry}/>:null}
+            </article>;}):null}
+            {!choices.length?<><p className={styles.empty}><PackageOpen/>{workshopOnly?"Cette machine n’est pas encore acquise. Choisis sa gamme pour l’ajouter à ton atelier.":"Cet emplacement est prêt à accueillir ton matériel."}</p>{workshopOnly&&suggestion?<KqWorkshopTiers key={suggestion.code} code={suggestion.code} cashCents={cashCents} career={career} disabled={busy||loading} onUpdated={onRetry} onBusyChange={setUpgradeBusy}/>:null}</>:null}
+            <button type="button" className={styles.shopButton} disabled={busy} onClick={()=>openShop(workshopOnly?selectedEquipment?.code??suggestion?.code:suggestion?.code)}><ShoppingBag size={17}/>{sharedSlot?"Matériel de l’atelier commun":buildingSlot?`Matériel de l’entrepôt ${buildingNumber}`:slot==="flower-drying"&&suggestion?`Aménager le séchoir · ${formatKqCash(suggestion.priceCents)}`:`Acheter du matériel · tente ${tentNumber}`}</button>
+          </>}
+          <small className={styles.rule}>{workshopOnly?"Un modèle actif par emplacement. Les niveaux et l’entretien de tes machines sont conservés.":sharedSlot?"Un seul achat pour toutes les tentes. Installation, niveau et entretien communs.":buildingSlot?`Un seul achat pour les tentes ${buildingNumber===1?"1 à 4":"5 à 8"}. Installation, niveau et usure partagés dans cet entrepôt.`:<>Matériel et niveaux propres à la tente {tentNumber}. Les changements s’appliquent à la prochaine culture commune.</>}</small>
+        </aside>;
   return <div className={styles.overlay} data-embedded={inline||undefined} data-page={embedded||undefined} data-workshop-only={workshopOnly||undefined}>
     {!inline?<button type="button" tabIndex={-1} className={styles.backdrop} onClick={onClose} disabled={storageBusy||busy} aria-label="Fermer l’entrepôt"/>:null}
     <section className={styles.dialog} role={inline?"region":"dialog"} aria-modal={inline?undefined:true} aria-labelledby="equipment-inventory-title" data-arena-tour-surface="warehouse" onKeyDown={event=>{
-      if(inline)return;
+      if(inline||event.target instanceof Element&&event.target.closest("[data-app-dialog]"))return;
       if(event.key==="Escape"){event.preventDefault();event.stopPropagation();if(!storageBusy&&!busy)onClose();return;}
       if(event.key!=="Tab")return;
       const controls=Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),summary,[tabindex="0"]')).filter(el=>el.getClientRects().length>0);
@@ -197,8 +229,14 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
       </header>
       {!workshopOnly&&<KqCareerProgress career={career} profile={chanvrierProfile} compact/>}
       {!workshopOnly&&initialSection==="storage"?<div className={styles.storageView}><KqWarehouseStorage onChanged={onRetry} onBusyChange={setStorageBusy}/></div>:<div className={styles.layout}>
-        <div ref={workshop} className={styles.workshop} tabIndex={-1} aria-label="Explorer l’entrepôt">
-          {workshopOnly||listView?<div className={styles.listView}>
+        <div ref={workshop} className={styles.workshop} tabIndex={-1} aria-label={workshopOnly?"Explorer l’atelier":"Explorer l’entrepôt"}>
+          {workshopOnly?<>
+            <KqWorkshopScene purchasedCodes={purchasedCodes} equippedCodes={sharedCodes} levels={levels} maintenance={maintenance} selectedSlot={machineDialogOpen?slot:undefined} disabled={loading||!!loadError||busy} onSelect={select}/>
+            <div className={styles.workshopToolbar}>
+              <div aria-live="polite">{loading?<p role="status">Actualisation de l’atelier…</p>:loadError?<p role="alert" className={styles.error}><CircleAlert size={17} aria-hidden="true"/>{loadError}<button type="button" onClick={onRetry}><RefreshCw size={16} aria-hidden="true"/>Réessayer</button></p>:<p>Clique sur une machine pour l’acheter, l’installer ou l’améliorer.</p>}</div>
+              <button type="button" disabled={busy||loading||!!loadError} onClick={()=>openShop(selectedEquipment?.code??suggestion?.code)}><ShoppingBag size={17} aria-hidden="true"/>Matériel de l’atelier commun</button>
+            </div>
+          </>:listView?<div className={styles.listView}>
             <div className={styles.listHeading}><strong>{workshopOnly?"Choisir une machine":"Choisir un emplacement"}</strong>{!workshopOnly&&<button type="button" data-warehouse-view-toggle onClick={()=>changeView(false)}><ImageIcon size={16} aria-hidden="true"/>Voir le décor</button>}</div>
             {!workshopOnly&&<KqTentSelector equipmentScopeVersion={equipmentScopeVersion} tents={tents} tentNumber={tentNumber} disabled={!tents.length||productionPending} onSelect={onSelectTent}/>}
             {visibleGroups.map(group=><section key={group.code} className={styles.listGroup} aria-label={group.label}>
@@ -209,29 +247,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
           <KqWarehouseOverview equipmentScopeVersion={equipmentScopeVersion} buildings={sceneBuildings} tents={loading&&!tents.length?[]:sceneTents} sharedEquipment={sharedEquipment?{...sharedEquipment,equippedCodes:sharedCodes}:undefined}
             selectedTentNumber={tentNumber} selectedSlot={slot} disabled={loading||!!loadError||busy} loading={loading} error={loadError} onRetry={onRetry} onSelect={selectInOverview}/></>}
         </div>
-        <aside key={sharedSlot?"shared":buildingSlot?`building:${buildingNumber}`:tentNumber} ref={panel} className={styles.panel} tabIndex={-1} aria-labelledby="warehouse-slot-title">
-          <button type="button" className={styles.backToScene} onClick={showWorkshop}><ArrowUp size={16} aria-hidden="true"/>{workshopOnly?"Retour aux machines":"Retour au récapitulatif"}</button>
-          <div className={styles.panelHeading}><small>{workshopOnly?"Atelier de transformation":sharedSlot?"Atelier commun · Toutes les tentes":buildingSlot?`Entrepôt ${buildingNumber} · Services partagés`:`Tente ${tentNumber} · ${selectedGroup.label}`}</small><span data-installed={!!installed}>{installed?<><Check size={12} aria-hidden="true"/>Installé</>:"Libre"}</span></div><h3 id="warehouse-slot-title">{KQ_EQUIPMENT_SLOT_LABELS[slot]}</h3>
-          {slot==="flower-drying"?<p>Le séchoir des fleurs {buildingScope?`de l’entrepôt ${buildingNumber}, commun à ses tentes`:`de la tente ${tentNumber}`}. Chaque niveau renforce la régularité ; la qualité maximale augmente aux niveaux 4, 7 et 10.</p>:null}
-          <div aria-live="polite">{error||loadError?<p role="alert" className={styles.error}><CircleAlert size={16}/>{error||loadError}</p>:null}{notice?<p role="status" className={styles.notice}><Check size={16}/>{notice}</p>:null}</div>
-          {loading?<p role="status">Actualisation de l’atelier…</p>:loadError?<button type="button" onClick={onRetry}><RefreshCw size={16}/>Réessayer</button>:<>
-            {choices.length>1?<label className={styles.modelChoice}>Matériel de cet emplacement<select value={selectedEquipment.code} onChange={event=>updateTent(tentNumber,{selectedCode:event.target.value})} disabled={busy}><option disabled value="">Choisir un modèle</option>{choices.map(item=><option key={item.code} value={item.code}>{item.name} · {activeCodes.includes(item.code)?"installé":"en réserve"}</option>)}</select></label>:null}
-            {selectedEquipment?[selectedEquipment].map(item=>{const isInstalled=activeCodes.includes(item.code),requirement=getKqEquipmentRequirementState({equipment:item,ownedCodes}),artwork=getKqWorkshopProductArtwork(item.code,levels[item.code]??1);return <article key={item.code} className={styles.item} data-installed={isInstalled}>
-              <span>{cultureWear[item.code]?.due?"Hors service":isInstalled?"Installé":item.purchasable?"En réserve":"Fourni"}{item.purchasable?` · niveau ${levels[item.code]??1}`:""}</span><h4>{item.name}</h4>
-              {artwork?<Image src={artwork.src} alt="" width={512} height={512} sizes="180px" className={styles.machineArtwork} data-workshop-inventory-artwork={item.code}/>:null}
-              <ul>{getKqEquipmentImpactLabels(item).map(label=><li key={label}>{label}</li>)}</ul><small>{item.tradeoff}</small>
-              {!isInstalled&&installed?<p>Remplace {installed.name}, qui reste en réserve.</p>:null}
-              {!requirement.compatible?<p className={styles.error}>Prérequis : {requirement.missing.map(r=>r.label).join(", ")}</p>:null}
-              {!isInstalled?<button type="button" disabled={!purchasedCodes.includes(item.code)||!requirement.compatible||busy||loading||cultureWear[item.code]?.due} onClick={()=>void equip(item)}>{pending===item.code?"Installation…":cultureWear[item.code]?.due?"À remplacer avant installation":sharedSlot?"Installer dans l’atelier commun":buildingSlot?`Installer · entrepôt ${buildingNumber}`:`Installer · tente ${tentNumber}`}</button>:null}
-              {cultureWear[item.code]?<KqCultureEquipmentWear equipmentScopeVersion={equipmentScopeVersion} tentNumber={tentNumber} productionUnits={units} code={item.code} name={item.name} condition={cultureWear[item.code]} cashCents={cashCents} activeRun={activeRun} disabled={busy||loading} onUpdated={onRetry}/>:null}
-              {item.purchasable&&purchasedCodes.includes(item.code)&&!cultureWear[item.code]?.due?<KqEquipmentUpgrade workshopOnly={workshopOnly} maintenanceDue={maintenance[item.code]?.due} onBusyChange={setUpgradeBusy} equipmentScopeVersion={equipmentScopeVersion} career={career} code={item.code} level={levels[item.code]??1} cashCents={cashCents} tentNumber={tentNumber} productionUnits={units} disabled={busy||loading} onUpdated={onRetry}/>:null}
-              {maintenance[item.code]?<KqMachineMaintenance onBusyChange={setMaintenanceBusy} tentNumber={tentNumber} productionUnits={units} code={item.code} condition={maintenance[item.code]} cashCents={cashCents} disabled={busy||loading} onUpdated={onRetry}/>:null}
-            </article>;}):null}
-            {!choices.length?<p className={styles.empty}><PackageOpen/>Cet emplacement est prêt à accueillir ton matériel.</p>:null}
-            <button type="button" className={styles.shopButton} disabled={busy} onClick={()=>openShop(suggestion?.code)}><ShoppingBag size={17}/>{sharedSlot?"Matériel de l’atelier commun":buildingSlot?`Matériel de l’entrepôt ${buildingNumber}`:slot==="flower-drying"&&suggestion?`Aménager le séchoir · ${formatKqCash(suggestion.priceCents)}`:`Acheter du matériel · tente ${tentNumber}`}</button>
-          </>}
-          <small className={styles.rule}>{workshopOnly?"Un modèle actif par emplacement. Les niveaux et l’entretien de tes machines sont conservés.":sharedSlot?"Un seul achat pour toutes les tentes. Installation, niveau et entretien communs.":buildingSlot?`Un seul achat pour les tentes ${buildingNumber===1?"1 à 4":"5 à 8"}. Installation, niveau et usure partagés dans cet entrepôt.`:<>Matériel et niveaux propres à la tente {tentNumber}. Les changements s’appliquent à la prochaine culture commune.</>}</small>
-        </aside>
+        {workshopOnly?<KqWorkshopMachineDialog open={machineDialogOpen} busy={busy||loading} title={KQ_EQUIPMENT_SLOT_LABELS[slot]} onClose={()=>{if(!busy&&!loading)setMachineDialogOpen(false);}}>{equipmentPanel}</KqWorkshopMachineDialog>:equipmentPanel}
         {!workshopOnly&&<div ref={management} className={styles.management}>
           <details className={styles.performance}><summary><span>Bilan de la tente {tentNumber}<small>Bonus du matériel{buildingScope?" et de son bâtiment":""}</small></span><ChevronDown size={18} aria-hidden="true"/></summary><div className={styles.performanceContent}><dl className={styles.stats}><div><dt>Quantité</dt><dd>+{summary.quantityPercent} %</dd></div><div><dt>Qualité max.</dt><dd>+{summary.qualityMaxBonus}</dd></div><div><dt>Régularité</dt><dd>+{summary.regularityPercent} %</dd></div></dl>
           <small className={styles.estimate}>Les bonus du matériel hors service sont désactivés ; le kit de départ prend le relais aux emplacements concernés. Le matériel est fixé au lancement de la culture commune. Le panneau Charges et énergie présente la facture totale.</small></div></details>

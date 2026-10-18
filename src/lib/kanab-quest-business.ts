@@ -21,6 +21,22 @@ export type KqLabInvoice = {
   id: string; runId: string; issuedAt: string; dueAt: string; amountCents: number; remainingCents: number;
 };
 export type KqSupplierInvoice = KqLabInvoice;
+export type KqStorageClimateBilling = {
+  version: 1;
+  code: string | null;
+  areaM2: number;
+  kwhPerM2Month: number;
+  tariffCentsPerKwh: number;
+  monthlyKwh: number;
+  monthlyCostCents: number;
+  periodStartedAt: string | null;
+  nextBillingAt: string | null;
+  accruedCents: number;
+  outstandingCents: number;
+  /** Electricity already committed by a culture running when monthly billing was introduced. */
+  transitionCreditCents?: number;
+  invoices: Array<{ id: string; periodStartedAt: string; periodEndedAt: string; amountCents: number; remainingCents: number }>;
+};
 export type KqBusinessState = {
   version: 1;
   serverNow: string;
@@ -33,6 +49,8 @@ export type KqBusinessState = {
   lab: { outstandingCents: number; overdueCents: number; invoices: KqLabInvoice[] };
   /** Absent in historical snapshots and guided trials without supplier invoices. */
   suppliers?: { outstandingCents: number; overdueCents: number; invoices: KqSupplierInvoice[] };
+  /** Monthly storage electricity, also included in the shared electricity balance. */
+  storageClimate?: KqStorageClimateBilling;
   nextEventAt: string | null;
   ledger: Array<{ id: string; kind: string; amountCents: number; occurredAt: string }>;
 };

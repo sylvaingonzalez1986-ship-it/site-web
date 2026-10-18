@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createKqTreasuryTutorial, type KqTreasuryTutorialLesson, type KqTreasuryTutorialProgress } from "@/lib/kanab-quest-treasury-tutorial";
 import { createKqTutorialApi, KqTutorialApiProvider } from "./KqTutorialApiContext";
 import { KqTreasuryDesk } from "./KqTreasuryDesk";
-import { KqMarketHub, type KqMarketSection } from "./KqMarketHub";
+import { KqMarketDesk, type KqMarketSection } from "./KqMarketDesk";
 import styles from "./KqTreasuryTutorial.module.css";
 
 export function KqTreasuryTutorial({ lesson, onProgress, onOpenShop }: {
@@ -27,10 +27,9 @@ export function KqTreasuryTutorial({ lesson, onProgress, onOpenShop }: {
   const locationName = lesson !== "business" ? "Banque" : businessAtMarket ? "Marché" : "Bureau";
   return <KqTutorialApiProvider api={api}>
     <section data-treasury-tutorial={lesson} aria-label={`${locationName} du didacticiel`}>
-      <p role="note"><strong>{locationName} d’essai.</strong> 5 000 € fictifs, personnage Trésorier et ordinateur prêtés. Les opérations restent dans cet atelier. {lesson === "business" ? "Gère ton activité au Marché ; retrouve tes factures et tes comptes au Bureau." : "Cours de démonstration fixes à 100 € ; aucun cours réel n’est consulté."}</p>
       {lesson === "business" ? <nav className={styles.navigation} aria-label="Espaces de cet essai de gestion"><button type="button" aria-pressed={businessAtMarket} onClick={() => { setBusinessLocation("market"); setMarketSection("management"); }}>Marché · Gérer mon activité</button><button type="button" aria-pressed={!businessAtMarket} onClick={() => setBusinessLocation("accounting")}>Bureau · Comptabilité</button></nav> : null}
       {notice ? <p role="status">{notice}</p> : null}
-      {businessAtMarket ? <KqMarketHub section={marketSection} onSectionChange={setMarketSection} onOpenShop={openShop}
+      {businessAtMarket ? <KqMarketDesk section={marketSection} onSectionChange={setMarketSection} onOpenShop={openShop}
         onOpenTreasury={() => setBusinessLocation("accounting")}
         onOpenStorage={() => setNotice("Retrouve tes contenants dans l’atelier Stockage & curing du didacticiel.")} />
         : <KqTreasuryDesk key={`${lesson}-${businessLocation}`} initialPole={lesson === "business" ? "accounting" : "bank"}

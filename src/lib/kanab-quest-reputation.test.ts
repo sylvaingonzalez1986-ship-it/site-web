@@ -1,6 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import {
   calculateKqPlacardScore,
   didKqReputationTierChange,
@@ -9,11 +7,11 @@ import {
 } from "@/lib/kanab-quest-reputation";
 
 describe("Kanab Quest reputation progression", () => {
-  it("adds a capped company contribution without changing duel rating or reputation", () => {
+  it("keeps the uncapped decimal company contribution without changing duel rating or reputation", () => {
     const input = { rating: 1000, seasonPoints: 100, reputation: 400 };
     expect(calculateKqPlacardScore({ ...input, businessScore: 120 }))
       .toMatchObject({ score: 1225, rating: 1000, reputationBonus: 80, businessBonus: 120 });
-    expect(calculateKqPlacardScore({ ...input, businessScore: 9999 }).businessBonus).toBe(200);
+    expect(calculateKqPlacardScore({ ...input, businessScore: 9999.3 })).toMatchObject({ businessBonus: 9999.3, score: 11104.3 });
     for (const businessScore of [undefined, -5, Number.NaN, Number.POSITIVE_INFINITY]) {
       expect(calculateKqPlacardScore({ ...input, businessScore }).score).toBe(1105);
     }
@@ -69,12 +67,4 @@ describe("Kanab Quest reputation progression", () => {
     expect(getKqReputationProgress(Number.NaN).reputation).toBe(0);
   });
 
-  it("keeps reputation titles and Kanab Quest scores in the full Arena leaderboard", () => {
-    const arenaClient = readFileSync(
-      join(process.cwd(), "src/components/contest/ContestHubClient.tsx"),
-      "utf8",
-    );
-    expect(arenaClient).toContain("getKqReputationProgress(item.reputation).tier.name");
-    expect(arenaClient).toContain("score: item.placardScore");
-  });
 });

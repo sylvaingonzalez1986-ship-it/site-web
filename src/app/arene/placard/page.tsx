@@ -1,11 +1,12 @@
 import { isArenaPrelaunch } from "@/lib/arena-opening";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import { PlacardPlayerShell } from "@/components/placard/PlacardPlayerShell";
+import { ArenaGameEntry } from "@/components/contest/ArenaGameEntry";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isContestFeatureEnabledServer } from "@/lib/contest-feature";
 import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { getArenaIntroductionState } from "@/lib/supabase/arena-introduction-backend";
 
 export const metadata: Metadata = {
   title: "Kanab Quest",
@@ -18,5 +19,6 @@ export default async function PlacardPlayerPage() {
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) redirect("/compte/connexion?next=%2Farene%2Fplacard");
   if (!await isKqPlayerRequestEnabled()) notFound();
-  return <PlacardPlayerShell key={session.customerId} draftOwnerId={session.customerId} />;
+  const introductionState = await getArenaIntroductionState(session.customerId);
+  return <ArenaGameEntry key={session.customerId} userId={session.customerId} introductionState={introductionState} />;
 }

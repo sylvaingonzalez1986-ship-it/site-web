@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-18",
+  "asset": "public/placard/warehouse-v4/overhead-room-renovated-v1.webp",
+  "source": "public/contest/releve/overhead-renovated-v1.webp",
+  "provenance": "docs/bete-de-concours/assets/releve-overhead-illustration-v1.json",
+  "operation": "Unmodified copy of the approved La relève renovation artwork, shared with the live game.",
+  "dimensions": { "width": 1024, "height": 1024 },
+  "rendering": "The SVG background fills the existing canvas. The 10×10 and historical 40×25 playable grids and zone coordinates are unchanged."
+}

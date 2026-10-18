@@ -1,0 +1,27 @@
+﻿.visit { min-width: 0; }
+.toolbar { display: flex; align-items: center; gap: 10px; min-height: 44px; margin-bottom: 12px; }
+.actions { display: flex; flex: 1; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+.actions nav { display: flex; flex-wrap: wrap; gap: 8px; }
+.actions button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; border: 2px solid #172923; border-radius: 12px; padding: 9px 12px; background: #efc451; box-shadow: 2px 2px 0 #172923; color: #172923; font: 750 .8rem/1.25 var(--font-body), sans-serif; cursor: pointer; text-align: left; }
+.actions button svg { flex-shrink: 0; }
+.actions button small { display: block; margin-top: 3px; color: #425447; font-size: .64rem; font-weight: 550; }
+.actions button:disabled { opacity: .5; cursor: default; box-shadow: none; }
+.actions button[aria-pressed=false] { background: #fffaf0; box-shadow: none; }
+.help,.notice > button { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; padding: 0; border: 2px solid #172923; border-radius: 12px; background: #fffaf0; color: #172923; cursor: pointer; }
+.help { align-self: flex-start; }
+.toolbar button:focus-visible,.helpDialog button:focus-visible { outline: 3px solid #08796e; outline-offset: 3px; }
+.notice { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 12px; padding: 8px 10px 8px 14px; border: 1px solid #bc9c40; border-radius: 12px; background: #fff2cd; font: .84rem/1.45 var(--font-body), sans-serif; }
+.notice > button { width: 36px; height: 36px; border: 0; background: transparent; }
+.helpDialog { width: min(560px,calc(100vw - 24px)); }
+.helpDialog p { margin: 15px 0; color: #365044; font-size: .88rem; line-height: 1.6; }
+.helpBudget { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 0 0 20px; }
+.helpBudget div { padding: 12px; border-radius: 10px; background: #e6efdf; }
+.helpBudget dt { font-size: .7rem; line-height: 1.3; color: #526359; }
+.helpBudget dd { margin: 7px 0 0; font-size: 1rem; font-weight: 800; }
+@media (max-width: 600px) {
+ .toolbar { align-items: flex-start; gap: 8px; }
+ .actions button { min-height: 44px; padding: 8px 10px; font-size: .74rem; }
+ .helpBudget { gap: 7px; }
+ .helpBudget div { padding: 8px; }
+ .helpBudget dd { font-size: .85rem; }
+}

@@ -65,7 +65,7 @@ try {
     await page.setViewport({width,height:1000,isMobile:touch,hasTouch:touch});
     await visit('compact');
     assert.deepEqual(await dimensions(),{columns:10,rows:10,viewBox:'0 0 400 400'});
-    assert.ok(await page.$eval('[data-warehouse-map]',async map=>{const source=[...map.querySelectorAll('image')].find(node=>node.href.baseVal.endsWith('/overhead-room-100m2-sylvain-v1.webp'));if(!source)return false;const image=new Image();image.src=source.href.baseVal;await image.decode();return image.naturalWidth>0&&image.naturalHeight>0;}),'New compact cartoon room loads');
+    assert.ok(await page.$eval('[data-warehouse-map]',async map=>{const source=map.querySelector('[data-warehouse-room-artwork]');if(!source?.href.baseVal.endsWith('/overhead-room-renovated-v1.webp'))return false;const image=new Image();image.src=source.href.baseVal;await image.decode();return image.naturalWidth>0&&image.naturalHeight>0;}),'Renovated professional room loads');
     assert.equal(await page.$eval('[aria-label="Repères de ton installation"]',node=>node.textContent.includes('/ 100')),true,'Surface shows 100 m²');
     assert.equal(await page.$eval('[data-warehouse-map]',node=>node.getAttribute('aria-label').includes('100 cases')),true);
     await clickText('Aménager');await openSettings();

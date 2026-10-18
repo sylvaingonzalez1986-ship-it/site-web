@@ -7,6 +7,7 @@ import { calculateKqPlacardScore } from "@/lib/kanab-quest-reputation";
 import styles from "./KqSeasonBoard.module.css";
 
 type Standing = { id: string; rank: number; name: string; placardScore: number; businessScore?: number; isPlayer: boolean };
+const formatScore = (value: number) => value.toLocaleString("fr-FR", { maximumFractionDigits: 1 });
 export type KqSeasonBoardProps = {
   seasonCode?: string; rank: number | null; score: number; rating: number; seasonPoints: number; reputation: number;
   wins: number; losses: number; streak: number; arenaExperience: number; leaderboard: Standing[];
@@ -29,7 +30,7 @@ export function KqSeasonBoard({ seasonCode, rank, score, rating, seasonPoints, r
         <div className={styles.sectionLabel}><Trophy size={16} aria-hidden="true" />Ma place dans la saison</div>
         <dl className={styles.stats}>
           <div><dt>Classement</dt><dd>{rank === null ? "—" : `#${rank}`}</dd><small>{rank === null ? "Un premier duel t’attend" : "Tous les joueurs réunis"}</small></div>
-          <div><dt>Score Kanab Quest</dt><dd>{score.toLocaleString("fr-FR")}</dd><small>Dont +{breakdown.businessBonus} pour ton entreprise</small></div>
+          <div><dt>Score Kanab Quest</dt><dd>{formatScore(score)}</dd><small>Dont +{formatScore(breakdown.businessBonus)} pour ton entreprise</small></div>
         </dl>
         <p className={styles.record}><Swords size={16} aria-hidden="true" /><strong>{wins} victoire{wins !== 1 ? "s" : ""}</strong><span>·</span>{losses} défaite{losses !== 1 ? "s" : ""}</p>
         <div className={styles.reward}>
@@ -39,7 +40,7 @@ export function KqSeasonBoard({ seasonCode, rank, score, rating, seasonPoints, r
       </div>
       <div className={styles.leaders}>
         <div className={styles.sectionLabel}>En tête de Kanab Quest<span>Score</span></div>
-        {leaderboard.length ? <ol>{leaderboard.map(entry => <li key={entry.id} data-player={entry.isPlayer}><b className={styles.place}>#{entry.rank}</b><span className={styles.identity}><span className={styles.name}>{entry.name}{entry.isPlayer ? <small>Toi</small> : null}</span><small>Entreprise {entry.businessScore ?? 0} / 200</small></span><strong>{entry.placardScore.toLocaleString("fr-FR")}</strong></li>)}</ol> : <p className={styles.empty}>Le classement n’est pas encore disponible.</p>}
+        {leaderboard.length ? <ol>{leaderboard.map(entry => <li key={entry.id} data-player={entry.isPlayer}><b className={styles.place}>#{entry.rank}</b><span className={styles.identity}><span className={styles.name}>{entry.name}{entry.isPlayer ? <small>Toi</small> : null}</span><small>Entreprise {formatScore(entry.businessScore ?? 0)} pts</small></span><strong>{formatScore(entry.placardScore)}</strong></li>)}</ol> : <p className={styles.empty}>Le classement n’est pas encore disponible.</p>}
         {!local ? <Link className={styles.fullRanking} prefetch={false} href="/arene?vue=classement">Voir tout le classement<ArrowRight size={15} aria-hidden="true" /></Link> : null}
         <p className={styles.openPool}><Swords size={18} aria-hidden="true" />La cote et la qualité de ta fleur ne limitent pas les adversaires que tu peux rencontrer.</p>
       </div>
@@ -52,13 +53,12 @@ export function KqSeasonBoard({ seasonCode, rank, score, rating, seasonPoints, r
           <div><dt>Cote de duel</dt><dd>{breakdown.rating}</dd><small>Elle monte avec les victoires et baisse avec les défaites. Battre un adversaire mieux coté rapporte davantage.</small></div>
           <div><dt>Bonus de saison</dt><dd>+{breakdown.seasonBonus}</dd><small>{seasonPoints} points de saison · Bonus plafonné à 150.</small></div>
           <div><dt>Bonus de réputation</dt><dd>+{breakdown.reputationBonus}</dd><small>{reputation} de réputation · Bonus progressif, plafonné à 100.</small></div>
-          <div><dt>Développement de l’entreprise</dt><dd>+{breakdown.businessBonus}</dd><small>Chiffre d’affaires encaissé : 80 points. Capacité de production installée : 60 points. Valeur nette estimée de l’entreprise : 60 points. Maximum : 200.</small></div>
+          <div><dt>Développement de l’entreprise</dt><dd>+{formatScore(breakdown.businessBonus)}</dd><small>Surface cultivée, chiffre d’affaires de la saison et réputation commerciale. Progression dégressive, sans plafond.</small></div>
         </dl>
-        <p>Le chiffre d’affaires encaissé dans le jeu, TTC et cumulé, apporte jusqu’à 80 points à 10 000 €. La valeur nette estimée apporte jusqu’à 60 points à 10 000 €. Ces deux bonus augmentent de moins en moins vite.</p>
-        <p>La capacité rapporte 1,2 point par m² de culture équipé, jusqu’à 60 points pour 50 m². Une surface équipée compte même en pause ; les espaces vides, de séchage et de stockage sont exclus.</p>
-        <p>La valeur nette estimée correspond à ce que possède encore ton entreprise, placements compris, moins ses dettes. Les placements sont évalués au dernier cours disponible ou, à défaut, à leur prix d’achat.</p>
+        <p>La surface réellement cultivée est moyennée sur 30 jours. Les espaces vides, les cultures en pause, le séchage et le stockage sont exclus. Le chiffre d’affaires correspond aux ventes du jeu encaissées pendant la saison, hors taxes et annulations. La réputation commerciale actuelle constitue le troisième critère.</p>
+        <p>Entreprise = 27 × log₂(1 + surface / 50) + 36 × log₂(1 + chiffre d’affaires / 10 000) + 27 × log₂(1 + réputation / 600). À titre de repère, 50 m² cultivés en moyenne, 10 000 € de ventes et 600 de réputation apportent 90 points. Chaque critère peut continuer à progresser.</p>
         <p>À Score Kanab Quest égal : meilleure réputation, puis meilleure cote, plus de victoires, moins de défaites et enfin plus de points de saison.</p>
-        {score !== breakdown.score ? <p>Score calculé actuellement : <strong>{breakdown.score}</strong>. Le classement affiché repose sur sa dernière mise à jour.</p> : null}
+        {score !== breakdown.score ? <p>Score calculé actuellement : <strong>{formatScore(breakdown.score)}</strong>. Le classement affiché repose sur sa dernière mise à jour.</p> : null}
         <p><strong>{arenaExperience.toLocaleString("fr-FR")} EXP d’Arène</strong> gagnée. L’EXP suit ton parcours ; elle n’est pas ajoutée directement au Score Kanab Quest.</p>
         <p>Un pack bonus récompense chaque palier de trois victoires consécutives : 3, 6, 9… Les entraînements contre les bots ne modifient ni ta cote ni ta série.</p>
         {!local ? <p>Les joueurs partagent la même file. Le tirage privilégie les fleurs qui attendent depuis le plus longtemps, sans condition de division, de cote ou de qualité.</p> : null}

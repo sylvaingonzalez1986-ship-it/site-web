@@ -12,6 +12,15 @@ export type KqTreasuryTutorialLesson = "bank" | "investments" | "business";
 export type KqTreasuryTutorialProgress = { instruction: string; complete: boolean };
 type Position = { quantity: bigint; costBasisCents: number };
 type PendingOrder = { market: "stocks" | "crypto"; order: KqStockOrder | KqCryptoOrder };
+export type KqTreasuryTutorialState = {
+  version: 1; started: number; serial: number; business: ReturnType<typeof createKqBusinessPreview>; energyDue: number;
+  loan: KqBankLoan | null; loans: KqBankLoan[]; firstDepositAt: string | null;
+  initial: KqTreasuryBalances; balances: KqTreasuryBalances; journal: KqTreasuryEntry[];
+  positions: Array<[string, { quantity: string; costBasisCents: number }]>;
+  orders: Array<[string, PendingOrder]>;
+  trades: Array<[string, { market: "stocks" | "crypto"; trade: KqStockTrade | KqCryptoTrade }]>;
+  replayed: Array<[string, string]>; actions: string[];
+};
 const QUANTITY_SCALE = BigInt(100_000_000);
 const DEMO_PRICE_CENTS = 10_000;
 const INITIAL_CASH = 500_000;
@@ -27,36 +36,39 @@ function quantityUnits(value: string) {
  * storage, session or customer identifiers. Every amount and price is fictitious.
  * Shared production parsers and loan/calendar rules keep the practice consistent.
  */
-export function createKqTreasuryTutorial(options: { now?: () => number } = {}) {
+export function createKqTreasuryTutorial(options: { now?: () => number; initialCashCents?: number; state?: KqTreasuryTutorialState } = {}) {
   const clock = options.now ?? Date.now;
-  const started = clock();
+  const saved = options.state ? structuredClone(options.state) : undefined;
+  const started = saved?.started ?? clock();
   const stamp = () => new Date(clock()).toISOString();
   let serial = 0;
   const id = () => `71000000-0000-4000-8000-${(++serial).toString(16).padStart(12, "0")}`;
   const marketId = id();
   const labId = id();
   const runId = id();
-  const business = createKqBusinessPreview(started);
-  business.lab = { outstandingCents: 4500, overdueCents: 0, invoices: [{ id: labId, runId, issuedAt: stamp(), dueAt: new Date(started + KQ_GAME_MONTH_MS).toISOString(), amountCents: 4500, remainingCents: 4500 }] };
-  let energyDue = 414;
-  let loan: KqBankLoan | null = null;
-  const loans: KqBankLoan[] = [];
-  let firstDepositAt: string | null = null;
-  const initial: KqTreasuryBalances = { cash: INITIAL_CASH, opening_equity: -INITIAL_CASH, lab_payable: -4500, expense_lab: 4500, energy_payable: -414, expense_energy: 414 };
-  const balances = { ...initial };
-  const journal: KqTreasuryEntry[] = [];
-  const positions = new Map<string, Position>();
-  const orders = new Map<string, PendingOrder>();
-  const trades = new Map<string, { market: "stocks" | "crypto"; trade: KqStockTrade | KqCryptoTrade }>();
-  const replayed = new Map<string, string>();
-  const actions = new Set<string>();
+  const business = saved?.business ?? createKqBusinessPreview(started);
+  if (!saved) business.lab = { outstandingCents: 4500, overdueCents: 0, invoices: [{ id: labId, runId, issuedAt: stamp(), dueAt: new Date(started + KQ_GAME_MONTH_MS).toISOString(), amountCents: 4500, remainingCents: 4500 }] };
+  let energyDue = saved?.energyDue ?? 414;
+  let loan: KqBankLoan | null = saved?.loan ?? null;
+  const loans: KqBankLoan[] = saved?.loans ?? [];
+  let firstDepositAt: string | null = saved?.firstDepositAt ?? null;
+  const initialCash = options.initialCashCents ?? INITIAL_CASH;
+  const initial: KqTreasuryBalances = saved?.initial ?? { cash: initialCash, opening_equity: -initialCash, lab_payable: -4500, expense_lab: 4500, energy_payable: -414, expense_energy: 414 };
+  const balances = saved?.balances ?? { ...initial };
+  const journal: KqTreasuryEntry[] = saved?.journal ?? [];
+  const positions = new Map<string, Position>(saved?.positions.map(([key, value]) => [key, { ...value, quantity: BigInt(value.quantity) }]));
+  const orders = new Map<string, PendingOrder>(saved?.orders);
+  const trades = new Map<string, { market: "stocks" | "crypto"; trade: KqStockTrade | KqCryptoTrade }>(saved?.trades);
+  const replayed = new Map<string, string>(saved?.replayed);
+  const actions = new Set<string>(saved?.actions);
+  if (saved) serial = saved.serial;
   const listeners = new Set<() => void>();
   const cash = () => balances.cash ?? 0;
   const afford = (cents: number) => { if (cents > cash()) throw new Error("Le budget fictif ne suffit pas pour cette opération."); };
   function post(kind: string, postings: KqTreasuryPosting[]) {
     if (postings.reduce((sum, item) => sum + item.deltaCents, 0) !== 0) throw new Error("Écriture d’essai déséquilibrée.");
     for (const item of postings) balances[item.account] = (balances[item.account] ?? 0) + item.deltaCents;
-    journal.unshift({ id: id(), occurredAt: stamp(), kind, reference: "Didacticiel · opération fictive", postings });
+    journal.unshift({ id: id(), occurredAt: stamp(), kind: kind === 'savings-deposit' || kind === 'savings-withdraw' ? 'savings-movement' : kind, reference: "Didacticiel · opération fictive", postings });
     actions.add(kind);
   }
   const spend = (kind: string, cents: number, account: KqTreasuryPosting["account"]) => {
@@ -97,7 +109,7 @@ export function createKqTreasuryTutorial(options: { now?: () => number } = {}) {
     return { version: 1, serverNow: stamp(), startedAt: new Date(started).toISOString(), businessStartedAt: new Date(started).toISOString(),
       period: { key, from: new Date(started).toISOString(), to: key === "previous" ? new Date(started).toISOString() : stamp() },
       openingBalances: { ...initial }, closingBalances: { ...closing },
-      series: [{ from: new Date(started).toISOString(), to: stamp(), cashOpeningCents: INITIAL_CASH, cashClosingCents: closing.cash ?? 0,
+      series: [{ from: new Date(started).toISOString(), to: stamp(), cashOpeningCents: initial.cash ?? 0, cashClosingCents: closing.cash ?? 0,
         inflowsCents: rows.reduce((sum, row) => sum + Math.max(0, row.postings.find(item => item.account === "cash")?.deltaCents ?? 0), 0),
         outflowsCents: rows.reduce((sum, row) => sum + Math.max(0, -(row.postings.find(item => item.account === "cash")?.deltaCents ?? 0)), 0), revenueCents: 0, expenseCents: 0 }],
       journal: { items: rows.slice(offset, offset + 25), total: rows.length, offset, limit: 25 },
@@ -294,5 +306,10 @@ export function createKqTreasuryTutorial(options: { now?: () => number } = {}) {
     if (!actions.has("lab-paid")) return { instruction: "Passe au Bureau → Factures et règle l’analyse fictive. Observe le nouveau solde.", complete: false };
     return { instruction: "Ton activité se gère au Marché. L’analyse est réglée : retrouve les mouvements dans le journal du Bureau.", complete: true };
   }
-  return { request, progress, subscribe: (listener: () => void) => { listeners.add(listener); return () => { listeners.delete(listener); }; } };
+  const snapshot = (): KqTreasuryTutorialState => structuredClone({ version: 1, started, serial, business, energyDue, loan, loans, firstDepositAt,
+    initial, balances, journal, positions: [...positions].map(([key, value]) => [key, { ...value, quantity: value.quantity.toString() }]),
+    orders: [...orders], trades: [...trades], replayed: [...replayed], actions: [...actions] });
+  return { request, progress, snapshot,
+    synchronizeCash: (cashCents: number) => { if (!Number.isSafeInteger(cashCents) || cashCents < 0) throw new Error("Solde d’essai invalide."); balances.cash = cashCents; },
+    subscribe: (listener: () => void) => { listeners.add(listener); return () => { listeners.delete(listener); }; } };
 }
