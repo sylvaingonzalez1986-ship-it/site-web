@@ -3,28 +3,29 @@ import { NextResponse, type NextRequest } from "next/server";
 import { isArenaPrelaunch, isArenaActivityApi, getArenaClosedPageMode, ARENA_OPENING_AT, ARENA_OPENING_MESSAGE } from "@/lib/arena-opening";
 import { isPioneerPackPrelaunch, PIONEER_PACK_OPENING_AT, PIONEER_PACK_OPENING_MESSAGE } from "@/lib/pioneer-pack";
 import { ADMIN_COOKIE_NAME, verifyAdminSessionToken } from "@/lib/admin-auth";
+import { getSupabasePublicOrigin } from "@/lib/supabase-public-origin";
+import { sanitizeNextPath } from "@/lib/safe-next-path";
 
 const MUTATIVE_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 const AGE_GATE_COOKIE_NAME = "age_verified";
 const CRAWLER_USER_AGENT_PATTERN =
   /(googlebot|bingbot|duckduckbot|yandex(bot)?|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slurp|applebot|pinterestbot|discordbot|whatsapp|petalbot|ahrefsbot|semrushbot|oai-searchbot|gptbot|chatgpt-user|claude-searchbot|claude-user|claudebot|perplexitybot|perplexity-user)/i;
 
-const SUPABASE_HOSTNAME = "eyowwwpdmfrulhkpvlnf.supabase.co";
-const SUPABASE_CSP_SOURCES = `https://${SUPABASE_HOSTNAME} https://*.supabase.co`;
 const VIVA_ORIGIN = "https://www.vivapayments.com";
 
 function buildCspHeader(nonce: string): string {
   const isProd = process.env.NODE_ENV === "production";
   const devConnectSources = isProd ? "" : " ws:";
+  const supabaseOrigin = getSupabasePublicOrigin();
   const directives = [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' ${VIVA_ORIGIN}`,
     `style-src 'self' 'unsafe-inline'`,
-    `img-src 'self' data: blob: ${SUPABASE_CSP_SOURCES} https://static.wixstatic.com https://files.cdn.printful.com https://s2.coinmarketcap.com/static/img/coins/64x64/`,
-    `media-src 'self' blob: ${SUPABASE_CSP_SOURCES}`,
+    `img-src 'self' data: blob: ${supabaseOrigin} https://static.wixstatic.com https://files.cdn.printful.com https://s2.coinmarketcap.com/static/img/coins/64x64/`,
+    `media-src 'self' blob: ${supabaseOrigin}`,
     `font-src 'self' data:`,
-    `connect-src 'self'${devConnectSources} ${SUPABASE_CSP_SOURCES} ${VIVA_ORIGIN}`,
-    `frame-src ${VIVA_ORIGIN} ${SUPABASE_CSP_SOURCES}`,
+    `connect-src 'self'${devConnectSources} ${supabaseOrigin} ${VIVA_ORIGIN}`,
+    `frame-src ${VIVA_ORIGIN} ${supabaseOrigin}`,
     "frame-ancestors 'none'",
     "object-src 'none'",
     "base-uri 'self'",
@@ -158,16 +159,6 @@ export function shouldValidateMutativeOrigin(pathname: string, method: string): 
 
 export function isAdminRestrictedPage(pathname: string): boolean {
   return pathname.startsWith("/admin") || pathname === "/dev/placard" || pathname.startsWith("/dev/placard/");
-}
-
-function sanitizeNextPath(value: string | null): string {
-  if (!value) {
-    return "/";
-  }
-  if (!value.startsWith("/") || value.startsWith("//")) {
-    return "/";
-  }
-  return value;
 }
 
 function isValidOrigin(request: NextRequest): boolean {
@@ -316,6 +307,7 @@ export async function middleware(request: NextRequest) {
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
+  requestHeaders.set("Content-Security-Policy", cspHeader);
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });
   return secure(response);

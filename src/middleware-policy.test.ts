@@ -1,5 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
+import { POST as verifyAge } from "@/app/api/age-gate/verify/route";
 import {
   middleware,
   isAdminRestrictedPage,
@@ -8,7 +9,87 @@ import {
   shouldValidateMutativeOrigin,
 } from "../middleware";
 
+afterEach(() => {
+  vi.unstubAllEnvs();
+});
+
+function parsePolicy(policy: string) {
+  return new Map(policy.split(";").map((directive) => {
+    const [name, ...sources] = directive.trim().split(/\s+/);
+    return [name, sources];
+  }));
+}
+
+async function verifiedAgeRequest(next: string) {
+  vi.stubEnv("ADMIN_SESSION_SECRET", "age-gate-redirect-test-secret");
+  const verification = await verifyAge(new Request("https://example.test/api/age-gate/verify", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ confirmed: true }),
+  }));
+  const cookie = verification.cookies.get("age_verified")!;
+  const url = new URL("https://example.test/age-gate");
+  url.searchParams.set("next", next);
+  return new NextRequest(url, {
+    headers: { accept: "text/html", cookie: `${cookie.name}=${cookie.value}` },
+  });
+}
+
 describe("middleware policy helpers", () => {
+  it.each(["production", "development"])("restricts Supabase to the configured project in %s", async (environment) => {
+    vi.stubEnv("NODE_ENV", environment);
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://configured-project.supabase.co/");
+    const response = await middleware(new NextRequest("https://example.test/"));
+    const policy = response.headers.get("Content-Security-Policy")!;
+    const directives = parsePolicy(policy);
+
+    for (const name of ["img-src", "media-src", "connect-src", "frame-src"]) {
+      expect(directives.get(name)?.filter((source) => source.includes("supabase.co")))
+        .toEqual(["https://configured-project.supabase.co"]);
+      expect(directives.get(name)).not.toContain("https:");
+      expect(directives.get(name)).not.toContain("*");
+    }
+    expect(policy).not.toContain("*.supabase.co");
+    expect(directives.get("script-src")).not.toContain("https://configured-project.supabase.co");
+    expect(directives.get("object-src")).toEqual(["'none'"]);
+    expect(directives.get("frame-ancestors")).toEqual(["'none'"]);
+    for (const name of ["script-src", "connect-src", "frame-src"]) {
+      expect(directives.get(name)).toContain("https://www.vivapayments.com");
+    }
+    expect(directives.has("upgrade-insecure-requests")).toBe(environment === "production");
+    expect(directives.get("connect-src")?.includes("ws:")).toBe(environment !== "production");
+  });
+
+  it("uses the existing project when no Supabase URL is configured", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "");
+    const response = await middleware(new NextRequest("https://example.test/"));
+    const directives = parsePolicy(response.headers.get("Content-Security-Policy")!);
+    expect(directives.get("frame-src"))
+      .toEqual(["https://www.vivapayments.com", "https://eyowwwpdmfrulhkpvlnf.supabase.co"]);
+  });
+
+  it("passes its fresh nonce and policy to Next instead of trusting request-supplied headers", async () => {
+    const request = () => new NextRequest("https://example.test/", {
+      headers: {
+        "x-nonce": "attacker-nonce",
+        "Content-Security-Policy": "script-src 'unsafe-inline'",
+      },
+    });
+    const first = await middleware(request());
+    const second = await middleware(request());
+
+    for (const response of [first, second]) {
+      const nonce = response.headers.get("x-middleware-request-x-nonce");
+      const policy = response.headers.get("Content-Security-Policy");
+      expect(nonce).toMatch(/^[a-f0-9]{32}$/);
+      expect(policy).toContain(`'nonce-${nonce}'`);
+      expect(response.headers.get("x-middleware-request-content-security-policy")).toBe(policy);
+      expect(parsePolicy(policy!).get("script-src")).not.toContain("'unsafe-inline'");
+    }
+    expect(first.headers.get("x-middleware-request-x-nonce"))
+      .not.toBe(second.headers.get("x-middleware-request-x-nonce"));
+  });
+
   it("permits crypto logo images without authorizing CoinMarketCap scripts or API calls", async () => {
     const response = await middleware(new NextRequest("https://example.test/"));
     const policy = response.headers.get("Content-Security-Policy");
@@ -33,6 +114,28 @@ describe("middleware policy helpers", () => {
     expect(shouldEnforceAgeGate("/bete-de-concours")).toBe(true);
     expect(shouldEnforceAgeGate("/bete-de-concours/lot-premium")).toBe(true);
     expect(shouldEnforceAgeGate("/bete-de-concours/profils/testeur")).toBe(true);
+  });
+
+  it.each([
+    "/\\audit.invalid",
+    "/%5caudit.invalid",
+    "/%255caudit.invalid",
+    "//audit.invalid",
+    "/%2faudit.invalid",
+    "/admin/..//audit.invalid",
+    "/%0aaudit.invalid",
+    "https://audit.invalid",
+  ])("blocks an unsafe server redirect with a valid signed age cookie: %s", async (next) => {
+    const response = await middleware(await verifiedAgeRequest(next));
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe("https://example.test/");
+  });
+
+  it("preserves the intended shop return for an already age-verified visitor", async () => {
+    const next = "/boutique?filtre=huile%26bio#catalogue";
+    const response = await middleware(await verifiedAgeRequest(next));
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe(`https://example.test${next}`);
   });
 
   it.each([

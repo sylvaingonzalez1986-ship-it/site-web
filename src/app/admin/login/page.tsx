@@ -1,4 +1,5 @@
 import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
+import { sanitizeAdminNextPath } from "@/lib/safe-next-path";
 
 import Link from "next/link";
 import styles from "@/components/admin/AdminLogin.module.css";
@@ -6,10 +7,10 @@ import styles from "@/components/admin/AdminLogin.module.css";
 export default async function AdminLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string | string[] }>;
 }) {
   const params = await searchParams;
-  const nextUrl = params.next || "/admin";
+  const nextUrl = sanitizeAdminNextPath(params.next);
 
   return (
     <section className={styles.page} aria-labelledby="admin-login-title">

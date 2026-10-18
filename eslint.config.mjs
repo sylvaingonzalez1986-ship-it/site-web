@@ -2,7 +2,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 
-// package.json overrides @next/eslint-plugin-next@16.3.8's fast-glob with
+// package.json overrides @next/eslint-plugin-next@16.4.1's fast-glob with
 // tinyglobby@0.2.17 to remove the dependency affected by GHSA-vfj7-8cjw-p6xm.
 // This is scoped to this single-root config: without settings.next.rootDir,
 // Next's getRootDirs returns context.cwd and never calls the aliased globSync.

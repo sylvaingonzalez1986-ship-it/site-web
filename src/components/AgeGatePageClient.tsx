@@ -2,19 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { sanitizeNextPath } from "@/lib/safe-next-path";
 import styles from "@/components/FirstVisitExperience.module.css";
 
 const AGE_VERIFIED_EVENT = "lcb:age-verified";
-
-function sanitizeNextPath(value: string | null): string {
-  if (!value) {
-    return "/";
-  }
-  if (!value.startsWith("/") || value.startsWith("//")) {
-    return "/";
-  }
-  return value;
-}
 
 type AgeGatePageClientProps = {
   nextPathParam: string | null;
@@ -24,7 +15,6 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
   const [denied, setDenied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const nextPath = sanitizeNextPath(nextPathParam);
 
   const confirmMajority = async () => {
     setLoading(true);
@@ -43,7 +33,7 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
       }
 
       window.dispatchEvent(new Event(AGE_VERIFIED_EVENT));
-      window.location.assign(nextPath);
+      window.location.assign(sanitizeNextPath(nextPathParam));
     } catch {
       setError("Verification impossible.");
     } finally {

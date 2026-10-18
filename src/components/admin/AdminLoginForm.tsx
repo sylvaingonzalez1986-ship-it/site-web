@@ -2,14 +2,8 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
+import { sanitizeAdminNextPath } from "@/lib/safe-next-path";
 import styles from "./AdminLogin.module.css";
-
-function sanitizeNextUrl(value: string): string {
-  if (!value || !value.startsWith("/") || value.startsWith("//")) {
-    return "/admin";
-  }
-  return value;
-}
 
 type AdminLoginFormProps = {
   nextUrl: string;
@@ -61,7 +55,7 @@ export function AdminLoginForm({ nextUrl }: AdminLoginFormProps) {
         return;
       }
 
-      router.replace(sanitizeNextUrl(nextUrl));
+      router.replace(sanitizeAdminNextPath(nextUrl));
       router.refresh();
     } catch (submitError) {
       setError(submitError instanceof Error

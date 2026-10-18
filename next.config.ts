@@ -1,21 +1,13 @@
 import type { NextConfig } from "next";
 import bundleAnalyzer from "@next/bundle-analyzer";
 import { withSentryConfig } from "@sentry/nextjs";
+import { getSupabasePublicOrigin } from "./src/lib/supabase-public-origin";
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
 
-const DEFAULT_SUPABASE_HOSTNAME = "eyowwwpdmfrulhkpvlnf.supabase.co";
-
-const configuredSupabaseOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "") || "";
-const configuredSupabaseHostname = configuredSupabaseOrigin
-  ? new URL(configuredSupabaseOrigin).hostname
-  : null;
-const isNonEmptyString = (value: string | null): value is string => Boolean(value);
-const supabaseHostnames = Array.from(
-  new Set([DEFAULT_SUPABASE_HOSTNAME, configuredSupabaseHostname].filter(isNonEmptyString)),
-);
+const supabaseUrl = new URL(getSupabasePublicOrigin());
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
@@ -70,15 +62,11 @@ const nextConfig: NextConfig = {
     ],
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**.supabase.co",
+        protocol: supabaseUrl.protocol === "http:" ? "http" : "https",
+        hostname: supabaseUrl.hostname,
+        port: supabaseUrl.port,
         pathname: "/storage/v1/object/public/**",
       },
-      ...supabaseHostnames.map((hostname) => ({
-        protocol: "https" as const,
-        hostname,
-        pathname: "/storage/v1/object/public/**",
-      })),
       {
         protocol: "https",
         hostname: "static.wixstatic.com",
